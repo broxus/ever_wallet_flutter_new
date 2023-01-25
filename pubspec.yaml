@@ -14,7 +14,10 @@ dependencies:
   flutter_bloc: ^8.1.1
   flutter_localizations:
     sdk: flutter
+  get_it: ^7.2.0
   intl: ^0.17.0
+  nekoton_repository:
+    path: packages/nekoton_repository
 
 dev_dependencies:
   bloc_test: ^9.1.0

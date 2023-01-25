@@ -1,8 +1,10 @@
 import 'dart:async';
 import 'dart:developer';
 
+import 'package:app/di/di.dart';
 import 'package:bloc/bloc.dart';
 import 'package:flutter/widgets.dart';
+import 'package:get_it/get_it.dart';
 
 class AppBlocObserver extends BlocObserver {
   @override
@@ -19,6 +21,8 @@ class AppBlocObserver extends BlocObserver {
 }
 
 Future<void> bootstrap(FutureOr<Widget> Function() builder) async {
+  await _setUpDi();
+
   FlutterError.onError = (details) {
     log(details.exceptionAsString(), stackTrace: details.stack);
   };
@@ -29,4 +33,12 @@ Future<void> bootstrap(FutureOr<Widget> Function() builder) async {
     () async => runApp(await builder()),
     (error, stackTrace) => log(error.toString(), stackTrace: stackTrace),
   );
+}
+
+Future<void> _setUpDi() async {
+  await Future.forEach<Di>(
+    di(),
+    (m) => m.register(GetIt.instance),
+  );
+  await GetIt.instance.allReady();
 }

@@ -12,6 +12,14 @@ EVER Wallet Flutter app
 
 ## Getting Started 🚀
 
+Install packages recursively:
+
+```sh
+$ very_good packages get -r
+```
+
+## Flavours
+
 This project contains 3 flavors:
 
 - development
