@@ -17,6 +17,14 @@ packages:
       url: "https://pub.dev"
     source: hosted
     version: "5.4.0"
+  archive:
+    dependency: transitive
+    description:
+      name: archive
+      sha256: ed7cc591a948744994714375caf9a2ce89e1d82e8243997c8a2994d57181c212
+      url: "https://pub.dev"
+    source: hosted
+    version: "3.3.5"
   args:
     dependency: transitive
     description:
@@ -57,6 +65,14 @@ packages:
       url: "https://pub.dev"
     source: hosted
     version: "2.1.1"
+  build_cli_annotations:
+    dependency: transitive
+    description:
+      name: build_cli_annotations
+      sha256: b59d2769769efd6c9ff6d4c4cede0be115a566afc591705c2040b707534b1172
+      url: "https://pub.dev"
+    source: hosted
+    version: "2.1.0"
   characters:
     dependency: transitive
     description:
@@ -81,6 +97,14 @@ packages:
       url: "https://pub.dev"
     source: hosted
     version: "1.17.0"
+  colorize:
+    dependency: transitive
+    description:
+      name: colorize
+      sha256: "584746cd6ba1cba0633b6720f494fe6f9601c4170f0666c1579d2aa2a61071ba"
+      url: "https://pub.dev"
+    source: hosted
+    version: "3.0.0"
   convert:
     dependency: transitive
     description:
@@ -129,6 +153,14 @@ packages:
       url: "https://pub.dev"
     source: hosted
     version: "1.3.1"
+  ffi:
+    dependency: transitive
+    description:
+      name: ffi
+      sha256: a38574032c5f1dd06c4aee541789906c12ccaab8ba01446e800d9c5b79c4a978
+      url: "https://pub.dev"
+    source: hosted
+    version: "2.0.1"
   file:
     dependency: transitive
     description:
@@ -155,6 +187,23 @@ packages:
     description: flutter
     source: sdk
     version: "0.0.0"
+  flutter_nekoton_bridge:
+    dependency: transitive
+    description:
+      path: "packages/flutter_nekoton_bridge"
+      ref: HEAD
+      resolved-ref: c83cb7ba123ff676f8264327429b0b16d716d372
+      url: "https://github.com/nesquikm/nekoton_bridge.git"
+    source: git
+    version: "1.0.3"
+  flutter_rust_bridge:
+    dependency: transitive
+    description:
+      name: flutter_rust_bridge
+      sha256: d3f891b4cf8d6521053e17135430c82709706590e2c8b3669c8205607ffed564
+      url: "https://pub.dev"
+    source: hosted
+    version: "1.61.1"
   flutter_test:
     dependency: "direct dev"
     description: flutter
@@ -184,6 +233,14 @@ packages:
       url: "https://pub.dev"
     source: hosted
     version: "2.1.1"
+  http:
+    dependency: transitive
+    description:
+      name: http
+      sha256: "6aa2946395183537c8b880962d935877325d6a09a2867c3970c05c0fed6ac482"
+      url: "https://pub.dev"
+    source: hosted
+    version: "0.13.5"
   http_multi_server:
     dependency: transitive
     description:
@@ -272,6 +329,15 @@ packages:
       url: "https://pub.dev"
     source: hosted
     version: "0.3.0"
+  nekoton_bridge:
+    dependency: transitive
+    description:
+      path: "packages/nekoton_bridge"
+      ref: HEAD
+      resolved-ref: c83cb7ba123ff676f8264327429b0b16d716d372
+      url: "https://github.com/nesquikm/nekoton_bridge.git"
+    source: git
+    version: "1.0.3"
   nekoton_repository:
     dependency: "direct main"
     description:
@@ -311,6 +377,30 @@ packages:
       url: "https://pub.dev"
     source: hosted
     version: "1.8.2"
+  petitparser:
+    dependency: transitive
+    description:
+      name: petitparser
+      sha256: "49392a45ced973e8d94a85fdb21293fbb40ba805fc49f2965101ae748a3683b4"
+      url: "https://pub.dev"
+    source: hosted
+    version: "5.1.0"
+  plugin_platform_interface:
+    dependency: transitive
+    description:
+      name: plugin_platform_interface
+      sha256: dbf0f707c78beedc9200146ad3cb0ab4d5da13c246336987be6940f026500d3a
+      url: "https://pub.dev"
+    source: hosted
+    version: "2.1.3"
+  pointycastle:
+    dependency: transitive
+    description:
+      name: pointycastle
+      sha256: db7306cf0249f838d1a24af52b5a5887c5bf7f31d8bb4e827d071dc0939ad346
+      url: "https://pub.dev"
+    source: hosted
+    version: "3.6.2"
   pool:
     dependency: transitive
     description:
@@ -335,6 +425,14 @@ packages:
       url: "https://pub.dev"
     source: hosted
     version: "2.1.3"
+  puppeteer:
+    dependency: transitive
+    description:
+      name: puppeteer
+      sha256: "4e235aaf9a338a45c9eb1ee38956e0ba369867bf144d7a27fdaf245409b2b87b"
+      url: "https://pub.dev"
+    source: hosted
+    version: "2.21.0"
   shelf:
     dependency: transitive
     description:
@@ -452,6 +550,14 @@ packages:
       url: "https://pub.dev"
     source: hosted
     version: "0.4.20"
+  tuple:
+    dependency: transitive
+    description:
+      name: tuple
+      sha256: "0ea99cd2f9352b2586583ab2ce6489d1f95a5f6de6fb9492faaf97ae2060f0aa"
+      url: "https://pub.dev"
+    source: hosted
+    version: "2.0.1"
   typed_data:
     dependency: transitive
     description:
@@ -460,6 +566,14 @@ packages:
       url: "https://pub.dev"
     source: hosted
     version: "1.3.1"
+  uuid:
+    dependency: transitive
+    description:
+      name: uuid
+      sha256: "648e103079f7c64a36dc7d39369cabb358d377078a051d6ae2ad3aa539519313"
+      url: "https://pub.dev"
+    source: hosted
+    version: "3.0.7"
   vector_math:
     dependency: transitive
     description:
@@ -517,5 +631,5 @@ packages:
     source: hosted
     version: "3.1.1"
 sdks:
-  dart: ">=2.18.0 <4.0.0"
+  dart: ">=2.18.5 <4.0.0"
   flutter: ">=3.3.10"

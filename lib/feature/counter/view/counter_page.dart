@@ -47,6 +47,11 @@ class CounterView extends StatelessWidget {
             onPressed: () => context.read<CounterCubit>().getFromService(),
             child: const Icon(Icons.computer),
           ),
+          const SizedBox(height: 8),
+          FloatingActionButton(
+            onPressed: () => context.read<CounterCubit>().getFromNekotonRust(),
+            child: const Icon(Icons.pedal_bike),
+          ),
         ],
       ),
     );

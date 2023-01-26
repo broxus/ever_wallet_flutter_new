@@ -10,4 +10,6 @@ class CounterCubit extends Cubit<int> {
   void decrement() => emit(state - 1);
   void getFromNekoton() => emit(inject<NekotonRepository>().getNewModel().id);
   void getFromService() => emit(inject<CounterService>().ultimateAnswer);
+  void getFromNekotonRust() =>
+      emit(inject<NekotonRepository>().getFromNekotonRust());
 }
