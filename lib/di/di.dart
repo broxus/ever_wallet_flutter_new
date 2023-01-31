@@ -1,15 +1,20 @@
+import 'package:app/di/di.config.dart';
 import 'package:get_it/get_it.dart';
-export 'modules.dart';
+import 'package:injectable/injectable.dart';
 
-abstract class Di {
-  const Di();
+final getIt = GetIt.instance;
 
-  Future<void> register(GetIt serviceLocator);
-}
+@InjectableInit(
+  initializerName: 'init', // default
+  preferRelativeImports: true, // default
+  asExtension: true, // default
+  generateForDir: ['lib'],
+)
+Future<void> configureDi() => getIt.init();
 
 T inject<T extends Object>({
   String? instanceName,
 }) =>
-    GetIt.I.get<T>(
+    getIt.get<T>(
       instanceName: instanceName,
     );
