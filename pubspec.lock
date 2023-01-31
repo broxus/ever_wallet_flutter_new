@@ -21,10 +21,10 @@ packages:
     dependency: transitive
     description:
       name: archive
-      sha256: ed7cc591a948744994714375caf9a2ce89e1d82e8243997c8a2994d57181c212
+      sha256: d6347d54a2d8028e0437e3c099f66fdb8ae02c4720c1e7534c9f24c10351f85d
       url: "https://pub.dev"
     source: hosted
-    version: "3.3.5"
+    version: "3.3.6"
   args:
     dependency: transitive
     description:
@@ -296,10 +296,10 @@ packages:
     dependency: transitive
     description:
       name: flutter_rust_bridge
-      sha256: d3f891b4cf8d6521053e17135430c82709706590e2c8b3669c8205607ffed564
+      sha256: "5aea0f3980dcd314f1890ef0d2392263817899cc15e543734b5d4dbe66b761eb"
       url: "https://pub.dev"
     source: hosted
-    version: "1.61.1"
+    version: "1.62.0"
   flutter_test:
     dependency: "direct dev"
     description: flutter
@@ -565,10 +565,10 @@ packages:
     dependency: transitive
     description:
       name: puppeteer
-      sha256: "4e235aaf9a338a45c9eb1ee38956e0ba369867bf144d7a27fdaf245409b2b87b"
+      sha256: "1304d8044054a8c89df648ef12352cf840ed2d34bbfbfa03d91537c72ae0f2c7"
       url: "https://pub.dev"
     source: hosted
-    version: "2.21.0"
+    version: "2.22.0"
   recase:
     dependency: transitive
     description:
