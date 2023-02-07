@@ -1,5 +1,4 @@
 import 'dart:async';
-import 'dart:developer';
 
 import 'package:app/di/di.dart';
 import 'package:app/logs/logs.dart';
@@ -27,14 +26,16 @@ Future<void> bootstrap(FutureOr<Widget> Function() builder) async {
   await configureDi();
   await configureLogs();
 
+  final log = Logger('bootstrap');
+
   FlutterError.onError = (details) {
-    log(details.exceptionAsString(), stackTrace: details.stack);
+    log.severe(details.exceptionAsString(), details, details.stack);
   };
 
   Bloc.observer = AppBlocObserver();
 
   await runZonedGuarded(
     () async => runApp(await builder()),
-    (error, stackTrace) => log(error.toString(), stackTrace: stackTrace),
+    (error, stackTrace) => log.severe(error.toString(), error, stackTrace),
   );
 }

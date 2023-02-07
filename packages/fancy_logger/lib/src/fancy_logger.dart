@@ -12,7 +12,7 @@ class FancyLogger {
 
   /// Init app logger
   Future<void> start() async {
-    Logger.root.level = Level.ALL; // defaults to Level.INFO
+    Logger.root.level = Level.INFO; // defaults to Level.INFO
     Logger.root.onRecord.listen((record) {
       debugPrint(
         // ignore: lines_longer_than_80_chars
