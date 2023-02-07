@@ -1,19 +1,18 @@
 name: app
 
 packages:
-  - .
   - packages/**
+  - .
 
 scripts:
-# TODO: Melos skips pub get for root packages, so we call it directly
   bootstrap:
-    run: flutter pub get && flutter packages pub run build_runner build --delete-conflicting-outputs
+    run: melos exec -c 1 --fail-fast -- "flutter pub get"
     description: Bootstrap packages
 
   codegen:
-    run: flutter packages pub run build_runner build --delete-conflicting-outputs
+    run: melos exec -c 1 --fail-fast -- "flutter packages pub run build_runner build --delete-conflicting-outputs"
     description: Generate code for all packages
 
   clean:
-    run: flutter clean
+    run: melos exec -c 1 --fail-fast -- "flutter clean"
     description: Clean all

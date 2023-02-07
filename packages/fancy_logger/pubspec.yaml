@@ -1,22 +1,18 @@
-name: nekoton_repository
-description: Nekoton repository package
+name: fancy_logger
+description: A Very Good Project created by Very Good CLI.
 version: 0.1.0+1
 publish_to: none
 
 environment:
-  sdk: ">=2.18.0 <3.0.0"
+  sdk: ">=2.19.0 <3.0.0"
   flutter: 3.7.1
 
 dependencies:
   equatable: ^2.0.5
   flutter:
     sdk: flutter
-  flutter_nekoton_bridge:
-    git:
-      url: https://github.com/nesquikm/nekoton_bridge.git
-      ref: nekoton_bridge-v1.5.0-dev.1
-      path: packages/flutter_nekoton_bridge
   injectable: ^2.1.0
+  logging: ^1.1.1
 
 dev_dependencies:
   build_runner: ^2.3.3
