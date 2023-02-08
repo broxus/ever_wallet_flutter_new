@@ -10,7 +10,9 @@ import 'package:logging/logging.dart';
 @singleton
 class FancyLogger {
   /// {@macro fancy_logger}
-  const FancyLogger();
+  FancyLogger();
+
+  final _log = Logger('FancyLogger');
 
   /// Init app logger
   Future<void> init(Level level) async {
@@ -34,12 +36,19 @@ class FancyLogger {
         stackTrace: record.stackTrace,
       );
     });
+
+    await startSession();
+  }
+
+  /// Increment session id
+  Future<void> startSession() async {
+    _log.fine('Session start');
   }
 
   /// The color map
   static final Map<Level, ConsoleColor> _colorMap = {
-    Level.FINEST: ConsoleColor.white,
-    Level.FINER: ConsoleColor.white,
+    Level.FINEST: ConsoleColor.green,
+    Level.FINER: ConsoleColor.green,
     Level.FINE: ConsoleColor.green,
     Level.CONFIG: ConsoleColor.blue,
     Level.INFO: ConsoleColor.cyan,

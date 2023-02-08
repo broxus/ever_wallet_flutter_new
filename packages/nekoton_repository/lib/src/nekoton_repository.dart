@@ -54,6 +54,8 @@ class NekotonRepository {
     return _logMap.keys.firstWhere((key) => _logMap[key] == level);
   }
 
+  /// Things below only for tests
+
   /// Create a new example thing
   ExampleModel getNewModel() => ExampleModel(id: Random().nextInt(1 << 16));
 

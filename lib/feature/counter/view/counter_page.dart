@@ -25,6 +25,7 @@ class CounterView extends StatelessWidget {
       appBar: AppBar(title: Text(l10n.counterAppBarTitle)),
       body: ListView(
         children: [
+          const Center(child: CounterText()),
           TextButton(
             onPressed: () => context.read<CounterCubit>().logs(),
             child: const Text('Logs from dart'),

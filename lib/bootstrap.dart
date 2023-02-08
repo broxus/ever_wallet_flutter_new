@@ -14,7 +14,7 @@ class AppBlocObserver extends BlocObserver {
   @override
   void onChange(BlocBase<dynamic> bloc, Change<dynamic> change) {
     super.onChange(bloc, change);
-    _log.finest('onChange(${bloc.runtimeType}, $change)');
+    _log.fine('onChange(${bloc.runtimeType}, $change)');
   }
 
   @override
@@ -25,7 +25,7 @@ class AppBlocObserver extends BlocObserver {
 }
 
 Future<void> bootstrap(
-  FutureOr<Widget> Function() builder,
+  Widget Function() builder,
   AppBuildType appBuildType,
 ) async {
   await configureDi();
@@ -40,7 +40,43 @@ Future<void> bootstrap(
   Bloc.observer = AppBlocObserver();
 
   await runZonedGuarded(
-    () async => runApp(await builder()),
+    () async => runApp(
+      AppWrapper(
+        builder: builder,
+      ),
+    ),
     (error, stackTrace) => log.severe(error.toString(), error, stackTrace),
   );
+}
+
+class AppWrapper extends StatefulWidget {
+  const AppWrapper({super.key, required this.builder});
+  final Widget Function() builder;
+
+  @override
+  State<AppWrapper> createState() => _AppWrapperState();
+}
+
+class _AppWrapperState extends State<AppWrapper> with WidgetsBindingObserver {
+  @override
+  void initState() {
+    super.initState();
+    WidgetsBinding.instance.addObserver(this);
+  }
+
+  @override
+  void dispose() {
+    WidgetsBinding.instance.removeObserver(this);
+    super.dispose();
+  }
+
+  @override
+  void didChangeAppLifecycleState(AppLifecycleState state) {
+    if (state == AppLifecycleState.resumed) startLogSession();
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return widget.builder();
+  }
 }

@@ -15,7 +15,7 @@ Future<void> configureLogs(
   /// Log levels depending on build type
   switch (appBuildType) {
     case AppBuildType.development:
-      level = Level.FINE;
+      level = Level.FINEST;
       break;
     case AppBuildType.staging:
       level = Level.INFO;
@@ -29,4 +29,8 @@ Future<void> configureLogs(
     level: level,
     mobileLogger: mobileLogger,
   );
+}
+
+Future<void> startLogSession() async {
+  await inject<FancyLogger>().startSession();
 }
