@@ -93,7 +93,7 @@ The app can be built with several flavors. Each of them determines the logging l
 
 We also have logs from nekoton, and level transformation matrix is in `packages/nekoton_repository/lib/src/nekoton_repository.dart`.
 
-Console colors defined in `packages/fancy_logger/lib/src/models/console_color.dart`.
+Console colors are defined in fancy_logger package.
 
 ---
 

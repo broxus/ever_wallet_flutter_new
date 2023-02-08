@@ -1,6 +1,6 @@
-import 'dart:developer' as developer;
-
-import 'package:fancy_logger/fancy_logger.dart';
+import 'package:fancy_logger/src/abstract_logger.dart';
+import 'package:fancy_logger/src/console_logger.dart';
+import 'package:fancy_logger/src/db_logger.dart';
 import 'package:injectable/injectable.dart';
 import 'package:logging/logging.dart';
 
@@ -13,52 +13,38 @@ class FancyLogger {
   FancyLogger();
 
   final _log = Logger('FancyLogger');
+  final List<AbstractLogger> _loggers = [ConsoleLogger(), DbLogger()];
 
   /// Init app logger
   Future<void> init(Level level) async {
     Logger.root.level = level;
-    Logger.root.onRecord.listen((record) {
-      var trace = record.error?.toString();
-      trace = trace != null ? '\n$trace\n' : '';
-      final message = _colorMessage(
-        // ignore: lines_longer_than_80_chars
-        '${record.loggerName}: ${record.level.name}: ${record.time}: ${record.message}$trace',
-        record.level,
-      );
-      developer.log(
-        message,
-        time: record.time,
-        sequenceNumber: record.sequenceNumber,
-        level: record.level.value,
-        name: record.loggerName,
-        zone: record.zone,
-        error: record.error,
-        stackTrace: record.stackTrace,
-      );
-    });
+    for (final logger in _loggers) {
+      await logger.init();
+    }
+    Logger.root.onRecord.listen(_writeRecord);
 
     await startSession();
   }
 
-  /// Increment session id
-  Future<void> startSession() async {
-    _log.fine('Session start');
+  void _writeRecord(LogRecord record) {
+    for (final logger in _loggers) {
+      logger.write(record);
+    }
   }
 
-  /// The color map
-  static final Map<Level, ConsoleColor> _colorMap = {
-    Level.FINEST: ConsoleColor.green,
-    Level.FINER: ConsoleColor.green,
-    Level.FINE: ConsoleColor.green,
-    Level.CONFIG: ConsoleColor.blue,
-    Level.INFO: ConsoleColor.cyan,
-    Level.WARNING: ConsoleColor.yellow,
-    Level.SEVERE: ConsoleColor.red,
-    Level.SHOUT: ConsoleColor.red,
-  };
+  /// Increment session id
+  Future<void> startSession() async {
+    final logStrings = <String>[];
+    for (final logger in _loggers) {
+      final logString = await logger.sessionStart();
+      if (logString != null) {
+        logStrings.add(logString);
+      }
+    }
 
-  String _colorMessage(String message, Level level) {
-    final colorString = _colorMap[level]?.value ?? '';
-    return '$colorString$message${ConsoleColor.reset.value}';
+    final logStringsReduced = logStrings.reduce(
+      (value, element) => value = '$value, $element',
+    );
+    _log.fine('Session start $logStringsReduced');
   }
 }
