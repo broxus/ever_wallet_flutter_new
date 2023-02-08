@@ -12,7 +12,7 @@ class ConsoleLogger extends AbstractLogger {
     trace = trace != null ? '\n$trace\n' : '';
     final message = _colorMessage(
       // ignore: lines_longer_than_80_chars
-      '${record.loggerName}: ${record.level.name}: ${record.time}: ${record.message}$trace',
+      '${record.level.name}: ${record.time}: ${record.message}$trace',
       record.level,
     );
     developer.log(
