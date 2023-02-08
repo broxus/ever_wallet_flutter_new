@@ -37,6 +37,14 @@ class CounterView extends StatelessWidget {
             onPressed: () => context.read<CounterCubit>().nekotonPanic(),
             child: const Text('Panic from rust'),
           ),
+          TextButton(
+            onPressed: () => context.read<CounterCubit>().dartError(),
+            child: const Text('Dart error'),
+          ),
+          TextButton(
+            onPressed: () => context.read<CounterCubit>().dartException(),
+            child: const Text('Dart exception'),
+          ),
         ],
       ),
       floatingActionButton: Column(

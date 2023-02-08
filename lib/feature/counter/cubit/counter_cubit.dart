@@ -30,4 +30,9 @@ class CounterCubit extends Cubit<int> {
 
   void nekotonLogs() => inject<NekotonRepository>().someLogs();
   void nekotonPanic() => inject<NekotonRepository>().somePanic();
+
+  void dartError() => {throw MyError()};
+  void dartException() => {throw Exception('Dart exception')};
 }
+
+class MyError extends Error {}
