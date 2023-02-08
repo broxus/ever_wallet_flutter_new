@@ -14,9 +14,10 @@ dependencies:
   flutter_nekoton_bridge:
     git:
       url: https://github.com/nesquikm/nekoton_bridge.git
-      ref: nekoton_bridge-v1.5.0-dev.1
+      ref: nekoton_bridge-v1.5.1-dev.0
       path: packages/flutter_nekoton_bridge
   injectable: ^2.1.0
+  logging: ^1.1.1
 
 dev_dependencies:
   build_runner: ^2.3.3

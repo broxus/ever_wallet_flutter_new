@@ -294,8 +294,8 @@ packages:
     dependency: transitive
     description:
       path: "packages/flutter_nekoton_bridge"
-      ref: "nekoton_bridge-v1.5.0-dev.1"
-      resolved-ref: f5b37fe0e3ab1b78244768781aa0c3e7e21a3534
+      ref: "nekoton_bridge-v1.5.1-dev.0"
+      resolved-ref: "86dd10dffac3387699502a1c494e8d24eae44f1c"
       url: "https://github.com/nesquikm/nekoton_bridge.git"
     source: git
     version: "1.4.0"
@@ -468,11 +468,11 @@ packages:
     dependency: transitive
     description:
       path: "packages/nekoton_bridge"
-      ref: "nekoton_bridge-v1.5.0-dev.0"
-      resolved-ref: "81567640a434eb09e8f08d049efbad16eac9fc55"
+      ref: "nekoton_bridge-v1.5.1-dev.0"
+      resolved-ref: "86dd10dffac3387699502a1c494e8d24eae44f1c"
       url: "https://github.com/nesquikm/nekoton_bridge.git"
     source: git
-    version: "1.5.0-dev.0"
+    version: "1.5.1-dev.0"
   nekoton_repository:
     dependency: "direct main"
     description:

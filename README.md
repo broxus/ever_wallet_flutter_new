@@ -1,8 +1,6 @@
 # App
 
-![coverage][coverage_badge]
 [![style: very good analysis][very_good_analysis_badge]][very_good_analysis_link]
-[![License: MIT][license_badge]][license_link]
 
 EVER Wallet Flutter app
 
@@ -30,7 +28,7 @@ Or, even better, use melos:
 $ melos bs
 ```
 
-## Codegen
+## Codegen 🦾
 
 This thing will run all code generators for all packages:
 
@@ -38,7 +36,7 @@ This thing will run all code generators for all packages:
 $ melos run codegen
 ```
 
-## Clean up
+## Clean up 🧹
 
 To clean up all packages just run:
 
@@ -46,7 +44,7 @@ To clean up all packages just run:
 $ melos clean
 ```
 
-## Flavours
+## Flavours 👃
 
 This project contains 3 flavors:
 
@@ -88,6 +86,14 @@ $ genhtml coverage/lcov.info -o coverage/
 # Open Coverage Report
 $ open coverage/index.html
 ```
+
+## Logging ( ͡❛ ͜ʖ ͡❛)✌
+
+The app can be built with several flavors. Each of them determines the logging level. The defining map is in `logs/logs.dart`.
+
+We also have logs from nekoton, and level transformation matrix is in `packages/nekoton_repository/lib/src/nekoton_repository.dart`.
+
+Console colors defined in `packages/fancy_logger/lib/src/models/console_color.dart`.
 
 ---
 

@@ -23,7 +23,22 @@ class CounterView extends StatelessWidget {
     final l10n = context.l10n;
     return Scaffold(
       appBar: AppBar(title: Text(l10n.counterAppBarTitle)),
-      body: const Center(child: CounterText()),
+      body: ListView(
+        children: [
+          TextButton(
+            onPressed: () => context.read<CounterCubit>().logs(),
+            child: const Text('Logs from dart'),
+          ),
+          TextButton(
+            onPressed: () => context.read<CounterCubit>().nekotonLogs(),
+            child: const Text('Logs from rust'),
+          ),
+          TextButton(
+            onPressed: () => context.read<CounterCubit>().nekotonPanic(),
+            child: const Text('Panic from rust'),
+          ),
+        ],
+      ),
       floatingActionButton: Column(
         mainAxisAlignment: MainAxisAlignment.end,
         crossAxisAlignment: CrossAxisAlignment.end,

@@ -6,25 +6,30 @@ import 'package:bloc/bloc.dart';
 import 'package:flutter/widgets.dart';
 import 'package:logging/logging.dart';
 
+enum AppBuildType { development, staging, production }
+
 class AppBlocObserver extends BlocObserver {
-  final log = Logger('AppBlocObserver');
+  final _log = Logger('AppBlocObserver');
 
   @override
   void onChange(BlocBase<dynamic> bloc, Change<dynamic> change) {
     super.onChange(bloc, change);
-    log.finest('onChange(${bloc.runtimeType}, $change)');
+    _log.finest('onChange(${bloc.runtimeType}, $change)');
   }
 
   @override
   void onError(BlocBase<dynamic> bloc, Object error, StackTrace stackTrace) {
-    log.severe('onError(${bloc.runtimeType}, $error, $stackTrace)');
+    _log.severe('onError(${bloc.runtimeType}, $error, $stackTrace)');
     super.onError(bloc, error, stackTrace);
   }
 }
 
-Future<void> bootstrap(FutureOr<Widget> Function() builder) async {
+Future<void> bootstrap(
+  FutureOr<Widget> Function() builder,
+  AppBuildType appBuildType,
+) async {
   await configureDi();
-  await configureLogs();
+  await configureLogs(appBuildType);
 
   final log = Logger('bootstrap');
 
