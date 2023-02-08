@@ -34,7 +34,7 @@ Future<void> bootstrap(
   final log = Logger('bootstrap');
 
   FlutterError.onError = (details) {
-    log.severe(details.toString(), details, details.stack);
+    log.severe(details.exceptionAsString(), details, details.stack);
   };
 
   Bloc.observer = AppBlocObserver();

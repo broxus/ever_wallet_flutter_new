@@ -16,9 +16,11 @@ class FancyLogger {
   Future<void> init(Level level) async {
     Logger.root.level = level;
     Logger.root.onRecord.listen((record) {
+      var trace = record.error?.toString();
+      trace = trace != null ? '\n$trace\n' : '';
       final message = _colorMessage(
         // ignore: lines_longer_than_80_chars
-        '${record.loggerName}: ${record.level.name}: ${record.time}: ${record.message}',
+        '${record.loggerName}: ${record.level.name}: ${record.time}: ${record.message}$trace',
         record.level,
       );
       developer.log(
