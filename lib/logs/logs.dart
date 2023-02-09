@@ -7,26 +7,37 @@ import 'package:nekoton_repository/nekoton_repository.dart';
 Future<void> configureLogs(
   AppBuildType appBuildType,
 ) async {
-  var level = Level.WARNING;
+  var retainStrategy = {Level.ALL: 100};
 
   /// This enables direct mobile logger (adb logcat / oslog)
   const mobileLogger = false;
 
-  /// Log levels depending on build type
+  // /// Log levels depending on build type
   switch (appBuildType) {
     case AppBuildType.development:
-      level = Level.FINEST;
+      retainStrategy = {
+        Level.ALL: 100,
+        Level.SEVERE: 100,
+      };
       break;
     case AppBuildType.staging:
-      level = Level.INFO;
+      retainStrategy = {
+        Level.ALL: 100,
+        Level.SEVERE: 100,
+      };
       break;
     case AppBuildType.production:
-      level = Level.WARNING;
+      retainStrategy = {
+        Level.CONFIG: 50,
+        Level.SEVERE: 50,
+      };
       break;
   }
-  await inject<FancyLogger>().init(level);
+
+  final fancyLogger = inject<FancyLogger>();
+  await fancyLogger.init(retainStrategy);
   await inject<NekotonRepository>().setupLogger(
-    level: level,
+    level: fancyLogger.minLevel,
     mobileLogger: mobileLogger,
   );
 }
