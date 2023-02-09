@@ -13,7 +13,9 @@ class FancyLogger {
   FancyLogger();
 
   final _log = Logger('FancyLogger');
-  final List<AbstractLogger> _loggers = [ConsoleLogger(), DbLogger()];
+  final _consoleLogger = ConsoleLogger();
+  final _dbLogger = DbLogger();
+  late final List<AbstractLogger> _loggers = [_consoleLogger, _dbLogger];
 
   /// Init app logger
   Future<void> init(Level level) async {
@@ -47,4 +49,7 @@ class FancyLogger {
     );
     _log.fine('Session start $logStringsReduced');
   }
+
+  /// Get all logs as strings (for debug purposes only)
+  Future<String> getAllLogs() async => _dbLogger.getAllLogs();
 }

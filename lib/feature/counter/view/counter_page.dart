@@ -1,4 +1,5 @@
 import 'package:app/feature/counter/counter.dart';
+import 'package:app/feature/counter/cubit/log_display_cubit.dart';
 import 'package:app/l10n/l10n.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -8,8 +9,15 @@ class CounterPage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return BlocProvider(
-      create: (_) => CounterCubit(),
+    return MultiBlocProvider(
+      providers: [
+        BlocProvider(
+          create: (_) => CounterCubit(),
+        ),
+        BlocProvider(
+          create: (context) => LogDisplayCubit(),
+        ),
+      ],
       child: const CounterView(),
     );
   }
@@ -23,30 +31,41 @@ class CounterView extends StatelessWidget {
     final l10n = context.l10n;
     return Scaffold(
       appBar: AppBar(title: Text(l10n.counterAppBarTitle)),
-      body: ListView(
-        children: [
-          const Center(child: CounterText()),
-          TextButton(
-            onPressed: () => context.read<CounterCubit>().logs(),
-            child: const Text('Logs from dart'),
-          ),
-          TextButton(
-            onPressed: () => context.read<CounterCubit>().nekotonLogs(),
-            child: const Text('Logs from rust'),
-          ),
-          TextButton(
-            onPressed: () => context.read<CounterCubit>().nekotonPanic(),
-            child: const Text('Panic from rust'),
-          ),
-          TextButton(
-            onPressed: () => context.read<CounterCubit>().dartError(),
-            child: const Text('Dart error'),
-          ),
-          TextButton(
-            onPressed: () => context.read<CounterCubit>().dartException(),
-            child: const Text('Dart exception'),
-          ),
-        ],
+      body: SafeArea(
+        child: Column(
+          children: [
+            const Expanded(
+              child: SingleChildScrollView(
+                child: LogDisplay(),
+              ),
+            ),
+            const Center(child: CounterText()),
+            TextButton(
+              onPressed: () => context.read<CounterCubit>().logs(),
+              child: const Text('Logs from dart'),
+            ),
+            TextButton(
+              onPressed: () => context.read<CounterCubit>().nekotonLogs(),
+              child: const Text('Logs from rust'),
+            ),
+            TextButton(
+              onPressed: () => context.read<CounterCubit>().nekotonPanic(),
+              child: const Text('Panic from rust'),
+            ),
+            TextButton(
+              onPressed: () => context.read<CounterCubit>().dartError(),
+              child: const Text('Dart error'),
+            ),
+            TextButton(
+              onPressed: () => context.read<CounterCubit>().dartException(),
+              child: const Text('Dart exception'),
+            ),
+            TextButton(
+              onPressed: () => context.read<LogDisplayCubit>().requestLogs(),
+              child: const Text('Request logs from db'),
+            ),
+          ],
+        ),
       ),
       floatingActionButton: Column(
         mainAxisAlignment: MainAxisAlignment.end,
@@ -89,6 +108,17 @@ class CounterText extends StatelessWidget {
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
     final count = context.select((CounterCubit cubit) => cubit.state);
-    return Text('$count', style: theme.textTheme.displayLarge);
+    return Text('$count', style: theme.textTheme.displaySmall);
+  }
+}
+
+class LogDisplay extends StatelessWidget {
+  const LogDisplay({super.key});
+
+  @override
+  Widget build(BuildContext context) {
+    final theme = Theme.of(context);
+    final logs = context.select((LogDisplayCubit cubit) => cubit.state);
+    return Text(logs, style: theme.textTheme.bodyMedium);
   }
 }

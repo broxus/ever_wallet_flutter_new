@@ -11,11 +11,12 @@ enum AppBuildType { development, staging, production }
 class AppBlocObserver extends BlocObserver {
   final _log = Logger('AppBlocObserver');
 
-  @override
-  void onChange(BlocBase<dynamic> bloc, Change<dynamic> change) {
-    super.onChange(bloc, change);
-    _log.fine('onChange(${bloc.runtimeType}, $change)');
-  }
+  /// TODO(nesquikm): Maybe this this is a good point to debug something bad? :)
+  // @override
+  // void onChange(BlocBase<dynamic> bloc, Change<dynamic> change) {
+  //   super.onChange(bloc, change);
+  //   _log.fine('onChange(${bloc.runtimeType}, $change)');
+  // }
 
   @override
   void onError(BlocBase<dynamic> bloc, Object error, StackTrace stackTrace) {
