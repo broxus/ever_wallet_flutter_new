@@ -3,7 +3,7 @@ import 'package:logging/logging.dart';
 /// An abstract logger
 abstract class AbstractLogger {
   /// Init logger
-  Future<void> init() async {}
+  Future<void> init(Map<Level, int> retainStrategy) async {}
 
   /// Start a new session
   Future<String?> sessionStart() async {

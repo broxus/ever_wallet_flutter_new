@@ -1,4 +1,3 @@
-import 'package:fancy_logger/fancy_logger.dart';
 import 'package:fancy_logger/src/abstract_logger.dart';
 import 'package:fancy_logger/src/console_logger.dart';
 import 'package:fancy_logger/src/db_logger.dart';
@@ -21,7 +20,7 @@ class FancyLogger {
 
   /// Init app logger
   /// [retainStrategy] processing algorythm:
-  /// * sort all records by level (OFF->ALL)
+  /// * sort all records by level (ALL->OFF)
   /// * record with minimum level will be used as global filter
   ///   (for storing and printing)
   /// * each integer for a level means how many sessions the records with this
@@ -31,18 +30,18 @@ class FancyLogger {
   /// So, examples:
   ///
   /// {
-  ///   Level.SEVERE:   50,   // records with SEVERE level retained for 50 sessions
-  ///   Level.INFO:     100,  // records with INFO level retained for 150 sessions
-  ///   Level.ALL:      200,  // ALL records with be deleted after 350 sessions
+  ///   Level.ALL:      200,  // ALL records with be deleted after 200 sessions
+  ///   Level.INFO:     100,  // records with INFO and higher level retained for 300 sessions
+  ///   Level.SEVERE:   50,   // records with SEVERE and higher level retained for 350 sessions
   /// }
   ///
   /// {
-  ///   Level.SEVERE:   50,   // records with SEVERE level retained for 50 sessions
-  ///   Level.INFO:     100,  // records with INFO level retained for 150 sessions
-  ///   Level.CONFIG:   200,  // records with CONFIG level retained for 350 sessions
+  ///   Level.CONFIG:   200,  // records with CONFIG and higher level retained for 200 sessions
   ///                         // lower level records (FINE, FINER and FINEST) will not
   ///                         // be printed nor stored because lowest level in the map
   ///                         // is CONFIG
+  ///   Level.INFO:     100,  // records with INFO and higher level retained for 300 sessions
+  ///   Level.SEVERE:   50,   // records with SEVERE and higher level retained for 350 sessions
   /// }
   ///
   /// {
@@ -65,7 +64,7 @@ class FancyLogger {
 
     Logger.root.level = _minLevel;
     for (final logger in _loggers) {
-      await logger.init();
+      await logger.init(retainStrategy);
     }
     Logger.root.onRecord.listen(_writeRecord);
 
