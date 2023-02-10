@@ -98,4 +98,7 @@ class FancyLogger {
 
   /// Get all logs as strings (for debug purposes only)
   Future<String> getAllLogs() async => _dbLogger.getAllLogs();
+
+  /// Write logs to archived JSON, return file path
+  Future<String> writeAllLogsToJson() async => _dbLogger.writeAllLogsToJson();
 }

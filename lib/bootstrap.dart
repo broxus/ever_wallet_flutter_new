@@ -11,7 +11,7 @@ enum AppBuildType { development, staging, production }
 class AppBlocObserver extends BlocObserver {
   final _log = Logger('AppBlocObserver');
 
-  /// TODO(nesquikm): Maybe this this is a good point to debug something bad? :)
+  // TODO(nesquikm): Maybe this this is a good point to debug something bad?
   // @override
   // void onChange(BlocBase<dynamic> bloc, Change<dynamic> change) {
   //   super.onChange(bloc, change);

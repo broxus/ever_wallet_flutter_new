@@ -64,6 +64,11 @@ class CounterView extends StatelessWidget {
               onPressed: () => context.read<LogDisplayCubit>().requestLogs(),
               child: const Text('Request logs from db'),
             ),
+            TextButton(
+              onPressed: () =>
+                  context.read<LogDisplayCubit>().writeAllLogsToJson(),
+              child: const Text('Write logs to acrhived json'),
+            ),
           ],
         ),
       ),

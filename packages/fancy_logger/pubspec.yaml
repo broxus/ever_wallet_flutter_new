@@ -8,12 +8,14 @@ environment:
   flutter: 3.7.1
 
 dependencies:
+  archive: ^3.3.6
   equatable: ^2.0.5
   flutter:
     sdk: flutter
   injectable: ^2.1.0
   logging: ^1.1.1
   path: ^1.8.2
+  path_provider: ^2.0.12
   sqflite: ^2.2.4+1
 
 dev_dependencies:

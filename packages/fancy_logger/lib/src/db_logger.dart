@@ -1,10 +1,14 @@
 import 'dart:async';
+import 'dart:convert';
+import 'dart:io';
 
+import 'package:archive/archive_io.dart';
 import 'package:fancy_logger/src/abstract_logger.dart';
 import 'package:fancy_logger/src/models/writable_log_record.dart';
 import 'package:flutter/widgets.dart';
 import 'package:logging/logging.dart';
 import 'package:path/path.dart';
+import 'package:path_provider/path_provider.dart';
 import 'package:sqflite/sqflite.dart';
 
 /// Database logger
@@ -79,13 +83,57 @@ class DbLogger extends AbstractLogger {
 
     final list = await _database.rawQuery(
       '''
-        SELECT * from records ORDER BY record_timestamp ASC
+        SELECT * FROM records ORDER BY record_timestamp ASC
       ''',
     );
     return list.fold(
       '',
       (previousValue, element) => '$previousValue\n$element',
     );
+  }
+
+  /// Write logs to archived JSON, return file path
+  Future<String> writeAllLogsToJson() async {
+    if (!_database.isOpen) return 'Database is not ready';
+
+    final cursor = await _database.rawQueryCursor(
+      '''
+        SELECT
+          logger_name,
+          id,
+          record_timestamp,
+          session_id,
+          level,
+          message,
+          time
+        FROM records ORDER BY record_timestamp ASC
+      ''',
+      [],
+    );
+
+    final fileAcrhive = _FileAcrhive();
+    final filePath = await fileAcrhive.open();
+
+    await fileAcrhive.writeString('{\n  "logs": [\n');
+
+    try {
+      var isFirst = true;
+      while (await cursor.moveNext()) {
+        final row = cursor.current;
+        final string = json.encode(row);
+        final comma = isFirst ? '' : ',\n';
+        await fileAcrhive.writeString('$comma    $string');
+        isFirst = false;
+      }
+    } finally {
+      await cursor.close();
+    }
+
+    await fileAcrhive.writeString('\n  ]\n}');
+
+    await fileAcrhive.close();
+
+    return filePath;
   }
 
   Future<void> _cleanup() async {
@@ -149,4 +197,39 @@ class _LevelBound {
         nextLevel: nextLevel,
         sessionId: sessionId ?? this.sessionId,
       );
+}
+
+class _FileAcrhive {
+  _FileAcrhive();
+
+  OutputFileStream? _outputFileStream;
+  final encoder = BZip2Encoder();
+
+  Future<String> open() async {
+    await close();
+
+    final filePath = join(
+      (await getTemporaryDirectory()).path,
+      'logs.json.bz2',
+    );
+
+    try {
+      await File(filePath).delete();
+    } catch (_) {}
+
+    _outputFileStream = OutputFileStream(filePath);
+
+    return filePath;
+  }
+
+  Future<void> close() async {
+    await _outputFileStream?.close();
+    _outputFileStream = null;
+  }
+
+  Future<void> writeString(String string) async {
+    _outputFileStream?.writeBytes(
+      encoder.encode(utf8.encode(string)),
+    );
+  }
 }
