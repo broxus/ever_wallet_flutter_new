@@ -1,6 +1,7 @@
 import 'dart:async';
 import 'dart:convert';
 import 'dart:io';
+import 'dart:typed_data' as td;
 
 import 'package:archive/archive_io.dart';
 import 'package:fancy_logger/src/abstract_logger.dart';
@@ -199,11 +200,14 @@ class _LevelBound {
       );
 }
 
+const _binaryChunkSize = 1024 * 512;
+
 class _FileAcrhive {
   _FileAcrhive();
 
   OutputFileStream? _outputFileStream;
   final encoder = BZip2Encoder();
+  final bytesBuilder = td.BytesBuilder();
 
   Future<String> open() async {
     await close();
@@ -223,13 +227,22 @@ class _FileAcrhive {
   }
 
   Future<void> close() async {
+    _checkAndWriteBuffer(force: true);
     await _outputFileStream?.close();
     _outputFileStream = null;
   }
 
   Future<void> writeString(String string) async {
-    _outputFileStream?.writeBytes(
-      encoder.encode(utf8.encode(string)),
-    );
+    bytesBuilder.add(utf8.encode(string));
+    _checkAndWriteBuffer();
+  }
+
+  void _checkAndWriteBuffer({bool force = false}) {
+    if ((force && bytesBuilder.length > 0) ||
+        bytesBuilder.length > _binaryChunkSize) {
+      _outputFileStream?.writeBytes(encoder.encode(
+        bytesBuilder.takeBytes(),
+      ));
+    }
   }
 }
