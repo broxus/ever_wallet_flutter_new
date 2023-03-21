@@ -240,9 +240,11 @@ class _FileAcrhive {
   void _checkAndWriteBuffer({bool force = false}) {
     if ((force && bytesBuilder.isNotEmpty) ||
         bytesBuilder.length > _binaryChunkSize) {
-      _outputFileStream?.writeBytes(encoder.encode(
-        bytesBuilder.takeBytes(),
-      ));
+      _outputFileStream?.writeBytes(
+        encoder.encode(
+          bytesBuilder.takeBytes(),
+        ),
+      );
     }
   }
 }
