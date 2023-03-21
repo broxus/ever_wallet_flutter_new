@@ -5,14 +5,6 @@ packages:
   - .
 
 scripts:
-  bootstrap:
-    run: melos exec -c 1 --fail-fast -- "flutter pub get"
-    description: Bootstrap packages
-
   codegen:
     run: melos exec -c 1 --fail-fast -- "flutter packages pub run build_runner build --delete-conflicting-outputs"
     description: Generate code for all packages
-
-  clean:
-    run: melos exec -c 1 --fail-fast -- "flutter clean"
-    description: Clean all
