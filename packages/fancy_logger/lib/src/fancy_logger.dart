@@ -3,6 +3,7 @@ import 'dart:async';
 import 'package:fancy_logger/src/abstract_logger.dart';
 import 'package:fancy_logger/src/console_logger.dart';
 import 'package:fancy_logger/src/db_logger.dart';
+import 'package:flutter/foundation.dart';
 import 'package:injectable/injectable.dart';
 import 'package:logging/logging.dart';
 
@@ -104,12 +105,15 @@ class FancyLogger {
   }
 
   /// Get all logs as strings (for debug purposes only)
+  @visibleForTesting
   Future<String> getAllLogsAsString() async => _dbLogger.getAllLogsAsString();
 
   /// Get all logs as [LogRecord]s (for debug purposes only)
+  @visibleForTesting
   Future<List<LogRecord>> getAllLogs() async => _dbLogger.getAllLogs();
 
   /// Get all logs as maps (for debug purposes only)
+  @visibleForTesting
   Future<List<Map<String, Object?>>> getAllLogsAsMaps() async =>
       _dbLogger.getAllLogsAsMaps();
 
@@ -117,5 +121,6 @@ class FancyLogger {
   Future<String> writeAllLogsToJson() async => _dbLogger.writeAllLogsToJson();
 
   /// Clear logs (for debug purposes only)
+  @visibleForTesting
   Future<void> clearAllLogs() => _dbLogger.clearAllLogs();
 }
