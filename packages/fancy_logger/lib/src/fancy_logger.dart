@@ -105,7 +105,8 @@ class FancyLogger {
   }
 
   /// Get all logs as strings (for debug purposes only)
-  @visibleForTesting
+  // TODO: uncomment visibleForTesting after removing call from LogDisplayCubit
+  // @visibleForTesting
   Future<String> getAllLogsAsString() async => _dbLogger.getAllLogsAsString();
 
   /// Get all logs as [LogRecord]s (for debug purposes only)
