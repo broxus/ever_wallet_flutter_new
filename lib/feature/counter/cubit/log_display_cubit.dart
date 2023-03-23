@@ -8,7 +8,7 @@ class LogDisplayCubit extends Cubit<String> {
   final _log = Logger('LogDisplayCubit');
 
   Future<void> requestLogs() async => emit(
-        await inject<FancyLogger>().getAllLogs(),
+        await inject<FancyLogger>().getAllLogsAsString(),
       );
 
   Future<void> writeAllLogsToJson() async {

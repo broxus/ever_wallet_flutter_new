@@ -66,7 +66,7 @@ class DbLogger extends AbstractLogger {
       );
     });
 
-    Future.delayed(const Duration(seconds: 1), _cleanup);
+    Future.delayed(const Duration(milliseconds: 200), _cleanup);
 
     return 'new session id: $_sessionId';
   }
@@ -78,8 +78,8 @@ class DbLogger extends AbstractLogger {
     _database.insert('records', record.toMap(sessionId: _sessionId));
   }
 
-  /// Get all logs as strings (for debug purposes only)
-  Future<String> getAllLogs() async {
+  /// Get all logs as strings
+  Future<String> getAllLogsAsString() async {
     if (!_database.isOpen) return '';
 
     final list = await _database.rawQuery(
@@ -91,6 +91,30 @@ class DbLogger extends AbstractLogger {
       '',
       (previousValue, element) => '$previousValue\n$element',
     );
+  }
+
+  /// Get all logs as [LogRecord]s (for debug purposes only)
+  Future<List<LogRecord>> getAllLogs() async {
+    if (!_database.isOpen) return [];
+
+    final list = await _database.rawQuery(
+      '''
+        SELECT * FROM records ORDER BY record_timestamp ASC
+      ''',
+    );
+    return list.map(WritableLogRecord.fromMap).toList();
+  }
+
+  /// Get all logs as maps (for debug purposes only)
+  Future<List<Map<String, Object?>>> getAllLogsAsMaps() async {
+    if (!_database.isOpen) return [];
+
+    final list = await _database.rawQuery(
+      '''
+        SELECT * FROM records ORDER BY record_timestamp ASC
+      ''',
+    );
+    return list;
   }
 
   /// Write logs to archived JSON, return file path
@@ -180,6 +204,15 @@ class DbLogger extends AbstractLogger {
     ''';
 
     unawaited(_database.execute(query));
+  }
+
+  /// Clear logs (for debug purposes only)
+  Future<void> clearAllLogs() async {
+    const query = '''
+      DELETE FROM records;
+    ''';
+
+    await _database.execute(query);
   }
 }
 

@@ -1,3 +1,5 @@
+import 'dart:async';
+
 import 'package:fancy_logger/src/abstract_logger.dart';
 import 'package:fancy_logger/src/console_logger.dart';
 import 'package:fancy_logger/src/db_logger.dart';
@@ -53,7 +55,10 @@ class FancyLogger {
   ///                         // (i.e. you will be able to retrieve the logs from the
   ///                         // previous run)
   /// }
-  Future<void> init(Map<Level, int> retainStrategy) async {
+  Future<void> init(
+    Map<Level, int> retainStrategy, {
+    bool startNewSession = true,
+  }) async {
     // If there are no explicit instructions on how to retain logs
     final retainStrategyNotEmpty =
         retainStrategy.isEmpty ? {Level.ALL: 100} : retainStrategy;
@@ -66,9 +71,11 @@ class FancyLogger {
     for (final logger in _loggers) {
       await logger.init(retainStrategy);
     }
+
+    Logger.root.clearListeners();
     Logger.root.onRecord.listen(_writeRecord);
 
-    await startSession();
+    if (startNewSession) await startSession();
   }
 
   /// Get computed minimal level
@@ -97,8 +104,18 @@ class FancyLogger {
   }
 
   /// Get all logs as strings (for debug purposes only)
-  Future<String> getAllLogs() async => _dbLogger.getAllLogs();
+  Future<String> getAllLogsAsString() async => _dbLogger.getAllLogsAsString();
+
+  /// Get all logs as [LogRecord]s (for debug purposes only)
+  Future<List<LogRecord>> getAllLogs() async => _dbLogger.getAllLogs();
+
+  /// Get all logs as maps (for debug purposes only)
+  Future<List<Map<String, Object?>>> getAllLogsAsMaps() async =>
+      _dbLogger.getAllLogsAsMaps();
 
   /// Write logs to archived JSON, return file path
   Future<String> writeAllLogsToJson() async => _dbLogger.writeAllLogsToJson();
+
+  /// Clear logs (for debug purposes only)
+  Future<void> clearAllLogs() => _dbLogger.clearAllLogs();
 }
