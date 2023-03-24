@@ -1,17 +1,16 @@
 // ignore_for_file: prefer_const_constructors
 
 import 'dart:convert';
+import 'dart:io' show Platform;
 
+import 'package:archive/archive_io.dart';
 import 'package:fancy_logger/fancy_logger.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:logging/logging.dart';
+import 'package:path_provider_platform_interface/path_provider_platform_interface.dart';
+import 'package:plugin_platform_interface/plugin_platform_interface.dart';
 import 'package:sqflite/sqflite.dart';
 import 'package:sqflite_common_ffi/sqflite_ffi.dart';
-import 'package:path_provider/path_provider.dart';
-import 'package:plugin_platform_interface/plugin_platform_interface.dart';
-import 'package:path_provider_platform_interface/path_provider_platform_interface.dart';
-import 'dart:io' show Platform;
-import 'package:archive/archive_io.dart';
 
 void main() {
   // Initialize ffi implementation
