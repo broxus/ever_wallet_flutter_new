@@ -8,3 +8,26 @@ scripts:
   codegen:
     run: melos exec -c 1 --fail-fast -- "flutter packages pub run build_runner build --delete-conflicting-outputs"
     description: Generate code for all packages
+
+  test:
+    run: melos run test:flutter --no-select
+    description: Run all Dart & Flutter tests in this project.
+
+  test:flutter:
+    run: melos exec -c 1 --fail-fast -- "flutter test test"
+    description: Run Flutter tests for a specific package in this project.
+    packageFilters:
+      flutter: true
+      dirExists: test
+
+  test:integration:
+    run: melos exec -c 1 --fail-fast -- "flutter test integration_test"
+    description: Run Flutter teintegration teststs for a specific package in this project.
+    packageFilters:
+      flutter: true
+      dirExists: integration_test
+
+  check-all:
+    description: Prepare to commit by checking all things
+    run: melos test && melos test:integration
+

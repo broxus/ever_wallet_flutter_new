@@ -1,11 +1,19 @@
+import 'dart:async';
 import 'dart:developer' as developer;
 
 import 'package:fancy_logger/fancy_logger.dart';
 import 'package:fancy_logger/src/abstract_logger.dart';
 import 'package:logging/logging.dart';
 
+/// {@template console_logger}
 /// Console logger
+/// {@endtemplate}
 class ConsoleLogger extends AbstractLogger {
+  /// {@macro console_logger}
+  ConsoleLogger(this._loggerCallback);
+
+  final ConsoleLoggerCallback? _loggerCallback;
+
   @override
   void write(LogRecord record) {
     var trace = record.error?.toString();
@@ -16,6 +24,16 @@ class ConsoleLogger extends AbstractLogger {
       record.level,
     );
     developer.log(
+      message,
+      time: record.time,
+      sequenceNumber: record.sequenceNumber,
+      level: record.level.value,
+      name: record.loggerName,
+      zone: record.zone,
+      error: record.error,
+      stackTrace: record.stackTrace,
+    );
+    _loggerCallback?.call(
       message,
       time: record.time,
       sequenceNumber: record.sequenceNumber,
@@ -44,3 +62,15 @@ class ConsoleLogger extends AbstractLogger {
     Level.SHOUT: ConsoleColor.red,
   };
 }
+
+/// Console logger callback. Mostly for debugging and testing purpose.
+typedef ConsoleLoggerCallback = void Function(
+  String message, {
+  DateTime? time,
+  int? sequenceNumber,
+  int level,
+  String name,
+  Zone? zone,
+  Object? error,
+  StackTrace? stackTrace,
+});

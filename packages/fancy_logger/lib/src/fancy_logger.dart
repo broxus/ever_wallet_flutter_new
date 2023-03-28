@@ -1,5 +1,6 @@
 import 'dart:async';
 
+import 'package:collection/collection.dart';
 import 'package:fancy_logger/src/abstract_logger.dart';
 import 'package:fancy_logger/src/console_logger.dart';
 import 'package:fancy_logger/src/db_logger.dart';
@@ -16,9 +17,7 @@ class FancyLogger {
   FancyLogger();
 
   final _log = Logger('FancyLogger');
-  final _consoleLogger = ConsoleLogger();
-  final _dbLogger = DbLogger();
-  late final List<AbstractLogger> _loggers = [_consoleLogger, _dbLogger];
+  late List<AbstractLogger> _loggers = [];
   Level _minLevel = Level.ALL;
 
   /// Init app logger
@@ -59,6 +58,9 @@ class FancyLogger {
   Future<void> init(
     Map<Level, int> retainStrategy, {
     bool startNewSession = true,
+    bool consoleLogger = true,
+    bool dbLogger = true,
+    ConsoleLoggerCallback? consoleLoggerCallback,
   }) async {
     // If there are no explicit instructions on how to retain logs
     final retainStrategyNotEmpty =
@@ -69,6 +71,11 @@ class FancyLogger {
     );
 
     Logger.root.level = _minLevel;
+    _loggers = <AbstractLogger>[
+      if (consoleLogger) ConsoleLogger(consoleLoggerCallback),
+      if (dbLogger) DbLogger(),
+    ];
+
     for (final logger in _loggers) {
       await logger.init(retainStrategy);
     }
@@ -98,8 +105,9 @@ class FancyLogger {
       }
     }
 
-    final logStringsReduced = logStrings.reduce(
-      (value, element) => value = '$value, $element',
+    final logStringsReduced = logStrings.fold(
+      '',
+      (value, element) => value = '$value$element',
     );
     _log.fine('Session start $logStringsReduced');
   }
@@ -124,4 +132,13 @@ class FancyLogger {
   /// Clear logs (for debug purposes only)
   @visibleForTesting
   Future<void> clearAllLogs() => _dbLogger.clearAllLogs();
+
+  DbLogger get _dbLogger {
+    final dbLogger =
+        _loggers.firstWhereOrNull((logger) => logger is DbLogger) as DbLogger?;
+    if (dbLogger == null) {
+      throw Exception('DbLogger is not initialized!');
+    }
+    return dbLogger;
+  }
 }
