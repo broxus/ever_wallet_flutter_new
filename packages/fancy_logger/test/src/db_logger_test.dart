@@ -286,6 +286,34 @@ void main() {
       }
       expect(logs, hasLength(index));
     });
+
+    test('archived JSON test with custom filename', () async {
+      final fancyLogger = FancyLogger();
+      await fancyLogger.init({Level.ALL: 100}, startNewSession: false);
+      await fancyLogger.clearAllLogs();
+
+      log
+        ..finest('some finest log')
+        ..finer('some finer log')
+        ..fine('some fine log')
+        ..config('some config log')
+        ..info('some info log')
+        ..warning('some warning log')
+        ..severe('some severe log')
+        ..shout('some shout log');
+
+      final archive = await fancyLogger.writeAllLogsToJson('custom_file_name');
+
+      final input = InputFileStream(archive);
+      final jsonContent =
+          json.decode(utf8.decode(BZip2Decoder().decodeBuffer(input)))
+              as Map<String, dynamic>;
+      final logs = jsonContent['logs'] as List<dynamic>;
+
+      expect(logs, hasLength(8));
+
+      expect(archive, endsWith('custom_file_name.bz2'));
+    });
   });
 }
 

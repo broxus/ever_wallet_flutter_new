@@ -127,7 +127,8 @@ class FancyLogger {
       _dbLogger.getAllLogsAsMaps();
 
   /// Write logs to archived JSON, return file path
-  Future<String> writeAllLogsToJson() async => _dbLogger.writeAllLogsToJson();
+  Future<String> writeAllLogsToJson([String filename = 'logs.json']) async =>
+      _dbLogger.writeAllLogsToJson(filename);
 
   /// Clear logs (for debug purposes only)
   @visibleForTesting

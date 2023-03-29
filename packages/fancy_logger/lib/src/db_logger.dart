@@ -118,7 +118,7 @@ class DbLogger extends AbstractLogger {
   }
 
   /// Write logs to archived JSON, return file path
-  Future<String> writeAllLogsToJson() async {
+  Future<String> writeAllLogsToJson(String filename) async {
     if (!_database.isOpen) return 'Database is not ready';
 
     final cursor = await _database.rawQueryCursor(
@@ -137,7 +137,7 @@ class DbLogger extends AbstractLogger {
     );
 
     final fileAcrhive = _FileAcrhive();
-    final filePath = await fileAcrhive.open();
+    final filePath = await fileAcrhive.open(filename);
 
     await fileAcrhive.writeString('{\n  "logs": [\n');
 
@@ -242,12 +242,12 @@ class _FileAcrhive {
   final encoder = BZip2Encoder();
   final bytesBuilder = td.BytesBuilder();
 
-  Future<String> open() async {
+  Future<String> open(String filename) async {
     await close();
 
     final filePath = join(
       (await getTemporaryDirectory()).path,
-      'logs.json.bz2',
+      '$filename.bz2',
     );
 
     try {
