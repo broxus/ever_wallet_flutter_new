@@ -20,14 +20,16 @@ scripts:
       flutter: true
       dirExists: test
 
-  test:integration:
-    run: melos exec -c 1 --fail-fast -- "flutter test integration_test"
-    description: Run Flutter teintegration teststs for a specific package in this project.
-    packageFilters:
-      flutter: true
-      dirExists: integration_test
+  # TODO: uncomment after adding integration tests
+  # test:integration:
+  #   run: melos exec -c 1 --fail-fast -- "flutter test integration_test"
+  #   description: Run Flutter teintegration teststs for a specific package in this project.
+  #   packageFilters:
+  #     flutter: true
+  #     dirExists: integration_test
 
   check-all:
     description: Prepare to commit by checking all things
-    run: melos test && melos test:integration
+    run: melos test
+    # run: melos test && melos test:integration
 
