@@ -9,6 +9,8 @@ environment:
 
 dependencies:
   bloc: ^8.1.0
+  encrypted_storage:
+    path: packages/encrypted_storage
   fancy_logger:
     path: packages/fancy_logger
   flutter:
