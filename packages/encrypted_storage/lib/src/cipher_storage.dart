@@ -1,6 +1,5 @@
 import 'package:encrypt/encrypt.dart';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
-import 'package:logging/logging.dart';
 
 /// {@template ciper_storage}
 /// Ciper storage
@@ -14,8 +13,6 @@ class CipherStorage {
   late FlutterSecureStorage _storage;
   late final Key _key;
   late final IV _iv;
-
-  final _log = Logger('CiperStorage');
 
   /// Init ciper storage
   Future<void> init() async {

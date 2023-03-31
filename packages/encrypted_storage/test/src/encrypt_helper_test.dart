@@ -1,6 +1,4 @@
 // ignore_for_file: prefer_const_constructors
-import 'dart:typed_data';
-
 import 'package:encrypted_storage/src/cipher_storage.dart';
 import 'package:encrypted_storage/src/encrypt_helper.dart';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
