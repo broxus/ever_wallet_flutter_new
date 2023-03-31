@@ -9,8 +9,8 @@ class CipherStorage {
   /// {@macro ciper_storage}
   CipherStorage();
 
-  static const String _keyKey = 'key';
-  static const String _ivKey = 'iv';
+  static const String _keyKey = 'cipher_storage_key';
+  static const String _ivKey = 'cipher_storage_iv';
   late FlutterSecureStorage _storage;
   late final Key _key;
   late final IV _iv;
@@ -32,13 +32,13 @@ class CipherStorage {
     }
 
     if ((key == null && iv != null) || (key != null && iv == null)) {
-      _log.severe(
+      throw StateError(
         'key and iv reading error: one of them is null while another is not',
       );
     }
 
-    _key = Key.fromSecureRandom(64);
-    _iv = IV.fromSecureRandom(32);
+    _key = Key.fromSecureRandom(32);
+    _iv = IV.fromSecureRandom(16);
 
     await _storage.write(key: _keyKey, value: _key.base64);
     await _storage.write(key: _ivKey, value: _iv.base64);
