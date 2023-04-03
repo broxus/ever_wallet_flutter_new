@@ -23,8 +23,8 @@ class CipherStorage {
     final iv = rows[_ivKey];
 
     if (key != null && iv != null) {
-      _key = Key.fromBase64(key);
-      _iv = IV.fromBase64(iv);
+      _key = keyFromBase64(key);
+      _iv = ivFromBase64(iv);
       return;
     }
 
@@ -34,8 +34,8 @@ class CipherStorage {
       );
     }
 
-    _key = Key.fromSecureRandom(32);
-    _iv = IV.fromSecureRandom(16);
+    _key = keyFromSecureRandom();
+    _iv = ivFromSecureRandom();
 
     await _storage.write(key: _keyKey, value: _key.base64);
     await _storage.write(key: _ivKey, value: _iv.base64);
@@ -50,4 +50,16 @@ class CipherStorage {
   AndroidOptions _getAndroidOptions() => const AndroidOptions(
         encryptedSharedPreferences: true,
       );
+
+  /// Generate key from base64
+  static Key keyFromBase64(String key) => Key.fromBase64(key);
+
+  /// Generate initialization vector from base64
+  static IV ivFromBase64(String iv) => IV.fromBase64(iv);
+
+  /// Generate a new key
+  static Key keyFromSecureRandom() => Key.fromSecureRandom(32);
+
+  /// Generate a new initialization vector
+  static IV ivFromSecureRandom() => IV.fromSecureRandom(16);
 }

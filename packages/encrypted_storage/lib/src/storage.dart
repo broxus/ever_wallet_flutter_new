@@ -9,7 +9,7 @@ import 'package:sqflite/sqflite.dart';
 /// {@template storage}
 /// Storage (db backend)
 /// {@endtemplate}
-class Storage implements AbstractStorage {
+class Storage {
   /// {@macro storage}
   Storage();
 
@@ -41,6 +41,7 @@ class Storage implements AbstractStorage {
           domain TEXT NOT NULL,
           key TEXT NOT NULL,
           value TEXT NOT NULL,
+          iv TEXT NOT NULL,
           PRIMARY KEY (domain, key)
         );
       ''',
@@ -67,7 +68,6 @@ class Storage implements AbstractStorage {
   }
 
   /// Clear storage: all records
-  @override
   Future<void> clearAll() async {
     const query = '''
       DELETE FROM storage;
@@ -79,7 +79,6 @@ class Storage implements AbstractStorage {
   }
 
   /// Clear storage: all records in one domain
-  @override
   Future<void> clearDomain([String? domain = defaultDomain]) async {
     final query = '''
       DELETE FROM storage WHERE domain = "$domain";
@@ -94,7 +93,6 @@ class Storage implements AbstractStorage {
   /// [domain].
   /// If the pair was already existed it will be overwritten if [overwrite]
   /// is true (by default)
-  @override
   Future<void> set(
     String key,
     String value, {
@@ -108,7 +106,6 @@ class Storage implements AbstractStorage {
   /// If the pair was already existed it will be overwritten if [overwrite]
   /// is true (by default). Unspecified in [pairs] in db will not be altered
   /// or deleted.
-  @override
   Future<void> setDomain(
     Map<String, String> pairs, {
     String domain = defaultDomain,
@@ -137,7 +134,6 @@ class Storage implements AbstractStorage {
   }
 
   /// Delete by [key] from [domain].
-  @override
   Future<void> delete(
     String key, {
     String domain = defaultDomain,
@@ -146,7 +142,6 @@ class Storage implements AbstractStorage {
   }
 
   /// Delete by [keys] from [domain].
-  @override
   Future<void> deleteDomain(
     List<String> keys, {
     String domain = defaultDomain,
@@ -178,7 +173,6 @@ class Storage implements AbstractStorage {
   }
 
   /// Get value by [key] and [domain]. If not found will return [defaultValue]
-  @override
   Future<String?> get(
     String key, {
     String? defaultValue,
@@ -194,7 +188,6 @@ class Storage implements AbstractStorage {
   }
 
   /// Get key-value pair map from [domain].
-  @override
   Future<Map<String, String>> getDomain({
     String domain = defaultDomain,
   }) async {
