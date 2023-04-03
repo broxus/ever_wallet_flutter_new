@@ -41,6 +41,9 @@ void main() {
     setUpAll(() {
       FlutterSecureStorage.setMockInitialValues({});
     });
+    setUp(() {
+      EncryptedStorage().reset();
+    });
 
     test('init and check empty', () async {
       final storage = EncryptedStorage();

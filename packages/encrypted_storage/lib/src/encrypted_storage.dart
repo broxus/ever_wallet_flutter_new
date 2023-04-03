@@ -25,6 +25,11 @@ class EncryptedStorage implements AbstractStorage {
     _encryptHelper = EncryptHelper(_cipherStorage);
   }
 
+  /// Reset storage
+  Future<void> reset([String dbName = 'encrypted_storage.db']) async {
+    return _storage.reset(dbName);
+  }
+
   @override
   Future<void> clearAll() async {
     return _storage.clearAll();
@@ -57,23 +62,28 @@ class EncryptedStorage implements AbstractStorage {
     String? defaultValue,
     String domain = defaultDomain,
   }) async {
-    final a = await _storage.get(
+    final storageValue = await _storage.get(
       _encryptHelper.encrypt(key),
-      defaultValue: _encryptHelper.encryptNullable(defaultValue),
+      defaultValue: defaultValue != null
+          ? StorageValue(_encryptHelper.encrypt(defaultValue), '')
+          : null,
       domain: domain,
     );
-    return _encryptHelper.decryptNullable(a);
+    return _encryptHelper.decryptNullable(
+      storageValue?.value,
+      storageValue?.iv,
+    );
   }
 
   @override
   Future<Map<String, String>> getDomain({String domain = defaultDomain}) async {
-    return (await _storage.getDomain(
+    final pairs = await _storage.getDomain(
       domain: domain,
-    ))
-        .map(
+    );
+    return pairs.map(
       (key, value) => MapEntry(
         _encryptHelper.decrypt(key),
-        _encryptHelper.decrypt(value),
+        _encryptHelper.decrypt(value.value, value.iv),
       ),
     );
   }
@@ -85,9 +95,10 @@ class EncryptedStorage implements AbstractStorage {
     String domain = defaultDomain,
     bool overwrite = true,
   }) {
+    final iv = CipherStorage.ivFromSecureRandom().base64;
     return _storage.set(
       _encryptHelper.encrypt(key),
-      _encryptHelper.encrypt(value),
+      StorageValue(_encryptHelper.encrypt(value, iv), iv),
       domain: domain,
       overwrite: overwrite,
     );
@@ -100,12 +111,13 @@ class EncryptedStorage implements AbstractStorage {
     bool overwrite = true,
   }) {
     return _storage.setDomain(
-      pairs.map(
-        (key, value) => MapEntry(
+      pairs.map((key, value) {
+        final iv = CipherStorage.ivFromSecureRandom().base64;
+        return MapEntry(
           _encryptHelper.encrypt(key),
-          _encryptHelper.encrypt(value),
-        ),
-      ),
+          StorageValue(_encryptHelper.encrypt(value, iv), iv),
+        );
+      }),
       domain: domain,
       overwrite: overwrite,
     );
