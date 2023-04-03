@@ -1,3 +1,5 @@
+import 'dart:async';
+
 import 'package:flutter/widgets.dart';
 import 'package:logging/logging.dart';
 import 'package:path/path.dart';
@@ -25,8 +27,12 @@ class Storage {
         'encrypted_storage.db',
       ),
       onCreate: _onCreate,
+      onUpgrade: _onUpgrade,
+      onDowngrade: _onDowngrade,
       version: 1,
     );
+
+    _log.finest('initialized');
   }
 
   Future<void> _onCreate(Database db, int version) async {
@@ -36,7 +42,7 @@ class Storage {
           domain TEXT NOT NULL,
           key TEXT NOT NULL,
           value TEXT NOT NULL,
-          PRIMARY KEY (domain, key),
+          PRIMARY KEY (domain, key)
         );
       ''',
     );
@@ -45,6 +51,20 @@ class Storage {
         CREATE INDEX storage_domain_index ON storage(domain);
       ''',
     );
+
+    _log.finest('database created');
+  }
+
+  FutureOr<void> _onUpgrade(Database db, int oldVersion, int newVersion) {
+    _log
+      ..finest('database upgraded from $oldVersion to $newVersion')
+      ..warning('no upgrade migrations found');
+  }
+
+  FutureOr<void> _onDowngrade(Database db, int oldVersion, int newVersion) {
+    _log
+      ..finest('database downgraded from $oldVersion to $newVersion')
+      ..warning('no downgrade migrations found');
   }
 
   /// Clear storage: all records
@@ -54,15 +74,19 @@ class Storage {
     ''';
 
     await _database.execute(query);
+
+    _log.finest('storage cleared');
   }
 
   /// Clear storage: all records in one domain
   Future<void> clearDomain([String? domain = _defaultDomain]) async {
     final query = '''
-      DELETE FROM storage WHERE domain = $domain;
+      DELETE FROM storage WHERE domain = "$domain";
     ''';
 
     await _database.execute(query);
+
+    _log.finest('domain $domain cleared');
   }
 
   /// Write the key-value pair. [value] will be written for the [key] in
@@ -95,7 +119,8 @@ class Storage {
     var isFirst = true;
     final values = pairs.entries.fold('', (previousValue, pair) {
       final prefix = isFirst ? '' : ', ';
-      final result = '$prefix($domain, ${pair.key}, ${pair.value})';
+      final result =
+          '$previousValue$prefix("$domain", "${pair.key}", "${pair.value}")';
       isFirst = false;
       return result;
     });
@@ -108,18 +133,58 @@ class Storage {
     await _database.execute(query);
   }
 
+  /// Delete by [key] from [domain].
+  Future<void> delete(
+    String key, {
+    String domain = _defaultDomain,
+  }) async {
+    return deleteDomain([key], domain: domain);
+  }
+
+  /// Delete by [keys] from [domain].
+  Future<void> deleteDomain(
+    List<String> keys, {
+    String domain = _defaultDomain,
+  }) async {
+    if (keys.isEmpty) {
+      _log.info('deleteDomain called with empty key list');
+      return;
+    }
+
+    if (keys.length > 512) {
+      _log.warning(
+        'deleteDomain: key list is too long: ${keys.length}',
+      );
+    }
+
+    var isFirst = true;
+    final andClause = keys.fold('', (previousValue, key) {
+      final prefix = isFirst ? '' : ' OR ';
+      final result = '$previousValue$prefix(key = "$key")';
+      isFirst = false;
+      return result;
+    });
+
+    final query = '''
+      DELETE FROM storage WHERE domain = "$domain" AND ($andClause)
+    ''';
+
+    await _database.execute(query);
+  }
+
   /// Get value by [key] and [domain]. If not found will return [defaultValue]
   Future<String?> get(
-    String key,
-    String? defaultValue, {
+    String key, {
+    String? defaultValue,
     String domain = _defaultDomain,
   }) async {
     final list = await _database.rawQuery(
       '''
-        SELECT value FROM storage WHERE domain = $domain and key = $key LIMIT 1;
+        SELECT value FROM storage WHERE domain = "$domain" and key = "$key" LIMIT 1;
       ''',
     );
-    return list[0]['value'] as String? ?? defaultValue;
+
+    return list.isNotEmpty ? list.first['value'] as String? : defaultValue;
   }
 
   /// Get key-value pair map from [domain].
@@ -128,7 +193,7 @@ class Storage {
   }) async {
     final list = await _database.rawQuery(
       '''
-        SELECT key, value FROM storage WHERE domain = $domain;
+        SELECT key, value FROM storage WHERE domain = "$domain";
       ''',
     );
 
