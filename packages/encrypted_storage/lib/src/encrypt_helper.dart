@@ -22,4 +22,18 @@ class EncryptHelper {
   String decrypt(String input) {
     return _encrypter.decrypt64(input, iv: _cipherStorage.iv);
   }
+
+  /// Encrypt [String], return base64-encoded String
+  String? encryptNullable(String? input) {
+    return input != null
+        ? _encrypter.encrypt(input, iv: _cipherStorage.iv).base64
+        : null;
+  }
+
+  /// Decrypt base64-encoded String [String], return original String
+  String? decryptNullable(String? input) {
+    return input != null
+        ? _encrypter.decrypt64(input, iv: _cipherStorage.iv)
+        : null;
+  }
 }

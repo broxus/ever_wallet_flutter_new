@@ -80,5 +80,29 @@ void main() {
       final cipherStorage1 = CipherStorage();
       await expectLater(cipherStorage1.init, throwsStateError);
     });
+
+    test('encrypt and decrypt test, same instance, nullable', () async {
+      FlutterSecureStorage.setMockInitialValues({});
+      final cipherStorage = CipherStorage();
+      await cipherStorage.init();
+      final encryptHelper = EncryptHelper(cipherStorage);
+
+      expect(
+        encryptHelper.decryptNullable(
+          encryptHelper.encryptNullable(
+            testString,
+          ),
+        ),
+        testString,
+      );
+      expect(
+        encryptHelper.decryptNullable(
+          encryptHelper.encryptNullable(
+            null,
+          ),
+        ),
+        null,
+      );
+    });
   });
 }

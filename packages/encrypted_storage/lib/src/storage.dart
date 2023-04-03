@@ -1,16 +1,15 @@
 import 'dart:async';
 
+import 'package:encrypted_storage/src/abstract_storage.dart';
 import 'package:flutter/widgets.dart';
 import 'package:logging/logging.dart';
 import 'package:path/path.dart';
 import 'package:sqflite/sqflite.dart';
 
-const String _defaultDomain = 'default';
-
 /// {@template storage}
 /// Storage (db backend)
 /// {@endtemplate}
-class Storage {
+class Storage implements AbstractStorage {
   /// {@macro storage}
   Storage();
 
@@ -18,13 +17,13 @@ class Storage {
   final _log = Logger('EncryptedStorage: Storage');
 
   /// Init storage
-  Future<void> init() async {
+  Future<void> init([String dbName = 'storage.db']) async {
     WidgetsFlutterBinding.ensureInitialized();
 
     _database = await openDatabase(
       join(
         await getDatabasesPath(),
-        'encrypted_storage.db',
+        dbName,
       ),
       onCreate: _onCreate,
       onUpgrade: _onUpgrade,
@@ -68,6 +67,7 @@ class Storage {
   }
 
   /// Clear storage: all records
+  @override
   Future<void> clearAll() async {
     const query = '''
       DELETE FROM storage;
@@ -79,7 +79,8 @@ class Storage {
   }
 
   /// Clear storage: all records in one domain
-  Future<void> clearDomain([String? domain = _defaultDomain]) async {
+  @override
+  Future<void> clearDomain([String? domain = defaultDomain]) async {
     final query = '''
       DELETE FROM storage WHERE domain = "$domain";
     ''';
@@ -93,10 +94,11 @@ class Storage {
   /// [domain].
   /// If the pair was already existed it will be overwritten if [overwrite]
   /// is true (by default)
+  @override
   Future<void> set(
     String key,
     String value, {
-    String domain = _defaultDomain,
+    String domain = defaultDomain,
     bool overwrite = true,
   }) async {
     return setDomain({key: value}, domain: domain, overwrite: overwrite);
@@ -106,9 +108,10 @@ class Storage {
   /// If the pair was already existed it will be overwritten if [overwrite]
   /// is true (by default). Unspecified in [pairs] in db will not be altered
   /// or deleted.
+  @override
   Future<void> setDomain(
     Map<String, String> pairs, {
-    String domain = _defaultDomain,
+    String domain = defaultDomain,
     bool overwrite = true,
   }) async {
     if (pairs.isEmpty) {
@@ -134,17 +137,19 @@ class Storage {
   }
 
   /// Delete by [key] from [domain].
+  @override
   Future<void> delete(
     String key, {
-    String domain = _defaultDomain,
+    String domain = defaultDomain,
   }) async {
     return deleteDomain([key], domain: domain);
   }
 
   /// Delete by [keys] from [domain].
+  @override
   Future<void> deleteDomain(
     List<String> keys, {
-    String domain = _defaultDomain,
+    String domain = defaultDomain,
   }) async {
     if (keys.isEmpty) {
       _log.info('deleteDomain called with empty key list');
@@ -173,10 +178,11 @@ class Storage {
   }
 
   /// Get value by [key] and [domain]. If not found will return [defaultValue]
+  @override
   Future<String?> get(
     String key, {
     String? defaultValue,
-    String domain = _defaultDomain,
+    String domain = defaultDomain,
   }) async {
     final list = await _database.rawQuery(
       '''
@@ -188,8 +194,9 @@ class Storage {
   }
 
   /// Get key-value pair map from [domain].
+  @override
   Future<Map<String, String>> getDomain({
-    String domain = _defaultDomain,
+    String domain = defaultDomain,
   }) async {
     final list = await _database.rawQuery(
       '''

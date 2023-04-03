@@ -13,4 +13,3 @@ export 'src/encrypted_storage.dart';
 // @microPackageInit => short const
 @InjectableInit.microPackage()
 initMicroPackage() {} // will not be called but needed for code generation
-
