@@ -1,6 +1,7 @@
 import 'package:flutter/rendering.dart';
 import 'package:ui_components_lib/ui_components_lib.dart';
 
+/// Default theme for ever app
 ThemeStyle everPredefinedTheme() {
   return ThemeStyle(
     colors: const ColorsPalette(
