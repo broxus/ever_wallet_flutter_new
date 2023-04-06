@@ -5,10 +5,12 @@ publish_to: none
 
 environment:
   sdk: ">=2.18.0 <3.0.0"
-  flutter: 3.7.7
+  flutter: 3.7.9
 
 dependencies:
   bloc: ^8.1.0
+  encrypted_storage:
+    path: packages/encrypted_storage
   fancy_logger:
     path: packages/fancy_logger
   flutter:
