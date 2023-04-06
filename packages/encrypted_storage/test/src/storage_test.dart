@@ -221,7 +221,7 @@ void main() {
       );
       expect(await storage.getDomain(), testKeyValuePairs0);
       expect(
-        await storage.getDomainKeys(),
+        (await storage.getDomainKeys())..sort(),
         testKeyValuePairs0.keys.toList()..sort(),
       );
       for (final pair in testKeyValuePairs0.entries) {

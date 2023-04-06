@@ -178,10 +178,22 @@ void main() {
       await storage.init();
       await storage.clearAll();
       expect(await storage.getDomain(), isEmpty);
+      expect(await storage.getDomainKeys(), isEmpty);
 
       await storage.setDomain(testKeyValuePairs0);
-      expect(await storage.getDomain(), hasLength(testKeyValuePairs0.length));
+      expect(
+        await storage.getDomain(),
+        hasLength(testKeyValuePairs0.length),
+      );
+      expect(
+        await storage.getDomainKeys(),
+        hasLength(testKeyValuePairs0.length),
+      );
       expect(await storage.getDomain(), testKeyValuePairs0);
+      expect(
+        (await storage.getDomainKeys())..sort(),
+        testKeyValuePairs0.keys.toList()..sort(),
+      );
       for (final pair in testKeyValuePairs0.entries) {
         expect(await storage.get(pair.key), pair.value);
       }
