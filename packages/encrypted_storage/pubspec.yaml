@@ -8,6 +8,7 @@ environment:
   flutter: 3.7.9
 
 dependencies:
+  collection: ^1.17.0
   encrypt: ^5.0.1
   flutter:
     sdk: flutter

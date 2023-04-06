@@ -1,5 +1,6 @@
 import 'dart:async';
 
+import 'package:collection/collection.dart';
 import 'package:encrypted_storage/src/abstract_storage.dart';
 import 'package:flutter/widgets.dart';
 import 'package:logging/logging.dart';
@@ -16,8 +17,10 @@ class Storage {
   late final Database _database;
   final _log = Logger('EncryptedStorage: Storage');
 
+  static const _storageFileName = 'storage.db';
+
   /// Init storage
-  Future<void> init([String dbName = 'storage.db']) async {
+  Future<void> init([String dbName = _storageFileName]) async {
     WidgetsFlutterBinding.ensureInitialized();
 
     _database = await openDatabase(
@@ -35,7 +38,7 @@ class Storage {
   }
 
   /// Reset storage
-  Future<void> reset([String dbName = 'storage.db']) async {
+  Future<void> reset([String dbName = _storageFileName]) async {
     WidgetsFlutterBinding.ensureInitialized();
 
     await deleteDatabase(
@@ -172,25 +175,22 @@ class Storage {
       return;
     }
 
-    if (keys.length > 512) {
-      _log.warning(
-        'deleteDomain: key list is too long: ${keys.length}',
-      );
-    }
+    // SQLite has a limit of 999 variables per query
+    keys.slices(512).forEach((keys) async {
+      var isFirst = true;
+      final andClause = keys.fold('', (previousValue, key) {
+        final prefix = isFirst ? '' : ' OR ';
+        final result = '$previousValue$prefix(key = "$key")';
+        isFirst = false;
+        return result;
+      });
 
-    var isFirst = true;
-    final andClause = keys.fold('', (previousValue, key) {
-      final prefix = isFirst ? '' : ' OR ';
-      final result = '$previousValue$prefix(key = "$key")';
-      isFirst = false;
-      return result;
+      final query = '''
+        DELETE FROM storage WHERE domain = "$domain" AND ($andClause)
+      ''';
+
+      await _database.execute(query);
     });
-
-    final query = '''
-      DELETE FROM storage WHERE domain = "$domain" AND ($andClause)
-    ''';
-
-    await _database.execute(query);
   }
 
   /// Get value by [key] and [domain]. If not found will return [defaultValue]
@@ -232,6 +232,23 @@ class Storage {
           pair['iv']! as String,
         )
     };
+  }
+
+  /// Get keys from [domain]
+  Future<List<String>> getDomainKeys({
+    String domain = defaultDomain,
+  }) async {
+    final list = await _database.rawQuery(
+      '''
+      SELECT key FROM storage WHERE domain = "$domain";
+    ''',
+    );
+
+    return [
+      // There is no way to write null in these fields
+      // ignore: cast_nullable_to_non_nullable
+      for (var pair in list) pair['key']! as String
+    ];
   }
 }
 

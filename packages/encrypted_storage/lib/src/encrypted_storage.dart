@@ -16,8 +16,10 @@ class EncryptedStorage implements AbstractStorage {
   late EncryptHelper _encryptHelper;
   final Storage _storage;
 
+  static const String _storageFileName = 'encrypted_storage.db';
+
   /// Init encrypted storage
-  Future<void> init([String dbName = 'encrypted_storage.db']) async {
+  Future<void> init([String dbName = _storageFileName]) async {
     await Future.wait([
       _cipherStorage.init(),
       _storage.init(dbName),
@@ -26,7 +28,8 @@ class EncryptedStorage implements AbstractStorage {
   }
 
   /// Reset storage
-  Future<void> reset([String dbName = 'encrypted_storage.db']) async {
+  /// @visibleForTesting
+  Future<void> reset([String dbName = _storageFileName]) async {
     return _storage.reset(dbName);
   }
 
@@ -86,6 +89,16 @@ class EncryptedStorage implements AbstractStorage {
         _encryptHelper.decrypt(value.value, value.iv),
       ),
     );
+  }
+
+  @override
+  Future<List<String>> getDomainKeys({
+    String domain = defaultDomain,
+  }) async {
+    final keys = await _storage.getDomainKeys(
+      domain: domain,
+    );
+    return keys.map((key) => _encryptHelper.decrypt(key)).toList();
   }
 
   @override

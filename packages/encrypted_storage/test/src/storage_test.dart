@@ -21,6 +21,11 @@ final Map<String, StorageValue> testKeyValuePairs1 = {
     'key 1: $id': StorageValue('value: 1: $id', 'iv: 1: $id')
 };
 
+final Map<String, StorageValue> testKeyValuePairs2 = {
+  for (var id in List<int>.generate(2048, (index) => index))
+    'key 2: $id': StorageValue('value: 2: $id', 'iv: 2: $id')
+};
+
 void main() {
   // Initialize ffi implementation
   sqfliteFfiInit();
@@ -203,10 +208,22 @@ void main() {
       await storage.init();
       await storage.clearAll();
       expect(await storage.getDomain(), isEmpty);
+      expect(await storage.getDomainKeys(), isEmpty);
 
       await storage.setDomain(testKeyValuePairs0);
-      expect(await storage.getDomain(), hasLength(testKeyValuePairs0.length));
+      expect(
+        await storage.getDomain(),
+        hasLength(testKeyValuePairs0.length),
+      );
+      expect(
+        await storage.getDomainKeys(),
+        hasLength(testKeyValuePairs0.length),
+      );
       expect(await storage.getDomain(), testKeyValuePairs0);
+      expect(
+        await storage.getDomainKeys(),
+        testKeyValuePairs0.keys.toList()..sort(),
+      );
       for (final pair in testKeyValuePairs0.entries) {
         expect(await storage.get(pair.key), pair.value);
       }
@@ -290,6 +307,22 @@ void main() {
           ...testKeyValuePairs1,
         },
       );
+    });
+
+    test('huge pair list delete test (query splitting) in default domain',
+        () async {
+      final storage = Storage();
+      await storage.init();
+      await storage.clearAll();
+      expect(await storage.getDomain(), isEmpty);
+
+      await storage.setDomain(testKeyValuePairs2);
+      expect(
+        await storage.getDomain(),
+        hasLength(testKeyValuePairs2.length),
+      );
+      await storage.deleteDomain(List.from(testKeyValuePairs2.keys));
+      expect(await storage.getDomain(), isEmpty);
     });
   });
 }

@@ -57,4 +57,9 @@ abstract class AbstractStorage {
   Future<Map<String, String>> getDomain({
     String domain = defaultDomain,
   });
+
+  /// Get keys from [domain]
+  Future<List<String>> getDomainKeys({
+    String domain = defaultDomain,
+  });
 }
