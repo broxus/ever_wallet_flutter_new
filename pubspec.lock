@@ -289,7 +289,7 @@ packages:
     source: path
     version: "0.1.0+1"
   equatable:
-    dependency: transitive
+    dependency: "direct main"
     description:
       name: equatable
       sha256: c2b87cb7756efdf69892005af546c56c0b5037f54d2a88269b4f347a505e3ca2
@@ -812,6 +812,14 @@ packages:
       url: "https://pub.dev"
     source: hosted
     version: "4.1.0"
+  rxdart:
+    dependency: "direct main"
+    description:
+      name: rxdart
+      sha256: "0c7c0cedd93788d996e33041ffecda924cc54389199cde4e6a34b440f50044cb"
+      url: "https://pub.dev"
+    source: hosted
+    version: "0.27.7"
   shelf:
     dependency: transitive
     description:
@@ -1091,4 +1099,4 @@ packages:
     version: "2.1.0"
 sdks:
   dart: ">=2.19.0 <3.0.0"
-  flutter: ">=3.7.9"
+  flutter: ">=3.7.10"

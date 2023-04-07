@@ -4,7 +4,7 @@ import 'package:fancy_logger/fancy_logger.dart';
 import 'package:logging/logging.dart';
 import 'package:nekoton_repository/nekoton_repository.dart';
 
-Future<void> configureLogs(
+Future<void> configureLogger(
   AppBuildType appBuildType,
 ) async {
   var retainStrategy = {Level.ALL: 100};

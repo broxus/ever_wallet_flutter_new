@@ -2,10 +2,12 @@ import 'package:encrypted_storage/src/abstract_storage.dart';
 import 'package:encrypted_storage/src/cipher_storage.dart';
 import 'package:encrypted_storage/src/encrypt_helper.dart';
 import 'package:encrypted_storage/src/storage.dart';
+import 'package:injectable/injectable.dart';
 
 /// {@template encrypted_storage}
 /// Encrypted storage
 /// {@endtemplate}
+@singleton
 class EncryptedStorage implements AbstractStorage {
   /// {@macro encrypted_storage}
   EncryptedStorage()

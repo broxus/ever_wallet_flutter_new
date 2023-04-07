@@ -5,12 +5,13 @@ publish_to: none
 
 environment:
   sdk: ">=2.18.0 <3.0.0"
-  flutter: 3.7.9
+  flutter: 3.7.10
 
 dependencies:
   bloc: ^8.1.0
   encrypted_storage:
     path: packages/encrypted_storage
+  equatable: ^2.0.5
   fancy_logger:
     path: packages/fancy_logger
   flutter:
@@ -24,6 +25,7 @@ dependencies:
   logging: ^1.1.1
   nekoton_repository:
     path: packages/nekoton_repository
+  rxdart: ^0.27.7
 
 dev_dependencies:
   bloc_test: ^9.1.0
