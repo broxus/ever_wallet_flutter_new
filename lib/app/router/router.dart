@@ -13,24 +13,32 @@ import 'package:go_router/go_router.dart';
 import 'package:nekoton_repository/nekoton_repository.dart';
 
 GoRouter getRouter(BuildContext context) {
-  return GoRouter(
+  // Redirect to onboarding or wallet depending on the current location and if
+  // the user has an account
+  String? shouldRedirect({required String location, required bool hasAccount}) {
+    final currentRoute = getRootAppRoute(location);
+
+    if (hasAccount && currentRoute == AppRoute.onboarding) {
+      // Already onboarded, redirect to wallet
+      return AppRoute.wallet.path;
+    } else if (!hasAccount && currentRoute != AppRoute.onboarding) {
+      // Not onboarded, redirect to onboarding
+      return AppRoute.onboarding.path;
+    }
+    // No need to redirect
+    return null;
+  }
+
+  final router = GoRouter(
     redirect: (context, state) {
       // Save current location in NavCubit
       final location = state.location;
       context.read<NavCubit>().setLocation(location);
-
       final hasAccount = inject<NekotonRepository>().accountsStream.value;
-      final currentRoute = getRootAppRoute(location);
 
-      if (hasAccount && currentRoute == AppRoute.onboarding) {
-        // Already onboarded, redirect to wallet
-        return AppRoute.wallet.path;
-      } else if (!hasAccount && currentRoute != AppRoute.onboarding) {
-        // Not onboarded, redirect to onboarding
-        return AppRoute.onboarding.path;
-      }
-      // No need to redirect
-      return null;
+      // Actually redirect, this is when the router will actually change the
+      // location, so we need to subscribe to the accountsStream for updates
+      return shouldRedirect(location: location, hasAccount: hasAccount);
     },
     initialLocation: context.read<NavCubit>().state.location,
     routes: <RouteBase>[
@@ -73,4 +81,18 @@ GoRouter getRouter(BuildContext context) {
     ],
     errorBuilder: (context, state) => ErrorPage(state.error),
   );
+
+  // Subscribe to accountsStream to redirect if needed
+  inject<NekotonRepository>().accountsStream.listen((hasAccount) {
+    final redirectLocation = shouldRedirect(
+      location: context.read<NavCubit>().state.location,
+      hasAccount: hasAccount,
+    );
+
+    if (redirectLocation != null) {
+      router.go(redirectLocation);
+    }
+  });
+
+  return router;
 }
