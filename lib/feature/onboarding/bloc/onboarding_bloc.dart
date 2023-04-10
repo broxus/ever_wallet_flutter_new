@@ -15,7 +15,7 @@ class OnboardingBloc extends Bloc<OnboardingEvent, OnboardingState> {
     on<OnboardingDeleteAccount>(_onDeleteAccount);
   }
 
-  // TODO: absolutely shitty naming, just for demo purposes
+  // TODO(nesquikm): absolutely shitty naming, just for demo purposes
   FutureOr<void> _onAddAccount(
     OnboardingEvent event,
     Emitter<OnboardingState> emit,
@@ -23,7 +23,7 @@ class OnboardingBloc extends Bloc<OnboardingEvent, OnboardingState> {
     inject<NekotonRepository>().addAccount();
   }
 
-  // TODO: absolutely shitty naming, just for demo purposes
+  // TODO(nesquikm): absolutely shitty naming, just for demo purposes
   FutureOr<void> _onDeleteAccount(
     OnboardingDeleteAccount event,
     Emitter<OnboardingState> emit,

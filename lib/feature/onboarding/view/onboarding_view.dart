@@ -9,26 +9,24 @@ class OnboardingView extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Center(
-      child: StreamBuilder<bool>(
-        stream: inject<NekotonRepository>().accountsStream,
-        builder: (context, snapshot) {
-          return Column(
-            children: [
-              const Text('Onboarding'),
-              TextButton(
-                onPressed: () => onAddAccount(context),
-                child: const Text('Add account'),
-              ),
-              TextButton(
-                onPressed: () => onDeleteAccount(context),
-                child: const Text('Delete account'),
-              ),
-              Text('account: ${snapshot.data}'),
-            ],
-          );
-        },
-      ),
+    return StreamBuilder<bool>(
+      stream: inject<NekotonRepository>().accountsStream,
+      builder: (context, snapshot) {
+        return Column(
+          children: [
+            const Text('Onboarding'),
+            TextButton(
+              onPressed: () => onAddAccount(context),
+              child: const Text('Add account'),
+            ),
+            TextButton(
+              onPressed: () => onDeleteAccount(context),
+              child: const Text('Delete account'),
+            ),
+            Text('account: ${snapshot.data}'),
+          ],
+        );
+      },
     );
   }
 
