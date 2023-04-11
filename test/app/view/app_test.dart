@@ -1,5 +1,3 @@
-import 'package:app/app/app.dart';
-import 'package:app/feature/onboarding/onboarding.dart';
 import 'package:flutter_test/flutter_test.dart';
 
 void main() {
