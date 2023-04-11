@@ -12,7 +12,7 @@ enum AppRoute {
   static AppRoute getByPath(String path) {
     return AppRoute.values.firstWhere(
       (e) => e.path == path,
-      orElse: () => onboarding,
+      orElse: () => defaultRoute,
     );
   }
 
