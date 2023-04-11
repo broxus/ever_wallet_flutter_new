@@ -1,8 +1,8 @@
-import 'package:app/app/cubit/nav_cubit.dart';
-import 'package:app/app/router/app_route.dart';
+import 'package:app/app/router/router.dart';
+import 'package:app/app/service/navigation_service.dart';
+import 'package:app/di/di.dart';
 import 'package:app/feature/root/view/root_tab.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
 
 class RootView extends StatelessWidget {
@@ -13,14 +13,10 @@ class RootView extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       body: child,
-      bottomNavigationBar: BlocBuilder<NavCubit, NavState>(
-        builder: (context, state) {
-          return BottomNavigationBar(
-            items: _getItems(),
-            currentIndex: _tabIndex(context),
-            onTap: (int index) => _onTap(context, index),
-          );
-        },
+      bottomNavigationBar: BottomNavigationBar(
+        items: _getItems(),
+        currentIndex: _tabIndex(context),
+        onTap: (int index) => _onTap(context, index),
       ),
     );
   }
@@ -35,7 +31,7 @@ class RootView extends StatelessWidget {
 
   int _tabIndex(BuildContext context) {
     return RootTab.getByPath(
-      getRootPath(context.read<NavCubit>().state.location),
+      getRootPath(inject<NavigationService>().location),
     ).index;
   }
 }

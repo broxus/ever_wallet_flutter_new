@@ -15,6 +15,8 @@ enum AppRoute {
       orElse: () => onboarding,
     );
   }
+
+  static AppRoute get defaultRoute => onboarding;
 }
 
 String getRootPath(String location) {

@@ -1,4 +1,4 @@
-import 'package:app/app/router/app_route.dart';
+import 'package:app/app/router/router.dart';
 import 'package:flutter/material.dart';
 import 'package:logging/logging.dart';
 

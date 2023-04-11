@@ -1,5 +1,5 @@
-import 'package:app/app/cubit/nav_cubit.dart';
-import 'package:app/app/router/app_route.dart';
+import 'package:app/app/router/router.dart';
+import 'package:app/app/service/services.dart';
 import 'package:app/di/di.dart';
 import 'package:app/feature/browser/browser.dart';
 import 'package:app/feature/error/error.dart';
@@ -8,9 +8,10 @@ import 'package:app/feature/profile/profile.dart';
 import 'package:app/feature/root/root.dart';
 import 'package:app/feature/wallet/wallet.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
 import 'package:nekoton_repository/nekoton_repository.dart';
+
+export 'app_route.dart';
 
 GoRouter getRouter(BuildContext context) {
   // Redirect to onboarding or wallet depending on the current location and if
@@ -31,16 +32,17 @@ GoRouter getRouter(BuildContext context) {
 
   final router = GoRouter(
     redirect: (context, state) {
-      // Save current location in NavCubit
       final location = state.location;
-      context.read<NavCubit>().setLocation(location);
+      // Save current location in NavigationService
+      inject<NavigationService>().setLocation(location);
       final hasAccount = inject<NekotonRepository>().accountsStream.value;
 
       // Actually redirect, this is when the router will actually change the
       // location, so we need to subscribe to the accountsStream for updates
       return shouldRedirect(location: location, hasAccount: hasAccount);
     },
-    initialLocation: context.read<NavCubit>().state.location,
+    // Initial location from NavigationService
+    initialLocation: inject<NavigationService>().location,
     routes: <RouteBase>[
       GoRoute(
         name: AppRoute.onboarding.name,
@@ -50,7 +52,6 @@ GoRouter getRouter(BuildContext context) {
         },
       ),
       ShellRoute(
-        // navigatorKey: _shellNavigatorKey,
         builder: (context, state, child) {
           return RootPage(child: child);
         },
@@ -83,9 +84,11 @@ GoRouter getRouter(BuildContext context) {
   );
 
   // Subscribe to accountsStream to redirect if needed
+  // This is a-la guard, it should redirect to onboarding or wallet depending
+  // on the current location and if the user has an account
   inject<NekotonRepository>().accountsStream.listen((hasAccount) {
     final redirectLocation = shouldRedirect(
-      location: context.read<NavCubit>().state.location,
+      location: inject<NavigationService>().location,
       hasAccount: hasAccount,
     );
 

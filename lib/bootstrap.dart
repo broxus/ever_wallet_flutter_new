@@ -32,6 +32,7 @@ Future<void> bootstrap(
   await configureDi();
   await configureLogger(appBuildType);
   await configureEncryptedStorage();
+  await configureNavigationService();
   await configureNekoton();
 
   final log = Logger('bootstrap');

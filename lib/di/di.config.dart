@@ -15,6 +15,7 @@ import 'package:get_it/get_it.dart' as _i1;
 import 'package:injectable/injectable.dart' as _i2;
 import 'package:nekoton_repository/nekoton_repository.module.dart' as _i4;
 
+import '../app/service/navigation_service.dart' as _i7;
 import '../feature/counter/service/counter_service.dart' as _i6;
 
 extension GetItInjectableX on _i1.GetIt {
@@ -32,6 +33,7 @@ extension GetItInjectableX on _i1.GetIt {
     await _i4.NekotonRepositoryPackageModule().init(gh);
     await _i5.EncryptedStoragePackageModule().init(gh);
     gh.singleton<_i6.CounterService>(_i6.CounterService());
+    gh.singleton<_i7.NavigationService>(_i7.NavigationService());
     return this;
   }
 }
