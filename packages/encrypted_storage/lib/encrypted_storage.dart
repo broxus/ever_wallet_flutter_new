@@ -3,6 +3,7 @@ library encrypted_storage;
 
 import 'package:injectable/injectable.dart';
 
+export 'src/abstract_storage.dart';
 export 'src/encrypted_storage.dart';
 
 // ignore_for_file: always_declare_return_types

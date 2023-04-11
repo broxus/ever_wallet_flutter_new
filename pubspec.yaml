@@ -5,12 +5,13 @@ publish_to: none
 
 environment:
   sdk: ">=2.18.0 <3.0.0"
-  flutter: 3.7.9
+  flutter: 3.7.10
 
 dependencies:
   bloc: ^8.1.0
   encrypted_storage:
     path: packages/encrypted_storage
+  equatable: ^2.0.5
   fancy_logger:
     path: packages/fancy_logger
   flutter:
@@ -19,11 +20,14 @@ dependencies:
   flutter_localizations:
     sdk: flutter
   get_it: ^7.2.0
+  go_router: ^6.5.5
   injectable: ^2.1.0
   intl: ^0.17.0
+  json_annotation: ^4.8.0
   logging: ^1.1.1
   nekoton_repository:
     path: packages/nekoton_repository
+  rxdart: ^0.27.7
 
 dev_dependencies:
   bloc_test: ^9.1.0
@@ -31,6 +35,7 @@ dev_dependencies:
   flutter_test:
     sdk: flutter
   injectable_generator: ^2.1.3
+  json_serializable: ^6.6.1
   melos: ^3.0.0
   mocktail: ^0.3.0
   very_good_analysis: ^4.0.0+1
