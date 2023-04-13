@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:ui_components_lib/ui_components_lib.dart';
 
+/// {@template common_button_icon}
 /// Widget of icon that allows you to put SvgPicture or Icon in [CommonButton].
 ///
 /// ```
@@ -8,7 +9,9 @@ import 'package:ui_components_lib/ui_components_lib.dart';
 ///   leading: CommonButtonIconWidget(svg: 'assets/star.svg'),
 /// )
 /// ```dart
+/// {@endtemplate}
 class CommonButtonIconWidget extends StatelessWidget {
+  /// {@macro common_button_icon}
   const CommonButtonIconWidget({
     this.icon,
     this.svg,

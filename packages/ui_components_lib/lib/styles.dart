@@ -1,10 +1,13 @@
 import 'package:flutter/rendering.dart';
 import 'package:ui_components_lib/ui_components_lib.dart';
 
+/// {@template styles_palette}
 /// The palette of styles in the project.
 /// Text styles do not contains colors for elements, it must be added directly
 /// in components.
+/// {@endtemplate}
 class StylesPalette {
+  /// {@macro styles_palette}
   const StylesPalette({
     required this.buttonTextStyle,
     required this.buttonsStyle,
