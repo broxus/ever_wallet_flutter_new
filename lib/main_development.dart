@@ -3,7 +3,7 @@ import 'package:app/bootstrap.dart';
 
 void main() {
   bootstrap(
-    () => const App(),
+    () => const AppPage(),
     AppBuildType.development,
   );
 }

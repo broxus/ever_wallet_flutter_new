@@ -11,6 +11,6 @@ jobs:
     with:
       min_coverage: 0
       flutter_channel: stable
-      flutter_version: 3.7.7
+      flutter_version: 3.7.10
       runs_on: macos-latest
       test_recursion: true

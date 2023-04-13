@@ -1,7 +1,7 @@
 import 'dart:async';
 
+import 'package:app/bootstrap/bootstrap.dart';
 import 'package:app/di/di.dart';
-import 'package:app/logs/logs.dart';
 import 'package:bloc/bloc.dart';
 import 'package:flutter/widgets.dart';
 import 'package:logging/logging.dart';
@@ -30,7 +30,10 @@ Future<void> bootstrap(
   AppBuildType appBuildType,
 ) async {
   await configureDi();
-  await configureLogs(appBuildType);
+  await configureLogger(appBuildType);
+  await configureEncryptedStorage();
+  await configureNavigationService();
+  await configureNekoton();
 
   final log = Logger('bootstrap');
 
