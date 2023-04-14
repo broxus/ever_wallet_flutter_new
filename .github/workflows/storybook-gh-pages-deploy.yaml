@@ -38,6 +38,8 @@ jobs:
       - run: melos bs && melos build:storybook
       - name: Upload artifact
         uses: actions/upload-pages-artifact@v1
+        with:
+          path: "packages/ui_components_lib/example/build/web"
 
   # Deployment job
   deploy:
