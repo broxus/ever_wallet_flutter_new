@@ -4,6 +4,7 @@
 BUILD_DIR=packages/ui_components_lib/example
 cd $BUILD_DIR
 
+mkdir -p assets
 GIT_LOG_FILE=assets/git_log.txt
 
 echo $'Branch: ' > $GIT_LOG_FILE
