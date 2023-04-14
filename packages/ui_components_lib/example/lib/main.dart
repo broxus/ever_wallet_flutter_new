@@ -1,5 +1,4 @@
-import 'package:example/stories/buttons.dart';
-import 'package:example/stories/colors.dart';
+import 'package:example/stories/stories.dart';
 import 'package:flutter/material.dart';
 import 'package:storybook_flutter/storybook_flutter.dart';
 import 'package:ui_components_lib/ui_components_lib.dart';
@@ -21,8 +20,12 @@ class StoryWidget extends StatelessWidget {
           home: child,
         );
       },
-      initialStory: 'Widgets/Buttons',
+      initialStory: 'Git log',
       stories: [
+        Story(
+          name: 'Git log',
+          builder: (_) => const GitLog(),
+        ),
         Story(
           name: 'Widgets/Buttons',
           builder: (_) => const ButtonsStory(),

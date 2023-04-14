@@ -29,6 +29,14 @@
       "type": "dart",
       "program": "lib/main_production.dart",
       "args": ["--flavor", "production", "--target", "lib/main_production.dart"]
+    },
+    {
+      "name": "Launch storybook",
+      "type": "dart",
+      "request": "launch",
+      "cwd": "packages/ui_components_lib/example",
+      "program": "lib/main.dart",
+      "args": ["--flavor", "development", "--target", "lib/main.dart"]
     }
   ]
 }
