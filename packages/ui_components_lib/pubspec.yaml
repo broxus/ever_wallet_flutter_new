@@ -1,0 +1,52 @@
+name: ui_components_lib
+description: Library with UI components for nekoton projects
+version: 1.0.0+1
+publish_to: none
+
+environment:
+  sdk: ">=2.18.0 <3.0.0"
+  flutter: 3.3.0
+
+dependencies:
+  flutter:
+    sdk: flutter
+  flutter_svg: ^2.0.4
+
+dev_dependencies:
+  flutter_test:
+    sdk: flutter
+  very_good_analysis: ^3.1.0
+
+flutter:
+  uses-material-design: true
+  generate: true
+
+  fonts:
+    - family: PT
+      fonts:
+        - asset: assets/fonts/PT-Root-UI/PT-Root-UI_Light.ttf
+          weight: 300
+        - asset: assets/fonts/PT-Root-UI/PT-Root-UI_Regular.ttf
+          weight: 400
+        - asset: assets/fonts/PT-Root-UI/PT-Root-UI_Medium.ttf
+          weight: 500
+        - asset: assets/fonts/PT-Root-UI/PT-Root-UI_Bold.ttf
+          weight: 700
+    - family: Faktum
+      fonts:
+        - asset: assets/fonts/faktum/Faktum-Bold.ttf
+        - asset: assets/fonts/faktum/Faktum-BoldItalic.ttf
+        - asset: assets/fonts/faktum/Faktum-ExtraBold.ttf
+        - asset: assets/fonts/faktum/Faktum-ExtraBoldItalic.ttf
+        - asset: assets/fonts/faktum/Faktum-ExtraLight.ttf
+        - asset: assets/fonts/faktum/Faktum-ExtraLightItalic.ttf
+        - asset: assets/fonts/faktum/Faktum-Light.ttf
+        - asset: assets/fonts/faktum/Faktum-LightItalic.ttf
+        - asset: assets/fonts/faktum/Faktum-Medium.ttf
+        - asset: assets/fonts/faktum/Faktum-MediumItalic.ttf
+        - asset: assets/fonts/faktum/Faktum-Regular.ttf
+        - asset: assets/fonts/faktum/Faktum-RegularItalic.ttf
+        - asset: assets/fonts/faktum/Faktum-SemiBold.ttf
+        - asset: assets/fonts/faktum/Faktum-SemiBoldItalic.ttf
+        - asset: assets/fonts/faktum/Faktum-Thin.ttf
+        - asset: assets/fonts/faktum/Faktum-ThinItalic.ttf
