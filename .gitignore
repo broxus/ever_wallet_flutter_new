@@ -55,6 +55,9 @@ linked_*.ds
 unlinked.ds
 unlinked_spec.ds
 .fvm/
+**/*.freezed.dart
+**/*.g.dart
+**/*.gen.dart
 
 # Android related
 **/android/**/gradle-wrapper.jar
@@ -67,6 +70,7 @@ unlinked_spec.ds
 **/android/key.properties
 **/android/.idea/
 *.jks
+local.properties
 
 # iOS/XCode related
 **/ios/**/*.mode1v3

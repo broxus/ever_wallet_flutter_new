@@ -8,7 +8,7 @@ environment:
   flutter: 3.7.10
 
 dependencies:
-  archive: ^3.3.6
+  archive: ^3.3.2
   collection: ^1.17.0
   equatable: ^2.0.5
   flutter:

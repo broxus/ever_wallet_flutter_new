@@ -1,0 +1,1 @@
+const maxLastSelectedSeeds = 4;
