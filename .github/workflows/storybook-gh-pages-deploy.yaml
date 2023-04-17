@@ -36,7 +36,7 @@ jobs:
         uses: subosito/flutter-action@v2
         with:
           channel: 'stable'
-      - run: melos bs && melos build:storybook
+      - run: melos bs && melos build:storybook -- --base-href /${{ github.event.repository.name }}/
       - name: Upload artifact
         uses: actions/upload-pages-artifact@v1
         with:
