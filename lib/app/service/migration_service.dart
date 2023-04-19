@@ -5,23 +5,28 @@ import 'dart:io';
 import 'package:app/app/constants.dart';
 import 'package:app/app/service/dto/account_interaction_dto.dart';
 import 'package:app/app/service/dto/bookmark_dto.dart';
+import 'package:app/app/service/dto/browser_tab_dto.dart';
 import 'package:app/app/service/dto/currency_dto.dart';
 import 'package:app/app/service/dto/permissions_dto.dart';
+import 'package:app/app/service/dto/search_history_dto.dart';
 import 'package:app/app/service/dto/site_meta_data_dto.dart';
 import 'package:app/app/service/dto/token_contract_asset_dto.dart';
 import 'package:app/app/service/dto/wallet_contract_type_dto.dart';
 import 'package:app/data/models/bookmark.dart';
-import 'package:app/data/models/browser_tabs_dto.dart';
+import 'package:app/data/models/browser_tab.dart';
 import 'package:app/data/models/currency.dart';
+import 'package:app/data/models/network_type.dart';
 import 'package:app/data/models/permissions.dart';
-import 'package:app/data/models/search_history_dto.dart';
+import 'package:app/data/models/search_history.dart';
 import 'package:app/data/models/site_meta_data.dart';
 import 'package:app/data/models/token_contract_asset.dart';
 import 'package:flutter/foundation.dart';
 import 'package:hive_flutter/hive_flutter.dart';
+import 'package:logging/logging.dart';
 import 'package:nekoton_repository/nekoton_repository.dart';
 import 'package:path_provider/path_provider.dart';
-import 'package:rxdart/rxdart.dart';
+
+final _migrationLogger = Logger('MigrationService');
 
 /// This class is used only for migration from old version of storage.
 @visibleForTesting
@@ -59,9 +64,13 @@ class HiveSourceMigration {
   final _wasStEverOpenedKey = 'was_stever_opened_key';
   final _lastSelectedSeedsKey = 'last_selected_seeds_key';
 
-  static Future<HiveSourceMigration> create() async {
+  /// [migrateFileAtStart] - if true, migration file will be created at start,
+  /// used only for tests.
+  static Future<HiveSourceMigration> create({
+    bool migrateFileAtStart = true,
+  }) async {
     final instance = HiveSourceMigration._();
-    await instance._initialize();
+    await instance._initialize(migrateFileAtStart: migrateFileAtStart);
     return instance;
   }
 
@@ -115,9 +124,6 @@ class HiveSourceMigration {
   Box<List<String>> get _hiddenAccountsBox =>
       Hive.box<List<String>>(_hiddenAccountsKey);
 
-  Stream<Map<String, String>> get seedsStream =>
-      _seedsBox.watchAll<String>().map((e) => e.cast<String, String>());
-
   Map<String, String> get seeds => _seedsBox.toMap().cast<String, String>();
 
   Future<void> addSeedOrRename({
@@ -130,9 +136,6 @@ class HiveSourceMigration {
 
   Future<void> clearSeeds() => _seedsBox.clear();
 
-  Stream<String?> get currentKeyStream =>
-      _preferencesBox.watchKey(_currentKeyKey).cast<String?>();
-
   String? get currentKey => _preferencesBox.get(_currentKeyKey) as String?;
 
   /// Set label(name) to publicKey
@@ -140,10 +143,6 @@ class HiveSourceMigration {
         _currentKeyKey,
         publicKey,
       );
-
-  /// Same as [lastViewedSeeds] but as stream
-  Stream<List<String>> lastViewedSeedsStream() =>
-      _preferencesBox.watchKey(_lastSelectedSeedsKey).cast<List<String>>();
 
   /// Returns up to [maxLastSelectedSeeds] public keys of seeds that were used.
   ///
@@ -164,11 +163,6 @@ class HiveSourceMigration {
   /// List of addresses of accounts
   List<String> get hiddenAccounts =>
       _hiddenAccountsBox.get(_hiddenAccountsKey) ?? <String>[];
-
-  /// Equivalent of [hiddenAccounts] but with stream
-  Stream<List<String>> get hiddenAccountsStream => _hiddenAccountsBox
-      .watchKey(_hiddenAccountsKey)
-      .map((e) => e ?? <String>[]);
 
   /// Hide or show account address
   Future<void> toggleHiddenAccount(String address) {
@@ -200,11 +194,6 @@ class HiveSourceMigration {
       _keyPasswordsBox.delete(publicKey);
 
   Future<void> clearKeyPasswords() => _keyPasswordsBox.clear();
-
-  Stream<Map<String, List<String>>> get externalAccountsStream =>
-      _externalAccountsBox
-          .watchAll<String>()
-          .map((e) => e.map((k, v) => MapEntry(k, v.cast<String>())));
 
   Map<String, List<String>> get externalAccounts => _externalAccountsBox
       .toMap()
@@ -266,22 +255,14 @@ class HiveSourceMigration {
 
   Future<void> removeStorageData(String key) => _nekotonFlutterBox.delete(key);
 
-  Stream<List<TokenContractAsset>> get everSystemTokenContractAssetsStream =>
-      _everSystemTokenContractAssetsBox
-          .watchAllValues()
-          .map((e) => e.map((e) => e.toModel()).toList());
-
-  Stream<List<TokenContractAsset>> get venomSystemTokenContractAssetsStream =>
-      _venomSystemTokenContractAssetsBox
-          .watchAllValues()
-          .map((e) => e.map((e) => e.toModel()).toList());
-
   List<TokenContractAsset> get everSystemTokenContractAssets =>
-      _everSystemTokenContractAssetsBox.values.map((e) => e.toModel()).toList();
+      _everSystemTokenContractAssetsBox.values
+          .map((e) => e.toModel(NetworkType.ever))
+          .toList();
 
   List<TokenContractAsset> get venomSystemTokenContractAssets =>
       _venomSystemTokenContractAssetsBox.values
-          .map((e) => e.toModel())
+          .map((e) => e.toModel(NetworkType.venom))
           .toList();
 
   Future<void> updateEverSystemTokenContractAssets(
@@ -300,22 +281,14 @@ class HiveSourceMigration {
         .addAll(assets.map((e) => e.toDto()));
   }
 
-  Stream<List<TokenContractAsset>> get everCustomTokenContractAssetsStream =>
-      _everCustomTokenContractAssetsBox
-          .watchAllValues()
-          .map((e) => e.map((e) => e.toModel()).toList());
-
-  Stream<List<TokenContractAsset>> get venomCustomTokenContractAssetsStream =>
-      _venomCustomTokenContractAssetsBox
-          .watchAllValues()
-          .map((e) => e.map((e) => e.toModel()).toList());
-
   List<TokenContractAsset> get everCustomTokenContractAssets =>
-      _everCustomTokenContractAssetsBox.values.map((e) => e.toModel()).toList();
+      _everCustomTokenContractAssetsBox.values
+          .map((e) => e.toModel(NetworkType.ever))
+          .toList();
 
   List<TokenContractAsset> get venomCustomTokenContractAssets =>
       _venomCustomTokenContractAssetsBox.values
-          .map((e) => e.toModel())
+          .map((e) => e.toModel(NetworkType.venom))
           .toList();
 
   Future<void> addEverCustomTokenContractAsset(
@@ -346,20 +319,12 @@ class HiveSourceMigration {
   Future<void> clearVenomCustomTokenContractAssets() =>
       _venomCustomTokenContractAssetsBox.clear();
 
-  Stream<String?> get localeStream =>
-      _userPreferencesBox.watchKey(_localeKey).cast<String?>();
-
   String? get locale => _userPreferencesBox.get(_localeKey) as String?;
 
   Future<void> setLocale(String locale) =>
       _userPreferencesBox.put(_localeKey, locale);
 
   Future<void> clearLocale() => _userPreferencesBox.delete(_localeKey);
-
-  Stream<bool> get isBiometryEnabledStream => _userPreferencesBox
-      .watchKey(_biometryStatusKey)
-      .cast<bool?>()
-      .map((e) => e ?? false);
 
   bool get isBiometryEnabled =>
       _userPreferencesBox.get(_biometryStatusKey) as bool? ?? false;
@@ -369,11 +334,6 @@ class HiveSourceMigration {
 
   Future<void> clearIsBiometryEnabled() =>
       _userPreferencesBox.delete(_biometryStatusKey);
-
-  Stream<Map<String, Permissions>> get permissionsStream => _permissionsBox
-      .watchAll<String>()
-      .cast<Map<String, PermissionsDto>>()
-      .map((e) => e.map((k, v) => MapEntry(k, v.toModel())));
 
   Map<String, Permissions> get permissions => _permissionsBox
       .toMap()
@@ -402,10 +362,6 @@ class HiveSourceMigration {
     }
   }
 
-  Stream<List<Bookmark>> get bookmarksStream => _bookmarksBox
-      .watchAllValues()
-      .map((e) => e.map((e) => e.toModel()).toList());
-
   List<Bookmark> get bookmarks =>
       _bookmarksBox.values.map((e) => e.toModel()).toList();
 
@@ -416,12 +372,10 @@ class HiveSourceMigration {
 
   Future<void> clearBookmarks() => _bookmarksBox.clear();
 
-  Stream<List<SearchHistoryDto>> get searchHistoryStream =>
-      _searchHistoryBox.watchAllValues().map((e) => e.toList());
+  List<SearchHistory> get searchHistory =>
+      _searchHistoryBox.values.map((e) => e.toModel()).toList();
 
-  List<SearchHistoryDto> get searchHistory => _searchHistoryBox.values.toList();
-
-  Future<void> addSearchHistoryEntry(SearchHistoryDto entry) async {
+  Future<void> addSearchHistoryEntry(SearchHistory entry) async {
     var list =
         _searchHistoryBox.toMap().cast<String, SearchHistoryDto>().entries;
 
@@ -429,7 +383,7 @@ class HiveSourceMigration {
 
     final entries = [
       ...list,
-      MapEntry(entry.openTime.toString(), entry),
+      MapEntry(entry.openTime.toString(), entry.toDto()),
     ]..sort((a, b) => -a.value.openTime.compareTo(b.value.openTime));
 
     await _searchHistoryBox.clear();
@@ -437,7 +391,7 @@ class HiveSourceMigration {
     await _searchHistoryBox.putAll(Map.fromEntries(entries.take(50)));
   }
 
-  Future<void> removeSearchHistoryEntry(SearchHistoryDto entry) async {
+  Future<void> removeSearchHistoryEntry(SearchHistory entry) async {
     final keys = _searchHistoryBox
         .toMap()
         .cast<String, SearchHistoryDto>()
@@ -463,19 +417,13 @@ class HiveSourceMigration {
 
   Future<void> clearSitesMetaData() => _siteMetaDataBox.clear();
 
-  Stream<List<Currency>> get everCurrenciesStream => _everCurrenciesBox
-      .watchAllValues()
-      .map((e) => e.map((e) => e.toModel()).toList());
+  List<Currency> get everCurrencies => _everCurrenciesBox.values
+      .map((e) => e.toModel(NetworkType.ever))
+      .toList();
 
-  Stream<List<Currency>> get venomCurrenciesStream => _venomCurrenciesBox
-      .watchAllValues()
-      .map((e) => e.map((e) => e.toModel()).toList());
-
-  List<Currency> get everCurrencies =>
-      _everCurrenciesBox.values.map((e) => e.toModel()).toList();
-
-  List<Currency> get venomCurrencies =>
-      _venomCurrenciesBox.values.map((e) => e.toModel()).toList();
+  List<Currency> get venomCurrencies => _venomCurrenciesBox.values
+      .map((e) => e.toModel(NetworkType.venom))
+      .toList();
 
   Future<void> saveEverCurrency({
     required String address,
@@ -508,21 +456,23 @@ class HiveSourceMigration {
 
   List<BrowserTab> get browserTabs =>
       (_browserTabsBox.get(_browserTabsKey) as List<dynamic>?)
-          ?.cast<BrowserTab>() ??
+          ?.cast<BrowserTabDto>()
+          .map((e) => e.toModel())
+          .toList() ??
       <BrowserTab>[];
 
   int get browserTabsLastIndex =>
       _browserTabsBox.get(_browserTabsLastIndexKey) as int? ?? -1;
 
-  Future<void> saveBrowserTabs(List<BrowserTab> dto) =>
-      _browserTabsBox.put(_browserTabsKey, dto);
+  Future<void> saveBrowserTabs(List<BrowserTab> tabs) =>
+      _browserTabsBox.put(_browserTabsKey, tabs.map((e) => e.toDto()).toList());
 
   Future<void> saveBrowserTabsLastIndex(int lastIndex) =>
       _browserTabsBox.put(_browserTabsLastIndexKey, lastIndex);
 
   Future<void> dispose() => Hive.close();
 
-  Future<void> _initialize() async {
+  Future<void> _initialize({required bool migrateFileAtStart}) async {
     final key = Uint8List.fromList(
       [
         142,
@@ -612,8 +562,52 @@ class HiveSourceMigration {
     await Hive.openBox<dynamic>(_browserTabsKey);
     await Hive.openBox<List<String>>(_hiddenAccountsKey);
 
+    if (migrateFileAtStart) await saveStorageData();
+
     await _migrateStorage();
     await _migrateLastViewedSeeds();
+  }
+
+  Future<File> get migrationFile async {
+    final tempDir = await getTemporaryDirectory();
+    return File('${tempDir.path}/migration.json');
+  }
+
+  Map<String, dynamic> get jsonData => {
+        'nekoton': _nekotonFlutterBox.toJson(),
+        'ever_custom':
+            everCustomTokenContractAssets.map((e) => e.toJson()).toList(),
+        'venom_custom':
+            venomCustomTokenContractAssets.map((e) => e.toJson()).toList(),
+        'ever_system':
+            everSystemTokenContractAssets.map((e) => e.toJson()).toList(),
+        'venom_system':
+            venomSystemTokenContractAssets.map((e) => e.toJson()).toList(),
+        'prefs': _preferencesBox.toJson(),
+        'search_history': searchHistory
+            .map(
+              (e) => {'url': e.url, 'date': e.openTime.millisecondsSinceEpoch},
+            )
+            .toList(),
+        'external_accounts': externalAccounts,
+        'hidden_accounts': hiddenAccounts,
+        'browser_tabs': browserTabs.map((e) => e.toJson()).toList(),
+        'user_prefs': _userPreferencesBox.toJson(),
+        'permissions':
+            permissions.map((key, value) => MapEntry(key, value.toJson())),
+        'passwords': _keyPasswordsBox.toJson(),
+      };
+
+  /// Migrate all data from old storage to temporary migration file to avoid
+  /// losing data if problem occurs during migration.
+  Future<void> saveStorageData() async {
+    try {
+      final tempJsonData = jsonData;
+      final migrationFile = await this.migrationFile;
+      await migrationFile.writeAsString(jsonEncode(tempJsonData));
+    } catch (e, t) {
+      _migrationLogger.severe('saveStorageData', e, t);
+    }
   }
 
   Future<void> _migrateStorage() async {
@@ -680,14 +674,8 @@ class HiveSourceMigration {
 }
 
 extension<T> on Box<T> {
-  Stream<T?> watchKey(dynamic key) =>
-      watch(key: key).map((e) => e.value as T).cast<T?>().startWith(get(key));
-
-  Stream<Map<K, T>> watchAll<K>() =>
-      watch().map((_) => toMap().cast<K, T>()).startWith(toMap().cast<K, T>());
-
-  Stream<Iterable<T>> watchAllValues() =>
-      watch().map((_) => values).startWith(values);
+  /// For simple types
+  Map<String, dynamic> toJson() => toMap().cast<String, dynamic>();
 }
 
 extension on HiveInterface {

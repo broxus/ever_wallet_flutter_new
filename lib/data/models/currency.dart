@@ -1,3 +1,4 @@
+import 'package:app/data/models/network_type.dart';
 import 'package:freezed_annotation/freezed_annotation.dart';
 
 part 'currency.freezed.dart';
@@ -17,6 +18,7 @@ class Currency with _$Currency {
     required String volume7d,
     required String fee24h,
     required int transactionsCount24h,
+    required NetworkType networkType,
   }) = _Currency;
 
   factory Currency.fromJson(Map<String, dynamic> json) => _$CurrencyFromJson(json);

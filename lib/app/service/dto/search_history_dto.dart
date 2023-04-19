@@ -1,3 +1,4 @@
+import 'package:app/data/models/search_history.dart';
 import 'package:freezed_annotation/freezed_annotation.dart';
 import 'package:hive_flutter/hive_flutter.dart';
 
@@ -13,4 +14,18 @@ class SearchHistoryDto with _$SearchHistoryDto {
     @HiveField(0) required String url,
     @HiveField(1) required DateTime openTime,
   }) = _SearchHistoryDto;
+}
+
+extension SiteMetaDataX on SearchHistory {
+  SearchHistoryDto toDto() => SearchHistoryDto(
+        url: url,
+        openTime: openTime,
+      );
+}
+
+extension SiteMetaDataDtoX on SearchHistoryDto {
+  SearchHistory toModel() => SearchHistory(
+        url: url,
+        openTime: openTime,
+      );
 }

@@ -1,4 +1,5 @@
 import 'package:app/data/models/currency.dart';
+import 'package:app/data/models/network_type.dart';
 import 'package:freezed_annotation/freezed_annotation.dart';
 import 'package:hive_flutter/hive_flutter.dart';
 
@@ -41,7 +42,7 @@ extension CurrencyX on Currency {
 }
 
 extension CurrencyDtoX on CurrencyDto {
-  Currency toModel() => Currency(
+  Currency toModel(NetworkType networkType) => Currency(
         currency: currency,
         address: address,
         price: price,
@@ -53,5 +54,6 @@ extension CurrencyDtoX on CurrencyDto {
         volume7d: volume7d,
         fee24h: fee24h,
         transactionsCount24h: transactionsCount24h,
+        networkType: networkType,
       );
 }

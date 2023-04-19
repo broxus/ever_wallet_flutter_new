@@ -1,8 +1,10 @@
+import 'package:app/data/models/network_type.dart';
 import 'package:app/data/models/token_contract_asset.dart';
 import 'package:freezed_annotation/freezed_annotation.dart';
 import 'package:hive_flutter/hive_flutter.dart';
 
 part 'token_contract_asset_dto.freezed.dart';
+
 part 'token_contract_asset_dto.g.dart';
 
 @freezed
@@ -32,7 +34,7 @@ extension TokenContractAssetX on TokenContractAsset {
 }
 
 extension TokenContractAssetDtoX on TokenContractAssetDto {
-  TokenContractAsset toModel() => TokenContractAsset(
+  TokenContractAsset toModel(NetworkType type) => TokenContractAsset(
         name: name,
         chainId: chainId,
         symbol: symbol,
@@ -40,5 +42,6 @@ extension TokenContractAssetDtoX on TokenContractAssetDto {
         address: address,
         logoURI: logoURI,
         version: version,
+        networkType: type,
       );
 }
