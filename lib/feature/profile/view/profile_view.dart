@@ -7,15 +7,18 @@ class ProfileView extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Column(
-      mainAxisAlignment: MainAxisAlignment.center,
-      children: [
-        const Text('Profile'),
-        TextButton(
-          onPressed: () => onDeleteAccount(context),
-          child: const Text('Delete account'),
-        ),
-      ],
+    return ColoredBox(
+      color: Colors.yellow,
+      child: Column(
+        mainAxisAlignment: MainAxisAlignment.center,
+        children: [
+          const Text('Profile'),
+          TextButton(
+            onPressed: () => onDeleteAccount(context),
+            child: const Text('Delete account'),
+          ),
+        ],
+      ),
     );
   }
 
