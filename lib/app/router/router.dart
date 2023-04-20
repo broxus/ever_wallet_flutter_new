@@ -1,3 +1,4 @@
+import 'package:app/app/router/page_transitions.dart';
 import 'package:app/app/router/router.dart';
 import 'package:app/app/service/services.dart';
 import 'package:app/di/di.dart';
@@ -47,35 +48,48 @@ GoRouter getRouter(BuildContext context) {
       GoRoute(
         name: AppRoute.onboarding.name,
         path: AppRoute.onboarding.path,
-        builder: (BuildContext context, GoRouterState state) {
-          return const OnboardingPage();
-        },
+        pageBuilder: (context, state) => onboardingTransitionPageBuilder(
+          context,
+          state,
+          const OnboardingPage(),
+        ),
       ),
       ShellRoute(
-        builder: (context, state, child) {
-          return RootPage(child: child);
-        },
+        pageBuilder: (context, state, child) => rootTransitionPageBuilder(
+          context,
+          state,
+          RootPage(child: child),
+        ),
         routes: <RouteBase>[
           GoRoute(
             name: AppRoute.wallet.name,
             path: AppRoute.wallet.path,
-            builder: (BuildContext context, GoRouterState state) {
-              return const WalletPage();
-            },
+            pageBuilder: (BuildContext context, GoRouterState state) =>
+                rootTabsTransitionPageBuilder(
+              context,
+              state,
+              const WalletPage(),
+            ),
           ),
           GoRoute(
             name: AppRoute.browser.name,
             path: AppRoute.browser.path,
-            builder: (BuildContext context, GoRouterState state) {
-              return const BrowserPage();
-            },
+            pageBuilder: (BuildContext context, GoRouterState state) =>
+                rootTabsTransitionPageBuilder(
+              context,
+              state,
+              const BrowserPage(),
+            ),
           ),
           GoRoute(
             name: AppRoute.profile.name,
             path: AppRoute.profile.path,
-            builder: (BuildContext context, GoRouterState state) {
-              return const ProfilePage();
-            },
+            pageBuilder: (BuildContext context, GoRouterState state) =>
+                rootTabsTransitionPageBuilder(
+              context,
+              state,
+              const ProfilePage(),
+            ),
           ),
         ],
       ),
