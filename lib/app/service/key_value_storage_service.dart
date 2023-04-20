@@ -10,8 +10,10 @@ import 'package:app/data/models/search_history.dart';
 import 'package:app/data/models/site_meta_data.dart';
 import 'package:app/data/models/token_contract_asset.dart';
 import 'package:encrypted_storage/encrypted_storage.dart';
+import 'package:flutter/foundation.dart';
 
 /// List of keys to store in storage
+const _migrationKey = 'migration_key';
 const _passwordsKey = 'passwords_key';
 const _systemContractAssetsKey = 'system_contract_assets_key';
 const _customContractAssetsKey = 'custom_contract_assets_key';
@@ -57,6 +59,13 @@ class KeyValueStorageService {
       clearCurrencies(),
       clearPreferences(),
     ]);
+  }
+
+  /// Get all preferences
+  @visibleForTesting
+  Future<Map<String, dynamic>> get preferences async {
+    final encoded = await _storage.getDomain(domain: _preferencesKey);
+    return encoded.map((key, value) => MapEntry(key, jsonDecode(value)));
   }
 
   Future<void> clearPreferences() => _storage.clearDomain(_preferencesKey);
@@ -220,6 +229,17 @@ class KeyValueStorageService {
       domain: _externalAccountsKey,
     );
   }
+
+  /// Update list of accounts for specified [publicKey].
+  Future<void> updateExternalAccounts({
+    required String publicKey,
+    required List<String> accounts,
+  }) =>
+      _storage.set(
+        publicKey,
+        jsonEncode(accounts),
+        domain: _externalAccountsKey,
+      );
 
   /// Remove external account for specified [publicKey]
   Future<void> removeExternalAccount({
@@ -668,4 +688,18 @@ class KeyValueStorageService {
   /// Clear all browser tabs
   Future<void> clearBrowserTabs() =>
       _storage.delete(_browserTabsKey, domain: _preferencesKey);
+
+  /// Return true if storage was migrated from old hive to this one
+  Future<bool> get isStorageMigrated async {
+    final encoded = await _storage.get(_migrationKey, domain: _preferencesKey);
+    return jsonDecode(encoded ?? 'false') as bool;
+  }
+
+  /// Set flag that storage was migrated from old hive to this one.
+  /// This must happens only in the end of migration process.
+  Future<void> completeStorageMigration() => _storage.set(
+        _migrationKey,
+        jsonEncode(true),
+        domain: _preferencesKey,
+      );
 }

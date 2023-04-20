@@ -1,5 +1,6 @@
 import 'dart:convert';
 
+import 'package:app/app/service/key_value_storage_service.dart';
 import 'package:app/app/service/migration_service.dart';
 import 'package:app/data/models/account_interaction.dart';
 import 'package:app/data/models/bookmark.dart';
@@ -99,7 +100,7 @@ const _address =
 const _password = 'password';
 
 /// Put fake data inside hive storage
-Future<void> _initializeHive(HiveSourceMigration migration) async {
+Future<void> _fillHive(HiveSourceMigration migration) async {
   await migration.setCurrentKey(_publicKey);
   await migration.updateLastViewedSeeds([_publicKey]);
   await migration.toggleHiddenAccount(_address);
@@ -145,16 +146,18 @@ void main() {
   IntegrationTestWidgetsFlutterBinding.ensureInitialized();
 
   late NekotonRepository repository;
-  late HiveSourceMigration migration;
+  late HiveSourceMigration hive;
   late EncryptedStorage encryptedStorage;
+  late KeyValueStorageService storage;
 
   setUp(() async {
     encryptedStorage = EncryptedStorage();
-    await encryptedStorage.init();
     await encryptedStorage.reset();
+    await encryptedStorage.init();
+    storage = KeyValueStorageService(encryptedStorage);
     repository = NekotonRepository();
-    migration = await HiveSourceMigration.create(migrateFileAtStart: false);
-    final file = await migration.migrationFile;
+    hive = await HiveSourceMigration.create(migrateFileAtStart: false);
+    final file = await hive.migrationFile;
     if (file.existsSync()) {
       file.deleteSync();
     }
@@ -162,23 +165,151 @@ void main() {
     runApp(Container());
   });
 
+  Future<void> checkMigration() async {
+    /// Nekoton storage
+    expect(
+      await storage.getStorageData(keystoreStorageKey),
+      await hive.getStorageData(keystoreStorageKey),
+    );
+    expect(
+      await storage.getStorageData(accountsStorageKey),
+      await hive.getStorageData(accountsStorageKey),
+    );
+
+    /// Seeds
+    expect(await storage.seeds, hive.seeds);
+
+    /// Passwords
+    expect(
+      await storage.getKeyPassword(_publicKey),
+      hive.getKeyPassword(_publicKey),
+    );
+
+    /// System contracts
+    expect(
+      await storage.getSystemTokenContractAssets(NetworkType.ever),
+      hive.everSystemTokenContractAssets,
+    );
+    expect(
+      await storage.getSystemTokenContractAssets(NetworkType.venom),
+      hive.venomSystemTokenContractAssets,
+    );
+
+    /// Custom contracts
+    expect(
+      await storage.getCustomTokenContractAssets(NetworkType.ever),
+      hive.everCustomTokenContractAssets,
+    );
+    expect(
+      await storage.getCustomTokenContractAssets(NetworkType.venom),
+      hive.venomCustomTokenContractAssets,
+    );
+
+    /// Currencies
+    expect(
+      await storage.getCurrencies(NetworkType.ever),
+      hive.everCurrencies,
+    );
+    expect(
+      await storage.getCurrencies(NetworkType.venom),
+      hive.venomCurrencies,
+    );
+
+    /// Permissions
+    expect(await storage.permissions, hive.permissions);
+
+    /// Bookmarks
+    expect(await storage.bookmarks, hive.bookmarks);
+
+    /// Search history
+    expect(await storage.searchHistory, hive.searchHistory);
+
+    /// Site metadata
+    expect(
+      await storage.getSiteMetaData(_metadata.url),
+      hive.getSiteMetaData(_metadata.url),
+    );
+
+    /// Preferences
+    expect(await storage.locale, hive.locale);
+    expect(await storage.isBiometryEnabled, hive.isBiometryEnabled);
+    expect(await storage.getWasStEverOpened, hive.wasStEverOpened);
+    expect(await storage.getWhyNeedBrowser, hive.getWhyNeedBrowser);
+    expect(await storage.lastViewedSeeds(), hive.lastViewedSeeds());
+    expect(await storage.hiddenAccounts, hive.hiddenAccounts);
+    expect(await storage.externalAccounts, hive.externalAccounts);
+    expect(await storage.currentConnection, hive.currentConnection);
+    expect(await storage.currentKey, hive.currentKey);
+
+    /// Browser
+    expect(await storage.browserTabs, hive.browserTabs);
+    expect(await storage.browserTabsLastIndex, hive.browserTabsLastIndex);
+  }
+
   group('Testing of storage migration', () {
     testWidgets(
       'Verify migration file creates correctly',
       (tester) async {
-        await _initializeHive(migration);
-        await migration.saveStorageData();
-        final migrationFile = await migration.migrationFile;
+        await tester.pumpAndSettle();
+
+        await _fillHive(hive);
+        final migrationFile = await hive.migrationFile;
+        expect(migrationFile.existsSync(), isFalse);
+
+        await hive.saveStorageData();
         expect(migrationFile.existsSync(), isTrue);
         expect(
-          migration.jsonData,
+          hive.jsonData,
           jsonDecode(await migrationFile.readAsString()),
         );
       },
     );
 
-    testWidgets('Migrate storage', (tester) async {
-      await _initializeHive(migration);
+    testWidgets('Migrate storage needMigration', (tester) async {
+      await tester.pumpAndSettle();
+
+      await _fillHive(hive);
+      final migration = MigrationService(storage, hive);
+      expect(await storage.isStorageMigrated, isFalse);
+      expect(await migration.needMigration(), isTrue);
+    });
+
+    testWidgets('Migrate storage no need migration 1', (tester) async {
+      await tester.pumpAndSettle();
+
+      final migration = MigrationService(storage, hive);
+      expect(await storage.isStorageMigrated, isFalse);
+      expect(await migration.needMigration(), isFalse);
+    });
+
+    testWidgets('Migrate storage no need migration 2', (tester) async {
+      await tester.pumpAndSettle();
+
+      final migration = MigrationService(storage, hive);
+      await storage.completeStorageMigration();
+      expect(await storage.isStorageMigrated, isTrue);
+      expect(await migration.needMigration(), isFalse);
+    });
+
+    testWidgets('Migrate storage verify migrationFile exists', (tester) async {
+      await tester.pumpAndSettle();
+
+      final migration = MigrationService(storage, hive);
+      final migrationFile = await hive.migrationFile;
+      expect(migrationFile.existsSync(), isFalse);
+
+      await migration.verifyMigrationFileExists();
+      expect(migrationFile.existsSync(), isTrue);
+    });
+
+    testWidgets('Migrate storage apply migration', (tester) async {
+      await tester.pumpAndSettle();
+
+      await _fillHive(hive);
+      final migration = MigrationService(storage, hive);
+      await migration.applyMigration();
+
+      await checkMigration();
     });
   });
 }

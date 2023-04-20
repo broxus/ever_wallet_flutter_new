@@ -12,6 +12,7 @@ import 'package:app/app/service/dto/search_history_dto.dart';
 import 'package:app/app/service/dto/site_meta_data_dto.dart';
 import 'package:app/app/service/dto/token_contract_asset_dto.dart';
 import 'package:app/app/service/dto/wallet_contract_type_dto.dart';
+import 'package:app/app/service/key_value_storage_service.dart';
 import 'package:app/data/models/bookmark.dart';
 import 'package:app/data/models/browser_tab.dart';
 import 'package:app/data/models/currency.dart';
@@ -184,6 +185,10 @@ class HiveSourceMigration {
 
   String? getKeyPassword(String publicKey) => _keyPasswordsBox.get(publicKey);
 
+  Map<String, String> get _passwords => _keyPasswordsBox
+      .toJson()
+      .map((key, value) => MapEntry(key, value as String));
+
   Future<void> setKeyPassword({
     required String publicKey,
     required String password,
@@ -243,6 +248,10 @@ class HiveSourceMigration {
         _currentConnectionKey,
         currentConnection,
       );
+
+  Map<String, String> get _storageData => _nekotonFlutterBox
+      .toJson()
+      .map((key, value) => MapEntry(key, value as String));
 
   Future<String?> getStorageData(String key) async =>
       _nekotonFlutterBox.get(key);
@@ -406,6 +415,10 @@ class HiveSourceMigration {
 
   Future<void> clearSearchHistory() => _searchHistoryBox.clear();
 
+  Map<String, SiteMetaData> get _siteMetadata => _siteMetaDataBox
+      .toMap()
+      .map((key, value) => MapEntry(key as String, value.toModel()));
+
   SiteMetaData? getSiteMetaData(String url) =>
       _siteMetaDataBox.get(url)?.toModel();
 
@@ -471,6 +484,9 @@ class HiveSourceMigration {
       _browserTabsBox.put(_browserTabsLastIndexKey, lastIndex);
 
   Future<void> dispose() => Hive.close();
+
+  // TODO(alex-a4): delete boxes after some time to prevent data loss
+  // Future<void> eraseHive() => Hive.deleteFromDisk();
 
   Future<void> _initialize({required bool migrateFileAtStart}) async {
     final key = Uint8List.fromList(
@@ -562,11 +578,17 @@ class HiveSourceMigration {
     await Hive.openBox<dynamic>(_browserTabsKey);
     await Hive.openBox<List<String>>(_hiddenAccountsKey);
 
-    if (migrateFileAtStart) await saveStorageData();
-
     await _migrateStorage();
     await _migrateLastViewedSeeds();
+
+    if (migrateFileAtStart) await saveStorageData();
   }
+
+  /// Return true, if any sensitive data was found
+  bool get _hasAnySensitiveData =>
+      _nekotonFlutterBox.isNotEmpty ||
+      _userPreferencesBox.isNotEmpty ||
+      _preferencesBox.isNotEmpty;
 
   Future<File> get migrationFile async {
     final tempDir = await getTemporaryDirectory();
@@ -610,6 +632,7 @@ class HiveSourceMigration {
     }
   }
 
+  /// This is old migration (not linked to migration to EncryptedStorage)
   Future<void> _migrateStorage() async {
     try {
       final directory = await getApplicationDocumentsDirectory();
@@ -639,6 +662,7 @@ class HiveSourceMigration {
     } catch (_) {}
   }
 
+  // TODO(alex-a4): move this migration to EncryptedStorage
   /// Put all master names from [masterKeysNames] into [_seedsBox]
   ///  This can happens only one time after app upgrading when there were old
   ///  box with names.
@@ -670,6 +694,148 @@ class HiveSourceMigration {
           .toList();
       return updateLastViewedSeeds(fakeViewed);
     }
+  }
+}
+
+/// A service that migrates data from the old storage to the new one.
+class MigrationService {
+  MigrationService(this._storage, this._hive);
+
+  final KeyValueStorageService _storage;
+  final HiveSourceMigration _hive;
+
+  /// This is a full process of migration with all steps.
+  Future<void> migrate() async {
+    if (await needMigration()) {
+      try {
+        await verifyMigrationFileExists();
+        await applyMigration();
+        await completeMigration();
+      } catch (e, t) {
+        _migrationLogger.severe('migrate()', e, t);
+        // TODO(alex-a4): decide what to do with migration error
+        rethrow;
+      }
+    } else {
+      await completeMigration();
+    }
+  }
+
+  /// Returns true if migration was not completed (no data in new storage
+  /// and exists data in old storage).
+  Future<bool> needMigration() async =>
+      !(await _storage.isStorageMigrated) && _hive._hasAnySensitiveData;
+
+  /// If migration file not exists and we decided to migrate, then we need
+  /// to create this file.
+  Future<void> verifyMigrationFileExists() async {
+    final file = await _hive.migrationFile;
+    if (!file.existsSync()) {
+      await _hive.saveStorageData();
+    }
+  }
+
+  /// Migrate all data from hive to new storage.
+  Future<void> applyMigration() async {
+    /// Storage
+    for (final entry in _hive._storageData.entries) {
+      await _storage.setStorageData(key: entry.key, value: entry.value);
+    }
+
+    /// Seeds
+    for (final entry in _hive.seeds.entries) {
+      await _storage.addSeedOrRename(masterKey: entry.key, name: entry.value);
+    }
+
+    /// Passwords
+    for (final entry in _hive._passwords.entries) {
+      await _storage.setKeyPassword(
+        publicKey: entry.key,
+        password: entry.value,
+      );
+    }
+
+    /// System contracts
+    await _storage
+        .updateSystemTokenContractAssets(_hive.everSystemTokenContractAssets);
+    await _storage
+        .updateSystemTokenContractAssets(_hive.venomSystemTokenContractAssets);
+
+    /// Custom contracts
+    for (final asset in _hive.everCustomTokenContractAssets) {
+      await _storage.addCustomTokenContractAsset(asset);
+    }
+    for (final asset in _hive.venomCustomTokenContractAssets) {
+      await _storage.addCustomTokenContractAsset(asset);
+    }
+
+    /// Currencies
+    for (final cur in _hive.everCurrencies) {
+      await _storage.saveOrUpdateCurrency(currency: cur);
+    }
+    for (final cur in _hive.venomCurrencies) {
+      await _storage.saveOrUpdateCurrency(currency: cur);
+    }
+
+    /// Permissions
+    for (final entry in _hive.permissions.entries) {
+      await _storage.setPermissions(
+        origin: entry.key,
+        permissions: entry.value,
+      );
+    }
+
+    /// Bookmarks
+    for (final bookmark in _hive.bookmarks) {
+      await _storage.addBookmark(bookmark);
+    }
+
+    /// Search history
+    for (final entry in _hive.searchHistory) {
+      await _storage.addSearchHistoryEntry(entry);
+    }
+
+    /// Site metadata
+    for (final entry in _hive._siteMetadata.entries) {
+      await _storage.addSiteMetaData(url: entry.key, metaData: entry.value);
+    }
+
+    /// Preferences
+    if (_hive.locale != null) await _storage.setLocale(_hive.locale!);
+    await _storage.setIsBiometryEnabled(isEnabled: _hive.isBiometryEnabled);
+    if (_hive.wasStEverOpened) await _storage.saveWasStEverOpened();
+    if (_hive.getWhyNeedBrowser) await _storage.saveWhyNeedBrowser();
+    await _storage.updateLastViewedSeeds(_hive.lastViewedSeeds());
+    for (final account in _hive.hiddenAccounts) {
+      await _storage.toggleHiddenAccount(account);
+    }
+    for (final entry in _hive.externalAccounts.entries) {
+      await _storage.updateExternalAccounts(
+        publicKey: entry.key,
+        accounts: entry.value,
+      );
+    }
+    if (_hive.currentConnection != null) {
+      await _storage.setCurrentConnection(_hive.currentConnection!);
+    }
+    if (_hive.currentKey != null) {
+      await _storage.setCurrentKey(_hive.currentKey!);
+    }
+
+    /// Browser
+    await _storage.saveBrowserTabsLastIndex(_hive.browserTabsLastIndex);
+    await _storage.saveBrowserTabs(_hive.browserTabs);
+  }
+
+  /// Complete migration by deleting temp file and closing boxes.
+  Future<void> completeMigration() async {
+    final file = await _hive.migrationFile;
+    if (file.existsSync()) await file.delete();
+
+    await _hive.dispose();
+    await _storage.completeStorageMigration();
+    // TODO(alex-a4): delete boxes after some time to prevent data loss
+    // _hiveSourceMigration.eraseHive();
   }
 }
 
