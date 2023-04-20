@@ -5,8 +5,11 @@ class WalletView extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return const Center(
-      child: Text('Wallet'),
+    return const ColoredBox(
+      color: Colors.blue,
+      child: Center(
+        child: Text('Wallet'),
+      ),
     );
   }
 }
