@@ -5,8 +5,11 @@ class BrowserView extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return const Center(
-      child: Text('Browser'),
+    return const ColoredBox(
+      color: Colors.green,
+      child: Center(
+        child: Text('Browser'),
+      ),
     );
   }
 }
