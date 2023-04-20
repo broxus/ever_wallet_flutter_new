@@ -57,6 +57,14 @@ packages:
       url: "https://pub.dev"
     source: hosted
     version: "2.10.0"
+  basic_utils:
+    dependency: transitive
+    description:
+      name: basic_utils
+      sha256: "9d3dcb8eaba8b1578a720c23988e98fde2ef21da40ae34e9e8f6fe84cee86a65"
+      url: "https://pub.dev"
+    source: hosted
+    version: "5.5.1"
   bloc:
     dependency: "direct main"
     description:
@@ -281,6 +289,14 @@ packages:
       url: "https://pub.dev"
     source: hosted
     version: "1.1.0"
+  decimal:
+    dependency: transitive
+    description:
+      name: decimal
+      sha256: eece91944f523657c75a3a008a90ec7f7eb3986191153a78570c7d0ac8ef3d01
+      url: "https://pub.dev"
+    source: hosted
+    version: "2.3.2"
   diff_match_patch:
     dependency: transitive
     description:
@@ -343,6 +359,14 @@ packages:
       url: "https://pub.dev"
     source: hosted
     version: "6.1.4"
+  fixed:
+    dependency: transitive
+    description:
+      name: fixed
+      sha256: b381d800661c88b81b44b77bb5c9198ddad4b8f73dda53c691904dc597f358f1
+      url: "https://pub.dev"
+    source: hosted
+    version: "2.3.3"
   fixnum:
     dependency: transitive
     description:
@@ -385,6 +409,14 @@ packages:
       url: "https://pub.dev"
     source: hosted
     version: "5.2.0"
+  flutter_lints:
+    dependency: transitive
+    description:
+      name: flutter_lints
+      sha256: aeb0b80a8b3709709c9cc496cdc027c5b3216796bc0af0ce1007eaf24464fd4c
+      url: "https://pub.dev"
+    source: hosted
+    version: "2.0.1"
   flutter_localizations:
     dependency: "direct main"
     description: flutter
@@ -396,7 +428,7 @@ packages:
       path: "/Users/alexey/Projects/nekoton_bridge/packages/flutter_nekoton_bridge"
       relative: false
     source: path
-    version: "1.7.0-dev.0"
+    version: "1.8.0-dev.3"
   flutter_rust_bridge:
     dependency: transitive
     description:
@@ -641,6 +673,14 @@ packages:
       url: "https://pub.dev"
     source: hosted
     version: "6.6.1"
+  lints:
+    dependency: transitive
+    description:
+      name: lints
+      sha256: "5e4a9cd06d447758280a8ac2405101e0e2094d2a1dbdd3756aec3fe7775ba593"
+      url: "https://pub.dev"
+    source: hosted
+    version: "2.0.1"
   logging:
     dependency: "direct main"
     description:
@@ -697,6 +737,22 @@ packages:
       url: "https://pub.dev"
     source: hosted
     version: "0.3.0"
+  money2:
+    dependency: transitive
+    description:
+      name: money2
+      sha256: "4a403cffeda86287eaa96c1902bc7a24a437d25bab84419a96c9877a019ecb22"
+      url: "https://pub.dev"
+    source: hosted
+    version: "3.3.0"
+  money2_improver:
+    dependency: transitive
+    description:
+      name: money2_improver
+      sha256: "3486c95b0923f39eb933d1cd580ce64a350303d3c3086d8e72b70871a436b20d"
+      url: "https://pub.dev"
+    source: hosted
+    version: "1.1.0"
   mustache_template:
     dependency: transitive
     description:
@@ -709,11 +765,11 @@ packages:
     dependency: transitive
     description:
       path: "packages/nekoton_bridge"
-      ref: "nekoton_bridge-v1.5.2"
-      resolved-ref: "915264016c7469a5a89f4fa132e117c459f0f6ad"
+      ref: "nekoton_bridge-v1.8.0-dev.3"
+      resolved-ref: "031239c66ffac883965a04e2625d65241f90db7a"
       url: "https://github.com/broxus/nekoton_bridge.git"
     source: git
-    version: "1.5.2"
+    version: "1.8.0-dev.3"
   nekoton_repository:
     dependency: "direct main"
     description:
@@ -921,6 +977,14 @@ packages:
       url: "https://pub.dev"
     source: hosted
     version: "3.2.1"
+  rational:
+    dependency: transitive
+    description:
+      name: rational
+      sha256: ba58e9e18df9abde280e8b10051e4bce85091e41e8e7e411b6cde2e738d357cf
+      url: "https://pub.dev"
+    source: hosted
+    version: "2.2.2"
   recase:
     dependency: transitive
     description:
@@ -1287,5 +1351,5 @@ packages:
     source: hosted
     version: "2.1.0"
 sdks:
-  dart: ">=2.19.0 <3.0.0"
+  dart: ">=2.19.2 <3.0.0"
   flutter: ">=3.7.10"
