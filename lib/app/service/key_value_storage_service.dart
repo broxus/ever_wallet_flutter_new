@@ -11,6 +11,7 @@ import 'package:app/data/models/site_meta_data.dart';
 import 'package:app/data/models/token_contract_asset.dart';
 import 'package:encrypted_storage/encrypted_storage.dart';
 import 'package:flutter/foundation.dart';
+import 'package:injectable/injectable.dart';
 
 /// List of keys to store in storage
 const _migrationKey = 'migration_key';
@@ -41,6 +42,7 @@ const _lastSelectedSeedsKey = 'last_selected_seeds_key';
 /// to interact with basic nekoton-app models.
 /// This storage can be filled with data from the old version of the app via
 /// migration service.
+@singleton
 class KeyValueStorageService {
   KeyValueStorageService(this._storage);
 
@@ -138,14 +140,21 @@ class KeyValueStorageService {
     return accountsList.cast<String>();
   }
 
-  /// Hide or show account address
-  Future<void> toggleHiddenAccount(String address) async {
+  /// Hide account address so it won't be displayed at accounts list
+  Future<void> hideAccount(String address) async {
     final accounts = await hiddenAccounts;
-    if (accounts.contains(address)) {
-      accounts.remove(address);
-    } else {
-      accounts.add(address);
-    }
+    accounts.add(address);
+    return _storage.set(
+      _hiddenAccountsKey,
+      jsonEncode(accounts.toSet().toList()),
+      domain: _preferencesKey,
+    );
+  }
+
+  /// Show account address so it will be displayed at accounts list
+  Future<void> showAccount(String address) async {
+    final accounts = await hiddenAccounts;
+    accounts.remove(address);
     return _storage.set(
       _hiddenAccountsKey,
       jsonEncode(accounts),

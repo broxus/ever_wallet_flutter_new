@@ -65,13 +65,9 @@ class HiveSourceMigration {
   final _wasStEverOpenedKey = 'was_stever_opened_key';
   final _lastSelectedSeedsKey = 'last_selected_seeds_key';
 
-  /// [migrateFileAtStart] - if true, migration file will be created at start,
-  /// used only for tests.
-  static Future<HiveSourceMigration> create({
-    bool migrateFileAtStart = true,
-  }) async {
+  static Future<HiveSourceMigration> create() async {
     final instance = HiveSourceMigration._();
-    await instance._initialize(migrateFileAtStart: migrateFileAtStart);
+    await instance._initialize();
     return instance;
   }
 
@@ -165,16 +161,14 @@ class HiveSourceMigration {
   List<String> get hiddenAccounts =>
       _hiddenAccountsBox.get(_hiddenAccountsKey) ?? <String>[];
 
-  /// Hide or show account address
-  Future<void> toggleHiddenAccount(String address) {
-    final accounts = hiddenAccounts;
-    if (accounts.contains(address)) {
-      accounts.remove(address);
-    } else {
-      accounts.add(address);
-    }
+  /// Hide account address
+  Future<void> addHiddenAccount(String address) {
+    final accounts = hiddenAccounts..add(address);
 
-    return _hiddenAccountsBox.put(_hiddenAccountsKey, accounts);
+    return _hiddenAccountsBox.put(
+      _hiddenAccountsKey,
+      accounts.toSet().toList(),
+    );
   }
 
   /// Remove information about hidden account (make it visible)
@@ -488,7 +482,7 @@ class HiveSourceMigration {
   // TODO(alex-a4): delete boxes after some time to prevent data loss
   // Future<void> eraseHive() => Hive.deleteFromDisk();
 
-  Future<void> _initialize({required bool migrateFileAtStart}) async {
+  Future<void> _initialize() async {
     final key = Uint8List.fromList(
       [
         142,
@@ -580,8 +574,6 @@ class HiveSourceMigration {
 
     await _migrateStorage();
     await _migrateLastViewedSeeds();
-
-    if (migrateFileAtStart) await saveStorageData();
   }
 
   /// Return true, if any sensitive data was found
@@ -714,6 +706,16 @@ class MigrationService {
   final KeyValueStorageService _storage;
   final HiveSourceMigration _hive;
 
+  /// Migration method for app that includes hive initialization.
+  static Future<void> migrateWithHiveInit(
+    KeyValueStorageService storage,
+  ) async {
+    return MigrationService(
+      storage,
+      await HiveSourceMigration.create(),
+    ).migrate();
+  }
+
   /// This is a full process of migration with all steps.
   Future<void> migrate() async {
     if (await needMigration()) {
@@ -820,7 +822,7 @@ class MigrationService {
     if (_hive.getWhyNeedBrowser) await _storage.saveWhyNeedBrowser();
     await _storage.updateLastViewedSeeds(_hive.lastViewedSeeds());
     for (final account in _hive.hiddenAccounts) {
-      await _storage.toggleHiddenAccount(account);
+      await _storage.hideAccount(account);
     }
     for (final entry in _hive.externalAccounts.entries) {
       await _storage.updateExternalAccounts(

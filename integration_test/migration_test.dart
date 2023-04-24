@@ -116,7 +116,7 @@ Future<void> _fillHive(HiveSourceMigration migration) async {
   await migration.setCurrentKey(_publicKey);
   await migration.addSeedOrRename(masterKey: _publicKey, name: 'name');
   await migration.updateLastViewedSeeds([_publicKey]);
-  await migration.toggleHiddenAccount(_address);
+  await migration.addHiddenAccount(_address);
   await migration.setKeyPassword(publicKey: _publicKey, password: _password);
   await migration.addExternalAccount(publicKey: _publicKey, address: _address);
   await migration.setCurrentConnection(_connection);
@@ -159,6 +159,77 @@ void main() {
   late EncryptedStorage encryptedStorage;
   late KeyValueStorageService storage;
 
+  Future<void> checkMigration() async {
+    /// Nekoton storage
+    expect(
+      await storage.getStorageData(keystoreStorageKey),
+      _keystoreStorageData,
+    );
+    expect(
+      await storage.getStorageData(accountsStorageKey),
+      _accountsStorageData,
+    );
+
+    /// Seeds
+    expect(await storage.seeds, {_publicKey: 'name'});
+
+    /// Passwords
+    expect(await storage.getKeyPassword(_publicKey), _password);
+
+    /// System contracts
+    expect(
+      await storage.getSystemTokenContractAssets(NetworkType.ever),
+      [_everContractAsset],
+    );
+    expect(
+      await storage.getSystemTokenContractAssets(NetworkType.venom),
+      [_venomContractAsset],
+    );
+
+    /// Custom contracts
+    expect(
+      await storage.getCustomTokenContractAssets(NetworkType.ever),
+      [_everContractAsset],
+    );
+    expect(
+      await storage.getCustomTokenContractAssets(NetworkType.venom),
+      [_venomContractAsset],
+    );
+
+    /// Currencies
+    expect(await storage.getCurrencies(NetworkType.ever), [_everCurrency]);
+    expect(await storage.getCurrencies(NetworkType.venom), [_venomCurrency]);
+
+    /// Permissions
+    expect(await storage.permissions, {'origin': _permissions});
+
+    /// Bookmarks
+    expect(await storage.bookmarks, [_bookmark]);
+
+    /// Search history
+    expect(await storage.searchHistory, [_search]);
+
+    /// Site metadata
+    expect(await storage.getSiteMetaData(_metadata.url), _metadata);
+
+    /// Preferences
+    expect(await storage.locale, _locale);
+    expect(await storage.isBiometryEnabled, true);
+    expect(await storage.getWasStEverOpened, true);
+    expect(await storage.getWhyNeedBrowser, true);
+    expect(await storage.lastViewedSeeds(), [_publicKey]);
+    expect(await storage.hiddenAccounts, [_address]);
+    expect(await storage.externalAccounts, {
+      _publicKey: [_address]
+    });
+    expect(await storage.currentConnection, _connection);
+    expect(await storage.currentKey, _publicKey);
+
+    /// Browser
+    expect(await storage.browserTabs, [_browserTab]);
+    expect(await storage.browserTabsLastIndex, -1);
+  }
+
   setUp(() async {
     encryptedStorage = EncryptedStorage();
     FlutterSecureStorage.setMockInitialValues({});
@@ -167,7 +238,7 @@ void main() {
     storage = KeyValueStorageService(encryptedStorage);
     repository = NekotonRepository();
     await Hive.deleteFromDisk();
-    hive = await HiveSourceMigration.create(migrateFileAtStart: false);
+    hive = await HiveSourceMigration.create();
     final file = await hive.migrationFile;
     if (file.existsSync()) {
       file.deleteSync();
@@ -324,6 +395,9 @@ void main() {
       await tester.pumpAndSettle();
 
       await _fillHive(hive);
+
+      expect(await storage.isStorageMigrated, isFalse);
+
       final migration = MigrationService(storage, hive);
       await migration.migrate();
 
@@ -332,74 +406,25 @@ void main() {
       expect(hive.checkIfSensitiveBoxesOpened(), isFalse);
       expect(await storage.isStorageMigrated, isTrue);
 
-      /// Nekoton storage
-      expect(
-        await storage.getStorageData(keystoreStorageKey),
-        _keystoreStorageData,
-      );
-      expect(
-        await storage.getStorageData(accountsStorageKey),
-        _accountsStorageData,
-      );
+      await checkMigration();
+    });
 
-      /// Seeds
-      expect(await storage.seeds, {_publicKey: 'name'});
+    testWidgets('Migrate storage without init hive', (tester) async {
+      await tester.pumpAndSettle();
 
-      /// Passwords
-      expect(await storage.getKeyPassword(_publicKey), _password);
+      await _fillHive(hive);
+      await hive.dispose();
 
-      /// System contracts
-      expect(
-        await storage.getSystemTokenContractAssets(NetworkType.ever),
-        [_everContractAsset],
-      );
-      expect(
-        await storage.getSystemTokenContractAssets(NetworkType.venom),
-        [_venomContractAsset],
-      );
+      expect(await storage.isStorageMigrated, isFalse);
 
-      /// Custom contracts
-      expect(
-        await storage.getCustomTokenContractAssets(NetworkType.ever),
-        [_everContractAsset],
-      );
-      expect(
-        await storage.getCustomTokenContractAssets(NetworkType.venom),
-        [_venomContractAsset],
-      );
+      await MigrationService.migrateWithHiveInit(storage);
 
-      /// Currencies
-      expect(await storage.getCurrencies(NetworkType.ever), [_everCurrency]);
-      expect(await storage.getCurrencies(NetworkType.venom), [_venomCurrency]);
+      final migrationFile = await hive.migrationFile;
+      expect(migrationFile.existsSync(), isFalse);
+      expect(hive.checkIfSensitiveBoxesOpened(), isFalse);
+      expect(await storage.isStorageMigrated, isTrue);
 
-      /// Permissions
-      expect(await storage.permissions, {'origin': _permissions});
-
-      /// Bookmarks
-      expect(await storage.bookmarks, [_bookmark]);
-
-      /// Search history
-      expect(await storage.searchHistory, [_search]);
-
-      /// Site metadata
-      expect(await storage.getSiteMetaData(_metadata.url), _metadata);
-
-      /// Preferences
-      expect(await storage.locale, _locale);
-      expect(await storage.isBiometryEnabled, true);
-      expect(await storage.getWasStEverOpened, true);
-      expect(await storage.getWhyNeedBrowser, true);
-      expect(await storage.lastViewedSeeds(), [_publicKey]);
-      expect(await storage.hiddenAccounts, [_address]);
-      expect(await storage.externalAccounts, {
-        _publicKey: [_address]
-      });
-      expect(await storage.currentConnection, _connection);
-      expect(await storage.currentKey, _publicKey);
-
-      /// Browser
-      expect(await storage.browserTabs, [_browserTab]);
-      expect(await storage.browserTabsLastIndex, -1);
+      await checkMigration();
     });
   });
 }
