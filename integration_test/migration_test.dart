@@ -233,8 +233,8 @@ void main() {
   setUp(() async {
     encryptedStorage = EncryptedStorage();
     FlutterSecureStorage.setMockInitialValues({});
-    await encryptedStorage.reset();
     await encryptedStorage.init();
+    await encryptedStorage.clearAll();
     storage = KeyValueStorageService(encryptedStorage);
     repository = NekotonRepository();
     await Hive.deleteFromDisk();
