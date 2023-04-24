@@ -73,7 +73,9 @@ class _Colors {
 
   static const white = Color(0xFFFFFFFF);
   static const black = Color(0xFF000000);
+  static const almostBlack = Color(0xFF010101);
   static const transparent = Color(0x00000000);
+  static const almostTransparentWhite = Color(0x10000000);
 
   /// Yellow
   static const yellow300 = Color(0xFFB28501);
