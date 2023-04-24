@@ -14,10 +14,17 @@ jobs:
     uses: VeryGoodOpenSource/very_good_workflows/.github/workflows/semantic_pull_request.yml@v1
 
   build:
-    uses: VeryGoodOpenSource/very_good_workflows/.github/workflows/flutter_package.yml@v1
-    with:
-      min_coverage: 0
-      flutter_channel: stable
-      flutter_version: 3.7.10
-      runs_on: macos-latest
-      test_recursion: true
+    runs-on: macos-latest
+    steps:
+      - uses: bluefireteam/melos-action@v2
+        with:
+          run-bootstrap: false
+      - uses: VeryGoodOpenSource/very_good_workflows/.github/workflows/flutter_package.yml@v1
+        with:
+          min_coverage: 0
+          flutter_channel: stable
+          flutter_version: 3.7.12
+          runs_on: macos-latest
+          test_recursion: true
+          setup: "melos bs"
+
