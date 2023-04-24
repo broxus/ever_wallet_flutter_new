@@ -1,6 +1,13 @@
 name: app
 
-on: [pull_request, push]
+on:
+  pull_request:
+  push:
+    branches:
+      - main
+  schedule:
+    # runs the CI everyday at 10AM
+    - cron: "0 10 * * *"
 
 jobs:
   semantic-pull-request:
