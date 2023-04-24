@@ -4,7 +4,8 @@ import 'package:nekoton_repository/nekoton_repository.dart';
 part 'ton_wallet_multisig_pending_transaction.freezed.dart';
 
 @freezed
-class TonWalletMultisigPendingTransaction with _$TonWalletMultisigPendingTransaction {
+class TonWalletMultisigPendingTransaction
+    with _$TonWalletMultisigPendingTransaction {
   const factory TonWalletMultisigPendingTransaction({
     required String lt,
     String? prevTransactionLt,

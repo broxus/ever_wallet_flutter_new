@@ -21,5 +21,6 @@ class Currency with _$Currency {
     required NetworkType networkType,
   }) = _Currency;
 
-  factory Currency.fromJson(Map<String, dynamic> json) => _$CurrencyFromJson(json);
+  factory Currency.fromJson(Map<String, dynamic> json) =>
+      _$CurrencyFromJson(json);
 }

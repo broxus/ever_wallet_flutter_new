@@ -5,3 +5,6 @@ linter:
 analyzer:
   exclude:
     - lib/di/di.config.dart
+    - '**.freezed.dart'
+    - '**.g.dart'
+    - '**_generated**.dart'

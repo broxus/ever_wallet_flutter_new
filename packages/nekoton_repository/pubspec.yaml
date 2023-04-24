@@ -14,11 +14,10 @@ dependencies:
   flutter:
     sdk: flutter
   flutter_nekoton_bridge:
-#    git:
-#      url: https://github.com/nesquikm/nekoton_bridge.git
-#      ref: nekoton_bridge-v1.5.1-dev.0
-#      path: packages/flutter_nekoton_bridge
-    path: /Users/alexey/Projects/nekoton_bridge/packages/flutter_nekoton_bridge
+    git:
+      url: https://github.com/broxus/nekoton_bridge.git
+      ref: flutter_nekoton_bridge-v1.8.0-dev.6
+      path: packages/flutter_nekoton_bridge
   injectable: ^2.1.0
   logging: ^1.1.1
   rxdart: ^0.27.7

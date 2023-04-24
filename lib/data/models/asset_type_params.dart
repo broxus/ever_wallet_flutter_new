@@ -9,5 +9,6 @@ class AssetTypeParams with _$AssetTypeParams {
     required String rootContract,
   }) = _AssetTypeParams;
 
-  factory AssetTypeParams.fromJson(Map<String, dynamic> json) => _$AssetTypeParamsFromJson(json);
+  factory AssetTypeParams.fromJson(Map<String, dynamic> json) =>
+      _$AssetTypeParamsFromJson(json);
 }

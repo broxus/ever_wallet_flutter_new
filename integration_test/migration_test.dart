@@ -14,7 +14,9 @@ import 'package:app/data/models/token_contract_asset.dart';
 import 'package:app/data/models/wallet_contract_type.dart';
 import 'package:encrypted_storage/encrypted_storage.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:flutter_test/flutter_test.dart';
+import 'package:hive_flutter/hive_flutter.dart';
 import 'package:integration_test/integration_test.dart';
 import 'package:logging/logging.dart';
 import 'package:nekoton_repository/nekoton_repository.dart';
@@ -98,37 +100,44 @@ const _publicKey =
 const _address =
     '0:18678befa040e2d66322fcb995d81cd5981ef7aaee494bd3e6a92554c455d0c5';
 const _password = 'password';
+const _connection = 'connection';
+const _locale = 'ru_RU';
+
+const _accountsStorageData =
+// ignore: lines_longer_than_80_chars, unnecessary_string_escapes
+    '{"assets":{"0:18678befa040e2d66322fcb995d81cd5981ef7aaee494bd3e6a92554c455d0c5":"{\"name\":\"EVER Wallet\",\"ton_wallet\":{\"address\":\"0:18678befa040e2d66322fcb995d81cd5981ef7aaee494bd3e6a92554c455d0c5\",\"public_key\":\"bb9c2578a1b9d0c7a6c947c419afe61c691052ff459df65e3eb4375faf3b25c6\",\"contract\":\"EverWallet\"},\"additional_assets\":{}}","0:91b689ad990660249eb00140577e6a98d70043ccaa7f63acfc0436336bdbd80f":"{\"name\":\"multic\",\"ton_wallet\":{\"address\":\"0:91b689ad990660249eb00140577e6a98d70043ccaa7f63acfc0436336bdbd80f\",\"public_key\":\"162ded41d97cf526082012ce1e4c4f3bc03ab678d86e8983a8104e513658396a\",\"contract\":{\"Multisig\":\"Multisig2_1\"}},\"additional_assets\":{}}"}}';
+
+const _keystoreStorageData =
+// ignore: lines_longer_than_80_chars, unnecessary_string_escapes
+    '[["LedgerKeySigner","[]"],["DerivedKeySigner","{\"master_keys\":{\"42a4ed9aefcf547c47ea9f4288cd5dd9457e4b68ccfa4dddecf22d4a18cb7e41\":{\"public_key\":\"42a4ed9aefcf547c47ea9f4288cd5dd9457e4b68ccfa4dddecf22d4a18cb7e41\",\"salt\":\"4a81bc1a024f07ba4bba7767c94e2739f211ef018bf8ee31b497298520a8c69a\",\"enc_entropy\":\"2cc5644f793ac83cade296a597b6f8a413d560853ac3db7650fe0981c52452555dfee5feb7f8bfc156fae5ced34e508587f97c97d50e39adf691b02361124f10627308875db297eddcfe48fc3999b1b1\",\"entropy_nonce\":\"8d00fc917a87c5e27e5434e2\",\"enc_phrase\":\"10624805d0f8f29edc50b529e299ac71567203652df00080da895bc6aad0c35b9be857cd4780829440155d22bd56d45f29b4be155ae8e4c05b3c89d8ba8b64ab6ff3ea12dda24d2013f5231e82e14758db14d1711692726ba4fd2289bf44\",\"phrase_nonce\":\"cd629775c64e5651a96e9211\",\"accounts_map\":{}},\"bb9c2578a1b9d0c7a6c947c419afe61c691052ff459df65e3eb4375faf3b25c6\":{\"public_key\":\"bb9c2578a1b9d0c7a6c947c419afe61c691052ff459df65e3eb4375faf3b25c6\",\"salt\":\"b99d1933629c8fee54c9ee9cebb54ca4b1ba45e8a2226721af51b001502d31c9\",\"enc_entropy\":\"cd089cd9b21b98e67bb3c276af5d28d8f601c7bb40a086f8aa192b2f94883147d00be6b73f57689759088c9fefedb08012ea7e82be8f8ae35e7ee53da23f560998f0ce8f637c569eadb3000cf865f2eb\",\"entropy_nonce\":\"d858b9d324a2030c38406e22\",\"enc_phrase\":\"4a298798f566ae8f4142980f84fcc0d800afbba3e577c09febef595940d0b2fb52c3445c58c5e483fa4641b2bafa89296899b95c74b72c54b153351d7b0d1b9f9703808924fbe4f004673e6d00528a46cbf06a7275f1b62dc4a423d8\",\"phrase_nonce\":\"03f2a0f866ca5d98b34865e3\",\"accounts_map\":{\"bb9c2578a1b9d0c7a6c947c419afe61c691052ff459df65e3eb4375faf3b25c6\":{\"name\":\"MultiSeed\",\"account_id\":0}}}}}"],["EncryptedKeySigner","[]"]]';
 
 /// Put fake data inside hive storage
 Future<void> _fillHive(HiveSourceMigration migration) async {
   await migration.setCurrentKey(_publicKey);
+  await migration.addSeedOrRename(masterKey: _publicKey, name: 'name');
   await migration.updateLastViewedSeeds([_publicKey]);
   await migration.toggleHiddenAccount(_address);
   await migration.setKeyPassword(publicKey: _publicKey, password: _password);
   await migration.addExternalAccount(publicKey: _publicKey, address: _address);
-  await migration.setCurrentConnection('connection');
+  await migration.setCurrentConnection(_connection);
   await migration.setStorageData(
     key: '__core__accounts',
-    value:
-        // ignore: lines_longer_than_80_chars, unnecessary_string_escapes
-        '{"assets":{"0:18678befa040e2d66322fcb995d81cd5981ef7aaee494bd3e6a92554c455d0c5":"{\"name\":\"EVER Wallet\",\"ton_wallet\":{\"address\":\"0:18678befa040e2d66322fcb995d81cd5981ef7aaee494bd3e6a92554c455d0c5\",\"public_key\":\"bb9c2578a1b9d0c7a6c947c419afe61c691052ff459df65e3eb4375faf3b25c6\",\"contract\":\"EverWallet\"},\"additional_assets\":{}}","0:91b689ad990660249eb00140577e6a98d70043ccaa7f63acfc0436336bdbd80f":"{\"name\":\"multic\",\"ton_wallet\":{\"address\":\"0:91b689ad990660249eb00140577e6a98d70043ccaa7f63acfc0436336bdbd80f\",\"public_key\":\"162ded41d97cf526082012ce1e4c4f3bc03ab678d86e8983a8104e513658396a\",\"contract\":{\"Multisig\":\"Multisig2_1\"}},\"additional_assets\":{}}"}}',
+    value: _accountsStorageData,
   );
   await migration.setStorageData(
     key: '__core__keystore',
-    value:
-        // ignore: lines_longer_than_80_chars, unnecessary_string_escapes
-        '[["LedgerKeySigner","[]"],["DerivedKeySigner","{\"master_keys\":{\"42a4ed9aefcf547c47ea9f4288cd5dd9457e4b68ccfa4dddecf22d4a18cb7e41\":{\"public_key\":\"42a4ed9aefcf547c47ea9f4288cd5dd9457e4b68ccfa4dddecf22d4a18cb7e41\",\"salt\":\"4a81bc1a024f07ba4bba7767c94e2739f211ef018bf8ee31b497298520a8c69a\",\"enc_entropy\":\"2cc5644f793ac83cade296a597b6f8a413d560853ac3db7650fe0981c52452555dfee5feb7f8bfc156fae5ced34e508587f97c97d50e39adf691b02361124f10627308875db297eddcfe48fc3999b1b1\",\"entropy_nonce\":\"8d00fc917a87c5e27e5434e2\",\"enc_phrase\":\"10624805d0f8f29edc50b529e299ac71567203652df00080da895bc6aad0c35b9be857cd4780829440155d22bd56d45f29b4be155ae8e4c05b3c89d8ba8b64ab6ff3ea12dda24d2013f5231e82e14758db14d1711692726ba4fd2289bf44\",\"phrase_nonce\":\"cd629775c64e5651a96e9211\",\"accounts_map\":{}},\"bb9c2578a1b9d0c7a6c947c419afe61c691052ff459df65e3eb4375faf3b25c6\":{\"public_key\":\"bb9c2578a1b9d0c7a6c947c419afe61c691052ff459df65e3eb4375faf3b25c6\",\"salt\":\"b99d1933629c8fee54c9ee9cebb54ca4b1ba45e8a2226721af51b001502d31c9\",\"enc_entropy\":\"cd089cd9b21b98e67bb3c276af5d28d8f601c7bb40a086f8aa192b2f94883147d00be6b73f57689759088c9fefedb08012ea7e82be8f8ae35e7ee53da23f560998f0ce8f637c569eadb3000cf865f2eb\",\"entropy_nonce\":\"d858b9d324a2030c38406e22\",\"enc_phrase\":\"4a298798f566ae8f4142980f84fcc0d800afbba3e577c09febef595940d0b2fb52c3445c58c5e483fa4641b2bafa89296899b95c74b72c54b153351d7b0d1b9f9703808924fbe4f004673e6d00528a46cbf06a7275f1b62dc4a423d8\",\"phrase_nonce\":\"03f2a0f866ca5d98b34865e3\",\"accounts_map\":{\"bb9c2578a1b9d0c7a6c947c419afe61c691052ff459df65e3eb4375faf3b25c6\":{\"name\":\"MultiSeed\",\"account_id\":0}}}}}"],["EncryptedKeySigner","[]"]]',
+    value: _keystoreStorageData,
   );
   await migration.updateEverSystemTokenContractAssets([_everContractAsset]);
   await migration.updateVenomSystemTokenContractAssets([_venomContractAsset]);
   await migration.addEverCustomTokenContractAsset(_everContractAsset);
   await migration.addVenomCustomTokenContractAsset(_venomContractAsset);
-  await migration.setLocale('ru_RU');
+  await migration.setLocale(_locale);
   await migration.setIsBiometryEnabled(isEnabled: true);
   await migration.setPermissions(origin: 'origin', permissions: _permissions);
   await migration.addBookmark(_bookmark);
   await migration.addSearchHistoryEntry(_search);
-  await migration.cacheSiteMetaData(url: 'URL', metaData: _metadata);
+  await migration.cacheSiteMetaData(url: _metadata.url, metaData: _metadata);
   await migration.saveEverCurrency(
     address: 'everAddress',
     currency: _everCurrency,
@@ -152,10 +161,12 @@ void main() {
 
   setUp(() async {
     encryptedStorage = EncryptedStorage();
+    FlutterSecureStorage.setMockInitialValues({});
     await encryptedStorage.reset();
     await encryptedStorage.init();
     storage = KeyValueStorageService(encryptedStorage);
     repository = NekotonRepository();
+    await Hive.deleteFromDisk();
     hive = await HiveSourceMigration.create(migrateFileAtStart: false);
     final file = await hive.migrationFile;
     if (file.existsSync()) {
@@ -164,87 +175,6 @@ void main() {
     await repository.setupLogger(level: Level.ALL, mobileLogger: true);
     runApp(Container());
   });
-
-  Future<void> checkMigration() async {
-    /// Nekoton storage
-    expect(
-      await storage.getStorageData(keystoreStorageKey),
-      await hive.getStorageData(keystoreStorageKey),
-    );
-    expect(
-      await storage.getStorageData(accountsStorageKey),
-      await hive.getStorageData(accountsStorageKey),
-    );
-
-    /// Seeds
-    expect(await storage.seeds, hive.seeds);
-
-    /// Passwords
-    expect(
-      await storage.getKeyPassword(_publicKey),
-      hive.getKeyPassword(_publicKey),
-    );
-
-    /// System contracts
-    expect(
-      await storage.getSystemTokenContractAssets(NetworkType.ever),
-      hive.everSystemTokenContractAssets,
-    );
-    expect(
-      await storage.getSystemTokenContractAssets(NetworkType.venom),
-      hive.venomSystemTokenContractAssets,
-    );
-
-    /// Custom contracts
-    expect(
-      await storage.getCustomTokenContractAssets(NetworkType.ever),
-      hive.everCustomTokenContractAssets,
-    );
-    expect(
-      await storage.getCustomTokenContractAssets(NetworkType.venom),
-      hive.venomCustomTokenContractAssets,
-    );
-
-    /// Currencies
-    expect(
-      await storage.getCurrencies(NetworkType.ever),
-      hive.everCurrencies,
-    );
-    expect(
-      await storage.getCurrencies(NetworkType.venom),
-      hive.venomCurrencies,
-    );
-
-    /// Permissions
-    expect(await storage.permissions, hive.permissions);
-
-    /// Bookmarks
-    expect(await storage.bookmarks, hive.bookmarks);
-
-    /// Search history
-    expect(await storage.searchHistory, hive.searchHistory);
-
-    /// Site metadata
-    expect(
-      await storage.getSiteMetaData(_metadata.url),
-      hive.getSiteMetaData(_metadata.url),
-    );
-
-    /// Preferences
-    expect(await storage.locale, hive.locale);
-    expect(await storage.isBiometryEnabled, hive.isBiometryEnabled);
-    expect(await storage.getWasStEverOpened, hive.wasStEverOpened);
-    expect(await storage.getWhyNeedBrowser, hive.getWhyNeedBrowser);
-    expect(await storage.lastViewedSeeds(), hive.lastViewedSeeds());
-    expect(await storage.hiddenAccounts, hive.hiddenAccounts);
-    expect(await storage.externalAccounts, hive.externalAccounts);
-    expect(await storage.currentConnection, hive.currentConnection);
-    expect(await storage.currentKey, hive.currentKey);
-
-    /// Browser
-    expect(await storage.browserTabs, hive.browserTabs);
-    expect(await storage.browserTabsLastIndex, hive.browserTabsLastIndex);
-  }
 
   group('Testing of storage migration', () {
     testWidgets(
@@ -309,7 +239,167 @@ void main() {
       final migration = MigrationService(storage, hive);
       await migration.applyMigration();
 
-      await checkMigration();
+      /// Nekoton storage
+      expect(
+        await storage.getStorageData(keystoreStorageKey),
+        await hive.getStorageData(keystoreStorageKey),
+      );
+      expect(
+        await storage.getStorageData(accountsStorageKey),
+        await hive.getStorageData(accountsStorageKey),
+      );
+
+      /// Seeds
+      expect(await storage.seeds, hive.seeds);
+
+      /// Passwords
+      expect(
+        await storage.getKeyPassword(_publicKey),
+        hive.getKeyPassword(_publicKey),
+      );
+
+      /// System contracts
+      expect(
+        await storage.getSystemTokenContractAssets(NetworkType.ever),
+        hive.everSystemTokenContractAssets,
+      );
+      expect(
+        await storage.getSystemTokenContractAssets(NetworkType.venom),
+        hive.venomSystemTokenContractAssets,
+      );
+
+      /// Custom contracts
+      expect(
+        await storage.getCustomTokenContractAssets(NetworkType.ever),
+        hive.everCustomTokenContractAssets,
+      );
+      expect(
+        await storage.getCustomTokenContractAssets(NetworkType.venom),
+        hive.venomCustomTokenContractAssets,
+      );
+
+      /// Currencies
+      expect(
+        await storage.getCurrencies(NetworkType.ever),
+        hive.everCurrencies,
+      );
+      expect(
+        await storage.getCurrencies(NetworkType.venom),
+        hive.venomCurrencies,
+      );
+
+      /// Permissions
+      expect(await storage.permissions, hive.permissions);
+
+      /// Bookmarks
+      expect(await storage.bookmarks, hive.bookmarks);
+
+      /// Search history
+      expect(await storage.searchHistory, hive.searchHistory);
+
+      /// Site metadata
+      expect(
+        await storage.getSiteMetaData(_metadata.url),
+        hive.getSiteMetaData(_metadata.url),
+      );
+
+      /// Preferences
+      expect(await storage.locale, hive.locale);
+      expect(await storage.isBiometryEnabled, hive.isBiometryEnabled);
+      expect(await storage.getWasStEverOpened, hive.wasStEverOpened);
+      expect(await storage.getWhyNeedBrowser, hive.getWhyNeedBrowser);
+      expect(await storage.lastViewedSeeds(), hive.lastViewedSeeds());
+      expect(await storage.hiddenAccounts, hive.hiddenAccounts);
+      expect(await storage.externalAccounts, hive.externalAccounts);
+      expect(await storage.currentConnection, hive.currentConnection);
+      expect(await storage.currentKey, hive.currentKey);
+
+      /// Browser
+      expect(await storage.browserTabs, hive.browserTabs);
+      expect(await storage.browserTabsLastIndex, hive.browserTabsLastIndex);
+      expect(hive.checkIfSensitiveBoxesOpened(), isTrue);
+    });
+
+    testWidgets('Migrate storage full migration', (tester) async {
+      await tester.pumpAndSettle();
+
+      await _fillHive(hive);
+      final migration = MigrationService(storage, hive);
+      await migration.migrate();
+
+      final migrationFile = await hive.migrationFile;
+      expect(migrationFile.existsSync(), isFalse);
+      expect(hive.checkIfSensitiveBoxesOpened(), isFalse);
+      expect(await storage.isStorageMigrated, isTrue);
+
+      /// Nekoton storage
+      expect(
+        await storage.getStorageData(keystoreStorageKey),
+        _keystoreStorageData,
+      );
+      expect(
+        await storage.getStorageData(accountsStorageKey),
+        _accountsStorageData,
+      );
+
+      /// Seeds
+      expect(await storage.seeds, {_publicKey: 'name'});
+
+      /// Passwords
+      expect(await storage.getKeyPassword(_publicKey), _password);
+
+      /// System contracts
+      expect(
+        await storage.getSystemTokenContractAssets(NetworkType.ever),
+        [_everContractAsset],
+      );
+      expect(
+        await storage.getSystemTokenContractAssets(NetworkType.venom),
+        [_venomContractAsset],
+      );
+
+      /// Custom contracts
+      expect(
+        await storage.getCustomTokenContractAssets(NetworkType.ever),
+        [_everContractAsset],
+      );
+      expect(
+        await storage.getCustomTokenContractAssets(NetworkType.venom),
+        [_venomContractAsset],
+      );
+
+      /// Currencies
+      expect(await storage.getCurrencies(NetworkType.ever), [_everCurrency]);
+      expect(await storage.getCurrencies(NetworkType.venom), [_venomCurrency]);
+
+      /// Permissions
+      expect(await storage.permissions, {'origin': _permissions});
+
+      /// Bookmarks
+      expect(await storage.bookmarks, [_bookmark]);
+
+      /// Search history
+      expect(await storage.searchHistory, [_search]);
+
+      /// Site metadata
+      expect(await storage.getSiteMetaData(_metadata.url), _metadata);
+
+      /// Preferences
+      expect(await storage.locale, _locale);
+      expect(await storage.isBiometryEnabled, true);
+      expect(await storage.getWasStEverOpened, true);
+      expect(await storage.getWhyNeedBrowser, true);
+      expect(await storage.lastViewedSeeds(), [_publicKey]);
+      expect(await storage.hiddenAccounts, [_address]);
+      expect(await storage.externalAccounts, {
+        _publicKey: [_address]
+      });
+      expect(await storage.currentConnection, _connection);
+      expect(await storage.currentKey, _publicKey);
+
+      /// Browser
+      expect(await storage.browserTabs, [_browserTab]);
+      expect(await storage.browserTabsLastIndex, -1);
     });
   });
 }

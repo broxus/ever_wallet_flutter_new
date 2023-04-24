@@ -13,7 +13,8 @@ class TokenWalletPendingSubscriptionCollection {
   });
 
   bool isSameTransport(List<dynamic> otherTransportCollection) =>
-      const DeepCollectionEquality().equals(transportCollection, otherTransportCollection);
+      const DeepCollectionEquality()
+          .equals(transportCollection, otherTransportCollection);
 
   @override
   bool operator ==(Object other) =>

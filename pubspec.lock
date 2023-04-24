@@ -425,10 +425,12 @@ packages:
   flutter_nekoton_bridge:
     dependency: transitive
     description:
-      path: "/Users/alexey/Projects/nekoton_bridge/packages/flutter_nekoton_bridge"
-      relative: false
-    source: path
-    version: "1.8.0-dev.3"
+      path: "packages/flutter_nekoton_bridge"
+      ref: "flutter_nekoton_bridge-v1.8.0-dev.6"
+      resolved-ref: "7d9c09d44356672c714bdcca1f7b5136df8ecf76"
+      url: "https://github.com/broxus/nekoton_bridge.git"
+    source: git
+    version: "1.8.0-dev.6"
   flutter_rust_bridge:
     dependency: transitive
     description:
@@ -438,7 +440,7 @@ packages:
     source: hosted
     version: "1.73.0"
   flutter_secure_storage:
-    dependency: transitive
+    dependency: "direct dev"
     description:
       name: flutter_secure_storage
       sha256: "98352186ee7ad3639ccc77ad7924b773ff6883076ab952437d20f18a61f0a7c5"
@@ -765,11 +767,11 @@ packages:
     dependency: transitive
     description:
       path: "packages/nekoton_bridge"
-      ref: "nekoton_bridge-v1.8.0-dev.3"
-      resolved-ref: "031239c66ffac883965a04e2625d65241f90db7a"
+      ref: "nekoton_bridge-v1.8.0-dev.5"
+      resolved-ref: "4fa7c2e1e8d50a65363b79761f748061c802dcfa"
       url: "https://github.com/broxus/nekoton_bridge.git"
     source: git
-    version: "1.8.0-dev.3"
+    version: "1.8.0-dev.5"
   nekoton_repository:
     dependency: "direct main"
     description:

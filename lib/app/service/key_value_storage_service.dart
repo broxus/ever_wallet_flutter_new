@@ -510,11 +510,7 @@ class KeyValueStorageService {
     }
     final history = jsonDecode(encoded) as List<dynamic>;
     return history
-        .map(
-          (entry) => SearchHistory.fromJson(
-            jsonDecode(entry as String) as Map<String, dynamic>,
-          ),
-        )
+        .map((entry) => SearchHistory.fromJson(entry as Map<String, dynamic>))
         .toList();
   }
 
@@ -531,7 +527,7 @@ class KeyValueStorageService {
 
     return _storage.set(
       _searchHistoryKey,
-      jsonEncode(entries.take(50)),
+      jsonEncode(entries.take(50).toList()),
       domain: _preferencesKey,
     );
   }
@@ -588,11 +584,7 @@ class KeyValueStorageService {
     }
     final list = jsonDecode(encoded) as List<dynamic>;
     return list
-        .map(
-          (entry) => Currency.fromJson(
-            jsonDecode(entry as String) as Map<String, dynamic>,
-          ),
-        )
+        .map((entry) => Currency.fromJson(entry as Map<String, dynamic>))
         .toList();
   }
 
@@ -670,11 +662,7 @@ class KeyValueStorageService {
     }
     final list = jsonDecode(encoded) as List<dynamic>;
     return list
-        .map(
-          (entry) => BrowserTab.fromJson(
-            jsonDecode(entry as String) as Map<String, dynamic>,
-          ),
-        )
+        .map((entry) => BrowserTab.fromJson(entry as Map<String, dynamic>))
         .toList();
   }
 

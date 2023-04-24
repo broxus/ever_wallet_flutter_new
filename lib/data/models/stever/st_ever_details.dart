@@ -12,5 +12,6 @@ class StEverDetails with _$StEverDetails {
     required String totalAssets,
   }) = _StEverDetails;
 
-  factory StEverDetails.fromJson(Map<String, dynamic> json) => _$StEverDetailsFromJson(json);
+  factory StEverDetails.fromJson(Map<String, dynamic> json) =>
+      _$StEverDetailsFromJson(json);
 }

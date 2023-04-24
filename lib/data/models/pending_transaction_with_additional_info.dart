@@ -15,7 +15,8 @@ class PendingTransactionWithAdditionalInfo
     required int createdAt,
   }) = _PendingTransactionWithAdditionalInfo;
 
-  factory PendingTransactionWithAdditionalInfo.fromJson(Map<String, dynamic> json) =>
+  factory PendingTransactionWithAdditionalInfo.fromJson(
+          Map<String, dynamic> json) =>
       _$PendingTransactionWithAdditionalInfoFromJson(json);
 
   const PendingTransactionWithAdditionalInfo._();

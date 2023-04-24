@@ -540,7 +540,7 @@ class HiveSourceMigration {
       ..tryRegisterAdapter(CurrencyDtoAdapter());
 
     for (var i = 1; i < 224; i++) {
-      if (!usedAdapters.contains(i)) {
+      if (!usedAdapters.contains(i) && Hive.isAdapterRegistered(i)) {
         Hive.ignoreTypeId<Object>(i);
       }
     }
@@ -590,11 +590,20 @@ class HiveSourceMigration {
       _userPreferencesBox.isNotEmpty ||
       _preferencesBox.isNotEmpty;
 
+  /// Check if some of hive boxes was opened
+  @visibleForTesting
+  bool checkIfSensitiveBoxesOpened() =>
+      Hive.isBoxOpen(_nekotonFlutterBoxName) ||
+      Hive.isBoxOpen(_userPreferencesBoxName) ||
+      Hive.isBoxOpen(_preferencesBoxName);
+
+  @visibleForTesting
   Future<File> get migrationFile async {
     final tempDir = await getTemporaryDirectory();
     return File('${tempDir.path}/migration.json');
   }
 
+  @visibleForTesting
   Map<String, dynamic> get jsonData => {
         'nekoton': _nekotonFlutterBox.toJson(),
         'ever_custom':
@@ -622,6 +631,7 @@ class HiveSourceMigration {
 
   /// Migrate all data from old storage to temporary migration file to avoid
   /// losing data if problem occurs during migration.
+  @visibleForTesting
   Future<void> saveStorageData() async {
     try {
       final tempJsonData = jsonData;
@@ -723,11 +733,13 @@ class MigrationService {
 
   /// Returns true if migration was not completed (no data in new storage
   /// and exists data in old storage).
+  @visibleForTesting
   Future<bool> needMigration() async =>
       !(await _storage.isStorageMigrated) && _hive._hasAnySensitiveData;
 
   /// If migration file not exists and we decided to migrate, then we need
   /// to create this file.
+  @visibleForTesting
   Future<void> verifyMigrationFileExists() async {
     final file = await _hive.migrationFile;
     if (!file.existsSync()) {
@@ -736,6 +748,7 @@ class MigrationService {
   }
 
   /// Migrate all data from hive to new storage.
+  @visibleForTesting
   Future<void> applyMigration() async {
     /// Storage
     for (final entry in _hive._storageData.entries) {
@@ -828,6 +841,7 @@ class MigrationService {
   }
 
   /// Complete migration by deleting temp file and closing boxes.
+  @visibleForTesting
   Future<void> completeMigration() async {
     final file = await _hive.migrationFile;
     if (file.existsSync()) await file.delete();
