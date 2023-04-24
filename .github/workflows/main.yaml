@@ -15,16 +15,22 @@ jobs:
 
   build:
     runs-on: macos-latest
-    steps:
-      - uses: bluefireteam/melos-action@v2
-        with:
-          run-bootstrap: false
-      - uses: VeryGoodOpenSource/very_good_workflows/.github/workflows/flutter_package.yml@v1
-        with:
-          min_coverage: 0
-          flutter_channel: stable
-          flutter_version: 3.7.12
-          runs_on: macos-latest
-          test_recursion: true
-          setup: "melos bs"
 
+    steps:
+      # Setup
+      - uses: actions/checkout@v3
+      - uses: subosito/flutter-action@v2
+        with:
+          cache: true
+          cache-key: flutter-:os:-:channel:-:version:-:arch:-:hash:-${{ hashFiles('**/pubspec.lock') }}
+      - uses: bluefireteam/melos-action@v2
+
+      # Dart/Flutter
+      - name: Check Dart format
+        run: melos run check-format --no-select
+      - name: Generate dart code
+        run: melos codegen --no-select
+      - name: Dart code analysis
+        run: melos run analyze --no-select
+      - name: Run all Dart & Flutter tests
+        run: melos run test --no-select
