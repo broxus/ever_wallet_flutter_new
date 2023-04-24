@@ -8,10 +8,19 @@ scripts:
   codegen:
     run: melos exec -c 1 --fail-fast -- "flutter packages pub run build_runner build --delete-conflicting-outputs"
     description: Generate code for all packages
+    packageFilters:
+      dependsOn: "build_runner"
 
   test:
-    run: melos run test:flutter --no-select
+    run: melos run test:dart --no-select && melos run test:flutter --no-select
     description: Run all Dart & Flutter tests in this project.
+
+  test:dart:
+    run: melos exec -c 1 --fail-fast -- "dart test test"
+    description: Run Dart tests for a specific package in this project.
+    packageFilters:
+      flutter: false
+      dirExists: test
 
   test:flutter:
     run: melos exec -c 1 --fail-fast -- "flutter test test"
@@ -35,4 +44,3 @@ scripts:
   build:storybook:
     run: bash scripts/build-storybook.sh
     description: Build the storybook
-
