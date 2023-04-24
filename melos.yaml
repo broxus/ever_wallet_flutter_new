@@ -38,8 +38,7 @@ scripts:
 
   check-all:
     description: Prepare to commit by checking all things
-    run: melos test
-    # run: melos test && melos test:integration
+    run: melos test && melos test:integration
 
   build:storybook:
     run: bash scripts/build-storybook.sh
