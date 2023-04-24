@@ -41,8 +41,8 @@ void main() {
     setUpAll(() {
       FlutterSecureStorage.setMockInitialValues({});
     });
-    setUp(() {
-      EncryptedStorage().reset();
+    setUp(() async {
+      await EncryptedStorage().reset();
     });
 
     test('init and check empty', () async {
@@ -278,5 +278,35 @@ void main() {
         },
       );
     });
+  });
+
+  group('EncryptedStorage multiple init/reset', () {
+    setUpAll(() {
+      FlutterSecureStorage.setMockInitialValues({});
+    });
+    setUp(() async {
+      await EncryptedStorage().reset();
+    });
+
+    test(
+      'run #0',
+      () async {
+        final storage = EncryptedStorage();
+        await storage.init();
+
+        await storage.set('testKey', 'testValue');
+        expect(await storage.get('testKey'), 'testValue');
+      },
+    );
+
+    test(
+      'run #1',
+      () async {
+        final storage = EncryptedStorage();
+        await storage.init();
+
+        expect(await storage.getDomain(), isEmpty);
+      },
+    );
   });
 }
