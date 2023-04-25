@@ -47,7 +47,9 @@ scripts:
       dirExists: test
 
   test:integration:
-    exec: "flutter test integration_test"
+    # TODO(nesquikm): Maybe we should separate integration_test for the app and packages
+    # because packages may not use flavors at all
+    exec: "flutter test --flavor production integration_test"
     description: Run Flutter teintegration teststs for a specific package in this project.
     concurrency: 1
     failFast: true

@@ -13,7 +13,7 @@ jobs:
   semantic-pull-request:
     uses: VeryGoodOpenSource/very_good_workflows/.github/workflows/semantic_pull_request.yml@v1
 
-  build:
+  build_and_test:
     runs-on: macos-latest
 
     steps:
@@ -34,3 +34,51 @@ jobs:
         run: melos run analyze --no-select
       - name: Run all Dart & Flutter tests
         run: melos run test --no-select
+
+
+  ios_integration_test:
+    runs-on: macos-latest
+    timeout-minutes: 360
+
+    steps:
+      - uses: actions/checkout@v3
+      - uses: subosito/flutter-action@v2
+        with:
+          cache: true
+          cache-key: flutter-:os:-:channel:-:version:-:arch:-:hash:-${{ hashFiles('**/pubspec.lock') }}
+      - uses: bluefireteam/melos-action@v2
+
+      - name: Start iOS Simulator
+        run: |
+          DEVICE_ID=$(xcrun xctrace list devices | grep iPhone | head -1 | awk '{print $NF}' | tr -d '()')
+          echo "DEVICE_ID=$DEVICE_ID" >> $GITHUB_ENV
+          xcrun simctl boot $DEVICE_ID
+
+      - name: Run Flutter integration tests
+        working-directory: .
+        run: flutter test --flavor production -d ${{ env.DEVICE_ID }} integration_test
+
+  android_integration_test:
+    runs-on: macos-latest
+    timeout-minutes: 360
+
+    steps:
+      - uses: actions/checkout@v3
+      - uses: subosito/flutter-action@v2
+        with:
+          cache: true
+          cache-key: flutter-:os:-:channel:-:version:-:arch:-:hash:-${{ hashFiles('**/pubspec.lock') }}
+      - uses: bluefireteam/melos-action@v2
+
+      - name: Run Flutter integration tests
+        uses: Wandalen/wretry.action@master # sometimes android tests are flaky
+        with:
+          attempt_limit: 5
+          action: reactivecircus/android-emulator-runner@v2
+          with: |
+            api-level: 33
+            target: google_apis
+            arch: x86_64
+            ram-size: 1024M
+            disk-size: 2048M
+            script: flutter test --flavor production -d `flutter devices | grep android | tr ' ' '\n' | grep emulator-` integration_test
