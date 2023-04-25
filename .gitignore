@@ -59,6 +59,7 @@ unlinked_spec.ds
 **/*.g.dart
 **/*.gen.dart
 **/*.reflectable.dart
+**/lib/*.module.dart
 
 # DI auto-generated files
 lib/di/di.config.dart
