@@ -58,6 +58,7 @@ unlinked_spec.ds
 **/*.freezed.dart
 **/*.g.dart
 **/*.gen.dart
+**/*.reflectable.dart
 
 # Android related
 **/android/**/gradle-wrapper.jar

@@ -51,3 +51,8 @@ scripts:
   build:storybook:
     run: bash scripts/build-storybook.sh
     description: Build the storybook
+
+command:
+  clean:
+    hooks:
+      post: bash scripts/clean.sh
