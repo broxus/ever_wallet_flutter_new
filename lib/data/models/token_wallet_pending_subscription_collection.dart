@@ -1,16 +1,20 @@
 import 'package:collection/collection.dart';
+import 'package:flutter/foundation.dart';
 import 'package:tuple/tuple.dart';
 
-/// Collection that is used to compare TokenWallet that is in progress of subscribing
-class TokenWalletPendingSubscriptionCollection {
-  /// first - owner(address), second - rootContract
-  final Tuple2<String, String> asset;
-  final List<dynamic> transportCollection;
+@immutable
 
-  TokenWalletPendingSubscriptionCollection({
+/// Collection that is used to compare TokenWallet that is in progress
+/// of subscribing
+class TokenWalletPendingSubscriptionCollection {
+  const TokenWalletPendingSubscriptionCollection({
     required this.asset,
     required this.transportCollection,
   });
+
+  /// first - owner(address), second - rootContract
+  final Tuple2<String, String> asset;
+  final List<dynamic> transportCollection;
 
   bool isSameTransport(List<dynamic> otherTransportCollection) =>
       const DeepCollectionEquality()

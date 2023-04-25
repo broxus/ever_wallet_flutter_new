@@ -2,7 +2,8 @@ import 'package:collection/collection.dart';
 import 'package:flutter/foundation.dart';
 import 'package:nekoton_repository/nekoton_repository.dart';
 
-/// Collection that is used to compare TonWallet that is in progress of subscribing
+/// Collection that is used to compare TonWallet that is in progress
+/// of subscribing
 @immutable
 class TonWalletPendingSubscriptionCollection {
   const TonWalletPendingSubscriptionCollection({
