@@ -32,13 +32,15 @@ jobs:
           fetch-depth: 50
       - uses: subosito/flutter-action@v2
       - uses: bluefireteam/melos-action@v2
+      - name: Generate dart code
+        run: melos codegen --no-select
       - name: Setup Pages
         uses: actions/configure-pages@v3
       - name: Build web app
         uses: subosito/flutter-action@v2
         with:
           channel: 'stable'
-      - run: melos bs && melos build:storybook -- --base-href /${{ github.event.repository.name }}/
+      - run: melos build:storybook -- --base-href /${{ github.event.repository.name }}/
       - name: Upload artifact
         uses: actions/upload-pages-artifact@v1
         with:
