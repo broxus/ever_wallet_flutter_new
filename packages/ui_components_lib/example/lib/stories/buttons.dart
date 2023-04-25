@@ -118,6 +118,12 @@ class ButtonsStory extends StatelessWidget {
                 fillWidth: true,
                 onPressed: () {},
               ),
+
+              /// IconButton
+              const SizedBox(height: 20),
+              CommonIconButton.icon(icon: Icons.add, onPressed: () {}),
+              const SizedBox(height: 10),
+              CommonIconButton.icon(icon: Icons.add),
             ],
           ),
         ),

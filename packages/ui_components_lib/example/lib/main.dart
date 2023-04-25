@@ -16,7 +16,9 @@ class StoryWidget extends StatelessWidget {
       wrapperBuilder: (context, child) {
         return MaterialApp(
           debugShowCheckedModeBanner: false,
-          theme: ThemeData(extensions: [everPredefinedTheme()]),
+          theme: everPredefinedLightTheme(),
+          darkTheme: everPredefinedDarkTheme(),
+          useInheritedMediaQuery: true,
           home: child,
         );
       },

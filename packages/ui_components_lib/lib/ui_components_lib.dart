@@ -6,6 +6,7 @@ export 'colors.dart';
 export 'components/button/button_style.dart';
 export 'components/button/common_button.dart';
 export 'components/button/common_button_icon.dart';
+export 'components/button/common_icon_button.dart';
 export 'predefined_theme.dart';
 export 'styles.dart';
 export 'theme_style.dart';
