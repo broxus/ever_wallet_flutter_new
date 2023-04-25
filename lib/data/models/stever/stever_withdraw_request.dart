@@ -4,7 +4,8 @@ part 'stever_withdraw_request.freezed.dart';
 
 part 'stever_withdraw_request.g.dart';
 
-/// Request of stever withdraw. This request can be cancelled to return stever back
+/// Request of stever withdraw. This request can be cancelled to return
+/// stever back
 class StEverWithdrawRequest {
   const StEverWithdrawRequest({
     required this.nonce,
