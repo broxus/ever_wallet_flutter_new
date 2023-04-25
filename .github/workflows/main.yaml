@@ -10,7 +10,7 @@ on:
     - cron: "0 10 * * *"
 
 jobs:
-  semantic-pull-request:
+  semantic_pull_request:
     uses: VeryGoodOpenSource/very_good_workflows/.github/workflows/semantic_pull_request.yml@v1
 
   build_and_test:
@@ -48,6 +48,9 @@ jobs:
           cache-key: flutter-:os:-:channel:-:version:-:arch:-:hash:-${{ hashFiles('**/pubspec.lock') }}
       - uses: bluefireteam/melos-action@v2
 
+      - name: Generate dart code
+        run: melos codegen --no-select
+
       - name: Start iOS Simulator
         run: |
           DEVICE_ID=$(xcrun xctrace list devices | grep iPhone | head -1 | awk '{print $NF}' | tr -d '()')
@@ -69,6 +72,9 @@ jobs:
           cache: true
           cache-key: flutter-:os:-:channel:-:version:-:arch:-:hash:-${{ hashFiles('**/pubspec.lock') }}
       - uses: bluefireteam/melos-action@v2
+
+      - name: Generate dart code
+        run: melos codegen --no-select
 
       - name: Run Flutter integration tests
         uses: Wandalen/wretry.action@master # sometimes android tests are flaky
