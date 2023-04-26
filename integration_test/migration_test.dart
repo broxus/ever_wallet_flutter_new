@@ -1,7 +1,9 @@
 import 'dart:convert';
 
-import 'package:app/app/service/key_value_storage_service.dart';
 import 'package:app/app/service/migration_service.dart';
+import 'package:app/app/service/storage_service/account_seed_storage_service.dart';
+import 'package:app/app/service/storage_service/browser_storage_service.dart';
+import 'package:app/app/service/storage_service/general_storage_service.dart';
 import 'package:app/data/models/account_interaction.dart';
 import 'package:app/data/models/bookmark.dart';
 import 'package:app/data/models/browser_tab.dart';
@@ -157,7 +159,9 @@ void main() {
   late NekotonRepository repository;
   late HiveSourceMigration hive;
   late EncryptedStorage encryptedStorage;
-  late KeyValueStorageService storage;
+  late GeneralStorageService storage;
+  late BrowserStorageService browserStorage;
+  late AccountSeedStorageService accountSeedStorage;
 
   Future<void> checkMigration() async {
     /// Nekoton storage
@@ -171,7 +175,7 @@ void main() {
     );
 
     /// Seeds
-    expect(await storage.seeds, {_publicKey: 'name'});
+    expect(await accountSeedStorage.seeds, {_publicKey: 'name'});
 
     /// Passwords
     expect(await storage.getKeyPassword(_publicKey), _password);
@@ -201,33 +205,33 @@ void main() {
     expect(await storage.getCurrencies(NetworkType.venom), [_venomCurrency]);
 
     /// Permissions
-    expect(await storage.permissions, {'origin': _permissions});
+    expect(await browserStorage.permissions, {'origin': _permissions});
 
     /// Bookmarks
-    expect(await storage.bookmarks, [_bookmark]);
+    expect(await browserStorage.bookmarks, [_bookmark]);
 
     /// Search history
-    expect(await storage.searchHistory, [_search]);
+    expect(await browserStorage.searchHistory, [_search]);
 
     /// Site metadata
-    expect(await storage.getSiteMetaData(_metadata.url), _metadata);
+    expect(await browserStorage.getSiteMetaData(_metadata.url), _metadata);
 
     /// Preferences
     expect(await storage.locale, _locale);
     expect(await storage.isBiometryEnabled, true);
     expect(await storage.getWasStEverOpened, true);
-    expect(await storage.getWhyNeedBrowser, true);
-    expect(await storage.lastViewedSeeds(), [_publicKey]);
-    expect(await storage.hiddenAccounts, [_address]);
-    expect(await storage.externalAccounts, {
+    expect(await browserStorage.getWhyNeedBrowser, true);
+    expect(await accountSeedStorage.lastViewedSeeds(), [_publicKey]);
+    expect(await accountSeedStorage.hiddenAccounts, [_address]);
+    expect(await accountSeedStorage.externalAccounts, {
       _publicKey: [_address]
     });
     expect(await storage.currentConnection, _connection);
-    expect(await storage.currentKey, _publicKey);
+    expect(await accountSeedStorage.currentKey, _publicKey);
 
     /// Browser
-    expect(await storage.browserTabs, [_browserTab]);
-    expect(await storage.browserTabsLastIndex, -1);
+    expect(await browserStorage.browserTabs, [_browserTab]);
+    expect(await browserStorage.browserTabsLastIndex, -1);
   }
 
   setUp(() async {
@@ -235,7 +239,9 @@ void main() {
     FlutterSecureStorage.setMockInitialValues({});
     await encryptedStorage.init();
     await encryptedStorage.clearAll();
-    storage = KeyValueStorageService(encryptedStorage);
+    storage = GeneralStorageService(encryptedStorage);
+    browserStorage = BrowserStorageService(encryptedStorage);
+    accountSeedStorage = AccountSeedStorageService(encryptedStorage);
     repository = NekotonRepository();
     await Hive.deleteFromDisk();
     hive = await HiveSourceMigration.create();
@@ -270,7 +276,12 @@ void main() {
       await tester.pumpAndSettle();
 
       await _fillHive(hive);
-      final migration = MigrationService(storage, hive);
+      final migration = MigrationService(
+        storage,
+        browserStorage,
+        accountSeedStorage,
+        hive,
+      );
       expect(await storage.isStorageMigrated, isFalse);
       expect(await migration.needMigration(), isTrue);
     });
@@ -278,7 +289,12 @@ void main() {
     testWidgets('Migrate storage no need migration 1', (tester) async {
       await tester.pumpAndSettle();
 
-      final migration = MigrationService(storage, hive);
+      final migration = MigrationService(
+        storage,
+        browserStorage,
+        accountSeedStorage,
+        hive,
+      );
       expect(await storage.isStorageMigrated, isFalse);
       expect(await migration.needMigration(), isFalse);
     });
@@ -286,7 +302,12 @@ void main() {
     testWidgets('Migrate storage no need migration 2', (tester) async {
       await tester.pumpAndSettle();
 
-      final migration = MigrationService(storage, hive);
+      final migration = MigrationService(
+        storage,
+        browserStorage,
+        accountSeedStorage,
+        hive,
+      );
       await storage.completeStorageMigration();
       expect(await storage.isStorageMigrated, isTrue);
       expect(await migration.needMigration(), isFalse);
@@ -295,7 +316,12 @@ void main() {
     testWidgets('Migrate storage verify migrationFile exists', (tester) async {
       await tester.pumpAndSettle();
 
-      final migration = MigrationService(storage, hive);
+      final migration = MigrationService(
+        storage,
+        browserStorage,
+        accountSeedStorage,
+        hive,
+      );
       final migrationFile = await hive.migrationFile;
       expect(migrationFile.existsSync(), isFalse);
 
@@ -307,7 +333,12 @@ void main() {
       await tester.pumpAndSettle();
 
       await _fillHive(hive);
-      final migration = MigrationService(storage, hive);
+      final migration = MigrationService(
+        storage,
+        browserStorage,
+        accountSeedStorage,
+        hive,
+      );
       await migration.applyMigration();
 
       /// Nekoton storage
@@ -321,7 +352,7 @@ void main() {
       );
 
       /// Seeds
-      expect(await storage.seeds, hive.seeds);
+      expect(await accountSeedStorage.seeds, hive.seeds);
 
       /// Passwords
       expect(
@@ -360,17 +391,17 @@ void main() {
       );
 
       /// Permissions
-      expect(await storage.permissions, hive.permissions);
+      expect(await browserStorage.permissions, hive.permissions);
 
       /// Bookmarks
-      expect(await storage.bookmarks, hive.bookmarks);
+      expect(await browserStorage.bookmarks, hive.bookmarks);
 
       /// Search history
-      expect(await storage.searchHistory, hive.searchHistory);
+      expect(await browserStorage.searchHistory, hive.searchHistory);
 
       /// Site metadata
       expect(
-        await storage.getSiteMetaData(_metadata.url),
+        await browserStorage.getSiteMetaData(_metadata.url),
         hive.getSiteMetaData(_metadata.url),
       );
 
@@ -378,16 +409,22 @@ void main() {
       expect(await storage.locale, hive.locale);
       expect(await storage.isBiometryEnabled, hive.isBiometryEnabled);
       expect(await storage.getWasStEverOpened, hive.wasStEverOpened);
-      expect(await storage.getWhyNeedBrowser, hive.getWhyNeedBrowser);
-      expect(await storage.lastViewedSeeds(), hive.lastViewedSeeds());
-      expect(await storage.hiddenAccounts, hive.hiddenAccounts);
-      expect(await storage.externalAccounts, hive.externalAccounts);
+      expect(await browserStorage.getWhyNeedBrowser, hive.getWhyNeedBrowser);
+      expect(
+        await accountSeedStorage.lastViewedSeeds(),
+        hive.lastViewedSeeds(),
+      );
+      expect(await accountSeedStorage.hiddenAccounts, hive.hiddenAccounts);
+      expect(await accountSeedStorage.externalAccounts, hive.externalAccounts);
       expect(await storage.currentConnection, hive.currentConnection);
-      expect(await storage.currentKey, hive.currentKey);
+      expect(await accountSeedStorage.currentKey, hive.currentKey);
 
       /// Browser
-      expect(await storage.browserTabs, hive.browserTabs);
-      expect(await storage.browserTabsLastIndex, hive.browserTabsLastIndex);
+      expect(await browserStorage.browserTabs, hive.browserTabs);
+      expect(
+        await browserStorage.browserTabsLastIndex,
+        hive.browserTabsLastIndex,
+      );
       expect(hive.checkIfSensitiveBoxesOpened(), isTrue);
     });
 
@@ -398,7 +435,12 @@ void main() {
 
       expect(await storage.isStorageMigrated, isFalse);
 
-      final migration = MigrationService(storage, hive);
+      final migration = MigrationService(
+        storage,
+        browserStorage,
+        accountSeedStorage,
+        hive,
+      );
       await migration.migrate();
 
       final migrationFile = await hive.migrationFile;
@@ -417,7 +459,11 @@ void main() {
 
       expect(await storage.isStorageMigrated, isFalse);
 
-      await MigrationService.migrateWithHiveInit(storage);
+      await MigrationService.migrateWithHiveInit(
+        storage,
+        browserStorage,
+        accountSeedStorage,
+      );
 
       final migrationFile = await hive.migrationFile;
       expect(migrationFile.existsSync(), isFalse);

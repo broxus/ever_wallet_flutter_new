@@ -12,7 +12,9 @@ import 'package:app/app/service/dto/search_history_dto.dart';
 import 'package:app/app/service/dto/site_meta_data_dto.dart';
 import 'package:app/app/service/dto/token_contract_asset_dto.dart';
 import 'package:app/app/service/dto/wallet_contract_type_dto.dart';
-import 'package:app/app/service/key_value_storage_service.dart';
+import 'package:app/app/service/storage_service/account_seed_storage_service.dart';
+import 'package:app/app/service/storage_service/browser_storage_service.dart';
+import 'package:app/app/service/storage_service/general_storage_service.dart';
 import 'package:app/data/models/bookmark.dart';
 import 'package:app/data/models/browser_tab.dart';
 import 'package:app/data/models/currency.dart';
@@ -701,17 +703,28 @@ class HiveSourceMigration {
 
 /// A service that migrates data from the old storage to the new one.
 class MigrationService {
-  MigrationService(this._storage, this._hive);
+  MigrationService(
+    this._storage,
+    this._browserStorage,
+    this._accountSeedStorage,
+    this._hive,
+  );
 
-  final KeyValueStorageService _storage;
+  final GeneralStorageService _storage;
+  final BrowserStorageService _browserStorage;
+  final AccountSeedStorageService _accountSeedStorage;
   final HiveSourceMigration _hive;
 
   /// Migration method for app that includes hive initialization.
   static Future<void> migrateWithHiveInit(
-    KeyValueStorageService storage,
+    GeneralStorageService storage,
+    BrowserStorageService browserStorage,
+    AccountSeedStorageService accountSeedStorage,
   ) async {
     return MigrationService(
       storage,
+      browserStorage,
+      accountSeedStorage,
       await HiveSourceMigration.create(),
     ).migrate();
   }
@@ -759,7 +772,10 @@ class MigrationService {
 
     /// Seeds
     for (final entry in _hive.seeds.entries) {
-      await _storage.addSeedOrRename(masterKey: entry.key, name: entry.value);
+      await _accountSeedStorage.addSeedOrRename(
+        masterKey: entry.key,
+        name: entry.value,
+      );
     }
 
     /// Passwords
@@ -794,7 +810,7 @@ class MigrationService {
 
     /// Permissions
     for (final entry in _hive.permissions.entries) {
-      await _storage.setPermissions(
+      await _browserStorage.setPermissions(
         origin: entry.key,
         permissions: entry.value,
       );
@@ -802,30 +818,33 @@ class MigrationService {
 
     /// Bookmarks
     for (final bookmark in _hive.bookmarks) {
-      await _storage.addBookmark(bookmark);
+      await _browserStorage.addBookmark(bookmark);
     }
 
     /// Search history
     for (final entry in _hive.searchHistory) {
-      await _storage.addSearchHistoryEntry(entry);
+      await _browserStorage.addSearchHistoryEntry(entry);
     }
 
     /// Site metadata
     for (final entry in _hive._siteMetadata.entries) {
-      await _storage.addSiteMetaData(url: entry.key, metaData: entry.value);
+      await _browserStorage.addSiteMetaData(
+        url: entry.key,
+        metaData: entry.value,
+      );
     }
 
     /// Preferences
     if (_hive.locale != null) await _storage.setLocale(_hive.locale!);
     await _storage.setIsBiometryEnabled(isEnabled: _hive.isBiometryEnabled);
     if (_hive.wasStEverOpened) await _storage.saveWasStEverOpened();
-    if (_hive.getWhyNeedBrowser) await _storage.saveWhyNeedBrowser();
-    await _storage.updateLastViewedSeeds(_hive.lastViewedSeeds());
+    if (_hive.getWhyNeedBrowser) await _browserStorage.saveWhyNeedBrowser();
+    await _accountSeedStorage.updateLastViewedSeeds(_hive.lastViewedSeeds());
     for (final account in _hive.hiddenAccounts) {
-      await _storage.hideAccount(account);
+      await _accountSeedStorage.hideAccount(account);
     }
     for (final entry in _hive.externalAccounts.entries) {
-      await _storage.updateExternalAccounts(
+      await _accountSeedStorage.updateExternalAccounts(
         publicKey: entry.key,
         accounts: entry.value,
       );
@@ -834,12 +853,12 @@ class MigrationService {
       await _storage.setCurrentConnection(_hive.currentConnection!);
     }
     if (_hive.currentKey != null) {
-      await _storage.setCurrentKey(_hive.currentKey!);
+      await _accountSeedStorage.setCurrentKey(_hive.currentKey!);
     }
 
     /// Browser
-    await _storage.saveBrowserTabsLastIndex(_hive.browserTabsLastIndex);
-    await _storage.saveBrowserTabs(_hive.browserTabs);
+    await _browserStorage.saveBrowserTabsLastIndex(_hive.browserTabsLastIndex);
+    await _browserStorage.saveBrowserTabs(_hive.browserTabs);
   }
 
   /// Complete migration by deleting temp file and closing boxes.
