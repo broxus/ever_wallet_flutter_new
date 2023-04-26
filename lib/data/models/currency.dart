@@ -2,6 +2,7 @@ import 'package:app/data/models/network_type.dart';
 import 'package:freezed_annotation/freezed_annotation.dart';
 
 part 'currency.freezed.dart';
+
 part 'currency.g.dart';
 
 @freezed
@@ -9,6 +10,7 @@ class Currency with _$Currency {
   const factory Currency({
     required String currency,
     required String address,
+    // Price in USD
     required String price,
     required String priceChange,
     required String tvl,

@@ -181,18 +181,6 @@ class AccountSeedStorageService extends AbstractStorageService {
         .then((_) => _streamedHiddenAccounts());
   }
 
-  /// Remove information about hidden account (make it visible)
-  Future<void> removeHiddenIfPossible(String address) async {
-    final accounts = (await hiddenAccounts)..remove(address);
-    return _storage
-        .set(
-          _hiddenAccountsKey,
-          jsonEncode(accounts),
-          domain: _accountSeedPreferencesKey,
-        )
-        .then((_) => _streamedHiddenAccounts());
-  }
-
   /// Clear information about hidden accounts
   Future<void> clearHiddenAccounts() => _storage
       .delete(

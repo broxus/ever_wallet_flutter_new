@@ -2,6 +2,7 @@ import 'package:freezed_annotation/freezed_annotation.dart';
 import 'package:nekoton_repository/nekoton_repository.dart';
 
 part 'pending_transaction_with_additional_info.freezed.dart';
+
 part 'pending_transaction_with_additional_info.g.dart';
 
 @freezed
@@ -11,7 +12,7 @@ class PendingTransactionWithAdditionalInfo
   const factory PendingTransactionWithAdditionalInfo({
     required PendingTransaction transaction,
     String? dst,
-    String? amount,
+    @amountJsonConverter required BigInt? amount,
     required int createdAt,
   }) = _PendingTransactionWithAdditionalInfo;
 

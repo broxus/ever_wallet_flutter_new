@@ -1,4 +1,5 @@
 import 'package:freezed_annotation/freezed_annotation.dart';
+import 'package:nekoton_repository/nekoton_repository.dart';
 
 part 'stever_withdraw_request.freezed.dart';
 
@@ -21,7 +22,7 @@ class StEverWithdrawRequest {
 @freezed
 class StEverWithdrawRequestData with _$StEverWithdrawRequestData {
   const factory StEverWithdrawRequestData({
-    required String amount,
+    @amountJsonConverter required BigInt amount,
     required String timestamp,
   }) = _StEverWithdrawRequestData;
 

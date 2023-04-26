@@ -9,7 +9,7 @@ class ConnectionData with _$ConnectionData {
     required int networkId,
     required String group,
     required List<String> endpoints,
-    required int timeout,
+    required Duration timeout,
     required bool local,
   }) = _ConnectionDataGql;
 

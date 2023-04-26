@@ -62,10 +62,11 @@ class ApprovalRequest with _$ApprovalRequest {
     required String origin,
     required String sender,
     required String recipient,
-    required String amount,
+    @amountJsonConverter required BigInt amount,
     required bool bounce,
     required FunctionCall? payload,
     required KnownPayload? knownPayload,
+    // TODO(alex-a4): remove Tuple to something suitable when use this class
     required Completer<Tuple2<String, String>> completer,
   }) = _SendMessage;
 }

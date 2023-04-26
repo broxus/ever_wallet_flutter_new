@@ -1,11 +1,8 @@
 import 'dart:async';
 
-import 'package:app/app/service/migration_service.dart';
-import 'package:app/app/service/storage_service/account_seed_storage_service.dart';
-import 'package:app/app/service/storage_service/browser_storage_service.dart';
-import 'package:app/app/service/storage_service/general_storage_service.dart';
-import 'package:app/app/service/storage_service/storage_manager_service.dart';
 import 'package:app/bootstrap/bootstrap.dart';
+import 'package:app/bootstrap/migrate_storage.dart';
+import 'package:app/bootstrap/storave_services.dart';
 import 'package:app/di/di.dart';
 import 'package:bloc/bloc.dart';
 import 'package:flutter/widgets.dart';
@@ -39,12 +36,8 @@ Future<void> bootstrap(
   await configureEncryptedStorage();
   await configureNavigationService();
   await configureNekoton();
-  await MigrationService.migrateWithHiveInit(
-    inject<GeneralStorageService>(),
-    inject<BrowserStorageService>(),
-    inject<AccountSeedStorageService>(),
-  );
-  await inject<StorageManagerService>().init();
+  await migrateStorage();
+  await configureStorageServices();
 
   final log = Logger('bootstrap');
 
