@@ -558,6 +558,14 @@ packages:
       url: "https://pub.dev"
     source: hosted
     version: "6.5.7"
+  googleapis_auth:
+    dependency: "direct dev"
+    description:
+      name: googleapis_auth
+      sha256: f59be210ede1e22718962e4ef48a08ae783eb67fe19b0f4c16b204e20df0869c
+      url: "https://pub.dev"
+    source: hosted
+    version: "1.4.0"
   graphs:
     dependency: transitive
     description:
