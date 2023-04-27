@@ -138,3 +138,11 @@ app.*.map.json
 # melos-related
 pubspec_overrides.yaml
 .idea
+
+# Secrets
+android/crystal.keystore
+android/key.properties
+android/fastlane/GooglePlayServiceAccount.json
+ios/fastlane/AuthKey_L4N29B6Z42.p8
+fastlane/FirebaseAPIKey.json
+fastlane/FirebaseADKey.json
