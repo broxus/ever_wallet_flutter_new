@@ -12,7 +12,7 @@ class PendingTransactionWithAdditionalInfo
   const factory PendingTransactionWithAdditionalInfo({
     required PendingTransaction transaction,
     String? dst,
-    @amountJsonConverter required BigInt? amount,
+    @amountJsonConverter required Fixed? amount,
     required int createdAt,
   }) = _PendingTransactionWithAdditionalInfo;
 

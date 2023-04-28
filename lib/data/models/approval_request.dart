@@ -62,7 +62,7 @@ class ApprovalRequest with _$ApprovalRequest {
     required String origin,
     required String sender,
     required String recipient,
-    @amountJsonConverter required BigInt amount,
+    @amountJsonConverter required Fixed amount,
     required bool bounce,
     required FunctionCall? payload,
     required KnownPayload? knownPayload,

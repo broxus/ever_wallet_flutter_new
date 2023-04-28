@@ -22,7 +22,7 @@ class StEverWithdrawRequest {
 @freezed
 class StEverWithdrawRequestData with _$StEverWithdrawRequestData {
   const factory StEverWithdrawRequestData({
-    @amountJsonConverter required BigInt amount,
+    @amountJsonConverter required Fixed amount,
     required String timestamp,
   }) = _StEverWithdrawRequestData;
 

@@ -17,7 +17,7 @@ import 'package:app/app/service/storage_service/browser_storage_service.dart';
 import 'package:app/app/service/storage_service/general_storage_service.dart';
 import 'package:app/data/models/bookmark.dart';
 import 'package:app/data/models/browser_tab.dart';
-import 'package:app/data/models/currency.dart';
+import 'package:app/data/models/currency.dart' as cur;
 import 'package:app/data/models/network_type.dart';
 import 'package:app/data/models/permissions.dart';
 import 'package:app/data/models/search_history.dart';
@@ -426,23 +426,23 @@ class HiveSourceMigration {
 
   Future<void> clearSitesMetaData() => _siteMetaDataBox.clear();
 
-  List<Currency> get everCurrencies => _everCurrenciesBox.values
+  List<cur.Currency> get everCurrencies => _everCurrenciesBox.values
       .map((e) => e.toModel(NetworkType.ever))
       .toList();
 
-  List<Currency> get venomCurrencies => _venomCurrenciesBox.values
+  List<cur.Currency> get venomCurrencies => _venomCurrenciesBox.values
       .map((e) => e.toModel(NetworkType.venom))
       .toList();
 
   Future<void> saveEverCurrency({
     required String address,
-    required Currency currency,
+    required cur.Currency currency,
   }) =>
       _everCurrenciesBox.put(address, currency.toDto());
 
   Future<void> saveVenomCurrency({
     required String address,
-    required Currency currency,
+    required cur.Currency currency,
   }) =>
       _venomCurrenciesBox.put(address, currency.toDto());
 

@@ -11,8 +11,8 @@ class StEverDetails with _$StEverDetails {
   /// Total amount of assets in blockchain.
   /// Exchange rate calculates as totalAssets / stEverSupply
   const factory StEverDetails({
-    @amountJsonConverter required BigInt stEverSupply,
-    @amountJsonConverter required BigInt totalAssets,
+    @amountJsonConverter required Fixed stEverSupply,
+    @amountJsonConverter required Fixed totalAssets,
   }) = _StEverDetails;
 
   factory StEverDetails.fromJson(Map<String, dynamic> json) =>

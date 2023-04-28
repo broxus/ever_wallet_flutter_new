@@ -426,11 +426,11 @@ packages:
     dependency: transitive
     description:
       path: "packages/flutter_nekoton_bridge"
-      ref: "flutter_nekoton_bridge-v1.8.0-dev.6"
-      resolved-ref: "7d9c09d44356672c714bdcca1f7b5136df8ecf76"
+      ref: "flutter_nekoton_bridge-v1.8.0-dev.7"
+      resolved-ref: "97573d88668ac6c73385ddfe09f5aa126162cef5"
       url: "https://github.com/broxus/nekoton_bridge.git"
     source: git
-    version: "1.8.0-dev.6"
+    version: "1.8.0-dev.7"
   flutter_rust_bridge:
     dependency: transitive
     description:
@@ -759,10 +759,10 @@ packages:
     dependency: transitive
     description:
       name: money2_improver
-      sha256: "3486c95b0923f39eb933d1cd580ce64a350303d3c3086d8e72b70871a436b20d"
+      sha256: e7f1dc0a322774a954e327f3e16762bd6366cce01737653249ce233f1e83a013
       url: "https://pub.dev"
     source: hosted
-    version: "1.1.0"
+    version: "1.2.0"
   mustache_template:
     dependency: transitive
     description:
