@@ -8,6 +8,6 @@ class SignedMessageWithAdditionalInfo with _$SignedMessageWithAdditionalInfo {
   const factory SignedMessageWithAdditionalInfo({
     required SignedMessage message,
     String? dst,
-    String? amount,
+    @amountJsonConverter Fixed? amount,
   }) = _SignedMessageWithAdditionalInfo;
 }
