@@ -7,6 +7,8 @@ export 'components/button/button_style.dart';
 export 'components/button/common_button.dart';
 export 'components/button/common_button_icon.dart';
 export 'components/button/common_icon_button.dart';
+export 'components/input/common_input.dart';
+export 'components/input/common_switch_input.dart';
 export 'predefined_theme.dart';
 export 'styles.dart';
 export 'theme_style.dart';

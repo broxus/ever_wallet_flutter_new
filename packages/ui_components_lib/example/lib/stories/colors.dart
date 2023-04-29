@@ -113,7 +113,7 @@ class ColorsStory extends StatelessWidget {
               name: 'fillingTertiary',
             ),
             _ColorItem(
-              color: colors.fillingHover,
+              color: colors.fillingPressed,
               name: 'fillingHover',
             ),
             _ColorItem(

@@ -1,3 +1,4 @@
+import 'package:example/stories/inputs.dart';
 import 'package:example/stories/stories.dart';
 import 'package:flutter/material.dart';
 import 'package:storybook_flutter/storybook_flutter.dart';
@@ -31,6 +32,10 @@ class StoryWidget extends StatelessWidget {
         Story(
           name: 'Widgets/Buttons',
           builder: (_) => const ButtonsStory(),
+        ),
+        Story(
+          name: 'Widgets/Inputs',
+          builder: (_) => const InputsStory(),
         ),
         Story(
           name: 'Colors',

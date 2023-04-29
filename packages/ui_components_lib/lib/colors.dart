@@ -35,7 +35,7 @@ class ColorsPalette {
     required this.fillingPrimary,
     required this.fillingSecondary,
     required this.fillingTertiary,
-    required this.fillingHover,
+    required this.fillingPressed,
     required this.statusPositiveTitle,
     required this.statusPositiveBackground,
     required this.statusMediumTitle,
@@ -77,7 +77,7 @@ class ColorsPalette {
   final Color fillingPrimary;
   final Color fillingSecondary;
   final Color fillingTertiary;
-  final Color fillingHover;
+  final Color fillingPressed;
 
   /// Status color for theme
   final Color statusPositiveTitle;
@@ -122,6 +122,7 @@ class ColorsRes {
   static const neutral950 = Color(0xFFF7F7F9);
 
   /// Blue
+static const lightBlue = Color(0xFFC5E4F3);
   static const blue200 = Color(0xFF183784);
   static const bluePrimary = Color(0xFF2B63F1);
   static const blue700 = Color(0xFF7D9FF7);

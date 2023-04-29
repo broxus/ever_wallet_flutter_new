@@ -22,6 +22,8 @@ class StylesPalette {
 
 /// List of all styles from nekoton's typography
 class StyleRes {
+  const StyleRes._();
+
   /// Landing Title 44/48 Semibold
   static const landingTitle = TextStyle(
     fontFamily: 'Faktum',
