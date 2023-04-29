@@ -12,12 +12,12 @@ class TokenContractAssetDto with _$TokenContractAssetDto {
   @HiveType(typeId: 1)
   const factory TokenContractAssetDto({
     @HiveField(0) required String name,
-    @HiveField(1) int? chainId,
     @HiveField(2) required String symbol,
     @HiveField(3) required int decimals,
     @HiveField(4) required String address,
-    @HiveField(5) String? logoURI,
     @HiveField(6) required int version,
+    @HiveField(1) int? chainId,
+    @HiveField(5) String? logoURI,
   }) = _TokenContractAssetDto;
 }
 

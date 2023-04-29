@@ -58,7 +58,7 @@ Future<void> bootstrap(
 }
 
 class AppWrapper extends StatefulWidget {
-  const AppWrapper({super.key, required this.builder});
+  const AppWrapper({required this.builder, super.key});
 
   final Widget Function() builder;
 

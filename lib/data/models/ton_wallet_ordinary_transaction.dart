@@ -7,13 +7,13 @@ part 'ton_wallet_ordinary_transaction.freezed.dart';
 class TonWalletOrdinaryTransaction with _$TonWalletOrdinaryTransaction {
   const factory TonWalletOrdinaryTransaction({
     required String lt,
-    String? prevTransactionLt,
     required bool isOutgoing,
     @amountJsonConverter required Fixed value,
     required String address,
     required DateTime date,
     @amountJsonConverter required Fixed fees,
     required String hash,
+    String? prevTransactionLt,
     String? comment,
     DePoolOnRoundCompleteNotification? dePoolOnRoundCompleteNotification,
     DePoolReceiveAnswerNotification? dePoolReceiveAnswerNotification,

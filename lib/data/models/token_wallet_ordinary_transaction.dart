@@ -7,13 +7,13 @@ part 'token_wallet_ordinary_transaction.freezed.dart';
 class TokenWalletOrdinaryTransaction with _$TokenWalletOrdinaryTransaction {
   const factory TokenWalletOrdinaryTransaction({
     required String lt,
-    String? prevTransactionLt,
     required bool isOutgoing,
-    @amountJsonConverter required Fixed value,
     required String address,
+    @amountJsonConverter required Fixed value,
     required DateTime date,
     @amountJsonConverter required Fixed fees,
     required String hash,
+    String? prevTransactionLt,
     TokenIncomingTransfer? incomingTransfer,
     TokenOutgoingTransfer? outgoingTransfer,
     TokenSwapBack? swapBack,

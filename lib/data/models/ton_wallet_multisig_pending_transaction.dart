@@ -8,7 +8,6 @@ class TonWalletMultisigPendingTransaction
     with _$TonWalletMultisigPendingTransaction {
   const factory TonWalletMultisigPendingTransaction({
     required String lt,
-    String? prevTransactionLt,
     required String creator,
     required List<String> confirmations,
     required List<String> custodians,
@@ -19,16 +18,17 @@ class TonWalletMultisigPendingTransaction
     required DateTime date,
     @amountJsonConverter required Fixed fees,
     required String hash,
-    String? comment,
-    DePoolOnRoundCompleteNotification? dePoolOnRoundCompleteNotification,
-    DePoolReceiveAnswerNotification? dePoolReceiveAnswerNotification,
-    TokenWalletDeployedNotification? tokenWalletDeployedNotification,
-    WalletInteractionInfo? walletInteractionInfo,
     required int signsReceived,
     required int signsRequired,
     required String transactionId,
     required List<String> publicKeys,
     required bool canConfirm,
     required DateTime expireAt,
+    String? prevTransactionLt,
+    String? comment,
+    DePoolOnRoundCompleteNotification? dePoolOnRoundCompleteNotification,
+    DePoolReceiveAnswerNotification? dePoolReceiveAnswerNotification,
+    TokenWalletDeployedNotification? tokenWalletDeployedNotification,
+    WalletInteractionInfo? walletInteractionInfo,
   }) = _TonWalletMultisigPendingTransaction;
 }

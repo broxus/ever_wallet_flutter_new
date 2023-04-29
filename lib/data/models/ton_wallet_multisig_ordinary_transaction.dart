@@ -8,7 +8,6 @@ class TonWalletMultisigOrdinaryTransaction
     with _$TonWalletMultisigOrdinaryTransaction {
   const factory TonWalletMultisigOrdinaryTransaction({
     required String lt,
-    String? prevTransactionLt,
     required String creator,
     required List<String> confirmations,
     required List<String> custodians,
@@ -18,6 +17,7 @@ class TonWalletMultisigOrdinaryTransaction
     required DateTime date,
     @amountJsonConverter required Fixed fees,
     required String hash,
+    String? prevTransactionLt,
     String? comment,
     DePoolOnRoundCompleteNotification? dePoolOnRoundCompleteNotification,
     DePoolReceiveAnswerNotification? dePoolReceiveAnswerNotification,

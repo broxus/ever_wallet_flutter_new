@@ -8,7 +8,6 @@ class TonWalletMultisigExpiredTransaction
     with _$TonWalletMultisigExpiredTransaction {
   const factory TonWalletMultisigExpiredTransaction({
     required String lt,
-    String? prevTransactionLt,
     required String creator,
     required List<String> confirmations,
     required List<String> custodians,
@@ -18,6 +17,7 @@ class TonWalletMultisigExpiredTransaction
     required DateTime date,
     @amountJsonConverter required Fixed fees,
     required String hash,
+    String? prevTransactionLt,
     String? comment,
     DePoolOnRoundCompleteNotification? dePoolOnRoundCompleteNotification,
     DePoolReceiveAnswerNotification? dePoolReceiveAnswerNotification,
