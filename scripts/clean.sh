@@ -11,9 +11,9 @@ find . -type f -name "*.module.dart" -delete
 rm -rf lib/di/di.config.dart
 
 # Sectets
-rm android/crystal.keystore
-rm android/key.properties
-rm android/fastlane/GooglePlayServiceAccount.json
-rm ios/fastlane/AuthKey_L4N29B6Z42.p8
-rm fastlane/FirebaseAPIKey.json
-rm fastlane/FirebaseADKey.json
+rm -f android/crystal.keystore
+rm -f android/key.properties
+rm -f android/fastlane/GooglePlayServiceAccount.json
+rm -f ios/fastlane/AuthKey_L4N29B6Z42.p8
+rm -f fastlane/FirebaseAPIKey.json
+rm -f fastlane/FirebaseADKey.json

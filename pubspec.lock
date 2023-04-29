@@ -748,7 +748,7 @@ packages:
     source: hosted
     version: "0.3.0"
   money2:
-    dependency: transitive
+    dependency: "direct main"
     description:
       name: money2
       sha256: "4a403cffeda86287eaa96c1902bc7a24a437d25bab84419a96c9877a019ecb22"
@@ -756,7 +756,7 @@ packages:
     source: hosted
     version: "3.3.0"
   money2_improver:
-    dependency: transitive
+    dependency: "direct main"
     description:
       name: money2_improver
       sha256: e7f1dc0a322774a954e327f3e16762bd6366cce01737653249ce233f1e83a013
