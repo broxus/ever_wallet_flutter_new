@@ -306,7 +306,7 @@ class _CommonInputState extends State<CommonInput> {
                       labelText: widget.labelText,
                       labelStyle: widget.labelStyle ??
                           StyleRes.medium14
-                              .copyWith(color: colors.textTertiary),
+                              .copyWith(color: colors.textSecondary),
                       contentPadding: EdgeInsets.zero,
                       suffixIcon: _buildSuffixIcon(),
                       prefixIconConstraints: widget.prefixIcon == null
