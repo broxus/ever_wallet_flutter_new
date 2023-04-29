@@ -1,6 +1,8 @@
 import 'dart:async';
 
 import 'package:app/bootstrap/bootstrap.dart';
+import 'package:app/bootstrap/migrate_storage.dart';
+import 'package:app/bootstrap/storave_services.dart';
 import 'package:app/di/di.dart';
 import 'package:bloc/bloc.dart';
 import 'package:flutter/widgets.dart';
@@ -34,6 +36,8 @@ Future<void> bootstrap(
   await configureEncryptedStorage();
   await configureNavigationService();
   await configureNekoton();
+  await migrateStorage();
+  await configureStorageServices();
 
   final log = Logger('bootstrap');
 
@@ -54,7 +58,8 @@ Future<void> bootstrap(
 }
 
 class AppWrapper extends StatefulWidget {
-  const AppWrapper({super.key, required this.builder});
+  const AppWrapper({required this.builder, super.key});
+
   final Widget Function() builder;
 
   @override

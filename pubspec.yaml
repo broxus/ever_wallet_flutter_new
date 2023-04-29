@@ -5,10 +5,11 @@ publish_to: none
 
 environment:
   sdk: ">=2.18.0 <3.0.0"
-  flutter: 3.7.10
+  flutter: 3.7.12
 
 dependencies:
   bloc: ^8.1.0
+  collection: ^1.17.0
   encrypted_storage:
     path: packages/encrypted_storage
   equatable: ^2.0.5
@@ -19,27 +20,50 @@ dependencies:
   flutter_bloc: ^8.1.1
   flutter_localizations:
     sdk: flutter
+  flutter_svg: 2.0.3
+  freezed_annotation: ^2.2.0
   get_it: ^7.2.0
   go_router: ^6.5.7
-  injectable: ^2.1.0
+  hive_flutter: ^1.1.0
+  injectable: ^2.1.1
   intl: ^0.17.0
   json_annotation: ^4.8.0
   logging: ^1.1.1
+  money2: ^3.3.0
+  money2_improver: ^1.2.0
   nekoton_repository:
     path: packages/nekoton_repository
+  path_provider: ^2.0.14
   rxdart: ^0.27.7
+  tuple: ^2.0.1
 
 dev_dependencies:
   bloc_test: ^9.1.0
   build_runner: ^2.3.3
+  flutter_gen_runner: ^5.2.0
+  flutter_secure_storage: ^8.0.0
   flutter_test:
     sdk: flutter
-  injectable_generator: ^2.1.3
+  freezed: ^2.3.2
+  googleapis_auth: ^1.4.0
+  hive_generator: ^2.0.0
+  injectable_generator: ^2.1.5
+  integration_test:
+    sdk: flutter
   json_serializable: ^6.6.1
   melos: ^3.0.0
   mocktail: ^0.3.0
   very_good_analysis: ^4.0.0+1
 
+flutter_gen:
+  output: lib/generated/
+
+  integrations:
+    flutter_svg: true
+
 flutter:
   uses-material-design: true
   generate: true
+
+  assets:
+    - assets/images/
