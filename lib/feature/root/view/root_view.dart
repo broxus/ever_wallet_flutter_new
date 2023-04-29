@@ -6,7 +6,7 @@ import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 
 class RootView extends StatelessWidget {
-  const RootView({super.key, required this.child});
+  const RootView({required this.child, super.key});
   final Widget child;
 
   @override

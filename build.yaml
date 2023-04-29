@@ -1,0 +1,11 @@
+targets:
+  $default:
+    sources:
+      - lib/**
+      # Note that it is important to include these in the default target.
+      - pubspec.*
+      - $package$
+    builders:
+      json_serializable:
+        options:
+          explicit_to_json: true

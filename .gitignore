@@ -55,6 +55,14 @@ linked_*.ds
 unlinked.ds
 unlinked_spec.ds
 .fvm/
+**/*.freezed.dart
+**/*.g.dart
+**/*.gen.dart
+**/*.reflectable.dart
+**/lib/*.module.dart
+
+# DI auto-generated files
+lib/di/di.config.dart
 
 # Android related
 **/android/**/gradle-wrapper.jar
@@ -67,6 +75,7 @@ unlinked_spec.ds
 **/android/key.properties
 **/android/.idea/
 *.jks
+local.properties
 
 # iOS/XCode related
 **/ios/**/*.mode1v3
@@ -129,3 +138,11 @@ app.*.map.json
 # melos-related
 pubspec_overrides.yaml
 .idea
+
+# Secrets
+android/crystal.keystore
+android/key.properties
+android/fastlane/GooglePlayServiceAccount.json
+ios/fastlane/AuthKey_L4N29B6Z42.p8
+fastlane/FirebaseAPIKey.json
+fastlane/FirebaseADKey.json

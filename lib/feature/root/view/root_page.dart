@@ -2,7 +2,7 @@ import 'package:app/feature/root/view/root_view.dart';
 import 'package:flutter/material.dart';
 
 class RootPage extends StatelessWidget {
-  const RootPage({super.key, required this.child});
+  const RootPage({required this.child, super.key});
   final Widget child;
 
   @override

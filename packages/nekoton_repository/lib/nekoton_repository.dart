@@ -2,6 +2,9 @@
 library nekoton_repository;
 
 import 'package:injectable/injectable.dart';
+
+export 'package:flutter_nekoton_bridge/flutter_nekoton_bridge.dart';
+
 export 'src/models/models.dart';
 export 'src/nekoton_repository.dart';
 
