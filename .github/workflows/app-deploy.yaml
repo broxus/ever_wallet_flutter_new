@@ -4,11 +4,12 @@ on:
   push:
     branches:
       - main
+      - "feat/build_deploy_fad"
   # Allows you to run this workflow manually from the Actions tab
   workflow_dispatch:
     inputs:
       version_parameters:
-        description: 'Deploy to:'
+        description: "Deploy to:"
         required: true
         default: "fad"
         type: choice
@@ -32,7 +33,7 @@ jobs:
       # Fastlane
       - uses: ruby/setup-ruby@v1
         with:
-          ruby-version: '3.0'
+          ruby-version: "3.0"
           bundler-cache: true
       - name: Install bundler
         run: gem install bundler
