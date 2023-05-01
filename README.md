@@ -1,6 +1,7 @@
 # App
 
 [![style: very good analysis][very_good_analysis_badge]][very_good_analysis_link]
+[![app](https://github.com/broxus/ever_wallet_flutter_new/actions/workflows/main.yaml/badge.svg)](https://github.com/broxus/ever_wallet_flutter_new/actions/workflows/main.yaml)
 
 EVER Wallet Flutter app
 
@@ -16,13 +17,7 @@ $ dart pub global activate melos
 
 Using [melos](https://melos.invertase.dev/) makes it very easy to work with the project, so enjoy.
 
-Install packages recursively:
-
-```sh
-$ very_good packages get -r
-```
-
-Or, even better, use melos:
+Boostrap packages recursively:
 
 ```sh
 $ melos bs
@@ -36,12 +31,51 @@ This thing will run all code generators for all packages:
 $ melos run codegen
 ```
 
+## Code format checking and analyser 🦠
+
+```
+$ melos run check-format
+$ melos run analyze
+```
+
 ## Clean up 🧹
 
 To clean up all packages just run:
 
 ```
 $ melos clean
+```
+
+## Running Tests 🧪
+
+To run all unit and widget tests use the following command:
+
+```sh
+$ melos test
+```
+
+Also you can run dart, flutter and integration tests separately:
+
+```sh
+$ melos test:dart
+$ melos test:flutter
+$ melos test:integration
+```
+
+## Pre-commit preparation 🦠🧪🤏
+
+To run code format check, analyzer and all tests use the following command:
+
+```sh
+$ melos check-all
+```
+
+## Build storybook 📚
+
+To build storybook:
+
+```sh
+$ melos build:storybook
 ```
 
 ## Flavours 👃
@@ -68,14 +102,6 @@ $ flutter run --flavor production --target lib/main_production.dart
 _\*App works on iOS, Android, Web, and Windows._
 
 ---
-
-## Running Tests 🧪
-
-To run all unit and widget tests use the following command:
-
-```sh
-$ flutter test --coverage --test-randomize-ordering-seed random
-```
 
 To view the generated coverage report you can use [lcov](https://github.com/linux-test-project/lcov).
 
