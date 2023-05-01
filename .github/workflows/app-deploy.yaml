@@ -22,6 +22,9 @@ jobs:
     runs-on: macos-latest
     env:
       BUNDLER: bundle
+      SECRET_PASSPHRASE: ${{ secrets.SECRET_PASSPHRASE }}
+      MATCH_GIT_PRIVATE_KEY: ${{ secrets.MATCH_GIT_PRIVATE_KEY }}
+      MATCH_PASSWORD: ${{ secrets.MATCH_PASSWORD }}
 
     steps:
       # Setup
@@ -39,7 +42,7 @@ jobs:
           bundler-cache: true
       - name: Install bundler
         run: gem install bundler
-      - name: Install bundler
+      - name: Install bundles
         run: bundle install
 
       # Secrets
