@@ -8,6 +8,7 @@ environment:
   flutter: 3.3.0
 
 dependencies:
+  another_flushbar: ^1.12.29
   flutter:
     sdk: flutter
   flutter_svg: ^2.0.4

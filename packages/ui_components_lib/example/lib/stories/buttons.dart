@@ -2,8 +2,17 @@ import 'package:flutter/material.dart';
 import 'package:ui_components_lib/ui_components_lib.dart';
 
 /// Page with buttons
-class ButtonsStory extends StatelessWidget {
+class ButtonsStory extends StatefulWidget {
   const ButtonsStory({super.key});
+
+  @override
+  State<ButtonsStory> createState() => _ButtonsStoryState();
+}
+
+class _ButtonsStoryState extends State<ButtonsStory> {
+  static const tabs = ['Tab1', 'Tab2', 'Tab3'];
+  final tabBar1Notifier = ValueNotifier<String>(tabs.first);
+  final tabBar2Notifier = ValueNotifier<String>(tabs.first);
 
   @override
   Widget build(BuildContext context) {
@@ -116,6 +125,36 @@ class ButtonsStory extends StatelessWidget {
                 text: 'AttentionButton fillWidth',
                 fillWidth: true,
                 onPressed: () {},
+              ),
+              const SizedBox(height: 20),
+
+              /// TabBar
+              const Text('TabBar without fillWidth'),
+              ValueListenableBuilder(
+                valueListenable: tabBar1Notifier,
+                builder: (_, value, __) {
+                  return CommonTabBar<String>(
+                    values: tabs,
+                    builder: (_, v) => v,
+                    selectedValue: value,
+                    onChanged: (v) => tabBar1Notifier.value = v,
+                  );
+                },
+              ),
+              const SizedBox(height: 10),
+
+              const Text('TabBar with fillWidth'),
+              ValueListenableBuilder(
+                valueListenable: tabBar2Notifier,
+                builder: (_, value, __) {
+                  return CommonTabBar<String>(
+                    values: tabs,
+                    fillWidth: true,
+                    builder: (_, v) => v,
+                    selectedValue: value,
+                    onChanged: (v) => tabBar2Notifier.value = v,
+                  );
+                },
               ),
 
               /// IconButton
