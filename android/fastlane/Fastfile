@@ -1,0 +1,46 @@
+# This file contains the fastlane.tools configuration
+# You can find the documentation at https://docs.fastlane.tools
+#
+# For a list of all available actions, check out
+#
+#     https://docs.fastlane.tools/actions
+#
+# For a list of all available plugins, check out
+#
+#     https://docs.fastlane.tools/plugins/available-plugins
+#
+
+before_all do
+  if is_ci
+    update_fastlane
+  end
+end
+
+default_platform(:android)
+
+platform :android do
+  desc "Deploy a new build to the Google Play Internal channel"
+  lane :deploy_google_play_internal do
+    upload_to_play_store(
+      track: "internal",
+      aab: "../build/app/outputs/bundle/release/app-release.aab",
+      skip_upload_metadata: true,
+      skip_upload_changelogs: false,
+      skip_upload_images: true,
+      skip_upload_screenshots: true,
+      changes_not_sent_for_review: true
+    )
+  end
+
+  desc "Deploy a new build to the FAD"
+  lane :deploy_fad do |options|
+    firebase_app_distribution(
+      app: "1:1017783238389:android:23c9e07bee6cc2ef2e4fbc",
+      groups: "qa",
+      android_artifact_type: "APK",
+      android_artifact_path: "../build/app/outputs/flutter-apk/app-release.apk",
+      service_credentials_file: "../fastlane/FirebaseADKey.json",
+      release_notes: "#{options[:changelog_string]}"
+    )
+  end
+end

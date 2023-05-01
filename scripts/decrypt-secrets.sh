@@ -2,15 +2,11 @@
 set -e
 set -o pipefail
 
+source ./scripts/export-secrets.sh
+
 # Setup
 BUILD_DIR=secrets
 cd $BUILD_DIR
-
-PASSPHRASE_FILE=".passphrase"
-if test -f "$PASSPHRASE_FILE"; then
-    echo "Found passphrase file"
-    source $PASSPHRASE_FILE
-fi
 
 if test -z "$SECRET_PASSPHRASE"
 then

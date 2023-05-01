@@ -9,7 +9,6 @@ scripts:
     run: bash scripts/decrypt-secrets.sh
     description: Decrypt secrets
 
-
   codegen:
     exec: "flutter packages pub run build_runner build --delete-conflicting-outputs"
     description: Generate code for all packages
@@ -70,6 +69,14 @@ scripts:
   build:storybook:
     run: bash scripts/build-storybook.sh
     description: Build the storybook
+
+  build:ios_match_assure:
+    run: bash scripts/ios-match-assure.sh
+    description: Making sure the iOS certificates and profiles are installed
+
+  build:ios_match_new_devices:
+    run: bash scripts/ios-match-new-devices.sh
+    description: Registering new devices already added through devportal
 
 command:
   clean:

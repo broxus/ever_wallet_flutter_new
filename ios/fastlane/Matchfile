@@ -1,0 +1,3 @@
+git_url("git@github.com:broxus/ios-provisioning.git")
+
+app_identifier("com.broxus.crystal.app")

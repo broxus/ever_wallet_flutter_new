@@ -146,4 +146,7 @@ android/fastlane/GooglePlayServiceAccount.json
 ios/fastlane/AuthKey_L4N29B6Z42.p8
 fastlane/FirebaseAPIKey.json
 fastlane/FirebaseADKey.json
-secrets/.passphrase
+secrets/.secrets
+
+# Fastlane
+**/fastlane/report.xml
