@@ -1,4 +1,4 @@
-name: app
+name: app tests
 
 on:
   pull_request:
