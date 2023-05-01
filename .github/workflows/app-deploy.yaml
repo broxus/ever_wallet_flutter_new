@@ -40,6 +40,11 @@ jobs:
       - name: Install bundler
         run: bundle install
 
+      # Secrets
+      - name: Decrypt secrets
+        run: melos decrypt-secrets
+
+      # iOS certs
       - name: Making sure the iOS certificates and profiles are installed
         run: melos build:ios_match_assure
 
