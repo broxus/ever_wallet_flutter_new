@@ -61,7 +61,8 @@ class CommonTabBar<T> extends StatelessWidget {
         decoration: BoxDecoration(
           border: Border(
             bottom: BorderSide(
-              color: isSelected ? colors.textButtonSecondary : Colors.transparent,
+              color:
+                  isSelected ? colors.textButtonSecondary : Colors.transparent,
             ),
           ),
         ),
