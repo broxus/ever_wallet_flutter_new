@@ -5,4 +5,4 @@ set -o pipefail
 source ./scripts/export-secrets.sh
 
 cd ios
-fastlane ios match_assure
+$BUNDLER fastlane ios match_assure
