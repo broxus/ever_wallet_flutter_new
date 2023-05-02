@@ -22,9 +22,8 @@ jobs:
   build_and_deploy:
     runs-on: macos-latest
     env:
-      # BUNDLER: "bundle exec"
       SECRET_PASSPHRASE: ${{ secrets.SECRET_PASSPHRASE }}
-      MATCH_GIT_PRIVATE_KEY: ${{ secrets.MATCH_GIT_PRIVATE_KEY }}
+      MATCH_GIT_BASIC_AUTHORIZATION: ${{ secrets.MATCH_GIT_BASIC_AUTHORIZATION }}
       MATCH_PASSWORD: ${{ secrets.MATCH_PASSWORD }}
 
     steps:
@@ -35,16 +34,6 @@ jobs:
           cache: true
           cache-key: flutter-:os:-:channel:-:version:-:arch:-:hash:-${{ hashFiles('**/pubspec.lock') }}
       - uses: bluefireteam/melos-action@v2
-
-      # Fastlane
-      # - uses: ruby/setup-ruby@v1
-      #   with:
-      #     ruby-version: "3.0"
-      #     bundler-cache: true
-      # - name: Install bundler
-      #   run: gem install bundler
-      # - name: Install bundles
-      #   run: bundle install
 
       # Secrets
       - name: Decrypt secrets
