@@ -74,6 +74,7 @@ lib/di/di.config.dart
 **/android/**/GeneratedPluginRegistrant.java
 **/android/key.properties
 **/android/.idea/
+**/android/fastlane/metadata/
 *.jks
 local.properties
 
