@@ -17,3 +17,4 @@ rm -f android/fastlane/GooglePlayServiceAccount.json
 rm -f ios/fastlane/AuthKey_L4N29B6Z42.p8
 rm -f fastlane/FirebaseAPIKey.json
 rm -f fastlane/FirebaseADKey.json
+rm -f secrets/ios-provisioning-key*

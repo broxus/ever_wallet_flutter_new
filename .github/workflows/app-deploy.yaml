@@ -23,7 +23,6 @@ jobs:
     runs-on: macos-latest
     env:
       SECRET_PASSPHRASE: ${{ secrets.SECRET_PASSPHRASE }}
-      MATCH_GIT_BASIC_AUTHORIZATION: ${{ secrets.MATCH_GIT_BASIC_AUTHORIZATION }}
       MATCH_PASSWORD: ${{ secrets.MATCH_PASSWORD }}
 
     steps:
