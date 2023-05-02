@@ -45,3 +45,7 @@ jobs:
       # Dart/Flutter
       - name: Generate dart code
         run: melos codegen --no-select
+
+      # Build and deploy to FAD
+      - name: Build and deploy to FAD
+        run: melos build:deploy_fad
