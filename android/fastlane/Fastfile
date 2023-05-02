@@ -23,7 +23,7 @@ platform :android do
   lane :deploy_google_play_internal do
     upload_to_play_store(
       track: "internal",
-      aab: "../build/app/outputs/bundle/release/app-release.aab",
+      aab: "../build/app/outputs/bundle/release/app-production-release.aab",
       skip_upload_metadata: true,
       skip_upload_changelogs: false,
       skip_upload_images: true,
@@ -38,7 +38,7 @@ platform :android do
       app: "1:1017783238389:android:23c9e07bee6cc2ef2e4fbc",
       groups: "qa",
       android_artifact_type: "APK",
-      android_artifact_path: "../build/app/outputs/flutter-apk/app-release.apk",
+      android_artifact_path: "../build/app/outputs/flutter-apk/app-production-release.apk",
       service_credentials_file: "../fastlane/FirebaseADKey.json",
       release_notes: "#{options[:CHANGELOG_STRING]}"
     )

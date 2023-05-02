@@ -25,7 +25,7 @@ platform :ios do
       key_filepath: "fastlane/AuthKey_L4N29B6Z42.p8",
     )
     upload_to_testflight(
-      ipa: "../build/ios/ipa/ever_wallet.ipa",
+      ipa: "../build/ios/ipa/App.ipa",
       skip_waiting_for_build_processing: true,
       api_key: api_key,
       changelog: "#{options[:CHANGELOG_STRING]}"
@@ -38,7 +38,7 @@ platform :ios do
     firebase_app_distribution(
       app: "1:1017783238389:ios:a0ab19a124c910702e4fbc",
       groups: "qa",
-      ipa_path: "../build/ios/ipa/ever_wallet.ipa",
+      ipa_path: "../build/ios/ipa/App.ipa",
       service_credentials_file: "../fastlane/FirebaseADKey.json",
       release_notes: "#{options[:CHANGELOG_STRING]}"
     )
