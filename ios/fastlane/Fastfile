@@ -28,7 +28,7 @@ platform :ios do
       ipa: "../build/ios/ipa/App.ipa",
       skip_waiting_for_build_processing: true,
       api_key: api_key,
-      changelog: "#{options[:CHANGELOG_STRING]}"
+      changelog: "#{options[:changelog_string]}"
     )
   end
 
@@ -40,7 +40,7 @@ platform :ios do
       groups: "qa",
       ipa_path: "../build/ios/ipa/App.ipa",
       service_credentials_file: "../fastlane/FirebaseADKey.json",
-      release_notes: "#{options[:CHANGELOG_STRING]}"
+      release_notes: "#{options[:changelog_string]}"
     )
   end
 
