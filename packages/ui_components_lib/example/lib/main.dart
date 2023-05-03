@@ -16,7 +16,9 @@ class StoryWidget extends StatelessWidget {
       wrapperBuilder: (context, child) {
         return MaterialApp(
           debugShowCheckedModeBanner: false,
-          theme: ThemeData(extensions: [everPredefinedTheme()]),
+          theme: everPredefinedLightTheme(),
+          darkTheme: everPredefinedDarkTheme(),
+          useInheritedMediaQuery: true,
           home: child,
         );
       },
@@ -29,6 +31,14 @@ class StoryWidget extends StatelessWidget {
         Story(
           name: 'Widgets/Buttons',
           builder: (_) => const ButtonsStory(),
+        ),
+        Story(
+          name: 'Widgets/Inputs',
+          builder: (_) => const InputsStory(),
+        ),
+        Story(
+          name: 'Widgets/Snackbar',
+          builder: (_) => const SnackbarStory(),
         ),
         Story(
           name: 'Colors',
