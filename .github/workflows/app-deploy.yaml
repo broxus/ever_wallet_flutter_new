@@ -7,7 +7,6 @@ on:
   push:
     branches:
       - main
-      - "feat/build_deploy_fad"
   # Allows you to run this workflow manually from the Actions tab
   workflow_dispatch:
     inputs:
