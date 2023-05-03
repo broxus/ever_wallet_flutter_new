@@ -10,6 +10,17 @@ import 'package:ui_components_lib/ui_components_lib.dart';
 ///   extensions: [ThemeStyle(...)],
 /// )
 /// ```dart
+///
+///
+/// If you need to change theme in some direct place in the app (single screen
+/// or widget) it would be better to override flutter tree theme
+/// by wrapping your widget with [Theme] :
+/// ```
+/// Theme(
+///   data: everPredefinedDarkTheme(),
+///   child: MyScreenWithOtherTheme(),
+/// );
+/// ```dart
 /// {@endtemplate}
 class ThemeStyle extends ThemeExtension<ThemeStyle> {
   /// {@macro theme_style}
