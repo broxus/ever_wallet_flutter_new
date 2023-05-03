@@ -10,6 +10,7 @@ environment:
 dependencies:
   bloc: ^8.1.0
   collection: ^1.17.0
+  dotted_border: ^2.0.0+3
   encrypted_storage:
     path: packages/encrypted_storage
   equatable: ^2.0.5
@@ -35,7 +36,12 @@ dependencies:
     path: packages/nekoton_repository
   path_provider: ^2.0.14
   rxdart: ^0.27.7
+  string_extensions: ^0.6.6
   tuple: ^2.0.1
+  ui_components_lib:
+    path: packages/ui_components_lib
+  url_launcher: ^6.1.10
+  visibility_detector: ^0.4.0+2
 
 dev_dependencies:
   bloc_test: ^9.1.0
@@ -67,3 +73,7 @@ flutter:
 
   assets:
     - assets/images/
+    - assets/images/onboarding/layer1/
+    - assets/images/onboarding/layer2/
+    - assets/images/onboarding/layer3/
+    - assets/images/onboarding/

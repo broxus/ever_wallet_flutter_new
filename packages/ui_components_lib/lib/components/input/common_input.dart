@@ -48,6 +48,7 @@ class CommonInput extends StatefulWidget {
     this.enabledBorderColor,
     this.inactiveBorderColor,
     this.errorColor,
+    this.obscureText = false,
   });
 
   /// Height of input field
@@ -136,6 +137,9 @@ class CommonInput extends StatefulWidget {
   /// [ColorsPalette.textTertiary].
   final TextStyle? labelStyle;
 
+  /// If text should look like password, default false
+  final bool obscureText;
+
   @override
   State<CommonInput> createState() => _CommonInputState();
 }
@@ -199,6 +203,7 @@ class _CommonInputState extends State<CommonInput> {
             child = SizedBox(
               height: widget.height ?? commonInputHeight,
               child: TextField(
+                obscureText: widget.obscureText,
                 style: widget.textStyle ??
                     StyleRes.regular16.copyWith(color: colors.textPrimary),
                 controller: _controller,

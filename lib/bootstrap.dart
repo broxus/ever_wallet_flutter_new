@@ -35,9 +35,10 @@ Future<void> bootstrap(
   await configureLogger(appBuildType);
   await configureEncryptedStorage();
   await configureNavigationService();
-  await configureNekoton();
   await migrateStorage();
   await configureStorageServices();
+  // SetUp nekoton after storage migrations
+  await configureNekoton();
 
   final log = Logger('bootstrap');
 
