@@ -61,11 +61,11 @@ jobs:
 
 
       - name: Build and deploy to FAD
-        if: contains(inputs.deploy_target, 'fad')
+        if: inputs.deploy_target == 'fad' || inputs.deploy_target == 'fad_store' || inputs.deploy_target == ''
         run: echo "to FAD!"
 
       - name: Build and deploy to STORE
-        if: contains(inputs.deploy_target, 'store')
+        if: inputs.deploy_target == 'store' || inputs.deploy_target == 'fad_store'
         run: echo "to STORE!"
       #   run: melos build:deploy_fad
 
