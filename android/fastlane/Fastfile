@@ -23,7 +23,7 @@ platform :android do
   lane :deploy_google_play_internal do
     upload_to_play_store(
       track: "internal",
-      aab: "../build/app/outputs/bundle/release/app-production-release.aab",
+      aab: "../build/app/outputs/bundle/productionRelease/app-production-release.aab",
       skip_upload_metadata: true,
       skip_upload_changelogs: false,
       skip_upload_images: true,

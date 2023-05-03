@@ -4,4 +4,4 @@ set -o pipefail
 
 echo "🛒🏗️🤖 Build AAB for STORE"
 
-flutter build appbundle $build_number_string --flavor production --target lib/main_production.dart
+flutter build appbundle $BUILD_NUMBER_STRING --flavor production --target lib/main_production.dart
