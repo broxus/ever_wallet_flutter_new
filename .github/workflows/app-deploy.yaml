@@ -1,6 +1,9 @@
 name: app deploy
 
 on:
+  pull_request:
+    branches:
+      - main
   push:
     branches:
       - main
@@ -8,7 +11,7 @@ on:
   # Allows you to run this workflow manually from the Actions tab
   workflow_dispatch:
     inputs:
-      version_parameters:
+      deploy_target:
         description: "Deploy to:"
         required: true
         default: "fad"
@@ -30,32 +33,42 @@ jobs:
       - uses: actions/checkout@v3
         with:
           fetch-depth: 50
-      - uses: subosito/flutter-action@v2
-        with:
-          cache: true
-          cache-key: flutter-:os:-:channel:-:version:-:arch:-:hash:-${{ hashFiles('**/pubspec.lock') }}
-      - uses: bluefireteam/melos-action@v2
-      - uses: actions/setup-java@v3
-        with:
-          distribution: zulu
-          java-version: "11.x"
+      # - uses: subosito/flutter-action@v2
+      #   with:
+      #     cache: true
+      #     cache-key: flutter-:os:-:channel:-:version:-:arch:-:hash:-${{ hashFiles('**/pubspec.lock') }}
+      # - uses: bluefireteam/melos-action@v2
+      # - uses: actions/setup-java@v3
+      #   with:
+      #     distribution: zulu
+      #     java-version: "11.x"
 
       # Secrets
-      - name: Decrypt secrets
-        run: melos decrypt-secrets
+      # - name: Decrypt secrets
+      #   run: melos decrypt-secrets
 
       # iOS certs
-      - name: Making sure the iOS certificates and profiles are installed
-        run: melos build:ios_match_assure
+      # - name: Making sure the iOS certificates and profiles are installed
+      #   run: melos build:ios_match_assure
 
       # Dart/Flutter
-      - name: Generate dart code
-        run: melos codegen --no-select
+      # - name: Generate dart code
+      #   run: melos codegen --no-select
 
       # Build and deploy to FAD
-      # - name: Build and deploy to FAD
+      - name: ECHO
+        run: echo ${{ inputs.deploy_target }}
+
+
+      - name: Build and deploy to FAD
+        if: contains(inputs.deploy_target, 'fad')
+        run: echo "to FAD!"
+
+      - name: Build and deploy to STORE
+        if: contains(inputs.deploy_target, 'store')
+        run: echo "to STORE!"
       #   run: melos build:deploy_fad
 
-      # Build and deploy to FAD
-      - name: Build and deploy to FAD
-        run: melos build:deploy_store
+      # Build and deploy to STORE
+      # - name: Build and deploy to STORE
+      #   run: melos build:deploy_store
