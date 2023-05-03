@@ -9,67 +9,88 @@ import 'dart:ui';
 class ColorsPalette {
   /// {@macro colors_palette}
   const ColorsPalette({
-    required this.primaryTappableColor,
-    required this.secondaryTappableColor,
+    required this.backgroundPrimary,
+    required this.backgroundOverlay,
+    required this.textPrimary,
+    required this.textSecondary,
+    required this.textTertiary,
+    required this.textButtonPrimary,
+    required this.textButtonSecondary,
+    required this.textNegative,
+    required this.textPositive,
+    required this.textButtonPressed,
+    required this.textButtonDisabled,
+    required this.accentPrimary,
+    required this.accentPrimaryPressed,
+    required this.accentPrimaryDisabled,
+    required this.accentSecondary,
+    required this.accentSecondaryPressed,
+    required this.accentSecondaryDisabled,
+    required this.accentTertiary,
+    required this.accentTertiaryPressed,
+    required this.accentTertiaryDisabled,
+    required this.accentWarning,
+    required this.accentWarningPressed,
+    required this.accentWarningDisabled,
+    required this.fillingPrimary,
+    required this.fillingSecondary,
+    required this.fillingTertiary,
+    required this.fillingPressed,
+    required this.statusPositiveTitle,
+    required this.statusPositiveBackground,
+    required this.statusMediumTitle,
+    required this.statusMediumBackground,
+    required this.statusNegativeTitle,
+    required this.statusNegativeBackground,
   });
 
-  /// Default color for buttons and tappable elements
-  final Color primaryTappableColor;
+  /// Background color for theme
+  final Color backgroundPrimary;
+  final Color backgroundOverlay;
 
-  /// Secondary color for buttons and tappable elements
-  final Color secondaryTappableColor;
-}
+  /// Text color for theme
+  final Color textPrimary;
+  final Color textSecondary;
+  final Color textTertiary;
+  final Color textButtonPrimary;
+  final Color textButtonSecondary;
+  final Color textNegative;
+  final Color textPositive;
+  final Color textButtonPressed;
+  final Color textButtonDisabled;
 
-class ColorsRes {
-  static const transparent = _Colors.transparent;
+  /// Accent color for theme
+  final Color accentPrimary;
+  final Color accentPrimaryPressed;
+  final Color accentPrimaryDisabled;
+  final Color accentSecondary;
+  final Color accentSecondaryPressed;
+  final Color accentSecondaryDisabled;
+  final Color accentTertiary;
+  final Color accentTertiaryPressed;
+  final Color accentTertiaryDisabled;
+  final Color accentWarning;
+  final Color accentWarningPressed;
+  final Color accentWarningDisabled;
 
-  /// Background color for light theme
-  static const lightBackgroundPrimary = _Colors.white;
-  static const lightBackgroundOverlay = _Colors.neutral300Opacity60;
+  /// Fill color for theme
+  final Color fillingPrimary;
+  final Color fillingSecondary;
+  final Color fillingTertiary;
+  final Color fillingPressed;
 
-  /// Text color for light theme
-  static const lightTextPrimary = _Colors.black;
-  static const lightTextSecondary = _Colors.neutral300;
-  static const lightTextTertiary = _Colors.neutral600;
-  static const lightTextButtonPrimary = _Colors.white;
-  static const lightTextButtonSecondary = _Colors.bluePrimary;
-  static const lightTextNegative = _Colors.redPrimary;
-  static const lightTextPositive = _Colors.greenPrimary;
-  static const lightTextButtonPressed = _Colors.blue200;
-  static const lightTextButtonDisabled = _Colors.blue800;
-
-  /// Accent color for light theme
-  static const lightAccentPrimary = _Colors.bluePrimary;
-  static const lightAccentPrimaryPressed = _Colors.blue200;
-  static const lightAccentPrimaryDisabled = _Colors.blue900;
-  static const lightAccentSecondary = _Colors.blue950;
-  static const lightAccentSecondaryPressed = _Colors.blue850;
-  static const lightAccentSecondaryDisabled = _Colors.blue970;
-  static const lightAccentTertiary = _Colors.blue950;
-  static const lightAccentTertiaryPressed = _Colors.blue950;
-  static const lightAccentTertiaryDisabled = _Colors.blue950;
-  static const lightAccentWarning = _Colors.redPrimary;
-  static const lightAccentWarningPressed = _Colors.red200;
-  static const lightAccentWarningDisabled = _Colors.red900;
-
-  /// Fill color for light theme
-  static const lightFillingPrimary = _Colors.neutral600;
-  static const lightFillingSecondary = _Colors.blue950;
-  static const lightFillingIcons = _Colors.neutral600;
-  static const lightFillingHover = _Colors.neutral900;
-
-  /// Status color for light theme
-  static const lightStatusPositiveTitle = _Colors.green300;
-  static const lightStatusPositiveBackground = _Colors.green900;
-  static const lightStatusMediumTitle = _Colors.yellow300;
-  static const lightStatusMediumBackground = _Colors.yellow900;
-  static const lightStatusNegativeTitle = _Colors.red300;
-  static const lightStatusNegativeBackground = _Colors.red900;
+  /// Status color for theme
+  final Color statusPositiveTitle;
+  final Color statusPositiveBackground;
+  final Color statusMediumTitle;
+  final Color statusMediumBackground;
+  final Color statusNegativeTitle;
+  final Color statusNegativeBackground;
 }
 
 /// List of all colors from nekoton's palette.
-class _Colors {
-  const _Colors._();
+class ColorsRes {
+  const ColorsRes._();
 
   static const white = Color(0xFFFFFFFF);
   static const black = Color(0xFF000000);
@@ -96,10 +117,12 @@ class _Colors {
   static const neutral300Opacity60 = Color(0x996C7078);
   static const neutralPrimary = Color(0xFF8B909A);
   static const neutral600 = Color(0xFFA6AAB2);
+  static const neutral700 = Color(0xFFB7BAC2);
   static const neutral900 = Color(0xFFF0F1F5);
   static const neutral950 = Color(0xFFF7F7F9);
 
   /// Blue
+  static const lightBlue = Color(0xFFC5E4F3);
   static const blue200 = Color(0xFF183784);
   static const bluePrimary = Color(0xFF2B63F1);
   static const blue700 = Color(0xFF7D9FF7);
@@ -108,4 +131,7 @@ class _Colors {
   static const blue900 = Color(0xFFDAE4FD);
   static const blue950 = Color(0xFFECF1FE);
   static const blue970 = Color(0xFFF9FAFF);
+
+  /// Dark theme
+  static const dark060C32 = Color(0xFF060C32);
 }
