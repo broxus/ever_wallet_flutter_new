@@ -37,13 +37,13 @@ jobs:
       - name: Create Pull Request
         uses: peter-evans/create-pull-request@v5.0.1
         with:
-          commit-message: "feat: version bump"
+          commit-message: "chore: version bump"
           committer: nesquikm <drapolyuk@gmail.com>
           author: ${{ github.actor }} <${{ github.actor }}@users.noreply.github.com>
           signoff: false
           branch: version-bump
           delete-branch: true
-          title: "feat: version bump"
+          title: "chore: version bump"
           body: |
             ## Description
 
