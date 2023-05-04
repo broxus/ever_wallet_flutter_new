@@ -5,6 +5,10 @@ packages:
   - .
 
 scripts:
+  decrypt-secrets:
+    run: bash scripts/decrypt-secrets.sh
+    description: Decrypt secrets
+
   codegen:
     exec: "flutter packages pub run build_runner build --delete-conflicting-outputs"
     description: Generate code for all packages
@@ -58,13 +62,33 @@ scripts:
       dirExists: integration_test
 
   check-all:
-    run: melos analyze && melos test && melos test:integration
+    run: melos check-format && melos analyze && melos test && melos test:integration
     description: Prepare to commit by checking all things
     failFast: true
 
   build:storybook:
     run: bash scripts/build-storybook.sh
     description: Build the storybook
+
+  build:ios_match_assure:
+    run: bash scripts/ios-match-assure.sh
+    description: Making sure the iOS certificates and profiles are installed
+
+  build:ios_match_new_devices:
+    run: bash scripts/ios-match-new-devices.sh
+    description: Registering new devices already added through devportal
+
+  build:deploy_fad:
+    run: bash scripts/build-deploy-fad.sh
+    description: Build and deploy to FAD
+
+  build:deploy_store:
+    run: bash scripts/build-deploy-store.sh
+    description: Build and deploy to Testflight and Google Play internal
+
+  build:deploy_fad_store:
+    run: bash scripts/build-deploy-fad-store.sh
+    description: Build and deploy to FAD, Testflight and Google Play internal
 
 command:
   clean:

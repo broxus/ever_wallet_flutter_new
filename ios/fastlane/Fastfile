@@ -1,0 +1,61 @@
+# This file contains the fastlane.tools configuration
+# You can find the documentation at https://docs.fastlane.tools
+#
+# For a list of all available actions, check out
+#
+#     https://docs.fastlane.tools/actions
+#
+# For a list of all available plugins, check out
+#
+#     https://docs.fastlane.tools/plugins/available-plugins
+#
+
+# Uncomment the line if you want fastlane to automatically update itself
+# update_fastlane
+
+default_platform(:ios)
+
+platform :ios do
+  desc "Deploy a new build to the TestFlight"
+  lane :deploy_testflight do |options|
+    setup_ci if ENV['CI']
+    api_key = app_store_connect_api_key(
+      key_id: "L4N29B6Z42",
+      issuer_id: "85296931-1453-4b5c-ab31-7df0851a233b",
+      key_filepath: "fastlane/AuthKey_L4N29B6Z42.p8",
+    )
+    upload_to_testflight(
+      ipa: "../build/ios/ipa/App.ipa",
+      skip_waiting_for_build_processing: true,
+      api_key: api_key,
+      changelog: "#{options[:changelog_string]}"
+    )
+  end
+
+  desc "Deploy a new build to the FAD"
+  lane :deploy_fad do |options|
+    setup_ci if ENV['CI']
+    firebase_app_distribution(
+      app: "1:1017783238389:ios:a0ab19a124c910702e4fbc",
+      groups: "qa",
+      ipa_path: "../build/ios/ipa/App.ipa",
+      service_credentials_file: "../fastlane/FirebaseADKey.json",
+      release_notes: "#{options[:changelog_string]}"
+    )
+  end
+
+  desc "Assure there is correct iOS certs and profiles"
+  lane :match_assure do
+    setup_ci if ENV['CI']
+    match(type: "appstore", readonly: is_ci)
+    match(type: "development", readonly: is_ci)
+    match(type: "adhoc", readonly: is_ci)
+  end
+
+  desc "Register new devices already added through devportal to adhoc and development certs and profiles"
+  lane :match_new_devices do
+    setup_ci if ENV['CI']
+    match(type: "development", force_for_new_devices: true)
+    match(type: "adhoc", force_for_new_devices: true)
+  end
+end

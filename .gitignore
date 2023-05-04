@@ -74,6 +74,7 @@ lib/di/di.config.dart
 **/android/**/GeneratedPluginRegistrant.java
 **/android/key.properties
 **/android/.idea/
+**/android/fastlane/metadata/
 *.jks
 local.properties
 
@@ -146,3 +147,8 @@ android/fastlane/GooglePlayServiceAccount.json
 ios/fastlane/AuthKey_L4N29B6Z42.p8
 fastlane/FirebaseAPIKey.json
 fastlane/FirebaseADKey.json
+secrets/.secrets
+secrets/ios-provisioning-key*
+
+# Fastlane
+**/fastlane/report.xml
