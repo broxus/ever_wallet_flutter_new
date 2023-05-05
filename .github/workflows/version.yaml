@@ -16,6 +16,9 @@ on:
 jobs:
   version_bump:
     runs-on: macos-latest
+    env:
+      GITHUB_TOKEN: ${{ secrets.BOT_ACCESS_TOKEN }}
+
     steps:
       # Setup
       - uses: actions/checkout@v3
