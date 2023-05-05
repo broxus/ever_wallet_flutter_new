@@ -2,7 +2,11 @@ enum AppRoute {
   onboarding('onboarding', '/onboarding'),
   wallet('wallet', '/wallet'),
   browser('browser', '/browser'),
-  profile('profile', '/profile');
+  profile('profile', '/profile'),
+  createSeed('createSeed', '/createSeed'),
+  checkSeed('checkSeed', '/checkSeed'),
+  enterSeed('enterSeed', '/enterSeed'),
+  createSeedPassword('createSeedPassword', '/createSeedPassword');
 
   const AppRoute(this.name, this.path);
 

@@ -64,7 +64,6 @@ class _CreateSeedPasswordViewState extends State<CreateSeedPasswordView> {
       onTap: () => FocusScope.of(context).unfocus(),
       child: Scaffold(
         resizeToAvoidBottomInset: false,
-        backgroundColor: Colors.transparent,
         appBar: const OnboardingAppBar(),
         body: SafeArea(
           child: Padding(

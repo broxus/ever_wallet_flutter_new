@@ -53,6 +53,18 @@ GoRouter getRouter(BuildContext context) {
           state,
           const OnboardingPage(),
         ),
+        routes: [
+          GoRoute(
+            name: AppRoute.createSeed.name,
+            path: AppRoute.createSeed.path,
+            pageBuilder: (BuildContext context, GoRouterState state) =>
+                onboardingTransitionPageBuilder(
+              context,
+              state,
+              const WalletPage(),
+            ),
+          ),
+        ],
       ),
       ShellRoute(
         pageBuilder: (context, state, child) => rootTransitionPageBuilder(

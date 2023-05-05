@@ -94,7 +94,6 @@ class _EnterSeedPhraseViewState extends State<EnterSeedPhraseView> {
       onTap: () => FocusScope.of(context).unfocus(),
       child: Scaffold(
         resizeToAvoidBottomInset: false,
-        backgroundColor: Colors.transparent,
         appBar: const OnboardingAppBar(),
         body: SafeArea(
           child: Padding(

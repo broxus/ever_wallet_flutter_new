@@ -1,5 +1,4 @@
 import 'package:app/feature/add_seed_to_app/create_seed/create_seed.dart';
-import 'package:app/feature/onboarding/widgets/onboarding_app_bar.dart';
 import 'package:app/generated/assets.gen.dart';
 import 'package:app/l10n/l10n.dart';
 import 'package:collection/collection.dart';
@@ -22,14 +21,11 @@ class CreateSeedView extends StatefulWidget {
   const CreateSeedView({
     required this.skipCallback,
     required this.checkCallback,
-    required this.needSkipButtonBorder,
     super.key,
   });
 
   final CreateSeedNavigationCallback skipCallback;
   final CreateSeedNavigationCallback checkCallback;
-
-  final bool needSkipButtonBorder;
 
   @override
   State<CreateSeedView> createState() => _CreateSeedViewState();
@@ -45,77 +41,72 @@ class _CreateSeedViewState extends State<CreateSeedView> {
     final localization = context.l10n;
     final colors = context.themeStyle.colors;
 
-    return Scaffold(
-      resizeToAvoidBottomInset: false,
-      backgroundColor: Colors.transparent,
-      appBar: const OnboardingAppBar(),
-      body: SafeArea(
-        child: Padding(
-          padding: const EdgeInsets.all(16),
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              Text(
-                localization.save_seed_phrase,
-                style: StyleRes.pageTitle.copyWith(color: colors.textPrimary),
-              ),
-              const SizedBox(height: 12),
-              Text(
-                localization.save_seed_warning,
-                style: StyleRes.bodyText.copyWith(color: colors.textSecondary),
-              ),
-              const SizedBox(height: 24),
-              Expanded(
-                child: BlocBuilder<CreateSeedCubit, CreateSeedCubitState>(
-                  bloc: cubit,
-                  builder: (context, state) {
-                    return state.when(
-                      initial: Container.new,
-                      generated: (words) {
-                        return Stack(
-                          children: [
-                            SingleChildScrollView(
-                              child: Column(
-                                mainAxisSize: MainAxisSize.min,
-                                children: [
-                                  _wordsField(colors, words),
-                                  _copyButton(words),
-                                  // To allow scroll above buttons
-                                  const SizedBox(
-                                    height: commonButtonHeight * 2 + 12,
-                                  ),
-                                ],
-                              ),
+    return SafeArea(
+      child: Padding(
+        padding: const EdgeInsets.all(16),
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            Text(
+              localization.save_seed_phrase,
+              style: StyleRes.pageTitle.copyWith(color: colors.textPrimary),
+            ),
+            const SizedBox(height: 12),
+            Text(
+              localization.save_seed_warning,
+              style: StyleRes.bodyText.copyWith(color: colors.textSecondary),
+            ),
+            const SizedBox(height: 24),
+            Expanded(
+              child: BlocBuilder<CreateSeedCubit, CreateSeedCubitState>(
+                bloc: cubit,
+                builder: (context, state) {
+                  return state.when(
+                    initial: Container.new,
+                    generated: (words) {
+                      return Stack(
+                        children: [
+                          SingleChildScrollView(
+                            child: Column(
+                              mainAxisSize: MainAxisSize.min,
+                              children: [
+                                _wordsField(colors, words),
+                                _copyButton(words),
+                                // To allow scroll above buttons
+                                const SizedBox(
+                                  height: commonButtonHeight * 2 + 12,
+                                ),
+                              ],
                             ),
-                            Positioned(
-                              left: 0,
-                              right: 0,
-                              bottom: 0,
-                              child: Column(
-                                children: [
-                                  CommonButton.primary(
-                                    text: localization.check_seed_phrase,
-                                    onPressed: () =>
-                                        widget.checkCallback(context, words),
-                                  ),
-                                  const SizedBox(height: 12),
-                                  CommonButton.secondary(
-                                    text: localization.skip_take_risk,
-                                    onPressed: () =>
-                                        widget.skipCallback(context, words),
-                                  ),
-                                ],
-                              ),
+                          ),
+                          Positioned(
+                            left: 0,
+                            right: 0,
+                            bottom: 0,
+                            child: Column(
+                              children: [
+                                CommonButton.primary(
+                                  text: localization.check_seed_phrase,
+                                  onPressed: () =>
+                                      widget.checkCallback(context, words),
+                                ),
+                                const SizedBox(height: 12),
+                                CommonButton.secondary(
+                                  text: localization.skip_take_risk,
+                                  onPressed: () =>
+                                      widget.skipCallback(context, words),
+                                ),
+                              ],
                             ),
-                          ],
-                        );
-                      },
-                    );
-                  },
-                ),
+                          ),
+                        ],
+                      );
+                    },
+                  );
+                },
               ),
-            ],
-          ),
+            ),
+          ],
         ),
       ),
     );

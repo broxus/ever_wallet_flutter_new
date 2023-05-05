@@ -51,7 +51,6 @@ class _CheckSeedPhraseViewState extends State<CheckSeedPhraseView> {
     final colors = context.themeStyle.colors;
 
     return Scaffold(
-      backgroundColor: Colors.transparent,
       appBar: OnboardingAppBar(
         actions: [
           CommonButton.ghostNoPadding(
