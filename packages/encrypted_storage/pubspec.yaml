@@ -1,6 +1,6 @@
 name: encrypted_storage
 description: Encrypted storage
-version: 0.1.0+1
+version: 0.1.1-dev.0
 publish_to: none
 
 environment:
