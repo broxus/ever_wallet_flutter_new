@@ -67,6 +67,7 @@ class NekotonRepository {
     required fnb.StorageRemove remove,
     required fnb.StorageRemoveUnchecked removeUnchecked,
   }) async {
+    await fnb.initRustToDartCaller();
     _nekotonStorage = await Storage.create(
       get: get,
       set: set,
