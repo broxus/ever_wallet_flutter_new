@@ -1,4 +1,6 @@
 #!/bin/bash
+set -e
+set -o pipefail
 
 # Setup
 BUILD_DIR=packages/ui_components_lib/example

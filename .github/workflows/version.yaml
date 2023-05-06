@@ -1,0 +1,61 @@
+name: Version main app
+
+on:
+  # Allows you to run this workflow manually from the Actions tab
+  workflow_dispatch:
+    inputs:
+      version_parameters:
+        description: 'Parameters to pass to "melos version"'
+        required: true
+        default: "--prerelease"
+        type: choice
+        options:
+          - "--prerelease"
+          - "--graduate"
+
+jobs:
+  version_bump:
+    runs-on: macos-latest
+    steps:
+      # Setup
+      - uses: actions/checkout@v3
+        with:
+          token: ${{ secrets.BOT_ACCESS_TOKEN }}
+      - name: Setup git
+        run: |
+          git config user.name "nesquikm"
+          git config user.email "drapolyuk@gmail.com"
+      - uses: subosito/flutter-action@v2
+        with:
+          cache: true
+          cache-key: flutter-:os:-:channel:-:version:-:arch:-:hash:-${{ hashFiles('**/pubspec.lock') }}
+      - uses: bluefireteam/melos-action@v2
+
+      - name: Bump version using melos
+        run: melos version -a --yes ${{ inputs.version_parameters }}
+
+      - name: Create Pull Request
+        uses: peter-evans/create-pull-request@v5.0.1
+        with:
+          commit-message: "chore: version bump"
+          committer: nesquikm <drapolyuk@gmail.com>
+          author: ${{ github.actor }} <${{ github.actor }}@users.noreply.github.com>
+          signoff: false
+          branch: version-bump
+          delete-branch: true
+          title: "chore: version bump"
+          body: |
+            ## Description
+
+            This is an automated PR to bump the version of the main app.
+
+            ## Type of Change
+
+            - [x] 🗑️ Chore
+
+          labels: |
+            version_bump
+            automated_pr
+          draft: false
+      - name: Push modified tags
+        run: git push --tags
