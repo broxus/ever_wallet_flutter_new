@@ -50,7 +50,7 @@ dev_dependencies:
   injectable_generator: ^2.1.5
   integration_test:
     sdk: flutter
-  json_serializable: ^6.6.1
+  json_serializable: ^6.6.2
   melos: ^3.0.0
   mocktail: ^0.3.0
   very_good_analysis: ^4.0.0+1
