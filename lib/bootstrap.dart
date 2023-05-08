@@ -33,6 +33,7 @@ Future<void> bootstrap(
 ) async {
   await configureDi();
   await configureLogger(appBuildType);
+
   await configureEncryptedStorage();
   await configureNavigationService();
   await migrateStorage();
