@@ -44,7 +44,7 @@ dev_dependencies:
   flutter_secure_storage: ^8.0.0
   flutter_test:
     sdk: flutter
-  freezed: ^2.3.2
+  freezed: ^2.3.3
   googleapis_auth: ^1.4.0
   hive_generator: ^2.0.0
   injectable_generator: ^2.1.5
