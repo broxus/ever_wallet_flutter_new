@@ -16,6 +16,9 @@ on:
 jobs:
   version_bump:
     runs-on: macos-latest
+    env:
+      GITHUB_TOKEN: ${{ secrets.BOT_ACCESS_TOKEN }}
+
     steps:
       # Setup
       - uses: actions/checkout@v3
@@ -37,6 +40,7 @@ jobs:
       - name: Create Pull Request
         uses: peter-evans/create-pull-request@v5.0.1
         with:
+          token: ${{ secrets.BOT_ACCESS_TOKEN }}
           commit-message: "chore: version bump"
           committer: nesquikm <drapolyuk@gmail.com>
           author: ${{ github.actor }} <${{ github.actor }}@users.noreply.github.com>
