@@ -98,7 +98,7 @@ class Storage {
   /// Clear storage: all records in one domain
   Future<void> clearDomain([String? domain = defaultDomain]) async {
     final query = '''
-      DELETE FROM storage WHERE domain = "$domain";
+      DELETE FROM storage WHERE domain = '$domain';
     ''';
 
     await _database.execute(query);
@@ -144,7 +144,7 @@ class Storage {
       final prefix = isFirst ? '' : ', ';
       final result =
           // ignore: lines_longer_than_80_chars
-          '$previousValue$prefix("$domain", "${pair.key}", "${pair.value.value}", "${pair.value.iv}" )';
+          "$previousValue$prefix('$domain', '${pair.key}', '${pair.value.value}', '${pair.value.iv}' )";
       isFirst = false;
       return result;
     });
@@ -180,13 +180,13 @@ class Storage {
       var isFirst = true;
       final andClause = keys.fold('', (previousValue, key) {
         final prefix = isFirst ? '' : ' OR ';
-        final result = '$previousValue$prefix(key = "$key")';
+        final result = "$previousValue$prefix(key = '$key')";
         isFirst = false;
         return result;
       });
 
       final query = '''
-        DELETE FROM storage WHERE domain = "$domain" AND ($andClause)
+        DELETE FROM storage WHERE domain = '$domain' AND ($andClause)
       ''';
 
       await _database.execute(query);
@@ -201,7 +201,7 @@ class Storage {
   }) async {
     final list = await _database.rawQuery(
       '''
-        SELECT value, iv FROM storage WHERE domain = "$domain" and key = "$key" LIMIT 1;
+        SELECT value, iv FROM storage WHERE domain = '$domain' and key = '$key' LIMIT 1;
       ''',
     );
 
@@ -219,7 +219,7 @@ class Storage {
   }) async {
     final list = await _database.rawQuery(
       '''
-        SELECT key, value, iv FROM storage WHERE domain = "$domain";
+        SELECT key, value, iv FROM storage WHERE domain = '$domain';
       ''',
     );
 
@@ -240,7 +240,7 @@ class Storage {
   }) async {
     final list = await _database.rawQuery(
       '''
-      SELECT key FROM storage WHERE domain = "$domain";
+      SELECT key FROM storage WHERE domain = '$domain';
     ''',
     );
 
