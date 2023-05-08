@@ -71,6 +71,7 @@ class _CreateSeedViewState extends State<CreateSeedView> {
                               mainAxisSize: MainAxisSize.min,
                               children: [
                                 _wordsField(colors, words),
+                                const SizedBox(height: 4),
                                 _copyButton(words),
                                 // To allow scroll above buttons
                                 const SizedBox(
@@ -89,12 +90,14 @@ class _CreateSeedViewState extends State<CreateSeedView> {
                                   text: localization.check_seed_phrase,
                                   onPressed: () =>
                                       widget.checkCallback(context, words),
+                                  fillWidth: true,
                                 ),
                                 const SizedBox(height: 12),
                                 CommonButton.secondary(
                                   text: localization.skip_take_risk,
                                   onPressed: () =>
                                       widget.skipCallback(context, words),
+                                  fillWidth: true,
                                 ),
                               ],
                             ),

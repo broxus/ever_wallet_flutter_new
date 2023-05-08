@@ -1,3 +1,4 @@
+import 'package:app/app/router/app_route.dart';
 import 'package:app/feature/onboarding/onboarding.dart';
 import 'package:app/l10n/l10n.dart';
 import 'package:flutter/gestures.dart';
@@ -47,12 +48,15 @@ class OnboardingView extends StatelessWidget {
                   const SizedBox(height: 32),
                   CommonButton.primary(
                     text: context.l10n.create_new_wallet,
-                    onPressed: () {},
+                    onPressed: () =>
+                        context.goFurther(AppRoute.createSeed.path),
+                    fillWidth: true,
                   ),
                   const SizedBox(height: 12),
                   CommonButton.secondary(
                     text: context.l10n.sign_in,
-                    onPressed: () {},
+                    onPressed: () => context.goFurther(AppRoute.enterSeed.path),
+                    fillWidth: true,
                   ),
                   // const SizedBox(height: 12),
                   // CommonButton.secondary(

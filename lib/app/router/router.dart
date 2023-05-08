@@ -2,6 +2,10 @@ import 'package:app/app/router/page_transitions.dart';
 import 'package:app/app/router/router.dart';
 import 'package:app/app/service/services.dart';
 import 'package:app/di/di.dart';
+import 'package:app/feature/add_seed_to_app/check_seed_phrase/check_seed_phrase.dart';
+import 'package:app/feature/add_seed_to_app/create_password/create_password.dart';
+import 'package:app/feature/add_seed_to_app/create_seed/create_seed.dart';
+import 'package:app/feature/add_seed_to_app/enter_seed_phrase/enter_seed_phrase.dart';
 import 'package:app/feature/browser/browser.dart';
 import 'package:app/feature/error/error.dart';
 import 'package:app/feature/onboarding/onboarding.dart';
@@ -35,7 +39,9 @@ GoRouter getRouter(BuildContext context) {
     redirect: (context, state) {
       final location = state.location;
       // Save current location in NavigationService
-      inject<NavigationService>().setLocation(location);
+      if (canSaveLocation(location)) {
+        inject<NavigationService>().setLocation(location);
+      }
       final hasSeeds = inject<NekotonRepository>().hasSeeds.value;
 
       // Actually redirect, this is when the router will actually change the
@@ -55,14 +61,44 @@ GoRouter getRouter(BuildContext context) {
         ),
         routes: [
           GoRoute(
-            name: AppRoute.createSeed.name,
             path: AppRoute.createSeed.path,
-            pageBuilder: (BuildContext context, GoRouterState state) =>
-                onboardingTransitionPageBuilder(
-              context,
-              state,
-              const WalletPage(),
-            ),
+            builder: (_, __) => const CreateSeedPage(),
+            routes: [
+              GoRoute(
+                path: AppRoute.checkSeed.path,
+                builder: (_, state) => CheckSeedPhrasePage(
+                  extra: state.extra! as CreateSeedRouteExtra,
+                ),
+                routes: [
+                  GoRoute(
+                    path: AppRoute.createSeedPassword.path,
+                    builder: (_, state) => CreateSeedPasswordOnboardingPage(
+                      extra: state.extra! as CreateSeedRouteExtra,
+                    ),
+                  ),
+                ],
+              ),
+              GoRoute(
+                path: AppRoute.createSeedPassword.path,
+                builder: (BuildContext context, GoRouterState state) =>
+                    CreateSeedPasswordOnboardingPage(
+                  extra: state.extra! as CreateSeedRouteExtra,
+                ),
+              ),
+            ],
+          ),
+          GoRoute(
+            path: AppRoute.enterSeed.path,
+            builder: (_, __) => const EnterSeedPhrasePage(),
+            routes: [
+              GoRoute(
+                path: AppRoute.createSeedPassword.path,
+                builder: (BuildContext context, GoRouterState state) =>
+                    CreateSeedPasswordOnboardingPage(
+                  extra: state.extra! as CreateSeedRouteExtra,
+                ),
+              ),
+            ],
           ),
         ],
       ),

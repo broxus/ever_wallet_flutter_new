@@ -1,3 +1,5 @@
+import 'package:app/app/router/app_route.dart';
+import 'package:app/feature/add_seed_to_app/create_password/create_password.dart';
 import 'package:app/feature/add_seed_to_app/create_seed/create_seed.dart';
 import 'package:app/feature/onboarding/widgets/onboarding_app_bar.dart';
 import 'package:flutter/material.dart';
@@ -15,8 +17,18 @@ class CreateSeedPage extends StatelessWidget {
       resizeToAvoidBottomInset: false,
       appBar: const OnboardingAppBar(),
       body: CreateSeedView(
-        skipCallback: (BuildContext context, List<String> phrase) {},
-        checkCallback: (BuildContext context, List<String> phrase) {},
+        checkCallback: (BuildContext context, List<String> phrase) {
+          context.goFurther(
+            AppRoute.checkSeed.path,
+            extra: CreateSeedRouteExtra(phrase: phrase),
+          );
+        },
+        skipCallback: (BuildContext context, List<String> phrase) {
+          context.goFurther(
+            AppRoute.createSeedPassword.path,
+            extra: CreateSeedRouteExtra(phrase: phrase),
+          );
+        },
       ),
     );
   }

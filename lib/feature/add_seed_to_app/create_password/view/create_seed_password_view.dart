@@ -1,6 +1,5 @@
 import 'dart:async';
 
-import 'package:app/feature/onboarding/widgets/onboarding_app_bar.dart';
 import 'package:app/l10n/l10n.dart';
 import 'package:flutter/material.dart';
 import 'package:ui_components_lib/ui_components_lib.dart';
@@ -60,71 +59,63 @@ class _CreateSeedPasswordViewState extends State<CreateSeedPasswordView> {
     final colors = context.themeStyle.colors;
     final localization = context.l10n;
 
-    return GestureDetector(
-      onTap: () => FocusScope.of(context).unfocus(),
-      child: Scaffold(
-        resizeToAvoidBottomInset: false,
-        appBar: const OnboardingAppBar(),
-        body: SafeArea(
-          child: Padding(
-            padding: const EdgeInsets.all(16),
-            child: Form(
-              key: formKey,
-              // TODO(alex-a4): add transport checking
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  Text(
-                    localization.create_password,
-                    style:
-                        StyleRes.pageTitle.copyWith(color: colors.textPrimary),
-                  ),
-                  const SizedBox(height: 16),
-                  Text(
-                    localization.create_password_description,
-                    style:
-                        StyleRes.bodyText.copyWith(color: colors.textSecondary),
-                  ),
-                  const SizedBox(height: 32),
-                  CommonInput(
-                    obscureText: true,
-                    controller: passwordController,
-                    focusNode: passwordFocus,
-                    labelText: localization.your_password,
-                    onSubmitted: (_) => confirmFocus.requestFocus(),
-                    validator: (_) {
-                      if (passwordController.text.length >= 8) {
-                        return null;
-                      }
-                      return localization.password_length;
-                    },
-                  ),
-                  const SizedBox(height: 12),
-                  CommonInput(
-                    obscureText: true,
-                    controller: confirmController,
-                    focusNode: confirmFocus,
-                    labelText: localization.confirm_password,
-                    textInputAction: TextInputAction.done,
-                    onSubmitted: (_) => _nextAction(),
-                    validator: (_) {
-                      if (confirmController.text == passwordController.text) {
-                        return null;
-                      }
-
-                      return localization.passwords_match;
-                    },
-                  ),
-                  const SizedBox(height: 12),
-                  if (widget.needBiometryIfPossible) getBiometricSwitcher(),
-                  const Spacer(),
-                  CommonButton.primary(
-                    text: localization.next,
-                    onPressed: _nextAction,
-                  ),
-                ],
+    return SafeArea(
+      child: Padding(
+        padding: const EdgeInsets.all(16),
+        child: Form(
+          key: formKey,
+          // TODO(alex-a4): add transport checking
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              Text(
+                localization.create_password,
+                style: StyleRes.pageTitle.copyWith(color: colors.textPrimary),
               ),
-            ),
+              const SizedBox(height: 16),
+              Text(
+                localization.create_password_description,
+                style: StyleRes.bodyText.copyWith(color: colors.textSecondary),
+              ),
+              const SizedBox(height: 32),
+              CommonInput(
+                obscureText: true,
+                controller: passwordController,
+                focusNode: passwordFocus,
+                labelText: localization.your_password,
+                onSubmitted: (_) => confirmFocus.requestFocus(),
+                validator: (_) {
+                  if (passwordController.text.length >= 8) {
+                    return null;
+                  }
+                  return localization.password_length;
+                },
+              ),
+              const SizedBox(height: 12),
+              CommonInput(
+                obscureText: true,
+                controller: confirmController,
+                focusNode: confirmFocus,
+                labelText: localization.confirm_password,
+                textInputAction: TextInputAction.done,
+                onSubmitted: (_) => _nextAction(),
+                validator: (_) {
+                  if (confirmController.text == passwordController.text) {
+                    return null;
+                  }
+
+                  return localization.passwords_match;
+                },
+              ),
+              const SizedBox(height: 12),
+              if (widget.needBiometryIfPossible) getBiometricSwitcher(),
+              const Spacer(),
+              CommonButton.primary(
+                text: localization.next,
+                onPressed: _nextAction,
+                fillWidth: true,
+              ),
+            ],
           ),
         ),
       ),

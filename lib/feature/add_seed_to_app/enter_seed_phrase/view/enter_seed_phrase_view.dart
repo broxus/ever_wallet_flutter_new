@@ -1,7 +1,6 @@
 import 'dart:async';
 
 import 'package:app/feature/add_seed_to_app/constants.dart';
-import 'package:app/feature/onboarding/widgets/onboarding_app_bar.dart';
 import 'package:app/l10n/l10n.dart';
 import 'package:collection/collection.dart';
 import 'package:flutter/material.dart';
@@ -90,31 +89,25 @@ class _EnterSeedPhraseViewState extends State<EnterSeedPhraseView> {
     final l10n = context.l10n;
     final bottomPadding = MediaQuery.of(context).viewInsets.bottom;
 
-    return GestureDetector(
-      onTap: () => FocusScope.of(context).unfocus(),
-      child: Scaffold(
-        resizeToAvoidBottomInset: false,
-        appBar: const OnboardingAppBar(),
-        body: SafeArea(
-          child: Padding(
-            padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 16),
-            child: Column(
-              children: [
-                Expanded(
-                  child: _buildPhrasesList(),
-                ),
-                SizedBox(
-                  height: bottomPadding < commonButtonHeight
-                      ? 0
-                      : bottomPadding - commonButtonHeight,
-                ),
-                CommonButton.primary(
-                  text: l10n.confirm,
-                  onPressed: _confirmAction,
-                ),
-              ],
+    return SafeArea(
+      child: Padding(
+        padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 16),
+        child: Column(
+          children: [
+            Expanded(
+              child: _buildPhrasesList(),
             ),
-          ),
+            SizedBox(
+              height: bottomPadding < commonButtonHeight
+                  ? 0
+                  : bottomPadding - commonButtonHeight,
+            ),
+            CommonButton.primary(
+              text: l10n.confirm,
+              onPressed: _confirmAction,
+              fillWidth: true,
+            ),
+          ],
         ),
       ),
     );
@@ -310,7 +303,7 @@ class _EnterSeedPhraseViewState extends State<EnterSeedPhraseView> {
     }
   }
 
-  void _confirmAction() {
+  Future<void> _confirmAction() async {
     if (_validateFormWithError()) {
       try {
         FocusManager.instance.primaryFocus?.unfocus();
@@ -320,11 +313,13 @@ class _EnterSeedPhraseViewState extends State<EnterSeedPhraseView> {
             ? const MnemonicType.legacy()
             : defaultMnemonicType;
 
-        deriveFromPhrase(
+        await deriveFromPhrase(
           phrase: phrase.join(' '),
           mnemonicType: mnemonicType,
         );
-        widget.callback(context, phrase);
+        if (context.mounted) {
+          widget.callback(context, phrase);
+        }
       } on Exception catch (e) {
         formErrorNotifier.value = e.toString();
       } on Object catch (e) {

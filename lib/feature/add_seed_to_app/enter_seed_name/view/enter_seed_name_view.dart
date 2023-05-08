@@ -74,6 +74,7 @@ class _EnterSeedNameViewState extends State<EnterSeedNameView> {
                 CommonButton.primary(
                   text: localization.continue_word,
                   onPressed: _nextAction,
+                  fillWidth: true,
                 ),
               ],
             ),
