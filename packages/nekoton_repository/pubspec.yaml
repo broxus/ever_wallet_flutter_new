@@ -16,7 +16,7 @@ dependencies:
   flutter_nekoton_bridge:
     git:
       url: https://github.com/broxus/nekoton_bridge.git
-      ref: flutter_nekoton_bridge-v1.8.0-dev.7
+      ref: flutter_nekoton_bridge-v1.8.0-dev.8
       path: packages/flutter_nekoton_bridge
   injectable: ^2.1.0
   logging: ^1.1.1

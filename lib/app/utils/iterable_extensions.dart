@@ -1,4 +1,4 @@
-extension ListWidgetExtension<T> on Iterable<T> {
+extension ListExtension<T> on Iterable<T> {
   /// Separate every element of list by [separator].
   /// Typically used in widgets.
   List<T> separated(T separator) {

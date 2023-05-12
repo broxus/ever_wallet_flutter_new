@@ -59,7 +59,7 @@ bool canSaveLocation(String location) {
 
 extension NavigationHelper on BuildContext {
   /// Navigate to a location above current.
-  /// Except of:
+  /// Instead of:
   /// ```
   /// onPressed: () => context.go(
   ///   '${AppRoute.onboarding.path}/${AppRoute.multiuse.path}',
