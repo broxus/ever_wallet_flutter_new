@@ -1,5 +1,6 @@
 import 'package:app/feature/add_seed/constants.dart';
 import 'package:bloc/bloc.dart';
+import 'package:flutter/services.dart';
 import 'package:freezed_annotation/freezed_annotation.dart';
 import 'package:nekoton_repository/nekoton_repository.dart';
 
@@ -13,6 +14,18 @@ class CreateSeedCubit extends Cubit<CreateSeedCubitState> {
 
   Future<void> init() async {
     final seed = await generateKey(accountType: defaultMnemonicType);
-    emit(CreateSeedCubitState.generated(seed.words));
+    emit(CreateSeedCubitState.generated(words: seed.words, isCopied: false));
+  }
+
+  Future<void> copySeed() async {
+    final s = state;
+    if (s is _$_Generated) {
+      await Clipboard.setData(
+        ClipboardData(text: s.words.join(' ')),
+      );
+      Future.delayed(const Duration(seconds: 2), () {
+        emit(s.copyWith(isCopied: false));
+      });
+    }
   }
 }

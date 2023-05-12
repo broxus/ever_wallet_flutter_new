@@ -3,7 +3,6 @@ import 'package:app/generated/assets.gen.dart';
 import 'package:app/l10n/l10n.dart';
 import 'package:collection/collection.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:ui_components_lib/ui_components_lib.dart';
 
@@ -13,7 +12,7 @@ typedef CreateSeedCompleteCallback = void Function(List<String> phrase);
 /// {@template create_seed_view}
 /// Widget that allows user to create random seed phrase, copy it and check
 /// {@endtemplate}
-class CreateSeedView extends StatefulWidget {
+class CreateSeedView extends StatelessWidget {
   /// {@macro create_seed_view}
   const CreateSeedView({
     required this.skipCallback,
@@ -23,13 +22,6 @@ class CreateSeedView extends StatefulWidget {
 
   final CreateSeedCompleteCallback skipCallback;
   final CreateSeedCompleteCallback checkCallback;
-
-  @override
-  State<CreateSeedView> createState() => _CreateSeedViewState();
-}
-
-class _CreateSeedViewState extends State<CreateSeedView> {
-  final isCopied = ValueNotifier<bool>(false);
 
   @override
   Widget build(BuildContext context) {
@@ -57,7 +49,7 @@ class _CreateSeedViewState extends State<CreateSeedView> {
                 builder: (context, state) {
                   return state.when(
                     initial: Container.new,
-                    generated: (words) {
+                    generated: (words, isCopied) {
                       return Stack(
                         children: [
                           SingleChildScrollView(
@@ -66,7 +58,7 @@ class _CreateSeedViewState extends State<CreateSeedView> {
                               children: [
                                 _wordsField(colors, words),
                                 const SizedBox(height: 4),
-                                _copyButton(words),
+                                _copyButton(words, isCopied),
                                 // To allow scroll above buttons
                                 const SizedBox(
                                   height: commonButtonHeight * 2 + 12,
@@ -82,13 +74,13 @@ class _CreateSeedViewState extends State<CreateSeedView> {
                               children: [
                                 CommonButton.primary(
                                   text: localization.check_seed_phrase,
-                                  onPressed: () => widget.checkCallback(words),
+                                  onPressed: () => checkCallback(words),
                                   fillWidth: true,
                                 ),
                                 const SizedBox(height: 12),
                                 CommonButton.secondary(
                                   text: localization.skip_take_risk,
-                                  onPressed: () => widget.skipCallback(words),
+                                  onPressed: () => skipCallback(words),
                                   fillWidth: true,
                                 ),
                               ],
@@ -129,12 +121,12 @@ class _CreateSeedViewState extends State<CreateSeedView> {
     );
   }
 
-  Widget _copyButton(List<String> words) {
-    return ValueListenableBuilder<bool>(
-      valueListenable: isCopied,
-      builder: (context, copied, __) {
+  Widget _copyButton(List<String> words, bool copied) {
+    return Builder(
+      builder: (context) {
         final localization = context.l10n;
         final colors = context.themeStyle.colors;
+        final cubit = context.read<CreateSeedCubit>();
 
         if (copied) {
           return SizedBox(
@@ -155,15 +147,7 @@ class _CreateSeedViewState extends State<CreateSeedView> {
                 svg: Assets.images.copy.path,
               ),
               text: localization.copy_words,
-              onPressed: () {
-                Clipboard.setData(
-                  ClipboardData(text: words.join(' ')),
-                );
-                isCopied.value = true;
-                Future.delayed(const Duration(seconds: 2), () {
-                  isCopied.value = false;
-                });
-              },
+              onPressed: cubit.copySeed,
             ),
           ],
         );
