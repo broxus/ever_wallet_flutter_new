@@ -1,2 +1,2 @@
-//GENERATED BARREL FILE 
-export 'create_seed_cubit.dart'; 
+//GENERATED BARREL FILE
+export 'create_seed_cubit.dart';
