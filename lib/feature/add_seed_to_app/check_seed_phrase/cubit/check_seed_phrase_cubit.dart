@@ -1,12 +1,16 @@
 import 'dart:math';
 
+import 'package:app/feature/add_seed_to_app/check_seed_phrase/cubit/check_seed_correct_answer.dart';
 import 'package:bloc/bloc.dart';
 import 'package:collection/collection.dart';
 import 'package:flutter/foundation.dart';
 import 'package:freezed_annotation/freezed_annotation.dart';
 import 'package:nekoton_repository/nekoton_repository.dart';
 
+export 'check_seed_correct_answer.dart';
+
 part 'check_seed_phrase_cubit.freezed.dart';
+part 'check_seed_phrase_state.dart';
 
 const defaultWordsToCheckAmount = 3;
 const defaultCheckAnswersAmount = 9;
@@ -158,54 +162,4 @@ class CheckSeedPhraseCubit extends Cubit<CheckSeedPhraseCubitState> {
       ..shuffle();
     return answers;
   }
-}
-
-@freezed
-class CheckSeedPhraseCubitState with _$CheckSeedPhraseCubitState {
-  const factory CheckSeedPhraseCubitState.initial() = _Initial;
-
-  /// Display answer without any selections
-  const factory CheckSeedPhraseCubitState.answer(
-    List<String> availableAnswers,
-    List<CheckSeedCorrectAnswer> userAnswers,
-    int currentAnswerIndex,
-  ) = _Answer;
-
-  /// Correct selection. Other selections must be blocked.
-  /// Question will change automatically
-  const factory CheckSeedPhraseCubitState.correct(
-    List<String> availableAnswers,
-    List<CheckSeedCorrectAnswer> userAnswers,
-  ) = _Correct;
-
-  /// Error selection
-  const factory CheckSeedPhraseCubitState.error(
-    List<String> availableAnswers,
-    List<CheckSeedCorrectAnswer> userAnswers,
-  ) = _Error;
-}
-
-@immutable
-class CheckSeedCorrectAnswer {
-  const CheckSeedCorrectAnswer(this.word, this.wordIndex);
-
-  /// If word is empty string then user doesn't answered
-  final String word;
-
-  /// Starts with 0
-  final int wordIndex;
-
-  CheckSeedCorrectAnswer copyWith({required String word}) =>
-      CheckSeedCorrectAnswer(word, wordIndex);
-
-  @override
-  bool operator ==(Object other) =>
-      identical(this, other) ||
-      other is CheckSeedCorrectAnswer &&
-          runtimeType == other.runtimeType &&
-          word == other.word &&
-          wordIndex == other.wordIndex;
-
-  @override
-  int get hashCode => word.hashCode ^ wordIndex.hashCode;
 }
