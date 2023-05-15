@@ -1,3 +1,4 @@
+import 'package:app/app/router/router.dart';
 import 'package:app/feature/widgets/widgets.dart';
 import 'package:flutter/material.dart';
 import 'package:ui_components_lib/ui_components_lib.dart';
@@ -104,7 +105,7 @@ class DefaultAppBar extends StatelessWidget implements PreferredSizeWidget {
                           (_showLeadingClose
                               ? CommonButton.ghostNoPadding(
                                   onPressed: onClosePressed ??
-                                      () => Navigator.of(context).maybePop(),
+                                      () => context.maybePop(),
                                   leading: CommonButtonIconWidget.icon(
                                     icon: Icons.arrow_back_ios,
                                   ),
@@ -122,7 +123,7 @@ class DefaultAppBar extends StatelessWidget implements PreferredSizeWidget {
                               CommonButton.ghostNoPadding(
                                 onPressed: onActionsClosePressed ??
                                     onClosePressed ??
-                                    () => Navigator.of(context).maybePop(),
+                                    () => context.maybePop(),
                                 leading: CommonButtonIconWidget.icon(
                                   icon: Icons.close,
                                 ),
