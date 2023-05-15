@@ -74,4 +74,12 @@ extension NavigationHelper on BuildContext {
     return GoRouter.of(this)
         .go('${GoRouter.of(this).location}/$location', extra: extra);
   }
+
+  /// Pop current screen if possible.
+  void maybePop() {
+    final goRouter = GoRouter.of(this);
+    if (goRouter.canPop()) {
+      goRouter.pop();
+    }
+  }
 }
