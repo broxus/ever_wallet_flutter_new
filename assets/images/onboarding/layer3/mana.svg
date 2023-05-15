@@ -1,0 +1,26 @@
+<svg width="64" height="64" viewBox="0 0 64 64" fill="none" xmlns="http://www.w3.org/2000/svg">
+<defs>
+<linearGradient id="paint0_linear_9683_35494" x1="54.6272" y1="9.3728" x2="9.3728" y2="54.6272" gradientUnits="userSpaceOnUse">
+<stop stop-color="#FF2D55"/>
+<stop offset="1" stop-color="#FFBC5B"/>
+</linearGradient>
+<linearGradient id="paint1_linear_9683_35494" x1="32.6652" y1="20.8" x2="32.6652" y2="44.8" gradientUnits="userSpaceOnUse">
+<stop stop-color="#A524B3"/>
+<stop offset="1" stop-color="#FF2D55"/>
+</linearGradient>
+<linearGradient id="paint2_linear_9683_35494" x1="50.259" y1="33.6" x2="50.259" y2="51.2" gradientUnits="userSpaceOnUse">
+<stop stop-color="#A524B3"/>
+<stop offset="1" stop-color="#FF2D55"/>
+</linearGradient>
+</defs>
+<path d="M32 64C49.6731 64 64 49.6731 64 32C64 14.3269 49.6731 0 32 0C14.3269 0 0 14.3269 0 32C0 49.6731 14.3269 64 32 64Z" fill="url(#paint0_linear_9683_35494)"/>
+<path fill-rule="evenodd" clip-rule="evenodd" d="M22.672 20.8V44.8H42.672L22.672 20.8Z" fill="url(#paint1_linear_9683_35494)"/>
+<path fill-rule="evenodd" clip-rule="evenodd" d="M2.672 44.8H22.672V20.8L2.672 44.8Z" fill="white"/>
+<path fill-rule="evenodd" clip-rule="evenodd" d="M6.40002 51.2C8.22402 53.616 10.384 55.776 12.8 57.6H51.2C53.616 55.776 55.776 53.616 57.6 51.2H6.40002Z" fill="#FC9965"/>
+<path fill-rule="evenodd" clip-rule="evenodd" d="M12.8 57.6C18.144 61.616 24.8 64 32.0001 64C39.2001 64 45.8561 61.616 51.2001 57.6H12.8Z" fill="#FF2D55"/>
+<path fill-rule="evenodd" clip-rule="evenodd" d="M42.928 33.6V51.2H57.6L42.928 33.6Z" fill="url(#paint2_linear_9683_35494)"/>
+<path fill-rule="evenodd" clip-rule="evenodd" d="M42.928 44.8H2.672C3.664 47.088 4.928 49.232 6.4 51.2H42.944V44.8H42.928V44.8Z" fill="#FFBC5B"/>
+<path fill-rule="evenodd" clip-rule="evenodd" d="M28.272 51.2H42.928V33.6L28.272 51.2Z" fill="white"/>
+<path d="M42.928 28.8C47.3463 28.8 50.928 25.2183 50.928 20.8C50.928 16.3817 47.3463 12.8 42.928 12.8C38.5097 12.8 34.928 16.3817 34.928 20.8C34.928 25.2183 38.5097 28.8 42.928 28.8Z" fill="#FFC95B"/>
+<path d="M22.672 16C24.8811 16 26.672 14.2091 26.672 12C26.672 9.79086 24.8811 8 22.672 8C20.4629 8 18.672 9.79086 18.672 12C18.672 14.2091 20.4629 16 22.672 16Z" fill="#FFC95B"/>
+</svg>

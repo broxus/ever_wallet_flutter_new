@@ -2,6 +2,10 @@ import 'package:app/app/router/page_transitions.dart';
 import 'package:app/app/router/router.dart';
 import 'package:app/app/service/services.dart';
 import 'package:app/di/di.dart';
+import 'package:app/feature/add_seed/check_seed_phrase/check_seed_phrase.dart';
+import 'package:app/feature/add_seed/create_password/create_password.dart';
+import 'package:app/feature/add_seed/create_seed/create_seed.dart';
+import 'package:app/feature/add_seed/enter_seed_phrase/enter_seed_phrase.dart';
 import 'package:app/feature/browser/browser.dart';
 import 'package:app/feature/error/error.dart';
 import 'package:app/feature/onboarding/onboarding.dart';
@@ -16,14 +20,14 @@ export 'app_route.dart';
 
 GoRouter getRouter(BuildContext context) {
   // Redirect to onboarding or wallet depending on the current location and if
-  // the user has an account
-  String? shouldRedirect({required String location, required bool hasAccount}) {
+  // the user has any seeds.
+  String? shouldRedirect({required String location, required bool hasSeeds}) {
     final currentRoute = getRootAppRoute(location);
 
-    if (hasAccount && currentRoute == AppRoute.onboarding) {
+    if (hasSeeds && currentRoute == AppRoute.onboarding) {
       // Already onboarded, redirect to wallet
       return AppRoute.wallet.path;
-    } else if (!hasAccount && currentRoute != AppRoute.onboarding) {
+    } else if (!hasSeeds && currentRoute != AppRoute.onboarding) {
       // Not onboarded, redirect to onboarding
       return AppRoute.onboarding.path;
     }
@@ -35,12 +39,14 @@ GoRouter getRouter(BuildContext context) {
     redirect: (context, state) {
       final location = state.location;
       // Save current location in NavigationService
-      inject<NavigationService>().setLocation(location);
-      final hasAccount = inject<NekotonRepository>().accountsStream.value;
+      if (canSaveLocation(location)) {
+        inject<NavigationService>().setLocation(location);
+      }
+      final hasSeeds = inject<NekotonRepository>().hasSeeds.value;
 
       // Actually redirect, this is when the router will actually change the
-      // location, so we need to subscribe to the accountsStream for updates
-      return shouldRedirect(location: location, hasAccount: hasAccount);
+      // location, so we need to subscribe to the hasSeeds for updates
+      return shouldRedirect(location: location, hasSeeds: hasSeeds);
     },
     // Initial location from NavigationService
     initialLocation: inject<NavigationService>().location,
@@ -53,6 +59,48 @@ GoRouter getRouter(BuildContext context) {
           state,
           const OnboardingPage(),
         ),
+        routes: [
+          GoRoute(
+            path: AppRoute.createSeed.path,
+            builder: (_, __) => const CreateSeedPage(),
+            routes: [
+              GoRoute(
+                path: AppRoute.checkSeed.path,
+                builder: (_, state) => CheckSeedPhrasePage(
+                  extra: state.extra! as CreateSeedRouteExtra,
+                ),
+                routes: [
+                  GoRoute(
+                    path: AppRoute.createSeedPassword.path,
+                    builder: (_, state) => CreateSeedPasswordOnboardingPage(
+                      extra: state.extra! as CreateSeedRouteExtra,
+                    ),
+                  ),
+                ],
+              ),
+              GoRoute(
+                path: AppRoute.createSeedPassword.path,
+                builder: (BuildContext context, GoRouterState state) =>
+                    CreateSeedPasswordOnboardingPage(
+                  extra: state.extra! as CreateSeedRouteExtra,
+                ),
+              ),
+            ],
+          ),
+          GoRoute(
+            path: AppRoute.enterSeed.path,
+            builder: (_, __) => const EnterSeedPhrasePage(),
+            routes: [
+              GoRoute(
+                path: AppRoute.createSeedPassword.path,
+                builder: (BuildContext context, GoRouterState state) =>
+                    CreateSeedPasswordOnboardingPage(
+                  extra: state.extra! as CreateSeedRouteExtra,
+                ),
+              ),
+            ],
+          ),
+        ],
       ),
       ShellRoute(
         pageBuilder: (context, state, child) => rootTransitionPageBuilder(
@@ -97,13 +145,13 @@ GoRouter getRouter(BuildContext context) {
     errorBuilder: (context, state) => ErrorPage(state.error),
   );
 
-  // Subscribe to accountsStream to redirect if needed
+  // Subscribe to hasSeeds to redirect if needed
   // This is a-la guard, it should redirect to onboarding or wallet depending
-  // on the current location and if the user has an account
-  inject<NekotonRepository>().accountsStream.listen((hasAccount) {
+  // on the current location and if the user has any seeds.
+  inject<NekotonRepository>().hasSeeds.listen((hasSeeds) {
     final redirectLocation = shouldRedirect(
       location: inject<NavigationService>().location,
-      hasAccount: hasAccount,
+      hasSeeds: hasSeeds,
     );
 
     if (redirectLocation != null) {

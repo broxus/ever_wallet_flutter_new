@@ -28,7 +28,7 @@ Future<void> configureLogger(
       break;
     case AppBuildType.production:
       retainStrategy = {
-        Level.CONFIG: 50,
+        Level.ALL: 50,
         Level.SEVERE: 50,
       };
       break;

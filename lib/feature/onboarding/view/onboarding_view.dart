@@ -1,40 +1,100 @@
-import 'package:app/di/di.dart';
-import 'package:app/feature/onboarding/bloc/onboarding_bloc.dart';
+import 'package:app/app/router/app_route.dart';
+import 'package:app/feature/onboarding/onboarding.dart';
+import 'package:app/l10n/l10n.dart';
+import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:nekoton_repository/nekoton_repository.dart';
+import 'package:ui_components_lib/ui_components_lib.dart';
+import 'package:url_launcher/url_launcher_string.dart';
 
+const decentralizationPolicyLink =
+    'https://l1.broxus.com/everscale/wallet/terms';
+
+/// Main widget of onboarding that new users see
 class OnboardingView extends StatelessWidget {
   const OnboardingView({super.key});
 
   @override
   Widget build(BuildContext context) {
-    return StreamBuilder<bool>(
-      stream: inject<NekotonRepository>().accountsStream,
-      builder: (context, snapshot) {
-        return Column(
+    final l10n = context.l10n;
+    final colors = context.themeStyle.colors;
+
+    return OnboardingBackground(
+      child: SafeArea(
+        minimum: const EdgeInsets.only(bottom: 16),
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            const Text('Onboarding'),
-            TextButton(
-              onPressed: () => onAddAccount(context),
-              child: const Text('Add account'),
+            const SizedBox(height: 8),
+            const Expanded(child: SlidingBlockChains()),
+            const SizedBox(height: 20),
+            Padding(
+              padding: const EdgeInsets.symmetric(horizontal: 16),
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Text(
+                    l10n.welcomeTitle,
+                    style: StyleRes.landingTitle.copyWith(
+                      color: colors.textPrimary,
+                    ),
+                  ),
+                  const SizedBox(height: 16),
+                  Text(
+                    l10n.supportTokenAndAccessEverscale,
+                    style: StyleRes.regular16.copyWith(
+                      color: colors.textPrimary,
+                    ),
+                  ),
+                  const SizedBox(height: 32),
+                  CommonButton.primary(
+                    text: context.l10n.createNewWallet,
+                    onPressed: () =>
+                        context.goFurther(AppRoute.createSeed.path),
+                    fillWidth: true,
+                  ),
+                  const SizedBox(height: 12),
+                  CommonButton.secondary(
+                    text: context.l10n.signIn,
+                    onPressed: () => context.goFurther(AppRoute.enterSeed.path),
+                    fillWidth: true,
+                  ),
+                  // const SizedBox(height: 12),
+                  // CommonButton.secondary(
+                  //   text: l10n.signWithLedger,
+                  // TODO(alex-a4): change icon
+                  //   leading: Assets.images.ledger.svg(
+                  //     color: style.styles.secondaryButtonStyle.color,
+                  //   ),
+                  //   onPressed: () {},
+                  // ),
+                  const SizedBox(height: 16),
+                  Text.rich(
+                    TextSpan(
+                      children: [
+                        TextSpan(
+                          text: l10n.byProcessingAcceptLicense,
+                          style: StyleRes.bodyText.copyWith(
+                            color: colors.textPrimary,
+                          ),
+                        ),
+                        TextSpan(
+                          text: l10n.readHere,
+                          style: StyleRes.bodyText.copyWith(
+                            color: colors.accentPrimary,
+                          ),
+                          recognizer: TapGestureRecognizer()..onTap = onLinkTap,
+                        ),
+                      ],
+                    ),
+                  ),
+                ],
+              ),
             ),
-            TextButton(
-              onPressed: () => onDeleteAccount(context),
-              child: const Text('Delete account'),
-            ),
-            Text('account: ${snapshot.data}'),
           ],
-        );
-      },
+        ),
+      ),
     );
   }
 
-  void onAddAccount(BuildContext context) {
-    context.read<OnboardingBloc>().add(OnboardingAddAccount());
-  }
-
-  void onDeleteAccount(BuildContext context) {
-    context.read<OnboardingBloc>().add(OnboardingDeleteAccount());
-  }
+  void onLinkTap() => launchUrlString(decentralizationPolicyLink);
 }
