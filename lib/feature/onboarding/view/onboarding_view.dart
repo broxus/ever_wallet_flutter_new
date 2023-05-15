@@ -33,34 +33,34 @@ class OnboardingView extends StatelessWidget {
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   Text(
-                    l10n.welcome_title,
+                    l10n.welcomeTitle,
                     style: StyleRes.landingTitle.copyWith(
                       color: colors.textPrimary,
                     ),
                   ),
                   const SizedBox(height: 16),
                   Text(
-                    l10n.support_token_and_access_everscale,
+                    l10n.supportTokenAndAccessEverscale,
                     style: StyleRes.regular16.copyWith(
                       color: colors.textPrimary,
                     ),
                   ),
                   const SizedBox(height: 32),
                   CommonButton.primary(
-                    text: context.l10n.create_new_wallet,
+                    text: context.l10n.createNewWallet,
                     onPressed: () =>
                         context.goFurther(AppRoute.createSeed.path),
                     fillWidth: true,
                   ),
                   const SizedBox(height: 12),
                   CommonButton.secondary(
-                    text: context.l10n.sign_in,
+                    text: context.l10n.signIn,
                     onPressed: () => context.goFurther(AppRoute.enterSeed.path),
                     fillWidth: true,
                   ),
                   // const SizedBox(height: 12),
                   // CommonButton.secondary(
-                  //   text: l10n.sign_with_ledger,
+                  //   text: l10n.signWithLedger,
                   // TODO(alex-a4): change icon
                   //   leading: Assets.images.ledger.svg(
                   //     color: style.styles.secondaryButtonStyle.color,
@@ -72,13 +72,13 @@ class OnboardingView extends StatelessWidget {
                     TextSpan(
                       children: [
                         TextSpan(
-                          text: l10n.by_processing_accept_license,
+                          text: l10n.byProcessingAcceptLicense,
                           style: StyleRes.bodyText.copyWith(
                             color: colors.textPrimary,
                           ),
                         ),
                         TextSpan(
-                          text: l10n.read_here,
+                          text: l10n.readHere,
                           style: StyleRes.bodyText.copyWith(
                             color: colors.accentPrimary,
                           ),

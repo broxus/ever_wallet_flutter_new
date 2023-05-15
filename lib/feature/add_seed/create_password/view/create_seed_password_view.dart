@@ -35,12 +35,12 @@ class CreateSeedPasswordView extends StatelessWidget {
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               Text(
-                localization.create_password,
+                localization.createPassword,
                 style: StyleRes.pageTitle.copyWith(color: colors.textPrimary),
               ),
               const SizedBox(height: 16),
               Text(
-                localization.create_password_description,
+                localization.createPasswordDescription,
                 style: StyleRes.bodyText.copyWith(color: colors.textSecondary),
               ),
               const SizedBox(height: 32),
@@ -48,13 +48,13 @@ class CreateSeedPasswordView extends StatelessWidget {
                 obscureText: true,
                 controller: cubit.passwordController,
                 focusNode: cubit.passwordFocus,
-                labelText: localization.your_password,
+                labelText: localization.yourPassword,
                 onSubmitted: (_) => cubit.confirmFocus.requestFocus(),
                 validator: (_) {
                   if (cubit.passwordController.text.length >= 8) {
                     return null;
                   }
-                  return localization.password_length;
+                  return localization.passwordLength;
                 },
               ),
               const SizedBox(height: 12),
@@ -62,7 +62,7 @@ class CreateSeedPasswordView extends StatelessWidget {
                 obscureText: true,
                 controller: cubit.confirmController,
                 focusNode: cubit.confirmFocus,
-                labelText: localization.confirm_password,
+                labelText: localization.confirmPassword,
                 textInputAction: TextInputAction.done,
                 onSubmitted: (_) => cubit.nextAction(),
                 validator: (_) {
@@ -71,7 +71,7 @@ class CreateSeedPasswordView extends StatelessWidget {
                     return null;
                   }
 
-                  return localization.passwords_match;
+                  return localization.passwordsMatch;
                 },
               ),
               const SizedBox(height: 12),
@@ -102,7 +102,7 @@ class CreateSeedPasswordView extends StatelessWidget {
             children: [
               Expanded(
                 child: Text(
-                  localization.use_biometry_for_fast_login,
+                  localization.useBiometryForFastLogin,
                   style: StyleRes.regular16.copyWith(color: colors.textPrimary),
                 ),
               ),

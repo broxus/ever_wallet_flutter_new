@@ -30,7 +30,7 @@ class CounterView extends StatelessWidget {
   Widget build(BuildContext context) {
     final l10n = context.l10n;
     return Scaffold(
-      appBar: AppBar(title: Text(l10n.welcome_title)),
+      appBar: AppBar(title: Text(l10n.welcomeTitle)),
       body: SafeArea(
         child: Column(
           children: [

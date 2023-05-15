@@ -35,12 +35,12 @@ class CreateSeedView extends StatelessWidget {
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             Text(
-              localization.save_seed_phrase,
+              localization.saveSeedPhrase,
               style: StyleRes.pageTitle.copyWith(color: colors.textPrimary),
             ),
             const SizedBox(height: 12),
             Text(
-              localization.save_seed_warning,
+              localization.saveSeedWarning,
               style: StyleRes.bodyText.copyWith(color: colors.textSecondary),
             ),
             const SizedBox(height: 24),
@@ -73,13 +73,13 @@ class CreateSeedView extends StatelessWidget {
                             child: Column(
                               children: [
                                 CommonButton.primary(
-                                  text: localization.check_seed_phrase,
+                                  text: localization.checkSeedPhrase,
                                   onPressed: () => checkCallback(words),
                                   fillWidth: true,
                                 ),
                                 const SizedBox(height: 12),
                                 CommonButton.secondary(
-                                  text: localization.skip_take_risk,
+                                  text: localization.skipTakeRisk,
                                   onPressed: () => skipCallback(words),
                                   fillWidth: true,
                                 ),
@@ -133,7 +133,7 @@ class CreateSeedView extends StatelessWidget {
             height: commonButtonHeight,
             child: Align(
               child: Text(
-                localization.copied_no_exclamation,
+                localization.copiedNoExclamation,
                 style: StyleRes.medium16.copyWith(color: colors.textPositive),
               ),
             ),
@@ -146,7 +146,7 @@ class CreateSeedView extends StatelessWidget {
               leading: CommonButtonIconWidget.svg(
                 svg: Assets.images.copy.path,
               ),
-              text: localization.copy_words,
+              text: localization.copyWords,
               onPressed: cubit.copySeed,
             ),
           ],

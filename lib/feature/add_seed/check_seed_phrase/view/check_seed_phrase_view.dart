@@ -20,12 +20,12 @@ class CheckSeedPhraseView extends StatelessWidget {
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             Text(
-              l10n.check_seed_phrase,
+              l10n.checkSeedPhrase,
               style: StyleRes.pageTitle.copyWith(color: colors.textPrimary),
             ),
             const SizedBox(height: 16),
             Text(
-              l10n.check_seed_phrase_correctly,
+              l10n.checkSeedPhraseCorrectly,
               style: StyleRes.bodyText.copyWith(color: colors.textSecondary),
             ),
             const SizedBox(height: 32),
@@ -75,7 +75,7 @@ class CheckSeedPhraseView extends StatelessWidget {
             ),
             if (isError)
               Text(
-                localization.seed_is_wrong,
+                localization.seedIsWrong,
                 style: StyleRes.bodyText.copyWith(color: colors.textNegative),
               ),
             const Spacer(),

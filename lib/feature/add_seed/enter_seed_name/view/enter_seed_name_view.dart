@@ -44,12 +44,12 @@ class _EnterSeedNameViewState extends State<EnterSeedNameView> {
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             Text(
-              localization.seed_phrase_name_title,
+              localization.seedPhraseNameTitle,
               style: StyleRes.pageTitle.copyWith(color: colors.textPrimary),
             ),
             const SizedBox(height: 12),
             Text(
-              localization.seed_phrase_name_description,
+              localization.seedPhraseNameDescription,
               style: StyleRes.bodyText.copyWith(
                 color: colors.textSecondary,
               ),
@@ -58,12 +58,12 @@ class _EnterSeedNameViewState extends State<EnterSeedNameView> {
             CommonInput(
               controller: nameController,
               height: 52,
-              labelText: localization.seed_name,
+              labelText: localization.seedName,
               onSubmitted: (_) => _nextAction(),
             ),
             const Spacer(),
             CommonButton.primary(
-              text: localization.continue_word,
+              text: localization.continueWord,
               onPressed: _nextAction,
               fillWidth: true,
             ),

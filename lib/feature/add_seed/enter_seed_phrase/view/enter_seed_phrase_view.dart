@@ -67,7 +67,7 @@ class EnterSeedPhraseView extends StatelessWidget {
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   Text(
-                    l10n.enter_seed_phrase,
+                    l10n.enterSeedPhrase,
                     style:
                         StyleRes.pageTitle.copyWith(color: colors.textPrimary),
                   ),
@@ -79,22 +79,21 @@ class EnterSeedPhraseView extends StatelessWidget {
                           values: allowedValues,
                           selectedValue: currentValue,
                           onChanged: cubit.changeTab,
-                          builder: (_, v) => l10n.words_count(v),
+                          builder: (_, v) => l10n.wordsCount(v),
                         ),
                       ),
                       CommonButton.ghostNoPadding(
                         onPressed: displayPasteButton
                             ? cubit.pastePhrase
                             : cubit.clearFields,
-                        text: displayPasteButton
-                            ? l10n.paste_all
-                            : l10n.clear_all,
+                        text:
+                            displayPasteButton ? l10n.pasteAll : l10n.clearAll,
                       ),
                     ],
                   ),
                   const SizedBox(height: 12),
                   Text(
-                    l10n.paste_seed_into_first_box,
+                    l10n.pasteSeedIntoFirstBox,
                     style:
                         StyleRes.bodyText.copyWith(color: colors.textPrimary),
                   ),
