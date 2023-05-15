@@ -34,7 +34,7 @@ dependencies:
   money2_improver: ^1.2.0
   nekoton_repository:
     path: packages/nekoton_repository
-  path_provider: ^2.0.14
+  path_provider: ^2.0.15
   rxdart: ^0.27.7
   string_extensions: ^0.6.6
   tuple: ^2.0.1
