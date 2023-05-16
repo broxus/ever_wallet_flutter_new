@@ -40,7 +40,7 @@ dependencies:
   tuple: ^2.0.1
   ui_components_lib:
     path: packages/ui_components_lib
-  url_launcher: ^6.1.10
+  url_launcher: ^6.1.11
   visibility_detector: ^0.4.0+2
 
 dev_dependencies:
