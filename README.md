@@ -99,9 +99,30 @@ $ flutter run --flavor staging --target lib/main_staging.dart
 $ flutter run --flavor production --target lib/main_production.dart
 ```
 
-_\*App works on iOS, Android, Web, and Windows._
+_\*App works on iOS and Android. It should run on macOS, Linux and Windows, but we have no tests nor UI kit for desktop platforms._
 
----
+## Versioning the app 🔢
+
+### App version #️⃣
+
+App version is defined in `pubspec.yaml` file. To bump the version use the following command:
+
+```sh
+# For development releases:
+$ melos version -a --yes --prerelease
+
+# For production releases:
+$ melos version -a --yes --graduate
+```
+
+You can use version workflow in GitHub actions to bump the version automatically. This workflow will create a new branch and PR (because push to main is prohibited) with the new version. Don't forget to merge the PR to main!
+
+### App build number #️⃣
+
+App build number is defined in `pubspec.yaml` file. However, there is a `tools/get_build_number.dart` tool that generates the build number by incrementing it transactionally in Firebase Realtime Database. So, you don't need to worry about the build number, it's always unique and increases monotonously.
+
+
+## Coverage 📊
 
 To view the generated coverage report you can use [lcov](https://github.com/linux-test-project/lcov).
 
