@@ -1,4 +1,5 @@
 import 'package:flutter/foundation.dart';
+import 'package:get_it/get_it.dart';
 import 'package:nekoton_repository/nekoton_repository.dart';
 
 /// List of seeds that user added into application.
@@ -8,13 +9,7 @@ import 'package:nekoton_repository/nekoton_repository.dart';
 /// To listen SeedList changes, use [NekotonRepository.seedsStream]
 @immutable
 class SeedsList {
-  SeedsList({
-    required SeedKeyRepository seedKeyRepository,
-    required this.allKeys,
-  })  : _seedKeyRepository = seedKeyRepository,
-        _seedsMap = _mapKeysToSeeds(allKeys, seedKeyRepository);
-
-  final SeedKeyRepository _seedKeyRepository;
+  SeedsList({required this.allKeys}) : _seedsMap = _mapKeysToSeeds(allKeys);
 
   /// All cached seeds.
   /// This structure uses to simplify searching of seeds.
@@ -40,7 +35,7 @@ class SeedsList {
     required String password,
     String? name,
   }) =>
-      _seedKeyRepository.addSeed(
+      GetIt.instance<SeedKeyRepository>().addSeed(
         phrase: phrase,
         password: password,
         name: name,
@@ -57,7 +52,7 @@ class SeedsList {
     required String password,
   }) {
     final key = allKeys.firstWhere((k) => k.publicKey == publicKey);
-    return _seedKeyRepository.encrypt(
+    return GetIt.instance<SeedKeyRepository>().encrypt(
       data: data,
       algorithm: algorithm,
       publicKeys: publicKeys,
@@ -73,7 +68,7 @@ class SeedsList {
     required String password,
   }) {
     final key = allKeys.firstWhere((k) => k.publicKey == publicKey);
-    return _seedKeyRepository.decrypt(
+    return GetIt.instance<SeedKeyRepository>().decrypt(
       data: data,
       signInput: key.signInput(password),
     );
@@ -89,7 +84,7 @@ class SeedsList {
     required int? signatureId,
   }) {
     final key = allKeys.firstWhere((k) => k.publicKey == publicKey);
-    return _seedKeyRepository.sign(
+    return GetIt.instance<SeedKeyRepository>().sign(
       data: data,
       signatureId: signatureId,
       signInput: key.signInput(password),
@@ -106,7 +101,7 @@ class SeedsList {
     required int? signatureId,
   }) {
     final key = allKeys.firstWhere((k) => k.publicKey == publicKey);
-    return _seedKeyRepository.signData(
+    return GetIt.instance<SeedKeyRepository>().signData(
       data: data,
       signatureId: signatureId,
       signInput: key.signInput(password),
@@ -123,7 +118,7 @@ class SeedsList {
     required int? signatureId,
   }) {
     final key = allKeys.firstWhere((k) => k.publicKey == publicKey);
-    return _seedKeyRepository.signRawData(
+    return GetIt.instance<SeedKeyRepository>().signRawData(
       data: data,
       signatureId: signatureId,
       signInput: key.signInput(password),
@@ -154,10 +149,7 @@ class SeedsList {
   /// Return map grouped by masterKey.
   /// Key - publicKey of masterKey.
   /// Value - Seed related to masterKey.
-  static Map<String, Seed> _mapKeysToSeeds(
-    List<KeyStoreEntry> allKeys,
-    SeedKeyRepository seedKeyRepository,
-  ) {
+  static Map<String, Seed> _mapKeysToSeeds(List<KeyStoreEntry> allKeys) {
     /// Key - publicKey of masterKey.
     /// Value - list of all keys that derives from this masterKey.
     /// MasterKey is always first in this list.
@@ -178,11 +170,7 @@ class SeedsList {
     return seeds.map(
       (master, keys) => MapEntry(
         master,
-        Seed(
-          masterKey: keys.first,
-          subKeys: keys.sublist(1),
-          seedKeyRepository: seedKeyRepository,
-        ),
+        Seed(masterKey: keys.first, subKeys: keys.sublist(1)),
       ),
     );
   }

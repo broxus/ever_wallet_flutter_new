@@ -117,11 +117,8 @@ class NekotonRepository with SeedKeyRepositoryImpl {
 
   /// Start listening list of keys and map them to [SeedsList]
   void _initSeedsSubject() {
-    _keyStore.keysStream.listen(
-      (keys) => _seedsSubject.add(
-        SeedsList(allKeys: keys, seedKeyRepository: this),
-      ),
-    );
+    _keyStore.keysStream
+        .listen((keys) => _seedsSubject.add(SeedsList(allKeys: keys)));
   }
 
   /// Subject that allows subscribe to seeds existing. This is used by

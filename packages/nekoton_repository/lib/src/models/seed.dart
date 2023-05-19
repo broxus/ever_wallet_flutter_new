@@ -1,4 +1,5 @@
 import 'package:flutter/foundation.dart';
+import 'package:get_it/get_it.dart';
 import 'package:nekoton_repository/nekoton_repository.dart';
 
 /// Any seed of application, that contains [masterKey] and [subKeys].
@@ -12,10 +13,7 @@ class Seed {
   const Seed({
     required this.masterKey,
     required this.subKeys,
-    required SeedKeyRepository seedKeyRepository,
-  }) : _seedKeyRepository = seedKeyRepository;
-
-  final SeedKeyRepository _seedKeyRepository;
+  });
 
   /// Master key of seed.
   /// This key is derived directly from seed phrase.
@@ -36,7 +34,7 @@ class Seed {
     required List<int> accountIds,
     required String password,
   }) =>
-      _seedKeyRepository.deriveKeys(
+      GetIt.instance<SeedKeyRepository>().deriveKeys(
         accountIds: accountIds,
         password: password,
         masterKey: masterKey.publicKey,
@@ -47,29 +45,17 @@ class Seed {
     required String oldPassword,
     required String newPassword,
   }) =>
-      _seedKeyRepository.changeSeedPassword(
+      GetIt.instance<SeedKeyRepository>().changeSeedPassword(
         publicKey: masterKey.publicKey,
         oldPassword: oldPassword,
         newPassword: newPassword,
         isLegacy: masterKey.isLegacy,
       );
 
-  /// Rename key (sub or master) with [publicKey] to [name].
-  Future<void> renameKey({
-    required String publicKey,
-    required String name,
-  }) =>
-      _seedKeyRepository.renameKey(
-        publicKey: publicKey,
-        masterKey: masterKey.publicKey,
-        name: name,
-        isLegacy: masterKey.isLegacy,
-      );
-
   /// Return seeds phrase of this seed.
   /// Do not works for ledger key.
   Future<List<String>> exportKey(String password) =>
-      _seedKeyRepository.exportKey(
+      GetIt.instance<SeedKeyRepository>().exportKey(
         masterKey: masterKey.publicKey,
         password: password,
         isLegacy: masterKey.isLegacy,
@@ -77,16 +63,8 @@ class Seed {
 
   /// This method allows remove full seed and all related keys (master and sub)
   Future<void> removeSeed() {
-    return _seedKeyRepository.removeKeys(
+    return GetIt.instance<SeedKeyRepository>().removeKeys(
       [masterKey.publicKey, ...subKeys.map((e) => e.publicKey)],
     );
-  }
-
-  /// This method allows removing only sub key.
-  /// If you need remove seed, use [removeSeed].
-  /// Returns true, if key was removed.
-  Future<bool> removeKey(String publicKey) async {
-    final removed = await _seedKeyRepository.removeKeys([publicKey]);
-    return removed.isNotEmpty;
   }
 }

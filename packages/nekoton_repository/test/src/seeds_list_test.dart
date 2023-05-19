@@ -1,12 +1,7 @@
 import 'package:flutter_test/flutter_test.dart';
-import 'package:mocktail/mocktail.dart';
 import 'package:nekoton_repository/nekoton_repository.dart';
 
-class MockSeedKeyRepository extends Mock implements SeedKeyRepository {}
-
 void main() {
-  final mockedRepo = MockSeedKeyRepository();
-
   group('SeedsList test', () {
     test('SeedsList creation', () {
       final masterKey = KeyStoreEntry(
@@ -41,7 +36,6 @@ void main() {
 
       final seedsList = SeedsList(
         allKeys: [masterKey, subKey1, subKey2, masterKey2],
-        seedKeyRepository: mockedRepo,
       );
 
       expect(seedsList.seeds.length, 2);
