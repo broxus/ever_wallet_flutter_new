@@ -8,7 +8,7 @@ environment:
   flutter: 3.7.12
 
 dependencies:
-  bloc: ^8.1.0
+  bloc: ^8.1.2
   collection: ^1.17.0
   dotted_border: ^2.0.0+3
   encrypted_storage:
