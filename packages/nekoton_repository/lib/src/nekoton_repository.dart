@@ -12,7 +12,7 @@ import 'package:rxdart/rxdart.dart';
 /// Nekoton repository package
 /// {@endtemplate}
 @singleton
-class NekotonRepository {
+class NekotonRepository with SeedKeyRepositoryImpl {
   /// {@macro nekoton_repository}
   NekotonRepository();
 
@@ -24,6 +24,7 @@ class NekotonRepository {
   late final fnb.KeyStore _keyStore;
 
   /// KeyStore must be initialized with [setupNekoton] before usage
+  @override
   fnb.KeyStore get keyStore => _keyStore;
 
   /// Nekoton's accounts storage and its getter
@@ -96,6 +97,7 @@ class NekotonRepository {
     _accountsStorage = await AccountsStorage.create(storage: _nekotonStorage);
 
     _initHasAnySeeds();
+    _initSeedsSubject();
   }
 
   /// Clear used memory
@@ -104,6 +106,19 @@ class NekotonRepository {
     _accountsStorage.dispose();
     _nekotonStorage.dispose();
     await _hasSeeds.close();
+  }
+
+  /// List of all keys mapped into seeds
+  final _seedsSubject = BehaviorSubject<SeedsList>();
+
+  /// List of all seeds (and keys) of application.
+  /// Every time when keys are changed, this stream will emit new value.
+  Stream<SeedsList> get seedsStream => _seedsSubject.stream;
+
+  /// Start listening list of keys and map them to [SeedsList]
+  void _initSeedsSubject() {
+    _keyStore.keysStream
+        .listen((keys) => _seedsSubject.add(SeedsList(allKeys: keys)));
   }
 
   /// Subject that allows subscribe to seeds existing. This is used by
@@ -143,7 +158,11 @@ class NekotonRepository {
     return _logMap.keys.firstWhere((key) => _logMap[key] == level);
   }
 
-  /// Things below only for tests
+  /// -------------------------------------
+  /// -------------------------------------
+  /// ---- Things below only for tests ----
+  /// -------------------------------------
+  /// -------------------------------------
 
   final _hasAccount = BehaviorSubject<bool>();
 
