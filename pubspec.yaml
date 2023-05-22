@@ -44,7 +44,7 @@ dependencies:
   visibility_detector: ^0.4.0+2
 
 dev_dependencies:
-  bloc_test: ^9.1.0
+  bloc_test: ^9.1.2
   build_runner: ^2.3.3
   flutter_gen_runner: ^5.2.0
   flutter_secure_storage: ^8.0.0
