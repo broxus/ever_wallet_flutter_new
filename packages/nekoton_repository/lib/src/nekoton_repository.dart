@@ -1,7 +1,6 @@
 import 'dart:async';
 import 'dart:math';
 
-import 'package:encrypted_storage/encrypted_storage.dart';
 import 'package:flutter_nekoton_bridge/flutter_nekoton_bridge.dart' as fnb;
 import 'package:injectable/injectable.dart';
 import 'package:logging/logging.dart';
@@ -9,16 +8,22 @@ import 'package:nekoton_repository/nekoton_repository.dart';
 import 'package:rxdart/rxdart.dart';
 
 /// {@template nekoton_repository}
-/// Nekoton repository package
+/// Nekoton repository package.
+///
+/// To look through different modules logic, see [TransportRepository],
+/// [SeedKeyRepository], [AccountRepository].
+///
+/// To full initialization of repository, use [setupLogger] -> [setupNekoton] ->
+/// [updateTransport].
+///
 /// {@endtemplate}
 @singleton
-class NekotonRepository with SeedKeyRepositoryImpl {
+class NekotonRepository
+    with TransportRepositoryImpl, SeedKeyRepositoryImpl, AccountRepositoryImpl {
   /// {@macro nekoton_repository}
   NekotonRepository();
 
   final _log = Logger('NekotonRepository');
-
-  late final AbstractStorage _storage;
 
   /// Nekoton's keystore and its getter
   late final fnb.KeyStore _keyStore;
@@ -31,6 +36,7 @@ class NekotonRepository with SeedKeyRepositoryImpl {
   late final fnb.AccountsStorage _accountsStorage;
 
   /// AccountsStorage must be initialized with [setupNekoton] before usage
+  @override
   fnb.AccountsStorage get accountsStorage => _accountsStorage;
 
   /// Nekoton's storage aka middleware between nekoton's users and app
@@ -51,13 +57,6 @@ class NekotonRepository with SeedKeyRepositoryImpl {
         logHandler: _logHandler,
       );
     }
-  }
-
-  /// Setup storage
-  Future<void> setupStorage({
-    required AbstractStorage storage,
-  }) async {
-    _storage = storage;
   }
 
   /// Setup nekoton storages
@@ -163,23 +162,6 @@ class NekotonRepository with SeedKeyRepositoryImpl {
   /// ---- Things below only for tests ----
   /// -------------------------------------
   /// -------------------------------------
-
-  final _hasAccount = BehaviorSubject<bool>();
-
-  /// Add account to storage
-  Future<void> addAccount() async {
-    await _storage.set('account', 'true');
-    _hasAccount.add(true);
-  }
-
-  /// Delete account from storage
-  Future<void> deleteAccount() async {
-    await _storage.delete('account');
-    _hasAccount.add(false);
-  }
-
-  /// Stream of account
-  BehaviorSubject<bool> get accountsStream => _hasAccount;
 
   /// Create a new example thing
   ExampleModel getNewModel() => ExampleModel(id: Random().nextInt(1 << 16));

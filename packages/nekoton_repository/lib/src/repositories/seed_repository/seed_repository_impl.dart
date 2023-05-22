@@ -1,12 +1,12 @@
-import 'package:flutter_nekoton_bridge/flutter_nekoton_bridge.dart';
-import 'package:nekoton_repository/src/repositories/seed_repository/seed_repository.dart';
+import 'package:nekoton_repository/nekoton_repository.dart';
 
 /// Implementation of SeedRepository.
 /// Usage
 /// ```
 /// class NekotonRepository with SeedRepositoryImpl {}
 /// ```
-mixin SeedKeyRepositoryImpl implements SeedKeyRepository {
+mixin SeedKeyRepositoryImpl on TransportRepository
+    implements SeedKeyRepository {
   KeyStore get keyStore;
 
   @override
@@ -36,7 +36,7 @@ mixin SeedKeyRepositoryImpl implements SeedKeyRepository {
 
     // TODO(alex-a4): add logic to triger accounts adding
 
-    return publicKeys.map((e) => e.publicKey).toList();
+    return publicKeys;
   }
 
   @override
@@ -79,11 +79,11 @@ mixin SeedKeyRepositoryImpl implements SeedKeyRepository {
       );
     }
 
-    final key = await keyStore.addKey(createKeyInput);
+    final publicKey = await keyStore.addKey(createKeyInput);
 
     // TODO(alex-a4): add logic to triger accounts adding
 
-    return key.publicKey;
+    return publicKey;
   }
 
   @override
@@ -270,6 +270,9 @@ mixin SeedKeyRepositoryImpl implements SeedKeyRepository {
   @override
   Future<List<String>> removeKeys(List<String> publicKeys) async {
     final removed = await keyStore.removeKeys(publicKeys: publicKeys);
-    return removed.map((e) => e.publicKey).toList();
+
+    // TODO(alex-a4): trigger accounts removing
+
+    return removed;
   }
 }
