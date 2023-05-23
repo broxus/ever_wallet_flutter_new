@@ -11,24 +11,15 @@ mixin AccountRepositoryImpl on TransportRepository
   /// Getter of nekoton's storage
   AccountsStorage get accountsStorage;
 
+  NekotonStorageRepository get storageRepository;
+
   @override
-  Future<void> addAccount({
-    required String publicKey,
-    required WalletType walletType,
-    required int workchain,
-    String? name,
-    String? explicitAddress,
-  }) {
-    return accountsStorage.addAccount(
-      AccountToAdd(
-        name: name ?? currentTransport.defaultAccountName(walletType),
-        publicKey: publicKey,
-        contract: walletType,
-        workchain: workchain,
-        explicitAddress: explicitAddress,
-      ),
-    );
-  }
+  Future<void> addAccount(AccountToAdd account) =>
+      accountsStorage.addAccount(account);
+
+  @override
+  Future<void> addAccounts(List<AccountToAdd> accounts) =>
+      accountsStorage.addAccounts(accounts);
 
   @override
   Future<void> addExternalAccount({
@@ -56,13 +47,44 @@ mixin AccountRepositoryImpl on TransportRepository
       );
 
       await addAccount(
-        name: name,
-        publicKey: existingWalletInfo.publicKey,
-        walletType: existingWalletInfo.walletType,
-        workchain: existingWalletInfo.address.workchain,
-        explicitAddress: address,
+        AccountToAdd(
+          name: name ??
+              currentTransport
+                  .defaultAccountName(existingWalletInfo.walletType),
+          publicKey: publicKey,
+          contract: existingWalletInfo.walletType,
+          workchain: existingWalletInfo.address.workchain,
+          explicitAddress: address,
+        ),
+      );
+      await storageRepository.addExternalAccount(
+        publicKey: publicKey,
+        address: address,
       );
     }
-    return;
+  }
+
+  @override
+  Future<void> removeAccounts(List<KeyAccount> accounts) {
+    final addresses = accounts.map((e) => e.account.address).toList();
+
+    final externalAccounts = <String, List<String>>{};
+    for (final account in accounts) {
+      if (externalAccounts.containsKey(account.publicKey)) {
+        externalAccounts[account.publicKey]!.add(account.account.address);
+      } else {
+        externalAccounts[account.publicKey] = [account.account.address];
+      }
+    }
+
+    for (final entry in externalAccounts.entries) {
+      storageRepository.removeExternalAccounts(
+        publicKey: entry.key,
+        addresses: entry.value,
+      );
+    }
+    storageRepository.showAccounts(addresses);
+
+    return accountsStorage.removeAccounts(addresses);
   }
 }

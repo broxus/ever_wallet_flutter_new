@@ -1,3 +1,6 @@
+import 'dart:async';
+
+import 'package:get_it/get_it.dart';
 import 'package:nekoton_repository/nekoton_repository.dart';
 
 /// Implementation of SeedRepository.
@@ -8,6 +11,8 @@ import 'package:nekoton_repository/nekoton_repository.dart';
 mixin SeedKeyRepositoryImpl on TransportRepository
     implements SeedKeyRepository {
   KeyStore get keyStore;
+
+  NekotonStorageRepository get storageRepository;
 
   @override
   Future<List<String>> deriveKeys({
@@ -34,7 +39,7 @@ mixin SeedKeyRepositoryImpl on TransportRepository
           .toList(),
     );
 
-    // TODO(alex-a4): add logic to triger accounts adding
+    unawaited(triggerAddingAccounts(publicKeys));
 
     return publicKeys;
   }
@@ -81,9 +86,45 @@ mixin SeedKeyRepositoryImpl on TransportRepository
 
     final publicKey = await keyStore.addKey(createKeyInput);
 
-    // TODO(alex-a4): add logic to triger accounts adding
+    unawaited(triggerAddingAccounts([publicKey]));
 
     return publicKey;
+  }
+
+  /// Trigger adding accounts to [AccountRepository] by public keys.
+  Future<void> triggerAddingAccounts(List<String> publicKeys) async {
+    final foundAccounts = <ExistingWalletInfo>[];
+
+    final transport = currentTransport;
+
+    for (final key in publicKeys) {
+      final found = await TonWallet.findExistingWallets(
+        transport: transport.transport,
+        workchainId: defaultWorkchainId,
+        publicKey: key,
+        walletTypes: transport.availableWalletTypes,
+      );
+
+      final activeAccounts = found.where((e) => e.isActive);
+
+      foundAccounts.addAll(activeAccounts);
+      // TODO(alex-a4): check if this logic really needed
+      // final isExists = accounts.any((e) => e.address == activeWallet.
+      // address);
+    }
+
+    await GetIt.instance<AccountRepository>().addAccounts(
+      foundAccounts
+          .map(
+            (e) => AccountToAdd(
+              publicKey: e.publicKey,
+              contract: e.walletType,
+              workchain: e.address.workchain,
+              name: transport.defaultAccountName(e.walletType),
+            ),
+          )
+          .toList(),
+    );
   }
 
   @override
@@ -268,11 +309,28 @@ mixin SeedKeyRepositoryImpl on TransportRepository
       );
 
   @override
-  Future<List<String>> removeKeys(List<String> publicKeys) async {
-    final removed = await keyStore.removeKeys(publicKeys: publicKeys);
-
-    // TODO(alex-a4): trigger accounts removing
-
+  Future<List<String>> removeKeys(List<SeedKey> keys) async {
+    final removed = await keyStore.removeKeys(
+      publicKeys: keys.map((e) => e.key.publicKey).toList(),
+    );
+    unawaited(
+      triggerRemovingAccounts(
+        keys.where((k) => removed.contains(k.key.publicKey)),
+      ),
+    );
     return removed;
+  }
+
+  /// Remove accounts, specified for [keys] that were removed.
+  /// Also removes information from storage about hidden and external accounts.
+  Future<void> triggerRemovingAccounts(Iterable<SeedKey> keys) async {
+    final accountsToRemove = <KeyAccount>[];
+
+    for (final key in keys) {
+      for (final account in key.accountList.allAccounts) {
+        accountsToRemove.add(account);
+      }
+    }
+    await GetIt.instance<AccountRepository>().removeAccounts(accountsToRemove);
   }
 }

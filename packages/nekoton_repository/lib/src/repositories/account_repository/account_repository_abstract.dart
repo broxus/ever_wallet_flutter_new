@@ -4,18 +4,12 @@ import 'package:nekoton_repository/nekoton_repository.dart';
 /// This repository can be used as <AccountRepositoryImpl> or you can add
 /// custom logic.
 abstract class AccountRepository {
-  /// Add account to key with [publicKey] and [walletType].
-  /// [workchain] specify Transport network that should be used for this account
-  /// [name] is optional and if not specified, auto-generated name will be used.
-  /// [explicitAddress] is used for external accounts where [publicKey] is
-  /// custodian.
-  Future<void> addAccount({
-    required String publicKey,
-    required WalletType walletType,
-    required int workchain,
-    String? name,
-    String? explicitAddress,
-  });
+  /// Add account to storage.
+  Future<void> addAccount(AccountToAdd account);
+
+  /// Add list of accounts to storage.
+  /// Same as [addAccount] but for multiple accounts.
+  Future<void> addAccounts(List<AccountToAdd> accounts);
 
   /// Add external account with [address] where [publicKey] is custodian.
   /// [name] is optional.
@@ -25,4 +19,7 @@ abstract class AccountRepository {
     required String address,
     String? name,
   });
+
+  /// Remove accounts from storage.
+  Future<void> removeAccounts(List<KeyAccount> accounts);
 }

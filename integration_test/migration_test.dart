@@ -161,16 +161,16 @@ void main() {
   late EncryptedStorage encryptedStorage;
   late GeneralStorageService storage;
   late BrowserStorageService browserStorage;
-  late AccountSeedStorageService accountSeedStorage;
+  late NekotonStorageService accountSeedStorage;
 
   Future<void> checkMigration() async {
     /// Nekoton storage
     expect(
-      await storage.getStorageData(keystoreStorageKey),
+      await accountSeedStorage.getStorageData(keystoreStorageKey),
       _keystoreStorageData,
     );
     expect(
-      await storage.getStorageData(accountsStorageKey),
+      await accountSeedStorage.getStorageData(accountsStorageKey),
       _accountsStorageData,
     );
 
@@ -221,13 +221,13 @@ void main() {
     expect(await storage.isBiometryEnabled, true);
     expect(await storage.getWasStEverOpened, true);
     expect(await browserStorage.getWhyNeedBrowser, true);
-    expect(await accountSeedStorage.lastViewedSeeds(), [_publicKey]);
+    expect(await storage.lastViewedSeeds(), [_publicKey]);
     expect(await accountSeedStorage.hiddenAccounts, [_address]);
     expect(await accountSeedStorage.externalAccounts, {
       _publicKey: [_address]
     });
     expect(await storage.currentConnection, _connection);
-    expect(await accountSeedStorage.currentKey, _publicKey);
+    expect(await storage.currentKey, _publicKey);
 
     /// Browser
     expect(await browserStorage.browserTabs, [_browserTab]);
@@ -241,7 +241,7 @@ void main() {
     await encryptedStorage.clearAll();
     storage = GeneralStorageService(encryptedStorage);
     browserStorage = BrowserStorageService(encryptedStorage);
-    accountSeedStorage = AccountSeedStorageService(encryptedStorage);
+    accountSeedStorage = NekotonStorageService(encryptedStorage);
     repository = NekotonRepository();
     await Hive.deleteFromDisk();
     hive = await HiveSourceMigration.create();
@@ -343,11 +343,11 @@ void main() {
 
       /// Nekoton storage
       expect(
-        await storage.getStorageData(keystoreStorageKey),
+        await accountSeedStorage.getStorageData(keystoreStorageKey),
         await hive.getStorageData(keystoreStorageKey),
       );
       expect(
-        await storage.getStorageData(accountsStorageKey),
+        await accountSeedStorage.getStorageData(accountsStorageKey),
         await hive.getStorageData(accountsStorageKey),
       );
 
@@ -411,13 +411,13 @@ void main() {
       expect(await storage.getWasStEverOpened, hive.wasStEverOpened);
       expect(await browserStorage.getWhyNeedBrowser, hive.getWhyNeedBrowser);
       expect(
-        await accountSeedStorage.lastViewedSeeds(),
+        await storage.lastViewedSeeds(),
         hive.lastViewedSeeds(),
       );
       expect(await accountSeedStorage.hiddenAccounts, hive.hiddenAccounts);
       expect(await accountSeedStorage.externalAccounts, hive.externalAccounts);
       expect(await storage.currentConnection, hive.currentConnection);
-      expect(await accountSeedStorage.currentKey, hive.currentKey);
+      expect(await storage.currentKey, hive.currentKey);
 
       /// Browser
       expect(await browserStorage.browserTabs, hive.browserTabs);

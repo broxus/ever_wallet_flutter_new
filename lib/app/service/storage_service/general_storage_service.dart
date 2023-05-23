@@ -7,6 +7,7 @@ import 'package:app/data/models/network_type.dart';
 import 'package:app/data/models/token_contract_asset.dart';
 import 'package:encrypted_storage/encrypted_storage.dart';
 import 'package:injectable/injectable.dart';
+import 'package:nekoton_repository/nekoton_repository.dart' hide Currency;
 import 'package:rxdart/rxdart.dart';
 
 /// List of keys to store in storage
@@ -14,13 +15,14 @@ const _migrationKey = 'migration_key';
 const _passwordsKey = 'passwords_key';
 const _systemContractAssetsKey = 'system_contract_assets_key';
 const _customContractAssetsKey = 'custom_contract_assets_key';
-const _nekotonBridgeKey = 'nekoton_bridge_key';
 const _preferencesKey = 'preferences_key';
 const _currenciesKey = 'currencies_key';
 const _biometryStatusKey = 'biometry_status_key';
 const _currentConnectionKey = 'current_connection_key';
 const _localeKey = 'locale';
 const _wasStEverOpenedKey = 'was_stever_opened_key';
+const _currentKey = 'current_public_key';
+const _lastSelectedSeedsKey = 'last_selected_seeds_key';
 
 /// This is a wrapper-class above [EncryptedStorage] that provides methods
 /// to interact with general information that is not related to some specified
@@ -41,11 +43,12 @@ class GeneralStorageService extends AbstractStorageService {
         _streamedCustomContractAssets(),
         _streamedCurrencies(),
         _streamedLocale(),
+        _streamedCurrentKey(),
+        _streamedLastViewedSeeds(),
       ]);
 
   @override
   Future<void> clearSensitiveData() => Future.wait([
-        clearStorageData(),
         clearKeyPasswords(),
         clearCurrencies(),
         clearPreferences(),
@@ -53,6 +56,68 @@ class GeneralStorageService extends AbstractStorageService {
 
   /// Clear all preferences data
   Future<void> clearPreferences() => _storage.clearDomain(_preferencesKey);
+
+  /// Subject of public keys names
+  final _currentKeySubject = BehaviorSubject<String?>();
+
+  /// Stream of public keys names
+  Stream<String?> get currentKeyStream => _currentKeySubject.stream;
+
+  /// Get current public key that user set before
+  Future<String?> get currentKey =>
+      _storage.get(_currentKey, domain: _preferencesKey);
+
+  /// Put current public key of user to stream
+  Future<void> _streamedCurrentKey() async =>
+      _currentKeySubject.add(await currentKey);
+
+  /// Set current public key of user
+  Future<void> setCurrentKey(String publicKey) => _storage
+      .set(
+        _currentKey,
+        publicKey,
+        domain: _preferencesKey,
+      )
+      .then((_) => _streamedCurrentKey());
+
+  /// Subject of last viewed seeds
+  final _lastViewedSeedsSubject = BehaviorSubject<List<String>>();
+
+  /// Stream of last viewed seeds
+  Stream<List<String>> get lastViewedSeedsStream =>
+      _lastViewedSeedsSubject.stream;
+
+  /// Put last viewed seeds to stream
+  Future<void> _streamedLastViewedSeeds() async =>
+      _lastViewedSeedsSubject.add(await lastViewedSeeds());
+
+  /// Returns up to [maxLastSelectedSeeds] public keys of seeds that were used.
+  ///
+  /// After updating to application version with this list, it's filled with 4
+  /// (or less) random keys with [currentKey] at 1-st place.
+  Future<List<String>> lastViewedSeeds() async {
+    final seeds = await _storage.get(
+      _lastSelectedSeedsKey,
+      domain: _preferencesKey,
+    );
+    if (seeds == null) {
+      return [];
+    }
+    final seedsList = jsonDecode(seeds) as List<dynamic>;
+    return seedsList.cast<String>();
+  }
+
+  /// Update seeds that were used by user.
+  /// There must be only master keys, if key is sub, then put its master.
+  /// Count of seeds must be less or equals to [maxLastSelectedSeeds] and
+  /// cropped outside.
+  Future<void> updateLastViewedSeeds(List<String> seedsKeys) => _storage
+      .set(
+        _lastSelectedSeedsKey,
+        jsonEncode(seedsKeys),
+        domain: _preferencesKey,
+      )
+      .then((_) => _streamedLastViewedSeeds());
 
   /// Get password of public key if it was cached with biometry
   Future<String?> getKeyPassword(String publicKey) => _storage.get(
@@ -101,24 +166,6 @@ class GeneralStorageService extends AbstractStorageService {
         domain: _preferencesKey,
       )
       .then((_) => _streamedCurrentConnection());
-
-  /// Get data of nekoton storage
-  Future<String?> getStorageData(String key) async =>
-      _storage.get(key, domain: _nekotonBridgeKey);
-
-  /// Set data of nekoton storage
-  Future<void> setStorageData({
-    required String key,
-    required String value,
-  }) =>
-      _storage.set(key, value, domain: _nekotonBridgeKey);
-
-  /// Clear data of nekoton storage by key
-  Future<void> removeStorageData(String key) =>
-      _storage.delete(key, domain: _nekotonBridgeKey);
-
-  /// Clear all data of nekoton storage
-  Future<void> clearStorageData() => _storage.clearDomain(_nekotonBridgeKey);
 
   /// Subject of system token contract assets
   final _systemTokenContractAssetsSubject =

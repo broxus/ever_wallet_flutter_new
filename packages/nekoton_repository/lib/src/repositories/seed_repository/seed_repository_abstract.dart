@@ -49,7 +49,7 @@ abstract class SeedKeyRepository {
   });
 
   /// Encrypt data for external usages.
-  /// [signInput] can be get from [KeyStoreExtension.signInput].
+  /// [signInput] can be get from [SeedKey.signInput].
   Future<List<EncryptedData>> encrypt({
     required String data,
     required List<String> publicKeys,
@@ -58,7 +58,7 @@ abstract class SeedKeyRepository {
   });
 
   /// Decrypt data from external usages.
-  /// [signInput] can be get from [KeyStoreExtension.signInput].
+  /// [signInput] can be get from [SeedKey.signInput].
   Future<String> decrypt({
     required EncryptedData data,
     required SignInput signInput,
@@ -66,7 +66,7 @@ abstract class SeedKeyRepository {
 
   /// Sign [data] message with key it was called on.
   /// [signatureId] is [Transport.getSignatureId].
-  /// [signInput] can be get from [KeyStoreExtension.signInput].
+  /// [signInput] can be get from [SeedKey.signInput].
   Future<String> sign({
     required String data,
     required SignInput signInput,
@@ -75,7 +75,7 @@ abstract class SeedKeyRepository {
 
   /// Sign [data] message with key it was called on.
   /// [signatureId] is [Transport.getSignatureId].
-  /// [signInput] can be get from [KeyStoreExtension.signInput].
+  /// [signInput] can be get from [SeedKey.signInput].
   Future<SignedData> signData({
     required String data,
     required SignInput signInput,
@@ -84,7 +84,7 @@ abstract class SeedKeyRepository {
 
   /// Sign raw [data] message with key it was called on.
   /// [signatureId] is [Transport.getSignatureId].
-  /// [signInput] can be get from [KeyStoreExtension.signInput].
+  /// [signInput] can be get from [SeedKey.signInput].
   Future<SignedDataRaw> signRawData({
     required String data,
     required SignInput signInput,
@@ -92,5 +92,5 @@ abstract class SeedKeyRepository {
   });
 
   /// Remove keys from keystore and return public keys that were deleted
-  Future<List<String>> removeKeys(List<String> publicKeys);
+  Future<List<String>> removeKeys(List<SeedKey> keys);
 }

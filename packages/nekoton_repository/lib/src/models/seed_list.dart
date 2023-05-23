@@ -1,3 +1,4 @@
+import 'package:equatable/equatable.dart';
 import 'package:flutter/foundation.dart';
 import 'package:get_it/get_it.dart';
 import 'package:nekoton_repository/nekoton_repository.dart';
@@ -6,10 +7,15 @@ import 'package:nekoton_repository/nekoton_repository.dart';
 /// This list allows iterating over [seeds] and add/remove seeds.
 ///
 /// This instance is immutable and it can't change its state.
-/// To listen SeedList changes, use [NekotonRepository.seedsStream]
+/// To listen SeedList changes, use [NekotonRepository.seedListStream]
 @immutable
-class SeedsList {
-  SeedsList({required this.allKeys}) : _seedsMap = _mapKeysToSeeds(allKeys);
+class SeedList extends Equatable {
+  SeedList({
+    required List<KeyStoreEntry> allKeys,
+    required Map<String, AccountList> mappedAccounts,
+  }) : _seedsMap = _mapKeysToSeeds(allKeys, mappedAccounts) {
+    _allKeys = _seedsMap.values.expand((seed) => seed.allKeys).toList();
+  }
 
   /// All cached seeds.
   /// This structure uses to simplify searching of seeds.
@@ -26,7 +32,7 @@ class SeedsList {
 
   /// This is a plane list of all keys(master and sub) in application.
   /// This can be useful sometimes.
-  final List<KeyStoreEntry> allKeys;
+  late final List<SeedKey> _allKeys;
 
   /// Add new seed to application.
   /// Returns publicKey of masterKey of added seed.
@@ -51,7 +57,7 @@ class SeedsList {
     required String publicKey,
     required String password,
   }) {
-    final key = allKeys.firstWhere((k) => k.publicKey == publicKey);
+    final key = _allKeys.firstWhere((k) => k.key.publicKey == publicKey);
     return GetIt.instance<SeedKeyRepository>().encrypt(
       data: data,
       algorithm: algorithm,
@@ -67,7 +73,7 @@ class SeedsList {
     required String publicKey,
     required String password,
   }) {
-    final key = allKeys.firstWhere((k) => k.publicKey == publicKey);
+    final key = _allKeys.firstWhere((k) => k.key.publicKey == publicKey);
     return GetIt.instance<SeedKeyRepository>().decrypt(
       data: data,
       signInput: key.signInput(password),
@@ -83,7 +89,7 @@ class SeedsList {
     required String password,
     required int? signatureId,
   }) {
-    final key = allKeys.firstWhere((k) => k.publicKey == publicKey);
+    final key = _allKeys.firstWhere((k) => k.key.publicKey == publicKey);
     return GetIt.instance<SeedKeyRepository>().sign(
       data: data,
       signatureId: signatureId,
@@ -100,7 +106,7 @@ class SeedsList {
     required String password,
     required int? signatureId,
   }) {
-    final key = allKeys.firstWhere((k) => k.publicKey == publicKey);
+    final key = _allKeys.firstWhere((k) => k.key.publicKey == publicKey);
     return GetIt.instance<SeedKeyRepository>().signData(
       data: data,
       signatureId: signatureId,
@@ -117,7 +123,7 @@ class SeedsList {
     required String password,
     required int? signatureId,
   }) {
-    final key = allKeys.firstWhere((k) => k.publicKey == publicKey);
+    final key = _allKeys.firstWhere((k) => k.key.publicKey == publicKey);
     return GetIt.instance<SeedKeyRepository>().signRawData(
       data: data,
       signatureId: signatureId,
@@ -149,7 +155,13 @@ class SeedsList {
   /// Return map grouped by masterKey.
   /// Key - publicKey of masterKey.
   /// Value - Seed related to masterKey.
-  static Map<String, Seed> _mapKeysToSeeds(List<KeyStoreEntry> allKeys) {
+  ///
+  /// [mappedAccounts] - key is publicKey of key. value - list of accounts that
+  /// related to this key.
+  static Map<String, Seed> _mapKeysToSeeds(
+    List<KeyStoreEntry> allKeys,
+    Map<String, AccountList> mappedAccounts,
+  ) {
     /// Key - publicKey of masterKey.
     /// Value - list of all keys that derives from this masterKey.
     /// MasterKey is always first in this list.
@@ -170,8 +182,27 @@ class SeedsList {
     return seeds.map(
       (master, keys) => MapEntry(
         master,
-        Seed(masterKey: keys.first, subKeys: keys.sublist(1)),
+        Seed(
+          masterKey: SeedKey(
+            key: keys.first,
+            accountList: mappedAccounts[keys.first.publicKey] ??
+                AccountList.empty(keys.first.publicKey),
+          ),
+          subKeys: keys
+              .sublist(1)
+              .map(
+                (key) => SeedKey(
+                  key: key,
+                  accountList: mappedAccounts[key.publicKey] ??
+                      AccountList.empty(key.publicKey),
+                ),
+              )
+              .toList(),
+        ),
       ),
     );
   }
+
+  @override
+  List<Object?> get props => [_seedsMap];
 }
