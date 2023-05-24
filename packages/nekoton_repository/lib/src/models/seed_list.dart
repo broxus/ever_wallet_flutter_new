@@ -1,3 +1,4 @@
+import 'package:collection/collection.dart';
 import 'package:equatable/equatable.dart';
 import 'package:flutter/foundation.dart';
 import 'package:get_it/get_it.dart';
@@ -33,6 +34,27 @@ class SeedList extends Equatable {
   /// This is a plane list of all keys(master and sub) in application.
   /// This can be useful sometimes.
   late final List<SeedKey> _allKeys;
+
+  /// Get [SeedKey] instance by it's publicKey.
+  /// This is a heavy operation and must not be called during build.
+  /// This method can be helpful in browser.
+  ///
+  /// Returns found key or null.
+  SeedKey? getSeedKey(String publicKey) =>
+      _allKeys.firstWhereOrNull((k) => k.key.publicKey == publicKey);
+
+  /// Get account instance by it's address.
+  /// This is a heavy operation and must not be called during build.
+  /// This method can be helpful in browser.
+  ///
+  /// Returns found account or null.
+  KeyAccount? getAccountByAddress(String accountAddress) {
+    for (final key in _allKeys) {
+      final found = key.getAccountByAddress(accountAddress);
+      if (found != null) return found;
+    }
+    return null;
+  }
 
   /// Add new seed to application.
   /// Returns publicKey of masterKey of added seed.

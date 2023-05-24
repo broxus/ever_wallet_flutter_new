@@ -1,5 +1,6 @@
 import 'package:equatable/equatable.dart';
 import 'package:flutter/foundation.dart';
+import 'package:get_it/get_it.dart';
 
 import 'package:nekoton_repository/nekoton_repository.dart';
 
@@ -26,6 +27,44 @@ class KeyAccount extends Equatable {
 
   /// Flag that allows identify if this account is hidden.
   final bool isHidden;
+
+  /// Toggle hidden state for this account.
+  /// If it was hidden, it became visible and vice versa.
+  Future<void> toggleHidden() {
+    if (isHidden) {
+      return GetIt.instance<NekotonRepository>()
+          .storageRepository
+          .showAccounts([account.address]);
+    } else {
+      return GetIt.instance<NekotonRepository>()
+          .storageRepository
+          .hideAccounts([account.address]);
+    }
+  }
+
+  /// Add token to this account
+  Future<void> addTokenWallet(String rootTokenContract) =>
+      GetIt.instance<AccountRepository>().addTokenWallet(
+        accountAddress: account.address,
+        rootTokenContract: rootTokenContract,
+      );
+
+  /// Remove token from this account
+  Future<void> removeTokenWallet(String rootTokenContract) =>
+      GetIt.instance<AccountRepository>().removeTokenWallet(
+        accountAddress: account.address,
+        rootTokenContract: rootTokenContract,
+      );
+
+  /// Change name of this account to [newName].
+  Future<void> renameAccount(String newName) =>
+      GetIt.instance<AccountRepository>()
+          .renameAccount(account.address, newName);
+
+  /// Remove this account from storage.
+  /// This works fine for local and external accounts.
+  Future<void> removeAccount() =>
+      GetIt.instance<AccountRepository>().removeAccounts([this]);
 
   @override
   List<Object?> get props => [account, isExternal, isHidden];

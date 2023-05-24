@@ -14,7 +14,7 @@ import 'package:rxdart/rxdart.dart';
 /// [SeedKeyRepository], [AccountRepository].
 ///
 /// To full initialization of repository, use [setupLogger] ->
-/// [setupNekotonAndStorage] -> [updateTransport].
+/// [setupNekotonAndStorage] -> [updateTransport] -> [setupSeedListUpdating].
 ///
 /// {@endtemplate}
 @singleton
@@ -42,7 +42,8 @@ class NekotonRepository
   /// Nekoton's storage aka middleware between nekoton's users and app
   late final fnb.Storage _nekotonStorage;
 
-  /// Storage that stores all nekoton related data
+  /// Storage that stores all nekoton related data, must be initialized with
+  /// [setupNekotonAndStorage] first.
   late final NekotonStorageRepository _storageRepository;
 
   @override
@@ -101,7 +102,6 @@ class NekotonRepository
     _accountsStorage = await AccountsStorage.create(storage: _nekotonStorage);
 
     _initHasAnySeeds();
-    _initSeedsSubjects();
   }
 
   /// Clear used memory
@@ -122,20 +122,30 @@ class NekotonRepository
 
   SeedList get seedList => _seedsSubject.value;
 
-  /// Start listening list of keys and map them to [SeedList]
-  void _initSeedsSubjects() {
-    _keyStore.keysStream.listen((keys) => _updateSeedList(allKeys: keys));
+  /// Start listening list of keys and map them to [SeedList].
+  ///
+  /// BehaviorSubjects for all of this streams returns last value immediately
+  /// but we do not need 5 triggers of [_updateSeedList] method, so we call it
+  /// manually in the end
+  void setupSeedListUpdating() {
+    _keyStore.keysStream
+        .skip(1)
+        .listen((keys) => _updateSeedList(allKeys: keys));
     _accountsStorage.accountsStream
+        .skip(1)
         .listen((accounts) => _updateSeedList(allAccounts: accounts));
     _storageRepository.hiddenAccountsStream
+        .skip(1)
         .listen((hidden) => _updateSeedList(hiddenAccounts: hidden));
     _storageRepository.externalAccountsStream
+        .skip(1)
         .listen((external) => _updateSeedList(externalAccounts: external));
     currentTransportStream
+        .skip(1)
         .listen((transport) => _updateSeedList(transport: transport));
 
-    // TODO(alex-a4): if first init needed because of BehaviorSubject
-    // _updateSeedList();
+    // TODO(alex-a4): if first init needed because of BehaviorSubject & skip
+    _updateSeedList();
   }
 
   /// Helper method that allows update one of incoming param of [buildSeeds].

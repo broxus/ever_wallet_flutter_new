@@ -18,6 +18,20 @@ class SeedKey extends Equatable {
   /// List of accounts that specified for this [key]
   final AccountList accountList;
 
+  /// Get account instance by it's address.
+  /// This is a heavy operation and must not be called during build.
+  /// This method can be helpful in browser.
+  ///
+  /// Returns found account or null.
+  KeyAccount? getAccountByAddress(String accountAddress) {
+    for (final account in accountList.allAccounts) {
+      if (account.account.address == accountAddress) {
+        return account;
+      }
+    }
+    return null;
+  }
+
   /// This method allows removing only sub key.
   /// If you need remove seed, use [Seed.removeSeed].
   /// Returns true, if key was removed.
@@ -60,6 +74,24 @@ class SeedKey extends Equatable {
             ),
           ),
         );
+
+  /// Returns list of Accounts that were already created for this key.
+  /// !!! Returns not sorted for UI list.
+  List<WalletType> get createdAccountTypes =>
+      accountList.allAccounts.map((e) => e.account.tonWallet.contract).toList();
+
+  /// Returns list of Accounts that can be created for this key in scope of
+  /// current active transport.
+  /// availableForTransport\created=availableForCreation.
+  ///
+  /// !!! Returns not sorted for UI list.
+  List<WalletType> get availableForCreationAccountTypes {
+    final created = createdAccountTypes;
+    final availableForTransport = GetIt.instance<TransportRepository>()
+        .currentTransport
+        .availableWalletTypes;
+    return availableForTransport.where((a) => !created.contains(a)).toList();
+  }
 
   @override
   List<Object?> get props => [key, accountList];
