@@ -29,7 +29,7 @@ dependencies:
   injectable: ^2.1.1
   intl: ^0.17.0
   json_annotation: ^4.8.0
-  logging: ^1.1.1
+  logging: ^1.2.0
   money2: ^3.3.0
   money2_improver: ^1.2.0
   nekoton_repository:
