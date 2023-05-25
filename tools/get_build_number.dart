@@ -7,7 +7,7 @@ const String _buildUrl = 'https://broxus.firebaseio.com/mobileApp/build.json';
 
 void main(List<String> arguments) async {
   if (arguments.isEmpty) {
-    stderr.write('Usage: get_build <path_to_service_account.json>');
+    stderr.write('Usage: get_build_number <path_to_service_account.json>');
     exit(42);
   }
 
