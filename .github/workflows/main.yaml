@@ -27,6 +27,9 @@ jobs:
           cache-key: flutter-:os:-:channel:-:version:-:arch:-:hash:-${{ hashFiles('**/pubspec.lock') }}
       - uses: bluefireteam/melos-action@v2
 
+      - name: Decrypt secrets
+        run: melos decrypt-secrets
+
       # Dart/Flutter
       - name: Check Dart format
         run: melos run check-format --no-select
