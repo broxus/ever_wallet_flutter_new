@@ -40,7 +40,7 @@ platform :ios do
       groups: "qa",
       ipa_path: "../build/ios/ipa/App.ipa",
       service_credentials_file: "../fastlane/FirebaseADKey.json",
-      release_notes: "#{options[:changelog_string]}"
+      release_notes_file:  "../fastlane/changelog.txt",
     )
   end
 
