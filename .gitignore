@@ -152,3 +152,4 @@ secrets/ios-provisioning-key*
 
 # Fastlane
 **/fastlane/report.xml
+fastlane/changelog.txt
