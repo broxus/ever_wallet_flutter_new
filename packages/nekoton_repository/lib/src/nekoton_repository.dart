@@ -161,8 +161,7 @@ class NekotonRepository
       buildSeeds(
         allKeys: allKeys ?? _keyStore.keys,
         allAccounts: allAccounts ?? _accountsStorage.accounts,
-        hiddenAccounts:
-            hiddenAccounts ?? _storageRepository.hiddenAccounts,
+        hiddenAccounts: hiddenAccounts ?? _storageRepository.hiddenAccounts,
         externalAccounts:
             externalAccounts ?? _storageRepository.externalAccounts,
         transport: transport ?? currentTransport,
