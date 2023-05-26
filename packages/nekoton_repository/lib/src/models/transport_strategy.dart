@@ -13,7 +13,7 @@ abstract class TransportStrategy {
   /// For example, for ever this returns [12, 24].
   /// This list is used during adding new seed phrase and order of items saves
   /// for building interface.
-  List<int> get seedPhraseAvailableWords;
+  List<int> get seedPhraseWordsCount;
 
   /// This type of wallet is used for creating default account for any publicKey
   WalletType get defaultWalletType;

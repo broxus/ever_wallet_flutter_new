@@ -42,7 +42,7 @@ class Seed extends Equatable {
       );
 
   /// Change password of seed phrase.
-  Future<void> changeSeedPassword({
+  Future<void> changePassword({
     required String oldPassword,
     required String newPassword,
   }) =>
@@ -63,7 +63,7 @@ class Seed extends Equatable {
       );
 
   /// This method allows remove full seed and all related keys (master and sub)
-  Future<void> removeSeed() =>
+  Future<void> remove() =>
       GetIt.instance<SeedKeyRepository>().removeKeys(allKeys);
 
   @override

@@ -61,15 +61,18 @@ class GeneralStorageService extends AbstractStorageService {
   final _currentKeySubject = BehaviorSubject<String?>();
 
   /// Stream of public keys names
-  Stream<String?> get currentKeyStream => _currentKeySubject.stream;
+  Stream<String?> get currentKeyStream => _currentKeySubject;
 
-  /// Get current public key that user set before
-  Future<String?> get currentKey =>
+  /// Get last cached public key that user set before
+  String? get currentKey => _currentKeySubject.valueOrNull;
+
+  /// Read from storage current public key that user set before
+  Future<String?> readCurrentKey() =>
       _storage.get(_currentKey, domain: _preferencesKey);
 
   /// Put current public key of user to stream
   Future<void> _streamedCurrentKey() async =>
-      _currentKeySubject.add(await currentKey);
+      _currentKeySubject.add(await readCurrentKey());
 
   /// Set current public key of user
   Future<void> setCurrentKey(String publicKey) => _storage
@@ -84,18 +87,20 @@ class GeneralStorageService extends AbstractStorageService {
   final _lastViewedSeedsSubject = BehaviorSubject<List<String>>();
 
   /// Stream of last viewed seeds
-  Stream<List<String>> get lastViewedSeedsStream =>
-      _lastViewedSeedsSubject.stream;
+  Stream<List<String>> get lastViewedSeedsStream => _lastViewedSeedsSubject;
+
+  /// Get last cached viewed seeds
+  List<String> get lastViewedSeeds => _lastViewedSeedsSubject.value;
 
   /// Put last viewed seeds to stream
   Future<void> _streamedLastViewedSeeds() async =>
-      _lastViewedSeedsSubject.add(await lastViewedSeeds());
+      _lastViewedSeedsSubject.add(await readLastViewedSeeds());
 
   /// Returns up to [maxLastSelectedSeeds] public keys of seeds that were used.
   ///
   /// After updating to application version with this list, it's filled with 4
   /// (or less) random keys with [currentKey] at 1-st place.
-  Future<List<String>> lastViewedSeeds() async {
+  Future<List<String>> readLastViewedSeeds() async {
     final seeds = await _storage.get(
       _lastSelectedSeedsKey,
       domain: _preferencesKey,
@@ -147,15 +152,17 @@ class GeneralStorageService extends AbstractStorageService {
   final _currentConnectionSubject = BehaviorSubject<String?>();
 
   /// Stream of current connection
-  Stream<String?> get currentConnectionStream =>
-      _currentConnectionSubject.stream;
+  Stream<String?> get currentConnectionStream => _currentConnectionSubject;
+
+  /// Get last cached current connection
+  String? get currentConnection => _currentConnectionSubject.valueOrNull;
 
   /// Put current connection to stream
   Future<void> _streamedCurrentConnection() async =>
-      _currentConnectionSubject.add(await currentConnection);
+      _currentConnectionSubject.add(await readCurrentConnection());
 
-  /// Get current connection of network by name
-  Future<String?> get currentConnection =>
+  /// Read from storage current connection of network by name
+  Future<String?> readCurrentConnection() =>
       _storage.get(_currentConnectionKey, domain: _preferencesKey);
 
   /// Set current connection of network by name
@@ -175,8 +182,11 @@ class GeneralStorageService extends AbstractStorageService {
   Stream<List<TokenContractAsset>> systemTokenContractAssetsStream(
     NetworkType network,
   ) =>
-      _systemTokenContractAssetsSubject.stream
-          .map((event) => event[network] ?? []);
+      _systemTokenContractAssetsSubject.map((event) => event[network] ?? []);
+
+  /// Get last cached system token contract assets by network type
+  List<TokenContractAsset> getSystemTokenContractAssets(NetworkType network) =>
+      _systemTokenContractAssetsSubject.value[network] ?? [];
 
   /// Put system token contract assets to stream
   Future<void> _streamedSystemContractAssets() async {
@@ -218,7 +228,7 @@ class GeneralStorageService extends AbstractStorageService {
   }
 
   /// Get list of system assets by network type
-  Future<List<TokenContractAsset>> getSystemTokenContractAssets(
+  Future<List<TokenContractAsset>> readSystemTokenContractAssets(
     NetworkType type,
   ) async {
     final assets = await _storage.get(
@@ -244,8 +254,11 @@ class GeneralStorageService extends AbstractStorageService {
   Stream<List<TokenContractAsset>> customTokenContractAssetsStream(
     NetworkType network,
   ) =>
-      _customTokenContractAssetsSubject.stream
-          .map((event) => event[network] ?? []);
+      _customTokenContractAssetsSubject.map((event) => event[network] ?? []);
+
+  /// Get last cached custom token contract assets by network type
+  List<TokenContractAsset> getCustomTokenContractAssets(NetworkType type) =>
+      _customTokenContractAssetsSubject.value[type] ?? [];
 
   /// Put custom token contract assets to stream
   Future<void> _streamedCustomContractAssets() async {
@@ -264,8 +277,8 @@ class GeneralStorageService extends AbstractStorageService {
     _customTokenContractAssetsSubject.add(decoded);
   }
 
-  /// Get list of custom assets by network type
-  Future<List<TokenContractAsset>> getCustomTokenContractAssets(
+  /// Read from storage list of custom assets by network type
+  Future<List<TokenContractAsset>> readCustomTokenContractAssets(
     NetworkType type,
   ) async {
     final assets = await _storage.get(
@@ -288,7 +301,7 @@ class GeneralStorageService extends AbstractStorageService {
   Future<void> addCustomTokenContractAsset(
     TokenContractAsset tokenContractAsset,
   ) async {
-    final assets = await getCustomTokenContractAssets(
+    final assets = await readCustomTokenContractAssets(
       tokenContractAsset.networkType,
     );
     final newAssets = assets
@@ -307,7 +320,7 @@ class GeneralStorageService extends AbstractStorageService {
   Future<void> removeCustomTokenContractAsset(
     TokenContractAsset asset,
   ) async {
-    final assets = await getCustomTokenContractAssets(asset.networkType);
+    final assets = await readCustomTokenContractAssets(asset.networkType);
     final newAssets = assets.where((a) => a.address != asset.address).toList();
     await _storage.set(
       asset.networkType.index.toString(),
@@ -334,12 +347,16 @@ class GeneralStorageService extends AbstractStorageService {
   final _localeSubject = BehaviorSubject<String?>();
 
   /// Stream of locale
-  Stream<String?> get localeStream => _localeSubject.stream;
+  Stream<String?> get localeStream => _localeSubject;
 
-  Future<void> _streamedLocale() async => _localeSubject.add(await locale);
+  /// Get last cached locale
+  String? get locale => _localeSubject.valueOrNull;
 
-  /// Get locale that used could save in settings
-  Future<String?> get locale =>
+  Future<void> _streamedLocale() async =>
+      _localeSubject.add(await readLocale());
+
+  /// Read from storage locale that used could save in settings
+  Future<String?> readLocale() =>
       _storage.get(_localeKey, domain: _preferencesKey);
 
   /// Set locale that used could save in settings
@@ -377,7 +394,11 @@ class GeneralStorageService extends AbstractStorageService {
 
   /// Stream of currencies by specified network type
   Stream<List<Currency>> currenciesStream(NetworkType network) =>
-      _currencySubject.stream.map((event) => event[network] ?? []);
+      _currencySubject.map((event) => event[network] ?? []);
+
+  /// Get last cached currencies by network type
+  List<Currency> getCurrencies(NetworkType type) =>
+      _currencySubject.value[type] ?? [];
 
   /// Put custom token contract assets to stream
   Future<void> _streamedCurrencies() async {
@@ -393,8 +414,8 @@ class GeneralStorageService extends AbstractStorageService {
     _currencySubject.add(decoded);
   }
 
-  /// Get list of all currencies specified for network type
-  Future<List<Currency>> getCurrencies(NetworkType type) async {
+  /// Read from storage list of all currencies specified for network type
+  Future<List<Currency>> readCurrencies(NetworkType type) async {
     final encoded = await _storage.get(
       type.index.toString(),
       domain: _currenciesKey,
@@ -412,7 +433,7 @@ class GeneralStorageService extends AbstractStorageService {
   /// This ignores duplicates and saves only one currency with same address.
   Future<void> saveOrUpdateCurrency({required Currency currency}) async {
     final type = currency.networkType;
-    final list = await getCurrencies(type);
+    final list = await readCurrencies(type);
     final newList = list.where((e) => e.address != currency.address).toList()
       ..add(currency);
 

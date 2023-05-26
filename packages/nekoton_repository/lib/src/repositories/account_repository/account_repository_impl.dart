@@ -56,7 +56,7 @@ mixin AccountRepositoryImpl on TransportRepository
                   .defaultAccountName(existingWalletInfo.walletType),
           publicKey: publicKey,
           contract: existingWalletInfo.walletType,
-          workchain: existingWalletInfo.address.workchain,
+          workchain: AddressUtils.workchain(existingWalletInfo.address),
           explicitAddress: address,
         ),
       );
@@ -118,11 +118,10 @@ mixin AccountRepositoryImpl on TransportRepository
 
     final externalAccounts = <String, List<String>>{};
     for (final account in accounts) {
-      if (externalAccounts.containsKey(account.publicKey)) {
-        externalAccounts[account.publicKey]!.add(account.account.address);
-      } else {
-        externalAccounts[account.publicKey] = [account.account.address];
-      }
+      externalAccounts[account.publicKey] = [
+        ...?externalAccounts[account.publicKey],
+        account.account.address
+      ];
     }
 
     for (final entry in externalAccounts.entries) {
@@ -134,7 +133,7 @@ mixin AccountRepositoryImpl on TransportRepository
 
     final removeFromLocal = <KeyAccount>[];
     final updatedExternal =
-        storageRepository.externalAccountsCached.values.expand((e) => e);
+        storageRepository.externalAccounts.values.expand((e) => e);
     for (final account in accounts) {
       final isStillExternal = updatedExternal.contains(account.account.address);
       final isLocal = localKeys.contains(account.account.publicKey);

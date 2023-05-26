@@ -119,7 +119,7 @@ mixin SeedKeyRepositoryImpl on TransportRepository
             (e) => AccountToAdd(
               publicKey: e.publicKey,
               contract: e.walletType,
-              workchain: e.address.workchain,
+              workchain: AddressUtils.workchain(e.address),
               name: transport.defaultAccountName(e.walletType),
             ),
           )

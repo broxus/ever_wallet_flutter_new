@@ -192,26 +192,26 @@ void main() {
 
     /// Custom contracts
     expect(
-      await storage.getCustomTokenContractAssets(NetworkType.ever),
+      await storage.readCustomTokenContractAssets(NetworkType.ever),
       [_everContractAsset],
     );
     expect(
-      await storage.getCustomTokenContractAssets(NetworkType.venom),
+      await storage.readCustomTokenContractAssets(NetworkType.venom),
       [_venomContractAsset],
     );
 
     /// Currencies
-    expect(await storage.getCurrencies(NetworkType.ever), [_everCurrency]);
-    expect(await storage.getCurrencies(NetworkType.venom), [_venomCurrency]);
+    expect(await storage.readCurrencies(NetworkType.ever), [_everCurrency]);
+    expect(await storage.readCurrencies(NetworkType.venom), [_venomCurrency]);
 
     /// Permissions
     expect(await browserStorage.permissions, {'origin': _permissions});
 
     /// Bookmarks
-    expect(await browserStorage.bookmarks, [_bookmark]);
+    expect(await browserStorage.readBookmarks, [_bookmark]);
 
     /// Search history
-    expect(await browserStorage.searchHistory, [_search]);
+    expect(await browserStorage.readSearchHistory, [_search]);
 
     /// Site metadata
     expect(await browserStorage.getSiteMetaData(_metadata.url), _metadata);
@@ -221,16 +221,16 @@ void main() {
     expect(await storage.isBiometryEnabled, true);
     expect(await storage.getWasStEverOpened, true);
     expect(await browserStorage.getWhyNeedBrowser, true);
-    expect(await storage.lastViewedSeeds(), [_publicKey]);
-    expect(await accountSeedStorage.hiddenAccounts, [_address]);
-    expect(await accountSeedStorage.externalAccounts, {
+    expect(await storage.readLastViewedSeeds(), [_publicKey]);
+    expect(await accountSeedStorage.readHiddenAccounts, [_address]);
+    expect(await accountSeedStorage.readExternalAccounts, {
       _publicKey: [_address]
     });
-    expect(await storage.currentConnection, _connection);
-    expect(await storage.currentKey, _publicKey);
+    expect(await storage.readCurrentConnection, _connection);
+    expect(await storage.readCurrentKey, _publicKey);
 
     /// Browser
-    expect(await browserStorage.browserTabs, [_browserTab]);
+    expect(await browserStorage.readBrowserTabs, [_browserTab]);
     expect(await browserStorage.browserTabsLastIndex, -1);
   }
 
@@ -372,21 +372,21 @@ void main() {
 
       /// Custom contracts
       expect(
-        await storage.getCustomTokenContractAssets(NetworkType.ever),
+        await storage.readCustomTokenContractAssets(NetworkType.ever),
         hive.everCustomTokenContractAssets,
       );
       expect(
-        await storage.getCustomTokenContractAssets(NetworkType.venom),
+        await storage.readCustomTokenContractAssets(NetworkType.venom),
         hive.venomCustomTokenContractAssets,
       );
 
       /// Currencies
       expect(
-        await storage.getCurrencies(NetworkType.ever),
+        await storage.readCurrencies(NetworkType.ever),
         hive.everCurrencies,
       );
       expect(
-        await storage.getCurrencies(NetworkType.venom),
+        await storage.readCurrencies(NetworkType.venom),
         hive.venomCurrencies,
       );
 
@@ -394,10 +394,10 @@ void main() {
       expect(await browserStorage.permissions, hive.permissions);
 
       /// Bookmarks
-      expect(await browserStorage.bookmarks, hive.bookmarks);
+      expect(await browserStorage.readBookmarks, hive.bookmarks);
 
       /// Search history
-      expect(await browserStorage.searchHistory, hive.searchHistory);
+      expect(await browserStorage.readSearchHistory, hive.searchHistory);
 
       /// Site metadata
       expect(
@@ -411,16 +411,16 @@ void main() {
       expect(await storage.getWasStEverOpened, hive.wasStEverOpened);
       expect(await browserStorage.getWhyNeedBrowser, hive.getWhyNeedBrowser);
       expect(
-        await storage.lastViewedSeeds(),
+        await storage.readLastViewedSeeds(),
         hive.lastViewedSeeds(),
       );
-      expect(await accountSeedStorage.hiddenAccounts, hive.hiddenAccounts);
-      expect(await accountSeedStorage.externalAccounts, hive.externalAccounts);
-      expect(await storage.currentConnection, hive.currentConnection);
-      expect(await storage.currentKey, hive.currentKey);
+      expect(await accountSeedStorage.readHiddenAccounts, hive.hiddenAccounts);
+      expect(await accountSeedStorage.readExternalAccounts, hive.externalAccounts);
+      expect(await storage.readCurrentConnection, hive.currentConnection);
+      expect(await storage.readCurrentKey, hive.currentKey);
 
       /// Browser
-      expect(await browserStorage.browserTabs, hive.browserTabs);
+      expect(await browserStorage.readBrowserTabs, hive.browserTabs);
       expect(
         await browserStorage.browserTabsLastIndex,
         hive.browserTabsLastIndex,

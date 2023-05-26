@@ -162,9 +162,9 @@ class NekotonRepository
         allKeys: allKeys ?? _keyStore.keys,
         allAccounts: allAccounts ?? _accountsStorage.accounts,
         hiddenAccounts:
-            hiddenAccounts ?? _storageRepository.hiddenAccountsCached,
+            hiddenAccounts ?? _storageRepository.hiddenAccounts,
         externalAccounts:
-            externalAccounts ?? _storageRepository.externalAccountsCached,
+            externalAccounts ?? _storageRepository.externalAccounts,
         transport: transport ?? currentTransport,
       ),
     );
@@ -202,11 +202,7 @@ class NekotonRepository
         isExternal: isExternal,
         publicKey: key,
       );
-      if (mapped.containsKey(key)) {
-        mapped[key]!.add(keyAccount);
-      } else {
-        mapped[key] = [keyAccount];
-      }
+      mapped[key] = [...?mapped[key], keyAccount];
     }
 
     return SeedList(

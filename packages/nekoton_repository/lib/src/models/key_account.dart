@@ -28,19 +28,16 @@ class KeyAccount extends Equatable {
   /// Flag that allows identify if this account is hidden.
   final bool isHidden;
 
-  /// Toggle hidden state for this account.
-  /// If it was hidden, it became visible and vice versa.
-  Future<void> toggleHidden() {
-    if (isHidden) {
-      return GetIt.instance<NekotonRepository>()
-          .storageRepository
-          .showAccounts([account.address]);
-    } else {
-      return GetIt.instance<NekotonRepository>()
-          .storageRepository
-          .hideAccounts([account.address]);
-    }
-  }
+  /// Show this account in wallet page.
+  Future<void> show() => GetIt.instance<NekotonRepository>()
+      .storageRepository
+      .showAccounts([account.address]);
+
+  /// Hide this account from wallet page.
+  /// In profile page is still will be visible.
+  Future<void> hide() => GetIt.instance<NekotonRepository>()
+      .storageRepository
+      .hideAccounts([account.address]);
 
   /// Add token to this account
   Future<void> addTokenWallet(String rootTokenContract) =>
@@ -57,13 +54,12 @@ class KeyAccount extends Equatable {
       );
 
   /// Change name of this account to [newName].
-  Future<void> renameAccount(String newName) =>
-      GetIt.instance<AccountRepository>()
-          .renameAccount(account.address, newName);
+  Future<void> rename(String newName) => GetIt.instance<AccountRepository>()
+      .renameAccount(account.address, newName);
 
   /// Remove this account from storage.
   /// This works fine for local and external accounts.
-  Future<void> removeAccount() =>
+  Future<void> remove() =>
       GetIt.instance<AccountRepository>().removeAccounts([this]);
 
   @override
