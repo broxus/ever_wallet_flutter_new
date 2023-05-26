@@ -33,7 +33,7 @@ class SeedKey extends Equatable {
   }
 
   /// This method allows removing only sub key.
-  /// If you need remove seed, use [Seed.removeSeed].
+  /// If you need remove seed, use [Seed.remove].
   /// Returns true, if key was removed.
   Future<bool> remove() async {
     final removed =
