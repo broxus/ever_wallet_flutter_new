@@ -22,3 +22,4 @@ rm -f secrets/ios-provisioning-key*
 # Remove changelog
 rm -rf fastlane/changelog.txt
 rm -rf android/fastlane/metadata/android/
+rm -rf packages/ui_components_lib/example/assets/git_log.txt
