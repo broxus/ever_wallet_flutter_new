@@ -94,6 +94,7 @@ mixin SeedKeyRepositoryImpl on TransportRepository
   /// Trigger adding accounts to [AccountRepository] by public keys.
   Future<void> triggerAddingAccounts(List<String> publicKeys) async {
     final foundAccounts = <ExistingWalletInfo>[];
+    final accountsToAdd = <AccountToAdd>[];
 
     final transport = currentTransport;
 
@@ -106,25 +107,36 @@ mixin SeedKeyRepositoryImpl on TransportRepository
       );
 
       final activeAccounts = found.where((e) => e.isActive);
-
-      foundAccounts.addAll(activeAccounts);
       // TODO(alex-a4): check if this logic really needed
       // final isExists = accounts.any((e) => e.address == activeWallet.
       // address);
+
+      /// If no accounts were found for this key, then create default one
+      if (activeAccounts.isEmpty) {
+        accountsToAdd.add(
+          AccountToAdd(
+            name: transport.defaultAccountName(transport.defaultWalletType),
+            publicKey: key,
+            contract: transport.defaultWalletType,
+            workchain: defaultWorkchainId,
+          ),
+        );
+      } else {
+        foundAccounts.addAll(activeAccounts);
+      }
+    }
+    for (final a in foundAccounts) {
+      accountsToAdd.add(
+        AccountToAdd(
+          publicKey: a.publicKey,
+          contract: a.walletType,
+          workchain: AddressUtils.workchain(a.address),
+          name: transport.defaultAccountName(a.walletType),
+        ),
+      );
     }
 
-    await GetIt.instance<AccountRepository>().addAccounts(
-      foundAccounts
-          .map(
-            (e) => AccountToAdd(
-              publicKey: e.publicKey,
-              contract: e.walletType,
-              workchain: AddressUtils.workchain(e.address),
-              name: transport.defaultAccountName(e.walletType),
-            ),
-          )
-          .toList(),
-    );
+    await GetIt.instance<AccountRepository>().addAccounts(accountsToAdd);
   }
 
   @override

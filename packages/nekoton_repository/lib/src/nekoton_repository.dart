@@ -128,6 +128,8 @@ class NekotonRepository
   /// but we do not need 5 triggers of [_updateSeedList] method, so we call it
   /// manually in the end
   void setupSeedListUpdating() {
+    // We should skip 1-st item to avoid 5x init calls, because BehaviorSubject
+    // emits last value after starting listening
     _keyStore.keysStream
         .skip(1)
         .listen((keys) => _updateSeedList(allKeys: keys));
@@ -144,7 +146,6 @@ class NekotonRepository
         .skip(1)
         .listen((transport) => _updateSeedList(transport: transport));
 
-    // TODO(alex-a4): if first init needed because of BehaviorSubject & skip
     _updateSeedList();
   }
 
@@ -170,7 +171,7 @@ class NekotonRepository
   }
 
   // TODO(alex-a4): understand how transport affects loading existingWallets
-  //   like with adding kew.
+  //   like with adding key.
   /// This is a pure function that combine all accounts/keys sources into a
   /// single hierarchy structure.
   SeedList buildSeeds({
