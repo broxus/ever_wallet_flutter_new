@@ -8,6 +8,7 @@ environment:
   flutter: 3.7.12
 
 dependencies:
+  collection: ^1.17.0
   encrypted_storage:
     path: ../encrypted_storage
   equatable: ^2.0.5
@@ -16,7 +17,7 @@ dependencies:
   flutter_nekoton_bridge:
     git:
       url: https://github.com/broxus/nekoton_bridge.git
-      ref: flutter_nekoton_bridge-v1.8.0-dev.8
+      ref: flutter_nekoton_bridge-v1.8.0-dev.9
       path: packages/flutter_nekoton_bridge
   get_it: ^7.6.0
   injectable: ^2.1.0

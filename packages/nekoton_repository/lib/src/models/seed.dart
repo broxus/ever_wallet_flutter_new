@@ -1,3 +1,4 @@
+import 'package:equatable/equatable.dart';
 import 'package:flutter/foundation.dart';
 import 'package:get_it/get_it.dart';
 import 'package:nekoton_repository/nekoton_repository.dart';
@@ -7,9 +8,9 @@ import 'package:nekoton_repository/nekoton_repository.dart';
 /// [subKeys] is a list of keys that derives from [masterKey].
 ///
 /// This instance is immutable and it can't change its state.
-/// To listen SeedList changes, use [NekotonRepository.seedsStream]
+/// To listen SeedList changes, use [NekotonRepository.seedListStream]
 @immutable
-class Seed {
+class Seed extends Equatable {
   const Seed({
     required this.masterKey,
     required this.subKeys,
@@ -17,14 +18,14 @@ class Seed {
 
   /// Master key of seed.
   /// This key is derived directly from seed phrase.
-  final KeyStoreEntry masterKey;
+  final SeedKey masterKey;
 
   /// List of derived keys of [masterKey].
   /// This list do not contains [masterKey].
-  final List<KeyStoreEntry> subKeys;
+  final List<SeedKey> subKeys;
 
   /// Just for iterating over all keys.
-  List<KeyStoreEntry> get allKeys => [masterKey, ...subKeys];
+  List<SeedKey> get allKeys => [masterKey, ...subKeys];
 
   /// Derive keys from [masterKey] this call adds list of sub keys to
   /// [subKeys].
@@ -37,34 +38,34 @@ class Seed {
       GetIt.instance<SeedKeyRepository>().deriveKeys(
         accountIds: accountIds,
         password: password,
-        masterKey: masterKey.publicKey,
+        masterKey: masterKey.key.publicKey,
       );
 
   /// Change password of seed phrase.
-  Future<void> changeSeedPassword({
+  Future<void> changePassword({
     required String oldPassword,
     required String newPassword,
   }) =>
       GetIt.instance<SeedKeyRepository>().changeSeedPassword(
-        publicKey: masterKey.publicKey,
+        publicKey: masterKey.key.publicKey,
         oldPassword: oldPassword,
         newPassword: newPassword,
-        isLegacy: masterKey.isLegacy,
+        isLegacy: masterKey.key.isLegacy,
       );
 
   /// Return seeds phrase of this seed.
   /// Do not works for ledger key.
   Future<List<String>> exportKey(String password) =>
       GetIt.instance<SeedKeyRepository>().exportKey(
-        masterKey: masterKey.publicKey,
+        masterKey: masterKey.key.publicKey,
         password: password,
-        isLegacy: masterKey.isLegacy,
+        isLegacy: masterKey.key.isLegacy,
       );
 
   /// This method allows remove full seed and all related keys (master and sub)
-  Future<void> removeSeed() {
-    return GetIt.instance<SeedKeyRepository>().removeKeys(
-      [masterKey.publicKey, ...subKeys.map((e) => e.publicKey)],
-    );
-  }
+  Future<void> remove() =>
+      GetIt.instance<SeedKeyRepository>().removeKeys(allKeys);
+
+  @override
+  List<Object?> get props => [allKeys];
 }

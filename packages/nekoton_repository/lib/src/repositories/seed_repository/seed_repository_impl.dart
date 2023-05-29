@@ -1,13 +1,18 @@
-import 'package:flutter_nekoton_bridge/flutter_nekoton_bridge.dart';
-import 'package:nekoton_repository/src/repositories/seed_repository/seed_repository.dart';
+import 'dart:async';
+
+import 'package:get_it/get_it.dart';
+import 'package:nekoton_repository/nekoton_repository.dart';
 
 /// Implementation of SeedRepository.
 /// Usage
 /// ```
 /// class NekotonRepository with SeedRepositoryImpl {}
 /// ```
-mixin SeedKeyRepositoryImpl implements SeedKeyRepository {
+mixin SeedKeyRepositoryImpl on TransportRepository
+    implements SeedKeyRepository {
   KeyStore get keyStore;
+
+  NekotonStorageRepository get storageRepository;
 
   @override
   Future<List<String>> deriveKeys({
@@ -34,9 +39,9 @@ mixin SeedKeyRepositoryImpl implements SeedKeyRepository {
           .toList(),
     );
 
-    // TODO(alex-a4): add logic to triger accounts adding
+    unawaited(triggerAddingAccounts(publicKeys));
 
-    return publicKeys.map((e) => e.publicKey).toList();
+    return publicKeys;
   }
 
   @override
@@ -79,11 +84,47 @@ mixin SeedKeyRepositoryImpl implements SeedKeyRepository {
       );
     }
 
-    final key = await keyStore.addKey(createKeyInput);
+    final publicKey = await keyStore.addKey(createKeyInput);
 
-    // TODO(alex-a4): add logic to triger accounts adding
+    unawaited(triggerAddingAccounts([publicKey]));
 
-    return key.publicKey;
+    return publicKey;
+  }
+
+  /// Trigger adding accounts to [AccountRepository] by public keys.
+  Future<void> triggerAddingAccounts(List<String> publicKeys) async {
+    final foundAccounts = <ExistingWalletInfo>[];
+
+    final transport = currentTransport;
+
+    for (final key in publicKeys) {
+      final found = await TonWallet.findExistingWallets(
+        transport: transport.transport,
+        workchainId: defaultWorkchainId,
+        publicKey: key,
+        walletTypes: transport.availableWalletTypes,
+      );
+
+      final activeAccounts = found.where((e) => e.isActive);
+
+      foundAccounts.addAll(activeAccounts);
+      // TODO(alex-a4): check if this logic really needed
+      // final isExists = accounts.any((e) => e.address == activeWallet.
+      // address);
+    }
+
+    await GetIt.instance<AccountRepository>().addAccounts(
+      foundAccounts
+          .map(
+            (e) => AccountToAdd(
+              publicKey: e.publicKey,
+              contract: e.walletType,
+              workchain: AddressUtils.workchain(e.address),
+              name: transport.defaultAccountName(e.walletType),
+            ),
+          )
+          .toList(),
+    );
   }
 
   @override
@@ -268,8 +309,28 @@ mixin SeedKeyRepositoryImpl implements SeedKeyRepository {
       );
 
   @override
-  Future<List<String>> removeKeys(List<String> publicKeys) async {
-    final removed = await keyStore.removeKeys(publicKeys: publicKeys);
-    return removed.map((e) => e.publicKey).toList();
+  Future<List<String>> removeKeys(List<SeedKey> keys) async {
+    final removed = await keyStore.removeKeys(
+      publicKeys: keys.map((e) => e.key.publicKey).toList(),
+    );
+    unawaited(
+      triggerRemovingAccounts(
+        keys.where((k) => removed.contains(k.key.publicKey)),
+      ),
+    );
+    return removed;
+  }
+
+  /// Remove accounts, specified for [keys] that were removed.
+  /// Also removes information from storage about hidden and external accounts.
+  Future<void> triggerRemovingAccounts(Iterable<SeedKey> keys) async {
+    final accountsToRemove = <KeyAccount>[];
+
+    for (final key in keys) {
+      for (final account in key.accountList.allAccounts) {
+        accountsToRemove.add(account);
+      }
+    }
+    await GetIt.instance<AccountRepository>().removeAccounts(accountsToRemove);
   }
 }

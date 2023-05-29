@@ -2,7 +2,6 @@ import 'dart:collection';
 import 'dart:convert';
 import 'dart:io';
 
-import 'package:app/app/constants.dart';
 import 'package:app/app/service/dto/account_interaction_dto.dart';
 import 'package:app/app/service/dto/bookmark_dto.dart';
 import 'package:app/app/service/dto/browser_tab_dto.dart';
@@ -712,14 +711,14 @@ class MigrationService {
 
   final GeneralStorageService _storage;
   final BrowserStorageService _browserStorage;
-  final AccountSeedStorageService _accountSeedStorage;
+  final NekotonStorageService _accountSeedStorage;
   final HiveSourceMigration _hive;
 
   /// Migration method for app that includes hive initialization.
   static Future<void> migrateWithHiveInit(
     GeneralStorageService storage,
     BrowserStorageService browserStorage,
-    AccountSeedStorageService accountSeedStorage,
+    NekotonStorageService accountSeedStorage,
   ) async {
     return MigrationService(
       storage,
@@ -767,7 +766,10 @@ class MigrationService {
   Future<void> applyMigration() async {
     /// Storage
     for (final entry in _hive._storageData.entries) {
-      await _storage.setStorageData(key: entry.key, value: entry.value);
+      await _accountSeedStorage.setStorageData(
+        key: entry.key,
+        value: entry.value,
+      );
     }
 
     /// Seeds
@@ -839,10 +841,8 @@ class MigrationService {
     await _storage.setIsBiometryEnabled(isEnabled: _hive.isBiometryEnabled);
     if (_hive.wasStEverOpened) await _storage.saveWasStEverOpened();
     if (_hive.getWhyNeedBrowser) await _browserStorage.saveWhyNeedBrowser();
-    await _accountSeedStorage.updateLastViewedSeeds(_hive.lastViewedSeeds());
-    for (final account in _hive.hiddenAccounts) {
-      await _accountSeedStorage.hideAccount(account);
-    }
+    await _storage.updateLastViewedSeeds(_hive.lastViewedSeeds());
+    await _accountSeedStorage.hideAccounts(_hive.hiddenAccounts);
     for (final entry in _hive.externalAccounts.entries) {
       await _accountSeedStorage.updateExternalAccounts(
         publicKey: entry.key,
@@ -853,7 +853,7 @@ class MigrationService {
       await _storage.setCurrentConnection(_hive.currentConnection!);
     }
     if (_hive.currentKey != null) {
-      await _accountSeedStorage.setCurrentKey(_hive.currentKey!);
+      await _storage.setCurrentKey(_hive.currentKey!);
     }
 
     /// Browser

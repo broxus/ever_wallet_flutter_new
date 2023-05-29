@@ -1,6 +1,5 @@
-import 'package:app/app/service/storage_service/general_storage_service.dart';
+import 'package:app/app/service/storage_service/account_seed_storage_service.dart';
 import 'package:app/di/di.dart';
-import 'package:encrypted_storage/encrypted_storage.dart';
 import 'package:logging/logging.dart';
 import 'package:nekoton_repository/nekoton_repository.dart';
 
@@ -9,19 +8,9 @@ Future<void> configureNekoton() async {
     ..finest('NekotonRepository initializating...');
 
   final nekotonRepository = inject<NekotonRepository>();
-  await nekotonRepository.setupStorage(storage: inject<EncryptedStorage>());
 
-  log
-    ..finest('NekotonRepository initialized with storage')
-    ..finest('GeneralStorageService initializating...');
-
-  final storage = inject<GeneralStorageService>();
-  await nekotonRepository.setupNekoton(
-    get: storage.getStorageData,
-    set: storage.setStorageData,
-    setUnchecked: storage.setStorageData,
-    remove: storage.removeStorageData,
-    removeUnchecked: storage.removeStorageData,
+  await nekotonRepository.setupNekotonAndStorage(
+    storage: inject<NekotonStorageService>(),
   );
-  log.finest('NekotonRepository initialized with storage hooks');
+  log.finest('NekotonRepository initialized with storage');
 }

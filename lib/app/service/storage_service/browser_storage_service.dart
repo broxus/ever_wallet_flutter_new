@@ -93,14 +93,17 @@ class BrowserStorageService extends AbstractStorageService {
   final _bookmarksSubject = BehaviorSubject<List<Bookmark>>();
 
   /// Stream of bookmarks
-  Stream<List<Bookmark>> get bookmarksStream => _bookmarksSubject.stream;
+  Stream<List<Bookmark>> get bookmarksStream => _bookmarksSubject;
+
+  /// Get last cached bookmarks
+  List<Bookmark> get bookmarks => _bookmarksSubject.value;
 
   /// Put bookmarks to stream
   Future<void> _streamedBookmarks() async =>
-      _bookmarksSubject.add(await bookmarks);
+      _bookmarksSubject.add(await readBookmarks());
 
-  /// Get list of bookmarks that user had saved
-  Future<List<Bookmark>> get bookmarks async {
+  /// Read from storage list of bookmarks that user had saved
+  Future<List<Bookmark>> readBookmarks() async {
     final bookmarks = await _storage.getDomain(domain: _bookmarksKey);
     return bookmarks.values
         .map(
@@ -133,16 +136,18 @@ class BrowserStorageService extends AbstractStorageService {
   /// Subject of search history
   final _searchHistorySubject = BehaviorSubject<List<SearchHistory>>();
 
+  /// Get last cached search history
+  List<SearchHistory> get searchHistory => _searchHistorySubject.value;
+
   /// Stream of search history
-  Stream<List<SearchHistory>> get searchHistoryStream =>
-      _searchHistorySubject.stream;
+  Stream<List<SearchHistory>> get searchHistoryStream => _searchHistorySubject;
 
   /// Put search history to stream
   Future<void> _streamedSearchHistory() async =>
-      _searchHistorySubject.add(await searchHistory);
+      _searchHistorySubject.add(await readSearchHistory());
 
-  /// Get list of search history in browser
-  Future<List<SearchHistory>> get searchHistory async {
+  /// Read from storage list of search history in browser
+  Future<List<SearchHistory>> readSearchHistory() async {
     final encoded = await _storage.get(
       _searchHistoryKey,
       domain: _browserPreferencesKey,
@@ -159,7 +164,7 @@ class BrowserStorageService extends AbstractStorageService {
   /// Add search history entry to storage. Search sorts by date and saves only
   /// last 50 entries.
   Future<void> addSearchHistoryEntry(SearchHistory entry) async {
-    var list = await searchHistory;
+    var list = await readSearchHistory();
     list = list.where((e) => e.url != entry.url).toList();
 
     final entries = [
@@ -178,7 +183,7 @@ class BrowserStorageService extends AbstractStorageService {
 
   /// Remove search history entry from storage
   Future<void> removeSearchHistoryEntry(SearchHistory entry) async {
-    var list = await searchHistory;
+    var list = await readSearchHistory();
     list = list.where((e) => e.url != entry.url).toList();
 
     return _storage
@@ -253,14 +258,17 @@ class BrowserStorageService extends AbstractStorageService {
   final _browserTabsSubject = BehaviorSubject<List<BrowserTab>>();
 
   /// Stream of browser tabs
-  Stream<List<BrowserTab>> get browserTabsStream => _browserTabsSubject.stream;
+  Stream<List<BrowserTab>> get browserTabsStream => _browserTabsSubject;
+
+  /// Get last cached browser tabs
+  List<BrowserTab> get browserTabs => _browserTabsSubject.value;
 
   /// Put browser tabs to stream
   Future<void> _streamedBrowserTabs() async =>
-      _browserTabsSubject.add(await browserTabs);
+      _browserTabsSubject.add(await readBrowserTabs());
 
-  /// Get list of browser tabs from storage
-  Future<List<BrowserTab>> get browserTabs async {
+  /// Read from storage list of browser tabs from storage
+  Future<List<BrowserTab>> readBrowserTabs() async {
     final encoded = await _storage.get(
       _browserTabsKey,
       domain: _browserPreferencesKey,
