@@ -246,8 +246,8 @@ void main() {
     expect(await storage.isBiometryEnabled, true);
     expect(await storage.getWasStEverOpened, true);
     expect(await browserStorage.getWhyNeedBrowser, true);
-    expect(await storage.readLastViewedKeys(), [_publicKey]);
-    expect(storage.lastViewedKeys, [_publicKey]);
+    expect(await storage.readLastViewedSeeds(), [_publicKey]);
+    expect(storage.lastViewedSeeds, [_publicKey]);
     expect(await accountSeedStorage.readHiddenAccounts(), [_address]);
     expect(accountSeedStorage.hiddenAccounts, [_address]);
     expect(await accountSeedStorage.readExternalAccounts(), {
@@ -475,10 +475,10 @@ void main() {
       expect(await storage.getWasStEverOpened, hive.wasStEverOpened);
       expect(await browserStorage.getWhyNeedBrowser, hive.getWhyNeedBrowser);
       expect(
-        await storage.readLastViewedKeys(),
+        await storage.readLastViewedSeeds(),
         hive.lastViewedSeeds(),
       );
-      expect(storage.lastViewedKeys, hive.lastViewedSeeds());
+      expect(storage.lastViewedSeeds, hive.lastViewedSeeds());
       expect(
         await accountSeedStorage.readHiddenAccounts(),
         hive.hiddenAccounts,

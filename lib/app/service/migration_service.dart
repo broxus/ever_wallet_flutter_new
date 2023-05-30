@@ -841,7 +841,7 @@ class MigrationService {
     await _storage.setIsBiometryEnabled(isEnabled: _hive.isBiometryEnabled);
     if (_hive.wasStEverOpened) await _storage.saveWasStEverOpened();
     if (_hive.getWhyNeedBrowser) await _browserStorage.saveWhyNeedBrowser();
-    await _storage.updateLastViewedKeys(_hive.lastViewedSeeds());
+    await _storage.updateLastViewedSeeds(_hive.lastViewedSeeds());
     await _accountSeedStorage.hideAccounts(_hive.hiddenAccounts);
     for (final entry in _hive.externalAccounts.entries) {
       await _accountSeedStorage.updateExternalAccounts(
