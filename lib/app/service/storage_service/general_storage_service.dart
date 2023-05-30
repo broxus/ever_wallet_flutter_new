@@ -83,16 +83,16 @@ class GeneralStorageService extends AbstractStorageService {
       )
       .then((_) => _streamedCurrentKey());
 
-  /// Subject of last viewed seeds
+  /// Subject of last viewed seeds (master keys)
   final _lastViewedSeedsSubject = BehaviorSubject<List<String>>();
 
-  /// Stream of last viewed seeds
+  /// Stream of last viewed seeds (master keys)
   Stream<List<String>> get lastViewedSeedsStream => _lastViewedSeedsSubject;
 
-  /// Get last cached viewed seeds
+  /// Get last cached viewed seeds (master keys)
   List<String> get lastViewedSeeds => _lastViewedSeedsSubject.value;
 
-  /// Put last viewed seeds to stream
+  /// Put last viewed seeds (master keys) to stream
   Future<void> _streamedLastViewedSeeds() async =>
       _lastViewedSeedsSubject.add(await readLastViewedSeeds());
 
