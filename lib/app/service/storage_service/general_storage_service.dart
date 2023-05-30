@@ -44,7 +44,7 @@ class GeneralStorageService extends AbstractStorageService {
         _streamedCurrencies(),
         _streamedLocale(),
         _streamedCurrentKey(),
-        _streamedLastViewedSeeds(),
+        _streamedLastViewedKeys(),
       ]);
 
   @override
@@ -86,21 +86,21 @@ class GeneralStorageService extends AbstractStorageService {
   /// Subject of last viewed seeds
   final _lastViewedSeedsSubject = BehaviorSubject<List<String>>();
 
-  /// Stream of last viewed seeds
-  Stream<List<String>> get lastViewedSeedsStream => _lastViewedSeedsSubject;
+  /// Stream of last viewed keys
+  Stream<List<String>> get lastViewedKeysStream => _lastViewedSeedsSubject;
 
-  /// Get last cached viewed seeds
-  List<String> get lastViewedSeeds => _lastViewedSeedsSubject.value;
+  /// Get last cached viewed keys
+  List<String> get lastViewedKeys => _lastViewedSeedsSubject.value;
 
-  /// Put last viewed seeds to stream
-  Future<void> _streamedLastViewedSeeds() async =>
-      _lastViewedSeedsSubject.add(await readLastViewedSeeds());
+  /// Put last viewed keys to stream
+  Future<void> _streamedLastViewedKeys() async =>
+      _lastViewedSeedsSubject.add(await readLastViewedKeys());
 
-  /// Returns up to [maxLastSelectedSeeds] public keys of seeds that were used.
+  /// Returns up to [maxLastSelectedSeeds] public keys of keys that were used.
   ///
   /// After updating to application version with this list, it's filled with 4
   /// (or less) random keys with [currentKey] at 1-st place.
-  Future<List<String>> readLastViewedSeeds() async {
+  Future<List<String>> readLastViewedKeys() async {
     final seeds = await _storage.get(
       _lastSelectedSeedsKey,
       domain: _preferencesKey,
@@ -116,13 +116,13 @@ class GeneralStorageService extends AbstractStorageService {
   /// There must be only master keys, if key is sub, then put its master.
   /// Count of seeds must be less or equals to [maxLastSelectedSeeds] and
   /// cropped outside.
-  Future<void> updateLastViewedSeeds(List<String> seedsKeys) => _storage
+  Future<void> updateLastViewedKeys(List<String> seedsKeys) => _storage
       .set(
         _lastSelectedSeedsKey,
         jsonEncode(seedsKeys),
         domain: _preferencesKey,
       )
-      .then((_) => _streamedLastViewedSeeds());
+      .then((_) => _streamedLastViewedKeys());
 
   /// Get password of public key if it was cached with biometry
   Future<String?> getKeyPassword(String publicKey) => _storage.get(
