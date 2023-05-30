@@ -1,6 +1,6 @@
 import 'dart:convert';
 
-import 'package:app/app/service/storage_service/abstract_storage_service.dart';
+import 'package:app/app/service/service.dart';
 import 'package:app/data/models/bookmark.dart';
 import 'package:app/data/models/browser_tab.dart';
 import 'package:app/data/models/permissions.dart';
