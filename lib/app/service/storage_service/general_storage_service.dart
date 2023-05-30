@@ -1,7 +1,7 @@
 import 'dart:async';
 import 'dart:convert';
 
-import 'package:app/app/service/storage_service/abstract_storage_service.dart';
+import 'package:app/app/service/service.dart';
 import 'package:app/data/models/currency.dart';
 import 'package:app/data/models/network_type.dart';
 import 'package:app/data/models/token_contract_asset.dart';

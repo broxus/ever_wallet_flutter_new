@@ -1,6 +1,6 @@
 import 'package:app/app/router/page_transitions.dart';
 import 'package:app/app/router/router.dart';
-import 'package:app/app/service/services.dart';
+import 'package:app/app/service/service.dart';
 import 'package:app/di/di.dart';
 import 'package:app/feature/add_seed/check_seed_phrase/check_seed_phrase.dart';
 import 'package:app/feature/add_seed/create_password/create_password.dart';

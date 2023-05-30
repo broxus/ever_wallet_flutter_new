@@ -1,7 +1,4 @@
-import 'package:app/app/service/storage_service/abstract_storage_service.dart';
-import 'package:app/app/service/storage_service/account_seed_storage_service.dart';
-import 'package:app/app/service/storage_service/browser_storage_service.dart';
-import 'package:app/app/service/storage_service/general_storage_service.dart';
+import 'package:app/app/service/service.dart';
 import 'package:injectable/injectable.dart';
 
 /// Service that allows init or clear data of all storages from single point

@@ -1,5 +1,5 @@
 import 'package:app/app/router/router.dart';
-import 'package:app/app/service/navigation_service.dart';
+import 'package:app/app/service/service.dart';
 import 'package:app/di/di.dart';
 import 'package:app/feature/root/view/root_tab.dart';
 import 'package:flutter/material.dart';
