@@ -32,16 +32,13 @@ class HttpService {
   }
 
   void _logResponse(String endpoint, http.Response response, String method) {
+    final message =
+        // ignore: lines_longer_than_80_chars
+        '$method ${response.statusCode}, $endpoint, ${response.reasonPhrase ?? 'unknown reason'}';
     if (response.statusCode >= 300 && response.statusCode < 400) {
-      _log.fine(
-        // ignore: lines_longer_than_80_chars
-        '$method ${response.statusCode}, $endpoint, ${response.reasonPhrase ?? ''}',
-      );
+      _log.fine(message);
     } else if (response.statusCode >= 400) {
-      _log.severe(
-        // ignore: lines_longer_than_80_chars
-        '$method ${response.statusCode}, $endpoint, ${response.reasonPhrase ?? ''}',
-      );
+      _log.severe(message);
     }
   }
 }
