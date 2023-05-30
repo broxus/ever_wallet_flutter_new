@@ -1,3 +1,4 @@
+import 'package:app/data/models/network_type.dart';
 import 'package:freezed_annotation/freezed_annotation.dart';
 
 part 'connection_data.freezed.dart';
@@ -11,6 +12,7 @@ class ConnectionData with _$ConnectionData {
     required List<String> endpoints,
     required Duration timeout,
     required bool local,
+    required NetworkType networkType,
   }) = _ConnectionDataGql;
 
   const factory ConnectionData.jrpc({
@@ -18,5 +20,6 @@ class ConnectionData with _$ConnectionData {
     required int networkId,
     required String group,
     required String endpoint,
+    required NetworkType networkType,
   }) = _ConnectionDataJrpc;
 }
