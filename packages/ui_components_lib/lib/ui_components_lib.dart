@@ -10,6 +10,7 @@ export 'components/button/common_icon_button.dart';
 export 'components/button/press_ink_widget.dart';
 export 'components/button/press_scale_widget.dart';
 export 'components/button/tab_bar.dart';
+export 'components/common/common.dart';
 export 'components/displayable/snackbar.dart';
 export 'components/input/common_input.dart';
 export 'components/input/common_switch_input.dart';

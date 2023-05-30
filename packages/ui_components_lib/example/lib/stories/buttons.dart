@@ -26,6 +26,38 @@ class _ButtonsStoryState extends State<ButtonsStory> {
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
+              ElevatedButton(
+                onPressed: () {},
+                style: ButtonStyle(
+                  shape: MaterialStateProperty.all(
+                    RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(30),
+                    ),
+                  ),
+                ),
+                child: const Text('BUTTON'),
+              ),
+              Material(
+                shape: const SquircleShapeBorder(cornerRadius: 100),
+                color: Colors.black,
+                child: InkResponse(
+                  onTap: () {},
+                  hoverColor: Colors.transparent,
+                  highlightColor: Colors.transparent,
+                  splashColor: Colors.grey[200],
+                  splashFactory: const SquircleShapeFactory(cornerRadius: 100),
+                  customBorder: const SquircleShapeBorder(cornerRadius: 100),
+                  child: const Padding(
+                    padding: EdgeInsets.all(8),
+                    child: Text(
+                      'Plain Squircle',
+                      style: TextStyle(color: Colors.white),
+                    ),
+                  ),
+                ),
+              ),
+              const SizedBox(height: 30),
+
               /// Primary
               CommonButton.primary(
                 text: 'PrimaryButton',

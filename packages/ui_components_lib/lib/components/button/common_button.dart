@@ -26,7 +26,7 @@ class CommonButton extends StatelessWidget {
     this.style,
     this.child,
     this.focusNode,
-    this.radius,
+    this.squircleRadius,
     this.backgroundColor,
     this.height = commonButtonHeight,
     this.padding,
@@ -198,7 +198,7 @@ class CommonButton extends StatelessWidget {
   final bool fillWidth;
 
   /// UI based params
-  final BorderRadius? radius;
+  final double? squircleRadius;
 
   /// Height of the button
   final double height;
@@ -266,30 +266,23 @@ class CommonButton extends StatelessWidget {
       isDisabled: isDisabled,
       child: SizedBox(
         height: height,
-        child: DecoratedBox(
-          decoration: BoxDecoration(
-            color: bgColor,
-            borderRadius: radius ?? BorderRadius.zero,
-            border: bord,
-          ),
-          child: Material(
-            color: Colors.transparent,
-            child: Padding(
-              padding: EdgeInsets.all(bord?.top.width ?? 0),
-              child: InkWell(
-                hoverColor: Colors.transparent,
-                focusNode: focusNode,
-                customBorder: RoundedRectangleBorder(
-                  borderRadius: radius ?? BorderRadius.zero,
-                ),
-                splashColor: splash,
-                highlightColor: splash,
-                onTap: onPressed,
-                onLongPress: onLongPress,
-                child: fillWidth
-                    ? Center(child: child)
-                    : Row(mainAxisSize: MainAxisSize.min, children: [child]),
-              ),
+        child: Material(
+          color: bgColor,
+          shape: bord,
+          child: Padding(
+            padding: EdgeInsets.zero,
+            // padding: EdgeInsets.all(bord?.top.width ?? 0),
+            child: InkWell(
+              hoverColor: Colors.transparent,
+              focusNode: focusNode,
+              customBorder: bord,
+              splashColor: splash,
+              highlightColor: splash,
+              onTap: onPressed,
+              onLongPress: onLongPress,
+              child: fillWidth
+                  ? Center(child: child)
+                  : Row(mainAxisSize: MainAxisSize.min, children: [child]),
             ),
           ),
         ),

@@ -51,10 +51,10 @@ class EverButtonStyle {
   final EdgeInsets contentPadding;
 
   /// Border for button when it's enabled
-  final BoxBorder? border;
+  final ShapeBorder? border;
 
   /// Border for button when it's disabled
-  final BoxBorder? disabledBorder;
+  final ShapeBorder? disabledBorder;
 
   /// Color of button content when it's enabled (text and icons)
   final Color contentColor;
