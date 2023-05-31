@@ -35,10 +35,10 @@ class HttpService {
     final message =
         // ignore: lines_longer_than_80_chars
         '$method ${response.statusCode}, $endpoint, ${response.reasonPhrase ?? 'unknown reason'}';
-    if (response.statusCode >= 300 && response.statusCode < 400) {
-      _log.fine(message);
-    } else if (response.statusCode >= 400) {
+    if (response.statusCode >= 400) {
       _log.severe(message);
+    } else {
+      _log.finest(message);
     }
   }
 }
