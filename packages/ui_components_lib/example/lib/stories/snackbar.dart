@@ -43,13 +43,13 @@ class SnackbarStory extends StatelessWidget {
               onPressed: () => showSnackbar(
                 context: context,
                 type: SnackbarType.info,
-                message: 'Error snackbar',
+                message: 'Action snackbar',
                 duration: const Duration(seconds: 3),
                 actionText: 'Action',
                 onAction: () => showSnackbar(
                   context: context,
                   type: SnackbarType.info,
-                  message: 'Error snackbar',
+                  message: 'Another snackbar',
                   duration: const Duration(seconds: 3),
                 ),
               ),

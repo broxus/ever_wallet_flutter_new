@@ -12,6 +12,8 @@ enum SnackbarType {
   error,
 }
 
+// TODO(nesquikm): remove this global variable after the SnackBar learning
+// to dismiss itself after the action is pressed.
 Flushbar<void>? _snack;
 
 Future<void> showSnackbar({
@@ -55,6 +57,9 @@ Future<void> showSnackbar({
       ? CommonButton.ghost(
           onPressed: onAction != null
               ? () {
+                  // TODO(nesquikm): WTF? The snackbar SHOULD dismiss itself
+                  // immediately after the action is pressed, but it doesn't.
+                  // So we have to dismiss it manually.
                   _snack?.dismiss();
                   onAction();
                 }
