@@ -10,6 +10,7 @@ environment:
 dependencies:
   bloc: ^8.1.2
   collection: ^1.17.0
+  crypto: ^3.0.2
   dotted_border: ^2.0.0+3
   encrypted_storage:
     path: packages/encrypted_storage

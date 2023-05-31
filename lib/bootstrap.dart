@@ -1,5 +1,6 @@
 import 'dart:async';
 
+import 'package:app/app/service/messenger/messenger.dart';
 import 'package:app/bootstrap/bootstrap.dart';
 import 'package:app/di/di.dart';
 import 'package:bloc/bloc.dart';
@@ -87,6 +88,8 @@ class _AppWrapperState extends State<AppWrapper> with WidgetsBindingObserver {
 
   @override
   Widget build(BuildContext context) {
-    return widget.builder();
+    return MessengerWidget(
+      child: widget.builder(),
+    );
   }
 }
