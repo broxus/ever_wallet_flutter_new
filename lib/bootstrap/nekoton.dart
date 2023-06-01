@@ -1,4 +1,4 @@
-import 'package:app/app/service/storage_service/account_seed_storage_service.dart';
+import 'package:app/app/service/service.dart';
 import 'package:app/di/di.dart';
 import 'package:logging/logging.dart';
 import 'package:nekoton_repository/nekoton_repository.dart';

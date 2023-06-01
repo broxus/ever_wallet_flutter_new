@@ -1,8 +1,6 @@
 import 'dart:async';
 
 import 'package:app/bootstrap/bootstrap.dart';
-import 'package:app/bootstrap/migrate_storage.dart';
-import 'package:app/bootstrap/storage_services.dart';
 import 'package:app/di/di.dart';
 import 'package:bloc/bloc.dart';
 import 'package:flutter/widgets.dart';
@@ -40,6 +38,7 @@ Future<void> bootstrap(
   await configureStorageServices();
   // SetUp nekoton after storage migrations
   await configureNekoton();
+  await configureConnectionService();
 
   final log = Logger('bootstrap');
 

@@ -26,7 +26,8 @@ dependencies:
   get_it: ^7.6.0
   go_router: ^7.1.1
   hive_flutter: ^1.1.0
-  injectable: ^2.1.1
+  http: ^0.13.6
+  injectable: ^2.1.2
   intl: ^0.17.0
   json_annotation: ^4.8.0
   logging: ^1.1.1
@@ -53,7 +54,7 @@ dev_dependencies:
   freezed: ^2.3.4
   googleapis_auth: ^1.4.1
   hive_generator: ^2.0.0
-  injectable_generator: ^2.1.5
+  injectable_generator: ^2.1.6
   integration_test:
     sdk: flutter
   json_serializable: ^6.6.1

@@ -1,4 +1,4 @@
-import 'package:app/app/service/storage_service/abstract_storage_service.dart';
+import 'package:app/app/service/service.dart';
 import 'package:encrypted_storage/encrypted_storage.dart';
 import 'package:injectable/injectable.dart';
 import 'package:nekoton_repository/nekoton_repository.dart';

@@ -26,6 +26,9 @@ abstract class TransportStrategy {
   /// For example, EVER.
   String get nativeTokenTicker;
 
+  /// Address of native token in network
+  String get nativeTokenAddress;
+
   /// !!! This is like ID for specified network !!!
   ///
   /// This returns name of the network.
