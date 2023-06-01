@@ -4,7 +4,7 @@ import 'package:flutter_typeahead/flutter_typeahead.dart';
 import 'package:ui_components_lib/ui_components_lib.dart';
 
 /// Default height for input
-const commonInputHeight = 44.0;
+const commonInputHeight = 56.0;
 
 /// {@template common_input}
 /// Defaut input field that could be used in application.
@@ -130,11 +130,11 @@ class CommonInput extends StatefulWidget {
   final Color? suggestionBackground;
 
   /// Style for text of input, color used for cursor, default
-  /// [StyleRes.regular16] and [ColorsPalette.textPrimary]
+  /// [StyleRes.primaryRegular] and [ColorsPalette.textPrimary]
   final TextStyle? textStyle;
 
-  /// Style for label text, default [StyleRes.medium14] and
-  /// [ColorsPalette.textTertiary].
+  /// Style for label text, default [StyleRes.primaryRegular] and
+  /// [ColorsPalette.textSecondary].
   final TextStyle? labelStyle;
 
   /// If text should look like password, default false
@@ -205,7 +205,7 @@ class _CommonInputState extends State<CommonInput> {
               child: TextField(
                 obscureText: widget.obscureText,
                 style: widget.textStyle ??
-                    StyleRes.regular16.copyWith(color: colors.textPrimary),
+                    StyleRes.primaryRegular.copyWith(color: colors.textPrimary),
                 controller: _controller,
                 focusNode: widget.focusNode,
                 keyboardType: widget.keyboardType ?? TextInputType.text,
@@ -222,7 +222,8 @@ class _CommonInputState extends State<CommonInput> {
                   errorStyle: const TextStyle(fontSize: 0, height: 0),
                   labelText: widget.labelText,
                   labelStyle: widget.labelStyle ??
-                      StyleRes.medium14.copyWith(color: colors.textSecondary),
+                      StyleRes.primaryRegular
+                          .copyWith(color: colors.textSecondary),
                   contentPadding: EdgeInsets.zero,
                   suffixIcon: _buildSuffixIcon(),
                   prefixIconConstraints: widget.prefixIcon == null
@@ -236,36 +237,35 @@ class _CommonInputState extends State<CommonInput> {
                     gapPadding: 1,
                     borderRadius: BorderRadius.circular(0),
                     borderSide: BorderSide(
-                      color: widget.inactiveBorderColor ?? colors.accentPrimary,
+                      color: widget.inactiveBorderColor ?? colors.strokePrimary,
                     ),
                   ),
                   enabledBorder: OutlineInputBorder(
                     gapPadding: 1,
                     borderRadius: BorderRadius.circular(0),
                     borderSide: BorderSide(
-                      color:
-                          widget.inactiveBorderColor ?? colors.fillingTertiary,
+                      color: widget.inactiveBorderColor ?? colors.strokePrimary,
                     ),
                   ),
                   focusedBorder: OutlineInputBorder(
                     gapPadding: 1,
                     borderRadius: BorderRadius.circular(0),
                     borderSide: BorderSide(
-                      color: colors.accentPrimary,
+                      color: colors.strokeContrast,
                     ),
                   ),
                   errorBorder: OutlineInputBorder(
                     gapPadding: 1,
                     borderRadius: BorderRadius.circular(0),
                     borderSide: BorderSide(
-                      color: widget.errorColor ?? colors.accentWarning,
+                      color: widget.errorColor ?? colors.alert,
                     ),
                   ),
                   focusedErrorBorder: OutlineInputBorder(
                     gapPadding: 1,
                     borderRadius: BorderRadius.circular(0),
                     borderSide: BorderSide(
-                      color: widget.errorColor ?? colors.accentWarning,
+                      color: widget.errorColor ?? colors.alert,
                     ),
                   ),
                 ),
@@ -292,7 +292,8 @@ class _CommonInputState extends State<CommonInput> {
                   hideOnLoading: true,
                   textFieldConfiguration: TextFieldConfiguration(
                     style: widget.textStyle ??
-                        StyleRes.regular16.copyWith(color: colors.textPrimary),
+                        StyleRes.primaryRegular
+                            .copyWith(color: colors.textPrimary),
                     controller: _controller,
                     focusNode: widget.focusNode,
                     keyboardType: widget.keyboardType ?? TextInputType.text,
@@ -310,7 +311,7 @@ class _CommonInputState extends State<CommonInput> {
                       errorStyle: const TextStyle(fontSize: 0, height: 0),
                       labelText: widget.labelText,
                       labelStyle: widget.labelStyle ??
-                          StyleRes.medium14
+                          StyleRes.primaryRegular
                               .copyWith(color: colors.textSecondary),
                       contentPadding: EdgeInsets.zero,
                       suffixIcon: _buildSuffixIcon(),
@@ -327,7 +328,7 @@ class _CommonInputState extends State<CommonInput> {
                         borderRadius: BorderRadius.circular(0),
                         borderSide: BorderSide(
                           color: widget.inactiveBorderColor ??
-                              colors.accentPrimary,
+                              colors.strokePrimary,
                         ),
                       ),
                       enabledBorder: OutlineInputBorder(
@@ -335,28 +336,28 @@ class _CommonInputState extends State<CommonInput> {
                         borderRadius: BorderRadius.circular(0),
                         borderSide: BorderSide(
                           color: widget.inactiveBorderColor ??
-                              colors.fillingTertiary,
+                              colors.strokePrimary,
                         ),
                       ),
                       focusedBorder: OutlineInputBorder(
                         gapPadding: 1,
                         borderRadius: BorderRadius.circular(0),
                         borderSide: BorderSide(
-                          color: colors.accentPrimary,
+                          color: colors.strokeContrast,
                         ),
                       ),
                       errorBorder: OutlineInputBorder(
                         gapPadding: 1,
                         borderRadius: BorderRadius.circular(0),
                         borderSide: BorderSide(
-                          color: widget.errorColor ?? colors.accentWarning,
+                          color: widget.errorColor ?? colors.alert,
                         ),
                       ),
                       focusedErrorBorder: OutlineInputBorder(
                         gapPadding: 1,
                         borderRadius: BorderRadius.circular(0),
                         borderSide: BorderSide(
-                          color: widget.errorColor ?? colors.accentWarning,
+                          color: widget.errorColor ?? colors.alert,
                         ),
                       ),
                     ),
@@ -364,7 +365,7 @@ class _CommonInputState extends State<CommonInput> {
                   suggestionsCallback: suggestionsCallback,
                   itemBuilder: itemBuilder,
                   suggestionsBoxDecoration: SuggestionsBoxDecoration(
-                    color: widget.suggestionBackground ?? colors.fillingPrimary,
+                    color: widget.suggestionBackground ?? Colors.transparent,
                   ),
                   onSuggestionSelected: onSuggestionSelected,
                 ),
@@ -382,8 +383,8 @@ class _CommonInputState extends State<CommonInput> {
                 const SizedBox(height: 4),
                 Text(
                   state.errorText!,
-                  style: StyleRes.medium14.copyWith(
-                    color: widget.errorColor ?? colors.textNegative,
+                  style: StyleRes.addRegular.copyWith(
+                    color: widget.errorColor ?? colors.alert,
                   ),
                 ),
               ]
@@ -407,11 +408,11 @@ class _CommonInputState extends State<CommonInput> {
       margin: const EdgeInsets.only(left: 8),
       alignment: Alignment.center,
       child: CommonIconButton.icon(
+        buttonType: EverButtonType.ghost,
         icon: Icons.clear_rounded,
         onPressed: _clearText,
         outerPadding: EdgeInsets.zero,
-        color: widget.textStyle?.color ??
-            context.themeStyle.colors.fillingTertiary,
+        color: widget.textStyle?.color,
       ),
     );
   }

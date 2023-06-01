@@ -24,31 +24,23 @@ flutter:
   generate: true
 
   fonts:
-    - family: PT
+    - family: Inter
       fonts:
-        - asset: assets/fonts/PT-Root-UI/PT-Root-UI_Light.ttf
+        - asset: assets/fonts/Inter/static/Inter-Thin.ttf
+          weight: 100
+        - asset: assets/fonts/Inter/static/Inter-ExtraLight.ttf
+          weight: 200
+        - asset: assets/fonts/Inter/static/Inter-Light.ttf
           weight: 300
-        - asset: assets/fonts/PT-Root-UI/PT-Root-UI_Regular.ttf
+        - asset: assets/fonts/Inter/static/Inter-Regular.ttf
           weight: 400
-        - asset: assets/fonts/PT-Root-UI/PT-Root-UI_Medium.ttf
+        - asset: assets/fonts/Inter/static/Inter-Medium.ttf
           weight: 500
-        - asset: assets/fonts/PT-Root-UI/PT-Root-UI_Bold.ttf
+        - asset: assets/fonts/Inter/static/Inter-SemiBold.ttf
+          weight: 600
+        - asset: assets/fonts/Inter/static/Inter-Bold.ttf
           weight: 700
-    - family: Faktum
-      fonts:
-        - asset: assets/fonts/faktum/Faktum-Bold.ttf
-        - asset: assets/fonts/faktum/Faktum-BoldItalic.ttf
-        - asset: assets/fonts/faktum/Faktum-ExtraBold.ttf
-        - asset: assets/fonts/faktum/Faktum-ExtraBoldItalic.ttf
-        - asset: assets/fonts/faktum/Faktum-ExtraLight.ttf
-        - asset: assets/fonts/faktum/Faktum-ExtraLightItalic.ttf
-        - asset: assets/fonts/faktum/Faktum-Light.ttf
-        - asset: assets/fonts/faktum/Faktum-LightItalic.ttf
-        - asset: assets/fonts/faktum/Faktum-Medium.ttf
-        - asset: assets/fonts/faktum/Faktum-MediumItalic.ttf
-        - asset: assets/fonts/faktum/Faktum-Regular.ttf
-        - asset: assets/fonts/faktum/Faktum-RegularItalic.ttf
-        - asset: assets/fonts/faktum/Faktum-SemiBold.ttf
-        - asset: assets/fonts/faktum/Faktum-SemiBoldItalic.ttf
-        - asset: assets/fonts/faktum/Faktum-Thin.ttf
-        - asset: assets/fonts/faktum/Faktum-ThinItalic.ttf
+        - asset: assets/fonts/Inter/static/Inter-ExtraBold.ttf
+          weight: 800
+        - asset: assets/fonts/Inter/static/Inter-Black.ttf
+          weight: 900

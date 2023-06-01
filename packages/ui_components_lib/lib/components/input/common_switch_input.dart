@@ -68,10 +68,10 @@ class _CommonSwitchInputState extends State<CommonSwitchInput> {
           child: CommonSwitcher(
             value: widget.value,
             backgroundColor: state.hasError
-                ? colors.accentWarning
+                ? colors.alert
                 : widget.value
-                    ? colors.textPositive
-                    : colors.fillingTertiary,
+                    ? colors.apply
+                    : colors.backgroundSecondary,
             thumbColor: widget.thumbColor ?? ColorsRes.white,
             thumbSize: widget.value ? 24 : 16,
             thumbChild: widget.thumbChild,

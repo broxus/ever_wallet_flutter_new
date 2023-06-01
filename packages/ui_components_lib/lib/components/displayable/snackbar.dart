@@ -23,10 +23,10 @@ Future<void> showSnackbar({
   _previousSnack = Flushbar<void>(
     messageText: Text(
       message,
-      style: StyleRes.regular16.copyWith(color: colors.textPrimary),
+      style: StyleRes.secondaryBold.copyWith(color: colors.textContrast),
     ),
     flushbarPosition: flushbarPosition,
-    backgroundColor: colors.fillingPrimary,
+    backgroundColor: colors.blue,
     margin: const EdgeInsets.symmetric(horizontal: 16) + margin,
     duration: displayDuration,
   );
@@ -50,10 +50,10 @@ Future<void> showErrorSnackbar({
   _previousSnack = Flushbar(
     messageText: Text(
       message,
-      style: StyleRes.regular16.copyWith(color: colors.textNegative),
+      style: StyleRes.secondaryBold.copyWith(color: colors.textContrast),
     ),
     flushbarPosition: flushbarPosition,
-    backgroundColor: colors.fillingPrimary,
+    backgroundColor: colors.alert,
     margin: const EdgeInsets.symmetric(horizontal: 16) + margin,
     duration: displayDuration,
   );
@@ -80,10 +80,10 @@ Future<void> showSnackbarWithAction({
   _previousSnack = Flushbar(
     messageText: Text(
       isOneLine ? message.overflow : message,
-      style: StyleRes.regular16.copyWith(color: colors.textPrimary),
+      style: StyleRes.secondaryBold.copyWith(color: colors.textContrast),
       maxLines: isOneLine ? 1 : null,
     ),
-    mainButton: CommonButton.ghost(
+    mainButton: CommonButton.secondary(
       onPressed: () {
         action();
         _previousSnack?.dismiss();
@@ -91,7 +91,7 @@ Future<void> showSnackbarWithAction({
       text: actionText,
     ),
     flushbarPosition: flushbarPosition,
-    backgroundColor: colors.fillingPrimary,
+    backgroundColor: colors.blue,
     margin: const EdgeInsets.symmetric(horizontal: 16) + margin,
     duration: displayDuration,
   );

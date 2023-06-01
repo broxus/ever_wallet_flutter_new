@@ -24,218 +24,80 @@ class StylesPalette {
 class StyleRes {
   const StyleRes._();
 
-  /// Landing Title 44/48 Semibold
-  static const landingTitle = TextStyle(
-    fontFamily: 'Faktum',
-    fontSize: 44,
-    height: 1.09,
+  /// Balance 48 Semibold
+  static const balance = TextStyle(
+    fontFamily: 'Inter',
+    fontSize: 48,
     fontWeight: FontWeight.w600,
+    letterSpacing: -0.06,
   );
 
-  /// Page title 28/32 Semibold
-  static const pageTitle = TextStyle(
-    fontFamily: 'Faktum',
-    fontSize: 28,
-    height: 1.14,
-    fontWeight: FontWeight.w600,
+  /// H1 32 Bold
+  static const h1 = TextStyle(
+    fontFamily: 'Inter',
+    fontSize: 32,
+    fontWeight: FontWeight.w700,
+    letterSpacing: -0.06,
   );
 
-  /// H2 24/28 Semibold
+  /// H2 20 Bold
   static const h2 = TextStyle(
-    fontFamily: 'Faktum',
-    fontSize: 24,
-    height: 1.166,
-    fontWeight: FontWeight.w500,
+    fontFamily: 'Inter',
+    fontSize: 20,
+    fontWeight: FontWeight.w700,
+    letterSpacing: -0.06,
   );
 
-  /// H3 18/24 Medium
-  static const h3 = TextStyle(
-    fontFamily: 'Faktum',
-    fontSize: 18,
-    height: 1.33,
+  /// Primary-Bold 16/24 SemiBold
+  static const primaryBold = TextStyle(
+    fontFamily: 'Inter',
+    fontSize: 16,
+    height: 1.5,
     fontWeight: FontWeight.w600,
-    letterSpacing: 0.1,
+    letterSpacing: -0.04,
   );
 
-  /// Body text 14/20 Regular
-  static const bodyText = TextStyle(
-    fontFamily: 'PT',
-    fontSize: 14,
-    height: 1.42,
-    fontWeight: FontWeight.w400,
-    letterSpacing: 0.1,
-  );
-
-  /// -----------------------------------------
-  /// Bold group
-  /// -----------------------------------------
-
-  /// Bold 20/24
-  static const bold20 = TextStyle(
-    fontFamily: 'PT',
-    fontSize: 20,
-    height: 1.2,
-    fontWeight: FontWeight.w700,
-    letterSpacing: 0.15,
-  );
-
-  /// Bold 16/20
-  static const bold16 = TextStyle(
-    fontFamily: 'PT',
+  /// Primary-Regular 16/24 Normal
+  static const primaryRegular = TextStyle(
+    fontFamily: 'Inter',
     fontSize: 16,
-    height: 1.25,
-    fontWeight: FontWeight.w700,
-    letterSpacing: 0.25,
+    height: 1.5,
+    fontWeight: FontWeight.w500,
+    letterSpacing: -0.04,
   );
 
-  /// Bold 14/20
-  static const bold14 = TextStyle(
-    fontFamily: 'PT',
+  /// Secondary-Bold 14/18 SemiBold
+  static const secondaryBold = TextStyle(
+    fontFamily: 'Inter',
     fontSize: 14,
-    height: 1.428,
-    fontWeight: FontWeight.w700,
-    letterSpacing: 0.6,
+    height: 1.3,
+    fontWeight: FontWeight.w600,
+    letterSpacing: -0.04,
   );
 
-  /// Bold 12/16
-  static const bold12 = TextStyle(
-    fontFamily: 'PT',
+  /// Add-Bold 12/16 SemiBold
+  static const addBold = TextStyle(
+    fontFamily: 'Inter',
     fontSize: 12,
-    height: 1.33,
-    fontWeight: FontWeight.w700,
-    letterSpacing: 0.75,
+    height: 1.3,
+    fontWeight: FontWeight.w600,
+    letterSpacing: -0.04,
   );
 
-  /// -----------------------------------------
-  /// Medium group
-  /// -----------------------------------------
-
-  /// Medium 28/32
-  static const medium28 = TextStyle(
-    fontFamily: 'PT',
-    fontSize: 28,
-    height: 1.14,
+  /// Add-Regular 12/16 SemiBold
+  static const addRegular = TextStyle(
+    fontFamily: 'Inter',
+    fontSize: 12,
+    height: 1.3,
     fontWeight: FontWeight.w500,
-    letterSpacing: 0.25,
+    letterSpacing: -0.04,
   );
 
-  /// Medium 20/24
-  static const medium20 = TextStyle(
-    fontFamily: 'PT',
-    fontSize: 24,
-    height: 1.2,
-    fontWeight: FontWeight.w500,
-    letterSpacing: 0.15,
-  );
-
-  /// Medium 18/24
-  static const medium18 = TextStyle(
-    fontFamily: 'PT',
-    fontSize: 24,
-    height: 1.33,
-    fontWeight: FontWeight.w500,
-    letterSpacing: 0.3,
-  );
-
-  /// Medium 16/22
-  static const medium16 = TextStyle(
-    fontFamily: 'PT',
+  /// Button 16 SemiBold
+  static const button = TextStyle(
+    fontFamily: 'Inter',
     fontSize: 16,
-    height: 1.375,
-    fontWeight: FontWeight.w500,
-  );
-
-  /// Medium 14/20
-  static const medium14 = TextStyle(
-    fontFamily: 'PT',
-    fontSize: 14,
-    height: 1.428,
-    fontWeight: FontWeight.w500,
-    letterSpacing: 0.1,
-  );
-
-  /// Medium 14/20 Tabular
-  static const medium14Tabular = TextStyle(
-    fontFamily: 'PT',
-    fontSize: 14,
-    height: 1.428,
-    fontWeight: FontWeight.w500,
-    letterSpacing: 0.1,
-  );
-
-  /// Medium 12/16
-  static const medium12 = TextStyle(
-    fontFamily: 'PT',
-    fontSize: 12,
-    height: 1.33,
-    fontWeight: FontWeight.w500,
-    letterSpacing: 0.2,
-  );
-
-  /// Medium 12/16 Tabular
-  static const medium12Tabular = TextStyle(
-    fontFamily: 'PT',
-    fontSize: 12,
-    height: 1.33,
-    fontWeight: FontWeight.w500,
-    letterSpacing: 0.2,
-  );
-
-  /// -----------------------------------------
-  /// Regular group
-  /// -----------------------------------------
-
-  /// Regular 24/28
-  static const regular24 = TextStyle(
-    fontFamily: 'PT',
-    fontSize: 24,
-    height: 1.16,
-    fontWeight: FontWeight.w400,
-    letterSpacing: 0.15,
-  );
-
-  /// Regular 20/24
-  static const regular20 = TextStyle(
-    fontFamily: 'PT',
-    fontSize: 20,
-    height: 1.2,
-    fontWeight: FontWeight.w400,
-    letterSpacing: 0.15,
-  );
-
-  /// Regular 18/24
-  static const regular18 = TextStyle(
-    fontFamily: 'PT',
-    fontSize: 18,
-    height: 1.33,
-    fontWeight: FontWeight.w400,
-    letterSpacing: 0.3,
-  );
-
-  /// Regular 16/22
-  static const regular16 = TextStyle(
-    fontFamily: 'PT',
-    fontSize: 16,
-    height: 1.375,
-    fontWeight: FontWeight.w400,
-    letterSpacing: 0.25,
-  );
-
-  /// Regular 14/20 Tabular
-  static const regular14Tabular = TextStyle(
-    fontFamily: 'PT',
-    fontSize: 16,
-    height: 1.428,
-    fontWeight: FontWeight.w400,
-    letterSpacing: 0.1,
-  );
-
-  /// Regular 12/16
-  static const regular12 = TextStyle(
-    fontFamily: 'PT',
-    fontSize: 12,
-    height: 1.33,
-    fontWeight: FontWeight.w400,
-    letterSpacing: 0.2,
+    fontWeight: FontWeight.w600,
+    letterSpacing: -0.04,
   );
 }

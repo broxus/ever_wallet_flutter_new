@@ -50,20 +50,20 @@ class CommonButtonIconWidget extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final buttonStyle = EverButtonStyleProvider.of(context);
-    final isDisabled = buttonStyle.isDisabled;
-    final style = buttonStyle.style;
+    final color = buttonStyle.contentColor;
 
-    final color = isDisabled
-        ? style.contentDisabledColor ?? style.contentColor
-        : style.contentColor;
-
-    if (icon != null) {
-      return Icon(icon, color: color, size: size ?? 20);
-    }
-
-    return SvgPicture.asset(
-      svg!,
-      theme: SvgTheme(currentColor: color, fontSize: size ?? 20),
+    return AnimatedColor(
+      color: color,
+      duration: kThemeAnimationDuration,
+      builder: (context, color) {
+        if (icon != null) {
+          return Icon(icon, color: color, size: size ?? 20);
+        }
+        return SvgPicture.asset(
+          svg!,
+          theme: SvgTheme(currentColor: color, fontSize: size ?? 20),
+        );
+      },
     );
   }
 }

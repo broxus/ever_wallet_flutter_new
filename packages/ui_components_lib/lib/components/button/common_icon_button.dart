@@ -4,9 +4,10 @@ import 'package:ui_components_lib/ui_components_lib.dart';
 /// {@template common_icon_button}
 /// This is a common button with icon inside
 /// {@endtemplate}
-class CommonIconButton extends StatelessWidget {
+class CommonIconButton extends StatefulWidget {
   /// {@macro common_icon_button}
   const CommonIconButton({
+    required this.buttonType,
     this.onPressed,
     this.onLongPress,
     this.focusNode,
@@ -15,6 +16,7 @@ class CommonIconButton extends StatelessWidget {
     this.svg,
     this.size,
     this.color,
+    this.backgroundColor,
     this.outerPadding,
     this.innerPadding,
   }) : assert(
@@ -25,6 +27,7 @@ class CommonIconButton extends StatelessWidget {
   /// Factory that allows create button with svg asset
   factory CommonIconButton.svg({
     required String svg,
+    required EverButtonType buttonType,
     VoidCallback? onPressed,
     VoidCallback? onLongPress,
     FocusNode? focusNode,
@@ -35,6 +38,7 @@ class CommonIconButton extends StatelessWidget {
     EdgeInsets? innerPadding,
   }) =>
       CommonIconButton(
+        buttonType: buttonType,
         onPressed: onPressed,
         onLongPress: onLongPress,
         focusNode: focusNode,
@@ -49,6 +53,7 @@ class CommonIconButton extends StatelessWidget {
   /// Factory that allows create button with [IconData]
   factory CommonIconButton.icon({
     required IconData icon,
+    required EverButtonType buttonType,
     VoidCallback? onPressed,
     VoidCallback? onLongPress,
     FocusNode? focusNode,
@@ -59,6 +64,7 @@ class CommonIconButton extends StatelessWidget {
     EdgeInsets? innerPadding,
   }) =>
       CommonIconButton(
+        buttonType: buttonType,
         onPressed: onPressed,
         onLongPress: onLongPress,
         focusNode: focusNode,
@@ -69,6 +75,9 @@ class CommonIconButton extends StatelessWidget {
         outerPadding: outerPadding,
         innerPadding: innerPadding,
       );
+
+  /// Style that will be used to get colors
+  final EverButtonType buttonType;
 
   /// Callback when user tap button
   final VoidCallback? onPressed;
@@ -88,42 +97,74 @@ class CommonIconButton extends StatelessWidget {
   /// Size for image
   final double? size;
 
-  /// Color of icon, if not specified, then [ColorsPalette.fillingTertiary]
+  /// Color of icon, if not specified, then color from [EverButtonStyle]
   /// is used.
   final Color? color;
+
+  /// Color of background, if not specified, then color from [EverButtonStyle]
+  /// is used.
+  final Color? backgroundColor;
 
   /// Padding around ink effect, default 0
   final EdgeInsets? outerPadding;
 
-  /// Padding around icon but inside ink effect, default 8
+  /// Padding around icon but inside ink effect, default 20
   final EdgeInsets? innerPadding;
 
   @override
-  Widget build(BuildContext context) {
-    final color = this.color ??
-        (onPressed == null && onLongPress == null
-            // TODO(alex-a4): change disabled color
-            ? context.themeStyle.colors.fillingTertiary
-            : context.themeStyle.colors.fillingTertiary);
+  State<CommonIconButton> createState() => _CommonIconButtonState();
+}
 
-    return Padding(
-      padding: outerPadding ?? EdgeInsets.zero,
-      child: InkWell(
-        borderRadius: BorderRadius.circular(90),
-        onTap: onPressed,
-        onLongPress: onLongPress,
-        focusNode: focusNode,
-        child: Padding(
-          padding: innerPadding ?? const EdgeInsets.all(8),
-          child: icon != null
-              ? Icon(icon, color: color, size: size ?? 20)
-              : SvgPicture.asset(
-                  svg!,
-                  theme: SvgTheme(
-                    currentColor: color,
-                    fontSize: size ?? 20,
-                  ),
-                ),
+class _CommonIconButtonState extends State<CommonIconButton> {
+  bool isPressed = false;
+
+  @override
+  Widget build(BuildContext context) {
+    final styles = context.themeStyle.styles;
+    final buttonStyle = styles.buttonsStyle[widget.buttonType]!;
+    final isDisabled = widget.onPressed == null && widget.onLongPress == null;
+    final backgroundColor = widget.backgroundColor ??
+        (isDisabled
+            ? buttonStyle.backgroundDisabledColor
+            : buttonStyle.backgroundColor);
+    final contentColor = widget.color ??
+        (isDisabled
+            ? buttonStyle.contentDisabledColor
+            : isPressed
+                ? buttonStyle.contentPressedColor
+                : buttonStyle.contentColor);
+
+    return EverButtonStyleProvider(
+      contentColor: contentColor,
+      child: Padding(
+        padding: widget.outerPadding ?? EdgeInsets.zero,
+        child: Material(
+          shape: RoundedRectangleBorder(
+            borderRadius: BorderRadius.circular(90),
+          ),
+          color: backgroundColor,
+          child: InkWell(
+            hoverColor: Colors.transparent,
+            splashColor: Colors.transparent,
+            highlightColor: Colors.transparent,
+            borderRadius: BorderRadius.circular(90),
+            onTap: widget.onPressed,
+            onLongPress: widget.onLongPress,
+            focusNode: widget.focusNode,
+            onHighlightChanged: (isPressed) {
+              if (isPressed != this.isPressed) {
+                setState(() => this.isPressed = isPressed);
+              }
+            },
+            child: Padding(
+              padding: widget.innerPadding ?? const EdgeInsets.all(20),
+              child: CommonButtonIconWidget(
+                icon: widget.icon,
+                svg: widget.svg,
+                size: widget.size,
+              ),
+            ),
+          ),
         ),
       ),
     );

@@ -18,7 +18,7 @@ class PressInkWidget extends StatelessWidget {
   /// Child that must have ink effect
   final Widget? child;
 
-  /// Color of ink effect, default [ColorsPalette.accentSecondaryPressed]
+  /// Color of ink effect, default [ColorsPalette.backgroundPrimary] 0.8 opacity
   final Color? pressStateColor;
 
   /// Pressed callback
@@ -32,8 +32,8 @@ class PressInkWidget extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final presState =
-        pressStateColor ?? context.themeStyle.colors.accentSecondaryPressed;
+    final presState = pressStateColor ??
+        context.themeStyle.colors.backgroundPrimary.withOpacity(0.8);
 
     assert(debugCheckHasMaterial(context), 'No Material above PressInkWidget');
 

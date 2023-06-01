@@ -1,4 +1,3 @@
-import 'package:app/app/utils/iterable_extensions.dart';
 import 'package:app/feature/add_seed/check_seed_phrase/check_seed_phrase.dart';
 import 'package:dotted_border/dotted_border.dart';
 import 'package:flutter/material.dart';

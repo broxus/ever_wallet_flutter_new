@@ -9,17 +9,8 @@ enum EverButtonType {
   /// Button with secondary style
   secondary,
 
-  /// Button with tertiary style
-  tertiary,
-
   /// Button with ghost style
   ghost,
-
-  /// Button with ghost style without padding
-  ghostNoPadding,
-
-  /// Button that if used as delete action or something like that
-  attention,
 }
 
 /// {@template button_style}
@@ -29,38 +20,26 @@ class EverButtonStyle {
   /// {@macro button_style}
   const EverButtonStyle({
     required this.backgroundColor,
-    required this.splashColor,
-    required this.disabledBackgroundColor,
+    required this.backgroundDisabledColor,
     required this.contentColor,
-    this.contentDisabledColor,
-    this.contentPadding = const EdgeInsets.symmetric(horizontal: 16),
-    this.border,
-    this.disabledBorder,
+    required this.contentDisabledColor,
+    required this.contentPressedColor,
   });
 
   /// Color for button when it's enabled
   final Color backgroundColor;
 
-  /// Color for button when it's disabled (no any press events
-  final Color disabledBackgroundColor;
-
-  /// Color of splash when button is pressed
-  final Color splashColor;
-
-  /// Padding for button content
-  final EdgeInsets contentPadding;
-
-  /// Border for button when it's enabled
-  final ShapeBorder? border;
-
-  /// Border for button when it's disabled
-  final ShapeBorder? disabledBorder;
+  /// Color for button when it's disabled
+  final Color backgroundDisabledColor;
 
   /// Color of button content when it's enabled (text and icons)
   final Color contentColor;
 
-  /// If color not specified, [contentColor] will be used
-  final Color? contentDisabledColor;
+  /// Color of button content when button is pressed
+  final Color contentPressedColor;
+
+  /// Color of button content when button is disabled
+  final Color contentDisabledColor;
 }
 
 /// {@template button_style_mapper}
@@ -71,16 +50,12 @@ class EverButtonStyleProvider extends InheritedWidget {
   /// {@macro button_style_mapper}
   const EverButtonStyleProvider({
     required super.child,
-    required this.style,
-    required this.isDisabled,
+    required this.contentColor,
     super.key,
   });
 
   /// Style of button
-  final EverButtonStyle style;
-
-  /// If button is disabled that moment
-  final bool isDisabled;
+  final Color contentColor;
 
   /// Get information about button style from context
   static EverButtonStyleProvider of(BuildContext context) {
@@ -95,5 +70,5 @@ class EverButtonStyleProvider extends InheritedWidget {
 
   @override
   bool updateShouldNotify(EverButtonStyleProvider oldWidget) =>
-      oldWidget.style != style && oldWidget.isDisabled != isDisabled;
+      oldWidget.contentColor != contentColor;
 }

@@ -9,52 +9,13 @@ import 'dart:ui' as ui;
 
 import 'package:flutter/material.dart';
 
-class SquircleShapeFactory extends InteractiveInkFeatureFactory {
-  const SquircleShapeFactory({this.cornerRadius = 0});
-
-  final double cornerRadius;
-
-  @override
-  InteractiveInkFeature create({
-    required MaterialInkController controller,
-    required RenderBox referenceBox,
-    required ui.Offset position,
-    required ui.Color color,
-    required ui.TextDirection textDirection,
-    bool containedInkWell = false,
-    RectCallback? rectCallback,
-    BorderRadius? borderRadius,
-    ShapeBorder? customBorder,
-    double? radius,
-    ui.VoidCallback? onRemoved,
-  }) {
-    return InkRipple(
-      controller: controller,
-      referenceBox: referenceBox,
-      position: position,
-      color: color,
-      containedInkWell: containedInkWell,
-      rectCallback: rectCallback,
-      customBorder: SquircleShapeBorder(cornerRadius: cornerRadius),
-      onRemoved: onRemoved,
-      textDirection: textDirection,
-    );
-  }
-}
-
 /// Shape border that implements figma's squircle.
 /// https://github.com/aloisdeniel/figma_squircle/issues/5
 class SquircleShapeBorder extends ShapeBorder {
   /// Creates a continuous cornered rectangle border.
   ///
   /// The [cornerRadius] argument must not be null.
-  const SquircleShapeBorder({
-    this.cornerRadius = 0.0,
-  }) : percentage = -1;
-
-  const SquircleShapeBorder.percentage({
-    this.percentage = 0.0,
-  }) : cornerRadius = -1;
+  const SquircleShapeBorder({this.cornerRadius = 0.0});
 
   /// The radius for each corner.
   ///
@@ -65,11 +26,8 @@ class SquircleShapeBorder extends ShapeBorder {
   /// to describe the radius for every corner.
   final double cornerRadius;
 
-  final double percentage;
-
   Path path(Rect rect) {
-    final calculatedCornerRadius =
-        percentage == -1 ? cornerRadius : rect.shortestSide * percentage;
+    final calculatedCornerRadius = cornerRadius;
 
     var limitedRadius = 0.0;
     final width = rect.width;
@@ -288,7 +246,6 @@ class SquircleShapeBorder extends ShapeBorder {
 
   @override
   Path getOuterPath(Rect rect, {TextDirection? textDirection}) {
-    print('RECT: $rect');
     return path(rect);
   }
 

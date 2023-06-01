@@ -1,9 +1,8 @@
 import 'dart:async';
 
-import 'package:app/app/utils/iterable_extensions.dart';
 import 'package:collection/collection.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_svg/flutter_svg.dart';
+import 'package:ui_components_lib/ui_components_lib.dart';
 import 'package:visibility_detector/visibility_detector.dart';
 
 const _doubleRowsPadding = 8.0;

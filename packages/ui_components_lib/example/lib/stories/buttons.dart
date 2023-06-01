@@ -26,141 +26,100 @@ class _ButtonsStoryState extends State<ButtonsStory> {
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              ElevatedButton(
-                onPressed: () {},
-                style: ButtonStyle(
-                  shape: MaterialStateProperty.all(
-                    RoundedRectangleBorder(
-                      borderRadius: BorderRadius.circular(30),
-                    ),
-                  ),
-                ),
-                child: const Text('BUTTON'),
-              ),
-              Material(
-                shape: const SquircleShapeBorder(cornerRadius: 100),
-                color: Colors.black,
-                child: InkResponse(
-                  onTap: () {},
-                  hoverColor: Colors.transparent,
-                  highlightColor: Colors.transparent,
-                  splashColor: Colors.grey[200],
-                  splashFactory: const SquircleShapeFactory(cornerRadius: 100),
-                  customBorder: const SquircleShapeBorder(cornerRadius: 100),
-                  child: const Padding(
-                    padding: EdgeInsets.all(8),
-                    child: Text(
-                      'Plain Squircle',
-                      style: TextStyle(color: Colors.white),
-                    ),
-                  ),
-                ),
-              ),
-              const SizedBox(height: 30),
-
               /// Primary
               CommonButton.primary(
+                leading: CommonButtonIconWidget.icon(icon: Icons.add),
+                trailing: CommonButtonIconWidget.icon(icon: Icons.alarm),
                 text: 'PrimaryButton',
                 onPressed: () {},
               ),
               const SizedBox(height: 10),
               CommonButton.primary(
+                leading: CommonButtonIconWidget.icon(icon: Icons.add),
+                trailing: CommonButtonIconWidget.icon(icon: Icons.alarm),
                 text: 'PrimaryButton Disabled',
               ),
               const SizedBox(height: 10),
               CommonButton.primary(
+                leading: CommonButtonIconWidget.icon(icon: Icons.add),
+                trailing: CommonButtonIconWidget.icon(icon: Icons.alarm),
                 text: 'PrimaryButton fillWidth',
                 fillWidth: true,
                 onPressed: () {},
+              ),
+              const SizedBox(height: 10),
+              CommonButton.primary(
+                leading: CommonButtonIconWidget.icon(icon: Icons.add),
+                trailing: CommonButtonIconWidget.icon(icon: Icons.alarm),
+                text: 'PrimaryButton',
+                onPressed: () {},
+                isLoading: true,
               ),
               const SizedBox(height: 20),
 
               /// Secondary
               CommonButton.secondary(
+                leading: CommonButtonIconWidget.icon(icon: Icons.add),
+                trailing: CommonButtonIconWidget.icon(icon: Icons.alarm),
                 text: 'SecondaryButton',
                 onPressed: () {},
               ),
               const SizedBox(height: 10),
               CommonButton.secondary(
+                leading: CommonButtonIconWidget.icon(icon: Icons.add),
+                trailing: CommonButtonIconWidget.icon(icon: Icons.alarm),
                 text: 'SecondaryButton Disabled',
               ),
               const SizedBox(height: 10),
               CommonButton.secondary(
+                leading: CommonButtonIconWidget.icon(icon: Icons.add),
+                trailing: CommonButtonIconWidget.icon(icon: Icons.alarm),
                 text: 'SecondaryButton fillWidth',
                 fillWidth: true,
                 onPressed: () {},
               ),
-
-              /// Tertiary
-              const SizedBox(height: 20),
-              CommonButton.tertiary(
-                text: 'TertiaryButton',
-                onPressed: () {},
-              ),
               const SizedBox(height: 10),
-              CommonButton.tertiary(
-                text: 'TertiaryButton Disabled',
-              ),
-              const SizedBox(height: 10),
-              CommonButton.tertiary(
-                text: 'TertiaryButton fillWidth',
-                fillWidth: true,
+              CommonButton.secondary(
+                leading: CommonButtonIconWidget.icon(icon: Icons.add),
+                trailing: CommonButtonIconWidget.icon(icon: Icons.alarm),
+                text: 'SecondaryButton',
                 onPressed: () {},
+                isLoading: true,
               ),
 
               /// Ghost
               const SizedBox(height: 20),
               CommonButton.ghost(
+                leading: CommonButtonIconWidget.icon(icon: Icons.add),
+                trailing: CommonButtonIconWidget.icon(icon: Icons.alarm),
                 text: 'GhostButton',
                 onPressed: () {},
               ),
               const SizedBox(height: 10),
               CommonButton.ghost(
+                leading: CommonButtonIconWidget.icon(icon: Icons.add),
+                trailing: CommonButtonIconWidget.icon(icon: Icons.alarm),
                 text: 'GhostButton Disabled',
               ),
               const SizedBox(height: 10),
               CommonButton.ghost(
+                leading: CommonButtonIconWidget.icon(icon: Icons.add),
+                trailing: CommonButtonIconWidget.icon(icon: Icons.alarm),
                 text: 'GhostButton fillWidth',
                 fillWidth: true,
                 onPressed: () {},
               ),
-
-              /// GhostNoPadding
-              const SizedBox(height: 20),
-              CommonButton.ghostNoPadding(
-                text: 'GhostNoPaddingButton',
-                onPressed: () {},
-              ),
               const SizedBox(height: 10),
-              CommonButton.ghostNoPadding(
-                text: 'GhostNoPaddingButton Disabled',
-              ),
-              const SizedBox(height: 10),
-              CommonButton.ghostNoPadding(
-                text: 'GhostNoPaddingButton fillWidth',
-                fillWidth: true,
+              CommonButton.ghost(
+                leading: CommonButtonIconWidget.icon(icon: Icons.add),
+                trailing: CommonButtonIconWidget.icon(icon: Icons.alarm),
+                text: 'GhostButton',
                 onPressed: () {},
+                isLoading: true,
               ),
-
-              /// Attention
-              const SizedBox(height: 20),
-              CommonButton.attention(
-                text: 'AttentionButton',
-                onPressed: () {},
-              ),
-              const SizedBox(height: 10),
-              CommonButton.attention(
-                text: 'AttentionButton Disabled',
-              ),
-              const SizedBox(height: 10),
-              CommonButton.attention(
-                text: 'AttentionButton fillWidth',
-                fillWidth: true,
-                onPressed: () {},
-              ),
-              const SizedBox(height: 20),
 
               /// TabBar
+              const SizedBox(height: 60),
               const Text('TabBar without fillWidth'),
               ValueListenableBuilder(
                 valueListenable: tabBar1Notifier,
@@ -191,9 +150,42 @@ class _ButtonsStoryState extends State<ButtonsStory> {
 
               /// IconButton
               const SizedBox(height: 20),
-              CommonIconButton.icon(icon: Icons.add, onPressed: () {}),
-              const SizedBox(height: 10),
-              CommonIconButton.icon(icon: Icons.add),
+              Row(
+                children: [
+                  CommonIconButton.icon(
+                    icon: Icons.add,
+                    onPressed: () {},
+                    buttonType: EverButtonType.primary,
+                  ),
+                  const SizedBox(width: 10),
+                  CommonIconButton.icon(
+                    icon: Icons.add,
+                    buttonType: EverButtonType.primary,
+                  ),
+                  const SizedBox(width: 20),
+                  CommonIconButton.icon(
+                    icon: Icons.add,
+                    onPressed: () {},
+                    buttonType: EverButtonType.secondary,
+                  ),
+                  const SizedBox(width: 10),
+                  CommonIconButton.icon(
+                    icon: Icons.add,
+                    buttonType: EverButtonType.secondary,
+                  ),
+                  const SizedBox(width: 20),
+                  CommonIconButton.icon(
+                    icon: Icons.add,
+                    onPressed: () {},
+                    buttonType: EverButtonType.ghost,
+                  ),
+                  const SizedBox(width: 10),
+                  CommonIconButton.icon(
+                    icon: Icons.add,
+                    buttonType: EverButtonType.ghost,
+                  ),
+                ],
+              ),
             ],
           ),
         ),
