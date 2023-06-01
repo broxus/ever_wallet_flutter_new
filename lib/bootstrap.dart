@@ -88,7 +88,7 @@ class _AppWrapperState extends State<AppWrapper> with WidgetsBindingObserver {
 
   @override
   Widget build(BuildContext context) {
-    return MessengerWidget(
+    return MessengerServiceWidget(
       child: widget.builder(),
     );
   }
