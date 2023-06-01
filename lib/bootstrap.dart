@@ -1,6 +1,5 @@
 import 'dart:async';
 
-import 'package:app/app/service/messenger/messenger.dart';
 import 'package:app/bootstrap/bootstrap.dart';
 import 'package:app/di/di.dart';
 import 'package:bloc/bloc.dart';
