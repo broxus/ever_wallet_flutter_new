@@ -2,10 +2,13 @@ import 'dart:async';
 
 import 'package:app/di/di.dart';
 import 'package:encrypted_storage/encrypted_storage.dart';
+import 'package:flutter/widgets.dart';
 import 'package:injectable/injectable.dart';
 
 @singleton
 class NavigationService {
+  static GlobalKey<NavigatorState> navigatorKey = GlobalKey<NavigatorState>();
+
   Future<void> init(String initialLocation) async {
     _location = (await inject<EncryptedStorage>().get(
       _locationKey,

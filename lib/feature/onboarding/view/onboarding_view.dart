@@ -1,4 +1,6 @@
 import 'package:app/app/router/app_route.dart';
+import 'package:app/app/service/service.dart';
+import 'package:app/di/di.dart';
 import 'package:app/feature/onboarding/onboarding.dart';
 import 'package:app/l10n/l10n.dart';
 import 'package:flutter/gestures.dart';
@@ -32,6 +34,14 @@ class OnboardingView extends StatelessWidget {
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
+                  CommonButton.primary(
+                    text: 'Message',
+                    onPressed: () => inject<MessengerService>().show(
+                      Message.info(message: 'Message'),
+                    ),
+                    fillWidth: true,
+                  ),
+                  const SizedBox(height: 12),
                   Text(
                     l10n.welcomeTitle,
                     style: StyleRes.landingTitle.copyWith(

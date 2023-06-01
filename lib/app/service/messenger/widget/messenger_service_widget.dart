@@ -1,4 +1,5 @@
 import 'package:app/app/service/messenger/cubit/messenger_cubit.dart';
+import 'package:app/app/service/service.dart';
 import 'package:flutter/widgets.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:ui_components_lib/ui_components_lib.dart';
@@ -17,6 +18,7 @@ class MessengerServiceWidget extends StatefulWidget {
 
 class _MessengerServiceWidgetState extends State<MessengerServiceWidget> {
   final MessengerCubit _cubit = MessengerCubit();
+  bool _isSnackbarShown = false;
 
   @override
   void initState() {
@@ -25,20 +27,38 @@ class _MessengerServiceWidgetState extends State<MessengerServiceWidget> {
     _cubit.init();
   }
 
-  void showNextMessage() {
-    final message = _cubit.nextMessage;
+  void _onDismiss() {
+    _isSnackbarShown = false;
+    _showNextMessage();
+  }
+
+  void _showNextMessage() {
+    // Wait for the current snackbar to be dismissed
+    if (_isSnackbarShown) {
+      return;
+    }
+
+    // We can't use current context here because it's not contains Navigator
+    final ctx = NavigationService.navigatorKey.currentState?.context;
+    if (ctx == null) {
+      return;
+    }
+
+    final message = _cubit.nextMessage();
     if (message == null) {
       return;
     }
 
+    _isSnackbarShown = true;
+
     showSnackbar(
-      context: context,
+      context: ctx,
       type: message.type.snackbarType,
       message: message.message,
       duration: message.duration,
       actionText: message.actionText,
       onAction: message.onAction,
-      onDismiss: showNextMessage,
+      onDismiss: _onDismiss,
     );
   }
 
@@ -46,7 +66,7 @@ class _MessengerServiceWidgetState extends State<MessengerServiceWidget> {
   Widget build(BuildContext context) {
     return BlocListener<MessengerCubit, MessengerState>(
       bloc: _cubit,
-      listener: (context, state) => showNextMessage(),
+      listener: (context, state) => _showNextMessage(),
       child: widget.child,
     );
   }

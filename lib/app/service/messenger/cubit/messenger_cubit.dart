@@ -48,8 +48,16 @@ class MessengerCubit extends Cubit<MessengerState> {
     );
   }
 
-  Message? get nextMessage =>
-      state.messagesToShow.isEmpty ? null : state.messagesToShow.removeLast();
+  /// Get next message from the queue
+  Message? nextMessage() {
+    if (state.messagesToShow.isEmpty) {
+      return null;
+    }
+
+    final first = state.messagesToShow.first;
+    emit(state.copyWith(messagesToShow: state.messagesToShow.skip(1).toList()));
+    return first;
+  }
 
   /// Clear messages queue
   void clearQueue() {
