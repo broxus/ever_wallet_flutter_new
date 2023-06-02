@@ -28,9 +28,7 @@ class _InputsStoryState extends State<InputsStory> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        title: const Text('Inputs'),
-      ),
+      appBar: const DefaultAppBar(titleText: 'Inputs'),
       body: SingleChildScrollView(
         child: Padding(
           padding: const EdgeInsets.all(16),

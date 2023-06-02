@@ -68,8 +68,7 @@ class EnterSeedPhraseView extends StatelessWidget {
                 children: [
                   Text(
                     l10n.enterSeedPhrase,
-                    style:
-                        StyleRes.pageTitle.copyWith(color: colors.textPrimary),
+                    style: StyleRes.h1.copyWith(color: colors.textPrimary),
                   ),
                   const SizedBox(height: 28),
                   Row(
@@ -82,7 +81,7 @@ class EnterSeedPhraseView extends StatelessWidget {
                           builder: (_, v) => l10n.wordsCount(v),
                         ),
                       ),
-                      CommonButton.ghostNoPadding(
+                      CommonButton.ghost(
                         onPressed: displayPasteButton
                             ? cubit.pastePhrase
                             : cubit.clearFields,
@@ -94,8 +93,8 @@ class EnterSeedPhraseView extends StatelessWidget {
                   const SizedBox(height: 12),
                   Text(
                     l10n.pasteSeedIntoFirstBox,
-                    style:
-                        StyleRes.bodyText.copyWith(color: colors.textPrimary),
+                    style: StyleRes.primaryRegular
+                        .copyWith(color: colors.textPrimary),
                   ),
                   const SizedBox(height: 24),
                   Row(
@@ -138,14 +137,14 @@ class EnterSeedPhraseView extends StatelessWidget {
                   const SizedBox(height: 8),
                   if (error == null)
                     SizedBox(
-                      height: StyleRes.regular16.fontSize! *
-                          StyleRes.regular16.height!,
+                      height: StyleRes.secondaryBold.fontSize! *
+                          StyleRes.secondaryBold.height!,
                     )
                   else
                     Text(
                       (error.isEmpty ? '' : error).capitalize!,
-                      style: StyleRes.regular16
-                          .copyWith(color: colors.textNegative),
+                      style:
+                          StyleRes.secondaryBold.copyWith(color: colors.alert),
                     ),
                   const SizedBox(height: 16),
                 ],
@@ -182,7 +181,8 @@ class EnterSeedPhraseView extends StatelessWidget {
               padding: const EdgeInsets.only(left: 16, top: 11, right: 4),
               child: Text(
                 '$index.',
-                style: StyleRes.bodyText.copyWith(color: colors.textTertiary),
+                style:
+                    StyleRes.addRegular.copyWith(color: colors.textSecondary),
               ),
             ),
             onSubmitted: (_) => cubit.nextOrConfirm(index - 1),
@@ -201,7 +201,7 @@ class EnterSeedPhraseView extends StatelessWidget {
       tileColor: Colors.transparent,
       title: Text(
         suggestion,
-        style: StyleRes.bodyText.copyWith(color: colors.textPrimary),
+        style: StyleRes.primaryRegular.copyWith(color: colors.textPrimary),
       ),
     );
   }

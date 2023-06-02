@@ -17,9 +17,7 @@ class _ButtonsStoryState extends State<ButtonsStory> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        title: const Text('Buttons'),
-      ),
+      appBar: const DefaultAppBar(titleText: 'Buttons'),
       body: SingleChildScrollView(
         child: Padding(
           padding: const EdgeInsets.all(16),

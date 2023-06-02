@@ -36,12 +36,13 @@ class CreateSeedPasswordView extends StatelessWidget {
             children: [
               Text(
                 localization.createPassword,
-                style: StyleRes.pageTitle.copyWith(color: colors.textPrimary),
+                style: StyleRes.h1.copyWith(color: colors.textPrimary),
               ),
               const SizedBox(height: 16),
               Text(
                 localization.createPasswordDescription,
-                style: StyleRes.bodyText.copyWith(color: colors.textSecondary),
+                style:
+                    StyleRes.primaryRegular.copyWith(color: colors.textPrimary),
               ),
               const SizedBox(height: 32),
               CommonInput(
@@ -75,7 +76,6 @@ class CreateSeedPasswordView extends StatelessWidget {
                 },
               ),
               const SizedBox(height: 12),
-              if (needBiometryIfPossible) getBiometricSwitcher(),
               const Spacer(),
               CommonButton.primary(
                 text: localization.next,
@@ -86,37 +86,6 @@ class CreateSeedPasswordView extends StatelessWidget {
           ),
         ),
       ),
-    );
-  }
-
-  Widget getBiometricSwitcher() {
-    return Builder(
-      builder: (context) {
-        final localization = context.l10n;
-        final colors = context.themeStyle.colors;
-
-        return Container(
-          color: ColorsRes.lightBlue.withOpacity(0.1),
-          padding: const EdgeInsets.all(12),
-          child: Row(
-            children: [
-              Expanded(
-                child: Text(
-                  localization.useBiometryForFastLogin,
-                  style: StyleRes.regular16.copyWith(color: colors.textPrimary),
-                ),
-              ),
-              const SizedBox(width: 16),
-              CommonSwitchInput(
-                value: true,
-                onChanged: (value) {
-                  // TODO(alex-a4): implement later
-                },
-              ),
-            ],
-          ),
-        );
-      },
     );
   }
 }

@@ -45,14 +45,13 @@ class _EnterSeedNameViewState extends State<EnterSeedNameView> {
           children: [
             Text(
               localization.seedPhraseNameTitle,
-              style: StyleRes.pageTitle.copyWith(color: colors.textPrimary),
+              style: StyleRes.h1.copyWith(color: colors.textPrimary),
             ),
             const SizedBox(height: 12),
             Text(
               localization.seedPhraseNameDescription,
-              style: StyleRes.bodyText.copyWith(
-                color: colors.textSecondary,
-              ),
+              style:
+                  StyleRes.primaryRegular.copyWith(color: colors.textPrimary),
             ),
             const SizedBox(height: 20),
             CommonInput(

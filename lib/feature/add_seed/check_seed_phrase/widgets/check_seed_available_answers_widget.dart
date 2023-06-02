@@ -61,7 +61,7 @@ class CheckSeedAvailableAnswersWidget extends StatelessWidget {
             onPressed: isSelected ? null : () => selectAnswer(answer),
             child: DottedBorder(
               dashPattern: isSelected ? const [4, 4] : const [1, 0],
-              color: colors.accentTertiary,
+              color: colors.strokePrimary,
               child: Center(
                 child: Padding(
                   padding: const EdgeInsets.symmetric(
@@ -70,8 +70,8 @@ class CheckSeedAvailableAnswersWidget extends StatelessWidget {
                   ),
                   child: Text(
                     isSelected ? '' : answer,
-                    style: StyleRes.medium16
-                        .copyWith(color: colors.textButtonSecondary),
+                    style: StyleRes.secondaryBold
+                        .copyWith(color: colors.textPrimary),
                   ),
                 ),
               ),

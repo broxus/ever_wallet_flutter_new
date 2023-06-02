@@ -1,10 +1,12 @@
 import 'dart:async';
 
+import 'package:app/app/router/app_route.dart';
 import 'package:app/bootstrap/bootstrap.dart';
 import 'package:app/di/di.dart';
 import 'package:bloc/bloc.dart';
 import 'package:flutter/widgets.dart';
 import 'package:logging/logging.dart';
+import 'package:ui_components_lib/components/common/common.dart';
 
 enum AppBuildType { development, staging, production }
 
@@ -47,6 +49,8 @@ Future<void> bootstrap(
   };
 
   Bloc.observer = AppBlocObserver();
+
+  DefaultAppBar.defaultPopAction = (context) => context.maybePop();
 
   await runZonedGuarded(
     () async => runApp(

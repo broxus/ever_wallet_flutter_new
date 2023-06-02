@@ -36,12 +36,13 @@ class CreateSeedView extends StatelessWidget {
           children: [
             Text(
               localization.saveSeedPhrase,
-              style: StyleRes.pageTitle.copyWith(color: colors.textPrimary),
+              style: StyleRes.h1.copyWith(color: colors.textPrimary),
             ),
             const SizedBox(height: 12),
             Text(
               localization.saveSeedWarning,
-              style: StyleRes.bodyText.copyWith(color: colors.textSecondary),
+              style:
+                  StyleRes.primaryRegular.copyWith(color: colors.textPrimary),
             ),
             const SizedBox(height: 24),
             Expanded(
@@ -100,8 +101,6 @@ class CreateSeedView extends StatelessWidget {
   }
 
   Widget _textPair(String word, int index, ColorsPalette colors) {
-    final style = StyleRes.regular16.copyWith(color: colors.textPrimary);
-
     return Padding(
       padding: const EdgeInsets.only(bottom: 12),
       child: Row(
@@ -110,11 +109,15 @@ class CreateSeedView extends StatelessWidget {
             width: 28,
             child: Text(
               '$index.',
-              style: style.copyWith(color: colors.textTertiary),
+              style: StyleRes.addRegular.copyWith(color: colors.textSecondary),
             ),
           ),
           Expanded(
-            child: Text(word, style: style, textAlign: TextAlign.left),
+            child: Text(
+              word,
+              style: StyleRes.button.copyWith(color: colors.textPrimary),
+              textAlign: TextAlign.left,
+            ),
           ),
         ],
       ),
@@ -129,27 +132,17 @@ class CreateSeedView extends StatelessWidget {
         final cubit = context.read<CreateSeedCubit>();
 
         if (copied) {
-          return SizedBox(
-            height: commonButtonHeight,
-            child: Align(
-              child: Text(
-                localization.copiedNoExclamation,
-                style: StyleRes.medium16.copyWith(color: colors.textPositive),
-              ),
-            ),
+          return CommonButton(
+            buttonType: EverButtonType.ghost,
+            contentDisabledColor: colors.apply,
+            trailing: CommonButtonIconWidget.svg(svg: Assets.images.check.path),
+            text: localization.copiedNoExclamation,
           );
         }
-        return Row(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: [
-            CommonButton.ghost(
-              leading: CommonButtonIconWidget.svg(
-                svg: Assets.images.copy.path,
-              ),
-              text: localization.copyWords,
-              onPressed: cubit.copySeed,
-            ),
-          ],
+        return CommonButton.ghost(
+          trailing: CommonButtonIconWidget.svg(svg: Assets.images.copy.path),
+          text: localization.copyWords,
+          onPressed: cubit.copySeed,
         );
       },
     );
@@ -157,7 +150,6 @@ class CreateSeedView extends StatelessWidget {
 
   Widget _wordsField(ColorsPalette colors, List<String> words) {
     return Container(
-      color: colors.fillingSecondary,
       padding: const EdgeInsets.all(16),
       child: Row(
         children: [

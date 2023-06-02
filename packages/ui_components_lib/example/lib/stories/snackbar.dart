@@ -8,9 +8,7 @@ class SnackbarStory extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        title: const Text('Colors (based on theme)'),
-      ),
+      appBar: const DefaultAppBar(titleText: 'SnackBars'),
       body: SingleChildScrollView(
         padding: const EdgeInsets.all(16),
         child: Column(

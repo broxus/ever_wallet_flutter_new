@@ -1,9 +1,9 @@
 import 'package:app/app/router/app_route.dart';
 import 'package:app/feature/add_seed/create_password/create_password.dart';
-import 'package:app/feature/onboarding/widgets/onboarding_app_bar.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
+import 'package:ui_components_lib/components/common/common.dart';
 
 /// {@template create_seed_password_onboarding_page}
 /// Entry point to create seed password from onboarding.
@@ -30,7 +30,7 @@ class CreateSeedPasswordOnboardingPage extends StatelessWidget {
         onTap: () => FocusScope.of(context).unfocus(),
         child: const Scaffold(
           resizeToAvoidBottomInset: false,
-          appBar: OnboardingAppBar(),
+          appBar: DefaultAppBar(),
           body: CreateSeedPasswordView(needBiometryIfPossible: true),
         ),
       ),
@@ -63,7 +63,7 @@ class CreateSeedPasswordProfilePage extends StatelessWidget {
         onTap: () => FocusScope.of(context).unfocus(),
         child: const Scaffold(
           resizeToAvoidBottomInset: false,
-          appBar: OnboardingAppBar(),
+          appBar: DefaultAppBar(),
           body: CreateSeedPasswordView(needBiometryIfPossible: false),
         ),
       ),

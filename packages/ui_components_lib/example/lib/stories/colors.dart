@@ -9,20 +9,62 @@ class ColorsStory extends StatelessWidget {
   Widget build(BuildContext context) {
     final colors = context.themeStyle.colors;
     return Scaffold(
-      appBar: AppBar(
-        title: const Text('Colors (based on theme)'),
-      ),
+      appBar: const DefaultAppBar(titleText: 'Colors (based on theme)'),
       body: SingleChildScrollView(
         child: Wrap(
           children: [
             /// Order for colors same as in ColorsPalette
             _ColorItem(
+              color: colors.textPrimary,
+              name: 'textPrimary',
+            ),
+            _ColorItem(
+              color: colors.textSecondary,
+              name: 'textSecondary',
+            ),
+            _ColorItem(
+              color: colors.textContrast,
+              name: 'textContrast',
+            ),
+            _ColorItem(
+              color: colors.appBackground,
+              name: 'appBackground',
+            ),
+            _ColorItem(
               color: colors.backgroundPrimary,
               name: 'backgroundPrimary',
             ),
             _ColorItem(
-              color: colors.textPrimary,
-              name: 'textPrimary',
+              color: colors.backgroundSecondary,
+              name: 'backgroundSecondary',
+            ),
+            _ColorItem(
+              color: colors.strokePrimary,
+              name: 'strokePrimary',
+            ),
+            _ColorItem(
+              color: colors.strokeSecondary,
+              name: 'strokeSecondary',
+            ),
+            _ColorItem(
+              color: colors.strokeContrast,
+              name: 'strokeContrast',
+            ),
+            _ColorItem(
+              color: colors.alert,
+              name: 'alert',
+            ),
+            _ColorItem(
+              color: colors.apply,
+              name: 'apply',
+            ),
+            _ColorItem(
+              color: colors.blue,
+              name: 'blue',
+            ),
+            _ColorItem(
+              color: colors.blueSecond,
+              name: 'blueSecond',
             ),
           ],
         ),

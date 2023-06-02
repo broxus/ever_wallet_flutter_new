@@ -87,6 +87,8 @@ class CommonButton extends StatefulWidget {
   /// CommonButton with ghost style
   factory CommonButton.ghost({
     String? text,
+    EdgeInsets? padding,
+    double? height,
     VoidCallback? onPressed,
     VoidCallback? onLongPress,
     Widget? leading,
@@ -105,6 +107,8 @@ class CommonButton extends StatefulWidget {
         focusNode: focusNode,
         isLoading: isLoading,
         fillWidth: fillWidth,
+        height: height ?? commonButtonHeight,
+        padding: padding,
       );
 
   /// Type of the button that is used to identify colors
