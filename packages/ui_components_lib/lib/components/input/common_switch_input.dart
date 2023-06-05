@@ -9,9 +9,9 @@ import 'package:ui_components_lib/ui_components_lib.dart';
 class CommonSwitchInput extends StatefulWidget {
   /// {@macro common_switch_input}
   const CommonSwitchInput({
-    super.key,
     required this.value,
     required this.onChanged,
+    super.key,
     this.validator,
     this.validateMode,
     this.thumbChild,
