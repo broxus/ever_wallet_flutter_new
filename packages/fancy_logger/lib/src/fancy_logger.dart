@@ -141,6 +141,7 @@ class FancyLogger {
     if (dbLogger == null) {
       throw Exception('DbLogger is not initialized!');
     }
+
     return dbLogger;
   }
 }

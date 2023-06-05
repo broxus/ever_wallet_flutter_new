@@ -4,6 +4,9 @@
 // Use of this source code is governed by a BSD-style license that can be
 // found in the LICENSE file.
 
+// ignore_for_file: long-method, no-magic-number, double-literal-format
+// ignore_for_file: binary-expression-operand-order, no-empty-block
+
 import 'dart:math' as math;
 import 'dart:ui' as ui;
 
@@ -236,6 +239,7 @@ class SquircleShapeBorder extends ShapeBorder {
       minSideLength / minRadiusEdgeLength,
     )!;
     limitedRadius = math.min(radius, minSideLength / multiplier);
+
     return bezierRoundedRect();
   }
 
@@ -269,6 +273,7 @@ class SquircleShapeBorder extends ShapeBorder {
         cornerRadius: ui.lerpDouble(a.cornerRadius, cornerRadius, t)!,
       );
     }
+
     return super.lerpFrom(a, t);
   }
 
@@ -279,12 +284,14 @@ class SquircleShapeBorder extends ShapeBorder {
         cornerRadius: ui.lerpDouble(cornerRadius, b.cornerRadius, t)!,
       );
     }
+
     return super.lerpTo(b, t);
   }
 
   @override
   bool operator ==(Object other) {
     if (other is! SquircleShapeBorder) return false;
+
     return cornerRadius == other.cornerRadius;
   }
 
