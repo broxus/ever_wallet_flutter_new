@@ -159,6 +159,12 @@ class _CommonInputState extends State<CommonInput> {
   }
 
   @override
+  void dispose() {
+    _controller.removeListener(_handleDidChange);
+    super.dispose();
+  }
+
+  @override
   void didChangeDependencies() {
     super.didChangeDependencies();
     _handleInput();

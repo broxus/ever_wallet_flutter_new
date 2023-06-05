@@ -135,14 +135,18 @@ class DefaultAppBar extends StatelessWidget implements PreferredSizeWidget {
       color: backgroundColor ?? Colors.transparent,
       borderRadius: BorderRadius.zero,
       child: Container(
-        margin: EdgeInsets.only(top: mq.padding.top, left: 16, right: 16),
+        margin: EdgeInsets.only(
+          top: mq.padding.top,
+          left: Dimens.medium,
+          right: Dimens.medium,
+        ),
         height: preferredSize.height,
         child: Column(
           mainAxisSize: MainAxisSize.min,
           children: [
             Expanded(
               child: Padding(
-                padding: const EdgeInsets.symmetric(horizontal: 6),
+                padding: const EdgeInsets.symmetric(horizontal: Dimens.xSmall),
                 child: Row(
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [

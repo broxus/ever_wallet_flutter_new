@@ -1,3 +1,4 @@
+import 'dart:async';
 import 'package:flutter/material.dart';
 import 'package:ui_components_lib/ui_components_lib.dart';
 
@@ -48,16 +49,7 @@ class _InputsStoryState extends State<InputsStory> {
               CommonInput(
                 labelText: 'Suggestions with simple builder',
                 controller: suggestion1Controller,
-                suggestionsCallback: (pattern) {
-                  if (pattern.isEmpty) return suggestionsList;
-                  return suggestionsList
-                      .where(
-                        (element) => element
-                            .toLowerCase()
-                            .contains(pattern.toLowerCase()),
-                      )
-                      .toList();
-                },
+                suggestionsCallback: _onSuggest,
                 itemBuilder: (_, suggestion) =>
                     ListTile(title: Text(suggestion)),
                 onSuggestionSelected: (v) => suggestion1Controller.text = v,
@@ -128,16 +120,7 @@ class _InputsStoryState extends State<InputsStory> {
                     CommonInput(
                       labelText: 'Validation with suggestions',
                       controller: suggestion2Controller,
-                      suggestionsCallback: (pattern) {
-                        if (pattern.isEmpty) return suggestionsList;
-                        return suggestionsList
-                            .where(
-                              (element) => element
-                                  .toLowerCase()
-                                  .contains(pattern.toLowerCase()),
-                            )
-                            .toList();
-                      },
+                      suggestionsCallback: _onSuggest,
                       itemBuilder: (_, suggestion) =>
                           ListTile(title: Text(suggestion)),
                       onSuggestionSelected: (v) =>
@@ -212,5 +195,14 @@ class _InputsStoryState extends State<InputsStory> {
         ),
       ),
     );
+  }
+
+  FutureOr<Iterable<String>> _onSuggest(String pattern) {
+    if (pattern.isEmpty) return suggestionsList;
+    return suggestionsList
+        .where(
+          (element) => element.toLowerCase().contains(pattern.toLowerCase()),
+        )
+        .toList();
   }
 }

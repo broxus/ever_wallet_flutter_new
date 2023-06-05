@@ -4,6 +4,9 @@
 // Use of this source code is governed by a BSD-style license that can be
 // found in the LICENSE file.
 
+// ignore_for_file: long-method, no-magic-number, double-literal-format
+// ignore_for_file: binary-expression-operand-order, no-empty-block
+
 import 'dart:math' as math;
 import 'dart:ui' as ui;
 

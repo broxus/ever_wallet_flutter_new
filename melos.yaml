@@ -19,7 +19,13 @@ scripts:
     packageFilters:
       dependsOn: "build_runner"
 
+  # TODO(nesquikm): we have to isolane runing dart_code_metrics for the main app because we
+  # can't add dart_code_metrics to the app due to dependency incompatibility
   analyze:
+    run: melos run analyze_all_packages --no-select && cd packages/ui_components_lib && flutter pub run dart_code_metrics:metrics analyze ../../lib
+    description: Analyze all packages and run dart_code_metrics for the main app
+
+  analyze_all_packages:
     exec: flutter analyze . && flutter pub run dart_code_metrics:metrics analyze lib
     description: Analyze a specific package in this project.
 

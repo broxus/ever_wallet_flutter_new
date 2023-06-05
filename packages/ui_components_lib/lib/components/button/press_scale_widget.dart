@@ -62,6 +62,7 @@ class PressScaleWidgetState extends State<PressScaleWidget>
       duration: widget.animationDuration,
       vsync: this,
     )..addListener(() {
+        // ignore: no-empty-block
         setState(() {});
       });
     _doubleAnimation = Tween<double>(begin: 0, end: 1).animate(_controller);

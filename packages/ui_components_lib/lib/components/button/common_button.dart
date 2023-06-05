@@ -205,14 +205,17 @@ class _CommonButtonState extends State<CommonButton> {
     if (widget.child == null) {
       if (widget.isLoading) {
         child = Padding(
-          padding: widget.padding ?? const EdgeInsets.symmetric(horizontal: 50),
+          // TODO(nesquikm): dimens12 seems illegal here :)
+          padding: widget.padding ??
+              const EdgeInsets.symmetric(horizontal: Dimens.dimens12),
           child: Center(
             child: SizedBox(
-              width: 20,
-              height: 20,
+              width: Dimens.large,
+              height: Dimens.large,
               child: CircularProgressIndicator(
                 color: contentColor,
-                strokeWidth: 2,
+                // TODO(nesquikm): add strokeWidth to style, maybe set of them
+                strokeWidth: Dimens.xxxLarge,
               ),
             ),
           ),

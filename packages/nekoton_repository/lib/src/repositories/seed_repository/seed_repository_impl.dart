@@ -55,34 +55,30 @@ mixin SeedKeyRepositoryImpl on TransportRepository
         isLegacy ? const MnemonicType.legacy() : const MnemonicType.labs(0);
     final phraseStr = phrase.join(' ');
 
-    final CreateKeyInput createKeyInput;
-
-    if (isLegacy) {
-      createKeyInput = EncryptedKeyCreateInput(
-        name: name,
-        phrase: phraseStr,
-        mnemonicType: mnemonicType,
-        password: Password.explicit(
-          PasswordExplicit(
-            password: password,
-            cacheBehavior: const PasswordCacheBehavior.nop(),
-          ),
-        ),
-      );
-    } else {
-      createKeyInput = DerivedKeyCreateInput.import(
-        DerivedKeyCreateInputImport(
-          keyName: name,
-          phrase: phraseStr,
-          password: Password.explicit(
-            PasswordExplicit(
-              password: password,
-              cacheBehavior: const PasswordCacheBehavior.nop(),
+    final createKeyInput = isLegacy
+        ? EncryptedKeyCreateInput(
+            name: name,
+            phrase: phraseStr,
+            mnemonicType: mnemonicType,
+            password: Password.explicit(
+              PasswordExplicit(
+                password: password,
+                cacheBehavior: const PasswordCacheBehavior.nop(),
+              ),
             ),
-          ),
-        ),
-      );
-    }
+          )
+        : DerivedKeyCreateInput.import(
+            DerivedKeyCreateInputImport(
+              keyName: name,
+              phrase: phraseStr,
+              password: Password.explicit(
+                PasswordExplicit(
+                  password: password,
+                  cacheBehavior: const PasswordCacheBehavior.nop(),
+                ),
+              ),
+            ),
+          );
 
     final publicKey = await keyStore.addKey(createKeyInput);
 
@@ -146,45 +142,41 @@ mixin SeedKeyRepositoryImpl on TransportRepository
     required String newPassword,
     required bool isLegacy,
   }) async {
-    final UpdateKeyInput updateKeyInput;
-
-    if (isLegacy) {
-      updateKeyInput = EncryptedKeyUpdateParams.changePassword(
-        EncryptedKeyUpdateParamsChangePassword(
-          publicKey: publicKey,
-          oldPassword: Password.explicit(
-            PasswordExplicit(
-              password: oldPassword,
-              cacheBehavior: const PasswordCacheBehavior.nop(),
+    final updateKeyInput = isLegacy
+        ? EncryptedKeyUpdateParams.changePassword(
+            EncryptedKeyUpdateParamsChangePassword(
+              publicKey: publicKey,
+              oldPassword: Password.explicit(
+                PasswordExplicit(
+                  password: oldPassword,
+                  cacheBehavior: const PasswordCacheBehavior.nop(),
+                ),
+              ),
+              newPassword: Password.explicit(
+                PasswordExplicit(
+                  password: newPassword,
+                  cacheBehavior: const PasswordCacheBehavior.nop(),
+                ),
+              ),
             ),
-          ),
-          newPassword: Password.explicit(
-            PasswordExplicit(
-              password: newPassword,
-              cacheBehavior: const PasswordCacheBehavior.nop(),
+          )
+        : DerivedKeyUpdateParams.changePassword(
+            DerivedKeyUpdateParamsChangePassword(
+              masterKey: publicKey,
+              oldPassword: Password.explicit(
+                PasswordExplicit(
+                  password: oldPassword,
+                  cacheBehavior: const PasswordCacheBehavior.nop(),
+                ),
+              ),
+              newPassword: Password.explicit(
+                PasswordExplicit(
+                  password: newPassword,
+                  cacheBehavior: const PasswordCacheBehavior.nop(),
+                ),
+              ),
             ),
-          ),
-        ),
-      );
-    } else {
-      updateKeyInput = DerivedKeyUpdateParams.changePassword(
-        DerivedKeyUpdateParamsChangePassword(
-          masterKey: publicKey,
-          oldPassword: Password.explicit(
-            PasswordExplicit(
-              password: oldPassword,
-              cacheBehavior: const PasswordCacheBehavior.nop(),
-            ),
-          ),
-          newPassword: Password.explicit(
-            PasswordExplicit(
-              password: newPassword,
-              cacheBehavior: const PasswordCacheBehavior.nop(),
-            ),
-          ),
-        ),
-      );
-    }
+          );
 
     await keyStore.updateKey(updateKeyInput);
   }
@@ -196,24 +188,20 @@ mixin SeedKeyRepositoryImpl on TransportRepository
     required String name,
     required bool isLegacy,
   }) async {
-    final UpdateKeyInput updateKeyInput;
-
-    if (isLegacy) {
-      updateKeyInput = EncryptedKeyUpdateParams.rename(
-        EncryptedKeyUpdateParamsRename(
-          publicKey: publicKey,
-          name: name,
-        ),
-      );
-    } else {
-      updateKeyInput = DerivedKeyUpdateParams.renameKey(
-        DerivedKeyUpdateParamsRenameKey(
-          masterKey: masterKey,
-          publicKey: publicKey,
-          name: name,
-        ),
-      );
-    }
+    final updateKeyInput = isLegacy
+        ? EncryptedKeyUpdateParams.rename(
+            EncryptedKeyUpdateParamsRename(
+              publicKey: publicKey,
+              name: name,
+            ),
+          )
+        : DerivedKeyUpdateParams.renameKey(
+            DerivedKeyUpdateParamsRenameKey(
+              masterKey: masterKey,
+              publicKey: publicKey,
+              name: name,
+            ),
+          );
 
     await keyStore.updateKey(updateKeyInput);
   }
@@ -224,29 +212,25 @@ mixin SeedKeyRepositoryImpl on TransportRepository
     required String password,
     required bool isLegacy,
   }) async {
-    final ExportKeyInput exportKeyInput;
-
-    if (isLegacy) {
-      exportKeyInput = EncryptedKeyPassword(
-        publicKey: masterKey,
-        password: Password.explicit(
-          PasswordExplicit(
-            password: password,
-            cacheBehavior: const PasswordCacheBehavior.nop(),
-          ),
-        ),
-      );
-    } else {
-      exportKeyInput = DerivedKeyExportParams(
-        masterKey: masterKey,
-        password: Password.explicit(
-          PasswordExplicit(
-            password: password,
-            cacheBehavior: const PasswordCacheBehavior.nop(),
-          ),
-        ),
-      );
-    }
+    final exportKeyInput = isLegacy
+        ? EncryptedKeyPassword(
+            publicKey: masterKey,
+            password: Password.explicit(
+              PasswordExplicit(
+                password: password,
+                cacheBehavior: const PasswordCacheBehavior.nop(),
+              ),
+            ),
+          )
+        : DerivedKeyExportParams(
+            masterKey: masterKey,
+            password: Password.explicit(
+              PasswordExplicit(
+                password: password,
+                cacheBehavior: const PasswordCacheBehavior.nop(),
+              ),
+            ),
+          );
 
     final exportKeyOutput = await keyStore.exportKey(exportKeyInput);
 

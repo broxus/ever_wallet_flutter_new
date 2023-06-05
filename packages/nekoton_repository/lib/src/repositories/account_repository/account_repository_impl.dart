@@ -120,7 +120,7 @@ mixin AccountRepositoryImpl on TransportRepository
     for (final account in accounts) {
       externalAccounts[account.publicKey] = [
         ...?externalAccounts[account.publicKey],
-        account.account.address
+        account.account.address,
       ];
     }
 

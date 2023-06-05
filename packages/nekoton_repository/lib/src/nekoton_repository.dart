@@ -260,9 +260,11 @@ class NekotonRepository
   /// -------------------------------------
 
   /// Create a new example thing
+  // ignore: no-magic-number
   ExampleModel getNewModel() => ExampleModel(id: Random().nextInt(1 << 16));
 
   /// Call something from nekoton
+  // ignore: no-magic-number
   int getFromNekotonRust() => fnb.simpleAdderSync(1, 2);
 
   /// Some logs from rust

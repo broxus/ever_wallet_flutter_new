@@ -31,6 +31,7 @@ class CommonStory extends StatelessWidget {
                   fillWidth: false,
                   buttonType: EverButtonType.ghost,
                   text: 'Action',
+                  // ignore: no-empty-block
                   onPressed: () {},
                 ),
               ],
@@ -48,11 +49,12 @@ class CommonStory extends StatelessWidget {
               titleText: 'Not centered title',
               subtitleTopText: 'TopSubtitle',
               subtitleBottomWidget: CommonButton(
-                height: 20,
+                height: Dimens.dimens05,
                 padding: EdgeInsets.zero,
                 buttonType: EverButtonType.ghost,
                 fillWidth: false,
                 text: 'SubtitleBottom button',
+                // ignore: no-empty-block
                 onPressed: () {},
               ),
               actions: [
@@ -61,6 +63,7 @@ class CommonStory extends StatelessWidget {
                   fillWidth: false,
                   buttonType: EverButtonType.ghost,
                   text: 'Action',
+                  // ignore: no-empty-block
                   onPressed: () {},
                 ),
               ],

@@ -1,5 +1,9 @@
 import 'package:flutter/material.dart';
-import 'package:ui_components_lib/ui_components_lib.dart';
+import 'package:ui_components_lib/colors.dart';
+import 'package:ui_components_lib/components/button/button_style.dart';
+import 'package:ui_components_lib/opac.dart';
+import 'package:ui_components_lib/styles.dart';
+import 'package:ui_components_lib/theme_style.dart';
 
 /// Default theme for ever app with light brightness
 ThemeData everPredefinedLightTheme() {
@@ -69,22 +73,24 @@ Map<EverButtonType, EverButtonStyle> _mapButtonStyle(ColorsPalette colors) {
   return {
     EverButtonType.primary: EverButtonStyle(
       backgroundColor: colors.backgroundPrimary,
-      backgroundDisabledColor: colors.backgroundPrimary.withOpacity(0.5),
+      backgroundDisabledColor:
+          colors.backgroundPrimary.withOpacity(Opac.medium),
       contentColor: colors.textContrast,
       contentPressedColor: colors.textSecondary,
       contentDisabledColor: colors.textContrast,
     ),
     EverButtonType.secondary: EverButtonStyle(
       backgroundColor: colors.backgroundSecondary,
-      backgroundDisabledColor: colors.backgroundSecondary.withOpacity(0.5),
+      backgroundDisabledColor:
+          colors.backgroundSecondary.withOpacity(Opac.medium),
       contentColor: colors.textPrimary,
-      contentDisabledColor: colors.textPrimary.withOpacity(0.5),
+      contentDisabledColor: colors.textPrimary.withOpacity(Opac.medium),
       contentPressedColor: colors.textSecondary,
     ),
     EverButtonType.ghost: EverButtonStyle(
       backgroundColor: ColorsRes.transparent,
       contentColor: colors.textPrimary,
-      contentDisabledColor: colors.textPrimary.withOpacity(0.5),
+      contentDisabledColor: colors.textPrimary.withOpacity(Opac.medium),
       backgroundDisabledColor: ColorsRes.transparent,
       contentPressedColor: colors.textSecondary,
     ),

@@ -7,6 +7,8 @@ import 'package:logging/logging.dart';
 import 'package:path/path.dart';
 import 'package:sqflite/sqflite.dart';
 
+const _sqLiteSliceSize = 512;
+
 /// {@template storage}
 /// Storage (db backend)
 /// {@endtemplate}
@@ -51,7 +53,7 @@ class Storage {
     _log.finest('reset');
   }
 
-  Future<void> _onCreate(Database db, int version) async {
+  Future<void> _onCreate(Database db, int _) async {
     await db.execute(
       '''
         CREATE TABLE storage (
@@ -72,13 +74,13 @@ class Storage {
     _log.finest('database created');
   }
 
-  FutureOr<void> _onUpgrade(Database db, int oldVersion, int newVersion) {
+  FutureOr<void> _onUpgrade(Database _, int oldVersion, int newVersion) {
     _log
       ..finest('database upgraded from $oldVersion to $newVersion')
       ..warning('no upgrade migrations found');
   }
 
-  FutureOr<void> _onDowngrade(Database db, int oldVersion, int newVersion) {
+  FutureOr<void> _onDowngrade(Database _, int oldVersion, int newVersion) {
     _log
       ..finest('database downgraded from $oldVersion to $newVersion')
       ..warning('no downgrade migrations found');
@@ -176,7 +178,7 @@ class Storage {
     }
 
     // SQLite has a limit of 999 variables per query
-    keys.slices(512).forEach((keys) async {
+    keys.slices(_sqLiteSliceSize).forEach((keys) async {
       var isFirst = true;
       final andClause = keys.fold('', (previousValue, key) {
         final prefix = isFirst ? '' : ' OR ';
@@ -230,7 +232,7 @@ class Storage {
         pair['key']! as String: StorageValue(
           pair['value']! as String,
           pair['iv']! as String,
-        )
+        ),
     };
   }
 
@@ -247,7 +249,7 @@ class Storage {
     return [
       // There is no way to write null in these fields
       // ignore: cast_nullable_to_non_nullable
-      for (var pair in list) pair['key']! as String
+      for (var pair in list) pair['key']! as String,
     ];
   }
 }

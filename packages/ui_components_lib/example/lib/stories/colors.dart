@@ -87,19 +87,19 @@ class _ColorItem extends StatelessWidget {
     final isBackgroundLight =
         Theme.of(context).scaffoldBackgroundColor.computeLuminance() > 0.7;
     return SizedBox(
-      width: 200,
+      width: Dimens.dimens50,
       child: Column(
         children: [
           Container(
-            width: 150,
-            height: 100,
+            width: Dimens.dimens37,
+            height: Dimens.dimens25,
             margin: const EdgeInsets.all(16),
             decoration: BoxDecoration(
               color: color,
               border: Border.all(
                 color: isBackgroundLight ? Colors.black : Colors.white,
               ),
-              borderRadius: BorderRadius.circular(10),
+              borderRadius: BorderRadius.circular(Dimens.medium),
             ),
           ),
           Center(
@@ -110,7 +110,7 @@ class _ColorItem extends StatelessWidget {
                 textAlign: TextAlign.center,
                 style: TextStyle(
                   color: isBackgroundLight ? Colors.black : Colors.white,
-                  fontSize: 16,
+                  fontSize: Dimens.medium,
                 ),
               ),
             ),

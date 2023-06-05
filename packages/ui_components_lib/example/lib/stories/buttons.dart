@@ -29,6 +29,7 @@ class _ButtonsStoryState extends State<ButtonsStory> {
                 leading: CommonButtonIconWidget.icon(icon: Icons.add),
                 trailing: CommonButtonIconWidget.icon(icon: Icons.alarm),
                 text: 'PrimaryButton',
+                // ignore: no-empty-block
                 onPressed: () {},
               ),
               const SizedBox(height: 10),
@@ -43,6 +44,7 @@ class _ButtonsStoryState extends State<ButtonsStory> {
                 trailing: CommonButtonIconWidget.icon(icon: Icons.alarm),
                 text: 'PrimaryButton fillWidth',
                 fillWidth: true,
+                // ignore: no-empty-block
                 onPressed: () {},
               ),
               const SizedBox(height: 10),
@@ -50,6 +52,7 @@ class _ButtonsStoryState extends State<ButtonsStory> {
                 leading: CommonButtonIconWidget.icon(icon: Icons.add),
                 trailing: CommonButtonIconWidget.icon(icon: Icons.alarm),
                 text: 'PrimaryButton',
+                // ignore: no-empty-block
                 onPressed: () {},
                 isLoading: true,
               ),
@@ -60,6 +63,7 @@ class _ButtonsStoryState extends State<ButtonsStory> {
                 leading: CommonButtonIconWidget.icon(icon: Icons.add),
                 trailing: CommonButtonIconWidget.icon(icon: Icons.alarm),
                 text: 'SecondaryButton',
+                // ignore: no-empty-block
                 onPressed: () {},
               ),
               const SizedBox(height: 10),
@@ -74,6 +78,7 @@ class _ButtonsStoryState extends State<ButtonsStory> {
                 trailing: CommonButtonIconWidget.icon(icon: Icons.alarm),
                 text: 'SecondaryButton fillWidth',
                 fillWidth: true,
+                // ignore: no-empty-block
                 onPressed: () {},
               ),
               const SizedBox(height: 10),
@@ -81,6 +86,7 @@ class _ButtonsStoryState extends State<ButtonsStory> {
                 leading: CommonButtonIconWidget.icon(icon: Icons.add),
                 trailing: CommonButtonIconWidget.icon(icon: Icons.alarm),
                 text: 'SecondaryButton',
+                // ignore: no-empty-block
                 onPressed: () {},
                 isLoading: true,
               ),
@@ -91,6 +97,7 @@ class _ButtonsStoryState extends State<ButtonsStory> {
                 leading: CommonButtonIconWidget.icon(icon: Icons.add),
                 trailing: CommonButtonIconWidget.icon(icon: Icons.alarm),
                 text: 'GhostButton',
+                // ignore: no-empty-block
                 onPressed: () {},
               ),
               const SizedBox(height: 10),
@@ -105,6 +112,7 @@ class _ButtonsStoryState extends State<ButtonsStory> {
                 trailing: CommonButtonIconWidget.icon(icon: Icons.alarm),
                 text: 'GhostButton fillWidth',
                 fillWidth: true,
+                // ignore: no-empty-block
                 onPressed: () {},
               ),
               const SizedBox(height: 10),
@@ -112,6 +120,7 @@ class _ButtonsStoryState extends State<ButtonsStory> {
                 leading: CommonButtonIconWidget.icon(icon: Icons.add),
                 trailing: CommonButtonIconWidget.icon(icon: Icons.alarm),
                 text: 'GhostButton',
+                // ignore: no-empty-block
                 onPressed: () {},
                 isLoading: true,
               ),
@@ -152,6 +161,7 @@ class _ButtonsStoryState extends State<ButtonsStory> {
                 children: [
                   CommonIconButton.icon(
                     icon: Icons.add,
+                    // ignore: no-empty-block
                     onPressed: () {},
                     buttonType: EverButtonType.primary,
                   ),
@@ -163,6 +173,7 @@ class _ButtonsStoryState extends State<ButtonsStory> {
                   const SizedBox(width: 20),
                   CommonIconButton.icon(
                     icon: Icons.add,
+                    // ignore: no-empty-block
                     onPressed: () {},
                     buttonType: EverButtonType.secondary,
                   ),
@@ -174,6 +185,7 @@ class _ButtonsStoryState extends State<ButtonsStory> {
                   const SizedBox(width: 20),
                   CommonIconButton.icon(
                     icon: Icons.add,
+                    // ignore: no-empty-block
                     onPressed: () {},
                     buttonType: EverButtonType.ghost,
                   ),

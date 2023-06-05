@@ -34,7 +34,7 @@ class DbLogger extends AbstractLogger {
     );
   }
 
-  Future<void> _onCreate(Database db, int version) async {
+  Future<void> _onCreate(Database db, int _) async {
     await db.execute(
       '''
         CREATE TABLE sessions (
@@ -109,12 +109,11 @@ class DbLogger extends AbstractLogger {
   Future<List<Map<String, Object?>>> getAllLogsAsMaps() async {
     if (!_database.isOpen) return [];
 
-    final list = await _database.rawQuery(
+    return _database.rawQuery(
       '''
         SELECT * FROM records ORDER BY record_timestamp ASC
       ''',
     );
-    return list;
   }
 
   /// Write logs to archived JSON, return file path
