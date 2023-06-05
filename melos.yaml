@@ -20,7 +20,7 @@ scripts:
       dependsOn: "build_runner"
 
   analyze:
-    exec: flutter analyze .
+    exec: flutter analyze . && flutter pub run dart_code_metrics:metrics analyze lib
     description: Analyze a specific package in this project.
 
   check-format:

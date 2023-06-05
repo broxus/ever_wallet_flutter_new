@@ -10,3 +10,56 @@ analyzer:
     - "**_generated**.dart"
   errors:
     invalid_annotation_target: ignore
+dart_code_metrics:
+  anti-patterns:
+    - long-method
+    - long-parameter-list
+  metrics:
+    cyclomatic-complexity: 20
+    maximum-nesting-level: 5
+    number-of-parameters: 5
+    source-lines-of-code: 50
+  rules:
+    - always-remove-listener
+    - avoid-global-state
+    - avoid-missing-enum-constant-in-map
+    - avoid-nested-conditional-expressions:
+        - acceptable-level: 2
+    - avoid-returning-widgets
+    - avoid-throw-in-catch-block
+    - avoid-unused-parameters
+    - avoid-unnecessary-setstate
+    - avoid-unnecessary-type-assertions
+    - avoid-unnecessary-type-casts
+    - avoid-use-expanded-as-spacer
+    - avoid-unrelated-type-assertions
+    - avoid-wrapping-in-padding
+    - avoid-shrink-wrap-in-lists
+    - avoid-top-level-members-in-tests
+    - binary-expression-operand-order
+    - double-literal-format
+    - newline-before-return
+    - no-boolean-literal-compare
+    - no-empty-block
+    - no-equal-then-else
+    - no-magic-number
+    - prefer-async-await
+    - prefer-immediate-return
+    - prefer-enums-by-name
+    - prefer-last
+    - prefer-trailing-comma
+    - prefer-conditional-expressions
+    - prefer-correct-edge-insets-constructor-rule
+    - prefer-correct-identifier-length:
+        exceptions: [ 'i', 'x', 'y', 'r', 't' ]
+        min-identifier-length: 2
+    - prefer-extracting-callbacks:
+        allowed-line-count: 2
+        ignored-named-arguments:
+          - onPressed
+          - onTap
+          - onChanged
+          - listener
+          - transitionBuilder
+          - onSubmitted
+          - onFieldSubmitted
