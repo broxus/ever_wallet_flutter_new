@@ -33,7 +33,7 @@ class CommonInput extends StatefulWidget {
     this.validateMode,
     this.onChanged,
     this.inputFormatters,
-    this.labelText,
+    this.hintText,
     this.prefixIcon,
     this.suffixIcon,
     this.suggestionsCallback,
@@ -44,11 +44,13 @@ class CommonInput extends StatefulWidget {
     this.needClearButton = true,
     this.suggestionBackground,
     this.textStyle,
-    this.labelStyle,
+    this.hintStyle,
     this.enabledBorderColor,
     this.inactiveBorderColor,
     this.errorColor,
     this.obscureText = false,
+    this.titleText,
+    this.subtitleText,
   });
 
   /// Height of input field
@@ -87,8 +89,8 @@ class CommonInput extends StatefulWidget {
   /// Input formatters
   final List<TextInputFormatter>? inputFormatters;
 
-  /// Label text for input field
-  final String? labelText;
+  /// Hint text for input field
+  final String? hintText;
 
   /// Icon to show before input field.
   /// If you want specify custom icon, you need to wrap your input with
@@ -135,7 +137,14 @@ class CommonInput extends StatefulWidget {
 
   /// Style for label text, default [StyleRes.primaryRegular] and
   /// [ColorsPalette.textSecondary].
-  final TextStyle? labelStyle;
+  final TextStyle? hintStyle;
+
+  /// Title (name) of input, it displays above input
+  final String? titleText;
+
+  /// Subtitle (additional info) of input, displays near title.
+  /// To display subtitle, specify [titleText].
+  final String? subtitleText;
 
   /// If text should look like password, default false
   final bool obscureText;
@@ -211,7 +220,6 @@ class _CommonInputState extends State<CommonInput> {
                 keyboardType: widget.keyboardType ?? TextInputType.text,
                 onChanged: widget.onChanged,
                 textInputAction: widget.textInputAction ?? TextInputAction.next,
-                cursorWidth: 1,
                 cursorColor: widget.textStyle?.color ?? colors.textPrimary,
                 onSubmitted: widget.onSubmitted,
                 autocorrect: widget.autocorrect,
@@ -220,12 +228,13 @@ class _CommonInputState extends State<CommonInput> {
                 decoration: InputDecoration(
                   errorText: state.hasError ? '' : null,
                   errorStyle: const TextStyle(fontSize: 0, height: 0),
-                  labelText: widget.labelText,
-                  labelStyle: widget.labelStyle ??
+                  hintText: widget.hintText,
+                  hintStyle: widget.hintStyle ??
                       StyleRes.primaryRegular
                           .copyWith(color: colors.textSecondary),
                   contentPadding: EdgeInsets.zero,
-                  suffixIcon: _buildSuffixIcon(),
+                  suffixIcon: _buildSuffixIcon(colors),
+                  suffixIconConstraints: _suffixIconConstraints(),
                   prefixIconConstraints: widget.prefixIcon == null
                       ? const BoxConstraints(maxHeight: 0, maxWidth: 16)
                       : const BoxConstraints(
@@ -233,37 +242,32 @@ class _CommonInputState extends State<CommonInput> {
                           minWidth: 35,
                         ),
                   prefixIcon: widget.prefixIcon ?? const SizedBox(width: 16),
-                  border: OutlineInputBorder(
-                    gapPadding: 1,
-                    borderRadius: BorderRadius.circular(0),
+                  border: SquircleInputBorder(
+                    squircleRadius: 16,
                     borderSide: BorderSide(
                       color: widget.inactiveBorderColor ?? colors.strokePrimary,
                     ),
                   ),
-                  enabledBorder: OutlineInputBorder(
-                    gapPadding: 1,
-                    borderRadius: BorderRadius.circular(0),
+                  enabledBorder: SquircleInputBorder(
+                    squircleRadius: 16,
                     borderSide: BorderSide(
                       color: widget.inactiveBorderColor ?? colors.strokePrimary,
                     ),
                   ),
-                  focusedBorder: OutlineInputBorder(
-                    gapPadding: 1,
-                    borderRadius: BorderRadius.circular(0),
+                  focusedBorder: SquircleInputBorder(
+                    squircleRadius: 16,
                     borderSide: BorderSide(
                       color: colors.strokeContrast,
                     ),
                   ),
-                  errorBorder: OutlineInputBorder(
-                    gapPadding: 1,
-                    borderRadius: BorderRadius.circular(0),
+                  errorBorder: SquircleInputBorder(
+                    squircleRadius: 16,
                     borderSide: BorderSide(
                       color: widget.errorColor ?? colors.alert,
                     ),
                   ),
-                  focusedErrorBorder: OutlineInputBorder(
-                    gapPadding: 1,
-                    borderRadius: BorderRadius.circular(0),
+                  focusedErrorBorder: SquircleInputBorder(
+                    squircleRadius: 16,
                     borderSide: BorderSide(
                       color: widget.errorColor ?? colors.alert,
                     ),
@@ -300,7 +304,6 @@ class _CommonInputState extends State<CommonInput> {
                     onChanged: widget.onChanged,
                     textInputAction:
                         widget.textInputAction ?? TextInputAction.next,
-                    cursorWidth: 1,
                     cursorColor: widget.textStyle?.color ?? colors.textPrimary,
                     onSubmitted: widget.onSubmitted,
                     autocorrect: widget.autocorrect,
@@ -309,12 +312,12 @@ class _CommonInputState extends State<CommonInput> {
                     decoration: InputDecoration(
                       errorText: state.hasError ? '' : null,
                       errorStyle: const TextStyle(fontSize: 0, height: 0),
-                      labelText: widget.labelText,
-                      labelStyle: widget.labelStyle ??
+                      hintText: widget.hintText,
+                      hintStyle: widget.hintStyle ??
                           StyleRes.primaryRegular
                               .copyWith(color: colors.textSecondary),
                       contentPadding: EdgeInsets.zero,
-                      suffixIcon: _buildSuffixIcon(),
+                      suffixIcon: _buildSuffixIcon(colors),
                       prefixIconConstraints: widget.prefixIcon == null
                           ? const BoxConstraints(maxHeight: 0, maxWidth: 16)
                           : const BoxConstraints(
@@ -323,39 +326,34 @@ class _CommonInputState extends State<CommonInput> {
                             ),
                       prefixIcon:
                           widget.prefixIcon ?? const SizedBox(width: 16),
-                      border: OutlineInputBorder(
-                        gapPadding: 1,
-                        borderRadius: BorderRadius.circular(0),
+                      border: SquircleInputBorder(
+                        squircleRadius: 16,
                         borderSide: BorderSide(
                           color: widget.inactiveBorderColor ??
                               colors.strokePrimary,
                         ),
                       ),
-                      enabledBorder: OutlineInputBorder(
-                        gapPadding: 1,
-                        borderRadius: BorderRadius.circular(0),
+                      enabledBorder: SquircleInputBorder(
+                        squircleRadius: 16,
                         borderSide: BorderSide(
                           color: widget.inactiveBorderColor ??
                               colors.strokePrimary,
                         ),
                       ),
-                      focusedBorder: OutlineInputBorder(
-                        gapPadding: 1,
-                        borderRadius: BorderRadius.circular(0),
+                      focusedBorder: SquircleInputBorder(
+                        squircleRadius: 16,
                         borderSide: BorderSide(
                           color: colors.strokeContrast,
                         ),
                       ),
-                      errorBorder: OutlineInputBorder(
-                        gapPadding: 1,
-                        borderRadius: BorderRadius.circular(0),
+                      errorBorder: SquircleInputBorder(
+                        squircleRadius: 16,
                         borderSide: BorderSide(
                           color: widget.errorColor ?? colors.alert,
                         ),
                       ),
-                      focusedErrorBorder: OutlineInputBorder(
-                        gapPadding: 1,
-                        borderRadius: BorderRadius.circular(0),
+                      focusedErrorBorder: SquircleInputBorder(
+                        squircleRadius: 16,
                         borderSide: BorderSide(
                           color: widget.errorColor ?? colors.alert,
                         ),
@@ -373,11 +371,32 @@ class _CommonInputState extends State<CommonInput> {
             }
           }
 
-          if (widget.validator == null) return child;
           return Column(
             mainAxisSize: MainAxisSize.min,
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
+              if (widget.titleText != null) ...[
+                Text.rich(
+                  TextSpan(
+                    children: [
+                      TextSpan(
+                        text: widget.titleText,
+                        style: StyleRes.secondaryBold
+                            .copyWith(color: colors.textPrimary),
+                      ),
+                      if (widget.subtitleText != null) ...[
+                        const WidgetSpan(child: SizedBox(width: 4)),
+                        TextSpan(
+                          text: widget.subtitleText,
+                          style: StyleRes.addRegular
+                              .copyWith(color: colors.textSecondary),
+                        ),
+                      ],
+                    ],
+                  ),
+                ),
+                const SizedBox(height: 8)
+              ],
               child,
               if (state.errorText != null && state.errorText!.isNotEmpty) ...[
                 const SizedBox(height: 4),
@@ -393,27 +412,31 @@ class _CommonInputState extends State<CommonInput> {
         },
       );
 
-  Widget _buildSuffixIcon() {
+  Widget _buildSuffixIcon(ColorsPalette colors) {
     if (widget.suffixIcon != null) return widget.suffixIcon!;
     if (widget.needClearButton && !isEmpty) {
-      return _buildClearIcon();
+      return _buildClearIcon(colors);
     }
 
     return const SizedBox.shrink();
   }
 
-  Widget _buildClearIcon() {
-    return Container(
-      constraints: const BoxConstraints(maxHeight: 30, maxWidth: 38),
-      margin: const EdgeInsets.only(left: 8),
-      alignment: Alignment.center,
-      child: CommonIconButton.icon(
-        buttonType: EverButtonType.ghost,
-        icon: Icons.clear_rounded,
-        onPressed: _clearText,
-        outerPadding: EdgeInsets.zero,
-        color: widget.textStyle?.color,
-      ),
+  BoxConstraints _suffixIconConstraints() {
+    if (widget.suffixIcon != null || widget.needClearButton && !isEmpty) {
+      return const BoxConstraints(
+        minHeight: commonInputHeight,
+        minWidth: defaultCommonIconButtonSize,
+      );
+    }
+    return const BoxConstraints(minHeight: commonInputHeight);
+  }
+
+  Widget _buildClearIcon(ColorsPalette colors) {
+    return CommonIconButton.icon(
+      buttonType: EverButtonType.ghost,
+      icon: Icons.clear_rounded,
+      onPressed: _clearText,
+      color: widget.textStyle?.color ?? colors.textSecondary,
     );
   }
 

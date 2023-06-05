@@ -1,6 +1,13 @@
 import 'package:flutter/material.dart';
 import 'package:ui_components_lib/ui_components_lib.dart';
 
+/// Default inner padding (from icon to border)
+const defaultCommonIconButtonInnerPadding = 20.0;
+
+/// Default full size of icon button (*2 because EdgeInsets.all)
+const defaultCommonIconButtonSize =
+    defaultCommonIconSize + defaultCommonIconButtonInnerPadding * 2;
+
 /// {@template common_icon_button}
 /// This is a common button with icon inside
 /// {@endtemplate}
@@ -108,7 +115,8 @@ class CommonIconButton extends StatefulWidget {
   /// Padding around ink effect, default 0
   final EdgeInsets? outerPadding;
 
-  /// Padding around icon but inside ink effect, default 20
+  /// Padding around icon but inside ink effect, default is
+  /// [defaultCommonIconButtonInnerPadding]
   final EdgeInsets? innerPadding;
 
   @override
@@ -157,7 +165,8 @@ class _CommonIconButtonState extends State<CommonIconButton> {
               }
             },
             child: Padding(
-              padding: widget.innerPadding ?? const EdgeInsets.all(20),
+              padding: widget.innerPadding ??
+                  const EdgeInsets.all(defaultCommonIconButtonInnerPadding),
               child: CommonButtonIconWidget(
                 icon: widget.icon,
                 svg: widget.svg,

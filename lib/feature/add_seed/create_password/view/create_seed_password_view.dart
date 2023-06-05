@@ -49,7 +49,7 @@ class CreateSeedPasswordView extends StatelessWidget {
                 obscureText: true,
                 controller: cubit.passwordController,
                 focusNode: cubit.passwordFocus,
-                labelText: localization.yourPassword,
+                hintText: localization.yourPassword,
                 onSubmitted: (_) => cubit.confirmFocus.requestFocus(),
                 validator: (_) {
                   if (cubit.passwordController.text.length >= 8) {
@@ -63,7 +63,7 @@ class CreateSeedPasswordView extends StatelessWidget {
                 obscureText: true,
                 controller: cubit.confirmController,
                 focusNode: cubit.confirmFocus,
-                labelText: localization.confirmPassword,
+                hintText: localization.confirmPassword,
                 textInputAction: TextInputAction.done,
                 onSubmitted: (_) => cubit.nextAction(),
                 validator: (_) {
