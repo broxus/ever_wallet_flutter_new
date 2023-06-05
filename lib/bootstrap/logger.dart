@@ -19,19 +19,16 @@ Future<void> configureLogger(
         Level.ALL: 100,
         Level.SEVERE: 100,
       };
-      break;
     case AppBuildType.staging:
       retainStrategy = {
         Level.ALL: 100,
         Level.SEVERE: 100,
       };
-      break;
     case AppBuildType.production:
       retainStrategy = {
         Level.ALL: 50,
         Level.SEVERE: 50,
       };
-      break;
   }
 
   final fancyLogger = inject<FancyLogger>();

@@ -1,5 +1,3 @@
-library ui_components_lib;
-
 export 'package:flutter_svg/flutter_svg.dart';
 
 export 'colors.dart';
