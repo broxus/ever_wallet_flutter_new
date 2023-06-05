@@ -1,2 +1,2 @@
-//GENERATED BARREL FILE 
-export 'snackbar.dart'; 
+//GENERATED BARREL FILE
+export 'snackbar.dart';
