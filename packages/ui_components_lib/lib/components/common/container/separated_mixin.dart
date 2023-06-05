@@ -9,6 +9,7 @@ mixin SeparatedMixin on MultiChildRenderObjectWidget {
         result.add(separator);
       }
     }
+
     return result;
   }
 }

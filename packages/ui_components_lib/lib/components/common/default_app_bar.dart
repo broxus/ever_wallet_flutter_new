@@ -56,6 +56,7 @@ class DefaultAppBar extends StatelessWidget implements PreferredSizeWidget {
   /// and real application.
   ///
   /// To change behavior, just set another callback in main.dart
+  // ignore: avoid-global-state
   static DefaultAppBarCloseAction defaultPopAction =
       (context) => Navigator.of(context).pop();
 
