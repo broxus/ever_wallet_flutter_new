@@ -21,7 +21,7 @@ class StoryWidget extends StatelessWidget {
           home: child,
         );
       },
-      initialStory: 'Widgets/Buttons',
+      initialStory: 'Git log',
       stories: [
         Story(
           name: 'Git log',

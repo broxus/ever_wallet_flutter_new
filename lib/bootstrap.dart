@@ -6,7 +6,7 @@ import 'package:app/di/di.dart';
 import 'package:bloc/bloc.dart';
 import 'package:flutter/widgets.dart';
 import 'package:logging/logging.dart';
-import 'package:ui_components_lib/components/common/common.dart';
+import 'package:ui_components_lib/ui_components_lib.dart';
 
 enum AppBuildType { development, staging, production }
 
