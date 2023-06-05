@@ -379,7 +379,7 @@ class _CommonInputState extends State<CommonInput> {
       children: [
         child,
         if (state.errorText != null && state.errorText!.isNotEmpty) ...[
-          const SizedBox(height: 4),
+          const SizedBox(height: Dimens.xxSmall),
           Text(
             state.errorText!,
             style: StyleRes.addRegular.copyWith(
