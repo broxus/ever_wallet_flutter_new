@@ -3,7 +3,7 @@ import 'package:app/feature/add_seed/create_password/create_password.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
-import 'package:ui_components_lib/components/common/common.dart';
+import 'package:ui_components_lib/ui_components_lib.dart';
 
 /// {@template create_seed_password_onboarding_page}
 /// Entry point to create seed password from onboarding.
