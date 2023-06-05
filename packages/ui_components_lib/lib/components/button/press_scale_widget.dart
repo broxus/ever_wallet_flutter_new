@@ -79,17 +79,12 @@ class PressScaleWidgetState extends State<PressScaleWidget>
       splashColor: Colors.transparent,
       highlightColor: Colors.transparent,
       hoverColor: Colors.transparent,
-      onHighlightChanged: (isPressed) {
-        if (isPressed) {
-          _controller.forward();
-        } else {
-          _controller.reverse();
-        }
-      },
+      onHighlightChanged: _onHighlightChanged,
       onLongPress: widget.onLongPress,
       onTap: widget.onPressed,
       radius: widget.radius,
       child: Transform.scale(
+        // ignore: no-magic-number
         scale: 1.0 - (_doubleAnimation.value * _scaleRatio / 100),
         child: SizedBox(
           height: widget.height,
@@ -98,5 +93,13 @@ class PressScaleWidgetState extends State<PressScaleWidget>
         ),
       ),
     );
+  }
+
+  void _onHighlightChanged(bool isPressed) {
+    if (isPressed) {
+      _controller.forward();
+    } else {
+      _controller.reverse();
+    }
   }
 }

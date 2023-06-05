@@ -87,6 +87,7 @@ class DbLogger extends AbstractLogger {
         SELECT * FROM records ORDER BY record_timestamp ASC
       ''',
     );
+
     return list.fold(
       '',
       (previousValue, element) => '$previousValue\n$element',
@@ -102,6 +103,7 @@ class DbLogger extends AbstractLogger {
         SELECT * FROM records ORDER BY record_timestamp ASC
       ''',
     );
+
     return list.map(WritableLogRecord.fromMap).toList();
   }
 
@@ -177,6 +179,7 @@ class DbLogger extends AbstractLogger {
               sessionId: e.value,
             );
             nextLevel = e.key;
+
             return ret;
           },
         )
@@ -184,6 +187,7 @@ class DbLogger extends AbstractLogger {
         .reversed
         .map((e) {
           retain -= e.sessionId;
+
           return e.copyWith(sessionId: retain);
         })
         .toList();
@@ -193,6 +197,7 @@ class DbLogger extends AbstractLogger {
       final next = element.nextLevel == null
           ? ''
           : 'AND level < ${element.nextLevel!.value}';
+
       return '''
         $previous(session_id < ${element.sessionId} AND level >= ${element.level.value} $next)
         ''';

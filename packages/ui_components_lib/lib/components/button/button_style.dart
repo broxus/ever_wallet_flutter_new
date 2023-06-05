@@ -65,6 +65,7 @@ class EverButtonStyleProvider extends InheritedWidget {
       result != null,
       'No EverButtonStyleProvider found in context',
     );
+
     return result!;
   }
 

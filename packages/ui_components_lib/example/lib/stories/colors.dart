@@ -8,6 +8,7 @@ class ColorsStory extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final colors = context.themeStyle.colors;
+
     return Scaffold(
       appBar: const DefaultAppBar(titleText: 'Colors (based on theme)'),
       body: SingleChildScrollView(
@@ -86,6 +87,7 @@ class _ColorItem extends StatelessWidget {
   Widget build(BuildContext context) {
     final isBackgroundLight =
         Theme.of(context).scaffoldBackgroundColor.computeLuminance() > 0.7;
+
     return SizedBox(
       width: Dimens.dimens50,
       child: Column(

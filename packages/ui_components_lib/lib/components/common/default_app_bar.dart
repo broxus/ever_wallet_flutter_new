@@ -205,7 +205,7 @@ class DefaultAppBar extends StatelessWidget implements PreferredSizeWidget {
                 defaultPopAction(context);
               }
             },
-          )
+          ),
       ],
     );
   }
@@ -257,6 +257,7 @@ class DefaultAppBar extends StatelessWidget implements PreferredSizeWidget {
         ],
       );
     }
+
     return anyTitle;
   }
 }

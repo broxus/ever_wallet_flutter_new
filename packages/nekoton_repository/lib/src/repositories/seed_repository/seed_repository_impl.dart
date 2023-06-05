@@ -314,6 +314,7 @@ mixin SeedKeyRepositoryImpl on TransportRepository
         keys.where((k) => removed.contains(k.key.publicKey)),
       ),
     );
+
     return removed;
   }
 

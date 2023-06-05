@@ -73,18 +73,21 @@ class NekotonStorageRepository {
     required String name,
   }) async {
     await _storage.set(masterKey, name, domain: _seedsKey);
+
     return _streamedSeeds();
   }
 
   /// Remove name of public key
   Future<void> removeSeed(String masterKey) async {
     await _storage.delete(masterKey, domain: _seedsKey);
+
     return _streamedSeeds();
   }
 
   /// Clear information about all names of public keys
   Future<void> clearSeeds() async {
     await _storage.clearDomain(_seedsKey);
+
     return _seedsSubject.add({});
   }
 
@@ -111,6 +114,7 @@ class NekotonStorageRepository {
       return [];
     }
     final accountsList = jsonDecode(accounts) as List<dynamic>;
+
     return accountsList.cast<String>();
   }
 
@@ -169,6 +173,7 @@ class NekotonStorageRepository {
   /// value - list of addresses of accounts
   Future<Map<String, List<String>>> readExternalAccounts() async {
     final accounts = await _storage.getDomain(domain: _externalAccountsKey);
+
     return accounts.map(
       (key, value) => MapEntry(
         key,

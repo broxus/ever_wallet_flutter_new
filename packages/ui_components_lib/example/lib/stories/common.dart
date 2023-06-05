@@ -8,6 +8,7 @@ class CommonStory extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final colors = context.themeStyle.colors;
+
     return Scaffold(
       appBar: const DefaultAppBar(titleText: 'CommonWidgets'),
       body: SingleChildScrollView(

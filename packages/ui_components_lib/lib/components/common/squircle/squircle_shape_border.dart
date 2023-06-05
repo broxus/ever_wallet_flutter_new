@@ -239,6 +239,7 @@ class SquircleShapeBorder extends ShapeBorder {
       minSideLength / minRadiusEdgeLength,
     )!;
     limitedRadius = math.min(radius, minSideLength / multiplier);
+
     return bezierRoundedRect();
   }
 
@@ -272,6 +273,7 @@ class SquircleShapeBorder extends ShapeBorder {
         cornerRadius: ui.lerpDouble(a.cornerRadius, cornerRadius, t)!,
       );
     }
+
     return super.lerpFrom(a, t);
   }
 
@@ -282,12 +284,14 @@ class SquircleShapeBorder extends ShapeBorder {
         cornerRadius: ui.lerpDouble(cornerRadius, b.cornerRadius, t)!,
       );
     }
+
     return super.lerpTo(b, t);
   }
 
   @override
   bool operator ==(Object other) {
     if (other is! SquircleShapeBorder) return false;
+
     return cornerRadius == other.cornerRadius;
   }
 

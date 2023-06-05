@@ -138,6 +138,7 @@ class Storage {
   }) async {
     if (pairs.isEmpty) {
       _log.info('setAll called with empty pair map');
+
       return;
     }
 
@@ -148,6 +149,7 @@ class Storage {
           // ignore: lines_longer_than_80_chars
           "$previousValue$prefix('$domain', '${pair.key}', '${pair.value.value}', '${pair.value.iv}' )";
       isFirst = false;
+
       return result;
     });
 
@@ -174,6 +176,7 @@ class Storage {
   }) async {
     if (keys.isEmpty) {
       _log.info('deleteDomain called with empty key list');
+
       return;
     }
 
@@ -184,6 +187,7 @@ class Storage {
         final prefix = isFirst ? '' : ' OR ';
         final result = "$previousValue$prefix(key = '$key')";
         isFirst = false;
+
         return result;
       });
 

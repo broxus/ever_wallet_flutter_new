@@ -28,6 +28,7 @@ class CipherStorage {
     if (key != null && iv != null) {
       _key = keyFromBase64(key);
       _iv = ivFromBase64(iv);
+
       return;
     }
 

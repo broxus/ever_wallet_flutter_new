@@ -22,6 +22,7 @@ ThemeData everPredefinedLightTheme() {
     blue: ColorsRes.blue,
     blueSecond: ColorsRes.blueSecond,
   );
+
   return ThemeData(
     brightness: Brightness.light,
     scaffoldBackgroundColor: colors.appBackground,
@@ -54,6 +55,7 @@ ThemeData everPredefinedDarkTheme() {
     blue: ColorsRes.blue,
     blueSecond: ColorsRes.blueSecond,
   );
+
   return ThemeData(
     brightness: Brightness.dark,
     scaffoldBackgroundColor: colors.appBackground,

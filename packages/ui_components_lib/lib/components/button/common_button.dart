@@ -2,7 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:ui_components_lib/ui_components_lib.dart';
 
 /// Default height of the common button
-const commonButtonHeight = 56.0;
+const commonButtonHeight = Dimens.dimens14;
+const defaultSquircleRadius = Dimens.dimens25;
 
 /// {@template common_button}
 /// Default button in the app with background.
@@ -26,7 +27,7 @@ class CommonButton extends StatefulWidget {
     this.style,
     this.child,
     this.focusNode,
-    this.squircleRadius = 100,
+    this.squircleRadius = defaultSquircleRadius,
     this.backgroundColor,
     this.height = commonButtonHeight,
     this.padding,
@@ -264,11 +265,7 @@ class _CommonButtonState extends State<CommonButton> {
             hoverColor: Colors.transparent,
             splashColor: Colors.transparent,
             highlightColor: Colors.transparent,
-            onHighlightChanged: (isPressed) {
-              if (isPressed != this.isPressed) {
-                setState(() => this.isPressed = isPressed);
-              }
-            },
+            onHighlightChanged: _onHighlightChanged,
             focusNode: widget.focusNode,
             onTap: widget.isLoading ? null : widget.onPressed,
             onLongPress: widget.isLoading ? null : widget.onLongPress,
@@ -279,5 +276,11 @@ class _CommonButtonState extends State<CommonButton> {
         ),
       ),
     );
+  }
+
+  void _onHighlightChanged(bool isPressed) {
+    if (isPressed != this.isPressed) {
+      setState(() => this.isPressed = isPressed);
+    }
   }
 }

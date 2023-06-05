@@ -78,6 +78,7 @@ mixin AccountRepositoryImpl on TransportRepository
         local.add(account);
       }
     }
+
     return Future.wait([
       removeLocalAccounts(local),
       removeExternalAccounts(external),
