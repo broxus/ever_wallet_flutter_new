@@ -37,15 +37,12 @@ class _SelectionStatusInputState extends State<SelectionStatusInput> {
       case SelectionStatus.unfocus:
         borderColor = colors.strokePrimary;
         contentColor = isPressed ? colors.textPrimary : colors.textSecondary;
-        break;
       case SelectionStatus.focus:
         borderColor = colors.strokeContrast;
         contentColor = isPressed ? colors.textSecondary : colors.textPrimary;
-        break;
       case SelectionStatus.completed:
         backgroundColor = colors.backgroundPrimary;
         contentColor = isPressed ? colors.textSecondary : colors.textContrast;
-        break;
     }
 
     return SizedBox(
