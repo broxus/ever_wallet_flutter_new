@@ -59,8 +59,11 @@ class CommonTabBar<T> extends StatelessWidget {
       padding: const EdgeInsets.symmetric(horizontal: 16),
       fillWidth: fillWidth,
       text: builder(context, v),
-      height: 48,
-      squircleRadius: 12,
+      // TODO(alex-a4): mabye we should use something
+      // like Dimens.buttonHeight.medium?
+      height: Dimens.dimens12,
+      // TODO(alex-a4): aaand default squircle radius?
+      squircleRadius: Dimens.dimens03,
       backgroundColor:
           isSelected ? colors.backgroundPrimary : colors.backgroundSecondary,
       contentColor: isSelected ? colors.textContrast : colors.textSecondary,

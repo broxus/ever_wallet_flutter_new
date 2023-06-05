@@ -51,18 +51,14 @@ class _SelectionStatusInputState extends State<SelectionStatusInput> {
       child: Material(
         color: backgroundColor ?? Colors.transparent,
         shape: SquircleBoxBorder(
-          squircleRadius: 16,
+          squircleRadius: Dimens.dimens04,
           borderSide: BorderSide(color: borderColor ?? Colors.transparent),
         ),
         child: InkWell(
           hoverColor: Colors.transparent,
           splashColor: Colors.transparent,
           highlightColor: Colors.transparent,
-          onHighlightChanged: (isPressed) {
-            if (isPressed != this.isPressed) {
-              setState(() => this.isPressed = isPressed);
-            }
-          },
+          onHighlightChanged: _triggerPressed,
           onTap: widget.onPressed,
           child: AnimatedColor(
             color: contentColor,
@@ -83,5 +79,11 @@ class _SelectionStatusInputState extends State<SelectionStatusInput> {
         ),
       ),
     );
+  }
+
+  void _triggerPressed(bool isPressed) {
+    if (isPressed != this.isPressed) {
+      setState(() => this.isPressed = isPressed);
+    }
   }
 }

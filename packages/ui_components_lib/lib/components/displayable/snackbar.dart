@@ -33,6 +33,7 @@ Future<void> showSnackbar({
 
   // ignore: use_build_context_synchronously
   if (!context.mounted) return;
+
   return _previousSnack!.show(context);
 }
 
@@ -60,6 +61,7 @@ Future<void> showErrorSnackbar({
 
   // ignore: use_build_context_synchronously
   if (!context.mounted) return;
+
   return _previousSnack!.show(context);
 }
 
@@ -98,5 +100,6 @@ Future<void> showSnackbarWithAction({
 
   // ignore: use_build_context_synchronously
   if (!context.mounted) return;
+
   return _previousSnack!.show(context);
 }

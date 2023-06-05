@@ -66,6 +66,7 @@ class CommonButtonIconWidget extends StatelessWidget {
             size: size ?? defaultCommonIconSize,
           );
         }
+
         return SvgPicture.asset(
           svg!,
           theme: SvgTheme(

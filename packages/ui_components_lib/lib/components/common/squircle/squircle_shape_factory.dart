@@ -114,7 +114,6 @@ class SquircleShapeInk extends InteractiveInkFeature {
       transform: transform,
       paint: paint,
       squirclePath: _squirclePath,
-      customBorder: SquircleShapeBorder(cornerRadius: squircleRadius),
     );
   }
 
@@ -122,8 +121,6 @@ class SquircleShapeInk extends InteractiveInkFeature {
     required Canvas canvas,
     required Matrix4 transform,
     required Paint paint,
-    // This border is used only for clipping.
-    required ShapeBorder customBorder,
     required Path squirclePath,
   }) {
     final originOffset = MatrixUtils.getAsTranslation(transform);

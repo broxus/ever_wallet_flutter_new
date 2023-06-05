@@ -56,6 +56,7 @@ class DefaultAppBar extends StatelessWidget implements PreferredSizeWidget {
   /// and real application.
   ///
   /// To change behavior, just set another callback in main.dart
+  // ignore: avoid-global-state
   static DefaultAppBarCloseAction defaultPopAction =
       (context) => Navigator.of(context).pop();
 
@@ -135,14 +136,18 @@ class DefaultAppBar extends StatelessWidget implements PreferredSizeWidget {
       color: backgroundColor ?? Colors.transparent,
       borderRadius: BorderRadius.zero,
       child: Container(
-        margin: EdgeInsets.only(top: mq.padding.top, left: 16, right: 16),
+        margin: EdgeInsets.only(
+          top: mq.padding.top,
+          left: Dimens.medium,
+          right: Dimens.medium,
+        ),
         height: preferredSize.height,
         child: Column(
           mainAxisSize: MainAxisSize.min,
           children: [
             Expanded(
               child: Padding(
-                padding: const EdgeInsets.symmetric(horizontal: 6),
+                padding: const EdgeInsets.symmetric(horizontal: Dimens.xSmall),
                 child: Row(
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
@@ -201,7 +206,7 @@ class DefaultAppBar extends StatelessWidget implements PreferredSizeWidget {
                 defaultPopAction(context);
               }
             },
-          )
+          ),
       ],
     );
   }
@@ -253,6 +258,7 @@ class DefaultAppBar extends StatelessWidget implements PreferredSizeWidget {
         ],
       );
     }
+
     return anyTitle;
   }
 }

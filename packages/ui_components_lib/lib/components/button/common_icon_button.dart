@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:ui_components_lib/ui_components_lib.dart';
 
 /// Default inner padding (from icon to border)
-const defaultCommonIconButtonInnerPadding = 20.0;
+const defaultCommonIconButtonInnerPadding = Dimens.dimens05;
 
 /// Default full size of icon button (*2 because EdgeInsets.all)
 const defaultCommonIconButtonSize =
@@ -148,22 +148,20 @@ class _CommonIconButtonState extends State<CommonIconButton> {
         padding: widget.outerPadding ?? EdgeInsets.zero,
         child: Material(
           shape: RoundedRectangleBorder(
-            borderRadius: BorderRadius.circular(90),
+            borderRadius: BorderRadius.circular(Dimens.dimens23),
           ),
           color: backgroundColor,
           child: InkWell(
             hoverColor: Colors.transparent,
             splashColor: Colors.transparent,
             highlightColor: Colors.transparent,
-            borderRadius: BorderRadius.circular(90),
+            // TODO(alex-a4): maybe we should use something
+            // like Dimens.radius.large?
+            borderRadius: BorderRadius.circular(Dimens.dimens23),
             onTap: widget.onPressed,
             onLongPress: widget.onLongPress,
             focusNode: widget.focusNode,
-            onHighlightChanged: (isPressed) {
-              if (isPressed != this.isPressed) {
-                setState(() => this.isPressed = isPressed);
-              }
-            },
+            onHighlightChanged: _onHighlightChanged,
             child: Padding(
               padding: widget.innerPadding ??
                   const EdgeInsets.all(defaultCommonIconButtonInnerPadding),
@@ -177,5 +175,11 @@ class _CommonIconButtonState extends State<CommonIconButton> {
         ),
       ),
     );
+  }
+
+  void _onHighlightChanged(bool isPressed) {
+    if (isPressed != this.isPressed) {
+      setState(() => this.isPressed = isPressed);
+    }
   }
 }

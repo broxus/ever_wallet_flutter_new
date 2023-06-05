@@ -2,7 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:ui_components_lib/ui_components_lib.dart';
 
 /// Default height of the common button
-const commonButtonHeight = 56.0;
+const commonButtonHeight = Dimens.dimens14;
+const defaultSquircleRadius = Dimens.dimens25;
 
 /// {@template common_button}
 /// Default button in the app with background.
@@ -26,7 +27,7 @@ class CommonButton extends StatefulWidget {
     this.style,
     this.child,
     this.focusNode,
-    this.squircleRadius = 100,
+    this.squircleRadius = defaultSquircleRadius,
     this.backgroundColor,
     this.height = commonButtonHeight,
     this.padding,
@@ -201,54 +202,11 @@ class _CommonButtonState extends State<CommonButton> {
             buttonStyle.backgroundDisabledColor)
         : (widget.backgroundColor ?? buttonStyle.backgroundColor);
 
-    Widget child;
-    if (widget.child == null) {
-      if (widget.isLoading) {
-        child = Padding(
-          padding: widget.padding ?? const EdgeInsets.symmetric(horizontal: 50),
-          child: Center(
-            child: SizedBox(
-              width: 20,
-              height: 20,
-              child: CircularProgressIndicator(
-                color: contentColor,
-                strokeWidth: 2,
-              ),
-            ),
-          ),
-        );
-      } else {
-        final textWidget = AnimatedColor(
-          color: contentColor,
-          duration: kThemeAnimationDuration,
-          builder: (_, color) => Text(
-            widget.text ?? '',
-            style: textStyle.copyWith(color: color),
-          ),
-        );
-        child = Padding(
-          padding: widget.padding ?? const EdgeInsets.symmetric(horizontal: 20),
-          child: widget.leading == null && widget.trailing == null
-              ? textWidget
-              : Row(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  children: [
-                    if (widget.leading != null) ...[
-                      widget.leading!,
-                      const SizedBox(width: 10),
-                    ],
-                    textWidget,
-                    if (widget.trailing != null) ...[
-                      const SizedBox(width: 10),
-                      widget.trailing!,
-                    ],
-                  ],
-                ),
-        );
-      }
-    } else {
-      child = widget.child!;
-    }
+    final child = widget.child == null
+        ? (widget.isLoading
+            ? _loadingChild(contentColor)
+            : _textChild(textStyle, contentColor))
+        : widget.child!;
 
     return EverButtonStyleProvider(
       contentColor: contentColor,
@@ -261,11 +219,7 @@ class _CommonButtonState extends State<CommonButton> {
             hoverColor: Colors.transparent,
             splashColor: Colors.transparent,
             highlightColor: Colors.transparent,
-            onHighlightChanged: (isPressed) {
-              if (isPressed != this.isPressed) {
-                setState(() => this.isPressed = isPressed);
-              }
-            },
+            onHighlightChanged: _onHighlightChanged,
             focusNode: widget.focusNode,
             onTap: widget.isLoading ? null : widget.onPressed,
             onLongPress: widget.isLoading ? null : widget.onLongPress,
@@ -275,6 +229,61 @@ class _CommonButtonState extends State<CommonButton> {
           ),
         ),
       ),
+    );
+  }
+
+  void _onHighlightChanged(bool isPressed) {
+    if (isPressed != this.isPressed) {
+      setState(() => this.isPressed = isPressed);
+    }
+  }
+
+  Widget _loadingChild(Color contentColor) {
+    return Padding(
+      padding: widget.padding ??
+          const EdgeInsets.symmetric(horizontal: Dimens.dimens12),
+      child: Center(
+        child: SizedBox(
+          width: Dimens.large,
+          height: Dimens.large,
+          child: CircularProgressIndicator(
+            color: contentColor,
+            // TODO(nesquikm): add strokeWidth to style, maybe set of them
+            strokeWidth: Dimens.xxxSmall,
+          ),
+        ),
+      ),
+    );
+  }
+
+  Widget _textChild(TextStyle textStyle, Color contentColor) {
+    final textWidget = AnimatedColor(
+      color: contentColor,
+      duration: kThemeAnimationDuration,
+      builder: (_, color) => Text(
+        widget.text ?? '',
+        style: textStyle.copyWith(color: color),
+      ),
+    );
+
+    return Padding(
+      padding: widget.padding ?? const EdgeInsets.symmetric(horizontal: 20),
+      child: widget.leading == null && widget.trailing == null
+          ? textWidget
+          : Row(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                if (widget.leading != null) ...[
+                  widget.leading!,
+                  const SizedBox(width: 10),
+                ],
+                textWidget,
+                if (widget.trailing != null) ...[
+                  const SizedBox(width: 10),
+                  widget.trailing!,
+                ],
+              ],
+            ),
     );
   }
 }
