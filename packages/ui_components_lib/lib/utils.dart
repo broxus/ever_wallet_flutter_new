@@ -26,11 +26,4 @@ extension ListExtension<T> on Iterable<T> {
 
     return children;
   }
-
-  /// Do some action for every element with its index
-  void forEachIndexed<R>(R Function(T item, int index) each) {
-    for (var i = 0; i < length; i++) {
-      each(elementAt(i), i);
-    }
-  }
 }
