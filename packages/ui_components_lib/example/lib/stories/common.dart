@@ -67,6 +67,13 @@ class CommonStory extends StatelessWidget {
                   // ignore: no-empty-block
                   onPressed: () {},
                 ),
+                CommonIconButton.icon(
+                  innerPadding: appBarIconButtonInnerPadding,
+                  icon: Icons.access_alarm_sharp,
+                  buttonType: EverButtonType.primary,
+                  // ignore: no-empty-block
+                  onPressed: () {},
+                ),
               ],
             ),
           ],

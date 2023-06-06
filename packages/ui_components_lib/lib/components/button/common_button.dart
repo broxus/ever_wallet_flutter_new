@@ -202,57 +202,11 @@ class _CommonButtonState extends State<CommonButton> {
             buttonStyle.backgroundDisabledColor)
         : (widget.backgroundColor ?? buttonStyle.backgroundColor);
 
-    Widget child;
-    if (widget.child == null) {
-      if (widget.isLoading) {
-        child = Padding(
-          // TODO(nesquikm): dimens12 seems illegal here :)
-          padding: widget.padding ??
-              const EdgeInsets.symmetric(horizontal: Dimens.d48),
-          child: Center(
-            child: SizedBox(
-              width: Dimens.large,
-              height: Dimens.large,
-              child: CircularProgressIndicator(
-                color: contentColor,
-                // TODO(nesquikm): add strokeWidth to style, maybe set of them
-                strokeWidth: Dimens.xxxLarge,
-              ),
-            ),
-          ),
-        );
-      } else {
-        final textWidget = AnimatedColor(
-          color: contentColor,
-          duration: kThemeAnimationDuration,
-          builder: (_, color) => Text(
-            widget.text ?? '',
-            style: textStyle.copyWith(color: color),
-          ),
-        );
-        child = Padding(
-          padding: widget.padding ?? const EdgeInsets.symmetric(horizontal: 20),
-          child: widget.leading == null && widget.trailing == null
-              ? textWidget
-              : Row(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  children: [
-                    if (widget.leading != null) ...[
-                      widget.leading!,
-                      const SizedBox(width: 10),
-                    ],
-                    textWidget,
-                    if (widget.trailing != null) ...[
-                      const SizedBox(width: 10),
-                      widget.trailing!,
-                    ],
-                  ],
-                ),
-        );
-      }
-    } else {
-      child = widget.child!;
-    }
+    final child = widget.child == null
+        ? (widget.isLoading
+            ? _loadingChild(contentColor)
+            : _textChild(textStyle, contentColor))
+        : widget.child!;
 
     return EverButtonStyleProvider(
       contentColor: contentColor,
@@ -282,5 +236,54 @@ class _CommonButtonState extends State<CommonButton> {
     if (isPressed != this.isPressed) {
       setState(() => this.isPressed = isPressed);
     }
+  }
+
+  Widget _loadingChild(Color contentColor) {
+    return Padding(
+      padding:
+          widget.padding ?? const EdgeInsets.symmetric(horizontal: Dimens.d48),
+      child: Center(
+        child: SizedBox(
+          width: Dimens.large,
+          height: Dimens.large,
+          child: CircularProgressIndicator(
+            color: contentColor,
+            // TODO(nesquikm): add strokeWidth to style, maybe set of them
+            strokeWidth: Dimens.xxxSmall,
+          ),
+        ),
+      ),
+    );
+  }
+
+  Widget _textChild(TextStyle textStyle, Color contentColor) {
+    final textWidget = AnimatedColor(
+      color: contentColor,
+      duration: kThemeAnimationDuration,
+      builder: (_, color) => Text(
+        widget.text ?? '',
+        style: textStyle.copyWith(color: color),
+      ),
+    );
+
+    return Padding(
+      padding: widget.padding ?? const EdgeInsets.symmetric(horizontal: 20),
+      child: widget.leading == null && widget.trailing == null
+          ? textWidget
+          : Row(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                if (widget.leading != null) ...[
+                  widget.leading!,
+                  const SizedBox(width: 10),
+                ],
+                textWidget,
+                if (widget.trailing != null) ...[
+                  const SizedBox(width: 10),
+                  widget.trailing!,
+                ],
+              ],
+            ),
+    );
   }
 }

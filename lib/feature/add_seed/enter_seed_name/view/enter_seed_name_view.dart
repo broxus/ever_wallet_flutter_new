@@ -57,7 +57,7 @@ class _EnterSeedNameViewState extends State<EnterSeedNameView> {
             CommonInput(
               controller: nameController,
               height: 52,
-              labelText: localization.seedName,
+              hintText: localization.seedName,
               onSubmitted: (_) => _nextAction(),
             ),
             const Spacer(),

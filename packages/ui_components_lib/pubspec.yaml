@@ -11,7 +11,7 @@ dependencies:
   flutter:
     sdk: flutter
   flutter_svg: ^2.0.5
-  flutter_typeahead: ^4.3.7
+  flutter_typeahead: ^4.6.1
 
 dev_dependencies:
   dart_code_metrics: ^5.7.4

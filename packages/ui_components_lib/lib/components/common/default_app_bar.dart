@@ -123,77 +123,49 @@ class DefaultAppBar extends StatelessWidget implements PreferredSizeWidget {
   bool get _showActionsClose =>
       closeType == CloseType.actions || closeType == CloseType.multi;
 
-  bool get _hasAnyLeading => leading != null || _showLeadingClose;
-
   @override
   Widget build(BuildContext context) {
     final colors = context.themeStyle.colors;
-    final mq = MediaQuery.of(context);
 
     final title = buildTitle(colors);
+    final leading = this.leading ??
+        (_showLeadingClose
+            ? CommonIconButton.icon(
+                innerPadding: appBarIconButtonInnerPadding,
+                icon: Icons.arrow_back_rounded,
+                buttonType: EverButtonType.secondary,
+                onPressed: () {
+                  if (onClosePressed != null) {
+                    onClosePressed!(context);
+                  } else {
+                    defaultPopAction(context);
+                  }
+                },
+              )
+            : null);
 
-    return Material(
-      color: backgroundColor ?? Colors.transparent,
-      borderRadius: BorderRadius.zero,
-      child: Container(
-        margin: EdgeInsets.only(
-          top: mq.padding.top,
-          left: Dimens.medium,
-          right: Dimens.medium,
-        ),
-        height: preferredSize.height,
-        child: Column(
-          mainAxisSize: MainAxisSize.min,
-          children: [
-            Expanded(
-              child: Padding(
-                padding: const EdgeInsets.symmetric(horizontal: Dimens.xSmall),
-                child: Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  children: [
-                    leading ??
-                        (_showLeadingClose
-                            ? CommonIconButton.icon(
-                                innerPadding: appBarIconButtonInnerPadding,
-                                icon: Icons.arrow_back_rounded,
-                                buttonType: EverButtonType.secondary,
-                                onPressed: () {
-                                  if (onClosePressed != null) {
-                                    onClosePressed!(context);
-                                  } else {
-                                    defaultPopAction(context);
-                                  }
-                                },
-                              )
-                            : const SizedBox(width: appBarButtonSize)),
-                    if (title != null) ...[
-                      const SizedBox(width: 8),
-                      Expanded(child: title),
-                      const SizedBox(width: 8),
-                    ],
-                    if (_hasAnyActions)
-                      _actionsWidget(context)
-                    else if (_hasAnyLeading)
-                      // This button is need display appbar in the center if no
-                      // actions
-                      const SizedBox(width: appBarButtonSize),
-                  ],
-                ),
-              ),
-            ),
-          ],
-        ),
+    return Padding(
+      padding: const EdgeInsets.symmetric(horizontal: Dimens.d16),
+      child: AppBar(
+        backgroundColor: backgroundColor ?? Colors.transparent,
+        toolbarHeight: preferredSize.height,
+        elevation: 0,
+        titleSpacing: Dimens.d8,
+        centerTitle: centerTitle,
+        leadingWidth: appBarButtonSize,
+        leading: leading == null ? null : Center(child: leading),
+        actions: _hasAnyActions ? _actionsWidget(context) : null,
+        title: title,
       ),
     );
   }
 
-  Widget _actionsWidget(BuildContext context) {
-    return Row(
-      mainAxisAlignment: MainAxisAlignment.end,
-      children: [
-        if (_hasActions) ...actions!,
-        if (_showActionsClose)
-          CommonButton(
+  List<Widget> _actionsWidget(BuildContext context) {
+    return [
+      if (_hasActions) ...actions!.map((e) => Center(child: e)),
+      if (_showActionsClose)
+        Center(
+          child: CommonButton(
             buttonType: EverButtonType.ghost,
             height: appBarButtonSize,
             child: CommonButtonIconWidget.icon(icon: Icons.close),
@@ -207,8 +179,8 @@ class DefaultAppBar extends StatelessWidget implements PreferredSizeWidget {
               }
             },
           ),
-      ],
-    );
+        ),
+    ];
   }
 
   Widget? buildTitle(ColorsPalette colors) {

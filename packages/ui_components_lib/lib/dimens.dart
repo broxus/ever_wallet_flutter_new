@@ -13,6 +13,7 @@ class Dimens {
   static const double d92 = 92;
   static const double d100 = 100;
   static const double d148 = 148;
+  static const double d168 = 168;
   static const double d200 = 200;
 
   static const double xxxSmall = d2;
