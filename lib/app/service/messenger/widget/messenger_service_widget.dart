@@ -27,6 +27,12 @@ class _MessengerServiceWidgetState extends State<MessengerServiceWidget> {
     _cubit.init();
   }
 
+  @override
+  void dispose() {
+    _cubit.close();
+    super.dispose();
+  }
+
   void _onDismiss() {
     _isSnackbarShown = false;
     _showNextMessage();

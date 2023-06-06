@@ -1,3 +1,5 @@
+import 'dart:async';
+
 import 'package:app/app/service/messenger/message.dart';
 import 'package:app/app/service/messenger/service/service.dart';
 import 'package:app/di/di.dart';
@@ -17,10 +19,27 @@ class MessengerCubit extends Cubit<MessengerState> {
           ),
         );
 
+  StreamSubscription<Message>? _messageSubscription;
+  StreamSubscription<void>? _clearQueueSubscription;
+
   void init() {
     final messengerService = inject<MessengerService>();
-    messengerService.messageStream.listen(show);
-    messengerService.clearQueueStream.listen((_) => clearQueue());
+    _messageSubscription = messengerService.messageStream.listen(
+      show,
+    );
+    _clearQueueSubscription = messengerService.clearQueueStream.listen(
+      (_) => clearQueue(),
+    );
+  }
+
+  @override
+  Future<void> close() {
+    _messageSubscription?.cancel();
+    _messageSubscription = null;
+    _clearQueueSubscription?.cancel();
+    _clearQueueSubscription = null;
+
+    return super.close();
   }
 
   /// Show message to the user
