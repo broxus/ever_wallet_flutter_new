@@ -9,7 +9,7 @@ class SnackbarStory extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: const Text('Colors (based on theme)'),
+        title: const Text('Snackbar'),
       ),
       body: SingleChildScrollView(
         padding: const EdgeInsets.all(16),
@@ -19,29 +19,40 @@ class SnackbarStory extends StatelessWidget {
             CommonButton.primary(
               text: 'Default snackbar',
               onPressed: () {
-                showSnackbar(context: context, message: 'Default snackbar');
+                showSnackbar(
+                  context: context,
+                  type: SnackbarType.info,
+                  message: 'Default snackbar',
+                  duration: const Duration(seconds: 3),
+                );
               },
             ),
             const SizedBox(height: 20),
             CommonButton.primary(
               text: 'Error snackbar',
-              onPressed: () {
-                showErrorSnackbar(context: context, message: 'Error snackbar');
-              },
+              onPressed: () => showSnackbar(
+                context: context,
+                type: SnackbarType.error,
+                message: 'Error snackbar',
+                duration: const Duration(seconds: 3),
+              ),
             ),
             const SizedBox(height: 20),
             CommonButton.primary(
               text: 'Snackbar with action',
-              onPressed: () {
-                showSnackbarWithAction(
+              onPressed: () => showSnackbar(
+                context: context,
+                type: SnackbarType.info,
+                message: 'Action snackbar',
+                duration: const Duration(seconds: 3),
+                actionText: 'Action',
+                onAction: () => showSnackbar(
                   context: context,
-                  message: 'Snackbar with action',
-                  action: () {
-                    showSnackbar(context: context, message: 'Another snackbar');
-                  },
-                  actionText: 'Action',
-                );
-              },
+                  type: SnackbarType.info,
+                  message: 'Another snackbar',
+                  duration: const Duration(seconds: 3),
+                ),
+              ),
             ),
           ],
         ),

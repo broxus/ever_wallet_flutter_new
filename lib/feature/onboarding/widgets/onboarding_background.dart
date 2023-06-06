@@ -55,9 +55,9 @@ class OnboardingGradient extends StatelessWidget {
 
     return Material(
       color: background,
-      child: Stack(
+      child: const Stack(
         fit: StackFit.expand,
-        children: const [
+        children: [
           Positioned(
             left: -200,
             top: -100,

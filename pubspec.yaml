@@ -4,12 +4,13 @@ version: 2.0.0+1
 publish_to: none
 
 environment:
-  sdk: ">=2.18.0 <3.0.0"
-  flutter: 3.7.12
+  sdk: '>=3.0.0 <4.0.0'
 
 dependencies:
   bloc: ^8.1.2
+  clock: ^1.1.1
   collection: ^1.17.0
+  crypto: ^3.0.2
   dotted_border: ^2.0.0+3
   encrypted_storage:
     path: packages/encrypted_storage
@@ -28,9 +29,9 @@ dependencies:
   hive_flutter: ^1.1.0
   http: ^0.13.6
   injectable: ^2.1.2
-  intl: ^0.17.0
+  intl: ^0.18.0
   json_annotation: ^4.8.0
-  logging: ^1.1.1
+  logging: 1.1.1
   money2: ^3.3.0
   money2_improver: ^1.2.0
   nekoton_repository:
@@ -60,6 +61,7 @@ dev_dependencies:
   json_serializable: ^6.6.1
   melos: ^3.1.0
   mocktail: ^0.3.0
+  test: ^1.22.0
   very_good_analysis: ^4.0.0+1
 
 flutter_gen:
