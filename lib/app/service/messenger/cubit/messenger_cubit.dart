@@ -10,6 +10,9 @@ import 'package:freezed_annotation/freezed_annotation.dart';
 part 'messenger_state.dart';
 part 'messenger_cubit.freezed.dart';
 
+/// Cubit that process messages and shows them to the user. It is not a bloc
+/// because nextMessage() should immediately return next message to show and
+/// remove it from the FIFO and blocs are not designed to do that.
 class MessengerCubit extends Cubit<MessengerState> {
   MessengerCubit()
       : super(
