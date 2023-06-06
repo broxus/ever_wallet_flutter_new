@@ -58,8 +58,6 @@ class _InputsStoryState extends State<InputsStory> {
                 subtitleText: 'Subtitle',
                 controller: suggestion1Controller,
                 suggestionsCallback: _onSuggest,
-                itemBuilder: (_, suggestion) =>
-                    ListTile(title: Text(suggestion)),
                 onSuggestionSelected: (v) => suggestion1Controller.text = v,
               ),
               const SizedBox(height: 20),
@@ -129,8 +127,6 @@ class _InputsStoryState extends State<InputsStory> {
                       hintText: 'Validation with suggestions',
                       controller: suggestion2Controller,
                       suggestionsCallback: _onSuggest,
-                      itemBuilder: (_, suggestion) =>
-                          ListTile(title: Text(suggestion)),
                       onSuggestionSelected: (v) =>
                           suggestion2Controller.text = v,
                       validator: (v) => v?.isEmpty ?? true ? 'Error' : null,

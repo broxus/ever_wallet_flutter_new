@@ -107,7 +107,8 @@ class CommonInput extends StatefulWidget {
   /// If null, then TextField will be used
   final SuggestionsCallback<String>? suggestionsCallback;
 
-  /// Builder function for suggestions, no need for TextField
+  /// Builder function for suggestions, no need for TextField.
+  /// If null, default is used
   final ItemBuilder<String>? itemBuilder;
 
   /// Callback for suggestion selection, no need for TextField
@@ -381,14 +382,12 @@ class _CommonInputState extends State<CommonInput> {
     required bool hasError,
     required SuggestionsCallback<String> suggestionsCallback,
   }) {
-    final itemBuilder = widget.itemBuilder;
     final onSuggestionSelected = widget.onSuggestionSelected;
 
-    if (itemBuilder == null || onSuggestionSelected == null) {
+    if (onSuggestionSelected == null) {
       assert(
         false,
-        // ignore: lines_longer_than_80_chars
-        'itemBuilder and onSuggestionSelected must be set to use TypeAheadField',
+        'onSuggestionSelected must be set to use TypeAheadField',
       );
 
       return const SizedBox();
@@ -428,7 +427,7 @@ class _CommonInputState extends State<CommonInput> {
                     )
                   : const BoxConstraints(
                       minHeight: commonInputHeight,
-                      minWidth: 35,
+                      minWidth: Dimens.dimens09,
                     ),
               prefixIcon:
                   widget.prefixIcon ?? const SizedBox(width: Dimens.dimens04),
@@ -465,13 +464,34 @@ class _CommonInputState extends State<CommonInput> {
             ),
           ),
           suggestionsCallback: suggestionsCallback,
-          itemBuilder: itemBuilder,
+          itemBuilder: widget.itemBuilder ??
+              (context, item) =>
+                  _defaultSuggestionItemBuilder(context, item, colors),
           suggestionsBoxDecoration: SuggestionsBoxDecoration(
-            color: widget.suggestionBackground ?? Colors.transparent,
+            shape: const SquircleShapeBorder(cornerRadius: Dimens.dimens04),
+            color: widget.suggestionBackground ?? colors.backgroundSecondary,
           ),
           onSuggestionSelected: onSuggestionSelected,
         ),
       );
     }
+  }
+
+  /// Default builder for suggestions item
+  Widget _defaultSuggestionItemBuilder(
+    BuildContext context,
+    String itemData,
+    ColorsPalette colors,
+  ) {
+    return Container(
+      height: Dimens.dimens10,
+      margin: const EdgeInsets.all(Dimens.dimens03),
+      child: ListTile(
+        title: Text(
+          itemData,
+          style: StyleRes.button.copyWith(color: colors.textPrimary),
+        ),
+      ),
+    );
   }
 }
