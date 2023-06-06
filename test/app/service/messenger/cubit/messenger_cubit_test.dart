@@ -17,6 +17,11 @@ void main() {
     type: MessageType.info,
   );
 
+  final message2 = Message(
+    message: 'message2',
+    type: MessageType.info,
+  );
+
   group('MessengerCubit', () {
     late MessengerCubit messengerCubit;
     setUp(() {
@@ -168,6 +173,72 @@ void main() {
           messagesToShow: [message0],
           messagesTime: {message0.hashString: DateTime(2001)},
         )
+      ],
+    );
+
+    blocTest(
+      'correct message order',
+      build: MessengerCubit.new,
+      act: (cubit) {
+        expect(cubit.nextMessage(), null);
+        withClock(Clock.fixed(DateTime(2000)), () {
+          cubit.show(message0);
+        });
+        withClock(Clock.fixed(DateTime(2001)), () {
+          cubit.show(message1);
+        });
+        withClock(Clock.fixed(DateTime(2002)), () {
+          cubit.show(message2);
+        });
+        expect(cubit.nextMessage(), message0);
+        expect(cubit.nextMessage(), message1);
+        expect(cubit.nextMessage(), message2);
+        expect(cubit.nextMessage(), null);
+      },
+      expect: () => <MessengerState>[
+        MessengerState(
+          messagesToShow: [message0],
+          messagesTime: {message0.hashString: DateTime(2000)},
+        ),
+        MessengerState(
+          messagesToShow: [message1, message0],
+          messagesTime: {
+            message0.hashString: DateTime(2000),
+            message1.hashString: DateTime(2001),
+          },
+        ),
+        MessengerState(
+          messagesToShow: [message2, message1, message0],
+          messagesTime: {
+            message0.hashString: DateTime(2000),
+            message1.hashString: DateTime(2001),
+            message2.hashString: DateTime(2002),
+          },
+        ),
+        MessengerState(
+          messagesToShow: [message2, message1],
+          messagesTime: {
+            message0.hashString: DateTime(2000),
+            message1.hashString: DateTime(2001),
+            message2.hashString: DateTime(2002),
+          },
+        ),
+        MessengerState(
+          messagesToShow: [message2],
+          messagesTime: {
+            message0.hashString: DateTime(2000),
+            message1.hashString: DateTime(2001),
+            message2.hashString: DateTime(2002),
+          },
+        ),
+        MessengerState(
+          messagesToShow: [],
+          messagesTime: {
+            message0.hashString: DateTime(2000),
+            message1.hashString: DateTime(2001),
+            message2.hashString: DateTime(2002),
+          },
+        ),
       ],
     );
   });

@@ -55,9 +55,9 @@ class MessengerCubit extends Cubit<MessengerState> {
       return null;
     }
 
-    final first = state.messagesToShow.first;
-    emit(state.copyWith(messagesToShow: state.messagesToShow.skip(1).toList()));
-    return first;
+    final [...remain, last] = state.messagesToShow;
+    emit(state.copyWith(messagesToShow: remain));
+    return last;
   }
 
   /// Clear messages queue

@@ -4,8 +4,7 @@ version: 2.0.0+1
 publish_to: none
 
 environment:
-  sdk: ">=2.18.0 <3.0.0"
-  flutter: 3.7.12
+  sdk: '>=3.0.0 <4.0.0'
 
 dependencies:
   bloc: ^8.1.2
@@ -30,7 +29,7 @@ dependencies:
   hive_flutter: ^1.1.0
   http: ^0.13.6
   injectable: ^2.1.2
-  intl: ^0.17.0
+  intl: ^0.18.0
   json_annotation: ^4.8.0
   logging: 1.1.1
   money2: ^3.3.0
