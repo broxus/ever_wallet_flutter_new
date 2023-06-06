@@ -46,6 +46,7 @@ class CheckSeedAnswersWidget extends StatelessWidget {
         builder: (context) {
           final colors = context.themeStyle.colors;
           final l10n = context.l10n;
+
           return PressInkWidget(
             onPressed: isSelected ? () => clearAnswer(answer.word) : null,
             child: Container(

@@ -24,6 +24,7 @@ class CreateSeedPasswordOnboardingPage extends StatelessWidget {
         phrase: extra.phrase,
         setCurrentKey: true,
         // Redundant because of guard, but we need to pass it down.
+        // ignore: no-empty-block
         completeCallback: () {},
       ),
       child: GestureDetector(

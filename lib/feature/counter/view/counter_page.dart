@@ -29,6 +29,7 @@ class CounterView extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final l10n = context.l10n;
+
     return Scaffold(
       appBar: AppBar(title: Text(l10n.welcomeTitle)),
       body: SafeArea(
@@ -113,6 +114,7 @@ class CounterText extends StatelessWidget {
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
     final count = context.select((CounterCubit cubit) => cubit.state);
+
     return Text('$count', style: theme.textTheme.displaySmall);
   }
 }
@@ -124,6 +126,7 @@ class LogDisplay extends StatelessWidget {
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
     final logs = context.select((LogDisplayCubit cubit) => cubit.state);
+
     return Text(logs, style: theme.textTheme.bodyMedium);
   }
 }

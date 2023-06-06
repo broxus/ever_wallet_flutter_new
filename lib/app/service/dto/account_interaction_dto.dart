@@ -1,3 +1,5 @@
+// ignore_for_file: no-magic-number
+
 import 'package:app/app/service/dto/wallet_contract_type_dto.dart';
 import 'package:app/data/models/account_interaction.dart';
 import 'package:freezed_annotation/freezed_annotation.dart';

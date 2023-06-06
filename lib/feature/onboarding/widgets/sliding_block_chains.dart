@@ -7,6 +7,10 @@ import 'package:visibility_detector/visibility_detector.dart';
 
 const _doubleRowsPadding = 8.0;
 const _tripleRowsPadding = 16.0;
+const _rowItemsOffset = 2;
+const _twoLinesMinHeight = 150.0;
+const _scrollOffset = 0.5;
+const _scrollPeriod = 30;
 
 /// Panel of sliding block chains on main screen of onboarding
 class SlidingBlockChains extends StatefulWidget {
@@ -72,7 +76,7 @@ class _SlidingBlockChainsState extends State<SlidingBlockChains> {
   }
 
   void _initTimer() => timer = Timer.periodic(
-        const Duration(milliseconds: 30),
+        const Duration(milliseconds: _scrollPeriod),
         (timer) => _scrollLists(),
       );
 
@@ -84,7 +88,7 @@ class _SlidingBlockChainsState extends State<SlidingBlockChains> {
   void _scrollLists() {
     for (final c in controllers) {
       if (c.hasClients) {
-        c.jumpTo(c.offset + 0.5);
+        c.jumpTo(c.offset + _scrollOffset);
       }
     }
   }
@@ -93,38 +97,37 @@ class _SlidingBlockChainsState extends State<SlidingBlockChains> {
   Widget build(BuildContext context) {
     return VisibilityDetector(
       key: const Key('SlidingBlockChains'),
-      onVisibilityChanged: (info) {
-        final isVisible = info.visibleBounds != Rect.zero;
-        if (isVisible && timer == null) {
-          _initTimer();
-        } else if (!isVisible) {
-          _stopTimer();
-        }
-      },
+      onVisibilityChanged: _visibilityChanged,
       child: Center(
         child: ConstrainedBox(
           constraints: const BoxConstraints(maxHeight: 200),
           child: LayoutBuilder(
             builder: (context, constraints) {
-              final lineCount = constraints.maxHeight < 150 ? 2 : 3;
+              final lineCount =
+                  // ignore: no-magic-number
+                  constraints.maxHeight < _twoLinesMinHeight ? 2 : 3;
               _paddingBetweenRows =
+                  // ignore: no-magic-number
                   lineCount == 3 ? _tripleRowsPadding : _doubleRowsPadding;
 
               final partSize = (constraints.maxHeight -
+                      // ignore: no-magic-number
                       _paddingBetweenRows * (lineCount - 1)) /
                   lineCount;
               if (controllers.isEmpty) {
                 final imagesByControllerCount = _images.length ~/ lineCount;
                 controllers.addAll(
+                  // ignore: prefer-extracting-callbacks
                   List.generate(lineCount, (index) {
                     final start = index * imagesByControllerCount;
                     controllerImages.add(
                       _images.sublist(start, start + imagesByControllerCount),
                     );
                     if (index.isEven) return ScrollController();
+
                     return ScrollController(
-                      initialScrollOffset:
-                          partSize / 2 + _paddingBetweenRows / 2,
+                      initialScrollOffset: partSize / _rowItemsOffset +
+                          _paddingBetweenRows / _rowItemsOffset,
                     );
                   }),
                 );
@@ -169,5 +172,14 @@ class _SlidingBlockChainsState extends State<SlidingBlockChains> {
         'assets/images/onboarding/${controllerImages[listIndex][index]}',
       ),
     );
+  }
+
+  void _visibilityChanged(VisibilityInfo info) {
+    final isVisible = info.visibleBounds != Rect.zero;
+    if (isVisible && timer == null) {
+      _initTimer();
+    } else if (!isVisible) {
+      _stopTimer();
+    }
   }
 }

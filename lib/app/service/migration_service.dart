@@ -67,6 +67,7 @@ class HiveSourceMigration {
   static Future<HiveSourceMigration> create() async {
     final instance = HiveSourceMigration._();
     await instance._initialize();
+
     return instance;
   }
 
@@ -173,6 +174,7 @@ class HiveSourceMigration {
   /// Remove information about hidden account (make it visible)
   Future<void> removeHiddenIfPossible(String address) {
     final accounts = hiddenAccounts..remove(address);
+
     return _hiddenAccountsBox.put(_hiddenAccountsKey, accounts);
   }
 
@@ -390,6 +392,7 @@ class HiveSourceMigration {
 
     await _searchHistoryBox.clear();
 
+    // ignore: no-magic-number
     await _searchHistoryBox.putAll(Map.fromEntries(entries.take(50)));
   }
 
@@ -481,6 +484,7 @@ class HiveSourceMigration {
   // TODO(alex-a4): delete boxes after some time to prevent data loss
   // Future<void> eraseHive() => Hive.deleteFromDisk();
 
+  // ignore: long-method
   Future<void> _initialize() async {
     final key = Uint8List.fromList(
       [
@@ -515,7 +519,7 @@ class HiveSourceMigration {
         34,
         80,
         128,
-        80
+        80,
       ],
     );
 
@@ -532,6 +536,7 @@ class HiveSourceMigration {
       ..tryRegisterAdapter(SearchHistoryDtoAdapter())
       ..tryRegisterAdapter(CurrencyDtoAdapter());
 
+    // ignore: no-magic-number
     for (var i = 1; i < 224; i++) {
       if (!usedAdapters.contains(i) && Hive.isAdapterRegistered(i)) {
         Hive.ignoreTypeId<Object>(i);
@@ -591,6 +596,7 @@ class HiveSourceMigration {
   @visibleForTesting
   Future<File> get migrationFile async {
     final tempDir = await getTemporaryDirectory();
+
     return File('${tempDir.path}/migration.json');
   }
 
@@ -693,6 +699,7 @@ class HiveSourceMigration {
       final fakeViewed = LinkedHashSet<String>.from(seedsKeys)
           .take(maxLastSelectedSeeds)
           .toList();
+
       return updateLastViewedSeeds(fakeViewed);
     }
   }
@@ -761,6 +768,7 @@ class MigrationService {
 
   /// Migrate all data from hive to new storage.
   @visibleForTesting
+  // ignore: long-method
   Future<void> applyMigration() async {
     /// Storage
     for (final entry in _hive._storageData.entries) {

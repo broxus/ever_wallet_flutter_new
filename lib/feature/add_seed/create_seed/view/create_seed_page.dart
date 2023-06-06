@@ -20,12 +20,14 @@ class CreateSeedPage extends StatelessWidget {
         resizeToAvoidBottomInset: false,
         appBar: const DefaultAppBar(),
         body: CreateSeedView(
+          // ignore: prefer-extracting-callbacks
           checkCallback: (List<String> phrase) {
             context.goFurther(
               AppRoute.checkSeed.path,
               extra: CreateSeedRouteExtra(phrase: phrase),
             );
           },
+          // ignore: prefer-extracting-callbacks
           skipCallback: (List<String> phrase) {
             context.goFurther(
               AppRoute.createSeedPassword.path,

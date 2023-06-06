@@ -1,3 +1,5 @@
+// ignore_for_file: no-magic-number
+
 import 'package:app/data/models/network_type.dart';
 import 'package:app/data/models/token_contract_asset.dart';
 import 'package:freezed_annotation/freezed_annotation.dart';

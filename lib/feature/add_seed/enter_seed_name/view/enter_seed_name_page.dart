@@ -25,6 +25,7 @@ class EnterSeedNamePage extends StatelessWidget {
         resizeToAvoidBottomInset: false,
         appBar: const DefaultAppBar(),
         body: EnterSeedNameView(
+          // ignore: prefer-extracting-callbacks
           callback: (String? name) {
             context.goFurther(
               AppRoute.createSeedPassword.path,

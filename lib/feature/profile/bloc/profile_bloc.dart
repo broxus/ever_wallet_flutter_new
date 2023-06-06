@@ -17,5 +17,7 @@ class ProfileBloc extends Bloc<ProfileEvent, ProfileState> {
   FutureOr<void> _onDeleteAccount(
     ProfileDeleteAccount event,
     Emitter<ProfileState> emit,
-  ) {}
+  )
+  // ignore: no-empty-block
+  {}
 }

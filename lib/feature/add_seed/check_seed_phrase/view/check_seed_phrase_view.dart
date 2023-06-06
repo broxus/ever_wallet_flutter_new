@@ -66,6 +66,7 @@ class CheckSeedPhraseView extends StatelessWidget {
         final localization = context.l10n;
         final colors = context.themeStyle.colors;
         final cubit = context.read<CheckSeedPhraseCubit>();
+
         return Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [

@@ -6,10 +6,12 @@ class Dimens {
   static const double d16 = 16;
   static const double d20 = 20;
   static const double d24 = 24;
+  static const double d28 = 28;
   static const double d32 = 32;
   static const double d40 = 40;
   static const double d48 = 48;
   static const double d56 = 56;
+  static const double d64 = 64;
   static const double d92 = 92;
   static const double d100 = 100;
   static const double d148 = 148;

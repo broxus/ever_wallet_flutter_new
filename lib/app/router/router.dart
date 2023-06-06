@@ -18,7 +18,8 @@ import 'package:nekoton_repository/nekoton_repository.dart';
 
 export 'app_route.dart';
 
-GoRouter getRouter(BuildContext context) {
+// ignore: long-method
+GoRouter getRouter(BuildContext _) {
   // Redirect to onboarding or wallet depending on the current location and if
   // the user has any seeds.
   String? shouldRedirect({required String location, required bool hasSeeds}) {
@@ -31,6 +32,7 @@ GoRouter getRouter(BuildContext context) {
       // Not onboarded, redirect to onboarding
       return AppRoute.onboarding.path;
     }
+
     // No need to redirect
     return null;
   }

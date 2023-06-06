@@ -1,3 +1,5 @@
+// ignore_for_file: no-magic-number
+
 import 'dart:typed_data';
 
 import 'package:app/data/models/browser_tab.dart';
