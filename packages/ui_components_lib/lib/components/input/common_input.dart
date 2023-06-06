@@ -5,6 +5,7 @@ import 'package:ui_components_lib/ui_components_lib.dart';
 
 /// Default height for input
 const commonInputHeight = 56.0;
+const suggestionDividerSize = 1.0;
 
 /// {@template common_input}
 /// Defaut input field that could be used in application.
@@ -464,10 +465,17 @@ class _CommonInputState extends State<CommonInput> {
             ),
           ),
           suggestionsCallback: suggestionsCallback,
+          itemSeparatorBuilder: (_, __) => Divider(
+            height: suggestionDividerSize,
+            color: colors.strokeSecondary,
+            thickness: suggestionDividerSize,
+          ),
           itemBuilder: widget.itemBuilder ??
               (context, item) =>
                   _defaultSuggestionItemBuilder(context, item, colors),
           suggestionsBoxDecoration: SuggestionsBoxDecoration(
+            hasScrollbar: false,
+            constraints: const BoxConstraints(maxWidth: Dimens.dimens42),
             shape: const SquircleShapeBorder(cornerRadius: Dimens.dimens04),
             color: widget.suggestionBackground ?? colors.backgroundSecondary,
           ),
