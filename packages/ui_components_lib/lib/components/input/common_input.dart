@@ -486,7 +486,7 @@ class _CommonInputState extends State<CommonInput> {
 
   /// Default builder for suggestions item
   Widget _defaultSuggestionItemBuilder(
-    BuildContext context,
+    BuildContext _,
     String itemData,
     ColorsPalette colors,
   ) {
