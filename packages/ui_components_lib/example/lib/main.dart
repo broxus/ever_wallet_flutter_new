@@ -18,7 +18,6 @@ class StoryWidget extends StatelessWidget {
           debugShowCheckedModeBanner: false,
           theme: everPredefinedLightTheme(),
           darkTheme: everPredefinedDarkTheme(),
-          useInheritedMediaQuery: true,
           home: child,
         );
       },

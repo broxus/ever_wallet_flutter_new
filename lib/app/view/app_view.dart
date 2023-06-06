@@ -1,4 +1,5 @@
 import 'package:app/app/router/router.dart';
+import 'package:app/app/view/app_root_widgets.dart';
 import 'package:app/l10n/l10n.dart';
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
@@ -34,6 +35,7 @@ class _AppViewState extends State<AppView> {
       supportedLocales: AppLocalizations.supportedLocales,
       theme: everPredefinedLightTheme(),
       darkTheme: everPredefinedDarkTheme(),
+      builder: (context, child) => AppRootWidgets(child: child ?? Container()),
     );
   }
 }

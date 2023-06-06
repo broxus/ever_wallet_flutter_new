@@ -1,102 +1,87 @@
 import 'dart:async';
 
+import 'package:another_flushbar/flushbar.dart';
 import 'package:flutter/material.dart';
 import 'package:ui_components_lib/ui_components_lib.dart';
 
-export 'package:another_flushbar/flushbar.dart';
+enum SnackbarType {
+  /// Just a regular Snackbar
+  info,
 
-const snackbarDisplayDuration = Duration(seconds: 2);
+  /// Snackbar that informs about error
+  error,
+}
 
-Flushbar<void>? _previousSnack;
+// TODO(nesquikm): remove this global variable after the SnackBar learning
+// to dismiss itself after the action is pressed.
+Flushbar<void>? _snack;
 
-/// Show default snackbar that must tell user about something
 Future<void> showSnackbar({
   required BuildContext context,
+  required SnackbarType type,
   required String message,
-  FlushbarPosition flushbarPosition = FlushbarPosition.BOTTOM,
-  EdgeInsets margin = const EdgeInsets.symmetric(vertical: 8),
-  Duration displayDuration = snackbarDisplayDuration,
-}) async {
+  bool isDismissible = true,
+  Duration? duration,
+  VoidCallback? onDismiss,
+  String? actionText,
+  VoidCallback? onAction,
+}) {
   final colors = context.themeStyle.colors;
-  await _previousSnack?.dismiss();
+  // TODO(nesquikm): use return values from switch after upgrading dart
+  Color backgroundColor() {
+    switch (type) {
+      case SnackbarType.error:
+        return colors.accentWarning;
+      case SnackbarType.info:
+        return colors.backgroundPrimary;
+    }
+  }
 
-  _previousSnack = Flushbar<void>(
+  void onStatusChanged(FlushbarStatus? status) {
+    switch (status) {
+      case FlushbarStatus.IS_APPEARING:
+        break;
+      case FlushbarStatus.SHOWING:
+        break;
+      case FlushbarStatus.IS_HIDING:
+        break;
+      case FlushbarStatus.DISMISSED:
+        onDismiss?.call();
+        break;
+      case null:
+        break;
+    }
+  }
+
+  final mainButton = (actionText != null)
+      ? CommonButton.ghost(
+          onPressed: onAction != null
+              ? () {
+                  // TODO(nesquikm): WTF? The snackbar SHOULD dismiss itself
+                  // immediately after the action is pressed, but it doesn't.
+                  // So we have to dismiss it manually.
+                  _snack?.dismiss();
+                  onAction();
+                }
+              : null,
+          text: actionText,
+        )
+      : null;
+
+  _snack = Flushbar<void>(
     messageText: Text(
       message,
       style: StyleRes.regular16.copyWith(color: colors.textPrimary),
     ),
-    flushbarPosition: flushbarPosition,
-    backgroundColor: colors.fillingPrimary,
-    margin: const EdgeInsets.symmetric(horizontal: 16) + margin,
-    duration: displayDuration,
+    backgroundColor: backgroundColor(),
+    isDismissible: isDismissible,
+    duration: duration,
+    onStatusChanged: onStatusChanged,
+    mainButton: mainButton,
+    onTap: (flushbar) {
+      flushbar.dismiss();
+    },
   );
 
-  // ignore: use_build_context_synchronously
-  if (!context.mounted) return;
-  return _previousSnack!.show(context);
-}
-
-/// Show snackbar with error customization that means someething wrong happens
-Future<void> showErrorSnackbar({
-  required BuildContext context,
-  required String message,
-  FlushbarPosition flushbarPosition = FlushbarPosition.BOTTOM,
-  EdgeInsets margin = const EdgeInsets.symmetric(vertical: 16),
-  Duration displayDuration = snackbarDisplayDuration,
-}) async {
-  final colors = context.themeStyle.colors;
-  await _previousSnack?.dismiss();
-
-  _previousSnack = Flushbar(
-    messageText: Text(
-      message,
-      style: StyleRes.regular16.copyWith(color: colors.textNegative),
-    ),
-    flushbarPosition: flushbarPosition,
-    backgroundColor: colors.fillingPrimary,
-    margin: const EdgeInsets.symmetric(horizontal: 16) + margin,
-    duration: displayDuration,
-  );
-
-  // ignore: use_build_context_synchronously
-  if (!context.mounted) return;
-  return _previousSnack!.show(context);
-}
-
-/// Show snackbar with specified action that user can make
-Future<void> showSnackbarWithAction({
-  required BuildContext context,
-  required String message,
-  required String actionText,
-  required VoidCallback action,
-  bool isOneLine = true,
-  FlushbarPosition flushbarPosition = FlushbarPosition.BOTTOM,
-  EdgeInsets margin = const EdgeInsets.symmetric(vertical: 8),
-  Duration displayDuration = snackbarDisplayDuration,
-}) async {
-  final colors = context.themeStyle.colors;
-  await _previousSnack?.dismiss();
-
-  _previousSnack = Flushbar(
-    messageText: Text(
-      isOneLine ? message.overflow : message,
-      style: StyleRes.regular16.copyWith(color: colors.textPrimary),
-      maxLines: isOneLine ? 1 : null,
-    ),
-    mainButton: CommonButton.ghost(
-      onPressed: () {
-        action();
-        _previousSnack?.dismiss();
-      },
-      text: actionText,
-    ),
-    flushbarPosition: flushbarPosition,
-    backgroundColor: colors.fillingPrimary,
-    margin: const EdgeInsets.symmetric(horizontal: 16) + margin,
-    duration: displayDuration,
-  );
-
-  // ignore: use_build_context_synchronously
-  if (!context.mounted) return;
-  return _previousSnack!.show(context);
+  return _snack?.show(context) ?? Future<void>.value();
 }
