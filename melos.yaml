@@ -6,12 +6,12 @@ packages:
 
 scripts:
   decrypt-secrets:
-    run: bash scripts/decrypt-secrets.sh
     description: Decrypt secrets
+    run: bash scripts/decrypt-secrets.sh
 
   codegen:
-    exec: "flutter packages pub run build_runner build --delete-conflicting-outputs"
     description: Generate code for all packages
+    exec: "flutter packages pub run build_runner build --delete-conflicting-outputs"
     # concurrency set to ONE because we SHOULD generate all code for packages prior we
     # started generation for the app
     concurrency: 1
@@ -22,25 +22,29 @@ scripts:
   # TODO(nesquikm): we have to isolane runing dart_code_metrics for the main app because we
   # can't add dart_code_metrics to the app due to dependency incompatibility
   analyze:
-    run: melos run analyze_all_packages --no-select && cd packages/ui_components_lib && flutter pub run dart_code_metrics:metrics analyze ../../lib
     description: Analyze all packages and run dart_code_metrics for the main app
+    run: melos run analyze_subpackages --no-select && cd packages/ui_components_lib && flutter pub run dart_code_metrics:metrics analyze ../../lib
+    failFast: true
 
-  analyze_all_packages:
-    exec: flutter analyze . && flutter pub run dart_code_metrics:metrics analyze lib
+  analyze_subpackages:
     description: Analyze a specific package in this project.
+    exec: flutter analyze . && flutter pub run dart_code_metrics:metrics analyze lib
+    failFast: true
+    packageFilters:
+      dependsOn: "dart_code_metrics"
 
   check-format:
+    description: Check the format of a specific package in this project.
     exec: dart format --set-exit-if-changed .
     failFast: true
-    description: Check the format of a specific package in this project.
 
   test:
-    run: melos run test:dart --no-select && melos run test:flutter --no-select
     description: Run all Dart & Flutter tests in this project.
+    run: melos run test:dart --no-select && melos run test:flutter --no-select
 
   test:dart:
-    exec: "dart test test"
     description: Run Dart tests for a specific package in this project.
+    exec: "dart test test"
     concurrency: 1
     failFast: true
     packageFilters:
@@ -48,8 +52,8 @@ scripts:
       dirExists: test
 
   test:flutter:
-    exec: "flutter test test"
     description: Run Flutter tests for a specific package in this project.
+    exec: "flutter test test"
     concurrency: 1
     failFast: true
     packageFilters:
@@ -57,10 +61,10 @@ scripts:
       dirExists: test
 
   test:integration:
+    description: Run Flutter teintegration teststs for a specific package in this project.
     # TODO(nesquikm): Maybe we should separate integration_test for the app and packages
     # because packages may not use flavors at all
     exec: "flutter test --flavor production integration_test"
-    description: Run Flutter teintegration teststs for a specific package in this project.
     concurrency: 1
     failFast: true
     packageFilters:
@@ -68,33 +72,33 @@ scripts:
       dirExists: integration_test
 
   check-all:
-    run: melos check-format && melos analyze && melos test && melos test:integration
     description: Prepare to commit by checking all things
+    run: melos check-format && melos analyze && melos test && melos test:integration
     failFast: true
 
   build:storybook:
-    run: bash scripts/build-storybook.sh
     description: Build the storybook
+    run: bash scripts/build-storybook.sh
 
   build:ios_match_assure:
-    run: bash scripts/ios-match-assure.sh
     description: Making sure the iOS certificates and profiles are installed
+    run: bash scripts/ios-match-assure.sh
 
   build:ios_match_new_devices:
-    run: bash scripts/ios-match-new-devices.sh
     description: Registering new devices already added through devportal
+    run: bash scripts/ios-match-new-devices.sh
 
   build:deploy_fad:
-    run: bash scripts/build-deploy-fad.sh
     description: Build and deploy to FAD
+    run: bash scripts/build-deploy-fad.sh
 
   build:deploy_store:
-    run: bash scripts/build-deploy-store.sh
     description: Build and deploy to Testflight and Google Play internal
+    run: bash scripts/build-deploy-store.sh
 
   build:deploy_fad_store:
-    run: bash scripts/build-deploy-fad-store.sh
     description: Build and deploy to FAD, Testflight and Google Play internal
+    run: bash scripts/build-deploy-fad-store.sh
 
 command:
   clean:

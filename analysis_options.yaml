@@ -29,7 +29,6 @@ dart_code_metrics:
     - avoid-unnecessary-setstate
     - avoid-unnecessary-type-assertions
     - avoid-unnecessary-type-casts
-    - avoid-use-expanded-as-spacer
     - avoid-unrelated-type-assertions
     - avoid-wrapping-in-padding
     - avoid-shrink-wrap-in-lists
@@ -47,7 +46,6 @@ dart_code_metrics:
     - prefer-last
     - prefer-trailing-comma
     - prefer-conditional-expressions
-    - prefer-correct-edge-insets-constructor-rule
     - prefer-correct-identifier-length:
         exceptions: [ 'i', 'x', 'y', 'r', 't' ]
         min-identifier-length: 2
