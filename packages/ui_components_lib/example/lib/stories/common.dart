@@ -50,7 +50,7 @@ class CommonStory extends StatelessWidget {
               titleText: 'Not centered title',
               subtitleTopText: 'TopSubtitle',
               subtitleBottomWidget: CommonButton(
-                height: Dimens.dimens05,
+                height: Dimens.d20,
                 padding: EdgeInsets.zero,
                 buttonType: EverButtonType.ghost,
                 fillWidth: false,

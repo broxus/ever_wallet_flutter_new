@@ -2,8 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:ui_components_lib/ui_components_lib.dart';
 
 /// Default height of the common button
-const commonButtonHeight = Dimens.dimens14;
-const defaultSquircleRadius = Dimens.dimens25;
+const commonButtonHeight = Dimens.d56;
+const defaultSquircleRadius = Dimens.d100;
 
 /// {@template common_button}
 /// Default button in the app with background.
@@ -208,7 +208,7 @@ class _CommonButtonState extends State<CommonButton> {
         child = Padding(
           // TODO(nesquikm): dimens12 seems illegal here :)
           padding: widget.padding ??
-              const EdgeInsets.symmetric(horizontal: Dimens.dimens12),
+              const EdgeInsets.symmetric(horizontal: Dimens.d48),
           child: Center(
             child: SizedBox(
               width: Dimens.large,

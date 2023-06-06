@@ -140,7 +140,7 @@ class _CommonIconButtonState extends State<CommonIconButton> {
         padding: widget.outerPadding ?? EdgeInsets.zero,
         child: Material(
           shape: RoundedRectangleBorder(
-            borderRadius: BorderRadius.circular(Dimens.dimens23),
+            borderRadius: BorderRadius.circular(Dimens.d92),
           ),
           color: backgroundColor,
           child: InkWell(
@@ -149,14 +149,13 @@ class _CommonIconButtonState extends State<CommonIconButton> {
             highlightColor: Colors.transparent,
             // TODO(alex-a4): maybe we should use something
             // like Dimens.radius.large?
-            borderRadius: BorderRadius.circular(Dimens.dimens23),
+            borderRadius: BorderRadius.circular(Dimens.d92),
             onTap: widget.onPressed,
             onLongPress: widget.onLongPress,
             focusNode: widget.focusNode,
             onHighlightChanged: _onHighlightChanged,
             child: Padding(
-              padding:
-                  widget.innerPadding ?? const EdgeInsets.all(Dimens.dimens05),
+              padding: widget.innerPadding ?? const EdgeInsets.all(Dimens.d20),
               child: CommonButtonIconWidget(
                 icon: widget.icon,
                 svg: widget.svg,
