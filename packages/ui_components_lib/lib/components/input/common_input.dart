@@ -335,39 +335,38 @@ class _CommonInputState extends State<CommonInput> {
           suffixIcon: _buildSuffixIcon(colors),
           suffixIconConstraints: _suffixIconConstraints(),
           prefixIconConstraints: widget.prefixIcon == null
-              ? const BoxConstraints(maxHeight: 0, maxWidth: Dimens.dimens04)
+              ? const BoxConstraints(maxHeight: 0, maxWidth: Dimens.d16)
               : const BoxConstraints(
                   minHeight: commonInputHeight,
-                  minWidth: 35,
+                  minWidth: Dimens.d40,
                 ),
-          prefixIcon:
-              widget.prefixIcon ?? const SizedBox(width: Dimens.dimens04),
+          prefixIcon: widget.prefixIcon ?? const SizedBox(width: Dimens.d16),
           border: SquircleInputBorder(
-            squircleRadius: Dimens.dimens04,
+            squircleRadius: Dimens.d16,
             borderSide: BorderSide(
               color: widget.inactiveBorderColor ?? colors.strokePrimary,
             ),
           ),
           enabledBorder: SquircleInputBorder(
-            squircleRadius: Dimens.dimens04,
+            squircleRadius: Dimens.d16,
             borderSide: BorderSide(
               color: widget.inactiveBorderColor ?? colors.strokePrimary,
             ),
           ),
           focusedBorder: SquircleInputBorder(
-            squircleRadius: Dimens.dimens04,
+            squircleRadius: Dimens.d16,
             borderSide: BorderSide(
               color: colors.strokeContrast,
             ),
           ),
           errorBorder: SquircleInputBorder(
-            squircleRadius: Dimens.dimens04,
+            squircleRadius: Dimens.d16,
             borderSide: BorderSide(
               color: widget.errorColor ?? colors.alert,
             ),
           ),
           focusedErrorBorder: SquircleInputBorder(
-            squircleRadius: Dimens.dimens04,
+            squircleRadius: Dimens.d16,
             borderSide: BorderSide(
               color: widget.errorColor ?? colors.alert,
             ),
@@ -424,40 +423,40 @@ class _CommonInputState extends State<CommonInput> {
               prefixIconConstraints: widget.prefixIcon == null
                   ? const BoxConstraints(
                       maxHeight: 0,
-                      maxWidth: Dimens.dimens04,
+                      maxWidth: Dimens.d16,
                     )
                   : const BoxConstraints(
                       minHeight: commonInputHeight,
-                      minWidth: Dimens.dimens09,
+                      minWidth: Dimens.d40,
                     ),
               prefixIcon:
-                  widget.prefixIcon ?? const SizedBox(width: Dimens.dimens04),
+                  widget.prefixIcon ?? const SizedBox(width: Dimens.d16),
               border: SquircleInputBorder(
-                squircleRadius: Dimens.dimens04,
+                squircleRadius: Dimens.d16,
                 borderSide: BorderSide(
                   color: widget.inactiveBorderColor ?? colors.strokePrimary,
                 ),
               ),
               enabledBorder: SquircleInputBorder(
-                squircleRadius: Dimens.dimens04,
+                squircleRadius: Dimens.d16,
                 borderSide: BorderSide(
                   color: widget.inactiveBorderColor ?? colors.strokePrimary,
                 ),
               ),
               focusedBorder: SquircleInputBorder(
-                squircleRadius: Dimens.dimens04,
+                squircleRadius: Dimens.d16,
                 borderSide: BorderSide(
                   color: colors.strokeContrast,
                 ),
               ),
               errorBorder: SquircleInputBorder(
-                squircleRadius: Dimens.dimens04,
+                squircleRadius: Dimens.d16,
                 borderSide: BorderSide(
                   color: widget.errorColor ?? colors.alert,
                 ),
               ),
               focusedErrorBorder: SquircleInputBorder(
-                squircleRadius: Dimens.dimens04,
+                squircleRadius: Dimens.d16,
                 borderSide: BorderSide(
                   color: widget.errorColor ?? colors.alert,
                 ),
@@ -475,8 +474,8 @@ class _CommonInputState extends State<CommonInput> {
                   _defaultSuggestionItemBuilder(context, item, colors),
           suggestionsBoxDecoration: SuggestionsBoxDecoration(
             hasScrollbar: false,
-            constraints: const BoxConstraints(maxWidth: Dimens.dimens42),
-            shape: const SquircleShapeBorder(cornerRadius: Dimens.dimens04),
+            constraints: const BoxConstraints(maxWidth: Dimens.d168),
+            shape: const SquircleShapeBorder(cornerRadius: Dimens.d16),
             color: widget.suggestionBackground ?? colors.backgroundSecondary,
           ),
           onSuggestionSelected: onSuggestionSelected,
@@ -492,8 +491,8 @@ class _CommonInputState extends State<CommonInput> {
     ColorsPalette colors,
   ) {
     return Container(
-      height: Dimens.dimens10,
-      margin: const EdgeInsets.all(Dimens.dimens03),
+      height: Dimens.d40,
+      margin: const EdgeInsets.all(Dimens.d12),
       child: ListTile(
         title: Text(
           itemData,

@@ -89,12 +89,12 @@ class _ColorItem extends StatelessWidget {
         Theme.of(context).scaffoldBackgroundColor.computeLuminance() > 0.7;
 
     return SizedBox(
-      width: Dimens.dimens50,
+      width: Dimens.d200,
       child: Column(
         children: [
           Container(
-            width: Dimens.dimens37,
-            height: Dimens.dimens25,
+            width: Dimens.d148,
+            height: Dimens.d100,
             margin: const EdgeInsets.all(16),
             decoration: BoxDecoration(
               color: color,

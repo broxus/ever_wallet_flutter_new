@@ -96,7 +96,7 @@ class CommonSwitcher extends StatelessWidget {
     required this.thumbSize,
     super.key,
     // TODO(nesquikm): add to *large maybe?
-    this.width = Dimens.dimens14,
+    this.width = Dimens.d56,
     this.height = Dimens.xxLarge,
     this.thumbChild,
   });
@@ -133,7 +133,7 @@ class CommonSwitcher extends StatelessWidget {
       decoration: BoxDecoration(
         color: backgroundColor,
         // TODO(nesquikm): add separated radius dimensions maybe?
-        borderRadius: BorderRadius.circular(Dimens.dimens25),
+        borderRadius: BorderRadius.circular(Dimens.d92),
       ),
       child: AnimatedAlign(
         duration: kThemeAnimationDuration,

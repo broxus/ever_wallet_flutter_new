@@ -50,7 +50,7 @@ class CommonStory extends StatelessWidget {
               titleText: 'Not centered title',
               subtitleTopText: 'TopSubtitle',
               subtitleBottomWidget: CommonButton(
-                height: Dimens.dimens05,
+                height: Dimens.d20,
                 padding: EdgeInsets.zero,
                 buttonType: EverButtonType.ghost,
                 fillWidth: false,
@@ -65,6 +65,12 @@ class CommonStory extends StatelessWidget {
                   buttonType: EverButtonType.ghost,
                   text: 'Action',
                   // ignore: no-empty-block
+                  onPressed: () {},
+                ),
+                CommonIconButton.icon(
+                  innerPadding: appBarIconButtonInnerPadding,
+                  icon: Icons.access_alarm_sharp,
+                  buttonType: EverButtonType.primary,
                   onPressed: () {},
                 ),
               ],

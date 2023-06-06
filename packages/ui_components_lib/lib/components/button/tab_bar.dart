@@ -61,9 +61,9 @@ class CommonTabBar<T> extends StatelessWidget {
       text: builder(context, v),
       // TODO(alex-a4): mabye we should use something
       // like Dimens.buttonHeight.medium?
-      height: Dimens.dimens12,
+      height: Dimens.d48,
       // TODO(alex-a4): aaand default squircle radius?
-      squircleRadius: Dimens.dimens03,
+      squircleRadius: Dimens.d12,
       backgroundColor:
           isSelected ? colors.backgroundPrimary : colors.backgroundSecondary,
       contentColor: isSelected ? colors.textContrast : colors.textSecondary,

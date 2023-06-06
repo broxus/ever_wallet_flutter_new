@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:ui_components_lib/ui_components_lib.dart';
 
 /// Default inner padding (from icon to border)
-const defaultCommonIconButtonInnerPadding = Dimens.dimens05;
+const defaultCommonIconButtonInnerPadding = Dimens.d20;
 
 /// Default full size of icon button (*2 because EdgeInsets.all)
 const defaultCommonIconButtonSize =
@@ -148,7 +148,7 @@ class _CommonIconButtonState extends State<CommonIconButton> {
         padding: widget.outerPadding ?? EdgeInsets.zero,
         child: Material(
           shape: RoundedRectangleBorder(
-            borderRadius: BorderRadius.circular(Dimens.dimens23),
+            borderRadius: BorderRadius.circular(Dimens.d92),
           ),
           color: backgroundColor,
           child: InkWell(
@@ -157,7 +157,7 @@ class _CommonIconButtonState extends State<CommonIconButton> {
             highlightColor: Colors.transparent,
             // TODO(alex-a4): maybe we should use something
             // like Dimens.radius.large?
-            borderRadius: BorderRadius.circular(Dimens.dimens23),
+            borderRadius: BorderRadius.circular(Dimens.d92),
             onTap: widget.onPressed,
             onLongPress: widget.onLongPress,
             focusNode: widget.focusNode,
