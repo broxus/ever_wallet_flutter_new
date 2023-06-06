@@ -460,7 +460,7 @@ class GeneralStorageService extends AbstractStorageService {
   /// Clear information about all currencies.
   Future<void> clearCurrencies() async {
     await _storage.clearDomain(_currenciesKey);
-    await _currencySubject.add({});
+    _currencySubject.add({});
   }
 
   /// Get flag if What's StEver screen was shown

@@ -38,6 +38,7 @@ GoRouter getRouter(BuildContext _) {
   }
 
   final router = GoRouter(
+    navigatorKey: NavigationService.navigatorKey,
     redirect: (context, state) {
       final location = state.location;
       // Save current location in NavigationService
