@@ -7,6 +7,7 @@ import 'package:injectable/injectable.dart';
 
 @singleton
 class NavigationService {
+  // ignore: avoid-global-state
   static GlobalKey<NavigatorState> navigatorKey = GlobalKey<NavigatorState>();
 
   Future<void> init(String initialLocation) async {

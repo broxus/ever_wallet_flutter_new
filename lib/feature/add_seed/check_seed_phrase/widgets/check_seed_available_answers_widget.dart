@@ -1,4 +1,3 @@
-import 'package:app/app/utils/iterable_extensions.dart';
 import 'package:app/feature/add_seed/check_seed_phrase/check_seed_phrase.dart';
 import 'package:dotted_border/dotted_border.dart';
 import 'package:flutter/material.dart';
@@ -62,7 +61,7 @@ class CheckSeedAvailableAnswersWidget extends StatelessWidget {
             onPressed: isSelected ? null : () => selectAnswer(answer),
             child: DottedBorder(
               dashPattern: isSelected ? const [4, 4] : const [1, 0],
-              color: colors.accentTertiary,
+              color: colors.strokePrimary,
               child: Center(
                 child: Padding(
                   padding: const EdgeInsets.symmetric(
@@ -71,8 +70,8 @@ class CheckSeedAvailableAnswersWidget extends StatelessWidget {
                   ),
                   child: Text(
                     isSelected ? '' : answer,
-                    style: StyleRes.medium16
-                        .copyWith(color: colors.textButtonSecondary),
+                    style: StyleRes.secondaryBold
+                        .copyWith(color: colors.textPrimary),
                   ),
                 ),
               ),

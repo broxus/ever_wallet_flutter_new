@@ -44,16 +44,13 @@ class OnboardingView extends StatelessWidget {
                   const SizedBox(height: 12),
                   Text(
                     l10n.welcomeTitle,
-                    style: StyleRes.landingTitle.copyWith(
-                      color: colors.textPrimary,
-                    ),
+                    style: StyleRes.balance.copyWith(color: colors.textPrimary),
                   ),
                   const SizedBox(height: 16),
                   Text(
                     l10n.supportTokenAndAccessEverscale,
-                    style: StyleRes.regular16.copyWith(
-                      color: colors.textPrimary,
-                    ),
+                    style: StyleRes.primaryRegular
+                        .copyWith(color: colors.textPrimary),
                   ),
                   const SizedBox(height: 32),
                   CommonButton.primary(
@@ -62,7 +59,7 @@ class OnboardingView extends StatelessWidget {
                         context.goFurther(AppRoute.createSeed.path),
                     fillWidth: true,
                   ),
-                  const SizedBox(height: 12),
+                  const SizedBox(height: 8),
                   CommonButton.secondary(
                     text: context.l10n.signIn,
                     onPressed: () => context.goFurther(AppRoute.enterSeed.path),
@@ -83,19 +80,19 @@ class OnboardingView extends StatelessWidget {
                       children: [
                         TextSpan(
                           text: l10n.byProcessingAcceptLicense,
-                          style: StyleRes.bodyText.copyWith(
-                            color: colors.textPrimary,
+                          style: StyleRes.addRegular.copyWith(
+                            color: colors.textSecondary,
                           ),
                         ),
                         TextSpan(
                           text: l10n.readHere,
-                          style: StyleRes.bodyText.copyWith(
-                            color: colors.accentPrimary,
-                          ),
+                          style:
+                              StyleRes.addRegular.copyWith(color: colors.blue),
                           recognizer: TapGestureRecognizer()..onTap = onLinkTap,
                         ),
                       ],
                     ),
+                    textAlign: TextAlign.center,
                   ),
                 ],
               ),

@@ -1,4 +1,3 @@
-import 'package:app/app/utils/iterable_extensions.dart';
 import 'package:app/feature/add_seed/check_seed_phrase/check_seed_phrase.dart';
 import 'package:app/l10n/l10n.dart';
 import 'package:collection/collection.dart';
@@ -47,6 +46,7 @@ class CheckSeedAnswersWidget extends StatelessWidget {
         builder: (context) {
           final colors = context.themeStyle.colors;
           final l10n = context.l10n;
+
           return PressInkWidget(
             onPressed: isSelected ? () => clearAnswer(answer.word) : null,
             child: Container(
@@ -54,17 +54,17 @@ class CheckSeedAnswersWidget extends StatelessWidget {
               padding: const EdgeInsets.symmetric(vertical: 12, horizontal: 4),
               decoration: BoxDecoration(
                 border: Border.all(
-                  color:
-                      isCurrent ? colors.accentPrimary : colors.fillingTertiary,
+                  color: isCurrent
+                      ? colors.backgroundPrimary
+                      : colors.backgroundSecondary,
                 ),
               ),
               child: Text(
                 isSelected
                     ? '${answer.wordIndex + 1}. ${answer.word}'
                     : '${l10n.word} #${answer.wordIndex + 1}',
-                style: StyleRes.regular16.copyWith(
-                  color:
-                      isSelected ? colors.textSecondary : colors.textTertiary,
+                style: StyleRes.button.copyWith(
+                  color: isSelected ? colors.textSecondary : colors.textPrimary,
                 ),
               ),
             ),

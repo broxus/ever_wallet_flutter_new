@@ -1,3 +1,5 @@
+import 'dart:io';
+
 import 'package:http/http.dart' as http;
 import 'package:injectable/injectable.dart';
 import 'package:logging/logging.dart';
@@ -35,7 +37,7 @@ class HttpService {
     final message =
         // ignore: lines_longer_than_80_chars
         '$method ${response.statusCode}, $endpoint, ${response.reasonPhrase ?? 'unknown reason'}';
-    if (response.statusCode >= 400) {
+    if (response.statusCode >= HttpStatus.badRequest) {
       _log.severe(message);
     } else {
       _log.finest(message);

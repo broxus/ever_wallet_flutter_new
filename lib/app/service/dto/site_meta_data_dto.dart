@@ -1,3 +1,4 @@
+// ignore_for_file: no-magic-number
 import 'package:app/data/models/site_meta_data.dart';
 import 'package:freezed_annotation/freezed_annotation.dart';
 import 'package:hive_flutter/hive_flutter.dart';

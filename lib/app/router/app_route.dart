@@ -23,6 +23,7 @@ enum AppRoute {
   final bool isSaveLocation;
 
   static AppRoute getByPath(String path) {
+    // ignore: prefer-enums-by-name
     return AppRoute.values.firstWhere(
       (e) => e.path == path,
       orElse: () => defaultRoute,
@@ -37,8 +38,10 @@ String getRootPath(String location) {
   final segments = Uri.parse(location).pathSegments;
   if (segments.isEmpty) {
     AppRoute._log.severe('getRootPath: no root location found');
+
     return AppRoute.defaultRoute.path;
   }
+
   return '/${segments.first}';
 }
 
@@ -51,10 +54,9 @@ AppRoute getRootAppRoute(String location) {
 /// NavigationService.
 bool canSaveLocation(String location) {
   final uri = Uri.parse(location);
-  final allSaved = uri.pathSegments
-      .every((segment) => AppRoute.getByPath(segment).isSaveLocation);
 
-  return allSaved;
+  return uri.pathSegments
+      .every((segment) => AppRoute.getByPath(segment).isSaveLocation);
 }
 
 extension NavigationHelper on BuildContext {

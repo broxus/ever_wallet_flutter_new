@@ -1,6 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:ui_components_lib/ui_components_lib.dart';
 
+/// Default size for [CommonButtonIconWidget]
+const defaultCommonIconSize = 20.0;
+
 /// {@template common_button_icon}
 /// Widget of icon that allows you to put SvgPicture or Icon in [CommonButton].
 ///
@@ -50,20 +53,28 @@ class CommonButtonIconWidget extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final buttonStyle = EverButtonStyleProvider.of(context);
-    final isDisabled = buttonStyle.isDisabled;
-    final style = buttonStyle.style;
+    final color = buttonStyle.contentColor;
 
-    final color = isDisabled
-        ? style.contentDisabledColor ?? style.contentColor
-        : style.contentColor;
+    return AnimatedColor(
+      color: color,
+      duration: kThemeAnimationDuration,
+      builder: (context, color) {
+        if (icon != null) {
+          return Icon(
+            icon,
+            color: color,
+            size: size ?? defaultCommonIconSize,
+          );
+        }
 
-    if (icon != null) {
-      return Icon(icon, color: color, size: size ?? 20);
-    }
-
-    return SvgPicture.asset(
-      svg!,
-      theme: SvgTheme(currentColor: color, fontSize: size ?? 20),
+        return SvgPicture.asset(
+          svg!,
+          theme: SvgTheme(
+            currentColor: color,
+            fontSize: size ?? defaultCommonIconSize,
+          ),
+        );
+      },
     );
   }
 }

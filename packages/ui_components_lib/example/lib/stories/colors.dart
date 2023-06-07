@@ -8,137 +8,64 @@ class ColorsStory extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final colors = context.themeStyle.colors;
+
     return Scaffold(
-      appBar: AppBar(
-        title: const Text('Colors (based on theme)'),
-      ),
+      appBar: const DefaultAppBar(titleText: 'Colors (based on theme)'),
       body: SingleChildScrollView(
         child: Wrap(
           children: [
             /// Order for colors same as in ColorsPalette
             _ColorItem(
-              color: colors.backgroundPrimary,
-              name: 'backgroundPrimary',
-            ),
-            _ColorItem(
-              color: colors.backgroundOverlay,
-              name: 'backgroundOverlay',
-            ),
-            _ColorItem(
               color: colors.textPrimary,
               name: 'textPrimary',
             ),
             _ColorItem(
-              color: colors.textButtonPrimary,
-              name: 'textButtonPrimary',
+              color: colors.textSecondary,
+              name: 'textSecondary',
             ),
             _ColorItem(
-              color: colors.textButtonSecondary,
-              name: 'textButtonSecondary',
+              color: colors.textContrast,
+              name: 'textContrast',
             ),
             _ColorItem(
-              color: colors.textNegative,
-              name: 'textNegative',
+              color: colors.appBackground,
+              name: 'appBackground',
             ),
             _ColorItem(
-              color: colors.textPositive,
-              name: 'textPositive',
+              color: colors.backgroundPrimary,
+              name: 'backgroundPrimary',
             ),
             _ColorItem(
-              color: colors.textButtonPressed,
-              name: 'textButtonPressed',
+              color: colors.backgroundSecondary,
+              name: 'backgroundSecondary',
             ),
             _ColorItem(
-              color: colors.textButtonDisabled,
-              name: 'textButtonDisabled',
+              color: colors.strokePrimary,
+              name: 'strokePrimary',
             ),
             _ColorItem(
-              color: colors.accentPrimary,
-              name: 'accentPrimary',
+              color: colors.strokeSecondary,
+              name: 'strokeSecondary',
             ),
             _ColorItem(
-              color: colors.accentPrimaryPressed,
-              name: 'accentPrimaryPressed',
+              color: colors.strokeContrast,
+              name: 'strokeContrast',
             ),
             _ColorItem(
-              color: colors.accentPrimaryDisabled,
-              name: 'accentPrimaryDisabled',
+              color: colors.alert,
+              name: 'alert',
             ),
             _ColorItem(
-              color: colors.accentSecondary,
-              name: 'accentSecondary',
+              color: colors.apply,
+              name: 'apply',
             ),
             _ColorItem(
-              color: colors.accentSecondaryPressed,
-              name: 'accentSecondaryPressed',
+              color: colors.blue,
+              name: 'blue',
             ),
             _ColorItem(
-              color: colors.accentSecondaryDisabled,
-              name: 'accentSecondaryDisabled',
-            ),
-            _ColorItem(
-              color: colors.accentTertiary,
-              name: 'accentTertiary',
-            ),
-            _ColorItem(
-              color: colors.accentTertiaryPressed,
-              name: 'accentTertiaryPressed',
-            ),
-            _ColorItem(
-              color: colors.accentTertiaryDisabled,
-              name: 'accentTertiaryDisabled',
-            ),
-            _ColorItem(
-              color: colors.accentWarning,
-              name: 'accentWarning',
-            ),
-            _ColorItem(
-              color: colors.accentWarningPressed,
-              name: 'accentWarningPressed',
-            ),
-            _ColorItem(
-              color: colors.accentWarningDisabled,
-              name: 'accentWarningDisabled',
-            ),
-            _ColorItem(
-              color: colors.fillingPrimary,
-              name: 'fillingPrimary',
-            ),
-            _ColorItem(
-              color: colors.fillingSecondary,
-              name: 'fillingSecondary',
-            ),
-            _ColorItem(
-              color: colors.fillingTertiary,
-              name: 'fillingTertiary',
-            ),
-            _ColorItem(
-              color: colors.fillingPressed,
-              name: 'fillingHover',
-            ),
-            _ColorItem(
-              color: colors.statusPositiveTitle,
-              name: 'statusPositiveTitle',
-            ),
-            _ColorItem(
-              color: colors.statusPositiveBackground,
-              name: 'statusPositiveBackground',
-            ),
-            _ColorItem(
-              color: colors.statusMediumTitle,
-              name: 'statusMediumTitle',
-            ),
-            _ColorItem(
-              color: colors.statusMediumBackground,
-              name: 'statusMediumBackground',
-            ),
-            _ColorItem(
-              color: colors.statusNegativeTitle,
-              name: 'statusNegativeTitle',
-            ),
-            _ColorItem(
-              color: colors.statusNegativeBackground,
-              name: 'statusNegativeBackground',
+              color: colors.blueSecond,
+              name: 'blueSecond',
             ),
           ],
         ),
@@ -160,20 +87,21 @@ class _ColorItem extends StatelessWidget {
   Widget build(BuildContext context) {
     final isBackgroundLight =
         Theme.of(context).scaffoldBackgroundColor.computeLuminance() > 0.7;
+
     return SizedBox(
-      width: 200,
+      width: Dimens.d200,
       child: Column(
         children: [
           Container(
-            width: 150,
-            height: 100,
+            width: Dimens.d148,
+            height: Dimens.d100,
             margin: const EdgeInsets.all(16),
             decoration: BoxDecoration(
               color: color,
               border: Border.all(
                 color: isBackgroundLight ? Colors.black : Colors.white,
               ),
-              borderRadius: BorderRadius.circular(10),
+              borderRadius: BorderRadius.circular(Dimens.medium),
             ),
           ),
           Center(
@@ -184,7 +112,7 @@ class _ColorItem extends StatelessWidget {
                 textAlign: TextAlign.center,
                 style: TextStyle(
                   color: isBackgroundLight ? Colors.black : Colors.white,
-                  fontSize: 16,
+                  fontSize: Dimens.medium,
                 ),
               ),
             ),

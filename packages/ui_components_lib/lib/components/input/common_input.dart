@@ -4,7 +4,8 @@ import 'package:flutter_typeahead/flutter_typeahead.dart';
 import 'package:ui_components_lib/ui_components_lib.dart';
 
 /// Default height for input
-const commonInputHeight = 44.0;
+const commonInputHeight = 56.0;
+const suggestionDividerSize = 1.0;
 
 /// {@template common_input}
 /// Defaut input field that could be used in application.
@@ -33,7 +34,7 @@ class CommonInput extends StatefulWidget {
     this.validateMode,
     this.onChanged,
     this.inputFormatters,
-    this.labelText,
+    this.hintText,
     this.prefixIcon,
     this.suffixIcon,
     this.suggestionsCallback,
@@ -44,11 +45,13 @@ class CommonInput extends StatefulWidget {
     this.needClearButton = true,
     this.suggestionBackground,
     this.textStyle,
-    this.labelStyle,
+    this.hintStyle,
     this.enabledBorderColor,
     this.inactiveBorderColor,
     this.errorColor,
     this.obscureText = false,
+    this.titleText,
+    this.subtitleText,
   });
 
   /// Height of input field
@@ -87,8 +90,8 @@ class CommonInput extends StatefulWidget {
   /// Input formatters
   final List<TextInputFormatter>? inputFormatters;
 
-  /// Label text for input field
-  final String? labelText;
+  /// Hint text for input field
+  final String? hintText;
 
   /// Icon to show before input field.
   /// If you want specify custom icon, you need to wrap your input with
@@ -105,7 +108,8 @@ class CommonInput extends StatefulWidget {
   /// If null, then TextField will be used
   final SuggestionsCallback<String>? suggestionsCallback;
 
-  /// Builder function for suggestions, no need for TextField
+  /// Builder function for suggestions, no need for TextField.
+  /// If null, default is used
   final ItemBuilder<String>? itemBuilder;
 
   /// Callback for suggestion selection, no need for TextField
@@ -130,12 +134,19 @@ class CommonInput extends StatefulWidget {
   final Color? suggestionBackground;
 
   /// Style for text of input, color used for cursor, default
-  /// [StyleRes.regular16] and [ColorsPalette.textPrimary]
+  /// [StyleRes.primaryRegular] and [ColorsPalette.textPrimary]
   final TextStyle? textStyle;
 
-  /// Style for label text, default [StyleRes.medium14] and
-  /// [ColorsPalette.textTertiary].
-  final TextStyle? labelStyle;
+  /// Style for label text, default [StyleRes.primaryRegular] and
+  /// [ColorsPalette.textSecondary].
+  final TextStyle? hintStyle;
+
+  /// Title (name) of input, it displays above input
+  final String? titleText;
+
+  /// Subtitle (additional info) of input, displays near title.
+  /// To display subtitle, specify [titleText].
+  final String? subtitleText;
 
   /// If text should look like password, default false
   final bool obscureText;
@@ -159,6 +170,12 @@ class _CommonInputState extends State<CommonInput> {
   }
 
   @override
+  void dispose() {
+    _controller.removeListener(_handleDidChange);
+    super.dispose();
+  }
+
+  @override
   void didChangeDependencies() {
     super.didChangeDependencies();
     _handleInput();
@@ -171,6 +188,7 @@ class _CommonInputState extends State<CommonInput> {
       _controller = widget.controller!;
       _controller.addListener(_handleDidChange);
     }
+
     return super.didUpdateWidget(oldWidget);
   }
 
@@ -187,232 +205,96 @@ class _CommonInputState extends State<CommonInput> {
     isEmpty = inputText.isEmpty;
   }
 
+  // ignore: long-method
+  Widget _onBuild(FormFieldState<String> state) {
+    final colors = context.themeStyle.colors;
+    field = state;
+
+    Widget child;
+
+    final suggestionsCallback = widget.suggestionsCallback;
+    child = suggestionsCallback == null
+        ? _commonInputField(colors: colors, hasError: state.hasError)
+        : _suggestionsInputField(
+            colors: colors,
+            hasError: state.hasError,
+            suggestionsCallback: suggestionsCallback,
+          );
+
+    return Column(
+      mainAxisSize: MainAxisSize.min,
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        if (widget.titleText != null) ...[
+          Text.rich(
+            TextSpan(
+              children: [
+                TextSpan(
+                  text: widget.titleText,
+                  style: StyleRes.secondaryBold
+                      .copyWith(color: colors.textPrimary),
+                ),
+                if (widget.subtitleText != null) ...[
+                  const WidgetSpan(child: SizedBox(width: 4)),
+                  TextSpan(
+                    text: widget.subtitleText,
+                    style: StyleRes.addRegular
+                        .copyWith(color: colors.textSecondary),
+                  ),
+                ],
+              ],
+            ),
+          ),
+          const SizedBox(height: 8),
+        ],
+        child,
+        if (state.errorText != null && state.errorText!.isNotEmpty) ...[
+          const SizedBox(height: 4),
+          Text(
+            state.errorText!,
+            style: StyleRes.addRegular.copyWith(
+              color: widget.errorColor ?? colors.alert,
+            ),
+          ),
+        ],
+      ],
+    );
+  }
+
   @override
   Widget build(BuildContext context) => FormField<String>(
         validator: widget.validator,
         autovalidateMode: widget.validateMode,
         initialValue: _controller.text,
-        builder: (state) {
-          final colors = context.themeStyle.colors;
-          field = state;
-
-          Widget child;
-
-          final suggestionsCallback = widget.suggestionsCallback;
-          if (suggestionsCallback == null) {
-            child = SizedBox(
-              height: widget.height ?? commonInputHeight,
-              child: TextField(
-                obscureText: widget.obscureText,
-                style: widget.textStyle ??
-                    StyleRes.regular16.copyWith(color: colors.textPrimary),
-                controller: _controller,
-                focusNode: widget.focusNode,
-                keyboardType: widget.keyboardType ?? TextInputType.text,
-                onChanged: widget.onChanged,
-                textInputAction: widget.textInputAction ?? TextInputAction.next,
-                cursorWidth: 1,
-                cursorColor: widget.textStyle?.color ?? colors.textPrimary,
-                onSubmitted: widget.onSubmitted,
-                autocorrect: widget.autocorrect,
-                enableSuggestions: widget.enableSuggestions,
-                inputFormatters: widget.inputFormatters,
-                decoration: InputDecoration(
-                  errorText: state.hasError ? '' : null,
-                  errorStyle: const TextStyle(fontSize: 0, height: 0),
-                  labelText: widget.labelText,
-                  labelStyle: widget.labelStyle ??
-                      StyleRes.medium14.copyWith(color: colors.textSecondary),
-                  contentPadding: EdgeInsets.zero,
-                  suffixIcon: _buildSuffixIcon(),
-                  prefixIconConstraints: widget.prefixIcon == null
-                      ? const BoxConstraints(maxHeight: 0, maxWidth: 16)
-                      : const BoxConstraints(
-                          minHeight: commonInputHeight,
-                          minWidth: 35,
-                        ),
-                  prefixIcon: widget.prefixIcon ?? const SizedBox(width: 16),
-                  border: OutlineInputBorder(
-                    gapPadding: 1,
-                    borderRadius: BorderRadius.circular(0),
-                    borderSide: BorderSide(
-                      color: widget.inactiveBorderColor ?? colors.accentPrimary,
-                    ),
-                  ),
-                  enabledBorder: OutlineInputBorder(
-                    gapPadding: 1,
-                    borderRadius: BorderRadius.circular(0),
-                    borderSide: BorderSide(
-                      color:
-                          widget.inactiveBorderColor ?? colors.fillingTertiary,
-                    ),
-                  ),
-                  focusedBorder: OutlineInputBorder(
-                    gapPadding: 1,
-                    borderRadius: BorderRadius.circular(0),
-                    borderSide: BorderSide(
-                      color: colors.accentPrimary,
-                    ),
-                  ),
-                  errorBorder: OutlineInputBorder(
-                    gapPadding: 1,
-                    borderRadius: BorderRadius.circular(0),
-                    borderSide: BorderSide(
-                      color: widget.errorColor ?? colors.accentWarning,
-                    ),
-                  ),
-                  focusedErrorBorder: OutlineInputBorder(
-                    gapPadding: 1,
-                    borderRadius: BorderRadius.circular(0),
-                    borderSide: BorderSide(
-                      color: widget.errorColor ?? colors.accentWarning,
-                    ),
-                  ),
-                ),
-              ),
-            );
-          } else {
-            final itemBuilder = widget.itemBuilder;
-            final onSuggestionSelected = widget.onSuggestionSelected;
-
-            if (itemBuilder == null || onSuggestionSelected == null) {
-              assert(
-                false,
-                // ignore: lines_longer_than_80_chars
-                'itemBuilder and onSuggestionSelected must be set to use TypeAheadField',
-              );
-              child = const SizedBox();
-            } else {
-              child = SizedBox(
-                height: widget.height ?? commonInputHeight,
-                child: TypeAheadField<String>(
-                  autoFlipDirection: true,
-                  hideOnEmpty: true,
-                  hideOnError: true,
-                  hideOnLoading: true,
-                  textFieldConfiguration: TextFieldConfiguration(
-                    style: widget.textStyle ??
-                        StyleRes.regular16.copyWith(color: colors.textPrimary),
-                    controller: _controller,
-                    focusNode: widget.focusNode,
-                    keyboardType: widget.keyboardType ?? TextInputType.text,
-                    onChanged: widget.onChanged,
-                    textInputAction:
-                        widget.textInputAction ?? TextInputAction.next,
-                    cursorWidth: 1,
-                    cursorColor: widget.textStyle?.color ?? colors.textPrimary,
-                    onSubmitted: widget.onSubmitted,
-                    autocorrect: widget.autocorrect,
-                    enableSuggestions: widget.enableSuggestions,
-                    inputFormatters: widget.inputFormatters,
-                    decoration: InputDecoration(
-                      errorText: state.hasError ? '' : null,
-                      errorStyle: const TextStyle(fontSize: 0, height: 0),
-                      labelText: widget.labelText,
-                      labelStyle: widget.labelStyle ??
-                          StyleRes.medium14
-                              .copyWith(color: colors.textSecondary),
-                      contentPadding: EdgeInsets.zero,
-                      suffixIcon: _buildSuffixIcon(),
-                      prefixIconConstraints: widget.prefixIcon == null
-                          ? const BoxConstraints(maxHeight: 0, maxWidth: 16)
-                          : const BoxConstraints(
-                              minHeight: commonInputHeight,
-                              minWidth: 35,
-                            ),
-                      prefixIcon:
-                          widget.prefixIcon ?? const SizedBox(width: 16),
-                      border: OutlineInputBorder(
-                        gapPadding: 1,
-                        borderRadius: BorderRadius.circular(0),
-                        borderSide: BorderSide(
-                          color: widget.inactiveBorderColor ??
-                              colors.accentPrimary,
-                        ),
-                      ),
-                      enabledBorder: OutlineInputBorder(
-                        gapPadding: 1,
-                        borderRadius: BorderRadius.circular(0),
-                        borderSide: BorderSide(
-                          color: widget.inactiveBorderColor ??
-                              colors.fillingTertiary,
-                        ),
-                      ),
-                      focusedBorder: OutlineInputBorder(
-                        gapPadding: 1,
-                        borderRadius: BorderRadius.circular(0),
-                        borderSide: BorderSide(
-                          color: colors.accentPrimary,
-                        ),
-                      ),
-                      errorBorder: OutlineInputBorder(
-                        gapPadding: 1,
-                        borderRadius: BorderRadius.circular(0),
-                        borderSide: BorderSide(
-                          color: widget.errorColor ?? colors.accentWarning,
-                        ),
-                      ),
-                      focusedErrorBorder: OutlineInputBorder(
-                        gapPadding: 1,
-                        borderRadius: BorderRadius.circular(0),
-                        borderSide: BorderSide(
-                          color: widget.errorColor ?? colors.accentWarning,
-                        ),
-                      ),
-                    ),
-                  ),
-                  suggestionsCallback: suggestionsCallback,
-                  itemBuilder: itemBuilder,
-                  suggestionsBoxDecoration: SuggestionsBoxDecoration(
-                    color: widget.suggestionBackground ?? colors.fillingPrimary,
-                  ),
-                  onSuggestionSelected: onSuggestionSelected,
-                ),
-              );
-            }
-          }
-
-          if (widget.validator == null) return child;
-          return Column(
-            mainAxisSize: MainAxisSize.min,
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              child,
-              if (state.errorText != null && state.errorText!.isNotEmpty) ...[
-                const SizedBox(height: 4),
-                Text(
-                  state.errorText!,
-                  style: StyleRes.medium14.copyWith(
-                    color: widget.errorColor ?? colors.textNegative,
-                  ),
-                ),
-              ]
-            ],
-          );
-        },
+        builder: _onBuild,
       );
 
-  Widget _buildSuffixIcon() {
+  Widget _buildSuffixIcon(ColorsPalette colors) {
     if (widget.suffixIcon != null) return widget.suffixIcon!;
     if (widget.needClearButton && !isEmpty) {
-      return _buildClearIcon();
+      return _buildClearIcon(colors);
     }
 
     return const SizedBox.shrink();
   }
 
-  Widget _buildClearIcon() {
-    return Container(
-      constraints: const BoxConstraints(maxHeight: 30, maxWidth: 38),
-      margin: const EdgeInsets.only(left: 8),
-      alignment: Alignment.center,
-      child: CommonIconButton.icon(
-        icon: Icons.clear_rounded,
-        onPressed: _clearText,
-        outerPadding: EdgeInsets.zero,
-        color: widget.textStyle?.color ??
-            context.themeStyle.colors.fillingTertiary,
-      ),
+  BoxConstraints _suffixIconConstraints() {
+    if (widget.suffixIcon != null || widget.needClearButton && !isEmpty) {
+      return const BoxConstraints(
+        minHeight: commonInputHeight,
+        minWidth: defaultCommonIconButtonSize,
+      );
+    }
+
+    return const BoxConstraints(minHeight: commonInputHeight);
+  }
+
+  Widget _buildClearIcon(ColorsPalette colors) {
+    return CommonIconButton.icon(
+      buttonType: EverButtonType.ghost,
+      icon: Icons.clear_rounded,
+      onPressed: _clearText,
+      color: widget.textStyle?.color ?? colors.textSecondary,
     );
   }
 
@@ -420,5 +302,203 @@ class _CommonInputState extends State<CommonInput> {
     widget.onClearField?.call();
     widget.focusNode?.unfocus();
     _controller.clear();
+  }
+
+  // ignore: long-method
+  Widget _commonInputField({
+    required ColorsPalette colors,
+    required bool hasError,
+  }) {
+    return SizedBox(
+      height: widget.height ?? commonInputHeight,
+      child: TextField(
+        obscureText: widget.obscureText,
+        style: widget.textStyle ??
+            StyleRes.primaryRegular.copyWith(color: colors.textPrimary),
+        controller: _controller,
+        focusNode: widget.focusNode,
+        keyboardType: widget.keyboardType ?? TextInputType.text,
+        onChanged: widget.onChanged,
+        textInputAction: widget.textInputAction ?? TextInputAction.next,
+        cursorColor: widget.textStyle?.color ?? colors.textPrimary,
+        onSubmitted: widget.onSubmitted,
+        autocorrect: widget.autocorrect,
+        enableSuggestions: widget.enableSuggestions,
+        inputFormatters: widget.inputFormatters,
+        decoration: InputDecoration(
+          errorText: hasError ? '' : null,
+          errorStyle: const TextStyle(fontSize: 0, height: 0),
+          hintText: widget.hintText,
+          hintStyle: widget.hintStyle ??
+              StyleRes.primaryRegular.copyWith(color: colors.textSecondary),
+          contentPadding: EdgeInsets.zero,
+          suffixIcon: _buildSuffixIcon(colors),
+          suffixIconConstraints: _suffixIconConstraints(),
+          prefixIconConstraints: widget.prefixIcon == null
+              ? const BoxConstraints(maxHeight: 0, maxWidth: Dimens.d16)
+              : const BoxConstraints(
+                  minHeight: commonInputHeight,
+                  minWidth: Dimens.d40,
+                ),
+          prefixIcon: widget.prefixIcon ?? const SizedBox(width: Dimens.d16),
+          border: SquircleInputBorder(
+            squircleRadius: Dimens.d16,
+            borderSide: BorderSide(
+              color: widget.inactiveBorderColor ?? colors.strokePrimary,
+            ),
+          ),
+          enabledBorder: SquircleInputBorder(
+            squircleRadius: Dimens.d16,
+            borderSide: BorderSide(
+              color: widget.inactiveBorderColor ?? colors.strokePrimary,
+            ),
+          ),
+          focusedBorder: SquircleInputBorder(
+            squircleRadius: Dimens.d16,
+            borderSide: BorderSide(
+              color: colors.strokeContrast,
+            ),
+          ),
+          errorBorder: SquircleInputBorder(
+            squircleRadius: Dimens.d16,
+            borderSide: BorderSide(
+              color: widget.errorColor ?? colors.alert,
+            ),
+          ),
+          focusedErrorBorder: SquircleInputBorder(
+            squircleRadius: Dimens.d16,
+            borderSide: BorderSide(
+              color: widget.errorColor ?? colors.alert,
+            ),
+          ),
+        ),
+      ),
+    );
+  }
+
+  // ignore: long-method
+  Widget _suggestionsInputField({
+    required ColorsPalette colors,
+    required bool hasError,
+    required SuggestionsCallback<String> suggestionsCallback,
+  }) {
+    final onSuggestionSelected = widget.onSuggestionSelected;
+
+    if (onSuggestionSelected == null) {
+      assert(
+        false,
+        'onSuggestionSelected must be set to use TypeAheadField',
+      );
+
+      return const SizedBox();
+    } else {
+      return SizedBox(
+        height: widget.height ?? commonInputHeight,
+        child: TypeAheadField<String>(
+          autoFlipDirection: true,
+          hideOnEmpty: true,
+          hideOnError: true,
+          hideOnLoading: true,
+          textFieldConfiguration: TextFieldConfiguration(
+            style: widget.textStyle ??
+                StyleRes.primaryRegular.copyWith(color: colors.textPrimary),
+            controller: _controller,
+            focusNode: widget.focusNode,
+            keyboardType: widget.keyboardType ?? TextInputType.text,
+            onChanged: widget.onChanged,
+            textInputAction: widget.textInputAction ?? TextInputAction.next,
+            cursorColor: widget.textStyle?.color ?? colors.textPrimary,
+            onSubmitted: widget.onSubmitted,
+            autocorrect: widget.autocorrect,
+            enableSuggestions: widget.enableSuggestions,
+            inputFormatters: widget.inputFormatters,
+            decoration: InputDecoration(
+              errorText: hasError ? '' : null,
+              errorStyle: const TextStyle(fontSize: 0, height: 0),
+              hintText: widget.hintText,
+              hintStyle: widget.hintStyle ??
+                  StyleRes.primaryRegular.copyWith(color: colors.textSecondary),
+              contentPadding: EdgeInsets.zero,
+              suffixIcon: _buildSuffixIcon(colors),
+              prefixIconConstraints: widget.prefixIcon == null
+                  ? const BoxConstraints(
+                      maxHeight: 0,
+                      maxWidth: Dimens.d16,
+                    )
+                  : const BoxConstraints(
+                      minHeight: commonInputHeight,
+                      minWidth: Dimens.d40,
+                    ),
+              prefixIcon:
+                  widget.prefixIcon ?? const SizedBox(width: Dimens.d16),
+              border: SquircleInputBorder(
+                squircleRadius: Dimens.d16,
+                borderSide: BorderSide(
+                  color: widget.inactiveBorderColor ?? colors.strokePrimary,
+                ),
+              ),
+              enabledBorder: SquircleInputBorder(
+                squircleRadius: Dimens.d16,
+                borderSide: BorderSide(
+                  color: widget.inactiveBorderColor ?? colors.strokePrimary,
+                ),
+              ),
+              focusedBorder: SquircleInputBorder(
+                squircleRadius: Dimens.d16,
+                borderSide: BorderSide(
+                  color: colors.strokeContrast,
+                ),
+              ),
+              errorBorder: SquircleInputBorder(
+                squircleRadius: Dimens.d16,
+                borderSide: BorderSide(
+                  color: widget.errorColor ?? colors.alert,
+                ),
+              ),
+              focusedErrorBorder: SquircleInputBorder(
+                squircleRadius: Dimens.d16,
+                borderSide: BorderSide(
+                  color: widget.errorColor ?? colors.alert,
+                ),
+              ),
+            ),
+          ),
+          suggestionsCallback: suggestionsCallback,
+          itemSeparatorBuilder: (_, __) => Divider(
+            height: suggestionDividerSize,
+            color: colors.strokeSecondary,
+            thickness: suggestionDividerSize,
+          ),
+          itemBuilder: widget.itemBuilder ??
+              (context, item) =>
+                  _defaultSuggestionItemBuilder(context, item, colors),
+          suggestionsBoxDecoration: SuggestionsBoxDecoration(
+            hasScrollbar: false,
+            constraints: const BoxConstraints(maxWidth: Dimens.d168),
+            shape: const SquircleShapeBorder(cornerRadius: Dimens.d16),
+            color: widget.suggestionBackground ?? colors.backgroundSecondary,
+          ),
+          onSuggestionSelected: onSuggestionSelected,
+        ),
+      );
+    }
+  }
+
+  /// Default builder for suggestions item
+  Widget _defaultSuggestionItemBuilder(
+    BuildContext _,
+    String itemData,
+    ColorsPalette colors,
+  ) {
+    return Container(
+      height: Dimens.d40,
+      margin: const EdgeInsets.all(Dimens.d12),
+      child: ListTile(
+        title: Text(
+          itemData,
+          style: StyleRes.button.copyWith(color: colors.textPrimary),
+        ),
+      ),
+    );
   }
 }

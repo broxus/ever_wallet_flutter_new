@@ -78,6 +78,7 @@ mixin AccountRepositoryImpl on TransportRepository
         local.add(account);
       }
     }
+
     return Future.wait([
       removeLocalAccounts(local),
       removeExternalAccounts(external),
@@ -120,7 +121,7 @@ mixin AccountRepositoryImpl on TransportRepository
     for (final account in accounts) {
       externalAccounts[account.publicKey] = [
         ...?externalAccounts[account.publicKey],
-        account.account.address
+        account.account.address,
       ];
     }
 

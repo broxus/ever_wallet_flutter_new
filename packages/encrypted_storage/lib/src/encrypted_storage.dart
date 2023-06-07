@@ -74,6 +74,7 @@ class EncryptedStorage implements AbstractStorage {
           : null,
       domain: domain,
     );
+
     return _encryptHelper.decryptNullable(
       storageValue?.value,
       storageValue?.iv,
@@ -85,6 +86,7 @@ class EncryptedStorage implements AbstractStorage {
     final pairs = await _storage.getDomain(
       domain: domain,
     );
+
     return pairs.map(
       (key, value) => MapEntry(
         _encryptHelper.decrypt(key),
@@ -100,6 +102,7 @@ class EncryptedStorage implements AbstractStorage {
     final keys = await _storage.getDomainKeys(
       domain: domain,
     );
+
     return keys.map((key) => _encryptHelper.decrypt(key)).toList();
   }
 
@@ -111,6 +114,7 @@ class EncryptedStorage implements AbstractStorage {
     bool overwrite = true,
   }) {
     final iv = CipherStorage.ivFromSecureRandom().base64;
+
     return _storage.set(
       _encryptHelper.encrypt(key),
       StorageValue(_encryptHelper.encrypt(value, iv), iv),
@@ -124,17 +128,17 @@ class EncryptedStorage implements AbstractStorage {
     Map<String, String> pairs, {
     String domain = defaultDomain,
     bool overwrite = true,
-  }) {
-    return _storage.setDomain(
-      pairs.map((key, value) {
-        final iv = CipherStorage.ivFromSecureRandom().base64;
-        return MapEntry(
-          _encryptHelper.encrypt(key),
-          StorageValue(_encryptHelper.encrypt(value, iv), iv),
-        );
-      }),
-      domain: domain,
-      overwrite: overwrite,
-    );
-  }
+  }) =>
+      _storage.setDomain(
+        pairs.map((key, value) {
+          final iv = CipherStorage.ivFromSecureRandom().base64;
+
+          return MapEntry(
+            _encryptHelper.encrypt(key),
+            StorageValue(_encryptHelper.encrypt(value, iv), iv),
+          );
+        }),
+        domain: domain,
+        overwrite: overwrite,
+      );
 }

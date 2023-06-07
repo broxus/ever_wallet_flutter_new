@@ -21,12 +21,13 @@ class CheckSeedPhraseView extends StatelessWidget {
           children: [
             Text(
               l10n.checkSeedPhrase,
-              style: StyleRes.pageTitle.copyWith(color: colors.textPrimary),
+              style: StyleRes.h1.copyWith(color: colors.textPrimary),
             ),
             const SizedBox(height: 16),
             Text(
               l10n.checkSeedPhraseCorrectly,
-              style: StyleRes.bodyText.copyWith(color: colors.textSecondary),
+              style:
+                  StyleRes.primaryRegular.copyWith(color: colors.textPrimary),
             ),
             const SizedBox(height: 32),
             Expanded(
@@ -65,6 +66,7 @@ class CheckSeedPhraseView extends StatelessWidget {
         final localization = context.l10n;
         final colors = context.themeStyle.colors;
         final cubit = context.read<CheckSeedPhraseCubit>();
+
         return Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
@@ -76,7 +78,8 @@ class CheckSeedPhraseView extends StatelessWidget {
             if (isError)
               Text(
                 localization.seedIsWrong,
-                style: StyleRes.bodyText.copyWith(color: colors.textNegative),
+                style: StyleRes.addRegular.copyWith(color: colors.alert),
+                textAlign: TextAlign.center,
               ),
             const Spacer(),
             CheckSeedAvailableAnswersWidget(

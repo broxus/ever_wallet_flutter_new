@@ -29,7 +29,7 @@ class RootView extends StatelessWidget {
     context.goNamed(tab.name);
   }
 
-  int _tabIndex(BuildContext context) {
+  int _tabIndex(BuildContext _) {
     return RootTab.getByPath(
       getRootPath(inject<NavigationService>().location),
     ).index;

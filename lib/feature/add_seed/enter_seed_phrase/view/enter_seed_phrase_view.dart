@@ -6,6 +6,8 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:string_extensions/string_extensions.dart';
 import 'package:ui_components_lib/ui_components_lib.dart';
 
+const _gridColumnCount = 2;
+
 /// {@template enter_seed_phrase_view}
 /// Screen that allows user to enter seed phrase with 12 or 24 words.
 /// {@endtemplate}
@@ -20,7 +22,7 @@ class EnterSeedPhraseView extends StatelessWidget {
 
     return SafeArea(
       child: Padding(
-        padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 16),
+        padding: const EdgeInsets.all(Dimens.d16),
         child: Column(
           children: [
             Expanded(
@@ -43,6 +45,7 @@ class EnterSeedPhraseView extends StatelessWidget {
     );
   }
 
+  // ignore:long-method
   Widget _buildPhrasesList() {
     return BlocBuilder<EnterSeedPhraseCubit, EnterSeedPhraseState>(
       builder: (context, state) {
@@ -68,86 +71,31 @@ class EnterSeedPhraseView extends StatelessWidget {
                 children: [
                   Text(
                     l10n.enterSeedPhrase,
-                    style:
-                        StyleRes.pageTitle.copyWith(color: colors.textPrimary),
+                    style: StyleRes.h1.copyWith(color: colors.textPrimary),
                   ),
-                  const SizedBox(height: 28),
-                  Row(
-                    children: [
-                      Expanded(
-                        child: CommonTabBar<int>(
-                          values: allowedValues,
-                          selectedValue: currentValue,
-                          onChanged: cubit.changeTab,
-                          builder: (_, v) => l10n.wordsCount(v),
-                        ),
-                      ),
-                      CommonButton.ghostNoPadding(
-                        onPressed: displayPasteButton
-                            ? cubit.pastePhrase
-                            : cubit.clearFields,
-                        text:
-                            displayPasteButton ? l10n.pasteAll : l10n.clearAll,
-                      ),
-                    ],
-                  ),
-                  const SizedBox(height: 12),
+                  const SizedBox(height: Dimens.d24),
+                  _tabs(allowedValues, cubit, currentValue, displayPasteButton),
+                  const SizedBox(height: Dimens.d12),
                   Text(
                     l10n.pasteSeedIntoFirstBox,
-                    style:
-                        StyleRes.bodyText.copyWith(color: colors.textPrimary),
+                    style: StyleRes.primaryRegular
+                        .copyWith(color: colors.textPrimary),
                   ),
-                  const SizedBox(height: 24),
-                  Row(
-                    children: [
-                      Expanded(
-                        child: Column(
-                          children: controllers
-                              .getRange(0, currentValue ~/ 2)
-                              .mapIndexed(
-                                (index, c) => _inputBuild(
-                                  c,
-                                  focuses[index],
-                                  index + 1,
-                                  currentValue,
-                                ),
-                              )
-                              .toList(),
-                        ),
-                      ),
-                      const SizedBox(width: 16),
-                      Expanded(
-                        child: Column(
-                          children: controllers
-                              .getRange(currentValue ~/ 2, currentValue)
-                              .mapIndexed(
-                            (index, c) {
-                              final i = index + currentValue ~/ 2;
-                              return _inputBuild(
-                                c,
-                                focuses[i],
-                                i + 1,
-                                currentValue,
-                              );
-                            },
-                          ).toList(),
-                        ),
-                      ),
-                    ],
-                  ),
-                  const SizedBox(height: 8),
+                  const SizedBox(height: Dimens.d24),
+                  _inputs(controllers, focuses, currentValue),
+                  const SizedBox(height: Dimens.d8),
                   if (error == null)
                     SizedBox(
-                      height: StyleRes.regular16.fontSize! *
-                          StyleRes.regular16.height!,
+                      height: StyleRes.secondaryBold.fontSize! *
+                          StyleRes.secondaryBold.height!,
                     )
                   else
                     Text(
                       (error.isEmpty ? '' : error).capitalize!,
-                      style: StyleRes.regular16
-                          .copyWith(color: colors.textNegative),
+                      style:
+                          StyleRes.secondaryBold.copyWith(color: colors.alert),
                     ),
-                  const SizedBox(height: 16),
+                  const SizedBox(height: Dimens.d16),
                 ],
               ),
             ),
@@ -170,7 +118,7 @@ class EnterSeedPhraseView extends StatelessWidget {
         final colors = context.themeStyle.colors;
 
         return Padding(
-          padding: const EdgeInsets.only(bottom: 8),
+          padding: const EdgeInsets.only(bottom: Dimens.d8),
           child: CommonInput(
             controller: controller,
             suggestionsCallback: (_) => cubit.suggestionsCallback(controller),
@@ -179,10 +127,12 @@ class EnterSeedPhraseView extends StatelessWidget {
                 cubit.onSuggestionSelected(suggestion, index - 1),
             focusNode: focus,
             prefixIcon: Padding(
+              // ignore: no-magic-number
               padding: const EdgeInsets.only(left: 16, top: 11, right: 4),
               child: Text(
                 '$index.',
-                style: StyleRes.bodyText.copyWith(color: colors.textTertiary),
+                style:
+                    StyleRes.addRegular.copyWith(color: colors.textSecondary),
               ),
             ),
             onSubmitted: (_) => cubit.nextOrConfirm(index - 1),
@@ -197,12 +147,92 @@ class EnterSeedPhraseView extends StatelessWidget {
 
   Widget _itemBuilder(BuildContext context, String suggestion) {
     final colors = context.themeStyle.colors;
+
     return ListTile(
       tileColor: Colors.transparent,
       title: Text(
         suggestion,
-        style: StyleRes.bodyText.copyWith(color: colors.textPrimary),
+        style: StyleRes.primaryRegular.copyWith(color: colors.textPrimary),
       ),
+    );
+  }
+
+  Widget _tabs(
+    List<int> allowedValues,
+    EnterSeedPhraseCubit cubit,
+    int currentValue,
+    bool displayPasteButton,
+  ) {
+    return Builder(
+      builder: (context) {
+        final l10n = context.l10n;
+
+        return Row(
+          children: [
+            Expanded(
+              child: CommonTabBar<int>(
+                values: allowedValues,
+                selectedValue: currentValue,
+                onChanged: cubit.changeTab,
+                builder: (_, v) => l10n.wordsCount(v),
+              ),
+            ),
+            CommonButton.ghost(
+              onPressed:
+                  displayPasteButton ? cubit.pastePhrase : cubit.clearFields,
+              text: displayPasteButton ? l10n.pasteAll : l10n.clearAll,
+            ),
+          ],
+        );
+      },
+    );
+  }
+
+  Widget _inputs(
+    List<TextEditingController> controllers,
+    List<FocusNode> focuses,
+    int currentValue,
+  ) {
+    return Row(
+      children: [
+        Expanded(
+          child: Column(
+            children: controllers
+                .getRange(0, currentValue ~/ _gridColumnCount)
+                .mapIndexed(
+                  (index, c) => _inputBuild(
+                    c,
+                    focuses[index],
+                    index + 1,
+                    currentValue,
+                  ),
+                )
+                .toList(),
+          ),
+        ),
+        const SizedBox(width: Dimens.d16),
+        Expanded(
+          child: Column(
+            children: controllers
+                .getRange(
+              currentValue ~/ _gridColumnCount,
+              currentValue,
+            )
+                .mapIndexed(
+              (index, c) {
+                final i = index + currentValue ~/ _gridColumnCount;
+
+                return _inputBuild(
+                  c,
+                  focuses[i],
+                  i + 1,
+                  currentValue,
+                );
+              },
+            ).toList(),
+          ),
+        ),
+      ],
     );
   }
 }

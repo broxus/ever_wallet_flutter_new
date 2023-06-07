@@ -45,6 +45,7 @@ class CommonTabBar<T> extends StatelessWidget {
                 ? Expanded(child: _item(context, v))
                 : _item(context, v),
           )
+          .separated(const SizedBox(width: 8))
           .toList(),
     );
   }
@@ -52,28 +53,22 @@ class CommonTabBar<T> extends StatelessWidget {
   Widget _item(BuildContext context, T v) {
     final colors = context.themeStyle.colors;
     final isSelected = v == selectedValue;
-    return PressScaleWidget(
+
+    return CommonButton(
       onPressed: () => onChanged(v),
-      child: Container(
-        height: 44,
-        alignment: Alignment.center,
-        padding: const EdgeInsets.symmetric(horizontal: 8),
-        decoration: BoxDecoration(
-          border: Border(
-            bottom: BorderSide(
-              color:
-                  isSelected ? colors.textButtonSecondary : Colors.transparent,
-            ),
-          ),
-        ),
-        child: Text(
-          builder(context, v),
-          style: StyleRes.medium16.copyWith(
-            color:
-                isSelected ? colors.textButtonSecondary : colors.textTertiary,
-          ),
-        ),
-      ),
+      padding: const EdgeInsets.symmetric(horizontal: 16),
+      fillWidth: fillWidth,
+      text: builder(context, v),
+      // TODO(alex-a4): mabye we should use something
+      // like Dimens.buttonHeight.medium?
+      height: Dimens.d48,
+      // TODO(alex-a4): aaand default squircle radius?
+      squircleRadius: Dimens.d12,
+      backgroundColor:
+          isSelected ? colors.backgroundPrimary : colors.backgroundSecondary,
+      contentColor: isSelected ? colors.textContrast : colors.textSecondary,
+      contentPressedColor:
+          isSelected ? colors.textSecondary : colors.textPrimary,
     );
   }
 }

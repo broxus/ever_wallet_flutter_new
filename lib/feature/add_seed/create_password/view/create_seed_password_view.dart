@@ -4,6 +4,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:ui_components_lib/ui_components_lib.dart';
 
+const _minPasswordLength = 8;
+
 /// {@template create_password_widget}
 /// Screen that allows user set password for specified seed phrase.
 /// This is a final screen in phrase creation flow and in the end seed phrase
@@ -28,7 +30,7 @@ class CreateSeedPasswordView extends StatelessWidget {
 
     return SafeArea(
       child: Padding(
-        padding: const EdgeInsets.all(16),
+        padding: const EdgeInsets.all(Dimens.d16),
         child: Form(
           key: cubit.formKey,
           child: Column(
@@ -36,46 +38,34 @@ class CreateSeedPasswordView extends StatelessWidget {
             children: [
               Text(
                 localization.createPassword,
-                style: StyleRes.pageTitle.copyWith(color: colors.textPrimary),
+                style: StyleRes.h1.copyWith(color: colors.textPrimary),
               ),
-              const SizedBox(height: 16),
+              const SizedBox(height: Dimens.d16),
               Text(
                 localization.createPasswordDescription,
-                style: StyleRes.bodyText.copyWith(color: colors.textSecondary),
+                style:
+                    StyleRes.primaryRegular.copyWith(color: colors.textPrimary),
               ),
-              const SizedBox(height: 32),
+              const SizedBox(height: Dimens.d32),
               CommonInput(
                 obscureText: true,
                 controller: cubit.passwordController,
                 focusNode: cubit.passwordFocus,
-                labelText: localization.yourPassword,
+                hintText: localization.yourPassword,
                 onSubmitted: (_) => cubit.confirmFocus.requestFocus(),
-                validator: (_) {
-                  if (cubit.passwordController.text.length >= 8) {
-                    return null;
-                  }
-                  return localization.passwordLength;
-                },
+                validator: (_) => _validatePassword(cubit, localization),
               ),
-              const SizedBox(height: 12),
+              const SizedBox(height: Dimens.d12),
               CommonInput(
                 obscureText: true,
                 controller: cubit.confirmController,
                 focusNode: cubit.confirmFocus,
-                labelText: localization.confirmPassword,
+                hintText: localization.confirmPassword,
                 textInputAction: TextInputAction.done,
                 onSubmitted: (_) => cubit.nextAction(),
-                validator: (_) {
-                  if (cubit.confirmController.text ==
-                      cubit.passwordController.text) {
-                    return null;
-                  }
-
-                  return localization.passwordsMatch;
-                },
+                validator: (_) => _validateRepeatPassword(cubit, localization),
               ),
-              const SizedBox(height: 12),
-              if (needBiometryIfPossible) getBiometricSwitcher(),
+              const SizedBox(height: Dimens.d12),
               const Spacer(),
               CommonButton.primary(
                 text: localization.next,
@@ -89,34 +79,25 @@ class CreateSeedPasswordView extends StatelessWidget {
     );
   }
 
-  Widget getBiometricSwitcher() {
-    return Builder(
-      builder: (context) {
-        final localization = context.l10n;
-        final colors = context.themeStyle.colors;
+  String? _validatePassword(
+    CreateSeedPasswordCubit cubit,
+    AppLocalizations localization,
+  ) {
+    if (cubit.passwordController.text.length >= _minPasswordLength) {
+      return null;
+    }
 
-        return Container(
-          color: ColorsRes.lightBlue.withOpacity(0.1),
-          padding: const EdgeInsets.all(12),
-          child: Row(
-            children: [
-              Expanded(
-                child: Text(
-                  localization.useBiometryForFastLogin,
-                  style: StyleRes.regular16.copyWith(color: colors.textPrimary),
-                ),
-              ),
-              const SizedBox(width: 16),
-              CommonSwitchInput(
-                value: true,
-                onChanged: (value) {
-                  // TODO(alex-a4): implement later
-                },
-              ),
-            ],
-          ),
-        );
-      },
-    );
+    return localization.passwordLength;
+  }
+
+  String? _validateRepeatPassword(
+    CreateSeedPasswordCubit cubit,
+    AppLocalizations localization,
+  ) {
+    if (cubit.confirmController.text == cubit.passwordController.text) {
+      return null;
+    }
+
+    return localization.passwordsMatch;
   }
 }

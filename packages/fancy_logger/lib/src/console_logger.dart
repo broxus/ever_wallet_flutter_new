@@ -47,6 +47,7 @@ class ConsoleLogger extends AbstractLogger {
 
   String _colorMessage(String message, Level level) {
     final colorString = _colorMap[level]?.value ?? '';
+
     return '$colorString$message${ConsoleColor.reset.value}';
   }
 
