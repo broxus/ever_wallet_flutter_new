@@ -2,8 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:ui_components_lib/ui_components_lib.dart';
 
 /// Default height of the common button
-const commonButtonHeight = Dimens.d56;
-const defaultSquircleRadius = Dimens.d100;
+const commonButtonHeight = DimensSize.d56;
+const defaultSquircleRadius = DimensSize.d100;
 
 /// {@template common_button}
 /// Default button in the app with background.
@@ -240,16 +240,15 @@ class _CommonButtonState extends State<CommonButton> {
 
   Widget _loadingChild(Color contentColor) {
     return Padding(
-      padding:
-          widget.padding ?? const EdgeInsets.symmetric(horizontal: Dimens.d48),
+      padding: widget.padding ??
+          const EdgeInsets.symmetric(horizontal: DimensSize.d48),
       child: Center(
         child: SizedBox(
-          width: Dimens.large,
-          height: Dimens.large,
+          width: DimensSize.d20,
+          height: DimensSize.d20,
           child: CircularProgressIndicator(
             color: contentColor,
-            // TODO(nesquikm): add strokeWidth to style, maybe set of them
-            strokeWidth: Dimens.xxxSmall,
+            strokeWidth: DimensStroke.medium,
           ),
         ),
       ),

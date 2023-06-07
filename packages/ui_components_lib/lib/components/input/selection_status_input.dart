@@ -12,12 +12,14 @@ class SelectionStatusInput extends StatefulWidget {
     required this.title,
     required this.onPressed,
     required this.status,
+    this.icon,
     super.key,
   });
 
   final String title;
   final SelectionStatus status;
   final VoidCallback? onPressed;
+  final Widget? icon;
 
   @override
   State<SelectionStatusInput> createState() => _SelectionStatusInputState();
@@ -45,36 +47,42 @@ class _SelectionStatusInputState extends State<SelectionStatusInput> {
         contentColor = isPressed ? colors.textSecondary : colors.textContrast;
     }
 
-    return SizedBox(
-      width: double.infinity,
-      height: commonButtonHeight,
-      child: Material(
-        color: backgroundColor ?? Colors.transparent,
-        shape: SquircleBoxBorder(
-          squircleRadius: Dimens.d16,
-          borderSide: BorderSide(color: borderColor ?? Colors.transparent),
-        ),
-        child: InkWell(
-          hoverColor: Colors.transparent,
-          splashColor: Colors.transparent,
-          highlightColor: Colors.transparent,
-          onHighlightChanged: _triggerPressed,
-          onTap: widget.onPressed,
-          child: AnimatedColor(
-            color: contentColor,
-            duration: kThemeAnimationDuration,
-            builder: (context, color) {
-              return Row(
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: [
-                  Text(
-                    widget.title,
-                    style: StyleRes.button.copyWith(color: contentColor),
-                  ),
-                  // TODO(alex-a4): add trash can button
-                ],
-              );
-            },
+    return EverButtonStyleProvider(
+      contentColor: contentColor,
+      child: SizedBox(
+        width: double.infinity,
+        height: commonButtonHeight,
+        child: Material(
+          color: backgroundColor ?? Colors.transparent,
+          shape: SquircleBoxBorder(
+            squircleRadius: DimensRadius.medium,
+            borderSide: BorderSide(color: borderColor ?? Colors.transparent),
+          ),
+          child: InkWell(
+            hoverColor: Colors.transparent,
+            splashColor: Colors.transparent,
+            highlightColor: Colors.transparent,
+            onHighlightChanged: _triggerPressed,
+            onTap: widget.onPressed,
+            child: AnimatedColor(
+              color: contentColor,
+              duration: kThemeAnimationDuration,
+              builder: (context, color) {
+                return Row(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    Text(
+                      widget.title,
+                      style: StyleRes.button.copyWith(color: contentColor),
+                    ),
+                    if (widget.icon != null) ...[
+                      widget.icon!,
+                      const SizedBox(width: DimensSize.d8),
+                    ],
+                  ],
+                );
+              },
+            ),
           ),
         ),
       ),

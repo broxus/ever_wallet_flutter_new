@@ -6,7 +6,7 @@ class ContainerRow extends Container {
     required List<Widget> children,
     super.key,
     super.alignment,
-    super.padding = const EdgeInsets.all(Dimens.xSmall),
+    super.padding = const EdgeInsets.all(DimensSize.d8),
     super.color,
     super.decoration,
     super.foregroundDecoration,
@@ -19,7 +19,7 @@ class ContainerRow extends Container {
     super.clipBehavior = Clip.none,
   }) : super(
           child: SeparatedRow(
-            separator: const SizedBox(height: Dimens.xSmall),
+            separator: const SizedBox(height: DimensSize.d8),
             children: children,
           ),
         );

@@ -30,7 +30,7 @@ class CreateSeedView extends StatelessWidget {
 
     return SafeArea(
       child: Padding(
-        padding: const EdgeInsets.all(Dimens.d16),
+        padding: const EdgeInsets.all(DimensSize.d16),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
@@ -38,13 +38,13 @@ class CreateSeedView extends StatelessWidget {
               localization.saveSeedPhrase,
               style: StyleRes.h1.copyWith(color: colors.textPrimary),
             ),
-            const SizedBox(height: Dimens.d12),
+            const SizedBox(height: DimensSize.d12),
             Text(
               localization.saveSeedWarning,
               style:
                   StyleRes.primaryRegular.copyWith(color: colors.textPrimary),
             ),
-            const SizedBox(height: Dimens.d24),
+            const SizedBox(height: DimensSize.d24),
             Expanded(
               child: BlocBuilder<CreateSeedCubit, CreateSeedCubitState>(
                 builder: (context, state) {
@@ -58,12 +58,11 @@ class CreateSeedView extends StatelessWidget {
                               mainAxisSize: MainAxisSize.min,
                               children: [
                                 _wordsField(colors, words),
-                                const SizedBox(height: Dimens.d4),
+                                const SizedBox(height: DimensSize.d4),
                                 _copyButton(isCopied),
                                 // To allow scroll above buttons
                                 const SizedBox(
-                                  height: commonButtonHeight * Dimens.d2 +
-                                      Dimens.d12,
+                                  height: commonButtonHeight + DimensSize.d12,
                                 ),
                               ],
                             ),
@@ -79,7 +78,7 @@ class CreateSeedView extends StatelessWidget {
                                   onPressed: () => checkCallback(words),
                                   fillWidth: true,
                                 ),
-                                const SizedBox(height: Dimens.d12),
+                                const SizedBox(height: DimensSize.d12),
                                 CommonButton.secondary(
                                   text: localization.skipTakeRisk,
                                   onPressed: () => skipCallback(words),
@@ -103,11 +102,11 @@ class CreateSeedView extends StatelessWidget {
 
   Widget _textPair(String word, int index, ColorsPalette colors) {
     return Padding(
-      padding: const EdgeInsets.only(bottom: Dimens.d12),
+      padding: const EdgeInsets.only(bottom: DimensSize.d12),
       child: Row(
         children: [
           SizedBox(
-            width: Dimens.d28,
+            width: DimensSize.d28,
             child: Text(
               '$index.',
               style: StyleRes.addRegular.copyWith(color: colors.textSecondary),
@@ -152,7 +151,7 @@ class CreateSeedView extends StatelessWidget {
 
   Widget _wordsField(ColorsPalette colors, List<String> words) {
     return Container(
-      padding: const EdgeInsets.all(Dimens.d16),
+      padding: const EdgeInsets.all(DimensSize.d16),
       child: Row(
         children: [
           Expanded(

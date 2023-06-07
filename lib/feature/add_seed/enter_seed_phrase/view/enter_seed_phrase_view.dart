@@ -22,7 +22,7 @@ class EnterSeedPhraseView extends StatelessWidget {
 
     return SafeArea(
       child: Padding(
-        padding: const EdgeInsets.all(Dimens.d16),
+        padding: const EdgeInsets.all(DimensSize.d16),
         child: Column(
           children: [
             Expanded(
@@ -73,17 +73,17 @@ class EnterSeedPhraseView extends StatelessWidget {
                     l10n.enterSeedPhrase,
                     style: StyleRes.h1.copyWith(color: colors.textPrimary),
                   ),
-                  const SizedBox(height: Dimens.d24),
+                  const SizedBox(height: DimensSize.d24),
                   _tabs(allowedValues, cubit, currentValue, displayPasteButton),
-                  const SizedBox(height: Dimens.d12),
+                  const SizedBox(height: DimensSize.d12),
                   Text(
                     l10n.pasteSeedIntoFirstBox,
                     style: StyleRes.primaryRegular
                         .copyWith(color: colors.textPrimary),
                   ),
-                  const SizedBox(height: Dimens.d24),
+                  const SizedBox(height: DimensSize.d24),
                   _inputs(controllers, focuses, currentValue),
-                  const SizedBox(height: Dimens.d8),
+                  const SizedBox(height: DimensSize.d8),
                   if (error == null)
                     SizedBox(
                       height: StyleRes.secondaryBold.fontSize! *
@@ -95,7 +95,7 @@ class EnterSeedPhraseView extends StatelessWidget {
                       style:
                           StyleRes.secondaryBold.copyWith(color: colors.alert),
                     ),
-                  const SizedBox(height: Dimens.d16),
+                  const SizedBox(height: DimensSize.d16),
                 ],
               ),
             ),
@@ -118,7 +118,7 @@ class EnterSeedPhraseView extends StatelessWidget {
         final colors = context.themeStyle.colors;
 
         return Padding(
-          padding: const EdgeInsets.only(bottom: Dimens.d8),
+          padding: const EdgeInsets.only(bottom: DimensSize.d8),
           child: CommonInput(
             controller: controller,
             suggestionsCallback: (_) => cubit.suggestionsCallback(controller),
@@ -210,7 +210,7 @@ class EnterSeedPhraseView extends StatelessWidget {
                 .toList(),
           ),
         ),
-        const SizedBox(width: Dimens.d16),
+        const SizedBox(width: DimensSize.d16),
         Expanded(
           child: Column(
             children: controllers

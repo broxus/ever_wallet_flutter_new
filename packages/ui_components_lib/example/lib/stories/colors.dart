@@ -89,30 +89,29 @@ class _ColorItem extends StatelessWidget {
         Theme.of(context).scaffoldBackgroundColor.computeLuminance() > 0.7;
 
     return SizedBox(
-      width: Dimens.d200,
+      width: DimensSize.d200,
       child: Column(
         children: [
           Container(
-            width: Dimens.d148,
-            height: Dimens.d100,
-            margin: const EdgeInsets.all(16),
+            width: DimensSize.d148,
+            height: DimensSize.d100,
+            margin: const EdgeInsets.all(DimensSize.d16),
             decoration: BoxDecoration(
               color: color,
               border: Border.all(
                 color: isBackgroundLight ? Colors.black : Colors.white,
               ),
-              borderRadius: BorderRadius.circular(Dimens.medium),
+              borderRadius: BorderRadius.circular(DimensRadius.medium),
             ),
           ),
           Center(
             child: Padding(
-              padding: const EdgeInsets.symmetric(horizontal: 16),
+              padding: const EdgeInsets.symmetric(horizontal: DimensSize.d16),
               child: Text(
                 name,
                 textAlign: TextAlign.center,
-                style: TextStyle(
+                style: StyleRes.primaryRegular.copyWith(
                   color: isBackgroundLight ? Colors.black : Colors.white,
-                  fontSize: Dimens.medium,
                 ),
               ),
             ),

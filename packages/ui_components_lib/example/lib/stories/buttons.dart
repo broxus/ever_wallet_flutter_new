@@ -196,6 +196,50 @@ class _ButtonsStoryState extends State<ButtonsStory> {
                   ),
                 ],
               ),
+
+              /// Small button
+              const SizedBox(height: 30),
+              SmallButton.primary(
+                leading: CommonButtonIconWidget.icon(icon: Icons.add),
+                trailing: CommonButtonIconWidget.icon(icon: Icons.alarm),
+                text: 'SmallPrimary',
+                // ignore: no-empty-block
+                onPressed: () {},
+              ),
+              const SizedBox(height: 10),
+              SmallButton.primary(
+                leading: CommonButtonIconWidget.icon(icon: Icons.add),
+                trailing: CommonButtonIconWidget.icon(icon: Icons.alarm),
+                text: 'SmallPrimary Disabled',
+              ),
+              const SizedBox(height: 20),
+              SmallButton.secondary(
+                leading: CommonButtonIconWidget.icon(icon: Icons.add),
+                trailing: CommonButtonIconWidget.icon(icon: Icons.alarm),
+                text: 'SmallSecondary',
+                // ignore: no-empty-block
+                onPressed: () {},
+              ),
+              const SizedBox(height: 10),
+              SmallButton.secondary(
+                leading: CommonButtonIconWidget.icon(icon: Icons.add),
+                trailing: CommonButtonIconWidget.icon(icon: Icons.alarm),
+                text: 'SmallSecondary Disabled',
+              ),
+              const SizedBox(height: 20),
+              SmallButton.ghost(
+                leading: CommonButtonIconWidget.icon(icon: Icons.add),
+                trailing: CommonButtonIconWidget.icon(icon: Icons.alarm),
+                text: 'SmallGhost',
+                // ignore: no-empty-block
+                onPressed: () {},
+              ),
+              const SizedBox(height: 10),
+              SmallButton.ghost(
+                leading: CommonButtonIconWidget.icon(icon: Icons.add),
+                trailing: CommonButtonIconWidget.icon(icon: Icons.alarm),
+                text: 'SmallGhost Disabled',
+              ),
             ],
           ),
         ),

@@ -30,7 +30,7 @@ class CreateSeedPasswordView extends StatelessWidget {
 
     return SafeArea(
       child: Padding(
-        padding: const EdgeInsets.all(Dimens.d16),
+        padding: const EdgeInsets.all(DimensSize.d16),
         child: Form(
           key: cubit.formKey,
           child: Column(
@@ -40,13 +40,13 @@ class CreateSeedPasswordView extends StatelessWidget {
                 localization.createPassword,
                 style: StyleRes.h1.copyWith(color: colors.textPrimary),
               ),
-              const SizedBox(height: Dimens.d16),
+              const SizedBox(height: DimensSize.d16),
               Text(
                 localization.createPasswordDescription,
                 style:
                     StyleRes.primaryRegular.copyWith(color: colors.textPrimary),
               ),
-              const SizedBox(height: Dimens.d32),
+              const SizedBox(height: DimensSize.d32),
               CommonInput(
                 obscureText: true,
                 controller: cubit.passwordController,
@@ -55,7 +55,7 @@ class CreateSeedPasswordView extends StatelessWidget {
                 onSubmitted: (_) => cubit.confirmFocus.requestFocus(),
                 validator: (_) => _validatePassword(cubit, localization),
               ),
-              const SizedBox(height: Dimens.d12),
+              const SizedBox(height: DimensSize.d12),
               CommonInput(
                 obscureText: true,
                 controller: cubit.confirmController,
@@ -65,7 +65,7 @@ class CreateSeedPasswordView extends StatelessWidget {
                 onSubmitted: (_) => cubit.nextAction(),
                 validator: (_) => _validateRepeatPassword(cubit, localization),
               ),
-              const SizedBox(height: Dimens.d12),
+              const SizedBox(height: DimensSize.d12),
               const Spacer(),
               CommonButton.primary(
                 text: localization.next,
