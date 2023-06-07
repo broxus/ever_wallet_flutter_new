@@ -18,4 +18,7 @@ export 'src/repositories/repositories.dart';
 
 // @microPackageInit => short const
 @InjectableInit.microPackage()
-initMicroPackage() {} // will not be called but needed for code generation
+// ignore: no-empty-block
+initMicroPackage() {
+  // will not be called but needed for code generation
+}

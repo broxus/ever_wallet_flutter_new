@@ -11,6 +11,7 @@ part 'enter_seed_phrase_cubit.freezed.dart';
 
 /// Regexp that helps splitting seed phrase into words.
 final seedSplitRegExp = RegExp(r'[ |;|,|:|\n|.]');
+const _debugPhraseLength = 15;
 
 /// Callback that will be called when user correctly enter seed phrase.
 typedef EnterSeedPhraseConfirmCallback = void Function(List<String> phrase);
@@ -37,6 +38,7 @@ class EnterSeedPhraseCubit extends Cubit<EnterSeedPhraseState> {
     for (final f in _focuses) {
       f.dispose();
     }
+
     return super.close();
   }
 
@@ -52,10 +54,10 @@ class EnterSeedPhraseCubit extends Cubit<EnterSeedPhraseState> {
       c.addListener(() {
         final hasText =
             _controllers.any((controller) => controller.text.isNotEmpty);
-        final s = state;
+        final st = state;
         // hasText means paste button must not be shown
-        if (s is _Tab && s.displayPasteButton == hasText) {
-          emit(s.copyWith(displayPasteButton: !hasText));
+        if (st is _Tab && st.displayPasteButton == hasText) {
+          emit(st.copyWith(displayPasteButton: !hasText));
         }
         if (hasText) {
           _checkDebugPhraseGenerating();
@@ -65,7 +67,7 @@ class EnterSeedPhraseCubit extends Cubit<EnterSeedPhraseState> {
     _controllers[0].addListener(() {
       /// Only for 1-st controller allow paste as button
       /// It's some bug but Input's paste removes spaces so check with length
-      if (_controllers[0].text.length > 15) {
+      if (_controllers[0].text.length > _debugPhraseLength) {
         pastePhrase();
       }
     });
@@ -91,6 +93,7 @@ class EnterSeedPhraseCubit extends Cubit<EnterSeedPhraseState> {
     if (hints.length == 1 && hints[0] == value.text) {
       return [];
     }
+
     return hints;
   }
 
@@ -99,10 +102,10 @@ class EnterSeedPhraseCubit extends Cubit<EnterSeedPhraseState> {
     _currentValue = value;
     formKey.currentState?.reset();
 
-    final s = state;
-    if (s is _Tab) {
+    final st = state;
+    if (st is _Tab) {
       emit(
-        s.copyWith(
+        st.copyWith(
           currentValue: value,
           controllers: _controllers.take(value).toList(),
           focuses: _focuses.take(value).toList(),
@@ -135,9 +138,9 @@ class EnterSeedPhraseCubit extends Cubit<EnterSeedPhraseState> {
       } on Object catch (e) {
         error = e.toString();
       }
-      final s = state;
-      if (error != null && s is _Tab) {
-        emit(s.copyWith(formError: error));
+      final st = state;
+      if (error != null && st is _Tab) {
+        emit(st.copyWith(formError: error));
       }
     }
   }
@@ -236,19 +239,20 @@ class EnterSeedPhraseCubit extends Cubit<EnterSeedPhraseState> {
   /// Validate form and return its status
   bool _validateFormWithError() {
     final isValid = formKey.currentState?.validate() ?? false;
-    final s = state;
-    if (s is _Tab) {
-      emit(s.copyWith(formError: isValid ? null : ''));
+    final st = state;
+    if (st is _Tab) {
+      emit(st.copyWith(formError: isValid ? null : ''));
     }
+
     return isValid;
   }
 
   /// Drop form validation state
   void _resetFormAndError() {
     formKey.currentState?.reset();
-    final s = state;
-    if (s is _Tab) {
-      emit(s.copyWith(formError: null));
+    final st = state;
+    if (st is _Tab) {
+      emit(st.copyWith(formError: null));
     }
   }
 }

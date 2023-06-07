@@ -112,6 +112,7 @@ class CheckSeedPhraseCubit extends Cubit<CheckSeedPhraseCubitState> {
     for (var i = 0; i < userAnswers.length; i++) {
       if (userAnswers[i].word.isEmpty) return i;
     }
+
     return null;
   }
 
@@ -135,7 +136,7 @@ class CheckSeedPhraseCubit extends Cubit<CheckSeedPhraseCubitState> {
     indices.sort();
 
     return [
-      for (final index in indices) CheckSeedCorrectAnswer(phrase[index], index)
+      for (final index in indices) CheckSeedCorrectAnswer(phrase[index], index),
     ];
   }
 
@@ -159,6 +160,7 @@ class CheckSeedPhraseCubit extends Cubit<CheckSeedPhraseCubitState> {
       ..shuffle()
       ..shuffle()
       ..shuffle();
+
     return answers;
   }
 }

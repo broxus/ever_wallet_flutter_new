@@ -30,20 +30,21 @@ class CreateSeedView extends StatelessWidget {
 
     return SafeArea(
       child: Padding(
-        padding: const EdgeInsets.all(16),
+        padding: const EdgeInsets.all(Dimens.d16),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             Text(
               localization.saveSeedPhrase,
-              style: StyleRes.pageTitle.copyWith(color: colors.textPrimary),
+              style: StyleRes.h1.copyWith(color: colors.textPrimary),
             ),
-            const SizedBox(height: 12),
+            const SizedBox(height: Dimens.d12),
             Text(
               localization.saveSeedWarning,
-              style: StyleRes.bodyText.copyWith(color: colors.textSecondary),
+              style:
+                  StyleRes.primaryRegular.copyWith(color: colors.textPrimary),
             ),
-            const SizedBox(height: 24),
+            const SizedBox(height: Dimens.d24),
             Expanded(
               child: BlocBuilder<CreateSeedCubit, CreateSeedCubitState>(
                 builder: (context, state) {
@@ -57,11 +58,12 @@ class CreateSeedView extends StatelessWidget {
                               mainAxisSize: MainAxisSize.min,
                               children: [
                                 _wordsField(colors, words),
-                                const SizedBox(height: 4),
-                                _copyButton(words, isCopied),
+                                const SizedBox(height: Dimens.d4),
+                                _copyButton(isCopied),
                                 // To allow scroll above buttons
                                 const SizedBox(
-                                  height: commonButtonHeight * 2 + 12,
+                                  height: commonButtonHeight * Dimens.d2 +
+                                      Dimens.d12,
                                 ),
                               ],
                             ),
@@ -77,7 +79,7 @@ class CreateSeedView extends StatelessWidget {
                                   onPressed: () => checkCallback(words),
                                   fillWidth: true,
                                 ),
-                                const SizedBox(height: 12),
+                                const SizedBox(height: Dimens.d12),
                                 CommonButton.secondary(
                                   text: localization.skipTakeRisk,
                                   onPressed: () => skipCallback(words),
@@ -100,28 +102,30 @@ class CreateSeedView extends StatelessWidget {
   }
 
   Widget _textPair(String word, int index, ColorsPalette colors) {
-    final style = StyleRes.regular16.copyWith(color: colors.textPrimary);
-
     return Padding(
-      padding: const EdgeInsets.only(bottom: 12),
+      padding: const EdgeInsets.only(bottom: Dimens.d12),
       child: Row(
         children: [
           SizedBox(
-            width: 28,
+            width: Dimens.d28,
             child: Text(
               '$index.',
-              style: style.copyWith(color: colors.textTertiary),
+              style: StyleRes.addRegular.copyWith(color: colors.textSecondary),
             ),
           ),
           Expanded(
-            child: Text(word, style: style, textAlign: TextAlign.left),
+            child: Text(
+              word,
+              style: StyleRes.button.copyWith(color: colors.textPrimary),
+              textAlign: TextAlign.left,
+            ),
           ),
         ],
       ),
     );
   }
 
-  Widget _copyButton(List<String> words, bool copied) {
+  Widget _copyButton(bool copied) {
     return Builder(
       builder: (context) {
         final localization = context.l10n;
@@ -129,27 +133,18 @@ class CreateSeedView extends StatelessWidget {
         final cubit = context.read<CreateSeedCubit>();
 
         if (copied) {
-          return SizedBox(
-            height: commonButtonHeight,
-            child: Align(
-              child: Text(
-                localization.copiedNoExclamation,
-                style: StyleRes.medium16.copyWith(color: colors.textPositive),
-              ),
-            ),
+          return CommonButton(
+            buttonType: EverButtonType.ghost,
+            contentDisabledColor: colors.apply,
+            trailing: CommonButtonIconWidget.svg(svg: Assets.images.check.path),
+            text: localization.copiedNoExclamation,
           );
         }
-        return Row(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: [
-            CommonButton.ghost(
-              leading: CommonButtonIconWidget.svg(
-                svg: Assets.images.copy.path,
-              ),
-              text: localization.copyWords,
-              onPressed: cubit.copySeed,
-            ),
-          ],
+
+        return CommonButton.ghost(
+          trailing: CommonButtonIconWidget.svg(svg: Assets.images.copy.path),
+          text: localization.copyWords,
+          onPressed: cubit.copySeed,
         );
       },
     );
@@ -157,14 +152,15 @@ class CreateSeedView extends StatelessWidget {
 
   Widget _wordsField(ColorsPalette colors, List<String> words) {
     return Container(
-      color: colors.fillingSecondary,
-      padding: const EdgeInsets.all(16),
+      padding: const EdgeInsets.all(Dimens.d16),
       child: Row(
         children: [
           Expanded(
             child: Column(
               children: words
+                  // ignore:  no-magic-number
                   .getRange(0, 6)
+                  // ignore:  no-magic-number
                   .mapIndexed((i, word) => _textPair(word, i + 1, colors))
                   .toList(),
             ),
@@ -172,7 +168,9 @@ class CreateSeedView extends StatelessWidget {
           Expanded(
             child: Column(
               children: words
+                  // ignore:  no-magic-number
                   .getRange(6, 12)
+                  // ignore:  no-magic-number
                   .mapIndexed((i, word) => _textPair(word, i + 7, colors))
                   .toList(),
             ),

@@ -8,6 +8,7 @@ import 'package:clock/clock.dart';
 import 'package:freezed_annotation/freezed_annotation.dart';
 
 part 'messenger_state.dart';
+
 part 'messenger_cubit.freezed.dart';
 
 /// Cubit that process messages and shows them to the user. It is not a bloc
@@ -79,6 +80,7 @@ class MessengerCubit extends Cubit<MessengerState> {
 
     final [...remain, last] = state.messagesToShow;
     emit(state.copyWith(messagesToShow: remain));
+
     return last;
   }
 

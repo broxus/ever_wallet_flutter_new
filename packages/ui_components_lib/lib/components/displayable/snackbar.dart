@@ -31,7 +31,7 @@ Future<void> showSnackbar({
   Color backgroundColor() {
     switch (type) {
       case SnackbarType.error:
-        return colors.accentWarning;
+        return colors.alert;
       case SnackbarType.info:
         return colors.backgroundPrimary;
     }
@@ -47,7 +47,6 @@ Future<void> showSnackbar({
         break;
       case FlushbarStatus.DISMISSED:
         onDismiss?.call();
-        break;
       case null:
         break;
     }
@@ -71,7 +70,7 @@ Future<void> showSnackbar({
   _snack = Flushbar<void>(
     messageText: Text(
       message,
-      style: StyleRes.regular16.copyWith(color: colors.textPrimary),
+      style: StyleRes.secondaryBold.copyWith(color: colors.textContrast),
     ),
     backgroundColor: backgroundColor(),
     isDismissible: isDismissible,

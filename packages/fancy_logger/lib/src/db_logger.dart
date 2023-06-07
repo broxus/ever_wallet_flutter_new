@@ -34,7 +34,7 @@ class DbLogger extends AbstractLogger {
     );
   }
 
-  Future<void> _onCreate(Database db, int version) async {
+  Future<void> _onCreate(Database db, int _) async {
     await db.execute(
       '''
         CREATE TABLE sessions (
@@ -87,6 +87,7 @@ class DbLogger extends AbstractLogger {
         SELECT * FROM records ORDER BY record_timestamp ASC
       ''',
     );
+
     return list.fold(
       '',
       (previousValue, element) => '$previousValue\n$element',
@@ -102,6 +103,7 @@ class DbLogger extends AbstractLogger {
         SELECT * FROM records ORDER BY record_timestamp ASC
       ''',
     );
+
     return list.map(WritableLogRecord.fromMap).toList();
   }
 
@@ -109,12 +111,11 @@ class DbLogger extends AbstractLogger {
   Future<List<Map<String, Object?>>> getAllLogsAsMaps() async {
     if (!_database.isOpen) return [];
 
-    final list = await _database.rawQuery(
+    return _database.rawQuery(
       '''
         SELECT * FROM records ORDER BY record_timestamp ASC
       ''',
     );
-    return list;
   }
 
   /// Write logs to archived JSON, return file path
@@ -178,6 +179,7 @@ class DbLogger extends AbstractLogger {
               sessionId: e.value,
             );
             nextLevel = e.key;
+
             return ret;
           },
         )
@@ -185,6 +187,7 @@ class DbLogger extends AbstractLogger {
         .reversed
         .map((e) {
           retain -= e.sessionId;
+
           return e.copyWith(sessionId: retain);
         })
         .toList();
@@ -194,6 +197,7 @@ class DbLogger extends AbstractLogger {
       final next = element.nextLevel == null
           ? ''
           : 'AND level < ${element.nextLevel!.value}';
+
       return '''
         $previous(session_id < ${element.sessionId} AND level >= ${element.level.value} $next)
         ''';

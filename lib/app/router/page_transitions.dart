@@ -5,7 +5,7 @@ import 'package:go_router/go_router.dart';
 const _duration = Duration(milliseconds: 150);
 
 CustomTransitionPage<void> onboardingTransitionPageBuilder(
-  BuildContext context,
+  BuildContext _,
   GoRouterState state,
   Widget child,
 ) {
@@ -35,7 +35,7 @@ CustomTransitionPage<void> onboardingTransitionPageBuilder(
 }
 
 CustomTransitionPage<void> rootTransitionPageBuilder(
-  BuildContext context,
+  BuildContext _,
   GoRouterState state,
   Widget child,
 ) {
@@ -65,7 +65,7 @@ CustomTransitionPage<void> rootTransitionPageBuilder(
 }
 
 CustomTransitionPage<void> rootTabsTransitionPageBuilder(
-  BuildContext context,
+  BuildContext _,
   GoRouterState state,
   Widget child,
 ) {

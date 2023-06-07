@@ -18,13 +18,13 @@ class CreateSeedCubit extends Cubit<CreateSeedCubitState> {
   }
 
   Future<void> copySeed() async {
-    final s = state;
-    if (s is _$_Generated) {
+    final st = state;
+    if (st is _$_Generated) {
       await Clipboard.setData(
-        ClipboardData(text: s.words.join(' ')),
+        ClipboardData(text: st.words.join(' ')),
       );
       Future.delayed(const Duration(seconds: 2), () {
-        emit(s.copyWith(isCopied: false));
+        emit(st.copyWith(isCopied: false));
       });
     }
   }

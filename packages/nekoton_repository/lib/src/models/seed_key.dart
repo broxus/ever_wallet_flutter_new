@@ -29,6 +29,7 @@ class SeedKey extends Equatable {
         return account;
       }
     }
+
     return null;
   }
 
@@ -38,6 +39,7 @@ class SeedKey extends Equatable {
   Future<bool> remove() async {
     final removed =
         await GetIt.instance<SeedKeyRepository>().removeKeys([this]);
+
     return removed.isNotEmpty;
   }
 
@@ -90,6 +92,7 @@ class SeedKey extends Equatable {
     final availableForTransport = GetIt.instance<TransportRepository>()
         .currentTransport
         .availableWalletTypes;
+
     return availableForTransport.where((a) => !created.contains(a)).toList();
   }
 

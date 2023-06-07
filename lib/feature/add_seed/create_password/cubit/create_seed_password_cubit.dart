@@ -42,6 +42,7 @@ class CreateSeedPasswordCubit extends Cubit<CreateSeedPasswordState> {
     confirmController.dispose();
     passwordFocus.dispose();
     confirmFocus.dispose();
+
     return super.close();
   }
 

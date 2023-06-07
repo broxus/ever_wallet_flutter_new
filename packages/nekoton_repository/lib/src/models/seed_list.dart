@@ -53,6 +53,7 @@ class SeedList extends Equatable {
       final found = key.getAccountByAddress(accountAddress);
       if (found != null) return found;
     }
+
     return null;
   }
 
@@ -80,6 +81,7 @@ class SeedList extends Equatable {
     required String password,
   }) {
     final key = _allKeys.firstWhere((k) => k.key.publicKey == publicKey);
+
     return GetIt.instance<SeedKeyRepository>().encrypt(
       data: data,
       algorithm: algorithm,
@@ -96,6 +98,7 @@ class SeedList extends Equatable {
     required String password,
   }) {
     final key = _allKeys.firstWhere((k) => k.key.publicKey == publicKey);
+
     return GetIt.instance<SeedKeyRepository>().decrypt(
       data: data,
       signInput: key.signInput(password),
@@ -112,6 +115,7 @@ class SeedList extends Equatable {
     required int? signatureId,
   }) {
     final key = _allKeys.firstWhere((k) => k.key.publicKey == publicKey);
+
     return GetIt.instance<SeedKeyRepository>().sign(
       data: data,
       signatureId: signatureId,
@@ -129,6 +133,7 @@ class SeedList extends Equatable {
     required int? signatureId,
   }) {
     final key = _allKeys.firstWhere((k) => k.key.publicKey == publicKey);
+
     return GetIt.instance<SeedKeyRepository>().signData(
       data: data,
       signatureId: signatureId,
@@ -146,6 +151,7 @@ class SeedList extends Equatable {
     required int? signatureId,
   }) {
     final key = _allKeys.firstWhere((k) => k.key.publicKey == publicKey);
+
     return GetIt.instance<SeedKeyRepository>().signRawData(
       data: data,
       signatureId: signatureId,

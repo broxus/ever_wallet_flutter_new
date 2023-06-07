@@ -9,9 +9,9 @@ import 'package:ui_components_lib/ui_components_lib.dart';
 class CommonSwitchInput extends StatefulWidget {
   /// {@macro common_switch_input}
   const CommonSwitchInput({
-    super.key,
     required this.value,
     required this.onChanged,
+    super.key,
     this.validator,
     this.validateMode,
     this.thumbChild,
@@ -49,35 +49,36 @@ class _CommonSwitchInputState extends State<CommonSwitchInput> {
     field?.didChange(v);
   }
 
+  Widget _onBuild(FormFieldState<bool> state) {
+    final colors = context.themeStyle.colors;
+    field = state;
+
+    return GestureDetector(
+      onTap: () {
+        _handleDidChange(!widget.value);
+        widget.onChanged(!widget.value);
+      },
+      child: CommonSwitcher(
+        value: widget.value,
+        backgroundColor: state.hasError
+            ? colors.alert
+            : widget.value
+                ? colors.apply
+                : colors.backgroundSecondary,
+        thumbColor: widget.thumbColor ?? ColorsRes.white,
+        thumbSize: widget.value ? Dimens.xLarge : Dimens.medium,
+        thumbChild: widget.thumbChild,
+      ),
+    );
+  }
+
   @override
   Widget build(BuildContext context) {
-    final colors = context.themeStyle.colors;
-
     return FormField<bool>(
       validator: widget.validator,
       initialValue: widget.value,
       autovalidateMode: widget.validateMode,
-      builder: (state) {
-        field = state;
-
-        return GestureDetector(
-          onTap: () {
-            _handleDidChange(!widget.value);
-            widget.onChanged(!widget.value);
-          },
-          child: CommonSwitcher(
-            value: widget.value,
-            backgroundColor: state.hasError
-                ? colors.accentWarning
-                : widget.value
-                    ? colors.textPositive
-                    : colors.fillingTertiary,
-            thumbColor: widget.thumbColor ?? ColorsRes.white,
-            thumbSize: widget.value ? 24 : 16,
-            thumbChild: widget.thumbChild,
-          ),
-        );
-      },
+      builder: _onBuild,
     );
   }
 }
@@ -94,8 +95,9 @@ class CommonSwitcher extends StatelessWidget {
     required this.backgroundColor,
     required this.thumbSize,
     super.key,
-    this.width = 52,
-    this.height = 32,
+    // TODO(nesquikm): add to *large maybe?
+    this.width = Dimens.d56,
+    this.height = Dimens.xxLarge,
     this.thumbChild,
   });
 
@@ -125,10 +127,13 @@ class CommonSwitcher extends StatelessWidget {
     return Container(
       width: width,
       height: height,
-      padding: value ? const EdgeInsets.all(4) : const EdgeInsets.all(8),
+      padding: value
+          ? const EdgeInsets.all(Dimens.xxSmall)
+          : const EdgeInsets.all(Dimens.xSmall),
       decoration: BoxDecoration(
         color: backgroundColor,
-        borderRadius: BorderRadius.circular(100),
+        // TODO(nesquikm): add separated radius dimensions maybe?
+        borderRadius: BorderRadius.circular(Dimens.d92),
       ),
       child: AnimatedAlign(
         duration: kThemeAnimationDuration,

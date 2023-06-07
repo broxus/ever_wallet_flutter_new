@@ -75,13 +75,14 @@ class GeneralStorageService extends AbstractStorageService {
       _currentKeySubject.add(await readCurrentKey());
 
   /// Set current public key of user
-  Future<void> setCurrentKey(String publicKey) => _storage
-      .set(
-        _currentKey,
-        publicKey,
-        domain: _preferencesKey,
-      )
-      .then((_) => _streamedCurrentKey());
+  Future<void> setCurrentKey(String publicKey) async {
+    await _storage.set(
+      _currentKey,
+      publicKey,
+      domain: _preferencesKey,
+    );
+    await _streamedCurrentKey();
+  }
 
   /// Subject of last viewed seeds (master keys)
   final _lastViewedSeedsSubject = BehaviorSubject<List<String>>();
@@ -109,6 +110,7 @@ class GeneralStorageService extends AbstractStorageService {
       return [];
     }
     final seedsList = jsonDecode(seeds) as List<dynamic>;
+
     return seedsList.cast<String>();
   }
 
@@ -116,13 +118,14 @@ class GeneralStorageService extends AbstractStorageService {
   /// There must be only master keys, if key is sub, then put its master.
   /// Count of seeds must be less or equals to [maxLastSelectedSeeds] and
   /// cropped outside.
-  Future<void> updateLastViewedSeeds(List<String> seedsKeys) => _storage
-      .set(
-        _lastSelectedSeedsKey,
-        jsonEncode(seedsKeys),
-        domain: _preferencesKey,
-      )
-      .then((_) => _streamedLastViewedSeeds());
+  Future<void> updateLastViewedSeeds(List<String> seedsKeys) async {
+    await _storage.set(
+      _lastSelectedSeedsKey,
+      jsonEncode(seedsKeys),
+      domain: _preferencesKey,
+    );
+    await _streamedLastViewedSeeds();
+  }
 
   /// Get password of public key if it was cached with biometry
   Future<String?> getKeyPassword(String publicKey) => _storage.get(
@@ -166,13 +169,14 @@ class GeneralStorageService extends AbstractStorageService {
       _storage.get(_currentConnectionKey, domain: _preferencesKey);
 
   /// Set current connection of network by name
-  Future<void> setCurrentConnection(String currentConnection) => _storage
-      .set(
-        _currentConnectionKey,
-        currentConnection,
-        domain: _preferencesKey,
-      )
-      .then((_) => _streamedCurrentConnection());
+  Future<void> setCurrentConnection(String currentConnection) async {
+    await _storage.set(
+      _currentConnectionKey,
+      currentConnection,
+      domain: _preferencesKey,
+    );
+    await _streamedCurrentConnection();
+  }
 
   /// Subject of system token contract assets
   final _systemTokenContractAssetsSubject =
@@ -239,6 +243,7 @@ class GeneralStorageService extends AbstractStorageService {
       return [];
     }
     final assetsList = jsonDecode(assets) as List<dynamic>;
+
     return assetsList
         .map(
           (asset) => TokenContractAsset.fromJson(asset as Map<String, dynamic>),
@@ -289,6 +294,7 @@ class GeneralStorageService extends AbstractStorageService {
       return [];
     }
     final assetsList = jsonDecode(assets) as List<dynamic>;
+
     return assetsList
         .map(
           (asset) => TokenContractAsset.fromJson(asset as Map<String, dynamic>),
@@ -331,17 +337,19 @@ class GeneralStorageService extends AbstractStorageService {
   }
 
   /// Delete all custom token contract assets with same type.
-  Future<void> deleteCustomTokens(NetworkType type) => _storage
-      .delete(
-        type.index.toString(),
-        domain: _customContractAssetsKey,
-      )
-      .then((value) => _streamedCustomContractAssets());
+  Future<void> deleteCustomTokens(NetworkType type) async {
+    await _storage.delete(
+      type.index.toString(),
+      domain: _customContractAssetsKey,
+    );
+    await _streamedCustomContractAssets();
+  }
 
   /// Clear all custom tokens
-  Future<void> clearAllCustomTokens() => _storage
-      .clearDomain(_customContractAssetsKey)
-      .then((value) => _customTokenContractAssetsSubject.add({}));
+  Future<void> clearAllCustomTokens() async {
+    await _storage.clearDomain(_customContractAssetsKey);
+    _customTokenContractAssetsSubject.add({});
+  }
 
   /// Subject of locale
   final _localeSubject = BehaviorSubject<String?>();
@@ -360,14 +368,16 @@ class GeneralStorageService extends AbstractStorageService {
       _storage.get(_localeKey, domain: _preferencesKey);
 
   /// Set locale that used could save in settings
-  Future<void> setLocale(String locale) => _storage
-      .set(_localeKey, locale, domain: _preferencesKey)
-      .then((_) => _streamedLocale());
+  Future<void> setLocale(String locale) async {
+    await _storage.set(_localeKey, locale, domain: _preferencesKey);
+    await _streamedLocale();
+  }
 
   /// Clear locale
-  Future<void> clearLocale() => _storage
-      .delete(_localeKey, domain: _preferencesKey)
-      .then((_) => _localeSubject.add(null));
+  Future<void> clearLocale() async {
+    await _storage.delete(_localeKey, domain: _preferencesKey);
+    _localeSubject.add(null);
+  }
 
   /// Get if biometry is enabled in app
   Future<bool> get isBiometryEnabled async {
@@ -375,6 +385,7 @@ class GeneralStorageService extends AbstractStorageService {
       _biometryStatusKey,
       domain: _preferencesKey,
     );
+
     return jsonDecode(encoded ?? 'false') as bool;
   }
 
@@ -424,6 +435,7 @@ class GeneralStorageService extends AbstractStorageService {
       return [];
     }
     final list = jsonDecode(encoded) as List<dynamic>;
+
     return list
         .map((entry) => Currency.fromJson(entry as Map<String, dynamic>))
         .toList();
@@ -437,19 +449,19 @@ class GeneralStorageService extends AbstractStorageService {
     final newList = list.where((e) => e.address != currency.address).toList()
       ..add(currency);
 
-    return _storage
-        .set(
-          type.index.toString(),
-          jsonEncode(newList),
-          domain: _currenciesKey,
-        )
-        .then((_) => _streamedCurrencies());
+    await _storage.set(
+      type.index.toString(),
+      jsonEncode(newList),
+      domain: _currenciesKey,
+    );
+    await _streamedCurrencies();
   }
 
   /// Clear information about all currencies.
-  Future<void> clearCurrencies() => _storage
-      .clearDomain(_currenciesKey)
-      .then((_) => _currencySubject.add({}));
+  Future<void> clearCurrencies() async {
+    await _storage.clearDomain(_currenciesKey);
+    _currencySubject.add({});
+  }
 
   /// Get flag if What's StEver screen was shown
   Future<bool> get getWasStEverOpened async {
@@ -457,6 +469,7 @@ class GeneralStorageService extends AbstractStorageService {
       _wasStEverOpenedKey,
       domain: _preferencesKey,
     );
+
     return jsonDecode(encoded ?? 'false') as bool;
   }
 
@@ -470,6 +483,7 @@ class GeneralStorageService extends AbstractStorageService {
   /// Return true if storage was migrated from old hive to this one
   Future<bool> get isStorageMigrated async {
     final encoded = await _storage.get(_migrationKey, domain: _preferencesKey);
+
     return jsonDecode(encoded ?? 'false') as bool;
   }
 

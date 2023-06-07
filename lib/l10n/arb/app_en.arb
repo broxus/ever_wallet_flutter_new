@@ -1,25 +1,25 @@
 {
   "@@locale": "en",
-  "applicationTitle": "EVER Wallet",
+  "applicationTitle": "Sparx Wallet",
   "skipWord": "Skip",
-  "checkSeedPhrase": "Check the phrase",
+  "checkSeedPhrase": "Let’s check your seed phrase",
   "checkSeedPhraseCorrectly": "Now let’s check that you wrote your seed phrase correctly. Please choose the correct words to continue.",
   "seedIsWrong": "The seed phrase is wrong",
   "word": "Word",
   "createPassword": "Create a password",
-  "createPasswordDescription": "We will ask for it at each transaction. If you forget it, you will need to restore the wallet from the seed phrase",
+  "createPasswordDescription": "We will ask for it at each transaction. If you forget it, you will need to restore your wallet from the seed phrase.",
   "yourPassword": "Your password",
   "confirmPassword": "Confirm password",
-  "enterSeedPhrase": "Enter your seed phrase",
+  "enterSeedPhrase": "Enter seed phrase",
   "passwordsMatch": "Passwords must match",
   "next": "Next",
   "confirm": "Confirm",
   "readHere": "Read here",
   "useBiometryForFastLogin": "Use Biometry for fast login",
-  "saveSeedPhrase": "Save the seed phrase",
+  "saveSeedPhrase": "Save your seed phrase",
   "copyWords": "Copy all words",
   "saveSeedWarning": "It gives access to your wallet, don’t share it with anyone and store in a safe place. If you lose it, you will not be able to restore it.",
-  "copiedNoExclamation": "Copied",
+  "copiedNoExclamation": "Copied!",
   "ok": "OK",
   "copy": "Copy",
   "seedPhraseNameTitle": "Enter the name for seed phrase",
@@ -33,17 +33,17 @@
   "passwordLength": "Password must be at least 8 symbols",
   "seedName": "Seed name",
   "wordsCount": "{count} words",
-    "@wordsCount": {
-      "placeholders": {
-        "count": {}
+  "@wordsCount": {
+    "placeholders": {
+      "count": {}
     }
   },
-  "pasteSeedIntoFirstBox": "You can paste all the words from the clipboard into the first box",
+  "pasteSeedIntoFirstBox": "You can paste all the words from the clipboard into the first box.",
   "pasteAll": "Paste all",
   "clearAll": "Clear all",
-  "welcomeTitle": "Welcome to\nEVER Wallet",
+  "welcomeTitle": "Welcome\nto Sparx Wallet",
   "createNewWallet": "Create a new wallet",
-  "supportTokenAndAccessEverscale": "Support of any token and access to the DApps of Everscale blockchain ecosystem",
+  "supportTokenAndAccessEverscale": "Token support and access to all Everscale-powered Dapps.",
   "signWithLedger": "Sign in with Ledger",
   "byProcessingAcceptLicense": "By proceeding, you accept EVER Wallet License Agreement. "
 }

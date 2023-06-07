@@ -1,5 +1,3 @@
-// ignore_for_file: public_member_api_docs
-// ignore_for_file: unused_field
 import 'dart:ui';
 
 /// {@template colors_palette}
@@ -9,129 +7,66 @@ import 'dart:ui';
 class ColorsPalette {
   /// {@macro colors_palette}
   const ColorsPalette({
-    required this.backgroundPrimary,
-    required this.backgroundOverlay,
     required this.textPrimary,
     required this.textSecondary,
-    required this.textTertiary,
-    required this.textButtonPrimary,
-    required this.textButtonSecondary,
-    required this.textNegative,
-    required this.textPositive,
-    required this.textButtonPressed,
-    required this.textButtonDisabled,
-    required this.accentPrimary,
-    required this.accentPrimaryPressed,
-    required this.accentPrimaryDisabled,
-    required this.accentSecondary,
-    required this.accentSecondaryPressed,
-    required this.accentSecondaryDisabled,
-    required this.accentTertiary,
-    required this.accentTertiaryPressed,
-    required this.accentTertiaryDisabled,
-    required this.accentWarning,
-    required this.accentWarningPressed,
-    required this.accentWarningDisabled,
-    required this.fillingPrimary,
-    required this.fillingSecondary,
-    required this.fillingTertiary,
-    required this.fillingPressed,
-    required this.statusPositiveTitle,
-    required this.statusPositiveBackground,
-    required this.statusMediumTitle,
-    required this.statusMediumBackground,
-    required this.statusNegativeTitle,
-    required this.statusNegativeBackground,
+    required this.textContrast,
+    required this.appBackground,
+    required this.backgroundPrimary,
+    required this.backgroundSecondary,
+    required this.strokePrimary,
+    required this.strokeSecondary,
+    required this.strokeContrast,
+    required this.alert,
+    required this.apply,
+    required this.blue,
+    required this.blueSecond,
   });
 
-  /// Background color for theme
-  final Color backgroundPrimary;
-  final Color backgroundOverlay;
-
-  /// Text color for theme
+  /// Text
   final Color textPrimary;
   final Color textSecondary;
-  final Color textTertiary;
-  final Color textButtonPrimary;
-  final Color textButtonSecondary;
-  final Color textNegative;
-  final Color textPositive;
-  final Color textButtonPressed;
-  final Color textButtonDisabled;
+  final Color textContrast;
 
-  /// Accent color for theme
-  final Color accentPrimary;
-  final Color accentPrimaryPressed;
-  final Color accentPrimaryDisabled;
-  final Color accentSecondary;
-  final Color accentSecondaryPressed;
-  final Color accentSecondaryDisabled;
-  final Color accentTertiary;
-  final Color accentTertiaryPressed;
-  final Color accentTertiaryDisabled;
-  final Color accentWarning;
-  final Color accentWarningPressed;
-  final Color accentWarningDisabled;
+  /// Background
+  final Color appBackground;
+  final Color backgroundPrimary;
+  final Color backgroundSecondary;
 
-  /// Fill color for theme
-  final Color fillingPrimary;
-  final Color fillingSecondary;
-  final Color fillingTertiary;
-  final Color fillingPressed;
+  final Color strokePrimary;
+  final Color strokeSecondary;
+  final Color strokeContrast;
 
-  /// Status color for theme
-  final Color statusPositiveTitle;
-  final Color statusPositiveBackground;
-  final Color statusMediumTitle;
-  final Color statusMediumBackground;
-  final Color statusNegativeTitle;
-  final Color statusNegativeBackground;
+  final Color alert;
+  final Color apply;
+  final Color blue;
+  final Color blueSecond;
 }
 
 /// List of all colors from nekoton's palette.
 class ColorsRes {
   const ColorsRes._();
 
-  static const white = Color(0xFFFFFFFF);
-  static const black = Color(0xFF000000);
   static const transparent = Color(0x00000000);
 
-  /// Yellow
-  static const yellow300 = Color(0xFFB28501);
-  static const yellowPrimary = Color(0xFFE6AC00);
-  static const yellow900 = Color(0xFFFEF2CD);
+  static const black = Color(0xFF222222);
+  static const black343333 = Color(0xFF343333);
+  static const black303030 = Color(0xFF303030);
+  static const black454545 = Color(0xFF454545);
+  static const black3C3C3C = Color(0xFF3C3C3C);
 
-  /// Green
-  static const green300 = Color(0xFF398A39);
-  static const greenPrimary = Color(0xFF4AB44A);
-  static const green900 = Color(0xFFDEF1DE);
+  static const white = Color(0xFFFFFFFF);
+  static const whiteF3F3F3 = Color(0xFFF3F3F3);
+  static const whiteF7F7F7 = Color(0xFFF7F7F7);
+  static const whiteF4F2F2 = Color(0xFFF4F2F2);
 
-  /// Red
-  static const red200 = Color(0xFF762331);
-  static const red300 = Color(0xFFA53045);
-  static const redPrimary = Color(0xFFD83F5A);
-  static const red900 = Color(0xFFF7D7DD);
+  static const grey = Color(0xFFB3B3B3);
+  static const grey898989 = Color(0xFF898989);
+  static const greyE2E2E2 = Color(0xFFE2E2E2);
 
-  /// Neutral
-  static const neutral300 = Color(0xFF6C7078);
-  static const neutral300Opacity60 = Color(0x996C7078);
-  static const neutralPrimary = Color(0xFF8B909A);
-  static const neutral600 = Color(0xFFA6AAB2);
-  static const neutral700 = Color(0xFFB7BAC2);
-  static const neutral900 = Color(0xFFF0F1F5);
-  static const neutral950 = Color(0xFFF7F7F9);
-
-  /// Blue
-  static const lightBlue = Color(0xFFC5E4F3);
-  static const blue200 = Color(0xFF183784);
-  static const bluePrimary = Color(0xFF2B63F1);
-  static const blue700 = Color(0xFF7D9FF7);
-  static const blue800 = Color(0xFF96B2F9);
-  static const blue850 = Color(0xFFB1C5FA);
-  static const blue900 = Color(0xFFDAE4FD);
-  static const blue950 = Color(0xFFECF1FE);
-  static const blue970 = Color(0xFFF9FAFF);
-
-  /// Dark theme
-  static const dark060C32 = Color(0xFF060C32);
+  static const redLight = Color(0xFFF32929);
+  static const redDark = Color(0xFFEC4C4C);
+  static const greenLight = Color(0xFF27B21A);
+  static const greenDark = Color(0xFF26CC17);
+  static const blue = Color(0xFF52B6D3);
+  static const blueSecond = Color(0xFFA0C1C9);
 }

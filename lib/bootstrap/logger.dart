@@ -4,6 +4,9 @@ import 'package:fancy_logger/fancy_logger.dart';
 import 'package:logging/logging.dart';
 import 'package:nekoton_repository/nekoton_repository.dart';
 
+const _devLogsRetainSessionCount = 100;
+const _prodLogsRetainSessionCount = 50;
+
 Future<void> configureLogger(
   AppBuildType appBuildType,
 ) async {
@@ -16,22 +19,19 @@ Future<void> configureLogger(
   switch (appBuildType) {
     case AppBuildType.development:
       retainStrategy = {
-        Level.ALL: 100,
-        Level.SEVERE: 100,
+        Level.ALL: _devLogsRetainSessionCount,
+        Level.SEVERE: _devLogsRetainSessionCount,
       };
-      break;
     case AppBuildType.staging:
       retainStrategy = {
-        Level.ALL: 100,
-        Level.SEVERE: 100,
+        Level.ALL: _devLogsRetainSessionCount,
+        Level.SEVERE: _devLogsRetainSessionCount,
       };
-      break;
     case AppBuildType.production:
       retainStrategy = {
-        Level.ALL: 50,
-        Level.SEVERE: 50,
+        Level.ALL: _prodLogsRetainSessionCount,
+        Level.SEVERE: _prodLogsRetainSessionCount,
       };
-      break;
   }
 
   final fancyLogger = inject<FancyLogger>();
