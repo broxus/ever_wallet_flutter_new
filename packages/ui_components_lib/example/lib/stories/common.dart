@@ -13,6 +13,7 @@ class CommonStory extends StatelessWidget {
       appBar: const DefaultAppBar(titleText: 'CommonWidgets'),
       body: SingleChildScrollView(
         child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             const SizedBox(height: 30),
             DefaultAppBar(
@@ -75,6 +76,34 @@ class CommonStory extends StatelessWidget {
                   onPressed: () {},
                 ),
               ],
+            ),
+            const SizedBox(height: DimensSize.d28),
+            CommonCard(
+              titleText: 'Card Title',
+              leadingText: 'leading',
+              trailingChild: CommonButtonIconWidget.icon(icon: Icons.delete),
+            ),
+            const SizedBox(height: DimensSize.d8),
+            CommonCard(
+              titleText: 'Card Title',
+              leadingChild:
+                  CommonButtonIconWidget.icon(icon: Icons.access_alarm_sharp),
+              borderColor: colors.alert,
+              trailingChild: CommonButtonIconWidget.icon(icon: Icons.delete),
+            ),
+            const SizedBox(height: DimensSize.d8),
+            const Row(
+              children: [
+                Expanded(child: CommonCard(titleText: 'Card fill width')),
+              ],
+            ),
+            const SizedBox(height: DimensSize.d8),
+            CommonCard(
+              titleText: 'Card Title',
+              topSubtitleText: 'TopSubtitle',
+              leadingChild:
+                  CommonButtonIconWidget.icon(icon: Icons.access_alarm_sharp),
+              trailingChild: CommonButtonIconWidget.icon(icon: Icons.delete),
             ),
           ],
         ),
