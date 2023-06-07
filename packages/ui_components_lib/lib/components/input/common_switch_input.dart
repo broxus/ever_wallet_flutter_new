@@ -34,7 +34,7 @@ class CommonSwitchInput extends StatefulWidget {
   /// It can be icon for example.
   final Widget? thumbChild;
 
-  /// Color of sliding circle, white by default
+  /// Color of sliding circle, [ColorsPalette.backgroundSecondary] by default
   final Color? thumbColor;
 
   @override
@@ -63,10 +63,10 @@ class _CommonSwitchInputState extends State<CommonSwitchInput> {
         backgroundColor: state.hasError
             ? colors.alert
             : widget.value
-                ? colors.apply
-                : colors.backgroundSecondary,
-        thumbColor: widget.thumbColor ?? ColorsRes.white,
-        thumbSize: widget.value ? DimensSize.d24 : DimensSize.d16,
+                ? colors.strokeContrast
+                : colors.strokePrimary,
+        thumbColor: widget.thumbColor ?? colors.backgroundSecondary,
+        thumbSize: DimensSize.d20,
         thumbChild: widget.thumbChild,
       ),
     );
@@ -95,8 +95,8 @@ class CommonSwitcher extends StatelessWidget {
     required this.backgroundColor,
     required this.thumbSize,
     super.key,
-    this.width = DimensSize.d56,
-    this.height = DimensSize.d32,
+    this.width = DimensSize.d48,
+    this.height = DimensSize.d28,
     this.thumbChild,
   });
 
@@ -126,9 +126,7 @@ class CommonSwitcher extends StatelessWidget {
     return Container(
       width: width,
       height: height,
-      padding: value
-          ? const EdgeInsets.all(DimensSize.d4)
-          : const EdgeInsets.all(DimensSize.d8),
+      padding: const EdgeInsets.all(DimensSize.d4),
       decoration: BoxDecoration(
         color: backgroundColor,
         borderRadius: BorderRadius.circular(DimensRadius.max),
@@ -136,8 +134,7 @@ class CommonSwitcher extends StatelessWidget {
       child: AnimatedAlign(
         duration: kThemeAnimationDuration,
         alignment: value ? Alignment.centerRight : Alignment.centerLeft,
-        child: AnimatedContainer(
-          duration: kThemeAnimationDuration,
+        child: Container(
           width: thumbSize,
           height: thumbSize,
           decoration: BoxDecoration(
@@ -146,7 +143,7 @@ class CommonSwitcher extends StatelessWidget {
           ),
           child: FittedBox(
             child: Padding(
-              padding: const EdgeInsets.all(2),
+              padding: const EdgeInsets.all(DimensStroke.medium),
               child: thumbChild,
             ),
           ),
