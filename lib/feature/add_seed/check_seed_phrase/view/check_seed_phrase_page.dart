@@ -37,7 +37,7 @@ class _CheckSeedPhrasePageState extends State<CheckSeedPhrasePage> {
         appBar: DefaultAppBar(
           actions: [
             CommonButton.ghost(
-              padding: const EdgeInsets.symmetric(horizontal: 16),
+              padding: EdgeInsets.zero,
               text: context.l10n.skipWord,
               onPressed: () => _navigateToPassword(context),
             ),

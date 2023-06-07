@@ -69,6 +69,14 @@ class EverButtonStyleProvider extends InheritedWidget {
     return result!;
   }
 
+  /// Get information about button style from context if it provided
+  static EverButtonStyleProvider? ofNullable(BuildContext context) {
+    final result =
+        context.dependOnInheritedWidgetOfExactType<EverButtonStyleProvider>();
+
+    return result;
+  }
+
   @override
   bool updateShouldNotify(EverButtonStyleProvider oldWidget) =>
       oldWidget.contentColor != contentColor;

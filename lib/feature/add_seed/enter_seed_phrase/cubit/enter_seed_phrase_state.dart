@@ -10,8 +10,6 @@ class EnterSeedPhraseState with _$EnterSeedPhraseState {
   /// [controllers] and [focuses] used for TextField widgets.
   /// [allowedValues] and [currentValue] used for tab widget.
   /// If [allowedValues] contains only one item, tab widget must not be shown.
-  /// [formError] used for displaying error message of form validation.
-  ///   If [formError] is empty text, then default error message will be shown.
   /// [displayPasteButton] = false if there are no text in fields else true
   const factory EnterSeedPhraseState.tab({
     required List<int> allowedValues,
@@ -19,6 +17,6 @@ class EnterSeedPhraseState with _$EnterSeedPhraseState {
     required List<TextEditingController> controllers,
     required List<FocusNode> focuses,
     required bool displayPasteButton,
-    String? formError,
+    required List<ValueNotifier<bool>> inputsCompleted,
   }) = _Tab;
 }

@@ -29,70 +29,71 @@ class CreateSeedView extends StatelessWidget {
     final colors = context.themeStyle.colors;
 
     return SafeArea(
+      minimum: const EdgeInsets.only(bottom: DimensSize.d16),
       child: Padding(
-        padding: const EdgeInsets.all(DimensSize.d16),
+        padding: const EdgeInsets.symmetric(horizontal: DimensSize.d16),
         child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            Text(
-              localization.saveSeedPhrase,
-              style: StyleRes.h1.copyWith(color: colors.textPrimary),
-            ),
-            const SizedBox(height: DimensSize.d12),
-            Text(
-              localization.saveSeedWarning,
-              style:
-                  StyleRes.primaryRegular.copyWith(color: colors.textPrimary),
-            ),
-            const SizedBox(height: DimensSize.d24),
             Expanded(
-              child: BlocBuilder<CreateSeedCubit, CreateSeedCubitState>(
-                builder: (context, state) {
-                  return state.when(
-                    initial: Container.new,
-                    generated: (words, isCopied) {
-                      return Stack(
-                        children: [
-                          SingleChildScrollView(
-                            child: Column(
+              child: SingleChildScrollView(
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Text(
+                      localization.saveSeedPhrase,
+                      style: StyleRes.h1.copyWith(color: colors.textPrimary),
+                    ),
+                    const SizedBox(height: DimensSize.d12),
+                    Text(
+                      localization.saveSeedWarning,
+                      style: StyleRes.primaryRegular
+                          .copyWith(color: colors.textPrimary),
+                    ),
+                    const SizedBox(height: DimensSize.d24),
+                    BlocBuilder<CreateSeedCubit, CreateSeedCubitState>(
+                      builder: (context, state) {
+                        return state.when(
+                          initial: Container.new,
+                          generated: (words, isCopied) {
+                            return Column(
                               mainAxisSize: MainAxisSize.min,
                               children: [
                                 _wordsField(colors, words),
                                 const SizedBox(height: DimensSize.d4),
                                 _copyButton(isCopied),
-                                // To allow scroll above buttons
-                                const SizedBox(
-                                  height: commonButtonHeight + DimensSize.d12,
-                                ),
                               ],
-                            ),
-                          ),
-                          Positioned(
-                            left: 0,
-                            right: 0,
-                            bottom: 0,
-                            child: Column(
-                              children: [
-                                CommonButton.primary(
-                                  text: localization.checkSeedPhrase,
-                                  onPressed: () => checkCallback(words),
-                                  fillWidth: true,
-                                ),
-                                const SizedBox(height: DimensSize.d12),
-                                CommonButton.secondary(
-                                  text: localization.skipTakeRisk,
-                                  onPressed: () => skipCallback(words),
-                                  fillWidth: true,
-                                ),
-                              ],
-                            ),
-                          ),
-                        ],
-                      );
-                    },
-                  );
-                },
+                            );
+                          },
+                        );
+                      },
+                    ),
+                    const SizedBox(height: DimensSize.d8),
+                  ],
+                ),
               ),
+            ),
+            BlocBuilder<CreateSeedCubit, CreateSeedCubitState>(
+              builder: (context, state) {
+                final words = state.maybeWhen(
+                  generated: (words, _) => words,
+                  orElse: () => const <String>[],
+                );
+                return Column(
+                  children: [
+                    CommonButton.primary(
+                      text: localization.checkSeedPhrase,
+                      onPressed: () => checkCallback(words),
+                      fillWidth: true,
+                    ),
+                    const SizedBox(height: DimensSize.d8),
+                    CommonButton.secondary(
+                      text: localization.skipTakeRisk,
+                      onPressed: () => skipCallback(words),
+                      fillWidth: true,
+                    ),
+                  ],
+                );
+              },
             ),
           ],
         ),
@@ -101,27 +102,13 @@ class CreateSeedView extends StatelessWidget {
   }
 
   Widget _textPair(String word, int index, ColorsPalette colors) {
-    return Padding(
-      padding: const EdgeInsets.only(bottom: DimensSize.d12),
-      child: Row(
-        children: [
-          SizedBox(
-            width: DimensSize.d28,
-            child: Text(
-              '$index.',
-              style: StyleRes.addRegular.copyWith(color: colors.textSecondary),
-            ),
-          ),
-          Expanded(
-            child: Text(
-              word,
-              style: StyleRes.button.copyWith(color: colors.textPrimary),
-              textAlign: TextAlign.left,
-            ),
-          ),
-        ],
-      ),
-    );
+    String indexText;
+    if (index < 10) {
+      indexText = '0$index';
+    } else {
+      indexText = '$index';
+    }
+    return CommonCard(titleText: word, leadingText: indexText);
   }
 
   Widget _copyButton(bool copied) {
@@ -150,32 +137,32 @@ class CreateSeedView extends StatelessWidget {
   }
 
   Widget _wordsField(ColorsPalette colors, List<String> words) {
-    return Container(
-      padding: const EdgeInsets.all(DimensSize.d16),
-      child: Row(
-        children: [
-          Expanded(
-            child: Column(
-              children: words
-                  // ignore:  no-magic-number
-                  .getRange(0, 6)
-                  // ignore:  no-magic-number
-                  .mapIndexed((i, word) => _textPair(word, i + 1, colors))
-                  .toList(),
-            ),
+    final lengthHalf = words.length ~/ 2;
+
+    return SeparatedRow(
+      separator: const SizedBox(width: DimensSize.d8),
+      children: [
+        Expanded(
+          child: SeparatedColumn(
+            separator: const SizedBox(height: DimensSize.d8),
+            children: words
+                .getRange(0, lengthHalf)
+                .mapIndexed((i, word) => _textPair(word, i + 1, colors))
+                .toList(),
           ),
-          Expanded(
-            child: Column(
-              children: words
-                  // ignore:  no-magic-number
-                  .getRange(6, 12)
-                  // ignore:  no-magic-number
-                  .mapIndexed((i, word) => _textPair(word, i + 7, colors))
-                  .toList(),
-            ),
+        ),
+        Expanded(
+          child: SeparatedColumn(
+            separator: const SizedBox(height: DimensSize.d8),
+            children: words
+                .getRange(lengthHalf, words.length)
+                .mapIndexed(
+                  (i, word) => _textPair(word, i + lengthHalf + 1, colors),
+                )
+                .toList(),
           ),
-        ],
-      ),
+        ),
+      ],
     );
   }
 }

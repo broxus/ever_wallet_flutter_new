@@ -19,6 +19,7 @@ class CommonCard extends StatelessWidget {
     this.topSubtitleChild,
     this.topSubtitleText,
     this.padding,
+    this.centerTitle = false,
   });
 
   /// Custom widget or text that displays above title.
@@ -45,7 +46,11 @@ class CommonCard extends StatelessWidget {
   /// Color of card border
   final Color? borderColor;
 
+  /// Default padding is horizontal: 12
   final EdgeInsets? padding;
+
+  /// If title should be centered
+  final bool centerTitle;
 
   @override
   Widget build(BuildContext context) {
@@ -94,11 +99,8 @@ class CommonCard extends StatelessWidget {
         style: StyleRes.addRegular.copyWith(color: colors.textSecondary),
       );
     }
-    final padding = this.padding ??
-        const EdgeInsets.symmetric(
-          horizontal: DimensSize.d12,
-          vertical: DimensSize.d16,
-        );
+    final padding =
+        this.padding ?? const EdgeInsets.symmetric(horizontal: DimensSize.d12);
 
     return EverButtonStyleProvider(
       contentColor: colors.textSecondary,
@@ -125,7 +127,7 @@ class CommonCard extends StatelessWidget {
             separator: const SizedBox(width: DimensSize.d8),
             children: [
               if (subtitle != null) subtitle,
-              Expanded(child: title),
+              Expanded(child: centerTitle ? Center(child: title) : title),
               if (trailingChild != null) trailingChild!,
             ],
           ),

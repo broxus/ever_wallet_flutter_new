@@ -19,7 +19,7 @@ class ContainerRow extends Container {
     super.clipBehavior = Clip.none,
   }) : super(
           child: SeparatedRow(
-            separator: const SizedBox(height: DimensSize.d8),
+            separator: const SizedBox(width: DimensSize.d8),
             children: children,
           ),
         );

@@ -30,7 +30,7 @@ class CreateSeedPasswordOnboardingPage extends StatelessWidget {
       child: GestureDetector(
         onTap: () => FocusScope.of(context).unfocus(),
         child: const Scaffold(
-          resizeToAvoidBottomInset: false,
+          resizeToAvoidBottomInset: true,
           appBar: DefaultAppBar(),
           body: CreateSeedPasswordView(needBiometryIfPossible: true),
         ),
@@ -63,7 +63,7 @@ class CreateSeedPasswordProfilePage extends StatelessWidget {
       child: GestureDetector(
         onTap: () => FocusScope.of(context).unfocus(),
         child: const Scaffold(
-          resizeToAvoidBottomInset: false,
+          resizeToAvoidBottomInset: true,
           appBar: DefaultAppBar(),
           body: CreateSeedPasswordView(needBiometryIfPossible: false),
         ),

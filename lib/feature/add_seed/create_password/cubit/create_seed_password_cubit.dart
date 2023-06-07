@@ -1,7 +1,12 @@
+import 'package:app/app/service/messenger/message.dart';
+import 'package:app/app/service/messenger/service/messenger_service.dart';
+import 'package:app/di/di.dart';
 import 'package:flutter/widgets.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
 import 'package:freezed_annotation/freezed_annotation.dart';
+import 'package:logging/logging.dart';
+import 'package:nekoton_repository/nekoton_repository.dart' hide Message;
 
 part 'create_seed_password_state.dart';
 
@@ -14,7 +19,14 @@ class CreateSeedPasswordCubit extends Cubit<CreateSeedPasswordState> {
     required this.completeCallback,
     this.setCurrentKey = false,
     this.name,
-  }) : super(const CreateSeedPasswordState());
+  }) : super(CreateSeedPasswordState.initial()) {
+    passwordController.addListener(() {
+      formKey.currentState?.reset();
+    });
+    confirmController.addListener(() {
+      formKey.currentState?.reset();
+    });
+  }
 
   /// Callback that calls when seed is created
   final VoidCallback completeCallback;
@@ -46,46 +58,36 @@ class CreateSeedPasswordCubit extends Cubit<CreateSeedPasswordState> {
     return super.close();
   }
 
+  void showPassword() {
+    emit(state.copyWith(obscurePassword: false));
+  }
+
+  void hidePassword() {
+    emit(state.copyWith(obscurePassword: true));
+  }
+
+  void showConfirm() {
+    emit(state.copyWith(obscureConfirm: false));
+  }
+
+  void hideConfirm() {
+    emit(state.copyWith(obscureConfirm: true));
+  }
+
   Future<void> nextAction() async {
     if (formKey.currentState?.validate() ?? false) {
-      // TODO(alex-a4): add transport checking
-      // final keyRepo = context.read<KeysRepository>();
-      // final accountsRepo = context.read<AccountsRepository>();
-      // final key = await keyRepo.createKey(
-      //   phrase: widget.phrase,
-      //   password: passwordController.text,
-      //   name: widget.name,
-      // );
-      // // make key visible for subscribers
-      // if (widget.setCurrentKey) await keyRepo.setCurrentKey(key.publicKey);
-      //
-      // final overlay = DefaultDialogController.showFullScreenLoader();
-      //
-      // /// Waits for founding any accounts. If no accounts found - start creating a new one
-      // late StreamSubscription sub;
-      // sub = accountsRepo
-      //     .accountsForStream(key.publicKey)
-      //     .where((event) => event.isNotEmpty)
-      //     .timeout(const Duration(seconds: 1), onTimeout: (c) => c.close())
-      //     .listen(
-      //   (accounts) {
-      //     overlay.dismiss(animate: false);
-      //     widget.callback(context);
-      //     sub.cancel();
-      //   },
-      //   onDone: () async {
-      //     await context.read<AccountsRepository>().addAccount(
-      //           publicKey: key.publicKey,
-      //           walletType: getDefaultWalletType(isEver),
-      //           workchain: kDefaultWorkchain,
-      //         );
-      //     overlay.dismiss(animate: false);
-      //     if (mounted) {
-      //       widget.callback(context);
-      //     }
-      //     sub.cancel();
-      //   },
-      // );
+      emit(state.copyWith(isLoading: true));
+      final nekoton = inject<NekotonRepository>();
+      try {
+        await nekoton.addSeed(
+          phrase: phrase,
+          password: passwordController.text,
+        );
+      } catch (e) {
+        Logger('CreateSeedPasswordCubit').severe(e);
+        emit(state.copyWith(isLoading: false));
+        inject<MessengerService>().show(Message.error(message: e.toString()));
+      }
     }
   }
 }

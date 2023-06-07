@@ -91,8 +91,27 @@ class CheckSeedPhraseCubit extends Cubit<CheckSeedPhraseCubitState> {
     );
     if (hasError) {
       emit(CheckSeedPhraseCubitState.error(availableAnswers, userAnswers));
+      Future<void>.delayed(delayBeforeCompleteChecking, () {
+        userAnswers.forEachIndexed(
+          (index, answer) =>
+              userAnswers[index] = userAnswers[index].copyWith(word: ''),
+        );
+        currentCheckIndex = 0;
+        emit(
+          CheckSeedPhraseCubitState.answer(
+            availableAnswers,
+            userAnswers,
+            0,
+          ),
+        );
+      });
     } else {
-      emit(CheckSeedPhraseCubitState.correct(availableAnswers, userAnswers));
+      emit(
+        CheckSeedPhraseCubitState.correct(
+          availableAnswers,
+          List.of(userAnswers),
+        ),
+      );
       Future<void>.delayed(delayBeforeCompleteChecking, completeChecking);
     }
   }
