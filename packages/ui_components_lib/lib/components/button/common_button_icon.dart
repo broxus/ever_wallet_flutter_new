@@ -59,22 +59,80 @@ class CommonButtonIconWidget extends StatelessWidget {
       color: color,
       duration: kThemeAnimationDuration,
       builder: (context, color) {
-        if (icon != null) {
-          return Icon(
-            icon,
-            color: color,
-            size: size ?? defaultCommonIconSize,
-          );
-        }
-
-        return SvgPicture.asset(
-          svg!,
-          theme: SvgTheme(
-            currentColor: color,
-            fontSize: size ?? defaultCommonIconSize,
-          ),
+        return CommonIconWidget(
+          icon: icon,
+          svg: svg,
+          size: size ?? defaultCommonIconSize,
+          color: color,
         );
       },
+    );
+  }
+}
+
+/// {@template common_icon}
+///
+/// Widget of icon that allows you to put SvgPicture or Icon.
+///
+/// {@endtemplate}
+class CommonIconWidget extends StatelessWidget {
+  /// {@macro common_icon_widget}
+  const CommonIconWidget({
+    this.icon,
+    this.svg,
+    this.size,
+    super.key,
+    this.color,
+  }) : assert(
+          icon != null || svg != null,
+          'IconData or Svg path must be specified',
+        );
+
+  /// Factory that allows creating widget with [IconData]
+  factory CommonIconWidget.icon({
+    required IconData icon,
+    double? size,
+    Key? key,
+  }) =>
+      CommonIconWidget(icon: icon, size: size, key: key);
+
+  /// Factory that allows creating widget with svg asset
+  factory CommonIconWidget.svg({
+    required String svg,
+    double? size,
+    Key? key,
+  }) =>
+      CommonIconWidget(svg: svg, size: size, key: key);
+
+  /// Data of icon that is used in [Icon]
+  final IconData? icon;
+
+  /// Path in assets directory to svg image
+  final String? svg;
+
+  /// Size for image
+  final double? size;
+
+  /// Color of image, if not specified then [ColorsPalette.blue] is used
+  final Color? color;
+
+  @override
+  Widget build(BuildContext context) {
+    final colors = context.themeStyle.colors;
+    if (icon != null) {
+      return Icon(
+        icon,
+        color: color ?? colors.blue,
+        size: size ?? defaultCommonIconSize,
+      );
+    }
+
+    return SvgPicture.asset(
+      svg!,
+      theme: SvgTheme(
+        currentColor: color ?? colors.blue,
+        fontSize: size ?? defaultCommonIconSize,
+      ),
     );
   }
 }

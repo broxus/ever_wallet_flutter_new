@@ -145,12 +145,12 @@ class DefaultAppBar extends StatelessWidget implements PreferredSizeWidget {
             : null);
 
     return Padding(
-      padding: const EdgeInsets.symmetric(horizontal: Dimens.d16),
+      padding: const EdgeInsets.symmetric(horizontal: DimensSize.d16),
       child: AppBar(
         backgroundColor: backgroundColor ?? Colors.transparent,
         toolbarHeight: preferredSize.height,
         elevation: 0,
-        titleSpacing: Dimens.d8,
+        titleSpacing: DimensSize.d8,
         centerTitle: centerTitle,
         leadingWidth: appBarButtonSize,
         leading: leading == null ? null : Center(child: leading),

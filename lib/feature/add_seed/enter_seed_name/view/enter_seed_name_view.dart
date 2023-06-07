@@ -39,7 +39,7 @@ class _EnterSeedNameViewState extends State<EnterSeedNameView> {
 
     return SafeArea(
       child: Padding(
-        padding: const EdgeInsets.all(Dimens.d16),
+        padding: const EdgeInsets.all(DimensSize.d16),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
@@ -47,13 +47,13 @@ class _EnterSeedNameViewState extends State<EnterSeedNameView> {
               localization.seedPhraseNameTitle,
               style: StyleRes.h1.copyWith(color: colors.textPrimary),
             ),
-            const SizedBox(height: Dimens.d12),
+            const SizedBox(height: DimensSize.d12),
             Text(
               localization.seedPhraseNameDescription,
               style:
                   StyleRes.primaryRegular.copyWith(color: colors.textPrimary),
             ),
-            const SizedBox(height: Dimens.d20),
+            const SizedBox(height: DimensSize.d20),
             CommonInput(
               controller: nameController,
               hintText: localization.seedName,
