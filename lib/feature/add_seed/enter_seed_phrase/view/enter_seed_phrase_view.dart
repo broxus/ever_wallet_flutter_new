@@ -124,12 +124,9 @@ class EnterSeedPhraseView extends StatelessWidget {
         final cubit = context.read<EnterSeedPhraseCubit>();
         final colors = context.themeStyle.colors;
 
-        String indexText;
-        if (index < 10) {
-          indexText = '0$index';
-        } else {
-          indexText = '$index';
-        }
+        // ignore: no-magic-number
+        final indexText = index < 10 ? '0$index' : '$index';
+
         if (completed) {
           return PressScaleWidget(
             onPressed: () => controller.clear(),

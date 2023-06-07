@@ -58,7 +58,7 @@ class CreateSeedView extends StatelessWidget {
                             return Column(
                               mainAxisSize: MainAxisSize.min,
                               children: [
-                                _wordsField(colors, words),
+                                _wordsField(words),
                                 const SizedBox(height: DimensSize.d4),
                                 _copyButton(isCopied),
                               ],
@@ -78,6 +78,7 @@ class CreateSeedView extends StatelessWidget {
                   generated: (words, _) => words,
                   orElse: () => const <String>[],
                 );
+
                 return Column(
                   children: [
                     CommonButton.primary(
@@ -101,13 +102,10 @@ class CreateSeedView extends StatelessWidget {
     );
   }
 
-  Widget _textPair(String word, int index, ColorsPalette colors) {
-    String indexText;
-    if (index < 10) {
-      indexText = '0$index';
-    } else {
-      indexText = '$index';
-    }
+  Widget _textPair(String word, int index) {
+    // ignore: no-magic-number
+    final indexText = index < 10 ? '0$index' : '$index';
+
     return CommonCard(titleText: word, leadingText: indexText);
   }
 
@@ -136,7 +134,7 @@ class CreateSeedView extends StatelessWidget {
     );
   }
 
-  Widget _wordsField(ColorsPalette colors, List<String> words) {
+  Widget _wordsField(List<String> words) {
     final lengthHalf = words.length ~/ 2;
 
     return SeparatedRow(
@@ -147,7 +145,7 @@ class CreateSeedView extends StatelessWidget {
             separator: const SizedBox(height: DimensSize.d8),
             children: words
                 .getRange(0, lengthHalf)
-                .mapIndexed((i, word) => _textPair(word, i + 1, colors))
+                .mapIndexed((i, word) => _textPair(word, i + 1))
                 .toList(),
           ),
         ),
@@ -157,7 +155,7 @@ class CreateSeedView extends StatelessWidget {
             children: words
                 .getRange(lengthHalf, words.length)
                 .mapIndexed(
-                  (i, word) => _textPair(word, i + lengthHalf + 1, colors),
+                  (i, word) => _textPair(word, i + lengthHalf + 1),
                 )
                 .toList(),
           ),

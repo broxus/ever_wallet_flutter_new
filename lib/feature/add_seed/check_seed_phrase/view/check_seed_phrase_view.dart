@@ -89,7 +89,7 @@ class CheckSeedPhraseView extends StatelessWidget {
   }
 
   Widget _buildAnswers(
-    List<String> available,
+    List<String> _,
     List<CheckSeedCorrectAnswer> userAnswers, {
     int? currentIndex,
   }) {

@@ -336,6 +336,7 @@ class _CommonInputState extends State<CommonInput> {
   }) {
     final style = widget.textStyle ??
         StyleRes.primaryRegular.copyWith(color: colors.textPrimary);
+
     return SizedBox(
       height: widget.height,
       child: TextField(

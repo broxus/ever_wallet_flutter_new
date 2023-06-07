@@ -37,6 +37,7 @@ class _ChangeNotifierListenerState extends State<ChangeNotifierListener> {
     super.didUpdateWidget(oldWidget);
   }
 
+  // ignore: no-empty-block
   void _updater() => setState(() {});
 
   @override

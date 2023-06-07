@@ -71,15 +71,12 @@ class CommonCard extends StatelessWidget {
 
     final hasTopSubtitle = topSubtitleChild != null || topSubtitleText != null;
     if (hasTopSubtitle) {
-      Widget topSubtitle;
-      if (topSubtitleChild != null) {
-        topSubtitle = topSubtitleChild!;
-      } else {
-        topSubtitle = Text(
-          topSubtitleText!,
-          style: StyleRes.addRegular.copyWith(color: colors.textSecondary),
-        );
-      }
+      final topSubtitle = topSubtitleChild != null
+          ? topSubtitleChild!
+          : Text(
+              topSubtitleText!,
+              style: StyleRes.addRegular.copyWith(color: colors.textSecondary),
+            );
       title = SeparatedColumn(
         mainAxisSize: MainAxisSize.min,
         crossAxisAlignment: CrossAxisAlignment.start,
