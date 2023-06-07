@@ -66,7 +66,7 @@ class _CommonSwitchInputState extends State<CommonSwitchInput> {
                 ? colors.apply
                 : colors.backgroundSecondary,
         thumbColor: widget.thumbColor ?? ColorsRes.white,
-        thumbSize: widget.value ? Dimens.xLarge : Dimens.medium,
+        thumbSize: widget.value ? DimensSize.d24 : DimensSize.d16,
         thumbChild: widget.thumbChild,
       ),
     );
@@ -95,9 +95,8 @@ class CommonSwitcher extends StatelessWidget {
     required this.backgroundColor,
     required this.thumbSize,
     super.key,
-    // TODO(nesquikm): add to *large maybe?
-    this.width = Dimens.d56,
-    this.height = Dimens.xxLarge,
+    this.width = DimensSize.d56,
+    this.height = DimensSize.d32,
     this.thumbChild,
   });
 
@@ -128,12 +127,11 @@ class CommonSwitcher extends StatelessWidget {
       width: width,
       height: height,
       padding: value
-          ? const EdgeInsets.all(Dimens.xxSmall)
-          : const EdgeInsets.all(Dimens.xSmall),
+          ? const EdgeInsets.all(DimensSize.d4)
+          : const EdgeInsets.all(DimensSize.d8),
       decoration: BoxDecoration(
         color: backgroundColor,
-        // TODO(nesquikm): add separated radius dimensions maybe?
-        borderRadius: BorderRadius.circular(Dimens.d92),
+        borderRadius: BorderRadius.circular(DimensRadius.max),
       ),
       child: AnimatedAlign(
         duration: kThemeAnimationDuration,

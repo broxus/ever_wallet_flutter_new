@@ -51,7 +51,7 @@ class _SelectionStatusInputState extends State<SelectionStatusInput> {
       child: Material(
         color: backgroundColor ?? Colors.transparent,
         shape: SquircleBoxBorder(
-          squircleRadius: Dimens.d16,
+          squircleRadius: DimensRadius.medium,
           borderSide: BorderSide(color: borderColor ?? Colors.transparent),
         ),
         child: InkWell(
