@@ -1,3 +1,4 @@
+import 'dart:ui' as ui;
 import 'package:flutter/material.dart';
 import 'package:ui_components_lib/ui_components_lib.dart';
 
@@ -70,7 +71,7 @@ class CommonButtonIconWidget extends StatelessWidget {
   }
 }
 
-/// {@template common_icon}
+/// {@template common_icon_widget}
 ///
 /// Widget of icon that allows you to put SvgPicture or Icon.
 ///
@@ -113,26 +114,29 @@ class CommonIconWidget extends StatelessWidget {
   /// Size for image
   final double? size;
 
-  /// Color of image, if not specified then [ColorsPalette.blue] is used
+  /// Color of image, if not specified then color of image is used
   final Color? color;
 
   @override
   Widget build(BuildContext context) {
-    final colors = context.themeStyle.colors;
+    final contentColor =
+        EverButtonStyleProvider.ofNullable(context)?.contentColor;
+
+    final color = this.color ?? contentColor;
+
     if (icon != null) {
       return Icon(
         icon,
-        color: color ?? colors.blue,
+        color: color,
         size: size ?? defaultCommonIconSize,
       );
     }
 
     return SvgPicture.asset(
       svg!,
-      theme: SvgTheme(
-        currentColor: color ?? colors.blue,
-        fontSize: size ?? defaultCommonIconSize,
-      ),
+      colorFilter:
+          color == null ? null : ui.ColorFilter.mode(color, ui.BlendMode.srcIn),
+      theme: SvgTheme(fontSize: size ?? defaultCommonIconSize),
     );
   }
 }

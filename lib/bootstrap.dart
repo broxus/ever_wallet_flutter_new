@@ -31,33 +31,35 @@ Future<void> bootstrap(
   Widget Function() builder,
   AppBuildType appBuildType,
 ) async {
-  await configureDi();
-  await configureLogger(appBuildType);
-
-  await configureEncryptedStorage();
-  await configureNavigationService();
-  await migrateStorage();
-  await configureStorageServices();
-  // SetUp nekoton after storage migrations
-  await configureNekoton();
-  await configureConnectionService();
-
   final log = Logger('bootstrap');
 
-  FlutterError.onError = (details) {
-    log.severe(details.exceptionAsString(), details, details.stack);
-  };
-
-  Bloc.observer = AppBlocObserver();
-
-  DefaultAppBar.defaultPopAction = (context) => context.maybePop();
-
   await runZonedGuarded(
-    () async => runApp(
-      AppWrapper(
-        builder: builder,
-      ),
-    ),
+    () async {
+      await configureDi();
+      await configureLogger(appBuildType);
+
+      await configureEncryptedStorage();
+      await configureNavigationService();
+      await migrateStorage();
+      await configureStorageServices();
+      // SetUp nekoton after storage migrations
+      await configureNekoton();
+      await configureConnectionService();
+
+      FlutterError.onError = (details) {
+        log.severe(details.exceptionAsString(), details, details.stack);
+      };
+
+      Bloc.observer = AppBlocObserver();
+
+      DefaultAppBar.defaultPopAction = (context) => context.maybePop();
+
+      runApp(
+        AppWrapper(
+          builder: builder,
+        ),
+      );
+    },
     (error, stackTrace) => log.severe(error.toString(), error, stackTrace),
   );
 }

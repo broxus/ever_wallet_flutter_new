@@ -5,8 +5,8 @@ import 'package:flutter/material.dart';
 import 'package:ui_components_lib/ui_components_lib.dart';
 import 'package:visibility_detector/visibility_detector.dart';
 
-const _doubleRowsPadding = 8.0;
-const _tripleRowsPadding = 16.0;
+const _doubleRowsPadding = DimensSize.d8;
+const _tripleRowsPadding = DimensSize.d16;
 const _rowItemsOffset = 2;
 const _twoLinesMinHeight = 150.0;
 const _scrollOffset = 0.5;
@@ -100,7 +100,7 @@ class _SlidingBlockChainsState extends State<SlidingBlockChains> {
       onVisibilityChanged: _visibilityChanged,
       child: Center(
         child: ConstrainedBox(
-          constraints: const BoxConstraints(maxHeight: 200),
+          constraints: const BoxConstraints(maxHeight: DimensSize.d200),
           child: LayoutBuilder(
             builder: (context, constraints) {
               final lineCount =

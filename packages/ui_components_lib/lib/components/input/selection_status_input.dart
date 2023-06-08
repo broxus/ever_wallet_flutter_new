@@ -64,24 +64,21 @@ class _SelectionStatusInputState extends State<SelectionStatusInput> {
             highlightColor: Colors.transparent,
             onHighlightChanged: _triggerPressed,
             onTap: widget.onPressed,
-            child: AnimatedColor(
-              color: contentColor,
-              duration: kThemeAnimationDuration,
-              builder: (context, color) {
-                return Row(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  children: [
-                    Text(
+            child: SeparatedRow(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                AnimatedColor(
+                  color: contentColor,
+                  duration: kThemeAnimationDuration,
+                  builder: (_, color) {
+                    return Text(
                       widget.title,
-                      style: StyleRes.button.copyWith(color: contentColor),
-                    ),
-                    if (widget.icon != null) ...[
-                      widget.icon!,
-                      const SizedBox(width: DimensSize.d8),
-                    ],
-                  ],
-                );
-              },
+                      style: StyleRes.button.copyWith(color: color),
+                    );
+                  },
+                ),
+                if (widget.icon != null) widget.icon!,
+              ],
             ),
           ),
         ),

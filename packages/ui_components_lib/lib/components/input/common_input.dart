@@ -40,7 +40,7 @@ class CommonInput extends StatefulWidget {
     this.suggestionsCallback,
     this.itemBuilder,
     this.onSuggestionSelected,
-    this.height,
+    this.height = commonInputHeight,
     this.onClearField,
     this.needClearButton = true,
     this.suggestionBackground,
@@ -52,10 +52,11 @@ class CommonInput extends StatefulWidget {
     this.obscureText = false,
     this.titleText,
     this.subtitleText,
+    this.prefixIconConstraints,
   });
 
   /// Height of input field
-  final double? height;
+  final double height;
 
   /// Controller for input field
   final TextEditingController? controller;
@@ -97,6 +98,9 @@ class CommonInput extends StatefulWidget {
   /// If you want specify custom icon, you need to wrap your input with
   /// [BoxConstraints] for proper behavior.
   final Widget? prefixIcon;
+
+  /// Constraints for [prefixIcon]
+  final BoxConstraints? prefixIconConstraints;
 
   /// Icon to show after input field, if not specified and [needClearButton] is
   /// true then custom clear button will be shown.
@@ -235,7 +239,7 @@ class _CommonInputState extends State<CommonInput> {
                       .copyWith(color: colors.textPrimary),
                 ),
                 if (widget.subtitleText != null) ...[
-                  const WidgetSpan(child: SizedBox(width: 4)),
+                  const WidgetSpan(child: SizedBox(width: DimensSize.d4)),
                   TextSpan(
                     text: widget.subtitleText,
                     style: StyleRes.addRegular
@@ -245,11 +249,11 @@ class _CommonInputState extends State<CommonInput> {
               ],
             ),
           ),
-          const SizedBox(height: 8),
+          const SizedBox(height: DimensSize.d8),
         ],
         child,
         if (state.errorText != null && state.errorText!.isNotEmpty) ...[
-          const SizedBox(height: 4),
+          const SizedBox(height: DimensSize.d4),
           Text(
             state.errorText!,
             style: StyleRes.addRegular.copyWith(
@@ -280,13 +284,34 @@ class _CommonInputState extends State<CommonInput> {
 
   BoxConstraints _suffixIconConstraints() {
     if (widget.suffixIcon != null || widget.needClearButton && !isEmpty) {
-      return const BoxConstraints(
-        minHeight: commonInputHeight,
+      return BoxConstraints(
+        minHeight: widget.height,
         minWidth: defaultCommonIconButtonSize,
       );
     }
 
-    return const BoxConstraints(minHeight: commonInputHeight);
+    return BoxConstraints(
+      minHeight: widget.height,
+      minWidth: DimensSize.d8,
+    );
+  }
+
+  BoxConstraints _prefixIconConstraints() {
+    if (widget.prefixIconConstraints != null) {
+      return widget.prefixIconConstraints!;
+    }
+
+    if (widget.prefixIcon != null) {
+      return BoxConstraints(
+        minHeight: widget.height,
+        minWidth: defaultCommonIconButtonSize,
+      );
+    }
+
+    return BoxConstraints(
+      minHeight: widget.height,
+      minWidth: DimensSize.d8,
+    );
   }
 
   Widget _buildClearIcon(ColorsPalette colors) {
@@ -309,18 +334,21 @@ class _CommonInputState extends State<CommonInput> {
     required ColorsPalette colors,
     required bool hasError,
   }) {
+    final style = widget.textStyle ??
+        StyleRes.primaryRegular.copyWith(color: colors.textPrimary);
+
     return SizedBox(
-      height: widget.height ?? commonInputHeight,
+      height: widget.height,
       child: TextField(
         obscureText: widget.obscureText,
-        style: widget.textStyle ??
-            StyleRes.primaryRegular.copyWith(color: colors.textPrimary),
+        style: style,
         controller: _controller,
         focusNode: widget.focusNode,
         keyboardType: widget.keyboardType ?? TextInputType.text,
         onChanged: widget.onChanged,
         textInputAction: widget.textInputAction ?? TextInputAction.next,
         cursorColor: widget.textStyle?.color ?? colors.textPrimary,
+        cursorHeight: style.fontSize,
         onSubmitted: widget.onSubmitted,
         autocorrect: widget.autocorrect,
         enableSuggestions: widget.enableSuggestions,
@@ -334,12 +362,7 @@ class _CommonInputState extends State<CommonInput> {
           contentPadding: EdgeInsets.zero,
           suffixIcon: _buildSuffixIcon(colors),
           suffixIconConstraints: _suffixIconConstraints(),
-          prefixIconConstraints: widget.prefixIcon == null
-              ? const BoxConstraints(maxHeight: 0, maxWidth: DimensSize.d16)
-              : const BoxConstraints(
-                  minHeight: commonInputHeight,
-                  minWidth: DimensSize.d40,
-                ),
+          prefixIconConstraints: _prefixIconConstraints(),
           prefixIcon:
               widget.prefixIcon ?? const SizedBox(width: DimensSize.d16),
           border: SquircleInputBorder(
@@ -394,7 +417,7 @@ class _CommonInputState extends State<CommonInput> {
       return const SizedBox();
     } else {
       return SizedBox(
-        height: widget.height ?? commonInputHeight,
+        height: widget.height,
         child: TypeAheadField<String>(
           autoFlipDirection: true,
           hideOnEmpty: true,
@@ -421,6 +444,7 @@ class _CommonInputState extends State<CommonInput> {
                   StyleRes.primaryRegular.copyWith(color: colors.textSecondary),
               contentPadding: EdgeInsets.zero,
               suffixIcon: _buildSuffixIcon(colors),
+              suffixIconConstraints: _suffixIconConstraints(),
               prefixIconConstraints: widget.prefixIcon == null
                   ? const BoxConstraints(
                       maxHeight: 0,

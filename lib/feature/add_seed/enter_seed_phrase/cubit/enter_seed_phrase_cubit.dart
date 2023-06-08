@@ -1,9 +1,13 @@
+import 'package:app/app/service/messenger/message.dart';
+import 'package:app/app/service/messenger/service/messenger_service.dart';
+import 'package:app/di/di.dart';
 import 'package:app/feature/add_seed/constants.dart';
 import 'package:bloc/bloc.dart';
+import 'package:collection/collection.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter/widgets.dart';
 import 'package:freezed_annotation/freezed_annotation.dart';
-import 'package:nekoton_repository/nekoton_repository.dart';
+import 'package:nekoton_repository/nekoton_repository.dart' hide Message;
 
 part 'enter_seed_phrase_state.dart';
 
@@ -12,6 +16,8 @@ part 'enter_seed_phrase_cubit.freezed.dart';
 /// Regexp that helps splitting seed phrase into words.
 final seedSplitRegExp = RegExp(r'[ |;|,|:|\n|.]');
 const _debugPhraseLength = 15;
+
+const _legacySeedPhraseLength = 24;
 
 /// Callback that will be called when user correctly enter seed phrase.
 typedef EnterSeedPhraseConfirmCallback = void Function(List<String> phrase);
@@ -24,9 +30,15 @@ class EnterSeedPhraseCubit extends Cubit<EnterSeedPhraseState> {
   final EnterSeedPhraseConfirmCallback confirmCallback;
 
   final formKey = GlobalKey<FormState>();
-  final _controllers = List.generate(24, (_) => TextEditingController());
-  final _focuses = List.generate(24, (_) => FocusNode());
-  final _possibleValues = const <int>[12, 24];
+
+  /// This list is same length as [_controllers] and [_focuses].
+  /// If item contains true, then user entered correct word in this field.
+  /// Item validates only if there at least one character in the field and
+  /// it's not in focus.
+  late List<ValueNotifier<bool>> _inputsCompleted;
+
+  late List<TextEditingController> _controllers;
+  late List<FocusNode> _focuses;
   late List<int> _allowedValues;
   late int _currentValue;
 
@@ -38,19 +50,23 @@ class EnterSeedPhraseCubit extends Cubit<EnterSeedPhraseState> {
     for (final f in _focuses) {
       f.dispose();
     }
+    for (final i in _inputsCompleted) {
+      i.dispose();
+    }
 
     return super.close();
   }
 
   void init() {
-    // TODO(alex-a4): uncomment when transport selection will be added
-    // if (context.read<TransportRepository>().isEverTransport) {
-    //   _allowedValues = possibleValues;
-    // } else {
-    _allowedValues = [_possibleValues.first];
-    // }
+    _allowedValues =
+        inject<NekotonRepository>().currentTransport.seedPhraseWordsCount;
     _currentValue = _allowedValues.first;
-    for (final c in _controllers) {
+    final max = _allowedValues.max;
+    _controllers = List.generate(max, (_) => TextEditingController());
+    _focuses = List.generate(max, (_) => FocusNode());
+    _inputsCompleted = List.generate(max, (_) => ValueNotifier(false));
+
+    _controllers.forEachIndexed((index, c) {
       c.addListener(() {
         final hasText =
             _controllers.any((controller) => controller.text.isNotEmpty);
@@ -62,14 +78,19 @@ class EnterSeedPhraseCubit extends Cubit<EnterSeedPhraseState> {
         if (hasText) {
           _checkDebugPhraseGenerating();
         }
+
+        _checkInputCompletion(index);
       });
-    }
+    });
     _controllers[0].addListener(() {
       /// Only for 1-st controller allow paste as button
       /// It's some bug but Input's paste removes spaces so check with length
       if (_controllers[0].text.length > _debugPhraseLength) {
         pastePhrase();
       }
+    });
+    _focuses.forEachIndexed((index, f) {
+      f.addListener(() => _checkInputCompletion(index));
     });
     emit(
       EnterSeedPhraseState.tab(
@@ -78,6 +99,7 @@ class EnterSeedPhraseCubit extends Cubit<EnterSeedPhraseState> {
         controllers: _controllers.take(_currentValue).toList(),
         focuses: _focuses.take(_currentValue).toList(),
         displayPasteButton: true,
+        inputsCompleted: _inputsCompleted.take(_currentValue).toList(),
       ),
     );
   }
@@ -86,11 +108,10 @@ class EnterSeedPhraseCubit extends Cubit<EnterSeedPhraseState> {
   Future<List<String>> suggestionsCallback(
     TextEditingController controller,
   ) async {
-    final value = controller.value;
-    if (value.text.isEmpty) return [];
-    final text = value.text.substring(0, value.selection.start);
+    final text = controller.value.text;
+    if (text.isEmpty) return [];
     final hints = await getHints(input: text);
-    if (hints.length == 1 && hints[0] == value.text) {
+    if (hints.length == 1 && hints[0] == text) {
       return [];
     }
 
@@ -110,8 +131,8 @@ class EnterSeedPhraseCubit extends Cubit<EnterSeedPhraseState> {
           controllers: _controllers.take(value).toList(),
           focuses: _focuses.take(value).toList(),
           allowedValues: _allowedValues,
-          formError: null,
           displayPasteButton: true,
+          inputsCompleted: _inputsCompleted.take(value).toList(),
         ),
       );
     }
@@ -124,7 +145,7 @@ class EnterSeedPhraseCubit extends Cubit<EnterSeedPhraseState> {
         FocusManager.instance.primaryFocus?.unfocus();
         final phrase =
             _controllers.take(_currentValue).map((e) => e.text).toList();
-        final mnemonicType = _currentValue == _possibleValues.last
+        final mnemonicType = _currentValue == _legacySeedPhraseLength
             ? const MnemonicType.legacy()
             : defaultMnemonicType;
 
@@ -138,18 +159,18 @@ class EnterSeedPhraseCubit extends Cubit<EnterSeedPhraseState> {
       } on Object catch (e) {
         error = e.toString();
       }
-      final st = state;
-      if (error != null && st is _Tab) {
-        emit(st.copyWith(formError: error));
+      if (error != null) {
+        inject<MessengerService>().show(Message.error(message: error));
       }
     }
   }
 
+  /// [index] starts with 0
   void nextOrConfirm(int index) {
-    if (index == _currentValue) {
+    if (index == _currentValue - 1) {
       confirmAction();
     } else {
-      _focuses[index].requestFocus();
+      _focuses[index + 1].requestFocus();
     }
   }
 
@@ -221,7 +242,7 @@ class EnterSeedPhraseCubit extends Cubit<EnterSeedPhraseState> {
   Future<void> _checkDebugPhraseGenerating() async {
     if (_controllers.any((e) => e.text == 'speakfriendandenter')) {
       final key = await generateKey(
-        accountType: _currentValue == _possibleValues.last
+        accountType: _currentValue == _legacySeedPhraseLength
             ? const MnemonicType.legacy()
             : defaultMnemonicType,
       );
@@ -239,20 +260,34 @@ class EnterSeedPhraseCubit extends Cubit<EnterSeedPhraseState> {
   /// Validate form and return its status
   bool _validateFormWithError() {
     final isValid = formKey.currentState?.validate() ?? false;
-    final st = state;
-    if (st is _Tab) {
-      emit(st.copyWith(formError: isValid ? null : ''));
-    }
+
+    // TODO(alex-a4): fix text
+    inject<MessengerService>().show(Message.error(message: 'Invalid phrase'));
 
     return isValid;
   }
 
   /// Drop form validation state
-  void _resetFormAndError() {
-    formKey.currentState?.reset();
-    final st = state;
-    if (st is _Tab) {
-      emit(st.copyWith(formError: null));
+  void _resetFormAndError() => formKey.currentState?.reset();
+
+  /// If input with [index] has any text and it's not in focus
+  void _checkInputCompletion(int index) {
+    final controller = _controllers[index];
+    final focus = _focuses[index];
+    final inputCompleted = _inputsCompleted[index];
+
+    if (controller.text.isNotEmpty &&
+        !focus.hasFocus &&
+        !inputCompleted.value) {
+      // TODO(alex-a4): decide if we need validation here
+      // final text = controller.text;
+      // final hints = await getHints(input: text);
+      // if (hints.length == 1 && hints[0] == text) {
+      // if input entered, not focus and not completed yet
+      inputCompleted.value = true;
+    } else if (controller.text.isEmpty && inputCompleted.value) {
+      // if input is empty but still completed
+      inputCompleted.value = false;
     }
   }
 }

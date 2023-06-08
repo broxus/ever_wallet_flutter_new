@@ -1,4 +1,5 @@
 import 'package:app/feature/add_seed/check_seed_phrase/check_seed_phrase.dart';
+import 'package:app/generated/assets.gen.dart';
 import 'package:app/l10n/l10n.dart';
 import 'package:collection/collection.dart';
 import 'package:flutter/material.dart';
@@ -30,10 +31,8 @@ class CheckSeedAnswersWidget extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Row(
-      children: userAnswers
-          .mapIndexed(_answerBuilder)
-          .separated(const SizedBox(width: 16)),
+    return SeparatedColumn(
+      children: userAnswers.mapIndexed(_answerBuilder).toList(),
     );
   }
 
@@ -41,36 +40,25 @@ class CheckSeedAnswersWidget extends StatelessWidget {
     final isSelected = answer.word != '';
     final isCurrent = index == currentIndex;
 
-    return Expanded(
-      child: Builder(
-        builder: (context) {
-          final colors = context.themeStyle.colors;
-          final l10n = context.l10n;
+    return Builder(
+      builder: (context) {
+        final l10n = context.l10n;
 
-          return PressInkWidget(
-            onPressed: isSelected ? () => clearAnswer(answer.word) : null,
-            child: Container(
-              alignment: Alignment.center,
-              padding: const EdgeInsets.symmetric(vertical: 12, horizontal: 4),
-              decoration: BoxDecoration(
-                border: Border.all(
-                  color: isCurrent
-                      ? colors.backgroundPrimary
-                      : colors.backgroundSecondary,
-                ),
-              ),
-              child: Text(
-                isSelected
-                    ? '${answer.wordIndex + 1}. ${answer.word}'
-                    : '${l10n.word} #${answer.wordIndex + 1}',
-                style: StyleRes.button.copyWith(
-                  color: isSelected ? colors.textSecondary : colors.textPrimary,
-                ),
-              ),
-            ),
-          );
-        },
-      ),
+        return SelectionStatusInput(
+          title: isSelected
+              ? answer.word
+              : '${l10n.word} #${answer.wordIndex + 1}',
+          onPressed: isSelected ? () => clearAnswer(answer.word) : null,
+          icon: isSelected
+              ? CommonButtonIconWidget.svg(svg: Assets.images.trash.path)
+              : null,
+          status: isCurrent
+              ? SelectionStatus.focus
+              : isSelected
+                  ? SelectionStatus.completed
+                  : SelectionStatus.unfocus,
+        );
+      },
     );
   }
 }

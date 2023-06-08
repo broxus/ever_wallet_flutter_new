@@ -38,14 +38,13 @@ class CommonTabBar<T> extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Row(
+    return SeparatedRow(
       children: values
           .map(
             (v) => fillWidth
                 ? Expanded(child: _item(context, v))
                 : _item(context, v),
           )
-          .separated(const SizedBox(width: 8))
           .toList(),
     );
   }
@@ -56,7 +55,7 @@ class CommonTabBar<T> extends StatelessWidget {
 
     return CommonButton(
       onPressed: () => onChanged(v),
-      padding: const EdgeInsets.symmetric(horizontal: 16),
+      padding: const EdgeInsets.symmetric(horizontal: DimensSize.d16),
       fillWidth: fillWidth,
       text: builder(context, v),
       height: DimensSize.d48,
