@@ -28,7 +28,6 @@ class CheckSeedAvailableAnswersWidget extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return SeparatedColumn(
-      separator: const SizedBox(height: DimensSize.d8),
       mainAxisSize: MainAxisSize.min,
       children: [
         for (var index = 0; index < defaultWordsToCheckAmount; index++)
@@ -44,7 +43,6 @@ class CheckSeedAvailableAnswersWidget extends StatelessWidget {
 
   Widget _answersRow(List<String> answers) {
     return SeparatedRow(
-      separator: const SizedBox(width: DimensSize.d8),
       children: answers.map(_answerBuilder).toList(),
     );
   }

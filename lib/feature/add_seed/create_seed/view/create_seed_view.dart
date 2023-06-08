@@ -138,11 +138,9 @@ class CreateSeedView extends StatelessWidget {
     final lengthHalf = words.length ~/ 2;
 
     return SeparatedRow(
-      separator: const SizedBox(width: DimensSize.d8),
       children: [
         Expanded(
           child: SeparatedColumn(
-            separator: const SizedBox(height: DimensSize.d8),
             children: words
                 .getRange(0, lengthHalf)
                 .mapIndexed((i, word) => _textPair(word, i + 1))
@@ -151,7 +149,6 @@ class CreateSeedView extends StatelessWidget {
         ),
         Expanded(
           child: SeparatedColumn(
-            separator: const SizedBox(height: DimensSize.d8),
             children: words
                 .getRange(lengthHalf, words.length)
                 .mapIndexed(

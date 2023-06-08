@@ -7,6 +7,7 @@ class ContainerRow extends Container {
     super.key,
     super.alignment,
     super.padding = const EdgeInsets.all(DimensSize.d8),
+    double? separatorSize = DimensSize.d8,
     super.color,
     super.decoration,
     super.foregroundDecoration,
@@ -19,7 +20,7 @@ class ContainerRow extends Container {
     super.clipBehavior = Clip.none,
   }) : super(
           child: SeparatedRow(
-            separator: const SizedBox(width: DimensSize.d8),
+            separatorSize: separatorSize,
             children: children,
           ),
         );

@@ -39,7 +39,6 @@ class CommonTabBar<T> extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return SeparatedRow(
-      separator: const SizedBox(width: DimensSize.d8),
       children: values
           .map(
             (v) => fillWidth

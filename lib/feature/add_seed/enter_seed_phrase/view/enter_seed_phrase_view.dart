@@ -228,7 +228,6 @@ class EnterSeedPhraseView extends StatelessWidget {
       children: [
         Expanded(
           child: SeparatedColumn(
-            separator: const SizedBox(height: DimensSize.d8),
             children: controllers
                 .getRange(0, currentValue ~/ _gridColumnCount)
                 .mapIndexed(
@@ -245,7 +244,6 @@ class EnterSeedPhraseView extends StatelessWidget {
         ),
         Expanded(
           child: SeparatedColumn(
-            separator: const SizedBox(height: DimensSize.d8),
             children: controllers
                 .getRange(currentValue ~/ _gridColumnCount, currentValue)
                 .mapIndexed(
