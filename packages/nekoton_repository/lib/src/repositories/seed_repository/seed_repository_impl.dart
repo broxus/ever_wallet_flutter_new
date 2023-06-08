@@ -222,7 +222,7 @@ mixin SeedKeyRepositoryImpl on TransportRepository
               ),
             ),
           )
-        : DerivedKeyExportParams(
+        : DerivedKeyExportSeedParams(
             masterKey: masterKey,
             password: Password.explicit(
               PasswordExplicit(
@@ -232,13 +232,14 @@ mixin SeedKeyRepositoryImpl on TransportRepository
             ),
           );
 
-    final exportKeyOutput = await keyStore.exportKey(exportKeyInput);
+    final exportKeyOutput = await keyStore.exportSeed(exportKeyInput);
 
     final List<String> phrase;
 
     if (exportKeyInput is EncryptedKeyPassword) {
-      phrase = (exportKeyOutput as EncryptedKeyExportOutput).phrase.split(' ');
-    } else if (exportKeyInput is DerivedKeyExportParams) {
+      phrase =
+          (exportKeyOutput as EncryptedKeyExportSeedOutput).phrase.split(' ');
+    } else if (exportKeyInput is DerivedKeyExportSeedParams) {
       phrase = (exportKeyOutput as DerivedKeyExportOutput).phrase.split(' ');
     } else {
       throw UnsupportedError('Invalid signer');
