@@ -65,7 +65,6 @@ class _SelectionStatusInputState extends State<SelectionStatusInput> {
             onHighlightChanged: _triggerPressed,
             onTap: widget.onPressed,
             child: SeparatedRow(
-              separator: const SizedBox(width: DimensSize.d8),
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
                 AnimatedColor(

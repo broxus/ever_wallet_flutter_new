@@ -32,7 +32,6 @@ class CheckSeedAnswersWidget extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return SeparatedColumn(
-      separator: const SizedBox(height: DimensSize.d8),
       children: userAnswers.mapIndexed(_answerBuilder).toList(),
     );
   }

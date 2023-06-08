@@ -80,7 +80,7 @@ class CommonCard extends StatelessWidget {
       title = SeparatedColumn(
         mainAxisSize: MainAxisSize.min,
         crossAxisAlignment: CrossAxisAlignment.start,
-        separator: const SizedBox(height: DimensSize.d4),
+        separatorSize: DimensSize.d4,
         children: [
           topSubtitle,
           title,
@@ -121,7 +121,6 @@ class CommonCard extends StatelessWidget {
               ? padding
               : padding.subtract(const EdgeInsets.all(DimensStroke.small)),
           child: SeparatedRow(
-            separator: const SizedBox(width: DimensSize.d8),
             children: [
               if (subtitle != null) subtitle,
               Expanded(child: centerTitle ? Center(child: title) : title),
