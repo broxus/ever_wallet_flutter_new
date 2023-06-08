@@ -1,5 +1,6 @@
 import 'package:app/app/service/messenger/cubit/messenger_cubit.dart';
 import 'package:app/app/service/service.dart';
+import 'package:app/generated/assets.gen.dart';
 import 'package:flutter/widgets.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:ui_components_lib/ui_components_lib.dart';
@@ -65,6 +66,13 @@ class _MessengerServiceWidgetState extends State<MessengerServiceWidget> {
       actionText: message.actionText,
       onAction: message.onAction,
       onDismiss: _onDismiss,
+      icon: CommonIconWidget.svg(
+        svg: switch (message.type.snackbarType) {
+          SnackbarType.error => Assets.images.alert.path,
+          SnackbarType.info => Assets.images.alarm.path,
+          SnackbarType.successful => Assets.images.check.path,
+        },
+      ),
     );
   }
 

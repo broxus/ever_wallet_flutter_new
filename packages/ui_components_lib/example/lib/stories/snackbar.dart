@@ -15,13 +15,14 @@ class SnackbarStory extends StatelessWidget {
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             CommonButton.primary(
-              text: 'Default snackbar',
+              text: 'Default snackbar (icon is wrong)',
               onPressed: () {
                 showSnackbar(
                   context: context,
                   type: SnackbarType.info,
                   message: 'Default snackbar',
                   duration: const Duration(seconds: 3),
+                  icon: buildIcon(SnackbarType.info),
                 );
               },
             ),
@@ -31,6 +32,7 @@ class SnackbarStory extends StatelessWidget {
               onPressed: () => showSnackbar(
                 context: context,
                 type: SnackbarType.error,
+                icon: buildIcon(SnackbarType.error),
                 message: 'Error snackbar',
                 duration: const Duration(seconds: 3),
               ),
@@ -41,6 +43,7 @@ class SnackbarStory extends StatelessWidget {
               onPressed: () => showSnackbar(
                 context: context,
                 type: SnackbarType.info,
+                icon: buildIcon(SnackbarType.info),
                 message: 'Action snackbar',
                 duration: const Duration(seconds: 3),
                 actionText: 'Action',
@@ -52,9 +55,30 @@ class SnackbarStory extends StatelessWidget {
                 ),
               ),
             ),
+            const SizedBox(height: 20),
+            CommonButton.primary(
+              text: 'Successful snackbar',
+              onPressed: () => showSnackbar(
+                context: context,
+                type: SnackbarType.successful,
+                icon: buildIcon(SnackbarType.successful),
+                message: 'Successful snackbar',
+                duration: const Duration(seconds: 3),
+              ),
+            ),
           ],
         ),
       ),
+    );
+  }
+
+  Widget buildIcon(SnackbarType type) {
+    return CommonIconWidget.icon(
+      icon: switch (type) {
+        SnackbarType.error => Icons.error,
+        SnackbarType.info => Icons.add_alert_rounded,
+        SnackbarType.successful => Icons.check_circle,
+      },
     );
   }
 }
