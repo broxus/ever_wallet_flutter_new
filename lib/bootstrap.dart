@@ -5,6 +5,7 @@ import 'package:app/bootstrap/bootstrap.dart';
 import 'package:app/di/di.dart';
 import 'package:bloc/bloc.dart';
 import 'package:flutter/widgets.dart';
+import 'package:go_router/go_router.dart';
 import 'package:logging/logging.dart';
 import 'package:ui_components_lib/ui_components_lib.dart';
 
@@ -53,6 +54,7 @@ Future<void> bootstrap(
       Bloc.observer = AppBlocObserver();
 
       DefaultAppBar.defaultPopAction = (context) => context.maybePop();
+      DefaultAppBar.defaultCanPopAction = (context) => context.canPop();
 
       runApp(
         AppWrapper(

@@ -117,9 +117,7 @@ class CommonCard extends StatelessWidget {
                     borderSide: BorderSide(color: borderColor!),
                   ),
           ),
-          padding: borderColor == null
-              ? padding
-              : padding.subtract(const EdgeInsets.all(DimensStroke.small)),
+          padding: padding,
           child: SeparatedRow(
             children: [
               if (subtitle != null) subtitle,

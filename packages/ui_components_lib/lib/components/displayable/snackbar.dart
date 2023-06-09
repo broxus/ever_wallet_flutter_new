@@ -57,19 +57,23 @@ Future<void> showSnackbar({
   }
 
   final mainButton = actionText != null
-      ? SmallButton(
-          buttonType: EverButtonType.secondary,
-          contentColor: backgroundColor,
-          onPressed: onAction != null
-              ? () {
-                  // TODO(nesquikm): WTF? The snackbar SHOULD dismiss itself
-                  // immediately after the action is pressed, but it doesn't.
-                  // So we have to dismiss it manually.
-                  _snack?.dismiss();
-                  onAction();
-                }
-              : null,
-          text: actionText,
+      ? Padding(
+          // padding here because flushbar itself removes padding from button
+          padding: const EdgeInsets.only(right: DimensSize.d8),
+          child: SmallButton(
+            buttonType: EverButtonType.secondary,
+            contentColor: backgroundColor,
+            onPressed: onAction != null
+                ? () {
+                    // TODO(nesquikm): WTF? The snackbar SHOULD dismiss itself
+                    // immediately after the action is pressed, but it doesn't.
+                    // So we have to dismiss it manually.
+                    _snack?.dismiss();
+                    onAction();
+                  }
+                : null,
+            text: actionText,
+          ),
         )
       : null;
 
