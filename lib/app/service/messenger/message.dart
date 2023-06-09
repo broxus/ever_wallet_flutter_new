@@ -9,9 +9,13 @@ enum MessageType {
   info(SnackbarType.info, defaultInfoMessageDebounceDuration),
 
   /// Message that informs about error
-  error(SnackbarType.error, defaultErrorMessageDebounceDuration);
+  error(SnackbarType.error, defaultErrorMessageDebounceDuration),
+
+  /// Message that informs that user made some correct action
+  successful(SnackbarType.successful, defaultSuccessfulMessageDebounceDuration);
 
   const MessageType(this.snackbarType, this.debounceTime);
+
   final SnackbarType snackbarType;
   final Duration debounceTime;
 }

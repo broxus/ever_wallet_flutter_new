@@ -10,32 +10,36 @@ enum SnackbarType {
 
   /// Snackbar that informs about error
   error,
+
+  /// Some successful action
+  successful,
 }
 
 // TODO(nesquikm): remove this global variable after the SnackBar learning
 // to dismiss itself after the action is pressed.
 Flushbar<void>? _snack;
 
+/// [bottomPadding] - allows user to change position of snak if needed.
+/// [icon] - displays only if there is no action.
+// ignore: long-method
 Future<void> showSnackbar({
   required BuildContext context,
   required SnackbarType type,
   required String message,
+  Widget? icon,
   bool isDismissible = true,
+  double bottomPadding = DimensSize.d16,
   Duration? duration,
   VoidCallback? onDismiss,
   String? actionText,
   VoidCallback? onAction,
 }) {
   final colors = context.themeStyle.colors;
-  // TODO(nesquikm): use return values from switch after upgrading dart
-  Color backgroundColor() {
-    switch (type) {
-      case SnackbarType.error:
-        return colors.alert;
-      case SnackbarType.info:
-        return colors.backgroundPrimary;
-    }
-  }
+  final backgroundColor = switch (type) {
+    SnackbarType.error => colors.alert,
+    SnackbarType.info => colors.blue,
+    SnackbarType.successful => colors.apply,
+  };
 
   void onStatusChanged(FlushbarStatus? status) {
     switch (status) {
@@ -52,8 +56,10 @@ Future<void> showSnackbar({
     }
   }
 
-  final mainButton = (actionText != null)
-      ? CommonButton.ghost(
+  final mainButton = actionText != null
+      ? SmallButton(
+          buttonType: EverButtonType.secondary,
+          contentColor: backgroundColor,
           onPressed: onAction != null
               ? () {
                   // TODO(nesquikm): WTF? The snackbar SHOULD dismiss itself
@@ -72,11 +78,20 @@ Future<void> showSnackbar({
       message,
       style: StyleRes.secondaryBold.copyWith(color: colors.textContrast),
     ),
-    backgroundColor: backgroundColor(),
+    icon: mainButton == null && icon != null
+        ? EverButtonStyleProvider(
+            contentColor: colors.textContrast,
+            child: icon,
+          )
+        : null,
+    borderRadius: BorderRadius.circular(DimensRadius.medium),
+    backgroundColor: backgroundColor,
     isDismissible: isDismissible,
     duration: duration,
     onStatusChanged: onStatusChanged,
     mainButton: mainButton,
+    margin: const EdgeInsets.symmetric(horizontal: DimensSize.d16) +
+        EdgeInsets.only(bottom: bottomPadding),
     onTap: (flushbar) {
       flushbar.dismiss();
     },

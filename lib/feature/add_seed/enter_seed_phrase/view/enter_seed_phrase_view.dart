@@ -205,7 +205,9 @@ class EnterSeedPhraseView extends StatelessWidget {
             ),
             CommonButton.ghost(
               leading: CommonButtonIconWidget.svg(
-                svg: Assets.images.paste.path,
+                svg: displayPasteButton
+                    ? Assets.images.paste.path
+                    : Assets.images.close.path,
               ),
               onPressed:
                   displayPasteButton ? cubit.pastePhrase : cubit.clearFields,

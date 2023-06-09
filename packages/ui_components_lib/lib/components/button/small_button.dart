@@ -15,6 +15,7 @@ class SmallButton extends StatelessWidget {
     this.trailing,
     this.child,
     this.focusNode,
+    this.contentColor,
   });
 
   /// CommonButton with primary style
@@ -97,6 +98,9 @@ class SmallButton extends StatelessWidget {
   /// See [CommonButton.focusNode]
   final FocusNode? focusNode;
 
+  /// See [CommonButton.contentColor]
+  final Color? contentColor;
+
   @override
   Widget build(BuildContext context) {
     return CommonButton(
@@ -110,6 +114,7 @@ class SmallButton extends StatelessWidget {
       onPressed: onPressed,
       onLongPress: onLongPress,
       text: text,
+      contentColor: contentColor,
       leading: leading,
       trailing: trailing,
       fillWidth: false,
