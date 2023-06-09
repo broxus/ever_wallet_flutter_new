@@ -18,7 +18,7 @@ dependencies:
   sqflite: ^2.2.6
 
 dev_dependencies:
-  build_runner: ^2.3.3
+  build_runner: ^2.4.5
   dart_code_metrics: ^5.7.4
   flutter_test:
     sdk: flutter

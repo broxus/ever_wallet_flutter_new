@@ -64,8 +64,8 @@ class SeedKey extends Equatable {
             ),
           ),
         )
-      : DerivedKeySignParams.byAccountId(
-          DerivedKeySignParamsByAccountId(
+      : DerivedKeyPassword.byAccountId(
+          DerivedKeyPasswordByAccountId(
             masterKey: key.masterKey,
             accountId: key.accountId,
             password: Password.explicit(
