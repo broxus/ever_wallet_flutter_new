@@ -63,7 +63,7 @@ class _NavigationServiceWidgetState extends State<NavigationServiceWidget> {
   // Handle root app route change
   void _onRootAppRouteChange(AppRoute oldRoute, AppRoute route) {
     switch ((oldRoute, route)) {
-      // When user navigates from onboarding it means that he has created
+      // When user navigates from onboarding it means that he has created a seed
       case (AppRoute.onboarding, _):
 
         /// TODO(alex-a4): HERE is the place to handle onboarding completion
