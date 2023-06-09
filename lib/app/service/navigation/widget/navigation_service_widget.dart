@@ -32,7 +32,7 @@ class _NavigationServiceWidgetState extends State<NavigationServiceWidget> {
     super.dispose();
   }
 
-  void _onNavigationEvent(BuildContext context, NavigationState state) {
+  void _onNavigationEvent(NavigationState state) {
     _onLocationChange(state.oldLocation, state.location);
   }
 
@@ -77,7 +77,7 @@ class _NavigationServiceWidgetState extends State<NavigationServiceWidget> {
   Widget build(BuildContext context) {
     return BlocListener<NavigationBloc, NavigationState>(
       bloc: _bloc,
-      listener: _onNavigationEvent,
+      listener: (_, state) => _onNavigationEvent(state),
       child: widget.child,
     );
   }
