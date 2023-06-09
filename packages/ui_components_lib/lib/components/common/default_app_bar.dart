@@ -19,6 +19,9 @@ enum CloseType {
 /// Action that is called by back leading or action buttons.
 typedef DefaultAppBarCloseAction = void Function(BuildContext context);
 
+/// Action that is called to check if close button should be displayed.
+typedef DefaultAppBarCanPopAction = bool Function(BuildContext context);
+
 /// Default width or height of appbar button
 const appBarButtonSize = 40.0;
 const appBarIconButtonInnerPadding = EdgeInsets.all(
@@ -59,6 +62,14 @@ class DefaultAppBar extends StatelessWidget implements PreferredSizeWidget {
   // ignore: avoid-global-state
   static DefaultAppBarCloseAction defaultPopAction =
       (context) => Navigator.of(context).pop();
+
+  /// This is a default action of [DefaultAppBar] to check if leading
+  /// close button should be displayed.
+  ///
+  /// To change behavior, just set another callback in main.dart
+  // ignore: avoid-global-state
+  static DefaultAppBarCanPopAction defaultCanPopAction =
+      (context) => Navigator.of(context).canPop();
 
   @override
   Size get preferredSize => const Size.fromHeight(64);
@@ -129,7 +140,7 @@ class DefaultAppBar extends StatelessWidget implements PreferredSizeWidget {
 
     final title = buildTitle(colors);
     final leading = this.leading ??
-        (_showLeadingClose
+        (_showLeadingClose && defaultCanPopAction(context)
             ? CommonIconButton.icon(
                 innerPadding: appBarIconButtonInnerPadding,
                 icon: Icons.arrow_back_rounded,
@@ -163,7 +174,7 @@ class DefaultAppBar extends StatelessWidget implements PreferredSizeWidget {
   List<Widget> _actionsWidget(BuildContext context) {
     return [
       if (_hasActions) ...actions!.map((e) => Center(child: e)),
-      if (_showActionsClose)
+      if (_showActionsClose && defaultCanPopAction(context))
         Center(
           child: CommonButton(
             buttonType: EverButtonType.ghost,
