@@ -21,6 +21,7 @@ Flushbar<void>? _snack;
 
 /// [bottomPadding] - allows user to change position of snak if needed.
 /// [icon] - displays only if there is no action.
+// ignore: long-method
 Future<void> showSnackbar({
   required BuildContext context,
   required SnackbarType type,
