@@ -4,6 +4,7 @@ import 'package:app/di/di.dart';
 import 'package:encrypted_storage/encrypted_storage.dart';
 import 'package:flutter/widgets.dart';
 import 'package:injectable/injectable.dart';
+import 'package:rxdart/rxdart.dart';
 
 @singleton
 class NavigationService {
@@ -11,21 +12,28 @@ class NavigationService {
   static GlobalKey<NavigatorState> navigatorKey = GlobalKey<NavigatorState>();
 
   Future<void> init(String initialLocation) async {
-    _location = (await inject<EncryptedStorage>().get(
+    final location = await inject<EncryptedStorage>().get(
       _locationKey,
       domain: _domain,
       defaultValue: initialLocation,
-    ))!;
+    );
+
+    if (location != null) {
+      _locationSubject.add(location);
+    }
   }
 
   static const _domain = 'NavigationService';
   static const _locationKey = 'location';
 
-  late String _location;
-  String get location => _location;
+  final _locationSubject = BehaviorSubject<String>();
+
+  String get location => _locationSubject.valueOrNull ?? '';
+
+  ValueStream<String> get locationStream => _locationSubject.stream;
 
   Future<void> setLocation(String location) async {
-    _location = location;
+    _locationSubject.add(location);
 
     return inject<EncryptedStorage>().set(
       _locationKey,

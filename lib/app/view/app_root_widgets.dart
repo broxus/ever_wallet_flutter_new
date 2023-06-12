@@ -14,6 +14,8 @@ class AppRootWidgets extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return MessengerServiceWidget(child: child);
+    return MessengerServiceWidget(
+      child: NavigationServiceWidget(child: child),
+    );
   }
 }

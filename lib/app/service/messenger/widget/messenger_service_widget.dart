@@ -80,7 +80,7 @@ class _MessengerServiceWidgetState extends State<MessengerServiceWidget> {
   Widget build(BuildContext context) {
     return BlocListener<MessengerCubit, MessengerState>(
       bloc: _cubit,
-      listener: (context, state) => _showNextMessage(),
+      listener: (_, __) => _showNextMessage(),
       child: widget.child,
     );
   }
