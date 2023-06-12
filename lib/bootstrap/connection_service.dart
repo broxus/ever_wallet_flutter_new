@@ -11,4 +11,5 @@ Future<void> configureConnectionService() async {
 
   log.finest('NekotonRepository start SeedList listening');
   inject<NekotonRepository>().setupSeedListUpdating();
+  log.finest('ConnectionService initialized');
 }
