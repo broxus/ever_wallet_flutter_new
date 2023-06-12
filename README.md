@@ -31,6 +31,14 @@ This thing will run all code generators for all packages:
 $ melos run codegen
 ```
 
+## Codegen: localization 🌐
+
+This thing will run localization code generator for all packages:
+
+```
+$ melos run codegen:locale
+```
+
 ## Code format checking and analyser 🦠
 
 ```

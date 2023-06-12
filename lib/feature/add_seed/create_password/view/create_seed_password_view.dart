@@ -1,5 +1,5 @@
 import 'package:app/feature/add_seed/create_password/create_password.dart';
-import 'package:app/generated/assets.gen.dart';
+import 'package:app/generated/generated.dart';
 import 'package:app/l10n/l10n.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';

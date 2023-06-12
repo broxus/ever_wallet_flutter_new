@@ -1,6 +1,6 @@
 import 'package:app/app/service/messenger/cubit/messenger_cubit.dart';
 import 'package:app/app/service/service.dart';
-import 'package:app/generated/assets.gen.dart';
+import 'package:app/generated/generated.dart';
 import 'package:flutter/widgets.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:ui_components_lib/ui_components_lib.dart';
