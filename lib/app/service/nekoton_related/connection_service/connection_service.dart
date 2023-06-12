@@ -6,6 +6,7 @@ import 'package:app/data/models/connection_data.dart';
 import 'package:app/data/models/network_type.dart';
 import 'package:collection/collection.dart';
 import 'package:injectable/injectable.dart';
+import 'package:logging/logging.dart';
 import 'package:nekoton_repository/nekoton_repository.dart' hide ConnectionData;
 
 /// This is a service that stores information about different connections
@@ -16,6 +17,8 @@ class ConnectionService {
     this._nekotonRepository,
     this._httpService,
   );
+
+  static final _log = Logger('ConnectionService');
 
   final HttpService _httpService;
   final GeneralStorageService _storageService;
@@ -53,6 +56,7 @@ class ConnectionService {
   /// Create nekoton's transport by connection, create transport's strategy
   /// by its type and put it in nekoton.
   Future<void> _updateTransportByConnection(ConnectionData connection) async {
+    _log.finest('updateTransportByConnection: ${connection.name}');
     final type = connection.networkType;
 
     final transport = await connection.when<Future<Transport>>(
@@ -79,6 +83,7 @@ class ConnectionService {
     await _nekotonRepository.updateTransport(
       _createStrategyByType(type, transport),
     );
+    _log.finest('updateTransportByConnection completed!');
   }
 
   /// Create TransportStrategy based on [type] of connection data.

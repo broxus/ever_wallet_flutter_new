@@ -490,11 +490,11 @@ packages:
     dependency: transitive
     description:
       path: "packages/flutter_nekoton_bridge"
-      ref: "flutter_nekoton_bridge-v1.8.0-dev.10"
-      resolved-ref: f3f3dc9be95801c81eacba82266006ca35b1ba63
+      ref: "flutter_nekoton_bridge-v1.8.0-dev.11"
+      resolved-ref: "63b4ff8ac0cc8861158de39d4b247a711e94e203"
       url: "https://github.com/broxus/nekoton_bridge.git"
     source: git
-    version: "1.8.0-dev.10"
+    version: "1.8.0-dev.11"
   flutter_rust_bridge:
     dependency: transitive
     description:
@@ -847,11 +847,11 @@ packages:
     dependency: transitive
     description:
       path: "packages/nekoton_bridge"
-      ref: "nekoton_bridge-v1.8.0-dev.8"
-      resolved-ref: f3f3dc9be95801c81eacba82266006ca35b1ba63
+      ref: "nekoton_bridge-v1.8.0-dev.9"
+      resolved-ref: "63b4ff8ac0cc8861158de39d4b247a711e94e203"
       url: "https://github.com/broxus/nekoton_bridge.git"
     source: git
-    version: "1.8.0-dev.8"
+    version: "1.8.0-dev.9"
   nekoton_repository:
     dependency: "direct main"
     description:
