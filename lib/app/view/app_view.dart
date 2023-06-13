@@ -1,6 +1,6 @@
 import 'package:app/app/router/router.dart';
 import 'package:app/app/view/app_root_widgets.dart';
-import 'package:app/l10n/l10n.dart';
+import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:ui_components_lib/ui_components_lib.dart';
@@ -32,8 +32,9 @@ class _AppViewState extends State<AppView> {
     return MaterialApp.router(
       debugShowCheckedModeBanner: false,
       routerConfig: _router,
-      localizationsDelegates: AppLocalizations.localizationsDelegates,
-      supportedLocales: AppLocalizations.supportedLocales,
+      localizationsDelegates: context.localizationDelegates,
+      supportedLocales: context.supportedLocales,
+      locale: context.locale,
       theme: everPredefinedLightTheme(),
       darkTheme: everPredefinedDarkTheme(),
       builder: (context, child) => AppRootWidgets(child: child ?? Container()),

@@ -1,7 +1,7 @@
 import 'package:app/app/router/app_route.dart';
 import 'package:app/feature/add_seed/check_seed_phrase/check_seed_phrase.dart';
 import 'package:app/feature/add_seed/create_password/create_password.dart';
-import 'package:app/l10n/l10n.dart';
+import 'package:app/generated/generated.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:ui_components_lib/ui_components_lib.dart';
@@ -38,7 +38,7 @@ class _CheckSeedPhrasePageState extends State<CheckSeedPhrasePage> {
           actions: [
             CommonButton.ghost(
               padding: EdgeInsets.zero,
-              text: context.l10n.skipWord,
+              text: LocaleKeys.skipWord.tr(),
               onPressed: () => _navigateToPassword(context),
             ),
           ],

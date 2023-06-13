@@ -4,6 +4,7 @@ import 'package:app/app/router/app_route.dart';
 import 'package:app/bootstrap/bootstrap.dart';
 import 'package:app/di/di.dart';
 import 'package:bloc/bloc.dart';
+import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/widgets.dart';
 import 'package:go_router/go_router.dart';
 import 'package:logging/logging.dart';
@@ -56,9 +57,20 @@ Future<void> bootstrap(
       DefaultAppBar.defaultPopAction = (context) => context.maybePop();
       DefaultAppBar.defaultCanPopAction = (context) => context.canPop();
 
+      WidgetsFlutterBinding.ensureInitialized();
+      // easy_localization claims that this is needed
+      await EasyLocalization.ensureInitialized();
+
       runApp(
-        AppWrapper(
-          builder: builder,
+        EasyLocalization(
+          supportedLocales: const [
+            Locale('en', 'US'),
+          ],
+          path: 'assets/translations',
+          fallbackLocale: const Locale('en', 'US'),
+          child: AppWrapper(
+            builder: builder,
+          ),
         ),
       );
     },

@@ -11,6 +11,11 @@ scripts:
 
   codegen:
     description: Generate code for all packages
+    run: melos run codegen:build_runner --no-select && melos run codegen:locale --no-select
+    failFast: true
+
+  codegen:build_runner:
+    description: Generate code for all packages using build_runner
     exec: "flutter packages pub run build_runner build --delete-conflicting-outputs"
     # concurrency set to ONE because we SHOULD generate all code for packages prior we
     # started generation for the app
@@ -18,6 +23,13 @@ scripts:
     failFast: true
     packageFilters:
       dependsOn: "build_runner"
+
+  codegen:locale:
+    description: Generate localizations code for all packages
+    exec: dart run easy_localization:generate  --source-dir assets/translations -f keys --output-file locale_keys.g.dart && dart format lib/generated/locale_keys.g.dart
+    failFast: true
+    packageFilters:
+      dependsOn: "easy_localization"
 
   # TODO(nesquikm): we have to isolane runing dart_code_metrics for the main app because we
   # can't add dart_code_metrics to the app due to dependency incompatibility

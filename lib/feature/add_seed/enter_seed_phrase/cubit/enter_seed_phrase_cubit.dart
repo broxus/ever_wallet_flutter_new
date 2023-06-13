@@ -3,8 +3,10 @@ import 'package:app/app/service/messenger/service/messenger_service.dart';
 import 'package:app/di/di.dart';
 import 'package:app/feature/add_seed/constants.dart';
 import 'package:app/feature/add_seed/enter_seed_phrase/cubit/cubit.dart';
+import 'package:app/generated/locale_keys.g.dart';
 import 'package:bloc/bloc.dart';
 import 'package:collection/collection.dart';
+import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter/widgets.dart';
 import 'package:freezed_annotation/freezed_annotation.dart';
@@ -222,8 +224,7 @@ class EnterSeedPhraseCubit extends Cubit<EnterSeedPhraseState> {
     if (words.isEmpty) {
       _resetFormAndError();
 
-      // TODO(alex-a4): fix text
-      _showValidateError('Incorrect words format');
+      _showValidateError(LocaleKeys.incorrectWordsFormat.tr());
       return;
     }
 
@@ -289,11 +290,10 @@ class EnterSeedPhraseCubit extends Cubit<EnterSeedPhraseState> {
       emit(st.copyWith(inputs: _inputModels.take(_currentValue).toList()));
     }
 
-    // TODO(alex-a4): fix text
     if (hasEmptyFields) {
-      _showValidateError('Fill in the missing words, please');
+      _showValidateError(LocaleKeys.fillMissingWords.tr());
     } else if (hasWrongWords) {
-      _showValidateError('Incorrect words format');
+      _showValidateError(LocaleKeys.incorrectWordsFormat.tr());
     }
 
     return !hasEmptyFields && !hasWrongWords;
