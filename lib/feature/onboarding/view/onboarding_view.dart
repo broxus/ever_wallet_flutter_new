@@ -57,7 +57,6 @@ class OnboardingView extends StatelessWidget {
                 ),
                 // const SizedBox(height: 12),
                 // CommonButton.secondary(
-                //   text: l10n.signWithLedger,
                 // TODO(alex-a4): change icon
                 //   leading: Assets.images.ledger.svg(
                 //     color: style.styles.secondaryButtonStyle.color,

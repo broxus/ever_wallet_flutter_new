@@ -1,6 +1,5 @@
 import 'package:app/feature/add_seed/check_seed_phrase/check_seed_phrase.dart';
 import 'package:app/generated/generated.dart';
-import 'package:app/l10n/l10n.dart';
 import 'package:collection/collection.dart';
 import 'package:flutter/material.dart';
 import 'package:ui_components_lib/ui_components_lib.dart';
@@ -42,12 +41,10 @@ class CheckSeedAnswersWidget extends StatelessWidget {
 
     return Builder(
       builder: (context) {
-        final l10n = context.l10n;
-
         return SelectionStatusInput(
           title: isSelected
               ? answer.word
-              : '${l10n.word} #${answer.wordIndex + 1}',
+              : '${LocaleKeys.wordWord} #${answer.wordIndex + 1}',
           onPressed: isSelected ? () => clearAnswer(answer.word) : null,
           icon: isSelected
               ? CommonButtonIconWidget.svg(svg: Assets.images.trash.path)

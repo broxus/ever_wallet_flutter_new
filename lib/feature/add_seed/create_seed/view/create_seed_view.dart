@@ -1,6 +1,5 @@
 import 'package:app/feature/add_seed/create_seed/create_seed.dart';
 import 'package:app/generated/generated.dart';
-import 'package:app/l10n/l10n.dart';
 import 'package:collection/collection.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -25,7 +24,6 @@ class CreateSeedView extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final localization = context.l10n;
     final colors = context.themeStyle.colors;
 
     return SafeArea(
@@ -40,12 +38,12 @@ class CreateSeedView extends StatelessWidget {
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
                     Text(
-                      localization.saveSeedPhrase,
+                      LocaleKeys.saveSeedPhrase.tr(),
                       style: StyleRes.h1.copyWith(color: colors.textPrimary),
                     ),
                     const SizedBox(height: DimensSize.d12),
                     Text(
-                      localization.saveSeedWarning,
+                      LocaleKeys.saveSeedWarning.tr(),
                       style: StyleRes.primaryRegular
                           .copyWith(color: colors.textPrimary),
                     ),
@@ -82,13 +80,13 @@ class CreateSeedView extends StatelessWidget {
                 return Column(
                   children: [
                     CommonButton.primary(
-                      text: localization.checkSeedPhrase,
+                      text: LocaleKeys.checkSeedPhrase.tr(),
                       onPressed: () => checkCallback(words),
                       fillWidth: true,
                     ),
                     const SizedBox(height: DimensSize.d8),
                     CommonButton.secondary(
-                      text: localization.skipTakeRisk,
+                      text: LocaleKeys.skipTakeRisk.tr(),
                       onPressed: () => skipCallback(words),
                       fillWidth: true,
                     ),
@@ -112,7 +110,6 @@ class CreateSeedView extends StatelessWidget {
   Widget _copyButton(bool copied) {
     return Builder(
       builder: (context) {
-        final localization = context.l10n;
         final colors = context.themeStyle.colors;
         final cubit = context.read<CreateSeedCubit>();
 
@@ -121,13 +118,13 @@ class CreateSeedView extends StatelessWidget {
             buttonType: EverButtonType.ghost,
             contentDisabledColor: colors.apply,
             trailing: CommonButtonIconWidget.svg(svg: Assets.images.check.path),
-            text: localization.copiedNoExclamation,
+            text: LocaleKeys.copiedExclamation.tr(),
           );
         }
 
         return CommonButton.ghost(
           trailing: CommonButtonIconWidget.svg(svg: Assets.images.copy.path),
-          text: localization.copyWords,
+          text: LocaleKeys.copyWords.tr(),
           onPressed: cubit.copySeed,
         );
       },

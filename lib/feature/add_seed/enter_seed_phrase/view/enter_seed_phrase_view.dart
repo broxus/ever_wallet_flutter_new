@@ -1,6 +1,5 @@
 import 'package:app/feature/add_seed/enter_seed_phrase/cubit/cubit.dart';
 import 'package:app/generated/generated.dart';
-import 'package:app/l10n/l10n.dart';
 import 'package:collection/collection.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -17,7 +16,6 @@ class EnterSeedPhraseView extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final l10n = context.l10n;
     final colors = context.themeStyle.colors;
     final bottomPadding = MediaQuery.of(context).viewInsets.bottom;
     final hasBottomPadding = bottomPadding >= commonButtonHeight;
@@ -42,7 +40,7 @@ class EnterSeedPhraseView extends StatelessWidget {
               height: hasBottomPadding ? bottomPadding - commonButtonHeight : 0,
             ),
             CommonButton.primary(
-              text: l10n.confirm,
+              text: LocaleKeys.confirm.tr(),
               onPressed: () =>
                   context.read<EnterSeedPhraseCubit>().confirmAction(),
               fillWidth: true,
@@ -58,7 +56,6 @@ class EnterSeedPhraseView extends StatelessWidget {
     return BlocBuilder<EnterSeedPhraseCubit, EnterSeedPhraseState>(
       builder: (context, state) {
         final cubit = context.read<EnterSeedPhraseCubit>();
-        final l10n = context.l10n;
         final colors = context.themeStyle.colors;
         final bottomPadding = MediaQuery.of(context).viewInsets.bottom;
         final isKeyboardOpen = bottomPadding >= commonButtonHeight;
@@ -81,12 +78,12 @@ class EnterSeedPhraseView extends StatelessWidget {
                 children: [
                   if (!isKeyboardOpen) ...[
                     Text(
-                      l10n.enterSeedPhrase,
+                      LocaleKeys.enterSeedPhrase.tr(),
                       style: StyleRes.h1.copyWith(color: colors.textPrimary),
                     ),
                     const SizedBox(height: DimensSize.d12),
                     Text(
-                      l10n.pasteSeedIntoFirstBox,
+                      LocaleKeys.pasteSeedIntoFirstBox.tr(),
                       style: StyleRes.primaryRegular
                           .copyWith(color: colors.textPrimary),
                     ),
@@ -188,8 +185,6 @@ class EnterSeedPhraseView extends StatelessWidget {
   ) {
     return Builder(
       builder: (context) {
-        final l10n = context.l10n;
-
         return Row(
           children: [
             Expanded(
@@ -199,7 +194,7 @@ class EnterSeedPhraseView extends StatelessWidget {
                   values: allowedValues,
                   selectedValue: currentValue,
                   onChanged: cubit.changeTab,
-                  builder: (_, v) => l10n.wordsCount(v),
+                  builder: (_, v) => LocaleKeys.wordsCount.plural(v),
                 ),
               ),
             ),
@@ -211,7 +206,9 @@ class EnterSeedPhraseView extends StatelessWidget {
               ),
               onPressed:
                   displayPasteButton ? cubit.pastePhrase : cubit.clearFields,
-              text: displayPasteButton ? l10n.pasteAll : l10n.clearAll,
+              text: displayPasteButton
+                  ? LocaleKeys.pasteAll.tr()
+                  : LocaleKeys.clearAll.tr(),
             ),
           ],
         );
