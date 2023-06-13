@@ -245,7 +245,7 @@ This project relies on [flutter_localizations][flutter_localizations_link] and f
 }
 ```
 
-1. Then add a new key/value
+2. Then add a new key/value
 
 ```json
 {
