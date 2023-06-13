@@ -225,6 +225,7 @@ class EnterSeedPhraseCubit extends Cubit<EnterSeedPhraseState> {
       _resetFormAndError();
 
       _showValidateError(LocaleKeys.incorrectWordsFormat.tr());
+
       return;
     }
 
@@ -266,6 +267,7 @@ class EnterSeedPhraseCubit extends Cubit<EnterSeedPhraseState> {
     if (hints.contains(word)) {
       return true;
     }
+
     return false;
   }
 
