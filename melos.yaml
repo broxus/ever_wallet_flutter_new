@@ -26,7 +26,7 @@ scripts:
 
   codegen:locale:
     description: Generate localizations code for all packages
-    exec: dart run easy_localization:generate  --source-dir assets/translations -f keys --output-file locale_keys.g.dart
+    exec: dart run easy_localization:generate  --source-dir assets/translations -f keys --output-file locale_keys.g.dart && dart format lib/generated/locale_keys.g.dart
     failFast: true
     packageFilters:
       dependsOn: "easy_localization"
