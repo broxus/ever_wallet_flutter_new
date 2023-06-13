@@ -41,5 +41,7 @@
     "few": "{} word",
     "many": "{} words",
     "other": "{} words"
-  }
+  },
+  "fillMissingWords": "Fill in the missing words, please",
+  "incorrectWordsFormat": "Incorrect words format"
 }

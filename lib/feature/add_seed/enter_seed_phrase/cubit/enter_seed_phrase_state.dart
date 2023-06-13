@@ -14,9 +14,7 @@ class EnterSeedPhraseState with _$EnterSeedPhraseState {
   const factory EnterSeedPhraseState.tab({
     required List<int> allowedValues,
     required int currentValue,
-    required List<TextEditingController> controllers,
-    required List<FocusNode> focuses,
+    required List<EnterSeedPhraseInputModel> inputs,
     required bool displayPasteButton,
-    required List<ValueNotifier<bool>> inputsCompleted,
   }) = _Tab;
 }
