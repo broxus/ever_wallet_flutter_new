@@ -8,4 +8,4 @@ const defaultInfoMessageDebounceDuration = Duration(seconds: 1);
 const defaultSuccessfulMessageDebounceDuration = Duration(seconds: 1);
 
 /// Default debounce duration for error messages.
-const defaultErrorMessageDebounceDuration = Duration(seconds: 15);
+const defaultErrorMessageDebounceDuration = Duration(seconds: 2);

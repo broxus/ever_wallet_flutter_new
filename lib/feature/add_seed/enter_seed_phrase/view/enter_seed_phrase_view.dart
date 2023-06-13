@@ -1,6 +1,5 @@
 import 'package:app/feature/add_seed/enter_seed_phrase/cubit/cubit.dart';
-import 'package:app/generated/assets.gen.dart';
-import 'package:app/l10n/l10n.dart';
+import 'package:app/generated/generated.dart';
 import 'package:collection/collection.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -17,7 +16,6 @@ class EnterSeedPhraseView extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final l10n = context.l10n;
     final colors = context.themeStyle.colors;
     final bottomPadding = MediaQuery.of(context).viewInsets.bottom;
     final hasBottomPadding = bottomPadding >= commonButtonHeight;
@@ -42,7 +40,7 @@ class EnterSeedPhraseView extends StatelessWidget {
               height: hasBottomPadding ? bottomPadding - commonButtonHeight : 0,
             ),
             CommonButton.primary(
-              text: l10n.confirm,
+              text: LocaleKeys.confirm.tr(),
               onPressed: () =>
                   context.read<EnterSeedPhraseCubit>().confirmAction(),
               fillWidth: true,
@@ -58,7 +56,6 @@ class EnterSeedPhraseView extends StatelessWidget {
     return BlocBuilder<EnterSeedPhraseCubit, EnterSeedPhraseState>(
       builder: (context, state) {
         final cubit = context.read<EnterSeedPhraseCubit>();
-        final l10n = context.l10n;
         final colors = context.themeStyle.colors;
         final bottomPadding = MediaQuery.of(context).viewInsets.bottom;
         final isKeyboardOpen = bottomPadding >= commonButtonHeight;
@@ -68,10 +65,8 @@ class EnterSeedPhraseView extends StatelessWidget {
           tab: (
             allowedValues,
             currentValue,
-            controllers,
-            focuses,
+            inputsModels,
             displayPasteButton,
-            inputsCompleted,
           ) =>
               SingleChildScrollView(
             child: Form(
@@ -81,12 +76,12 @@ class EnterSeedPhraseView extends StatelessWidget {
                 children: [
                   if (!isKeyboardOpen) ...[
                     Text(
-                      l10n.enterSeedPhrase,
+                      LocaleKeys.enterSeedPhrase.tr(),
                       style: StyleRes.h1.copyWith(color: colors.textPrimary),
                     ),
                     const SizedBox(height: DimensSize.d12),
                     Text(
-                      l10n.pasteSeedIntoFirstBox,
+                      LocaleKeys.pasteSeedIntoFirstBox.tr(),
                       style: StyleRes.primaryRegular
                           .copyWith(color: colors.textPrimary),
                     ),
@@ -98,7 +93,7 @@ class EnterSeedPhraseView extends StatelessWidget {
                       displayPasteButton,
                     ),
                   ],
-                  _inputs(controllers, focuses, currentValue, inputsCompleted),
+                  _inputs(inputsModels, currentValue),
                   const SizedBox(height: DimensSize.d16),
                 ],
               ),
@@ -109,60 +104,62 @@ class EnterSeedPhraseView extends StatelessWidget {
     );
   }
 
-  /// [index] start with 1
   /// [currentValue] starts with 0
   Widget _inputBuild(
-    TextEditingController controller,
-    FocusNode focus,
-    int index,
+    EnterSeedPhraseInputModel input,
     int currentValue,
-    ValueNotifier<bool> inputCompleted,
   ) {
-    return ValueListenableBuilder<bool>(
-      valueListenable: inputCompleted,
-      builder: (context, completed, _) {
+    final displayIndex = input.index + 1;
+    final indexText = displayIndex < 10 ? '0$displayIndex' : '$displayIndex';
+
+    return Builder(
+      builder: (context) {
         final cubit = context.read<EnterSeedPhraseCubit>();
         final colors = context.themeStyle.colors;
 
-        // ignore: no-magic-number
-        final indexText = index < 10 ? '0$index' : '$index';
-
-        if (completed) {
-          return PressScaleWidget(
-            onPressed: () => controller.clear(),
-            child: CommonCard(
-              leadingText: indexText,
-              titleText: controller.text,
-              trailingChild:
-                  CommonIconWidget.svg(svg: Assets.images.trash.path),
-            ),
-          );
-        }
-
-        return CommonInput(
-          height: DimensSize.d48,
-          controller: controller,
-          suggestionsCallback: (_) => cubit.suggestionsCallback(controller),
-          itemBuilder: _itemBuilder,
-          onSuggestionSelected: (suggestion) =>
-              cubit.onSuggestionSelected(suggestion, index - 1),
-          focusNode: focus,
-          needClearButton: false,
-          prefixIcon: Padding(
-            // ignore: no-magic-number
-            padding: EdgeInsets.only(
-              left: DimensSize.d12,
-              top: StyleRes.addRegular.fontSize!,
-            ),
-            child: Text(
-              indexText,
-              style: StyleRes.addRegular.copyWith(color: colors.textSecondary),
-            ),
-          ),
-          onSubmitted: (_) => cubit.nextOrConfirm(index - 1),
-          textInputAction: index - 1 == currentValue
-              ? TextInputAction.done
-              : TextInputAction.next,
+        return input.when(
+          entered: (text, index, hasError) {
+            return PressScaleWidget(
+              onPressed: () => cubit.clearInputModel(index),
+              child: CommonCard(
+                leadingText: indexText,
+                titleText: text,
+                trailingChild:
+                    CommonIconWidget.svg(svg: Assets.images.trash.path),
+                borderColor: hasError ? colors.alert : null,
+              ),
+            );
+          },
+          input: (controller, focus, index, hasError) {
+            return CommonInput(
+              height: DimensSize.d48,
+              controller: controller,
+              suggestionsCallback: (_) => cubit.suggestionsCallback(controller),
+              itemBuilder: _itemBuilder,
+              onSuggestionSelected: (suggestion) =>
+                  cubit.onSuggestionSelected(suggestion, index),
+              focusNode: focus,
+              // show error border if field is empty
+              validator: (v) => v?.isEmpty ?? true ? '' : null,
+              needClearButton: false,
+              prefixIcon: Padding(
+                // ignore: no-magic-number
+                padding: EdgeInsets.only(
+                  left: DimensSize.d12,
+                  top: StyleRes.addRegular.fontSize!,
+                ),
+                child: Text(
+                  indexText,
+                  style:
+                      StyleRes.addRegular.copyWith(color: colors.textSecondary),
+                ),
+              ),
+              onSubmitted: (_) => cubit.nextOrConfirm(index),
+              textInputAction: index == currentValue
+                  ? TextInputAction.done
+                  : TextInputAction.next,
+            );
+          },
         );
       },
     );
@@ -188,8 +185,6 @@ class EnterSeedPhraseView extends StatelessWidget {
   ) {
     return Builder(
       builder: (context) {
-        final l10n = context.l10n;
-
         return Row(
           children: [
             Expanded(
@@ -199,7 +194,7 @@ class EnterSeedPhraseView extends StatelessWidget {
                   values: allowedValues,
                   selectedValue: currentValue,
                   onChanged: cubit.changeTab,
-                  builder: (_, v) => l10n.wordsCount(v),
+                  builder: (_, v) => LocaleKeys.wordsCount.plural(v),
                 ),
               ),
             ),
@@ -211,7 +206,9 @@ class EnterSeedPhraseView extends StatelessWidget {
               ),
               onPressed:
                   displayPasteButton ? cubit.pastePhrase : cubit.clearFields,
-              text: displayPasteButton ? l10n.pasteAll : l10n.clearAll,
+              text: displayPasteButton
+                  ? LocaleKeys.pasteAll.tr()
+                  : LocaleKeys.clearAll.tr(),
             ),
           ],
         );
@@ -220,47 +217,30 @@ class EnterSeedPhraseView extends StatelessWidget {
   }
 
   Widget _inputs(
-    List<TextEditingController> controllers,
-    List<FocusNode> focuses,
+    List<EnterSeedPhraseInputModel> inputs,
     int currentValue,
-    List<ValueNotifier<bool>> inputsCompleted,
   ) {
     return ContainerRow(
       padding: const EdgeInsets.symmetric(vertical: DimensSize.d16),
       children: [
         Expanded(
           child: SeparatedColumn(
-            children: controllers
+            children: inputs
                 .getRange(0, currentValue ~/ _gridColumnCount)
                 .mapIndexed(
-                  (index, c) => _inputBuild(
-                    c,
-                    focuses[index],
-                    index + 1,
-                    currentValue,
-                    inputsCompleted[index],
-                  ),
+                  (index, input) => _inputBuild(input, currentValue),
                 )
                 .toList(),
           ),
         ),
         Expanded(
           child: SeparatedColumn(
-            children: controllers
+            children: inputs
                 .getRange(currentValue ~/ _gridColumnCount, currentValue)
                 .mapIndexed(
-              (index, c) {
-                final i = index + currentValue ~/ _gridColumnCount;
-
-                return _inputBuild(
-                  c,
-                  focuses[i],
-                  i + 1,
-                  currentValue,
-                  inputsCompleted[i],
-                );
-              },
-            ).toList(),
+                  (index, input) => _inputBuild(input, currentValue),
+                )
+                .toList(),
           ),
         ),
       ],

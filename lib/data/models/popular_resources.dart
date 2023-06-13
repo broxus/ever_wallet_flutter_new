@@ -1,4 +1,4 @@
-import 'package:app/generated/assets.gen.dart';
+import 'package:app/generated/generated.dart';
 import 'package:flutter/material.dart';
 
 @immutable

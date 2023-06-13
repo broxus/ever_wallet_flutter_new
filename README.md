@@ -31,6 +31,14 @@ This thing will run all code generators for all packages:
 $ melos run codegen
 ```
 
+## Codegen: localization 🌐
+
+This thing will run localization code generator for all packages:
+
+```
+$ melos run codegen:locale
+```
+
 ## Code format checking and analyser 🦠
 
 ```
@@ -225,47 +233,35 @@ Console colors are defined in fancy_logger package.
 
 ## Working with Translations 🌐
 
-This project relies on [flutter_localizations][flutter_localizations_link] and follows the [official internationalization guide for Flutter][internationalization_link].
+This project relies on [flutter_localizations][flutter_localizations_link] and follows the [official internationalization guide for Flutter][internationalization_link]. However, we use [easy_localization][easy_localization_link] package to simplify the internationalization process.
 
 ### Adding Strings
 
-1. To add a new localizable string, open the `app_en.arb` file at `lib/l10n/arb/app_en.arb`.
+1. To add a new localizable string, open the `en-US.json` file at `assets/translations/en-US.json`.
 
-```arb
+```json
 {
-    "@@locale": "en",
-    "counterAppBarTitle": "Counter",
-    "@counterAppBarTitle": {
-        "description": "Text shown in the AppBar of the Counter Page"
-    }
+    "confirm": "Confirm"
 }
 ```
 
-2. Then add a new key/value and description
+2. Then add a new key/value
 
-```arb
+```json
 {
-    "@@locale": "en",
-    "counterAppBarTitle": "Counter",
-    "@counterAppBarTitle": {
-        "description": "Text shown in the AppBar of the Counter Page"
-    },
-    "helloWorld": "Hello World",
-    "@helloWorld": {
-        "description": "Hello World Text"
-    }
+    "confirm": "Confirm",
+    "continueWord": "Continue"
 }
 ```
 
 3. Use the new string
 
 ```dart
-import 'package:app/l10n/l10n.dart';
+import 'package:app/generated/generated.dart';
 
 @override
 Widget build(BuildContext context) {
-  final l10n = context.l10n;
-  return Text(l10n.helloWorld);
+  return Text(LocaleKeys.continueWord.tr());
 }
 ```
 
@@ -287,44 +283,30 @@ Update the `CFBundleLocalizations` array in the `Info.plist` at `ios/Runner/Info
 
 ### Adding Translations
 
-1. For each supported locale, add a new ARB file in `lib/l10n/arb`.
+1. For each supported locale, add a new JSON file in `assets/translations`.
 
 ```
-├── l10n
-│   ├── arb
-│   │   ├── app_en.arb
-│   │   └── app_es.arb
+├── assets
+│   ├── translations
+│   │   ├── en-US.json
+│   │   └── es-ES.json
 ```
 
-2. Add the translated strings to each `.arb` file:
+2. Add the translated strings to each `.json` file:
 
-`app_en.arb`
+`es-ES.json`
 
-```arb
+```json
 {
-    "@@locale": "en",
-    "counterAppBarTitle": "Counter",
-    "@counterAppBarTitle": {
-        "description": "Text shown in the AppBar of the Counter Page"
-    }
-}
-```
-
-`app_es.arb`
-
-```arb
-{
-    "@@locale": "es",
-    "counterAppBarTitle": "Contador",
-    "@counterAppBarTitle": {
-        "description": "Texto mostrado en la AppBar de la página del contador"
-    }
+    "confirm": "Confirmar",
+    "continueWord": "Continuar"
 }
 ```
 
 [coverage_badge]: coverage_badge.svg
 [flutter_localizations_link]: https://api.flutter.dev/flutter/flutter_localizations/flutter_localizations-library.html
 [internationalization_link]: https://flutter.dev/docs/development/accessibility-and-localization/internationalization
+[easy_localization_link]: https://pub.dev/packages/easy_localization
 [license_badge]: https://img.shields.io/badge/license-MIT-blue.svg
 [license_link]: https://opensource.org/licenses/MIT
 [very_good_analysis_badge]: https://img.shields.io/badge/style-very_good_analysis-B22C89.svg

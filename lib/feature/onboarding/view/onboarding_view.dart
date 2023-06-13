@@ -1,6 +1,6 @@
 import 'package:app/app/router/app_route.dart';
 import 'package:app/feature/onboarding/onboarding.dart';
-import 'package:app/l10n/l10n.dart';
+import 'package:app/generated/generated.dart';
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:ui_components_lib/ui_components_lib.dart';
@@ -15,7 +15,6 @@ class OnboardingView extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final l10n = context.l10n;
     final colors = context.themeStyle.colors;
 
     return SafeArea(
@@ -33,32 +32,31 @@ class OnboardingView extends StatelessWidget {
               children: [
                 const SizedBox(height: DimensSize.d12),
                 Text(
-                  l10n.welcomeTitle,
+                  LocaleKeys.welcomeTitle.tr(),
                   style: StyleRes.balance.copyWith(color: colors.textPrimary),
                   textAlign: TextAlign.center,
                 ),
                 const SizedBox(height: DimensSize.d12),
                 Text(
-                  l10n.supportTokenAndAccessEverscale,
+                  LocaleKeys.supportTokenAndAccessEverscale.tr(),
                   style: StyleRes.primaryRegular
                       .copyWith(color: colors.textPrimary),
                   textAlign: TextAlign.center,
                 ),
                 const SizedBox(height: DimensSize.d24),
                 CommonButton.primary(
-                  text: context.l10n.createNewWallet,
+                  text: LocaleKeys.createNewWallet.tr(),
                   onPressed: () => context.goFurther(AppRoute.createSeed.path),
                   fillWidth: true,
                 ),
                 const SizedBox(height: DimensSize.d8),
                 CommonButton.secondary(
-                  text: context.l10n.signIn,
+                  text: LocaleKeys.signInWithPhrase.tr(),
                   onPressed: () => context.goFurther(AppRoute.enterSeed.path),
                   fillWidth: true,
                 ),
                 // const SizedBox(height: 12),
                 // CommonButton.secondary(
-                //   text: l10n.signWithLedger,
                 // TODO(alex-a4): change icon
                 //   leading: Assets.images.ledger.svg(
                 //     color: style.styles.secondaryButtonStyle.color,
@@ -70,12 +68,12 @@ class OnboardingView extends StatelessWidget {
                   TextSpan(
                     children: [
                       TextSpan(
-                        text: l10n.byProcessingAcceptLicense,
+                        text: LocaleKeys.byProcessingAcceptLicense.tr(),
                         style: StyleRes.addRegular
                             .copyWith(color: colors.textSecondary),
                       ),
                       TextSpan(
-                        text: l10n.readHere,
+                        text: LocaleKeys.readHere.tr(),
                         style: StyleRes.addRegular.copyWith(color: colors.blue),
                         recognizer: TapGestureRecognizer()..onTap = _onLinkTap,
                       ),
