@@ -2,7 +2,7 @@ import 'package:app/app/service/messenger/message.dart';
 import 'package:app/app/service/messenger/service/messenger_service.dart';
 import 'package:app/di/di.dart';
 import 'package:app/feature/add_seed/check_seed_phrase/check_seed_phrase.dart';
-import 'package:app/l10n/l10n.dart';
+import 'package:app/generated/generated.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:ui_components_lib/ui_components_lib.dart';
@@ -16,7 +16,6 @@ class CheckSeedPhraseView extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final l10n = context.l10n;
     final colors = context.themeStyle.colors;
 
     return SafeArea(
@@ -32,12 +31,12 @@ class CheckSeedPhraseView extends StatelessWidget {
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
                     Text(
-                      l10n.letsCheckSeedPhrase,
+                      LocaleKeys.letsCheckSeedPhrase.tr(),
                       style: StyleRes.h1.copyWith(color: colors.textPrimary),
                     ),
                     const SizedBox(height: DimensSize.d12),
                     Text(
-                      l10n.checkSeedPhraseCorrectly,
+                      LocaleKeys.checkSeedPhraseCorrectly.tr(),
                       style: StyleRes.primaryRegular
                           .copyWith(color: colors.textPrimary),
                     ),
@@ -50,7 +49,7 @@ class CheckSeedPhraseView extends StatelessWidget {
                         error: (_, __) {
                           inject<MessengerService>().show(
                             Message.error(
-                              message: context.l10n.seedIsWrong,
+                              message: LocaleKeys.seedIsWrong.tr(),
                               duration: _errorDisplayDuration,
                               debounceTime: _errorDelayDuration,
                             ),

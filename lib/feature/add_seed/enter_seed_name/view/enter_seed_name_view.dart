@@ -1,4 +1,4 @@
-import 'package:app/l10n/l10n.dart';
+import 'package:app/generated/generated.dart';
 import 'package:flutter/material.dart';
 import 'package:ui_components_lib/ui_components_lib.dart';
 
@@ -34,7 +34,6 @@ class _EnterSeedNameViewState extends State<EnterSeedNameView> {
 
   @override
   Widget build(BuildContext context) {
-    final localization = context.l10n;
     final colors = context.themeStyle.colors;
 
     return SafeArea(
@@ -44,24 +43,24 @@ class _EnterSeedNameViewState extends State<EnterSeedNameView> {
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             Text(
-              localization.seedPhraseNameTitle,
+              LocaleKeys.seedPhraseNameTitle.tr(),
               style: StyleRes.h1.copyWith(color: colors.textPrimary),
             ),
             const SizedBox(height: DimensSize.d12),
             Text(
-              localization.seedPhraseNameDescription,
+              LocaleKeys.seedPhraseNameDescription.tr(),
               style:
                   StyleRes.primaryRegular.copyWith(color: colors.textPrimary),
             ),
             const SizedBox(height: DimensSize.d20),
             CommonInput(
               controller: nameController,
-              hintText: localization.seedName,
+              hintText: LocaleKeys.seedName.tr(),
               onSubmitted: (_) => _nextAction(),
             ),
             const Spacer(),
             CommonButton.primary(
-              text: localization.continueWord,
+              text: LocaleKeys.continueWord.tr(),
               onPressed: _nextAction,
               fillWidth: true,
             ),

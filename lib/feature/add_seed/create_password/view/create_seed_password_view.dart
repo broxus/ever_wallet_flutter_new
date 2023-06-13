@@ -1,6 +1,5 @@
 import 'package:app/feature/add_seed/create_password/create_password.dart';
-import 'package:app/generated/assets.gen.dart';
-import 'package:app/l10n/l10n.dart';
+import 'package:app/generated/generated.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:ui_components_lib/ui_components_lib.dart';
@@ -25,8 +24,6 @@ class CreateSeedPasswordView extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final colors = context.themeStyle.colors;
-    final localization = context.l10n;
-
     final cubit = context.read<CreateSeedPasswordCubit>();
 
     return SafeArea(
@@ -45,28 +42,27 @@ class CreateSeedPasswordView extends StatelessWidget {
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
                           Text(
-                            localization.createPassword,
+                            LocaleKeys.createPassword.tr(),
                             style:
                                 StyleRes.h1.copyWith(color: colors.textPrimary),
                           ),
                           const SizedBox(height: DimensSize.d16),
                           Text(
-                            localization.createPasswordDescription,
+                            LocaleKeys.createPasswordDescription.tr(),
                             style: StyleRes.primaryRegular
                                 .copyWith(color: colors.textPrimary),
                           ),
                           const SizedBox(height: DimensSize.d32),
                           CommonInput(
-                            titleText: localization.yourPassword,
-                            subtitleText: localization.passwordDescription,
+                            titleText: LocaleKeys.yourPassword.tr(),
+                            subtitleText: LocaleKeys.passwordDescription.tr(),
                             obscureText: state.obscurePassword,
                             controller: cubit.passwordController,
                             focusNode: cubit.passwordFocus,
-                            hintText: localization.randomPassword,
+                            hintText: LocaleKeys.randomPassword.tr(),
                             onSubmitted: (_) =>
                                 cubit.confirmFocus.requestFocus(),
-                            validator: (_) =>
-                                _validatePassword(cubit, localization),
+                            validator: (_) => _validatePassword(cubit),
                             suffixIcon: CommonIconButton.svg(
                               color: colors.textSecondary,
                               svg: state.obscurePassword
@@ -84,16 +80,15 @@ class CreateSeedPasswordView extends StatelessWidget {
                           ),
                           const SizedBox(height: DimensSize.d12),
                           CommonInput(
-                            titleText: localization.confirmPassword,
-                            subtitleText: localization.passwordDescription,
+                            titleText: LocaleKeys.confirmPassword.tr(),
+                            subtitleText: LocaleKeys.passwordDescription.tr(),
                             obscureText: state.obscureConfirm,
                             controller: cubit.confirmController,
                             focusNode: cubit.confirmFocus,
-                            hintText: localization.randomPassword,
+                            hintText: LocaleKeys.randomPassword.tr(),
                             textInputAction: TextInputAction.done,
                             onSubmitted: (_) => cubit.nextAction(),
-                            validator: (_) =>
-                                _validateRepeatPassword(cubit, localization),
+                            validator: (_) => _validateRepeatPassword(cubit),
                             suffixIcon: CommonIconButton.svg(
                               color: colors.textSecondary,
                               svg: state.obscureConfirm
@@ -115,7 +110,7 @@ class CreateSeedPasswordView extends StatelessWidget {
                     ),
                   ),
                   CommonButton.primary(
-                    text: localization.createWord,
+                    text: LocaleKeys.createWord.tr(),
                     onPressed: cubit.nextAction,
                     fillWidth: true,
                     isLoading: state.isLoading,
@@ -131,23 +126,21 @@ class CreateSeedPasswordView extends StatelessWidget {
 
   String? _validatePassword(
     CreateSeedPasswordCubit cubit,
-    AppLocalizations localization,
   ) {
     if (cubit.passwordController.text.length >= _minPasswordLength) {
       return null;
     }
 
-    return localization.passwordLength;
+    return LocaleKeys.passwordLength.tr();
   }
 
   String? _validateRepeatPassword(
     CreateSeedPasswordCubit cubit,
-    AppLocalizations localization,
   ) {
     if (cubit.confirmController.text == cubit.passwordController.text) {
       return null;
     }
 
-    return localization.passwordsMatch;
+    return LocaleKeys.passwordsMatch.tr();
   }
 }
