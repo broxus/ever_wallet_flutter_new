@@ -10,7 +10,7 @@ dependencies:
   another_flushbar: ^1.12.29
   flutter:
     sdk: flutter
-  flutter_svg: ^2.0.5
+  flutter_svg: ^2.0.7
   flutter_typeahead: ^4.6.1
 
 dev_dependencies:
