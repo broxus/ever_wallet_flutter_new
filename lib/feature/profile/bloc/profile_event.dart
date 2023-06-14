@@ -1,9 +1,13 @@
 part of 'profile_bloc.dart';
 
-@immutable
-abstract class ProfileEvent extends Equatable {
-  @override
-  List<Object?> get props => [];
-}
+@freezed
+class ProfileEvent with _$ProfileEvent {
+  const factory ProfileEvent.init() = _Initialize;
 
-class ProfileDeleteAccount extends ProfileEvent {}
+  const factory ProfileEvent.logOut() = _LogOut;
+
+  const factory ProfileEvent.changeBiometry({required bool value}) =
+      _ChangeBiometry;
+
+  const factory ProfileEvent.exportSeed() = _ExportSeed;
+}

@@ -1,9 +1,13 @@
 part of 'profile_bloc.dart';
 
-@immutable
-abstract class ProfileState extends Equatable {
-  @override
-  List<Object?> get props => [];
-}
+@freezed
+class ProfileState with _$ProfileState {
+  const factory ProfileState.initial() = _Initial;
 
-class ProfileInitial extends ProfileState {}
+  const factory ProfileState.data({
+    required SeedList seedList,
+    required String currentSeed,
+    required bool biometryEnabled,
+    required bool biometryAvailable,
+  }) = _Data;
+}

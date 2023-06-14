@@ -7,22 +7,21 @@ class ProfileView extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return ColoredBox(
-      color: Colors.yellow,
-      child: Column(
-        mainAxisAlignment: MainAxisAlignment.center,
-        children: [
-          const Text('Profile'),
-          TextButton(
-            onPressed: () => onDeleteAccount(context),
-            child: const Text('Delete account'),
-          ),
-        ],
+    return Scaffold(
+      body: BlocBuilder<ProfileBloc, ProfileState>(
+        builder: (context, state) {
+          return state.when(
+            initial: () => const SizedBox(),
+            data: (
+              seedList,
+              currentSeed,
+              biometryEnabled,
+              biometryAvailable,
+            ) =>
+                const SizedBox(),
+          );
+        },
       ),
     );
-  }
-
-  void onDeleteAccount(BuildContext context) {
-    context.read<ProfileBloc>().add(ProfileDeleteAccount());
   }
 }

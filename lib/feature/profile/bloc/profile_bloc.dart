@@ -1,23 +1,23 @@
 import 'dart:async';
 
 import 'package:bloc/bloc.dart';
-import 'package:equatable/equatable.dart';
-import 'package:flutter/material.dart';
+import 'package:freezed_annotation/freezed_annotation.dart';
+import 'package:nekoton_repository/nekoton_repository.dart';
+
+part 'profile_bloc.freezed.dart';
 
 part 'profile_event.dart';
 
 part 'profile_state.dart';
 
+/// Bloc for profile page that stores current key in state and some settings.
 class ProfileBloc extends Bloc<ProfileEvent, ProfileState> {
-  ProfileBloc() : super(ProfileInitial()) {
-    on<ProfileDeleteAccount>(_onDeleteAccount);
+  ProfileBloc() : super(const ProfileState.initial()) {
+    on<_Initialize>(_initialize);
+    on<_LogOut>(_initialize);
+    on<_ChangeBiometry>(_initialize);
+    on<_ExportSeed>(_initialize);
   }
 
-  // TODO(nesquikm): absolutely shitty naming, just for demo purposes
-  FutureOr<void> _onDeleteAccount(
-    ProfileDeleteAccount event,
-    Emitter<ProfileState> emit,
-  )
-  // ignore: no-empty-block
-  {}
+  Future<void> _initialize(event, Emitter<ProfileState> emit) async {}
 }
