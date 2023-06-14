@@ -19,6 +19,7 @@ typedef CommonSheetBodyBuilder = Widget Function(
 /// [openFullScreen] if a [body] should be displayed for full screen.
 /// [useAppBackgroundColor] if true, then [ColorsPalette.appBackground] is used
 ///   as sheet color, [ColorsPalette.backgroundSecondary] otherwise.
+// ignore: long-method
 Future<T?> showCommonBottomSheet<T>({
   required BuildContext context,
   required CommonSheetBodyBuilder body,

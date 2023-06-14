@@ -4,6 +4,11 @@ import 'package:flutter/material.dart';
 import 'package:sliding_up_panel/sliding_up_panel.dart';
 import 'package:ui_components_lib/ui_components_lib.dart';
 
+const defaultMinHeight = 150.0;
+const defaultMinHeightSizePercent = 0.3;
+const defaultMaxHeight = 500.0;
+const defaultMaxHeightSizePercent = 0.7;
+
 /// Builder for panel item that allows use [ScrollController].
 typedef CommonSlidingPanelBuilder = Widget Function(
   BuildContext context,
@@ -15,10 +20,10 @@ class CommonSlidingPanel extends StatelessWidget {
   const CommonSlidingPanel({
     required this.panelBuilder,
     required this.body,
-    this.maxHeightSizePercent = 0.7,
-    this.maxHeight = 500,
-    this.minHeightSizePercent = 0.3,
-    this.minHeight = 150,
+    this.maxHeightSizePercent = defaultMaxHeightSizePercent,
+    this.maxHeight = defaultMaxHeight,
+    this.minHeightSizePercent = defaultMinHeightSizePercent,
+    this.minHeight = defaultMinHeight,
     super.key,
   });
 
@@ -62,6 +67,7 @@ class CommonSlidingPanel extends StatelessWidget {
         top: Radius.circular(DimensRadius.large),
       ),
       color: colors.backgroundSecondary,
+      // ignore: prefer-extracting-callbacks
       panelBuilder: (ScrollController controller) {
         return Material(
           color: Colors.transparent,
