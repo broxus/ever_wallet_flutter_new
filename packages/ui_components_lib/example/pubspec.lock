@@ -437,14 +437,14 @@ packages:
     description: flutter
     source: sdk
     version: "0.0.99"
-  sliding_up_panel:
+  sliding_up_panel2:
     dependency: transitive
     description:
-      name: sliding_up_panel
-      sha256: "578e90956a6212d1e406373250b2436a0f3afece29aee3c24c8360094d6cf968"
+      name: sliding_up_panel2
+      sha256: "7c2aac81c03e74fcd070799c5e2011f1c5de7026bd22a76164e81e23a49f2bdb"
       url: "https://pub.dev"
     source: hosted
-    version: "2.0.0+1"
+    version: "3.3.0+1"
   source_span:
     dependency: transitive
     description:

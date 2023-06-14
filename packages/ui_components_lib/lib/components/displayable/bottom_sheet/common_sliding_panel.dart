@@ -1,7 +1,7 @@
 import 'dart:math' as math;
 
 import 'package:flutter/material.dart';
-import 'package:sliding_up_panel/sliding_up_panel.dart';
+import 'package:sliding_up_panel2/sliding_up_panel2.dart';
 import 'package:ui_components_lib/ui_components_lib.dart';
 
 const defaultMinHeight = 150.0;
@@ -16,7 +16,7 @@ typedef CommonSlidingPanelBuilder = Widget Function(
 );
 
 /// This is a wrapper widget above [SlidingUpPanel] with default behavior.
-class CommonSlidingPanel extends StatelessWidget {
+class CommonSlidingPanel extends StatefulWidget {
   const CommonSlidingPanel({
     required this.panelBuilder,
     required this.body,
@@ -25,6 +25,7 @@ class CommonSlidingPanel extends StatelessWidget {
     this.minHeightSizePercent = defaultMinHeightSizePercent,
     this.minHeight = defaultMinHeight,
     super.key,
+    this.scrollController,
   });
 
   /// See [SlidingUpPanel.panelBuilder]
@@ -55,20 +56,50 @@ class CommonSlidingPanel extends StatelessWidget {
   /// Apply max value of [minHeight] and [minHeightSizePercent]
   final double minHeight;
 
+  /// Scroll that will be used inside [SlidingUpPanel] and same scroll
+  /// will be provided to [panelBuilder].
+  ///
+  /// If not provided, widget creates custom one.
+  final ScrollController? scrollController;
+
+  @override
+  State<CommonSlidingPanel> createState() => _CommonSlidingPanelState();
+}
+
+class _CommonSlidingPanelState extends State<CommonSlidingPanel> {
+  late ScrollController controller;
+  bool _internal = true;
+
+  @override
+  void initState() {
+    super.initState();
+    controller = widget.scrollController ?? ScrollController();
+    if (widget.scrollController != null) _internal = false;
+  }
+
+  @override
+  void dispose() {
+    if (_internal) controller.dispose();
+    super.dispose();
+  }
+
   @override
   Widget build(BuildContext context) {
     final size = MediaQuery.of(context).size;
     final colors = context.themeStyle.colors;
 
     return SlidingUpPanel(
-      minHeight: math.max(size.height * minHeightSizePercent, minHeight),
-      maxHeight: math.max(size.height * maxHeightSizePercent, maxHeight),
+      scrollController: controller,
+      minHeight:
+          math.max(size.height * widget.minHeightSizePercent, widget.minHeight),
+      maxHeight:
+          math.max(size.height * widget.maxHeightSizePercent, widget.maxHeight),
       borderRadius: const BorderRadius.vertical(
         top: Radius.circular(DimensRadius.large),
       ),
       color: colors.backgroundSecondary,
       // ignore: prefer-extracting-callbacks
-      panelBuilder: (ScrollController controller) {
+      panelBuilder: () {
         return Material(
           color: Colors.transparent,
           child: Column(
@@ -78,12 +109,12 @@ class CommonSlidingPanel extends StatelessWidget {
                 verticalMargin: DimensSize.d8,
               ),
               const SizedBox(height: DimensSize.d12),
-              panelBuilder(context, controller),
+              Expanded(child: widget.panelBuilder(context, controller)),
             ],
           ),
         );
       },
-      body: body,
+      body: widget.body,
     );
   }
 }
