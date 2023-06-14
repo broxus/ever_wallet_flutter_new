@@ -21,6 +21,13 @@ ThemeData everPredefinedLightTheme() {
     apply: ColorsRes.greenLight,
     blue: ColorsRes.blue,
     blueSecond: ColorsRes.blueSecond,
+    labelYellow: ColorsRes.yellow,
+    labelOrange: ColorsRes.orange,
+    lightBlue: ColorsRes.blueEAF6F9,
+    lightGreen: ColorsRes.greenE5F5E3,
+    lightOrange: ColorsRes.orangeFCF3E3,
+    lightRed: ColorsRes.redFDEDE5,
+    gradient: ColorsRes.gradientLight,
   );
 
   return ThemeData(
@@ -54,6 +61,13 @@ ThemeData everPredefinedDarkTheme() {
     apply: ColorsRes.greenDark,
     blue: ColorsRes.blue,
     blueSecond: ColorsRes.blueSecond,
+    labelYellow: ColorsRes.yellow,
+    labelOrange: ColorsRes.orange,
+    lightBlue: ColorsRes.blue344347,
+    lightGreen: ColorsRes.green374236,
+    lightOrange: ColorsRes.orange463D2D,
+    lightRed: ColorsRes.red443926,
+    gradient: ColorsRes.gradientDark,
   );
 
   return ThemeData(

@@ -20,6 +20,13 @@ class ColorsPalette {
     required this.apply,
     required this.blue,
     required this.blueSecond,
+    required this.labelYellow,
+    required this.labelOrange,
+    required this.lightBlue,
+    required this.lightGreen,
+    required this.lightOrange,
+    required this.lightRed,
+    required this.gradient,
   });
 
   /// Text
@@ -32,14 +39,28 @@ class ColorsPalette {
   final Color backgroundPrimary;
   final Color backgroundSecondary;
 
+  /// Stroke
   final Color strokePrimary;
   final Color strokeSecondary;
   final Color strokeContrast;
 
+  /// Additional, like accent
   final Color alert;
   final Color apply;
   final Color blue;
   final Color blueSecond;
+
+  /// Info colors
+  final Color labelYellow;
+  final Color labelOrange;
+
+  final Color lightBlue;
+  final Color lightGreen;
+  final Color lightOrange;
+  final Color lightRed;
+
+  /// Gradient
+  final List<Color> gradient;
 }
 
 /// List of all colors from nekoton's palette.
@@ -47,6 +68,15 @@ class ColorsRes {
   const ColorsRes._();
 
   static const transparent = Color(0x00000000);
+
+  static const gradientLight = <Color>[
+    Color(0x00F7F7F7),
+    Color(0xFFF7F7F7),
+  ];
+  static const gradientDark = <Color>[
+    Color(0x00222222),
+    Color(0xFF222222),
+  ];
 
   static const black = Color(0xFF222222);
   static const black343333 = Color(0xFF343333);
@@ -65,8 +95,21 @@ class ColorsRes {
 
   static const redLight = Color(0xFFF32929);
   static const redDark = Color(0xFFEC4C4C);
+  static const redFDEDE5 = Color(0xFFFDEDE5);
+  static const red443926 = Color(0xFF443926);
+
   static const greenLight = Color(0xFF27B21A);
   static const greenDark = Color(0xFF26CC17);
+  static const greenE5F5E3 = Color(0xFFE5F5E3);
+  static const green374236 = Color(0xFF374236);
+
   static const blue = Color(0xFF52B6D3);
   static const blueSecond = Color(0xFFA0C1C9);
+  static const blueEAF6F9 = Color(0xFFEAF6F9);
+  static const blue344347 = Color(0xFF344347);
+
+  static const yellow = Color(0xFFE7A017);
+  static const orange = Color(0xFFED6220);
+  static const orangeFCF3E3 = Color(0xFFFCF3E3);
+  static const orange463D2D = Color(0xFF463D2D);
 }
