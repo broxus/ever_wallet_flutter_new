@@ -40,6 +40,10 @@ class StoryWidget extends StatelessWidget {
           builder: (_) => const SnackbarStory(),
         ),
         Story(
+          name: 'Widgets/Sheet',
+          builder: (_) => const SheetStory(),
+        ),
+        Story(
           name: 'Widgets/Common',
           builder: (_) => const CommonStory(),
         ),

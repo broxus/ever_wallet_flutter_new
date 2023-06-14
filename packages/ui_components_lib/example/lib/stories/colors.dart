@@ -12,62 +12,92 @@ class ColorsStory extends StatelessWidget {
     return Scaffold(
       appBar: const DefaultAppBar(titleText: 'Colors (based on theme)'),
       body: SingleChildScrollView(
-        child: Wrap(
-          children: [
-            /// Order for colors same as in ColorsPalette
-            _ColorItem(
-              color: colors.textPrimary,
-              name: 'textPrimary',
-            ),
-            _ColorItem(
-              color: colors.textSecondary,
-              name: 'textSecondary',
-            ),
-            _ColorItem(
-              color: colors.textContrast,
-              name: 'textContrast',
-            ),
-            _ColorItem(
-              color: colors.appBackground,
-              name: 'appBackground',
-            ),
-            _ColorItem(
-              color: colors.backgroundPrimary,
-              name: 'backgroundPrimary',
-            ),
-            _ColorItem(
-              color: colors.backgroundSecondary,
-              name: 'backgroundSecondary',
-            ),
-            _ColorItem(
-              color: colors.strokePrimary,
-              name: 'strokePrimary',
-            ),
-            _ColorItem(
-              color: colors.strokeSecondary,
-              name: 'strokeSecondary',
-            ),
-            _ColorItem(
-              color: colors.strokeContrast,
-              name: 'strokeContrast',
-            ),
-            _ColorItem(
-              color: colors.alert,
-              name: 'alert',
-            ),
-            _ColorItem(
-              color: colors.apply,
-              name: 'apply',
-            ),
-            _ColorItem(
-              color: colors.blue,
-              name: 'blue',
-            ),
-            _ColorItem(
-              color: colors.blueSecond,
-              name: 'blueSecond',
-            ),
-          ],
+        child: Center(
+          child: Wrap(
+            children: [
+              /// Order for colors same as in ColorsPalette
+              _ColorItem(
+                color: colors.textPrimary,
+                name: 'textPrimary',
+              ),
+              _ColorItem(
+                color: colors.textSecondary,
+                name: 'textSecondary',
+              ),
+              _ColorItem(
+                color: colors.textContrast,
+                name: 'textContrast',
+              ),
+              _ColorItem(
+                color: colors.appBackground,
+                name: 'appBackground',
+              ),
+              _ColorItem(
+                color: colors.backgroundPrimary,
+                name: 'backgroundPrimary',
+              ),
+              _ColorItem(
+                color: colors.backgroundSecondary,
+                name: 'backgroundSecondary',
+              ),
+              _ColorItem(
+                color: colors.strokePrimary,
+                name: 'strokePrimary',
+              ),
+              _ColorItem(
+                color: colors.strokeSecondary,
+                name: 'strokeSecondary',
+              ),
+              _ColorItem(
+                color: colors.strokeContrast,
+                name: 'strokeContrast',
+              ),
+              _ColorItem(
+                color: colors.alert,
+                name: 'alert',
+              ),
+              _ColorItem(
+                color: colors.apply,
+                name: 'apply',
+              ),
+              _ColorItem(
+                color: colors.blue,
+                name: 'blue',
+              ),
+              _ColorItem(
+                color: colors.blueSecond,
+                name: 'blueSecond',
+              ),
+              _ColorItem(
+                color: colors.labelYellow,
+                name: 'labelYellow',
+              ),
+              _ColorItem(
+                color: colors.labelOrange,
+                name: 'labelOrange',
+              ),
+              _ColorItem(
+                color: colors.lightBlue,
+                name: 'lightBlue',
+              ),
+              _ColorItem(
+                color: colors.lightGreen,
+                name: 'lightGreen',
+              ),
+              _ColorItem(
+                color: colors.lightOrange,
+                name: 'lightOrange',
+              ),
+              _ColorItem(
+                color: colors.lightRed,
+                name: 'lightRed',
+              ),
+              _ColorItem(
+                gradient: colors.gradient,
+                name: 'gradient',
+              ),
+            ],
+          ),
         ),
       ),
     );
@@ -76,11 +106,13 @@ class ColorsStory extends StatelessWidget {
 
 class _ColorItem extends StatelessWidget {
   const _ColorItem({
-    required this.color,
     required this.name,
+    this.color,
+    this.gradient,
   });
 
-  final Color color;
+  final Color? color;
+  final List<Color>? gradient;
   final String name;
 
   @override
@@ -98,6 +130,13 @@ class _ColorItem extends StatelessWidget {
             margin: const EdgeInsets.all(DimensSize.d16),
             decoration: BoxDecoration(
               color: color,
+              gradient: gradient == null
+                  ? null
+                  : LinearGradient(
+                      colors: gradient!,
+                      begin: Alignment.topCenter,
+                      end: Alignment.bottomCenter,
+                    ),
               border: Border.all(
                 color: isBackgroundLight ? Colors.black : Colors.white,
               ),

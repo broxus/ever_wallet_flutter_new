@@ -6,7 +6,9 @@ import 'package:ui_components_lib/ui_components_lib.dart';
 class SquircleBoxBorder extends BoxBorder {
   SquircleBoxBorder({
     required double squircleRadius,
-    this.borderSide = const BorderSide(),
+    // width 0.1 because if 0, it do not renders by DecoratedBox, by typically
+    // we do not need this side anyway.
+    this.borderSide = const BorderSide(color: Colors.transparent, width: 0.1),
   }) : shape = SquircleShapeBorder(cornerRadius: squircleRadius);
 
   final SquircleShapeBorder shape;
