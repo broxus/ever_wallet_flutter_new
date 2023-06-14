@@ -12,6 +12,8 @@ dependencies:
     sdk: flutter
   flutter_svg: ^2.0.7
   flutter_typeahead: ^4.6.1
+  modal_bottom_sheet: ^3.0.0-pre
+  sliding_up_panel: ^2.0.0+1
 
 dev_dependencies:
   dart_code_metrics: ^5.7.4

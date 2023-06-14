@@ -8,6 +8,9 @@ class ContainerColumn extends Container {
     super.alignment,
     super.padding = const EdgeInsets.all(DimensSize.d8),
     double? separatorSize = DimensSize.d8,
+    MainAxisSize mainAxisSize = MainAxisSize.max,
+    CrossAxisAlignment crossAxisAlignment = CrossAxisAlignment.start,
+    Widget? separator,
     super.color,
     super.decoration,
     super.foregroundDecoration,
@@ -21,6 +24,9 @@ class ContainerColumn extends Container {
   }) : super(
           child: SeparatedColumn(
             separatorSize: separatorSize,
+            mainAxisSize: mainAxisSize,
+            crossAxisAlignment: crossAxisAlignment,
+            separator: separator,
             children: children,
           ),
         );

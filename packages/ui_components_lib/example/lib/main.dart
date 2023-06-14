@@ -21,7 +21,7 @@ class StoryWidget extends StatelessWidget {
           home: child,
         );
       },
-      initialStory: 'Git log',
+      initialStory: 'Widgets/Sheet',
       stories: [
         Story(
           name: 'Git log',
@@ -38,6 +38,10 @@ class StoryWidget extends StatelessWidget {
         Story(
           name: 'Widgets/Snackbar',
           builder: (_) => const SnackbarStory(),
+        ),
+        Story(
+          name: 'Widgets/Sheet',
+          builder: (_) => const SheetStory(),
         ),
         Story(
           name: 'Widgets/Common',
