@@ -10,6 +10,7 @@ Future<void> configureConnectionService() async {
   await service.setUp();
 
   log.finest('NekotonRepository start SeedList listening');
+  // start listening only after transport initialized
   inject<NekotonRepository>().setupSeedListUpdating();
   log.finest('ConnectionService initialized');
 }

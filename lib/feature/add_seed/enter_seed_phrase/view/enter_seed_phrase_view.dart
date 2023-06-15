@@ -143,10 +143,10 @@ class EnterSeedPhraseView extends StatelessWidget {
               validator: (v) => v?.isEmpty ?? true ? '' : null,
               needClearButton: false,
               prefixIcon: Padding(
-                // ignore: no-magic-number
                 padding: EdgeInsets.only(
                   left: DimensSize.d12,
-                  top: StyleRes.addRegular.fontSize!,
+                  // ignore: no-magic-number
+                  top: StyleRes.addRegular.fontSize! + 2,
                 ),
                 child: Text(
                   indexText,

@@ -45,6 +45,7 @@ class GeneralStorageService extends AbstractStorageService {
         _streamedLocale(),
         _streamedCurrentKey(),
         _streamedLastViewedSeeds(),
+        _streamedCurrentConnection(),
       ]);
 
   @override
@@ -379,8 +380,21 @@ class GeneralStorageService extends AbstractStorageService {
     _localeSubject.add(null);
   }
 
+  /// Subject of biometry enabled status
+  final _biometryEnabledSubject = BehaviorSubject<bool>();
+
+  /// Stream of biometry enabled status
+  Stream<bool> get isBiometryEnabledStream => _biometryEnabledSubject;
+
+  /// Get last cached biometry enabled status
+  bool get isBiometryEnabled => _biometryEnabledSubject.valueOrNull ?? false;
+
+  /// Convert biometry enabled status to stream
+  Future<void> _streamedBiometryEnabled() async =>
+      _biometryEnabledSubject.add(await readIsBiometryEnabled());
+
   /// Get if biometry is enabled in app
-  Future<bool> get isBiometryEnabled async {
+  Future<bool> readIsBiometryEnabled() async {
     final encoded = await _storage.get(
       _biometryStatusKey,
       domain: _preferencesKey,
@@ -390,15 +404,20 @@ class GeneralStorageService extends AbstractStorageService {
   }
 
   /// Set if biometry is enabled in app
-  Future<void> setIsBiometryEnabled({required bool isEnabled}) => _storage.set(
-        _biometryStatusKey,
-        jsonEncode(isEnabled),
-        domain: _preferencesKey,
-      );
+  Future<void> setIsBiometryEnabled({required bool isEnabled}) async {
+    await _storage.set(
+      _biometryStatusKey,
+      jsonEncode(isEnabled),
+      domain: _preferencesKey,
+    );
+    await _streamedBiometryEnabled();
+  }
 
   /// Delete information about biometry
-  Future<void> clearIsBiometryEnabled() =>
-      _storage.delete(_biometryStatusKey, domain: _preferencesKey);
+  Future<void> clearIsBiometryEnabled() async {
+    await _storage.delete(_biometryStatusKey, domain: _preferencesKey);
+    _biometryEnabledSubject.add(false);
+  }
 
   /// Subject of currencies by network type
   final _currencySubject = BehaviorSubject<Map<NetworkType, List<Currency>>>();

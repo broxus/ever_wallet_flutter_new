@@ -68,9 +68,9 @@ class _MessengerServiceWidgetState extends State<MessengerServiceWidget> {
       onDismiss: _onDismiss,
       icon: CommonIconWidget.svg(
         svg: switch (message.type.snackbarType) {
-          SnackbarType.error => Assets.images.alert.path,
-          SnackbarType.info => Assets.images.alarm.path,
-          SnackbarType.successful => Assets.images.check.path,
+          SnackbarType.error => Assets.images.alertRounded.path,
+          SnackbarType.info => Assets.images.alarmRounded.path,
+          SnackbarType.successful => Assets.images.checkRounded.path,
         },
       ),
     );

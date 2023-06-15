@@ -1,6 +1,7 @@
 import 'dart:async';
 
 import 'package:app/app/router/app_route.dart';
+import 'package:app/app/service/service.dart';
 import 'package:app/bootstrap/bootstrap.dart';
 import 'package:app/di/di.dart';
 import 'package:bloc/bloc.dart';
@@ -47,6 +48,7 @@ Future<void> bootstrap(
       // SetUp nekoton after storage migrations
       await configureNekoton();
       await configureConnectionService();
+      await configureBiometry();
 
       FlutterError.onError = (details) {
         log.severe(details.exceptionAsString(), details, details.stack);
@@ -103,6 +105,7 @@ class _AppWrapperState extends State<AppWrapper> with WidgetsBindingObserver {
   @override
   void didChangeAppLifecycleState(AppLifecycleState state) {
     if (state == AppLifecycleState.resumed) startLogSession();
+    inject<AppLifecycleService>().updateState(state);
   }
 
   @override

@@ -4,10 +4,10 @@ part of 'profile_bloc.dart';
 class ProfileState with _$ProfileState {
   const factory ProfileState.initial() = _Initial;
 
+  /// [currentSeed] is seed for current key.
+  /// [exportedSeed] is seed for [currentSeed], that was exported with password.
   const factory ProfileState.data({
-    required SeedList seedList,
-    required String currentSeed,
-    required bool biometryEnabled,
-    required bool biometryAvailable,
+    required Seed currentSeed,
+    List<String>? exportedSeed,
   }) = _Data;
 }

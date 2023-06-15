@@ -2,12 +2,19 @@ part of 'profile_bloc.dart';
 
 @freezed
 class ProfileEvent with _$ProfileEvent {
+  /// Init all subscriptions
   const factory ProfileEvent.init() = _Initialize;
 
+  /// Clear all sensitive data and navigate to onboarding screen
   const factory ProfileEvent.logOut() = _LogOut;
 
-  const factory ProfileEvent.changeBiometry({required bool value}) =
-      _ChangeBiometry;
+  /// This is internal event to update data reacting for some subscription
+  const factory ProfileEvent.updateData(
+    String? currentKey,
+    SeedList list,
+  ) = _UpdateData;
 
-  const factory ProfileEvent.exportSeed() = _ExportSeed;
+  /// Export seed phrase with early entered password.
+  /// This means, that user want to export current seed (from currentKey)
+  const factory ProfileEvent.exportSeed(String password) = _ExportSeed;
 }
