@@ -107,6 +107,7 @@ class CommonStory extends StatelessWidget {
             ),
             const SizedBox(height: DimensSize.d32),
             CommonListTile(
+              // ignore: no-empty-block
               onPressed: () {},
               leading: CommonBackgroundedIconWidget.icon(icon: Icons.add),
               titleText: 'ListTile tite',
@@ -116,6 +117,7 @@ class CommonStory extends StatelessWidget {
             ),
             const SizedBox(height: DimensSize.d8),
             CommonListTile(
+              // ignore: no-empty-block
               onPressed: () {},
               backgroundColor: colors.backgroundSecondary,
               leading: CommonBackgroundedIconWidget.icon(icon: Icons.add),

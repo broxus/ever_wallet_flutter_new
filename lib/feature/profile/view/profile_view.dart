@@ -40,6 +40,7 @@ class ProfileView extends StatelessWidget {
               trailing: CommonIconWidget.svg(svg: Assets.images.export.path),
               onPressed: currentSeed == null
                   ? null
+                  // ignore: no-empty-block
                   : () {
                       // TODO(alex-a4): first-ask user password, then call bloc
                     },
@@ -54,6 +55,7 @@ class ProfileView extends StatelessWidget {
                   trailing: CommonButtonIconWidget.svg(
                     svg: Assets.images.caretRight.path,
                   ),
+                  // ignore: no-empty-block
                   onPressed: () {},
                 ),
                 _profileTile(
@@ -62,6 +64,7 @@ class ProfileView extends StatelessWidget {
                   trailing: CommonButtonIconWidget.svg(
                     svg: Assets.images.caretRight.path,
                   ),
+                  // ignore: no-empty-block
                   onPressed: () {},
                 ),
                 _profileTile(
@@ -70,6 +73,7 @@ class ProfileView extends StatelessWidget {
                   trailing: CommonButtonIconWidget.svg(
                     svg: Assets.images.caretRight.path,
                   ),
+                  // ignore: no-empty-block
                   onPressed: () {},
                 ),
                 _profileTile(
@@ -78,6 +82,7 @@ class ProfileView extends StatelessWidget {
                   trailing: CommonButtonIconWidget.svg(
                     svg: Assets.images.caretRight.path,
                   ),
+                  // ignore: no-empty-block
                   onPressed: () {},
                 ),
               ],

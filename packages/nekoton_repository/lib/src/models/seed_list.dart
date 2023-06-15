@@ -34,6 +34,7 @@ class SeedList extends Equatable {
         return seed;
       }
     }
+
     return null;
   }
 

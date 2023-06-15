@@ -110,7 +110,6 @@ class _AppWrapperState extends State<AppWrapper> with WidgetsBindingObserver {
 
   @override
   Widget build(BuildContext context) {
-    context.setLocale(const Locale('en', 'US'));
     return widget.builder();
   }
 }

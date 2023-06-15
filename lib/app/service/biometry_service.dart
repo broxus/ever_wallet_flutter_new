@@ -112,6 +112,7 @@ class BiometryService {
     if ((await _localAuth.getAvailableBiometrics()).isEmpty) {
       return false;
     }
+
     return true;
   }
 }

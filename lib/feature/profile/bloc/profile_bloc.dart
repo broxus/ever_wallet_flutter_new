@@ -36,6 +36,7 @@ class ProfileBloc extends Bloc<ProfileEvent, ProfileState> {
   Future<void> close() {
     _seedSubscription.cancel();
     _currentKeySubscription.cancel();
+
     return super.close();
   }
 
@@ -54,7 +55,6 @@ class ProfileBloc extends Bloc<ProfileEvent, ProfileState> {
             ProfileEvent.updateData(currentKeyService.currentKey, list),
           ),
         );
-
 
     add(
       ProfileEvent.updateData(
@@ -92,8 +92,10 @@ class ProfileBloc extends Bloc<ProfileEvent, ProfileState> {
     } else if (seed != null) {
       // returned seed is not same as [currentKey], update it
       await currentKeyService.changeCurrentKey(seed.masterKey.key.publicKey);
+
       return seed;
     }
+
     return null;
   }
 
@@ -106,6 +108,7 @@ class ProfileBloc extends Bloc<ProfileEvent, ProfileState> {
       if (foundKey != null) {
         return list.getSeedByAnyPublicKey(foundKey);
       }
+
       // no any key in list
       return null;
     }
