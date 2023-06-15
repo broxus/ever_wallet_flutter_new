@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 
 /// Coefficient of scaling in percent
-const _scaleRatio = 5.0;
+const _defaultScaleRatio = 5.0;
 
 /// {@template press_scale_widget}
 /// Widget that resizes during press
@@ -17,6 +17,7 @@ class PressScaleWidget extends StatefulWidget {
     this.onLongPress,
     this.height,
     this.width,
+    this.scaleRatio = _defaultScaleRatio,
   });
 
   /// Height of widget
@@ -39,6 +40,9 @@ class PressScaleWidget extends StatefulWidget {
 
   /// Duration of scale animation, default to 50 milliseconds
   final Duration animationDuration;
+
+  /// Scale ratio in percent, default [_defaultScaleRatio]
+  final double scaleRatio;
 
   @override
   PressScaleWidgetState createState() => PressScaleWidgetState();
@@ -85,7 +89,7 @@ class PressScaleWidgetState extends State<PressScaleWidget>
       radius: widget.radius,
       child: Transform.scale(
         // ignore: no-magic-number
-        scale: 1.0 - (_doubleAnimation.value * _scaleRatio / 100),
+        scale: 1.0 - (_doubleAnimation.value * widget.scaleRatio / 100),
         child: SizedBox(
           height: widget.height,
           width: widget.width,

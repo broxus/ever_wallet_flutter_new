@@ -118,7 +118,7 @@ class NekotonRepository
 
   /// List of all seeds (and keys) of application.
   /// Every time when keys are changed, this stream will emit new value.
-  Stream<SeedList> get seedListStream => _seedsSubject.stream;
+  ValueStream<SeedList> get seedListStream => _seedsSubject.stream;
 
   SeedList get seedList => _seedsSubject.value;
 

@@ -70,7 +70,7 @@ class EverButtonStyleProvider extends InheritedWidget {
   }
 
   /// Get information about button style from context if it provided
-  static EverButtonStyleProvider? ofNullable(BuildContext context) {
+  static EverButtonStyleProvider? maybeOf(BuildContext context) {
     return context
         .dependOnInheritedWidgetOfExactType<EverButtonStyleProvider>();
   }

@@ -27,6 +27,16 @@ class SeedList extends Equatable {
   /// Get seed by masterKey if it's in list.
   Seed? getSeed(String masterKey) => _seedsMap[masterKey];
 
+  /// Get seed from list by public key of master key or of sub key.
+  Seed? getSeedByAnyPublicKey(String publicKey) {
+    for (final seed in _seedsMap.values) {
+      if (seed.allKeys.any((key) => key.key.publicKey == publicKey)) {
+        return seed;
+      }
+    }
+    return null;
+  }
+
   /// List of seeds that user added into application.
   /// Every seed is a group of masterKey and its subKeys.
   List<Seed> get seeds => _seedsMap.values.toList();
