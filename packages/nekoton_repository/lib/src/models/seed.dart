@@ -21,6 +21,12 @@ class Seed extends Equatable {
   /// This key is derived directly from seed phrase.
   final SeedKey masterKey;
 
+  /// Proxy getter of name of master key
+  String get name => masterKey.key.name;
+
+  /// Proxy getter of public key of master key
+  String get publicKey => masterKey.key.publicKey;
+
   /// List of derived keys of [masterKey].
   /// This list do not contains [masterKey].
   final List<SeedKey> subKeys;
@@ -30,7 +36,7 @@ class Seed extends Equatable {
 
   /// Get instance of SeedKey if [publicKey] is part of this seed.
   SeedKey? findKeyByPublicKey(String publicKey) =>
-      allKeys.firstWhereOrNull((key) => key.key.publicKey == publicKey);
+      allKeys.firstWhereOrNull((key) => key.publicKey == publicKey);
 
   /// Derive keys from [masterKey] this call adds list of sub keys to
   /// [subKeys].
@@ -43,7 +49,7 @@ class Seed extends Equatable {
       GetIt.instance<SeedKeyRepository>().deriveKeys(
         accountIds: accountIds,
         password: password,
-        masterKey: masterKey.key.publicKey,
+        masterKey: masterKey.publicKey,
       );
 
   /// Change password of seed phrase.
@@ -52,19 +58,19 @@ class Seed extends Equatable {
     required String newPassword,
   }) =>
       GetIt.instance<SeedKeyRepository>().changeSeedPassword(
-        publicKey: masterKey.key.publicKey,
+        publicKey: masterKey.publicKey,
         oldPassword: oldPassword,
         newPassword: newPassword,
-        isLegacy: masterKey.key.isLegacy,
+        isLegacy: masterKey.isLegacy,
       );
 
   /// Return seeds phrase of this seed.
   /// Do not works for ledger key.
   Future<List<String>> exportKey(String password) =>
       GetIt.instance<SeedKeyRepository>().exportKey(
-        masterKey: masterKey.key.publicKey,
+        masterKey: masterKey.publicKey,
         password: password,
-        isLegacy: masterKey.key.isLegacy,
+        isLegacy: masterKey.isLegacy,
       );
 
   /// This method allows remove full seed and all related keys (master and sub)

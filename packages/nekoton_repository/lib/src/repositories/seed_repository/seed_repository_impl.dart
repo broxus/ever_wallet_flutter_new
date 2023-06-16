@@ -308,11 +308,11 @@ mixin SeedKeyRepositoryImpl on TransportRepository
   @override
   Future<List<String>> removeKeys(List<SeedKey> keys) async {
     final removed = await keyStore.removeKeys(
-      publicKeys: keys.map((e) => e.key.publicKey).toList(),
+      publicKeys: keys.map((e) => e.publicKey).toList(),
     );
     unawaited(
       triggerRemovingAccounts(
-        keys.where((k) => removed.contains(k.key.publicKey)),
+        keys.where((k) => removed.contains(k.publicKey)),
       ),
     );
 

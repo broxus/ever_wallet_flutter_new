@@ -18,6 +18,15 @@ class SeedKey extends Equatable {
   /// List of accounts that specified for this [key]
   final AccountList accountList;
 
+  /// Proxy getter of name of key
+  String get name => key.name;
+
+  /// Proxy getter of public key of key
+  String get publicKey => key.publicKey;
+
+  /// Proxy getter of legacy flag of key
+  bool get isLegacy => key.isLegacy;
+
   /// Get account instance by it's address.
   /// This is a heavy operation and must not be called during build.
   /// This method can be helpful in browser.
@@ -49,12 +58,12 @@ class SeedKey extends Equatable {
         publicKey: key.publicKey,
         masterKey: key.masterKey,
         name: name,
-        isLegacy: key.isLegacy,
+        isLegacy: isLegacy,
       );
 
   /// Input that can be used to decrypt/encrypt methods.
   /// [password] is the password of the seed
-  SignInput signInput(String password) => key.isLegacy
+  SignInput signInput(String password) => isLegacy
       ? EncryptedKeyPassword(
           publicKey: key.publicKey,
           password: Password.explicit(
