@@ -68,6 +68,7 @@ class ShapedContainerColumn extends StatelessWidget {
         child: Padding(
           padding: padding,
           child: SeparatedColumn(
+            mainAxisSize: mainAxisSize,
             crossAxisAlignment: CrossAxisAlignment.start,
             separatorSize: DimensSize.d16,
             children: [

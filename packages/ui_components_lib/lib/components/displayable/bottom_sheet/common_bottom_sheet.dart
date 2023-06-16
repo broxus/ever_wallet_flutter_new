@@ -40,7 +40,7 @@ Future<T?> showCommonBottomSheet<T>({
     context: context,
     isDismissible: dismissible,
     useRootNavigator: useRootNavigator,
-    barrierColor: barrierColor,
+    barrierColor: barrierColor ?? Colors.black.withOpacity(0.73),
     containerWidget: (context, animation, child) => _ContainerWidget(
       animated: wrapIntoAnimatedSize,
       child: child,
@@ -151,7 +151,7 @@ class __ContainerWidgetState extends State<_ContainerWidget> {
       clipBehavior: Clip.antiAlias,
       decoration: const BoxDecoration(
         borderRadius: BorderRadius.vertical(
-          top: Radius.circular(DimensRadius.xMedium),
+          top: Radius.circular(DimensRadius.large),
         ),
       ),
       width: double.infinity,
