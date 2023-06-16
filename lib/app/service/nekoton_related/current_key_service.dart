@@ -30,7 +30,7 @@ class CurrentKeyService {
   /// Change current selected key and update [lastViewedSeeds].
   Future<void> changeCurrentKey(String publicKey) {
     final masterKey =
-        _nekotonRepository.seedList.getSeedKey(publicKey)?.key.masterKey;
+        _nekotonRepository.seedList.findSeedKey(publicKey)?.key.masterKey;
     final lastViewed = List<String>.from(lastViewedSeeds);
     if (masterKey != null) {
       lastViewed.insert(0, masterKey);

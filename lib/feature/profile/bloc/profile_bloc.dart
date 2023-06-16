@@ -87,7 +87,7 @@ class ProfileBloc extends Bloc<ProfileEvent, ProfileState> {
     final seed = _getCurrentSeed(currentKey, list);
     if (seed != null &&
         currentKey != null &&
-        seed.getKeyByPublicKey(currentKey)?.key.publicKey == currentKey) {
+        seed.findKeyByPublicKey(currentKey)?.key.publicKey == currentKey) {
       return seed;
     } else if (seed != null) {
       // returned seed is not same as [currentKey], update it
@@ -106,14 +106,14 @@ class ProfileBloc extends Bloc<ProfileEvent, ProfileState> {
       // if no current key, try to find any available
       final foundKey = list.seeds.firstOrNull?.masterKey.key.publicKey;
       if (foundKey != null) {
-        return list.getSeedByAnyPublicKey(foundKey);
+        return list.findSeedByAnyPublicKey(foundKey);
       }
 
       // no any key in list
       return null;
     }
 
-    return list.getSeedByAnyPublicKey(currentKey);
+    return list.findSeedByAnyPublicKey(currentKey);
   }
 
   Future<void> _logOut(

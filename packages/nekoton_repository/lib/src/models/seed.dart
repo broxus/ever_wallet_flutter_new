@@ -29,7 +29,7 @@ class Seed extends Equatable {
   List<SeedKey> get allKeys => [masterKey, ...subKeys];
 
   /// Get instance of SeedKey if [publicKey] is part of this seed.
-  SeedKey? getKeyByPublicKey(String publicKey) =>
+  SeedKey? findKeyByPublicKey(String publicKey) =>
       allKeys.firstWhereOrNull((key) => key.key.publicKey == publicKey);
 
   /// Derive keys from [masterKey] this call adds list of sub keys to
@@ -72,5 +72,5 @@ class Seed extends Equatable {
       GetIt.instance<SeedKeyRepository>().removeKeys(allKeys);
 
   @override
-  List<Object?> get props => [allKeys];
+  List<Object?> get props => allKeys;
 }

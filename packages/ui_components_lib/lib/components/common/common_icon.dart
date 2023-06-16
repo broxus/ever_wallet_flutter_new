@@ -17,8 +17,8 @@ class CommonIconWidget extends StatelessWidget {
     super.key,
     this.color,
   }) : assert(
-          icon != null || svg != null,
-          'IconData or Svg path must be specified',
+          (icon != null || svg != null) && !(icon != null && svg != null),
+          'IconData or Svg path must be specified, but not together',
         );
 
   /// Factory that allows creating widget with [IconData]
@@ -64,11 +64,16 @@ class CommonIconWidget extends StatelessWidget {
       );
     }
 
-    return SvgPicture.asset(
-      svg!,
-      colorFilter:
-          color == null ? null : ui.ColorFilter.mode(color, ui.BlendMode.srcIn),
-      theme: SvgTheme(fontSize: size ?? defaultCommonIconSize),
-    );
+    if (svg != null) {
+      return SvgPicture.asset(
+        svg!,
+        colorFilter: color == null
+            ? null
+            : ui.ColorFilter.mode(color, ui.BlendMode.srcIn),
+        theme: SvgTheme(fontSize: size ?? defaultCommonIconSize),
+      );
+    }
+
+    return const SizedBox.shrink();
   }
 }
