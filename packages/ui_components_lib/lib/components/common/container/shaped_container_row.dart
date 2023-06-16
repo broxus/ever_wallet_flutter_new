@@ -19,6 +19,8 @@ class ShapedContainerRow extends StatelessWidget {
     this.separator,
     this.mainAxisSize = MainAxisSize.max,
     this.crossAxisAlignment = CrossAxisAlignment.center,
+    this.mainAxisAlignment = MainAxisAlignment.start,
+    this.titleText,
   });
 
   /// See [Column.children]
@@ -40,14 +42,20 @@ class ShapedContainerRow extends StatelessWidget {
   /// See <ContainerColumn.separatorSize>
   final double? separatorSize;
 
-  /// See [Column.mainAxisSize]
+  /// See [Row.mainAxisSize]
   final MainAxisSize mainAxisSize;
 
-  /// See [Column.crossAxisAlignment]
+  /// See [Row.crossAxisAlignment]
   final CrossAxisAlignment crossAxisAlignment;
+
+  /// See [Row.mainAxisAlignment]
+  final MainAxisAlignment mainAxisAlignment;
 
   /// See <ContainerColumn.separator>
   final Widget? separator;
+
+  /// Title that displays above list of content
+  final String? titleText;
 
   @override
   Widget build(BuildContext context) {
@@ -56,13 +64,30 @@ class ShapedContainerRow extends StatelessWidget {
       child: Material(
         color: color ?? context.themeStyle.colors.backgroundSecondary,
         shape: SquircleShapeBorder(cornerRadius: squircleRadius),
-        child: ContainerRow(
-          separator: separator,
-          separatorSize: separatorSize,
-          mainAxisSize: mainAxisSize,
-          crossAxisAlignment: crossAxisAlignment,
+        // padding here, because ContainerColumn changes alignment in a bad way
+        child: Padding(
           padding: padding,
-          children: children,
+          child: SeparatedColumn(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            separatorSize: DimensSize.d16,
+            children: [
+              if (titleText != null)
+                Text(
+                  titleText!,
+                  style: StyleRes.h2.copyWith(
+                    color: context.themeStyle.colors.textPrimary,
+                  ),
+                ),
+              SeparatedRow(
+                separator: separator,
+                separatorSize: separatorSize,
+                mainAxisSize: mainAxisSize,
+                mainAxisAlignment: mainAxisAlignment,
+                crossAxisAlignment: crossAxisAlignment,
+                children: children,
+              ),
+            ],
+          ),
         ),
       ),
     );
