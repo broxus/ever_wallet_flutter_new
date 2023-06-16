@@ -142,16 +142,15 @@ class EnterSeedPhraseView extends StatelessWidget {
               // show error border if field is empty
               validator: (v) => v?.isEmpty ?? true ? '' : null,
               needClearButton: false,
-              prefixIcon: Padding(
-                // ignore: no-magic-number
-                padding: EdgeInsets.only(
-                  left: DimensSize.d12,
-                  top: StyleRes.addRegular.fontSize!,
-                ),
-                child: Text(
-                  indexText,
-                  style:
-                      StyleRes.addRegular.copyWith(color: colors.textSecondary),
+              // IntrinsicWidth to force Center match prefixIconConstraints
+              prefixIcon: IntrinsicWidth(
+                child: Center(
+                  child: Text(
+                    indexText,
+                    style: StyleRes.addRegular.copyWith(
+                      color: colors.textSecondary,
+                    ),
+                  ),
                 ),
               ),
               onSubmitted: (_) => cubit.nextOrConfirm(index),

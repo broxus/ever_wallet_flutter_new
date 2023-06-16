@@ -145,7 +145,7 @@ void main() {
       );
 
       expect(seedsList.seeds.length, 2);
-      final seed1 = seedsList.getSeed('key1')!;
+      final seed1 = seedsList.findSeed('key1')!;
       expect(
         seed1.masterKey,
         SeedKey(
@@ -166,7 +166,7 @@ void main() {
           ),
         ]),
       );
-      final seed2 = seedsList.getSeed('key4')!;
+      final seed2 = seedsList.findSeed('key4')!;
       expect(
         seed2.masterKey,
         SeedKey(
@@ -189,7 +189,7 @@ void main() {
       );
 
       expect(seedsList.seeds.length, 2);
-      final seed1 = seedsList.getSeed('key1')!;
+      final seed1 = seedsList.findSeed('key1')!;
       expect(
         seed1.masterKey,
         SeedKey(key: masterKey, accountList: accounts1),
@@ -214,7 +214,7 @@ void main() {
           SeedKey(key: subKey2, accountList: accountsSub2),
         ]),
       );
-      final seed2 = seedsList.getSeed('key4')!;
+      final seed2 = seedsList.findSeed('key4')!;
       expect(
         seed2.masterKey,
         SeedKey(key: masterKey2, accountList: accounts2),
@@ -247,7 +247,7 @@ void main() {
       );
 
       expect(seedsList.seeds.length, 2);
-      final seed1 = seedsList.getSeed('key1')!;
+      final seed1 = seedsList.findSeed('key1')!;
       expect(
         seed1.masterKey,
         SeedKey(key: masterKey, accountList: accounts1),
@@ -272,7 +272,7 @@ void main() {
           SeedKey(key: subKey2, accountList: accountsSub2),
         ]),
       );
-      final seed2 = seedsList.getSeed('key4')!;
+      final seed2 = seedsList.findSeed('key4')!;
       expect(
         seed2.masterKey,
         SeedKey(key: masterKey2, accountList: accounts2),
@@ -303,7 +303,7 @@ void main() {
       );
 
       expect(seedsList.seeds.length, 2);
-      final seed1 = seedsList.getSeed('key1')!;
+      final seed1 = seedsList.findSeed('key1')!;
       expect(
         seed1.masterKey,
         SeedKey(
@@ -322,7 +322,7 @@ void main() {
           SeedKey(key: subKey2, accountList: accountsSub2),
         ]),
       );
-      final seed2 = seedsList.getSeed('key4')!;
+      final seed2 = seedsList.findSeed('key4')!;
       expect(
         seed2.masterKey,
         SeedKey(

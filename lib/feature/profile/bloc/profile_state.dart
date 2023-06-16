@@ -1,9 +1,13 @@
 part of 'profile_bloc.dart';
 
-@immutable
-abstract class ProfileState extends Equatable {
-  @override
-  List<Object?> get props => [];
-}
+@freezed
+class ProfileState with _$ProfileState {
+  const factory ProfileState.initial() = _Initial;
 
-class ProfileInitial extends ProfileState {}
+  /// [currentSeed] is seed for current key.
+  /// [exportedSeed] is seed for [currentSeed], that was exported with password.
+  const factory ProfileState.data({
+    required Seed currentSeed,
+    List<String>? exportedSeed,
+  }) = _Data;
+}

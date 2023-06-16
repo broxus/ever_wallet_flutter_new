@@ -7,6 +7,7 @@ const _hiddenAccountsKey = 'hidden_accounts_key';
 const _seedsKey = 'seeds_key';
 const _nekotonBridgeKey = 'nekoton_bridge_key';
 const _externalAccountsKey = 'external_accounts_key';
+const _seedNamesMigratedKey = 'seed_names_migrated_key';
 
 const _accountSeedPreferencesKey = 'account_seed_preferences_key';
 
@@ -66,8 +67,9 @@ class NekotonStorageRepository {
       _storage.getDomain(domain: _seedsKey);
 
   /// Add or rename public key
-  // TODO(alex-a4): remove this method and move this names inside keys calling
-  //   updateKey
+  ///
+  /// DEPRECATED: this names will be migrated to nekoton's KeyStoreEntry.name
+  /// after first launch, see [isSeedNamesMigrated].
   Future<void> addSeedOrRename({
     required String masterKey,
     required String name,
@@ -256,4 +258,22 @@ class NekotonStorageRepository {
   /// Clear information about all preferences
   Future<void> clearPreferences() =>
       _storage.clearDomain(_accountSeedPreferencesKey);
+
+  /// Get flag that tells that names of seeds were migrated, see
+  /// [addSeedOrRename].
+  Future<bool> get isSeedNamesMigrated async {
+    final encoded = await _storage.get(
+      _seedNamesMigratedKey,
+      domain: _accountSeedPreferencesKey,
+    );
+
+    return jsonDecode(encoded ?? 'false') as bool;
+  }
+
+  /// Set flag seed names were migrated to nekoton's KeyStoreEntry.name field.
+  Future<void> saveIsSeedNamesMigrated() => _storage.set(
+        _seedNamesMigratedKey,
+        jsonEncode(true),
+        domain: _accountSeedPreferencesKey,
+      );
 }

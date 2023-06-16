@@ -19,6 +19,7 @@
   "createWord": "Create",
   "passwordLength": "Password must be at least 8 symbols",
   "passwordsMatch": "Passwords must match",
+  "passwordIsWrong": "Password is wrong",
   "saveSeedPhrase": "Save your seed phrase",
   "saveSeedWarning": "It gives access to your wallet, don’t share it with anyone and store in a safe place. If you lose it, you will not be able to restore it.",
   "checkSeedPhrase": "Check your phrase",
@@ -43,5 +44,13 @@
     "other": "{} words"
   },
   "fillMissingWords": "Fill in the missing words, please",
-  "incorrectWordsFormat": "Incorrect words format"
+  "incorrectWordsFormat": "Incorrect words format",
+  "currentSeed": "Current seed",
+  "exportSeedPhrase": "Export seed phrase",
+  "manageSeedsAndAccounts": "Manage seeds and accounts",
+  "currencyWord": "Currency",
+  "languageWord": "Language",
+  "biometryWord": "Biometry",
+  "darkTheme": "DarkTheme",
+  "logOut": "Log out"
 }

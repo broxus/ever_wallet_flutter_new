@@ -1,5 +1,4 @@
 import 'dart:async';
-import 'dart:math';
 
 import 'package:flutter_nekoton_bridge/flutter_nekoton_bridge.dart' as fnb;
 import 'package:injectable/injectable.dart';
@@ -118,7 +117,7 @@ class NekotonRepository
 
   /// List of all seeds (and keys) of application.
   /// Every time when keys are changed, this stream will emit new value.
-  Stream<SeedList> get seedListStream => _seedsSubject.stream;
+  ValueStream<SeedList> get seedListStream => _seedsSubject.stream;
 
   SeedList get seedList => _seedsSubject.value;
 
@@ -252,24 +251,4 @@ class NekotonRepository
   Level _toLogLevel(fnb.LogLevel level) {
     return _logMap.keys.firstWhere((key) => _logMap[key] == level);
   }
-
-  /// -------------------------------------
-  /// -------------------------------------
-  /// ---- Things below only for tests ----
-  /// -------------------------------------
-  /// -------------------------------------
-
-  /// Create a new example thing
-  // ignore: no-magic-number
-  ExampleModel getNewModel() => ExampleModel(id: Random().nextInt(1 << 16));
-
-  /// Call something from nekoton
-  // ignore: no-magic-number
-  int getFromNekotonRust() => fnb.simpleAdderSync(1, 2);
-
-  /// Some logs from rust
-  void someLogs() => fnb.simpleLog();
-
-  /// Panic from rust
-  void somePanic() => fnb.simplePanic();
 }

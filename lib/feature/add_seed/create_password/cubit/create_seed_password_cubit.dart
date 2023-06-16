@@ -1,16 +1,14 @@
-import 'package:app/app/service/messenger/message.dart';
-import 'package:app/app/service/messenger/service/messenger_service.dart';
+import 'package:app/app/service/service.dart';
 import 'package:app/di/di.dart';
 import 'package:flutter/widgets.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-
 import 'package:freezed_annotation/freezed_annotation.dart';
 import 'package:logging/logging.dart';
 import 'package:nekoton_repository/nekoton_repository.dart' hide Message;
 
-part 'create_seed_password_state.dart';
-
 part 'create_seed_password_cubit.freezed.dart';
+
+part 'create_seed_password_state.dart';
 
 /// Cubit for creating seed password.
 class CreateSeedPasswordCubit extends Cubit<CreateSeedPasswordState> {
@@ -78,11 +76,15 @@ class CreateSeedPasswordCubit extends Cubit<CreateSeedPasswordState> {
     if (formKey.currentState?.validate() ?? false) {
       emit(state.copyWith(isLoading: true));
       final nekoton = inject<NekotonRepository>();
+      final currentKeyService = inject<CurrentKeyService>();
       try {
-        await nekoton.addSeed(
+        final publicKey = await nekoton.addSeed(
           phrase: phrase,
           password: passwordController.text,
         );
+        if (setCurrentKey) {
+          await currentKeyService.changeCurrentKey(publicKey);
+        }
       } catch (e) {
         Logger('CreateSeedPasswordCubit').severe(e);
         emit(state.copyWith(isLoading: false));

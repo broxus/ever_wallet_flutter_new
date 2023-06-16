@@ -105,6 +105,41 @@ class CommonStory extends StatelessWidget {
                   CommonButtonIconWidget.icon(icon: Icons.access_alarm_sharp),
               trailingChild: CommonButtonIconWidget.icon(icon: Icons.delete),
             ),
+            const SizedBox(height: DimensSize.d32),
+            CommonListTile(
+              // ignore: no-empty-block
+              onPressed: () {},
+              leading: CommonBackgroundedIconWidget.icon(icon: Icons.add),
+              titleText: 'ListTile tite',
+              subtitleText: 'ListTile subtitle',
+              trailing:
+                  CommonIconWidget.icon(icon: Icons.arrow_forward_ios_rounded),
+            ),
+            const SizedBox(height: DimensSize.d8),
+            CommonListTile(
+              // ignore: no-empty-block
+              onPressed: () {},
+              backgroundColor: colors.backgroundSecondary,
+              leading: CommonBackgroundedIconWidget.icon(icon: Icons.add),
+              titleText: 'ListTile tite with color',
+              subtitleText: 'ListTile subtitle',
+              trailing:
+                  CommonIconWidget.icon(icon: Icons.arrow_forward_ios_rounded),
+            ),
+            const SizedBox(height: DimensSize.d8),
+            const Text('Icon with background'),
+            const SizedBox(height: DimensSize.d4),
+            SeparatedRow(
+              children: [
+                CommonBackgroundedIconWidget.icon(icon: Icons.add),
+                CommonBackgroundedIconWidget.icon(
+                  icon: Icons.add,
+                  backgroundColor: colors.alert,
+                  iconColor: colors.textPrimary,
+                ),
+              ],
+            ),
+            const SizedBox(height: DimensSize.d32),
           ],
         ),
       ),

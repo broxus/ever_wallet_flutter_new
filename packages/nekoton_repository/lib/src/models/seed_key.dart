@@ -23,7 +23,7 @@ class SeedKey extends Equatable {
   /// This method can be helpful in browser.
   ///
   /// Returns found account or null.
-  KeyAccount? getAccountByAddress(String accountAddress) {
+  KeyAccount? findAccountByAddress(String accountAddress) {
     for (final account in accountList.allAccounts) {
       if (account.account.address == accountAddress) {
         return account;

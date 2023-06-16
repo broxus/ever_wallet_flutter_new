@@ -1,9 +1,20 @@
 part of 'profile_bloc.dart';
 
-@immutable
-abstract class ProfileEvent extends Equatable {
-  @override
-  List<Object?> get props => [];
-}
+@freezed
+class ProfileEvent with _$ProfileEvent {
+  /// Init all subscriptions
+  const factory ProfileEvent.init() = _Initialize;
 
-class ProfileDeleteAccount extends ProfileEvent {}
+  /// Clear all sensitive data and navigate to onboarding screen
+  const factory ProfileEvent.logOut() = _LogOut;
+
+  /// This is internal event to update data reacting for some subscription
+  const factory ProfileEvent.updateData(
+    String? currentKey,
+    SeedList list,
+  ) = _UpdateData;
+
+  /// Export seed phrase with early entered password.
+  /// This means, that user want to export current seed (from currentKey)
+  const factory ProfileEvent.exportSeed(String password) = _ExportSeed;
+}

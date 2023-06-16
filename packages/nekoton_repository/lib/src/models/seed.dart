@@ -1,3 +1,4 @@
+import 'package:collection/collection.dart';
 import 'package:equatable/equatable.dart';
 import 'package:flutter/foundation.dart';
 import 'package:get_it/get_it.dart';
@@ -26,6 +27,10 @@ class Seed extends Equatable {
 
   /// Just for iterating over all keys.
   List<SeedKey> get allKeys => [masterKey, ...subKeys];
+
+  /// Get instance of SeedKey if [publicKey] is part of this seed.
+  SeedKey? findKeyByPublicKey(String publicKey) =>
+      allKeys.firstWhereOrNull((key) => key.key.publicKey == publicKey);
 
   /// Derive keys from [masterKey] this call adds list of sub keys to
   /// [subKeys].
@@ -67,5 +72,5 @@ class Seed extends Equatable {
       GetIt.instance<SeedKeyRepository>().removeKeys(allKeys);
 
   @override
-  List<Object?> get props => [allKeys];
+  List<Object?> get props => allKeys;
 }

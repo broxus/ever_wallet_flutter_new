@@ -1,3 +1,5 @@
+export 'app_lifecycle_service.dart';
+export 'biometry_service.dart';
 export 'messenger/messenger.dart';
 export 'migration_service.dart';
 export 'navigation/navigation.dart';

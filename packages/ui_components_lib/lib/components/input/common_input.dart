@@ -348,7 +348,6 @@ class _CommonInputState extends State<CommonInput> {
         onChanged: widget.onChanged,
         textInputAction: widget.textInputAction ?? TextInputAction.next,
         cursorColor: widget.textStyle?.color ?? colors.textPrimary,
-        cursorHeight: style.fontSize,
         onSubmitted: widget.onSubmitted,
         autocorrect: widget.autocorrect,
         enableSuggestions: widget.enableSuggestions,

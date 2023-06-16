@@ -9,7 +9,7 @@ class ContainerColumn extends Container {
     super.padding = const EdgeInsets.all(DimensSize.d8),
     double? separatorSize = DimensSize.d8,
     MainAxisSize mainAxisSize = MainAxisSize.max,
-    CrossAxisAlignment crossAxisAlignment = CrossAxisAlignment.start,
+    CrossAxisAlignment crossAxisAlignment = CrossAxisAlignment.center,
     Widget? separator,
     super.color,
     super.decoration,

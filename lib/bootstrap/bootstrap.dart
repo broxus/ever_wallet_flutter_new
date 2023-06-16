@@ -1,3 +1,4 @@
+export 'biometry.dart';
 export 'connection_service.dart';
 export 'encrypted_storage.dart';
 export 'logger.dart';

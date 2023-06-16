@@ -240,7 +240,7 @@ void main() {
     /// Preferences
     expect(await storage.readLocale(), _locale);
     expect(storage.locale, _locale);
-    expect(await storage.isBiometryEnabled, true);
+    expect(await storage.readIsBiometryEnabled(), true);
     expect(await storage.getWasStEverOpened, true);
     expect(await browserStorage.getWhyNeedBrowser, true);
     expect(await storage.readLastViewedSeeds(), [_publicKey]);
@@ -468,7 +468,7 @@ void main() {
       /// Preferences
       expect(await storage.readLocale(), hive.locale);
       expect(storage.locale, hive.locale);
-      expect(await storage.isBiometryEnabled, hive.isBiometryEnabled);
+      expect(await storage.readIsBiometryEnabled(), hive.isBiometryEnabled);
       expect(await storage.getWasStEverOpened, hive.wasStEverOpened);
       expect(await browserStorage.getWhyNeedBrowser, hive.getWhyNeedBrowser);
       expect(

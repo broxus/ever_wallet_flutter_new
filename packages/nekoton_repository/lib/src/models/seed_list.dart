@@ -25,7 +25,18 @@ class SeedList extends Equatable {
   final Map<String, Seed> _seedsMap;
 
   /// Get seed by masterKey if it's in list.
-  Seed? getSeed(String masterKey) => _seedsMap[masterKey];
+  Seed? findSeed(String masterKey) => _seedsMap[masterKey];
+
+  /// Get seed from list by public key of master key or of sub key.
+  Seed? findSeedByAnyPublicKey(String publicKey) {
+    for (final seed in _seedsMap.values) {
+      if (seed.findKeyByPublicKey(publicKey) != null) {
+        return seed;
+      }
+    }
+
+    return null;
+  }
 
   /// List of seeds that user added into application.
   /// Every seed is a group of masterKey and its subKeys.
@@ -40,7 +51,7 @@ class SeedList extends Equatable {
   /// This method can be helpful in browser.
   ///
   /// Returns found key or null.
-  SeedKey? getSeedKey(String publicKey) =>
+  SeedKey? findSeedKey(String publicKey) =>
       _allKeys.firstWhereOrNull((k) => k.key.publicKey == publicKey);
 
   /// Get account instance by it's address.
@@ -48,9 +59,9 @@ class SeedList extends Equatable {
   /// This method can be helpful in browser.
   ///
   /// Returns found account or null.
-  KeyAccount? getAccountByAddress(String accountAddress) {
+  KeyAccount? findAccountByAddress(String accountAddress) {
     for (final key in _allKeys) {
-      final found = key.getAccountByAddress(accountAddress);
+      final found = key.findAccountByAddress(accountAddress);
       if (found != null) return found;
     }
 

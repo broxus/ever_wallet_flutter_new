@@ -54,6 +54,7 @@ class CreateSeedPasswordView extends StatelessWidget {
                           ),
                           const SizedBox(height: DimensSize.d32),
                           CommonInput(
+                            keyboardType: TextInputType.visiblePassword,
                             titleText: LocaleKeys.yourPassword.tr(),
                             subtitleText: LocaleKeys.passwordDescription.tr(),
                             obscureText: state.obscurePassword,
@@ -80,6 +81,7 @@ class CreateSeedPasswordView extends StatelessWidget {
                           ),
                           const SizedBox(height: DimensSize.d12),
                           CommonInput(
+                            keyboardType: TextInputType.visiblePassword,
                             titleText: LocaleKeys.confirmPassword.tr(),
                             subtitleText: LocaleKeys.passwordDescription.tr(),
                             obscureText: state.obscureConfirm,
