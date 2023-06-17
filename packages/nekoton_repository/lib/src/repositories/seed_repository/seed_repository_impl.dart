@@ -55,6 +55,8 @@ mixin SeedKeyRepositoryImpl on TransportRepository
         isLegacy ? const MnemonicType.legacy() : const MnemonicType.labs(0);
     final phraseStr = phrase.join(' ');
 
+    name = name?.isEmpty ?? true ? null : name;
+
     final createKeyInput = isLegacy
         ? EncryptedKeyCreateInput(
             name: name,
