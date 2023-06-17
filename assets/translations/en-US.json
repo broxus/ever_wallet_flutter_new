@@ -26,8 +26,8 @@
   "skipTakeRisk": "Skip, I'll take the risk",
   "copiedExclamation": "Copied!",
   "copyWords": "Copy all words",
-  "seedPhraseNameTitle": "Enter the name for seed phrase",
-  "seedPhraseNameDescription": "It is not necessary, but it will help identify this particular seed if you have a lot of them.",
+  "enterSeedNameScreenTitle": "Enter new name for seed phrase",
+  "enterSeedNameScreenDescription": "It is not necessary, but it will help you to identify this particular seed if you have a lot of them.",
   "seedName": "Seed name",
   "continueWord": "Continue",
   "confirm": "Confirm",
@@ -52,5 +52,21 @@
   "languageWord": "Language",
   "biometryWord": "Biometry",
   "darkTheme": "DarkTheme",
-  "logOut": "Log out"
+  "logOut": "Log out",
+  "totalBalance": "Total balance",
+  "seedPhrases": "Seed phrases",
+  "addSeedPhrase": "Add seed phrase",
+  "addNewSeedPhrase": "Add new seed phrase",
+  "publicKeysWithData": {
+    "one": "{} public key • {data}",
+    "other": "{} public keys • {data}"
+  },
+  "createNewSeed": "Create new seed",
+  "importSeed": "Import seed",
+  "settingsOfSeed": "Settings of the seed phrase",
+  "useThisSeed": "Use this seed",
+  "renameWord": "Rename",
+  "exportWord": "Export",
+  "changePassword": "Change password",
+  "deleteWord": "Delete"
 }

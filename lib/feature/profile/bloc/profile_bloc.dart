@@ -18,7 +18,7 @@ part 'profile_state.dart';
 class ProfileBloc extends Bloc<ProfileEvent, ProfileState> {
   ProfileBloc(
     this.nekotonRepository,
-    this.currentKeyService,
+    this.currentSeedService,
   ) : super(const ProfileState.initial()) {
     on<_Initialize>(_initialize);
     on<_LogOut>(_logOut);
@@ -27,15 +27,12 @@ class ProfileBloc extends Bloc<ProfileEvent, ProfileState> {
   }
 
   final NekotonRepository nekotonRepository;
-  final CurrentKeyService currentKeyService;
-
-  late StreamSubscription<SeedList> _seedSubscription;
-  late StreamSubscription<String?> _currentKeySubscription;
+  final CurrentSeedService currentSeedService;
+  late StreamSubscription<Seed?> _currentSeedSubscription;
 
   @override
   Future<void> close() {
-    _seedSubscription.cancel();
-    _currentKeySubscription.cancel();
+    _currentSeedSubscription.cancel();
 
     return super.close();
   }
@@ -44,76 +41,18 @@ class ProfileBloc extends Bloc<ProfileEvent, ProfileState> {
     _Initialize _,
     Emitter<ProfileState> __,
   ) async {
-    // skip 1 to avoid duplicate init
-    _currentKeySubscription = currentKeyService.currentKeyStream.skip(1).listen(
-          (current) => add(
-            ProfileEvent.updateData(current, nekotonRepository.seedList),
-          ),
-        );
-    _seedSubscription = nekotonRepository.seedListStream.skip(1).listen(
-          (list) => add(
-            ProfileEvent.updateData(currentKeyService.currentKey, list),
-          ),
-        );
-
-    add(
-      ProfileEvent.updateData(
-        currentKeyService.currentKey,
-        nekotonRepository.seedList,
-      ),
-    );
+    _currentSeedSubscription = currentSeedService.currentSeedStream
+        .listen((seed) => add(ProfileEvent.updateData(seed)));
   }
 
   Future<void> _updateData(
     _UpdateData event,
     Emitter<ProfileState> emit,
   ) async {
-    final (currentKey, list) = (event.currentKey, event.list);
-
-    final seed = await _tryUpdateCurrentKey(currentKey, list);
+    final seed = event.currentSeed;
     if (seed != null) {
       emit(ProfileState.data(currentSeed: seed));
     }
-  }
-
-  /// Checks that [currentKey] has seed instance or try update currentKey in
-  /// storage.
-  /// Returns current seed instance or null if no seed found.
-  /// If no seed found, some wrong happened (app should be logged out).
-  Future<Seed?> _tryUpdateCurrentKey(
-    String? currentKey,
-    SeedList list,
-  ) async {
-    final seed = _getCurrentSeed(currentKey, list);
-    if (seed != null &&
-        currentKey != null &&
-        seed.findKeyByPublicKey(currentKey)?.key.publicKey == currentKey) {
-      return seed;
-    } else if (seed != null) {
-      // returned seed is not same as [currentKey], update it
-      await currentKeyService.changeCurrentKey(seed.masterKey.key.publicKey);
-
-      return seed;
-    }
-
-    return null;
-  }
-
-  /// Get instance of seed by its public key.
-  /// Or get any first available seed if [currentKey] is null.
-  Seed? _getCurrentSeed(String? currentKey, SeedList list) {
-    if (currentKey == null) {
-      // if no current key, try to find any available
-      final foundKey = list.seeds.firstOrNull?.masterKey.key.publicKey;
-      if (foundKey != null) {
-        return list.findSeedByAnyPublicKey(foundKey);
-      }
-
-      // no any key in list
-      return null;
-    }
-
-    return list.findSeedByAnyPublicKey(currentKey);
   }
 
   Future<void> _logOut(
@@ -128,10 +67,7 @@ class ProfileBloc extends Bloc<ProfileEvent, ProfileState> {
     _ExportSeed event,
     Emitter<ProfileState> emit,
   ) async {
-    final seed = await _tryUpdateCurrentKey(
-      currentKeyService.currentKey,
-      nekotonRepository.seedList,
-    );
+    final seed = currentSeedService.currentSeed;
     if (seed != null) {
       try {
         final exported = await seed.exportKey(event.password);

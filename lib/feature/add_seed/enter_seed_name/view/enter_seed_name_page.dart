@@ -1,21 +1,24 @@
 import 'package:app/app/router/app_route.dart';
-import 'package:app/feature/add_seed/create_password/create_password.dart';
 import 'package:app/feature/add_seed/enter_seed_name/view/enter_seed_name_view.dart';
 import 'package:flutter/material.dart';
 import 'package:ui_components_lib/ui_components_lib.dart';
 
-/// {@template enter_seed_name_page}
-/// Page that allows user to enter seed name, used only in profile section
-/// during seed adding.
+/// Commands that will be used to choose where to navigate after entering name
+const enterSeedNameImportCommand = 'import';
+const enterSeedNameCreateCommand = 'create';
+
+/// {@template enter_seed_name_create_page}
+/// Page that allows user to enter seed name, used only in profile section as
+/// a STARTING screen in seed CREATING or IMPORTING flows.
 /// {@endtemplate}
 class EnterSeedNamePage extends StatelessWidget {
-  /// {@macro enter_seed_name_page}
+  /// {@macro enter_seed_name_create_page}
   const EnterSeedNamePage({
-    required this.extra,
+    required this.command,
     super.key,
   });
 
-  final CreateSeedRouteExtra extra;
+  final String command;
 
   @override
   Widget build(BuildContext context) {
@@ -26,11 +29,12 @@ class EnterSeedNamePage extends StatelessWidget {
         appBar: const DefaultAppBar(),
         body: EnterSeedNameView(
           // ignore: prefer-extracting-callbacks
-          callback: (String? name) {
-            context.goFurther(
-              AppRoute.createSeedPassword.path,
-              extra: CreateSeedRouteExtra(phrase: extra.phrase, name: name),
-            );
+          callback: (name) {
+            final query = name == null ? null : {'name': name};
+            final path = command == enterSeedNameImportCommand
+                ? AppRoute.enterSeed.pathWithQuery(query)
+                : AppRoute.createSeed.pathWithQuery(query);
+            context.goFurther(path);
           },
         ),
       ),

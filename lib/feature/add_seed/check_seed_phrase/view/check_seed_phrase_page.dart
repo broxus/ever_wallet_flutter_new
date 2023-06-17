@@ -9,7 +9,7 @@ import 'package:ui_components_lib/ui_components_lib.dart';
 /// {@template check_seed_phrase_page}
 /// Entry point to check if user wrote down seed phrase correctly.
 /// {@endtemplate}
-class CheckSeedPhrasePage extends StatefulWidget {
+class CheckSeedPhrasePage extends StatelessWidget {
   /// {@macro check_seed_phrase_page}
   const CheckSeedPhrasePage({
     required this.extra,
@@ -18,19 +18,14 @@ class CheckSeedPhrasePage extends StatefulWidget {
 
   final CreateSeedRouteExtra extra;
 
-  @override
-  State<CheckSeedPhrasePage> createState() => _CheckSeedPhrasePageState();
-}
-
-class _CheckSeedPhrasePageState extends State<CheckSeedPhrasePage> {
   void _navigateToPassword(BuildContext context) =>
-      context.goFurther(AppRoute.createSeedPassword.path, extra: widget.extra);
+      context.goFurther(AppRoute.createSeedPassword.path, extra: extra);
 
   @override
   Widget build(BuildContext context) {
     return BlocProvider<CheckSeedPhraseCubit>(
       create: (context) => CheckSeedPhraseCubit(
-        widget.extra.phrase,
+        extra.phrase,
         () => _navigateToPassword(context),
       )..initAnswers(),
       child: Scaffold(

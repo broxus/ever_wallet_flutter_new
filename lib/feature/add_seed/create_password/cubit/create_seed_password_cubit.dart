@@ -81,10 +81,12 @@ class CreateSeedPasswordCubit extends Cubit<CreateSeedPasswordState> {
         final publicKey = await nekoton.addSeed(
           phrase: phrase,
           password: passwordController.text,
+          name: name,
         );
         if (setCurrentKey) {
           await currentKeyService.changeCurrentKey(publicKey);
         }
+        completeCallback();
       } catch (e) {
         Logger('CreateSeedPasswordCubit').severe(e);
         emit(state.copyWith(isLoading: false));

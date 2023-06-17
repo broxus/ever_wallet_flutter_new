@@ -5,10 +5,12 @@ import 'package:app/di/di.dart';
 import 'package:app/feature/add_seed/check_seed_phrase/check_seed_phrase.dart';
 import 'package:app/feature/add_seed/create_password/create_password.dart';
 import 'package:app/feature/add_seed/create_seed/create_seed.dart';
+import 'package:app/feature/add_seed/enter_seed_name/enter_seed_name.dart';
 import 'package:app/feature/add_seed/enter_seed_phrase/enter_seed_phrase.dart';
 import 'package:app/feature/browser/browser.dart';
 import 'package:app/feature/error/error.dart';
 import 'package:app/feature/onboarding/onboarding.dart';
+import 'package:app/feature/profile/manage_seeds_accounts/manage_seeds_accounts.dart';
 import 'package:app/feature/profile/profile.dart';
 import 'package:app/feature/root/root.dart';
 import 'package:app/feature/wallet/wallet.dart';
@@ -83,7 +85,7 @@ GoRouter getRouter(BuildContext _) {
               ),
               GoRoute(
                 path: AppRoute.createSeedPassword.path,
-                builder: (BuildContext context, GoRouterState state) =>
+                builder: (_, GoRouterState state) =>
                     CreateSeedPasswordOnboardingPage(
                   extra: state.extra! as CreateSeedRouteExtra,
                 ),
@@ -96,7 +98,7 @@ GoRouter getRouter(BuildContext _) {
             routes: [
               GoRoute(
                 path: AppRoute.createSeedPassword.path,
-                builder: (BuildContext context, GoRouterState state) =>
+                builder: (_, GoRouterState state) =>
                     CreateSeedPasswordOnboardingPage(
                   extra: state.extra! as CreateSeedRouteExtra,
                 ),
@@ -141,6 +143,69 @@ GoRouter getRouter(BuildContext _) {
               state,
               const ProfilePage(),
             ),
+            routes: [
+              GoRoute(
+                path: AppRoute.manageSeedsAccounts.path,
+                name: AppRoute.manageSeedsAccounts.name,
+                builder: (_, __) => const ManageSeedsAccountsPage(),
+                routes: [
+                  GoRoute(
+                    path: AppRoute.enterSeedName.path,
+                    builder: (_, state) => EnterSeedNamePage(
+                      command: state.pathParameters['command'] ??
+                          enterSeedNameImportCommand,
+                    ),
+                    routes: [
+                      GoRoute(
+                        path: AppRoute.createSeed.path,
+                        builder: (_, state) => CreateSeedPage(
+                          name: state.queryParameters['name'],
+                        ),
+                        routes: [
+                          GoRoute(
+                            path: AppRoute.checkSeed.path,
+                            builder: (_, state) => CheckSeedPhrasePage(
+                              extra: state.extra! as CreateSeedRouteExtra,
+                            ),
+                            routes: [
+                              GoRoute(
+                                path: AppRoute.createSeedPassword.path,
+                                builder: (_, state) =>
+                                    CreateSeedPasswordProfilePage(
+                                  extra: state.extra! as CreateSeedRouteExtra,
+                                ),
+                              ),
+                            ],
+                          ),
+                          GoRoute(
+                            path: AppRoute.createSeedPassword.path,
+                            builder: (_, GoRouterState state) =>
+                                CreateSeedPasswordProfilePage(
+                              extra: state.extra! as CreateSeedRouteExtra,
+                            ),
+                          ),
+                        ],
+                      ),
+                      GoRoute(
+                        path: AppRoute.enterSeed.path,
+                        builder: (_, state) => EnterSeedPhrasePage(
+                          name: state.queryParameters['name'],
+                        ),
+                        routes: [
+                          GoRoute(
+                            path: AppRoute.createSeedPassword.path,
+                            builder: (_, GoRouterState state) =>
+                                CreateSeedPasswordProfilePage(
+                              extra: state.extra! as CreateSeedRouteExtra,
+                            ),
+                          ),
+                        ],
+                      ),
+                    ],
+                  ),
+                ],
+              ),
+            ],
           ),
         ],
       ),

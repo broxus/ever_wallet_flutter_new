@@ -42,23 +42,30 @@ class _EnterSeedNameViewState extends State<EnterSeedNameView> {
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            Text(
-              LocaleKeys.seedPhraseNameTitle.tr(),
-              style: StyleRes.h1.copyWith(color: colors.textPrimary),
+            Expanded(
+              child: SingleChildScrollView(
+                child: Column(
+                  children: [
+                    Text(
+                      LocaleKeys.enterSeedNameScreenTitle.tr(),
+                      style: StyleRes.h1.copyWith(color: colors.textPrimary),
+                    ),
+                    const SizedBox(height: DimensSize.d12),
+                    Text(
+                      LocaleKeys.enterSeedNameScreenDescription.tr(),
+                      style: StyleRes.primaryRegular
+                          .copyWith(color: colors.textPrimary),
+                    ),
+                    const SizedBox(height: DimensSize.d24),
+                    CommonInput(
+                      controller: nameController,
+                      titleText: LocaleKeys.seedName.tr(),
+                      onSubmitted: (_) => _nextAction(),
+                    ),
+                  ],
+                ),
+              ),
             ),
-            const SizedBox(height: DimensSize.d12),
-            Text(
-              LocaleKeys.seedPhraseNameDescription.tr(),
-              style:
-                  StyleRes.primaryRegular.copyWith(color: colors.textPrimary),
-            ),
-            const SizedBox(height: DimensSize.d20),
-            CommonInput(
-              controller: nameController,
-              hintText: LocaleKeys.seedName.tr(),
-              onSubmitted: (_) => _nextAction(),
-            ),
-            const Spacer(),
             CommonButton.primary(
               text: LocaleKeys.continueWord.tr(),
               onPressed: _nextAction,

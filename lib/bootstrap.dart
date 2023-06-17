@@ -50,6 +50,8 @@ Future<void> bootstrap(
       await configureConnectionService();
       await configureBiometry();
 
+      await configureFeatureServices();
+
       FlutterError.onError = (details) {
         log.severe(details.exceptionAsString(), details, details.stack);
       };
