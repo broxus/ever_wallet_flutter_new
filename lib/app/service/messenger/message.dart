@@ -62,6 +62,22 @@ class Message {
         onAction: onAction,
       );
 
+  factory Message.successful({
+    required String message,
+    Duration duration = defaultMessageDisplayDuration,
+    Duration debounceTime = defaultInfoMessageDebounceDuration,
+    String? actionText,
+    VoidCallback? onAction,
+  }) =>
+      Message(
+        type: MessageType.successful,
+        message: message,
+        duration: duration,
+        debounceTime: debounceTime,
+        actionText: actionText,
+        onAction: onAction,
+      );
+
   final MessageType type;
   final String message;
   final Duration duration;

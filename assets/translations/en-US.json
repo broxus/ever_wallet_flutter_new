@@ -68,5 +68,18 @@
   "renameWord": "Rename",
   "exportWord": "Export",
   "changePassword": "Change password",
-  "deleteWord": "Delete"
+  "deleteWord": "Delete",
+  "enterNewName": "Enter new name",
+  "nameWord": "Name",
+  "seedPhrase": "Seed phrase",
+  "keyWord": "Key",
+  "valueRenamed": "{value} renamed successfully",
+  "enterPasswordTo": "Enter password to {action}",
+  "changeSeedPassword": "Change seed phrase password",
+  "oldPassword": "Old password",
+  "newPassword": "New password",
+  "submitWord": "Submit",
+  "passwordChanged": "Password changed successfully",
+  "valueCopiedExclamation": "{value} Copied!",
+  "seedIsMissing": "Seed is missing"
 }

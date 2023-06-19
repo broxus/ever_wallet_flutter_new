@@ -18,6 +18,7 @@ enum EnterSeedNameCommand {
     if (name == null || EnterSeedNameCommand.values.asNameMap()[name] == null) {
       return create;
     }
+
     return EnterSeedNameCommand.values.asNameMap()[name]!;
   }
 }

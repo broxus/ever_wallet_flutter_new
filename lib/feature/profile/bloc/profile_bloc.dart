@@ -70,7 +70,7 @@ class ProfileBloc extends Bloc<ProfileEvent, ProfileState> {
     final seed = currentSeedService.currentSeed;
     if (seed != null) {
       try {
-        final exported = await seed.exportKey(event.password);
+        final exported = await seed.export(event.password);
         emit(ProfileState.data(currentSeed: seed, exportedSeed: exported));
       } catch (e) {
         inject<MessengerService>().show(

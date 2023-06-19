@@ -24,6 +24,9 @@ class SeedKey extends Equatable {
   /// Proxy getter of public key of key
   String get publicKey => key.publicKey;
 
+  /// Proxy getter of master flag of key
+  bool get isMaster => key.isMaster;
+
   /// Proxy getter of legacy flag of key
   bool get isLegacy => key.isLegacy;
 
