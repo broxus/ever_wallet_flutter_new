@@ -15,7 +15,7 @@ class ProfilePage extends StatelessWidget {
     return BlocProvider(
       create: (context) => ProfileBloc(
         inject<NekotonRepository>(),
-        inject<CurrentKeyService>(),
+        inject<CurrentSeedService>(),
       )..add(const ProfileEvent.init()),
       child: BlocConsumer<ProfileBloc, ProfileState>(
         listener: (context, state) {

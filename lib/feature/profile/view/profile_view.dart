@@ -1,3 +1,4 @@
+import 'package:app/app/router/app_route.dart';
 import 'package:app/feature/profile/bloc/profile_bloc.dart';
 import 'package:app/generated/assets.gen.dart';
 import 'package:app/generated/locale_keys.g.dart';
@@ -31,7 +32,7 @@ class ProfileView extends StatelessWidget {
             ),
             const SizedBox(height: DimensSize.d4),
             Text(
-              currentSeed?.masterKey.key.name ?? '',
+              currentSeed?.name ?? '',
               style: StyleRes.h2.copyWith(color: colors.textPrimary),
             ),
             const SizedBox(height: DimensSize.d16),
@@ -55,8 +56,8 @@ class ProfileView extends StatelessWidget {
                   trailing: CommonButtonIconWidget.svg(
                     svg: Assets.images.caretRight.path,
                   ),
-                  // ignore: no-empty-block
-                  onPressed: () {},
+                  onPressed: () =>
+                      context.goFurther(AppRoute.manageSeedsAccounts.path),
                 ),
                 _profileTile(
                   leadingIcon: Assets.images.currency.path,

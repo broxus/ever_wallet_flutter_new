@@ -10,7 +10,13 @@ import 'package:ui_components_lib/ui_components_lib.dart';
 /// {@endtemplate}
 class CreateSeedPage extends StatelessWidget {
   /// {@macro create_seed_page}
-  const CreateSeedPage({super.key});
+  const CreateSeedPage({
+    this.name,
+    super.key,
+  });
+
+  /// Optional name that could be set in profile section.
+  final String? name;
 
   @override
   Widget build(BuildContext context) {
@@ -24,14 +30,14 @@ class CreateSeedPage extends StatelessWidget {
           checkCallback: (List<String> phrase) {
             context.goFurther(
               AppRoute.checkSeed.path,
-              extra: CreateSeedRouteExtra(phrase: phrase),
+              extra: CreateSeedRouteExtra(phrase: phrase, name: name),
             );
           },
           // ignore: prefer-extracting-callbacks
           skipCallback: (List<String> phrase) {
             context.goFurther(
               AppRoute.createSeedPassword.path,
-              extra: CreateSeedRouteExtra(phrase: phrase),
+              extra: CreateSeedRouteExtra(phrase: phrase, name: name),
             );
           },
         ),

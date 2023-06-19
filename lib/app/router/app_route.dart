@@ -1,3 +1,4 @@
+import 'package:app/feature/add_seed/enter_seed_name/enter_seed_name.dart';
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:logging/logging.dart';
@@ -6,10 +7,25 @@ enum AppRoute {
   onboarding('onboarding', '/onboarding', isSaveLocation: true),
   wallet('wallet', '/wallet', isSaveLocation: true),
   browser('browser', '/browser', isSaveLocation: true),
+
+  /// Profile section
   profile('profile', '/profile', isSaveLocation: true),
+  manageSeedsAccounts('manageSeeds', 'manageSeeds', isSaveLocation: true),
+
+  /// Adding seed
   createSeed('', 'createSeed', isSaveLocation: true),
-  checkSeed('', 'checkSeed'),
+  createSeedNamed('', 'createSeed/:$enterSeedNameName', isSaveLocation: true),
   enterSeed('', 'enterSeed', isSaveLocation: true),
+  enterSeedNamed('', 'enterSeed/:name', isSaveLocation: true),
+
+  // command flag means: 'import' - import, 'create' (or other) - create,
+  // see <enterSeedNameImportCommand> and <enterSeedNameCreateCommand>.
+  enterSeedName(
+    '',
+    'enterSeedName/:$enterSeedNameCommand',
+    isSaveLocation: true,
+  ),
+  checkSeed('', 'checkSeed'),
   createSeedPassword('', 'createSeedPassword');
 
   const AppRoute(this.name, this.path, {this.isSaveLocation = false});
@@ -31,6 +47,26 @@ enum AppRoute {
   }
 
   static AppRoute get defaultRoute => onboarding;
+
+  /// Helper method, that allows add path parameter to [path].
+  ///
+  /// If [path] field of [AppRoute] contains [':'] then [data] will replace this
+  /// parameter.
+  // TODO(alex-a4): we need check if this will work in a nested routes with data
+  //   I mean, if routes above this will contains :data in their path or it was
+  //   replace by them when they were pushed.
+  String pathWithData(String data) {
+    if (path.contains(':')) {
+      return path.replaceAll(RegExp(r':\w*'), data);
+    }
+
+    return path;
+  }
+
+  /// Helper method, that allows add query parameters to [path].
+  String pathWithQuery(Map<String, String>? query) {
+    return Uri(path: path, queryParameters: query).toString();
+  }
 }
 
 /// Get first segment from [location].
@@ -73,8 +109,28 @@ extension NavigationHelper on BuildContext {
   /// onPressed: () => context.goFurther(AppRoute.multiuse.path),
   /// ```
   void goFurther(String location, {Object? extra}) {
-    return GoRouter.of(this)
-        .go('${GoRouter.of(this).location}/$location', extra: extra);
+    var resultLocation = Uri.parse(GoRouter.of(this).location);
+    // We have query params in old path and we must update it manually
+    if (resultLocation.hasQuery) {
+      final newLocation = Uri.parse(location);
+      final query = <String, dynamic>{}
+        ..addAll(resultLocation.queryParameters)
+        ..addAll(newLocation.queryParameters);
+
+      resultLocation = resultLocation.replace(
+        path: '${resultLocation.path}/${newLocation.path}',
+        queryParameters: query,
+      );
+    } else {
+      // old location do not have query, new one may have it, we dont care
+      resultLocation =
+          resultLocation.replace(path: '${resultLocation.path}/$location');
+    }
+
+    return GoRouter.of(this).go(
+      Uri.decodeComponent(resultLocation.toString()),
+      extra: extra,
+    );
   }
 
   /// Pop current screen if possible.

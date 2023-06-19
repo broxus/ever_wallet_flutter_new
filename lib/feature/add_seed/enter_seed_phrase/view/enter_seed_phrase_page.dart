@@ -10,7 +10,13 @@ import 'package:ui_components_lib/ui_components_lib.dart';
 /// {@endtemplate}
 class EnterSeedPhrasePage extends StatelessWidget {
   /// {@macro enter_seed_phrase_page}
-  const EnterSeedPhrasePage({super.key});
+  const EnterSeedPhrasePage({
+    this.name,
+    super.key,
+  });
+
+  /// Optional name that could be set in profile section.
+  final String? name;
 
   @override
   Widget build(BuildContext context) {
@@ -18,7 +24,7 @@ class EnterSeedPhrasePage extends StatelessWidget {
       create: (context) => EnterSeedPhraseCubit(
         (phrase) => context.goFurther(
           AppRoute.createSeedPassword.path,
-          extra: CreateSeedRouteExtra(phrase: phrase),
+          extra: CreateSeedRouteExtra(phrase: phrase, name: name),
         ),
       )..init(),
       child: GestureDetector(

@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:ui_components_lib/ui_components_lib.dart';
 
+const _defaultContainerSize = 3;
+
 /// Page with all colors
 class CommonStory extends StatelessWidget {
   const CommonStory({super.key});
@@ -138,6 +140,49 @@ class CommonStory extends StatelessWidget {
                   iconColor: colors.textPrimary,
                 ),
               ],
+            ),
+            const SizedBox(height: DimensSize.d24),
+
+            // containers
+            const Text('DIFFERENT CONTAINERS', style: StyleRes.h2),
+            const SizedBox(height: DimensSize.d8),
+            ShapedContainerColumn(
+              titleText: 'ShapedContainerColumn',
+              children: List.generate(
+                _defaultContainerSize,
+                (index) => CommonListTile(titleText: 'Item $index'),
+              ),
+            ),
+            const SizedBox(height: DimensSize.d8),
+            ShapedContainerColumn(
+              titleText: 'ShapedContainerColumn',
+              children: List.generate(
+                _defaultContainerSize,
+                (index) => Text('Item $index'),
+              ),
+            ),
+            const SizedBox(height: DimensSize.d8),
+            ShapedContainerColumn(
+              separator: const CommonDivider(),
+              children: List.generate(
+                _defaultContainerSize,
+                (index) => CommonListTile(titleText: 'Item $index'),
+              ),
+            ),
+            const SizedBox(height: DimensSize.d8),
+            ShapedContainerRow(
+              titleText: 'ShapedContainerRow',
+              children: List.generate(
+                _defaultContainerSize,
+                (index) => Text('Item $index'),
+              ),
+            ),
+            const SizedBox(height: DimensSize.d8),
+            ShapedContainerRow(
+              children: List.generate(
+                _defaultContainerSize,
+                (index) => Expanded(child: Text('Item $index')),
+              ),
             ),
             const SizedBox(height: DimensSize.d32),
           ],

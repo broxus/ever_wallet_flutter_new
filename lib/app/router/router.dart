@@ -2,21 +2,15 @@ import 'package:app/app/router/page_transitions.dart';
 import 'package:app/app/router/router.dart';
 import 'package:app/app/service/service.dart';
 import 'package:app/di/di.dart';
-import 'package:app/feature/add_seed/check_seed_phrase/check_seed_phrase.dart';
-import 'package:app/feature/add_seed/create_password/create_password.dart';
-import 'package:app/feature/add_seed/create_seed/create_seed.dart';
-import 'package:app/feature/add_seed/enter_seed_phrase/enter_seed_phrase.dart';
-import 'package:app/feature/browser/browser.dart';
 import 'package:app/feature/error/error.dart';
 import 'package:app/feature/onboarding/onboarding.dart';
-import 'package:app/feature/profile/profile.dart';
 import 'package:app/feature/root/root.dart';
-import 'package:app/feature/wallet/wallet.dart';
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:nekoton_repository/nekoton_repository.dart';
 
 export 'app_route.dart';
+export 'routs/routs.dart';
 
 // ignore: long-method
 GoRouter getRouter(BuildContext _) {
@@ -63,46 +57,8 @@ GoRouter getRouter(BuildContext _) {
           const OnboardingPage(),
         ),
         routes: [
-          GoRoute(
-            path: AppRoute.createSeed.path,
-            builder: (_, __) => const CreateSeedPage(),
-            routes: [
-              GoRoute(
-                path: AppRoute.checkSeed.path,
-                builder: (_, state) => CheckSeedPhrasePage(
-                  extra: state.extra! as CreateSeedRouteExtra,
-                ),
-                routes: [
-                  GoRoute(
-                    path: AppRoute.createSeedPassword.path,
-                    builder: (_, state) => CreateSeedPasswordOnboardingPage(
-                      extra: state.extra! as CreateSeedRouteExtra,
-                    ),
-                  ),
-                ],
-              ),
-              GoRoute(
-                path: AppRoute.createSeedPassword.path,
-                builder: (BuildContext context, GoRouterState state) =>
-                    CreateSeedPasswordOnboardingPage(
-                  extra: state.extra! as CreateSeedRouteExtra,
-                ),
-              ),
-            ],
-          ),
-          GoRoute(
-            path: AppRoute.enterSeed.path,
-            builder: (_, __) => const EnterSeedPhrasePage(),
-            routes: [
-              GoRoute(
-                path: AppRoute.createSeedPassword.path,
-                builder: (BuildContext context, GoRouterState state) =>
-                    CreateSeedPasswordOnboardingPage(
-                  extra: state.extra! as CreateSeedRouteExtra,
-                ),
-              ),
-            ],
-          ),
+          createSeedNoNamedOnboardingRoute,
+          enterSeedNoNamedOnboardingRoute,
         ],
       ),
       ShellRoute(
@@ -112,36 +68,9 @@ GoRouter getRouter(BuildContext _) {
           RootPage(child: child),
         ),
         routes: <RouteBase>[
-          GoRoute(
-            name: AppRoute.wallet.name,
-            path: AppRoute.wallet.path,
-            pageBuilder: (BuildContext context, GoRouterState state) =>
-                rootTabsTransitionPageBuilder(
-              context,
-              state,
-              const WalletPage(),
-            ),
-          ),
-          GoRoute(
-            name: AppRoute.browser.name,
-            path: AppRoute.browser.path,
-            pageBuilder: (BuildContext context, GoRouterState state) =>
-                rootTabsTransitionPageBuilder(
-              context,
-              state,
-              const BrowserPage(),
-            ),
-          ),
-          GoRoute(
-            name: AppRoute.profile.name,
-            path: AppRoute.profile.path,
-            pageBuilder: (BuildContext context, GoRouterState state) =>
-                rootTabsTransitionPageBuilder(
-              context,
-              state,
-              const ProfilePage(),
-            ),
-          ),
+          walletRoute,
+          browserRoute,
+          profileRoute,
         ],
       ),
     ],

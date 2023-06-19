@@ -24,18 +24,30 @@ class CommonIconWidget extends StatelessWidget {
   /// Factory that allows creating widget with [IconData]
   factory CommonIconWidget.icon({
     required IconData icon,
+    Color? color,
     double? size,
     Key? key,
   }) =>
-      CommonIconWidget(icon: icon, size: size, key: key);
+      CommonIconWidget(
+        icon: icon,
+        size: size,
+        key: key,
+        color: color,
+      );
 
   /// Factory that allows creating widget with svg asset
   factory CommonIconWidget.svg({
     required String svg,
+    Color? color,
     double? size,
     Key? key,
   }) =>
-      CommonIconWidget(svg: svg, size: size, key: key);
+      CommonIconWidget(
+        svg: svg,
+        size: size,
+        key: key,
+        color: color,
+      );
 
   /// Data of icon that is used in [Icon]
   final IconData? icon;

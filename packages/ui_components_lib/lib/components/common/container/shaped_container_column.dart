@@ -18,7 +18,9 @@ class ShapedContainerColumn extends StatelessWidget {
     this.separatorSize = DimensSize.d8,
     this.separator,
     this.mainAxisSize = MainAxisSize.max,
-    this.crossAxisAlignment = CrossAxisAlignment.center,
+    this.crossAxisAlignment = CrossAxisAlignment.start,
+    this.mainAxisAlignment = MainAxisAlignment.start,
+    this.titleText,
   });
 
   /// See [Column.children]
@@ -46,8 +48,14 @@ class ShapedContainerColumn extends StatelessWidget {
   /// See [Column.crossAxisAlignment]
   final CrossAxisAlignment crossAxisAlignment;
 
+  /// See [Column.mainAxisAlignment]
+  final MainAxisAlignment mainAxisAlignment;
+
   /// See <ContainerColumn.separator>
   final Widget? separator;
+
+  /// Title that displays above list of content
+  final String? titleText;
 
   @override
   Widget build(BuildContext context) {
@@ -56,13 +64,31 @@ class ShapedContainerColumn extends StatelessWidget {
       child: Material(
         color: color ?? context.themeStyle.colors.backgroundSecondary,
         shape: SquircleShapeBorder(cornerRadius: squircleRadius),
-        child: ContainerColumn(
-          separator: separator,
-          separatorSize: separatorSize,
-          mainAxisSize: mainAxisSize,
-          crossAxisAlignment: crossAxisAlignment,
+        // padding here, because ContainerColumn changes alignment in a bad way
+        child: Padding(
           padding: padding,
-          children: children,
+          child: SeparatedColumn(
+            mainAxisSize: mainAxisSize,
+            crossAxisAlignment: CrossAxisAlignment.start,
+            separatorSize: DimensSize.d16,
+            children: [
+              if (titleText != null)
+                Text(
+                  titleText!,
+                  style: StyleRes.h2.copyWith(
+                    color: context.themeStyle.colors.textPrimary,
+                  ),
+                ),
+              SeparatedColumn(
+                separator: separator,
+                separatorSize: separatorSize,
+                mainAxisSize: mainAxisSize,
+                mainAxisAlignment: mainAxisAlignment,
+                crossAxisAlignment: crossAxisAlignment,
+                children: children,
+              ),
+            ],
+          ),
         ),
       ),
     );

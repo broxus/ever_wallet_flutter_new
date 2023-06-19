@@ -52,7 +52,7 @@ class SeedList extends Equatable {
   ///
   /// Returns found key or null.
   SeedKey? findSeedKey(String publicKey) =>
-      _allKeys.firstWhereOrNull((k) => k.key.publicKey == publicKey);
+      _allKeys.firstWhereOrNull((k) => k.publicKey == publicKey);
 
   /// Get account instance by it's address.
   /// This is a heavy operation and must not be called during build.
@@ -91,7 +91,7 @@ class SeedList extends Equatable {
     required String publicKey,
     required String password,
   }) {
-    final key = _allKeys.firstWhere((k) => k.key.publicKey == publicKey);
+    final key = _allKeys.firstWhere((k) => k.publicKey == publicKey);
 
     return GetIt.instance<SeedKeyRepository>().encrypt(
       data: data,
@@ -108,7 +108,7 @@ class SeedList extends Equatable {
     required String publicKey,
     required String password,
   }) {
-    final key = _allKeys.firstWhere((k) => k.key.publicKey == publicKey);
+    final key = _allKeys.firstWhere((k) => k.publicKey == publicKey);
 
     return GetIt.instance<SeedKeyRepository>().decrypt(
       data: data,
@@ -125,7 +125,7 @@ class SeedList extends Equatable {
     required String password,
     required int? signatureId,
   }) {
-    final key = _allKeys.firstWhere((k) => k.key.publicKey == publicKey);
+    final key = _allKeys.firstWhere((k) => k.publicKey == publicKey);
 
     return GetIt.instance<SeedKeyRepository>().sign(
       data: data,
@@ -143,7 +143,7 @@ class SeedList extends Equatable {
     required String password,
     required int? signatureId,
   }) {
-    final key = _allKeys.firstWhere((k) => k.key.publicKey == publicKey);
+    final key = _allKeys.firstWhere((k) => k.publicKey == publicKey);
 
     return GetIt.instance<SeedKeyRepository>().signData(
       data: data,
@@ -161,7 +161,7 @@ class SeedList extends Equatable {
     required String password,
     required int? signatureId,
   }) {
-    final key = _allKeys.firstWhere((k) => k.key.publicKey == publicKey);
+    final key = _allKeys.firstWhere((k) => k.publicKey == publicKey);
 
     return GetIt.instance<SeedKeyRepository>().signRawData(
       data: data,

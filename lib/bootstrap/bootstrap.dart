@@ -1,6 +1,7 @@
 export 'biometry.dart';
 export 'connection_service.dart';
 export 'encrypted_storage.dart';
+export 'feature_services.dart';
 export 'logger.dart';
 export 'migrate_storage.dart';
 export 'navigation_service.dart';

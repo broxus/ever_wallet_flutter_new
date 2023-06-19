@@ -24,6 +24,7 @@ class CommonListTile extends StatelessWidget {
     this.backgroundColor,
     this.squircleRadius = DimensRadius.xMedium,
     this.padding = const EdgeInsets.symmetric(horizontal: DimensSize.d8),
+    this.contentColor,
   });
 
   /// Press callback of tile
@@ -56,6 +57,9 @@ class CommonListTile extends StatelessWidget {
   /// Padding of content inside tile, default is horizontal: DimensSize.d8.
   final EdgeInsets padding;
 
+  /// Color of text and icons inside tile
+  final Color? contentColor;
+
   @override
   Widget build(BuildContext context) {
     final colors = context.themeStyle.colors;
@@ -63,14 +67,18 @@ class CommonListTile extends StatelessWidget {
     final title = titleText != null
         ? Text(
             titleText!,
-            style: StyleRes.button.copyWith(color: colors.textPrimary),
+            style: StyleRes.button.copyWith(
+              color: contentColor ?? colors.textPrimary,
+            ),
           )
         : titleChild;
 
     final subtitle = subtitleText != null
         ? Text(
             subtitleText!,
-            style: StyleRes.addRegular.copyWith(color: colors.textSecondary),
+            style: StyleRes.addRegular.copyWith(
+              color: contentColor ?? colors.textSecondary,
+            ),
           )
         : subtitleChild;
 
@@ -100,7 +108,7 @@ class CommonListTile extends StatelessWidget {
             ),
             if (trailing != null)
               EverButtonStyleProvider(
-                contentColor: colors.textSecondary,
+                contentColor: contentColor ?? colors.textSecondary,
                 child: trailing!,
               ),
           ],
