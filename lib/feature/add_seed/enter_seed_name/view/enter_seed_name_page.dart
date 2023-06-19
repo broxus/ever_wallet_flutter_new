@@ -11,19 +11,14 @@ const enterSeedNameName = 'name';
 
 /// Commands that will be used to choose where to navigate after entering name
 enum EnterSeedNameCommand {
-  import('import'),
-  create('create');
-
-  const EnterSeedNameCommand(this.name);
-
-  final String name;
+  import,
+  create;
 
   static EnterSeedNameCommand getByName(String? name) {
-    // ignore: prefer-enums-by-name
-    return EnterSeedNameCommand.values.firstWhere(
-      (element) => element.name == name,
-      orElse: () => create,
-    );
+    if (name == null || EnterSeedNameCommand.values.asNameMap()[name] == null) {
+      return create;
+    }
+    return EnterSeedNameCommand.values.asNameMap()[name]!;
   }
 }
 
