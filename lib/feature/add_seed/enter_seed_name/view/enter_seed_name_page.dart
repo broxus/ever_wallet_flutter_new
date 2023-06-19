@@ -3,9 +3,29 @@ import 'package:app/feature/add_seed/enter_seed_name/view/enter_seed_name_view.d
 import 'package:flutter/material.dart';
 import 'package:ui_components_lib/ui_components_lib.dart';
 
+/// Name of path field for navigation
+const enterSeedNameCommand = 'command';
+
+/// Name of path field for navigation
+const enterSeedNameName = 'name';
+
 /// Commands that will be used to choose where to navigate after entering name
-const enterSeedNameImportCommand = 'import';
-const enterSeedNameCreateCommand = 'create';
+enum EnterSeedNameCommand {
+  import('import'),
+  create('create');
+
+  const EnterSeedNameCommand(this.name);
+
+  final String name;
+
+  static EnterSeedNameCommand getByName(String? name) {
+    // ignore: prefer-enums-by-name
+    return EnterSeedNameCommand.values.firstWhere(
+      (element) => element.name == name,
+      orElse: () => create,
+    );
+  }
+}
 
 /// {@template enter_seed_name_create_page}
 /// Page that allows user to enter seed name, used only in profile section as
@@ -14,11 +34,11 @@ const enterSeedNameCreateCommand = 'create';
 class EnterSeedNamePage extends StatelessWidget {
   /// {@macro enter_seed_name_create_page}
   const EnterSeedNamePage({
-    required this.command,
+    required this.commandName,
     super.key,
   });
 
-  final String command;
+  final String? commandName;
 
   @override
   Widget build(BuildContext context) {
@@ -30,10 +50,17 @@ class EnterSeedNamePage extends StatelessWidget {
         body: EnterSeedNameView(
           // ignore: prefer-extracting-callbacks
           callback: (name) {
-            final query = name == null ? null : {'name': name};
-            final path = command == enterSeedNameImportCommand
-                ? AppRoute.enterSeed.pathWithQuery(query)
-                : AppRoute.createSeed.pathWithQuery(query);
+            final command = EnterSeedNameCommand.getByName(commandName);
+
+            final path = switch (command) {
+              EnterSeedNameCommand.import => name == null
+                  ? AppRoute.enterSeed.path
+                  : AppRoute.enterSeedNamed.pathWithData(name),
+              EnterSeedNameCommand.create => name == null
+                  ? AppRoute.createSeed.path
+                  : AppRoute.createSeedNamed.pathWithData(name),
+            };
+
             context.goFurther(path);
           },
         ),

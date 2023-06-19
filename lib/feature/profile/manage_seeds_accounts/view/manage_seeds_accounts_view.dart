@@ -91,11 +91,13 @@ class ManageSeedsAccountsView extends StatelessWidget {
       switch (selected) {
         case SelectAddSeedType.create:
           context.goFurther(
-            AppRoute.enterSeedName.pathWithData(enterSeedNameCreateCommand),
+            AppRoute.enterSeedName
+                .pathWithData(EnterSeedNameCommand.create.name),
           );
         case SelectAddSeedType.import:
           context.goFurther(
-            AppRoute.enterSeedName.pathWithData(enterSeedNameImportCommand),
+            AppRoute.enterSeedName
+                .pathWithData(EnterSeedNameCommand.import.name),
           );
       }
     }

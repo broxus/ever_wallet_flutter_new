@@ -2,8 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:modal_bottom_sheet/modal_bottom_sheet.dart';
 import 'package:ui_components_lib/ui_components_lib.dart';
 
-const _defaultBarrierOpacity = 0.73;
-
 /// Builder for body parameter of [showCommonBottomSheet].
 /// This allows get [ScrollController] of modal sheet and use it in scroll box.
 typedef CommonSheetBodyBuilder = Widget Function(
@@ -42,8 +40,7 @@ Future<T?> showCommonBottomSheet<T>({
     context: context,
     isDismissible: dismissible,
     useRootNavigator: useRootNavigator,
-    barrierColor:
-        barrierColor ?? Colors.black.withOpacity(_defaultBarrierOpacity),
+    barrierColor: barrierColor ?? Colors.black.withOpacity(Opac.large),
     containerWidget: (context, animation, child) => _ContainerWidget(
       animated: wrapIntoAnimatedSize,
       child: child,

@@ -1,3 +1,4 @@
+import 'package:app/feature/add_seed/enter_seed_name/enter_seed_name.dart';
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:logging/logging.dart';
@@ -11,11 +12,19 @@ enum AppRoute {
   profile('profile', '/profile', isSaveLocation: true),
   manageSeedsAccounts('manageSeeds', 'manageSeeds', isSaveLocation: true),
 
-  /// Adding seed (name is optional)
+  /// Adding seed
   createSeed('', 'createSeed', isSaveLocation: true),
+  createSeedNamed('', 'createSeed/:$enterSeedNameName', isSaveLocation: true),
   enterSeed('', 'enterSeed', isSaveLocation: true),
-  // command flag means: 'import' - import, 'create' (or other) - create
-  enterSeedName('', 'enterSeedName/:command', isSaveLocation: true),
+  enterSeedNamed('', 'enterSeed/:name', isSaveLocation: true),
+
+  // command flag means: 'import' - import, 'create' (or other) - create,
+  // see <enterSeedNameImportCommand> and <enterSeedNameCreateCommand>.
+  enterSeedName(
+    '',
+    'enterSeedName/:$enterSeedNameCommand',
+    isSaveLocation: true,
+  ),
   checkSeed('', 'checkSeed'),
   createSeedPassword('', 'createSeedPassword');
 
