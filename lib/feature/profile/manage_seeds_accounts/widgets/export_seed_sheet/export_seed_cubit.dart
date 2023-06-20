@@ -20,6 +20,7 @@ class ExportSeedCubit extends Cubit<ExportSeedState> {
   Future<void> export(String password) async {
     if (password.isEmpty) {
       emit(const ExportSeedState.error(LocaleKeys.passwordIsWrong));
+
       return;
     }
 

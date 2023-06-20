@@ -8,6 +8,8 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:nekoton_repository/nekoton_repository.dart' hide Message;
 import 'package:ui_components_lib/ui_components_lib.dart';
 
+const _minPasswordLength = 8;
+
 /// Helper method that shows the [ChangeSeedPasswordSheet] bottom sheet.
 ModalRoute<void> changeSeedPasswordSheetRoute(String publicKey) {
   return commonBottomSheetRoute<void>(
@@ -110,9 +112,10 @@ class _ChangeSeedPasswordSheetState extends State<ChangeSeedPasswordSheet> {
   }
 
   String? _inputValidator(String? password) {
-    if (password == null || password.length < 8) {
+    if (password == null || password.length < _minPasswordLength) {
       return LocaleKeys.passwordLength.tr();
     }
+
     return null;
   }
 }

@@ -123,7 +123,6 @@ class ManageSeedsAccountsView extends StatelessWidget {
             namedArgs: {'data': '0 USD'},
           ),
           trailing: SeparatedRow(
-            separatorSize: DimensSize.d16,
             mainAxisSize: MainAxisSize.min,
             children: [
               if (currentSeed?.publicKey == seed.publicKey)
@@ -136,7 +135,7 @@ class ManageSeedsAccountsView extends StatelessWidget {
                 svg: Assets.images.settings.path,
                 buttonType: EverButtonType.ghost,
                 onPressed: () => showSeedSettingsSheet(context, seed.publicKey),
-                innerPadding: EdgeInsets.zero,
+                innerPadding: const EdgeInsets.all(DimensSize.d8),
               ),
             ],
           ),
