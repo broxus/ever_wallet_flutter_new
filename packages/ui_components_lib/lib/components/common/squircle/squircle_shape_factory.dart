@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 
-import 'package:ui_components_lib/components/common/squircle/squircle_shape_border.dart';
 import 'package:ui_components_lib/ui_components_lib.dart';
 
 // !!!!!!!!!!!!!!!!!!!!!!!!
