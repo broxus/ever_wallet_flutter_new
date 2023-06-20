@@ -4,7 +4,6 @@ import 'package:app/feature/profile/manage_seeds_accounts/widgets/widgets.dart';
 import 'package:app/feature/profile/profile.dart';
 import 'package:app/generated/generated.dart';
 import 'package:flutter/material.dart';
-import 'package:nekoton_repository/nekoton_repository.dart';
 import 'package:ui_components_lib/ui_components_lib.dart';
 
 /// Helper function that shows [SeedSettingsSheet]
@@ -74,8 +73,9 @@ class SeedSettingsSheet extends StatelessWidget {
           ),
         ),
         CommonListTile(
-          // ignore: no-empty-block
-          onPressed: () {},
+          onPressed: () => Navigator.of(context)
+            ..pop()
+            ..push(changeSeedPasswordSheetRoute(publicKey)),
           titleText: LocaleKeys.changePassword.tr(),
           trailing: CommonIconWidget.svg(
             svg: Assets.images.lock.path,
@@ -84,13 +84,9 @@ class SeedSettingsSheet extends StatelessWidget {
         ),
         if (publicKey != currentKey)
           CommonListTile(
-            onPressed: () {
-              inject<NekotonRepository>()
-                  .seedList
-                  .findSeed(publicKey)
-                  ?.remove();
-              Navigator.of(context).pop();
-            },
+            onPressed: () => Navigator.of(context)
+              ..pop()
+              ..push(deleteSeedSheetRoute(publicKey)),
             contentColor: colors.alert,
             titleText: LocaleKeys.deleteWord.tr(),
             trailing: CommonIconWidget.svg(svg: Assets.images.trash.path),
