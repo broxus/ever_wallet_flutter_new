@@ -9,3 +9,9 @@ const defaultSuccessfulMessageDebounceDuration = Duration(seconds: 1);
 
 /// Default debounce duration for error messages.
 const defaultErrorMessageDebounceDuration = Duration(seconds: 2);
+
+/// Default animaion duration.
+const defaultAnimationDuration = Duration(milliseconds: 300);
+
+/// Default transition duration.
+const defaultTransitionDuration = Duration(milliseconds: 300);
