@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:ui_components_lib/ui_components_lib.dart';
 
 /// Coefficient of scaling in percent
 const _defaultScaleRatio = 5.0;
@@ -13,7 +14,7 @@ class PressScaleWidget extends StatefulWidget {
     super.key,
     this.onPressed,
     this.radius,
-    this.animationDuration = const Duration(milliseconds: 50),
+    this.animationDuration = defaultAnimationDuration,
     this.onLongPress,
     this.height,
     this.width,
