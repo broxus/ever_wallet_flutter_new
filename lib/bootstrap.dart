@@ -52,6 +52,8 @@ Future<void> bootstrap(
 
       await configureFeatureServices();
 
+      await configureLocalization();
+
       FlutterError.onError = (details) {
         log.severe(details.exceptionAsString(), details, details.stack);
       };
@@ -60,10 +62,6 @@ Future<void> bootstrap(
 
       DefaultAppBar.defaultPopAction = (context) => context.maybePop();
       DefaultAppBar.defaultCanPopAction = (context) => context.canPop();
-
-      WidgetsFlutterBinding.ensureInitialized();
-      // easy_localization claims that this is needed
-      await EasyLocalization.ensureInitialized();
 
       runApp(
         EasyLocalization(
