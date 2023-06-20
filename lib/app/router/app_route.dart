@@ -4,19 +4,58 @@ import 'package:go_router/go_router.dart';
 import 'package:logging/logging.dart';
 
 enum AppRoute {
-  onboarding('onboarding', '/onboarding', isSaveLocation: true),
-  wallet('wallet', '/wallet', isSaveLocation: true),
-  browser('browser', '/browser', isSaveLocation: true),
+  onboarding(
+    'onboarding',
+    '/onboarding',
+    isSaveLocation: true,
+  ),
+  wallet(
+    'wallet',
+    '/wallet',
+    isSaveLocation: true,
+    isBottomNavigationBarVisible: true,
+  ),
+  browser(
+    'browser',
+    '/browser',
+    isSaveLocation: true,
+    isBottomNavigationBarVisible: true,
+  ),
 
   /// Profile section
-  profile('profile', '/profile', isSaveLocation: true),
-  manageSeedsAccounts('manageSeeds', 'manageSeeds', isSaveLocation: true),
+  profile(
+    'profile',
+    '/profile',
+    isSaveLocation: true,
+    isBottomNavigationBarVisible: true,
+  ),
+  manageSeedsAccounts(
+    'manageSeeds',
+    'manageSeeds',
+    isSaveLocation: true,
+  ),
 
   /// Adding seed
-  createSeed('', 'createSeed', isSaveLocation: true),
-  createSeedNamed('', 'createSeed/:$enterSeedNameName', isSaveLocation: true),
-  enterSeed('', 'enterSeed', isSaveLocation: true),
-  enterSeedNamed('', 'enterSeed/:name', isSaveLocation: true),
+  createSeed(
+    '',
+    'createSeed',
+    isSaveLocation: true,
+  ),
+  createSeedNamed(
+    '',
+    'createSeed/:$enterSeedNameName',
+    isSaveLocation: true,
+  ),
+  enterSeed(
+    '',
+    'enterSeed',
+    isSaveLocation: true,
+  ),
+  enterSeedNamed(
+    '',
+    'enterSeed/:name',
+    isSaveLocation: true,
+  ),
 
   // command flag means: 'import' - import, 'create' (or other) - create,
   // see <enterSeedNameImportCommand> and <enterSeedNameCreateCommand>.
@@ -25,10 +64,21 @@ enum AppRoute {
     'enterSeedName/:$enterSeedNameCommand',
     isSaveLocation: true,
   ),
-  checkSeed('', 'checkSeed'),
-  createSeedPassword('', 'createSeedPassword');
+  checkSeed(
+    '',
+    'checkSeed',
+  ),
+  createSeedPassword(
+    '',
+    'createSeedPassword',
+  );
 
-  const AppRoute(this.name, this.path, {this.isSaveLocation = false});
+  const AppRoute(
+    this.name,
+    this.path, {
+    this.isSaveLocation = false,
+    this.isBottomNavigationBarVisible = false,
+  });
 
   static final _log = Logger('AppRoute');
 
@@ -37,6 +87,9 @@ enum AppRoute {
 
   /// If location is saved in NavigationService.
   final bool isSaveLocation;
+
+  /// Should BottomNavigationBar be visible.
+  final bool isBottomNavigationBarVisible;
 
   static AppRoute getByPath(String path) {
     // ignore: prefer-enums-by-name
@@ -81,9 +134,27 @@ String getRootPath(String location) {
   return '/${segments.first}';
 }
 
+/// Get last segment from [location].
+String getCurrentPath(String location) {
+  final segments = Uri.parse(location).pathSegments;
+  if (segments.isEmpty) {
+    AppRoute._log.severe('getCurrentPath: no current location found');
+
+    return AppRoute.defaultRoute.path;
+  }
+
+  // If we have only one segment, then we are on root location
+  return '${segments.length == 1 ? '/' : ''}${segments.last}';
+}
+
 /// Get first segment from [location] and return [AppRoute].
 AppRoute getRootAppRoute(String location) {
   return AppRoute.getByPath(getRootPath(location));
+}
+
+/// Get last segment from [location] and return [AppRoute].
+AppRoute getCurrentAppRoute(String location) {
+  return AppRoute.getByPath(getCurrentPath(location));
 }
 
 /// Returns true, if every segment from [location] can be saved in

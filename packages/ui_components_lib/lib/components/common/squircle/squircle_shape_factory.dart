@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 
 import 'package:ui_components_lib/components/common/squircle/squircle_shape_border.dart';
+import 'package:ui_components_lib/ui_components_lib.dart';
 
 // !!!!!!!!!!!!!!!!!!!!!!!!
 // TODO(alex-a4): if we will really need this in the future, we must update
@@ -9,7 +10,7 @@ import 'package:ui_components_lib/components/common/squircle/squircle_shape_bord
 // !!!!!!!!!!!!!!!!!!!!!!!!
 
 /// Copied from ink_ripple.dart but without k prefix
-const _splashFadeDuration = Duration(milliseconds: 200);
+const _splashFadeDuration = defaultAnimationDuration;
 
 /// Factory that is used inside [InkResponse] to create [SquircleShapeInk]
 // class _SquircleShapeInkFactory extends InteractiveInkFeatureFactory {
