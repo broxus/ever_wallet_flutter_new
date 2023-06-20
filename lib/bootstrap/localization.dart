@@ -15,6 +15,7 @@ Future<void> configureLocalization() async {
   void customLogPrinter(
     Object object, {
     LevelMessages? level,
+    // ignore: avoid-unused-parameters
     String? name,
     StackTrace? stackTrace,
   }) {
