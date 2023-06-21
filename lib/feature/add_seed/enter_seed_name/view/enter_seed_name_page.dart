@@ -41,7 +41,7 @@ class EnterSeedNamePage extends StatelessWidget {
     return GestureDetector(
       onTap: () => FocusScope.of(context).unfocus(),
       child: Scaffold(
-        resizeToAvoidBottomInset: false,
+        resizeToAvoidBottomInset: true,
         appBar: const DefaultAppBar(),
         body: EnterSeedNameView(
           // ignore: prefer-extracting-callbacks

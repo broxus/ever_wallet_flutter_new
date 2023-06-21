@@ -42,7 +42,7 @@ class ProfileView extends StatelessWidget {
               trailing: CommonIconWidget.svg(svg: Assets.images.export.path),
               onPressed: currentSeed == null
                   ? null
-                  : () => Navigator.of(context)
+                  : () => Navigator.of(context, rootNavigator: true)
                       .push(exportSeedSheetRoute(currentSeed!.publicKey)),
             ),
             const SizedBox(height: DimensSize.d32),

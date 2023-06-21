@@ -58,10 +58,10 @@ class _RenameSheetState extends State<RenameSheet> {
                   Message.successful(
                     message: isSeed
                         ? LocaleKeys.valueRenamed.tr(
-                            namedArgs: {'value': LocaleKeys.seedPhrase.tr()},
+                            args: [LocaleKeys.seedPhrase.tr()],
                           )
                         : LocaleKeys.valueRenamed.tr(
-                            namedArgs: {'value': LocaleKeys.keyWord.tr()},
+                            args: [LocaleKeys.keyWord.tr()],
                           ),
                   ),
                 );

@@ -8,6 +8,7 @@ import 'package:ui_components_lib/ui_components_lib.dart';
 
 class RootView extends StatefulWidget {
   const RootView({required this.child, super.key});
+
   final Widget child;
 
   @override
@@ -22,8 +23,26 @@ class _RootViewState extends State<RootView> {
             .isBottomNavigationBarVisible;
 
     return Scaffold(
-      body: widget.child,
+      // We disable this isets, because this is a root Scaffold and we have
+      // Scaffold -> Scaffold -> Content on a pages below, so if screen need
+      // this insets, it can use resizeToAvoidBottomInset: true,
+      resizeToAvoidBottomInset: false,
+      body: Builder(
+        builder: (context) {
+          return MediaQuery(
+            // we need to directly remove bottom padding if bottom bar is not
+            // visible, because scaffold do not remove this padding if BottomBar
+            // exists in the tree (but we do not remove it, just hide).
+            data: MediaQuery.of(context).removePadding(
+              removeBottom: !isBottomNavigationBarVisible,
+            ),
+            child: widget.child,
+          );
+        },
+      ),
       extendBody: !isBottomNavigationBarVisible,
+      // IF WE HAVE PROBLEM with deleting MQ above, we need to replace Slide
+      // widget to some ExpandablePanel, may be it will help.
       bottomNavigationBar: AnimatedSlide(
         duration: defaultAnimationDuration,
         offset: Offset(0, isBottomNavigationBarVisible ? 0 : 1.0),

@@ -47,8 +47,7 @@ class ExportSeedSavePhrase extends StatelessWidget {
   }
 
   Widget _textPair(String word, int index) {
-    // ignore: no-magic-number
-    final indexText = index < 10 ? '0$index' : '$index';
+    final indexText = NumberFormat('00').format(index);
 
     return CommonCard(
       titleText: word,

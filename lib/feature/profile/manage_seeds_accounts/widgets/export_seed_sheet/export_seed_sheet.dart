@@ -13,7 +13,7 @@ import 'package:ui_components_lib/ui_components_lib.dart';
 ModalRoute<void> exportSeedSheetRoute(String publicKey) {
   return commonBottomSheetRoute<void>(
     title: LocaleKeys.enterPasswordTo.tr(
-      namedArgs: {'action': LocaleKeys.exportWord.tr().toLowerCase()},
+      args: [LocaleKeys.exportWord.tr().toLowerCase()],
     ),
     useAppBackgroundColor: true,
     body: (_, __) => BlocProvider<ExportSeedCubit>(
@@ -35,8 +35,8 @@ class ExportSeedSheet extends StatelessWidget {
     return BlocConsumer<ExportSeedCubit, ExportSeedState>(
       listener: (context, state) {
         state.whenOrNull(
-          error: (code) => inject<MessengerService>().show(
-            Message.error(message: code.tr()),
+          error: (error) => inject<MessengerService>().show(
+            Message.error(message: error),
           ),
           success: (phrase) {
             Navigator.of(context)

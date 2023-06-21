@@ -6,8 +6,8 @@ class ExportSeedState with _$ExportSeedState {
 
   const factory ExportSeedState.loading() = _Loading;
 
-  /// Error with [code] that should be get from localization.
-  const factory ExportSeedState.error(String code) = _Error;
+  /// [error] that should be get from localization.
+  const factory ExportSeedState.error(String error) = _Error;
 
   const factory ExportSeedState.success(List<String> phrase) = _Success;
 }

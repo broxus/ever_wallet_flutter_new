@@ -120,7 +120,7 @@ class ManageSeedsAccountsView extends StatelessWidget {
           titleText: seed.name,
           subtitleText: LocaleKeys.publicKeysWithData.plural(
             seed.allKeys.length,
-            namedArgs: {'data': '0 USD'},
+            args: ['${seed.allKeys.length}', '0 USD'],
           ),
           trailing: SeparatedRow(
             mainAxisSize: MainAxisSize.min,

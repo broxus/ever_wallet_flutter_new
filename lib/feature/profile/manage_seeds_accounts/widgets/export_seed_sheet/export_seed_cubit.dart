@@ -19,7 +19,7 @@ class ExportSeedCubit extends Cubit<ExportSeedState> {
 
   Future<void> export(String password) async {
     if (password.isEmpty) {
-      emit(const ExportSeedState.error(LocaleKeys.passwordIsWrong));
+      emit(ExportSeedState.error(LocaleKeys.passwordIsWrong.tr()));
 
       return;
     }
@@ -32,10 +32,10 @@ class ExportSeedCubit extends Cubit<ExportSeedState> {
         final phrase = await seed.export(password);
         emit(ExportSeedState.success(phrase));
       } catch (_) {
-        emit(const ExportSeedState.error(LocaleKeys.passwordIsWrong));
+        emit(ExportSeedState.error(LocaleKeys.passwordIsWrong.tr()));
       }
     } else {
-      emit(const ExportSeedState.error(LocaleKeys.seedIsMissing));
+      emit(ExportSeedState.error(LocaleKeys.seedIsMissing.tr()));
     }
   }
 }
