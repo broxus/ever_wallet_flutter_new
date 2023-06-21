@@ -66,7 +66,7 @@ class Seed extends Equatable {
 
   /// Return seeds phrase of this seed.
   /// Do not works for ledger key.
-  Future<List<String>> exportKey(String password) =>
+  Future<List<String>> export(String password) =>
       GetIt.instance<SeedKeyRepository>().exportKey(
         masterKey: masterKey.publicKey,
         password: password,

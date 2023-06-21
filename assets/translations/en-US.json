@@ -58,8 +58,12 @@
   "addSeedPhrase": "Add seed phrase",
   "addNewSeedPhrase": "Add new seed phrase",
   "publicKeysWithData": {
-    "one": "{} public key • {data}",
-    "other": "{} public keys • {data}"
+    "one": "{} public key • {}",
+    "other": "{} public keys • {}"
+  },
+  "accountsWithData": {
+    "one": "{} account • {}",
+    "other": "{} accounts • {}"
   },
   "createNewSeed": "Create new seed",
   "importSeed": "Import seed",
@@ -68,5 +72,22 @@
   "renameWord": "Rename",
   "exportWord": "Export",
   "changePassword": "Change password",
-  "deleteWord": "Delete"
+  "deleteWord": "Delete",
+  "deleteSeedPhrase": "Delete seed phrase",
+  "deleteSeedPhraseDescription": "After deleting seed phrase will disappear from your list. You will be able to get it back by importing.",
+  "enterNewName": "Enter new name",
+  "nameWord": "Name",
+  "seedPhrase": "Seed phrase",
+  "keyWord": "Key",
+  "keysWord": "Keys",
+  "valueRenamed": "{} renamed successfully",
+  "enterPasswordTo": "Enter password to {}",
+  "changeSeedPassword": "Change seed phrase password",
+  "oldPassword": "Old password",
+  "newPassword": "New password",
+  "submitWord": "Submit",
+  "passwordChanged": "Password changed successfully",
+  "valueCopiedExclamation": "{} Copied!",
+  "seedIsMissing": "Seed is missing",
+  "cancelWord": "Cancel"
 }

@@ -1,5 +1,6 @@
 import 'package:app/app/router/app_route.dart';
 import 'package:app/feature/profile/bloc/profile_bloc.dart';
+import 'package:app/feature/profile/manage_seeds_accounts/widgets/widgets.dart';
 import 'package:app/generated/assets.gen.dart';
 import 'package:app/generated/locale_keys.g.dart';
 import 'package:easy_localization/easy_localization.dart';
@@ -41,10 +42,8 @@ class ProfileView extends StatelessWidget {
               trailing: CommonIconWidget.svg(svg: Assets.images.export.path),
               onPressed: currentSeed == null
                   ? null
-                  // ignore: no-empty-block
-                  : () {
-                      // TODO(alex-a4): first-ask user password, then call bloc
-                    },
+                  : () => Navigator.of(context, rootNavigator: true)
+                      .push(exportSeedSheetRoute(currentSeed!.publicKey)),
             ),
             const SizedBox(height: DimensSize.d32),
             ShapedContainerColumn(

@@ -110,7 +110,7 @@ class EnterSeedPhraseView extends StatelessWidget {
     int currentValue,
   ) {
     final displayIndex = input.index + 1;
-    final indexText = displayIndex < 10 ? '0$displayIndex' : '$displayIndex';
+    final indexText = NumberFormat('00').format(displayIndex);
 
     return Builder(
       builder: (context) {
