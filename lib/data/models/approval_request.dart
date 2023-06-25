@@ -4,7 +4,6 @@ import 'package:app/data/models/permission.dart';
 import 'package:app/data/models/permissions.dart';
 import 'package:freezed_annotation/freezed_annotation.dart';
 import 'package:nekoton_repository/nekoton_repository.dart';
-import 'package:tuple/tuple.dart';
 
 part 'approval_request.freezed.dart';
 
@@ -66,7 +65,6 @@ class ApprovalRequest with _$ApprovalRequest {
     required bool bounce,
     required FunctionCall? payload,
     required KnownPayload? knownPayload,
-    // TODO(alex-a4): remove Tuple to something suitable when use this class
-    required Completer<Tuple2<String, String>> completer,
+    required Completer<(String, String)> completer,
   }) = _SendMessage;
 }
