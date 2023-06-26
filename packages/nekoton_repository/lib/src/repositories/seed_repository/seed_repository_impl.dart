@@ -3,6 +3,8 @@ import 'dart:async';
 import 'package:get_it/get_it.dart';
 import 'package:nekoton_repository/nekoton_repository.dart';
 
+const _maxDeriveKeys = 100;
+
 /// Implementation of SeedRepository.
 /// Usage
 /// ```
@@ -23,8 +25,7 @@ mixin SeedKeyRepositoryImpl on TransportRepository
       DerivedKeyGetPublicKeys(
         masterKey: masterKey,
         offset: 0,
-        // TODO(alex-a4): check if 100 keys is good here
-        limit: 100,
+        limit: _maxDeriveKeys,
         password: Password.explicit(
           PasswordExplicit(
             password: password,

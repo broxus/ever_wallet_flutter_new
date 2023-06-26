@@ -38,7 +38,6 @@ class Seed extends Equatable {
   SeedKey? findKeyByPublicKey(String publicKey) =>
       allKeys.firstWhereOrNull((key) => key.publicKey == publicKey);
 
-
   /// Returns list of public keys that can be used in [deriveKeys] from
   /// seed with [masterKey] and [password].
   /// Returns list of up to 100 public keys, that could be displayed by pages.

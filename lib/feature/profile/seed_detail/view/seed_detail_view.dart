@@ -71,48 +71,7 @@ class SeedDetailView extends StatelessWidget {
                   titleText: LocaleKeys.keysWord.tr(),
                   mainAxisSize: MainAxisSize.min,
                   children: seed.allKeys
-                      .map(
-                        (key) => CommonListTile(
-                          padding: EdgeInsets.zero,
-                          leading: CommonBackgroundedIconWidget.svg(
-                            svg: Assets.images.key.path,
-                          ),
-                          titleText: key.name,
-                          trailing: SeparatedRow(
-                            mainAxisSize: MainAxisSize.min,
-                            children: [
-                              if (currentPublicKey == key.publicKey)
-                                CommonIconWidget.svg(
-                                  svg: Assets.images.check.path,
-                                  color: colors.textPrimary,
-                                ),
-                              CommonIconButton.svg(
-                                color: colors.textSecondary,
-                                svg: Assets.images.settings.path,
-                                buttonType: EverButtonType.ghost,
-                                onPressed: () => seed.publicKey == key.publicKey
-                                    ? showSeedSettingsSheet(
-                                        context,
-                                        key.publicKey,
-                                      )
-                                    : showKeySettingsSheet(
-                                        context,
-                                        key.publicKey,
-                                      ),
-                                innerPadding:
-                                    const EdgeInsets.all(DimensSize.d8),
-                              ),
-                            ],
-                          ),
-                          subtitleText: LocaleKeys.accountsWithData.plural(
-                            key.accountList.allAccounts.length,
-                            args: [
-                              '${key.accountList.allAccounts.length}',
-                              '0 USD',
-                            ],
-                          ),
-                        ),
-                      )
+                      .map((key) => _keyItem(key, seed, currentPublicKey))
                       .toList(),
                 ),
               ),
@@ -123,6 +82,58 @@ class SeedDetailView extends StatelessWidget {
               onPressed: () => showDeriveKeysSheetPassword(context, publicKey),
             ),
           ],
+        );
+      },
+    );
+  }
+
+  Widget _keyItem(
+    SeedKey key,
+    Seed seed,
+    String? currentPublicKey,
+  ) {
+    return Builder(
+      builder: (context) {
+        final colors = context.themeStyle.colors;
+
+        return CommonListTile(
+          padding: EdgeInsets.zero,
+          leading: CommonBackgroundedIconWidget.svg(
+            svg: Assets.images.key.path,
+          ),
+          titleText: key.name,
+          trailing: SeparatedRow(
+            mainAxisSize: MainAxisSize.min,
+            children: [
+              if (currentPublicKey == key.publicKey)
+                CommonIconWidget.svg(
+                  svg: Assets.images.check.path,
+                  color: colors.textPrimary,
+                ),
+              CommonIconButton.svg(
+                color: colors.textSecondary,
+                svg: Assets.images.settings.path,
+                buttonType: EverButtonType.ghost,
+                onPressed: () => seed.publicKey == key.publicKey
+                    ? showSeedSettingsSheet(
+                        context,
+                        key.publicKey,
+                      )
+                    : showKeySettingsSheet(
+                        context,
+                        key.publicKey,
+                      ),
+                innerPadding: const EdgeInsets.all(DimensSize.d8),
+              ),
+            ],
+          ),
+          subtitleText: LocaleKeys.accountsWithData.plural(
+            key.accountList.allAccounts.length,
+            args: [
+              '${key.accountList.allAccounts.length}',
+              '0 USD',
+            ],
+          ),
         );
       },
     );

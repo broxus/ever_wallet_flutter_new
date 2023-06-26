@@ -78,6 +78,7 @@ class SeedDetailCubit extends Cubit<SeedDetailState> {
     _seedListSubscription.cancel();
     _currentKeySubscription.cancel();
     _currentSeedSubscription.cancel();
+
     return super.close();
   }
 }

@@ -149,7 +149,7 @@ class _CheckboxPainter extends CustomPainter {
           ..style = PaintingStyle.stroke
           ..blendMode = BlendMode.srcIn
           ..color = Colors.transparent
-          ..strokeWidth = 2
+          ..strokeWidth = DimensStroke.medium
           ..strokeJoin = StrokeJoin.round
           ..strokeCap = StrokeCap.round,
       );
