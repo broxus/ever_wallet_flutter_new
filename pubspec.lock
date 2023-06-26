@@ -506,11 +506,11 @@ packages:
     dependency: transitive
     description:
       path: "packages/flutter_nekoton_bridge"
-      ref: "flutter_nekoton_bridge-v1.8.0-dev.11"
-      resolved-ref: "63b4ff8ac0cc8861158de39d4b247a711e94e203"
+      ref: "flutter_nekoton_bridge-v1.8.0-dev.12"
+      resolved-ref: "5319f6e277d35019c0281ff5f75543748b6c3654"
       url: "https://github.com/broxus/nekoton_bridge.git"
     source: git
-    version: "1.8.0-dev.11"
+    version: "1.8.0-dev.12"
   flutter_plugin_android_lifecycle:
     dependency: transitive
     description:
@@ -523,10 +523,10 @@ packages:
     dependency: transitive
     description:
       name: flutter_rust_bridge
-      sha256: c039cb7b21d11665591557c1bf1d558f8db549a260cc69d455f30443a883f95c
+      sha256: "6960d0843f6f7b4eac28f2531eb0024f01c49bf9eec798327fbbafa084c1f535"
       url: "https://pub.dev"
     source: hosted
-    version: "1.77.1"
+    version: "1.78.0"
   flutter_secure_storage:
     dependency: "direct dev"
     description:
@@ -919,11 +919,11 @@ packages:
     dependency: transitive
     description:
       path: "packages/nekoton_bridge"
-      ref: "nekoton_bridge-v1.8.0-dev.9"
-      resolved-ref: "63b4ff8ac0cc8861158de39d4b247a711e94e203"
+      ref: "nekoton_bridge-v1.8.0-dev.10"
+      resolved-ref: "5319f6e277d35019c0281ff5f75543748b6c3654"
       url: "https://github.com/broxus/nekoton_bridge.git"
     source: git
-    version: "1.8.0-dev.9"
+    version: "1.8.0-dev.10"
   nekoton_repository:
     dependency: "direct main"
     description:
@@ -1135,10 +1135,10 @@ packages:
     dependency: transitive
     description:
       name: puppeteer
-      sha256: dd49117259867d0ce0de33ddd95628fb70cff94581a6432c08272447b8dd1d27
+      sha256: f00b54703dc22af04eaace8f23a33c56008870f990684c2ad8c4115ac51b0a38
       url: "https://pub.dev"
     source: hosted
-    version: "2.24.0"
+    version: "3.1.1"
   quiver:
     dependency: transitive
     description:
@@ -1441,7 +1441,7 @@ packages:
     source: hosted
     version: "1.0.1"
   tuple:
-    dependency: "direct main"
+    dependency: transitive
     description:
       name: tuple
       sha256: "0ea99cd2f9352b2586583ab2ce6489d1f95a5f6de6fb9492faaf97ae2060f0aa"
