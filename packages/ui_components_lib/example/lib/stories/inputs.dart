@@ -28,13 +28,15 @@ class _InputsStoryState extends State<InputsStory> {
   final switcher2Notifier = ValueNotifier<bool>(true);
   final switcher3Notifier = ValueNotifier<bool>(true);
 
+  final checkbox1Notifier = ValueNotifier<bool>(true);
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: const DefaultAppBar(titleText: 'Inputs'),
       body: SingleChildScrollView(
         child: Padding(
-          padding: const EdgeInsets.all(16),
+          padding: const EdgeInsets.all(DimensSize.d16),
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
@@ -43,13 +45,13 @@ class _InputsStoryState extends State<InputsStory> {
                 titleText: 'Title',
                 subtitleText: 'Subtitle',
               ),
-              const SizedBox(height: 20),
+              const SizedBox(height: DimensSize.d20),
 
               const CommonInput(
                 hintText: 'Default without X',
                 needClearButton: false,
               ),
-              const SizedBox(height: 20),
+              const SizedBox(height: DimensSize.d20),
 
               /// with suggestion
               CommonInput(
@@ -60,7 +62,7 @@ class _InputsStoryState extends State<InputsStory> {
                 suggestionsCallback: _onSuggest,
                 onSuggestionSelected: (v) => suggestion1Controller.text = v,
               ),
-              const SizedBox(height: 20),
+              const SizedBox(height: DimensSize.d20),
 
               /// Validation
               Form(
@@ -72,7 +74,7 @@ class _InputsStoryState extends State<InputsStory> {
                       hintText: 'Silent validation for emptiness',
                       validator: (v) => v?.isEmpty ?? true ? '' : null,
                     ),
-                    const SizedBox(height: 12),
+                    const SizedBox(height: DimensSize.d12),
                     CommonButton.primary(
                       text: 'Validate',
                       onPressed: () =>
@@ -81,7 +83,7 @@ class _InputsStoryState extends State<InputsStory> {
                   ],
                 ),
               ),
-              const SizedBox(height: 20),
+              const SizedBox(height: DimensSize.d20),
 
               Form(
                 key: validationFormKey12,
@@ -96,7 +98,7 @@ class _InputsStoryState extends State<InputsStory> {
                   ],
                 ),
               ),
-              const SizedBox(height: 20),
+              const SizedBox(height: DimensSize.d20),
 
               Form(
                 key: validationFormKey2,
@@ -107,7 +109,7 @@ class _InputsStoryState extends State<InputsStory> {
                       hintText: 'Validation for emptiness with error',
                       validator: (v) => v?.isEmpty ?? true ? 'Error' : null,
                     ),
-                    const SizedBox(height: 12),
+                    const SizedBox(height: DimensSize.d12),
                     CommonButton.primary(
                       text: 'Validate',
                       onPressed: () =>
@@ -116,7 +118,7 @@ class _InputsStoryState extends State<InputsStory> {
                   ],
                 ),
               ),
-              const SizedBox(height: 20),
+              const SizedBox(height: DimensSize.d20),
 
               Form(
                 key: validationFormKey3,
@@ -131,7 +133,7 @@ class _InputsStoryState extends State<InputsStory> {
                           suggestion2Controller.text = v,
                       validator: (v) => v?.isEmpty ?? true ? 'Error' : null,
                     ),
-                    const SizedBox(height: 12),
+                    const SizedBox(height: DimensSize.d12),
                     CommonButton.primary(
                       text: 'Validate',
                       onPressed: () =>
@@ -142,7 +144,7 @@ class _InputsStoryState extends State<InputsStory> {
               ),
 
               /// Status selection
-              const SizedBox(height: 30),
+              const SizedBox(height: DimensSize.d20),
               ValueListenableBuilder<SelectionStatus>(
                 valueListenable: statusValue,
                 builder: (_, value, __) {
@@ -156,7 +158,7 @@ class _InputsStoryState extends State<InputsStory> {
               ),
 
               /// Switchers
-              const SizedBox(height: 30),
+              const SizedBox(height: DimensSize.d20),
               ValueListenableBuilder<bool>(
                 valueListenable: switcher1Notifier,
                 builder: (_, value, __) {
@@ -166,7 +168,7 @@ class _InputsStoryState extends State<InputsStory> {
                   );
                 },
               ),
-              const SizedBox(height: 20),
+              const SizedBox(height: DimensSize.d20),
 
               ValueListenableBuilder<bool>(
                 valueListenable: switcher2Notifier,
@@ -194,7 +196,7 @@ class _InputsStoryState extends State<InputsStory> {
                   );
                 },
               ),
-              const SizedBox(height: 20),
+              const SizedBox(height: DimensSize.d20),
 
               ValueListenableBuilder<bool>(
                 valueListenable: switcher3Notifier,
@@ -206,8 +208,24 @@ class _InputsStoryState extends State<InputsStory> {
                   );
                 },
               ),
+              const SizedBox(height: DimensSize.d20),
+              SeparatedRow(
+                children: [
+                  ValueListenableBuilder<bool>(
+                    valueListenable: checkbox1Notifier,
+                    builder: (_, value, __) {
+                      return CommonCheckboxInput(
+                        checked: value,
+                        onChanged: (v) => checkbox1Notifier.value = v,
+                      );
+                    },
+                  ),
+                  const CommonCheckboxInput(checked: false),
+                  const CommonCheckboxInput(checked: true),
+                ],
+              ),
 
-              const SizedBox(height: 40),
+              const SizedBox(height: DimensSize.d40),
             ],
           ),
         ),
