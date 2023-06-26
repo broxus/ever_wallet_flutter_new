@@ -113,6 +113,8 @@ class ManageSeedsAccountsView extends StatelessWidget {
 
         return CommonListTile(
           padding: EdgeInsets.zero,
+          onPressed: () => context
+              .goFurther(AppRoute.seedDetail.pathWithData(seed.publicKey)),
           leading: CommonBackgroundedIconWidget.svg(
             svg: Assets.images.sparxLogoSmall.path,
             useDefaultColor: false,

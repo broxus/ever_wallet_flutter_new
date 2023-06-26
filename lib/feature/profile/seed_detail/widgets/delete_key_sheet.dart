@@ -4,19 +4,19 @@ import 'package:flutter/material.dart';
 import 'package:nekoton_repository/nekoton_repository.dart';
 import 'package:ui_components_lib/ui_components_lib.dart';
 
-/// Helper method that shows the [DeleteSeedSheet] bottom sheet.
-ModalRoute<void> deleteSeedSheetRoute(String publicKey) {
+/// Helper method that shows the [DeleteKeySheet] bottom sheet.
+ModalRoute<void> deleteKeySheetRoute(String publicKey) {
   return commonBottomSheetRoute<void>(
-    title: LocaleKeys.deleteSeedPhrase.tr(),
-    subtitle: LocaleKeys.deleteSeedPhraseDescription.tr(),
+    title: LocaleKeys.deleteKey.tr(),
+    subtitle: LocaleKeys.deleteKeyDescription.tr(),
     useAppBackgroundColor: true,
-    body: (_, __) => DeleteSeedSheet(publicKey: publicKey),
+    body: (_, __) => DeleteKeySheet(publicKey: publicKey),
   );
 }
 
-/// Widget that allows to delete seed.
-class DeleteSeedSheet extends StatelessWidget {
-  const DeleteSeedSheet({
+/// Widget that allows to delete key.
+class DeleteKeySheet extends StatelessWidget {
+  const DeleteKeySheet({
     required this.publicKey,
     super.key,
   });
@@ -26,49 +26,52 @@ class DeleteSeedSheet extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final colors = context.themeStyle.colors;
-    final seed = inject<NekotonRepository>().seedList.findSeed(publicKey);
+    final key = inject<NekotonRepository>().seedList.findSeedKey(publicKey);
 
     return SeparatedColumn(
       children: [
-        if (seed != null)
+        if (key != null)
           Expanded(
             child: SingleChildScrollView(
               child: ShapedContainerColumn(
                 margin: EdgeInsets.zero,
-                separatorSize: DimensSize.d16,
                 mainAxisSize: MainAxisSize.min,
                 children: [
                   _sectionItem(
-                    LocaleKeys.seedPhrase.tr(),
+                    LocaleKeys.publicKey.tr(),
                     [
                       CommonListTile(
                         leading: CommonBackgroundedIconWidget.svg(
                           svg: Assets.images.sparxLogoSmall.path,
                         ),
-                        titleText: seed.name,
-                        subtitleText: LocaleKeys.publicKeysWithData.plural(
-                          seed.allKeys.length,
-                          args: ['${seed.allKeys.length}', '0 USD'],
+                        titleText: key.name,
+                        subtitleText: LocaleKeys.accountsWithData.plural(
+                          key.accountList.allAccounts.length,
+                          args: [
+                            '${key.accountList.allAccounts.length}',
+                            '0 USD',
+                          ],
                         ),
                         padding: EdgeInsets.zero,
                       ),
                     ],
                   ),
-                  if (seed.subKeys.isNotEmpty) const CommonDivider(),
-                  if (seed.subKeys.isNotEmpty)
+                  if (key.accountList.allAccounts.isNotEmpty)
+                    const CommonDivider(),
+                  if (key.accountList.allAccounts.isNotEmpty)
                     _sectionItem(
-                      LocaleKeys.keysWord.tr(),
-                      seed.subKeys
+                      LocaleKeys.myAccounts.tr(),
+                      key.accountList.allAccounts
                           .map(
-                            (key) => CommonListTile(
+                            (account) => CommonListTile(
                               leading: CommonBackgroundedIconWidget.svg(
                                 svg: Assets.images.key.path,
                               ),
-                              titleText: key.name,
-                              subtitleText: LocaleKeys.accountsWithData.plural(
-                                key.accountList.allAccounts.length,
+                              titleText: account.name,
+                              subtitleText:
+                                  LocaleKeys.accountAddressWithData.tr(
                                 args: [
-                                  '${key.accountList.allAccounts.length}',
+                                  account.name,
                                   '0 USD',
                                 ],
                               ),
@@ -81,7 +84,7 @@ class DeleteSeedSheet extends StatelessWidget {
               ),
             ),
           ),
-        if (seed != null)
+        if (key != null)
           CommonButton(
             buttonType: EverButtonType.secondary,
             contentColor: colors.alert,
@@ -89,7 +92,7 @@ class DeleteSeedSheet extends StatelessWidget {
             onPressed: () {
               inject<NekotonRepository>()
                   .seedList
-                  .findSeed(publicKey)
+                  .findSeedKey(publicKey)
                   ?.remove();
               Navigator.of(context).pop();
             },
