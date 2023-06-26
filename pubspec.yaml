@@ -18,8 +18,7 @@ dependencies:
   encrypted_storage:
     path: packages/encrypted_storage
   equatable: ^2.0.5
-  fancy_logger:
-    path: packages/fancy_logger
+  fancy_logger: 0.1.0-dev.0+2
   flutter:
     sdk: flutter
   flutter_bloc: ^8.1.3
