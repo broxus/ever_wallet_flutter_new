@@ -15,11 +15,9 @@ dependencies:
   dotted_border: ^2.0.0+3
   easy_localization: ^3.0.2
   easy_logger: ^0.0.2
-  encrypted_storage:
-    path: packages/encrypted_storage
+  encrypted_storage: 0.1.0-dev.0+2
   equatable: ^2.0.5
-  fancy_logger:
-    path: packages/fancy_logger
+  fancy_logger: 0.1.0-dev.0+2
   flutter:
     sdk: flutter
   flutter_bloc: ^8.1.3
@@ -36,7 +34,9 @@ dependencies:
   money2: ^3.4.1
   money2_improver: ^1.3.0
   nekoton_repository:
-    path: packages/nekoton_repository
+    git:
+      url: https://github.com/broxus/nekoton_repository.git
+      ref: v0.1.1-dev.0
   path_provider: ^2.0.15
   rxdart: ^0.27.7
   string_extensions: ^0.6.6
