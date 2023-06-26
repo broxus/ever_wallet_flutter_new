@@ -38,6 +38,17 @@ class Seed extends Equatable {
   SeedKey? findKeyByPublicKey(String publicKey) =>
       allKeys.firstWhereOrNull((key) => key.publicKey == publicKey);
 
+
+  /// Returns list of public keys that can be used in [deriveKeys] from
+  /// seed with [masterKey] and [password].
+  /// Returns list of up to 100 public keys, that could be displayed by pages.
+  /// !!! Seed should not be legacy.
+  Future<List<String>> getKeysToDerive(String password) =>
+      GetIt.instance<SeedKeyRepository>().getKeysToDerive(
+        masterKey: masterKey.publicKey,
+        password: password,
+      );
+
   /// Derive keys from [masterKey] this call adds list of sub keys to
   /// [subKeys].
   /// This method returns list of public keys that allows add additional logic
@@ -67,7 +78,7 @@ class Seed extends Equatable {
   /// Return seeds phrase of this seed.
   /// Do not works for ledger key.
   Future<List<String>> export(String password) =>
-      GetIt.instance<SeedKeyRepository>().exportKey(
+      GetIt.instance<SeedKeyRepository>().exportSeed(
         masterKey: masterKey.publicKey,
         password: password,
         isLegacy: masterKey.isLegacy,

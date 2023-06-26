@@ -15,6 +15,27 @@ mixin SeedKeyRepositoryImpl on TransportRepository
   NekotonStorageRepository get storageRepository;
 
   @override
+  Future<List<String>> getKeysToDerive({
+    required String masterKey,
+    required String password,
+  }) {
+    return keyStore.getPublicKeys(
+      DerivedKeyGetPublicKeys(
+        masterKey: masterKey,
+        offset: 0,
+        // TODO(alex-a4): check if 100 keys is good here
+        limit: 100,
+        password: Password.explicit(
+          PasswordExplicit(
+            password: password,
+            cacheBehavior: const PasswordCacheBehavior.nop(),
+          ),
+        ),
+      ),
+    );
+  }
+
+  @override
   Future<List<String>> deriveKeys({
     required List<int> accountIds,
     required String password,
@@ -209,7 +230,7 @@ mixin SeedKeyRepositoryImpl on TransportRepository
   }
 
   @override
-  Future<List<String>> exportKey({
+  Future<List<String>> exportSeed({
     required String masterKey,
     required String password,
     required bool isLegacy,

@@ -28,6 +28,19 @@ class KeyAccount extends Equatable {
   /// Flag that allows identify if this account is hidden.
   final bool isHidden;
 
+  /// Proxy getter of name of account
+  String get name => account.name;
+
+  /// Proxy getter of address of account
+  String get address => account.address;
+
+  /// Proxy getter of workchain of account
+  int get workchain => account.workchain;
+
+  /// Proxy getter of additional assets of account
+  Map<String, AdditionalAssets> get additionalAssets =>
+      account.additionalAssets;
+
   /// Show this account in wallet page.
   Future<void> show() => GetIt.instance<NekotonRepository>()
       .storageRepository
