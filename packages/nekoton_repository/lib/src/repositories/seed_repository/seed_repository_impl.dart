@@ -3,6 +3,8 @@ import 'dart:async';
 import 'package:get_it/get_it.dart';
 import 'package:nekoton_repository/nekoton_repository.dart';
 
+const _maxDeriveKeys = 100;
+
 /// Implementation of SeedRepository.
 /// Usage
 /// ```
@@ -13,6 +15,26 @@ mixin SeedKeyRepositoryImpl on TransportRepository
   KeyStore get keyStore;
 
   NekotonStorageRepository get storageRepository;
+
+  @override
+  Future<List<String>> getKeysToDerive({
+    required String masterKey,
+    required String password,
+  }) {
+    return keyStore.getPublicKeys(
+      DerivedKeyGetPublicKeys(
+        masterKey: masterKey,
+        offset: 0,
+        limit: _maxDeriveKeys,
+        password: Password.explicit(
+          PasswordExplicit(
+            password: password,
+            cacheBehavior: const PasswordCacheBehavior.nop(),
+          ),
+        ),
+      ),
+    );
+  }
 
   @override
   Future<List<String>> deriveKeys({
@@ -209,7 +231,7 @@ mixin SeedKeyRepositoryImpl on TransportRepository
   }
 
   @override
-  Future<List<String>> exportKey({
+  Future<List<String>> exportSeed({
     required String masterKey,
     required String password,
     required bool isLegacy,
