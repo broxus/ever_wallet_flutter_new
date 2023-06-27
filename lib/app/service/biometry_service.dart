@@ -27,7 +27,7 @@ class BiometryService {
   /// Stream of biometry enabled status
   Stream<bool> get enabledStream => storage.isBiometryEnabledStream;
 
-  /// If biometry enabled
+  /// If biometry enabled and available (if not available, then not enabled)
   bool get enabled => storage.isBiometryEnabled;
 
   /// Init biometry settings and subscriptions
@@ -62,15 +62,21 @@ class BiometryService {
     }
   }
 
-  /// Save password of [publicKey] to storage if biometry is enabled
+  /// Save password of [publicKey] to storage if biometry is available on device
+  ///
+  /// Setting password immediately after onboarding will stay here not so long,
+  /// because of clearing password, if enabled stream provides false.
   Future<void> setKeyPassword({
     required String publicKey,
     required String password,
-  }) =>
-      storage.setKeyPassword(
+  }) async {
+    if (available) {
+      return storage.setKeyPassword(
         publicKey: publicKey,
         password: password,
       );
+    }
+  }
 
   /// Get password of [publicKey] if it was stored before or throw exception.
   /// [localizedReason] is a message that will be shown to user with biometry
@@ -89,6 +95,22 @@ class BiometryService {
       }
     } else {
       throw BiometryPasswordNotStoredException();
+    }
+  }
+
+  /// This method typically called after password of seed was changed.
+  /// If biometry enabled - update password of [publicKey] in storage
+  /// even if there was no password before, because if biometry enabled, we must
+  /// store all passwords.
+  Future<void> updatePasswordIfPossible({
+    required String publicKey,
+    required String newPassword,
+  }) async {
+    if (enabled) {
+      return setKeyPassword(
+        publicKey: publicKey,
+        password: newPassword,
+      );
     }
   }
 
@@ -114,5 +136,14 @@ class BiometryService {
     }
 
     return true;
+  }
+
+  /// Get list of available biometry types.
+  /// If biometry is not available - return empty list.
+  Future<List<BiometricType>> getAvailableBiometry() async {
+    if (await _isAvailable) {
+      return _localAuth.getAvailableBiometrics();
+    }
+    return [];
   }
 }

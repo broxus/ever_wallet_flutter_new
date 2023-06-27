@@ -1,3 +1,4 @@
+import 'package:app/app/service/service.dart';
 import 'package:app/generated/generated.dart';
 import 'package:bloc/bloc.dart';
 import 'package:freezed_annotation/freezed_annotation.dart';
@@ -12,10 +13,12 @@ class ChangeSeedPasswordCubit extends Cubit<ChangeSeedPasswordState> {
   ChangeSeedPasswordCubit(
     this.nekotonRepository,
     this.publicKey,
+    this.biometryService,
   ) : super(const ChangeSeedPasswordState.initial());
 
   final String publicKey;
   final NekotonRepository nekotonRepository;
+  final BiometryService biometryService;
 
   Future<void> changePassword({
     required String oldPassword,
@@ -27,6 +30,10 @@ class ChangeSeedPasswordCubit extends Cubit<ChangeSeedPasswordState> {
     try {
       await seed.changePassword(
         oldPassword: oldPassword,
+        newPassword: newPassword,
+      );
+      await biometryService.updatePasswordIfPossible(
+        publicKey: publicKey,
         newPassword: newPassword,
       );
       emit(const ChangeSeedPasswordState.completed());

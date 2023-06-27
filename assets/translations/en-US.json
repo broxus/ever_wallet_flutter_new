@@ -101,5 +101,12 @@
   "publicKey": "Public key",
   "selectWord": "Select",
   "selectKeysYouNeed": "Select keys you need",
-  "pageCountOf": "Page {} of {}"
+  "pageCountOf": "Page {} of {}",
+  "biometryAuthReason": "Please authenticate to interact with wallet",
+  "touchId": "Touch ID",
+  "touchIdDescription": "Touch ID login use this feature to avoid re-entering the pass-code.",
+  "faceId": "Face ID",
+  "faceIdDescription": "Face ID login use this feature to avoid re-entering the pass-code.",
+  "useSomething": "Use {}",
+  "noThanks": "No, thanks"
 }

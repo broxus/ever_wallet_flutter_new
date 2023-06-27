@@ -78,6 +78,10 @@ enum AppRoute {
   createSeedPassword(
     '',
     'createSeedPassword',
+  ),
+  enableBiometryAfterOnboarding(
+    '',
+    'enableBiometryAfterOnboarding',
   );
 
   const AppRoute(

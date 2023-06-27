@@ -16,21 +16,20 @@ class ProfilePage extends StatelessWidget {
       create: (context) => ProfileBloc(
         inject<NekotonRepository>(),
         inject<CurrentSeedService>(),
+        inject<BiometryService>(),
       )..add(const ProfileEvent.init()),
-      child: BlocConsumer<ProfileBloc, ProfileState>(
-        listener: (context, state) {
-          state.whenOrNull(
-            data: (currentSeed, exportedSeed) {
-              if (exportedSeed != null) {
-                // TODO(alex-a4): show seed dialog
-              }
-            },
-          );
-        },
+      child: BlocBuilder<ProfileBloc, ProfileState>(
         builder: (context, state) {
           return state.when(
             initial: () => const ProfileView(),
-            data: (currentSeed, _) => ProfileView(currentSeed: currentSeed),
+            data: (
+              currentSeed,
+              isBiometryAvailable,
+            ) =>
+                ProfileView(
+              currentSeed: currentSeed,
+              isBiometryAvailable: isBiometryAvailable,
+            ),
           );
         },
       ),

@@ -21,14 +21,19 @@ ModalRoute<void> exportSeedSheetRoute(String publicKey) {
         inject<NekotonRepository>(),
         publicKey,
       ),
-      child: const ExportSeedSheet(),
+      child: ExportSeedSheet(publicKey: publicKey),
     ),
   );
 }
 
 /// Sheet that allows user to enter password and export seed phrase.
 class ExportSeedSheet extends StatelessWidget {
-  const ExportSeedSheet({super.key});
+  const ExportSeedSheet({
+    required this.publicKey,
+    super.key,
+  });
+
+  final String publicKey;
 
   @override
   Widget build(BuildContext context) {
@@ -45,16 +50,11 @@ class ExportSeedSheet extends StatelessWidget {
           },
         );
       },
-      builder: (context, state) {
-        final isLoading = state.maybeWhen(
-          loading: () => true,
-          orElse: () => false,
-        );
-
+      builder: (context, _) {
         return EnterPasswordWidget(
-          isLoading: isLoading,
           onPasswordEntered: (password) =>
               context.read<ExportSeedCubit>().export(password),
+          publicKey: publicKey,
         );
       },
     );
