@@ -89,6 +89,7 @@ class EnterPasswordCubit extends Cubit<EnterPasswordState> {
   /// Returns true if face biometry is available, else fingerprint.
   Future<bool> _isFaceBiometry() async {
     final available = await biometryService.getAvailableBiometry();
+
     return available.contains(BiometricType.face);
   }
 

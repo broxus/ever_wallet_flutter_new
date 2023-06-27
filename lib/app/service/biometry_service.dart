@@ -144,6 +144,7 @@ class BiometryService {
     if (await _isAvailable) {
       return _localAuth.getAvailableBiometrics();
     }
+
     return [];
   }
 }

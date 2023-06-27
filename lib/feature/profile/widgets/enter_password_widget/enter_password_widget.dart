@@ -69,6 +69,7 @@ class _EnterPasswordWidgetState extends State<EnterPasswordWidget> {
               if (fromBiometry) {
                 return _biometryBody(isFaceBiometry);
               }
+
               return _passwordBody();
             },
           );
