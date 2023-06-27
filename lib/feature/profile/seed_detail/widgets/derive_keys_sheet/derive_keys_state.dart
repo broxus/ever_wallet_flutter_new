@@ -17,6 +17,7 @@ class DeriveKeysState with _$DeriveKeysState {
     required int pageCount,
     required List<String> displayDerivedKeys,
     required List<String> selectedKeys,
+    required Map<String, String> keyNames,
     required bool isLoading,
     required bool isCompleted,
   }) = _Data;

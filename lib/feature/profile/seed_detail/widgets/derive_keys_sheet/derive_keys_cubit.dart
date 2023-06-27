@@ -28,6 +28,9 @@ class DeriveKeysCubit extends Cubit<DeriveKeysState> {
   /// Keys that were added before this deriving
   List<String> addedKeys = [];
 
+  /// Key - public key, value - name of key
+  Map<String, String> addedKeysNames = {};
+
   /// Index of page that should contains paginated keys from
   /// [derivePossibleKeys], page can be up to [_pageCount].
   int _currentPageIndex = 0;
@@ -48,7 +51,10 @@ class DeriveKeysCubit extends Cubit<DeriveKeysState> {
     final seed = nekotonRepository.seedList.findSeed(publicKey);
     if (seed == null) return;
 
-    addedKeys.addAll(seed.allKeys.map((e) => e.publicKey));
+    for (final key in seed.allKeys) {
+      addedKeys.add(key.publicKey);
+      addedKeysNames[key.publicKey] = key.name;
+    }
     checkedKeys.addAll(addedKeys);
 
     final keys = await seed.getKeysToDerive(password);
@@ -109,6 +115,7 @@ class DeriveKeysCubit extends Cubit<DeriveKeysState> {
         canPrevPage: _canPrevPage(),
         currentPageIndex: _currentPageIndex,
         pageCount: _pageCount,
+        keyNames: addedKeysNames,
         displayDerivedKeys: derivePossibleKeys
             .skip(_currentPageIndex * _keysPerPage)
             .take(_keysPerPage)
@@ -130,6 +137,7 @@ class DeriveKeysCubit extends Cubit<DeriveKeysState> {
         canPrevPage: false,
         currentPageIndex: _currentPageIndex,
         pageCount: _pageCount,
+        keyNames: addedKeysNames,
         displayDerivedKeys: derivePossibleKeys
             .skip(_currentPageIndex * _keysPerPage)
             .take(_keysPerPage)
@@ -163,6 +171,7 @@ class DeriveKeysCubit extends Cubit<DeriveKeysState> {
         canPrevPage: false,
         currentPageIndex: _currentPageIndex,
         pageCount: _pageCount,
+        keyNames: addedKeysNames,
         displayDerivedKeys: derivePossibleKeys
             .skip(_currentPageIndex * _keysPerPage)
             .take(_keysPerPage)

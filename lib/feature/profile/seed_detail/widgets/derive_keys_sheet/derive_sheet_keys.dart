@@ -44,7 +44,17 @@ class DeriveKeysSheet extends StatelessWidget {
     return BlocConsumer<DeriveKeysCubit, DeriveKeysState>(
       listener: (context, state) {
         state.whenOrNull(
-          data: (_, __, ___, ____, _____, ______, _______, completed) {
+          data: (
+            _,
+            __,
+            ___,
+            ____,
+            _____,
+            ______,
+            _______,
+            ________,
+            completed,
+          ) {
             if (completed) {
               Navigator.of(context).pop();
             }
@@ -61,6 +71,7 @@ class DeriveKeysSheet extends StatelessWidget {
             pageCount,
             displayDerivedKeys,
             selectedKeys,
+            keyNames,
             isLoading,
             isCompleted,
           ) {
@@ -105,6 +116,7 @@ class DeriveKeysSheet extends StatelessWidget {
                           .map(
                             (k) => _keyItem(
                               key: k,
+                              name: keyNames[k],
                               isSelected: selectedKeys.contains(k),
                             ),
                           )
@@ -137,6 +149,7 @@ class DeriveKeysSheet extends StatelessWidget {
   Widget _keyItem({
     required String key,
     required bool isSelected,
+    String? name,
   }) {
     return Builder(
       builder: (context) {
@@ -152,7 +165,7 @@ class DeriveKeysSheet extends StatelessWidget {
           leading: CommonBackgroundedIconWidget.svg(
             svg: Assets.images.key.path,
           ),
-          titleText: key.ellipsePublicKey(),
+          titleText: name ?? key.ellipsePublicKey(),
           trailing: CommonIconWidget.svg(
             svg: isSelected
                 ? Assets.images.checkSquare.path
