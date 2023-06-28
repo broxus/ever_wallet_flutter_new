@@ -55,7 +55,7 @@ class SeedSettingsSheet extends StatelessWidget {
         CommonListTile(
           onPressed: () => Navigator.of(context)
             ..pop()
-            ..push(showRenameSheet(publicKey)),
+            ..push(showRenameSheet(publicKey, renameSeed: true)),
           titleText: LocaleKeys.renameWord.tr(),
           trailing: CommonIconWidget.svg(
             svg: Assets.images.edit.path,

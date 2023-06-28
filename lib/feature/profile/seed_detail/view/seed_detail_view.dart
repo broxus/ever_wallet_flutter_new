@@ -1,4 +1,3 @@
-import 'package:app/feature/profile/manage_seeds_accounts/widgets/widgets.dart';
 import 'package:app/feature/profile/seed_detail/seed_detail.dart';
 import 'package:app/generated/generated.dart';
 import 'package:flutter/material.dart';
@@ -114,15 +113,11 @@ class SeedDetailView extends StatelessWidget {
                 color: colors.textSecondary,
                 svg: Assets.images.settings.path,
                 buttonType: EverButtonType.ghost,
-                onPressed: () => seed.publicKey == key.publicKey
-                    ? showSeedSettingsSheet(
-                        context,
-                        key.publicKey,
-                      )
-                    : showKeySettingsSheet(
-                        context,
-                        key.publicKey,
-                      ),
+                onPressed: () => showKeySettingsSheet(
+                  context: context,
+                  publicKey: key.publicKey,
+                  isMaster: key.isMaster,
+                ),
                 innerPadding: const EdgeInsets.all(DimensSize.d8),
               ),
             ],

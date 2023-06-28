@@ -780,7 +780,7 @@ class MigrationService {
 
     /// Seeds
     for (final entry in _hive.seeds.entries) {
-      await _accountSeedStorage.addSeedOrRename(
+      await _accountSeedStorage.updateSeedName(
         masterKey: entry.key,
         name: entry.value,
       );
