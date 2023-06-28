@@ -17,7 +17,7 @@ dependencies:
   easy_logger: ^0.0.2
   encrypted_storage: 0.1.0-dev.0+2
   equatable: ^2.0.5
-  fancy_logger: 0.1.0-dev.0+2
+  fancy_logger: 0.1.0+1
   flutter:
     sdk: flutter
   flutter_bloc: ^8.1.3
@@ -27,6 +27,7 @@ dependencies:
   go_router: ^8.2.0
   hive_flutter: ^1.1.0
   http: ^0.13.6
+  http_proxy: ^1.2.1
   injectable: ^2.1.2
   json_annotation: ^4.8.0
   local_auth: ^2.1.6
