@@ -86,6 +86,10 @@ class CreateSeedPasswordCubit extends Cubit<CreateSeedPasswordState> {
         if (setCurrentKey) {
           await currentKeyService.changeCurrentKey(publicKey);
         }
+        await inject<BiometryService>().setKeyPassword(
+          publicKey: publicKey,
+          password: passwordController.text,
+        );
         completeCallback();
       } catch (e) {
         Logger('CreateSeedPasswordCubit').severe(e);

@@ -31,9 +31,9 @@ class DeriveKeysEnterPasswordSheet extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return EnterCheckPasswordWidget(
+    return EnterPasswordWidget(
       publicKey: publicKey,
-      onPasswordAccepted: (password) => Navigator.of(context)
+      onPasswordEntered: (password) => Navigator.of(context)
         ..pop()
         ..push(deriveKeysSheet(publicKey, password)),
     );

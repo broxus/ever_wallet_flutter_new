@@ -2,9 +2,7 @@ import 'dart:async';
 
 import 'package:app/app/service/service.dart';
 import 'package:app/di/di.dart';
-import 'package:app/generated/locale_keys.g.dart';
 import 'package:bloc/bloc.dart';
-import 'package:easy_localization/easy_localization.dart';
 import 'package:freezed_annotation/freezed_annotation.dart';
 import 'package:nekoton_repository/nekoton_repository.dart' hide Message;
 
@@ -19,20 +17,24 @@ class ProfileBloc extends Bloc<ProfileEvent, ProfileState> {
   ProfileBloc(
     this.nekotonRepository,
     this.currentSeedService,
+    this.biometryService,
   ) : super(const ProfileState.initial()) {
     on<_Initialize>(_initialize);
     on<_LogOut>(_logOut);
-    on<_ExportSeed>(_exportSeed);
     on<_UpdateData>(_updateData);
   }
 
   final NekotonRepository nekotonRepository;
   final CurrentSeedService currentSeedService;
+  final BiometryService biometryService;
+
   late StreamSubscription<Seed?> _currentSeedSubscription;
+  late StreamSubscription<bool> _biometryAvailableSubscription;
 
   @override
   Future<void> close() {
     _currentSeedSubscription.cancel();
+    _biometryAvailableSubscription.cancel();
 
     return super.close();
   }
@@ -41,8 +43,32 @@ class ProfileBloc extends Bloc<ProfileEvent, ProfileState> {
     _Initialize _,
     Emitter<ProfileState> __,
   ) async {
-    _currentSeedSubscription = currentSeedService.currentSeedStream
-        .listen((seed) => add(ProfileEvent.updateData(seed)));
+    // skip 1 to avoid duplicate init
+    _currentSeedSubscription =
+        currentSeedService.currentSeedStream.skip(1).listen(
+              (seed) => add(
+                ProfileEvent.updateData(
+                  currentSeed: seed,
+                  isBiometryAvailable: biometryService.available,
+                ),
+              ),
+            );
+    _biometryAvailableSubscription =
+        biometryService.availabilityStream.skip(1).listen(
+              (isAvailable) => add(
+                ProfileEvent.updateData(
+                  currentSeed: currentSeedService.currentSeed,
+                  isBiometryAvailable: isAvailable,
+                ),
+              ),
+            );
+
+    add(
+      ProfileEvent.updateData(
+        currentSeed: currentSeedService.currentSeed,
+        isBiometryAvailable: biometryService.available,
+      ),
+    );
   }
 
   Future<void> _updateData(
@@ -51,7 +77,12 @@ class ProfileBloc extends Bloc<ProfileEvent, ProfileState> {
   ) async {
     final seed = event.currentSeed;
     if (seed != null) {
-      emit(ProfileState.data(currentSeed: seed));
+      emit(
+        ProfileState.data(
+          currentSeed: seed,
+          isBiometryAvailable: event.isBiometryAvailable,
+        ),
+      );
     }
   }
 
@@ -61,22 +92,5 @@ class ProfileBloc extends Bloc<ProfileEvent, ProfileState> {
   ) async {
     await inject<StorageManagerService>().clearSensitiveData();
     await nekotonRepository.keyStore.reloadKeystore();
-  }
-
-  Future<void> _exportSeed(
-    _ExportSeed event,
-    Emitter<ProfileState> emit,
-  ) async {
-    final seed = currentSeedService.currentSeed;
-    if (seed != null) {
-      try {
-        final exported = await seed.export(event.password);
-        emit(ProfileState.data(currentSeed: seed, exportedSeed: exported));
-      } catch (e) {
-        inject<MessengerService>().show(
-          Message.error(message: LocaleKeys.passwordIsWrong.tr()),
-        );
-      }
-    }
   }
 }

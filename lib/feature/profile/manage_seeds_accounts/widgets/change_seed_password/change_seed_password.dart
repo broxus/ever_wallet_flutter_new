@@ -19,6 +19,7 @@ ModalRoute<void> changeSeedPasswordSheetRoute(String publicKey) {
       create: (_) => ChangeSeedPasswordCubit(
         inject<NekotonRepository>(),
         publicKey,
+        inject<BiometryService>(),
       ),
       child: const ChangeSeedPasswordSheet(),
     ),

@@ -1,5 +1,6 @@
 import 'package:app/app/router/page_transitions.dart';
 import 'package:app/app/router/router.dart';
+import 'package:app/feature/add_seed/add_seed_enable_biometry/add_seed_enable_biometry.dart';
 import 'package:app/feature/wallet/wallet.dart';
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
@@ -15,5 +16,11 @@ GoRoute get walletRoute {
       state,
       const WalletPage(),
     ),
+    routes: [
+      GoRoute(
+        path: AppRoute.enableBiometryAfterOnboarding.path,
+        builder: (_, __) => const AddSeedEnableBiometryPage(),
+      ),
+    ],
   );
 }
