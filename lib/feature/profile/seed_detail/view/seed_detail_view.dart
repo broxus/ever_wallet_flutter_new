@@ -70,7 +70,7 @@ class SeedDetailView extends StatelessWidget {
                   titleText: LocaleKeys.keysWord.tr(),
                   mainAxisSize: MainAxisSize.min,
                   children: seed.allKeys
-                      .map((key) => _keyItem(key, seed, currentPublicKey))
+                      .map((key) => _keyItem(key, currentPublicKey))
                       .toList(),
                 ),
               ),
@@ -88,7 +88,6 @@ class SeedDetailView extends StatelessWidget {
 
   Widget _keyItem(
     SeedKey key,
-    Seed seed,
     String? currentPublicKey,
   ) {
     return Builder(
