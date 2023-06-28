@@ -10,11 +10,19 @@ import 'package:ui_components_lib/ui_components_lib.dart';
 export 'rename_sheet_cubit.dart';
 
 /// Helper method to show the [RenameSheet] widget as a bottom sheet.
-ModalRoute<void> showRenameSheet(String publicKey) {
+///
+/// To rename seed phrase, put [renameSeed] true, else key will be renamed.
+///
+/// Snackbar will contains 'seed' if [renameSeed] is true and 'key' if false.
+ModalRoute<void> showRenameSheet(String publicKey, {bool renameSeed = false}) {
   return commonBottomSheetRoute(
     title: LocaleKeys.enterNewName.tr(),
     body: (_, __) => BlocProvider<RenameSheetCubit>(
-      create: (_) => RenameSheetCubit(inject<NekotonRepository>(), publicKey),
+      create: (_) => RenameSheetCubit(
+        nekotonRepository: inject<NekotonRepository>(),
+        publicKey: publicKey,
+        renameSeed: renameSeed,
+      ),
       child: const RenameSheet(),
     ),
   );
@@ -22,8 +30,6 @@ ModalRoute<void> showRenameSheet(String publicKey) {
 
 /// Sheet that allows enter new name of the seed or public key.
 /// This sheet automatically calls rename method for key/seed.
-///
-/// Snackbar will contains 'seed' if key is master and 'key' if not.
 class RenameSheet extends StatefulWidget {
   const RenameSheet({super.key});
 

@@ -10,20 +10,35 @@ part 'rename_sheet_cubit.freezed.dart';
 /// Same logic for both of them, but seed/key depends difference needs only for
 /// snackbar text.
 class RenameSheetCubit extends Cubit<RenameSheetState> {
-  RenameSheetCubit(
-    this.nekotonRepository,
-    this.publicKey,
-  ) : super(const RenameSheetState.init());
+  RenameSheetCubit({
+    required this.nekotonRepository,
+    required this.publicKey,
+    required this.renameSeed,
+  }) : super(const RenameSheetState.init());
 
   final NekotonRepository nekotonRepository;
   final String publicKey;
 
-  void rename(String newName) {
-    final key = nekotonRepository.seedList.findSeedKey(publicKey);
-    if (key == null || newName.isEmpty) {
-      return;
+  /// if true, then seed with [publicKey] will be renamed, else plain key
+  final bool renameSeed;
+
+  void rename(String name) {
+    final newName = name.trim();
+    if (newName.isEmpty) return;
+
+    if (renameSeed) {
+      final seed = nekotonRepository.seedList.findSeed(publicKey);
+      if (seed == null) {
+        return;
+      }
+      seed.rename(name: newName);
+    } else {
+      final key = nekotonRepository.seedList.findSeedKey(publicKey);
+      if (key != null) {
+        key.rename(name: newName);
+      }
     }
-    key.rename(name: newName);
-    emit(RenameSheetState.completed(isSeed: key.isMaster));
+
+    emit(RenameSheetState.completed(isSeed: renameSeed));
   }
 }
