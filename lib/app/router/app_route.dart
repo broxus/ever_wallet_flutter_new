@@ -191,6 +191,8 @@ extension NavigationHelper on BuildContext {
   /// onPressed: () => context.goFurther(AppRoute.multiuse.path),
   /// ```
   void goFurther(String location, {Object? extra}) {
+    if (!mounted) return;
+
     var resultLocation = Uri.parse(GoRouter.of(this).location);
     // We have query params in old path and we must update it manually
     if (resultLocation.hasQuery) {
