@@ -17,7 +17,7 @@ dependencies:
   easy_logger: ^0.0.2
   encrypted_storage: 0.1.0-dev.0+2
   equatable: ^2.0.5
-  fancy_logger: 0.1.0-dev.0+2
+  fancy_logger: 0.1.0+1
   flutter:
     sdk: flutter
   flutter_bloc: ^8.1.3

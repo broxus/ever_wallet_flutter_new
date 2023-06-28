@@ -373,10 +373,10 @@ packages:
     dependency: "direct main"
     description:
       name: fancy_logger
-      sha256: ee2294f4e53c5ca3a217e764e49f2a59b2b506ee72a40ba206091532fd4ce901
+      sha256: "5196d1d1ce7d840821f4d76953892f60f9b502d0635f7e296528573ed8acbf48"
       url: "https://pub.dev"
     source: hosted
-    version: "0.1.0-dev.0+2"
+    version: "0.1.0+1"
   ffi:
     dependency: transitive
     description:
