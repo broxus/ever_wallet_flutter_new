@@ -13,6 +13,7 @@ CustomTransitionPage<void> onboardingTransitionPageBuilder(
 ) {
   return CustomTransitionPage<void>(
     key: state.pageKey,
+    name: state.name,
     child: child,
     transitionDuration: _duration,
     transitionsBuilder: (
@@ -43,6 +44,7 @@ CustomTransitionPage<void> rootTransitionPageBuilder(
 ) {
   return CustomTransitionPage<void>(
     key: state.pageKey,
+    name: state.name,
     child: child,
     transitionDuration: _duration,
     transitionsBuilder: (
@@ -73,6 +75,7 @@ CustomTransitionPage<void> rootTabsTransitionPageBuilder(
 ) {
   return CustomTransitionPage<void>(
     key: state.pageKey,
+    name: state.name,
     child: child,
     transitionDuration: _duration,
     transitionsBuilder: (

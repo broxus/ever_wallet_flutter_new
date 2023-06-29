@@ -193,7 +193,7 @@ extension NavigationHelper on BuildContext {
   void goFurther(String location, {Object? extra}) {
     if (!mounted) return;
 
-    var resultLocation = Uri.parse(GoRouter.of(this).location);
+    var resultLocation = Uri.parse(GoRouterState.of(this).location);
     // We have query params in old path and we must update it manually
     if (resultLocation.hasQuery) {
       final newLocation = Uri.parse(location);

@@ -14,11 +14,18 @@ export 'routs/routs.dart';
 
 // ignore: long-method
 GoRouter getRouter(BuildContext _) {
+  // Last saved root app route
+  AppRoute? lastRootAppRoute;
+
+  // Saved subroutes for each root app route
+  final savedSubroutes = <AppRoute, String>{};
+
   // Redirect to onboarding or wallet depending on the current location and if
   // the user has any seeds.
   String? shouldRedirect({required String location, required bool hasSeeds}) {
     final currentRoute = getRootAppRoute(location);
 
+    // If the user has seeds and is on onboarding, redirect to wallet
     if (hasSeeds && currentRoute == AppRoute.onboarding) {
       // Already onboarded, redirect to wallet
       return AppRoute.wallet.path;
@@ -31,22 +38,69 @@ GoRouter getRouter(BuildContext _) {
     return null;
   }
 
+  // Set location, it will be called in multiple places
+  // because GoRouter's 'redirect' handler doesn't call it aster pop()
+  void setLocation(String location) {
+    // Set current location in NavigationService
+    inject<NavigationService>()
+        .setLocation(location: location, save: canSaveLocation(location));
+
+    // Get root app route
+    final rootAppRoute = getRootAppRoute(location);
+
+    // Save subroute for the root app route
+    savedSubroutes[rootAppRoute] = location;
+
+    // Save last root app route
+    lastRootAppRoute = rootAppRoute;
+  }
+
+  // Create a new router
   final router = GoRouter(
+    restorationScopeId: 'app',
     navigatorKey: NavigationService.navigatorKey,
     redirect: (context, state) {
+      // Get current location
       final location = state.location;
-      // Save current location in NavigationService
-      if (canSaveLocation(location)) {
-        inject<NavigationService>().setLocation(location);
-      }
+
+      // Get root app route
+      final rootAppRoute = getRootAppRoute(location);
+
+      // Get saved subroute for the root app route (if any)
+      final savedSubroute = savedSubroutes[rootAppRoute];
+
+      // Check if the root app route changed
+      final rootAppRouteChaned = lastRootAppRoute != rootAppRoute;
+
+      // Set location
+      setLocation(location);
+
+      // Check if the user has seeds
       final hasSeeds = inject<NekotonRepository>().hasSeeds.value;
 
-      // Actually redirect, this is when the router will actually change the
-      // location, so we need to subscribe to the hasSeeds for updates
-      return shouldRedirect(location: location, hasSeeds: hasSeeds);
+      // Check if the user should be redirected
+      final guardRedirect =
+          shouldRedirect(location: location, hasSeeds: hasSeeds);
+
+      // Redirect if needed
+      if (guardRedirect != null) {
+        return guardRedirect;
+      }
+
+      // If the root app route changed and there is a saved subroute, return it
+      // This is for the case when the user navigates to a subroute, then
+      // navigates to another root app route and returns back to the previous
+      // root app route using bottom tab bar. In this case, the subroute should
+      // be restored.
+      if (rootAppRouteChaned && savedSubroute != null) {
+        return savedSubroute;
+      }
+
+      // Nothing to do, return null
+      return null;
     },
     // Initial location from NavigationService
-    initialLocation: inject<NavigationService>().location,
+    initialLocation: inject<NavigationService>().savedLocation,
     routes: <RouteBase>[
       GoRoute(
         name: AppRoute.onboarding.name,
@@ -81,14 +135,22 @@ GoRouter getRouter(BuildContext _) {
   // This is a-la guard, it should redirect to onboarding or wallet depending
   // on the current location and if the user has any seeds.
   inject<NekotonRepository>().hasSeeds.listen((hasSeeds) {
+    // Again, check if the user should be redirected depending on the current
+    // location and if the user has any seeds.
     final redirectLocation = shouldRedirect(
       location: inject<NavigationService>().location,
       hasSeeds: hasSeeds,
     );
 
+    // Redirect if needed
     if (redirectLocation != null) {
       router.go(redirectLocation);
     }
+  });
+
+  // Subscribe to routerDelegate changes to set location
+  router.routerDelegate.addListener(() {
+    setLocation(router.routerDelegate.currentConfiguration.uri.toString());
   });
 
   return router;
