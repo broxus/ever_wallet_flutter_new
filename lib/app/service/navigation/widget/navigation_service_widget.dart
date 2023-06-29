@@ -1,7 +1,11 @@
 import 'package:app/app/router/app_route.dart';
 import 'package:app/app/service/navigation/bloc/navigation_bloc.dart';
+import 'package:app/app/service/service.dart';
+import 'package:app/di/di.dart';
 import 'package:flutter/widgets.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+
+const _navigationAwaitDuration = Duration(milliseconds: 500);
 
 class NavigationServiceWidget extends StatefulWidget {
   const NavigationServiceWidget({
@@ -64,12 +68,28 @@ class _NavigationServiceWidgetState extends State<NavigationServiceWidget> {
   void _onRootAppRouteChange(AppRoute oldRoute, AppRoute route) {
     switch ((oldRoute, route)) {
       // When user navigates from onboarding it means that he has created a seed
-      case (AppRoute.onboarding, _):
-
-        /// TODO(alex-a4): HERE is the place to handle onboarding completion
-        /// i.e. show biometric auth dialog
-        break;
+      case (AppRoute.onboarding, AppRoute.wallet):
+        _onboardingToWalletNavigation();
       default:
+    }
+  }
+
+  Future<void> _onboardingToWalletNavigation() async {
+    // This is a hack, because after navigation from onboarding to wallet
+    // we need wait some time after onboarding screen disappear, on it crashes
+    await Future<void>.delayed(_navigationAwaitDuration);
+
+    // We can't use current context here because it's not contains Navigator
+    final context = NavigationService.navigatorKey.currentState?.context;
+    if (context == null) {
+      return;
+    }
+
+    final biometry = inject<BiometryService>();
+    if (biometry.available) {
+      if (context.mounted) {
+        context.goFurther(AppRoute.enableBiometryAfterOnboarding.path);
+      }
     }
   }
 
@@ -77,7 +97,7 @@ class _NavigationServiceWidgetState extends State<NavigationServiceWidget> {
   Widget build(BuildContext context) {
     return BlocListener<NavigationBloc, NavigationState>(
       bloc: _bloc,
-      listener: (_, state) => _onNavigationEvent(state),
+      listener: (context, state) => _onNavigationEvent(state),
       child: widget.child,
     );
   }

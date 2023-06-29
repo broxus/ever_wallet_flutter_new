@@ -9,15 +9,20 @@ import 'package:flutter/services.dart';
 import 'package:ui_components_lib/ui_components_lib.dart';
 
 /// Helper function that shows [KeySettingsSheet]
-void showKeySettingsSheet(
-  BuildContext context,
-  String publicKey,
-) {
+/// if [isMaster] true, then delete action will be blocked, use seed delete.
+void showKeySettingsSheet({
+  required BuildContext context,
+  required String publicKey,
+  required bool isMaster,
+}) {
   showCommonBottomSheet<void>(
     context: context,
     useAppBackgroundColor: true,
     title: LocaleKeys.settingsOfKey.tr(),
-    body: (_, __) => KeySettingsSheet(publicKey: publicKey),
+    body: (_, __) => KeySettingsSheet(
+      publicKey: publicKey,
+      isMaster: isMaster,
+    ),
   );
 }
 
@@ -25,10 +30,12 @@ void showKeySettingsSheet(
 class KeySettingsSheet extends StatelessWidget {
   const KeySettingsSheet({
     required this.publicKey,
+    required this.isMaster,
     super.key,
   });
 
   final String publicKey;
+  final bool isMaster;
 
   @override
   Widget build(BuildContext context) {
@@ -82,7 +89,7 @@ class KeySettingsSheet extends StatelessWidget {
             color: colors.textPrimary,
           ),
         ),
-        if (publicKey != currentKey)
+        if (publicKey != currentKey && !isMaster)
           CommonListTile(
             onPressed: () => Navigator.of(context)
               ..pop()

@@ -1,24 +1,30 @@
 import 'package:app/app/router/app_route.dart';
-import 'package:app/feature/profile/bloc/profile_bloc.dart';
+import 'package:app/app/service/service.dart';
+import 'package:app/di/di.dart';
 import 'package:app/feature/profile/manage_seeds_accounts/widgets/widgets.dart';
+import 'package:app/feature/profile/profile.dart';
 import 'package:app/generated/assets.gen.dart';
 import 'package:app/generated/locale_keys.g.dart';
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:logging/logging.dart';
 import 'package:nekoton_repository/nekoton_repository.dart';
 import 'package:ui_components_lib/ui_components_lib.dart';
 
 class ProfileView extends StatelessWidget {
   const ProfileView({
-    super.key,
+    this.isBiometryAvailable = false,
     this.currentSeed,
+    super.key,
   });
 
   final Seed? currentSeed;
+  final bool isBiometryAvailable;
 
   @override
   Widget build(BuildContext context) {
+    final service = inject<BiometryService>();
     final colors = context.themeStyle.colors;
     final mq = MediaQuery.of(context);
 
@@ -76,15 +82,27 @@ class ProfileView extends StatelessWidget {
                   // ignore: no-empty-block
                   onPressed: () {},
                 ),
-                _profileTile(
-                  leadingIcon: Assets.images.fingerSmall.path,
-                  title: LocaleKeys.biometryWord.tr(),
-                  trailing: CommonButtonIconWidget.svg(
-                    svg: Assets.images.caretRight.path,
+                if (isBiometryAvailable)
+                  StreamBuilder<bool>(
+                    stream: service.enabledStream,
+                    initialData: service.enabled,
+                    builder: (context, snapshot) {
+                      final enabled = snapshot.data ?? false;
+
+                      return _profileTile(
+                        leadingIcon: Assets.images.fingerSmall.path,
+                        title: LocaleKeys.biometryWord.tr(),
+                        trailing: CommonSwitchInput(
+                          value: enabled,
+                          onChanged: (value) => service.setStatus(
+                            localizedReason: LocaleKeys.biometryAuthReason.tr(),
+                            isEnabled: !enabled,
+                          ),
+                        ),
+                        onPressed: null,
+                      );
+                    },
                   ),
-                  // ignore: no-empty-block
-                  onPressed: () {},
-                ),
               ],
             ),
             const SizedBox(height: DimensSize.d40),
@@ -105,6 +123,8 @@ class ProfileView extends StatelessWidget {
     );
   }
 
+  /// !!! Modifying this tile, change BiometryTile and other tiles with custom
+  /// logic in this screen.
   Widget _profileTile({
     required String leadingIcon,
     required String title,

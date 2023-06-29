@@ -18,20 +18,14 @@ class ExportSeedCubit extends Cubit<ExportSeedState> {
   final String publicKey;
 
   Future<void> export(String password) async {
-    if (password.isEmpty) {
-      emit(ExportSeedState.error(LocaleKeys.passwordIsWrong.tr()));
-
-      return;
-    }
-
-    emit(const ExportSeedState.loading());
-
     final seed = nekotonRepository.seedList.findSeed(publicKey);
     if (seed != null) {
       try {
         final phrase = await seed.export(password);
         emit(ExportSeedState.success(phrase));
       } catch (_) {
+        // Typically, this will never happens, as widget provides only
+        // correct password, but we check error for any case.
         emit(ExportSeedState.error(LocaleKeys.passwordIsWrong.tr()));
       }
     } else {

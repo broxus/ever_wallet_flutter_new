@@ -9,9 +9,8 @@ class ProfileEvent with _$ProfileEvent {
   const factory ProfileEvent.logOut() = _LogOut;
 
   /// This is internal event to update data reacting for some subscription
-  const factory ProfileEvent.updateData(Seed? currentSeed) = _UpdateData;
-
-  /// Export seed phrase with early entered password.
-  /// This means, that user want to export current seed (from currentKey)
-  const factory ProfileEvent.exportSeed(String password) = _ExportSeed;
+  const factory ProfileEvent.updateData({
+    required Seed? currentSeed,
+    required bool isBiometryAvailable,
+  }) = _UpdateData;
 }

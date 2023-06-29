@@ -172,8 +172,8 @@ void main() {
     );
 
     /// Seeds
-    expect(await accountSeedStorage.readSeeds(), {_publicKey: 'name'});
-    expect(accountSeedStorage.seeds, {_publicKey: 'name'});
+    expect(await accountSeedStorage.readSeedNames(), {_publicKey: 'name'});
+    expect(accountSeedStorage.seedNames, {_publicKey: 'name'});
 
     /// Passwords
     expect(await storage.getKeyPassword(_publicKey), _password);
@@ -382,8 +382,8 @@ void main() {
       );
 
       /// Seeds
-      expect(await accountSeedStorage.readSeeds(), hive.seeds);
-      expect(accountSeedStorage.seeds, hive.seeds);
+      expect(await accountSeedStorage.readSeedNames(), hive.seeds);
+      expect(accountSeedStorage.seedNames, hive.seeds);
 
       /// Passwords
       expect(
