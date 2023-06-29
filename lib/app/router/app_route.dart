@@ -37,8 +37,13 @@ enum AppRoute {
     isSaveLocation: true,
   ),
   seedDetail(
-    'seedDetail',
+    '',
     'seedDetail/:$publicKeyPathParam',
+    isSaveLocation: true,
+  ),
+  keyDetail(
+    '',
+    'keyDetail/:$publicKeyPathParam',
     isSaveLocation: true,
   ),
 
