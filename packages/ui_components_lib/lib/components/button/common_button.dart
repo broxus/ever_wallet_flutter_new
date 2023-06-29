@@ -37,6 +37,7 @@ class CommonButton extends StatefulWidget {
     this.contentColor,
     this.contentPressedColor,
     this.contentDisabledColor,
+    this.textAlign,
     super.key,
   });
 
@@ -177,6 +178,9 @@ class CommonButton extends StatefulWidget {
   /// Color of the button content when it is disabled, default is taken from
   final Color? contentDisabledColor;
 
+  /// Alignment for text of button
+  final TextAlign? textAlign;
+
   @override
   State<CommonButton> createState() => _CommonButtonState();
 }
@@ -261,6 +265,7 @@ class _CommonButtonState extends State<CommonButton> {
       duration: kThemeAnimationDuration,
       builder: (_, color) => Text(
         widget.text ?? '',
+        textAlign: widget.textAlign,
         style: textStyle.copyWith(color: color),
       ),
     );

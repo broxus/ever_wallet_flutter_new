@@ -44,24 +44,21 @@ class CommonTabSwitcher<T> extends StatelessWidget {
   Widget build(BuildContext context) {
     final colors = context.themeStyle.colors;
 
-    return SizedBox(
-      height: DimensSize.d48,
-      child: ShapedContainerRow(
-        mainAxisSize: MainAxisSize.min,
-        separatorSize: DimensSize.d4,
-        margin: EdgeInsets.zero,
-        padding: const EdgeInsets.all(DimensSize.d4),
-        color: colors.appBackground,
-        children: values.map((i) {
-          final item = _switcherItem(i, colors);
+    return ShapedContainerRow(
+      mainAxisSize: MainAxisSize.min,
+      separatorSize: DimensSize.d4,
+      margin: EdgeInsets.zero,
+      padding: const EdgeInsets.all(DimensSize.d4),
+      color: colors.appBackground,
+      children: values.map((i) {
+        final item = _switcherItem(i, colors);
 
-          if (fillWidth) {
-            return Expanded(child: item);
-          }
+        if (fillWidth) {
+          return Expanded(child: item);
+        }
 
-          return item;
-        }).toList(),
-      ),
+        return item;
+      }).toList(),
     );
   }
 
@@ -73,12 +70,17 @@ class CommonTabSwitcher<T> extends StatelessWidget {
       duration: kThemeAnimationDuration,
       builder: (context, color) {
         return CommonButton(
-          height: DimensSize.d40,
+          height: DimensSize.d48,
           squircleRadius: DimensRadius.medium,
           buttonType: EverButtonType.ghost,
           onPressed: () => onTabChanged(item.value),
           fillWidth: fillWidth,
           backgroundColor: color,
+          padding: const EdgeInsets.symmetric(
+            horizontal: DimensSize.d16,
+            vertical: DimensSize.d4,
+          ),
+          textAlign: TextAlign.center,
           text: item.title,
           contentColor: colors.textPrimary,
         );

@@ -209,10 +209,12 @@ class _CommonStoryState extends State<CommonStory> {
               child: ValueListenableBuilder<int>(
                 valueListenable: tabSwitcherNotifier1,
                 builder: (_, value, __) {
-                  return CommonTabSwitcher(
-                    onTabChanged: (v) => tabSwitcherNotifier1.value = v,
-                    values: tabSwitcherValues,
-                    currentValue: value,
+                  return IntrinsicHeight(
+                    child: CommonTabSwitcher(
+                      onTabChanged: (v) => tabSwitcherNotifier1.value = v,
+                      values: tabSwitcherValues,
+                      currentValue: value,
+                    ),
                   );
                 },
               ),
@@ -224,11 +226,13 @@ class _CommonStoryState extends State<CommonStory> {
               child: ValueListenableBuilder<int>(
                 valueListenable: tabSwitcherNotifier2,
                 builder: (_, value, __) {
-                  return CommonTabSwitcher(
-                    fillWidth: false,
-                    onTabChanged: (v) => tabSwitcherNotifier2.value = v,
-                    values: tabSwitcherValues,
-                    currentValue: value,
+                  return IntrinsicHeight(
+                    child: CommonTabSwitcher(
+                      fillWidth: false,
+                      onTabChanged: (v) => tabSwitcherNotifier2.value = v,
+                      values: tabSwitcherValues,
+                      currentValue: value,
+                    ),
                   );
                 },
               ),
