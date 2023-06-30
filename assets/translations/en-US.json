@@ -114,5 +114,15 @@
   "newAccountName": "New account name",
   "newAccountNameDescription": "You will get a new account based on the selected ones. To create an address with a new public key, use Manage seeds & accounts.",
   "newAccountType": "New account type",
-  "noAccountsYet": "No accounts yet"
+  "noAccountsYet": "No accounts yet",
+  "accountDefault": "{} (default)",
+  "addressWord": "Address",
+  "accountWord": "Account",
+  "addExistingAccount": "Add existing account",
+  "addExistingAccountDescription": "You can add only those addresses where your public key is a custodian",
+  "keyIsNotCustodian": "Public key is not a custodian of this account",
+  "addressIsWrong": "Address is wrong",
+  "hideWord": "Hide",
+  "showWord": "Show",
+  "settingsOfAccount": "Settings of the account"
 }

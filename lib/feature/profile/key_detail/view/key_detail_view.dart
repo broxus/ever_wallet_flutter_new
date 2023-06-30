@@ -134,7 +134,20 @@ class KeyDetailView extends StatelessWidget {
             fillWidth: true,
             leading: CommonButtonIconWidget.svg(svg: Assets.images.plus.path),
             text: LocaleKeys.addNewAccount.tr(),
-            onPressed: () {},
+            onPressed: () {
+              switch (tab) {
+                case KeyDetailAccountsTab.local:
+                  showAddNewLocalAccountSheet(
+                    context: context,
+                    publicKey: seedKey.publicKey,
+                  );
+                case KeyDetailAccountsTab.external:
+                  showAddNewExternalAccountSheet(
+                    context: context,
+                    publicKey: seedKey.publicKey,
+                  );
+              }
+            },
           ),
         ),
       ],
@@ -190,12 +203,23 @@ class KeyDetailView extends StatelessWidget {
           ),
           titleText: account.name,
           subtitleText: account.address.ellipseAddress(),
-          trailing: CommonIconButton.svg(
-            svg: Assets.images.settings.path,
-            buttonType: EverButtonType.ghost,
-            color: colors.textSecondary,
-            innerPadding: const EdgeInsets.all(DimensSize.d8),
-            onPressed: () {},
+          trailing: SeparatedRow(
+            separatorSize: DimensSize.d4,
+            mainAxisSize: MainAxisSize.min,
+            children: [
+              if (account.isHidden)
+                CommonIconWidget.svg(svg: Assets.images.closedEye.path),
+              CommonIconButton.svg(
+                svg: Assets.images.settings.path,
+                buttonType: EverButtonType.ghost,
+                color: colors.textSecondary,
+                innerPadding: const EdgeInsets.all(DimensSize.d8),
+                onPressed: () => showAccountSettingsSheet(
+                  context: context,
+                  address: account.address,
+                ),
+              ),
+            ],
           ),
         );
       },
