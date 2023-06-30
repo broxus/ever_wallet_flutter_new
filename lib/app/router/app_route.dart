@@ -107,7 +107,7 @@ enum AppRoute {
   final bool isBottomNavigationBarVisible;
 
   /// Should subroutes be saved and restored when user navigates between
-  /// root routes.
+  /// root routes. It's effective only for root routes
   final bool isSaveSubroutes;
 
   static AppRoute getByPath(String path) {
