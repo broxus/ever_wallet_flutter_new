@@ -202,7 +202,6 @@ extension NavigationHelper on BuildContext {
     if (!mounted) return;
 
     final currentLocation = inject<NavigationService>().location;
-    // final currentLocation1 = GoRouterState.of(this).location;
     var resultLocation = Uri.parse(currentLocation);
     // We have query params in old path and we must update it manually
     if (resultLocation.hasQuery) {

@@ -17,7 +17,8 @@ GoRouter getRouter(BuildContext _) {
   // Last saved root app route
   AppRoute? lastRootAppRoute;
 
-  // Just for
+  // Just for debouncing, because setLocation() can be called multiple times
+  // with the same location
   String? lastSetlocation;
 
   // Saved subroutes for each root app route
@@ -42,7 +43,7 @@ GoRouter getRouter(BuildContext _) {
   }
 
   // Set location, it will be called in multiple places
-  // because GoRouter's 'redirect' handler doesn't call it aster pop()
+  // because GoRouter's 'redirect' handler doesn't call it after pop()
   void setLocation(String location) {
     // And because of that, we need to check if the location is the same
     // as the last one to avoid duplicate calls of NavigationService.setLocation
