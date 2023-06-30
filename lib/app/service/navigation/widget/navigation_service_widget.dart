@@ -5,8 +5,6 @@ import 'package:app/di/di.dart';
 import 'package:flutter/widgets.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
-const _navigationAwaitDuration = Duration(milliseconds: 500);
-
 class NavigationServiceWidget extends StatefulWidget {
   const NavigationServiceWidget({
     required this.child,
@@ -75,10 +73,6 @@ class _NavigationServiceWidgetState extends State<NavigationServiceWidget> {
   }
 
   Future<void> _onboardingToWalletNavigation() async {
-    // This is a hack, because after navigation from onboarding to wallet
-    // we need wait some time after onboarding screen disappear, on it crashes
-    await Future<void>.delayed(_navigationAwaitDuration);
-
     // We can't use current context here because it's not contains Navigator
     final context = NavigationService.navigatorKey.currentState?.context;
     if (context == null) {
