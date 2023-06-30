@@ -17,6 +17,9 @@ GoRouter getRouter(BuildContext _) {
   // Last saved root app route
   AppRoute? lastRootAppRoute;
 
+  // Just for
+  String? lastSetlocation;
+
   // Saved subroutes for each root app route
   final savedSubroutes = <AppRoute, String>{};
 
@@ -41,6 +44,14 @@ GoRouter getRouter(BuildContext _) {
   // Set location, it will be called in multiple places
   // because GoRouter's 'redirect' handler doesn't call it aster pop()
   void setLocation(String location) {
+    // And because of that, we need to check if the location is the same
+    // as the last one to avoid duplicate calls of NavigationService.setLocation
+    if (lastSetlocation == location) {
+      return;
+    }
+
+    lastSetlocation = location;
+
     // Set current location in NavigationService
     inject<NavigationService>()
         .setLocation(location: location, save: canSaveLocation(location));
@@ -49,7 +60,9 @@ GoRouter getRouter(BuildContext _) {
     final rootAppRoute = getRootAppRoute(location);
 
     // Save subroute for the root app route
-    savedSubroutes[rootAppRoute] = location;
+    if (rootAppRoute.isSaveSubroutes) {
+      savedSubroutes[rootAppRoute] = location;
+    }
 
     // Save last root app route
     lastRootAppRoute = rootAppRoute;

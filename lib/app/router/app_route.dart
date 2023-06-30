@@ -1,3 +1,5 @@
+import 'package:app/app/service/navigation/service/navigation_service.dart';
+import 'package:app/di/di.dart';
 import 'package:app/feature/add_seed/enter_seed_name/enter_seed_name.dart';
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
@@ -22,6 +24,7 @@ enum AppRoute {
     '/browser',
     isSaveLocation: true,
     isBottomNavigationBarVisible: true,
+    isSaveSubroutes: true,
   ),
 
   /// Profile section
@@ -89,6 +92,7 @@ enum AppRoute {
     this.path, {
     this.isSaveLocation = false,
     this.isBottomNavigationBarVisible = false,
+    this.isSaveSubroutes = false,
   });
 
   static final _log = Logger('AppRoute');
@@ -101,6 +105,10 @@ enum AppRoute {
 
   /// Should BottomNavigationBar be visible.
   final bool isBottomNavigationBarVisible;
+
+  /// Should subroutes be saved and restored when user navigates between
+  /// root routes.
+  final bool isSaveSubroutes;
 
   static AppRoute getByPath(String path) {
     // ignore: prefer-enums-by-name
@@ -193,7 +201,9 @@ extension NavigationHelper on BuildContext {
   void goFurther(String location, {Object? extra}) {
     if (!mounted) return;
 
-    var resultLocation = Uri.parse(GoRouterState.of(this).location);
+    final currentLocation = inject<NavigationService>().location;
+    // final currentLocation1 = GoRouterState.of(this).location;
+    var resultLocation = Uri.parse(currentLocation);
     // We have query params in old path and we must update it manually
     if (resultLocation.hasQuery) {
       final newLocation = Uri.parse(location);
