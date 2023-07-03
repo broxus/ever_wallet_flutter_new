@@ -5,8 +5,8 @@ import 'package:nekoton_repository/nekoton_repository.dart';
 /// This is a wrapper-class above [NekotonRepository] that provides methods
 /// to interact with NekotonRepository.
 @singleton
-class NekotonRepositoryService extends AbstractStorageService {
-  NekotonRepositoryService(this._nekotonRepository);
+class NekotonRepositoryStorageService extends AbstractStorageService {
+  NekotonRepositoryStorageService(this._nekotonRepository);
 
   final NekotonRepository _nekotonRepository;
 

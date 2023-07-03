@@ -8,8 +8,13 @@ class StorageManagerService {
     GeneralStorageService general,
     BrowserStorageService browser,
     NekotonStorageService accountSeed,
-    NekotonRepositoryService nekotonRepositoryService,
-  ) : _storages = [general, browser, accountSeed, nekotonRepositoryService];
+    NekotonRepositoryStorageService nekotonRepositoryStorageService,
+  ) : _storages = [
+          general,
+          browser,
+          accountSeed,
+          nekotonRepositoryStorageService,
+        ];
 
   final List<AbstractStorageService> _storages;
 
