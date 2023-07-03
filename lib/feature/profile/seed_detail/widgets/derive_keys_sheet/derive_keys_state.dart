@@ -7,7 +7,8 @@ class DeriveKeysState with _$DeriveKeysState {
   /// [displayDerivedKeys] contains small list of keys, that should be displayed
   /// on single page.
   ///
-  /// if [isLoading] = true, then state when button should display loading indicator.
+  /// if [isLoading] = true, then state when button should display loading
+  /// indicator.
   /// prev and next page buttons should be disabled.
   /// if [isCompleted] = true, then sheet must be closed.
   const factory DeriveKeysState.data({

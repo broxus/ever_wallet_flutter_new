@@ -45,8 +45,9 @@ class CommonListTile extends StatelessWidget {
   /// Widget that renders on the right side of tile
   final Widget? trailing;
 
-  /// Default height of tile, [DimensSize.d56] by default
-  final double height;
+  /// Default height of tile, [DimensSize.d56] by default.
+  /// If height is null, then tile will wrap its content by height.
+  final double? height;
 
   /// Background color of tile, [Colors.transparent] by default
   final Color? backgroundColor;

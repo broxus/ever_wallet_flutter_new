@@ -7,7 +7,6 @@ class EnterSeedPhraseState with _$EnterSeedPhraseState {
   const factory EnterSeedPhraseState.initial() = _Initial;
 
   /// State that displays 12 or 24 words entering
-  /// [controllers] and [focuses] used for TextField widgets.
   /// [allowedValues] and [currentValue] used for tab widget.
   /// If [allowedValues] contains only one item, tab widget must not be shown.
   /// [displayPasteButton] = false if there are no text in fields else true

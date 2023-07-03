@@ -42,7 +42,7 @@ class DeleteKeySheet extends StatelessWidget {
                     [
                       CommonListTile(
                         leading: CommonBackgroundedIconWidget.svg(
-                          svg: Assets.images.sparxLogoSmall.path,
+                          svg: Assets.images.key.path,
                         ),
                         titleText: key.name,
                         subtitleText: LocaleKeys.accountsWithData.plural(
@@ -65,7 +65,7 @@ class DeleteKeySheet extends StatelessWidget {
                           .map(
                             (account) => CommonListTile(
                               leading: CommonBackgroundedIconWidget.svg(
-                                svg: Assets.images.key.path,
+                                svg: Assets.images.person.path,
                               ),
                               titleText: account.name,
                               subtitleText:

@@ -1,14 +1,12 @@
 import 'package:app/app/router/app_route.dart';
 import 'package:app/app/service/service.dart';
 import 'package:app/di/di.dart';
-import 'package:app/feature/profile/manage_seeds_accounts/widgets/widgets.dart';
 import 'package:app/feature/profile/profile.dart';
 import 'package:app/generated/assets.gen.dart';
 import 'package:app/generated/locale_keys.g.dart';
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:logging/logging.dart';
 import 'package:nekoton_repository/nekoton_repository.dart';
 import 'package:ui_components_lib/ui_components_lib.dart';
 
