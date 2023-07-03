@@ -1,7 +1,6 @@
 import 'package:app/app/service/service.dart';
 import 'package:app/di/di.dart';
 import 'package:app/feature/profile/profile.dart';
-import 'package:app/feature/profile/seed_detail/seed_detail.dart';
 import 'package:app/generated/generated.dart';
 import 'package:app/utils/utils.dart';
 import 'package:flutter/material.dart';

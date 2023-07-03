@@ -5,8 +5,6 @@ import 'package:app/di/di.dart';
 import 'package:flutter/widgets.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
-const _navigationAwaitDuration = Duration(milliseconds: 500);
-
 class NavigationServiceWidget extends StatefulWidget {
   const NavigationServiceWidget({
     required this.child,

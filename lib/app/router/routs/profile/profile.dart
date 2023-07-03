@@ -1,8 +1,6 @@
 import 'package:app/app/router/page_transitions.dart';
 import 'package:app/app/router/router.dart';
-import 'package:app/feature/profile/manage_seeds_accounts/manage_seeds_accounts.dart';
 import 'package:app/feature/profile/profile.dart';
-import 'package:app/feature/profile/seed_detail/seed_detail.dart';
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 
@@ -40,8 +38,17 @@ GoRoute get manageSeedAccountsRoute {
 GoRoute get seedDetailRoute {
   return GoRoute(
     path: AppRoute.seedDetail.path,
-    name: AppRoute.seedDetail.name,
     builder: (_, state) => SeedDetailPage(
+      publicKey: state.pathParameters[publicKeyPathParam]!,
+    ),
+    routes: [keyDetailRoute],
+  );
+}
+
+GoRoute get keyDetailRoute {
+  return GoRoute(
+    path: AppRoute.keyDetail.path,
+    builder: (_, state) => KeyDetailPage(
       publicKey: state.pathParameters[publicKeyPathParam]!,
     ),
   );

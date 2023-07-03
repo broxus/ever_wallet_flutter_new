@@ -1,3 +1,4 @@
+import 'package:app/app/router/app_route.dart';
 import 'package:app/feature/profile/seed_detail/seed_detail.dart';
 import 'package:app/generated/generated.dart';
 import 'package:flutter/material.dart';
@@ -95,6 +96,8 @@ class SeedDetailView extends StatelessWidget {
         final colors = context.themeStyle.colors;
 
         return CommonListTile(
+          onPressed: () =>
+              context.goFurther(AppRoute.keyDetail.pathWithData(key.publicKey)),
           padding: EdgeInsets.zero,
           leading: CommonBackgroundedIconWidget.svg(
             svg: Assets.images.key.path,

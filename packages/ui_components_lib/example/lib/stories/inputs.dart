@@ -23,12 +23,17 @@ class _InputsStoryState extends State<InputsStory> {
   final validationFormKey2 = GlobalKey<FormState>();
   final validationFormKey3 = GlobalKey<FormState>();
   final validationFormKey4 = GlobalKey<FormState>();
+  final validationFormKey5 = GlobalKey<FormState>();
 
   final switcher1Notifier = ValueNotifier<bool>(true);
   final switcher2Notifier = ValueNotifier<bool>(true);
   final switcher3Notifier = ValueNotifier<bool>(true);
 
   final checkbox1Notifier = ValueNotifier<bool>(true);
+
+  static const radioValues = ['one', 'two', 'three'];
+  late final radio1Notifier = ValueNotifier<String>(radioValues.first);
+  late final radio2Notifier = ValueNotifier<String?>(null);
 
   @override
   Widget build(BuildContext context) {
@@ -223,6 +228,54 @@ class _InputsStoryState extends State<InputsStory> {
                   const CommonCheckboxInput(checked: false),
                   const CommonCheckboxInput(checked: true),
                 ],
+              ),
+              const SizedBox(height: DimensSize.d20),
+              ValueListenableBuilder<String>(
+                valueListenable: radio1Notifier,
+                builder: (_, value, __) {
+                  return SeparatedRow(
+                    children: radioValues
+                        .map(
+                          (v) => CommonRadioInput(
+                            value: v,
+                            groupValue: value,
+                            onChanged: (v) => radio1Notifier.value = v,
+                          ),
+                        )
+                        .toList(),
+                  );
+                },
+              ),
+              const SizedBox(height: DimensSize.d8),
+              Form(
+                key: validationFormKey5,
+                child: ValueListenableBuilder<String?>(
+                  valueListenable: radio2Notifier,
+                  builder: (_, value, __) {
+                    return SeparatedRow(
+                      children: [
+                        ...radioValues.map(
+                          (v) => CommonRadioInput(
+                            value: v,
+                            groupValue: value,
+                            onChanged: (v) => radio2Notifier.value = v,
+                            validator: (_) =>
+                                radio2Notifier.value == null ? '' : null,
+                          ),
+                        ),
+                        CommonButton.primary(
+                          text: 'Validate (if not selected)',
+                          onPressed: () =>
+                              validationFormKey5.currentState?.validate(),
+                        ),
+                        CommonButton.ghost(
+                          text: 'Reset',
+                          onPressed: () => radio2Notifier.value = null,
+                        ),
+                      ],
+                    );
+                  },
+                ),
               ),
 
               const SizedBox(height: DimensSize.d40),

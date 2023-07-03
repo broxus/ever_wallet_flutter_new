@@ -938,11 +938,11 @@ packages:
     dependency: "direct main"
     description:
       path: "."
-      ref: "v0.1.1-dev.3"
-      resolved-ref: "6a2464fc088c62ffdf1d2c8f97b1e777e6d548d0"
+      ref: "v0.1.1-dev.4"
+      resolved-ref: "898c27336128f29ff571d8b61e5be839358be623"
       url: "https://github.com/broxus/nekoton_repository.git"
     source: git
-    version: "0.1.1-dev.3"
+    version: "0.1.1-dev.4"
   nested:
     dependency: transitive
     description:

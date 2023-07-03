@@ -1,6 +1,5 @@
 import 'package:app/app/service/service.dart';
 import 'package:app/di/di.dart';
-import 'package:app/feature/profile/manage_seeds_accounts/widgets/widgets.dart';
 import 'package:app/feature/profile/profile.dart';
 import 'package:app/generated/generated.dart';
 import 'package:flutter/material.dart';

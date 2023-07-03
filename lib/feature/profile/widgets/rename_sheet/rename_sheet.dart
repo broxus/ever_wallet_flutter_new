@@ -55,6 +55,7 @@ class _RenameSheetState extends State<RenameSheet> {
         CommonInput(
           controller: _nameController,
           titleText: LocaleKeys.nameWord.tr(),
+          onSubmitted: (_) => _rename(context),
         ),
         BlocConsumer<RenameSheetCubit, RenameSheetState>(
           listener: (context, state) {
@@ -82,8 +83,7 @@ class _RenameSheetState extends State<RenameSheet> {
             return CommonButton.primary(
               fillWidth: true,
               isLoading: isLoading,
-              onPressed: () =>
-                  context.read<RenameSheetCubit>().rename(_nameController.text),
+              onPressed: () => _rename(context),
               text: LocaleKeys.renameWord.tr(),
             );
           },
@@ -91,4 +91,7 @@ class _RenameSheetState extends State<RenameSheet> {
       ],
     );
   }
+
+  void _rename(BuildContext context) =>
+      context.read<RenameSheetCubit>().rename(_nameController.text);
 }
