@@ -52,15 +52,15 @@ class ApprovalRequest with _$ApprovalRequest {
   const factory ApprovalRequest.callContractMethod({
     required String origin,
     required PublicKey publicKey,
-    required String recipient,
+    required Address recipient,
     required FunctionCall payload,
     required Completer<String> completer,
   }) = _CallContractMethod;
 
   const factory ApprovalRequest.sendMessage({
     required String origin,
-    required String sender,
-    required String recipient,
+    required Address sender,
+    required Address recipient,
     @amountJsonConverter required Fixed amount,
     required bool bounce,
     required FunctionCall? payload,
