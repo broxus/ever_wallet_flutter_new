@@ -37,6 +37,7 @@ class AccountDetailCubit extends Cubit<AccountDetailState> {
   @override
   Future<void> close() {
     _seedListSubscription.cancel();
+
     return super.close();
   }
 }

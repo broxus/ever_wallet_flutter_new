@@ -70,6 +70,7 @@ class GeneralStorageService extends AbstractStorageService {
   /// Read from storage current public key that user set before
   Future<PublicKey?> readCurrentKey() async {
     final keyString = await _storage.get(_currentKey, domain: _preferencesKey);
+
     return keyString != null ? PublicKey(publicKey: keyString) : null;
   }
 

@@ -57,8 +57,7 @@ class CustomTransportStrategy extends TransportStrategy {
   @override
   final nativeTokenTicker = '';
 
-  // TODO(nesquikm): maybe we should construct 'zero-address' directly
-  // as Address factory?
+  // TODO(nesquikm): to be implemented
   @override
   final nativeTokenAddress = const Address(address: '');
 
