@@ -5,7 +5,9 @@ import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:logging/logging.dart';
 
-const publicKeyPathParam = 'publicKey';
+const seedDetailPublicKeyPathParam = 'seedDetailPublicKey';
+const keyDetailPublicKeyPathParam = 'keyDetailPublicKey';
+const accountDetailAddressPathParam = 'accountDetailAddress';
 
 enum AppRoute {
   onboarding(
@@ -41,12 +43,17 @@ enum AppRoute {
   ),
   seedDetail(
     '',
-    'seedDetail/:$publicKeyPathParam',
+    'seedDetail/:$seedDetailPublicKeyPathParam',
     isSaveLocation: true,
   ),
   keyDetail(
     '',
-    'keyDetail/:$publicKeyPathParam',
+    'keyDetail/:$keyDetailPublicKeyPathParam',
+    isSaveLocation: true,
+  ),
+  accountDetail(
+    '',
+    'accountDetail/:$accountDetailAddressPathParam',
     isSaveLocation: true,
   ),
 

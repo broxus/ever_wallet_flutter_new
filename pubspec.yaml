@@ -8,6 +8,7 @@ environment:
   flutter: ">=3.10.3"
 
 dependencies:
+  barcode_widget: ^2.0.4
   bloc: ^8.1.2
   clock: ^1.1.1
   collection: ^1.17.0

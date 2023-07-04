@@ -41,7 +41,7 @@ GoRoute get seedDetailRoute {
     path: AppRoute.seedDetail.path,
     builder: (_, state) => SeedDetailPage(
       publicKey: PublicKey(
-        publicKey: state.pathParameters[publicKeyPathParam]!,
+        publicKey: state.pathParameters[seedDetailPublicKeyPathParam]!,
       ),
     ),
     routes: [keyDetailRoute],
@@ -53,7 +53,19 @@ GoRoute get keyDetailRoute {
     path: AppRoute.keyDetail.path,
     builder: (_, state) => KeyDetailPage(
       publicKey: PublicKey(
-        publicKey: state.pathParameters[publicKeyPathParam]!,
+        publicKey: state.pathParameters[keyDetailPublicKeyPathParam]!,
+      ),
+    ),
+    routes: [accountDetailRoute],
+  );
+}
+
+GoRoute get accountDetailRoute {
+  return GoRoute(
+    path: AppRoute.accountDetail.path,
+    builder: (_, state) => AccountDetailPage(
+      address: Address(
+        address: state.pathParameters[accountDetailAddressPathParam]!,
       ),
     ),
   );
