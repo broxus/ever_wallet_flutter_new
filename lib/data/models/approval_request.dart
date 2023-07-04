@@ -30,28 +30,28 @@ class ApprovalRequest with _$ApprovalRequest {
 
   const factory ApprovalRequest.signData({
     required String origin,
-    required String publicKey,
+    required PublicKey publicKey,
     required String data,
     required Completer<String> completer,
   }) = _SignData;
 
   const factory ApprovalRequest.encryptData({
     required String origin,
-    required String publicKey,
+    required PublicKey publicKey,
     required String data,
     required Completer<String> completer,
   }) = _EncryptData;
 
   const factory ApprovalRequest.decryptData({
     required String origin,
-    required String publicKey,
-    required String sourcePublicKey,
+    required PublicKey publicKey,
+    required PublicKey sourcePublicKey,
     required Completer<String> completer,
   }) = _DecryptData;
 
   const factory ApprovalRequest.callContractMethod({
     required String origin,
-    required String publicKey,
+    required PublicKey publicKey,
     required String recipient,
     required FunctionCall payload,
     required Completer<String> completer,

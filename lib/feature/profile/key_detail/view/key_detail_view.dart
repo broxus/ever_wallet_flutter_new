@@ -2,7 +2,6 @@ import 'package:app/app/service/service.dart';
 import 'package:app/di/di.dart';
 import 'package:app/feature/profile/profile.dart';
 import 'package:app/generated/generated.dart';
-import 'package:app/utils/utils.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -71,7 +70,7 @@ class KeyDetailView extends StatelessWidget {
                     const CommonDivider(),
                     _headerItem(
                       title: LocaleKeys.publicKey.tr(),
-                      subtitle: seedKey.publicKey,
+                      subtitle: seedKey.publicKey.publicKey,
                       isPrimary: false,
                       action: CommonIconButton.svg(
                         svg: Assets.images.copy.path,
@@ -81,12 +80,12 @@ class KeyDetailView extends StatelessWidget {
                         color: colors.textSecondary,
                         onPressed: () {
                           Clipboard.setData(
-                            ClipboardData(text: seedKey.publicKey),
+                            ClipboardData(text: seedKey.publicKey.publicKey),
                           );
                           inject<MessengerService>().show(
                             Message.successful(
                               message: LocaleKeys.valueCopiedExclamation.tr(
-                                args: [seedKey.publicKey.ellipsePublicKey()],
+                                args: [seedKey.publicKey.toEllipseString()],
                               ),
                             ),
                           );
@@ -202,7 +201,7 @@ class KeyDetailView extends StatelessWidget {
             svg: Assets.images.person.path,
           ),
           titleText: account.name,
-          subtitleText: account.address.ellipseAddress(),
+          subtitleText: account.address.toEllipseString(),
           trailing: SeparatedRow(
             separatorSize: DimensSize.d4,
             mainAxisSize: MainAxisSize.min,

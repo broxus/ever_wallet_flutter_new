@@ -15,7 +15,7 @@ class ExportSeedCubit extends Cubit<ExportSeedState> {
   ) : super(const ExportSeedState.initial());
 
   final NekotonRepository nekotonRepository;
-  final String publicKey;
+  final PublicKey publicKey;
 
   Future<void> export(String password) async {
     final seed = nekotonRepository.seedList.findSeed(publicKey);

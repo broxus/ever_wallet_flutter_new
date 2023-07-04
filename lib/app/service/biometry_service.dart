@@ -1,6 +1,7 @@
 import 'package:app/app/service/service.dart';
 import 'package:injectable/injectable.dart';
 import 'package:local_auth/local_auth.dart';
+import 'package:nekoton_repository/nekoton_repository.dart';
 import 'package:rxdart/rxdart.dart';
 
 class BiometryNotAuthException implements Exception {}
@@ -67,7 +68,7 @@ class BiometryService {
   /// Setting password immediately after onboarding will stay here not so long,
   /// because of clearing password, if enabled stream provides false.
   Future<void> setKeyPassword({
-    required String publicKey,
+    required PublicKey publicKey,
     required String password,
   }) async {
     if (available) {
@@ -83,7 +84,7 @@ class BiometryService {
   ///   dialog.
   Future<String> getKeyPassword({
     required String localizedReason,
-    required String publicKey,
+    required PublicKey publicKey,
   }) async {
     final password = await storage.getKeyPassword(publicKey);
 
@@ -103,7 +104,7 @@ class BiometryService {
   /// even if there was no password before, because if biometry enabled, we must
   /// store all passwords.
   Future<void> updatePasswordIfPossible({
-    required String publicKey,
+    required PublicKey publicKey,
     required String newPassword,
   }) async {
     if (enabled) {

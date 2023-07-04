@@ -5,7 +5,7 @@ import 'package:nekoton_repository/nekoton_repository.dart';
 import 'package:ui_components_lib/ui_components_lib.dart';
 
 /// Helper method that shows the [DeleteKeySheet] bottom sheet.
-ModalRoute<void> deleteKeySheetRoute(String publicKey) {
+ModalRoute<void> deleteKeySheetRoute(PublicKey publicKey) {
   return commonBottomSheetRoute<void>(
     title: LocaleKeys.deleteKey.tr(),
     subtitle: LocaleKeys.deleteKeyDescription.tr(),
@@ -21,7 +21,7 @@ class DeleteKeySheet extends StatelessWidget {
     super.key,
   });
 
-  final String publicKey;
+  final PublicKey publicKey;
 
   @override
   Widget build(BuildContext context) {

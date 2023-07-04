@@ -17,7 +17,7 @@ class RenameSheetCubit extends Cubit<RenameSheetState> {
   }) : super(const RenameSheetState.init());
 
   final NekotonRepository nekotonRepository;
-  final String publicKey;
+  final PublicKey publicKey;
 
   /// if true, then seed with [publicKey] will be renamed, else plain key
   final bool renameSeed;

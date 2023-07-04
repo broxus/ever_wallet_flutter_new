@@ -31,7 +31,7 @@ class EnterPasswordWidget extends StatefulWidget {
   final ValueChanged<String> onPasswordEntered;
 
   /// Key for which password must be entered.
-  final String publicKey;
+  final PublicKey publicKey;
 
   @override
   State<EnterPasswordWidget> createState() => _EnterPasswordWidgetState();

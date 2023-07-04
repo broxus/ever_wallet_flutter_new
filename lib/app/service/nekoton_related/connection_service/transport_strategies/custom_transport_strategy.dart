@@ -9,7 +9,7 @@ class CustomTransportStrategy extends TransportStrategy {
   final Transport transport;
 
   @override
-  String accountExplorerLink(String accountAddress) => '';
+  String accountExplorerLink(Address accountAddress) => '';
 
   @override
   final availableWalletTypes = const [];
@@ -57,8 +57,10 @@ class CustomTransportStrategy extends TransportStrategy {
   @override
   final nativeTokenTicker = '';
 
+  // TODO(nesquikm): maybe we should construct 'zero-address' directly
+  // as Address factory?
   @override
-  final nativeTokenAddress = '';
+  final nativeTokenAddress = const Address(address: '');
 
   @override
   final networkName = '';

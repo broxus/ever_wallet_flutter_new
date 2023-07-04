@@ -13,7 +13,7 @@ class SeedDetailView extends StatelessWidget {
     super.key,
   });
 
-  final String publicKey;
+  final PublicKey publicKey;
 
   @override
   Widget build(BuildContext context) {
@@ -33,7 +33,7 @@ class SeedDetailView extends StatelessWidget {
   Widget _buildSeed(
     Seed seed,
     bool isCurrentSeed,
-    String? currentPublicKey,
+    PublicKey? currentPublicKey,
   ) {
     return Builder(
       builder: (context) {
@@ -89,15 +89,16 @@ class SeedDetailView extends StatelessWidget {
 
   Widget _keyItem(
     SeedKey key,
-    String? currentPublicKey,
+    PublicKey? currentPublicKey,
   ) {
     return Builder(
       builder: (context) {
         final colors = context.themeStyle.colors;
 
         return CommonListTile(
-          onPressed: () =>
-              context.goFurther(AppRoute.keyDetail.pathWithData(key.publicKey)),
+          onPressed: () => context.goFurther(
+            AppRoute.keyDetail.pathWithData(key.publicKey.publicKey),
+          ),
           padding: EdgeInsets.zero,
           leading: CommonBackgroundedIconWidget.svg(
             svg: Assets.images.key.path,

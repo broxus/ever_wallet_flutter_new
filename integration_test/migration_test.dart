@@ -4,7 +4,7 @@ import 'package:app/app/service/service.dart';
 import 'package:app/data/models/account_interaction.dart';
 import 'package:app/data/models/bookmark.dart';
 import 'package:app/data/models/browser_tab.dart';
-import 'package:app/data/models/currency.dart' as cur;
+import 'package:app/data/models/custom_currency.dart' as cur;
 import 'package:app/data/models/network_type.dart';
 import 'package:app/data/models/permissions.dart';
 import 'package:app/data/models/search_history.dart';
@@ -40,7 +40,10 @@ const _everContractAsset = TokenContractAsset(
   chainId: 1,
   symbol: 'stEVER',
   decimals: 9,
-  address: '0:6d42d0bc4a6568120ea88bf642edb653d727cfbd35868c47877532de128e71f2',
+  address: Address(
+    address:
+        '0:6d42d0bc4a6568120ea88bf642edb653d727cfbd35868c47877532de128e71f2',
+  ),
   logoURI:
       'https://raw.githubusercontent.com/broxus/ton-assets/master/icons/stEVER/logo.svg',
   version: 5,
@@ -51,14 +54,17 @@ const _venomContractAsset = TokenContractAsset(
   chainId: 1,
   symbol: 'USDT',
   decimals: 6,
-  address: '0:20470e6a6e33aa696263b5702608d69e3317c23bf20c2f921b38d6588c555603',
+  address: Address(
+    address:
+        '0:20470e6a6e33aa696263b5702608d69e3317c23bf20c2f921b38d6588c555603',
+  ),
   logoURI:
       'https://raw.githubusercontent.com/BVFDT/venom-assets/master/icons/USDT/logo.svg',
   version: 5,
   networkType: NetworkType.venom,
 );
-const _everCurrency = cur.Currency(
-  address: 'everAddress',
+const _everCurrency = cur.CustomCurrency(
+  address: Address(address: '42:everAddress'),
   currency: 'EVER',
   fee24h: '',
   price: '',
@@ -71,8 +77,8 @@ const _everCurrency = cur.Currency(
   volumeChange24h: '',
   networkType: NetworkType.ever,
 );
-const _venomCurrency = cur.Currency(
-  address: 'venomAddress',
+const _venomCurrency = cur.CustomCurrency(
+  address: Address(address: '69:venomAddress'),
   currency: 'VENOM',
   fee24h: '',
   price: '',
@@ -94,10 +100,12 @@ const _permissions = Permissions(
   basic: true,
 );
 
-const _publicKey =
-    'bb9c2578a1b9d0c7a6c947c419afe61c691052ff459df65e3eb4375faf3b25c6';
-const _address =
-    '0:18678befa040e2d66322fcb995d81cd5981ef7aaee494bd3e6a92554c455d0c5';
+const _publicKey = PublicKey(
+  publicKey: 'bb9c2578a1b9d0c7a6c947c419afe61c691052ff459df65e3eb4375faf3b25c6',
+);
+const _address = Address(
+  address: '0:18678befa040e2d66322fcb995d81cd5981ef7aaee494bd3e6a92554c455d0c5',
+);
 const _password = 'password';
 const _connection = 'connection';
 const _locale = 'ru_RU';
@@ -112,9 +120,12 @@ const _keystoreStorageData =
 
 /// Put fake data inside hive storage
 Future<void> _fillHive(HiveSourceMigration migration) async {
-  await migration.setCurrentKey(_publicKey);
-  await migration.addSeedOrRename(masterKey: _publicKey, name: 'name');
-  await migration.updateLastViewedSeeds([_publicKey]);
+  await migration.setCurrentKey(_publicKey.publicKey);
+  await migration.addSeedOrRename(
+    masterKey: _publicKey.publicKey,
+    name: 'name',
+  );
+  await migration.updateLastViewedSeeds([_publicKey.publicKey]);
   await migration.addHiddenAccount(_address);
   await migration.setKeyPassword(publicKey: _publicKey, password: _password);
   await migration.addExternalAccount(publicKey: _publicKey, address: _address);
@@ -138,11 +149,15 @@ Future<void> _fillHive(HiveSourceMigration migration) async {
   await migration.addSearchHistoryEntry(_search);
   await migration.cacheSiteMetaData(url: _metadata.url, metaData: _metadata);
   await migration.saveEverCurrency(
-    address: 'everAddress',
+    address: const Address(
+      address: '42:everAddress',
+    ),
     currency: _everCurrency,
   );
   await migration.saveVenomCurrency(
-    address: 'venomAddress',
+    address: const Address(
+      address: '69:venomAddress',
+    ),
     currency: _venomCurrency,
   );
   await migration.saveWhyNeedBrowser();
@@ -382,8 +397,16 @@ void main() {
       );
 
       /// Seeds
-      expect(await accountSeedStorage.readSeedNames(), hive.seeds);
-      expect(accountSeedStorage.seedNames, hive.seeds);
+      expect(
+        (await accountSeedStorage.readSeedNames())
+            .map((key, value) => MapEntry(key.publicKey, value)),
+        hive.seeds,
+      );
+      expect(
+        accountSeedStorage.seedNames
+            .map((key, value) => MapEntry(key.publicKey, value)),
+        hive.seeds,
+      );
 
       /// Passwords
       expect(
@@ -472,24 +495,42 @@ void main() {
       expect(await storage.getWasStEverOpened, hive.wasStEverOpened);
       expect(await browserStorage.getWhyNeedBrowser, hive.getWhyNeedBrowser);
       expect(
-        await storage.readLastViewedSeeds(),
+        (await storage.readLastViewedSeeds()).map((key) => key.publicKey),
         hive.lastViewedSeeds(),
       );
-      expect(storage.lastViewedSeeds, hive.lastViewedSeeds());
       expect(
-        await accountSeedStorage.readHiddenAccounts(),
+        storage.lastViewedSeeds.map((key) => key.publicKey),
+        hive.lastViewedSeeds(),
+      );
+      expect(
+        (await accountSeedStorage.readHiddenAccounts())
+            .map((addr) => addr.address),
         hive.hiddenAccounts,
       );
-      expect(accountSeedStorage.hiddenAccounts, hive.hiddenAccounts);
       expect(
-        await accountSeedStorage.readExternalAccounts(),
+        accountSeedStorage.hiddenAccounts.map((addr) => addr.address),
+        hive.hiddenAccounts,
+      );
+      expect(
+        (await accountSeedStorage.readExternalAccounts()).map(
+          (key, value) => MapEntry(
+            key.publicKey,
+            value.map((addr) => addr.address),
+          ),
+        ),
         hive.externalAccounts,
       );
-      expect(accountSeedStorage.externalAccounts, hive.externalAccounts);
+      expect(
+        accountSeedStorage.externalAccounts.map(
+          (key, value) =>
+              MapEntry(key.publicKey, value.map((addr) => addr.address)),
+        ),
+        hive.externalAccounts,
+      );
       expect(await storage.readCurrentConnection(), hive.currentConnection);
       expect(storage.currentConnection, hive.currentConnection);
-      expect(await storage.readCurrentKey(), hive.currentKey);
-      expect(storage.currentKey, hive.currentKey);
+      expect((await storage.readCurrentKey())?.publicKey, hive.currentKey);
+      expect(storage.currentKey?.publicKey, hive.currentKey);
 
       /// Browser
       expect(await browserStorage.readBrowserTabs(), hive.browserTabs);

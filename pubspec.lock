@@ -508,11 +508,11 @@ packages:
     dependency: transitive
     description:
       path: "packages/flutter_nekoton_bridge"
-      ref: "flutter_nekoton_bridge-v1.8.0-dev.12"
-      resolved-ref: "5319f6e277d35019c0281ff5f75543748b6c3654"
+      ref: "flutter_nekoton_bridge-v1.8.0-dev.13"
+      resolved-ref: f82572919a18ce2ce21c21859247454309724886
       url: "https://github.com/broxus/nekoton_bridge.git"
     source: git
-    version: "1.8.0-dev.12"
+    version: "1.8.0-dev.13"
   flutter_plugin_android_lifecycle:
     dependency: transitive
     description:
@@ -929,20 +929,20 @@ packages:
     dependency: transitive
     description:
       path: "packages/nekoton_bridge"
-      ref: "nekoton_bridge-v1.8.0-dev.10"
-      resolved-ref: "5319f6e277d35019c0281ff5f75543748b6c3654"
+      ref: "nekoton_bridge-v1.8.0-dev.11"
+      resolved-ref: f82572919a18ce2ce21c21859247454309724886
       url: "https://github.com/broxus/nekoton_bridge.git"
     source: git
-    version: "1.8.0-dev.10"
+    version: "1.8.0-dev.11"
   nekoton_repository:
     dependency: "direct main"
     description:
       path: "."
-      ref: "v0.1.1-dev.4"
-      resolved-ref: "898c27336128f29ff571d8b61e5be839358be623"
+      ref: "v0.1.1-dev.5"
+      resolved-ref: ca2d7ddd06f16f40d0349b3f0cf5ce1321abcf78
       url: "https://github.com/broxus/nekoton_repository.git"
     source: git
-    version: "0.1.1-dev.4"
+    version: "0.1.1-dev.5"
   nested:
     dependency: transitive
     description:

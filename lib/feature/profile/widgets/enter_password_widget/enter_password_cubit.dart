@@ -23,7 +23,7 @@ class EnterPasswordCubit extends Cubit<EnterPasswordState> {
     this.publicKey,
   ) : super(const EnterPasswordState.initial());
 
-  final String publicKey;
+  final PublicKey publicKey;
   final BiometryService biometryService;
   final NekotonRepository nekotonRepository;
 

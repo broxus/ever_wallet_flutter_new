@@ -6,7 +6,7 @@ import 'package:nekoton_repository/nekoton_repository.dart' hide Message;
 import 'package:ui_components_lib/ui_components_lib.dart';
 
 /// Helper function to show [AccountRenameSheet].
-ModalRoute<void> getRenameAccountSheet(String address) {
+ModalRoute<void> getRenameAccountSheet(Address address) {
   return commonBottomSheetRoute(
     title: LocaleKeys.enterNewName.tr(),
     body: (_, __) => AccountRenameSheet(address: address),
@@ -20,7 +20,7 @@ class AccountRenameSheet extends StatefulWidget {
     super.key,
   });
 
-  final String address;
+  final Address address;
 
   @override
   State<AccountRenameSheet> createState() => _AccountRenameSheetState();

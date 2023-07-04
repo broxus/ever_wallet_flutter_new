@@ -10,7 +10,7 @@ import 'package:nekoton_repository/nekoton_repository.dart' hide Message;
 import 'package:ui_components_lib/ui_components_lib.dart';
 
 /// Helper method that shows the [ExportSeedSheet] bottom sheet.
-ModalRoute<void> exportSeedSheetRoute(String publicKey) {
+ModalRoute<void> exportSeedSheetRoute(PublicKey publicKey) {
   return commonBottomSheetRoute<void>(
     title: LocaleKeys.enterPasswordTo.tr(
       args: [LocaleKeys.exportWord.tr().toLowerCase()],
@@ -33,7 +33,7 @@ class ExportSeedSheet extends StatelessWidget {
     super.key,
   });
 
-  final String publicKey;
+  final PublicKey publicKey;
 
   @override
   Widget build(BuildContext context) {

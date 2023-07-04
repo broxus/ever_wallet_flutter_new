@@ -8,7 +8,7 @@ import 'package:ui_components_lib/ui_components_lib.dart';
 /// Helper function to show [AccountSettingsSheet].
 Future<void> showAccountSettingsSheet({
   required BuildContext context,
-  required String address,
+  required Address address,
   bool showHiding = true,
 }) {
   return showCommonBottomSheet(
@@ -31,7 +31,7 @@ class AccountSettingsSheet extends StatelessWidget {
   });
 
   /// Address of account to show settings for.
-  final String address;
+  final Address address;
 
   /// Flag if hide/show item should be shown.
   final bool showHiding;
