@@ -8,6 +8,7 @@ import 'package:app/data/models/search_history.dart';
 import 'package:app/data/models/site_meta_data.dart';
 import 'package:encrypted_storage/encrypted_storage.dart';
 import 'package:injectable/injectable.dart';
+import 'package:nekoton_repository/nekoton_repository.dart';
 import 'package:rxdart/rxdart.dart';
 
 const _permissionsKey = 'permissions_key';
@@ -74,7 +75,7 @@ class BrowserStorageService extends AbstractStorageService {
       _storage.delete(origin, domain: _permissionsKey);
 
   /// Delete permissions for specified account
-  Future<void> deletePermissionsForAccount(String address) async {
+  Future<void> deletePermissionsForAccount(Address address) async {
     final perms = await permissions;
     final origins = perms.entries
         .where((e) => e.value.accountInteraction?.address == address)

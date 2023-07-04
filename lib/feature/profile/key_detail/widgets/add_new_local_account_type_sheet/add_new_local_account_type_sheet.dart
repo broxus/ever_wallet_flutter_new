@@ -8,7 +8,7 @@ import 'package:ui_components_lib/ui_components_lib.dart';
 
 /// Helper function to display AddNewLocalAccountTypeSheet
 ModalRoute<void> showAddNewLocalAccountTypeSheet({
-  required String publicKey,
+  required PublicKey publicKey,
   required String name,
 }) {
   return commonBottomSheetRoute(

@@ -22,30 +22,30 @@ class DeriveKeysCubit extends Cubit<DeriveKeysState> {
   ) : super(const DeriveKeysState.initial());
 
   final NekotonRepository nekotonRepository;
-  final String publicKey;
+  final PublicKey publicKey;
   final String password;
 
   /// Keys that were added before this deriving
-  List<String> addedKeys = [];
+  List<PublicKey> addedKeys = [];
 
   /// Key - public key, value - name of key
-  Map<String, String> addedKeysNames = {};
+  Map<PublicKey, String> addedKeysNames = {};
 
   /// Index of page that should contains paginated keys from
   /// [derivePossibleKeys], page can be up to [_pageCount].
   int _currentPageIndex = 0;
 
   /// List of keys that should be displayed in UI like all possible keys.
-  List<String> derivePossibleKeys = [];
+  List<PublicKey> derivePossibleKeys = [];
 
   /// Keys that were added during this deriving and this keys should be derived
-  Set<String> newKeysToAdd = {};
+  Set<PublicKey> newKeysToAdd = {};
 
   /// Keys that were added before this deriving and must be removed
-  Set<String> keysToRemove = {};
+  Set<PublicKey> keysToRemove = {};
 
   /// Keys that should contains check mark in UI (like they are added)
-  Set<String> checkedKeys = {};
+  Set<PublicKey> checkedKeys = {};
 
   Future<void> init() async {
     final seed = nekotonRepository.seedList.findSeed(publicKey);
@@ -66,7 +66,7 @@ class DeriveKeysCubit extends Cubit<DeriveKeysState> {
   /// Set check mark to key.
   /// Add new key to [newKeysToAdd] if it was not added before or do nothing if
   /// it is in [addedKeys].
-  void checkKey(String publicKey) {
+  void checkKey(PublicKey publicKey) {
     if (!addedKeys.contains(publicKey)) {
       newKeysToAdd.add(publicKey);
     } else {
@@ -80,7 +80,7 @@ class DeriveKeysCubit extends Cubit<DeriveKeysState> {
   /// Remove check mark from key.
   /// Add key to [keysToRemove] if it is in [addedKeys] or do nothing if it is
   /// in [newKeysToAdd].
-  void uncheckKey(String publicKey) {
+  void uncheckKey(PublicKey publicKey) {
     if (addedKeys.contains(publicKey)) {
       keysToRemove.add(publicKey);
     } else {

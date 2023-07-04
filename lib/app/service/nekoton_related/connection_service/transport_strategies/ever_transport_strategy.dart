@@ -8,8 +8,8 @@ class EverTransportStrategy extends TransportStrategy {
   final Transport transport;
 
   @override
-  String accountExplorerLink(String accountAddress) =>
-      'https://everscan.io/accounts/$accountAddress';
+  String accountExplorerLink(Address accountAddress) =>
+      'https://everscan.io/accounts/${accountAddress.address}';
 
   @override
   final availableWalletTypes = const [
@@ -71,8 +71,10 @@ class EverTransportStrategy extends TransportStrategy {
   final nativeTokenTicker = 'EVER';
 
   @override
-  final nativeTokenAddress =
-      '0:a49cd4e158a9a15555e624759e2e4e766d22600b7800d891e46f9291f044a93d';
+  final nativeTokenAddress = const Address(
+    address:
+        '0:a49cd4e158a9a15555e624759e2e4e766d22600b7800d891e46f9291f044a93d',
+  );
 
   @override
   final networkName = 'Everscale';

@@ -9,7 +9,7 @@ import 'package:ui_components_lib/ui_components_lib.dart';
 /// Helper method to display [AddNewExternalAccountSheet].
 Future<void> showAddNewExternalAccountSheet({
   required BuildContext context,
-  required String publicKey,
+  required PublicKey publicKey,
 }) {
   return showCommonBottomSheet(
     context: context,

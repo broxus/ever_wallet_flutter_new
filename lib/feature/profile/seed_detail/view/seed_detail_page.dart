@@ -16,7 +16,7 @@ class SeedDetailPage extends StatelessWidget {
   });
 
   /// Master key of seed
-  final String publicKey;
+  final PublicKey publicKey;
 
   @override
   Widget build(BuildContext context) {

@@ -17,7 +17,7 @@ class AddNewLocalAccountTypeCubit extends Cubit<AddNewLocalAccountTypeState> {
   final NekotonRepository nekotonRepository;
 
   /// Key for which account will be created
-  final String publicKey;
+  final PublicKey publicKey;
 
   /// If name is empty, then default will be created
   final String name;

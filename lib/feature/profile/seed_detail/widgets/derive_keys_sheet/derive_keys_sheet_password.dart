@@ -2,13 +2,14 @@ import 'package:app/feature/profile/seed_detail/widgets/widgets.dart';
 import 'package:app/feature/profile/widgets/widgets.dart';
 import 'package:app/generated/generated.dart';
 import 'package:flutter/material.dart';
+import 'package:nekoton_repository/nekoton_repository.dart';
 import 'package:ui_components_lib/ui_components_lib.dart';
 
 /// Helper function that shows [DeriveKeysEnterPasswordSheet] to enter
 /// password before deriving keys.
 void showDeriveKeysSheetPassword(
   BuildContext context,
-  String publicKey,
+  PublicKey publicKey,
 ) {
   showCommonBottomSheet<void>(
     context: context,
@@ -27,7 +28,7 @@ class DeriveKeysEnterPasswordSheet extends StatelessWidget {
     super.key,
   });
 
-  final String publicKey;
+  final PublicKey publicKey;
 
   @override
   Widget build(BuildContext context) {

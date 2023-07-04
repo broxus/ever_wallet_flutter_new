@@ -21,10 +21,10 @@ class SeedDetailCubit extends Cubit<SeedDetailState> {
   final CurrentSeedService currentSeedService;
   final CurrentKeyService currentKeyService;
   final NekotonRepository nekotonRepository;
-  final String publicKey;
+  final PublicKey publicKey;
 
   late StreamSubscription<Seed?> _currentSeedSubscription;
-  late StreamSubscription<String?> _currentKeySubscription;
+  late StreamSubscription<PublicKey?> _currentKeySubscription;
   late StreamSubscription<SeedList> _seedListSubscription;
 
   void init() {
@@ -55,7 +55,7 @@ class SeedDetailCubit extends Cubit<SeedDetailState> {
     );
   }
 
-  void _mapState({required Seed? currentSeed, required String? currentKey}) {
+  void _mapState({required Seed? currentSeed, required PublicKey? currentKey}) {
     final seed = nekotonRepository.seedList.findSeed(publicKey);
 
     if (seed == null) {

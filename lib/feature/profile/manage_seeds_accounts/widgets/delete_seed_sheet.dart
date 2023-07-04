@@ -5,7 +5,7 @@ import 'package:nekoton_repository/nekoton_repository.dart';
 import 'package:ui_components_lib/ui_components_lib.dart';
 
 /// Helper method that shows the [DeleteSeedSheet] bottom sheet.
-ModalRoute<void> deleteSeedSheetRoute(String publicKey) {
+ModalRoute<void> deleteSeedSheetRoute(PublicKey publicKey) {
   return commonBottomSheetRoute<void>(
     title: LocaleKeys.deleteSeedPhrase.tr(),
     subtitle: LocaleKeys.deleteSeedPhraseDescription.tr(),
@@ -21,7 +21,7 @@ class DeleteSeedSheet extends StatelessWidget {
     super.key,
   });
 
-  final String publicKey;
+  final PublicKey publicKey;
 
   @override
   Widget build(BuildContext context) {

@@ -8,8 +8,8 @@ class VenomTransportStrategy extends TransportStrategy {
   final Transport transport;
 
   @override
-  String accountExplorerLink(String accountAddress) =>
-      'https://venomscan.com/accounts/$accountAddress';
+  String accountExplorerLink(Address accountAddress) =>
+      'https://venomscan.com/accounts/${accountAddress.address}';
 
   @override
   final availableWalletTypes = const [
@@ -63,8 +63,10 @@ class VenomTransportStrategy extends TransportStrategy {
   final nativeTokenTicker = 'VENOM';
 
   @override
-  final nativeTokenAddress =
-      '0:28237a5d5abb32413a79b5f98573074d3b39b72121305d9c9c97912fc06d843c';
+  final nativeTokenAddress = const Address(
+    address:
+        '0:28237a5d5abb32413a79b5f98573074d3b39b72121305d9c9c97912fc06d843c',
+  );
 
   @override
   final networkName = 'Venom';

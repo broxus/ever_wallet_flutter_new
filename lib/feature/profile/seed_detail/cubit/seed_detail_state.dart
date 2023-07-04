@@ -8,7 +8,7 @@ class SeedDetailState with _$SeedDetailState {
   const factory SeedDetailState.data({
     required Seed seed,
     required bool isCurrentSeed,
-    required String? currentPublicKey,
+    required PublicKey? currentPublicKey,
   }) = _Data;
 
   /// No seed found, we need close screen

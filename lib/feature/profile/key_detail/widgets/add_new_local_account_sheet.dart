@@ -1,12 +1,13 @@
 import 'package:app/feature/profile/profile.dart';
 import 'package:app/generated/generated.dart';
 import 'package:flutter/material.dart';
+import 'package:nekoton_repository/nekoton_repository.dart';
 import 'package:ui_components_lib/ui_components_lib.dart';
 
 /// This is a helper method to display AddNewLocalAccountSheet.
 Future<void> showAddNewLocalAccountSheet({
   required BuildContext context,
-  required String publicKey,
+  required PublicKey publicKey,
 }) {
   return showCommonBottomSheet(
     context: context,
@@ -31,7 +32,7 @@ class AddNewLocalAccountSheet extends StatefulWidget {
     super.key,
   });
 
-  final String publicKey;
+  final PublicKey publicKey;
   final ScrollController controller;
 
   @override

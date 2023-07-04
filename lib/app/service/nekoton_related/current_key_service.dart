@@ -15,23 +15,23 @@ class CurrentKeyService {
   final NekotonRepository _nekotonRepository;
 
   /// Getter of last used key
-  String? get currentKey => _storageService.currentKey;
+  PublicKey? get currentKey => _storageService.currentKey;
 
   /// Stream of last used key
-  Stream<String?> get currentKeyStream => _storageService.currentKeyStream;
+  Stream<PublicKey?> get currentKeyStream => _storageService.currentKeyStream;
 
   /// Getter of last viewed seed (only master keys)
-  List<String> get lastViewedSeeds => _storageService.lastViewedSeeds;
+  List<PublicKey> get lastViewedSeeds => _storageService.lastViewedSeeds;
 
   /// Stream of ast viewed seed (only master keys)
-  Stream<List<String>> get lastViewedSeedsStream =>
+  Stream<List<PublicKey>> get lastViewedSeedsStream =>
       _storageService.lastViewedSeedsStream;
 
   /// Change current selected key and update [lastViewedSeeds].
-  Future<void> changeCurrentKey(String publicKey) {
+  Future<void> changeCurrentKey(PublicKey publicKey) {
     final masterKey =
         _nekotonRepository.seedList.findSeedKey(publicKey)?.key.masterKey;
-    final lastViewed = List<String>.from(lastViewedSeeds);
+    final lastViewed = List<PublicKey>.from(lastViewedSeeds);
     if (masterKey != null) {
       lastViewed.insert(0, masterKey);
     }

@@ -18,7 +18,7 @@ class KeyDetailCubit extends Cubit<KeyDetailState> {
   ) : super(const KeyDetailState.initial());
 
   final NekotonRepository nekotonRepository;
-  final String publicKey;
+  final PublicKey publicKey;
 
   KeyDetailAccountsTab _accountsTab = KeyDetailAccountsTab.local;
   late String _ownerSeedName;

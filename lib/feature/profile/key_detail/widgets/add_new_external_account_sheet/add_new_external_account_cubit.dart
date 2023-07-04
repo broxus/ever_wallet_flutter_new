@@ -17,16 +17,16 @@ class AddNewExternalAccountCubit extends Cubit<AddNewExternalAccountState> {
   ) : super(const AddNewExternalAccountState.initial());
 
   /// Public key for which new account will be added
-  final String publicKey;
+  final PublicKey publicKey;
   final NekotonRepository nekotonRepository;
 
-  Future<void> createAccount(String addr, String name) async {
+  Future<void> createAccount(String addressString, String name) async {
     final seedKey = nekotonRepository.seedList.findSeedKey(publicKey);
     if (seedKey == null) return;
 
     emit(const AddNewExternalAccountState.loading());
     final newName = name.trim();
-    final address = addr.trim();
+    final address = Address(address: addressString.trim());
 
     try {
       final isCorrect = await validateAddress(address);

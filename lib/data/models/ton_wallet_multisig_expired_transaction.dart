@@ -13,7 +13,7 @@ class TonWalletMultisigExpiredTransaction
     required List<String> custodians,
     required bool isOutgoing,
     @amountJsonConverter required Fixed value,
-    required String address,
+    required Address address,
     required DateTime date,
     @amountJsonConverter required Fixed fees,
     required String hash,

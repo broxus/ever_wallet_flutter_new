@@ -1,5 +1,6 @@
 import 'package:app/data/models/network_type.dart';
 import 'package:freezed_annotation/freezed_annotation.dart';
+import 'package:nekoton_repository/nekoton_repository.dart';
 
 part 'token_contract_asset.freezed.dart';
 
@@ -11,7 +12,7 @@ class TokenContractAsset with _$TokenContractAsset {
     required String name,
     required String symbol,
     required int decimals,
-    required String address,
+    required Address address,
     required NetworkType networkType,
     required int version,
     int? chainId,

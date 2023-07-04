@@ -3,6 +3,7 @@ import 'package:app/app/router/router.dart';
 import 'package:app/feature/profile/profile.dart';
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
+import 'package:nekoton_repository/nekoton_repository.dart';
 
 /// Get route for profile root.
 GoRoute get profileRoute {
@@ -39,7 +40,9 @@ GoRoute get seedDetailRoute {
   return GoRoute(
     path: AppRoute.seedDetail.path,
     builder: (_, state) => SeedDetailPage(
-      publicKey: state.pathParameters[publicKeyPathParam]!,
+      publicKey: PublicKey(
+        publicKey: state.pathParameters[publicKeyPathParam]!,
+      ),
     ),
     routes: [keyDetailRoute],
   );
@@ -49,7 +52,9 @@ GoRoute get keyDetailRoute {
   return GoRoute(
     path: AppRoute.keyDetail.path,
     builder: (_, state) => KeyDetailPage(
-      publicKey: state.pathParameters[publicKeyPathParam]!,
+      publicKey: PublicKey(
+        publicKey: state.pathParameters[publicKeyPathParam]!,
+      ),
     ),
   );
 }

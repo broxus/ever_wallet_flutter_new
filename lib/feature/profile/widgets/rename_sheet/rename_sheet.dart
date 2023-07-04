@@ -14,7 +14,10 @@ export 'rename_sheet_cubit.dart';
 /// To rename seed phrase, put [renameSeed] true, else key will be renamed.
 ///
 /// Snackbar will contains 'seed' if [renameSeed] is true and 'key' if false.
-ModalRoute<void> showRenameSheet(String publicKey, {bool renameSeed = false}) {
+ModalRoute<void> showRenameSheet(
+  PublicKey publicKey, {
+  bool renameSeed = false,
+}) {
   return commonBottomSheetRoute(
     title: LocaleKeys.enterNewName.tr(),
     body: (_, __) => BlocProvider<RenameSheetCubit>(

@@ -16,7 +16,7 @@ class ChangeSeedPasswordCubit extends Cubit<ChangeSeedPasswordState> {
     this.biometryService,
   ) : super(const ChangeSeedPasswordState.initial());
 
-  final String publicKey;
+  final PublicKey publicKey;
   final NekotonRepository nekotonRepository;
   final BiometryService biometryService;
 

@@ -11,7 +11,7 @@ import 'package:ui_components_lib/ui_components_lib.dart';
 const _minPasswordLength = 8;
 
 /// Helper method that shows the [ChangeSeedPasswordSheet] bottom sheet.
-ModalRoute<void> changeSeedPasswordSheetRoute(String publicKey) {
+ModalRoute<void> changeSeedPasswordSheetRoute(PublicKey publicKey) {
   return commonBottomSheetRoute<void>(
     title: LocaleKeys.changeSeedPassword.tr(),
     useAppBackgroundColor: true,

@@ -1,7 +1,6 @@
 import 'package:app/di/di.dart';
 import 'package:app/feature/profile/seed_detail/widgets/derive_keys_sheet/derive_keys_cubit.dart';
 import 'package:app/generated/generated.dart';
-import 'package:app/utils/utils.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:nekoton_repository/nekoton_repository.dart';
@@ -9,7 +8,7 @@ import 'package:ui_components_lib/ui_components_lib.dart';
 
 /// Helper method that displays [DeriveKeysSheet] sheet.
 /// Showing this sheet means, that [password] is correct for [publicKey].
-ModalRoute<void> deriveKeysSheet(String publicKey, String password) {
+ModalRoute<void> deriveKeysSheet(PublicKey publicKey, String password) {
   return commonBottomSheetRoute(
     title: LocaleKeys.selectKeysYouNeed.tr(),
     body: (_, controller) => BlocProvider<DeriveKeysCubit>(
@@ -37,7 +36,7 @@ class DeriveKeysSheet extends StatelessWidget {
   final ScrollController controller;
 
   /// For master key changing its state must be disabled (it's always checked)
-  final String masterKey;
+  final PublicKey masterKey;
 
   @override
   Widget build(BuildContext context) {
@@ -147,7 +146,7 @@ class DeriveKeysSheet extends StatelessWidget {
   }
 
   Widget _keyItem({
-    required String key,
+    required PublicKey key,
     required bool isSelected,
     String? name,
   }) {
@@ -165,7 +164,7 @@ class DeriveKeysSheet extends StatelessWidget {
           leading: CommonBackgroundedIconWidget.svg(
             svg: Assets.images.key.path,
           ),
-          titleText: name ?? key.ellipsePublicKey(),
+          titleText: name ?? key.toEllipseString(),
           trailing: CommonIconWidget.svg(
             svg: isSelected
                 ? Assets.images.checkSquare.path

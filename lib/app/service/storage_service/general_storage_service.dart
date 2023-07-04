@@ -2,7 +2,7 @@ import 'dart:async';
 import 'dart:convert';
 
 import 'package:app/app/service/service.dart';
-import 'package:app/data/models/currency.dart';
+import 'package:app/data/models/custom_currency.dart';
 import 'package:app/data/models/network_type.dart';
 import 'package:app/data/models/token_contract_asset.dart';
 import 'package:encrypted_storage/encrypted_storage.dart';
@@ -59,40 +59,42 @@ class GeneralStorageService extends AbstractStorageService {
   Future<void> clearPreferences() => _storage.clearDomain(_preferencesKey);
 
   /// Subject of public keys names
-  final _currentKeySubject = BehaviorSubject<String?>();
+  final _currentKeySubject = BehaviorSubject<PublicKey?>();
 
   /// Stream of public keys names
-  Stream<String?> get currentKeyStream => _currentKeySubject;
+  Stream<PublicKey?> get currentKeyStream => _currentKeySubject;
 
   /// Get last cached public key that user set before
-  String? get currentKey => _currentKeySubject.valueOrNull;
+  PublicKey? get currentKey => _currentKeySubject.valueOrNull;
 
   /// Read from storage current public key that user set before
-  Future<String?> readCurrentKey() =>
-      _storage.get(_currentKey, domain: _preferencesKey);
+  Future<PublicKey?> readCurrentKey() async {
+    final keyString = await _storage.get(_currentKey, domain: _preferencesKey);
+    return keyString != null ? PublicKey(publicKey: keyString) : null;
+  }
 
   /// Put current public key of user to stream
   Future<void> _streamedCurrentKey() async =>
       _currentKeySubject.add(await readCurrentKey());
 
   /// Set current public key of user
-  Future<void> setCurrentKey(String publicKey) async {
+  Future<void> setCurrentKey(PublicKey publicKey) async {
     await _storage.set(
       _currentKey,
-      publicKey,
+      publicKey.publicKey,
       domain: _preferencesKey,
     );
     await _streamedCurrentKey();
   }
 
   /// Subject of last viewed seeds (master keys)
-  final _lastViewedSeedsSubject = BehaviorSubject<List<String>>();
+  final _lastViewedSeedsSubject = BehaviorSubject<List<PublicKey>>();
 
   /// Stream of last viewed seeds (master keys)
-  Stream<List<String>> get lastViewedSeedsStream => _lastViewedSeedsSubject;
+  Stream<List<PublicKey>> get lastViewedSeedsStream => _lastViewedSeedsSubject;
 
   /// Get last cached viewed seeds (master keys)
-  List<String> get lastViewedSeeds => _lastViewedSeedsSubject.value;
+  List<PublicKey> get lastViewedSeeds => _lastViewedSeedsSubject.value;
 
   /// Put last viewed seeds (master keys) to stream
   Future<void> _streamedLastViewedSeeds() async =>
@@ -102,7 +104,7 @@ class GeneralStorageService extends AbstractStorageService {
   ///
   /// After updating to application version with this list, it's filled with 4
   /// (or less) random keys with [currentKey] at 1-st place.
-  Future<List<String>> readLastViewedSeeds() async {
+  Future<List<PublicKey>> readLastViewedSeeds() async {
     final seeds = await _storage.get(
       _lastSelectedSeedsKey,
       domain: _preferencesKey,
@@ -112,14 +114,17 @@ class GeneralStorageService extends AbstractStorageService {
     }
     final seedsList = jsonDecode(seeds) as List<dynamic>;
 
-    return seedsList.cast<String>();
+    return seedsList
+        .cast<String>()
+        .map((keyString) => PublicKey(publicKey: keyString))
+        .toList();
   }
 
   /// Update seeds that were used by user.
   /// There must be only master keys, if key is sub, then put its master.
   /// Count of seeds must be less or equals to [maxLastSelectedSeeds] and
   /// cropped outside.
-  Future<void> updateLastViewedSeeds(List<String> seedsKeys) async {
+  Future<void> updateLastViewedSeeds(List<PublicKey> seedsKeys) async {
     await _storage.set(
       _lastSelectedSeedsKey,
       jsonEncode(seedsKeys),
@@ -129,25 +134,25 @@ class GeneralStorageService extends AbstractStorageService {
   }
 
   /// Get password of public key if it was cached with biometry
-  Future<String?> getKeyPassword(String publicKey) => _storage.get(
-        publicKey,
+  Future<String?> getKeyPassword(PublicKey publicKey) => _storage.get(
+        publicKey.publicKey,
         domain: _passwordsKey,
       );
 
   /// Set password of public key to cache it with biometry
   Future<void> setKeyPassword({
-    required String publicKey,
+    required PublicKey publicKey,
     required String password,
   }) =>
       _storage.set(
-        publicKey,
+        publicKey.publicKey,
         password,
         domain: _passwordsKey,
       );
 
   /// Remove password of public key from cache
-  Future<void> removeKeyPassword(String publicKey) =>
-      _storage.delete(publicKey, domain: _passwordsKey);
+  Future<void> removeKeyPassword(PublicKey publicKey) =>
+      _storage.delete(publicKey.publicKey, domain: _passwordsKey);
 
   /// Clear all passwords of public keys from cache
   Future<void> clearKeyPasswords() => _storage.clearDomain(_passwordsKey);
@@ -420,14 +425,15 @@ class GeneralStorageService extends AbstractStorageService {
   }
 
   /// Subject of currencies by network type
-  final _currencySubject = BehaviorSubject<Map<NetworkType, List<Currency>>>();
+  final _currencySubject =
+      BehaviorSubject<Map<NetworkType, List<CustomCurrency>>>();
 
   /// Stream of currencies by specified network type
-  Stream<List<Currency>> currenciesStream(NetworkType network) =>
+  Stream<List<CustomCurrency>> currenciesStream(NetworkType network) =>
       _currencySubject.map((event) => event[network] ?? []);
 
   /// Get last cached currencies by network type
-  List<Currency> getCurrencies(NetworkType type) =>
+  List<CustomCurrency> getCurrencies(NetworkType type) =>
       _currencySubject.value[type] ?? [];
 
   /// Put custom token contract assets to stream
@@ -437,7 +443,9 @@ class GeneralStorageService extends AbstractStorageService {
       (key, value) => MapEntry(
         NetworkType.values[int.parse(key)],
         (jsonDecode(value) as List<dynamic>)
-            .map((entry) => Currency.fromJson(entry as Map<String, dynamic>))
+            .map(
+              (entry) => CustomCurrency.fromJson(entry as Map<String, dynamic>),
+            )
             .toList(),
       ),
     );
@@ -445,7 +453,7 @@ class GeneralStorageService extends AbstractStorageService {
   }
 
   /// Read from storage list of all currencies specified for network type
-  Future<List<Currency>> readCurrencies(NetworkType type) async {
+  Future<List<CustomCurrency>> readCurrencies(NetworkType type) async {
     final encoded = await _storage.get(
       type.index.toString(),
       domain: _currenciesKey,
@@ -456,13 +464,13 @@ class GeneralStorageService extends AbstractStorageService {
     final list = jsonDecode(encoded) as List<dynamic>;
 
     return list
-        .map((entry) => Currency.fromJson(entry as Map<String, dynamic>))
+        .map((entry) => CustomCurrency.fromJson(entry as Map<String, dynamic>))
         .toList();
   }
 
   /// Save currency to storage for specified network type.
   /// This ignores duplicates and saves only one currency with same address.
-  Future<void> saveOrUpdateCurrency({required Currency currency}) async {
+  Future<void> saveOrUpdateCurrency({required CustomCurrency currency}) async {
     final type = currency.networkType;
     final list = await readCurrencies(type);
     final newList = list.where((e) => e.address != currency.address).toList()
