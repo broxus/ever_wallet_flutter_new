@@ -124,5 +124,6 @@
   "addressIsWrong": "Address is wrong",
   "hideWord": "Hide",
   "showWord": "Show",
-  "settingsOfAccount": "Settings of the account"
+  "settingsOfAccount": "Settings of the account",
+  "displayOnMainScreen": "Display on the main screen"
 }

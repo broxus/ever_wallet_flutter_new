@@ -1,3 +1,4 @@
+import 'package:app/app/router/app_route.dart';
 import 'package:app/app/service/service.dart';
 import 'package:app/di/di.dart';
 import 'package:app/feature/profile/profile.dart';
@@ -197,6 +198,9 @@ class KeyDetailView extends StatelessWidget {
 
         return CommonListTile(
           padding: EdgeInsets.zero,
+          onPressed: () => context.goFurther(
+            AppRoute.accountDetail.pathWithData(account.address.address),
+          ),
           leading: CommonBackgroundedIconWidget.svg(
             svg: Assets.images.person.path,
           ),
@@ -207,7 +211,10 @@ class KeyDetailView extends StatelessWidget {
             mainAxisSize: MainAxisSize.min,
             children: [
               if (account.isHidden)
-                CommonIconWidget.svg(svg: Assets.images.closedEye.path),
+                CommonIconWidget.svg(
+                  svg: Assets.images.closedEye.path,
+                  color: colors.textPrimary,
+                ),
               CommonIconButton.svg(
                 svg: Assets.images.settings.path,
                 buttonType: EverButtonType.ghost,
