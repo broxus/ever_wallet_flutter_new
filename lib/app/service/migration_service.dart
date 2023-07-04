@@ -14,7 +14,7 @@ import 'package:app/app/service/dto/wallet_contract_type_dto.dart';
 import 'package:app/app/service/service.dart';
 import 'package:app/data/models/bookmark.dart';
 import 'package:app/data/models/browser_tab.dart';
-import 'package:app/data/models/custom_currency.dart' as cur;
+import 'package:app/data/models/custom_currency.dart';
 import 'package:app/data/models/network_type.dart';
 import 'package:app/data/models/permissions.dart';
 import 'package:app/data/models/search_history.dart';
@@ -427,23 +427,23 @@ class HiveSourceMigration {
 
   Future<void> clearSitesMetaData() => _siteMetaDataBox.clear();
 
-  List<cur.CustomCurrency> get everCurrencies => _everCurrenciesBox.values
+  List<CustomCurrency> get everCurrencies => _everCurrenciesBox.values
       .map((e) => e.toModel(NetworkType.ever))
       .toList();
 
-  List<cur.CustomCurrency> get venomCurrencies => _venomCurrenciesBox.values
+  List<CustomCurrency> get venomCurrencies => _venomCurrenciesBox.values
       .map((e) => e.toModel(NetworkType.venom))
       .toList();
 
   Future<void> saveEverCurrency({
     required Address address,
-    required cur.CustomCurrency currency,
+    required CustomCurrency currency,
   }) =>
       _everCurrenciesBox.put(address.address, currency.toDto());
 
   Future<void> saveVenomCurrency({
     required Address address,
-    required cur.CustomCurrency currency,
+    required CustomCurrency currency,
   }) =>
       _venomCurrenciesBox.put(address.address, currency.toDto());
 

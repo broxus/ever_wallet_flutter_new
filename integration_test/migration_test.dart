@@ -4,7 +4,7 @@ import 'package:app/app/service/service.dart';
 import 'package:app/data/models/account_interaction.dart';
 import 'package:app/data/models/bookmark.dart';
 import 'package:app/data/models/browser_tab.dart';
-import 'package:app/data/models/custom_currency.dart' as cur;
+import 'package:app/data/models/custom_currency.dart';
 import 'package:app/data/models/network_type.dart';
 import 'package:app/data/models/permissions.dart';
 import 'package:app/data/models/search_history.dart';
@@ -63,7 +63,7 @@ const _venomContractAsset = TokenContractAsset(
   version: 5,
   networkType: NetworkType.venom,
 );
-const _everCurrency = cur.CustomCurrency(
+const _everCurrency = CustomCurrency(
   address: Address(address: '42:everAddress'),
   currency: 'EVER',
   fee24h: '',
@@ -77,7 +77,7 @@ const _everCurrency = cur.CustomCurrency(
   volumeChange24h: '',
   networkType: NetworkType.ever,
 );
-const _venomCurrency = cur.CustomCurrency(
+const _venomCurrency = CustomCurrency(
   address: Address(address: '69:venomAddress'),
   currency: 'VENOM',
   fee24h: '',
