@@ -1,0 +1,4 @@
+enum ContactSupportMode {
+  initiatedByUser,
+  initiatedByCrash,
+}

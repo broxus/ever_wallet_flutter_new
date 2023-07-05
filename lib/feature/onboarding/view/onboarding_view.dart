@@ -1,4 +1,5 @@
 import 'package:app/app/router/app_route.dart';
+import 'package:app/feature/contact_support/contact_support.dart';
 import 'package:app/feature/onboarding/onboarding.dart';
 import 'package:app/generated/generated.dart';
 import 'package:flutter/gestures.dart';
@@ -18,15 +19,42 @@ class OnboardingView extends StatelessWidget {
     final colors = context.themeStyle.colors;
 
     return SafeArea(
-      minimum: const EdgeInsets.only(bottom: 16),
+      minimum: const EdgeInsets.only(bottom: DimensSize.d16),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          const SizedBox(height: 8),
-          const Expanded(child: SlidingBlockChains()),
-          const SizedBox(height: 20),
           Padding(
-            padding: const EdgeInsets.symmetric(horizontal: 16),
+            padding: const EdgeInsets.symmetric(
+              horizontal: DimensSize.d16,
+              vertical: DimensSize.d12,
+            ),
+            child: Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: [
+                SmallButton.secondary(
+                  leading: CommonButtonIconWidget.svg(
+                    svg: Assets.images.langIcons.english.path,
+                  ),
+                  text: LocaleKeys.langEnglish.tr(),
+                  onPressed: () {},
+                ),
+                CommonIconButton.svg(
+                  svg: Assets.images.support.path,
+                  buttonType: EverButtonType.secondary,
+                  innerPadding: const EdgeInsets.all(DimensSize.d12),
+                  onPressed: () => showContactSupportSheet(
+                    context: context,
+                    mode: ContactSupportMode.initiatedByUser,
+                  ),
+                ),
+              ],
+            ),
+          ),
+          const SizedBox(height: DimensSize.d12),
+          const Expanded(child: SlidingBlockChains()),
+          const SizedBox(height: DimensSize.d20),
+          Padding(
+            padding: const EdgeInsets.symmetric(horizontal: DimensSize.d16),
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [

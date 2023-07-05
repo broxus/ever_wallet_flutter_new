@@ -1,6 +1,7 @@
 import 'package:app/app/router/app_route.dart';
 import 'package:app/app/service/service.dart';
 import 'package:app/di/di.dart';
+import 'package:app/feature/contact_support/contact_support.dart';
 import 'package:app/feature/profile/profile.dart';
 import 'package:app/generated/assets.gen.dart';
 import 'package:app/generated/locale_keys.g.dart';
@@ -101,6 +102,23 @@ class ProfileView extends StatelessWidget {
                       );
                     },
                   ),
+              ],
+            ),
+            const SizedBox(height: DimensSize.d16),
+            ShapedContainerColumn(
+              separator: const CommonDivider(),
+              children: [
+                _profileTile(
+                  leadingIcon: Assets.images.support.path,
+                  title: LocaleKeys.contactSupport.tr(),
+                  trailing: CommonButtonIconWidget.svg(
+                    svg: Assets.images.caretRight.path,
+                  ),
+                  onPressed: () => showContactSupportSheet(
+                    context: context,
+                    mode: ContactSupportMode.initiatedByUser,
+                  ),
+                ),
               ],
             ),
             const SizedBox(height: DimensSize.d40),
