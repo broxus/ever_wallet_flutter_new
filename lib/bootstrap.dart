@@ -6,6 +6,7 @@ import 'package:app/bootstrap/bootstrap.dart';
 import 'package:app/di/di.dart';
 import 'package:bloc/bloc.dart';
 import 'package:easy_localization/easy_localization.dart';
+import 'package:flutter/foundation.dart';
 import 'package:flutter/widgets.dart';
 import 'package:go_router/go_router.dart';
 import 'package:logging/logging.dart';
@@ -56,6 +57,11 @@ Future<void> bootstrap(
 
       FlutterError.onError = (details) {
         log.severe(details.exceptionAsString(), details, details.stack);
+      };
+
+      PlatformDispatcher.instance.onError = (error, stack) {
+        log.severe(null, error, stack);
+        return true;
       };
 
       Bloc.observer = AppBlocObserver();
