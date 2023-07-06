@@ -59,6 +59,7 @@ class _WalletAccountsBodyState extends State<WalletAccountsBody> {
                     height: DimensSize.d220,
                   );
                 }
+
                 return Padding(
                   padding: const EdgeInsets.symmetric(
                     horizontal: DimensSize.d16,

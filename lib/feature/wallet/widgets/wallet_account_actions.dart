@@ -23,16 +23,19 @@ class WalletAccountActions extends StatelessWidget {
       children: [
         _buttonItem(
           svg: Assets.images.arrowDown.path,
+          // ignore: no-empty-block
           onPressed: () {},
           title: LocaleKeys.receiveWord.tr(),
         ),
         _buttonItem(
           svg: Assets.images.arrowUp.path,
+          // ignore: no-empty-block
           onPressed: () {},
           title: LocaleKeys.sendWord.tr(),
         ),
         _buttonItem(
           svg: Assets.images.stake.path,
+          // ignore: no-empty-block
           onPressed: () {},
           title: LocaleKeys.stakeWord.tr(),
         ),
