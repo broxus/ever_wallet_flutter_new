@@ -100,6 +100,7 @@ class _AppWrapperState extends State<AppWrapper> with WidgetsBindingObserver {
   void initState() {
     super.initState();
     WidgetsBinding.instance.addObserver(this);
+    appStartSession(setCrashDetected: true);
   }
 
   @override
@@ -110,7 +111,17 @@ class _AppWrapperState extends State<AppWrapper> with WidgetsBindingObserver {
 
   @override
   void didChangeAppLifecycleState(AppLifecycleState state) {
-    if (state == AppLifecycleState.resumed) startLogSession();
+    switch (state) {
+      case AppLifecycleState.resumed:
+        startLogSession();
+        appStartSession(setCrashDetected: false);
+      case AppLifecycleState.inactive:
+        appStopSession();
+      case AppLifecycleState.paused:
+      case AppLifecycleState.detached:
+        break;
+    }
+
     inject<AppLifecycleService>().updateState(state);
   }
 
