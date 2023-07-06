@@ -22,6 +22,7 @@ dependencies:
   flutter:
     sdk: flutter
   flutter_bloc: ^8.1.3
+  flutter_email_sender: ^6.0.1
   flutter_svg: ^2.0.7
   freezed_annotation: ^2.2.0
   get_it: ^7.6.0
@@ -41,6 +42,7 @@ dependencies:
       ref: v0.1.1-dev.5
   path_provider: ^2.0.15
   rxdart: ^0.27.7
+  shared_preferences: ^2.2.0
   string_extensions: ^0.6.12
   ui_components_lib:
     path: packages/ui_components_lib
@@ -83,3 +85,4 @@ flutter:
     - assets/images/onboarding/layer2/
     - assets/images/onboarding/layer3/
     - assets/images/onboarding/
+    - assets/images/lang_icons/
