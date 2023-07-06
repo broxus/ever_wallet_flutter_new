@@ -12,7 +12,7 @@ part 'contact_support_bloc.freezed.dart';
 
 class ContactSupportBloc
     extends Bloc<ContactSupportEvent, ContactSupportState> {
-  ContactSupportBloc() : super(const _Initial()) {
+  ContactSupportBloc() : super(const ContactSupportState.initial()) {
     on<ContactSupportEvent>((event, emit) async {
       await event.map(
         sendEmail: (event) async {

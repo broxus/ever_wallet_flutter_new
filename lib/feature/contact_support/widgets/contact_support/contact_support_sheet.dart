@@ -31,12 +31,10 @@ Future<void> showContactSupportSheet({
       create: (context) => ContactSupportBloc(),
       child: BlocListener<ContactSupportBloc, ContactSupportState>(
         listener: (context, state) {
-          state.when(
+          state.whenOrNull(
             initial: () {
               Navigator.of(context).pop();
             },
-            // ignore: no-empty-block
-            busy: () {},
           );
         },
         child: ContactSupportSheet(mode: mode),
