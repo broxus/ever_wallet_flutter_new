@@ -61,6 +61,7 @@ Future<void> bootstrap(
 
       PlatformDispatcher.instance.onError = (error, stack) {
         log.severe(null, error, stack);
+
         return true;
       };
 

@@ -8,7 +8,6 @@ import 'package:ui_components_lib/ui_components_lib.dart';
 Future<void> showContactSupportSheet({
   required BuildContext context,
   required ContactSupportMode mode,
-  bool showHiding = true,
 }) {
   final title = switch (mode) {
     ContactSupportMode.initiatedByUser =>
@@ -36,6 +35,7 @@ Future<void> showContactSupportSheet({
             initial: () {
               Navigator.of(context).pop();
             },
+            // ignore: no-empty-block
             busy: () {},
           );
         },

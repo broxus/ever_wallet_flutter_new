@@ -24,10 +24,10 @@ class _CrashDetectorServiceWidgetState
   void initState() {
     super.initState();
 
-    detectCrash();
+    _detectCrash();
   }
 
-  Future<void> detectCrash() async {
+  Future<void> _detectCrash() async {
     super.initState();
 
     Future.delayed(_showContactSupportSheetDelay, () async {

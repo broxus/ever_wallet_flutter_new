@@ -36,6 +36,7 @@ class OnboardingView extends StatelessWidget {
                     svg: Assets.images.langIcons.english.path,
                   ),
                   text: LocaleKeys.langEnglish.tr(),
+                  // ignore: no-empty-block
                   onPressed: () {},
                 ),
                 CommonIconButton.svg(

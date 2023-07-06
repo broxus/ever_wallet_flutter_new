@@ -51,11 +51,13 @@ Future<bool> appGetCrashDetected() async {
     _log.info(
       'appGetCrashDetected: detected crash not indicated in debug mode',
     );
+
     return false;
   }
 
   _log.severe('appGetCrashDetected: detected crash indicated');
 
   await prefs.setBool(_crashDetectedKey, false);
+
   return true;
 }
