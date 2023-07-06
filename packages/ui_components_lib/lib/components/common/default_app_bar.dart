@@ -51,6 +51,7 @@ class DefaultAppBar extends StatelessWidget implements PreferredSizeWidget {
     this.titleWidget,
     this.subtitleTopWidget,
     this.subtitleBottomWidget,
+    this.leadingWidth = appBarButtonSize,
   });
 
   /// This is a default action of [DefaultAppBar] that is used with leading
@@ -124,6 +125,9 @@ class DefaultAppBar extends StatelessWidget implements PreferredSizeWidget {
   /// If divider must be displayed below appbar, default true
   final bool needDivider;
 
+  /// Width of leading widget, default [appBarButtonSize]
+  final double leadingWidth;
+
   bool get _hasActions => actions?.isNotEmpty ?? false;
 
   bool get _hasAnyActions => _hasActions || _showActionsClose;
@@ -163,8 +167,13 @@ class DefaultAppBar extends StatelessWidget implements PreferredSizeWidget {
         elevation: 0,
         titleSpacing: DimensSize.d8,
         centerTitle: centerTitle,
-        leadingWidth: appBarButtonSize,
-        leading: leading == null ? null : Center(child: leading),
+        leadingWidth: leadingWidth,
+        leading: leading == null
+            ? null
+            : Align(
+                alignment: Alignment.centerLeft,
+                child: leading,
+              ),
         actions: _hasAnyActions ? _actionsWidget(context) : null,
         title: title,
       ),

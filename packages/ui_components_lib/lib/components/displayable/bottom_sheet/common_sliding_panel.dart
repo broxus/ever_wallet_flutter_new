@@ -1,8 +1,9 @@
 import 'dart:math' as math;
 
 import 'package:flutter/material.dart';
-import 'package:sliding_up_panel2/sliding_up_panel2.dart';
 import 'package:ui_components_lib/ui_components_lib.dart';
+
+export 'package:sliding_up_panel2/sliding_up_panel2.dart';
 
 const defaultMinHeight = 150.0;
 const defaultMinHeightSizePercent = 0.3;
@@ -26,6 +27,7 @@ class CommonSlidingPanel extends StatefulWidget {
     this.minHeight = defaultMinHeight,
     super.key,
     this.scrollController,
+    this.panelController,
   });
 
   /// See [SlidingUpPanel.panelBuilder]
@@ -62,6 +64,9 @@ class CommonSlidingPanel extends StatefulWidget {
   /// If not provided, widget creates custom one.
   final ScrollController? scrollController;
 
+  /// Controller that allows programmatically hide/show panel.
+  final PanelController? panelController;
+
   @override
   State<CommonSlidingPanel> createState() => _CommonSlidingPanelState();
 }
@@ -89,6 +94,7 @@ class _CommonSlidingPanelState extends State<CommonSlidingPanel> {
     final colors = context.themeStyle.colors;
 
     return SlidingUpPanel(
+      controller: widget.panelController,
       scrollController: controller,
       minHeight:
           math.max(size.height * widget.minHeightSizePercent, widget.minHeight),

@@ -70,18 +70,16 @@ class CommonTabSwitcher<T> extends StatelessWidget {
       duration: kThemeAnimationDuration,
       builder: (context, color) {
         return CommonButton(
-          height: DimensSize.d48,
+          height: DimensSize.d40,
           squircleRadius: DimensRadius.medium,
           buttonType: EverButtonType.ghost,
           onPressed: () => onTabChanged(item.value),
           fillWidth: fillWidth,
           backgroundColor: color,
-          padding: const EdgeInsets.symmetric(
-            horizontal: DimensSize.d16,
-            vertical: DimensSize.d4,
-          ),
+          padding: const EdgeInsets.all(DimensSize.d4),
           textAlign: TextAlign.center,
           text: item.title,
+          style: StyleRes.primaryBold,
           contentColor: colors.textPrimary,
         );
       },

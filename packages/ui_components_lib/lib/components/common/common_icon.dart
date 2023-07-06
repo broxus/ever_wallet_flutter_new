@@ -16,6 +16,7 @@ class CommonIconWidget extends StatelessWidget {
     this.size,
     super.key,
     this.color,
+    this.avoidContentColor = false,
   }) : assert(
           (icon != null || svg != null) && !(icon != null && svg != null),
           'IconData or Svg path must be specified, but not together',
@@ -26,6 +27,7 @@ class CommonIconWidget extends StatelessWidget {
     required IconData icon,
     Color? color,
     double? size,
+    bool avoidContentColor = false,
     Key? key,
   }) =>
       CommonIconWidget(
@@ -33,6 +35,7 @@ class CommonIconWidget extends StatelessWidget {
         size: size,
         key: key,
         color: color,
+        avoidContentColor: avoidContentColor,
       );
 
   /// Factory that allows creating widget with svg asset
@@ -40,6 +43,7 @@ class CommonIconWidget extends StatelessWidget {
     required String svg,
     Color? color,
     double? size,
+    bool avoidContentColor = false,
     Key? key,
   }) =>
       CommonIconWidget(
@@ -47,6 +51,7 @@ class CommonIconWidget extends StatelessWidget {
         size: size,
         key: key,
         color: color,
+        avoidContentColor: avoidContentColor,
       );
 
   /// Data of icon that is used in [Icon]
@@ -62,11 +67,15 @@ class CommonIconWidget extends StatelessWidget {
   /// is used, if it's absent too, then icon renders its own color.
   final Color? color;
 
+  /// If true, then color from provider will be ignored and natural color
+  /// of icon will be used, by default false.
+  final bool avoidContentColor;
+
   @override
   Widget build(BuildContext context) {
     final contentColor = EverButtonStyleProvider.maybeOf(context)?.contentColor;
 
-    final color = this.color ?? contentColor;
+    final color = this.color ?? (avoidContentColor ? null : contentColor);
 
     if (icon != null) {
       return Icon(

@@ -20,6 +20,7 @@ class CommonCard extends StatelessWidget {
     this.topSubtitleText,
     this.padding,
     this.centerTitle = false,
+    this.backgroundColor,
   });
 
   /// Custom widget or text that displays above title.
@@ -39,9 +40,13 @@ class CommonCard extends StatelessWidget {
   /// Widget that displays right from title
   final Widget? trailingChild;
 
-  /// Size of card
-  final double height;
-  final double width;
+  /// Height of card.
+  /// If null, then it will try to wrap content, default [_cardDefaultHeight]
+  final double? height;
+
+  /// Width of card.
+  /// If null, then it will try to wrap content, default [DimensSize.d168]
+  final double? width;
 
   /// Color of card border
   final Color? borderColor;
@@ -51,6 +56,9 @@ class CommonCard extends StatelessWidget {
 
   /// If title should be centered
   final bool centerTitle;
+
+  /// Color of card
+  final Color? backgroundColor;
 
   @override
   Widget build(BuildContext context) {
@@ -103,7 +111,7 @@ class CommonCard extends StatelessWidget {
       contentColor: colors.textSecondary,
       child: Material(
         shape: const SquircleShapeBorder(cornerRadius: DimensRadius.medium),
-        color: colors.backgroundSecondary,
+        color: backgroundColor ?? colors.backgroundSecondary,
         child: Container(
           width: width,
           height: height == _cardDefaultHeight && hasTopSubtitle
@@ -119,9 +127,10 @@ class CommonCard extends StatelessWidget {
           ),
           padding: padding,
           child: SeparatedRow(
+            mainAxisSize: width == null ? MainAxisSize.min : MainAxisSize.max,
             children: [
               if (subtitle != null) subtitle,
-              Expanded(child: centerTitle ? Center(child: title) : title),
+              Flexible(child: centerTitle ? Center(child: title) : title),
               if (trailingChild != null) trailingChild!,
             ],
           ),
