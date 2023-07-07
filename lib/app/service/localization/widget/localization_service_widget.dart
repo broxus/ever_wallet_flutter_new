@@ -41,8 +41,9 @@ class _LocalizationServiceWidgetState extends State<LocalizationServiceWidget> {
   }
 
   void _setLocaleByLanguageCode() {
-    inject<LocalizationService>()
-        .setLocaleByLanguageCode(context.locale.languageCode);
+    inject<LocalizationService>().setLocaleByLanguageCode(
+      SupportedLocaleCodes.byName(context.locale.languageCode),
+    );
   }
 
   @override
