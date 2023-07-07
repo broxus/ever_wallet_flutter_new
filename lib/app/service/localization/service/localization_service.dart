@@ -47,7 +47,8 @@ class LocalizationService {
 
   void setLocaleByLanguageCode(SupportedLocaleCodes code) {
     if (_localeCodeStreamController.valueOrNull == code) return;
-    _log.finest('setting locale by code ${code.name}');
+
+    _log.finest('setting locale by code "${code.name}"');
 
     _localeCodeStreamController.add(code);
   }

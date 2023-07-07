@@ -1,6 +1,6 @@
 import 'package:app/app/service/service.dart';
 import 'package:app/di/di.dart';
-import 'package:app/feature/common/common.dart';
+import 'package:app/feature/localization/localization.dart';
 import 'package:app/feature/onboarding/view/onboarding_view.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
