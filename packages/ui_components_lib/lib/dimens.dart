@@ -30,6 +30,7 @@ class DimensSize {
   static const double d148 = 148;
   static const double d168 = 168;
   static const double d200 = 200;
+  static const double d220 = 220;
 }
 
 /// Class that contains all the stroke used in the app.

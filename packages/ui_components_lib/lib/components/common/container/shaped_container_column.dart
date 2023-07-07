@@ -21,6 +21,8 @@ class ShapedContainerColumn extends StatelessWidget {
     this.crossAxisAlignment = CrossAxisAlignment.start,
     this.mainAxisAlignment = MainAxisAlignment.start,
     this.titleText,
+    this.width,
+    this.height,
   });
 
   /// See [Column.children]
@@ -57,37 +59,49 @@ class ShapedContainerColumn extends StatelessWidget {
   /// Title that displays above list of content
   final String? titleText;
 
+  /// Size of container.
+  /// If null, container will be sized to fit its children.
+  final double? width;
+  final double? height;
+
   @override
   Widget build(BuildContext context) {
-    return Padding(
-      padding: margin,
-      child: Material(
-        color: color ?? context.themeStyle.colors.backgroundSecondary,
-        shape: SquircleShapeBorder(cornerRadius: squircleRadius),
-        // padding here, because ContainerColumn changes alignment in a bad way
-        child: Padding(
-          padding: padding,
-          child: SeparatedColumn(
-            mainAxisSize: mainAxisSize,
-            crossAxisAlignment: CrossAxisAlignment.start,
-            separatorSize: DimensSize.d16,
-            children: [
-              if (titleText != null)
-                Text(
-                  titleText!,
-                  style: StyleRes.h2.copyWith(
-                    color: context.themeStyle.colors.textPrimary,
+    final body = SeparatedColumn(
+      separator: separator,
+      separatorSize: separatorSize,
+      mainAxisSize: mainAxisSize,
+      mainAxisAlignment: mainAxisAlignment,
+      crossAxisAlignment: crossAxisAlignment,
+      children: children,
+    );
+
+    return SizedBox(
+      width: width,
+      height: height,
+      child: Padding(
+        padding: margin,
+        child: Material(
+          color: color ?? context.themeStyle.colors.backgroundSecondary,
+          shape: SquircleShapeBorder(cornerRadius: squircleRadius),
+          // padding here, because ContainerColumn changes alignment in bad way
+          child: Padding(
+            padding: padding,
+            child: titleText == null
+                ? body
+                : SeparatedColumn(
+                    mainAxisSize: mainAxisSize,
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    separatorSize: DimensSize.d16,
+                    children: [
+                      Text(
+                        titleText!,
+                        style: StyleRes.h2.copyWith(
+                          color: context.themeStyle.colors.textPrimary,
+                        ),
+                      ),
+                      body,
+                    ],
                   ),
-                ),
-              SeparatedColumn(
-                separator: separator,
-                separatorSize: separatorSize,
-                mainAxisSize: mainAxisSize,
-                mainAxisAlignment: mainAxisAlignment,
-                crossAxisAlignment: crossAxisAlignment,
-                children: children,
-              ),
-            ],
           ),
         ),
       ),
