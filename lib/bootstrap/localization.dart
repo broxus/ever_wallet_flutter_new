@@ -1,7 +1,6 @@
 import 'package:app/generated/generated.dart';
 import 'package:easy_logger/easy_logger.dart';
 import 'package:flutter/widgets.dart';
-
 import 'package:logging/logging.dart';
 
 /// This is a method that allows configure some feature-related services

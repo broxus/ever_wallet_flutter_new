@@ -72,11 +72,10 @@ Future<void> bootstrap(
 
       runApp(
         EasyLocalization(
-          supportedLocales: const [
-            Locale('en', 'US'),
-          ],
+          supportedLocales: supportedLocales,
           path: 'assets/translations',
-          fallbackLocale: const Locale('en', 'US'),
+          fallbackLocale: fallbackLocale,
+          useOnlyLangCode: true,
           child: AppWrapper(
             builder: builder,
           ),
@@ -124,6 +123,13 @@ class _AppWrapperState extends State<AppWrapper> with WidgetsBindingObserver {
     }
 
     inject<AppLifecycleService>().updateState(state);
+  }
+
+  @override
+  void didChangeLocales(List<Locale>? locales) {
+    super.didChangeLocales(locales);
+
+    inject<LocalizationService>().refreshLocale();
   }
 
   @override
