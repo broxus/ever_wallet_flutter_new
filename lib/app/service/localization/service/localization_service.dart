@@ -5,9 +5,9 @@ import 'package:injectable/injectable.dart';
 import 'package:logging/logging.dart';
 import 'package:rxdart/rxdart.dart';
 
-/// Service that shows messages to the user. Keep is simple and stupid, use only
-/// as stream sources for blocs and cubits that actual provide messages to the
-/// user.
+/// Service that provides localization functionality for the app. Keep it
+/// simple and stupid, use only as stream sources for blocs and cubits that
+/// actually do the job
 @singleton
 class LocalizationService {
   final _log = Logger('LocalizationService');
