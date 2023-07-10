@@ -19,6 +19,7 @@ class CommonButtonIconWidget extends StatelessWidget {
     this.icon,
     this.svg,
     this.size,
+    this.useDefaultColor = true,
     super.key,
   }) : assert(
           icon != null || svg != null,
@@ -37,9 +38,15 @@ class CommonButtonIconWidget extends StatelessWidget {
   factory CommonButtonIconWidget.svg({
     required String svg,
     double? size,
+    bool useDefaultColor = true,
     Key? key,
   }) =>
-      CommonButtonIconWidget(svg: svg, size: size, key: key);
+      CommonButtonIconWidget(
+        svg: svg,
+        size: size,
+        useDefaultColor: useDefaultColor,
+        key: key,
+      );
 
   /// Data of icon that is used in [Icon]
   final IconData? icon;
@@ -50,22 +57,29 @@ class CommonButtonIconWidget extends StatelessWidget {
   /// Size for image
   final double? size;
 
+  /// If true, icon will be colored with [EverButtonStyleProvider.contentColor]
+  final bool useDefaultColor;
+
   @override
   Widget build(BuildContext context) {
     final buttonStyle = EverButtonStyleProvider.of(context);
-    final color = buttonStyle.contentColor;
+    final color = useDefaultColor ? buttonStyle.contentColor : null;
 
-    return AnimatedColor(
-      color: color,
-      duration: kThemeAnimationDuration,
-      builder: (context, color) {
-        return CommonIconWidget(
-          icon: icon,
-          svg: svg,
-          size: size ?? defaultCommonIconSize,
-          color: color,
-        );
-      },
+    final widget = CommonIconWidget(
+      icon: icon,
+      svg: svg,
+      size: size ?? defaultCommonIconSize,
+      avoidContentColor: color == null,
     );
+
+    return color == null
+        ? widget
+        : AnimatedColor(
+            color: color,
+            duration: kThemeAnimationDuration,
+            builder: (context, color) {
+              return widget;
+            },
+          );
   }
 }

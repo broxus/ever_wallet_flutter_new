@@ -3,7 +3,7 @@ import 'dart:async';
 import 'package:app/app/service/messenger/message.dart';
 import 'package:injectable/injectable.dart';
 
-/// Service that shows messages to the user. Keep is simple and stupid, use only
+/// Service that shows messages to the user. Keep it simple and stupid, use only
 /// as stream sources for blocs and cubits that actual provide messages to the
 /// user.
 @singleton

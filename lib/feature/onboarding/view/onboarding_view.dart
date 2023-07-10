@@ -1,6 +1,7 @@
 import 'package:app/app/router/app_route.dart';
 import 'package:app/feature/contact_support/contact_support.dart';
 import 'package:app/feature/onboarding/onboarding.dart';
+import 'package:app/feature/onboarding/view/change_language_button.dart';
 import 'package:app/generated/generated.dart';
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
@@ -31,14 +32,7 @@ class OnboardingView extends StatelessWidget {
             child: Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
-                SmallButton.secondary(
-                  leading: CommonButtonIconWidget.svg(
-                    svg: Assets.images.langIcons.english.path,
-                  ),
-                  text: LocaleKeys.langEnglish.tr(),
-                  // ignore: no-empty-block
-                  onPressed: () {},
-                ),
+                const ChangeLanguageButton(),
                 CommonIconButton.svg(
                   svg: Assets.images.support.path,
                   buttonType: EverButtonType.secondary,

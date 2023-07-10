@@ -181,7 +181,7 @@ class CommonBottomSheetWidget extends StatelessWidget {
           ? colors.appBackground
           : colors.backgroundSecondary,
       child: SafeArea(
-        minimum: const EdgeInsets.only(bottom: DimensSize.d16),
+        minimum: const EdgeInsets.only(bottom: DimensSize.d24),
         child: Padding(
           padding: avoidBottomInsets
               ? MediaQuery.of(context).viewInsets
