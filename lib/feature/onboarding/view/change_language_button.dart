@@ -1,4 +1,3 @@
-import 'package:app/app/service/localization/localization.dart';
 import 'package:app/feature/localization/localization.dart';
 import 'package:app/generated/generated.dart';
 import 'package:flutter/material.dart';
@@ -12,21 +11,16 @@ class ChangeLanguageButton extends StatelessWidget {
   Widget build(BuildContext context) {
     return BlocBuilder<LocalizationBloc, LocalizationState>(
       builder: (context, state) {
-        final icon = switch (state.localeCode) {
-          SupportedLocaleCodes.en => Assets.images.langIcons.english.path,
-          SupportedLocaleCodes.ko => Assets.images.langIcons.korean.path,
-        };
-        final text = switch (state.localeCode) {
-          SupportedLocaleCodes.en => LocaleKeys.langEnglish.tr(),
-          SupportedLocaleCodes.ko => LocaleKeys.langKorean.tr(),
-        };
         return SmallButton.secondary(
           leading: CommonButtonIconWidget.svg(
-            svg: icon,
+            svg: state.localeCode.iconPath,
+            useDefaultColor: false,
           ),
-          text: text,
+          text: state.localeCode.localizedString.tr(),
           // ignore: no-empty-block
-          onPressed: () {},
+          onPressed: () => showLocalizationSheet(
+            context: context,
+          ),
         );
       },
     );

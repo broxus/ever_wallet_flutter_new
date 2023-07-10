@@ -1,8 +1,9 @@
 import 'dart:async';
 
-import 'package:app/app/service/localization/service/localization_service.dart';
+import 'package:app/app/service/localization/localization.dart';
 import 'package:bloc/bloc.dart';
 import 'package:freezed_annotation/freezed_annotation.dart';
+import 'package:logging/logging.dart';
 
 part 'localization_event.dart';
 part 'localization_state.dart';
@@ -17,15 +18,25 @@ class LocalizationBloc extends Bloc<LocalizationEvent, LocalizationState> {
         ) {
     on<LocalizationEvent>((event, emit) {
       event.when(
-        setLocaleCode: (code) {
-          localizationService.setLocaleByLanguageCode(code);
+        setLocaleCodeFromService: (code) {
+          _log.finest('setting locale from service ${code.name}');
+          emit(LocalizationState(localeCode: code));
+        },
+        changeLocaleCode: (SupportedLocaleCodes code) {
+          _log.finest('change locale to ${code.name}');
+          localizationService.changeLocaleCode(code);
         },
       );
     });
 
-    _localeCodeSubscription = localizationService.localeCodeStream
-        .listen((event) => add(LocalizationEvent.setLocaleCode(code: event)));
+    _localeCodeSubscription = localizationService.localeCodeStream.listen(
+      (code) {
+        _log.finest('received new locale from service ${code.name}');
+        add(LocalizationEvent.setLocaleCodeFromService(code: code));
+      },
+    );
   }
+  final _log = Logger('LocalizationBloc');
 
   final LocalizationService localizationService;
 
