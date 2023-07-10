@@ -237,7 +237,7 @@ This project relies on [flutter_localizations][flutter_localizations_link] and f
 
 ### Adding Strings
 
-1. To add a new localizable string, open the `en-US.json` file at `assets/translations/en-US.json`.
+1. To add a new localizable string, open the `en.json` file at `assets/translations/en.json`.
 
 ```json
 {
@@ -288,19 +288,39 @@ Update the `CFBundleLocalizations` array in the `Info.plist` at `ios/Runner/Info
 ```
 ├── assets
 │   ├── translations
-│   │   ├── en-US.json
-│   │   └── es-ES.json
+│   │   ├── en.json
+│   │   └── es.json
 ```
 
 2. Add the translated strings to each `.json` file:
 
-`es-ES.json`
+`es.json`
 
 ```json
 {
     "confirm": "Confirmar",
     "continueWord": "Continuar"
 }
+```
+
+4. Provide flag icon asset
+
+Put new vector icon to `assets/images/lang_icons/spanish.svg`.
+
+5. Add the locale to `SupportedLocaleCodes` enum in `lib/app/service/localization/service/supported_locale_codes.dart` (yes, don't forget the language string).
+
+```dart
+    ...
+    es(LocaleKeys.langSpanish),
+    ...
+```
+
+6. Provide flag icon asset and iconPath in `SupportedLocaleCodes` enum
+
+```dart
+    ...
+    SupportedLocaleCodes.ko => Assets.images.langIcons.spainsh.path,
+    ...
 ```
 
 [coverage_badge]: coverage_badge.svg
