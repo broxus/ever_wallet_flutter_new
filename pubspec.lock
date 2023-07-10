@@ -365,10 +365,10 @@ packages:
     dependency: "direct main"
     description:
       name: encrypted_storage
-      sha256: a764f34f989c2d2b35934db9cf1eb4b48d7317964de5ff037ff61e72bba21fd9
+      sha256: d20b955d3e01851aba45f31cbcb8e3396669a95bd51c564e8237504b33344471
       url: "https://pub.dev"
     source: hosted
-    version: "0.1.0+1"
+    version: "0.1.0+2"
   equatable:
     dependency: "direct main"
     description:
@@ -389,10 +389,10 @@ packages:
     dependency: "direct main"
     description:
       name: fancy_logger
-      sha256: "5196d1d1ce7d840821f4d76953892f60f9b502d0635f7e296528573ed8acbf48"
+      sha256: "75dadab76ea2b706edcb05e62e5d97fd35a9f7e58fa87e495530a22d9308cac5"
       url: "https://pub.dev"
     source: hosted
-    version: "0.1.0+1"
+    version: "0.1.0+2"
   ffi:
     dependency: transitive
     description:
@@ -531,12 +531,11 @@ packages:
   flutter_nekoton_bridge:
     dependency: transitive
     description:
-      path: "packages/flutter_nekoton_bridge"
-      ref: "flutter_nekoton_bridge-v1.8.0-dev.13"
-      resolved-ref: f82572919a18ce2ce21c21859247454309724886
-      url: "https://github.com/broxus/nekoton_bridge.git"
-    source: git
-    version: "1.8.0-dev.13"
+      name: flutter_nekoton_bridge
+      sha256: d12e9bae9dc3b7718e693fe63929aee222e4406d3c6090d910af87ae75aab8d7
+      url: "https://pub.dev"
+    source: hosted
+    version: "1.8.2"
   flutter_plugin_android_lifecycle:
     dependency: transitive
     description:
@@ -952,21 +951,19 @@ packages:
   nekoton_bridge:
     dependency: transitive
     description:
-      path: "packages/nekoton_bridge"
-      ref: "nekoton_bridge-v1.8.0-dev.11"
-      resolved-ref: f82572919a18ce2ce21c21859247454309724886
-      url: "https://github.com/broxus/nekoton_bridge.git"
-    source: git
-    version: "1.8.0-dev.11"
+      name: nekoton_bridge
+      sha256: "1862f74fb03fd8bd1fef14f8ca1027190bc47c58a3575c954839cb9aaab89715"
+      url: "https://pub.dev"
+    source: hosted
+    version: "1.8.2"
   nekoton_repository:
     dependency: "direct main"
     description:
-      path: "."
-      ref: "v0.1.1-dev.5"
-      resolved-ref: ca2d7ddd06f16f40d0349b3f0cf5ce1321abcf78
-      url: "https://github.com/broxus/nekoton_repository.git"
-    source: git
-    version: "0.1.1-dev.5"
+      name: nekoton_repository
+      sha256: "8bf5df3b5a59064d768b62a1892c8baf0de3cb255b2b2e4e5050744ffc4d47e9"
+      url: "https://pub.dev"
+    source: hosted
+    version: "0.1.1"
   nested:
     dependency: transitive
     description:
