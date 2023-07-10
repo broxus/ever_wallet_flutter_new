@@ -16,17 +16,13 @@ class LocalizationBloc extends Bloc<LocalizationEvent, LocalizationState> {
             localeCode: localizationService.localeCode,
           ),
         ) {
-    on<LocalizationEvent>((event, emit) {
-      event.when(
-        setLocaleCodeFromService: (code) {
-          _log.finest('setting locale from service ${code.name}');
-          emit(LocalizationState(localeCode: code));
-        },
-        changeLocaleCode: (SupportedLocaleCodes code) {
-          _log.finest('change locale to ${code.name}');
-          localizationService.changeLocaleCode(code);
-        },
-      );
+    on<_SetLocaleCodeFromService>((event, emit) {
+      _log.finest('setting locale from service ${event.code.name}');
+      emit(LocalizationState(localeCode: event.code));
+    });
+    on<_ChangeLocaleCode>((event, emit) {
+      _log.finest('change locale to ${event.code.name}');
+      localizationService.changeLocaleCode(event.code);
     });
 
     _localeCodeSubscription = localizationService.localeCodeStream.listen(
