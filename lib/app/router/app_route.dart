@@ -1,6 +1,7 @@
 import 'package:app/app/service/navigation/service/navigation_service.dart';
 import 'package:app/di/di.dart';
 import 'package:app/feature/add_seed/enter_seed_name/enter_seed_name.dart';
+import 'package:collection/collection.dart';
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:logging/logging.dart';
@@ -97,6 +98,40 @@ enum AppRoute {
   enableBiometryAfterOnboarding(
     '',
     'enableBiometryAfterOnboarding',
+  ),
+
+  /// Browser section
+
+  /// Bookmarks browser page
+  browserBookmarks(
+    'browserBookmarks',
+    '/browser/browserBookmarks',
+    isSaveLocation: true,
+    isBottomNavigationBarVisible: true,
+  ),
+
+  /// History browser page
+  browserHistory(
+    'browserHistory',
+    '/browser/browserHistory',
+    isSaveLocation: true,
+    isBottomNavigationBarVisible: true,
+  ),
+
+  /// Tabs browser page
+  browserTabs(
+    'browserTabs',
+    '/browser/browserTabs',
+    isSaveLocation: true,
+    isBottomNavigationBarVisible: true,
+  ),
+
+  /// Webview browser page
+  browserWebview(
+    'browserWebview',
+    '/browser/browserWebview',
+    isSaveLocation: true,
+    isBottomNavigationBarVisible: true,
   );
 
   const AppRoute(
@@ -122,11 +157,10 @@ enum AppRoute {
   /// root routes. It's effective only for root routes
   final bool isSaveSubroutes;
 
-  static AppRoute getByPath(String path) {
+  static AppRoute? getByPath(String path) {
     // ignore: prefer-enums-by-name
-    return AppRoute.values.firstWhere(
+    return AppRoute.values.firstWhereOrNull(
       (e) => e.path == path,
-      orElse: () => defaultRoute,
     );
   }
 
@@ -180,12 +214,14 @@ String getCurrentPath(String location) {
 
 /// Get first segment from [location] and return [AppRoute].
 AppRoute getRootAppRoute(String location) {
-  return AppRoute.getByPath(getRootPath(location));
+  return AppRoute.getByPath(getRootPath(location)) ?? AppRoute.defaultRoute;
 }
 
 /// Get last segment from [location] and return [AppRoute].
 AppRoute getCurrentAppRoute(String location) {
-  return AppRoute.getByPath(getCurrentPath(location));
+  return AppRoute.getByPath(getCurrentPath(location)) ??
+      AppRoute.getByPath(location) ??
+      AppRoute.defaultRoute;
 }
 
 /// Returns true, if every segment from [location] can be saved in
@@ -194,7 +230,7 @@ bool canSaveLocation(String location) {
   final uri = Uri.parse(location);
 
   return uri.pathSegments
-      .every((segment) => AppRoute.getByPath(segment).isSaveLocation);
+      .every((segment) => AppRoute.getByPath(segment)?.isSaveLocation ?? false);
 }
 
 extension NavigationHelper on BuildContext {
