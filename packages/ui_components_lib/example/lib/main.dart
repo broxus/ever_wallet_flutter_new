@@ -18,7 +18,6 @@ class StoryWidget extends StatelessWidget {
           debugShowCheckedModeBanner: false,
           theme: everPredefinedLightTheme(),
           darkTheme: everPredefinedDarkTheme(),
-          useInheritedMediaQuery: true,
           home: child,
         );
       },
@@ -39,6 +38,14 @@ class StoryWidget extends StatelessWidget {
         Story(
           name: 'Widgets/Snackbar',
           builder: (_) => const SnackbarStory(),
+        ),
+        Story(
+          name: 'Widgets/Sheet',
+          builder: (_) => const SheetStory(),
+        ),
+        Story(
+          name: 'Widgets/Common',
+          builder: (_) => const CommonStory(),
         ),
         Story(
           name: 'Colors',

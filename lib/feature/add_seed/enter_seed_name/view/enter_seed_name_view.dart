@@ -1,4 +1,4 @@
-import 'package:app/l10n/l10n.dart';
+import 'package:app/generated/generated.dart';
 import 'package:flutter/material.dart';
 import 'package:ui_components_lib/ui_components_lib.dart';
 
@@ -34,36 +34,40 @@ class _EnterSeedNameViewState extends State<EnterSeedNameView> {
 
   @override
   Widget build(BuildContext context) {
-    final localization = context.l10n;
     final colors = context.themeStyle.colors;
 
     return SafeArea(
       child: Padding(
-        padding: const EdgeInsets.all(16),
+        padding: const EdgeInsets.all(DimensSize.d16),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            Text(
-              localization.seedPhraseNameTitle,
-              style: StyleRes.pageTitle.copyWith(color: colors.textPrimary),
-            ),
-            const SizedBox(height: 12),
-            Text(
-              localization.seedPhraseNameDescription,
-              style: StyleRes.bodyText.copyWith(
-                color: colors.textSecondary,
+            Expanded(
+              child: SingleChildScrollView(
+                child: Column(
+                  children: [
+                    Text(
+                      LocaleKeys.enterSeedNameScreenTitle.tr(),
+                      style: StyleRes.h1.copyWith(color: colors.textPrimary),
+                    ),
+                    const SizedBox(height: DimensSize.d12),
+                    Text(
+                      LocaleKeys.enterSeedNameScreenDescription.tr(),
+                      style: StyleRes.primaryRegular
+                          .copyWith(color: colors.textPrimary),
+                    ),
+                    const SizedBox(height: DimensSize.d24),
+                    CommonInput(
+                      controller: nameController,
+                      titleText: LocaleKeys.seedName.tr(),
+                      onSubmitted: (_) => _nextAction(),
+                    ),
+                  ],
+                ),
               ),
             ),
-            const SizedBox(height: 20),
-            CommonInput(
-              controller: nameController,
-              height: 52,
-              labelText: localization.seedName,
-              onSubmitted: (_) => _nextAction(),
-            ),
-            const Spacer(),
             CommonButton.primary(
-              text: localization.continueWord,
+              text: LocaleKeys.continueWord.tr(),
               onPressed: _nextAction,
               fillWidth: true,
             ),

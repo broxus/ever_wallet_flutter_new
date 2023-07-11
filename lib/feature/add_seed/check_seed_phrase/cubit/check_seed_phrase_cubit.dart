@@ -91,8 +91,27 @@ class CheckSeedPhraseCubit extends Cubit<CheckSeedPhraseCubitState> {
     );
     if (hasError) {
       emit(CheckSeedPhraseCubitState.error(availableAnswers, userAnswers));
+      Future<void>.delayed(delayBeforeCompleteChecking, () {
+        userAnswers.forEachIndexed(
+          (index, answer) =>
+              userAnswers[index] = userAnswers[index].copyWith(word: ''),
+        );
+        currentCheckIndex = 0;
+        emit(
+          CheckSeedPhraseCubitState.answer(
+            availableAnswers,
+            userAnswers,
+            0,
+          ),
+        );
+      });
     } else {
-      emit(CheckSeedPhraseCubitState.correct(availableAnswers, userAnswers));
+      emit(
+        CheckSeedPhraseCubitState.correct(
+          availableAnswers,
+          List.of(userAnswers),
+        ),
+      );
       Future<void>.delayed(delayBeforeCompleteChecking, completeChecking);
     }
   }
@@ -112,6 +131,7 @@ class CheckSeedPhraseCubit extends Cubit<CheckSeedPhraseCubitState> {
     for (var i = 0; i < userAnswers.length; i++) {
       if (userAnswers[i].word.isEmpty) return i;
     }
+
     return null;
   }
 
@@ -135,7 +155,7 @@ class CheckSeedPhraseCubit extends Cubit<CheckSeedPhraseCubitState> {
     indices.sort();
 
     return [
-      for (final index in indices) CheckSeedCorrectAnswer(phrase[index], index)
+      for (final index in indices) CheckSeedCorrectAnswer(phrase[index], index),
     ];
   }
 
@@ -159,6 +179,7 @@ class CheckSeedPhraseCubit extends Cubit<CheckSeedPhraseCubitState> {
       ..shuffle()
       ..shuffle()
       ..shuffle();
+
     return answers;
   }
 }

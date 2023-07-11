@@ -17,9 +17,7 @@ class _ButtonsStoryState extends State<ButtonsStory> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        title: const Text('Buttons'),
-      ),
+      appBar: const DefaultAppBar(titleText: 'Buttons'),
       body: SingleChildScrollView(
         child: Padding(
           padding: const EdgeInsets.all(16),
@@ -28,107 +26,107 @@ class _ButtonsStoryState extends State<ButtonsStory> {
             children: [
               /// Primary
               CommonButton.primary(
+                leading: CommonButtonIconWidget.icon(icon: Icons.add),
+                trailing: CommonButtonIconWidget.icon(icon: Icons.alarm),
                 text: 'PrimaryButton',
+                // ignore: no-empty-block
                 onPressed: () {},
               ),
               const SizedBox(height: 10),
               CommonButton.primary(
+                leading: CommonButtonIconWidget.icon(icon: Icons.add),
+                trailing: CommonButtonIconWidget.icon(icon: Icons.alarm),
                 text: 'PrimaryButton Disabled',
               ),
               const SizedBox(height: 10),
               CommonButton.primary(
+                leading: CommonButtonIconWidget.icon(icon: Icons.add),
+                trailing: CommonButtonIconWidget.icon(icon: Icons.alarm),
                 text: 'PrimaryButton fillWidth',
                 fillWidth: true,
+                // ignore: no-empty-block
                 onPressed: () {},
+              ),
+              const SizedBox(height: 10),
+              CommonButton.primary(
+                leading: CommonButtonIconWidget.icon(icon: Icons.add),
+                trailing: CommonButtonIconWidget.icon(icon: Icons.alarm),
+                text: 'PrimaryButton',
+                // ignore: no-empty-block
+                onPressed: () {},
+                isLoading: true,
               ),
               const SizedBox(height: 20),
 
               /// Secondary
               CommonButton.secondary(
+                leading: CommonButtonIconWidget.icon(icon: Icons.add),
+                trailing: CommonButtonIconWidget.icon(icon: Icons.alarm),
                 text: 'SecondaryButton',
+                // ignore: no-empty-block
                 onPressed: () {},
               ),
               const SizedBox(height: 10),
               CommonButton.secondary(
+                leading: CommonButtonIconWidget.icon(icon: Icons.add),
+                trailing: CommonButtonIconWidget.icon(icon: Icons.alarm),
                 text: 'SecondaryButton Disabled',
               ),
               const SizedBox(height: 10),
               CommonButton.secondary(
+                leading: CommonButtonIconWidget.icon(icon: Icons.add),
+                trailing: CommonButtonIconWidget.icon(icon: Icons.alarm),
                 text: 'SecondaryButton fillWidth',
                 fillWidth: true,
-                onPressed: () {},
-              ),
-
-              /// Tertiary
-              const SizedBox(height: 20),
-              CommonButton.tertiary(
-                text: 'TertiaryButton',
+                // ignore: no-empty-block
                 onPressed: () {},
               ),
               const SizedBox(height: 10),
-              CommonButton.tertiary(
-                text: 'TertiaryButton Disabled',
-              ),
-              const SizedBox(height: 10),
-              CommonButton.tertiary(
-                text: 'TertiaryButton fillWidth',
-                fillWidth: true,
+              CommonButton.secondary(
+                leading: CommonButtonIconWidget.icon(icon: Icons.add),
+                trailing: CommonButtonIconWidget.icon(icon: Icons.alarm),
+                text: 'SecondaryButton',
+                // ignore: no-empty-block
                 onPressed: () {},
+                isLoading: true,
               ),
 
               /// Ghost
               const SizedBox(height: 20),
               CommonButton.ghost(
+                leading: CommonButtonIconWidget.icon(icon: Icons.add),
+                trailing: CommonButtonIconWidget.icon(icon: Icons.alarm),
                 text: 'GhostButton',
+                // ignore: no-empty-block
                 onPressed: () {},
               ),
               const SizedBox(height: 10),
               CommonButton.ghost(
+                leading: CommonButtonIconWidget.icon(icon: Icons.add),
+                trailing: CommonButtonIconWidget.icon(icon: Icons.alarm),
                 text: 'GhostButton Disabled',
               ),
               const SizedBox(height: 10),
               CommonButton.ghost(
+                leading: CommonButtonIconWidget.icon(icon: Icons.add),
+                trailing: CommonButtonIconWidget.icon(icon: Icons.alarm),
                 text: 'GhostButton fillWidth',
                 fillWidth: true,
-                onPressed: () {},
-              ),
-
-              /// GhostNoPadding
-              const SizedBox(height: 20),
-              CommonButton.ghostNoPadding(
-                text: 'GhostNoPaddingButton',
+                // ignore: no-empty-block
                 onPressed: () {},
               ),
               const SizedBox(height: 10),
-              CommonButton.ghostNoPadding(
-                text: 'GhostNoPaddingButton Disabled',
-              ),
-              const SizedBox(height: 10),
-              CommonButton.ghostNoPadding(
-                text: 'GhostNoPaddingButton fillWidth',
-                fillWidth: true,
+              CommonButton.ghost(
+                leading: CommonButtonIconWidget.icon(icon: Icons.add),
+                trailing: CommonButtonIconWidget.icon(icon: Icons.alarm),
+                text: 'GhostButton',
+                // ignore: no-empty-block
                 onPressed: () {},
+                isLoading: true,
               ),
-
-              /// Attention
-              const SizedBox(height: 20),
-              CommonButton.attention(
-                text: 'AttentionButton',
-                onPressed: () {},
-              ),
-              const SizedBox(height: 10),
-              CommonButton.attention(
-                text: 'AttentionButton Disabled',
-              ),
-              const SizedBox(height: 10),
-              CommonButton.attention(
-                text: 'AttentionButton fillWidth',
-                fillWidth: true,
-                onPressed: () {},
-              ),
-              const SizedBox(height: 20),
 
               /// TabBar
+              const SizedBox(height: 60),
               const Text('TabBar without fillWidth'),
               ValueListenableBuilder(
                 valueListenable: tabBar1Notifier,
@@ -159,9 +157,89 @@ class _ButtonsStoryState extends State<ButtonsStory> {
 
               /// IconButton
               const SizedBox(height: 20),
-              CommonIconButton.icon(icon: Icons.add, onPressed: () {}),
+              Row(
+                children: [
+                  CommonIconButton.icon(
+                    icon: Icons.add,
+                    // ignore: no-empty-block
+                    onPressed: () {},
+                    buttonType: EverButtonType.primary,
+                  ),
+                  const SizedBox(width: 10),
+                  CommonIconButton.icon(
+                    icon: Icons.add,
+                    buttonType: EverButtonType.primary,
+                  ),
+                  const SizedBox(width: 20),
+                  CommonIconButton.icon(
+                    icon: Icons.add,
+                    // ignore: no-empty-block
+                    onPressed: () {},
+                    buttonType: EverButtonType.secondary,
+                  ),
+                  const SizedBox(width: 10),
+                  CommonIconButton.icon(
+                    icon: Icons.add,
+                    buttonType: EverButtonType.secondary,
+                  ),
+                  const SizedBox(width: 20),
+                  CommonIconButton.icon(
+                    icon: Icons.add,
+                    // ignore: no-empty-block
+                    onPressed: () {},
+                    buttonType: EverButtonType.ghost,
+                  ),
+                  const SizedBox(width: 10),
+                  CommonIconButton.icon(
+                    icon: Icons.add,
+                    buttonType: EverButtonType.ghost,
+                  ),
+                ],
+              ),
+
+              /// Small button
+              const SizedBox(height: 30),
+              SmallButton.primary(
+                leading: CommonButtonIconWidget.icon(icon: Icons.add),
+                trailing: CommonButtonIconWidget.icon(icon: Icons.alarm),
+                text: 'SmallPrimary',
+                // ignore: no-empty-block
+                onPressed: () {},
+              ),
               const SizedBox(height: 10),
-              CommonIconButton.icon(icon: Icons.add),
+              SmallButton.primary(
+                leading: CommonButtonIconWidget.icon(icon: Icons.add),
+                trailing: CommonButtonIconWidget.icon(icon: Icons.alarm),
+                text: 'SmallPrimary Disabled',
+              ),
+              const SizedBox(height: 20),
+              SmallButton.secondary(
+                leading: CommonButtonIconWidget.icon(icon: Icons.add),
+                trailing: CommonButtonIconWidget.icon(icon: Icons.alarm),
+                text: 'SmallSecondary',
+                // ignore: no-empty-block
+                onPressed: () {},
+              ),
+              const SizedBox(height: 10),
+              SmallButton.secondary(
+                leading: CommonButtonIconWidget.icon(icon: Icons.add),
+                trailing: CommonButtonIconWidget.icon(icon: Icons.alarm),
+                text: 'SmallSecondary Disabled',
+              ),
+              const SizedBox(height: 20),
+              SmallButton.ghost(
+                leading: CommonButtonIconWidget.icon(icon: Icons.add),
+                trailing: CommonButtonIconWidget.icon(icon: Icons.alarm),
+                text: 'SmallGhost',
+                // ignore: no-empty-block
+                onPressed: () {},
+              ),
+              const SizedBox(height: 10),
+              SmallButton.ghost(
+                leading: CommonButtonIconWidget.icon(icon: Icons.add),
+                trailing: CommonButtonIconWidget.icon(icon: Icons.alarm),
+                text: 'SmallGhost Disabled',
+              ),
             ],
           ),
         ),

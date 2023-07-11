@@ -1,13 +1,10 @@
 import 'dart:convert';
 
-import 'package:app/app/service/migration_service.dart';
-import 'package:app/app/service/storage_service/account_seed_storage_service.dart';
-import 'package:app/app/service/storage_service/browser_storage_service.dart';
-import 'package:app/app/service/storage_service/general_storage_service.dart';
+import 'package:app/app/service/service.dart';
 import 'package:app/data/models/account_interaction.dart';
 import 'package:app/data/models/bookmark.dart';
 import 'package:app/data/models/browser_tab.dart';
-import 'package:app/data/models/currency.dart' as cur;
+import 'package:app/data/models/custom_currency.dart';
 import 'package:app/data/models/network_type.dart';
 import 'package:app/data/models/permissions.dart';
 import 'package:app/data/models/search_history.dart';
@@ -43,7 +40,10 @@ const _everContractAsset = TokenContractAsset(
   chainId: 1,
   symbol: 'stEVER',
   decimals: 9,
-  address: '0:6d42d0bc4a6568120ea88bf642edb653d727cfbd35868c47877532de128e71f2',
+  address: Address(
+    address:
+        '0:6d42d0bc4a6568120ea88bf642edb653d727cfbd35868c47877532de128e71f2',
+  ),
   logoURI:
       'https://raw.githubusercontent.com/broxus/ton-assets/master/icons/stEVER/logo.svg',
   version: 5,
@@ -54,14 +54,17 @@ const _venomContractAsset = TokenContractAsset(
   chainId: 1,
   symbol: 'USDT',
   decimals: 6,
-  address: '0:20470e6a6e33aa696263b5702608d69e3317c23bf20c2f921b38d6588c555603',
+  address: Address(
+    address:
+        '0:20470e6a6e33aa696263b5702608d69e3317c23bf20c2f921b38d6588c555603',
+  ),
   logoURI:
       'https://raw.githubusercontent.com/BVFDT/venom-assets/master/icons/USDT/logo.svg',
   version: 5,
   networkType: NetworkType.venom,
 );
-const _everCurrency = cur.Currency(
-  address: 'everAddress',
+const _everCurrency = CustomCurrency(
+  address: Address(address: '42:everAddress'),
   currency: 'EVER',
   fee24h: '',
   price: '',
@@ -74,8 +77,8 @@ const _everCurrency = cur.Currency(
   volumeChange24h: '',
   networkType: NetworkType.ever,
 );
-const _venomCurrency = cur.Currency(
-  address: 'venomAddress',
+const _venomCurrency = CustomCurrency(
+  address: Address(address: '69:venomAddress'),
   currency: 'VENOM',
   fee24h: '',
   price: '',
@@ -97,10 +100,12 @@ const _permissions = Permissions(
   basic: true,
 );
 
-const _publicKey =
-    'bb9c2578a1b9d0c7a6c947c419afe61c691052ff459df65e3eb4375faf3b25c6';
-const _address =
-    '0:18678befa040e2d66322fcb995d81cd5981ef7aaee494bd3e6a92554c455d0c5';
+const _publicKey = PublicKey(
+  publicKey: 'bb9c2578a1b9d0c7a6c947c419afe61c691052ff459df65e3eb4375faf3b25c6',
+);
+const _address = Address(
+  address: '0:18678befa040e2d66322fcb995d81cd5981ef7aaee494bd3e6a92554c455d0c5',
+);
 const _password = 'password';
 const _connection = 'connection';
 const _locale = 'ru_RU';
@@ -115,9 +120,12 @@ const _keystoreStorageData =
 
 /// Put fake data inside hive storage
 Future<void> _fillHive(HiveSourceMigration migration) async {
-  await migration.setCurrentKey(_publicKey);
-  await migration.addSeedOrRename(masterKey: _publicKey, name: 'name');
-  await migration.updateLastViewedSeeds([_publicKey]);
+  await migration.setCurrentKey(_publicKey.publicKey);
+  await migration.addSeedOrRename(
+    masterKey: _publicKey.publicKey,
+    name: 'name',
+  );
+  await migration.updateLastViewedSeeds([_publicKey.publicKey]);
   await migration.addHiddenAccount(_address);
   await migration.setKeyPassword(publicKey: _publicKey, password: _password);
   await migration.addExternalAccount(publicKey: _publicKey, address: _address);
@@ -141,11 +149,15 @@ Future<void> _fillHive(HiveSourceMigration migration) async {
   await migration.addSearchHistoryEntry(_search);
   await migration.cacheSiteMetaData(url: _metadata.url, metaData: _metadata);
   await migration.saveEverCurrency(
-    address: 'everAddress',
+    address: const Address(
+      address: '42:everAddress',
+    ),
     currency: _everCurrency,
   );
   await migration.saveVenomCurrency(
-    address: 'venomAddress',
+    address: const Address(
+      address: '69:venomAddress',
+    ),
     currency: _venomCurrency,
   );
   await migration.saveWhyNeedBrowser();
@@ -161,76 +173,109 @@ void main() {
   late EncryptedStorage encryptedStorage;
   late GeneralStorageService storage;
   late BrowserStorageService browserStorage;
-  late AccountSeedStorageService accountSeedStorage;
+  late NekotonStorageService accountSeedStorage;
 
   Future<void> checkMigration() async {
     /// Nekoton storage
     expect(
-      await storage.getStorageData(keystoreStorageKey),
+      await accountSeedStorage.getStorageData(keystoreStorageKey),
       _keystoreStorageData,
     );
     expect(
-      await storage.getStorageData(accountsStorageKey),
+      await accountSeedStorage.getStorageData(accountsStorageKey),
       _accountsStorageData,
     );
 
     /// Seeds
-    expect(await accountSeedStorage.seeds, {_publicKey: 'name'});
+    expect(await accountSeedStorage.readSeedNames(), {_publicKey: 'name'});
+    expect(accountSeedStorage.seedNames, {_publicKey: 'name'});
 
     /// Passwords
     expect(await storage.getKeyPassword(_publicKey), _password);
 
     /// System contracts
     expect(
-      await storage.getSystemTokenContractAssets(NetworkType.ever),
+      await storage.readSystemTokenContractAssets(NetworkType.ever),
       [_everContractAsset],
     );
     expect(
-      await storage.getSystemTokenContractAssets(NetworkType.venom),
+      storage.getSystemTokenContractAssets(NetworkType.ever),
+      [_everContractAsset],
+    );
+
+    expect(
+      await storage.readSystemTokenContractAssets(NetworkType.venom),
+      [_venomContractAsset],
+    );
+    expect(
+      storage.getSystemTokenContractAssets(NetworkType.venom),
       [_venomContractAsset],
     );
 
     /// Custom contracts
     expect(
-      await storage.getCustomTokenContractAssets(NetworkType.ever),
+      await storage.readCustomTokenContractAssets(NetworkType.ever),
       [_everContractAsset],
     );
     expect(
-      await storage.getCustomTokenContractAssets(NetworkType.venom),
+      storage.getCustomTokenContractAssets(NetworkType.ever),
+      [_everContractAsset],
+    );
+
+    expect(
+      await storage.readCustomTokenContractAssets(NetworkType.venom),
+      [_venomContractAsset],
+    );
+    expect(
+      storage.getCustomTokenContractAssets(NetworkType.venom),
       [_venomContractAsset],
     );
 
     /// Currencies
-    expect(await storage.getCurrencies(NetworkType.ever), [_everCurrency]);
-    expect(await storage.getCurrencies(NetworkType.venom), [_venomCurrency]);
+    expect(await storage.readCurrencies(NetworkType.ever), [_everCurrency]);
+    expect(storage.getCurrencies(NetworkType.ever), [_everCurrency]);
+
+    expect(await storage.readCurrencies(NetworkType.venom), [_venomCurrency]);
+    expect(storage.getCurrencies(NetworkType.venom), [_venomCurrency]);
 
     /// Permissions
     expect(await browserStorage.permissions, {'origin': _permissions});
 
     /// Bookmarks
-    expect(await browserStorage.bookmarks, [_bookmark]);
+    expect(await browserStorage.readBookmarks(), [_bookmark]);
+    expect(browserStorage.bookmarks, [_bookmark]);
 
     /// Search history
-    expect(await browserStorage.searchHistory, [_search]);
+    expect(await browserStorage.readSearchHistory(), [_search]);
+    expect(browserStorage.searchHistory, [_search]);
 
     /// Site metadata
     expect(await browserStorage.getSiteMetaData(_metadata.url), _metadata);
 
     /// Preferences
-    expect(await storage.locale, _locale);
-    expect(await storage.isBiometryEnabled, true);
+    expect(await storage.readLocale(), _locale);
+    expect(storage.locale, _locale);
+    expect(await storage.readIsBiometryEnabled(), true);
     expect(await storage.getWasStEverOpened, true);
     expect(await browserStorage.getWhyNeedBrowser, true);
-    expect(await accountSeedStorage.lastViewedSeeds(), [_publicKey]);
-    expect(await accountSeedStorage.hiddenAccounts, [_address]);
-    expect(await accountSeedStorage.externalAccounts, {
+    expect(await storage.readLastViewedSeeds(), [_publicKey]);
+    expect(storage.lastViewedSeeds, [_publicKey]);
+    expect(await accountSeedStorage.readHiddenAccounts(), [_address]);
+    expect(accountSeedStorage.hiddenAccounts, [_address]);
+    expect(await accountSeedStorage.readExternalAccounts(), {
       _publicKey: [_address]
     });
-    expect(await storage.currentConnection, _connection);
-    expect(await accountSeedStorage.currentKey, _publicKey);
+    expect(accountSeedStorage.externalAccounts, {
+      _publicKey: [_address]
+    });
+    expect(await storage.readCurrentConnection(), _connection);
+    expect(storage.currentConnection, _connection);
+    expect(await storage.readCurrentKey(), _publicKey);
+    expect(storage.currentKey, _publicKey);
 
     /// Browser
-    expect(await browserStorage.browserTabs, [_browserTab]);
+    expect(await browserStorage.readBrowserTabs(), [_browserTab]);
+    expect(browserStorage.browserTabs, [_browserTab]);
     expect(await browserStorage.browserTabsLastIndex, -1);
   }
 
@@ -241,7 +286,7 @@ void main() {
     await encryptedStorage.clearAll();
     storage = GeneralStorageService(encryptedStorage);
     browserStorage = BrowserStorageService(encryptedStorage);
-    accountSeedStorage = AccountSeedStorageService(encryptedStorage);
+    accountSeedStorage = NekotonStorageService(encryptedStorage);
     repository = NekotonRepository();
     await Hive.deleteFromDisk();
     hive = await HiveSourceMigration.create();
@@ -343,16 +388,25 @@ void main() {
 
       /// Nekoton storage
       expect(
-        await storage.getStorageData(keystoreStorageKey),
+        await accountSeedStorage.getStorageData(keystoreStorageKey),
         await hive.getStorageData(keystoreStorageKey),
       );
       expect(
-        await storage.getStorageData(accountsStorageKey),
+        await accountSeedStorage.getStorageData(accountsStorageKey),
         await hive.getStorageData(accountsStorageKey),
       );
 
       /// Seeds
-      expect(await accountSeedStorage.seeds, hive.seeds);
+      expect(
+        (await accountSeedStorage.readSeedNames())
+            .map((key, value) => MapEntry(key.publicKey, value)),
+        hive.seeds,
+      );
+      expect(
+        accountSeedStorage.seedNames
+            .map((key, value) => MapEntry(key.publicKey, value)),
+        hive.seeds,
+      );
 
       /// Passwords
       expect(
@@ -362,31 +416,58 @@ void main() {
 
       /// System contracts
       expect(
-        await storage.getSystemTokenContractAssets(NetworkType.ever),
+        await storage.readSystemTokenContractAssets(NetworkType.ever),
         hive.everSystemTokenContractAssets,
       );
       expect(
-        await storage.getSystemTokenContractAssets(NetworkType.venom),
+        storage.getSystemTokenContractAssets(NetworkType.ever),
+        hive.everSystemTokenContractAssets,
+      );
+
+      expect(
+        await storage.readSystemTokenContractAssets(NetworkType.venom),
+        hive.venomSystemTokenContractAssets,
+      );
+      expect(
+        storage.getSystemTokenContractAssets(NetworkType.venom),
         hive.venomSystemTokenContractAssets,
       );
 
       /// Custom contracts
       expect(
-        await storage.getCustomTokenContractAssets(NetworkType.ever),
+        await storage.readCustomTokenContractAssets(NetworkType.ever),
         hive.everCustomTokenContractAssets,
       );
       expect(
-        await storage.getCustomTokenContractAssets(NetworkType.venom),
+        storage.getCustomTokenContractAssets(NetworkType.ever),
+        hive.everCustomTokenContractAssets,
+      );
+
+      expect(
+        await storage.readCustomTokenContractAssets(NetworkType.venom),
+        hive.venomCustomTokenContractAssets,
+      );
+      expect(
+        storage.getCustomTokenContractAssets(NetworkType.venom),
         hive.venomCustomTokenContractAssets,
       );
 
       /// Currencies
       expect(
-        await storage.getCurrencies(NetworkType.ever),
+        await storage.readCurrencies(NetworkType.ever),
         hive.everCurrencies,
       );
       expect(
-        await storage.getCurrencies(NetworkType.venom),
+        storage.getCurrencies(NetworkType.ever),
+        hive.everCurrencies,
+      );
+
+      expect(
+        await storage.readCurrencies(NetworkType.venom),
+        hive.venomCurrencies,
+      );
+      expect(
+        storage.getCurrencies(NetworkType.venom),
         hive.venomCurrencies,
       );
 
@@ -394,10 +475,12 @@ void main() {
       expect(await browserStorage.permissions, hive.permissions);
 
       /// Bookmarks
-      expect(await browserStorage.bookmarks, hive.bookmarks);
+      expect(await browserStorage.readBookmarks(), hive.bookmarks);
+      expect(browserStorage.bookmarks, hive.bookmarks);
 
       /// Search history
-      expect(await browserStorage.searchHistory, hive.searchHistory);
+      expect(await browserStorage.readSearchHistory(), hive.searchHistory);
+      expect(browserStorage.searchHistory, hive.searchHistory);
 
       /// Site metadata
       expect(
@@ -406,21 +489,52 @@ void main() {
       );
 
       /// Preferences
-      expect(await storage.locale, hive.locale);
-      expect(await storage.isBiometryEnabled, hive.isBiometryEnabled);
+      expect(await storage.readLocale(), hive.locale);
+      expect(storage.locale, hive.locale);
+      expect(await storage.readIsBiometryEnabled(), hive.isBiometryEnabled);
       expect(await storage.getWasStEverOpened, hive.wasStEverOpened);
       expect(await browserStorage.getWhyNeedBrowser, hive.getWhyNeedBrowser);
       expect(
-        await accountSeedStorage.lastViewedSeeds(),
+        (await storage.readLastViewedSeeds()).map((key) => key.publicKey),
         hive.lastViewedSeeds(),
       );
-      expect(await accountSeedStorage.hiddenAccounts, hive.hiddenAccounts);
-      expect(await accountSeedStorage.externalAccounts, hive.externalAccounts);
-      expect(await storage.currentConnection, hive.currentConnection);
-      expect(await accountSeedStorage.currentKey, hive.currentKey);
+      expect(
+        storage.lastViewedSeeds.map((key) => key.publicKey),
+        hive.lastViewedSeeds(),
+      );
+      expect(
+        (await accountSeedStorage.readHiddenAccounts())
+            .map((addr) => addr.address),
+        hive.hiddenAccounts,
+      );
+      expect(
+        accountSeedStorage.hiddenAccounts.map((addr) => addr.address),
+        hive.hiddenAccounts,
+      );
+      expect(
+        (await accountSeedStorage.readExternalAccounts()).map(
+          (key, value) => MapEntry(
+            key.publicKey,
+            value.map((addr) => addr.address),
+          ),
+        ),
+        hive.externalAccounts,
+      );
+      expect(
+        accountSeedStorage.externalAccounts.map(
+          (key, value) =>
+              MapEntry(key.publicKey, value.map((addr) => addr.address)),
+        ),
+        hive.externalAccounts,
+      );
+      expect(await storage.readCurrentConnection(), hive.currentConnection);
+      expect(storage.currentConnection, hive.currentConnection);
+      expect((await storage.readCurrentKey())?.publicKey, hive.currentKey);
+      expect(storage.currentKey?.publicKey, hive.currentKey);
 
       /// Browser
-      expect(await browserStorage.browserTabs, hive.browserTabs);
+      expect(await browserStorage.readBrowserTabs(), hive.browserTabs);
+      expect(browserStorage.browserTabs, hive.browserTabs);
       expect(
         await browserStorage.browserTabsLastIndex,
         hive.browserTabsLastIndex,

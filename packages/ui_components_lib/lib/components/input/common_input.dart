@@ -4,7 +4,8 @@ import 'package:flutter_typeahead/flutter_typeahead.dart';
 import 'package:ui_components_lib/ui_components_lib.dart';
 
 /// Default height for input
-const commonInputHeight = 44.0;
+const commonInputHeight = DimensSize.d56;
+const suggestionDividerSize = DimensStroke.small;
 
 /// {@template common_input}
 /// Defaut input field that could be used in application.
@@ -33,26 +34,29 @@ class CommonInput extends StatefulWidget {
     this.validateMode,
     this.onChanged,
     this.inputFormatters,
-    this.labelText,
+    this.hintText,
     this.prefixIcon,
     this.suffixIcon,
     this.suggestionsCallback,
     this.itemBuilder,
     this.onSuggestionSelected,
-    this.height,
+    this.height = commonInputHeight,
     this.onClearField,
     this.needClearButton = true,
     this.suggestionBackground,
     this.textStyle,
-    this.labelStyle,
+    this.hintStyle,
     this.enabledBorderColor,
     this.inactiveBorderColor,
     this.errorColor,
     this.obscureText = false,
+    this.titleText,
+    this.subtitleText,
+    this.prefixIconConstraints,
   });
 
   /// Height of input field
-  final double? height;
+  final double height;
 
   /// Controller for input field
   final TextEditingController? controller;
@@ -87,13 +91,16 @@ class CommonInput extends StatefulWidget {
   /// Input formatters
   final List<TextInputFormatter>? inputFormatters;
 
-  /// Label text for input field
-  final String? labelText;
+  /// Hint text for input field
+  final String? hintText;
 
   /// Icon to show before input field.
   /// If you want specify custom icon, you need to wrap your input with
   /// [BoxConstraints] for proper behavior.
   final Widget? prefixIcon;
+
+  /// Constraints for [prefixIcon]
+  final BoxConstraints? prefixIconConstraints;
 
   /// Icon to show after input field, if not specified and [needClearButton] is
   /// true then custom clear button will be shown.
@@ -105,7 +112,8 @@ class CommonInput extends StatefulWidget {
   /// If null, then TextField will be used
   final SuggestionsCallback<String>? suggestionsCallback;
 
-  /// Builder function for suggestions, no need for TextField
+  /// Builder function for suggestions, no need for TextField.
+  /// If null, default is used
   final ItemBuilder<String>? itemBuilder;
 
   /// Callback for suggestion selection, no need for TextField
@@ -130,12 +138,19 @@ class CommonInput extends StatefulWidget {
   final Color? suggestionBackground;
 
   /// Style for text of input, color used for cursor, default
-  /// [StyleRes.regular16] and [ColorsPalette.textPrimary]
+  /// [StyleRes.primaryRegular] and [ColorsPalette.textPrimary]
   final TextStyle? textStyle;
 
-  /// Style for label text, default [StyleRes.medium14] and
-  /// [ColorsPalette.textTertiary].
-  final TextStyle? labelStyle;
+  /// Style for label text, default [StyleRes.primaryRegular] and
+  /// [ColorsPalette.textSecondary].
+  final TextStyle? hintStyle;
+
+  /// Title (name) of input, it displays above input
+  final String? titleText;
+
+  /// Subtitle (additional info) of input, displays near title.
+  /// To display subtitle, specify [titleText].
+  final String? subtitleText;
 
   /// If text should look like password, default false
   final bool obscureText;
@@ -159,6 +174,12 @@ class _CommonInputState extends State<CommonInput> {
   }
 
   @override
+  void dispose() {
+    _controller.removeListener(_handleDidChange);
+    super.dispose();
+  }
+
+  @override
   void didChangeDependencies() {
     super.didChangeDependencies();
     _handleInput();
@@ -171,6 +192,7 @@ class _CommonInputState extends State<CommonInput> {
       _controller = widget.controller!;
       _controller.addListener(_handleDidChange);
     }
+
     return super.didUpdateWidget(oldWidget);
   }
 
@@ -187,232 +209,117 @@ class _CommonInputState extends State<CommonInput> {
     isEmpty = inputText.isEmpty;
   }
 
+  // ignore: long-method
+  Widget _onBuild(FormFieldState<String> state) {
+    final colors = context.themeStyle.colors;
+    field = state;
+
+    Widget child;
+
+    final suggestionsCallback = widget.suggestionsCallback;
+    child = suggestionsCallback == null
+        ? _commonInputField(colors: colors, hasError: state.hasError)
+        : _suggestionsInputField(
+            colors: colors,
+            hasError: state.hasError,
+            suggestionsCallback: suggestionsCallback,
+          );
+
+    return Column(
+      mainAxisSize: MainAxisSize.min,
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        if (widget.titleText != null) ...[
+          Text.rich(
+            TextSpan(
+              children: [
+                TextSpan(
+                  text: widget.titleText,
+                  style: StyleRes.secondaryBold
+                      .copyWith(color: colors.textPrimary),
+                ),
+                if (widget.subtitleText != null) ...[
+                  const WidgetSpan(child: SizedBox(width: DimensSize.d4)),
+                  TextSpan(
+                    text: widget.subtitleText,
+                    style: StyleRes.addRegular
+                        .copyWith(color: colors.textSecondary),
+                  ),
+                ],
+              ],
+            ),
+          ),
+          const SizedBox(height: DimensSize.d8),
+        ],
+        child,
+        if (state.errorText != null && state.errorText!.isNotEmpty) ...[
+          const SizedBox(height: DimensSize.d4),
+          Text(
+            state.errorText!,
+            style: StyleRes.addRegular.copyWith(
+              color: widget.errorColor ?? colors.alert,
+            ),
+          ),
+        ],
+      ],
+    );
+  }
+
   @override
   Widget build(BuildContext context) => FormField<String>(
         validator: widget.validator,
         autovalidateMode: widget.validateMode,
         initialValue: _controller.text,
-        builder: (state) {
-          final colors = context.themeStyle.colors;
-          field = state;
-
-          Widget child;
-
-          final suggestionsCallback = widget.suggestionsCallback;
-          if (suggestionsCallback == null) {
-            child = SizedBox(
-              height: widget.height ?? commonInputHeight,
-              child: TextField(
-                obscureText: widget.obscureText,
-                style: widget.textStyle ??
-                    StyleRes.regular16.copyWith(color: colors.textPrimary),
-                controller: _controller,
-                focusNode: widget.focusNode,
-                keyboardType: widget.keyboardType ?? TextInputType.text,
-                onChanged: widget.onChanged,
-                textInputAction: widget.textInputAction ?? TextInputAction.next,
-                cursorWidth: 1,
-                cursorColor: widget.textStyle?.color ?? colors.textPrimary,
-                onSubmitted: widget.onSubmitted,
-                autocorrect: widget.autocorrect,
-                enableSuggestions: widget.enableSuggestions,
-                inputFormatters: widget.inputFormatters,
-                decoration: InputDecoration(
-                  errorText: state.hasError ? '' : null,
-                  errorStyle: const TextStyle(fontSize: 0, height: 0),
-                  labelText: widget.labelText,
-                  labelStyle: widget.labelStyle ??
-                      StyleRes.medium14.copyWith(color: colors.textSecondary),
-                  contentPadding: EdgeInsets.zero,
-                  suffixIcon: _buildSuffixIcon(),
-                  prefixIconConstraints: widget.prefixIcon == null
-                      ? const BoxConstraints(maxHeight: 0, maxWidth: 16)
-                      : const BoxConstraints(
-                          minHeight: commonInputHeight,
-                          minWidth: 35,
-                        ),
-                  prefixIcon: widget.prefixIcon ?? const SizedBox(width: 16),
-                  border: OutlineInputBorder(
-                    gapPadding: 1,
-                    borderRadius: BorderRadius.circular(0),
-                    borderSide: BorderSide(
-                      color: widget.inactiveBorderColor ?? colors.accentPrimary,
-                    ),
-                  ),
-                  enabledBorder: OutlineInputBorder(
-                    gapPadding: 1,
-                    borderRadius: BorderRadius.circular(0),
-                    borderSide: BorderSide(
-                      color:
-                          widget.inactiveBorderColor ?? colors.fillingTertiary,
-                    ),
-                  ),
-                  focusedBorder: OutlineInputBorder(
-                    gapPadding: 1,
-                    borderRadius: BorderRadius.circular(0),
-                    borderSide: BorderSide(
-                      color: colors.accentPrimary,
-                    ),
-                  ),
-                  errorBorder: OutlineInputBorder(
-                    gapPadding: 1,
-                    borderRadius: BorderRadius.circular(0),
-                    borderSide: BorderSide(
-                      color: widget.errorColor ?? colors.accentWarning,
-                    ),
-                  ),
-                  focusedErrorBorder: OutlineInputBorder(
-                    gapPadding: 1,
-                    borderRadius: BorderRadius.circular(0),
-                    borderSide: BorderSide(
-                      color: widget.errorColor ?? colors.accentWarning,
-                    ),
-                  ),
-                ),
-              ),
-            );
-          } else {
-            final itemBuilder = widget.itemBuilder;
-            final onSuggestionSelected = widget.onSuggestionSelected;
-
-            if (itemBuilder == null || onSuggestionSelected == null) {
-              assert(
-                false,
-                // ignore: lines_longer_than_80_chars
-                'itemBuilder and onSuggestionSelected must be set to use TypeAheadField',
-              );
-              child = const SizedBox();
-            } else {
-              child = SizedBox(
-                height: widget.height ?? commonInputHeight,
-                child: TypeAheadField<String>(
-                  autoFlipDirection: true,
-                  hideOnEmpty: true,
-                  hideOnError: true,
-                  hideOnLoading: true,
-                  textFieldConfiguration: TextFieldConfiguration(
-                    style: widget.textStyle ??
-                        StyleRes.regular16.copyWith(color: colors.textPrimary),
-                    controller: _controller,
-                    focusNode: widget.focusNode,
-                    keyboardType: widget.keyboardType ?? TextInputType.text,
-                    onChanged: widget.onChanged,
-                    textInputAction:
-                        widget.textInputAction ?? TextInputAction.next,
-                    cursorWidth: 1,
-                    cursorColor: widget.textStyle?.color ?? colors.textPrimary,
-                    onSubmitted: widget.onSubmitted,
-                    autocorrect: widget.autocorrect,
-                    enableSuggestions: widget.enableSuggestions,
-                    inputFormatters: widget.inputFormatters,
-                    decoration: InputDecoration(
-                      errorText: state.hasError ? '' : null,
-                      errorStyle: const TextStyle(fontSize: 0, height: 0),
-                      labelText: widget.labelText,
-                      labelStyle: widget.labelStyle ??
-                          StyleRes.medium14
-                              .copyWith(color: colors.textSecondary),
-                      contentPadding: EdgeInsets.zero,
-                      suffixIcon: _buildSuffixIcon(),
-                      prefixIconConstraints: widget.prefixIcon == null
-                          ? const BoxConstraints(maxHeight: 0, maxWidth: 16)
-                          : const BoxConstraints(
-                              minHeight: commonInputHeight,
-                              minWidth: 35,
-                            ),
-                      prefixIcon:
-                          widget.prefixIcon ?? const SizedBox(width: 16),
-                      border: OutlineInputBorder(
-                        gapPadding: 1,
-                        borderRadius: BorderRadius.circular(0),
-                        borderSide: BorderSide(
-                          color: widget.inactiveBorderColor ??
-                              colors.accentPrimary,
-                        ),
-                      ),
-                      enabledBorder: OutlineInputBorder(
-                        gapPadding: 1,
-                        borderRadius: BorderRadius.circular(0),
-                        borderSide: BorderSide(
-                          color: widget.inactiveBorderColor ??
-                              colors.fillingTertiary,
-                        ),
-                      ),
-                      focusedBorder: OutlineInputBorder(
-                        gapPadding: 1,
-                        borderRadius: BorderRadius.circular(0),
-                        borderSide: BorderSide(
-                          color: colors.accentPrimary,
-                        ),
-                      ),
-                      errorBorder: OutlineInputBorder(
-                        gapPadding: 1,
-                        borderRadius: BorderRadius.circular(0),
-                        borderSide: BorderSide(
-                          color: widget.errorColor ?? colors.accentWarning,
-                        ),
-                      ),
-                      focusedErrorBorder: OutlineInputBorder(
-                        gapPadding: 1,
-                        borderRadius: BorderRadius.circular(0),
-                        borderSide: BorderSide(
-                          color: widget.errorColor ?? colors.accentWarning,
-                        ),
-                      ),
-                    ),
-                  ),
-                  suggestionsCallback: suggestionsCallback,
-                  itemBuilder: itemBuilder,
-                  suggestionsBoxDecoration: SuggestionsBoxDecoration(
-                    color: widget.suggestionBackground ?? colors.fillingPrimary,
-                  ),
-                  onSuggestionSelected: onSuggestionSelected,
-                ),
-              );
-            }
-          }
-
-          if (widget.validator == null) return child;
-          return Column(
-            mainAxisSize: MainAxisSize.min,
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              child,
-              if (state.errorText != null && state.errorText!.isNotEmpty) ...[
-                const SizedBox(height: 4),
-                Text(
-                  state.errorText!,
-                  style: StyleRes.medium14.copyWith(
-                    color: widget.errorColor ?? colors.textNegative,
-                  ),
-                ),
-              ]
-            ],
-          );
-        },
+        builder: _onBuild,
       );
 
-  Widget _buildSuffixIcon() {
+  Widget _buildSuffixIcon(ColorsPalette colors) {
     if (widget.suffixIcon != null) return widget.suffixIcon!;
     if (widget.needClearButton && !isEmpty) {
-      return _buildClearIcon();
+      return _buildClearIcon(colors);
     }
 
     return const SizedBox.shrink();
   }
 
-  Widget _buildClearIcon() {
-    return Container(
-      constraints: const BoxConstraints(maxHeight: 30, maxWidth: 38),
-      margin: const EdgeInsets.only(left: 8),
-      alignment: Alignment.center,
-      child: CommonIconButton.icon(
-        icon: Icons.clear_rounded,
-        onPressed: _clearText,
-        outerPadding: EdgeInsets.zero,
-        color: widget.textStyle?.color ??
-            context.themeStyle.colors.fillingTertiary,
-      ),
+  BoxConstraints _suffixIconConstraints() {
+    if (widget.suffixIcon != null || widget.needClearButton && !isEmpty) {
+      return BoxConstraints(
+        minHeight: widget.height,
+        minWidth: defaultCommonIconButtonSize,
+      );
+    }
+
+    return BoxConstraints(
+      minHeight: widget.height,
+      minWidth: DimensSize.d8,
+    );
+  }
+
+  BoxConstraints _prefixIconConstraints() {
+    if (widget.prefixIconConstraints != null) {
+      return widget.prefixIconConstraints!;
+    }
+
+    if (widget.prefixIcon != null) {
+      return BoxConstraints(
+        minHeight: widget.height,
+        minWidth: defaultCommonIconButtonSize,
+      );
+    }
+
+    return BoxConstraints(
+      minHeight: widget.height,
+      minWidth: DimensSize.d8,
+    );
+  }
+
+  Widget _buildClearIcon(ColorsPalette colors) {
+    return CommonIconButton.icon(
+      buttonType: EverButtonType.ghost,
+      icon: Icons.clear_rounded,
+      onPressed: _clearText,
+      color: widget.textStyle?.color ?? colors.textSecondary,
     );
   }
 
@@ -420,5 +327,202 @@ class _CommonInputState extends State<CommonInput> {
     widget.onClearField?.call();
     widget.focusNode?.unfocus();
     _controller.clear();
+  }
+
+  // ignore: long-method
+  Widget _commonInputField({
+    required ColorsPalette colors,
+    required bool hasError,
+  }) {
+    final style = widget.textStyle ??
+        StyleRes.primaryRegular.copyWith(color: colors.textPrimary);
+
+    return SizedBox(
+      height: widget.height,
+      child: TextField(
+        obscureText: widget.obscureText,
+        style: style,
+        controller: _controller,
+        focusNode: widget.focusNode,
+        keyboardType: widget.keyboardType ?? TextInputType.text,
+        onChanged: widget.onChanged,
+        textInputAction: widget.textInputAction ?? TextInputAction.next,
+        cursorColor: widget.textStyle?.color ?? colors.textPrimary,
+        onSubmitted: widget.onSubmitted,
+        autocorrect: widget.autocorrect,
+        enableSuggestions: widget.enableSuggestions,
+        inputFormatters: widget.inputFormatters,
+        decoration: InputDecoration(
+          errorText: hasError ? '' : null,
+          errorStyle: const TextStyle(fontSize: 0, height: 0),
+          hintText: widget.hintText,
+          hintStyle: widget.hintStyle ??
+              StyleRes.primaryRegular.copyWith(color: colors.textSecondary),
+          contentPadding: EdgeInsets.zero,
+          suffixIcon: _buildSuffixIcon(colors),
+          suffixIconConstraints: _suffixIconConstraints(),
+          prefixIconConstraints: _prefixIconConstraints(),
+          prefixIcon:
+              widget.prefixIcon ?? const SizedBox(width: DimensSize.d16),
+          border: SquircleInputBorder(
+            squircleRadius: DimensRadius.medium,
+            borderSide: BorderSide(
+              color: widget.inactiveBorderColor ?? colors.strokePrimary,
+            ),
+          ),
+          enabledBorder: SquircleInputBorder(
+            squircleRadius: DimensRadius.medium,
+            borderSide: BorderSide(
+              color: widget.inactiveBorderColor ?? colors.strokePrimary,
+            ),
+          ),
+          focusedBorder: SquircleInputBorder(
+            squircleRadius: DimensRadius.medium,
+            borderSide: BorderSide(
+              color: colors.strokeContrast,
+            ),
+          ),
+          errorBorder: SquircleInputBorder(
+            squircleRadius: DimensRadius.medium,
+            borderSide: BorderSide(
+              color: widget.errorColor ?? colors.alert,
+            ),
+          ),
+          focusedErrorBorder: SquircleInputBorder(
+            squircleRadius: DimensRadius.medium,
+            borderSide: BorderSide(
+              color: widget.errorColor ?? colors.alert,
+            ),
+          ),
+        ),
+      ),
+    );
+  }
+
+  // ignore: long-method
+  Widget _suggestionsInputField({
+    required ColorsPalette colors,
+    required bool hasError,
+    required SuggestionsCallback<String> suggestionsCallback,
+  }) {
+    final onSuggestionSelected = widget.onSuggestionSelected;
+
+    if (onSuggestionSelected == null) {
+      assert(
+        false,
+        'onSuggestionSelected must be set to use TypeAheadField',
+      );
+
+      return const SizedBox();
+    } else {
+      return SizedBox(
+        height: widget.height,
+        child: TypeAheadField<String>(
+          autoFlipDirection: true,
+          hideOnEmpty: true,
+          hideOnError: true,
+          hideOnLoading: true,
+          textFieldConfiguration: TextFieldConfiguration(
+            style: widget.textStyle ??
+                StyleRes.primaryRegular.copyWith(color: colors.textPrimary),
+            controller: _controller,
+            focusNode: widget.focusNode,
+            keyboardType: widget.keyboardType ?? TextInputType.text,
+            onChanged: widget.onChanged,
+            textInputAction: widget.textInputAction ?? TextInputAction.next,
+            cursorColor: widget.textStyle?.color ?? colors.textPrimary,
+            onSubmitted: widget.onSubmitted,
+            autocorrect: widget.autocorrect,
+            enableSuggestions: widget.enableSuggestions,
+            inputFormatters: widget.inputFormatters,
+            decoration: InputDecoration(
+              errorText: hasError ? '' : null,
+              errorStyle: const TextStyle(fontSize: 0, height: 0),
+              hintText: widget.hintText,
+              hintStyle: widget.hintStyle ??
+                  StyleRes.primaryRegular.copyWith(color: colors.textSecondary),
+              contentPadding: EdgeInsets.zero,
+              suffixIcon: _buildSuffixIcon(colors),
+              suffixIconConstraints: _suffixIconConstraints(),
+              prefixIconConstraints: widget.prefixIcon == null
+                  ? const BoxConstraints(
+                      maxHeight: 0,
+                      maxWidth: DimensSize.d16,
+                    )
+                  : const BoxConstraints(
+                      minHeight: commonInputHeight,
+                      minWidth: DimensSize.d40,
+                    ),
+              prefixIcon:
+                  widget.prefixIcon ?? const SizedBox(width: DimensSize.d16),
+              border: SquircleInputBorder(
+                squircleRadius: DimensRadius.medium,
+                borderSide: BorderSide(
+                  color: widget.inactiveBorderColor ?? colors.strokePrimary,
+                ),
+              ),
+              enabledBorder: SquircleInputBorder(
+                squircleRadius: DimensRadius.medium,
+                borderSide: BorderSide(
+                  color: widget.inactiveBorderColor ?? colors.strokePrimary,
+                ),
+              ),
+              focusedBorder: SquircleInputBorder(
+                squircleRadius: DimensRadius.medium,
+                borderSide: BorderSide(
+                  color: colors.strokeContrast,
+                ),
+              ),
+              errorBorder: SquircleInputBorder(
+                squircleRadius: DimensRadius.medium,
+                borderSide: BorderSide(
+                  color: widget.errorColor ?? colors.alert,
+                ),
+              ),
+              focusedErrorBorder: SquircleInputBorder(
+                squircleRadius: DimensRadius.medium,
+                borderSide: BorderSide(
+                  color: widget.errorColor ?? colors.alert,
+                ),
+              ),
+            ),
+          ),
+          suggestionsCallback: suggestionsCallback,
+          itemSeparatorBuilder: (_, __) => Divider(
+            height: suggestionDividerSize,
+            color: colors.strokeSecondary,
+            thickness: suggestionDividerSize,
+          ),
+          itemBuilder: widget.itemBuilder ??
+              (context, item) =>
+                  _defaultSuggestionItemBuilder(context, item, colors),
+          suggestionsBoxDecoration: SuggestionsBoxDecoration(
+            hasScrollbar: false,
+            constraints: const BoxConstraints(maxWidth: DimensSize.d168),
+            shape: const SquircleShapeBorder(cornerRadius: DimensRadius.medium),
+            color: widget.suggestionBackground ?? colors.backgroundSecondary,
+          ),
+          onSuggestionSelected: onSuggestionSelected,
+        ),
+      );
+    }
+  }
+
+  /// Default builder for suggestions item
+  Widget _defaultSuggestionItemBuilder(
+    BuildContext _,
+    String itemData,
+    ColorsPalette colors,
+  ) {
+    return Container(
+      height: DimensSize.d40,
+      margin: const EdgeInsets.all(DimensSize.d12),
+      child: ListTile(
+        title: Text(
+          itemData,
+          style: StyleRes.button.copyWith(color: colors.textPrimary),
+        ),
+      ),
+    );
   }
 }

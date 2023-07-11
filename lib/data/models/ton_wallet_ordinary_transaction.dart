@@ -9,7 +9,7 @@ class TonWalletOrdinaryTransaction with _$TonWalletOrdinaryTransaction {
     required String lt,
     required bool isOutgoing,
     @amountJsonConverter required Fixed value,
-    required String address,
+    required Address address,
     required DateTime date,
     @amountJsonConverter required Fixed fees,
     required String hash,

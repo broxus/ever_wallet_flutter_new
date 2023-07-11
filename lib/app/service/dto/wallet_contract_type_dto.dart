@@ -1,3 +1,5 @@
+// ignore_for_file: no-magic-number
+
 import 'package:app/data/models/wallet_contract_type.dart';
 import 'package:hive_flutter/hive_flutter.dart';
 

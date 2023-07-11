@@ -1,4 +1,3 @@
-import 'package:app/app/utils/iterable_extensions.dart';
 import 'package:app/feature/add_seed/check_seed_phrase/check_seed_phrase.dart';
 import 'package:dotted_border/dotted_border.dart';
 import 'package:flutter/material.dart';
@@ -28,25 +27,23 @@ class CheckSeedAvailableAnswersWidget extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Column(
+    return SeparatedColumn(
       mainAxisSize: MainAxisSize.min,
       children: [
-        for (var index = 0; index < defaultWordsToCheckAmount; index++) ...[
+        for (var index = 0; index < defaultWordsToCheckAmount; index++)
           _answersRow(
             availableAnswers.sublist(
               index * defaultWordsToCheckAmount,
               index * defaultWordsToCheckAmount + defaultWordsToCheckAmount,
             ),
           ),
-          const SizedBox(height: 8),
-        ],
       ],
     );
   }
 
   Widget _answersRow(List<String> answers) {
-    return Row(
-      children: answers.map(_answerBuilder).separated(const SizedBox(width: 8)),
+    return SeparatedRow(
+      children: answers.map(_answerBuilder).toList(),
     );
   }
 
@@ -58,21 +55,32 @@ class CheckSeedAvailableAnswersWidget extends StatelessWidget {
         builder: (context) {
           final colors = context.themeStyle.colors;
 
-          return PressInkWidget(
+          return PressScaleWidget(
             onPressed: isSelected ? null : () => selectAnswer(answer),
-            child: DottedBorder(
-              dashPattern: isSelected ? const [4, 4] : const [1, 0],
-              color: colors.accentTertiary,
-              child: Center(
-                child: Padding(
-                  padding: const EdgeInsets.symmetric(
-                    vertical: 12,
-                    horizontal: 4,
-                  ),
-                  child: Text(
-                    isSelected ? '' : answer,
-                    style: StyleRes.medium16
-                        .copyWith(color: colors.textButtonSecondary),
+            child: SizedBox(
+              height: DimensSize.d48,
+              child: Material(
+                color: isSelected
+                    ? Colors.transparent
+                    : colors.backgroundSecondary,
+                shape:
+                    const SquircleShapeBorder(cornerRadius: DimensRadius.max),
+                child: DottedBorder(
+                  customPath: (size) =>
+                      const SquircleShapeBorder(cornerRadius: DimensRadius.max)
+                          .getOuterPath(Offset.zero & size),
+                  dashPattern: isSelected ? const [4, 4] : const [1, 0],
+                  strokeWidth: isSelected ? DimensStroke.small : 0,
+                  color: isSelected ? colors.strokePrimary : Colors.transparent,
+                  child: Center(
+                    child: Text(
+                      answer,
+                      style: StyleRes.secondaryBold.copyWith(
+                        color: isSelected
+                            ? colors.textSecondary
+                            : colors.textPrimary,
+                      ),
+                    ),
                   ),
                 ),
               ),

@@ -1,9 +1,9 @@
 import 'package:app/app/router/app_route.dart';
 import 'package:app/feature/add_seed/create_password/create_password.dart';
-import 'package:app/feature/onboarding/widgets/onboarding_app_bar.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
+import 'package:ui_components_lib/ui_components_lib.dart';
 
 /// {@template create_seed_password_onboarding_page}
 /// Entry point to create seed password from onboarding.
@@ -24,13 +24,14 @@ class CreateSeedPasswordOnboardingPage extends StatelessWidget {
         phrase: extra.phrase,
         setCurrentKey: true,
         // Redundant because of guard, but we need to pass it down.
+        // ignore: no-empty-block
         completeCallback: () {},
       ),
       child: GestureDetector(
         onTap: () => FocusScope.of(context).unfocus(),
         child: const Scaffold(
-          resizeToAvoidBottomInset: false,
-          appBar: OnboardingAppBar(),
+          resizeToAvoidBottomInset: true,
+          appBar: DefaultAppBar(),
           body: CreateSeedPasswordView(needBiometryIfPossible: true),
         ),
       ),
@@ -57,13 +58,14 @@ class CreateSeedPasswordProfilePage extends StatelessWidget {
         phrase: extra.phrase,
         name: extra.name,
         // When we do this flow from profile, navigate to profile root
-        completeCallback: () => context.goNamed(AppRoute.profile.path),
+        completeCallback: () =>
+            context.goNamed(AppRoute.manageSeedsAccounts.name),
       ),
       child: GestureDetector(
         onTap: () => FocusScope.of(context).unfocus(),
         child: const Scaffold(
-          resizeToAvoidBottomInset: false,
-          appBar: OnboardingAppBar(),
+          resizeToAvoidBottomInset: true,
+          appBar: DefaultAppBar(),
           body: CreateSeedPasswordView(needBiometryIfPossible: false),
         ),
       ),

@@ -38,7 +38,7 @@ class CommonTabBar<T> extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Row(
+    return SeparatedRow(
       children: values
           .map(
             (v) => fillWidth
@@ -52,28 +52,19 @@ class CommonTabBar<T> extends StatelessWidget {
   Widget _item(BuildContext context, T v) {
     final colors = context.themeStyle.colors;
     final isSelected = v == selectedValue;
-    return PressScaleWidget(
+
+    return CommonButton(
       onPressed: () => onChanged(v),
-      child: Container(
-        height: 44,
-        alignment: Alignment.center,
-        padding: const EdgeInsets.symmetric(horizontal: 8),
-        decoration: BoxDecoration(
-          border: Border(
-            bottom: BorderSide(
-              color:
-                  isSelected ? colors.textButtonSecondary : Colors.transparent,
-            ),
-          ),
-        ),
-        child: Text(
-          builder(context, v),
-          style: StyleRes.medium16.copyWith(
-            color:
-                isSelected ? colors.textButtonSecondary : colors.textTertiary,
-          ),
-        ),
-      ),
+      padding: const EdgeInsets.symmetric(horizontal: DimensSize.d16),
+      fillWidth: fillWidth,
+      text: builder(context, v),
+      height: DimensSize.d48,
+      squircleRadius: DimensRadius.xMedium,
+      backgroundColor:
+          isSelected ? colors.backgroundPrimary : colors.backgroundSecondary,
+      contentColor: isSelected ? colors.textContrast : colors.textSecondary,
+      contentPressedColor:
+          isSelected ? colors.textSecondary : colors.textPrimary,
     );
   }
 }

@@ -1,6 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:ui_components_lib/ui_components_lib.dart';
 
+/// Default size for [CommonButtonIconWidget]
+const defaultCommonIconSize = 20.0;
+
 /// {@template common_button_icon}
 /// Widget of icon that allows you to put SvgPicture or Icon in [CommonButton].
 ///
@@ -16,6 +19,7 @@ class CommonButtonIconWidget extends StatelessWidget {
     this.icon,
     this.svg,
     this.size,
+    this.useDefaultColor = true,
     super.key,
   }) : assert(
           icon != null || svg != null,
@@ -34,9 +38,15 @@ class CommonButtonIconWidget extends StatelessWidget {
   factory CommonButtonIconWidget.svg({
     required String svg,
     double? size,
+    bool useDefaultColor = true,
     Key? key,
   }) =>
-      CommonButtonIconWidget(svg: svg, size: size, key: key);
+      CommonButtonIconWidget(
+        svg: svg,
+        size: size,
+        useDefaultColor: useDefaultColor,
+        key: key,
+      );
 
   /// Data of icon that is used in [Icon]
   final IconData? icon;
@@ -47,23 +57,29 @@ class CommonButtonIconWidget extends StatelessWidget {
   /// Size for image
   final double? size;
 
+  /// If true, icon will be colored with [EverButtonStyleProvider.contentColor]
+  final bool useDefaultColor;
+
   @override
   Widget build(BuildContext context) {
     final buttonStyle = EverButtonStyleProvider.of(context);
-    final isDisabled = buttonStyle.isDisabled;
-    final style = buttonStyle.style;
+    final color = useDefaultColor ? buttonStyle.contentColor : null;
 
-    final color = isDisabled
-        ? style.contentDisabledColor ?? style.contentColor
-        : style.contentColor;
-
-    if (icon != null) {
-      return Icon(icon, color: color, size: size ?? 20);
-    }
-
-    return SvgPicture.asset(
-      svg!,
-      theme: SvgTheme(currentColor: color, fontSize: size ?? 20),
+    final widget = CommonIconWidget(
+      icon: icon,
+      svg: svg,
+      size: size ?? defaultCommonIconSize,
+      avoidContentColor: color == null,
     );
+
+    return color == null
+        ? widget
+        : AnimatedColor(
+            color: color,
+            duration: kThemeAnimationDuration,
+            builder: (context, color) {
+              return widget;
+            },
+          );
   }
 }

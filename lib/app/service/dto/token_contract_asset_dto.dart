@@ -1,7 +1,10 @@
+// ignore_for_file: no-magic-number
+
 import 'package:app/data/models/network_type.dart';
 import 'package:app/data/models/token_contract_asset.dart';
 import 'package:freezed_annotation/freezed_annotation.dart';
 import 'package:hive_flutter/hive_flutter.dart';
+import 'package:nekoton_repository/nekoton_repository.dart';
 
 part 'token_contract_asset_dto.freezed.dart';
 
@@ -27,7 +30,7 @@ extension TokenContractAssetX on TokenContractAsset {
         chainId: chainId,
         symbol: symbol,
         decimals: decimals,
-        address: address,
+        address: address.address,
         logoURI: logoURI,
         version: version,
       );
@@ -39,7 +42,7 @@ extension TokenContractAssetDtoX on TokenContractAssetDto {
         chainId: chainId,
         symbol: symbol,
         decimals: decimals,
-        address: address,
+        address: Address(address: address),
         logoURI: logoURI,
         version: version,
         networkType: type,

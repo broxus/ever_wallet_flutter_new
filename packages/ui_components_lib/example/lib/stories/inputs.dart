@@ -1,3 +1,4 @@
+import 'dart:async';
 import 'package:flutter/material.dart';
 import 'package:ui_components_lib/ui_components_lib.dart';
 
@@ -12,6 +13,8 @@ class InputsStory extends StatefulWidget {
 }
 
 class _InputsStoryState extends State<InputsStory> {
+  final statusValue = ValueNotifier<SelectionStatus>(SelectionStatus.unfocus);
+
   final suggestion1Controller = TextEditingController();
   final suggestion2Controller = TextEditingController();
 
@@ -20,51 +23,51 @@ class _InputsStoryState extends State<InputsStory> {
   final validationFormKey2 = GlobalKey<FormState>();
   final validationFormKey3 = GlobalKey<FormState>();
   final validationFormKey4 = GlobalKey<FormState>();
+  final validationFormKey5 = GlobalKey<FormState>();
 
   final switcher1Notifier = ValueNotifier<bool>(true);
   final switcher2Notifier = ValueNotifier<bool>(true);
   final switcher3Notifier = ValueNotifier<bool>(true);
 
+  final checkbox1Notifier = ValueNotifier<bool>(true);
+
+  static const radioValues = ['one', 'two', 'three'];
+  late final radio1Notifier = ValueNotifier<String>(radioValues.first);
+  late final radio2Notifier = ValueNotifier<String?>(null);
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        title: const Text('Inputs'),
-      ),
+      appBar: const DefaultAppBar(titleText: 'Inputs'),
       body: SingleChildScrollView(
         child: Padding(
-          padding: const EdgeInsets.all(16),
+          padding: const EdgeInsets.all(DimensSize.d16),
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              const CommonInput(labelText: 'Default input'),
-              const SizedBox(height: 20),
+              const CommonInput(
+                hintText: 'Default input',
+                titleText: 'Title',
+                subtitleText: 'Subtitle',
+              ),
+              const SizedBox(height: DimensSize.d20),
 
               const CommonInput(
-                labelText: 'Default without X',
+                hintText: 'Default without X',
                 needClearButton: false,
               ),
-              const SizedBox(height: 20),
+              const SizedBox(height: DimensSize.d20),
 
               /// with suggestion
               CommonInput(
-                labelText: 'Suggestions with simple builder',
+                hintText: 'Suggestions with simple builder',
+                titleText: 'Title',
+                subtitleText: 'Subtitle',
                 controller: suggestion1Controller,
-                suggestionsCallback: (pattern) {
-                  if (pattern.isEmpty) return suggestionsList;
-                  return suggestionsList
-                      .where(
-                        (element) => element
-                            .toLowerCase()
-                            .contains(pattern.toLowerCase()),
-                      )
-                      .toList();
-                },
-                itemBuilder: (_, suggestion) =>
-                    ListTile(title: Text(suggestion)),
+                suggestionsCallback: _onSuggest,
                 onSuggestionSelected: (v) => suggestion1Controller.text = v,
               ),
-              const SizedBox(height: 20),
+              const SizedBox(height: DimensSize.d20),
 
               /// Validation
               Form(
@@ -73,10 +76,10 @@ class _InputsStoryState extends State<InputsStory> {
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
                     CommonInput(
-                      labelText: 'Silent validation for emptiness',
+                      hintText: 'Silent validation for emptiness',
                       validator: (v) => v?.isEmpty ?? true ? '' : null,
                     ),
-                    const SizedBox(height: 12),
+                    const SizedBox(height: DimensSize.d12),
                     CommonButton.primary(
                       text: 'Validate',
                       onPressed: () =>
@@ -85,7 +88,7 @@ class _InputsStoryState extends State<InputsStory> {
                   ],
                 ),
               ),
-              const SizedBox(height: 20),
+              const SizedBox(height: DimensSize.d20),
 
               Form(
                 key: validationFormKey12,
@@ -93,14 +96,14 @@ class _InputsStoryState extends State<InputsStory> {
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
                     CommonInput(
-                      labelText: 'Auto silent validation',
+                      hintText: 'Auto silent validation',
                       validator: (v) => v?.isEmpty ?? true ? '' : null,
                       validateMode: AutovalidateMode.onUserInteraction,
                     ),
                   ],
                 ),
               ),
-              const SizedBox(height: 20),
+              const SizedBox(height: DimensSize.d20),
 
               Form(
                 key: validationFormKey2,
@@ -108,10 +111,10 @@ class _InputsStoryState extends State<InputsStory> {
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
                     CommonInput(
-                      labelText: 'Validation for emptiness with error',
+                      hintText: 'Validation for emptiness with error',
                       validator: (v) => v?.isEmpty ?? true ? 'Error' : null,
                     ),
-                    const SizedBox(height: 12),
+                    const SizedBox(height: DimensSize.d12),
                     CommonButton.primary(
                       text: 'Validate',
                       onPressed: () =>
@@ -120,7 +123,7 @@ class _InputsStoryState extends State<InputsStory> {
                   ],
                 ),
               ),
-              const SizedBox(height: 20),
+              const SizedBox(height: DimensSize.d20),
 
               Form(
                 key: validationFormKey3,
@@ -128,25 +131,14 @@ class _InputsStoryState extends State<InputsStory> {
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
                     CommonInput(
-                      labelText: 'Validation with suggestions',
+                      hintText: 'Validation with suggestions',
                       controller: suggestion2Controller,
-                      suggestionsCallback: (pattern) {
-                        if (pattern.isEmpty) return suggestionsList;
-                        return suggestionsList
-                            .where(
-                              (element) => element
-                                  .toLowerCase()
-                                  .contains(pattern.toLowerCase()),
-                            )
-                            .toList();
-                      },
-                      itemBuilder: (_, suggestion) =>
-                          ListTile(title: Text(suggestion)),
+                      suggestionsCallback: _onSuggest,
                       onSuggestionSelected: (v) =>
                           suggestion2Controller.text = v,
                       validator: (v) => v?.isEmpty ?? true ? 'Error' : null,
                     ),
-                    const SizedBox(height: 12),
+                    const SizedBox(height: DimensSize.d12),
                     CommonButton.primary(
                       text: 'Validate',
                       onPressed: () =>
@@ -155,9 +147,23 @@ class _InputsStoryState extends State<InputsStory> {
                   ],
                 ),
               ),
-              const SizedBox(height: 30),
+
+              /// Status selection
+              const SizedBox(height: DimensSize.d20),
+              ValueListenableBuilder<SelectionStatus>(
+                valueListenable: statusValue,
+                builder: (_, value, __) {
+                  return SelectionStatusInput(
+                    status: value,
+                    title: 'SelectionStatus',
+                    onPressed: () => statusValue.value = SelectionStatus.values[
+                        (value.index + 1) % SelectionStatus.values.length],
+                  );
+                },
+              ),
 
               /// Switchers
+              const SizedBox(height: DimensSize.d20),
               ValueListenableBuilder<bool>(
                 valueListenable: switcher1Notifier,
                 builder: (_, value, __) {
@@ -167,7 +173,7 @@ class _InputsStoryState extends State<InputsStory> {
                   );
                 },
               ),
-              const SizedBox(height: 20),
+              const SizedBox(height: DimensSize.d20),
 
               ValueListenableBuilder<bool>(
                 valueListenable: switcher2Notifier,
@@ -195,7 +201,7 @@ class _InputsStoryState extends State<InputsStory> {
                   );
                 },
               ),
-              const SizedBox(height: 20),
+              const SizedBox(height: DimensSize.d20),
 
               ValueListenableBuilder<bool>(
                 valueListenable: switcher3Notifier,
@@ -207,12 +213,86 @@ class _InputsStoryState extends State<InputsStory> {
                   );
                 },
               ),
+              const SizedBox(height: DimensSize.d20),
+              SeparatedRow(
+                children: [
+                  ValueListenableBuilder<bool>(
+                    valueListenable: checkbox1Notifier,
+                    builder: (_, value, __) {
+                      return CommonCheckboxInput(
+                        checked: value,
+                        onChanged: (v) => checkbox1Notifier.value = v,
+                      );
+                    },
+                  ),
+                  const CommonCheckboxInput(checked: false),
+                  const CommonCheckboxInput(checked: true),
+                ],
+              ),
+              const SizedBox(height: DimensSize.d20),
+              ValueListenableBuilder<String>(
+                valueListenable: radio1Notifier,
+                builder: (_, value, __) {
+                  return SeparatedRow(
+                    children: radioValues
+                        .map(
+                          (v) => CommonRadioInput(
+                            value: v,
+                            groupValue: value,
+                            onChanged: (v) => radio1Notifier.value = v,
+                          ),
+                        )
+                        .toList(),
+                  );
+                },
+              ),
+              const SizedBox(height: DimensSize.d8),
+              Form(
+                key: validationFormKey5,
+                child: ValueListenableBuilder<String?>(
+                  valueListenable: radio2Notifier,
+                  builder: (_, value, __) {
+                    return SeparatedRow(
+                      children: [
+                        ...radioValues.map(
+                          (v) => CommonRadioInput(
+                            value: v,
+                            groupValue: value,
+                            onChanged: (v) => radio2Notifier.value = v,
+                            validator: (_) =>
+                                radio2Notifier.value == null ? '' : null,
+                          ),
+                        ),
+                        CommonButton.primary(
+                          text: 'Validate (if not selected)',
+                          onPressed: () =>
+                              validationFormKey5.currentState?.validate(),
+                        ),
+                        CommonButton.ghost(
+                          text: 'Reset',
+                          onPressed: () => radio2Notifier.value = null,
+                        ),
+                      ],
+                    );
+                  },
+                ),
+              ),
 
-              const SizedBox(height: 40),
+              const SizedBox(height: DimensSize.d40),
             ],
           ),
         ),
       ),
     );
+  }
+
+  FutureOr<Iterable<String>> _onSuggest(String pattern) {
+    if (pattern.isEmpty) return suggestionsList;
+
+    return suggestionsList
+        .where(
+          (element) => element.toLowerCase().contains(pattern.toLowerCase()),
+        )
+        .toList();
   }
 }

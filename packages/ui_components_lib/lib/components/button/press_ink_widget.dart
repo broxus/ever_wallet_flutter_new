@@ -11,14 +11,14 @@ class PressInkWidget extends StatelessWidget {
     this.onPressed,
     this.child,
     this.onLongPress,
-    this.borderRadius = BorderRadius.zero,
+    this.squircleRadius = 0,
     this.pressStateColor,
   });
 
   /// Child that must have ink effect
   final Widget? child;
 
-  /// Color of ink effect, default [ColorsPalette.accentSecondaryPressed]
+  /// Color of ink effect, default [ColorsPalette.backgroundPrimary] 0.8 opacity
   final Color? pressStateColor;
 
   /// Pressed callback
@@ -27,24 +27,24 @@ class PressInkWidget extends StatelessWidget {
   /// Long pressed callback
   final VoidCallback? onLongPress;
 
-  /// Radius of the ink effect, default 0
-  final BorderRadius borderRadius;
+  /// Radius for [SquircleShapeBorder], default 0
+  final double squircleRadius;
 
   @override
   Widget build(BuildContext context) {
-    final presState =
-        pressStateColor ?? context.themeStyle.colors.accentSecondaryPressed;
+    final presState = pressStateColor ??
+        context.themeStyle.colors.backgroundPrimary.withOpacity(0.8);
 
     assert(debugCheckHasMaterial(context), 'No Material above PressInkWidget');
 
     return InkResponse(
+      customBorder: SquircleShapeBorder(cornerRadius: squircleRadius),
       splashColor: Colors.transparent,
       hoverColor: Colors.transparent,
       highlightColor: presState,
       highlightShape: BoxShape.rectangle,
       onLongPress: onLongPress,
       onTap: onPressed,
-      borderRadius: borderRadius,
       child: child,
     );
   }

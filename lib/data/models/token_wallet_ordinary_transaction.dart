@@ -8,7 +8,7 @@ class TokenWalletOrdinaryTransaction with _$TokenWalletOrdinaryTransaction {
   const factory TokenWalletOrdinaryTransaction({
     required String lt,
     required bool isOutgoing,
-    required String address,
+    required Address address,
     @amountJsonConverter required Fixed value,
     required DateTime date,
     @amountJsonConverter required Fixed fees,

@@ -1,18 +1,111 @@
+import 'package:app/app/service/navigation/service/navigation_service.dart';
+import 'package:app/di/di.dart';
+import 'package:app/feature/add_seed/enter_seed_name/enter_seed_name.dart';
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:logging/logging.dart';
 
-enum AppRoute {
-  onboarding('onboarding', '/onboarding', isSaveLocation: true),
-  wallet('wallet', '/wallet', isSaveLocation: true),
-  browser('browser', '/browser', isSaveLocation: true),
-  profile('profile', '/profile', isSaveLocation: true),
-  createSeed('', 'createSeed', isSaveLocation: true),
-  checkSeed('', 'checkSeed'),
-  enterSeed('', 'enterSeed', isSaveLocation: true),
-  createSeedPassword('', 'createSeedPassword');
+const seedDetailPublicKeyPathParam = 'seedDetailPublicKey';
+const keyDetailPublicKeyPathParam = 'keyDetailPublicKey';
+const accountDetailAddressPathParam = 'accountDetailAddress';
 
-  const AppRoute(this.name, this.path, {this.isSaveLocation = false});
+enum AppRoute {
+  onboarding(
+    'onboarding',
+    '/onboarding',
+    isSaveLocation: true,
+  ),
+  wallet(
+    'wallet',
+    '/wallet',
+    isSaveLocation: true,
+    isBottomNavigationBarVisible: true,
+  ),
+  browser(
+    'browser',
+    '/browser',
+    isSaveLocation: true,
+    isBottomNavigationBarVisible: true,
+    isSaveSubroutes: true,
+  ),
+
+  /// Profile section
+  profile(
+    'profile',
+    '/profile',
+    isSaveLocation: true,
+    isBottomNavigationBarVisible: true,
+  ),
+  manageSeedsAccounts(
+    'manageSeeds',
+    'manageSeeds',
+    isSaveLocation: true,
+  ),
+  seedDetail(
+    '',
+    'seedDetail/:$seedDetailPublicKeyPathParam',
+    isSaveLocation: true,
+  ),
+  keyDetail(
+    '',
+    'keyDetail/:$keyDetailPublicKeyPathParam',
+    isSaveLocation: true,
+  ),
+  accountDetail(
+    '',
+    'accountDetail/:$accountDetailAddressPathParam',
+    isSaveLocation: true,
+  ),
+
+  /// Adding seed
+  createSeed(
+    '',
+    'createSeed',
+    isSaveLocation: true,
+  ),
+  createSeedNamed(
+    '',
+    'createSeed/:$enterSeedNameName',
+    isSaveLocation: true,
+  ),
+  enterSeed(
+    '',
+    'enterSeed',
+    isSaveLocation: true,
+  ),
+  enterSeedNamed(
+    '',
+    'enterSeed/:name',
+    isSaveLocation: true,
+  ),
+
+  // command flag means: 'import' - import, 'create' (or other) - create,
+  // see <enterSeedNameImportCommand> and <enterSeedNameCreateCommand>.
+  enterSeedName(
+    '',
+    'enterSeedName/:$enterSeedNameCommand',
+    isSaveLocation: true,
+  ),
+  checkSeed(
+    '',
+    'checkSeed',
+  ),
+  createSeedPassword(
+    '',
+    'createSeedPassword',
+  ),
+  enableBiometryAfterOnboarding(
+    '',
+    'enableBiometryAfterOnboarding',
+  );
+
+  const AppRoute(
+    this.name,
+    this.path, {
+    this.isSaveLocation = false,
+    this.isBottomNavigationBarVisible = false,
+    this.isSaveSubroutes = false,
+  });
 
   static final _log = Logger('AppRoute');
 
@@ -22,7 +115,15 @@ enum AppRoute {
   /// If location is saved in NavigationService.
   final bool isSaveLocation;
 
+  /// Should BottomNavigationBar be visible.
+  final bool isBottomNavigationBarVisible;
+
+  /// Should subroutes be saved and restored when user navigates between
+  /// root routes. It's effective only for root routes
+  final bool isSaveSubroutes;
+
   static AppRoute getByPath(String path) {
+    // ignore: prefer-enums-by-name
     return AppRoute.values.firstWhere(
       (e) => e.path == path,
       orElse: () => defaultRoute,
@@ -30,6 +131,26 @@ enum AppRoute {
   }
 
   static AppRoute get defaultRoute => onboarding;
+
+  /// Helper method, that allows add path parameter to [path].
+  ///
+  /// If [path] field of [AppRoute] contains [':'] then [data] will replace this
+  /// parameter.
+  // TODO(alex-a4): we need check if this will work in a nested routes with data
+  //   I mean, if routes above this will contains :data in their path or it was
+  //   replace by them when they were pushed.
+  String pathWithData(String data) {
+    if (path.contains(':')) {
+      return path.replaceAll(RegExp(r':\w*'), data);
+    }
+
+    return path;
+  }
+
+  /// Helper method, that allows add query parameters to [path].
+  String pathWithQuery(Map<String, String>? query) {
+    return Uri(path: path, queryParameters: query).toString();
+  }
 }
 
 /// Get first segment from [location].
@@ -37,9 +158,24 @@ String getRootPath(String location) {
   final segments = Uri.parse(location).pathSegments;
   if (segments.isEmpty) {
     AppRoute._log.severe('getRootPath: no root location found');
+
     return AppRoute.defaultRoute.path;
   }
+
   return '/${segments.first}';
+}
+
+/// Get last segment from [location].
+String getCurrentPath(String location) {
+  final segments = Uri.parse(location).pathSegments;
+  if (segments.isEmpty) {
+    AppRoute._log.severe('getCurrentPath: no current location found');
+
+    return AppRoute.defaultRoute.path;
+  }
+
+  // If we have only one segment, then we are on root location
+  return '${segments.length == 1 ? '/' : ''}${segments.last}';
 }
 
 /// Get first segment from [location] and return [AppRoute].
@@ -47,14 +183,18 @@ AppRoute getRootAppRoute(String location) {
   return AppRoute.getByPath(getRootPath(location));
 }
 
+/// Get last segment from [location] and return [AppRoute].
+AppRoute getCurrentAppRoute(String location) {
+  return AppRoute.getByPath(getCurrentPath(location));
+}
+
 /// Returns true, if every segment from [location] can be saved in
 /// NavigationService.
 bool canSaveLocation(String location) {
   final uri = Uri.parse(location);
-  final allSaved = uri.pathSegments
-      .every((segment) => AppRoute.getByPath(segment).isSaveLocation);
 
-  return allSaved;
+  return uri.pathSegments
+      .every((segment) => AppRoute.getByPath(segment).isSaveLocation);
 }
 
 extension NavigationHelper on BuildContext {
@@ -71,8 +211,31 @@ extension NavigationHelper on BuildContext {
   /// onPressed: () => context.goFurther(AppRoute.multiuse.path),
   /// ```
   void goFurther(String location, {Object? extra}) {
-    return GoRouter.of(this)
-        .go('${GoRouter.of(this).location}/$location', extra: extra);
+    if (!mounted) return;
+
+    final currentLocation = inject<NavigationService>().location;
+    var resultLocation = Uri.parse(currentLocation);
+    // We have query params in old path and we must update it manually
+    if (resultLocation.hasQuery) {
+      final newLocation = Uri.parse(location);
+      final query = <String, dynamic>{}
+        ..addAll(resultLocation.queryParameters)
+        ..addAll(newLocation.queryParameters);
+
+      resultLocation = resultLocation.replace(
+        path: '${resultLocation.path}/${newLocation.path}',
+        queryParameters: query,
+      );
+    } else {
+      // old location do not have query, new one may have it, we dont care
+      resultLocation =
+          resultLocation.replace(path: '${resultLocation.path}/$location');
+    }
+
+    return GoRouter.of(this).go(
+      Uri.decodeComponent(resultLocation.toString()),
+      extra: extra,
+    );
   }
 
   /// Pop current screen if possible.

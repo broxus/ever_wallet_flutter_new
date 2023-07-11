@@ -1,7 +1,10 @@
-import 'package:app/data/models/currency.dart';
+// ignore_for_file: no-magic-number
+
+import 'package:app/data/models/custom_currency.dart';
 import 'package:app/data/models/network_type.dart';
 import 'package:freezed_annotation/freezed_annotation.dart';
 import 'package:hive_flutter/hive_flutter.dart';
+import 'package:nekoton_repository/nekoton_repository.dart';
 
 part 'currency_dto.freezed.dart';
 
@@ -25,10 +28,10 @@ class CurrencyDto with _$CurrencyDto {
   }) = _CurrencyDto;
 }
 
-extension CurrencyX on Currency {
+extension CurrencyX on CustomCurrency {
   CurrencyDto toDto() => CurrencyDto(
         currency: currency,
-        address: address,
+        address: address.address,
         price: price,
         priceChange: priceChange,
         tvl: tvl,
@@ -42,9 +45,9 @@ extension CurrencyX on Currency {
 }
 
 extension CurrencyDtoX on CurrencyDto {
-  Currency toModel(NetworkType networkType) => Currency(
+  CustomCurrency toModel(NetworkType networkType) => CustomCurrency(
         currency: currency,
-        address: address,
+        address: Address(address: address),
         price: price,
         priceChange: priceChange,
         tvl: tvl,

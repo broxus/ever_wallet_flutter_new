@@ -1,8 +1,10 @@
 import 'package:app/feature/add_seed/create_password/create_password.dart';
-import 'package:app/l10n/l10n.dart';
+import 'package:app/generated/generated.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:ui_components_lib/ui_components_lib.dart';
+
+const _minPasswordLength = 8;
 
 /// {@template create_password_widget}
 /// Screen that allows user set password for specified seed phrase.
@@ -22,101 +24,125 @@ class CreateSeedPasswordView extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final colors = context.themeStyle.colors;
-    final localization = context.l10n;
-
     final cubit = context.read<CreateSeedPasswordCubit>();
 
     return SafeArea(
+      minimum: const EdgeInsets.only(bottom: DimensSize.d16),
       child: Padding(
-        padding: const EdgeInsets.all(16),
+        padding: const EdgeInsets.symmetric(horizontal: DimensSize.d16),
         child: Form(
           key: cubit.formKey,
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              Text(
-                localization.createPassword,
-                style: StyleRes.pageTitle.copyWith(color: colors.textPrimary),
-              ),
-              const SizedBox(height: 16),
-              Text(
-                localization.createPasswordDescription,
-                style: StyleRes.bodyText.copyWith(color: colors.textSecondary),
-              ),
-              const SizedBox(height: 32),
-              CommonInput(
-                obscureText: true,
-                controller: cubit.passwordController,
-                focusNode: cubit.passwordFocus,
-                labelText: localization.yourPassword,
-                onSubmitted: (_) => cubit.confirmFocus.requestFocus(),
-                validator: (_) {
-                  if (cubit.passwordController.text.length >= 8) {
-                    return null;
-                  }
-                  return localization.passwordLength;
-                },
-              ),
-              const SizedBox(height: 12),
-              CommonInput(
-                obscureText: true,
-                controller: cubit.confirmController,
-                focusNode: cubit.confirmFocus,
-                labelText: localization.confirmPassword,
-                textInputAction: TextInputAction.done,
-                onSubmitted: (_) => cubit.nextAction(),
-                validator: (_) {
-                  if (cubit.confirmController.text ==
-                      cubit.passwordController.text) {
-                    return null;
-                  }
-
-                  return localization.passwordsMatch;
-                },
-              ),
-              const SizedBox(height: 12),
-              if (needBiometryIfPossible) getBiometricSwitcher(),
-              const Spacer(),
-              CommonButton.primary(
-                text: localization.next,
-                onPressed: cubit.nextAction,
-                fillWidth: true,
-              ),
-            ],
+          child: BlocBuilder<CreateSeedPasswordCubit, CreateSeedPasswordState>(
+            builder: (context, state) {
+              return Column(
+                children: [
+                  Expanded(
+                    child: SingleChildScrollView(
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          Text(
+                            LocaleKeys.createPassword.tr(),
+                            style:
+                                StyleRes.h1.copyWith(color: colors.textPrimary),
+                          ),
+                          const SizedBox(height: DimensSize.d16),
+                          Text(
+                            LocaleKeys.createPasswordDescription.tr(),
+                            style: StyleRes.primaryRegular
+                                .copyWith(color: colors.textPrimary),
+                          ),
+                          const SizedBox(height: DimensSize.d32),
+                          CommonInput(
+                            keyboardType: TextInputType.visiblePassword,
+                            titleText: LocaleKeys.yourPassword.tr(),
+                            subtitleText: LocaleKeys.passwordDescription.tr(),
+                            obscureText: state.obscurePassword,
+                            controller: cubit.passwordController,
+                            focusNode: cubit.passwordFocus,
+                            hintText: LocaleKeys.randomPassword.tr(),
+                            onSubmitted: (_) =>
+                                cubit.confirmFocus.requestFocus(),
+                            validator: (_) => _validatePassword(cubit),
+                            suffixIcon: CommonIconButton.svg(
+                              color: colors.textSecondary,
+                              svg: state.obscurePassword
+                                  ? Assets.images.openedEye.path
+                                  : Assets.images.closedEye.path,
+                              buttonType: EverButtonType.ghost,
+                              onPressed: () {
+                                if (state.obscurePassword) {
+                                  cubit.showPassword();
+                                } else {
+                                  cubit.hidePassword();
+                                }
+                              },
+                            ),
+                          ),
+                          const SizedBox(height: DimensSize.d12),
+                          CommonInput(
+                            keyboardType: TextInputType.visiblePassword,
+                            titleText: LocaleKeys.confirmPassword.tr(),
+                            subtitleText: LocaleKeys.passwordDescription.tr(),
+                            obscureText: state.obscureConfirm,
+                            controller: cubit.confirmController,
+                            focusNode: cubit.confirmFocus,
+                            hintText: LocaleKeys.randomPassword.tr(),
+                            textInputAction: TextInputAction.done,
+                            onSubmitted: (_) => cubit.nextAction(),
+                            validator: (_) => _validateRepeatPassword(cubit),
+                            suffixIcon: CommonIconButton.svg(
+                              color: colors.textSecondary,
+                              svg: state.obscureConfirm
+                                  ? Assets.images.openedEye.path
+                                  : Assets.images.closedEye.path,
+                              buttonType: EverButtonType.ghost,
+                              onPressed: () {
+                                if (state.obscureConfirm) {
+                                  cubit.showConfirm();
+                                } else {
+                                  cubit.hideConfirm();
+                                }
+                              },
+                            ),
+                          ),
+                          const SizedBox(height: DimensSize.d12),
+                        ],
+                      ),
+                    ),
+                  ),
+                  CommonButton.primary(
+                    text: LocaleKeys.createWord.tr(),
+                    onPressed: cubit.nextAction,
+                    fillWidth: true,
+                    isLoading: state.isLoading,
+                  ),
+                ],
+              );
+            },
           ),
         ),
       ),
     );
   }
 
-  Widget getBiometricSwitcher() {
-    return Builder(
-      builder: (context) {
-        final localization = context.l10n;
-        final colors = context.themeStyle.colors;
+  String? _validatePassword(
+    CreateSeedPasswordCubit cubit,
+  ) {
+    if (cubit.passwordController.text.length >= _minPasswordLength) {
+      return null;
+    }
 
-        return Container(
-          color: ColorsRes.lightBlue.withOpacity(0.1),
-          padding: const EdgeInsets.all(12),
-          child: Row(
-            children: [
-              Expanded(
-                child: Text(
-                  localization.useBiometryForFastLogin,
-                  style: StyleRes.regular16.copyWith(color: colors.textPrimary),
-                ),
-              ),
-              const SizedBox(width: 16),
-              CommonSwitchInput(
-                value: true,
-                onChanged: (value) {
-                  // TODO(alex-a4): implement later
-                },
-              ),
-            ],
-          ),
-        );
-      },
-    );
+    return LocaleKeys.passwordLength.tr();
+  }
+
+  String? _validateRepeatPassword(
+    CreateSeedPasswordCubit cubit,
+  ) {
+    if (cubit.confirmController.text == cubit.passwordController.text) {
+      return null;
+    }
+
+    return LocaleKeys.passwordsMatch.tr();
   }
 }

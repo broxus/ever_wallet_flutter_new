@@ -2,7 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:ui_components_lib/ui_components_lib.dart';
 
 /// Default height of the common button
-const commonButtonHeight = 50.0;
+const commonButtonHeight = DimensSize.d56;
+const defaultSquircleRadius = DimensSize.d100;
 
 /// {@template common_button}
 /// Default button in the app with background.
@@ -14,7 +15,7 @@ const commonButtonHeight = 50.0;
 /// CommonButton.primary(text: 'MyButton', onPressed: (){})
 /// ```dart
 /// {@endtemplate}
-class CommonButton extends StatelessWidget {
+class CommonButton extends StatefulWidget {
   /// {@macro common_button}
   const CommonButton({
     this.buttonType = EverButtonType.primary,
@@ -26,13 +27,17 @@ class CommonButton extends StatelessWidget {
     this.style,
     this.child,
     this.focusNode,
-    this.radius,
+    this.squircleRadius = defaultSquircleRadius,
     this.backgroundColor,
     this.height = commonButtonHeight,
     this.padding,
     this.fillWidth = true,
-    this.splashColor,
-    this.border,
+    this.isLoading = false,
+    this.backgroundDisabledColor,
+    this.contentColor,
+    this.contentPressedColor,
+    this.contentDisabledColor,
+    this.textAlign,
     super.key,
   });
 
@@ -44,6 +49,7 @@ class CommonButton extends StatelessWidget {
     Widget? leading,
     Widget? trailing,
     FocusNode? focusNode,
+    bool isLoading = false,
     bool fillWidth = false,
   }) =>
       CommonButton(
@@ -53,6 +59,7 @@ class CommonButton extends StatelessWidget {
         leading: leading,
         trailing: trailing,
         focusNode: focusNode,
+        isLoading: isLoading,
         fillWidth: fillWidth,
       );
 
@@ -64,6 +71,7 @@ class CommonButton extends StatelessWidget {
     Widget? leading,
     Widget? trailing,
     FocusNode? focusNode,
+    bool isLoading = false,
     bool fillWidth = false,
   }) =>
       CommonButton(
@@ -74,38 +82,21 @@ class CommonButton extends StatelessWidget {
         leading: leading,
         trailing: trailing,
         focusNode: focusNode,
-        fillWidth: fillWidth,
-      );
-
-  /// CommonButton with tertiary style
-  factory CommonButton.tertiary({
-    String? text,
-    VoidCallback? onPressed,
-    VoidCallback? onLongPress,
-    Widget? leading,
-    Widget? trailing,
-    FocusNode? focusNode,
-    bool fillWidth = false,
-  }) =>
-      CommonButton(
-        buttonType: EverButtonType.tertiary,
-        text: text,
-        onPressed: onPressed,
-        onLongPress: onLongPress,
-        leading: leading,
-        trailing: trailing,
-        focusNode: focusNode,
+        isLoading: isLoading,
         fillWidth: fillWidth,
       );
 
   /// CommonButton with ghost style
   factory CommonButton.ghost({
     String? text,
+    EdgeInsets? padding,
+    double? height,
     VoidCallback? onPressed,
     VoidCallback? onLongPress,
     Widget? leading,
     Widget? trailing,
     FocusNode? focusNode,
+    bool isLoading = false,
     bool fillWidth = false,
   }) =>
       CommonButton(
@@ -116,50 +107,10 @@ class CommonButton extends StatelessWidget {
         leading: leading,
         trailing: trailing,
         focusNode: focusNode,
+        isLoading: isLoading,
         fillWidth: fillWidth,
-      );
-
-  /// CommonButton with ghostNoPadding style
-  factory CommonButton.ghostNoPadding({
-    String? text,
-    VoidCallback? onPressed,
-    VoidCallback? onLongPress,
-    Widget? leading,
-    Widget? trailing,
-    FocusNode? focusNode,
-    bool fillWidth = false,
-  }) =>
-      CommonButton(
-        buttonType: EverButtonType.ghostNoPadding,
-        text: text,
-        onPressed: onPressed,
-        onLongPress: onLongPress,
-        leading: leading,
-        trailing: trailing,
-        focusNode: focusNode,
-        fillWidth: fillWidth,
-        height: 24,
-      );
-
-  /// CommonButton with attention style
-  factory CommonButton.attention({
-    String? text,
-    VoidCallback? onPressed,
-    VoidCallback? onLongPress,
-    Widget? leading,
-    Widget? trailing,
-    FocusNode? focusNode,
-    bool fillWidth = false,
-  }) =>
-      CommonButton(
-        buttonType: EverButtonType.attention,
-        text: text,
-        onPressed: onPressed,
-        onLongPress: onLongPress,
-        leading: leading,
-        trailing: trailing,
-        focusNode: focusNode,
-        fillWidth: fillWidth,
+        height: height ?? commonButtonHeight,
+        padding: padding,
       );
 
   /// Type of the button that is used to identify colors
@@ -188,6 +139,10 @@ class CommonButton extends StatelessWidget {
   /// Typically, use [CommonButtonIconWidget] that provides you color
   final Widget? trailing;
 
+  /// If button should display loading indicator instead of child, default false
+  /// If true, callbacks won't work, but style will look like enabled.
+  final bool isLoading;
+
   /// Alternative option to display custom widget instead of [text]
   final Widget? child;
 
@@ -197,103 +152,142 @@ class CommonButton extends StatelessWidget {
   /// If button should fill all width
   final bool fillWidth;
 
-  /// UI based params
-  final BorderRadius? radius;
+  /// Radius of [SquircleShapeBorder], default 100
+  final double squircleRadius;
 
   /// Height of the button
   final double height;
 
-  /// Padding of the button content, default is taken from style
+  /// Padding of the button content.
+  /// Content default is horizontal: 20, loading default is horizontal: 50.
   final EdgeInsets? padding;
 
   /// Background color of the button, default is taken from style
   final Color? backgroundColor;
 
-  /// Splash color of the button, default is taken from style
-  final Color? splashColor;
+  /// Background color of the button when it is disabled, default is taken from
+  /// style
+  final Color? backgroundDisabledColor;
 
-  /// Border of the button, default is taken from style
-  final BoxBorder? border;
+  /// Color of the button content, default is taken from style
+  final Color? contentColor;
+
+  /// Color of the button content when it is pressed, default is taken from
+  final Color? contentPressedColor;
+
+  /// Color of the button content when it is disabled, default is taken from
+  final Color? contentDisabledColor;
+
+  /// Alignment for text of button
+  final TextAlign? textAlign;
+
+  @override
+  State<CommonButton> createState() => _CommonButtonState();
+}
+
+class _CommonButtonState extends State<CommonButton> {
+  bool isPressed = false;
 
   @override
   Widget build(BuildContext context) {
     final styles = context.themeStyle.styles;
-    final buttonStyle = styles.buttonsStyle[buttonType]!;
+    final buttonStyle = styles.buttonsStyle[widget.buttonType]!;
 
-    final isDisabled = onPressed == null && onLongPress == null;
+    final isDisabled = widget.onPressed == null && widget.onLongPress == null;
 
     final contentColor = isDisabled
-        ? buttonStyle.contentDisabledColor ?? buttonStyle.contentColor
-        : buttonStyle.contentColor;
-    final textStyle =
-        style ?? styles.buttonTextStyle.copyWith(color: contentColor);
-    final bgColor = backgroundColor ??
-        (isDisabled
-            ? buttonStyle.disabledBackgroundColor
-            : buttonStyle.backgroundColor);
-    final splash = splashColor ?? buttonStyle.splashColor;
-    final bord = border ??
-        (isDisabled ? buttonStyle.disabledBorder : buttonStyle.border);
+        ? (widget.contentDisabledColor ?? buttonStyle.contentDisabledColor)
+        : isPressed
+            ? (widget.contentPressedColor ?? buttonStyle.contentPressedColor)
+            : (widget.contentColor ?? buttonStyle.contentColor);
+    final textStyle = widget.style ?? styles.buttonTextStyle;
+    final bgColor = isDisabled
+        ? (widget.backgroundDisabledColor ??
+            buttonStyle.backgroundDisabledColor)
+        : (widget.backgroundColor ?? buttonStyle.backgroundColor);
 
-    Widget child;
-    if (this.child == null) {
-      final textWidget = Text(text ?? '', style: textStyle);
-      child = Padding(
-        padding: padding ?? buttonStyle.contentPadding,
-        child: leading == null && trailing == null
-            ? textWidget
-            : Row(
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: [
-                  if (leading != null) ...[
-                    leading!,
-                    const SizedBox(width: 10),
-                  ],
-                  textWidget,
-                  if (trailing != null) ...[
-                    const SizedBox(width: 10),
-                    trailing!,
-                  ],
-                ],
-              ),
-      );
-    } else {
-      child = this.child!;
-    }
+    final child = widget.child == null
+        ? (widget.isLoading
+            ? _loadingChild(contentColor)
+            : _textChild(textStyle, contentColor))
+        : widget.child!;
 
     return EverButtonStyleProvider(
-      style: buttonStyle,
-      isDisabled: isDisabled,
+      contentColor: contentColor,
       child: SizedBox(
-        height: height,
-        child: DecoratedBox(
-          decoration: BoxDecoration(
-            color: bgColor,
-            borderRadius: radius ?? BorderRadius.zero,
-            border: bord,
-          ),
-          child: Material(
-            color: Colors.transparent,
-            child: Padding(
-              padding: EdgeInsets.all(bord?.top.width ?? 0),
-              child: InkWell(
-                hoverColor: Colors.transparent,
-                focusNode: focusNode,
-                customBorder: RoundedRectangleBorder(
-                  borderRadius: radius ?? BorderRadius.zero,
-                ),
-                splashColor: splash,
-                highlightColor: splash,
-                onTap: onPressed,
-                onLongPress: onLongPress,
-                child: fillWidth
-                    ? Center(child: child)
-                    : Row(mainAxisSize: MainAxisSize.min, children: [child]),
-              ),
-            ),
+        height: widget.height,
+        child: Material(
+          color: bgColor,
+          shape: SquircleShapeBorder(cornerRadius: widget.squircleRadius),
+          child: InkWell(
+            hoverColor: Colors.transparent,
+            splashColor: Colors.transparent,
+            highlightColor: Colors.transparent,
+            onHighlightChanged: _onHighlightChanged,
+            focusNode: widget.focusNode,
+            onTap: widget.isLoading ? null : widget.onPressed,
+            onLongPress: widget.isLoading ? null : widget.onLongPress,
+            child: widget.fillWidth
+                ? Center(child: child)
+                : Row(mainAxisSize: MainAxisSize.min, children: [child]),
           ),
         ),
       ),
+    );
+  }
+
+  void _onHighlightChanged(bool isPressed) {
+    if (isPressed != this.isPressed) {
+      setState(() => this.isPressed = isPressed);
+    }
+  }
+
+  Widget _loadingChild(Color contentColor) {
+    return Padding(
+      padding: widget.padding ??
+          const EdgeInsets.symmetric(horizontal: DimensSize.d48),
+      child: Center(
+        child: SizedBox(
+          width: DimensSize.d20,
+          height: DimensSize.d20,
+          child: CircularProgressIndicator(
+            color: contentColor,
+            strokeWidth: DimensStroke.medium,
+          ),
+        ),
+      ),
+    );
+  }
+
+  Widget _textChild(TextStyle textStyle, Color contentColor) {
+    final textWidget = AnimatedColor(
+      color: contentColor,
+      duration: kThemeAnimationDuration,
+      builder: (_, color) => Text(
+        widget.text ?? '',
+        textAlign: widget.textAlign,
+        style: textStyle.copyWith(color: color),
+      ),
+    );
+
+    return Padding(
+      padding: widget.padding ?? const EdgeInsets.symmetric(horizontal: 20),
+      child: widget.leading == null && widget.trailing == null
+          ? textWidget
+          : Row(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                if (widget.leading != null) ...[
+                  widget.leading!,
+                  const SizedBox(width: 10),
+                ],
+                textWidget,
+                if (widget.trailing != null) ...[
+                  const SizedBox(width: 10),
+                  widget.trailing!,
+                ],
+              ],
+            ),
     );
   }
 }

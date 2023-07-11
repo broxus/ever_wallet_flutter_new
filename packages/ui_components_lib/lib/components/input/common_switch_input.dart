@@ -9,9 +9,9 @@ import 'package:ui_components_lib/ui_components_lib.dart';
 class CommonSwitchInput extends StatefulWidget {
   /// {@macro common_switch_input}
   const CommonSwitchInput({
-    super.key,
     required this.value,
     required this.onChanged,
+    super.key,
     this.validator,
     this.validateMode,
     this.thumbChild,
@@ -34,7 +34,7 @@ class CommonSwitchInput extends StatefulWidget {
   /// It can be icon for example.
   final Widget? thumbChild;
 
-  /// Color of sliding circle, white by default
+  /// Color of sliding circle, [ColorsPalette.backgroundSecondary] by default
   final Color? thumbColor;
 
   @override
@@ -49,35 +49,36 @@ class _CommonSwitchInputState extends State<CommonSwitchInput> {
     field?.didChange(v);
   }
 
+  Widget _onBuild(FormFieldState<bool> state) {
+    final colors = context.themeStyle.colors;
+    field = state;
+
+    return GestureDetector(
+      onTap: () {
+        _handleDidChange(!widget.value);
+        widget.onChanged(!widget.value);
+      },
+      child: CommonSwitcher(
+        value: widget.value,
+        backgroundColor: state.hasError
+            ? colors.alert
+            : widget.value
+                ? colors.strokeContrast
+                : colors.strokePrimary,
+        thumbColor: widget.thumbColor ?? colors.backgroundSecondary,
+        thumbSize: DimensSize.d20,
+        thumbChild: widget.thumbChild,
+      ),
+    );
+  }
+
   @override
   Widget build(BuildContext context) {
-    final colors = context.themeStyle.colors;
-
     return FormField<bool>(
       validator: widget.validator,
       initialValue: widget.value,
       autovalidateMode: widget.validateMode,
-      builder: (state) {
-        field = state;
-
-        return GestureDetector(
-          onTap: () {
-            _handleDidChange(!widget.value);
-            widget.onChanged(!widget.value);
-          },
-          child: CommonSwitcher(
-            value: widget.value,
-            backgroundColor: state.hasError
-                ? colors.accentWarning
-                : widget.value
-                    ? colors.textPositive
-                    : colors.fillingTertiary,
-            thumbColor: widget.thumbColor ?? ColorsRes.white,
-            thumbSize: widget.value ? 24 : 16,
-            thumbChild: widget.thumbChild,
-          ),
-        );
-      },
+      builder: _onBuild,
     );
   }
 }
@@ -94,8 +95,8 @@ class CommonSwitcher extends StatelessWidget {
     required this.backgroundColor,
     required this.thumbSize,
     super.key,
-    this.width = 52,
-    this.height = 32,
+    this.width = DimensSize.d48,
+    this.height = DimensSize.d28,
     this.thumbChild,
   });
 
@@ -125,16 +126,15 @@ class CommonSwitcher extends StatelessWidget {
     return Container(
       width: width,
       height: height,
-      padding: value ? const EdgeInsets.all(4) : const EdgeInsets.all(8),
+      padding: const EdgeInsets.all(DimensSize.d4),
       decoration: BoxDecoration(
         color: backgroundColor,
-        borderRadius: BorderRadius.circular(100),
+        borderRadius: BorderRadius.circular(DimensRadius.max),
       ),
       child: AnimatedAlign(
         duration: kThemeAnimationDuration,
         alignment: value ? Alignment.centerRight : Alignment.centerLeft,
-        child: AnimatedContainer(
-          duration: kThemeAnimationDuration,
+        child: Container(
           width: thumbSize,
           height: thumbSize,
           decoration: BoxDecoration(
@@ -143,7 +143,7 @@ class CommonSwitcher extends StatelessWidget {
           ),
           child: FittedBox(
             child: Padding(
-              padding: const EdgeInsets.all(2),
+              padding: const EdgeInsets.all(DimensStroke.medium),
               child: thumbChild,
             ),
           ),

@@ -1,16 +1,19 @@
+// ignore_for_file: avoid_redundant_argument_values
+
 import 'package:flutter/widgets.dart';
 import 'package:go_router/go_router.dart';
+import 'package:ui_components_lib/ui_components_lib.dart';
 
-// TODO(nesquikm): move to ui package
-const _duration = Duration(milliseconds: 150);
+const _duration = defaultTransitionDuration;
 
 CustomTransitionPage<void> onboardingTransitionPageBuilder(
-  BuildContext context,
+  BuildContext _,
   GoRouterState state,
   Widget child,
 ) {
   return CustomTransitionPage<void>(
     key: state.pageKey,
+    name: state.name,
     child: child,
     transitionDuration: _duration,
     transitionsBuilder: (
@@ -35,12 +38,13 @@ CustomTransitionPage<void> onboardingTransitionPageBuilder(
 }
 
 CustomTransitionPage<void> rootTransitionPageBuilder(
-  BuildContext context,
+  BuildContext _,
   GoRouterState state,
   Widget child,
 ) {
   return CustomTransitionPage<void>(
     key: state.pageKey,
+    name: state.name,
     child: child,
     transitionDuration: _duration,
     transitionsBuilder: (
@@ -65,12 +69,13 @@ CustomTransitionPage<void> rootTransitionPageBuilder(
 }
 
 CustomTransitionPage<void> rootTabsTransitionPageBuilder(
-  BuildContext context,
+  BuildContext _,
   GoRouterState state,
   Widget child,
 ) {
   return CustomTransitionPage<void>(
     key: state.pageKey,
+    name: state.name,
     child: child,
     transitionDuration: _duration,
     transitionsBuilder: (

@@ -8,139 +8,96 @@ class ColorsStory extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final colors = context.themeStyle.colors;
+
     return Scaffold(
-      appBar: AppBar(
-        title: const Text('Colors (based on theme)'),
-      ),
+      appBar: const DefaultAppBar(titleText: 'Colors (based on theme)'),
       body: SingleChildScrollView(
-        child: Wrap(
-          children: [
-            /// Order for colors same as in ColorsPalette
-            _ColorItem(
-              color: colors.backgroundPrimary,
-              name: 'backgroundPrimary',
-            ),
-            _ColorItem(
-              color: colors.backgroundOverlay,
-              name: 'backgroundOverlay',
-            ),
-            _ColorItem(
-              color: colors.textPrimary,
-              name: 'textPrimary',
-            ),
-            _ColorItem(
-              color: colors.textButtonPrimary,
-              name: 'textButtonPrimary',
-            ),
-            _ColorItem(
-              color: colors.textButtonSecondary,
-              name: 'textButtonSecondary',
-            ),
-            _ColorItem(
-              color: colors.textNegative,
-              name: 'textNegative',
-            ),
-            _ColorItem(
-              color: colors.textPositive,
-              name: 'textPositive',
-            ),
-            _ColorItem(
-              color: colors.textButtonPressed,
-              name: 'textButtonPressed',
-            ),
-            _ColorItem(
-              color: colors.textButtonDisabled,
-              name: 'textButtonDisabled',
-            ),
-            _ColorItem(
-              color: colors.accentPrimary,
-              name: 'accentPrimary',
-            ),
-            _ColorItem(
-              color: colors.accentPrimaryPressed,
-              name: 'accentPrimaryPressed',
-            ),
-            _ColorItem(
-              color: colors.accentPrimaryDisabled,
-              name: 'accentPrimaryDisabled',
-            ),
-            _ColorItem(
-              color: colors.accentSecondary,
-              name: 'accentSecondary',
-            ),
-            _ColorItem(
-              color: colors.accentSecondaryPressed,
-              name: 'accentSecondaryPressed',
-            ),
-            _ColorItem(
-              color: colors.accentSecondaryDisabled,
-              name: 'accentSecondaryDisabled',
-            ),
-            _ColorItem(
-              color: colors.accentTertiary,
-              name: 'accentTertiary',
-            ),
-            _ColorItem(
-              color: colors.accentTertiaryPressed,
-              name: 'accentTertiaryPressed',
-            ),
-            _ColorItem(
-              color: colors.accentTertiaryDisabled,
-              name: 'accentTertiaryDisabled',
-            ),
-            _ColorItem(
-              color: colors.accentWarning,
-              name: 'accentWarning',
-            ),
-            _ColorItem(
-              color: colors.accentWarningPressed,
-              name: 'accentWarningPressed',
-            ),
-            _ColorItem(
-              color: colors.accentWarningDisabled,
-              name: 'accentWarningDisabled',
-            ),
-            _ColorItem(
-              color: colors.fillingPrimary,
-              name: 'fillingPrimary',
-            ),
-            _ColorItem(
-              color: colors.fillingSecondary,
-              name: 'fillingSecondary',
-            ),
-            _ColorItem(
-              color: colors.fillingTertiary,
-              name: 'fillingTertiary',
-            ),
-            _ColorItem(
-              color: colors.fillingPressed,
-              name: 'fillingHover',
-            ),
-            _ColorItem(
-              color: colors.statusPositiveTitle,
-              name: 'statusPositiveTitle',
-            ),
-            _ColorItem(
-              color: colors.statusPositiveBackground,
-              name: 'statusPositiveBackground',
-            ),
-            _ColorItem(
-              color: colors.statusMediumTitle,
-              name: 'statusMediumTitle',
-            ),
-            _ColorItem(
-              color: colors.statusMediumBackground,
-              name: 'statusMediumBackground',
-            ),
-            _ColorItem(
-              color: colors.statusNegativeTitle,
-              name: 'statusNegativeTitle',
-            ),
-            _ColorItem(
-              color: colors.statusNegativeBackground,
-              name: 'statusNegativeBackground',
-            ),
-          ],
+        child: Center(
+          child: Wrap(
+            children: [
+              /// Order for colors same as in ColorsPalette
+              _ColorItem(
+                color: colors.textPrimary,
+                name: 'textPrimary',
+              ),
+              _ColorItem(
+                color: colors.textSecondary,
+                name: 'textSecondary',
+              ),
+              _ColorItem(
+                color: colors.textContrast,
+                name: 'textContrast',
+              ),
+              _ColorItem(
+                color: colors.appBackground,
+                name: 'appBackground',
+              ),
+              _ColorItem(
+                color: colors.backgroundPrimary,
+                name: 'backgroundPrimary',
+              ),
+              _ColorItem(
+                color: colors.backgroundSecondary,
+                name: 'backgroundSecondary',
+              ),
+              _ColorItem(
+                color: colors.strokePrimary,
+                name: 'strokePrimary',
+              ),
+              _ColorItem(
+                color: colors.strokeSecondary,
+                name: 'strokeSecondary',
+              ),
+              _ColorItem(
+                color: colors.strokeContrast,
+                name: 'strokeContrast',
+              ),
+              _ColorItem(
+                color: colors.alert,
+                name: 'alert',
+              ),
+              _ColorItem(
+                color: colors.apply,
+                name: 'apply',
+              ),
+              _ColorItem(
+                color: colors.blue,
+                name: 'blue',
+              ),
+              _ColorItem(
+                color: colors.blueSecond,
+                name: 'blueSecond',
+              ),
+              _ColorItem(
+                color: colors.labelYellow,
+                name: 'labelYellow',
+              ),
+              _ColorItem(
+                color: colors.labelOrange,
+                name: 'labelOrange',
+              ),
+              _ColorItem(
+                color: colors.lightBlue,
+                name: 'lightBlue',
+              ),
+              _ColorItem(
+                color: colors.lightGreen,
+                name: 'lightGreen',
+              ),
+              _ColorItem(
+                color: colors.lightOrange,
+                name: 'lightOrange',
+              ),
+              _ColorItem(
+                color: colors.lightRed,
+                name: 'lightRed',
+              ),
+              _ColorItem(
+                gradient: colors.gradient,
+                name: 'gradient',
+              ),
+            ],
+          ),
         ),
       ),
     );
@@ -149,42 +106,51 @@ class ColorsStory extends StatelessWidget {
 
 class _ColorItem extends StatelessWidget {
   const _ColorItem({
-    required this.color,
     required this.name,
+    this.color,
+    this.gradient,
   });
 
-  final Color color;
+  final Color? color;
+  final List<Color>? gradient;
   final String name;
 
   @override
   Widget build(BuildContext context) {
     final isBackgroundLight =
         Theme.of(context).scaffoldBackgroundColor.computeLuminance() > 0.7;
+
     return SizedBox(
-      width: 200,
+      width: DimensSize.d200,
       child: Column(
         children: [
           Container(
-            width: 150,
-            height: 100,
-            margin: const EdgeInsets.all(16),
+            width: DimensSize.d148,
+            height: DimensSize.d100,
+            margin: const EdgeInsets.all(DimensSize.d16),
             decoration: BoxDecoration(
               color: color,
+              gradient: gradient == null
+                  ? null
+                  : LinearGradient(
+                      colors: gradient!,
+                      begin: Alignment.topCenter,
+                      end: Alignment.bottomCenter,
+                    ),
               border: Border.all(
                 color: isBackgroundLight ? Colors.black : Colors.white,
               ),
-              borderRadius: BorderRadius.circular(10),
+              borderRadius: BorderRadius.circular(DimensRadius.medium),
             ),
           ),
           Center(
             child: Padding(
-              padding: const EdgeInsets.symmetric(horizontal: 16),
+              padding: const EdgeInsets.symmetric(horizontal: DimensSize.d16),
               child: Text(
                 name,
                 textAlign: TextAlign.center,
-                style: TextStyle(
+                style: StyleRes.primaryRegular.copyWith(
                   color: isBackgroundLight ? Colors.black : Colors.white,
-                  fontSize: 16,
                 ),
               ),
             ),

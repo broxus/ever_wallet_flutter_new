@@ -2,7 +2,6 @@ import 'dart:collection';
 import 'dart:convert';
 import 'dart:io';
 
-import 'package:app/app/constants.dart';
 import 'package:app/app/service/dto/account_interaction_dto.dart';
 import 'package:app/app/service/dto/bookmark_dto.dart';
 import 'package:app/app/service/dto/browser_tab_dto.dart';
@@ -12,12 +11,10 @@ import 'package:app/app/service/dto/search_history_dto.dart';
 import 'package:app/app/service/dto/site_meta_data_dto.dart';
 import 'package:app/app/service/dto/token_contract_asset_dto.dart';
 import 'package:app/app/service/dto/wallet_contract_type_dto.dart';
-import 'package:app/app/service/storage_service/account_seed_storage_service.dart';
-import 'package:app/app/service/storage_service/browser_storage_service.dart';
-import 'package:app/app/service/storage_service/general_storage_service.dart';
+import 'package:app/app/service/service.dart';
 import 'package:app/data/models/bookmark.dart';
 import 'package:app/data/models/browser_tab.dart';
-import 'package:app/data/models/currency.dart' as cur;
+import 'package:app/data/models/custom_currency.dart';
 import 'package:app/data/models/network_type.dart';
 import 'package:app/data/models/permissions.dart';
 import 'package:app/data/models/search_history.dart';
@@ -70,6 +67,7 @@ class HiveSourceMigration {
   static Future<HiveSourceMigration> create() async {
     final instance = HiveSourceMigration._();
     await instance._initialize();
+
     return instance;
   }
 
@@ -164,8 +162,8 @@ class HiveSourceMigration {
       _hiddenAccountsBox.get(_hiddenAccountsKey) ?? <String>[];
 
   /// Hide account address
-  Future<void> addHiddenAccount(String address) {
-    final accounts = hiddenAccounts..add(address);
+  Future<void> addHiddenAccount(Address address) {
+    final accounts = hiddenAccounts..add(address.address);
 
     return _hiddenAccountsBox.put(
       _hiddenAccountsKey,
@@ -174,24 +172,26 @@ class HiveSourceMigration {
   }
 
   /// Remove information about hidden account (make it visible)
-  Future<void> removeHiddenIfPossible(String address) {
-    final accounts = hiddenAccounts..remove(address);
+  Future<void> removeHiddenIfPossible(Address address) {
+    final accounts = hiddenAccounts..remove(address.address);
+
     return _hiddenAccountsBox.put(_hiddenAccountsKey, accounts);
   }
 
-  String? getKeyPassword(String publicKey) => _keyPasswordsBox.get(publicKey);
+  String? getKeyPassword(PublicKey publicKey) =>
+      _keyPasswordsBox.get(publicKey.publicKey);
 
   Map<String, String> get _passwords => _keyPasswordsBox
       .toJson()
       .map((key, value) => MapEntry(key, value as String));
 
   Future<void> setKeyPassword({
-    required String publicKey,
+    required PublicKey publicKey,
     required String password,
   }) =>
-      _keyPasswordsBox.put(publicKey, password);
+      _keyPasswordsBox.put(publicKey.publicKey, password);
 
-  Future<void> removeKeyPassword(String publicKey) =>
+  Future<void> removeKeyPassword(PublicKey publicKey) =>
       _keyPasswordsBox.delete(publicKey);
 
   Future<void> clearKeyPasswords() => _keyPasswordsBox.clear();
@@ -201,36 +201,36 @@ class HiveSourceMigration {
       .map((k, v) => MapEntry(k as String, v.cast<String>()));
 
   Future<void> addExternalAccount({
-    required String publicKey,
-    required String address,
+    required PublicKey publicKey,
+    required Address address,
   }) async {
     final list = (_externalAccountsBox
-            .get(publicKey)
+            .get(publicKey.publicKey)
             ?.cast<String>()
-            .where((e) => e != address)
+            .where((e) => e != address.address)
             .toList() ??
         [])
-      ..add(address);
+      ..add(address.address);
 
-    await _externalAccountsBox.put(publicKey, list);
+    await _externalAccountsBox.put(publicKey.publicKey, list);
   }
 
   Future<void> removeExternalAccount({
-    required String publicKey,
-    required String address,
+    required PublicKey publicKey,
+    required Address address,
   }) async {
     final list = _externalAccountsBox
         .get(publicKey)
         ?.cast<String>()
-        .where((e) => e != address)
+        .where((e) => e != address.address)
         .toList();
 
     if (list == null) return;
 
     if (list.isNotEmpty) {
-      await _externalAccountsBox.put(publicKey, list);
+      await _externalAccountsBox.put(publicKey.publicKey, list);
     } else {
-      await _externalAccountsBox.delete(publicKey);
+      await _externalAccountsBox.delete(publicKey.publicKey);
     }
   }
 
@@ -300,7 +300,7 @@ class HiveSourceMigration {
     TokenContractAsset tokenContractAsset,
   ) =>
       _everCustomTokenContractAssetsBox.put(
-        tokenContractAsset.address,
+        tokenContractAsset.address.address,
         tokenContractAsset.toDto(),
       );
 
@@ -308,7 +308,7 @@ class HiveSourceMigration {
     TokenContractAsset tokenContractAsset,
   ) =>
       _venomCustomTokenContractAssetsBox.put(
-        tokenContractAsset.address,
+        tokenContractAsset.address.address,
         tokenContractAsset.toDto(),
       );
 
@@ -354,7 +354,7 @@ class HiveSourceMigration {
   Future<void> deletePermissionsForOrigin(String origin) =>
       _permissionsBox.delete(origin);
 
-  Future<void> deletePermissionsForAccount(String address) async {
+  Future<void> deletePermissionsForAccount(Address address) async {
     final origins = permissions.entries
         .where((e) => e.value.accountInteraction?.address == address)
         .map((e) => e.key);
@@ -393,6 +393,7 @@ class HiveSourceMigration {
 
     await _searchHistoryBox.clear();
 
+    // ignore: no-magic-number
     await _searchHistoryBox.putAll(Map.fromEntries(entries.take(50)));
   }
 
@@ -426,25 +427,25 @@ class HiveSourceMigration {
 
   Future<void> clearSitesMetaData() => _siteMetaDataBox.clear();
 
-  List<cur.Currency> get everCurrencies => _everCurrenciesBox.values
+  List<CustomCurrency> get everCurrencies => _everCurrenciesBox.values
       .map((e) => e.toModel(NetworkType.ever))
       .toList();
 
-  List<cur.Currency> get venomCurrencies => _venomCurrenciesBox.values
+  List<CustomCurrency> get venomCurrencies => _venomCurrenciesBox.values
       .map((e) => e.toModel(NetworkType.venom))
       .toList();
 
   Future<void> saveEverCurrency({
-    required String address,
-    required cur.Currency currency,
+    required Address address,
+    required CustomCurrency currency,
   }) =>
-      _everCurrenciesBox.put(address, currency.toDto());
+      _everCurrenciesBox.put(address.address, currency.toDto());
 
   Future<void> saveVenomCurrency({
-    required String address,
-    required cur.Currency currency,
+    required Address address,
+    required CustomCurrency currency,
   }) =>
-      _venomCurrenciesBox.put(address, currency.toDto());
+      _venomCurrenciesBox.put(address.address, currency.toDto());
 
   Future<void> clearCurrencies() async {
     await _everCurrenciesBox.clear();
@@ -484,6 +485,7 @@ class HiveSourceMigration {
   // TODO(alex-a4): delete boxes after some time to prevent data loss
   // Future<void> eraseHive() => Hive.deleteFromDisk();
 
+  // ignore: long-method
   Future<void> _initialize() async {
     final key = Uint8List.fromList(
       [
@@ -518,7 +520,7 @@ class HiveSourceMigration {
         34,
         80,
         128,
-        80
+        80,
       ],
     );
 
@@ -535,6 +537,7 @@ class HiveSourceMigration {
       ..tryRegisterAdapter(SearchHistoryDtoAdapter())
       ..tryRegisterAdapter(CurrencyDtoAdapter());
 
+    // ignore: no-magic-number
     for (var i = 1; i < 224; i++) {
       if (!usedAdapters.contains(i) && Hive.isAdapterRegistered(i)) {
         Hive.ignoreTypeId<Object>(i);
@@ -594,6 +597,7 @@ class HiveSourceMigration {
   @visibleForTesting
   Future<File> get migrationFile async {
     final tempDir = await getTemporaryDirectory();
+
     return File('${tempDir.path}/migration.json');
   }
 
@@ -673,13 +677,13 @@ class HiveSourceMigration {
   ///
   /// Function is public because names of keys were stored in keystore, not in
   /// box.
-  Future<void> migrateSeedsNames(Map<String, String> masterKeysNames) async {
+  Future<void> migrateSeedsNames(Map<PublicKey, String> masterKeysNames) async {
     const labelsBoxName = 'public_keys_labels_v1';
     if (await Hive.boxExists(labelsBoxName)) {
       final box = await Hive.openBox<String>(labelsBoxName);
 
       for (final publicKey in masterKeysNames.keys) {
-        await _seedsBox.put(publicKey, masterKeysNames[publicKey]!);
+        await _seedsBox.put(publicKey.publicKey, masterKeysNames[publicKey]!);
       }
 
       await box.deleteFromDisk();
@@ -696,6 +700,7 @@ class HiveSourceMigration {
       final fakeViewed = LinkedHashSet<String>.from(seedsKeys)
           .take(maxLastSelectedSeeds)
           .toList();
+
       return updateLastViewedSeeds(fakeViewed);
     }
   }
@@ -712,14 +717,14 @@ class MigrationService {
 
   final GeneralStorageService _storage;
   final BrowserStorageService _browserStorage;
-  final AccountSeedStorageService _accountSeedStorage;
+  final NekotonStorageService _accountSeedStorage;
   final HiveSourceMigration _hive;
 
   /// Migration method for app that includes hive initialization.
   static Future<void> migrateWithHiveInit(
     GeneralStorageService storage,
     BrowserStorageService browserStorage,
-    AccountSeedStorageService accountSeedStorage,
+    NekotonStorageService accountSeedStorage,
   ) async {
     return MigrationService(
       storage,
@@ -764,16 +769,20 @@ class MigrationService {
 
   /// Migrate all data from hive to new storage.
   @visibleForTesting
+  // ignore: long-method
   Future<void> applyMigration() async {
     /// Storage
     for (final entry in _hive._storageData.entries) {
-      await _storage.setStorageData(key: entry.key, value: entry.value);
+      await _accountSeedStorage.setStorageData(
+        key: entry.key,
+        value: entry.value,
+      );
     }
 
     /// Seeds
     for (final entry in _hive.seeds.entries) {
-      await _accountSeedStorage.addSeedOrRename(
-        masterKey: entry.key,
+      await _accountSeedStorage.updateSeedName(
+        masterKey: PublicKey(publicKey: entry.key),
         name: entry.value,
       );
     }
@@ -781,7 +790,7 @@ class MigrationService {
     /// Passwords
     for (final entry in _hive._passwords.entries) {
       await _storage.setKeyPassword(
-        publicKey: entry.key,
+        publicKey: PublicKey(publicKey: entry.key),
         password: entry.value,
       );
     }
@@ -839,13 +848,20 @@ class MigrationService {
     await _storage.setIsBiometryEnabled(isEnabled: _hive.isBiometryEnabled);
     if (_hive.wasStEverOpened) await _storage.saveWasStEverOpened();
     if (_hive.getWhyNeedBrowser) await _browserStorage.saveWhyNeedBrowser();
-    await _accountSeedStorage.updateLastViewedSeeds(_hive.lastViewedSeeds());
-    for (final account in _hive.hiddenAccounts) {
-      await _accountSeedStorage.hideAccount(account);
-    }
+    await _storage.updateLastViewedSeeds(
+      _hive
+          .lastViewedSeeds()
+          .map((publicKeyString) => PublicKey(publicKey: publicKeyString))
+          .toList(),
+    );
+    await _accountSeedStorage.hideAccounts(
+      _hive.hiddenAccounts
+          .map((addressString) => Address(address: addressString))
+          .toList(),
+    );
     for (final entry in _hive.externalAccounts.entries) {
       await _accountSeedStorage.updateExternalAccounts(
-        publicKey: entry.key,
+        publicKey: PublicKey(publicKey: entry.key),
         accounts: entry.value,
       );
     }
@@ -853,7 +869,7 @@ class MigrationService {
       await _storage.setCurrentConnection(_hive.currentConnection!);
     }
     if (_hive.currentKey != null) {
-      await _accountSeedStorage.setCurrentKey(_hive.currentKey!);
+      await _storage.setCurrentKey(PublicKey(publicKey: _hive.currentKey!));
     }
 
     /// Browser

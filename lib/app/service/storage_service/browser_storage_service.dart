@@ -1,6 +1,6 @@
 import 'dart:convert';
 
-import 'package:app/app/service/storage_service/abstract_storage_service.dart';
+import 'package:app/app/service/service.dart';
 import 'package:app/data/models/bookmark.dart';
 import 'package:app/data/models/browser_tab.dart';
 import 'package:app/data/models/permissions.dart';
@@ -8,6 +8,7 @@ import 'package:app/data/models/search_history.dart';
 import 'package:app/data/models/site_meta_data.dart';
 import 'package:encrypted_storage/encrypted_storage.dart';
 import 'package:injectable/injectable.dart';
+import 'package:nekoton_repository/nekoton_repository.dart';
 import 'package:rxdart/rxdart.dart';
 
 const _permissionsKey = 'permissions_key';
@@ -49,6 +50,7 @@ class BrowserStorageService extends AbstractStorageService {
   /// key - url address, value - permissions
   Future<Map<String, Permissions>> get permissions async {
     final encoded = await _storage.getDomain(domain: _permissionsKey);
+
     return encoded.map(
       (key, value) => MapEntry(
         key,
@@ -73,7 +75,7 @@ class BrowserStorageService extends AbstractStorageService {
       _storage.delete(origin, domain: _permissionsKey);
 
   /// Delete permissions for specified account
-  Future<void> deletePermissionsForAccount(String address) async {
+  Future<void> deletePermissionsForAccount(Address address) async {
     final perms = await permissions;
     final origins = perms.entries
         .where((e) => e.value.accountInteraction?.address == address)
@@ -93,15 +95,19 @@ class BrowserStorageService extends AbstractStorageService {
   final _bookmarksSubject = BehaviorSubject<List<Bookmark>>();
 
   /// Stream of bookmarks
-  Stream<List<Bookmark>> get bookmarksStream => _bookmarksSubject.stream;
+  Stream<List<Bookmark>> get bookmarksStream => _bookmarksSubject;
+
+  /// Get last cached bookmarks
+  List<Bookmark> get bookmarks => _bookmarksSubject.value;
 
   /// Put bookmarks to stream
   Future<void> _streamedBookmarks() async =>
-      _bookmarksSubject.add(await bookmarks);
+      _bookmarksSubject.add(await readBookmarks());
 
-  /// Get list of bookmarks that user had saved
-  Future<List<Bookmark>> get bookmarks async {
+  /// Read from storage list of bookmarks that user had saved
+  Future<List<Bookmark>> readBookmarks() async {
     final bookmarks = await _storage.getDomain(domain: _bookmarksKey);
+
     return bookmarks.values
         .map(
           (bookmark) => Bookmark.fromJson(
@@ -112,37 +118,42 @@ class BrowserStorageService extends AbstractStorageService {
   }
 
   /// Add bookmark to storage, where [Bookmark.id] is key
-  Future<void> addBookmark(Bookmark bookmark) => _storage
-      .set(
-        bookmark.id.toString(),
-        jsonEncode(bookmark.toJson()),
-        domain: _bookmarksKey,
-      )
-      .then((_) => _streamedBookmarks());
+  Future<void> addBookmark(Bookmark bookmark) async {
+    await _storage.set(
+      bookmark.id.toString(),
+      jsonEncode(bookmark.toJson()),
+      domain: _bookmarksKey,
+    );
+    await _streamedBookmarks();
+  }
 
   /// Delete bookmark from storage by its id
-  Future<void> deleteBookmark(int id) => _storage
-      .delete(id.toString(), domain: _bookmarksKey)
-      .then((_) => _streamedBookmarks());
+  Future<void> deleteBookmark(int id) async {
+    await _storage.delete(id.toString(), domain: _bookmarksKey);
+    await _streamedBookmarks();
+  }
 
   /// Clear all bookmarks
-  Future<void> clearBookmarks() => _storage
-      .clearDomain(_bookmarksKey)
-      .then((_) => _bookmarksSubject.add([]));
+  Future<void> clearBookmarks() async {
+    await _storage.clearDomain(_bookmarksKey);
+    _bookmarksSubject.add([]);
+  }
 
   /// Subject of search history
   final _searchHistorySubject = BehaviorSubject<List<SearchHistory>>();
 
+  /// Get last cached search history
+  List<SearchHistory> get searchHistory => _searchHistorySubject.value;
+
   /// Stream of search history
-  Stream<List<SearchHistory>> get searchHistoryStream =>
-      _searchHistorySubject.stream;
+  Stream<List<SearchHistory>> get searchHistoryStream => _searchHistorySubject;
 
   /// Put search history to stream
   Future<void> _streamedSearchHistory() async =>
-      _searchHistorySubject.add(await searchHistory);
+      _searchHistorySubject.add(await readSearchHistory());
 
-  /// Get list of search history in browser
-  Future<List<SearchHistory>> get searchHistory async {
+  /// Read from storage list of search history in browser
+  Future<List<SearchHistory>> readSearchHistory() async {
     final encoded = await _storage.get(
       _searchHistoryKey,
       domain: _browserPreferencesKey,
@@ -151,6 +162,7 @@ class BrowserStorageService extends AbstractStorageService {
       return [];
     }
     final history = jsonDecode(encoded) as List<dynamic>;
+
     return history
         .map((entry) => SearchHistory.fromJson(entry as Map<String, dynamic>))
         .toList();
@@ -159,7 +171,7 @@ class BrowserStorageService extends AbstractStorageService {
   /// Add search history entry to storage. Search sorts by date and saves only
   /// last 50 entries.
   Future<void> addSearchHistoryEntry(SearchHistory entry) async {
-    var list = await searchHistory;
+    var list = await readSearchHistory();
     list = list.where((e) => e.url != entry.url).toList();
 
     final entries = [
@@ -167,33 +179,33 @@ class BrowserStorageService extends AbstractStorageService {
       entry,
     ]..sort((a, b) => -a.openTime.compareTo(b.openTime));
 
-    return _storage
-        .set(
-          _searchHistoryKey,
-          jsonEncode(entries.take(50).toList()),
-          domain: _browserPreferencesKey,
-        )
-        .then((_) => _streamedSearchHistory());
+    await _storage.set(
+      _searchHistoryKey,
+      // ignore: no-magic-number
+      jsonEncode(entries.take(50).toList()),
+      domain: _browserPreferencesKey,
+    );
+    await _streamedSearchHistory();
   }
 
   /// Remove search history entry from storage
   Future<void> removeSearchHistoryEntry(SearchHistory entry) async {
-    var list = await searchHistory;
+    var list = await readSearchHistory();
     list = list.where((e) => e.url != entry.url).toList();
 
-    return _storage
-        .set(
-          _searchHistoryKey,
-          jsonEncode(list),
-          domain: _browserPreferencesKey,
-        )
-        .then((_) => _streamedSearchHistory());
+    await _storage.set(
+      _searchHistoryKey,
+      jsonEncode(list),
+      domain: _browserPreferencesKey,
+    );
+    await _streamedSearchHistory();
   }
 
   /// Clear all search history
-  Future<void> clearSearchHistory() => _storage
-      .delete(_searchHistoryKey, domain: _browserPreferencesKey)
-      .then((_) => _searchHistorySubject.add([]));
+  Future<void> clearSearchHistory() async {
+    await _storage.delete(_searchHistoryKey, domain: _browserPreferencesKey);
+    _searchHistorySubject.add([]);
+  }
 
   /// Get metadata of site by its url
   Future<SiteMetaData?> getSiteMetaData(String url) async {
@@ -201,6 +213,7 @@ class BrowserStorageService extends AbstractStorageService {
     if (encoded == null) {
       return null;
     }
+
     return SiteMetaData.fromJson(
       jsonDecode(encoded) as Map<String, dynamic>,
     );
@@ -226,6 +239,7 @@ class BrowserStorageService extends AbstractStorageService {
       _browserNeedKey,
       domain: _browserPreferencesKey,
     );
+
     return jsonDecode(encoded ?? 'false') as bool;
   }
 
@@ -239,6 +253,7 @@ class BrowserStorageService extends AbstractStorageService {
       _browserTabsLastIndexKey,
       domain: _browserPreferencesKey,
     );
+
     return int.tryParse(encoded ?? '') ?? -1;
   }
 
@@ -253,14 +268,17 @@ class BrowserStorageService extends AbstractStorageService {
   final _browserTabsSubject = BehaviorSubject<List<BrowserTab>>();
 
   /// Stream of browser tabs
-  Stream<List<BrowserTab>> get browserTabsStream => _browserTabsSubject.stream;
+  Stream<List<BrowserTab>> get browserTabsStream => _browserTabsSubject;
+
+  /// Get last cached browser tabs
+  List<BrowserTab> get browserTabs => _browserTabsSubject.value;
 
   /// Put browser tabs to stream
   Future<void> _streamedBrowserTabs() async =>
-      _browserTabsSubject.add(await browserTabs);
+      _browserTabsSubject.add(await readBrowserTabs());
 
-  /// Get list of browser tabs from storage
-  Future<List<BrowserTab>> get browserTabs async {
+  /// Read from storage list of browser tabs from storage
+  Future<List<BrowserTab>> readBrowserTabs() async {
     final encoded = await _storage.get(
       _browserTabsKey,
       domain: _browserPreferencesKey,
@@ -269,24 +287,27 @@ class BrowserStorageService extends AbstractStorageService {
       return [];
     }
     final list = jsonDecode(encoded) as List<dynamic>;
+
     return list
         .map((entry) => BrowserTab.fromJson(entry as Map<String, dynamic>))
         .toList();
   }
 
   /// Save list of browser tabs to storage
-  Future<void> saveBrowserTabs(List<BrowserTab> tabs) => _storage
-      .set(
-        _browserTabsKey,
-        jsonEncode(tabs),
-        domain: _browserPreferencesKey,
-      )
-      .then((_) => _streamedBrowserTabs());
+  Future<void> saveBrowserTabs(List<BrowserTab> tabs) async {
+    await _storage.set(
+      _browserTabsKey,
+      jsonEncode(tabs),
+      domain: _browserPreferencesKey,
+    );
+    await _streamedBrowserTabs();
+  }
 
   /// Clear all browser tabs
-  Future<void> clearBrowserTabs() => _storage
-      .delete(_browserTabsKey, domain: _browserPreferencesKey)
-      .then((_) => _browserTabsSubject.add([]));
+  Future<void> clearBrowserTabs() async {
+    await _storage.delete(_browserTabsKey, domain: _browserPreferencesKey);
+    _browserTabsSubject.add([]);
+  }
 
   /// Clear information about all preferences
   Future<void> clearPreferences() =>

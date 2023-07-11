@@ -16,7 +16,7 @@ class StEverWithdrawRequest {
 
   final StEverWithdrawRequestData data;
   final String nonce;
-  final String accountAddress;
+  final Address accountAddress;
 }
 
 @freezed
