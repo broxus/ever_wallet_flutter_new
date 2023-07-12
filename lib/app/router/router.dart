@@ -7,6 +7,7 @@ import 'package:app/feature/onboarding/onboarding.dart';
 import 'package:app/feature/root/root.dart';
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
+import 'package:logging/logging.dart';
 import 'package:nekoton_repository/nekoton_repository.dart';
 
 export 'app_route.dart';
@@ -14,6 +15,8 @@ export 'routs/routs.dart';
 
 // ignore: long-method
 GoRouter getRouter(BuildContext _) {
+  final log = Logger('RouterHelper');
+
   // Last saved root app route
   AppRoute? lastRootAppRoute;
 
@@ -144,6 +147,7 @@ GoRouter getRouter(BuildContext _) {
     ],
     errorBuilder: (context, state) {
       // Something went wrong, clear saved subroutes
+      log.severe('GoRouter error: ${state.error}');
       savedSubroutes.clear();
       return ErrorPage(state.error);
     },
