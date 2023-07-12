@@ -17,7 +17,6 @@ ShellRoute get browserRoute {
       bookmarksRoute,
       historyRoute,
       tabsRoute,
-      webviewRoute,
     ],
   );
 }
@@ -74,20 +73,6 @@ GoRoute get tabsRoute {
       context,
       state,
       const TabsPage(),
-    ),
-  );
-}
-
-/// Get route for browser tabs page.
-GoRoute get webviewRoute {
-  return GoRoute(
-    name: AppRoute.browserWebview.name,
-    path: AppRoute.browserWebview.path,
-    pageBuilder: (BuildContext context, GoRouterState state) =>
-        browserSubscreensTransitionPageBuilder(
-      context,
-      state,
-      const WebviewPage(),
     ),
   );
 }

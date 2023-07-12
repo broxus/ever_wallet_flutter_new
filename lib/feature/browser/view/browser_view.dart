@@ -39,10 +39,6 @@ class _BrowserViewState extends State<BrowserView> {
                 text: 'tb',
                 onPressed: () => context.goNamed(AppRoute.browserTabs.name),
               ),
-              CommonButton(
-                text: 'wv',
-                onPressed: () => context.goNamed(AppRoute.browserWebview.name),
-              ),
             ],
           ),
         ),

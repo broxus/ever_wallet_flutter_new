@@ -124,14 +124,6 @@ enum AppRoute {
     '/browser/browserTabs',
     isSaveLocation: true,
     isBottomNavigationBarVisible: true,
-  ),
-
-  /// Webview browser page
-  browserWebview(
-    'browserWebview',
-    '/browser/browserWebview',
-    isSaveLocation: true,
-    isBottomNavigationBarVisible: true,
   );
 
   const AppRoute(

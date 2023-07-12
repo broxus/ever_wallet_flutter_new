@@ -142,7 +142,11 @@ GoRouter getRouter(BuildContext _) {
         ],
       ),
     ],
-    errorBuilder: (context, state) => ErrorPage(state.error),
+    errorBuilder: (context, state) {
+      // Something went wrong, clear saved subroutes
+      savedSubroutes.clear();
+      return ErrorPage(state.error);
+    },
   );
 
   // Subscribe to hasSeeds to redirect if needed
