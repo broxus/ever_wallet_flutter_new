@@ -1,8 +1,10 @@
 import 'package:app/bootstrap.dart';
 import 'package:app/di/di.dart';
 import 'package:fancy_logger/fancy_logger.dart';
+import 'package:flutter/widgets.dart';
 import 'package:logging/logging.dart';
 import 'package:nekoton_repository/nekoton_repository.dart';
+import 'package:package_info_plus/package_info_plus.dart';
 
 const _devLogsRetainSessionCount = 100;
 const _prodLogsRetainSessionCount = 50;
@@ -34,8 +36,14 @@ Future<void> configureLogger(
       };
   }
 
+  WidgetsFlutterBinding.ensureInitialized();
+  final packageInfo = await PackageInfo.fromPlatform();
+  final packageInfoString =
+      '[${packageInfo.version}:${packageInfo.buildNumber}]';
+
   final fancyLogger = inject<FancyLogger>();
-  await fancyLogger.init(retainStrategy);
+  await fancyLogger.init(retainStrategy, sessionStartExtra: packageInfoString);
+
   await inject<NekotonRepository>().setupLogger(
     level: fancyLogger.minLevel,
     mobileLogger: mobileLogger,
