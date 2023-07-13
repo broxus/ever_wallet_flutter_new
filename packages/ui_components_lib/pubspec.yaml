@@ -16,10 +16,13 @@ dependencies:
   sliding_up_panel2: ^3.3.0+1
 
 dev_dependencies:
+  broxus_flutter_analysis:
+    git:
+      url: https://github.com/broxus/flutter_templates.git
+      ref: main
   dart_code_metrics: ^5.7.4
   flutter_test:
     sdk: flutter
-  very_good_analysis: ^5.0.0+1
 
 flutter:
   uses-material-design: true

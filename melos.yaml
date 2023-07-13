@@ -9,6 +9,10 @@ scripts:
     description: Decrypt secrets
     run: bash scripts/decrypt-secrets.sh
 
+  build_and_test:
+    description: GA main script
+    run: bash scripts/build_and_test.sh
+
   codegen:
     description: Generate code for all packages
     run: melos run codegen:build_runner --no-select && melos run codegen:locale --no-select
