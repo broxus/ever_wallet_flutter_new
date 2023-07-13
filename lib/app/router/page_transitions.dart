@@ -91,3 +91,27 @@ CustomTransitionPage<void> rootTabsTransitionPageBuilder(
     },
   );
 }
+
+CustomTransitionPage<void> browserSubscreensTransitionPageBuilder(
+  BuildContext _,
+  GoRouterState state,
+  Widget child,
+) {
+  return CustomTransitionPage<void>(
+    key: state.pageKey,
+    name: state.name,
+    child: child,
+    transitionDuration: _duration,
+    transitionsBuilder: (
+      BuildContext context,
+      Animation<double> animation,
+      Animation<double> secondaryAnimation,
+      Widget child,
+    ) {
+      return FadeTransition(
+        opacity: CurveTween(curve: Curves.easeInOut).animate(animation),
+        child: child,
+      );
+    },
+  );
+}
