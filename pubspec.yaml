@@ -52,6 +52,7 @@ dev_dependencies:
     git:
       url: https://github.com/broxus/flutter_templates.git
       ref: main
+  build_runner: ^2.4.6
   flutter_gen_runner: ^5.2.0
   flutter_secure_storage: ^8.0.0
   flutter_test:
