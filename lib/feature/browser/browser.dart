@@ -1,3 +1,4 @@
+export 'bloc/bloc.dart';
 export 'bookmarks/bookmarks.dart';
 export 'history/history.dart';
 export 'primary/primary.dart';
