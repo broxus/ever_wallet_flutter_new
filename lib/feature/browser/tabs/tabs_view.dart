@@ -1,3 +1,4 @@
+import 'package:app/feature/browser/browser.dart';
 import 'package:flutter/material.dart';
 
 class TabsView extends StatefulWidget {
@@ -10,11 +11,22 @@ class TabsView extends StatefulWidget {
 class _TabsViewState extends State<TabsView> {
   @override
   Widget build(BuildContext context) {
-    return const ColoredBox(
-      color: Colors.amber,
-      child: Center(
-        child: Text('Tabs'),
-      ),
+    return Column(
+      children: [
+        const Expanded(
+          child: ColoredBox(
+            color: Colors.amber,
+            child: Center(
+              child: Text('Tabs'),
+            ),
+          ),
+        ),
+        BrowserBottomMenuTabs(
+          onCloseAllPressed: null,
+          onAddTabPressed: () {},
+          onDonePressed: () {},
+        ),
+      ],
     );
   }
 }

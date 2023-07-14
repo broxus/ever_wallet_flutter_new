@@ -1,1 +1,1 @@
-export 'browser_bloc.dart';
+export 'browser_tabs_bloc_bloc.dart';
