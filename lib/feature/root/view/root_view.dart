@@ -18,6 +18,7 @@ class RootView extends StatefulWidget {
 class _RootViewState extends State<RootView> {
   @override
   Widget build(BuildContext context) {
+    final colors = context.themeStyle.colors;
     final isBottomNavigationBarVisible =
         getCurrentAppRoute(GoRouterState.of(context).location)
             .isBottomNavigationBarVisible;
@@ -46,17 +47,34 @@ class _RootViewState extends State<RootView> {
       bottomNavigationBar: AnimatedSlide(
         duration: defaultAnimationDuration,
         offset: Offset(0, isBottomNavigationBarVisible ? 0 : 1.0),
-        child: BottomNavigationBar(
-          items: _getItems(),
-          currentIndex: _tabIndex(context),
-          onTap: (int index) => _onTap(context, index),
+        child: Container(
+          clipBehavior: Clip.hardEdge,
+          decoration: BoxDecoration(
+            boxShadow: [
+              BoxShadow(color: colors.strokeSecondary, spreadRadius: 1),
+            ],
+            borderRadius: const BorderRadius.vertical(
+              top: Radius.circular(DimensRadius.large),
+            ),
+          ),
+          child: BottomNavigationBar(
+            type: BottomNavigationBarType.fixed,
+            backgroundColor: colors.backgroundSecondary,
+            selectedItemColor: colors.blue,
+            unselectedItemColor: colors.textSecondary,
+            selectedLabelStyle: StyleRes.addBold,
+            unselectedLabelStyle: StyleRes.addBold,
+            items: _getItems(context),
+            currentIndex: _tabIndex(context),
+            onTap: (int index) => _onTap(context, index),
+          ),
         ),
       ),
     );
   }
 
-  List<BottomNavigationBarItem> _getItems() =>
-      RootTab.values.map((tab) => tab.item).toList();
+  List<BottomNavigationBarItem> _getItems(BuildContext context) =>
+      RootTab.values.map((tab) => tab.item(context)).toList();
 
   void _onTap(BuildContext context, int value) {
     final tab = RootTab.values[value];
