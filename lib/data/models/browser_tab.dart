@@ -12,6 +12,7 @@ class BrowserTab with _$BrowserTab {
     required String? image,
     required String? title,
     required int lastScrollPosition,
+    required int id,
   }) = _BrowserTab;
 
   factory BrowserTab.fromJson(Map<String, dynamic> json) =>

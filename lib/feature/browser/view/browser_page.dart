@@ -10,7 +10,9 @@ class BrowserPage extends StatelessWidget {
   Widget build(BuildContext context) {
     return BlocProvider<BrowserTabsBlocBloc>(
       create: (context) => BrowserTabsBlocBloc(),
-      child: BrowserView(child: child),
+      child: SafeArea(
+        child: BrowserView(child: child),
+      ),
     );
   }
 }

@@ -11,22 +11,29 @@ class PrimaryView extends StatefulWidget {
 class _PrimaryViewState extends State<PrimaryView> {
   @override
   Widget build(BuildContext context) {
-    return Column(
+    return Stack(
       children: [
-        const Expanded(
-          child: ColoredBox(
-            color: Colors.pink,
-            child: Center(
-              child: Text('Primary'),
-            ),
+        const IndexedStack(
+          index: 0,
+          children: [
+            BrowserTabView(),
+          ],
+        ),
+        Align(
+          alignment: Alignment.topCenter,
+          child: BrowserSearchBar(
+            onSubmit: () => {},
           ),
         ),
-        BrowserBottomMenuCommon(
-          onBackPressed: () => {},
-          onForwardPressed: null,
-          onAddTabPressed: null,
-          onTabsPressed: null,
-          onOverflowPressed: null,
+        Align(
+          alignment: Alignment.bottomCenter,
+          child: BrowserBottomMenuCommon(
+            onBackPressed: () => {},
+            onForwardPressed: null,
+            onAddTabPressed: null,
+            onTabsPressed: null,
+            onOverflowPressed: null,
+          ),
         ),
       ],
     );

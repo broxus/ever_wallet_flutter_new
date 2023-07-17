@@ -154,5 +154,6 @@
   "contactSupportEmailBodyInitiatedByCrash": "Hi, SparX wallet just crashed. Here is my problem: {briefly describe your problem}. Also you can find logs in the attachment.",
   "contactSupportCantFindEmailClient": "Can't find email client",
   "browserCloseAll": "Close All",
-  "browserDone": "Done"
+  "browserDone": "Done",
+  "browserSearchURL": "Search or enter URL"
 }

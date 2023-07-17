@@ -34,6 +34,7 @@ final _browserTab = BrowserTab(
   image: 'IMAGE',
   title: 'TITLE',
   lastScrollPosition: 10,
+  id: 0,
 );
 const _everContractAsset = TokenContractAsset(
   name: 'Staked Ever',

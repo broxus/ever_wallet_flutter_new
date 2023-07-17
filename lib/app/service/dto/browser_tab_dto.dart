@@ -32,10 +32,11 @@ extension BrowserTabX on BrowserTab {
 }
 
 extension BrowserTabDtoX on BrowserTabDto {
-  BrowserTab toModel() => BrowserTab(
+  BrowserTab toModel(int id) => BrowserTab(
         url: Uri.parse(url),
         lastScrollPosition: lastScrollPosition,
         image: image,
         title: title,
+        id: id,
       );
 }

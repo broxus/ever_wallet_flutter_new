@@ -28,7 +28,6 @@ enum AppRoute {
     isSaveLocation: true,
     isBottomNavigationBarVisible: true,
     isSaveSubroutes: true,
-    isPopToRoot: false,
   ),
 
   /// Profile section
@@ -133,7 +132,6 @@ enum AppRoute {
     this.isSaveLocation = false,
     this.isBottomNavigationBarVisible = false,
     this.isSaveSubroutes = false,
-    this.isPopToRoot = true,
   });
 
   static final _log = Logger('AppRoute');
@@ -150,12 +148,6 @@ enum AppRoute {
   /// Should subroutes be saved and restored when user navigates between
   /// root routes. It's effective only for root routes
   final bool isSaveSubroutes;
-
-  /// Should pop to root route when user navigates to this route from the
-  /// same root route.
-  /// This is 'tap to bottom navigation button second time' shortcut.
-  /// It's effective only for root routes.
-  final bool isPopToRoot;
 
   static AppRoute? getByPath(String path) {
     // ignore: prefer-enums-by-name

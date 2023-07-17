@@ -80,9 +80,6 @@ GoRouter getRouter(BuildContext _) {
       // Get current location
       final location = state.location;
 
-      // Get app route
-      final appRoute = getAppRoute(location);
-
       // Get root app route
       final rootAppRoute = getRootAppRoute(location);
 
@@ -112,13 +109,7 @@ GoRouter getRouter(BuildContext _) {
       // navigates to another root app route and returns back to the previous
       // root app route using bottom tab bar. In this case, the subroute should
       // be restored.
-      // This mechanism provides one more important thing: if the user navigates
-      // to the same root app route (for example, using bottom tab bar), the
-      // router will redirect to root app route's path (for convinience, it's
-      // just a shortcut to the root app route's path). However, for special
-      // cases we should not do that, for example, for browser route.
-      if ((rootAppRouteChaned || !appRoute.isPopToRoot) &&
-          savedSubroute != null) {
+      if (rootAppRouteChaned && savedSubroute != null) {
         return savedSubroute;
       }
 
