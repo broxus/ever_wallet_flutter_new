@@ -271,7 +271,9 @@ class _CommonButtonState extends State<CommonButton> {
     );
 
     return Padding(
-      padding: widget.padding ?? const EdgeInsets.symmetric(horizontal: 20),
+      padding: widget.padding ?? const EdgeInsets.symmetric(
+          horizontal: DimensSize.d20,
+      ),
       child: widget.leading == null && widget.trailing == null
           ? textWidget
           : Row(
@@ -279,11 +281,11 @@ class _CommonButtonState extends State<CommonButton> {
               children: [
                 if (widget.leading != null) ...[
                   widget.leading!,
-                  const SizedBox(width: 10),
+                  const SizedBox(width: DimensSize.d8),
                 ],
                 textWidget,
                 if (widget.trailing != null) ...[
-                  const SizedBox(width: 10),
+                  const SizedBox(width: DimensSize.d8),
                   widget.trailing!,
                 ],
               ],

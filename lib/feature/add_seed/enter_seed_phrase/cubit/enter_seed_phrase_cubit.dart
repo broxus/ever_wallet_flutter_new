@@ -18,7 +18,7 @@ part 'enter_seed_phrase_cubit.freezed.dart';
 part 'enter_seed_phrase_state.dart';
 
 /// Regexp that helps splitting seed phrase into words.
-final seedSplitRegExp = RegExp(r'[ |;|,|:|\n|.]');
+final seedSplitRegExp = RegExp(r'[ |;,:\n.]');
 const _debugPhraseLength = 15;
 
 const _legacySeedPhraseLength = 24;
