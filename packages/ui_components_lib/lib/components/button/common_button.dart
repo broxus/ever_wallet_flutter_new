@@ -271,9 +271,10 @@ class _CommonButtonState extends State<CommonButton> {
     );
 
     return Padding(
-      padding: widget.padding ?? const EdgeInsets.symmetric(
-          horizontal: DimensSize.d20,
-      ),
+      padding: widget.padding ??
+          const EdgeInsets.symmetric(
+            horizontal: DimensSize.d20,
+          ),
       child: widget.leading == null && widget.trailing == null
           ? textWidget
           : Row(
