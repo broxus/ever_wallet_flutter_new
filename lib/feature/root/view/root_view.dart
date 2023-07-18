@@ -52,8 +52,8 @@ class _RootViewState extends State<RootView> {
           decoration: BoxDecoration(
             boxShadow: [
               BoxShadow(
-                  color: colors.strokeSecondary,
-                  spreadRadius: DimensStroke.small,
+                color: colors.strokeSecondary,
+                spreadRadius: DimensStroke.small,
               ),
             ],
             borderRadius: const BorderRadius.vertical(
