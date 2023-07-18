@@ -10,11 +10,7 @@ class PrimaryPage extends StatelessWidget {
   Widget build(BuildContext context) {
     return BlocProvider<HudBloc>(
       create: (context) => HudBloc(),
-      child: BlocBuilder<HudBloc, HudState>(
-        builder: (context, state) {
-          return const PrimaryView();
-        },
-      ),
+      child: const PrimaryView(),
     );
   }
 }

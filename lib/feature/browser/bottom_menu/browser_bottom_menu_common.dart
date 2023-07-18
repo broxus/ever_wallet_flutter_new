@@ -11,6 +11,9 @@ class BrowserBottomMenuCommon extends StatelessWidget {
     required this.onOverflowPressed,
     super.key,
   });
+
+  static const height = DimensSize.d64;
+
   final VoidCallback? onBackPressed;
   final VoidCallback? onForwardPressed;
   final VoidCallback? onAddTabPressed;
@@ -24,7 +27,7 @@ class BrowserBottomMenuCommon extends StatelessWidget {
     return ColoredBox(
       color: colors.appBackground,
       child: SizedBox(
-        height: DimensSize.d64,
+        height: height,
         child: Row(
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
           children: [
