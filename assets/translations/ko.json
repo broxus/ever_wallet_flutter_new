@@ -155,5 +155,8 @@
   "contactSupportCantFindEmailClient": "Can't find email client",
   "browserCloseAll": "Close All",
   "browserDone": "Done",
-  "browserSearchURL": "Search or enter URL"
+  "browserSearchURL": "Search or enter URL",
+  "walletWord": "Wallet",
+  "browserWord": "Browser",
+  "profileWord": "Profile"
 }

@@ -113,6 +113,15 @@ packages:
       url: "https://pub.dev"
     source: hosted
     version: "2.1.1"
+  broxus_flutter_analysis:
+    dependency: "direct dev"
+    description:
+      path: "."
+      ref: main
+      resolved-ref: "119d6797981a6e6998d42e287a547b792d5ea78f"
+      url: "https://github.com/broxus/flutter_templates.git"
+    source: git
+    version: "1.0.0"
   build:
     dependency: transitive
     description:
@@ -896,10 +905,10 @@ packages:
     dependency: "direct dev"
     description:
       name: melos
-      sha256: ccbb6ecd8bb3f08ae8f9ce22920d816bff325a98940c845eda0257cd395503ac
+      sha256: "3f22f6cc629d72acf3acc8a7f8563384550290fa30790efa328c9cf606aa17d7"
       url: "https://pub.dev"
     source: hosted
-    version: "3.1.0"
+    version: "3.1.1"
   meta:
     dependency: transitive
     description:
@@ -1176,10 +1185,10 @@ packages:
     dependency: transitive
     description:
       name: pub_updater
-      sha256: "42890302ab2672adf567dc2b20e55b4ecc29d7e19c63b6b98143ab68dd717d3a"
+      sha256: "05ae70703e06f7fdeb05f7f02dd680b8aad810e87c756a618f33e1794635115c"
       url: "https://pub.dev"
     source: hosted
-    version: "0.2.4"
+    version: "0.3.0"
   pubspec:
     dependency: transitive
     description:
@@ -1649,7 +1658,7 @@ packages:
     source: hosted
     version: "2.1.4"
   very_good_analysis:
-    dependency: "direct dev"
+    dependency: transitive
     description:
       name: very_good_analysis
       sha256: "5e4ea72d2a9188630f0dd8f120a541de730090ef8863243fedca8267a84508b8"
