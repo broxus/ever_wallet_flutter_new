@@ -31,6 +31,8 @@ class _PrimaryViewState extends State<PrimaryView>
 
   static const Curve _curve = Curves.easeOutCubic;
 
+  static const _animationHalfValue = 0.5;
+
   // It's when the HUD is visible. It's true only when its FULLY visible beacuse
   // it's used to change the size of the content (webview), and we should
   // change it behind the HUD.
@@ -39,6 +41,35 @@ class _PrimaryViewState extends State<PrimaryView>
   @override
   void initState() {
     super.initState();
+
+    // Init animations. It's a long list of animations, so we moved it to
+    // separate method.
+    _initAminations();
+
+    // We can't use HudBloc here because we need to listen to the animation
+    _animationController.addStatusListener((status) {
+      if (status == AnimationStatus.forward) {
+        // Animation start playing 1->0, i.e. HUD was visible, but became not
+        // So, we should extend content below HUD to make it fill entire screen
+        // befor HUD will be hidden
+        if (_animationController.value > _animationHalfValue) {
+          setState(() {
+            print('forward ${_animationController.value}');
+            _isHudVisible = false;
+          });
+        }
+      }
+      // Animation is completed, so we can change HUD visibility according to
+      // animation value
+      if (status == AnimationStatus.completed) {
+        setState(() {
+          _isHudVisible = _animationController.value > _animationHalfValue;
+        });
+      }
+    });
+  }
+
+  void _initAminations() {
     _animationController = AnimationController(
       value: 1,
       vsync: this,
@@ -81,28 +112,6 @@ class _PrimaryViewState extends State<PrimaryView>
         curve: _curve,
       ),
     );
-
-    // We can't use HudBloc here because we need to listen to the animation
-    _animationController.addStatusListener((status) {
-      if (status == AnimationStatus.forward) {
-        // Animation start playing 1->0, i.e. HUD was visible, but became not
-        // So, we should extend content below HUD to make it fill entire screen
-        // befor HUD will be hidden
-        if (_animationController.value > 0.5) {
-          setState(() {
-            print('forward ${_animationController.value}');
-            _isHudVisible = false;
-          });
-        }
-      }
-      // Animation is completed, so we can change HUD visibility according to
-      // animation value
-      if (status == AnimationStatus.completed) {
-        setState(() {
-          _isHudVisible = _animationController.value > 0.5;
-        });
-      }
-    });
   }
 
   @override

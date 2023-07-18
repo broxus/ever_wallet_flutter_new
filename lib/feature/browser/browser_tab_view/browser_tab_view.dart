@@ -47,7 +47,7 @@ class _BrowserTabViewState extends State<BrowserTabView> {
     }
   }
 
-  void _onScrollChanged(InAppWebViewController controller, int x, int y) {
+  void _onScrollChanged(_, __, int y) {
     // Remove all events that are not active anymore (cancelled, executed)
     _delayedScrollEvents.removeWhere((event) => !event.timer.isActive);
 
@@ -66,10 +66,10 @@ class _BrowserTabViewState extends State<BrowserTabView> {
   }
 
   void _onOverScrolled(
-    InAppWebViewController controller,
-    int x,
+    _,
+    __,
     int y,
-    bool clampedX,
+    ___,
     bool clampedY,
   ) {
     if (clampedY) {
@@ -81,6 +81,7 @@ class _BrowserTabViewState extends State<BrowserTabView> {
         if (event.y < y) return false;
         // Cancel timer
         event.timer.cancel();
+
         // Remove event from the list
         return true;
       });
@@ -107,6 +108,7 @@ class _BrowserTabViewState extends State<BrowserTabView> {
     // If we don't have start position, set it and return
     if (_scrollGestureYStart == null) {
       _scrollGestureYStart = y;
+
       return;
     }
 

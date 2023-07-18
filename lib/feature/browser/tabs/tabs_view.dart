@@ -23,7 +23,9 @@ class _TabsViewState extends State<TabsView> {
         ),
         BrowserBottomMenuTabs(
           onCloseAllPressed: null,
+          // ignore: no-empty-block
           onAddTabPressed: () {},
+          // ignore: no-empty-block
           onDonePressed: () {},
         ),
       ],
