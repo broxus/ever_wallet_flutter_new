@@ -13,14 +13,27 @@ class PrimaryView extends StatefulWidget {
 
 class _PrimaryViewState extends State<PrimaryView>
     with SingleTickerProviderStateMixin {
+  // Scroll position of the webview, used to hide the HUD when the user scrolls
+  // further than a certain threshold.
   static const int _hudScrollMinYThreshold = 64;
+  // Scroll dY of the webview, used to hide and show the HUD when the user
+  // scrolls up and down.
   static const int _hudScrollDYThreshold = 64;
 
+  // Main animation controller of the HUD.
   late AnimationController _animationController;
+  // Search bar animation
   late final Animation<Offset> _searchBarAnimation;
+  // Bottom menu animation
   late final Animation<Offset> _bottomMenuAnimation;
+  // Content (webview) animation
   late final Animation<RelativeRect> _contentAnimation;
 
+  static const Curve _curve = Curves.easeOutCubic;
+
+  // It's when the HUD is visible. It's true only when its FULLY visible beacuse
+  // it's used to change the size of the content (webview), and we should
+  // change it behind the HUD.
   bool _isHudVisible = true;
 
   @override
@@ -38,7 +51,7 @@ class _PrimaryViewState extends State<PrimaryView>
     ).animate(
       CurvedAnimation(
         parent: _animationController,
-        curve: Curves.easeOutCubic,
+        curve: _curve,
       ),
     );
 
@@ -48,12 +61,14 @@ class _PrimaryViewState extends State<PrimaryView>
     ).animate(
       CurvedAnimation(
         parent: _animationController,
-        curve: Curves.easeOutCubic,
+        curve: _curve,
       ),
     );
 
     _contentAnimation = RelativeRectTween(
       begin: RelativeRect.fill,
+      // Yeah, we don't change height of the content!
+      // We just move it up and down
       end: const RelativeRect.fromLTRB(
         0,
         BrowserSearchBar.height,
@@ -63,18 +78,25 @@ class _PrimaryViewState extends State<PrimaryView>
     ).animate(
       CurvedAnimation(
         parent: _animationController,
-        curve: Curves.easeOutCubic,
+        curve: _curve,
       ),
     );
 
+    // We can't use HudBloc here because we need to listen to the animation
     _animationController.addStatusListener((status) {
       if (status == AnimationStatus.forward) {
+        // Animation start playing 1->0, i.e. HUD was visible, but became not
+        // So, we should extend content below HUD to make it fill entire screen
+        // befor HUD will be hidden
         if (_animationController.value > 0.5) {
           setState(() {
+            print('forward ${_animationController.value}');
             _isHudVisible = false;
           });
         }
       }
+      // Animation is completed, so we can change HUD visibility according to
+      // animation value
       if (status == AnimationStatus.completed) {
         setState(() {
           _isHudVisible = _animationController.value > 0.5;
@@ -91,8 +113,11 @@ class _PrimaryViewState extends State<PrimaryView>
 
   @override
   Widget build(BuildContext context) {
+    // We use only listener (without builder) because we don't need to rebuild
+    // the entire widget tree when HUD visibility changes
     return BlocListener<HudBloc, HudState>(
       listener: (context, state) {
+        // Just animate HUD visibility according to the bloc state
         _animationController.animateTo(
           state.when(
             visible: () => 1.0,
@@ -103,12 +128,21 @@ class _PrimaryViewState extends State<PrimaryView>
       child: AnimatedBuilder(
         animation: _animationController,
         builder: (BuildContext context, Widget? child) {
+          // There are 3 layers:
           return Stack(
             children: [
+              // 1. Content (webview)
+              // It should be below HUD when HUD is visible, and fill entire
+              // screen when HUD is not visible
+              // We don't animate height of the content because it's a webview
               Positioned.fill(
+                // Just change bottom padding according to HUD visibility
+                // instantly
                 bottom: _isHudVisible ? BrowserBottomMenuCommon.height : 0,
                 child: Stack(
                   children: [
+                    // But animate content position to follow search
+                    // bar animation
                     PositionedTransition(
                       rect: _contentAnimation,
                       child: child!,
@@ -116,6 +150,7 @@ class _PrimaryViewState extends State<PrimaryView>
                   ],
                 ),
               ),
+              // 2. HUD: search bar
               Align(
                 alignment: Alignment.topCenter,
                 child: SlideTransition(
@@ -125,6 +160,7 @@ class _PrimaryViewState extends State<PrimaryView>
                   ),
                 ),
               ),
+              // 3. HUD: bottom menu
               Align(
                 alignment: Alignment.bottomCenter,
                 child: SlideTransition(
@@ -141,6 +177,7 @@ class _PrimaryViewState extends State<PrimaryView>
             ],
           );
         },
+        // We use child to prevent webview from rebuilding when HUD
         child: IndexedStack(
           index: 0,
           children: [
@@ -153,12 +190,17 @@ class _PrimaryViewState extends State<PrimaryView>
 
   void _onScroll({required int currentY, required int gestureDY}) {
     if (currentY < _hudScrollMinYThreshold) {
+      // If we are at the top of the page, we should show HUD
       context.read<HudBloc>().add(const HudEvent.show());
     } else {
+      // Elsewise, we should show and  hide HUD according to gesture direction.
+      // Here we check if gesture is long enough to hide or show HUD
       if (gestureDY.abs() > _hudScrollDYThreshold) {
         if (gestureDY > 0) {
+          // If gesture is down, we should hide HUD
           context.read<HudBloc>().add(const HudEvent.hide());
         } else {
+          // If gesture is up, we should show HUD
           context.read<HudBloc>().add(const HudEvent.show());
         }
       }
