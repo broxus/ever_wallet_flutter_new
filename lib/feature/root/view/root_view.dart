@@ -51,7 +51,10 @@ class _RootViewState extends State<RootView> {
           clipBehavior: Clip.hardEdge,
           decoration: BoxDecoration(
             boxShadow: [
-              BoxShadow(color: colors.strokeSecondary, spreadRadius: 1),
+              BoxShadow(
+                  color: colors.strokeSecondary,
+                  spreadRadius: DimensStroke.small,
+              ),
             ],
             borderRadius: const BorderRadius.vertical(
               top: Radius.circular(DimensRadius.large),
