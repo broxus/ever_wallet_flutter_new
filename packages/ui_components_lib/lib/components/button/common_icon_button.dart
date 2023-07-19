@@ -1,12 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:ui_components_lib/ui_components_lib.dart';
 
-/// Default inner padding (from icon to border)
-const defaultCommonIconButtonInnerPadding = DimensSize.d20;
-
-/// Default full size of icon button (*2 because EdgeInsets.all)
-const defaultCommonIconButtonSize =
-    defaultCommonIconSize + defaultCommonIconButtonInnerPadding * 2;
+const defaultCommonIconButtonSize = DimensSize.d56;
 
 /// {@template common_icon_button}
 /// This is a common button with icon inside
@@ -24,8 +19,6 @@ class CommonIconButton extends StatefulWidget {
     this.size,
     this.color,
     this.backgroundColor,
-    this.outerPadding,
-    this.innerPadding,
   }) : assert(
           icon != null || svg != null,
           'IconData or Svg path must be specified',
@@ -39,10 +32,8 @@ class CommonIconButton extends StatefulWidget {
     VoidCallback? onLongPress,
     FocusNode? focusNode,
     Key? key,
-    double? size,
+    CommonIconButtonSize? size,
     Color? color,
-    EdgeInsets? outerPadding,
-    EdgeInsets? innerPadding,
   }) =>
       CommonIconButton(
         buttonType: buttonType,
@@ -53,8 +44,6 @@ class CommonIconButton extends StatefulWidget {
         svg: svg,
         size: size,
         color: color,
-        outerPadding: outerPadding,
-        innerPadding: innerPadding,
       );
 
   /// Factory that allows create button with [IconData]
@@ -65,10 +54,8 @@ class CommonIconButton extends StatefulWidget {
     VoidCallback? onLongPress,
     FocusNode? focusNode,
     Key? key,
-    double? size,
+    CommonIconButtonSize? size,
     Color? color,
-    EdgeInsets? outerPadding,
-    EdgeInsets? innerPadding,
   }) =>
       CommonIconButton(
         buttonType: buttonType,
@@ -79,8 +66,6 @@ class CommonIconButton extends StatefulWidget {
         icon: icon,
         size: size,
         color: color,
-        outerPadding: outerPadding,
-        innerPadding: innerPadding,
       );
 
   /// Style that will be used to get colors
@@ -101,8 +86,8 @@ class CommonIconButton extends StatefulWidget {
   /// Path in assets directory to svg image
   final String? svg;
 
-  /// Size for image
-  final double? size;
+  /// Size of button, default is [CommonIconButtonSize.medium]
+  final CommonIconButtonSize? size;
 
   /// Color of icon, if not specified, then color from [EverButtonStyle]
   /// is used.
@@ -112,19 +97,19 @@ class CommonIconButton extends StatefulWidget {
   /// is used.
   final Color? backgroundColor;
 
-  /// Padding around ink effect, default 0
-  final EdgeInsets? outerPadding;
-
-  /// Padding around icon but inside ink effect, default is
-  /// [defaultCommonIconButtonInnerPadding]
-  final EdgeInsets? innerPadding;
-
   @override
   State<CommonIconButton> createState() => _CommonIconButtonState();
 }
 
 class _CommonIconButtonState extends State<CommonIconButton> {
   bool isPressed = false;
+
+  EdgeInsets get _innerPadding {
+    final size = (widget.size ?? CommonIconButtonSize.medium).value;
+
+    // ignore: no-magic-number
+    return EdgeInsets.all((size - defaultCommonIconSize) / 2);
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -144,30 +129,25 @@ class _CommonIconButtonState extends State<CommonIconButton> {
 
     return EverButtonStyleProvider(
       contentColor: contentColor,
-      child: Padding(
-        padding: widget.outerPadding ?? EdgeInsets.zero,
-        child: Material(
-          shape: RoundedRectangleBorder(
-            borderRadius: BorderRadius.circular(DimensRadius.max),
-          ),
-          color: backgroundColor,
-          child: InkWell(
-            hoverColor: Colors.transparent,
-            splashColor: Colors.transparent,
-            highlightColor: Colors.transparent,
-            borderRadius: BorderRadius.circular(DimensRadius.max),
-            onTap: widget.onPressed,
-            onLongPress: widget.onLongPress,
-            focusNode: widget.focusNode,
-            onHighlightChanged: _onHighlightChanged,
-            child: Padding(
-              padding: widget.innerPadding ??
-                  const EdgeInsets.all(defaultCommonIconButtonInnerPadding),
-              child: CommonButtonIconWidget(
-                icon: widget.icon,
-                svg: widget.svg,
-                size: widget.size,
-              ),
+      child: Material(
+        shape: RoundedRectangleBorder(
+          borderRadius: BorderRadius.circular(DimensRadius.max),
+        ),
+        color: backgroundColor,
+        child: InkWell(
+          hoverColor: Colors.transparent,
+          splashColor: Colors.transparent,
+          highlightColor: Colors.transparent,
+          borderRadius: BorderRadius.circular(DimensRadius.max),
+          onTap: widget.onPressed,
+          onLongPress: widget.onLongPress,
+          focusNode: widget.focusNode,
+          onHighlightChanged: _onHighlightChanged,
+          child: Padding(
+            padding: _innerPadding,
+            child: CommonButtonIconWidget(
+              icon: widget.icon,
+              svg: widget.svg,
             ),
           ),
         ),
@@ -180,4 +160,19 @@ class _CommonIconButtonState extends State<CommonIconButton> {
       setState(() => this.isPressed = isPressed);
     }
   }
+}
+
+enum CommonIconButtonSize {
+  /// 28x28
+  xsmall(DimensSize.d28),
+
+  /// 44x44
+  small(DimensSize.d44),
+
+  /// 56x56 (default)
+  medium(DimensSize.d56);
+
+  const CommonIconButtonSize(this.value);
+
+  final double value;
 }

@@ -23,10 +23,7 @@ typedef DefaultAppBarCloseAction = void Function(BuildContext context);
 typedef DefaultAppBarCanPopAction = bool Function(BuildContext context);
 
 /// Default width or height of appbar button
-const appBarButtonSize = 40.0;
-const appBarIconButtonInnerPadding = EdgeInsets.all(
-  (appBarButtonSize - defaultCommonIconSize) / 2,
-);
+const appBarButtonSize = DimensSize.d44;
 
 /// {@template default_appbar}
 /// Default appbar for authorized zone.
@@ -146,8 +143,8 @@ class DefaultAppBar extends StatelessWidget implements PreferredSizeWidget {
     final leading = this.leading ??
         (_showLeadingClose && defaultCanPopAction(context)
             ? CommonIconButton.icon(
-                innerPadding: appBarIconButtonInnerPadding,
                 icon: Icons.arrow_back_rounded,
+                size: CommonIconButtonSize.small,
                 buttonType: EverButtonType.secondary,
                 onPressed: () {
                   if (onClosePressed != null) {

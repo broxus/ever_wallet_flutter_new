@@ -31,17 +31,18 @@ class AddNewAccountCard extends StatelessWidget {
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
-            CommonIconButton(
-              onPressed: () => showAddNewLocalAccountSheet(
-                context: context,
-                publicKey: publicKey,
+            Padding(
+              padding: const EdgeInsets.all(DimensSize.d12),
+              child: CommonIconButton(
+                onPressed: () => showAddNewLocalAccountSheet(
+                  context: context,
+                  publicKey: publicKey,
+                ),
+                svg: Assets.images.plus.path,
+                buttonType: EverButtonType.primary,
+                backgroundColor: colors.blue,
+                color: colors.backgroundSecondary,
               ),
-              innerPadding: const EdgeInsets.all(DimensSize.d16),
-              outerPadding: const EdgeInsets.all(DimensSize.d12),
-              svg: Assets.images.plus.path,
-              buttonType: EverButtonType.primary,
-              backgroundColor: colors.blue,
-              color: colors.backgroundSecondary,
             ),
             Text(
               LocaleKeys.addAccount.tr(),
