@@ -549,10 +549,10 @@ packages:
     dependency: "direct main"
     description:
       name: flutter_nekoton_bridge
-      sha256: a043191348b279364409f66af995d7bfcb0ae42aa9c0d7ac9b2837ee74f89dc2
+      sha256: "048fc2301d92030ea3ff6885c96859557bb75f08a51d28240f38ac9190be3a37"
       url: "https://pub.dev"
     source: hosted
-    version: "1.10.0"
+    version: "1.12.0"
   flutter_plugin_android_lifecycle:
     dependency: transitive
     description:
@@ -969,18 +969,18 @@ packages:
     dependency: transitive
     description:
       name: nekoton_bridge
-      sha256: fa3a2a2776b1561efb15b6b86bad04fe6e4e6d537b454449c5a56b913056d89d
+      sha256: "872aa98292aaf2b862f6edbb5ac72e7cba8bc85d83ced628a5401c9da3c3f847"
       url: "https://pub.dev"
     source: hosted
-    version: "1.8.4"
+    version: "1.9.0"
   nekoton_repository:
     dependency: "direct main"
     description:
       name: nekoton_repository
-      sha256: "8bf5df3b5a59064d768b62a1892c8baf0de3cb255b2b2e4e5050744ffc4d47e9"
+      sha256: "1cf89f829d8ef1a4fddb2f3b8b920e86bcf40d7e8c7a46ffa9640b80c72661a3"
       url: "https://pub.dev"
     source: hosted
-    version: "0.1.1"
+    version: "0.3.0"
   nekoton_webview:
     dependency: "direct main"
     description:
