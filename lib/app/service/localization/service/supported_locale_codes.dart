@@ -21,6 +21,7 @@ enum SupportedLocaleCodes {
     for (final value in SupportedLocaleCodes.values) {
       if (value.name == name) return value;
     }
+
     return fallbackLocaleCode;
   }
 }

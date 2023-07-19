@@ -204,6 +204,11 @@ String getCurrentPath(String location) {
   return '${segments.length == 1 ? '/' : ''}${segments.last}';
 }
 
+/// Get [AppRoute].
+AppRoute getAppRoute(String location) {
+  return AppRoute.getByPath(location) ?? AppRoute.defaultRoute;
+}
+
 /// Get first segment from [location] and return [AppRoute].
 AppRoute getRootAppRoute(String location) {
   return AppRoute.getByPath(getRootPath(location)) ?? AppRoute.defaultRoute;

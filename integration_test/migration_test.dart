@@ -29,11 +29,12 @@ final _search = SearchHistory(
   url: 'https://octusbridge.io',
 );
 const _bookmark = Bookmark(id: 0, name: 'Bookmark', url: 'URL');
-const _browserTab = BrowserTab(
-  url: 'URL',
+final _browserTab = BrowserTab(
+  url: Uri.parse('URL'),
   image: 'IMAGE',
   title: 'TITLE',
   lastScrollPosition: 10,
+  id: 0,
 );
 const _everContractAsset = TokenContractAsset(
   name: 'Staked Ever',
