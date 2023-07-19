@@ -9,11 +9,15 @@ class StorageManagerService {
     BrowserStorageService browser,
     NekotonStorageService accountSeed,
     NekotonRepositoryStorageService nekotonRepositoryStorageService,
+    TonWalletStorageService tonWalletStorageService,
+    TokenWalletStorageService tokenWalletStorageService,
   ) : _storages = [
           general,
           browser,
           accountSeed,
           nekotonRepositoryStorageService,
+          tonWalletStorageService,
+          tokenWalletStorageService,
         ];
 
   final List<AbstractStorageService> _storages;
