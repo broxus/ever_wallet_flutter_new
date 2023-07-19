@@ -28,29 +28,29 @@ class _CrashDetectorServiceWidgetState
   }
 
   Future<void> _detectCrash() async {
-    super.initState();
+    Future.delayed(_showContactSupportSheetDelay, _detectCrashDelayed);
+  }
 
-    Future.delayed(_showContactSupportSheetDelay, () async {
-      crashDetected = await appGetCrashDetected();
+  Future<void> _detectCrashDelayed() async {
+    crashDetected = await appGetCrashDetected();
 
-      if (crashDetected) {
-        setState(() {
-          crashDetected = false;
-        });
+    if (crashDetected) {
+      setState(() {
+        crashDetected = false;
+      });
 
-        // We can't use current context here because it's not contains Navigator
-        final ctx = NavigationService.navigatorKey.currentState?.context;
-        if (ctx == null) {
-          return;
-        }
-
-        // ignore: use_build_context_synchronously
-        await showContactSupportSheet(
-          context: ctx,
-          mode: ContactSupportMode.initiatedByCrash,
-        );
+      // We can't use current context here because it's not contains Navigator
+      final ctx = NavigationService.navigatorKey.currentState?.context;
+      if (ctx == null) {
+        return;
       }
-    });
+
+      // ignore: use_build_context_synchronously
+      await showContactSupportSheet(
+        context: ctx,
+        mode: ContactSupportMode.initiatedByCrash,
+      );
+    }
   }
 
   @override

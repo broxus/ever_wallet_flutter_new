@@ -476,6 +476,14 @@ packages:
       url: "https://pub.dev"
     source: hosted
     version: "5.3.1"
+  flutter_inappwebview:
+    dependency: "direct main"
+    description:
+      name: flutter_inappwebview
+      sha256: f73505c792cf083d5566e1a94002311be497d984b5607f25be36d685cf6361cf
+      url: "https://pub.dev"
+    source: hosted
+    version: "5.7.2+3"
   flutter_keyboard_visibility:
     dependency: transitive
     description:
@@ -538,7 +546,7 @@ packages:
     source: sdk
     version: "0.0.0"
   flutter_nekoton_bridge:
-    dependency: transitive
+    dependency: "direct main"
     description:
       name: flutter_nekoton_bridge
       sha256: "048fc2301d92030ea3ff6885c96859557bb75f08a51d28240f38ac9190be3a37"
@@ -973,6 +981,14 @@ packages:
       url: "https://pub.dev"
     source: hosted
     version: "0.3.0"
+  nekoton_webview:
+    dependency: "direct main"
+    description:
+      name: nekoton_webview
+      sha256: bd4435f96f2065246bb15292ff9436b10d0ab27ec01a7304eca3fd211296609b
+      url: "https://pub.dev"
+    source: hosted
+    version: "0.1.1"
   nested:
     dependency: transitive
     description:

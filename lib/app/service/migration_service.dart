@@ -20,6 +20,7 @@ import 'package:app/data/models/permissions.dart';
 import 'package:app/data/models/search_history.dart';
 import 'package:app/data/models/site_meta_data.dart';
 import 'package:app/data/models/token_contract_asset.dart';
+import 'package:collection/collection.dart';
 import 'package:flutter/foundation.dart';
 import 'package:hive_flutter/hive_flutter.dart';
 import 'package:logging/logging.dart';
@@ -467,7 +468,7 @@ class HiveSourceMigration {
   List<BrowserTab> get browserTabs =>
       (_browserTabsBox.get(_browserTabsKey) as List<dynamic>?)
           ?.cast<BrowserTabDto>()
-          .map((e) => e.toModel())
+          .mapIndexed((index, element) => element.toModel(index))
           .toList() ??
       <BrowserTab>[];
 

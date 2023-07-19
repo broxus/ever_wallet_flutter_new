@@ -1,4 +1,8 @@
+export 'bloc/bloc.dart';
 export 'bookmarks/bookmarks.dart';
+export 'bottom_menu/bottom_menu.dart';
+export 'browser_search_bar/browser_search_bar.dart';
+export 'browser_tab_view/browser_tab_view.dart';
 export 'history/history.dart';
 export 'primary/primary.dart';
 export 'tabs/tabs.dart';

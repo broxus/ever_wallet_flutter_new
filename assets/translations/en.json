@@ -152,5 +152,11 @@
   "contactSupportEmailToInitiatedByCrash": "help@broxus.com",
   "contactSupportEmailSubjectInitiatedByCrash": "Hey, SparX wallet just crashed",
   "contactSupportEmailBodyInitiatedByCrash": "Hi, SparX wallet just crashed. Here is my problem: {briefly describe your problem}. Also you can find logs in the attachment.",
-  "contactSupportCantFindEmailClient": "Can't find email client"
+  "contactSupportCantFindEmailClient": "Can't find email client",
+  "browserCloseAll": "Close All",
+  "browserDone": "Done",
+  "browserSearchURL": "Search or enter URL",
+  "walletWord": "Wallet",
+  "browserWord": "Browser",
+  "profileWord": "Profile"
 }

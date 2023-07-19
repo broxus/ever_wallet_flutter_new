@@ -149,6 +149,7 @@ GoRouter getRouter(BuildContext _) {
       // Something went wrong, clear saved subroutes
       log.severe('GoRouter error: ${state.error}');
       savedSubroutes.clear();
+
       return ErrorPage(state.error);
     },
   );
