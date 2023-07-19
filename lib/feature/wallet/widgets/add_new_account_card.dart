@@ -31,8 +31,7 @@ class AddNewAccountCard extends StatelessWidget {
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
-            Padding(
-              padding: const EdgeInsets.all(DimensSize.d12),
+            CommonPadding.medium(
               child: CommonIconButton(
                 onPressed: () => showAddNewLocalAccountSheet(
                   context: context,

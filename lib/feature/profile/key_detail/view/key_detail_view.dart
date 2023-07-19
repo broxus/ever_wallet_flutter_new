@@ -76,7 +76,7 @@ class KeyDetailView extends StatelessWidget {
                       action: CommonIconButton.svg(
                         svg: Assets.images.copy.path,
                         buttonType: EverButtonType.ghost,
-                        // size: const EdgeInsets.all(DimensSize.d4),
+                        size: CommonIconButtonSize.xsmall,
                         color: colors.textSecondary,
                         onPressed: () {
                           Clipboard.setData(
