@@ -38,7 +38,7 @@ dependencies:
   logging: 1.1.1
   money2: ^3.4.1
   money2_improver: ^1.3.0
-  nekoton_repository: ^0.3.0
+  nekoton_repository: ^0.4.0
   nekoton_webview: ^0.1.1
   package_info_plus: ^4.0.2
   path_provider: ^2.0.15
