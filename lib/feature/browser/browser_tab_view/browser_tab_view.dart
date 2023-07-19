@@ -3,13 +3,15 @@ import 'dart:async';
 import 'package:flutter/material.dart';
 import 'package:flutter_inappwebview/flutter_inappwebview.dart';
 
+typedef BrowserOnScrollCallback = void Function({
+  required int currentY,
+  required int gestureDY,
+});
+
 class BrowserTabView extends StatefulWidget {
   const BrowserTabView({required this.onScroll, super.key});
 
-  final void Function({
-    required int currentY,
-    required int gestureDY,
-  })? onScroll;
+  final BrowserOnScrollCallback? onScroll;
 
   @override
   State<BrowserTabView> createState() => _BrowserTabViewState();

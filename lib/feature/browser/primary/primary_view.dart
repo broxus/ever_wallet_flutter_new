@@ -54,7 +54,6 @@ class _PrimaryViewState extends State<PrimaryView>
         // befor HUD will be hidden
         if (_animationController.value > _animationHalfValue) {
           setState(() {
-            print('forward ${_animationController.value}');
             _isHudVisible = false;
           });
         }
