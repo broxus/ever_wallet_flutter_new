@@ -1,4 +1,4 @@
-export 'account_card.dart';
+export 'account_card/account_card.dart';
 export 'add_new_account_card.dart';
 export 'network_selection_card.dart';
 export 'wallet_account_actions.dart';

@@ -3,7 +3,6 @@ import 'package:app/di/di.dart';
 import 'package:app/feature/wallet/wallet.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:nekoton_repository/nekoton_repository.dart';
 import 'package:ui_components_lib/ui_components_lib.dart';
 
 /// Entry point for wallet screen (root tab)
@@ -20,8 +19,7 @@ class WalletPage extends StatelessWidget {
   Widget build(BuildContext context) {
     return BlocProvider(
       create: (_) => WalletCubit(
-        inject<NekotonRepository>(),
-        inject<CurrentKeyService>(),
+        inject<CurrentAccountsService>(),
         initialIndex,
       )..init(),
       child: Scaffold(

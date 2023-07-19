@@ -15,13 +15,11 @@ part 'wallet_cubit.freezed.dart';
 /// its balance, tokens etc.
 class WalletCubit extends Cubit<WalletState> {
   WalletCubit(
-    this.nekotonRepository,
-    this.currentKeyService,
+    this.currentAccountsService,
     this.initialIndex,
   ) : super(const WalletState.initial());
 
-  final NekotonRepository nekotonRepository;
-  final CurrentKeyService currentKeyService;
+  final CurrentAccountsService currentAccountsService;
 
   /// Starting index for account of current key.
   /// This index can be used, if user goes to wallet screen from another screen
@@ -30,48 +28,43 @@ class WalletCubit extends Cubit<WalletState> {
   /// Page controller should be here to allow cubit manipulate with it
   late PageController _pageController;
 
-  late StreamSubscription<PublicKey?> _currentKeySubscription;
-  late StreamSubscription<SeedList> _seedListSubscription;
+  late StreamSubscription<AccountList?> _accountsListSubscription;
 
   void init() {
     // skip 1 to avoid duplicate initializing
-    _seedListSubscription = nekotonRepository.seedListStream
+    _accountsListSubscription = currentAccountsService.currentAccountsStream
         .skip(1)
-        .listen((_) => _updateCurrentKey());
-    _currentKeySubscription = currentKeyService.currentKeyStream
-        .skip(1)
-        .listen((_) => _updateCurrentKey());
+        .listen(_updateCurrentAccounts);
 
     _pageController = PageController();
     _pageController.addListener(_pageControllerListener);
 
-    _updateCurrentKey(initialIndex);
+    _updateCurrentAccounts(
+      currentAccountsService.currentAccounts,
+      initialIndex,
+    );
   }
 
   /// Needs to drop/update selected account index
-  SeedKey? _prevKey;
+  AccountList? _prevAccounts;
 
   /// If called, then currentKey changed or seedList updated
-  void _updateCurrentKey([int? initialIndex]) {
-    final list = nekotonRepository.seedList;
-    final current = currentKeyService.currentKey;
-    final key = current == null ? null : list.findSeedKey(current);
-
-    if (current == null || key == null) {
-      // means no instance for this key and we should be logged out or another
-      // current key will be selected soon
+  void _updateCurrentAccounts(AccountList? list, [int? initialIndex]) {
+    if (list == null) {
+      // means no accounts for this key and we should be logged out or another
+      // accounts will be selected soon
       emit(const WalletState.empty());
 
       return;
     }
 
-    final keyChanged = _prevKey?.publicKey != key.publicKey;
+    final keyChanged = _prevAccounts?.publicKey != list.publicKey;
 
     // key changed, update account index.
     // do not compare instances, because accounts can be different.
     //
     // for init method this will be called anyway.
-    _prevKey = key;
+    _prevAccounts = list;
     if (keyChanged) {
       updateCurrentAccountIndex(initialIndex ?? 0);
     } else {
@@ -84,21 +77,21 @@ class WalletCubit extends Cubit<WalletState> {
   /// `add account` card is displayed.
   /// [index] is a value of page controller.
   void updateCurrentAccountIndex(int index) {
-    final list = _prevKey?.accountList;
-    if (list == null) {
+    final accounts = _prevAccounts?.displayAccounts;
+    final key = _prevAccounts?.publicKey;
+    if (accounts == null || key == null) {
       emit(const WalletState.empty());
 
       return;
     }
 
-    final accounts = list.displayAccounts;
     final current =
         index >= 0 && index < accounts.length ? accounts[index] : null;
 
     emit(
       WalletState.accounts(
         list: accounts,
-        currentKey: list.publicKey,
+        currentKey: key,
         currentAccount: current,
         controller: _pageController,
       ),
@@ -121,8 +114,7 @@ class WalletCubit extends Cubit<WalletState> {
   @override
   Future<void> close() {
     _pageController.dispose();
-    _seedListSubscription.cancel();
-    _currentKeySubscription.cancel();
+    _accountsListSubscription.cancel();
 
     return super.close();
   }

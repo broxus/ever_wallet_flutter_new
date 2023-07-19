@@ -2,6 +2,7 @@ export 'app_lifecycle_service.dart';
 export 'biometry_service.dart';
 export 'crash_detector/crash_detector.dart';
 export 'currency_convert_service.dart';
+export 'current_accounts_service.dart';
 export 'current_seed_service.dart';
 export 'localization/localization.dart';
 export 'messenger/messenger.dart';
