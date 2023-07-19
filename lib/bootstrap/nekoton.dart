@@ -11,6 +11,8 @@ Future<void> configureNekoton() async {
 
   await nekotonRepository.setupNekotonAndStorage(
     storage: inject<NekotonStorageService>(),
+    tonWalletStorage: inject<TonWalletStorageService>(),
+    tokenWalletStorage: inject<TokenWalletStorageService>(),
   );
   log.finest('NekotonRepository initialized with storage!');
 }
