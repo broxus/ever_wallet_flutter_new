@@ -37,9 +37,9 @@ class AccountDetailPage extends StatelessWidget {
                 appBar: DefaultAppBar(
                   actions: [
                     CommonIconButton.svg(
-                      innerPadding: appBarIconButtonInnerPadding,
                       svg: Assets.images.settings.path,
                       buttonType: EverButtonType.secondary,
+                      size: CommonIconButtonSize.small,
                       onPressed: () => showAccountSettingsSheet(
                         context: context,
                         address: account.address,

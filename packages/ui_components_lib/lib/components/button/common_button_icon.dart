@@ -1,9 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:ui_components_lib/ui_components_lib.dart';
 
-/// Default size for [CommonButtonIconWidget]
-const defaultCommonIconSize = 20.0;
-
 /// {@template common_button_icon}
 /// Widget of icon that allows you to put SvgPicture or Icon in [CommonButton].
 ///
@@ -29,7 +26,7 @@ class CommonButtonIconWidget extends StatelessWidget {
   /// Factory that allows creating widget with [IconData]
   factory CommonButtonIconWidget.icon({
     required IconData icon,
-    double? size,
+    CommonButtonIconSize? size,
     Key? key,
   }) =>
       CommonButtonIconWidget(icon: icon, size: size, key: key);
@@ -37,7 +34,7 @@ class CommonButtonIconWidget extends StatelessWidget {
   /// Factory that allows creating widget with svg asset
   factory CommonButtonIconWidget.svg({
     required String svg,
-    double? size,
+    CommonButtonIconSize? size,
     bool useDefaultColor = true,
     Key? key,
   }) =>
@@ -55,7 +52,7 @@ class CommonButtonIconWidget extends StatelessWidget {
   final String? svg;
 
   /// Size for image
-  final double? size;
+  final CommonButtonIconSize? size;
 
   /// If true, icon will be colored with [EverButtonStyleProvider.contentColor]
   final bool useDefaultColor;
@@ -68,7 +65,7 @@ class CommonButtonIconWidget extends StatelessWidget {
     final widget = CommonIconWidget(
       icon: icon,
       svg: svg,
-      size: size ?? defaultCommonIconSize,
+      size: size?.value ?? CommonButtonIconSize.medium.value,
       avoidContentColor: color == null,
     );
 
@@ -82,4 +79,12 @@ class CommonButtonIconWidget extends StatelessWidget {
             },
           );
   }
+}
+
+enum CommonButtonIconSize {
+  medium(DimensSize.d20);
+
+  const CommonButtonIconSize(this.value);
+
+  final double value;
 }

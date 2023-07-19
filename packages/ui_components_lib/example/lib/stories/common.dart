@@ -88,9 +88,9 @@ class _CommonStoryState extends State<CommonStory> {
                   onPressed: () {},
                 ),
                 CommonIconButton.icon(
-                  innerPadding: appBarIconButtonInnerPadding,
                   icon: Icons.access_alarm_sharp,
                   buttonType: EverButtonType.primary,
+                  size: CommonIconButtonSize.small,
                   // ignore: no-empty-block
                   onPressed: () {},
                 ),

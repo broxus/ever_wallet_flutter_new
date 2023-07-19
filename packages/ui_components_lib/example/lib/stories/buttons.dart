@@ -157,44 +157,56 @@ class _ButtonsStoryState extends State<ButtonsStory> {
 
               /// IconButton
               const SizedBox(height: 20),
-              Row(
-                children: [
-                  CommonIconButton.icon(
-                    icon: Icons.add,
-                    // ignore: no-empty-block
-                    onPressed: () {},
-                    buttonType: EverButtonType.primary,
-                  ),
-                  const SizedBox(width: 10),
-                  CommonIconButton.icon(
-                    icon: Icons.add,
-                    buttonType: EverButtonType.primary,
-                  ),
-                  const SizedBox(width: 20),
-                  CommonIconButton.icon(
-                    icon: Icons.add,
-                    // ignore: no-empty-block
-                    onPressed: () {},
-                    buttonType: EverButtonType.secondary,
-                  ),
-                  const SizedBox(width: 10),
-                  CommonIconButton.icon(
-                    icon: Icons.add,
-                    buttonType: EverButtonType.secondary,
-                  ),
-                  const SizedBox(width: 20),
-                  CommonIconButton.icon(
-                    icon: Icons.add,
-                    // ignore: no-empty-block
-                    onPressed: () {},
-                    buttonType: EverButtonType.ghost,
-                  ),
-                  const SizedBox(width: 10),
-                  CommonIconButton.icon(
-                    icon: Icons.add,
-                    buttonType: EverButtonType.ghost,
-                  ),
-                ],
+              SeparatedColumn(
+                children: CommonIconButtonSize.values
+                    .map(
+                      (size) => Row(
+                        children: [
+                          CommonIconButton.icon(
+                            icon: Icons.add,
+                            // ignore: no-empty-block
+                            onPressed: () {},
+                            buttonType: EverButtonType.primary,
+                            size: size,
+                          ),
+                          const SizedBox(width: 10),
+                          CommonIconButton.icon(
+                            icon: Icons.add,
+                            buttonType: EverButtonType.primary,
+                            size: size,
+                          ),
+                          const SizedBox(width: 20),
+                          CommonIconButton.icon(
+                            icon: Icons.add,
+                            // ignore: no-empty-block
+                            onPressed: () {},
+                            buttonType: EverButtonType.secondary,
+                            size: size,
+                          ),
+                          const SizedBox(width: 10),
+                          CommonIconButton.icon(
+                            icon: Icons.add,
+                            buttonType: EverButtonType.secondary,
+                            size: size,
+                          ),
+                          const SizedBox(width: 20),
+                          CommonIconButton.icon(
+                            icon: Icons.add,
+                            // ignore: no-empty-block
+                            onPressed: () {},
+                            buttonType: EverButtonType.ghost,
+                            size: size,
+                          ),
+                          const SizedBox(width: 10),
+                          CommonIconButton.icon(
+                            icon: Icons.add,
+                            buttonType: EverButtonType.ghost,
+                            size: size,
+                          ),
+                        ],
+                      ),
+                    )
+                    .toList(),
               ),
 
               /// Small button

@@ -3,6 +3,9 @@ import 'package:flutter/material.dart';
 
 import 'package:ui_components_lib/ui_components_lib.dart';
 
+/// Default size for [CommonIconWidget]
+const defaultCommonIconSize = DimensSize.d20;
+
 /// {@template common_icon_widget}
 ///
 /// Widget of icon that allows you to put SvgPicture or Icon.

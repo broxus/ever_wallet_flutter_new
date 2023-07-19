@@ -76,8 +76,7 @@ class KeyDetailView extends StatelessWidget {
                       action: CommonIconButton.svg(
                         svg: Assets.images.copy.path,
                         buttonType: EverButtonType.ghost,
-                        outerPadding: EdgeInsets.zero,
-                        innerPadding: const EdgeInsets.all(DimensSize.d4),
+                        size: CommonIconButtonSize.xsmall,
                         color: colors.textSecondary,
                         onPressed: () {
                           Clipboard.setData(
@@ -219,7 +218,7 @@ class KeyDetailView extends StatelessWidget {
                 svg: Assets.images.settings.path,
                 buttonType: EverButtonType.ghost,
                 color: colors.textSecondary,
-                innerPadding: const EdgeInsets.all(DimensSize.d8),
+                size: CommonIconButtonSize.xsmall,
                 onPressed: () => showAccountSettingsSheet(
                   context: context,
                   address: account.address,
