@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:ui_components_lib/components/button/simple_button.dart';
 import 'package:ui_components_lib/ui_components_lib.dart';
 
 /// Builder of tab bar item
@@ -53,7 +54,7 @@ class CommonTabBar<T> extends StatelessWidget {
     final colors = context.themeStyle.colors;
     final isSelected = v == selectedValue;
 
-    return CommonButton(
+    return SimpleButton(
       onPressed: () => onChanged(v),
       padding: const EdgeInsets.symmetric(horizontal: DimensSize.d16),
       fillWidth: fillWidth,

@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:ui_components_lib/components/button/simple_button.dart';
 import 'package:ui_components_lib/ui_components_lib.dart';
 
 /// Definition of tab item for [CommonTabSwitcher]
@@ -69,7 +70,7 @@ class CommonTabSwitcher<T> extends StatelessWidget {
           : colors.appBackground,
       duration: kThemeAnimationDuration,
       builder: (context, color) {
-        return CommonButton(
+        return SimpleButton(
           height: DimensSize.d40,
           squircleRadius: DimensRadius.medium,
           buttonType: EverButtonType.ghost,
