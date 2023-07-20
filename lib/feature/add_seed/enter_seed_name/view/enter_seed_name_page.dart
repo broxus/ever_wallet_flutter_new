@@ -51,10 +51,18 @@ class EnterSeedNamePage extends StatelessWidget {
             final path = switch (command) {
               EnterSeedNameCommand.import => name == null
                   ? AppRoute.enterSeed.path
-                  : AppRoute.enterSeedNamed.pathWithData(name),
+                  : AppRoute.enterSeedNamed.pathWithData(
+                      pathParameters: {
+                        enterSeedNameName: name,
+                      },
+                    ),
               EnterSeedNameCommand.create => name == null
                   ? AppRoute.createSeed.path
-                  : AppRoute.createSeedNamed.pathWithData(name),
+                  : AppRoute.createSeedNamed.pathWithData(
+                      pathParameters: {
+                        enterSeedNameName: name,
+                      },
+                    ),
             };
 
             context.goFurther(path);
