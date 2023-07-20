@@ -146,6 +146,14 @@ packages:
       url: "https://pub.dev"
     source: hosted
     version: "2.3.1"
+  decimal:
+    dependency: transitive
+    description:
+      name: decimal
+      sha256: "24a261d5d5c87e86c7651c417a5dbdf8bcd7080dd592533910e8d0505a279f21"
+      url: "https://pub.dev"
+    source: hosted
+    version: "2.3.3"
   device_frame:
     dependency: transitive
     description:
@@ -170,6 +178,14 @@ packages:
       url: "https://pub.dev"
     source: hosted
     version: "6.1.4"
+  fixed:
+    dependency: transitive
+    description:
+      name: fixed
+      sha256: "928887f443d9e667dc50d1a060a9129833a9910ec1912801c0375ab8fe56b1ac"
+      url: "https://pub.dev"
+    source: hosted
+    version: "2.4.0"
   flutter:
     dependency: "direct main"
     description: flutter
@@ -289,6 +305,14 @@ packages:
       url: "https://pub.dev"
     source: hosted
     version: "4.0.2"
+  intl:
+    dependency: transitive
+    description:
+      name: intl
+      sha256: "3bc132a9dbce73a7e4a21a17d06e1878839ffbf975568bc875c60537824b0c4d"
+      url: "https://pub.dev"
+    source: hosted
+    version: "0.18.1"
   js:
     dependency: transitive
     description:
@@ -337,6 +361,22 @@ packages:
       url: "https://pub.dev"
     source: hosted
     version: "3.0.0-pre"
+  money2:
+    dependency: transitive
+    description:
+      name: money2
+      sha256: "0a53f184abf1b3d5be4c4e811357bd065f7311c1724835569f7ec871de2abd30"
+      url: "https://pub.dev"
+    source: hosted
+    version: "3.4.1"
+  money2_improver:
+    dependency: transitive
+    description:
+      name: money2_improver
+      sha256: "66ac6833323715c6d3b6b9fabad6090d67c26c56b1c817b8168d219626373708"
+      url: "https://pub.dev"
+    source: hosted
+    version: "1.3.0"
   nested:
     dependency: transitive
     description:
@@ -433,6 +473,14 @@ packages:
       url: "https://pub.dev"
     source: hosted
     version: "0.3.0"
+  rational:
+    dependency: transitive
+    description:
+      name: rational
+      sha256: ba58e9e18df9abde280e8b10051e4bce85091e41e8e7e411b6cde2e738d357cf
+      url: "https://pub.dev"
+    source: hosted
+    version: "2.2.2"
   recase:
     dependency: transitive
     description:

@@ -24,6 +24,17 @@ class _CommonStoryState extends State<CommonStory> {
     CommonTabSwitcherItem(title: 'Three', value: 3),
   ];
 
+  final currencyDecimal = 2;
+  late final money = Money.fromBigIntWithCurrency(
+    BigInt.parse('4004299'),
+    Currency.create(
+      'USD',
+      currencyDecimal,
+      pattern: '0.${'#' * currencyDecimal}',
+      symbol: 'USD',
+    ),
+  );
+
   @override
   Widget build(BuildContext context) {
     final colors = context.themeStyle.colors;
@@ -237,6 +248,12 @@ class _CommonStoryState extends State<CommonStory> {
                 },
               ),
             ),
+            const SizedBox(height: DimensSize.d16),
+            MoneyWidget(money: money, style: MoneyWidgetStyle.big),
+            const SizedBox(height: DimensSize.d8),
+            MoneyWidget(money: money, style: MoneyWidgetStyle.primary),
+            const SizedBox(height: DimensSize.d8),
+            MoneyWidget(money: money, style: MoneyWidgetStyle.secondary),
 
             const SizedBox(height: DimensSize.d32),
           ],
