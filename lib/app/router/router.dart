@@ -118,7 +118,7 @@ GoRouter getRouter(BuildContext _) {
     },
     // Initial location from NavigationService
     initialLocation: inject<NavigationService>().savedLocation,
-    routes: <RouteBase>[
+    routes: [
       GoRoute(
         name: AppRoute.onboarding.name,
         path: AppRoute.onboarding.path,
@@ -132,16 +132,14 @@ GoRouter getRouter(BuildContext _) {
           enterSeedNoNamedOnboardingRoute,
         ],
       ),
-      ShellRoute(
-        pageBuilder: (context, state, child) => rootTransitionPageBuilder(
-          context,
-          state,
-          RootPage(child: child),
+      StatefulShellRoute.indexedStack(
+        builder: (context, state, navigationShell) => RootPage(
+          child: navigationShell,
         ),
-        routes: <RouteBase>[
-          walletRoute,
-          browserRoute,
-          profileRoute,
+        branches: [
+          walletBranch,
+          browserBranch,
+          profileBranch,
         ],
       ),
     ],

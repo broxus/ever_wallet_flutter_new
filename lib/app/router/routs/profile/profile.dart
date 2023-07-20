@@ -1,23 +1,20 @@
-import 'package:app/app/router/page_transitions.dart';
 import 'package:app/app/router/router.dart';
 import 'package:app/feature/profile/profile.dart';
-import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:nekoton_repository/nekoton_repository.dart';
 
-/// Get route for profile root.
-GoRoute get profileRoute {
-  return GoRoute(
-    name: AppRoute.profile.name,
-    path: AppRoute.profile.path,
-    pageBuilder: (BuildContext context, GoRouterState state) =>
-        rootTabsTransitionPageBuilder(
-      context,
-      state,
-      const ProfilePage(),
-    ),
+/// Get branch for profile root.
+StatefulShellBranch get profileBranch {
+  return StatefulShellBranch(
     routes: [
-      manageSeedAccountsRoute,
+      GoRoute(
+        name: AppRoute.profile.name,
+        path: AppRoute.profile.path,
+        builder: (context, state) => const ProfilePage(),
+        routes: [
+          manageSeedAccountsRoute,
+        ],
+      ),
     ],
   );
 }
