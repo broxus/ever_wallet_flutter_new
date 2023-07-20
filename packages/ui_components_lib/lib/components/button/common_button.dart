@@ -3,7 +3,6 @@ import 'package:ui_components_lib/ui_components_lib.dart';
 
 /// Default height of the common button
 const commonButtonHeight = DimensSize.d56;
-const defaultSquircleRadius = DimensSize.d100;
 
 /// {@template common_button}
 /// Default button in the app with background.
@@ -27,10 +26,8 @@ class CommonButton extends StatefulWidget {
     this.style,
     this.child,
     this.focusNode,
-    this.squircleRadius = defaultSquircleRadius,
     this.backgroundColor,
-    this.height = commonButtonHeight,
-    this.padding,
+    this.size = CommonButtonSize.large,
     this.fillWidth = true,
     this.isLoading = false,
     this.backgroundDisabledColor,
@@ -44,6 +41,7 @@ class CommonButton extends StatefulWidget {
   /// CommonButton with primary style
   factory CommonButton.primary({
     String? text,
+    CommonButtonSize? size,
     VoidCallback? onPressed,
     VoidCallback? onLongPress,
     Widget? leading,
@@ -61,11 +59,13 @@ class CommonButton extends StatefulWidget {
         focusNode: focusNode,
         isLoading: isLoading,
         fillWidth: fillWidth,
+        size: size ?? CommonButtonSize.large,
       );
 
   /// CommonButton with secondary style
   factory CommonButton.secondary({
     String? text,
+    CommonButtonSize? size,
     VoidCallback? onPressed,
     VoidCallback? onLongPress,
     Widget? leading,
@@ -84,13 +84,13 @@ class CommonButton extends StatefulWidget {
         focusNode: focusNode,
         isLoading: isLoading,
         fillWidth: fillWidth,
+        size: size ?? CommonButtonSize.large,
       );
 
   /// CommonButton with ghost style
   factory CommonButton.ghost({
     String? text,
-    EdgeInsets? padding,
-    double? height,
+    CommonButtonSize? size,
     VoidCallback? onPressed,
     VoidCallback? onLongPress,
     Widget? leading,
@@ -109,8 +109,7 @@ class CommonButton extends StatefulWidget {
         focusNode: focusNode,
         isLoading: isLoading,
         fillWidth: fillWidth,
-        height: height ?? commonButtonHeight,
-        padding: padding,
+        size: size ?? CommonButtonSize.large,
       );
 
   /// Type of the button that is used to identify colors
@@ -152,15 +151,8 @@ class CommonButton extends StatefulWidget {
   /// If button should fill all width
   final bool fillWidth;
 
-  /// Radius of [SquircleShapeBorder], default 100
-  final double squircleRadius;
-
-  /// Height of the button
-  final double height;
-
-  /// Padding of the button content.
-  /// Content default is horizontal: 20, loading default is horizontal: 50.
-  final EdgeInsets? padding;
+  /// Size of the button
+  final CommonButtonSize size;
 
   /// Background color of the button, default is taken from style
   final Color? backgroundColor;
@@ -200,7 +192,11 @@ class _CommonButtonState extends State<CommonButton> {
         : isPressed
             ? (widget.contentPressedColor ?? buttonStyle.contentPressedColor)
             : (widget.contentColor ?? buttonStyle.contentColor);
-    final textStyle = widget.style ?? styles.buttonTextStyle;
+    final textStyle = widget.style ??
+        switch (widget.size) {
+          CommonButtonSize.large => styles.buttonTextStyle,
+          _ => styles.smallButtonTextStyle,
+        };
     final bgColor = isDisabled
         ? (widget.backgroundDisabledColor ??
             buttonStyle.backgroundDisabledColor)
@@ -215,10 +211,10 @@ class _CommonButtonState extends State<CommonButton> {
     return EverButtonStyleProvider(
       contentColor: contentColor,
       child: SizedBox(
-        height: widget.height,
+        height: widget.size.height,
         child: Material(
           color: bgColor,
-          shape: SquircleShapeBorder(cornerRadius: widget.squircleRadius),
+          shape: const SquircleShapeBorder(cornerRadius: DimensSize.d100),
           child: InkWell(
             hoverColor: Colors.transparent,
             splashColor: Colors.transparent,
@@ -243,9 +239,10 @@ class _CommonButtonState extends State<CommonButton> {
   }
 
   Widget _loadingChild(Color contentColor) {
+    // ignore: no-magic-number
+    final padding = widget.size.padding * 2;
     return Padding(
-      padding: widget.padding ??
-          const EdgeInsets.symmetric(horizontal: DimensSize.d48),
+      padding: padding,
       child: Center(
         child: SizedBox(
           width: DimensSize.d20,
@@ -271,10 +268,7 @@ class _CommonButtonState extends State<CommonButton> {
     );
 
     return Padding(
-      padding: widget.padding ??
-          const EdgeInsets.symmetric(
-            horizontal: DimensSize.d20,
-          ),
+      padding: widget.size.padding,
       child: widget.leading == null && widget.trailing == null
           ? textWidget
           : Row(
@@ -293,4 +287,15 @@ class _CommonButtonState extends State<CommonButton> {
             ),
     );
   }
+}
+
+enum CommonButtonSize {
+  small(DimensSize.d32, EdgeInsets.symmetric(horizontal: DimensSize.d16)),
+  medium(DimensSize.d44, EdgeInsets.symmetric(horizontal: DimensSize.d16)),
+  large(DimensSize.d56, EdgeInsets.symmetric(horizontal: DimensSize.d24));
+
+  const CommonButtonSize(this.height, this.padding);
+
+  final double height;
+  final EdgeInsetsGeometry padding;
 }

@@ -126,7 +126,6 @@ class ProfileView extends StatelessWidget {
             ),
             const SizedBox(height: DimensSize.d40),
             CommonButton(
-              padding: const EdgeInsets.symmetric(horizontal: DimensSize.d24),
               buttonType: EverButtonType.ghost,
               contentColor: colors.alert,
               onPressed: () =>

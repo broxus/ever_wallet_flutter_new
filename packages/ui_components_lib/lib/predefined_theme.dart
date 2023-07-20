@@ -38,6 +38,7 @@ ThemeData everPredefinedLightTheme() {
         colors: colors,
         styles: StylesPalette(
           buttonTextStyle: StyleRes.button,
+          smallButtonTextStyle: StyleRes.smallButton,
           buttonsStyle: _mapButtonStyle(colors),
         ),
       ),
@@ -78,6 +79,7 @@ ThemeData everPredefinedDarkTheme() {
         colors: colors,
         styles: StylesPalette(
           buttonTextStyle: StyleRes.button,
+          smallButtonTextStyle: StyleRes.smallButton,
           buttonsStyle: _mapButtonStyle(colors),
         ),
       ),

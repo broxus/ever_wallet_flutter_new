@@ -1,9 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:ui_components_lib/ui_components_lib.dart';
 
+const defaultSquircleRadius = DimensSize.d100;
+
 /// {@template simple_button}
-/// Default customizable button without predifined sizes
-/// for internal puroses only.
+/// Default customizable button without predifined sizes.
 ///
 /// Simple usages:
 /// ```dart

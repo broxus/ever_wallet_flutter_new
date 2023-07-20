@@ -59,7 +59,7 @@ class _CommonStoryState extends State<CommonStory> {
               subtitleBottomText: 'BottomSubtitle',
               actions: [
                 CommonButton(
-                  height: appBarButtonSize,
+                  size: CommonButtonSize.medium,
                   fillWidth: false,
                   buttonType: EverButtonType.ghost,
                   text: 'Action',
@@ -80,18 +80,9 @@ class _CommonStoryState extends State<CommonStory> {
               centerTitle: false,
               titleText: 'Not centered title',
               subtitleTopText: 'TopSubtitle',
-              subtitleBottomWidget: CommonButton(
-                height: DimensSize.d20,
-                padding: EdgeInsets.zero,
-                buttonType: EverButtonType.ghost,
-                fillWidth: false,
-                text: 'SubtitleBottom button',
-                // ignore: no-empty-block
-                onPressed: () {},
-              ),
               actions: [
                 CommonButton(
-                  height: appBarButtonSize,
+                  size: CommonButtonSize.medium,
                   fillWidth: false,
                   buttonType: EverButtonType.ghost,
                   text: 'Action',

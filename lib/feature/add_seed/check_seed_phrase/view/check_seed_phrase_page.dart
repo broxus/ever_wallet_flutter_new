@@ -31,8 +31,10 @@ class CheckSeedPhrasePage extends StatelessWidget {
       child: Scaffold(
         appBar: DefaultAppBar(
           actions: [
-            CommonButton.ghost(
-              padding: EdgeInsets.zero,
+            SimpleButton(
+              buttonType: EverButtonType.ghost,
+              height: DimensSize.d44,
+              style: StyleRes.smallButton,
               text: LocaleKeys.skipWord.tr(),
               onPressed: () => _navigateToPassword(context),
             ),

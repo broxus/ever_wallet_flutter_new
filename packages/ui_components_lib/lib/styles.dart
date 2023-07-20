@@ -13,11 +13,13 @@ class StylesPalette {
   /// {@macro styles_palette}
   const StylesPalette({
     required this.buttonTextStyle,
+    required this.smallButtonTextStyle,
     required this.buttonsStyle,
   });
 
   /// Basic texts
   final TextStyle buttonTextStyle;
+  final TextStyle smallButtonTextStyle;
 
   /// Default list of styles for buttons.
   final Map<EverButtonType, EverButtonStyle> buttonsStyle;
@@ -111,6 +113,16 @@ class StyleRes {
   static const button = TextStyle(
     fontFamily: _interFamily,
     fontSize: 16,
+    height: 1,
+    fontWeight: FontWeight.w600,
+    letterSpacing: -0.04,
+    package: _uiComponentsLib,
+  );
+
+  /// Button 14 SemiBold
+  static const smallButton = TextStyle(
+    fontFamily: _interFamily,
+    fontSize: 14,
     height: 1,
     fontWeight: FontWeight.w600,
     letterSpacing: -0.04,

@@ -11,7 +11,8 @@ class ChangeLanguageButton extends StatelessWidget {
   Widget build(BuildContext context) {
     return BlocBuilder<LocalizationBloc, LocalizationState>(
       builder: (context, state) {
-        return SmallButton.secondary(
+        return CommonButton.secondary(
+          size: CommonButtonSize.medium,
           leading: CommonButtonIconWidget.svg(
             svg: state.localeCode.iconPath,
             useDefaultColor: false,

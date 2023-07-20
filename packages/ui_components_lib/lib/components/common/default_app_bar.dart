@@ -184,7 +184,7 @@ class DefaultAppBar extends StatelessWidget implements PreferredSizeWidget {
         Center(
           child: CommonButton(
             buttonType: EverButtonType.ghost,
-            height: appBarButtonSize,
+            size: CommonButtonSize.medium,
             child: CommonButtonIconWidget.icon(icon: Icons.close),
             onPressed: () {
               if (onActionsClosePressed != null) {

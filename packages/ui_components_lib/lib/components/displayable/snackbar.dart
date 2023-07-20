@@ -60,8 +60,9 @@ Future<void> showSnackbar({
       ? Padding(
           // padding here because flushbar itself removes padding from button
           padding: const EdgeInsets.only(right: DimensSize.d8),
-          child: SmallButton(
+          child: CommonButton(
             buttonType: EverButtonType.secondary,
+            size: CommonButtonSize.small,
             contentColor: backgroundColor,
             onPressed: onAction != null
                 ? () {

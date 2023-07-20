@@ -27,7 +27,8 @@ class BrowserBottomMenuTabs extends StatelessWidget {
           children: [
             Expanded(
               child: Center(
-                child: SmallButton.ghost(
+                child: CommonButton.ghost(
+                  size: CommonButtonSize.small,
                   text: LocaleKeys.browserCloseAll.tr(),
                   onPressed: onCloseAllPressed,
                 ),
@@ -44,7 +45,8 @@ class BrowserBottomMenuTabs extends StatelessWidget {
             ),
             Expanded(
               child: Center(
-                child: SmallButton.ghost(
+                child: CommonButton.ghost(
+                  size: CommonButtonSize.small,
                   text: LocaleKeys.browserDone.tr(),
                   onPressed: onDonePressed,
                 ),

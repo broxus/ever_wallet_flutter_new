@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:ui_components_lib/components/button/simple_button.dart';
 import 'package:ui_components_lib/ui_components_lib.dart';
 
 /// Builder of tab bar item
