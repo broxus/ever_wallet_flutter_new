@@ -113,15 +113,15 @@ class SeedDetailView extends StatelessWidget {
                   color: colors.textPrimary,
                 ),
               CommonIconButton.svg(
-                color: colors.textSecondary,
                 svg: Assets.images.settings.path,
+                color: colors.textSecondary,
                 buttonType: EverButtonType.ghost,
+                size: CommonIconButtonSize.xsmall,
                 onPressed: () => showKeySettingsSheet(
                   context: context,
                   publicKey: key.publicKey,
                   isMaster: key.isMaster,
                 ),
-                innerPadding: const EdgeInsets.all(DimensSize.d8),
               ),
             ],
           ),

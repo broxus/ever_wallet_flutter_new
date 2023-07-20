@@ -36,7 +36,7 @@ class OnboardingView extends StatelessWidget {
                 CommonIconButton.svg(
                   svg: Assets.images.support.path,
                   buttonType: EverButtonType.secondary,
-                  innerPadding: const EdgeInsets.all(DimensSize.d12),
+                  size: CommonIconButtonSize.small,
                   onPressed: () => showContactSupportSheet(
                     context: context,
                     mode: ContactSupportMode.initiatedByUser,

@@ -93,8 +93,7 @@ class AccountCard extends StatelessWidget {
                             svg: Assets.images.settings.path,
                             buttonType: EverButtonType.ghost,
                             color: colors.textSecondary,
-                            outerPadding: EdgeInsets.zero,
-                            innerPadding: const EdgeInsets.all(DimensSize.d4),
+                            size: CommonIconButtonSize.xsmall,
                             onPressed: () => showAccountSettingsSheet(
                               context: context,
                               address: account.address,

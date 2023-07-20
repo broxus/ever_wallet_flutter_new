@@ -47,9 +47,9 @@ class KeyDetailPage extends StatelessWidget {
                   ? null
                   : [
                       CommonIconButton.svg(
-                        innerPadding: appBarIconButtonInnerPadding,
                         svg: Assets.images.settings.path,
                         buttonType: EverButtonType.secondary,
+                        size: CommonIconButtonSize.small,
                         onPressed: () => showKeySettingsSheet(
                           context: context,
                           publicKey: publicKey,
