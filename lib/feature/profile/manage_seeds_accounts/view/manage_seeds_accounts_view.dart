@@ -91,13 +91,19 @@ class ManageSeedsAccountsView extends StatelessWidget {
       switch (selected) {
         case SelectAddSeedType.create:
           context.goFurther(
-            AppRoute.enterSeedName
-                .pathWithData(EnterSeedNameCommand.create.name),
+            AppRoute.enterSeedName.pathWithData(
+              pathParameters: {
+                enterSeedNameCommand: EnterSeedNameCommand.create.name,
+              },
+            ),
           );
         case SelectAddSeedType.import:
           context.goFurther(
-            AppRoute.enterSeedName
-                .pathWithData(EnterSeedNameCommand.import.name),
+            AppRoute.enterSeedName.pathWithData(
+              pathParameters: {
+                enterSeedNameCommand: EnterSeedNameCommand.import.name,
+              },
+            ),
           );
       }
     }
@@ -114,7 +120,11 @@ class ManageSeedsAccountsView extends StatelessWidget {
         return CommonListTile(
           padding: EdgeInsets.zero,
           onPressed: () => context.goFurther(
-            AppRoute.seedDetail.pathWithData(seed.publicKey.publicKey),
+            AppRoute.seedDetail.pathWithData(
+              pathParameters: {
+                seedDetailPublicKeyPathParam: seed.publicKey.publicKey,
+              },
+            ),
           ),
           leading: CommonBackgroundedIconWidget.svg(
             svg: Assets.images.sparxLogoSmall.path,

@@ -10,6 +10,8 @@ const seedDetailPublicKeyPathParam = 'seedDetailPublicKey';
 const keyDetailPublicKeyPathParam = 'keyDetailPublicKey';
 const accountDetailAddressPathParam = 'accountDetailAddress';
 
+final RegExp _parameterRegExp = RegExp(r':(\w+)(\((?:\\.|[^\\()])+\))?');
+
 enum AppRoute {
   onboarding(
     'onboarding',
@@ -76,7 +78,7 @@ enum AppRoute {
   ),
   enterSeedNamed(
     '',
-    'enterSeed/:name',
+    'enterSeed/:$enterSeedNameName',
     isSaveLocation: true,
   ),
 
@@ -158,19 +160,53 @@ enum AppRoute {
 
   static AppRoute get defaultRoute => onboarding;
 
-  /// Helper method, that allows add path parameter to [path].
+  // Reconstructs the full path from a [pattern] and path parameters.
+  // This thing is directly copied from the go_router package ¯\_(ツ)_/¯
   ///
-  /// If [path] field of [AppRoute] contains [':'] then [data] will replace this
-  /// parameter.
-  // TODO(alex-a4): we need check if this will work in a nested routes with data
-  //   I mean, if routes above this will contains :data in their path or it was
-  //   replace by them when they were pushed.
-  String pathWithData(String data) {
-    if (path.contains(':')) {
-      return path.replaceAll(RegExp(r':\w*'), data);
+  /// This is useful for restoring the original path from a [RegExpMatch].
+  ///
+  /// For example, A path matched a [RegExp] returned from patternToRegExp and
+  /// produced a [RegExpMatch]. To reconstruct the path from the match, one
+  /// can follow these steps:
+  ///
+  /// 1. Get the `pathParameters` by calling extractPathParameters with the
+  ///    [RegExpMatch] and the parameters used for generating the [RegExp].
+  /// 2. Call [patternToPath] with the `pathParameters` from the first step and
+  ///    the original `pattern` used for generating the [RegExp].
+  String patternToPath(String pattern, Map<String, String> pathParameters) {
+    final buffer = StringBuffer();
+    var start = 0;
+    for (final match in _parameterRegExp.allMatches(pattern)) {
+      if (match.start > start) {
+        buffer.write(pattern.substring(start, match.start));
+      }
+      final name = match[1]!;
+      buffer.write(pathParameters[name]);
+      start = match.end;
     }
 
-    return path;
+    if (start < pattern.length) {
+      buffer.write(pattern.substring(start));
+    }
+    return buffer.toString();
+  }
+
+  /// Helper method, that allows add path and query parameter to [path].
+  String pathWithData({
+    Map<String, String> pathParameters = const <String, String>{},
+    Map<String, dynamic> queryParameters = const <String, dynamic>{},
+  }) {
+    final encodedParams = <String, String>{
+      for (final MapEntry<String, String> param in pathParameters.entries)
+        param.key: Uri.encodeComponent(param.value)
+    };
+
+    final location = patternToPath(path, encodedParams);
+
+    return Uri(
+            path: location,
+            queryParameters: queryParameters.isEmpty ? null : queryParameters)
+        .toString();
   }
 
   /// Helper method, that allows add query parameters to [path].
