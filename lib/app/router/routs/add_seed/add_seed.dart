@@ -6,6 +6,12 @@ import 'package:app/feature/add_seed/enter_seed_name/enter_seed_name.dart';
 import 'package:app/feature/add_seed/enter_seed_phrase/enter_seed_phrase.dart';
 import 'package:go_router/go_router.dart';
 
+/// Name of path field for navigation
+const enterSeedNameCommandPathParam = 'command';
+
+/// Name of path field for navigation
+const enterSeedNameNamePathParam = 'name';
+
 /// Route that allows to create a seed phrase without entering name.
 /// This route may be used in onboarding or profile section, depends
 /// on [passwordRoute].
@@ -102,7 +108,7 @@ GoRoute get createSeedNamedProfileRoute {
   return GoRoute(
     path: AppRoute.createSeedNamed.path,
     builder: (_, state) => CreateSeedPage(
-      name: state.pathParameters[enterSeedNameName],
+      name: state.pathParameters[enterSeedNameNamePathParam],
     ),
     routes: [
       GoRoute(
@@ -125,7 +131,7 @@ GoRoute get enterSeedNamedProfileRoute {
   return GoRoute(
     path: AppRoute.enterSeedNamed.path,
     builder: (_, state) => EnterSeedPhrasePage(
-      name: state.pathParameters[enterSeedNameName],
+      name: state.pathParameters[enterSeedNameNamePathParam],
     ),
     routes: [
       GoRoute(
@@ -143,7 +149,7 @@ GoRoute get addSeedNamedRoute {
   return GoRoute(
     path: AppRoute.enterSeedName.path,
     builder: (_, state) => EnterSeedNamePage(
-      commandName: state.pathParameters[enterSeedNameCommand],
+      commandName: state.pathParameters[enterSeedNameCommandPathParam],
     ),
     routes: [
       createSeedNoNamedProfileRoute,

@@ -1,6 +1,10 @@
 import 'package:app/app/router/router.dart';
 import 'package:app/feature/browser/browser.dart';
 import 'package:go_router/go_router.dart';
+import 'package:string_extensions/string_extensions.dart';
+
+const browserUrlPathParam = 'url';
+const browserTabIdPathParam = 'tabId';
 
 /// Get branch for browser root.
 StatefulShellBranch get browserBranch {
@@ -28,7 +32,10 @@ StatefulShellBranch get primaryBranch {
       GoRoute(
         name: AppRoute.browser.name,
         path: AppRoute.browser.path,
-        builder: (context, state) => const PrimaryPage(),
+        builder: (context, state) => PrimaryPage(
+          url: state.queryParameters[browserUrlPathParam],
+          tabId: state.queryParameters[browserTabIdPathParam].toInt(),
+        ),
       ),
     ],
   );

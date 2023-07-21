@@ -277,7 +277,7 @@ void main() {
     /// Browser
     expect(await browserStorage.readBrowserTabs(), [_browserTab]);
     expect(browserStorage.browserTabs, [_browserTab]);
-    expect(await browserStorage.browserTabsLastIndex, -1);
+    expect(await browserStorage.readBrowserActiveTabId(), -1);
   }
 
   setUp(() async {
@@ -537,7 +537,7 @@ void main() {
       expect(await browserStorage.readBrowserTabs(), hive.browserTabs);
       expect(browserStorage.browserTabs, hive.browserTabs);
       expect(
-        await browserStorage.browserTabsLastIndex,
+        await browserStorage.readBrowserActiveTabId(),
         hive.browserTabsLastIndex,
       );
       expect(hive.checkIfSensitiveBoxesOpened(), isTrue);

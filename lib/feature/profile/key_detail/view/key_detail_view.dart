@@ -1,4 +1,4 @@
-import 'package:app/app/router/app_route.dart';
+import 'package:app/app/router/router.dart';
 import 'package:app/app/service/service.dart';
 import 'package:app/di/di.dart';
 import 'package:app/feature/profile/profile.dart';

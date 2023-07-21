@@ -121,6 +121,21 @@ class _PrimaryViewState extends State<PrimaryView>
 
   @override
   Widget build(BuildContext context) {
+    final currentTabId = context.watch<BrowserTabsBloc>().state.currentTabId;
+    final tabs = context.watch<BrowserTabsBloc>().state.tabs;
+    final currentTabIndex = tabs.indexWhere((tab) => tab.id == currentTabId);
+
+    final currentStackIndex = currentTabIndex < 0 ? 0 : currentTabIndex + 1;
+
+    final stackViews = [
+      const Text(
+        'empty',
+      ),
+      ...tabs.map(
+        (tab) => BrowserTabView(onScroll: _onScroll),
+      ),
+    ];
+
     // We use only listener (without builder) because we don't need to rebuild
     // the entire widget tree when HUD visibility changes
     return BlocListener<HudBloc, HudState>(
@@ -164,7 +179,11 @@ class _PrimaryViewState extends State<PrimaryView>
                 child: SlideTransition(
                   position: _searchBarAnimation,
                   child: BrowserSearchBar(
-                    onSubmit: () => {},
+                    onSubmitted: (text) => {
+                      context.read<BrowserTabsBloc>().add(
+                            BrowserTabsBlocEvent.add(uri: Uri.parse(text)),
+                          )
+                    },
                   ),
                 ),
               ),
@@ -187,10 +206,8 @@ class _PrimaryViewState extends State<PrimaryView>
         },
         // We use child to prevent webview from rebuilding when HUD
         child: IndexedStack(
-          index: 0,
-          children: [
-            BrowserTabView(onScroll: _onScroll),
-          ],
+          index: currentStackIndex,
+          children: stackViews,
         ),
       ),
     );

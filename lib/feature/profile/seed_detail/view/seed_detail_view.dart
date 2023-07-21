@@ -1,4 +1,4 @@
-import 'package:app/app/router/app_route.dart';
+import 'package:app/app/router/router.dart';
 import 'package:app/feature/profile/seed_detail/seed_detail.dart';
 import 'package:app/generated/generated.dart';
 import 'package:flutter/material.dart';

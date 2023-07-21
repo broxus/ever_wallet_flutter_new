@@ -3,6 +3,10 @@ import 'package:app/feature/profile/profile.dart';
 import 'package:go_router/go_router.dart';
 import 'package:nekoton_repository/nekoton_repository.dart';
 
+const seedDetailPublicKeyPathParam = 'seedDetailPublicKey';
+const keyDetailPublicKeyPathParam = 'keyDetailPublicKey';
+const accountDetailAddressPathParam = 'accountDetailAddress';
+
 /// Get branch for profile root.
 StatefulShellBranch get profileBranch {
   return StatefulShellBranch(
