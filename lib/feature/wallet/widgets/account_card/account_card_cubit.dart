@@ -1,5 +1,6 @@
 import 'dart:async';
 
+import 'package:app/app/service/service.dart';
 import 'package:bloc/bloc.dart';
 import 'package:collection/collection.dart';
 import 'package:freezed_annotation/freezed_annotation.dart';
@@ -15,32 +16,84 @@ class AccountCardCubit extends Cubit<AccountCardState> {
   AccountCardCubit(
     this.nekotonRepository,
     this.account,
-  ) : super(const AccountCardState.initial());
+    this.balanceService,
+    this.currencyConvertService,
+  ) : super(
+          AccountCardState.data(
+            account: account,
+            walletName: _walletName(nekotonRepository, account),
+          ),
+        ) {
+    _walletsSubscription = nekotonRepository.walletsStream.listen((wallets) {
+      final wl = wallets.firstWhereOrNull((w) => w.address == account.address);
+      if (wl != null) _initWallet(wl);
+    });
+  }
 
+  final CurrencyConvertService currencyConvertService;
+  final BalanceService balanceService;
   final NekotonRepository nekotonRepository;
   final KeyAccount account;
 
   late StreamSubscription<List<TonWallet>> _walletsSubscription;
-  TonWallet? wallet;
+  StreamSubscription<void>? _thisWalletSubscription;
+  StreamSubscription<Fixed>? _balanceSubscription;
 
-  void init() {
-    emit(AccountCardState.data(account: account, wallet: null));
-    _walletsSubscription = nekotonRepository.walletsStream.listen((wallets) {
-      final w = wallets.firstWhereOrNull((w) => w.address == account.address);
-      if (w != null) _initWallet(w);
-    });
-  }
+  Fixed? _cachedFiatBalance;
+
+  TonWallet? wallet;
 
   void _initWallet(TonWallet w) {
     if (wallet != null) return;
 
     wallet = w;
-    emit(AccountCardState.data(account: account, wallet: wallet));
+    _thisWalletSubscription =
+        w.fieldUpdatesStream.listen((_) => _updateWalletData(w));
+    _balanceSubscription =
+        balanceService.accountOverallBalance(w.address).listen((fiat) {
+      _cachedFiatBalance = fiat;
+      _updateWalletData(w);
+    });
+
+    _updateWalletData(w);
+  }
+
+  void _updateWalletData(TonWallet w) {
+    final balance = _cachedFiatBalance;
+    final custodians = w.custodians;
+    final localCustodians =
+        nekotonRepository.getLocalCustodians(account.address);
+    // count of local custodians of count of real custodians, works
+    // only for multisig wallets
+    final custodiansString = custodians != null && localCustodians != null
+        ? '${localCustodians.length}/${custodians.length}'
+        : null;
+
+    final money =
+        balance == null ? null : currencyConvertService.convert(balance);
+
+    emit(
+      AccountCardState.data(
+        account: account,
+        walletName: _walletName(nekotonRepository, account),
+        balance: money,
+        custodiansString: custodiansString,
+      ),
+    );
   }
 
   @override
   Future<void> close() {
     _walletsSubscription.cancel();
+    _thisWalletSubscription?.cancel();
+    _balanceSubscription?.cancel();
+
     return super.close();
+  }
+
+  static String _walletName(NekotonRepository repo, KeyAccount account) {
+    return repo.currentTransport
+        .defaultAccountName(account.account.tonWallet.contract)
+        .toLowerCase();
   }
 }

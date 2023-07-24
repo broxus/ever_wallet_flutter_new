@@ -188,6 +188,7 @@ enum AppRoute {
     if (start < pattern.length) {
       buffer.write(pattern.substring(start));
     }
+
     return buffer.toString();
   }
 
@@ -198,15 +199,15 @@ enum AppRoute {
   }) {
     final encodedParams = <String, String>{
       for (final MapEntry<String, String> param in pathParameters.entries)
-        param.key: Uri.encodeComponent(param.value)
+        param.key: Uri.encodeComponent(param.value),
     };
 
     final location = patternToPath(path, encodedParams);
 
     return Uri(
-            path: location,
-            queryParameters: queryParameters.isEmpty ? null : queryParameters)
-        .toString();
+      path: location,
+      queryParameters: queryParameters.isEmpty ? null : queryParameters,
+    ).toString();
   }
 
   /// Helper method, that allows add query parameters to [path].

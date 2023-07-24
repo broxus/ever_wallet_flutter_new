@@ -200,7 +200,7 @@ class KeyDetailView extends StatelessWidget {
           onPressed: () => context.goFurther(
             AppRoute.accountDetail.pathWithData(
               pathParameters: {
-                accountDetailAddressPathParam: account.address.address
+                accountDetailAddressPathParam: account.address.address,
               },
             ),
           ),

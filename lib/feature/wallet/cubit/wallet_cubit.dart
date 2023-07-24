@@ -16,10 +16,12 @@ part 'wallet_cubit.freezed.dart';
 class WalletCubit extends Cubit<WalletState> {
   WalletCubit(
     this.currentAccountsService,
+    this.nekotonRepository,
     this.initialIndex,
   ) : super(const WalletState.initial());
 
   final CurrentAccountsService currentAccountsService;
+  final NekotonRepository nekotonRepository;
 
   /// Starting index for account of current key.
   /// This index can be used, if user goes to wallet screen from another screen
@@ -88,6 +90,13 @@ class WalletCubit extends Cubit<WalletState> {
     final current =
         index >= 0 && index < accounts.length ? accounts[index] : null;
 
+    if (current != null) {
+      _tryStartPolling(current.address);
+    } else {
+      // add new account tab selected
+      nekotonRepository.stopPolling();
+    }
+
     emit(
       WalletState.accounts(
         list: accounts,
@@ -109,6 +118,21 @@ class WalletCubit extends Cubit<WalletState> {
     } else if (!_onScroll && currentPage != currentPagePosition) {
       _onScroll = true;
     }
+  }
+
+  StreamSubscription<dynamic>? _subscription;
+
+  /// Start listening for wallet subscriptions and when subscription will be
+  /// created, start polling.
+  void _tryStartPolling(Address address) {
+    _subscription?.cancel();
+
+    _subscription = nekotonRepository.tokenWalletsStream.listen((wallets) {
+      if (wallets.map((e) => e.address).contains(address)) {
+        nekotonRepository.startPolling(address);
+        _subscription?.cancel();
+      }
+    });
   }
 
   @override
