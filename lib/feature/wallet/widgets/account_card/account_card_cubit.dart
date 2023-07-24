@@ -39,13 +39,6 @@ class AccountCardCubit extends Cubit<AccountCardState> {
   TonWallet? wallet;
 
   void init() {
-    emit(
-      AccountCardState.data(
-        account: account,
-        walletName: _walletName(nekotonRepository, account),
-      ),
-    );
-
     _walletsSubscription = nekotonRepository.walletsStream.listen((wallets) {
       final wl = wallets.firstWhereOrNull((w) => w.address == account.address);
       if (wl != null) _initWallet(wl);
