@@ -30,7 +30,7 @@ class AccountCard extends StatelessWidget {
         account,
         inject<BalanceService>(),
         inject<CurrencyConvertService>(),
-      )..init(),
+      ),
       child: BlocBuilder<AccountCardCubit, AccountCardState>(
         builder: (context, state) {
           return state.when<Widget>(
