@@ -256,7 +256,7 @@ class BrowserStorageService extends AbstractStorageService {
   Stream<int> get browserActiveTabIdStream => _browserActiveTabIdSubject;
 
   /// Get last cached of active browser tab id
-  int get browserActiveTabId => _browserActiveTabIdSubject.value;
+  int get browserActiveTabId => _browserActiveTabIdSubject.valueOrNull ?? -1;
 
   /// Put browser active tab stream
   Future<void> _streamedBrowserActiveTabId() async =>
@@ -300,7 +300,7 @@ class BrowserStorageService extends AbstractStorageService {
   Stream<List<BrowserTab>> get browserTabsStream => _browserTabsSubject;
 
   /// Get last cached browser tabs
-  List<BrowserTab> get browserTabs => _browserTabsSubject.value;
+  List<BrowserTab> get browserTabs => _browserTabsSubject.valueOrNull ?? [];
 
   /// Put browser tabs to stream
   Future<void> _streamedBrowserTabs() async =>
