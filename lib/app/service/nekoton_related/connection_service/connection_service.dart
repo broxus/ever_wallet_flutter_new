@@ -101,3 +101,15 @@ class ConnectionService {
     }
   }
 }
+
+extension TransportTypeExtension on TransportStrategy {
+  NetworkType get networkType {
+    if (this is EverTransportStrategy) {
+      return NetworkType.ever;
+    } else if (this is VenomTransportStrategy) {
+      return NetworkType.venom;
+    } else {
+      return NetworkType.custom;
+    }
+  }
+}

@@ -1,6 +1,8 @@
 import 'package:injectable/injectable.dart';
 import 'package:nekoton_repository/nekoton_repository.dart';
 
+String moneyPattern(int decimal) => '0.${'#' * decimal}';
+
 /// This is a service that helps converting some real-world currency to another.
 ///
 /// !!! We do not know now how it will look like, but this is an attempt to
@@ -8,16 +10,28 @@ import 'package:nekoton_repository/nekoton_repository.dart';
 @singleton
 class CurrencyConvertService {
   CurrencyConvertService() {
-    Currencies().register(
-      CommonCurrencies().usd,
-    );
+    for (final cur in fiatSupportedMoney) {
+      Currencies().register(cur);
+    }
   }
 
-  /// Convert [amount] in USD currency to [currency] (aka USD, euro, won etc).
+  /// Currencies from real-world that we can use to convert
+  static final fiatSupportedMoney = [
+    Currency.create('USD', 5, symbol: 'USD', pattern: moneyPattern(5)),
+  ];
+
+  /// Returns [Currency.code] of currency for real world
+  String get currentFiatCode => fiatSupportedMoney.first.code;
+
+  /// Convert amount [usdAmount] in USD currency to [currency] (aka USD, euro,
+  /// won etc), if [currency] is null, then [currentFiatCode] will be used.
   ///
   /// !!! Now this is just a direct returning of amount with USD currency.
   // ignore: avoid-unused-parameters
-  Future<Money> convert(Fixed amount, {Currency? currency}) async {
-    return Money.fromFixed(amount, code: 'USD');
+  Money convert(Fixed usdAmount, {Currency? currency}) {
+    return Money.fromFixedWithCurrency(
+      usdAmount,
+      currency ?? Currencies()[currentFiatCode]!,
+    );
   }
 }

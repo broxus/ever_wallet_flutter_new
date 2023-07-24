@@ -49,7 +49,7 @@ StatefulShellBranch get bookmarksBranch {
         name: AppRoute.browserBookmarks.name,
         path: AppRoute.browserBookmarks.path,
         builder: (context, state) => const BookmarksPage(),
-      )
+      ),
     ],
   );
 }
@@ -62,7 +62,7 @@ StatefulShellBranch get historyBranch {
         name: AppRoute.browserHistory.name,
         path: AppRoute.browserHistory.path,
         builder: (context, state) => const HistoryPage(),
-      )
+      ),
     ],
   );
 }
@@ -75,7 +75,7 @@ StatefulShellBranch get tabsBranch {
         name: AppRoute.browserTabs.name,
         path: AppRoute.browserTabs.path,
         builder: (context, state) => const TabsPage(),
-      )
+      ),
     ],
   );
 }
