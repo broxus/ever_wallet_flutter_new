@@ -52,6 +52,7 @@ class _PrimaryPageState extends State<PrimaryPage> {
         ),
       );
       context.clearQueryParams();
+
       return;
     }
 
@@ -63,6 +64,7 @@ class _PrimaryPageState extends State<PrimaryPage> {
         ),
       );
       context.clearQueryParams();
+
       return;
     }
 
@@ -76,6 +78,7 @@ class _PrimaryPageState extends State<PrimaryPage> {
         ),
       );
       context.clearQueryParams();
+
       return;
     }
   }

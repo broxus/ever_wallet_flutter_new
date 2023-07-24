@@ -352,6 +352,7 @@ class BrowserStorageService extends AbstractStorageService {
   /// Remove browser tab by id
   Future<void> removeBrowserTab(int id) async {
     final tabs = browserTabs..removeWhere((tab) => tab.id == id);
+
     return saveBrowserTabs(tabs);
   }
 

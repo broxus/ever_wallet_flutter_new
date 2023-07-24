@@ -21,6 +21,43 @@ class BrowserTabsBloc extends Bloc<BrowserTabsEvent, BrowserTabsState> {
             currentTabId: browserStorageService.browserActiveTabId,
           ),
         ) {
+    _registerHandlers();
+
+    _browserTabsSubscription = browserStorageService.browserTabsStream.listen(
+      (tabs) {
+        add(BrowserTabsEvent.setTabs(tabs: tabs));
+      },
+    );
+
+    _browserActiveTabIdSubscription =
+        browserStorageService.browserActiveTabIdStream.listen(
+      (id) {
+        add(BrowserTabsEvent.setActiveTabId(id: id));
+      },
+    );
+  }
+  static final _log = Logger('BrowserTabsBloc');
+
+  final BrowserStorageService browserStorageService;
+
+  StreamSubscription<List<BrowserTab>>? _browserTabsSubscription;
+  StreamSubscription<int>? _browserActiveTabIdSubscription;
+
+  BrowserTab? get activeTab => state.tabs.firstWhereOrNull(
+        (tab) => tab.id == state.currentTabId,
+      );
+
+  @override
+  Future<void> close() {
+    _browserTabsSubscription?.cancel();
+    _browserTabsSubscription = null;
+    _browserActiveTabIdSubscription?.cancel();
+    _browserActiveTabIdSubscription = null;
+
+    return super.close();
+  }
+
+  void _registerHandlers() {
     on<_Add>((event, emit) {
       final tab = BrowserTab(
         url: event.uri,
@@ -69,38 +106,5 @@ class BrowserTabsBloc extends Bloc<BrowserTabsEvent, BrowserTabsState> {
       browserStorageService.saveBrowserActiveTabId(event.id);
       emit(state.copyWith(currentTabId: event.id));
     });
-
-    _browserTabsSubscription = browserStorageService.browserTabsStream.listen(
-      (tabs) {
-        add(BrowserTabsEvent.setTabs(tabs: tabs));
-      },
-    );
-
-    _browserActiveTabIdSubscription =
-        browserStorageService.browserActiveTabIdStream.listen(
-      (id) {
-        add(BrowserTabsEvent.setActiveTabId(id: id));
-      },
-    );
-  }
-  static final _log = Logger('BrowserTabsBloc');
-
-  final BrowserStorageService browserStorageService;
-
-  StreamSubscription<List<BrowserTab>>? _browserTabsSubscription;
-  StreamSubscription<int>? _browserActiveTabIdSubscription;
-
-  BrowserTab? get activeTab => state.tabs.firstWhereOrNull(
-        (tab) => tab.id == state.currentTabId,
-      );
-
-  @override
-  Future<void> close() {
-    _browserTabsSubscription?.cancel();
-    _browserTabsSubscription = null;
-    _browserActiveTabIdSubscription?.cancel();
-    _browserActiveTabIdSubscription = null;
-
-    return super.close();
   }
 }
