@@ -118,9 +118,11 @@ class CurrenciesService {
       final currency = _decodeCurrency(encoded, transport);
 
       await storageService.saveOrUpdateCurrency(currency: currency);
+
       return currency;
     } catch (e, st) {
       _logger.severe('getCurrencyForContract', e, st);
+
       return null;
     }
   }
@@ -145,7 +147,7 @@ class CurrenciesService {
               )
               .expand((e) => e)
               .map((e) => e.rootTokenContract),
-        }
+        },
       ];
 
       for (final rootTokenContract in rootTokenContracts) {

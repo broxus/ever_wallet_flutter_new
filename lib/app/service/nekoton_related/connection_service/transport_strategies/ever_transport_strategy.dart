@@ -87,5 +87,6 @@ class EverTransportStrategy extends TransportStrategy {
       'https://everscan.io/transactions/$transactionHash';
 
   @override
+  // ignore: no-magic-number
   int get defaultNativeCurrencyDecimal => 9;
 }

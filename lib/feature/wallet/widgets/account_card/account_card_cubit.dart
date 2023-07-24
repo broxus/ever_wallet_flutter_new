@@ -47,8 +47,8 @@ class AccountCardCubit extends Cubit<AccountCardState> {
     );
 
     _walletsSubscription = nekotonRepository.walletsStream.listen((wallets) {
-      final w = wallets.firstWhereOrNull((w) => w.address == account.address);
-      if (w != null) _initWallet(w);
+      final wl = wallets.firstWhereOrNull((w) => w.address == account.address);
+      if (wl != null) _initWallet(wl);
     });
   }
 
@@ -96,6 +96,7 @@ class AccountCardCubit extends Cubit<AccountCardState> {
     _walletsSubscription.cancel();
     _thisWalletSubscription?.cancel();
     _balanceSubscription?.cancel();
+
     return super.close();
   }
 

@@ -25,6 +25,7 @@ class BalanceService {
   ///
   /// If you need to get amount without subscriptions, use [getKeyBalance] or
   /// [getAccountBalance].
+  // ignore: long-method
   Stream<Fixed> accountOverallBalance(Address address) {
     return Rx.combineLatest3<TonWallet?, TransportStrategy, KeyAccount?,
         (TonWallet?, TransportStrategy, KeyAccount?)>(
@@ -109,6 +110,7 @@ class BalanceService {
       );
     }).onErrorReturnWith((e, st) {
       _logger.severe('accountOverallBalance', e, st);
+
       return Fixed.zero;
     });
   }
@@ -150,6 +152,7 @@ class BalanceService {
       );
     }).onErrorReturnWith((e, st) {
       _logger.severe('tonWalletBalanceStream', e, st);
+
       return Fixed.zero;
     });
   }
@@ -192,6 +195,7 @@ class BalanceService {
       );
     }).onErrorReturnWith((e, st) {
       _logger.severe('tokenWalletBalanceStream', e, st);
+
       return Fixed.zero;
     });
   }
@@ -199,14 +203,14 @@ class BalanceService {
   /// Get balance of public key and all related Ton/Token wallets of it without
   /// creating subscriptions.
   // TODO(alex-a4): implement later
-  Future<Fixed> getKeyBalance(PublicKey key) async {
+  Future<Fixed> getKeyBalance(PublicKey _) async {
     return Fixed.zero;
   }
 
   /// Get balance of account and all tokens of wallet without
   /// creating subscriptions.
   // TODO(alex-a4): implement later
-  Future<Fixed> getAccountBalance(KeyAccount account) async {
+  Future<Fixed> getAccountBalance(KeyAccount _) async {
     return Fixed.zero;
   }
 }

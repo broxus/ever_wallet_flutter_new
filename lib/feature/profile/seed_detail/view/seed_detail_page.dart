@@ -24,9 +24,9 @@ class SeedDetailPage extends StatelessWidget {
       appBar: DefaultAppBar(
         actions: [
           CommonIconButton.svg(
-            innerPadding: appBarIconButtonInnerPadding,
             svg: Assets.images.settings.path,
             buttonType: EverButtonType.secondary,
+            size: CommonIconButtonSize.small,
             onPressed: () => showSeedSettingsSheet(context, publicKey),
           ),
         ],

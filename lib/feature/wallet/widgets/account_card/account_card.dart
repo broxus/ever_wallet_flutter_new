@@ -115,6 +115,7 @@ class AccountCard extends StatelessWidget {
     );
   }
 
+  // ignore: long-method
   Widget _walletDescriptionTile(String walletName, String? custodians) {
     return Builder(
       builder: (context) {
@@ -156,7 +157,7 @@ class AccountCard extends StatelessWidget {
                           custodians,
                           style: StyleRes.addRegular
                               .copyWith(color: colors.textSecondary),
-                        )
+                        ),
                       ],
                     ],
                   ),
@@ -167,8 +168,6 @@ class AccountCard extends StatelessWidget {
               svg: Assets.images.settings.path,
               buttonType: EverButtonType.ghost,
               color: colors.textSecondary,
-              outerPadding: EdgeInsets.zero,
-              innerPadding: const EdgeInsets.all(DimensSize.d4),
               onPressed: () => showAccountSettingsSheet(
                 context: context,
                 address: account.address,

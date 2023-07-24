@@ -79,5 +79,6 @@ class VenomTransportStrategy extends TransportStrategy {
       'https://venomscan.com/transactions/$transactionHash';
 
   @override
+  // ignore: no-magic-number
   int get defaultNativeCurrencyDecimal => 9;
 }

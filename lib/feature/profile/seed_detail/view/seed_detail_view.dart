@@ -97,7 +97,11 @@ class SeedDetailView extends StatelessWidget {
 
         return CommonListTile(
           onPressed: () => context.goFurther(
-            AppRoute.keyDetail.pathWithData(key.publicKey.publicKey),
+            AppRoute.keyDetail.pathWithData(
+              pathParameters: {
+                keyDetailPublicKeyPathParam: key.publicKey.publicKey,
+              },
+            ),
           ),
           padding: EdgeInsets.zero,
           leading: CommonBackgroundedIconWidget.svg(
@@ -113,15 +117,15 @@ class SeedDetailView extends StatelessWidget {
                   color: colors.textPrimary,
                 ),
               CommonIconButton.svg(
-                color: colors.textSecondary,
                 svg: Assets.images.settings.path,
+                color: colors.textSecondary,
                 buttonType: EverButtonType.ghost,
+                size: CommonIconButtonSize.xsmall,
                 onPressed: () => showKeySettingsSheet(
                   context: context,
                   publicKey: key.publicKey,
                   isMaster: key.isMaster,
                 ),
-                innerPadding: const EdgeInsets.all(DimensSize.d8),
               ),
             ],
           ),
