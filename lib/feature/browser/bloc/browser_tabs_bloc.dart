@@ -3,6 +3,7 @@ import 'dart:async';
 import 'package:app/app/service/service.dart';
 import 'package:app/data/models/models.dart';
 import 'package:bloc/bloc.dart';
+import 'package:collection/collection.dart';
 import 'package:freezed_annotation/freezed_annotation.dart';
 import 'package:logging/logging.dart';
 
@@ -88,6 +89,10 @@ class BrowserTabsBloc extends Bloc<BrowserTabsEvent, BrowserTabsState> {
 
   StreamSubscription<List<BrowserTab>>? _browserTabsSubscription;
   StreamSubscription<int>? _browserActiveTabIdSubscription;
+
+  BrowserTab? get activeTab => state.tabs.firstWhereOrNull(
+        (tab) => tab.id == state.currentTabId,
+      );
 
   @override
   Future<void> close() {

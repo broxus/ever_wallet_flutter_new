@@ -214,9 +214,12 @@ class _PrimaryViewState extends State<PrimaryView>
   }
 
   void _onSearchSubmitted(String text) {
-    context.read<BrowserTabsBloc>().add(
-          BrowserTabsEvent.add(uri: Uri.parse(text)),
-        );
+    final browserTabsBloc = context.read<BrowserTabsBloc>();
+    browserTabsBloc.add(
+      browserTabsBloc.activeTab != null
+          ? BrowserTabsEvent.setUrl(uri: Uri.parse(text))
+          : BrowserTabsEvent.add(uri: Uri.parse(text)),
+    );
   }
 
   void _onTabsPressed() {
