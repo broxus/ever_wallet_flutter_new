@@ -19,45 +19,64 @@ class _PrimaryPageState extends State<PrimaryPage> {
   void didUpdateWidget(covariant PrimaryPage oldWidget) {
     super.didUpdateWidget(oldWidget);
 
-    final browserTabsBloc = context.read<BrowserTabsBloc>();
-
-    var stateWasChanged = false;
-
-    // Change active tab id.
-    if (widget.tabId != oldWidget.tabId && widget.tabId != null) {
-      browserTabsBloc.add(
-        BrowserTabsBlocEvent.setActive(
-          id: widget.tabId!,
-        ),
-      );
-      stateWasChanged = true;
-    }
-
-    // Create new tab.
-    if (widget.url != null && widget.tabId == null) {
-      browserTabsBloc.add(
-        BrowserTabsBlocEvent.add(
-          uri: Uri.parse(widget.url!),
-        ),
-      );
-      stateWasChanged = true;
-    }
-
-    // We don't want to store url, tab id or anything else in the route location
-    // because it's complicated to handle it in the browser tabs bloc: we will
-    // have two sources of truth: route location and browser tabs bloc state.
-    // So, just change bloc state, clear route location and let the browser tabs
-    // bloc handle the rest.
-    if (stateWasChanged) {
-      context.clearQueryParams();
-    }
+    _handleWidgetUpdate(oldWidget);
   }
 
   @override
   Widget build(BuildContext context) {
     return BlocProvider<HudBloc>(
       create: (context) => HudBloc(),
-      child: const PrimaryView(),
+      child: BlocBuilder<BrowserTabsBloc, BrowserTabsState>(
+        builder: (context, state) {
+          return const PrimaryView();
+        },
+      ),
     );
+  }
+
+  void _handleWidgetUpdate(PrimaryPage oldWidget) {
+    // We don't want to store url, tab id or anything else in the route location
+    // because it's complicated to handle it in the browser tabs bloc: we will
+    // have two sources of truth: route location and browser tabs bloc state.
+    // So, just change bloc state, clear route location and let the browser tabs
+    // bloc handle the rest. It is perfectly fine until we don't need to build
+    // web version of the app.
+
+    final browserTabsBloc = context.read<BrowserTabsBloc>();
+
+    // Change url of the active tab.
+    if (widget.tabId != null && widget.url != null) {
+      browserTabsBloc.add(
+        BrowserTabsEvent.setActive(
+          id: widget.tabId!,
+        ),
+      );
+      context.clearQueryParams();
+      return;
+    }
+
+    // Change active tab id.
+    if (widget.tabId != oldWidget.tabId && widget.tabId != null) {
+      browserTabsBloc.add(
+        BrowserTabsEvent.setActive(
+          id: widget.tabId!,
+        ),
+      );
+      context.clearQueryParams();
+      return;
+    }
+
+    // Create new tab.
+    if (widget.url != null &&
+        widget.url != oldWidget.url &&
+        widget.tabId == null) {
+      browserTabsBloc.add(
+        BrowserTabsEvent.add(
+          uri: Uri.parse(widget.url!),
+        ),
+      );
+      context.clearQueryParams();
+      return;
+    }
   }
 }

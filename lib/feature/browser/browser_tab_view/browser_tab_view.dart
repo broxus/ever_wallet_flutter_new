@@ -1,5 +1,6 @@
 import 'dart:async';
 
+import 'package:app/data/models/models.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_inappwebview/flutter_inappwebview.dart';
 
@@ -9,8 +10,9 @@ typedef BrowserOnScrollCallback = void Function({
 });
 
 class BrowserTabView extends StatefulWidget {
-  const BrowserTabView({required this.onScroll, super.key});
+  const BrowserTabView({required this.tab, required this.onScroll, super.key});
 
+  final BrowserTab tab;
   final BrowserOnScrollCallback? onScroll;
 
   @override
@@ -31,11 +33,13 @@ class _BrowserTabViewState extends State<BrowserTabView> {
 
   @override
   Widget build(BuildContext context) {
+    print('BrowserTabView tab: ${widget.tab.id} ${widget.tab.url}');
+
     return InAppWebView(
       onOverScrolled: _onOverScrolled,
       onScrollChanged: _onScrollChanged,
       initialUrlRequest: URLRequest(
-        url: Uri.parse('https://app.flatqube.io/swap'),
+        url: widget.tab.url,
       ),
     );
   }

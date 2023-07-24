@@ -1,7 +1,9 @@
+import 'package:app/app/router/router.dart';
 import 'package:app/feature/browser/browser.dart';
 import 'package:app/feature/browser/primary/hud_bloc/hud_bloc.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:go_router/go_router.dart';
 import 'package:ui_components_lib/ui_components_lib.dart';
 
 class PrimaryView extends StatefulWidget {
@@ -127,12 +129,14 @@ class _PrimaryViewState extends State<PrimaryView>
 
     final currentStackIndex = currentTabIndex < 0 ? 0 : currentTabIndex + 1;
 
+    print('currentStackIndex $currentStackIndex $currentTabId');
+
     final stackViews = [
       const Text(
         'empty',
       ),
       ...tabs.map(
-        (tab) => BrowserTabView(onScroll: _onScroll),
+        (tab) => BrowserTabView(tab: tab, onScroll: _onScroll),
       ),
     ];
 
@@ -179,11 +183,7 @@ class _PrimaryViewState extends State<PrimaryView>
                 child: SlideTransition(
                   position: _searchBarAnimation,
                   child: BrowserSearchBar(
-                    onSubmitted: (text) => {
-                      context.read<BrowserTabsBloc>().add(
-                            BrowserTabsBlocEvent.add(uri: Uri.parse(text)),
-                          )
-                    },
+                    onSubmitted: _onSearchSubmitted,
                   ),
                 ),
               ),
@@ -196,7 +196,7 @@ class _PrimaryViewState extends State<PrimaryView>
                     onBackPressed: () => {},
                     onForwardPressed: null,
                     onAddTabPressed: null,
-                    onTabsPressed: null,
+                    onTabsPressed: _onTabsPressed,
                     onOverflowPressed: null,
                   ),
                 ),
@@ -211,6 +211,16 @@ class _PrimaryViewState extends State<PrimaryView>
         ),
       ),
     );
+  }
+
+  void _onSearchSubmitted(String text) {
+    context.read<BrowserTabsBloc>().add(
+          BrowserTabsEvent.add(uri: Uri.parse(text)),
+        );
+  }
+
+  void _onTabsPressed() {
+    context.goNamed(AppRoute.browserTabs.name);
   }
 
   void _onScroll({required int currentY, required int gestureDY}) {

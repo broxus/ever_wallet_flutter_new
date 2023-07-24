@@ -281,6 +281,10 @@ class BrowserStorageService extends AbstractStorageService {
     final verifiedId =
         browserTabById(id) != null ? id : browserTabs.firstOrNull?.id ?? -1;
 
+    if (id == browserActiveTabId) {
+      return;
+    }
+
     await _storage.set(
       _browserTabsActiveTabIdKey,
       verifiedId.toString(),
@@ -305,6 +309,10 @@ class BrowserStorageService extends AbstractStorageService {
   /// Get tab by id
   BrowserTab? browserTabById(int id) =>
       browserTabs.firstWhereOrNull((tab) => tab.id == id);
+
+  /// Get active tab
+  BrowserTab? get browserTabActive =>
+      browserTabs.firstWhereOrNull((tab) => tab.id == browserActiveTabId);
 
   /// Read list of browser tabs from storage
   Future<List<BrowserTab>> readBrowserTabs() async {
@@ -332,6 +340,13 @@ class BrowserStorageService extends AbstractStorageService {
         1;
     await saveBrowserTabs([...browserTabs, tab.copyWith(id: newId)]);
     await saveBrowserActiveTabId(newId);
+  }
+
+  /// Set browser tab
+  Future<void> setBrowserTab(BrowserTab tab) async {
+    final id = tab.id;
+    final tabs = browserTabs..removeWhere((tab) => tab.id == id);
+    await saveBrowserTabs([...tabs, tab]);
   }
 
   /// Remove browser tab by id
