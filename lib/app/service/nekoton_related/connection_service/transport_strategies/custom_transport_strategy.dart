@@ -69,4 +69,8 @@ class CustomTransportStrategy extends TransportStrategy {
 
   @override
   String transactionExplorerLink(String transactionHash) => '';
+
+  @override
+  // TODO(alex-a4): implement defaultNativeCurrencyDecimal
+  int get defaultNativeCurrencyDecimal => throw UnimplementedError();
 }

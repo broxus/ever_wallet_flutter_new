@@ -175,7 +175,6 @@ class TonWalletStorageService extends TonWalletTransactionsStorage
 
   /// Add it later to storage
   @override
-  // ignore: no-empty-block
   Future<void> updateTonWalletDetails({
     required int networkId,
     required String group,
@@ -183,5 +182,6 @@ class TonWalletStorageService extends TonWalletTransactionsStorage
     required ContractState contractState,
     required TonWalletDetails details,
     required List<PublicKey>? custodians,
+    // ignore: no-empty-block
   }) async {}
 }

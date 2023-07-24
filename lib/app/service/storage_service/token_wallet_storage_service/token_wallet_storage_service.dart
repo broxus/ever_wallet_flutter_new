@@ -68,7 +68,6 @@ class TokenWalletStorageService extends TokenWalletTransactionsStorage
 
   /// Add it later to storage
   @override
-  // ignore: no-empty-block
   Future<void> updateTokenWalletDetails({
     required int networkId,
     required String group,
@@ -76,7 +75,8 @@ class TokenWalletStorageService extends TokenWalletTransactionsStorage
     required Address rootTokenContract,
     required Symbol symbol,
     required TokenWalletVersion version,
-    required Fixed balance,
+    required BigInt balance,
     required ContractState contractState,
+    // ignore: no-empty-block
   }) async {}
 }

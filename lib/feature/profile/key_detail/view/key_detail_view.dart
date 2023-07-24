@@ -198,7 +198,11 @@ class KeyDetailView extends StatelessWidget {
         return CommonListTile(
           padding: EdgeInsets.zero,
           onPressed: () => context.goFurther(
-            AppRoute.accountDetail.pathWithData(account.address.address),
+            AppRoute.accountDetail.pathWithData(
+              pathParameters: {
+                accountDetailAddressPathParam: account.address.address,
+              },
+            ),
           ),
           leading: CommonBackgroundedIconWidget.svg(
             svg: Assets.images.person.path,

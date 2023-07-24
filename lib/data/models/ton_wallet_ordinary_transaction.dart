@@ -8,10 +8,10 @@ class TonWalletOrdinaryTransaction with _$TonWalletOrdinaryTransaction {
   const factory TonWalletOrdinaryTransaction({
     required String lt,
     required bool isOutgoing,
-    @amountJsonConverter required Fixed value,
+    @amountJsonConverter required BigInt value,
     required Address address,
     required DateTime date,
-    @amountJsonConverter required Fixed fees,
+    @amountJsonConverter required BigInt fees,
     required String hash,
     String? prevTransactionLt,
     String? comment,

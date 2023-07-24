@@ -97,7 +97,11 @@ class SeedDetailView extends StatelessWidget {
 
         return CommonListTile(
           onPressed: () => context.goFurther(
-            AppRoute.keyDetail.pathWithData(key.publicKey.publicKey),
+            AppRoute.keyDetail.pathWithData(
+              pathParameters: {
+                keyDetailPublicKeyPathParam: key.publicKey.publicKey,
+              },
+            ),
           ),
           padding: EdgeInsets.zero,
           leading: CommonBackgroundedIconWidget.svg(
