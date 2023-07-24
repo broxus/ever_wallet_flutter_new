@@ -130,8 +130,6 @@ class _PrimaryViewState extends State<PrimaryView>
 
     final currentStackIndex = currentTabIndex < 0 ? 0 : currentTabIndex + 1;
 
-    print('currentStackIndex $currentStackIndex $currentTabId');
-
     final stackViews = [
       const Text(
         'empty',

@@ -43,8 +43,6 @@ class _BrowserTabViewState extends State<BrowserTabView> {
 
   @override
   Widget build(BuildContext context) {
-    print('BrowserTabView tab: ${widget.tab.id} ${widget.tab.url}');
-
     return InAppWebView(
       onOverScrolled: _onOverScrolled,
       onScrollChanged: _onScrollChanged,
