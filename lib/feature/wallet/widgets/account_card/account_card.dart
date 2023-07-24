@@ -168,6 +168,7 @@ class AccountCard extends StatelessWidget {
               svg: Assets.images.settings.path,
               buttonType: EverButtonType.ghost,
               color: colors.textSecondary,
+              size: CommonIconButtonSize.small,
               onPressed: () => showAccountSettingsSheet(
                 context: context,
                 address: account.address,
