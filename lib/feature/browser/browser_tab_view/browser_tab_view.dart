@@ -9,11 +9,21 @@ typedef BrowserOnScrollCallback = void Function({
   required int gestureDY,
 });
 
+typedef BrowserOnOverScrollCallback = void Function({
+  required int y,
+});
+
 class BrowserTabView extends StatefulWidget {
-  const BrowserTabView({required this.tab, required this.onScroll, super.key});
+  const BrowserTabView({
+    required this.tab,
+    required this.onScroll,
+    required this.onOverScroll,
+    super.key,
+  });
 
   final BrowserTab tab;
   final BrowserOnScrollCallback? onScroll;
+  final BrowserOnOverScrollCallback? onOverScroll;
 
   @override
   State<BrowserTabView> createState() => _BrowserTabViewState();
@@ -79,6 +89,8 @@ class _BrowserTabViewState extends State<BrowserTabView> {
     bool clampedY,
   ) {
     if (clampedY) {
+      widget.onOverScroll?.call(y: y);
+
       // Hey, we are overscrolled!
       // Remove all that contains overscrolled y position
       // Hopefully it will be before any of timers will fire

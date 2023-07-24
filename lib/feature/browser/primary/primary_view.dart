@@ -17,10 +17,11 @@ class _PrimaryViewState extends State<PrimaryView>
     with SingleTickerProviderStateMixin {
   // Scroll position of the webview, used to hide the HUD when the user scrolls
   // further than a certain threshold.
-  static const int _hudScrollMinYThreshold = 64;
+  static const int _hudScrollMinYThreshold = 4;
   // Scroll dY of the webview, used to hide and show the HUD when the user
   // scrolls up and down.
-  static const int _hudScrollDYThreshold = 64;
+  static const int _hudScrollDYThresholdDown = 64;
+  static const int _hudScrollDYThresholdUp = 128;
 
   // Main animation controller of the HUD.
   late AnimationController _animationController;
@@ -136,7 +137,12 @@ class _PrimaryViewState extends State<PrimaryView>
         'empty',
       ),
       ...tabs.map(
-        (tab) => BrowserTabView(tab: tab, onScroll: _onScroll),
+        (tab) => BrowserTabView(
+          tab: tab,
+          onScroll: _onScroll,
+          key: ValueKey(tab.id),
+          onOverScroll: _onOverScroll,
+        ),
       ),
     ];
 
@@ -233,15 +239,19 @@ class _PrimaryViewState extends State<PrimaryView>
     } else {
       // Elsewise, we should show and  hide HUD according to gesture direction.
       // Here we check if gesture is long enough to hide or show HUD
-      if (gestureDY.abs() > _hudScrollDYThreshold) {
-        if (gestureDY > 0) {
-          // If gesture is down, we should hide HUD
-          context.read<HudBloc>().add(const HudEvent.hide());
-        } else {
-          // If gesture is up, we should show HUD
-          context.read<HudBloc>().add(const HudEvent.show());
-        }
+      if (gestureDY > 0 && gestureDY.abs() > _hudScrollDYThresholdDown) {
+        // If gesture is down, we should hide HUD
+        context.read<HudBloc>().add(const HudEvent.hide());
+      } else if (gestureDY < 0 && gestureDY.abs() > _hudScrollDYThresholdUp) {
+        // If gesture is up, we should show HUD
+        context.read<HudBloc>().add(const HudEvent.show());
       }
+    }
+  }
+
+  void _onOverScroll({required int y}) {
+    if (y > 0) {
+      context.read<HudBloc>().add(const HudEvent.hide());
     }
   }
 }
