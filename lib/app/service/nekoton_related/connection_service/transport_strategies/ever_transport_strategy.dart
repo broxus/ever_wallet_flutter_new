@@ -85,4 +85,7 @@ class EverTransportStrategy extends TransportStrategy {
   @override
   String transactionExplorerLink(String transactionHash) =>
       'https://everscan.io/transactions/$transactionHash';
+
+  @override
+  int get defaultNativeCurrencyDecimal => 9;
 }

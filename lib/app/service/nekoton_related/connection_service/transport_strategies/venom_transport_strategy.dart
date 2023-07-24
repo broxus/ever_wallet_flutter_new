@@ -77,4 +77,7 @@ class VenomTransportStrategy extends TransportStrategy {
   @override
   String transactionExplorerLink(String transactionHash) =>
       'https://venomscan.com/transactions/$transactionHash';
+
+  @override
+  int get defaultNativeCurrencyDecimal => 9;
 }
