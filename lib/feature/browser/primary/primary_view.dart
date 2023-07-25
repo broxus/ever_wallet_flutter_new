@@ -223,9 +223,10 @@ class _PrimaryViewState extends State<PrimaryView>
 
   void _onSearchSubmitted(String text) {
     final browserTabsBloc = context.read<BrowserTabsBloc>();
+    final activeTab = browserTabsBloc.activeTab;
     browserTabsBloc.add(
-      browserTabsBloc.activeTab != null
-          ? BrowserTabsEvent.setUrl(uri: Uri.parse(text))
+      activeTab != null
+          ? BrowserTabsEvent.setUrl(id: activeTab.id, uri: Uri.parse(text))
           : BrowserTabsEvent.add(uri: Uri.parse(text)),
     );
   }
@@ -257,18 +258,18 @@ class _PrimaryViewState extends State<PrimaryView>
     }
   }
 
-  void _onLoadStart({required Uri? url}) {
-    _setUrl(url);
+  void _onLoadStart({required int id, required Uri? url}) {
+    _setUrl(id, url);
   }
 
-  void _onLoadStop({required Uri? url}) {
-    _setUrl(url);
+  void _onLoadStop({required int id, required Uri? url}) {
+    _setUrl(id, url);
   }
 
-  void _setUrl(Uri? url) {
+  void _setUrl(int id, Uri? url) {
     final browserTabsBloc = context.read<BrowserTabsBloc>();
     if (url != null) {
-      browserTabsBloc.add(BrowserTabsEvent.setUrl(uri: url));
+      browserTabsBloc.add(BrowserTabsEvent.setUrl(id: id, uri: url));
     }
   }
 }

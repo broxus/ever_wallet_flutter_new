@@ -82,11 +82,14 @@ class BrowserTabsBloc extends Bloc<BrowserTabsEvent, BrowserTabsState> {
       browserTabsStorageService.addBrowserTab(tab);
     });
     on<_SetUrl>((event, emit) {
-      final tab = browserTabsStorageService.browserTabActive?.copyWith(
+      final oldTab = browserTabsStorageService.browserTabById(event.id);
+      final newTab = oldTab?.copyWith(
         url: event.uri,
       );
-      if (tab != null) {
-        browserTabsStorageService.setBrowserTab(tab);
+      if (newTab != null) {
+        if (oldTab?.url != newTab.url) {
+          browserTabsStorageService.setBrowserTab(newTab);
+        }
       } else {
         _log.severe('No active tab');
       }
