@@ -1,7 +1,9 @@
+import 'package:app/app/router/router.dart';
 import 'package:app/feature/browser/browser.dart';
 import 'package:app/feature/browser/primary/hud_bloc/hud_bloc.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:go_router/go_router.dart';
 import 'package:ui_components_lib/ui_components_lib.dart';
 
 class PrimaryView extends StatefulWidget {
@@ -15,10 +17,11 @@ class _PrimaryViewState extends State<PrimaryView>
     with SingleTickerProviderStateMixin {
   // Scroll position of the webview, used to hide the HUD when the user scrolls
   // further than a certain threshold.
-  static const int _hudScrollMinYThreshold = 64;
+  static const int _hudScrollMinYThreshold = 4;
   // Scroll dY of the webview, used to hide and show the HUD when the user
   // scrolls up and down.
-  static const int _hudScrollDYThreshold = 64;
+  static const int _hudScrollDYThresholdDown = 64;
+  static const int _hudScrollDYThresholdUp = 128;
 
   // Main animation controller of the HUD.
   late AnimationController _animationController;
@@ -121,6 +124,28 @@ class _PrimaryViewState extends State<PrimaryView>
 
   @override
   Widget build(BuildContext context) {
+    final currentTabId = context.watch<BrowserTabsBloc>().state.currentTabId;
+    final tabs = context.watch<BrowserTabsBloc>().state.tabs;
+    final currentTabIndex = tabs.indexWhere((tab) => tab.id == currentTabId);
+
+    final currentStackIndex = currentTabIndex < 0 ? 0 : currentTabIndex + 1;
+
+    final stackViews = [
+      const Text(
+        'empty',
+      ),
+      ...tabs.map(
+        (tab) => BrowserTabView(
+          tab: tab,
+          onScroll: _onScroll,
+          key: ValueKey(tab.id),
+          onOverScroll: _onOverScroll,
+          onLoadStart: _onLoadStart,
+          onLoadStop: _onLoadStop,
+        ),
+      ),
+    ];
+
     // We use only listener (without builder) because we don't need to rebuild
     // the entire widget tree when HUD visibility changes
     return BlocListener<HudBloc, HudState>(
@@ -143,16 +168,18 @@ class _PrimaryViewState extends State<PrimaryView>
               // It should be below HUD when HUD is visible, and fill entire
               // screen when HUD is not visible
               // We don't animate height of the content because it's a webview
-              Positioned.fill(
-                // Just change bottom padding according to HUD visibility
-                // instantly
-                bottom: _isHudVisible ? BrowserBottomMenuCommon.height : 0,
+
+              // But animate content position to follow search
+              // bar animation
+              PositionedTransition(
+                rect: _contentAnimation,
                 child: Stack(
                   children: [
-                    // But animate content position to follow search
-                    // bar animation
-                    PositionedTransition(
-                      rect: _contentAnimation,
+                    Positioned.fill(
+                      bottom: _isHudVisible
+                          ? BrowserSearchBar.height +
+                              BrowserBottomMenuCommon.height
+                          : 0,
                       child: child!,
                     ),
                   ],
@@ -164,7 +191,7 @@ class _PrimaryViewState extends State<PrimaryView>
                 child: SlideTransition(
                   position: _searchBarAnimation,
                   child: BrowserSearchBar(
-                    onSubmit: () => {},
+                    onSubmitted: _onSearchSubmitted,
                   ),
                 ),
               ),
@@ -177,7 +204,7 @@ class _PrimaryViewState extends State<PrimaryView>
                     onBackPressed: () => {},
                     onForwardPressed: null,
                     onAddTabPressed: null,
-                    onTabsPressed: null,
+                    onTabsPressed: _onTabsPressed,
                     onOverflowPressed: null,
                   ),
                 ),
@@ -187,13 +214,24 @@ class _PrimaryViewState extends State<PrimaryView>
         },
         // We use child to prevent webview from rebuilding when HUD
         child: IndexedStack(
-          index: 0,
-          children: [
-            BrowserTabView(onScroll: _onScroll),
-          ],
+          index: currentStackIndex,
+          children: stackViews,
         ),
       ),
     );
+  }
+
+  void _onSearchSubmitted(String text) {
+    final browserTabsBloc = context.read<BrowserTabsBloc>();
+    browserTabsBloc.add(
+      browserTabsBloc.activeTab != null
+          ? BrowserTabsEvent.setUrl(uri: Uri.parse(text))
+          : BrowserTabsEvent.add(uri: Uri.parse(text)),
+    );
+  }
+
+  void _onTabsPressed() {
+    context.goNamed(AppRoute.browserTabs.name);
   }
 
   void _onScroll({required int currentY, required int gestureDY}) {
@@ -203,15 +241,34 @@ class _PrimaryViewState extends State<PrimaryView>
     } else {
       // Elsewise, we should show and  hide HUD according to gesture direction.
       // Here we check if gesture is long enough to hide or show HUD
-      if (gestureDY.abs() > _hudScrollDYThreshold) {
-        if (gestureDY > 0) {
-          // If gesture is down, we should hide HUD
-          context.read<HudBloc>().add(const HudEvent.hide());
-        } else {
-          // If gesture is up, we should show HUD
-          context.read<HudBloc>().add(const HudEvent.show());
-        }
+      if (gestureDY > 0 && gestureDY.abs() > _hudScrollDYThresholdDown) {
+        // If gesture is down, we should hide HUD
+        context.read<HudBloc>().add(const HudEvent.hide());
+      } else if (gestureDY < 0 && gestureDY.abs() > _hudScrollDYThresholdUp) {
+        // If gesture is up, we should show HUD
+        context.read<HudBloc>().add(const HudEvent.show());
       }
+    }
+  }
+
+  void _onOverScroll({required int y}) {
+    if (y > 0) {
+      context.read<HudBloc>().add(const HudEvent.hide());
+    }
+  }
+
+  void _onLoadStart({required Uri? url}) {
+    _setUrl(url);
+  }
+
+  void _onLoadStop({required Uri? url}) {
+    _setUrl(url);
+  }
+
+  void _setUrl(Uri? url) {
+    final browserTabsBloc = context.read<BrowserTabsBloc>();
+    if (url != null) {
+      browserTabsBloc.add(BrowserTabsEvent.setUrl(uri: url));
     }
   }
 }

@@ -1,4 +1,4 @@
-import 'package:app/app/router/app_route.dart';
+import 'package:app/app/router/router.dart';
 import 'package:app/feature/add_seed/enter_seed_name/enter_seed_name.dart';
 import 'package:app/feature/profile/manage_seeds_accounts/manage_seeds_accounts.dart';
 import 'package:app/generated/generated.dart';
@@ -93,7 +93,7 @@ class ManageSeedsAccountsView extends StatelessWidget {
           context.goFurther(
             AppRoute.enterSeedName.pathWithData(
               pathParameters: {
-                enterSeedNameCommand: EnterSeedNameCommand.create.name,
+                enterSeedNameCommandPathParam: EnterSeedNameCommand.create.name,
               },
             ),
           );
@@ -101,7 +101,7 @@ class ManageSeedsAccountsView extends StatelessWidget {
           context.goFurther(
             AppRoute.enterSeedName.pathWithData(
               pathParameters: {
-                enterSeedNameCommand: EnterSeedNameCommand.import.name,
+                enterSeedNameCommandPathParam: EnterSeedNameCommand.import.name,
               },
             ),
           );

@@ -5,10 +5,10 @@ import 'package:ui_components_lib/ui_components_lib.dart';
 
 class BrowserSearchBar extends StatelessWidget {
   const BrowserSearchBar({
-    required this.onSubmit,
+    required this.onSubmitted,
     super.key,
   });
-  final VoidCallback? onSubmit;
+  final ValueChanged<String>? onSubmitted;
 
   static const height = DimensSize.d64;
 
@@ -32,6 +32,7 @@ class BrowserSearchBar extends StatelessWidget {
               prefixIcon: CommonIconWidget.svg(
                 svg: Assets.images.search.path,
               ),
+              onSubmitted: onSubmitted,
             ),
           ),
         ),
