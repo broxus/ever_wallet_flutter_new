@@ -13,17 +13,25 @@ typedef BrowserOnOverScrollCallback = void Function({
   required int y,
 });
 
+typedef BrowserOnNavigateCallback = void Function({
+  required Uri? url,
+});
+
 class BrowserTabView extends StatefulWidget {
   const BrowserTabView({
     required this.tab,
-    required this.onScroll,
-    required this.onOverScroll,
+    this.onScroll,
+    this.onOverScroll,
+    this.onLoadStart,
+    this.onLoadStop,
     super.key,
   });
 
   final BrowserTab tab;
   final BrowserOnScrollCallback? onScroll;
   final BrowserOnOverScrollCallback? onOverScroll;
+  final BrowserOnNavigateCallback? onLoadStart;
+  final BrowserOnNavigateCallback? onLoadStop;
 
   @override
   State<BrowserTabView> createState() => _BrowserTabViewState();
@@ -41,14 +49,47 @@ class _BrowserTabViewState extends State<BrowserTabView> {
   // How long to wait before considering scroll event as not overscroll
   static const Duration _scrollTimerDelay = Duration(milliseconds: 100);
 
+  InAppWebViewController? _webViewController;
+
+  final _initialOptions = InAppWebViewGroupOptions(
+    ios: IOSInAppWebViewOptions(),
+    android: AndroidInAppWebViewOptions(),
+    crossPlatform: InAppWebViewOptions(),
+  );
+
+  @override
+  void didUpdateWidget(BrowserTabView oldWidget) {
+    super.didUpdateWidget(oldWidget);
+
+    onTabChanged(widget.tab, oldWidget.tab);
+  }
+
+  Future<void> onTabChanged(BrowserTab newTab, BrowserTab oldTab) async {
+    final url = await _webViewController?.getUrl();
+
+    if (newTab.url != oldTab.url && url != newTab.url) {
+      await _webViewController?.loadUrl(
+        urlRequest: URLRequest(
+          url: widget.tab.url,
+        ),
+      );
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
     return InAppWebView(
+      initialOptions: _initialOptions,
       onOverScrolled: _onOverScrolled,
       onScrollChanged: _onScrollChanged,
       initialUrlRequest: URLRequest(
         url: widget.tab.url,
       ),
+      onWebViewCreated: (controller) {
+        _webViewController = controller;
+      },
+      onLoadStart: (controller, url) => widget.onLoadStart?.call(url: url),
+      onLoadStop: (controller, url) => widget.onLoadStop?.call(url: url),
     );
   }
 

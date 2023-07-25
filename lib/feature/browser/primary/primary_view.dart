@@ -140,6 +140,8 @@ class _PrimaryViewState extends State<PrimaryView>
           onScroll: _onScroll,
           key: ValueKey(tab.id),
           onOverScroll: _onOverScroll,
+          onLoadStart: _onLoadStart,
+          onLoadStop: _onLoadStop,
         ),
       ),
     ];
@@ -250,6 +252,21 @@ class _PrimaryViewState extends State<PrimaryView>
   void _onOverScroll({required int y}) {
     if (y > 0) {
       context.read<HudBloc>().add(const HudEvent.hide());
+    }
+  }
+
+  void _onLoadStart({required Uri? url}) {
+    _setUrl(url);
+  }
+
+  void _onLoadStop({required Uri? url}) {
+    _setUrl(url);
+  }
+
+  void _setUrl(Uri? url) {
+    final browserTabsBloc = context.read<BrowserTabsBloc>();
+    if (url != null) {
+      browserTabsBloc.add(BrowserTabsEvent.setUrl(uri: url));
     }
   }
 }
