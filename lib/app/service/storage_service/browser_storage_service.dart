@@ -345,13 +345,13 @@ class BrowserStorageService extends AbstractStorageService {
   /// Set browser tab
   Future<void> setBrowserTab(BrowserTab tab) async {
     final id = tab.id;
-    final tabs = browserTabs..removeWhere((tab) => tab.id == id);
+    final tabs = [...browserTabs]..removeWhere((tab) => tab.id == id);
     await saveBrowserTabs([...tabs, tab]);
   }
 
   /// Remove browser tab by id
   Future<void> removeBrowserTab(int id) async {
-    final tabs = browserTabs..removeWhere((tab) => tab.id == id);
+    final tabs = [...browserTabs]..removeWhere((tab) => tab.id == id);
 
     return saveBrowserTabs(tabs);
   }
