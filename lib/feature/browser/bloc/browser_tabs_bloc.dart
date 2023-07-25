@@ -14,23 +14,24 @@ part 'browser_tabs_bloc.freezed.dart';
 final _emptyUri = Uri.parse('');
 
 class BrowserTabsBloc extends Bloc<BrowserTabsEvent, BrowserTabsState> {
-  BrowserTabsBloc(this.browserStorageService)
+  BrowserTabsBloc(this.browserTabsStorageService)
       : super(
           BrowserTabsState(
-            tabs: browserStorageService.browserTabs,
-            currentTabId: browserStorageService.browserActiveTabId,
+            tabs: browserTabsStorageService.browserTabs,
+            currentTabId: browserTabsStorageService.browserActiveTabId,
           ),
         ) {
     _registerHandlers();
 
-    _browserTabsSubscription = browserStorageService.browserTabsStream.listen(
+    _browserTabsSubscription =
+        browserTabsStorageService.browserTabsStream.listen(
       (tabs) {
         add(BrowserTabsEvent.setTabs(tabs: tabs));
       },
     );
 
     _browserActiveTabIdSubscription =
-        browserStorageService.browserActiveTabIdStream.listen(
+        browserTabsStorageService.browserActiveTabIdStream.listen(
       (id) {
         add(BrowserTabsEvent.setActiveTabId(id: id));
       },
@@ -38,7 +39,7 @@ class BrowserTabsBloc extends Bloc<BrowserTabsEvent, BrowserTabsState> {
   }
   static final _log = Logger('BrowserTabsBloc');
 
-  final BrowserStorageService browserStorageService;
+  final BrowserTabsStorageService browserTabsStorageService;
 
   StreamSubscription<List<BrowserTab>>? _browserTabsSubscription;
   StreamSubscription<int>? _browserActiveTabIdSubscription;
@@ -67,7 +68,7 @@ class BrowserTabsBloc extends Bloc<BrowserTabsEvent, BrowserTabsState> {
         // Service will generate unique id for the tab
         id: 0,
       );
-      browserStorageService.addBrowserTab(tab);
+      browserTabsStorageService.addBrowserTab(tab);
     });
     on<_AddEmpty>((event, emit) {
       final tab = BrowserTab(
@@ -78,32 +79,32 @@ class BrowserTabsBloc extends Bloc<BrowserTabsEvent, BrowserTabsState> {
         // Service will generate unique id for the tab
         id: 0,
       );
-      browserStorageService.addBrowserTab(tab);
+      browserTabsStorageService.addBrowserTab(tab);
     });
     on<_SetUrl>((event, emit) {
-      final tab = browserStorageService.browserTabActive?.copyWith(
+      final tab = browserTabsStorageService.browserTabActive?.copyWith(
         url: event.uri,
       );
       if (tab != null) {
-        browserStorageService.setBrowserTab(tab);
+        browserTabsStorageService.setBrowserTab(tab);
       } else {
         _log.severe('No active tab');
       }
     });
     on<_Remove>((event, emit) {
-      browserStorageService.removeBrowserTab(event.id);
+      browserTabsStorageService.removeBrowserTab(event.id);
     });
     on<_SetActive>((event, emit) {
-      browserStorageService.saveBrowserActiveTabId(event.id);
+      browserTabsStorageService.saveBrowserActiveTabId(event.id);
     });
     on<_CloseAll>((event, emit) {
-      browserStorageService.clearBrowserTabs();
+      browserTabsStorageService.clearBrowserTabs();
     });
     on<_SetTabs>((event, emit) {
       emit(state.copyWith(tabs: event.tabs));
     });
     on<_SetActiveTabId>((event, emit) {
-      browserStorageService.saveBrowserActiveTabId(event.id);
+      browserTabsStorageService.saveBrowserActiveTabId(event.id);
       emit(state.copyWith(currentTabId: event.id));
     });
   }
