@@ -168,16 +168,18 @@ class _PrimaryViewState extends State<PrimaryView>
               // It should be below HUD when HUD is visible, and fill entire
               // screen when HUD is not visible
               // We don't animate height of the content because it's a webview
-              Positioned.fill(
-                // Just change bottom padding according to HUD visibility
-                // instantly
-                bottom: _isHudVisible ? BrowserBottomMenuCommon.height : 0,
+
+              // But animate content position to follow search
+              // bar animation
+              PositionedTransition(
+                rect: _contentAnimation,
                 child: Stack(
                   children: [
-                    // But animate content position to follow search
-                    // bar animation
-                    PositionedTransition(
-                      rect: _contentAnimation,
+                    Positioned.fill(
+                      bottom: _isHudVisible
+                          ? BrowserSearchBar.height +
+                              BrowserBottomMenuCommon.height
+                          : 0,
                       child: child!,
                     ),
                   ],
