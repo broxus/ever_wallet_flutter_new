@@ -8,7 +8,7 @@ class BrowserSearchBar extends StatelessWidget {
     required this.onSubmitted,
     super.key,
   });
-  final void Function(String)? onSubmitted;
+  final ValueChanged<String>? onSubmitted;
 
   static const height = DimensSize.d64;
 
