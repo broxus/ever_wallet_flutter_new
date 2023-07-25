@@ -1,4 +1,4 @@
-//GENERATED BARREL FILE
+export 'browser_search_bar.dart';
 export 'common_checkbox.dart';
 export 'common_input.dart';
 export 'common_radio.dart';

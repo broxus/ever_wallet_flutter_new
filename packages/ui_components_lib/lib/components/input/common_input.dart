@@ -48,6 +48,7 @@ class CommonInput extends StatefulWidget {
     this.hintStyle,
     this.enabledBorderColor,
     this.inactiveBorderColor,
+    this.focusedBorderColor,
     this.errorColor,
     this.obscureText = false,
     this.titleText,
@@ -124,6 +125,9 @@ class CommonInput extends StatefulWidget {
 
   /// Border color for input without focus
   final Color? inactiveBorderColor;
+
+  /// Border color for input with focus
+  final Color? focusedBorderColor;
 
   /// Border color for input with error
   final Color? errorColor;
@@ -373,13 +377,13 @@ class _CommonInputState extends State<CommonInput> {
           enabledBorder: SquircleInputBorder(
             squircleRadius: DimensRadius.medium,
             borderSide: BorderSide(
-              color: widget.inactiveBorderColor ?? colors.strokePrimary,
+              color: widget.enabledBorderColor ?? colors.strokePrimary,
             ),
           ),
           focusedBorder: SquircleInputBorder(
             squircleRadius: DimensRadius.medium,
             borderSide: BorderSide(
-              color: colors.strokeContrast,
+              color: widget.focusedBorderColor ?? colors.strokeContrast,
             ),
           ),
           errorBorder: SquircleInputBorder(

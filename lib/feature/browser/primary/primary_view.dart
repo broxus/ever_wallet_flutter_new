@@ -124,7 +124,8 @@ class _PrimaryViewState extends State<PrimaryView>
 
   @override
   Widget build(BuildContext context) {
-    final currentTabId = context.watch<BrowserTabsBloc>().state.currentTabId;
+    final currentTab = context.watch<BrowserTabsBloc>().activeTab;
+    final currentTabId = currentTab?.id;
     final tabs = context.watch<BrowserTabsBloc>().state.tabs;
     final currentTabIndex = tabs.indexWhere((tab) => tab.id == currentTabId);
 
@@ -191,6 +192,7 @@ class _PrimaryViewState extends State<PrimaryView>
                 child: SlideTransition(
                   position: _searchBarAnimation,
                   child: BrowserSearchBar(
+                    uri: currentTab?.url,
                     onSubmitted: _onSearchSubmitted,
                   ),
                 ),
@@ -221,7 +223,11 @@ class _PrimaryViewState extends State<PrimaryView>
     );
   }
 
-  void _onSearchSubmitted(String text) {
+  void _onSearchSubmitted(String? text) {
+    if (text == null) {
+      return;
+    }
+
     final browserTabsBloc = context.read<BrowserTabsBloc>();
     final activeTab = browserTabsBloc.activeTab;
     browserTabsBloc.add(

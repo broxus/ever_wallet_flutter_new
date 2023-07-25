@@ -5,38 +5,23 @@ import 'package:ui_components_lib/ui_components_lib.dart';
 
 class BrowserSearchBar extends StatelessWidget {
   const BrowserSearchBar({
-    required this.onSubmitted,
+    this.uri,
+    this.onSubmitted,
     super.key,
   });
-  final ValueChanged<String>? onSubmitted;
+  final Uri? uri;
+  final ValueChanged<String?>? onSubmitted;
 
   static const height = DimensSize.d64;
 
   @override
   Widget build(BuildContext context) {
-    final colors = context.themeStyle.colors;
-
-    return ColoredBox(
-      color: colors.appBackground,
-      child: Container(
-        padding: const EdgeInsets.symmetric(
-          horizontal: DimensSize.d16,
-        ),
-        child: SizedBox(
-          height: height,
-          child: Center(
-            child: CommonInput(
-              height: DimensSize.d40,
-              autocorrect: false,
-              hintText: LocaleKeys.browserSearchURL.tr(),
-              prefixIcon: CommonIconWidget.svg(
-                svg: Assets.images.search.path,
-              ),
-              onSubmitted: onSubmitted,
-            ),
-          ),
-        ),
-      ),
+    // final colors = context.themeStyle.colors;
+    return BrowserSearchBarInput(
+      uri: uri,
+      hintText: LocaleKeys.browserSearchURL.tr(),
+      cancelText: LocaleKeys.browserSearchURLCancel.tr(),
+      onSubmitted: onSubmitted,
     );
   }
 }
