@@ -6,6 +6,8 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
 import 'package:ui_components_lib/ui_components_lib.dart';
 
+const _searchEngineUri = 'https://duckduckgo.com/?q=';
+
 class PrimaryView extends StatefulWidget {
   const PrimaryView({super.key});
 
@@ -228,12 +230,17 @@ class _PrimaryViewState extends State<PrimaryView>
       return;
     }
 
+    var uri = Uri.parse(text);
+    if (!uri.hasScheme) {
+      uri = Uri.parse('$_searchEngineUri$text');
+    }
+
     final browserTabsBloc = context.read<BrowserTabsBloc>();
     final activeTab = browserTabsBloc.activeTab;
     browserTabsBloc.add(
       activeTab != null
-          ? BrowserTabsEvent.setUrl(id: activeTab.id, uri: Uri.parse(text))
-          : BrowserTabsEvent.add(uri: Uri.parse(text)),
+          ? BrowserTabsEvent.setUrl(id: activeTab.id, uri: uri)
+          : BrowserTabsEvent.add(uri: uri),
     );
   }
 
