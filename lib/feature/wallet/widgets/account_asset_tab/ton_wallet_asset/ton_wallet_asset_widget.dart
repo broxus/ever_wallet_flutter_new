@@ -33,6 +33,7 @@ class TonWalletAssetWidget extends StatelessWidget {
                 tokenBalance: tokenBalance,
                 fiatBalance: fiatBalance,
                 icon: TonWalletIconWidget(path: iconPath),
+                // ignore: no-empty-block
                 onPressed: () {},
               );
             },

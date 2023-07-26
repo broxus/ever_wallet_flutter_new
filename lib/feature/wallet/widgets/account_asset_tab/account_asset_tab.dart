@@ -55,6 +55,7 @@ class AccountAssetsTab extends StatelessWidget {
               CommonButton.primary(
                 fillWidth: true,
                 text: LocaleKeys.manageAssets.tr(),
+                // ignore: no-empty-block
                 onPressed: () {},
               ),
             ],

@@ -38,6 +38,7 @@ class TokenWalletAssetWidget extends StatelessWidget {
                 tokenBalance: tokenBalance,
                 fiatBalance: fiatBalance,
                 icon: TokenWalletIconWidget(asset: asset),
+                // ignore: no-empty-block
                 onPressed: () {},
               );
             },

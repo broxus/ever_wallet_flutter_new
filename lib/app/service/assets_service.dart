@@ -37,6 +37,7 @@ class AssetsService {
         _contractsUpdateListener,
       );
       // listen needs to enable stream api
+      // ignore: no-empty-block
     }).listen((_) {});
   }
 
@@ -74,6 +75,7 @@ class AssetsService {
         final wallets =
             account?.additionalAssets[transport.transport.group]?.tokenWallets;
         if (wallets == null) return contracts;
+
         return contracts
             .where(
               (contract) =>
