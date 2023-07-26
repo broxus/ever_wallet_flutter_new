@@ -174,6 +174,7 @@ void main() {
   late EncryptedStorage encryptedStorage;
   late GeneralStorageService storage;
   late BrowserStorageService browserStorage;
+  late BrowserTabsStorageService browserTabsStorage;
   late NekotonStorageService accountSeedStorage;
 
   Future<void> checkMigration() async {
@@ -275,9 +276,9 @@ void main() {
     expect(storage.currentKey, _publicKey);
 
     /// Browser
-    expect(await browserStorage.readBrowserTabs(), [_browserTab]);
-    expect(browserStorage.browserTabs, [_browserTab]);
-    expect(await browserStorage.readBrowserActiveTabId(), -1);
+    expect(await browserTabsStorage.readBrowserTabs(), [_browserTab]);
+    expect(browserTabsStorage.browserTabs, [_browserTab]);
+    expect(await browserTabsStorage.readBrowserActiveTabId(), -1);
   }
 
   setUp(() async {
@@ -287,6 +288,7 @@ void main() {
     await encryptedStorage.clearAll();
     storage = GeneralStorageService(encryptedStorage);
     browserStorage = BrowserStorageService(encryptedStorage);
+    browserTabsStorage = BrowserTabsStorageService(encryptedStorage);
     accountSeedStorage = NekotonStorageService(encryptedStorage);
     repository = NekotonRepository();
     await Hive.deleteFromDisk();
@@ -325,6 +327,7 @@ void main() {
       final migration = MigrationService(
         storage,
         browserStorage,
+        browserTabsStorage,
         accountSeedStorage,
         hive,
       );
@@ -338,6 +341,7 @@ void main() {
       final migration = MigrationService(
         storage,
         browserStorage,
+        browserTabsStorage,
         accountSeedStorage,
         hive,
       );
@@ -351,6 +355,7 @@ void main() {
       final migration = MigrationService(
         storage,
         browserStorage,
+        browserTabsStorage,
         accountSeedStorage,
         hive,
       );
@@ -365,6 +370,7 @@ void main() {
       final migration = MigrationService(
         storage,
         browserStorage,
+        browserTabsStorage,
         accountSeedStorage,
         hive,
       );
@@ -382,6 +388,7 @@ void main() {
       final migration = MigrationService(
         storage,
         browserStorage,
+        browserTabsStorage,
         accountSeedStorage,
         hive,
       );
@@ -534,10 +541,10 @@ void main() {
       expect(storage.currentKey?.publicKey, hive.currentKey);
 
       /// Browser
-      expect(await browserStorage.readBrowserTabs(), hive.browserTabs);
-      expect(browserStorage.browserTabs, hive.browserTabs);
+      expect(await browserTabsStorage.readBrowserTabs(), hive.browserTabs);
+      expect(browserTabsStorage.browserTabs, hive.browserTabs);
       expect(
-        await browserStorage.readBrowserActiveTabId(),
+        await browserTabsStorage.readBrowserActiveTabId(),
         hive.browserTabsLastIndex,
       );
       expect(hive.checkIfSensitiveBoxesOpened(), isTrue);
@@ -553,6 +560,7 @@ void main() {
       final migration = MigrationService(
         storage,
         browserStorage,
+        browserTabsStorage,
         accountSeedStorage,
         hive,
       );
@@ -577,6 +585,7 @@ void main() {
       await MigrationService.migrateWithHiveInit(
         storage,
         browserStorage,
+        browserTabsStorage,
         accountSeedStorage,
       );
 

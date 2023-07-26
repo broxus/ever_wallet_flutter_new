@@ -16,7 +16,7 @@ class _BrowserPageState extends State<BrowserPage> {
   @override
   Widget build(BuildContext context) {
     return BlocProvider<BrowserTabsBloc>(
-      create: (context) => BrowserTabsBloc(inject<BrowserStorageService>()),
+      create: (context) => BrowserTabsBloc(inject<BrowserTabsStorageService>()),
       child: SafeArea(
         child: BrowserView(child: widget.child),
       ),

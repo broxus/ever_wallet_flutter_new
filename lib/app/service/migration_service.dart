@@ -712,12 +712,14 @@ class MigrationService {
   MigrationService(
     this._storage,
     this._browserStorage,
+    this._browserTabsStorageService,
     this._accountSeedStorage,
     this._hive,
   );
 
   final GeneralStorageService _storage;
   final BrowserStorageService _browserStorage;
+  final BrowserTabsStorageService _browserTabsStorageService;
   final NekotonStorageService _accountSeedStorage;
   final HiveSourceMigration _hive;
 
@@ -725,11 +727,13 @@ class MigrationService {
   static Future<void> migrateWithHiveInit(
     GeneralStorageService storage,
     BrowserStorageService browserStorage,
+    BrowserTabsStorageService browserTabsStorageService,
     NekotonStorageService accountSeedStorage,
   ) async {
     return MigrationService(
       storage,
       browserStorage,
+      browserTabsStorageService,
       accountSeedStorage,
       await HiveSourceMigration.create(),
     ).migrate();
@@ -875,8 +879,9 @@ class MigrationService {
 
     /// Browser
     /// After migration browser tab id will be equal to index in tabs list.
-    await _browserStorage.saveBrowserTabs(_hive.browserTabs);
-    await _browserStorage.saveBrowserActiveTabId(_hive.browserTabsLastIndex);
+    await _browserTabsStorageService.saveBrowserTabs(_hive.browserTabs);
+    await _browserTabsStorageService
+        .saveBrowserActiveTabId(_hive.browserTabsLastIndex);
   }
 
   /// Complete migration by deleting temp file and closing boxes.

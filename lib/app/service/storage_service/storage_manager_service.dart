@@ -7,6 +7,7 @@ class StorageManagerService {
   StorageManagerService(
     GeneralStorageService general,
     BrowserStorageService browser,
+    BrowserTabsStorageService browserTabs,
     NekotonStorageService accountSeed,
     NekotonRepositoryStorageService nekotonRepositoryStorageService,
     TonWalletStorageService tonWalletStorageService,
@@ -14,6 +15,7 @@ class StorageManagerService {
   ) : _storages = [
           general,
           browser,
+          browserTabs,
           accountSeed,
           nekotonRepositoryStorageService,
           tonWalletStorageService,

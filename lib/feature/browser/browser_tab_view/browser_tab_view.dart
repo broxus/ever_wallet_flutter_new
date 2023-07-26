@@ -14,6 +14,7 @@ typedef BrowserOnOverScrollCallback = void Function({
 });
 
 typedef BrowserOnNavigateCallback = void Function({
+  required int id,
   required Uri? url,
 });
 
@@ -61,16 +62,16 @@ class _BrowserTabViewState extends State<BrowserTabView> {
   void didUpdateWidget(BrowserTabView oldWidget) {
     super.didUpdateWidget(oldWidget);
 
-    onTabChanged(widget.tab, oldWidget.tab);
+    _handleTabChanged(widget.tab, oldWidget.tab);
   }
 
-  Future<void> onTabChanged(BrowserTab newTab, BrowserTab oldTab) async {
+  Future<void> _handleTabChanged(BrowserTab newTab, BrowserTab oldTab) async {
     final url = await _webViewController?.getUrl();
 
     if (newTab.url != oldTab.url && url != newTab.url) {
       await _webViewController?.loadUrl(
         urlRequest: URLRequest(
-          url: widget.tab.url,
+          url: newTab.url,
         ),
       );
     }
@@ -78,18 +79,18 @@ class _BrowserTabViewState extends State<BrowserTabView> {
 
   @override
   Widget build(BuildContext context) {
+    final id = widget.tab.id;
     return InAppWebView(
+      key: ValueKey(widget.tab.id),
       initialOptions: _initialOptions,
       onOverScrolled: _onOverScrolled,
       onScrollChanged: _onScrollChanged,
-      initialUrlRequest: URLRequest(
-        url: widget.tab.url,
-      ),
-      onWebViewCreated: (controller) {
-        _webViewController = controller;
+      onWebViewCreated: onWebViewCreated,
+      onLoadStart: (controller, url) {
+        widget.onLoadStart?.call(id: id, url: url);
       },
-      onLoadStart: (controller, url) => widget.onLoadStart?.call(url: url),
-      onLoadStop: (controller, url) => widget.onLoadStop?.call(url: url),
+      onLoadStop: (controller, url) =>
+          widget.onLoadStop?.call(id: id, url: url),
     );
   }
 
@@ -186,6 +187,13 @@ class _BrowserTabViewState extends State<BrowserTabView> {
       _scrollGestureYStart = y;
       // Reset gesture dY
       _scrollGestureDY = 0;
+    }
+  }
+
+  void onWebViewCreated(InAppWebViewController controller) {
+    _webViewController = controller;
+    if (widget.tab.url.toString().isNotEmpty) {
+      controller.loadUrl(urlRequest: URLRequest(url: widget.tab.url));
     }
   }
 }
