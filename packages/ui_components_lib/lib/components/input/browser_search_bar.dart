@@ -87,7 +87,6 @@ class _BrowserSearchBarInputState extends State<BrowserSearchBarInput> {
                   children: [
                     CommonInput(
                       fillColor: colors.appBackground,
-                      isDense: true,
                       controller: _textEditingController,
                       needClearButton: false,
                       height: DimensSize.d40,
@@ -213,15 +212,18 @@ class _BrowserSearchBarInputState extends State<BrowserSearchBarInput> {
   Widget? _getIcon(String? svg, IconData icondata) {
     final colors = context.themeStyle.colors;
 
-    return svg != null
-        ? CommonIconWidget.svg(
-            svg: svg,
-            color: colors.textSecondary,
-            size: DimensSize.d20,
-          )
-        : CommonIconWidget.icon(
-            icon: icondata,
-            color: colors.textSecondary,
-          );
+    return Padding(
+      padding: const EdgeInsets.all(DimensSize.d8),
+      child: svg != null
+          ? CommonIconWidget.svg(
+              svg: svg,
+              color: colors.textSecondary,
+              size: DimensSize.d20,
+            )
+          : CommonIconWidget.icon(
+              icon: icondata,
+              color: colors.textSecondary,
+            ),
+    );
   }
 }

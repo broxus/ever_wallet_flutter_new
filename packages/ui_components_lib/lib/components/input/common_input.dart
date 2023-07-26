@@ -54,7 +54,6 @@ class CommonInput extends StatefulWidget {
     this.titleText,
     this.subtitleText,
     this.prefixIconConstraints,
-    this.isDense,
     this.fillColor,
   });
 
@@ -160,10 +159,6 @@ class CommonInput extends StatefulWidget {
 
   /// If text should look like password, default false
   final bool obscureText;
-
-  /// Whether the [InputDecorator.child] is part of a dense form (i.e., uses less
-  /// vertical space).
-  final bool? isDense;
 
   final Color? fillColor;
 
@@ -367,7 +362,6 @@ class _CommonInputState extends State<CommonInput> {
         decoration: InputDecoration(
           filled: widget.fillColor != null,
           fillColor: widget.fillColor,
-          isDense: widget.isDense,
           errorText: hasError ? '' : null,
           errorStyle: const TextStyle(fontSize: 0, height: 0),
           hintText: widget.hintText,
