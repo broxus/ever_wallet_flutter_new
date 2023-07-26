@@ -1,0 +1,182 @@
+import 'package:app/data/models/models.dart';
+import 'package:app/generated/generated.dart';
+import 'package:flutter/material.dart';
+import 'package:nekoton_repository/nekoton_repository.dart';
+import 'package:ui_components_lib/ui_components_lib.dart';
+
+/// Widget that is able to display icon for TokenWallet
+class TokenWalletIconWidget extends StatelessWidget {
+  const TokenWalletIconWidget({
+    required this.asset,
+    super.key,
+  });
+
+  final TokenContractAsset asset;
+
+  @override
+  Widget build(BuildContext context) {
+    return SizedBox.square(
+      dimension: DimensSize.d40,
+      child: Stack(
+        children: [
+          ClipOval(
+            child: asset.logoURI != null
+                ? SvgPicture.network(
+                    asset.logoURI!,
+                    width: DimensSize.d40,
+                    height: DimensSize.d40,
+                  )
+                : CustomPaint(painter: _AvatarPainter(asset.address.address)),
+          ),
+          if (asset.version == TokenWalletVersion.oldTip3v4)
+            const Positioned(
+              right: 0,
+              bottom: 0,
+              child: TokenAssetOldLabel(),
+            ),
+        ],
+      ),
+    );
+  }
+}
+
+class TokenAssetOldLabel extends StatelessWidget {
+  const TokenAssetOldLabel({super.key});
+
+  @override
+  Widget build(BuildContext context) {
+    final colors = context.themeStyle.colors;
+
+    return Container(
+      decoration: BoxDecoration(
+        borderRadius: BorderRadius.circular(DimensRadius.small),
+        color: colors.alert,
+      ),
+      padding: const EdgeInsets.all(DimensSize.d4),
+      child: Text(
+        LocaleKeys.oldWord.tr(),
+        style: StyleRes.addRegular.copyWith(
+          color: colors.textPrimary,
+        ),
+      ),
+    );
+  }
+}
+
+class _AvatarPainter extends CustomPainter {
+  const _AvatarPainter(this.address);
+
+  final String address;
+
+  @override
+  void paint(Canvas canvas, Size size) {
+    final hash = address.split(':').last;
+
+    final colors = List.generate(
+      16,
+      (index) => '#${hash[0]}${hash[index * 4]}${hash[index * 4 + 1]}'
+          '${hash[index * 4 + 2]}${hash[63]}${hash[index * 4 + 3]}',
+    );
+
+    canvas
+      ..drawCircle(
+        const Offset(3, 3),
+        7,
+        Paint()..color = colors[0].toColor(),
+      )
+      ..drawCircle(
+        const Offset(3, 13),
+        7,
+        Paint()..color = colors[4].toColor(),
+      )
+      ..drawCircle(
+        const Offset(3, 23),
+        7,
+        Paint()..color = colors[8].toColor(),
+      )
+      ..drawCircle(
+        const Offset(3, 33),
+        7,
+        Paint()..color = colors[12].toColor(),
+      )
+      ..drawCircle(
+        const Offset(13, 3),
+        7,
+        Paint()..color = colors[1].toColor(),
+      )
+      ..drawCircle(
+        const Offset(13, 13),
+        7,
+        Paint()..color = colors[5].toColor(),
+      )
+      ..drawCircle(
+        const Offset(13, 23),
+        7,
+        Paint()..color = colors[9].toColor(),
+      )
+      ..drawCircle(
+        const Offset(13, 33),
+        7,
+        Paint()..color = colors[13].toColor(),
+      )
+      ..drawCircle(
+        const Offset(23, 3),
+        7,
+        Paint()..color = colors[2].toColor(),
+      )
+      ..drawCircle(
+        const Offset(23, 13),
+        7,
+        Paint()..color = colors[6].toColor(),
+      )
+      ..drawCircle(
+        const Offset(23, 23),
+        7,
+        Paint()..color = colors[10].toColor(),
+      )
+      ..drawCircle(
+        const Offset(23, 33),
+        7,
+        Paint()..color = colors[14].toColor(),
+      )
+      ..drawCircle(
+        const Offset(33, 3),
+        7,
+        Paint()..color = colors[3].toColor(),
+      )
+      ..drawCircle(
+        const Offset(33, 13),
+        7,
+        Paint()..color = colors[7].toColor(),
+      )
+      ..drawCircle(
+        const Offset(33, 23),
+        7,
+        Paint()..color = colors[11].toColor(),
+      )
+      ..drawCircle(
+        const Offset(33, 33),
+        7,
+        Paint()..color = colors[15].toColor(),
+      );
+  }
+
+  @override
+  bool shouldRepaint(_AvatarPainter oldDelegate) => false;
+}
+
+extension on String {
+  Color toColor() {
+    var hexColor = replaceAll('#', '');
+
+    if (hexColor.length == 6) {
+      hexColor = 'FF$hexColor';
+    }
+
+    if (hexColor.length == 8) {
+      return Color(int.parse('0x$hexColor'));
+    }
+
+    throw Exception('Invalid color format');
+  }
+}

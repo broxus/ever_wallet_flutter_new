@@ -32,7 +32,7 @@ extension TokenContractAssetX on TokenContractAsset {
         decimals: decimals,
         address: address.address,
         logoURI: logoURI,
-        version: version,
+        version: version.toInt(),
       );
 }
 
@@ -44,7 +44,14 @@ extension TokenContractAssetDtoX on TokenContractAssetDto {
         decimals: decimals,
         address: Address(address: address),
         logoURI: logoURI,
-        version: version,
+        version: version.toVersion(),
         networkType: type,
       );
+}
+
+extension on TokenWalletVersion {
+  int toInt() => switch (this) {
+        TokenWalletVersion.oldTip3v4 => 4,
+        TokenWalletVersion.tip3 => 5,
+      };
 }

@@ -34,7 +34,7 @@ class AccountCardCubit extends Cubit<AccountCardState> {
   StreamSubscription<void>? _thisWalletSubscription;
   StreamSubscription<Fixed>? _balanceSubscription;
 
-  Fixed? _cachedFiatBalance;
+  Fixed _cachedFiatBalance = Fixed.zero;
 
   TonWallet? wallet;
 
@@ -60,6 +60,10 @@ class AccountCardCubit extends Cubit<AccountCardState> {
         w.fieldUpdatesStream.listen((_) => _updateWalletData(w));
     _balanceSubscription =
         balanceService.accountOverallBalance(w.address).listen((fiat) {
+      if (fiat == Fixed.zero && _cachedFiatBalance == Fixed.zero) {
+        return;
+      }
+
       _cachedFiatBalance = fiat;
       _updateWalletData(w);
     });
@@ -78,8 +82,7 @@ class AccountCardCubit extends Cubit<AccountCardState> {
         ? '${localCustodians.length}/${custodians.length}'
         : null;
 
-    final money =
-        balance == null ? null : currencyConvertService.convert(balance);
+    final money = currencyConvertService.convert(balance);
 
     emit(
       AccountCardState.data(

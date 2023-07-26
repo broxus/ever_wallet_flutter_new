@@ -7,5 +7,8 @@ class AccountAssetTabState with _$AccountAssetTabState {
 
   /// This state will produce new additionalAssets with account when it will
   /// change
-  const factory AccountAssetTabState.account(KeyAccount account) = _Account;
+  const factory AccountAssetTabState.accounts(
+    TonWalletAsset tonWallet,
+    List<TokenContractAsset>? tokens,
+  ) = _Accounts;
 }
