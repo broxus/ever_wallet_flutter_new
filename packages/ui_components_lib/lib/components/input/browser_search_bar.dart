@@ -128,31 +128,25 @@ class _BrowserSearchBarInputState extends State<BrowserSearchBarInput> {
   void _handleFocusChange() {
     setState(() {
       _focused = _focusNode.hasFocus;
+      _updateTextField();
     });
-    _updateTextField();
   }
 
   void _updateTextField() {
-    setState(() {
-      if (_focused) {
-        _textEditingController
-          ..text = _getTextFieldText()
-          ..selection = TextSelection(
-            baseOffset: 0,
-            extentOffset: _textEditingController.text.length,
-          );
-      } else {
-        _textEditingController.text = _getTextFieldText();
-      }
-    });
+    if (_focused) {
+      _textEditingController
+        ..text = _getTextFieldText()
+        ..selection = TextSelection(
+          baseOffset: 0,
+          extentOffset: _textEditingController.text.length,
+        );
+    } else {
+      _textEditingController.text = _getTextFieldText();
+    }
   }
 
   String _getTextFieldText() {
-    if (_focused) {
-      return widget.uri?.toString() ?? '';
-    } else {
-      return widget.uri?.host ?? '';
-    }
+    return _focused ? widget.uri?.toString() ?? '' : widget.uri?.host ?? '';
   }
 
   void _onSubmitted(String text) {
