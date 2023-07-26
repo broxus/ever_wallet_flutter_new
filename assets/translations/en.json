@@ -156,6 +156,7 @@
   "browserCloseAll": "Close All",
   "browserDone": "Done",
   "browserSearchURL": "Search or enter URL",
+  "browserSearchURLCancel": "Cancel",
   "walletWord": "Wallet",
   "browserWord": "Browser",
   "profileWord": "Profile",

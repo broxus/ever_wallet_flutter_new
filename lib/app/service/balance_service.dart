@@ -41,8 +41,6 @@ class BalanceService {
       final transport = value.$2;
       final account = value.$3;
 
-      // _logger.finest('');
-
       if (wallet == null || account == null) return Stream.value(Fixed.zero);
 
       /// Balance for native wallet, concatenate changing of balance

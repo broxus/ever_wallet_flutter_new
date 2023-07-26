@@ -1,13 +1,7 @@
-import 'package:app/app/router/app_route.dart';
+import 'package:app/app/router/router.dart';
 import 'package:app/feature/add_seed/enter_seed_name/view/enter_seed_name_view.dart';
 import 'package:flutter/material.dart';
 import 'package:ui_components_lib/ui_components_lib.dart';
-
-/// Name of path field for navigation
-const enterSeedNameCommand = 'command';
-
-/// Name of path field for navigation
-const enterSeedNameName = 'name';
 
 /// Commands that will be used to choose where to navigate after entering name
 enum EnterSeedNameCommand {
@@ -53,14 +47,14 @@ class EnterSeedNamePage extends StatelessWidget {
                   ? AppRoute.enterSeed.path
                   : AppRoute.enterSeedNamed.pathWithData(
                       pathParameters: {
-                        enterSeedNameName: name,
+                        enterSeedNameNamePathParam: name,
                       },
                     ),
               EnterSeedNameCommand.create => name == null
                   ? AppRoute.createSeed.path
                   : AppRoute.createSeedNamed.pathWithData(
                       pathParameters: {
-                        enterSeedNameName: name,
+                        enterSeedNameNamePathParam: name,
                       },
                     ),
             };

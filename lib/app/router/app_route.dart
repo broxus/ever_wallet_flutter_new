@@ -1,14 +1,10 @@
+import 'package:app/app/router/routs/routs.dart';
 import 'package:app/app/service/navigation/service/navigation_service.dart';
 import 'package:app/di/di.dart';
-import 'package:app/feature/add_seed/enter_seed_name/enter_seed_name.dart';
 import 'package:collection/collection.dart';
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:logging/logging.dart';
-
-const seedDetailPublicKeyPathParam = 'seedDetailPublicKey';
-const keyDetailPublicKeyPathParam = 'keyDetailPublicKey';
-const accountDetailAddressPathParam = 'accountDetailAddress';
 
 final RegExp _parameterRegExp = RegExp(r':(\w+)(\((?:\\.|[^\\()])+\))?');
 
@@ -68,7 +64,7 @@ enum AppRoute {
   ),
   createSeedNamed(
     '',
-    'createSeed/:$enterSeedNameName',
+    'createSeed/:$enterSeedNameNamePathParam',
     isSaveLocation: true,
   ),
   enterSeed(
@@ -78,7 +74,7 @@ enum AppRoute {
   ),
   enterSeedNamed(
     '',
-    'enterSeed/:$enterSeedNameName',
+    'enterSeed/:$enterSeedNameNamePathParam',
     isSaveLocation: true,
   ),
 
@@ -86,7 +82,7 @@ enum AppRoute {
   // see <enterSeedNameImportCommand> and <enterSeedNameCreateCommand>.
   enterSeedName(
     '',
-    'enterSeedName/:$enterSeedNameCommand',
+    'enterSeedName/:$enterSeedNameCommandPathParam',
     isSaveLocation: true,
   ),
   checkSeed(
@@ -305,6 +301,20 @@ extension NavigationHelper on BuildContext {
     return GoRouter.of(this).go(
       Uri.decodeComponent(resultLocation.toString()),
       extra: extra,
+    );
+  }
+
+  /// Navigate to current location, but without query parameters.
+  void clearQueryParams() {
+    if (!mounted) return;
+
+    final currentLocation = inject<NavigationService>().location;
+    final resultLocation = Uri.parse(currentLocation).replace(
+      queryParameters: {},
+    );
+
+    return GoRouter.of(this).go(
+      Uri.decodeComponent(resultLocation.toString()),
     );
   }
 

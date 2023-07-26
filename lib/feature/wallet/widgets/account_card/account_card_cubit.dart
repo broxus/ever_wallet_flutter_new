@@ -23,7 +23,12 @@ class AccountCardCubit extends Cubit<AccountCardState> {
             account: account,
             walletName: _walletName(nekotonRepository, account),
           ),
-        );
+        ) {
+    _walletsSubscription = nekotonRepository.walletsStream.listen((wallets) {
+      final wl = wallets.firstWhereOrNull((w) => w.address == account.address);
+      if (wl != null) _initWallet(wl);
+    });
+  }
 
   final CurrencyConvertService currencyConvertService;
   final BalanceService balanceService;
@@ -37,20 +42,6 @@ class AccountCardCubit extends Cubit<AccountCardState> {
   Fixed _cachedFiatBalance = Fixed.zero;
 
   TonWallet? wallet;
-
-  void init() {
-    emit(
-      AccountCardState.data(
-        account: account,
-        walletName: _walletName(nekotonRepository, account),
-      ),
-    );
-
-    _walletsSubscription = nekotonRepository.walletsStream.listen((wallets) {
-      final wl = wallets.firstWhereOrNull((w) => w.address == account.address);
-      if (wl != null) _initWallet(wl);
-    });
-  }
 
   void _initWallet(TonWallet w) {
     if (wallet != null) return;

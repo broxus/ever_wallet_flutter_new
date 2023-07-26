@@ -66,6 +66,13 @@ class WalletCubit extends Cubit<WalletState> {
       );
     }
 
+    if (current != null) {
+      _tryStartPolling(current.address);
+    } else {
+      // add new account tab selected
+      nekotonRepository.stopPolling();
+    }
+
     emit(
       WalletState.accounts(
         list: accounts,
@@ -87,6 +94,21 @@ class WalletCubit extends Cubit<WalletState> {
     } else if (!_onScroll && currentPage != currentPagePosition) {
       _onScroll = true;
     }
+  }
+
+  StreamSubscription<dynamic>? _subscription;
+
+  /// Start listening for wallet subscriptions and when subscription will be
+  /// created, start polling.
+  void _tryStartPolling(Address address) {
+    _subscription?.cancel();
+
+    _subscription = nekotonRepository.tokenWalletsStream.listen((wallets) {
+      if (wallets.map((e) => e.address).contains(address)) {
+        nekotonRepository.startPolling(address);
+        _subscription?.cancel();
+      }
+    });
   }
 
   @override

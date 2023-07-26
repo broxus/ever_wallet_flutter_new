@@ -278,6 +278,15 @@ class _InputsStoryState extends State<InputsStory> {
                 ),
               ),
 
+              const BrowserSearchBarInput(
+                hintText: 'Search or enter URL',
+                cancelText: 'Cancel',
+              ),
+              BrowserSearchBarInput(
+                uri: Uri.parse('https://pub.dev/packages/money2_improver'),
+                hintText: 'Search or enter URL',
+                cancelText: 'Cancel',
+              ),
               const SizedBox(height: DimensSize.d40),
             ],
           ),

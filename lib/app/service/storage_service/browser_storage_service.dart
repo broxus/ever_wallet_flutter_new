@@ -2,7 +2,6 @@ import 'dart:convert';
 
 import 'package:app/app/service/service.dart';
 import 'package:app/data/models/bookmark.dart';
-import 'package:app/data/models/browser_tab.dart';
 import 'package:app/data/models/permissions.dart';
 import 'package:app/data/models/search_history.dart';
 import 'package:app/data/models/site_meta_data.dart';
@@ -17,9 +16,6 @@ const _bookmarksKey = 'bookmarks_key';
 const _searchHistoryKey = 'search_history_key';
 const _siteMetaDataKey = 'site_meta_data_key';
 const _browserNeedKey = 'browser_need_key';
-const _browserTabsKey = 'browser_tabs_key';
-const _browserTabsLastIndexKey = 'browser_tabs_last_index_key';
-
 const _browserPreferencesKey = 'browser_preferences_key';
 
 /// This is a wrapper-class above [EncryptedStorage] that provides methods
@@ -35,7 +31,6 @@ class BrowserStorageService extends AbstractStorageService {
   Future<void> init() => Future.wait([
         _streamedBookmarks(),
         _streamedSearchHistory(),
-        _streamedBrowserTabs(),
       ]);
 
   @override
@@ -246,68 +241,6 @@ class BrowserStorageService extends AbstractStorageService {
   /// Set flag that Why Need Browser screen was shown
   Future<void> saveWhyNeedBrowser() => _storage
       .set(_browserNeedKey, jsonEncode(true), domain: _browserPreferencesKey);
-
-  /// Get last selected browser tab index
-  Future<int> get browserTabsLastIndex async {
-    final encoded = await _storage.get(
-      _browserTabsLastIndexKey,
-      domain: _browserPreferencesKey,
-    );
-
-    return int.tryParse(encoded ?? '') ?? -1;
-  }
-
-  /// Save last selected browser tab index
-  Future<void> saveBrowserTabsLastIndex(int index) => _storage.set(
-        _browserTabsLastIndexKey,
-        index.toString(),
-        domain: _browserPreferencesKey,
-      );
-
-  /// Subject of browser tabs
-  final _browserTabsSubject = BehaviorSubject<List<BrowserTab>>();
-
-  /// Stream of browser tabs
-  Stream<List<BrowserTab>> get browserTabsStream => _browserTabsSubject;
-
-  /// Get last cached browser tabs
-  List<BrowserTab> get browserTabs => _browserTabsSubject.value;
-
-  /// Put browser tabs to stream
-  Future<void> _streamedBrowserTabs() async =>
-      _browserTabsSubject.add(await readBrowserTabs());
-
-  /// Read from storage list of browser tabs from storage
-  Future<List<BrowserTab>> readBrowserTabs() async {
-    final encoded = await _storage.get(
-      _browserTabsKey,
-      domain: _browserPreferencesKey,
-    );
-    if (encoded == null) {
-      return [];
-    }
-    final list = jsonDecode(encoded) as List<dynamic>;
-
-    return list
-        .map((entry) => BrowserTab.fromJson(entry as Map<String, dynamic>))
-        .toList();
-  }
-
-  /// Save list of browser tabs to storage
-  Future<void> saveBrowserTabs(List<BrowserTab> tabs) async {
-    await _storage.set(
-      _browserTabsKey,
-      jsonEncode(tabs),
-      domain: _browserPreferencesKey,
-    );
-    await _streamedBrowserTabs();
-  }
-
-  /// Clear all browser tabs
-  Future<void> clearBrowserTabs() async {
-    await _storage.delete(_browserTabsKey, domain: _browserPreferencesKey);
-    _browserTabsSubject.add([]);
-  }
 
   /// Clear information about all preferences
   Future<void> clearPreferences() =>

@@ -8,6 +8,7 @@ Future<void> migrateStorage() async {
   await MigrationService.migrateWithHiveInit(
     inject<GeneralStorageService>(),
     inject<BrowserStorageService>(),
+    inject<BrowserTabsStorageService>(),
     inject<NekotonStorageService>(),
   );
   log.finest('MigrationService finished');
