@@ -34,7 +34,7 @@ extension BrowserTabX on BrowserTab {
 extension BrowserTabDtoX on BrowserTabDto {
   BrowserTab toModel(int id) => BrowserTab(
         url: Uri.parse(url),
-        sortingOrder: DateTime.now().millisecondsSinceEpoch,
+        sortingOrder: -1,
         image: image,
         title: title,
         id: '$id',
