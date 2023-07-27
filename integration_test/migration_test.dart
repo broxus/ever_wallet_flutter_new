@@ -47,7 +47,7 @@ const _everContractAsset = TokenContractAsset(
   ),
   logoURI:
       'https://raw.githubusercontent.com/broxus/ton-assets/master/icons/stEVER/logo.svg',
-  version: 5,
+  version: TokenWalletVersion.tip3,
   networkType: NetworkType.ever,
 );
 const _venomContractAsset = TokenContractAsset(
@@ -61,7 +61,7 @@ const _venomContractAsset = TokenContractAsset(
   ),
   logoURI:
       'https://raw.githubusercontent.com/BVFDT/venom-assets/master/icons/USDT/logo.svg',
-  version: 5,
+  version: TokenWalletVersion.tip3,
   networkType: NetworkType.venom,
 );
 const _everCurrency = CustomCurrency(

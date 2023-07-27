@@ -19,5 +19,10 @@ Future<void> configureFeatureServices() async {
     ..finest('CurrenciesService initializating...');
 
   inject<CurrenciesService>().init();
-  log.finest('CurrenciesService initialized');
+  log
+    ..finest('CurrenciesService initialized')
+    ..finest('AssetsService initializating...');
+
+  inject<AssetsService>().init();
+  log.finest('AssetsService initialized');
 }

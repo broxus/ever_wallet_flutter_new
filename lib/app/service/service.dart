@@ -1,4 +1,5 @@
 export 'app_lifecycle_service.dart';
+export 'assets_service.dart';
 export 'balance_service.dart';
 export 'biometry_service.dart';
 export 'crash_detector/crash_detector.dart';

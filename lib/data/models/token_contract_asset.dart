@@ -14,11 +14,22 @@ class TokenContractAsset with _$TokenContractAsset {
     required int decimals,
     required Address address,
     required NetworkType networkType,
-    required int version,
+    required TokenWalletVersion version,
     int? chainId,
     String? logoURI,
   }) = _TokenContractAsset;
 
   factory TokenContractAsset.fromJson(Map<String, dynamic> json) =>
       _$TokenContractAssetFromJson(json);
+}
+
+extension IntTokenWalletVersionExtension on int {
+  TokenWalletVersion toVersion() {
+    // ignore: no-magic-number
+    if (this == 4) {
+      return TokenWalletVersion.oldTip3v4;
+    }
+
+    return TokenWalletVersion.tip3;
+  }
 }
