@@ -33,8 +33,8 @@ final _browserTab = BrowserTab(
   url: Uri.parse('URL'),
   image: 'IMAGE',
   title: 'TITLE',
-  lastScrollPosition: 10,
-  id: 0,
+  sortingOrder: 10,
+  id: '0',
 );
 const _everContractAsset = TokenContractAsset(
   name: 'Staked Ever',

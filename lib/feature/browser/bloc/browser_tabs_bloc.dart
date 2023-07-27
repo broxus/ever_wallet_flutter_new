@@ -44,7 +44,7 @@ class BrowserTabsBloc extends Bloc<BrowserTabsEvent, BrowserTabsState> {
   final BrowserTabsStorageService browserTabsStorageService;
 
   StreamSubscription<List<BrowserTab>>? _browserTabsSubscription;
-  StreamSubscription<int>? _browserActiveTabIdSubscription;
+  StreamSubscription<String?>? _browserActiveTabIdSubscription;
 
   BrowserTab? get activeTab => state.tabs.firstWhereOrNull(
         (tab) => tab.id == state.currentTabId,
@@ -62,24 +62,14 @@ class BrowserTabsBloc extends Bloc<BrowserTabsEvent, BrowserTabsState> {
 
   void _registerHandlers() {
     on<_Add>((event, emit) {
-      final tab = BrowserTab(
+      final tab = BrowserTab.create(
         url: event.uri,
-        image: null,
-        title: null,
-        lastScrollPosition: 0,
-        // Service will generate unique id for the tab
-        id: 0,
       );
       browserTabsStorageService.addBrowserTab(tab);
     });
     on<_AddEmpty>((event, emit) {
-      final tab = BrowserTab(
+      final tab = BrowserTab.create(
         url: _emptyUri,
-        image: null,
-        title: null,
-        lastScrollPosition: 0,
-        // Service will generate unique id for the tab
-        id: 0,
       );
       browserTabsStorageService.addBrowserTab(tab);
     });

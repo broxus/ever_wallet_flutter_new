@@ -31,7 +31,7 @@ class _BrowserTabsViewState extends State<BrowserTabsViewWidget> {
     return BlocBuilder<BrowserTabsBloc, BrowserTabsState>(
       buildWhen: (previous, current) {
         final tabId = current.currentTabId;
-        if (tabId < 0) {
+        if (tabId == null) {
           return false;
         }
 

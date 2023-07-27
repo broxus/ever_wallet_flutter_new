@@ -881,7 +881,7 @@ class MigrationService {
     /// After migration browser tab id will be equal to index in tabs list.
     await _browserTabsStorageService.saveBrowserTabs(_hive.browserTabs);
     await _browserTabsStorageService
-        .saveBrowserActiveTabId(_hive.browserTabsLastIndex);
+        .saveBrowserActiveTabId('${_hive.browserTabsLastIndex}');
   }
 
   /// Complete migration by deleting temp file and closing boxes.

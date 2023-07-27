@@ -15,17 +15,17 @@ typedef BrowserOnOverScrollCallback = void Function({
 });
 
 typedef BrowserOnNavigateCallback = void Function({
-  required int id,
+  required String id,
   required Uri? url,
 });
 
 typedef BrowserOnProgressCallback = void Function({
-  required int id,
+  required String id,
   required int progress,
 });
 
 typedef BrowserOnErrorCallback = void Function({
-  required int id,
+  required String id,
   required Uri? url,
   required int code,
   required String message,

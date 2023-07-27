@@ -252,17 +252,17 @@ class _PrimaryViewState extends State<PrimaryView>
     }
   }
 
-  void _onLoadStart({required int id, required Uri? url}) {
+  void _onLoadStart({required String id, required Uri? url}) {
     _setUrl(id, url);
     _setState(id, BrowserTabState.loading);
   }
 
-  void _onLoadStop({required int id, required Uri? url}) {
+  void _onLoadStop({required String id, required Uri? url}) {
     _setUrl(id, url);
     _setState(id, BrowserTabState.loaded);
   }
 
-  void _onProgressChanged({required int id, required int progress}) {
+  void _onProgressChanged({required String id, required int progress}) {
     context.read<BrowserTabsBloc>().add(
           BrowserTabsEvent.setProgress(
             id: id,
@@ -272,8 +272,8 @@ class _PrimaryViewState extends State<PrimaryView>
   }
 
   void _onLoadError({
+    required String id,
     required int code,
-    required int id,
     required String message,
     required Uri? url,
   }) {
@@ -285,14 +285,14 @@ class _PrimaryViewState extends State<PrimaryView>
         );
   }
 
-  void _setUrl(int id, Uri? url) {
+  void _setUrl(String id, Uri? url) {
     final browserTabsBloc = context.read<BrowserTabsBloc>();
     if (url != null) {
       browserTabsBloc.add(BrowserTabsEvent.setUrl(id: id, uri: url));
     }
   }
 
-  void _setState(int id, BrowserTabState state) {
+  void _setState(String id, BrowserTabState state) {
     context.read<BrowserTabsBloc>().add(
           BrowserTabsEvent.setState(
             id: id,
