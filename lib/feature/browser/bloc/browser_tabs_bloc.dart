@@ -60,6 +60,7 @@ class BrowserTabsBloc extends Bloc<BrowserTabsEvent, BrowserTabsState> {
     return super.close();
   }
 
+  // ignore: long-method
   void _registerHandlers() {
     on<_Add>((event, emit) {
       final tab = BrowserTab.create(
@@ -77,6 +78,7 @@ class BrowserTabsBloc extends Bloc<BrowserTabsEvent, BrowserTabsState> {
       final oldTab = browserTabsStorageService.browserTabById(event.id);
       if (oldTab == null) {
         _log.severe('_SetUrl: no active tab');
+
         return;
       }
       final newTab = oldTab.copyWith(
@@ -90,6 +92,7 @@ class BrowserTabsBloc extends Bloc<BrowserTabsEvent, BrowserTabsState> {
       final oldTab = browserTabsStorageService.browserTabById(event.id);
       if (oldTab == null) {
         _log.severe('_SetState: no active tab');
+
         return;
       }
       final progress = switch (oldTab.state) {
@@ -109,6 +112,7 @@ class BrowserTabsBloc extends Bloc<BrowserTabsEvent, BrowserTabsState> {
       final oldTab = browserTabsStorageService.browserTabById(event.id);
       if (oldTab == null) {
         _log.severe('_SetProgress: no active tab');
+
         return;
       }
       final progress = event.progress;

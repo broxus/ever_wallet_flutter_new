@@ -273,8 +273,11 @@ class _PrimaryViewState extends State<PrimaryView>
 
   void _onLoadError({
     required String id,
+    // ignore: avoid-unused-parameters
     required int code,
+    // ignore: avoid-unused-parameters
     required String message,
+    // ignore: avoid-unused-parameters
     required Uri? url,
   }) {
     context.read<BrowserTabsBloc>().add(

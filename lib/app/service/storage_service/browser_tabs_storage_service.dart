@@ -37,12 +37,10 @@ class BrowserTabsStorageService extends AbstractStorageService {
 
   /// Read active tab from storage
   Future<String?> readBrowserActiveTabId() async {
-    final encoded = await _storage.get(
+    return _storage.get(
       _browserTabsActiveTabIdKey,
       domain: _browserTabsDomain,
     );
-
-    return encoded;
   }
 
   /// Save active tab id to storage

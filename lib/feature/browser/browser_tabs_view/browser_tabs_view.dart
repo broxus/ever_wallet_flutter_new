@@ -29,25 +29,7 @@ class _BrowserTabsViewState extends State<BrowserTabsViewWidget> {
   @override
   Widget build(BuildContext context) {
     return BlocBuilder<BrowserTabsBloc, BrowserTabsState>(
-      buildWhen: (previous, current) {
-        final tabId = current.currentTabId;
-        if (tabId == null) {
-          return false;
-        }
-
-        if (tabId != previous.currentTabId) {
-          return true;
-        }
-
-        final tab = current.tabs.firstWhereOrNull((t) => t.id == tabId);
-
-        if (tab?.url !=
-            previous.tabs.firstWhereOrNull((t) => t.id == tabId)?.url) {
-          return true;
-        }
-
-        return false;
-      },
+      buildWhen: _buildWhen,
       builder: (context, state) {
         final currentTab = context.read<BrowserTabsBloc>().activeTab;
         final currentTabId = currentTab?.id;
@@ -80,5 +62,24 @@ class _BrowserTabsViewState extends State<BrowserTabsViewWidget> {
         );
       },
     );
+  }
+
+  bool _buildWhen(BrowserTabsState previous, BrowserTabsState current) {
+    final tabId = current.currentTabId;
+    if (tabId == null) {
+      return false;
+    }
+
+    if (tabId != previous.currentTabId) {
+      return true;
+    }
+
+    final tab = current.tabs.firstWhereOrNull((t) => t.id == tabId);
+
+    if (tab?.url != previous.tabs.firstWhereOrNull((t) => t.id == tabId)?.url) {
+      return true;
+    }
+
+    return false;
   }
 }

@@ -884,6 +884,7 @@ class MigrationService {
         ? _browserTabsStorageService.browserTabs
             .elementAtOrNull(_hive.browserTabsLastIndex)
         : null;
+
     await _browserTabsStorageService.saveBrowserActiveTabId(tab?.id);
   }
 
