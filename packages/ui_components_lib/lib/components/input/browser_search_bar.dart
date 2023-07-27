@@ -5,20 +5,22 @@ class BrowserSearchBarInput extends StatefulWidget {
   const BrowserSearchBarInput({
     this.uri,
     this.onSubmitted,
+    this.onShared,
     this.hintText,
-    this.searchIcon,
-    this.secureIcon,
-    this.shareIcon,
+    this.searchSvg,
+    this.secureSvg,
+    this.shareSvg,
     this.cancelText,
     super.key,
   });
 
   final Uri? uri;
-  final ValueChanged<String?>? onSubmitted;
+  final ValueChanged<String>? onSubmitted;
+  final ValueSetter<Uri?>? onShared;
   final String? hintText;
-  final Widget? searchIcon;
-  final Widget? secureIcon;
-  final Widget? shareIcon;
+  final String? searchSvg;
+  final String? secureSvg;
+  final String? shareSvg;
   final String? cancelText;
 
   @override
@@ -64,6 +66,13 @@ class _BrowserSearchBarInputState extends State<BrowserSearchBarInput> {
       color: _focused ? colors.textPrimary : colors.textSecondary,
     );
 
+    final prefixIcon = _getPrefixIcon();
+    final prefixIconDecoration = prefixIcon != null
+        ? BoxConstraints.tight(const Size.square(DimensSize.d32))
+        : null;
+
+    final shareButton = _getShareButton();
+
     return Material(
       color: colors.backgroundSecondary,
       child: SizedBox(
@@ -73,20 +82,31 @@ class _BrowserSearchBarInputState extends State<BrowserSearchBarInput> {
           child: Row(
             children: [
               Expanded(
-                child: CommonInput(
-                  controller: _textEditingController,
-                  needClearButton: false,
-                  height: DimensSize.d40,
-                  autocorrect: false,
-                  hintText: widget.hintText,
-                  prefixIcon: widget.searchIcon,
-                  suffixIcon: widget.shareIcon,
-                  onSubmitted: _onSubmitted,
-                  focusNode: _focusNode,
-                  inactiveBorderColor: Colors.transparent,
-                  enabledBorderColor: Colors.transparent,
-                  focusedBorderColor: Colors.transparent,
-                  textStyle: textStyle,
+                child: Stack(
+                  alignment: Alignment.center,
+                  children: [
+                    CommonInput(
+                      fillColor: colors.appBackground,
+                      controller: _textEditingController,
+                      needClearButton: false,
+                      height: DimensSize.d40,
+                      autocorrect: false,
+                      hintText: widget.hintText,
+                      prefixIcon: prefixIcon,
+                      onSubmitted: _onSubmitted,
+                      focusNode: _focusNode,
+                      inactiveBorderColor: Colors.transparent,
+                      enabledBorderColor: Colors.transparent,
+                      focusedBorderColor: Colors.transparent,
+                      textStyle: textStyle,
+                      prefixIconConstraints: prefixIconDecoration,
+                    ),
+                    if (shareButton != null)
+                      Positioned(
+                        right: 0,
+                        child: shareButton,
+                      ),
+                  ],
                 ),
               ),
               if (_focused)
@@ -108,17 +128,17 @@ class _BrowserSearchBarInputState extends State<BrowserSearchBarInput> {
   void _handleFocusChange() {
     setState(() {
       _focused = _focusNode.hasFocus;
+      _updateTextField();
     });
-    _updateTextField();
   }
 
   void _updateTextField() {
     if (_focused) {
       _textEditingController
         ..text = _getTextFieldText()
-        ..selection = const TextSelection(
+        ..selection = TextSelection(
           baseOffset: 0,
-          extentOffset: 0,
+          extentOffset: _textEditingController.text.length,
         );
     } else {
       _textEditingController.text = _getTextFieldText();
@@ -126,15 +146,78 @@ class _BrowserSearchBarInputState extends State<BrowserSearchBarInput> {
   }
 
   String _getTextFieldText() {
-    if (_focused) {
-      return widget.uri?.toString() ?? '';
-    } else {
-      return widget.uri?.host ?? '';
-    }
+    return _focused ? widget.uri?.toString() ?? '' : widget.uri?.host ?? '';
   }
 
   void _onSubmitted(String text) {
     widget.onSubmitted?.call(text);
     _focusNode.unfocus();
+  }
+
+  bool get _isSecure => widget.uri?.isScheme('https') ?? false;
+  bool get _isEmpty => _textEditingController.text.isEmpty;
+
+  Widget? _getPrefixIcon() {
+    if (_focused) {
+      return null;
+    }
+
+    if (_isEmpty) {
+      return _getIcon(widget.searchSvg, Icons.search);
+    }
+
+    if (_isSecure) {
+      return _getIcon(widget.secureSvg, Icons.lock);
+    }
+
+    return null;
+  }
+
+  Widget? _getShareButton() {
+    if (_focused || _isEmpty) {
+      return null;
+    }
+
+    final onShared = _isEmpty || widget.onShared == null
+        ? null
+        : () => widget.onShared?.call(widget.uri);
+
+    return _getButton(widget.shareSvg, Icons.share, onShared);
+  }
+
+  Widget? _getButton(
+    String? svg,
+    IconData icondata,
+    VoidCallback? onPressed,
+  ) {
+    return svg != null
+        ? CommonIconButton.svg(
+            svg: svg,
+            buttonType: EverButtonType.ghost,
+            onPressed: onPressed,
+          )
+        : CommonIconButton.icon(
+            icon: icondata,
+            buttonType: EverButtonType.ghost,
+            onPressed: onPressed,
+          );
+  }
+
+  Widget? _getIcon(String? svg, IconData icondata) {
+    final colors = context.themeStyle.colors;
+
+    return Padding(
+      padding: const EdgeInsets.all(DimensSize.d8),
+      child: svg != null
+          ? CommonIconWidget.svg(
+              svg: svg,
+              color: colors.textSecondary,
+              size: DimensSize.d20,
+            )
+          : CommonIconWidget.icon(
+              icon: icondata,
+              color: colors.textSecondary,
+            ),
+    );
   }
 }

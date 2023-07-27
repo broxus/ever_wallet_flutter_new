@@ -283,9 +283,23 @@ class _InputsStoryState extends State<InputsStory> {
                 cancelText: 'Cancel',
               ),
               BrowserSearchBarInput(
+                uri: Uri.parse('http://insecure.net/some/path'),
+                hintText: 'Search or enter URL',
+                cancelText: 'Cancel',
+              ),
+
+              BrowserSearchBarInput(
                 uri: Uri.parse('https://pub.dev/packages/money2_improver'),
                 hintText: 'Search or enter URL',
                 cancelText: 'Cancel',
+                onShared: (value) => {
+                  showSnackbar(
+                    context: context,
+                    type: SnackbarType.info,
+                    message: 'Share $value',
+                    duration: const Duration(seconds: 3),
+                  )
+                },
               ),
               const SizedBox(height: DimensSize.d40),
             ],
