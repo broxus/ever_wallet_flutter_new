@@ -166,7 +166,8 @@ class AssetsService {
       for (final token in (decoded['tokens'] as List<dynamic>)
           .cast<Map<String, dynamic>>()) {
         token['networkType'] = transport.networkType.name;
-        token['version'] = (token['version'] as int).toVersion().toString();
+        token['version'] =
+            intToWalletContractConvert(token['version'] as int).toString();
       }
 
       final manifest = TonAssetsManifest.fromJson(decoded);

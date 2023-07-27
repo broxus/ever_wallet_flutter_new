@@ -23,13 +23,11 @@ class TokenContractAsset with _$TokenContractAsset {
       _$TokenContractAssetFromJson(json);
 }
 
-extension IntTokenWalletVersionExtension on int {
-  TokenWalletVersion toVersion() {
-    // ignore: no-magic-number
-    if (this == 4) {
-      return TokenWalletVersion.oldTip3v4;
-    }
-
-    return TokenWalletVersion.tip3;
+TokenWalletVersion intToWalletContractConvert(int version) {
+  // ignore: no-magic-number
+  if (version == 4) {
+    return TokenWalletVersion.oldTip3v4;
   }
+
+  return TokenWalletVersion.tip3;
 }
