@@ -9,7 +9,7 @@ part 'ton_assets_manifest.g.dart';
 @freezed
 class TonAssetsManifest with _$TonAssetsManifest {
   const factory TonAssetsManifest({
-    @JsonKey(name: r'\$schema') required String schema,
+    @JsonKey(name: r'$schema') required String schema,
     required String name,
     required TonAssetsManifestVersion version,
     required List<String> keywords,

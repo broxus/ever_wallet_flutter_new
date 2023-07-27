@@ -1,7 +1,6 @@
 import 'package:app/feature/wallet/wallet.dart';
 import 'package:app/feature/widgets/change_notifier_listener.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:nekoton_repository/nekoton_repository.dart';
 import 'package:ui_components_lib/ui_components_lib.dart';
 
@@ -42,8 +41,9 @@ class _WalletAccountsBodyState extends State<WalletAccountsBody> {
             child: PageView.builder(
               controller: widget.controller,
               itemCount: list.length + 1,
-              onPageChanged:
-                  context.read<WalletCubit>().updateCurrentAccountIndex,
+              // we do not need this callback, we have listener in cubit
+              // ignore: no-empty-block
+              onPageChanged: (_) {},
               itemBuilder: (_, index) {
                 Widget child;
                 if (index == list.length) {

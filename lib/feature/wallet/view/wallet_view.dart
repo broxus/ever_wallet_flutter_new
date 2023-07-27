@@ -45,6 +45,7 @@ class _WalletViewState extends State<WalletView> {
         }
 
         return WalletBottomPanel(
+          key: Key('WalletBottomPanel-${widget.currentAccount!.address}'),
           currentAccount: widget.currentAccount!,
           scrollController: scrollController,
         );

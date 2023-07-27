@@ -58,12 +58,16 @@ class BrowserTabView extends StatefulWidget {
 class _BrowserTabViewState extends State<BrowserTabView> {
   // Last SANE Y position (i.e. not overscrolled)
   int? _lastScrollY;
+
   // Position of gesture start: every direction change resets it
   int? _scrollGestureYStart;
+
   // Distance from gesture start to current position
   int? _scrollGestureDY;
+
   // Delayed scroll events are used to detect overscrolling
   final List<DelayedScrollEvent> _delayedScrollEvents = [];
+
   // How long to wait before considering scroll event as not overscroll
   static const Duration _scrollTimerDelay = Duration(milliseconds: 100);
 
@@ -99,6 +103,7 @@ class _BrowserTabViewState extends State<BrowserTabView> {
   @override
   Widget build(BuildContext context) {
     final id = widget.tab.id;
+
     return InAppWebView(
       key: ValueKey(widget.tab.id),
       initialOptions: _initialOptions,
@@ -247,6 +252,7 @@ class DelayedScrollEvent {
 
   // Timer that will fire when scroll event is not overscrolled
   final Timer timer;
+
   // Scroll position
   final int y;
 }

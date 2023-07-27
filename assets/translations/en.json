@@ -159,5 +159,16 @@
   "browserSearchURLCancel": "Cancel",
   "walletWord": "Wallet",
   "browserWord": "Browser",
-  "profileWord": "Profile"
+  "profileWord": "Profile",
+  "manageAssets": "Manage assets",
+  "searchWord": "Search",
+  "customToken": "Custom token",
+  "enterAssetName": "Enter the asset name",
+  "saveWord": "Save",
+  "selectNewAssets": "Select new assets",
+  "sorryNoAssetsFound": "Sorry, we didn't find anything for your request",
+  "rootTokenContract": "Root token contract",
+  "proceedWord": "Proceed",
+  "invalidRootTokenContract": "Invalid root token contract",
+  "oldWord": "Old"
 }

@@ -1,3 +1,4 @@
+import 'package:app/feature/wallet/widgets/account_asset_tab/account_asset_tab.dart';
 import 'package:app/generated/generated.dart';
 import 'package:flutter/material.dart';
 import 'package:nekoton_repository/nekoton_repository.dart';
@@ -31,13 +32,13 @@ class _WalletBottomPanelState extends State<WalletBottomPanel> {
     return SingleChildScrollView(
       controller: widget.scrollController,
       padding: const EdgeInsets.symmetric(horizontal: DimensSize.d16),
-      child: SeparatedColumn(
-        mainAxisSize: MainAxisSize.min,
-        children: [
-          ValueListenableBuilder<WalletBottomPanelTab>(
-            valueListenable: currentTabNotifier,
-            builder: (_, value, __) {
-              return CommonTabSwitcher(
+      child: ValueListenableBuilder<WalletBottomPanelTab>(
+        valueListenable: currentTabNotifier,
+        builder: (_, value, __) {
+          return SeparatedColumn(
+            mainAxisSize: MainAxisSize.min,
+            children: [
+              CommonTabSwitcher(
                 onTabChanged: (v) => currentTabNotifier.value = v,
                 values: [
                   CommonTabSwitcherItem(
@@ -50,10 +51,15 @@ class _WalletBottomPanelState extends State<WalletBottomPanel> {
                   ),
                 ],
                 currentValue: value,
-              );
-            },
-          ),
-        ],
+              ),
+              switch (value) {
+                WalletBottomPanelTab.asset =>
+                  AccountAssetsTab(account: widget.currentAccount),
+                WalletBottomPanelTab.transactions => Container(),
+              },
+            ],
+          );
+        },
       ),
     );
   }

@@ -1,3 +1,4 @@
+import 'package:app/generated/generated.dart';
 import 'package:nekoton_repository/nekoton_repository.dart';
 
 /// Transport strategy for everscale network
@@ -64,8 +65,7 @@ class EverTransportStrategy extends TransportStrategy {
       'https://raw.githubusercontent.com/broxus/ton-assets/master/manifest.json';
 
   @override
-  // TODO(alex-a4): implement nativeTokenIcon
-  String get nativeTokenIcon => throw UnimplementedError();
+  String get nativeTokenIcon => Assets.images.everCoin.path;
 
   @override
   final nativeTokenTicker = 'EVER';
