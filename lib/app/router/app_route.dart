@@ -14,12 +14,19 @@ enum AppRoute {
     '/onboarding',
     isSaveLocation: true,
   ),
+  /// Wallet section
   wallet(
     'wallet',
     '/wallet',
     isSaveLocation: true,
     isBottomNavigationBarVisible: true,
   ),
+  selectNewAsset(
+    '',
+    'selectNewAsset/:$selectNewAssetAddress',
+  ),
+
+  /// Browser section
   browser(
     'browser',
     '/browser',
