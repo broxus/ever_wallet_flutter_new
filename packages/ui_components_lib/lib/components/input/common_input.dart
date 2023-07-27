@@ -54,6 +54,7 @@ class CommonInput extends StatefulWidget {
     this.titleText,
     this.subtitleText,
     this.prefixIconConstraints,
+    this.fillColor,
   });
 
   /// Height of input field
@@ -158,6 +159,8 @@ class CommonInput extends StatefulWidget {
 
   /// If text should look like password, default false
   final bool obscureText;
+
+  final Color? fillColor;
 
   @override
   State<CommonInput> createState() => _CommonInputState();
@@ -357,6 +360,8 @@ class _CommonInputState extends State<CommonInput> {
         enableSuggestions: widget.enableSuggestions,
         inputFormatters: widget.inputFormatters,
         decoration: InputDecoration(
+          filled: widget.fillColor != null,
+          fillColor: widget.fillColor,
           errorText: hasError ? '' : null,
           errorStyle: const TextStyle(fontSize: 0, height: 0),
           hintText: widget.hintText,
