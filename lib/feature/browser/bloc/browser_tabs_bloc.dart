@@ -118,6 +118,7 @@ class BrowserTabsBloc extends Bloc<BrowserTabsEvent, BrowserTabsState> {
       final progress = event.progress;
       final newTab = oldTab.copyWith(
         progress: progress,
+        state: BrowserTabState.loading,
       );
 
       emit(state.copyWith(tabs: _replaceTab(newTab)));

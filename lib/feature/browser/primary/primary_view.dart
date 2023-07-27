@@ -163,6 +163,7 @@ class _PrimaryViewState extends State<PrimaryView>
                           : 0,
                       child: child!,
                     ),
+                    const BrowserProgressBar(),
                   ],
                 ),
               ),
@@ -280,12 +281,7 @@ class _PrimaryViewState extends State<PrimaryView>
     // ignore: avoid-unused-parameters
     required Uri? url,
   }) {
-    context.read<BrowserTabsBloc>().add(
-          BrowserTabsEvent.setState(
-            id: id,
-            state: BrowserTabState.error,
-          ),
-        );
+    _setState(id, BrowserTabState.error);
   }
 
   void _setUrl(String id, Uri? url) {

@@ -1,6 +1,7 @@
 export 'bloc/bloc.dart';
 export 'bookmarks/bookmarks.dart';
 export 'bottom_menu/bottom_menu.dart';
+export 'browser_progress_bar/browser_progress_bar.dart';
 export 'browser_search_bar/browser_search_bar.dart';
 export 'browser_tab_view/browser_tab_view.dart';
 export 'browser_tabs_view/browser_tabs_view.dart';
