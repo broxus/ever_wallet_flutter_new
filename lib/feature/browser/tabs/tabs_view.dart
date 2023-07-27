@@ -14,7 +14,7 @@ class TabsView extends StatefulWidget {
 class _TabsViewState extends State<TabsView> {
   @override
   Widget build(BuildContext context) {
-    final tabs = context.watch<BrowserTabsBloc>().state.tabs;
+    final tabs = context.read<BrowserTabsBloc>().state.tabs;
     final onCloseAllPressed = tabs.isNotEmpty ? _onCloseAllPressed : null;
 
     return Column(

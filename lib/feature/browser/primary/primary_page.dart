@@ -27,11 +27,6 @@ class _PrimaryPageState extends State<PrimaryPage> {
     return BlocProvider<HudBloc>(
       create: (context) => HudBloc(),
       child: const PrimaryView(),
-      // child: BlocBuilder<BrowserTabsBloc, BrowserTabsState>(
-      //   builder: (context, state) {
-      //     return const PrimaryView();
-      //   },
-      // ),
     );
   }
 

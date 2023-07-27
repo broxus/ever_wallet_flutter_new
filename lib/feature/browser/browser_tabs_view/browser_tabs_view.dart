@@ -1,4 +1,5 @@
 import 'package:app/feature/browser/browser.dart';
+import 'package:collection/collection.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
@@ -38,9 +39,10 @@ class _BrowserTabsViewState extends State<BrowserTabsViewWidget> {
           return true;
         }
 
-        final tab = current.tabs.elementAtOrNull(tabId);
+        final tab = current.tabs.firstWhereOrNull((t) => t.id == tabId);
 
-        if (tab?.url != previous.tabs.elementAtOrNull(tabId)?.url) {
+        if (tab?.url !=
+            previous.tabs.firstWhereOrNull((t) => t.id == tabId)?.url) {
           return true;
         }
 
