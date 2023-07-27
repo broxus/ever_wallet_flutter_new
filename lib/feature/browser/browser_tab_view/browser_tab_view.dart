@@ -3,6 +3,7 @@ import 'dart:async';
 import 'package:app/data/models/models.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_inappwebview/flutter_inappwebview.dart';
+import 'package:logging/logging.dart';
 
 typedef BrowserOnScrollCallback = void Function({
   required int currentY,
@@ -18,6 +19,18 @@ typedef BrowserOnNavigateCallback = void Function({
   required Uri? url,
 });
 
+typedef BrowserOnProgressCallback = void Function({
+  required int id,
+  required int progress,
+});
+
+typedef BrowserOnErrorCallback = void Function({
+  required int id,
+  required Uri? url,
+  required int code,
+  required String message,
+});
+
 class BrowserTabView extends StatefulWidget {
   const BrowserTabView({
     required this.tab,
@@ -25,6 +38,8 @@ class BrowserTabView extends StatefulWidget {
     this.onOverScroll,
     this.onLoadStart,
     this.onLoadStop,
+    this.onProgressChanged,
+    this.onLoadError,
     super.key,
   });
 
@@ -33,6 +48,8 @@ class BrowserTabView extends StatefulWidget {
   final BrowserOnOverScrollCallback? onOverScroll;
   final BrowserOnNavigateCallback? onLoadStart;
   final BrowserOnNavigateCallback? onLoadStop;
+  final BrowserOnProgressCallback? onProgressChanged;
+  final BrowserOnErrorCallback? onLoadError;
 
   @override
   State<BrowserTabView> createState() => _BrowserTabViewState();
@@ -57,6 +74,8 @@ class _BrowserTabViewState extends State<BrowserTabView> {
     android: AndroidInAppWebViewOptions(),
     crossPlatform: InAppWebViewOptions(),
   );
+
+  static final _log = Logger('BrowserTabView');
 
   @override
   void didUpdateWidget(BrowserTabView oldWidget) {
@@ -87,10 +106,31 @@ class _BrowserTabViewState extends State<BrowserTabView> {
       onScrollChanged: _onScrollChanged,
       onWebViewCreated: onWebViewCreated,
       onLoadStart: (controller, url) {
-        widget.onLoadStart?.call(id: id, url: url);
+        widget.onLoadStart?.call(
+          id: id,
+          url: url,
+        );
       },
-      onLoadStop: (controller, url) =>
-          widget.onLoadStop?.call(id: id, url: url),
+      onLoadStop: (controller, url) => widget.onLoadStop?.call(
+        id: id,
+        url: url,
+      ),
+      onProgressChanged: (controller, progress) =>
+          widget.onProgressChanged?.call(
+        id: id,
+        progress: progress,
+      ),
+      onLoadError: (controller, url, code, message) {
+        _log.warning(
+          'Failed to load $url: $code $message',
+        );
+        widget.onLoadError?.call(
+          id: id,
+          url: url,
+          code: code,
+          message: message,
+        );
+      },
     );
   }
 

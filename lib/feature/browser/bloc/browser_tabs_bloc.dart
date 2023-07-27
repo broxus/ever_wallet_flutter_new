@@ -19,6 +19,8 @@ class BrowserTabsBloc extends Bloc<BrowserTabsEvent, BrowserTabsState> {
           BrowserTabsState(
             tabs: browserTabsStorageService.browserTabs,
             currentTabId: browserTabsStorageService.browserActiveTabId,
+            state: BrowserTabState.initial,
+            progress: 0,
           ),
         ) {
     _registerHandlers();
@@ -83,16 +85,48 @@ class BrowserTabsBloc extends Bloc<BrowserTabsEvent, BrowserTabsState> {
     });
     on<_SetUrl>((event, emit) {
       final oldTab = browserTabsStorageService.browserTabById(event.id);
-      final newTab = oldTab?.copyWith(
+      if (oldTab == null) {
+        _log.severe('_SetUrl: no active tab');
+        return;
+      }
+      final newTab = oldTab.copyWith(
         url: event.uri,
       );
-      if (newTab != null) {
-        if (oldTab?.url != newTab.url) {
-          browserTabsStorageService.setBrowserTab(newTab);
-        }
-      } else {
-        _log.severe('No active tab');
+      if (oldTab.url != newTab.url) {
+        browserTabsStorageService.setBrowserTab(newTab);
       }
+    });
+    on<_SetState>((event, emit) {
+      final oldTab = browserTabsStorageService.browserTabById(event.id);
+      if (oldTab == null) {
+        _log.severe('_SetState: no active tab');
+        return;
+      }
+      final progress = switch (oldTab.state) {
+        BrowserTabState.initial => 0,
+        BrowserTabState.loading => oldTab.progress,
+        BrowserTabState.loaded => 100,
+        BrowserTabState.error => 0,
+      };
+      final newTab = oldTab.copyWith(
+        state: event.state,
+        progress: progress,
+      );
+
+      emit(state.copyWith(tabs: _replaceTab(newTab)));
+    });
+    on<_SetProgress>((event, emit) {
+      final oldTab = browserTabsStorageService.browserTabById(event.id);
+      if (oldTab == null) {
+        _log.severe('_SetProgress: no active tab');
+        return;
+      }
+      final progress = event.progress;
+      final newTab = oldTab.copyWith(
+        progress: progress,
+      );
+
+      emit(state.copyWith(tabs: _replaceTab(newTab)));
     });
     on<_Remove>((event, emit) {
       browserTabsStorageService.removeBrowserTab(event.id);
@@ -110,5 +144,12 @@ class BrowserTabsBloc extends Bloc<BrowserTabsEvent, BrowserTabsState> {
       browserTabsStorageService.saveBrowserActiveTabId(event.id);
       emit(state.copyWith(currentTabId: event.id));
     });
+  }
+
+  List<BrowserTab> _replaceTab(BrowserTab newTab) {
+    return [
+      ...([...state.tabs]..removeWhere((tab) => tab.id == newTab.id)),
+      newTab,
+    ];
   }
 }

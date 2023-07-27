@@ -26,11 +26,12 @@ class _PrimaryPageState extends State<PrimaryPage> {
   Widget build(BuildContext context) {
     return BlocProvider<HudBloc>(
       create: (context) => HudBloc(),
-      child: BlocBuilder<BrowserTabsBloc, BrowserTabsState>(
-        builder: (context, state) {
-          return const PrimaryView();
-        },
-      ),
+      child: const PrimaryView(),
+      // child: BlocBuilder<BrowserTabsBloc, BrowserTabsState>(
+      //   builder: (context, state) {
+      //     return const PrimaryView();
+      //   },
+      // ),
     );
   }
 
