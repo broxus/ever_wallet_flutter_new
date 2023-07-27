@@ -48,6 +48,10 @@ class StoryWidget extends StatelessWidget {
           builder: (_) => const CommonStory(),
         ),
         Story(
+          name: 'Widgets/Read Only',
+          builder: (_) => const ReadOnlyStory(),
+        ),
+        Story(
           name: 'Colors',
           builder: (_) => const ColorsStory(),
         ),
