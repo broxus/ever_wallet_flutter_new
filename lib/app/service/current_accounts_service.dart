@@ -133,7 +133,7 @@ class CurrentAccountsService {
       wallets.where((w) => w.owner == address).forEach((w) {
         _nekotonRepository.startPollingToken(
           w.owner,
-          w.address,
+          w.rootTokenContract,
           stopPrevious: false,
         );
         // ignore cancelling sub, because we do not know how many tokens could

@@ -1,3 +1,4 @@
+import 'package:app/app/router/router.dart';
 import 'package:app/app/service/service.dart';
 import 'package:app/di/di.dart';
 import 'package:app/feature/wallet/widgets/account_asset_tab/account_asset_tab_cubit.dart';
@@ -55,8 +56,13 @@ class AccountAssetsTab extends StatelessWidget {
               CommonButton.primary(
                 fillWidth: true,
                 text: LocaleKeys.manageAssets.tr(),
-                // ignore: no-empty-block
-                onPressed: () {},
+                onPressed: () => context.goFurther(
+                  AppRoute.selectNewAsset.pathWithData(
+                    pathParameters: {
+                      selectNewAssetAddressPathParam: account.address.address,
+                    },
+                  ),
+                ),
               ),
             ],
           );
