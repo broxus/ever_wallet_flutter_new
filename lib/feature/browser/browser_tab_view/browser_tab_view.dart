@@ -222,6 +222,7 @@ class _BrowserTabViewState extends State<BrowserTabView> {
     int progress,
   ) {
     // Seems very strange, but they do it in example ¯\_(ツ)_/¯
+    // ignore: no-magic-number
     if (progress == 100) {
       _pullToRefreshController?.endRefreshing();
     }
