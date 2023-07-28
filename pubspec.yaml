@@ -49,6 +49,7 @@ dependencies:
   ui_components_lib:
     path: packages/ui_components_lib
   url_launcher: ^6.1.12
+  uuid: ^3.0.7
   visibility_detector: ^0.4.0+2
 
 dev_dependencies:

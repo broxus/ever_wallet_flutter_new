@@ -14,7 +14,9 @@ class TabsView extends StatefulWidget {
 class _TabsViewState extends State<TabsView> {
   @override
   Widget build(BuildContext context) {
-    final tabs = context.watch<BrowserTabsBloc>().state.tabs;
+    final tabs = [...context.watch<BrowserTabsBloc>().state.tabs]..sort(
+        (a, b) => a.sortingOrder.compareTo(b.sortingOrder),
+      );
     final onCloseAllPressed = tabs.isNotEmpty ? _onCloseAllPressed : null;
 
     return Column(
@@ -27,6 +29,7 @@ class _TabsViewState extends State<TabsView> {
                 for (final tab in tabs)
                   ListTile(
                     title: Text(tab.url.toString()),
+                    subtitle: Text('${tab.sortingOrder} ${tab.id}'),
                     onTap: () {
                       context.read<BrowserTabsBloc>().add(
                             BrowserTabsEvent.setActive(id: tab.id),
