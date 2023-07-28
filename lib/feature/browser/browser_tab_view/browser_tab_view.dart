@@ -4,6 +4,7 @@ import 'package:app/data/models/models.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_inappwebview/flutter_inappwebview.dart';
 import 'package:logging/logging.dart';
+import 'package:ui_components_lib/ui_components_lib.dart';
 
 typedef BrowserOnScrollCallback = void Function({
   required int currentY,
@@ -72,6 +73,7 @@ class _BrowserTabViewState extends State<BrowserTabView> {
   static const Duration _scrollTimerDelay = Duration(milliseconds: 100);
 
   InAppWebViewController? _webViewController;
+  PullToRefreshController? _pullToRefreshController;
 
   final _initialOptions = InAppWebViewGroupOptions(
     ios: IOSInAppWebViewOptions(),
@@ -102,8 +104,11 @@ class _BrowserTabViewState extends State<BrowserTabView> {
 
   @override
   Widget build(BuildContext context) {
+    _initPTRController();
+
     return InAppWebView(
       key: ValueKey(widget.tab.id),
+      pullToRefreshController: _pullToRefreshController,
       initialOptions: _initialOptions,
       onOverScrolled: _onOverScrolled,
       onScrollChanged: _onScrollChanged,
@@ -232,6 +237,7 @@ class _BrowserTabViewState extends State<BrowserTabView> {
     _,
     Uri? url,
   ) {
+    _pullToRefreshController?.endRefreshing();
     widget.onLoadStop?.call(
       id: widget.tab.id,
       url: url,
@@ -242,6 +248,10 @@ class _BrowserTabViewState extends State<BrowserTabView> {
     _,
     int progress,
   ) {
+    // Seems very strange, but they do it in example ¯\_(ツ)_/¯
+    if (progress == 100) {
+      _pullToRefreshController?.endRefreshing();
+    }
     widget.onProgressChanged?.call(
       id: widget.tab.id,
       progress: progress,
@@ -254,6 +264,7 @@ class _BrowserTabViewState extends State<BrowserTabView> {
     int code,
     String message,
   ) {
+    _pullToRefreshController?.endRefreshing();
     _log.warning(
       'Failed to load $url: $code $message',
     );
@@ -263,6 +274,21 @@ class _BrowserTabViewState extends State<BrowserTabView> {
       code: code,
       message: message,
     );
+  }
+
+  void _onRefresh() {
+    _webViewController?.reload();
+  }
+
+  void _initPTRController() {
+    final colors = context.themeStyle.colors;
+    _pullToRefreshController = _pullToRefreshController ??
+        PullToRefreshController(
+          options: PullToRefreshOptions(
+            color: colors.textSecondary,
+          ),
+          onRefresh: _onRefresh,
+        );
   }
 }
 
