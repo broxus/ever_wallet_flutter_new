@@ -14,6 +14,7 @@ enum AppRoute {
     '/onboarding',
     isSaveLocation: true,
   ),
+
   /// Wallet section
   wallet(
     'wallet',

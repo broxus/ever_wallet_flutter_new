@@ -102,6 +102,7 @@ class _SelectNewAssetSelectTabState extends State<SelectNewAssetSelectTab> {
 
   bool _assetSearchValidation(TokenContractAsset asset) {
     final text = searchController.text.toLowerCase();
+
     return asset.symbol.toLowerCase().contains(text) ||
         asset.name.toLowerCase().contains(text);
   }

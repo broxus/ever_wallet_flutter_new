@@ -106,40 +106,42 @@ class AssetsService {
           .map((list) => list.findAccountByAddress(address)),
       (contracts, transport, account) => (transport, account, contracts),
     ).asyncExpand<(List<TokenContractAsset>, List<TokenContractAsset>)>(
-        (value) {
-      final transport = value.$1;
-      final account = value.$2;
-      final contracts = value.$3;
+      (value) {
+        final transport = value.$1;
+        final account = value.$2;
+        final contracts = value.$3;
 
-      final wallets =
-          account?.additionalAssets[transport.transport.group]?.tokenWallets;
-      if (wallets == null) return Stream.value((contracts, []));
+        final wallets =
+            account?.additionalAssets[transport.transport.group]?.tokenWallets;
+        if (wallets == null) return Stream.value((contracts, []));
 
-      final notCreated = contracts
-          .where(
-            (contract) =>
-                // take only contracts that is not created for account
-                wallets.none((w) => w.rootTokenContract == contract.address),
-          )
-          .toList();
+        final notCreated = contracts
+            .where(
+              (contract) =>
+                  // take only contracts that is not created for account
+                  wallets.none((w) => w.rootTokenContract == contract.address),
+            )
+            .toList();
 
-      return Stream.fromFuture(
-        Future.value(
-          () async {
-            return (
-              notCreated,
-              (await Future.wait(
-                wallets.map(
-                  (e) => getTokenContractAsset(e.rootTokenContract, transport),
-                ),
-              ))
-                  .whereNotNull()
-                  .toList(),
-            );
-          }(),
-        ),
-      );
-    });
+        return Stream.fromFuture(
+          Future.value(
+            () async {
+              return (
+                notCreated,
+                (await Future.wait(
+                  wallets.map(
+                    (e) =>
+                        getTokenContractAsset(e.rootTokenContract, transport),
+                  ),
+                ))
+                    .whereNotNull()
+                    .toList(),
+              );
+            }(),
+          ),
+        );
+      },
+    );
   }
 
   /// Get list of contracts, added to account with [address].
@@ -212,7 +214,8 @@ class AssetsService {
 
       return asset;
     } catch (e, st) {
-      _logger.severe('getTokenContractAsset', e, st);
+      _logger.severe('getTokenContractAsset, $rootTokenContract', e, st);
+
       return null;
     }
   }

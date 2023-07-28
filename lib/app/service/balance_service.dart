@@ -78,7 +78,7 @@ class BalanceService {
             nekotonRepository.tokenWalletsStream
                 .map(
           (list) => list.firstWhereOrNull(
-            (w) => w.address == contract && w.owner == address,
+            (w) => w.rootTokenContract == contract && w.owner == address,
           ),
         )
                 .flatMap(
@@ -169,7 +169,7 @@ class BalanceService {
       // subscribe for wallet appearing, because it can happens later
       nekotonRepository.tokenWalletsStream.map(
         (list) => list.firstWhereOrNull(
-          (w) => w.address == rootTokenContract && w.owner == owner,
+          (w) => w.rootTokenContract == rootTokenContract && w.owner == owner,
         ),
       ),
       nekotonRepository.currentTransportStream,

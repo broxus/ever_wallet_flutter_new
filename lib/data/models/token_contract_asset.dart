@@ -12,6 +12,7 @@ class TokenContractAsset with _$TokenContractAsset {
     required String name,
     required String symbol,
     required int decimals,
+    // address of rootTokenContract
     required Address address,
     required NetworkType networkType,
     required TokenWalletVersion version,

@@ -37,6 +37,9 @@ class _SelectNewAssetCustomEnterState extends State<SelectNewAssetCustomEnter> {
         CommonInput(
           controller: addressController,
           onSubmitted: (_) => _enable(context),
+          inputFormatters: [
+            FilteringTextInputFormatter.deny(RegExp(r'\s')),
+          ],
           suffixIcon: ValueListenableBuilder<TextEditingValue>(
             valueListenable: addressController,
             builder: (context, value, _) {
