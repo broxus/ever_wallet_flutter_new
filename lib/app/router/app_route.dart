@@ -24,7 +24,7 @@ enum AppRoute {
   ),
   selectNewAsset(
     '',
-    'selectNewAsset/:$selectNewAssetAddress',
+    'selectNewAsset/:$selectNewAssetAddressPathParam',
   ),
 
   /// Browser section

@@ -59,7 +59,7 @@ class AccountAssetsTab extends StatelessWidget {
                 onPressed: () => context.goFurther(
                   AppRoute.selectNewAsset.pathWithData(
                     pathParameters: {
-                      selectNewAssetAddress: account.address.address,
+                      selectNewAssetAddressPathParam: account.address.address,
                     },
                   ),
                 ),

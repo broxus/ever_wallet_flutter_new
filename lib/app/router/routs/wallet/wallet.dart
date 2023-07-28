@@ -5,7 +5,7 @@ import 'package:app/feature/wallet/widgets/account_asset_tab/select_new_asset/se
 import 'package:go_router/go_router.dart';
 import 'package:nekoton_repository/nekoton_repository.dart';
 
-const selectNewAssetAddress = 'selectNewAssetAddress';
+const selectNewAssetAddressPathParam = 'selectNewAssetAddress';
 
 /// Branch that is root for wallet.
 StatefulShellBranch get walletBranch {
@@ -24,7 +24,7 @@ StatefulShellBranch get walletBranch {
             path: AppRoute.selectNewAsset.path,
             builder: (_, state) => SelectNewAssetPage(
               address: Address(
-                address: state.pathParameters[selectNewAssetAddress]!,
+                address: state.pathParameters[selectNewAssetAddressPathParam]!,
               ),
             ),
           ),
