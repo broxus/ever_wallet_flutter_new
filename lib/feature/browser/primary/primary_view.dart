@@ -185,7 +185,7 @@ class _PrimaryViewState extends State<PrimaryView>
           );
         },
         // We use child to prevent webview from rebuilding when HUD
-        child: const BrowserTabsViewWidget(),
+        child: const BrowserTabsView(),
       ),
     );
   }

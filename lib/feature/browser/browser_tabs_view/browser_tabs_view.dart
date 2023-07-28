@@ -3,16 +3,16 @@ import 'package:collection/collection.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
-class BrowserTabsViewWidget extends StatefulWidget {
-  const BrowserTabsViewWidget({
+class BrowserTabsView extends StatefulWidget {
+  const BrowserTabsView({
     super.key,
   });
 
   @override
-  State<BrowserTabsViewWidget> createState() => _BrowserTabsViewState();
+  State<BrowserTabsView> createState() => _BrowserTabsViewState();
 }
 
-class _BrowserTabsViewState extends State<BrowserTabsViewWidget> {
+class _BrowserTabsViewState extends State<BrowserTabsView> {
   @override
   Widget build(BuildContext context) {
     return BlocBuilder<BrowserTabsBloc, BrowserTabsState>(
