@@ -1,7 +1,9 @@
 import 'dart:async';
 
 import 'package:app/data/models/models.dart';
+import 'package:app/feature/browser/browser.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_inappwebview/flutter_inappwebview.dart';
 import 'package:logging/logging.dart';
 import 'package:ui_components_lib/ui_components_lib.dart';
@@ -15,42 +17,17 @@ typedef BrowserOnOverScrollCallback = void Function({
   required int y,
 });
 
-typedef BrowserOnNavigateCallback = void Function({
-  required String id,
-  required Uri? url,
-});
-
-typedef BrowserOnProgressCallback = void Function({
-  required String id,
-  required int progress,
-});
-
-typedef BrowserOnErrorCallback = void Function({
-  required String id,
-  required Uri? url,
-  required int code,
-  required String message,
-});
-
 class BrowserTabView extends StatefulWidget {
   const BrowserTabView({
     required this.tab,
     this.onScroll,
     this.onOverScroll,
-    this.onLoadStart,
-    this.onLoadStop,
-    this.onProgressChanged,
-    this.onLoadError,
     super.key,
   });
 
   final BrowserTab tab;
   final BrowserOnScrollCallback? onScroll;
   final BrowserOnOverScrollCallback? onOverScroll;
-  final BrowserOnNavigateCallback? onLoadStart;
-  final BrowserOnNavigateCallback? onLoadStop;
-  final BrowserOnProgressCallback? onProgressChanged;
-  final BrowserOnErrorCallback? onLoadError;
 
   @override
   State<BrowserTabView> createState() => _BrowserTabViewState();
@@ -227,10 +204,8 @@ class _BrowserTabViewState extends State<BrowserTabView> {
     _,
     Uri? url,
   ) {
-    widget.onLoadStart?.call(
-      id: widget.tab.id,
-      url: url,
-    );
+    _setUrl(url);
+    _setState(BrowserTabState.loading);
   }
 
   void _onLoadStop(
@@ -238,10 +213,8 @@ class _BrowserTabViewState extends State<BrowserTabView> {
     Uri? url,
   ) {
     _pullToRefreshController?.endRefreshing();
-    widget.onLoadStop?.call(
-      id: widget.tab.id,
-      url: url,
-    );
+    _setUrl(url);
+    _setState(BrowserTabState.loaded);
   }
 
   void _onProgressChanged(
@@ -252,10 +225,12 @@ class _BrowserTabViewState extends State<BrowserTabView> {
     if (progress == 100) {
       _pullToRefreshController?.endRefreshing();
     }
-    widget.onProgressChanged?.call(
-      id: widget.tab.id,
-      progress: progress,
-    );
+    context.read<BrowserTabsBloc>().add(
+          BrowserTabsEvent.setProgress(
+            id: widget.tab.id,
+            progress: progress,
+          ),
+        );
   }
 
   void _onLoadError(
@@ -268,12 +243,7 @@ class _BrowserTabViewState extends State<BrowserTabView> {
     _log.warning(
       'Failed to load $url: $code $message',
     );
-    widget.onLoadError?.call(
-      id: widget.tab.id,
-      url: url,
-      code: code,
-      message: message,
-    );
+    _setState(BrowserTabState.error);
   }
 
   void _onRefresh() {
@@ -288,6 +258,22 @@ class _BrowserTabViewState extends State<BrowserTabView> {
             color: colors.textSecondary,
           ),
           onRefresh: _onRefresh,
+        );
+  }
+
+  void _setUrl(Uri? url) {
+    final browserTabsBloc = context.read<BrowserTabsBloc>();
+    if (url != null) {
+      browserTabsBloc.add(BrowserTabsEvent.setUrl(id: widget.tab.id, uri: url));
+    }
+  }
+
+  void _setState(BrowserTabState state) {
+    context.read<BrowserTabsBloc>().add(
+          BrowserTabsEvent.setState(
+            id: widget.tab.id,
+            state: state,
+          ),
         );
   }
 }

@@ -7,19 +7,11 @@ class BrowserTabsViewWidget extends StatefulWidget {
   const BrowserTabsViewWidget({
     this.onScroll,
     this.onOverScroll,
-    this.onLoadStart,
-    this.onLoadStop,
-    this.onProgressChanged,
-    this.onLoadError,
     super.key,
   });
 
   final BrowserOnScrollCallback? onScroll;
   final BrowserOnOverScrollCallback? onOverScroll;
-  final BrowserOnNavigateCallback? onLoadStart;
-  final BrowserOnNavigateCallback? onLoadStop;
-  final BrowserOnProgressCallback? onProgressChanged;
-  final BrowserOnErrorCallback? onLoadError;
 
   @override
   State<BrowserTabsViewWidget> createState() => _BrowserTabsViewState();
@@ -48,10 +40,6 @@ class _BrowserTabsViewState extends State<BrowserTabsViewWidget> {
               onScroll: widget.onScroll,
               key: ValueKey(tab.id),
               onOverScroll: widget.onOverScroll,
-              onLoadStart: widget.onLoadStart,
-              onLoadStop: widget.onLoadStop,
-              onProgressChanged: widget.onProgressChanged,
-              onLoadError: widget.onLoadError,
             ),
           ),
         ];

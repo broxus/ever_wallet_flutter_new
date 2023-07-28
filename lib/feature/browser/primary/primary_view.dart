@@ -1,5 +1,4 @@
 import 'package:app/app/router/router.dart';
-import 'package:app/data/models/models.dart';
 import 'package:app/feature/browser/browser.dart';
 import 'package:app/feature/browser/primary/hud_bloc/hud_bloc.dart';
 import 'package:flutter/material.dart';
@@ -198,10 +197,6 @@ class _PrimaryViewState extends State<PrimaryView>
         child: BrowserTabsViewWidget(
           onScroll: _onScroll,
           onOverScroll: _onOverScroll,
-          onLoadStart: _onLoadStart,
-          onLoadStop: _onLoadStop,
-          onProgressChanged: _onProgressChanged,
-          onLoadError: _onLoadError,
         ),
       ),
     );
@@ -251,52 +246,5 @@ class _PrimaryViewState extends State<PrimaryView>
     if (y > 0) {
       context.read<HudBloc>().add(const HudEvent.hide());
     }
-  }
-
-  void _onLoadStart({required String id, required Uri? url}) {
-    _setUrl(id, url);
-    _setState(id, BrowserTabState.loading);
-  }
-
-  void _onLoadStop({required String id, required Uri? url}) {
-    _setUrl(id, url);
-    _setState(id, BrowserTabState.loaded);
-  }
-
-  void _onProgressChanged({required String id, required int progress}) {
-    context.read<BrowserTabsBloc>().add(
-          BrowserTabsEvent.setProgress(
-            id: id,
-            progress: progress,
-          ),
-        );
-  }
-
-  void _onLoadError({
-    required String id,
-    // ignore: avoid-unused-parameters
-    required int code,
-    // ignore: avoid-unused-parameters
-    required String message,
-    // ignore: avoid-unused-parameters
-    required Uri? url,
-  }) {
-    _setState(id, BrowserTabState.error);
-  }
-
-  void _setUrl(String id, Uri? url) {
-    final browserTabsBloc = context.read<BrowserTabsBloc>();
-    if (url != null) {
-      browserTabsBloc.add(BrowserTabsEvent.setUrl(id: id, uri: url));
-    }
-  }
-
-  void _setState(String id, BrowserTabState state) {
-    context.read<BrowserTabsBloc>().add(
-          BrowserTabsEvent.setState(
-            id: id,
-            state: state,
-          ),
-        );
   }
 }
