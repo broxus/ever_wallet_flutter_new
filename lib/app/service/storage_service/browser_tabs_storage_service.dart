@@ -23,34 +23,28 @@ class BrowserTabsStorageService extends AbstractStorageService {
   // ===== Active tab related =====
 
   /// Subject of active browser tab id
-  final _browserActiveTabIdSubject = BehaviorSubject<int>();
+  final _browserActiveTabIdSubject = BehaviorSubject<String?>();
 
   /// Stream of active browser tab id
-  Stream<int> get browserActiveTabIdStream => _browserActiveTabIdSubject;
+  Stream<String?> get browserActiveTabIdStream => _browserActiveTabIdSubject;
 
   /// Get last cached of active browser tab id
-  int get browserActiveTabId => _browserActiveTabIdSubject.valueOrNull ?? -1;
+  String? get browserActiveTabId => _browserActiveTabIdSubject.valueOrNull;
 
   /// Put browser active tab stream
   Future<void> _streamedBrowserActiveTabId() async =>
       _browserActiveTabIdSubject.add(await readBrowserActiveTabId());
 
   /// Read active tab from storage
-  Future<int> readBrowserActiveTabId() async {
-    final encoded = await _storage.get(
+  Future<String?> readBrowserActiveTabId() async {
+    return _storage.get(
       _browserTabsActiveTabIdKey,
       domain: _browserTabsDomain,
     );
-
-    if (encoded == null) {
-      return -1;
-    }
-
-    return int.tryParse(encoded) ?? -1;
   }
 
   /// Save active tab id to storage
-  Future<void> saveBrowserActiveTabId(int id) async {
+  Future<void> saveBrowserActiveTabId(String? id) async {
     final verifiedId =
         browserTabById(id) != null ? id : browserTabs.firstOrNull?.id ?? -1;
 
@@ -115,18 +109,14 @@ class BrowserTabsStorageService extends AbstractStorageService {
     _browserTabsSubject.add([]);
 
     await _streamedBrowserTabs();
-    await saveBrowserActiveTabId(-1);
+    await saveBrowserActiveTabId(null);
   }
 
   /// Add browser tab
   Future<void> addBrowserTab(BrowserTab tab) async {
     /// Provide unique id for tab
-    final newId = browserTabs.fold(
-          0,
-          (max, tab) => tab.id > max ? tab.id : max,
-        ) +
-        1;
-    await saveBrowserTabs([...browserTabs, tab.copyWith(id: newId)]);
+    final newId = tab.id;
+    await saveBrowserTabs([...browserTabs, tab]);
     await saveBrowserActiveTabId(newId);
   }
 
@@ -138,15 +128,15 @@ class BrowserTabsStorageService extends AbstractStorageService {
   }
 
   /// Remove browser tab by id
-  Future<void> removeBrowserTab(int id) async {
+  Future<void> removeBrowserTab(String id) async {
     final tabs = [...browserTabs]..removeWhere((tab) => tab.id == id);
 
     return saveBrowserTabs(tabs);
   }
 
   /// Get tab by id
-  BrowserTab? browserTabById(int id) =>
-      browserTabs.firstWhereOrNull((tab) => tab.id == id);
+  BrowserTab? browserTabById(String? id) =>
+      id != null ? browserTabs.firstWhereOrNull((tab) => tab.id == id) : null;
 
   /// Get active tab
   BrowserTab? get browserTabActive =>

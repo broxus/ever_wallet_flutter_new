@@ -33,8 +33,8 @@ final _browserTab = BrowserTab(
   url: Uri.parse('URL'),
   image: 'IMAGE',
   title: 'TITLE',
-  lastScrollPosition: 10,
-  id: 0,
+  sortingOrder: -1,
+  id: '0',
 );
 const _everContractAsset = TokenContractAsset(
   name: 'Staked Ever',
@@ -278,7 +278,7 @@ void main() {
     /// Browser
     expect(await browserTabsStorage.readBrowserTabs(), [_browserTab]);
     expect(browserTabsStorage.browserTabs, [_browserTab]);
-    expect(await browserTabsStorage.readBrowserActiveTabId(), -1);
+    expect(await browserTabsStorage.readBrowserActiveTabId(), null);
   }
 
   setUp(() async {
@@ -545,7 +545,7 @@ void main() {
       expect(browserTabsStorage.browserTabs, hive.browserTabs);
       expect(
         await browserTabsStorage.readBrowserActiveTabId(),
-        hive.browserTabsLastIndex,
+        null,
       );
       expect(hive.checkIfSensitiveBoxesOpened(), isTrue);
     });

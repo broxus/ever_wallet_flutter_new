@@ -8,7 +8,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 class PrimaryPage extends StatefulWidget {
   const PrimaryPage({this.url, this.tabId, super.key});
   final String? url;
-  final int? tabId;
+  final String? tabId;
 
   @override
   State<PrimaryPage> createState() => _PrimaryPageState();
@@ -26,11 +26,7 @@ class _PrimaryPageState extends State<PrimaryPage> {
   Widget build(BuildContext context) {
     return BlocProvider<HudBloc>(
       create: (context) => HudBloc(),
-      child: BlocBuilder<BrowserTabsBloc, BrowserTabsState>(
-        builder: (context, state) {
-          return const PrimaryView();
-        },
-      ),
+      child: const PrimaryView(),
     );
   }
 
