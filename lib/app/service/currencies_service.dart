@@ -135,35 +135,31 @@ class CurrenciesService {
   ) async {
     if (assets == null) return;
 
-    try {
-      final rootTokenContracts = [
-        ...{
-          transport.nativeTokenAddress,
-          ...assets
-              .map(
-                (e) => e.additionalAssets.values
-                    .map((e) => e.tokenWallets)
-                    .expand((e) => e),
-              )
-              .expand((e) => e)
-              .map((e) => e.rootTokenContract),
-        },
-      ];
+    final rootTokenContracts = [
+      ...{
+        transport.nativeTokenAddress,
+        ...assets
+            .map(
+              (e) => e.additionalAssets.values
+                  .map((e) => e.tokenWallets)
+                  .expand((e) => e),
+            )
+            .expand((e) => e)
+            .map((e) => e.rootTokenContract),
+      },
+    ];
 
-      for (final rootTokenContract in rootTokenContracts) {
-        try {
-          final encoded = await httpService.postRequest(
-            endpoint: transport.currencyUrl(rootTokenContract.address),
-          );
-          final currency = _decodeCurrency(encoded, transport);
+    for (final rootTokenContract in rootTokenContracts) {
+      try {
+        final encoded = await httpService.postRequest(
+          endpoint: transport.currencyUrl(rootTokenContract.address),
+        );
+        final currency = _decodeCurrency(encoded, transport);
 
-          await storageService.saveOrUpdateCurrency(currency: currency);
-        } catch (_) {
-          rethrow;
-        }
+        await storageService.saveOrUpdateCurrency(currency: currency);
+      } catch (e, st) {
+        _logger.severe('_currencyChangedMapper', e, st);
       }
-    } catch (err, st) {
-      _logger.severe('_currencyChangedMapper', err, st);
     }
   }
 

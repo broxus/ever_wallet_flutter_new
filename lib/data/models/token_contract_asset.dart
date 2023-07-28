@@ -12,6 +12,7 @@ class TokenContractAsset with _$TokenContractAsset {
     required String name,
     required String symbol,
     required int decimals,
+    // address of rootTokenContract
     required Address address,
     required NetworkType networkType,
     required TokenWalletVersion version,
@@ -23,13 +24,11 @@ class TokenContractAsset with _$TokenContractAsset {
       _$TokenContractAssetFromJson(json);
 }
 
-extension IntTokenWalletVersionExtension on int {
-  TokenWalletVersion toVersion() {
-    // ignore: no-magic-number
-    if (this == 4) {
-      return TokenWalletVersion.oldTip3v4;
-    }
-
-    return TokenWalletVersion.tip3;
+TokenWalletVersion intToWalletContractConvert(int version) {
+  // ignore: no-magic-number
+  if (version == 4) {
+    return TokenWalletVersion.oldTip3v4;
   }
+
+  return TokenWalletVersion.tip3;
 }

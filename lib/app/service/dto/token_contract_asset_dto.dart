@@ -44,7 +44,7 @@ extension TokenContractAssetDtoX on TokenContractAssetDto {
         decimals: decimals,
         address: Address(address: address),
         logoURI: logoURI,
-        version: version.toVersion(),
+        version: intToWalletContractConvert(version),
         networkType: type,
       );
 }

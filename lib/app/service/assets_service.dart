@@ -87,6 +87,63 @@ class AssetsService {
     );
   }
 
+  /// Returns stream, that contains 2 lists:
+  /// 1-st list of contracts available to create for account with [address]
+  /// 2-nd list of contracts, already created for account with [address].
+  ///
+  /// This is a combination of streams [contractsForAccount] and
+  /// [contractsToCreateForAccount].
+  Stream<(List<TokenContractAsset>, List<TokenContractAsset>)>
+      allAvailableContractsForAccount(Address address) {
+    return Rx.combineLatest3<
+        List<TokenContractAsset>,
+        TransportStrategy,
+        KeyAccount?,
+        (TransportStrategy, KeyAccount?, List<TokenContractAsset>)>(
+      contractsStream,
+      nekotonRepository.currentTransportStream,
+      nekotonRepository.seedListStream
+          .map((list) => list.findAccountByAddress(address)),
+      (contracts, transport, account) => (transport, account, contracts),
+    ).asyncExpand<(List<TokenContractAsset>, List<TokenContractAsset>)>(
+      (value) {
+        final transport = value.$1;
+        final account = value.$2;
+        final contracts = value.$3;
+
+        final wallets =
+            account?.additionalAssets[transport.transport.group]?.tokenWallets;
+        if (wallets == null) return Stream.value((contracts, []));
+
+        final notCreated = contracts
+            .where(
+              (contract) =>
+                  // take only contracts that is not created for account
+                  wallets.none((w) => w.rootTokenContract == contract.address),
+            )
+            .toList();
+
+        return Stream.fromFuture(
+          Future.value(
+            () async {
+              return (
+                notCreated,
+                (await Future.wait(
+                  wallets.map(
+                    (e) =>
+                        getTokenContractAsset(e.rootTokenContract, transport),
+                  ),
+                ))
+                    .whereNotNull()
+                    .toList(),
+              );
+            }(),
+          ),
+        );
+      },
+    );
+  }
+
   /// Get list of contracts, added to account with [address].
   /// This stream listens for contracts from storage and load contracts if
   /// needed or return it from storage.
@@ -105,10 +162,16 @@ class AssetsService {
         if (wallets == null) return Stream.value([]);
 
         return Stream.fromFuture(
-          Future.wait(
-            wallets.map(
-              (e) => getTokenContractAsset(e.rootTokenContract, transport),
-            ),
+          Future.value(
+            () async {
+              return (await Future.wait(
+                wallets.map(
+                  (e) => getTokenContractAsset(e.rootTokenContract, transport),
+                ),
+              ))
+                  .whereNotNull()
+                  .toList();
+            }(),
           ),
         );
       });
@@ -117,7 +180,7 @@ class AssetsService {
 
   /// Get token contract if it's already was added to storage or download its
   /// data from blockchain.
-  Future<TokenContractAsset> getTokenContractAsset(
+  Future<TokenContractAsset?> getTokenContractAsset(
     Address rootTokenContract,
     TransportStrategy transport,
   ) async {
@@ -151,8 +214,9 @@ class AssetsService {
 
       return asset;
     } catch (e, st) {
-      _logger.severe('getTokenContractAsset', e, st);
-      rethrow;
+      _logger.severe('getTokenContractAsset, $rootTokenContract', e, st);
+
+      return null;
     }
   }
 
@@ -166,7 +230,8 @@ class AssetsService {
       for (final token in (decoded['tokens'] as List<dynamic>)
           .cast<Map<String, dynamic>>()) {
         token['networkType'] = transport.networkType.name;
-        token['version'] = (token['version'] as int).toVersion().toString();
+        token['version'] =
+            intToWalletContractConvert(token['version'] as int).toString();
       }
 
       final manifest = TonAssetsManifest.fromJson(decoded);

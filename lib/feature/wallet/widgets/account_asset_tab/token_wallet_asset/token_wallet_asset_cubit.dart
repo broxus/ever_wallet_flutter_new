@@ -23,7 +23,7 @@ class TokenWalletAssetCubit extends Cubit<TokenWalletAssetState> {
     _walletsSubscription =
         nekotonRepository.tokenWalletsStream.listen((wallets) {
       final wallet = wallets.firstWhereOrNull(
-        (w) => w.owner == owner && w.address == asset.address,
+        (w) => w.owner == owner && w.rootTokenContract == asset.address,
       );
       if (wallet != null) {
         _walletsSubscription?.cancel();
