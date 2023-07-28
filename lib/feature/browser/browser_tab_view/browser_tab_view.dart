@@ -8,26 +8,21 @@ import 'package:flutter_inappwebview/flutter_inappwebview.dart';
 import 'package:logging/logging.dart';
 import 'package:ui_components_lib/ui_components_lib.dart';
 
-typedef BrowserOnScrollCallback = void Function({
-  required int currentY,
-  required int gestureDY,
-});
-
-typedef BrowserOnOverScrollCallback = void Function({
-  required int y,
-});
+// Scroll position of the webview, used to hide the HUD when the user scrolls
+// further than a certain threshold.
+const int _hudScrollMinYThreshold = 4;
+// Scroll dY of the webview, used to hide and show the HUD when the user
+// scrolls up and down.
+const int _hudScrollDYThresholdDown = 64;
+const int _hudScrollDYThresholdUp = 128;
 
 class BrowserTabView extends StatefulWidget {
   const BrowserTabView({
     required this.tab,
-    this.onScroll,
-    this.onOverScroll,
     super.key,
   });
 
   final BrowserTab tab;
-  final BrowserOnScrollCallback? onScroll;
-  final BrowserOnOverScrollCallback? onOverScroll;
 
   @override
   State<BrowserTabView> createState() => _BrowserTabViewState();
@@ -64,18 +59,28 @@ class _BrowserTabViewState extends State<BrowserTabView> {
   void didUpdateWidget(BrowserTabView oldWidget) {
     super.didUpdateWidget(oldWidget);
 
+    _handleUrlChanged(widget.tab, oldWidget.tab);
     _handleTabChanged(widget.tab, oldWidget.tab);
   }
 
-  Future<void> _handleTabChanged(BrowserTab newTab, BrowserTab oldTab) async {
+  Future<void> _handleUrlChanged(BrowserTab newTab, BrowserTab oldTab) async {
     final url = await _webViewController?.getUrl();
 
+    // Reload the webview if the tab URL changed and the new URL is not the same
+    // as the current URL.
     if (newTab.url != oldTab.url && url != newTab.url) {
       await _webViewController?.loadUrl(
         urlRequest: URLRequest(
           url: newTab.url,
         ),
       );
+    }
+  }
+
+  Future<void> _handleTabChanged(BrowserTab newTab, BrowserTab oldTab) async {
+    // Show HUD if the tab changed.
+    if (newTab.id != oldTab.id) {
+      context.read<HudBloc>().add(const HudEvent.show());
     }
   }
 
@@ -132,7 +137,10 @@ class _BrowserTabViewState extends State<BrowserTabView> {
     bool clampedY,
   ) {
     if (clampedY) {
-      widget.onOverScroll?.call(y: y);
+      // If we are overscrolled down hide HUD
+      if (y > 0) {
+        context.read<HudBloc>().add(const HudEvent.hide());
+      }
 
       // Hey, we are overscrolled!
       // Remove all that contains overscrolled y position
@@ -157,10 +165,22 @@ class _BrowserTabViewState extends State<BrowserTabView> {
     _lastScrollY = y;
     // Call onScroll callback with current position and gesture dY
     if (_scrollGestureDY != null) {
-      widget.onScroll?.call(
-        currentY: y,
-        gestureDY: _scrollGestureDY!,
-      );
+      if (y < _hudScrollMinYThreshold) {
+        // If we are at the top of the page, we should show HUD
+        context.read<HudBloc>().add(const HudEvent.show());
+      } else {
+        // Elsewise, we should show and  hide HUD according to gesture direction.
+        // Here we check if gesture is long enough to hide or show HUD
+        if (_scrollGestureDY! > 0 &&
+            _scrollGestureDY!.abs() > _hudScrollDYThresholdDown) {
+          // If gesture is down, we should hide HUD
+          context.read<HudBloc>().add(const HudEvent.hide());
+        } else if (_scrollGestureDY! < 0 &&
+            _scrollGestureDY!.abs() > _hudScrollDYThresholdUp) {
+          // If gesture is up, we should show HUD
+          context.read<HudBloc>().add(const HudEvent.show());
+        }
+      }
     }
   }
 

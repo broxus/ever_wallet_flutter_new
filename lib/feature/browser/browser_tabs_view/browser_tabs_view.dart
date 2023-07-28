@@ -5,13 +5,8 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 
 class BrowserTabsViewWidget extends StatefulWidget {
   const BrowserTabsViewWidget({
-    this.onScroll,
-    this.onOverScroll,
     super.key,
   });
-
-  final BrowserOnScrollCallback? onScroll;
-  final BrowserOnOverScrollCallback? onOverScroll;
 
   @override
   State<BrowserTabsViewWidget> createState() => _BrowserTabsViewState();
@@ -37,9 +32,7 @@ class _BrowserTabsViewState extends State<BrowserTabsViewWidget> {
           ...tabs.map(
             (tab) => BrowserTabView(
               tab: tab,
-              onScroll: widget.onScroll,
               key: ValueKey(tab.id),
-              onOverScroll: widget.onOverScroll,
             ),
           ),
         ];

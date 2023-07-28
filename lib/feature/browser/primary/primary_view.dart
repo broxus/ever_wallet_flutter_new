@@ -1,6 +1,5 @@
 import 'package:app/app/router/router.dart';
 import 'package:app/feature/browser/browser.dart';
-import 'package:app/feature/browser/primary/hud_bloc/hud_bloc.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
@@ -17,14 +16,6 @@ class PrimaryView extends StatefulWidget {
 
 class _PrimaryViewState extends State<PrimaryView>
     with SingleTickerProviderStateMixin {
-  // Scroll position of the webview, used to hide the HUD when the user scrolls
-  // further than a certain threshold.
-  static const int _hudScrollMinYThreshold = 4;
-  // Scroll dY of the webview, used to hide and show the HUD when the user
-  // scrolls up and down.
-  static const int _hudScrollDYThresholdDown = 64;
-  static const int _hudScrollDYThresholdUp = 128;
-
   // Main animation controller of the HUD.
   late AnimationController _animationController;
   // Search bar animation
@@ -194,10 +185,7 @@ class _PrimaryViewState extends State<PrimaryView>
           );
         },
         // We use child to prevent webview from rebuilding when HUD
-        child: BrowserTabsViewWidget(
-          onScroll: _onScroll,
-          onOverScroll: _onOverScroll,
-        ),
+        child: const BrowserTabsViewWidget(),
       ),
     );
   }
@@ -223,28 +211,5 @@ class _PrimaryViewState extends State<PrimaryView>
 
   void _onTabsPressed() {
     context.goNamed(AppRoute.browserTabs.name);
-  }
-
-  void _onScroll({required int currentY, required int gestureDY}) {
-    if (currentY < _hudScrollMinYThreshold) {
-      // If we are at the top of the page, we should show HUD
-      context.read<HudBloc>().add(const HudEvent.show());
-    } else {
-      // Elsewise, we should show and  hide HUD according to gesture direction.
-      // Here we check if gesture is long enough to hide or show HUD
-      if (gestureDY > 0 && gestureDY.abs() > _hudScrollDYThresholdDown) {
-        // If gesture is down, we should hide HUD
-        context.read<HudBloc>().add(const HudEvent.hide());
-      } else if (gestureDY < 0 && gestureDY.abs() > _hudScrollDYThresholdUp) {
-        // If gesture is up, we should show HUD
-        context.read<HudBloc>().add(const HudEvent.show());
-      }
-    }
-  }
-
-  void _onOverScroll({required int y}) {
-    if (y > 0) {
-      context.read<HudBloc>().add(const HudEvent.hide());
-    }
   }
 }
