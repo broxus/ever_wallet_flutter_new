@@ -210,31 +210,42 @@ enum AppRoute {
   String pathWithQuery(Map<String, String>? query) {
     return Uri(path: path, queryParameters: query).toString();
   }
+
+  /// Returns path segments from [uri]. It's a wrapper for [Uri.pathSegments],
+  /// but for the first segment adds slash. We are strongly recommend to use
+  /// this method instead of [Uri.pathSegments].
+  static List<String> pathSegments(Uri uri) {
+    if (uri.pathSegments.isEmpty) return [];
+
+    final segments = [...uri.pathSegments]
+      ..replaceRange(0, 1, ['/${uri.pathSegments.first}']);
+
+    return segments;
+  }
 }
 
 /// Get first segment from [location].
 String getRootPath(String location) {
-  final segments = Uri.parse(location).pathSegments;
+  final segments = AppRoute.pathSegments(Uri.parse(location));
   if (segments.isEmpty) {
     AppRoute._log.severe('getRootPath: no root location found');
 
     return AppRoute.defaultRoute.path;
   }
 
-  return '/${segments.first}';
+  return segments.first;
 }
 
 /// Get last segment from [location].
 String getCurrentPath(String location) {
-  final segments = Uri.parse(location).pathSegments;
+  final segments = AppRoute.pathSegments(Uri.parse(location));
   if (segments.isEmpty) {
     AppRoute._log.severe('getCurrentPath: no current location found');
 
     return AppRoute.defaultRoute.path;
   }
 
-  // If we have only one segment, then we are on root location
-  return '${segments.length == 1 ? '/' : ''}${segments.last}';
+  return segments.last;
 }
 
 /// Get [AppRoute].
@@ -259,7 +270,7 @@ AppRoute getCurrentAppRoute(String location) {
 bool canSaveLocation(String location) {
   final uri = Uri.parse(location);
 
-  return uri.pathSegments
+  return AppRoute.pathSegments(uri)
       .every((segment) => AppRoute.getByPath(segment)?.isSaveLocation ?? false);
 }
 
