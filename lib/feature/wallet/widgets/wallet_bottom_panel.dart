@@ -1,4 +1,5 @@
 import 'package:app/feature/wallet/widgets/account_asset_tab/account_asset_tab.dart';
+import 'package:app/feature/wallet/widgets/account_transactions_tab/account_transactions_tab.dart';
 import 'package:app/generated/generated.dart';
 import 'package:flutter/material.dart';
 import 'package:nekoton_repository/nekoton_repository.dart';
@@ -55,7 +56,8 @@ class _WalletBottomPanelState extends State<WalletBottomPanel> {
               switch (value) {
                 WalletBottomPanelTab.asset =>
                   AccountAssetsTab(account: widget.currentAccount),
-                WalletBottomPanelTab.transactions => Container(),
+                WalletBottomPanelTab.transactions =>
+                  AccountTransactionsTab(account: widget.currentAccount),
               },
             ],
           );
