@@ -21,6 +21,7 @@ class TonWalletMultisigOrdinaryTransactionWidget extends StatelessWidget {
 
     return TonWalletTransactionWidget(
       displayDate: displayDate,
+      // ignore: no-empty-block
       onPressed: () {},
       address: transaction.address,
       isIncoming: !transaction.isOutgoing,

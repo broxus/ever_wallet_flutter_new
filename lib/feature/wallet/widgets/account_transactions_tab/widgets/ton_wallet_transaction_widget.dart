@@ -118,15 +118,13 @@ class TonWalletTransactionWidget extends StatelessWidget {
       ),
     );
 
-    if (date == null) {
-      return body;
-    } else {
-      return SeparatedColumn(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        mainAxisSize: MainAxisSize.min,
-        children: [date, body],
-      );
-    }
+    return date == null
+        ? body
+        : SeparatedColumn(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            mainAxisSize: MainAxisSize.min,
+            children: [date, body],
+          );
   }
 
   Widget _headerDate() {
@@ -194,6 +192,7 @@ class TonWalletTransactionWidget extends StatelessWidget {
     );
   }
 
+  // ignore: long-method
   Widget _baseTransactionBody() {
     return Builder(
       builder: (context) {
