@@ -17,11 +17,17 @@ class MoneyWidget extends StatelessWidget {
   const MoneyWidget({
     required this.money,
     required this.style,
+    this.sign,
     super.key,
   });
 
   final Money money;
   final MoneyWidgetStyle style;
+
+  /// If sign > 0, then + will be displayed before [money], if sign < 0, then
+  /// - will be displayed.
+  /// If null, nothing will displayed.
+  final int? sign;
 
   @override
   Widget build(BuildContext context) {
@@ -43,10 +49,12 @@ class MoneyWidget extends StatelessWidget {
         StyleRes.addRegular.copyWith(color: colors.textSecondary),
     };
 
+    final signStr = sign == null || sign == 0 ? '' : (sign! > 0 ? '+' : '-');
+
     return Row(
       mainAxisSize: MainAxisSize.min,
       children: [
-        Text(money.formatImproved(), style: moneyStyle),
+        Text('$signStr${money.formatImproved()}', style: moneyStyle),
         const SizedBox(width: DimensStroke.medium),
         Text(money.currency.symbol, style: symbolStyle),
       ],

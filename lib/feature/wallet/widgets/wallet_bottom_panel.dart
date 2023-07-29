@@ -59,6 +59,7 @@ class _WalletBottomPanelState extends State<WalletBottomPanel> {
                 WalletBottomPanelTab.transactions =>
                   AccountTransactionsTab(account: widget.currentAccount),
               },
+              const SizedBox(height: DimensSize.d8),
             ],
           );
         },

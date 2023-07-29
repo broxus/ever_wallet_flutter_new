@@ -3,6 +3,8 @@ import 'package:app/di/di.dart';
 import 'package:app/feature/wallet/widgets/account_transactions_tab/account_transactions_tab_cubit.dart';
 import 'package:app/feature/wallet/widgets/account_transactions_tab/models/account_transaction_item.dart';
 import 'package:app/feature/wallet/widgets/account_transactions_tab/widgets/widgets.dart';
+import 'package:app/utils/utils.dart';
+import 'package:collection/collection.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:nekoton_repository/nekoton_repository.dart';
@@ -37,41 +39,47 @@ class AccountTransactionsTab extends StatelessWidget {
             loading: () => const SizedBox.shrink(),
             transactions: (transactions) {
               return SeparatedColumn(
-                separator: const Padding(
-                  padding: EdgeInsets.symmetric(vertical: DimensSize.d8),
-                  child: CommonDivider(),
-                ),
-                children: transactions.map((e) {
+                children: transactions.mapIndexed((index, e) {
+                  final prev = index == 0 ? null : transactions[index - 1];
+                  final displayDate =
+                      prev == null || !prev.date.isSameDay(e.date);
+
                   return switch (e.type) {
                     AccountTransactionType.ordinary =>
                       TonWalletOrdinaryTransactionWidget(
                         transaction:
                             e.transaction as TonWalletOrdinaryTransaction,
+                        displayDate: displayDate,
                       ),
                     AccountTransactionType.pending =>
                       TonWalletPendingTransactionWidget(
                         transaction:
                             e.transaction as TonWalletPendingTransaction,
+                        displayDate: displayDate,
                       ),
                     AccountTransactionType.expired =>
                       TonWalletExpiredTransactionWidget(
                         transaction:
                             e.transaction as TonWalletExpiredTransaction,
+                        displayDate: displayDate,
                       ),
                     AccountTransactionType.multisigOrdinary =>
                       TonWalletMultisigOrdinaryTransactionWidget(
                         transaction: e.transaction
                             as TonWalletMultisigOrdinaryTransaction,
+                        displayDate: displayDate,
                       ),
                     AccountTransactionType.multisigPending =>
                       TonWalletMultisigPendingTransactionWidget(
                         transaction: e.transaction
                             as TonWalletMultisigPendingTransaction,
+                        displayDate: displayDate,
                       ),
                     AccountTransactionType.multisigExpired =>
                       TonWalletMultisigExpiredTransactionWidget(
                         transaction: e.transaction
                             as TonWalletMultisigExpiredTransaction,
+                        displayDate: displayDate,
                       ),
                   };
                 }).toList(),
