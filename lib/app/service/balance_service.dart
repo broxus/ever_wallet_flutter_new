@@ -47,9 +47,7 @@ class BalanceService {
       /// of wallet and currency updating.
       final tonWalletBalanceStream =
           Rx.combineLatest2<BigInt, CustomCurrency?, Fixed>(
-        wallet.fieldUpdatesStream
-            .map((_) => wallet.contractState.balance)
-            .startWith(wallet.contractState.balance),
+        wallet.fieldUpdatesStream.map((_) => wallet.contractState.balance),
         currenciesService.currenciesStream(transport.networkType).map(
               (curs) => curs.firstWhereOrNull(
                 (cur) => cur.address == transport.nativeTokenAddress,
@@ -86,7 +84,7 @@ class BalanceService {
             if (wallet == null) return Stream.value(Fixed.zero);
 
             return Rx.combineLatest2<Money?, CustomCurrency?, Fixed>(
-              wallet.onMoneyBalanceChangedStream.startWith(wallet.moneyBalance),
+              wallet.onMoneyBalanceChangedStream,
               currenciesService.currenciesStream(transport.networkType).map(
                     (curs) => curs.firstWhereOrNull(
                       (cur) => cur.address == contract,
@@ -132,9 +130,7 @@ class BalanceService {
       if (wallet == null) return Stream.value(Fixed.zero);
 
       return Rx.combineLatest2<BigInt, CustomCurrency?, Fixed>(
-        wallet.fieldUpdatesStream
-            .map((_) => wallet.contractState.balance)
-            .startWith(wallet.contractState.balance),
+        wallet.fieldUpdatesStream.map((_) => wallet.contractState.balance),
         currenciesService.currenciesStream(transport.networkType).map(
               (curs) => curs.firstWhereOrNull(
                 (cur) => cur.address == transport.nativeTokenAddress,
@@ -181,7 +177,7 @@ class BalanceService {
       if (wallet == null) return Stream.value(Fixed.zero);
 
       return Rx.combineLatest2<Money?, CustomCurrency?, Fixed>(
-        wallet.onMoneyBalanceChangedStream.startWith(wallet.moneyBalance),
+        wallet.onMoneyBalanceChangedStream,
         currenciesService.currenciesStream(transport.networkType).map(
               (curs) => curs.firstWhereOrNull(
                 (cur) => cur.address == rootTokenContract,

@@ -93,7 +93,7 @@ class AccountTransactionsTabCubit extends Cubit<AccountTransactionsTabState> {
         void,
         List<TransactionWithData<TransactionAdditionalInfo?>>?,
         List<TransactionWithData<TransactionAdditionalInfo?>>>(
-      wallet.fieldUpdatesStream.startWith(null),
+      wallet.fieldUpdatesStream,
       walletStorage.transactionsStream(
         networkId: transport.networkId,
         group: transport.group,

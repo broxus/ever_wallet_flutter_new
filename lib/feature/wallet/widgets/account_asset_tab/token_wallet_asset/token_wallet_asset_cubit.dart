@@ -6,7 +6,6 @@ import 'package:bloc/bloc.dart';
 import 'package:collection/collection.dart';
 import 'package:freezed_annotation/freezed_annotation.dart';
 import 'package:nekoton_repository/nekoton_repository.dart';
-import 'package:rxdart/rxdart.dart';
 
 part 'token_wallet_asset_state.dart';
 
@@ -28,8 +27,7 @@ class TokenWalletAssetCubit extends Cubit<TokenWalletAssetState> {
       if (wallet != null) {
         _walletsSubscription?.cancel();
 
-        _thisWalletSubscription =
-            wallet.fieldUpdatesStream.startWith(null).listen((_) {
+        _thisWalletSubscription = wallet.fieldUpdatesStream.listen((_) {
           _cachedTokenBalance = wallet.moneyBalance;
 
           _updateState();
