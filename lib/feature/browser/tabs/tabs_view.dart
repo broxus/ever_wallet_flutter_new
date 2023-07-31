@@ -17,8 +17,6 @@ class _TabsViewState extends State<TabsView> {
     final tabs = [...context.watch<BrowserTabsBloc>().state.tabs]..sort(
         (a, b) => a.sortingOrder.compareTo(b.sortingOrder),
       );
-    final onCloseAllPressed = tabs.isNotEmpty ? _onCloseAllPressed : null;
-
     return Column(
       children: [
         Expanded(
@@ -41,30 +39,8 @@ class _TabsViewState extends State<TabsView> {
             ),
           ),
         ),
-        BrowserBottomMenuTabs(
-          onCloseAllPressed: onCloseAllPressed,
-          onAddTabPressed: _onAddTabPressed,
-          onDonePressed: _onDonePressed,
-        ),
+        const BrowserBottomMenuTabs(),
       ],
     );
-  }
-
-  void _onCloseAllPressed() {
-    context.read<BrowserTabsBloc>().add(
-          const BrowserTabsEvent.closeAll(),
-        );
-    context.goNamed(AppRoute.browser.name);
-  }
-
-  void _onAddTabPressed() {
-    context.read<BrowserTabsBloc>().add(
-          const BrowserTabsEvent.addEmpty(),
-        );
-    context.goNamed(AppRoute.browser.name);
-  }
-
-  void _onDonePressed() {
-    context.goNamed(AppRoute.browser.name);
   }
 }

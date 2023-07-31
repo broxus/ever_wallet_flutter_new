@@ -203,6 +203,8 @@ class _BrowserSearchBarInputState extends State<BrowserSearchBarInput> {
           );
   }
 
+  // TODO(Odrin): we should add all the icons in the ui kit library
+  // and get rid of this method
   Widget? _getIcon(String? svg, IconData icondata) {
     final colors = context.themeStyle.colors;
 

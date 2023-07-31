@@ -1,8 +1,6 @@
-import 'package:app/app/router/router.dart';
 import 'package:app/feature/browser/browser.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:go_router/go_router.dart';
 import 'package:ui_components_lib/ui_components_lib.dart';
 
 const _searchEngineUri = 'https://duckduckgo.com/?q=';
@@ -172,13 +170,7 @@ class _PrimaryViewState extends State<PrimaryView>
                 alignment: Alignment.bottomCenter,
                 child: SlideTransition(
                   position: _bottomMenuAnimation,
-                  child: BrowserBottomMenuCommon(
-                    onBackPressed: () => {},
-                    onForwardPressed: null,
-                    onAddTabPressed: null,
-                    onTabsPressed: _onTabsPressed,
-                    onOverflowPressed: null,
-                  ),
+                  child: const BrowserBottomMenuCommon(),
                 ),
               ),
             ],
@@ -207,9 +199,5 @@ class _PrimaryViewState extends State<PrimaryView>
           ? BrowserTabsEvent.setUrl(id: activeTab.id, uri: uri)
           : BrowserTabsEvent.add(uri: uri),
     );
-  }
-
-  void _onTabsPressed() {
-    context.goNamed(AppRoute.browserTabs.name);
   }
 }
