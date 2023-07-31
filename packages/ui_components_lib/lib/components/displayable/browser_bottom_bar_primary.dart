@@ -103,8 +103,6 @@ class BrowserBottomBarPrimary extends StatelessWidget {
     IconData icondata,
     VoidCallback? onPressed,
   ) {
-    final colors = context.themeStyle.colors;
-
     return Padding(
       padding: const EdgeInsets.all(DimensSize.d8),
       child: svg != null
