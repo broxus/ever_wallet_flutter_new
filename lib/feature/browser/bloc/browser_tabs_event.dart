@@ -10,12 +10,14 @@ class BrowserTabsEvent with _$BrowserTabsEvent {
   }) = _SetUrl;
   const factory BrowserTabsEvent.setState({
     required String id,
-    required BrowserTabState state,
+    BrowserTabStateType? state,
+    int? progress,
+    bool? canGoBack,
+    bool? canGoForward,
+    VoidCallback? goBack,
+    VoidCallback? goForward,
+    VoidCallback? refresh,
   }) = _SetState;
-  const factory BrowserTabsEvent.setProgress({
-    required String id,
-    required int progress,
-  }) = _SetProgress;
   const factory BrowserTabsEvent.remove({required String id}) = _Remove;
   const factory BrowserTabsEvent.setActive({required String id}) = _SetActive;
   const factory BrowserTabsEvent.closeAll() = _CloseAll;

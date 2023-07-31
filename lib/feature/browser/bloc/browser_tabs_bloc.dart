@@ -1,7 +1,9 @@
 import 'dart:async';
+import 'dart:ui';
 
 import 'package:app/app/service/service.dart';
 import 'package:app/data/models/models.dart';
+import 'package:app/feature/browser/browser.dart';
 import 'package:bloc/bloc.dart';
 import 'package:collection/collection.dart';
 import 'package:freezed_annotation/freezed_annotation.dart';
@@ -19,8 +21,7 @@ class BrowserTabsBloc extends Bloc<BrowserTabsEvent, BrowserTabsState> {
           BrowserTabsState(
             tabs: browserTabsStorageService.browserTabs,
             currentTabId: browserTabsStorageService.browserActiveTabId,
-            state: BrowserTabState.initial,
-            progress: 0,
+            tabsState: {},
           ),
         ) {
     _registerHandlers();
@@ -46,9 +47,13 @@ class BrowserTabsBloc extends Bloc<BrowserTabsEvent, BrowserTabsState> {
   StreamSubscription<List<BrowserTab>>? _browserTabsSubscription;
   StreamSubscription<String?>? _browserActiveTabIdSubscription;
 
-  BrowserTab? get activeTab => state.tabs.firstWhereOrNull(
-        (tab) => tab.id == state.currentTabId,
-      );
+  BrowserTab? get activeTab => state.currentTabId != null
+      ? browserTabById(state.currentTabId ?? '')
+      : null;
+
+  BrowserTabState? get activeTabState => state.currentTabId != null
+      ? browserTabStateById(state.currentTabId ?? '')
+      : null;
 
   @override
   Future<void> close() {
@@ -75,7 +80,7 @@ class BrowserTabsBloc extends Bloc<BrowserTabsEvent, BrowserTabsState> {
       browserTabsStorageService.addBrowserTab(tab);
     });
     on<_SetUrl>((event, emit) {
-      final oldTab = browserTabsStorageService.browserTabById(event.id);
+      final oldTab = browserTabById(event.id);
       if (oldTab == null) {
         _log.severe('_SetUrl: no active tab');
 
@@ -89,39 +94,24 @@ class BrowserTabsBloc extends Bloc<BrowserTabsEvent, BrowserTabsState> {
       }
     });
     on<_SetState>((event, emit) {
-      final oldTab = browserTabsStorageService.browserTabById(event.id);
-      if (oldTab == null) {
-        _log.severe('_SetState: no active tab');
+      var oldTabState = browserTabStateById(event.id);
+      oldTabState ??= const BrowserTabState();
 
-        return;
-      }
-      final progress = switch (oldTab.state) {
-        BrowserTabState.initial => 0,
-        BrowserTabState.loading => oldTab.progress,
-        BrowserTabState.loaded => 100,
-        BrowserTabState.error => 0,
-      };
-      final newTab = oldTab.copyWith(
-        state: event.state,
-        progress: progress,
+      final stateType = event.progress == 100
+          ? BrowserTabStateType.loaded
+          : event.state ?? oldTabState.state;
+
+      final newTabState = oldTabState.copyWith(
+        state: stateType,
+        progress: event.progress ?? oldTabState.progress,
+        canGoBack: event.canGoBack ?? oldTabState.canGoBack,
+        canGoForward: event.canGoForward ?? oldTabState.canGoForward,
+        goBack: event.goBack ?? oldTabState.goBack,
+        goForward: event.goForward ?? oldTabState.goForward,
+        refresh: event.refresh ?? oldTabState.refresh,
       );
 
-      emit(state.copyWith(tabs: _replaceTab(newTab)));
-    });
-    on<_SetProgress>((event, emit) {
-      final oldTab = browserTabsStorageService.browserTabById(event.id);
-      if (oldTab == null) {
-        _log.severe('_SetProgress: no active tab');
-
-        return;
-      }
-      final progress = event.progress;
-      final newTab = oldTab.copyWith(
-        progress: progress,
-        state: BrowserTabState.loading,
-      );
-
-      emit(state.copyWith(tabs: _replaceTab(newTab)));
+      emit(state.copyWith(tabsState: _replaceTabState(event.id, newTabState)));
     });
     on<_Remove>((event, emit) {
       browserTabsStorageService.removeBrowserTab(event.id);
@@ -133,7 +123,12 @@ class BrowserTabsBloc extends Bloc<BrowserTabsEvent, BrowserTabsState> {
       browserTabsStorageService.clearBrowserTabs();
     });
     on<_SetTabs>((event, emit) {
-      emit(state.copyWith(tabs: event.tabs));
+      emit(
+        state.copyWith(
+          tabs: event.tabs,
+          tabsState: _clearTabStates(event.tabs),
+        ),
+      );
     });
     on<_SetActiveTabId>((event, emit) {
       browserTabsStorageService.saveBrowserActiveTabId(event.id);
@@ -141,10 +136,38 @@ class BrowserTabsBloc extends Bloc<BrowserTabsEvent, BrowserTabsState> {
     });
   }
 
-  List<BrowserTab> _replaceTab(BrowserTab newTab) {
-    return [
-      ...([...state.tabs]..removeWhere((tab) => tab.id == newTab.id)),
-      newTab,
-    ];
+  // List<BrowserTab> _replaceTab(BrowserTab newTab) {
+  //   return [
+  //     ...([...state.tabs]..removeWhere((tab) => tab.id == newTab.id)),
+  //     newTab,
+  //   ];
+  // }
+
+  Map<String, BrowserTabState> _replaceTabState(
+    String id,
+    BrowserTabState newTabState,
+  ) {
+    return {
+      ...({...state.tabsState}..removeWhere((key, value) => key == id)),
+      ...{id: newTabState},
+    };
+  }
+
+  Map<String, BrowserTabState> _clearTabStates(
+    List<BrowserTab> tabs,
+  ) {
+    return {
+      ...({...state.tabsState}..removeWhere(
+          (key, value) => browserTabById(key) == null,
+        )),
+    };
+  }
+
+  BrowserTab? browserTabById(String id) {
+    return state.tabs.firstWhereOrNull((tab) => tab.id == id);
+  }
+
+  BrowserTabState? browserTabStateById(String id) {
+    return state.tabsState[id];
   }
 }

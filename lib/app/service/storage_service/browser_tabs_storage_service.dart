@@ -46,7 +46,7 @@ class BrowserTabsStorageService extends AbstractStorageService {
   /// Save active tab id to storage
   Future<void> saveBrowserActiveTabId(String? id) async {
     final verifiedId =
-        browserTabById(id) != null ? id : browserTabs.firstOrNull?.id ?? -1;
+        _browserTabById(id) != null ? id : browserTabs.firstOrNull?.id ?? -1;
 
     if (id == browserActiveTabId) {
       return;
@@ -135,12 +135,12 @@ class BrowserTabsStorageService extends AbstractStorageService {
   }
 
   /// Get tab by id
-  BrowserTab? browserTabById(String? id) =>
+  BrowserTab? _browserTabById(String? id) =>
       id != null ? browserTabs.firstWhereOrNull((tab) => tab.id == id) : null;
 
   /// Get active tab
-  BrowserTab? get browserTabActive =>
-      browserTabs.firstWhereOrNull((tab) => tab.id == browserActiveTabId);
+  // BrowserTab? get _browserTabActive =>
+  // browserTabs.firstWhereOrNull((tab) => tab.id == browserActiveTabId);
 
   @override
   Future<void> init() => Future.wait([

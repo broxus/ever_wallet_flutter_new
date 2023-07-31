@@ -56,6 +56,13 @@ class _BrowserTabViewState extends State<BrowserTabView> {
   static final _log = Logger('BrowserTabView');
 
   @override
+  void initState() {
+    super.initState();
+
+    _setBrowserTabCallbacks();
+  }
+
+  @override
   void didUpdateWidget(BrowserTabView oldWidget) {
     super.didUpdateWidget(oldWidget);
 
@@ -225,7 +232,7 @@ class _BrowserTabViewState extends State<BrowserTabView> {
     Uri? url,
   ) {
     _setUrl(url);
-    _setState(BrowserTabState.loading);
+    _setState(state: BrowserTabStateType.loading);
   }
 
   void _onLoadStop(
@@ -234,7 +241,7 @@ class _BrowserTabViewState extends State<BrowserTabView> {
   ) {
     _pullToRefreshController?.endRefreshing();
     _setUrl(url);
-    _setState(BrowserTabState.loaded);
+    _setState(state: BrowserTabStateType.loaded);
   }
 
   void _onProgressChanged(
@@ -246,12 +253,8 @@ class _BrowserTabViewState extends State<BrowserTabView> {
     if (progress == 100) {
       _pullToRefreshController?.endRefreshing();
     }
-    context.read<BrowserTabsBloc>().add(
-          BrowserTabsEvent.setProgress(
-            id: widget.tab.id,
-            progress: progress,
-          ),
-        );
+
+    _setState(progress: progress);
   }
 
   void _onLoadError(
@@ -264,11 +267,19 @@ class _BrowserTabViewState extends State<BrowserTabView> {
     _log.warning(
       'Failed to load $url: $code $message',
     );
-    _setState(BrowserTabState.error);
+    _setState(state: BrowserTabStateType.error);
   }
 
   void _onRefresh() {
     _webViewController?.reload();
+  }
+
+  void _onGoBack() {
+    _webViewController?.goBack();
+  }
+
+  void _onGoForward() {
+    _webViewController?.goForward();
   }
 
   void _initPTRController() {
@@ -289,11 +300,46 @@ class _BrowserTabViewState extends State<BrowserTabView> {
     }
   }
 
-  void _setState(BrowserTabState state) {
+  Future<void> _setState({
+    BrowserTabStateType? state,
+    int? progress,
+  }) async {
+    final canGoBack = await _webViewController?.canGoBack() ?? false;
+    final canGoForward = await _webViewController?.canGoForward() ?? false;
+
+    _addSetStateEvent(
+      state: state,
+      canGoBack: canGoBack,
+      canGoForward: canGoForward,
+      progress: progress,
+    );
+  }
+
+  // Should be sync because context calls are not allowed in async callbacks
+  void _addSetStateEvent({
+    BrowserTabStateType? state,
+    bool? canGoBack,
+    bool? canGoForward,
+    int? progress,
+  }) {
     context.read<BrowserTabsBloc>().add(
           BrowserTabsEvent.setState(
             id: widget.tab.id,
             state: state,
+            canGoBack: canGoBack,
+            canGoForward: canGoForward,
+            progress: progress,
+          ),
+        );
+  }
+
+  void _setBrowserTabCallbacks() {
+    context.read<BrowserTabsBloc>().add(
+          BrowserTabsEvent.setState(
+            id: widget.tab.id,
+            goBack: _onGoBack,
+            goForward: _onGoForward,
+            refresh: _onRefresh,
           ),
         );
   }

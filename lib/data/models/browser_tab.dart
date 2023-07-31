@@ -3,15 +3,7 @@ import 'package:nekoton_repository/nekoton_repository.dart';
 import 'package:uuid/uuid.dart';
 
 part 'browser_tab.freezed.dart';
-
 part 'browser_tab.g.dart';
-
-enum BrowserTabState {
-  initial,
-  loading,
-  loaded,
-  error,
-}
 
 @freezed
 class BrowserTab with _$BrowserTab {
@@ -30,22 +22,6 @@ class BrowserTab with _$BrowserTab {
 
     /// The sorting position of the tab.
     required int sortingOrder,
-
-    /// Transient field to store the state of the tab.
-    @JsonKey(
-      includeFromJson: false,
-      includeToJson: false,
-    )
-    @Default(BrowserTabState.initial)
-    BrowserTabState state,
-
-    /// Transient field to store the progress of the tab.
-    @JsonKey(
-      includeFromJson: false,
-      includeToJson: false,
-    )
-    @Default(0)
-    int progress,
   }) = _BrowserTab;
 
   factory BrowserTab.create({

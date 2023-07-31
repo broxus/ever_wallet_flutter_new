@@ -5,7 +5,6 @@ class BrowserTabsState with _$BrowserTabsState {
   const factory BrowserTabsState({
     required List<BrowserTab> tabs,
     required String? currentTabId,
-    required BrowserTabState state,
-    required int progress,
+    required Map<String, BrowserTabState> tabsState,
   }) = _BrowserTabsState;
 }

@@ -17,6 +17,9 @@ class BrowserBottomMenuCommon extends StatelessWidget {
     return BlocBuilder<BrowserTabsBloc, BrowserTabsState>(
       builder: (context, state) {
         final tabCount = context.watch<BrowserTabsBloc>().state.tabs.length;
+        final currentTabState = context.read<BrowserTabsBloc>().activeTabState;
+        final canGoBack = currentTabState?.canGoBack ?? false;
+        final canGoForward = currentTabState?.canGoForward ?? false;
 
         return BrowserBottomBarPrimary(
           backSvg: Assets.images.navigateBack.path,
@@ -25,8 +28,8 @@ class BrowserBottomMenuCommon extends StatelessWidget {
           historySvg: Assets.images.history.path,
           dotsSvg: Assets.images.dots.path,
           onCountIndicatorPressed: () => _onCountIndicatorPressed(context),
-          onBackPressed: null,
-          onForwardPressed: null,
+          onBackPressed: canGoBack ? currentTabState?.goBack : null,
+          onForwardPressed: canGoForward ? currentTabState?.goForward : null,
           onPlusPressed: () => _onPlusPressed(context),
           onHistoryPressed: () => _onHistoryPressed(context),
           onDotsPressed: () => _onDotsPressed(context),
