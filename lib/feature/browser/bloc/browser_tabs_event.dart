@@ -8,6 +8,10 @@ class BrowserTabsEvent with _$BrowserTabsEvent {
     required String id,
     required Uri uri,
   }) = _SetUrl;
+  const factory BrowserTabsEvent.setScreenshot({
+    required String id,
+    required String imagePath,
+  }) = _SetScreenshot;
   const factory BrowserTabsEvent.setState({
     required String id,
     BrowserTabStateType? state,

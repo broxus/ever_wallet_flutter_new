@@ -1,3 +1,5 @@
+import 'dart:io';
+
 import 'package:app/app/router/router.dart';
 import 'package:app/feature/browser/browser.dart';
 import 'package:flutter/material.dart';
@@ -26,8 +28,9 @@ class _TabsViewState extends State<TabsView> {
               children: [
                 for (final tab in tabs)
                   ListTile(
-                    title: Text(tab.url.toString()),
-                    subtitle: Text('${tab.sortingOrder} ${tab.id}'),
+                    title: Text(
+                        '${tab.url} ${tab.sortingOrder} ${tab.id} ${tab.imagePath}'),
+                    subtitle: Image.file(File(tab.imagePath ?? '')),
                     onTap: () {
                       context.read<BrowserTabsBloc>().add(
                             BrowserTabsEvent.setActive(id: tab.id),

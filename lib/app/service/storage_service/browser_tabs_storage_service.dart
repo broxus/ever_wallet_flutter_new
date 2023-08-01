@@ -1,4 +1,5 @@
 import 'dart:convert';
+import 'dart:io';
 
 import 'package:app/app/service/service.dart';
 import 'package:app/data/models/models.dart';
@@ -110,6 +111,11 @@ class BrowserTabsStorageService extends AbstractStorageService {
 
     await _streamedBrowserTabs();
     await saveBrowserActiveTabId(null);
+
+    try {
+      await Directory(await BrowserTab.tabsDirectoryPath)
+          .delete(recursive: true);
+    } catch (_) {}
   }
 
   /// Add browser tab
@@ -131,16 +137,17 @@ class BrowserTabsStorageService extends AbstractStorageService {
   Future<void> removeBrowserTab(String id) async {
     final tabs = [...browserTabs]..removeWhere((tab) => tab.id == id);
 
-    return saveBrowserTabs(tabs);
+    await saveBrowserTabs(tabs);
+
+    try {
+      await Directory(await BrowserTab.getTabsDirectoryPath(id))
+          .delete(recursive: true);
+    } catch (_) {}
   }
 
   /// Get tab by id
   BrowserTab? _browserTabById(String? id) =>
       id != null ? browserTabs.firstWhereOrNull((tab) => tab.id == id) : null;
-
-  /// Get active tab
-  // BrowserTab? get _browserTabActive =>
-  // browserTabs.firstWhereOrNull((tab) => tab.id == browserActiveTabId);
 
   @override
   Future<void> init() => Future.wait([

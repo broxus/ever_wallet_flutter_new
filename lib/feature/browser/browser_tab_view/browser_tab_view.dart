@@ -1,4 +1,5 @@
 import 'dart:async';
+import 'dart:io';
 
 import 'package:app/data/models/models.dart';
 import 'package:app/feature/browser/browser.dart';
@@ -7,6 +8,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_inappwebview/flutter_inappwebview.dart';
 import 'package:logging/logging.dart';
 import 'package:ui_components_lib/ui_components_lib.dart';
+import 'package:uuid/uuid.dart';
 
 // Scroll position of the webview, used to hide the HUD when the user scrolls
 // further than a certain threshold.
@@ -15,6 +17,16 @@ const int _hudScrollMinYThreshold = 4;
 // scrolls up and down.
 const int _hudScrollDYThresholdDown = 64;
 const int _hudScrollDYThresholdUp = 128;
+
+const Duration _screenShotTimerDuration = Duration(seconds: 1);
+final ScreenshotConfiguration _screenshotConfiguration =
+    ScreenshotConfiguration(
+  compressFormat: CompressFormat.JPEG,
+  // ignore: no-magic-number
+  quality: 70,
+  // ignore: no-magic-number
+  snapshotWidth: 160,
+);
 
 class BrowserTabView extends StatefulWidget {
   const BrowserTabView({
@@ -46,6 +58,8 @@ class _BrowserTabViewState extends State<BrowserTabView> {
 
   InAppWebViewController? _webViewController;
   PullToRefreshController? _pullToRefreshController;
+
+  Timer? _screenshotTimer;
 
   final _initialOptions = InAppWebViewGroupOptions(
     ios: IOSInAppWebViewOptions(),
@@ -111,11 +125,13 @@ class _BrowserTabViewState extends State<BrowserTabView> {
 
   @override
   void dispose() {
-    super.dispose();
-
     for (final event in _delayedScrollEvents) {
       event.timer.cancel();
     }
+
+    _screenshotTimer?.cancel();
+
+    super.dispose();
   }
 
   void _onScrollChanged(_, __, int y) {
@@ -189,6 +205,8 @@ class _BrowserTabViewState extends State<BrowserTabView> {
         }
       }
     }
+
+    _saveScreenshot();
   }
 
   // Calculate scroll gesture
@@ -242,6 +260,7 @@ class _BrowserTabViewState extends State<BrowserTabView> {
     _pullToRefreshController?.endRefreshing();
     _setUrl(url);
     _setState(state: BrowserTabStateType.loaded);
+    _saveScreenshot(force: true);
   }
 
   void _onProgressChanged(
@@ -255,6 +274,7 @@ class _BrowserTabViewState extends State<BrowserTabView> {
     }
 
     _setState(progress: progress);
+    _saveScreenshot();
   }
 
   void _onLoadError(
@@ -333,6 +353,18 @@ class _BrowserTabViewState extends State<BrowserTabView> {
         );
   }
 
+  // Should be sync because context calls are not allowed in async callbacks
+  void _addSetScreenshotEvent({
+    required String imagePath,
+  }) {
+    context.read<BrowserTabsBloc>().add(
+          BrowserTabsEvent.setScreenshot(
+            id: widget.tab.id,
+            imagePath: imagePath,
+          ),
+        );
+  }
+
   void _setBrowserTabCallbacks() {
     context.read<BrowserTabsBloc>().add(
           BrowserTabsEvent.setState(
@@ -342,6 +374,42 @@ class _BrowserTabViewState extends State<BrowserTabView> {
             refresh: _onRefresh,
           ),
         );
+  }
+
+  Future<void> _saveScreenshot({bool force = false}) async {
+    print('_saveScreenshot $force');
+    if ((_screenshotTimer?.isActive ?? false) && !force) {
+      return;
+    }
+
+    _screenshotTimer?.cancel();
+    _screenshotTimer = Timer(
+      force ? Duration.zero : _screenShotTimerDuration,
+      () async {
+        final image = await _webViewController?.takeScreenshot(
+          screenshotConfiguration: _screenshotConfiguration,
+        );
+        if (image == null) {
+          _log.warning('Failed to take screenshot');
+          return;
+        }
+
+        final imageDirectoryPath = await widget.tab.imageDirectoryPath;
+
+        try {
+          await Directory(imageDirectoryPath).delete(recursive: true);
+        } catch (_) {}
+
+        try {
+          await Directory(imageDirectoryPath).create(recursive: true);
+        } catch (_) {}
+
+        final imagePath = '$imageDirectoryPath/${const Uuid().v4()}.jpg';
+        final file = File(imagePath);
+        await file.writeAsBytes(image);
+        _addSetScreenshotEvent(imagePath: imagePath);
+      },
+    );
   }
 }
 

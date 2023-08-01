@@ -31,7 +31,7 @@ final _search = SearchHistory(
 const _bookmark = Bookmark(id: 0, name: 'Bookmark', url: 'URL');
 final _browserTab = BrowserTab(
   url: Uri.parse('URL'),
-  image: 'IMAGE',
+  imagePath: null,
   title: 'TITLE',
   sortingOrder: -1,
   id: '0',

@@ -93,6 +93,18 @@ class BrowserTabsBloc extends Bloc<BrowserTabsEvent, BrowserTabsState> {
         browserTabsStorageService.setBrowserTab(newTab);
       }
     });
+    on<_SetScreenshot>((event, emit) {
+      final oldTab = browserTabById(event.id);
+      if (oldTab == null) {
+        _log.severe('_SetScreenshot: no active tab');
+
+        return;
+      }
+      final newTab = oldTab.copyWith(
+        imagePath: event.imagePath,
+      );
+      browserTabsStorageService.setBrowserTab(newTab);
+    });
     on<_SetState>((event, emit) {
       var oldTabState = browserTabStateById(event.id);
       oldTabState ??= const BrowserTabState();
