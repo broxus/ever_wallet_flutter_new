@@ -18,7 +18,7 @@ const int _hudScrollMinYThreshold = 4;
 const int _hudScrollDYThresholdDown = 64;
 const int _hudScrollDYThresholdUp = 128;
 
-const Duration _screenShotTimerDuration = Duration(seconds: 1);
+const Duration _screenShotTimerDuration = Duration(seconds: 5);
 final ScreenshotConfiguration _screenshotConfiguration =
     ScreenshotConfiguration(
   compressFormat: CompressFormat.JPEG,
@@ -150,6 +150,10 @@ class _BrowserTabViewState extends State<BrowserTabView> {
     _delayedScrollEvents.add(
       event,
     );
+
+    if (y == 0) {
+      context.read<HudBloc>().add(const HudEvent.show());
+    }
   }
 
   void _onOverScrolled(
@@ -377,7 +381,6 @@ class _BrowserTabViewState extends State<BrowserTabView> {
   }
 
   Future<void> _saveScreenshot({bool force = false}) async {
-    print('_saveScreenshot $force');
     if ((_screenshotTimer?.isActive ?? false) && !force) {
       return;
     }
