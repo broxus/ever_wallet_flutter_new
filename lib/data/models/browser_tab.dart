@@ -43,6 +43,7 @@ class BrowserTab with _$BrowserTab {
 
   static Future<String> get tabsDirectoryPath async {
     final appDocsDir = (await getApplicationDocumentsDirectory()).path;
+
     return '$appDocsDir/tabs';
   }
 

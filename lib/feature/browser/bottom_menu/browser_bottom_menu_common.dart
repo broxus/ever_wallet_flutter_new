@@ -53,5 +53,6 @@ class BrowserBottomMenuCommon extends StatelessWidget {
     context.goNamed(AppRoute.browserHistory.name);
   }
 
+  // ignore: no-empty-block, avoid-unused-parameters
   void _onDotsPressed(BuildContext context) {}
 }

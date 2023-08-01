@@ -433,6 +433,7 @@ class _BrowserTabViewState extends State<BrowserTabView> {
         );
         if (image == null) {
           _log.warning('Failed to take screenshot');
+
           return;
         }
 

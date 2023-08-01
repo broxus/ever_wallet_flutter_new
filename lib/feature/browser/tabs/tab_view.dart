@@ -56,7 +56,8 @@ class TabView extends StatelessWidget {
             Expanded(
               child: OverflowBox(
                 alignment: Alignment.topCenter,
-                maxHeight: 10000,
+                // ignore: no-magic-number
+                maxHeight: 1000,
                 child: Image.file(
                   File(tab.imagePath ?? ''),
                   fit: BoxFit.scaleDown,

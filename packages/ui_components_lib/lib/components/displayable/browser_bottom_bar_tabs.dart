@@ -40,7 +40,6 @@ class BrowserBottomBarTabs extends StatelessWidget {
             ),
             Expanded(
               child: _getIconButton(
-                context,
                 plusSvg,
                 Icons.add_circle,
                 onPlusPressed,
@@ -63,7 +62,6 @@ class BrowserBottomBarTabs extends StatelessWidget {
   // TODO(Odrin): we should add all the icons in the ui kit library
   // and get rid of this method
   Widget _getIconButton(
-    BuildContext context,
     String? svg,
     IconData icondata,
     VoidCallback? onPressed,

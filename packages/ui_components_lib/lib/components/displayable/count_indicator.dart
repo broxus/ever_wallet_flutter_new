@@ -22,7 +22,10 @@ class CountIndicator extends StatelessWidget {
             decoration: BoxDecoration(
               border: SquircleBoxBorder(
                 squircleRadius: DimensRadius.small,
-                borderSide: BorderSide(color: colors.textPrimary, width: 2),
+                borderSide: BorderSide(
+                  color: colors.textPrimary,
+                  width: DimensStroke.medium,
+                ),
               ),
             ),
             child: Padding(
@@ -33,7 +36,7 @@ class CountIndicator extends StatelessWidget {
                   Text(
                     count.toString(),
                     style: styles.buttonTextStyle,
-                  )
+                  ),
                 ],
               ),
             ),

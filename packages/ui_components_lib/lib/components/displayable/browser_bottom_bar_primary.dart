@@ -44,7 +44,6 @@ class BrowserBottomBarPrimary extends StatelessWidget {
           children: [
             Expanded(
               child: _getIconButton(
-                context,
                 backSvg,
                 Icons.arrow_back_ios,
                 onBackPressed,
@@ -52,7 +51,6 @@ class BrowserBottomBarPrimary extends StatelessWidget {
             ),
             Expanded(
               child: _getIconButton(
-                context,
                 forwardSvg,
                 Icons.arrow_forward_ios,
                 onForwardPressed,
@@ -60,7 +58,6 @@ class BrowserBottomBarPrimary extends StatelessWidget {
             ),
             Expanded(
               child: _getIconButton(
-                context,
                 plusSvg,
                 Icons.add_circle,
                 onPlusPressed,
@@ -69,7 +66,6 @@ class BrowserBottomBarPrimary extends StatelessWidget {
             Expanded(
               child: tabCount == 0
                   ? _getIconButton(
-                      context,
                       historySvg,
                       Icons.watch_later_outlined,
                       onHistoryPressed,
@@ -83,7 +79,6 @@ class BrowserBottomBarPrimary extends StatelessWidget {
             ),
             Expanded(
               child: _getIconButton(
-                context,
                 dotsSvg,
                 Icons.menu,
                 onDotsPressed,
@@ -98,7 +93,6 @@ class BrowserBottomBarPrimary extends StatelessWidget {
   // TODO(Odrin): we should add all the icons in the ui kit library
   // and get rid of this method
   Widget _getIconButton(
-    BuildContext context,
     String? svg,
     IconData icondata,
     VoidCallback? onPressed,

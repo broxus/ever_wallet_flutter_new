@@ -135,7 +135,7 @@ class BrowserTabsBloc extends Bloc<BrowserTabsEvent, BrowserTabsState> {
       emit(
         state.copyWith(
           tabs: event.tabs,
-          tabsState: _clearTabStates(event.tabs),
+          tabsState: _clearTabStates(),
         ),
       );
     });
@@ -162,9 +162,7 @@ class BrowserTabsBloc extends Bloc<BrowserTabsEvent, BrowserTabsState> {
     };
   }
 
-  Map<String, BrowserTabState> _clearTabStates(
-    List<BrowserTab> tabs,
-  ) {
+  Map<String, BrowserTabState> _clearTabStates() {
     return {
       ...({...state.tabsState}..removeWhere(
           (key, value) => browserTabById(key) == null,
