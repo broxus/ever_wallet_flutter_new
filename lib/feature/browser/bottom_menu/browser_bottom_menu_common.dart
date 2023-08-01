@@ -53,6 +53,16 @@ class BrowserBottomMenuCommon extends StatelessWidget {
     context.goNamed(AppRoute.browserHistory.name);
   }
 
-  // ignore: no-empty-block, avoid-unused-parameters
-  void _onDotsPressed(BuildContext context) {}
+  void _onDotsPressed(BuildContext context) {
+    final currentTab = context.read<BrowserTabsBloc>().activeTab;
+    final currentTabState = context.read<BrowserTabsBloc>().activeTabState;
+    final hasUrl = currentTab?.url.host.isNotEmpty ?? false;
+
+    showBrowserPrimarySheet(
+      context: context,
+      refreshEnabled: hasUrl,
+      addToBookmarksEnabled: hasUrl,
+      onRefreshPressed: currentTabState?.refresh,
+    );
+  }
 }
