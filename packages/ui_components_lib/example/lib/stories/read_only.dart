@@ -1,9 +1,37 @@
+import 'dart:async';
+import 'dart:math';
+
 import 'package:flutter/material.dart';
 import 'package:ui_components_lib/ui_components_lib.dart';
 
 /// Page with read only controls
-class ReadOnlyStory extends StatelessWidget {
+class ReadOnlyStory extends StatefulWidget {
   const ReadOnlyStory({super.key});
+
+  @override
+  State<ReadOnlyStory> createState() => _ReadOnlyStoryState();
+}
+
+class _ReadOnlyStoryState extends State<ReadOnlyStory> {
+  Timer? _timer;
+  double _progress = 0;
+
+  @override
+  void initState() {
+    super.initState();
+
+    _timer = Timer.periodic(const Duration(seconds: 2), (timer) {
+      setState(() {
+        _progress = Random().nextDouble();
+      });
+    });
+  }
+
+  @override
+  void dispose() {
+    _timer?.cancel();
+    super.dispose();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -19,6 +47,7 @@ class ReadOnlyStory extends StatelessWidget {
               const ProgressBar(value: 0.5),
               const ProgressBar(value: 0.75),
               const ProgressBar(value: 1),
+              ProgressBar(value: _progress),
               CountIndicator(
                 count: 1,
                 onPressed: () {

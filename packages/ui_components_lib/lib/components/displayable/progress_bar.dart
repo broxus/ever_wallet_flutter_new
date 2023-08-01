@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:ui_components_lib/theme_style.dart';
+import 'package:ui_components_lib/ui_components_lib.dart';
 
 class ProgressBar extends StatelessWidget {
   const ProgressBar({this.value, super.key});
@@ -10,10 +10,19 @@ class ProgressBar extends StatelessWidget {
   Widget build(BuildContext context) {
     final colors = context.themeStyle.colors;
 
-    return LinearProgressIndicator(
-      value: value,
-      color: colors.blue,
-      backgroundColor: Colors.transparent,
+    return TweenAnimationBuilder(
+      duration: defaultAnimationDuration,
+      curve: Curves.easeInOut,
+      tween: Tween<double>(
+        begin: 0,
+        end: value ?? 0,
+      ),
+      builder: (BuildContext context, double value, _) =>
+          LinearProgressIndicator(
+        value: value,
+        color: colors.blue,
+        backgroundColor: Colors.transparent,
+      ),
     );
   }
 }
