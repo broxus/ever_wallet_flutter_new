@@ -1,5 +1,4 @@
 import 'package:app/app/router/router.dart';
-import 'package:app/feature/contact_support/contact_support.dart';
 import 'package:app/generated/generated.dart';
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
