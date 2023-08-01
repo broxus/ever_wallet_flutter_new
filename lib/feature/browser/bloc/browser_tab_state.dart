@@ -15,6 +15,7 @@ class BrowserTabState with _$BrowserTabState {
   const factory BrowserTabState({
     @Default(BrowserTabStateType.initial) final BrowserTabStateType state,
     @Default(0) final int progress,
+    @Default(null) final String? errorMessage,
     @Default(false) final bool canGoBack,
     @Default(false) final bool canGoForward,
     @Default(null) final VoidCallback? goBack,

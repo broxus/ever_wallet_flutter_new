@@ -157,6 +157,8 @@
   "browserDone": "Done",
   "browserSearchURL": "Search or enter URL",
   "browserSearchURLCancel": "Cancel",
+  "browserErrorTitle": "Error occurred",
+  "browserErrorDefault": "Unknown error",
   "walletWord": "Wallet",
   "browserWord": "Browser",
   "profileWord": "Profile",

@@ -109,13 +109,10 @@ class BrowserTabsBloc extends Bloc<BrowserTabsEvent, BrowserTabsState> {
       var oldTabState = browserTabStateById(event.id);
       oldTabState ??= const BrowserTabState();
 
-      final stateType = event.progress == 100
-          ? BrowserTabStateType.loaded
-          : event.state ?? oldTabState.state;
-
       final newTabState = oldTabState.copyWith(
-        state: stateType,
+        state: event.state ?? oldTabState.state,
         progress: event.progress ?? oldTabState.progress,
+        errorMessage: event.errorMessage ?? oldTabState.errorMessage,
         canGoBack: event.canGoBack ?? oldTabState.canGoBack,
         canGoForward: event.canGoForward ?? oldTabState.canGoForward,
         goBack: event.goBack ?? oldTabState.goBack,

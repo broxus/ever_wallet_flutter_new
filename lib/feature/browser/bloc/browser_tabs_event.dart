@@ -21,6 +21,7 @@ class BrowserTabsEvent with _$BrowserTabsEvent {
     VoidCallback? goBack,
     VoidCallback? goForward,
     VoidCallback? refresh,
+    String? errorMessage,
   }) = _SetState;
   const factory BrowserTabsEvent.remove({required String id}) = _Remove;
   const factory BrowserTabsEvent.setActive({required String id}) = _SetActive;

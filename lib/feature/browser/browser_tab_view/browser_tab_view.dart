@@ -3,6 +3,7 @@ import 'dart:io';
 
 import 'package:app/data/models/models.dart';
 import 'package:app/feature/browser/browser.dart';
+import 'package:app/feature/browser/browser_tab_view/browser_error_view.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_inappwebview/flutter_inappwebview.dart';
@@ -31,10 +32,12 @@ final ScreenshotConfiguration _screenshotConfiguration =
 class BrowserTabView extends StatefulWidget {
   const BrowserTabView({
     required this.tab,
+    required this.tabState,
     super.key,
   });
 
   final BrowserTab tab;
+  final BrowserTabState tabState;
 
   @override
   State<BrowserTabView> createState() => _BrowserTabViewState();
@@ -109,17 +112,27 @@ class _BrowserTabViewState extends State<BrowserTabView> {
   Widget build(BuildContext context) {
     _initPTRController();
 
-    return InAppWebView(
-      key: ValueKey(widget.tab.id),
-      pullToRefreshController: _pullToRefreshController,
-      initialOptions: _initialOptions,
-      onOverScrolled: _onOverScrolled,
-      onScrollChanged: _onScrollChanged,
-      onWebViewCreated: _onWebViewCreated,
-      onLoadStart: _onLoadStart,
-      onLoadStop: _onLoadStop,
-      onProgressChanged: _onProgressChanged,
-      onLoadError: _onLoadError,
+    return Stack(
+      children: [
+        InAppWebView(
+          key: ValueKey(widget.tab.id),
+          pullToRefreshController: _pullToRefreshController,
+          initialOptions: _initialOptions,
+          onOverScrolled: _onOverScrolled,
+          onScrollChanged: _onScrollChanged,
+          onWebViewCreated: _onWebViewCreated,
+          onLoadStart: _onLoadStart,
+          onLoadStop: _onLoadStop,
+          onProgressChanged: _onProgressChanged,
+          onLoadError: _onLoadError,
+          onLoadHttpError: _onLoadHttpError,
+        ),
+        if (widget.tabState.state == BrowserTabStateType.error)
+          BrowserErrorView(
+            tab: widget.tab,
+            tabState: widget.tabState,
+          ),
+      ],
     );
   }
 
@@ -291,7 +304,21 @@ class _BrowserTabViewState extends State<BrowserTabView> {
     _log.warning(
       'Failed to load $url: $code $message',
     );
-    _setState(state: BrowserTabStateType.error);
+    _setState(
+      state: BrowserTabStateType.error,
+      errorMessage: '$message $code',
+    );
+  }
+
+  void _onLoadHttpError(_, Uri? url, int statusCode, String description) {
+    _pullToRefreshController?.endRefreshing();
+    _log.warning(
+      'Failed to load $url: $statusCode $description',
+    );
+    _setState(
+      state: BrowserTabStateType.error,
+      errorMessage: '$description $statusCode',
+    );
   }
 
   void _onRefresh() {
@@ -327,6 +354,7 @@ class _BrowserTabViewState extends State<BrowserTabView> {
   Future<void> _setState({
     BrowserTabStateType? state,
     int? progress,
+    String? errorMessage,
   }) async {
     final canGoBack = await _webViewController?.canGoBack() ?? false;
     final canGoForward = await _webViewController?.canGoForward() ?? false;
@@ -336,6 +364,7 @@ class _BrowserTabViewState extends State<BrowserTabView> {
       canGoBack: canGoBack,
       canGoForward: canGoForward,
       progress: progress,
+      errorMessage: errorMessage,
     );
   }
 
@@ -345,7 +374,12 @@ class _BrowserTabViewState extends State<BrowserTabView> {
     bool? canGoBack,
     bool? canGoForward,
     int? progress,
+    String? errorMessage,
   }) {
+    if (!context.mounted) {
+      return;
+    }
+
     context.read<BrowserTabsBloc>().add(
           BrowserTabsEvent.setState(
             id: widget.tab.id,
@@ -353,6 +387,7 @@ class _BrowserTabViewState extends State<BrowserTabView> {
             canGoBack: canGoBack,
             canGoForward: canGoForward,
             progress: progress,
+            errorMessage: errorMessage,
           ),
         );
   }
@@ -361,6 +396,10 @@ class _BrowserTabViewState extends State<BrowserTabView> {
   void _addSetScreenshotEvent({
     required String imagePath,
   }) {
+    if (!context.mounted) {
+      return;
+    }
+
     context.read<BrowserTabsBloc>().add(
           BrowserTabsEvent.setScreenshot(
             id: widget.tab.id,

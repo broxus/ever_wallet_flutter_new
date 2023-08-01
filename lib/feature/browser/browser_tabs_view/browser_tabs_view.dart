@@ -21,6 +21,7 @@ class _BrowserTabsViewState extends State<BrowserTabsView> {
         final currentTab = context.read<BrowserTabsBloc>().activeTab;
         final currentTabId = currentTab?.id;
         final tabs = context.read<BrowserTabsBloc>().state.tabs;
+        final tabsState = context.read<BrowserTabsBloc>().state.tabsState;
         final currentTabIndex =
             tabs.indexWhere((tab) => tab.id == currentTabId);
         final currentStackIndex = currentTabIndex < 0 ? 0 : currentTabIndex + 1;
@@ -32,6 +33,7 @@ class _BrowserTabsViewState extends State<BrowserTabsView> {
           ...tabs.map(
             (tab) => BrowserTabView(
               tab: tab,
+              tabState: tabsState[tab.id] ?? const BrowserTabState(),
               key: ValueKey(tab.id),
             ),
           ),
@@ -56,8 +58,15 @@ class _BrowserTabsViewState extends State<BrowserTabsView> {
     }
 
     final tab = current.tabs.firstWhereOrNull((t) => t.id == tabId);
+    final previousTab = previous.tabs.firstWhereOrNull((t) => t.id == tabId);
+    final tabState = current.tabsState[tabId];
+    final previousTabState = previous.tabsState[tabId];
 
-    if (tab?.url != previous.tabs.firstWhereOrNull((t) => t.id == tabId)?.url) {
+    if (tab?.url != previousTab?.url) {
+      return true;
+    }
+
+    if (tabState?.state != previousTabState?.state) {
       return true;
     }
 
