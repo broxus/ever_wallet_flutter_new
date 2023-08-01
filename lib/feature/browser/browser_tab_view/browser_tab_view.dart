@@ -176,7 +176,7 @@ class _BrowserTabViewState extends State<BrowserTabView> {
         // If we are at the top of the page, we should show HUD
         context.read<HudBloc>().add(const HudEvent.show());
       } else {
-        // Elsewise, we should show and  hide HUD according to gesture direction.
+        // Elsewise, we should show and  hide HUD according to gesture direction
         // Here we check if gesture is long enough to hide or show HUD
         if (_scrollGestureDY! > 0 &&
             _scrollGestureDY!.abs() > _hudScrollDYThresholdDown) {

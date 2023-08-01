@@ -31,6 +31,7 @@ class ReadOnlyStory extends StatelessWidget {
                 },
               ),
               CountIndicator(
+                // ignore: no-magic-number
                 count: 999,
                 onPressed: () {
                   showSnackbar(
