@@ -1,2 +1,2 @@
-export 'browser_tab_state.dart';
-export 'browser_tabs_bloc.dart';
+export 'browser_history/browser_history.dart';
+export 'browser_tabs/browser_tabs.dart';

@@ -3,11 +3,11 @@ import 'dart:convert';
 import 'package:app/app/service/service.dart';
 import 'package:app/data/models/account_interaction.dart';
 import 'package:app/data/models/bookmark.dart';
+import 'package:app/data/models/browser_history_item.dart';
 import 'package:app/data/models/browser_tab.dart';
 import 'package:app/data/models/custom_currency.dart';
 import 'package:app/data/models/network_type.dart';
 import 'package:app/data/models/permissions.dart';
-import 'package:app/data/models/search_history.dart';
 import 'package:app/data/models/site_meta_data.dart';
 import 'package:app/data/models/token_contract_asset.dart';
 import 'package:app/data/models/wallet_contract_type.dart';
@@ -24,9 +24,11 @@ const _metadata = SiteMetaData(
   url: 'https://octusbridge.io',
   description: 'OctusBridge',
 );
-final _search = SearchHistory(
-  openTime: DateTime.fromMillisecondsSinceEpoch(1681819001248),
+final _historyItem = BrowserHistoryItem(
+  visitTime: DateTime.fromMillisecondsSinceEpoch(1681819001248),
   url: 'https://octusbridge.io',
+  title: '',
+  id: '0',
 );
 const _bookmark = Bookmark(id: 0, name: 'Bookmark', url: 'URL');
 final _browserTab = BrowserTab(
@@ -147,7 +149,7 @@ Future<void> _fillHive(HiveSourceMigration migration) async {
   await migration.setIsBiometryEnabled(isEnabled: true);
   await migration.setPermissions(origin: 'origin', permissions: _permissions);
   await migration.addBookmark(_bookmark);
-  await migration.addSearchHistoryEntry(_search);
+  await migration.addSearchHistoryEntry(_historyItem);
   await migration.cacheSiteMetaData(url: _metadata.url, metaData: _metadata);
   await migration.saveEverCurrency(
     address: const Address(
@@ -175,6 +177,7 @@ void main() {
   late GeneralStorageService storage;
   late BrowserStorageService browserStorage;
   late BrowserTabsStorageService browserTabsStorage;
+  late BrowserHistoryStorageService browserHistoryStorage;
   late NekotonStorageService accountSeedStorage;
 
   Future<void> checkMigration() async {
@@ -247,9 +250,9 @@ void main() {
     expect(await browserStorage.readBookmarks(), [_bookmark]);
     expect(browserStorage.bookmarks, [_bookmark]);
 
-    /// Search history
-    expect(await browserStorage.readSearchHistory(), [_search]);
-    expect(browserStorage.searchHistory, [_search]);
+    /// Browser history
+    expect(await browserHistoryStorage.readBrowserHistory(), [_historyItem]);
+    expect(browserHistoryStorage.browserHistory, [_historyItem]);
 
     /// Site metadata
     expect(await browserStorage.getSiteMetaData(_metadata.url), _metadata);
@@ -289,6 +292,7 @@ void main() {
     storage = GeneralStorageService(encryptedStorage);
     browserStorage = BrowserStorageService(encryptedStorage);
     browserTabsStorage = BrowserTabsStorageService(encryptedStorage);
+    browserHistoryStorage = BrowserHistoryStorageService(encryptedStorage);
     accountSeedStorage = NekotonStorageService(encryptedStorage);
     repository = NekotonRepository();
     await Hive.deleteFromDisk();
@@ -328,6 +332,7 @@ void main() {
         storage,
         browserStorage,
         browserTabsStorage,
+        browserHistoryStorage,
         accountSeedStorage,
         hive,
       );
@@ -342,6 +347,7 @@ void main() {
         storage,
         browserStorage,
         browserTabsStorage,
+        browserHistoryStorage,
         accountSeedStorage,
         hive,
       );
@@ -356,6 +362,7 @@ void main() {
         storage,
         browserStorage,
         browserTabsStorage,
+        browserHistoryStorage,
         accountSeedStorage,
         hive,
       );
@@ -371,6 +378,7 @@ void main() {
         storage,
         browserStorage,
         browserTabsStorage,
+        browserHistoryStorage,
         accountSeedStorage,
         hive,
       );
@@ -389,6 +397,7 @@ void main() {
         storage,
         browserStorage,
         browserTabsStorage,
+        browserHistoryStorage,
         accountSeedStorage,
         hive,
       );
@@ -487,8 +496,14 @@ void main() {
       expect(browserStorage.bookmarks, hive.bookmarks);
 
       /// Search history
-      expect(await browserStorage.readSearchHistory(), hive.searchHistory);
-      expect(browserStorage.searchHistory, hive.searchHistory);
+      expect(
+        await browserHistoryStorage.readBrowserHistory(),
+        hive.searchHistory,
+      );
+      expect(
+        browserHistoryStorage.browserHistory,
+        hive.searchHistory,
+      );
 
       /// Site metadata
       expect(
@@ -561,6 +576,7 @@ void main() {
         storage,
         browserStorage,
         browserTabsStorage,
+        browserHistoryStorage,
         accountSeedStorage,
         hive,
       );
@@ -586,6 +602,7 @@ void main() {
         storage,
         browserStorage,
         browserTabsStorage,
+        browserHistoryStorage,
         accountSeedStorage,
       );
 

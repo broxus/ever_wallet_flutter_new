@@ -15,8 +15,19 @@ class BrowserPage extends StatefulWidget {
 class _BrowserPageState extends State<BrowserPage> {
   @override
   Widget build(BuildContext context) {
-    return BlocProvider<BrowserTabsBloc>(
-      create: (context) => BrowserTabsBloc(inject<BrowserTabsStorageService>()),
+    return MultiBlocProvider(
+      providers: [
+        BlocProvider<BrowserTabsBloc>(
+          create: (context) => BrowserTabsBloc(
+            inject<BrowserTabsStorageService>(),
+          ),
+        ),
+        BlocProvider<BrowserHistoryBloc>(
+          create: (context) => BrowserHistoryBloc(
+            inject<BrowserHistoryStorageService>(),
+          ),
+        ),
+      ],
       child: SafeArea(
         child: BrowserView(child: widget.child),
       ),

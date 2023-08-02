@@ -106,7 +106,10 @@ class BrowserTabsStorageService extends AbstractStorageService {
 
   /// Clear all browser tabs
   Future<void> clearBrowserTabs() async {
-    await _storage.delete(_browserTabsKey, domain: _browserTabsDomain);
+    await _storage.delete(
+      _browserTabsKey,
+      domain: _browserTabsDomain,
+    );
     _browserTabsSubject.add([]);
 
     await _streamedBrowserTabs();

@@ -72,6 +72,8 @@ class _BrowserTabViewState extends State<BrowserTabView> {
 
   static final _log = Logger('BrowserTabView');
 
+  Uri? _lastUrl;
+
   @override
   void initState() {
     super.initState();
@@ -278,6 +280,7 @@ class _BrowserTabViewState extends State<BrowserTabView> {
     _setUrl(url);
     _setState(state: BrowserTabStateType.loaded);
     _saveScreenshot(force: true);
+    _saveHistory(url: url);
   }
 
   void _onProgressChanged(
@@ -345,10 +348,13 @@ class _BrowserTabViewState extends State<BrowserTabView> {
   }
 
   void _setUrl(Uri? url) {
-    final browserTabsBloc = context.read<BrowserTabsBloc>();
-    if (url != null) {
-      browserTabsBloc.add(BrowserTabsEvent.setUrl(id: widget.tab.id, uri: url));
+    if (url?.toString().trim().isEmpty ?? true) {
+      return;
     }
+
+    context
+        .read<BrowserTabsBloc>()
+        .add(BrowserTabsEvent.setUrl(id: widget.tab.id, uri: url!));
   }
 
   Future<void> _setState({
@@ -408,6 +414,25 @@ class _BrowserTabViewState extends State<BrowserTabView> {
         );
   }
 
+  // Should be sync because context calls are not allowed in async callbacks
+  void _addAppendHistoryEvent({
+    required String title,
+    required Uri url,
+  }) {
+    if (!context.mounted) {
+      return;
+    }
+
+    context.read<BrowserHistoryBloc>().add(
+          BrowserHistoryEvent.add(
+            item: BrowserHistoryItem.create(
+              title: title,
+              url: url.toString(),
+            ),
+          ),
+        );
+  }
+
   void _setBrowserTabCallbacks() {
     context.read<BrowserTabsBloc>().add(
           BrowserTabsEvent.setState(
@@ -453,6 +478,26 @@ class _BrowserTabViewState extends State<BrowserTabView> {
         _addSetScreenshotEvent(imagePath: imagePath);
       },
     );
+  }
+
+  Future<void> _saveHistory({required Uri? url}) async {
+    if (url?.toString().trim().isEmpty ?? true) {
+      return;
+    }
+
+    final title = await _webViewController?.getTitle() ?? url?.host ?? '';
+
+    // TODO(nesquikm): we should refactor this
+    // Now we add history item only if host is changed
+    // Better behaviour should be probably added
+    if (url?.host != _lastUrl?.host) {
+      _addAppendHistoryEvent(
+        title: title,
+        url: url!,
+      );
+    }
+
+    _lastUrl = url;
   }
 }
 

@@ -3,7 +3,6 @@ import 'dart:convert';
 import 'package:app/app/service/service.dart';
 import 'package:app/data/models/bookmark.dart';
 import 'package:app/data/models/permissions.dart';
-import 'package:app/data/models/search_history.dart';
 import 'package:app/data/models/site_meta_data.dart';
 import 'package:encrypted_storage/encrypted_storage.dart';
 import 'package:injectable/injectable.dart';
@@ -13,7 +12,6 @@ import 'package:rxdart/rxdart.dart';
 const _permissionsKey = 'permissions_key';
 
 const _bookmarksKey = 'bookmarks_key';
-const _searchHistoryKey = 'search_history_key';
 const _siteMetaDataKey = 'site_meta_data_key';
 const _browserNeedKey = 'browser_need_key';
 const _browserPreferencesKey = 'browser_preferences_key';
@@ -30,7 +28,6 @@ class BrowserStorageService extends AbstractStorageService {
   @override
   Future<void> init() => Future.wait([
         _streamedBookmarks(),
-        _streamedSearchHistory(),
       ]);
 
   @override
@@ -132,74 +129,6 @@ class BrowserStorageService extends AbstractStorageService {
   Future<void> clearBookmarks() async {
     await _storage.clearDomain(_bookmarksKey);
     _bookmarksSubject.add([]);
-  }
-
-  /// Subject of search history
-  final _searchHistorySubject = BehaviorSubject<List<SearchHistory>>();
-
-  /// Get last cached search history
-  List<SearchHistory> get searchHistory => _searchHistorySubject.value;
-
-  /// Stream of search history
-  Stream<List<SearchHistory>> get searchHistoryStream => _searchHistorySubject;
-
-  /// Put search history to stream
-  Future<void> _streamedSearchHistory() async =>
-      _searchHistorySubject.add(await readSearchHistory());
-
-  /// Read from storage list of search history in browser
-  Future<List<SearchHistory>> readSearchHistory() async {
-    final encoded = await _storage.get(
-      _searchHistoryKey,
-      domain: _browserPreferencesKey,
-    );
-    if (encoded == null) {
-      return [];
-    }
-    final history = jsonDecode(encoded) as List<dynamic>;
-
-    return history
-        .map((entry) => SearchHistory.fromJson(entry as Map<String, dynamic>))
-        .toList();
-  }
-
-  /// Add search history entry to storage. Search sorts by date and saves only
-  /// last 50 entries.
-  Future<void> addSearchHistoryEntry(SearchHistory entry) async {
-    var list = await readSearchHistory();
-    list = list.where((e) => e.url != entry.url).toList();
-
-    final entries = [
-      ...list,
-      entry,
-    ]..sort((a, b) => -a.openTime.compareTo(b.openTime));
-
-    await _storage.set(
-      _searchHistoryKey,
-      // ignore: no-magic-number
-      jsonEncode(entries.take(50).toList()),
-      domain: _browserPreferencesKey,
-    );
-    await _streamedSearchHistory();
-  }
-
-  /// Remove search history entry from storage
-  Future<void> removeSearchHistoryEntry(SearchHistory entry) async {
-    var list = await readSearchHistory();
-    list = list.where((e) => e.url != entry.url).toList();
-
-    await _storage.set(
-      _searchHistoryKey,
-      jsonEncode(list),
-      domain: _browserPreferencesKey,
-    );
-    await _streamedSearchHistory();
-  }
-
-  /// Clear all search history
-  Future<void> clearSearchHistory() async {
-    await _storage.delete(_searchHistoryKey, domain: _browserPreferencesKey);
-    _searchHistorySubject.add([]);
   }
 
   /// Get metadata of site by its url
