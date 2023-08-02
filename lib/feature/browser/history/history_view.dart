@@ -1,4 +1,6 @@
+import 'package:app/feature/browser/browser.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 
 class HistoryView extends StatefulWidget {
   const HistoryView({super.key});
@@ -10,11 +12,9 @@ class HistoryView extends StatefulWidget {
 class _HistoryViewState extends State<HistoryView> {
   @override
   Widget build(BuildContext context) {
-    return const ColoredBox(
-      color: Colors.lightGreen,
-      child: Center(
-        child: Text('History'),
-      ),
+    final items = context.watch<BrowserHistoryBloc>().state.items;
+    return ListView(
+      children: items.map((item) => Text(item.title)).toList(),
     );
   }
 }

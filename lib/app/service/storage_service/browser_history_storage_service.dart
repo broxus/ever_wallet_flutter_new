@@ -48,8 +48,9 @@ class BrowserHistoryStorageService extends AbstractStorageService {
     final list = jsonDecode(encoded) as List<dynamic>;
 
     return list
-        .map((entry) =>
-            BrowserHistoryItem.fromJson(entry as Map<String, dynamic>))
+        .map(
+          (entry) => BrowserHistoryItem.fromJson(entry as Map<String, dynamic>),
+        )
         .toList();
   }
 

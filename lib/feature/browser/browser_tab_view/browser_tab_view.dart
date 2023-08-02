@@ -490,7 +490,7 @@ class _BrowserTabViewState extends State<BrowserTabView> {
     // TODO(nesquikm): we should refactor this
     // Now we add history item only if host is changed
     // Better behaviour should be probably added
-    if (url?.host != _lastUrl?.host) {
+    if (url?.host != _lastUrl?.host && _lastUrl != null) {
       _addAppendHistoryEvent(
         title: title,
         url: url!,

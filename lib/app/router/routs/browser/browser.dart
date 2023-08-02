@@ -16,7 +16,6 @@ StatefulShellBranch get browserBranch {
         branches: [
           primaryBranch,
           bookmarksBranch,
-          historyBranch,
           tabsBranch,
         ],
       ),
@@ -35,6 +34,9 @@ StatefulShellBranch get primaryBranch {
           url: state.queryParameters[browserUrlPathParam],
           tabId: state.queryParameters[browserTabIdPathParam],
         ),
+        routes: [
+          historyRoute,
+        ],
       ),
     ],
   );
@@ -53,16 +55,12 @@ StatefulShellBranch get bookmarksBranch {
   );
 }
 
-/// Get branch for browser history page.
-StatefulShellBranch get historyBranch {
-  return StatefulShellBranch(
-    routes: [
-      GoRoute(
-        name: AppRoute.browserHistory.name,
-        path: AppRoute.browserHistory.path,
-        builder: (context, state) => const HistoryPage(),
-      ),
-    ],
+/// Get route for browser history page.
+GoRoute get historyRoute {
+  return GoRoute(
+    name: AppRoute.browserHistory.name,
+    path: AppRoute.browserHistory.path,
+    builder: (_, __) => const HistoryPage(),
   );
 }
 
