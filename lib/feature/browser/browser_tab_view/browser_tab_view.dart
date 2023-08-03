@@ -9,7 +9,6 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_inappwebview/flutter_inappwebview.dart';
 import 'package:logging/logging.dart';
 import 'package:ui_components_lib/ui_components_lib.dart';
-import 'package:uuid/uuid.dart';
 
 // Scroll position of the webview, used to hide the HUD when the user scrolls
 // further than a certain threshold.
