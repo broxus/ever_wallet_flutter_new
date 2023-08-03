@@ -44,7 +44,6 @@ class TabView extends StatelessWidget {
                     ),
                   ),
                 ),
-                const CommonDivider(),
                 CommonIconButton.svg(
                   svg: Assets.images.minusCircled.path,
                   buttonType: EverButtonType.ghost,
@@ -53,15 +52,18 @@ class TabView extends StatelessWidget {
                 ),
               ],
             ),
+            const CommonDivider(),
             Expanded(
               child: OverflowBox(
                 alignment: Alignment.topCenter,
                 // ignore: no-magic-number
                 maxHeight: 1000,
-                child: Image.file(
-                  File(tab.imagePath ?? ''),
-                  fit: BoxFit.scaleDown,
-                ),
+                child: (tab.imagePath ?? '').isNotEmpty
+                    ? Image.file(
+                        File(tab.imagePath ?? ''),
+                        fit: BoxFit.scaleDown,
+                      )
+                    : const SizedBox(),
               ),
             ),
           ],
