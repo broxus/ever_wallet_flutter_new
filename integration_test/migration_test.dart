@@ -250,9 +250,19 @@ void main() {
     expect(await browserStorage.readBookmarks(), [_bookmark]);
     expect(browserStorage.bookmarks, [_bookmark]);
 
-    /// Browser history
-    expect(await browserHistoryStorage.readBrowserHistory(), [_historyItem]);
-    expect(browserHistoryStorage.browserHistory, [_historyItem]);
+    /// Browser history, we need to change id because it's generated on fly
+    expect(
+      (await browserHistoryStorage.readBrowserHistory()).map(
+        (item) => item.copyWith(id: '0'),
+      ),
+      [_historyItem],
+    );
+    expect(
+      browserHistoryStorage.browserHistory.map(
+        (item) => item.copyWith(id: '0'),
+      ),
+      [_historyItem],
+    );
 
     /// Site metadata
     expect(await browserStorage.getSiteMetaData(_metadata.url), _metadata);
