@@ -1,4 +1,5 @@
 import 'package:app/app/service/service.dart';
+import 'package:app/data/models/models.dart';
 import 'package:app/di/di.dart';
 import 'package:app/feature/browser/browser.dart';
 import 'package:flutter/material.dart';
@@ -15,22 +16,26 @@ class BrowserPage extends StatefulWidget {
 class _BrowserPageState extends State<BrowserPage> {
   @override
   Widget build(BuildContext context) {
-    return MultiBlocProvider(
-      providers: [
-        BlocProvider<BrowserTabsBloc>(
-          create: (context) => BrowserTabsBloc(
-            inject<BrowserTabsStorageService>(),
-          ),
+    return BlocProvider<BrowserHistoryBloc>(
+      create: (context) => BrowserHistoryBloc(
+        inject<BrowserHistoryStorageService>(),
+      ),
+      child: BlocProvider<BrowserTabsBloc>(
+        create: (context) => BrowserTabsBloc(
+          inject<BrowserTabsStorageService>(),
+          (item) => _onBrowserHistoryItemAdd(context, item),
         ),
-        BlocProvider<BrowserHistoryBloc>(
-          create: (context) => BrowserHistoryBloc(
-            inject<BrowserHistoryStorageService>(),
-          ),
+        child: SafeArea(
+          child: BrowserView(child: widget.child),
         ),
-      ],
-      child: SafeArea(
-        child: BrowserView(child: widget.child),
       ),
     );
+  }
+
+  void _onBrowserHistoryItemAdd(
+    BuildContext context,
+    BrowserHistoryItem item,
+  ) {
+    context.read<BrowserHistoryBloc>().add(BrowserHistoryEvent.add(item: item));
   }
 }

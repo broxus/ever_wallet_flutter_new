@@ -71,8 +71,6 @@ class _BrowserTabViewState extends State<BrowserTabView> {
 
   static final _log = Logger('BrowserTabView');
 
-  Uri? _lastUrl;
-
   @override
   void initState() {
     super.initState();
@@ -127,6 +125,7 @@ class _BrowserTabViewState extends State<BrowserTabView> {
           onProgressChanged: _onProgressChanged,
           onLoadError: _onLoadError,
           onLoadHttpError: _onLoadHttpError,
+          onTitleChanged: _onTitleChanged,
         ),
         if (widget.tabState.state == BrowserTabStateType.error)
           BrowserErrorView(
@@ -279,7 +278,6 @@ class _BrowserTabViewState extends State<BrowserTabView> {
     _setUrl(url);
     _setState(state: BrowserTabStateType.loaded);
     _saveScreenshot(force: true);
-    _saveHistory(url: url);
   }
 
   void _onProgressChanged(
@@ -323,6 +321,13 @@ class _BrowserTabViewState extends State<BrowserTabView> {
     );
   }
 
+  void _onTitleChanged(_, String? title) {
+    if (title?.trim().isEmpty ?? true) {
+      return;
+    }
+    _setState(title: title);
+  }
+
   void _onRefresh() {
     _webViewController?.reload();
   }
@@ -360,6 +365,7 @@ class _BrowserTabViewState extends State<BrowserTabView> {
     BrowserTabStateType? state,
     int? progress,
     String? errorMessage,
+    String? title,
   }) async {
     final canGoBack = await _webViewController?.canGoBack() ?? false;
     final canGoForward = await _webViewController?.canGoForward() ?? false;
@@ -370,6 +376,7 @@ class _BrowserTabViewState extends State<BrowserTabView> {
       canGoForward: canGoForward,
       progress: progress,
       errorMessage: errorMessage,
+      title: title,
     );
   }
 
@@ -380,6 +387,7 @@ class _BrowserTabViewState extends State<BrowserTabView> {
     bool? canGoForward,
     int? progress,
     String? errorMessage,
+    String? title,
   }) {
     if (!context.mounted) {
       return;
@@ -393,6 +401,7 @@ class _BrowserTabViewState extends State<BrowserTabView> {
             canGoForward: canGoForward,
             progress: progress,
             errorMessage: errorMessage,
+            title: title,
           ),
         );
   }
@@ -409,25 +418,6 @@ class _BrowserTabViewState extends State<BrowserTabView> {
           BrowserTabsEvent.setScreenshot(
             id: widget.tab.id,
             imageId: imageId,
-          ),
-        );
-  }
-
-  // Should be sync because context calls are not allowed in async callbacks
-  void _addAppendHistoryEvent({
-    required String title,
-    required Uri url,
-  }) {
-    if (!context.mounted) {
-      return;
-    }
-
-    context.read<BrowserHistoryBloc>().add(
-          BrowserHistoryEvent.add(
-            item: BrowserHistoryItem.create(
-              title: title,
-              url: url.toString(),
-            ),
           ),
         );
   }
@@ -477,26 +467,6 @@ class _BrowserTabViewState extends State<BrowserTabView> {
         _addSetScreenshotEvent(imageId: imageId);
       },
     );
-  }
-
-  Future<void> _saveHistory({required Uri? url}) async {
-    if (url?.toString().trim().isEmpty ?? true) {
-      return;
-    }
-
-    final title = await _webViewController?.getTitle() ?? url?.host ?? '';
-
-    // TODO(nesquikm): we should refactor this
-    // Now we add history item only if host is changed
-    // Better behaviour should be probably added
-    if (url?.host != _lastUrl?.host && _lastUrl != null) {
-      _addAppendHistoryEvent(
-        title: title,
-        url: url!,
-      );
-    }
-
-    _lastUrl = url;
   }
 }
 

@@ -16,7 +16,7 @@ part 'browser_tabs_bloc.freezed.dart';
 final _emptyUri = Uri.parse('');
 
 class BrowserTabsBloc extends Bloc<BrowserTabsEvent, BrowserTabsState> {
-  BrowserTabsBloc(this.browserTabsStorageService)
+  BrowserTabsBloc(this.browserTabsStorageService, this.onBrowserHistoryItemAdd)
       : super(
           BrowserTabsState(
             tabs: browserTabsStorageService.browserTabs,
@@ -43,6 +43,7 @@ class BrowserTabsBloc extends Bloc<BrowserTabsEvent, BrowserTabsState> {
   static final _log = Logger('BrowserTabsBloc');
 
   final BrowserTabsStorageService browserTabsStorageService;
+  final void Function(BrowserHistoryItem) onBrowserHistoryItemAdd;
 
   StreamSubscription<List<BrowserTab>>? _browserTabsSubscription;
   StreamSubscription<String?>? _browserActiveTabIdSubscription;
@@ -92,6 +93,17 @@ class BrowserTabsBloc extends Bloc<BrowserTabsEvent, BrowserTabsState> {
       if (oldTab.url != newTab.url) {
         browserTabsStorageService.setBrowserTab(newTab);
       }
+
+      if (oldTab.url.host != newTab.url.host &&
+          oldTab.url.toString().trim().isNotEmpty) {
+        // Host was changed, add old url to history
+        onBrowserHistoryItemAdd(
+          BrowserHistoryItem.create(
+            url: oldTab.url.toString(),
+            title: browserTabStateById(oldTab.id)?.title ?? '',
+          ),
+        );
+      }
     });
     on<_SetScreenshot>((event, emit) {
       final oldTab = browserTabById(event.id);
@@ -113,6 +125,7 @@ class BrowserTabsBloc extends Bloc<BrowserTabsEvent, BrowserTabsState> {
         state: event.state ?? oldTabState.state,
         progress: event.progress ?? oldTabState.progress,
         errorMessage: event.errorMessage ?? oldTabState.errorMessage,
+        title: event.title ?? oldTabState.title,
         canGoBack: event.canGoBack ?? oldTabState.canGoBack,
         canGoForward: event.canGoForward ?? oldTabState.canGoForward,
         goBack: event.goBack ?? oldTabState.goBack,
@@ -123,12 +136,31 @@ class BrowserTabsBloc extends Bloc<BrowserTabsEvent, BrowserTabsState> {
       emit(state.copyWith(tabsState: _replaceTabState(event.id, newTabState)));
     });
     on<_Remove>((event, emit) {
+      final tab = browserTabById(event.id);
+      if (tab != null) {
+        // Tab is closing, add url to history
+        onBrowserHistoryItemAdd(
+          BrowserHistoryItem.create(
+            url: tab.url.toString(),
+            title: browserTabStateById(tab.id)?.title ?? '',
+          ),
+        );
+      }
       browserTabsStorageService.removeBrowserTab(event.id);
     });
     on<_SetActive>((event, emit) {
       browserTabsStorageService.saveBrowserActiveTabId(event.id);
     });
     on<_CloseAll>((event, emit) {
+      // All tabs are closing, add urls to history
+      for (final tab in state.tabs) {
+        onBrowserHistoryItemAdd(
+          BrowserHistoryItem.create(
+            url: tab.url.toString(),
+            title: browserTabStateById(tab.id)?.title ?? '',
+          ),
+        );
+      }
       browserTabsStorageService.clearBrowserTabs();
     });
     on<_SetTabs>((event, emit) {

@@ -57,7 +57,7 @@ class BrowserHistoryStorageService extends AbstractStorageService {
   /// Save list of browser history items to storage
   Future<void> saveBrowserHistory(List<BrowserHistoryItem> history) async {
     final limitedHistory = [...history]
-      ..sort((a, b) => -b.visitTime.compareTo(a.visitTime))
+      ..sort((a, b) => b.visitTime.compareTo(a.visitTime))
       ..take(_historyItemCountLimit);
 
     await _storage.set(

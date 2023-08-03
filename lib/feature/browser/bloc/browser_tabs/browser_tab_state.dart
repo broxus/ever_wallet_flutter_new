@@ -16,6 +16,7 @@ class BrowserTabState with _$BrowserTabState {
     @Default(BrowserTabStateType.initial) final BrowserTabStateType state,
     @Default(0) final int progress,
     @Default(null) final String? errorMessage,
+    @Default(null) final String? title,
     @Default(false) final bool canGoBack,
     @Default(false) final bool canGoForward,
     @Default(null) final VoidCallback? goBack,
