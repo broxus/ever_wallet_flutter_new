@@ -35,7 +35,7 @@ extension BrowserTabDtoX on BrowserTabDto {
   BrowserTab toModel(int id) => BrowserTab(
         url: Uri.parse(url),
         sortingOrder: -1,
-        imagePath: null,
+        imageId: null,
         title: title,
         id: '$id',
       );

@@ -101,7 +101,7 @@ class BrowserTabsBloc extends Bloc<BrowserTabsEvent, BrowserTabsState> {
         return;
       }
       final newTab = oldTab.copyWith(
-        imagePath: event.imagePath,
+        imageId: event.imageId,
       );
       browserTabsStorageService.setBrowserTab(newTab);
     });

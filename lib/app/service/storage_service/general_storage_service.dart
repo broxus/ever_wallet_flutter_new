@@ -8,6 +8,7 @@ import 'package:app/data/models/token_contract_asset.dart';
 import 'package:encrypted_storage/encrypted_storage.dart';
 import 'package:injectable/injectable.dart';
 import 'package:nekoton_repository/nekoton_repository.dart' hide Currency;
+import 'package:path_provider/path_provider.dart';
 import 'package:rxdart/rxdart.dart';
 
 /// List of keys to store in storage
@@ -46,6 +47,7 @@ class GeneralStorageService extends AbstractStorageService {
         _streamedCurrentKey(),
         _streamedLastViewedSeeds(),
         _streamedCurrentConnection(),
+        _initAppDirectories(),
       ]);
 
   @override
@@ -522,4 +524,12 @@ class GeneralStorageService extends AbstractStorageService {
         jsonEncode(true),
         domain: _preferencesKey,
       );
+
+  /// Application documents directory, used for syncrhronous path operations
+  late final String applicationDocumentsDirectory;
+
+  Future<void> _initAppDirectories() async {
+    final directory = await getApplicationDocumentsDirectory();
+    applicationDocumentsDirectory = directory.path;
+  }
 }

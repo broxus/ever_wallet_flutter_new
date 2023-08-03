@@ -33,7 +33,7 @@ final _historyItem = BrowserHistoryItem(
 const _bookmark = Bookmark(id: 0, name: 'Bookmark', url: 'URL');
 final _browserTab = BrowserTab(
   url: Uri.parse('URL'),
-  imagePath: null,
+  imageId: null,
   title: 'TITLE',
   sortingOrder: -1,
   id: '0',

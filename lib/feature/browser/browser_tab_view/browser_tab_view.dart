@@ -400,7 +400,7 @@ class _BrowserTabViewState extends State<BrowserTabView> {
 
   // Should be sync because context calls are not allowed in async callbacks
   void _addSetScreenshotEvent({
-    required String imagePath,
+    required String imageId,
   }) {
     if (!context.mounted) {
       return;
@@ -409,7 +409,7 @@ class _BrowserTabViewState extends State<BrowserTabView> {
     context.read<BrowserTabsBloc>().add(
           BrowserTabsEvent.setScreenshot(
             id: widget.tab.id,
-            imagePath: imagePath,
+            imageId: imageId,
           ),
         );
   }
@@ -457,13 +457,12 @@ class _BrowserTabViewState extends State<BrowserTabView> {
           screenshotConfiguration: _screenshotConfiguration,
         );
         if (image == null) {
-          _log.warning('Failed to take screenshot');
-
           return;
         }
 
-        final imageDirectoryPath = await widget.tab.imageDirectoryPath;
+        final imageDirectoryPath = widget.tab.imageDirectoryPath;
 
+        // For now, we just drop all images and save only last one
         try {
           await Directory(imageDirectoryPath).delete(recursive: true);
         } catch (_) {}
@@ -472,10 +471,11 @@ class _BrowserTabViewState extends State<BrowserTabView> {
           await Directory(imageDirectoryPath).create(recursive: true);
         } catch (_) {}
 
-        final imagePath = '$imageDirectoryPath/${const Uuid().v4()}.jpg';
+        final imageId = BrowserTab.newImageId;
+        final imagePath = widget.tab.getImagePath(imageId);
         final file = File(imagePath);
         await file.writeAsBytes(image);
-        _addSetScreenshotEvent(imagePath: imagePath);
+        _addSetScreenshotEvent(imageId: imageId);
       },
     );
   }

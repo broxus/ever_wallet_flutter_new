@@ -116,8 +116,7 @@ class BrowserTabsStorageService extends AbstractStorageService {
     await saveBrowserActiveTabId(null);
 
     try {
-      await Directory(await BrowserTab.tabsDirectoryPath)
-          .delete(recursive: true);
+      await Directory(BrowserTab.tabsDirectoryPath).delete(recursive: true);
     } catch (_) {}
   }
 
@@ -143,7 +142,7 @@ class BrowserTabsStorageService extends AbstractStorageService {
     await saveBrowserTabs(tabs);
 
     try {
-      await Directory(await BrowserTab.getTabsDirectoryPath(id))
+      await Directory(BrowserTab.getTabDirectoryPath(id))
           .delete(recursive: true);
     } catch (_) {}
   }

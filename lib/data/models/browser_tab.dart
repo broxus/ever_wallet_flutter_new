@@ -1,6 +1,7 @@
+import 'package:app/app/service/service.dart';
+import 'package:app/di/di.dart';
 import 'package:freezed_annotation/freezed_annotation.dart';
 import 'package:nekoton_repository/nekoton_repository.dart';
-import 'package:path_provider/path_provider.dart';
 import 'package:uuid/uuid.dart';
 
 part 'browser_tab.freezed.dart';
@@ -16,7 +17,7 @@ class BrowserTab with _$BrowserTab {
     @uriJsonConverter required Uri url,
 
     /// The screenshot path of the tab.
-    required String? imagePath,
+    required String? imageId,
 
     /// The title of the tab.
     required String? title,
@@ -31,7 +32,7 @@ class BrowserTab with _$BrowserTab {
       BrowserTab(
         id: const Uuid().v4(),
         url: url,
-        imagePath: null,
+        imageId: null,
         title: null,
         sortingOrder: DateTime.now().millisecondsSinceEpoch,
       );
@@ -41,17 +42,29 @@ class BrowserTab with _$BrowserTab {
   factory BrowserTab.fromJson(Map<String, dynamic> json) =>
       _$BrowserTabFromJson(json);
 
-  static Future<String> get tabsDirectoryPath async {
-    final appDocsDir = (await getApplicationDocumentsDirectory()).path;
+  static String get tabsDirectoryPath {
+    final appDocsDir =
+        inject<GeneralStorageService>().applicationDocumentsDirectory;
 
     return '$appDocsDir/tabs';
   }
 
-  static Future<String> getTabsDirectoryPath(String id) async {
-    return '${await tabsDirectoryPath}/$id';
+  // Yeah, in future we probably should support several screenshots per tab.
+  static String get newImageId => const Uuid().v4();
+
+  static String getTabDirectoryPath(String id) {
+    return '$tabsDirectoryPath/$id';
   }
 
-  Future<String> get imageDirectoryPath async {
-    return getTabsDirectoryPath(id);
+  String get imageDirectoryPath {
+    return getTabDirectoryPath(id);
+  }
+
+  String? get imagePath {
+    return imageId == null ? null : '${getTabDirectoryPath(id)}/$imageId';
+  }
+
+  String getImagePath(String imageId) {
+    return '${getTabDirectoryPath(id)}/$imageId';
   }
 }
