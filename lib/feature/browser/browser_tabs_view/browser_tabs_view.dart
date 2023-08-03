@@ -13,6 +13,8 @@ class BrowserTabsView extends StatefulWidget {
 }
 
 class _BrowserTabsViewState extends State<BrowserTabsView> {
+  List<BrowserTabView> stackViews = [];
+
   @override
   Widget build(BuildContext context) {
     return BlocBuilder<BrowserTabsBloc, BrowserTabsState>(
@@ -22,25 +24,50 @@ class _BrowserTabsViewState extends State<BrowserTabsView> {
         final currentTabId = currentTab?.id;
         final tabs = context.read<BrowserTabsBloc>().state.tabs;
         final tabsState = context.read<BrowserTabsBloc>().state.tabsState;
-        final currentTabIndex =
-            tabs.indexWhere((tab) => tab.id == currentTabId);
-        final currentStackIndex = currentTabIndex < 0 ? 0 : currentTabIndex + 1;
 
-        final stackViews = [
-          const Text(
-            'empty',
-          ),
-          ...tabs.map(
-            (tab) => BrowserTabView(
-              tab: tab,
-              tabState: tabsState[tab.id] ?? const BrowserTabState(),
-              key: ValueKey(tab.id),
-            ),
-          ),
-        ];
+        stackViews
+          // replace changed
+          ..forEachIndexed(
+            (index, view) {
+              final newTab = tabs.firstWhereOrNull(
+                (tab) =>
+                    view.tab.id == tab.id &&
+                    (view.tab != tab || view.tabState != tabsState[tab.id]),
+              );
+              if (newTab == null) return;
+              stackViews[index] = BrowserTabView(
+                tab: newTab,
+                tabState: tabsState[newTab.id] ?? const BrowserTabState(),
+                key: ValueKey(newTab.id),
+              );
+            },
+          )
+          // remove views with non-existent tabs
+          ..removeWhere(
+            (view) => tabs.indexWhere((tab) => tab.id == view.tab.id) < 0,
+          )
+          // remove new views
+          ..addAll(
+            tabs
+                .where(
+                  (tab) =>
+                      stackViews.indexWhere((view) => view.tab.id == tab.id) <
+                      0,
+                )
+                .map(
+                  (tab) => BrowserTabView(
+                    tab: tab,
+                    tabState: tabsState[tab.id] ?? const BrowserTabState(),
+                    key: ValueKey(tab.id),
+                  ),
+                ),
+          );
+
+        final currentTabIndex =
+            stackViews.indexWhere((view) => view.tab.id == currentTabId);
 
         return IndexedStack(
-          index: currentStackIndex,
+          index: currentTabIndex,
           children: stackViews,
         );
       },
