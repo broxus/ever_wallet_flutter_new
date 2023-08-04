@@ -162,6 +162,7 @@
   "browserRefresh": "Reload",
   "browserAddToBookmarks": "Add to bookmarks",
   "browserHistory": "History",
+  "browserSearch": "Search",
   "walletWord": "Wallet",
   "browserWord": "Browser",
   "profileWord": "Profile",

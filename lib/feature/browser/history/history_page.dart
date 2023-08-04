@@ -16,7 +16,10 @@ class HistoryPage extends StatelessWidget {
       ),
       body: BlocBuilder<BrowserHistoryBloc, BrowserHistoryState>(
         builder: (context, state) {
-          return const HistoryView();
+          return GestureDetector(
+            onTap: () => FocusScope.of(context).unfocus(),
+            child: const HistoryView(),
+          );
         },
       ),
     );
