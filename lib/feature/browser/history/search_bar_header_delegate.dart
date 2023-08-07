@@ -19,26 +19,29 @@ class SearchBarHeaderDelegate extends SliverPersistentHeaderDelegate {
   ) {
     final colors = context.themeStyle.colors;
 
-    return Padding(
-      padding: const EdgeInsets.symmetric(
-        horizontal: DimensSize.d16,
-        vertical: DimensSize.d16,
-      ),
-      child: CommonInput(
-        fillColor: colors.appBackground,
-        autocorrect: false,
-        hintText: LocaleKeys.browserSearch.tr(),
-        prefixIcon: Padding(
-          padding: const EdgeInsets.all(DimensSize.d16),
-          child: CommonIconWidget.svg(
-            svg: Assets.images.search.path,
-            color: colors.textSecondary,
-            size: DimensSize.d20,
-          ),
+    return ColoredBox(
+      color: colors.appBackground,
+      child: Padding(
+        padding: const EdgeInsets.symmetric(
+          horizontal: DimensSize.d16,
+          vertical: DimensSize.d16,
         ),
-        controller: controller,
+        child: CommonInput(
+          fillColor: colors.appBackground,
+          autocorrect: false,
+          hintText: LocaleKeys.browserSearch.tr(),
+          prefixIcon: Padding(
+            padding: const EdgeInsets.all(DimensSize.d16),
+            child: CommonIconWidget.svg(
+              svg: Assets.images.search.path,
+              color: colors.textSecondary,
+              size: DimensSize.d20,
+            ),
+          ),
+          controller: controller,
+        ),
+        // ),
       ),
-      // ),
     );
   }
 

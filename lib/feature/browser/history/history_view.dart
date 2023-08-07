@@ -102,10 +102,7 @@ class _HistoryViewState extends State<HistoryView> {
             _bottomSpacerBuilder(),
           ],
         ),
-        SafeArea(
-          minimum: const EdgeInsets.only(bottom: DimensSize.d16),
-          child: _buttonsBuilder(),
-        ),
+        _buttonsBuilder(),
       ],
     );
   }
@@ -163,40 +160,54 @@ class _HistoryViewState extends State<HistoryView> {
   }
 
   Widget _buttonsBuilder() {
-    final isEditing = context.watch<BrowserHistoryBloc>().state.isEditing;
+    final colors = context.themeStyle.colors;
 
-    return Padding(
-      padding: const EdgeInsets.symmetric(horizontal: DimensSize.d16),
-      child: SeparatedColumn(
-        mainAxisSize: MainAxisSize.min,
-        children: isEditing
-            ? [
-                CommonButton.secondary(
-                  text: LocaleKeys.browserHistoryClear.tr(),
-                  onPressed: () => {},
-                  fillWidth: true,
-                ),
-                CommonButton.primary(
-                  text: LocaleKeys.browserHistoryDone.tr(),
-                  onPressed: () => context.read<BrowserHistoryBloc>().add(
-                        const BrowserHistoryEvent.setIsEditing(
-                          value: false,
+    final isEditing = context.watch<BrowserHistoryBloc>().state.isEditing;
+    // SafeArea(
+    //   minimum: const EdgeInsets.only(bottom: DimensSize.d16),
+    //   child: _buttonsBuilder(),
+    // ),
+    return Container(
+      decoration: BoxDecoration(
+        gradient: LinearGradient(
+          begin: Alignment.topCenter,
+          end: Alignment.bottomCenter,
+          colors: colors.gradient,
+        ),
+      ),
+      child: SafeArea(
+        minimum: const EdgeInsets.all(DimensSize.d16),
+        child: SeparatedColumn(
+          mainAxisSize: MainAxisSize.min,
+          children: isEditing
+              ? [
+                  CommonButton.secondary(
+                    text: LocaleKeys.browserHistoryClear.tr(),
+                    onPressed: () => {},
+                    fillWidth: true,
+                  ),
+                  CommonButton.primary(
+                    text: LocaleKeys.browserHistoryDone.tr(),
+                    onPressed: () => context.read<BrowserHistoryBloc>().add(
+                          const BrowserHistoryEvent.setIsEditing(
+                            value: false,
+                          ),
                         ),
-                      ),
-                  fillWidth: true,
-                ),
-              ]
-            : [
-                CommonButton.primary(
-                  text: LocaleKeys.browserHistoryEdit.tr(),
-                  onPressed: () => context.read<BrowserHistoryBloc>().add(
-                        const BrowserHistoryEvent.setIsEditing(
-                          value: true,
+                    fillWidth: true,
+                  ),
+                ]
+              : [
+                  CommonButton.primary(
+                    text: LocaleKeys.browserHistoryEdit.tr(),
+                    onPressed: () => context.read<BrowserHistoryBloc>().add(
+                          const BrowserHistoryEvent.setIsEditing(
+                            value: true,
+                          ),
                         ),
-                      ),
-                  fillWidth: true,
-                ),
-              ],
+                    fillWidth: true,
+                  ),
+                ],
+        ),
       ),
     );
   }
