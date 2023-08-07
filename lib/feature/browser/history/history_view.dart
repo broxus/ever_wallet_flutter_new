@@ -1,8 +1,12 @@
 import 'package:app/app/router/router.dart';
+import 'package:app/app/service/service.dart';
 import 'package:app/data/models/models.dart';
+import 'package:app/di/di.dart';
 import 'package:app/feature/browser/browser.dart';
 import 'package:app/generated/generated.dart';
+import 'package:app/utils/utils.dart';
 import 'package:cached_network_image/cached_network_image.dart';
+import 'package:collection/collection.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
@@ -19,21 +23,76 @@ class _HistoryViewState extends State<HistoryView> {
   @override
   Widget build(BuildContext context) {
     final items = context.watch<BrowserHistoryBloc>().state.items;
+    final sectioned = items.fold<Map<DateTime, List<BrowserHistoryItem>>>(
+      {},
+      (previousSectioned, item) {
+        final key = previousSectioned.keys
+            .firstWhereOrNull((e) => item.visitTime.isSameDay(e));
+        if (key == null) {
+          return {
+            item.visitTime: [item],
+            ...previousSectioned,
+          };
+        }
+
+        final value = previousSectioned[key] ?? [];
+        return {
+          ...previousSectioned,
+          key: [...value, item],
+        };
+      },
+    );
+
+    final widgets = sectioned.entries
+        .sorted((a, b) => a.key.compareTo(b.key))
+        .fold<List<Widget>>(
+      [],
+      (previousWidgets, entry) {
+        final date = entry.key;
+        final items = entry.value.sorted(
+          (a, b) => b.visitTime.compareTo(
+            a.visitTime,
+          ),
+        );
+
+        return [
+          _headerBuilder(date),
+          SliverList.builder(
+            itemCount: items.length,
+            itemBuilder: (_, index) => _itemBuilder(items[index]),
+          ),
+          ...previousWidgets,
+        ];
+      },
+    );
     return CustomScrollView(
       slivers: [
         SliverPersistentHeader(
           floating: true,
           delegate: SearchBarHeaderDelegate(),
         ),
-        SliverList.builder(
-          itemCount: items.length,
-          itemBuilder: (_, index) => _itemBuilder(items[index]),
-        ),
+        ...widgets,
       ],
     );
   }
 
-  Widget? _itemBuilder(BrowserHistoryItem item) {
+  Widget _headerBuilder(DateTime dateTime) {
+    final localeCode = inject<LocalizationService>().localeCode.name;
+    return SliverToBoxAdapter(
+      child: Padding(
+        padding: const EdgeInsets.symmetric(
+          horizontal: DimensSize.d16,
+          vertical: DimensSize.d8,
+        ),
+        child: Text(
+          DateFormat.yMMMMEEEEd(localeCode).format(dateTime),
+          style: StyleRes.primaryBold,
+        ),
+      ),
+    );
+  }
+
+  Widget _itemBuilder(BrowserHistoryItem item) {
     final colors = context.themeStyle.colors;
 
     return Padding(
