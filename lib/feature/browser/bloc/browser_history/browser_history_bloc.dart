@@ -11,8 +11,9 @@ part 'browser_history_bloc.freezed.dart';
 
 class BrowserHistoryBloc
     extends Bloc<BrowserHistoryEvent, BrowserHistoryState> {
-  BrowserHistoryBloc(this.browserHistoryStorageService)
-      : super(
+  BrowserHistoryBloc(
+    this.browserHistoryStorageService,
+  ) : super(
           BrowserHistoryState(
             items: browserHistoryStorageService.browserHistory,
           ),

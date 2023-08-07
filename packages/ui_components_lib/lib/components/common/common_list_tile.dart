@@ -71,6 +71,9 @@ class CommonListTile extends StatelessWidget {
             style: StyleRes.button.copyWith(
               color: contentColor ?? colors.textPrimary,
             ),
+            maxLines: 1,
+            overflow: TextOverflow.ellipsis,
+            softWrap: false,
           )
         : titleChild;
 
@@ -80,6 +83,9 @@ class CommonListTile extends StatelessWidget {
             style: StyleRes.addRegular.copyWith(
               color: contentColor ?? colors.textSecondary,
             ),
+            maxLines: 2,
+            overflow: TextOverflow.ellipsis,
+            softWrap: false,
           )
         : subtitleChild;
 

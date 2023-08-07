@@ -28,6 +28,7 @@ final _historyItem = BrowserHistoryItem(
   visitTime: DateTime.fromMillisecondsSinceEpoch(1681819001248),
   url: 'https://octusbridge.io',
   title: '',
+  faviconUrl: null,
   id: '0',
 );
 const _bookmark = Bookmark(id: 0, name: 'Bookmark', url: 'URL');

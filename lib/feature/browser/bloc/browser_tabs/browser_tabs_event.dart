@@ -18,6 +18,7 @@ class BrowserTabsEvent with _$BrowserTabsEvent {
     int? progress,
     String? errorMessage,
     String? title,
+    String? faviconUrl,
     bool? canGoBack,
     bool? canGoForward,
     VoidCallback? goBack,
