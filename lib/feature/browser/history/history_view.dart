@@ -171,7 +171,9 @@ class _HistoryViewState extends State<HistoryView> {
           mainAxisSize: MainAxisSize.min,
           children: [
             CommonIconWidget.svg(
-              svg: Assets.images.history.path,
+              svg: isHistoryEmpty
+                  ? Assets.images.history.path
+                  : Assets.images.searchEmpty.path,
               size: DimensSize.d56,
             ),
             Text(

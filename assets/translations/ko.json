@@ -164,7 +164,7 @@
   "browserHistory": "History",
   "browserSearch": "Search",
   "browserHistoryEmpty": "Your history will appear here",
-  "browserHistoryEmptySearch": "No results were found",
+  "browserHistoryEmptySearch": "Sorry, we didn't find anything for your request",
   "walletWord": "Wallet",
   "browserWord": "Browser",
   "profileWord": "Profile",
