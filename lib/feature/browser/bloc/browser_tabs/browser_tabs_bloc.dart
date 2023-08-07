@@ -177,13 +177,6 @@ class BrowserTabsBloc extends Bloc<BrowserTabsEvent, BrowserTabsState> {
     });
   }
 
-  // List<BrowserTab> _replaceTab(BrowserTab newTab) {
-  //   return [
-  //     ...([...state.tabs]..removeWhere((tab) => tab.id == newTab.id)),
-  //     newTab,
-  //   ];
-  // }
-
   Map<String, BrowserTabState> _replaceTabState(
     String id,
     BrowserTabState newTabState,

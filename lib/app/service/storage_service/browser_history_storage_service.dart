@@ -65,6 +65,7 @@ class BrowserHistoryStorageService extends AbstractStorageService {
       jsonEncode(limitedHistory),
       domain: _browserHistoryDomain,
     );
+
     await _streamedBrowserHistory();
   }
 
@@ -74,7 +75,6 @@ class BrowserHistoryStorageService extends AbstractStorageService {
       _browserHistoryKey,
       domain: _browserHistoryDomain,
     );
-    _browserHistorySubject.add([]);
 
     await _streamedBrowserHistory();
   }
