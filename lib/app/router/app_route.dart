@@ -225,10 +225,8 @@ enum AppRoute {
   static List<String> pathSegments(Uri uri) {
     if (uri.pathSegments.isEmpty) return [];
 
-    final segments = [...uri.pathSegments]
+    return [...uri.pathSegments]
       ..replaceRange(0, 1, ['/${uri.pathSegments.first}']);
-
-    return segments;
   }
 }
 
