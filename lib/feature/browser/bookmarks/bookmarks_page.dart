@@ -6,6 +6,6 @@ class BookmarksPage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return BookmarksView();
+    return const BookmarksView();
   }
 }

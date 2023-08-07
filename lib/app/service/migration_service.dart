@@ -13,11 +13,11 @@ import 'package:app/app/service/dto/token_contract_asset_dto.dart';
 import 'package:app/app/service/dto/wallet_contract_type_dto.dart';
 import 'package:app/app/service/service.dart';
 import 'package:app/data/models/bookmark.dart';
+import 'package:app/data/models/browser_history_item.dart';
 import 'package:app/data/models/browser_tab.dart';
 import 'package:app/data/models/custom_currency.dart';
 import 'package:app/data/models/network_type.dart';
 import 'package:app/data/models/permissions.dart';
-import 'package:app/data/models/search_history.dart';
 import 'package:app/data/models/site_meta_data.dart';
 import 'package:app/data/models/token_contract_asset.dart';
 import 'package:collection/collection.dart';
@@ -378,10 +378,10 @@ class HiveSourceMigration {
 
   Future<void> clearBookmarks() => _bookmarksBox.clear();
 
-  List<SearchHistory> get searchHistory =>
-      _searchHistoryBox.values.map((e) => e.toModel()).toList();
+  List<BrowserHistoryItem> get searchHistory =>
+      _searchHistoryBox.values.map((e) => e.toModel(e.url.hashCode)).toList();
 
-  Future<void> addSearchHistoryEntry(SearchHistory entry) async {
+  Future<void> addSearchHistoryEntry(BrowserHistoryItem entry) async {
     var list =
         _searchHistoryBox.toMap().cast<String, SearchHistoryDto>().entries;
 
@@ -389,7 +389,7 @@ class HiveSourceMigration {
 
     final entries = [
       ...list,
-      MapEntry(entry.openTime.toString(), entry.toDto()),
+      MapEntry(entry.visitTime.toString(), entry.toDto()),
     ]..sort((a, b) => -a.value.openTime.compareTo(b.value.openTime));
 
     await _searchHistoryBox.clear();
@@ -398,7 +398,7 @@ class HiveSourceMigration {
     await _searchHistoryBox.putAll(Map.fromEntries(entries.take(50)));
   }
 
-  Future<void> removeSearchHistoryEntry(SearchHistory entry) async {
+  Future<void> removeSearchHistoryEntry(BrowserHistoryItem entry) async {
     final keys = _searchHistoryBox
         .toMap()
         .cast<String, SearchHistoryDto>()
@@ -616,7 +616,7 @@ class HiveSourceMigration {
         'prefs': _preferencesBox.toJson(),
         'search_history': searchHistory
             .map(
-              (e) => {'url': e.url, 'date': e.openTime.millisecondsSinceEpoch},
+              (e) => {'url': e.url, 'date': e.visitTime.millisecondsSinceEpoch},
             )
             .toList(),
         'external_accounts': externalAccounts,
@@ -713,6 +713,7 @@ class MigrationService {
     this._storage,
     this._browserStorage,
     this._browserTabsStorageService,
+    this._browserHistoryStorageService,
     this._accountSeedStorage,
     this._hive,
   );
@@ -720,6 +721,7 @@ class MigrationService {
   final GeneralStorageService _storage;
   final BrowserStorageService _browserStorage;
   final BrowserTabsStorageService _browserTabsStorageService;
+  final BrowserHistoryStorageService _browserHistoryStorageService;
   final NekotonStorageService _accountSeedStorage;
   final HiveSourceMigration _hive;
 
@@ -728,12 +730,14 @@ class MigrationService {
     GeneralStorageService storage,
     BrowserStorageService browserStorage,
     BrowserTabsStorageService browserTabsStorageService,
+    BrowserHistoryStorageService _browserHistoryStorageService,
     NekotonStorageService accountSeedStorage,
   ) async {
     return MigrationService(
       storage,
       browserStorage,
       browserTabsStorageService,
+      _browserHistoryStorageService,
       accountSeedStorage,
       await HiveSourceMigration.create(),
     ).migrate();
@@ -835,9 +839,9 @@ class MigrationService {
       await _browserStorage.addBookmark(bookmark);
     }
 
-    /// Search history
+    /// Browser history
     for (final entry in _hive.searchHistory) {
-      await _browserStorage.addSearchHistoryEntry(entry);
+      await _browserHistoryStorageService.addBrowserHistoryItem(entry);
     }
 
     /// Site metadata

@@ -1,5 +1,6 @@
 export 'abstract_storage_service.dart';
 export 'account_seed_storage_service.dart';
+export 'browser_history_storage_service.dart';
 export 'browser_storage_service.dart';
 export 'browser_tabs_storage_service.dart';
 export 'general_storage_service.dart';

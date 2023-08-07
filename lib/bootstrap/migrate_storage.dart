@@ -9,6 +9,7 @@ Future<void> migrateStorage() async {
     inject<GeneralStorageService>(),
     inject<BrowserStorageService>(),
     inject<BrowserTabsStorageService>(),
+    inject<BrowserHistoryStorageService>(),
     inject<NekotonStorageService>(),
   );
   log.finest('MigrationService finished');

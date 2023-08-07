@@ -298,7 +298,7 @@ class _InputsStoryState extends State<InputsStory> {
                     type: SnackbarType.info,
                     message: 'Share $value',
                     duration: const Duration(seconds: 3),
-                  )
+                  ),
                 },
               ),
               const SizedBox(height: DimensSize.d40),

@@ -26,7 +26,7 @@ extension BrowserTabX on BrowserTab {
   BrowserTabDto toDto() => BrowserTabDto(
         url: url.toString(),
         lastScrollPosition: 0,
-        image: image,
+        image: null,
         title: title,
       );
 }
@@ -35,7 +35,7 @@ extension BrowserTabDtoX on BrowserTabDto {
   BrowserTab toModel(int id) => BrowserTab(
         url: Uri.parse(url),
         sortingOrder: -1,
-        image: image,
+        imageId: null,
         title: title,
         id: '$id',
       );

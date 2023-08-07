@@ -1,4 +1,3 @@
-import 'package:app/data/models/models.dart';
 import 'package:app/feature/browser/browser.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -11,9 +10,10 @@ class BrowserProgressBar extends StatelessWidget {
   Widget build(BuildContext context) {
     return BlocBuilder<BrowserTabsBloc, BrowserTabsState>(
       builder: (context, state) {
-        final currentTab = context.watch<BrowserTabsBloc>().activeTab;
-        final value = switch (currentTab?.state) {
-          BrowserTabState.loading => (currentTab?.progress ?? 0.0) / 100.0,
+        final currentTabState = context.watch<BrowserTabsBloc>().activeTabState;
+        final value = switch (currentTabState?.state) {
+          BrowserTabStateType.loading =>
+            (currentTabState?.progress ?? 0.0) / 100.0,
           _ => null,
         };
 

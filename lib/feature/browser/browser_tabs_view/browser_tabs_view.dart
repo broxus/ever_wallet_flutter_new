@@ -3,29 +3,18 @@ import 'package:collection/collection.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
-class BrowserTabsViewWidget extends StatefulWidget {
-  const BrowserTabsViewWidget({
-    this.onScroll,
-    this.onOverScroll,
-    this.onLoadStart,
-    this.onLoadStop,
-    this.onProgressChanged,
-    this.onLoadError,
+class BrowserTabsView extends StatefulWidget {
+  const BrowserTabsView({
     super.key,
   });
 
-  final BrowserOnScrollCallback? onScroll;
-  final BrowserOnOverScrollCallback? onOverScroll;
-  final BrowserOnNavigateCallback? onLoadStart;
-  final BrowserOnNavigateCallback? onLoadStop;
-  final BrowserOnProgressCallback? onProgressChanged;
-  final BrowserOnErrorCallback? onLoadError;
-
   @override
-  State<BrowserTabsViewWidget> createState() => _BrowserTabsViewState();
+  State<BrowserTabsView> createState() => _BrowserTabsViewState();
 }
 
-class _BrowserTabsViewState extends State<BrowserTabsViewWidget> {
+class _BrowserTabsViewState extends State<BrowserTabsView> {
+  List<BrowserTabView> stackViews = [];
+
   @override
   Widget build(BuildContext context) {
     return BlocBuilder<BrowserTabsBloc, BrowserTabsState>(
@@ -34,30 +23,51 @@ class _BrowserTabsViewState extends State<BrowserTabsViewWidget> {
         final currentTab = context.read<BrowserTabsBloc>().activeTab;
         final currentTabId = currentTab?.id;
         final tabs = context.read<BrowserTabsBloc>().state.tabs;
-        final currentTabIndex =
-            tabs.indexWhere((tab) => tab.id == currentTabId);
-        final currentStackIndex = currentTabIndex < 0 ? 0 : currentTabIndex + 1;
+        final tabsState = context.read<BrowserTabsBloc>().state.tabsState;
 
-        final stackViews = [
-          const Text(
-            'empty',
-          ),
-          ...tabs.map(
-            (tab) => BrowserTabView(
-              tab: tab,
-              onScroll: widget.onScroll,
-              key: ValueKey(tab.id),
-              onOverScroll: widget.onOverScroll,
-              onLoadStart: widget.onLoadStart,
-              onLoadStop: widget.onLoadStop,
-              onProgressChanged: widget.onProgressChanged,
-              onLoadError: widget.onLoadError,
-            ),
-          ),
-        ];
+        stackViews
+          // replace changed
+          ..forEachIndexed(
+            (index, view) {
+              final newTab = tabs.firstWhereOrNull(
+                (tab) =>
+                    view.tab.id == tab.id &&
+                    (view.tab != tab || view.tabState != tabsState[tab.id]),
+              );
+              if (newTab == null) return;
+              stackViews[index] = BrowserTabView(
+                tab: newTab,
+                tabState: tabsState[newTab.id] ?? const BrowserTabState(),
+                key: ValueKey(newTab.id),
+              );
+            },
+          )
+          // remove views with non-existent tabs
+          ..removeWhere(
+            (view) => tabs.indexWhere((tab) => tab.id == view.tab.id) < 0,
+          )
+          // remove new views
+          ..addAll(
+            tabs
+                .where(
+                  (tab) =>
+                      stackViews.indexWhere((view) => view.tab.id == tab.id) <
+                      0,
+                )
+                .map(
+                  (tab) => BrowserTabView(
+                    tab: tab,
+                    tabState: tabsState[tab.id] ?? const BrowserTabState(),
+                    key: ValueKey(tab.id),
+                  ),
+                ),
+          );
+
+        final currentTabIndex =
+            stackViews.indexWhere((view) => view.tab.id == currentTabId);
 
         return IndexedStack(
-          index: currentStackIndex,
+          index: currentTabIndex,
           children: stackViews,
         );
       },
@@ -75,8 +85,15 @@ class _BrowserTabsViewState extends State<BrowserTabsViewWidget> {
     }
 
     final tab = current.tabs.firstWhereOrNull((t) => t.id == tabId);
+    final previousTab = previous.tabs.firstWhereOrNull((t) => t.id == tabId);
+    final tabState = current.tabsState[tabId];
+    final previousTabState = previous.tabsState[tabId];
 
-    if (tab?.url != previous.tabs.firstWhereOrNull((t) => t.id == tabId)?.url) {
+    if (tab?.url != previousTab?.url) {
+      return true;
+    }
+
+    if (tabState?.state != previousTabState?.state) {
       return true;
     }
 

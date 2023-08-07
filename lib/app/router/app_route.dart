@@ -119,9 +119,8 @@ enum AppRoute {
   /// History browser page
   browserHistory(
     'browserHistory',
-    '/browser/browserHistory',
+    'browserHistory',
     isSaveLocation: true,
-    isBottomNavigationBarVisible: true,
   ),
 
   /// Tabs browser page

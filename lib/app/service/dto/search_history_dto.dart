@@ -1,6 +1,6 @@
 // ignore_for_file: no-magic-number
 
-import 'package:app/data/models/search_history.dart';
+import 'package:app/data/models/browser_history_item.dart';
 import 'package:freezed_annotation/freezed_annotation.dart';
 import 'package:hive_flutter/hive_flutter.dart';
 
@@ -18,16 +18,18 @@ class SearchHistoryDto with _$SearchHistoryDto {
   }) = _SearchHistoryDto;
 }
 
-extension SiteMetaDataX on SearchHistory {
+extension SiteMetaDataX on BrowserHistoryItem {
   SearchHistoryDto toDto() => SearchHistoryDto(
         url: url,
-        openTime: openTime,
+        openTime: visitTime,
       );
 }
 
 extension SiteMetaDataDtoX on SearchHistoryDto {
-  SearchHistory toModel() => SearchHistory(
+  BrowserHistoryItem toModel(int id) => BrowserHistoryItem(
         url: url,
-        openTime: openTime,
+        visitTime: openTime,
+        title: '',
+        id: '$id',
       );
 }
