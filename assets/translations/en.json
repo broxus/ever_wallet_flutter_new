@@ -176,5 +176,12 @@
   "rootTokenContract": "Root token contract",
   "proceedWord": "Proceed",
   "invalidRootTokenContract": "Invalid root token contract",
-  "oldWord": "Old"
+  "oldWord": "Old",
+  "feesWord": "Fees",
+  "feesWithData": "Fees ~{}",
+  "statusWord": "Status",
+  "leftForConfirmation": "Left for confirmation {} • Signed {} of {}",
+  "transactionStatusWaitingConfirmation": "Waiting for confirmation",
+  "transactionStatusInProgress": "Transaction in progress",
+  "transactionStatusExpired": "Transaction expired"
 }
