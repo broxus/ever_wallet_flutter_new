@@ -1,3 +1,4 @@
+import 'package:app/feature/wallet/wallet.dart';
 import 'package:app/generated/generated.dart';
 import 'package:flutter/material.dart';
 import 'package:nekoton_repository/nekoton_repository.dart';
@@ -23,8 +24,10 @@ class WalletAccountActions extends StatelessWidget {
       children: [
         _buttonItem(
           svg: Assets.images.arrowDown.path,
-          // ignore: no-empty-block
-          onPressed: () {},
+          onPressed: () => showReceiveFundsSheet(
+            context,
+            currentAccount!.address,
+          ),
           title: LocaleKeys.receiveWord.tr(),
         ),
         _buttonItem(

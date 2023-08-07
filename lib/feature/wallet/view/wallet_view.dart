@@ -38,6 +38,7 @@ class _WalletViewState extends State<WalletView> {
   @override
   Widget build(BuildContext context) {
     return CommonSlidingPanel(
+      maxHeightSizePercent: 1,
       panelController: _panelController,
       panelBuilder: (context, scrollController) {
         if (widget.currentAccount == null) {

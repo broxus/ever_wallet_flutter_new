@@ -26,6 +26,7 @@
   "skipTakeRisk": "Skip, I'll take the risk",
   "copiedExclamation": "Copied!",
   "copyWords": "Copy all words",
+  "copyWord": "Copy",
   "enterSeedNameScreenTitle": "Enter new name for seed phrase",
   "enterSeedNameScreenDescription": "It is not necessary, but it will help you to identify this particular seed if you have a lot of them.",
   "seedName": "Seed name",
@@ -183,5 +184,7 @@
   "leftForConfirmation": "Left for confirmation {} • Signed {} of {}",
   "transactionStatusWaitingConfirmation": "Waiting for confirmation",
   "transactionStatusInProgress": "Transaction in progress",
-  "transactionStatusExpired": "Transaction expired"
+  "transactionStatusExpired": "Transaction expired",
+  "addressToReceiveFunds": "Your address to receive funds",
+  "shareWord": "Share"
 }
