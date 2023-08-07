@@ -4,7 +4,12 @@ import 'package:flutter/widgets.dart';
 import 'package:ui_components_lib/ui_components_lib.dart';
 
 class SearchBarHeaderDelegate extends SliverPersistentHeaderDelegate {
+  SearchBarHeaderDelegate({
+    required this.controller,
+  });
   static const _height = DimensSize.d56 + DimensSize.d16 + DimensSize.d16;
+
+  TextEditingController controller;
 
   @override
   Widget build(
@@ -21,7 +26,6 @@ class SearchBarHeaderDelegate extends SliverPersistentHeaderDelegate {
       ),
       child: CommonInput(
         fillColor: colors.appBackground,
-        needClearButton: false,
         autocorrect: false,
         hintText: LocaleKeys.browserSearch.tr(),
         prefixIcon: Padding(
@@ -32,6 +36,7 @@ class SearchBarHeaderDelegate extends SliverPersistentHeaderDelegate {
             size: DimensSize.d20,
           ),
         ),
+        controller: controller,
       ),
       // ),
     );

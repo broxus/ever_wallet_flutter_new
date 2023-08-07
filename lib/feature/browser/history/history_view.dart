@@ -20,9 +20,30 @@ class HistoryView extends StatefulWidget {
 }
 
 class _HistoryViewState extends State<HistoryView> {
+  final _searchController = TextEditingController();
+
+  @override
+  void initState() {
+    super.initState();
+
+    _searchController.addListener(() {
+      context.read<BrowserHistoryBloc>().add(
+            BrowserHistoryEvent.setSearchString(
+              value: _searchController.text,
+            ),
+          );
+    });
+  }
+
+  @override
+  void dispose() {
+    _searchController.dispose();
+    super.dispose();
+  }
+
   @override
   Widget build(BuildContext context) {
-    final items = context.watch<BrowserHistoryBloc>().state.items;
+    final items = context.watch<BrowserHistoryBloc>().getFiltredItems();
     final sectioned = items.fold<Map<DateTime, List<BrowserHistoryItem>>>(
       {},
       (previousSectioned, item) {
@@ -43,7 +64,7 @@ class _HistoryViewState extends State<HistoryView> {
       },
     );
 
-    final widgets = sectioned.entries
+    var widgets = sectioned.entries
         .sorted((a, b) => a.key.compareTo(b.key))
         .fold<List<Widget>>(
       [],
@@ -65,11 +86,14 @@ class _HistoryViewState extends State<HistoryView> {
         ];
       },
     );
+
+    widgets = widgets.isNotEmpty ? widgets : [_emptyBuilder()];
+
     return CustomScrollView(
       slivers: [
         SliverPersistentHeader(
           floating: true,
-          delegate: SearchBarHeaderDelegate(),
+          delegate: SearchBarHeaderDelegate(controller: _searchController),
         ),
         ...widgets,
       ],
@@ -136,5 +160,31 @@ class _HistoryViewState extends State<HistoryView> {
         );
 
     context.goNamed(AppRoute.browser.name);
+  }
+
+  Widget _emptyBuilder() {
+    final isHistoryEmpty = context.watch<BrowserHistoryBloc>().isHistoryEmpty;
+
+    return SliverFillRemaining(
+      child: Center(
+        child: SeparatedColumn(
+          mainAxisSize: MainAxisSize.min,
+          children: [
+            CommonIconWidget.svg(
+              svg: Assets.images.history.path,
+              size: DimensSize.d56,
+            ),
+            Text(
+              isHistoryEmpty
+                  ? LocaleKeys.browserHistoryEmpty.tr()
+                  : LocaleKeys.browserHistoryEmptySearch.tr(),
+              style: StyleRes.primaryRegular.copyWith(
+                color: context.themeStyle.colors.textSecondary,
+              ),
+            )
+          ],
+        ),
+      ),
+    );
   }
 }

@@ -16,6 +16,7 @@ class BrowserHistoryBloc
   ) : super(
           BrowserHistoryState(
             items: browserHistoryStorageService.browserHistory,
+            searchString: '',
           ),
         ) {
     _registerHandlers();
@@ -58,5 +59,27 @@ class BrowserHistoryBloc
         ),
       );
     });
+    on<_SetSearchString>((event, emit) {
+      emit(
+        state.copyWith(
+          searchString: event.value,
+        ),
+      );
+    });
+  }
+
+  List<BrowserHistoryItem> getFiltredItems() {
+    final searchString = state.searchString.toLowerCase();
+
+    return state.items.where((item) {
+      final title = item.title.toLowerCase();
+      final url = item.url.toLowerCase();
+
+      return title.contains(searchString) || url.contains(searchString);
+    }).toList();
+  }
+
+  bool get isHistoryEmpty {
+    return state.items.isEmpty;
   }
 }

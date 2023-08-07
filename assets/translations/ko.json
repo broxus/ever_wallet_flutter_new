@@ -163,6 +163,8 @@
   "browserAddToBookmarks": "Add to bookmarks",
   "browserHistory": "History",
   "browserSearch": "Search",
+  "browserHistoryEmpty": "Your history will appear here",
+  "browserHistoryEmptySearch": "No results were found",
   "walletWord": "Wallet",
   "browserWord": "Browser",
   "profileWord": "Profile",

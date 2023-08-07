@@ -4,5 +4,6 @@ part of 'browser_history_bloc.dart';
 class BrowserHistoryState with _$BrowserHistoryState {
   const factory BrowserHistoryState({
     required List<BrowserHistoryItem> items,
+    required String searchString,
   }) = _BrowserHistoryState;
 }
