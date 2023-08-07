@@ -7,7 +7,7 @@ class SearchBarHeaderDelegate extends SliverPersistentHeaderDelegate {
   SearchBarHeaderDelegate({
     required this.controller,
   });
-  static const _height = DimensSize.d56 + DimensSize.d16 + DimensSize.d16;
+  static const _height = DimensSize.d56 + DimensSize.d16 + DimensSize.d16 + 1;
 
   TextEditingController controller;
 
@@ -21,26 +21,34 @@ class SearchBarHeaderDelegate extends SliverPersistentHeaderDelegate {
 
     return ColoredBox(
       color: colors.appBackground,
-      child: Padding(
-        padding: const EdgeInsets.symmetric(
-          horizontal: DimensSize.d16,
-          vertical: DimensSize.d16,
-        ),
-        child: CommonInput(
-          fillColor: colors.appBackground,
-          autocorrect: false,
-          hintText: LocaleKeys.browserSearch.tr(),
-          prefixIcon: Padding(
-            padding: const EdgeInsets.all(DimensSize.d16),
-            child: CommonIconWidget.svg(
-              svg: Assets.images.search.path,
-              color: colors.textSecondary,
-              size: DimensSize.d20,
+      child: Column(
+        children: [
+          Padding(
+            padding: const EdgeInsets.symmetric(
+              horizontal: DimensSize.d16,
+              vertical: DimensSize.d16,
             ),
+            child: CommonInput(
+              fillColor: colors.appBackground,
+              autocorrect: false,
+              hintText: LocaleKeys.browserSearch.tr(),
+              prefixIcon: Padding(
+                padding: const EdgeInsets.all(DimensSize.d16),
+                child: CommonIconWidget.svg(
+                  svg: Assets.images.search.path,
+                  color: colors.textSecondary,
+                  size: DimensSize.d20,
+                ),
+              ),
+              controller: controller,
+            ),
+            // ),
           ),
-          controller: controller,
-        ),
-        // ),
+          if (overlapsContent)
+            CommonDivider(
+              color: colors.strokePrimary,
+            ),
+        ],
       ),
     );
   }
