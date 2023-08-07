@@ -5,5 +5,6 @@ class BrowserHistoryState with _$BrowserHistoryState {
   const factory BrowserHistoryState({
     required List<BrowserHistoryItem> items,
     required String searchString,
+    required bool isEditing,
   }) = _BrowserHistoryState;
 }

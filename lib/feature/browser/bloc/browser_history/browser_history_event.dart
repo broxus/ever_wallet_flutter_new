@@ -11,4 +11,6 @@ class BrowserHistoryEvent with _$BrowserHistoryEvent {
   }) = _Set;
   const factory BrowserHistoryEvent.setSearchString({required String value}) =
       _SetSearchString;
+  const factory BrowserHistoryEvent.setIsEditing({required bool value}) =
+      _SetIsEditing;
 }

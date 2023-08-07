@@ -89,13 +89,23 @@ class _HistoryViewState extends State<HistoryView> {
 
     widgets = widgets.isNotEmpty ? widgets : [_emptyBuilder()];
 
-    return CustomScrollView(
-      slivers: [
-        SliverPersistentHeader(
-          floating: true,
-          delegate: SearchBarHeaderDelegate(controller: _searchController),
+    return Stack(
+      alignment: AlignmentDirectional.bottomCenter,
+      children: [
+        CustomScrollView(
+          slivers: [
+            SliverPersistentHeader(
+              floating: true,
+              delegate: SearchBarHeaderDelegate(controller: _searchController),
+            ),
+            ...widgets,
+            _bottomSpacerBuilder(),
+          ],
         ),
-        ...widgets,
+        SafeArea(
+          minimum: const EdgeInsets.only(bottom: DimensSize.d16),
+          child: _buttonsBuilder(),
+        ),
       ],
     );
   }
@@ -149,6 +159,60 @@ class _HistoryViewState extends State<HistoryView> {
           ),
         ],
       ),
+    );
+  }
+
+  Widget _buttonsBuilder() {
+    final isEditing = context.watch<BrowserHistoryBloc>().state.isEditing;
+
+    return Padding(
+      padding: const EdgeInsets.symmetric(horizontal: DimensSize.d16),
+      child: SeparatedColumn(
+        mainAxisSize: MainAxisSize.min,
+        children: isEditing
+            ? [
+                CommonButton.secondary(
+                  text: LocaleKeys.browserHistoryClear.tr(),
+                  onPressed: () => {},
+                  fillWidth: true,
+                ),
+                CommonButton.primary(
+                  text: LocaleKeys.browserHistoryDone.tr(),
+                  onPressed: () => context.read<BrowserHistoryBloc>().add(
+                        const BrowserHistoryEvent.setIsEditing(
+                          value: false,
+                        ),
+                      ),
+                  fillWidth: true,
+                ),
+              ]
+            : [
+                CommonButton.primary(
+                  text: LocaleKeys.browserHistoryEdit.tr(),
+                  onPressed: () => context.read<BrowserHistoryBloc>().add(
+                        const BrowserHistoryEvent.setIsEditing(
+                          value: true,
+                        ),
+                      ),
+                  fillWidth: true,
+                ),
+              ],
+      ),
+    );
+  }
+
+  Widget _bottomSpacerBuilder() {
+    final isEditing = context.watch<BrowserHistoryBloc>().state.isEditing;
+
+    return SliverSafeArea(
+      sliver: SliverToBoxAdapter(
+        child: SizedBox(
+          height: isEditing
+              ? DimensSize.d56 + DimensSize.d56 + DimensSize.d16
+              : DimensSize.d56 + DimensSize.d16,
+        ),
+      ),
+      minimum: const EdgeInsets.only(bottom: DimensSize.d16),
     );
   }
 

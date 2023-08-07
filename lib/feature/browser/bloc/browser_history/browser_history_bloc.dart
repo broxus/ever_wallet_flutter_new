@@ -17,6 +17,7 @@ class BrowserHistoryBloc
           BrowserHistoryState(
             items: browserHistoryStorageService.browserHistory,
             searchString: '',
+            isEditing: false,
           ),
         ) {
     _registerHandlers();
@@ -63,6 +64,13 @@ class BrowserHistoryBloc
       emit(
         state.copyWith(
           searchString: event.value,
+        ),
+      );
+    });
+    on<_SetIsEditing>((event, emit) {
+      emit(
+        state.copyWith(
+          isEditing: event.value,
         ),
       );
     });
