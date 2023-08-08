@@ -156,6 +156,11 @@ class BrowserTabsBloc extends Bloc<BrowserTabsEvent, BrowserTabsState> {
         );
       }
       browserTabsStorageService.removeBrowserTab(event.id);
+      if (state.currentTabId == event.id) {
+        final tabs = state.tabs;
+        final newActiveTabId = tabs.firstOrNull?.id;
+        browserTabsStorageService.saveBrowserActiveTabId(newActiveTabId);
+      }
     });
     on<_SetActive>((event, emit) {
       browserTabsStorageService.saveBrowserActiveTabId(event.id);
