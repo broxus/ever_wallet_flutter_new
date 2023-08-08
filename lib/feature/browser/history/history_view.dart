@@ -44,6 +44,7 @@ class _HistoryViewState extends State<HistoryView> {
 
   @override
   Widget build(BuildContext context) {
+    final isEditing = context.watch<BrowserHistoryBloc>().state.isEditing;
     final items = context.watch<BrowserHistoryBloc>().getFiltredItems();
     final sectioned = items.fold<Map<DateTime, List<BrowserHistoryItem>>>(
       {},
@@ -81,7 +82,10 @@ class _HistoryViewState extends State<HistoryView> {
           _headerBuilder(date),
           SliverList.builder(
             itemCount: items.length,
-            itemBuilder: (_, index) => _itemBuilder(items[index]),
+            itemBuilder: (_, index) => _itemBuilder(
+              items[index],
+              isEditing: isEditing,
+            ),
           ),
           ...previousWidgets,
         ];
@@ -124,7 +128,7 @@ class _HistoryViewState extends State<HistoryView> {
     );
   }
 
-  Widget _itemBuilder(BrowserHistoryItem item) {
+  Widget _itemBuilder(BrowserHistoryItem item, {required bool isEditing}) {
     final colors = context.themeStyle.colors;
 
     return Padding(
@@ -132,30 +136,43 @@ class _HistoryViewState extends State<HistoryView> {
         vertical: DimensSize.d4,
         horizontal: DimensSize.d16,
       ),
-      child: ShapedContainerColumn(
-        mainAxisSize: MainAxisSize.min,
-        margin: EdgeInsets.zero,
+      child: SeparatedRow(
         children: [
-          CommonListTile(
-            titleText: item.title,
-            subtitleText: item.url,
-            leading: CachedNetworkImage(
-              height: DimensSize.d40,
-              width: DimensSize.d40,
-              imageUrl: item.faviconUrl ?? '',
-              placeholder: (_, __) => CircularProgressIndicator(
-                color: colors.textSecondary,
-                strokeWidth: DimensStroke.medium,
-              ),
-              // TODO(nesquikm): what we should show when
-              // no favicon is available?
-              errorWidget: (_, __, ___) => const Icon(Icons.error),
+          Expanded(
+            child: ShapedContainerColumn(
+              mainAxisSize: MainAxisSize.min,
+              margin: EdgeInsets.zero,
+              children: [
+                CommonListTile(
+                  titleText: item.title,
+                  subtitleText: item.url,
+                  leading: CachedNetworkImage(
+                    height: DimensSize.d40,
+                    width: DimensSize.d40,
+                    imageUrl: item.faviconUrl ?? '',
+                    placeholder: (_, __) => CircularProgressIndicator(
+                      color: colors.textSecondary,
+                      strokeWidth: DimensStroke.medium,
+                    ),
+                    // TODO(nesquikm): what we should show when
+                    // no favicon is available?
+                    errorWidget: (_, __, ___) => const Icon(Icons.error),
+                  ),
+                  trailing: CommonButtonIconWidget.svg(
+                    svg: Assets.images.caretRight.path,
+                  ),
+                  onPressed: () => _onItemPressed(item),
+                ),
+              ],
             ),
-            trailing: CommonButtonIconWidget.svg(
-              svg: Assets.images.caretRight.path,
-            ),
-            onPressed: () => _onItemPressed(item),
           ),
+          if (isEditing)
+            CommonIconButton.svg(
+              svg: Assets.images.trash.path,
+              buttonType: EverButtonType.secondary,
+              color: colors.alert,
+              onPressed: () => _removeHistoryItem(item),
+            )
         ],
       ),
     );
@@ -290,6 +307,14 @@ class _HistoryViewState extends State<HistoryView> {
     context.read<BrowserHistoryBloc>().add(
           BrowserHistoryEvent.setIsEditing(
             value: value,
+          ),
+        );
+  }
+
+  void _removeHistoryItem(BrowserHistoryItem item) {
+    context.read<BrowserHistoryBloc>().add(
+          BrowserHistoryEvent.remove(
+            id: item.id,
           ),
         );
   }
