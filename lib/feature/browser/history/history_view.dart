@@ -303,6 +303,7 @@ class _HistoryViewState extends State<HistoryView> {
 
   void _clearHistory() {
     context.read<BrowserHistoryBloc>().add(const BrowserHistoryEvent.clear());
+    context.goNamed(AppRoute.browser.name);
   }
 
   void _setIsEditing(bool value) {
