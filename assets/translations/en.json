@@ -186,5 +186,8 @@
   "transactionStatusInProgress": "Transaction in progress",
   "transactionStatusExpired": "Transaction expired",
   "addressToReceiveFunds": "Your address to receive funds",
-  "shareWord": "Share"
+  "shareWord": "Share",
+  "deployWord": "Deploy",
+  "toSendMultisigAddCustodian": "To send funds via multisig, you need to add a custodian",
+  "addWord": "Add"
 }

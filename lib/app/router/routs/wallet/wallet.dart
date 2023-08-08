@@ -28,6 +28,7 @@ StatefulShellBranch get walletBranch {
               ),
             ),
           ),
+          addSeedNamedRoute,
         ],
       ),
     ],
