@@ -59,6 +59,7 @@ class _HistoryViewState extends State<HistoryView> {
         }
 
         final value = previousSectioned[key] ?? [];
+
         return {
           ...previousSectioned,
           key: [...value, item],
@@ -114,6 +115,7 @@ class _HistoryViewState extends State<HistoryView> {
 
   Widget _headerBuilder(DateTime dateTime) {
     final localeCode = inject<LocalizationService>().localeCode.name;
+
     return SliverToBoxAdapter(
       child: Padding(
         padding: const EdgeInsets.symmetric(
@@ -172,7 +174,7 @@ class _HistoryViewState extends State<HistoryView> {
               buttonType: EverButtonType.secondary,
               color: colors.alert,
               onPressed: () => _removeHistoryItem(item),
-            )
+            ),
         ],
       ),
     );
@@ -273,7 +275,7 @@ class _HistoryViewState extends State<HistoryView> {
               style: StyleRes.primaryRegular.copyWith(
                 color: context.themeStyle.colors.textSecondary,
               ),
-            )
+            ),
           ],
         ),
       ),
