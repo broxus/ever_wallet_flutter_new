@@ -63,12 +63,6 @@ class _BrowserTabViewState extends State<BrowserTabView> {
 
   Timer? _screenshotTimer;
 
-  final _initialOptions = InAppWebViewGroupOptions(
-    ios: IOSInAppWebViewOptions(),
-    android: AndroidInAppWebViewOptions(),
-    crossPlatform: InAppWebViewOptions(),
-  );
-
   static final _log = Logger('BrowserTabView');
 
   @override
@@ -111,12 +105,29 @@ class _BrowserTabViewState extends State<BrowserTabView> {
   Widget build(BuildContext context) {
     _initPTRController();
 
+    final clearCache =
+        context.read<BrowserTabsBloc>().state.clearCacheOnNextTab;
+
+    if (clearCache) {
+      context.read<BrowserTabsBloc>().add(
+            const BrowserTabsEvent.cacheCleared(),
+          );
+    }
+
+    final initialOptions = InAppWebViewGroupOptions(
+      ios: IOSInAppWebViewOptions(),
+      android: AndroidInAppWebViewOptions(),
+      crossPlatform: InAppWebViewOptions(
+        clearCache: clearCache,
+      ),
+    );
+
     return Stack(
       children: [
         InAppWebView(
           key: ValueKey(widget.tab.id),
           pullToRefreshController: _pullToRefreshController,
-          initialOptions: _initialOptions,
+          initialOptions: initialOptions,
           onOverScrolled: _onOverScrolled,
           onScrollChanged: _onScrollChanged,
           onWebViewCreated: _onWebViewCreated,

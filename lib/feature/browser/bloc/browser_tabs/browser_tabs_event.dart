@@ -32,4 +32,6 @@ class BrowserTabsEvent with _$BrowserTabsEvent {
       _SetTabs;
   const factory BrowserTabsEvent.setActiveTabId({required String? id}) =
       _SetActiveTabId;
+  const factory BrowserTabsEvent.clearCache() = _ClearCache;
+  const factory BrowserTabsEvent.cacheCleared() = _CacheCleared;
 }

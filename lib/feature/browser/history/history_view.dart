@@ -9,6 +9,7 @@ import 'package:cached_network_image/cached_network_image.dart';
 import 'package:collection/collection.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:flutter_inappwebview/flutter_inappwebview.dart';
 import 'package:go_router/go_router.dart';
 import 'package:ui_components_lib/ui_components_lib.dart';
 
@@ -146,7 +147,8 @@ class _HistoryViewState extends State<HistoryView> {
                 color: colors.textSecondary,
                 strokeWidth: DimensStroke.medium,
               ),
-              // TODO(nesquikm): what we should show when no favicon is available?
+              // TODO(nesquikm): what we should show when
+              // no favicon is available?
               errorWidget: (_, __, ___) => const Icon(Icons.error),
             ),
             trailing: CommonButtonIconWidget.svg(
@@ -163,10 +165,8 @@ class _HistoryViewState extends State<HistoryView> {
     final colors = context.themeStyle.colors;
 
     final isEditing = context.watch<BrowserHistoryBloc>().state.isEditing;
-    // SafeArea(
-    //   minimum: const EdgeInsets.only(bottom: DimensSize.d16),
-    //   child: _buttonsBuilder(),
-    // ),
+    final isHistoryEmpty = context.watch<BrowserHistoryBloc>().isHistoryEmpty;
+
     return Container(
       decoration: BoxDecoration(
         gradient: LinearGradient(
@@ -183,27 +183,25 @@ class _HistoryViewState extends State<HistoryView> {
               ? [
                   CommonButton.secondary(
                     text: LocaleKeys.browserHistoryClear.tr(),
-                    onPressed: () => {},
+                    onPressed: () {
+                      showBrowserHistorySheet(
+                        context: context,
+                        clearHistoryEnabled: !isHistoryEmpty,
+                        onClearPressed: _onClearPressed,
+                      );
+                    },
                     fillWidth: true,
                   ),
                   CommonButton.primary(
                     text: LocaleKeys.browserHistoryDone.tr(),
-                    onPressed: () => context.read<BrowserHistoryBloc>().add(
-                          const BrowserHistoryEvent.setIsEditing(
-                            value: false,
-                          ),
-                        ),
+                    onPressed: () => _setIsEditing(false),
                     fillWidth: true,
                   ),
                 ]
               : [
                   CommonButton.primary(
                     text: LocaleKeys.browserHistoryEdit.tr(),
-                    onPressed: () => context.read<BrowserHistoryBloc>().add(
-                          const BrowserHistoryEvent.setIsEditing(
-                            value: true,
-                          ),
-                        ),
+                    onPressed: () => _setIsEditing(true),
                     fillWidth: true,
                   ),
                 ],
@@ -263,5 +261,36 @@ class _HistoryViewState extends State<HistoryView> {
         ),
       ),
     );
+  }
+
+  void _onClearPressed({
+    required bool clearCache,
+    required bool clearCookies,
+    required bool clearHistory,
+  }) {
+    _setIsEditing(false);
+    if (clearCache) _clearCache();
+    if (clearCookies) _clearCookies();
+    if (clearHistory) _clearHistory();
+  }
+
+  void _clearCache() {
+    context.read<BrowserTabsBloc>().add(const BrowserTabsEvent.clearCache());
+  }
+
+  void _clearCookies() {
+    CookieManager.instance().deleteAllCookies();
+  }
+
+  void _clearHistory() {
+    context.read<BrowserHistoryBloc>().add(const BrowserHistoryEvent.clear());
+  }
+
+  void _setIsEditing(bool value) {
+    context.read<BrowserHistoryBloc>().add(
+          BrowserHistoryEvent.setIsEditing(
+            value: value,
+          ),
+        );
   }
 }
