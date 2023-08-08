@@ -730,14 +730,14 @@ class MigrationService {
     GeneralStorageService storage,
     BrowserStorageService browserStorage,
     BrowserTabsStorageService browserTabsStorageService,
-    BrowserHistoryStorageService _browserHistoryStorageService,
+    BrowserHistoryStorageService browserHistoryStorageService,
     NekotonStorageService accountSeedStorage,
   ) async {
     return MigrationService(
       storage,
       browserStorage,
       browserTabsStorageService,
-      _browserHistoryStorageService,
+      browserHistoryStorageService,
       accountSeedStorage,
       await HiveSourceMigration.create(),
     ).migrate();

@@ -69,9 +69,10 @@ class AccountCardCubit extends Cubit<AccountCardState> {
         nekotonRepository.getLocalCustodians(account.address);
     // count of local custodians of count of real custodians, works
     // only for multisig wallets
-    final custodiansString = custodians != null && localCustodians != null
-        ? '${localCustodians.length}/${custodians.length}'
-        : null;
+    final custodiansString =
+        custodians != null && custodians.length > 1 && localCustodians != null
+            ? '${localCustodians.length}/${custodians.length}'
+            : null;
 
     final money = currencyConvertService.convert(balance);
 

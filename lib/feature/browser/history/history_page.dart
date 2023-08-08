@@ -1,5 +1,4 @@
 import 'package:app/feature/browser/browser.dart';
-import 'package:app/feature/browser/history/history_view.dart';
 import 'package:app/generated/generated.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
