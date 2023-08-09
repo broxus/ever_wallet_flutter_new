@@ -3,7 +3,7 @@ export 'account_removed_event.dart';
 export 'approval_request.dart';
 export 'asset_type.dart';
 export 'asset_type_params.dart';
-export 'bookmark.dart';
+export 'browser_bookmark_item.dart';
 export 'browser_history_item.dart';
 export 'browser_tab.dart';
 export 'connection_data.dart';

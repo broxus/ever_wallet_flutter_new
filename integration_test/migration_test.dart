@@ -2,7 +2,7 @@ import 'dart:convert';
 
 import 'package:app/app/service/service.dart';
 import 'package:app/data/models/account_interaction.dart';
-import 'package:app/data/models/bookmark.dart';
+import 'package:app/data/models/browser_bookmark_item.dart';
 import 'package:app/data/models/browser_history_item.dart';
 import 'package:app/data/models/browser_tab.dart';
 import 'package:app/data/models/custom_currency.dart';
@@ -31,7 +31,13 @@ final _historyItem = BrowserHistoryItem(
   faviconUrl: null,
   id: '0',
 );
-const _bookmark = Bookmark(id: 0, name: 'Bookmark', url: 'URL');
+const _bookmark = BrowserBookmarkItem(
+  id: '0',
+  title: 'TITLE',
+  url: 'URL',
+  sortingOrder: -1,
+  faviconUrl: null,
+);
 final _browserTab = BrowserTab(
   url: Uri.parse('URL'),
   imageId: null,
@@ -179,6 +185,7 @@ void main() {
   late BrowserStorageService browserStorage;
   late BrowserTabsStorageService browserTabsStorage;
   late BrowserHistoryStorageService browserHistoryStorage;
+  late BrowserBookmarksStorageService browserBookmarksStorage;
   late NekotonStorageService accountSeedStorage;
 
   Future<void> checkMigration() async {
@@ -248,8 +255,8 @@ void main() {
     expect(await browserStorage.permissions, {'origin': _permissions});
 
     /// Bookmarks
-    expect(await browserStorage.readBookmarks(), [_bookmark]);
-    expect(browserStorage.bookmarks, [_bookmark]);
+    expect(await browserBookmarksStorage.readBrowserBookmarks(), [_bookmark]);
+    expect(browserBookmarksStorage.browserBookmarks, [_bookmark]);
 
     /// Browser history, we need to change id because it's generated on fly
     expect(
@@ -304,6 +311,7 @@ void main() {
     browserStorage = BrowserStorageService(encryptedStorage);
     browserTabsStorage = BrowserTabsStorageService(encryptedStorage);
     browserHistoryStorage = BrowserHistoryStorageService(encryptedStorage);
+    browserBookmarksStorage = BrowserBookmarksStorageService(encryptedStorage);
     accountSeedStorage = NekotonStorageService(encryptedStorage);
     repository = NekotonRepository();
     await Hive.deleteFromDisk();
@@ -344,6 +352,7 @@ void main() {
         browserStorage,
         browserTabsStorage,
         browserHistoryStorage,
+        browserBookmarksStorage,
         accountSeedStorage,
         hive,
       );
@@ -359,6 +368,7 @@ void main() {
         browserStorage,
         browserTabsStorage,
         browserHistoryStorage,
+        browserBookmarksStorage,
         accountSeedStorage,
         hive,
       );
@@ -374,6 +384,7 @@ void main() {
         browserStorage,
         browserTabsStorage,
         browserHistoryStorage,
+        browserBookmarksStorage,
         accountSeedStorage,
         hive,
       );
@@ -390,6 +401,7 @@ void main() {
         browserStorage,
         browserTabsStorage,
         browserHistoryStorage,
+        browserBookmarksStorage,
         accountSeedStorage,
         hive,
       );
@@ -409,6 +421,7 @@ void main() {
         browserStorage,
         browserTabsStorage,
         browserHistoryStorage,
+        browserBookmarksStorage,
         accountSeedStorage,
         hive,
       );
@@ -503,8 +516,11 @@ void main() {
       expect(await browserStorage.permissions, hive.permissions);
 
       /// Bookmarks
-      expect(await browserStorage.readBookmarks(), hive.bookmarks);
-      expect(browserStorage.bookmarks, hive.bookmarks);
+      expect(
+        await browserBookmarksStorage.readBrowserBookmarks(),
+        hive.bookmarks,
+      );
+      expect(browserBookmarksStorage.browserBookmarks, hive.bookmarks);
 
       /// Search history
       expect(
@@ -588,6 +604,7 @@ void main() {
         browserStorage,
         browserTabsStorage,
         browserHistoryStorage,
+        browserBookmarksStorage,
         accountSeedStorage,
         hive,
       );
@@ -614,6 +631,7 @@ void main() {
         browserStorage,
         browserTabsStorage,
         browserHistoryStorage,
+        browserBookmarksStorage,
         accountSeedStorage,
       );
 
