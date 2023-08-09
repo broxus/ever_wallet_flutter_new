@@ -1,4 +1,5 @@
 import 'package:app/app/router/router.dart';
+import 'package:app/data/models/models.dart';
 import 'package:app/feature/browser/browser.dart';
 import 'package:app/generated/generated.dart';
 import 'package:flutter/widgets.dart';
@@ -63,6 +64,24 @@ class BrowserBottomMenuCommon extends StatelessWidget {
       refreshEnabled: hasUrl,
       addToBookmarksEnabled: hasUrl,
       onRefreshPressed: currentTabState?.refresh,
+      onAddToBookmarkPressed: () => _onAddToBookmarkPressed(context),
     );
+  }
+
+  void _onAddToBookmarkPressed(BuildContext context) {
+    final currentTab = context.read<BrowserTabsBloc>().activeTab;
+    final currentTabState = context.read<BrowserTabsBloc>().activeTabState;
+
+    if (currentTab?.url.host.isNotEmpty ?? false) {
+      context.read<BrowserBookmarksBloc>().add(
+            BrowserBookmarksEvent.add(
+              item: BrowserBookmarkItem.create(
+                title: currentTabState?.title ?? '',
+                url: currentTab!.url.toString(),
+                faviconUrl: currentTabState?.faviconUrl,
+              ),
+            ),
+          );
+    }
   }
 }

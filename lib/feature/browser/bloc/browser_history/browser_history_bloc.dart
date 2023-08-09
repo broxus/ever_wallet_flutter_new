@@ -76,7 +76,7 @@ class BrowserHistoryBloc
     });
   }
 
-  List<BrowserHistoryItem> getFiltredItems() {
+  List<BrowserHistoryItem> getFilteredItems() {
     final searchString = state.searchString.toLowerCase();
 
     return state.items.where((item) {

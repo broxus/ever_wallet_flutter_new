@@ -45,7 +45,7 @@ class _HistoryViewState extends State<HistoryView> {
   @override
   Widget build(BuildContext context) {
     final isEditing = context.watch<BrowserHistoryBloc>().state.isEditing;
-    final items = context.watch<BrowserHistoryBloc>().getFiltredItems();
+    final items = context.watch<BrowserHistoryBloc>().getFilteredItems();
     final sectioned = items.fold<Map<DateTime, List<BrowserHistoryItem>>>(
       {},
       (previousSectioned, item) {

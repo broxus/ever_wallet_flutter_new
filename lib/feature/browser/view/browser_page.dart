@@ -16,10 +16,19 @@ class BrowserPage extends StatefulWidget {
 class _BrowserPageState extends State<BrowserPage> {
   @override
   Widget build(BuildContext context) {
-    return BlocProvider<BrowserHistoryBloc>(
-      create: (context) => BrowserHistoryBloc(
-        inject<BrowserHistoryStorageService>(),
-      ),
+    return MultiBlocProvider(
+      providers: [
+        BlocProvider<BrowserHistoryBloc>(
+          create: (context) => BrowserHistoryBloc(
+            inject<BrowserHistoryStorageService>(),
+          ),
+        ),
+        BlocProvider<BrowserBookmarksBloc>(
+          create: (context) => BrowserBookmarksBloc(
+            inject<BrowserBookmarksStorageService>(),
+          ),
+        ),
+      ],
       child: BlocProvider<BrowserTabsBloc>(
         create: (context) => BrowserTabsBloc(
           inject<BrowserTabsStorageService>(),

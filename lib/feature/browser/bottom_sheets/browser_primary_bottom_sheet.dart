@@ -10,6 +10,7 @@ Future<void> showBrowserPrimarySheet({
   required bool refreshEnabled,
   required bool addToBookmarksEnabled,
   required VoidCallback? onRefreshPressed,
+  required VoidCallback? onAddToBookmarkPressed,
 }) {
   return showCommonBottomSheet(
     context: context,
@@ -17,6 +18,7 @@ Future<void> showBrowserPrimarySheet({
       refreshEnabled: refreshEnabled,
       addToBookmarksEnabled: addToBookmarksEnabled,
       onRefreshPressed: onRefreshPressed,
+      onAddToBookmarkPressed: onAddToBookmarkPressed,
     ),
   );
 }
@@ -26,11 +28,13 @@ class BrowserPrimarySheet extends StatelessWidget {
     required this.refreshEnabled,
     required this.addToBookmarksEnabled,
     required this.onRefreshPressed,
+    required this.onAddToBookmarkPressed,
     super.key,
   });
   final bool refreshEnabled;
   final bool addToBookmarksEnabled;
   final VoidCallback? onRefreshPressed;
+  final VoidCallback? onAddToBookmarkPressed;
 
   @override
   Widget build(BuildContext context) {
@@ -56,7 +60,10 @@ class BrowserPrimarySheet extends StatelessWidget {
         if (addToBookmarksEnabled)
           CommonListTile(
             titleText: LocaleKeys.browserAddToBookmarks.tr(),
-            onPressed: () {},
+            onPressed: () {
+              Navigator.of(context).pop();
+              onAddToBookmarkPressed?.call();
+            },
             contentColor: colors.textPrimary,
             trailing: CommonButtonIconWidget.svg(
               svg: Assets.images.star.path,
