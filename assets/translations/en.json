@@ -189,5 +189,7 @@
   "shareWord": "Share",
   "deployWord": "Deploy",
   "toSendMultisigAddCustodian": "To send funds via multisig, you need to add a custodian",
-  "addWord": "Add"
+  "addWord": "Add",
+  "transactionsHistory": "Transactions history",
+  "historyIsEmpty": "History is empty"
 }

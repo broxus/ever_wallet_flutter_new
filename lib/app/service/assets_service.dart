@@ -220,6 +220,23 @@ class AssetsService {
     }
   }
 
+  /// Try getting contract of existed token contract from storage.
+  /// This can be helpful when you know, that token exists, but you do not have
+  /// direct access to TokenWallet.
+  TokenContractAsset? maybeGetTokenContract(
+    Address rootTokenContract,
+    TransportStrategy transport,
+  ) {
+    final asset = storage
+            .getCustomTokenContractAssets(transport.networkType)
+            .firstWhereOrNull((c) => c.address == rootTokenContract) ??
+        storage
+            .getSystemTokenContractAssets(transport.networkType)
+            .firstWhereOrNull((c) => c.address == rootTokenContract);
+
+    return asset;
+  }
+
   /// Load manifest specified for transport and update system contracts that
   /// user can add to list of its contracts.
   Future<void> _updateSystemContracts(TransportStrategy transport) async {

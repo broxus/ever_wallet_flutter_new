@@ -1,3 +1,4 @@
+import 'package:app/app/router/router.dart';
 import 'package:app/app/service/service.dart';
 import 'package:app/di/di.dart';
 import 'package:app/feature/wallet/widgets/account_asset_tab/ton_wallet_asset/ton_wallet_asset_cubit.dart';
@@ -33,8 +34,14 @@ class TonWalletAssetWidget extends StatelessWidget {
                 tokenBalance: tokenBalance,
                 fiatBalance: fiatBalance,
                 icon: TonWalletIconWidget(path: iconPath),
-                // ignore: no-empty-block
-                onPressed: () {},
+                onPressed: () => context.goFurther(
+                  AppRoute.tonWalletDetails.pathWithData(
+                    pathParameters: {
+                      tonWalletDetailsAddressPathParam:
+                          tonWallet.address.address,
+                    },
+                  ),
+                ),
               );
             },
           );

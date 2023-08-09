@@ -16,10 +16,12 @@ import 'package:ui_components_lib/ui_components_lib.dart';
 class WalletAccountActions extends StatelessWidget {
   const WalletAccountActions({
     required this.currentAccount,
+    this.allowStake = true,
     super.key,
   });
 
   final KeyAccount? currentAccount;
+  final bool allowStake;
 
   @override
   Widget build(BuildContext context) {
@@ -54,7 +56,7 @@ class WalletAccountActions extends StatelessWidget {
                     svg: _actionIcon(action),
                     title: _actionTitle(action),
                   ),
-                  if (hasStake)
+                  if (hasStake && allowStake)
                     _buttonItem(
                       svg: Assets.images.stake.path,
                       // ignore: no-empty-block

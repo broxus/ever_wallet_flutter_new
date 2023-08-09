@@ -1,3 +1,4 @@
+import 'package:app/app/router/router.dart';
 import 'package:app/app/service/service.dart';
 import 'package:app/data/models/models.dart';
 import 'package:app/di/di.dart';
@@ -38,8 +39,15 @@ class TokenWalletAssetWidget extends StatelessWidget {
                 tokenBalance: tokenBalance,
                 fiatBalance: fiatBalance,
                 icon: TokenWalletIconWidget(asset: asset),
-                // ignore: no-empty-block
-                onPressed: () {},
+                onPressed: () => context.goFurther(
+                  AppRoute.tokenWalletDetails.pathWithData(
+                    pathParameters: {
+                      tokenWalletDetailsOwnerAddressPathParam: owner.address,
+                      tokenWalletDetailsContractAddressPathParam:
+                          asset.address.address,
+                    },
+                  ),
+                ),
               );
             },
           );
