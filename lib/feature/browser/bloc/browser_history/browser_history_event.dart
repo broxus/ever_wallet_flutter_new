@@ -9,4 +9,8 @@ class BrowserHistoryEvent with _$BrowserHistoryEvent {
   const factory BrowserHistoryEvent.set({
     required List<BrowserHistoryItem> items,
   }) = _Set;
+  const factory BrowserHistoryEvent.setSearchString({required String value}) =
+      _SetSearchString;
+  const factory BrowserHistoryEvent.setIsEditing({required bool value}) =
+      _SetIsEditing;
 }

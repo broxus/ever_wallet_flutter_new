@@ -53,3 +53,10 @@ class DimensRadius {
   static const double large = 24;
   static const double max = 90;
 }
+
+/// Class that contains all the elevation used in the app.
+class DimensElevation {
+  const DimensElevation._();
+
+  static const double medium = 24;
+}

@@ -4,7 +4,12 @@ import 'package:flutter/widgets.dart';
 import 'package:ui_components_lib/ui_components_lib.dart';
 
 class SearchBarHeaderDelegate extends SliverPersistentHeaderDelegate {
-  static const _height = DimensSize.d56 + DimensSize.d16 + DimensSize.d16;
+  SearchBarHeaderDelegate({
+    required this.controller,
+  });
+  static const _height = DimensSize.d56 + DimensSize.d16 + DimensSize.d16 + 1;
+
+  TextEditingController controller;
 
   @override
   Widget build(
@@ -14,26 +19,37 @@ class SearchBarHeaderDelegate extends SliverPersistentHeaderDelegate {
   ) {
     final colors = context.themeStyle.colors;
 
-    return Padding(
-      padding: const EdgeInsets.symmetric(
-        horizontal: DimensSize.d16,
-        vertical: DimensSize.d16,
-      ),
-      child: CommonInput(
-        fillColor: colors.appBackground,
-        needClearButton: false,
-        autocorrect: false,
-        hintText: LocaleKeys.browserSearch.tr(),
-        prefixIcon: Padding(
-          padding: const EdgeInsets.all(DimensSize.d16),
-          child: CommonIconWidget.svg(
-            svg: Assets.images.search.path,
-            color: colors.textSecondary,
-            size: DimensSize.d20,
+    return ColoredBox(
+      color: colors.appBackground,
+      child: Column(
+        children: [
+          Padding(
+            padding: const EdgeInsets.symmetric(
+              horizontal: DimensSize.d16,
+              vertical: DimensSize.d16,
+            ),
+            child: CommonInput(
+              fillColor: colors.appBackground,
+              autocorrect: false,
+              hintText: LocaleKeys.browserSearch.tr(),
+              prefixIcon: Padding(
+                padding: const EdgeInsets.all(DimensSize.d16),
+                child: CommonIconWidget.svg(
+                  svg: Assets.images.search.path,
+                  color: colors.textSecondary,
+                  size: DimensSize.d20,
+                ),
+              ),
+              controller: controller,
+            ),
+            // ),
           ),
-        ),
+          if (overlapsContent)
+            CommonDivider(
+              color: colors.strokePrimary,
+            ),
+        ],
       ),
-      // ),
     );
   }
 

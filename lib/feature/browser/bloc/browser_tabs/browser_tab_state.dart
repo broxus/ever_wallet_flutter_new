@@ -17,6 +17,7 @@ class BrowserTabState with _$BrowserTabState {
     @Default(0) final int progress,
     @Default(null) final String? errorMessage,
     @Default(null) final String? title,
+    @Default(null) final String? faviconUrl,
     @Default(false) final bool canGoBack,
     @Default(false) final bool canGoForward,
     @Default(null) final VoidCallback? goBack,

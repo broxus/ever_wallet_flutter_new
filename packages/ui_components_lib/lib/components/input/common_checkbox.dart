@@ -126,18 +126,20 @@ class _CheckboxPainter extends CustomPainter {
     final width = size.width;
     final height = size.height;
 
-    canvas.drawRRect(
-      ui.RRect.fromLTRBR(
-        0,
-        0,
-        width,
-        height,
-        const Radius.circular(DimensRadius.small),
-      ),
-      Paint()
-        ..color = color
-        ..style = checked ? PaintingStyle.fill : PaintingStyle.stroke,
-    );
+    canvas
+      ..saveLayer(Offset.zero & size, Paint())
+      ..drawRRect(
+        ui.RRect.fromLTRBR(
+          0,
+          0,
+          width,
+          height,
+          const Radius.circular(DimensRadius.small),
+        ),
+        Paint()
+          ..color = color
+          ..style = checked ? PaintingStyle.fill : PaintingStyle.stroke,
+      );
     if (checked) {
       final checkPath = Path()
         ..moveTo(width * 0.3, height * 0.5)
@@ -147,13 +149,13 @@ class _CheckboxPainter extends CustomPainter {
         checkPath,
         Paint()
           ..style = PaintingStyle.stroke
-          ..blendMode = BlendMode.srcIn
-          ..color = Colors.transparent
+          ..blendMode = BlendMode.clear
           ..strokeWidth = DimensStroke.medium
           ..strokeJoin = StrokeJoin.round
           ..strokeCap = StrokeCap.round,
       );
     }
+    canvas.restore();
   }
 
   @override

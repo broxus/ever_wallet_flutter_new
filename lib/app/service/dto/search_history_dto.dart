@@ -31,5 +31,6 @@ extension SiteMetaDataDtoX on SearchHistoryDto {
         visitTime: openTime,
         title: '',
         id: '$id',
+        faviconUrl: null,
       );
 }
