@@ -15,7 +15,6 @@ export 'network_type.dart';
 export 'pending_transaction_with_additional_info.dart';
 export 'permission.dart';
 export 'permissions.dart';
-export 'popular_resources.dart';
 export 'signed_message_with_additional_info.dart';
 export 'site_meta_data.dart';
 export 'token_contract_asset.dart';

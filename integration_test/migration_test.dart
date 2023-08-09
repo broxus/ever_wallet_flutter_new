@@ -26,15 +26,15 @@ const _metadata = SiteMetaData(
 );
 final _historyItem = BrowserHistoryItem(
   visitTime: DateTime.fromMillisecondsSinceEpoch(1681819001248),
-  url: 'https://octusbridge.io',
+  url: Uri.parse('https://octusbridge.io'),
   title: '',
   faviconUrl: null,
   id: '0',
 );
-const _bookmark = BrowserBookmarkItem(
+final _bookmark = BrowserBookmarkItem(
   id: '0',
   title: 'TITLE',
-  url: 'URL',
+  url: Uri.parse('URL'),
   sortingOrder: -1,
   faviconUrl: null,
 );

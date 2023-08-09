@@ -23,7 +23,7 @@ extension BookmarkX on BrowserBookmarkItem {
   BookmarkDto toDto() => BookmarkDto(
         id: int.tryParse(id) ?? Random().nextInt(-1 >>> 1),
         name: title,
-        url: url,
+        url: url.toString(),
       );
 }
 
@@ -31,7 +31,7 @@ extension BookmarkDtoX on BookmarkDto {
   BrowserBookmarkItem toModel() => BrowserBookmarkItem(
         id: '$id',
         title: name,
-        url: url,
+        url: Uri.parse(url),
         faviconUrl: null,
         sortingOrder: -1,
       );

@@ -45,6 +45,9 @@ class BrowserHistoryBloc
   // ignore: long-method
   void _registerHandlers() {
     on<_Add>((event, emit) {
+      if (event.item.url.host.isEmpty) {
+        return;
+      }
       browserHistoryStorageService.addBrowserHistoryItem(event.item);
     });
     on<_Remove>((event, emit) {
@@ -81,7 +84,7 @@ class BrowserHistoryBloc
 
     return state.items.where((item) {
       final title = item.title.toLowerCase();
-      final url = item.url.toLowerCase();
+      final url = item.url.toString().toLowerCase();
 
       return title.contains(searchString) || url.contains(searchString);
     }).toList();

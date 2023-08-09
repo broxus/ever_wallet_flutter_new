@@ -52,6 +52,7 @@ class _BrowserStartViewState extends State<BrowserStartView> {
     if (items.isEmpty) {
       return [];
     }
+
     return [
       _sectionHeaderBuilder(
         title: title,
@@ -120,7 +121,7 @@ class _BrowserStartViewState extends State<BrowserStartView> {
             children: [
               CommonListTile(
                 titleText: item.title,
-                subtitleText: item.url,
+                subtitleText: item.url.toString(),
                 leading: CachedNetworkImage(
                   height: DimensSize.d40,
                   width: DimensSize.d40,
@@ -144,7 +145,7 @@ class _BrowserStartViewState extends State<BrowserStartView> {
   }
 
   void _onItemPressed(BrowserBookmarkItem item) {
-    final uri = Uri.parse(item.url);
+    final uri = item.url;
 
     context.read<BrowserTabsBloc>().add(
           BrowserTabsEvent.add(uri: uri),

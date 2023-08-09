@@ -385,7 +385,7 @@ class HiveSourceMigration {
     var list =
         _searchHistoryBox.toMap().cast<String, SearchHistoryDto>().entries;
 
-    list = list.where((e) => e.value.url != entry.url);
+    list = list.where((e) => e.value.url != entry.url.toString());
 
     final entries = [
       ...list,
@@ -403,7 +403,7 @@ class HiveSourceMigration {
         .toMap()
         .cast<String, SearchHistoryDto>()
         .entries
-        .where((e) => e.value.url == entry.url)
+        .where((e) => e.value.url == entry.url.toString())
         .map((e) => e.key);
 
     for (final key in keys) {

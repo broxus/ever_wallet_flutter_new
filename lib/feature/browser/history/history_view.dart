@@ -148,7 +148,7 @@ class _HistoryViewState extends State<HistoryView> {
               children: [
                 CommonListTile(
                   titleText: item.title,
-                  subtitleText: item.url,
+                  subtitleText: item.url.toString(),
                   leading: CachedNetworkImage(
                     height: DimensSize.d40,
                     width: DimensSize.d40,
@@ -246,7 +246,7 @@ class _HistoryViewState extends State<HistoryView> {
   }
 
   void _onItemPressed(BrowserHistoryItem item) {
-    final uri = Uri.parse(item.url);
+    final uri = item.url;
 
     context.read<BrowserTabsBloc>().add(
           BrowserTabsEvent.add(uri: uri),

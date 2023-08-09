@@ -1,8 +1,8 @@
+import 'package:flutter_nekoton_bridge/flutter_nekoton_bridge.dart';
 import 'package:freezed_annotation/freezed_annotation.dart';
 import 'package:uuid/uuid.dart';
 
 part 'browser_bookmark_item.freezed.dart';
-
 part 'browser_bookmark_item.g.dart';
 
 @freezed
@@ -10,7 +10,7 @@ class BrowserBookmarkItem with _$BrowserBookmarkItem {
   const factory BrowserBookmarkItem({
     required String id,
     required String title,
-    required String url,
+    @uriJsonConverter required Uri url,
     required String? faviconUrl,
     required int sortingOrder,
   }) = _BrowserBookmarkItem;
@@ -20,7 +20,7 @@ class BrowserBookmarkItem with _$BrowserBookmarkItem {
 
   factory BrowserBookmarkItem.create({
     required String title,
-    required String url,
+    required Uri url,
     required String? faviconUrl,
   }) =>
       BrowserBookmarkItem(

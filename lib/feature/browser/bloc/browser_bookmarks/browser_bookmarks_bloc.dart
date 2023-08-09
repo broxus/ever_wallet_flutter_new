@@ -44,6 +44,13 @@ class BrowserBookmarksBloc
   // ignore: long-method
   void _registerHandlers() {
     on<_Add>((event, emit) {
+      if (event.item.url.host.isEmpty) {
+        return;
+      }
+      if (state.items.indexWhere((item) => item.url == event.item.url) >= 0) {
+        return;
+      }
+
       browserBookmarksStorageService.addBrowserBookmarkItem(event.item);
     });
     on<_Remove>((event, emit) {

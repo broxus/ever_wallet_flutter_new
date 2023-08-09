@@ -207,13 +207,9 @@ class BrowserTabsBloc extends Bloc<BrowserTabsEvent, BrowserTabsState> {
   }
 
   void _addHistoryItem(BrowserTab tab, BrowserTabState? state) {
-    if (tab.url.host.isEmpty) {
-      return;
-    }
-
     onBrowserHistoryItemAdd(
       BrowserHistoryItem.create(
-        url: tab.url.toString(),
+        url: tab.url,
         title: state?.title ?? '',
         faviconUrl: state?.faviconUrl,
       ),
