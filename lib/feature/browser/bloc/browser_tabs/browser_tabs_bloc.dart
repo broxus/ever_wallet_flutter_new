@@ -16,12 +16,15 @@ part 'browser_tabs_bloc.freezed.dart';
 final _emptyUri = Uri.parse('');
 
 class BrowserTabsBloc extends Bloc<BrowserTabsEvent, BrowserTabsState> {
-  BrowserTabsBloc(this.browserTabsStorageService, this.onBrowserHistoryItemAdd)
-      : super(
+  BrowserTabsBloc(
+    this.browserTabsStorageService,
+    this.onBrowserHistoryItemAdd,
+  ) : super(
           BrowserTabsState(
             tabs: browserTabsStorageService.browserTabs,
             currentTabId: browserTabsStorageService.browserActiveTabId,
             tabsState: {},
+            clearCacheOnNextTab: false,
           ),
         ) {
     _registerHandlers();
@@ -43,6 +46,7 @@ class BrowserTabsBloc extends Bloc<BrowserTabsEvent, BrowserTabsState> {
   static final _log = Logger('BrowserTabsBloc');
 
   final BrowserTabsStorageService browserTabsStorageService;
+
   final void Function(BrowserHistoryItem) onBrowserHistoryItemAdd;
 
   StreamSubscription<List<BrowserTab>>? _browserTabsSubscription;
@@ -96,11 +100,13 @@ class BrowserTabsBloc extends Bloc<BrowserTabsEvent, BrowserTabsState> {
 
       if (oldTab.url.host != newTab.url.host &&
           oldTab.url.toString().trim().isNotEmpty) {
+        final state = browserTabStateById(oldTab.id);
         // Host was changed, add old url to history
         onBrowserHistoryItemAdd(
           BrowserHistoryItem.create(
             url: oldTab.url.toString(),
-            title: browserTabStateById(oldTab.id)?.title ?? '',
+            title: state?.title ?? '',
+            faviconUrl: state?.faviconUrl,
           ),
         );
       }
@@ -126,6 +132,7 @@ class BrowserTabsBloc extends Bloc<BrowserTabsEvent, BrowserTabsState> {
         progress: event.progress ?? oldTabState.progress,
         errorMessage: event.errorMessage ?? oldTabState.errorMessage,
         title: event.title ?? oldTabState.title,
+        faviconUrl: event.faviconUrl ?? oldTabState.faviconUrl,
         canGoBack: event.canGoBack ?? oldTabState.canGoBack,
         canGoForward: event.canGoForward ?? oldTabState.canGoForward,
         goBack: event.goBack ?? oldTabState.goBack,
@@ -138,15 +145,22 @@ class BrowserTabsBloc extends Bloc<BrowserTabsEvent, BrowserTabsState> {
     on<_Remove>((event, emit) {
       final tab = browserTabById(event.id);
       if (tab != null) {
+        final state = browserTabStateById(tab.id);
         // Tab is closing, add url to history
         onBrowserHistoryItemAdd(
           BrowserHistoryItem.create(
             url: tab.url.toString(),
-            title: browserTabStateById(tab.id)?.title ?? '',
+            title: state?.title ?? '',
+            faviconUrl: state?.faviconUrl,
           ),
         );
       }
       browserTabsStorageService.removeBrowserTab(event.id);
+      if (state.currentTabId == event.id) {
+        final tabs = state.tabs;
+        final newActiveTabId = tabs.firstOrNull?.id;
+        browserTabsStorageService.saveBrowserActiveTabId(newActiveTabId);
+      }
     });
     on<_SetActive>((event, emit) {
       browserTabsStorageService.saveBrowserActiveTabId(event.id);
@@ -154,10 +168,12 @@ class BrowserTabsBloc extends Bloc<BrowserTabsEvent, BrowserTabsState> {
     on<_CloseAll>((event, emit) {
       // All tabs are closing, add urls to history
       for (final tab in state.tabs) {
+        final state = browserTabStateById(tab.id);
         onBrowserHistoryItemAdd(
           BrowserHistoryItem.create(
             url: tab.url.toString(),
-            title: browserTabStateById(tab.id)?.title ?? '',
+            title: state?.title ?? '',
+            faviconUrl: state?.faviconUrl,
           ),
         );
       }
@@ -174,6 +190,12 @@ class BrowserTabsBloc extends Bloc<BrowserTabsEvent, BrowserTabsState> {
     on<_SetActiveTabId>((event, emit) {
       browserTabsStorageService.saveBrowserActiveTabId(event.id);
       emit(state.copyWith(currentTabId: event.id));
+    });
+    on<_ClearCache>((event, emit) {
+      emit(state.copyWith(clearCacheOnNextTab: true));
+    });
+    on<_CacheCleared>((event, emit) {
+      emit(state.copyWith(clearCacheOnNextTab: true));
     });
   }
 

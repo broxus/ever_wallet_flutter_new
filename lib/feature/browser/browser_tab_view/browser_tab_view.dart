@@ -63,12 +63,6 @@ class _BrowserTabViewState extends State<BrowserTabView> {
 
   Timer? _screenshotTimer;
 
-  final _initialOptions = InAppWebViewGroupOptions(
-    ios: IOSInAppWebViewOptions(),
-    android: AndroidInAppWebViewOptions(),
-    crossPlatform: InAppWebViewOptions(),
-  );
-
   static final _log = Logger('BrowserTabView');
 
   @override
@@ -111,12 +105,29 @@ class _BrowserTabViewState extends State<BrowserTabView> {
   Widget build(BuildContext context) {
     _initPTRController();
 
+    final clearCache =
+        context.read<BrowserTabsBloc>().state.clearCacheOnNextTab;
+
+    if (clearCache) {
+      context.read<BrowserTabsBloc>().add(
+            const BrowserTabsEvent.cacheCleared(),
+          );
+    }
+
+    final initialOptions = InAppWebViewGroupOptions(
+      ios: IOSInAppWebViewOptions(),
+      android: AndroidInAppWebViewOptions(),
+      crossPlatform: InAppWebViewOptions(
+        clearCache: clearCache,
+      ),
+    );
+
     return Stack(
       children: [
         InAppWebView(
           key: ValueKey(widget.tab.id),
           pullToRefreshController: _pullToRefreshController,
-          initialOptions: _initialOptions,
+          initialOptions: initialOptions,
           onOverScrolled: _onOverScrolled,
           onScrollChanged: _onScrollChanged,
           onWebViewCreated: _onWebViewCreated,
@@ -268,6 +279,7 @@ class _BrowserTabViewState extends State<BrowserTabView> {
   ) {
     _setUrl(url);
     _setState(state: BrowserTabStateType.loading);
+    _getFavicons();
   }
 
   void _onLoadStop(
@@ -366,6 +378,7 @@ class _BrowserTabViewState extends State<BrowserTabView> {
     int? progress,
     String? errorMessage,
     String? title,
+    String? faviconUrl,
   }) async {
     final canGoBack = await _webViewController?.canGoBack() ?? false;
     final canGoForward = await _webViewController?.canGoForward() ?? false;
@@ -377,6 +390,7 @@ class _BrowserTabViewState extends State<BrowserTabView> {
       progress: progress,
       errorMessage: errorMessage,
       title: title,
+      faviconUrl: faviconUrl,
     );
   }
 
@@ -388,6 +402,7 @@ class _BrowserTabViewState extends State<BrowserTabView> {
     int? progress,
     String? errorMessage,
     String? title,
+    String? faviconUrl,
   }) {
     if (!context.mounted) {
       return;
@@ -402,6 +417,7 @@ class _BrowserTabViewState extends State<BrowserTabView> {
             progress: progress,
             errorMessage: errorMessage,
             title: title,
+            faviconUrl: faviconUrl,
           ),
         );
   }
@@ -467,6 +483,20 @@ class _BrowserTabViewState extends State<BrowserTabView> {
         _addSetScreenshotEvent(imageId: imageId);
       },
     );
+  }
+
+  Future<void> _getFavicons() async {
+    final favicons = await _webViewController?.getFavicons();
+    if (favicons?.isEmpty ?? true) {
+      return;
+    }
+    favicons?.sort(
+      (a, b) =>
+          (b.width ?? 0) * (b.height ?? 0) - (a.width ?? 0) * (a.height ?? 0),
+    );
+    final url = favicons![0].url;
+
+    await _setState(faviconUrl: url.toString());
   }
 }
 

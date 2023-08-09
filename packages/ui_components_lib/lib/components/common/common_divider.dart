@@ -11,14 +11,16 @@ const _commonDividerSize = 1.0;
 /// {@endtemplate}
 class CommonDivider extends StatelessWidget {
   /// {@macro common_divider}
-  const CommonDivider({super.key});
+  const CommonDivider({super.key, this.color});
+
+  final Color? color;
 
   @override
   Widget build(BuildContext context) {
     return Divider(
       height: _commonDividerSize,
       thickness: _commonDividerSize,
-      color: context.themeStyle.colors.strokeSecondary,
+      color: color ?? context.themeStyle.colors.strokeSecondary,
     );
   }
 }

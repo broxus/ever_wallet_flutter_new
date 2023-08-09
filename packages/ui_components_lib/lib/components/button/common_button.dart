@@ -38,6 +38,7 @@ class CommonButton extends StatefulWidget {
     this.contentPressedColor,
     this.contentDisabledColor,
     this.textAlign,
+    this.elevation = 0,
     super.key,
   });
 
@@ -84,6 +85,7 @@ class CommonButton extends StatefulWidget {
         focusNode: focusNode,
         isLoading: isLoading,
         fillWidth: fillWidth,
+        elevation: DimensElevation.medium,
       );
 
   /// CommonButton with ghost style
@@ -181,6 +183,8 @@ class CommonButton extends StatefulWidget {
   /// Alignment for text of button
   final TextAlign? textAlign;
 
+  final double elevation;
+
   @override
   State<CommonButton> createState() => _CommonButtonState();
 }
@@ -217,6 +221,7 @@ class _CommonButtonState extends State<CommonButton> {
       child: SizedBox(
         height: widget.height,
         child: Material(
+          elevation: widget.elevation,
           color: bgColor,
           shape: SquircleShapeBorder(cornerRadius: widget.squircleRadius),
           child: InkWell(

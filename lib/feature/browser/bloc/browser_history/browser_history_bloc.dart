@@ -11,10 +11,13 @@ part 'browser_history_bloc.freezed.dart';
 
 class BrowserHistoryBloc
     extends Bloc<BrowserHistoryEvent, BrowserHistoryState> {
-  BrowserHistoryBloc(this.browserHistoryStorageService)
-      : super(
+  BrowserHistoryBloc(
+    this.browserHistoryStorageService,
+  ) : super(
           BrowserHistoryState(
             items: browserHistoryStorageService.browserHistory,
+            searchString: '',
+            isEditing: false,
           ),
         ) {
     _registerHandlers();
@@ -57,5 +60,34 @@ class BrowserHistoryBloc
         ),
       );
     });
+    on<_SetSearchString>((event, emit) {
+      emit(
+        state.copyWith(
+          searchString: event.value,
+        ),
+      );
+    });
+    on<_SetIsEditing>((event, emit) {
+      emit(
+        state.copyWith(
+          isEditing: event.value,
+        ),
+      );
+    });
+  }
+
+  List<BrowserHistoryItem> getFiltredItems() {
+    final searchString = state.searchString.toLowerCase();
+
+    return state.items.where((item) {
+      final title = item.title.toLowerCase();
+      final url = item.url.toLowerCase();
+
+      return title.contains(searchString) || url.contains(searchString);
+    }).toList();
+  }
+
+  bool get isHistoryEmpty {
+    return state.items.isEmpty;
   }
 }
