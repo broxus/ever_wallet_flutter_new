@@ -134,6 +134,7 @@ class _HistoryViewState extends State<HistoryView> {
     final colors = context.themeStyle.colors;
 
     return Padding(
+      key: ValueKey(item.id),
       padding: const EdgeInsets.symmetric(
         vertical: DimensSize.d4,
         horizontal: DimensSize.d16,
