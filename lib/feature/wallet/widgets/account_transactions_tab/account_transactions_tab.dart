@@ -3,6 +3,7 @@ import 'package:app/di/di.dart';
 import 'package:app/feature/wallet/widgets/account_transactions_tab/account_transactions_tab_cubit.dart';
 import 'package:app/feature/wallet/widgets/account_transactions_tab/models/account_transaction_item.dart';
 import 'package:app/feature/wallet/widgets/account_transactions_tab/widgets/widgets.dart';
+import 'package:app/generated/generated.dart';
 import 'package:app/utils/utils.dart';
 import 'package:collection/collection.dart';
 import 'package:flutter/material.dart';
@@ -34,8 +35,17 @@ class AccountTransactionsTab extends StatelessWidget {
       child:
           BlocBuilder<AccountTransactionsTabCubit, AccountTransactionsTabState>(
         builder: (context, state) {
+          final colors = context.themeStyle.colors;
+
           return state.when(
-            empty: () => const SizedBox.shrink(),
+            empty: () => Center(
+              child: Text(
+                LocaleKeys.historyIsEmpty.tr(),
+                style: StyleRes.primaryBold.copyWith(
+                  color: colors.textPrimary,
+                ),
+              ),
+            ),
             loading: () => const SizedBox.shrink(),
             transactions: (transactions) {
               return SeparatedColumn(

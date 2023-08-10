@@ -26,6 +26,14 @@ enum AppRoute {
     '',
     'selectNewAsset/:$selectNewAssetAddressPathParam',
   ),
+  tonWalletDetails(
+    '',
+    'tonWalletDetails/:$tonWalletDetailsAddressPathParam',
+  ),
+  tokenWalletDetails(
+    '',
+    'tonWalletDetails/:$tokenWalletDetailsOwnerAddressPathParam/:$tokenWalletDetailsContractAddressPathParam',
+  ),
 
   /// Browser section
   browser(

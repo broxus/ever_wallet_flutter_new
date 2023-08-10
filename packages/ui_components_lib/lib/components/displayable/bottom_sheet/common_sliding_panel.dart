@@ -28,6 +28,7 @@ class CommonSlidingPanel extends StatefulWidget {
     super.key,
     this.scrollController,
     this.panelController,
+    this.crossAxisAlignment = CrossAxisAlignment.start,
   });
 
   /// See [SlidingUpPanel.panelBuilder]
@@ -67,6 +68,9 @@ class CommonSlidingPanel extends StatefulWidget {
   /// Controller that allows programmatically hide/show panel.
   final PanelController? panelController;
 
+  /// Alignment for [panelBuilder] content.
+  final CrossAxisAlignment crossAxisAlignment;
+
   @override
   State<CommonSlidingPanel> createState() => _CommonSlidingPanelState();
 }
@@ -90,37 +94,43 @@ class _CommonSlidingPanelState extends State<CommonSlidingPanel> {
 
   @override
   Widget build(BuildContext context) {
-    final size = MediaQuery.of(context).size;
     final colors = context.themeStyle.colors;
 
-    return SlidingUpPanel(
-      controller: widget.panelController,
-      scrollController: controller,
-      minHeight:
-          math.max(size.height * widget.minHeightSizePercent, widget.minHeight),
-      maxHeight:
-          math.max(size.height * widget.maxHeightSizePercent, widget.maxHeight),
-      borderRadius: const BorderRadius.vertical(
-        top: Radius.circular(DimensRadius.large),
-      ),
-      color: colors.backgroundSecondary,
-      // ignore: prefer-extracting-callbacks
-      panelBuilder: () {
-        return Material(
-          color: Colors.transparent,
-          child: Column(
-            children: [
-              const SheetDraggableLine(
-                height: DimensSize.d4,
-                verticalMargin: DimensSize.d8,
-              ),
-              const SizedBox(height: DimensSize.d12),
-              Expanded(child: widget.panelBuilder(context, controller)),
-            ],
+    return LayoutBuilder(
+      builder: (context, constraints) {
+        final height = constraints.maxHeight;
+
+        return SlidingUpPanel(
+          controller: widget.panelController,
+          scrollController: controller,
+          minHeight:
+              math.max(height * widget.minHeightSizePercent, widget.minHeight),
+          maxHeight:
+              math.max(height * widget.maxHeightSizePercent, widget.maxHeight),
+          borderRadius: const BorderRadius.vertical(
+            top: Radius.circular(DimensRadius.large),
           ),
+          color: colors.backgroundSecondary,
+          // ignore: prefer-extracting-callbacks
+          panelBuilder: () {
+            return Material(
+              color: Colors.transparent,
+              child: SeparatedColumn(
+                crossAxisAlignment: widget.crossAxisAlignment,
+                mainAxisSize: MainAxisSize.min,
+                children: [
+                  const SheetDraggableLine(
+                    height: DimensSize.d4,
+                    verticalMargin: DimensSize.d8,
+                  ),
+                  Expanded(child: widget.panelBuilder(context, controller)),
+                ],
+              ),
+            );
+          },
+          body: widget.body,
         );
       },
-      body: widget.body,
     );
   }
 }
