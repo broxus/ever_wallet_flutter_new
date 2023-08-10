@@ -8,13 +8,12 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:ui_components_lib/ui_components_lib.dart';
 
 /// Helper function to show [BrowserBookmarkRenameSheet].
-Future<void> showBrowserBookmarkRenameSheet({
+ModalRoute<void> showBrowserBookmarkRenameSheet({
   required BuildContext context,
   required BrowserBookmarkItem item,
 }) {
-  return showCommonBottomSheet(
+  return commonBottomSheetRoute(
     title: LocaleKeys.browserBookmarkRenameEnterName.tr(),
-    context: context,
     body: (_, __) => BrowserBookmarkRenameSheet(
       item: item,
     ),
@@ -87,14 +86,14 @@ class _BrowserBookmarkRenameSheetState
   }
 
   void _onRename(BuildContext context) {
+    if (_canRename()) {
+      context.read<BrowserBookmarksBloc>().add(
+            BrowserBookmarksEvent.setItem(
+              item: widget.item.copyWith(title: _newName),
+            ),
+          );
+    }
     Navigator.of(context).pop();
-    if (!_canRename()) return;
-
-    context.read<BrowserBookmarksBloc>().add(
-          BrowserBookmarksEvent.setItem(
-            item: widget.item.copyWith(title: _newName),
-          ),
-        );
   }
 
   bool _canRename() {

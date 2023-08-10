@@ -82,22 +82,24 @@ class _BrowserBookmarkSheetState extends State<BrowserBookmarkSheet> {
   }
 
   void _onSharePressed(BuildContext context) {
-    Navigator.of(context).pop();
     final shareText = widget.item.url.toString();
     Share.share(shareText);
+    Navigator.of(context).pop();
   }
 
   void _onRenamePressed(BuildContext context) {
-    Navigator.of(context).pop();
-    showBrowserBookmarkRenameSheet(context: context, item: widget.item);
+    Navigator.of(context)
+      ..pop()
+      ..push(
+          showBrowserBookmarkRenameSheet(context: context, item: widget.item));
   }
 
   void _onDeletePressed(BuildContext context) {
-    Navigator.of(context).pop();
     context.read<BrowserBookmarksBloc>().add(
           BrowserBookmarksEvent.remove(
             id: widget.item.id,
           ),
         );
+    Navigator.of(context).pop();
   }
 }
