@@ -9,6 +9,9 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
 import 'package:ui_components_lib/ui_components_lib.dart';
 
+/// Item count limit for each section
+const _itemCountLimit = 6;
+
 class BrowserStartView extends StatefulWidget {
   const BrowserStartView({super.key});
 
@@ -53,10 +56,18 @@ class _BrowserStartViewState extends State<BrowserStartView> {
       return [];
     }
 
+    final sortedItems = [...items]..sort(
+        (a, b) => b.sortingOrder - a.sortingOrder,
+      );
+
+    final sortedLimitedItems = sortedItems.take(_itemCountLimit).toList();
+
+    final buttonEnabled = items.length > _itemCountLimit;
+
     return [
       _sectionHeaderBuilder(
         title: title,
-        buttonText: buttonText,
+        buttonText: buttonEnabled ? buttonText : null,
         buttonOnPressed: buttonOnPressed,
       ),
       SliverPadding(
@@ -69,9 +80,9 @@ class _BrowserStartViewState extends State<BrowserStartView> {
             mainAxisExtent: DimensSize.d92,
           ),
           itemBuilder: (_, index) => _itemBuilder(
-            items[index],
+            sortedLimitedItems[index],
           ),
-          itemCount: items.length,
+          itemCount: sortedLimitedItems.length,
         ),
       ),
     ];
@@ -161,5 +172,7 @@ class _BrowserStartViewState extends State<BrowserStartView> {
     }
   }
 
-  void _onSeeAllPressed() {}
+  void _onSeeAllPressed() {
+    context.goNamed(AppRoute.browserBookmarks.name);
+  }
 }
