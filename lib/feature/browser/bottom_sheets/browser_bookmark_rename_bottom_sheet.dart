@@ -9,7 +9,6 @@ import 'package:ui_components_lib/ui_components_lib.dart';
 
 /// Helper function to show [BrowserBookmarkRenameSheet].
 ModalRoute<void> showBrowserBookmarkRenameSheet({
-  required BuildContext context,
   required BrowserBookmarkItem item,
 }) {
   return commonBottomSheetRoute(

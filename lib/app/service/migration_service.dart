@@ -618,7 +618,7 @@ class HiveSourceMigration {
             .map(
               (e) => {
                 'url': e.url.toString(),
-                'date': e.visitTime.millisecondsSinceEpoch
+                'date': e.visitTime.millisecondsSinceEpoch,
               },
             )
             .toList(),
