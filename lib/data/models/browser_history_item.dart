@@ -1,8 +1,8 @@
+import 'package:flutter_nekoton_bridge/flutter_nekoton_bridge.dart';
 import 'package:freezed_annotation/freezed_annotation.dart';
 import 'package:uuid/uuid.dart';
 
 part 'browser_history_item.freezed.dart';
-
 part 'browser_history_item.g.dart';
 
 @freezed
@@ -11,14 +11,14 @@ class BrowserHistoryItem with _$BrowserHistoryItem {
     /// The id of the tab.
     required String id,
     required String title,
-    required String url,
+    @uriJsonConverter required Uri url,
     required DateTime visitTime,
     required String? faviconUrl,
   }) = _BrowserHistoryItemDto;
 
   factory BrowserHistoryItem.create({
     required String title,
-    required String url,
+    @uriJsonConverter required Uri url,
     required String? faviconUrl,
   }) =>
       BrowserHistoryItem(

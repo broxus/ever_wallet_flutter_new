@@ -1,17 +1,14 @@
 import 'dart:convert';
 
 import 'package:app/app/service/service.dart';
-import 'package:app/data/models/bookmark.dart';
 import 'package:app/data/models/permissions.dart';
 import 'package:app/data/models/site_meta_data.dart';
 import 'package:encrypted_storage/encrypted_storage.dart';
 import 'package:injectable/injectable.dart';
 import 'package:nekoton_repository/nekoton_repository.dart';
-import 'package:rxdart/rxdart.dart';
 
 const _permissionsKey = 'permissions_key';
 
-const _bookmarksKey = 'bookmarks_key';
 const _siteMetaDataKey = 'site_meta_data_key';
 const _browserNeedKey = 'browser_need_key';
 const _browserPreferencesKey = 'browser_preferences_key';
@@ -26,14 +23,11 @@ class BrowserStorageService extends AbstractStorageService {
   final EncryptedStorage _storage;
 
   @override
-  Future<void> init() => Future.wait([
-        _streamedBookmarks(),
-      ]);
+  Future<void> init() => Future.wait([]);
 
   @override
   Future<void> clearSensitiveData() => Future.wait([
         clearPreferences(),
-        clearBookmarks(),
         clearSitesMetaData(),
         clearPermissions(),
       ]);
@@ -82,54 +76,6 @@ class BrowserStorageService extends AbstractStorageService {
 
   /// Clear information about permissions
   Future<void> clearPermissions() => _storage.clearDomain(_permissionsKey);
-
-  // Subject of bookmarks
-  final _bookmarksSubject = BehaviorSubject<List<Bookmark>>();
-
-  /// Stream of bookmarks
-  Stream<List<Bookmark>> get bookmarksStream => _bookmarksSubject;
-
-  /// Get last cached bookmarks
-  List<Bookmark> get bookmarks => _bookmarksSubject.value;
-
-  /// Put bookmarks to stream
-  Future<void> _streamedBookmarks() async =>
-      _bookmarksSubject.add(await readBookmarks());
-
-  /// Read from storage list of bookmarks that user had saved
-  Future<List<Bookmark>> readBookmarks() async {
-    final bookmarks = await _storage.getDomain(domain: _bookmarksKey);
-
-    return bookmarks.values
-        .map(
-          (bookmark) => Bookmark.fromJson(
-            jsonDecode(bookmark) as Map<String, dynamic>,
-          ),
-        )
-        .toList();
-  }
-
-  /// Add bookmark to storage, where [Bookmark.id] is key
-  Future<void> addBookmark(Bookmark bookmark) async {
-    await _storage.set(
-      bookmark.id.toString(),
-      jsonEncode(bookmark.toJson()),
-      domain: _bookmarksKey,
-    );
-    await _streamedBookmarks();
-  }
-
-  /// Delete bookmark from storage by its id
-  Future<void> deleteBookmark(int id) async {
-    await _storage.delete(id.toString(), domain: _bookmarksKey);
-    await _streamedBookmarks();
-  }
-
-  /// Clear all bookmarks
-  Future<void> clearBookmarks() async {
-    await _storage.clearDomain(_bookmarksKey);
-    _bookmarksSubject.add([]);
-  }
 
   /// Get metadata of site by its url
   Future<SiteMetaData?> getSiteMetaData(String url) async {

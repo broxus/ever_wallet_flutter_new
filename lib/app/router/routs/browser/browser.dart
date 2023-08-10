@@ -15,7 +15,6 @@ StatefulShellBranch get browserBranch {
         ),
         branches: [
           primaryBranch,
-          bookmarksBranch,
           tabsBranch,
         ],
       ),
@@ -36,22 +35,19 @@ StatefulShellBranch get primaryBranch {
         ),
         routes: [
           historyRoute,
+          bookmarksRoute,
         ],
       ),
     ],
   );
 }
 
-/// Get branch for browser primary page.
-StatefulShellBranch get bookmarksBranch {
-  return StatefulShellBranch(
-    routes: [
-      GoRoute(
-        name: AppRoute.browserBookmarks.name,
-        path: AppRoute.browserBookmarks.path,
-        builder: (context, state) => const BookmarksPage(),
-      ),
-    ],
+/// Get route for browser primary page.
+GoRoute get bookmarksRoute {
+  return GoRoute(
+    name: AppRoute.browserBookmarks.name,
+    path: AppRoute.browserBookmarks.path,
+    builder: (context, state) => const BookmarksPage(),
   );
 }
 
