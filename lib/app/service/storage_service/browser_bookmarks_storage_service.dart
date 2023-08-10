@@ -93,6 +93,7 @@ class BrowserBookmarksStorageService extends AbstractStorageService {
 
     if (item == null) {
       _log.warning('Browser bookmark item with id $id not found');
+
       return;
     }
 

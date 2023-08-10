@@ -52,6 +52,12 @@ class _BrowserBookmarkRenameSheetState
   }
 
   @override
+  void dispose() {
+    _nameController.dispose();
+    super.dispose();
+  }
+
+  @override
   Widget build(BuildContext context) {
     return BlocProvider<BrowserBookmarksBloc>(
       create: (context) => BrowserBookmarksBloc(
@@ -72,7 +78,7 @@ class _BrowserBookmarkRenameSheetState
                 fillWidth: true,
                 onPressed: _canRename() ? () => _onRename(context) : null,
                 text: LocaleKeys.browserBookmarkRenameWord.tr(),
-              )
+              ),
             ],
           );
         },
