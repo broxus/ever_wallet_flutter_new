@@ -7,6 +7,7 @@ import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
+import 'package:share_plus/share_plus.dart';
 import 'package:ui_components_lib/ui_components_lib.dart';
 
 /// Item count limit for each section
@@ -170,9 +171,31 @@ class _BrowserStartViewState extends State<BrowserStartView> {
       // This is a predefined item, so we can't remove it.
       return;
     }
+
+    showBrowserBookmarkSheet(
+      context: context,
+      onSharePressed: () => _onSharePressed(item),
+      onRenamePressed: () => _onRenamePressed(item),
+      onDeletePressed: () => _onDeletePressed(item),
+    );
   }
 
   void _onSeeAllPressed() {
     context.goNamed(AppRoute.browserBookmarks.name);
+  }
+
+  void _onSharePressed(BrowserBookmarkItem item) {
+    final shareText = item.url.toString();
+    Share.share(shareText);
+  }
+
+  void _onRenamePressed(BrowserBookmarkItem item) {}
+
+  void _onDeletePressed(BrowserBookmarkItem item) {
+    context.read<BrowserBookmarksBloc>().add(
+          BrowserBookmarksEvent.remove(
+            id: item.id,
+          ),
+        );
   }
 }

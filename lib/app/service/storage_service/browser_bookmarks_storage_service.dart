@@ -2,8 +2,12 @@ import 'dart:convert';
 
 import 'package:app/app/service/service.dart';
 import 'package:app/data/models/models.dart';
+import 'package:app/di/di.dart';
+import 'package:app/generated/generated.dart';
+import 'package:collection/collection.dart';
 import 'package:encrypted_storage/encrypted_storage.dart';
 import 'package:injectable/injectable.dart';
+import 'package:logging/logging.dart';
 import 'package:rxdart/rxdart.dart';
 
 const _browserBookmarksDomain = 'browser_bookmarks';
@@ -14,6 +18,8 @@ const _browserBookmarksKey = 'browser_bookmarks_key';
 @singleton
 class BrowserBookmarksStorageService extends AbstractStorageService {
   BrowserBookmarksStorageService(this._storage);
+
+  static final _log = Logger('BrowserBookmarksStorageService');
 
   /// Storage that is used to store data
   final EncryptedStorage _storage;
@@ -80,8 +86,22 @@ class BrowserBookmarksStorageService extends AbstractStorageService {
 
   /// Remove browser bookmarks item by id
   Future<void> removeBrowserBookmarkItem(String id) async {
-    final bookmarks = [...browserBookmarks]
-      ..removeWhere((item) => item.id == id);
+    final item = browserBookmarks.firstWhereOrNull((item) => item.id == id);
+
+    if (item == null) {
+      _log.warning('Browser bookmark item with id $id not found');
+      return;
+    }
+
+    final bookmarks = [...browserBookmarks]..remove(item);
+
+    inject<MessengerService>().show(
+      Message.info(
+        message: LocaleKeys.browserBookmarkDeleted.tr(),
+        actionText: LocaleKeys.browserBookmarkDeletedUndo.tr(),
+        onAction: () => addBrowserBookmarkItem(item),
+      ),
+    );
 
     await saveBrowserBookmarks(bookmarks);
   }
