@@ -21,14 +21,14 @@ class TokenWalletDetailsCubit extends Cubit<TokenWalletDetailsState> {
     required this.balanceService,
     required this.assetsService,
   }) : super(const TokenWalletDetailsState.initial()) {
-    final a = nekotonRepository.seedList.findAccountByAddress(owner);
-    if (a == null) {
+    final acc = nekotonRepository.seedList.findAccountByAddress(owner);
+    if (acc == null) {
       emit(const TokenWalletDetailsState.empty());
 
       return;
     }
 
-    account = a;
+    account = acc;
     _cachedFiatBalance = currencyConvertService.convert(Fixed.zero);
 
     final contract = assetsService.maybeGetTokenContract(
@@ -37,7 +37,7 @@ class TokenWalletDetailsCubit extends Cubit<TokenWalletDetailsState> {
     );
     _cachedTokenBalance = Money.fromBigIntWithCurrency(
       BigInt.zero,
-      Currency.create(contract?.symbol ?? '-', 0),
+      Currency.create(contract?.symbol ?? '?', 0),
     );
     contractName = contract?.name ?? '';
 

@@ -36,13 +36,14 @@ class TonWalletDetailsPage extends StatelessWidget {
               empty: () => const SizedBox.shrink(),
               data: (walletName, account, tokenBalance, fiatBalance) {
                 return CommonSlidingPanel(
+                  // ignore: no-magic-number
                   minHeightSizePercent: 0.65,
                   maxHeightSizePercent: 1,
                   body: SeparatedColumn(
                     mainAxisSize: MainAxisSize.min,
                     separatorSize: DimensSize.d24,
                     children: [
-                      _header(walletName, tokenBalance, fiatBalance, context),
+                      _header(walletName, tokenBalance, fiatBalance),
                       WalletAccountActions(
                         currentAccount: account,
                         allowStake: false,
@@ -81,7 +82,6 @@ class TonWalletDetailsPage extends StatelessWidget {
     String walletName,
     Money tokenBalance,
     Money fiatBalance,
-    BuildContext context,
   ) {
     return Builder(
       builder: (context) {

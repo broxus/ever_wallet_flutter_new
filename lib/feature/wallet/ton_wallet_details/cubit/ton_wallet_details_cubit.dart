@@ -19,14 +19,14 @@ class TonWalletDetailsCubit extends Cubit<TonWalletDetailsState> {
     required this.currencyConvertService,
     required this.balanceService,
   }) : super(const TonWalletDetailsState.initial()) {
-    final a = nekotonRepository.seedList.findAccountByAddress(address);
-    if (a == null) {
+    final acc = nekotonRepository.seedList.findAccountByAddress(address);
+    if (acc == null) {
       emit(const TonWalletDetailsState.empty());
 
       return;
     }
 
-    account = a;
+    account = acc;
 
     _cachedFiatBalance = currencyConvertService.convert(Fixed.zero);
     _cachedTokenBalance = Money.fromBigIntWithCurrency(

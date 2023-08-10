@@ -46,13 +46,14 @@ class TokenWalletDetailsPage extends StatelessWidget {
                 canSend,
               ) {
                 return CommonSlidingPanel(
+                  // ignore: no-magic-number
                   minHeightSizePercent: 0.65,
                   maxHeightSizePercent: 1,
                   body: SeparatedColumn(
                     mainAxisSize: MainAxisSize.min,
                     separatorSize: DimensSize.d24,
                     children: [
-                      _header(contractName, tokenBalance, fiatBalance, context),
+                      _header(contractName, tokenBalance, fiatBalance),
                       _actions(canSend, context),
                     ],
                   ),
@@ -91,7 +92,6 @@ class TokenWalletDetailsPage extends StatelessWidget {
     String contractName,
     Money tokenBalance,
     Money fiatBalance,
-    BuildContext context,
   ) {
     return Builder(
       builder: (context) {
@@ -125,6 +125,7 @@ class TokenWalletDetailsPage extends StatelessWidget {
         ),
         if (canSend)
           _buttonItem(
+            // ignore: no-empty-block
             onPressed: () {},
             svg: Assets.images.arrowUp.path,
             title: LocaleKeys.sendWord.tr(),

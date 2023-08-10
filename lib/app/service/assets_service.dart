@@ -227,14 +227,12 @@ class AssetsService {
     Address rootTokenContract,
     TransportStrategy transport,
   ) {
-    final asset = storage
+    return storage
             .getCustomTokenContractAssets(transport.networkType)
             .firstWhereOrNull((c) => c.address == rootTokenContract) ??
         storage
             .getSystemTokenContractAssets(transport.networkType)
             .firstWhereOrNull((c) => c.address == rootTokenContract);
-
-    return asset;
   }
 
   /// Load manifest specified for transport and update system contracts that

@@ -33,15 +33,15 @@ StatefulShellBranch get walletBranch {
             ),
           ),
           addSeedNamedRoute,
-          tonWalletDetails,
-          tokenWalletDetails,
+          tonWalletDetailsRoute,
+          tokenWalletDetailsRoute,
         ],
       ),
     ],
   );
 }
 
-GoRoute get tonWalletDetails {
+GoRoute get tonWalletDetailsRoute {
   return GoRoute(
     path: AppRoute.tonWalletDetails.path,
     builder: (_, state) => TonWalletDetailsPage(
@@ -52,7 +52,7 @@ GoRoute get tonWalletDetails {
   );
 }
 
-GoRoute get tokenWalletDetails {
+GoRoute get tokenWalletDetailsRoute {
   return GoRoute(
     path: AppRoute.tokenWalletDetails.path,
     builder: (_, state) => TokenWalletDetailsPage(
