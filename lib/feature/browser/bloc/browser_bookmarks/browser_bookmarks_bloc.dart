@@ -41,13 +41,15 @@ class BrowserBookmarksBloc
     return super.close();
   }
 
+  bool canBeAdded(Uri? url) {
+    return (url?.host.isNotEmpty ?? false) &&
+        state.items.indexWhere((item) => item.url == url) < 0;
+  }
+
   // ignore: long-method
   void _registerHandlers() {
     on<_Add>((event, emit) {
-      if (event.item.url.host.isEmpty) {
-        return;
-      }
-      if (state.items.indexWhere((item) => item.url == event.item.url) >= 0) {
+      if (!canBeAdded(event.item.url)) {
         return;
       }
 

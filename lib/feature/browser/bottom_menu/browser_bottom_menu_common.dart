@@ -59,10 +59,13 @@ class BrowserBottomMenuCommon extends StatelessWidget {
     final currentTabState = context.read<BrowserTabsBloc>().activeTabState;
     final hasUrl = currentTab?.url.host.isNotEmpty ?? false;
 
+    final canBeAddedToBookmarks =
+        context.read<BrowserBookmarksBloc>().canBeAdded(currentTab?.url);
+
     showBrowserPrimarySheet(
       context: context,
       refreshEnabled: hasUrl,
-      addToBookmarksEnabled: hasUrl,
+      addToBookmarksEnabled: canBeAddedToBookmarks,
       onRefreshPressed: currentTabState?.refresh,
       onAddToBookmarkPressed: () => _onAddToBookmarkPressed(context),
     );
