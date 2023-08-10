@@ -1,5 +1,4 @@
-import 'package:app/feature/wallet/widgets/account_asset_tab/account_asset_tab.dart';
-import 'package:app/feature/wallet/widgets/account_transactions_tab/account_transactions_tab.dart';
+import 'package:app/feature/wallet/wallet.dart';
 import 'package:app/generated/generated.dart';
 import 'package:flutter/material.dart';
 import 'package:nekoton_repository/nekoton_repository.dart';

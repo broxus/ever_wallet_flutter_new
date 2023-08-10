@@ -56,6 +56,7 @@ class BrowserPrimarySheet extends StatelessWidget {
         if (addToBookmarksEnabled)
           CommonListTile(
             titleText: LocaleKeys.browserAddToBookmarks.tr(),
+            // ignore: no-empty-block
             onPressed: () {},
             contentColor: colors.textPrimary,
             trailing: CommonButtonIconWidget.svg(

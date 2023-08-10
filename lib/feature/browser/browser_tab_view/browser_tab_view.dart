@@ -457,6 +457,7 @@ class _BrowserTabViewState extends State<BrowserTabView> {
     _screenshotTimer?.cancel();
     _screenshotTimer = Timer(
       force ? Duration.zero : _screenShotTimerDuration,
+      // ignore: prefer-extracting-callbacks
       () async {
         final image = await _webViewController?.takeScreenshot(
           screenshotConfiguration: _screenshotConfiguration,

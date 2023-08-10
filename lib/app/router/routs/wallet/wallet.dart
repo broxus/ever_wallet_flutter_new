@@ -6,6 +6,10 @@ import 'package:go_router/go_router.dart';
 import 'package:nekoton_repository/nekoton_repository.dart';
 
 const selectNewAssetAddressPathParam = 'selectNewAssetAddress';
+const tonWalletDetailsAddressPathParam = 'tonWalletDetailsAddress';
+const tokenWalletDetailsOwnerAddressPathParam = 'tonWalletDetailsOwnerAddress';
+const tokenWalletDetailsContractAddressPathParam =
+    'tonWalletDetailsContractAddress';
 
 /// Branch that is root for wallet.
 StatefulShellBranch get walletBranch {
@@ -29,8 +33,36 @@ StatefulShellBranch get walletBranch {
             ),
           ),
           addSeedNamedRoute,
+          tonWalletDetailsRoute,
+          tokenWalletDetailsRoute,
         ],
       ),
     ],
+  );
+}
+
+GoRoute get tonWalletDetailsRoute {
+  return GoRoute(
+    path: AppRoute.tonWalletDetails.path,
+    builder: (_, state) => TonWalletDetailsPage(
+      address: Address(
+        address: state.pathParameters[tonWalletDetailsAddressPathParam]!,
+      ),
+    ),
+  );
+}
+
+GoRoute get tokenWalletDetailsRoute {
+  return GoRoute(
+    path: AppRoute.tokenWalletDetails.path,
+    builder: (_, state) => TokenWalletDetailsPage(
+      owner: Address(
+        address: state.pathParameters[tokenWalletDetailsOwnerAddressPathParam]!,
+      ),
+      rootTokenContract: Address(
+        address:
+            state.pathParameters[tokenWalletDetailsContractAddressPathParam]!,
+      ),
+    ),
   );
 }

@@ -38,6 +38,7 @@ class WalletAssetWidget extends StatelessWidget {
               money: fiatBalance!,
               style: MoneyWidgetStyle.secondary,
             ),
+      onPressed: onPressed,
       trailing: CommonIconWidget.svg(svg: Assets.images.caretRight.path),
     );
   }
