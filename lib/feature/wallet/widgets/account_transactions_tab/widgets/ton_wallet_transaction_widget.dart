@@ -1,46 +1,8 @@
+import 'package:app/feature/wallet/wallet.dart';
 import 'package:app/generated/generated.dart';
 import 'package:flutter/material.dart';
 import 'package:nekoton_repository/nekoton_repository.dart';
 import 'package:ui_components_lib/ui_components_lib.dart';
-
-/// Status of transaction that could be used to display additional information
-/// about transaction
-enum TonWalletTransactionStatus {
-  completed, // transaction fully completed
-  pending, // transaction in progress
-  waitingConfirmation, // waiting for confirmation
-  expired; // transaction time expired
-
-  String? get title {
-    return switch (this) {
-      TonWalletTransactionStatus.completed => null,
-      TonWalletTransactionStatus.pending =>
-        LocaleKeys.transactionStatusInProgress.tr(),
-      TonWalletTransactionStatus.waitingConfirmation =>
-        LocaleKeys.transactionStatusWaitingConfirmation.tr(),
-      TonWalletTransactionStatus.expired =>
-        LocaleKeys.transactionStatusExpired.tr(),
-    };
-  }
-
-  Color textColor(ColorsPalette colors) {
-    return switch (this) {
-      TonWalletTransactionStatus.completed => Colors.transparent,
-      TonWalletTransactionStatus.pending => colors.labelYellow,
-      TonWalletTransactionStatus.waitingConfirmation => colors.labelOrange,
-      TonWalletTransactionStatus.expired => colors.alert,
-    };
-  }
-
-  Color backgroundColor(ColorsPalette colors) {
-    return switch (this) {
-      TonWalletTransactionStatus.completed => Colors.transparent,
-      TonWalletTransactionStatus.pending => colors.lightOrange,
-      TonWalletTransactionStatus.waitingConfirmation => colors.lightRed,
-      TonWalletTransactionStatus.expired => colors.lightRed,
-    };
-  }
-}
 
 /// Widget that displays pure transaction for TonWallet
 class TonWalletTransactionWidget extends StatelessWidget {
@@ -93,27 +55,45 @@ class TonWalletTransactionWidget extends StatelessWidget {
   Widget build(BuildContext context) {
     final colors = context.themeStyle.colors;
     final date = displayDate ? _headerDate() : null;
-    final status = _statusBody();
+    final statusWidget = tonWalletTransactionStatusBody(status);
 
-    final body = Material(
-      shape: const SquircleShapeBorder(cornerRadius: DimensRadius.medium),
-      color: colors.backgroundSecondary,
-      child: Container(
-        decoration: BoxDecoration(
-          border: SquircleBoxBorder(
-            squircleRadius: DimensRadius.medium,
-            borderSide: BorderSide(color: colors.strokeSecondary),
+    final body = PressScaleWidget(
+      onPressed: onPressed,
+      child: Material(
+        shape: const SquircleShapeBorder(cornerRadius: DimensRadius.medium),
+        color: colors.backgroundSecondary,
+        child: Container(
+          decoration: BoxDecoration(
+            border: SquircleBoxBorder(
+              squircleRadius: DimensRadius.medium,
+              borderSide: BorderSide(color: colors.strokeSecondary),
+            ),
           ),
-        ),
-        child: SeparatedColumn(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          mainAxisSize: MainAxisSize.min,
-          separator: const CommonDivider(),
-          children: [
-            _baseTransactionBody(),
-            if (additionalInformation != null) additionalInformation!,
-            if (status != null) status,
-          ],
+          child: SeparatedColumn(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            mainAxisSize: MainAxisSize.min,
+            separator: const CommonDivider(),
+            children: [
+              _baseTransactionBody(),
+              if (additionalInformation != null) additionalInformation!,
+              if (statusWidget != null)
+                Padding(
+                  padding: const EdgeInsets.all(DimensSize.d16),
+                  child: SeparatedRow(
+                    children: [
+                      Text(
+                        LocaleKeys.statusWord.tr(),
+                        style: StyleRes.addRegular.copyWith(
+                          color: colors.textSecondary,
+                        ),
+                      ),
+                      const Spacer(),
+                      statusWidget,
+                    ],
+                  ),
+                ),
+            ],
+          ),
         ),
       ),
     );
@@ -142,50 +122,6 @@ class TonWalletTransactionWidget extends StatelessWidget {
           child: Text(
             formatter.format(transactionDateTime),
             style: StyleRes.secondaryBold.copyWith(color: colors.textPrimary),
-          ),
-        );
-      },
-    );
-  }
-
-  Widget? _statusBody() {
-    final title = status.title;
-    if (title == null) return null;
-
-    return Builder(
-      builder: (context) {
-        final colors = context.themeStyle.colors;
-
-        return Padding(
-          padding: const EdgeInsets.all(DimensSize.d16),
-          child: SeparatedRow(
-            children: [
-              Text(
-                LocaleKeys.statusWord.tr(),
-                style: StyleRes.addRegular.copyWith(
-                  color: colors.textSecondary,
-                ),
-              ),
-              const Spacer(),
-              Material(
-                shape: const SquircleShapeBorder(
-                  cornerRadius: DimensRadius.small,
-                ),
-                color: status.backgroundColor(colors),
-                child: Padding(
-                  padding: const EdgeInsets.symmetric(
-                    horizontal: DimensSize.d8,
-                    vertical: DimensSize.d4,
-                  ),
-                  child: Text(
-                    title,
-                    style: StyleRes.addRegular.copyWith(
-                      color: status.textColor(colors),
-                    ),
-                  ),
-                ),
-              ),
-            ],
           ),
         );
       },

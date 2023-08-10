@@ -21,6 +21,7 @@ class ShapedContainerColumn extends StatelessWidget {
     this.crossAxisAlignment = CrossAxisAlignment.start,
     this.mainAxisAlignment = MainAxisAlignment.start,
     this.titleText,
+    this.subtitleText,
     this.width,
     this.height,
   });
@@ -59,6 +60,9 @@ class ShapedContainerColumn extends StatelessWidget {
   /// Title that displays above list of content
   final String? titleText;
 
+  /// Text that displays right from [titleText].
+  final String? subtitleText;
+
   /// Size of container.
   /// If null, container will be sized to fit its children.
   final double? width;
@@ -86,18 +90,36 @@ class ShapedContainerColumn extends StatelessWidget {
           // padding here, because ContainerColumn changes alignment in bad way
           child: Padding(
             padding: padding,
-            child: titleText == null
+            child: titleText == null && subtitleText == null
                 ? body
                 : SeparatedColumn(
                     mainAxisSize: mainAxisSize,
                     crossAxisAlignment: CrossAxisAlignment.start,
                     separatorSize: DimensSize.d16,
                     children: [
-                      Text(
-                        titleText!,
-                        style: StyleRes.h2.copyWith(
-                          color: context.themeStyle.colors.textPrimary,
-                        ),
+                      SeparatedRow(
+                        children: [
+                          if (titleText != null)
+                            Expanded(
+                              child: Text(
+                                titleText!,
+                                style: StyleRes.h2.copyWith(
+                                  color: context.themeStyle.colors.textPrimary,
+                                ),
+                              ),
+                            ),
+                          if (subtitleText != null)
+                            Flexible(
+                              child: Text(
+                                subtitleText!,
+                                style: StyleRes.addRegular.copyWith(
+                                  color:
+                                      context.themeStyle.colors.textSecondary,
+                                ),
+                                textAlign: TextAlign.right,
+                              ),
+                            ),
+                        ],
                       ),
                       body,
                     ],
