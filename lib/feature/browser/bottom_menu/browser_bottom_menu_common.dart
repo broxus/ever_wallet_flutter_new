@@ -77,7 +77,7 @@ class BrowserBottomMenuCommon extends StatelessWidget {
 
     if (currentTab?.url.host.isNotEmpty ?? false) {
       context.read<BrowserBookmarksBloc>().add(
-            BrowserBookmarksEvent.add(
+            BrowserBookmarksEvent.setItem(
               item: BrowserBookmarkItem.create(
                 title: currentTabState?.title ?? '',
                 url: currentTab!.url,

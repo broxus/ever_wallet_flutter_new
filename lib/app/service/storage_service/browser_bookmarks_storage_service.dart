@@ -79,9 +79,12 @@ class BrowserBookmarksStorageService extends AbstractStorageService {
     await _streamedBrowserBookmarks();
   }
 
-  /// Add browser bookmarks item
-  Future<void> addBrowserBookmarkItem(BrowserBookmarkItem item) async {
-    await saveBrowserBookmarks([...browserBookmarks, item]);
+  /// Add or replace browser bookmarks item
+  Future<void> setBrowserBookmarkItem(BrowserBookmarkItem item) async {
+    await saveBrowserBookmarks([
+      ...[...browserBookmarks]..removeWhere((i) => i.id == item.id),
+      item,
+    ]);
   }
 
   /// Remove browser bookmarks item by id
@@ -99,7 +102,7 @@ class BrowserBookmarksStorageService extends AbstractStorageService {
       Message.info(
         message: LocaleKeys.browserBookmarkDeleted.tr(),
         actionText: LocaleKeys.browserBookmarkDeletedUndo.tr(),
-        onAction: () => addBrowserBookmarkItem(item),
+        onAction: () => setBrowserBookmarkItem(item),
       ),
     );
 

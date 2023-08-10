@@ -48,12 +48,13 @@ class BrowserBookmarksBloc
 
   // ignore: long-method
   void _registerHandlers() {
-    on<_Add>((event, emit) {
-      if (!canBeAdded(event.item.url)) {
+    on<_SetItem>((event, emit) {
+      if (!canBeAdded(event.item.url) &&
+          state.items.indexWhere((item) => item.id == event.item.id) < 0) {
         return;
       }
 
-      browserBookmarksStorageService.addBrowserBookmarkItem(event.item);
+      browserBookmarksStorageService.setBrowserBookmarkItem(event.item);
     });
     on<_Remove>((event, emit) {
       browserBookmarksStorageService.removeBrowserBookmarkItem(event.id);

@@ -89,6 +89,7 @@ class _BrowserBookmarkSheetState extends State<BrowserBookmarkSheet> {
 
   void _onRenamePressed(BuildContext context) {
     Navigator.of(context).pop();
+    showBrowserBookmarkRenameSheet(context: context, item: widget.item);
   }
 
   void _onDeletePressed(BuildContext context) {

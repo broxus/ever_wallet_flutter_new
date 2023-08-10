@@ -2,8 +2,9 @@ part of 'browser_bookmarks_bloc.dart';
 
 @freezed
 class BrowserBookmarksEvent with _$BrowserBookmarksEvent {
-  const factory BrowserBookmarksEvent.add({required BrowserBookmarkItem item}) =
-      _Add;
+  const factory BrowserBookmarksEvent.setItem({
+    required BrowserBookmarkItem item,
+  }) = _SetItem;
   const factory BrowserBookmarksEvent.remove({required String id}) = _Remove;
   const factory BrowserBookmarksEvent.clear() = _Clear;
   const factory BrowserBookmarksEvent.set({

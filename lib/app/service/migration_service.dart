@@ -840,7 +840,7 @@ class MigrationService {
 
     /// Bookmarks
     for (final bookmark in _hive.bookmarks) {
-      await _browserBookmarksStorageService.addBrowserBookmarkItem(bookmark);
+      await _browserBookmarksStorageService.setBrowserBookmarkItem(bookmark);
     }
 
     /// Browser history
