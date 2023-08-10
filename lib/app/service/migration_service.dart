@@ -616,7 +616,10 @@ class HiveSourceMigration {
         'prefs': _preferencesBox.toJson(),
         'search_history': searchHistory
             .map(
-              (e) => {'url': e.url, 'date': e.visitTime.millisecondsSinceEpoch},
+              (e) => {
+                'url': e.url.toString(),
+                'date': e.visitTime.millisecondsSinceEpoch
+              },
             )
             .toList(),
         'external_accounts': externalAccounts,
