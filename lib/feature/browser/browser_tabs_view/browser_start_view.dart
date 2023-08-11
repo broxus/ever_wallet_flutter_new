@@ -11,7 +11,11 @@ import 'package:ui_components_lib/ui_components_lib.dart';
 
 /// Item count limit for each section
 const _itemCountLimit = 6;
+
+/// Card height
 const _cardHeight = 116.0;
+
+/// Card viewport fraction
 const _cardViewportFraction = 0.85;
 
 class BrowserStartView extends StatefulWidget {
