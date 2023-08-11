@@ -1,5 +1,5 @@
 import 'package:app/di/di.dart';
-import 'package:app/feature/wallet/widgets/account_transactions_tab/widgets/widgets.dart';
+import 'package:app/feature/wallet/wallet.dart';
 import 'package:flutter/material.dart';
 import 'package:nekoton_repository/nekoton_repository.dart';
 
@@ -21,8 +21,13 @@ class TonWalletMultisigOrdinaryTransactionWidget extends StatelessWidget {
 
     return TonWalletTransactionWidget(
       displayDate: displayDate,
-      // ignore: no-empty-block
-      onPressed: () {},
+      onPressed: () => Navigator.of(context, rootNavigator: true).push(
+        MaterialPageRoute<void>(
+          builder: (_) => TonWalletMultisigOrdinaryTransactionDetailsPage(
+            transaction: transaction,
+          ),
+        ),
+      ),
       address: transaction.address,
       isIncoming: !transaction.isOutgoing,
       status: TonWalletTransactionStatus.completed,
