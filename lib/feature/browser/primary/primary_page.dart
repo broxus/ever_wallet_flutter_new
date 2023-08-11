@@ -46,7 +46,7 @@ class _PrimaryPageState extends State<PrimaryPage> {
           id: widget.tabId!,
         ),
       );
-      context.clearQueryParams();
+      _clearQueryParams();
 
       return;
     }
@@ -58,7 +58,7 @@ class _PrimaryPageState extends State<PrimaryPage> {
           id: widget.tabId!,
         ),
       );
-      context.clearQueryParams();
+      _clearQueryParams();
 
       return;
     }
@@ -72,9 +72,15 @@ class _PrimaryPageState extends State<PrimaryPage> {
           uri: Uri.parse(widget.url!),
         ),
       );
-      context.clearQueryParams();
+      _clearQueryParams();
 
       return;
     }
+  }
+
+  void _clearQueryParams() {
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      context.clearQueryParams();
+    });
   }
 }
