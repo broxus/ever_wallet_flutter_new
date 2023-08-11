@@ -45,9 +45,9 @@ class TabView extends StatelessWidget {
                   ),
                 ),
                 CommonIconButton.svg(
-                  svg: Assets.images.minusCircled.path,
+                  svg: Assets.images.closeAnother.path,
                   buttonType: EverButtonType.ghost,
-                  color: colors.alert,
+                  color: colors.textSecondary,
                   onPressed: onClosePressed,
                 ),
               ],
