@@ -98,17 +98,10 @@ class BrowserTabsBloc extends Bloc<BrowserTabsEvent, BrowserTabsState> {
         browserTabsStorageService.setBrowserTab(newTab);
       }
 
-      if (oldTab.url.host != newTab.url.host &&
-          oldTab.url.toString().trim().isNotEmpty) {
+      if (oldTab.url.host != newTab.url.host) {
         final state = browserTabStateById(oldTab.id);
         // Host was changed, add old url to history
-        onBrowserHistoryItemAdd(
-          BrowserHistoryItem.create(
-            url: oldTab.url.toString(),
-            title: state?.title ?? '',
-            faviconUrl: state?.faviconUrl,
-          ),
-        );
+        _addHistoryItem(oldTab, state);
       }
     });
     on<_SetScreenshot>((event, emit) {
@@ -147,13 +140,7 @@ class BrowserTabsBloc extends Bloc<BrowserTabsEvent, BrowserTabsState> {
       if (tab != null) {
         final state = browserTabStateById(tab.id);
         // Tab is closing, add url to history
-        onBrowserHistoryItemAdd(
-          BrowserHistoryItem.create(
-            url: tab.url.toString(),
-            title: state?.title ?? '',
-            faviconUrl: state?.faviconUrl,
-          ),
-        );
+        _addHistoryItem(tab, state);
       }
       browserTabsStorageService.removeBrowserTab(event.id);
       if (state.currentTabId == event.id) {
@@ -169,13 +156,7 @@ class BrowserTabsBloc extends Bloc<BrowserTabsEvent, BrowserTabsState> {
       // All tabs are closing, add urls to history
       for (final tab in state.tabs) {
         final state = browserTabStateById(tab.id);
-        onBrowserHistoryItemAdd(
-          BrowserHistoryItem.create(
-            url: tab.url.toString(),
-            title: state?.title ?? '',
-            faviconUrl: state?.faviconUrl,
-          ),
-        );
+        _addHistoryItem(tab, state);
       }
       browserTabsStorageService.clearBrowserTabs();
     });
@@ -223,5 +204,15 @@ class BrowserTabsBloc extends Bloc<BrowserTabsEvent, BrowserTabsState> {
 
   BrowserTabState? browserTabStateById(String id) {
     return state.tabsState[id];
+  }
+
+  void _addHistoryItem(BrowserTab tab, BrowserTabState? state) {
+    onBrowserHistoryItemAdd(
+      BrowserHistoryItem.create(
+        url: tab.url,
+        title: state?.title ?? '',
+        faviconUrl: state?.faviconUrl,
+      ),
+    );
   }
 }

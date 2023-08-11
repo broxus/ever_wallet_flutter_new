@@ -12,7 +12,7 @@ import 'package:app/app/service/dto/site_meta_data_dto.dart';
 import 'package:app/app/service/dto/token_contract_asset_dto.dart';
 import 'package:app/app/service/dto/wallet_contract_type_dto.dart';
 import 'package:app/app/service/service.dart';
-import 'package:app/data/models/bookmark.dart';
+import 'package:app/data/models/browser_bookmark_item.dart';
 import 'package:app/data/models/browser_history_item.dart';
 import 'package:app/data/models/browser_tab.dart';
 import 'package:app/data/models/custom_currency.dart';
@@ -368,10 +368,10 @@ class HiveSourceMigration {
     }
   }
 
-  List<Bookmark> get bookmarks =>
+  List<BrowserBookmarkItem> get bookmarks =>
       _bookmarksBox.values.map((e) => e.toModel()).toList();
 
-  Future<void> addBookmark(Bookmark bookmark) =>
+  Future<void> addBookmark(BrowserBookmarkItem bookmark) =>
       _bookmarksBox.put(bookmark.id, bookmark.toDto());
 
   Future<void> deleteBookmark(int id) => _bookmarksBox.delete(id);
@@ -385,7 +385,7 @@ class HiveSourceMigration {
     var list =
         _searchHistoryBox.toMap().cast<String, SearchHistoryDto>().entries;
 
-    list = list.where((e) => e.value.url != entry.url);
+    list = list.where((e) => e.value.url != entry.url.toString());
 
     final entries = [
       ...list,
@@ -403,7 +403,7 @@ class HiveSourceMigration {
         .toMap()
         .cast<String, SearchHistoryDto>()
         .entries
-        .where((e) => e.value.url == entry.url)
+        .where((e) => e.value.url == entry.url.toString())
         .map((e) => e.key);
 
     for (final key in keys) {
@@ -616,7 +616,10 @@ class HiveSourceMigration {
         'prefs': _preferencesBox.toJson(),
         'search_history': searchHistory
             .map(
-              (e) => {'url': e.url, 'date': e.visitTime.millisecondsSinceEpoch},
+              (e) => {
+                'url': e.url.toString(),
+                'date': e.visitTime.millisecondsSinceEpoch,
+              },
             )
             .toList(),
         'external_accounts': externalAccounts,
@@ -714,6 +717,7 @@ class MigrationService {
     this._browserStorage,
     this._browserTabsStorageService,
     this._browserHistoryStorageService,
+    this._browserBookmarksStorageService,
     this._accountSeedStorage,
     this._hive,
   );
@@ -722,6 +726,7 @@ class MigrationService {
   final BrowserStorageService _browserStorage;
   final BrowserTabsStorageService _browserTabsStorageService;
   final BrowserHistoryStorageService _browserHistoryStorageService;
+  final BrowserBookmarksStorageService _browserBookmarksStorageService;
   final NekotonStorageService _accountSeedStorage;
   final HiveSourceMigration _hive;
 
@@ -731,6 +736,7 @@ class MigrationService {
     BrowserStorageService browserStorage,
     BrowserTabsStorageService browserTabsStorageService,
     BrowserHistoryStorageService browserHistoryStorageService,
+    BrowserBookmarksStorageService browserBookmarksStorageService,
     NekotonStorageService accountSeedStorage,
   ) async {
     return MigrationService(
@@ -738,6 +744,7 @@ class MigrationService {
       browserStorage,
       browserTabsStorageService,
       browserHistoryStorageService,
+      browserBookmarksStorageService,
       accountSeedStorage,
       await HiveSourceMigration.create(),
     ).migrate();
@@ -836,7 +843,7 @@ class MigrationService {
 
     /// Bookmarks
     for (final bookmark in _hive.bookmarks) {
-      await _browserStorage.addBookmark(bookmark);
+      await _browserBookmarksStorageService.setBrowserBookmarkItem(bookmark);
     }
 
     /// Browser history

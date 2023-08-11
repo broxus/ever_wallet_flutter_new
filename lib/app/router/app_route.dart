@@ -119,9 +119,8 @@ enum AppRoute {
   /// Bookmarks browser page
   browserBookmarks(
     'browserBookmarks',
-    '/browser/browserBookmarks',
+    'browserBookmarks',
     isSaveLocation: true,
-    isBottomNavigationBarVisible: true,
   ),
 
   /// History browser page

@@ -13,6 +13,7 @@ class CommonListTile extends StatelessWidget {
   /// {@macro common_list_tile}
   const CommonListTile({
     this.onPressed,
+    this.onLongPressed,
     this.titleText,
     this.titleChild,
     this.subtitleText,
@@ -29,6 +30,9 @@ class CommonListTile extends StatelessWidget {
 
   /// Press callback of tile
   final VoidCallback? onPressed;
+
+  /// Long press callback of tile
+  final VoidCallback? onLongPressed;
 
   /// Title text or title widget of tile, it renders above subtitle
   final String? titleText;
@@ -91,6 +95,7 @@ class CommonListTile extends StatelessWidget {
 
     return PressScaleWidget(
       onPressed: onPressed,
+      onLongPress: onLongPressed,
       scaleRatio: _defaultListTileScaleRation,
       child: Material(
         color: backgroundColor ?? Colors.transparent,

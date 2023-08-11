@@ -114,11 +114,11 @@ class _BrowserHistorySheetState extends State<BrowserHistorySheet> {
   }
 
   void _onClearPressed() {
-    Navigator.of(context).pop();
     widget.onClearPressed(
       clearHistory: _clearHistory,
       clearCookies: _clearCookies,
       clearCache: _clearCache,
     );
+    Navigator.of(context).pop();
   }
 }

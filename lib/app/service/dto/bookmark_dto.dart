@@ -1,6 +1,8 @@
 // ignore_for_file: no-magic-number
 
-import 'package:app/data/models/bookmark.dart';
+import 'dart:math';
+
+import 'package:app/data/models/browser_bookmark_item.dart';
 import 'package:freezed_annotation/freezed_annotation.dart';
 import 'package:hive_flutter/hive_flutter.dart';
 
@@ -17,18 +19,20 @@ class BookmarkDto with _$BookmarkDto {
   }) = _BookmarkDto;
 }
 
-extension BookmarkX on Bookmark {
+extension BookmarkX on BrowserBookmarkItem {
   BookmarkDto toDto() => BookmarkDto(
-        id: id,
-        name: name,
-        url: url,
+        id: int.tryParse(id) ?? Random().nextInt(-1 >>> 1),
+        name: title,
+        url: url.toString(),
       );
 }
 
 extension BookmarkDtoX on BookmarkDto {
-  Bookmark toModel() => Bookmark(
-        id: id,
-        name: name,
-        url: url,
+  BrowserBookmarkItem toModel() => BrowserBookmarkItem(
+        id: '$id',
+        title: name,
+        url: Uri.parse(url),
+        faviconUrl: null,
+        sortingOrder: -1,
       );
 }

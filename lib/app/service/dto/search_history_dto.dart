@@ -20,14 +20,14 @@ class SearchHistoryDto with _$SearchHistoryDto {
 
 extension SiteMetaDataX on BrowserHistoryItem {
   SearchHistoryDto toDto() => SearchHistoryDto(
-        url: url,
+        url: url.toString(),
         openTime: visitTime,
       );
 }
 
 extension SiteMetaDataDtoX on SearchHistoryDto {
   BrowserHistoryItem toModel(int id) => BrowserHistoryItem(
-        url: url,
+        url: Uri.parse(url),
         visitTime: openTime,
         title: '',
         id: '$id',
