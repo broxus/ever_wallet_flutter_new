@@ -15,7 +15,6 @@ class TonWalletTransactionDetailsDefaultBody extends StatelessWidget {
     required this.fee,
     required this.status,
     required this.isIncoming,
-    // required this.type,
     this.comment,
     super.key,
   });
@@ -40,9 +39,6 @@ class TonWalletTransactionDetailsDefaultBody extends StatelessWidget {
 
   /// Status of transaction
   final TonWalletTransactionStatus status;
-
-  /// Type (ordinary, multisig sumbit/send)
-  // final String type;
 
   /// Comment of transaction
   final String? comment;
@@ -98,10 +94,6 @@ class TonWalletTransactionDetailsDefaultBody extends StatelessWidget {
                 title: LocaleKeys.commentWord.tr(),
                 content: comment,
               ),
-            // TonWalletTransactionDetailsItem(
-            //   title: LocaleKeys.typeWord.tr(),
-            //   content: type,
-            // ),
           ],
         ),
       ],

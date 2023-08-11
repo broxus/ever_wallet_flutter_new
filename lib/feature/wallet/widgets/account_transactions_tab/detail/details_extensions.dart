@@ -11,12 +11,13 @@ Money _getNativeMoney(BigInt value) => Money.fromBigIntWithCurrency(
           inject<NekotonRepository>().currentTransport.nativeTokenTicker]!,
     );
 
+/// Pair, where 1-st item is title of section,
+/// 2-nd item list of content specified for payload
+typedef DetailsTitleAndBody = (String, List<TonWalletTransactionDetailsItem>);
+
 extension KnownPayloadX on KnownPayload {
-  /// Returns pair, where 1-st item is title of section,
-  /// 2-nd item list of content specified for payload
   // ignore: long-method
-  (String, List<TonWalletTransactionDetailsItem>)? toRepresentableData() =>
-      when(
+  DetailsTitleAndBody? toRepresentableData() => when(
         comment: (data) => data.isNotEmpty
             ? (
                 LocaleKeys.commentWord.tr(),
@@ -77,7 +78,7 @@ extension WalletInteractionMethodX on WalletInteractionMethod {
   /// Returns pair, where 1-st item is title of section,
   /// 2-nd item list of content specified for interaction method
   // ignore: long-method
-  (String, List<TonWalletTransactionDetailsItem>) toRepresentableData() => when(
+  DetailsTitleAndBody toRepresentableData() => when(
         walletV3Transfer: () => (
           LocaleKeys.walletV3Transfer.tr(),
           [],
