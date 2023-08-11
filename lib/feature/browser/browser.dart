@@ -9,4 +9,5 @@ export 'browser_tabs_view/browser_tabs_view.dart';
 export 'history/history.dart';
 export 'primary/primary.dart';
 export 'tabs/tabs.dart';
+export 'utils.dart';
 export 'view/view.dart';
