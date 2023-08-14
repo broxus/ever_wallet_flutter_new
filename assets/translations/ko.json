@@ -280,5 +280,10 @@
   "initiatorWord": "Initiator",
   "signedWord": "Signed",
   "notSignedWord": "Not signed",
-  "confirmTransaction": "Confirm transaction"
+  "confirmTransaction": "Confirm transaction",
+  "tokenOutgoingTransfer": "Token outgoing transfer",
+  "swapBack": "Swap back",
+  "acceptWord": "Accept",
+  "transferBounced": "Transfer bounced",
+  "swapBackBounced": "Swap back bounced"
 }
