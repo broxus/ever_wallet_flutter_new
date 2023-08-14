@@ -3,6 +3,19 @@
 import 'package:app/data/models/models.dart';
 import 'package:app/generated/generated.dart';
 
+class BrowserCard {
+  BrowserCard({
+    required this.title,
+    required this.description,
+    required this.url,
+    required this.imagePath,
+  });
+  final String title;
+  final String description;
+  final Uri url;
+  final String imagePath;
+}
+
 List<BrowserBookmarkItem> predefinedItems() => [
       BrowserBookmarkItem(
         id: '',
@@ -45,5 +58,20 @@ List<BrowserBookmarkItem> predefinedItems() => [
         url: Uri.parse(LocaleKeys.browserLink06Url.tr()),
         faviconUrl: LocaleKeys.browserLink06Favicon.tr(),
         sortingOrder: 1,
+      ),
+    ];
+
+List<BrowserCard> predefinedCards() => [
+      BrowserCard(
+        title: LocaleKeys.browserCardLink01Title.tr(),
+        description: LocaleKeys.browserCardLink01Description.tr(),
+        url: Uri.parse(LocaleKeys.browserCardLink01Url.tr()),
+        imagePath: Assets.images.browserCard01.path,
+      ),
+      BrowserCard(
+        title: LocaleKeys.browserCardLink02Title.tr(),
+        description: LocaleKeys.browserCardLink02Description.tr(),
+        url: Uri.parse(LocaleKeys.browserCardLink02Url.tr()),
+        imagePath: Assets.images.browserCard02.path,
       ),
     ];

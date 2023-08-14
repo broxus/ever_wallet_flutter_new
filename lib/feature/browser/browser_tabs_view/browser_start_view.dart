@@ -12,6 +12,12 @@ import 'package:ui_components_lib/ui_components_lib.dart';
 /// Item count limit for each section
 const _itemCountLimit = 6;
 
+/// Card height
+const _cardHeight = 116.0;
+
+/// Card viewport fraction
+const _cardViewportFraction = 0.85;
+
 class BrowserStartView extends StatefulWidget {
   const BrowserStartView({super.key});
 
@@ -21,6 +27,16 @@ class BrowserStartView extends StatefulWidget {
 
 class _BrowserStartViewState extends State<BrowserStartView> {
   final _predefinedItems = predefinedItems();
+  final _predefinedCards = predefinedCards();
+  final _cardController = PageController(
+    viewportFraction: _cardViewportFraction,
+  );
+
+  @override
+  void dispose() {
+    _cardController.dispose();
+    super.dispose();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -41,6 +57,7 @@ class _BrowserStartViewState extends State<BrowserStartView> {
             title: LocaleKeys.browserPopularResources.tr(),
             items: _predefinedItems,
           ),
+          ..._cardsBuilder(),
         ],
       ),
     );
@@ -156,13 +173,7 @@ class _BrowserStartViewState extends State<BrowserStartView> {
   }
 
   void _onItemPressed(BrowserBookmarkItem item) {
-    final uri = item.url;
-
-    context.read<BrowserTabsBloc>().add(
-          BrowserTabsEvent.add(uri: uri),
-        );
-
-    context.goNamed(AppRoute.browser.name);
+    _openUrl(item.url);
   }
 
   void _onItemLongPressed(BrowserBookmarkItem item) {
@@ -179,5 +190,87 @@ class _BrowserStartViewState extends State<BrowserStartView> {
 
   void _onSeeAllPressed() {
     context.goNamed(AppRoute.browserBookmarks.name);
+  }
+
+  List<Widget> _cardsBuilder() {
+    return [
+      SliverPadding(
+        padding: const EdgeInsets.only(
+          top: DimensSize.d32,
+        ),
+        sliver: SliverToBoxAdapter(
+          child: SizedBox(
+            height: _cardHeight,
+            child: PageView.builder(
+              controller: _cardController,
+              itemBuilder: (_, index) =>
+                  _cardItemBuilder(_predefinedCards[index]),
+              itemCount: _predefinedCards.length,
+            ),
+          ),
+        ),
+      ),
+    ];
+  }
+
+  Widget _cardItemBuilder(BrowserCard card) {
+    final colors = context.themeStyle.colors;
+    return Padding(
+      padding: const EdgeInsets.symmetric(
+        horizontal: DimensSize.d8,
+      ),
+      child: InkWell(
+        onTap: () => _onCardPressed(card),
+        child: ShapedContainerRow(
+          color: colors.blue,
+          mainAxisSize: MainAxisSize.min,
+          margin: EdgeInsets.zero,
+          padding: EdgeInsets.zero,
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            Expanded(
+              child: Padding(
+                padding: const EdgeInsets.symmetric(
+                  horizontal: DimensSize.d16,
+                  vertical: DimensSize.d20,
+                ),
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Text(
+                      card.title,
+                      style: StyleRes.primaryBold.copyWith(
+                        color: colors.textContrast,
+                      ),
+                    ),
+                    Text(
+                      card.description,
+                      style: StyleRes.addRegular.copyWith(
+                        color: colors.textContrast,
+                      ),
+                    ),
+                  ],
+                ),
+              ),
+            ),
+            CommonIconWidget.svg(
+              svg: card.imagePath,
+            ),
+          ],
+        ),
+      ),
+    );
+  }
+
+  void _onCardPressed(BrowserCard card) {
+    _openUrl(card.url);
+  }
+
+  void _openUrl(Uri url) {
+    context.read<BrowserTabsBloc>().add(
+          BrowserTabsEvent.add(uri: url),
+        );
+
+    context.goNamed(AppRoute.browser.name);
   }
 }
