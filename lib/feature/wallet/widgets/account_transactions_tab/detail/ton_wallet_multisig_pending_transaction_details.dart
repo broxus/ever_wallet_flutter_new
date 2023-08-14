@@ -34,7 +34,7 @@ class TonWalletMultisigPendingTransactionDetailsPage extends StatelessWidget {
 
     return Scaffold(
       appBar: const DefaultAppBar(),
-      body: TonWalletTransactionDetailsBodyWithExplorerButton(
+      body: WalletTransactionDetailsBodyWithExplorerButton(
         transactionHash: transaction.hash,
         action: transaction.canConfirm
             ? CommonButton.primary(
@@ -50,7 +50,7 @@ class TonWalletMultisigPendingTransactionDetailsPage extends StatelessWidget {
         body: SeparatedColumn(
           separatorSize: DimensSize.d16,
           children: [
-            TonWalletTransactionDetailsDefaultBody(
+            WalletTransactionDetailsDefaultBody(
               date: transaction.date,
               isIncoming: !transaction.isOutgoing,
               status: transaction.canConfirm
@@ -69,22 +69,22 @@ class TonWalletMultisigPendingTransactionDetailsPage extends StatelessWidget {
               comment: transaction.comment,
             ),
             if (dePoolOnRoundComplete != null)
-              TonWalletTransactionAdditionalBody(
+              WalletTransactionAdditionalBody(
                 type: LocaleKeys.depoolRoundComplete.tr(),
                 children: dePoolOnRoundComplete,
               ),
             if (dePoolReceiveAnswer != null)
-              TonWalletTransactionAdditionalBody(
+              WalletTransactionAdditionalBody(
                 type: LocaleKeys.depoolReceiveAnswer.tr(),
                 children: dePoolReceiveAnswer,
               ),
             if (tokenWalletDeployed != null)
-              TonWalletTransactionAdditionalBody(
+              WalletTransactionAdditionalBody(
                 type: LocaleKeys.tokenWalletDeployed.tr(),
                 children: [tokenWalletDeployed],
               ),
             if (walletInteraction != null)
-              TonWalletTransactionAdditionalBody(
+              WalletTransactionAdditionalBody(
                 type: LocaleKeys.walletInteraction.tr(),
                 children: walletInteraction,
               ),

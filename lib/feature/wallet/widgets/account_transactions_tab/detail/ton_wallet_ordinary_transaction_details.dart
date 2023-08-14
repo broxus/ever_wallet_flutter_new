@@ -34,12 +34,12 @@ class TonWalletOrdinaryTransactionDetailsPage extends StatelessWidget {
 
     return Scaffold(
       appBar: const DefaultAppBar(),
-      body: TonWalletTransactionDetailsBodyWithExplorerButton(
+      body: WalletTransactionDetailsBodyWithExplorerButton(
         transactionHash: transaction.hash,
         body: SeparatedColumn(
           separatorSize: DimensSize.d16,
           children: [
-            TonWalletTransactionDetailsDefaultBody(
+            WalletTransactionDetailsDefaultBody(
               date: transaction.date,
               isIncoming: !transaction.isOutgoing,
               status: TonWalletTransactionStatus.completed,
@@ -56,22 +56,22 @@ class TonWalletOrdinaryTransactionDetailsPage extends StatelessWidget {
               comment: transaction.comment,
             ),
             if (dePoolOnRoundComplete != null)
-              TonWalletTransactionAdditionalBody(
+              WalletTransactionAdditionalBody(
                 type: LocaleKeys.depoolRoundComplete.tr(),
                 children: dePoolOnRoundComplete,
               ),
             if (dePoolReceiveAnswer != null)
-              TonWalletTransactionAdditionalBody(
+              WalletTransactionAdditionalBody(
                 type: LocaleKeys.depoolReceiveAnswer.tr(),
                 children: dePoolReceiveAnswer,
               ),
             if (tokenWalletDeployed != null)
-              TonWalletTransactionAdditionalBody(
+              WalletTransactionAdditionalBody(
                 type: LocaleKeys.tokenWalletDeployed.tr(),
                 children: [tokenWalletDeployed],
               ),
             if (walletInteraction != null)
-              TonWalletTransactionAdditionalBody(
+              WalletTransactionAdditionalBody(
                 type: LocaleKeys.walletInteraction.tr(),
                 children: walletInteraction,
               ),
