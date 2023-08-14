@@ -1,3 +1,4 @@
+import 'package:app/feature/wallet/wallet.dart';
 import 'package:app/generated/generated.dart';
 import 'package:flutter/material.dart';
 import 'package:nekoton_repository/nekoton_repository.dart';
@@ -33,17 +34,27 @@ class TokenWalletTransactionWidget extends StatelessWidget {
     final colors = context.themeStyle.colors;
     final date = displayDate ? _headerDate() : null;
 
-    final body = Material(
-      shape: const SquircleShapeBorder(cornerRadius: DimensRadius.medium),
-      color: colors.backgroundSecondary,
-      child: Container(
-        decoration: BoxDecoration(
-          border: SquircleBoxBorder(
-            squircleRadius: DimensRadius.medium,
-            borderSide: BorderSide(color: colors.strokeSecondary),
+    final body = PressScaleWidget(
+      onPressed: () => Navigator.of(context, rootNavigator: true).push(
+        MaterialPageRoute<void>(
+          builder: (_) => TokenWalletOrdinaryTransactionDetailsPage(
+            transaction: transaction,
+            tokenCurrency: transactionValue.currency,
           ),
         ),
-        child: _baseTransactionBody(),
+      ),
+      child: Material(
+        shape: const SquircleShapeBorder(cornerRadius: DimensRadius.medium),
+        color: colors.backgroundSecondary,
+        child: Container(
+          decoration: BoxDecoration(
+            border: SquircleBoxBorder(
+              squircleRadius: DimensRadius.medium,
+              borderSide: BorderSide(color: colors.strokeSecondary),
+            ),
+          ),
+          child: _baseTransactionBody(),
+        ),
       ),
     );
 
