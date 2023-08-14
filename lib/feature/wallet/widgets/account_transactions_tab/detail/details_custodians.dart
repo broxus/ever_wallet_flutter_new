@@ -68,7 +68,7 @@ class TonWalletTransactionCustodiansDetails extends StatelessWidget {
       title:
           isSign ? LocaleKeys.signedWord.tr() : LocaleKeys.notSignedWord.tr(),
       leading: CommonIconWidget.svg(
-        size: 14,
+        size: DimensSize.d16,
         svg:
             isSign ? Assets.images.checkRounded.path : Assets.images.close.path,
       ),
@@ -84,8 +84,7 @@ class TonWalletTransactionCustodiansDetails extends StatelessWidget {
           CommonChips(
             title: LocaleKeys.initiatorWord.tr(),
             leading: CommonIconWidget.svg(
-              // ignore: no-magic-number
-              size: 14,
+              size: DimensSize.d16,
               svg: Assets.images.persons.path,
             ),
             type: CommonChipsType.warning,
