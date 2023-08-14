@@ -40,7 +40,8 @@ class _BrowserStartViewState extends State<BrowserStartView> {
 
   @override
   Widget build(BuildContext context) {
-    final bookmarkItems = context.watch<BrowserBookmarksBloc>().state.items;
+    final bookmarkItems =
+        context.watch<BrowserBookmarksBloc>().getSortedItems();
     final colors = context.themeStyle.colors;
 
     return ColoredBox(
@@ -73,11 +74,7 @@ class _BrowserStartViewState extends State<BrowserStartView> {
       return [];
     }
 
-    final sortedItems = [...items]..sort(
-        (a, b) => b.sortingOrder - a.sortingOrder,
-      );
-
-    final sortedLimitedItems = sortedItems.take(_itemCountLimit).toList();
+    final sortedLimitedItems = items.take(_itemCountLimit).toList();
 
     final buttonEnabled = items.length > _itemCountLimit;
 
@@ -267,10 +264,15 @@ class _BrowserStartViewState extends State<BrowserStartView> {
   }
 
   void _openUrl(Uri url) {
+    final currentTabId = context.read<BrowserTabsBloc>().activeTab?.id;
+    if (currentTabId == null) {
+      context.read<BrowserTabsBloc>().add(
+            BrowserTabsEvent.add(uri: url),
+          );
+      return;
+    }
     context.read<BrowserTabsBloc>().add(
-          BrowserTabsEvent.add(uri: url),
+          BrowserTabsEvent.setUrl(id: currentTabId, uri: url),
         );
-
-    context.goNamed(AppRoute.browser.name);
   }
 }

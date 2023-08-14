@@ -46,6 +46,12 @@ class BrowserBookmarksBloc
         state.items.indexWhere((item) => item.url == url) < 0;
   }
 
+  List<BrowserBookmarkItem> getSortedItems() {
+    return [...state.items]..sort(
+        (a, b) => b.sortingOrder - a.sortingOrder,
+      );
+  }
+
   // ignore: long-method
   void _registerHandlers() {
     on<_SetItem>((event, emit) {
