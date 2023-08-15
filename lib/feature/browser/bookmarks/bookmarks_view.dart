@@ -83,6 +83,7 @@ class _BookmarksViewState extends State<BookmarksView> {
     );
   }
 
+  // ignore: long-method
   Widget _itemBuilder(
     BrowserBookmarkItem item, {
     required int index,

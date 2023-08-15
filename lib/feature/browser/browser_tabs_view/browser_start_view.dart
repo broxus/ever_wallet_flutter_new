@@ -212,6 +212,7 @@ class _BrowserStartViewState extends State<BrowserStartView> {
 
   Widget _cardItemBuilder(BrowserCard card) {
     final colors = context.themeStyle.colors;
+
     return Padding(
       padding: const EdgeInsets.symmetric(
         horizontal: DimensSize.d8,
