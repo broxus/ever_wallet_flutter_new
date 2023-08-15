@@ -49,6 +49,8 @@ class _HistoryViewState extends State<HistoryView> {
         }
       },
     );
+
+    _setIsEditing(false);
   }
 
   @override

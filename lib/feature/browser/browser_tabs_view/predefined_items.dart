@@ -60,7 +60,7 @@ List<BrowserBookmarkItem> predefinedItems() => [
         sortingOrder: 1,
       ),
     ]..sort(
-        (a, b) => b.sortingOrder - a.sortingOrder,
+        (a, b) => (b.sortingOrder - a.sortingOrder).sign.toInt(),
       );
 
 List<BrowserCard> predefinedCards() => [
