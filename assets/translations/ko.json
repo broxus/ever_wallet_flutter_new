@@ -214,6 +214,7 @@
   "browserBookmarksDone": "Done",
   "browserBookmarksDeleted": "All bookmarks were deleted",
   "browserBookmarksDeletedUndo": "Undo",
+  "browserStartEmptySearch": "Sorry, we didn't find anything for your request",
   "walletWord": "Wallet",
   "browserWord": "Browser",
   "profileWord": "Profile",

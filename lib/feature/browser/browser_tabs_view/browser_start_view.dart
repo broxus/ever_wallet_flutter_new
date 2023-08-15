@@ -40,26 +40,132 @@ class _BrowserStartViewState extends State<BrowserStartView> {
 
   @override
   Widget build(BuildContext context) {
+    final colors = context.themeStyle.colors;
     final bookmarkItems =
         context.watch<BrowserBookmarksBloc>().getSortedItems();
-    final colors = context.themeStyle.colors;
+    final searchText = context.watch<BrowserTabsBloc>().state.searchText;
+
+    final slivers = searchText.isEmpty
+        ? [
+            ..._sectionBuilder(
+              title: LocaleKeys.browserBookmarks.tr(),
+              items: bookmarkItems,
+              buttonText: LocaleKeys.browserSeeAll.tr(),
+              buttonOnPressed: _onSeeAllPressed,
+            ),
+            ..._sectionBuilder(
+              title: LocaleKeys.browserPopularResources.tr(),
+              items: _predefinedItems,
+            ),
+            ..._cardsBuilder(),
+          ]
+        : _searchResultBuilder(
+            items: [...bookmarkItems, ..._predefinedItems],
+            searchText: searchText,
+          );
 
     return ColoredBox(
       color: colors.appBackground,
       child: CustomScrollView(
-        slivers: [
-          ..._sectionBuilder(
-            title: LocaleKeys.browserBookmarks.tr(),
-            items: bookmarkItems,
-            buttonText: LocaleKeys.browserSeeAll.tr(),
-            buttonOnPressed: _onSeeAllPressed,
+        slivers: slivers,
+      ),
+    );
+  }
+
+  List<Widget> _searchResultBuilder({
+    required List<BrowserBookmarkItem> items,
+    required String searchText,
+  }) {
+    // TODO(nesquikm): We probably should create bloc to handle
+    // this kind of logic
+    final filteredItems = items.where((item) {
+      final title = item.title.toLowerCase();
+      final url = item.url.toString().toLowerCase();
+      final search = searchText.toLowerCase();
+      return title.contains(search) || url.contains(search);
+    }).toList();
+
+    if (filteredItems.isEmpty) {
+      return [
+        _searchResultEmptyBuilder(),
+      ];
+    }
+
+    return [
+      SliverPadding(
+        padding: const EdgeInsets.symmetric(vertical: DimensSize.d16),
+        sliver: SliverList.builder(
+          itemCount: filteredItems.length,
+          itemBuilder: (_, index) => _searchResultItemBuilder(
+            filteredItems[index],
           ),
-          ..._sectionBuilder(
-            title: LocaleKeys.browserPopularResources.tr(),
-            items: _predefinedItems,
+        ),
+      ),
+    ];
+  }
+
+  Widget _searchResultItemBuilder(BrowserBookmarkItem item) {
+    final colors = context.themeStyle.colors;
+
+    return Padding(
+      key: ValueKey(item.id),
+      padding: const EdgeInsets.symmetric(
+        vertical: DimensSize.d4,
+        horizontal: DimensSize.d16,
+      ),
+      child: SeparatedRow(
+        children: [
+          Expanded(
+            child: ShapedContainerColumn(
+              mainAxisSize: MainAxisSize.min,
+              margin: EdgeInsets.zero,
+              children: [
+                CommonListTile(
+                  titleText: item.title,
+                  subtitleText: item.url.toString(),
+                  leading: CachedNetworkImage(
+                    height: DimensSize.d40,
+                    width: DimensSize.d40,
+                    imageUrl: item.faviconUrl ?? '',
+                    placeholder: (_, __) => CircularProgressIndicator(
+                      color: colors.textSecondary,
+                      strokeWidth: DimensStroke.medium,
+                    ),
+                    // TODO(nesquikm): what we should show when
+                    // no favicon is available?
+                    errorWidget: (_, __, ___) => const Icon(Icons.error),
+                  ),
+                  trailing: CommonButtonIconWidget.svg(
+                    svg: Assets.images.caretRight.path,
+                  ),
+                  onPressed: () => _onItemPressed(item),
+                ),
+              ],
+            ),
           ),
-          ..._cardsBuilder(),
         ],
+      ),
+    );
+  }
+
+  Widget _searchResultEmptyBuilder() {
+    return SliverFillRemaining(
+      child: Center(
+        child: SeparatedColumn(
+          mainAxisSize: MainAxisSize.min,
+          children: [
+            CommonIconWidget.svg(
+              svg: Assets.images.searchEmpty.path,
+              size: DimensSize.d56,
+            ),
+            Text(
+              LocaleKeys.browserStartEmptySearch.tr(),
+              style: StyleRes.primaryRegular.copyWith(
+                color: context.themeStyle.colors.textSecondary,
+              ),
+            ),
+          ],
+        ),
       ),
     );
   }
