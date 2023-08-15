@@ -5,6 +5,7 @@ class BrowserSearchBarInput extends StatefulWidget {
   const BrowserSearchBarInput({
     this.uri,
     this.onSubmitted,
+    this.onChanged,
     this.onShared,
     this.hintText,
     this.searchSvg,
@@ -16,6 +17,7 @@ class BrowserSearchBarInput extends StatefulWidget {
 
   final Uri? uri;
   final ValueChanged<String>? onSubmitted;
+  final ValueChanged<String>? onChanged;
   final ValueSetter<Uri?>? onShared;
   final String? hintText;
   final String? searchSvg;
@@ -47,6 +49,11 @@ class _BrowserSearchBarInputState extends State<BrowserSearchBarInput> {
     _focusNode.addListener(_handleFocusChange);
 
     _textEditingController = TextEditingController(text: _getTextFieldText());
+    _textEditingController.addListener(
+      () {
+        widget.onChanged?.call(_textEditingController.text);
+      },
+    );
   }
 
   @override
