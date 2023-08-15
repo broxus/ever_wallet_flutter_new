@@ -140,6 +140,7 @@ class _WalletPrepareTransferViewState extends State<WalletPrepareTransferView> {
                         : null,
                     suffixIconConstraints: BoxConstraints(
                       minHeight: commonInputHeight,
+                      // ignore: no-magic-number
                       minWidth: CommonIconButtonSize.small.value * 2,
                     ),
                     suffixIcon: _addressSuffixIcon(),
@@ -152,6 +153,7 @@ class _WalletPrepareTransferViewState extends State<WalletPrepareTransferView> {
                     controller: _amountController,
                     focusNode: _amountFocus,
                     onSubmitted: (_) => _commentFocus.requestFocus(),
+                    // ignore: prefer-extracting-callbacks
                     validator: (value) {
                       if (value == null || value.isEmpty) {
                         return LocaleKeys.amountIsEmpty.tr();
