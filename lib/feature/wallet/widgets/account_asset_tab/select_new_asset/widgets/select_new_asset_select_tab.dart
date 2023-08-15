@@ -121,7 +121,11 @@ class SelectNewAssetItem extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return CommonListTile(
-      leading: TokenWalletIconWidget(asset: asset),
+      leading: TokenWalletIconWidget(
+        logoURI: asset.logoURI,
+        address: asset.address,
+        version: asset.version,
+      ),
       titleText: asset.symbol,
       subtitleText: asset.name,
       trailing: CommonSwitchInput(

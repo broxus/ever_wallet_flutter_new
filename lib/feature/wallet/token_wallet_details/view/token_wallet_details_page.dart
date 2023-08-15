@@ -1,3 +1,4 @@
+import 'package:app/app/router/router.dart';
 import 'package:app/di/di.dart';
 import 'package:app/feature/wallet/wallet.dart';
 import 'package:app/generated/generated.dart';
@@ -125,8 +126,15 @@ class TokenWalletDetailsPage extends StatelessWidget {
         ),
         if (canSend)
           _buttonItem(
-            // ignore: no-empty-block
-            onPressed: () {},
+            onPressed: () => context.goFurther(
+              AppRoute.walletPrepareTransferSpecified.pathWithData(
+                pathParameters: {
+                  walletPrepareTransferAddressPathParam: owner.address,
+                  walletPrepareTransferRootTokenAddressPathParam:
+                      rootTokenContract.address,
+                },
+              ),
+            ),
             svg: Assets.images.arrowUp.path,
             title: LocaleKeys.sendWord.tr(),
           ),

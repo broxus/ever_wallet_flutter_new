@@ -1,4 +1,6 @@
 export 'account_asset_tab/account_asset_tab.dart';
+export 'account_asset_tab/token_wallet_asset/token_wallet_icon.dart';
+export 'account_asset_tab/ton_wallet_asset/ton_wallet_icon.dart';
 export 'account_card/account_card.dart';
 export 'account_transactions_tab/account_transactions_tab.dart';
 export 'account_transactions_tab/detail/details.dart';

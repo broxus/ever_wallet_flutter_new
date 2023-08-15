@@ -9,7 +9,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:nekoton_repository/nekoton_repository.dart';
 
-/// Widget that stores information about additional token and display itsl
+/// Widget that stores information about additional token and display its
 /// balances.
 class TokenWalletAssetWidget extends StatelessWidget {
   const TokenWalletAssetWidget({
@@ -38,7 +38,11 @@ class TokenWalletAssetWidget extends StatelessWidget {
               return WalletAssetWidget(
                 tokenBalance: tokenBalance,
                 fiatBalance: fiatBalance,
-                icon: TokenWalletIconWidget(asset: asset),
+                icon: TokenWalletIconWidget(
+                  logoURI: asset.logoURI,
+                  address: asset.address,
+                  version: asset.version,
+                ),
                 onPressed: () => context.goFurther(
                   AppRoute.tokenWalletDetails.pathWithData(
                     pathParameters: {
