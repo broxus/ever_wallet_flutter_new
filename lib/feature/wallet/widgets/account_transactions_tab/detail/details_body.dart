@@ -4,10 +4,10 @@ import 'package:flutter/material.dart';
 import 'package:nekoton_repository/nekoton_repository.dart';
 import 'package:ui_components_lib/ui_components_lib.dart';
 
-/// Body of transaction for TonWallet that contains main information about
-/// transaction (date, hash, value, fee, sender/recipient).
-class TonWalletTransactionDetailsDefaultBody extends StatelessWidget {
-  const TonWalletTransactionDetailsDefaultBody({
+/// Body of transaction for Ton/Token Wallets that contains main information
+/// about transaction (date, hash, value, fee, sender/recipient).
+class WalletTransactionDetailsDefaultBody extends StatelessWidget {
+  const WalletTransactionDetailsDefaultBody({
     required this.date,
     required this.recipientOrSender,
     required this.hash,
@@ -16,6 +16,7 @@ class TonWalletTransactionDetailsDefaultBody extends StatelessWidget {
     required this.status,
     required this.isIncoming,
     this.comment,
+    this.type,
     super.key,
   });
 
@@ -42,6 +43,9 @@ class TonWalletTransactionDetailsDefaultBody extends StatelessWidget {
 
   /// Comment of transaction
   final String? comment;
+
+  /// Type of transaction, that exists for TokenWallet
+  final String? type;
 
   @override
   Widget build(BuildContext context) {
@@ -94,6 +98,11 @@ class TonWalletTransactionDetailsDefaultBody extends StatelessWidget {
                 title: LocaleKeys.commentWord.tr(),
                 content: comment,
               ),
+            if (type != null)
+              TonWalletTransactionDetailsItem(
+                title: LocaleKeys.typeWord.tr(),
+                content: type,
+              ),
           ],
         ),
       ],
@@ -131,8 +140,8 @@ class TonWalletTransactionDetailsDefaultBody extends StatelessWidget {
 
 /// Body of transaction for TonWallet that contains additional information,
 /// that is mapped based on transaction data.
-class TonWalletTransactionAdditionalBody extends StatelessWidget {
-  const TonWalletTransactionAdditionalBody({
+class WalletTransactionAdditionalBody extends StatelessWidget {
+  const WalletTransactionAdditionalBody({
     required this.children,
     this.type,
     super.key,

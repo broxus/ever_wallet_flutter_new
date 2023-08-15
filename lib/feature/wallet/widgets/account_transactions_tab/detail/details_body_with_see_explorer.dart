@@ -4,9 +4,9 @@ import 'package:ui_components_lib/ui_components_lib.dart';
 
 /// Widget that wraps [body] in stack and adds [SeeInExplorerButton].
 /// [body] automatically wraps with scroll widget.
-class TonWalletTransactionDetailsBodyWithExplorerButton
-    extends StatelessWidget {
-  const TonWalletTransactionDetailsBodyWithExplorerButton({
+/// Works for Ton/Token wallets
+class WalletTransactionDetailsBodyWithExplorerButton extends StatelessWidget {
+  const WalletTransactionDetailsBodyWithExplorerButton({
     required this.body,
     required this.transactionHash,
     this.action,
