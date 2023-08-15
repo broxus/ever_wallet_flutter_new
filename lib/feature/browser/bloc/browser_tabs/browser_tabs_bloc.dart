@@ -25,6 +25,7 @@ class BrowserTabsBloc extends Bloc<BrowserTabsEvent, BrowserTabsState> {
             currentTabId: browserTabsStorageService.browserActiveTabId,
             tabsState: {},
             clearCacheOnNextTab: false,
+            searchText: '',
           ),
         ) {
     _registerHandlers();
@@ -177,6 +178,9 @@ class BrowserTabsBloc extends Bloc<BrowserTabsEvent, BrowserTabsState> {
     });
     on<_CacheCleared>((event, emit) {
       emit(state.copyWith(clearCacheOnNextTab: true));
+    });
+    on<_SetSearchText>((event, emit) {
+      emit(state.copyWith(searchText: event.text));
     });
   }
 

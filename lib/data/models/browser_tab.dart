@@ -23,7 +23,7 @@ class BrowserTab with _$BrowserTab {
     required String? title,
 
     /// The sorting position of the tab.
-    required int sortingOrder,
+    required double sortingOrder,
   }) = _BrowserTab;
 
   factory BrowserTab.create({
@@ -34,7 +34,7 @@ class BrowserTab with _$BrowserTab {
         url: url,
         imageId: null,
         title: null,
-        sortingOrder: DateTime.now().millisecondsSinceEpoch,
+        sortingOrder: DateTime.now().millisecondsSinceEpoch.toDouble(),
       );
 
   const BrowserTab._();

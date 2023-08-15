@@ -9,9 +9,11 @@ import 'package:ui_components_lib/ui_components_lib.dart';
 class BrowserSearchBar extends StatelessWidget {
   const BrowserSearchBar({
     this.onSubmitted,
+    this.onChanged,
     super.key,
   });
   final ValueChanged<String?>? onSubmitted;
+  final ValueChanged<String?>? onChanged;
 
   static const height = DimensSize.d64;
 
@@ -26,6 +28,7 @@ class BrowserSearchBar extends StatelessWidget {
           hintText: LocaleKeys.browserSearchURL.tr(),
           cancelText: LocaleKeys.browserSearchURLCancel.tr(),
           onSubmitted: onSubmitted,
+          onChanged: onChanged,
           onShared: _onShared,
           searchSvg: Assets.images.search.path,
           secureSvg: Assets.images.lock.path,

@@ -59,7 +59,9 @@ List<BrowserBookmarkItem> predefinedItems() => [
         faviconUrl: LocaleKeys.browserLink06Favicon.tr(),
         sortingOrder: 1,
       ),
-    ];
+    ]..sort(
+        (a, b) => (b.sortingOrder - a.sortingOrder).sign.toInt(),
+      );
 
 List<BrowserCard> predefinedCards() => [
       BrowserCard(

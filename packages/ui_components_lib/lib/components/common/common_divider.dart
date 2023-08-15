@@ -24,3 +24,33 @@ class CommonDivider extends StatelessWidget {
     );
   }
 }
+
+/// Default divider of application, that is used to separate items and header
+/// sections in sliver lists.
+class CommonSliverDividerHeaderDelegate extends SliverPersistentHeaderDelegate {
+  CommonSliverDividerHeaderDelegate({this.color});
+
+  @override
+  Widget build(
+    BuildContext context,
+    double shrinkOffset,
+    bool overlapsContent,
+  ) {
+    return CommonDivider(
+      color: color,
+    );
+  }
+
+  final Color? color;
+
+  @override
+  double get maxExtent => _commonDividerSize;
+
+  @override
+  double get minExtent => _commonDividerSize;
+
+  @override
+  bool shouldRebuild(covariant SliverPersistentHeaderDelegate oldDelegate) {
+    return false;
+  }
+}

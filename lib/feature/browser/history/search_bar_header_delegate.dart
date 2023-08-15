@@ -42,12 +42,7 @@ class SearchBarHeaderDelegate extends SliverPersistentHeaderDelegate {
               ),
               controller: controller,
             ),
-            // ),
           ),
-          if (overlapsContent)
-            CommonDivider(
-              color: colors.strokePrimary,
-            ),
         ],
       ),
     );
