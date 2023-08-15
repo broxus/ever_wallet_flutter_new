@@ -7,5 +7,6 @@ class BrowserTabsState with _$BrowserTabsState {
     required String? currentTabId,
     required Map<String, BrowserTabState> tabsState,
     required bool clearCacheOnNextTab,
+    required String searchText,
   }) = _BrowserTabsState;
 }

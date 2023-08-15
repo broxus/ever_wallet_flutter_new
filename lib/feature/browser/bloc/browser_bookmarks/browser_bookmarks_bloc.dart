@@ -46,6 +46,12 @@ class BrowserBookmarksBloc
         state.items.indexWhere((item) => item.url == url) < 0;
   }
 
+  List<BrowserBookmarkItem> getSortedItems() {
+    return [...state.items]..sort(
+        (a, b) => (b.sortingOrder - a.sortingOrder).sign.toInt(),
+      );
+  }
+
   // ignore: long-method
   void _registerHandlers() {
     on<_SetItem>((event, emit) {
@@ -53,6 +59,16 @@ class BrowserBookmarksBloc
           state.items.indexWhere((item) => item.id == event.item.id) < 0) {
         return;
       }
+
+      // We should update it locally to prevent flicker when reordering
+      emit(
+        state.copyWith(
+          items: [
+            ...[...state.items]..removeWhere((i) => i.id == event.item.id),
+            event.item,
+          ],
+        ),
+      );
 
       browserBookmarksStorageService.setBrowserBookmarkItem(event.item);
     });
