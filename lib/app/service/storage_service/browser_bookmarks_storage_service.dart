@@ -73,12 +73,12 @@ class BrowserBookmarksStorageService extends AbstractStorageService {
   Future<void> clearBrowserBookmarks({
     bool needUndo = true,
   }) async {
+    final savedbrowserBookmarks = browserBookmarks;
+
     await _storage.delete(
       _browserBookmarksKey,
       domain: _browserBookmarksDomain,
     );
-
-    final savedbrowserBookmarks = browserBookmarks;
 
     if (needUndo) {
       inject<MessengerService>().show(
