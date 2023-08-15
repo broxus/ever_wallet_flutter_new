@@ -32,7 +32,7 @@ dependencies:
   hive_flutter: ^1.1.0
   http: ^0.13.6
   http_proxy: ^1.2.1
-  injectable: ^2.1.2
+  injectable: ^2.2.0
   json_annotation: ^4.8.0
   local_auth: ^2.1.6
   logging: 1.1.1
