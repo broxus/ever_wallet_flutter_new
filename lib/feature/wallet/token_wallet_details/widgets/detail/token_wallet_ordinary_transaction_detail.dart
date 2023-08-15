@@ -45,12 +45,12 @@ class TokenWalletOrdinaryTransactionDetailsPage extends StatelessWidget {
 
     return Scaffold(
       appBar: const DefaultAppBar(),
-      body: TonWalletTransactionDetailsBodyWithExplorerButton(
+      body: WalletTransactionDetailsBodyWithExplorerButton(
         transactionHash: transaction.hash,
         body: SeparatedColumn(
           separatorSize: DimensSize.d16,
           children: [
-            TonWalletTransactionDetailsDefaultBody(
+            WalletTransactionDetailsDefaultBody(
               date: transaction.date,
               isIncoming: !transaction.isOutgoing,
               status: TonWalletTransactionStatus.completed,
@@ -64,12 +64,8 @@ class TokenWalletOrdinaryTransactionDetailsPage extends StatelessWidget {
               ),
               hash: transaction.hash,
               recipientOrSender: transaction.address,
+              type: type,
             ),
-            if (type != null)
-              TonWalletTransactionDetailsItem(
-                title: LocaleKeys.typeWord.tr(),
-                content: type,
-              ),
           ],
         ),
       ),
