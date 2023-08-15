@@ -34,4 +34,6 @@ class BrowserTabsEvent with _$BrowserTabsEvent {
       _SetActiveTabId;
   const factory BrowserTabsEvent.clearCache() = _ClearCache;
   const factory BrowserTabsEvent.cacheCleared() = _CacheCleared;
+  const factory BrowserTabsEvent.setSearchText({required String text}) =
+      _SetSearchText;
 }

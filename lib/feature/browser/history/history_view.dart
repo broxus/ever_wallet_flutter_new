@@ -22,28 +22,48 @@ class HistoryView extends StatefulWidget {
 
 class _HistoryViewState extends State<HistoryView> {
   final _searchController = TextEditingController();
+  final _scrollController = ScrollController();
+  bool _showTopDivider = false;
 
   @override
   void initState() {
     super.initState();
 
-    _searchController.addListener(() {
-      context.read<BrowserHistoryBloc>().add(
-            BrowserHistoryEvent.setSearchString(
-              value: _searchController.text,
-            ),
-          );
-    });
+    _searchController.addListener(
+      () {
+        context.read<BrowserHistoryBloc>().add(
+              BrowserHistoryEvent.setSearchString(
+                value: _searchController.text,
+              ),
+            );
+      },
+    );
+
+    _scrollController.addListener(
+      () {
+        final showTopDivider = _scrollController.position.pixels > 0;
+        if (showTopDivider != _showTopDivider) {
+          setState(() {
+            _showTopDivider = showTopDivider;
+          });
+        }
+      },
+    );
+
+    _setIsEditing(false);
   }
 
   @override
   void dispose() {
     _searchController.dispose();
+    _scrollController.dispose();
     super.dispose();
   }
 
   @override
   Widget build(BuildContext context) {
+    final colors = context.themeStyle.colors;
+
     final isEditing = context.watch<BrowserHistoryBloc>().state.isEditing;
     final items = context.watch<BrowserHistoryBloc>().getFilteredItems();
     final sectioned = items.fold<Map<DateTime, List<BrowserHistoryItem>>>(
@@ -104,9 +124,17 @@ class _HistoryViewState extends State<HistoryView> {
               floating: true,
               delegate: SearchBarHeaderDelegate(controller: _searchController),
             ),
+            if (_showTopDivider)
+              SliverPersistentHeader(
+                pinned: true,
+                delegate: CommonSliverDividerHeaderDelegate(
+                  color: colors.strokePrimary,
+                ),
+              ),
             ...widgets,
             _bottomSpacerBuilder(),
           ],
+          controller: _scrollController,
         ),
         _buttonsBuilder(),
       ],

@@ -162,6 +162,7 @@ class _PrimaryViewState extends State<PrimaryView>
                   position: _searchBarAnimation,
                   child: BrowserSearchBar(
                     onSubmitted: _onSearchSubmitted,
+                    onChanged: _onSearchChanged,
                   ),
                 ),
               ),
@@ -187,6 +188,7 @@ class _PrimaryViewState extends State<PrimaryView>
       return;
     }
 
+    // TODO(nesquikm): create more efficient way to check if it's a URL
     var uri = Uri.parse(text);
     if (!uri.hasScheme) {
       uri = Uri.parse('$_searchEngineUri$text');
@@ -199,5 +201,15 @@ class _PrimaryViewState extends State<PrimaryView>
           ? BrowserTabsEvent.setUrl(id: activeTab.id, uri: uri)
           : BrowserTabsEvent.add(uri: uri),
     );
+  }
+
+  void _onSearchChanged(String? text) {
+    if (text == null) {
+      return;
+    }
+
+    context
+        .read<BrowserTabsBloc>()
+        .add(BrowserTabsEvent.setSearchText(text: text));
   }
 }

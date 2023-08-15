@@ -70,11 +70,25 @@ class BrowserBookmarksStorageService extends AbstractStorageService {
   }
 
   /// Clear browser bookmarks
-  Future<void> clearBrowserBookmarks() async {
+  Future<void> clearBrowserBookmarks({
+    bool needUndo = true,
+  }) async {
+    final savedbrowserBookmarks = browserBookmarks;
+
     await _storage.delete(
       _browserBookmarksKey,
       domain: _browserBookmarksDomain,
     );
+
+    if (needUndo) {
+      inject<MessengerService>().show(
+        Message.info(
+          message: LocaleKeys.browserBookmarksDeleted.tr(),
+          actionText: LocaleKeys.browserBookmarksDeletedUndo.tr(),
+          onAction: () => saveBrowserBookmarks(savedbrowserBookmarks),
+        ),
+      );
+    }
 
     await _streamedBrowserBookmarks();
   }
@@ -117,6 +131,6 @@ class BrowserBookmarksStorageService extends AbstractStorageService {
 
   @override
   Future<void> clearSensitiveData() => Future.wait([
-        clearBrowserBookmarks(),
+        clearBrowserBookmarks(needUndo: false),
       ]);
 }
