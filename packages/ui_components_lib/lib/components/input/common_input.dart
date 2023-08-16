@@ -54,6 +54,7 @@ class CommonInput extends StatefulWidget {
     this.titleText,
     this.subtitleText,
     this.prefixIconConstraints,
+    this.suffixIconConstraints,
     this.fillColor,
   });
 
@@ -103,6 +104,9 @@ class CommonInput extends StatefulWidget {
 
   /// Constraints for [prefixIcon]
   final BoxConstraints? prefixIconConstraints;
+
+  /// Constraints for [suffixIcon]
+  final BoxConstraints? suffixIconConstraints;
 
   /// Icon to show after input field, if not specified and [needClearButton] is
   /// true then custom clear button will be shown.
@@ -290,6 +294,10 @@ class _CommonInputState extends State<CommonInput> {
   }
 
   BoxConstraints _suffixIconConstraints() {
+    if (widget.suffixIconConstraints != null) {
+      return widget.suffixIconConstraints!;
+    }
+
     if (widget.suffixIcon != null || widget.needClearButton && !isEmpty) {
       return BoxConstraints(
         minHeight: widget.height,

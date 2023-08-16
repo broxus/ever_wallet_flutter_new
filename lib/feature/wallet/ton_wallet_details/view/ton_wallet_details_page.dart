@@ -47,6 +47,7 @@ class TonWalletDetailsPage extends StatelessWidget {
                       WalletAccountActions(
                         currentAccount: account,
                         allowStake: false,
+                        sendSpecified: true,
                       ),
                     ],
                   ),

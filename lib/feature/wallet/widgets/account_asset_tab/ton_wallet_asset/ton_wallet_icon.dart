@@ -5,11 +5,13 @@ import 'package:ui_components_lib/ui_components_lib.dart';
 class TonWalletIconWidget extends StatelessWidget {
   const TonWalletIconWidget({
     required this.path,
+    this.size = DimensSize.d40,
     super.key,
   });
 
   /// Can be asset path or network url
   final String path;
+  final double size;
 
   @override
   Widget build(BuildContext context) {
@@ -18,15 +20,15 @@ class TonWalletIconWidget extends StatelessWidget {
     if (uri.hasScheme) {
       return SvgPicture.network(
         path,
-        width: DimensSize.d40,
-        height: DimensSize.d40,
+        width: size,
+        height: size,
       );
     }
 
     return SvgPicture.asset(
       path,
-      width: DimensSize.d40,
-      height: DimensSize.d40,
+      width: size,
+      height: size,
     );
   }
 }
