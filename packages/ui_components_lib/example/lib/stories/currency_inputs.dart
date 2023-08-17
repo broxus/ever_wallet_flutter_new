@@ -119,6 +119,42 @@ class _CurrencyInputsStoryState extends State<CurrencyInputsStory> {
                   ),
                 ],
               ),
+              const Text(
+                'USD, allow negative with ticker',
+              ),
+              CommonInput(
+                inputFormatters: [
+                  CurrencyTextInputFormatter(
+                    usd,
+                    allowNegative: true,
+                    includeTicker: true,
+                  ),
+                ],
+              ),
+              const Text(
+                'Coin with scale 6, allow negative with ticker',
+              ),
+              CommonInput(
+                inputFormatters: [
+                  CurrencyTextInputFormatter(
+                    scale6,
+                    allowNegative: true,
+                    includeTicker: true,
+                  ),
+                ],
+              ),
+              const Text(
+                'Coin with scale 0, allow negative with ticker',
+              ),
+              CommonInput(
+                inputFormatters: [
+                  CurrencyTextInputFormatter(
+                    scale0,
+                    allowNegative: true,
+                    includeTicker: true,
+                  ),
+                ],
+              ),
             ],
           ),
         ),

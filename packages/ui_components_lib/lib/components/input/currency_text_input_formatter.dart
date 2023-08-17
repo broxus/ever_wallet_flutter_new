@@ -10,15 +10,18 @@ class CurrencyTextInputFormatter extends TextInputFormatter {
     _scale = currency.scale;
     _decimalSeparator = _scale > 0 ? currency.decimalSeparator : '';
 
+    _tickerString = includeTicker ? ' ${currency.code}' : '';
+
     final minusSignExp = allowNegative ? '(?<minus>-?)' : '(?<minus>)';
     const integerExp = '(?<integer>[0-9]+)';
     final separatorExp =
         '(?<separator>$_decimalSeparator)'.replaceAll('.', r'\.');
     final decimalExp = '(?<decimal>[0-9]{0,$_scale})';
+    final tickerExp =
+        includeTicker ? '(?<ticker>($_tickerString)?)' : '(?<ticker>)';
 
     _fullRegExp = RegExp(
-      '^$minusSignExp($integerExp($separatorExp$decimalExp)?)?\$',
-      caseSensitive: false,
+      '^$minusSignExp($integerExp($separatorExp$decimalExp)?)?$tickerExp\$',
     );
   }
 
@@ -27,6 +30,7 @@ class CurrencyTextInputFormatter extends TextInputFormatter {
   final bool includeTicker;
 
   late final String _decimalSeparator;
+  late final String _tickerString;
   late final int _scale;
   late final RegExp _fullRegExp;
 
@@ -35,9 +39,7 @@ class CurrencyTextInputFormatter extends TextInputFormatter {
     TextEditingValue oldValue,
     TextEditingValue newValue,
   ) {
-    final newTrim = newValue.text.trim();
-
-    final match = _fullRegExp.firstMatch(newTrim);
+    final match = _fullRegExp.firstMatch(newValue.text);
 
     if (match == null) {
       return oldValue;
@@ -56,11 +58,13 @@ class CurrencyTextInputFormatter extends TextInputFormatter {
     }
 
     final newText = '$minus$integer$separator$decimal';
+    final newTextWithTicker =
+        newText.isNotEmpty ? '$newText$_tickerString' : '';
 
     final newSelection = clampSelection(newValue.selection, newText);
 
     return TextEditingValue(
-      text: newText,
+      text: newTextWithTicker,
       selection: newSelection,
     );
   }
