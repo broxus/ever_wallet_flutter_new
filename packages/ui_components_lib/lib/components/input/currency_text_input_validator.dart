@@ -25,6 +25,7 @@ class CurrencyTextInputValidator {
   }
 
   /// Create a [CurrencyTextInputValidator] from a [CurrencyTextInputFormatter].
+  /// [error] is the error message to be used when the input is invalid.
   /// [emptyError], if provided, will be used as the error message when the
   /// input is empty. Else, the field can be empty.
   factory CurrencyTextInputValidator.fromFormatter(
@@ -69,6 +70,15 @@ class CurrencyTextInputValidator {
   }
 }
 
+/// Create a [CurrencyTextInputFormatter] and a [CurrencyTextInputValidator]
+/// from a [Currency].
+/// [currency] is the [Currency] to be used for validation.
+/// [error] is the error message to be used when the input is invalid.
+/// [allowNegative] determines whether negative values are allowed.
+/// [includeTicker] determines whether the currency ticker is included in the
+/// validation.
+/// [emptyError], if provided, will be used as the error message when the
+/// input is empty. Else, the field can be empty.
 (CurrencyTextInputFormatter, CurrencyTextInputValidator)
     createCurrencyTextInputFormatterValidator(
   Currency currency, {
