@@ -47,6 +47,9 @@ class _CurrencyInputsStoryState extends State<CurrencyInputsStory> {
   late final CurrencyTextInputValidator _scale0NegativeTickerValidator;
   late final CurrencyTextInputFormatter _scale0NegativeTickerFormatter;
 
+  late final CurrencyTextInputValidator _usdTickerNotEmptyValidator;
+  late final CurrencyTextInputFormatter _usdTickerNotEmptyFormatter;
+
   @override
   void initState() {
     super.initState();
@@ -55,48 +58,70 @@ class _CurrencyInputsStoryState extends State<CurrencyInputsStory> {
     final scale6 = Currency.create('SIX', 6);
     final scale0 = Currency.create('ZERO', 0);
 
-    _usdValidator = CurrencyTextInputValidator(usd);
+    _usdValidator = CurrencyTextInputValidator(usd, error: 'invalid value');
     _usdFormatter = CurrencyTextInputFormatter.fromValidator(_usdValidator);
 
-    _scale6Validator = CurrencyTextInputValidator(scale6);
+    _scale6Validator =
+        CurrencyTextInputValidator(scale6, error: 'invalid value');
     _scale6Formatter =
         CurrencyTextInputFormatter.fromValidator(_scale6Validator);
 
-    _scale0Validator = CurrencyTextInputValidator(scale0);
+    _scale0Validator =
+        CurrencyTextInputValidator(scale0, error: 'invalid value');
     _scale0Formatter =
         CurrencyTextInputFormatter.fromValidator(_scale0Validator);
 
-    _usdTickerValidator = CurrencyTextInputValidator(usd, includeTicker: true);
+    _usdTickerValidator = CurrencyTextInputValidator(
+      usd,
+      error: 'invalid value',
+      includeTicker: true,
+    );
     _usdTickerFormatter =
         CurrencyTextInputFormatter.fromValidator(_usdTickerValidator);
 
-    _scale6TickerValidator =
-        CurrencyTextInputValidator(scale6, includeTicker: true);
+    _scale6TickerValidator = CurrencyTextInputValidator(
+      scale6,
+      error: 'invalid value',
+      includeTicker: true,
+    );
     _scale6TickerFormatter =
         CurrencyTextInputFormatter.fromValidator(_scale6TickerValidator);
 
-    _scale0TickerValidator =
-        CurrencyTextInputValidator(scale0, includeTicker: true);
+    _scale0TickerValidator = CurrencyTextInputValidator(
+      scale0,
+      error: 'invalid value',
+      includeTicker: true,
+    );
     _scale0TickerFormatter =
         CurrencyTextInputFormatter.fromValidator(_scale0TickerValidator);
 
-    _usdNegativeValidator =
-        CurrencyTextInputValidator(usd, allowNegative: true);
+    _usdNegativeValidator = CurrencyTextInputValidator(
+      usd,
+      error: 'invalid value',
+      allowNegative: true,
+    );
     _usdNegativeFormatter =
         CurrencyTextInputFormatter.fromValidator(_usdNegativeValidator);
 
-    _scale6NegativeValidator =
-        CurrencyTextInputValidator(scale6, allowNegative: true);
+    _scale6NegativeValidator = CurrencyTextInputValidator(
+      scale6,
+      error: 'invalid value',
+      allowNegative: true,
+    );
     _scale6NegativeFormatter =
         CurrencyTextInputFormatter.fromValidator(_scale6NegativeValidator);
 
-    _scale0NegativeValidator =
-        CurrencyTextInputValidator(scale0, allowNegative: true);
+    _scale0NegativeValidator = CurrencyTextInputValidator(
+      scale0,
+      error: 'invalid value',
+      allowNegative: true,
+    );
     _scale0NegativeFormatter =
         CurrencyTextInputFormatter.fromValidator(_scale0NegativeValidator);
 
     _usdNegativeTickerValidator = CurrencyTextInputValidator(
       usd,
+      error: 'invalid value',
       allowNegative: true,
       includeTicker: true,
     );
@@ -105,6 +130,7 @@ class _CurrencyInputsStoryState extends State<CurrencyInputsStory> {
 
     _scale6NegativeTickerValidator = CurrencyTextInputValidator(
       scale6,
+      error: 'invalid value',
       allowNegative: true,
       includeTicker: true,
     );
@@ -114,12 +140,22 @@ class _CurrencyInputsStoryState extends State<CurrencyInputsStory> {
 
     _scale0NegativeTickerValidator = CurrencyTextInputValidator(
       scale0,
+      error: 'invalid value',
       allowNegative: true,
       includeTicker: true,
     );
     _scale0NegativeTickerFormatter = CurrencyTextInputFormatter.fromValidator(
       _scale0NegativeTickerValidator,
     );
+
+    _usdTickerNotEmptyValidator = CurrencyTextInputValidator(
+      usd,
+      includeTicker: true,
+      error: 'invalid value',
+      emptyError: 'should not be empty',
+    );
+    _usdTickerNotEmptyFormatter =
+        CurrencyTextInputFormatter.fromValidator(_usdTickerNotEmptyValidator);
   }
 
   @override
@@ -235,6 +271,14 @@ class _CurrencyInputsStoryState extends State<CurrencyInputsStory> {
                   inputFormatters: [_scale0NegativeTickerFormatter],
                   validateMode: AutovalidateMode.onUserInteraction,
                   validator: _scale0NegativeTickerValidator.validate,
+                ),
+                const Text(
+                  'USD  with ticker not empty',
+                ),
+                CommonInput(
+                  inputFormatters: [_usdTickerNotEmptyFormatter],
+                  validateMode: AutovalidateMode.onUserInteraction,
+                  validator: _usdTickerNotEmptyValidator.validate,
                 ),
               ],
             ),

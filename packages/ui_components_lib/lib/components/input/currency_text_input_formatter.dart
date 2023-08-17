@@ -13,21 +13,11 @@ class CurrencyTextInputFormatter extends TextInputFormatter {
     this.allowNegative = false,
     this.includeTicker = false,
   }) {
-    _scale = currency.scale;
-    _decimalSeparator = _scale > 0 ? currency.decimalSeparator : '';
-
     _tickerString = includeTicker ? ' ${currency.code}' : '';
-
-    final minusSignExp = allowNegative ? '(?<minus>-?)' : '(?<minus>)';
-    const integerExp = '(?<integer>[0-9]+)';
-    final separatorExp =
-        '(?<separator>$_decimalSeparator)'.replaceAll('.', r'\.');
-    final decimalExp = '(?<decimal>[0-9]{0,$_scale})';
-    final tickerExp =
-        includeTicker ? '(?<ticker>($_tickerString)?)' : '(?<ticker>)';
-
-    _fullRegExp = RegExp(
-      '^$minusSignExp($integerExp($separatorExp$decimalExp)?)?$tickerExp\$',
+    _fullRegExp = createRegExp(
+      currency: currency,
+      allowNegative: allowNegative,
+      includeTicker: includeTicker,
     );
   }
 
@@ -46,10 +36,30 @@ class CurrencyTextInputFormatter extends TextInputFormatter {
   final bool allowNegative;
   final bool includeTicker;
 
-  late final String _decimalSeparator;
   late final String _tickerString;
-  late final int _scale;
   late final RegExp _fullRegExp;
+
+  static RegExp createRegExp({
+    required Currency currency,
+    required bool allowNegative,
+    required bool includeTicker,
+  }) {
+    final scale = currency.scale;
+    final decimalSeparator = scale > 0 ? currency.decimalSeparator : '';
+    final tickerString = includeTicker ? ' ${currency.code}' : '';
+
+    final minusSignExp = allowNegative ? '(?<minus>-?)' : '(?<minus>)';
+    const integerExp = '(?<integer>[0-9]+)';
+    final separatorExp =
+        '(?<separator>$decimalSeparator)'.replaceAll('.', r'\.');
+    final decimalExp = '(?<decimal>[0-9]{0,$scale})';
+    final tickerExp =
+        includeTicker ? '(?<ticker>($tickerString)?)' : '(?<ticker>)';
+
+    return RegExp(
+      '^$minusSignExp($integerExp($separatorExp$decimalExp)?)?$tickerExp\$',
+    );
+  }
 
   @override
   TextEditingValue formatEditUpdate(
