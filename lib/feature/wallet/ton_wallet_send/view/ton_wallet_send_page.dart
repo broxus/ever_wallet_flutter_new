@@ -76,7 +76,7 @@ class TonWalletSendPage extends StatelessWidget {
   Widget _confirmPage({BigInt? fee, String? error}) {
     return Scaffold(
       appBar: DefaultAppBar(
-        onClosePressed: (context) => context.goNamed(AppRoute.wallet.name),
+        onClosePressed: (context) => context.pop(),
         titleText: LocaleKeys.confirmTransaction.tr(),
       ),
       body: TonWalletSendConfirmView(
