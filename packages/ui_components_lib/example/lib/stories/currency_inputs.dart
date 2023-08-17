@@ -11,6 +11,7 @@ class CurrencyInputsStory extends StatefulWidget {
 class _CurrencyInputsStoryState extends State<CurrencyInputsStory> {
   final usd = Currencies().find('USD')!;
   final scale6 = Currency.create('SIX', 6);
+  final scale0 = Currency.create('ZERO', 0);
 
   @override
   Widget build(BuildContext context) {
@@ -23,28 +24,100 @@ class _CurrencyInputsStoryState extends State<CurrencyInputsStory> {
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               const Text(
-                'USD without ticker',
+                'USD',
               ),
               CommonInput(
-                inputFormatters: [CurrencyTextInputFormatter(usd)],
+                inputFormatters: [
+                  CurrencyTextInputFormatter(
+                    usd,
+                  ),
+                ],
+              ),
+              const Text(
+                'Coin with scale 6',
+              ),
+              CommonInput(
+                inputFormatters: [
+                  CurrencyTextInputFormatter(
+                    scale6,
+                  ),
+                ],
+              ),
+              const Text(
+                'Coin with scale 0',
+              ),
+              CommonInput(
+                inputFormatters: [
+                  CurrencyTextInputFormatter(
+                    scale0,
+                  ),
+                ],
               ),
               const Text(
                 'USD with ticker',
               ),
               CommonInput(
-                inputFormatters: [CurrencyTextInputFormatter(usd)],
+                inputFormatters: [
+                  CurrencyTextInputFormatter(
+                    usd,
+                    includeTicker: true,
+                  ),
+                ],
               ),
               const Text(
-                'Coin with scale 6 and without ticker',
+                'Coin with scale 6 with ticker',
               ),
               CommonInput(
-                inputFormatters: [CurrencyTextInputFormatter(scale6)],
+                inputFormatters: [
+                  CurrencyTextInputFormatter(
+                    scale6,
+                    includeTicker: true,
+                  ),
+                ],
               ),
               const Text(
-                'Coin with scale 6 and with ticker',
+                'Coin with scale 0 with ticker',
               ),
               CommonInput(
-                inputFormatters: [CurrencyTextInputFormatter(scale6)],
+                inputFormatters: [
+                  CurrencyTextInputFormatter(
+                    scale0,
+                    includeTicker: true,
+                  ),
+                ],
+              ),
+              const Text(
+                'USD, allow negative',
+              ),
+              CommonInput(
+                inputFormatters: [
+                  CurrencyTextInputFormatter(
+                    usd,
+                    allowNegative: true,
+                  ),
+                ],
+              ),
+              const Text(
+                'Coin with scale 6, allow negative',
+              ),
+              CommonInput(
+                inputFormatters: [
+                  CurrencyTextInputFormatter(
+                    scale6,
+                    allowNegative: true,
+                  ),
+                ],
+              ),
+              const Text(
+                'Coin with scale 0, allow negative',
+              ),
+              CommonInput(
+                inputFormatters: [
+                  CurrencyTextInputFormatter(
+                    scale0,
+                    allowNegative: true,
+                  ),
+                ],
               ),
             ],
           ),
