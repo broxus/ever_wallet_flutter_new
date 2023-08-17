@@ -4,6 +4,7 @@ import 'package:ui_components_lib/components/input/input.dart';
 
 class CurrencyTextInputValidator {
   /// [currency] is the [Currency] to be used for validation.
+  /// [error] is the error message to be used when the input is invalid.
   /// [allowNegative] determines whether negative values are allowed.
   /// [includeTicker] determines whether the currency ticker is included in the
   /// validation.
