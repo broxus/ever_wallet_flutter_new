@@ -18,6 +18,7 @@ class MoneyWidget extends StatelessWidget {
     required this.money,
     required this.style,
     this.sign,
+    this.signValue,
     super.key,
   });
 
@@ -28,6 +29,10 @@ class MoneyWidget extends StatelessWidget {
   /// - will be displayed.
   /// If null, nothing will displayed.
   final int? sign;
+
+  /// Additional string, that can be put before money.
+  /// Typically, this can be `~` symbol for fee.
+  final String? signValue;
 
   @override
   Widget build(BuildContext context) {
@@ -54,7 +59,10 @@ class MoneyWidget extends StatelessWidget {
     return Row(
       mainAxisSize: MainAxisSize.min,
       children: [
-        Text('$signStr${money.formatImproved()}', style: moneyStyle),
+        Text(
+          '${signValue ?? ''}$signStr${money.formatImproved()}',
+          style: moneyStyle,
+        ),
         const SizedBox(width: DimensStroke.medium),
         Text(money.currency.symbol, style: symbolStyle),
       ],
