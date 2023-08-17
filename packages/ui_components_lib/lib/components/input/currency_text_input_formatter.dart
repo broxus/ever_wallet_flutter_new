@@ -1,7 +1,13 @@
 import 'package:flutter/services.dart';
 import 'package:money2/money2.dart';
 
+import 'package:ui_components_lib/components/input/input.dart';
+
 class CurrencyTextInputFormatter extends TextInputFormatter {
+  /// [currency] is the [Currency] to be used for validation.
+  /// [allowNegative] determines whether negative values are allowed.
+  /// [includeTicker] determines whether the currency ticker is included in the
+  /// validation.
   CurrencyTextInputFormatter(
     this.currency, {
     this.allowNegative = false,
@@ -22,6 +28,17 @@ class CurrencyTextInputFormatter extends TextInputFormatter {
 
     _fullRegExp = RegExp(
       '^$minusSignExp($integerExp($separatorExp$decimalExp)?)?$tickerExp\$',
+    );
+  }
+
+  /// Create a [CurrencyTextInputFormatter] from a [CurrencyTextInputValidator].
+  factory CurrencyTextInputFormatter.fromValidator(
+    CurrencyTextInputValidator validator,
+  ) {
+    return CurrencyTextInputFormatter(
+      validator.currency,
+      allowNegative: validator.allowNegative,
+      includeTicker: validator.includeTicker,
     );
   }
 
