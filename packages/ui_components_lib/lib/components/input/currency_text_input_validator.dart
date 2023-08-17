@@ -85,6 +85,7 @@ class CurrencyTextInputValidator {
     emptyError: emptyError,
   );
   final formatter = CurrencyTextInputFormatter.fromValidator(validator);
+
   return (
     formatter,
     validator,

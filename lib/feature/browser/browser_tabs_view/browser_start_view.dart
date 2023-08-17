@@ -82,6 +82,7 @@ class _BrowserStartViewState extends State<BrowserStartView> {
       final title = item.title.toLowerCase();
       final url = item.url.toString().toLowerCase();
       final search = searchText.toLowerCase();
+
       return title.contains(search) || url.contains(search);
     }).toList();
 
@@ -376,6 +377,7 @@ class _BrowserStartViewState extends State<BrowserStartView> {
       context.read<BrowserTabsBloc>().add(
             BrowserTabsEvent.add(uri: url),
           );
+
       return;
     }
     context.read<BrowserTabsBloc>().add(

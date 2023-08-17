@@ -51,6 +51,7 @@ class _CurrencyInputsStoryState extends State<CurrencyInputsStory> {
   late final CurrencyTextInputFormatter _usdTickerNotEmptyFormatter;
 
   @override
+  // ignore: long-method
   void initState() {
     super.initState();
 
