@@ -1,3 +1,4 @@
+import 'package:app/app/router/router.dart';
 import 'package:app/app/service/service.dart';
 import 'package:app/di/di.dart';
 import 'package:app/feature/wallet/wallet.dart';
@@ -49,9 +50,26 @@ class WalletPrepareTransferPage extends StatelessWidget {
               amount,
               comment,
             ) {
-              // TODO(alex-a4): navigate to send page
-              inject<MessengerService>()
-                  .show(Message.successful(message: 'Go send'));
+              if (selectedAsset.isNative) {
+                context.goFurther(
+                  AppRoute.tonWalletSend.pathWithQuery(
+                    {
+                      tonWalletSendAddressQueryParam: address.address,
+                      tonWalletSendPublicKeyQueryParam:
+                          selectedCustodian.publicKey,
+                      if (comment != null)
+                        tonWalletSendCommentQueryParam: comment,
+                      tonWalletSendDestinationQueryParam:
+                          receiveAddress.address,
+                      tonWalletSendAmountQueryParam:
+                          amount.minorUnits.toString(),
+                    },
+                  ),
+                );
+              } else {
+                inject<MessengerService>()
+                    .show(Message.successful(message: 'Go send token'));
+              }
             },
           );
         },

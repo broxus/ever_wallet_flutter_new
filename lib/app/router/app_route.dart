@@ -42,6 +42,10 @@ enum AppRoute {
     '',
     'walletPrepareTransfer/:$walletPrepareTransferAddressPathParam/:$walletPrepareTransferRootTokenAddressPathParam',
   ),
+  tonWalletSend(
+    '',
+    'tonWalletSend', // all data in query
+  ),
 
   /// Browser section
   browser(

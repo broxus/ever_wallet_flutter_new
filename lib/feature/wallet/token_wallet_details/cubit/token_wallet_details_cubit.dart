@@ -49,7 +49,7 @@ class TokenWalletDetailsCubit extends Cubit<TokenWalletDetailsState> {
         (w) => w.owner == owner && w.rootTokenContract == rootTokenContract,
       );
       if (wallet != null) {
-        final local = nekotonRepository.localCustodians(owner);
+        final local = nekotonRepository.getLocalCustodians(owner);
         _canSend = local != null && local.isNotEmpty;
 
         _walletsSubscription?.cancel();
