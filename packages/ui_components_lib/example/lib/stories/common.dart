@@ -255,6 +255,19 @@ class _CommonStoryState extends State<CommonStory> {
             const SizedBox(height: DimensSize.d8),
             MoneyWidget(money: money, style: MoneyWidgetStyle.secondary),
 
+            const SizedBox(height: DimensSize.d16),
+            SeparatedRow(
+              children: const [
+                CommonCircularProgressIndicator(
+                  size: CircularIndicatorSize.small,
+                ),
+                CommonCircularProgressIndicator(),
+                CommonCircularProgressIndicator(
+                  size: CircularIndicatorSize.large,
+                ),
+              ],
+            ),
+
             const SizedBox(height: DimensSize.d32),
           ],
         ),
