@@ -17,11 +17,15 @@ class WalletAccountActions extends StatelessWidget {
   const WalletAccountActions({
     required this.currentAccount,
     this.allowStake = true,
+    this.sendSpecified = false,
     super.key,
   });
 
   final KeyAccount? currentAccount;
   final bool allowStake;
+
+  /// If send action should be navigated to send specified token or select token
+  final bool sendSpecified;
 
   @override
   Widget build(BuildContext context) {
@@ -87,8 +91,32 @@ class WalletAccountActions extends StatelessWidget {
     WalletAccountActionBehavior action,
   ) =>
       switch (action) {
-        // ignore: no-empty-block
-        WalletAccountActionBehavior.send => () {},
+        WalletAccountActionBehavior.send => () {
+            if (sendSpecified) {
+              context.goFurther(
+                AppRoute.walletPrepareTransferSpecified.pathWithData(
+                  pathParameters: {
+                    walletPrepareTransferAddressPathParam:
+                        currentAccount!.address.address,
+                    walletPrepareTransferRootTokenAddressPathParam:
+                        inject<NekotonRepository>()
+                            .currentTransport
+                            .nativeTokenAddress
+                            .address,
+                  },
+                ),
+              );
+            } else {
+              context.goFurther(
+                AppRoute.walletPrepareTransfer.pathWithData(
+                  pathParameters: {
+                    walletPrepareTransferAddressPathParam:
+                        currentAccount!.address.address,
+                  },
+                ),
+              );
+            }
+          },
         // ignore: no-empty-block
         WalletAccountActionBehavior.deploy => () {},
         WalletAccountActionBehavior.sendLocalCustodiansNeeded => () =>

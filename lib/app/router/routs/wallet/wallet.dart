@@ -10,6 +10,9 @@ const tonWalletDetailsAddressPathParam = 'tonWalletDetailsAddress';
 const tokenWalletDetailsOwnerAddressPathParam = 'tonWalletDetailsOwnerAddress';
 const tokenWalletDetailsContractAddressPathParam =
     'tonWalletDetailsContractAddress';
+const walletPrepareTransferAddressPathParam = 'walletPrepareAddress';
+const walletPrepareTransferRootTokenAddressPathParam =
+    'walletPrepareRootTokenAddress';
 
 /// Branch that is root for wallet.
 StatefulShellBranch get walletBranch {
@@ -35,6 +38,7 @@ StatefulShellBranch get walletBranch {
           addSeedNamedRoute,
           tonWalletDetailsRoute,
           tokenWalletDetailsRoute,
+          walletPrepareTransferRoute,
         ],
       ),
     ],
@@ -49,6 +53,9 @@ GoRoute get tonWalletDetailsRoute {
         address: state.pathParameters[tonWalletDetailsAddressPathParam]!,
       ),
     ),
+    routes: [
+      walletPrepareTransferLockedRoute,
+    ],
   );
 }
 
@@ -62,6 +69,37 @@ GoRoute get tokenWalletDetailsRoute {
       rootTokenContract: Address(
         address:
             state.pathParameters[tokenWalletDetailsContractAddressPathParam]!,
+      ),
+    ),
+    routes: [
+      walletPrepareTransferLockedRoute,
+    ],
+  );
+}
+
+/// Prepare transfer with selecting token
+GoRoute get walletPrepareTransferRoute {
+  return GoRoute(
+    path: AppRoute.walletPrepareTransfer.path,
+    builder: (_, state) => WalletPrepareTransferPage(
+      address: Address(
+        address: state.pathParameters[walletPrepareTransferAddressPathParam]!,
+      ),
+    ),
+  );
+}
+
+/// Prepare transfer with specified token
+GoRoute get walletPrepareTransferLockedRoute {
+  return GoRoute(
+    path: AppRoute.walletPrepareTransferSpecified.path,
+    builder: (_, state) => WalletPrepareTransferPage(
+      address: Address(
+        address: state.pathParameters[walletPrepareTransferAddressPathParam]!,
+      ),
+      rootTokenContract: Address(
+        address: state
+            .pathParameters[walletPrepareTransferRootTokenAddressPathParam]!,
       ),
     ),
   );

@@ -124,6 +124,7 @@
   "addExistingAccountDescription": "You can add only those addresses where your public key is a custodian",
   "keyIsNotCustodian": "Public key is not a custodian of this account",
   "addressIsWrong": "Address is wrong",
+  "addressIsEmpty": "Address is empty",
   "hideWord": "Hide",
   "showWord": "Show",
   "settingsOfAccount": "Settings of the account",
@@ -298,5 +299,15 @@
   "swapBack": "Swap back",
   "acceptWord": "Accept",
   "transferBounced": "Transfer bounced",
-  "swapBackBounced": "Swap back bounced"
+  "swapBackBounced": "Swap back bounced",
+  "amountIsWrong": "Amount is wrong",
+  "amountIsEmpty": "Amount is empty",
+  "sendYourFunds": "Send your funds",
+  "nextWord": "Next",
+  "amountAvailable": "(available {})",
+  "receiverAddress": "Receiver address",
+  "accountNotFound": "Account with address {} not found",
+  "selectToken": "Select token",
+  "insufficientFunds": "Insufficient funds",
+  "maxWord": "Max"
 }

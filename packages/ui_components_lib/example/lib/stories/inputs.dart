@@ -35,6 +35,8 @@ class _InputsStoryState extends State<InputsStory> {
   late final radio1Notifier = ValueNotifier<String>(radioValues.first);
   late final radio2Notifier = ValueNotifier<String?>(null);
 
+  late final dropdown1Notifier = ValueNotifier<String>(suggestionsList.first);
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -301,6 +303,26 @@ class _InputsStoryState extends State<InputsStory> {
                   ),
                 },
               ),
+              const SizedBox(height: DimensSize.d24),
+              ValueListenableBuilder<String>(
+                valueListenable: dropdown1Notifier,
+                builder: (context, value, _) {
+                  return CommonSelectDropdown<String>(
+                    values: suggestionsList
+                        .map(
+                          (e) => CommonSheetDropdownItem(
+                            value: e,
+                            title: e,
+                            icon: const Icon(Icons.add),
+                          ),
+                        )
+                        .toList(),
+                    currentValue: value,
+                    onChanged: (v) => dropdown1Notifier.value = v,
+                  );
+                },
+              ),
+
               const SizedBox(height: DimensSize.d40),
             ],
           ),

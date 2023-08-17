@@ -1,4 +1,4 @@
-import 'package:app/data/models/models.dart';
+import 'package:app/feature/wallet/wallet.dart';
 import 'package:app/generated/generated.dart';
 import 'package:flutter/material.dart';
 import 'package:nekoton_repository/nekoton_repository.dart';
@@ -7,28 +7,31 @@ import 'package:ui_components_lib/ui_components_lib.dart';
 /// Widget that is able to display icon for TokenWallet
 class TokenWalletIconWidget extends StatelessWidget {
   const TokenWalletIconWidget({
-    required this.asset,
+    required this.address,
+    required this.logoURI,
+    required this.version,
+    this.size = DimensSize.d40,
     super.key,
   });
 
-  final TokenContractAsset asset;
+  final Address address;
+  final TokenWalletVersion version;
+  final String? logoURI;
+
+  final double size;
 
   @override
   Widget build(BuildContext context) {
     return SizedBox.square(
-      dimension: DimensSize.d40,
+      dimension: size,
       child: Stack(
         children: [
           ClipOval(
-            child: asset.logoURI != null
-                ? SvgPicture.network(
-                    asset.logoURI!,
-                    width: DimensSize.d40,
-                    height: DimensSize.d40,
-                  )
-                : CustomPaint(painter: _AvatarPainter(asset.address.address)),
+            child: logoURI != null
+                ? TonWalletIconWidget(path: logoURI!, size: size)
+                : CustomPaint(painter: _AvatarPainter(address.address)),
           ),
-          if (asset.version == TokenWalletVersion.oldTip3v4)
+          if (version == TokenWalletVersion.oldTip3v4)
             const Positioned(
               right: 0,
               bottom: 0,

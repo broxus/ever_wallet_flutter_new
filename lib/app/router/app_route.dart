@@ -34,6 +34,14 @@ enum AppRoute {
     '',
     'tonWalletDetails/:$tokenWalletDetailsOwnerAddressPathParam/:$tokenWalletDetailsContractAddressPathParam',
   ),
+  walletPrepareTransfer(
+    '',
+    'walletPrepareTransfer/:$walletPrepareTransferAddressPathParam',
+  ),
+  walletPrepareTransferSpecified(
+    '',
+    'walletPrepareTransfer/:$walletPrepareTransferAddressPathParam/:$walletPrepareTransferRootTokenAddressPathParam',
+  ),
 
   /// Browser section
   browser(
