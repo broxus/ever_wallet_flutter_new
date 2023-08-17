@@ -99,6 +99,7 @@ class TonWalletSendBloc extends Bloc<TonWalletSendEvent, TonWalletSendState> {
             fees,
           ),
         );
+
         return;
       }
 

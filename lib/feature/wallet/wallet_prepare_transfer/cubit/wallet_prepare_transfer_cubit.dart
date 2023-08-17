@@ -54,6 +54,7 @@ class WalletPrepareTransferCubit extends Cubit<WalletPrepareTransferState> {
 
     // Get local custodians async because TonWallet can be missed if
     // <rootTokenContract> is not null
+    // ignore: prefer-async-await
     nekotonRepository.getLocalCustodiansAsync(address).then((custodians) {
       if (custodians != null) _cachedLocalCustodians = custodians;
 
@@ -126,6 +127,7 @@ class WalletPrepareTransferCubit extends Cubit<WalletPrepareTransferState> {
     if (!await validateAddress(addr)) {
       inject<MessengerService>()
           .show(Message.error(message: LocaleKeys.addressIsWrong.tr()));
+
       return;
     }
 
@@ -201,6 +203,7 @@ class WalletPrepareTransferCubit extends Cubit<WalletPrepareTransferState> {
 
     if (contract == null) {
       emit(const WalletPrepareTransferState.empty());
+
       return;
     }
 

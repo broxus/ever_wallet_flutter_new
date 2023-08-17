@@ -99,6 +99,7 @@ class TonWalletSendConfirmView extends StatelessWidget {
                 body: (_, __) => Builder(
                   builder: (c) {
                     return EnterPasswordWidget(
+                      // ignore: prefer-extracting-callbacks
                       onPasswordEntered: (value) {
                         Navigator.of(c).pop();
                         context
