@@ -50,6 +50,9 @@ class _CurrencyInputsStoryState extends State<CurrencyInputsStory> {
   late final CurrencyTextInputValidator _usdTickerNotEmptyValidator;
   late final CurrencyTextInputFormatter _usdTickerNotEmptyFormatter;
 
+  late final CurrencyTextInputValidator _usdMinMaxValidator;
+  late final CurrencyTextInputFormatter _usdMinMaxFormatter;
+
   @override
   // ignore: long-method
   void initState() {
@@ -157,6 +160,17 @@ class _CurrencyInputsStoryState extends State<CurrencyInputsStory> {
     );
     _usdTickerNotEmptyFormatter =
         CurrencyTextInputFormatter.fromValidator(_usdTickerNotEmptyValidator);
+
+    _usdMinMaxValidator = CurrencyTextInputValidator(
+      usd,
+      error: 'invalid value',
+      min: Fixed.parse('42.42'),
+      minError: 'should be greater or equal than 42.42',
+      max: Fixed.parse('69.69'),
+      maxError: 'should be less than or equal 69.69',
+    );
+    _usdMinMaxFormatter =
+        CurrencyTextInputFormatter.fromValidator(_usdValidator);
   }
 
   @override
@@ -274,12 +288,20 @@ class _CurrencyInputsStoryState extends State<CurrencyInputsStory> {
                   validator: _scale0NegativeTickerValidator.validate,
                 ),
                 const Text(
-                  'USD  with ticker not empty',
+                  'USD with ticker not empty',
                 ),
                 CommonInput(
                   inputFormatters: [_usdTickerNotEmptyFormatter],
                   validateMode: AutovalidateMode.onUserInteraction,
                   validator: _usdTickerNotEmptyValidator.validate,
+                ),
+                const Text(
+                  'USD with min 42.42 and max 69.69',
+                ),
+                CommonInput(
+                  inputFormatters: [_usdMinMaxFormatter],
+                  validateMode: AutovalidateMode.onUserInteraction,
+                  validator: _usdMinMaxValidator.validate,
                 ),
               ],
             ),
