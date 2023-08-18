@@ -20,6 +20,7 @@ class _ReadOnlyStoryState extends State<ReadOnlyStory> {
   void initState() {
     super.initState();
 
+    // ignore: prefer-extracting-callbacks
     _timer = Timer.periodic(const Duration(seconds: 2), (timer) {
       setState(() {
         _progress = Random().nextDouble();

@@ -36,6 +36,10 @@ class StoryWidget extends StatelessWidget {
           builder: (_) => const InputsStory(),
         ),
         Story(
+          name: 'Widgets/Currency Inputs',
+          builder: (_) => const CurrencyInputsStory(),
+        ),
+        Story(
           name: 'Widgets/Snackbar',
           builder: (_) => const SnackbarStory(),
         ),
