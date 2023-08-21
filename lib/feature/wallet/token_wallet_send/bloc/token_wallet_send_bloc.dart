@@ -7,42 +7,53 @@ import 'package:freezed_annotation/freezed_annotation.dart';
 import 'package:logging/logging.dart';
 import 'package:nekoton_repository/nekoton_repository.dart' hide Message;
 
-part 'ton_wallet_send_state.dart';
+part 'token_wallet_send_bloc.freezed.dart';
 
-part 'ton_wallet_send_event.dart';
+part 'token_wallet_send_event.dart';
 
-part 'ton_wallet_send_bloc.freezed.dart';
+part 'token_wallet_send_state.dart';
 
-/// Bloc that allows prepare transaction to send native funds from [TonWallet]
-/// for confirmation and send transaction.
-class TonWalletSendBloc extends Bloc<TonWalletSendEvent, TonWalletSendState> {
-  TonWalletSendBloc({
+/// Bloc that allows to prepare not native token from [TokenWallet] for
+/// confirmation and sending transaction.
+class TokenWalletSendBloc
+    extends Bloc<TokenWalletSendEvent, TokenWalletSendState> {
+  TokenWalletSendBloc({
     required this.nekotonRepository,
-    required this.address,
+    required this.owner,
+    required this.rootTokenContract,
     required this.publicKey,
     required this.destination,
     required this.amount,
+    required BigInt? attachedAmount,
     required this.comment,
-  }) : super(const TonWalletSendState.loading()) {
+  })  : attachedAmount = attachedAmount ?? defaultAttachAmount,
+        super(const TokenWalletSendState.init()) {
     _registerHandlers();
   }
 
-  final _logger = Logger('TonWalletSendBloc');
+  final _logger = Logger('TokenWalletSendBloc');
   final NekotonRepository nekotonRepository;
 
-  /// Address of TonWallet that will be used to send funds
-  final Address address;
+  /// Address of account for token.
+  final Address owner;
 
-  /// Custodian of [address] that will be initiator of transaction (for not
+  /// Address of contract for token
+  final Address rootTokenContract;
+
+  /// Local custodian of account, that will be initiator of transaction (for not
   /// multisig this is main key).
   final PublicKey publicKey;
 
-  /// Address where funds should be sent
+  /// Address where tokens must be sent
   final Address destination;
   late Address repackedDestination;
 
-  /// Amount of tokens that should be sent
+  /// How many tokens must be sent, to convert Fixed to BigInt, use
+  /// [Fixed.minorUnits].
   final BigInt amount;
+
+  /// Attached amount in native tokens, that should be added to transaction.
+  final BigInt attachedAmount;
 
   /// Comment for transaction
   final String? comment;
@@ -50,50 +61,76 @@ class TonWalletSendBloc extends Bloc<TonWalletSendEvent, TonWalletSendState> {
   /// Fee for transaction after calculating it in [_handlePrepare]
   BigInt? fees;
 
+  late Currency tokenCurrency;
+
   late UnsignedMessage unsignedMessage;
 
   void _registerHandlers() {
     on<_Prepare>((event, emit) => _handlePrepare(emit));
     on<_Send>((event, emit) => _handleSend(emit, event.password));
     on<_CompleteSend>(
-      (event, emit) => emit(TonWalletSendState.sent(fees!, event.transaction)),
+      (event, emit) => emit(
+        TokenWalletSendState.sent(fees!, tokenCurrency, event.transaction),
+      ),
     );
     on<_AllowCloseSend>(
-      (event, emit) => emit(const TonWalletSendState.sending(canClose: true)),
+      (event, emit) => emit(const TokenWalletSendState.sending(canClose: true)),
     );
   }
 
-  Future<void> _handlePrepare(Emitter<TonWalletSendState> emit) async {
+  Future<void> _handlePrepare(Emitter<TokenWalletSendState> emit) async {
     try {
+      final tokenWallet = await nekotonRepository.tokenWalletsStream
+          .expand((e) => e)
+          .firstWhere(
+            (wallet) =>
+                wallet.owner == owner &&
+                wallet.rootTokenContract == rootTokenContract,
+          );
+      tokenCurrency = tokenWallet.currency;
+      emit(TokenWalletSendState.loading(tokenCurrency));
+
       repackedDestination = await repackAddress(destination);
 
-      unsignedMessage = await nekotonRepository.prepareTransfer(
-        address: address,
-        publicKey: publicKey,
+      final internalMessage = await nekotonRepository.prepareTokenTransfer(
+        owner: owner,
+        rootTokenContract: rootTokenContract,
         destination: repackedDestination,
         amount: amount,
-        body: comment,
+        payload: comment,
+        attachedAmount: attachedAmount,
+        notifyReceiver: true,
+      );
+
+      unsignedMessage = await nekotonRepository.prepareTransfer(
+        address: owner,
+        publicKey: publicKey,
+        destination: internalMessage.destination,
+        amount: internalMessage.amount,
+        body: internalMessage.body,
         bounce: defaultMessageBounce,
         expiration: defaultSendTimeout,
       );
 
       fees = await nekotonRepository.estimateFees(
-        address: address,
+        address: owner,
         message: unsignedMessage,
       );
 
       final wallet = await nekotonRepository.walletsStream
           .expand((e) => e)
-          .firstWhere((wallets) => wallets.address == address);
+          .firstWhere((wallets) => wallets.address == owner);
 
       final balance = wallet.contractState.balance;
 
-      final isPossibleToSendMessage = balance > (fees! + amount);
+      final isPossibleToSendMessage =
+          balance > (fees! + internalMessage.amount);
 
       if (!isPossibleToSendMessage) {
         emit(
-          TonWalletSendState.calculatingError(
+          TokenWalletSendState.calculatingError(
             LocaleKeys.insufficientFunds.tr(),
+            tokenCurrency,
             fees,
           ),
         );
@@ -101,22 +138,22 @@ class TonWalletSendBloc extends Bloc<TonWalletSendEvent, TonWalletSendState> {
         return;
       }
 
-      emit(TonWalletSendState.readyToSend(fees!));
+      emit(TokenWalletSendState.readyToSend(fees!, tokenCurrency));
     } on FfiException catch (e, t) {
       _logger.severe('_handleSend', e, t);
-      emit(TonWalletSendState.calculatingError(e.message));
+      emit(TokenWalletSendState.calculatingError(e.message, tokenCurrency));
     } on Exception catch (e, t) {
       _logger.severe('_handleSend', e, t);
-      emit(TonWalletSendState.calculatingError(e.toString()));
+      emit(TokenWalletSendState.calculatingError(e.toString(), tokenCurrency));
     }
   }
 
   Future<void> _handleSend(
-    Emitter<TonWalletSendState> emit,
+    Emitter<TokenWalletSendState> emit,
     String password,
   ) async {
     try {
-      emit(const TonWalletSendState.sending(canClose: false));
+      emit(const TokenWalletSendState.sending(canClose: false));
       await unsignedMessage.refreshTimeout();
 
       final hash = unsignedMessage.hash;
@@ -131,10 +168,10 @@ class TonWalletSendBloc extends Bloc<TonWalletSendEvent, TonWalletSendState> {
 
       final signedMessage = await unsignedMessage.sign(signature: signature);
 
-      emit(const TonWalletSendState.sending(canClose: true));
+      emit(const TokenWalletSendState.sending(canClose: true));
 
       final transaction = await nekotonRepository.send(
-        address: address,
+        address: owner,
         signedMessage: signedMessage,
         amount: amount,
         destination: repackedDestination,
@@ -146,16 +183,16 @@ class TonWalletSendBloc extends Bloc<TonWalletSendEvent, TonWalletSendState> {
         ),
       );
       if (!isClosed) {
-        add(TonWalletSendEvent.completeSend(transaction));
+        add(TokenWalletSendEvent.completeSend(transaction));
       }
     } on FfiException catch (e, t) {
       _logger.severe('_handleSend', e, t);
       inject<MessengerService>().show(Message.error(message: e.message));
-      emit(TonWalletSendState.readyToSend(fees!));
+      emit(TokenWalletSendState.readyToSend(fees!, tokenCurrency));
     } on Exception catch (e, t) {
       _logger.severe('_handleSend', e, t);
       inject<MessengerService>().show(Message.error(message: e.toString()));
-      emit(TonWalletSendState.readyToSend(fees!));
+      emit(TokenWalletSendState.readyToSend(fees!, tokenCurrency));
     }
   }
 }
