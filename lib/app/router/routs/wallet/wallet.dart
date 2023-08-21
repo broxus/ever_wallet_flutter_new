@@ -134,18 +134,20 @@ GoRoute get tonWalletSend {
     builder: (context, state) {
       return TonWalletSendPage(
         address: Address(
-          address: state.queryParameters[tonWalletSendAddressQueryParam]!,
+          address: state.uri.queryParameters[tonWalletSendAddressQueryParam]!,
         ),
         publicKey: PublicKey(
-          publicKey: state.queryParameters[tonWalletSendPublicKeyQueryParam]!,
+          publicKey:
+              state.uri.queryParameters[tonWalletSendPublicKeyQueryParam]!,
         ),
         destination: Address(
-          address: state.queryParameters[tonWalletSendDestinationQueryParam]!,
+          address:
+              state.uri.queryParameters[tonWalletSendDestinationQueryParam]!,
         ),
         amount: BigInt.parse(
-          state.queryParameters[tonWalletSendAmountQueryParam]!,
+          state.uri.queryParameters[tonWalletSendAmountQueryParam]!,
         ),
-        comment: state.queryParameters[tonWalletSendCommentQueryParam],
+        comment: state.uri.queryParameters[tonWalletSendCommentQueryParam],
       );
     },
   );

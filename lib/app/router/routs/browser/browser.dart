@@ -30,8 +30,8 @@ StatefulShellBranch get primaryBranch {
         name: AppRoute.browser.name,
         path: AppRoute.browser.path,
         builder: (context, state) => PrimaryPage(
-          url: state.queryParameters[browserUrlPathParam],
-          tabId: state.queryParameters[browserTabIdPathParam],
+          url: state.uri.queryParameters[browserUrlPathParam],
+          tabId: state.uri.queryParameters[browserTabIdPathParam],
         ),
         routes: [
           historyRoute,
