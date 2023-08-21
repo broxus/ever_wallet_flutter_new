@@ -20,7 +20,7 @@ class _RootViewState extends State<RootView> {
   Widget build(BuildContext context) {
     final colors = context.themeStyle.colors;
     final isBottomNavigationBarVisible =
-        getCurrentAppRoute(GoRouterState.of(context).location)
+        getCurrentAppRoute(GoRouterState.of(context).uri.toString())
             .isBottomNavigationBarVisible;
 
     return Scaffold(
