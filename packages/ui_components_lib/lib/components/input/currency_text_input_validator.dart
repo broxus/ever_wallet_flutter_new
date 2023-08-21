@@ -27,11 +27,11 @@ class CurrencyTextInputValidator {
     this.max,
     this.maxError,
   })  : assert(
-          min != null && minError == null,
+          min != null && minError != null || min == null && minError == null,
           'minError must be provided when min is provided',
         ),
         assert(
-          max != null && maxError == null,
+          max != null && maxError != null || max == null && maxError == null,
           'maxError must be provided when max is provided',
         ) {
     _scale = currency.scale;

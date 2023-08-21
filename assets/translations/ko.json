@@ -309,5 +309,8 @@
   "accountNotFound": "Account with address {} not found",
   "selectToken": "Select token",
   "insufficientFunds": "Insufficient funds",
-  "maxWord": "Max"
+  "maxWord": "Max",
+  "transactionIsSending": "Transaction is sending",
+  "okayWord": "Okay",
+  "transactionSentSuccessfully": "Transaction has been sent successfully"
 }

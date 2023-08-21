@@ -153,24 +153,18 @@ class _WalletPrepareTransferViewState extends State<WalletPrepareTransferView> {
                     controller: _amountController,
                     focusNode: _amountFocus,
                     onSubmitted: (_) => _commentFocus.requestFocus(),
-                    // ignore: prefer-extracting-callbacks
-                    validator: (value) {
-                      if (value == null || value.isEmpty) {
-                        return LocaleKeys.amountIsEmpty.tr();
-                      }
-                      final parsed = Fixed.tryParse(
-                        value,
-                        scale: widget.selectedAsset.balance.scale,
-                      );
-                      if (parsed == null) {
-                        return LocaleKeys.amountIsWrong.tr();
-                      }
-                      if (widget.selectedAsset.balance.amount < parsed) {
-                        return LocaleKeys.insufficientFunds.tr();
-                      }
-
-                      return null;
-                    },
+                    validator: (value) => CurrencyTextInputValidator(
+                      widget.selectedAsset.balance.currency,
+                      emptyError: LocaleKeys.amountIsEmpty.tr(),
+                      error: LocaleKeys.amountIsWrong.tr(),
+                      max: widget.selectedAsset.balance.amount,
+                      maxError: LocaleKeys.insufficientFunds.tr(),
+                    ).validate(value),
+                    inputFormatters: [
+                      CurrencyTextInputFormatter(
+                        widget.selectedAsset.balance.currency,
+                      ),
+                    ],
                     suffixIconConstraints: const BoxConstraints(
                       minWidth: DimensSize.d64,
                       minHeight: commonInputHeight,

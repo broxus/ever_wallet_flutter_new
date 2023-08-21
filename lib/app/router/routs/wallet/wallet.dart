@@ -14,6 +14,12 @@ const walletPrepareTransferAddressPathParam = 'walletPrepareAddress';
 const walletPrepareTransferRootTokenAddressPathParam =
     'walletPrepareRootTokenAddress';
 
+const tonWalletSendAddressQueryParam = 'tonWalletSendAddress';
+const tonWalletSendPublicKeyQueryParam = 'tonWalletSendPublicKey';
+const tonWalletSendCommentQueryParam = 'tonWalletSendComment';
+const tonWalletSendDestinationQueryParam = 'tonWalletSendDestination';
+const tonWalletSendAmountQueryParam = 'tonWalletSendAmount';
+
 /// Branch that is root for wallet.
 StatefulShellBranch get walletBranch {
   return StatefulShellBranch(
@@ -86,6 +92,9 @@ GoRoute get walletPrepareTransferRoute {
         address: state.pathParameters[walletPrepareTransferAddressPathParam]!,
       ),
     ),
+    routes: [
+      tonWalletSend,
+    ],
   );
 }
 
@@ -102,5 +111,32 @@ GoRoute get walletPrepareTransferLockedRoute {
             .pathParameters[walletPrepareTransferRootTokenAddressPathParam]!,
       ),
     ),
+    routes: [
+      tonWalletSend,
+    ],
+  );
+}
+
+/// Send native token from TonWallet
+GoRoute get tonWalletSend {
+  return GoRoute(
+    path: AppRoute.tonWalletSend.path,
+    builder: (context, state) {
+      return TonWalletSendPage(
+        address: Address(
+          address: state.queryParameters[tonWalletSendAddressQueryParam]!,
+        ),
+        publicKey: PublicKey(
+          publicKey: state.queryParameters[tonWalletSendPublicKeyQueryParam]!,
+        ),
+        destination: Address(
+          address: state.queryParameters[tonWalletSendDestinationQueryParam]!,
+        ),
+        amount: BigInt.parse(
+          state.queryParameters[tonWalletSendAmountQueryParam]!,
+        ),
+        comment: state.queryParameters[tonWalletSendCommentQueryParam],
+      );
+    },
   );
 }

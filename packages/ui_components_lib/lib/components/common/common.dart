@@ -3,6 +3,7 @@ export 'animated_color.dart';
 export 'common_backgrounded_icon.dart';
 export 'common_card.dart';
 export 'common_chips.dart';
+export 'common_circular_loading_indicator.dart';
 export 'common_divider.dart';
 export 'common_icon.dart';
 export 'common_list_tile.dart';
