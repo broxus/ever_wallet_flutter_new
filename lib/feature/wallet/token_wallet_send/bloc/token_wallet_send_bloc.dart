@@ -23,7 +23,7 @@ class TokenWalletSendBloc
     required this.rootTokenContract,
     required this.publicKey,
     required this.destination,
-    required this.amount,
+    required this.tokenAmount,
     required BigInt? attachedAmount,
     required this.comment,
   })  : attachedAmount = attachedAmount ?? defaultAttachAmount,
@@ -50,7 +50,8 @@ class TokenWalletSendBloc
 
   /// How many tokens must be sent, to convert Fixed to BigInt, use
   /// [Fixed.minorUnits].
-  final BigInt amount;
+  final BigInt tokenAmount;
+  late BigInt sendAmount;
 
   /// Attached amount in native tokens, that should be added to transaction.
   final BigInt attachedAmount;
@@ -90,23 +91,23 @@ class TokenWalletSendBloc
       tokenCurrency = tokenWallet.currency;
       emit(TokenWalletSendState.loading(tokenCurrency));
 
-      repackedDestination = await repackAddress(destination);
-
       final internalMessage = await nekotonRepository.prepareTokenTransfer(
         owner: owner,
         rootTokenContract: rootTokenContract,
-        destination: repackedDestination,
-        amount: amount,
+        destination: await repackAddress(destination),
+        amount: tokenAmount,
         payload: comment,
         attachedAmount: attachedAmount,
         notifyReceiver: true,
       );
 
+      repackedDestination = Address(address: internalMessage.destination);
+      sendAmount = internalMessage.amount;
       unsignedMessage = await nekotonRepository.prepareTransfer(
         address: owner,
         publicKey: publicKey,
-        destination: internalMessage.destination,
-        amount: internalMessage.amount,
+        destination: repackedDestination,
+        amount: sendAmount,
         body: internalMessage.body,
         bounce: defaultMessageBounce,
         expiration: defaultSendTimeout,
@@ -173,7 +174,7 @@ class TokenWalletSendBloc
       final transaction = await nekotonRepository.send(
         address: owner,
         signedMessage: signedMessage,
-        amount: amount,
+        amount: sendAmount,
         destination: repackedDestination,
       );
 

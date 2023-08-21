@@ -54,7 +54,7 @@ class TokenWalletSendPage extends StatelessWidget {
     return BlocProvider<TokenWalletSendBloc>(
       create: (_) => TokenWalletSendBloc(
         destination: destination,
-        amount: amount,
+        tokenAmount: amount,
         owner: owner,
         rootTokenContract: rootTokenContract,
         attachedAmount: attachedAmount,
