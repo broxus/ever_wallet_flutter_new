@@ -128,13 +128,11 @@ class _BrowserStartViewState extends State<BrowserStartView> {
                     height: DimensSize.d40,
                     width: DimensSize.d40,
                     imageUrl: item.faviconUrl ?? '',
-                    placeholder: (_, __) => CircularProgressIndicator(
-                      color: colors.textSecondary,
-                      strokeWidth: DimensStroke.medium,
+                    placeholder: (_, __) =>
+                        const CommonCircularProgressIndicator(),
+                    errorWidget: (_, __, ___) => CommonIconWidget.svg(
+                      svg: Assets.images.web.path,
                     ),
-                    // TODO(nesquikm): what we should show when
-                    // no favicon is available?
-                    errorWidget: (_, __, ___) => const Icon(Icons.error),
                   ),
                   trailing: CommonButtonIconWidget.svg(
                     svg: Assets.images.caretRight.path,
@@ -258,13 +256,11 @@ class _BrowserStartViewState extends State<BrowserStartView> {
                   height: DimensSize.d40,
                   width: DimensSize.d40,
                   imageUrl: item.faviconUrl ?? '',
-                  placeholder: (_, __) => CircularProgressIndicator(
-                    color: colors.textSecondary,
-                    strokeWidth: DimensStroke.medium,
+                  placeholder: (_, __) =>
+                      const CommonCircularProgressIndicator(),
+                  errorWidget: (_, __, ___) => CommonIconWidget.svg(
+                    svg: Assets.images.web.path,
                   ),
-                  // TODO(nesquikm): what we should show when
-                  // no favicon is available?
-                  errorWidget: (_, __, ___) => const Icon(Icons.error),
                 ),
                 onPressed: () => _onItemPressed(item),
                 onLongPressed: () => _onItemLongPressed(item),
