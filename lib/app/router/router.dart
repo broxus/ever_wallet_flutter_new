@@ -78,7 +78,7 @@ GoRouter getRouter(BuildContext _) {
     navigatorKey: NavigationService.navigatorKey,
     redirect: (context, state) {
       // Get current location
-      final location = state.location;
+      final location = state.uri.toString();
 
       // Get root app route
       final rootAppRoute = getRootAppRoute(location);
