@@ -71,6 +71,7 @@ class BrowserTab with _$BrowserTab {
   static String get defaultImagePath {
     final appDocsDir =
         inject<GeneralStorageService>().applicationDocumentsDirectory;
+
     return '$appDocsDir/browser_default_tab_image.png';
   }
 
