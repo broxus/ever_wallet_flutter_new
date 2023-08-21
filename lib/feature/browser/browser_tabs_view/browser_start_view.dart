@@ -288,8 +288,6 @@ class _BrowserStartViewState extends State<BrowserStartView> {
   }
 
   Widget _itemBuilder(BrowserBookmarkItem item) {
-    final colors = context.themeStyle.colors;
-
     return SeparatedRow(
       key: ValueKey(item.id),
       children: [
