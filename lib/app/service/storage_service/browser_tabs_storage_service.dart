@@ -118,6 +118,9 @@ class BrowserTabsStorageService extends AbstractStorageService {
     try {
       await Directory(BrowserTab.tabsDirectoryPath).delete(recursive: true);
     } catch (_) {}
+    try {
+      await File(BrowserTab.defaultImagePath).delete();
+    } catch (_) {}
   }
 
   /// Add browser tab
