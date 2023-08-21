@@ -77,6 +77,7 @@ class CurrenciesService {
         case AppLifecycleState.inactive:
         case AppLifecycleState.detached:
         case AppLifecycleState.paused:
+        case AppLifecycleState.hidden:
           stopPolling();
       }
     });
