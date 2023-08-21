@@ -119,6 +119,7 @@ class _AppWrapperState extends State<AppWrapper> with WidgetsBindingObserver {
         appStopSession();
       case AppLifecycleState.paused:
       case AppLifecycleState.detached:
+      case AppLifecycleState.hidden:
         break;
     }
 
