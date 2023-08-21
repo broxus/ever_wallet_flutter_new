@@ -106,8 +106,6 @@ class _BrowserStartViewState extends State<BrowserStartView> {
   }
 
   Widget _searchResultItemBuilder(BrowserBookmarkItem item) {
-    final colors = context.themeStyle.colors;
-
     return Padding(
       key: ValueKey(item.id),
       padding: const EdgeInsets.symmetric(
@@ -239,8 +237,6 @@ class _BrowserStartViewState extends State<BrowserStartView> {
   }
 
   Widget _itemBuilder(BrowserBookmarkItem item) {
-    final colors = context.themeStyle.colors;
-
     return SeparatedRow(
       key: ValueKey(item.id),
       children: [
