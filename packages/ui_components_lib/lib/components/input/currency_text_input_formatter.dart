@@ -49,7 +49,7 @@ class CurrencyTextInputFormatter extends TextInputFormatter {
     final tickerString = includeTicker ? ' ${currency.code}' : '';
 
     final minusSignExp = allowNegative ? '(?<minus>-?)' : '(?<minus>)';
-    const integerExp = '(?<integer>[0-9]+)';
+    const integerExp = '(?<integer>[0-9]*)';
     final separatorExp =
         '(?<separator>$decimalSeparator)'.replaceAll('.', r'\.');
     final decimalExp = '(?<decimal>[0-9]{0,$scale})';
