@@ -159,24 +159,28 @@ GoRoute get tokenWalletSend {
     builder: (context, state) {
       return TokenWalletSendPage(
         owner: Address(
-          address: state.queryParameters[tokenWalletSendOwnerQueryParam]!,
+          address: state.uri.queryParameters[tokenWalletSendOwnerQueryParam]!,
         ),
         rootTokenContract: Address(
-          address: state.queryParameters[tokenWalletSendContractQueryParam]!,
+          address:
+              state.uri.queryParameters[tokenWalletSendContractQueryParam]!,
         ),
         publicKey: PublicKey(
-          publicKey: state.queryParameters[tokenWalletSendPublicKeyQueryParam]!,
+          publicKey:
+              state.uri.queryParameters[tokenWalletSendPublicKeyQueryParam]!,
         ),
         destination: Address(
-          address: state.queryParameters[tokenWalletSendDestinationQueryParam]!,
+          address:
+              state.uri.queryParameters[tokenWalletSendDestinationQueryParam]!,
         ),
         attachedAmount: BigInt.tryParse(
-          state.queryParameters[tokenWalletSendAttachedAmountQueryParam] ?? '',
+          state.uri.queryParameters[tokenWalletSendAttachedAmountQueryParam] ??
+              '',
         ),
         amount: BigInt.parse(
-          state.queryParameters[tokenWalletSendAmountQueryParam]!,
+          state.uri.queryParameters[tokenWalletSendAmountQueryParam]!,
         ),
-        comment: state.queryParameters[tokenWalletSendCommentQueryParam],
+        comment: state.uri.queryParameters[tokenWalletSendCommentQueryParam],
       );
     },
   );

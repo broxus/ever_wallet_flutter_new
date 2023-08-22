@@ -101,7 +101,7 @@ class TokenWalletSendBloc
         notifyReceiver: true,
       );
 
-      repackedDestination = Address(address: internalMessage.destination);
+      repackedDestination = internalMessage.destination;
       sendAmount = internalMessage.amount;
       unsignedMessage = await nekotonRepository.prepareTransfer(
         address: owner,
