@@ -56,7 +56,7 @@ void main() {
         MessengerState(
           messagesToShow: [message0],
           messagesTime: {message0.hashString: DateTime(2000)},
-        )
+        ),
       ],
     );
 
@@ -79,7 +79,7 @@ void main() {
         MessengerState(
           messagesToShow: [message0, message0],
           messagesTime: {message0.hashString: DateTime(2001)},
-        )
+        ),
       ],
     );
 
@@ -105,7 +105,7 @@ void main() {
             message0.hashString: DateTime(2000),
             message1.hashString: DateTime(2001),
           },
-        )
+        ),
       ],
     );
 
@@ -144,7 +144,7 @@ void main() {
         MessengerState(
           messagesToShow: [],
           messagesTime: {message0.hashString: DateTime(2001)},
-        )
+        ),
       ],
     );
 
@@ -172,7 +172,7 @@ void main() {
         MessengerState(
           messagesToShow: [message0],
           messagesTime: {message0.hashString: DateTime(2001)},
-        )
+        ),
       ],
     );
 
