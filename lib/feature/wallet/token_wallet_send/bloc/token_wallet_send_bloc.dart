@@ -79,6 +79,7 @@ class TokenWalletSendBloc
     );
   }
 
+  // ignore: long-method
   Future<void> _handlePrepare(Emitter<TokenWalletSendState> emit) async {
     try {
       final tokenWallet = await nekotonRepository.tokenWalletsStream
