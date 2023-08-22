@@ -79,6 +79,7 @@ class TokenWalletSendBloc
     );
   }
 
+  // ignore: long-method
   Future<void> _handlePrepare(Emitter<TokenWalletSendState> emit) async {
     try {
       final tokenWallet = await nekotonRepository.tokenWalletsStream
@@ -101,7 +102,7 @@ class TokenWalletSendBloc
         notifyReceiver: true,
       );
 
-      repackedDestination = Address(address: internalMessage.destination);
+      repackedDestination = internalMessage.destination;
       sendAmount = internalMessage.amount;
       unsignedMessage = await nekotonRepository.prepareTransfer(
         address: owner,
