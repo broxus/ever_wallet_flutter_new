@@ -18,8 +18,7 @@ class TonWalletSendState with _$TonWalletSendState {
   /// to blockchain but not completed.
   const factory TonWalletSendState.sending({required bool canClose}) = _Sending;
 
-  /// Transaction sent successfully or not.
-  /// If transaction is null, then error happened
+  /// Transaction sent successfully
   const factory TonWalletSendState.sent(BigInt fee, Transaction transaction) =
       _Sent;
 }

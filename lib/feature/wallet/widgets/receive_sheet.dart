@@ -97,7 +97,9 @@ class ReceiveFundsSheet extends StatelessWidget {
     Clipboard.setData(ClipboardData(text: address.address));
     inject<MessengerService>().show(
       Message.successful(
-        message: LocaleKeys.copiedExclamation.tr(),
+        message: LocaleKeys.valueCopiedExclamation.tr(
+          args: [address.toEllipseString()],
+        ),
       ),
     );
   }

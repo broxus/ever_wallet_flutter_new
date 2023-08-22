@@ -312,5 +312,6 @@
   "maxWord": "Max",
   "transactionIsSending": "Transaction is sending",
   "okayWord": "Okay",
-  "transactionSentSuccessfully": "Transaction has been sent successfully"
+  "transactionSentSuccessfully": "Transaction has been sent successfully",
+  "attachedAmount": "Attached amount"
 }

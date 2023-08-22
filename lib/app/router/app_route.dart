@@ -46,6 +46,10 @@ enum AppRoute {
     '',
     'tonWalletSend', // all data in query
   ),
+  tokenWalletSend(
+    '',
+    'tokenWalletSend', // all data in query
+  ),
 
   /// Browser section
   browser(

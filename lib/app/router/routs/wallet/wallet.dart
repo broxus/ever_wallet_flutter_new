@@ -20,6 +20,14 @@ const tonWalletSendCommentQueryParam = 'tonWalletSendComment';
 const tonWalletSendDestinationQueryParam = 'tonWalletSendDestination';
 const tonWalletSendAmountQueryParam = 'tonWalletSendAmount';
 
+const tokenWalletSendOwnerQueryParam = 'tokenWalletSendOwner';
+const tokenWalletSendContractQueryParam = 'tokenWalletSendContract';
+const tokenWalletSendPublicKeyQueryParam = 'tokenWalletSendPublicKey';
+const tokenWalletSendCommentQueryParam = 'tokenWalletSendComment';
+const tokenWalletSendDestinationQueryParam = 'tokenWalletSendDestination';
+const tokenWalletSendAmountQueryParam = 'tokenWalletSendAmount';
+const tokenWalletSendAttachedAmountQueryParam = 'tokenWalletSendAttachedAmount';
+
 /// Branch that is root for wallet.
 StatefulShellBranch get walletBranch {
   return StatefulShellBranch(
@@ -94,6 +102,7 @@ GoRoute get walletPrepareTransferRoute {
     ),
     routes: [
       tonWalletSend,
+      tokenWalletSend,
     ],
   );
 }
@@ -113,6 +122,7 @@ GoRoute get walletPrepareTransferLockedRoute {
     ),
     routes: [
       tonWalletSend,
+      tokenWalletSend,
     ],
   );
 }
@@ -138,6 +148,39 @@ GoRoute get tonWalletSend {
           state.uri.queryParameters[tonWalletSendAmountQueryParam]!,
         ),
         comment: state.uri.queryParameters[tonWalletSendCommentQueryParam],
+      );
+    },
+  );
+}
+
+GoRoute get tokenWalletSend {
+  return GoRoute(
+    path: AppRoute.tokenWalletSend.path,
+    builder: (context, state) {
+      return TokenWalletSendPage(
+        owner: Address(
+          address: state.uri.queryParameters[tokenWalletSendOwnerQueryParam]!,
+        ),
+        rootTokenContract: Address(
+          address:
+              state.uri.queryParameters[tokenWalletSendContractQueryParam]!,
+        ),
+        publicKey: PublicKey(
+          publicKey:
+              state.uri.queryParameters[tokenWalletSendPublicKeyQueryParam]!,
+        ),
+        destination: Address(
+          address:
+              state.uri.queryParameters[tokenWalletSendDestinationQueryParam]!,
+        ),
+        attachedAmount: BigInt.tryParse(
+          state.uri.queryParameters[tokenWalletSendAttachedAmountQueryParam] ??
+              '',
+        ),
+        amount: BigInt.parse(
+          state.uri.queryParameters[tokenWalletSendAmountQueryParam]!,
+        ),
+        comment: state.uri.queryParameters[tokenWalletSendCommentQueryParam],
       );
     },
   );

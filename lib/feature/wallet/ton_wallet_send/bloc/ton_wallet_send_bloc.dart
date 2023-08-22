@@ -1,6 +1,7 @@
 import 'package:app/app/service/service.dart';
 import 'package:app/di/di.dart';
 import 'package:app/generated/generated.dart';
+import 'package:app/utils/constants.dart';
 import 'package:bloc/bloc.dart';
 import 'package:freezed_annotation/freezed_annotation.dart';
 import 'package:logging/logging.dart';
@@ -12,10 +13,7 @@ part 'ton_wallet_send_event.dart';
 
 part 'ton_wallet_send_bloc.freezed.dart';
 
-const messageBounce = false;
-const defaultSendTimeout = Expiration.timeout(60);
-
-/// Bloc that allows prepare transaction to send native funds from TonWallet
+/// Bloc that allows prepare transaction to send native funds from [TonWallet]
 /// for confirmation and send transaction.
 class TonWalletSendBloc extends Bloc<TonWalletSendEvent, TonWalletSendState> {
   TonWalletSendBloc({
@@ -75,7 +73,7 @@ class TonWalletSendBloc extends Bloc<TonWalletSendEvent, TonWalletSendState> {
         destination: repackedDestination,
         amount: amount,
         body: comment,
-        bounce: messageBounce,
+        bounce: defaultMessageBounce,
         expiration: defaultSendTimeout,
       );
 

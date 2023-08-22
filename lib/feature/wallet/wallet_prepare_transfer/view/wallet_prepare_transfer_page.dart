@@ -1,5 +1,4 @@
 import 'package:app/app/router/router.dart';
-import 'package:app/app/service/service.dart';
 import 'package:app/di/di.dart';
 import 'package:app/feature/wallet/wallet.dart';
 import 'package:app/generated/generated.dart';
@@ -67,8 +66,23 @@ class WalletPrepareTransferPage extends StatelessWidget {
                   ),
                 );
               } else {
-                inject<MessengerService>()
-                    .show(Message.successful(message: 'Go send token'));
+                context.goFurther(
+                  AppRoute.tokenWalletSend.pathWithQuery(
+                    {
+                      tokenWalletSendOwnerQueryParam: address.address,
+                      tokenWalletSendContractQueryParam:
+                          selectedAsset.rootTokenContract.address,
+                      tokenWalletSendPublicKeyQueryParam:
+                          selectedCustodian.publicKey,
+                      if (comment != null)
+                        tokenWalletSendCommentQueryParam: comment,
+                      tokenWalletSendDestinationQueryParam:
+                          receiveAddress.address,
+                      tokenWalletSendAmountQueryParam:
+                          amount.minorUnits.toString(),
+                    },
+                  ),
+                );
               }
             },
           );

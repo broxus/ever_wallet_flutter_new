@@ -285,12 +285,18 @@ void main() {
     expect(storage.lastViewedSeeds, [_publicKey]);
     expect(await accountSeedStorage.readHiddenAccounts(), [_address]);
     expect(accountSeedStorage.hiddenAccounts, [_address]);
-    expect(await accountSeedStorage.readExternalAccounts(), {
-      _publicKey: [_address]
-    });
-    expect(accountSeedStorage.externalAccounts, {
-      _publicKey: [_address]
-    });
+    expect(
+      await accountSeedStorage.readExternalAccounts(),
+      {
+        _publicKey: [_address],
+      },
+    );
+    expect(
+      accountSeedStorage.externalAccounts,
+      {
+        _publicKey: [_address],
+      },
+    );
     expect(await storage.readCurrentConnection(), _connection);
     expect(storage.currentConnection, _connection);
     expect(await storage.readCurrentKey(), _publicKey);
