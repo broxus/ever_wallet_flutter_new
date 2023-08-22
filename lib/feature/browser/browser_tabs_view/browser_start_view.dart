@@ -23,7 +23,7 @@ const _cardHeight = 116.0;
 /// Card viewport fraction
 const _cardViewportFraction = 0.85;
 
-/// How ofter we can take screenshot
+/// How often we can take screenshot
 const Duration _screenShotPeriodDuration = Duration(seconds: 5);
 
 class BrowserStartView extends StatefulWidget {
