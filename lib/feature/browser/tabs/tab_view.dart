@@ -58,12 +58,11 @@ class TabView extends StatelessWidget {
                 alignment: Alignment.topCenter,
                 // ignore: no-magic-number
                 maxHeight: 1000,
-                child: (tab.imagePath ?? '').isNotEmpty
-                    ? Image.file(
-                        File(tab.imagePath ?? ''),
-                        fit: BoxFit.scaleDown,
-                      )
-                    : const SizedBox(),
+                child: Image.file(
+                  File(tab.imageOrDefaultPath),
+                  fit: BoxFit.scaleDown,
+                  errorBuilder: (_, __, ___) => const SizedBox(),
+                ),
               ),
             ),
           ],

@@ -67,4 +67,15 @@ class BrowserTab with _$BrowserTab {
   String getImagePath(String imageId) {
     return '${getTabDirectoryPath(id)}/$imageId';
   }
+
+  static String get defaultImagePath {
+    final appDocsDir =
+        inject<GeneralStorageService>().applicationDocumentsDirectory;
+
+    return '$appDocsDir/browser_default_tab_image.png';
+  }
+
+  String get imageOrDefaultPath {
+    return imagePath ?? defaultImagePath;
+  }
 }
