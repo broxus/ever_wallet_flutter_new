@@ -1,3 +1,6 @@
+import 'dart:io';
+import 'dart:ui' as ui;
+
 import 'package:app/app/router/router.dart';
 import 'package:app/data/models/models.dart';
 import 'package:app/feature/browser/browser.dart';
@@ -5,8 +8,10 @@ import 'package:app/feature/browser/browser_tabs_view/predefined_items.dart';
 import 'package:app/generated/generated.dart';
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/rendering.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
+import 'package:logging/logging.dart';
 import 'package:ui_components_lib/ui_components_lib.dart';
 
 /// Item count limit for each section
@@ -18,6 +23,9 @@ const _cardHeight = 116.0;
 /// Card viewport fraction
 const _cardViewportFraction = 0.85;
 
+/// How often we can take screenshot
+const Duration _screenShotPeriodDuration = Duration(seconds: 5);
+
 class BrowserStartView extends StatefulWidget {
   const BrowserStartView({super.key});
 
@@ -26,11 +34,15 @@ class BrowserStartView extends StatefulWidget {
 }
 
 class _BrowserStartViewState extends State<BrowserStartView> {
+  final _log = Logger('_BrowserStartViewState');
+
   final _predefinedItems = predefinedItems();
   final _predefinedCards = predefinedCards();
   final _cardController = PageController(
     viewportFraction: _cardViewportFraction,
   );
+  final _globalKey = GlobalKey();
+  DateTime? _lastScreenshotTime;
 
   @override
   void dispose() {
@@ -44,6 +56,10 @@ class _BrowserStartViewState extends State<BrowserStartView> {
     final bookmarkItems =
         context.watch<BrowserBookmarksBloc>().getSortedItems();
     final searchText = context.watch<BrowserTabsBloc>().state.searchText;
+
+    if (searchText.isEmpty) {
+      _saveScreenshot();
+    }
 
     final slivers = searchText.isEmpty
         ? [
@@ -64,12 +80,47 @@ class _BrowserStartViewState extends State<BrowserStartView> {
             searchText: searchText,
           );
 
-    return ColoredBox(
-      color: colors.appBackground,
-      child: CustomScrollView(
-        slivers: slivers,
+    return RepaintBoundary(
+      key: _globalKey,
+      child: ColoredBox(
+        color: colors.appBackground,
+        child: CustomScrollView(
+          slivers: slivers,
+        ),
       ),
     );
+  }
+
+  Future<void> _saveScreenshot() async {
+    final now = DateTime.now();
+    if (_lastScreenshotTime != null &&
+        now.difference(_lastScreenshotTime!) < _screenShotPeriodDuration) {
+      return;
+    }
+
+    _lastScreenshotTime = now;
+
+    WidgetsBinding.instance.addPostFrameCallback((_) async {
+      try {
+        final boundary = _globalKey.currentContext?.findRenderObject()
+            as RenderRepaintBoundary?;
+
+        final image = await boundary!.toImage(pixelRatio: 2);
+
+        final byteData = await image.toByteData(format: ui.ImageByteFormat.png);
+        final pngBytes = byteData?.buffer.asUint8List().toList();
+        if (pngBytes == null) {
+          throw Exception("Can't convert image to bytes");
+        }
+
+        final file = File(BrowserTab.defaultImagePath);
+        await file.writeAsBytes(pngBytes);
+
+        await FileImage(File(BrowserTab.defaultImagePath)).evict();
+      } catch (e, s) {
+        _log.severe('Error while saving screenshot: $e', null, s);
+      }
+    });
   }
 
   List<Widget> _searchResultBuilder({
