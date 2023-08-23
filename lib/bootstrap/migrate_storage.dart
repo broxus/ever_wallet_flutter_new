@@ -7,10 +7,10 @@ Future<void> migrateStorage() async {
   final log = Logger('bootstrap')..finest('MigrationService starting...');
   await MigrationService.migrateWithHiveInit(
     inject<GeneralStorageService>(),
-    inject<BrowserStorageService>(),
     inject<BrowserTabsStorageService>(),
     inject<BrowserHistoryStorageService>(),
     inject<BrowserBookmarksStorageService>(),
+    inject<BrowserPermissionsStorageService>(),
     inject<NekotonStorageService>(),
   );
   log.finest('MigrationService finished');
