@@ -8,6 +8,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_inappwebview/flutter_inappwebview.dart';
 import 'package:logging/logging.dart';
+import 'package:nekoton_webview/nekoton_webview.dart';
 import 'package:ui_components_lib/ui_components_lib.dart';
 
 // Scroll position of the webview, used to hide the HUD when the user scrolls
@@ -266,10 +267,15 @@ class _BrowserTabViewState extends State<BrowserTabView> {
     }
   }
 
-  void _onWebViewCreated(InAppWebViewController controller) {
+  Future<void> _onWebViewCreated(InAppWebViewController controller) async {
     _webViewController = controller;
+
+    await controller.initNekotonProvider(
+      providerApi: InpageProvider(),
+    );
+
     if (widget.tab.url.toString().isNotEmpty) {
-      controller.loadUrl(urlRequest: URLRequest(url: widget.tab.url));
+      await controller.loadUrl(urlRequest: URLRequest(url: widget.tab.url));
     }
   }
 
