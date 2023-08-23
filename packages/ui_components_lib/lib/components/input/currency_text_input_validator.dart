@@ -107,6 +107,10 @@ class CurrencyTextInputValidator {
       return error;
     }
 
+    if (separator.isNotEmpty && integer.isEmpty) {
+      return error;
+    }
+
     if (min != null && Fixed.parse(value, scale: _scale) < min!) {
       return minError;
     }
