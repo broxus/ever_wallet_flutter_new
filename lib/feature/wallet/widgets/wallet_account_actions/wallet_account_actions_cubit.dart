@@ -63,7 +63,12 @@ class WalletAccountActionsCubit extends Cubit<WalletAccountActionsState> {
     }
 
     // TODO(alex-a4): add stake check in transport
-    emit(WalletAccountActionsState.data(action: action, hasStake: true));
+    emit(
+      WalletAccountActionsState.data(
+        action: action,
+        hasStake: action != WalletAccountActionBehavior.deploy,
+      ),
+    );
   }
 
   @override

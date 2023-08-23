@@ -313,5 +313,21 @@
   "transactionIsSending": "Transaction is sending",
   "okayWord": "Okay",
   "transactionSentSuccessfully": "Transaction has been sent successfully",
-  "attachedAmount": "Attached amount"
+  "attachedAmount": "Attached amount",
+  "selectWalletType": "Select wallet type",
+  "standardWallet": "Standard wallet",
+  "multisigWallet": "Multisignature wallet",
+  "evaluationConfirmation": "Evaluation confirmation",
+  "outOfNumber": "out of {} custodians",
+  "custodiansWord": "Custodians",
+  "publicKeyOfCustodianNumber": "Public key of custodian {}",
+  "addOneMorePublicKey": "Add one more public key",
+  "deployWallet": "Deploy wallet",
+  "requiredConfirms": "Required confirms",
+  "requireConfirmsCount": "{} of {}",
+  "fundsDebitedToDeploy": "Funds will be debited from your balance to deploy",
+  "invalidValue": "Invalid value",
+  "invalidLengthMustBe": "Invalid length, must be {}",
+  "accountBalance": "Account balance",
+  "walletDeployedSuccessfully": "Wallet deployed successfully"
 }

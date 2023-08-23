@@ -28,6 +28,9 @@ const tokenWalletSendDestinationQueryParam = 'tokenWalletSendDestination';
 const tokenWalletSendAmountQueryParam = 'tokenWalletSendAmount';
 const tokenWalletSendAttachedAmountQueryParam = 'tokenWalletSendAttachedAmount';
 
+const walletDeployAddressPathParam = 'walletDeployAddress';
+const walletDeployPublicKeyPathParam = 'walletDeployPublicKey';
+
 /// Branch that is root for wallet.
 StatefulShellBranch get walletBranch {
   return StatefulShellBranch(
@@ -53,6 +56,7 @@ StatefulShellBranch get walletBranch {
           tonWalletDetailsRoute,
           tokenWalletDetailsRoute,
           walletPrepareTransferRoute,
+          walletDeploy,
         ],
       ),
     ],
@@ -181,6 +185,22 @@ GoRoute get tokenWalletSend {
           state.uri.queryParameters[tokenWalletSendAmountQueryParam]!,
         ),
         comment: state.uri.queryParameters[tokenWalletSendCommentQueryParam],
+      );
+    },
+  );
+}
+
+GoRoute get walletDeploy {
+  return GoRoute(
+    path: AppRoute.walletDeploy.path,
+    builder: (context, state) {
+      return WalletDeployPage(
+        address: Address(
+          address: state.pathParameters[walletDeployAddressPathParam]!,
+        ),
+        publicKey: PublicKey(
+          publicKey: state.pathParameters[walletDeployPublicKeyPathParam]!,
+        ),
       );
     },
   );

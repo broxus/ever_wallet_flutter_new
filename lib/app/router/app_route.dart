@@ -50,6 +50,10 @@ enum AppRoute {
     '',
     'tokenWalletSend', // all data in query
   ),
+  walletDeploy(
+    '',
+    'walletDeploy/:$walletDeployAddressPathParam/:$walletDeployPublicKeyPathParam',
+  ),
 
   /// Browser section
   browser(
