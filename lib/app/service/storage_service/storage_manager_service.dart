@@ -6,20 +6,20 @@ import 'package:injectable/injectable.dart';
 class StorageManagerService {
   StorageManagerService(
     GeneralStorageService general,
-    BrowserStorageService browser,
     BrowserTabsStorageService browserTabs,
     BrowserHistoryStorageService browserHistory,
     BrowserBookmarksStorageService browserBookmarks,
+    BrowserPermissionsStorageService browserPermissions,
     NekotonStorageService accountSeed,
     NekotonRepositoryStorageService nekotonRepositoryStorageService,
     TonWalletStorageService tonWalletStorageService,
     TokenWalletStorageService tokenWalletStorageService,
   ) : _storages = [
           general,
-          browser,
           browserTabs,
           browserHistory,
           browserBookmarks,
+          browserPermissions,
           accountSeed,
           nekotonRepositoryStorageService,
           tonWalletStorageService,

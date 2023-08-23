@@ -413,13 +413,6 @@ class HiveSourceMigration {
 
   Future<void> clearSearchHistory() => _searchHistoryBox.clear();
 
-  Map<String, SiteMetaData> get _siteMetadata => _siteMetaDataBox
-      .toMap()
-      .map((key, value) => MapEntry(key as String, value.toModel()));
-
-  SiteMetaData? getSiteMetaData(String url) =>
-      _siteMetaDataBox.get(url)?.toModel();
-
   Future<void> cacheSiteMetaData({
     required String url,
     required SiteMetaData metaData,
@@ -714,37 +707,37 @@ class HiveSourceMigration {
 class MigrationService {
   MigrationService(
     this._storage,
-    this._browserStorage,
     this._browserTabsStorageService,
     this._browserHistoryStorageService,
     this._browserBookmarksStorageService,
+    this._browserPermissionsStorageService,
     this._accountSeedStorage,
     this._hive,
   );
 
   final GeneralStorageService _storage;
-  final BrowserStorageService _browserStorage;
   final BrowserTabsStorageService _browserTabsStorageService;
   final BrowserHistoryStorageService _browserHistoryStorageService;
   final BrowserBookmarksStorageService _browserBookmarksStorageService;
+  final BrowserPermissionsStorageService _browserPermissionsStorageService;
   final NekotonStorageService _accountSeedStorage;
   final HiveSourceMigration _hive;
 
   /// Migration method for app that includes hive initialization.
   static Future<void> migrateWithHiveInit(
     GeneralStorageService storage,
-    BrowserStorageService browserStorage,
     BrowserTabsStorageService browserTabsStorageService,
     BrowserHistoryStorageService browserHistoryStorageService,
     BrowserBookmarksStorageService browserBookmarksStorageService,
+    BrowserPermissionsStorageService browserPermissionsStorageService,
     NekotonStorageService accountSeedStorage,
   ) async {
     return MigrationService(
       storage,
-      browserStorage,
       browserTabsStorageService,
       browserHistoryStorageService,
       browserBookmarksStorageService,
+      browserPermissionsStorageService,
       accountSeedStorage,
       await HiveSourceMigration.create(),
     ).migrate();
@@ -835,7 +828,7 @@ class MigrationService {
 
     /// Permissions
     for (final entry in _hive.permissions.entries) {
-      await _browserStorage.setPermissions(
+      await _browserPermissionsStorageService.setPermissions(
         origin: entry.key,
         permissions: entry.value,
       );
@@ -851,19 +844,10 @@ class MigrationService {
       await _browserHistoryStorageService.addBrowserHistoryItem(entry);
     }
 
-    /// Site metadata
-    for (final entry in _hive._siteMetadata.entries) {
-      await _browserStorage.addSiteMetaData(
-        url: entry.key,
-        metaData: entry.value,
-      );
-    }
-
     /// Preferences
     if (_hive.locale != null) await _storage.setLocale(_hive.locale!);
     await _storage.setIsBiometryEnabled(isEnabled: _hive.isBiometryEnabled);
     if (_hive.wasStEverOpened) await _storage.saveWasStEverOpened();
-    if (_hive.getWhyNeedBrowser) await _browserStorage.saveWhyNeedBrowser();
     await _storage.updateLastViewedSeeds(
       _hive
           .lastViewedSeeds()

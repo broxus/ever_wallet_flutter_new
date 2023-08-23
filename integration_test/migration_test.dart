@@ -182,10 +182,10 @@ void main() {
   late HiveSourceMigration hive;
   late EncryptedStorage encryptedStorage;
   late GeneralStorageService storage;
-  late BrowserStorageService browserStorage;
   late BrowserTabsStorageService browserTabsStorage;
   late BrowserHistoryStorageService browserHistoryStorage;
   late BrowserBookmarksStorageService browserBookmarksStorage;
+  late BrowserPermissionsStorageService browserPermissionsStorage;
   late NekotonStorageService accountSeedStorage;
 
   Future<void> checkMigration() async {
@@ -252,7 +252,10 @@ void main() {
     expect(storage.getCurrencies(NetworkType.venom), [_venomCurrency]);
 
     /// Permissions
-    expect(await browserStorage.permissions, {'origin': _permissions});
+    expect(
+      await browserPermissionsStorage.permissions,
+      {'origin': _permissions},
+    );
 
     /// Bookmarks
     expect(await browserBookmarksStorage.readBrowserBookmarks(), [_bookmark]);
@@ -272,15 +275,11 @@ void main() {
       [_historyItem],
     );
 
-    /// Site metadata
-    expect(await browserStorage.getSiteMetaData(_metadata.url), _metadata);
-
     /// Preferences
     expect(await storage.readLocale(), _locale);
     expect(storage.locale, _locale);
     expect(await storage.readIsBiometryEnabled(), true);
     expect(await storage.getWasStEverOpened, true);
-    expect(await browserStorage.getWhyNeedBrowser, true);
     expect(await storage.readLastViewedSeeds(), [_publicKey]);
     expect(storage.lastViewedSeeds, [_publicKey]);
     expect(await accountSeedStorage.readHiddenAccounts(), [_address]);
@@ -314,10 +313,11 @@ void main() {
     await encryptedStorage.init();
     await encryptedStorage.clearAll();
     storage = GeneralStorageService(encryptedStorage);
-    browserStorage = BrowserStorageService(encryptedStorage);
     browserTabsStorage = BrowserTabsStorageService(encryptedStorage);
     browserHistoryStorage = BrowserHistoryStorageService(encryptedStorage);
     browserBookmarksStorage = BrowserBookmarksStorageService(encryptedStorage);
+    browserPermissionsStorage =
+        BrowserPermissionsStorageService(encryptedStorage);
     accountSeedStorage = NekotonStorageService(encryptedStorage);
     repository = NekotonRepository();
     await Hive.deleteFromDisk();
@@ -355,10 +355,10 @@ void main() {
       await _fillHive(hive);
       final migration = MigrationService(
         storage,
-        browserStorage,
         browserTabsStorage,
         browserHistoryStorage,
         browserBookmarksStorage,
+        browserPermissionsStorage,
         accountSeedStorage,
         hive,
       );
@@ -371,10 +371,10 @@ void main() {
 
       final migration = MigrationService(
         storage,
-        browserStorage,
         browserTabsStorage,
         browserHistoryStorage,
         browserBookmarksStorage,
+        browserPermissionsStorage,
         accountSeedStorage,
         hive,
       );
@@ -387,10 +387,10 @@ void main() {
 
       final migration = MigrationService(
         storage,
-        browserStorage,
         browserTabsStorage,
         browserHistoryStorage,
         browserBookmarksStorage,
+        browserPermissionsStorage,
         accountSeedStorage,
         hive,
       );
@@ -404,10 +404,10 @@ void main() {
 
       final migration = MigrationService(
         storage,
-        browserStorage,
         browserTabsStorage,
         browserHistoryStorage,
         browserBookmarksStorage,
+        browserPermissionsStorage,
         accountSeedStorage,
         hive,
       );
@@ -424,10 +424,10 @@ void main() {
       await _fillHive(hive);
       final migration = MigrationService(
         storage,
-        browserStorage,
         browserTabsStorage,
         browserHistoryStorage,
         browserBookmarksStorage,
+        browserPermissionsStorage,
         accountSeedStorage,
         hive,
       );
@@ -519,7 +519,7 @@ void main() {
       );
 
       /// Permissions
-      expect(await browserStorage.permissions, hive.permissions);
+      expect(await browserPermissionsStorage.permissions, hive.permissions);
 
       /// Bookmarks
       expect(
@@ -538,18 +538,11 @@ void main() {
         hive.searchHistory,
       );
 
-      /// Site metadata
-      expect(
-        await browserStorage.getSiteMetaData(_metadata.url),
-        hive.getSiteMetaData(_metadata.url),
-      );
-
       /// Preferences
       expect(await storage.readLocale(), hive.locale);
       expect(storage.locale, hive.locale);
       expect(await storage.readIsBiometryEnabled(), hive.isBiometryEnabled);
       expect(await storage.getWasStEverOpened, hive.wasStEverOpened);
-      expect(await browserStorage.getWhyNeedBrowser, hive.getWhyNeedBrowser);
       expect(
         (await storage.readLastViewedSeeds()).map((key) => key.publicKey),
         hive.lastViewedSeeds(),
@@ -607,10 +600,10 @@ void main() {
 
       final migration = MigrationService(
         storage,
-        browserStorage,
         browserTabsStorage,
         browserHistoryStorage,
         browserBookmarksStorage,
+        browserPermissionsStorage,
         accountSeedStorage,
         hive,
       );
@@ -634,10 +627,10 @@ void main() {
 
       await MigrationService.migrateWithHiveInit(
         storage,
-        browserStorage,
         browserTabsStorage,
         browserHistoryStorage,
         browserBookmarksStorage,
+        browserPermissionsStorage,
         accountSeedStorage,
       );
 
