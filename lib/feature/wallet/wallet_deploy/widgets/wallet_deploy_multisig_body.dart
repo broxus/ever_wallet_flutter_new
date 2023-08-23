@@ -70,6 +70,7 @@ class _WalletDeployMultisigBodyState extends State<WalletDeployMultisigBody> {
         ..dispose();
     }
     requireConfirmationController.dispose();
+    focusNotifier.dispose();
     super.dispose();
   }
 
@@ -115,30 +116,48 @@ class _WalletDeployMultisigBodyState extends State<WalletDeployMultisigBody> {
                 crossAxisAlignment: CrossAxisAlignment.start,
                 separatorSize: DimensSize.d16,
                 children: [
-                  WalletSelectDeployTypeWidget(
-                    currenyType: WalletDeployType.multisig,
-                    onChangeAction: (context) =>
-                        context.read<WalletDeployBloc>().add(
-                              WalletDeployEvent.updateMultisigData(
-                                _collectValidKeys(),
-                                _collectRequireConfirmations(),
-                              ),
+                  ValueListenableBuilder<bool>(
+                    valueListenable: focusNotifier,
+                    builder: (context, value, _) {
+                      if (value) {
+                        return const CommonDivider();
+                      }
+
+                      return SeparatedColumn(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        separatorSize: DimensSize.d16,
+                        children: [
+                          WalletSelectDeployTypeWidget(
+                            currenyType: WalletDeployType.multisig,
+                            onChangeAction: (context) =>
+                                context.read<WalletDeployBloc>().add(
+                                      WalletDeployEvent.updateMultisigData(
+                                        _collectValidKeys(),
+                                        _collectRequireConfirmations(),
+                                      ),
+                                    ),
+                          ),
+                          CommonInput(
+                            controller: requireConfirmationController,
+                            titleText: LocaleKeys.evaluationConfirmation.tr(),
+                            subtitleText: LocaleKeys.outOfNumber.tr(
+                              args: [custodianControllers.length.toString()],
                             ),
-                  ),
-                  CommonInput(
-                    controller: requireConfirmationController,
-                    titleText: LocaleKeys.evaluationConfirmation.tr(),
-                    subtitleText: LocaleKeys.outOfNumber.tr(
-                      args: [custodianControllers.length.toString()],
-                    ),
-                    keyboardType: TextInputType.number,
-                    textInputAction: TextInputAction.next,
-                    onSubmitted: (_) => custodianFocuses.first.requestFocus(),
-                    inputFormatters: [
-                      FilteringTextInputFormatter.deny(RegExp(r'\s')),
-                      FilteringTextInputFormatter.allow(RegExp('[0-9]')),
-                    ],
-                    validator: _validateRequireConfirmations,
+                            keyboardType: TextInputType.number,
+                            textInputAction: TextInputAction.next,
+                            onSubmitted: (_) =>
+                                custodianFocuses.first.requestFocus(),
+                            inputFormatters: [
+                              FilteringTextInputFormatter.deny(RegExp(r'\s')),
+                              FilteringTextInputFormatter.allow(
+                                RegExp('[0-9]'),
+                              ),
+                            ],
+                            validator: _validateRequireConfirmations,
+                          ),
+                        ],
+                      );
+                    },
                   ),
                   Text(
                     LocaleKeys.custodiansWord.tr(),
@@ -245,14 +264,18 @@ class _WalletDeployMultisigBodyState extends State<WalletDeployMultisigBody> {
   }
 
   void _next(BuildContext context) {
-    if (_formKey.currentState?.validate() ?? false) {
-      context.read<WalletDeployBloc>().add(
-            WalletDeployEvent.deployMultisig(
-              _collectValidKeys(),
-              _collectRequireConfirmations(),
-            ),
-          );
-    }
+    FocusScope.of(context).unfocus();
+
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      if (_formKey.currentState?.validate() ?? false) {
+        context.read<WalletDeployBloc>().add(
+              WalletDeployEvent.deployMultisig(
+                _collectValidKeys(),
+                _collectRequireConfirmations(),
+              ),
+            );
+      }
+    });
   }
 
   /// Get list of valid public keys
