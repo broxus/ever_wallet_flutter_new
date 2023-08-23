@@ -41,14 +41,16 @@ class InpageProvider extends ProviderApi {
 
   @override
   FutureOr<DecodeTransactionOutput?> decodeTransaction(
-      DecodeTransactionInput input) {
+    DecodeTransactionInput input,
+  ) {
     // TODO: implement decodeTransaction
     throw UnimplementedError();
   }
 
   @override
   FutureOr<DecodeTransactionEventsOutput> decodeTransactionEvents(
-      DecodeTransactionEventsInput input) {
+    DecodeTransactionEventsInput input,
+  ) {
     // TODO: implement decodeTransactionEvents
     throw UnimplementedError();
   }
@@ -91,7 +93,8 @@ class InpageProvider extends ProviderApi {
 
   @override
   FutureOr<ExtractPublicKeyOutput> extractPublicKey(
-      ExtractPublicKeyInput input) {
+    ExtractPublicKeyInput input,
+  ) {
     // TODO: implement extractPublicKey
     throw UnimplementedError();
   }
@@ -104,7 +107,8 @@ class InpageProvider extends ProviderApi {
 
   @override
   FutureOr<GetAccountsByCodeHashOutput> getAccountsByCodeHash(
-      GetAccountsByCodeHashInput input) {
+    GetAccountsByCodeHashInput input,
+  ) {
     // TODO: implement getAccountsByCodeHash
     throw UnimplementedError();
   }
@@ -123,21 +127,24 @@ class InpageProvider extends ProviderApi {
 
   @override
   FutureOr<GetContractFieldsOutput> getContractFields(
-      GetContractFieldsInput input) {
+    GetContractFieldsInput input,
+  ) {
     // TODO: implement getContractFields
     throw UnimplementedError();
   }
 
   @override
   FutureOr<GetExpectedAddressOutput> getExpectedAddress(
-      GetExpectedAddressInput input) {
+    GetExpectedAddressInput input,
+  ) {
     // TODO: implement getExpectedAddress
     throw UnimplementedError();
   }
 
   @override
   FutureOr<GetFullContractStateOutput> getFullContractState(
-      GetFullContractStateInput input) {
+    GetFullContractStateInput input,
+  ) {
     // TODO: implement getFullContractState
     throw UnimplementedError();
   }
@@ -149,6 +156,7 @@ class InpageProvider extends ProviderApi {
     return GetProviderStateOutput.fromJson(
       {
         'version': '0.3.0',
+        // ignore: no-magic-number
         'numericVersion': 3000,
         'networkId': 1,
         'selectedConnection': 'mainnet',
@@ -212,14 +220,16 @@ class InpageProvider extends ProviderApi {
 
   @override
   FutureOr<SendExternalMessageOutput> sendExternalMessage(
-      SendExternalMessageInput input) {
+    SendExternalMessageInput input,
+  ) {
     // TODO: implement sendExternalMessage
     throw UnimplementedError();
   }
 
   @override
   FutureOr<SendExternalMessageDelayedOutput> sendExternalMessageDelayed(
-      SendExternalMessageDelayedInput input) {
+    SendExternalMessageDelayedInput input,
+  ) {
     // TODO: implement sendExternalMessageDelayed
     throw UnimplementedError();
   }
@@ -232,14 +242,16 @@ class InpageProvider extends ProviderApi {
 
   @override
   FutureOr<SendMessageDelayedOutput> sendMessageDelayed(
-      SendMessageDelayedInput input) {
+    SendMessageDelayedInput input,
+  ) {
     // TODO: implement sendMessageDelayed
     throw UnimplementedError();
   }
 
   @override
   FutureOr<SendUnsignedExternalMessageOutput> sendUnsignedExternalMessage(
-      SendUnsignedExternalMessageInput input) {
+    SendUnsignedExternalMessageInput input,
+  ) {
     // TODO: implement sendUnsignedExternalMessage
     throw UnimplementedError();
   }
