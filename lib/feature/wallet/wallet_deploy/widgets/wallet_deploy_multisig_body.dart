@@ -54,6 +54,7 @@ class _WalletDeployMultisigBodyState extends State<WalletDeployMultisigBody> {
   void initState() {
     super.initState();
     for (final f in custodianFocuses) {
+      // ignore: always-remove-listener
       f.addListener(_focusListener);
     }
   }
@@ -64,7 +65,9 @@ class _WalletDeployMultisigBodyState extends State<WalletDeployMultisigBody> {
       c.dispose();
     }
     for (final f in custodianFocuses) {
-      f.dispose();
+      f
+        ..removeListener(_focusListener)
+        ..dispose();
     }
     requireConfirmationController.dispose();
     super.dispose();
@@ -222,23 +225,21 @@ class _WalletDeployMultisigBodyState extends State<WalletDeployMultisigBody> {
       builder: (context, value, _) {
         final colors = context.themeStyle.colors;
 
-        if (value.text.isNotEmpty) {
-          return CommonIconButton.icon(
-            buttonType: EverButtonType.ghost,
-            icon: Icons.clear_rounded,
-            size: CommonIconButtonSize.medium,
-            onPressed: controller.clear,
-            color: colors.textSecondary,
-          );
-        } else {
-          return CommonIconButton.svg(
-            buttonType: EverButtonType.ghost,
-            svg: Assets.images.paste.path,
-            size: CommonIconButtonSize.medium,
-            onPressed: () => _pasteCustodian(index),
-            color: colors.blue,
-          );
-        }
+        return value.text.isNotEmpty
+            ? CommonIconButton.icon(
+                buttonType: EverButtonType.ghost,
+                icon: Icons.clear_rounded,
+                size: CommonIconButtonSize.medium,
+                onPressed: controller.clear,
+                color: colors.textSecondary,
+              )
+            : CommonIconButton.svg(
+                buttonType: EverButtonType.ghost,
+                svg: Assets.images.paste.path,
+                size: CommonIconButtonSize.medium,
+                onPressed: () => _pasteCustodian(index),
+                color: colors.blue,
+              );
       },
     );
   }
@@ -265,6 +266,7 @@ class _WalletDeployMultisigBodyState extends State<WalletDeployMultisigBody> {
         null) {
       return int.parse(requireConfirmationController.text);
     }
+
     return defaultRequireConfirmations;
   }
 
@@ -281,6 +283,7 @@ class _WalletDeployMultisigBodyState extends State<WalletDeployMultisigBody> {
       return LocaleKeys.invalidLengthMustBe
           .tr(args: [publicKeyLength.toString()]);
     }
+
     return null;
   }
 

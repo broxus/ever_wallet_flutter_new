@@ -101,6 +101,7 @@ class WalletDeployPage extends StatelessWidget {
               titleText: canPrev
                   ? LocaleKeys.deployWallet.tr()
                   : LocaleKeys.selectWalletType.tr(),
+              // ignore: prefer-extracting-callbacks
               onClosePressed: (context) {
                 if (canPrev) {
                   context

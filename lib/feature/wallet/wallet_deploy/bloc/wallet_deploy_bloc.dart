@@ -151,6 +151,7 @@ class WalletDeployBloc extends Bloc<WalletDeployEvent, WalletDeployState> {
     }
   }
 
+  // ignore: long-method
   Future<void> _handlePrepareDeploy(
     Emitter<WalletDeployState> emit, [
     List<PublicKey>? custodians,
@@ -216,6 +217,7 @@ class WalletDeployBloc extends Bloc<WalletDeployEvent, WalletDeployState> {
     }
   }
 
+  // ignore: long-method
   Future<void> _handleSend(
     Emitter<WalletDeployState> emit,
     String password,
