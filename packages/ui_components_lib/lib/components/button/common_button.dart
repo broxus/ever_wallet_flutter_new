@@ -234,7 +234,10 @@ class _CommonButtonState extends State<CommonButton> {
             onLongPress: widget.isLoading ? null : widget.onLongPress,
             child: widget.fillWidth
                 ? Center(child: child)
-                : Row(mainAxisSize: MainAxisSize.min, children: [child]),
+                : Row(
+                    mainAxisSize: MainAxisSize.min,
+                    children: [Flexible(child: child)],
+                  ),
           ),
         ),
       ),
@@ -283,13 +286,14 @@ class _CommonButtonState extends State<CommonButton> {
       child: widget.leading == null && widget.trailing == null
           ? textWidget
           : Row(
+              mainAxisSize: MainAxisSize.min,
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
                 if (widget.leading != null) ...[
                   widget.leading!,
                   const SizedBox(width: DimensSize.d8),
                 ],
-                textWidget,
+                Flexible(child: textWidget),
                 if (widget.trailing != null) ...[
                   const SizedBox(width: DimensSize.d8),
                   widget.trailing!,

@@ -56,6 +56,8 @@ class CommonInput extends StatefulWidget {
     this.prefixIconConstraints,
     this.suffixIconConstraints,
     this.fillColor,
+    this.maxLength,
+    this.outerActions,
   });
 
   /// Height of input field
@@ -164,7 +166,14 @@ class CommonInput extends StatefulWidget {
   /// If text should look like password, default false
   final bool obscureText;
 
+  /// See [InputDecoration.fillColor]
   final Color? fillColor;
+
+  /// See [TextField.maxLength]
+  final int? maxLength;
+
+  /// Actions that will be displayed right from text field
+  final List<Widget>? outerActions;
 
   @override
   State<CommonInput> createState() => _CommonInputState();
@@ -235,6 +244,15 @@ class _CommonInputState extends State<CommonInput> {
             hasError: state.hasError,
             suggestionsCallback: suggestionsCallback,
           );
+
+    if (widget.outerActions != null) {
+      child = SeparatedRow(
+        children: [
+          Expanded(child: child),
+          ...widget.outerActions!,
+        ],
+      );
+    }
 
     return Column(
       mainAxisSize: MainAxisSize.min,
@@ -452,6 +470,7 @@ class _CommonInputState extends State<CommonInput> {
             autocorrect: widget.autocorrect,
             enableSuggestions: widget.enableSuggestions,
             inputFormatters: widget.inputFormatters,
+            maxLength: widget.maxLength,
             decoration: InputDecoration(
               errorText: hasError ? '' : null,
               errorStyle: const TextStyle(fontSize: 0, height: 0),

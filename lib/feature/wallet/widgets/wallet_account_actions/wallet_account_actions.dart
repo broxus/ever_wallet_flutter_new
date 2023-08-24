@@ -118,7 +118,15 @@ class WalletAccountActions extends StatelessWidget {
             }
           },
         // ignore: no-empty-block
-        WalletAccountActionBehavior.deploy => () {},
+        WalletAccountActionBehavior.deploy => () => context.goFurther(
+              AppRoute.walletDeploy.pathWithData(
+                pathParameters: {
+                  walletDeployAddressPathParam: currentAccount!.address.address,
+                  walletDeployPublicKeyPathParam:
+                      currentAccount!.publicKey.publicKey,
+                },
+              ),
+            ),
         WalletAccountActionBehavior.sendLocalCustodiansNeeded => () =>
             inject<MessengerService>().show(
               Message.error(

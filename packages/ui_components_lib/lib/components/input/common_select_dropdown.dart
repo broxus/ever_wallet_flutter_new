@@ -154,6 +154,7 @@ class CommonSelectDropdown<T> extends StatelessWidget {
       body: (context, scrollController) {
         return SingleChildScrollView(
           controller: scrollController,
+          padding: const EdgeInsets.only(top: DimensSize.d16),
           child: SeparatedColumn(
             separator: const Padding(
               padding: EdgeInsets.symmetric(vertical: DimensSize.d12),
