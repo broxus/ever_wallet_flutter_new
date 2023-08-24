@@ -15,7 +15,7 @@ class WalletDeployStandardBody extends StatelessWidget {
       child: SeparatedColumn(
         children: [
           const WalletSelectDeployTypeWidget(
-            currenyType: WalletDeployType.standard,
+            type: WalletDeployType.standard,
           ),
           const Spacer(),
           CommonButton.primary(

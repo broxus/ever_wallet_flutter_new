@@ -16,7 +16,7 @@ extension on WalletDeployType {
 /// Widget that displays input that allows change deploy type for wallet.
 class WalletSelectDeployTypeWidget extends StatelessWidget {
   const WalletSelectDeployTypeWidget({
-    required this.currenyType,
+    required this.type,
     this.onChangeAction,
     super.key,
   });
@@ -25,7 +25,7 @@ class WalletSelectDeployTypeWidget extends StatelessWidget {
   /// This can be helpful to update multisig data
   final ValueChanged<BuildContext>? onChangeAction;
 
-  final WalletDeployType currenyType;
+  final WalletDeployType type;
 
   @override
   Widget build(BuildContext context) {
@@ -40,7 +40,7 @@ class WalletSelectDeployTypeWidget extends StatelessWidget {
             ),
           )
           .toList(),
-      currentValue: currenyType,
+      currentValue: type,
       onChanged: (t) {
         onChangeAction?.call(context);
         context.read<WalletDeployBloc>().add(WalletDeployEvent.changeType(t));

@@ -128,7 +128,7 @@ class _WalletDeployMultisigBodyState extends State<WalletDeployMultisigBody> {
                         separatorSize: DimensSize.d16,
                         children: [
                           WalletSelectDeployTypeWidget(
-                            currenyType: WalletDeployType.multisig,
+                            type: WalletDeployType.multisig,
                             onChangeAction: (context) =>
                                 context.read<WalletDeployBloc>().add(
                                       WalletDeployEvent.updateMultisigData(
