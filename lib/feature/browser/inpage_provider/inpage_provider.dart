@@ -3,6 +3,8 @@ import 'dart:async';
 import 'package:nekoton_webview/nekoton_webview.dart';
 
 class InpageProvider extends ProviderApi {
+  Uri? url;
+
   @override
   FutureOr<AddAssetOutput> addAsset(AddAssetInput input) {
     // TODO: implement addAsset
