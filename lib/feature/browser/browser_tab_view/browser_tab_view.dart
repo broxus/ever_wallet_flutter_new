@@ -61,6 +61,7 @@ class _BrowserTabViewState extends State<BrowserTabView> {
 
   InAppWebViewController? _webViewController;
   PullToRefreshController? _pullToRefreshController;
+  final InpageProvider _inpageProvider = InpageProvider();
 
   Timer? _screenshotTimer;
 
@@ -271,7 +272,7 @@ class _BrowserTabViewState extends State<BrowserTabView> {
     _webViewController = controller;
 
     await controller.initNekotonProvider(
-      providerApi: InpageProvider(),
+      providerApi: _inpageProvider,
     );
 
     if (widget.tab.url.toString().isNotEmpty) {
@@ -373,6 +374,8 @@ class _BrowserTabViewState extends State<BrowserTabView> {
     if (url?.toString().trim().isEmpty ?? true) {
       return;
     }
+
+    _inpageProvider.url = url;
 
     context
         .read<BrowserTabsBloc>()
