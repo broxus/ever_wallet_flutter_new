@@ -96,21 +96,27 @@ class AppWrapper extends StatefulWidget {
 }
 
 class _AppWrapperState extends State<AppWrapper> with WidgetsBindingObserver {
+  late final AppLifecycleListener _listener;
+
   @override
   void initState() {
     super.initState();
-    WidgetsBinding.instance.addObserver(this);
+
+    _listener = AppLifecycleListener(
+      onStateChange: _onStateChanged,
+    );
+
     appStartSession(setCrashDetected: true);
   }
 
   @override
   void dispose() {
-    WidgetsBinding.instance.removeObserver(this);
+    _listener.dispose();
+
     super.dispose();
   }
 
-  @override
-  void didChangeAppLifecycleState(AppLifecycleState state) {
+  void _onStateChanged(AppLifecycleState state) {
     switch (state) {
       case AppLifecycleState.resumed:
         startLogSession();
