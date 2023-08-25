@@ -28,7 +28,11 @@ Future<void> contactSupportEmailSend(
       LocaleKeys.contactSupportEmailBodyInitiatedByUser.tr(),
   };
 
-  final logFilePath = await inject<FancyLogger>().writeAllLogsToJson();
+  final now =
+      DateTime.now().toLocal().toString().replaceAll(RegExp(r'\s'), '_');
+
+  final logFilePath =
+      await inject<FancyLogger>().writeAllLogsToJson('sparx_logs_$now.json');
 
   final email = Email(
     subject: subject,
