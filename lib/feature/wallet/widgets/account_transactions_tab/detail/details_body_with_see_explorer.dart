@@ -47,7 +47,10 @@ class WalletTransactionDetailsBodyWithExplorerButton extends StatelessWidget {
             mainAxisSize: MainAxisSize.min,
             children: [
               if (action != null) action!,
-              SeeInExplorerButton(transactionHash: transactionHash),
+              SeeInExplorerButton(
+                transactionHash: transactionHash,
+                isSecondary: action != null,
+              ),
             ],
           ),
         ),

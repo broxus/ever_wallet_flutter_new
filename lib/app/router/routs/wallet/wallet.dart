@@ -1,3 +1,5 @@
+import 'dart:convert';
+
 import 'package:app/app/router/router.dart';
 import 'package:app/feature/add_seed/add_seed_enable_biometry/add_seed_enable_biometry.dart';
 import 'package:app/feature/wallet/wallet.dart';
@@ -31,6 +33,19 @@ const tokenWalletSendAttachedAmountQueryParam = 'tokenWalletSendAttachedAmount';
 const walletDeployAddressPathParam = 'walletDeployAddress';
 const walletDeployPublicKeyPathParam = 'walletDeployPublicKey';
 
+const tonWalletConfirmTransactionWalletAddressQueryParam =
+    'tonWalletConfirmTransactionAddress';
+const tonWalletConfirmTransactionLocalCustodiansQueryParam =
+    'tonWalletConfirmTransactionLocalCustodians';
+const tonWalletConfirmTransactionTransactionIdQueryParam =
+    'tonWalletConfirmTransactionTransactionId';
+const tonWalletConfirmTransactionDestinationQueryParam =
+    'tonWalletConfirmTransactionDestination';
+const tonWalletConfirmTransactionAmountQueryParam =
+    'tonWalletConfirmTransactionAmount';
+const tonWalletConfirmTransactionCommentQueryParam =
+    'tonWalletConfirmTransactionComment';
+
 /// Branch that is root for wallet.
 StatefulShellBranch get walletBranch {
   return StatefulShellBranch(
@@ -56,7 +71,8 @@ StatefulShellBranch get walletBranch {
           tonWalletDetailsRoute,
           tokenWalletDetailsRoute,
           walletPrepareTransferRoute,
-          walletDeploy,
+          walletDeployRoute,
+          tonConfirmTranscationRoute,
         ],
       ),
     ],
@@ -73,6 +89,7 @@ GoRoute get tonWalletDetailsRoute {
     ),
     routes: [
       walletPrepareTransferLockedRoute,
+      tonConfirmTranscationRoute,
     ],
   );
 }
@@ -105,8 +122,8 @@ GoRoute get walletPrepareTransferRoute {
       ),
     ),
     routes: [
-      tonWalletSend,
-      tokenWalletSend,
+      tonWalletSendRoute,
+      tokenWalletSendRoute,
     ],
   );
 }
@@ -125,14 +142,14 @@ GoRoute get walletPrepareTransferLockedRoute {
       ),
     ),
     routes: [
-      tonWalletSend,
-      tokenWalletSend,
+      tonWalletSendRoute,
+      tokenWalletSendRoute,
     ],
   );
 }
 
 /// Send native token from TonWallet
-GoRoute get tonWalletSend {
+GoRoute get tonWalletSendRoute {
   return GoRoute(
     path: AppRoute.tonWalletSend.path,
     builder: (context, state) {
@@ -157,7 +174,8 @@ GoRoute get tonWalletSend {
   );
 }
 
-GoRoute get tokenWalletSend {
+/// Send not native tokens
+GoRoute get tokenWalletSendRoute {
   return GoRoute(
     path: AppRoute.tokenWalletSend.path,
     builder: (context, state) {
@@ -190,7 +208,8 @@ GoRoute get tokenWalletSend {
   );
 }
 
-GoRoute get walletDeploy {
+/// Deploy account to blockchain
+GoRoute get walletDeployRoute {
   return GoRoute(
     path: AppRoute.walletDeploy.path,
     builder: (context, state) {
@@ -201,6 +220,40 @@ GoRoute get walletDeploy {
         publicKey: PublicKey(
           publicKey: state.pathParameters[walletDeployPublicKeyPathParam]!,
         ),
+      );
+    },
+  );
+}
+
+/// Confirm multisig transaction for TonWallet
+GoRoute get tonConfirmTranscationRoute {
+  return GoRoute(
+    path: AppRoute.tonConfirmTransaction.path,
+    builder: (context, state) {
+      final decoded = (jsonDecode(
+        state.uri.queryParameters[
+            tonWalletConfirmTransactionLocalCustodiansQueryParam]!,
+      ) as List<dynamic>)
+          .cast<String>();
+
+      return TonConfirmTransactionPage(
+        walletAddress: Address(
+          address: state.uri.queryParameters[
+              tonWalletConfirmTransactionWalletAddressQueryParam]!,
+        ),
+        localCustodians: decoded.map((e) => PublicKey(publicKey: e)).toList(),
+        transactionId: state.uri.queryParameters[
+            tonWalletConfirmTransactionTransactionIdQueryParam]!,
+        destination: Address(
+          address: state.uri.queryParameters[
+              tonWalletConfirmTransactionDestinationQueryParam]!,
+        ),
+        amount: BigInt.parse(
+          state.uri
+              .queryParameters[tonWalletConfirmTransactionAmountQueryParam]!,
+        ),
+        comment: state
+            .uri.queryParameters[tonWalletConfirmTransactionCommentQueryParam],
       );
     },
   );
