@@ -63,9 +63,9 @@ class _TonWalletConfirmTransactionPrepareState
           CommonButton.primary(
             fillWidth: true,
             text: LocaleKeys.nextWord.tr(),
-            onPressed: () => context
-                .read<TonConfirmTransactionBloc>()
-                .add(TonConfirmTransactionEvent.prepare(custodianNotifier.value)),
+            onPressed: () => context.read<TonConfirmTransactionBloc>().add(
+                  TonConfirmTransactionEvent.prepare(custodianNotifier.value),
+                ),
           ),
         ],
       ),
