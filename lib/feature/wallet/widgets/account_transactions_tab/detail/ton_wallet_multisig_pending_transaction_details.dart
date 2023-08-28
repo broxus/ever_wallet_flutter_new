@@ -1,3 +1,6 @@
+import 'dart:convert';
+
+import 'package:app/app/router/router.dart';
 import 'package:app/di/di.dart';
 import 'package:app/feature/wallet/wallet.dart';
 import 'package:app/generated/generated.dart';
@@ -38,9 +41,33 @@ class TonWalletMultisigPendingTransactionDetailsPage extends StatelessWidget {
         transactionHash: transaction.hash,
         action: transaction.canConfirm
             ? CommonButton.primary(
-                // TODO(alex-a4): add going to confirmation page
-                // ignore: no-empty-block
-                onPressed: () {},
+                fillWidth: true,
+                onPressed: () {
+                  Navigator.of(context).pop();
+                  context.goFurther(
+                    AppRoute.tonConfirmTransaction.pathWithQuery(
+                      {
+                        tonWalletConfirmTransactionWalletAddressQueryParam:
+                            transaction.walletAddress.address,
+                        tonWalletConfirmTransactionLocalCustodiansQueryParam:
+                            jsonEncode(
+                          transaction.nonConfirmedLocalCustodians
+                              .map((e) => e.publicKey)
+                              .toList(),
+                        ),
+                        tonWalletConfirmTransactionTransactionIdQueryParam:
+                            transaction.transactionId,
+                        tonWalletConfirmTransactionDestinationQueryParam:
+                            transaction.address.address,
+                        tonWalletConfirmTransactionAmountQueryParam:
+                            transaction.value.toString(),
+                        if (transaction.comment != null)
+                          tonWalletConfirmTransactionCommentQueryParam:
+                              transaction.comment!,
+                      },
+                    ),
+                  );
+                },
                 text: LocaleKeys.confirmTransaction.tr(),
                 leading: CommonButtonIconWidget.svg(
                   svg: Assets.images.check.path,

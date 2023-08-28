@@ -108,7 +108,7 @@ class WalletDeployConfirmView extends StatelessWidget {
               showCommonBottomSheet<void>(
                 context: context,
                 title: LocaleKeys.enterPasswordTo.tr(
-                  args: [LocaleKeys.addKey.tr().toLowerCase()],
+                  args: [LocaleKeys.deployWallet.tr().toLowerCase()],
                 ),
                 useAppBackgroundColor: true,
                 body: (_, __) => Builder(

@@ -10,16 +10,19 @@ import 'package:ui_components_lib/ui_components_lib.dart';
 class SeeInExplorerButton extends StatelessWidget {
   const SeeInExplorerButton({
     required this.transactionHash,
+    this.isSecondary = false,
     super.key,
   });
 
   final String transactionHash;
+  final bool isSecondary;
 
   @override
   Widget build(BuildContext context) {
-    return CommonButton.primary(
+    return CommonButton(
+      buttonType:
+          isSecondary ? EverButtonType.secondary : EverButtonType.primary,
       text: LocaleKeys.seeInExplorer.tr(),
-      fillWidth: true,
       leading: CommonButtonIconWidget.svg(svg: Assets.images.planetInner.path),
       onPressed: () {
         Navigator.of(context).pop();

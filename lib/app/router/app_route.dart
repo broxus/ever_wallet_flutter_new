@@ -54,6 +54,10 @@ enum AppRoute {
     '',
     'walletDeploy/:$walletDeployAddressPathParam/:$walletDeployPublicKeyPathParam',
   ),
+  tonConfirmTransaction(
+    '',
+    'tonConfirmTransaction', // all data in query
+  ),
 
   /// Browser section
   browser(
