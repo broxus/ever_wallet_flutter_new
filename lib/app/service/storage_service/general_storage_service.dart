@@ -47,6 +47,7 @@ class GeneralStorageService extends AbstractStorageService {
         _streamedCurrentKey(),
         _streamedLastViewedSeeds(),
         _streamedCurrentConnection(),
+        _streamedBiometryEnabled(),
         _initAppDirectories(),
       ]);
 
