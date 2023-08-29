@@ -64,15 +64,15 @@ class ProfileView extends StatelessWidget {
                   onPressed: () =>
                       context.goFurther(AppRoute.manageSeedsAccounts.path),
                 ),
-                _profileTile(
-                  leadingIcon: Assets.images.currency.path,
-                  title: LocaleKeys.currencyWord.tr(),
-                  trailing: CommonButtonIconWidget.svg(
-                    svg: Assets.images.caretRight.path,
-                  ),
-                  // ignore: no-empty-block
-                  onPressed: () {},
-                ),
+                // _profileTile(
+                //   leadingIcon: Assets.images.currency.path,
+                //   title: LocaleKeys.currencyWord.tr(),
+                //   trailing: CommonButtonIconWidget.svg(
+                //     svg: Assets.images.caretRight.path,
+                //   ),
+                //   // ignore: no-empty-block
+                //   onPressed: () {},
+                // ),
                 _profileTile(
                   leadingIcon: Assets.images.planetInner.path,
                   title: LocaleKeys.languageWord.tr(),
