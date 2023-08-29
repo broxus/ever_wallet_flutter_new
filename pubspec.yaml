@@ -60,7 +60,7 @@ dev_dependencies:
       ref: main
   build_runner: ^2.4.6
   flutter_gen_runner: ^5.3.1
-  flutter_secure_storage: ^8.0.0
+  flutter_secure_storage: ^8.1.0
   flutter_test:
     sdk: flutter
   freezed: ^2.4.1
