@@ -93,7 +93,7 @@ class TonWalletSendConfirmView extends StatelessWidget {
               showCommonBottomSheet<void>(
                 context: context,
                 title: LocaleKeys.enterPasswordTo.tr(
-                  args: [LocaleKeys.addKey.tr().toLowerCase()],
+                  args: [LocaleKeys.sendYourFunds.tr().toLowerCase()],
                 ),
                 useAppBackgroundColor: true,
                 body: (_, __) => Builder(

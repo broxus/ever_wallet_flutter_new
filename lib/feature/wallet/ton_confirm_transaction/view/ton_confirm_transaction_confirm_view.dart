@@ -1,21 +1,20 @@
 import 'package:app/di/di.dart';
 import 'package:app/feature/profile/profile.dart';
-import 'package:app/feature/wallet/token_wallet_send/token_wallet_send.dart';
+import 'package:app/feature/wallet/ton_confirm_transaction/bloc/bloc.dart';
 import 'package:app/generated/generated.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:nekoton_repository/nekoton_repository.dart';
 import 'package:ui_components_lib/ui_components_lib.dart';
 
-/// View that allows confirm send token transaction by entering password
-class TokenWalletSendConfirmView extends StatelessWidget {
-  const TokenWalletSendConfirmView({
+/// View that allows confirm confirming transaction transaction by entering
+/// password
+class TonWalletConfirmTransactionConfirmView extends StatelessWidget {
+  const TonWalletConfirmTransactionConfirmView({
     required this.recipient,
     required this.amount,
     required this.comment,
     required this.publicKey,
-    required this.attachedAmount,
-    required this.tokenCurrency,
     this.fee,
     this.feeError,
     super.key,
@@ -23,10 +22,8 @@ class TokenWalletSendConfirmView extends StatelessWidget {
 
   final Address recipient;
   final BigInt amount;
-  final BigInt attachedAmount;
   final BigInt? fee;
   final String? comment;
-  final Currency tokenCurrency;
 
   final String? feeError;
 
@@ -57,16 +54,6 @@ class TokenWalletSendConfirmView extends StatelessWidget {
                   valueChild: MoneyWidget(
                     money: Money.fromBigIntWithCurrency(
                       amount,
-                      tokenCurrency,
-                    ),
-                    style: MoneyWidgetStyle.primary,
-                  ),
-                ),
-                _info(
-                  title: LocaleKeys.attachedAmount.tr(),
-                  valueChild: MoneyWidget(
-                    money: Money.fromBigIntWithCurrency(
-                      attachedAmount,
                       Currencies()[inject<NekotonRepository>()
                           .currentTransport
                           .nativeTokenTicker]!,
@@ -102,12 +89,12 @@ class TokenWalletSendConfirmView extends StatelessWidget {
           child: CommonButton.primary(
             fillWidth: true,
             isLoading: isLoading,
-            text: LocaleKeys.sendWord.tr(),
+            text: LocaleKeys.confirm.tr(),
             onPressed: () {
               showCommonBottomSheet<void>(
                 context: context,
                 title: LocaleKeys.enterPasswordTo.tr(
-                  args: [LocaleKeys.sendYourFunds.tr().toLowerCase()],
+                  args: [LocaleKeys.confirmTransaction.tr().toLowerCase()],
                 ),
                 useAppBackgroundColor: true,
                 body: (_, __) => Builder(
@@ -117,8 +104,8 @@ class TokenWalletSendConfirmView extends StatelessWidget {
                       onPasswordEntered: (value) {
                         Navigator.of(c).pop();
                         context
-                            .read<TokenWalletSendBloc>()
-                            .add(TokenWalletSendEvent.send(value));
+                            .read<TonConfirmTransactionBloc>()
+                            .add(TonConfirmTransactionEvent.send(value));
                       },
                       publicKey: publicKey,
                     );
