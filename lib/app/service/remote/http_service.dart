@@ -1,4 +1,5 @@
 import 'dart:io';
+import 'dart:typed_data';
 
 import 'package:http/http.dart' as http;
 import 'package:injectable/injectable.dart';
@@ -24,6 +25,23 @@ class HttpService {
     _logResponse(endpoint, response, 'POST');
 
     return response.body;
+  }
+
+  /// Post request for <Transport> from nekoton that uses bytes as data and
+  /// response.
+  Future<Uint8List> postTransportDataBytes({
+    required String endpoint,
+    required Map<String, String> headers,
+    required Uint8List dataBytes,
+  }) async {
+    final response = await http.post(
+      Uri.parse(endpoint),
+      headers: headers,
+      body: dataBytes,
+    );
+    _logResponse(endpoint, response, 'POST');
+
+    return response.bodyBytes;
   }
 
   /// Pure post request for [endpoint].

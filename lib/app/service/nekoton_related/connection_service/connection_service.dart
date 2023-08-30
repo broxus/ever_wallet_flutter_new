@@ -70,9 +70,9 @@ class ConnectionService {
         endpoints: endpoints,
         local: local,
       ),
-      jrpc: (name, networkId, group, endpoint, _) =>
-          _nekotonRepository.createJrpcTransport(
-        post: _httpService.postTransportData,
+      proto: (name, networkId, group, endpoint, _) =>
+          _nekotonRepository.createProtoTransport(
+        post: _httpService.postTransportDataBytes,
         name: name,
         networkId: networkId,
         group: group,

@@ -15,11 +15,11 @@ class ConnectionData with _$ConnectionData {
     required NetworkType networkType,
   }) = _ConnectionDataGql;
 
-  const factory ConnectionData.jrpc({
+  const factory ConnectionData.proto({
     required String name,
     required int networkId,
     required String group,
     required String endpoint,
     required NetworkType networkType,
-  }) = _ConnectionDataJrpc;
+  }) = _ConnectionDataProto;
 }
