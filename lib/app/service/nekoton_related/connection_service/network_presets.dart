@@ -3,11 +3,11 @@ import 'package:app/data/models/network_type.dart';
 
 /// Presets for ever network
 const everPresets = <ConnectionData>[
-  ConnectionData.jrpc(
-    name: 'Mainnet (JRPC)',
+  ConnectionData.proto(
+    name: 'Mainnet (PROTO)',
     networkId: 1,
     group: 'mainnet',
-    endpoint: 'https://jrpc.everwallet.net/rpc',
+    endpoint: 'https://jrpc.everwallet.net/proto',
     networkType: NetworkType.ever,
   ),
   ConnectionData.gql(
@@ -44,11 +44,11 @@ const venomPresets = [
   //   endpoint: 'https://jrpc.venom.foundation/rpc',
   //   networkType: NetworkType.venom,
   // ),
-  ConnectionData.jrpc(
+  ConnectionData.proto(
     name: 'Testnet Venom',
     networkId: 1010,
     group: 'testnet',
-    endpoint: 'https://jrpc-testnet.venom.foundation/rpc',
+    endpoint: 'https://jrpc-testnet.venom.foundation/proto',
     networkType: NetworkType.venom,
   ),
 ];
