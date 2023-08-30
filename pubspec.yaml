@@ -41,7 +41,7 @@ dependencies:
   nekoton_repository: ^0.16.0
   nekoton_webview: ^0.1.2
   package_info_plus: ^4.1.0
-  path_provider: ^2.0.15
+  path_provider: ^2.1.1
   rxdart: ^0.27.7
   share_plus: 7.0.2
   shared_preferences: ^2.2.0
