@@ -20,6 +20,7 @@ class TonWalletIconWidget extends StatelessWidget {
     if (uri.hasScheme) {
       return SvgPicture.network(
         path,
+        placeholderBuilder: (_) => const CommonCircularProgressIndicator(),
         width: size,
         height: size,
       );
@@ -27,6 +28,7 @@ class TonWalletIconWidget extends StatelessWidget {
 
     return SvgPicture.asset(
       path,
+      placeholderBuilder: (_) => const CommonCircularProgressIndicator(),
       width: size,
       height: size,
     );
