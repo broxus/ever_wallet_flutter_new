@@ -191,6 +191,12 @@ class CurrentAccountsService {
 
     _currentAccountsSubject.add(key.accountList);
     _updateSubscriptions(key.accountList);
+
+    final currentAccount = currentActiveAccount?.$2;
+    final accounts = currentAccounts?.displayAccounts;
+    if (currentAccount == null && accounts != null && accounts.isNotEmpty) {
+      updateCurrentActiveAccount(0);
+    }
   }
 
   /// Update Ton/Token wallet subscriptions when user changes current active key

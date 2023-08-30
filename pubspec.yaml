@@ -17,7 +17,7 @@ dependencies:
   dotted_border: ^2.0.0+3
   easy_localization: ^3.0.2
   easy_logger: ^0.0.2
-  encrypted_storage: 0.1.1
+  encrypted_storage: 0.1.2
   equatable: ^2.0.5
   fancy_logger: 0.1.3
   flutter:
@@ -28,7 +28,7 @@ dependencies:
   flutter_svg: ^2.0.7
   freezed_annotation: ^2.4.1
   get_it: ^7.6.0
-  go_router: ^10.1.0
+  go_router: ^10.1.1
   hive_flutter: ^1.1.0
   http: ^0.13.6
   http_proxy: ^1.2.1
@@ -59,8 +59,8 @@ dev_dependencies:
       url: https://github.com/broxus/flutter_templates.git
       ref: main
   build_runner: ^2.4.6
-  flutter_gen_runner: ^5.2.0
-  flutter_secure_storage: ^8.0.0
+  flutter_gen_runner: ^5.3.1
+  flutter_secure_storage: ^9.0.0
   flutter_test:
     sdk: flutter
   freezed: ^2.4.1
