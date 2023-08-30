@@ -446,10 +446,10 @@ packages:
     dependency: transitive
     description:
       name: fixed
-      sha256: "928887f443d9e667dc50d1a060a9129833a9910ec1912801c0375ab8fe56b1ac"
+      sha256: "2f45316422263a7b27506fca71972f7167b03857fc2105d94df5e01cafbd76ce"
       url: "https://pub.dev"
     source: hosted
-    version: "2.4.0"
+    version: "4.0.1"
   fixnum:
     dependency: transitive
     description:
@@ -589,10 +589,10 @@ packages:
     dependency: transitive
     description:
       name: flutter_nekoton_bridge
-      sha256: "0bde0781118d5806c818c13e37078d46037378eb6077b82e7c3f9cd8362726b0"
+      sha256: "838c351bc2186574aad35c845bf1592c7971e0b35ae66cb3fad5c8709f832c49"
       url: "https://pub.dev"
     source: hosted
-    version: "1.18.1"
+    version: "1.19.0"
   flutter_plugin_android_lifecycle:
     dependency: transitive
     description:
@@ -985,18 +985,18 @@ packages:
     dependency: "direct main"
     description:
       name: money2
-      sha256: "0a53f184abf1b3d5be4c4e811357bd065f7311c1724835569f7ec871de2abd30"
+      sha256: "98ac9c752f0dd71c88b72d90976433fbc28c9063d561070aab3b796a835c1740"
       url: "https://pub.dev"
     source: hosted
-    version: "3.4.1"
+    version: "4.0.0"
   money2_improver:
     dependency: "direct main"
     description:
       name: money2_improver
-      sha256: "66ac6833323715c6d3b6b9fabad6090d67c26c56b1c817b8168d219626373708"
+      sha256: "8671b3ba4cfeb8626abb2d2697c42488d7d56f27e81af24853a41c39f678daa2"
       url: "https://pub.dev"
     source: hosted
-    version: "1.3.0"
+    version: "1.3.1"
   mustache_template:
     dependency: transitive
     description:
@@ -1009,10 +1009,10 @@ packages:
     dependency: transitive
     description:
       name: nekoton_bridge
-      sha256: "4e467195c8b7504fdbc0750578c50af98c6439f32557090366a19934ed9e992b"
+      sha256: c264fa6ee806302bc84b46409d6a5251a47fe79fbe775c16079990fe872d9b69
       url: "https://pub.dev"
     source: hosted
-    version: "1.11.1"
+    version: "1.12.0"
   nekoton_repository:
     dependency: "direct main"
     description:
