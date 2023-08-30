@@ -36,10 +36,18 @@ extension KnownPayloadX on KnownPayload {
               ownerWallet: (data) => TonWalletTransactionDetailsItem(
                 title: LocaleKeys.ownerWallet.tr(),
                 content: data.address,
+                copyValue: data.address,
+                copyMessage: LocaleKeys.valueCopiedExclamation.tr(
+                  args: [data.toEllipseString()],
+                ),
               ),
               tokenWallet: (data) => TonWalletTransactionDetailsItem(
                 title: LocaleKeys.tokenWallet.tr(),
                 content: data.address,
+                copyValue: data.address,
+                copyMessage: LocaleKeys.valueCopiedExclamation.tr(
+                  args: [data.toEllipseString()],
+                ),
               ),
             ),
             TonWalletTransactionDetailsItem(
@@ -64,6 +72,10 @@ extension KnownPayloadX on KnownPayload {
             TonWalletTransactionDetailsItem(
               title: LocaleKeys.callbackAddress.tr(),
               content: data.callbackAddress.address,
+              copyValue: data.callbackAddress.address,
+              copyMessage: LocaleKeys.valueCopiedExclamation.tr(
+                args: [data.callbackAddress.toEllipseString()],
+              ),
             ),
             TonWalletTransactionDetailsItem(
               title: LocaleKeys.callbackPayload.tr(),
@@ -90,6 +102,10 @@ extension WalletInteractionMethodX on WalletInteractionMethod {
               TonWalletTransactionDetailsItem(
                 title: LocaleKeys.destinationWord.tr(),
                 content: data.dest.address,
+                copyValue: data.dest.address,
+                copyMessage: LocaleKeys.valueCopiedExclamation.tr(
+                  args: [data.dest.toEllipseString()],
+                ),
               ),
               TonWalletTransactionDetailsItem(
                 title: LocaleKeys.valueWord.tr(),
@@ -120,10 +136,18 @@ extension WalletInteractionMethodX on WalletInteractionMethod {
               TonWalletTransactionDetailsItem(
                 title: LocaleKeys.custodianWord.tr(),
                 content: data.custodian.publicKey,
+                copyValue: data.custodian.publicKey,
+                copyMessage: LocaleKeys.valueCopiedExclamation.tr(
+                  args: [data.custodian.toEllipseString()],
+                ),
               ),
               TonWalletTransactionDetailsItem(
                 title: LocaleKeys.destinationWord.tr(),
                 content: data.dest.address,
+                copyValue: data.dest.address,
+                copyMessage: LocaleKeys.valueCopiedExclamation.tr(
+                  args: [data.dest.toEllipseString()],
+                ),
               ),
               TonWalletTransactionDetailsItem(
                 title: LocaleKeys.valueWord.tr(),
@@ -151,6 +175,10 @@ extension WalletInteractionMethodX on WalletInteractionMethod {
               TonWalletTransactionDetailsItem(
                 title: LocaleKeys.transactionId.tr(),
                 content: data.transId,
+                copyValue: data.transId,
+                copyMessage: LocaleKeys.valueCopiedExclamation.tr(
+                  args: [data.transId],
+                ),
               ),
             ],
           ),
@@ -160,10 +188,18 @@ extension WalletInteractionMethodX on WalletInteractionMethod {
               TonWalletTransactionDetailsItem(
                 title: LocaleKeys.custodianWord.tr(),
                 content: data.custodian.publicKey,
+                copyValue: data.custodian.publicKey,
+                copyMessage: LocaleKeys.valueCopiedExclamation.tr(
+                  args: [data.custodian.toEllipseString()],
+                ),
               ),
               TonWalletTransactionDetailsItem(
                 title: LocaleKeys.transactionId.tr(),
                 content: data.transactionId,
+                copyValue: data.transactionId,
+                copyMessage: LocaleKeys.valueCopiedExclamation.tr(
+                  args: [data.transactionId],
+                ),
               ),
             ],
           ),
@@ -182,6 +218,10 @@ extension WalletInteractionInfoX on WalletInteractionInfo {
         TonWalletTransactionDetailsItem(
           title: LocaleKeys.recipientWord.tr(),
           content: recipient!.address,
+          copyValue: recipient!.address,
+          copyMessage: LocaleKeys.valueCopiedExclamation.tr(
+            args: [recipient!.toEllipseString()],
+          ),
         ),
       if (knownPayloadData != null) ...[
         TonWalletTransactionDetailsItem(
@@ -205,6 +245,10 @@ extension TokenWalletDeployedNotificationX on TokenWalletDeployedNotification {
       TonWalletTransactionDetailsItem(
         title: LocaleKeys.rootTokenContract.tr(),
         content: rootTokenContract.address,
+        copyValue: rootTokenContract.address,
+        copyMessage: LocaleKeys.valueCopiedExclamation.tr(
+          args: [rootTokenContract.toEllipseString()],
+        ),
       );
 }
 

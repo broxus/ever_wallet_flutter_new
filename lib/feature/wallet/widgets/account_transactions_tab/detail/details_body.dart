@@ -75,10 +75,16 @@ class WalletTransactionDetailsDefaultBody extends StatelessWidget {
                   ? LocaleKeys.senderWord.tr()
                   : LocaleKeys.recipientWord.tr(),
               content: recipientOrSender.address,
+              copyValue: recipientOrSender.address,
+              copyMessage: LocaleKeys.valueCopiedExclamation.tr(
+                args: [recipientOrSender.toEllipseString()],
+              ),
             ),
             TonWalletTransactionDetailsItem(
               title: LocaleKeys.hashId.tr(),
               content: hash,
+              copyValue: hash,
+              copyMessage: LocaleKeys.valueCopiedExclamation.tr(args: [hash]),
             ),
             TonWalletTransactionDetailsItem(
               title: LocaleKeys.amountWord.tr(),
