@@ -5,19 +5,33 @@ import 'package:app/feature/widgets/change_notifier_listener.dart';
 import 'package:app/generated/generated.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:logging/logging.dart';
 import 'package:nekoton_repository/nekoton_repository.dart';
 import 'package:ui_components_lib/ui_components_lib.dart';
 
 /// Entry point to screen where user can add new asset(contract) to account with
 /// [address].
 /// User can add existed asset or custom.
-class SelectNewAssetPage extends StatelessWidget {
+class SelectNewAssetPage extends StatefulWidget {
   const SelectNewAssetPage({
     required this.address,
     super.key,
   });
 
   final Address address;
+
+  @override
+  State<SelectNewAssetPage> createState() => _SelectNewAssetPageState();
+}
+
+class _SelectNewAssetPageState extends State<SelectNewAssetPage> {
+  final focus = FocusNode();
+
+  @override
+  void dispose() {
+    focus.dispose();
+    super.dispose();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -29,7 +43,7 @@ class SelectNewAssetPage extends StatelessWidget {
         ),
         body: BlocProvider<SelectNewAssetCubit>(
           create: (_) => SelectNewAssetCubit(
-            address: address,
+            address: widget.address,
             assetsService: inject<AssetsService>(),
             nekotonRepository: inject<NekotonRepository>(),
           ),
@@ -46,9 +60,10 @@ class SelectNewAssetPage extends StatelessWidget {
                   mainAxisSize: MainAxisSize.min,
                   children: [
                     ChangeNotifierListener(
-                      changeNotifier: FocusScope.of(context),
+                      changeNotifier: focus,
                       builder: (context) {
-                        final hasFocus = FocusScope.of(context).hasFocus;
+                        final hasFocus = focus.hasFocus;
+                        Logger('TEST').finest('HAS FOCUS: $hasFocus');
 
                         if (hasFocus) return const SizedBox.shrink();
 
@@ -72,11 +87,12 @@ class SelectNewAssetPage extends StatelessWidget {
                     Expanded(
                       child: switch (state.tab) {
                         SelectNewAssetTabs.select => SelectNewAssetSelectTab(
+                            focus: focus,
                             assetsToCreate: contracts?.$1 ?? [],
                             createdAssets: contracts?.$2 ?? [],
                           ),
                         SelectNewAssetTabs.custom =>
-                          const SelectNewAssetCustomEnter(),
+                          SelectNewAssetCustomEnter(focus: focus),
                       },
                     ),
                   ],

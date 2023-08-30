@@ -11,7 +11,12 @@ import 'package:ui_components_lib/ui_components_lib.dart';
 /// Widget that allows user to enter address of root token contract to add
 /// it to account.
 class SelectNewAssetCustomEnter extends StatefulWidget {
-  const SelectNewAssetCustomEnter({super.key});
+  const SelectNewAssetCustomEnter({
+    required this.focus,
+    super.key,
+  });
+
+  final FocusNode focus;
 
   @override
   State<SelectNewAssetCustomEnter> createState() =>
@@ -20,7 +25,6 @@ class SelectNewAssetCustomEnter extends StatefulWidget {
 
 class _SelectNewAssetCustomEnterState extends State<SelectNewAssetCustomEnter> {
   final addressController = TextEditingController();
-  final focus = FocusNode();
 
   @override
   void dispose() {
@@ -56,7 +60,7 @@ class _SelectNewAssetCustomEnterState extends State<SelectNewAssetCustomEnter> {
                 buttonType: EverButtonType.ghost,
                 icon: Icons.clear_rounded,
                 onPressed: () {
-                  focus.unfocus();
+                  widget.focus.unfocus();
                   addressController.clear();
                 },
                 color: colors.textSecondary,
@@ -75,7 +79,7 @@ class _SelectNewAssetCustomEnterState extends State<SelectNewAssetCustomEnter> {
   }
 
   void _enable(BuildContext context) {
-    focus.unfocus();
+    widget.focus.unfocus();
 
     context
         .read<SelectNewAssetCubit>()

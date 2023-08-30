@@ -11,11 +11,13 @@ class SelectNewAssetSelectTab extends StatefulWidget {
   const SelectNewAssetSelectTab({
     required this.createdAssets,
     required this.assetsToCreate,
+    required this.focus,
     super.key,
   });
 
   final List<TokenContractAsset> createdAssets;
   final List<TokenContractAsset> assetsToCreate;
+  final FocusNode focus;
 
   @override
   State<SelectNewAssetSelectTab> createState() =>
@@ -121,6 +123,7 @@ class SelectNewAssetItem extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return CommonListTile(
+      height: DimensSize.d68,
       leading: TokenWalletIconWidget(
         logoURI: asset.logoURI,
         address: asset.address,
