@@ -24,6 +24,7 @@ class BrowserTabsEvent with _$BrowserTabsEvent {
     VoidCallback? goBack,
     VoidCallback? goForward,
     VoidCallback? refresh,
+    Map<String, BrowserBasicAuthCreds>? basicAuthCreds,
   }) = _SetState;
   const factory BrowserTabsEvent.remove({required String id}) = _Remove;
   const factory BrowserTabsEvent.setActive({required String id}) = _SetActive;

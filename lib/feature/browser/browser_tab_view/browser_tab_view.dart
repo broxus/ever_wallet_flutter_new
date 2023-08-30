@@ -139,6 +139,7 @@ class _BrowserTabViewState extends State<BrowserTabView> {
           onLoadError: _onLoadError,
           onLoadHttpError: _onLoadHttpError,
           onTitleChanged: _onTitleChanged,
+          onReceivedHttpAuthRequest: _onReceivedHttpAuthRequest,
         ),
         if (widget.tabState.state == BrowserTabStateType.error)
           BrowserErrorView(
@@ -507,6 +508,45 @@ class _BrowserTabViewState extends State<BrowserTabView> {
     final url = favicons![0].url;
 
     await _setState(faviconUrl: url.toString());
+  }
+
+  Future<HttpAuthResponse?> _onReceivedHttpAuthRequest(
+    InAppWebViewController controller,
+    URLAuthenticationChallenge challenge,
+  ) async {
+    final fromStorage = widget.tabState.getBasicAuthCreds(challenge);
+    if (fromStorage != null) {
+      return HttpAuthResponse(
+        username: fromStorage.username,
+        password: fromStorage.password,
+        action: HttpAuthResponseAction.PROCEED,
+      );
+    }
+
+    final entered = await Navigator.of(context).push<BrowserBasicAuthCreds>(
+      showBrowserEnterBasicAuthCredsSheet(host: challenge.protectionSpace.host),
+    );
+
+    if (entered == null) {
+      // this thing returns HttpAuthResponseAction.CANCEL
+      return HttpAuthResponse();
+    }
+
+    if (context.mounted) {
+      context.read<BrowserTabsBloc>().add(
+            BrowserTabsEvent.setState(
+              id: widget.tab.id,
+              basicAuthCreds:
+                  widget.tabState.setBasicAuthCreds(challenge, entered),
+            ),
+          );
+    }
+
+    return HttpAuthResponse(
+      username: entered.username,
+      password: entered.password,
+      action: HttpAuthResponseAction.PROCEED,
+    );
   }
 }
 
