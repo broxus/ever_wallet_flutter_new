@@ -511,7 +511,7 @@ class _BrowserTabViewState extends State<BrowserTabView> {
   }
 
   Future<HttpAuthResponse?> _onReceivedHttpAuthRequest(
-    InAppWebViewController controller,
+    _,
     URLAuthenticationChallenge challenge,
   ) async {
     final fromStorage = widget.tabState.getBasicAuthCreds(challenge);

@@ -69,5 +69,6 @@ class BrowserPermissionsStorageService extends AbstractStorageService {
       ]);
 
   @override
+  // ignore: no-empty-block
   Future<void> init() async {}
 }
