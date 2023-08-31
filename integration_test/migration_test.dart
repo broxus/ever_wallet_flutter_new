@@ -519,7 +519,8 @@ void main() {
       );
 
       /// Permissions
-      expect(await browserPermissionsStorage.readPermissions(), hive.permissions);
+      expect(
+          await browserPermissionsStorage.readPermissions(), hive.permissions);
 
       /// Bookmarks
       expect(
