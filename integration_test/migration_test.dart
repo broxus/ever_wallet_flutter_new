@@ -253,7 +253,7 @@ void main() {
 
     /// Permissions
     expect(
-      await browserPermissionsStorage.permissions,
+      await browserPermissionsStorage.readPermissions(),
       {'origin': _permissions},
     );
 
@@ -519,7 +519,7 @@ void main() {
       );
 
       /// Permissions
-      expect(await browserPermissionsStorage.permissions, hive.permissions);
+      expect(await browserPermissionsStorage.readPermissions(), hive.permissions);
 
       /// Bookmarks
       expect(

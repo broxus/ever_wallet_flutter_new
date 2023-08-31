@@ -24,5 +24,10 @@ Future<void> configureFeatureServices() async {
     ..finest('AssetsService initializating...');
 
   inject<AssetsService>().init();
-  log.finest('AssetsService initialized');
+  log
+    ..finest('AssetsService initialized')
+    ..finest('PermissionsService initializing...');
+
+  inject<PermissionsService>().init();
+  log.finest('PermissionsService initialized');
 }
