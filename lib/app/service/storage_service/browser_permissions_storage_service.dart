@@ -5,6 +5,7 @@ import 'package:app/data/models/models.dart';
 import 'package:encrypted_storage/encrypted_storage.dart';
 import 'package:injectable/injectable.dart';
 import 'package:nekoton_repository/nekoton_repository.dart';
+import 'package:rxdart/rxdart.dart';
 
 const _browserPermissionsDomain = 'browser_permissions';
 
@@ -17,9 +18,24 @@ class BrowserPermissionsStorageService extends AbstractStorageService {
   /// Storage that is used to store data
   final EncryptedStorage _storage;
 
+  /// Subject for permissions of browser tabs
+  final _permissionsSubject =
+      BehaviorSubject<Map<String, Permissions>>.seeded({});
+
+  //// Get cached permissions from storage
+  /// key - url address, value - permissions
+  Map<String, Permissions> get permissions => _permissionsSubject.value;
+
+  /// Stream that allows tracking permissions changing
+  Stream<Map<String, Permissions>> get permissionsStream => _permissionsSubject;
+
+  /// Put browser bookmarks items to stream
+  Future<void> _streamedPermissions() async =>
+      _permissionsSubject.add(await readPermissions());
+
   /// Get all permissions that user had granted to dapps.
   /// key - url address, value - permissions
-  Future<Map<String, Permissions>> get permissions async {
+  Future<Map<String, Permissions>> readPermissions() async {
     final encoded = await _storage.getDomain(domain: _browserPermissionsDomain);
 
     return encoded.map(
@@ -34,20 +50,24 @@ class BrowserPermissionsStorageService extends AbstractStorageService {
   Future<void> setPermissions({
     required String origin,
     required Permissions permissions,
-  }) =>
-      _storage.set(
-        origin,
-        jsonEncode(permissions.toJson()),
-        domain: _browserPermissionsDomain,
-      );
+  }) async {
+    await _storage.set(
+      origin,
+      jsonEncode(permissions.toJson()),
+      domain: _browserPermissionsDomain,
+    );
+    await _streamedPermissions();
+  }
 
   /// Delete permissions for specified url
-  Future<void> deletePermissionsForOrigin(String origin) =>
-      _storage.delete(origin, domain: _browserPermissionsDomain);
+  Future<void> deletePermissionsForOrigin(String origin) async {
+    await _storage.delete(origin, domain: _browserPermissionsDomain);
+    await _streamedPermissions();
+  }
 
   /// Delete permissions for specified account
   Future<void> deletePermissionsForAccount(Address address) async {
-    final perms = await permissions;
+    final perms = permissions;
     final origins = perms.entries
         .where((e) => e.value.accountInteraction?.address == address)
         .map((e) => e.key);
@@ -57,11 +77,14 @@ class BrowserPermissionsStorageService extends AbstractStorageService {
 
       await setPermissions(origin: origin, permissions: permissions);
     }
+    await _streamedPermissions();
   }
 
   /// Clear information about permissions
-  Future<void> clearPermissions() =>
-      _storage.clearDomain(_browserPermissionsDomain);
+  Future<void> clearPermissions() async {
+    await _storage.clearDomain(_browserPermissionsDomain);
+    await _streamedPermissions();
+  }
 
   @override
   Future<void> clearSensitiveData() => Future.wait([
@@ -69,6 +92,7 @@ class BrowserPermissionsStorageService extends AbstractStorageService {
       ]);
 
   @override
-  // ignore: no-empty-block
-  Future<void> init() async {}
+  Future<void> init() => Future.wait([
+        _streamedPermissions(),
+      ]);
 }
