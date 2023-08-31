@@ -1,5 +1,7 @@
 import 'dart:async';
+import 'dart:convert';
 
+import 'package:app/app/service/navigation/service/service.dart';
 import 'package:app/di/di.dart';
 import 'package:encrypted_storage/encrypted_storage.dart';
 import 'package:flutter/widgets.dart';
@@ -9,48 +11,54 @@ import 'package:rxdart/rxdart.dart';
 @singleton
 class NavigationService {
   static const _domain = 'NavigationService';
-  static const _locationKey = 'location';
+  static const _stateKey = 'state';
   // ignore: avoid-global-state
   static GlobalKey<NavigatorState> navigatorKey = GlobalKey<NavigatorState>();
 
-  String _savedLocation = '';
+  var _savedState = const NavigationServiceState(location: '', fullPath: '');
 
   Future<void> init(String initialLocation) async {
     // Get location from storage
-    final location = await inject<EncryptedStorage>().get(
-      _locationKey,
+    final encoded = await inject<EncryptedStorage>().get(
+      _stateKey,
       domain: _domain,
-      defaultValue: initialLocation,
     );
 
-    // If location is not null, set it as saved location and add it to the
-    // stream
-    if (location != null) {
-      _savedLocation = location;
-      _locationSubject.add(location);
-    }
+    // Get location and full path from storage
+    final saved = encoded != null
+        ? NavigationServiceState.fromJson(
+            jsonDecode(encoded) as Map<String, dynamic>,
+          )
+        : NavigationServiceState(
+            location: initialLocation,
+            fullPath: initialLocation,
+          );
+
+    // Set it as saved state and add it to the stream
+    _savedState = saved;
+    _stateSubject.add(saved);
   }
 
-  final _locationSubject = BehaviorSubject<String>();
+  final _stateSubject = BehaviorSubject<NavigationServiceState>();
 
-  String get location => _locationSubject.valueOrNull ?? '';
+  NavigationServiceState get state => _stateSubject.valueOrNull ?? _savedState;
 
-  ValueStream<String> get locationStream => _locationSubject.stream;
+  ValueStream<NavigationServiceState> get stateStream => _stateSubject.stream;
 
-  String get savedLocation => _savedLocation;
+  NavigationServiceState get savedState => _savedState;
 
-  Future<void> setLocation({
-    required String location,
+  Future<void> setState({
+    required NavigationServiceState state,
     required bool save,
   }) async {
-    _locationSubject.add(location);
+    _stateSubject.add(state);
 
     // If it is supposed to be saved, save it to storage
     if (save) {
-      _savedLocation = location;
+      _savedState = state;
       await inject<EncryptedStorage>().set(
-        _locationKey,
-        location,
+        _stateKey,
+        jsonEncode(state.toJson()),
         domain: _domain,
       );
     }
