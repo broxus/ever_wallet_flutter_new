@@ -5,6 +5,13 @@ import 'package:injectable/injectable.dart';
 import 'package:nekoton_repository/nekoton_repository.dart';
 import 'package:rxdart/rxdart.dart';
 
+/// Exception that can be thrown during handling any callbacks.
+class ApprovalsHandleException implements Exception {
+  ApprovalsHandleException(this.message);
+
+  final String message;
+}
+
 /// Service that is a middleware between browser callbacks and UI actions.
 ///
 /// This methods must be called during handling browser events in
@@ -24,6 +31,7 @@ class BrowserApprovalsService {
 
   /// Request user for [permissions] for [origin].
   /// Action requires user agreement
+  /// Typically, exception must be [ApprovalsHandleException] or [FfiException]
   Future<Permissions> requestPermissions({
     required Uri origin,
     required List<Permission> permissions,
@@ -44,6 +52,7 @@ class BrowserApprovalsService {
   /// Ask user for permissions for any account in list of accounts active in
   /// scope of current selected PublicKey.
   /// Action requires user agreement
+  /// Typically, exception must be [ApprovalsHandleException] or [FfiException]
   Future<Permissions> changeAccount({
     required Uri origin,
     required List<Permission> permissions,
@@ -63,6 +72,7 @@ class BrowserApprovalsService {
 
   /// Add token contract to account with address [accountAddress]
   /// Action requires user agreement
+  /// Typically, exception must be [ApprovalsHandleException] or [FfiException]
   Future<void> addTip3Token({
     required Uri origin,
     required Address accountAddress,
@@ -85,6 +95,7 @@ class BrowserApprovalsService {
   /// Ask user for password to make [SeedList.signData] for specified
   /// [publicKey].
   /// Returns password for [publicKey] or throw error.
+  /// Typically, exception must be [ApprovalsHandleException] or [FfiException]
   Future<String> signData({
     required Uri origin,
     required PublicKey publicKey,
@@ -107,6 +118,7 @@ class BrowserApprovalsService {
   /// Ask user for password to make [SeedList.encrypt] for specified
   /// [publicKey].
   /// Returns password for [publicKey] or throw error.
+  /// Typically, exception must be [ApprovalsHandleException] or [FfiException]
   Future<String> encryptData({
     required Uri origin,
     required PublicKey publicKey,
@@ -127,18 +139,19 @@ class BrowserApprovalsService {
   }
 
   /// Ask user for password to make [SeedList.decrypt] for specified
-  /// [publicKey].
-  /// Returns password for [publicKey] or throw error.
+  /// [recipientPublicKey].
+  /// Returns password for [recipientPublicKey] or throw error.
+  /// Typically, exception must be [ApprovalsHandleException] or [FfiException]
   Future<String> decryptData({
     required Uri origin,
-    required PublicKey publicKey,
+    required PublicKey recipientPublicKey,
     required PublicKey sourcePublicKey,
   }) async {
     final completer = Completer<String>();
 
     final request = ApprovalRequest.decryptData(
       origin: origin,
-      publicKey: publicKey,
+      recipientPublicKey: recipientPublicKey,
       sourcePublicKey: sourcePublicKey,
       completer: completer,
     );
@@ -151,6 +164,7 @@ class BrowserApprovalsService {
   /// Ask user for password to make contract action for specified [publicKey]
   /// and [recipient].
   /// Returns password for [publicKey].
+  /// Typically, exception must be [ApprovalsHandleException] or [FfiException]
   Future<String> callContractMethod({
     required Uri origin,
     required PublicKey publicKey,
@@ -175,6 +189,7 @@ class BrowserApprovalsService {
   /// Asks user to select publicKey and enter password to send funds from
   /// account [sender] to [recipient].
   /// Returns selected publicKey and password for it or throw error.
+  /// Typically, exception must be [ApprovalsHandleException] or [FfiException]
   Future<(PublicKey, String)> sendMessage({
     required Uri origin,
     required Address sender,
