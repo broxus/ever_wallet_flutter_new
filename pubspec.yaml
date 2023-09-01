@@ -15,7 +15,7 @@ dependencies:
   collection: ^1.17.0
   crypto: ^3.0.2
   dotted_border: ^2.0.0+3
-  easy_localization: ^3.0.2
+  easy_localization: ^3.0.3
   easy_logger: ^0.0.2
   encrypted_storage: 0.1.2
   equatable: ^2.0.5
