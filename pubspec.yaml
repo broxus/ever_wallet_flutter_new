@@ -48,7 +48,7 @@ dependencies:
   string_extensions: ^0.6.12
   ui_components_lib:
     path: packages/ui_components_lib
-  url_launcher: ^6.1.12
+  url_launcher: ^6.1.14
   uuid: ^3.0.7
   visibility_detector: ^0.4.0+2
 
