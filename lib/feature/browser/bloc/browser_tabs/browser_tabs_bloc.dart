@@ -132,6 +132,7 @@ class BrowserTabsBloc extends Bloc<BrowserTabsEvent, BrowserTabsState> {
         goBack: event.goBack ?? oldTabState.goBack,
         goForward: event.goForward ?? oldTabState.goForward,
         refresh: event.refresh ?? oldTabState.refresh,
+        basicAuthCreds: event.basicAuthCreds ?? oldTabState.basicAuthCreds,
       );
 
       emit(state.copyWith(tabsState: _replaceTabState(event.id, newTabState)));
