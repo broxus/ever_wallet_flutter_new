@@ -10,47 +10,47 @@ part 'approval_request.freezed.dart';
 @freezed
 class ApprovalRequest with _$ApprovalRequest {
   const factory ApprovalRequest.requestPermissions({
-    required String origin,
+    required Uri origin,
     required List<Permission> permissions,
     required Completer<Permissions> completer,
   }) = _RequestPermissions;
 
   const factory ApprovalRequest.changeAccount({
-    required String origin,
+    required Uri origin,
     required List<Permission> permissions,
     required Completer<Permissions> completer,
   }) = _ChangeAccount;
 
   const factory ApprovalRequest.addTip3Token({
-    required String origin,
-    required String account,
+    required Uri origin,
+    required Address account,
     required RootTokenContractDetails details,
     required Completer<void> completer,
   }) = _AddTip3Token;
 
   const factory ApprovalRequest.signData({
-    required String origin,
+    required Uri origin,
     required PublicKey publicKey,
     required String data,
     required Completer<String> completer,
   }) = _SignData;
 
   const factory ApprovalRequest.encryptData({
-    required String origin,
+    required Uri origin,
     required PublicKey publicKey,
     required String data,
     required Completer<String> completer,
   }) = _EncryptData;
 
   const factory ApprovalRequest.decryptData({
-    required String origin,
+    required Uri origin,
     required PublicKey publicKey,
     required PublicKey sourcePublicKey,
     required Completer<String> completer,
   }) = _DecryptData;
 
   const factory ApprovalRequest.callContractMethod({
-    required String origin,
+    required Uri origin,
     required PublicKey publicKey,
     required Address recipient,
     required FunctionCall payload,
@@ -58,13 +58,13 @@ class ApprovalRequest with _$ApprovalRequest {
   }) = _CallContractMethod;
 
   const factory ApprovalRequest.sendMessage({
-    required String origin,
+    required Uri origin,
     required Address sender,
     required Address recipient,
     @amountJsonConverter required BigInt amount,
     required bool bounce,
     required FunctionCall? payload,
     required KnownPayload? knownPayload,
-    required Completer<(String, String)> completer,
+    required Completer<(PublicKey, String)> completer,
   }) = _SendMessage;
 }

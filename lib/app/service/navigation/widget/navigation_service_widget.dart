@@ -35,28 +35,34 @@ class _NavigationServiceWidgetState extends State<NavigationServiceWidget> {
   }
 
   void _onNavigationEvent(NavigationState state) {
-    _onLocationChange(state.oldLocation, state.location);
+    _onLocationChange(state.oldState, state.state);
   }
 
   // Handle location change
-  void _onLocationChange(String? oldLocation, String? location) {
+  void _onLocationChange(
+    NavigationServiceState? oldState,
+    NavigationServiceState? state,
+  ) {
     // Handle every location change
-    switch ((oldLocation, location)) {
+    switch ((oldState, state)) {
       // Skip if location is not yet set
       case (_, null):
         break;
       // When both locations are not null
-      case (final String oldLocation, final String location):
+      case (
+          final NavigationServiceState oldState,
+          final NavigationServiceState state,
+        ):
         // Calculate root app route change
-        final oldRoute = getRootAppRoute(oldLocation);
-        final route = getRootAppRoute(location);
+        final oldRoute = getRootAppRoute(fullPath: oldState.fullPath);
+        final route = getRootAppRoute(fullPath: state.fullPath);
 
         // And if it's changed
         if (oldRoute != route) {
           // Then call the handler
           _onRootAppRouteChange(
-            getRootAppRoute(oldLocation),
-            getRootAppRoute(location),
+            getRootAppRoute(fullPath: oldState.fullPath),
+            getRootAppRoute(fullPath: state.fullPath),
           );
         }
     }
