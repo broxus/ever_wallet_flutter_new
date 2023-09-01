@@ -20,7 +20,7 @@ class _RootViewState extends State<RootView> {
   Widget build(BuildContext context) {
     final colors = context.themeStyle.colors;
     final isBottomNavigationBarVisible =
-        getCurrentAppRoute(GoRouterState.of(context).uri.toString())
+        getCurrentAppRoute(fullPath: GoRouterState.of(context).fullPath)
             .isBottomNavigationBarVisible;
 
     return Scaffold(
@@ -86,7 +86,9 @@ class _RootViewState extends State<RootView> {
 
   int _tabIndex(BuildContext _) {
     return RootTab.getByPath(
-      getRootPath(inject<NavigationService>().location),
+      getRootPath(
+        fullPath: inject<NavigationService>().state.fullPath,
+      ),
     ).index;
   }
 }
