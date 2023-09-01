@@ -15,31 +15,31 @@ class NavigationBloc extends Bloc<NavigationEvent, NavigationState> {
           const NavigationState(),
         ) {
     on<_NavigatedTo>((event, emit) {
-      if (event.location == state.location) {
+      if (event.state == state.state) {
         return;
       }
 
       emit(
         state.copyWith(
-          location: event.location,
-          oldLocation: state.location,
+          state: event.state,
+          oldState: state.state,
         ),
       );
     });
   }
-  StreamSubscription<String>? _locationSubscription;
+  StreamSubscription<NavigationServiceState>? _serviceSubscription;
 
   void init() {
     final navigationService = inject<NavigationService>();
-    _locationSubscription = navigationService.locationStream.listen((event) {
+    _serviceSubscription = navigationService.stateStream.listen((event) {
       add(NavigationEvent.navigatedTo(event));
     });
   }
 
   @override
   Future<void> close() {
-    _locationSubscription?.cancel();
-    _locationSubscription = null;
+    _serviceSubscription?.cancel();
+    _serviceSubscription = null;
 
     return super.close();
   }

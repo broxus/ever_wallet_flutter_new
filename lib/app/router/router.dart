@@ -29,8 +29,8 @@ GoRouter getRouter(BuildContext _) {
 
   // Redirect to onboarding or wallet depending on the current location and if
   // the user has any seeds.
-  String? shouldRedirect({required String location, required bool hasSeeds}) {
-    final currentRoute = getRootAppRoute(location);
+  String? shouldRedirect({required String fullPath, required bool hasSeeds}) {
+    final currentRoute = getRootAppRoute(fullPath: fullPath);
 
     // If the user has seeds and is on onboarding, redirect to wallet
     if (hasSeeds && currentRoute == AppRoute.onboarding) {
@@ -47,7 +47,7 @@ GoRouter getRouter(BuildContext _) {
 
   // Set location, it will be called in multiple places
   // because GoRouter's 'redirect' handler doesn't call it after pop()
-  void setLocation(String location) {
+  void setLocation(String location, String fullPath) {
     // And because of that, we need to check if the location is the same
     // as the last one to avoid duplicate calls of NavigationService.setLocation
     if (lastSetlocation == location) {
@@ -57,11 +57,16 @@ GoRouter getRouter(BuildContext _) {
     lastSetlocation = location;
 
     // Set current location in NavigationService
-    inject<NavigationService>()
-        .setLocation(location: location, save: canSaveLocation(location));
+    inject<NavigationService>().setState(
+      state: NavigationServiceState(
+        location: location,
+        fullPath: fullPath,
+      ),
+      save: canSaveLocation(fullPath: fullPath),
+    );
 
     // Get root app route
-    final rootAppRoute = getRootAppRoute(location);
+    final rootAppRoute = getRootAppRoute(fullPath: fullPath);
 
     // Save subroute for the root app route
     if (rootAppRoute.isSaveSubroutes) {
@@ -77,11 +82,12 @@ GoRouter getRouter(BuildContext _) {
     restorationScopeId: 'app',
     navigatorKey: NavigationService.navigatorKey,
     redirect: (context, state) {
-      // Get current location
+      // Get current location and full path
       final location = state.uri.toString();
+      final fullPath = state.fullPath ?? location;
 
       // Get root app route
-      final rootAppRoute = getRootAppRoute(location);
+      final rootAppRoute = getRootAppRoute(fullPath: fullPath);
 
       // Get saved subroute for the root app route (if any)
       final savedSubroute = savedSubroutes[rootAppRoute];
@@ -90,14 +96,14 @@ GoRouter getRouter(BuildContext _) {
       final rootAppRouteChaned = lastRootAppRoute != rootAppRoute;
 
       // Set location
-      setLocation(location);
+      setLocation(location, fullPath);
 
       // Check if the user has seeds
       final hasSeeds = inject<NekotonRepository>().hasSeeds.value;
 
       // Check if the user should be redirected
       final guardRedirect =
-          shouldRedirect(location: location, hasSeeds: hasSeeds);
+          shouldRedirect(fullPath: fullPath, hasSeeds: hasSeeds);
 
       // Redirect if needed
       if (guardRedirect != null) {
@@ -117,7 +123,7 @@ GoRouter getRouter(BuildContext _) {
       return null;
     },
     // Initial location from NavigationService
-    initialLocation: inject<NavigationService>().savedLocation,
+    initialLocation: inject<NavigationService>().savedState.location,
     routes: [
       GoRoute(
         name: AppRoute.onboarding.name,
@@ -159,7 +165,7 @@ GoRouter getRouter(BuildContext _) {
     // Again, check if the user should be redirected depending on the current
     // location and if the user has any seeds.
     final redirectLocation = shouldRedirect(
-      location: inject<NavigationService>().location,
+      fullPath: inject<NavigationService>().state.fullPath,
       hasSeeds: hasSeeds,
     );
 
@@ -170,9 +176,15 @@ GoRouter getRouter(BuildContext _) {
   });
 
   // Subscribe to routerDelegate changes to set location
-  router.routerDelegate.addListener(() {
-    setLocation(router.routerDelegate.currentConfiguration.uri.toString());
-  });
+  router.routerDelegate.addListener(
+    () {
+      final currentConfiguration = router.routerDelegate.currentConfiguration;
+      setLocation(
+        currentConfiguration.uri.toString(),
+        currentConfiguration.fullPath,
+      );
+    },
+  );
 
   return router;
 }
