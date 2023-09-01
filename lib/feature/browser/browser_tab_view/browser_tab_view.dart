@@ -2,8 +2,10 @@ import 'dart:async';
 import 'dart:io';
 
 import 'package:app/data/models/models.dart';
+import 'package:app/di/di.dart';
 import 'package:app/feature/browser/browser.dart';
 import 'package:app/feature/browser/browser_tab_view/browser_error_view.dart';
+import 'package:app/feature/browser/browser_tab_view/browser_view_events_listener/browser_view_events_listener_cubit.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_inappwebview/flutter_inappwebview.dart';
@@ -124,29 +126,40 @@ class _BrowserTabViewState extends State<BrowserTabView> {
       ),
     );
 
-    return Stack(
-      children: [
-        InAppWebView(
-          key: ValueKey(widget.tab.id),
-          pullToRefreshController: _pullToRefreshController,
-          initialOptions: initialOptions,
-          onOverScrolled: _onOverScrolled,
-          onScrollChanged: _onScrollChanged,
-          onWebViewCreated: _onWebViewCreated,
-          onLoadStart: _onLoadStart,
-          onLoadStop: _onLoadStop,
-          onProgressChanged: _onProgressChanged,
-          onLoadError: _onLoadError,
-          onLoadHttpError: _onLoadHttpError,
-          onTitleChanged: _onTitleChanged,
-          onReceivedHttpAuthRequest: _onReceivedHttpAuthRequest,
-        ),
-        if (widget.tabState.state == BrowserTabStateType.error)
-          BrowserErrorView(
-            tab: widget.tab,
-            tabState: widget.tabState,
+    return BlocProvider<BrowserViewEventsListenerCubit>(
+      create: (_) => BrowserViewEventsListenerCubit(
+        tabId: widget.tab.id,
+        nekotonRepository: inject(),
+        permissionsService: inject(),
+      ),
+      child: Stack(
+        children: [
+          Builder(
+            builder: (context) {
+              return InAppWebView(
+                key: ValueKey(widget.tab.id),
+                pullToRefreshController: _pullToRefreshController,
+                initialOptions: initialOptions,
+                onOverScrolled: _onOverScrolled,
+                onScrollChanged: _onScrollChanged,
+                onWebViewCreated: (c) => _onWebViewCreated(c, context),
+                onLoadStart: _onLoadStart,
+                onLoadStop: _onLoadStop,
+                onProgressChanged: _onProgressChanged,
+                onLoadError: _onLoadError,
+                onLoadHttpError: _onLoadHttpError,
+                onTitleChanged: _onTitleChanged,
+                onReceivedHttpAuthRequest: _onReceivedHttpAuthRequest,
+              );
+            },
           ),
-      ],
+          if (widget.tabState.state == BrowserTabStateType.error)
+            BrowserErrorView(
+              tab: widget.tab,
+              tabState: widget.tabState,
+            ),
+        ],
+      ),
     );
   }
 
@@ -269,8 +282,14 @@ class _BrowserTabViewState extends State<BrowserTabView> {
     }
   }
 
-  Future<void> _onWebViewCreated(InAppWebViewController controller) async {
+  Future<void> _onWebViewCreated(
+    InAppWebViewController controller,
+    BuildContext context,
+  ) async {
     _webViewController = controller;
+    context
+        .read<BrowserViewEventsListenerCubit>()
+        .initControllerAndListeners(controller);
 
     await controller.initNekotonProvider(
       providerApi: _inpageProvider,
