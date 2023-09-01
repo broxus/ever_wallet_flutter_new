@@ -94,6 +94,7 @@ class TonWalletTransactionDetailsItem extends StatelessWidget {
 
     if (canCopy && copyValue != null) {
       return PressScaleWidget(
+        // ignore: prefer-extracting-callbacks
         onLongPress: () {
           Clipboard.setData(ClipboardData(text: copyValue!));
           if (copyMessage != null) {

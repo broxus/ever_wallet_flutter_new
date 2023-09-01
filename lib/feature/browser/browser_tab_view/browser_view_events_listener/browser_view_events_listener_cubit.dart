@@ -32,6 +32,7 @@ class BrowserViewEventsListenerCubit
 
   List<StreamSubscription<dynamic>> subs = [];
 
+  // ignore: avoid-unused-parameters
   void initControllerAndListeners(InAppWebViewController controller) {
     subs.addAll([
       // TODO(alex-a4): uncomment and fix when webview will be updated
@@ -52,6 +53,7 @@ class BrowserViewEventsListenerCubit
     for (final sub in subs) {
       sub.cancel();
     }
+
     return super.close();
   }
 }
