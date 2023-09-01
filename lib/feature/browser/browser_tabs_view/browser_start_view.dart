@@ -11,7 +11,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
-import 'package:logging/logging.dart';
 import 'package:ui_components_lib/ui_components_lib.dart';
 
 /// Item count limit for each section
@@ -34,8 +33,6 @@ class BrowserStartView extends StatefulWidget {
 }
 
 class _BrowserStartViewState extends State<BrowserStartView> {
-  final _log = Logger('_BrowserStartViewState');
-
   final _predefinedItems = predefinedItems();
   final _predefinedCards = predefinedCards();
   final _cardController = PageController(
@@ -117,9 +114,7 @@ class _BrowserStartViewState extends State<BrowserStartView> {
         await file.writeAsBytes(pngBytes);
 
         await FileImage(File(BrowserTab.defaultImagePath)).evict();
-      } catch (e, s) {
-        _log.severe('Error while saving screenshot: $e', null, s);
-      }
+      } catch (_) {}
     });
   }
 
