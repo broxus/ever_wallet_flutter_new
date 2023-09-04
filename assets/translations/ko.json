@@ -334,5 +334,8 @@
   "invalidValue": "Invalid value",
   "invalidLengthMustBe": "Invalid length, must be {}",
   "accountBalance": "Account balance",
-  "walletDeployedSuccessfully": "Wallet deployed successfully"
+  "walletDeployedSuccessfully": "Wallet deployed successfully",
+  "noCurrentKey": "No current key",
+  "notGranted": "Not granted",
+  "noPassword": "No password"
 }

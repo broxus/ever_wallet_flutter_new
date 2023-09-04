@@ -44,7 +44,7 @@ class ApprovalRequest with _$ApprovalRequest {
 
   const factory ApprovalRequest.decryptData({
     required Uri origin,
-    required PublicKey publicKey,
+    required PublicKey recipientPublicKey,
     required PublicKey sourcePublicKey,
     required Completer<String> completer,
   }) = _DecryptData;

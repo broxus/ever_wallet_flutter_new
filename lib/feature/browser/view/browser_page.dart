@@ -7,6 +7,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 
 class BrowserPage extends StatefulWidget {
   const BrowserPage({required this.child, super.key});
+
   final Widget child;
 
   @override
@@ -35,7 +36,9 @@ class _BrowserPageState extends State<BrowserPage> {
           (item) => _onBrowserHistoryItemAdd(context, item),
         ),
         child: SafeArea(
-          child: BrowserView(child: widget.child),
+          child: ApprovalsListenerWidget(
+            child: BrowserView(child: widget.child),
+          ),
         ),
       ),
     );
