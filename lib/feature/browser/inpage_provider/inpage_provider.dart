@@ -1,8 +1,21 @@
 import 'dart:async';
 
-import 'package:nekoton_webview/nekoton_webview.dart';
+import 'package:app/app/service/service.dart';
+import 'package:app/data/models/models.dart';
+import 'package:app/di/di.dart';
+import 'package:app/generated/generated.dart';
+import 'package:flutter_inappwebview/flutter_inappwebview.dart';
+import 'package:logging/logging.dart';
+import 'package:nekoton_webview/nekoton_webview.dart' hide Message;
 
 class InpageProvider extends ProviderApi {
+  InpageProvider(this.approvalsService);
+
+  final _logger = Logger('InpageProvider');
+
+  InAppWebViewController? controller;
+  final BrowserApprovalsService approvalsService;
+
   Uri? url;
 
   @override
@@ -12,9 +25,42 @@ class InpageProvider extends ProviderApi {
   }
 
   @override
-  FutureOr<PermissionsPartial> changeAccount() {
-    // TODO: implement changeAccount
-    throw UnimplementedError();
+  FutureOr<PermissionsPartial> changeAccount() async {
+    try {
+      final existingPermissions = inject<PermissionsService>().permissions[url];
+      if (existingPermissions?.accountInteraction == null) {
+        throw ApprovalsHandleException(
+          LocaleKeys.accountInteractionNotPermitted.tr(),
+        );
+      }
+
+      final existingPermissionsList = [
+        if (existingPermissions?.basic == null) Permission.basic,
+        if (existingPermissions?.accountInteraction == null)
+          Permission.accountInteraction,
+      ];
+
+      final permissions = await approvalsService.changeAccount(
+        origin: url!,
+        permissions: existingPermissionsList,
+      );
+
+      final accountInteraction = permissions.accountInteraction;
+
+      return PermissionsPartial(
+        permissions.basic,
+        accountInteraction == null
+            ? null
+            : PermissionsAccountInteraction(
+                accountInteraction.address.address,
+                accountInteraction.publicKey.publicKey,
+                accountInteraction.contractType.name,
+              ),
+      );
+    } on ApprovalsHandleException catch (e) {
+      inject<MessengerService>().show(Message.error(message: e.message));
+      rethrow;
+    }
   }
 
   @override
@@ -193,25 +239,59 @@ class InpageProvider extends ProviderApi {
     throw UnimplementedError();
   }
 
-  final _address =
-      '0:727a540fb41fba5767e8fb5aaf0c9b9b0c9aa4ff8d534c45e5ba68742dacc134';
-  final _publicKey =
-      '9599d7a809bd0787b2dd995df6408bb0c25ea4c1cb9a26d83d68639797abb5e3';
-
   @override
   FutureOr<PermissionsPartial> requestPermissions(
     RequestPermissionsInput input,
-  ) {
-    // TODO: implement requestPermissions
+  ) async {
+    final requiredPermissions = input.permissions
+        .map((e) => Permission.values.firstWhere((per) => per.name == e))
+        .toList();
+    final existingPermissions = inject<PermissionsService>().permissions[url];
 
-    return PermissionsPartial.fromJson({
-      'basic': true,
-      'accountInteraction': {
-        'address': _address,
-        'publicKey': _publicKey,
-        'contractType': 'EverWallet',
-      },
-    });
+    Permissions permissions;
+
+    try {
+      if (existingPermissions != null) {
+        final newPermissions = [
+          if (requiredPermissions.contains(Permission.basic) &&
+              existingPermissions.basic == null)
+            Permission.basic,
+          if (requiredPermissions.contains(Permission.accountInteraction) &&
+              existingPermissions.accountInteraction == null)
+            Permission.accountInteraction,
+        ];
+
+        if (newPermissions.isNotEmpty) {
+          permissions = await approvalsService.requestPermissions(
+            origin: url!,
+            permissions: requiredPermissions,
+          );
+        } else {
+          permissions = existingPermissions;
+        }
+      } else {
+        permissions = await approvalsService.requestPermissions(
+          origin: url!,
+          permissions: requiredPermissions,
+        );
+      }
+
+      final accountInteraction = permissions.accountInteraction;
+
+      return PermissionsPartial(
+        permissions.basic,
+        accountInteraction == null
+            ? null
+            : PermissionsAccountInteraction(
+                accountInteraction.address.address,
+                accountInteraction.publicKey.publicKey,
+                accountInteraction.contractType.name,
+              ),
+      );
+    } on ApprovalsHandleException catch (e) {
+      inject<MessengerService>().show(Message.error(message: e.message));
+      rethrow;
+    }
   }
 
   @override
@@ -316,5 +396,11 @@ class InpageProvider extends ProviderApi {
   FutureOr<VerifySignatureOutput> verifySignature(VerifySignatureInput input) {
     // TODO: implement verifySignature
     throw UnimplementedError();
+  }
+
+  @override
+  dynamic call(String method, dynamic params) {
+    _logger.finest('method: $method, params: $params');
+    return super.call(method, params);
   }
 }

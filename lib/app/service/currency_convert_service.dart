@@ -3,6 +3,8 @@ import 'package:nekoton_repository/nekoton_repository.dart';
 
 String moneyPattern(int decimal) => '0.${'#' * decimal}';
 
+String moneyPatternWithSymbol(int decimal) => '0.${'#' * decimal} S';
+
 /// This is a service that helps converting some real-world currency to another.
 ///
 /// !!! We do not know now how it will look like, but this is an attempt to
