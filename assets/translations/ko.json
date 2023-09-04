@@ -2,8 +2,8 @@
   "createNewWallet": "Create a new wallet",
   "signInWithPhrase": "Sign in with seed phrase",
   "welcomeTitle": "SparX 지갑에\n오신 것을 환영합니다",
-  "supportTokenAndAccessEverscale": "Token support and access to all Everscale-powered Dapps.",
-  "byProcessingAcceptLicense": "By proceeding, you accept EVER Wallet License Agreement. ",
+  "supportTokenAndAccessEverscale": "Token support and access to all TVM-based DApps",
+  "byProcessingAcceptLicense": "By proceeding, you accept Sparx Wallet License Agreement. ",
   "readHere": "Read here",
   "skipWord": "Skip",
   "letsCheckSeedPhrase": "Let’s check your seed phrase",
@@ -334,5 +334,8 @@
   "invalidValue": "Invalid value",
   "invalidLengthMustBe": "Invalid length, must be {}",
   "accountBalance": "Account balance",
-  "walletDeployedSuccessfully": "Wallet deployed successfully"
+  "walletDeployedSuccessfully": "Wallet deployed successfully",
+  "noCurrentKey": "No current key",
+  "notGranted": "Not granted",
+  "noPassword": "No password"
 }

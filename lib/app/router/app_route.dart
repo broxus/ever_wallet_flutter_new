@@ -274,6 +274,7 @@ enum AppRoute {
           return [element];
         }
         final [...rest, last] = previousValue;
+
         return [...rest, '$last/$element'];
       }
 
