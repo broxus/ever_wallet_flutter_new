@@ -243,9 +243,8 @@ class InpageProvider extends ProviderApi {
   FutureOr<PermissionsPartial> requestPermissions(
     RequestPermissionsInput input,
   ) async {
-    final requiredPermissions = input.permissions
-        .map((e) => Permission.values.firstWhere((per) => per.name == e))
-        .toList();
+    final requiredPermissions =
+        input.permissions.map((e) => Permission.values.byName(e)).toList();
     final existingPermissions = inject<PermissionsService>().permissions[url];
 
     Permissions permissions;
@@ -261,14 +260,12 @@ class InpageProvider extends ProviderApi {
             Permission.accountInteraction,
         ];
 
-        if (newPermissions.isNotEmpty) {
-          permissions = await approvalsService.requestPermissions(
-            origin: url!,
-            permissions: requiredPermissions,
-          );
-        } else {
-          permissions = existingPermissions;
-        }
+        permissions = newPermissions.isNotEmpty
+            ? await approvalsService.requestPermissions(
+                origin: url!,
+                permissions: requiredPermissions,
+              )
+            : existingPermissions;
       } else {
         permissions = await approvalsService.requestPermissions(
           origin: url!,
@@ -401,6 +398,7 @@ class InpageProvider extends ProviderApi {
   @override
   dynamic call(String method, dynamic params) {
     _logger.finest('method: $method, params: $params');
+
     return super.call(method, params);
   }
 }
