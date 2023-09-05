@@ -6,43 +6,43 @@ class InpageProvider extends ProviderApi {
   Uri? url;
 
   @override
-  FutureOr<AddAssetOutput> addAsset(AddAssetInput input) {
+  Future<AddAssetOutput> addAsset(AddAssetInput input) {
     // TODO: implement addAsset
     throw UnimplementedError();
   }
 
   @override
-  FutureOr<PermissionsPartial> changeAccount() {
+  Future<PermissionsPartial> changeAccount() {
     // TODO: implement changeAccount
     throw UnimplementedError();
   }
 
   @override
-  FutureOr<CodeToTvcOutput> codeToTvc(CodeToTvcInput input) {
+  Future<CodeToTvcOutput> codeToTvc(CodeToTvcInput input) {
     // TODO: implement codeToTvc
     throw UnimplementedError();
   }
 
   @override
-  FutureOr<DecodeEventOutput?> decodeEvent(DecodeEventInput input) {
+  Future<DecodeEventOutput?> decodeEvent(DecodeEventInput input) {
     // TODO: implement decodeEvent
     throw UnimplementedError();
   }
 
   @override
-  FutureOr<DecodeInputOutput?> decodeInput(DecodeInputInput input) {
+  Future<DecodeInputOutput?> decodeInput(DecodeInputInput input) {
     // TODO: implement decodeInput
     throw UnimplementedError();
   }
 
   @override
-  FutureOr<DecodeOutputOutput?> decodeOutput(DecodeOutputInput input) {
+  Future<DecodeOutputOutput?> decodeOutput(DecodeOutputInput input) {
     // TODO: implement decodeOutput
     throw UnimplementedError();
   }
 
   @override
-  FutureOr<DecodeTransactionOutput?> decodeTransaction(
+  Future<DecodeTransactionOutput?> decodeTransaction(
     DecodeTransactionInput input,
   ) {
     // TODO: implement decodeTransaction
@@ -50,7 +50,7 @@ class InpageProvider extends ProviderApi {
   }
 
   @override
-  FutureOr<DecodeTransactionEventsOutput> decodeTransactionEvents(
+  Future<DecodeTransactionEventsOutput> decodeTransactionEvents(
     DecodeTransactionEventsInput input,
   ) {
     // TODO: implement decodeTransactionEvents
@@ -58,43 +58,43 @@ class InpageProvider extends ProviderApi {
   }
 
   @override
-  FutureOr<DecryptDataOutput> decryptData(DecryptDataInput input) {
+  Future<DecryptDataOutput> decryptData(DecryptDataInput input) {
     // TODO: implement decryptData
     throw UnimplementedError();
   }
 
   @override
-  FutureOr<void> disconnect() {
+  Future<void> disconnect() {
     // TODO: implement disconnect
     throw UnimplementedError();
   }
 
   @override
-  FutureOr<EncodeInternalInputOutput> encodeInternalInput(FunctionCall input) {
+  Future<EncodeInternalInputOutput> encodeInternalInput(FunctionCall input) {
     // TODO: implement encodeInternalInput
     throw UnimplementedError();
   }
 
   @override
-  FutureOr<EncryptDataOutput> encryptData(EncryptDataInput input) {
+  Future<EncryptDataOutput> encryptData(EncryptDataInput input) {
     // TODO: implement encryptData
     throw UnimplementedError();
   }
 
   @override
-  FutureOr<EstimateFeesOutput> estimateFees(EstimateFeesInput input) {
+  Future<EstimateFeesOutput> estimateFees(EstimateFeesInput input) {
     // TODO: implement estimateFees
     throw UnimplementedError();
   }
 
   @override
-  FutureOr<ExecuteLocalOutput> executeLocal(ExecuteLocalInput input) {
+  Future<ExecuteLocalOutput> executeLocal(ExecuteLocalInput input) {
     // TODO: implement executeLocal
     throw UnimplementedError();
   }
 
   @override
-  FutureOr<ExtractPublicKeyOutput> extractPublicKey(
+  Future<ExtractPublicKeyOutput> extractPublicKey(
     ExtractPublicKeyInput input,
   ) {
     // TODO: implement extractPublicKey
@@ -102,13 +102,13 @@ class InpageProvider extends ProviderApi {
   }
 
   @override
-  FutureOr<FindTransactionOutput> findTransaction(FindTransactionInput input) {
+  Future<FindTransactionOutput> findTransaction(FindTransactionInput input) {
     // TODO: implement findTransaction
     throw UnimplementedError();
   }
 
   @override
-  FutureOr<GetAccountsByCodeHashOutput> getAccountsByCodeHash(
+  Future<GetAccountsByCodeHashOutput> getAccountsByCodeHash(
     GetAccountsByCodeHashInput input,
   ) {
     // TODO: implement getAccountsByCodeHash
@@ -116,19 +116,19 @@ class InpageProvider extends ProviderApi {
   }
 
   @override
-  FutureOr<GetBocHashOutput> getBocHash(GetBocHashInput input) {
+  Future<GetBocHashOutput> getBocHash(GetBocHashInput input) {
     // TODO: implement getBocHash
     throw UnimplementedError();
   }
 
   @override
-  FutureOr<GetCodeSaltOutput> getCodeSalt(GetCodeSaltInput input) {
+  Future<GetCodeSaltOutput> getCodeSalt(GetCodeSaltInput input) {
     // TODO: implement getCodeSalt
     throw UnimplementedError();
   }
 
   @override
-  FutureOr<GetContractFieldsOutput> getContractFields(
+  Future<GetContractFieldsOutput> getContractFields(
     GetContractFieldsInput input,
   ) {
     // TODO: implement getContractFields
@@ -136,7 +136,7 @@ class InpageProvider extends ProviderApi {
   }
 
   @override
-  FutureOr<GetExpectedAddressOutput> getExpectedAddress(
+  Future<GetExpectedAddressOutput> getExpectedAddress(
     GetExpectedAddressInput input,
   ) {
     // TODO: implement getExpectedAddress
@@ -144,7 +144,7 @@ class InpageProvider extends ProviderApi {
   }
 
   @override
-  FutureOr<GetFullContractStateOutput> getFullContractState(
+  Future<GetFullContractStateOutput> getFullContractState(
     GetFullContractStateInput input,
   ) {
     // TODO: implement getFullContractState
@@ -152,7 +152,7 @@ class InpageProvider extends ProviderApi {
   }
 
   @override
-  FutureOr<GetProviderStateOutput> getProviderState() {
+  Future<GetProviderStateOutput> getProviderState() async {
     // TODO: implement getProviderState
 
     return GetProviderStateOutput.fromJson(
@@ -170,25 +170,25 @@ class InpageProvider extends ProviderApi {
   }
 
   @override
-  FutureOr<GetTransactionOutput> getTransaction(GetTransactionInput input) {
+  Future<GetTransactionOutput> getTransaction(GetTransactionInput input) {
     // TODO: implement getTransaction
     throw UnimplementedError();
   }
 
   @override
-  FutureOr<GetTransactionsOutput> getTransactions(GetTransactionsInput input) {
+  Future<GetTransactionsOutput> getTransactions(GetTransactionsInput input) {
     // TODO: implement getTransactions
     throw UnimplementedError();
   }
 
   @override
-  FutureOr<MergeTvcOutput> mergeTvc(MergeTvcInput input) {
+  Future<MergeTvcOutput> mergeTvc(MergeTvcInput input) {
     // TODO: implement mergeTvc
     throw UnimplementedError();
   }
 
   @override
-  FutureOr<PackIntoCellOutput> packIntoCell(PackIntoCellInput input) {
+  Future<PackIntoCellOutput> packIntoCell(PackIntoCellInput input) {
     // TODO: implement packIntoCell
     throw UnimplementedError();
   }
@@ -199,9 +199,9 @@ class InpageProvider extends ProviderApi {
       '9599d7a809bd0787b2dd995df6408bb0c25ea4c1cb9a26d83d68639797abb5e3';
 
   @override
-  FutureOr<PermissionsPartial> requestPermissions(
+  Future<PermissionsPartial> requestPermissions(
     RequestPermissionsInput input,
-  ) {
+  ) async {
     // TODO: implement requestPermissions
 
     return PermissionsPartial.fromJson({
@@ -215,13 +215,13 @@ class InpageProvider extends ProviderApi {
   }
 
   @override
-  FutureOr<RunLocalOutput> runLocal(RunLocalInput input) {
+  Future<RunLocalOutput> runLocal(RunLocalInput input) {
     // TODO: implement runLocal
     throw UnimplementedError();
   }
 
   @override
-  FutureOr<SendExternalMessageOutput> sendExternalMessage(
+  Future<SendExternalMessageOutput> sendExternalMessage(
     SendExternalMessageInput input,
   ) {
     // TODO: implement sendExternalMessage
@@ -229,7 +229,7 @@ class InpageProvider extends ProviderApi {
   }
 
   @override
-  FutureOr<SendExternalMessageDelayedOutput> sendExternalMessageDelayed(
+  Future<SendExternalMessageDelayedOutput> sendExternalMessageDelayed(
     SendExternalMessageDelayedInput input,
   ) {
     // TODO: implement sendExternalMessageDelayed
@@ -237,13 +237,13 @@ class InpageProvider extends ProviderApi {
   }
 
   @override
-  FutureOr<SendMessageOutput> sendMessage(SendMessageInput input) {
+  Future<SendMessageOutput> sendMessage(SendMessageInput input) {
     // TODO: implement sendMessage
     throw UnimplementedError();
   }
 
   @override
-  FutureOr<SendMessageDelayedOutput> sendMessageDelayed(
+  Future<SendMessageDelayedOutput> sendMessageDelayed(
     SendMessageDelayedInput input,
   ) {
     // TODO: implement sendMessageDelayed
@@ -251,7 +251,7 @@ class InpageProvider extends ProviderApi {
   }
 
   @override
-  FutureOr<SendUnsignedExternalMessageOutput> sendUnsignedExternalMessage(
+  Future<SendUnsignedExternalMessageOutput> sendUnsignedExternalMessage(
     SendUnsignedExternalMessageInput input,
   ) {
     // TODO: implement sendUnsignedExternalMessage
@@ -259,61 +259,61 @@ class InpageProvider extends ProviderApi {
   }
 
   @override
-  FutureOr<SetCodeSaltOutput> setCodeSalt(SetCodeSaltInput input) {
+  Future<SetCodeSaltOutput> setCodeSalt(SetCodeSaltInput input) {
     // TODO: implement setCodeSalt
     throw UnimplementedError();
   }
 
   @override
-  FutureOr<SignDataOutput> signData(SignDataInput input) {
+  Future<SignDataOutput> signData(SignDataInput input) {
     // TODO: implement signData
     throw UnimplementedError();
   }
 
   @override
-  FutureOr<SignDataRawOutput> signDataRaw(SignDataRawInput input) {
+  Future<SignDataRawOutput> signDataRaw(SignDataRawInput input) {
     // TODO: implement signDataRaw
     throw UnimplementedError();
   }
 
   @override
-  FutureOr<SplitTvcOutput> splitTvc(SplitTvcInput input) {
+  Future<SplitTvcOutput> splitTvc(SplitTvcInput input) {
     // TODO: implement splitTvc
     throw UnimplementedError();
   }
 
   @override
-  FutureOr<ContractUpdatesSubscription> subscribe(SubscribeInput input) {
+  Future<ContractUpdatesSubscription> subscribe(SubscribeInput input) {
     // TODO: implement subscribe
     throw UnimplementedError();
   }
 
   @override
-  FutureOr<UnpackFromCellOutput> unpackFromCell(UnpackFromCellInput input) {
+  Future<UnpackFromCellOutput> unpackFromCell(UnpackFromCellInput input) {
     // TODO: implement unpackFromCell
     throw UnimplementedError();
   }
 
   @override
-  FutureOr<UnpackInitDataOutput> unpackInitData(UnpackInitDataInput input) {
+  Future<UnpackInitDataOutput> unpackInitData(UnpackInitDataInput input) {
     // TODO: implement unpackInitData
     throw UnimplementedError();
   }
 
   @override
-  FutureOr<void> unsubscribe(UnsubscribeInput input) {
+  Future<void> unsubscribe(UnsubscribeInput input) {
     // TODO: implement unsubscribe
     throw UnimplementedError();
   }
 
   @override
-  FutureOr<void> unsubscribeAll() {
+  Future<void> unsubscribeAll() {
     // TODO: implement unsubscribeAll
     throw UnimplementedError();
   }
 
   @override
-  FutureOr<VerifySignatureOutput> verifySignature(VerifySignatureInput input) {
+  Future<VerifySignatureOutput> verifySignature(VerifySignatureInput input) {
     // TODO: implement verifySignature
     throw UnimplementedError();
   }
