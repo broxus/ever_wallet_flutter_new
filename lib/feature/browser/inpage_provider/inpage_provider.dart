@@ -1,48 +1,185 @@
 import 'dart:async';
 
-import 'package:nekoton_webview/nekoton_webview.dart';
+import 'package:app/app/service/service.dart' as s;
+import 'package:app/data/models/models.dart';
+import 'package:app/di/di.dart';
+import 'package:app/generated/generated.dart';
+import 'package:flutter_inappwebview/flutter_inappwebview.dart';
+import 'package:logging/logging.dart';
+import 'package:nekoton_repository/nekoton_repository.dart' as nr;
+import 'package:nekoton_webview/nekoton_webview.dart' hide Message;
 
 class InpageProvider extends ProviderApi {
+  InpageProvider(
+    this.approvalsService,
+    this.permissionsService,
+    this.nekotonRepository,
+  );
+
+  final _logger = Logger('InpageProvider');
+
+  InAppWebViewController? controller;
+  final s.BrowserApprovalsService approvalsService;
+  final s.PermissionsService permissionsService;
+  final nr.NekotonRepository nekotonRepository;
+
   Uri? url;
 
-  @override
-  FutureOr<AddAssetOutput> addAsset(AddAssetInput input) {
-    // TODO: implement addAsset
-    throw UnimplementedError();
+  /// Check [permissions] if it contains [basic] (if true) and [account]
+  /// (if true) and if accountInteraction.address == accountAddress if it's
+  /// specified.
+  /// This is just a helper function for actions to check permissions, required
+  /// for this action.
+  /// [basic] needs everywhere by default (except of getting info about
+  /// provider)
+  ///
+  /// Method do not return anything. If some required permission not granted,
+  /// exception will be thrown.
+  void _checkPermissions({
+    required Permissions? permissions,
+    bool basic = true,
+    bool account = false,
+    nr.Address? accountAddress,
+  }) {
+    if (permissions == null) {
+      throw Exception(LocaleKeys.permissionsNotGranted.tr());
+    }
+    if (basic && permissions.basic != true) {
+      throw Exception(LocaleKeys.basicInteractionNotPermitted.tr());
+    }
+    if (account && permissions.accountInteraction == null) {
+      throw Exception(LocaleKeys.accountInteractionNotPermitted.tr());
+    }
+    if (account &&
+        accountAddress != null &&
+        permissions.accountInteraction?.address != accountAddress) {
+      throw Exception(
+        LocaleKeys.specifiedAccountInteractionNotPermitted.tr(),
+      );
+    }
   }
 
   @override
-  FutureOr<PermissionsPartial> changeAccount() {
-    // TODO: implement changeAccount
-    throw UnimplementedError();
+  Future<AddAssetOutput> addAsset(AddAssetInput input) async {
+    final accountAddress = nr.Address(address: input.account);
+    _checkPermissions(
+      permissions: permissionsService.permissions[url],
+      account: true,
+      accountAddress: accountAddress,
+    );
+
+    final type = assetTypeMap[input.type];
+    final contract = input.params?.rootContract;
+    final account =
+        nekotonRepository.seedList.findAccountByAddress(accountAddress);
+    if (contract == null) {
+      throw Exception(LocaleKeys.invalidRootTokenContract.tr());
+    }
+    if (account == null) throw Exception(LocaleKeys.accountNotFound.tr());
+    if (type == null) throw Exception(LocaleKeys.typeIsWrong.tr());
+
+    bool newAsset;
+
+    switch (type) {
+      case AssetType.tip3Token:
+        final rootTokenContract = await nr.repackAddress(
+          nr.Address(address: contract),
+        );
+        final transport = nekotonRepository.currentTransport;
+
+        final hasTokenWallet = account
+                .additionalAssets[transport.transport.group]?.tokenWallets
+                .any((e) => e.rootTokenContract == rootTokenContract) ??
+            false;
+
+        if (hasTokenWallet) {
+          newAsset = false;
+          break;
+        }
+
+        final details = await inject<s.AssetsService>().getTokenContractAsset(
+          rootTokenContract,
+          transport,
+        );
+        if (details == null) {
+          throw Exception(LocaleKeys.invalidRootTokenContract.tr());
+        }
+
+        await approvalsService.addTip3Token(
+          origin: url!,
+          accountAddress: accountAddress,
+          details: details,
+        );
+
+        await account.addTokenWallet(rootTokenContract);
+
+        newAsset = true;
+    }
+
+    return AddAssetOutput(newAsset);
   }
 
   @override
-  FutureOr<CodeToTvcOutput> codeToTvc(CodeToTvcInput input) {
+  Future<PermissionsPartial> changeAccount() async {
+    try {
+      final existingPermissions = permissionsService.permissions[url];
+      _checkPermissions(permissions: existingPermissions, account: true);
+
+      final existingPermissionsList = [
+        if (existingPermissions?.basic == null) Permission.basic,
+        if (existingPermissions?.accountInteraction == null)
+          Permission.accountInteraction,
+      ];
+
+      final permissions = await approvalsService.changeAccount(
+        origin: url!,
+        permissions: existingPermissionsList,
+      );
+
+      final accountInteraction = permissions.accountInteraction;
+
+      return PermissionsPartial(
+        permissions.basic,
+        accountInteraction == null
+            ? null
+            : PermissionsAccountInteraction(
+                accountInteraction.address.address,
+                accountInteraction.publicKey.publicKey,
+                accountInteraction.contractType.name,
+              ),
+      );
+    } on s.ApprovalsHandleException catch (e) {
+      inject<s.MessengerService>().show(s.Message.error(message: e.message));
+      rethrow;
+    }
+  }
+
+  @override
+  Future<CodeToTvcOutput> codeToTvc(CodeToTvcInput input) {
     // TODO: implement codeToTvc
     throw UnimplementedError();
   }
 
   @override
-  FutureOr<DecodeEventOutput?> decodeEvent(DecodeEventInput input) {
+  Future<DecodeEventOutput?> decodeEvent(DecodeEventInput input) {
     // TODO: implement decodeEvent
     throw UnimplementedError();
   }
 
   @override
-  FutureOr<DecodeInputOutput?> decodeInput(DecodeInputInput input) {
+  Future<DecodeInputOutput?> decodeInput(DecodeInputInput input) {
     // TODO: implement decodeInput
     throw UnimplementedError();
   }
 
   @override
-  FutureOr<DecodeOutputOutput?> decodeOutput(DecodeOutputInput input) {
+  Future<DecodeOutputOutput?> decodeOutput(DecodeOutputInput input) {
     // TODO: implement decodeOutput
     throw UnimplementedError();
   }
 
   @override
-  FutureOr<DecodeTransactionOutput?> decodeTransaction(
+  Future<DecodeTransactionOutput?> decodeTransaction(
     DecodeTransactionInput input,
   ) {
     // TODO: implement decodeTransaction
@@ -50,7 +187,7 @@ class InpageProvider extends ProviderApi {
   }
 
   @override
-  FutureOr<DecodeTransactionEventsOutput> decodeTransactionEvents(
+  Future<DecodeTransactionEventsOutput> decodeTransactionEvents(
     DecodeTransactionEventsInput input,
   ) {
     // TODO: implement decodeTransactionEvents
@@ -58,43 +195,43 @@ class InpageProvider extends ProviderApi {
   }
 
   @override
-  FutureOr<DecryptDataOutput> decryptData(DecryptDataInput input) {
+  Future<DecryptDataOutput> decryptData(DecryptDataInput input) {
     // TODO: implement decryptData
     throw UnimplementedError();
   }
 
   @override
-  FutureOr<void> disconnect() {
+  Future<void> disconnect() {
     // TODO: implement disconnect
     throw UnimplementedError();
   }
 
   @override
-  FutureOr<EncodeInternalInputOutput> encodeInternalInput(FunctionCall input) {
+  Future<EncodeInternalInputOutput> encodeInternalInput(FunctionCall input) {
     // TODO: implement encodeInternalInput
     throw UnimplementedError();
   }
 
   @override
-  FutureOr<EncryptDataOutput> encryptData(EncryptDataInput input) {
+  Future<EncryptDataOutput> encryptData(EncryptDataInput input) {
     // TODO: implement encryptData
     throw UnimplementedError();
   }
 
   @override
-  FutureOr<EstimateFeesOutput> estimateFees(EstimateFeesInput input) {
+  Future<EstimateFeesOutput> estimateFees(EstimateFeesInput input) {
     // TODO: implement estimateFees
     throw UnimplementedError();
   }
 
   @override
-  FutureOr<ExecuteLocalOutput> executeLocal(ExecuteLocalInput input) {
+  Future<ExecuteLocalOutput> executeLocal(ExecuteLocalInput input) {
     // TODO: implement executeLocal
     throw UnimplementedError();
   }
 
   @override
-  FutureOr<ExtractPublicKeyOutput> extractPublicKey(
+  Future<ExtractPublicKeyOutput> extractPublicKey(
     ExtractPublicKeyInput input,
   ) {
     // TODO: implement extractPublicKey
@@ -102,13 +239,13 @@ class InpageProvider extends ProviderApi {
   }
 
   @override
-  FutureOr<FindTransactionOutput> findTransaction(FindTransactionInput input) {
+  Future<FindTransactionOutput> findTransaction(FindTransactionInput input) {
     // TODO: implement findTransaction
     throw UnimplementedError();
   }
 
   @override
-  FutureOr<GetAccountsByCodeHashOutput> getAccountsByCodeHash(
+  Future<GetAccountsByCodeHashOutput> getAccountsByCodeHash(
     GetAccountsByCodeHashInput input,
   ) {
     // TODO: implement getAccountsByCodeHash
@@ -116,19 +253,19 @@ class InpageProvider extends ProviderApi {
   }
 
   @override
-  FutureOr<GetBocHashOutput> getBocHash(GetBocHashInput input) {
+  Future<GetBocHashOutput> getBocHash(GetBocHashInput input) {
     // TODO: implement getBocHash
     throw UnimplementedError();
   }
 
   @override
-  FutureOr<GetCodeSaltOutput> getCodeSalt(GetCodeSaltInput input) {
+  Future<GetCodeSaltOutput> getCodeSalt(GetCodeSaltInput input) {
     // TODO: implement getCodeSalt
     throw UnimplementedError();
   }
 
   @override
-  FutureOr<GetContractFieldsOutput> getContractFields(
+  Future<GetContractFieldsOutput> getContractFields(
     GetContractFieldsInput input,
   ) {
     // TODO: implement getContractFields
@@ -136,7 +273,7 @@ class InpageProvider extends ProviderApi {
   }
 
   @override
-  FutureOr<GetExpectedAddressOutput> getExpectedAddress(
+  Future<GetExpectedAddressOutput> getExpectedAddress(
     GetExpectedAddressInput input,
   ) {
     // TODO: implement getExpectedAddress
@@ -144,7 +281,7 @@ class InpageProvider extends ProviderApi {
   }
 
   @override
-  FutureOr<GetFullContractStateOutput> getFullContractState(
+  Future<GetFullContractStateOutput> getFullContractState(
     GetFullContractStateInput input,
   ) {
     // TODO: implement getFullContractState
@@ -152,7 +289,7 @@ class InpageProvider extends ProviderApi {
   }
 
   @override
-  FutureOr<GetProviderStateOutput> getProviderState() {
+  Future<GetProviderStateOutput> getProviderState() async {
     // TODO: implement getProviderState
 
     return GetProviderStateOutput.fromJson(
@@ -170,58 +307,89 @@ class InpageProvider extends ProviderApi {
   }
 
   @override
-  FutureOr<GetTransactionOutput> getTransaction(GetTransactionInput input) {
+  Future<GetTransactionOutput> getTransaction(GetTransactionInput input) {
     // TODO: implement getTransaction
     throw UnimplementedError();
   }
 
   @override
-  FutureOr<GetTransactionsOutput> getTransactions(GetTransactionsInput input) {
+  Future<GetTransactionsOutput> getTransactions(GetTransactionsInput input) {
     // TODO: implement getTransactions
     throw UnimplementedError();
   }
 
   @override
-  FutureOr<MergeTvcOutput> mergeTvc(MergeTvcInput input) {
+  Future<MergeTvcOutput> mergeTvc(MergeTvcInput input) {
     // TODO: implement mergeTvc
     throw UnimplementedError();
   }
 
   @override
-  FutureOr<PackIntoCellOutput> packIntoCell(PackIntoCellInput input) {
+  Future<PackIntoCellOutput> packIntoCell(PackIntoCellInput input) {
     // TODO: implement packIntoCell
     throw UnimplementedError();
   }
 
-  final _address =
-      '0:727a540fb41fba5767e8fb5aaf0c9b9b0c9aa4ff8d534c45e5ba68742dacc134';
-  final _publicKey =
-      '9599d7a809bd0787b2dd995df6408bb0c25ea4c1cb9a26d83d68639797abb5e3';
-
   @override
-  FutureOr<PermissionsPartial> requestPermissions(
+  Future<PermissionsPartial> requestPermissions(
     RequestPermissionsInput input,
-  ) {
-    // TODO: implement requestPermissions
+  ) async {
+    final requiredPermissions =
+        input.permissions.map((e) => Permission.values.byName(e)).toList();
+    final existingPermissions = inject<s.PermissionsService>().permissions[url];
 
-    return PermissionsPartial.fromJson({
-      'basic': true,
-      'accountInteraction': {
-        'address': _address,
-        'publicKey': _publicKey,
-        'contractType': 'EverWallet',
-      },
-    });
+    Permissions permissions;
+
+    try {
+      if (existingPermissions != null) {
+        final newPermissions = [
+          if (requiredPermissions.contains(Permission.basic) &&
+              existingPermissions.basic == null)
+            Permission.basic,
+          if (requiredPermissions.contains(Permission.accountInteraction) &&
+              existingPermissions.accountInteraction == null)
+            Permission.accountInteraction,
+        ];
+
+        permissions = newPermissions.isNotEmpty
+            ? await approvalsService.requestPermissions(
+                origin: url!,
+                permissions: requiredPermissions,
+              )
+            : existingPermissions;
+      } else {
+        permissions = await approvalsService.requestPermissions(
+          origin: url!,
+          permissions: requiredPermissions,
+        );
+      }
+
+      final accountInteraction = permissions.accountInteraction;
+
+      return PermissionsPartial(
+        permissions.basic,
+        accountInteraction == null
+            ? null
+            : PermissionsAccountInteraction(
+                accountInteraction.address.address,
+                accountInteraction.publicKey.publicKey,
+                accountInteraction.contractType.name,
+              ),
+      );
+    } on s.ApprovalsHandleException catch (e) {
+      inject<s.MessengerService>().show(s.Message.error(message: e.message));
+      rethrow;
+    }
   }
 
   @override
-  FutureOr<RunLocalOutput> runLocal(RunLocalInput input) {
+  Future<RunLocalOutput> runLocal(RunLocalInput input) {
     // TODO: implement runLocal
     throw UnimplementedError();
   }
 
   @override
-  FutureOr<SendExternalMessageOutput> sendExternalMessage(
+  Future<SendExternalMessageOutput> sendExternalMessage(
     SendExternalMessageInput input,
   ) {
     // TODO: implement sendExternalMessage
@@ -229,7 +397,7 @@ class InpageProvider extends ProviderApi {
   }
 
   @override
-  FutureOr<SendExternalMessageDelayedOutput> sendExternalMessageDelayed(
+  Future<SendExternalMessageDelayedOutput> sendExternalMessageDelayed(
     SendExternalMessageDelayedInput input,
   ) {
     // TODO: implement sendExternalMessageDelayed
@@ -237,13 +405,13 @@ class InpageProvider extends ProviderApi {
   }
 
   @override
-  FutureOr<SendMessageOutput> sendMessage(SendMessageInput input) {
+  Future<SendMessageOutput> sendMessage(SendMessageInput input) {
     // TODO: implement sendMessage
     throw UnimplementedError();
   }
 
   @override
-  FutureOr<SendMessageDelayedOutput> sendMessageDelayed(
+  Future<SendMessageDelayedOutput> sendMessageDelayed(
     SendMessageDelayedInput input,
   ) {
     // TODO: implement sendMessageDelayed
@@ -251,7 +419,7 @@ class InpageProvider extends ProviderApi {
   }
 
   @override
-  FutureOr<SendUnsignedExternalMessageOutput> sendUnsignedExternalMessage(
+  Future<SendUnsignedExternalMessageOutput> sendUnsignedExternalMessage(
     SendUnsignedExternalMessageInput input,
   ) {
     // TODO: implement sendUnsignedExternalMessage
@@ -259,62 +427,69 @@ class InpageProvider extends ProviderApi {
   }
 
   @override
-  FutureOr<SetCodeSaltOutput> setCodeSalt(SetCodeSaltInput input) {
+  Future<SetCodeSaltOutput> setCodeSalt(SetCodeSaltInput input) {
     // TODO: implement setCodeSalt
     throw UnimplementedError();
   }
 
   @override
-  FutureOr<SignDataOutput> signData(SignDataInput input) {
+  Future<SignDataOutput> signData(SignDataInput input) {
     // TODO: implement signData
     throw UnimplementedError();
   }
 
   @override
-  FutureOr<SignDataRawOutput> signDataRaw(SignDataRawInput input) {
+  Future<SignDataRawOutput> signDataRaw(SignDataRawInput input) {
     // TODO: implement signDataRaw
     throw UnimplementedError();
   }
 
   @override
-  FutureOr<SplitTvcOutput> splitTvc(SplitTvcInput input) {
+  Future<SplitTvcOutput> splitTvc(SplitTvcInput input) {
     // TODO: implement splitTvc
     throw UnimplementedError();
   }
 
   @override
-  FutureOr<ContractUpdatesSubscription> subscribe(SubscribeInput input) {
+  Future<ContractUpdatesSubscription> subscribe(SubscribeInput input) {
     // TODO: implement subscribe
     throw UnimplementedError();
   }
 
   @override
-  FutureOr<UnpackFromCellOutput> unpackFromCell(UnpackFromCellInput input) {
+  Future<UnpackFromCellOutput> unpackFromCell(UnpackFromCellInput input) {
     // TODO: implement unpackFromCell
     throw UnimplementedError();
   }
 
   @override
-  FutureOr<UnpackInitDataOutput> unpackInitData(UnpackInitDataInput input) {
+  Future<UnpackInitDataOutput> unpackInitData(UnpackInitDataInput input) {
     // TODO: implement unpackInitData
     throw UnimplementedError();
   }
 
   @override
-  FutureOr<void> unsubscribe(UnsubscribeInput input) {
+  Future<void> unsubscribe(UnsubscribeInput input) {
     // TODO: implement unsubscribe
     throw UnimplementedError();
   }
 
   @override
-  FutureOr<void> unsubscribeAll() {
+  Future<void> unsubscribeAll() {
     // TODO: implement unsubscribeAll
     throw UnimplementedError();
   }
 
   @override
-  FutureOr<VerifySignatureOutput> verifySignature(VerifySignatureInput input) {
+  Future<VerifySignatureOutput> verifySignature(VerifySignatureInput input) {
     // TODO: implement verifySignature
     throw UnimplementedError();
+  }
+
+  @override
+  dynamic call(String method, dynamic params) {
+    _logger.finest('method: $method, params: $params');
+
+    return super.call(method, params);
   }
 }

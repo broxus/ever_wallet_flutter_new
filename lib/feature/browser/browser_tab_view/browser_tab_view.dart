@@ -2,6 +2,7 @@ import 'dart:async';
 import 'dart:io';
 
 import 'package:app/data/models/models.dart';
+import 'package:app/di/di.dart';
 import 'package:app/feature/browser/browser.dart';
 import 'package:app/feature/browser/browser_tab_view/browser_error_view.dart';
 import 'package:flutter/material.dart';
@@ -61,7 +62,7 @@ class _BrowserTabViewState extends State<BrowserTabView> {
 
   InAppWebViewController? _webViewController;
   PullToRefreshController? _pullToRefreshController;
-  final InpageProvider _inpageProvider = InpageProvider();
+  final _inpageProvider = InpageProvider(inject(), inject(), inject());
 
   Timer? _screenshotTimer;
 
@@ -271,6 +272,7 @@ class _BrowserTabViewState extends State<BrowserTabView> {
 
   Future<void> _onWebViewCreated(InAppWebViewController controller) async {
     _webViewController = controller;
+    _inpageProvider.controller = controller;
 
     await controller.initNekotonProvider(
       providerApi: _inpageProvider,
