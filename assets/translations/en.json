@@ -46,6 +46,7 @@
   },
   "fillMissingWords": "Fill in the missing words, please",
   "incorrectWordsFormat": "Incorrect words format",
+  "wrongSeed": "The seed phrase is wrong, try again, please",
   "currentSeed": "Current seed",
   "exportSeedPhrase": "Export seed phrase",
   "manageSeedsAndAccounts": "Manage seeds and accounts",
