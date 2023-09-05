@@ -206,6 +206,8 @@ class AssetsService {
         symbol: tokenRootDetails.symbol,
         decimals: tokenRootDetails.decimals,
         address: rootTokenContract,
+        ownerAddress: tokenRootDetails.ownerAddress,
+        totalSupply: tokenRootDetails.totalSupply,
         version: tokenRootDetails.version,
         networkType: transport.networkType,
       );

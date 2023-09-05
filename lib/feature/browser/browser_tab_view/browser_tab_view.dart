@@ -62,7 +62,7 @@ class _BrowserTabViewState extends State<BrowserTabView> {
 
   InAppWebViewController? _webViewController;
   PullToRefreshController? _pullToRefreshController;
-  final _inpageProvider = InpageProvider(inject());
+  final _inpageProvider = InpageProvider(inject(), inject(), inject());
 
   Timer? _screenshotTimer;
 

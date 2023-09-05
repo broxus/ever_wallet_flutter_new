@@ -240,7 +240,7 @@ class _ApprovalsListenerWidgetState extends State<ApprovalsListenerWidget> {
     required BuildContext context,
     required Uri origin,
     required Address account,
-    required RootTokenContractDetails details,
+    required TokenContractAsset details,
     required Completer<void> completer,
   }) async {
     try {

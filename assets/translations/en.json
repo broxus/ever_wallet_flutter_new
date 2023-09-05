@@ -348,5 +348,15 @@
   "rejectWord": "Reject",
   "accountAddress": "Account address",
   "accountPublicKey": "Account public key",
-  "accountInteractionNotPermitted": "Account interaction not permitted"
+  "accountInteractionNotPermitted": "Account interaction not permitted",
+  "specifiedAccountInteractionNotPermitted": "Specified account interaction not permitted",
+  "basicInteractionNotPermitted": "Basic interaction not permitted",
+  "permissionsNotGranted": "Permissions not granted",
+  "addAsset": "Add asset",
+  "versionWord": "Version",
+  "symbolWord": "Symbol",
+  "decimalsWord": "Decimals",
+  "ownerAddress": "Owner address",
+  "totalSupply": "Total supply",
+  "typeIsWrong": "Type is wrong"
 }
