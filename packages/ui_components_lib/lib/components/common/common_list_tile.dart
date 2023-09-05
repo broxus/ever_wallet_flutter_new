@@ -28,7 +28,7 @@ class CommonListTile extends StatelessWidget {
     this.padding = const EdgeInsets.symmetric(horizontal: DimensSize.d8),
     this.contentColor,
     this.invertTitleSubtitleStyles = false,
-    this.subtitleMaxLines = 2,
+    this.subtitleMaxLines = _defaultSubtitleMaxLines,
   });
 
   /// Press callback of tile

@@ -24,6 +24,7 @@ Future<bool> showAddTip3TokenSheet({
       controller: scroll,
     ),
   );
+
   return res ?? false;
 }
 
