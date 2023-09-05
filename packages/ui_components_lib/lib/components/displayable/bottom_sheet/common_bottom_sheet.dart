@@ -39,7 +39,6 @@ Future<T?> showCommonBottomSheet<T>({
     expand: expand,
     context: context,
     isDismissible: dismissible,
-    enableDrag: !dismissible,
     useRootNavigator: useRootNavigator,
     barrierColor: barrierColor ?? Colors.black.withOpacity(Opac.large),
     containerWidget: (context, animation, child) => _ContainerWidget(
@@ -94,7 +93,6 @@ ModalSheetRoute<T> commonBottomSheetRoute<T>({
       title: title,
       body: body,
     ),
-    enableDrag: !dismissible,
     expanded: expand,
     isDismissible: dismissible,
     modalBarrierColor: barrierColor,
