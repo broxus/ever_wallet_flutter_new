@@ -139,6 +139,11 @@ class CreateSeedPasswordView extends StatelessWidget {
   String? _validateRepeatPassword(
     CreateSeedPasswordCubit cubit,
   ) {
+    // Should not validate second field if first is invalid
+    if (_validatePassword(cubit) != null) {
+      return null;
+    }
+
     if (cubit.confirmController.text == cubit.passwordController.text) {
       return null;
     }

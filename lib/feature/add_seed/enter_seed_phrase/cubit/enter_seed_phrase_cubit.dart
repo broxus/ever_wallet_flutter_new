@@ -10,6 +10,7 @@ import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter/widgets.dart';
 import 'package:freezed_annotation/freezed_annotation.dart';
+import 'package:logging/logging.dart';
 import 'package:nekoton_repository/nekoton_repository.dart' hide Message;
 import 'package:ui_components_lib/ui_components_lib.dart';
 
@@ -30,6 +31,8 @@ typedef EnterSeedPhraseConfirmCallback = void Function(List<String> phrase);
 class EnterSeedPhraseCubit extends Cubit<EnterSeedPhraseState> {
   EnterSeedPhraseCubit(this.confirmCallback)
       : super(const EnterSeedPhraseState.initial());
+
+  final _log = Logger('EnterSeedPhraseCubit');
 
   final EnterSeedPhraseConfirmCallback confirmCallback;
 
@@ -157,10 +160,12 @@ class EnterSeedPhraseCubit extends Cubit<EnterSeedPhraseState> {
           mnemonicType: mnemonicType,
         );
         confirmCallback(phrase);
-      } on Exception catch (e) {
+      } on Exception catch (e, s) {
+        _log.severe('confirmAction', e, s);
         error = e.toString();
-      } on Object catch (e) {
-        error = e.toString();
+      } on FfiException catch (e, s) {
+        _log.severe('confirmAction FfiException', e, s);
+        error = LocaleKeys.wrongSeed.tr();
       }
       if (error != null) {
         _showValidateError(error);

@@ -130,7 +130,7 @@ class CommonCard extends StatelessWidget {
             mainAxisSize: width == null ? MainAxisSize.min : MainAxisSize.max,
             children: [
               if (subtitle != null) subtitle,
-              Flexible(child: centerTitle ? Center(child: title) : title),
+              Expanded(child: centerTitle ? Center(child: title) : title),
               if (trailingChild != null) trailingChild!,
             ],
           ),
