@@ -76,7 +76,7 @@ class BrowserApprovalsService {
   Future<void> addTip3Token({
     required Uri origin,
     required Address accountAddress,
-    required RootTokenContractDetails details,
+    required TokenContractAsset details,
   }) async {
     final completer = Completer<void>();
 

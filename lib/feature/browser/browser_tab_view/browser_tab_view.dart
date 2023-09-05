@@ -63,7 +63,7 @@ class _BrowserTabViewState extends State<BrowserTabView> {
 
   InAppWebViewController? _webViewController;
   PullToRefreshController? _pullToRefreshController;
-  final InpageProvider _inpageProvider = InpageProvider();
+  final _inpageProvider = InpageProvider(inject(), inject(), inject());
 
   Timer? _screenshotTimer;
 
@@ -290,6 +290,7 @@ class _BrowserTabViewState extends State<BrowserTabView> {
     context
         .read<BrowserViewEventsListenerCubit>()
         .initControllerAndListeners(controller);
+    _inpageProvider.controller = controller;
 
     await controller.initNekotonProvider(
       providerApi: _inpageProvider,

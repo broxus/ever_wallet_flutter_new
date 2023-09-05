@@ -17,6 +17,11 @@ class TokenContractAsset with _$TokenContractAsset {
     required NetworkType networkType,
     required TokenWalletVersion version,
     int? chainId,
+    // address of owner that could be set when loaded in
+    // <TonWallet.getTokenRootDetailsFromTokenWallet>, may be optional
+    @JsonKey(includeToJson: false, includeFromJson: false)
+    Address? ownerAddress,
+    @JsonKey(includeToJson: false, includeFromJson: false) String? totalSupply,
     String? logoURI,
   }) = _TokenContractAsset;
 

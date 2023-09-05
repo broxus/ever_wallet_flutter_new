@@ -1,20 +1,157 @@
 import 'dart:async';
 
-import 'package:nekoton_webview/nekoton_webview.dart';
+import 'package:app/app/service/service.dart' as s;
+import 'package:app/data/models/models.dart';
+import 'package:app/di/di.dart';
+import 'package:app/generated/generated.dart';
+import 'package:flutter_inappwebview/flutter_inappwebview.dart';
+import 'package:logging/logging.dart';
+import 'package:nekoton_repository/nekoton_repository.dart' as nr;
+import 'package:nekoton_webview/nekoton_webview.dart' hide Message;
 
 class InpageProvider extends ProviderApi {
+  InpageProvider(
+    this.approvalsService,
+    this.permissionsService,
+    this.nekotonRepository,
+  );
+
+  final _logger = Logger('InpageProvider');
+
+  InAppWebViewController? controller;
+  final s.BrowserApprovalsService approvalsService;
+  final s.PermissionsService permissionsService;
+  final nr.NekotonRepository nekotonRepository;
+
   Uri? url;
 
-  @override
-  Future<AddAssetOutput> addAsset(AddAssetInput input) {
-    // TODO: implement addAsset
-    throw UnimplementedError();
+  /// Check [permissions] if it contains [basic] (if true) and [account]
+  /// (if true) and if accountInteraction.address == accountAddress if it's
+  /// specified.
+  /// This is just a helper function for actions to check permissions, required
+  /// for this action.
+  /// [basic] needs everywhere by default (except of getting info about
+  /// provider)
+  ///
+  /// Method do not return anything. If some required permission not granted,
+  /// exception will be thrown.
+  void _checkPermissions({
+    required Permissions? permissions,
+    bool basic = true,
+    bool account = false,
+    nr.Address? accountAddress,
+  }) {
+    if (permissions == null) {
+      throw Exception(LocaleKeys.permissionsNotGranted.tr());
+    }
+    if (basic && permissions.basic != true) {
+      throw Exception(LocaleKeys.basicInteractionNotPermitted.tr());
+    }
+    if (account && permissions.accountInteraction == null) {
+      throw Exception(LocaleKeys.accountInteractionNotPermitted.tr());
+    }
+    if (account &&
+        accountAddress != null &&
+        permissions.accountInteraction?.address != accountAddress) {
+      throw Exception(
+        LocaleKeys.specifiedAccountInteractionNotPermitted.tr(),
+      );
+    }
   }
 
   @override
-  Future<PermissionsPartial> changeAccount() {
-    // TODO: implement changeAccount
-    throw UnimplementedError();
+  Future<AddAssetOutput> addAsset(AddAssetInput input) async {
+    final accountAddress = nr.Address(address: input.account);
+    _checkPermissions(
+      permissions: permissionsService.permissions[url],
+      account: true,
+      accountAddress: accountAddress,
+    );
+
+    final type = assetTypeMap[input.type];
+    final contract = input.params?.rootContract;
+    final account =
+        nekotonRepository.seedList.findAccountByAddress(accountAddress);
+    if (contract == null) {
+      throw Exception(LocaleKeys.invalidRootTokenContract.tr());
+    }
+    if (account == null) throw Exception(LocaleKeys.accountNotFound.tr());
+    if (type == null) throw Exception(LocaleKeys.typeIsWrong.tr());
+
+    bool newAsset;
+
+    switch (type) {
+      case AssetType.tip3Token:
+        final rootTokenContract = await nr.repackAddress(
+          nr.Address(address: contract),
+        );
+        final transport = nekotonRepository.currentTransport;
+
+        final hasTokenWallet = account
+                .additionalAssets[transport.transport.group]?.tokenWallets
+                .any((e) => e.rootTokenContract == rootTokenContract) ??
+            false;
+
+        if (hasTokenWallet) {
+          newAsset = false;
+          break;
+        }
+
+        final details = await inject<s.AssetsService>().getTokenContractAsset(
+          rootTokenContract,
+          transport,
+        );
+        if (details == null) {
+          throw Exception(LocaleKeys.invalidRootTokenContract.tr());
+        }
+
+        await approvalsService.addTip3Token(
+          origin: url!,
+          accountAddress: accountAddress,
+          details: details,
+        );
+
+        await account.addTokenWallet(rootTokenContract);
+
+        newAsset = true;
+    }
+
+    return AddAssetOutput(newAsset);
+  }
+
+  @override
+  Future<PermissionsPartial> changeAccount() async {
+    try {
+      final existingPermissions = permissionsService.permissions[url];
+      _checkPermissions(permissions: existingPermissions, account: true);
+
+      final existingPermissionsList = [
+        if (existingPermissions?.basic == null) Permission.basic,
+        if (existingPermissions?.accountInteraction == null)
+          Permission.accountInteraction,
+      ];
+
+      final permissions = await approvalsService.changeAccount(
+        origin: url!,
+        permissions: existingPermissionsList,
+      );
+
+      final accountInteraction = permissions.accountInteraction;
+
+      return PermissionsPartial(
+        permissions.basic,
+        accountInteraction == null
+            ? null
+            : PermissionsAccountInteraction(
+                accountInteraction.address.address,
+                accountInteraction.publicKey.publicKey,
+                accountInteraction.contractType.name,
+              ),
+      );
+    } on s.ApprovalsHandleException catch (e) {
+      inject<s.MessengerService>().show(s.Message.error(message: e.message));
+      rethrow;
+    }
   }
 
   @override
@@ -193,25 +330,56 @@ class InpageProvider extends ProviderApi {
     throw UnimplementedError();
   }
 
-  final _address =
-      '0:727a540fb41fba5767e8fb5aaf0c9b9b0c9aa4ff8d534c45e5ba68742dacc134';
-  final _publicKey =
-      '9599d7a809bd0787b2dd995df6408bb0c25ea4c1cb9a26d83d68639797abb5e3';
-
   @override
   Future<PermissionsPartial> requestPermissions(
     RequestPermissionsInput input,
   ) async {
-    // TODO: implement requestPermissions
+    final requiredPermissions =
+        input.permissions.map((e) => Permission.values.byName(e)).toList();
+    final existingPermissions = inject<s.PermissionsService>().permissions[url];
 
-    return PermissionsPartial.fromJson({
-      'basic': true,
-      'accountInteraction': {
-        'address': _address,
-        'publicKey': _publicKey,
-        'contractType': 'EverWallet',
-      },
-    });
+    Permissions permissions;
+
+    try {
+      if (existingPermissions != null) {
+        final newPermissions = [
+          if (requiredPermissions.contains(Permission.basic) &&
+              existingPermissions.basic == null)
+            Permission.basic,
+          if (requiredPermissions.contains(Permission.accountInteraction) &&
+              existingPermissions.accountInteraction == null)
+            Permission.accountInteraction,
+        ];
+
+        permissions = newPermissions.isNotEmpty
+            ? await approvalsService.requestPermissions(
+                origin: url!,
+                permissions: requiredPermissions,
+              )
+            : existingPermissions;
+      } else {
+        permissions = await approvalsService.requestPermissions(
+          origin: url!,
+          permissions: requiredPermissions,
+        );
+      }
+
+      final accountInteraction = permissions.accountInteraction;
+
+      return PermissionsPartial(
+        permissions.basic,
+        accountInteraction == null
+            ? null
+            : PermissionsAccountInteraction(
+                accountInteraction.address.address,
+                accountInteraction.publicKey.publicKey,
+                accountInteraction.contractType.name,
+              ),
+      );
+    } on s.ApprovalsHandleException catch (e) {
+      inject<s.MessengerService>().show(s.Message.error(message: e.message));
+      rethrow;
+    }
   }
 
   @override
@@ -316,5 +484,12 @@ class InpageProvider extends ProviderApi {
   Future<VerifySignatureOutput> verifySignature(VerifySignatureInput input) {
     // TODO: implement verifySignature
     throw UnimplementedError();
+  }
+
+  @override
+  dynamic call(String method, dynamic params) {
+    _logger.finest('method: $method, params: $params');
+
+    return super.call(method, params);
   }
 }

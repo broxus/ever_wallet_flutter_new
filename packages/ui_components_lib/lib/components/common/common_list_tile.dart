@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:ui_components_lib/ui_components_lib.dart';
 
 const _defaultListTileScaleRation = 2.5;
+const _defaultSubtitleMaxLines = 2;
 
 /// {@template common_list_tile}
 ///
@@ -26,6 +27,8 @@ class CommonListTile extends StatelessWidget {
     this.squircleRadius = DimensRadius.xMedium,
     this.padding = const EdgeInsets.symmetric(horizontal: DimensSize.d8),
     this.contentColor,
+    this.invertTitleSubtitleStyles = false,
+    this.subtitleMaxLines = _defaultSubtitleMaxLines,
   });
 
   /// Press callback of tile
@@ -65,6 +68,14 @@ class CommonListTile extends StatelessWidget {
   /// Color of text and icons inside tile
   final Color? contentColor;
 
+  /// If true, then title will contains [StyleRes.addRegular] style and subtitle
+  /// will contains [StyleRes.button] style.
+  /// false by default.
+  final bool invertTitleSubtitleStyles;
+
+  /// [Text.maxLines] paramether for [subtitleText], default 2
+  final int? subtitleMaxLines;
+
   @override
   Widget build(BuildContext context) {
     final colors = context.themeStyle.colors;
@@ -72,8 +83,14 @@ class CommonListTile extends StatelessWidget {
     final title = titleText != null
         ? Text(
             titleText!,
-            style: StyleRes.button.copyWith(
-              color: contentColor ?? colors.textPrimary,
+            style: (invertTitleSubtitleStyles
+                    ? StyleRes.addRegular
+                    : StyleRes.button)
+                .copyWith(
+              color: contentColor ??
+                  (invertTitleSubtitleStyles
+                      ? colors.textSecondary
+                      : colors.textPrimary),
             ),
             maxLines: 1,
             overflow: TextOverflow.ellipsis,
@@ -84,12 +101,18 @@ class CommonListTile extends StatelessWidget {
     final subtitle = subtitleText != null
         ? Text(
             subtitleText!,
-            style: StyleRes.addRegular.copyWith(
-              color: contentColor ?? colors.textSecondary,
+            style: (invertTitleSubtitleStyles
+                    ? StyleRes.button
+                    : StyleRes.addRegular)
+                .copyWith(
+              color: contentColor ??
+                  (invertTitleSubtitleStyles
+                      ? colors.textPrimary
+                      : colors.textSecondary),
             ),
-            maxLines: 2,
-            overflow: TextOverflow.ellipsis,
-            softWrap: false,
+            maxLines: subtitleMaxLines,
+            overflow: subtitleMaxLines == null ? null : TextOverflow.ellipsis,
+            softWrap: subtitleMaxLines == null,
           )
         : subtitleChild;
 
