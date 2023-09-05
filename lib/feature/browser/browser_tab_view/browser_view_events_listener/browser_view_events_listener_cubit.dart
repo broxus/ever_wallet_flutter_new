@@ -5,6 +5,7 @@ import 'package:bloc/bloc.dart';
 import 'package:flutter_inappwebview/flutter_inappwebview.dart';
 import 'package:freezed_annotation/freezed_annotation.dart';
 import 'package:nekoton_repository/nekoton_repository.dart';
+import 'package:nekoton_webview/nekoton_webview.dart' as nwv;
 
 part 'browser_view_events_listener_state.dart';
 
@@ -32,19 +33,59 @@ class BrowserViewEventsListenerCubit
 
   List<StreamSubscription<dynamic>> subs = [];
 
-  // ignore: avoid-unused-parameters
   void initControllerAndListeners(InAppWebViewController controller) {
     subs.addAll([
-      // TODO(alex-a4): uncomment and fix when webview will be updated
-      // nekotonRepository
-      //     .tabTransactionsStream(tabId)
-      //     .listen((trans) => controller.transactionsFound(trans)),
-      // nekotonRepository
-      //     .tabStateChangesStream(tabId)
-      //     .listen((state) => controller.stateChanged(state)),
-      // nekotonRepository.currentTransportStream.listen(
-      //     (transport) => controller.transportChanged(transport.transport)),
-      // nekotonRepository.hasSeeds.listen((hasSeeds) => controler.loggerOut()),
+      nekotonRepository.tabTransactionsStream(tabId).listen(
+            (event) => controller.transactionsFound(
+              controller: controller,
+              event: nwv.TransactionsFoundEvent(
+                event.address.address,
+                event.transactions
+                    .map((e) => nwv.Transaction.fromJson(e.toJson()))
+                    .toList(),
+                nwv.TransactionsBatchInfo.fromJson(event.info.toJson()),
+              ),
+            ),
+          ),
+      nekotonRepository.tabStateChangesStream(tabId).listen(
+            (state) => controller.contractStateChanged(
+              controller: controller,
+              event: nwv.ContractStateChangedEvent(
+                state.address.address,
+                nwv.ContractState.fromJson(state.state.toJson()),
+              ),
+            ),
+          ),
+      nekotonRepository.currentTransportStream.listen(
+        (transport) async => controller.networkChanged(
+          controller: controller,
+          event: nwv.NetworkChangedEvent(
+            transport.transport.name,
+            await transport.transport.getNetworkId(),
+          ),
+        ),
+      ),
+      nekotonRepository.hasSeeds.listen((hasSeeds) {
+        if (!hasSeeds) {
+          controller.loggedOut(controller: controller);
+        }
+      }),
+      permissionsService.permissionsStream.listen(
+        (permissions) async {
+          // TODO(alex-a4): mb this is a potential problem because origin should
+          //  be just host
+          final currentPermissions = permissions[await controller.getUrl()];
+
+          await controller.permissionsChanged(
+            controller: controller,
+            event: nwv.PermissionsChangedEvent(
+              nwv.PermissionsPartial.fromJson(
+                currentPermissions?.toJson() ?? {},
+              ),
+            ),
+          );
+        },
+      ),
     ]);
   }
 
