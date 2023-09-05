@@ -1,7 +1,6 @@
 import 'dart:async';
 
-import 'package:app/data/models/permission.dart';
-import 'package:app/data/models/permissions.dart';
+import 'package:app/data/models/models.dart';
 import 'package:freezed_annotation/freezed_annotation.dart';
 import 'package:nekoton_repository/nekoton_repository.dart';
 
@@ -24,7 +23,7 @@ class ApprovalRequest with _$ApprovalRequest {
   const factory ApprovalRequest.addTip3Token({
     required Uri origin,
     required Address account,
-    required RootTokenContractDetails details,
+    required TokenContractAsset details,
     required Completer<void> completer,
   }) = _AddTip3Token;
 
