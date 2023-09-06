@@ -4,6 +4,7 @@ import 'package:app/app/service/service.dart' as s;
 import 'package:app/data/models/models.dart';
 import 'package:app/di/di.dart';
 import 'package:app/generated/generated.dart';
+import 'package:collection/collection.dart';
 import 'package:flutter_inappwebview/flutter_inappwebview.dart';
 import 'package:logging/logging.dart';
 import 'package:nekoton_repository/nekoton_repository.dart' as nr;
@@ -40,21 +41,33 @@ class InpageProvider extends ProviderApi {
     bool basic = true,
     bool account = false,
     nr.Address? accountAddress,
+    nr.PublicKey? publicKey,
   }) {
     if (permissions == null) {
-      throw Exception(LocaleKeys.permissionsNotGranted.tr());
+      throw s.ApprovalsHandleException(LocaleKeys.permissionsNotGranted.tr());
     }
     if (basic && permissions.basic != true) {
-      throw Exception(LocaleKeys.basicInteractionNotPermitted.tr());
+      throw s.ApprovalsHandleException(
+        LocaleKeys.basicInteractionNotPermitted.tr(),
+      );
     }
     if (account && permissions.accountInteraction == null) {
-      throw Exception(LocaleKeys.accountInteractionNotPermitted.tr());
+      throw s.ApprovalsHandleException(
+        LocaleKeys.accountInteractionNotPermitted.tr(),
+      );
     }
     if (account &&
         accountAddress != null &&
         permissions.accountInteraction?.address != accountAddress) {
-      throw Exception(
+      throw s.ApprovalsHandleException(
         LocaleKeys.specifiedAccountInteractionNotPermitted.tr(),
+      );
+    }
+    if (account &&
+        publicKey != null &&
+        permissions.accountInteraction?.publicKey != publicKey) {
+      throw s.ApprovalsHandleException(
+        LocaleKeys.specifiedSignerIsNotPermitted.tr(),
       );
     }
   }
@@ -121,37 +134,32 @@ class InpageProvider extends ProviderApi {
 
   @override
   Future<PermissionsPartial> changeAccount() async {
-    try {
-      final existingPermissions = permissionsService.getPermissions(url);
-      _checkPermissions(permissions: existingPermissions, account: true);
+    final existingPermissions = permissionsService.getPermissions(url);
+    _checkPermissions(permissions: existingPermissions, account: true);
 
-      final existingPermissionsList = [
-        if (existingPermissions?.basic == null) Permission.basic,
-        if (existingPermissions?.accountInteraction == null)
-          Permission.accountInteraction,
-      ];
+    final existingPermissionsList = [
+      if (existingPermissions?.basic == null) Permission.basic,
+      if (existingPermissions?.accountInteraction == null)
+        Permission.accountInteraction,
+    ];
 
-      final permissions = await approvalsService.changeAccount(
-        origin: url!,
-        permissions: existingPermissionsList,
-      );
+    final permissions = await approvalsService.changeAccount(
+      origin: url!,
+      permissions: existingPermissionsList,
+    );
 
-      final accountInteraction = permissions.accountInteraction;
+    final accountInteraction = permissions.accountInteraction;
 
-      return PermissionsPartial(
-        permissions.basic,
-        accountInteraction == null
-            ? null
-            : PermissionsAccountInteraction(
-                accountInteraction.address.address,
-                accountInteraction.publicKey.publicKey,
-                accountInteraction.contractType.name,
-              ),
-      );
-    } on s.ApprovalsHandleException catch (e) {
-      inject<s.MessengerService>().show(s.Message.error(message: e.message));
-      rethrow;
-    }
+    return PermissionsPartial(
+      permissions.basic,
+      accountInteraction == null
+          ? null
+          : PermissionsAccountInteraction(
+              accountInteraction.address.address,
+              accountInteraction.publicKey.publicKey,
+              accountInteraction.contractType.name,
+            ),
+    );
   }
 
   @override
@@ -195,9 +203,45 @@ class InpageProvider extends ProviderApi {
   }
 
   @override
-  Future<DecryptDataOutput> decryptData(DecryptDataInput input) {
-    // TODO: implement decryptData
-    throw UnimplementedError();
+  Future<DecryptDataOutput> decryptData(DecryptDataInput input) async {
+    final publicKey = nr.PublicKey(
+      publicKey: input.encryptedData.recipientPublicKey,
+    );
+    final sourceKey = nr.PublicKey(
+      publicKey: input.encryptedData.sourcePublicKey,
+    );
+    _checkPermissions(
+      permissions: permissionsService.getPermissions(url),
+      account: true,
+      publicKey: publicKey,
+    );
+
+    final password = await approvalsService.decryptData(
+      origin: url!,
+      recipientPublicKey: publicKey,
+      sourcePublicKey: sourceKey,
+    );
+    final algorithm = nr.EncryptionAlgorithm.values.firstWhereOrNull(
+      (alg) => alg.toString() == input.encryptedData.algorithm,
+    );
+
+    if (algorithm == null) {
+      throw s.ApprovalsHandleException(LocaleKeys.unsupportedAlgorithm.tr());
+    }
+
+    final decryptedData = await nekotonRepository.seedList.decrypt(
+      publicKey: publicKey,
+      password: password,
+      data: nr.EncryptedData(
+        algorithm: algorithm,
+        data: input.encryptedData.data,
+        nonce: input.encryptedData.nonce,
+        sourcePublicKey: sourceKey,
+        recipientPublicKey: publicKey,
+      ),
+    );
+
+    return DecryptDataOutput(decryptedData);
   }
 
   @override
@@ -213,9 +257,49 @@ class InpageProvider extends ProviderApi {
   }
 
   @override
-  Future<EncryptDataOutput> encryptData(EncryptDataInput input) {
-    // TODO: implement encryptData
-    throw UnimplementedError();
+  Future<EncryptDataOutput> encryptData(EncryptDataInput input) async {
+    final publicKey = nr.PublicKey(publicKey: input.publicKey);
+    _checkPermissions(
+      permissions: permissionsService.getPermissions(url),
+      account: true,
+      publicKey: publicKey,
+    );
+
+    final password = await approvalsService.encryptData(
+      origin: url!,
+      publicKey: publicKey,
+      data: input.data,
+    );
+    final algorithm = nr.EncryptionAlgorithm.values
+        .firstWhereOrNull((alg) => alg.toString() == input.algorithm);
+
+    if (algorithm == null) {
+      throw s.ApprovalsHandleException(LocaleKeys.unsupportedAlgorithm.tr());
+    }
+
+    final encryptedData = await nekotonRepository.seedList.encrypt(
+      data: input.data,
+      publicKey: publicKey,
+      password: password,
+      algorithm: algorithm,
+      publicKeys: input.recipientPublicKeys
+          .map((e) => nr.PublicKey(publicKey: e))
+          .toList(),
+    );
+
+    return EncryptDataOutput(
+      encryptedData
+          .map(
+            (e) => EncryptedData(
+              e.algorithm.toString(),
+              e.sourcePublicKey.publicKey,
+              e.recipientPublicKey.publicKey,
+              e.data,
+              e.nonce,
+            ),
+          )
+          .toList(),
+    );
   }
 
   @override
@@ -340,46 +424,41 @@ class InpageProvider extends ProviderApi {
 
     Permissions permissions;
 
-    try {
-      if (existingPermissions != null) {
-        final newPermissions = [
-          if (requiredPermissions.contains(Permission.basic) &&
-              existingPermissions.basic == null)
-            Permission.basic,
-          if (requiredPermissions.contains(Permission.accountInteraction) &&
-              existingPermissions.accountInteraction == null)
-            Permission.accountInteraction,
-        ];
+    if (existingPermissions != null) {
+      final newPermissions = [
+        if (requiredPermissions.contains(Permission.basic) &&
+            existingPermissions.basic == null)
+          Permission.basic,
+        if (requiredPermissions.contains(Permission.accountInteraction) &&
+            existingPermissions.accountInteraction == null)
+          Permission.accountInteraction,
+      ];
 
-        permissions = newPermissions.isNotEmpty
-            ? await approvalsService.requestPermissions(
-                origin: url!,
-                permissions: requiredPermissions,
-              )
-            : existingPermissions;
-      } else {
-        permissions = await approvalsService.requestPermissions(
-          origin: url!,
-          permissions: requiredPermissions,
-        );
-      }
-
-      final accountInteraction = permissions.accountInteraction;
-
-      return PermissionsPartial(
-        permissions.basic,
-        accountInteraction == null
-            ? null
-            : PermissionsAccountInteraction(
-                accountInteraction.address.address,
-                accountInteraction.publicKey.publicKey,
-                accountInteraction.contractType.name,
-              ),
+      permissions = newPermissions.isNotEmpty
+          ? await approvalsService.requestPermissions(
+              origin: url!,
+              permissions: requiredPermissions,
+            )
+          : existingPermissions;
+    } else {
+      permissions = await approvalsService.requestPermissions(
+        origin: url!,
+        permissions: requiredPermissions,
       );
-    } on s.ApprovalsHandleException catch (e) {
-      inject<s.MessengerService>().show(s.Message.error(message: e.message));
-      rethrow;
     }
+
+    final accountInteraction = permissions.accountInteraction;
+
+    return PermissionsPartial(
+      permissions.basic,
+      accountInteraction == null
+          ? null
+          : PermissionsAccountInteraction(
+              accountInteraction.address.address,
+              accountInteraction.publicKey.publicKey,
+              accountInteraction.contractType.name,
+            ),
+    );
   }
 
   @override
@@ -433,15 +512,78 @@ class InpageProvider extends ProviderApi {
   }
 
   @override
-  Future<SignDataOutput> signData(SignDataInput input) {
-    // TODO: implement signData
-    throw UnimplementedError();
+  Future<SignDataOutput> signData(SignDataInput input) async {
+    final publicKey = nr.PublicKey(publicKey: input.publicKey);
+    final withSignatureId = input.withSignatureId;
+    _checkPermissions(
+      permissions: permissionsService.getPermissions(url),
+      account: true,
+      publicKey: publicKey,
+    );
+
+    final password = await approvalsService.signData(
+      origin: url!,
+      publicKey: publicKey,
+      data: input.data,
+    );
+    final signatureId = withSignatureId == true
+        ? await nekotonRepository.currentTransport.transport.getSignatureId()
+        : withSignatureId == false
+            ? null
+            : withSignatureId != null && withSignatureId is num
+                ? withSignatureId.toInt()
+                : null;
+
+    final signedData = await nekotonRepository.seedList.signData(
+      data: input.data,
+      publicKey: publicKey,
+      password: password,
+      signatureId: signatureId,
+    );
+
+    return SignDataOutput(
+      signedData.dataHash,
+      signedData.signature,
+      signedData.signatureHex,
+      SignDataOutputSignatureParts(
+        signedData.signatureParts.high,
+        signedData.signatureParts.low,
+      ),
+    );
   }
 
   @override
-  Future<SignDataRawOutput> signDataRaw(SignDataRawInput input) {
-    // TODO: implement signDataRaw
-    throw UnimplementedError();
+  Future<SignDataRawOutput> signDataRaw(SignDataRawInput input) async {
+    final publicKey = nr.PublicKey(publicKey: input.publicKey);
+    _checkPermissions(
+      permissions: permissionsService.getPermissions(url),
+      account: true,
+      publicKey: publicKey,
+    );
+
+    final password = await approvalsService.signData(
+      origin: url!,
+      publicKey: publicKey,
+      data: input.data,
+    );
+    final signatureId =
+        await nekotonRepository.currentTransport.transport.getSignatureId();
+
+    final signedData = await nekotonRepository.seedList.signRawData(
+      data: input.data,
+      publicKey: publicKey,
+      password: password,
+      signatureId: signatureId,
+    );
+
+    return SignDataRawOutput(
+      signedData.signature,
+      signedData.signatureHex,
+      SignDataRawOutputSignatureParts(
+        signedData.signatureParts.high,
+        signedData.signatureParts.low,
+      ),
+    );
   }
 
   @override
@@ -487,9 +629,19 @@ class InpageProvider extends ProviderApi {
   }
 
   @override
-  dynamic call(String method, dynamic params) {
+  dynamic call(String method, dynamic params) async {
     _logger.finest('method: $method, params: $params');
-
-    return super.call(method, params);
+    try {
+      return await super.call(method, params);
+    } on s.ApprovalsHandleException catch (e) {
+      inject<s.MessengerService>().show(s.Message.error(message: e.message));
+      rethrow;
+    } catch (e, t) {
+      _logger.severe(method, e, t);
+      inject<s.MessengerService>().show(
+        s.Message.error(message: LocaleKeys.browserErrorTitle.tr()),
+      );
+      rethrow;
+    }
   }
 }
