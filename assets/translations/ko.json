@@ -358,5 +358,12 @@
   "decimalsWord": "Decimals",
   "ownerAddress": "Owner address",
   "totalSupply": "Total supply",
-  "typeIsWrong": "Type is wrong"
+  "typeIsWrong": "Type is wrong",
+  "signData": "Sign data",
+  "dataWord": "Data",
+  "encryptData": "Encrypt data",
+  "decryptData": "Decrypt data",
+  "sourcePublicKey": "Source public key",
+  "unsupportedAlgorithm": "Unsupported algorithm",
+  "specifiedSignerIsNotPermitted": "Specified signer is not permitted"
 }

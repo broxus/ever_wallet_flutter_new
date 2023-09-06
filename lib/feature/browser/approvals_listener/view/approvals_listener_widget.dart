@@ -1,4 +1,5 @@
 import 'dart:async';
+import 'dart:collection';
 
 import 'package:app/app/service/service.dart';
 import 'package:app/data/models/models.dart';
@@ -269,11 +270,15 @@ class _ApprovalsListenerWidgetState extends State<ApprovalsListenerWidget> {
     required Completer<String> completer,
   }) async {
     try {
-      final result = await showSignDataSheet(
+      final result = await showAskPasswordApprovalsSheet(
         context: context,
-        origin: origin,
+        sheetTitle: LocaleKeys.signData.tr(),
         publicKey: publicKey,
-        data: data,
+        data: LinkedHashMap.fromEntries([
+          MapEntry(LocaleKeys.originWord.tr(), origin.host),
+          MapEntry(LocaleKeys.publicKey.tr(), publicKey.publicKey),
+          MapEntry(LocaleKeys.dataWord.tr(), data),
+        ]),
       );
 
       if (result != null) {
@@ -294,11 +299,15 @@ class _ApprovalsListenerWidgetState extends State<ApprovalsListenerWidget> {
     required Completer<String> completer,
   }) async {
     try {
-      final result = await showEncryptDataSheet(
+      final result = await showAskPasswordApprovalsSheet(
         context: context,
-        origin: origin,
+        sheetTitle: LocaleKeys.encryptData.tr(),
         publicKey: publicKey,
-        data: data,
+        data: LinkedHashMap.fromEntries([
+          MapEntry(LocaleKeys.originWord.tr(), origin.host),
+          MapEntry(LocaleKeys.publicKey.tr(), publicKey.publicKey),
+          MapEntry(LocaleKeys.dataWord.tr(), data),
+        ]),
       );
 
       if (result != null) {
@@ -319,11 +328,15 @@ class _ApprovalsListenerWidgetState extends State<ApprovalsListenerWidget> {
     required Completer<String> completer,
   }) async {
     try {
-      final result = await showDecryptDataSheet(
+      final result = await showAskPasswordApprovalsSheet(
         context: context,
-        origin: origin,
-        recipientPublicKey: recipientPublicKey,
-        sourcePublicKey: sourcePublicKey,
+        sheetTitle: LocaleKeys.decryptData.tr(),
+        publicKey: recipientPublicKey,
+        data: LinkedHashMap.fromEntries([
+          MapEntry(LocaleKeys.originWord.tr(), origin.host),
+          MapEntry(LocaleKeys.publicKey.tr(), recipientPublicKey.publicKey),
+          MapEntry(LocaleKeys.sourcePublicKey.tr(), sourcePublicKey.publicKey),
+        ]),
       );
 
       if (result != null) {
