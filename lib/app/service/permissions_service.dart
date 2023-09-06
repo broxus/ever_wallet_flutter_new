@@ -24,23 +24,31 @@ class PermissionsService {
       );
 
   /// Get last existed permissions for browser.
-  /// key - url, value - permissions
+  /// key - origin of url, value - permissions
+  ///
+  /// If you are not sure, that your key is true origin, use [getPermissions].
   Map<Uri, Permissions> get permissions =>
       storage.permissions.map((key, value) => MapEntry(Uri.parse(key), value));
 
-  /// Set permissions for browser tab with url = [origin]
+  /// Get permission, specified by [url].
+  /// It's better to use this getter except of [permissions] to avoid errors,
+  /// related to taking only origin from url.
+  Permissions? getPermissions(Uri? url) =>
+      url == null ? null : permissions[Uri.parse(url.origin)];
+
+  /// Set permissions for browser tab with [url]
   Future<void> setPermissions({
-    required Uri origin,
+    required Uri url,
     required Permissions permissions,
   }) =>
       storage.setPermissions(
-        origin: origin.toString(),
+        origin: url.origin,
         permissions: permissions,
       );
 
-  /// Delete permissions for browser tab with url=[origin]
-  Future<void> deletePermissionsForOrigin(Uri origin) =>
-      storage.deletePermissionsForOrigin(origin.toString());
+  /// Delete permissions for browser tab with [url]
+  Future<void> deletePermissionsForOrigin(Uri url) =>
+      storage.deletePermissionsForOrigin(url.origin);
 
   /// Delete permissions for specified account
   Future<void> deletePermissionsForAccount(Address address) =>

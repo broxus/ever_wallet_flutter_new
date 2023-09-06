@@ -63,7 +63,7 @@ class InpageProvider extends ProviderApi {
   Future<AddAssetOutput> addAsset(AddAssetInput input) async {
     final accountAddress = nr.Address(address: input.account);
     _checkPermissions(
-      permissions: permissionsService.permissions[url],
+      permissions: permissionsService.getPermissions(url),
       account: true,
       accountAddress: accountAddress,
     );
@@ -122,7 +122,7 @@ class InpageProvider extends ProviderApi {
   @override
   Future<PermissionsPartial> changeAccount() async {
     try {
-      final existingPermissions = permissionsService.permissions[url];
+      final existingPermissions = permissionsService.getPermissions(url);
       _checkPermissions(permissions: existingPermissions, account: true);
 
       final existingPermissionsList = [
@@ -336,7 +336,7 @@ class InpageProvider extends ProviderApi {
   ) async {
     final requiredPermissions =
         input.permissions.map((e) => Permission.values.byName(e)).toList();
-    final existingPermissions = inject<s.PermissionsService>().permissions[url];
+    final existingPermissions = permissionsService.getPermissions(url);
 
     Permissions permissions;
 
