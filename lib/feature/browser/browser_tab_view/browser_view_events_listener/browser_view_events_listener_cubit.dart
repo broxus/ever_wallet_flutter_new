@@ -37,8 +37,7 @@ class BrowserViewEventsListenerCubit
     subs.addAll([
       nekotonRepository.tabTransactionsStream(tabId).listen(
             (event) => controller.transactionsFound(
-              controller: controller,
-              event: nwv.TransactionsFoundEvent(
+              nwv.TransactionsFoundEvent(
                 event.address.address,
                 event.transactions
                     .map((e) => nwv.Transaction.fromJson(e.toJson()))
@@ -49,8 +48,7 @@ class BrowserViewEventsListenerCubit
           ),
       nekotonRepository.tabStateChangesStream(tabId).listen(
             (state) => controller.contractStateChanged(
-              controller: controller,
-              event: nwv.ContractStateChangedEvent(
+              nwv.ContractStateChangedEvent(
                 state.address.address,
                 nwv.ContractState.fromJson(state.state.toJson()),
               ),
@@ -58,17 +56,14 @@ class BrowserViewEventsListenerCubit
           ),
       nekotonRepository.currentTransportStream.listen(
         (transport) async => controller.networkChanged(
-          controller: controller,
-          event: nwv.NetworkChangedEvent(
+          nwv.NetworkChangedEvent(
             transport.transport.name,
             await transport.transport.getNetworkId(),
           ),
         ),
       ),
       nekotonRepository.hasSeeds.listen((hasSeeds) {
-        if (!hasSeeds) {
-          controller.loggedOut(controller: controller);
-        }
+        if (!hasSeeds) controller.loggedOut();
       }),
       permissionsService.permissionsStream.listen(
         (permissions) async {
@@ -77,8 +72,7 @@ class BrowserViewEventsListenerCubit
           final currentPermissions = permissions[await controller.getUrl()];
 
           await controller.permissionsChanged(
-            controller: controller,
-            event: nwv.PermissionsChangedEvent(
+            nwv.PermissionsChangedEvent(
               nwv.PermissionsPartial.fromJson(
                 currentPermissions?.toJson() ?? {},
               ),
