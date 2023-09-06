@@ -57,17 +57,17 @@ class AskPasswordApprovalsSheet extends StatelessWidget {
             controller: controller,
             child: ShapedContainerColumn(
               margin: EdgeInsets.zero,
-              children: data.keys
+              children: data.entries
                   .map(
-                    (e) => CommonListTile(
+                    (entry) => CommonListTile(
                       height: null,
                       subtitleMaxLines: null,
                       invertTitleSubtitleStyles: true,
-                      titleText: e,
-                      subtitleText: data[e],
+                      titleText: entry.key,
+                      subtitleText: entry.value,
                       // ignore: prefer-extracting-callbacks
                       onPressed: () {
-                        Clipboard.setData(ClipboardData(text: data[e]!));
+                        Clipboard.setData(ClipboardData(text: entry.value));
                         inject<MessengerService>().show(
                           Message.successful(
                             message: LocaleKeys.copiedExclamation.tr(),
