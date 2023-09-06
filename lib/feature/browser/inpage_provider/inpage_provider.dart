@@ -8,23 +8,29 @@ import 'package:collection/collection.dart';
 import 'package:flutter_inappwebview/flutter_inappwebview.dart';
 import 'package:logging/logging.dart';
 import 'package:nekoton_repository/nekoton_repository.dart' as nr;
-import 'package:nekoton_webview/nekoton_webview.dart' hide Message;
+import 'package:nekoton_webview/nekoton_webview.dart';
+
+const providerVersion = '0.3.0';
+const providerNumericVersion = 3000;
 
 class InpageProvider extends ProviderApi {
-  InpageProvider(
-    this.approvalsService,
-    this.permissionsService,
-    this.nekotonRepository,
-  );
+  InpageProvider({
+    required this.tabId,
+    required this.approvalsService,
+    required this.permissionsService,
+    required this.nekotonRepository,
+  });
 
   final _logger = Logger('InpageProvider');
 
   InAppWebViewController? controller;
+  final String tabId;
   final s.BrowserApprovalsService approvalsService;
   final s.PermissionsService permissionsService;
   final nr.NekotonRepository nekotonRepository;
 
   Uri? url;
+  Uri? get origin => url == null ? null : Uri.parse(url!.origin);
 
   /// Check [permissions] if it contains [basic] (if true) and [account]
   /// (if true) and if accountInteraction.address == accountAddress if it's
@@ -76,7 +82,7 @@ class InpageProvider extends ProviderApi {
   Future<AddAssetOutput> addAsset(AddAssetInput input) async {
     final accountAddress = nr.Address(address: input.account);
     _checkPermissions(
-      permissions: permissionsService.getPermissions(url),
+      permissions: permissionsService.getPermissions(origin),
       account: true,
       accountAddress: accountAddress,
     );
@@ -119,7 +125,7 @@ class InpageProvider extends ProviderApi {
         }
 
         await approvalsService.addTip3Token(
-          origin: url!,
+          origin: origin!,
           accountAddress: accountAddress,
           details: details,
         );
@@ -134,7 +140,7 @@ class InpageProvider extends ProviderApi {
 
   @override
   Future<PermissionsPartial> changeAccount() async {
-    final existingPermissions = permissionsService.getPermissions(url);
+    final existingPermissions = permissionsService.getPermissions(origin);
     _checkPermissions(permissions: existingPermissions, account: true);
 
     final existingPermissionsList = [
@@ -144,13 +150,13 @@ class InpageProvider extends ProviderApi {
     ];
 
     final permissions = await approvalsService.changeAccount(
-      origin: url!,
+      origin: origin!,
       permissions: existingPermissionsList,
     );
 
     final accountInteraction = permissions.accountInteraction;
 
-    return PermissionsPartial(
+    final partical = PermissionsPartial(
       permissions.basic,
       accountInteraction == null
           ? null
@@ -160,6 +166,10 @@ class InpageProvider extends ProviderApi {
               accountInteraction.contractType.name,
             ),
     );
+
+    await controller?.permissionsChanged(PermissionsChangedEvent(partical));
+
+    return partical;
   }
 
   @override
@@ -211,13 +221,13 @@ class InpageProvider extends ProviderApi {
       publicKey: input.encryptedData.sourcePublicKey,
     );
     _checkPermissions(
-      permissions: permissionsService.getPermissions(url),
+      permissions: permissionsService.getPermissions(origin),
       account: true,
       publicKey: publicKey,
     );
 
     final password = await approvalsService.decryptData(
-      origin: url!,
+      origin: origin!,
       recipientPublicKey: publicKey,
       sourcePublicKey: sourceKey,
     );
@@ -245,9 +255,13 @@ class InpageProvider extends ProviderApi {
   }
 
   @override
-  Future<void> disconnect() {
-    // TODO: implement disconnect
-    throw UnimplementedError();
+  Future<void> disconnect() async {
+    await permissionsService.deletePermissionsForOrigin(origin!);
+    nekotonRepository.unsubscribeContractsTab(tabId);
+
+    await controller?.permissionsChanged(
+      const PermissionsChangedEvent(PermissionsPartial(null, null)),
+    );
   }
 
   @override
@@ -260,13 +274,13 @@ class InpageProvider extends ProviderApi {
   Future<EncryptDataOutput> encryptData(EncryptDataInput input) async {
     final publicKey = nr.PublicKey(publicKey: input.publicKey);
     _checkPermissions(
-      permissions: permissionsService.getPermissions(url),
+      permissions: permissionsService.getPermissions(origin),
       account: true,
       publicKey: publicKey,
     );
 
     final password = await approvalsService.encryptData(
-      origin: url!,
+      origin: origin!,
       publicKey: publicKey,
       data: input.data,
     );
@@ -374,19 +388,40 @@ class InpageProvider extends ProviderApi {
 
   @override
   Future<GetProviderStateOutput> getProviderState() async {
-    // TODO: implement getProviderState
+    final transport = nekotonRepository.currentTransport.transport;
+    final selectedConnection = transport.group;
+    const supportedPermissions = Permission.values;
+    final permissions =
+        permissionsService.getPermissions(origin) ?? const Permissions();
+    final subscriptions = nekotonRepository.tabSubscriptions(tabId);
+    final networkId = await transport.getNetworkId();
 
-    return GetProviderStateOutput.fromJson(
-      {
-        'version': '0.3.0',
-        // ignore: no-magic-number
-        'numericVersion': 3000,
-        'networkId': 1,
-        'selectedConnection': 'mainnet',
-        'supportedPermissions': ['basic', 'accountInteraction'],
-        'subscriptions': <String, Object>{},
-        'permissions': <String, Object>{},
-      },
+    return GetProviderStateOutput(
+      providerVersion,
+      providerNumericVersion,
+      selectedConnection,
+      networkId,
+      supportedPermissions.map((e) => e.name).toList(),
+      PermissionsPartial(
+        permissions.basic,
+        permissions.accountInteraction == null
+            ? null
+            : PermissionsAccountInteraction(
+                permissions.accountInteraction!.address.address,
+                permissions.accountInteraction!.publicKey.publicKey,
+                permissions.accountInteraction!.contractType.name,
+              ),
+      ),
+      subscriptions?.map(
+            (key, value) => MapEntry(
+              key.address,
+              ContractUpdatesSubscription(
+                value.contractState ?? false,
+                value.transactions ?? false,
+              ),
+            ),
+          ) ??
+          {},
     );
   }
 
@@ -420,7 +455,7 @@ class InpageProvider extends ProviderApi {
   ) async {
     final requiredPermissions =
         input.permissions.map((e) => Permission.values.byName(e)).toList();
-    final existingPermissions = permissionsService.getPermissions(url);
+    final existingPermissions = permissionsService.getPermissions(origin);
 
     Permissions permissions;
 
@@ -436,20 +471,20 @@ class InpageProvider extends ProviderApi {
 
       permissions = newPermissions.isNotEmpty
           ? await approvalsService.requestPermissions(
-              origin: url!,
+              origin: origin!,
               permissions: requiredPermissions,
             )
           : existingPermissions;
     } else {
       permissions = await approvalsService.requestPermissions(
-        origin: url!,
+        origin: origin!,
         permissions: requiredPermissions,
       );
     }
 
     final accountInteraction = permissions.accountInteraction;
 
-    return PermissionsPartial(
+    final partical = PermissionsPartial(
       permissions.basic,
       accountInteraction == null
           ? null
@@ -459,6 +494,9 @@ class InpageProvider extends ProviderApi {
               accountInteraction.contractType.name,
             ),
     );
+    await controller?.permissionsChanged(PermissionsChangedEvent(partical));
+
+    return partical;
   }
 
   @override
@@ -516,13 +554,13 @@ class InpageProvider extends ProviderApi {
     final publicKey = nr.PublicKey(publicKey: input.publicKey);
     final withSignatureId = input.withSignatureId;
     _checkPermissions(
-      permissions: permissionsService.getPermissions(url),
+      permissions: permissionsService.getPermissions(origin),
       account: true,
       publicKey: publicKey,
     );
 
     final password = await approvalsService.signData(
-      origin: url!,
+      origin: origin!,
       publicKey: publicKey,
       data: input.data,
     );
@@ -556,13 +594,13 @@ class InpageProvider extends ProviderApi {
   Future<SignDataRawOutput> signDataRaw(SignDataRawInput input) async {
     final publicKey = nr.PublicKey(publicKey: input.publicKey);
     _checkPermissions(
-      permissions: permissionsService.getPermissions(url),
+      permissions: permissionsService.getPermissions(origin),
       account: true,
       publicKey: publicKey,
     );
 
     final password = await approvalsService.signData(
-      origin: url!,
+      origin: origin!,
       publicKey: publicKey,
       data: input.data,
     );
@@ -593,9 +631,27 @@ class InpageProvider extends ProviderApi {
   }
 
   @override
-  Future<ContractUpdatesSubscription> subscribe(SubscribeInput input) {
-    // TODO: implement subscribe
-    throw UnimplementedError();
+  Future<ContractUpdatesSubscription> subscribe(SubscribeInput input) async {
+    final accountAddress = nr.Address(address: input.address);
+    _checkPermissions(
+      permissions: permissionsService.getPermissions(origin),
+      account: true,
+      accountAddress: accountAddress,
+    );
+
+    final subs = nr.ContractUpdatesSubscription(
+      contractState: input.subscriptions.state ?? true,
+      transactions: input.subscriptions.transactions ?? true,
+    );
+
+    await nekotonRepository.subscribeContract(
+      tabId: tabId,
+      address: accountAddress,
+      origin: origin!,
+      contractUpdatesSubscription: subs,
+    );
+
+    return ContractUpdatesSubscription(subs.contractState!, subs.transactions!);
   }
 
   @override
@@ -611,16 +667,19 @@ class InpageProvider extends ProviderApi {
   }
 
   @override
-  Future<void> unsubscribe(UnsubscribeInput input) {
-    // TODO: implement unsubscribe
-    throw UnimplementedError();
+  Future<void> unsubscribe(UnsubscribeInput input) async {
+    final accountAddress = nr.Address(address: input.address);
+
+    nekotonRepository.unsubscribeContract(
+      tabId: tabId,
+      address: accountAddress,
+      origin: origin!,
+    );
   }
 
   @override
-  Future<void> unsubscribeAll() {
-    // TODO: implement unsubscribeAll
-    throw UnimplementedError();
-  }
+  Future<void> unsubscribeAll() async =>
+      nekotonRepository.unsubscribeContractsTab(tabId);
 
   @override
   Future<VerifySignatureOutput> verifySignature(VerifySignatureInput input) {
