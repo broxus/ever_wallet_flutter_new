@@ -156,7 +156,7 @@ class InpageProvider extends ProviderApi {
 
     final accountInteraction = permissions.accountInteraction;
 
-    final partical = PermissionsPartial(
+    final partial = PermissionsPartial(
       permissions.basic,
       accountInteraction == null
           ? null
@@ -167,9 +167,9 @@ class InpageProvider extends ProviderApi {
             ),
     );
 
-    await controller?.permissionsChanged(PermissionsChangedEvent(partical));
+    await controller?.permissionsChanged(PermissionsChangedEvent(partial));
 
-    return partical;
+    return partial;
   }
 
   @override
@@ -484,7 +484,7 @@ class InpageProvider extends ProviderApi {
 
     final accountInteraction = permissions.accountInteraction;
 
-    final partical = PermissionsPartial(
+    final partial = PermissionsPartial(
       permissions.basic,
       accountInteraction == null
           ? null
@@ -494,9 +494,9 @@ class InpageProvider extends ProviderApi {
               accountInteraction.contractType.name,
             ),
     );
-    await controller?.permissionsChanged(PermissionsChangedEvent(partical));
+    await controller?.permissionsChanged(PermissionsChangedEvent(partial));
 
-    return partical;
+    return partial;
   }
 
   @override
