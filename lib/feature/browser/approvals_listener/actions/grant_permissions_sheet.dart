@@ -148,7 +148,7 @@ class GrantPermissionsSheet extends StatelessWidget {
     }
 
     inject<PermissionsService>()
-        .setPermissions(origin: origin, permissions: result);
+        .setPermissions(url: origin, permissions: result);
 
     Navigator.of(context).pop(result);
   }

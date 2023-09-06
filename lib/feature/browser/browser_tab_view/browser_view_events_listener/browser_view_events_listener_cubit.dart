@@ -67,9 +67,9 @@ class BrowserViewEventsListenerCubit
       }),
       permissionsService.permissionsStream.listen(
         (permissions) async {
-          // TODO(alex-a4): mb this is a potential problem because origin should
-          //  be just host
-          final currentPermissions = permissions[await controller.getUrl()];
+          final url = await controller.getUrl();
+          final currentPermissions =
+              url == null ? null : permissions[Uri.parse(url.origin)];
 
           await controller.permissionsChanged(
             nwv.PermissionsChangedEvent(
