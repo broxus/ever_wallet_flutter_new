@@ -514,6 +514,7 @@ class InpageProvider extends ProviderApi {
   @override
   Future<SignDataOutput> signData(SignDataInput input) async {
     final publicKey = nr.PublicKey(publicKey: input.publicKey);
+    final withSignatureId = input.withSignatureId;
     _checkPermissions(
       permissions: permissionsService.getPermissions(url),
       account: true,
@@ -525,8 +526,13 @@ class InpageProvider extends ProviderApi {
       publicKey: publicKey,
       data: input.data,
     );
-    final signatureId =
-        await nekotonRepository.currentTransport.transport.getSignatureId();
+    final signatureId = withSignatureId == true
+        ? await nekotonRepository.currentTransport.transport.getSignatureId()
+        : withSignatureId == false
+            ? null
+            : withSignatureId != null && withSignatureId is num
+                ? withSignatureId.toInt()
+                : null;
 
     final signedData = await nekotonRepository.seedList.signData(
       data: input.data,
