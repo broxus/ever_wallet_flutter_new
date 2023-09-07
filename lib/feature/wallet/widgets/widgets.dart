@@ -6,7 +6,6 @@ export 'account_transactions_tab/account_transactions_tab.dart';
 export 'account_transactions_tab/detail/details.dart';
 export 'account_transactions_tab/widgets/widgets.dart';
 export 'add_new_account_card.dart';
-export 'network_selection_card.dart';
 export 'receive_sheet.dart';
 export 'wallet_account_actions/wallet_account_actions.dart';
 export 'wallet_accounts_body.dart';

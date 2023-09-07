@@ -54,8 +54,7 @@ class AddSeedEnableBiometryView extends StatelessWidget {
           fillWidth: true,
           text: LocaleKeys.useSomething.tr(
             args: [
-              // ignore: prefer-trailing-comma
-              if (isFace) LocaleKeys.faceId.tr() else LocaleKeys.touchId.tr()
+              if (isFace) LocaleKeys.faceId.tr() else LocaleKeys.touchId.tr(),
             ],
           ),
           onPressed: () =>

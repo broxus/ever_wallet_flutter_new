@@ -1,15 +1,17 @@
-import 'package:app/app/service/nekoton_related/connection_service/network_presets.dart';
 import 'package:app/app/service/nekoton_related/connection_service/transport_strategies/transport_strategies.dart';
-import 'package:app/app/service/remote/http_service.dart';
-import 'package:app/app/service/storage_service/general_storage_service.dart';
+import 'package:app/app/service/service.dart';
 import 'package:app/data/models/connection_data.dart';
 import 'package:app/data/models/network_type.dart';
-import 'package:collection/collection.dart';
 import 'package:injectable/injectable.dart';
 import 'package:logging/logging.dart';
 import 'package:nekoton_repository/nekoton_repository.dart' hide ConnectionData;
 
-/// This is a service that stores information about different connections
+/// This is a service that switches between connections by creating
+/// [Transport] and putting it in [NekotonRepository]. It has no public
+/// methods, it uses [ConnectionsStorageService] as a source of connection
+/// data.
+/// The app should use [ConnectionsStorageService] to interact with
+/// connection-related data.
 @singleton
 class ConnectionService {
   ConnectionService(
@@ -21,36 +23,19 @@ class ConnectionService {
   static final _log = Logger('ConnectionService');
 
   final HttpService _httpService;
-  final GeneralStorageService _storageService;
+  final ConnectionsStorageService _storageService;
   final NekotonRepository _nekotonRepository;
 
-  /// This is useful to iterate over connections to find correct one.
-  List<ConnectionData> get allConnections => [
-        ...everPresets,
-        ...venomPresets,
-        ...customPresets,
-        // TODO(alex-a4): add custom connections from storage when implemented
-      ];
-
-  // TODO(alex-a4): add getting custom connections from storage when implemented
-  /// Set up first connection for app working.
-  /// If app started first time, first ever connection will be used.
+  /// Set up selected connection.
   Future<void> setUp() async {
-    final lastConnectionName = _storageService.currentConnection;
-    var connection =
-        allConnections.firstWhereOrNull((c) => c.name == lastConnectionName);
-    if (connection == null) {
-      connection = everPresets.first;
-      await _storageService.setCurrentConnection(connection.name);
-    }
+    final connection = _storageService.currentConnection;
+    _log.info('setUp: starting with ${connection.name}');
     await _updateTransportByConnection(connection);
-  }
 
-  /// Change connection of application.
-  /// Typically it's called when user change connection in settings.
-  Future<void> changeConnection(ConnectionData connection) async {
-    await _storageService.setCurrentConnection(connection.name);
-    await _updateTransportByConnection(connection);
+    _storageService.currentConnectionStream.listen((connection) async {
+      _log.info('setUp: switching to ${connection.name}');
+      await _updateTransportByConnection(connection);
+    });
   }
 
   /// Create nekoton's transport by connection, create transport's strategy
@@ -60,7 +45,7 @@ class ConnectionService {
     final type = connection.networkType;
 
     final transport = await connection.when<Future<Transport>>(
-      gql: (name, networkId, group, endpoints, timeout, local, _) =>
+      gql: (_, name, networkId, group, endpoints, timeout, __, ___) =>
           _nekotonRepository.createGqlTransport(
         post: _httpService.postTransportData,
         get: _httpService.getTransportData,
@@ -68,9 +53,9 @@ class ConnectionService {
         networkId: networkId,
         group: group,
         endpoints: endpoints,
-        local: local,
+        local: false,
       ),
-      proto: (name, networkId, group, endpoint, _) =>
+      proto: (_, name, networkId, group, endpoint, __, ___) =>
           _nekotonRepository.createProtoTransport(
         post: _httpService.postTransportDataBytes,
         name: name,
