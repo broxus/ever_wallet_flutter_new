@@ -365,5 +365,6 @@
   "decryptData": "Decrypt data",
   "sourcePublicKey": "Source public key",
   "unsupportedAlgorithm": "Unsupported algorithm",
-  "specifiedSignerIsNotPermitted": "Specified signer is not permitted"
+  "specifiedSignerIsNotPermitted": "Specified signer is not permitted",
+  "accountNotDeployed": "Account is not deployed"
 }
