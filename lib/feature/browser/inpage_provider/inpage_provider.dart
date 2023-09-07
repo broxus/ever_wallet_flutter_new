@@ -94,7 +94,11 @@ class InpageProvider extends ProviderApi {
     if (contract == null) {
       throw Exception(LocaleKeys.invalidRootTokenContract.tr());
     }
-    if (account == null) throw Exception(LocaleKeys.accountNotFound.tr());
+    if (account == null) {
+      throw Exception(
+        LocaleKeys.accountNotFound.tr(args: [accountAddress.address]),
+      );
+    }
     if (type == null) throw Exception(LocaleKeys.typeIsWrong.tr());
 
     bool newAsset;
@@ -648,14 +652,17 @@ class InpageProvider extends ProviderApi {
   @override
   Future<RunLocalOutput> runLocal(RunLocalInput input) async {
     _checkPermissions(permissions: permissionsService.getPermissions(origin));
+    final address = nr.Address(address: input.address);
     final cachedState = input.cachedState == null
         ? null
         : nr.FullContractState.fromJson(input.cachedState!.toJson());
     final contractState = cachedState ??
         await nekotonRepository.currentTransport.transport
-            .getFullContractState(nr.Address(address: input.address));
+            .getFullContractState(address);
     if (contractState == null) {
-      throw s.ApprovalsHandleException(LocaleKeys.accountNotFound.tr());
+      throw Exception(
+        LocaleKeys.accountNotFound.tr(args: [address.address]),
+      );
     }
 
     if (!contractState.isDeployed || contractState.lastTransactionId == null) {
@@ -883,6 +890,10 @@ class InpageProvider extends ProviderApi {
       return await super.call(method, params);
     } on s.ApprovalsHandleException catch (e, t) {
       _logger.severe(method, e.message, t);
+      inject<s.MessengerService>().show(s.Message.error(message: e.message));
+      rethrow;
+    } on nr.FfiException catch (e, t) {
+      _logger.severe(method, e, t);
       inject<s.MessengerService>().show(s.Message.error(message: e.message));
       rethrow;
     } catch (e, t) {
