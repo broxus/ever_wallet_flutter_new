@@ -845,7 +845,6 @@ class MigrationService {
     }
 
     /// Preferences
-    if (_hive.locale != null) await _storage.setLocale(_hive.locale!);
     await _storage.setIsBiometryEnabled(isEnabled: _hive.isBiometryEnabled);
     if (_hive.wasStEverOpened) await _storage.saveWasStEverOpened();
     await _storage.updateLastViewedSeeds(
@@ -864,9 +863,6 @@ class MigrationService {
         publicKey: PublicKey(publicKey: entry.key),
         accounts: entry.value,
       );
-    }
-    if (_hive.currentConnection != null) {
-      await _storage.setCurrentConnection(_hive.currentConnection!);
     }
     if (_hive.currentKey != null) {
       await _storage.setCurrentKey(PublicKey(publicKey: _hive.currentKey!));

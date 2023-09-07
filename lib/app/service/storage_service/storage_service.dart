@@ -4,6 +4,7 @@ export 'browser_bookmarks_storage_service.dart';
 export 'browser_history_storage_service.dart';
 export 'browser_permissions_storage_service.dart';
 export 'browser_tabs_storage_service.dart';
+export 'connections_storage_service.dart';
 export 'general_storage_service.dart';
 export 'nekoton_repository_service.dart';
 export 'storage_manager_service.dart';

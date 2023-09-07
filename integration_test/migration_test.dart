@@ -276,8 +276,6 @@ void main() {
     );
 
     /// Preferences
-    expect(await storage.readLocale(), _locale);
-    expect(storage.locale, _locale);
     expect(await storage.readIsBiometryEnabled(), true);
     expect(await storage.getWasStEverOpened, true);
     expect(await storage.readLastViewedSeeds(), [_publicKey]);
@@ -296,8 +294,6 @@ void main() {
         _publicKey: [_address],
       },
     );
-    expect(await storage.readCurrentConnection(), _connection);
-    expect(storage.currentConnection, _connection);
     expect(await storage.readCurrentKey(), _publicKey);
     expect(storage.currentKey, _publicKey);
 
@@ -542,8 +538,6 @@ void main() {
       );
 
       /// Preferences
-      expect(await storage.readLocale(), hive.locale);
-      expect(storage.locale, hive.locale);
       expect(await storage.readIsBiometryEnabled(), hive.isBiometryEnabled);
       expect(await storage.getWasStEverOpened, hive.wasStEverOpened);
       expect(
@@ -579,8 +573,6 @@ void main() {
         ),
         hive.externalAccounts,
       );
-      expect(await storage.readCurrentConnection(), hive.currentConnection);
-      expect(storage.currentConnection, hive.currentConnection);
       expect((await storage.readCurrentKey())?.publicKey, hive.currentKey);
       expect(storage.currentKey?.publicKey, hive.currentKey);
 
