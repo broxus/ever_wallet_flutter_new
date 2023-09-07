@@ -59,9 +59,13 @@ class MoneyWidget extends StatelessWidget {
     return Row(
       mainAxisSize: MainAxisSize.min,
       children: [
-        Text(
-          '${signValue ?? ''}$signStr${money.formatImproved()}',
-          style: moneyStyle,
+        Flexible(
+          child: Text(
+            '${signValue ?? ''}$signStr${money.formatImproved()}',
+            style: moneyStyle,
+            softWrap: false,
+            overflow: TextOverflow.ellipsis,
+          ),
         ),
         const SizedBox(width: DimensStroke.medium),
         Text(money.currency.symbol, style: symbolStyle),
