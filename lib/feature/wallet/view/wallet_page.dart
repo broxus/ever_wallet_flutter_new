@@ -28,7 +28,7 @@ class WalletPage extends StatelessWidget {
       child: Scaffold(
         appBar: const DefaultAppBar(
           leading: NetworkSelectionCard(),
-          leadingWidth: DimensSize.d168,
+          leadingWidth: DimensSize.d220,
         ),
         body: BlocBuilder<WalletCubit, WalletState>(
           builder: (context, state) {
