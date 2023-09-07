@@ -19,8 +19,6 @@ const _customContractAssetsKey = 'custom_contract_assets_key';
 const _preferencesKey = 'preferences_key';
 const _currenciesKey = 'currencies_key';
 const _biometryStatusKey = 'biometry_status_key';
-const _currentConnectionKey = 'current_connection_key';
-const _localeKey = 'locale';
 const _wasStEverOpenedKey = 'was_stever_opened_key';
 const _currentKey = 'current_public_key';
 const _lastSelectedSeedsKey = 'last_selected_seeds_key';
@@ -39,14 +37,11 @@ class GeneralStorageService extends AbstractStorageService {
 
   @override
   Future<void> init() => Future.wait([
-        _streamedCurrentConnection(),
         _streamedSystemContractAssets(),
         _streamedCustomContractAssets(),
         _streamedCurrencies(),
-        _streamedLocale(),
         _streamedCurrentKey(),
         _streamedLastViewedSeeds(),
-        _streamedCurrentConnection(),
         _streamedBiometryEnabled(),
         _initAppDirectories(),
       ]);
@@ -160,33 +155,6 @@ class GeneralStorageService extends AbstractStorageService {
 
   /// Clear all passwords of public keys from cache
   Future<void> clearKeyPasswords() => _storage.clearDomain(_passwordsKey);
-
-  /// Subject of current connection
-  final _currentConnectionSubject = BehaviorSubject<String?>();
-
-  /// Stream of current connection
-  Stream<String?> get currentConnectionStream => _currentConnectionSubject;
-
-  /// Get last cached current connection
-  String? get currentConnection => _currentConnectionSubject.valueOrNull;
-
-  /// Put current connection to stream
-  Future<void> _streamedCurrentConnection() async =>
-      _currentConnectionSubject.add(await readCurrentConnection());
-
-  /// Read from storage current connection of network by name
-  Future<String?> readCurrentConnection() =>
-      _storage.get(_currentConnectionKey, domain: _preferencesKey);
-
-  /// Set current connection of network by name
-  Future<void> setCurrentConnection(String currentConnection) async {
-    await _storage.set(
-      _currentConnectionKey,
-      currentConnection,
-      domain: _preferencesKey,
-    );
-    await _streamedCurrentConnection();
-  }
 
   /// Subject of system token contract assets
   final _systemTokenContractAssetsSubject =
@@ -359,34 +327,6 @@ class GeneralStorageService extends AbstractStorageService {
   Future<void> clearAllCustomTokens() async {
     await _storage.clearDomain(_customContractAssetsKey);
     _customTokenContractAssetsSubject.add({});
-  }
-
-  /// Subject of locale
-  final _localeSubject = BehaviorSubject<String?>();
-
-  /// Stream of locale
-  Stream<String?> get localeStream => _localeSubject;
-
-  /// Get last cached locale
-  String? get locale => _localeSubject.valueOrNull;
-
-  Future<void> _streamedLocale() async =>
-      _localeSubject.add(await readLocale());
-
-  /// Read from storage locale that used could save in settings
-  Future<String?> readLocale() =>
-      _storage.get(_localeKey, domain: _preferencesKey);
-
-  /// Set locale that used could save in settings
-  Future<void> setLocale(String locale) async {
-    await _storage.set(_localeKey, locale, domain: _preferencesKey);
-    await _streamedLocale();
-  }
-
-  /// Clear locale
-  Future<void> clearLocale() async {
-    await _storage.delete(_localeKey, domain: _preferencesKey);
-    _localeSubject.add(null);
   }
 
   /// Subject of biometry enabled status

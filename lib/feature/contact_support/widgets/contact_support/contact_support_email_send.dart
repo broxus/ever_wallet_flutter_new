@@ -3,9 +3,18 @@ import 'package:app/feature/contact_support/contact_support.dart';
 import 'package:app/generated/generated.dart';
 import 'package:fancy_logger/fancy_logger.dart';
 import 'package:flutter_email_sender/flutter_email_sender.dart';
+import 'package:share_plus/share_plus.dart';
+
+Future<String> contactSupportCreateLogfile() async {
+  final now =
+      DateTime.now().toLocal().toString().replaceAll(RegExp(r'\s'), '_');
+
+  return inject<FancyLogger>().writeAllLogsToJson('sparx_logs_$now.json');
+}
 
 Future<void> contactSupportEmailSend(
   ContactSupportMode mode,
+  String logFilePath,
 ) async {
   final to = switch (mode) {
     ContactSupportMode.initiatedByUser =>
@@ -28,12 +37,6 @@ Future<void> contactSupportEmailSend(
       LocaleKeys.contactSupportEmailBodyInitiatedByUser.tr(),
   };
 
-  final now =
-      DateTime.now().toLocal().toString().replaceAll(RegExp(r'\s'), '_');
-
-  final logFilePath =
-      await inject<FancyLogger>().writeAllLogsToJson('sparx_logs_$now.json');
-
   final email = Email(
     subject: subject,
     recipients: [to],
@@ -42,4 +45,10 @@ Future<void> contactSupportEmailSend(
   );
 
   await FlutterEmailSender.send(email);
+}
+
+Future<void> contactSupportShareFile(
+  String logFilePath,
+) async {
+  await Share.shareXFiles([XFile(logFilePath)]);
 }

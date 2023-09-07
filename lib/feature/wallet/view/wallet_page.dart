@@ -1,5 +1,6 @@
 import 'package:app/app/service/service.dart';
 import 'package:app/di/di.dart';
+import 'package:app/feature/network/network.dart';
 import 'package:app/feature/wallet/wallet.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -27,7 +28,7 @@ class WalletPage extends StatelessWidget {
       child: Scaffold(
         appBar: const DefaultAppBar(
           leading: NetworkSelectionCard(),
-          leadingWidth: DimensSize.d168,
+          leadingWidth: DimensSize.d220,
         ),
         body: BlocBuilder<WalletCubit, WalletState>(
           builder: (context, state) {
