@@ -63,7 +63,12 @@ class _BrowserTabViewState extends State<BrowserTabView> {
 
   InAppWebViewController? _webViewController;
   PullToRefreshController? _pullToRefreshController;
-  final _inpageProvider = InpageProvider(inject(), inject(), inject());
+  late final _inpageProvider = InpageProvider(
+    tabId: widget.tab.id,
+    approvalsService: inject(),
+    permissionsService: inject(),
+    nekotonRepository: inject(),
+  );
 
   Timer? _screenshotTimer;
 
