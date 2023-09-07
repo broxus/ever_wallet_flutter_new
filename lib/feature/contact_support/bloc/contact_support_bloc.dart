@@ -17,17 +17,36 @@ class ContactSupportBloc
       await event.map(
         sendEmail: (event) async {
           emit(const ContactSupportState.busy());
+          String? logFilePath;
           try {
-            await contactSupportEmailSend(event.mode);
+            logFilePath = await contactSupportCreateLogfile();
           } catch (e, s) {
             _log.severe(e, null, s);
             emit(const ContactSupportState.initial());
             inject<MessengerService>().show(
               Message.error(
-                message: LocaleKeys.contactSupportCantFindEmailClient.tr(),
+                message: LocaleKeys.contactSupportCantCreateFile.tr(),
               ),
             );
           }
+
+          if (logFilePath != null) {
+            try {
+              await contactSupportEmailSend(event.mode, logFilePath);
+            } catch (e, s) {
+              _log.severe(e, null, s);
+              emit(const ContactSupportState.initial());
+              inject<MessengerService>().show(
+                Message.error(
+                  message: LocaleKeys.contactSupportCantFindEmailClient.tr(),
+                  actionText:
+                      LocaleKeys.contactSupportCantFindEmailClientShare.tr(),
+                  onAction: () => contactSupportShareFile(logFilePath!),
+                ),
+              );
+            }
+          }
+
           emit(const ContactSupportState.initial());
         },
       );
