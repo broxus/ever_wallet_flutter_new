@@ -712,6 +712,7 @@ class MigrationService {
     this._browserBookmarksStorageService,
     this._browserPermissionsStorageService,
     this._accountSeedStorage,
+    this._connectionsStorage,
     this._hive,
   );
 
@@ -721,6 +722,7 @@ class MigrationService {
   final BrowserBookmarksStorageService _browserBookmarksStorageService;
   final BrowserPermissionsStorageService _browserPermissionsStorageService;
   final NekotonStorageService _accountSeedStorage;
+  final ConnectionsStorageService _connectionsStorage;
   final HiveSourceMigration _hive;
 
   /// Migration method for app that includes hive initialization.
@@ -731,6 +733,7 @@ class MigrationService {
     BrowserBookmarksStorageService browserBookmarksStorageService,
     BrowserPermissionsStorageService browserPermissionsStorageService,
     NekotonStorageService accountSeedStorage,
+    ConnectionsStorageService connectionsStorage,
   ) async {
     return MigrationService(
       storage,
@@ -739,6 +742,7 @@ class MigrationService {
       browserBookmarksStorageService,
       browserPermissionsStorageService,
       accountSeedStorage,
+      connectionsStorage,
       await HiveSourceMigration.create(),
     ).migrate();
   }
@@ -863,6 +867,15 @@ class MigrationService {
         publicKey: PublicKey(publicKey: entry.key),
         accounts: entry.value,
       );
+    }
+    if (_hive.currentConnection != null) {
+      final connections = _connectionsStorage.connections;
+      final connection = connections.firstWhereOrNull(
+        (element) => element.name == _hive.currentConnection,
+      );
+      if (connection != null) {
+        await _connectionsStorage.saveCurrentConnectionId(connection.id);
+      }
     }
     if (_hive.currentKey != null) {
       await _storage.setCurrentKey(PublicKey(publicKey: _hive.currentKey!));

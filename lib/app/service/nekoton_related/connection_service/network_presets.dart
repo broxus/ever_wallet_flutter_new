@@ -50,12 +50,12 @@ final _everPresets = <ConnectionData>[
 /// Presets for venom network
 final _venomPresets = [
   // venom is in test, uncomment it later
-  // ConnectionData.jrpc(
-  //   id: 'preset_venom_mainnet_jrpc',
-  //   name: 'Mainnet Venom (JRPC)',
+  // ConnectionData.protoPreset(
+  //   id: 'preset_venom_mainnet_proto',
+  //   name: 'Mainnet Venom (PROTO)',
   //   networkId: 1000,
   //   group: 'venom_mainnet',
-  //   endpoint: 'https://jrpc.venom.foundation/rpc',
+  //   endpoint: 'https://jrpc.venom.foundation/proto',
   //   networkType: NetworkType.venom,
   // ),
   ConnectionData.protoPreset(

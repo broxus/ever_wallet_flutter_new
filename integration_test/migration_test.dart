@@ -11,6 +11,7 @@ import 'package:app/data/models/permissions.dart';
 import 'package:app/data/models/site_meta_data.dart';
 import 'package:app/data/models/token_contract_asset.dart';
 import 'package:app/data/models/wallet_contract_type.dart';
+import 'package:collection/collection.dart';
 import 'package:encrypted_storage/encrypted_storage.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
@@ -117,7 +118,7 @@ const _address = Address(
   address: '0:18678befa040e2d66322fcb995d81cd5981ef7aaee494bd3e6a92554c455d0c5',
 );
 const _password = 'password';
-const _connection = 'connection';
+const _connection = 'Mainnet (PROTO)';
 const _locale = 'ru_RU';
 
 const _accountsStorageData =
@@ -187,6 +188,7 @@ void main() {
   late BrowserBookmarksStorageService browserBookmarksStorage;
   late BrowserPermissionsStorageService browserPermissionsStorage;
   late NekotonStorageService accountSeedStorage;
+  late ConnectionsStorageService connectionsStorage;
 
   Future<void> checkMigration() async {
     /// Nekoton storage
@@ -315,6 +317,7 @@ void main() {
     browserPermissionsStorage =
         BrowserPermissionsStorageService(encryptedStorage);
     accountSeedStorage = NekotonStorageService(encryptedStorage);
+    connectionsStorage = ConnectionsStorageService(encryptedStorage);
     repository = NekotonRepository();
     await Hive.deleteFromDisk();
     hive = await HiveSourceMigration.create();
@@ -356,6 +359,7 @@ void main() {
         browserBookmarksStorage,
         browserPermissionsStorage,
         accountSeedStorage,
+        connectionsStorage,
         hive,
       );
       expect(await storage.isStorageMigrated, isFalse);
@@ -372,6 +376,7 @@ void main() {
         browserBookmarksStorage,
         browserPermissionsStorage,
         accountSeedStorage,
+        connectionsStorage,
         hive,
       );
       expect(await storage.isStorageMigrated, isFalse);
@@ -388,6 +393,7 @@ void main() {
         browserBookmarksStorage,
         browserPermissionsStorage,
         accountSeedStorage,
+        connectionsStorage,
         hive,
       );
       await storage.completeStorageMigration();
@@ -405,6 +411,7 @@ void main() {
         browserBookmarksStorage,
         browserPermissionsStorage,
         accountSeedStorage,
+        connectionsStorage,
         hive,
       );
       final migrationFile = await hive.migrationFile;
@@ -425,6 +432,7 @@ void main() {
         browserBookmarksStorage,
         browserPermissionsStorage,
         accountSeedStorage,
+        connectionsStorage,
         hive,
       );
       await migration.applyMigration();
@@ -573,6 +581,13 @@ void main() {
         ),
         hive.externalAccounts,
       );
+      final connections = await connectionsStorage.readConnections();
+      final currentConnectionId =
+          await connectionsStorage.readCurrentConnectionId();
+      final currentConnection = connections.firstWhereOrNull(
+        (connection) => connection.id == currentConnectionId,
+      );
+      expect(currentConnection!.name, hive.currentConnection);
       expect((await storage.readCurrentKey())?.publicKey, hive.currentKey);
       expect(storage.currentKey?.publicKey, hive.currentKey);
 
@@ -600,6 +615,7 @@ void main() {
         browserBookmarksStorage,
         browserPermissionsStorage,
         accountSeedStorage,
+        connectionsStorage,
         hive,
       );
       await migration.migrate();
@@ -627,6 +643,7 @@ void main() {
         browserBookmarksStorage,
         browserPermissionsStorage,
         accountSeedStorage,
+        connectionsStorage,
       );
 
       final migrationFile = await hive.migrationFile;
