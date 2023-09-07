@@ -9,16 +9,22 @@ ModalRoute<BrowserBasicAuthCreds> showBrowserEnterBasicAuthCredsSheet({
 }) {
   return commonBottomSheetRoute(
     title: LocaleKeys.browserEnterBasicAuthTitle.tr(),
-    body: (_, __) => BrowserEnterBasicAuthCredsSheet(
+    body: (_, controller) => BrowserEnterBasicAuthCredsSheet(
       host: host,
+      controller: controller,
     ),
   );
 }
 
 class BrowserEnterBasicAuthCredsSheet extends StatefulWidget {
-  const BrowserEnterBasicAuthCredsSheet({required this.host, super.key});
+  const BrowserEnterBasicAuthCredsSheet({
+    required this.host,
+    required this.controller,
+    super.key,
+  });
 
   final String host;
+  final ScrollController controller;
 
   @override
   State<BrowserEnterBasicAuthCredsSheet> createState() =>
@@ -45,35 +51,38 @@ class _BrowserEnterBasicAuthCredsSheetState
 
   @override
   Widget build(BuildContext context) {
-    return SeparatedColumn(
-      mainAxisSize: MainAxisSize.min,
-      separatorSize: DimensSize.d24,
-      crossAxisAlignment: CrossAxisAlignment.start,
-      children: [
-        Text(
-          LocaleKeys.browserEnterBasicAuthDescription.tr(
-            args: [widget.host],
+    return SingleChildScrollView(
+      controller: widget.controller,
+      child: SeparatedColumn(
+        mainAxisSize: MainAxisSize.min,
+        separatorSize: DimensSize.d24,
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          Text(
+            LocaleKeys.browserEnterBasicAuthDescription.tr(
+              args: [widget.host],
+            ),
+            style: StyleRes.primaryRegular,
           ),
-          style: StyleRes.primaryRegular,
-        ),
-        CommonInput(
-          controller: _usernameController,
-          titleText: LocaleKeys.browserEnterBasicAuthUsername.tr(),
-          onSubmitted: (_) => _passwordFocusNode.requestFocus(),
-        ),
-        CommonInput(
-          controller: _passwordController,
-          focusNode: _passwordFocusNode,
-          titleText: LocaleKeys.browserEnterBasicAuthPassword.tr(),
-          onSubmitted: (_) => _onSignIn(),
-          obscureText: true,
-        ),
-        CommonButton.primary(
-          fillWidth: true,
-          onPressed: _onSignIn,
-          text: LocaleKeys.browserEnterBasicSignIn.tr(),
-        ),
-      ],
+          CommonInput(
+            controller: _usernameController,
+            titleText: LocaleKeys.browserEnterBasicAuthUsername.tr(),
+            onSubmitted: (_) => _passwordFocusNode.requestFocus(),
+          ),
+          CommonInput(
+            controller: _passwordController,
+            focusNode: _passwordFocusNode,
+            titleText: LocaleKeys.browserEnterBasicAuthPassword.tr(),
+            onSubmitted: (_) => _onSignIn(),
+            obscureText: true,
+          ),
+          CommonButton.primary(
+            fillWidth: true,
+            onPressed: _onSignIn,
+            text: LocaleKeys.browserEnterBasicSignIn.tr(),
+          ),
+        ],
+      ),
     );
   }
 

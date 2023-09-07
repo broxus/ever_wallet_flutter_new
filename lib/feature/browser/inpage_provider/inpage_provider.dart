@@ -175,7 +175,7 @@ class InpageProvider extends ProviderApi {
   @override
   Future<CodeToTvcOutput> codeToTvc(CodeToTvcInput input) async {
     _checkPermissions(permissions: permissionsService.getPermissions(origin));
-    final tvc = await nr.codeToTvc(input.code);
+    final (tvc, hash) = await nr.codeToTvc(input.code);
 
     return CodeToTvcOutput(tvc, hash);
   }
@@ -375,10 +375,12 @@ class InpageProvider extends ProviderApi {
 
   @override
   Future<ExecuteLocalOutput> executeLocal(ExecuteLocalInput input) async {
-    _checkPermissions(permissions: permissionsService.getPermissions(origin));
-    final output = await nr.executeLocal();
+    // TODO: implement executeLocal
+    throw UnimplementedError();
+    // _checkPermissions(permissions: permissionsService.getPermissions(origin));
+    // final output = await nr.executeLocal();
 
-    return ExecuteLocalOutput();
+    // return ExecuteLocalOutput();
   }
 
   @override
@@ -396,9 +398,17 @@ class InpageProvider extends ProviderApi {
     FindTransactionInput input,
   ) async {
     _checkPermissions(permissions: permissionsService.getPermissions(origin));
-    final output = await nr.findTransaction();
+    final hash = input.inMessageHash;
+    if (hash == null) {
+      throw s.ApprovalsHandleException(LocaleKeys.transactionNotFound.tr());
+    }
+    final output = await nekotonRepository.currentTransport.transport
+        .getDstTransaction(hash);
+    final trans = output?.data == null
+        ? null
+        : Transaction.fromJson(output!.data.toJson());
 
-    return FindTransactionOutput();
+    return FindTransactionOutput(trans);
   }
 
   @override
@@ -440,9 +450,19 @@ class InpageProvider extends ProviderApi {
     GetContractFieldsInput input,
   ) async {
     _checkPermissions(permissions: permissionsService.getPermissions(origin));
-    final output = await nr.getContractFields();
+    final (output, state) =
+        await nekotonRepository.currentTransport.transport.getContractFields(
+      address: nr.Address(address: input.address),
+      contractAbi: input.abi,
+      cachedState: input.cachedState == null
+          ? null
+          : nr.FullContractState.fromJson(input.cachedState!.toJson()),
+    );
 
-    return GetContractFieldsOutput();
+    return GetContractFieldsOutput(
+      output,
+      state == null ? null : FullContractState.fromJson(state.toJson()),
+    );
   }
 
   @override
@@ -450,7 +470,7 @@ class InpageProvider extends ProviderApi {
     GetExpectedAddressInput input,
   ) async {
     _checkPermissions(permissions: permissionsService.getPermissions(origin));
-    final result = await nr.getExpectedAddress(
+    final (address, state, hash) = await nr.getExpectedAddress(
       tvc: input.tvc,
       contractAbi: input.abi,
       workchainId: input.workchain?.toInt() ?? nr.defaultWorkchainId,
@@ -461,8 +481,8 @@ class InpageProvider extends ProviderApi {
     );
 
     return GetExpectedAddressOutput(
-      result.item1.address,
-      result.item2,
+      address.address,
+      state,
       hash,
     );
   }
@@ -558,7 +578,7 @@ class InpageProvider extends ProviderApi {
   @override
   Future<MergeTvcOutput> mergeTvc(MergeTvcInput input) async {
     _checkPermissions(permissions: permissionsService.getPermissions(origin));
-    final tvc = await nr.mergeTvc(code: input.code, data: input.data);
+    final (tvc, hash) = await nr.mergeTvc(code: input.code, data: input.data);
 
     return MergeTvcOutput(tvc, hash);
   }
@@ -566,7 +586,7 @@ class InpageProvider extends ProviderApi {
   @override
   Future<PackIntoCellOutput> packIntoCell(PackIntoCellInput input) async {
     _checkPermissions(permissions: permissionsService.getPermissions(origin));
-    final boc = await nr.packIntoCell(
+    final (boc, hash) = await nr.packIntoCell(
       params:
           input.structure.map((e) => nr.AbiParam.fromJson(e.toJson())).toList(),
       tokens: input.data,
@@ -694,7 +714,8 @@ class InpageProvider extends ProviderApi {
   @override
   Future<SetCodeSaltOutput> setCodeSalt(SetCodeSaltInput input) async {
     _checkPermissions(permissions: permissionsService.getPermissions(origin));
-    final code = await nr.setCodeSalt(code: input.code, salt: input.salt);
+    final (code, hash) =
+        await nr.setCodeSalt(code: input.code, salt: input.salt);
 
     return SetCodeSaltOutput(code, hash);
   }
@@ -777,19 +798,15 @@ class InpageProvider extends ProviderApi {
   @override
   Future<SplitTvcOutput> splitTvc(SplitTvcInput input) async {
     _checkPermissions(permissions: permissionsService.getPermissions(origin));
-    final result = await nr.splitTvc(input.tvc);
+    final (data, code) = await nr.splitTvc(input.tvc);
 
-    return SplitTvcOutput(result.item1, result.item2);
+    return SplitTvcOutput(data, code);
   }
 
   @override
   Future<ContractUpdatesSubscription> subscribe(SubscribeInput input) async {
     final accountAddress = nr.Address(address: input.address);
-    _checkPermissions(
-      permissions: permissionsService.getPermissions(origin),
-      account: true,
-      accountAddress: accountAddress,
-    );
+    _checkPermissions(permissions: permissionsService.getPermissions(origin));
 
     final subs = nr.ContractUpdatesSubscription(
       contractState: input.subscriptions.state ?? true,
@@ -822,9 +839,12 @@ class InpageProvider extends ProviderApi {
   @override
   Future<UnpackInitDataOutput> unpackInitData(UnpackInitDataInput input) async {
     _checkPermissions(permissions: permissionsService.getPermissions(origin));
-    final data = await nr.unpackInitData();
+    final (key, tokens) = await nr.unpackInitData(
+      contractAbi: input.abi,
+      data: input.data,
+    );
 
-    return UnpackInitDataOutput();
+    return UnpackInitDataOutput(key?.publicKey, tokens);
   }
 
   @override
@@ -861,7 +881,8 @@ class InpageProvider extends ProviderApi {
     _logger.finest('method: $method, params: $params');
     try {
       return await super.call(method, params);
-    } on s.ApprovalsHandleException catch (e) {
+    } on s.ApprovalsHandleException catch (e, t) {
+      _logger.severe(method, e.message, t);
       inject<s.MessengerService>().show(s.Message.error(message: e.message));
       rethrow;
     } catch (e, t) {
