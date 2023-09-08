@@ -26,10 +26,14 @@ class _WalletViewState extends State<WalletView> {
 
   @override
   void didUpdateWidget(covariant WalletView oldWidget) {
-    if (oldWidget.currentAccount != null && widget.currentAccount == null) {
+    if (oldWidget.currentAccount != null &&
+        widget.currentAccount == null &&
+        _panelController.isAttached) {
       _panelController.hide();
     }
-    if (oldWidget.currentAccount == null && widget.currentAccount != null) {
+    if (oldWidget.currentAccount == null &&
+        widget.currentAccount != null &&
+        _panelController.isAttached) {
       _panelController.show();
     }
     super.didUpdateWidget(oldWidget);

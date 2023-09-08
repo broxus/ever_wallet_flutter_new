@@ -94,7 +94,11 @@ class InpageProvider extends ProviderApi {
     if (contract == null) {
       throw Exception(LocaleKeys.invalidRootTokenContract.tr());
     }
-    if (account == null) throw Exception(LocaleKeys.accountNotFound.tr());
+    if (account == null) {
+      throw Exception(
+        LocaleKeys.accountNotFound.tr(args: [accountAddress.address]),
+      );
+    }
     if (type == null) throw Exception(LocaleKeys.typeIsWrong.tr());
 
     bool newAsset;
@@ -173,43 +177,86 @@ class InpageProvider extends ProviderApi {
   }
 
   @override
-  Future<CodeToTvcOutput> codeToTvc(CodeToTvcInput input) {
-    // TODO: implement codeToTvc
-    throw UnimplementedError();
+  Future<CodeToTvcOutput> codeToTvc(CodeToTvcInput input) async {
+    _checkPermissions(permissions: permissionsService.getPermissions(origin));
+    final (tvc, hash) = await nr.codeToTvc(input.code);
+
+    return CodeToTvcOutput(tvc, hash);
   }
 
   @override
-  Future<DecodeEventOutput?> decodeEvent(DecodeEventInput input) {
-    // TODO: implement decodeEvent
-    throw UnimplementedError();
+  Future<DecodeEventOutput?> decodeEvent(DecodeEventInput input) async {
+    _checkPermissions(permissions: permissionsService.getPermissions(origin));
+
+    final event = await nr.decodeEvent(
+      messageBody: input.body,
+      contractAbi: input.abi,
+      event: input.event,
+    );
+
+    return event == null ? null : DecodeEventOutput(event.event, event.data);
   }
 
   @override
-  Future<DecodeInputOutput?> decodeInput(DecodeInputInput input) {
-    // TODO: implement decodeInput
-    throw UnimplementedError();
+  Future<DecodeInputOutput?> decodeInput(DecodeInputInput input) async {
+    _checkPermissions(permissions: permissionsService.getPermissions(origin));
+    final output = await nr.decodeInput(
+      messageBody: input.body,
+      contractAbi: input.abi,
+      method: input.method,
+      internal: input.internal,
+    );
+
+    return output == null
+        ? null
+        : DecodeInputOutput(output.method, output.input);
   }
 
   @override
-  Future<DecodeOutputOutput?> decodeOutput(DecodeOutputInput input) {
-    // TODO: implement decodeOutput
-    throw UnimplementedError();
+  Future<DecodeOutputOutput?> decodeOutput(DecodeOutputInput input) async {
+    _checkPermissions(permissions: permissionsService.getPermissions(origin));
+    final output = await nr.decodeOutput(
+      messageBody: input.body,
+      contractAbi: input.abi,
+      method: input.method,
+    );
+
+    return output == null
+        ? null
+        : DecodeOutputOutput(output.method, output.output);
   }
 
   @override
   Future<DecodeTransactionOutput?> decodeTransaction(
     DecodeTransactionInput input,
-  ) {
-    // TODO: implement decodeTransaction
-    throw UnimplementedError();
+  ) async {
+    _checkPermissions(permissions: permissionsService.getPermissions(origin));
+    final output = await nr.decodeTransaction(
+      transaction: nr.Transaction.fromJson(input.transaction.toJson()),
+      contractAbi: input.abi,
+      method: input.method,
+    );
+
+    return output == null
+        ? null
+        : DecodeTransactionOutput(output.method, output.input, output.output);
   }
 
   @override
   Future<DecodeTransactionEventsOutput> decodeTransactionEvents(
     DecodeTransactionEventsInput input,
-  ) {
-    // TODO: implement decodeTransactionEvents
-    throw UnimplementedError();
+  ) async {
+    _checkPermissions(permissions: permissionsService.getPermissions(origin));
+    final events = await nr.decodeTransactionEvents(
+      transaction: nr.Transaction.fromJson(input.transaction.toJson()),
+      contractAbi: input.abi,
+    );
+
+    return DecodeTransactionEventsOutput(
+      events
+          .map((e) => DecodeTransactionEventsOutputEvents(e.event, e.data))
+          .toList(),
+    );
   }
 
   @override
@@ -265,9 +312,17 @@ class InpageProvider extends ProviderApi {
   }
 
   @override
-  Future<EncodeInternalInputOutput> encodeInternalInput(FunctionCall input) {
-    // TODO: implement encodeInternalInput
-    throw UnimplementedError();
+  Future<EncodeInternalInputOutput> encodeInternalInput(
+    FunctionCall input,
+  ) async {
+    _checkPermissions(permissions: permissionsService.getPermissions(origin));
+    final boc = await nr.encodeInternalInput(
+      contractAbi: input.abi,
+      method: input.method,
+      input: input.params,
+    );
+
+    return EncodeInternalInputOutput(boc);
   }
 
   @override
@@ -323,67 +378,130 @@ class InpageProvider extends ProviderApi {
   }
 
   @override
-  Future<ExecuteLocalOutput> executeLocal(ExecuteLocalInput input) {
+  Future<ExecuteLocalOutput> executeLocal(ExecuteLocalInput input) async {
     // TODO: implement executeLocal
     throw UnimplementedError();
+    // _checkPermissions(permissions: permissionsService.getPermissions(origin));
+    // final output = await nr.executeLocal();
+
+    // return ExecuteLocalOutput();
   }
 
   @override
   Future<ExtractPublicKeyOutput> extractPublicKey(
     ExtractPublicKeyInput input,
-  ) {
-    // TODO: implement extractPublicKey
-    throw UnimplementedError();
+  ) async {
+    _checkPermissions(permissions: permissionsService.getPermissions(origin));
+    final output = await nr.extractPublicKey(input.boc);
+
+    return ExtractPublicKeyOutput(output.publicKey);
   }
 
   @override
-  Future<FindTransactionOutput> findTransaction(FindTransactionInput input) {
-    // TODO: implement findTransaction
-    throw UnimplementedError();
+  Future<FindTransactionOutput> findTransaction(
+    FindTransactionInput input,
+  ) async {
+    _checkPermissions(permissions: permissionsService.getPermissions(origin));
+    final hash = input.inMessageHash;
+    if (hash == null) {
+      throw s.ApprovalsHandleException(LocaleKeys.transactionNotFound.tr());
+    }
+    final output = await nekotonRepository.currentTransport.transport
+        .getDstTransaction(hash);
+    final trans = output?.data == null
+        ? null
+        : Transaction.fromJson(output!.data.toJson());
+
+    return FindTransactionOutput(trans);
   }
 
   @override
   Future<GetAccountsByCodeHashOutput> getAccountsByCodeHash(
     GetAccountsByCodeHashInput input,
-  ) {
-    // TODO: implement getAccountsByCodeHash
-    throw UnimplementedError();
+  ) async {
+    _checkPermissions(permissions: permissionsService.getPermissions(origin));
+    final accountsList = await nekotonRepository.currentTransport.transport
+        .getAccountsByCodeHash(
+      codeHash: input.codeHash,
+      limit: input.limit?.toInt() ?? 50,
+      continuation: input.continuation,
+    );
+
+    return GetAccountsByCodeHashOutput(
+      accountsList.accounts,
+      accountsList.continuation,
+    );
   }
 
   @override
-  Future<GetBocHashOutput> getBocHash(GetBocHashInput input) {
-    // TODO: implement getBocHash
-    throw UnimplementedError();
+  Future<GetBocHashOutput> getBocHash(GetBocHashInput input) async {
+    _checkPermissions(permissions: permissionsService.getPermissions(origin));
+    final hash = await nr.getBocHash(input.boc);
+
+    return GetBocHashOutput(hash);
   }
 
   @override
-  Future<GetCodeSaltOutput> getCodeSalt(GetCodeSaltInput input) {
-    // TODO: implement getCodeSalt
-    throw UnimplementedError();
+  Future<GetCodeSaltOutput> getCodeSalt(GetCodeSaltInput input) async {
+    _checkPermissions(permissions: permissionsService.getPermissions(origin));
+    final code = await nr.getCodeSalt(input.code);
+
+    return GetCodeSaltOutput(code);
   }
 
   @override
   Future<GetContractFieldsOutput> getContractFields(
     GetContractFieldsInput input,
-  ) {
-    // TODO: implement getContractFields
-    throw UnimplementedError();
+  ) async {
+    _checkPermissions(permissions: permissionsService.getPermissions(origin));
+    final (output, state) =
+        await nekotonRepository.currentTransport.transport.getContractFields(
+      address: nr.Address(address: input.address),
+      contractAbi: input.abi,
+      cachedState: input.cachedState == null
+          ? null
+          : nr.FullContractState.fromJson(input.cachedState!.toJson()),
+    );
+
+    return GetContractFieldsOutput(
+      output,
+      state == null ? null : FullContractState.fromJson(state.toJson()),
+    );
   }
 
   @override
   Future<GetExpectedAddressOutput> getExpectedAddress(
     GetExpectedAddressInput input,
-  ) {
-    // TODO: implement getExpectedAddress
-    throw UnimplementedError();
+  ) async {
+    _checkPermissions(permissions: permissionsService.getPermissions(origin));
+    final (address, state, hash) = await nr.getExpectedAddress(
+      tvc: input.tvc,
+      contractAbi: input.abi,
+      workchainId: input.workchain?.toInt() ?? nr.defaultWorkchainId,
+      publicKey: input.publicKey == null
+          ? null
+          : nr.PublicKey(publicKey: input.publicKey!),
+      initData: input.initParams,
+    );
+
+    return GetExpectedAddressOutput(
+      address.address,
+      state,
+      hash,
+    );
   }
 
   @override
   Future<GetFullContractStateOutput> getFullContractState(
     GetFullContractStateInput input,
-  ) {
-    // TODO: implement getFullContractState
-    throw UnimplementedError();
+  ) async {
+    _checkPermissions(permissions: permissionsService.getPermissions(origin));
+    final state = await nekotonRepository.currentTransport.transport
+        .getFullContractState(nr.Address(address: input.address));
+
+    return GetFullContractStateOutput(
+      state == null ? null : FullContractState.fromJson(state.toJson()),
+    );
   }
 
   @override
@@ -426,27 +544,59 @@ class InpageProvider extends ProviderApi {
   }
 
   @override
-  Future<GetTransactionOutput> getTransaction(GetTransactionInput input) {
-    // TODO: implement getTransaction
-    throw UnimplementedError();
+  Future<GetTransactionOutput> getTransaction(GetTransactionInput input) async {
+    _checkPermissions(permissions: permissionsService.getPermissions(origin));
+    final transaction = await nekotonRepository.currentTransport.transport
+        .getTransaction(input.hash);
+
+    return GetTransactionOutput(
+      transaction == null ? null : Transaction.fromJson(transaction.toJson()),
+    );
   }
 
   @override
-  Future<GetTransactionsOutput> getTransactions(GetTransactionsInput input) {
-    // TODO: implement getTransactions
-    throw UnimplementedError();
+  Future<GetTransactionsOutput> getTransactions(
+    GetTransactionsInput input,
+  ) async {
+    _checkPermissions(permissions: permissionsService.getPermissions(origin));
+    final transactions =
+        await nekotonRepository.currentTransport.transport.getTransactions(
+      address: nr.Address(address: input.address),
+      count: input.limit?.toInt() ?? 50,
+      fromLt: input.continuation?.lt,
+    );
+
+    return GetTransactionsOutput(
+      transactions.transactions
+          .map((e) => Transaction.fromJson(e.toJson()))
+          .toList(),
+      transactions.continuation == null
+          ? null
+          : TransactionId.fromJson(transactions.continuation!.toJson()),
+      transactions.info == null
+          ? null
+          : TransactionsBatchInfo.fromJson(transactions.info!.toJson()),
+    );
   }
 
   @override
-  Future<MergeTvcOutput> mergeTvc(MergeTvcInput input) {
-    // TODO: implement mergeTvc
-    throw UnimplementedError();
+  Future<MergeTvcOutput> mergeTvc(MergeTvcInput input) async {
+    _checkPermissions(permissions: permissionsService.getPermissions(origin));
+    final (tvc, hash) = await nr.mergeTvc(code: input.code, data: input.data);
+
+    return MergeTvcOutput(tvc, hash);
   }
 
   @override
-  Future<PackIntoCellOutput> packIntoCell(PackIntoCellInput input) {
-    // TODO: implement packIntoCell
-    throw UnimplementedError();
+  Future<PackIntoCellOutput> packIntoCell(PackIntoCellInput input) async {
+    _checkPermissions(permissions: permissionsService.getPermissions(origin));
+    final (boc, hash) = await nr.packIntoCell(
+      params:
+          input.structure.map((e) => nr.AbiParam.fromJson(e.toJson())).toList(),
+      tokens: input.data,
+    );
+
+    return PackIntoCellOutput(boc, hash);
   }
 
   @override
@@ -500,9 +650,34 @@ class InpageProvider extends ProviderApi {
   }
 
   @override
-  Future<RunLocalOutput> runLocal(RunLocalInput input) {
-    // TODO: implement runLocal
-    throw UnimplementedError();
+  Future<RunLocalOutput> runLocal(RunLocalInput input) async {
+    _checkPermissions(permissions: permissionsService.getPermissions(origin));
+    final address = nr.Address(address: input.address);
+    final cachedState = input.cachedState == null
+        ? null
+        : nr.FullContractState.fromJson(input.cachedState!.toJson());
+    final contractState = cachedState ??
+        await nekotonRepository.currentTransport.transport
+            .getFullContractState(address);
+    if (contractState == null) {
+      throw Exception(
+        LocaleKeys.accountNotFound.tr(args: [address.address]),
+      );
+    }
+
+    if (!contractState.isDeployed || contractState.lastTransactionId == null) {
+      throw s.ApprovalsHandleException(LocaleKeys.accountNotDeployed.tr());
+    }
+
+    final executionOutput = await nr.runLocal(
+      accountStuffBoc: contractState.boc,
+      contractAbi: input.functionCall.abi,
+      method: input.functionCall.method,
+      input: input.functionCall.params,
+      responsible: input.responsible ?? false,
+    );
+
+    return RunLocalOutput(executionOutput.output, executionOutput.code);
   }
 
   @override
@@ -544,9 +719,12 @@ class InpageProvider extends ProviderApi {
   }
 
   @override
-  Future<SetCodeSaltOutput> setCodeSalt(SetCodeSaltInput input) {
-    // TODO: implement setCodeSalt
-    throw UnimplementedError();
+  Future<SetCodeSaltOutput> setCodeSalt(SetCodeSaltInput input) async {
+    _checkPermissions(permissions: permissionsService.getPermissions(origin));
+    final (code, hash) =
+        await nr.setCodeSalt(code: input.code, salt: input.salt);
+
+    return SetCodeSaltOutput(code, hash);
   }
 
   @override
@@ -625,19 +803,17 @@ class InpageProvider extends ProviderApi {
   }
 
   @override
-  Future<SplitTvcOutput> splitTvc(SplitTvcInput input) {
-    // TODO: implement splitTvc
-    throw UnimplementedError();
+  Future<SplitTvcOutput> splitTvc(SplitTvcInput input) async {
+    _checkPermissions(permissions: permissionsService.getPermissions(origin));
+    final (data, code) = await nr.splitTvc(input.tvc);
+
+    return SplitTvcOutput(data, code);
   }
 
   @override
   Future<ContractUpdatesSubscription> subscribe(SubscribeInput input) async {
     final accountAddress = nr.Address(address: input.address);
-    _checkPermissions(
-      permissions: permissionsService.getPermissions(origin),
-      account: true,
-      accountAddress: accountAddress,
-    );
+    _checkPermissions(permissions: permissionsService.getPermissions(origin));
 
     final subs = nr.ContractUpdatesSubscription(
       contractState: input.subscriptions.state ?? true,
@@ -655,15 +831,27 @@ class InpageProvider extends ProviderApi {
   }
 
   @override
-  Future<UnpackFromCellOutput> unpackFromCell(UnpackFromCellInput input) {
-    // TODO: implement unpackFromCell
-    throw UnimplementedError();
+  Future<UnpackFromCellOutput> unpackFromCell(UnpackFromCellInput input) async {
+    _checkPermissions(permissions: permissionsService.getPermissions(origin));
+    final data = await nr.unpackFromCell(
+      params:
+          input.structure.map((e) => nr.AbiParam.fromJson(e.toJson())).toList(),
+      boc: input.boc,
+      allowPartial: input.allowPartial,
+    );
+
+    return UnpackFromCellOutput(data);
   }
 
   @override
-  Future<UnpackInitDataOutput> unpackInitData(UnpackInitDataInput input) {
-    // TODO: implement unpackInitData
-    throw UnimplementedError();
+  Future<UnpackInitDataOutput> unpackInitData(UnpackInitDataInput input) async {
+    _checkPermissions(permissions: permissionsService.getPermissions(origin));
+    final (key, tokens) = await nr.unpackInitData(
+      contractAbi: input.abi,
+      data: input.data,
+    );
+
+    return UnpackInitDataOutput(key?.publicKey, tokens);
   }
 
   @override
@@ -682,9 +870,17 @@ class InpageProvider extends ProviderApi {
       nekotonRepository.unsubscribeContractsTab(tabId);
 
   @override
-  Future<VerifySignatureOutput> verifySignature(VerifySignatureInput input) {
-    // TODO: implement verifySignature
-    throw UnimplementedError();
+  Future<VerifySignatureOutput> verifySignature(
+    VerifySignatureInput input,
+  ) async {
+    _checkPermissions(permissions: permissionsService.getPermissions(origin));
+    final isValid = await nr.verifySignature(
+      publicKey: nr.PublicKey(publicKey: input.publicKey),
+      dataHash: input.dataHash,
+      signature: input.signature,
+    );
+
+    return VerifySignatureOutput(isValid);
   }
 
   @override
@@ -692,7 +888,12 @@ class InpageProvider extends ProviderApi {
     _logger.finest('method: $method, params: $params');
     try {
       return await super.call(method, params);
-    } on s.ApprovalsHandleException catch (e) {
+    } on s.ApprovalsHandleException catch (e, t) {
+      _logger.severe(method, e.message, t);
+      inject<s.MessengerService>().show(s.Message.error(message: e.message));
+      rethrow;
+    } on nr.FfiException catch (e, t) {
+      _logger.severe(method, e, t);
       inject<s.MessengerService>().show(s.Message.error(message: e.message));
       rethrow;
     } catch (e, t) {

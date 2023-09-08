@@ -89,4 +89,22 @@ class EverTransportStrategy extends TransportStrategy {
   @override
   // ignore: no-magic-number
   int get defaultNativeCurrencyDecimal => 9;
+
+  @override
+  final stakeInformation = StakingInformation(
+    stakingAPYLink: Uri.parse(
+      'https://staking.everwallet.net/v1/strategies/main',
+    ),
+    stakingValutAddress: const Address(
+      address:
+          '0:675a6d63f27e3f24d41d286043a9286b2e3eb6b84fa4c3308cc2833ef6f54d68',
+    ),
+    stakingRootContractAddress: const Address(
+      address:
+          '0:6d42d0bc4a6568120ea88bf642edb653d727cfbd35868c47877532de128e71f2',
+    ),
+    stakeDepositAttachedFee: BigInt.parse('2000000000'), // 2 EVER
+    stakeRemovePendingWithdrawAttachedFee: BigInt.parse('2000000000'), // 2 EVER
+    stakeWithdrawAttachedFee: BigInt.parse('3000000000'), // 3 EVER
+  );
 }
