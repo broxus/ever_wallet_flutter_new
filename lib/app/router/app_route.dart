@@ -165,6 +165,13 @@ enum AppRoute {
     '/browser/browserTabs',
     isSaveLocation: true,
     isBottomNavigationBarVisible: true,
+  ),
+
+  /// Configure networks page
+  configureNetworks(
+    'configureNetworks',
+    'configureNetworks',
+    isSaveLocation: true,
   );
 
   const AppRoute(

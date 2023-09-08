@@ -1,3 +1,4 @@
+import 'package:app/app/router/router.dart';
 import 'package:app/app/service/service.dart';
 import 'package:app/data/models/models.dart';
 import 'package:app/di/di.dart';
@@ -34,7 +35,10 @@ class _SelectNetworkSheetState extends State<SelectNetworkSheet> {
         inject<ConnectionsStorageService>(),
       ),
       child: Stack(
-        children: [_networkList()],
+        children: [
+          _networkList(),
+          _buttons(),
+        ],
       ),
     );
   }
@@ -81,5 +85,26 @@ class _SelectNetworkSheetState extends State<SelectNetworkSheet> {
           SelectNetworkEvent.setCurrentConnectionId(id: connection.id),
         );
     Navigator.of(context).pop();
+  }
+
+  Widget _buttons() {
+    return Align(
+      alignment: Alignment.bottomCenter,
+      child: Padding(
+        padding: const EdgeInsets.all(DimensSize.d16),
+        child: CommonButton.primary(
+          fillWidth: true,
+          onPressed: () => _onConfigurePressed(context),
+          text: LocaleKeys.configureNetworks.tr(),
+        ),
+      ),
+    );
+  }
+
+  void _onConfigurePressed(BuildContext context) {
+    Navigator.of(context).pop();
+    context.goFurther(
+      AppRoute.configureNetworks.path,
+    );
   }
 }
