@@ -81,4 +81,7 @@ class VenomTransportStrategy extends TransportStrategy {
   @override
   // ignore: no-magic-number
   int get defaultNativeCurrencyDecimal => 9;
+
+  @override
+  StakingInformation? get stakeInformation => null;
 }
