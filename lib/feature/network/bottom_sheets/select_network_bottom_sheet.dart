@@ -34,29 +34,36 @@ class _SelectNetworkSheetState extends State<SelectNetworkSheet> {
       create: (context) => SelectNetworkBloc(
         inject<ConnectionsStorageService>(),
       ),
-      child: Stack(
-        children: [
-          _networkList(),
-          _buttons(),
-        ],
+      child: BlocBuilder<SelectNetworkBloc, SelectNetworkState>(
+        builder: (context, state) {
+          return Stack(
+            alignment: AlignmentDirectional.bottomCenter,
+            children: [
+              CustomScrollView(
+                slivers: [
+                  _networkListBuilder(context),
+                  _bottomSpacerBuilder(),
+                ],
+              ),
+              _buttonsBuilder(),
+            ],
+          );
+        },
       ),
     );
   }
 
-  Widget _networkList() {
-    return BlocBuilder<SelectNetworkBloc, SelectNetworkState>(
-      builder: (context, state) {
-        final items = context.watch<SelectNetworkBloc>().state.connections;
-        final currentConnectionId =
-            context.watch<SelectNetworkBloc>().state.currentConnectionId;
-        return ListView.builder(
-          itemCount: items.length,
-          itemBuilder: (context, index) {
-            final item = items[index];
-            final isSelected = item.id == currentConnectionId;
-            return _networkItem(context, item, isSelected);
-          },
-        );
+  SliverList _networkListBuilder(BuildContext context) {
+    final items = context.watch<SelectNetworkBloc>().state.connections;
+    final currentConnectionId =
+        context.watch<SelectNetworkBloc>().state.currentConnectionId;
+
+    return SliverList.builder(
+      itemCount: items.length,
+      itemBuilder: (_, index) {
+        final item = items[index];
+        final isSelected = item.id == currentConnectionId;
+        return _networkItem(context, item, isSelected);
       },
     );
   }
@@ -80,6 +87,17 @@ class _SelectNetworkSheetState extends State<SelectNetworkSheet> {
     );
   }
 
+  Widget _bottomSpacerBuilder() {
+    return const SliverSafeArea(
+      sliver: SliverToBoxAdapter(
+        child: SizedBox(
+          height: DimensSize.d56 + DimensSize.d16,
+        ),
+      ),
+      minimum: EdgeInsets.only(bottom: DimensSize.d16),
+    );
+  }
+
   void _onItemPressed(BuildContext context, ConnectionData connection) {
     context.read<SelectNetworkBloc>().add(
           SelectNetworkEvent.setCurrentConnectionId(id: connection.id),
@@ -87,15 +105,23 @@ class _SelectNetworkSheetState extends State<SelectNetworkSheet> {
     Navigator.of(context).pop();
   }
 
-  Widget _buttons() {
-    return Align(
-      alignment: Alignment.bottomCenter,
-      child: Padding(
-        padding: const EdgeInsets.all(DimensSize.d16),
+  Widget _buttonsBuilder() {
+    final colors = context.themeStyle.colors;
+
+    return Container(
+      decoration: BoxDecoration(
+        gradient: LinearGradient(
+          begin: Alignment.topCenter,
+          end: Alignment.bottomCenter,
+          colors: colors.gradient,
+        ),
+      ),
+      child: SafeArea(
+        minimum: const EdgeInsets.all(DimensSize.d16),
         child: CommonButton.primary(
-          fillWidth: true,
-          onPressed: () => _onConfigurePressed(context),
           text: LocaleKeys.configureNetworks.tr(),
+          onPressed: () => _onConfigurePressed(context),
+          fillWidth: true,
         ),
       ),
     );
