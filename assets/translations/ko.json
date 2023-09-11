@@ -134,6 +134,7 @@
   "networksWord": "Networks",
   "selectNetwork": "Select network",
   "configureNetworks": "Configure networks",
+  "addCustomNetwork": "Add custom network",
   "receiveWord": "Receive",
   "sendWord": "Send",
   "stakeWord": "Stake",

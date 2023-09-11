@@ -16,7 +16,7 @@ class ConfigureNetworksPage extends StatelessWidget {
         titleText: LocaleKeys.networksWord.tr(),
       ),
       body: BlocProvider(
-        create: (context) => SelectNetworkBloc(
+        create: (context) => ManageNetworksBloc(
           inject<ConnectionsStorageService>(),
         ),
         child: const ConfigureNetworksView(),

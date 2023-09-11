@@ -20,7 +20,7 @@ class _NetworkSelectionCardState extends State<NetworkSelectionCard> {
     final colors = context.themeStyle.colors;
 
     return BlocProvider(
-      create: (context) => SelectNetworkBloc(
+      create: (context) => ManageNetworksBloc(
         inject<ConnectionsStorageService>(),
       ),
       child: PressScaleWidget(
@@ -28,10 +28,10 @@ class _NetworkSelectionCardState extends State<NetworkSelectionCard> {
         onPressed: () {
           showSelectNetworkSheet(context: context);
         },
-        child: BlocBuilder<SelectNetworkBloc, SelectNetworkState>(
+        child: BlocBuilder<ManageNetworksBloc, ManageNetworksState>(
           builder: (context, state) {
             final currentConnection =
-                context.watch<SelectNetworkBloc>().currentConnection;
+                context.watch<ManageNetworksBloc>().currentConnection;
             return CommonCard(
               padding: EdgeInsets.zero,
               leadingChild: Container(
