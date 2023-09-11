@@ -370,5 +370,8 @@
   "unsupportedAlgorithm": "Unsupported algorithm",
   "specifiedSignerIsNotPermitted": "Specified signer is not permitted",
   "accountNotDeployed": "Account is not deployed",
-  "transactionNotFound": "Transaction not found"
+  "transactionNotFound": "Transaction not found",
+  "callContractMethod": "Call contract method",
+  "recipientAddress": "Recipient address",
+  "sendMessage": "Send message"
 }

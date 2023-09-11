@@ -62,7 +62,7 @@ class ApprovalRequest with _$ApprovalRequest {
     required Address recipient,
     @amountJsonConverter required BigInt amount,
     required bool bounce,
-    required FunctionCall? payload,
+    required String? payload,
     required KnownPayload? knownPayload,
     required Completer<(PublicKey, String)> completer,
   }) = _SendMessage;

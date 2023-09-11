@@ -23,6 +23,7 @@ class TonWalletSendBloc extends Bloc<TonWalletSendEvent, TonWalletSendState> {
     required this.destination,
     required this.amount,
     required this.comment,
+    this.needRepack = true,
   }) : super(const TonWalletSendState.loading()) {
     _registerHandlers();
   }
@@ -40,6 +41,11 @@ class TonWalletSendBloc extends Bloc<TonWalletSendEvent, TonWalletSendState> {
   /// Address where funds should be sent
   final Address destination;
   late Address repackedDestination;
+
+  /// if true, then [repackedDestination] will be calculated during
+  /// [_handlePrepare], if false, then it must be set manually during creation
+  /// of bloc.
+  final bool needRepack;
 
   /// Amount of tokens that should be sent
   final BigInt amount;
@@ -65,7 +71,9 @@ class TonWalletSendBloc extends Bloc<TonWalletSendEvent, TonWalletSendState> {
 
   Future<void> _handlePrepare(Emitter<TonWalletSendState> emit) async {
     try {
-      repackedDestination = await repackAddress(destination);
+      if (needRepack) {
+        repackedDestination = await repackAddress(destination);
+      }
 
       unsignedMessage = await nekotonRepository.prepareTransfer(
         address: address,

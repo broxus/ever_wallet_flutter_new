@@ -145,7 +145,7 @@ class _ApprovalsListenerWidgetState extends State<ApprovalsListenerWidget> {
           recipient: recipient,
           amount: amount,
           bounce: bounce,
-          payload: payload,
+          comment: payload,
           knownPayload: knownPayload,
           completer: completer,
         ),
@@ -358,12 +358,15 @@ class _ApprovalsListenerWidgetState extends State<ApprovalsListenerWidget> {
     required Completer<String> completer,
   }) async {
     try {
-      final result = await showCallContractMethodSheet(
+      final result = await showAskPasswordApprovalsSheet(
         context: context,
-        origin: origin,
+        sheetTitle: LocaleKeys.callContractMethod.tr(),
         publicKey: publicKey,
-        recipient: recipient,
-        payload: payload,
+        data: LinkedHashMap.fromEntries([
+          MapEntry(LocaleKeys.originWord.tr(), origin.host),
+          MapEntry(LocaleKeys.publicKey.tr(), publicKey.publicKey),
+          MapEntry(LocaleKeys.recipientAddress.tr(), recipient.address),
+        ]),
       );
 
       if (result != null) {
@@ -383,7 +386,7 @@ class _ApprovalsListenerWidgetState extends State<ApprovalsListenerWidget> {
     required Address recipient,
     required BigInt amount,
     required bool bounce,
-    required FunctionCall? payload,
+    required String? comment,
     required KnownPayload? knownPayload,
     required Completer<(PublicKey, String)> completer,
   }) async {
@@ -395,7 +398,7 @@ class _ApprovalsListenerWidgetState extends State<ApprovalsListenerWidget> {
         recipient: recipient,
         amount: amount,
         bounce: bounce,
-        payload: payload,
+        comment: comment,
         knownPayload: knownPayload,
       );
 
