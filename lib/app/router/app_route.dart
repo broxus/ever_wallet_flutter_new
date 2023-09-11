@@ -172,6 +172,13 @@ enum AppRoute {
     'configureNetworks',
     'configureNetworks',
     isSaveLocation: true,
+  ),
+
+  /// Edit network page
+  editNetwork(
+    'editNetwork',
+    'editNetwork',
+    isSaveLocation: true,
   );
 
   const AppRoute(

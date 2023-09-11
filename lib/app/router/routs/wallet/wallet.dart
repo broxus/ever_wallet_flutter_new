@@ -266,5 +266,11 @@ GoRoute get configureNetworksRoute {
   return GoRoute(
     path: AppRoute.configureNetworks.path,
     builder: (_, __) => const ConfigureNetworksPage(),
+    routes: [
+      GoRoute(
+        path: AppRoute.editNetwork.path,
+        builder: (_, __) => const EditNetworkPage(),
+      ),
+    ],
   );
 }
