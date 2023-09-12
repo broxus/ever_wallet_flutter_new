@@ -92,6 +92,8 @@ class _BrowserTabViewState extends State<BrowserTabView> {
   Future<void> _handleUrlChanged(BrowserTab newTab, BrowserTab oldTab) async {
     final url = await _webViewController?.getUrl();
 
+    _log.finest('URL: ${url?.toString()}');
+
     // Reload the webview if the tab URL changed and the new URL is not the same
     // as the current URL.
     if (newTab.url != oldTab.url && url != newTab.url) {
@@ -128,6 +130,7 @@ class _BrowserTabViewState extends State<BrowserTabView> {
       android: AndroidInAppWebViewOptions(),
       crossPlatform: InAppWebViewOptions(
         clearCache: clearCache,
+        userAgent: 'EverWalletBrowser',
       ),
     );
 
@@ -548,7 +551,8 @@ class _BrowserTabViewState extends State<BrowserTabView> {
       );
     }
 
-    final entered = await Navigator.of(context).push<BrowserBasicAuthCreds>(
+    final entered = await Navigator.of(context, rootNavigator: true)
+        .push<BrowserBasicAuthCreds>(
       showBrowserEnterBasicAuthCredsSheet(host: challenge.protectionSpace.host),
     );
 

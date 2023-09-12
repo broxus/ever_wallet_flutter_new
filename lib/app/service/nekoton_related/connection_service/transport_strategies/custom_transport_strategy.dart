@@ -83,4 +83,7 @@ class CustomTransportStrategy extends TransportStrategy {
   @override
   // TODO(alex-a4): implement defaultNativeCurrencyDecimal
   int get defaultNativeCurrencyDecimal => throw UnimplementedError();
+
+  @override
+  StakingInformation? get stakeInformation => null;
 }

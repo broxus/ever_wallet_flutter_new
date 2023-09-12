@@ -1,3 +1,4 @@
+import 'package:app/generated/generated.dart';
 import 'package:nekoton_repository/nekoton_repository.dart';
 
 /// Transport strategy for venom network
@@ -19,7 +20,7 @@ class VenomTransportStrategy extends TransportStrategy {
 
   @override
   String currencyUrl(String currencyAddress) =>
-      'https://api.web3.world/v1/currencies/$currencyAddress';
+      'https://testnetapi.web3.world/v1/currencies/$currencyAddress';
 
   @override
   String defaultAccountName(WalletType walletType) => walletType.when(
@@ -56,8 +57,7 @@ class VenomTransportStrategy extends TransportStrategy {
       'https://raw.githubusercontent.com/BVFDT/venom-assets/master/manifest.json';
 
   @override
-  // TODO(alex-a4): implement nativeTokenIcon
-  String get nativeTokenIcon => throw UnimplementedError();
+  String get nativeTokenIcon => Assets.images.venom.path;
 
   @override
   final nativeTokenTicker = 'VENOM';
@@ -81,4 +81,7 @@ class VenomTransportStrategy extends TransportStrategy {
   @override
   // ignore: no-magic-number
   int get defaultNativeCurrencyDecimal => 9;
+
+  @override
+  StakingInformation? get stakeInformation => null;
 }
