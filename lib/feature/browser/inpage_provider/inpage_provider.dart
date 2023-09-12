@@ -419,6 +419,8 @@ class InpageProvider extends ProviderApi {
         message: unsignedMessage,
       );
 
+      unsignedMessage.dispose();
+
       return EstimateFeesOutput(fees.toString());
     } finally {
       if (subscribedNew) {
@@ -429,7 +431,62 @@ class InpageProvider extends ProviderApi {
 
   @override
   Future<ExecuteLocalOutput> executeLocal(ExecuteLocalInput input) async {
-    final header = input.messageHeader;
+    final contract = nr.Address(address: input.address);
+    final header = input.messageHeader as Map<String, dynamic>;
+    final repackedAddress = await nr.repackAddress(contract);
+
+    String message;
+
+    if (header['type'] == 'external') {
+      final payload = input.payload;
+      if (payload == null || payload is String) {
+        message = (await nr.createRawExternalMessage(
+          address: repackedAddress,
+          stateInit: input.stateInit,
+          payload: payload as String?,
+          timeout: defaultTimeout,
+        ))
+            .boc;
+      } else if (header['withoutSignature'] == true) {
+        final call = FunctionCall.fromJson(payload as Map<String, dynamic>);
+        message = (await nr.createExternalMessageWithoutSignature(
+          dst: repackedAddress,
+          contractAbi: call.abi,
+          method: call.method,
+          input: call.params,
+          timeout: defaultTimeout,
+        ))
+            .boc;
+      }
+    } else if (header['type'] == 'internal') {
+      final sender = nr.Address(address: header['sender']! as String);
+      final amount = BigInt.parse(header['amount']! as String);
+      final bounce = header['bounce']! as bool;
+      final bounced = header['bounced'] as bool?;
+      final body = input.payload == null
+          ? null
+          : input.payload is String
+              ? input.payload! as String
+              : await (FunctionCall call) async {
+                  await nr.encodeInternalInput(
+                    contractAbi: call.abi,
+                    method: call.method,
+                    input: call.params,
+                  );
+                }(
+                  FunctionCall.fromJson(input.payload! as Map<String, dynamic>),
+                );
+      message = await nr.encodeInternalMessage(
+        sender: sender,
+        contract: repackedAddress,
+        bounce: bounce,
+        stateInit: input.stateInit,
+        body: body,
+        amount: amount,
+      );
+    } else {
+      throw s.ApprovalsHandleException(LocaleKeys.unknownMessageType.tr());
+    }
 
     throw UnimplementedError();
     // _checkPermissions(permissions: permissionsService.getPermissions(origin));
@@ -790,6 +847,7 @@ class InpageProvider extends ProviderApi {
       );
 
       final signedMessage = await unsignedMessage.sign(signature: signature);
+      unsignedMessage.dispose();
 
       nr.Transaction transaction;
 
@@ -893,6 +951,7 @@ class InpageProvider extends ProviderApi {
       );
 
       final signedMessage = await unsignedMessage.sign(signature: signature);
+      unsignedMessage.dispose();
 
       final transaction = await nekotonRepository.sendContractUnawaited(
         address: repackedRecipient,
@@ -1017,6 +1076,7 @@ class InpageProvider extends ProviderApi {
       );
 
       final signedMessage = await unsignedMessage.sign(signature: signature);
+      unsignedMessage.dispose();
 
       final transaction = await nekotonRepository.send(
         address: sender,
@@ -1115,6 +1175,7 @@ class InpageProvider extends ProviderApi {
       );
 
       final signedMessage = await unsignedMessage.sign(signature: signature);
+      unsignedMessage.dispose();
 
       final transaction = await nekotonRepository.sendUnawaited(
         address: sender,
@@ -1190,7 +1251,7 @@ class InpageProvider extends ProviderApi {
       final payload =
           FunctionCall.fromJson(input.payload! as Map<String, dynamic>);
       final signedMessage = await nr.createExternalMessageWithoutSignature(
-        dst: repackedRecipient.address,
+        dst: repackedRecipient,
         contractAbi: payload.abi,
         method: payload.method,
         input: payload.params,

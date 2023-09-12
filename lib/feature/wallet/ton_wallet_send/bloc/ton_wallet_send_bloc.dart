@@ -57,6 +57,7 @@ class TonWalletSendBloc extends Bloc<TonWalletSendEvent, TonWalletSendState> {
   BigInt? fees;
 
   late UnsignedMessage unsignedMessage;
+  UnsignedMessage? _unsignedMessage;
 
   void _registerHandlers() {
     on<_Prepare>((event, emit) => _handlePrepare(emit));
@@ -84,6 +85,7 @@ class TonWalletSendBloc extends Bloc<TonWalletSendEvent, TonWalletSendState> {
         bounce: defaultMessageBounce,
         expiration: defaultSendTimeout,
       );
+      _unsignedMessage = unsignedMessage;
 
       fees = await nekotonRepository.estimateFees(
         address: address,
@@ -165,5 +167,11 @@ class TonWalletSendBloc extends Bloc<TonWalletSendEvent, TonWalletSendState> {
       inject<MessengerService>().show(Message.error(message: e.toString()));
       emit(TonWalletSendState.readyToSend(fees!));
     }
+  }
+
+  @override
+  Future<void> close() {
+    _unsignedMessage?.dispose();
+    return super.close();
   }
 }

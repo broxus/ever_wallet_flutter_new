@@ -65,6 +65,7 @@ class TokenWalletSendBloc
   late Currency tokenCurrency;
 
   late UnsignedMessage unsignedMessage;
+  UnsignedMessage? _unsignedMessage;
 
   void _registerHandlers() {
     on<_Prepare>((event, emit) => _handlePrepare(emit));
@@ -113,6 +114,7 @@ class TokenWalletSendBloc
         bounce: defaultMessageBounce,
         expiration: defaultSendTimeout,
       );
+      _unsignedMessage = unsignedMessage;
 
       fees = await nekotonRepository.estimateFees(
         address: owner,
@@ -196,5 +198,11 @@ class TokenWalletSendBloc
       inject<MessengerService>().show(Message.error(message: e.toString()));
       emit(TokenWalletSendState.readyToSend(fees!, tokenCurrency));
     }
+  }
+
+  @override
+  Future<void> close() {
+    _unsignedMessage?.dispose();
+    return super.close();
   }
 }

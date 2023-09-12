@@ -373,5 +373,6 @@
   "transactionNotFound": "Transaction not found",
   "callContractMethod": "Call contract method",
   "recipientAddress": "Recipient address",
-  "sendMessage": "Send message"
+  "sendMessage": "Send message",
+  "unknownMessageType": "Unknown message type"
 }
