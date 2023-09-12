@@ -434,16 +434,16 @@ class InpageProvider extends ProviderApi {
     final contract = nr.Address(address: input.address);
     final header = input.messageHeader as Map<String, dynamic>;
     final repackedAddress = await nr.repackAddress(contract);
+    final payload = input.payload;
 
     String message;
 
     if (header['type'] == 'external') {
-      final payload = input.payload;
       if (payload == null || payload is String) {
         message = (await nr.createRawExternalMessage(
-          address: repackedAddress,
+          dst: repackedAddress,
           stateInit: input.stateInit,
-          payload: payload as String?,
+          body: payload as String?,
           timeout: defaultTimeout,
         ))
             .boc;
@@ -457,6 +457,55 @@ class InpageProvider extends ProviderApi {
           timeout: defaultTimeout,
         ))
             .boc;
+      } else {
+        final publicKey =
+            nr.PublicKey(publicKey: header['publicKey']! as String);
+        final call = FunctionCall.fromJson(payload as Map<String, dynamic>);
+
+        _checkPermissions(
+          permissions: permissionsService.getPermissions(origin),
+          account: true,
+          publicKey: publicKey,
+        );
+
+        final unsignedMessage = await nr.createExternalMessage(
+          dst: repackedAddress.address,
+          publicKey: publicKey,
+          contractAbi: call.abi,
+          method: call.method,
+          input: call.params,
+          timeout: defaultTimeout,
+          stateInit: input.stateInit,
+        );
+
+        try {
+          if (input.executorParams?.disableSignatureCheck ?? false) {
+            message = (await unsignedMessage.signFake()).boc;
+          } else {
+            final password = await approvalsService.callContractMethod(
+              origin: origin!,
+              payload: nr.FunctionCall.fromJson(call.toJson()),
+              publicKey: publicKey,
+              recipient: repackedAddress,
+            );
+            final transport = nekotonRepository.currentTransport.transport;
+
+            await unsignedMessage.refreshTimeout();
+
+            final signature = await nekotonRepository.seedList.sign(
+              data: unsignedMessage.hash,
+              publicKey: publicKey,
+              password: password,
+              signatureId: await transport.getSignatureId(),
+            );
+
+            final signedMessage =
+                await unsignedMessage.sign(signature: signature);
+            message = signedMessage.boc;
+          }
+        } finally {
+          unsignedMessage.dispose();
+        }
       }
     } else if (header['type'] == 'internal') {
       final sender = nr.Address(address: header['sender']! as String);
@@ -477,8 +526,8 @@ class InpageProvider extends ProviderApi {
                   FunctionCall.fromJson(input.payload! as Map<String, dynamic>),
                 );
       message = await nr.encodeInternalMessage(
-        sender: sender,
-        contract: repackedAddress,
+        src: sender,
+        dst: repackedAddress,
         bounce: bounce,
         stateInit: input.stateInit,
         body: body,
@@ -488,11 +537,42 @@ class InpageProvider extends ProviderApi {
       throw s.ApprovalsHandleException(LocaleKeys.unknownMessageType.tr());
     }
 
-    throw UnimplementedError();
-    // _checkPermissions(permissions: permissionsService.getPermissions(origin));
-    // final output = await nr.executeLocal();
+    final transport = nekotonRepository.currentTransport.transport;
+    final state = await transport.getFullContractState(repackedAddress);
+    final config = await transport.getBlockchainConfig();
 
-    // return ExecuteLocalOutput();
+    final account = await nr.makeFullAccountBoc(state?.boc);
+    final overrideBalance = input.executorParams?.overrideBalance;
+
+    final (accountRes, transaction) = await nr.executeLocal(
+      account: account,
+      config: config.config,
+      disableSignatureCheck:
+          input.executorParams?.disableSignatureCheck ?? false,
+      message: message,
+      utime: DateTime.now(),
+      globalId: config.globalId,
+      overwriteBalance: overrideBalance == null
+          ? null
+          : BigInt.parse(overrideBalance as String),
+    );
+    final newState = await nr.parseFullAccountBoc(accountRes);
+
+    Map<String, Object?>? output;
+    if (payload != null && payload is Map<String, dynamic>) {
+      final call = FunctionCall.fromJson(payload);
+      output = (await nr.decodeTransaction(
+        transaction: transaction,
+        contractAbi: call.abi,
+      ))
+          ?.output;
+    }
+
+    return ExecuteLocalOutput(
+      Transaction.fromJson(transaction.toJson()),
+      newState == null ? null : FullContractState.fromJson(newState.toJson()),
+      output,
+    );
   }
 
   @override
@@ -1483,6 +1563,13 @@ class InpageProvider extends ProviderApi {
     } on s.ApprovalsHandleException catch (e, t) {
       _logger.severe(method, e.message, t);
       inject<s.MessengerService>().show(s.Message.error(message: e.message));
+      rethrow;
+    } on nr.ExecuteLocalException catch (e) {
+      inject<s.MessengerService>().show(
+        s.Message.error(
+          message: LocaleKeys.contractWithErrorCode.tr(args: [e.errorCode]),
+        ),
+      );
       rethrow;
     } on nr.FfiException catch (e, t) {
       _logger.severe(method, e, t);

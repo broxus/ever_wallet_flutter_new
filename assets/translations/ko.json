@@ -374,5 +374,6 @@
   "callContractMethod": "Call contract method",
   "recipientAddress": "Recipient address",
   "sendMessage": "Send message",
-  "unknownMessageType": "Unknown message type"
+  "unknownMessageType": "Unknown message type",
+  "contractWithErrorCode": "Contract did not accept the message. Exit code: {}"
 }
