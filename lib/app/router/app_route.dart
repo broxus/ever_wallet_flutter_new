@@ -263,11 +263,6 @@ enum AppRoute {
     ).toString();
   }
 
-  /// Helper method, that allows add query parameters to [path].
-  String pathWithQuery(Map<String, String>? query) {
-    return Uri(path: path, queryParameters: query).toString();
-  }
-
   /// Returns path segments from [fullPath]. It's a wrapper for
   /// [Uri.pathSegments], but for the first segment adds slash.
   /// Also it filters and joins segments that contains parameters.

@@ -13,7 +13,7 @@ void browserNewTab(BuildContext context, String url) {
     context.goNamed(
       AppRoute.browser.name,
       queryParameters: {
-        browserUrlPathParam: url,
+        browserUrlQueryParam: url,
       },
     );
   });
