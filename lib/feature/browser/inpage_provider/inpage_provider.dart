@@ -532,6 +532,7 @@ class InpageProvider extends ProviderApi {
         stateInit: input.stateInit,
         body: body,
         amount: amount,
+        bounced: bounced,
       );
     } else {
       throw s.ApprovalsHandleException(LocaleKeys.unknownMessageType.tr());
@@ -1287,7 +1288,7 @@ class InpageProvider extends ProviderApi {
 
       return SendMessageDelayedOutput(
         DelayedMessage(
-          hash,
+          signedMessage.hash,
           sender.address,
           transaction.expireAt.millisecondsSinceEpoch ~/ 1000,
         ),
