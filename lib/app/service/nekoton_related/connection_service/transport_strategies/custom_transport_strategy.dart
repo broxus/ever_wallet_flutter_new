@@ -1,18 +1,26 @@
-import 'package:nekoton_repository/nekoton_repository.dart';
+import 'package:app/data/models/models.dart';
+import 'package:nekoton_repository/nekoton_repository.dart' hide ConnectionData;
 
 // TODO(alex-a4): implement custom strategy when it will be implemented
 /// Transport strategy for any different custom network
 class CustomTransportStrategy extends TransportStrategy {
-  CustomTransportStrategy({required this.transport});
+  CustomTransportStrategy({required this.transport, required this.connection});
 
   @override
   final Transport transport;
 
-  @override
-  String accountExplorerLink(Address accountAddress) => '';
+  final ConnectionData connection;
 
   @override
-  final availableWalletTypes = const [];
+  String accountExplorerLink(Address accountAddress) => '';
+  // TODO(nesquikm): get account explorer link from connection data
+  // '${connection.accountExplorerURL}/${accountAddress.address}';
+
+  @override
+  final availableWalletTypes = const [
+    WalletType.everWallet(),
+    WalletType.multisig(MultisigType.multisig2_1),
+  ];
 
   @override
   String currencyUrl(String currencyAddress) => '';
@@ -69,6 +77,8 @@ class CustomTransportStrategy extends TransportStrategy {
 
   @override
   String transactionExplorerLink(String transactionHash) => '';
+  // TODO(nesquikm): get transaction explorer link from connection data
+  //    '${connection.transactionExplorerURL}/$transactionHash';
 
   @override
   // TODO(alex-a4): implement defaultNativeCurrencyDecimal
