@@ -86,6 +86,7 @@ class SelectNetworkBloc extends Bloc<SelectNetworkEvent, SelectNetworkState> {
           'Current connection with id $currentConnectionId not found. '
           'Returning default connection',
         );
+
         return defaultNetwork;
       },
     );

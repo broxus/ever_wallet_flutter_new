@@ -430,6 +430,7 @@ class InpageProvider extends ProviderApi {
   }
 
   @override
+  // ignore: long-method
   Future<ExecuteLocalOutput> executeLocal(ExecuteLocalInput input) async {
     final contract = nr.Address(address: input.address);
     final header = input.messageHeader as Map<String, dynamic>;
@@ -870,6 +871,7 @@ class InpageProvider extends ProviderApi {
   }
 
   @override
+  // ignore: long-method
   Future<SendExternalMessageOutput> sendExternalMessage(
     SendExternalMessageInput input,
   ) async {
@@ -930,23 +932,19 @@ class InpageProvider extends ProviderApi {
       final signedMessage = await unsignedMessage.sign(signature: signature);
       unsignedMessage.dispose();
 
-      nr.Transaction transaction;
-
-      if (input.local ?? false) {
-        transaction = await nekotonRepository.executeTransactionLocally(
-          address: repackedRecipient,
-          signedMessage: signedMessage,
-          options: nr.TransactionExecutionOptions(
-            disableSignatureCheck:
-                input.executorParams?.disableSignatureCheck ?? false,
-          ),
-        );
-      } else {
-        transaction = await nekotonRepository.sendContract(
-          address: repackedRecipient,
-          signedMessage: signedMessage,
-        );
-      }
+      final transaction = input.local ?? false
+          ? await nekotonRepository.executeTransactionLocally(
+              address: repackedRecipient,
+              signedMessage: signedMessage,
+              options: nr.TransactionExecutionOptions(
+                disableSignatureCheck:
+                    input.executorParams?.disableSignatureCheck ?? false,
+              ),
+            )
+          : await nekotonRepository.sendContract(
+              address: repackedRecipient,
+              signedMessage: signedMessage,
+            );
 
       nr.DecodedTransaction? decodedTransaction;
 
@@ -974,6 +972,7 @@ class InpageProvider extends ProviderApi {
   }
 
   @override
+  // ignore: long-method
   Future<SendExternalMessageDelayedOutput> sendExternalMessageDelayed(
     SendExternalMessageDelayedInput input,
   ) async {
@@ -1040,6 +1039,7 @@ class InpageProvider extends ProviderApi {
       );
 
       unawaited(
+        // ignore: prefer-async-await
         nekotonRepository
             .waitContractSending(pending: transaction, address: recipient)
             .then((trans) {
@@ -1090,6 +1090,7 @@ class InpageProvider extends ProviderApi {
   }
 
   @override
+  // ignore: long-method
   Future<SendMessageOutput> sendMessage(SendMessageInput input) async {
     final sender = nr.Address(address: input.sender);
     final amount = input.amount;
@@ -1187,6 +1188,7 @@ class InpageProvider extends ProviderApi {
   }
 
   @override
+  // ignore: long-method
   Future<SendMessageDelayedOutput> sendMessageDelayed(
     SendMessageDelayedInput input,
   ) async {
@@ -1266,6 +1268,7 @@ class InpageProvider extends ProviderApi {
       );
 
       unawaited(
+        // ignore: prefer-async-await
         nekotonRepository
             .waitSending(pending: transaction, address: sender)
             .then((trans) {
@@ -1290,6 +1293,7 @@ class InpageProvider extends ProviderApi {
         DelayedMessage(
           signedMessage.hash,
           sender.address,
+          // ignore: no-magic-number
           transaction.expireAt.millisecondsSinceEpoch ~/ 1000,
         ),
       );
@@ -1304,6 +1308,7 @@ class InpageProvider extends ProviderApi {
   }
 
   @override
+  // ignore: long-method
   Future<SendUnsignedExternalMessageOutput> sendUnsignedExternalMessage(
     SendUnsignedExternalMessageInput input,
   ) async {
@@ -1340,23 +1345,19 @@ class InpageProvider extends ProviderApi {
         timeout: defaultTimeout,
       );
 
-      nr.Transaction transaction;
-
-      if (input.local ?? false) {
-        transaction = await nekotonRepository.executeTransactionLocally(
-          address: repackedRecipient,
-          signedMessage: signedMessage,
-          options: nr.TransactionExecutionOptions(
-            disableSignatureCheck:
-                input.executorParams?.disableSignatureCheck ?? false,
-          ),
-        );
-      } else {
-        transaction = await nekotonRepository.sendContract(
-          address: repackedRecipient,
-          signedMessage: signedMessage,
-        );
-      }
+      final transaction = input.local ?? false
+          ? await nekotonRepository.executeTransactionLocally(
+              address: repackedRecipient,
+              signedMessage: signedMessage,
+              options: nr.TransactionExecutionOptions(
+                disableSignatureCheck:
+                    input.executorParams?.disableSignatureCheck ?? false,
+              ),
+            )
+          : await nekotonRepository.sendContract(
+              address: repackedRecipient,
+              signedMessage: signedMessage,
+            );
 
       nr.DecodedTransaction? decodedTransaction;
 

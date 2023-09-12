@@ -45,11 +45,13 @@ class _SelectNetworkSheetState extends State<SelectNetworkSheet> {
         final items = context.watch<SelectNetworkBloc>().state.connections;
         final currentConnectionId =
             context.watch<SelectNetworkBloc>().state.currentConnectionId;
+
         return ListView.builder(
           itemCount: items.length,
           itemBuilder: (context, index) {
             final item = items[index];
             final isSelected = item.id == currentConnectionId;
+
             return _networkItem(context, item, isSelected);
           },
         );

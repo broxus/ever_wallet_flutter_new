@@ -291,6 +291,7 @@ class WalletDeployBloc extends Bloc<WalletDeployEvent, WalletDeployState> {
   @override
   Future<void> close() {
     _unsignedMessage?.dispose();
+
     return super.close();
   }
 }

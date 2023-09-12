@@ -203,6 +203,7 @@ class TokenWalletSendBloc
   @override
   Future<void> close() {
     _unsignedMessage?.dispose();
+
     return super.close();
   }
 }

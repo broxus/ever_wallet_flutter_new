@@ -366,6 +366,7 @@ class _ApprovalsListenerWidgetState extends State<ApprovalsListenerWidget> {
           MapEntry(LocaleKeys.originWord.tr(), origin.host),
           MapEntry(LocaleKeys.publicKey.tr(), publicKey.publicKey),
           MapEntry(LocaleKeys.recipientAddress.tr(), recipient.address),
+          MapEntry(LocaleKeys.methodWord.tr(), payload.method),
         ]),
       );
 

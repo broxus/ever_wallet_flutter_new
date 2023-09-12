@@ -82,10 +82,26 @@ class SendMessageSheet extends StatelessWidget {
           final custodians = state.when(
             loading: () => null,
             empty: () => null,
-            data: (_, __, selectedCustodian, localCustodians, ___, ____) =>
+            data: (
+              _,
+              __,
+              selectedCustodian,
+              localCustodians,
+              ___,
+              ____,
+            ) =>
                 (selectedCustodian, localCustodians),
-            goNext: (_, __, selectedCustodian, localCustodians, ___, ____,
-                    _____, ______, _______) =>
+            goNext: (
+              _,
+              __,
+              selectedCustodian,
+              localCustodians,
+              ___,
+              ____,
+              _____,
+              ______,
+              _______,
+            ) =>
                 (selectedCustodian, localCustodians),
           );
           final selected = custodians?.$1;
@@ -100,6 +116,7 @@ class SendMessageSheet extends StatelessWidget {
     );
   }
 
+  // ignore: long-method
   Widget body({
     required List<PublicKey>? possible,
     required PublicKey? selected,

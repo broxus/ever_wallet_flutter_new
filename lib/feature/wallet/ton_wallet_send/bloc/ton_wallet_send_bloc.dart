@@ -172,6 +172,7 @@ class TonWalletSendBloc extends Bloc<TonWalletSendEvent, TonWalletSendState> {
   @override
   Future<void> close() {
     _unsignedMessage?.dispose();
+
     return super.close();
   }
 }
