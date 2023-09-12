@@ -64,14 +64,14 @@ class ConnectionService {
     );
 
     await _nekotonRepository.updateTransport(
-      _createStrategyByType(transport, connection),
+      _createStrategyByConnection(transport, connection),
     );
     _log.finest('updateTransportByConnection completed!');
   }
 
   /// Create TransportStrategy based on [ConnectionData.networkType] of
   /// [connection] data.
-  TransportStrategy _createStrategyByType(
+  TransportStrategy _createStrategyByConnection(
     Transport transport,
     ConnectionData connection,
   ) {
