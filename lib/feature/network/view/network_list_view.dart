@@ -81,7 +81,7 @@ class _NetworkListViewState extends State<NetworkListView> {
     return const SliverSafeArea(
       sliver: SliverToBoxAdapter(
         child: SizedBox(
-          height: DimensSize.d56 + DimensSize.d16,
+          height: commonButtonHeight + DimensSize.d16,
         ),
       ),
       minimum: EdgeInsets.only(bottom: DimensSize.d16),
