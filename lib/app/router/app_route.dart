@@ -359,13 +359,18 @@ extension NavigationHelper on BuildContext {
   /// ```
   /// onPressed: () => context.goFurther(AppRoute.multiuse.path),
   /// ```
-  void goFurther(String location, {Object? extra}) {
+  void goFurther(
+    String location, {
+    Object? extra,
+    bool preserveQueryParams = false,
+  }) {
     if (!mounted) return;
 
     final currentLocation = inject<NavigationService>().state.location;
     var resultLocation = Uri.parse(currentLocation);
-    // We have query params in old path and we must update it manually
-    if (resultLocation.hasQuery) {
+    // We have query params in old path that we should preserve, so we must
+    // update it manually
+    if (resultLocation.hasQuery && preserveQueryParams) {
       final newLocation = Uri.parse(location);
       final query = <String, dynamic>{}
         ..addAll(resultLocation.queryParameters)
@@ -402,10 +407,20 @@ extension NavigationHelper on BuildContext {
   }
 
   /// Pop current screen if possible.
-  void maybePop() {
+  void maybePop({bool preserveQueryParams = true}) {
+    if (!preserveQueryParams) {
+      clearQueryParams();
+    }
+
     final goRouter = GoRouter.of(this);
     if (goRouter.canPop()) {
       goRouter.pop();
     }
+  }
+
+  void clearQueryParamsAndPop<T extends Object?>([T? result]) {
+    clearQueryParams();
+
+    GoRouter.of(this).pop<T>(result);
   }
 }

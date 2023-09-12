@@ -63,7 +63,7 @@ class TonWalletMultisigPendingTransactionDetailsPage extends StatelessWidget {
                             transaction.value.toString(),
                         if (transaction.comment != null)
                           tonWalletConfirmTransactionCommentQueryParam:
-                              transaction.comment!,
+                              transaction.comment,
                       },
                     ),
                   );
