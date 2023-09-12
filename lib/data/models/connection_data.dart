@@ -15,6 +15,7 @@ sealed class ConnectionData with _$ConnectionData {
     required List<String> endpoints,
     required Duration timeout,
     required NetworkType networkType,
+    required bool isLocal,
     required bool isPreset,
   }) = _ConnectionDataGql;
 
@@ -25,6 +26,7 @@ sealed class ConnectionData with _$ConnectionData {
     required List<String> endpoints,
     required Duration timeout,
     required NetworkType networkType,
+    required bool isLocal,
   }) =>
       ConnectionData.gql(
         id: const Uuid().v4(),
@@ -34,6 +36,7 @@ sealed class ConnectionData with _$ConnectionData {
         endpoints: endpoints,
         timeout: timeout,
         networkType: networkType,
+        isLocal: isLocal,
         isPreset: false,
       );
 
@@ -54,6 +57,7 @@ sealed class ConnectionData with _$ConnectionData {
         endpoints: endpoints,
         timeout: timeout,
         networkType: networkType,
+        isLocal: false,
         isPreset: true,
       );
 
