@@ -42,7 +42,7 @@ class WalletDeployBloc extends Bloc<WalletDeployEvent, WalletDeployState> {
   BigInt? fees;
   BigInt? balance;
   late UnsignedMessage unsignedMessage;
-  UnsignedMessage _unsignedMessage;
+  UnsignedMessage? _unsignedMessage;
 
   /// Last selected type of deploying.
   /// For [WalletDeployType.multisig] [_cachedRequireConfirmations] and
