@@ -4,6 +4,7 @@ import 'package:app/app/service/nekoton_related/connection_service/network_prese
 import 'package:app/app/service/service.dart';
 import 'package:app/data/models/models.dart';
 import 'package:bloc/bloc.dart';
+import 'package:collection/collection.dart';
 import 'package:freezed_annotation/freezed_annotation.dart';
 import 'package:logging/logging.dart';
 
@@ -26,14 +27,21 @@ class ManageNetworksBloc
     _currentConnectionIdSubscription =
         storageService.currentConnectionIdStream.listen(
       (currentConnectionId) {
-        add(ManageNetworksEvent.setCurrentConnectionId(
-            id: currentConnectionId));
+        add(
+          ManageNetworksEvent.setCurrentConnectionId(
+            id: currentConnectionId,
+          ),
+        );
       },
     );
 
     _connectionsSubscription = storageService.connectionsStream.listen(
       (connections) {
-        add(ManageNetworksEvent.setConnections(connections: connections));
+        add(
+          ManageNetworksEvent.setConnections(
+            connections: connections,
+          ),
+        );
       },
     );
   }
@@ -78,18 +86,25 @@ class ManageNetworksBloc
   }
 
   ConnectionData get currentConnection {
-    final connections = state.connections;
     final currentConnectionId = state.currentConnectionId;
 
-    return connections.firstWhere(
-      (connection) => connection.id == currentConnectionId,
-      orElse: () {
-        _log.warning(
-          'Current connection with id $currentConnectionId not found. '
-          'Returning default connection',
-        );
-        return defaultNetwork;
-      },
+    final connection = getConnection(currentConnectionId);
+    if (connection != null) {
+      return connection;
+    }
+
+    _log.warning(
+      'Current connection with id $currentConnectionId not found. '
+      'Returning default connection',
+    );
+    return defaultNetwork;
+  }
+
+  ConnectionData? getConnection(String connectionId) {
+    final connections = state.connections;
+
+    return connections.firstWhereOrNull(
+      (connection) => connection.id == connectionId,
     );
   }
 }

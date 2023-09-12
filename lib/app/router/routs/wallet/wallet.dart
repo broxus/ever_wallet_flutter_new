@@ -47,6 +47,8 @@ const tonWalletConfirmTransactionAmountQueryParam =
 const tonWalletConfirmTransactionCommentQueryParam =
     'tonWalletConfirmTransactionComment';
 
+const networkConnectionDataIdQueryParam = 'connectionDataId';
+
 /// Branch that is root for wallet.
 StatefulShellBranch get walletBranch {
   return StatefulShellBranch(
@@ -269,7 +271,10 @@ GoRoute get configureNetworksRoute {
     routes: [
       GoRoute(
         path: AppRoute.editNetwork.path,
-        builder: (_, __) => const EditNetworkPage(),
+        builder: (_, state) => EditNetworkPage(
+          connectionDataId:
+              state.uri.queryParameters[networkConnectionDataIdQueryParam],
+        ),
       ),
     ],
   );

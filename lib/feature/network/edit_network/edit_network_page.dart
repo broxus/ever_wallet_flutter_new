@@ -8,7 +8,9 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:ui_components_lib/ui_components_lib.dart';
 
 class EditNetworkPage extends StatefulWidget {
-  const EditNetworkPage({super.key});
+  const EditNetworkPage({this.connectionDataId, super.key});
+
+  final String? connectionDataId;
 
   @override
   State<EditNetworkPage> createState() => _EditNetworkPageState();
@@ -17,15 +19,28 @@ class EditNetworkPage extends StatefulWidget {
 class _EditNetworkPageState extends State<EditNetworkPage> {
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: DefaultAppBar(
-        titleText: LocaleKeys.networksWord.tr(),
+    return BlocProvider(
+      create: (context) => ManageNetworksBloc(
+        inject<ConnectionsStorageService>(),
       ),
-      body: BlocProvider(
-        create: (context) => ManageNetworksBloc(
-          inject<ConnectionsStorageService>(),
-        ),
-        child: const EditNetworkView(),
+      child: BlocBuilder<ManageNetworksBloc, ManageNetworksState>(
+        builder: (context, state) {
+          final connection = widget.connectionDataId == null
+              ? null
+              : context.read<ManageNetworksBloc>().getConnection(
+                    widget.connectionDataId!,
+                  );
+          final title = connection == null
+              ? LocaleKeys.addCustomNetwork.tr()
+              : connection.name;
+
+          return Scaffold(
+            appBar: DefaultAppBar(
+              titleText: title,
+            ),
+            body: const EditNetworkView(),
+          );
+        },
       ),
     );
   }

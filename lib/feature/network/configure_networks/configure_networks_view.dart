@@ -35,7 +35,11 @@ class _ConfigureNetworksViewState extends State<ConfigureNetworksView> {
 
   void _onItemPressed(BuildContext context, ConnectionData connection) {
     context.goFurther(
-      AppRoute.editNetwork.path,
+      AppRoute.editNetwork.pathWithData(
+        queryParameters: {
+          networkConnectionDataIdQueryParam: connection.id,
+        },
+      ),
     );
   }
 
