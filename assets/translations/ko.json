@@ -60,12 +60,12 @@
   "addSeedPhrase": "Add seed phrase",
   "addNewSeedPhrase": "Add new seed phrase",
   "publicKeysWithData": {
-    "one": "{} public key • {}",
-    "other": "{} public keys • {}"
+    "one": "{} public key",
+    "other": "{} public keys"
   },
   "accountsWithData": {
-    "one": "{} account • {}",
-    "other": "{} accounts • {}"
+    "one": "{} account",
+    "other": "{} accounts"
   },
   "accountAddressWithData": "{} • {}",
   "createNewSeed": "Create new seed",

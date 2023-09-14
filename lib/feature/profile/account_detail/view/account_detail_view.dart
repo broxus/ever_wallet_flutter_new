@@ -10,10 +10,12 @@ import 'package:ui_components_lib/ui_components_lib.dart';
 class AccountDetailView extends StatelessWidget {
   const AccountDetailView({
     required this.account,
+    required this.balance,
     super.key,
   });
 
   final KeyAccount account;
+  final Money balance;
 
   @override
   Widget build(BuildContext context) {
@@ -46,7 +48,10 @@ class AccountDetailView extends StatelessWidget {
           ),
           CommonCard(
             topSubtitleText: LocaleKeys.totalBalance.tr(),
-            titleText: '0 USD',
+            titleChild: MoneyWidget(
+              money: balance,
+              style: MoneyWidgetStyle.primary,
+            ),
             height: DimensSize.d76,
             width: double.infinity,
           ),

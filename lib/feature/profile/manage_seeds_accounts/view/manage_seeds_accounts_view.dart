@@ -29,30 +29,6 @@ class ManageSeedsAccountsView extends StatelessWidget {
                 LocaleKeys.manageSeedsAndAccounts.tr(),
                 style: StyleRes.h1.copyWith(color: colors.textPrimary),
               ),
-              SeparatedRow(
-                children: [
-                  Expanded(
-                    child: CommonCard(
-                      height: DimensSize.d76,
-                      padding: const EdgeInsets.symmetric(
-                        horizontal: DimensSize.d16,
-                      ),
-                      topSubtitleText: LocaleKeys.currentSeed.tr(),
-                      titleText: state.currentSeed?.name ?? '',
-                    ),
-                  ),
-                  Expanded(
-                    child: CommonCard(
-                      padding: const EdgeInsets.symmetric(
-                        horizontal: DimensSize.d16,
-                      ),
-                      height: DimensSize.d76,
-                      topSubtitleText: LocaleKeys.totalBalance.tr(),
-                      titleText: '0 USD',
-                    ),
-                  ),
-                ],
-              ),
               Expanded(
                 child: SingleChildScrollView(
                   child: ShapedContainerColumn(
@@ -133,7 +109,7 @@ class ManageSeedsAccountsView extends StatelessWidget {
           titleText: seed.name,
           subtitleText: LocaleKeys.publicKeysWithData.plural(
             seed.allKeys.length,
-            args: ['${seed.allKeys.length}', '0 USD'],
+            args: ['${seed.allKeys.length}'],
           ),
           trailing: SeparatedRow(
             mainAxisSize: MainAxisSize.min,

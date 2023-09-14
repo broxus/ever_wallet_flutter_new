@@ -80,24 +80,6 @@ class CommonListTile extends StatelessWidget {
   Widget build(BuildContext context) {
     final colors = context.themeStyle.colors;
 
-    final title = titleText != null
-        ? Text(
-            titleText!,
-            style: (invertTitleSubtitleStyles
-                    ? StyleRes.addRegular
-                    : StyleRes.button)
-                .copyWith(
-              color: contentColor ??
-                  (invertTitleSubtitleStyles
-                      ? colors.textSecondary
-                      : colors.textPrimary),
-            ),
-            maxLines: 1,
-            overflow: TextOverflow.ellipsis,
-            softWrap: false,
-          )
-        : titleChild;
-
     final subtitle = subtitleText != null
         ? Text(
             subtitleText!,
@@ -115,6 +97,24 @@ class CommonListTile extends StatelessWidget {
             softWrap: subtitleMaxLines == null,
           )
         : subtitleChild;
+
+    final title = titleText != null
+        ? Text(
+            titleText!,
+            style: (invertTitleSubtitleStyles
+                    ? StyleRes.addRegular
+                    : StyleRes.button)
+                .copyWith(
+              color: contentColor ??
+                  (invertTitleSubtitleStyles
+                      ? colors.textSecondary
+                      : colors.textPrimary),
+            ),
+            maxLines: subtitle == null ? null : 1,
+            overflow: subtitle == null ? null : TextOverflow.ellipsis,
+            softWrap: subtitle == null ? null : false,
+          )
+        : titleChild;
 
     return PressScaleWidget(
       onPressed: onPressed,
