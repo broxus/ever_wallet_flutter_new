@@ -114,7 +114,7 @@ sealed class ConnectionData with _$ConnectionData {
     required String endpoint,
     required NetworkType networkType,
     required bool isPreset,
-  }) = _ConnectionDataProto;
+  }) = _ConnectionDataJrpc;
 
   factory ConnectionData.jrpcCustom({
     required String name,
