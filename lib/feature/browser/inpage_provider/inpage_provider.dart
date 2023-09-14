@@ -445,7 +445,7 @@ class InpageProvider extends ProviderApi {
           dst: repackedAddress,
           stateInit: input.stateInit,
           body: payload as String?,
-          timeout: defaultTimeout,
+          timeout: defaultSendTimeoutDuration,
         ))
             .boc;
       } else if (header['withoutSignature'] == true) {
@@ -455,7 +455,7 @@ class InpageProvider extends ProviderApi {
           contractAbi: call.abi,
           method: call.method,
           input: call.params,
-          timeout: defaultTimeout,
+          timeout: defaultSendTimeoutDuration,
         ))
             .boc;
       } else {
@@ -475,7 +475,7 @@ class InpageProvider extends ProviderApi {
           contractAbi: call.abi,
           method: call.method,
           input: call.params,
-          timeout: defaultTimeout,
+          timeout: defaultSendTimeoutDuration,
           stateInit: input.stateInit,
         );
 
@@ -909,7 +909,7 @@ class InpageProvider extends ProviderApi {
         input: input.payload.params,
         publicKey: publicKey,
         stateInit: input.stateInit,
-        timeout: defaultTimeout,
+        timeout: defaultSendTimeoutDuration,
       );
 
       final password = await approvalsService.callContractMethod(
@@ -1010,7 +1010,7 @@ class InpageProvider extends ProviderApi {
         input: input.payload.params,
         publicKey: publicKey,
         stateInit: input.stateInit,
-        timeout: defaultTimeout,
+        timeout: defaultSendTimeoutDuration,
       );
 
       final password = await approvalsService.callContractMethod(
@@ -1342,7 +1342,7 @@ class InpageProvider extends ProviderApi {
         method: payload.method,
         input: payload.params,
         stateInit: input.stateInit,
-        timeout: defaultTimeout,
+        timeout: defaultSendTimeoutDuration,
       );
 
       final transaction = input.local ?? false

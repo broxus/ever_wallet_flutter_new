@@ -10,4 +10,4 @@ const defaultMessageBounce = false;
 const defaultSendTimeout = Expiration.timeout(60);
 
 /// Same as [defaultSendTimeout] but in other type
-const defaultTimeout = Duration(seconds: 60);
+const defaultSendTimeoutDuration = Duration(seconds: 60);
