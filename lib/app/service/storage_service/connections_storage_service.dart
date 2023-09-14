@@ -55,6 +55,7 @@ class ConnectionsStorageService extends AbstractStorageService {
               'Current connection with id $currentConnectionId not found. '
               'Returning default connection',
             );
+
             return defaultNetwork;
           },
         ),
@@ -72,6 +73,7 @@ class ConnectionsStorageService extends AbstractStorageService {
           'Current connection with id $currentConnectionId not found. '
           'Returning default connection',
         );
+
         return defaultNetwork;
       },
     );
