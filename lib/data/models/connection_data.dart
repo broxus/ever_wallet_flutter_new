@@ -15,6 +15,7 @@ sealed class ConnectionData with _$ConnectionData {
     required List<String> endpoints,
     required Duration timeout,
     required NetworkType networkType,
+    required bool isLocal,
     required bool isPreset,
   }) = _ConnectionDataGql;
 
@@ -25,6 +26,7 @@ sealed class ConnectionData with _$ConnectionData {
     required List<String> endpoints,
     required Duration timeout,
     required NetworkType networkType,
+    required bool isLocal,
   }) =>
       ConnectionData.gql(
         id: const Uuid().v4(),
@@ -34,6 +36,7 @@ sealed class ConnectionData with _$ConnectionData {
         endpoints: endpoints,
         timeout: timeout,
         networkType: networkType,
+        isLocal: isLocal,
         isPreset: false,
       );
 
@@ -54,6 +57,7 @@ sealed class ConnectionData with _$ConnectionData {
         endpoints: endpoints,
         timeout: timeout,
         networkType: networkType,
+        isLocal: false,
         isPreset: true,
       );
 
@@ -93,6 +97,51 @@ sealed class ConnectionData with _$ConnectionData {
     required NetworkType networkType,
   }) =>
       ConnectionData.proto(
+        id: id,
+        name: name,
+        networkId: networkId,
+        group: group,
+        endpoint: endpoint,
+        networkType: networkType,
+        isPreset: true,
+      );
+
+  const factory ConnectionData.jrpc({
+    required String id,
+    required String name,
+    required int networkId,
+    required String group,
+    required String endpoint,
+    required NetworkType networkType,
+    required bool isPreset,
+  }) = _ConnectionDataProto;
+
+  factory ConnectionData.jrpcCustom({
+    required String name,
+    required int networkId,
+    required String group,
+    required String endpoint,
+    required NetworkType networkType,
+  }) =>
+      ConnectionData.jrpc(
+        id: const Uuid().v4(),
+        name: name,
+        networkId: networkId,
+        group: group,
+        endpoint: endpoint,
+        networkType: networkType,
+        isPreset: false,
+      );
+
+  factory ConnectionData.jrpcPreset({
+    required String id,
+    required String name,
+    required int networkId,
+    required String group,
+    required String endpoint,
+    required NetworkType networkType,
+  }) =>
+      ConnectionData.jrpc(
         id: id,
         name: name,
         networkId: networkId,

@@ -45,7 +45,7 @@ class ConnectionService {
     final type = connection.networkType;
 
     final transport = await connection.when<Future<Transport>>(
-      gql: (_, name, networkId, group, endpoints, timeout, __, ___) =>
+      gql: (_, name, networkId, group, endpoints, timeout, __, isLocal, ___) =>
           _nekotonRepository.createGqlTransport(
         post: _httpService.postTransportData,
         get: _httpService.getTransportData,
@@ -53,11 +53,19 @@ class ConnectionService {
         networkId: networkId,
         group: group,
         endpoints: endpoints,
-        local: false,
+        local: isLocal,
       ),
       proto: (_, name, networkId, group, endpoint, __, ___) =>
           _nekotonRepository.createProtoTransport(
         post: _httpService.postTransportDataBytes,
+        name: name,
+        networkId: networkId,
+        group: group,
+        endpoint: endpoint,
+      ),
+      jrpc: (_, name, networkId, group, endpoint, __, ___) =>
+          _nekotonRepository.createJrpcTransport(
+        post: _httpService.postTransportData,
         name: name,
         networkId: networkId,
         group: group,
