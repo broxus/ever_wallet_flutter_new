@@ -44,7 +44,9 @@ class AccountCardCubit extends Cubit<AccountCardState> {
   TonWallet? wallet;
 
   void _initWallet(TonWallet w) {
-    if (wallet != null) return;
+    if (wallet != null && wallet!.transport.name == w.transport.name) return;
+
+    _closeSubs();
 
     wallet = w;
     _thisWalletSubscription =
@@ -89,10 +91,14 @@ class AccountCardCubit extends Cubit<AccountCardState> {
   @override
   Future<void> close() {
     _walletsSubscription.cancel();
-    _thisWalletSubscription?.cancel();
-    _balanceSubscription?.cancel();
+    _closeSubs();
 
     return super.close();
+  }
+
+  void _closeSubs() {
+    _thisWalletSubscription?.cancel();
+    _balanceSubscription?.cancel();
   }
 
   static String _walletName(NekotonRepository repo, KeyAccount account) {
