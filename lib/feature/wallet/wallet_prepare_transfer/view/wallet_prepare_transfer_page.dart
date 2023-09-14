@@ -51,8 +51,8 @@ class WalletPrepareTransferPage extends StatelessWidget {
             ) {
               if (selectedAsset.isNative) {
                 context.goFurther(
-                  AppRoute.tonWalletSend.pathWithQuery(
-                    {
+                  AppRoute.tonWalletSend.pathWithData(
+                    queryParameters: {
                       tonWalletSendAddressQueryParam: address.address,
                       tonWalletSendPublicKeyQueryParam:
                           selectedCustodian.publicKey,
@@ -67,8 +67,8 @@ class WalletPrepareTransferPage extends StatelessWidget {
                 );
               } else {
                 context.goFurther(
-                  AppRoute.tokenWalletSend.pathWithQuery(
-                    {
+                  AppRoute.tokenWalletSend.pathWithData(
+                    queryParameters: {
                       tokenWalletSendOwnerQueryParam: address.address,
                       tokenWalletSendContractQueryParam:
                           selectedAsset.rootTokenContract.address,

@@ -1,7 +1,8 @@
+import 'package:app/app/router/router.dart';
 import 'package:app/app/service/service.dart';
 import 'package:app/data/models/models.dart';
 import 'package:app/di/di.dart';
-import 'package:app/feature/network/bloc/bloc.dart';
+import 'package:app/feature/network/network.dart';
 import 'package:app/generated/generated.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -30,58 +31,35 @@ class _SelectNetworkSheetState extends State<SelectNetworkSheet> {
   @override
   Widget build(BuildContext context) {
     return BlocProvider(
-      create: (context) => SelectNetworkBloc(
+      create: (context) => ManageNetworksBloc(
         inject<ConnectionsStorageService>(),
       ),
-      child: Stack(
-        children: [_networkList()],
+      child: BlocBuilder<ManageNetworksBloc, ManageNetworksState>(
+        builder: (context, state) {
+          return NetworkListView(
+            onItemPressed: (connection) => _onItemPressed(
+              context,
+              connection,
+            ),
+            buttonText: LocaleKeys.configureNetworks.tr(),
+            onButtonPressed: _onButtonPressed,
+          );
+        },
       ),
-    );
-  }
-
-  Widget _networkList() {
-    return BlocBuilder<SelectNetworkBloc, SelectNetworkState>(
-      builder: (context, state) {
-        final items = context.watch<SelectNetworkBloc>().state.connections;
-        final currentConnectionId =
-            context.watch<SelectNetworkBloc>().state.currentConnectionId;
-
-        return ListView.builder(
-          itemCount: items.length,
-          itemBuilder: (context, index) {
-            final item = items[index];
-            final isSelected = item.id == currentConnectionId;
-
-            return _networkItem(context, item, isSelected);
-          },
-        );
-      },
-    );
-  }
-
-  Widget _networkItem(
-    BuildContext context,
-    ConnectionData connection,
-    bool isSelected,
-  ) {
-    return CommonListTile(
-      titleText: connection.name,
-      leading: CommonIconWidget.svg(
-        svg: Assets.images.sparxLogoSmall.path,
-      ),
-      trailing: isSelected
-          ? CommonIconWidget.svg(
-              svg: Assets.images.check.path,
-            )
-          : null,
-      onPressed: () => _onItemPressed(context, connection),
     );
   }
 
   void _onItemPressed(BuildContext context, ConnectionData connection) {
-    context.read<SelectNetworkBloc>().add(
-          SelectNetworkEvent.setCurrentConnectionId(id: connection.id),
+    context.read<ManageNetworksBloc>().add(
+          ManageNetworksEvent.setCurrentConnectionId(id: connection.id),
         );
     Navigator.of(context).pop();
+  }
+
+  void _onButtonPressed() {
+    Navigator.of(context).pop();
+    context.goFurther(
+      AppRoute.configureNetworks.path,
+    );
   }
 }
