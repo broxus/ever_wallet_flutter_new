@@ -97,6 +97,7 @@ class ManageNetworksBloc
       'Current connection with id $currentConnectionId not found. '
       'Returning default connection',
     );
+
     return defaultNetwork;
   }
 

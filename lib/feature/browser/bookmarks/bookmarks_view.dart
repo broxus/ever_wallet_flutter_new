@@ -195,7 +195,7 @@ class _BookmarksViewState extends State<BookmarksView> {
       sliver: SliverToBoxAdapter(
         child: SizedBox(
           height: isEditing
-              ? commonButtonHeight * 2 + DimensSize.d16
+              ? commonButtonHeight + commonButtonHeight + DimensSize.d16
               : commonButtonHeight + DimensSize.d16,
         ),
       ),

@@ -23,6 +23,7 @@ class TonWalletSendBloc extends Bloc<TonWalletSendEvent, TonWalletSendState> {
     required this.destination,
     required this.amount,
     required this.comment,
+    this.needRepack = true,
   }) : super(const TonWalletSendState.loading()) {
     _registerHandlers();
   }
@@ -41,6 +42,11 @@ class TonWalletSendBloc extends Bloc<TonWalletSendEvent, TonWalletSendState> {
   final Address destination;
   late Address repackedDestination;
 
+  /// if true, then [repackedDestination] will be calculated during
+  /// [_handlePrepare], if false, then it must be set manually during creation
+  /// of bloc.
+  final bool needRepack;
+
   /// Amount of tokens that should be sent
   final BigInt amount;
 
@@ -51,6 +57,7 @@ class TonWalletSendBloc extends Bloc<TonWalletSendEvent, TonWalletSendState> {
   BigInt? fees;
 
   late UnsignedMessage unsignedMessage;
+  UnsignedMessage? _unsignedMessage;
 
   void _registerHandlers() {
     on<_Prepare>((event, emit) => _handlePrepare(emit));
@@ -65,7 +72,9 @@ class TonWalletSendBloc extends Bloc<TonWalletSendEvent, TonWalletSendState> {
 
   Future<void> _handlePrepare(Emitter<TonWalletSendState> emit) async {
     try {
-      repackedDestination = await repackAddress(destination);
+      if (needRepack) {
+        repackedDestination = await repackAddress(destination);
+      }
 
       unsignedMessage = await nekotonRepository.prepareTransfer(
         address: address,
@@ -76,6 +85,7 @@ class TonWalletSendBloc extends Bloc<TonWalletSendEvent, TonWalletSendState> {
         bounce: defaultMessageBounce,
         expiration: defaultSendTimeout,
       );
+      _unsignedMessage = unsignedMessage;
 
       fees = await nekotonRepository.estimateFees(
         address: address,
@@ -157,5 +167,12 @@ class TonWalletSendBloc extends Bloc<TonWalletSendEvent, TonWalletSendState> {
       inject<MessengerService>().show(Message.error(message: e.toString()));
       emit(TonWalletSendState.readyToSend(fees!));
     }
+  }
+
+  @override
+  Future<void> close() {
+    _unsignedMessage?.dispose();
+
+    return super.close();
   }
 }

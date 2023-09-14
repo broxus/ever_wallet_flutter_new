@@ -50,6 +50,7 @@ class _NetworkListViewState extends State<NetworkListView> {
       itemBuilder: (_, index) {
         final item = items[index];
         final isSelected = item.id == currentConnectionId;
+
         return _networkItem(item, isSelected);
       },
     );

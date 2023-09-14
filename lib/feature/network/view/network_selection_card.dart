@@ -32,6 +32,7 @@ class _NetworkSelectionCardState extends State<NetworkSelectionCard> {
           builder: (context, state) {
             final currentConnection =
                 context.watch<ManageNetworksBloc>().currentConnection;
+
             return CommonCard(
               padding: EdgeInsets.zero,
               leadingChild: Container(

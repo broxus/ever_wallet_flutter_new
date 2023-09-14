@@ -263,7 +263,7 @@ class _HistoryViewState extends State<HistoryView> {
       sliver: SliverToBoxAdapter(
         child: SizedBox(
           height: isEditing
-              ? commonButtonHeight * 2 + DimensSize.d16
+              ? commonButtonHeight + commonButtonHeight + DimensSize.d16
               : commonButtonHeight + DimensSize.d16,
         ),
       ),

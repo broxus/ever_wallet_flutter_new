@@ -42,6 +42,7 @@ class WalletDeployBloc extends Bloc<WalletDeployEvent, WalletDeployState> {
   BigInt? fees;
   BigInt? balance;
   late UnsignedMessage unsignedMessage;
+  UnsignedMessage? _unsignedMessage;
 
   /// Last selected type of deploying.
   /// For [WalletDeployType.multisig] [_cachedRequireConfirmations] and
@@ -121,6 +122,7 @@ class WalletDeployBloc extends Bloc<WalletDeployEvent, WalletDeployState> {
         address,
         defaultSendTimeout,
       );
+      _unsignedMessage = unsignedMessage;
 
       await _handlePrepareDeploy(emit);
     } on FfiException catch (e, t) {
@@ -284,5 +286,12 @@ class WalletDeployBloc extends Bloc<WalletDeployEvent, WalletDeployState> {
         ),
       );
     }
+  }
+
+  @override
+  Future<void> close() {
+    _unsignedMessage?.dispose();
+
+    return super.close();
   }
 }

@@ -64,6 +64,7 @@ class TonConfirmTransactionBloc
 
   late PublicKey selectedCustodian;
   late UnsignedMessage unsignedMessage;
+  UnsignedMessage? _unsignedMessage;
 
   void _registerHandlers() {
     on<_Prepare>((event, emit) => _handlePrepare(emit, event.custodian));
@@ -96,6 +97,7 @@ class TonConfirmTransactionBloc
         transactionId: transactionId,
         expiration: defaultSendTimeout,
       );
+      _unsignedMessage = unsignedMessage;
 
       fees = await nekotonRepository.estimateFees(
         address: walletAddress,
@@ -188,5 +190,12 @@ class TonConfirmTransactionBloc
       inject<MessengerService>().show(Message.error(message: e.toString()));
       emit(TonConfirmTransactionState.readyToSend(fees!, selectedCustodian));
     }
+  }
+
+  @override
+  Future<void> close() {
+    _unsignedMessage?.dispose();
+
+    return super.close();
   }
 }

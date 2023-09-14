@@ -4,6 +4,7 @@ import 'package:app/app/service/service.dart' as s;
 import 'package:app/data/models/models.dart';
 import 'package:app/di/di.dart';
 import 'package:app/generated/generated.dart';
+import 'package:app/utils/constants.dart';
 import 'package:collection/collection.dart';
 import 'package:flutter_inappwebview/flutter_inappwebview.dart';
 import 'package:logging/logging.dart';
@@ -372,19 +373,208 @@ class InpageProvider extends ProviderApi {
   }
 
   @override
-  Future<EstimateFeesOutput> estimateFees(EstimateFeesInput input) {
-    // TODO: implement estimateFees
-    throw UnimplementedError();
+  Future<EstimateFeesOutput> estimateFees(EstimateFeesInput input) async {
+    final sender = nr.Address(address: input.sender);
+    final amount = input.amount;
+    _checkPermissions(
+      permissions: permissionsService.getPermissions(origin),
+      account: true,
+      accountAddress: sender,
+    );
+    if (amount == null) {
+      throw s.ApprovalsHandleException(LocaleKeys.amountIsWrong.tr());
+    }
+    final repackedRecipient =
+        await nr.repackAddress(nr.Address(address: input.recipient));
+
+    String? body;
+
+    if (input.payload != null) {
+      body = await nr.encodeInternalInput(
+        contractAbi: input.payload!.abi,
+        method: input.payload!.method,
+        input: input.payload!.params,
+      );
+    }
+
+    var subscribedNew = false;
+
+    try {
+      if (nekotonRepository.walletsMap[sender] == null) {
+        await nekotonRepository.subscribeByAddress(sender);
+        subscribedNew = true;
+      }
+
+      final unsignedMessage = await nekotonRepository.prepareTransfer(
+        destination: repackedRecipient,
+        amount: amount,
+        body: body,
+        bounce: defaultMessageBounce,
+        address: sender,
+        expiration: defaultSendTimeout,
+      );
+
+      final fees = await nekotonRepository.estimateFees(
+        address: sender,
+        message: unsignedMessage,
+      );
+
+      unsignedMessage.dispose();
+
+      return EstimateFeesOutput(fees.toString());
+    } finally {
+      if (subscribedNew) {
+        nekotonRepository.unsubscribe(sender);
+      }
+    }
   }
 
   @override
+  // ignore: long-method
   Future<ExecuteLocalOutput> executeLocal(ExecuteLocalInput input) async {
-    // TODO: implement executeLocal
-    throw UnimplementedError();
-    // _checkPermissions(permissions: permissionsService.getPermissions(origin));
-    // final output = await nr.executeLocal();
+    final contract = nr.Address(address: input.address);
+    final header = input.messageHeader as Map<String, dynamic>;
+    final repackedAddress = await nr.repackAddress(contract);
+    final payload = input.payload;
 
-    // return ExecuteLocalOutput();
+    String message;
+
+    if (header['type'] == 'external') {
+      if (payload == null || payload is String) {
+        message = (await nr.createRawExternalMessage(
+          dst: repackedAddress,
+          stateInit: input.stateInit,
+          body: payload as String?,
+          timeout: defaultSendTimeoutDuration,
+        ))
+            .boc;
+      } else if (header['withoutSignature'] == true) {
+        final call = FunctionCall.fromJson(payload as Map<String, dynamic>);
+        message = (await nr.createExternalMessageWithoutSignature(
+          dst: repackedAddress,
+          contractAbi: call.abi,
+          method: call.method,
+          input: call.params,
+          timeout: defaultSendTimeoutDuration,
+        ))
+            .boc;
+      } else {
+        final publicKey =
+            nr.PublicKey(publicKey: header['publicKey']! as String);
+        final call = FunctionCall.fromJson(payload as Map<String, dynamic>);
+
+        _checkPermissions(
+          permissions: permissionsService.getPermissions(origin),
+          account: true,
+          publicKey: publicKey,
+        );
+
+        final unsignedMessage = await nr.createExternalMessage(
+          dst: repackedAddress.address,
+          publicKey: publicKey,
+          contractAbi: call.abi,
+          method: call.method,
+          input: call.params,
+          timeout: defaultSendTimeoutDuration,
+          stateInit: input.stateInit,
+        );
+
+        try {
+          if (input.executorParams?.disableSignatureCheck ?? false) {
+            message = (await unsignedMessage.signFake()).boc;
+          } else {
+            final password = await approvalsService.callContractMethod(
+              origin: origin!,
+              payload: nr.FunctionCall.fromJson(call.toJson()),
+              publicKey: publicKey,
+              recipient: repackedAddress,
+            );
+            final transport = nekotonRepository.currentTransport.transport;
+
+            await unsignedMessage.refreshTimeout();
+
+            final signature = await nekotonRepository.seedList.sign(
+              data: unsignedMessage.hash,
+              publicKey: publicKey,
+              password: password,
+              signatureId: await transport.getSignatureId(),
+            );
+
+            final signedMessage =
+                await unsignedMessage.sign(signature: signature);
+            message = signedMessage.boc;
+          }
+        } finally {
+          unsignedMessage.dispose();
+        }
+      }
+    } else if (header['type'] == 'internal') {
+      final sender = nr.Address(address: header['sender']! as String);
+      final amount = BigInt.parse(header['amount']! as String);
+      final bounce = header['bounce']! as bool;
+      final bounced = header['bounced'] as bool?;
+      final body = input.payload == null
+          ? null
+          : input.payload is String
+              ? input.payload! as String
+              : await (FunctionCall call) async {
+                  await nr.encodeInternalInput(
+                    contractAbi: call.abi,
+                    method: call.method,
+                    input: call.params,
+                  );
+                }(
+                  FunctionCall.fromJson(input.payload! as Map<String, dynamic>),
+                );
+      message = await nr.encodeInternalMessage(
+        src: sender,
+        dst: repackedAddress,
+        bounce: bounce,
+        stateInit: input.stateInit,
+        body: body,
+        amount: amount,
+        bounced: bounced,
+      );
+    } else {
+      throw s.ApprovalsHandleException(LocaleKeys.unknownMessageType.tr());
+    }
+
+    final transport = nekotonRepository.currentTransport.transport;
+    final state = await transport.getFullContractState(repackedAddress);
+    final config = await transport.getBlockchainConfig();
+
+    final account = await nr.makeFullAccountBoc(state?.boc);
+    final overrideBalance = input.executorParams?.overrideBalance;
+
+    final (accountRes, transaction) = await nr.executeLocal(
+      account: account,
+      config: config.config,
+      disableSignatureCheck:
+          input.executorParams?.disableSignatureCheck ?? false,
+      message: message,
+      utime: DateTime.now(),
+      globalId: config.globalId,
+      overwriteBalance: overrideBalance == null
+          ? null
+          : BigInt.parse(overrideBalance as String),
+    );
+    final newState = await nr.parseFullAccountBoc(accountRes);
+
+    Map<String, Object?>? output;
+    if (payload != null && payload is Map<String, dynamic>) {
+      final call = FunctionCall.fromJson(payload);
+      output = (await nr.decodeTransaction(
+        transaction: transaction,
+        contractAbi: call.abi,
+      ))
+          ?.output;
+    }
+
+    return ExecuteLocalOutput(
+      Transaction.fromJson(transaction.toJson()),
+      newState == null ? null : FullContractState.fromJson(newState.toJson()),
+      output,
+    );
   }
 
   @override
@@ -681,41 +871,517 @@ class InpageProvider extends ProviderApi {
   }
 
   @override
+  // ignore: long-method
   Future<SendExternalMessageOutput> sendExternalMessage(
     SendExternalMessageInput input,
-  ) {
-    // TODO: implement sendExternalMessage
-    throw UnimplementedError();
+  ) async {
+    final publicKey = nr.PublicKey(publicKey: input.publicKey);
+    final recipient = nr.Address(address: input.recipient);
+
+    _checkPermissions(
+      permissions: permissionsService.getPermissions(origin),
+      account: true,
+      publicKey: publicKey,
+    );
+
+    final repackedRecipient =
+        await nr.repackAddress(nr.Address(address: input.recipient));
+
+    var subscribedNew = false;
+
+    try {
+      if (nekotonRepository.allContracts
+              .firstWhereOrNull((c) => c.address == recipient) ==
+          null) {
+        await nekotonRepository.subscribeContract(
+          address: recipient,
+          origin: origin!,
+          tabId: tabId,
+          contractUpdatesSubscription: const nr.ContractUpdatesSubscription(),
+        );
+        subscribedNew = true;
+      }
+
+      final unsignedMessage = await nr.createExternalMessage(
+        dst: repackedRecipient.address,
+        contractAbi: input.payload.abi,
+        method: input.payload.method,
+        input: input.payload.params,
+        publicKey: publicKey,
+        stateInit: input.stateInit,
+        timeout: defaultSendTimeoutDuration,
+      );
+
+      final password = await approvalsService.callContractMethod(
+        origin: origin!,
+        payload: nr.FunctionCall.fromJson(input.payload.toJson()),
+        publicKey: publicKey,
+        recipient: recipient,
+      );
+      final transport = nekotonRepository.currentTransport.transport;
+
+      await unsignedMessage.refreshTimeout();
+
+      final signature = await nekotonRepository.seedList.sign(
+        data: unsignedMessage.hash,
+        publicKey: publicKey,
+        password: password,
+        signatureId: await transport.getSignatureId(),
+      );
+
+      final signedMessage = await unsignedMessage.sign(signature: signature);
+      unsignedMessage.dispose();
+
+      final transaction = input.local ?? false
+          ? await nekotonRepository.executeTransactionLocally(
+              address: repackedRecipient,
+              signedMessage: signedMessage,
+              options: nr.TransactionExecutionOptions(
+                disableSignatureCheck:
+                    input.executorParams?.disableSignatureCheck ?? false,
+              ),
+            )
+          : await nekotonRepository.sendContract(
+              address: repackedRecipient,
+              signedMessage: signedMessage,
+            );
+
+      nr.DecodedTransaction? decodedTransaction;
+
+      try {
+        decodedTransaction = await nr.decodeTransaction(
+          transaction: transaction,
+          contractAbi: input.payload.abi,
+          method: input.payload.method,
+        );
+      } catch (_) {}
+
+      return SendExternalMessageOutput(
+        Transaction.fromJson(transaction.toJson()),
+        decodedTransaction?.output,
+      );
+    } finally {
+      if (subscribedNew) {
+        nekotonRepository.unsubscribeContract(
+          tabId: tabId,
+          origin: origin!,
+          address: recipient,
+        );
+      }
+    }
   }
 
   @override
+  // ignore: long-method
   Future<SendExternalMessageDelayedOutput> sendExternalMessageDelayed(
     SendExternalMessageDelayedInput input,
-  ) {
-    // TODO: implement sendExternalMessageDelayed
-    throw UnimplementedError();
+  ) async {
+    final publicKey = nr.PublicKey(publicKey: input.publicKey);
+    final recipient = nr.Address(address: input.recipient);
+
+    _checkPermissions(
+      permissions: permissionsService.getPermissions(origin),
+      account: true,
+      publicKey: publicKey,
+    );
+
+    final repackedRecipient =
+        await nr.repackAddress(nr.Address(address: input.recipient));
+
+    var subscribedNew = false;
+
+    try {
+      if (nekotonRepository.allContracts
+              .firstWhereOrNull((c) => c.address == recipient) ==
+          null) {
+        await nekotonRepository.subscribeContract(
+          address: recipient,
+          origin: origin!,
+          tabId: tabId,
+          contractUpdatesSubscription: const nr.ContractUpdatesSubscription(),
+        );
+        subscribedNew = true;
+      }
+
+      final unsignedMessage = await nr.createExternalMessage(
+        dst: repackedRecipient.address,
+        contractAbi: input.payload.abi,
+        method: input.payload.method,
+        input: input.payload.params,
+        publicKey: publicKey,
+        stateInit: input.stateInit,
+        timeout: defaultSendTimeoutDuration,
+      );
+
+      final password = await approvalsService.callContractMethod(
+        origin: origin!,
+        payload: nr.FunctionCall.fromJson(input.payload.toJson()),
+        publicKey: publicKey,
+        recipient: recipient,
+      );
+      final transport = nekotonRepository.currentTransport.transport;
+
+      await unsignedMessage.refreshTimeout();
+
+      final signature = await nekotonRepository.seedList.sign(
+        data: unsignedMessage.hash,
+        publicKey: publicKey,
+        password: password,
+        signatureId: await transport.getSignatureId(),
+      );
+
+      final signedMessage = await unsignedMessage.sign(signature: signature);
+      unsignedMessage.dispose();
+
+      final transaction = await nekotonRepository.sendContractUnawaited(
+        address: repackedRecipient,
+        signedMessage: signedMessage,
+      );
+
+      unawaited(
+        // ignore: prefer-async-await
+        nekotonRepository
+            .waitContractSending(pending: transaction, address: recipient)
+            .then((trans) {
+          controller?.messageStatusUpdated(
+            MessageStatusUpdatedEvent(
+              recipient.address,
+              signedMessage.hash,
+              Transaction.fromJson(trans.toJson()),
+            ),
+          );
+          if (subscribedNew) {
+            nekotonRepository.unsubscribeContract(
+              tabId: tabId,
+              origin: origin!,
+              address: recipient,
+            );
+          }
+        }).catchError((Object? e, StackTrace? t) async {
+          _logger.severe(
+            'sendExternalMessageDelayed, waiting transaction',
+            e,
+            t,
+          );
+
+          return null;
+        }),
+      );
+
+      return SendExternalMessageDelayedOutput(
+        DelayedMessage(
+          signedMessage.hash,
+          recipient.address,
+          nr.dateSecondsSinceEpochJsonConverter.toJson(transaction.expireAt),
+        ),
+      );
+    } catch (_) {
+      // error during send process, waiting won't be called
+      if (subscribedNew) {
+        nekotonRepository.unsubscribeContract(
+          tabId: tabId,
+          origin: origin!,
+          address: recipient,
+        );
+      }
+
+      rethrow;
+    }
   }
 
   @override
-  Future<SendMessageOutput> sendMessage(SendMessageInput input) {
-    // TODO: implement sendMessage
-    throw UnimplementedError();
+  // ignore: long-method
+  Future<SendMessageOutput> sendMessage(SendMessageInput input) async {
+    final sender = nr.Address(address: input.sender);
+    final amount = input.amount;
+    _checkPermissions(
+      permissions: permissionsService.getPermissions(origin),
+      account: true,
+      accountAddress: sender,
+    );
+    if (amount == null) {
+      throw s.ApprovalsHandleException(LocaleKeys.amountIsWrong.tr());
+    }
+    final repackedRecipient =
+        await nr.repackAddress(nr.Address(address: input.recipient));
+
+    String? body;
+    nr.KnownPayload? knownPayload;
+
+    if (input.payload != null) {
+      body = await nr.encodeInternalInput(
+        contractAbi: input.payload!.abi,
+        method: input.payload!.method,
+        input: input.payload!.params,
+      );
+      knownPayload = await nr.parseKnownPayload(body);
+    }
+
+    var subscribedNew = false;
+
+    try {
+      if (nekotonRepository.walletsMap[sender] == null) {
+        await nekotonRepository.subscribeByAddress(sender);
+        subscribedNew = true;
+      }
+
+      final (key, password) = await approvalsService.sendMessage(
+        origin: origin!,
+        sender: sender,
+        recipient: repackedRecipient,
+        amount: amount,
+        bounce: input.bounce,
+        payload: body,
+        knownPayload: knownPayload,
+      );
+
+      final unsignedMessage = await nekotonRepository.prepareTransfer(
+        address: sender,
+        destination: repackedRecipient,
+        amount: amount,
+        body: body,
+        bounce: defaultMessageBounce,
+        expiration: defaultSendTimeout,
+        publicKey: key,
+      );
+
+      await unsignedMessage.message.refreshTimeout();
+
+      final hash = unsignedMessage.hash;
+      final transport = nekotonRepository.currentTransport.transport;
+
+      final signature = await nekotonRepository.seedList.sign(
+        data: hash,
+        publicKey: key,
+        password: password,
+        signatureId: await transport.getSignatureId(),
+      );
+
+      final signedMessage = await unsignedMessage.sign(signature: signature);
+      unsignedMessage.dispose();
+
+      final transaction = await nekotonRepository.send(
+        address: sender,
+        signedMessage: signedMessage,
+        destination: repackedRecipient,
+        amount: amount,
+      );
+
+      unawaited(
+        controller?.messageStatusUpdated(
+          MessageStatusUpdatedEvent(
+            sender.address,
+            signedMessage.hash,
+            Transaction.fromJson(transaction.toJson()),
+          ),
+        ),
+      );
+
+      return SendMessageOutput(
+        Transaction.fromJson(transaction.toJson()),
+      );
+    } finally {
+      if (subscribedNew) {
+        nekotonRepository.unsubscribe(sender);
+      }
+    }
   }
 
   @override
+  // ignore: long-method
   Future<SendMessageDelayedOutput> sendMessageDelayed(
     SendMessageDelayedInput input,
-  ) {
-    // TODO: implement sendMessageDelayed
-    throw UnimplementedError();
+  ) async {
+    final sender = nr.Address(address: input.sender);
+    final amount = input.amount;
+    _checkPermissions(
+      permissions: permissionsService.getPermissions(origin),
+      account: true,
+      accountAddress: sender,
+    );
+    if (amount == null) {
+      throw s.ApprovalsHandleException(LocaleKeys.amountIsWrong.tr());
+    }
+    final repackedRecipient =
+        await nr.repackAddress(nr.Address(address: input.recipient));
+
+    String? body;
+    nr.KnownPayload? knownPayload;
+
+    if (input.payload != null) {
+      body = await nr.encodeInternalInput(
+        contractAbi: input.payload!.abi,
+        method: input.payload!.method,
+        input: input.payload!.params,
+      );
+      knownPayload = await nr.parseKnownPayload(body);
+    }
+
+    var subscribedNew = false;
+
+    try {
+      if (nekotonRepository.walletsMap[sender] == null) {
+        await nekotonRepository.subscribeByAddress(sender);
+        subscribedNew = true;
+      }
+
+      final (key, password) = await approvalsService.sendMessage(
+        origin: origin!,
+        sender: sender,
+        recipient: repackedRecipient,
+        amount: amount,
+        bounce: input.bounce,
+        payload: body,
+        knownPayload: knownPayload,
+      );
+
+      final unsignedMessage = await nekotonRepository.prepareTransfer(
+        address: sender,
+        destination: repackedRecipient,
+        amount: amount,
+        body: body,
+        bounce: defaultMessageBounce,
+        expiration: defaultSendTimeout,
+        publicKey: key,
+      );
+
+      await unsignedMessage.message.refreshTimeout();
+
+      final hash = unsignedMessage.hash;
+      final transport = nekotonRepository.currentTransport.transport;
+
+      final signature = await nekotonRepository.seedList.sign(
+        data: hash,
+        publicKey: key,
+        password: password,
+        signatureId: await transport.getSignatureId(),
+      );
+
+      final signedMessage = await unsignedMessage.sign(signature: signature);
+      unsignedMessage.dispose();
+
+      final transaction = await nekotonRepository.sendUnawaited(
+        address: sender,
+        signedMessage: signedMessage,
+        destination: repackedRecipient,
+        amount: amount,
+      );
+
+      unawaited(
+        // ignore: prefer-async-await
+        nekotonRepository
+            .waitSending(pending: transaction, address: sender)
+            .then((trans) {
+          controller?.messageStatusUpdated(
+            MessageStatusUpdatedEvent(
+              sender.address,
+              signedMessage.hash,
+              Transaction.fromJson(trans.toJson()),
+            ),
+          );
+          if (subscribedNew) {
+            nekotonRepository.unsubscribe(sender);
+          }
+        }).catchError((Object? e, StackTrace? t) async {
+          _logger.severe('sendMessageDelayed, waiting transaction', e, t);
+
+          return null;
+        }),
+      );
+
+      return SendMessageDelayedOutput(
+        DelayedMessage(
+          signedMessage.hash,
+          sender.address,
+          // ignore: no-magic-number
+          transaction.expireAt.millisecondsSinceEpoch ~/ 1000,
+        ),
+      );
+    } catch (_) {
+      // error during send process, waiting won't be called
+      if (subscribedNew) {
+        nekotonRepository.unsubscribe(sender);
+      }
+
+      rethrow;
+    }
   }
 
   @override
+  // ignore: long-method
   Future<SendUnsignedExternalMessageOutput> sendUnsignedExternalMessage(
     SendUnsignedExternalMessageInput input,
-  ) {
-    // TODO: implement sendUnsignedExternalMessage
-    throw UnimplementedError();
+  ) async {
+    final recipient = nr.Address(address: input.recipient);
+
+    _checkPermissions(permissions: permissionsService.getPermissions(origin));
+
+    final repackedRecipient =
+        await nr.repackAddress(nr.Address(address: input.recipient));
+
+    var subscribedNew = false;
+
+    try {
+      if (nekotonRepository.allContracts
+              .firstWhereOrNull((c) => c.address == recipient) ==
+          null) {
+        await nekotonRepository.subscribeContract(
+          address: recipient,
+          origin: origin!,
+          tabId: tabId,
+          contractUpdatesSubscription: const nr.ContractUpdatesSubscription(),
+        );
+        subscribedNew = true;
+      }
+
+      final payload =
+          FunctionCall.fromJson(input.payload! as Map<String, dynamic>);
+      final signedMessage = await nr.createExternalMessageWithoutSignature(
+        dst: repackedRecipient,
+        contractAbi: payload.abi,
+        method: payload.method,
+        input: payload.params,
+        stateInit: input.stateInit,
+        timeout: defaultSendTimeoutDuration,
+      );
+
+      final transaction = input.local ?? false
+          ? await nekotonRepository.executeTransactionLocally(
+              address: repackedRecipient,
+              signedMessage: signedMessage,
+              options: nr.TransactionExecutionOptions(
+                disableSignatureCheck:
+                    input.executorParams?.disableSignatureCheck ?? false,
+              ),
+            )
+          : await nekotonRepository.sendContract(
+              address: repackedRecipient,
+              signedMessage: signedMessage,
+            );
+
+      nr.DecodedTransaction? decodedTransaction;
+
+      try {
+        decodedTransaction = await nr.decodeTransaction(
+          transaction: transaction,
+          contractAbi: payload.abi,
+          method: payload.method,
+        );
+      } catch (_) {}
+
+      return SendUnsignedExternalMessageOutput(
+        Transaction.fromJson(transaction.toJson()),
+        decodedTransaction?.output,
+      );
+    } finally {
+      if (subscribedNew) {
+        nekotonRepository.unsubscribeContract(
+          tabId: tabId,
+          origin: origin!,
+          address: recipient,
+        );
+      }
+    }
   }
 
   @override
@@ -820,12 +1486,20 @@ class InpageProvider extends ProviderApi {
       transactions: input.subscriptions.transactions ?? true,
     );
 
-    await nekotonRepository.subscribeContract(
-      tabId: tabId,
-      address: accountAddress,
-      origin: origin!,
-      contractUpdatesSubscription: subs,
+    final existed = nekotonRepository.allContracts.firstWhereOrNull(
+      (c) =>
+          c.address == accountAddress &&
+          c.tabId == tabId &&
+          c.origin == origin!,
     );
+    if (existed == null) {
+      await nekotonRepository.subscribeContract(
+        tabId: tabId,
+        address: accountAddress,
+        origin: origin!,
+        contractUpdatesSubscription: subs,
+      );
+    }
 
     return ContractUpdatesSubscription(subs.contractState!, subs.transactions!);
   }
@@ -891,6 +1565,13 @@ class InpageProvider extends ProviderApi {
     } on s.ApprovalsHandleException catch (e, t) {
       _logger.severe(method, e.message, t);
       inject<s.MessengerService>().show(s.Message.error(message: e.message));
+      rethrow;
+    } on nr.ExecuteLocalException catch (e) {
+      inject<s.MessengerService>().show(
+        s.Message.error(
+          message: LocaleKeys.contractWithErrorCode.tr(args: [e.errorCode]),
+        ),
+      );
       rethrow;
     } on nr.FfiException catch (e, t) {
       _logger.severe(method, e, t);
