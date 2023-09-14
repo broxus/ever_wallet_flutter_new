@@ -2,6 +2,7 @@ import 'dart:convert';
 
 import 'package:app/app/router/router.dart';
 import 'package:app/feature/add_seed/add_seed_enable_biometry/add_seed_enable_biometry.dart';
+import 'package:app/feature/network/network.dart';
 import 'package:app/feature/wallet/wallet.dart';
 import 'package:app/feature/wallet/widgets/account_asset_tab/select_new_asset/select_new_asset.dart';
 import 'package:go_router/go_router.dart';
@@ -46,6 +47,8 @@ const tonWalletConfirmTransactionAmountQueryParam =
 const tonWalletConfirmTransactionCommentQueryParam =
     'tonWalletConfirmTransactionComment';
 
+const networkConnectionDataIdQueryParam = 'connectionDataId';
+
 /// Branch that is root for wallet.
 StatefulShellBranch get walletBranch {
   return StatefulShellBranch(
@@ -73,6 +76,7 @@ StatefulShellBranch get walletBranch {
           walletPrepareTransferRoute,
           walletDeployRoute,
           tonConfirmTranscationRoute,
+          configureNetworksRoute,
         ],
       ),
     ],
@@ -256,5 +260,22 @@ GoRoute get tonConfirmTranscationRoute {
             .uri.queryParameters[tonWalletConfirmTransactionCommentQueryParam],
       );
     },
+  );
+}
+
+/// Configure networks
+GoRoute get configureNetworksRoute {
+  return GoRoute(
+    path: AppRoute.configureNetworks.path,
+    builder: (_, __) => const ConfigureNetworksPage(),
+    routes: [
+      GoRoute(
+        path: AppRoute.editNetwork.path,
+        builder: (_, state) => EditNetworkPage(
+          connectionDataId:
+              state.uri.queryParameters[networkConnectionDataIdQueryParam],
+        ),
+      ),
+    ],
   );
 }

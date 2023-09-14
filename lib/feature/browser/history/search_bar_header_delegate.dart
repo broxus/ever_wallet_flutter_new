@@ -7,7 +7,8 @@ class SearchBarHeaderDelegate extends SliverPersistentHeaderDelegate {
   SearchBarHeaderDelegate({
     required this.controller,
   });
-  static const _height = DimensSize.d56 + DimensSize.d16 + DimensSize.d16 + 1;
+  static const _height =
+      commonButtonHeight + DimensSize.d16 + DimensSize.d16 + 1;
 
   TextEditingController controller;
 

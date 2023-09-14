@@ -42,10 +42,8 @@ class ConnectionService {
   /// by its type and put it in nekoton.
   Future<void> _updateTransportByConnection(ConnectionData connection) async {
     _log.finest('updateTransportByConnection: ${connection.name}');
-    final type = connection.networkType;
-
     final transport = await connection.when<Future<Transport>>(
-      gql: (_, name, networkId, group, endpoints, timeout, __, ___) =>
+      gql: (_, name, networkId, group, endpoints, timeout, __, isLocal, ___) =>
           _nekotonRepository.createGqlTransport(
         post: _httpService.postTransportData,
         get: _httpService.getTransportData,
@@ -53,7 +51,7 @@ class ConnectionService {
         networkId: networkId,
         group: group,
         endpoints: endpoints,
-        local: false,
+        local: isLocal,
       ),
       proto: (_, name, networkId, group, endpoint, __, ___) =>
           _nekotonRepository.createProtoTransport(
@@ -66,23 +64,31 @@ class ConnectionService {
     );
 
     await _nekotonRepository.updateTransport(
-      _createStrategyByType(type, transport),
+      _createStrategyByConnection(transport, connection),
     );
     _log.finest('updateTransportByConnection completed!');
   }
 
-  /// Create TransportStrategy based on [type] of connection data.
-  TransportStrategy _createStrategyByType(
-    NetworkType type,
+  /// Create TransportStrategy based on [ConnectionData.networkType] of
+  /// [connection] data.
+  TransportStrategy _createStrategyByConnection(
     Transport transport,
+    ConnectionData connection,
   ) {
-    switch (type) {
+    switch (connection.networkType) {
       case NetworkType.ever:
-        return EverTransportStrategy(transport: transport);
+        return EverTransportStrategy(
+          transport: transport,
+        );
       case NetworkType.venom:
-        return VenomTransportStrategy(transport: transport);
+        return VenomTransportStrategy(
+          transport: transport,
+        );
       case NetworkType.custom:
-        return CustomTransportStrategy(transport: transport);
+        return CustomTransportStrategy(
+          transport: transport,
+          connection: connection,
+        );
     }
   }
 }
