@@ -61,6 +61,14 @@ class ConnectionService {
         group: group,
         endpoint: endpoint,
       ),
+      jrpc: (_, name, networkId, group, endpoint, __, ___) =>
+          _nekotonRepository.createJrpcTransport(
+        post: _httpService.postTransportData,
+        name: name,
+        networkId: networkId,
+        group: group,
+        endpoint: endpoint,
+      ),
     );
 
     await _nekotonRepository.updateTransport(

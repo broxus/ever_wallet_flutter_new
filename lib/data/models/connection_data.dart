@@ -106,6 +106,51 @@ sealed class ConnectionData with _$ConnectionData {
         isPreset: true,
       );
 
+  const factory ConnectionData.jrpc({
+    required String id,
+    required String name,
+    required int networkId,
+    required String group,
+    required String endpoint,
+    required NetworkType networkType,
+    required bool isPreset,
+  }) = _ConnectionDataJrpc;
+
+  factory ConnectionData.jrpcCustom({
+    required String name,
+    required int networkId,
+    required String group,
+    required String endpoint,
+    required NetworkType networkType,
+  }) =>
+      ConnectionData.jrpc(
+        id: const Uuid().v4(),
+        name: name,
+        networkId: networkId,
+        group: group,
+        endpoint: endpoint,
+        networkType: networkType,
+        isPreset: false,
+      );
+
+  factory ConnectionData.jrpcPreset({
+    required String id,
+    required String name,
+    required int networkId,
+    required String group,
+    required String endpoint,
+    required NetworkType networkType,
+  }) =>
+      ConnectionData.jrpc(
+        id: id,
+        name: name,
+        networkId: networkId,
+        group: group,
+        endpoint: endpoint,
+        networkType: networkType,
+        isPreset: true,
+      );
+
   factory ConnectionData.fromJson(Map<String, dynamic> json) =>
       _$ConnectionDataFromJson(json);
 }
