@@ -24,8 +24,12 @@ class TonWalletAssetCubit extends Cubit<TonWalletAssetState> {
     _walletsSubscription = nekotonRepository.walletsStream.listen((wallets) {
       final wallet =
           wallets.firstWhereOrNull((w) => w.address == tonWallet.address);
-      if (wallet != null) {
-        _walletsSubscription?.cancel();
+      // wallet not iniaitlized or transport of wallet changed
+      if (wallet != null &&
+          (_wallet == null ||
+              _wallet!.transport.name != wallet.transport.name)) {
+        _wallet = wallet;
+        _closeSubs();
 
         _thisWalletSubscription = wallet.fieldUpdatesStream.listen((_) {
           _cachedTokenBalance = Money.fromBigIntWithCurrency(
@@ -55,16 +59,22 @@ class TonWalletAssetCubit extends Cubit<TonWalletAssetState> {
   StreamSubscription<dynamic>? _thisWalletSubscription;
   StreamSubscription<dynamic>? _balanceSubscription;
 
+  TonWallet? _wallet;
+
   Money? _cachedFiatBalance;
   Money? _cachedTokenBalance;
 
   @override
   Future<void> close() {
     _walletsSubscription?.cancel();
-    _thisWalletSubscription?.cancel();
-    _balanceSubscription?.cancel();
+    _closeSubs();
 
     return super.close();
+  }
+
+  void _closeSubs() {
+    _thisWalletSubscription?.cancel();
+    _balanceSubscription?.cancel();
   }
 
   void _updateState() {
