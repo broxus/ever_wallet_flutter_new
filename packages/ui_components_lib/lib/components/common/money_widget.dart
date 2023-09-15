@@ -75,7 +75,7 @@ class MoneyWidget extends StatelessWidget {
         if (showSymbol) ...[
           const SizedBox(width: DimensStroke.medium),
           Text(money.currency.symbol, style: symbolStyle),
-        ]
+        ],
       ],
     );
   }
