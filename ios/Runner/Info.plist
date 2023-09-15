@@ -54,5 +54,9 @@
 	<true/>
 	<key>NSFaceIDUsageDescription</key>
     <string>This will simplify authentication and make it faster.</string>
+	<key>NSCameraUsageDescription</key>
+	<string>We need access to camera o scan QR-codes</string>
+	<key>NSPhotoLibraryUsageDescription</key>
+	<string>We need photos access to get QR code from photo library</string>
 </dict>
 </plist>
