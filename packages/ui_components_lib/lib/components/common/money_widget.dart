@@ -19,6 +19,7 @@ class MoneyWidget extends StatelessWidget {
     required this.style,
     this.sign,
     this.signValue,
+    this.showSymbol = true,
     super.key,
   });
 
@@ -33,6 +34,10 @@ class MoneyWidget extends StatelessWidget {
   /// Additional string, that can be put before money.
   /// Typically, this can be `~` symbol for fee.
   final String? signValue;
+
+  /// If true, then currency symbol will be displayed after money.
+  /// True, by default
+  final bool showSymbol;
 
   @override
   Widget build(BuildContext context) {
@@ -67,8 +72,10 @@ class MoneyWidget extends StatelessWidget {
             overflow: TextOverflow.ellipsis,
           ),
         ),
-        const SizedBox(width: DimensStroke.medium),
-        Text(money.currency.symbol, style: symbolStyle),
+        if (showSymbol) ...[
+          const SizedBox(width: DimensStroke.medium),
+          Text(money.currency.symbol, style: symbolStyle),
+        ]
       ],
     );
   }

@@ -1,3 +1,4 @@
+import 'package:app/app/service/service.dart';
 import 'package:app/di/di.dart';
 import 'package:app/feature/wallet/wallet.dart';
 import 'package:app/generated/generated.dart';
@@ -10,6 +11,24 @@ Money _getNativeMoney(BigInt value) => Money.fromBigIntWithCurrency(
       Currencies()[
           inject<NekotonRepository>().currentTransport.nativeTokenTicker]!,
     );
+
+/// Returns Money instance for token currency with [tokenAddress] if found
+/// with [value] or do not display token symbol.
+Money _getTokenMoney(BigInt value, Address tokenAddress) {
+  final possibleTokenSymbol = inject<AssetsService>()
+      .maybeGetTokenContract(
+        tokenAddress,
+        inject<NekotonRepository>().currentTransport,
+      )
+      ?.symbol;
+  final currency =
+      possibleTokenSymbol == null ? null : Currencies()[possibleTokenSymbol];
+
+  return Money.fromBigIntWithCurrency(
+    value,
+    currency ?? Currency.create('.', 0, symbol: '.', pattern: moneyPattern(0)),
+  );
+}
 
 /// Pair, where 1-st item is title of section,
 /// 2-nd item list of content specified for payload
@@ -53,8 +72,15 @@ extension KnownPayloadX on KnownPayload {
             TonWalletTransactionDetailsItem(
               title: LocaleKeys.tokensWord.tr(),
               contentChild: MoneyWidget(
-                money: _getNativeMoney(data.tokens),
+                money: _getTokenMoney(
+                  data.tokens,
+                  data.to.when(
+                    ownerWallet: (data) => data,
+                    tokenWallet: (data) => data,
+                  ),
+                ),
                 style: MoneyWidgetStyle.primary,
+                showSymbol: false,
               ),
             ),
           ],
@@ -65,8 +91,12 @@ extension KnownPayloadX on KnownPayload {
             TonWalletTransactionDetailsItem(
               title: LocaleKeys.tokensWord.tr(),
               contentChild: MoneyWidget(
-                money: _getNativeMoney(data.tokens),
+                money: _getTokenMoney(
+                  data.tokens,
+                  data.callbackAddress,
+                ),
                 style: MoneyWidgetStyle.primary,
+                showSymbol: false,
               ),
             ),
             TonWalletTransactionDetailsItem(
@@ -110,8 +140,9 @@ extension WalletInteractionMethodX on WalletInteractionMethod {
               TonWalletTransactionDetailsItem(
                 title: LocaleKeys.valueWord.tr(),
                 contentChild: MoneyWidget(
-                  money: _getNativeMoney(data.value),
+                  money: _getTokenMoney(data.value, data.dest),
                   style: MoneyWidgetStyle.primary,
+                  showSymbol: false,
                 ),
               ),
               TonWalletTransactionDetailsItem(
@@ -152,8 +183,9 @@ extension WalletInteractionMethodX on WalletInteractionMethod {
               TonWalletTransactionDetailsItem(
                 title: LocaleKeys.valueWord.tr(),
                 contentChild: MoneyWidget(
-                  money: _getNativeMoney(data.value),
+                  money: _getTokenMoney(data.value, data.dest),
                   style: MoneyWidgetStyle.primary,
+                  showSymbol: false,
                 ),
               ),
               TonWalletTransactionDetailsItem(
