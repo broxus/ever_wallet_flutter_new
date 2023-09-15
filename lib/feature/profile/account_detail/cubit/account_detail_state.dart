@@ -6,5 +6,8 @@ class AccountDetailState with _$AccountDetailState {
 
   const factory AccountDetailState.empty() = _Empty;
 
-  const factory AccountDetailState.data(KeyAccount account) = _Data;
+  const factory AccountDetailState.data(
+    KeyAccount account,
+    Money balance,
+  ) = _Data;
 }

@@ -48,7 +48,7 @@ class DeleteSeedSheet extends StatelessWidget {
                         titleText: seed.name,
                         subtitleText: LocaleKeys.publicKeysWithData.plural(
                           seed.allKeys.length,
-                          args: ['${seed.allKeys.length}', '0 USD'],
+                          args: ['${seed.allKeys.length}'],
                         ),
                         padding: EdgeInsets.zero,
                       ),
@@ -67,10 +67,7 @@ class DeleteSeedSheet extends StatelessWidget {
                               titleText: key.name,
                               subtitleText: LocaleKeys.accountsWithData.plural(
                                 key.accountList.allAccounts.length,
-                                args: [
-                                  '${key.accountList.allAccounts.length}',
-                                  '0 USD',
-                                ],
+                                args: ['${key.accountList.allAccounts.length}'],
                               ),
                               padding: EdgeInsets.zero,
                             ),

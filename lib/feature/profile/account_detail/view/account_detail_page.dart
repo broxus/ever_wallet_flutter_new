@@ -20,8 +20,11 @@ class AccountDetailPage extends StatelessWidget {
   Widget build(BuildContext context) {
     return BlocProvider<AccountDetailCubit>(
       create: (_) => AccountDetailCubit(
-        address,
-        inject<NekotonRepository>(),
+        address: address,
+        nekotonRepository: inject<NekotonRepository>(),
+        balanceService: inject(),
+        convertService: inject(),
+        currentAccountsService: inject(),
       )..init(),
       child: BlocConsumer<AccountDetailCubit, AccountDetailState>(
         listener: (context, state) {
@@ -32,7 +35,7 @@ class AccountDetailPage extends StatelessWidget {
             orElse: () => const Scaffold(
               appBar: DefaultAppBar(),
             ),
-            data: (account) {
+            data: (account, balance) {
               return Scaffold(
                 appBar: DefaultAppBar(
                   actions: [
@@ -48,7 +51,7 @@ class AccountDetailPage extends StatelessWidget {
                     ),
                   ],
                 ),
-                body: AccountDetailView(account: account),
+                body: AccountDetailView(account: account, balance: balance),
               );
             },
           );
