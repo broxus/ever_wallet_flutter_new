@@ -47,10 +47,7 @@ class DeleteKeySheet extends StatelessWidget {
                         titleText: key.name,
                         subtitleText: LocaleKeys.accountsWithData.plural(
                           key.accountList.allAccounts.length,
-                          args: [
-                            '${key.accountList.allAccounts.length}',
-                            '0 USD',
-                          ],
+                          args: ['${key.accountList.allAccounts.length}'],
                         ),
                         padding: EdgeInsets.zero,
                       ),
@@ -68,13 +65,7 @@ class DeleteKeySheet extends StatelessWidget {
                                 svg: Assets.images.person.path,
                               ),
                               titleText: account.name,
-                              subtitleText:
-                                  LocaleKeys.accountAddressWithData.tr(
-                                args: [
-                                  account.name,
-                                  '0 USD',
-                                ],
-                              ),
+                              subtitleText: account.name,
                               padding: EdgeInsets.zero,
                             ),
                           )
