@@ -58,12 +58,6 @@ class SeedDetailView extends StatelessWidget {
                 ),
               ],
             ),
-            CommonCard(
-              topSubtitleText: LocaleKeys.totalBalance.tr(),
-              titleText: '0 USD',
-              height: DimensSize.d76,
-              width: double.infinity,
-            ),
             Expanded(
               child: SingleChildScrollView(
                 child: ShapedContainerColumn(
@@ -131,10 +125,7 @@ class SeedDetailView extends StatelessWidget {
           ),
           subtitleText: LocaleKeys.accountsWithData.plural(
             key.accountList.allAccounts.length,
-            args: [
-              '${key.accountList.allAccounts.length}',
-              '0 USD',
-            ],
+            args: ['${key.accountList.allAccounts.length}'],
           ),
         );
       },
