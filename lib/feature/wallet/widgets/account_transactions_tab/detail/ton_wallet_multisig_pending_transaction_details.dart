@@ -45,8 +45,8 @@ class TonWalletMultisigPendingTransactionDetailsPage extends StatelessWidget {
                 onPressed: () {
                   Navigator.of(context).pop();
                   context.goFurther(
-                    AppRoute.tonConfirmTransaction.pathWithQuery(
-                      {
+                    AppRoute.tonConfirmTransaction.pathWithData(
+                      queryParameters: {
                         tonWalletConfirmTransactionWalletAddressQueryParam:
                             transaction.walletAddress.address,
                         tonWalletConfirmTransactionLocalCustodiansQueryParam:
@@ -63,7 +63,7 @@ class TonWalletMultisigPendingTransactionDetailsPage extends StatelessWidget {
                             transaction.value.toString(),
                         if (transaction.comment != null)
                           tonWalletConfirmTransactionCommentQueryParam:
-                              transaction.comment!,
+                              transaction.comment,
                       },
                     ),
                   );

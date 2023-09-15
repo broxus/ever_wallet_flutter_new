@@ -67,7 +67,8 @@ Future<void> bootstrap(
 
       Bloc.observer = AppBlocObserver();
 
-      DefaultAppBar.defaultPopAction = (context) => context.maybePop();
+      DefaultAppBar.defaultPopAction =
+          (context) => context.maybePop(preserveQueryParams: false);
       DefaultAppBar.defaultCanPopAction = (context) => context.canPop();
 
       runApp(
