@@ -24,8 +24,12 @@ class TokenWalletAssetCubit extends Cubit<TokenWalletAssetState> {
       final wallet = wallets.firstWhereOrNull(
         (w) => w.owner == owner && w.rootTokenContract == asset.address,
       );
-      if (wallet != null) {
-        _walletsSubscription?.cancel();
+      // wallet not iniaitlized or transport of wallet changed
+      if (wallet != null &&
+          (_wallet == null ||
+              _wallet!.transport.name != wallet.transport.name)) {
+        _wallet = wallet;
+        _closeSubs();
 
         _thisWalletSubscription = wallet.fieldUpdatesStream.listen((_) {
           _cachedTokenBalance = wallet.moneyBalance;
@@ -59,13 +63,19 @@ class TokenWalletAssetCubit extends Cubit<TokenWalletAssetState> {
   Money? _cachedFiatBalance;
   Money? _cachedTokenBalance;
 
+  TokenWallet? _wallet;
+
   @override
   Future<void> close() {
     _walletsSubscription?.cancel();
-    _thisWalletSubscription?.cancel();
-    _balanceSubscription?.cancel();
+    _closeSubs();
 
     return super.close();
+  }
+
+  void _closeSubs() {
+    _thisWalletSubscription?.cancel();
+    _balanceSubscription?.cancel();
   }
 
   void _updateState() {
