@@ -4,18 +4,20 @@ import 'package:app/app/service/nekoton_related/connection_service/network_prese
 import 'package:app/app/service/service.dart';
 import 'package:app/data/models/models.dart';
 import 'package:bloc/bloc.dart';
+import 'package:collection/collection.dart';
 import 'package:freezed_annotation/freezed_annotation.dart';
 import 'package:logging/logging.dart';
 
-part 'select_network_event.dart';
-part 'select_network_state.dart';
-part 'select_network_bloc.freezed.dart';
+part 'manage_networks_event.dart';
+part 'manage_networks_state.dart';
+part 'manage_networks_bloc.freezed.dart';
 
-class SelectNetworkBloc extends Bloc<SelectNetworkEvent, SelectNetworkState> {
-  SelectNetworkBloc(
+class ManageNetworksBloc
+    extends Bloc<ManageNetworksEvent, ManageNetworksState> {
+  ManageNetworksBloc(
     this.storageService,
   ) : super(
-          SelectNetworkState(
+          ManageNetworksState(
             currentConnectionId: storageService.currentConnectionId,
             connections: storageService.connections,
           ),
@@ -25,18 +27,26 @@ class SelectNetworkBloc extends Bloc<SelectNetworkEvent, SelectNetworkState> {
     _currentConnectionIdSubscription =
         storageService.currentConnectionIdStream.listen(
       (currentConnectionId) {
-        add(SelectNetworkEvent.setCurrentConnectionId(id: currentConnectionId));
+        add(
+          ManageNetworksEvent.setCurrentConnectionId(
+            id: currentConnectionId,
+          ),
+        );
       },
     );
 
     _connectionsSubscription = storageService.connectionsStream.listen(
       (connections) {
-        add(SelectNetworkEvent.setConnections(connections: connections));
+        add(
+          ManageNetworksEvent.setConnections(
+            connections: connections,
+          ),
+        );
       },
     );
   }
 
-  final _log = Logger('SelectNetworkBloc');
+  final _log = Logger('ManageNetworksBloc');
 
   StreamSubscription<String>? _currentConnectionIdSubscription;
   StreamSubscription<List<ConnectionData>>? _connectionsSubscription;
@@ -76,19 +86,26 @@ class SelectNetworkBloc extends Bloc<SelectNetworkEvent, SelectNetworkState> {
   }
 
   ConnectionData get currentConnection {
-    final connections = state.connections;
     final currentConnectionId = state.currentConnectionId;
 
-    return connections.firstWhere(
-      (connection) => connection.id == currentConnectionId,
-      orElse: () {
-        _log.warning(
-          'Current connection with id $currentConnectionId not found. '
-          'Returning default connection',
-        );
+    final connection = getConnection(currentConnectionId);
+    if (connection != null) {
+      return connection;
+    }
 
-        return defaultNetwork;
-      },
+    _log.warning(
+      'Current connection with id $currentConnectionId not found. '
+      'Returning default connection',
+    );
+
+    return defaultNetwork;
+  }
+
+  ConnectionData? getConnection(String connectionId) {
+    final connections = state.connections;
+
+    return connections.firstWhereOrNull(
+      (connection) => connection.id == connectionId,
     );
   }
 }
