@@ -6,7 +6,8 @@ class QrCubitState with _$QrCubitState {
 
   const factory QrCubitState.givePermissionsError() = _GivePermissions;
 
-  const factory QrCubitState.scanning(
-    MobileScannerController controller,
-  ) = _Scanning;
+  const factory QrCubitState.scanning({
+    required MobileScannerController controller,
+    String? data,
+  }) = _Scanning;
 }

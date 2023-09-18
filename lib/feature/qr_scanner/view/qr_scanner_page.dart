@@ -8,14 +8,23 @@ import 'package:ui_components_lib/ui_components_lib.dart';
 
 /// Helper function, that opens qr page in root navigator and returns string
 /// that qr was able to scan.
-Future<String?> showQrScanner(BuildContext context) async {
+/// [type] - will be used to validate scanned data.
+Future<String?> showQrScanner(
+  BuildContext context,
+  QrScanType type,
+) async {
   return Navigator.of(context, rootNavigator: true).push<String>(
-    MaterialPageRoute(builder: (_) => const QrScannerPage()),
+    MaterialPageRoute(builder: (_) => QrScannerPage(type: type)),
   );
 }
 
 class QrScannerPage extends StatefulWidget {
-  const QrScannerPage({super.key});
+  const QrScannerPage({
+    required this.type,
+    super.key,
+  });
+
+  final QrScanType type;
 
   @override
   State<QrScannerPage> createState() => _QrScannerPageState();
@@ -24,36 +33,52 @@ class QrScannerPage extends StatefulWidget {
 class _QrScannerPageState extends State<QrScannerPage> {
   @override
   Widget build(BuildContext context) {
+    final colors = context.themeStyle.colors;
+
     return Scaffold(
-      appBar: DefaultAppBar(
-        backgroundColor: Colors.transparent,
-        onClosePressed: (context) => Navigator.of(context).pop(),
-        titleText: LocaleKeys.scanQrCode.tr(),
-      ),
+      backgroundColor: colors.backgroundPrimary,
       body: BlocProvider<QrCubit>(
-        create: (_) => QrCubit(inject()),
+        create: (_) => QrCubit(
+          lifecycleService: inject(),
+          permissionsService: inject(),
+          type: widget.type,
+        ),
         child: Stack(
           children: [
             Positioned.fill(
-              child: BlocBuilder<QrCubit, QrCubitState>(
+              child: BlocConsumer<QrCubit, QrCubitState>(
+                listener: (context, state) {
+                  state.whenOrNull(
+                    scanning: (controller, data) {
+                      if (data != null) Navigator.of(context).pop(data);
+                    },
+                  );
+                },
                 builder: (context, state) {
                   return state.when(
                     loading: () => const CommonCircularProgressIndicator(
                       size: CircularIndicatorSize.large,
                     ),
                     givePermissionsError: _permissionsErrorBody,
-                    scanning: (controller) => MobileScanner(
+                    scanning: (controller, _) => MobileScanner(
                       controller: controller,
-                      // ignore: prefer-extracting-callbacks
-                      onDetect: (barcodes) {
-                        final codes = barcodes.barcodes;
-                        if (codes.isNotEmpty && codes.first.rawValue != null) {
-                          Navigator.of(context).pop(codes.first.rawValue);
-                        }
-                      },
+                      onDetect: context.read<QrCubit>().analyzeBarcodes,
                     ),
                   );
                 },
+              ),
+            ),
+            Positioned(
+              left: 0,
+              top: 0,
+              right: 0,
+              child: DefaultAppBar(
+                backgroundColor: Colors.transparent,
+                onClosePressed: (context) => Navigator.of(context).pop(),
+                titleWidget: Text(
+                  LocaleKeys.scanQrCode.tr(),
+                  style: StyleRes.button.copyWith(color: colors.textContrast),
+                ),
               ),
             ),
             Positioned(
@@ -62,9 +87,11 @@ class _QrScannerPageState extends State<QrScannerPage> {
               bottom: DimensSize.d24,
               child: Builder(
                 builder: (context) {
-                  return CommonButton.ghost(
+                  return CommonButton(
+                    buttonType: EverButtonType.ghost,
+                    textAlign: TextAlign.center,
                     text: LocaleKeys.uploadPhotoFromGallery.tr(),
-                    fillWidth: true,
+                    contentColor: colors.textContrast,
                     onPressed: context.read<QrCubit>().tryScanPhoto,
                     leading: CommonButtonIconWidget.svg(
                       svg: Assets.images.camera.path,
@@ -99,7 +126,9 @@ class _QrScannerPageState extends State<QrScannerPage> {
               CommonButton.primary(
                 fillWidth: true,
                 text: LocaleKeys.givePermissions.tr(),
-                onPressed: context.read<QrCubit>().openSettings,
+                onPressed: () => context
+                    .read<QrCubit>()
+                    .openSettings(SettingsOpenType.camera),
               ),
             ],
           ),

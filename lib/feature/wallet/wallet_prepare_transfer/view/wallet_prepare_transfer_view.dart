@@ -259,7 +259,8 @@ class _WalletPrepareTransferViewState extends State<WalletPrepareTransferView> {
               svg: Assets.images.scan.path,
               size: CommonIconButtonSize.small,
               onPressed: () async {
-                final address = await showQrScanner(context);
+                final address =
+                    await showQrScanner(context, QrScanType.address);
                 if (address != null) {
                   _receiverController.text = address;
                 }

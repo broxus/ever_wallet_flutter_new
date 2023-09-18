@@ -384,5 +384,6 @@
   "givePhotosPermission": "Give photos permission",
   "giveWord": "Give",
   "needCameraPermissions": "We need camera permissions to scan QR code",
-  "givePermissions": "Give permissions"
+  "givePermissions": "Give permissions",
+  "scannedDataIsNot": "Scanned data is not {}"
 }
