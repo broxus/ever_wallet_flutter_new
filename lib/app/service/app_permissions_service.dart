@@ -31,20 +31,24 @@ class AppPermissionsService {
           return false;
         }
       }
+
       return true;
     }
+
     return false;
   }
 
   /// Request permission and return if it's granted
   Future<bool> _request(Permission permission) async {
     final status = await permission.request();
+
     return _isGoodStatus(status);
   }
 
   /// Check status of permission and return if it's granted
   Future<bool> _check(Permission permission) async {
     final status = await permission.status;
+
     return _isGoodStatus(status);
   }
 
@@ -56,6 +60,7 @@ class AppPermissionsService {
         ? !isPermissionDenied && await _check(permission)
         : await _request(permission);
     final permanentlyDenied = await permission.isPermanentlyDenied;
+
     return !isPermissionDenied && !isGranted || permanentlyDenied;
   }
 
