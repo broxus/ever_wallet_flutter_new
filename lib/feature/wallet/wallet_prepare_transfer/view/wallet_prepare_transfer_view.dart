@@ -1,5 +1,6 @@
 import 'package:app/app/service/service.dart';
 import 'package:app/di/di.dart';
+import 'package:app/feature/qr_scanner/qr_scanner.dart';
 import 'package:app/feature/wallet/wallet.dart';
 import 'package:app/generated/generated.dart';
 import 'package:flutter/material.dart';
@@ -257,9 +258,13 @@ class _WalletPrepareTransferViewState extends State<WalletPrepareTransferView> {
               buttonType: EverButtonType.ghost,
               svg: Assets.images.scan.path,
               size: CommonIconButtonSize.small,
-              // TODO(alex-a4): add qr scanning
-              // ignore: no-empty-block
-              onPressed: () {},
+              onPressed: () async {
+                final address =
+                    await showQrScanner(context, QrScanType.address);
+                if (address != null) {
+                  _receiverController.text = address;
+                }
+              },
               color: colors.blue,
             ),
           ],
