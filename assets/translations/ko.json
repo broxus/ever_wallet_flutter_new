@@ -378,5 +378,12 @@
   "recipientAddress": "Recipient address",
   "sendMessage": "Send message",
   "unknownMessageType": "Unknown message type",
-  "contractWithErrorCode": "Contract did not accept the message. Exit code: {}"
+  "contractWithErrorCode": "Contract did not accept the message. Exit code: {}",
+  "scanQrCode": "Scan QR code",
+  "uploadPhotoFromGallery": "Upload photo from gallery",
+  "givePhotosPermission": "Give photos permission",
+  "giveWord": "Give",
+  "needCameraPermissions": "We need camera permissions to scan QR code",
+  "givePermissions": "Give permissions",
+  "scannedDataIsNot": "Scanned data is not {}"
 }

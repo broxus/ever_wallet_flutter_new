@@ -42,7 +42,19 @@ post_install do |installer|
     project.targets.each do |target|
         target.build_configurations.each do |config|
             config.build_settings['IPHONEOS_DEPLOYMENT_TARGET'] = '13.0'
-         end
+          # You can enable the permissions needed here. For example to enable camera
+          # permission, just remove the `#` character in front so it looks like this:
+          #
+          #  Preprocessor definitions can be found in: https://github.com/Baseflow/flutter-permission-handler/blob/master/permission_handler_apple/ios/Classes/PermissionHandlerEnums.h
+          config.build_settings['GCC_PREPROCESSOR_DEFINITIONS'] ||= [
+            '$(inherited)',
+            ## dart: PermissionGroup.camera
+            'PERMISSION_CAMERA=1',
+      
+            ## dart: PermissionGroup.photos
+            'PERMISSION_PHOTOS=1',
+          ]
+        end
     end
   end
 end
