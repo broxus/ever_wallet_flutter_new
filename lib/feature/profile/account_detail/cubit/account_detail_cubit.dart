@@ -84,6 +84,7 @@ class AccountDetailCubit extends Cubit<AccountDetailState> {
               .map((e) => e.address)
               .contains(address)) {
         _subCreatedManually = true;
+        // ignore: prefer-async-await
         nekotonRepository.subscribeByAddress(address).then((w) {
           // for cases, when screen was closed before sub completed
           if (isClosed) {
@@ -97,6 +98,7 @@ class AccountDetailCubit extends Cubit<AccountDetailState> {
 
         if (wallets != null) {
           for (final wallet in wallets) {
+            // ignore: prefer-async-await
             nekotonRepository
                 .subscribeToken(
               owner: address,
@@ -133,6 +135,7 @@ class AccountDetailCubit extends Cubit<AccountDetailState> {
           token.owner,
           token.rootTokenContract,
         );
+
         return true;
       });
     }
