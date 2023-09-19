@@ -1,5 +1,5 @@
 import 'package:app/data/models/models.dart';
-import 'package:nekoton_repository/nekoton_repository.dart' hide ConnectionData;
+import 'package:nekoton_repository/nekoton_repository.dart';
 
 // TODO(alex-a4): implement custom strategy when it will be implemented
 /// Transport strategy for any different custom network

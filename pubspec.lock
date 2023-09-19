@@ -290,6 +290,14 @@ packages:
       url: "https://pub.dev"
     source: hosted
     version: "3.0.0"
+  colorize:
+    dependency: transitive
+    description:
+      name: colorize
+      sha256: "584746cd6ba1cba0633b6720f494fe6f9601c4170f0666c1579d2aa2a61071ba"
+      url: "https://pub.dev"
+    source: hosted
+    version: "3.0.0"
   conventional_commit:
     dependency: transitive
     description:
@@ -621,10 +629,10 @@ packages:
     dependency: transitive
     description:
       name: flutter_nekoton_bridge
-      sha256: "249f6cde673bebbf7773372d0221aae6b1e4e425a778be21c7951d72c97c34ad"
+      sha256: "61d20003b86733b2243f6d38db9830ce0cf8e4500f76eb3fa344cbfcc8ead426"
       url: "https://pub.dev"
     source: hosted
-    version: "1.22.0"
+    version: "1.24.0"
   flutter_plugin_android_lifecycle:
     dependency: transitive
     description:
@@ -637,10 +645,10 @@ packages:
     dependency: transitive
     description:
       name: flutter_rust_bridge
-      sha256: a2ff791f96ed03be0d4a8d249130688371ab3612ef95efeddef23600b904a1ef
+      sha256: "6960d0843f6f7b4eac28f2531eb0024f01c49bf9eec798327fbbafa084c1f535"
       url: "https://pub.dev"
     source: hosted
-    version: "1.81.0"
+    version: "1.78.0"
   flutter_secure_storage:
     dependency: "direct dev"
     description:
@@ -1113,18 +1121,18 @@ packages:
     dependency: transitive
     description:
       name: nekoton_bridge
-      sha256: cf7212b97a9ff616fa48061c8d1103d2b6bec41907690da2ca7ecb56d820ef32
+      sha256: d15f6ece670a73d1947d000ad5d71cfc98f09a00931fbf5c613d40459ad30bd9
       url: "https://pub.dev"
     source: hosted
-    version: "1.15.0"
+    version: "1.16.0"
   nekoton_repository:
     dependency: "direct main"
     description:
       name: nekoton_repository
-      sha256: d465a1194ade7b877a33c83d367211d6864970e3b8aecc01d6bbe98fac892c92
+      sha256: "79a7ae8baaa4de65acf174cae071c147ec60a7eb18e3c0516ead23be8b502819"
       url: "https://pub.dev"
     source: hosted
-    version: "0.21.0"
+    version: "0.22.0"
   nekoton_webview:
     dependency: "direct main"
     description:
