@@ -10,7 +10,6 @@ sealed class ConnectionData with _$ConnectionData {
   const factory ConnectionData.gql({
     required String id,
     required String name,
-    required int networkId,
     required String group,
     required List<String> endpoints,
     required Duration timeout,
@@ -21,7 +20,6 @@ sealed class ConnectionData with _$ConnectionData {
 
   factory ConnectionData.gqlCustom({
     required String name,
-    required int networkId,
     required String group,
     required List<String> endpoints,
     required Duration timeout,
@@ -31,7 +29,6 @@ sealed class ConnectionData with _$ConnectionData {
       ConnectionData.gql(
         id: const Uuid().v4(),
         name: name,
-        networkId: networkId,
         group: group,
         endpoints: endpoints,
         timeout: timeout,
@@ -43,7 +40,6 @@ sealed class ConnectionData with _$ConnectionData {
   factory ConnectionData.gqlPreset({
     required String id,
     required String name,
-    required int networkId,
     required String group,
     required List<String> endpoints,
     required Duration timeout,
@@ -52,7 +48,6 @@ sealed class ConnectionData with _$ConnectionData {
       ConnectionData.gql(
         id: id,
         name: name,
-        networkId: networkId,
         group: group,
         endpoints: endpoints,
         timeout: timeout,
@@ -64,7 +59,6 @@ sealed class ConnectionData with _$ConnectionData {
   const factory ConnectionData.proto({
     required String id,
     required String name,
-    required int networkId,
     required String group,
     required String endpoint,
     required NetworkType networkType,
@@ -73,7 +67,6 @@ sealed class ConnectionData with _$ConnectionData {
 
   factory ConnectionData.protoCustom({
     required String name,
-    required int networkId,
     required String group,
     required String endpoint,
     required NetworkType networkType,
@@ -81,7 +74,6 @@ sealed class ConnectionData with _$ConnectionData {
       ConnectionData.proto(
         id: const Uuid().v4(),
         name: name,
-        networkId: networkId,
         group: group,
         endpoint: endpoint,
         networkType: networkType,
@@ -91,7 +83,6 @@ sealed class ConnectionData with _$ConnectionData {
   factory ConnectionData.protoPreset({
     required String id,
     required String name,
-    required int networkId,
     required String group,
     required String endpoint,
     required NetworkType networkType,
@@ -99,7 +90,6 @@ sealed class ConnectionData with _$ConnectionData {
       ConnectionData.proto(
         id: id,
         name: name,
-        networkId: networkId,
         group: group,
         endpoint: endpoint,
         networkType: networkType,
@@ -109,7 +99,6 @@ sealed class ConnectionData with _$ConnectionData {
   const factory ConnectionData.jrpc({
     required String id,
     required String name,
-    required int networkId,
     required String group,
     required String endpoint,
     required NetworkType networkType,
@@ -118,7 +107,6 @@ sealed class ConnectionData with _$ConnectionData {
 
   factory ConnectionData.jrpcCustom({
     required String name,
-    required int networkId,
     required String group,
     required String endpoint,
     required NetworkType networkType,
@@ -126,7 +114,6 @@ sealed class ConnectionData with _$ConnectionData {
       ConnectionData.jrpc(
         id: const Uuid().v4(),
         name: name,
-        networkId: networkId,
         group: group,
         endpoint: endpoint,
         networkType: networkType,
@@ -136,7 +123,6 @@ sealed class ConnectionData with _$ConnectionData {
   factory ConnectionData.jrpcPreset({
     required String id,
     required String name,
-    required int networkId,
     required String group,
     required String endpoint,
     required NetworkType networkType,
@@ -144,7 +130,6 @@ sealed class ConnectionData with _$ConnectionData {
       ConnectionData.jrpc(
         id: id,
         name: name,
-        networkId: networkId,
         group: group,
         endpoint: endpoint,
         networkType: networkType,

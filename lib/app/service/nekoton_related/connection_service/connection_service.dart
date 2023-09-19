@@ -4,7 +4,7 @@ import 'package:app/data/models/connection_data.dart';
 import 'package:app/data/models/network_type.dart';
 import 'package:injectable/injectable.dart';
 import 'package:logging/logging.dart';
-import 'package:nekoton_repository/nekoton_repository.dart' hide ConnectionData;
+import 'package:nekoton_repository/nekoton_repository.dart';
 
 /// This is a service that switches between connections by creating
 /// [Transport] and putting it in [NekotonRepository]. It has no public
@@ -43,29 +43,26 @@ class ConnectionService {
   Future<void> _updateTransportByConnection(ConnectionData connection) async {
     _log.finest('updateTransportByConnection: ${connection.name}');
     final transport = await connection.when<Future<Transport>>(
-      gql: (_, name, networkId, group, endpoints, timeout, __, isLocal, ___) =>
+      gql: (_, name, group, endpoints, timeout, __, isLocal, ___) =>
           _nekotonRepository.createGqlTransport(
         post: _httpService.postTransportData,
         get: _httpService.getTransportData,
         name: name,
-        networkId: networkId,
         group: group,
         endpoints: endpoints,
         local: isLocal,
       ),
-      proto: (_, name, networkId, group, endpoint, __, ___) =>
+      proto: (_, name, group, endpoint, __, ___) =>
           _nekotonRepository.createProtoTransport(
         post: _httpService.postTransportDataBytes,
         name: name,
-        networkId: networkId,
         group: group,
         endpoint: endpoint,
       ),
-      jrpc: (_, name, networkId, group, endpoint, __, ___) =>
+      jrpc: (_, name, group, endpoint, __, ___) =>
           _nekotonRepository.createJrpcTransport(
         post: _httpService.postTransportData,
         name: name,
-        networkId: networkId,
         group: group,
         endpoint: endpoint,
       ),
