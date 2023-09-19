@@ -6,7 +6,9 @@ class AccountTransactionsTabState with _$AccountTransactionsTabState {
 
   const factory AccountTransactionsTabState.loading() = _Loading;
 
-  const factory AccountTransactionsTabState.transactions(
-    List<AccountTransactionItem<Object>> transactions,
-  ) = _Transactions;
+  /// isLoading means that user scrolled to the end of list
+  const factory AccountTransactionsTabState.transactions({
+    required List<AccountTransactionItem<Object>> transactions,
+    required bool isLoading,
+  }) = _Transactions;
 }

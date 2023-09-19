@@ -4,6 +4,7 @@ import 'package:app/app/service/service.dart';
 import 'package:bloc/bloc.dart';
 import 'package:collection/collection.dart';
 import 'package:freezed_annotation/freezed_annotation.dart';
+import 'package:logging/logging.dart';
 import 'package:nekoton_repository/nekoton_repository.dart';
 import 'package:rxdart/rxdart.dart';
 
@@ -45,10 +46,33 @@ class TokenWalletTransactionsCubit extends Cubit<TokenWalletTransactionsState> {
     );
   }
 
+  final _logger = Logger('TokenWalletTransactionsCubit');
+
   final Address owner;
   final Address rootTokenContract;
   final NekotonRepository nekotonRepository;
   final TokenWalletStorageService walletStorage;
+
+  /// If not null, then [_transactionsState] will check for coming new
+  /// transactions and there is no new, then [_canLoadMore] will be false.
+  String? _lastLtWhenPreloaded;
+  bool _isPreloadingTransactions = false;
+  bool _canLoadMore = true;
+
+  /// Called from UI when user scrolled to the end of the list.
+  /// NOTE: this method may be called multiple times
+  void tryPreloadTransactions() {
+    final lastPrevLt = state.whenOrNull(
+      transactions: (transactions, _, __) => _lastLt(transactions),
+    );
+    if (_isPreloadingTransactions || !_canLoadMore || lastPrevLt == null) {
+      return;
+    }
+
+    _preloadTransactions(lastPrevLt);
+  }
+
+  Currency? _cachedCurrency;
 
   /// List of ordinary transactions and flag that sign that transactions was
   /// loaded and mapped.
@@ -101,20 +125,64 @@ class TokenWalletTransactionsCubit extends Cubit<TokenWalletTransactionsState> {
 
   void _checkState(Currency currency) {
     if (_ordinaryLoaded) {
-      _transactionsState(currency);
+      _cachedCurrency = currency;
+      _transactionsState(true);
     } else {
       emit(const TokenWalletTransactionsState.loading());
     }
   }
 
-  void _transactionsState(Currency currency) {
+  void _transactionsState([bool fromStream = false]) {
     if (_ordinary.isEmpty) {
+      _canLoadMore = false;
       emit(const TokenWalletTransactionsState.empty());
     } else {
       final transactions = [..._ordinary]
         ..sort((a, b) => b.date.compareTo(a.date));
 
-      emit(TokenWalletTransactionsState.transactions(transactions, currency));
+      final lastLt = _lastLt(transactions);
+      if (_lastLtWhenPreloaded != null &&
+          lastLt == _lastLtWhenPreloaded &&
+          !_isPreloadingTransactions &&
+          fromStream) {
+        _canLoadMore = false;
+        _lastLtWhenPreloaded = null;
+      }
+
+      emit(
+        TokenWalletTransactionsState.transactions(
+          transactions: transactions,
+          tokenCurrency: _cachedCurrency!,
+          isLoading: _isPreloadingTransactions,
+        ),
+      );
+    }
+  }
+
+  /// Get last available prevTransactionLt
+  String? _lastLt(
+    List<TokenWalletOrdinaryTransaction> transactions,
+  ) =>
+      transactions
+          .lastWhereOrNull((t) => t.prevTransactionLt != null)
+          ?.prevTransactionLt;
+
+  Future<void> _preloadTransactions(String lastPrevLt) async {
+    _isPreloadingTransactions = true;
+    _transactionsState();
+    _lastLtWhenPreloaded = lastPrevLt;
+
+    try {
+      await nekotonRepository.preloadTokenTransactions(
+        owner: owner,
+        rootTokenContract: rootTokenContract,
+        fromLt: lastPrevLt,
+      );
+    } catch (e, t) {
+      _logger.severe('_preloadTransactions', e, t);
+    } finally {
+      _isPreloadingTransactions = false;
+      _transactionsState();
     }
   }
 }
