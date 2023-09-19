@@ -27,7 +27,8 @@ class TonWalletAssetCubit extends Cubit<TonWalletAssetState> {
       // wallet not iniaitlized or transport of wallet changed
       if (wallet != null &&
           (_wallet == null ||
-              _wallet!.transport.name != wallet.transport.name)) {
+              _wallet!.transport.connectionParamsHash !=
+                  wallet.transport.connectionParamsHash)) {
         _wallet = wallet;
         _closeSubs();
 

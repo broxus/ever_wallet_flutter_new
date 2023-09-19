@@ -4,7 +4,7 @@ import 'package:app/data/models/connection_data.dart';
 import 'package:app/data/models/network_type.dart';
 import 'package:injectable/injectable.dart';
 import 'package:logging/logging.dart';
-import 'package:nekoton_repository/nekoton_repository.dart' hide ConnectionData;
+import 'package:nekoton_repository/nekoton_repository.dart';
 
 /// This is a service that switches between connections by creating
 /// [Transport] and putting it in [NekotonRepository]. It has no public
@@ -63,14 +63,6 @@ class ConnectionService {
           _nekotonRepository.createJrpcTransport(
         post: _httpService.postTransportData,
         name: name,
-        group: group,
-        endpoint: endpoint,
-      ),
-      jrpc: (_, name, networkId, group, endpoint, __, ___) =>
-          _nekotonRepository.createJrpcTransport(
-        post: _httpService.postTransportData,
-        name: name,
-        networkId: networkId,
         group: group,
         endpoint: endpoint,
       ),
