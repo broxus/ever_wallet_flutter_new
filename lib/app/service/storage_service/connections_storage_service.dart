@@ -131,7 +131,7 @@ class ConnectionsStorageService extends AbstractStorageService {
       domain: _connectionsDomain,
     );
 
-    final currentId = id ?? defaultNetworkId;
+    final currentId = id ?? defaultConnectionkId;
 
     _log.info('Current connection id:\n$currentId');
 
@@ -161,7 +161,7 @@ class ConnectionsStorageService extends AbstractStorageService {
         'Trying to set current connection with id $id that not exists. '
         'Setting default connection as current',
       );
-      newId = defaultNetworkId;
+      newId = defaultConnectionkId;
     }
 
     await _storage.set(
@@ -205,7 +205,7 @@ class ConnectionsStorageService extends AbstractStorageService {
 
     final items = [...connections]..removeWhere((item) => item.id == id);
 
-    await saveCurrentConnectionId(defaultNetworkId);
+    await saveCurrentConnectionId(defaultConnectionkId);
     await saveConnections(items);
   }
 
