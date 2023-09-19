@@ -58,7 +58,7 @@ class TokenWalletStorageService extends TokenWalletTransactionsStorage
     );
     final values = _transactionsSubject.value;
     final existed = values[info];
-    values[info] = List.from([...?existed, ...transaction])
+    values[info] = {...?existed, ...transaction}.toList()
       ..sort(
         // new transactions in the beginning
         (a, b) => b.transaction.createdAt.compareTo(a.transaction.createdAt),
