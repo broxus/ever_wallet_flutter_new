@@ -29,5 +29,10 @@ Future<void> configureFeatureServices() async {
     ..finest('PermissionsService initializing...');
 
   inject<PermissionsService>().init();
-  log.finest('PermissionsService initialized');
+  log
+    ..finest('PermissionsService initialized')
+    ..finest('StakingService initializing...');
+
+  await inject<StakingService>().init();
+  log.finest('StakingService initialized');
 }

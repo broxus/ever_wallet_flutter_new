@@ -1,6 +1,7 @@
 import 'dart:async';
 
 import 'package:app/app/service/service.dart';
+import 'package:app/di/di.dart';
 import 'package:bloc/bloc.dart';
 import 'package:collection/collection.dart';
 import 'package:freezed_annotation/freezed_annotation.dart';
@@ -44,13 +45,21 @@ class AccountCardCubit extends Cubit<AccountCardState> {
   TonWallet? wallet;
 
   void _initWallet(TonWallet w) {
-    if (wallet != null && wallet!.transport.name == w.transport.name) return;
+    if (wallet != null &&
+        wallet!.transport.connectionParamsHash ==
+            w.transport.connectionParamsHash) {
+      return;
+    }
 
     _closeSubs();
 
     wallet = w;
-    _thisWalletSubscription =
-        w.fieldUpdatesStream.listen((_) => _updateWalletData(w));
+    _thisWalletSubscription = w.fieldUpdatesStream.listen((_) {
+      _updateWalletData(w);
+      if (nekotonRepository.currentTransport.stakeInformation != null) {
+        inject<StakingService>().tryUpdateWithdraws(account.address);
+      }
+    });
     _balanceSubscription =
         balanceService.accountOverallBalance(w.address).listen((fiat) {
       if (fiat == Fixed.zero && _cachedFiatBalance == Fixed.zero) {

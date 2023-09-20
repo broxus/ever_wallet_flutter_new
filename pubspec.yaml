@@ -89,9 +89,11 @@ flutter:
 
   assets:
     - assets/translations/
+    - assets/abi/
     - assets/images/
     - assets/images/onboarding/layer1/
     - assets/images/onboarding/layer2/
     - assets/images/onboarding/layer3/
     - assets/images/onboarding/
     - assets/images/lang_icons/
+    - assets/images/stever/

@@ -7,5 +7,6 @@ class WalletAccountActionsState with _$WalletAccountActionsState {
   const factory WalletAccountActionsState.data({
     required WalletAccountActionBehavior action,
     required bool hasStake,
+    required bool hasStakeActions,
   }) = _Data;
 }
