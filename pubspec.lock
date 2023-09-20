@@ -559,10 +559,11 @@ packages:
   flutter_inappwebview:
     dependency: "direct main"
     description:
-      name: flutter_inappwebview
-      sha256: f73505c792cf083d5566e1a94002311be497d984b5607f25be36d685cf6361cf
-      url: "https://pub.dev"
-    source: hosted
+      path: "."
+      ref: "heads/v5.7.2+3_fix_xcode_17"
+      resolved-ref: "2d6c123b8065cdd98593b783a811e79d433e7244"
+      url: "https://github.com/nesquikm/flutter_inappwebview.git"
+    source: git
     version: "5.7.2+3"
   flutter_keyboard_visibility:
     dependency: transitive
@@ -1136,10 +1137,11 @@ packages:
   nekoton_webview:
     dependency: "direct main"
     description:
-      name: nekoton_webview
-      sha256: e496ffe7e087a233bcd275767bd338836186d5dc2446ed071b8610386a027b4e
-      url: "https://pub.dev"
-    source: hosted
+      path: "."
+      ref: "fix/xcode_17"
+      resolved-ref: e5f9a3fe455d2bd06fde86ae73b16c9e4648da91
+      url: "https://github.com/broxus/nekoton_webview.git"
+    source: git
     version: "0.1.5"
   nested:
     dependency: transitive
