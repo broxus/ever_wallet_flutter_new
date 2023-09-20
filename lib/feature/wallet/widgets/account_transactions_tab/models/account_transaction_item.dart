@@ -20,11 +20,14 @@ class AccountTransactionItem<T> extends Equatable
     required this.date,
     required this.transaction,
     required this.type,
+    required this.prevTransactionLt,
   });
 
   final DateTime date;
 
   final T transaction;
+
+  final String? prevTransactionLt;
 
   final AccountTransactionType type;
 

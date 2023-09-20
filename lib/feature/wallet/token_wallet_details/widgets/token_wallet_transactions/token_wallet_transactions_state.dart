@@ -6,8 +6,10 @@ class TokenWalletTransactionsState with _$TokenWalletTransactionsState {
 
   const factory TokenWalletTransactionsState.loading() = _Loading;
 
-  const factory TokenWalletTransactionsState.transactions(
-    List<TokenWalletOrdinaryTransaction> transactions,
-    Currency tokenCurrency,
-  ) = _Transactions;
+  const factory TokenWalletTransactionsState.transactions({
+    required List<TokenWalletOrdinaryTransaction> transactions,
+    required Currency tokenCurrency,
+    required bool isLoading,
+    required bool canLoadMore,
+  }) = _Transactions;
 }

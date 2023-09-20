@@ -22,51 +22,59 @@ class AccountAssetsTab extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return BlocProvider<AccountAssetTabCubit>(
-      create: (_) => AccountAssetTabCubit(
-        account,
-        inject<AssetsService>(),
-      ),
-      child: BlocBuilder<AccountAssetTabCubit, AccountAssetTabState>(
-        builder: (context, state) {
-          final assets = state.when(
-            empty: () => <Widget>[],
-            accounts: (tonWallet, contracts) {
-              return <Widget>[
-                TonWalletAssetWidget(tonWallet: tonWallet),
-                ...?contracts?.map(
-                  (e) => TokenWalletAssetWidget(
-                    asset: e,
-                    owner: tonWallet.address,
+    return SliverPadding(
+      padding: const EdgeInsets.symmetric(horizontal: DimensSize.d16),
+      sliver: BlocProvider<AccountAssetTabCubit>(
+        create: (_) => AccountAssetTabCubit(
+          account,
+          inject<AssetsService>(),
+        ),
+        child: BlocBuilder<AccountAssetTabCubit, AccountAssetTabState>(
+          builder: (context, state) {
+            final assets = state.when(
+              empty: () => <Widget>[],
+              accounts: (tonWallet, contracts) {
+                return <Widget>[
+                  TonWalletAssetWidget(tonWallet: tonWallet),
+                  ...?contracts?.map(
+                    (e) => TokenWalletAssetWidget(
+                      asset: e,
+                      owner: tonWallet.address,
+                    ),
                   ),
-                ),
-              ];
-            },
-          );
+                ];
+              },
+            );
 
-          return SeparatedColumn(
-            children: [
-              SeparatedColumn(
-                separator: const Padding(
-                  padding: EdgeInsets.symmetric(vertical: DimensSize.d8),
-                  child: CommonDivider(),
-                ),
-                children: assets,
-              ),
-              CommonButton.primary(
-                fillWidth: true,
-                text: LocaleKeys.manageAssets.tr(),
-                onPressed: () => context.goFurther(
-                  AppRoute.selectNewAsset.pathWithData(
-                    pathParameters: {
-                      selectNewAssetAddressPathParam: account.address.address,
-                    },
-                  ),
-                ),
-              ),
-            ],
-          );
-        },
+            return SliverList.separated(
+              itemCount: assets.length + 1,
+              separatorBuilder: (context, index) => index == assets.length - 1
+                  ? const SizedBox(height: DimensSize.d16)
+                  : const Padding(
+                      padding: EdgeInsets.symmetric(vertical: DimensSize.d8),
+                      child: CommonDivider(),
+                    ),
+              itemBuilder: (context, index) {
+                if (index == assets.length) {
+                  return CommonButton.primary(
+                    fillWidth: true,
+                    text: LocaleKeys.manageAssets.tr(),
+                    onPressed: () => context.goFurther(
+                      AppRoute.selectNewAsset.pathWithData(
+                        pathParameters: {
+                          selectNewAssetAddressPathParam:
+                              account.address.address,
+                        },
+                      ),
+                    ),
+                  );
+                }
+
+                return assets[index];
+              },
+            );
+          },
+        ),
       ),
     );
   }

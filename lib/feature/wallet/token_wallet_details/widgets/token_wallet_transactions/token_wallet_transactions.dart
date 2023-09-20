@@ -3,7 +3,6 @@ import 'package:app/feature/wallet/token_wallet_details/widgets/token_wallet_tra
 import 'package:app/feature/wallet/wallet.dart';
 import 'package:app/generated/generated.dart';
 import 'package:app/utils/utils.dart';
-import 'package:collection/collection.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:nekoton_repository/nekoton_repository.dart';
@@ -15,11 +14,13 @@ class TokenWalletTransactionsWidget extends StatelessWidget {
   const TokenWalletTransactionsWidget({
     required this.owner,
     required this.rootTokenContract,
+    required this.scrollController,
     super.key,
   });
 
   final Address owner;
   final Address rootTokenContract;
+  final ScrollController scrollController;
 
   @override
   Widget build(BuildContext context) {
@@ -36,41 +37,62 @@ class TokenWalletTransactionsWidget extends StatelessWidget {
           TokenWalletTransactionsState>(
         builder: (context, state) {
           return state.when(
-            empty: () => Center(
-              child: Text(
-                LocaleKeys.historyIsEmpty.tr(),
-                style: StyleRes.primaryBold.copyWith(
-                  color: colors.textPrimary,
+            empty: () => SliverFillRemaining(
+              child: Center(
+                child: Text(
+                  LocaleKeys.historyIsEmpty.tr(),
+                  style: StyleRes.primaryBold.copyWith(
+                    color: colors.textPrimary,
+                  ),
                 ),
               ),
             ),
-            loading: () => const SizedBox.shrink(),
-            transactions: (transactions, currency) {
-              return SeparatedColumn(
-                children: transactions.mapIndexed(
-                  (index, e) {
+            loading: () => const SliverToBoxAdapter(child: SizedBox.shrink()),
+            transactions: (transactions, currency, isLoading, _) {
+              return ScrollControllerPreloadListener(
+                preleloadAction: () => context
+                    .read<TokenWalletTransactionsCubit>()
+                    .tryPreloadTransactions(),
+                scrollController: scrollController,
+                child: SliverList.builder(
+                  itemCount: transactions.length + (isLoading ? 1 : 0),
+                  itemBuilder: (context, index) {
+                    if (index == transactions.length) {
+                      return const Padding(
+                        padding: EdgeInsets.all(DimensSize.d16),
+                        child: Center(child: CommonCircularProgressIndicator()),
+                      );
+                    }
+
+                    final trans = transactions[index];
+
                     final prev = index == 0 ? null : transactions[index - 1];
                     final displayDate =
-                        prev == null || !prev.date.isSameDay(e.date);
+                        prev == null || !prev.date.isSameDay(trans.date);
 
                     final ticker = inject<NekotonRepository>()
                         .currentTransport
                         .nativeTokenTicker;
 
-                    return TokenWalletTransactionWidget(
-                      transaction: e,
-                      displayDate: displayDate,
-                      transactionFee: Money.fromBigIntWithCurrency(
-                        e.fees,
-                        Currencies()[ticker]!,
+                    return Padding(
+                      padding: const EdgeInsets.symmetric(
+                        horizontal: DimensSize.d16,
                       ),
-                      transactionValue: Money.fromBigIntWithCurrency(
-                        e.value,
-                        currency,
+                      child: TokenWalletTransactionWidget(
+                        transaction: trans,
+                        displayDate: displayDate,
+                        transactionFee: Money.fromBigIntWithCurrency(
+                          trans.fees,
+                          Currencies()[ticker]!,
+                        ),
+                        transactionValue: Money.fromBigIntWithCurrency(
+                          trans.value,
+                          currency,
+                        ),
                       ),
                     );
                   },
-                ).toList(),
+                ),
               );
             },
           );
