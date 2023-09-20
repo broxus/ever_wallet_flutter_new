@@ -54,18 +54,21 @@ class TokenWalletTransactionsCubit extends Cubit<TokenWalletTransactionsState> {
   final TokenWalletStorageService walletStorage;
 
   /// If not null, then [_transactionsState] will check for coming new
-  /// transactions and there is no new, then [_canLoadMore] will be false.
+  /// transactions and there is no new, then canLoadMore will be false.
   String? _lastLtWhenPreloaded;
-  bool _isPreloadingTransactions = false;
-  bool _canLoadMore = true;
 
   /// Called from UI when user scrolled to the end of the list.
   /// NOTE: this method may be called multiple times
   void tryPreloadTransactions() {
     final lastPrevLt = state.whenOrNull(
-      transactions: (transactions, _, __) => _lastLt(transactions),
+      transactions: (transactions, _, __, ___) => _lastLt(transactions),
     );
-    if (_isPreloadingTransactions || !_canLoadMore || lastPrevLt == null) {
+    final (isLoading, canLoadMore) = state.maybeWhen(
+      transactions: (_, __, isLoading, canLoadMore) => (isLoading, canLoadMore),
+      orElse: () => (true, false),
+    );
+
+    if (isLoading || !canLoadMore || lastPrevLt == null) {
       return;
     }
 
@@ -126,34 +129,41 @@ class TokenWalletTransactionsCubit extends Cubit<TokenWalletTransactionsState> {
   void _checkState(Currency currency) {
     if (_ordinaryLoaded) {
       _cachedCurrency = currency;
-      _transactionsState(true);
+      _transactionsState(fromStream: true);
     } else {
       emit(const TokenWalletTransactionsState.loading());
     }
   }
 
-  void _transactionsState([bool fromStream = false]) {
+  void _transactionsState({
+    bool fromStream = false,
+    bool isLoading = false,
+  }) {
     if (_ordinary.isEmpty) {
-      _canLoadMore = false;
       emit(const TokenWalletTransactionsState.empty());
     } else {
       final transactions = [..._ordinary]
         ..sort((a, b) => b.date.compareTo(a.date));
 
+      var canLoadMore = state.maybeWhen(
+        transactions: (_, __, ___, canLoadMore) => canLoadMore,
+        orElse: () => true,
+      );
       final lastLt = _lastLt(transactions);
-      if (_lastLtWhenPreloaded != null &&
-          lastLt == _lastLtWhenPreloaded &&
-          !_isPreloadingTransactions &&
-          fromStream) {
-        _canLoadMore = false;
-        _lastLtWhenPreloaded = null;
+      if (_lastLtWhenPreloaded != null && !isLoading && fromStream) {
+        // we must check this state every time, because we may have multiple
+        // inputs for this method (different transactions streams, but not now,
+        // just copied from <AccountTransactionsTabCubit>)
+        // and this why we do not assign null to <_lastLtWhenPreloaded>
+        canLoadMore = lastLt != _lastLtWhenPreloaded;
       }
 
       emit(
         TokenWalletTransactionsState.transactions(
           transactions: transactions,
           tokenCurrency: _cachedCurrency!,
-          isLoading: _isPreloadingTransactions,
+          isLoading: isLoading,
+          canLoadMore: canLoadMore,
         ),
       );
     }
@@ -168,8 +178,7 @@ class TokenWalletTransactionsCubit extends Cubit<TokenWalletTransactionsState> {
           ?.prevTransactionLt;
 
   Future<void> _preloadTransactions(String lastPrevLt) async {
-    _isPreloadingTransactions = true;
-    _transactionsState();
+    _transactionsState(isLoading: true);
     _lastLtWhenPreloaded = lastPrevLt;
 
     try {
@@ -181,7 +190,6 @@ class TokenWalletTransactionsCubit extends Cubit<TokenWalletTransactionsState> {
     } catch (e, t) {
       _logger.severe('_preloadTransactions', e, t);
     } finally {
-      _isPreloadingTransactions = false;
       _transactionsState();
     }
   }

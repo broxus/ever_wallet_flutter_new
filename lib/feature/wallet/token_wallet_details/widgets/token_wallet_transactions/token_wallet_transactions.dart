@@ -48,7 +48,7 @@ class TokenWalletTransactionsWidget extends StatelessWidget {
               ),
             ),
             loading: () => const SliverToBoxAdapter(child: SizedBox.shrink()),
-            transactions: (transactions, currency, isLoading) {
+            transactions: (transactions, currency, isLoading, _) {
               return ScrollControllerPreloadListener(
                 preleloadAction: () => context
                     .read<TokenWalletTransactionsCubit>()
@@ -58,7 +58,10 @@ class TokenWalletTransactionsWidget extends StatelessWidget {
                   itemCount: transactions.length + (isLoading ? 1 : 0),
                   itemBuilder: (context, index) {
                     if (index == transactions.length) {
-                      return const CommonCircularProgressIndicator();
+                      return const Padding(
+                        padding: EdgeInsets.all(DimensSize.d16),
+                        child: Center(child: CommonCircularProgressIndicator()),
+                      );
                     }
 
                     final trans = transactions[index];

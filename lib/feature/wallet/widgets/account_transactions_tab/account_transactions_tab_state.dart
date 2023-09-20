@@ -10,5 +10,6 @@ class AccountTransactionsTabState with _$AccountTransactionsTabState {
   const factory AccountTransactionsTabState.transactions({
     required List<AccountTransactionItem<Object>> transactions,
     required bool isLoading,
+    required bool canLoadMore,
   }) = _Transactions;
 }
