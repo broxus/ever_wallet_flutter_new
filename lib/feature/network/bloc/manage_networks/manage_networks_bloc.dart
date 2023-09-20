@@ -83,6 +83,22 @@ class ManageNetworksBloc
         ),
       );
     });
+
+    on<_addConnection>((event, emit) {
+      storageService.addConnection(event.connection);
+    });
+
+    on<_updateConnection>((event, emit) {
+      storageService.updateConnection(event.connection);
+    });
+
+    on<_removeConnection>((event, emit) {
+      storageService.removeConnection(event.id);
+    });
+
+    on<_revertConnection>((event, emit) {
+      storageService.revertConnection(event.id);
+    });
   }
 
   ConnectionData get currentConnection {

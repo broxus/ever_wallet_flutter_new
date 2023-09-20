@@ -21,6 +21,7 @@ final _everPresets = <ConnectionData>[
     group: 'mainnet',
     endpoint: 'https://jrpc.everwallet.net/proto',
     networkType: NetworkType.ever,
+    canBeEdited: false,
   ),
   ConnectionData.gqlPreset(
     id: 'preset_ever_mainnet_gql',
@@ -31,6 +32,7 @@ final _everPresets = <ConnectionData>[
     ],
     timeout: defaultNetworkTimeout,
     networkType: NetworkType.ever,
+    canBeEdited: false,
   ),
   ConnectionData.gqlPreset(
     id: 'preset_ever_testnet_gql',
@@ -41,6 +43,7 @@ final _everPresets = <ConnectionData>[
     ],
     timeout: defaultNetworkTimeout,
     networkType: NetworkType.ever,
+    canBeEdited: false,
   ),
 ];
 
@@ -54,6 +57,7 @@ final _venomPresets = [
   //   group: 'venom_mainnet',
   //   endpoint: 'https://jrpc.venom.foundation/proto',
   //   networkType: NetworkType.venom,
+  //   canBeEdited: false,
   // ),
   ConnectionData.protoPreset(
     id: 'preset_venom_testnet_proto',
@@ -61,6 +65,7 @@ final _venomPresets = [
     group: 'testnet',
     endpoint: 'https://jrpc-testnet.venom.foundation/proto',
     networkType: NetworkType.venom,
+    canBeEdited: true,
   ),
 ];
 
@@ -75,6 +80,7 @@ final _customPresets = <ConnectionData>[
     ],
     timeout: defaultNetworkTimeout,
     networkType: NetworkType.custom,
+    canBeEdited: true,
   ),
   ConnectionData.gqlPreset(
     id: 'preset_tonlabs_testnet_gql',
@@ -85,5 +91,6 @@ final _customPresets = <ConnectionData>[
     ],
     timeout: defaultNetworkTimeout,
     networkType: NetworkType.custom,
+    canBeEdited: true,
   ),
 ];

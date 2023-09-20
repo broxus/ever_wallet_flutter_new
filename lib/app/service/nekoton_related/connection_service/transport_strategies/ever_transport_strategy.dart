@@ -1,3 +1,4 @@
+import 'package:app/app/service/nekoton_related/connection_service/transport_strategies/utils.dart';
 import 'package:app/generated/generated.dart';
 import 'package:nekoton_repository/nekoton_repository.dart';
 
@@ -31,37 +32,14 @@ class EverTransportStrategy extends TransportStrategy {
       'https://api.flatqube.io/v1/currencies/$currencyAddress';
 
   @override
-  String defaultAccountName(WalletType walletType) => walletType.when(
-        multisig: (multisigType) {
-          switch (multisigType) {
-            case MultisigType.safeMultisigWallet:
-              return 'SafeMultisig';
-            case MultisigType.safeMultisigWallet24h:
-              return 'SafeMultisig24';
-            case MultisigType.setcodeMultisigWallet:
-              return 'SetcodeMultisig';
-            case MultisigType.setcodeMultisigWallet24h:
-              return 'SetcodeMultisig24';
-            case MultisigType.bridgeMultisigWallet:
-              return 'BridgeMultisig';
-            case MultisigType.surfWallet:
-              return 'Surf';
-            case MultisigType.multisig2:
-              return 'Multisig2';
-            case MultisigType.multisig2_1:
-              return 'Multisig2.1';
-          }
-        },
-        everWallet: () => 'EVER Wallet',
-        walletV3: () => 'WalletV3',
-        highloadWalletV2: () => 'HighloadWalletV2',
-      );
+  String defaultAccountName(WalletType walletType) =>
+      getDefaultAccountName(walletType);
 
   @override
   final defaultWalletType = const WalletType.everWallet();
 
   @override
-  final manifestUrl =
+  final String manifestUrl =
       'https://raw.githubusercontent.com/broxus/ton-assets/master/manifest.json';
 
   @override
