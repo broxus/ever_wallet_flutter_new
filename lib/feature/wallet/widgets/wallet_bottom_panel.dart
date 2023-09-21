@@ -29,40 +29,43 @@ class _WalletBottomPanelState extends State<WalletBottomPanel> {
 
   @override
   Widget build(BuildContext context) {
-    return SingleChildScrollView(
-      controller: widget.scrollController,
-      padding: const EdgeInsets.symmetric(horizontal: DimensSize.d16),
-      child: ValueListenableBuilder<WalletBottomPanelTab>(
-        valueListenable: currentTabNotifier,
-        builder: (_, value, __) {
-          return SeparatedColumn(
-            mainAxisSize: MainAxisSize.min,
-            children: [
-              CommonTabSwitcher(
-                onTabChanged: (v) => currentTabNotifier.value = v,
-                values: [
-                  CommonTabSwitcherItem(
-                    title: LocaleKeys.assetsWord.tr(),
-                    value: WalletBottomPanelTab.asset,
-                  ),
-                  CommonTabSwitcherItem(
-                    title: LocaleKeys.transactionsWord.tr(),
-                    value: WalletBottomPanelTab.transactions,
-                  ),
-                ],
-                currentValue: value,
+    return ValueListenableBuilder<WalletBottomPanelTab>(
+      valueListenable: currentTabNotifier,
+      builder: (_, value, __) {
+        return CustomScrollView(
+          controller: widget.scrollController,
+          slivers: [
+            SliverToBoxAdapter(
+              child: Padding(
+                padding: const EdgeInsets.symmetric(horizontal: DimensSize.d16),
+                child: CommonTabSwitcher(
+                  onTabChanged: (v) => currentTabNotifier.value = v,
+                  values: [
+                    CommonTabSwitcherItem(
+                      title: LocaleKeys.assetsWord.tr(),
+                      value: WalletBottomPanelTab.asset,
+                    ),
+                    CommonTabSwitcherItem(
+                      title: LocaleKeys.transactionsWord.tr(),
+                      value: WalletBottomPanelTab.transactions,
+                    ),
+                  ],
+                  currentValue: value,
+                ),
               ),
-              switch (value) {
-                WalletBottomPanelTab.asset =>
-                  AccountAssetsTab(account: widget.currentAccount),
-                WalletBottomPanelTab.transactions =>
-                  AccountTransactionsTab(account: widget.currentAccount),
-              },
-              const SizedBox(height: DimensSize.d8),
-            ],
-          );
-        },
-      ),
+            ),
+            switch (value) {
+              WalletBottomPanelTab.asset =>
+                AccountAssetsTab(account: widget.currentAccount),
+              WalletBottomPanelTab.transactions => AccountTransactionsTab(
+                  account: widget.currentAccount,
+                  scrollController: widget.scrollController,
+                ),
+            },
+            const SliverToBoxAdapter(child: SizedBox(height: DimensSize.d8)),
+          ],
+        );
+      },
     );
   }
 }

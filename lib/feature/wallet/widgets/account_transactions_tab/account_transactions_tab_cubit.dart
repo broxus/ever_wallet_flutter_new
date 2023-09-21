@@ -5,6 +5,7 @@ import 'package:app/feature/wallet/widgets/account_transactions_tab/models/accou
 import 'package:bloc/bloc.dart';
 import 'package:collection/collection.dart';
 import 'package:freezed_annotation/freezed_annotation.dart';
+import 'package:logging/logging.dart';
 import 'package:nekoton_repository/nekoton_repository.dart';
 import 'package:rxdart/rxdart.dart';
 
@@ -44,9 +45,14 @@ class AccountTransactionsTabCubit extends Cubit<AccountTransactionsTabState> {
     );
   }
 
+  final _logger = Logger('AccountTransactionsTabCubit');
   final TonWalletStorageService walletStorage;
   final NekotonRepository nekotonRepository;
   final KeyAccount account;
+
+  /// If not null, then [_transactionsState] will check for coming new
+  /// transactions and there is no new, then canLoadMore will be false.
+  String? _lastLtWhenPreloaded;
 
   /// List of multisig transactions and flag that sign that multisig
   /// transactions was loaded and mapped.
@@ -69,6 +75,23 @@ class AccountTransactionsTabCubit extends Cubit<AccountTransactionsTabState> {
   StreamSubscription<dynamic>? _pendingTransactionsSub;
   StreamSubscription<dynamic>? _multisigTransactionsSub;
   late StreamSubscription<dynamic> _walletSubscription;
+
+  /// Called from UI when user scrolled to the end of the list.
+  /// NOTE: this method may be called multiple times
+  void tryPreloadTransactions() {
+    final lastPrevLt = state.whenOrNull(
+      transactions: (transactions, _, __) => _lastLt(transactions),
+    );
+    final (isLoading, canLoadMore) = state.maybeWhen(
+      transactions: (_, isLoading, canLoadMore) => (isLoading, canLoadMore),
+      orElse: () => (true, false),
+    );
+    if (isLoading || !canLoadMore || lastPrevLt == null) {
+      return;
+    }
+
+    _preloadTransactions(lastPrevLt);
+  }
 
   @override
   Future<void> close() {
@@ -186,14 +209,17 @@ class AccountTransactionsTabCubit extends Cubit<AccountTransactionsTabState> {
         _pendingLoaded &&
         _expiredLoaded &&
         _ordinaryLoaded) {
-      _transactionsState();
+      _transactionsState(fromStream: true);
     } else {
       emit(const AccountTransactionsTabState.loading());
     }
   }
 
   // ignore: long-method
-  void _transactionsState() {
+  void _transactionsState({
+    bool fromStream = false,
+    bool isLoading = false,
+  }) {
     if (_multisigExpired.isEmpty &&
         _multisigPending.isEmpty &&
         _multisigOrdinary.isEmpty &&
@@ -207,6 +233,7 @@ class AccountTransactionsTabCubit extends Cubit<AccountTransactionsTabState> {
           (e) => AccountTransactionItem(
             date: e.date,
             transaction: e,
+            prevTransactionLt: e.prevTransactionLt,
             type: AccountTransactionType.multisigOrdinary,
           ),
         ),
@@ -214,6 +241,7 @@ class AccountTransactionsTabCubit extends Cubit<AccountTransactionsTabState> {
           (e) => AccountTransactionItem(
             date: e.date,
             transaction: e,
+            prevTransactionLt: e.prevTransactionLt,
             type: AccountTransactionType.multisigPending,
           ),
         ),
@@ -221,6 +249,7 @@ class AccountTransactionsTabCubit extends Cubit<AccountTransactionsTabState> {
           (e) => AccountTransactionItem(
             date: e.date,
             transaction: e,
+            prevTransactionLt: e.prevTransactionLt,
             type: AccountTransactionType.multisigExpired,
           ),
         ),
@@ -228,6 +257,7 @@ class AccountTransactionsTabCubit extends Cubit<AccountTransactionsTabState> {
           (e) => AccountTransactionItem(
             date: e.date,
             transaction: e,
+            prevTransactionLt: e.prevTransactionLt,
             type: AccountTransactionType.ordinary,
           ),
         ),
@@ -235,6 +265,7 @@ class AccountTransactionsTabCubit extends Cubit<AccountTransactionsTabState> {
           (e) => AccountTransactionItem(
             date: e.date,
             transaction: e,
+            prevTransactionLt: null,
             type: AccountTransactionType.pending,
           ),
         ),
@@ -242,12 +273,56 @@ class AccountTransactionsTabCubit extends Cubit<AccountTransactionsTabState> {
           (e) => AccountTransactionItem(
             date: e.date,
             transaction: e,
+            prevTransactionLt: null,
             type: AccountTransactionType.expired,
           ),
         ),
       ]..sort((a, b) => b.compareTo(a));
 
-      emit(AccountTransactionsTabState.transactions(transactions));
+      var canLoadMore = state.maybeWhen(
+        transactions: (_, __, canLoadMore) => canLoadMore,
+        orElse: () => true,
+      );
+      final lastLt = _lastLt(transactions);
+
+      if (_lastLtWhenPreloaded != null && !isLoading && fromStream) {
+        // we must check this state every time, because we have multiple
+        // inputs for this method (different transactions streams) and this why
+        // we do not assign null to <_lastLtWhenPreloaded>
+        canLoadMore = lastLt != _lastLtWhenPreloaded;
+      }
+
+      emit(
+        AccountTransactionsTabState.transactions(
+          transactions: transactions,
+          isLoading: isLoading,
+          canLoadMore: canLoadMore,
+        ),
+      );
+    }
+  }
+
+  /// Get last available prevTransactionLt
+  String? _lastLt(
+    List<AccountTransactionItem<dynamic>> transactions,
+  ) =>
+      transactions
+          .lastWhereOrNull((t) => t.prevTransactionLt != null)
+          ?.prevTransactionLt;
+
+  Future<void> _preloadTransactions(String lastPrevLt) async {
+    _transactionsState(isLoading: true);
+    _lastLtWhenPreloaded = lastPrevLt;
+
+    try {
+      await nekotonRepository.preloadTransactions(
+        address: account.address,
+        fromLt: lastPrevLt,
+      );
+    } catch (e, t) {
+      _logger.severe('_preloadTransactions', e, t);
+    } finally {
+      _transactionsState();
     }
   }
 }

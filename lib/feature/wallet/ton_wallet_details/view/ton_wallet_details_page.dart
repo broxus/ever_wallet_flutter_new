@@ -51,24 +51,30 @@ class TonWalletDetailsPage extends StatelessWidget {
                       ),
                     ],
                   ),
-                  panelBuilder: (context, controller) => SingleChildScrollView(
-                    padding: const EdgeInsets.symmetric(
-                      horizontal: DimensSize.d16,
-                    ),
+                  panelBuilder: (context, controller) => CustomScrollView(
                     controller: controller,
-                    child: SeparatedColumn(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        Text(
-                          LocaleKeys.transactionsHistory.tr(),
-                          style: StyleRes.h2.copyWith(
-                            color: colors.textPrimary,
+                    slivers: [
+                      SliverToBoxAdapter(
+                        child: Padding(
+                          padding: const EdgeInsets.symmetric(
+                            horizontal: DimensSize.d16,
+                          ),
+                          child: Text(
+                            LocaleKeys.transactionsHistory.tr(),
+                            style: StyleRes.h2.copyWith(
+                              color: colors.textPrimary,
+                            ),
                           ),
                         ),
-                        AccountTransactionsTab(account: account),
-                        const SizedBox(height: DimensSize.d8),
-                      ],
-                    ),
+                      ),
+                      AccountTransactionsTab(
+                        account: account,
+                        scrollController: controller,
+                      ),
+                      const SliverToBoxAdapter(
+                        child: SizedBox(height: DimensSize.d8),
+                      ),
+                    ],
                   ),
                 );
               },

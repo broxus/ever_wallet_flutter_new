@@ -84,38 +84,44 @@ class AccountDetailCubit extends Cubit<AccountDetailState> {
               .map((e) => e.address)
               .contains(address)) {
         _subCreatedManually = true;
-        nekotonRepository.subscribeByAddress(address).then((w) {
-          // for cases, when screen was closed before sub completed
-          if (isClosed) {
-            nekotonRepository.unsubscribe(address);
-          } else {
-            _tonWallet = w;
-          }
-        });
+        _subscribeNative();
+
         final networkGroup = _lastTransport!.group;
         final wallets = account.additionalAssets[networkGroup]?.tokenWallets;
 
         if (wallets != null) {
           for (final wallet in wallets) {
-            nekotonRepository
-                .subscribeToken(
-              owner: address,
-              rootTokenContract: wallet.rootTokenContract,
-            )
-                .then((token) {
-              // for cases, when screen was closed before sub completed
-              if (isClosed) {
-                nekotonRepository.unsubscribeToken(
-                  token.owner,
-                  token.rootTokenContract,
-                );
-              } else {
-                _tokenWallets.add(token);
-              }
-            });
+            _subscribeToken(wallet.rootTokenContract);
           }
         }
       }
+    }
+  }
+
+  Future<void> _subscribeNative() async {
+    final wallet = await nekotonRepository.subscribeByAddress(address);
+    // for cases, when screen was closed before sub completed
+    if (isClosed) {
+      nekotonRepository.unsubscribe(address);
+    } else {
+      _tonWallet = wallet;
+    }
+  }
+
+  Future<void> _subscribeToken(Address rootTokenContract) async {
+    final token = await nekotonRepository.subscribeToken(
+      owner: address,
+      rootTokenContract: rootTokenContract,
+    );
+
+    // for cases, when screen was closed before sub completed
+    if (isClosed) {
+      nekotonRepository.unsubscribeToken(
+        token.owner,
+        token.rootTokenContract,
+      );
+    } else {
+      _tokenWallets.add(token);
     }
   }
 
@@ -133,6 +139,7 @@ class AccountDetailCubit extends Cubit<AccountDetailState> {
           token.owner,
           token.rootTokenContract,
         );
+
         return true;
       });
     }
