@@ -2,7 +2,9 @@ import 'dart:async';
 
 import 'package:app/app/service/service.dart';
 import 'package:app/data/models/models.dart';
+import 'package:app/generated/generated.dart';
 import 'package:bloc/bloc.dart';
+import 'package:bloc_event_transformers/bloc_event_transformers.dart';
 import 'package:flutter/widgets.dart';
 import 'package:freezed_annotation/freezed_annotation.dart';
 import 'package:logging/logging.dart';
@@ -25,7 +27,8 @@ class StakingBloc extends Bloc<StakingBlocEvent, StakingBlocState> {
     required this.stakingService,
   }) : super(const StakingBlocState.preparing()) {
     _registerHandlers();
-    _inputController.addListener(() => _updateReceive(_currentValue));
+    _inputController
+        .addListener(() => add(StakingBlocEvent.updateReceive(_currentValue)));
   }
 
   final _logger = Logger('StakingBloc');
@@ -50,7 +53,8 @@ class StakingBloc extends Bloc<StakingBlocEvent, StakingBlocState> {
   late TokenWallet _stEverWallet;
   late CustomCurrency _stEverWalletCurrency;
 
-  late double exchangeRate;
+  late StEverDetails _details;
+  Money? _receive;
   List<StEverWithdrawRequest> _requests = [];
   StreamSubscription<dynamic>? _requestsSub;
 
@@ -64,6 +68,10 @@ class StakingBloc extends Bloc<StakingBlocEvent, StakingBlocState> {
   void _registerHandlers() {
     on<_Init>((_, emit) => _init(emit));
     on<_SelectMax>((_, emit) => _selectMax(emit));
+    on<_UpdateReceive>(
+      (event, emit) => _updateReceive(event.value, emit),
+      transformer: debounce(const Duration(seconds: 1)),
+    );
     on<_UpdateRequests>((event, emit) {
       _requests = event.requests;
 
@@ -81,7 +89,10 @@ class StakingBloc extends Bloc<StakingBlocEvent, StakingBlocState> {
       (event, emit) {
         if (_type == event.type) return;
         _type = event.type;
+        _receive = null;
+        _inputController.clear();
         _emitDataState(emit);
+        add(StakingBlocEvent.updateReceive(Fixed.zero));
       },
     );
   }
@@ -109,10 +120,9 @@ class StakingBloc extends Bloc<StakingBlocEvent, StakingBlocState> {
         transport.nativeTokenAddress,
       ))!;
       apy = await stakingService.getAverageAPYPercent();
-      final details = await stakingService.getStEverDetails();
-      exchangeRate = details.totalAssets / details.stEverSupply;
+      _details = await stakingService.getStEverDetails();
       final time =
-          Duration(seconds: int.tryParse(details.withdrawHoldTime) ?? 0)
+          Duration(seconds: int.tryParse(_details.withdrawHoldTime) ?? 0)
               .inHours;
       if (0 <= time && time <= 24) {
         withdrawHours = time + 36;
@@ -125,7 +135,8 @@ class StakingBloc extends Bloc<StakingBlocEvent, StakingBlocState> {
       }
       accountPublicKey = local;
 
-      /// Do it last because if user don't have address, then method can throw error
+      // Do it last because if user don't have address, then method can throw
+      // error
       _requestsSub = stakingService
           .withdrawRequestsStream(accountAddress)
           .listen((requests) {
@@ -134,7 +145,7 @@ class StakingBloc extends Bloc<StakingBlocEvent, StakingBlocState> {
 
       // trigger updating of balances
       _emitDataState(emit);
-      await _updateReceive(Fixed.zero);
+      add(StakingBlocEvent.updateReceive(Fixed.zero));
     } catch (e, t) {
       _logger.severe('init', e, t);
       emit(const StakingBlocState.initError());
@@ -159,47 +170,49 @@ class StakingBloc extends Bloc<StakingBlocEvent, StakingBlocState> {
   /// EVER for stake and stEVER for unstake
   Currency get _currentCurrency {
     if (_type == StakingPageType.stake) {
-      return Currencies()[
-          nekotonRepository.currentTransport.nativeTokenTicker]!;
+      return _nativeCurrency;
     } else {
       return _stEverWallet.currency;
     }
   }
 
-  Future<void> _updateReceive(Fixed value) async {
-    Money? receiveAmount;
-
+  Future<void> _updateReceive(
+    Fixed value,
+    Emitter<StakingBlocState> emit,
+  ) async {
     try {
       switch (_type) {
         case StakingPageType.stake:
           final amount =
               await stakingService.getDepositStEverAmount(value.minorUnits);
-          receiveAmount = Money.fromBigIntWithCurrency(
+          _receive = Money.fromBigIntWithCurrency(
             amount,
             _stEverWallet.currency,
           );
         case StakingPageType.unstake:
           final amount =
               await stakingService.getWithdrawEverAmount(value.minorUnits);
-          receiveAmount = Money.fromBigIntWithCurrency(
+          _receive = Money.fromBigIntWithCurrency(
             amount,
             Currencies()[nekotonRepository.currentTransport.nativeTokenTicker]!,
           );
         case StakingPageType.inProgress:
-          // do nothing
-          break;
+          _receive = null;
       }
     } catch (e, t) {
       _logger.severe('Loading data after updating value', e, t);
     }
 
-    add(StakingBlocEvent.updateReceive(receiveAmount));
+    emit(_dataState.copyWith(receiveBalance: _receive));
   }
 
   StakingBlocState _stateWithData(Fixed value) {
     Money? balance;
     Money? enteredPrice;
     BigInt attachedAmount;
+    double exchangeRate;
+    Currency receiveCurrency;
+    var imagePath = '';
 
     switch (_type) {
       case StakingPageType.stake:
@@ -211,15 +224,25 @@ class StakingBloc extends Bloc<StakingBlocEvent, StakingBlocState> {
         enteredPrice = currencyConvert.convert(
           value * Fixed.parse(_everWalletCurrency.price),
         );
+        exchangeRate = _details.stEverSupply / _details.totalAssets;
+        imagePath = nekotonRepository.currentTransport.nativeTokenIcon;
+        receiveCurrency = _stEverWallet.moneyBalance.currency;
       case StakingPageType.unstake:
         attachedAmount = staking.stakeWithdrawAttachedFee;
         balance = _stEverWallet.moneyBalance;
         enteredPrice = currencyConvert.convert(
           value * Fixed.parse(_stEverWalletCurrency.price),
         );
+        exchangeRate = _details.totalAssets / _details.stEverSupply;
+        imagePath = Assets.images.stever.stever.path;
+        receiveCurrency = _nativeCurrency;
       case StakingPageType.inProgress:
         attachedAmount = staking.stakeRemovePendingWithdrawAttachedFee;
+        exchangeRate = 0.0;
+        // not used
+        receiveCurrency = Currency.create('-', 0);
     }
+
     final canPress =
         value != Fixed.zero && balance != null && value < balance.amount;
 
@@ -230,10 +253,14 @@ class StakingBloc extends Bloc<StakingBlocEvent, StakingBlocState> {
       enteredPrice: enteredPrice,
       attachedAmount: attachedAmount,
       exchangeRate: exchangeRate,
+      imagePath: imagePath,
       requests: _requests,
+      receiveBalance: _receive,
       canSubmitAction: canPress,
       withdrawTime: withdrawHours,
       apy: apy,
+      isLoading: false,
+      receiveCurrency: receiveCurrency,
     );
   }
 
@@ -243,6 +270,9 @@ class StakingBloc extends Bloc<StakingBlocEvent, StakingBlocState> {
       _inputController.text = max.amount.toString();
     }
   }
+
+  Currency get _nativeCurrency =>
+      Currencies()[nekotonRepository.currentTransport.nativeTokenTicker]!;
 
   @override
   Future<void> close() {

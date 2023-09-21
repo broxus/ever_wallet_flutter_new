@@ -64,8 +64,14 @@ class WalletAccountActions extends StatelessWidget {
                   if (hasStake && allowStake)
                     _buttonItem(
                       svg: Assets.images.stake.path,
-                      // ignore: no-empty-block
-                      onPressed: () {},
+                      onPressed: () => context.goFurther(
+                        AppRoute.walletStake.pathWithData(
+                          pathParameters: {
+                            walletStakeAddressPathParam:
+                                currentAccount!.address.address,
+                          },
+                        ),
+                      ),
                       title: LocaleKeys.stakeWord.tr(),
                       showPoint: hasStakeActions,
                     ),

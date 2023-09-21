@@ -97,6 +97,14 @@ packages:
       url: "https://pub.dev"
     source: hosted
     version: "8.1.2"
+  bloc_event_transformers:
+    dependency: "direct main"
+    description:
+      name: bloc_event_transformers
+      sha256: "622faef7099a3e032c0821fe19cc70319006446b2efaf89bb0451fd1ac9fe20f"
+      url: "https://pub.dev"
+    source: hosted
+    version: "1.0.1"
   bloc_test:
     dependency: "direct dev"
     description:

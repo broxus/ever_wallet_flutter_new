@@ -49,6 +49,8 @@ const tonWalletConfirmTransactionCommentQueryParam =
 
 const networkConnectionDataIdQueryParam = 'connectionDataId';
 
+const walletStakeAddressPathParam = 'walletStakeAddress';
+
 /// Branch that is root for wallet.
 StatefulShellBranch get walletBranch {
   return StatefulShellBranch(
@@ -77,6 +79,7 @@ StatefulShellBranch get walletBranch {
           walletDeployRoute,
           tonConfirmTranscationRoute,
           configureNetworksRoute,
+          stakingRoute,
         ],
       ),
     ],
@@ -276,6 +279,20 @@ GoRoute get configureNetworksRoute {
               state.uri.queryParameters[networkConnectionDataIdQueryParam],
         ),
       ),
+    ],
+  );
+}
+
+GoRoute get stakingRoute {
+  return GoRoute(
+    path: AppRoute.walletStake.path,
+    builder: (context, state) => StakingPage(
+      accountAddress: Address(
+        address: state.pathParameters[walletStakeAddressPathParam]!,
+      ),
+    ),
+    routes: [
+      tonWalletSendRoute,
     ],
   );
 }

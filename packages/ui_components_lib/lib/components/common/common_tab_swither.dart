@@ -6,9 +6,14 @@ class CommonTabSwitcherItem<T> {
   CommonTabSwitcherItem({
     required this.title,
     required this.value,
+    this.trailing,
   });
 
   final String title;
+
+  /// Widget that displays after [title], you can use [EverButtonStyleProvider]
+  /// to get current available text color.
+  final Widget? trailing;
   final T value;
 }
 
@@ -79,6 +84,7 @@ class CommonTabSwitcher<T> extends StatelessWidget {
           padding: const EdgeInsets.all(DimensSize.d4),
           textAlign: TextAlign.center,
           text: item.title,
+          trailing: item.trailing,
           style: StyleRes.primaryBold,
           contentColor: colors.textPrimary,
         );

@@ -196,7 +196,7 @@ class StakingService {
       accountStuffBoc: contractState.boc,
       contractAbi: stEverAbi,
       method: 'getDepositStEverAmount',
-      input: {'_amount': evers},
+      input: {'_amount': evers.toString()},
       responsible: false,
     );
     final amount = result.output?.values.firstOrNull as String?;
@@ -211,7 +211,7 @@ class StakingService {
       accountStuffBoc: contractState.boc,
       contractAbi: stEverAbi,
       method: 'getWithdrawEverAmount',
-      input: {'_amount': stEvers},
+      input: {'_amount': stEvers.toString()},
       responsible: false,
     );
     final amount = result.output?.values.firstOrNull as String?;

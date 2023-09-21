@@ -6,6 +6,7 @@ import 'package:ui_components_lib/ui_components_lib.dart';
 Future<void> showStEverHowItWorksSheet(BuildContext context) {
   return showCommonBottomSheet(
     context: context,
+    useAppBackgroundColor: true,
     title: LocaleKeys.howLiquidStakingWorks.tr(),
     body: (_, scrollController) => StEverHowItWorksSheet(
       scrollController: scrollController,
@@ -26,15 +27,18 @@ class StEverHowItWorksSheet extends StatelessWidget {
   Widget build(BuildContext context) {
     return SeparatedColumn(
       crossAxisAlignment: CrossAxisAlignment.start,
+      mainAxisSize: MainAxisSize.min,
+      separatorSize: DimensSize.d16,
       children: [
-        Expanded(
+        Flexible(
           child: SingleChildScrollView(
             controller: scrollController,
             child: ShapedContainerColumn(
+              mainAxisSize: MainAxisSize.min,
               margin: EdgeInsets.zero,
               padding: const EdgeInsets.symmetric(vertical: DimensSize.d16),
               separator: const Padding(
-                padding: EdgeInsets.symmetric(vertical: DimensSize.d8),
+                padding: EdgeInsets.symmetric(vertical: DimensSize.d16),
                 child: CommonDivider(),
               ),
               children: [
@@ -67,6 +71,7 @@ class StEverHowItWorksSheet extends StatelessWidget {
           ),
         ),
         CommonButton.primary(
+          fillWidth: true,
           text: LocaleKeys.gotIt.tr(),
           onPressed: () => Navigator.of(context).pop(),
         ),

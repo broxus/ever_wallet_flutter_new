@@ -6,6 +6,8 @@ class StakingBlocEvent with _$StakingBlocEvent {
 
   const factory StakingBlocEvent.selectMax() = _SelectMax;
 
+  const factory StakingBlocEvent.doAction() = _DoAction;
+
   /// Internal event
   const factory StakingBlocEvent.updateResuests(
     List<StEverWithdrawRequest> requests,
@@ -13,5 +15,5 @@ class StakingBlocEvent with _$StakingBlocEvent {
 
   const factory StakingBlocEvent.changeTab(StakingPageType type) = _ChangeTab;
 
-  const factory StakingBlocEvent.updateReceive(Money? receive) = _UpdateReceive;
+  const factory StakingBlocEvent.updateReceive(Fixed value) = _UpdateReceive;
 }

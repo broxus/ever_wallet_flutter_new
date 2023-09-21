@@ -400,6 +400,7 @@
   "stakeEverReceiverStever": "Stake EVER, receive stEVER",
   "tokenAmount": "{} Amount",
   "stakingInProgress": "Staking in progress",
+  "inProgress": "In progress",
   "unstakingInProgress": "Unstaking in progress",
   "stEverAppearInMinutes": "stEVER will appear in your account within a couple of minutes",
   "stEverReturnInMinutes": "stEVER will be returned in your account within a couple of minutes",
@@ -409,5 +410,6 @@
   "cancelUnstakingNote": "You can cancel unstaking, then stEVER will be returned to your account",
   "unstakingCancelled": "Unstaking cancelled",
   "exchangeRate": "Exchange rate",
-  "averageApy": "Average APY"
+  "averageApy": "Average APY",
+  "stakingInitError": "Error occurred during staking initialization"
 }
