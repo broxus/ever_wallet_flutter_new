@@ -411,5 +411,10 @@
   "unstakingCancelled": "Unstaking cancelled",
   "exchangeRate": "Exchange rate",
   "averageApy": "Average APY",
-  "stakingInitError": "Error occurred during staking initialization"
+  "stakingInitError": "Error occurred during staking initialization",
+  "cancelUnstakingCheckTitle": "Are you sure you want to сancel unstaking?",
+  "cancelUnstakingCheckSubtitle": " stEVER will be returned to your account",
+  "yesImSure": "Yes, I am sure",
+  "liquidStaking": "Liquid staking",
+  "unstakeAmount": "Unstake amount"
 }

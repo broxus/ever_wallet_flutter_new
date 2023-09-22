@@ -8,7 +8,8 @@ enum TonWalletTransactionStatus {
   completed, // transaction fully completed
   pending, // transaction in progress
   waitingConfirmation, // waiting for confirmation
-  expired; // transaction time expired
+  expired, // transaction time expired
+  unstakingInProgress; // custom status for unstaking request
 
   String? get title {
     return switch (this) {
@@ -19,6 +20,8 @@ enum TonWalletTransactionStatus {
         LocaleKeys.transactionStatusWaitingConfirmation.tr(),
       TonWalletTransactionStatus.expired =>
         LocaleKeys.transactionStatusExpired.tr(),
+      TonWalletTransactionStatus.unstakingInProgress =>
+        LocaleKeys.unstakingInProgress.tr(),
     };
   }
 
@@ -28,6 +31,7 @@ enum TonWalletTransactionStatus {
         TonWalletTransactionStatus.waitingConfirmation =>
           CommonChipsType.warning,
         TonWalletTransactionStatus.expired => CommonChipsType.warning,
+        TonWalletTransactionStatus.unstakingInProgress => CommonChipsType.note,
       };
 }
 

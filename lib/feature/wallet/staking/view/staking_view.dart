@@ -28,9 +28,9 @@ class StakingView extends StatelessWidget {
     this.canSubmitAction,
     this.inputController,
     this.imagePath,
-    this.isLoading,
     this.exchangeRate,
     this.receiveCurrency,
+    this.accountPublicKey,
     this.currentBalance,
     this.enteredPrice,
     this.receiveBalance,
@@ -50,7 +50,6 @@ class StakingView extends StatelessWidget {
   final int withdrawTime;
   final bool canSubmitAction;
   final TextEditingController inputController;
-  final bool? isLoading;
   final Currency receiveCurrency;
 
   /// How many stevers could be received for evers
@@ -67,6 +66,8 @@ class StakingView extends StatelessWidget {
 
   /// Pending withdraw requests
   final List<StEverWithdrawRequest>? requests;
+
+  final PublicKey accountPublicKey;
 
   /// Average profit
   final double? apy;
@@ -105,8 +106,14 @@ class StakingView extends StatelessWidget {
         switch (type) {
           StakingPageType.stake => _stakeUnstakeBody(),
           StakingPageType.unstake => _stakeUnstakeBody(),
-          StakingPageType.inProgress =>
-            StakingInProgress(requests: requests ?? []),
+          StakingPageType.inProgress => StakingInProgress(
+              requests: requests ?? [],
+              accountKey: accountPublicKey,
+              exchangeRate: exchangeRate ?? 0.0,
+              stakeCurrency: receiveCurrency,
+              attachedFee: attachedAmount,
+              withdrawHours: withdrawTime,
+            ),
         },
       ],
     );
@@ -121,6 +128,7 @@ class StakingView extends StatelessWidget {
         return Container(
           width: DimensSize.d20,
           height: DimensSize.d20,
+          alignment: Alignment.center,
           decoration: BoxDecoration(
             color: colors.blue,
             shape: BoxShape.circle,

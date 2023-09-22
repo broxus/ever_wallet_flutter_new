@@ -2,6 +2,7 @@ import 'dart:async';
 
 import 'package:app/app/service/service.dart';
 import 'package:app/data/models/models.dart';
+import 'package:app/feature/wallet/staking/staking.dart';
 import 'package:app/generated/generated.dart';
 import 'package:bloc/bloc.dart';
 import 'package:bloc_event_transformers/bloc_event_transformers.dart';
@@ -25,6 +26,7 @@ class StakingBloc extends Bloc<StakingBlocEvent, StakingBlocState> {
     required this.currencyConvert,
     required this.currenciesService,
     required this.stakingService,
+    required this.actionBloc,
   }) : super(const StakingBlocState.preparing()) {
     _registerHandlers();
     _inputController
@@ -37,6 +39,7 @@ class StakingBloc extends Bloc<StakingBlocEvent, StakingBlocState> {
   final CurrencyConvertService currencyConvert;
   final CurrenciesService currenciesService;
   final StakingService stakingService;
+  final ActionStakingBloc actionBloc;
 
   /// Withdraw time of stever in hours.
   /// if original time from 0 to 24, we add 36
@@ -93,6 +96,30 @@ class StakingBloc extends Bloc<StakingBlocEvent, StakingBlocState> {
         _inputController.clear();
         _emitDataState(emit);
         add(StakingBlocEvent.updateReceive(Fixed.zero));
+      },
+    );
+    on<_DoAction>(
+      (event, emit) {
+        switch (_type) {
+          case StakingPageType.stake:
+            actionBloc.add(
+              ActionStakingBlocEvent.stake(
+                amount: _currentValue.minorUnits,
+                accountKey: accountPublicKey,
+              ),
+            );
+          case StakingPageType.unstake:
+            actionBloc.add(
+              ActionStakingBlocEvent.unstake(
+                amount: _currentValue.minorUnits,
+                accountKey: accountPublicKey,
+                withdrawHours: withdrawHours,
+              ),
+            );
+          case StakingPageType.inProgress:
+            // do nothing
+            break;
+        }
       },
     );
   }
@@ -203,7 +230,7 @@ class StakingBloc extends Bloc<StakingBlocEvent, StakingBlocState> {
       _logger.severe('Loading data after updating value', e, t);
     }
 
-    emit(_dataState.copyWith(receiveBalance: _receive));
+    emit(_stateWithData(value));
   }
 
   StakingBlocState _stateWithData(Fixed value) {
@@ -238,9 +265,8 @@ class StakingBloc extends Bloc<StakingBlocEvent, StakingBlocState> {
         receiveCurrency = _nativeCurrency;
       case StakingPageType.inProgress:
         attachedAmount = staking.stakeRemovePendingWithdrawAttachedFee;
-        exchangeRate = 0.0;
-        // not used
-        receiveCurrency = Currency.create('-', 0);
+        exchangeRate = _details.totalAssets / _details.stEverSupply;
+        receiveCurrency = _stEverWallet.moneyBalance.currency;
     }
 
     final canPress =
@@ -259,8 +285,8 @@ class StakingBloc extends Bloc<StakingBlocEvent, StakingBlocState> {
       canSubmitAction: canPress,
       withdrawTime: withdrawHours,
       apy: apy,
-      isLoading: false,
       receiveCurrency: receiveCurrency,
+      accountKey: accountPublicKey,
     );
   }
 

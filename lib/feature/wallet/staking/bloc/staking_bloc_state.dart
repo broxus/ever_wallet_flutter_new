@@ -16,12 +16,12 @@ class StakingBlocState with _$StakingBlocState {
     required bool canSubmitAction,
     required TextEditingController inputController,
     required String imagePath,
-    required bool isLoading,
     // How many [receiveBalance] could be received for [currentBalance].
     // if we receive stever, then it should be displayed on right side, on left
     // otherwise
     required double exchangeRate,
     required Currency receiveCurrency,
+    required PublicKey accountKey,
     // Balance of current selected token (stake-ever, unstake-stever)
     Money? currentBalance,
     // Price in real curreny of entered tokens

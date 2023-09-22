@@ -197,6 +197,7 @@ class SendMessageSheet extends StatelessWidget {
                     publicKey: selected,
                     nekotonRepository: inject(),
                     needRepack: false,
+                    resultMessage: LocaleKeys.transactionSentSuccessfully.tr(),
                   )
                     ..repackedDestination = recipient
                     ..add(const TonWalletSendEvent.prepare()),

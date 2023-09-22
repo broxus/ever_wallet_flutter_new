@@ -22,6 +22,7 @@ class TokenWalletSendPage extends StatelessWidget {
     required this.amount,
     required this.attachedAmount,
     required this.comment,
+    required this.resultMessage,
     super.key,
   });
 
@@ -49,6 +50,9 @@ class TokenWalletSendPage extends StatelessWidget {
   /// Comment for transaction
   final String? comment;
 
+  /// Message that will be shown when transaction completed
+  final String? resultMessage;
+
   @override
   Widget build(BuildContext context) {
     return BlocProvider<TokenWalletSendBloc>(
@@ -61,6 +65,8 @@ class TokenWalletSendPage extends StatelessWidget {
         comment: comment,
         publicKey: publicKey,
         nekotonRepository: inject(),
+        resultMessage:
+            resultMessage ?? LocaleKeys.transactionSentSuccessfully.tr(),
       )..add(const TokenWalletSendEvent.prepare()),
       child: BlocConsumer<TokenWalletSendBloc, TokenWalletSendState>(
         listener: (context, state) {

@@ -73,19 +73,12 @@ class StakingService {
     required Address accountAddress,
     required BigInt depositAmount,
   }) {
-    // return SendMessageInput(
-    //   recipient: stakingInformation.stakingValutAddress,
-    //   sender: accountAddress,
-    //   amount: depositAmount + stakingInformation.stakeDepositAttachedFee,
-    //   bounce: false,
-    //   payload: ,
-    // );
     final payload = FunctionCall(
       method: 'deposit',
       abi: stEverAbi,
       params: {
         '_nonce': DateTime.now().millisecondsSinceEpoch,
-        '_amount': depositAmount,
+        '_amount': depositAmount.toString(),
       },
     );
 
@@ -97,9 +90,7 @@ class StakingService {
   }
 
   /// Returns body/comment to unstake stever via TokenWalletSendPage
-  Future<String> withdrawStEverPayload({
-    required String accountAddress,
-  }) async {
+  Future<String> withdrawStEverPayload() async {
     final contract = await getVaultContractState();
     final result = await runLocal(
       accountStuffBoc: contract.boc,
@@ -116,10 +107,7 @@ class StakingService {
 
   /// Cancel withdraw request.
   /// Returns body/comment that should be handled via TonWalletSendPage
-  Future<String> removeWithdrawPayload({
-    required String accountAddress,
-    required String nonce,
-  }) {
+  Future<String> removeWithdrawPayload(String nonce) {
     // return SendMessageInput(
     //   recipient: stEverVault,
     //   sender: accountAddress,
@@ -266,6 +254,7 @@ class StakingService {
   /// [userAvailableWithdraw]
   void acceptCancelledWithdraw(StEverWithdrawRequest request) {
     _cancelledWithdraw.add(request.nonce);
+    tryUpdateWithdraws(request.accountAddress);
   }
 
   /// Load average apy from stever website.

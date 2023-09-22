@@ -26,6 +26,7 @@ class TokenWalletSendBloc
     required this.tokenAmount,
     required BigInt? attachedAmount,
     required this.comment,
+    required this.resultMessage,
   })  : attachedAmount = attachedAmount ?? defaultAttachAmount,
         super(const TokenWalletSendState.init()) {
     _registerHandlers();
@@ -58,6 +59,9 @@ class TokenWalletSendBloc
 
   /// Comment for transaction
   final String? comment;
+
+  /// Message that will be shown when transaction completed
+  final String resultMessage;
 
   /// Fee for transaction after calculating it in [_handlePrepare]
   BigInt? fees;
@@ -182,9 +186,7 @@ class TokenWalletSendBloc
       );
 
       inject<MessengerService>().show(
-        Message.successful(
-          message: LocaleKeys.transactionSentSuccessfully.tr(),
-        ),
+        Message.successful(message: resultMessage),
       );
       if (!isClosed) {
         add(TokenWalletSendEvent.completeSend(transaction));
