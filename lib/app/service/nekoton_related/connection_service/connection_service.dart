@@ -119,10 +119,12 @@ class ConnectionService {
       case NetworkType.ever:
         return EverTransportStrategy(
           transport: transport,
+          connection: connection,
         );
       case NetworkType.venom:
         return VenomTransportStrategy(
           transport: transport,
+          connection: connection,
         );
       case NetworkType.custom:
         return CustomTransportStrategy(

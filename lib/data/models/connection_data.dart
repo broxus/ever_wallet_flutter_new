@@ -55,6 +55,8 @@ sealed class ConnectionData with _$ConnectionData {
     required List<String> endpoints,
     required Duration timeout,
     required NetworkType networkType,
+    required String blockExplorerUrl,
+    required String manifestUrl,
     required bool canBeEdited,
   }) =>
       ConnectionData.gql(
@@ -65,8 +67,8 @@ sealed class ConnectionData with _$ConnectionData {
         timeout: timeout,
         networkType: networkType,
         isLocal: false,
-        blockExplorerUrl: '',
-        manifestUrl: '',
+        blockExplorerUrl: blockExplorerUrl,
+        manifestUrl: manifestUrl,
         nativeTokenTicker: '',
         isPreset: true,
         canBeEdited: canBeEdited,
@@ -113,6 +115,8 @@ sealed class ConnectionData with _$ConnectionData {
     required String group,
     required String endpoint,
     required NetworkType networkType,
+    required String blockExplorerUrl,
+    required String manifestUrl,
     required bool canBeEdited,
   }) =>
       ConnectionData.proto(
@@ -121,8 +125,8 @@ sealed class ConnectionData with _$ConnectionData {
         group: group,
         endpoint: endpoint,
         networkType: networkType,
-        blockExplorerUrl: '',
-        manifestUrl: '',
+        blockExplorerUrl: blockExplorerUrl,
+        manifestUrl: manifestUrl,
         nativeTokenTicker: '',
         isPreset: true,
         canBeEdited: canBeEdited,
@@ -169,6 +173,8 @@ sealed class ConnectionData with _$ConnectionData {
     required String group,
     required String endpoint,
     required NetworkType networkType,
+    required String blockExplorerUrl,
+    required String manifestUrl,
     required bool canBeEdited,
   }) =>
       ConnectionData.jrpc(
@@ -177,8 +183,8 @@ sealed class ConnectionData with _$ConnectionData {
         group: group,
         endpoint: endpoint,
         networkType: networkType,
-        blockExplorerUrl: '',
-        manifestUrl: '',
+        blockExplorerUrl: blockExplorerUrl,
+        manifestUrl: manifestUrl,
         nativeTokenTicker: '',
         isPreset: true,
         canBeEdited: canBeEdited,

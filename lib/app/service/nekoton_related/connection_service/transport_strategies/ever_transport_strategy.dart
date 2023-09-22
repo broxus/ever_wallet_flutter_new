@@ -1,17 +1,25 @@
 import 'package:app/app/service/nekoton_related/connection_service/transport_strategies/utils.dart';
+import 'package:app/data/models/models.dart';
 import 'package:app/generated/generated.dart';
 import 'package:nekoton_repository/nekoton_repository.dart';
 
 /// Transport strategy for everscale network
 class EverTransportStrategy extends TransportStrategy {
-  EverTransportStrategy({required this.transport});
+  EverTransportStrategy({
+    required this.transport,
+    required this.connection,
+  });
 
   @override
   final Transport transport;
 
+  final ConnectionData connection;
+
   @override
   String accountExplorerLink(Address accountAddress) =>
-      'https://everscan.io/accounts/${accountAddress.address}';
+      connection.blockExplorerUrl.isNotEmpty
+          ? '${connection.blockExplorerUrl}/accounts/${accountAddress.address}'
+          : '';
 
   @override
   final availableWalletTypes = const [
@@ -39,8 +47,7 @@ class EverTransportStrategy extends TransportStrategy {
   final defaultWalletType = const WalletType.everWallet();
 
   @override
-  final String manifestUrl =
-      'https://raw.githubusercontent.com/broxus/ton-assets/master/manifest.json';
+  String get manifestUrl => connection.manifestUrl;
 
   @override
   String get nativeTokenIcon => Assets.images.everCoin.path;
@@ -62,7 +69,9 @@ class EverTransportStrategy extends TransportStrategy {
 
   @override
   String transactionExplorerLink(String transactionHash) =>
-      'https://everscan.io/transactions/$transactionHash';
+      connection.blockExplorerUrl.isNotEmpty
+          ? '${connection.blockExplorerUrl}/transactions/$transactionHash'
+          : '';
 
   @override
   // ignore: no-magic-number

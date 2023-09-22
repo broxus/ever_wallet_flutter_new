@@ -24,10 +24,12 @@ class _EditNetworkViewState extends State<EditNetworkView> {
   final _formKey = GlobalKey<FormState>();
 
   late ConnectionType _connectionType;
-  late final TextEditingController _nameController = TextEditingController();
+  final _nameController = TextEditingController();
   late List<TextEditingController> _endpointsControllers;
-  late final TextEditingController _currencySymbolController =
-      TextEditingController();
+  final _currencySymbolController = TextEditingController();
+  final _blockExplorerUrlController = TextEditingController();
+  final _manifestUrlController = TextEditingController();
+  late bool _isLocal;
 
   @override
   void initState() {
@@ -39,6 +41,10 @@ class _EditNetworkViewState extends State<EditNetworkView> {
 
     _nameController.text = widget.connection?.name ?? '';
     _endpointsControllers = _getEndpointsControllers();
+    _blockExplorerUrlController.text =
+        widget.connection?.blockExplorerUrl ?? '';
+    _manifestUrlController.text = widget.connection?.manifestUrl ?? '';
+    _isLocal = _getIsLocal();
   }
 
   @override
@@ -137,6 +143,15 @@ class _EditNetworkViewState extends State<EditNetworkView> {
   }
 
   List<Widget> _endpointsBuilder() {
+    void onLocalChanged({required bool value}) {
+      if (!widget.editable) {
+        return;
+      }
+      setState(() {
+        _isLocal = value;
+      });
+    }
+
     return [
       Padding(
         padding: const EdgeInsets.only(
@@ -150,6 +165,21 @@ class _EditNetworkViewState extends State<EditNetworkView> {
         ),
       ),
       ..._endpointsControllers.mapIndexed(_endpointItemBuilder),
+      if (_connectionType.enableLocal)
+        Row(
+          children: [
+            Expanded(
+              child: Text(
+                LocaleKeys.networkEndpointLocal.tr(),
+                style: StyleRes.secondaryBold,
+              ),
+            ),
+            CommonSwitchInput(
+              value: _isLocal,
+              onChanged: (value) => onLocalChanged(value: value),
+            ),
+          ],
+        ),
     ];
   }
 
@@ -232,10 +262,11 @@ class _EditNetworkViewState extends State<EditNetworkView> {
         ),
       ),
       CommonInput(
-        controller: _nameController,
+        controller: _blockExplorerUrlController,
         needClearButton: false,
         autocorrect: false,
         hintText: LocaleKeys.networkBlockExplorerHint.tr(),
+        enabled: widget.editable,
       ),
     ];
   }
@@ -254,10 +285,11 @@ class _EditNetworkViewState extends State<EditNetworkView> {
         ),
       ),
       CommonInput(
-        controller: _nameController,
+        controller: _manifestUrlController,
         needClearButton: false,
         autocorrect: false,
         hintText: LocaleKeys.networkTokenListHint.tr(),
+        enabled: widget.editable,
       ),
       Text.rich(
         TextSpan(
@@ -404,6 +436,56 @@ class _EditNetworkViewState extends State<EditNetworkView> {
           [
         TextEditingController(text: endpoint),
       ],
+    );
+  }
+
+  bool _getIsLocal() {
+    if (widget.connection == null) {
+      return false;
+    }
+
+    return widget.connection!.when(
+      gql: (
+        _,
+        __,
+        ___,
+        ____,
+        _____,
+        ______,
+        isLocal,
+        ________,
+        _________,
+        __________,
+        ___________,
+        ____________,
+      ) =>
+          isLocal,
+      proto: (
+        _,
+        __,
+        ___,
+        endpoint,
+        _____,
+        ______,
+        _______,
+        ________,
+        _________,
+        __________,
+      ) =>
+          false,
+      jrpc: (
+        _,
+        __,
+        ___,
+        endpoint,
+        _____,
+        ______,
+        _______,
+        ________,
+        _________,
+        __________,
+      ) =>
+          false,
     );
   }
 }
