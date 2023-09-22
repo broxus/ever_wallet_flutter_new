@@ -115,7 +115,7 @@ class CancelUnstakingPage extends StatelessWidget {
                         ),
                         titleText: LocaleKeys.exchangeRate.tr(),
                         subtitleText:
-                            // ignore: lines_longer_than_80_chars
+                            // ignore: lines_longer_than_80_chars, no-magic-number, binary-expression-operand-order
                             '1 ${inject<NekotonRepository>().currentTransport.nativeTokenTicker} ≈ ${(1 * exchangeRate).toStringAsFixed(4)} ${stakeCurrency.code}',
                       ),
                       CommonListTile(

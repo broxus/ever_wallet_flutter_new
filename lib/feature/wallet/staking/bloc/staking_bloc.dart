@@ -1,3 +1,4 @@
+// ignore_for_file: no-magic-number
 import 'dart:async';
 
 import 'package:app/app/service/service.dart';
@@ -70,7 +71,7 @@ class StakingBloc extends Bloc<StakingBlocEvent, StakingBlocState> {
 
   void _registerHandlers() {
     on<_Init>((_, emit) => _init(emit));
-    on<_SelectMax>((_, emit) => _selectMax(emit));
+    on<_SelectMax>((_, emit) => _selectMax());
     on<_UpdateReceive>(
       (event, emit) => _updateReceive(event.value, emit),
       transformer: debounce(const Duration(seconds: 1)),
@@ -151,11 +152,7 @@ class StakingBloc extends Bloc<StakingBlocEvent, StakingBlocState> {
       final time =
           Duration(seconds: int.tryParse(_details.withdrawHoldTime) ?? 0)
               .inHours;
-      if (0 <= time && time <= 24) {
-        withdrawHours = time + 36;
-      } else {
-        withdrawHours = time + 18;
-      }
+      withdrawHours = 0 <= time && time <= 24 ? time + 36 : time + 18;
       final local = nekotonRepository.getLocalCustodians(accountAddress)?.first;
       if (local == null) {
         throw Exception();
@@ -195,13 +192,8 @@ class StakingBloc extends Bloc<StakingBlocEvent, StakingBlocState> {
 
   /// Get currency for [_inputController].
   /// EVER for stake and stEVER for unstake
-  Currency get _currentCurrency {
-    if (_type == StakingPageType.stake) {
-      return _nativeCurrency;
-    } else {
-      return _stEverWallet.currency;
-    }
-  }
+  Currency get _currentCurrency =>
+      _type == StakingPageType.stake ? _nativeCurrency : _stEverWallet.currency;
 
   Future<void> _updateReceive(
     Fixed value,
@@ -233,6 +225,7 @@ class StakingBloc extends Bloc<StakingBlocEvent, StakingBlocState> {
     emit(_stateWithData(value));
   }
 
+  // ignore: long-method
   StakingBlocState _stateWithData(Fixed value) {
     Money? balance;
     Money? enteredPrice;
@@ -290,7 +283,7 @@ class StakingBloc extends Bloc<StakingBlocEvent, StakingBlocState> {
     );
   }
 
-  void _selectMax(Emitter<StakingBlocState> emit) {
+  void _selectMax() {
     final max = _dataState.currentBalance;
     if (max != null) {
       _inputController.text = max.amount.toString();

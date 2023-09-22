@@ -59,6 +59,7 @@ class StakingPage extends StatelessWidget {
     );
   }
 
+  // ignore: long-method
   Widget _stakingViewBuilder() {
     return Builder(
       builder: (context) {
@@ -128,6 +129,7 @@ class StakingPage extends StatelessWidget {
     );
   }
 
+  // ignore: long-method
   Widget _buttonBuilder() {
     return BlocConsumer<ActionStakingBloc, ActionStakingBlocState>(
       listener: (context, state) {

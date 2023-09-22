@@ -42,10 +42,7 @@ class ActionStakingBloc
   ) async {
     emit(const ActionStakingBlocState.inProgress());
 
-    final payload = await stakingService.depositEverBodyPayload(
-      accountAddress: accountAddress,
-      depositAmount: event.amount,
-    );
+    final payload = await stakingService.depositEverBodyPayload(event.amount);
 
     emit(
       ActionStakingBlocState.goStake(
@@ -92,7 +89,8 @@ class ActionStakingBloc
         nekotonRepository.seedList.findAccountByAddress(accountAddress);
     // if staking coin not in account, add it
     if (account?.additionalAssets[group]?.tokenWallets.firstWhereOrNull(
-            (c) => c.rootTokenContract == staking.stakingRootContractAddress) ==
+          (c) => c.rootTokenContract == staking.stakingRootContractAddress,
+        ) ==
         null) {
       unawaited(account?.addTokenWallet(staking.stakingRootContractAddress));
     }

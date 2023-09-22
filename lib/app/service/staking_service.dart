@@ -69,10 +69,7 @@ class StakingService {
 
   /// Returns body/comment for TonWalletSendPage, all other fields should be
   /// put manually.
-  Future<String> depositEverBodyPayload({
-    required Address accountAddress,
-    required BigInt depositAmount,
-  }) {
+  Future<String> depositEverBodyPayload(BigInt depositAmount) {
     final payload = FunctionCall(
       method: 'deposit',
       abi: stEverAbi,
@@ -265,7 +262,7 @@ class StakingService {
     );
     final decoded = jsonDecode(encoded) as Map<String, dynamic>;
 
-    // ignore: avoid_dynamic_calls
+    // ignore: avoid_dynamic_calls, no-magic-number
     return double.parse(decoded['data']?['apy'] as String? ?? '0.0') * 100;
   }
 

@@ -205,7 +205,7 @@ class StakingView extends StatelessWidget {
           invertTitleSubtitleStyles: true,
           titleText: LocaleKeys.exchangeRate.tr(),
           subtitleText:
-              // ignore: lines_longer_than_80_chars
+              // ignore: lines_longer_than_80_chars, no-magic-number, binary-expression-operand-order
               '1 ${currentBalance?.currency.code ?? ''} ≈ ${(1 * (exchangeRate ?? 1)).toStringAsFixed(4)} ${receiveCurrency.code}',
         ),
         CommonListTile(
@@ -235,6 +235,7 @@ class StakingView extends StatelessWidget {
           CommonListTile(
             invertTitleSubtitleStyles: true,
             titleText: LocaleKeys.averageApy.tr(),
+            // ignore: no-magic-number
             subtitleText: '${apy!.toStringAsFixed(2)} %',
           ),
       ],
