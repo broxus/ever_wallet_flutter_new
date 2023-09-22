@@ -141,7 +141,12 @@
   "networkTypeProto": "Proto",
   "networkName": "Network name",
   "networkNameHint": "Enter name",
-  "networkEndpoint": "Endpoint (URL)",
+  "networkEndpoint": {
+    "zero": "Endpoints (URLs)",
+    "one": "Endpoint (URL)",
+    "many": "Endpoints (URLs)",
+    "other": "Endpoints (URLs)"
+  },
   "networkEndpointHint": "Enter endpoint",
   "networkEndpointLocal": "Local",
   "networkCurrencySymbol": "Currency Symbol (Optional)",

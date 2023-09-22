@@ -43,7 +43,7 @@ final _everPresets = <ConnectionData>[
     ],
     timeout: defaultNetworkTimeout,
     networkType: NetworkType.ever,
-    canBeEdited: false,
+    canBeEdited: true,
   ),
 ];
 

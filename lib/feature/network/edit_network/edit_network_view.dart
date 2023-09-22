@@ -1,11 +1,18 @@
+import 'package:app/data/models/models.dart';
 import 'package:app/feature/browser/browser.dart';
+import 'package:app/feature/network/edit_network/connection_type.dart';
 import 'package:app/generated/generated.dart';
+import 'package:collection/collection.dart';
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:ui_components_lib/ui_components_lib.dart';
 
 class EditNetworkView extends StatefulWidget {
-  const EditNetworkView({super.key});
+  EditNetworkView({required this.connection, super.key})
+      : editable = connection?.canBeEdited ?? true;
+
+  final ConnectionData? connection;
+  final bool editable;
 
   @override
   State<EditNetworkView> createState() => _EditNetworkViewState();
@@ -13,10 +20,26 @@ class EditNetworkView extends StatefulWidget {
 
 class _EditNetworkViewState extends State<EditNetworkView> {
   int _buttonCount = 1;
-  bool _multipleEndpoints = true;
 
   final _formKey = GlobalKey<FormState>();
+
+  late ConnectionType _connectionType;
   late final TextEditingController _nameController = TextEditingController();
+  late List<TextEditingController> _endpointsControllers;
+  late final TextEditingController _currencySymbolController =
+      TextEditingController();
+
+  @override
+  void initState() {
+    super.initState();
+
+    _connectionType = widget.connection == null
+        ? ConnectionType.jrpc
+        : ConnectionType.fromConnection(widget.connection!);
+
+    _nameController.text = widget.connection?.name ?? '';
+    _endpointsControllers = _getEndpointsControllers();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -75,9 +98,18 @@ class _EditNetworkViewState extends State<EditNetworkView> {
         mainAxisSize: MainAxisSize.min,
         separator: const CommonDivider(),
         children: [
-          _typeComponentBuilder(LocaleKeys.networkTypeJRPC.tr()),
-          _typeComponentBuilder(LocaleKeys.networkTypeGraphQL.tr()),
-          _typeComponentBuilder(LocaleKeys.networkTypeProto.tr()),
+          _typeComponentBuilder(
+            LocaleKeys.networkTypeJRPC.tr(),
+            ConnectionType.jrpc,
+          ),
+          _typeComponentBuilder(
+            LocaleKeys.networkTypeGraphQL.tr(),
+            ConnectionType.gql,
+          ),
+          _typeComponentBuilder(
+            LocaleKeys.networkTypeProto.tr(),
+            ConnectionType.proto,
+          ),
         ],
       ),
     ];
@@ -99,66 +131,72 @@ class _EditNetworkViewState extends State<EditNetworkView> {
         needClearButton: false,
         autocorrect: false,
         hintText: LocaleKeys.networkNameHint.tr(),
+        enabled: widget.editable,
       ),
     ];
   }
 
   List<Widget> _endpointsBuilder() {
-    final colors = context.themeStyle.colors;
-
     return [
       Padding(
         padding: const EdgeInsets.only(
           top: DimensSize.d12,
         ),
         child: Text(
-          LocaleKeys.networkEndpoint.tr(),
+          LocaleKeys.networkEndpoint.plural(
+            _endpointsControllers.length,
+          ),
           style: StyleRes.secondaryBold,
         ),
       ),
-      CommonInput(
-        needClearButton: false,
-        autocorrect: false,
-        hintText: LocaleKeys.networkEndpointHint.tr(),
-        suffixIcon: CommonIconButton.svg(
-          color: colors.blue,
-          svg: Assets.images.plus.path,
-          buttonType: EverButtonType.ghost,
-          onPressed: () {},
-        ),
-      ),
-      SeparatedRow(
-        children: [
-          Expanded(
-            child: CommonInput(
-              needClearButton: false,
-              autocorrect: false,
-              hintText: LocaleKeys.networkEndpointHint.tr(),
-            ),
+      ..._endpointsControllers.mapIndexed(_endpointItemBuilder),
+    ];
+  }
+
+  Widget _endpointItemBuilder(int index, TextEditingController controller) {
+    final colors = context.themeStyle.colors;
+    void onAdd() {
+      setState(() {
+        _endpointsControllers.add(TextEditingController());
+      });
+    }
+
+    void onRemove() {
+      setState(() {
+        _endpointsControllers.removeAt(index);
+      });
+    }
+
+    return SeparatedRow(
+      children: [
+        Expanded(
+          child: CommonInput(
+            controller: controller,
+            needClearButton: false,
+            autocorrect: false,
+            hintText: LocaleKeys.networkEndpointHint.tr(),
+            suffixIcon: index == 0 &&
+                    widget.editable &&
+                    _connectionType.enableMultipleEndpoints
+                ? CommonIconButton.svg(
+                    color: colors.blue,
+                    svg: Assets.images.plus.path,
+                    buttonType: EverButtonType.ghost,
+                    onPressed: onAdd,
+                  )
+                : null,
+            enabled: widget.editable,
           ),
+        ),
+        if (index > 0 && widget.editable)
           CommonIconButton.svg(
             color: colors.alert,
             svg: Assets.images.trash.path,
             buttonType: EverButtonType.secondary,
-            onPressed: () {},
+            onPressed: onRemove,
           ),
-        ],
-      ),
-      Row(
-        children: [
-          Expanded(
-            child: Text(
-              LocaleKeys.networkEndpointLocal.tr(),
-              style: StyleRes.secondaryBold,
-            ),
-          ),
-          CommonSwitchInput(
-            value: false,
-            onChanged: (bool value) {},
-          ),
-        ],
-      ),
-    ];
+      ],
+    );
   }
 
   List<Widget> _currencySymbolBuilder() {
@@ -173,10 +211,11 @@ class _EditNetworkViewState extends State<EditNetworkView> {
         ),
       ),
       CommonInput(
-        controller: _nameController,
+        controller: _currencySymbolController,
         needClearButton: false,
         autocorrect: false,
         hintText: LocaleKeys.networkCurrencySymbolHint.tr(),
+        enabled: widget.editable,
       ),
     ];
   }
@@ -240,22 +279,35 @@ class _EditNetworkViewState extends State<EditNetworkView> {
     ];
   }
 
-  Widget _typeComponentBuilder(String title) {
+  Widget _typeComponentBuilder(String title, ConnectionType type) {
+    final onPressed = widget.editable
+        ? () {
+            _onChangeType(type);
+          }
+        : null;
+
     return CommonListTile(
       titleText: title,
       trailing: CommonCheckboxInput(
-        checked: false,
-        // onChanged: widget.clearHistoryEnabled
-        //     ? (value) => setState(
-        //           () => _clearHistory = value,
-        //         )
-        //     : null,
+        checked: _connectionType == type,
+        onChanged: onPressed != null
+            ? (value) {
+                if (value) onPressed.call();
+              }
+            : null,
       ),
-      // onPressed: widget.clearHistoryEnabled
-      //     ? () {
-      //         setState(() => _clearHistory = !_clearHistory);
-      //       }
-      //     : null,
+      onPressed: onPressed,
+    );
+  }
+
+  void _onChangeType(ConnectionType type) {
+    setState(
+      () {
+        _connectionType = type;
+        if (!type.enableMultipleEndpoints) {
+          _endpointsControllers = [_endpointsControllers.first];
+        }
+      },
     );
   }
 
@@ -294,4 +346,64 @@ class _EditNetworkViewState extends State<EditNetworkView> {
 
   void _onTokenListTextLinkTap() =>
       browserNewTab(context, LocaleKeys.networkTokenListTextLinkUrl.tr());
+
+  List<TextEditingController> _getEndpointsControllers() {
+    if (widget.connection == null) {
+      return [
+        TextEditingController(),
+      ];
+    }
+
+    return widget.connection!.when(
+      gql: (
+        _,
+        __,
+        ___,
+        endpoints,
+        _____,
+        ______,
+        _______,
+        ________,
+        _________,
+        __________,
+        ___________,
+        ____________,
+      ) =>
+          endpoints
+              .map(
+                (endpoint) => TextEditingController(text: endpoint),
+              )
+              .toList(),
+      proto: (
+        _,
+        __,
+        ___,
+        endpoint,
+        _____,
+        ______,
+        _______,
+        ________,
+        _________,
+        __________,
+      ) =>
+          [
+        TextEditingController(text: endpoint),
+      ],
+      jrpc: (
+        _,
+        __,
+        ___,
+        endpoint,
+        _____,
+        ______,
+        _______,
+        ________,
+        _________,
+        __________,
+      ) =>
+          [
+        TextEditingController(text: endpoint),
+      ],
+    );
+  }
 }
