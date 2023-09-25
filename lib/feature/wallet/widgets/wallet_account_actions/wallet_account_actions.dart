@@ -37,12 +37,13 @@ class WalletAccountActions extends StatelessWidget {
       create: (_) => WalletAccountActionsCubit(
         inject<NekotonRepository>(),
         account.address,
+        inject(),
       ),
       child: BlocBuilder<WalletAccountActionsCubit, WalletAccountActionsState>(
         builder: (context, state) {
           return state.when(
             loading: () => const SizedBox.shrink(),
-            data: (action, hasStake) {
+            data: (action, hasStake, hasStakeActions) {
               return SeparatedRow(
                 separatorSize: DimensSize.d32,
                 mainAxisAlignment: MainAxisAlignment.center,
@@ -63,9 +64,16 @@ class WalletAccountActions extends StatelessWidget {
                   if (hasStake && allowStake)
                     _buttonItem(
                       svg: Assets.images.stake.path,
-                      // ignore: no-empty-block
-                      onPressed: () {},
+                      onPressed: () => context.goFurther(
+                        AppRoute.walletStake.pathWithData(
+                          pathParameters: {
+                            walletStakeAddressPathParam:
+                                currentAccount!.address.address,
+                          },
+                        ),
+                      ),
                       title: LocaleKeys.stakeWord.tr(),
+                      showPoint: hasStakeActions,
                     ),
                 ],
               );
@@ -141,19 +149,41 @@ class WalletAccountActions extends StatelessWidget {
     required String svg,
     required VoidCallback onPressed,
     required String title,
+    bool showPoint = false,
   }) {
     return Builder(
       builder: (context) {
         final colors = context.themeStyle.colors;
 
+        final button = CommonIconButton.svg(
+          svg: svg,
+          buttonType: EverButtonType.primary,
+          onPressed: onPressed,
+        );
+
         return SeparatedColumn(
           mainAxisSize: MainAxisSize.min,
           children: [
-            CommonIconButton.svg(
-              svg: svg,
-              buttonType: EverButtonType.primary,
-              onPressed: onPressed,
-            ),
+            if (showPoint)
+              Stack(
+                children: [
+                  button,
+                  Positioned(
+                    top: DimensStroke.medium,
+                    right: DimensStroke.medium,
+                    child: Container(
+                      width: DimensSize.d12,
+                      height: DimensSize.d12,
+                      decoration: BoxDecoration(
+                        shape: BoxShape.circle,
+                        color: colors.blue,
+                      ),
+                    ),
+                  ),
+                ],
+              )
+            else
+              button,
             Text(
               title,
               style: StyleRes.addBold.copyWith(color: colors.textPrimary),

@@ -16,4 +16,5 @@ export 'navigation/navigation.dart';
 export 'nekoton_related/nekoton_related.dart';
 export 'permissions_service.dart';
 export 'remote/remote.dart';
+export 'staking_service.dart';
 export 'storage_service/storage_service.dart';

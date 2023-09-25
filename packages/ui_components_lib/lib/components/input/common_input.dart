@@ -52,6 +52,7 @@ class CommonInput extends StatefulWidget {
     this.errorColor,
     this.obscureText = false,
     this.titleText,
+    this.titleChild,
     this.subtitleText,
     this.prefixIconConstraints,
     this.suffixIconConstraints,
@@ -159,6 +160,9 @@ class CommonInput extends StatefulWidget {
   /// Title (name) of input, it displays above input
   final String? titleText;
 
+  /// Custom title instead of [titleText]
+  final Widget? titleChild;
+
   /// Subtitle (additional info) of input, displays near title.
   /// To display subtitle, specify [titleText].
   final String? subtitleText;
@@ -258,15 +262,20 @@ class _CommonInputState extends State<CommonInput> {
       mainAxisSize: MainAxisSize.min,
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        if (widget.titleText != null) ...[
+        if (widget.titleText != null || widget.titleChild != null) ...[
           Text.rich(
             TextSpan(
               children: [
-                TextSpan(
-                  text: widget.titleText,
-                  style: StyleRes.secondaryBold
-                      .copyWith(color: colors.textPrimary),
-                ),
+                if (widget.titleChild != null) ...[
+                  WidgetSpan(child: widget.titleChild!),
+                  const WidgetSpan(child: SizedBox(width: DimensSize.d4)),
+                ],
+                if (widget.titleText != null)
+                  TextSpan(
+                    text: widget.titleText,
+                    style: StyleRes.secondaryBold
+                        .copyWith(color: colors.textPrimary),
+                  ),
                 if (widget.subtitleText != null) ...[
                   const WidgetSpan(child: SizedBox(width: DimensSize.d4)),
                   TextSpan(

@@ -1,6 +1,7 @@
 import 'dart:convert';
 
 import 'package:app/app/router/router.dart';
+import 'package:app/data/models/models.dart';
 import 'package:app/feature/add_seed/add_seed_enable_biometry/add_seed_enable_biometry.dart';
 import 'package:app/feature/network/network.dart';
 import 'package:app/feature/wallet/wallet.dart';
@@ -22,6 +23,8 @@ const tonWalletSendPublicKeyQueryParam = 'tonWalletSendPublicKey';
 const tonWalletSendCommentQueryParam = 'tonWalletSendComment';
 const tonWalletSendDestinationQueryParam = 'tonWalletSendDestination';
 const tonWalletSendAmountQueryParam = 'tonWalletSendAmount';
+const tonWalletSendAttachedAmountQueryParam = 'tonWalletSendAttachedAmount';
+const tonWalletSendResultMessageQueryParam = 'tonWalletSendResultMessage';
 
 const tokenWalletSendOwnerQueryParam = 'tokenWalletSendOwner';
 const tokenWalletSendContractQueryParam = 'tokenWalletSendContract';
@@ -30,6 +33,7 @@ const tokenWalletSendCommentQueryParam = 'tokenWalletSendComment';
 const tokenWalletSendDestinationQueryParam = 'tokenWalletSendDestination';
 const tokenWalletSendAmountQueryParam = 'tokenWalletSendAmount';
 const tokenWalletSendAttachedAmountQueryParam = 'tokenWalletSendAttachedAmount';
+const tokenWalletSendResultMessageQueryParam = 'tokenWalletSendResultMessage';
 
 const walletDeployAddressPathParam = 'walletDeployAddress';
 const walletDeployPublicKeyPathParam = 'walletDeployPublicKey';
@@ -48,6 +52,20 @@ const tonWalletConfirmTransactionCommentQueryParam =
     'tonWalletConfirmTransactionComment';
 
 const networkConnectionDataIdQueryParam = 'connectionDataId';
+
+const walletStakeAddressPathParam = 'walletStakeAddress';
+
+const walletCancelUnstakingRequestQueryParam = 'walletCancelUnstakingRequest';
+const walletCancelUnstakingPublicKeyQueryParam =
+    'walletCancelUnstakingPublicKey';
+const walletCancelUnstakingExchangeRateQueryParam =
+    'walletCancelUnstakingExchangeRate';
+const walletCancelUnstakingWithdrawHorsQueryParam =
+    'walletCancelUnstakingWithdrawHors';
+const walletCancelUnstakingStakingCurrencyCodeQueryParam =
+    'walletCancelUnstakingStakingCurrencyCode';
+const walletCancelUnstakingAttachedFeeQueryParam =
+    'walletCancelUnstakingStakingAttachedFee';
 
 /// Branch that is root for wallet.
 StatefulShellBranch get walletBranch {
@@ -77,6 +95,7 @@ StatefulShellBranch get walletBranch {
           walletDeployRoute,
           tonConfirmTranscationRoute,
           configureNetworksRoute,
+          stakingRoute,
         ],
       ),
     ],
@@ -157,6 +176,9 @@ GoRoute get tonWalletSendRoute {
   return GoRoute(
     path: AppRoute.tonWalletSend.path,
     builder: (context, state) {
+      final attached =
+          state.uri.queryParameters[tonWalletSendAttachedAmountQueryParam];
+
       return TonWalletSendPage(
         address: Address(
           address: state.uri.queryParameters[tonWalletSendAddressQueryParam]!,
@@ -172,7 +194,10 @@ GoRoute get tonWalletSendRoute {
         amount: BigInt.parse(
           state.uri.queryParameters[tonWalletSendAmountQueryParam]!,
         ),
+        attachedAmount: attached == null ? null : BigInt.parse(attached),
         comment: state.uri.queryParameters[tonWalletSendCommentQueryParam],
+        resultMessage:
+            state.uri.queryParameters[tonWalletSendResultMessageQueryParam],
       );
     },
   );
@@ -207,6 +232,8 @@ GoRoute get tokenWalletSendRoute {
           state.uri.queryParameters[tokenWalletSendAmountQueryParam]!,
         ),
         comment: state.uri.queryParameters[tokenWalletSendCommentQueryParam],
+        resultMessage:
+            state.uri.queryParameters[tokenWalletSendResultMessageQueryParam],
       );
     },
   );
@@ -276,6 +303,53 @@ GoRoute get configureNetworksRoute {
               state.uri.queryParameters[networkConnectionDataIdQueryParam],
         ),
       ),
+    ],
+  );
+}
+
+GoRoute get stakingRoute {
+  return GoRoute(
+    path: AppRoute.walletStake.path,
+    builder: (context, state) => StakingPage(
+      accountAddress: Address(
+        address: state.pathParameters[walletStakeAddressPathParam]!,
+      ),
+    ),
+    routes: [
+      tonWalletSendRoute,
+      tokenWalletSendRoute,
+      cancelUnstakingRoute,
+    ],
+  );
+}
+
+GoRoute get cancelUnstakingRoute {
+  return GoRoute(
+    path: AppRoute.walletCancelUnstaking.path,
+    builder: (context, state) => CancelUnstakingPage(
+      request: StEverWithdrawRequest.fromJson(
+        jsonDecode(
+          state.uri.queryParameters[walletCancelUnstakingRequestQueryParam]!,
+        ) as Map<String, dynamic>,
+      ),
+      accountKey: PublicKey(
+        publicKey: state
+            .uri.queryParameters[walletCancelUnstakingPublicKeyQueryParam]!,
+      ),
+      attachedFee: BigInt.parse(
+        state.uri.queryParameters[walletCancelUnstakingAttachedFeeQueryParam]!,
+      ),
+      exchangeRate: double.parse(
+        state.uri.queryParameters[walletCancelUnstakingExchangeRateQueryParam]!,
+      ),
+      stakeCurrency: Currencies()[state.uri.queryParameters[
+          walletCancelUnstakingStakingCurrencyCodeQueryParam]!]!,
+      withdrawHours: int.parse(
+        state.uri.queryParameters[walletCancelUnstakingWithdrawHorsQueryParam]!,
+      ),
+    ),
+    routes: [
+      tonWalletSendRoute,
     ],
   );
 }

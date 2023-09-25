@@ -16,6 +16,7 @@ export 'permission.dart';
 export 'permissions.dart';
 export 'signed_message_with_additional_info.dart';
 export 'site_meta_data.dart';
+export 'stever/stever.dart';
 export 'token_contract_asset.dart';
 export 'token_wallet_ordinary_transaction.dart';
 export 'ton_assets_manifest.dart';

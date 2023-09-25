@@ -15,12 +15,14 @@ class TonWalletSendConfirmView extends StatelessWidget {
     required this.comment,
     required this.publicKey,
     this.fee,
+    this.attachedAmount,
     this.feeError,
     super.key,
   });
 
   final Address recipient;
   final BigInt amount;
+  final BigInt? attachedAmount;
   final BigInt? fee;
   final String? comment;
 
@@ -60,6 +62,19 @@ class TonWalletSendConfirmView extends StatelessWidget {
                     style: MoneyWidgetStyle.primary,
                   ),
                 ),
+                if (attachedAmount != null)
+                  _info(
+                    title: LocaleKeys.attachedAmount.tr(),
+                    valueChild: MoneyWidget(
+                      money: Money.fromBigIntWithCurrency(
+                        attachedAmount!,
+                        Currencies()[inject<NekotonRepository>()
+                            .currentTransport
+                            .nativeTokenTicker]!,
+                      ),
+                      style: MoneyWidgetStyle.primary,
+                    ),
+                  ),
                 _info(
                   title: LocaleKeys.blockchainFee.tr(),
                   valueChild: MoneyWidget(

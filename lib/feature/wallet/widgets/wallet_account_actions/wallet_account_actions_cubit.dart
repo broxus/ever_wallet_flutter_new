@@ -1,5 +1,7 @@
 import 'dart:async';
 
+import 'package:app/app/service/service.dart';
+import 'package:app/data/models/models.dart';
 import 'package:bloc/bloc.dart';
 import 'package:collection/collection.dart';
 import 'package:freezed_annotation/freezed_annotation.dart';
@@ -22,6 +24,7 @@ class WalletAccountActionsCubit extends Cubit<WalletAccountActionsState> {
   WalletAccountActionsCubit(
     this.nekotonRepository,
     this.address,
+    this.stakingService,
   ) : super(const WalletAccountActionsState.loading()) {
     _walletsSubscription = nekotonRepository.walletsStream.listen((wallets) {
       final wl = wallets.firstWhereOrNull((w) => w.address == address);
@@ -31,18 +34,33 @@ class WalletAccountActionsCubit extends Cubit<WalletAccountActionsState> {
 
   final NekotonRepository nekotonRepository;
   final Address address;
+  final StakingService stakingService;
 
   TonWallet? wallet;
 
   late StreamSubscription<List<TonWallet>> _walletsSubscription;
   StreamSubscription<void>? _thisWalletSubscription;
+  StreamSubscription<dynamic>? _withdrawsSubscription;
+
+  List<StEverWithdrawRequest> _cachedWithdraws = [];
 
   void _initWallet(TonWallet w) {
-    if (wallet != null) return;
+    if (wallet != null &&
+        wallet!.transport.connectionParamsHash ==
+            w.transport.connectionParamsHash) {
+      return;
+    }
+
+    _closeSubs();
 
     wallet = w;
     _thisWalletSubscription =
         w.fieldUpdatesStream.listen((_) => _updateWalletData(w));
+    _withdrawsSubscription =
+        stakingService.withdrawRequestsStream(address).listen((withdraws) {
+      _cachedWithdraws = withdraws;
+      _updateWalletData(wallet!);
+    });
   }
 
   void _updateWalletData(TonWallet w) {
@@ -62,19 +80,26 @@ class WalletAccountActionsCubit extends Cubit<WalletAccountActionsState> {
       action = WalletAccountActionBehavior.deploy;
     }
 
-    // TODO(alex-a4): add stake check in transport
+    final hasStake = action != WalletAccountActionBehavior.deploy &&
+        nekotonRepository.currentTransport.stakeInformation != null;
     emit(
       WalletAccountActionsState.data(
         action: action,
-        hasStake: action != WalletAccountActionBehavior.deploy,
+        hasStake: hasStake,
+        hasStakeActions: hasStake && _cachedWithdraws.isNotEmpty,
       ),
     );
+  }
+
+  void _closeSubs() {
+    _withdrawsSubscription?.cancel();
+    _thisWalletSubscription?.cancel();
   }
 
   @override
   Future<void> close() {
     _walletsSubscription.cancel();
-    _thisWalletSubscription?.cancel();
+    _closeSubs();
 
     return super.close();
   }

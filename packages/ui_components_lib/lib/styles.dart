@@ -77,6 +77,16 @@ class StyleRes {
     package: _uiComponentsLib,
   );
 
+  /// Secondary-Regular 14/18 Regular
+  static const secondaryRegular = TextStyle(
+    fontFamily: _interFamily,
+    fontSize: 14,
+    height: 1.3,
+    fontWeight: FontWeight.w400,
+    letterSpacing: -0.04,
+    package: _uiComponentsLib,
+  );
+
   /// Secondary-Bold 14/18 SemiBold
   static const secondaryBold = TextStyle(
     fontFamily: _interFamily,
