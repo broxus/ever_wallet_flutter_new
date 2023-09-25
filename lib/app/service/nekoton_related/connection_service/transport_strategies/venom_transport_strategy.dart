@@ -32,8 +32,13 @@ class VenomTransportStrategy extends TransportStrategy {
       'https://testnetapi.web3.world/v1/currencies/$currencyAddress';
 
   @override
-  String defaultAccountName(WalletType walletType) =>
-      getDefaultAccountName(walletType);
+  String defaultAccountName(WalletType walletType) => getDefaultAccountName(
+        walletType,
+        overrides: {
+          const WalletType.everWallet(): 'Default',
+          const WalletType.walletV3(): 'Legacy',
+        },
+      );
 
   @override
   final defaultWalletType = const WalletType.everWallet();
