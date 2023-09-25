@@ -7,6 +7,9 @@ import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:ui_components_lib/ui_components_lib.dart';
 
+const _maxNetworkNameLength = 32;
+const _maxCurrencySymbolLength = 16;
+
 class EditNetworkView extends StatefulWidget {
   EditNetworkView({required this.connection, super.key})
       : editable = connection?.canBeEdited ?? true;
@@ -30,6 +33,37 @@ class _EditNetworkViewState extends State<EditNetworkView> {
   final _blockExplorerUrlController = TextEditingController();
   final _manifestUrlController = TextEditingController();
   late bool _isLocal;
+
+  final _nameValidator = CommonTextValidator(
+    minLength: 1,
+    maxLength: _maxNetworkNameLength,
+    emptyError: LocaleKeys.textFieldShouldNotBeEmpty.tr(),
+    maxLengthError: LocaleKeys.textFieldTooLong.tr(
+      args: [
+        _maxNetworkNameLength.toString(),
+      ],
+    ),
+  );
+
+  final _currencySymbolValidator = CommonTextValidator(
+    maxLength: _maxCurrencySymbolLength,
+    maxLengthError: LocaleKeys.textFieldTooLong.tr(
+      args: [
+        _maxCurrencySymbolLength.toString(),
+      ],
+    ),
+  );
+
+  final _nonOptionalUrlValidator = UrlTextValidator(
+    emptyError: LocaleKeys.urlFieldShouldNotBeEmpty.tr(),
+    schemeError: LocaleKeys.urlFieldShouldHasScheme.tr(),
+    hostError: LocaleKeys.urlFieldShouldHasHost.tr(),
+  );
+
+  final _optionalUrlValidator = UrlTextValidator(
+    schemeError: LocaleKeys.urlFieldShouldHasScheme.tr(),
+    hostError: LocaleKeys.urlFieldShouldHasHost.tr(),
+  );
 
   @override
   void initState() {
@@ -138,6 +172,8 @@ class _EditNetworkViewState extends State<EditNetworkView> {
         autocorrect: false,
         hintText: LocaleKeys.networkNameHint.tr(),
         enabled: widget.editable,
+        validator: _nameValidator.validate,
+        validateMode: AutovalidateMode.onUserInteraction,
       ),
     ];
   }
@@ -216,6 +252,8 @@ class _EditNetworkViewState extends State<EditNetworkView> {
                   )
                 : null,
             enabled: widget.editable,
+            validator: _nonOptionalUrlValidator.validate,
+            validateMode: AutovalidateMode.onUserInteraction,
           ),
         ),
         if (index > 0 && widget.editable)
@@ -246,6 +284,8 @@ class _EditNetworkViewState extends State<EditNetworkView> {
         autocorrect: false,
         hintText: LocaleKeys.networkCurrencySymbolHint.tr(),
         enabled: widget.editable,
+        validator: _currencySymbolValidator.validate,
+        validateMode: AutovalidateMode.onUserInteraction,
       ),
     ];
   }
@@ -267,6 +307,8 @@ class _EditNetworkViewState extends State<EditNetworkView> {
         autocorrect: false,
         hintText: LocaleKeys.networkBlockExplorerHint.tr(),
         enabled: widget.editable,
+        validator: _optionalUrlValidator.validate,
+        validateMode: AutovalidateMode.onUserInteraction,
       ),
     ];
   }
@@ -290,6 +332,8 @@ class _EditNetworkViewState extends State<EditNetworkView> {
         autocorrect: false,
         hintText: LocaleKeys.networkTokenListHint.tr(),
         enabled: widget.editable,
+        validator: _optionalUrlValidator.validate,
+        validateMode: AutovalidateMode.onUserInteraction,
       ),
       Text.rich(
         TextSpan(
