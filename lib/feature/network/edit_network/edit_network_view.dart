@@ -379,6 +379,7 @@ class _EditNetworkViewState extends State<EditNetworkView> {
   void _onTokenListTextLinkTap() =>
       browserNewTab(context, LocaleKeys.networkTokenListTextLinkUrl.tr());
 
+  // ignore: long-method
   List<TextEditingController> _getEndpointsControllers() {
     if (widget.connection == null) {
       return [

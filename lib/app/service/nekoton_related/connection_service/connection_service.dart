@@ -40,6 +40,7 @@ class ConnectionService {
 
   /// Create nekoton's transport by connection, create transport's strategy
   /// by its type and put it in nekoton.
+  // ignore: long-method
   Future<void> _updateTransportByConnection(ConnectionData connection) async {
     _log.finest('updateTransportByConnection: ${connection.name}');
     final transport = await connection.when<Future<Transport>>(

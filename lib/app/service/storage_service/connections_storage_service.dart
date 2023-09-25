@@ -214,6 +214,7 @@ class ConnectionsStorageService extends AbstractStorageService {
     if (index < 0) {
       _log.warning('Unable to update connection with id ${item.id}. '
           'Connection not found.');
+
       return;
     }
     final newConnections = [...connections];
@@ -229,6 +230,7 @@ class ConnectionsStorageService extends AbstractStorageService {
     if (preset == null) {
       _log.warning('Unable to revert connection from preset with id $id. '
           'Connection not found');
+
       return;
     }
 
