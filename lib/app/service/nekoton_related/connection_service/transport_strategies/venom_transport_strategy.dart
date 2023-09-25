@@ -1,16 +1,24 @@
+import 'package:app/data/models/models.dart';
 import 'package:app/generated/generated.dart';
 import 'package:nekoton_repository/nekoton_repository.dart';
 
 /// Transport strategy for venom network
 class VenomTransportStrategy extends TransportStrategy {
-  VenomTransportStrategy({required this.transport});
+  VenomTransportStrategy({
+    required this.transport,
+    required this.connection,
+  });
 
   @override
   final Transport transport;
 
+  final ConnectionData connection;
+
   @override
   String accountExplorerLink(Address accountAddress) =>
-      'https://venomscan.com/accounts/${accountAddress.address}';
+      connection.blockExplorerUrl.isNotEmpty
+          ? '${connection.blockExplorerUrl}/accounts/${accountAddress.address}'
+          : '';
 
   @override
   final availableWalletTypes = const [
@@ -53,8 +61,7 @@ class VenomTransportStrategy extends TransportStrategy {
   final defaultWalletType = const WalletType.everWallet();
 
   @override
-  final manifestUrl =
-      'https://raw.githubusercontent.com/BVFDT/venom-assets/master/manifest.json';
+  String get manifestUrl => connection.manifestUrl;
 
   @override
   String get nativeTokenIcon => Assets.images.venom.path;
@@ -76,7 +83,9 @@ class VenomTransportStrategy extends TransportStrategy {
 
   @override
   String transactionExplorerLink(String transactionHash) =>
-      'https://venomscan.com/transactions/$transactionHash';
+      connection.blockExplorerUrl.isNotEmpty
+          ? '${connection.blockExplorerUrl}/transactions/$transactionHash'
+          : '';
 
   @override
   // ignore: no-magic-number

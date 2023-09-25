@@ -94,8 +94,7 @@ class ConnectionsStorageService extends AbstractStorageService {
       domain: _connectionsDomain,
     );
 
-    // Return presets and custom connections
-    var connections = networkPresets;
+    var connections = <ConnectionData>[];
 
     if (encoded != null) {
       final list = jsonDecode(encoded) as List<dynamic>;
@@ -105,10 +104,14 @@ class ConnectionsStorageService extends AbstractStorageService {
           )
           .toList();
 
-      connections = [
-        ...connections,
-        ...customConnections,
-      ];
+      if (customConnections.isNotEmpty) {
+        connections = customConnections;
+      }
+    }
+
+    if (connections.isEmpty) {
+      _log.info('Connections not found. Using presets.');
+      connections = networkPresets;
     }
 
     final connectionsText = connections
@@ -139,21 +142,17 @@ class ConnectionsStorageService extends AbstractStorageService {
   }
 
   /// Save list of [ConnectionData] items to storage
-  Future<void> saveConnections(List<ConnectionData> connections) async {
-    // Write only custom connections
-    final customConnections =
-        connections.where((connection) => !connection.isPreset).toList();
-
+  Future<void> _saveConnections(List<ConnectionData> connections) async {
     await _storage.set(
       _connectionsKey,
-      jsonEncode(customConnections),
+      jsonEncode(connections),
       domain: _connectionsDomain,
     );
 
     await _streamedConnections();
   }
 
-  /// Save list of [ConnectionData] items to storage
+  /// Save current connection id to storage
   Future<void> saveCurrentConnectionId(String id) async {
     var newId = id;
     if (connections.firstWhereOrNull((element) => element.id == id) == null) {
@@ -189,24 +188,53 @@ class ConnectionsStorageService extends AbstractStorageService {
     await _streamedCurrentConnectionId();
   }
 
-  /// Add [ConnectionData]
+  /// Add [ConnectionData] item
   Future<void> addConnection(ConnectionData item) async {
-    await saveConnections([...connections, item]);
+    await _saveConnections([...connections, item]);
   }
 
   /// Remove [ConnectionData] item by id
   Future<void> removeConnection(String id) async {
     if (id == currentConnectionId) {
-      _log.warning(
+      _log.info(
         'Trying to remove current connection. '
         'Setting default connection as current',
       );
+      await saveCurrentConnectionId(defaultConnectionkId);
     }
 
     final items = [...connections]..removeWhere((item) => item.id == id);
 
-    await saveCurrentConnectionId(defaultConnectionkId);
-    await saveConnections(items);
+    await _saveConnections(items);
+  }
+
+  /// Update [ConnectionData] item
+  Future<void> updateConnection(ConnectionData item) async {
+    final index = connections.indexWhere((element) => element.id == item.id);
+    if (index < 0) {
+      _log.warning('Unable to update connection with id ${item.id}. '
+          'Connection not found.');
+
+      return;
+    }
+    final newConnections = [...connections];
+    newConnections[index] = item;
+
+    await _saveConnections(newConnections);
+  }
+
+  /// Revert item to defaults from preset
+  Future<void> revertConnection(String id) async {
+    final preset =
+        networkPresets.firstWhereOrNull((element) => element.id == id);
+    if (preset == null) {
+      _log.warning('Unable to revert connection from preset with id $id. '
+          'Connection not found');
+
+      return;
+    }
+
+    return updateConnection(preset);
   }
 
   @override

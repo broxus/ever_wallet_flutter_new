@@ -38,7 +38,7 @@ class _EditNetworkPageState extends State<EditNetworkPage> {
             appBar: DefaultAppBar(
               titleText: title,
             ),
-            body: const EditNetworkView(),
+            body: EditNetworkView(connection: connection),
           );
         },
       ),

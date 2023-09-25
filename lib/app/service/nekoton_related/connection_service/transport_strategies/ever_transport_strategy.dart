@@ -1,16 +1,25 @@
+import 'package:app/app/service/nekoton_related/connection_service/transport_strategies/utils.dart';
+import 'package:app/data/models/models.dart';
 import 'package:app/generated/generated.dart';
 import 'package:nekoton_repository/nekoton_repository.dart';
 
 /// Transport strategy for everscale network
 class EverTransportStrategy extends TransportStrategy {
-  EverTransportStrategy({required this.transport});
+  EverTransportStrategy({
+    required this.transport,
+    required this.connection,
+  });
 
   @override
   final Transport transport;
 
+  final ConnectionData connection;
+
   @override
   String accountExplorerLink(Address accountAddress) =>
-      'https://everscan.io/accounts/${accountAddress.address}';
+      connection.blockExplorerUrl.isNotEmpty
+          ? '${connection.blockExplorerUrl}/accounts/${accountAddress.address}'
+          : '';
 
   @override
   final availableWalletTypes = const [
@@ -31,38 +40,14 @@ class EverTransportStrategy extends TransportStrategy {
       'https://api.flatqube.io/v1/currencies/$currencyAddress';
 
   @override
-  String defaultAccountName(WalletType walletType) => walletType.when(
-        multisig: (multisigType) {
-          switch (multisigType) {
-            case MultisigType.safeMultisigWallet:
-              return 'SafeMultisig';
-            case MultisigType.safeMultisigWallet24h:
-              return 'SafeMultisig24';
-            case MultisigType.setcodeMultisigWallet:
-              return 'SetcodeMultisig';
-            case MultisigType.setcodeMultisigWallet24h:
-              return 'SetcodeMultisig24';
-            case MultisigType.bridgeMultisigWallet:
-              return 'BridgeMultisig';
-            case MultisigType.surfWallet:
-              return 'Surf';
-            case MultisigType.multisig2:
-              return 'Multisig2';
-            case MultisigType.multisig2_1:
-              return 'Multisig2.1';
-          }
-        },
-        everWallet: () => 'EVER Wallet',
-        walletV3: () => 'WalletV3',
-        highloadWalletV2: () => 'HighloadWalletV2',
-      );
+  String defaultAccountName(WalletType walletType) =>
+      getDefaultAccountName(walletType);
 
   @override
   final defaultWalletType = const WalletType.everWallet();
 
   @override
-  final manifestUrl =
-      'https://raw.githubusercontent.com/broxus/ton-assets/master/manifest.json';
+  String get manifestUrl => connection.manifestUrl;
 
   @override
   String get nativeTokenIcon => Assets.images.everCoin.path;
@@ -84,7 +69,9 @@ class EverTransportStrategy extends TransportStrategy {
 
   @override
   String transactionExplorerLink(String transactionHash) =>
-      'https://everscan.io/transactions/$transactionHash';
+      connection.blockExplorerUrl.isNotEmpty
+          ? '${connection.blockExplorerUrl}/transactions/$transactionHash'
+          : '';
 
   @override
   // ignore: no-magic-number

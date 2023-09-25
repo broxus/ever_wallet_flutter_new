@@ -15,7 +15,11 @@ sealed class ConnectionData with _$ConnectionData {
     required Duration timeout,
     required NetworkType networkType,
     required bool isLocal,
+    required String blockExplorerUrl,
+    required String manifestUrl,
+    required String nativeTokenTicker,
     required bool isPreset,
+    required bool canBeEdited,
   }) = _ConnectionDataGql;
 
   factory ConnectionData.gqlCustom({
@@ -25,6 +29,9 @@ sealed class ConnectionData with _$ConnectionData {
     required Duration timeout,
     required NetworkType networkType,
     required bool isLocal,
+    required String blockExplorerUrl,
+    required String manifestUrl,
+    required String nativeTokenTicker,
   }) =>
       ConnectionData.gql(
         id: const Uuid().v4(),
@@ -34,7 +41,11 @@ sealed class ConnectionData with _$ConnectionData {
         timeout: timeout,
         networkType: networkType,
         isLocal: isLocal,
+        blockExplorerUrl: blockExplorerUrl,
+        manifestUrl: manifestUrl,
+        nativeTokenTicker: nativeTokenTicker,
         isPreset: false,
+        canBeEdited: true,
       );
 
   factory ConnectionData.gqlPreset({
@@ -44,6 +55,9 @@ sealed class ConnectionData with _$ConnectionData {
     required List<String> endpoints,
     required Duration timeout,
     required NetworkType networkType,
+    required String blockExplorerUrl,
+    required String manifestUrl,
+    required bool canBeEdited,
   }) =>
       ConnectionData.gql(
         id: id,
@@ -53,7 +67,11 @@ sealed class ConnectionData with _$ConnectionData {
         timeout: timeout,
         networkType: networkType,
         isLocal: false,
+        blockExplorerUrl: blockExplorerUrl,
+        manifestUrl: manifestUrl,
+        nativeTokenTicker: '',
         isPreset: true,
+        canBeEdited: canBeEdited,
       );
 
   const factory ConnectionData.proto({
@@ -62,7 +80,11 @@ sealed class ConnectionData with _$ConnectionData {
     required String group,
     required String endpoint,
     required NetworkType networkType,
+    required String blockExplorerUrl,
+    required String manifestUrl,
+    required String nativeTokenTicker,
     required bool isPreset,
+    required bool canBeEdited,
   }) = _ConnectionDataProto;
 
   factory ConnectionData.protoCustom({
@@ -70,6 +92,9 @@ sealed class ConnectionData with _$ConnectionData {
     required String group,
     required String endpoint,
     required NetworkType networkType,
+    required String blockExplorerUrl,
+    required String manifestUrl,
+    required String nativeTokenTicker,
   }) =>
       ConnectionData.proto(
         id: const Uuid().v4(),
@@ -77,7 +102,11 @@ sealed class ConnectionData with _$ConnectionData {
         group: group,
         endpoint: endpoint,
         networkType: networkType,
+        blockExplorerUrl: blockExplorerUrl,
+        manifestUrl: manifestUrl,
+        nativeTokenTicker: nativeTokenTicker,
         isPreset: false,
+        canBeEdited: true,
       );
 
   factory ConnectionData.protoPreset({
@@ -86,6 +115,9 @@ sealed class ConnectionData with _$ConnectionData {
     required String group,
     required String endpoint,
     required NetworkType networkType,
+    required String blockExplorerUrl,
+    required String manifestUrl,
+    required bool canBeEdited,
   }) =>
       ConnectionData.proto(
         id: id,
@@ -93,7 +125,11 @@ sealed class ConnectionData with _$ConnectionData {
         group: group,
         endpoint: endpoint,
         networkType: networkType,
+        blockExplorerUrl: blockExplorerUrl,
+        manifestUrl: manifestUrl,
+        nativeTokenTicker: '',
         isPreset: true,
+        canBeEdited: canBeEdited,
       );
 
   const factory ConnectionData.jrpc({
@@ -102,7 +138,11 @@ sealed class ConnectionData with _$ConnectionData {
     required String group,
     required String endpoint,
     required NetworkType networkType,
+    required String blockExplorerUrl,
+    required String manifestUrl,
+    required String nativeTokenTicker,
     required bool isPreset,
+    required bool canBeEdited,
   }) = _ConnectionDataJrpc;
 
   factory ConnectionData.jrpcCustom({
@@ -110,6 +150,9 @@ sealed class ConnectionData with _$ConnectionData {
     required String group,
     required String endpoint,
     required NetworkType networkType,
+    required String blockExplorerUrl,
+    required String manifestUrl,
+    required String nativeTokenTicker,
   }) =>
       ConnectionData.jrpc(
         id: const Uuid().v4(),
@@ -117,7 +160,11 @@ sealed class ConnectionData with _$ConnectionData {
         group: group,
         endpoint: endpoint,
         networkType: networkType,
+        blockExplorerUrl: blockExplorerUrl,
+        manifestUrl: manifestUrl,
+        nativeTokenTicker: nativeTokenTicker,
         isPreset: false,
+        canBeEdited: true,
       );
 
   factory ConnectionData.jrpcPreset({
@@ -126,6 +173,9 @@ sealed class ConnectionData with _$ConnectionData {
     required String group,
     required String endpoint,
     required NetworkType networkType,
+    required String blockExplorerUrl,
+    required String manifestUrl,
+    required bool canBeEdited,
   }) =>
       ConnectionData.jrpc(
         id: id,
@@ -133,7 +183,11 @@ sealed class ConnectionData with _$ConnectionData {
         group: group,
         endpoint: endpoint,
         networkType: networkType,
+        blockExplorerUrl: blockExplorerUrl,
+        manifestUrl: manifestUrl,
+        nativeTokenTicker: '',
         isPreset: true,
+        canBeEdited: canBeEdited,
       );
 
   factory ConnectionData.fromJson(Map<String, dynamic> json) =>

@@ -40,10 +40,24 @@ class ConnectionService {
 
   /// Create nekoton's transport by connection, create transport's strategy
   /// by its type and put it in nekoton.
+  // ignore: long-method
   Future<void> _updateTransportByConnection(ConnectionData connection) async {
     _log.finest('updateTransportByConnection: ${connection.name}');
     final transport = await connection.when<Future<Transport>>(
-      gql: (_, name, group, endpoints, timeout, __, isLocal, ___) =>
+      gql: (
+        _,
+        name,
+        group,
+        endpoints,
+        timeout,
+        __,
+        isLocal,
+        ___,
+        ____,
+        _____,
+        ______,
+        _______,
+      ) =>
           _nekotonRepository.createGqlTransport(
         post: _httpService.postTransportData,
         get: _httpService.getTransportData,
@@ -52,14 +66,36 @@ class ConnectionService {
         endpoints: endpoints,
         local: isLocal,
       ),
-      proto: (_, name, group, endpoint, __, ___) =>
+      proto: (
+        _,
+        name,
+        group,
+        endpoint,
+        __,
+        ___,
+        ____,
+        _____,
+        ______,
+        _______,
+      ) =>
           _nekotonRepository.createProtoTransport(
         post: _httpService.postTransportDataBytes,
         name: name,
         group: group,
         endpoint: endpoint,
       ),
-      jrpc: (_, name, group, endpoint, __, ___) =>
+      jrpc: (
+        _,
+        name,
+        group,
+        endpoint,
+        __,
+        ___,
+        ____,
+        _____,
+        ______,
+        _______,
+      ) =>
           _nekotonRepository.createJrpcTransport(
         post: _httpService.postTransportData,
         name: name,
@@ -84,10 +120,12 @@ class ConnectionService {
       case NetworkType.ever:
         return EverTransportStrategy(
           transport: transport,
+          connection: connection,
         );
       case NetworkType.venom:
         return VenomTransportStrategy(
           transport: transport,
+          connection: connection,
         );
       case NetworkType.custom:
         return CustomTransportStrategy(

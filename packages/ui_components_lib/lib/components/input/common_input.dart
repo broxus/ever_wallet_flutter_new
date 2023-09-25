@@ -59,6 +59,7 @@ class CommonInput extends StatefulWidget {
     this.fillColor,
     this.maxLength,
     this.outerActions,
+    this.enabled = true,
   });
 
   /// Height of input field
@@ -151,6 +152,7 @@ class CommonInput extends StatefulWidget {
 
   /// Style for text of input, color used for cursor, default
   /// [StyleRes.primaryRegular] and [ColorsPalette.textPrimary]
+  /// or [ColorsPalette.textSecondary] if the input is not enabled.
   final TextStyle? textStyle;
 
   /// Style for label text, default [StyleRes.primaryRegular] and
@@ -178,6 +180,9 @@ class CommonInput extends StatefulWidget {
 
   /// Actions that will be displayed right from text field
   final List<Widget>? outerActions;
+
+  /// Flag to enable/disable input
+  final bool enabled;
 
   @override
   State<CommonInput> createState() => _CommonInputState();
@@ -308,6 +313,7 @@ class _CommonInputState extends State<CommonInput> {
         validator: widget.validator,
         autovalidateMode: widget.validateMode,
         initialValue: _controller.text,
+        enabled: widget.enabled,
         builder: _onBuild,
       );
 
@@ -376,8 +382,9 @@ class _CommonInputState extends State<CommonInput> {
     required ColorsPalette colors,
     required bool hasError,
   }) {
-    final style = widget.textStyle ??
-        StyleRes.primaryRegular.copyWith(color: colors.textPrimary);
+    final color = widget.enabled ? colors.textPrimary : colors.textSecondary;
+    final style =
+        widget.textStyle ?? StyleRes.primaryRegular.copyWith(color: color);
 
     return SizedBox(
       height: widget.height,
@@ -389,7 +396,7 @@ class _CommonInputState extends State<CommonInput> {
         keyboardType: widget.keyboardType ?? TextInputType.text,
         onChanged: widget.onChanged,
         textInputAction: widget.textInputAction ?? TextInputAction.next,
-        cursorColor: widget.textStyle?.color ?? colors.textPrimary,
+        cursorColor: widget.textStyle?.color ?? color,
         onSubmitted: widget.onSubmitted,
         autocorrect: widget.autocorrect,
         enableSuggestions: widget.enableSuggestions,
@@ -439,6 +446,7 @@ class _CommonInputState extends State<CommonInput> {
             ),
           ),
         ),
+        enabled: widget.enabled,
       ),
     );
   }
