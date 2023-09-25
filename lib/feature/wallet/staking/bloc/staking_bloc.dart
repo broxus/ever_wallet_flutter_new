@@ -227,8 +227,8 @@ class StakingBloc extends Bloc<StakingBlocEvent, StakingBlocState> {
 
   // ignore: long-method
   StakingBlocState _stateWithData(Fixed value) {
-    Money? balance;
-    Money? enteredPrice;
+    Money balance;
+    Money enteredPrice;
     BigInt attachedAmount;
     double exchangeRate;
     Currency receiveCurrency;
@@ -260,10 +260,13 @@ class StakingBloc extends Bloc<StakingBlocEvent, StakingBlocState> {
         attachedAmount = staking.stakeRemovePendingWithdrawAttachedFee;
         exchangeRate = _details.totalAssets / _details.stEverSupply;
         receiveCurrency = _stEverWallet.moneyBalance.currency;
+        // fake balance
+        balance =
+            Money.fromBigIntWithCurrency(BigInt.zero, Currency.create('-', 0));
+        enteredPrice = currencyConvert.convert(Fixed.zero);
     }
 
-    final canPress =
-        value != Fixed.zero && balance != null && value < balance.amount;
+    final canPress = value != Fixed.zero && value < balance.amount;
 
     return StakingBlocState.data(
       type: _type,
@@ -285,9 +288,7 @@ class StakingBloc extends Bloc<StakingBlocEvent, StakingBlocState> {
 
   void _selectMax() {
     final max = _dataState.currentBalance;
-    if (max != null) {
-      _inputController.text = max.amount.toString();
-    }
+    _inputController.text = max.amount.toString();
   }
 
   Currency get _nativeCurrency =>

@@ -23,9 +23,9 @@ class StakingBlocState with _$StakingBlocState {
     required Currency receiveCurrency,
     required PublicKey accountKey,
     // Balance of current selected token (stake-ever, unstake-stever)
-    Money? currentBalance,
+    required Money currentBalance,
     // Price in real curreny of entered tokens
-    Money? enteredPrice,
+    required Money enteredPrice,
     // Balance of token user select after action (stake-stever, unstake-ever)
     Money? receiveBalance,
     // Pending withdraw requests

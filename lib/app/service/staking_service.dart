@@ -105,14 +105,6 @@ class StakingService {
   /// Cancel withdraw request.
   /// Returns body/comment that should be handled via TonWalletSendPage
   Future<String> removeWithdrawPayload(String nonce) {
-    // return SendMessageInput(
-    //   recipient: stEverVault,
-    //   sender: accountAddress,
-    //   amount: stakeRemovePendingWithdrawFee,
-    //   bounce: false,
-    //   payload: ,
-    // );
-
     final payload = FunctionCall(
       method: 'removePendingWithdraw',
       abi: stEverAbi,

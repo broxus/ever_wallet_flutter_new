@@ -3,7 +3,6 @@ import 'package:app/di/di.dart';
 import 'package:app/feature/wallet/wallet.dart';
 import 'package:app/generated/generated.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:nekoton_repository/nekoton_repository.dart';
 import 'package:ui_components_lib/ui_components_lib.dart';
@@ -56,10 +55,10 @@ class StakingView extends StatelessWidget {
   final double? exchangeRate;
 
   /// Balance of current selected token (stake-ever, unstake-stever)
-  final Money? currentBalance;
+  final Money currentBalance;
 
   /// Price in real curreny of entered tokens
-  final Money? enteredPrice;
+  final Money enteredPrice;
 
   /// Balance of token user select after action (stake-stever, unstake-ever)
   final Money? receiveBalance;
@@ -148,11 +147,10 @@ class StakingView extends StatelessWidget {
       separatorSize: DimensSize.d4,
       children: [
         _inputField(),
-        if (currentBalance != null)
-          MoneyWidget(
-            money: currentBalance!,
-            style: MoneyWidgetStyle.secondary,
-          ),
+        MoneyWidget(
+          money: currentBalance,
+          style: MoneyWidgetStyle.secondary,
+        ),
         const SizedBox(height: DimensSize.d12),
         _infoField(),
       ],
@@ -169,15 +167,12 @@ class StakingView extends StatelessWidget {
             path: imagePath,
             size: DimensSize.d16,
           ),
-          titleText: currentBalance != null
-              ? LocaleKeys.tokenAmount.tr(args: [currentBalance!.currency.code])
-              : null,
+          titleText:
+              LocaleKeys.tokenAmount.tr(args: [currentBalance.currency.code]),
           controller: inputController,
           hintText: '0.0',
           inputFormatters: [
-            FilteringTextInputFormatter.allow(RegExp(r'[0-9\,\.]')),
-            if (currentBalance != null)
-              CurrencyTextInputFormatter(currentBalance!.currency),
+            CurrencyTextInputFormatter(currentBalance.currency),
           ],
           suffixIconConstraints: const BoxConstraints(
             minHeight: commonInputHeight,
@@ -206,7 +201,7 @@ class StakingView extends StatelessWidget {
           titleText: LocaleKeys.exchangeRate.tr(),
           subtitleText:
               // ignore: lines_longer_than_80_chars, no-magic-number, binary-expression-operand-order
-              '1 ${currentBalance?.currency.code ?? ''} ≈ ${(1 * (exchangeRate ?? 1)).toStringAsFixed(4)} ${receiveCurrency.code}',
+              '1 ${currentBalance.currency.code} ≈ ${(1 * (exchangeRate ?? 1)).toStringAsFixed(4)} ${receiveCurrency.code}',
         ),
         CommonListTile(
           invertTitleSubtitleStyles: true,
