@@ -1,14 +1,18 @@
 import 'dart:async';
 
 import 'package:app/app/service/service.dart';
+import 'package:app/di/di.dart';
 import 'package:bloc/bloc.dart';
 import 'package:collection/collection.dart';
 import 'package:freezed_annotation/freezed_annotation.dart';
 import 'package:nekoton_repository/nekoton_repository.dart';
+import 'package:rxdart/rxdart.dart';
 
 part 'account_card_cubit_state.dart';
 
 part 'account_card_cubit.freezed.dart';
+
+const _withdrawUpdateDebounce = Duration(seconds: 3);
 
 /// Cubit that will be listen for subscriptions from [NekotonRepository] and
 /// provides [TonWallet] to ui.
@@ -37,6 +41,7 @@ class AccountCardCubit extends Cubit<AccountCardState> {
 
   late StreamSubscription<List<TonWallet>> _walletsSubscription;
   StreamSubscription<void>? _thisWalletSubscription;
+  StreamSubscription<void>? _withdrawRequestSubscription;
   StreamSubscription<Fixed>? _balanceSubscription;
 
   Fixed _cachedFiatBalance = Fixed.zero;
@@ -44,13 +49,23 @@ class AccountCardCubit extends Cubit<AccountCardState> {
   TonWallet? wallet;
 
   void _initWallet(TonWallet w) {
-    if (wallet != null && wallet!.transport.name == w.transport.name) return;
+    if (wallet != null &&
+        wallet!.transport.connectionParamsHash ==
+            w.transport.connectionParamsHash) {
+      return;
+    }
 
     _closeSubs();
 
     wallet = w;
     _thisWalletSubscription =
         w.fieldUpdatesStream.listen((_) => _updateWalletData(w));
+    _withdrawRequestSubscription =
+        w.fieldUpdatesStream.debounceTime(_withdrawUpdateDebounce).listen((_) {
+      if (nekotonRepository.currentTransport.stakeInformation != null) {
+        inject<StakingService>().tryUpdateWithdraws(account.address);
+      }
+    });
     _balanceSubscription =
         balanceService.accountOverallBalance(w.address).listen((fiat) {
       if (fiat == Fixed.zero && _cachedFiatBalance == Fixed.zero) {
@@ -99,6 +114,7 @@ class AccountCardCubit extends Cubit<AccountCardState> {
   void _closeSubs() {
     _thisWalletSubscription?.cancel();
     _balanceSubscription?.cancel();
+    _withdrawRequestSubscription?.cancel();
   }
 
   static String _walletName(NekotonRepository repo, KeyAccount account) {

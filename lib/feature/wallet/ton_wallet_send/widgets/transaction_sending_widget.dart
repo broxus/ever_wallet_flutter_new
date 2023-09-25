@@ -10,10 +10,16 @@ import 'package:ui_components_lib/ui_components_lib.dart';
 class TransactionSendingWidget extends StatelessWidget {
   const TransactionSendingWidget({
     required this.canClose,
+    this.completeCloseCallback,
     super.key,
   });
 
   final bool canClose;
+
+  /// Callback that could be used to change default behavior for closing
+  /// this screen when user achieved last step of sending when transaction is
+  /// ready.
+  final ValueChanged<BuildContext>? completeCloseCallback;
 
   @override
   Widget build(BuildContext context) {
@@ -43,7 +49,13 @@ class TransactionSendingWidget extends StatelessWidget {
           CommonButton.primary(
             fillWidth: true,
             text: LocaleKeys.okayWord.tr(),
-            onPressed: () => context.goNamed(AppRoute.wallet.name),
+            onPressed: () {
+              if (completeCloseCallback != null) {
+                completeCloseCallback!(context);
+              } else {
+                context.goNamed(AppRoute.wallet.name);
+              }
+            },
           ),
       ],
     );

@@ -13,6 +13,8 @@ class StEverDetails with _$StEverDetails {
   const factory StEverDetails({
     @amountJsonConverter required BigInt stEverSupply,
     @amountJsonConverter required BigInt totalAssets,
+    // Time before withdrawing in secodns
+    required String withdrawHoldTime,
   }) = _StEverDetails;
 
   factory StEverDetails.fromJson(Map<String, dynamic> json) =>

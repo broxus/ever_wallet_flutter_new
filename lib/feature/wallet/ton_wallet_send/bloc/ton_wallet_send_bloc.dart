@@ -23,6 +23,7 @@ class TonWalletSendBloc extends Bloc<TonWalletSendEvent, TonWalletSendState> {
     required this.destination,
     required this.amount,
     required this.comment,
+    required this.resultMessage,
     this.needRepack = true,
   }) : super(const TonWalletSendState.loading()) {
     _registerHandlers();
@@ -52,6 +53,9 @@ class TonWalletSendBloc extends Bloc<TonWalletSendEvent, TonWalletSendState> {
 
   /// Comment for transaction
   final String? comment;
+
+  /// Message that will be shown when transaction sending completed
+  final String resultMessage;
 
   /// Fee for transaction after calculating it in [_handlePrepare]
   BigInt? fees;
@@ -151,9 +155,7 @@ class TonWalletSendBloc extends Bloc<TonWalletSendEvent, TonWalletSendState> {
       );
 
       inject<MessengerService>().show(
-        Message.successful(
-          message: LocaleKeys.transactionSentSuccessfully.tr(),
-        ),
+        Message.successful(message: resultMessage),
       );
       if (!isClosed) {
         add(TonWalletSendEvent.completeSend(transaction));

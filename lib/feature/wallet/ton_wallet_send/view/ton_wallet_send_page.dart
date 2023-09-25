@@ -17,6 +17,9 @@ class TonWalletSendPage extends StatelessWidget {
     required this.destination,
     required this.amount,
     required this.comment,
+    this.attachedAmount,
+    this.resultMessage,
+    this.completeCloseCallback,
     super.key,
   });
 
@@ -34,24 +37,43 @@ class TonWalletSendPage extends StatelessWidget {
   /// [Fixed.minorUnits].
   final BigInt amount;
 
+  /// Ammount that will be just added to [amount]
+  final BigInt? attachedAmount;
+
   /// Comment for transaction
   final String? comment;
+
+  /// Message that will be shown when transaction sending completed
+  final String? resultMessage;
+
+  /// Callback that could be used to change default behavior for closing
+  /// this screen when user achieved last step of sending when transaction is
+  /// ready.
+  final ValueChanged<BuildContext>? completeCloseCallback;
 
   @override
   Widget build(BuildContext context) {
     return BlocProvider<TonWalletSendBloc>(
       create: (_) => TonWalletSendBloc(
         destination: destination,
-        amount: amount,
+        amount: amount + (attachedAmount ?? BigInt.zero),
         address: address,
         comment: comment,
         publicKey: publicKey,
         nekotonRepository: inject(),
+        resultMessage:
+            resultMessage ?? LocaleKeys.transactionSentSuccessfully.tr(),
       )..add(const TonWalletSendEvent.prepare()),
       child: BlocConsumer<TonWalletSendBloc, TonWalletSendState>(
         listener: (context, state) {
           state.whenOrNull(
-            sent: (_, __) => context.goNamed(AppRoute.wallet.name),
+            sent: (_, __) {
+              if (completeCloseCallback != null) {
+                completeCloseCallback!(context);
+              } else {
+                context.goNamed(AppRoute.wallet.name);
+              }
+            },
           );
         },
         builder: (context, state) {
@@ -63,7 +85,10 @@ class TonWalletSendPage extends StatelessWidget {
             sending: (canClose) => Scaffold(
               body: Padding(
                 padding: const EdgeInsets.all(DimensSize.d16),
-                child: TransactionSendingWidget(canClose: canClose),
+                child: TransactionSendingWidget(
+                  canClose: canClose,
+                  completeCloseCallback: completeCloseCallback,
+                ),
               ),
             ),
             sent: (fee, _) => _confirmPage(fee: fee),
@@ -82,6 +107,7 @@ class TonWalletSendPage extends StatelessWidget {
       body: TonWalletSendConfirmView(
         recipient: destination,
         amount: amount,
+        attachedAmount: attachedAmount,
         comment: comment,
         publicKey: publicKey,
         fee: fee,

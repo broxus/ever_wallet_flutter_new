@@ -58,6 +58,14 @@ enum AppRoute {
     '',
     'tonConfirmTransaction', // all data in query
   ),
+  walletStake(
+    '',
+    'walletStake/:$walletStakeAddressPathParam',
+  ),
+  walletCancelUnstaking(
+    '',
+    'walletCancelUnstaking', // all data in query
+  ),
 
   /// Browser section
   browser(
