@@ -441,5 +441,11 @@
   "cancelUnstakingCheckSubtitle": " stEVER will be returned to your account",
   "yesImSure": "Yes, I am sure",
   "liquidStaking": "Liquid staking",
-  "unstakeAmount": "Unstake amount"
+  "unstakeAmount": "Unstake amount",
+  "textFieldShouldNotBeEmpty": "Should not be empty",
+  "textFieldTooShort": "Too short, should be more than {} symbols",
+  "textFieldTooLong": "Too long, should be less than {} symbols",
+  "urlFieldShouldNotBeEmpty": "Should not be empty",
+  "urlFieldShouldHasScheme": "Should have scheme (https://)",
+  "urlFieldShouldHasHost": "Should have host"
 }
