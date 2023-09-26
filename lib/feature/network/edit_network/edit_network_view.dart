@@ -475,10 +475,13 @@ class _EditNetworkViewState extends State<EditNetworkView> {
 
     context.read<ManageNetworksBloc>().add(event);
 
-    final newlyCreatedConnectionId =
-        widget.connection == null ? connection.id : null;
+    context.clearQueryParamsAndPop();
 
-    context.clearQueryParamsAndPop(newlyCreatedConnectionId);
+    if (widget.connection == null) {
+      Navigator.of(context, rootNavigator: true).push(
+        showSwitchToThisNetworkSheet(connectionId: connection.id),
+      );
+    }
   }
 
   ConnectionData _getConnection() {

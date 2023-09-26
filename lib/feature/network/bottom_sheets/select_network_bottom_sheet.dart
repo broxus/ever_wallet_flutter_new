@@ -51,7 +51,7 @@ class _SelectNetworkSheetState extends State<SelectNetworkSheet> {
 
   void _onItemPressed(BuildContext context, ConnectionData connection) {
     context.read<ManageNetworksBloc>().add(
-          ManageNetworksEvent.setCurrentConnectionId(id: connection.id),
+          ManageNetworksEvent.updateCurrentConnectionId(id: connection.id),
         );
     Navigator.of(context).pop();
   }
