@@ -7,10 +7,12 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:ui_components_lib/ui_components_lib.dart';
 
 /// Helper function to show [SwitchToThisNetworkSheet].
-ModalRoute<void> showSwitchToThisNetworkSheet({
+Future<void> showSwitchToThisNetworkSheet({
+  required BuildContext context,
   required String connectionId,
 }) {
-  return commonBottomSheetRoute(
+  return showCommonBottomSheet(
+    context: context,
     title: LocaleKeys.networkAddedSheetTitle.tr(),
     body: (_, __) => SwitchToThisNetworkSheet(
       connectionId: connectionId,

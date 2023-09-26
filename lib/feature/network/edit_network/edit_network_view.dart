@@ -478,8 +478,9 @@ class _EditNetworkViewState extends State<EditNetworkView> {
     context.clearQueryParamsAndPop();
 
     if (widget.connection == null) {
-      Navigator.of(context, rootNavigator: true).push(
-        showSwitchToThisNetworkSheet(connectionId: connection.id),
+      showSwitchToThisNetworkSheet(
+        context: context,
+        connectionId: connection.id,
       );
     }
   }
