@@ -11,17 +11,17 @@ import 'package:ui_components_lib/ui_components_lib.dart';
 class CreateSeedPasswordOnboardingPage extends StatelessWidget {
   /// {@macro create_seed_password_onboarding_page}
   const CreateSeedPasswordOnboardingPage({
-    required this.extra,
+    required this.phrase,
     super.key,
   });
 
-  final CreateSeedRouteExtra extra;
+  final List<String> phrase;
 
   @override
   Widget build(BuildContext context) {
     return BlocProvider<CreateSeedPasswordCubit>(
       create: (context) => CreateSeedPasswordCubit(
-        phrase: extra.phrase,
+        phrase: phrase,
         setCurrentKey: true,
         // Redundant because of guard, but we need to pass it down.
         // ignore: no-empty-block
@@ -29,10 +29,12 @@ class CreateSeedPasswordOnboardingPage extends StatelessWidget {
       ),
       child: GestureDetector(
         onTap: () => FocusScope.of(context).unfocus(),
-        child: const Scaffold(
+        child: Scaffold(
           resizeToAvoidBottomInset: true,
-          appBar: DefaultAppBar(),
-          body: CreateSeedPasswordView(needBiometryIfPossible: true),
+          appBar: DefaultAppBar(
+            onClosePressed: (context) => context.maybePop(),
+          ),
+          body: const CreateSeedPasswordView(needBiometryIfPossible: true),
         ),
       ),
     );
@@ -45,28 +47,32 @@ class CreateSeedPasswordOnboardingPage extends StatelessWidget {
 class CreateSeedPasswordProfilePage extends StatelessWidget {
   /// {@macro create_seed_password_profile_page}
   const CreateSeedPasswordProfilePage({
-    required this.extra,
+    required this.phrase,
+    required this.name,
     super.key,
   });
 
-  final CreateSeedRouteExtra extra;
+  final List<String> phrase;
+  final String? name;
 
   @override
   Widget build(BuildContext context) {
     return BlocProvider<CreateSeedPasswordCubit>(
       create: (context) => CreateSeedPasswordCubit(
-        phrase: extra.phrase,
-        name: extra.name,
+        phrase: phrase,
+        name: name,
         // When we do this flow from profile, navigate to profile root
         completeCallback: () =>
             context.goNamed(AppRoute.manageSeedsAccounts.name),
       ),
       child: GestureDetector(
         onTap: () => FocusScope.of(context).unfocus(),
-        child: const Scaffold(
+        child: Scaffold(
           resizeToAvoidBottomInset: true,
-          appBar: DefaultAppBar(),
-          body: CreateSeedPasswordView(needBiometryIfPossible: false),
+          appBar: DefaultAppBar(
+            onClosePressed: (context) => context.maybePop(),
+          ),
+          body: const CreateSeedPasswordView(needBiometryIfPossible: false),
         ),
       ),
     );
