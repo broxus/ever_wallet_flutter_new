@@ -21,6 +21,7 @@ class EnterSeedPhrasePage extends StatelessWidget {
           AppRoute.createSeedPassword.pathWithData(
             queryParameters: {addSeedPhraseQueryParam: jsonEncode(phrase)},
           ),
+          preserveQueryParams: true,
         ),
       )..init(),
       child: GestureDetector(

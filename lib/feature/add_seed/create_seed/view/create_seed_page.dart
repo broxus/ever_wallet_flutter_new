@@ -27,14 +27,16 @@ class CreateSeedPage extends StatelessWidget {
               AppRoute.checkSeed.pathWithData(
                 queryParameters: {addSeedPhraseQueryParam: jsonEncode(phrase)},
               ),
+              preserveQueryParams: true,
             );
           },
           // ignore: prefer-extracting-callbacks
           skipCallback: (List<String> phrase) {
             context.goFurther(
-              AppRoute.checkSeed.pathWithData(
+              AppRoute.createSeedPassword.pathWithData(
                 queryParameters: {addSeedPhraseQueryParam: jsonEncode(phrase)},
               ),
+              preserveQueryParams: true,
             );
           },
         ),
