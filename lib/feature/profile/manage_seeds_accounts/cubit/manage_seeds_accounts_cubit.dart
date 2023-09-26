@@ -63,7 +63,6 @@ class ManageSeedsAccountsCubit extends Cubit<ManageSeedsAccountsState> {
   }
 
   static List<Seed> _mapSeedList(SeedList list) {
-    return List.from(list.seeds)
-      ..sort((a, b) => a.publicKey.compareTo(b.publicKey));
+    return List.from(list.seeds)..sort((a, b) => a.name.compareTo(b.name));
   }
 }
