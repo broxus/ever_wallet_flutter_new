@@ -1,10 +1,13 @@
+import 'package:app/app/router/router.dart';
 import 'package:app/data/models/models.dart';
 import 'package:app/feature/browser/browser.dart';
 import 'package:app/feature/network/edit_network/connection_type.dart';
+import 'package:app/feature/network/network.dart';
 import 'package:app/generated/generated.dart';
 import 'package:collection/collection.dart';
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:ui_components_lib/ui_components_lib.dart';
 
 const _maxNetworkNameLength = 32;
@@ -22,8 +25,6 @@ class EditNetworkView extends StatefulWidget {
 }
 
 class _EditNetworkViewState extends State<EditNetworkView> {
-  int _buttonCount = 1;
-
   final _formKey = GlobalKey<FormState>();
 
   late ConnectionType _connectionType;
@@ -33,6 +34,9 @@ class _EditNetworkViewState extends State<EditNetworkView> {
   final _blockExplorerUrlController = TextEditingController();
   final _manifestUrlController = TextEditingController();
   late bool _isLocal;
+
+  late final bool _deleteEnabled;
+  late final bool _saveEnabled;
 
   final _nameValidator = CommonTextValidator(
     minLength: 1,
@@ -75,10 +79,14 @@ class _EditNetworkViewState extends State<EditNetworkView> {
 
     _nameController.text = widget.connection?.name ?? '';
     _endpointsControllers = _getEndpointsControllers();
+    _currencySymbolController.text = widget.connection?.nativeTokenTicker ?? '';
     _blockExplorerUrlController.text =
         widget.connection?.blockExplorerUrl ?? '';
     _manifestUrlController.text = widget.connection?.manifestUrl ?? '';
     _isLocal = _getIsLocal();
+
+    _deleteEnabled = widget.connection != null && widget.editable;
+    _saveEnabled = widget.editable;
   }
 
   @override
@@ -390,6 +398,10 @@ class _EditNetworkViewState extends State<EditNetworkView> {
   Widget _buttonsBuilder() {
     final colors = context.themeStyle.colors;
 
+    final saveButtonText = widget.connection == null
+        ? LocaleKeys.networkAdd.tr()
+        : LocaleKeys.networkSave.tr();
+
     return Container(
       decoration: BoxDecoration(
         gradient: LinearGradient(
@@ -400,20 +412,34 @@ class _EditNetworkViewState extends State<EditNetworkView> {
       ),
       child: SafeArea(
         minimum: const EdgeInsets.all(DimensSize.d16),
-        child: CommonButton.primary(
-          // text: widget.buttonText,
-          // onPressed: widget.onButtonPressed,
-          fillWidth: true,
+        child: SeparatedColumn(
+          mainAxisSize: MainAxisSize.min,
+          children: [
+            if (_deleteEnabled)
+              CommonButton.secondary(
+                text: LocaleKeys.networkDelete.tr(),
+                onPressed: _onDelete,
+                fillWidth: true,
+              ),
+            if (_saveEnabled)
+              CommonButton.primary(
+                text: saveButtonText,
+                onPressed: _onSave,
+                fillWidth: true,
+              ),
+          ],
         ),
       ),
     );
   }
 
   Widget _bottomSpacerBuilder() {
+    final buttonCount = (_deleteEnabled ? 1 : 0) + (_saveEnabled ? 1 : 0);
+
     return SliverSafeArea(
       sliver: SliverToBoxAdapter(
         child: SizedBox(
-          height: _buttonCount * commonButtonHeight + DimensSize.d16,
+          height: buttonCount * commonButtonHeight + DimensSize.d16,
         ),
       ),
       minimum: const EdgeInsets.only(bottom: DimensSize.d16),
@@ -422,6 +448,82 @@ class _EditNetworkViewState extends State<EditNetworkView> {
 
   void _onTokenListTextLinkTap() =>
       browserNewTab(context, LocaleKeys.networkTokenListTextLinkUrl.tr());
+
+  void _onDelete() {
+    context.read<ManageNetworksBloc>().add(
+          ManageNetworksEvent.removeConnection(
+            id: widget.connection!.id,
+          ),
+        );
+    context.clearQueryParamsAndPop();
+  }
+
+  void _onSave() {
+    if (!_formKey.currentState!.validate()) {
+      return;
+    }
+
+    final connection = _getConnection();
+
+    final event = widget.connection != null
+        ? ManageNetworksEvent.updateConnection(
+            connection: connection,
+          )
+        : ManageNetworksEvent.addConnection(
+            connection: connection,
+          );
+
+    context.read<ManageNetworksBloc>().add(event);
+
+    context.clearQueryParamsAndPop();
+
+    if (widget.connection == null) {
+      showSwitchToThisNetworkSheet(
+        context: context,
+        connectionId: connection.id,
+      );
+    }
+  }
+
+  ConnectionData _getConnection() {
+    final id = widget.connection?.id;
+
+    return switch (_connectionType) {
+      ConnectionType.jrpc => ConnectionData.jrpcCustom(
+          id: id,
+          name: _nameController.text,
+          group: 'custom',
+          endpoint: _endpointsControllers[0].text,
+          networkType: NetworkType.custom,
+          blockExplorerUrl: _blockExplorerUrlController.text,
+          manifestUrl: _manifestUrlController.text,
+          nativeTokenTicker: _currencySymbolController.text,
+        ),
+      ConnectionType.gql => ConnectionData.gqlCustom(
+          id: id,
+          name: _nameController.text,
+          group: 'custom',
+          endpoints: _endpointsControllers
+              .map((controller) => controller.text)
+              .toList(),
+          networkType: NetworkType.custom,
+          isLocal: _isLocal,
+          blockExplorerUrl: _blockExplorerUrlController.text,
+          manifestUrl: _manifestUrlController.text,
+          nativeTokenTicker: _currencySymbolController.text,
+        ),
+      ConnectionType.proto => ConnectionData.protoCustom(
+          id: id,
+          name: _nameController.text,
+          group: 'custom',
+          endpoint: _endpointsControllers[0].text,
+          networkType: NetworkType.custom,
+          blockExplorerUrl: _blockExplorerUrlController.text,
+          manifestUrl: _manifestUrlController.text,
+          nativeTokenTicker: _currencySymbolController.text,
+        ),
+    };
+  }
 
   // ignore: long-method
   List<TextEditingController> _getEndpointsControllers() {
