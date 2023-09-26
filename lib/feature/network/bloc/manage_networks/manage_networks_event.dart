@@ -10,6 +10,10 @@ class ManageNetworksEvent with _$ManageNetworksEvent {
     required List<ConnectionData> connections,
   }) = _setConnections;
 
+  const factory ManageNetworksEvent.updateCurrentConnectionId({
+    required String id,
+  }) = _updateCurrentConnectionId;
+
   const factory ManageNetworksEvent.addConnection({
     required ConnectionData connection,
   }) = _addConnection;

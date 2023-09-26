@@ -3,6 +3,8 @@ import 'dart:convert';
 import 'package:app/app/service/nekoton_related/connection_service/network_presets.dart';
 import 'package:app/app/service/service.dart';
 import 'package:app/data/models/models.dart';
+import 'package:app/di/di.dart';
+import 'package:app/generated/generated.dart';
 import 'package:collection/collection.dart';
 import 'package:encrypted_storage/encrypted_storage.dart';
 import 'package:injectable/injectable.dart';
@@ -203,9 +205,18 @@ class ConnectionsStorageService extends AbstractStorageService {
       await saveCurrentConnectionId(defaultConnectionkId);
     }
 
-    final items = [...connections]..removeWhere((item) => item.id == id);
+    final savedConnections = connections;
+    final items = [...savedConnections]..removeWhere((item) => item.id == id);
 
     await _saveConnections(items);
+
+    inject<MessengerService>().show(
+      Message.info(
+        message: LocaleKeys.networkDeleted.tr(),
+        actionText: LocaleKeys.networkDeletedUndo.tr(),
+        onAction: () => _saveConnections(savedConnections),
+      ),
+    );
   }
 
   /// Update [ConnectionData] item
@@ -221,6 +232,12 @@ class ConnectionsStorageService extends AbstractStorageService {
     newConnections[index] = item;
 
     await _saveConnections(newConnections);
+
+    inject<MessengerService>().show(
+      Message.info(
+        message: LocaleKeys.networkSaved.tr(),
+      ),
+    );
   }
 
   /// Revert item to defaults from preset

@@ -72,7 +72,9 @@ class ManageNetworksBloc
           currentConnectionId: event.id,
         ),
       );
+    });
 
+    on<_updateCurrentConnectionId>((event, emit) {
       storageService.saveCurrentConnectionId(event.id);
     });
 
