@@ -1138,11 +1138,11 @@ packages:
     dependency: "direct main"
     description:
       path: "."
-      ref: "fix/xcode_17"
-      resolved-ref: e5f9a3fe455d2bd06fde86ae73b16c9e4648da91
+      ref: "fix/xcode_17+1"
+      resolved-ref: "37651a249e6c516737362b7d9335f8ed3a33bc5b"
       url: "https://github.com/broxus/nekoton_webview.git"
     source: git
-    version: "0.1.5"
+    version: "0.1.6"
   nested:
     dependency: transitive
     description:
