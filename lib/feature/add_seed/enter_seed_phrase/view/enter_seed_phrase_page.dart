@@ -5,7 +5,6 @@ import 'package:app/feature/add_seed/enter_seed_phrase/enter_seed_phrase.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
-import 'package:logging/logging.dart';
 import 'package:ui_components_lib/ui_components_lib.dart';
 
 /// {@template enter_seed_phrase_page}
@@ -19,6 +18,7 @@ class EnterSeedPhrasePage extends StatelessWidget {
   Widget build(BuildContext context) {
     return BlocProvider<EnterSeedPhraseCubit>(
       create: (context) => EnterSeedPhraseCubit(
+        // ignore: prefer-extracting-callbacks
         (phrase) {
           final path =
               GoRouter.of(context).routerDelegate.currentConfiguration.fullPath;
