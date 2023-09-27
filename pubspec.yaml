@@ -32,7 +32,7 @@ dependencies:
   flutter_svg: ^2.0.7
   freezed_annotation: ^2.4.1
   get_it: ^7.6.4
-  go_router: ^10.2.0
+  go_router: ^11.1.1
   hive_flutter: ^1.1.0
   http: ^0.13.6
   http_proxy: ^1.2.1
@@ -44,7 +44,7 @@ dependencies:
   mobile_scanner: ^3.4.1
   money2: ^4.0.0
   money2_improver: ^1.3.1
-  nekoton_repository: ^0.23.0
+  nekoton_repository: ^0.24.0
   nekoton_webview:
     git:
       url: https://github.com/broxus/nekoton_webview.git
