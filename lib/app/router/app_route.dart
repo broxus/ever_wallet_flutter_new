@@ -256,18 +256,24 @@ enum AppRoute {
   /// Helper method, that allows add path and query parameter to [path].
   String pathWithData({
     Map<String, String> pathParameters = const <String, String>{},
-    Map<String, dynamic> queryParameters = const <String, dynamic>{},
+    Map<String, String> queryParameters = const <String, String>{},
   }) {
     final encodedParams = <String, String>{
       for (final MapEntry<String, String> param in pathParameters.entries)
         param.key: Uri.encodeComponent(param.value),
     };
+    final encodedQuery = queryParameters.isEmpty
+        ? null
+        : <String, String>{
+            for (final param in queryParameters.entries)
+              param.key: Uri.encodeQueryComponent(param.value),
+          };
 
     final location = patternToPath(path, encodedParams);
 
     return Uri(
       path: location,
-      queryParameters: queryParameters.isEmpty ? null : queryParameters,
+      queryParameters: encodedQuery,
     ).toString();
   }
 
@@ -369,7 +375,6 @@ extension NavigationHelper on BuildContext {
   /// ```
   void goFurther(
     String location, {
-    Object? extra,
     bool preserveQueryParams = false,
   }) {
     if (!mounted) return;
@@ -396,7 +401,6 @@ extension NavigationHelper on BuildContext {
 
     return GoRouter.of(this).go(
       Uri.decodeComponent(resultLocation.toString()),
-      extra: extra,
     );
   }
 
