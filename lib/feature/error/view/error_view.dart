@@ -1,10 +1,16 @@
 import 'package:app/app/router/app_route.dart';
+import 'package:app/generated/generated.dart';
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:ui_components_lib/ui_components_lib.dart';
 
 class ErrorView extends StatelessWidget {
-  const ErrorView({super.key});
+  const ErrorView({
+    required this.isOnboarding,
+    super.key,
+  });
+
+  final bool isOnboarding;
 
   @override
   Widget build(BuildContext context) {
@@ -14,8 +20,12 @@ class ErrorView extends StatelessWidget {
         children: [
           const Text('Error'),
           CommonButton(
-            text: 'Go to wallet',
-            onPressed: () => context.goNamed(AppRoute.wallet.name),
+            text: isOnboarding
+                ? LocaleKeys.goToOnboarding.tr()
+                : LocaleKeys.goToWallet.tr(),
+            onPressed: () => context.goNamed(
+              isOnboarding ? AppRoute.onboarding.name : AppRoute.wallet.name,
+            ),
           ),
         ],
       ),

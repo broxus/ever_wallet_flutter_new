@@ -154,7 +154,14 @@ GoRouter getRouter(BuildContext _) {
       log.severe('GoRouter error: ${state.error}');
       savedSubroutes.clear();
 
-      return ErrorPage(state.error);
+      // Get current location and full path
+      final location = state.uri.toString();
+      final fullPath = state.fullPath ?? location;
+
+      final currentRoute = getRootAppRoute(fullPath: fullPath);
+      final isOnboarding = currentRoute == AppRoute.onboarding;
+
+      return ErrorPage(error: state.error, isOnboarding: isOnboarding);
     },
   );
 
