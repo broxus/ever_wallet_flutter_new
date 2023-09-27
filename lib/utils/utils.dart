@@ -27,5 +27,12 @@ class _TimestampFromStringJsonConverter
 class NtpTime {
   NtpTime._();
 
+  /// Returns current time of the system clock with offset from the NTP server
+  /// Use this method instead of [DateTime.now] to get the correct time
   static DateTime now() => inject<NtpService>().now();
+
+  /// Updates offset from the NTP server
+  /// Use this method to update the offset if you need to get the correct time
+  /// before sensitive operations
+  static void update() => inject<NtpService>().update();
 }

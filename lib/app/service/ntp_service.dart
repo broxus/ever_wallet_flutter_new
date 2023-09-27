@@ -48,7 +48,7 @@ class NtpService {
 
     _periodicUpdatesEnabled = true;
 
-    await _update();
+    await update();
     _scheduleNextUpdate();
   }
 
@@ -66,21 +66,22 @@ class NtpService {
       _updatePeriod,
       () async {
         if (_periodicUpdatesEnabled) {
-          await _update();
+          await update();
           _scheduleNextUpdate();
         }
       },
     );
   }
 
-  Future<void> _update() async {
+  /// Updates offset from the NTP server
+  Future<void> update() async {
     _log.finest('Updating offset...');
     try {
       final offset = await NTP.getNtpOffset(timeout: _updateTimeout);
       _offsetSubject.add(Duration(milliseconds: offset));
       _log.finest('...offset updated: $offset');
     } catch (e, s) {
-      _log.warning('Failed to update offset', e, s);
+      _log.warning('...failed to update offset', e, s);
     }
   }
 }
