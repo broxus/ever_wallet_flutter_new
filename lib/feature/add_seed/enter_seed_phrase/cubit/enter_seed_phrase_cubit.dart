@@ -24,6 +24,8 @@ const _debugPhraseLength = 15;
 
 const _legacySeedPhraseLength = 24;
 
+const _autoNavigationDelay = Duration(milliseconds: 500);
+
 /// Callback that will be called when user correctly enter seed phrase.
 typedef EnterSeedPhraseConfirmCallback = void Function(List<String> phrase);
 
@@ -234,6 +236,8 @@ class EnterSeedPhraseCubit extends Cubit<EnterSeedPhraseState> {
       return;
     }
 
+    _canAutoNavigate = false;
+
     words.asMap().forEach((index, word) {
       _controllers[index].value = TextEditingValue(
         text: word,
@@ -244,6 +248,9 @@ class EnterSeedPhraseCubit extends Cubit<EnterSeedPhraseState> {
     });
 
     await _validateFormWithError();
+
+    _canAutoNavigate = true;
+    _checkAutoNavigate();
   }
 
   /// Check if debug phrase is entered in any text field
@@ -366,6 +373,20 @@ class EnterSeedPhraseCubit extends Cubit<EnterSeedPhraseState> {
         hasError: false,
       );
       update();
+    }
+  }
+
+  /// If true, then [_checkAutoNavigate] will work, else otherwise.
+  /// This can be helpful to ignore this check, for example during paste phase
+  bool _canAutoNavigate = true;
+
+  /// if all inputs are completed, go next automatically
+  void _checkAutoNavigate() {
+    if (_canAutoNavigate &&
+        _inputModels
+            .take(_currentValue)
+            .every((i) => i is EnterSeedPhraseEntered)) {
+      Future.delayed(_autoNavigationDelay, confirmAction);
     }
   }
 }

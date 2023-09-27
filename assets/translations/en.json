@@ -456,5 +456,7 @@
   "textFieldTooLong": "Too long, should be no more than {} symbols",
   "urlFieldShouldNotBeEmpty": "Should not be empty",
   "urlFieldShouldHasScheme": "Should have scheme (https://)",
-  "urlFieldShouldHasHost": "Should have host"
+  "urlFieldShouldHasHost": "Should have host",
+  "goToWallet": "Go to wallet",
+  "goToOnboarding": "Go to onboarding"
 }

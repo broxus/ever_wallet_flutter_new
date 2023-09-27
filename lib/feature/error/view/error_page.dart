@@ -3,15 +3,20 @@ import 'package:flutter/material.dart';
 import 'package:ui_components_lib/ui_components_lib.dart';
 
 class ErrorPage extends StatelessWidget {
-  const ErrorPage(this.error, {super.key});
+  const ErrorPage({
+    required this.error,
+    required this.isOnboarding,
+    super.key,
+  });
 
   final Exception? error;
+  final bool isOnboarding;
 
   @override
   Widget build(BuildContext context) {
-    return const Scaffold(
-      appBar: DefaultAppBar(),
-      body: ErrorView(),
+    return Scaffold(
+      appBar: const DefaultAppBar(),
+      body: ErrorView(isOnboarding: isOnboarding),
     );
   }
 }
