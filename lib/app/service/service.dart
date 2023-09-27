@@ -14,6 +14,7 @@ export 'messenger/messenger.dart';
 export 'migration_service.dart';
 export 'navigation/navigation.dart';
 export 'nekoton_related/nekoton_related.dart';
+export 'ntp_service.dart';
 export 'permissions_service.dart';
 export 'remote/remote.dart';
 export 'staking_service.dart';

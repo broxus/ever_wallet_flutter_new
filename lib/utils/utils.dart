@@ -1,3 +1,5 @@
+import 'package:app/app/service/service.dart';
+import 'package:app/di/di.dart';
 import 'package:json_annotation/json_annotation.dart';
 import 'package:nekoton_repository/nekoton_repository.dart';
 
@@ -20,4 +22,10 @@ class _TimestampFromStringJsonConverter
   @override
   String toJson(DateTime object) =>
       dateSecondsSinceEpochJsonConverter.toJson(object).toString();
+}
+
+class NtpTime {
+  NtpTime._();
+
+  static DateTime now() => inject<NtpService>().now();
 }

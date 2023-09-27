@@ -1,3 +1,4 @@
+import 'package:app/utils/utils.dart';
 import 'package:freezed_annotation/freezed_annotation.dart';
 import 'package:nekoton_repository/nekoton_repository.dart';
 import 'package:uuid/uuid.dart';
@@ -28,6 +29,6 @@ class BrowserBookmarkItem with _$BrowserBookmarkItem {
         title: title,
         url: url,
         faviconUrl: faviconUrl,
-        sortingOrder: DateTime.now().millisecondsSinceEpoch.toDouble(),
+        sortingOrder: NtpTime.now().millisecondsSinceEpoch.toDouble(),
       );
 }

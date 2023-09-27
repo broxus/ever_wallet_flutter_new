@@ -49,6 +49,7 @@ dependencies:
     git:
       url: https://github.com/broxus/nekoton_webview.git
       ref: fix/xcode_17
+  ntp: ^2.0.0
   package_info_plus: ^4.1.0
   path_provider: ^2.1.1
   permission_handler: ^11.0.0
