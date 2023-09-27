@@ -1,5 +1,6 @@
-import 'package:app/app/router/app_route.dart';
-import 'package:app/feature/add_seed/create_password/create_password.dart';
+import 'dart:convert';
+
+import 'package:app/app/router/router.dart';
 import 'package:app/feature/add_seed/enter_seed_phrase/enter_seed_phrase.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -10,21 +11,17 @@ import 'package:ui_components_lib/ui_components_lib.dart';
 /// {@endtemplate}
 class EnterSeedPhrasePage extends StatelessWidget {
   /// {@macro enter_seed_phrase_page}
-  const EnterSeedPhrasePage({
-    this.name,
-    super.key,
-  });
-
-  /// Optional name that could be set in profile section.
-  final String? name;
+  const EnterSeedPhrasePage({super.key});
 
   @override
   Widget build(BuildContext context) {
     return BlocProvider<EnterSeedPhraseCubit>(
       create: (context) => EnterSeedPhraseCubit(
         (phrase) => context.goFurther(
-          AppRoute.createSeedPassword.path,
-          extra: CreateSeedRouteExtra(phrase: phrase, name: name),
+          AppRoute.createSeedPassword.pathWithData(
+            queryParameters: {addSeedPhraseQueryParam: jsonEncode(phrase)},
+          ),
+          preserveQueryParams: true,
         ),
       )..init(),
       child: GestureDetector(
