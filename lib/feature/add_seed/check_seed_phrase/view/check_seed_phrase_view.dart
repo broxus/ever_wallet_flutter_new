@@ -19,7 +19,7 @@ class CheckSeedPhraseView extends StatelessWidget {
     final colors = context.themeStyle.colors;
 
     return SafeArea(
-      minimum: const EdgeInsets.only(bottom: DimensSize.d16),
+      minimum: const EdgeInsets.only(bottom: DimensSize.d24),
       child: Padding(
         padding: const EdgeInsets.symmetric(horizontal: DimensSize.d16),
         child: Column(
