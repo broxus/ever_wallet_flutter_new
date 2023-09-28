@@ -1,5 +1,7 @@
 import 'dart:async';
+import 'dart:ui';
 
+import 'package:app/app/service/service.dart';
 import 'package:injectable/injectable.dart';
 import 'package:logging/logging.dart';
 import 'package:ntp/ntp.dart';
@@ -11,11 +13,18 @@ const _updateTimeout = Duration(seconds: 10);
 /// Period of time between NTP server requests
 const _updatePeriod = Duration(minutes: 1);
 
+/// Delay between app resume and NTP server request
+const _resumedDelay = Duration(milliseconds: 500);
+
 Timer? _updateTimer;
 
 /// Service that helps watching app lifecycle state.
 @singleton
 class NtpService {
+  NtpService(this.appLifecycleService);
+
+  final AppLifecycleService appLifecycleService;
+
   final _log = Logger('NtpService');
 
   bool _periodicUpdatesEnabled = false;
@@ -25,6 +34,16 @@ class NtpService {
     /// because it may take a long time (network request of the
     /// first update)
     unawaited(_startPeriodicUpdates());
+
+    appLifecycleService.appLifecycleStateStream
+        .where((state) => state == AppLifecycleState.resumed)
+        .delay(_resumedDelay)
+        .listen(
+      (event) {
+        _log.info('App resumed, updating offset...');
+        update();
+      },
+    );
   }
 
   @disposeMethod
