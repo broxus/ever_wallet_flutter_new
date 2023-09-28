@@ -38,6 +38,7 @@ class AccountAssetsTab extends StatelessWidget {
                   TonWalletAssetWidget(tonWallet: tonWallet),
                   ...?contracts?.map(
                     (e) => TokenWalletAssetWidget(
+                      key: ValueKey(e.address),
                       asset: e,
                       owner: tonWallet.address,
                     ),
