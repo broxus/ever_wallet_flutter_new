@@ -237,6 +237,12 @@ class AssetsService {
             .firstWhereOrNull((c) => c.address == rootTokenContract);
   }
 
+  /// Get list of current possible system contracts for transport
+  List<TokenContractAsset> get currentSystemTokenContractAssets =>
+      storage.getSystemTokenContractAssets(
+        nekotonRepository.currentTransport.networkType,
+      );
+
   /// Load manifest specified for transport and update system contracts that
   /// user can add to list of its contracts.
   Future<void> _updateSystemContracts(TransportStrategy transport) async {
