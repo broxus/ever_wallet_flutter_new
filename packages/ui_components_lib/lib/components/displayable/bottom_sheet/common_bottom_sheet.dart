@@ -34,6 +34,7 @@ Future<T?> showCommonBottomSheet<T>({
   bool useRootNavigator = true,
   Color? barrierColor,
   bool useAppBackgroundColor = false,
+  bool centerTitle = false,
 }) {
   return showCustomModalBottomSheet<T>(
     expand: expand,
@@ -52,6 +53,7 @@ Future<T?> showCommonBottomSheet<T>({
       padding: padding,
       subtitle: subtitle,
       title: title,
+      centerTitle: centerTitle,
       body: body,
     ),
   );
@@ -82,6 +84,7 @@ ModalSheetRoute<T> commonBottomSheetRoute<T>({
   bool openFullScreen = false,
   Color? barrierColor,
   bool useAppBackgroundColor = false,
+  bool centerTitle = false,
 }) {
   return ModalSheetRoute<T>(
     builder: (_) => CommonBottomSheetWidget(
@@ -92,6 +95,7 @@ ModalSheetRoute<T> commonBottomSheetRoute<T>({
       subtitle: subtitle,
       title: title,
       body: body,
+      centerTitle: centerTitle,
     ),
     expanded: expand,
     isDismissible: dismissible,
@@ -111,6 +115,7 @@ class CommonBottomSheetWidget extends StatelessWidget {
     required this.avoidBottomInsets,
     required this.openFullScreen,
     required this.useAppBackgroundColor,
+    required this.centerTitle,
     this.title,
     this.subtitle,
     super.key,
@@ -123,6 +128,7 @@ class CommonBottomSheetWidget extends StatelessWidget {
   final bool avoidBottomInsets;
   final bool openFullScreen;
   final bool useAppBackgroundColor;
+  final bool centerTitle;
 
   @override
   Widget build(BuildContext context) {
@@ -141,9 +147,13 @@ class CommonBottomSheetWidget extends StatelessWidget {
                   top: DimensSize.d20 + dragWidgetSize + dragWidgetMargin * 2,
                   bottom: subtitle != null ? DimensSize.d12 : DimensSize.d24,
                 ),
-            child: Text(
-              title!,
-              style: StyleRes.h2.copyWith(color: colors.textPrimary),
+            child: Align(
+              alignment: centerTitle ? Alignment.center : Alignment.centerLeft,
+              child: Text(
+                title!,
+                style: StyleRes.h2.copyWith(color: colors.textPrimary),
+                textAlign: centerTitle ? TextAlign.center : TextAlign.start,
+              ),
             ),
           ),
         if (subtitle != null)
