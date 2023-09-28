@@ -129,8 +129,7 @@ class ProfileView extends StatelessWidget {
               padding: const EdgeInsets.symmetric(horizontal: DimensSize.d24),
               buttonType: EverButtonType.ghost,
               contentColor: colors.alert,
-              onPressed: () =>
-                  context.read<ProfileBloc>().add(const ProfileEvent.logOut()),
+              onPressed: () => _logOutConfirm(context),
               text: LocaleKeys.logOut.tr(),
               trailing: CommonButtonIconWidget.svg(
                 svg: Assets.images.exit.path,
@@ -156,5 +155,13 @@ class ProfileView extends StatelessWidget {
       trailing: trailing,
       onPressed: onPressed,
     );
+  }
+
+  Future<void> _logOutConfirm(BuildContext context) async {
+    final confirmed = await showLogOutConfirmSheet(context);
+
+    if (confirmed && context.mounted) {
+      context.read<ProfileBloc>().add(const ProfileEvent.logOut());
+    }
   }
 }
