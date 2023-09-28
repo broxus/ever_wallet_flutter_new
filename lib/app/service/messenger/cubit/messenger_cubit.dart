@@ -3,8 +3,8 @@ import 'dart:async';
 import 'package:app/app/service/messenger/message.dart';
 import 'package:app/app/service/messenger/service/service.dart';
 import 'package:app/di/di.dart';
+import 'package:app/utils/utils.dart';
 import 'package:bloc/bloc.dart';
-import 'package:clock/clock.dart';
 import 'package:freezed_annotation/freezed_annotation.dart';
 
 part 'messenger_state.dart';
@@ -48,7 +48,7 @@ class MessengerCubit extends Cubit<MessengerState> {
 
   /// Show message to the user
   void show(Message message) {
-    final now = clock.now();
+    final now = NtpTime.clockNow();
     final previousMessageTime = state.messagesTime[message.hashString];
 
     // Just drop message if it was shown recently

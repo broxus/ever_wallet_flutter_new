@@ -1,5 +1,8 @@
+import 'dart:io';
+
 import 'package:app/app/service/service.dart';
 import 'package:app/di/di.dart';
+import 'package:clock/clock.dart';
 import 'package:json_annotation/json_annotation.dart';
 import 'package:nekoton_repository/nekoton_repository.dart';
 
@@ -30,6 +33,10 @@ class NtpTime {
   /// Returns current time of the system clock with offset from the NTP server
   /// Use this method instead of [DateTime.now] to get the correct time
   static DateTime now() => inject<NtpService>().now();
+
+  static DateTime clockNow() =>
+      // ignore: avoid_datetime_now
+      Platform.environment.containsKey('FLUTTER_TEST') ? clock.now() : now();
 
   /// Updates offset from the NTP server
   /// Use this method to update the offset if you need to get the correct time

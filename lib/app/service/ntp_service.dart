@@ -60,6 +60,7 @@ class NtpService {
   Duration get offset => _offsetSubject.value;
 
   /// Current time of the system clock with offset from the NTP server
+  // ignore: avoid_datetime_now
   DateTime now() => DateTime.now().add(offset);
 
   Future<void> _startPeriodicUpdates() async {

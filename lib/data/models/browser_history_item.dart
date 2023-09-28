@@ -1,3 +1,4 @@
+import 'package:app/utils/utils.dart';
 import 'package:freezed_annotation/freezed_annotation.dart';
 import 'package:nekoton_repository/nekoton_repository.dart';
 import 'package:uuid/uuid.dart';
@@ -25,7 +26,7 @@ class BrowserHistoryItem with _$BrowserHistoryItem {
         id: const Uuid().v4(),
         title: title,
         url: url,
-        visitTime: DateTime.now(),
+        visitTime: NtpTime.now(),
         faviconUrl: faviconUrl,
       );
 

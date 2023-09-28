@@ -1,5 +1,6 @@
 import 'package:app/app/service/service.dart';
 import 'package:app/di/di.dart';
+import 'package:app/utils/utils.dart';
 import 'package:freezed_annotation/freezed_annotation.dart';
 import 'package:nekoton_repository/nekoton_repository.dart';
 import 'package:uuid/uuid.dart';
@@ -34,7 +35,7 @@ class BrowserTab with _$BrowserTab {
         url: url,
         imageId: null,
         title: null,
-        sortingOrder: DateTime.now().millisecondsSinceEpoch.toDouble(),
+        sortingOrder: NtpTime.now().millisecondsSinceEpoch.toDouble(),
       );
 
   const BrowserTab._();

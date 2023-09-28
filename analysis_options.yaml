@@ -2,3 +2,5 @@ include: package:broxus_flutter_analysis/analysis_options.yaml
 analyzer:
   exclude:
     - lib/di/di.config.dart
+  plugins:
+    - custom_lint
