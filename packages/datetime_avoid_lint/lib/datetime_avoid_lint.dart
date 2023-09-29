@@ -33,6 +33,8 @@ class MyCustomLintCode extends DartLintRule {
     CustomLintContext context,
   ) {
     // Yeah, this is a hack, but it works
+    // TODO:(nesquikm) make some research and find a better way to do this
+    // for example, use recursive visitor for nodes
     context.registry.addMethodInvocation((node) {
       final s = node.toString();
       if (s.contains('now()')) {
