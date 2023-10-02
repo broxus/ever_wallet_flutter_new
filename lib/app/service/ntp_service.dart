@@ -18,7 +18,8 @@ const _resumedDelay = Duration(milliseconds: 500);
 
 Timer? _updateTimer;
 
-/// Service that helps watching app lifecycle state.
+/// Service that allows to get offset of the system clock from the NTP server
+/// and update it periodically.
 @singleton
 class NtpService {
   NtpService(this.appLifecycleService);

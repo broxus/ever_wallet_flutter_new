@@ -35,11 +35,13 @@ class NtpTime {
   static DateTime now() => inject<NtpService>().now();
 
   static DateTime clockNow() =>
+      // We forced to check if the test is running because we can't mock
+      // DateTime.now() in tests directly and forced to use clock package
       // ignore: avoid_datetime_now
       Platform.environment.containsKey('FLUTTER_TEST') ? clock.now() : now();
 
   /// Updates offset from the NTP server
   /// Use this method to update the offset if you need to get the correct time
   /// before sensitive operations
-  static void update() => inject<NtpService>().update();
+  static Future<void> update() => inject<NtpService>().update();
 }
