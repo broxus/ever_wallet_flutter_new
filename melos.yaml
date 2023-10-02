@@ -41,7 +41,7 @@ scripts:
   # can't add dart_code_metrics to the app due to dependency incompatibility
   analyze:
     description: Analyze all packages and run dart_code_metrics for the main app
-    run: melos run analyze_subpackages --no-select && cd packages/ui_components_lib && flutter pub run dart_code_metrics:metrics analyze ../../lib
+    run: melos run analyze_subpackages_custom_lint --no-select && melos run analyze_subpackages --no-select && cd packages/ui_components_lib && flutter pub run dart_code_metrics:metrics analyze ../../lib
     failFast: true
 
   analyze_subpackages:
@@ -50,6 +50,13 @@ scripts:
     failFast: true
     packageFilters:
       dependsOn: "dart_code_metrics"
+
+  analyze_subpackages_custom_lint:
+    description: Analyze a specific package in this project.
+    exec: dart run custom_lint
+    failFast: true
+    packageFilters:
+      dependsOn: "custom_lint"
 
   check-format:
     description: Check the format of a specific package in this project.

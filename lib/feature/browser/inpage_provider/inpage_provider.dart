@@ -5,6 +5,7 @@ import 'package:app/data/models/models.dart';
 import 'package:app/di/di.dart';
 import 'package:app/generated/generated.dart';
 import 'package:app/utils/constants.dart';
+import 'package:app/utils/utils.dart';
 import 'package:collection/collection.dart';
 import 'package:flutter_inappwebview/flutter_inappwebview.dart';
 import 'package:logging/logging.dart';
@@ -552,7 +553,7 @@ class InpageProvider extends ProviderApi {
       disableSignatureCheck:
           input.executorParams?.disableSignatureCheck ?? false,
       message: message,
-      utime: DateTime.now(),
+      utime: NtpTime.now(),
       globalId: config.globalId,
       overwriteBalance: overrideBalance == null
           ? null

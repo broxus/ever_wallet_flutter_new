@@ -6,6 +6,7 @@ import 'package:app/data/models/models.dart';
 import 'package:app/feature/browser/browser.dart';
 import 'package:app/feature/browser/browser_tabs_view/predefined_items.dart';
 import 'package:app/generated/generated.dart';
+import 'package:app/utils/utils.dart';
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
@@ -89,7 +90,7 @@ class _BrowserStartViewState extends State<BrowserStartView> {
   }
 
   Future<void> _saveScreenshot() async {
-    final now = DateTime.now();
+    final now = NtpTime.now();
     if (_lastScreenshotTime != null &&
         now.difference(_lastScreenshotTime!) < _screenShotPeriodDuration) {
       return;

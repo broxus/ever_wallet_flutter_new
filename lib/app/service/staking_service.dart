@@ -2,6 +2,7 @@ import 'dart:convert';
 
 import 'package:app/app/service/service.dart';
 import 'package:app/data/models/models.dart';
+import 'package:app/utils/utils.dart';
 import 'package:flutter/services.dart';
 import 'package:injectable/injectable.dart';
 import 'package:nekoton_repository/nekoton_repository.dart';
@@ -74,7 +75,7 @@ class StakingService {
       method: 'deposit',
       abi: stEverAbi,
       params: {
-        '_nonce': DateTime.now().millisecondsSinceEpoch,
+        '_nonce': NtpTime.now().millisecondsSinceEpoch,
         '_amount': depositAmount.toString(),
       },
     );
@@ -94,7 +95,7 @@ class StakingService {
       contractAbi: stEverAbi,
       method: 'encodeDepositPayload',
       input: {
-        '_nonce': DateTime.now().millisecondsSinceEpoch,
+        '_nonce': NtpTime.now().millisecondsSinceEpoch,
       },
       responsible: false,
     );

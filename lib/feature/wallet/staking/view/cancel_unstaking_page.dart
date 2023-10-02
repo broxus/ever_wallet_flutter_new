@@ -4,6 +4,7 @@ import 'package:app/data/models/models.dart';
 import 'package:app/di/di.dart';
 import 'package:app/feature/wallet/wallet.dart';
 import 'package:app/generated/generated.dart';
+import 'package:app/utils/utils.dart';
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:nekoton_repository/nekoton_repository.dart';
@@ -157,7 +158,7 @@ class CancelUnstakingPage extends StatelessWidget {
       builder: (context) {
         final date = request.data.timestamp;
         final colors = context.themeStyle.colors;
-        final formatter = date.year == DateTime.now().year
+        final formatter = date.year == NtpTime.now().year
             ? DateFormat('MM.dd, HH:mm', context.locale.languageCode)
             : DateFormat('MM.dd.y, HH:mm', context.locale.languageCode);
 

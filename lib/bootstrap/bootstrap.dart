@@ -8,4 +8,5 @@ export 'logger.dart';
 export 'migrate_storage.dart';
 export 'navigation_service.dart';
 export 'nekoton.dart';
+export 'ntp_service.dart';
 export 'storage_services.dart';

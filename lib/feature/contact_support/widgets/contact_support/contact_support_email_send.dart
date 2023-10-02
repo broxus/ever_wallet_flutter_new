@@ -1,13 +1,13 @@
 import 'package:app/di/di.dart';
 import 'package:app/feature/contact_support/contact_support.dart';
 import 'package:app/generated/generated.dart';
+import 'package:app/utils/utils.dart';
 import 'package:fancy_logger/fancy_logger.dart';
 import 'package:flutter_email_sender/flutter_email_sender.dart';
 import 'package:share_plus/share_plus.dart';
 
 Future<String> contactSupportCreateLogfile() async {
-  final now =
-      DateTime.now().toLocal().toString().replaceAll(RegExp(r'\s'), '_');
+  final now = NtpTime.now().toLocal().toString().replaceAll(RegExp(r'\s'), '_');
 
   return inject<FancyLogger>().writeAllLogsToJson('sparx_logs_$now.json');
 }

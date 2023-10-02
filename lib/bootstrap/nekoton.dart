@@ -14,5 +14,8 @@ Future<void> configureNekoton() async {
     tonWalletStorage: inject<TonWalletStorageService>(),
     tokenWalletStorage: inject<TokenWalletStorageService>(),
   );
+
+  inject<NtpService>().offsetStream.listen(nekotonRepository.updateClockOffset);
+
   log.finest('NekotonRepository initialized with storage!');
 }

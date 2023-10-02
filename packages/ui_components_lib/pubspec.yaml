@@ -23,7 +23,10 @@ dev_dependencies:
     git:
       url: https://github.com/broxus/flutter_templates.git
       ref: main
+  custom_lint: ^0.5.3
   dart_code_metrics: ^5.7.4
+  datetime_avoid_lint:
+    path: ../datetime_avoid_lint
   flutter_test:
     sdk: flutter
 

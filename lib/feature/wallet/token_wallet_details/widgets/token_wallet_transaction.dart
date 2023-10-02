@@ -1,5 +1,6 @@
 import 'package:app/feature/wallet/wallet.dart';
 import 'package:app/generated/generated.dart';
+import 'package:app/utils/utils.dart';
 import 'package:flutter/material.dart';
 import 'package:nekoton_repository/nekoton_repository.dart';
 import 'package:ui_components_lib/ui_components_lib.dart';
@@ -73,7 +74,7 @@ class TokenWalletTransactionWidget extends StatelessWidget {
         final colors = context.themeStyle.colors;
         final date = transaction.date;
 
-        final now = DateTime.now();
+        final now = NtpTime.now();
         final formatter = date.year == now.year
             ? DateFormat('MMMM dd', context.locale.languageCode)
             : DateFormat('MMMM dd y', context.locale.languageCode);

@@ -46,6 +46,7 @@ Future<void> bootstrap(
       await configureNavigationService();
       await migrateStorage();
       await configureStorageServices();
+      await configureNtpService();
       // SetUp nekoton after storage migrations
       await configureNekoton();
       await configureConnectionService();
