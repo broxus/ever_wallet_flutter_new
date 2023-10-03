@@ -1,6 +1,5 @@
 import 'package:app/feature/add_seed/enter_seed_phrase/cubit/cubit.dart';
 import 'package:app/generated/generated.dart';
-import 'package:collection/collection.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:ui_components_lib/ui_components_lib.dart';
@@ -132,6 +131,7 @@ class EnterSeedPhraseView extends StatelessWidget {
           },
           input: (controller, focus, index, hasError) {
             return CommonInput(
+              key: Key('SeedInput-$index'),
               height: DimensSize.d48,
               controller: controller,
               suggestionsCallback: (_) => cubit.suggestionsCallback(controller),
@@ -154,7 +154,7 @@ class EnterSeedPhraseView extends StatelessWidget {
                 ),
               ),
               onSubmitted: (_) => cubit.nextOrConfirm(index),
-              textInputAction: index == currentValue
+              textInputAction: index == currentValue - 1
                   ? TextInputAction.done
                   : TextInputAction.next,
             );
@@ -226,9 +226,7 @@ class EnterSeedPhraseView extends StatelessWidget {
           child: SeparatedColumn(
             children: inputs
                 .getRange(0, currentValue ~/ _gridColumnCount)
-                .mapIndexed(
-                  (index, input) => _inputBuild(input, currentValue),
-                )
+                .map((input) => _inputBuild(input, currentValue))
                 .toList(),
           ),
         ),
@@ -236,9 +234,7 @@ class EnterSeedPhraseView extends StatelessWidget {
           child: SeparatedColumn(
             children: inputs
                 .getRange(currentValue ~/ _gridColumnCount, currentValue)
-                .mapIndexed(
-                  (index, input) => _inputBuild(input, currentValue),
-                )
+                .map((input) => _inputBuild(input, currentValue))
                 .toList(),
           ),
         ),
