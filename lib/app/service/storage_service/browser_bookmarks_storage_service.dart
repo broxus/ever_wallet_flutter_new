@@ -94,7 +94,10 @@ class BrowserBookmarksStorageService extends AbstractStorageService {
   }
 
   /// Add or replace browser bookmarks item
-  Future<void> setBrowserBookmarkItem(BrowserBookmarkItem item) async {
+  Future<void> setBrowserBookmarkItem(
+    BrowserBookmarkItem item, {
+    bool needUndo = true,
+  }) async {
     final isAdding =
         browserBookmarks.firstWhereOrNull((i) => i.id == item.id) == null;
 
@@ -103,7 +106,7 @@ class BrowserBookmarksStorageService extends AbstractStorageService {
       item,
     ]);
 
-    if (isAdding) {
+    if (isAdding && needUndo) {
       inject<MessengerService>().show(
         Message.info(
           message: LocaleKeys.browserBookmarkAdded.tr(),
