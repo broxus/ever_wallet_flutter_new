@@ -67,6 +67,7 @@ class _HistoryViewState extends State<HistoryView> {
 
     final isEditing = context.watch<BrowserHistoryBloc>().state.isEditing;
     final items = context.watch<BrowserHistoryBloc>().getFilteredItems();
+    final isHistoryEmpty = context.watch<BrowserHistoryBloc>().isHistoryEmpty;
     final sectioned = items.fold<Map<DateTime, List<BrowserHistoryItem>>>(
       {},
       (previousSectioned, item) {
@@ -121,10 +122,12 @@ class _HistoryViewState extends State<HistoryView> {
       children: [
         CustomScrollView(
           slivers: [
-            SliverPersistentHeader(
-              floating: true,
-              delegate: SearchBarHeaderDelegate(controller: _searchController),
-            ),
+            if (!isHistoryEmpty)
+              SliverPersistentHeader(
+                floating: true,
+                delegate:
+                    SearchBarHeaderDelegate(controller: _searchController),
+              ),
             if (_showTopDivider)
               SliverPersistentHeader(
                 pinned: true,
