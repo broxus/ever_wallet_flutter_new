@@ -58,5 +58,10 @@
 	<string>We need access to camera to scan QR-codes</string>
 	<key>NSPhotoLibraryUsageDescription</key>
 	<string>We need photos access to get QR code from photo library</string>
+	<key>LSApplicationQueriesSchemes</key>
+	<array>
+		<string>metamask</string>
+		<string>trust</string>
+	</array>
 </dict>
 </plist>
