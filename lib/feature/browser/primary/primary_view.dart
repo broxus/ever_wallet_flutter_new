@@ -1,3 +1,7 @@
+import 'dart:async';
+
+import 'package:app/app/service/service.dart';
+import 'package:app/di/di.dart';
 import 'package:app/feature/browser/browser.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -183,18 +187,21 @@ class _PrimaryViewState extends State<PrimaryView>
     );
   }
 
-  void _onSearchSubmitted(String? text) {
+  Future<void> _onSearchSubmitted(String? text) async {
     if (text == null) {
       return;
     }
 
-    // TODO(nesquikm): create more efficient way to check if it's a URL
-    var uri = Uri.parse(text);
-    if (!uri.hasScheme) {
-      uri = Uri.parse('$_searchEngineUri$text');
+    final browserTabsBloc = context.read<BrowserTabsBloc>();
+
+    var (uri, isSchemeFound) = _getUri(text);
+    if (!isSchemeFound) {
+      final isResolvable = await inject<DnsResolveService>().isResolvable(uri);
+      if (!isResolvable) {
+        uri = Uri.parse('$_searchEngineUri$text');
+      }
     }
 
-    final browserTabsBloc = context.read<BrowserTabsBloc>();
     final activeTab = browserTabsBloc.activeTab;
     browserTabsBloc.add(
       activeTab != null
@@ -203,13 +210,25 @@ class _PrimaryViewState extends State<PrimaryView>
     );
   }
 
-  void _onSearchChanged(String? text) {
+  Future<void> _onSearchChanged(String? text) async {
     if (text == null) {
       return;
     }
 
+    final uri = _getUri(text).$1;
+    // Just try to resolve host and cache the result
+    unawaited(inject<DnsResolveService>().isResolvable(uri));
+
     context
         .read<BrowserTabsBloc>()
         .add(BrowserTabsEvent.setSearchText(text: text));
+  }
+
+  (Uri, bool) _getUri(String text) {
+    final uri = Uri.parse(text);
+    if (uri.hasScheme) {
+      return (uri, true);
+    }
+    return (Uri.parse('https://$text'), false);
   }
 }
