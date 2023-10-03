@@ -50,6 +50,7 @@ class _HistoryViewState extends State<HistoryView> {
       },
     );
 
+    _searchController.clear();
     _setIsEditing(false);
   }
 
