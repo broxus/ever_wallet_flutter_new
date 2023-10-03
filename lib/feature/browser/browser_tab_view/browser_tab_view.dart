@@ -92,7 +92,7 @@ class _BrowserTabViewState extends State<BrowserTabView> {
   Future<void> _handleUrlChanged(BrowserTab newTab, BrowserTab oldTab) async {
     final url = await _webViewController?.getUrl();
 
-    _log.finest('URL: ${url?.toString()}');
+    _log.finest('URL: $url');
 
     // Reload the webview if the tab URL changed and the new URL is not the same
     // as the current URL.
@@ -529,10 +529,7 @@ class _BrowserTabViewState extends State<BrowserTabView> {
     if (favicons?.isEmpty ?? true) {
       return;
     }
-    favicons?.sort(
-      (a, b) =>
-          (b.width ?? 0) * (b.height ?? 0) - (a.width ?? 0) * (a.height ?? 0),
-    );
+
     final url = favicons![0].url;
 
     await _setState(faviconUrl: url.toString());
