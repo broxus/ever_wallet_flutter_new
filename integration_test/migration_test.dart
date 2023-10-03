@@ -29,7 +29,6 @@ final _historyItem = BrowserHistoryItem(
   visitTime: DateTime.fromMillisecondsSinceEpoch(1681819001248),
   url: Uri.parse('https://octusbridge.io'),
   title: '',
-  faviconUrl: null,
   id: '0',
 );
 final _bookmark = BrowserBookmarkItem(
@@ -37,7 +36,6 @@ final _bookmark = BrowserBookmarkItem(
   title: 'TITLE',
   url: Uri.parse('URL'),
   sortingOrder: -1,
-  faviconUrl: null,
 );
 final _browserTab = BrowserTab(
   url: Uri.parse('URL'),

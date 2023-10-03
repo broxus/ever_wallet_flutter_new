@@ -21,6 +21,7 @@ dependencies:
   encrypted_storage: 0.1.2
   equatable: ^2.0.5
   fancy_logger: 0.1.4
+  favicon: ^1.1.1
   flutter:
     sdk: flutter
   flutter_bloc: ^8.1.3
