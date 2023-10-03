@@ -27,7 +27,11 @@ class _TabsViewState extends State<TabsView> {
       children: [
         Expanded(
           child: Padding(
-            padding: const EdgeInsets.symmetric(horizontal: DimensSize.d16),
+            padding: const EdgeInsets.only(
+              left: DimensSize.d16,
+              right: DimensSize.d16,
+              top: DimensSize.d24,
+            ),
             child: GridView.count(
               // ignore: no-magic-number
               crossAxisCount: 2,
