@@ -130,7 +130,7 @@ class _BrowserTabViewState extends State<BrowserTabView> {
       android: AndroidInAppWebViewOptions(),
       crossPlatform: InAppWebViewOptions(
         clearCache: clearCache,
-        userAgent: 'EverWalletBrowser',
+        applicationNameForUserAgent: 'EverWalletBrowser',
       ),
     );
 
