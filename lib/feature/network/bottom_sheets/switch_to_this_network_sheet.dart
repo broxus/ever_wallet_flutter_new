@@ -66,7 +66,8 @@ class _SwitchToThisNetworkSheetState extends State<SwitchToThisNetworkSheet> {
   void _onSwitch(BuildContext context) {
     context.read<ManageNetworksBloc>().add(
           ManageNetworksEvent.updateCurrentConnectionId(
-              id: widget.connectionId),
+            id: widget.connectionId,
+          ),
         );
     Navigator.of(context).pop();
   }

@@ -229,6 +229,7 @@ class _PrimaryViewState extends State<PrimaryView>
     if (uri.hasScheme) {
       return (uri, true);
     }
+
     return (Uri.parse('https://$text'), false);
   }
 }

@@ -22,6 +22,7 @@ class DnsResolveService {
       if (isResolved) {
         _hosts.add(host);
       }
+
       return isResolved;
     } catch (e) {
       return false;
