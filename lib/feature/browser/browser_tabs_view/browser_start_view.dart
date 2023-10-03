@@ -153,6 +153,9 @@ class _BrowserStartViewState extends State<BrowserStartView> {
   }
 
   Widget _searchResultItemBuilder(BrowserBookmarkItem item) {
+    final faviconUrl =
+        context.watch<BrowserFaviconsBloc>().getFaviconUrl(item.url) ?? '';
+
     return Padding(
       key: ValueKey(item.id),
       padding: const EdgeInsets.symmetric(
@@ -172,7 +175,7 @@ class _BrowserStartViewState extends State<BrowserStartView> {
                   leading: CachedNetworkImage(
                     height: DimensSize.d40,
                     width: DimensSize.d40,
-                    imageUrl: item.faviconUrl ?? '',
+                    imageUrl: faviconUrl,
                     placeholder: (_, __) =>
                         const CommonCircularProgressIndicator(),
                     errorWidget: (_, __, ___) => CommonIconWidget.svg(
@@ -284,6 +287,9 @@ class _BrowserStartViewState extends State<BrowserStartView> {
   }
 
   Widget _itemBuilder(BrowserBookmarkItem item) {
+    final faviconUrl =
+        context.watch<BrowserFaviconsBloc>().getFaviconUrl(item.url) ?? '';
+
     return SeparatedRow(
       key: ValueKey(item.id),
       children: [
@@ -298,7 +304,7 @@ class _BrowserStartViewState extends State<BrowserStartView> {
                 leading: CachedNetworkImage(
                   height: DimensSize.d40,
                   width: DimensSize.d40,
-                  imageUrl: item.faviconUrl ?? '',
+                  imageUrl: faviconUrl,
                   placeholder: (_, __) =>
                       const CommonCircularProgressIndicator(),
                   errorWidget: (_, __, ___) => CommonIconWidget.svg(

@@ -12,7 +12,6 @@ class BrowserBookmarkItem with _$BrowserBookmarkItem {
     required String id,
     required String title,
     @uriJsonConverter required Uri url,
-    required String? faviconUrl,
     required double sortingOrder,
   }) = _BrowserBookmarkItem;
 
@@ -22,13 +21,11 @@ class BrowserBookmarkItem with _$BrowserBookmarkItem {
   factory BrowserBookmarkItem.create({
     required String title,
     required Uri url,
-    required String? faviconUrl,
   }) =>
       BrowserBookmarkItem(
         id: const Uuid().v4(),
         title: title,
         url: url,
-        faviconUrl: faviconUrl,
         sortingOrder: NtpTime.now().millisecondsSinceEpoch.toDouble(),
       );
 }

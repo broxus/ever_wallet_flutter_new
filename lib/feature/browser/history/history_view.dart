@@ -164,6 +164,8 @@ class _HistoryViewState extends State<HistoryView> {
 
   Widget _itemBuilder(BrowserHistoryItem item, {required bool isEditing}) {
     final colors = context.themeStyle.colors;
+    final faviconUrl =
+        context.watch<BrowserFaviconsBloc>().getFaviconUrl(item.url) ?? '';
 
     return Padding(
       key: ValueKey(item.id),
@@ -184,7 +186,7 @@ class _HistoryViewState extends State<HistoryView> {
                   leading: CachedNetworkImage(
                     height: DimensSize.d40,
                     width: DimensSize.d40,
-                    imageUrl: item.faviconUrl ?? '',
+                    imageUrl: faviconUrl,
                     placeholder: (_, __) =>
                         const CommonCircularProgressIndicator(),
                     errorWidget: (_, __, ___) => CommonIconWidget.svg(

@@ -32,7 +32,6 @@ extension BookmarkDtoX on BookmarkDto {
         id: '$id',
         title: name,
         url: Uri.parse(url),
-        faviconUrl: null,
         sortingOrder: -1,
       );
 }

@@ -315,7 +315,6 @@ class _BrowserTabViewState extends State<BrowserTabView> {
   ) {
     _setUrl(url);
     _setState(state: BrowserTabStateType.loading);
-    _getFavicons();
   }
 
   void _onLoadStop(
@@ -416,7 +415,6 @@ class _BrowserTabViewState extends State<BrowserTabView> {
     int? progress,
     String? errorMessage,
     String? title,
-    String? faviconUrl,
   }) async {
     final canGoBack = await _webViewController?.canGoBack() ?? false;
     final canGoForward = await _webViewController?.canGoForward() ?? false;
@@ -428,7 +426,6 @@ class _BrowserTabViewState extends State<BrowserTabView> {
       progress: progress,
       errorMessage: errorMessage,
       title: title,
-      faviconUrl: faviconUrl,
     );
   }
 
@@ -440,7 +437,6 @@ class _BrowserTabViewState extends State<BrowserTabView> {
     int? progress,
     String? errorMessage,
     String? title,
-    String? faviconUrl,
   }) {
     if (!context.mounted) {
       return;
@@ -455,7 +451,6 @@ class _BrowserTabViewState extends State<BrowserTabView> {
             progress: progress,
             errorMessage: errorMessage,
             title: title,
-            faviconUrl: faviconUrl,
           ),
         );
   }
@@ -522,17 +517,6 @@ class _BrowserTabViewState extends State<BrowserTabView> {
         _addSetScreenshotEvent(imageId: imageId);
       },
     );
-  }
-
-  Future<void> _getFavicons() async {
-    final favicons = await _webViewController?.getFavicons();
-    if (favicons?.isEmpty ?? true) {
-      return;
-    }
-
-    final url = favicons![0].url;
-
-    await _setState(faviconUrl: url.toString());
   }
 
   Future<HttpAuthResponse?> _onReceivedHttpAuthRequest(

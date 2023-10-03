@@ -81,7 +81,6 @@ class BrowserBottomMenuCommon extends StatelessWidget {
               item: BrowserBookmarkItem.create(
                 title: currentTabState?.title ?? '',
                 url: currentTab!.url,
-                faviconUrl: currentTabState?.faviconUrl,
               ),
             ),
           );

@@ -14,20 +14,17 @@ class BrowserHistoryItem with _$BrowserHistoryItem {
     required String title,
     @uriJsonConverter required Uri url,
     required DateTime visitTime,
-    required String? faviconUrl,
   }) = _BrowserHistoryItemDto;
 
   factory BrowserHistoryItem.create({
     required String title,
     @uriJsonConverter required Uri url,
-    required String? faviconUrl,
   }) =>
       BrowserHistoryItem(
         id: const Uuid().v4(),
         title: title,
         url: url,
         visitTime: NtpTime.now(),
-        faviconUrl: faviconUrl,
       );
 
   const BrowserHistoryItem._();

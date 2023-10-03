@@ -90,6 +90,8 @@ class _BookmarksViewState extends State<BookmarksView> {
     required bool isEditing,
   }) {
     final colors = context.themeStyle.colors;
+    final faviconUrl =
+        context.watch<BrowserFaviconsBloc>().getFaviconUrl(item.url) ?? '';
 
     final trailing = isEditing
         ? ReorderableDragStartListener(
@@ -121,7 +123,7 @@ class _BookmarksViewState extends State<BookmarksView> {
                   leading: CachedNetworkImage(
                     height: DimensSize.d40,
                     width: DimensSize.d40,
-                    imageUrl: item.faviconUrl ?? '',
+                    imageUrl: faviconUrl,
                     placeholder: (_, __) =>
                         const CommonCircularProgressIndicator(),
                     errorWidget: (_, __, ___) => CommonIconWidget.svg(

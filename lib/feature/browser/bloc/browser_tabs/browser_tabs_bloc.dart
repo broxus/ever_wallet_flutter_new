@@ -126,7 +126,6 @@ class BrowserTabsBloc extends Bloc<BrowserTabsEvent, BrowserTabsState> {
         progress: event.progress ?? oldTabState.progress,
         errorMessage: event.errorMessage ?? oldTabState.errorMessage,
         title: event.title ?? oldTabState.title,
-        faviconUrl: event.faviconUrl ?? oldTabState.faviconUrl,
         canGoBack: event.canGoBack ?? oldTabState.canGoBack,
         canGoForward: event.canGoForward ?? oldTabState.canGoForward,
         goBack: event.goBack ?? oldTabState.goBack,
@@ -216,7 +215,6 @@ class BrowserTabsBloc extends Bloc<BrowserTabsEvent, BrowserTabsState> {
       BrowserHistoryItem.create(
         url: tab.url,
         title: state?.title ?? '',
-        faviconUrl: state?.faviconUrl,
       ),
     );
   }

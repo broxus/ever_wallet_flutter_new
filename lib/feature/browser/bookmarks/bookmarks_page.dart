@@ -14,11 +14,15 @@ class BookmarksPage extends StatelessWidget {
       appBar: DefaultAppBar(
         titleText: LocaleKeys.browserBookmarks.tr(),
       ),
-      body: BlocBuilder<BrowserBookmarksBloc, BrowserBookmarksState>(
+      body: BlocBuilder<BrowserFaviconsBloc, BrowserFaviconsState>(
         builder: (context, state) {
-          return GestureDetector(
-            onTap: () => FocusScope.of(context).unfocus(),
-            child: const BookmarksView(),
+          return BlocBuilder<BrowserBookmarksBloc, BrowserBookmarksState>(
+            builder: (context, state) {
+              return GestureDetector(
+                onTap: () => FocusScope.of(context).unfocus(),
+                child: const BookmarksView(),
+              );
+            },
           );
         },
       ),
