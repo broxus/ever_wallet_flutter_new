@@ -95,14 +95,30 @@ class BrowserBookmarksStorageService extends AbstractStorageService {
 
   /// Add or replace browser bookmarks item
   Future<void> setBrowserBookmarkItem(BrowserBookmarkItem item) async {
+    final isAdding =
+        browserBookmarks.firstWhereOrNull((i) => i.id == item.id) == null;
+
     await saveBrowserBookmarks([
       ...[...browserBookmarks]..removeWhere((i) => i.id == item.id),
       item,
     ]);
+
+    if (isAdding) {
+      inject<MessengerService>().show(
+        Message.info(
+          message: LocaleKeys.browserBookmarkAdded.tr(),
+          actionText: LocaleKeys.browserBookmarkAddedUndo.tr(),
+          onAction: () => removeBrowserBookmarkItem(item.id, needUndo: false),
+        ),
+      );
+    }
   }
 
   /// Remove browser bookmarks item by id
-  Future<void> removeBrowserBookmarkItem(String id) async {
+  Future<void> removeBrowserBookmarkItem(
+    String id, {
+    bool needUndo = true,
+  }) async {
     final item = browserBookmarks.firstWhereOrNull((item) => item.id == id);
 
     if (item == null) {
@@ -113,13 +129,15 @@ class BrowserBookmarksStorageService extends AbstractStorageService {
 
     final bookmarks = [...browserBookmarks]..remove(item);
 
-    inject<MessengerService>().show(
-      Message.info(
-        message: LocaleKeys.browserBookmarkDeleted.tr(),
-        actionText: LocaleKeys.browserBookmarkDeletedUndo.tr(),
-        onAction: () => setBrowserBookmarkItem(item),
-      ),
-    );
+    if (needUndo) {
+      inject<MessengerService>().show(
+        Message.info(
+          message: LocaleKeys.browserBookmarkDeleted.tr(),
+          actionText: LocaleKeys.browserBookmarkDeletedUndo.tr(),
+          onAction: () => setBrowserBookmarkItem(item),
+        ),
+      );
+    }
 
     await saveBrowserBookmarks(bookmarks);
   }

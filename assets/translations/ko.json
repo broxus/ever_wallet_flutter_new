@@ -251,6 +251,8 @@
   "browserBookmarkRenameName": "Name",
   "browserBookmarkRenameWord": "Rename",
   "browserBookmarksEdit": "Edit",
+  "browserBookmarkAdded": "Site was added to bookmarks",
+  "browserBookmarkAddedUndo": "Undo",
   "browserBookmarksClear": "Clear all",
   "browserBookmarksDone": "Done",
   "browserBookmarksDeleted": "All bookmarks were deleted",
