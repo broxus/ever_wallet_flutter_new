@@ -21,14 +21,16 @@ class ProfilePage extends StatelessWidget {
       child: BlocBuilder<ProfileBloc, ProfileState>(
         builder: (context, state) {
           return state.when(
-            initial: () => const ProfileView(),
+            initial: () => const ProfileView(appVersion: ''),
             data: (
               currentSeed,
               isBiometryAvailable,
+              appVersion,
             ) =>
                 ProfileView(
               currentSeed: currentSeed,
               isBiometryAvailable: isBiometryAvailable,
+              appVersion: appVersion,
             ),
           );
         },

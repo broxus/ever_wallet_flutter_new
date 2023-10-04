@@ -8,5 +8,6 @@ class ProfileState with _$ProfileState {
   const factory ProfileState.data({
     required Seed currentSeed,
     required bool isBiometryAvailable,
+    required String appVersion,
   }) = _Data;
 }

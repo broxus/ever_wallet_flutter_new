@@ -5,6 +5,7 @@ import 'package:app/di/di.dart';
 import 'package:bloc/bloc.dart';
 import 'package:freezed_annotation/freezed_annotation.dart';
 import 'package:nekoton_repository/nekoton_repository.dart' hide Message;
+import 'package:package_info_plus/package_info_plus.dart';
 
 part 'profile_bloc.freezed.dart';
 
@@ -27,6 +28,8 @@ class ProfileBloc extends Bloc<ProfileEvent, ProfileState> {
   final NekotonRepository nekotonRepository;
   final CurrentSeedService currentSeedService;
   final BiometryService biometryService;
+
+  String appVersion = '';
 
   late StreamSubscription<Seed?> _currentSeedSubscription;
   late StreamSubscription<bool> _biometryAvailableSubscription;
@@ -63,6 +66,9 @@ class ProfileBloc extends Bloc<ProfileEvent, ProfileState> {
               ),
             );
 
+    final info = await PackageInfo.fromPlatform();
+    appVersion = '${info.version}.${info.buildNumber}';
+
     add(
       ProfileEvent.updateData(
         currentSeed: currentSeedService.currentSeed,
@@ -81,6 +87,7 @@ class ProfileBloc extends Bloc<ProfileEvent, ProfileState> {
         ProfileState.data(
           currentSeed: seed,
           isBiometryAvailable: event.isBiometryAvailable,
+          appVersion: appVersion,
         ),
       );
     }
