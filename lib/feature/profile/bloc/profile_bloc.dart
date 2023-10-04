@@ -5,7 +5,6 @@ import 'package:app/di/di.dart';
 import 'package:bloc/bloc.dart';
 import 'package:freezed_annotation/freezed_annotation.dart';
 import 'package:nekoton_repository/nekoton_repository.dart' hide Message;
-import 'package:package_info_plus/package_info_plus.dart';
 
 part 'profile_bloc.freezed.dart';
 
@@ -15,11 +14,12 @@ part 'profile_state.dart';
 
 /// Bloc for profile page that stores current key in state and some settings.
 class ProfileBloc extends Bloc<ProfileEvent, ProfileState> {
-  ProfileBloc(
-    this.nekotonRepository,
-    this.currentSeedService,
-    this.biometryService,
-  ) : super(const ProfileState.initial()) {
+  ProfileBloc({
+    required this.nekotonRepository,
+    required this.currentSeedService,
+    required this.biometryService,
+    required this.versionService,
+  }) : super(const ProfileState.initial()) {
     on<_Initialize>(_initialize);
     on<_LogOut>(_logOut);
     on<_UpdateData>(_updateData);
@@ -28,8 +28,7 @@ class ProfileBloc extends Bloc<ProfileEvent, ProfileState> {
   final NekotonRepository nekotonRepository;
   final CurrentSeedService currentSeedService;
   final BiometryService biometryService;
-
-  String appVersion = '';
+  final AppVersionService versionService;
 
   late StreamSubscription<Seed?> _currentSeedSubscription;
   late StreamSubscription<bool> _biometryAvailableSubscription;
@@ -66,9 +65,6 @@ class ProfileBloc extends Bloc<ProfileEvent, ProfileState> {
               ),
             );
 
-    final info = await PackageInfo.fromPlatform();
-    appVersion = '${info.version}.${info.buildNumber}';
-
     add(
       ProfileEvent.updateData(
         currentSeed: currentSeedService.currentSeed,
@@ -87,7 +83,8 @@ class ProfileBloc extends Bloc<ProfileEvent, ProfileState> {
         ProfileState.data(
           currentSeed: seed,
           isBiometryAvailable: event.isBiometryAvailable,
-          appVersion: appVersion,
+          appVersion:
+              '${versionService.appVersion}.${versionService.buildNumber}',
         ),
       );
     }

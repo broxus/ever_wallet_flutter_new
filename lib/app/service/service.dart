@@ -1,5 +1,6 @@
 export 'app_lifecycle_service.dart';
 export 'app_permissions_service.dart';
+export 'app_version_service.dart';
 export 'approvals_service.dart';
 export 'assets_service.dart';
 export 'balance_service.dart';

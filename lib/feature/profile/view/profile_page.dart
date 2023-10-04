@@ -14,9 +14,10 @@ class ProfilePage extends StatelessWidget {
   Widget build(BuildContext context) {
     return BlocProvider(
       create: (context) => ProfileBloc(
-        inject<NekotonRepository>(),
-        inject<CurrentSeedService>(),
-        inject<BiometryService>(),
+        nekotonRepository: inject<NekotonRepository>(),
+        currentSeedService: inject<CurrentSeedService>(),
+        biometryService: inject<BiometryService>(),
+        versionService: inject(),
       )..add(const ProfileEvent.init()),
       child: BlocBuilder<ProfileBloc, ProfileState>(
         builder: (context, state) {
