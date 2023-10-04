@@ -5,7 +5,7 @@ import 'package:ui_components_lib/ui_components_lib.dart';
 
 /// Height in logical pixels for small screen to change percent for sliding
 /// sheet.
-const _smallScreenPixelHeight = 500.0;
+const _smallScreenPixelHeight = 700.0;
 const _bigScreenMinHeightSizePercent = 0.4;
 
 class WalletView extends StatefulWidget {
