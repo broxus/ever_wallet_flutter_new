@@ -14,6 +14,7 @@ import 'package:ui_components_lib/ui_components_lib.dart';
 
 class ProfileView extends StatelessWidget {
   const ProfileView({
+    required this.appVersion,
     this.isBiometryAvailable = false,
     this.currentSeed,
     super.key,
@@ -21,6 +22,7 @@ class ProfileView extends StatelessWidget {
 
   final Seed? currentSeed;
   final bool isBiometryAvailable;
+  final String appVersion;
 
   @override
   Widget build(BuildContext context) {
@@ -135,6 +137,13 @@ class ProfileView extends StatelessWidget {
                 svg: Assets.images.exit.path,
               ),
             ),
+            const SizedBox(height: DimensSize.d8),
+            Text(
+              appVersion,
+              textAlign: TextAlign.center,
+              style: StyleRes.addRegular.copyWith(color: colors.textSecondary),
+            ),
+            const SizedBox(height: DimensSize.d16),
           ],
         ),
       ),

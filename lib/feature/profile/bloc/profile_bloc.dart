@@ -14,11 +14,12 @@ part 'profile_state.dart';
 
 /// Bloc for profile page that stores current key in state and some settings.
 class ProfileBloc extends Bloc<ProfileEvent, ProfileState> {
-  ProfileBloc(
-    this.nekotonRepository,
-    this.currentSeedService,
-    this.biometryService,
-  ) : super(const ProfileState.initial()) {
+  ProfileBloc({
+    required this.nekotonRepository,
+    required this.currentSeedService,
+    required this.biometryService,
+    required this.versionService,
+  }) : super(const ProfileState.initial()) {
     on<_Initialize>(_initialize);
     on<_LogOut>(_logOut);
     on<_UpdateData>(_updateData);
@@ -27,6 +28,7 @@ class ProfileBloc extends Bloc<ProfileEvent, ProfileState> {
   final NekotonRepository nekotonRepository;
   final CurrentSeedService currentSeedService;
   final BiometryService biometryService;
+  final AppVersionService versionService;
 
   late StreamSubscription<Seed?> _currentSeedSubscription;
   late StreamSubscription<bool> _biometryAvailableSubscription;
@@ -81,6 +83,8 @@ class ProfileBloc extends Bloc<ProfileEvent, ProfileState> {
         ProfileState.data(
           currentSeed: seed,
           isBiometryAvailable: event.isBiometryAvailable,
+          appVersion:
+              '${versionService.appVersion}.${versionService.buildNumber}',
         ),
       );
     }

@@ -39,7 +39,10 @@ Future<void> bootstrap(
 
   await runZonedGuarded(
     () async {
+      WidgetsFlutterBinding.ensureInitialized();
+
       await configureDi();
+      await configureAppVersion();
       await configureLogger(appBuildType);
 
       await configureEncryptedStorage();
