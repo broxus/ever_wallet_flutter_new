@@ -3,6 +3,10 @@ import 'package:flutter/material.dart';
 import 'package:nekoton_repository/nekoton_repository.dart';
 import 'package:ui_components_lib/ui_components_lib.dart';
 
+/// Height in physical pixels for small screen to change percent for sliding
+/// sheet.
+const _smallScreenPixelHeight = 1400.0;
+
 class WalletView extends StatefulWidget {
   const WalletView({
     required this.controller,
@@ -41,8 +45,13 @@ class _WalletViewState extends State<WalletView> {
 
   @override
   Widget build(BuildContext context) {
+    final mq = MediaQuery.of(context);
+    final physicalHeight = mq.size.height * mq.devicePixelRatio;
+
     return CommonSlidingPanel(
       maxHeightSizePercent: 1,
+      minHeightSizePercent:
+          physicalHeight < _smallScreenPixelHeight ? 0.3 : 0.4,
       panelController: _panelController,
       panelBuilder: (context, scrollController) {
         if (widget.currentAccount == null) {

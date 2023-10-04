@@ -19,9 +19,10 @@ class _RootViewState extends State<RootView> {
   @override
   Widget build(BuildContext context) {
     final colors = context.themeStyle.colors;
-    final isBottomNavigationBarVisible =
-        getCurrentAppRoute(fullPath: GoRouterState.of(context).fullPath)
-            .isBottomNavigationBarVisible;
+    final route =
+        getCurrentAppRoute(fullPath: GoRouterState.of(context).fullPath);
+    final isBottomNavigationBarVisible = route.isBottomNavigationBarVisible;
+    final overrideExtend = route.overrideExtendScaffoldBody;
 
     return Scaffold(
       // We disable this isets, because this is a root Scaffold and we have
@@ -41,7 +42,7 @@ class _RootViewState extends State<RootView> {
           );
         },
       ),
-      extendBody: !isBottomNavigationBarVisible,
+      extendBody: !isBottomNavigationBarVisible || overrideExtend,
       // IF WE HAVE PROBLEM with deleting MQ above, we need to replace Slide
       // widget to some ExpandablePanel, may be it will help.
       bottomNavigationBar: AnimatedSlide(
