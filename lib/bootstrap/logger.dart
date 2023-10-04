@@ -36,7 +36,6 @@ Future<void> configureLogger(
       };
   }
 
-  WidgetsFlutterBinding.ensureInitialized();
   final version = inject<AppVersionService>();
   final packageInfoString = '[${version.appVersion}:${version.buildNumber}]';
 
