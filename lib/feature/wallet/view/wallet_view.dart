@@ -5,7 +5,8 @@ import 'package:ui_components_lib/ui_components_lib.dart';
 
 /// Height in physical pixels for small screen to change percent for sliding
 /// sheet.
-const _smallScreenPixelHeight = 1400.0;
+const _smallScreenPhysicalHeight = 1400.0;
+const _bigScreenMinHeightSizePercent = 0.4;
 
 class WalletView extends StatefulWidget {
   const WalletView({
@@ -50,8 +51,9 @@ class _WalletViewState extends State<WalletView> {
 
     return CommonSlidingPanel(
       maxHeightSizePercent: 1,
-      minHeightSizePercent:
-          physicalHeight < _smallScreenPixelHeight ? 0.3 : 0.4,
+      minHeightSizePercent: physicalHeight < _smallScreenPhysicalHeight
+          ? defaultMinHeightSizePercent
+          : _bigScreenMinHeightSizePercent,
       panelController: _panelController,
       panelBuilder: (context, scrollController) {
         if (widget.currentAccount == null) {
