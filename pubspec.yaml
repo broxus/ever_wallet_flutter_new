@@ -35,7 +35,7 @@ dependencies:
   http: ^0.13.6
   http_proxy: ^1.2.1
   image_picker: ^1.0.4
-  injectable: ^2.2.0
+  injectable: ^2.3.1
   json_annotation: ^4.8.1
   local_auth: ^2.1.7
   logging: 1.1.1
