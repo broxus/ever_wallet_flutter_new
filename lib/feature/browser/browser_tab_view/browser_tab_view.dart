@@ -353,14 +353,14 @@ class _BrowserTabViewState extends State<BrowserTabView> {
     );
     _setState(
       state: BrowserTabStateType.error,
-      errorMessage: '$message $code',
+      errorMessage: '$message $url',
     );
   }
 
   void _onLoadHttpError(_, Uri? url, int statusCode, String description) {
     _pullToRefreshController?.endRefreshing();
     _log.warning(
-      'Failed to load $url: $statusCode $description',
+      'Failed to load $url: HTTP $statusCode $description',
     );
     _setState(
       state: BrowserTabStateType.error,
