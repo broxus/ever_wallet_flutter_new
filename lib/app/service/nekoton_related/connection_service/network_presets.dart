@@ -25,6 +25,7 @@ final _everPresets = <ConnectionData>[
     blockExplorerUrl: 'https://everscan.io',
     manifestUrl:
         'https://raw.githubusercontent.com/broxus/ton-assets/master/manifest.json',
+    sortingOrder: 1,
   ),
   ConnectionData.gqlPreset(
     id: 'preset_ever_mainnet_gql',
@@ -39,6 +40,7 @@ final _everPresets = <ConnectionData>[
     blockExplorerUrl: 'https://everscan.io',
     manifestUrl:
         'https://raw.githubusercontent.com/broxus/ton-assets/master/manifest.json',
+    sortingOrder: 2,
   ),
   ConnectionData.gqlPreset(
     id: 'preset_ever_testnet_gql',
@@ -53,6 +55,7 @@ final _everPresets = <ConnectionData>[
     blockExplorerUrl: 'https://everscan.io',
     manifestUrl:
         'https://raw.githubusercontent.com/broxus/ton-assets/master/manifest.json',
+    sortingOrder: 3,
   ),
 ];
 
@@ -62,11 +65,11 @@ final _venomPresets = [
   // ConnectionData.protoPreset(
   //   id: 'preset_venom_mainnet_proto',
   //   name: 'Mainnet Venom (PROTO)',
-  //   networkId: 1000,
   //   group: 'venom_mainnet',
   //   endpoint: 'https://jrpc.venom.foundation/proto',
   //   networkType: NetworkType.venom,
   //   canBeEdited: false,
+  //   sortingOrder: 4,
   // ),
   ConnectionData.protoPreset(
     id: 'preset_venom_testnet_proto',
@@ -77,6 +80,7 @@ final _venomPresets = [
     canBeEdited: true,
     blockExplorerUrl: 'https://testnet.venomscan.com',
     manifestUrl: 'https://cdn.venom.foundation/assets/testnet/manifest.json',
+    sortingOrder: 5,
   ),
 ];
 

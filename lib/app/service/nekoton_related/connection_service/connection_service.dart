@@ -57,6 +57,7 @@ class ConnectionService {
         _____,
         ______,
         _______,
+        ________,
       ) =>
           _nekotonRepository.createGqlTransport(
         post: _httpService.postTransportData,
@@ -77,6 +78,7 @@ class ConnectionService {
         _____,
         ______,
         _______,
+        ________,
       ) =>
           _nekotonRepository.createProtoTransport(
         post: _httpService.postTransportDataBytes,
@@ -95,6 +97,7 @@ class ConnectionService {
         _____,
         ______,
         _______,
+        ________,
       ) =>
           _nekotonRepository.createJrpcTransport(
         post: _httpService.postTransportData,
