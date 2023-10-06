@@ -19,7 +19,7 @@ final _everPresets = <ConnectionData>[
     id: _everMainnetProtoId,
     name: 'Everscale',
     group: 'mainnet',
-    endpoint: 'https://jrpc.everwallet.net/proto',
+    endpoint: 'https://jrpc.everwallet.net',
     networkType: NetworkType.ever,
     canBeEdited: false,
     blockExplorerUrl: 'https://everscan.io',
