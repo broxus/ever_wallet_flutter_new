@@ -1,5 +1,6 @@
 import 'package:app/app/service/nekoton_related/connection_service/network_presets.dart';
 import 'package:app/data/models/network_type.dart';
+import 'package:app/utils/utils.dart';
 import 'package:freezed_annotation/freezed_annotation.dart';
 import 'package:uuid/uuid.dart';
 
@@ -21,6 +22,7 @@ sealed class ConnectionData with _$ConnectionData {
     required String nativeTokenTicker,
     required bool isPreset,
     required bool canBeEdited,
+    required double sortingOrder,
   }) = _ConnectionDataGql;
 
   factory ConnectionData.gqlCustom({
@@ -48,6 +50,7 @@ sealed class ConnectionData with _$ConnectionData {
         nativeTokenTicker: nativeTokenTicker,
         isPreset: false,
         canBeEdited: true,
+        sortingOrder: NtpTime.now().millisecondsSinceEpoch.toDouble(),
       );
 
   factory ConnectionData.gqlPreset({
@@ -60,6 +63,7 @@ sealed class ConnectionData with _$ConnectionData {
     required String blockExplorerUrl,
     required String manifestUrl,
     required bool canBeEdited,
+    required double sortingOrder,
   }) =>
       ConnectionData.gql(
         id: id,
@@ -74,6 +78,7 @@ sealed class ConnectionData with _$ConnectionData {
         nativeTokenTicker: '',
         isPreset: true,
         canBeEdited: canBeEdited,
+        sortingOrder: sortingOrder,
       );
 
   const factory ConnectionData.proto({
@@ -87,6 +92,7 @@ sealed class ConnectionData with _$ConnectionData {
     required String nativeTokenTicker,
     required bool isPreset,
     required bool canBeEdited,
+    required double sortingOrder,
   }) = _ConnectionDataProto;
 
   factory ConnectionData.protoCustom({
@@ -110,6 +116,7 @@ sealed class ConnectionData with _$ConnectionData {
         nativeTokenTicker: nativeTokenTicker,
         isPreset: false,
         canBeEdited: true,
+        sortingOrder: NtpTime.now().millisecondsSinceEpoch.toDouble(),
       );
 
   factory ConnectionData.protoPreset({
@@ -121,6 +128,7 @@ sealed class ConnectionData with _$ConnectionData {
     required String blockExplorerUrl,
     required String manifestUrl,
     required bool canBeEdited,
+    required double sortingOrder,
   }) =>
       ConnectionData.proto(
         id: id,
@@ -133,6 +141,7 @@ sealed class ConnectionData with _$ConnectionData {
         nativeTokenTicker: '',
         isPreset: true,
         canBeEdited: canBeEdited,
+        sortingOrder: sortingOrder,
       );
 
   const factory ConnectionData.jrpc({
@@ -146,6 +155,7 @@ sealed class ConnectionData with _$ConnectionData {
     required String nativeTokenTicker,
     required bool isPreset,
     required bool canBeEdited,
+    required double sortingOrder,
   }) = _ConnectionDataJrpc;
 
   factory ConnectionData.jrpcCustom({
@@ -169,6 +179,7 @@ sealed class ConnectionData with _$ConnectionData {
         nativeTokenTicker: nativeTokenTicker,
         isPreset: false,
         canBeEdited: true,
+        sortingOrder: NtpTime.now().millisecondsSinceEpoch.toDouble(),
       );
 
   factory ConnectionData.jrpcPreset({
@@ -180,6 +191,7 @@ sealed class ConnectionData with _$ConnectionData {
     required String blockExplorerUrl,
     required String manifestUrl,
     required bool canBeEdited,
+    required double sortingOrder,
   }) =>
       ConnectionData.jrpc(
         id: id,
@@ -192,6 +204,7 @@ sealed class ConnectionData with _$ConnectionData {
         nativeTokenTicker: '',
         isPreset: true,
         canBeEdited: canBeEdited,
+        sortingOrder: sortingOrder,
       );
 
   factory ConnectionData.fromJson(Map<String, dynamic> json) =>

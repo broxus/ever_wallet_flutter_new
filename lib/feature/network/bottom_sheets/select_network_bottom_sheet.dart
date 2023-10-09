@@ -17,6 +17,8 @@ Future<void> showSelectNetworkSheet({
     expand: true,
     title: LocaleKeys.selectNetwork.tr(),
     body: (_, __) => const SelectNetworkSheet(),
+    padding: EdgeInsets.zero,
+    avoidBottomInsets: false,
   );
 }
 

@@ -692,10 +692,10 @@ packages:
     dependency: transitive
     description:
       name: flutter_nekoton_bridge
-      sha256: a984f92d49c55bc4901fe7c53bf3d76f56bb3d0f93e99d8e817209bb0dd1cd8b
+      sha256: de5aa58c262510bf1b491019086d31e9d0d309d398327c6e832b4241b3837bcf
       url: "https://pub.dev"
     source: hosted
-    version: "1.25.1"
+    version: "1.25.2"
   flutter_plugin_android_lifecycle:
     dependency: transitive
     description:
@@ -1003,10 +1003,10 @@ packages:
     dependency: "direct main"
     description:
       name: injectable
-      sha256: "5217c45fec809286a7b1b4fbcbd70aab1662bf18d9eb207490df421323f7883f"
+      sha256: "6c67a3e405a498becc7fde5ac8c6e817338f0b5abc07da2de1e6c3156991d8ce"
       url: "https://pub.dev"
     source: hosted
-    version: "2.3.0"
+    version: "2.3.1"
   injectable_generator:
     dependency: "direct dev"
     description:
@@ -1168,10 +1168,10 @@ packages:
     dependency: "direct dev"
     description:
       name: mocktail
-      sha256: "9503969a7c2c78c7292022c70c0289ed6241df7a9ba720010c0b215af29a5a58"
+      sha256: bac151b31e4ed78bd59ab89aa4c0928f297b1180186d5daf03734519e5f596c1
       url: "https://pub.dev"
     source: hosted
-    version: "1.0.0"
+    version: "1.0.1"
   modal_bottom_sheet:
     dependency: transitive
     description:
@@ -1216,10 +1216,10 @@ packages:
     dependency: "direct main"
     description:
       name: nekoton_repository
-      sha256: "1153a62997648b914e6749e37c54eb06ec25771d54920a7d95a830e017cecb17"
+      sha256: "3309439ee2661f67e6d07a12d8d20571c3c0277235c58ec35bde0ba1a5e974bc"
       url: "https://pub.dev"
     source: hosted
-    version: "0.25.0"
+    version: "0.26.0"
   nekoton_webview:
     dependency: "direct main"
     description:
@@ -1360,10 +1360,10 @@ packages:
     dependency: "direct main"
     description:
       name: permission_handler
-      sha256: ad65ba9af42a3d067203641de3fd9f547ded1410bad3b84400c2b4899faede70
+      sha256: "284a66179cabdf942f838543e10413246f06424d960c92ba95c84439154fcac8"
       url: "https://pub.dev"
     source: hosted
-    version: "11.0.0"
+    version: "11.0.1"
   permission_handler_android:
     dependency: transitive
     description:

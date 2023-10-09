@@ -17,18 +17,19 @@ final defaultNetwork = networkPresets.firstWhere(
 final _everPresets = <ConnectionData>[
   ConnectionData.protoPreset(
     id: _everMainnetProtoId,
-    name: 'Mainnet (PROTO)',
+    name: 'Everscale',
     group: 'mainnet',
-    endpoint: 'https://jrpc.everwallet.net/proto',
+    endpoint: 'https://jrpc.everwallet.net',
     networkType: NetworkType.ever,
     canBeEdited: false,
     blockExplorerUrl: 'https://everscan.io',
     manifestUrl:
         'https://raw.githubusercontent.com/broxus/ton-assets/master/manifest.json',
+    sortingOrder: 1,
   ),
   ConnectionData.gqlPreset(
     id: 'preset_ever_mainnet_gql',
-    name: 'Mainnet (GQL)',
+    name: 'Everscale (reserve)',
     group: 'mainnet',
     endpoints: [
       'https://mainnet.evercloud.dev/89a3b8f46a484f2ea3bdd364ddaee3a3/graphql',
@@ -39,10 +40,11 @@ final _everPresets = <ConnectionData>[
     blockExplorerUrl: 'https://everscan.io',
     manifestUrl:
         'https://raw.githubusercontent.com/broxus/ton-assets/master/manifest.json',
+    sortingOrder: 2,
   ),
   ConnectionData.gqlPreset(
     id: 'preset_ever_testnet_gql',
-    name: 'Testnet',
+    name: 'Everscale (testnet)',
     group: 'testnet',
     endpoints: [
       'https://devnet.evercloud.dev/89a3b8f46a484f2ea3bdd364ddaee3a3/graphql',
@@ -53,6 +55,7 @@ final _everPresets = <ConnectionData>[
     blockExplorerUrl: 'https://everscan.io',
     manifestUrl:
         'https://raw.githubusercontent.com/broxus/ton-assets/master/manifest.json',
+    sortingOrder: 3,
   ),
 ];
 
@@ -62,51 +65,24 @@ final _venomPresets = [
   // ConnectionData.protoPreset(
   //   id: 'preset_venom_mainnet_proto',
   //   name: 'Mainnet Venom (PROTO)',
-  //   networkId: 1000,
   //   group: 'venom_mainnet',
   //   endpoint: 'https://jrpc.venom.foundation/proto',
   //   networkType: NetworkType.venom,
   //   canBeEdited: false,
+  //   sortingOrder: 4,
   // ),
   ConnectionData.protoPreset(
     id: 'preset_venom_testnet_proto',
-    name: 'Testnet Venom',
+    name: 'Venom (testnet)',
     group: 'testnet',
-    endpoint: 'https://jrpc-testnet.venom.foundation/proto',
+    endpoint: 'https://jrpc-testnet.venom.foundation',
     networkType: NetworkType.venom,
     canBeEdited: true,
-    blockExplorerUrl: 'https://venomscan.com',
-    manifestUrl:
-        'https://raw.githubusercontent.com/BVFDT/venom-assets/master/manifest.json',
+    blockExplorerUrl: 'https://testnet.venomscan.com',
+    manifestUrl: 'https://cdn.venom.foundation/assets/testnet/manifest.json',
+    sortingOrder: 5,
   ),
 ];
 
 /// Presets for different custom network
-final _customPresets = <ConnectionData>[
-  ConnectionData.gqlPreset(
-    id: 'preset_tonlabs_mainnet_gql',
-    name: 'fld.ton.dev',
-    group: 'fld',
-    endpoints: [
-      'https://gql.custler.net/graphql',
-    ],
-    timeout: defaultNetworkTimeout,
-    networkType: NetworkType.custom,
-    canBeEdited: true,
-    blockExplorerUrl: '',
-    manifestUrl: '',
-  ),
-  ConnectionData.gqlPreset(
-    id: 'preset_tonlabs_testnet_gql',
-    name: 'Gosh',
-    group: 'gosh',
-    endpoints: [
-      'https://network.gosh.sh',
-    ],
-    timeout: defaultNetworkTimeout,
-    networkType: NetworkType.custom,
-    canBeEdited: true,
-    blockExplorerUrl: '',
-    manifestUrl: '',
-  ),
-];
+final _customPresets = <ConnectionData>[];

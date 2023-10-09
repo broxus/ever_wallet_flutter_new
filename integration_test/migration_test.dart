@@ -116,7 +116,7 @@ const _address = Address(
   address: '0:18678befa040e2d66322fcb995d81cd5981ef7aaee494bd3e6a92554c455d0c5',
 );
 const _password = 'password';
-const _connection = 'Mainnet (PROTO)';
+const _connection = 'Everscale';
 const _locale = 'ru_RU';
 
 const _accountsStorageData =

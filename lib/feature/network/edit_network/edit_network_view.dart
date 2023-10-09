@@ -411,7 +411,12 @@ class _EditNetworkViewState extends State<EditNetworkView> {
         ),
       ),
       child: SafeArea(
-        minimum: const EdgeInsets.all(DimensSize.d16),
+        minimum: const EdgeInsets.only(
+          bottom: DimensSize.d32,
+          left: DimensSize.d16,
+          right: DimensSize.d16,
+          top: DimensSize.d16,
+        ),
         child: SeparatedColumn(
           mainAxisSize: MainAxisSize.min,
           children: [
@@ -547,6 +552,7 @@ class _EditNetworkViewState extends State<EditNetworkView> {
         __________,
         ___________,
         ____________,
+        _____________,
       ) =>
           endpoints
               .map(
@@ -564,6 +570,7 @@ class _EditNetworkViewState extends State<EditNetworkView> {
         ________,
         _________,
         __________,
+        ___________,
       ) =>
           [
         TextEditingController(text: endpoint),
@@ -579,6 +586,7 @@ class _EditNetworkViewState extends State<EditNetworkView> {
         ________,
         _________,
         __________,
+        ___________,
       ) =>
           [
         TextEditingController(text: endpoint),
@@ -605,6 +613,7 @@ class _EditNetworkViewState extends State<EditNetworkView> {
         __________,
         ___________,
         ____________,
+        _____________,
       ) =>
           isLocal,
       proto: (
@@ -618,6 +627,7 @@ class _EditNetworkViewState extends State<EditNetworkView> {
         ________,
         _________,
         __________,
+        ___________,
       ) =>
           false,
       jrpc: (
@@ -631,6 +641,7 @@ class _EditNetworkViewState extends State<EditNetworkView> {
         ________,
         _________,
         __________,
+        ___________,
       ) =>
           false,
     );

@@ -82,8 +82,11 @@ class ConnectionsStorageService extends AbstractStorageService {
   }
 
   /// Put [ConnectionData] items to stream
-  Future<void> _streamedConnections() async =>
-      _connectionsSubject.add(await readConnections());
+  Future<void> _streamedConnections() async => _connectionsSubject.add(
+        [...(await readConnections())]..sort(
+            (a, b) => (a.sortingOrder - b.sortingOrder).sign.toInt(),
+          ),
+      );
 
   /// Put current connection id to stream
   Future<void> _streamedCurrentConnectionId() async =>
@@ -107,7 +110,17 @@ class ConnectionsStorageService extends AbstractStorageService {
           .toList();
 
       if (customConnections.isNotEmpty) {
-        connections = customConnections;
+        final persistentPresets = networkPresets.where(
+          (preset) => !preset.canBeEdited,
+        );
+        // Remove persistent presets from custom connections
+        customConnections.removeWhere(
+          (connection) =>
+              connection.isPreset && connection.canBeEdited == false,
+        );
+        // And add them from presets because we want to update them from
+        // code
+        connections = [...persistentPresets, ...customConnections];
       }
     }
 
