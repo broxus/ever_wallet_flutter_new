@@ -21,6 +21,7 @@ enum AppRoute {
     '/wallet',
     isSaveLocation: true,
     isBottomNavigationBarVisible: true,
+    overrideExtendScaffoldBody: true,
   ),
   selectNewAsset(
     '',
@@ -195,6 +196,7 @@ enum AppRoute {
     this.isSaveLocation = false,
     this.isBottomNavigationBarVisible = false,
     this.isSaveSubroutes = false,
+    this.overrideExtendScaffoldBody = false,
   });
 
   static final _log = Logger('AppRoute');
@@ -207,6 +209,10 @@ enum AppRoute {
 
   /// Should BottomNavigationBar be visible.
   final bool isBottomNavigationBarVisible;
+
+  /// Additional field that allows use [Scaffold.extendBody] in <RootView> to
+  /// hide content behind bottom nav bar.
+  final bool overrideExtendScaffoldBody;
 
   /// Should subroutes be saved and restored when user navigates between
   /// root routes. It's effective only for root routes
