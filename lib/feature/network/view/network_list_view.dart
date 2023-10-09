@@ -101,7 +101,12 @@ class _NetworkListViewState extends State<NetworkListView> {
         ),
       ),
       child: SafeArea(
-        minimum: const EdgeInsets.all(DimensSize.d16),
+        minimum: const EdgeInsets.only(
+          bottom: DimensSize.d32,
+          left: DimensSize.d16,
+          right: DimensSize.d16,
+          top: DimensSize.d16,
+        ),
         child: CommonButton.primary(
           text: widget.buttonText,
           onPressed: widget.onButtonPressed,
