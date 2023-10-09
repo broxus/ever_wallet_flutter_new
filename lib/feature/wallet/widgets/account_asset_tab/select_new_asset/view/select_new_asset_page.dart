@@ -5,7 +5,6 @@ import 'package:app/feature/widgets/change_notifier_listener.dart';
 import 'package:app/generated/generated.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:logging/logging.dart';
 import 'package:nekoton_repository/nekoton_repository.dart';
 import 'package:ui_components_lib/ui_components_lib.dart';
 
@@ -63,7 +62,6 @@ class _SelectNewAssetPageState extends State<SelectNewAssetPage> {
                       changeNotifier: focus,
                       builder: (context) {
                         final hasFocus = focus.hasFocus;
-                        Logger('TEST').finest('HAS FOCUS: $hasFocus');
 
                         if (hasFocus) return const SizedBox.shrink();
 
