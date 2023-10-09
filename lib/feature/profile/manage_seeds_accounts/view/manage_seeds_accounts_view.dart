@@ -33,6 +33,10 @@ class ManageSeedsAccountsView extends StatelessWidget {
                 child: SingleChildScrollView(
                   child: ShapedContainerColumn(
                     margin: EdgeInsets.zero,
+                    separator: const Padding(
+                      padding: EdgeInsets.symmetric(vertical: DimensSize.d4),
+                      child: CommonDivider(),
+                    ),
                     titleText: LocaleKeys.seedPhrases.tr(),
                     children: state.seeds
                         .map(

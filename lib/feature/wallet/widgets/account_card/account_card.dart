@@ -44,16 +44,15 @@ class AccountCard extends StatelessWidget {
                 separator: const CommonDivider(),
                 children: [
                   Expanded(
-                    child: Padding(
-                      padding: const EdgeInsets.symmetric(
-                            horizontal: DimensSize.d16,
-                          ) +
-                          const EdgeInsets.only(top: DimensSize.d16),
-                      child: Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [
-                          _walletDescriptionTile(walletName, custodians),
-                          Expanded(
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        _walletDescriptionTile(walletName, custodians),
+                        Expanded(
+                          child: Padding(
+                            padding: const EdgeInsets.symmetric(
+                              horizontal: DimensSize.d16,
+                            ),
                             child: Center(
                               child: balance == null
                                   ? const SizedBox.shrink()
@@ -63,8 +62,8 @@ class AccountCard extends StatelessWidget {
                                     ),
                             ),
                           ),
-                        ],
-                      ),
+                        ),
+                      ],
                     ),
                   ),
                   _addressTile(),
@@ -83,10 +82,10 @@ class AccountCard extends StatelessWidget {
         final colors = context.themeStyle.colors;
 
         return CommonListTile(
-          height: DimensSize.d72,
+          height: DimensSize.d64,
           padding: const EdgeInsets.symmetric(
             horizontal: DimensSize.d16,
-            vertical: DimensSize.d12,
+            vertical: DimensSize.d8,
           ),
           contentColor: colors.blue,
           titleChild: Text(
@@ -125,56 +124,66 @@ class AccountCard extends StatelessWidget {
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             Expanded(
-              child: SeparatedColumn(
-                separatorSize: DimensSize.d4,
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  Text(
-                    account.name,
-                    style: StyleRes.button.copyWith(color: colors.textPrimary),
-                  ),
-                  SeparatedRow(
-                    separatorSize: DimensSize.d4,
-                    children: [
-                      CommonIconWidget.svg(
-                        svg: Assets.images.accountType.path,
-                        color: colors.textSecondary,
-                      ),
-                      Text(
-                        walletName,
-                        style: StyleRes.addRegular.copyWith(
-                          color: colors.textSecondary,
-                        ),
-                      ),
-                      if (custodians != null) ...[
-                        const SizedBox(width: DimensSize.d12),
+              child: Padding(
+                padding: const EdgeInsets.symmetric(
+                      horizontal: DimensSize.d16,
+                    ) +
+                    const EdgeInsets.only(top: DimensSize.d16),
+                child: SeparatedColumn(
+                  separatorSize: DimensSize.d4,
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Text(
+                      account.name,
+                      style:
+                          StyleRes.button.copyWith(color: colors.textPrimary),
+                    ),
+                    SeparatedRow(
+                      separatorSize: DimensSize.d4,
+                      children: [
                         CommonIconWidget.svg(
-                          svg: Assets.images.persons.path,
+                          svg: Assets.images.accountType.path,
                           color: colors.textSecondary,
                         ),
-                        const SizedBox(width: DimensSize.d4),
                         Text(
-                          custodians,
-                          style: StyleRes.addRegular
-                              .copyWith(color: colors.textSecondary),
+                          walletName,
+                          style: StyleRes.addRegular.copyWith(
+                            color: colors.textSecondary,
+                          ),
                         ),
+                        if (custodians != null) ...[
+                          const SizedBox(width: DimensSize.d12),
+                          CommonIconWidget.svg(
+                            svg: Assets.images.persons.path,
+                            color: colors.textSecondary,
+                          ),
+                          const SizedBox(width: DimensSize.d4),
+                          Text(
+                            custodians,
+                            style: StyleRes.addRegular
+                                .copyWith(color: colors.textSecondary),
+                          ),
+                        ],
                       ],
-                    ],
-                  ),
-                ],
+                    ),
+                  ],
+                ),
               ),
             ),
-            CommonIconButton.svg(
-              svg: Assets.images.settings.path,
-              buttonType: EverButtonType.ghost,
-              color: colors.textSecondary,
-              size: CommonIconButtonSize.small,
-              onPressed: () => showAccountSettingsSheet(
-                context: context,
-                address: account.address,
-                showHiding: false,
-                seeInExplorer: true,
-                showCopyAddress: true,
+            Padding(
+              padding: const EdgeInsets.all(DimensSize.d4),
+              child: CommonIconButton.svg(
+                svg: Assets.images.settings.path,
+                buttonType: EverButtonType.ghost,
+                color: colors.textSecondary,
+                size: CommonIconButtonSize.small,
+                onPressed: () => showAccountSettingsSheet(
+                  context: context,
+                  address: account.address,
+                  showHiding: false,
+                  seeInExplorer: true,
+                  showCopyAddress: true,
+                ),
               ),
             ),
           ],
