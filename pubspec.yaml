@@ -75,7 +75,7 @@ dev_dependencies:
   freezed: ^2.4.1
   googleapis_auth: ^1.4.1
   hive_generator: ^2.0.0
-  injectable_generator: ^2.1.6
+  injectable_generator: ^2.4.1
   integration_test:
     sdk: flutter
   intl: ^0.18.0
