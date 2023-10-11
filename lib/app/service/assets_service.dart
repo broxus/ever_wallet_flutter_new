@@ -88,8 +88,8 @@ class AssetsService {
   }
 
   /// Returns stream, that contains 2 lists:
-  /// 1-st list of contracts available to create for account with [address]
-  /// 2-nd list of contracts, already created for account with [address].
+  /// 1-st list of contracts available to enable for account with [address]
+  /// 2-nd list of contracts, already enabled for account with [address].
   ///
   /// This is a combination of streams [contractsForAccount] and
   /// [contractsToCreateForAccount].
@@ -210,6 +210,7 @@ class AssetsService {
         totalSupply: tokenRootDetails.totalSupply,
         version: tokenRootDetails.version,
         networkType: transport.networkType,
+        isCustom: true,
       );
 
       await storage.addCustomTokenContractAsset(asset);
@@ -255,6 +256,7 @@ class AssetsService {
         token['networkType'] = transport.networkType.name;
         token['version'] =
             intToWalletContractConvert(token['version'] as int).toString();
+        token['isCustom'] = false;
       }
 
       final manifest = TonAssetsManifest.fromJson(decoded);
