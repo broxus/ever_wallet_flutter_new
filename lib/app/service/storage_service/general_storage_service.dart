@@ -176,12 +176,16 @@ class GeneralStorageService extends AbstractStorageService {
     final decoded = encoded.map(
       (key, value) => MapEntry(
         NetworkType.values[int.parse(key)],
-        (jsonDecode(value) as List<dynamic>)
-            .map(
-              (asset) =>
-                  TokenContractAsset.fromJson(asset as Map<String, dynamic>),
-            )
-            .toList(),
+        (jsonDecode(value) as List<dynamic>).map(
+          (asset) {
+            asset = asset as Map<String, dynamic>;
+            if (asset['isCustom'] == null) {
+              asset['isCustom'] = false;
+            }
+
+            return TokenContractAsset.fromJson(asset);
+          },
+        ).toList(),
       ),
     );
     _systemTokenContractAssetsSubject.add(decoded);
@@ -222,11 +226,16 @@ class GeneralStorageService extends AbstractStorageService {
     }
     final assetsList = jsonDecode(assets) as List<dynamic>;
 
-    return assetsList
-        .map(
-          (asset) => TokenContractAsset.fromJson(asset as Map<String, dynamic>),
-        )
-        .toList();
+    return assetsList.map(
+      (asset) {
+        asset = asset as Map<String, dynamic>;
+        if (asset['isCustom'] == null) {
+          asset['isCustom'] = false;
+        }
+
+        return TokenContractAsset.fromJson(asset);
+      },
+    ).toList();
   }
 
   /// Subject of custom token contract assets
@@ -249,12 +258,16 @@ class GeneralStorageService extends AbstractStorageService {
     final decoded = encoded.map(
       (key, value) => MapEntry(
         NetworkType.values[int.parse(key)],
-        (jsonDecode(value) as List<dynamic>)
-            .map(
-              (asset) =>
-                  TokenContractAsset.fromJson(asset as Map<String, dynamic>),
-            )
-            .toList(),
+        (jsonDecode(value) as List<dynamic>).map(
+          (asset) {
+            asset = asset as Map<String, dynamic>;
+            if (asset['isCustom'] == null) {
+              asset['isCustom'] = true;
+            }
+
+            return TokenContractAsset.fromJson(asset);
+          },
+        ).toList(),
       ),
     );
     _customTokenContractAssetsSubject.add(decoded);
@@ -273,11 +286,16 @@ class GeneralStorageService extends AbstractStorageService {
     }
     final assetsList = jsonDecode(assets) as List<dynamic>;
 
-    return assetsList
-        .map(
-          (asset) => TokenContractAsset.fromJson(asset as Map<String, dynamic>),
-        )
-        .toList();
+    return assetsList.map(
+      (asset) {
+        asset = asset as Map<String, dynamic>;
+        if (asset['isCustom'] == null) {
+          asset['isCustom'] = true;
+        }
+
+        return TokenContractAsset.fromJson(asset);
+      },
+    ).toList();
   }
 
   /// Add custom token contract asset to list of tokens with same type.

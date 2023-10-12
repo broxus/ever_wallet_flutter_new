@@ -1,10 +1,7 @@
-import 'package:app/app/service/service.dart';
 import 'package:app/data/models/models.dart';
-import 'package:app/di/di.dart';
 import 'package:app/feature/wallet/widgets/account_asset_tab/select_new_asset/select_new_asset.dart';
 import 'package:app/feature/wallet/widgets/account_asset_tab/token_wallet_asset/token_wallet_icon.dart';
 import 'package:app/generated/generated.dart';
-import 'package:collection/collection.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:ui_components_lib/ui_components_lib.dart';
@@ -12,14 +9,12 @@ import 'package:ui_components_lib/ui_components_lib.dart';
 /// Widget that allows user select asset(contract) from list of loaded assets.
 class SelectNewAssetSelectTab extends StatefulWidget {
   const SelectNewAssetSelectTab({
-    required this.createdAssets,
-    required this.assetsToCreate,
+    required this.contracts,
     required this.focus,
     super.key,
   });
 
-  final List<TokenContractAsset> createdAssets;
-  final List<TokenContractAsset> assetsToCreate;
+  final List<(TokenContractAsset, bool)> contracts;
   final FocusNode focus;
 
   @override
@@ -38,28 +33,8 @@ class _SelectNewAssetSelectTabState extends State<SelectNewAssetSelectTab> {
 
   @override
   Widget build(BuildContext context) {
-    final manifestAssets =
-        inject<AssetsService>().currentSystemTokenContractAssets;
-    final mappedAssets = Map.fromEntries(
-      manifestAssets.mapIndexed(
-        (index, contract) => MapEntry(contract.address, index),
-      ),
-    );
-    final assetsWidgets = [
-      ...widget.createdAssets
-          .map((e) => SelectNewAssetItem(asset: e, isSelected: true)),
-      ...widget.assetsToCreate.map((e) => SelectNewAssetItem(asset: e)),
-    ]..sort((a, b) {
-        final aIndex = mappedAssets[a.asset.address];
-        final bIndex = mappedAssets[b.asset.address];
-
-        // if index is null (asset is custom), move to the end
-        if (aIndex == null) return 1;
-        if (bIndex == null) return -1;
-
-        // sort according to manifest list
-        return aIndex.compareTo(bIndex);
-      });
+    final assetsWidgets = widget.contracts
+        .map((pair) => SelectNewAssetItem(asset: pair.$1, isSelected: pair.$2));
 
     return ValueListenableBuilder<TextEditingValue>(
       valueListenable: searchController,

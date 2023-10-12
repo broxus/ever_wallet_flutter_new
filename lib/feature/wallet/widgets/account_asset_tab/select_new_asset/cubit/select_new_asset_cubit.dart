@@ -5,6 +5,7 @@ import 'package:app/data/models/models.dart';
 import 'package:app/di/di.dart';
 import 'package:app/generated/generated.dart';
 import 'package:bloc/bloc.dart';
+import 'package:collection/collection.dart';
 import 'package:freezed_annotation/freezed_annotation.dart';
 import 'package:nekoton_repository/nekoton_repository.dart' hide Message;
 
@@ -21,16 +22,48 @@ class SelectNewAssetCubit extends Cubit<SelectNewAssetState> {
     required this.address,
     required this.assetsService,
     required this.nekotonRepository,
-  }) : super(const SelectNewAssetState.data(tab: SelectNewAssetTabs.select)) {
+  }) : super(
+          const SelectNewAssetState.data(
+            tab: SelectNewAssetTabs.select,
+            isLoading: false,
+            showButton: false,
+          ),
+        ) {
     _seedSubscription = nekotonRepository.seedListStream.listen((list) {
       _cachedAccount = list.findAccountByAddress(address);
-      _updateState();
+
+      // ignore if we are in progress
+      final st = state;
+      if (st is _Data && !st.isLoading) _updateState();
     });
     _contractsSubscription = assetsService
         .allAvailableContractsForAccount(address)
         .listen((allContracts) {
-      _cachedContracts = allContracts;
-      _updateState();
+      final manifestAssets =
+          inject<AssetsService>().currentSystemTokenContractAssets;
+      final mappedAssets = Map.fromEntries(
+        manifestAssets.mapIndexed(
+          (index, contract) => MapEntry(contract.address, index),
+        ),
+      );
+      _originalContracts = [
+        ...allContracts.$2.map((e) => (e, true)),
+        ...allContracts.$1.map((e) => (e, false)),
+      ]..sort((a, b) {
+          final aIndex = mappedAssets[a.$1.address];
+          final bIndex = mappedAssets[b.$1.address];
+
+          // if index is null (asset is custom), move to the end
+          if (aIndex == null) return 1;
+          if (bIndex == null) return -1;
+
+          // sort according to manifest list
+          return aIndex.compareTo(bIndex);
+        });
+
+      // ignore if we are in progress
+      final st = state;
+      if (st is _Data && !st.isLoading) _updateState();
     });
   }
 
@@ -43,16 +76,35 @@ class SelectNewAssetCubit extends Cubit<SelectNewAssetState> {
 
   KeyAccount? _cachedAccount;
 
-  /// Left - available to create, right - created
-  (List<TokenContractAsset>, List<TokenContractAsset>)? _cachedContracts;
+  /// Left - contract, right - if it is already enabled
+  List<(TokenContractAsset, bool)> _originalContracts = [];
+
+  /// List of contracts from [_originalContracts] that should be enabled or
+  /// disabled when user decides to save changes
+  final _contractsToDisable = <Address>[];
+  final _contractsToEnable = <Address>[];
 
   void changeTab(SelectNewAssetTabs tab) {
-    if (tab == state.tab) return;
+    final st = state;
+    if (st is _Data) {
+      if (tab == st.tab) return;
 
-    emit(state.copyWith(tab: tab));
+      emit(st.copyWith(tab: tab));
+    }
   }
 
   Future<void> enableAsset(Address address) async {
+    if (_originalEnabled(address)) {
+      // original is enabled, so we came from toRemove state
+      _contractsToDisable.remove(address);
+    } else {
+      // original is disabled, so we want add it
+      _contractsToEnable.add(address);
+    }
+    _updateState();
+  }
+
+  Future<void> addCustom(Address address) async {
     final isValid = await validateAddress(address);
     if (isValid) {
       await _cachedAccount?.addTokenWallet(address);
@@ -63,18 +115,71 @@ class SelectNewAssetCubit extends Cubit<SelectNewAssetState> {
     }
   }
 
+  /// Returns true, if contract was enabled in original, null if there is no
+  /// such contract.
+  bool _originalEnabled(Address address) =>
+      _originalContracts.firstWhereOrNull((c) => c.$1.address == address)?.$2 ??
+      false;
+
+  /// Returns true, if contract was disabled in original, null if there is no
+  /// such contract.
+  bool _originalDisabled(Address address) => !(_originalContracts
+          .firstWhereOrNull((c) => c.$1.address == address)
+          ?.$2 ??
+      true);
+
   void disableAsset(Address address) {
-    _cachedAccount?.removeTokenWallet(address);
+    if (_originalDisabled(address)) {
+      // original is disabled, so we came from toAdd state
+      _contractsToEnable.remove(address);
+    } else {
+      // original is enabled, so we want remove it
+      _contractsToDisable.add(address);
+    }
+    _updateState();
   }
 
-  void _updateState() {
-    emit(
-      state.copyWith(
-        account: _cachedAccount,
-        contracts: _cachedContracts,
-        tab: SelectNewAssetTabs.select,
-      ),
-    );
+  Future<void> saveChanges() async {
+    _updateState(true);
+    for (final addr in _contractsToEnable) {
+      await _cachedAccount?.addTokenWallet(addr);
+    }
+    for (final addr in _contractsToDisable) {
+      await _cachedAccount?.removeTokenWallet(addr);
+    }
+
+    emit(const SelectNewAssetState.completed());
+  }
+
+  void _updateState([bool isLoading = false]) {
+    final st = state;
+    if (st is _Data) {
+      emit(
+        st.copyWith(
+          isLoading: isLoading,
+          account: _cachedAccount,
+          contracts:
+              _originalContracts.map((e) => (e.$1, _contractState(e))).toList(),
+          showButton:
+              _contractsToEnable.isNotEmpty || _contractsToDisable.isNotEmpty,
+          tab: SelectNewAssetTabs.select,
+        ),
+      );
+    }
+  }
+
+  bool _contractState((TokenContractAsset, bool) pair) {
+    // original is enabled and we want disable it
+    if (pair.$2 && _contractsToDisable.contains(pair.$1.address)) {
+      return false;
+    }
+    // original is disabled and we want enable it
+    if (!pair.$2 && _contractsToEnable.contains(pair.$1.address)) {
+      return true;
+    }
+
+    // state didnt change locally, return original
+    return pair.$2;
   }
 
   @override

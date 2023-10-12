@@ -37,7 +37,11 @@ extension TokenContractAssetX on TokenContractAsset {
 }
 
 extension TokenContractAssetDtoX on TokenContractAssetDto {
-  TokenContractAsset toModel(NetworkType type) => TokenContractAsset(
+  TokenContractAsset toModel({
+    required NetworkType type,
+    required bool isCustom,
+  }) =>
+      TokenContractAsset(
         name: name,
         chainId: chainId,
         symbol: symbol,
@@ -46,6 +50,7 @@ extension TokenContractAssetDtoX on TokenContractAssetDto {
         logoURI: logoURI,
         version: intToWalletContractConvert(version),
         networkType: type,
+        isCustom: isCustom,
       );
 }
 
