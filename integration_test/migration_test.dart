@@ -252,7 +252,7 @@ void main() {
 
     expect(
       await storage.readSystemTokenContractAssets(NetworkType.venom),
-      [_venomContractAssetCustom],
+      [_venomContractAssetSystem],
     );
     expect(
       storage.getSystemTokenContractAssets(NetworkType.venom),
