@@ -49,7 +49,7 @@ dependencies:
   path_provider: ^2.1.1
   permission_handler: ^11.0.1
   rxdart: ^0.27.7
-  share_plus: 7.0.2
+  share_plus: 7.1.0
   shared_preferences: ^2.2.2
   string_extensions: ^0.6.12
   ui_components_lib:
