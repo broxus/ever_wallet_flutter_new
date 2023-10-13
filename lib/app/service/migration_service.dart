@@ -263,12 +263,12 @@ class HiveSourceMigration {
 
   List<TokenContractAsset> get everSystemTokenContractAssets =>
       _everSystemTokenContractAssetsBox.values
-          .map((e) => e.toModel(NetworkType.ever))
+          .map((e) => e.toModel(type: NetworkType.ever, isCustom: false))
           .toList();
 
   List<TokenContractAsset> get venomSystemTokenContractAssets =>
       _venomSystemTokenContractAssetsBox.values
-          .map((e) => e.toModel(NetworkType.venom))
+          .map((e) => e.toModel(type: NetworkType.venom, isCustom: false))
           .toList();
 
   Future<void> updateEverSystemTokenContractAssets(
@@ -289,12 +289,12 @@ class HiveSourceMigration {
 
   List<TokenContractAsset> get everCustomTokenContractAssets =>
       _everCustomTokenContractAssetsBox.values
-          .map((e) => e.toModel(NetworkType.ever))
+          .map((e) => e.toModel(type: NetworkType.ever, isCustom: true))
           .toList();
 
   List<TokenContractAsset> get venomCustomTokenContractAssets =>
       _venomCustomTokenContractAssetsBox.values
-          .map((e) => e.toModel(NetworkType.venom))
+          .map((e) => e.toModel(type: NetworkType.venom, isCustom: true))
           .toList();
 
   Future<void> addEverCustomTokenContractAsset(

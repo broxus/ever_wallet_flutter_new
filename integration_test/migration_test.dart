@@ -44,7 +44,7 @@ final _browserTab = BrowserTab(
   sortingOrder: -1,
   id: '0',
 );
-const _everContractAsset = TokenContractAsset(
+const _everContractAssetCustom = TokenContractAsset(
   name: 'Staked Ever',
   chainId: 1,
   symbol: 'stEVER',
@@ -53,12 +53,28 @@ const _everContractAsset = TokenContractAsset(
     address:
         '0:6d42d0bc4a6568120ea88bf642edb653d727cfbd35868c47877532de128e71f2',
   ),
+  isCustom: true,
   logoURI:
       'https://raw.githubusercontent.com/broxus/ton-assets/master/icons/stEVER/logo.svg',
   version: TokenWalletVersion.tip3,
   networkType: NetworkType.ever,
 );
-const _venomContractAsset = TokenContractAsset(
+const _everContractAssetSystem = TokenContractAsset(
+  name: 'Staked Ever',
+  chainId: 1,
+  symbol: 'stEVER',
+  decimals: 9,
+  address: Address(
+    address:
+        '0:6d42d0bc4a6568120ea88bf642edb653d727cfbd35868c47877532de128e71f2',
+  ),
+  isCustom: false,
+  logoURI:
+      'https://raw.githubusercontent.com/broxus/ton-assets/master/icons/stEVER/logo.svg',
+  version: TokenWalletVersion.tip3,
+  networkType: NetworkType.ever,
+);
+const _venomContractAssetCustom = TokenContractAsset(
   name: 'Tether USD',
   chainId: 1,
   symbol: 'USDT',
@@ -67,6 +83,22 @@ const _venomContractAsset = TokenContractAsset(
     address:
         '0:20470e6a6e33aa696263b5702608d69e3317c23bf20c2f921b38d6588c555603',
   ),
+  isCustom: true,
+  logoURI:
+      'https://raw.githubusercontent.com/BVFDT/venom-assets/master/icons/USDT/logo.svg',
+  version: TokenWalletVersion.tip3,
+  networkType: NetworkType.venom,
+);
+const _venomContractAssetSystem = TokenContractAsset(
+  name: 'Tether USD',
+  chainId: 1,
+  symbol: 'USDT',
+  decimals: 6,
+  address: Address(
+    address:
+        '0:20470e6a6e33aa696263b5702608d69e3317c23bf20c2f921b38d6588c555603',
+  ),
+  isCustom: false,
   logoURI:
       'https://raw.githubusercontent.com/BVFDT/venom-assets/master/icons/USDT/logo.svg',
   version: TokenWalletVersion.tip3,
@@ -147,10 +179,12 @@ Future<void> _fillHive(HiveSourceMigration migration) async {
     key: '__core__keystore',
     value: _keystoreStorageData,
   );
-  await migration.updateEverSystemTokenContractAssets([_everContractAsset]);
-  await migration.updateVenomSystemTokenContractAssets([_venomContractAsset]);
-  await migration.addEverCustomTokenContractAsset(_everContractAsset);
-  await migration.addVenomCustomTokenContractAsset(_venomContractAsset);
+  await migration
+      .updateEverSystemTokenContractAssets([_everContractAssetSystem]);
+  await migration
+      .updateVenomSystemTokenContractAssets([_venomContractAssetSystem]);
+  await migration.addEverCustomTokenContractAsset(_everContractAssetCustom);
+  await migration.addVenomCustomTokenContractAsset(_venomContractAssetCustom);
   await migration.setLocale(_locale);
   await migration.setIsBiometryEnabled(isEnabled: true);
   await migration.setPermissions(origin: 'origin', permissions: _permissions);
@@ -209,39 +243,39 @@ void main() {
     /// System contracts
     expect(
       await storage.readSystemTokenContractAssets(NetworkType.ever),
-      [_everContractAsset],
+      [_everContractAssetSystem],
     );
     expect(
       storage.getSystemTokenContractAssets(NetworkType.ever),
-      [_everContractAsset],
+      [_everContractAssetSystem],
     );
 
     expect(
       await storage.readSystemTokenContractAssets(NetworkType.venom),
-      [_venomContractAsset],
+      [_venomContractAssetSystem],
     );
     expect(
       storage.getSystemTokenContractAssets(NetworkType.venom),
-      [_venomContractAsset],
+      [_venomContractAssetSystem],
     );
 
     /// Custom contracts
     expect(
       await storage.readCustomTokenContractAssets(NetworkType.ever),
-      [_everContractAsset],
+      [_everContractAssetCustom],
     );
     expect(
       storage.getCustomTokenContractAssets(NetworkType.ever),
-      [_everContractAsset],
+      [_everContractAssetCustom],
     );
 
     expect(
       await storage.readCustomTokenContractAssets(NetworkType.venom),
-      [_venomContractAsset],
+      [_venomContractAssetCustom],
     );
     expect(
       storage.getCustomTokenContractAssets(NetworkType.venom),
-      [_venomContractAsset],
+      [_venomContractAssetCustom],
     );
 
     /// Currencies

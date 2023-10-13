@@ -5,6 +5,7 @@ import 'package:app/feature/widgets/change_notifier_listener.dart';
 import 'package:app/generated/generated.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:go_router/go_router.dart';
 import 'package:nekoton_repository/nekoton_repository.dart';
 import 'package:ui_components_lib/ui_components_lib.dart';
 
@@ -46,55 +47,80 @@ class _SelectNewAssetPageState extends State<SelectNewAssetPage> {
             assetsService: inject<AssetsService>(),
             nekotonRepository: inject<NekotonRepository>(),
           ),
-          child: BlocBuilder<SelectNewAssetCubit, SelectNewAssetState>(
+          child: BlocConsumer<SelectNewAssetCubit, SelectNewAssetState>(
+            listener: (context, state) {
+              state.whenOrNull(completed: () => context.pop());
+            },
             builder: (context, state) {
-              final contracts = state.contracts;
-
-              return Padding(
-                padding: const EdgeInsets.symmetric(
-                  horizontal: DimensSize.d16,
-                  vertical: DimensSize.d12,
-                ),
-                child: SeparatedColumn(
-                  mainAxisSize: MainAxisSize.min,
-                  children: [
-                    ChangeNotifierListener(
-                      changeNotifier: focus,
-                      builder: (context) {
-                        final hasFocus = focus.hasFocus;
-
-                        if (hasFocus) return const SizedBox.shrink();
-
-                        return CommonTabSwitcher<SelectNewAssetTabs>(
-                          onTabChanged:
-                              context.read<SelectNewAssetCubit>().changeTab,
-                          values: [
-                            CommonTabSwitcherItem(
-                              title: LocaleKeys.searchWord.tr(),
-                              value: SelectNewAssetTabs.select,
-                            ),
-                            CommonTabSwitcherItem(
-                              title: LocaleKeys.customToken.tr(),
-                              value: SelectNewAssetTabs.custom,
-                            ),
-                          ],
-                          currentValue: state.tab,
-                        );
-                      },
+              return state.when(
+                completed: () => const SizedBox.shrink(),
+                data: (tab, isLoading, showButton, account, contracts) {
+                  return Padding(
+                    padding: const EdgeInsets.symmetric(
+                      horizontal: DimensSize.d16,
+                      vertical: DimensSize.d12,
                     ),
-                    Expanded(
-                      child: switch (state.tab) {
-                        SelectNewAssetTabs.select => SelectNewAssetSelectTab(
-                            focus: focus,
-                            assetsToCreate: contracts?.$1 ?? [],
-                            createdAssets: contracts?.$2 ?? [],
+                    child: SeparatedColumn(
+                      mainAxisSize: MainAxisSize.min,
+                      children: [
+                        ChangeNotifierListener(
+                          changeNotifier: focus,
+                          builder: (context) {
+                            final hasFocus = focus.hasFocus;
+
+                            if (hasFocus) return const SizedBox.shrink();
+
+                            return CommonTabSwitcher<SelectNewAssetTabs>(
+                              onTabChanged:
+                                  context.read<SelectNewAssetCubit>().changeTab,
+                              values: [
+                                CommonTabSwitcherItem(
+                                  title: LocaleKeys.searchWord.tr(),
+                                  value: SelectNewAssetTabs.select,
+                                ),
+                                CommonTabSwitcherItem(
+                                  title: LocaleKeys.customToken.tr(),
+                                  value: SelectNewAssetTabs.custom,
+                                ),
+                              ],
+                              currentValue: tab,
+                            );
+                          },
+                        ),
+                        Expanded(
+                          child: switch (tab) {
+                            SelectNewAssetTabs.select =>
+                              SelectNewAssetSelectTab(
+                                focus: focus,
+                                contracts: contracts ?? [],
+                              ),
+                            SelectNewAssetTabs.custom =>
+                              SelectNewAssetCustomEnter(
+                                focus: focus,
+                                contracts: (contracts ?? [])
+                                    .where((c) => c.$1.isCustom)
+                                    .toList(),
+                              ),
+                          },
+                        ),
+                        AnimatedSize(
+                          duration: defaultAnimationDuration,
+                          child: SizedBox(
+                            height: showButton ? commonButtonHeight : 0.0,
+                            child: CommonButton.primary(
+                              fillWidth: true,
+                              isLoading: isLoading,
+                              text: LocaleKeys.saveWord.tr(),
+                              onPressed: () => context
+                                  .read<SelectNewAssetCubit>()
+                                  .saveChanges(),
+                            ),
                           ),
-                        SelectNewAssetTabs.custom =>
-                          SelectNewAssetCustomEnter(focus: focus),
-                      },
+                        ),
+                      ],
                     ),
-                  ],
-                ),
+                  );
+                },
               );
             },
           ),
