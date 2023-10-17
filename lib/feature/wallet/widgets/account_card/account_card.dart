@@ -55,7 +55,7 @@ class AccountCard extends StatelessWidget {
                             ),
                             child: Center(
                               child: balance == null
-                                  ? const SizedBox.shrink()
+                                  ? _balanceLoader()
                                   : MoneyWidget(
                                       money: balance,
                                       style: MoneyWidgetStyle.primary,
@@ -73,6 +73,23 @@ class AccountCard extends StatelessWidget {
           );
         },
       ),
+    );
+  }
+
+  Widget _balanceLoader() {
+    return SeparatedRow(
+      separatorSize: DimensSize.d4,
+      mainAxisSize: MainAxisSize.min,
+      children: const [
+        CommonLoader(
+          width: DimensSize.d132,
+          height: DimensSize.d48,
+        ),
+        CommonLoader(
+          width: DimensSize.d32,
+          height: DimensSize.d20,
+        ),
+      ],
     );
   }
 
