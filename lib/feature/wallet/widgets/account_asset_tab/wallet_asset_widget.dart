@@ -33,6 +33,7 @@ class WalletAssetWidget extends StatelessWidget {
               style: MoneyWidgetStyle.primary,
             ),
       subtitleChild: fiatBalance == null
+          // ignore: no-magic-number
           ? _loader(2)
           : MoneyWidget(
               money: fiatBalance!,
