@@ -7,6 +7,7 @@ export 'common_circular_loading_indicator.dart';
 export 'common_divider.dart';
 export 'common_icon.dart';
 export 'common_list_tile.dart';
+export 'common_loader.dart';
 export 'common_padding.dart';
 export 'common_tab_swither.dart';
 export 'container/container.dart';

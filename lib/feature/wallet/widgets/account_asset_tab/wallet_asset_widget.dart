@@ -27,19 +27,31 @@ class WalletAssetWidget extends StatelessWidget {
     return CommonListTile(
       leading: icon,
       titleChild: tokenBalance == null
-          ? const SizedBox.shrink()
+          ? _loader(1)
           : MoneyWidget(
               money: tokenBalance!,
               style: MoneyWidgetStyle.primary,
             ),
       subtitleChild: fiatBalance == null
-          ? const SizedBox.shrink()
+          // ignore: no-magic-number
+          ? _loader(2)
           : MoneyWidget(
               money: fiatBalance!,
               style: MoneyWidgetStyle.secondary,
             ),
       onPressed: onPressed,
       trailing: CommonIconWidget.svg(svg: Assets.images.caretRight.path),
+    );
+  }
+
+  Widget _loader(int part) {
+    return LayoutBuilder(
+      builder: (context, constraints) {
+        return CommonLoader(
+          width: constraints.maxWidth / part,
+          height: DimensSize.d16,
+        );
+      },
     );
   }
 }

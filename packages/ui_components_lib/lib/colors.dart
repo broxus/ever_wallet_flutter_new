@@ -13,6 +13,7 @@ class ColorsPalette {
     required this.appBackground,
     required this.backgroundPrimary,
     required this.backgroundSecondary,
+    required this.loading,
     required this.strokePrimary,
     required this.strokeSecondary,
     required this.strokeContrast,
@@ -38,6 +39,7 @@ class ColorsPalette {
   final Color appBackground;
   final Color backgroundPrimary;
   final Color backgroundSecondary;
+  final Color loading;
 
   /// Stroke
   final Color strokePrimary;
@@ -92,6 +94,8 @@ class ColorsRes {
   static const grey = Color(0xFFB3B3B3);
   static const grey898989 = Color(0xFF898989);
   static const greyE2E2E2 = Color(0xFFE2E2E2);
+  static const greyE4E4E4 = Color(0xFFE4E4E4);
+  static const grey3C3C3C = Color(0xFF3C3C3C);
 
   static const redLight = Color(0xFFF32929);
   static const redDark = Color(0xFFEC4C4C);
