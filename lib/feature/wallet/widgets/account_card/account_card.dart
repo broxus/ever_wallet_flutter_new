@@ -26,10 +26,11 @@ class AccountCard extends StatelessWidget {
   Widget build(BuildContext context) {
     return BlocProvider(
       create: (_) => AccountCardCubit(
-        inject<NekotonRepository>(),
-        account,
-        inject<BalanceService>(),
-        inject<CurrencyConvertService>(),
+        nekotonRepository: inject<NekotonRepository>(),
+        account: account,
+        balanceService: inject<BalanceService>(),
+        currencyConvertService: inject<CurrencyConvertService>(),
+        balanceStorage: inject(),
       ),
       child: BlocBuilder<AccountCardCubit, AccountCardState>(
         builder: (context, state) {

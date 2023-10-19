@@ -1,3 +1,4 @@
+export 'account_balance.dart';
 export 'account_interaction.dart';
 export 'account_removed_event.dart';
 export 'approval_request.dart';

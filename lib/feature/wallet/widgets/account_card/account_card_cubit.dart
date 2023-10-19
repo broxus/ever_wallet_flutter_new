@@ -17,12 +17,13 @@ const _withdrawUpdateDebounce = Duration(seconds: 3);
 /// Cubit that will be listen for subscriptions from [NekotonRepository] and
 /// provides [TonWallet] to ui.
 class AccountCardCubit extends Cubit<AccountCardState> {
-  AccountCardCubit(
-    this.nekotonRepository,
-    this.account,
-    this.balanceService,
-    this.currencyConvertService,
-  ) : super(
+  AccountCardCubit({
+    required this.nekotonRepository,
+    required this.account,
+    required this.balanceService,
+    required this.currencyConvertService,
+    required this.balanceStorage,
+  }) : super(
           AccountCardState.data(
             account: account,
             walletName: _walletName(nekotonRepository, account),
@@ -32,11 +33,14 @@ class AccountCardCubit extends Cubit<AccountCardState> {
       final wl = wallets.firstWhereOrNull((w) => w.address == account.address);
       if (wl != null) _initWallet(wl);
     });
+    final balance = balanceStorage.overallBalance[account.address];
+    if (balance != null) _cachedFiatBalance = balance;
   }
 
   final CurrencyConvertService currencyConvertService;
   final BalanceService balanceService;
   final NekotonRepository nekotonRepository;
+  final BalanceStorageService balanceStorage;
   final KeyAccount account;
 
   late StreamSubscription<List<TonWallet>> _walletsSubscription;
@@ -71,9 +75,13 @@ class AccountCardCubit extends Cubit<AccountCardState> {
       if (fiat == Fixed.zero && _cachedFiatBalance == Fixed.zero) {
         return;
       }
-
       _cachedFiatBalance = fiat;
       _updateWalletData(w);
+
+      balanceStorage.setOverallBalance(
+        accountAddress: account.address,
+        balance: fiat,
+      );
     });
 
     _updateWalletData(w);

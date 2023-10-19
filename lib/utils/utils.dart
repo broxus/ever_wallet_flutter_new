@@ -1,3 +1,4 @@
+import 'dart:convert';
 import 'dart:io';
 
 import 'package:app/app/service/service.dart';
@@ -25,6 +26,19 @@ class _TimestampFromStringJsonConverter
   @override
   String toJson(DateTime object) =>
       dateSecondsSinceEpochJsonConverter.toJson(object).toString();
+}
+
+const moneyFromStringJsonConverter = _MoneyFromStringJsonConverter();
+
+class _MoneyFromStringJsonConverter extends JsonConverter<Money, String> {
+  const _MoneyFromStringJsonConverter();
+
+  @override
+  Money fromJson(String json) =>
+      MoneyImprover.fromJson(jsonDecode(json) as Map<String, dynamic>);
+
+  @override
+  String toJson(Money object) => jsonEncode(object.toJson());
 }
 
 class NtpTime {
