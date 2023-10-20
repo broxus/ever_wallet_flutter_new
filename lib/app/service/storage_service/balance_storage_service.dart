@@ -4,6 +4,7 @@ import 'package:app/app/service/service.dart';
 import 'package:app/data/models/models.dart';
 import 'package:encrypted_storage/encrypted_storage.dart';
 import 'package:injectable/injectable.dart';
+import 'package:logging/logging.dart';
 import 'package:nekoton_repository/nekoton_repository.dart';
 import 'package:rxdart/rxdart.dart';
 
@@ -13,6 +14,8 @@ const _balancesDomain = 'balancesDomain';
 @singleton
 class BalanceStorageService extends AbstractStorageService {
   BalanceStorageService(this._storage);
+
+  static final _logger = Logger('BalanceStorageService');
 
   /// Storage that is used to store data
   final EncryptedStorage _storage;
@@ -63,12 +66,16 @@ class BalanceStorageService extends AbstractStorageService {
     required Address accountAddress,
     required Fixed balance,
   }) async {
-    await _storage.set(
-      accountAddress.address,
-      jsonEncode(balance.toJson()),
-      domain: _overallBalancesDomain,
-    );
-    await _streamedOverallBalance();
+    try {
+      await _storage.set(
+        accountAddress.address,
+        jsonEncode(balance.toJson()),
+        domain: _overallBalancesDomain,
+      );
+      await _streamedOverallBalance();
+    } catch (e, t) {
+      _logger.severe('setOverallBalance', e, t);
+    }
   }
 
   /// Delete overall balances
@@ -123,22 +130,26 @@ class BalanceStorageService extends AbstractStorageService {
     required Address accountAddress,
     required AccountBalanceModel balance,
   }) async {
-    var existedForAccount = balances[accountAddress];
+    try {
+      var existedForAccount = balances[accountAddress];
 
-    if (existedForAccount == null) {
-      existedForAccount = [balance];
-    } else {
-      existedForAccount
-        ..removeWhere((b) => b == balance)
-        ..add(balance);
+      if (existedForAccount == null) {
+        existedForAccount = [balance];
+      } else {
+        existedForAccount
+          ..removeWhere((b) => b.rootTokenContract == balance.rootTokenContract)
+          ..add(balance);
+      }
+
+      await _storage.set(
+        accountAddress.address,
+        jsonEncode(existedForAccount.map((b) => b.toJson()).toList()),
+        domain: _balancesDomain,
+      );
+      await _streamedOverallBalance();
+    } catch (e, t) {
+      _logger.severe('setBalances', e, t);
     }
-
-    await _storage.set(
-      accountAddress.address,
-      jsonEncode(existedForAccount.map((b) => b.toJson()).toList()),
-      domain: _balancesDomain,
-    );
-    await _streamedOverallBalance();
   }
 
   /// Delete token balances

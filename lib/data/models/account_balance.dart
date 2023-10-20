@@ -19,14 +19,6 @@ class AccountBalanceModel with _$AccountBalanceModel {
 
   factory AccountBalanceModel.fromJson(Map<String, dynamic> json) =>
       _$AccountBalanceModelFromJson(json);
-
-  @override
-  int get hashCode => rootTokenContract.hashCode;
-
-  @override
-  bool operator ==(Object other) =>
-      other is AccountBalanceModel &&
-      other.rootTokenContract == rootTokenContract;
 }
 
 extension AccountBalancesExt on List<AccountBalanceModel> {
