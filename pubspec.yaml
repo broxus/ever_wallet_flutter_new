@@ -65,7 +65,7 @@ dev_dependencies:
       url: https://github.com/broxus/flutter_templates.git
       ref: main
   build_runner: ^2.4.6
-  custom_lint: ^0.5.3
+  custom_lint: ^0.5.4
   datetime_avoid_lint:
     path: packages/datetime_avoid_lint
   flutter_gen_runner: ^5.3.2
