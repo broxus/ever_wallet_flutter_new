@@ -37,27 +37,13 @@ Future<void> bootstrap(
 ) async {
   final log = Logger('bootstrap');
 
+  await configureDi();
+
+  await inject<BootstrapService>().init(appBuildType);
+
   await runZonedGuarded(
     () async {
       WidgetsFlutterBinding.ensureInitialized();
-
-      await configureDi();
-      await configureAppVersion();
-      await configureLogger(appBuildType);
-
-      await configureEncryptedStorage();
-      await configureNavigationService();
-      await migrateStorage();
-      await configureStorageServices();
-      await configureNtpService();
-      // SetUp nekoton after storage migrations
-      await configureNekoton();
-      await configureConnectionService();
-      await configureBiometry();
-
-      await configureFeatureServices();
-
-      await configureLocalization();
 
       FlutterError.onError = (details) {
         log.severe(details.exceptionAsString(), details, details.stack);

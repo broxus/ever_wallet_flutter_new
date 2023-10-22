@@ -456,5 +456,8 @@
   "goToWallet": "Go to wallet",
   "goToOnboarding": "Go to onboarding",
   "areYouSure": "Are you sure?",
-  "logoutConfirmText": "Make sure you saved the seed phrase, otherwise you will lose access to your seeds, keys and accounts."
+  "logoutConfirmText": "Make sure you saved the seed phrase, otherwise you will lose access to your seeds, keys and accounts.",
+  "initializationRerunFailed": "Initialization rerun failed",
+  "initializationFailedDescription": "App initialization failed, please, try again later",
+  "tryAgain": "Try again"
 }
