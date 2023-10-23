@@ -33,8 +33,18 @@ class AccountCardCubit extends Cubit<AccountCardState> {
       final wl = wallets.firstWhereOrNull((w) => w.address == account.address);
       if (wl != null) _initWallet(wl);
     });
+
     final balance = balanceStorage.overallBalance[account.address];
-    if (balance != null) _cachedFiatBalance = balance;
+    if (balance != null) {
+      _cachedFiatBalance = balance;
+      emit(
+        AccountCardState.data(
+          account: account,
+          walletName: _walletName(nekotonRepository, account),
+          balance: currencyConvertService.convert(balance),
+        ),
+      );
+    }
   }
 
   final CurrencyConvertService currencyConvertService;
