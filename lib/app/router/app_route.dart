@@ -11,7 +11,7 @@ final RegExp _parameterRegExp = RegExp(r':(\w+)(\((?:\\.|[^\\()])+\))?');
 enum AppRoute {
   bootstrapFailedInit(
     'bootstrapFailed',
-    '/bootstrapFailed:$bootstrapFailedIndexPathParam',
+    '/bootstrapFailed/:$bootstrapFailedIndexPathParam',
   ),
 
   onboarding(
@@ -409,7 +409,6 @@ extension NavigationHelper on BuildContext {
       resultLocation =
           resultLocation.replace(path: '${resultLocation.path}/$location');
     }
-
     return GoRouter.of(this).go(
       Uri.decodeComponent(resultLocation.toString()),
     );

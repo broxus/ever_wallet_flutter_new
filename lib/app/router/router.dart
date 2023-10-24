@@ -36,7 +36,8 @@ GoRouter getRouter(BuildContext _) {
   }) {
     final currentRoute = getRootAppRoute(fullPath: fullPath);
 
-    if (step != BootstrapSteps.completed) {
+    if (step != BootstrapSteps.completed &&
+        currentRoute != AppRoute.bootstrapFailedInit) {
       return AppRoute.bootstrapFailedInit.pathWithData(
         pathParameters: {bootstrapFailedIndexPathParam: step.index.toString()},
       );
