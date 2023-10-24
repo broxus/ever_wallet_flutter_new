@@ -1,4 +1,4 @@
-import 'package:app/app/router/app_route.dart';
+import 'package:app/app/router/router.dart';
 import 'package:app/app/service/service.dart';
 import 'package:app/feature/bootstrap_failed/bootstrap_failed.dart';
 import 'package:go_router/go_router.dart';
@@ -14,5 +14,8 @@ GoRoute get bootstrapFailedRoute {
         state.pathParameters[bootstrapFailedIndexPathParam]!,
       )],
     ),
+    routes: [
+      configureNetworksRoute,
+    ],
   );
 }

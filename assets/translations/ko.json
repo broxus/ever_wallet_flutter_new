@@ -459,5 +459,6 @@
   "logoutConfirmText": "Make sure you saved the seed phrase, otherwise you will lose access to your seeds, keys and accounts.",
   "initializationRerunFailed": "Initialization rerun failed",
   "initializationFailedDescription": "App initialization failed, please, try again later",
-  "tryAgain": "Try again"
+  "tryAgain": "Try again",
+  "connectingNetworkFailed": "Connecting network failed, please, try another network."
 }

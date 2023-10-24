@@ -23,7 +23,12 @@ Future<void> showSelectNetworkSheet({
 }
 
 class SelectNetworkSheet extends StatefulWidget {
-  const SelectNetworkSheet({super.key});
+  const SelectNetworkSheet({
+    this.needPopAfterAction = true,
+    super.key,
+  });
+
+  final bool needPopAfterAction;
 
   @override
   State<SelectNetworkSheet> createState() => _SelectNetworkSheetState();
@@ -55,11 +60,13 @@ class _SelectNetworkSheetState extends State<SelectNetworkSheet> {
     context.read<ManageNetworksBloc>().add(
           ManageNetworksEvent.updateCurrentConnectionId(id: connection.id),
         );
-    Navigator.of(context).pop();
+
+    if (widget.needPopAfterAction) Navigator.of(context).pop();
   }
 
   void _onButtonPressed() {
-    Navigator.of(context).pop();
+    if (widget.needPopAfterAction) Navigator.of(context).pop();
+
     context.goFurther(
       AppRoute.configureNetworks.path,
     );

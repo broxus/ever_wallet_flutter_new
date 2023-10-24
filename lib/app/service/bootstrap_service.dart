@@ -75,7 +75,7 @@ class BootstrapService {
 
       _bootstrapStepSubject.add(BootstrapSteps.completed);
     } catch (e, t) {
-      _log.severe('rerunFailedSteps', e, t);
+      _log.severe('rerunFailedSteps:${failedStep.name}', e, t);
       // update ui
       _bootstrapStepSubject.add(failedStep);
 
@@ -99,7 +99,6 @@ class BootstrapService {
     await configureNtpService();
     // SetUp nekoton after storage migrations
     await configureNekoton();
-    await configureLocalization();
     await configureBiometry();
   }
 

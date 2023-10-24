@@ -2,9 +2,11 @@ import 'package:app/app/service/nekoton_related/connection_service/transport_str
 import 'package:app/app/service/service.dart';
 import 'package:app/data/models/connection_data.dart';
 import 'package:app/data/models/network_type.dart';
+import 'package:app/di/di.dart';
+import 'package:app/generated/generated.dart';
 import 'package:injectable/injectable.dart';
 import 'package:logging/logging.dart';
-import 'package:nekoton_repository/nekoton_repository.dart';
+import 'package:nekoton_repository/nekoton_repository.dart' hide Message;
 
 /// This is a service that switches between connections by creating
 /// [Transport] and putting it in [NekotonRepository]. It has no public
@@ -43,74 +45,86 @@ class ConnectionService {
   // ignore: long-method
   Future<void> _updateTransportByConnection(ConnectionData connection) async {
     _log.finest('updateTransportByConnection: ${connection.name}');
-    final transport = await connection.when<Future<Transport>>(
-      gql: (
-        _,
-        name,
-        group,
-        endpoints,
-        timeout,
-        __,
-        isLocal,
-        ___,
-        ____,
-        _____,
-        ______,
-        _______,
-        ________,
-      ) =>
-          _nekotonRepository.createGqlTransport(
-        post: _httpService.postTransportData,
-        get: _httpService.getTransportData,
-        name: name,
-        group: group,
-        endpoints: endpoints,
-        local: isLocal,
-      ),
-      proto: (
-        _,
-        name,
-        group,
-        endpoint,
-        __,
-        ___,
-        ____,
-        _____,
-        ______,
-        _______,
-        ________,
-      ) =>
-          _nekotonRepository.createProtoTransport(
-        post: _httpService.postTransportDataBytes,
-        name: name,
-        group: group,
-        endpoint: endpoint,
-      ),
-      jrpc: (
-        _,
-        name,
-        group,
-        endpoint,
-        __,
-        ___,
-        ____,
-        _____,
-        ______,
-        _______,
-        ________,
-      ) =>
-          _nekotonRepository.createJrpcTransport(
-        post: _httpService.postTransportData,
-        name: name,
-        group: group,
-        endpoint: endpoint,
-      ),
-    );
+    try {
+      final transport = await connection.when<Future<Transport>>(
+        gql: (
+          _,
+          name,
+          group,
+          endpoints,
+          timeout,
+          __,
+          isLocal,
+          ___,
+          ____,
+          _____,
+          ______,
+          _______,
+          ________,
+        ) =>
+            _nekotonRepository.createGqlTransport(
+          post: _httpService.postTransportData,
+          get: _httpService.getTransportData,
+          name: name,
+          group: group,
+          endpoints: endpoints,
+          local: isLocal,
+        ),
+        proto: (
+          _,
+          name,
+          group,
+          endpoint,
+          __,
+          ___,
+          ____,
+          _____,
+          ______,
+          _______,
+          ________,
+        ) =>
+            _nekotonRepository.createProtoTransport(
+          post: _httpService.postTransportDataBytes,
+          name: name,
+          group: group,
+          endpoint: endpoint,
+        ),
+        jrpc: (
+          _,
+          name,
+          group,
+          endpoint,
+          __,
+          ___,
+          ____,
+          _____,
+          ______,
+          _______,
+          ________,
+        ) =>
+            _nekotonRepository.createJrpcTransport(
+          post: _httpService.postTransportData,
+          name: name,
+          group: group,
+          endpoint: endpoint,
+        ),
+      );
 
-    await _nekotonRepository.updateTransport(
-      _createStrategyByConnection(transport, connection),
-    );
-    _log.finest('updateTransportByConnection completed!');
+      await _nekotonRepository.updateTransport(
+        _createStrategyByConnection(transport, connection),
+      );
+      _log.finest('updateTransportByConnection completed!');
+    } catch (e, t) {
+      inject<MessengerService>().show(
+        Message.error(
+          message: LocaleKeys.connectingNetworkFailed.tr(),
+        ),
+      );
+      _log.severe('updateTransportByConnection', e, t);
+
+      // allow level above to track fail
+      rethrow;
+    }
   }
 
   /// Create TransportStrategy based on [ConnectionData.networkType] of
