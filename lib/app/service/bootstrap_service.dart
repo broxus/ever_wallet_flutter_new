@@ -56,6 +56,7 @@ class BootstrapService {
 
     if (failedStep == BootstrapSteps.completed) return;
 
+    // ignore: avoid-missing-enum-constant-in-map
     final steps = <BootstrapSteps, AsyncFunc>{
       BootstrapSteps.storage: storageStep,
       BootstrapSteps.connection: connectionStep,
