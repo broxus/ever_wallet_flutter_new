@@ -30,6 +30,7 @@ class TokenWalletAssetWidget extends StatelessWidget {
         balanceService: inject<BalanceService>(),
         currencyConvertService: inject<CurrencyConvertService>(),
         nekotonRepository: inject<NekotonRepository>(),
+        balanceStorage: inject(),
       ),
       child: BlocBuilder<TokenWalletAssetCubit, TokenWalletAssetState>(
         builder: (context, state) {

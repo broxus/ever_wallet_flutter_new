@@ -27,6 +27,19 @@ class _TimestampFromStringJsonConverter
       dateSecondsSinceEpochJsonConverter.toJson(object).toString();
 }
 
+const moneyFromStringJsonConverter = _MoneyFromStringJsonConverter();
+
+class _MoneyFromStringJsonConverter
+    extends JsonConverter<Money, Map<String, dynamic>> {
+  const _MoneyFromStringJsonConverter();
+
+  @override
+  Money fromJson(Map<String, dynamic> json) => MoneyImprover.fromJson(json);
+
+  @override
+  Map<String, dynamic> toJson(Money object) => object.toJson();
+}
+
 class NtpTime {
   NtpTime._();
 

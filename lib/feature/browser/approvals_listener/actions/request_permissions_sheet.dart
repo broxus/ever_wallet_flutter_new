@@ -122,10 +122,11 @@ class _RequestPermissionsSheetState extends State<RequestPermissionsSheet> {
   Widget _accountItem(KeyAccount account) {
     return BlocProvider(
       create: (_) => AccountCardCubit(
-        inject(),
-        account,
-        inject(),
-        inject(),
+        balanceStorage: inject(),
+        account: account,
+        currencyConvertService: inject(),
+        nekotonRepository: inject(),
+        balanceService: inject(),
       ),
       child: BlocBuilder<AccountCardCubit, AccountCardState>(
         builder: (context, state) {

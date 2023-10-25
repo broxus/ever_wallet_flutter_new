@@ -11,18 +11,19 @@ class _ExampleLinter extends PluginBase {
   /// We list all the custom warnings/infos/errors
   @override
   List<LintRule> getLintRules(CustomLintConfigs configs) => [
-        MyCustomLintCode(),
+        const MyCustomLintCode(),
       ];
 }
 
 class MyCustomLintCode extends DartLintRule {
-  MyCustomLintCode() : super(code: _code);
+  const MyCustomLintCode() : super(code: _code);
 
   /// Metadata about the warning that will show-up in the IDE.
   /// This is used for `// ignore: code` and enabling/disabling the lint
   static const _code = LintCode(
     name: 'avoid_datetime_now',
     problemMessage:
+        // ignore: lines_longer_than_80_chars
         'Use NtpTime.now() instead of DateTime.now() and NtpTime.clockNow() instead of clock.now()',
   );
 
@@ -33,7 +34,7 @@ class MyCustomLintCode extends DartLintRule {
     CustomLintContext context,
   ) {
     // Yeah, this is a hack, but it works
-    // TODO:(nesquikm) make some research and find a better way to do this
+    // TODO(nesquikm): make some research and find a better way to do this
     // for example, use recursive visitor for nodes
     context.registry.addMethodInvocation((node) {
       final s = node.toString();
