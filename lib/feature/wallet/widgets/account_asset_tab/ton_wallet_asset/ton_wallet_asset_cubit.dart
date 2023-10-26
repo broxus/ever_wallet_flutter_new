@@ -1,14 +1,14 @@
 import 'dart:async';
 
 import 'package:app/app/service/service.dart';
+import 'package:app/data/models/models.dart';
 import 'package:bloc/bloc.dart';
 import 'package:collection/collection.dart';
 import 'package:freezed_annotation/freezed_annotation.dart';
 import 'package:nekoton_repository/nekoton_repository.dart';
 
-part 'ton_wallet_asset_state.dart';
-
 part 'ton_wallet_asset_cubit.freezed.dart';
+part 'ton_wallet_asset_state.dart';
 
 class TonWalletAssetCubit extends Cubit<TonWalletAssetState> {
   TonWalletAssetCubit({
@@ -16,6 +16,7 @@ class TonWalletAssetCubit extends Cubit<TonWalletAssetState> {
     required this.tonWallet,
     required this.currencyConvertService,
     required this.nekotonRepository,
+    required this.balanceStorage,
   }) : super(
           TonWalletAssetState.data(
             iconPath: nekotonRepository.currentTransport.nativeTokenIcon,
@@ -38,6 +39,7 @@ class TonWalletAssetCubit extends Cubit<TonWalletAssetState> {
             Currencies()[nekotonRepository.currentTransport.nativeTokenTicker]!,
           );
 
+          _tryUpdateBalances();
           _updateState();
         });
         _balanceSubscription = balanceService
@@ -45,12 +47,22 @@ class TonWalletAssetCubit extends Cubit<TonWalletAssetState> {
             .listen((balance) {
           _cachedFiatBalance = currencyConvertService.convert(balance);
 
+          _tryUpdateBalances();
           _updateState();
         });
       }
     });
+
+    final balances = balanceStorage.balances[tonWallet.address]
+        ?.tokenBalance(_nativeTokenContract);
+    if (balances != null) {
+      _cachedFiatBalance = balances.fiatBalance;
+      _cachedTokenBalance = balances.tokenBalance;
+      _updateState();
+    }
   }
 
+  final BalanceStorageService balanceStorage;
   final TonWalletAsset tonWallet;
   final BalanceService balanceService;
   final CurrencyConvertService currencyConvertService;
@@ -76,6 +88,22 @@ class TonWalletAssetCubit extends Cubit<TonWalletAssetState> {
   void _closeSubs() {
     _thisWalletSubscription?.cancel();
     _balanceSubscription?.cancel();
+  }
+
+  Address get _nativeTokenContract =>
+      nekotonRepository.currentTransport.nativeTokenAddress;
+
+  void _tryUpdateBalances() {
+    if (_cachedFiatBalance != null && _cachedTokenBalance != null) {
+      balanceStorage.setBalances(
+        accountAddress: tonWallet.address,
+        balance: AccountBalanceModel(
+          rootTokenContract: _nativeTokenContract,
+          fiatBalance: _cachedFiatBalance!,
+          tokenBalance: _cachedTokenBalance!,
+        ),
+      );
+    }
   }
 
   void _updateState() {

@@ -18,6 +18,7 @@ class TokenWalletAssetCubit extends Cubit<TokenWalletAssetState> {
     required this.owner,
     required this.currencyConvertService,
     required this.nekotonRepository,
+    required this.balanceStorage,
   }) : super(const TokenWalletAssetState.data()) {
     _walletsSubscription =
         nekotonRepository.tokenWalletsStream.listen((wallets) {
@@ -35,6 +36,7 @@ class TokenWalletAssetCubit extends Cubit<TokenWalletAssetState> {
         _thisWalletSubscription = wallet.fieldUpdatesStream.listen((_) {
           _cachedTokenBalance = wallet.moneyBalance;
 
+          _tryUpdateBalances();
           _updateState();
         });
         _balanceSubscription = balanceService
@@ -45,12 +47,22 @@ class TokenWalletAssetCubit extends Cubit<TokenWalletAssetState> {
             .listen((balance) {
           _cachedFiatBalance = currencyConvertService.convert(balance);
 
+          _tryUpdateBalances();
           _updateState();
         });
       }
     });
+
+    final balances =
+        balanceStorage.balances[owner]?.tokenBalance(asset.address);
+    if (balances != null) {
+      _cachedFiatBalance = balances.fiatBalance;
+      _cachedTokenBalance = balances.tokenBalance;
+      _updateState();
+    }
   }
 
+  final BalanceStorageService balanceStorage;
   final TokenContractAsset asset;
   final Address owner;
   final BalanceService balanceService;
@@ -77,6 +89,19 @@ class TokenWalletAssetCubit extends Cubit<TokenWalletAssetState> {
   void _closeSubs() {
     _thisWalletSubscription?.cancel();
     _balanceSubscription?.cancel();
+  }
+
+  void _tryUpdateBalances() {
+    if (_cachedFiatBalance != null && _cachedTokenBalance != null) {
+      balanceStorage.setBalances(
+        accountAddress: owner,
+        balance: AccountBalanceModel(
+          rootTokenContract: asset.address,
+          fiatBalance: _cachedFiatBalance!,
+          tokenBalance: _cachedTokenBalance!,
+        ),
+      );
+    }
   }
 
   void _updateState() {

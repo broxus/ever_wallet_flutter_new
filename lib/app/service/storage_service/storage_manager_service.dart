@@ -16,6 +16,7 @@ class StorageManagerService {
     TonWalletStorageService tonWalletStorageService,
     TokenWalletStorageService tokenWalletStorageService,
     ConnectionsStorageService connectionStorageService,
+    BalanceStorageService balanceStorageService,
   ) : _storages = [
           general,
           browserTabs,
@@ -28,6 +29,7 @@ class StorageManagerService {
           tonWalletStorageService,
           tokenWalletStorageService,
           connectionStorageService,
+          balanceStorageService,
         ];
 
   final List<AbstractStorageService> _storages;
