@@ -9,6 +9,11 @@ import 'package:logging/logging.dart';
 final RegExp _parameterRegExp = RegExp(r':(\w+)(\((?:\\.|[^\\()])+\))?');
 
 enum AppRoute {
+  bootstrapFailedInit(
+    'bootstrapFailed',
+    '/bootstrapFailed/:$bootstrapFailedIndexPathParam',
+  ),
+
   onboarding(
     'onboarding',
     '/onboarding',

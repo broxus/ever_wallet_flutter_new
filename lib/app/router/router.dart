@@ -29,8 +29,19 @@ GoRouter getRouter(BuildContext _) {
 
   // Redirect to onboarding or wallet depending on the current location and if
   // the user has any seeds.
-  String? shouldRedirect({required String fullPath, required bool hasSeeds}) {
+  String? shouldRedirect({
+    required String fullPath,
+    required bool hasSeeds,
+    required BootstrapSteps step,
+  }) {
     final currentRoute = getRootAppRoute(fullPath: fullPath);
+
+    if (step != BootstrapSteps.completed &&
+        currentRoute != AppRoute.bootstrapFailedInit) {
+      return AppRoute.bootstrapFailedInit.pathWithData(
+        pathParameters: {bootstrapFailedIndexPathParam: step.index.toString()},
+      );
+    }
 
     // If the user has seeds and is on onboarding, redirect to wallet
     if (hasSeeds && currentRoute == AppRoute.onboarding) {
@@ -100,10 +111,14 @@ GoRouter getRouter(BuildContext _) {
 
       // Check if the user has seeds
       final hasSeeds = inject<NekotonRepository>().hasSeeds.value;
+      final step = inject<BootstrapService>().bootstrapStep;
 
       // Check if the user should be redirected
-      final guardRedirect =
-          shouldRedirect(fullPath: fullPath, hasSeeds: hasSeeds);
+      final guardRedirect = shouldRedirect(
+        fullPath: fullPath,
+        hasSeeds: hasSeeds,
+        step: step,
+      );
 
       // Redirect if needed
       if (guardRedirect != null) {
@@ -125,6 +140,7 @@ GoRouter getRouter(BuildContext _) {
     // Initial location from NavigationService
     initialLocation: inject<NavigationService>().savedState.location,
     routes: [
+      bootstrapFailedRoute,
       GoRoute(
         name: AppRoute.onboarding.name,
         path: AppRoute.onboarding.path,
@@ -174,6 +190,27 @@ GoRouter getRouter(BuildContext _) {
     final redirectLocation = shouldRedirect(
       fullPath: inject<NavigationService>().state.fullPath,
       hasSeeds: hasSeeds,
+      step: inject<BootstrapService>().bootstrapStep,
+    );
+
+    // Redirect if needed
+    if (redirectLocation != null) {
+      router.go(redirectLocation);
+    }
+  });
+
+  // Subscribe to bootstrapStep to redirect if needed
+  // This is a-la guard, it should redirect to onboarding or wallet depending
+  // on the current location and if the user has any seeds.
+  // This happends when user was sent to bootstrap failed screen to make some
+  // action and then bootstrap process was completed.
+  inject<BootstrapService>().bootstrapStepStream.listen((step) {
+    // Again, check if the user should be redirected depending on the current
+    // location and if the user has any seeds and bootstrap completed.
+    final redirectLocation = shouldRedirect(
+      fullPath: inject<NavigationService>().state.fullPath,
+      hasSeeds: inject<NekotonRepository>().hasSeeds.value,
+      step: step,
     );
 
     // Redirect if needed
