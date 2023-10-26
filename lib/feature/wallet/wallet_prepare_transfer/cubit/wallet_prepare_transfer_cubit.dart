@@ -25,6 +25,7 @@ class WalletPrepareTransferCubit extends Cubit<WalletPrepareTransferState> {
     required this.assetsService,
     required this.address,
     required this.rootTokenContract,
+    required this.tokenSymbol,
   }) : super(const WalletPrepareTransferState.loading()) {
     final acc = nekotonRepository.seedList.findAccountByAddress(address);
     if (acc == null) {
@@ -44,8 +45,10 @@ class WalletPrepareTransferCubit extends Cubit<WalletPrepareTransferState> {
       _createNativeContract();
       _findExistedContracts();
     } else {
+      final transport = nekotonRepository.currentTransport;
       // if default contract is specified, then lock it
-      if (root == nekotonRepository.currentTransport.nativeTokenAddress) {
+      if (root == transport.nativeTokenAddress &&
+          tokenSymbol == transport.nativeTokenTicker) {
         _createNativeContract();
       } else {
         _findSpecifiedContract(root);
@@ -69,6 +72,9 @@ class WalletPrepareTransferCubit extends Cubit<WalletPrepareTransferState> {
   /// Contract of token (native or not) that will be locked to send funds
   final Address? rootTokenContract;
 
+  /// Symbol of contract that should be locked
+  final String? tokenSymbol;
+
   /// Address of account that will be used to send funds (owner for TokenWallet,
   /// or address for TonWallet)
   final Address address;
@@ -89,8 +95,8 @@ class WalletPrepareTransferCubit extends Cubit<WalletPrepareTransferState> {
   late WalletPrepareTransferAsset selectedAsset;
 
   /// Map of all assets, that exists for current account
-  /// Key - rootTokenContract
-  final _assets = <Address, WalletPrepareTransferAsset>{};
+  /// Key - rootTokenContract + ticker
+  final _assets = <(Address, String), WalletPrepareTransferAsset>{};
 
   @override
   Future<void> close() {
@@ -100,15 +106,17 @@ class WalletPrepareTransferCubit extends Cubit<WalletPrepareTransferState> {
     return super.close();
   }
 
-  void changeAsset(Address rootTokenContract) {
-    final asset = _assets[rootTokenContract];
-    if (selectedAsset.rootTokenContract == rootTokenContract || asset == null) {
+  void changeAsset(Address rootTokenContract, String tokenSymbol) {
+    final asset = _assets[(rootTokenContract, tokenSymbol)];
+    if (selectedAsset.rootTokenContract == rootTokenContract &&
+            selectedAsset.tokenSymbol == tokenSymbol ||
+        asset == null) {
       return;
     }
 
     selectedAsset = asset;
     _updateState();
-    _startListeningBalance(rootTokenContract);
+    _startListeningBalance(rootTokenContract, tokenSymbol);
   }
 
   void changeCustodian(PublicKey custodian) {
@@ -174,11 +182,12 @@ class WalletPrepareTransferCubit extends Cubit<WalletPrepareTransferState> {
       _assets.addEntries(
         contracts.map(
           (e) => MapEntry(
-            e.address,
+            (e.address, e.symbol),
             WalletPrepareTransferAsset(
               rootTokenContract: e.address,
               isNative: false,
               balance: _zeroBalance(e.symbol),
+              tokenSymbol: e.symbol,
               logoURI: e.logoURI,
               title: e.name,
               version: e.version,
@@ -212,13 +221,14 @@ class WalletPrepareTransferCubit extends Cubit<WalletPrepareTransferState> {
       isNative: false,
       balance: _zeroBalance(contract.symbol),
       logoURI: contract.logoURI,
+      tokenSymbol: contract.symbol,
       title: contract.name,
       version: contract.version,
     );
-    _assets[root] = selectedAsset;
+    _assets[(root, contract.symbol)] = selectedAsset;
     _updateState();
 
-    _startListeningBalance(root);
+    _startListeningBalance(root, contract.symbol);
   }
 
   /// Subscription for list of wallets (Ton/Token)
@@ -236,8 +246,8 @@ class WalletPrepareTransferCubit extends Cubit<WalletPrepareTransferState> {
   /// If method was called, then [rootTokenContract] must be presented in
   /// [_assets].
   /// For Ton/Token wallets behavior is different.
-  void _startListeningBalance(Address rootTokenContract) {
-    final contract = _assets[rootTokenContract];
+  void _startListeningBalance(Address rootTokenContract, String tokenSymbol) {
+    final contract = _assets[(rootTokenContract, tokenSymbol)];
 
     _closeBalanceSubs();
     if (contract == null) {
@@ -257,9 +267,10 @@ class WalletPrepareTransferCubit extends Cubit<WalletPrepareTransferState> {
       final wallet = wallets.firstWhereOrNull((w) => w.address == address);
       if (wallet != null) {
         _walletsSubscription?.cancel();
+        final symbol = nekotonRepository.currentTransport.nativeTokenTicker;
 
         _currentWalletSubscription = wallet.fieldUpdatesStream.listen((_) {
-          final updated = _assets[root]?.copyWith(
+          final updated = _assets[(root, symbol)]?.copyWith(
             Money.fromBigIntWithCurrency(
               wallet.contractState.balance,
               Currencies()[
@@ -267,8 +278,9 @@ class WalletPrepareTransferCubit extends Cubit<WalletPrepareTransferState> {
             ),
           );
           if (updated != null) {
-            _assets[root] = updated;
-            if (selectedAsset.rootTokenContract == root) {
+            _assets[(root, symbol)] = updated;
+            if (selectedAsset.rootTokenContract == root &&
+                selectedAsset.tokenSymbol == symbol) {
               selectedAsset = updated;
             }
           }
@@ -289,10 +301,13 @@ class WalletPrepareTransferCubit extends Cubit<WalletPrepareTransferState> {
       if (wallet != null) {
         _walletsSubscription?.cancel();
         _currentWalletSubscription = wallet.fieldUpdatesStream.listen((_) {
-          final updated = _assets[root]?.copyWith(wallet.moneyBalance);
+          final updated = _assets[(root, wallet.symbol.name)]
+              ?.copyWith(wallet.moneyBalance);
+          final symbol = wallet.symbol.name;
           if (updated != null) {
-            _assets[root] = updated;
-            if (selectedAsset.rootTokenContract == root) {
+            _assets[(root, symbol)] = updated;
+            if (selectedAsset.rootTokenContract == root &&
+                selectedAsset.tokenSymbol == symbol) {
               selectedAsset = updated;
             }
           }
@@ -324,17 +339,19 @@ class WalletPrepareTransferCubit extends Cubit<WalletPrepareTransferState> {
   void _createNativeContract() {
     final transport = nekotonRepository.currentTransport;
     final root = transport.nativeTokenAddress;
+    final symbol = transport.nativeTokenTicker;
 
     selectedAsset = WalletPrepareTransferAsset(
       rootTokenContract: root,
       isNative: true,
       balance: _zeroBalance(transport.nativeTokenTicker),
+      tokenSymbol: transport.nativeTokenTicker,
       logoURI: transport.nativeTokenIcon,
       title: transport.nativeTokenTicker,
     );
-    _assets[root] = selectedAsset;
+    _assets[(root, symbol)] = selectedAsset;
     _updateState();
 
-    _startListeningBalance(root);
+    _startListeningBalance(root, symbol);
   }
 }

@@ -46,7 +46,7 @@ enum AppRoute {
   ),
   walletPrepareTransferSpecified(
     '',
-    'walletPrepareTransfer/:$walletPrepareTransferAddressPathParam/:$walletPrepareTransferRootTokenAddressPathParam',
+    'walletPrepareTransfer/:$walletPrepareTransferAddressPathParam/:$walletPrepareTransferRootTokenAddressPathParam/:$walletPrepareTransferSymbolPathParam',
   ),
   tonWalletSend(
     '',

@@ -67,11 +67,13 @@ class SendMessageSheet extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final transport = inject<NekotonRepository>().currentTransport;
+
     return BlocProvider<WalletPrepareTransferCubit>(
       create: (_) => WalletPrepareTransferCubit(
         address: sender,
-        rootTokenContract:
-            inject<NekotonRepository>().currentTransport.nativeTokenAddress,
+        rootTokenContract: transport.nativeTokenAddress,
+        tokenSymbol: transport.nativeTokenTicker,
         nekotonRepository: inject(),
         balanceService: inject(),
         assetsService: inject(),

@@ -17,6 +17,7 @@ const tokenWalletDetailsContractAddressPathParam =
 const walletPrepareTransferAddressPathParam = 'walletPrepareAddress';
 const walletPrepareTransferRootTokenAddressPathParam =
     'walletPrepareRootTokenAddress';
+const walletPrepareTransferSymbolPathParam = 'walletPrepareSymbol';
 
 const tonWalletSendAddressQueryParam = 'tonWalletSendAddress';
 const tonWalletSendPublicKeyQueryParam = 'tonWalletSendPublicKey';
@@ -163,6 +164,7 @@ GoRoute get walletPrepareTransferLockedRoute {
         address: state
             .pathParameters[walletPrepareTransferRootTokenAddressPathParam]!,
       ),
+      tokenSymbol: state.pathParameters[walletPrepareTransferSymbolPathParam],
     ),
     routes: [
       tonWalletSendRoute,

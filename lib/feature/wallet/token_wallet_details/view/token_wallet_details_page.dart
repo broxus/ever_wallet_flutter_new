@@ -55,7 +55,7 @@ class TokenWalletDetailsPage extends StatelessWidget {
                     separatorSize: DimensSize.d24,
                     children: [
                       _header(contractName, tokenBalance, fiatBalance),
-                      _actions(canSend, context),
+                      _actions(canSend, context, tokenBalance.currency.code),
                     ],
                   ),
                   panelBuilder: (context, controller) => CustomScrollView(
@@ -118,7 +118,7 @@ class TokenWalletDetailsPage extends StatelessWidget {
     );
   }
 
-  Widget _actions(bool canSend, BuildContext context) {
+  Widget _actions(bool canSend, BuildContext context, String ticker) {
     return SeparatedRow(
       separatorSize: DimensSize.d32,
       mainAxisAlignment: MainAxisAlignment.center,
@@ -136,6 +136,7 @@ class TokenWalletDetailsPage extends StatelessWidget {
                   walletPrepareTransferAddressPathParam: owner.address,
                   walletPrepareTransferRootTokenAddressPathParam:
                       rootTokenContract.address,
+                  walletPrepareTransferSymbolPathParam: ticker,
                 },
               ),
             ),
