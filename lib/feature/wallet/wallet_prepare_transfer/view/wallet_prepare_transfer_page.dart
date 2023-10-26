@@ -15,8 +15,14 @@ class WalletPrepareTransferPage extends StatelessWidget {
   const WalletPrepareTransferPage({
     required this.address,
     this.rootTokenContract,
+    this.tokenSymbol,
     super.key,
-  });
+  }) : assert(
+          rootTokenContract == null && tokenSymbol == null ||
+              rootTokenContract != null && tokenSymbol != null,
+          // ignore: lines_longer_than_80_chars
+          'rootTokenContract and tokenSymbol must be provided or not provided together',
+        );
 
   /// Address of account, that should be used to send funds
   final Address address;
@@ -24,12 +30,18 @@ class WalletPrepareTransferPage extends StatelessWidget {
   /// Contract of token (native or not) that will be locked to send funds
   final Address? rootTokenContract;
 
+  /// Symbol that is used together with [rootTokenContract] because native token
+  /// and wraped native token has the same contract address and this leads to
+  /// error.
+  final String? tokenSymbol;
+
   @override
   Widget build(BuildContext context) {
     return BlocProvider<WalletPrepareTransferCubit>(
       create: (_) => WalletPrepareTransferCubit(
         address: address,
         rootTokenContract: rootTokenContract,
+        tokenSymbol: tokenSymbol,
         nekotonRepository: inject(),
         balanceService: inject(),
         assetsService: inject(),

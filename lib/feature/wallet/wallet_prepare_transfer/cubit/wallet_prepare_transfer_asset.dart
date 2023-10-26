@@ -11,6 +11,7 @@ class WalletPrepareTransferAsset extends Equatable {
     required this.balance,
     required this.logoURI,
     required this.title,
+    required this.tokenSymbol,
     this.version,
   });
 
@@ -24,6 +25,9 @@ class WalletPrepareTransferAsset extends Equatable {
 
   /// Balance of this token.
   final Money balance;
+
+  /// Symbol of token (ticker), that is used for selection
+  final String tokenSymbol;
 
   /// Svg path or network uri
   final String? logoURI;
@@ -44,8 +48,9 @@ class WalletPrepareTransferAsset extends Equatable {
         isNative: isNative,
         logoURI: logoURI,
         version: version,
+        tokenSymbol: tokenSymbol,
       );
 
   @override
-  List<Object?> get props => [rootTokenContract, balance];
+  List<Object?> get props => [rootTokenContract, balance, tokenSymbol];
 }

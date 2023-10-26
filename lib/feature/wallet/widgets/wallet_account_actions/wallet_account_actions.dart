@@ -101,16 +101,16 @@ class WalletAccountActions extends StatelessWidget {
       switch (action) {
         WalletAccountActionBehavior.send => () {
             if (sendSpecified) {
+              final transport = inject<NekotonRepository>().currentTransport;
               context.goFurther(
                 AppRoute.walletPrepareTransferSpecified.pathWithData(
                   pathParameters: {
                     walletPrepareTransferAddressPathParam:
                         currentAccount!.address.address,
                     walletPrepareTransferRootTokenAddressPathParam:
-                        inject<NekotonRepository>()
-                            .currentTransport
-                            .nativeTokenAddress
-                            .address,
+                        transport.nativeTokenAddress.address,
+                    walletPrepareTransferSymbolPathParam:
+                        transport.nativeTokenTicker,
                   },
                 ),
               );

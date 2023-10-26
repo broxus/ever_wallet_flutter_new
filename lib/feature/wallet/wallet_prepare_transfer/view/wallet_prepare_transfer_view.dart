@@ -106,9 +106,11 @@ class _WalletPrepareTransferViewState extends State<WalletPrepareTransferView> {
                     titleText: LocaleKeys.assetsWord.tr(),
                     currentValue: widget.selectedAsset,
                     sheetTitle: LocaleKeys.selectToken.tr(),
-                    onChanged: (asset) => context
-                        .read<WalletPrepareTransferCubit>()
-                        .changeAsset(asset.rootTokenContract),
+                    onChanged: (asset) =>
+                        context.read<WalletPrepareTransferCubit>().changeAsset(
+                              asset.rootTokenContract,
+                              asset.tokenSymbol,
+                            ),
                   ),
                   if (widget.localCustodians.length > 1)
                     CommonSelectDropdown<PublicKey>(
