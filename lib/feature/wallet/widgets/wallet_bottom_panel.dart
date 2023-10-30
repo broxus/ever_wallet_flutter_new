@@ -1,6 +1,7 @@
 import 'package:app/feature/wallet/wallet.dart';
 import 'package:app/generated/generated.dart';
 import 'package:flutter/material.dart';
+import 'package:logging/logging.dart';
 import 'package:nekoton_repository/nekoton_repository.dart';
 import 'package:ui_components_lib/ui_components_lib.dart';
 
@@ -29,6 +30,10 @@ class _WalletBottomPanelState extends State<WalletBottomPanel> {
 
   @override
   Widget build(BuildContext context) {
+    final mq = MediaQuery.of(context);
+    Logger('WalletBottomPanel').finest(
+        'MediaQuery: ${mq.padding}, ${mq.viewInsets}, ${mq.viewPadding}');
+
     return ValueListenableBuilder<WalletBottomPanelTab>(
       valueListenable: currentTabNotifier,
       builder: (_, value, __) {
@@ -63,11 +68,7 @@ class _WalletBottomPanelState extends State<WalletBottomPanel> {
                 ),
             },
             const SliverToBoxAdapter(
-              child: SizedBox(
-                // we add kBottomNavigationBarHeight because for wallet page
-                // we use extendBody to hide bottom part of sliding sheet
-                height: DimensSize.d8 + kBottomNavigationBarHeight,
-              ),
+              child: SafeArea(child: SizedBox(height: DimensSize.d8)),
             ),
           ],
         );
