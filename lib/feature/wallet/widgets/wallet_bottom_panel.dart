@@ -30,10 +30,6 @@ class _WalletBottomPanelState extends State<WalletBottomPanel> {
 
   @override
   Widget build(BuildContext context) {
-    final mq = MediaQuery.of(context);
-    Logger('WalletBottomPanel').finest(
-        'MediaQuery: ${mq.padding}, ${mq.viewInsets}, ${mq.viewPadding}');
-
     return ValueListenableBuilder<WalletBottomPanelTab>(
       valueListenable: currentTabNotifier,
       builder: (_, value, __) {
