@@ -835,10 +835,10 @@ packages:
     dependency: "direct main"
     description:
       name: go_router
-      sha256: "2ccd74480706e0a70a0e0dfa9543dede41bc11d0fe3b146a6ad7b7686f6b4407"
+      sha256: d3f19eaec5dbb786364843b61b3458640959a9a930ac6fcce37f65683088b137
       url: "https://pub.dev"
     source: hosted
-    version: "11.1.4"
+    version: "12.0.3"
   googleapis_auth:
     dependency: "direct dev"
     description:
