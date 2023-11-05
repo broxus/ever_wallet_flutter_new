@@ -97,11 +97,11 @@ class AccountCardCubit extends Cubit<AccountCardState> {
         ),
       );
     } else {
-      final w = wState.wallet!;
+      final wallet = wState.wallet!;
 
       _thisWalletSubscription =
-          w.fieldUpdatesStream.listen((_) => _updateWalletData(w));
-      _withdrawRequestSubscription = w.fieldUpdatesStream
+          wallet.fieldUpdatesStream.listen((_) => _updateWalletData(wallet));
+      _withdrawRequestSubscription = wallet.fieldUpdatesStream
           .debounceTime(_withdrawUpdateDebounce)
           .listen((_) {
         if (nekotonRepository.currentTransport.stakeInformation != null) {
@@ -114,7 +114,7 @@ class AccountCardCubit extends Cubit<AccountCardState> {
           return;
         }
         _cachedFiatBalance = fiat;
-        _updateWalletData(w);
+        _updateWalletData(wallet);
 
         balanceStorage.setOverallBalance(
           accountAddress: account.address,
@@ -122,7 +122,7 @@ class AccountCardCubit extends Cubit<AccountCardState> {
         );
       });
 
-      _updateWalletData(w);
+      _updateWalletData(wallet);
     }
   }
 

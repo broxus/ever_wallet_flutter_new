@@ -40,7 +40,6 @@ class TokenWalletDetailsPage extends StatelessWidget {
               subscribeError: (contractName, account, error, isLoading) =>
                   _body(
                 contractName: contractName,
-                account: account,
                 error: error,
                 isLoadingError: isLoading,
               ),
@@ -53,7 +52,6 @@ class TokenWalletDetailsPage extends StatelessWidget {
               ) =>
                   _body(
                 contractName: contractName,
-                account: account,
                 tokenBalance: tokenBalance,
                 fiatBalance: fiatBalance,
                 canSend: canSend,
@@ -151,9 +149,9 @@ class TokenWalletDetailsPage extends StatelessWidget {
     );
   }
 
+  // ignore: long-method
   Widget _body({
     required String contractName,
-    required KeyAccount account,
     Money? tokenBalance,
     Money? fiatBalance,
     bool canSend = false,

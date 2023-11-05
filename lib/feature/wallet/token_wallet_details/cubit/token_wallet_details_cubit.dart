@@ -13,6 +13,7 @@ part 'token_wallet_details_cubit.freezed.dart';
 /// Cubit that allows loading balance for the [TokenWallet] (history loads
 /// separately) in widget.
 class TokenWalletDetailsCubit extends Cubit<TokenWalletDetailsState> {
+  // ignore: long-method
   TokenWalletDetailsCubit({
     required this.nekotonRepository,
     required this.rootTokenContract,
@@ -55,7 +56,6 @@ class TokenWalletDetailsCubit extends Cubit<TokenWalletDetailsState> {
           emit(
             TokenWalletDetailsState.subscribeError(
               contractName: contractName,
-              account: account,
               error: walletState.error!,
               isLoading: false,
             ),
@@ -124,7 +124,6 @@ class TokenWalletDetailsCubit extends Cubit<TokenWalletDetailsState> {
     emit(
       TokenWalletDetailsState.data(
         contractName: contractName,
-        account: account,
         fiatBalance: _cachedFiatBalance,
         tokenBalance: _cachedTokenBalance,
         canSend: _canSend,

@@ -125,6 +125,7 @@ class StakingBloc extends Bloc<StakingBlocEvent, StakingBlocState> {
     );
   }
 
+  // ignore: long-method
   Future<void> _init(Emitter<StakingBlocState> emit) async {
     try {
       final pair = (accountAddress, staking.stakingRootContractAddress);

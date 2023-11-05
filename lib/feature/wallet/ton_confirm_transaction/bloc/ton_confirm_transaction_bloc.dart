@@ -84,6 +84,7 @@ class TonConfirmTransactionBloc
     );
   }
 
+  // ignore: long-method
   Future<void> _handlePrepare(
     Emitter<TonConfirmTransactionState> emit,
     PublicKey custodian,

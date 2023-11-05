@@ -97,6 +97,7 @@ class TokenWalletSendBloc
 
       if (tokenWalletState.hasError) {
         emit(TokenWalletSendState.subscribeError(tokenWalletState.error!));
+
         return;
       }
 
@@ -139,6 +140,7 @@ class TokenWalletSendBloc
 
       if (walletState.hasError) {
         emit(TokenWalletSendState.subscribeError(tokenWalletState.error!));
+
         return;
       }
 

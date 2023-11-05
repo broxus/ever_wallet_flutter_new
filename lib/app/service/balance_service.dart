@@ -81,11 +81,11 @@ class BalanceService {
         )
                 .flatMap(
           (wallet) {
-            final w = wallet?.wallet;
-            if (w == null) return Stream.value(Fixed.zero);
+            final wl = wallet?.wallet;
+            if (wl == null) return Stream.value(Fixed.zero);
 
             return Rx.combineLatest2<Money?, CustomCurrency?, Fixed>(
-              w.onMoneyBalanceChangedStream,
+              wl.onMoneyBalanceChangedStream,
               currenciesService.currenciesStream(transport.networkType).map(
                     (curs) => curs.firstWhereOrNull(
                       (cur) => cur.address == contract,

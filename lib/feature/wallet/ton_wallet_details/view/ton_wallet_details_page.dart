@@ -81,6 +81,7 @@ class TonWalletDetailsPage extends StatelessWidget {
     );
   }
 
+  // ignore: long-method
   Widget _body({
     required String walletName,
     required KeyAccount account,
