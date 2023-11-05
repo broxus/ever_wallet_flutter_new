@@ -37,7 +37,7 @@ class WalletSubscribeErrorWidget extends StatelessWidget {
           ),
         ),
         if (onRetryPressed != null)
-          CommonButton.primary(
+          SmallButton.primary(
             text: LocaleKeys.tryAgain.tr(),
             isLoading: isLoadingError,
             onPressed: () => onRetryPressed!(context),

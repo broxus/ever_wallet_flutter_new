@@ -61,9 +61,9 @@ class TokenWalletAssetWidget extends StatelessWidget {
           tokenBalance: tokenBalance,
           fiatBalance: fiatBalance,
           error: error,
-          onRetryPressed: isErrorLoading
-              ? null
-              : (context) => context.read<TokenWalletAssetCubit>().retry(),
+          isRetryLoading: isErrorLoading,
+          onRetryPressed: (context) =>
+              context.read<TokenWalletAssetCubit>().retry(),
           icon: TokenWalletIconWidget(
             logoURI: asset.logoURI,
             address: asset.address,

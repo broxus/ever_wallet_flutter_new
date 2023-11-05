@@ -16,6 +16,7 @@ class SmallButton extends StatelessWidget {
     this.child,
     this.focusNode,
     this.contentColor,
+    this.isLoading = false,
   });
 
   /// CommonButton with primary style
@@ -26,9 +27,11 @@ class SmallButton extends StatelessWidget {
     Widget? leading,
     Widget? trailing,
     FocusNode? focusNode,
+    bool? isLoading,
   }) =>
       SmallButton(
         text: text,
+        isLoading: isLoading ?? false,
         onPressed: onPressed,
         onLongPress: onLongPress,
         leading: leading,
@@ -44,9 +47,11 @@ class SmallButton extends StatelessWidget {
     Widget? leading,
     Widget? trailing,
     FocusNode? focusNode,
+    bool? isLoading,
   }) =>
       SmallButton(
         buttonType: EverButtonType.secondary,
+        isLoading: isLoading ?? false,
         text: text,
         onPressed: onPressed,
         onLongPress: onLongPress,
@@ -63,9 +68,11 @@ class SmallButton extends StatelessWidget {
     Widget? leading,
     Widget? trailing,
     FocusNode? focusNode,
+    bool? isLoading,
   }) =>
       SmallButton(
         buttonType: EverButtonType.ghost,
+        isLoading: isLoading ?? false,
         text: text,
         onPressed: onPressed,
         onLongPress: onLongPress,
@@ -101,6 +108,9 @@ class SmallButton extends StatelessWidget {
   /// See [CommonButton.contentColor]
   final Color? contentColor;
 
+  /// See [CommonButton.isLoading]
+  final bool isLoading;
+
   @override
   Widget build(BuildContext context) {
     return CommonButton(
@@ -117,6 +127,7 @@ class SmallButton extends StatelessWidget {
       contentColor: contentColor,
       leading: leading,
       trailing: trailing,
+      isLoading: isLoading,
       fillWidth: false,
       child: child,
     );

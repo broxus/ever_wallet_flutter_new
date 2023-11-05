@@ -11,6 +11,7 @@ class WalletAssetWidget extends StatelessWidget {
     required this.fiatBalance,
     required this.icon,
     required this.onPressed,
+    this.isRetryLoading = false,
     this.onRetryPressed,
     this.error,
     super.key,
@@ -30,6 +31,9 @@ class WalletAssetWidget extends StatelessWidget {
 
   /// Callback that helps retry subscribe process
   final ValueChanged<BuildContext>? onRetryPressed;
+
+  /// If [onRetryPressed] was called and retry action in progress
+  final bool isRetryLoading;
 
   @override
   Widget build(BuildContext context) {
@@ -63,7 +67,9 @@ class WalletAssetWidget extends StatelessWidget {
       trailing: error != null
           ? CommonIconButton.svg(
               svg: Assets.images.refresh.path,
+              size: CommonIconButtonSize.small,
               buttonType: EverButtonType.primary,
+              isLoading: isRetryLoading,
               onPressed: onRetryPressed == null
                   ? null
                   : () => onRetryPressed!(context),

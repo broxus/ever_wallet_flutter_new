@@ -214,6 +214,7 @@ class AccountCard extends StatelessWidget {
                     child: error != null
                         ? WalletSubscribeErrorWidget(
                             error: error,
+                            isLoadingError: isErrorLoading,
                             onRetryPressed: (context) =>
                                 context.read<AccountCardCubit>().retry(),
                           )

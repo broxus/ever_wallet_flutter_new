@@ -19,6 +19,7 @@ class CommonIconButton extends StatefulWidget {
     this.size,
     this.color,
     this.backgroundColor,
+    this.isLoading = false,
   }) : assert(
           icon != null || svg != null,
           'IconData or Svg path must be specified',
@@ -34,6 +35,7 @@ class CommonIconButton extends StatefulWidget {
     Key? key,
     CommonIconButtonSize? size,
     Color? color,
+    bool? isLoading,
   }) =>
       CommonIconButton(
         buttonType: buttonType,
@@ -44,6 +46,7 @@ class CommonIconButton extends StatefulWidget {
         svg: svg,
         size: size,
         color: color,
+        isLoading: isLoading ?? false,
       );
 
   /// Factory that allows create button with [IconData]
@@ -56,6 +59,7 @@ class CommonIconButton extends StatefulWidget {
     Key? key,
     CommonIconButtonSize? size,
     Color? color,
+    bool? isLoading,
   }) =>
       CommonIconButton(
         buttonType: buttonType,
@@ -66,6 +70,7 @@ class CommonIconButton extends StatefulWidget {
         icon: icon,
         size: size,
         color: color,
+        isLoading: isLoading ?? false,
       );
 
   /// Style that will be used to get colors
@@ -96,6 +101,9 @@ class CommonIconButton extends StatefulWidget {
   /// Color of background, if not specified, then color from [EverButtonStyle]
   /// is used.
   final Color? backgroundColor;
+
+  /// If circular loading indicator should be displayed
+  final bool isLoading;
 
   @override
   State<CommonIconButton> createState() => _CommonIconButtonState();
@@ -139,18 +147,31 @@ class _CommonIconButtonState extends State<CommonIconButton> {
           splashColor: Colors.transparent,
           highlightColor: Colors.transparent,
           borderRadius: BorderRadius.circular(DimensRadius.max),
-          onTap: widget.onPressed,
-          onLongPress: widget.onLongPress,
+          onTap: widget.isLoading ? null : widget.onPressed,
+          onLongPress: widget.isLoading ? null : widget.onLongPress,
           focusNode: widget.focusNode,
           onHighlightChanged: _onHighlightChanged,
           child: Padding(
             padding: _innerPadding,
-            child: CommonButtonIconWidget(
-              icon: widget.icon,
-              svg: widget.svg,
-            ),
+            child: widget.isLoading
+                ? _loadingChild(contentColor)
+                : CommonButtonIconWidget(
+                    icon: widget.icon,
+                    svg: widget.svg,
+                  ),
           ),
         ),
+      ),
+    );
+  }
+
+  Widget _loadingChild(Color contentColor) {
+    return SizedBox(
+      width: DimensSize.d20,
+      height: DimensSize.d20,
+      child: CircularProgressIndicator(
+        color: contentColor,
+        strokeWidth: DimensStroke.medium,
       ),
     );
   }

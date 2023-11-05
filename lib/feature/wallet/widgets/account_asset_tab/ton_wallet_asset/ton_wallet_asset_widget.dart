@@ -59,9 +59,9 @@ class TonWalletAssetWidget extends StatelessWidget {
           tokenBalance: tokenBalance,
           fiatBalance: fiatBalance,
           error: error,
-          onRetryPressed: isErrorLoading
-              ? null
-              : (context) => context.read<TonWalletAssetCubit>().retry(),
+          isRetryLoading: isErrorLoading,
+          onRetryPressed: (context) =>
+              context.read<TonWalletAssetCubit>().retry(),
           icon: TonWalletIconWidget(path: iconPath),
           onPressed: () => context.goFurther(
             AppRoute.tonWalletDetails.pathWithData(
