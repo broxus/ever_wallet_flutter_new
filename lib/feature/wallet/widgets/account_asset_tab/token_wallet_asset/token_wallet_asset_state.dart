@@ -6,4 +6,9 @@ class TokenWalletAssetState with _$TokenWalletAssetState {
     Money? fiatBalance,
     Money? tokenBalance,
   }) = _Data;
+
+  const factory TokenWalletAssetState.subscribeError({
+    required Object error,
+    required bool isLoading,
+  }) = _SubscribeError;
 }

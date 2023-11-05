@@ -82,6 +82,7 @@ class SendMessageSheet extends StatelessWidget {
           BlocBuilder<WalletPrepareTransferCubit, WalletPrepareTransferState>(
         builder: (context, state) {
           final custodians = state.when(
+            subscribeError: (_) => null,
             loading: () => null,
             empty: () => null,
             data: (

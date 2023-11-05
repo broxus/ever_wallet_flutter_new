@@ -104,9 +104,17 @@ class TonConfirmTransactionBloc
         message: unsignedMessage,
       );
 
-      final wallet = await nekotonRepository.walletsStream
+      final walletState = await nekotonRepository.walletsStream
           .expand((e) => e)
           .firstWhere((wallets) => wallets.address == walletAddress);
+
+      if (walletState.hasError) {
+        emit(TonConfirmTransactionState.subscribeError(walletState.error!));
+
+        return;
+      }
+
+      final wallet = walletState.wallet!;
 
       final balance = wallet.contractState.balance;
 

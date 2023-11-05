@@ -6,6 +6,9 @@ class WalletPrepareTransferState with _$WalletPrepareTransferState {
 
   const factory WalletPrepareTransferState.empty() = _Empty;
 
+  const factory WalletPrepareTransferState.subscribeError(Object error) =
+      _SubscribeError;
+
   /// <localCustodians> contains at least public key of current wallet.
   /// <selectedCustodian> - which key should be initiator of transaction (for
   /// not multisig this is main key)

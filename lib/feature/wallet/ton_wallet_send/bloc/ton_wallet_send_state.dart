@@ -10,6 +10,9 @@ class TonWalletSendState with _$TonWalletSendState {
     BigInt? fee,
   ]) = _CalculatingError;
 
+  const factory TonWalletSendState.subscribeError(Object error) =
+      _SubscribeError;
+
   /// Blockchain fee loaded, allow user send transaction
   const factory TonWalletSendState.readyToSend(BigInt fee) = _Ready;
 

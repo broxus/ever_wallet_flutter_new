@@ -96,9 +96,17 @@ class TonWalletSendBloc extends Bloc<TonWalletSendEvent, TonWalletSendState> {
         message: unsignedMessage,
       );
 
-      final wallet = await nekotonRepository.walletsStream
+      final walletState = await nekotonRepository.walletsStream
           .expand((e) => e)
           .firstWhere((wallets) => wallets.address == address);
+
+      if (walletState.hasError) {
+        emit(TonWalletSendState.subscribeError(walletState.error!));
+
+        return;
+      }
+
+      final wallet = walletState.wallet!;
 
       final balance = wallet.contractState.balance;
 

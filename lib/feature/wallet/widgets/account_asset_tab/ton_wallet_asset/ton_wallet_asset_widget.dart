@@ -30,24 +30,48 @@ class TonWalletAssetWidget extends StatelessWidget {
       child: BlocBuilder<TonWalletAssetCubit, TonWalletAssetState>(
         builder: (context, state) {
           return state.when(
-            data: (iconPath, fiatBalance, tokenBalance) {
-              return WalletAssetWidget(
-                tokenBalance: tokenBalance,
-                fiatBalance: fiatBalance,
-                icon: TonWalletIconWidget(path: iconPath),
-                onPressed: () => context.goFurther(
-                  AppRoute.tonWalletDetails.pathWithData(
-                    pathParameters: {
-                      tonWalletDetailsAddressPathParam:
-                          tonWallet.address.address,
-                    },
-                  ),
-                ),
-              );
-            },
+            subscribeError: (iconPath, error, isLoading) => _asset(
+              iconPath: iconPath,
+              error: error,
+              isErrorLoading: isLoading,
+            ),
+            data: (iconPath, fiatBalance, tokenBalance) => _asset(
+              iconPath: iconPath,
+              fiatBalance: fiatBalance,
+              tokenBalance: tokenBalance,
+            ),
           );
         },
       ),
+    );
+  }
+
+  Widget _asset({
+    required String iconPath,
+    Object? error,
+    bool isErrorLoading = false,
+    Money? fiatBalance,
+    Money? tokenBalance,
+  }) {
+    return Builder(
+      builder: (context) {
+        return WalletAssetWidget(
+          tokenBalance: tokenBalance,
+          fiatBalance: fiatBalance,
+          error: error,
+          onRetryPressed: isErrorLoading
+              ? null
+              : (context) => context.read<TonWalletAssetCubit>().retry(),
+          icon: TonWalletIconWidget(path: iconPath),
+          onPressed: () => context.goFurther(
+            AppRoute.tonWalletDetails.pathWithData(
+              pathParameters: {
+                tonWalletDetailsAddressPathParam: tonWallet.address.address,
+              },
+            ),
+          ),
+        );
+      },
     );
   }
 }

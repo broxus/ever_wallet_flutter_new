@@ -53,48 +53,77 @@ class AccountCardCubit extends Cubit<AccountCardState> {
   final BalanceStorageService balanceStorage;
   final KeyAccount account;
 
-  late StreamSubscription<List<TonWallet>> _walletsSubscription;
+  late StreamSubscription<List<TonWalletState>> _walletsSubscription;
   StreamSubscription<void>? _thisWalletSubscription;
   StreamSubscription<void>? _withdrawRequestSubscription;
   StreamSubscription<Fixed>? _balanceSubscription;
 
   Fixed _cachedFiatBalance = Fixed.zero;
 
-  TonWallet? wallet;
+  TonWalletState? walletState;
 
-  void _initWallet(TonWallet w) {
-    if (wallet != null &&
-        wallet!.transport.connectionParamsHash ==
-            w.transport.connectionParamsHash) {
+  Future<void> retry() async {
+    final st = state;
+    if (st is _SubscribeError) {
+      emit(st.copyWith(isLoading: true));
+      await nekotonRepository.retrySubscriptions(account.address);
+      emit(st.copyWith(isLoading: false));
+    }
+  }
+
+  void _initWallet(TonWalletState wState) {
+    final oldWallet = walletState?.wallet;
+
+    // we have old wallet and if old and new has same transport and new is
+    // initialized, then ignore
+    if (oldWallet != null &&
+        oldWallet.transport.connectionParamsHash ==
+            wState.wallet?.transport.connectionParamsHash &&
+        wState.wallet?.transport.connectionParamsHash != null) {
       return;
     }
 
     _closeSubs();
 
-    wallet = w;
-    _thisWalletSubscription =
-        w.fieldUpdatesStream.listen((_) => _updateWalletData(w));
-    _withdrawRequestSubscription =
-        w.fieldUpdatesStream.debounceTime(_withdrawUpdateDebounce).listen((_) {
-      if (nekotonRepository.currentTransport.stakeInformation != null) {
-        inject<StakingService>().tryUpdateWithdraws(account.address);
-      }
-    });
-    _balanceSubscription =
-        balanceService.accountOverallBalance(w.address).listen((fiat) {
-      if (fiat == Fixed.zero && _cachedFiatBalance == Fixed.zero) {
-        return;
-      }
-      _cachedFiatBalance = fiat;
-      _updateWalletData(w);
+    walletState = wState;
 
-      balanceStorage.setOverallBalance(
-        accountAddress: account.address,
-        balance: fiat,
+    if (wState.hasError) {
+      emit(
+        AccountCardState.subscribeError(
+          account: account,
+          walletName: _walletName(nekotonRepository, account),
+          error: wState.error!,
+          isLoading: false,
+        ),
       );
-    });
+    } else {
+      final w = wState.wallet!;
 
-    _updateWalletData(w);
+      _thisWalletSubscription =
+          w.fieldUpdatesStream.listen((_) => _updateWalletData(w));
+      _withdrawRequestSubscription = w.fieldUpdatesStream
+          .debounceTime(_withdrawUpdateDebounce)
+          .listen((_) {
+        if (nekotonRepository.currentTransport.stakeInformation != null) {
+          inject<StakingService>().tryUpdateWithdraws(account.address);
+        }
+      });
+      _balanceSubscription =
+          balanceService.accountOverallBalance(wState.address).listen((fiat) {
+        if (fiat == Fixed.zero && _cachedFiatBalance == Fixed.zero) {
+          return;
+        }
+        _cachedFiatBalance = fiat;
+        _updateWalletData(w);
+
+        balanceStorage.setOverallBalance(
+          accountAddress: account.address,
+          balance: fiat,
+        );
+      });
+
+      _updateWalletData(w);
+    }
   }
 
   void _updateWalletData(TonWallet w) {

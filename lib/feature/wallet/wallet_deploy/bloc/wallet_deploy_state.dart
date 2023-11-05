@@ -42,4 +42,7 @@ class WalletDeployState with _$WalletDeployState {
     List<PublicKey>? custodians,
     int? requireConfirmations,
   }) = _Deployed;
+
+  const factory WalletDeployState.subscribeError(Object error) =
+      _SubscribeError;
 }

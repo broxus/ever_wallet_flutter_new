@@ -2,6 +2,7 @@ import 'dart:io';
 
 import 'package:app/app/service/service.dart';
 import 'package:app/di/di.dart';
+import 'package:app/generated/generated.dart';
 import 'package:clock/clock.dart';
 import 'package:json_annotation/json_annotation.dart';
 import 'package:nekoton_repository/nekoton_repository.dart';
@@ -57,4 +58,19 @@ class NtpTime {
   /// Use this method to update the offset if you need to get the correct time
   /// before sensitive operations
   static Future<void> update() => inject<NtpService>().update();
+}
+
+/// Helper method that can be used in ui for converting error that was sent
+/// by subscribing to [TonWallet]/[TokenWallet] to text.
+String convertRetrySubscribeErrorToText(Object error) {
+  if (error is TonWalletRetrySubscriptionMissedAsset ||
+      error is TokenWalletRetrySubscriptionMissedAsset) {
+    return LocaleKeys.suchTokenCannotBeSubscribed.tr();
+  }
+
+  if (error is FfiException) {
+    return error.message;
+  }
+
+  return LocaleKeys.creatingSubscriptionFailed.tr();
 }

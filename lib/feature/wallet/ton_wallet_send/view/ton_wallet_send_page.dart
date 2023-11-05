@@ -78,6 +78,12 @@ class TonWalletSendPage extends StatelessWidget {
         },
         builder: (context, state) {
           return state.when(
+            subscribeError: (error) => Scaffold(
+              appBar: DefaultAppBar(
+                titleText: LocaleKeys.confirmTransaction.tr(),
+              ),
+              body: Center(child: WalletSubscribeErrorWidget(error: error)),
+            ),
             loading: _confirmPage,
             calculatingError: (error, fee) =>
                 _confirmPage(fee: fee, error: error),

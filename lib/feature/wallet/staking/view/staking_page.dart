@@ -1,6 +1,6 @@
 import 'package:app/app/router/router.dart';
 import 'package:app/di/di.dart';
-import 'package:app/feature/wallet/staking/staking.dart';
+import 'package:app/feature/wallet/wallet.dart';
 import 'package:app/generated/generated.dart';
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
@@ -106,6 +106,9 @@ class StakingPage extends StatelessWidget {
                           size: CircularIndicatorSize.large,
                         ),
                       ),
+                    ),
+                    subscribeError: (error) => Center(
+                      child: WalletSubscribeErrorWidget(error: error),
                     ),
                     initError: () => Center(
                       child: Padding(

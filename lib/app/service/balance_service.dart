@@ -27,8 +27,8 @@ class BalanceService {
   /// [getAccountBalance].
   // ignore: long-method
   Stream<Fixed> accountOverallBalance(Address address) {
-    return Rx.combineLatest3<TonWallet?, TransportStrategy, KeyAccount?,
-        (TonWallet?, TransportStrategy, KeyAccount?)>(
+    return Rx.combineLatest3<TonWalletState?, TransportStrategy, KeyAccount?,
+        (TonWalletState?, TransportStrategy, KeyAccount?)>(
       // subscribe for wallet appearing, because it can happens later
       nekotonRepository.walletsStream
           .map((list) => list.firstWhereOrNull((w) => w.address == address)),
@@ -37,7 +37,7 @@ class BalanceService {
           .map((list) => list.findAccountByAddress(address)),
       (a, b, c) => (a, b, c),
     ).flatMap<Fixed>((value) {
-      final wallet = value.$1;
+      final wallet = value.$1?.wallet;
       final transport = value.$2;
       final account = value.$3;
 
@@ -81,10 +81,11 @@ class BalanceService {
         )
                 .flatMap(
           (wallet) {
-            if (wallet == null) return Stream.value(Fixed.zero);
+            final w = wallet?.wallet;
+            if (w == null) return Stream.value(Fixed.zero);
 
             return Rx.combineLatest2<Money?, CustomCurrency?, Fixed>(
-              wallet.onMoneyBalanceChangedStream,
+              w.onMoneyBalanceChangedStream,
               currenciesService.currenciesStream(transport.networkType).map(
                     (curs) => curs.firstWhereOrNull(
                       (cur) => cur.address == contract,
@@ -117,14 +118,14 @@ class BalanceService {
   /// in [NekotonRepository].
   /// To listen TokenWallet, use [tokenWalletBalanceStream].
   Stream<Fixed> tonWalletBalanceStream(Address address) {
-    return Rx.combineLatest2<TonWallet?, TransportStrategy,
-        (TonWallet?, TransportStrategy)>(
+    return Rx.combineLatest2<TonWalletState?, TransportStrategy,
+        (TonWalletState?, TransportStrategy)>(
       // subscribe for wallet appearing, because it can happens later
       nekotonRepository.walletsStream
           .map((list) => list.firstWhereOrNull((w) => w.address == address)),
       nekotonRepository.currentTransportStream, (a, b) => (a, b),
     ).flatMap((value) {
-      final wallet = value.$1;
+      final wallet = value.$1?.wallet;
       final transport = value.$2;
 
       if (wallet == null) return Stream.value(Fixed.zero);
@@ -160,8 +161,8 @@ class BalanceService {
     required Address owner,
     required Address rootTokenContract,
   }) {
-    return Rx.combineLatest2<TokenWallet?, TransportStrategy,
-        (TokenWallet?, TransportStrategy)>(
+    return Rx.combineLatest2<TokenWalletState?, TransportStrategy,
+        (TokenWalletState?, TransportStrategy)>(
       // subscribe for wallet appearing, because it can happens later
       nekotonRepository.tokenWalletsStream.map(
         (list) => list.firstWhereOrNull(
@@ -171,7 +172,7 @@ class BalanceService {
       nekotonRepository.currentTransportStream,
       (a, b) => (a, b),
     ).flatMap((value) {
-      final wallet = value.$1;
+      final wallet = value.$1?.wallet;
       final transport = value.$2;
 
       if (wallet == null) return Stream.value(Fixed.zero);

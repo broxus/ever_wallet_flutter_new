@@ -7,4 +7,10 @@ class TonWalletAssetState with _$TonWalletAssetState {
     Money? fiatBalance,
     Money? tokenBalance,
   }) = _Data;
+
+  const factory TonWalletAssetState.subscribeError({
+    required String iconPath,
+    required Object error,
+    required bool isLoading,
+  }) = _SubscribeError;
 }

@@ -103,6 +103,9 @@ class WalletPrepareTransferPage extends StatelessWidget {
           return state.when(
             loading: _defaultBody,
             empty: () => _defaultBody(_emptyText()),
+            subscribeError: (error) => _defaultBody(
+              Center(child: WalletSubscribeErrorWidget(error: error)),
+            ),
             data: _dataBody,
             goNext: (
               walletName,

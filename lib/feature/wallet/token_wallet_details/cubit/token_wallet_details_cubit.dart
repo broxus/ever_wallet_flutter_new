@@ -45,30 +45,42 @@ class TokenWalletDetailsCubit extends Cubit<TokenWalletDetailsState> {
 
     _walletsSubscription =
         nekotonRepository.tokenWalletsStream.listen((wallets) {
-      final wallet = wallets.firstWhereOrNull(
+      final walletState = wallets.firstWhereOrNull(
         (w) => w.owner == owner && w.rootTokenContract == rootTokenContract,
       );
-      if (wallet != null) {
-        final local = nekotonRepository.getLocalCustodians(owner);
-        _canSend = local != null && local.isNotEmpty;
-
+      if (walletState != null) {
         _walletsSubscription?.cancel();
 
-        _thisWalletSubscription = wallet.fieldUpdatesStream.listen((_) {
-          _cachedTokenBalance = wallet.moneyBalance;
+        if (walletState.hasError) {
+          emit(
+            TokenWalletDetailsState.subscribeError(
+              contractName: contractName,
+              account: account,
+              error: walletState.error!,
+              isLoading: false,
+            ),
+          );
+        } else {
+          final wallet = walletState.wallet!;
+          final local = nekotonRepository.getLocalCustodians(owner);
+          _canSend = local != null && local.isNotEmpty;
 
-          _updateState();
-        });
-        _balanceSubscription = balanceService
-            .tokenWalletBalanceStream(
-          owner: owner,
-          rootTokenContract: rootTokenContract,
-        )
-            .listen((balance) {
-          _cachedFiatBalance = currencyConvertService.convert(balance);
+          _thisWalletSubscription = wallet.fieldUpdatesStream.listen((_) {
+            _cachedTokenBalance = wallet.moneyBalance;
 
-          _updateState();
-        });
+            _updateState();
+          });
+          _balanceSubscription = balanceService
+              .tokenWalletBalanceStream(
+            owner: owner,
+            rootTokenContract: rootTokenContract,
+          )
+              .listen((balance) {
+            _cachedFiatBalance = currencyConvertService.convert(balance);
+
+            _updateState();
+          });
+        }
       }
     });
   }
@@ -97,6 +109,15 @@ class TokenWalletDetailsCubit extends Cubit<TokenWalletDetailsState> {
     _balanceSubscription?.cancel();
 
     return super.close();
+  }
+
+  Future<void> retry() async {
+    final st = state;
+    if (st is _SubscribeError) {
+      emit(st.copyWith(isLoading: true));
+      await nekotonRepository.retryTokenSubscription(owner, rootTokenContract);
+      emit(st.copyWith(isLoading: false));
+    }
   }
 
   void _updateState() {

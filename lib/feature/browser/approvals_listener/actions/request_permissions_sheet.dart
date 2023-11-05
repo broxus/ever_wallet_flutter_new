@@ -130,6 +130,11 @@ class _RequestPermissionsSheetState extends State<RequestPermissionsSheet> {
       ),
       child: BlocBuilder<AccountCardCubit, AccountCardState>(
         builder: (context, state) {
+          final balance = state.when(
+            data: (_, __, balance, ___) => balance,
+            subscribeError: (_, __, ___, ____) => null,
+          );
+
           return CommonListTile(
             onPressed: () => selectedAccount.value = account,
             titleText: state.walletName,
@@ -145,8 +150,8 @@ class _RequestPermissionsSheetState extends State<RequestPermissionsSheet> {
             subtitleText: LocaleKeys.accountAddressWithData.tr(
               args: [
                 account.address.toEllipseString(),
-                state.balance?.formatImproved(
-                      pattern: moneyPatternWithSymbol(state.balance!.scale),
+                balance?.formatImproved(
+                      pattern: moneyPatternWithSymbol(balance.scale),
                     ) ??
                     '',
               ],

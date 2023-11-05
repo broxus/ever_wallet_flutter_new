@@ -6,6 +6,13 @@ class TokenWalletDetailsState with _$TokenWalletDetailsState {
 
   const factory TokenWalletDetailsState.empty() = _Empty;
 
+  const factory TokenWalletDetailsState.subscribeError({
+    required String contractName,
+    required KeyAccount account,
+    required Object error,
+    required bool isLoading,
+  }) = _SubscribeError;
+
   const factory TokenWalletDetailsState.data({
     required String contractName,
     required KeyAccount account,

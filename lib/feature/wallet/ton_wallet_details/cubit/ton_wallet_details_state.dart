@@ -6,6 +6,13 @@ class TonWalletDetailsState with _$TonWalletDetailsState {
 
   const factory TonWalletDetailsState.empty() = _Empty;
 
+  const factory TonWalletDetailsState.subscribeError({
+    required String walletName,
+    required KeyAccount account,
+    required Object error,
+    required bool isLoading,
+  }) = _SubscribeError;
+
   const factory TonWalletDetailsState.data({
     required String walletName,
     required KeyAccount account,

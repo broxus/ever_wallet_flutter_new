@@ -87,13 +87,21 @@ class TokenWalletSendBloc
   // ignore: long-method
   Future<void> _handlePrepare(Emitter<TokenWalletSendState> emit) async {
     try {
-      final tokenWallet = await nekotonRepository.tokenWalletsStream
+      final tokenWalletState = await nekotonRepository.tokenWalletsStream
           .expand((e) => e)
           .firstWhere(
             (wallet) =>
                 wallet.owner == owner &&
                 wallet.rootTokenContract == rootTokenContract,
           );
+
+      if (tokenWalletState.hasError) {
+        emit(TokenWalletSendState.subscribeError(tokenWalletState.error!));
+        return;
+      }
+
+      final tokenWallet = tokenWalletState.wallet!;
+
       tokenCurrency = tokenWallet.currency;
       emit(TokenWalletSendState.loading(tokenCurrency));
 
@@ -125,9 +133,16 @@ class TokenWalletSendBloc
         message: unsignedMessage,
       );
 
-      final wallet = await nekotonRepository.walletsStream
+      final walletState = await nekotonRepository.walletsStream
           .expand((e) => e)
           .firstWhere((wallets) => wallets.address == owner);
+
+      if (walletState.hasError) {
+        emit(TokenWalletSendState.subscribeError(tokenWalletState.error!));
+        return;
+      }
+
+      final wallet = walletState.wallet!;
 
       final balance = wallet.contractState.balance;
 
