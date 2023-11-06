@@ -68,6 +68,7 @@ class AccountDetailView extends StatelessWidget {
                 height: DimensSize.d148,
                 data: account.address.address,
                 barcode: Barcode.qrCode(),
+                color: colors.textPrimary,
               ),
               CommonListTile(
                 onPressed: _copyAddress,

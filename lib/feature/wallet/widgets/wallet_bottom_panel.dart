@@ -63,11 +63,7 @@ class _WalletBottomPanelState extends State<WalletBottomPanel> {
                 ),
             },
             const SliverToBoxAdapter(
-              child: SizedBox(
-                // we add kBottomNavigationBarHeight because for wallet page
-                // we use extendBody to hide bottom part of sliding sheet
-                height: DimensSize.d8 + kBottomNavigationBarHeight,
-              ),
+              child: SafeArea(child: SizedBox(height: DimensSize.d8)),
             ),
           ],
         );

@@ -52,6 +52,7 @@ class ReceiveFundsSheet extends StatelessWidget {
               height: DimensSize.d148,
               data: address.address,
               barcode: Barcode.qrCode(),
+              color: colors.textPrimary,
             ),
             SeparatedColumn(
               mainAxisSize: MainAxisSize.min,
