@@ -37,15 +37,13 @@ class TokenWalletDetailsPage extends StatelessWidget {
             return state.when(
               initial: () => const SizedBox.shrink(),
               empty: () => const SizedBox.shrink(),
-              subscribeError: (contractName, account, error, isLoading) =>
-                  _body(
+              subscribeError: (contractName, error, isLoading) => _body(
                 contractName: contractName,
                 error: error,
                 isLoadingError: isLoading,
               ),
               data: (
                 contractName,
-                account,
                 tokenBalance,
                 fiatBalance,
                 canSend,
