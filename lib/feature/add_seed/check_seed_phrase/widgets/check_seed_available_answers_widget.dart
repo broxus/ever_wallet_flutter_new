@@ -27,17 +27,20 @@ class CheckSeedAvailableAnswersWidget extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return SeparatedColumn(
-      mainAxisSize: MainAxisSize.min,
-      children: [
-        for (var index = 0; index < defaultWordsToCheckAmount; index++)
-          _answersRow(
-            availableAnswers.sublist(
-              index * defaultWordsToCheckAmount,
-              index * defaultWordsToCheckAmount + defaultWordsToCheckAmount,
+    return SafeArea(
+      minimum: const EdgeInsets.only(bottom: DimensSize.d12),
+      child: SeparatedColumn(
+        mainAxisSize: MainAxisSize.min,
+        children: [
+          for (var index = 0; index < defaultWordsToCheckAmount; index++)
+            _answersRow(
+              availableAnswers.sublist(
+                index * defaultWordsToCheckAmount,
+                index * defaultWordsToCheckAmount + defaultWordsToCheckAmount,
+              ),
             ),
-          ),
-      ],
+        ],
+      ),
     );
   }
 

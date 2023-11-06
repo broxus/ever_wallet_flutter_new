@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:ui_components_lib/colors.dart';
 import 'package:ui_components_lib/components/button/button_style.dart';
 import 'package:ui_components_lib/opac.dart';
@@ -34,6 +35,9 @@ ThemeData everPredefinedLightTheme() {
   return ThemeData(
     brightness: Brightness.light,
     scaffoldBackgroundColor: colors.appBackground,
+    appBarTheme: const AppBarTheme(
+      systemOverlayStyle: SystemUiOverlayStyle.dark,
+    ),
     extensions: [
       ThemeStyle(
         colors: colors,
@@ -75,6 +79,9 @@ ThemeData everPredefinedDarkTheme() {
   return ThemeData(
     brightness: Brightness.dark,
     scaffoldBackgroundColor: colors.appBackground,
+    appBarTheme: const AppBarTheme(
+      systemOverlayStyle: SystemUiOverlayStyle.light,
+    ),
     extensions: [
       ThemeStyle(
         colors: colors,
