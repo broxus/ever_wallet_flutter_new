@@ -3,7 +3,7 @@ import 'package:app/di/di.dart';
 import 'package:logging/logging.dart';
 import 'package:nekoton_repository/nekoton_repository.dart';
 
-const _minSubscriptionsAtTime = 10;
+const _minSubscriptionsAtTime = 15;
 
 Future<void> configureNekoton() async {
   final log = Logger('bootstrap')
