@@ -23,7 +23,6 @@ class OnboardingView extends StatelessWidget {
       minimum: const EdgeInsets.only(bottom: DimensSize.d16),
       child: Center(
         child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             Padding(
               padding: const EdgeInsets.symmetric(
