@@ -41,6 +41,7 @@ class LocalizationSheet extends StatelessWidget {
                 },
                 leading: CommonBackgroundedIconWidget.svg(
                   svg: code.iconPath,
+                  backgroundColor: Colors.transparent,
                   useDefaultColor: false,
                 ),
                 titleText: code.localizedString.tr(),
