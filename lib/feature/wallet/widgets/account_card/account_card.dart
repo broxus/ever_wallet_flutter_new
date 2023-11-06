@@ -1,6 +1,7 @@
 import 'package:app/app/service/service.dart';
 import 'package:app/di/di.dart';
 import 'package:app/feature/profile/profile.dart';
+import 'package:app/feature/wallet/wallet.dart';
 import 'package:app/feature/wallet/widgets/account_card/account_card_cubit.dart';
 import 'package:app/generated/generated.dart';
 import 'package:flutter/material.dart';
@@ -35,42 +36,16 @@ class AccountCard extends StatelessWidget {
       child: BlocBuilder<AccountCardCubit, AccountCardState>(
         builder: (context, state) {
           return state.when<Widget>(
-            data: (account, walletName, balance, custodians) {
-              return ShapedContainerColumn(
-                squircleRadius: DimensRadius.large,
-                height: height,
-                width: double.infinity,
-                margin: EdgeInsets.zero,
-                padding: EdgeInsets.zero,
-                separator: const CommonDivider(),
-                children: [
-                  Expanded(
-                    child: Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        _walletDescriptionTile(walletName, custodians),
-                        Expanded(
-                          child: Padding(
-                            padding: const EdgeInsets.symmetric(
-                              horizontal: DimensSize.d16,
-                            ),
-                            child: Center(
-                              child: balance == null
-                                  ? _balanceLoader()
-                                  : MoneyWidget(
-                                      money: balance,
-                                      style: MoneyWidgetStyle.primary,
-                                    ),
-                            ),
-                          ),
-                        ),
-                      ],
-                    ),
-                  ),
-                  _addressTile(),
-                ],
-              );
-            },
+            subscribeError: (account, walletName, error, isLoading) => _body(
+              walletName: walletName,
+              error: error,
+              isErrorLoading: isLoading,
+            ),
+            data: (account, walletName, balance, custodians) => _body(
+              walletName: walletName,
+              balance: balance,
+              custodians: custodians,
+            ),
           );
         },
       ),
@@ -207,6 +182,56 @@ class AccountCard extends StatelessWidget {
           ],
         );
       },
+    );
+  }
+
+  Widget _body({
+    required String walletName,
+    String? custodians,
+    Money? balance,
+    Object? error,
+    bool isErrorLoading = false,
+  }) {
+    return ShapedContainerColumn(
+      squircleRadius: DimensRadius.large,
+      height: height,
+      width: double.infinity,
+      margin: EdgeInsets.zero,
+      padding: EdgeInsets.zero,
+      separator: const CommonDivider(),
+      children: [
+        Expanded(
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              _walletDescriptionTile(walletName, custodians),
+              Expanded(
+                child: Padding(
+                  padding: const EdgeInsets.symmetric(
+                    horizontal: DimensSize.d16,
+                  ),
+                  child: Center(
+                    child: error != null
+                        ? WalletSubscribeErrorWidget(
+                            error: error,
+                            isLoadingError: isErrorLoading,
+                            onRetryPressed: (context) =>
+                                context.read<AccountCardCubit>().retry(),
+                          )
+                        : balance == null
+                            ? _balanceLoader()
+                            : MoneyWidget(
+                                money: balance,
+                                style: MoneyWidgetStyle.primary,
+                              ),
+                  ),
+                ),
+              ),
+            ],
+          ),
+        ),
+        _addressTile(),
+      ],
     );
   }
 }

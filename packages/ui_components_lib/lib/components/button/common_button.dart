@@ -254,14 +254,12 @@ class _CommonButtonState extends State<CommonButton> {
     return Padding(
       padding: widget.padding ??
           const EdgeInsets.symmetric(horizontal: DimensSize.d48),
-      child: Center(
-        child: SizedBox(
-          width: DimensSize.d20,
-          height: DimensSize.d20,
-          child: CircularProgressIndicator(
-            color: contentColor,
-            strokeWidth: DimensStroke.medium,
-          ),
+      child: SizedBox(
+        width: DimensSize.d20,
+        height: DimensSize.d20,
+        child: CircularProgressIndicator(
+          color: contentColor,
+          strokeWidth: DimensStroke.medium,
         ),
       ),
     );

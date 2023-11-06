@@ -27,7 +27,7 @@ class WalletAccountActionsCubit extends Cubit<WalletAccountActionsState> {
     this.stakingService,
   ) : super(const WalletAccountActionsState.loading()) {
     _walletsSubscription = nekotonRepository.walletsStream.listen((wallets) {
-      final wl = wallets.firstWhereOrNull((w) => w.address == address);
+      final wl = wallets.firstWhereOrNull((w) => w.address == address)?.wallet;
       if (wl != null) _initWallet(wl);
     });
   }
@@ -38,7 +38,7 @@ class WalletAccountActionsCubit extends Cubit<WalletAccountActionsState> {
 
   TonWallet? wallet;
 
-  late StreamSubscription<List<TonWallet>> _walletsSubscription;
+  late StreamSubscription<List<TonWalletState>> _walletsSubscription;
   StreamSubscription<void>? _thisWalletSubscription;
   StreamSubscription<dynamic>? _withdrawsSubscription;
 

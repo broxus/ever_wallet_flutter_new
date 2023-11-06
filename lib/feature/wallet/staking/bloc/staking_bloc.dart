@@ -125,11 +125,19 @@ class StakingBloc extends Bloc<StakingBlocEvent, StakingBlocState> {
     );
   }
 
+  // ignore: long-method
   Future<void> _init(Emitter<StakingBlocState> emit) async {
     try {
       final pair = (accountAddress, staking.stakingRootContractAddress);
       final transport = nekotonRepository.currentTransport;
-      _everWallet = nekotonRepository.getWallet(accountAddress);
+
+      final ever = nekotonRepository.getWallet(accountAddress);
+      if (ever.hasError) {
+        emit(StakingBlocState.subscribeError(ever.error!));
+
+        return;
+      }
+      _everWallet = ever.wallet!;
 
       if (nekotonRepository.tokenWalletsMap[pair] == null) {
         await nekotonRepository.subscribeToken(
@@ -137,7 +145,14 @@ class StakingBloc extends Bloc<StakingBlocEvent, StakingBlocState> {
           rootTokenContract: pair.$2,
         );
       }
-      _stEverWallet = nekotonRepository.getTokenWallet(pair.$1, pair.$2);
+
+      final stever = nekotonRepository.getTokenWallet(pair.$1, pair.$2);
+      if (stever.hasError) {
+        emit(StakingBlocState.subscribeError(stever.error!));
+
+        return;
+      }
+      _stEverWallet = stever.wallet!;
 
       _stEverWalletCurrency = (await currenciesService.getCurrencyForContract(
         transport,

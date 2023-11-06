@@ -35,29 +35,51 @@ class TokenWalletAssetWidget extends StatelessWidget {
       child: BlocBuilder<TokenWalletAssetCubit, TokenWalletAssetState>(
         builder: (context, state) {
           return state.when(
-            data: (fiatBalance, tokenBalance) {
-              return WalletAssetWidget(
-                tokenBalance: tokenBalance,
-                fiatBalance: fiatBalance,
-                icon: TokenWalletIconWidget(
-                  logoURI: asset.logoURI,
-                  address: asset.address,
-                  version: asset.version,
-                ),
-                onPressed: () => context.goFurther(
-                  AppRoute.tokenWalletDetails.pathWithData(
-                    pathParameters: {
-                      tokenWalletDetailsOwnerAddressPathParam: owner.address,
-                      tokenWalletDetailsContractAddressPathParam:
-                          asset.address.address,
-                    },
-                  ),
-                ),
-              );
-            },
+            subscribeError: (error, isLoading) => _asset(
+              error: error,
+              isErrorLoading: isLoading,
+            ),
+            data: (fiatBalance, tokenBalance) => _asset(
+              fiatBalance: fiatBalance,
+              tokenBalance: tokenBalance,
+            ),
           );
         },
       ),
+    );
+  }
+
+  Widget _asset({
+    Object? error,
+    bool isErrorLoading = false,
+    Money? tokenBalance,
+    Money? fiatBalance,
+  }) {
+    return Builder(
+      builder: (context) {
+        return WalletAssetWidget(
+          tokenBalance: tokenBalance,
+          fiatBalance: fiatBalance,
+          error: error,
+          isRetryLoading: isErrorLoading,
+          onRetryPressed: (context) =>
+              context.read<TokenWalletAssetCubit>().retry(),
+          icon: TokenWalletIconWidget(
+            logoURI: asset.logoURI,
+            address: asset.address,
+            version: asset.version,
+          ),
+          onPressed: () => context.goFurther(
+            AppRoute.tokenWalletDetails.pathWithData(
+              pathParameters: {
+                tokenWalletDetailsOwnerAddressPathParam: owner.address,
+                tokenWalletDetailsContractAddressPathParam:
+                    asset.address.address,
+              },
+            ),
+          ),
+        );
+      },
     );
   }
 }

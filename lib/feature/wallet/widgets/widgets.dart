@@ -10,3 +10,4 @@ export 'receive_sheet.dart';
 export 'wallet_account_actions/wallet_account_actions.dart';
 export 'wallet_accounts_body.dart';
 export 'wallet_bottom_panel.dart';
+export 'wallet_subscribe_error_widget.dart';

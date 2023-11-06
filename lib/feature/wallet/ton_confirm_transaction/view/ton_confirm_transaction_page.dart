@@ -71,6 +71,12 @@ class TonConfirmTransactionPage extends StatelessWidget {
                 localCustodians: localCustodians,
               ),
             ),
+            subscribeError: (error) => Scaffold(
+              appBar: DefaultAppBar(
+                titleText: LocaleKeys.confirmTransaction.tr(),
+              ),
+              body: Center(child: WalletSubscribeErrorWidget(error: error)),
+            ),
             loading: (c) => _confirmPage(custodian: c),
             calculatingError: (
               error,

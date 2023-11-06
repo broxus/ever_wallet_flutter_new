@@ -60,7 +60,7 @@ class AccountDetailCubit extends Cubit<AccountDetailState> {
   /// used to listen balances
   // ignore: unused_field
   TonWallet? _tonWallet;
-  final List<TokenWallet> _tokenWallets = [];
+  final List<TokenWalletState> _tokenWallets = [];
 
   void _checkBalanceSub(KeyAccount account) {
     // no transport or transport changed
@@ -99,7 +99,7 @@ class AccountDetailCubit extends Cubit<AccountDetailState> {
   }
 
   Future<void> _subscribeNative() async {
-    final wallet = await nekotonRepository.subscribeByAddress(address);
+    final wallet = (await nekotonRepository.subscribeByAddress(address)).wallet;
     // for cases, when screen was closed before sub completed
     if (isClosed) {
       nekotonRepository.unsubscribe(address);

@@ -6,6 +6,8 @@ class StakingBlocState with _$StakingBlocState {
 
   const factory StakingBlocState.initError() = _InitError;
 
+  const factory StakingBlocState.subscribeError(Object error) = _SubscribeError;
+
   /// State that describes stake view
   const factory StakingBlocState.data({
     // Type of current selected action

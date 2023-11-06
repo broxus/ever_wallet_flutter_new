@@ -164,7 +164,13 @@ class WalletDeployBloc extends Bloc<WalletDeployEvent, WalletDeployState> {
           .expand((e) => e)
           .firstWhere((wallets) => wallets.address == address);
 
-      balance = wallet.contractState.balance;
+      if (wallet.hasError) {
+        emit(WalletDeployState.subscribeError(wallet.error!));
+
+        return;
+      }
+
+      balance = wallet.wallet!.contractState.balance;
 
       fees = await nekotonRepository.estimateFees(
         address: address,

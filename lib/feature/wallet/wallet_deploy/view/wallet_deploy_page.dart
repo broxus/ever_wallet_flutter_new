@@ -36,6 +36,9 @@ class WalletDeployPage extends StatelessWidget {
         },
         builder: (context, state) {
           return state.maybeWhen(
+            subscribeError: (error) => _scaffold(
+              WalletSubscribeErrorWidget(error: error),
+            ),
             standard: () => _scaffold(const WalletDeployStandardBody()),
             multisig: (custodians, requireConfirmations) => _scaffold(
               WalletDeployMultisigBody(

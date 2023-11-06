@@ -460,5 +460,7 @@
   "initializationRerunFailed": "Initialization rerun failed",
   "initializationFailedDescription": "App initialization failed, please, try again later",
   "tryAgain": "Try again",
-  "connectingNetworkFailed": "Connecting network failed, please, try another network."
+  "connectingNetworkFailed": "Connecting network failed, please, try another network.",
+  "creatingSubscriptionFailed": "Creating subscription failed",
+  "suchTokenCannotBeSubscribed": "Such token cannot be subscribed now"
 }

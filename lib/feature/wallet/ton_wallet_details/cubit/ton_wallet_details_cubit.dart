@@ -37,24 +37,38 @@ class TonWalletDetailsCubit extends Cubit<TonWalletDetailsState> {
     _updateState();
 
     _walletsSubscription = nekotonRepository.walletsStream.listen((wallets) {
-      final wallet = wallets.firstWhereOrNull((w) => w.address == address);
-      if (wallet != null) {
+      final walletState = wallets.firstWhereOrNull((w) => w.address == address);
+      if (walletState != null) {
         _walletsSubscription?.cancel();
 
-        _thisWalletSubscription = wallet.fieldUpdatesStream.listen((_) {
-          _cachedTokenBalance = Money.fromBigIntWithCurrency(
-            wallet.contractState.balance,
-            Currencies()[nekotonRepository.currentTransport.nativeTokenTicker]!,
+        if (walletState.hasError) {
+          emit(
+            TonWalletDetailsState.subscribeError(
+              walletName: _walletName(nekotonRepository, account),
+              account: account,
+              error: walletState.error!,
+              isLoading: false,
+            ),
           );
+        } else {
+          final wallet = walletState.wallet!;
 
-          _updateState();
-        });
-        _balanceSubscription =
-            balanceService.tonWalletBalanceStream(address).listen((balance) {
-          _cachedFiatBalance = currencyConvertService.convert(balance);
+          _thisWalletSubscription = wallet.fieldUpdatesStream.listen((_) {
+            _cachedTokenBalance = Money.fromBigIntWithCurrency(
+              wallet.contractState.balance,
+              Currencies()[
+                  nekotonRepository.currentTransport.nativeTokenTicker]!,
+            );
 
-          _updateState();
-        });
+            _updateState();
+          });
+          _balanceSubscription =
+              balanceService.tonWalletBalanceStream(address).listen((balance) {
+            _cachedFiatBalance = currencyConvertService.convert(balance);
+
+            _updateState();
+          });
+        }
       }
     });
   }
@@ -79,6 +93,15 @@ class TonWalletDetailsCubit extends Cubit<TonWalletDetailsState> {
     _balanceSubscription?.cancel();
 
     return super.close();
+  }
+
+  Future<void> retry() async {
+    final st = state;
+    if (st is _SubscribeError) {
+      emit(st.copyWith(isLoading: true));
+      await nekotonRepository.retrySubscriptions(address);
+      emit(st.copyWith(isLoading: false));
+    }
   }
 
   void _updateState() {

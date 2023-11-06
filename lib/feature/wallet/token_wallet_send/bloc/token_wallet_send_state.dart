@@ -4,6 +4,10 @@ part of 'token_wallet_send_bloc.dart';
 class TokenWalletSendState with _$TokenWalletSendState {
   const factory TokenWalletSendState.init() = _Init;
 
+  const factory TokenWalletSendState.subscribeError(
+    Object error,
+  ) = _SubscribeError;
+
   const factory TokenWalletSendState.loading(Currency tokenCurrency) = _Loading;
 
   /// Error during prepare process

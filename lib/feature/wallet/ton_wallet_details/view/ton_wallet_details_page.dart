@@ -29,55 +29,21 @@ class TonWalletDetailsPage extends StatelessWidget {
         ),
         child: BlocBuilder<TonWalletDetailsCubit, TonWalletDetailsState>(
           builder: (context, state) {
-            final colors = context.themeStyle.colors;
-
             return state.when(
               initial: () => const SizedBox.shrink(),
               empty: () => const SizedBox.shrink(),
-              data: (walletName, account, tokenBalance, fiatBalance) {
-                return CommonSlidingPanel(
-                  // ignore: no-magic-number
-                  minHeightSizePercent: 0.65,
-                  maxHeightSizePercent: 1,
-                  body: SeparatedColumn(
-                    mainAxisSize: MainAxisSize.min,
-                    separatorSize: DimensSize.d24,
-                    children: [
-                      _header(walletName, tokenBalance, fiatBalance),
-                      WalletAccountActions(
-                        currentAccount: account,
-                        allowStake: false,
-                        sendSpecified: true,
-                      ),
-                    ],
-                  ),
-                  panelBuilder: (context, controller) => CustomScrollView(
-                    controller: controller,
-                    slivers: [
-                      SliverToBoxAdapter(
-                        child: Padding(
-                          padding: const EdgeInsets.symmetric(
-                            horizontal: DimensSize.d16,
-                          ),
-                          child: Text(
-                            LocaleKeys.transactionsHistory.tr(),
-                            style: StyleRes.h2.copyWith(
-                              color: colors.textPrimary,
-                            ),
-                          ),
-                        ),
-                      ),
-                      AccountTransactionsTab(
-                        account: account,
-                        scrollController: controller,
-                      ),
-                      const SliverToBoxAdapter(
-                        child: SizedBox(height: DimensSize.d8),
-                      ),
-                    ],
-                  ),
-                );
-              },
+              subscribeError: (walletName, account, error, isLoading) => _body(
+                walletName: walletName,
+                account: account,
+                error: error,
+                isLoadingError: isLoading,
+              ),
+              data: (walletName, account, tokenBalance, fiatBalance) => _body(
+                walletName: walletName,
+                account: account,
+                tokenBalance: tokenBalance,
+                fiatBalance: fiatBalance,
+              ),
             );
           },
         ),
@@ -87,8 +53,8 @@ class TonWalletDetailsPage extends StatelessWidget {
 
   Widget _header(
     String walletName,
-    Money tokenBalance,
-    Money fiatBalance,
+    Money? tokenBalance,
+    Money? fiatBalance,
   ) {
     return Builder(
       builder: (context) {
@@ -102,11 +68,94 @@ class TonWalletDetailsPage extends StatelessWidget {
               walletName,
               style: StyleRes.addRegular.copyWith(color: colors.textSecondary),
             ),
-            MoneyWidget(money: tokenBalance, style: MoneyWidgetStyle.primary),
-            MoneyWidget(money: fiatBalance, style: MoneyWidgetStyle.secondary),
+            if (tokenBalance != null)
+              MoneyWidget(money: tokenBalance, style: MoneyWidgetStyle.primary),
+            if (fiatBalance != null)
+              MoneyWidget(
+                money: fiatBalance,
+                style: MoneyWidgetStyle.secondary,
+              ),
           ],
         );
       },
+    );
+  }
+
+  // ignore: long-method
+  Widget _body({
+    required String walletName,
+    required KeyAccount account,
+    Money? tokenBalance,
+    Money? fiatBalance,
+    Object? error,
+    bool isLoadingError = false,
+  }) {
+    return CommonSlidingPanel(
+      // ignore: no-magic-number
+      minHeightSizePercent: 0.65,
+      maxHeightSizePercent: 1,
+      body: SeparatedColumn(
+        mainAxisSize: MainAxisSize.min,
+        separatorSize: DimensSize.d24,
+        children: [
+          _header(walletName, tokenBalance, fiatBalance),
+          if (error == null)
+            WalletAccountActions(
+              currentAccount: account,
+              allowStake: false,
+              sendSpecified: true,
+            ),
+        ],
+      ),
+      panelBuilder: (context, controller) => Builder(
+        builder: (context) {
+          final colors = context.themeStyle.colors;
+
+          return CustomScrollView(
+            controller: controller,
+            slivers: error != null
+                ? <Widget>[
+                    SliverFillRemaining(
+                      child: Padding(
+                        padding: const EdgeInsets.symmetric(
+                          horizontal: DimensSize.d16,
+                        ),
+                        child: Center(
+                          child: WalletSubscribeErrorWidget(
+                            error: error,
+                            isLoadingError: isLoadingError,
+                            onRetryPressed: (context) =>
+                                context.read<TonWalletDetailsCubit>().retry(),
+                          ),
+                        ),
+                      ),
+                    ),
+                  ]
+                : <Widget>[
+                    SliverToBoxAdapter(
+                      child: Padding(
+                        padding: const EdgeInsets.symmetric(
+                          horizontal: DimensSize.d16,
+                        ),
+                        child: Text(
+                          LocaleKeys.transactionsHistory.tr(),
+                          style: StyleRes.h2.copyWith(
+                            color: colors.textPrimary,
+                          ),
+                        ),
+                      ),
+                    ),
+                    AccountTransactionsTab(
+                      account: account,
+                      scrollController: controller,
+                    ),
+                    const SliverToBoxAdapter(
+                      child: SizedBox(height: DimensSize.d8),
+                    ),
+                  ],
+          );
+        },
+      ),
     );
   }
 }

@@ -23,14 +23,17 @@ class TonWalletAssetCubit extends Cubit<TonWalletAssetState> {
           ),
         ) {
     _walletsSubscription = nekotonRepository.walletsStream.listen((wallets) {
-      final wallet =
+      final walletState =
           wallets.firstWhereOrNull((w) => w.address == tonWallet.address);
+
+      final oldWallet = _wallet?.wallet;
+      final wallet = walletState?.wallet;
       // wallet not iniaitlized or transport of wallet changed
       if (wallet != null &&
-          (_wallet == null ||
-              _wallet!.transport.connectionParamsHash !=
+          (oldWallet == null ||
+              oldWallet.transport.connectionParamsHash !=
                   wallet.transport.connectionParamsHash)) {
-        _wallet = wallet;
+        _wallet = walletState;
         _closeSubs();
 
         _thisWalletSubscription = wallet.fieldUpdatesStream.listen((_) {
@@ -50,6 +53,14 @@ class TonWalletAssetCubit extends Cubit<TonWalletAssetState> {
           _tryUpdateBalances();
           _updateState();
         });
+      } else if (walletState?.hasError ?? false) {
+        emit(
+          TonWalletAssetState.subscribeError(
+            iconPath: nekotonRepository.currentTransport.nativeTokenIcon,
+            error: walletState!.error!,
+            isLoading: false,
+          ),
+        );
       }
     });
 
@@ -72,7 +83,7 @@ class TonWalletAssetCubit extends Cubit<TonWalletAssetState> {
   StreamSubscription<dynamic>? _thisWalletSubscription;
   StreamSubscription<dynamic>? _balanceSubscription;
 
-  TonWallet? _wallet;
+  TonWalletState? _wallet;
 
   Money? _cachedFiatBalance;
   Money? _cachedTokenBalance;
@@ -83,6 +94,15 @@ class TonWalletAssetCubit extends Cubit<TonWalletAssetState> {
     _closeSubs();
 
     return super.close();
+  }
+
+  Future<void> retry() async {
+    final st = state;
+    if (st is _SubscribeError) {
+      emit(st.copyWith(isLoading: true));
+      await nekotonRepository.retrySubscriptions(tonWallet.address);
+      emit(st.copyWith(isLoading: false));
+    }
   }
 
   void _closeSubs() {

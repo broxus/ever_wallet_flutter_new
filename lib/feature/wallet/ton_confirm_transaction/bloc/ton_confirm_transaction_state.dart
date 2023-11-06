@@ -8,6 +8,9 @@ class TonConfirmTransactionState with _$TonConfirmTransactionState {
     PublicKey custodian,
   ) = _LoadingState;
 
+  const factory TonConfirmTransactionState.subscribeError(Object error) =
+      _SubscribeError;
+
   /// Error during prepare process
   const factory TonConfirmTransactionState.calculatingError(
     String error,

@@ -77,6 +77,12 @@ class TokenWalletSendPage extends StatelessWidget {
         builder: (context, state) {
           return state.when(
             init: () => const SizedBox.shrink(),
+            subscribeError: (error) => Scaffold(
+              appBar: const DefaultAppBar(),
+              body: Center(
+                child: WalletSubscribeErrorWidget(error: error),
+              ),
+            ),
             loading: (tokenCurrency) =>
                 _confirmPage(tokenCurrency: tokenCurrency),
             calculatingError: (error, tokenCurrency, fee) => _confirmPage(

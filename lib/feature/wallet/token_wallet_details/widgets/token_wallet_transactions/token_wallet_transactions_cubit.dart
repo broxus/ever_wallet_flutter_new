@@ -21,8 +21,8 @@ class TokenWalletTransactionsCubit extends Cubit<TokenWalletTransactionsState> {
     required this.nekotonRepository,
     required this.walletStorage,
   }) : super(const TokenWalletTransactionsState.loading()) {
-    _walletSubscription = Rx.combineLatest2<TokenWallet?, TransportStrategy,
-        (TokenWallet?, TransportStrategy)>(
+    _walletSubscription = Rx.combineLatest2<TokenWalletState?,
+        TransportStrategy, (TokenWalletState?, TransportStrategy)>(
       nekotonRepository.tokenWalletsStream.map(
         (wallets) => wallets.firstWhereOrNull(
           (w) => w.owner == owner && w.rootTokenContract == rootTokenContract,
@@ -32,7 +32,7 @@ class TokenWalletTransactionsCubit extends Cubit<TokenWalletTransactionsState> {
       (a, b) => (a, b),
     ).listen(
       (value) {
-        final wallet = value.$1;
+        final wallet = value.$1?.wallet;
         final transport = value.$2.transport;
 
         if (wallet == null) {

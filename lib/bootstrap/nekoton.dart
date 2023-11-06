@@ -3,11 +3,15 @@ import 'package:app/di/di.dart';
 import 'package:logging/logging.dart';
 import 'package:nekoton_repository/nekoton_repository.dart';
 
+const _minSubscriptionsAtTime = 10;
+
 Future<void> configureNekoton() async {
   final log = Logger('bootstrap')
     ..finest('NekotonRepository initializating...');
 
-  final nekotonRepository = inject<NekotonRepository>();
+  final nekotonRepository = inject<NekotonRepository>()
+    ..tonSubscribeAtTimeAmount = _minSubscriptionsAtTime
+    ..tokenSubscribeAtTimeAmount = _minSubscriptionsAtTime;
 
   await nekotonRepository.setupNekotonAndStorage(
     storage: inject<NekotonStorageService>(),

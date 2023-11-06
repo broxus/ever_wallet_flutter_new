@@ -22,15 +22,18 @@ class TokenWalletAssetCubit extends Cubit<TokenWalletAssetState> {
   }) : super(const TokenWalletAssetState.data()) {
     _walletsSubscription =
         nekotonRepository.tokenWalletsStream.listen((wallets) {
-      final wallet = wallets.firstWhereOrNull(
+      final walletState = wallets.firstWhereOrNull(
         (w) => w.owner == owner && w.rootTokenContract == asset.address,
       );
+
+      final oldWallet = _wallet?.wallet;
+      final wallet = walletState?.wallet;
       // wallet not iniaitlized or transport of wallet changed
       if (wallet != null &&
-          (_wallet == null ||
-              _wallet!.transport.connectionParamsHash !=
+          (oldWallet == null ||
+              oldWallet.transport.connectionParamsHash !=
                   wallet.transport.connectionParamsHash)) {
-        _wallet = wallet;
+        _wallet = walletState;
         _closeSubs();
 
         _thisWalletSubscription = wallet.fieldUpdatesStream.listen((_) {
@@ -50,6 +53,13 @@ class TokenWalletAssetCubit extends Cubit<TokenWalletAssetState> {
           _tryUpdateBalances();
           _updateState();
         });
+      } else if (walletState?.hasError ?? false) {
+        emit(
+          TokenWalletAssetState.subscribeError(
+            error: walletState!.error!,
+            isLoading: false,
+          ),
+        );
       }
     });
 
@@ -76,7 +86,7 @@ class TokenWalletAssetCubit extends Cubit<TokenWalletAssetState> {
   Money? _cachedFiatBalance;
   Money? _cachedTokenBalance;
 
-  TokenWallet? _wallet;
+  TokenWalletState? _wallet;
 
   @override
   Future<void> close() {
@@ -84,6 +94,15 @@ class TokenWalletAssetCubit extends Cubit<TokenWalletAssetState> {
     _closeSubs();
 
     return super.close();
+  }
+
+  Future<void> retry() async {
+    final st = state;
+    if (st is _SubscribeError) {
+      emit(st.copyWith(isLoading: true));
+      await nekotonRepository.retryTokenSubscription(owner, asset.address);
+      emit(st.copyWith(isLoading: false));
+    }
   }
 
   void _closeSubs() {

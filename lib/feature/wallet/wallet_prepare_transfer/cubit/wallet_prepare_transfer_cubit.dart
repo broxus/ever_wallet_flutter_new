@@ -264,7 +264,18 @@ class WalletPrepareTransferCubit extends Cubit<WalletPrepareTransferState> {
   /// Subscription for native token to find balance
   void _subscribeNativeBalance(Address root) {
     _walletsSubscription = nekotonRepository.walletsStream.listen((wallets) {
-      final wallet = wallets.firstWhereOrNull((w) => w.address == address);
+      final walletState = wallets.firstWhereOrNull((w) => w.address == address);
+
+      if (walletState == null) return;
+
+      if (walletState.hasError) {
+        emit(WalletPrepareTransferState.subscribeError(walletState.error!));
+
+        return;
+      }
+
+      final wallet = walletState.wallet;
+
       if (wallet != null) {
         _walletsSubscription?.cancel();
         final symbol = nekotonRepository.currentTransport.nativeTokenTicker;
@@ -295,9 +306,20 @@ class WalletPrepareTransferCubit extends Cubit<WalletPrepareTransferState> {
   void _subscribeTokenBalance(Address root) {
     _walletsSubscription =
         nekotonRepository.tokenWalletsStream.listen((wallets) {
-      final wallet = wallets.firstWhereOrNull(
+      final walletState = wallets.firstWhereOrNull(
         (w) => w.owner == address && w.rootTokenContract == root,
       );
+
+      if (walletState == null) return;
+
+      if (walletState.hasError) {
+        emit(WalletPrepareTransferState.subscribeError(walletState.error!));
+
+        return;
+      }
+
+      final wallet = walletState.wallet;
+
       if (wallet != null) {
         _walletsSubscription?.cancel();
         _currentWalletSubscription = wallet.fieldUpdatesStream.listen((_) {
