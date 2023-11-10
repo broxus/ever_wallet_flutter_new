@@ -54,17 +54,22 @@ class OnboardingView extends StatelessWidget {
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   const SizedBox(height: DimensSize.d12),
-                  Text(
-                    LocaleKeys.welcomeTitle.tr(),
-                    style: StyleRes.balance.copyWith(color: colors.textPrimary),
-                    textAlign: TextAlign.center,
+                  Center(
+                    child: Text(
+                      LocaleKeys.welcomeTitle.tr(),
+                      style:
+                          StyleRes.balance.copyWith(color: colors.textPrimary),
+                      textAlign: TextAlign.center,
+                    ),
                   ),
                   const SizedBox(height: DimensSize.d12),
-                  Text(
-                    LocaleKeys.supportTokenAndAccessEverscale.tr(),
-                    style: StyleRes.primaryRegular
-                        .copyWith(color: colors.textPrimary),
-                    textAlign: TextAlign.center,
+                  Center(
+                    child: Text(
+                      LocaleKeys.supportTokenAndAccessEverscale.tr(),
+                      style: StyleRes.primaryRegular
+                          .copyWith(color: colors.textPrimary),
+                      textAlign: TextAlign.center,
+                    ),
                   ),
                   const SizedBox(height: DimensSize.d24),
                   CommonButton.primary(
