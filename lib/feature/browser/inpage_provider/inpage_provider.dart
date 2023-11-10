@@ -150,8 +150,8 @@ class InpageProvider extends ProviderApi {
     _checkPermissions(permissions: existingPermissions, account: true);
 
     final existingPermissionsList = [
-      if (existingPermissions?.basic == null) Permission.basic,
-      if (existingPermissions?.accountInteraction == null)
+      if (existingPermissions?.basic ?? false) Permission.basic,
+      if (existingPermissions?.accountInteraction != null)
         Permission.accountInteraction,
     ];
 
@@ -159,6 +159,8 @@ class InpageProvider extends ProviderApi {
       origin: origin!,
       permissions: existingPermissionsList,
     );
+
+    _logger.finest('changeAccount', permissions.toJson());
 
     final accountInteraction = permissions.accountInteraction;
 
@@ -1562,7 +1564,9 @@ class InpageProvider extends ProviderApi {
   dynamic call(String method, dynamic params) async {
     _logger.finest('method: $method, params: $params');
     try {
-      return await super.call(method, params);
+      final result = await super.call(method, params);
+      _logger.finest('method: $method, result: ${result?.toJson()}');
+      return result;
     } on s.ApprovalsHandleException catch (e, t) {
       _logger.severe(method, e.message, t);
       inject<s.MessengerService>().show(s.Message.error(message: e.message));
