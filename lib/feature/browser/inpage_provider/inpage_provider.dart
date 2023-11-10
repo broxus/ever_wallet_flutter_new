@@ -11,6 +11,7 @@ import 'package:flutter_inappwebview/flutter_inappwebview.dart';
 import 'package:logging/logging.dart';
 import 'package:nekoton_repository/nekoton_repository.dart' as nr;
 import 'package:nekoton_webview/nekoton_webview.dart';
+import 'package:string_extensions/string_extensions.dart';
 
 const providerVersion = '0.3.0';
 const providerNumericVersion = 3000;
@@ -720,7 +721,7 @@ class InpageProvider extends ProviderApi {
             : PermissionsAccountInteraction(
                 permissions.accountInteraction!.address.address,
                 permissions.accountInteraction!.publicKey.publicKey,
-                permissions.accountInteraction!.contractType.name,
+                permissions.accountInteraction!.contractType.name.capitalize!,
               ),
       ),
       subscriptions?.map(
