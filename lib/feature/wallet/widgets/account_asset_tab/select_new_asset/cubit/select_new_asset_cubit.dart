@@ -141,8 +141,12 @@ class SelectNewAssetCubit extends Cubit<SelectNewAssetState> {
 
   Future<void> saveChanges() async {
     _updateState(true);
-    await _cachedAccount?.addTokenWallets(_contractsToEnable);
-    await _cachedAccount?.removeTokenWallets(_contractsToDisable);
+    if (_contractsToEnable.isNotEmpty) {
+      await _cachedAccount?.addTokenWallets(_contractsToEnable);
+    }
+    if (_contractsToDisable.isNotEmpty) {
+      await _cachedAccount?.removeTokenWallets(_contractsToDisable);
+    }
 
     emit(const SelectNewAssetState.completed());
   }
