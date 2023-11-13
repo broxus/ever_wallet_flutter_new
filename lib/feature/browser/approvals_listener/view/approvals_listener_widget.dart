@@ -53,12 +53,14 @@ class _ApprovalsListenerWidgetState extends State<ApprovalsListenerWidget> {
         changeAccount: (
           origin,
           permissions,
+          previousSelectedAccount,
           completer,
         ) =>
             changeAccount(
           context: context,
           origin: origin,
           permissions: permissions,
+          previousSelectedAccount: previousSelectedAccount,
           completer: completer,
         ),
         addTip3Token: (
@@ -216,6 +218,7 @@ class _ApprovalsListenerWidgetState extends State<ApprovalsListenerWidget> {
     required BuildContext context,
     required Uri origin,
     required List<Permission> permissions,
+    required Address? previousSelectedAccount,
     required Completer<Permissions> completer,
   }) async {
     try {
@@ -225,6 +228,7 @@ class _ApprovalsListenerWidgetState extends State<ApprovalsListenerWidget> {
         context: context,
         permissions: permissions,
         origin: origin,
+        previousSelectedAccount: previousSelectedAccount,
       );
 
       if (result != null) {

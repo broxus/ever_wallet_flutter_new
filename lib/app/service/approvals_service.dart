@@ -56,12 +56,14 @@ class BrowserApprovalsService {
   Future<Permissions> changeAccount({
     required Uri origin,
     required List<Permission> permissions,
+    required Address? previousSelectedAccount,
   }) async {
     final completer = Completer<Permissions>();
 
     final request = ApprovalRequest.changeAccount(
       origin: origin,
       permissions: permissions,
+      previousSelectedAccount: previousSelectedAccount,
       completer: completer,
     );
 

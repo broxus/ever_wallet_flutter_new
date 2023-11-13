@@ -159,6 +159,7 @@ class InpageProvider extends ProviderApi {
     final permissions = await approvalsService.changeAccount(
       origin: origin!,
       permissions: existingPermissionsList,
+      previousSelectedAccount: existingPermissions?.accountInteraction?.address,
     );
 
     _logger.finest('changeAccount', permissions.toJson());
