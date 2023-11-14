@@ -4,6 +4,7 @@ import 'package:app/di/di.dart';
 import 'package:app/feature/browser/browser.dart';
 import 'package:app/feature/wallet/widgets/account_card/account_card_cubit.dart';
 import 'package:app/generated/generated.dart';
+import 'package:collection/collection.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:nekoton_repository/nekoton_repository.dart';
@@ -23,6 +24,7 @@ Future<Permissions?> showRequestPermissionsSheet({
       origin: origin,
       permissions: permissions,
       scrollController: scrollController,
+      previousSelectedAccount: null,
     ),
   );
 }
@@ -33,6 +35,7 @@ Future<Permissions?> showChangeAccountSheet({
   required BuildContext context,
   required Uri origin,
   required List<Permission> permissions,
+  required Address? previousSelectedAccount,
 }) {
   return showCommonBottomSheet(
     context: context,
@@ -41,6 +44,7 @@ Future<Permissions?> showChangeAccountSheet({
       origin: origin,
       permissions: permissions,
       scrollController: scrollController,
+      previousSelectedAccount: previousSelectedAccount,
     ),
   );
 }
@@ -54,12 +58,14 @@ class RequestPermissionsSheet extends StatefulWidget {
     required this.origin,
     required this.permissions,
     required this.scrollController,
+    required this.previousSelectedAccount,
     super.key,
   });
 
   final Uri origin;
   final List<Permission> permissions;
   final ScrollController scrollController;
+  final Address? previousSelectedAccount;
 
   @override
   State<RequestPermissionsSheet> createState() =>
@@ -71,8 +77,12 @@ class _RequestPermissionsSheetState extends State<RequestPermissionsSheet> {
       inject<CurrentAccountsService>().currentAccounts?.allAccounts ?? [];
 
   // theoretically, there could be empty list if they were not created for key
-  late final selectedAccount =
-      ValueNotifier<KeyAccount?>(possibleAccounts.firstOrNull);
+  late final selectedAccount = ValueNotifier<KeyAccount?>(
+    possibleAccounts.firstWhereOrNull(
+          (a) => a.address == widget.previousSelectedAccount,
+        ) ??
+        possibleAccounts.firstOrNull,
+  );
 
   @override
   void dispose() {

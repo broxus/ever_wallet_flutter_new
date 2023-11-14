@@ -11,6 +11,7 @@ import 'package:flutter_inappwebview/flutter_inappwebview.dart';
 import 'package:logging/logging.dart';
 import 'package:nekoton_repository/nekoton_repository.dart' as nr;
 import 'package:nekoton_webview/nekoton_webview.dart';
+import 'package:string_extensions/string_extensions.dart';
 
 const providerVersion = '0.3.0';
 const providerNumericVersion = 3000;
@@ -150,15 +151,18 @@ class InpageProvider extends ProviderApi {
     _checkPermissions(permissions: existingPermissions, account: true);
 
     final existingPermissionsList = [
-      if (existingPermissions?.basic == null) Permission.basic,
-      if (existingPermissions?.accountInteraction == null)
+      if (existingPermissions?.basic ?? false) Permission.basic,
+      if (existingPermissions?.accountInteraction != null)
         Permission.accountInteraction,
     ];
 
     final permissions = await approvalsService.changeAccount(
       origin: origin!,
       permissions: existingPermissionsList,
+      previousSelectedAccount: existingPermissions?.accountInteraction?.address,
     );
+
+    _logger.finest('changeAccount', permissions.toJson());
 
     final accountInteraction = permissions.accountInteraction;
 
@@ -718,7 +722,7 @@ class InpageProvider extends ProviderApi {
             : PermissionsAccountInteraction(
                 permissions.accountInteraction!.address.address,
                 permissions.accountInteraction!.publicKey.publicKey,
-                permissions.accountInteraction!.contractType.name,
+                permissions.accountInteraction!.contractType.name.capitalize!,
               ),
       ),
       subscriptions?.map(
@@ -1562,7 +1566,9 @@ class InpageProvider extends ProviderApi {
   dynamic call(String method, dynamic params) async {
     _logger.finest('method: $method, params: $params');
     try {
-      return await super.call(method, params);
+      final result = await super.call(method, params);
+      _logger.finest('method: $method, result: ${result?.toJson()}');
+      return result;
     } on s.ApprovalsHandleException catch (e, t) {
       _logger.severe(method, e.message, t);
       inject<s.MessengerService>().show(s.Message.error(message: e.message));
