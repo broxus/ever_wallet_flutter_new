@@ -17,6 +17,7 @@ class ApprovalRequest with _$ApprovalRequest {
   const factory ApprovalRequest.changeAccount({
     required Uri origin,
     required List<Permission> permissions,
+    required Address? previousSelectedAccount,
     required Completer<Permissions> completer,
   }) = _ChangeAccount;
 
