@@ -13,8 +13,8 @@ import 'package:nekoton_repository/nekoton_repository.dart' as nr;
 import 'package:nekoton_webview/nekoton_webview.dart';
 import 'package:string_extensions/string_extensions.dart';
 
-const providerVersion = '0.3.0';
-const providerNumericVersion = 3000;
+const providerVersion = '0.3.36';
+const providerNumericVersion = 3036;
 
 class InpageProvider extends ProviderApi {
   InpageProvider({
@@ -789,6 +789,7 @@ class InpageProvider extends ProviderApi {
       params:
           input.structure.map((e) => nr.AbiParam.fromJson(e.toJson())).toList(),
       tokens: input.data,
+      abiVersion: input.abiVersion,
     );
 
     return PackIntoCellOutput(boc, hash);
@@ -1517,6 +1518,7 @@ class InpageProvider extends ProviderApi {
           input.structure.map((e) => nr.AbiParam.fromJson(e.toJson())).toList(),
       boc: input.boc,
       allowPartial: input.allowPartial,
+      abiVersion: input.abiVersion,
     );
 
     return UnpackFromCellOutput(data);
@@ -1553,10 +1555,17 @@ class InpageProvider extends ProviderApi {
     VerifySignatureInput input,
   ) async {
     _checkPermissions(permissions: permissionsService.getPermissions(origin));
+
+    final signatureId = input.withSignatureId == true
+        ? await nekotonRepository.currentTransport.transport.getSignatureId()
+        : input.withSignatureId == false
+            ? null
+            : int.tryParse(input.withSignatureId.toString());
     final isValid = await nr.verifySignature(
       publicKey: nr.PublicKey(publicKey: input.publicKey),
-      dataHash: input.dataHash,
+      data: input.dataHash,
       signature: input.signature,
+      signatureId: signatureId,
     );
 
     return VerifySignatureOutput(isValid);
