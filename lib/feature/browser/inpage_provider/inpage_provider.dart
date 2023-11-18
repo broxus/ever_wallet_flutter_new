@@ -1575,9 +1575,7 @@ class InpageProvider extends ProviderApi {
   dynamic call(String method, dynamic params) async {
     _logger.finest('method: $method, params: $params');
     try {
-      final result = await super.call(method, params);
-      _logger.finest('method: $method, result: ${result?.toJson()}');
-      return result;
+      return await super.call(method, params);
     } on s.ApprovalsHandleException catch (e, t) {
       _logger.severe(method, e.message, t);
       inject<s.MessengerService>().show(s.Message.error(message: e.message));
