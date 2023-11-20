@@ -107,7 +107,7 @@ class DeriveKeysSheet extends StatelessWidget {
                 Column(
                   children: [
                     const CommonDivider(),
-                    _padgesBuilder(
+                    _pagesBuilder(
                       currentPageIndex: currentPageIndex,
                       canPrevPage: canPrevPage,
                       canNextPage: canNextPage,
@@ -130,7 +130,8 @@ class DeriveKeysSheet extends StatelessWidget {
     );
   }
 
-  Widget _padgesBuilder({
+  // ignore: long-method
+  Widget _pagesBuilder({
     required int currentPageIndex,
     required bool canPrevPage,
     required bool canNextPage,
@@ -188,6 +189,7 @@ class DeriveKeysSheet extends StatelessWidget {
 
                     return Row(
                       mainAxisAlignment: MainAxisAlignment.center,
+                      // ignore: prefer-extracting-callbacks
                       children: List.generate(maxCount, (i) {
                         final index = i + startIndexOffset;
 

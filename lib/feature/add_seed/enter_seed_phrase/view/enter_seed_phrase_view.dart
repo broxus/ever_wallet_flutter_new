@@ -104,6 +104,7 @@ class EnterSeedPhraseView extends StatelessWidget {
   }
 
   /// [currentValue] starts with 0
+  // ignore: long-method
   Widget _inputBuild(
     EnterSeedPhraseInputModel input,
     int currentValue,
