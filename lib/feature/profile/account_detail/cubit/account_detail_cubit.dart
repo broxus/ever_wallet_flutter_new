@@ -2,7 +2,9 @@ import 'dart:async';
 
 import 'package:app/app/service/service.dart';
 import 'package:bloc/bloc.dart';
+import 'package:collection/collection.dart';
 import 'package:freezed_annotation/freezed_annotation.dart';
+import 'package:logging/logging.dart';
 import 'package:nekoton_repository/nekoton_repository.dart';
 
 part 'account_detail_state.dart';
@@ -19,6 +21,8 @@ class AccountDetailCubit extends Cubit<AccountDetailState> {
     required this.currentAccountsService,
   }) : super(const AccountDetailState.initial());
 
+  final _logger = Logger('AccountDetailCubit');
+
   final Address address;
   final NekotonRepository nekotonRepository;
   final BalanceService balanceService;
@@ -27,14 +31,25 @@ class AccountDetailCubit extends Cubit<AccountDetailState> {
 
   late StreamSubscription<SeedList> _seedListSubscription;
   StreamSubscription<dynamic>? _balanceSub;
+  List<PublicKey> _custodianKeys = [];
+  List<SeedKey> _custodians = [];
 
   void init() {
     _seedListSubscription =
         nekotonRepository.seedListStream.listen(_updateSeedState);
+    _findCustodians();
   }
 
   void _updateSeedState(SeedList list) {
     final account = list.findAccountByAddress(address);
+
+    if (_custodianKeys.isNotEmpty) {
+      _custodians = _custodianKeys
+          .map((e) => nekotonRepository.seedList.findSeedKey(e))
+          .whereNotNull()
+          .toList();
+    }
+
     if (account == null) {
       _cachedAccount = null;
       _closeBalanceSubs();
@@ -48,7 +63,7 @@ class AccountDetailCubit extends Cubit<AccountDetailState> {
 
   void _updateDataState() {
     if (isClosed) return;
-    emit(AccountDetailState.data(_cachedAccount!, _cachedBalance));
+    emit(AccountDetailState.data(_cachedAccount!, _cachedBalance, _custodians));
   }
 
   Transport? _lastTransport;
@@ -150,5 +165,21 @@ class AccountDetailCubit extends Cubit<AccountDetailState> {
     _seedListSubscription.cancel();
 
     return super.close();
+  }
+
+  Future<void> _findCustodians() async {
+    try {
+      final account = nekotonRepository.seedList.findAccountByAddress(address);
+      final custodians =
+          await nekotonRepository.getLocalCustodiansAsync(address);
+
+      if (custodians != null && custodians.isNotEmpty) {
+        _custodianKeys = custodians
+          ..removeWhere((k) => k == account?.publicKey);
+        _updateSeedState(nekotonRepository.seedList);
+      }
+    } catch (e, t) {
+      _logger.severe('_findCustodians', e, t);
+    }
   }
 }

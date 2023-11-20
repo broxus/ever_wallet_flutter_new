@@ -35,7 +35,7 @@ class AccountDetailPage extends StatelessWidget {
             orElse: () => const Scaffold(
               appBar: DefaultAppBar(),
             ),
-            data: (account, balance) {
+            data: (account, balance, custodians) {
               return Scaffold(
                 appBar: DefaultAppBar(
                   actions: [
@@ -51,7 +51,11 @@ class AccountDetailPage extends StatelessWidget {
                     ),
                   ],
                 ),
-                body: AccountDetailView(account: account, balance: balance),
+                body: AccountDetailView(
+                  account: account,
+                  balance: balance,
+                  custodians: custodians,
+                ),
               );
             },
           );

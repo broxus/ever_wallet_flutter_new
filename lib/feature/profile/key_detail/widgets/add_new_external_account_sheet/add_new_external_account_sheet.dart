@@ -13,6 +13,7 @@ Future<void> showAddNewExternalAccountSheet({
 }) {
   return showCommonBottomSheet(
     context: context,
+    useAppBackgroundColor: true,
     title: LocaleKeys.addExistingAccount.tr(),
     subtitle: LocaleKeys.addExistingAccountDescription.tr(),
     body: (_, scrollController) => BlocProvider<AddNewExternalAccountCubit>(

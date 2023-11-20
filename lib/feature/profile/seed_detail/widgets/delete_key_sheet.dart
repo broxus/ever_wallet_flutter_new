@@ -88,7 +88,7 @@ class DeleteKeySheet extends StatelessWidget {
               Navigator.of(context).pop();
             },
           ),
-        CommonButton.secondary(
+        CommonButton.primary(
           fillWidth: true,
           text: LocaleKeys.cancelWord.tr(),
           onPressed: () => Navigator.of(context).pop(),

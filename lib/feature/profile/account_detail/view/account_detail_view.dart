@@ -1,5 +1,6 @@
 import 'package:app/app/service/service.dart';
 import 'package:app/di/di.dart';
+import 'package:app/feature/profile/profile.dart';
 import 'package:app/generated/generated.dart';
 import 'package:barcode_widget/barcode_widget.dart';
 import 'package:flutter/material.dart';
@@ -11,11 +12,13 @@ class AccountDetailView extends StatelessWidget {
   const AccountDetailView({
     required this.account,
     required this.balance,
+    required this.custodians,
     super.key,
   });
 
   final KeyAccount account;
   final Money balance;
+  final List<SeedKey> custodians;
 
   @override
   Widget build(BuildContext context) {
@@ -98,6 +101,15 @@ class AccountDetailView extends StatelessWidget {
               onChanged: (_) => _changeVisibility(),
             ),
           ),
+          if (custodians.isNotEmpty)
+            ShapedContainerColumn(
+              mainAxisSize: MainAxisSize.min,
+              margin: EdgeInsets.zero,
+              crossAxisAlignment: CrossAxisAlignment.center,
+              separator: const CommonDivider(),
+              titleText: LocaleKeys.custodiansWord.tr(),
+              children: custodians.map(_custodianTile).toList(),
+            ),
         ],
       ),
     );
@@ -122,5 +134,26 @@ class AccountDetailView extends StatelessWidget {
     } else {
       account.hide();
     }
+  }
+
+  Widget _custodianTile(SeedKey custodian) {
+    return Builder(
+      builder: (context) {
+        final colors = context.themeStyle.colors;
+
+        return CommonListTile(
+          titleText: custodian.name,
+          subtitleText: custodian.publicKey.toEllipseString(),
+          trailing: CommonIconButton.svg(
+            svg: Assets.images.edit.path,
+            buttonType: EverButtonType.ghost,
+            color: colors.textSecondary,
+            onPressed: () => Navigator.of(context).push(
+              showRenameSheet(custodian.publicKey, isCustodian: true),
+            ),
+          ),
+        );
+      },
+    );
   }
 }
