@@ -121,6 +121,8 @@ class EnterSeedPhraseView extends StatelessWidget {
             return PressScaleWidget(
               onPressed: () => cubit.clearInputModel(index),
               child: CommonCard(
+                width: double.infinity,
+                alignment: Alignment.center,
                 leadingText: indexText,
                 titleText: text,
                 trailingChild:

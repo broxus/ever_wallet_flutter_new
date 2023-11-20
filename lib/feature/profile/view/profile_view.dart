@@ -139,7 +139,7 @@ class ProfileView extends StatelessWidget {
             ),
             const SizedBox(height: DimensSize.d8),
             Text(
-              appVersion,
+              '${LocaleKeys.versionWord.tr()} $appVersion',
               textAlign: TextAlign.center,
               style: StyleRes.addRegular.copyWith(color: colors.textSecondary),
             ),

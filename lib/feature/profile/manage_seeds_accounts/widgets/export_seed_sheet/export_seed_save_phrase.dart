@@ -50,6 +50,8 @@ class ExportSeedSavePhrase extends StatelessWidget {
     final indexText = NumberFormat('00').format(index);
 
     return CommonCard(
+      alignment: Alignment.center,
+      width: double.infinity,
       titleText: word,
       leadingText: indexText,
     );
