@@ -17,16 +17,18 @@ export 'rename_sheet_cubit.dart';
 ModalRoute<void> showRenameSheet(
   PublicKey publicKey, {
   bool renameSeed = false,
+  bool isCustodian = false,
 }) {
   return commonBottomSheetRoute(
     title: LocaleKeys.enterNewName.tr(),
+    useAppBackgroundColor: true,
     body: (_, __) => BlocProvider<RenameSheetCubit>(
       create: (_) => RenameSheetCubit(
         nekotonRepository: inject<NekotonRepository>(),
         publicKey: publicKey,
         renameSeed: renameSeed,
       ),
-      child: const RenameSheet(),
+      child: RenameSheet(isCustodian: isCustodian),
     ),
   );
 }
@@ -34,7 +36,12 @@ ModalRoute<void> showRenameSheet(
 /// Sheet that allows enter new name of the seed or public key.
 /// This sheet automatically calls rename method for key/seed.
 class RenameSheet extends StatefulWidget {
-  const RenameSheet({super.key});
+  const RenameSheet({
+    required this.isCustodian,
+    super.key,
+  });
+
+  final bool isCustodian;
 
   @override
   State<RenameSheet> createState() => _RenameSheetState();
@@ -70,9 +77,11 @@ class _RenameSheetState extends State<RenameSheet> {
                         ? LocaleKeys.valueRenamed.tr(
                             args: [LocaleKeys.seedPhrase.tr()],
                           )
-                        : LocaleKeys.valueRenamed.tr(
-                            args: [LocaleKeys.keyWord.tr()],
-                          ),
+                        : widget.isCustodian
+                            ? LocaleKeys.custodianRenamed.tr()
+                            : LocaleKeys.valueRenamed.tr(
+                                args: [LocaleKeys.keyWord.tr()],
+                              ),
                   ),
                 );
                 Navigator.of(context).pop();

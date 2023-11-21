@@ -9,5 +9,6 @@ class AccountDetailState with _$AccountDetailState {
   const factory AccountDetailState.data(
     KeyAccount account,
     Money balance,
+    List<SeedKey> custodians,
   ) = _Data;
 }

@@ -78,7 +78,7 @@ class _ChangeSeedPasswordSheetState extends State<ChangeSeedPasswordSheet> {
                   controller: _oldPasswordController,
                   validator: _inputValidator,
                   submit: _newPasswordFocus.requestFocus,
-                  title: LocaleKeys.oldPassword.tr(),
+                  title: LocaleKeys.yourPassword.tr(),
                   subtitle: LocaleKeys.passwordDescription.tr(),
                 ),
                 PasswordInput(

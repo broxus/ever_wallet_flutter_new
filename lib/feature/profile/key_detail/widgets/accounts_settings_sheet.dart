@@ -1,5 +1,6 @@
 import 'package:app/app/service/service.dart';
 import 'package:app/di/di.dart';
+import 'package:app/feature/browser/utils.dart';
 import 'package:app/feature/profile/profile.dart';
 import 'package:app/generated/generated.dart';
 import 'package:flutter/material.dart';
@@ -121,9 +122,15 @@ class AccountSettingsSheet extends StatelessWidget {
               if (seeInExplorer)
                 CommonListTile(
                   titleText: LocaleKeys.seeInExplorer.tr(),
-                  // TODO(alex-a4): add logic going to browser
-                  // ignore: no-empty-block
-                  onPressed: () {},
+                  onPressed: () {
+                    Navigator.of(context).pop();
+                    browserNewTab(
+                      context,
+                      inject<NekotonRepository>()
+                          .currentTransport
+                          .accountExplorerLink(account.address),
+                    );
+                  },
                   contentColor: colors.textPrimary,
                   trailing: CommonButtonIconWidget.svg(
                     svg: Assets.images.planetInner.path,
@@ -133,8 +140,9 @@ class AccountSettingsSheet extends StatelessWidget {
                 titleText: LocaleKeys.deleteWord.tr(),
                 contentColor: colors.alert,
                 onPressed: () {
-                  Navigator.of(context).pop();
-                  account.remove();
+                  Navigator.of(context)
+                    ..pop()
+                    ..push(deleteAccountSheetRoute(account));
                 },
                 trailing: CommonButtonIconWidget.svg(
                   svg: Assets.images.trash.path,

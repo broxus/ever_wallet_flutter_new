@@ -402,8 +402,8 @@ class _CommonInputState extends State<CommonInput> {
         enableSuggestions: widget.enableSuggestions,
         inputFormatters: widget.inputFormatters,
         decoration: InputDecoration(
-          filled: widget.fillColor != null,
-          fillColor: widget.fillColor,
+          filled: true,
+          fillColor: widget.fillColor ?? colors.backgroundSecondary,
           errorText: hasError ? '' : null,
           errorStyle: const TextStyle(fontSize: 0, height: 0),
           hintText: widget.hintText,

@@ -5,6 +5,7 @@ import 'package:app/di/di.dart';
 import 'package:bloc/bloc.dart';
 import 'package:collection/collection.dart';
 import 'package:freezed_annotation/freezed_annotation.dart';
+import 'package:logging/logging.dart';
 import 'package:nekoton_repository/nekoton_repository.dart';
 import 'package:rxdart/rxdart.dart';
 
@@ -129,8 +130,13 @@ class AccountCardCubit extends Cubit<AccountCardState> {
   void _updateWalletData(TonWallet w) {
     final balance = _cachedFiatBalance;
     final custodians = w.custodians;
-    final localCustodians =
-        nekotonRepository.getLocalCustodians(account.address);
+    List<PublicKey>? localCustodians;
+    try {
+      localCustodians = nekotonRepository.getLocalCustodians(account.address);
+    } catch (e, t) {
+      Logger('AccountCardCubit').severe('_updateWalletData', e, t);
+    }
+
     // count of local custodians of count of real custodians, works
     // only for multisig wallets
     final custodiansString =

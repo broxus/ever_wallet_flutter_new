@@ -21,6 +21,7 @@ class CommonCard extends StatelessWidget {
     this.padding,
     this.centerTitle = false,
     this.backgroundColor,
+    this.alignment,
   });
 
   /// Custom widget or text that displays above title.
@@ -59,6 +60,9 @@ class CommonCard extends StatelessWidget {
 
   /// Color of card
   final Color? backgroundColor;
+
+  /// Alignment for content
+  final Alignment? alignment;
 
   @override
   Widget build(BuildContext context) {
@@ -113,6 +117,7 @@ class CommonCard extends StatelessWidget {
         shape: const SquircleShapeBorder(cornerRadius: DimensRadius.medium),
         color: backgroundColor ?? colors.backgroundSecondary,
         child: Container(
+          alignment: alignment,
           width: width,
           height: height == _cardDefaultHeight && hasTopSubtitle
               ? DimensSize.d72

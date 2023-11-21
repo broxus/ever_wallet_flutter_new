@@ -104,6 +104,7 @@ class EnterSeedPhraseView extends StatelessWidget {
   }
 
   /// [currentValue] starts with 0
+  // ignore: long-method
   Widget _inputBuild(
     EnterSeedPhraseInputModel input,
     int currentValue,
@@ -121,6 +122,8 @@ class EnterSeedPhraseView extends StatelessWidget {
             return PressScaleWidget(
               onPressed: () => cubit.clearInputModel(index),
               child: CommonCard(
+                width: double.infinity,
+                alignment: Alignment.center,
                 leadingText: indexText,
                 titleText: text,
                 trailingChild:

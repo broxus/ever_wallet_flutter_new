@@ -10,7 +10,7 @@ part 'derive_keys_cubit.freezed.dart';
 const _keysPerPage = 5;
 
 /// Number of pages that we be able to select.
-const _pageCount = 20;
+const derivePageCount = 20;
 
 /// Cubit that contains logic to derive keys from seed.
 /// UI displays keys by pages, every page contains up to [_keysPerPage] keys.
@@ -32,7 +32,7 @@ class DeriveKeysCubit extends Cubit<DeriveKeysState> {
   Map<PublicKey, String> addedKeysNames = {};
 
   /// Index of page that should contains paginated keys from
-  /// [derivePossibleKeys], page can be up to [_pageCount].
+  /// [derivePossibleKeys], page can be up to [derivePageCount].
   int _currentPageIndex = 0;
 
   /// List of keys that should be displayed in UI like all possible keys.
@@ -92,7 +92,9 @@ class DeriveKeysCubit extends Cubit<DeriveKeysState> {
 
   bool _canPrevPage() => _currentPageIndex > 0;
 
-  bool _canNextPage() => _currentPageIndex < _pageCount - 1;
+  bool _canSelectPage(int page) => page >= 0 && page <= derivePageCount - 1;
+
+  bool _canNextPage() => _currentPageIndex < derivePageCount - 1;
 
   void prevPage() {
     if (_canPrevPage()) {
@@ -108,13 +110,21 @@ class DeriveKeysCubit extends Cubit<DeriveKeysState> {
     _emitDataState();
   }
 
+  void selectPage(int pageIndex) {
+    if (_canSelectPage(pageIndex)) {
+      _currentPageIndex = pageIndex;
+    }
+
+    _emitDataState();
+  }
+
   void _emitDataState() {
     emit(
       DeriveKeysState.data(
         canNextPage: _canNextPage(),
         canPrevPage: _canPrevPage(),
         currentPageIndex: _currentPageIndex,
-        pageCount: _pageCount,
+        pageCount: derivePageCount,
         keyNames: addedKeysNames,
         displayDerivedKeys: derivePossibleKeys
             .skip(_currentPageIndex * _keysPerPage)
@@ -136,7 +146,7 @@ class DeriveKeysCubit extends Cubit<DeriveKeysState> {
         canNextPage: false,
         canPrevPage: false,
         currentPageIndex: _currentPageIndex,
-        pageCount: _pageCount,
+        pageCount: derivePageCount,
         keyNames: addedKeysNames,
         displayDerivedKeys: derivePossibleKeys
             .skip(_currentPageIndex * _keysPerPage)
@@ -170,7 +180,7 @@ class DeriveKeysCubit extends Cubit<DeriveKeysState> {
         canNextPage: false,
         canPrevPage: false,
         currentPageIndex: _currentPageIndex,
-        pageCount: _pageCount,
+        pageCount: derivePageCount,
         keyNames: addedKeysNames,
         displayDerivedKeys: derivePossibleKeys
             .skip(_currentPageIndex * _keysPerPage)

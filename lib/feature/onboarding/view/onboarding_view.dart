@@ -93,24 +93,26 @@ class OnboardingView extends StatelessWidget {
                   //   onPressed: () {},
                   // ),
                   const SizedBox(height: DimensSize.d16),
-                  Text.rich(
-                    TextSpan(
-                      children: [
-                        TextSpan(
-                          text: LocaleKeys.byProcessingAcceptLicense.tr(),
-                          style: StyleRes.addRegular
-                              .copyWith(color: colors.textSecondary),
-                        ),
-                        TextSpan(
-                          text: LocaleKeys.readHere.tr(),
-                          style:
-                              StyleRes.addRegular.copyWith(color: colors.blue),
-                          recognizer: TapGestureRecognizer()
-                            ..onTap = _onLinkTap,
-                        ),
-                      ],
+                  Center(
+                    child: Text.rich(
+                      TextSpan(
+                        children: [
+                          TextSpan(
+                            text: LocaleKeys.byProcessingAcceptLicense.tr(),
+                            style: StyleRes.addRegular
+                                .copyWith(color: colors.textSecondary),
+                          ),
+                          TextSpan(
+                            text: LocaleKeys.readHere.tr(),
+                            style: StyleRes.addRegular
+                                .copyWith(color: colors.blue),
+                            recognizer: TapGestureRecognizer()
+                              ..onTap = _onLinkTap,
+                          ),
+                        ],
+                      ),
+                      textAlign: TextAlign.center,
                     ),
-                    textAlign: TextAlign.center,
                   ),
                 ],
               ),

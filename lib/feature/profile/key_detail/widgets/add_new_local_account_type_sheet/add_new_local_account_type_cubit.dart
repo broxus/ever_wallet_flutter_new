@@ -1,6 +1,8 @@
+import 'package:app/app/service/service.dart';
+import 'package:app/di/di.dart';
 import 'package:bloc/bloc.dart';
 import 'package:freezed_annotation/freezed_annotation.dart';
-import 'package:nekoton_repository/nekoton_repository.dart';
+import 'package:nekoton_repository/nekoton_repository.dart' hide Message;
 
 part 'add_new_local_account_type_state.dart';
 
@@ -62,11 +64,15 @@ class AddNewLocalAccountTypeCubit extends Cubit<AddNewLocalAccountTypeState> {
     if (currentSelected == null) return;
 
     final newName = name.trim();
-    await keyCreateFor.accountList.addAccount(
-      walletType: currentSelected!,
-      workchain: defaultWorkchainId,
-      name: newName.isEmpty ? null : newName,
-    );
+    try {
+      await keyCreateFor.accountList.addAccount(
+        walletType: currentSelected!,
+        workchain: defaultWorkchainId,
+        name: newName.isEmpty ? null : newName,
+      );
+    } on FfiException catch (e) {
+      inject<MessengerService>().show(Message.error(message: e.message));
+    }
 
     _emitDataState(isCompleted: true);
   }
