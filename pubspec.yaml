@@ -43,7 +43,7 @@ dependencies:
   money2: ^4.0.0
   money2_improver: ^1.3.3
   nekoton_repository: ^0.33.0
-  nekoton_webview: ^0.1.6
+  nekoton_webview: ^0.1.7
   ntp: ^2.0.0
   package_info_plus: ^4.1.0
   path_provider: ^2.1.1
