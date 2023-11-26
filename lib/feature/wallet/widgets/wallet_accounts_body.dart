@@ -4,6 +4,10 @@ import 'package:flutter/material.dart';
 import 'package:nekoton_repository/nekoton_repository.dart';
 import 'package:ui_components_lib/ui_components_lib.dart';
 
+const walletAccountCardHeight = DimensSize.d220;
+const walletAccountsPageIndicatorHeight = DimensSize.d8;
+const walletAccountIndicatorSpace = DimensSize.d16;
+
 /// Body of wallet, that displays information about accounts and allows
 /// scroll between them.
 class WalletAccountsBody extends StatefulWidget {
@@ -31,11 +35,11 @@ class _WalletAccountsBodyState extends State<WalletAccountsBody> {
 
     return SeparatedColumn(
       mainAxisSize: MainAxisSize.min,
-      separatorSize: DimensSize.d16,
+      separatorSize: walletAccountIndicatorSpace,
       children: [
         Container(
           margin: const EdgeInsets.only(top: DimensSize.d12),
-          height: DimensSize.d220,
+          height: walletAccountCardHeight,
           width: double.infinity,
           child: Center(
             child: PageView.builder(
@@ -48,7 +52,7 @@ class _WalletAccountsBodyState extends State<WalletAccountsBody> {
                 Widget child;
                 if (index == list.length) {
                   child = AddNewAccountCard(
-                    height: DimensSize.d220,
+                    height: walletAccountCardHeight,
                     publicKey: widget.publicKey,
                   );
                 } else {
@@ -56,7 +60,7 @@ class _WalletAccountsBodyState extends State<WalletAccountsBody> {
                   child = AccountCard(
                     account: item,
                     key: ValueKey(item.hashCode),
-                    height: DimensSize.d220,
+                    height: walletAccountCardHeight,
                   );
                 }
 
@@ -72,15 +76,11 @@ class _WalletAccountsBodyState extends State<WalletAccountsBody> {
         ),
         Padding(
           padding: const EdgeInsets.symmetric(horizontal: DimensSize.d16),
-          child: Column(
+          child: SeparatedColumn(
             mainAxisSize: MainAxisSize.min,
             children: [
               _pageIndicators(list.length + 1),
-              Padding(
-                padding: const EdgeInsets.only(top: DimensSize.d8),
-                child:
-                    WalletAccountActions(currentAccount: widget.currentAccount),
-              ),
+              WalletAccountActions(currentAccount: widget.currentAccount),
             ],
           ),
         ),
@@ -105,7 +105,7 @@ class _WalletAccountsBodyState extends State<WalletAccountsBody> {
         return AnimatedContainer(
           duration: kThemeAnimationDuration,
           width: DimensSize.d8,
-          height: DimensSize.d8,
+          height: walletAccountsPageIndicatorHeight,
           decoration: BoxDecoration(
             color: selected ? colors.textPrimary : colors.textSecondary,
             shape: BoxShape.circle,

@@ -11,6 +11,8 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:nekoton_repository/nekoton_repository.dart' hide Message;
 import 'package:ui_components_lib/ui_components_lib.dart';
 
+const walletActionButtonSize = CommonIconButtonSize.medium;
+
 /// Row with actions for current account.
 /// If account is null, then no actions available.
 class WalletAccountActions extends StatelessWidget {
@@ -159,6 +161,7 @@ class WalletAccountActions extends StatelessWidget {
           svg: svg,
           buttonType: EverButtonType.primary,
           onPressed: onPressed,
+          size: walletActionButtonSize,
         );
 
         return SeparatedColumn(

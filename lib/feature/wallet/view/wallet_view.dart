@@ -3,10 +3,19 @@ import 'package:flutter/material.dart';
 import 'package:nekoton_repository/nekoton_repository.dart';
 import 'package:ui_components_lib/ui_components_lib.dart';
 
-/// Height in logical pixels for small screen to change percent for sliding
-/// sheet.
-const _smallScreenPixelHeight = 700.0;
-const _bigScreenMinHeightSizePercent = 0.4;
+/// Sum of heights of elements on main screen
+final _appbarAccountCardActionsHeight = defaultAppBarHeight +
+    walletActionButtonSize.value +
+    walletAccountCardHeight +
+    walletAccountIndicatorSpace +
+    // multiply by 2 because indicators height is 8 and space between indicator
+    // and button is 8
+    walletAccountsPageIndicatorHeight * 2 +
+    kToolbarHeight +
+    // card margin
+    DimensSize.d12 +
+    // just space below
+    DimensSize.d24;
 
 class WalletView extends StatefulWidget {
   const WalletView({
@@ -46,13 +55,11 @@ class _WalletViewState extends State<WalletView> {
 
   @override
   Widget build(BuildContext context) {
-    final height = MediaQuery.of(context).size.height;
+    final mq = MediaQuery.of(context);
 
     return CommonSlidingPanel(
       maxHeightSizePercent: 1,
-      minHeightSizePercent: height < _smallScreenPixelHeight
-          ? defaultMinHeightSizePercent
-          : _bigScreenMinHeightSizePercent,
+      minHeight: mq.size.height - _appbarAccountCardActionsHeight,
       panelController: _panelController,
       panelBuilder: (context, scrollController) {
         if (widget.currentAccount == null) {
