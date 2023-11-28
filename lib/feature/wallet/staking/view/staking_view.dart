@@ -74,6 +74,7 @@ class StakingView extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return SeparatedColumn(
+      separatorSize: DimensSize.d16,
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
         SingleChildScrollView(

@@ -257,14 +257,15 @@ class WalletPrepareTransferCubit extends Cubit<WalletPrepareTransferState> {
     }
 
     if (contract.isNative) {
-      _subscribeNativeBalance(rootTokenContract);
+      _subscribeNativeBalance(contract);
     } else {
-      _subscribeTokenBalance(rootTokenContract);
+      _subscribeTokenBalance(contract);
     }
   }
 
   /// Subscription for native token to find balance
-  void _subscribeNativeBalance(Address root) {
+  void _subscribeNativeBalance(WalletPrepareTransferAsset contract) {
+    final root = contract.rootTokenContract;
     _walletsSubscription = nekotonRepository.walletsStream.listen((wallets) {
       final walletState = wallets.firstWhereOrNull((w) => w.address == address);
 
@@ -286,8 +287,7 @@ class WalletPrepareTransferCubit extends Cubit<WalletPrepareTransferState> {
           final updated = _assets[(root, symbol)]?.copyWith(
             Money.fromBigIntWithCurrency(
               wallet.contractState.balance,
-              Currencies()[
-                  nekotonRepository.currentTransport.nativeTokenTicker]!,
+              Currencies()[symbol]!,
             ),
           );
           if (updated != null) {
@@ -305,7 +305,9 @@ class WalletPrepareTransferCubit extends Cubit<WalletPrepareTransferState> {
   }
 
   /// Subscription for token wallet to find balance
-  void _subscribeTokenBalance(Address root) {
+  void _subscribeTokenBalance(WalletPrepareTransferAsset contract) {
+    final root = contract.rootTokenContract;
+    final symbol = contract.tokenSymbol;
     _walletsSubscription =
         nekotonRepository.tokenWalletsStream.listen((wallets) {
       final walletState = wallets.firstWhereOrNull(
@@ -325,9 +327,8 @@ class WalletPrepareTransferCubit extends Cubit<WalletPrepareTransferState> {
       if (wallet != null) {
         _walletsSubscription?.cancel();
         _currentWalletSubscription = wallet.fieldUpdatesStream.listen((_) {
-          final updated = _assets[(root, wallet.symbol.name)]
-              ?.copyWith(wallet.moneyBalance);
-          final symbol = wallet.symbol.name;
+          final updated =
+              _assets[(root, symbol)]?.copyWith(wallet.moneyBalance);
           if (updated != null) {
             _assets[(root, symbol)] = updated;
             if (selectedAsset.rootTokenContract == root &&
