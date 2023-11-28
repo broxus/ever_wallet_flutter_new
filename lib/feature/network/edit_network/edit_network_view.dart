@@ -360,6 +360,7 @@ class _EditNetworkViewState extends State<EditNetworkView> {
         ),
         textAlign: TextAlign.center,
       ),
+      const SizedBox(height: DimensSize.d16),
     ];
   }
 

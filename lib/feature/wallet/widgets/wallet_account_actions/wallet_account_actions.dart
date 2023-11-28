@@ -180,6 +180,8 @@ class WalletAccountActions extends StatelessWidget {
   }
 
   Future<void> _showAddSeedSheet(BuildContext context) async {
+    if (!context.mounted) return;
+
     final selected = await showSelectAddSeedTypeSheet(context);
 
     if (context.mounted && selected != null) {

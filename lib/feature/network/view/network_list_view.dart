@@ -45,7 +45,8 @@ class _NetworkListViewState extends State<NetworkListView> {
     final currentConnectionId =
         context.watch<ManageNetworksBloc>().state.currentConnectionId;
 
-    return SliverList.builder(
+    return SliverList.separated(
+      separatorBuilder: (_, __) => const CommonDivider(),
       itemCount: items.length,
       itemBuilder: (_, index) {
         final item = items[index];
@@ -60,21 +61,28 @@ class _NetworkListViewState extends State<NetworkListView> {
     ConnectionData connection,
     bool isSelected,
   ) {
-    final trailing = widget.itemTrailing ??
-        (isSelected
-            ? CommonIconWidget.svg(
-                svg: Assets.images.check.path,
-              )
-            : null);
+    return Builder(
+      builder: (context) {
+        final colors = context.themeStyle.colors;
 
-    return CommonListTile(
-      padding: const EdgeInsets.symmetric(horizontal: DimensSize.d16),
-      titleText: connection.name,
-      leading: CommonIconWidget.svg(
-        svg: Assets.images.sparxLogoSmall.path,
-      ),
-      trailing: trailing,
-      onPressed: () => widget.onItemPressed(connection),
+        final trailing = widget.itemTrailing ??
+            (isSelected
+                ? CommonIconWidget.svg(
+                    svg: Assets.images.check.path,
+                    color: colors.textPrimary,
+                  )
+                : null);
+
+        return CommonListTile(
+          padding: const EdgeInsets.symmetric(horizontal: DimensSize.d16),
+          titleText: connection.name,
+          leading: CommonIconWidget.svg(
+            svg: Assets.images.sparxLogoSmall.path,
+          ),
+          trailing: trailing,
+          onPressed: () => widget.onItemPressed(connection),
+        );
+      },
     );
   }
 

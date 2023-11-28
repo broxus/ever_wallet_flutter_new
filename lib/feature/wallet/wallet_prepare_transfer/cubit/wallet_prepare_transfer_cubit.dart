@@ -157,6 +157,8 @@ class WalletPrepareTransferCubit extends Cubit<WalletPrepareTransferState> {
   }
 
   void _updateState() {
+    if (isClosed) return;
+
     emit(
       WalletPrepareTransferState.data(
         walletName: _walletName(nekotonRepository, account),

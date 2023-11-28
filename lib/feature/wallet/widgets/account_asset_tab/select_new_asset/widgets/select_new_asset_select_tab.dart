@@ -46,6 +46,7 @@ class _SelectNewAssetSelectTabState extends State<SelectNewAssetSelectTab> {
           child: SeparatedColumn(
             children: [
               CommonInput(
+                hintText: LocaleKeys.enterAssetName.tr(),
                 controller: searchController,
                 prefixIconConstraints: BoxConstraints.loose(
                   const Size(DimensSize.d40, DimensSize.d20),

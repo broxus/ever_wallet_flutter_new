@@ -38,6 +38,7 @@ class _SelectNewAssetPageState extends State<SelectNewAssetPage> {
     return GestureDetector(
       onTap: () => FocusScope.of(context).unfocus(),
       child: Scaffold(
+        backgroundColor: context.themeStyle.colors.backgroundSecondary,
         appBar: DefaultAppBar(
           titleText: LocaleKeys.selectNewAssets.tr(),
         ),

@@ -7,6 +7,14 @@ typedef CommonTabBarTitleBuilder<T> = String Function(
   T value,
 );
 
+/// Builder of trailing widget of tab, returned widget is optional but may be
+/// used to add some information about tab.
+/// To get content color, you may use [EverButtonStyleProvider]
+typedef CommonTabBarTrailingBuilder<T> = Widget? Function(
+  BuildContext context,
+  T value,
+);
+
 /// {@template common_tab_bar}
 /// Default tab bar that displays section selection.
 /// {@endtemplate}
@@ -18,6 +26,7 @@ class CommonTabBar<T> extends StatelessWidget {
     required this.selectedValue,
     required this.onChanged,
     this.fillWidth = false,
+    this.trailingBuilder,
     super.key,
   });
 
@@ -36,6 +45,9 @@ class CommonTabBar<T> extends StatelessWidget {
   /// Whether the tab bar should fill the horizontal space
   final bool fillWidth;
 
+  /// Builder of trailing item for any tab.
+  final CommonTabBarTrailingBuilder<T>? trailingBuilder;
+
   @override
   Widget build(BuildContext context) {
     return SeparatedRow(
@@ -52,6 +64,7 @@ class CommonTabBar<T> extends StatelessWidget {
   Widget _item(BuildContext context, T v) {
     final colors = context.themeStyle.colors;
     final isSelected = v == selectedValue;
+    final trailing = trailingBuilder?.call(context, v);
 
     return CommonButton(
       onPressed: () => onChanged(v),
@@ -65,6 +78,7 @@ class CommonTabBar<T> extends StatelessWidget {
       contentColor: isSelected ? colors.textContrast : colors.textSecondary,
       contentPressedColor:
           isSelected ? colors.textSecondary : colors.textPrimary,
+      trailing: trailing,
     );
   }
 }
