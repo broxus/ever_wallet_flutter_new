@@ -13,7 +13,10 @@ class ShapedContainerColumn extends StatelessWidget {
     this.color,
     this.squircleRadius = DimensRadius.medium,
     this.margin = const EdgeInsets.symmetric(horizontal: DimensSize.d16),
-    this.padding = const EdgeInsets.all(DimensSize.d16),
+    this.padding = const EdgeInsets.symmetric(
+      horizontal: DimensSize.d16,
+      vertical: DimensSize.d8,
+    ),
     super.key,
     this.separatorSize = DimensSize.d8,
     this.separator,

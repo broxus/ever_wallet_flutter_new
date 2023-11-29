@@ -222,7 +222,7 @@ class AccountCard extends StatelessWidget {
                             ? _balanceLoader()
                             : MoneyWidget(
                                 money: balance,
-                                style: MoneyWidgetStyle.primary,
+                                style: MoneyWidgetStyle.big,
                               ),
                   ),
                 ),
