@@ -74,13 +74,14 @@ class StakingView extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return SeparatedColumn(
+      separatorSize: DimensSize.d16,
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
         SingleChildScrollView(
           scrollDirection: Axis.horizontal,
-          child: CommonTabSwitcher<StakingPageType>(
-            fillWidth: false,
-            onTabChanged: (type) => context
+          child: CommonTabBar<StakingPageType>(
+            selectedValue: type,
+            onChanged: (type) => context
                 .read<StakingBloc>()
                 .add(StakingBlocEvent.changeTab(type)),
             values: [
@@ -88,18 +89,11 @@ class StakingView extends StatelessWidget {
               StakingPageType.unstake,
               if (requests != null && requests!.isNotEmpty)
                 StakingPageType.inProgress,
-            ].map(
-              (e) {
-                return CommonTabSwitcherItem(
-                  value: e,
-                  title: e.title,
-                  trailing: e == StakingPageType.inProgress
-                      ? _pendingWithdrawIndicator()
-                      : null,
-                );
-              },
-            ).toList(),
-            currentValue: type,
+            ],
+            builder: (_, e) => e.title,
+            trailingBuilder: (_, e) => e == StakingPageType.inProgress
+                ? _pendingWithdrawIndicator()
+                : null,
           ),
         ),
         switch (type) {

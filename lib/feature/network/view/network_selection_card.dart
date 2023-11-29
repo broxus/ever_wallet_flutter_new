@@ -63,7 +63,7 @@ class _NetworkSelectionCardState extends State<NetworkSelectionCard> {
                     ),
                   ),
                   CommonIconWidget.svg(
-                    svg: Assets.images.caretDown.path,
+                    svg: Assets.images.caretDownSmall.path,
                     color: colors.textSecondary,
                   ),
                 ],

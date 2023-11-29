@@ -137,30 +137,36 @@ class _CommonIconButtonState extends State<CommonIconButton> {
 
     return EverButtonStyleProvider(
       contentColor: contentColor,
-      child: Material(
-        shape: RoundedRectangleBorder(
-          borderRadius: BorderRadius.circular(DimensRadius.max),
-        ),
+      child: AnimatedColor(
         color: backgroundColor,
-        child: InkWell(
-          hoverColor: Colors.transparent,
-          splashColor: Colors.transparent,
-          highlightColor: Colors.transparent,
-          borderRadius: BorderRadius.circular(DimensRadius.max),
-          onTap: widget.isLoading ? null : widget.onPressed,
-          onLongPress: widget.isLoading ? null : widget.onLongPress,
-          focusNode: widget.focusNode,
-          onHighlightChanged: _onHighlightChanged,
-          child: Padding(
-            padding: _innerPadding,
-            child: widget.isLoading
-                ? _loadingChild(contentColor)
-                : CommonButtonIconWidget(
-                    icon: widget.icon,
-                    svg: widget.svg,
-                  ),
-          ),
-        ),
+        duration: kThemeAnimationDuration,
+        builder: (context, backColor) {
+          return Material(
+            shape: RoundedRectangleBorder(
+              borderRadius: BorderRadius.circular(DimensRadius.max),
+            ),
+            color: backColor,
+            child: InkWell(
+              hoverColor: Colors.transparent,
+              splashColor: Colors.transparent,
+              highlightColor: Colors.transparent,
+              borderRadius: BorderRadius.circular(DimensRadius.max),
+              onTap: widget.isLoading ? null : widget.onPressed,
+              onLongPress: widget.isLoading ? null : widget.onLongPress,
+              focusNode: widget.focusNode,
+              onHighlightChanged: _onHighlightChanged,
+              child: Padding(
+                padding: _innerPadding,
+                child: widget.isLoading
+                    ? _loadingChild(contentColor)
+                    : CommonButtonIconWidget(
+                        icon: widget.icon,
+                        svg: widget.svg,
+                      ),
+              ),
+            ),
+          );
+        },
       ),
     );
   }

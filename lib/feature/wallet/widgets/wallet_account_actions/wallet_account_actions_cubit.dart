@@ -25,7 +25,12 @@ class WalletAccountActionsCubit extends Cubit<WalletAccountActionsState> {
     this.nekotonRepository,
     this.address,
     this.stakingService,
-  ) : super(const WalletAccountActionsState.loading()) {
+  ) : super(
+          WalletAccountActionsState.loading(
+            hasStake:
+                nekotonRepository.currentTransport.stakeInformation != null,
+          ),
+        ) {
     _walletsSubscription = nekotonRepository.walletsStream.listen((wallets) {
       final wl = wallets.firstWhereOrNull((w) => w.address == address)?.wallet;
       if (wl != null) _initWallet(wl);

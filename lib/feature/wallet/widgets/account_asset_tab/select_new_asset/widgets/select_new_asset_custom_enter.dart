@@ -46,6 +46,7 @@ class _SelectNewAssetCustomEnterState extends State<SelectNewAssetCustomEnter> {
             child: SeparatedColumn(
               children: [
                 CommonInput(
+                  titleText: LocaleKeys.rootTokenContract.tr(),
                   controller: addressController,
                   onSubmitted: (_) => _enable(context),
                   inputFormatters: [

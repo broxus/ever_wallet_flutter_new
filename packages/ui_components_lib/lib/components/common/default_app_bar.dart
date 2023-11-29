@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:ui_components_lib/ui_components_lib.dart';
 
+const defaultAppBarHeight = 64.0;
+
 /// Type of closing screen
 enum CloseType {
   /// top left arrow button
@@ -70,7 +72,7 @@ class DefaultAppBar extends StatelessWidget implements PreferredSizeWidget {
       (context) => Navigator.of(context).canPop();
 
   @override
-  Size get preferredSize => const Size.fromHeight(64);
+  Size get preferredSize => const Size.fromHeight(defaultAppBarHeight);
 
   /// Color of the appbar.
   /// Default is transparent

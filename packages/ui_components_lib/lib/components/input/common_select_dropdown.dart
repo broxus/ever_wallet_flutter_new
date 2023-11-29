@@ -98,6 +98,7 @@ class CommonSelectDropdown<T> extends StatelessWidget {
               vertical: DimensSize.d12,
             ),
             decoration: BoxDecoration(
+              color: colors.backgroundSecondary,
               border: SquircleBoxBorder(
                 squircleRadius: DimensRadius.medium,
                 borderSide: BorderSide(color: colors.strokePrimary),
