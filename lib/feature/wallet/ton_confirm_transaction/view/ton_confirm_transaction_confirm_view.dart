@@ -97,7 +97,7 @@ class TonWalletConfirmTransactionConfirmView extends StatelessWidget {
                       context: context,
                       title: LocaleKeys.enterPasswordTo.tr(
                         args: [
-                          LocaleKeys.confirmTransaction.tr().toLowerCase()
+                          LocaleKeys.confirmTransaction.tr().toLowerCase(),
                         ],
                       ),
                       useAppBackgroundColor: true,

@@ -331,6 +331,7 @@ class StakingBloc extends Bloc<StakingBlocEvent, StakingBlocState> {
             ),
           ),
         );
+
         return;
       }
     }
