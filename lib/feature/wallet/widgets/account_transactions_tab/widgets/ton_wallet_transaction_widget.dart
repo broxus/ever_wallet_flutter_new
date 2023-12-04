@@ -135,7 +135,7 @@ class TonWalletTransactionWidget extends StatelessWidget {
       builder: (context) {
         final colors = context.themeStyle.colors;
         final transactionTimeFormatter = DateFormat(
-          'H:m',
+          'HH:mm',
           context.locale.languageCode,
         );
 

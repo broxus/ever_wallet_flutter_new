@@ -3,6 +3,7 @@ import 'dart:async';
 
 import 'package:app/app/service/service.dart';
 import 'package:app/data/models/models.dart';
+import 'package:app/di/di.dart';
 import 'package:app/feature/wallet/staking/staking.dart';
 import 'package:app/generated/generated.dart';
 import 'package:bloc/bloc.dart';
@@ -10,13 +11,14 @@ import 'package:bloc_event_transformers/bloc_event_transformers.dart';
 import 'package:flutter/widgets.dart';
 import 'package:freezed_annotation/freezed_annotation.dart';
 import 'package:logging/logging.dart';
-import 'package:nekoton_repository/nekoton_repository.dart';
+import 'package:nekoton_repository/nekoton_repository.dart' hide Message;
 
 part 'staking_bloc_state.dart';
 part 'staking_bloc_event.dart';
 part 'staking_bloc.freezed.dart';
 
 const _defaultWithdrawHours = 36;
+final _maxPossibleStakeComission = BigInt.parse('100000000'); // 0.1 EVER
 
 enum StakingPageType { stake, unstake, inProgress }
 
@@ -68,6 +70,12 @@ class StakingBloc extends Bloc<StakingBlocEvent, StakingBlocState> {
 
   StakingInformation get staking =>
       nekotonRepository.currentTransport.stakeInformation!;
+
+  Money get comissionMoney => Money.fromBigIntWithCurrency(
+        // around 2.1 EVER
+        staking.stakeDepositAttachedFee + _maxPossibleStakeComission,
+        _nativeCurrency,
+      );
 
   void _registerHandlers() {
     on<_Init>((_, emit) => _init(emit));
@@ -228,7 +236,7 @@ class StakingBloc extends Bloc<StakingBlocEvent, StakingBlocState> {
               await stakingService.getWithdrawEverAmount(value.minorUnits);
           _receive = Money.fromBigIntWithCurrency(
             amount,
-            Currencies()[nekotonRepository.currentTransport.nativeTokenTicker]!,
+            _nativeCurrency,
           );
         case StakingPageType.inProgress:
           _receive = null;
@@ -281,7 +289,12 @@ class StakingBloc extends Bloc<StakingBlocEvent, StakingBlocState> {
         enteredPrice = currencyConvert.convert(Fixed.zero);
     }
 
-    final canPress = value != Fixed.zero && value < balance.amount;
+    final canPress = value != Fixed.zero &&
+        value <= balance.amount &&
+        // ignore: avoid_bool_literals_in_conditional_expressions
+        (_type == StakingPageType.stake
+            ? balance.amount >= comissionMoney.amount + value
+            : true);
 
     return StakingBlocState.data(
       type: _type,
@@ -302,7 +315,26 @@ class StakingBloc extends Bloc<StakingBlocEvent, StakingBlocState> {
   }
 
   void _selectMax() {
-    final max = _dataState.currentBalance;
+    var max = _dataState.currentBalance;
+
+    if (_type == StakingPageType.stake) {
+      max = max - comissionMoney;
+
+      if (max.amount < Fixed.zero) {
+        inject<MessengerService>().show(
+          Message.error(
+            message: LocaleKeys.stakingNotEnoughBalanceToStake.tr(
+              args: [
+                comissionMoney.formatImproved(),
+                comissionMoney.currency.code,
+              ],
+            ),
+          ),
+        );
+        return;
+      }
+    }
+
     _inputController.text = max.amount.toString();
   }
 
