@@ -226,8 +226,33 @@ class _WalletPrepareTransferViewState extends State<WalletPrepareTransferView> {
   }
 
   void _setMaxBalance() {
-    final available = widget.selectedAsset.balance;
-    // TODO(alex-a4): add formatting balance
+    final asset = widget.selectedAsset;
+    var available = asset.balance;
+
+    if (asset.isNative) {
+      // subtract approximate comission
+      final comission = Money.fromFixedWithCurrency(
+        Fixed.fromNum(0.1),
+        available.currency,
+      );
+      final amountMinusComission = available - comission;
+      if (amountMinusComission.amount < Fixed.zero) {
+        inject<MessengerService>().show(
+          Message.error(
+            message: LocaleKeys.sendingNotEnoughBalanceToSend.tr(
+              args: [
+                comission.formatImproved(),
+                comission.currency.code,
+              ],
+            ),
+          ),
+        );
+        return;
+      } else {
+        available = amountMinusComission;
+      }
+    }
+
     _amountController.text = available.formatImproved();
   }
 

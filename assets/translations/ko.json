@@ -446,6 +446,7 @@
   "averageApy": "Average APY",
   "stakingInitError": "Error occurred during staking initialization",
   "stakingNotEnoughBalanceToStake": "You need a minimum {} {} for staking",
+  "sendingNotEnoughBalanceToSend": "You need a minimum {} {} to send",
   "cancelUnstakingCheckTitle": "Are you sure you want to сancel unstaking?",
   "cancelUnstakingCheckSubtitle": " stEVER will be returned to your account",
   "yesImSure": "Yes, I am sure",

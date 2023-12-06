@@ -104,7 +104,7 @@ class TonWalletSendConfirmView extends StatelessWidget {
             fillWidth: true,
             isLoading: isLoading,
             text: LocaleKeys.sendWord.tr(),
-            onPressed: feeError != null
+            onPressed: feeError != null || fee == null
                 ? null
                 : () {
                     showCommonBottomSheet<void>(
