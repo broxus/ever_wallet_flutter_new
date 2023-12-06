@@ -203,10 +203,13 @@ class CurrentAccountsService {
   ///
   /// Old subscriptions will be automatically cancelled if haven't complete yet.
   Future<void> _updateSubscriptions(AccountList accountList) async {
-    final accounts = accountList.displayAccounts.map((e) => e.account).toList();
+    final accounts = accountList.displayAccounts;
 
-    await _nekotonRepository
-        .updateSubscriptions(accounts.map((e) => e.tonWallet).toList());
-    await _nekotonRepository.updateTokenSubscriptions(accounts);
+    await _nekotonRepository.updateSubscriptions(
+      accounts.map((e) => (e.account.tonWallet, e.isExternal)).toList(),
+    );
+    await _nekotonRepository.updateTokenSubscriptions(
+      accounts.map((e) => e.account).toList(),
+    );
   }
 }

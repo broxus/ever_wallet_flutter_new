@@ -100,7 +100,10 @@ class TonWalletTransactionWidget extends StatelessWidget {
     );
 
     return date == null
-        ? body
+        ? Padding(
+            padding: const EdgeInsets.only(top: DimensSize.d8),
+            child: body,
+          )
         : SeparatedColumn(
             crossAxisAlignment: CrossAxisAlignment.start,
             mainAxisSize: MainAxisSize.min,

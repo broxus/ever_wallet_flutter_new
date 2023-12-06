@@ -90,7 +90,7 @@ class TonWalletConfirmTransactionConfirmView extends StatelessWidget {
             fillWidth: true,
             isLoading: isLoading,
             text: LocaleKeys.confirm.tr(),
-            onPressed: feeError != null
+            onPressed: feeError != null || fee == null
                 ? null
                 : () {
                     showCommonBottomSheet<void>(

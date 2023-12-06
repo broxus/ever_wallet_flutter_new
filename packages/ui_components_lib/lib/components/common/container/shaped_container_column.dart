@@ -100,29 +100,33 @@ class ShapedContainerColumn extends StatelessWidget {
                     crossAxisAlignment: CrossAxisAlignment.start,
                     separatorSize: DimensSize.d16,
                     children: [
-                      SeparatedRow(
-                        children: [
-                          if (titleText != null)
-                            Expanded(
-                              child: Text(
-                                titleText!,
-                                style: StyleRes.h2.copyWith(
-                                  color: context.themeStyle.colors.textPrimary,
+                      Padding(
+                        padding: const EdgeInsets.only(top: DimensSize.d8),
+                        child: SeparatedRow(
+                          children: [
+                            if (titleText != null)
+                              Expanded(
+                                child: Text(
+                                  titleText!,
+                                  style: StyleRes.h2.copyWith(
+                                    color:
+                                        context.themeStyle.colors.textPrimary,
+                                  ),
                                 ),
                               ),
-                            ),
-                          if (subtitleText != null)
-                            Flexible(
-                              child: Text(
-                                subtitleText!,
-                                style: StyleRes.addRegular.copyWith(
-                                  color:
-                                      context.themeStyle.colors.textSecondary,
+                            if (subtitleText != null)
+                              Flexible(
+                                child: Text(
+                                  subtitleText!,
+                                  style: StyleRes.addRegular.copyWith(
+                                    color:
+                                        context.themeStyle.colors.textSecondary,
+                                  ),
+                                  textAlign: TextAlign.right,
                                 ),
-                                textAlign: TextAlign.right,
                               ),
-                            ),
-                        ],
+                          ],
+                        ),
                       ),
                       body,
                     ],
