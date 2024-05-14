@@ -521,15 +521,15 @@ class HiveSourceMigration {
     final usedAdapters = [1, 2, 3, 4, 55, 56, 221, 222, 223];
 
     Hive
-      ..tryRegisterAdapter(TokenContractAssetDtoAdapter())
+      ..tryRegisterAdapter(TokenContractAssetDtoImplAdapter())
       ..tryRegisterAdapter(WalletContractTypeDtoAdapter())
-      ..tryRegisterAdapter(PermissionsDtoAdapter())
-      ..tryRegisterAdapter(AccountInteractionDtoAdapter())
-      ..tryRegisterAdapter(BookmarkDtoAdapter())
-      ..tryRegisterAdapter(SiteMetaDataDtoAdapter())
-      ..tryRegisterAdapter(BrowserTabAdapter())
-      ..tryRegisterAdapter(SearchHistoryDtoAdapter())
-      ..tryRegisterAdapter(CurrencyDtoAdapter());
+      ..tryRegisterAdapter(PermissionsDtoImplAdapter())
+      ..tryRegisterAdapter(AccountInteractionDtoImplAdapter())
+      ..tryRegisterAdapter(BookmarkDtoImplAdapter())
+      ..tryRegisterAdapter(SiteMetaDataDtoImplAdapter())
+      ..tryRegisterAdapter(BrowserTabImplAdapter())
+      ..tryRegisterAdapter(SearchHistoryDtoImplAdapter())
+      ..tryRegisterAdapter(CurrencyDtoImplAdapter());
 
     // ignore: no-magic-number
     for (var i = 1; i < 224; i++) {
