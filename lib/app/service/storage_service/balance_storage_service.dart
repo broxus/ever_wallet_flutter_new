@@ -92,7 +92,7 @@ class BalanceStorageService extends AbstractStorageService {
   /// Get cached token balances for accounts
   /// key - address of account, value - list of balances for tokens in scope of
   /// this account.
-  Map<Address, List< AccountBalanceModel>> get balances =>
+  Map<Address, List<AccountBalanceModel>> get balances =>
       _balancesSubject.value;
 
   /// Stream that allows tracking token balances for accounts
