@@ -37,19 +37,15 @@ scripts:
     packageFilters:
       dependsOn: "easy_localization"
 
-  # TODO(nesquikm): we have to isolane runing dart_code_metrics for the main app because we
-  # can't add dart_code_metrics to the app due to dependency incompatibility
   analyze:
-    description: Analyze all packages and run dart_code_metrics for the main app
-    run: melos run analyze_subpackages_custom_lint --no-select && melos run analyze_subpackages --no-select && cd packages/ui_components_lib && flutter pub run dart_code_metrics:metrics analyze ../../lib
+    description: Analyze all packages
+    run: melos run analyze_subpackages_custom_lint --no-select && melos run analyze_subpackages --no-select
     failFast: true
 
   analyze_subpackages:
     description: Analyze a specific package in this project.
-    exec: flutter analyze . && flutter pub run dart_code_metrics:metrics analyze lib
+    exec: flutter analyze .
     failFast: true
-    packageFilters:
-      dependsOn: "dart_code_metrics"
 
   analyze_subpackages_custom_lint:
     description: Analyze a specific package in this project.

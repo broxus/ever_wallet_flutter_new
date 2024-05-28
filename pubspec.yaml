@@ -1,6 +1,6 @@
 name: app
 description: EVER Wallet Flutter app
-version: 2.0.0+2
+version: 2.0.0+3
 publish_to: none
 
 environment:
@@ -30,11 +30,9 @@ dependencies:
   flutter_svg: ^2.0.10+1
   freezed_annotation: ^2.4.1
   get_it: ^7.7.0
-#  go_router: ^11.1.4
   go_router: ^14.0.1
   hive_flutter: ^1.1.0
   http: ^1.2.1
-#  http_proxy: ^1.2.1
   image_picker: ^1.0.4
   injectable: ^2.4.1
   json_annotation: ^4.9.0
@@ -46,7 +44,7 @@ dependencies:
   nekoton_repository: ^0.35.1
   nekoton_webview: ^0.1.7
   ntp: ^2.0.0
-#  package_info_plus: ^4.1.0
+  #  package_info_plus: ^4.1.0
   package_info_plus: ^8.0.0
   path_provider: ^2.1.3
   permission_handler: ^11.3.1

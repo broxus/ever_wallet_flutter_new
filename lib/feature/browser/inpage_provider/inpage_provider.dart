@@ -722,7 +722,7 @@ class InpageProvider extends ProviderApi {
             : PermissionsAccountInteraction(
                 permissions.accountInteraction!.address.address,
                 permissions.accountInteraction!.publicKey.publicKey,
-                permissions.accountInteraction!.contractType.name.capitalize!,
+                permissions.accountInteraction!.contractType.name.capitalize,
               ),
       ),
       subscriptions?.map(

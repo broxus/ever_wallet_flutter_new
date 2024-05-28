@@ -543,6 +543,7 @@ class _BrowserTabViewState extends State<BrowserTabView> {
     }
 
     if (context.mounted) {
+      // ignore: use_build_context_synchronously
       context.read<BrowserTabsBloc>().add(
             BrowserTabsEvent.setState(
               id: widget.tab.id,
