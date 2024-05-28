@@ -45,10 +45,10 @@ packages:
     dependency: transitive
     description:
       name: archive
-      sha256: ecf4273855368121b1caed0d10d4513c7241dfc813f7d3c8933b36622ae9b265
+      sha256: "6bd38d335f0954f5fad9c79e614604fbf03a0e5b975923dd001b6ea965ef5b4b"
       url: "https://pub.dev"
     source: hosted
-    version: "3.5.1"
+    version: "3.6.0"
   args:
     dependency: transitive
     description:
@@ -607,18 +607,18 @@ packages:
     dependency: transitive
     description:
       name: flutter_gen_core
-      sha256: "3a6c3dbc1c0e260088e9c7ed1ba905436844e8c01a44799f6281edada9e45308"
+      sha256: b9894396b2a790cc2d6eb3ed86e5e113aaed993765b21d4b981c9da4476e0f52
       url: "https://pub.dev"
     source: hosted
-    version: "5.4.0"
+    version: "5.5.0+1"
   flutter_gen_runner:
     dependency: "direct dev"
     description:
       name: flutter_gen_runner
-      sha256: "24889d5140b03997f7148066a9c5fab8b606dff36093434c782d7a7fb22c6fb6"
+      sha256: b4c4c54e4dd89022f5e405fe96f16781be2dfbeabe8a70ccdf73b7af1302c655
       url: "https://pub.dev"
     source: hosted
-    version: "5.4.0"
+    version: "5.5.0+1"
   flutter_inappwebview:
     dependency: "direct main"
     description:
@@ -716,10 +716,10 @@ packages:
     dependency: "direct dev"
     description:
       name: flutter_secure_storage
-      sha256: c0f402067fb0498934faa6bddd670de0a3db45222e2ca9a068c6177c9a2360a4
+      sha256: "165164745e6afb5c0e3e3fcc72a012fb9e58496fb26ffb92cf22e16a821e85d0"
       url: "https://pub.dev"
     source: hosted
-    version: "9.1.1"
+    version: "9.2.2"
   flutter_secure_storage_linux:
     dependency: transitive
     description:
@@ -732,18 +732,18 @@ packages:
     dependency: transitive
     description:
       name: flutter_secure_storage_macos
-      sha256: "8cfa53010a294ff095d7be8fa5bb15f2252c50018d69c5104851303f3ff92510"
+      sha256: "1693ab11121a5f925bbea0be725abfcfbbcf36c1e29e571f84a0c0f436147a81"
       url: "https://pub.dev"
     source: hosted
-    version: "3.1.0"
+    version: "3.1.2"
   flutter_secure_storage_platform_interface:
     dependency: transitive
     description:
       name: flutter_secure_storage_platform_interface
-      sha256: "301f67ee9b87f04aef227f57f13f126fa7b13543c8e7a93f25c5d2d534c28a4a"
+      sha256: cf91ad32ce5adef6fba4d736a542baca9daf3beac4db2d04be350b87f69ac4a8
       url: "https://pub.dev"
     source: hosted
-    version: "1.1.1"
+    version: "1.1.2"
   flutter_secure_storage_web:
     dependency: transitive
     description:
@@ -835,10 +835,10 @@ packages:
     dependency: "direct main"
     description:
       name: go_router
-      sha256: "7685acd06244ba4be60f455c5cafe5790c63dc91fc03f7385b1e922a6b85b17c"
+      sha256: "6ad5662b014c06c20fa46ab78715c96b2222a7fe4f87bf77e0289592c2539e86"
       url: "https://pub.dev"
     source: hosted
-    version: "14.1.1"
+    version: "14.1.3"
   google_identity_services_web:
     dependency: transitive
     description:
@@ -863,6 +863,14 @@ packages:
       url: "https://pub.dev"
     source: hosted
     version: "2.3.1"
+  hashcodes:
+    dependency: transitive
+    description:
+      name: hashcodes
+      sha256: "80f9410a5b3c8e110c4b7604546034749259f5d6dcca63e0d3c17c9258f1a651"
+      url: "https://pub.dev"
+    source: hosted
+    version: "2.0.0"
   hive:
     dependency: transitive
     description:
@@ -931,10 +939,10 @@ packages:
     dependency: transitive
     description:
       name: image
-      sha256: "4c68bfd5ae83e700b5204c1e74451e7bf3cf750e6843c6e158289cf56bda018e"
+      sha256: "2237616a36c0d69aef7549ab439b833fb7f9fb9fc861af2cc9ac3eedddd69ca8"
       url: "https://pub.dev"
     source: hosted
-    version: "4.1.7"
+    version: "4.2.0"
   image_picker:
     dependency: "direct main"
     description:
@@ -947,10 +955,10 @@ packages:
     dependency: transitive
     description:
       name: image_picker_android
-      sha256: "79455f6cff4cbef583b2b524bbf0d4ec424e5959f4d464e36ef5323715b98370"
+      sha256: "0f57fee1e8bfadf8cc41818bbcd7f72e53bb768a54d9496355d5e8a5681a19f1"
       url: "https://pub.dev"
     source: hosted
-    version: "0.8.12"
+    version: "0.8.12+1"
   image_picker_for_web:
     dependency: transitive
     description:
@@ -963,10 +971,10 @@ packages:
     dependency: transitive
     description:
       name: image_picker_ios
-      sha256: f3285238eb1474ee42946f557ad7df17aa6a2cf4106c2f41bdc948cd71c8b5e5
+      sha256: "4824d8c7f6f89121ef0122ff79bb00b009607faecc8545b86bca9ab5ce1e95bf"
       url: "https://pub.dev"
     source: hosted
-    version: "0.8.11+1"
+    version: "0.8.11+2"
   image_picker_linux:
     dependency: transitive
     description:
@@ -999,14 +1007,22 @@ packages:
       url: "https://pub.dev"
     source: hosted
     version: "0.2.1+1"
+  image_size_getter:
+    dependency: transitive
+    description:
+      name: image_size_getter
+      sha256: f98c4246144e9b968899d2dfde69091e22a539bb64bc9b0bea51505fbb490e57
+      url: "https://pub.dev"
+    source: hosted
+    version: "2.1.3"
   injectable:
     dependency: "direct main"
     description:
       name: injectable
-      sha256: "3d98967224a5fdd4094a61bf53ed9616c3fbcf3e090bf83e7cb7d436d0c20041"
+      sha256: "3c8355a29d11ff28c0311bed754649761f345ef7a13ff66a714380954af51226"
       url: "https://pub.dev"
     source: hosted
-    version: "2.4.1"
+    version: "2.4.2"
   injectable_generator:
     dependency: "direct dev"
     description:
@@ -1112,10 +1128,10 @@ packages:
     dependency: transitive
     description:
       name: local_auth_darwin
-      sha256: "959145a4cf6f0de745b9ec9ac60101270eb4c5b8b7c2a0470907014adc1c618d"
+      sha256: e424ebf90d5233452be146d4a7da4bcd7a70278b67791592f3fde1bda8eef9e2
       url: "https://pub.dev"
     source: hosted
-    version: "1.3.0"
+    version: "1.3.1"
   local_auth_platform_interface:
     dependency: transitive
     description:
@@ -1536,10 +1552,10 @@ packages:
     dependency: transitive
     description:
       name: puppeteer
-      sha256: "37293a2379ec5d022b7af6e5967304e74c69ebf7b72925b965a3c1ff9ccd9a4c"
+      sha256: c45c51b4ad8d70acdffeb1cfb9d16b60a7eaab7bfef314dd5b02c3607269b556
       url: "https://pub.dev"
     source: hosted
-    version: "3.10.0"
+    version: "3.11.0"
   qr:
     dependency: transitive
     description:
@@ -1908,10 +1924,10 @@ packages:
     dependency: transitive
     description:
       name: url_launcher_android
-      sha256: "360a6ed2027f18b73c8d98e159dda67a61b7f2e0f6ec26e86c3ada33b0621775"
+      sha256: "17cd5e205ea615e2c6ea7a77323a11712dffa0720a8a90540db57a01347f9ad9"
       url: "https://pub.dev"
     source: hosted
-    version: "6.3.1"
+    version: "6.3.2"
   url_launcher_ios:
     dependency: transitive
     description:

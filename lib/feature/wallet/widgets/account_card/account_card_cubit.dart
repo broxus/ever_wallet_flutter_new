@@ -5,7 +5,6 @@ import 'package:app/di/di.dart';
 import 'package:bloc/bloc.dart';
 import 'package:collection/collection.dart';
 import 'package:freezed_annotation/freezed_annotation.dart';
-import 'package:logging/logging.dart';
 import 'package:nekoton_repository/nekoton_repository.dart';
 import 'package:rxdart/rxdart.dart';
 
