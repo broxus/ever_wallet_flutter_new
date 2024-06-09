@@ -1,0 +1,60 @@
+name: Run iOS integration tests
+
+on:
+  workflow_call:
+    inputs:
+      working-directory:
+        default: ./
+        type: string
+      codegen:
+        description: 'Run melos codegen before tests'
+        default: false
+        type: boolean
+
+
+jobs:
+  ios_integration_test:
+    runs-on: macos-latest
+    timeout-minutes: 360
+
+    steps:
+      - uses: actions/checkout@v3
+      - uses: subosito/flutter-action@v2
+        with:
+          flutter-version: '3.19.6'
+          channel: 'stable'
+          cache: true
+          cache-key: flutter-:os:-:channel:-:version:-:arch:-:hash:-${{ hashFiles('**/pubspec.lock') }}
+      - uses: bluefireteam/melos-action@v2
+
+      - name: Install CocoaPods
+        run: |
+          sudo gem install cocoapods
+          pod install --repo-update
+        working-directory: ios
+
+      - name: Clean CocoaPods cache
+        run: pod cache clean --all
+        working-directory: ios
+
+      - name: Install CocoaPods dependencies
+        run: pod install
+        working-directory: ios
+
+      - name: Clean Xcode build
+        run: xcodebuild clean -workspace Runner.xcworkspace -scheme Runner
+        working-directory: ios
+
+      - name: Start iOS Simulator
+        run: |
+          DEVICE_ID=$(xcrun xctrace list devices | grep iPhone | head -1 | awk '{print $NF}' | tr -d '()')
+          echo "DEVICE_ID=$DEVICE_ID" >> $GITHUB_ENV
+          xcrun simctl boot $DEVICE_ID
+
+      - name: Generate dart code
+        if: inputs.codegen
+        run: melos codegen --no-select
+
+      - name: Run Flutter integration tests
+        working-directory: ${{ inputs.working-directory }}
+        run: flutter test --flavor production -d ${{ env.DEVICE_ID }} integration_test
