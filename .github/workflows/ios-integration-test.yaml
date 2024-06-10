@@ -41,13 +41,13 @@ jobs:
         run: |
           pod install --verbose
           find ios -name "Pods_Runner.framework"
-        working-directory: ios
+        working-directory: ${{ inputs.working-directory }}/ios
 
       - name: Check and Remove Pods_Runner.framework (debug step)
         run: |
           find ios -name "Pods_Runner.framework" -exec rm -rf {} \;
           find ios -name "Pods_Runner.framework"
-        working-directory: ios
+        working-directory: ${{ inputs.working-directory }}/ios
 
       - name: Start iOS Simulator
         run: |
