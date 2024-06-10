@@ -33,21 +33,24 @@ jobs:
           cache-key: flutter-:os:-:channel:-:version:-:arch:-:hash:-${{ hashFiles('**/pubspec.lock') }}
       - uses: bluefireteam/melos-action@v2
 
-      - name: Install dependencies for all packages
-        run: flutter pub get
-        working-directory: ${{ inputs.working-directory }}
+#      - name: Install dependencies for all packages
+#        run: flutter pub get
+#        working-directory: ${{ inputs.working-directory }}
+#
+#      - name: Install CocoaPods dependencies
+#        run: |
+#          pod install --verbose
+#          find ios -name "Pods_Runner.framework"
+#        working-directory: ${{ inputs.working-directory }}/ios
 
-      - name: Install CocoaPods dependencies
+      - name: Remove Pods_Runner.framework
         run: |
-          pod install --verbose
-          find ios -name "Pods_Runner.framework"
-        working-directory: ${{ inputs.working-directory }}/ios
-
-      - name: Check and Remove Pods_Runner.framework (debug step)
-        run: |
-          find ios -name "Pods_Runner.framework" -exec rm -rf {} \;
-          find ios -name "Pods_Runner.framework"
-        working-directory: ${{ inputs.working-directory }}/ios
+            if [ -d "./ios/Pods/Pods_Runner.framework" ]; then
+            rm -rf ./ios/Pods/Pods_Runner.framework
+            echo "Pods_Runner.framework has been removed."
+            else
+            echo "Pods_Runner.framework does not exist."
+            fi
 
       - name: Start iOS Simulator
         run: |
