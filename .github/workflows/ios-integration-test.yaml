@@ -33,6 +33,18 @@ jobs:
           cache-key: flutter-:os:-:channel:-:version:-:arch:-:hash:-${{ hashFiles('**/pubspec.lock') }}
       - uses: bluefireteam/melos-action@v2
 
+      - name: Install CocoaPods dependencies
+        run: |
+          pod install --verbose
+          find ios -name "Pods_Runner.framework"
+        working-directory: ios
+
+      - name: Check and Remove Pods_Runner.framework (debug step)
+        run: |
+          find ios -name "Pods_Runner.framework" -exec rm -rf {} \;
+          find ios -name "Pods_Runner.framework"
+        working-directory: ios
+
       - name: Start iOS Simulator
         run: |
           DEVICE_ID=$(xcrun xctrace list devices | grep "iPhone 14" | head -1 | awk '{print $NF}' | tr -d '()')
