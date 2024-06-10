@@ -33,6 +33,10 @@ jobs:
           cache-key: flutter-:os:-:channel:-:version:-:arch:-:hash:-${{ hashFiles('**/pubspec.lock') }}
       - uses: bluefireteam/melos-action@v2
 
+      - name: Install dependencies for all packages
+        run: flutter pub get
+        working-directory: ${{ inputs.working-directory }}
+
       - name: Install CocoaPods dependencies
         run: |
           pod install --verbose
