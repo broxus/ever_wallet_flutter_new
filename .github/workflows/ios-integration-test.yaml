@@ -35,7 +35,7 @@ jobs:
 
       - name: Start iOS Simulator
         run: |
-          DEVICE_ID=$(xcrun xctrace list devices | grep iPhone | head -1 | awk '{print $NF}' | tr -d '()')
+          DEVICE_ID=$(xcrun xctrace list devices | grep "iPhone 14" | head -1 | awk '{print $NF}' | tr -d '()')
           echo "DEVICE_ID=$DEVICE_ID" >> $GITHUB_ENV
           xcrun simctl boot $DEVICE_ID
 
