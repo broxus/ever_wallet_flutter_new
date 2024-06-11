@@ -29,17 +29,6 @@ jobs:
 
       - uses: bluefireteam/melos-action@v2
 
-      - name: Get Flutter dependencies
-        run: flutter pub get
-        working-directory: ${{ inputs.working-directory }}
-
-      - name: Install CocoaPods dependencies
-        run: |
-          cd ios
-          pod install --verbose
-          cd ..
-        working-directory: ${{ inputs.working-directory }}
-
       - name: Start iOS Simulator
         run: |
           DEVICE_ID=$(xcrun xctrace list devices | grep iPhone | head -1 | awk '{print $NF}' | tr -d '()')
