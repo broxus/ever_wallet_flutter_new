@@ -20,17 +20,13 @@ jobs:
     steps:
       - uses: actions/checkout@v3
 
-      - name: Set up Xcode
-        uses: maxim-lobanov/setup-xcode@v1
-        with:
-          xcode-version: '15.2'
-
       - uses: subosito/flutter-action@v2
         with:
           flutter-version: '3.19.6'
           channel: 'stable'
           cache: true
           cache-key: flutter-:os:-:channel:-:version:-:arch:-:hash:-${{ hashFiles('**/pubspec.lock') }}
+
       - uses: bluefireteam/melos-action@v2
 
       - name: Get Flutter dependencies
@@ -46,7 +42,7 @@ jobs:
 
       - name: Start iOS Simulator
         run: |
-          DEVICE_ID=$(xcrun xctrace list devices | grep "iPhone 14" | head -1 | awk '{print $NF}' | tr -d '()')
+          DEVICE_ID=$(xcrun xctrace list devices | grep iPhone | head -1 | awk '{print $NF}' | tr -d '()')
           echo "DEVICE_ID=$DEVICE_ID" >> $GITHUB_ENV
           xcrun simctl boot $DEVICE_ID
 
