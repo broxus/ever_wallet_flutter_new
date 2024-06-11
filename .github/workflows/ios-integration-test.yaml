@@ -43,15 +43,6 @@ jobs:
 #          find ios -name "Pods_Runner.framework"
 #        working-directory: ${{ inputs.working-directory }}/ios
 
-      - name: Remove Pods_Runner.framework
-        run: |
-            if [ -d "./ios/Pods/Pods_Runner.framework" ]; then
-            rm -rf ./ios/Pods/Pods_Runner.framework
-            echo "Pods_Runner.framework has been removed."
-            else
-            echo "Pods_Runner.framework does not exist."
-            fi
-
       - name: Start iOS Simulator
         run: |
           DEVICE_ID=$(xcrun xctrace list devices | grep "iPhone 14" | head -1 | awk '{print $NF}' | tr -d '()')
