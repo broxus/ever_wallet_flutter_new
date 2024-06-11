@@ -33,15 +33,16 @@ jobs:
           cache-key: flutter-:os:-:channel:-:version:-:arch:-:hash:-${{ hashFiles('**/pubspec.lock') }}
       - uses: bluefireteam/melos-action@v2
 
-#      - name: Install dependencies for all packages
-#        run: flutter pub get
-#        working-directory: ${{ inputs.working-directory }}
-#
-#      - name: Install CocoaPods dependencies
-#        run: |
-#          pod install --verbose
-#          find ios -name "Pods_Runner.framework"
-#        working-directory: ${{ inputs.working-directory }}/ios
+      - name: Get Flutter dependencies
+        run: flutter pub get
+        working-directory: ${{ inputs.working-directory }}
+
+      - name: Install CocoaPods dependencies
+        run: |
+          cd ios
+          pod install --verbose
+          cd ..
+        working-directory: ${{ inputs.working-directory }}
 
       - name: Start iOS Simulator
         run: |
