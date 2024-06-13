@@ -1,0 +1,35 @@
+{
+  "name": "mobile_scanner",
+  "version": "3.2.0",
+  "summary": "An universal scanner for Flutter based on MLKit.",
+  "description": "An universal scanner for Flutter based on MLKit.",
+  "homepage": "http://example.com",
+  "license": {
+    "file": "../LICENSE"
+  },
+  "authors": {
+    "Your Company": "email@example.com"
+  },
+  "source": {
+    "path": "."
+  },
+  "source_files": "Classes/**/*",
+  "dependencies": {
+    "Flutter": [
+
+    ],
+    "GoogleMLKit/BarcodeScanning": [
+      "~> 4.0.0"
+    ]
+  },
+  "platforms": {
+    "ios": "11.0"
+  },
+  "static_framework": true,
+  "pod_target_xcconfig": {
+    "DEFINES_MODULE": "YES",
+    "EXCLUDED_ARCHS[sdk=iphonesimulator*]": "i386"
+  },
+  "swift_versions": "5.0",
+  "swift_version": "5.0"
+}
