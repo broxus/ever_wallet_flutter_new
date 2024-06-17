@@ -53,17 +53,26 @@ jobs:
       - name: Generate dart code
         run: melos codegen --no-select
 
+      # Read Sentry DSN
+      - name: Read Sentry DSN
+        id: read_sentry_dsn
+        run: |
+          if [ -f ./secrets/sentry-dsn.txt ]; then
+            SENTRY_DSN=$(cat ./secrets/sentry-dsn.txt)
+            echo "SENTRY_DSN=$SENTRY_DSN" >> $GITHUB_ENV
+          fi
+
       # Build and deploy to FAD
       - name: Build and deploy to FAD
         if: inputs.deploy_target == 'fad' || inputs.deploy_target == ''
-        run: melos build:deploy_fad
+        run: melos build:deploy_fad -- --dart-define=SENTRY_DSN=${{ env.SENTRY_DSN }}
 
       # Build and deploy to STORE
       - name: Build and deploy to STORE
         if: inputs.deploy_target == 'store'
-        run: melos build:deploy_store
+        run: melos build:deploy_store -- --dart-define=SENTRY_DSN=${{ env.SENTRY_DSN }}
 
       # Build and deploy to FAD and STORE
       - name: Build and deploy to FAD and STORE
         if: inputs.deploy_target == 'fad_store'
-        run: melos build:deploy_fad_store
+        run: melos build:deploy_fad_store -- --dart-define=SENTRY_DSN=${{ env.SENTRY_DSN }}
