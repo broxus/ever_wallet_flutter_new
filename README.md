@@ -189,7 +189,7 @@ This file contains all secrets and is encrypted with GPG. To decrypt it, run the
 $ melos decrypt-secrets
 ```
 
-This command will place the secrets files in the necessary directories: the `/secrets`, `/android` and `/ios` folders
+This command will place the secrets files in the necessary directories: the `/secrets`, `/android` and `/ios` folders.
 
 When performing a build via Github Actions, secrets are temporarily located in the required folders. After building the application, `scripts/clean.sh` is run to remove secrets.
 
@@ -212,24 +212,27 @@ somefolder/
 │   │   └── YourDeveloperAppleAuthKey.p8
 ├── secrets/
 │   ├── ios-provisioning-key
-│   └── ios-provisioning-key.pub
+│   ├── ios-provisioning-key.pub
+│   └── sentry-dsn.txt
 ```
 
 `/android/your_keystore_name.keystore` Keystore file in jks format. Used to sign an APK file
 
-`/android/fastlane/GooglePlayServiceAccount.json` File with Google service account credentials for interacting with the Google API and Google Play Developer API
+`/android/fastlane/GooglePlayServiceAccount.json` File with Google service account credentials for interacting with the Google API and Google Play Developer API.
 
-`/android/key.properties` File with data for signing APK files
+`/android/key.properties` File with data for signing APK files.
 
-`/fastlane/FirebaseADKey.json` Needed to interact with the Firebase API. Contains data for scripts to interact with Firebase services
+`/fastlane/FirebaseADKey.json` Needed to interact with the Firebase API. Contains data for scripts to interact with Firebase services.
 
 `/fastlane/FirebaseAPIKey.json` Used to update the build number in Firebase Realtime Database.
 
-`/ios/fastlane/YourDeveloperAppleAuthKey.p8` Required to work with the App Store Connect API
+`/ios/fastlane/YourDeveloperAppleAuthKey.p8` Required to work with the App Store Connect API.
 
 `/secrets/ios-provisioning-key` Provisioning Profile file
 
-`/secrets/ios-provisioning-key.pub` Apple public key to run match_assure
+`/secrets/ios-provisioning-key.pub` Apple public key to run match_assure.
+
+`/secrets/sentry-dsn.txt` Text file with dns for working with sentry.
 
 After that, in the directory with the created directories, run the command:
 
@@ -263,7 +266,7 @@ $ gpg --symmetric --cipher-algo AES256 secrets.tar
 
 Resulting secrets.tar.gpg file should be placed in `secrets` directory in the root of the project.
 
-Make sure that the old gpg file does not end up in the archive
+Make sure that the old gpg file does not end up in the archive.
 
 **Warning: When archiving the contents in secrets folder, do not forget to exclude unnecessary files, such old gpg file and .secrets with your personal data**
 
@@ -343,11 +346,11 @@ In the terminal, run the command to set the FASTLANE_SESSION environment variabl
 $ export FASTLANE_SESSION=$(cat fastlane_session.txt)
 ```
 
-After this, fastlane commands will no longer require the 6-digit Apple verification code
+After this, fastlane commands will no longer require the 6-digit Apple verification code.
 
 #### It takes a long time to clone the repository when running melos build:ios_match_new_devices
 
-If it takes a long time to clone the repository when you run the `melos build:ios_match_new_devices` command, you most likely do not have enough rights. Contact your administrator
+If it takes a long time to clone the repository when you run the `melos build:ios_match_new_devices` command, you most likely do not have enough rights. Contact your administrator.
 
 ## Deploy 🚀
 
@@ -376,6 +379,13 @@ $ melos build:deploy_fad_store
 
 Each of these commands will increment the build number before building the app.
 
+**Warning: To use Sentry, don't forget to pass the dsn via dart-define.**
+
+Example:
+```markdown
+melos build:deploy_fad -- --dart-define=SENTRY_DSN="your_dsn"
+```
+
 ## Coverage 📊
 
 To view the generated coverage report you can use [lcov](https://github.com/linux-test-project/lcov).
@@ -395,6 +405,24 @@ The app can be built with several flavors. Each of them determines the logging l
 We also have logs from nekoton, and level transformation matrix is in `packages/nekoton_repository/lib/src/nekoton_repository.dart`.
 
 Console colors are defined in fancy_logger package.
+
+## Crash analytics
+
+[Sentry](https://sentry.io) is used to intercept global errors and crash analytics.
+
+Sentry does not run in the development build type.
+
+Dsn is passed through dart-define using the SENTRY_DSN environment variable.
+
+Examples:
+
+```markdown
+melos build:deploy_fad -- --dart-define=SENTRY_DSN="your_dsn"
+```
+
+```markdown
+flutter run --dart-define=SENTRY_DSN="your_sentry_dsn_value"
+```
 
 ## Working with Translations 🌐
 
