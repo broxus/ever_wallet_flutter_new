@@ -148,6 +148,7 @@ fastlane/FirebaseAPIKey.json
 fastlane/FirebaseADKey.json
 secrets/.secrets
 secrets/ios-provisioning-key*
+secrets/sentry-dsn*
 
 # Fastlane
 **/fastlane/report.xml
