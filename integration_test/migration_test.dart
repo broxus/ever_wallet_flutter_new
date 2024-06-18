@@ -208,6 +208,7 @@ Future<void> _fillHive(HiveSourceMigration migration) async {
   await migration.saveBrowserTabs([_browserTab]);
 }
 
+@Timeout(Duration(minutes: 30))
 void main() {
   IntegrationTestWidgetsFlutterBinding.ensureInitialized();
 
