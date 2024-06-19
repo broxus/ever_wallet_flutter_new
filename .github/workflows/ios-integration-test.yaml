@@ -50,7 +50,10 @@ jobs:
         run: |
           TARGET_OPTION=""
           if [ -n "${{ inputs.target }}" ]; then
+            echo "target is specified: ${{ inputs.target }}"
             TARGET_OPTION="--target ${{ inputs.target }}"
+          else
+            echo "No target specified."
           fi
           flutter build ios --flavor production --debug --no-codesign $TARGET_OPTION -v
 
