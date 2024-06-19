@@ -38,7 +38,13 @@ jobs:
         run: melos codegen --no-select
 
       - name: Build Flutter application
-        run: flutter build ios --flavor production --debug --no-codesign
+        if: inputs.build-before-test == 'true'
+        run: |
+          TARGET_OPTION=""
+          if [ -n "${{ inputs.target }}" ]; then
+            TARGET_OPTION="--target ${{ inputs.target }}"
+          fi
+          flutter build ios --flavor production --debug --no-codesign $TARGET_OPTION
 
       - name: Run Flutter integration tests
         working-directory: ${{ inputs.working-directory }}
