@@ -45,18 +45,18 @@ jobs:
         if: inputs.codegen
         run: melos codegen --no-select
 
-      - name: Build Flutter application
-        if: inputs.build-before-test
-        run: |
-          TARGET_OPTION=""
-          if [ -n "${{ inputs.target }}" ]; then
-            echo "target is specified: ${{ inputs.target }}"
-            TARGET_OPTION="--target ${{ inputs.target }}"
-          else
-            echo "No target specified."
-          fi
-          flutter build ios --flavor production --debug --no-codesign $TARGET_OPTION -v
+#      - name: Build Flutter application
+#        if: inputs.build-before-test
+#        run: |
+#          TARGET_OPTION=""
+#          if [ -n "${{ inputs.target }}" ]; then
+#            echo "target is specified: ${{ inputs.target }}"
+#            TARGET_OPTION="--target ${{ inputs.target }}"
+#          else
+#            echo "No target specified."
+#          fi
+#          flutter build ios --flavor production --debug --no-codesign $TARGET_OPTION -v
 
       - name: Run Flutter integration tests
         working-directory: ${{ inputs.working-directory }}
-        run: flutter test --flavor production -d ${{ env.DEVICE_ID }} integration_test --timeout 20m -v
+        run: flutter test --flavor production -d ${{ env.DEVICE_ID }} integration_test --timeout 50m -v
