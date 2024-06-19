@@ -42,7 +42,7 @@ jobs:
         run: melos codegen --no-select
 
       - name: Build Flutter application
-        if: inputs.build-before-test == 'true'
+        if: inputs.build-before-test
         run: |
           TARGET_OPTION=""
           if [ -n "${{ inputs.target }}" ]; then
