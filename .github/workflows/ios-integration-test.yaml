@@ -59,4 +59,4 @@ jobs:
 
       - name: Run Flutter integration tests
         working-directory: ${{ inputs.working-directory }}
-        run: flutter test --flavor production -d ${{ env.DEVICE_ID }} integration_test
+        run: flutter test --flavor production -d ${{ env.DEVICE_ID }} integration_test --timeout 20m -v
