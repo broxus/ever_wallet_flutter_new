@@ -14,6 +14,10 @@ on:
         description: 'Build your application before running tests to avoid wasting time allocated to integration tests'
         default: false
         type: boolean
+      target:
+        description: 'Optional target file for the build'
+        required: false
+        type: string
 
 
 jobs:
