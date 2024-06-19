@@ -55,14 +55,8 @@ linked_*.ds
 unlinked.ds
 unlinked_spec.ds
 .fvm/
-**/*.freezed.dart
-**/*.g.dart
-**/*.gen.dart
 **/*.reflectable.dart
 **/lib/*.module.dart
-
-# DI auto-generated files
-lib/di/di.config.dart
 
 # Android related
 **/android/**/gradle-wrapper.jar
