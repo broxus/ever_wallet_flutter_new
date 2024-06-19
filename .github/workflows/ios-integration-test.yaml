@@ -52,7 +52,7 @@ jobs:
           if [ -n "${{ inputs.target }}" ]; then
             TARGET_OPTION="--target ${{ inputs.target }}"
           fi
-          flutter build ios --flavor production --debug --no-codesign $TARGET_OPTION
+          flutter build ios --flavor production --debug --no-codesign $TARGET_OPTION -v
 
       - name: Run Flutter integration tests
         working-directory: ${{ inputs.working-directory }}
