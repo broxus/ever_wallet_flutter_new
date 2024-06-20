@@ -22,6 +22,8 @@ jobs:
   ios_integration_test:
     uses: broxus/flutter_templates/.github/workflows/ios-integration-test.yaml@main
     with:
+      target: lib/main_development.dart
+      build-before-test: true
       codegen: true
 
   android_integration_test:
