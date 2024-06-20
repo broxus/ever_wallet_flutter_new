@@ -20,8 +20,8 @@ jobs:
       runner: macos-latest
 
   ios_integration_test:
-    uses: broxus/flutter_templates/.github/workflows/ios-integration-test.yaml@main
-#    uses: ./.github/workflows/ios-integration-test.yaml
+#    uses: broxus/flutter_templates/.github/workflows/ios-integration-test.yaml@main
+    uses: ./.github/workflows/ios-integration-test.yaml
     with:
       target: lib/main_development.dart
 #      codegen: true
