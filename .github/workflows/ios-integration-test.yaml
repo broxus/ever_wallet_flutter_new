@@ -13,6 +13,7 @@ on:
       before-test:
         description: 'Specify whether to build or run the application before tests'
         required: false
+#        build | run
         type: string
       target:
         description: 'Optional target file for the build'
