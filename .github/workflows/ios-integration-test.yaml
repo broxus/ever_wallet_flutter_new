@@ -10,10 +10,10 @@ on:
         description: 'Run melos codegen before tests'
         default: false
         type: boolean
-      build-before-test:
-        description: 'Build your application before running tests to avoid wasting time allocated to integration tests'
-        default: false
-        type: boolean
+      before-test:
+        description: 'Specify whether to build or run the application before tests'
+        required: false
+        type: string
       target:
         description: 'Optional target file for the build'
         required: false
@@ -68,8 +68,8 @@ jobs:
         if: inputs.codegen
         run: melos codegen --no-select
 
-      - name: Build Flutter application
-        if: inputs.build-before-test
+      - name: Build or Run Flutter application
+        if: inputs.before-test
         run: |
           TARGET_OPTION=""
           if [ -n "${{ inputs.target }}" ]; then
@@ -82,4 +82,4 @@ jobs:
 
       - name: Run Flutter integration tests
         working-directory: ${{ inputs.working-directory }}
-        run: flutter test --flavor production -d ${{ env.DEVICE_ID }} integration_test -v
+        run: flutter ${{ inputs.before-test }} --flavor production -d ${{ env.DEVICE_ID }} integration_test -v
