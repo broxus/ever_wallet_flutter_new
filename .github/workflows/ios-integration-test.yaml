@@ -1,0 +1,85 @@
+name: Run iOS integration tests
+
+on:
+  workflow_call:
+    inputs:
+      working-directory:
+        default: ./
+        type: string
+      codegen:
+        description: 'Run melos codegen before tests'
+        default: false
+        type: boolean
+      build-before-test:
+        description: 'Build your application before running tests to avoid wasting time allocated to integration tests'
+        default: false
+        type: boolean
+      target:
+        description: 'Optional target file for the build'
+        required: false
+        type: string
+
+
+jobs:
+  ios_integration_test:
+    runs-on: macos-latest
+    timeout-minutes: 360
+
+    steps:
+      - uses: actions/checkout@v3
+
+      - name: Cache Flutter dependencies
+        uses: actions/cache@v2
+        with:
+          path: |
+            ~/.pub-cache
+            ${{ github.workspace }}/.dart_tool/build
+            ${{ github.workspace }}/.packages
+            ${{ github.workspace }}/.flutter-plugins
+            ${{ github.workspace }}/.flutter-plugins-dependencies
+          key: flutter-${{ runner.os }}-${{ hashFiles('**/pubspec.yaml') }}
+          restore-keys: |
+            flutter-${{ runner.os }}-
+
+      - name: Cache CocoaPods
+        uses: actions/cache@v2
+        with:
+          path: ios/Pods
+          key: pods-${{ runner.os }}-${{ hashFiles('**/Podfile.lock') }}
+          restore-keys: |
+            pods-${{ runner.os }}-
+
+      - uses: subosito/flutter-action@v2
+        with:
+          flutter-version: '3.19.6'
+          channel: 'stable'
+          cache: true
+          cache-key: flutter-:os:-:channel:-:version:-:arch:-:hash:-${{ hashFiles('**/pubspec.lock') }}
+
+      - uses: bluefireteam/melos-action@v2
+
+      - name: Start iOS Simulator
+        run: |
+          DEVICE_ID=$(xcrun xctrace list devices | grep iPhone | head -1 | awk '{print $NF}' | tr -d '()')
+          echo "DEVICE_ID=$DEVICE_ID" >> $GITHUB_ENV
+          xcrun simctl boot $DEVICE_ID
+
+      - name: Generate dart code
+        if: inputs.codegen
+        run: melos codegen --no-select
+
+      - name: Build Flutter application
+        if: inputs.build-before-test
+        run: |
+          TARGET_OPTION=""
+          if [ -n "${{ inputs.target }}" ]; then
+            echo "target is specified: ${{ inputs.target }}"
+            TARGET_OPTION="--target ${{ inputs.target }}"
+          else
+            echo "No target specified."
+          fi
+          flutter build ios --flavor production --debug --no-codesign $TARGET_OPTION -v
+
+      - name: Run Flutter integration tests
+        working-directory: ${{ inputs.working-directory }}
+        run: flutter test --flavor production -d ${{ env.DEVICE_ID }} integration_test -v
