@@ -55,15 +55,7 @@ linked_*.ds
 unlinked.ds
 unlinked_spec.ds
 .fvm/
-**/*.freezed.dart
-**/*.g.dart
-**/*.gen.dart
 **/*.reflectable.dart
-**/lib/*.module.dart
-
-# DI auto-generated files
-lib/di/di.config.dart
-
 # Android related
 **/android/**/gradle-wrapper.jar
 **/android/.gradle
@@ -108,10 +100,6 @@ local.properties
 
 # Coverage
 coverage/
-
-# Submodules
-!pubspec.lock
-packages/**/pubspec.lock
 
 # Web related
 lib/generated_plugin_registrant.dart
