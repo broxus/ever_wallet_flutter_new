@@ -79,7 +79,7 @@ jobs:
           else
             echo "No target specified."
           fi
-          flutter build ios --flavor production --debug --no-codesign $TARGET_OPTION -v
+          flutter ${{ inputs.before-test }} ios --flavor production -d ${{ env.DEVICE_ID }} --debug $TARGET_OPTION -v
 
       - name: Run Flutter integration tests
         working-directory: ${{ inputs.working-directory }}
