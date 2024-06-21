@@ -25,7 +25,7 @@ jobs:
     with:
       target: lib/main_development.dart
       build-before-test: true
-      codegen: true
+#      codegen: true
 
   android_integration_test:
     uses: broxus/flutter_templates/.github/workflows/android-integration-test.yaml@main
