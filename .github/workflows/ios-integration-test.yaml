@@ -10,11 +10,10 @@ on:
         description: 'Run melos codegen before tests'
         default: false
         type: boolean
-      before-test:
-        description: 'Specify whether to build or run the application before tests'
-        required: false
-#        build | run
-        type: string
+      build-before-test:
+        description: 'Build your application before running tests to avoid wasting time allocated to integration tests'
+        default: false
+        type: boolean
       target:
         description: 'Optional target file for the build'
         required: false
@@ -28,35 +27,12 @@ jobs:
 
     steps:
       - uses: actions/checkout@v3
-
-      - name: Cache Flutter dependencies
-        uses: actions/cache@v2
-        with:
-          path: |
-            ~/.pub-cache
-            ${{ github.workspace }}/.dart_tool/build
-            ${{ github.workspace }}/.packages
-            ${{ github.workspace }}/.flutter-plugins
-            ${{ github.workspace }}/.flutter-plugins-dependencies
-          key: flutter-${{ runner.os }}-${{ hashFiles('**/pubspec.yaml') }}
-          restore-keys: |
-            flutter-${{ runner.os }}-
-
-      - name: Cache CocoaPods
-        uses: actions/cache@v2
-        with:
-          path: ios/Pods
-          key: pods-${{ runner.os }}-${{ hashFiles('**/Podfile.lock') }}
-          restore-keys: |
-            pods-${{ runner.os }}-
-
       - uses: subosito/flutter-action@v2
         with:
           flutter-version: '3.19.6'
           channel: 'stable'
           cache: true
           cache-key: flutter-:os:-:channel:-:version:-:arch:-:hash:-${{ hashFiles('**/pubspec.lock') }}
-
       - uses: bluefireteam/melos-action@v2
 
       - name: Start iOS Simulator
@@ -69,8 +45,8 @@ jobs:
         if: inputs.codegen
         run: melos codegen --no-select
 
-      - name: Build or Run Flutter application
-        if: inputs.before-test
+      - name: Build Flutter application
+        if: inputs.build-before-test
         run: |
           TARGET_OPTION=""
           if [ -n "${{ inputs.target }}" ]; then
@@ -79,8 +55,8 @@ jobs:
           else
             echo "No target specified."
           fi
-          flutter ${{ inputs.before-test }} ios --flavor production -d ${{ env.DEVICE_ID }} --debug $TARGET_OPTION -v
+          flutter build ios --flavor production --debug --no-codesign $TARGET_OPTION -v
 
       - name: Run Flutter integration tests
         working-directory: ${{ inputs.working-directory }}
-        run: flutter ${{ inputs.before-test }} --flavor production -d ${{ env.DEVICE_ID }} integration_test -v
+        run: flutter test --flavor production -d ${{ env.DEVICE_ID }} integration_test -v
