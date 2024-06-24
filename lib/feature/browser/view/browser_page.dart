@@ -39,6 +39,7 @@ class _BrowserPageState extends State<BrowserPage> {
         create: (context) => BrowserTabsBloc(
           inject<BrowserTabsStorageService>(),
           (item) => _onBrowserHistoryItemAdd(context, item),
+          (items) => _onBrowserMultipleHistoryItemAdd(context, items),
         ),
         child: SafeArea(
           child: ApprovalsListenerWidget(
@@ -53,6 +54,17 @@ class _BrowserPageState extends State<BrowserPage> {
     BuildContext context,
     BrowserHistoryItem item,
   ) {
-    context.read<BrowserHistoryBloc>().add(BrowserHistoryEvent.add(item: item));
+    context.read<BrowserHistoryBloc>().add(
+          BrowserHistoryEvent.add(item: item),
+        );
+  }
+
+  void _onBrowserMultipleHistoryItemAdd(
+    BuildContext context,
+    List<BrowserHistoryItem> items,
+  ) {
+    context.read<BrowserHistoryBloc>().add(
+          BrowserHistoryEvent.addMultiple(items: items),
+        );
   }
 }

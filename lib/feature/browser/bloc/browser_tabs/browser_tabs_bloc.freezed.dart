@@ -207,15 +207,23 @@ class __$$AddImplCopyWithImpl<$Res>
 
 /// @nodoc
 
-class _$AddImpl implements _Add {
+class _$AddImpl with DiagnosticableTreeMixin implements _Add {
   const _$AddImpl({required this.uri});
 
   @override
   final Uri uri;
 
   @override
-  String toString() {
+  String toString({DiagnosticLevel minLevel = DiagnosticLevel.info}) {
     return 'BrowserTabsEvent.add(uri: $uri)';
+  }
+
+  @override
+  void debugFillProperties(DiagnosticPropertiesBuilder properties) {
+    super.debugFillProperties(properties);
+    properties
+      ..add(DiagnosticsProperty('type', 'BrowserTabsEvent.add'))
+      ..add(DiagnosticsProperty('uri', uri));
   }
 
   @override
@@ -427,12 +435,18 @@ class __$$AddEmptyImplCopyWithImpl<$Res>
 
 /// @nodoc
 
-class _$AddEmptyImpl implements _AddEmpty {
+class _$AddEmptyImpl with DiagnosticableTreeMixin implements _AddEmpty {
   const _$AddEmptyImpl();
 
   @override
-  String toString() {
+  String toString({DiagnosticLevel minLevel = DiagnosticLevel.info}) {
     return 'BrowserTabsEvent.addEmpty()';
+  }
+
+  @override
+  void debugFillProperties(DiagnosticPropertiesBuilder properties) {
+    super.debugFillProperties(properties);
+    properties.add(DiagnosticsProperty('type', 'BrowserTabsEvent.addEmpty'));
   }
 
   @override
@@ -651,7 +665,7 @@ class __$$SetUrlImplCopyWithImpl<$Res>
 
 /// @nodoc
 
-class _$SetUrlImpl implements _SetUrl {
+class _$SetUrlImpl with DiagnosticableTreeMixin implements _SetUrl {
   const _$SetUrlImpl({required this.id, required this.uri});
 
   @override
@@ -660,8 +674,17 @@ class _$SetUrlImpl implements _SetUrl {
   final Uri uri;
 
   @override
-  String toString() {
+  String toString({DiagnosticLevel minLevel = DiagnosticLevel.info}) {
     return 'BrowserTabsEvent.setUrl(id: $id, uri: $uri)';
+  }
+
+  @override
+  void debugFillProperties(DiagnosticPropertiesBuilder properties) {
+    super.debugFillProperties(properties);
+    properties
+      ..add(DiagnosticsProperty('type', 'BrowserTabsEvent.setUrl'))
+      ..add(DiagnosticsProperty('id', id))
+      ..add(DiagnosticsProperty('uri', uri));
   }
 
   @override
@@ -896,7 +919,9 @@ class __$$SetScreenshotImplCopyWithImpl<$Res>
 
 /// @nodoc
 
-class _$SetScreenshotImpl implements _SetScreenshot {
+class _$SetScreenshotImpl
+    with DiagnosticableTreeMixin
+    implements _SetScreenshot {
   const _$SetScreenshotImpl({required this.id, required this.imageId});
 
   @override
@@ -905,8 +930,17 @@ class _$SetScreenshotImpl implements _SetScreenshot {
   final String imageId;
 
   @override
-  String toString() {
+  String toString({DiagnosticLevel minLevel = DiagnosticLevel.info}) {
     return 'BrowserTabsEvent.setScreenshot(id: $id, imageId: $imageId)';
+  }
+
+  @override
+  void debugFillProperties(DiagnosticPropertiesBuilder properties) {
+    super.debugFillProperties(properties);
+    properties
+      ..add(DiagnosticsProperty('type', 'BrowserTabsEvent.setScreenshot'))
+      ..add(DiagnosticsProperty('id', id))
+      ..add(DiagnosticsProperty('imageId', imageId));
   }
 
   @override
@@ -1198,7 +1232,7 @@ class __$$SetStateImplCopyWithImpl<$Res>
 
 /// @nodoc
 
-class _$SetStateImpl implements _SetState {
+class _$SetStateImpl with DiagnosticableTreeMixin implements _SetState {
   const _$SetStateImpl(
       {required this.id,
       this.state,
@@ -1244,8 +1278,26 @@ class _$SetStateImpl implements _SetState {
   }
 
   @override
-  String toString() {
+  String toString({DiagnosticLevel minLevel = DiagnosticLevel.info}) {
     return 'BrowserTabsEvent.setState(id: $id, state: $state, progress: $progress, errorMessage: $errorMessage, title: $title, canGoBack: $canGoBack, canGoForward: $canGoForward, goBack: $goBack, goForward: $goForward, refresh: $refresh, basicAuthCreds: $basicAuthCreds)';
+  }
+
+  @override
+  void debugFillProperties(DiagnosticPropertiesBuilder properties) {
+    super.debugFillProperties(properties);
+    properties
+      ..add(DiagnosticsProperty('type', 'BrowserTabsEvent.setState'))
+      ..add(DiagnosticsProperty('id', id))
+      ..add(DiagnosticsProperty('state', state))
+      ..add(DiagnosticsProperty('progress', progress))
+      ..add(DiagnosticsProperty('errorMessage', errorMessage))
+      ..add(DiagnosticsProperty('title', title))
+      ..add(DiagnosticsProperty('canGoBack', canGoBack))
+      ..add(DiagnosticsProperty('canGoForward', canGoForward))
+      ..add(DiagnosticsProperty('goBack', goBack))
+      ..add(DiagnosticsProperty('goForward', goForward))
+      ..add(DiagnosticsProperty('refresh', refresh))
+      ..add(DiagnosticsProperty('basicAuthCreds', basicAuthCreds));
   }
 
   @override
@@ -1525,15 +1577,23 @@ class __$$RemoveImplCopyWithImpl<$Res>
 
 /// @nodoc
 
-class _$RemoveImpl implements _Remove {
+class _$RemoveImpl with DiagnosticableTreeMixin implements _Remove {
   const _$RemoveImpl({required this.id});
 
   @override
   final String id;
 
   @override
-  String toString() {
+  String toString({DiagnosticLevel minLevel = DiagnosticLevel.info}) {
     return 'BrowserTabsEvent.remove(id: $id)';
+  }
+
+  @override
+  void debugFillProperties(DiagnosticPropertiesBuilder properties) {
+    super.debugFillProperties(properties);
+    properties
+      ..add(DiagnosticsProperty('type', 'BrowserTabsEvent.remove'))
+      ..add(DiagnosticsProperty('id', id));
   }
 
   @override
@@ -1760,15 +1820,23 @@ class __$$SetActiveImplCopyWithImpl<$Res>
 
 /// @nodoc
 
-class _$SetActiveImpl implements _SetActive {
+class _$SetActiveImpl with DiagnosticableTreeMixin implements _SetActive {
   const _$SetActiveImpl({required this.id});
 
   @override
   final String id;
 
   @override
-  String toString() {
+  String toString({DiagnosticLevel minLevel = DiagnosticLevel.info}) {
     return 'BrowserTabsEvent.setActive(id: $id)';
+  }
+
+  @override
+  void debugFillProperties(DiagnosticPropertiesBuilder properties) {
+    super.debugFillProperties(properties);
+    properties
+      ..add(DiagnosticsProperty('type', 'BrowserTabsEvent.setActive'))
+      ..add(DiagnosticsProperty('id', id));
   }
 
   @override
@@ -1980,12 +2048,18 @@ class __$$CloseAllImplCopyWithImpl<$Res>
 
 /// @nodoc
 
-class _$CloseAllImpl implements _CloseAll {
+class _$CloseAllImpl with DiagnosticableTreeMixin implements _CloseAll {
   const _$CloseAllImpl();
 
   @override
-  String toString() {
+  String toString({DiagnosticLevel minLevel = DiagnosticLevel.info}) {
     return 'BrowserTabsEvent.closeAll()';
+  }
+
+  @override
+  void debugFillProperties(DiagnosticPropertiesBuilder properties) {
+    super.debugFillProperties(properties);
+    properties.add(DiagnosticsProperty('type', 'BrowserTabsEvent.closeAll'));
   }
 
   @override
@@ -2199,7 +2273,7 @@ class __$$SetTabsImplCopyWithImpl<$Res>
 
 /// @nodoc
 
-class _$SetTabsImpl implements _SetTabs {
+class _$SetTabsImpl with DiagnosticableTreeMixin implements _SetTabs {
   const _$SetTabsImpl({required final List<BrowserTab> tabs}) : _tabs = tabs;
 
   final List<BrowserTab> _tabs;
@@ -2211,8 +2285,16 @@ class _$SetTabsImpl implements _SetTabs {
   }
 
   @override
-  String toString() {
+  String toString({DiagnosticLevel minLevel = DiagnosticLevel.info}) {
     return 'BrowserTabsEvent.setTabs(tabs: $tabs)';
+  }
+
+  @override
+  void debugFillProperties(DiagnosticPropertiesBuilder properties) {
+    super.debugFillProperties(properties);
+    properties
+      ..add(DiagnosticsProperty('type', 'BrowserTabsEvent.setTabs'))
+      ..add(DiagnosticsProperty('tabs', tabs));
   }
 
   @override
@@ -2441,15 +2523,25 @@ class __$$SetActiveTabIdImplCopyWithImpl<$Res>
 
 /// @nodoc
 
-class _$SetActiveTabIdImpl implements _SetActiveTabId {
+class _$SetActiveTabIdImpl
+    with DiagnosticableTreeMixin
+    implements _SetActiveTabId {
   const _$SetActiveTabIdImpl({required this.id});
 
   @override
   final String? id;
 
   @override
-  String toString() {
+  String toString({DiagnosticLevel minLevel = DiagnosticLevel.info}) {
     return 'BrowserTabsEvent.setActiveTabId(id: $id)';
+  }
+
+  @override
+  void debugFillProperties(DiagnosticPropertiesBuilder properties) {
+    super.debugFillProperties(properties);
+    properties
+      ..add(DiagnosticsProperty('type', 'BrowserTabsEvent.setActiveTabId'))
+      ..add(DiagnosticsProperty('id', id));
   }
 
   @override
@@ -2663,12 +2755,18 @@ class __$$ClearCacheImplCopyWithImpl<$Res>
 
 /// @nodoc
 
-class _$ClearCacheImpl implements _ClearCache {
+class _$ClearCacheImpl with DiagnosticableTreeMixin implements _ClearCache {
   const _$ClearCacheImpl();
 
   @override
-  String toString() {
+  String toString({DiagnosticLevel minLevel = DiagnosticLevel.info}) {
     return 'BrowserTabsEvent.clearCache()';
+  }
+
+  @override
+  void debugFillProperties(DiagnosticPropertiesBuilder properties) {
+    super.debugFillProperties(properties);
+    properties.add(DiagnosticsProperty('type', 'BrowserTabsEvent.clearCache'));
   }
 
   @override
@@ -2867,12 +2965,19 @@ class __$$CacheClearedImplCopyWithImpl<$Res>
 
 /// @nodoc
 
-class _$CacheClearedImpl implements _CacheCleared {
+class _$CacheClearedImpl with DiagnosticableTreeMixin implements _CacheCleared {
   const _$CacheClearedImpl();
 
   @override
-  String toString() {
+  String toString({DiagnosticLevel minLevel = DiagnosticLevel.info}) {
     return 'BrowserTabsEvent.cacheCleared()';
+  }
+
+  @override
+  void debugFillProperties(DiagnosticPropertiesBuilder properties) {
+    super.debugFillProperties(properties);
+    properties
+        .add(DiagnosticsProperty('type', 'BrowserTabsEvent.cacheCleared'));
   }
 
   @override
@@ -3086,15 +3191,25 @@ class __$$SetSearchTextImplCopyWithImpl<$Res>
 
 /// @nodoc
 
-class _$SetSearchTextImpl implements _SetSearchText {
+class _$SetSearchTextImpl
+    with DiagnosticableTreeMixin
+    implements _SetSearchText {
   const _$SetSearchTextImpl({required this.text});
 
   @override
   final String text;
 
   @override
-  String toString() {
+  String toString({DiagnosticLevel minLevel = DiagnosticLevel.info}) {
     return 'BrowserTabsEvent.setSearchText(text: $text)';
+  }
+
+  @override
+  void debugFillProperties(DiagnosticPropertiesBuilder properties) {
+    super.debugFillProperties(properties);
+    properties
+      ..add(DiagnosticsProperty('type', 'BrowserTabsEvent.setSearchText'))
+      ..add(DiagnosticsProperty('text', text));
   }
 
   @override
@@ -3421,7 +3536,9 @@ class __$$BrowserTabsStateImplCopyWithImpl<$Res>
 
 /// @nodoc
 
-class _$BrowserTabsStateImpl implements _BrowserTabsState {
+class _$BrowserTabsStateImpl
+    with DiagnosticableTreeMixin
+    implements _BrowserTabsState {
   const _$BrowserTabsStateImpl(
       {required final List<BrowserTab> tabs,
       required this.currentTabId,
@@ -3455,8 +3572,20 @@ class _$BrowserTabsStateImpl implements _BrowserTabsState {
   final String searchText;
 
   @override
-  String toString() {
+  String toString({DiagnosticLevel minLevel = DiagnosticLevel.info}) {
     return 'BrowserTabsState(tabs: $tabs, currentTabId: $currentTabId, tabsState: $tabsState, clearCacheOnNextTab: $clearCacheOnNextTab, searchText: $searchText)';
+  }
+
+  @override
+  void debugFillProperties(DiagnosticPropertiesBuilder properties) {
+    super.debugFillProperties(properties);
+    properties
+      ..add(DiagnosticsProperty('type', 'BrowserTabsState'))
+      ..add(DiagnosticsProperty('tabs', tabs))
+      ..add(DiagnosticsProperty('currentTabId', currentTabId))
+      ..add(DiagnosticsProperty('tabsState', tabsState))
+      ..add(DiagnosticsProperty('clearCacheOnNextTab', clearCacheOnNextTab))
+      ..add(DiagnosticsProperty('searchText', searchText));
   }
 
   @override
