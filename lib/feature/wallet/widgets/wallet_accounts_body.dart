@@ -32,6 +32,8 @@ class WalletAccountsBody extends StatefulWidget {
 }
 
 class _WalletAccountsBodyState extends State<WalletAccountsBody> {
+  final _renderId = 0;
+
   @override
   Widget build(BuildContext context) {
     final list = widget.accounts;
@@ -84,7 +86,7 @@ class _WalletAccountsBodyState extends State<WalletAccountsBody> {
             children: [
               _pageIndicators(list.length + 1),
               RenderMetricsObject(
-                id: '_id',
+                id: _renderId,
                 onMount: _onUpdate,
                 onUpdate: _onUpdate,
                 child: WalletAccountActions(
@@ -100,7 +102,11 @@ class _WalletAccountsBodyState extends State<WalletAccountsBody> {
 
   void _onUpdate(_, RenderMetricsBox rb) {
     Future.delayed(const Duration(milliseconds: 100), () {
-      widget.onMount(rb.data.bottomCenter.y);
+      try {
+        widget.onMount(rb.data.bottomCenter.y);
+      } on Object catch (e) {
+        debugPrint(e.toString());
+      }
     });
   }
 
