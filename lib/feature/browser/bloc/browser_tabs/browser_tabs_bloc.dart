@@ -1,5 +1,4 @@
 import 'dart:async';
-import 'dart:ui';
 
 import 'package:app/app/service/service.dart';
 import 'package:app/data/models/models.dart';
@@ -229,7 +228,7 @@ class BrowserTabsBloc extends Bloc<BrowserTabsEvent, BrowserTabsState> {
           _createHistoryItem(
             tab,
             browserTabStateById(tab.id),
-          )
+          ),
       ],
     );
   }
