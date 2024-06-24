@@ -1596,6 +1596,15 @@ packages:
       url: "https://pub.dev"
     source: hosted
     version: "4.0.6"
+  render_metrics:
+    dependency: "direct main"
+    description:
+      path: "."
+      ref: optional-render-manager
+      resolved-ref: "1e2440c00e65b4a70d94be5b4d41f47a940fdd94"
+      url: "https://github.com/knightsforce/flutter-render-metrics"
+    source: git
+    version: "2.0.4"
   rxdart:
     dependency: "direct main"
     description:

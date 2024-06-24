@@ -3,20 +3,6 @@ import 'package:flutter/material.dart';
 import 'package:nekoton_repository/nekoton_repository.dart';
 import 'package:ui_components_lib/ui_components_lib.dart';
 
-/// Sum of heights of elements on main screen
-final _appbarAccountCardActionsHeight = defaultAppBarHeight +
-    walletActionButtonSize.value +
-    walletAccountCardHeight +
-    walletAccountIndicatorSpace +
-    // multiply by 2 because indicators height is 8 and space between indicator
-    // and button is 8
-    walletAccountsPageIndicatorHeight * 2 +
-    kToolbarHeight +
-    // card margin
-    DimensSize.d12 +
-    // just space below
-    DimensSize.d24;
-
 class WalletView extends StatefulWidget {
   const WalletView({
     required this.controller,
@@ -38,6 +24,9 @@ class WalletView extends StatefulWidget {
 class _WalletViewState extends State<WalletView> {
   final _panelController = PanelController();
 
+  bool _isMountPanel = false;
+  late double _panelHeight = 100;
+
   @override
   void didUpdateWidget(covariant WalletView oldWidget) {
     if (oldWidget.currentAccount != null &&
@@ -55,11 +44,9 @@ class _WalletViewState extends State<WalletView> {
 
   @override
   Widget build(BuildContext context) {
-    final mq = MediaQuery.of(context);
-
     return CommonSlidingPanel(
       maxHeightSizePercent: 1,
-      minHeight: mq.size.height - _appbarAccountCardActionsHeight,
+      minHeight: _panelHeight,
       panelController: _panelController,
       panelBuilder: (context, scrollController) {
         if (widget.currentAccount == null) {
@@ -77,7 +64,22 @@ class _WalletViewState extends State<WalletView> {
         publicKey: widget.publicKey,
         currentAccount: widget.currentAccount,
         controller: widget.controller,
+        onMount: _onMount,
       ),
     );
+  }
+
+  void _onMount(double bottom) {
+    if (_isMountPanel || bottom == 0) {
+      return;
+    }
+
+    _isMountPanel = true;
+
+    final mq = MediaQuery.of(context);
+
+    setState(() {
+      _panelHeight = mq.size.height - (bottom + DimensSize.d48);
+    });
   }
 }

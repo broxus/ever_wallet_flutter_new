@@ -2,6 +2,7 @@ import 'package:app/feature/wallet/wallet.dart';
 import 'package:app/feature/widgets/change_notifier_listener.dart';
 import 'package:flutter/material.dart';
 import 'package:nekoton_repository/nekoton_repository.dart';
+import 'package:render_metrics/render_metrics.dart';
 import 'package:ui_components_lib/ui_components_lib.dart';
 
 const walletAccountCardHeight = DimensSize.d220;
@@ -16,6 +17,7 @@ class WalletAccountsBody extends StatefulWidget {
     required this.currentAccount,
     required this.controller,
     required this.publicKey,
+    required this.onMount,
     super.key,
   });
 
@@ -23,6 +25,7 @@ class WalletAccountsBody extends StatefulWidget {
   final PublicKey publicKey;
   final KeyAccount? currentAccount;
   final PageController controller;
+  final ValueChanged<double> onMount;
 
   @override
   State<WalletAccountsBody> createState() => _WalletAccountsBodyState();
@@ -80,12 +83,25 @@ class _WalletAccountsBodyState extends State<WalletAccountsBody> {
             mainAxisSize: MainAxisSize.min,
             children: [
               _pageIndicators(list.length + 1),
-              WalletAccountActions(currentAccount: widget.currentAccount),
+              RenderMetricsObject(
+                id: '_id',
+                onMount: _onUpdate,
+                onUpdate: _onUpdate,
+                child: WalletAccountActions(
+                  currentAccount: widget.currentAccount,
+                ),
+              ),
             ],
           ),
         ),
       ],
     );
+  }
+
+  void _onUpdate(_, RenderMetricsBox rb) {
+    Future.delayed(const Duration(milliseconds: 100), () {
+      widget.onMount(rb.data.bottomCenter.y);
+    });
   }
 
   Widget _pageIndicators(int count) {

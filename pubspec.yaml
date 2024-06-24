@@ -58,6 +58,12 @@ dependencies:
   url_launcher: ^6.2.6
   uuid: ^3.0.7
   visibility_detector: ^0.4.0+2
+  render_metrics:
+#    Temporarily. Before the adoption of the PR
+#    https://github:com/surfstudio/flutter-render-metrics/pull/27:
+    git:
+      url: https://github.com/knightsforce/flutter-render-metrics
+      ref: optional-render-manager
 
 dev_dependencies:
   bloc_test: ^9.1.7
