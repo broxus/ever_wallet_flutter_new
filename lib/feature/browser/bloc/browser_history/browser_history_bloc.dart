@@ -6,7 +6,9 @@ import 'package:bloc/bloc.dart';
 import 'package:freezed_annotation/freezed_annotation.dart';
 
 part 'browser_history_event.dart';
+
 part 'browser_history_state.dart';
+
 part 'browser_history_bloc.freezed.dart';
 
 class BrowserHistoryBloc
@@ -49,6 +51,14 @@ class BrowserHistoryBloc
         return;
       }
       browserHistoryStorageService.addBrowserHistoryItem(event.item);
+    });
+    on<_AddMultiple>((event, emit) async {
+      for (final item in event.items) {
+        if (item.url.host.isEmpty) {
+          continue;
+        }
+        await browserHistoryStorageService.addBrowserHistoryItem(item);
+      }
     });
     on<_Remove>((event, emit) {
       browserHistoryStorageService.removeBrowserHistoryItem(event.id);

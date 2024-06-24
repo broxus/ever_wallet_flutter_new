@@ -19,6 +19,7 @@ mixin _$BrowserHistoryEvent {
   @optionalTypeArgs
   TResult when<TResult extends Object?>({
     required TResult Function(BrowserHistoryItem item) add,
+    required TResult Function(List<BrowserHistoryItem> items) addMultiple,
     required TResult Function(String id) remove,
     required TResult Function() clear,
     required TResult Function(List<BrowserHistoryItem> items) set,
@@ -29,6 +30,7 @@ mixin _$BrowserHistoryEvent {
   @optionalTypeArgs
   TResult? whenOrNull<TResult extends Object?>({
     TResult? Function(BrowserHistoryItem item)? add,
+    TResult? Function(List<BrowserHistoryItem> items)? addMultiple,
     TResult? Function(String id)? remove,
     TResult? Function()? clear,
     TResult? Function(List<BrowserHistoryItem> items)? set,
@@ -39,6 +41,7 @@ mixin _$BrowserHistoryEvent {
   @optionalTypeArgs
   TResult maybeWhen<TResult extends Object?>({
     TResult Function(BrowserHistoryItem item)? add,
+    TResult Function(List<BrowserHistoryItem> items)? addMultiple,
     TResult Function(String id)? remove,
     TResult Function()? clear,
     TResult Function(List<BrowserHistoryItem> items)? set,
@@ -50,6 +53,7 @@ mixin _$BrowserHistoryEvent {
   @optionalTypeArgs
   TResult map<TResult extends Object?>({
     required TResult Function(_Add value) add,
+    required TResult Function(_AddMultiple value) addMultiple,
     required TResult Function(_Remove value) remove,
     required TResult Function(_Clear value) clear,
     required TResult Function(_Set value) set,
@@ -60,6 +64,7 @@ mixin _$BrowserHistoryEvent {
   @optionalTypeArgs
   TResult? mapOrNull<TResult extends Object?>({
     TResult? Function(_Add value)? add,
+    TResult? Function(_AddMultiple value)? addMultiple,
     TResult? Function(_Remove value)? remove,
     TResult? Function(_Clear value)? clear,
     TResult? Function(_Set value)? set,
@@ -70,6 +75,7 @@ mixin _$BrowserHistoryEvent {
   @optionalTypeArgs
   TResult maybeMap<TResult extends Object?>({
     TResult Function(_Add value)? add,
+    TResult Function(_AddMultiple value)? addMultiple,
     TResult Function(_Remove value)? remove,
     TResult Function(_Clear value)? clear,
     TResult Function(_Set value)? set,
@@ -171,6 +177,7 @@ class _$AddImpl implements _Add {
   @optionalTypeArgs
   TResult when<TResult extends Object?>({
     required TResult Function(BrowserHistoryItem item) add,
+    required TResult Function(List<BrowserHistoryItem> items) addMultiple,
     required TResult Function(String id) remove,
     required TResult Function() clear,
     required TResult Function(List<BrowserHistoryItem> items) set,
@@ -184,6 +191,7 @@ class _$AddImpl implements _Add {
   @optionalTypeArgs
   TResult? whenOrNull<TResult extends Object?>({
     TResult? Function(BrowserHistoryItem item)? add,
+    TResult? Function(List<BrowserHistoryItem> items)? addMultiple,
     TResult? Function(String id)? remove,
     TResult? Function()? clear,
     TResult? Function(List<BrowserHistoryItem> items)? set,
@@ -197,6 +205,7 @@ class _$AddImpl implements _Add {
   @optionalTypeArgs
   TResult maybeWhen<TResult extends Object?>({
     TResult Function(BrowserHistoryItem item)? add,
+    TResult Function(List<BrowserHistoryItem> items)? addMultiple,
     TResult Function(String id)? remove,
     TResult Function()? clear,
     TResult Function(List<BrowserHistoryItem> items)? set,
@@ -214,6 +223,7 @@ class _$AddImpl implements _Add {
   @optionalTypeArgs
   TResult map<TResult extends Object?>({
     required TResult Function(_Add value) add,
+    required TResult Function(_AddMultiple value) addMultiple,
     required TResult Function(_Remove value) remove,
     required TResult Function(_Clear value) clear,
     required TResult Function(_Set value) set,
@@ -227,6 +237,7 @@ class _$AddImpl implements _Add {
   @optionalTypeArgs
   TResult? mapOrNull<TResult extends Object?>({
     TResult? Function(_Add value)? add,
+    TResult? Function(_AddMultiple value)? addMultiple,
     TResult? Function(_Remove value)? remove,
     TResult? Function(_Clear value)? clear,
     TResult? Function(_Set value)? set,
@@ -240,6 +251,7 @@ class _$AddImpl implements _Add {
   @optionalTypeArgs
   TResult maybeMap<TResult extends Object?>({
     TResult Function(_Add value)? add,
+    TResult Function(_AddMultiple value)? addMultiple,
     TResult Function(_Remove value)? remove,
     TResult Function(_Clear value)? clear,
     TResult Function(_Set value)? set,
@@ -260,6 +272,177 @@ abstract class _Add implements BrowserHistoryEvent {
   BrowserHistoryItem get item;
   @JsonKey(ignore: true)
   _$$AddImplCopyWith<_$AddImpl> get copyWith =>
+      throw _privateConstructorUsedError;
+}
+
+/// @nodoc
+abstract class _$$AddMultipleImplCopyWith<$Res> {
+  factory _$$AddMultipleImplCopyWith(
+          _$AddMultipleImpl value, $Res Function(_$AddMultipleImpl) then) =
+      __$$AddMultipleImplCopyWithImpl<$Res>;
+  @useResult
+  $Res call({List<BrowserHistoryItem> items});
+}
+
+/// @nodoc
+class __$$AddMultipleImplCopyWithImpl<$Res>
+    extends _$BrowserHistoryEventCopyWithImpl<$Res, _$AddMultipleImpl>
+    implements _$$AddMultipleImplCopyWith<$Res> {
+  __$$AddMultipleImplCopyWithImpl(
+      _$AddMultipleImpl _value, $Res Function(_$AddMultipleImpl) _then)
+      : super(_value, _then);
+
+  @pragma('vm:prefer-inline')
+  @override
+  $Res call({
+    Object? items = null,
+  }) {
+    return _then(_$AddMultipleImpl(
+      items: null == items
+          ? _value._items
+          : items // ignore: cast_nullable_to_non_nullable
+              as List<BrowserHistoryItem>,
+    ));
+  }
+}
+
+/// @nodoc
+
+class _$AddMultipleImpl implements _AddMultiple {
+  const _$AddMultipleImpl({required final List<BrowserHistoryItem> items})
+      : _items = items;
+
+  final List<BrowserHistoryItem> _items;
+  @override
+  List<BrowserHistoryItem> get items {
+    if (_items is EqualUnmodifiableListView) return _items;
+    // ignore: implicit_dynamic_type
+    return EqualUnmodifiableListView(_items);
+  }
+
+  @override
+  String toString() {
+    return 'BrowserHistoryEvent.addMultiple(items: $items)';
+  }
+
+  @override
+  bool operator ==(Object other) {
+    return identical(this, other) ||
+        (other.runtimeType == runtimeType &&
+            other is _$AddMultipleImpl &&
+            const DeepCollectionEquality().equals(other._items, _items));
+  }
+
+  @override
+  int get hashCode =>
+      Object.hash(runtimeType, const DeepCollectionEquality().hash(_items));
+
+  @JsonKey(ignore: true)
+  @override
+  @pragma('vm:prefer-inline')
+  _$$AddMultipleImplCopyWith<_$AddMultipleImpl> get copyWith =>
+      __$$AddMultipleImplCopyWithImpl<_$AddMultipleImpl>(this, _$identity);
+
+  @override
+  @optionalTypeArgs
+  TResult when<TResult extends Object?>({
+    required TResult Function(BrowserHistoryItem item) add,
+    required TResult Function(List<BrowserHistoryItem> items) addMultiple,
+    required TResult Function(String id) remove,
+    required TResult Function() clear,
+    required TResult Function(List<BrowserHistoryItem> items) set,
+    required TResult Function(String value) setSearchString,
+    required TResult Function(bool value) setIsEditing,
+  }) {
+    return addMultiple(items);
+  }
+
+  @override
+  @optionalTypeArgs
+  TResult? whenOrNull<TResult extends Object?>({
+    TResult? Function(BrowserHistoryItem item)? add,
+    TResult? Function(List<BrowserHistoryItem> items)? addMultiple,
+    TResult? Function(String id)? remove,
+    TResult? Function()? clear,
+    TResult? Function(List<BrowserHistoryItem> items)? set,
+    TResult? Function(String value)? setSearchString,
+    TResult? Function(bool value)? setIsEditing,
+  }) {
+    return addMultiple?.call(items);
+  }
+
+  @override
+  @optionalTypeArgs
+  TResult maybeWhen<TResult extends Object?>({
+    TResult Function(BrowserHistoryItem item)? add,
+    TResult Function(List<BrowserHistoryItem> items)? addMultiple,
+    TResult Function(String id)? remove,
+    TResult Function()? clear,
+    TResult Function(List<BrowserHistoryItem> items)? set,
+    TResult Function(String value)? setSearchString,
+    TResult Function(bool value)? setIsEditing,
+    required TResult orElse(),
+  }) {
+    if (addMultiple != null) {
+      return addMultiple(items);
+    }
+    return orElse();
+  }
+
+  @override
+  @optionalTypeArgs
+  TResult map<TResult extends Object?>({
+    required TResult Function(_Add value) add,
+    required TResult Function(_AddMultiple value) addMultiple,
+    required TResult Function(_Remove value) remove,
+    required TResult Function(_Clear value) clear,
+    required TResult Function(_Set value) set,
+    required TResult Function(_SetSearchString value) setSearchString,
+    required TResult Function(_SetIsEditing value) setIsEditing,
+  }) {
+    return addMultiple(this);
+  }
+
+  @override
+  @optionalTypeArgs
+  TResult? mapOrNull<TResult extends Object?>({
+    TResult? Function(_Add value)? add,
+    TResult? Function(_AddMultiple value)? addMultiple,
+    TResult? Function(_Remove value)? remove,
+    TResult? Function(_Clear value)? clear,
+    TResult? Function(_Set value)? set,
+    TResult? Function(_SetSearchString value)? setSearchString,
+    TResult? Function(_SetIsEditing value)? setIsEditing,
+  }) {
+    return addMultiple?.call(this);
+  }
+
+  @override
+  @optionalTypeArgs
+  TResult maybeMap<TResult extends Object?>({
+    TResult Function(_Add value)? add,
+    TResult Function(_AddMultiple value)? addMultiple,
+    TResult Function(_Remove value)? remove,
+    TResult Function(_Clear value)? clear,
+    TResult Function(_Set value)? set,
+    TResult Function(_SetSearchString value)? setSearchString,
+    TResult Function(_SetIsEditing value)? setIsEditing,
+    required TResult orElse(),
+  }) {
+    if (addMultiple != null) {
+      return addMultiple(this);
+    }
+    return orElse();
+  }
+}
+
+abstract class _AddMultiple implements BrowserHistoryEvent {
+  const factory _AddMultiple({required final List<BrowserHistoryItem> items}) =
+      _$AddMultipleImpl;
+
+  List<BrowserHistoryItem> get items;
+  @JsonKey(ignore: true)
+  _$$AddMultipleImplCopyWith<_$AddMultipleImpl> get copyWith =>
       throw _privateConstructorUsedError;
 }
 
@@ -328,6 +511,7 @@ class _$RemoveImpl implements _Remove {
   @optionalTypeArgs
   TResult when<TResult extends Object?>({
     required TResult Function(BrowserHistoryItem item) add,
+    required TResult Function(List<BrowserHistoryItem> items) addMultiple,
     required TResult Function(String id) remove,
     required TResult Function() clear,
     required TResult Function(List<BrowserHistoryItem> items) set,
@@ -341,6 +525,7 @@ class _$RemoveImpl implements _Remove {
   @optionalTypeArgs
   TResult? whenOrNull<TResult extends Object?>({
     TResult? Function(BrowserHistoryItem item)? add,
+    TResult? Function(List<BrowserHistoryItem> items)? addMultiple,
     TResult? Function(String id)? remove,
     TResult? Function()? clear,
     TResult? Function(List<BrowserHistoryItem> items)? set,
@@ -354,6 +539,7 @@ class _$RemoveImpl implements _Remove {
   @optionalTypeArgs
   TResult maybeWhen<TResult extends Object?>({
     TResult Function(BrowserHistoryItem item)? add,
+    TResult Function(List<BrowserHistoryItem> items)? addMultiple,
     TResult Function(String id)? remove,
     TResult Function()? clear,
     TResult Function(List<BrowserHistoryItem> items)? set,
@@ -371,6 +557,7 @@ class _$RemoveImpl implements _Remove {
   @optionalTypeArgs
   TResult map<TResult extends Object?>({
     required TResult Function(_Add value) add,
+    required TResult Function(_AddMultiple value) addMultiple,
     required TResult Function(_Remove value) remove,
     required TResult Function(_Clear value) clear,
     required TResult Function(_Set value) set,
@@ -384,6 +571,7 @@ class _$RemoveImpl implements _Remove {
   @optionalTypeArgs
   TResult? mapOrNull<TResult extends Object?>({
     TResult? Function(_Add value)? add,
+    TResult? Function(_AddMultiple value)? addMultiple,
     TResult? Function(_Remove value)? remove,
     TResult? Function(_Clear value)? clear,
     TResult? Function(_Set value)? set,
@@ -397,6 +585,7 @@ class _$RemoveImpl implements _Remove {
   @optionalTypeArgs
   TResult maybeMap<TResult extends Object?>({
     TResult Function(_Add value)? add,
+    TResult Function(_AddMultiple value)? addMultiple,
     TResult Function(_Remove value)? remove,
     TResult Function(_Clear value)? clear,
     TResult Function(_Set value)? set,
@@ -459,6 +648,7 @@ class _$ClearImpl implements _Clear {
   @optionalTypeArgs
   TResult when<TResult extends Object?>({
     required TResult Function(BrowserHistoryItem item) add,
+    required TResult Function(List<BrowserHistoryItem> items) addMultiple,
     required TResult Function(String id) remove,
     required TResult Function() clear,
     required TResult Function(List<BrowserHistoryItem> items) set,
@@ -472,6 +662,7 @@ class _$ClearImpl implements _Clear {
   @optionalTypeArgs
   TResult? whenOrNull<TResult extends Object?>({
     TResult? Function(BrowserHistoryItem item)? add,
+    TResult? Function(List<BrowserHistoryItem> items)? addMultiple,
     TResult? Function(String id)? remove,
     TResult? Function()? clear,
     TResult? Function(List<BrowserHistoryItem> items)? set,
@@ -485,6 +676,7 @@ class _$ClearImpl implements _Clear {
   @optionalTypeArgs
   TResult maybeWhen<TResult extends Object?>({
     TResult Function(BrowserHistoryItem item)? add,
+    TResult Function(List<BrowserHistoryItem> items)? addMultiple,
     TResult Function(String id)? remove,
     TResult Function()? clear,
     TResult Function(List<BrowserHistoryItem> items)? set,
@@ -502,6 +694,7 @@ class _$ClearImpl implements _Clear {
   @optionalTypeArgs
   TResult map<TResult extends Object?>({
     required TResult Function(_Add value) add,
+    required TResult Function(_AddMultiple value) addMultiple,
     required TResult Function(_Remove value) remove,
     required TResult Function(_Clear value) clear,
     required TResult Function(_Set value) set,
@@ -515,6 +708,7 @@ class _$ClearImpl implements _Clear {
   @optionalTypeArgs
   TResult? mapOrNull<TResult extends Object?>({
     TResult? Function(_Add value)? add,
+    TResult? Function(_AddMultiple value)? addMultiple,
     TResult? Function(_Remove value)? remove,
     TResult? Function(_Clear value)? clear,
     TResult? Function(_Set value)? set,
@@ -528,6 +722,7 @@ class _$ClearImpl implements _Clear {
   @optionalTypeArgs
   TResult maybeMap<TResult extends Object?>({
     TResult Function(_Add value)? add,
+    TResult Function(_AddMultiple value)? addMultiple,
     TResult Function(_Remove value)? remove,
     TResult Function(_Clear value)? clear,
     TResult Function(_Set value)? set,
@@ -616,6 +811,7 @@ class _$SetImpl implements _Set {
   @optionalTypeArgs
   TResult when<TResult extends Object?>({
     required TResult Function(BrowserHistoryItem item) add,
+    required TResult Function(List<BrowserHistoryItem> items) addMultiple,
     required TResult Function(String id) remove,
     required TResult Function() clear,
     required TResult Function(List<BrowserHistoryItem> items) set,
@@ -629,6 +825,7 @@ class _$SetImpl implements _Set {
   @optionalTypeArgs
   TResult? whenOrNull<TResult extends Object?>({
     TResult? Function(BrowserHistoryItem item)? add,
+    TResult? Function(List<BrowserHistoryItem> items)? addMultiple,
     TResult? Function(String id)? remove,
     TResult? Function()? clear,
     TResult? Function(List<BrowserHistoryItem> items)? set,
@@ -642,6 +839,7 @@ class _$SetImpl implements _Set {
   @optionalTypeArgs
   TResult maybeWhen<TResult extends Object?>({
     TResult Function(BrowserHistoryItem item)? add,
+    TResult Function(List<BrowserHistoryItem> items)? addMultiple,
     TResult Function(String id)? remove,
     TResult Function()? clear,
     TResult Function(List<BrowserHistoryItem> items)? set,
@@ -659,6 +857,7 @@ class _$SetImpl implements _Set {
   @optionalTypeArgs
   TResult map<TResult extends Object?>({
     required TResult Function(_Add value) add,
+    required TResult Function(_AddMultiple value) addMultiple,
     required TResult Function(_Remove value) remove,
     required TResult Function(_Clear value) clear,
     required TResult Function(_Set value) set,
@@ -672,6 +871,7 @@ class _$SetImpl implements _Set {
   @optionalTypeArgs
   TResult? mapOrNull<TResult extends Object?>({
     TResult? Function(_Add value)? add,
+    TResult? Function(_AddMultiple value)? addMultiple,
     TResult? Function(_Remove value)? remove,
     TResult? Function(_Clear value)? clear,
     TResult? Function(_Set value)? set,
@@ -685,6 +885,7 @@ class _$SetImpl implements _Set {
   @optionalTypeArgs
   TResult maybeMap<TResult extends Object?>({
     TResult Function(_Add value)? add,
+    TResult Function(_AddMultiple value)? addMultiple,
     TResult Function(_Remove value)? remove,
     TResult Function(_Clear value)? clear,
     TResult Function(_Set value)? set,
@@ -775,6 +976,7 @@ class _$SetSearchStringImpl implements _SetSearchString {
   @optionalTypeArgs
   TResult when<TResult extends Object?>({
     required TResult Function(BrowserHistoryItem item) add,
+    required TResult Function(List<BrowserHistoryItem> items) addMultiple,
     required TResult Function(String id) remove,
     required TResult Function() clear,
     required TResult Function(List<BrowserHistoryItem> items) set,
@@ -788,6 +990,7 @@ class _$SetSearchStringImpl implements _SetSearchString {
   @optionalTypeArgs
   TResult? whenOrNull<TResult extends Object?>({
     TResult? Function(BrowserHistoryItem item)? add,
+    TResult? Function(List<BrowserHistoryItem> items)? addMultiple,
     TResult? Function(String id)? remove,
     TResult? Function()? clear,
     TResult? Function(List<BrowserHistoryItem> items)? set,
@@ -801,6 +1004,7 @@ class _$SetSearchStringImpl implements _SetSearchString {
   @optionalTypeArgs
   TResult maybeWhen<TResult extends Object?>({
     TResult Function(BrowserHistoryItem item)? add,
+    TResult Function(List<BrowserHistoryItem> items)? addMultiple,
     TResult Function(String id)? remove,
     TResult Function()? clear,
     TResult Function(List<BrowserHistoryItem> items)? set,
@@ -818,6 +1022,7 @@ class _$SetSearchStringImpl implements _SetSearchString {
   @optionalTypeArgs
   TResult map<TResult extends Object?>({
     required TResult Function(_Add value) add,
+    required TResult Function(_AddMultiple value) addMultiple,
     required TResult Function(_Remove value) remove,
     required TResult Function(_Clear value) clear,
     required TResult Function(_Set value) set,
@@ -831,6 +1036,7 @@ class _$SetSearchStringImpl implements _SetSearchString {
   @optionalTypeArgs
   TResult? mapOrNull<TResult extends Object?>({
     TResult? Function(_Add value)? add,
+    TResult? Function(_AddMultiple value)? addMultiple,
     TResult? Function(_Remove value)? remove,
     TResult? Function(_Clear value)? clear,
     TResult? Function(_Set value)? set,
@@ -844,6 +1050,7 @@ class _$SetSearchStringImpl implements _SetSearchString {
   @optionalTypeArgs
   TResult maybeMap<TResult extends Object?>({
     TResult Function(_Add value)? add,
+    TResult Function(_AddMultiple value)? addMultiple,
     TResult Function(_Remove value)? remove,
     TResult Function(_Clear value)? clear,
     TResult Function(_Set value)? set,
@@ -933,6 +1140,7 @@ class _$SetIsEditingImpl implements _SetIsEditing {
   @optionalTypeArgs
   TResult when<TResult extends Object?>({
     required TResult Function(BrowserHistoryItem item) add,
+    required TResult Function(List<BrowserHistoryItem> items) addMultiple,
     required TResult Function(String id) remove,
     required TResult Function() clear,
     required TResult Function(List<BrowserHistoryItem> items) set,
@@ -946,6 +1154,7 @@ class _$SetIsEditingImpl implements _SetIsEditing {
   @optionalTypeArgs
   TResult? whenOrNull<TResult extends Object?>({
     TResult? Function(BrowserHistoryItem item)? add,
+    TResult? Function(List<BrowserHistoryItem> items)? addMultiple,
     TResult? Function(String id)? remove,
     TResult? Function()? clear,
     TResult? Function(List<BrowserHistoryItem> items)? set,
@@ -959,6 +1168,7 @@ class _$SetIsEditingImpl implements _SetIsEditing {
   @optionalTypeArgs
   TResult maybeWhen<TResult extends Object?>({
     TResult Function(BrowserHistoryItem item)? add,
+    TResult Function(List<BrowserHistoryItem> items)? addMultiple,
     TResult Function(String id)? remove,
     TResult Function()? clear,
     TResult Function(List<BrowserHistoryItem> items)? set,
@@ -976,6 +1186,7 @@ class _$SetIsEditingImpl implements _SetIsEditing {
   @optionalTypeArgs
   TResult map<TResult extends Object?>({
     required TResult Function(_Add value) add,
+    required TResult Function(_AddMultiple value) addMultiple,
     required TResult Function(_Remove value) remove,
     required TResult Function(_Clear value) clear,
     required TResult Function(_Set value) set,
@@ -989,6 +1200,7 @@ class _$SetIsEditingImpl implements _SetIsEditing {
   @optionalTypeArgs
   TResult? mapOrNull<TResult extends Object?>({
     TResult? Function(_Add value)? add,
+    TResult? Function(_AddMultiple value)? addMultiple,
     TResult? Function(_Remove value)? remove,
     TResult? Function(_Clear value)? clear,
     TResult? Function(_Set value)? set,
@@ -1002,6 +1214,7 @@ class _$SetIsEditingImpl implements _SetIsEditing {
   @optionalTypeArgs
   TResult maybeMap<TResult extends Object?>({
     TResult Function(_Add value)? add,
+    TResult Function(_AddMultiple value)? addMultiple,
     TResult Function(_Remove value)? remove,
     TResult Function(_Clear value)? clear,
     TResult Function(_Set value)? set,

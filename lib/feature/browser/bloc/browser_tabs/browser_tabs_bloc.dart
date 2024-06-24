@@ -1,16 +1,18 @@
 import 'dart:async';
-import 'dart:ui';
 
 import 'package:app/app/service/service.dart';
 import 'package:app/data/models/models.dart';
 import 'package:app/feature/browser/browser.dart';
 import 'package:bloc/bloc.dart';
 import 'package:collection/collection.dart';
+import 'package:flutter/foundation.dart';
 import 'package:freezed_annotation/freezed_annotation.dart';
 import 'package:logging/logging.dart';
 
 part 'browser_tabs_event.dart';
+
 part 'browser_tabs_state.dart';
+
 part 'browser_tabs_bloc.freezed.dart';
 
 final _emptyUri = Uri.parse('');
@@ -19,6 +21,7 @@ class BrowserTabsBloc extends Bloc<BrowserTabsEvent, BrowserTabsState> {
   BrowserTabsBloc(
     this.browserTabsStorageService,
     this.onBrowserHistoryItemAdd,
+    this.onBrowserMultipleHistoryItemAdd,
   ) : super(
           BrowserTabsState(
             tabs: browserTabsStorageService.browserTabs,
@@ -44,11 +47,13 @@ class BrowserTabsBloc extends Bloc<BrowserTabsEvent, BrowserTabsState> {
       },
     );
   }
+
   static final _log = Logger('BrowserTabsBloc');
 
   final BrowserTabsStorageService browserTabsStorageService;
 
-  final void Function(BrowserHistoryItem) onBrowserHistoryItemAdd;
+  final ValueChanged<BrowserHistoryItem> onBrowserHistoryItemAdd;
+  final ValueChanged<List<BrowserHistoryItem>> onBrowserMultipleHistoryItemAdd;
 
   StreamSubscription<List<BrowserTab>>? _browserTabsSubscription;
   StreamSubscription<String?>? _browserActiveTabIdSubscription;
@@ -155,10 +160,7 @@ class BrowserTabsBloc extends Bloc<BrowserTabsEvent, BrowserTabsState> {
     });
     on<_CloseAll>((event, emit) {
       // All tabs are closing, add urls to history
-      for (final tab in state.tabs) {
-        final state = browserTabStateById(tab.id);
-        _addHistoryItem(tab, state);
-      }
+      _addHistoryMultipleItem(state);
       browserTabsStorageService.clearBrowserTabs();
     });
     on<_SetTabs>((event, emit) {
@@ -212,10 +214,32 @@ class BrowserTabsBloc extends Bloc<BrowserTabsEvent, BrowserTabsState> {
 
   void _addHistoryItem(BrowserTab tab, BrowserTabState? state) {
     onBrowserHistoryItemAdd(
-      BrowserHistoryItem.create(
-        url: tab.url,
-        title: state?.title ?? '',
-      ),
+      _createHistoryItem(tab, state),
+    );
+  }
+
+  void _addHistoryMultipleItem(BrowserTabsState? state) {
+    if (state == null) {
+      return;
+    }
+    onBrowserMultipleHistoryItemAdd(
+      [
+        for (final tab in state.tabs)
+          _createHistoryItem(
+            tab,
+            browserTabStateById(tab.id),
+          ),
+      ],
+    );
+  }
+
+  BrowserHistoryItem _createHistoryItem(
+    BrowserTab tab,
+    BrowserTabState? state,
+  ) {
+    return BrowserHistoryItem.create(
+      url: tab.url,
+      title: state?.title ?? '',
     );
   }
 }
