@@ -48,6 +48,12 @@ dependencies:
   package_info_plus: ^8.0.0
   path_provider: ^2.1.3
   permission_handler: ^11.3.1
+  render_metrics:
+    #    Temporarily. Before the adoption of the PR
+    #    https://github:com/surfstudio/flutter-render-metrics/pull/27:
+    git:
+      url: https://github.com/knightsforce/flutter-render-metrics
+      ref: optional-render-manager
   rxdart: ^0.27.7
   sentry_flutter: ^7.0.0
   share_plus: 9.0.0
