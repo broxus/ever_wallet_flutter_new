@@ -22,7 +22,10 @@ class ProfilePage extends StatelessWidget {
       child: BlocBuilder<ProfileBloc, ProfileState>(
         builder: (context, state) {
           return state.when(
-            initial: () => const ProfileView(appVersion: ''),
+            initial: () => const ProfileView(
+              appVersion: '',
+              darkThemeEnabled: false,
+            ),
             data: (
               currentSeed,
               isBiometryAvailable,
@@ -32,6 +35,7 @@ class ProfilePage extends StatelessWidget {
               currentSeed: currentSeed,
               isBiometryAvailable: isBiometryAvailable,
               appVersion: appVersion,
+              darkThemeEnabled: false,
             ),
           );
         },
