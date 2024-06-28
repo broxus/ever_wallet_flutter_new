@@ -64,15 +64,14 @@ class SeedDetailView extends StatelessWidget {
                   margin: EdgeInsets.zero,
                   titleText: LocaleKeys.keysWord.tr(),
                   mainAxisSize: MainAxisSize.min,
-                  children: seed.allKeys
-                      .map(
-                        (key) => _keyItem(
-                          key,
-                          currentPublicKey,
-                          key != seed.allKeys.last,
-                        ),
-                      )
-                      .toList(),
+                  children: [
+                    for (var i = 0; i < seed.allKeys.length; i++)
+                      _keyItem(
+                        seed.allKeys[i],
+                        currentPublicKey,
+                        i != seed.allKeys.length - 1,
+                      ),
+                  ],
                 ),
               ),
             ),
@@ -90,7 +89,7 @@ class SeedDetailView extends StatelessWidget {
   Widget _keyItem(
     SeedKey key,
     PublicKey? currentPublicKey,
-    bool isLastItem,
+    bool isShowingDivider,
   ) {
     return Builder(
       builder: (context) {
@@ -137,7 +136,7 @@ class SeedDetailView extends StatelessWidget {
                 args: ['${key.accountList.allAccounts.length}'],
               ),
             ),
-            if (isLastItem) const CommonDivider(),
+            if (isShowingDivider) const CommonDivider(),
           ],
         );
       },
