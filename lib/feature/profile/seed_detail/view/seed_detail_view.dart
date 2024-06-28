@@ -65,7 +65,13 @@ class SeedDetailView extends StatelessWidget {
                   titleText: LocaleKeys.keysWord.tr(),
                   mainAxisSize: MainAxisSize.min,
                   children: seed.allKeys
-                      .map((key) => _keyItem(key, currentPublicKey))
+                      .map(
+                        (key) => _keyItem(
+                          key,
+                          currentPublicKey,
+                          key != seed.allKeys.last,
+                        ),
+                      )
                       .toList(),
                 ),
               ),
@@ -84,49 +90,55 @@ class SeedDetailView extends StatelessWidget {
   Widget _keyItem(
     SeedKey key,
     PublicKey? currentPublicKey,
+    bool isLastItem,
   ) {
     return Builder(
       builder: (context) {
         final colors = context.themeStyle.colors;
 
-        return CommonListTile(
-          onPressed: () => context.goFurther(
-            AppRoute.keyDetail.pathWithData(
-              pathParameters: {
-                keyDetailPublicKeyPathParam: key.publicKey.publicKey,
-              },
-            ),
-          ),
-          padding: EdgeInsets.zero,
-          leading: CommonBackgroundedIconWidget.svg(
-            svg: Assets.images.key.path,
-          ),
-          titleText: key.name,
-          trailing: SeparatedRow(
-            mainAxisSize: MainAxisSize.min,
-            children: [
-              if (currentPublicKey == key.publicKey)
-                CommonIconWidget.svg(
-                  svg: Assets.images.check.path,
-                  color: colors.textPrimary,
-                ),
-              CommonIconButton.svg(
-                svg: Assets.images.settings.path,
-                color: colors.textSecondary,
-                buttonType: EverButtonType.ghost,
-                size: CommonIconButtonSize.xsmall,
-                onPressed: () => showKeySettingsSheet(
-                  context: context,
-                  publicKey: key.publicKey,
-                  isMaster: key.isMaster,
+        return Column(
+          children: [
+            CommonListTile(
+              onPressed: () => context.goFurther(
+                AppRoute.keyDetail.pathWithData(
+                  pathParameters: {
+                    keyDetailPublicKeyPathParam: key.publicKey.publicKey,
+                  },
                 ),
               ),
-            ],
-          ),
-          subtitleText: LocaleKeys.accountsWithData.plural(
-            key.accountList.allAccounts.length,
-            args: ['${key.accountList.allAccounts.length}'],
-          ),
+              padding: EdgeInsets.zero,
+              leading: CommonBackgroundedIconWidget.svg(
+                svg: Assets.images.key.path,
+              ),
+              titleText: key.name,
+              trailing: SeparatedRow(
+                mainAxisSize: MainAxisSize.min,
+                children: [
+                  if (currentPublicKey == key.publicKey)
+                    CommonIconWidget.svg(
+                      svg: Assets.images.check.path,
+                      color: colors.textPrimary,
+                    ),
+                  CommonIconButton.svg(
+                    svg: Assets.images.settings.path,
+                    color: colors.textSecondary,
+                    buttonType: EverButtonType.ghost,
+                    size: CommonIconButtonSize.xsmall,
+                    onPressed: () => showKeySettingsSheet(
+                      context: context,
+                      publicKey: key.publicKey,
+                      isMaster: key.isMaster,
+                    ),
+                  ),
+                ],
+              ),
+              subtitleText: LocaleKeys.accountsWithData.plural(
+                key.accountList.allAccounts.length,
+                args: ['${key.accountList.allAccounts.length}'],
+              ),
+            ),
+            if (isLastItem) const CommonDivider(),
+          ],
         );
       },
     );
