@@ -15,7 +15,7 @@ import 'package:ui_components_lib/ui_components_lib.dart';
 class ProfileView extends StatelessWidget {
   const ProfileView({
     required this.appVersion,
-    required this.darkThemeEnabled,
+    required this.isDarkThemeEnabled,
     this.isBiometryAvailable = false,
     this.currentSeed,
     super.key,
@@ -24,14 +24,13 @@ class ProfileView extends StatelessWidget {
   final Seed? currentSeed;
   final bool isBiometryAvailable;
   final String appVersion;
-  final bool darkThemeEnabled;
+  final bool isDarkThemeEnabled;
 
   @override
   Widget build(BuildContext context) {
     final service = inject<BiometryService>();
     final colors = context.themeStyle.colors;
     final mq = MediaQuery.of(context);
-    var darkThemeEnabled = this.darkThemeEnabled;
 
     return Scaffold(
       body: SingleChildScrollView(
@@ -98,7 +97,7 @@ class ProfileView extends StatelessWidget {
 
                       return _profileTile(
                         leadingIcon: Assets.images.fingerSmall.path,
-                        title: LocaleKeys.darkTheme.tr(),
+                        title: LocaleKeys.biometryWord.tr(),
                         trailing: CommonSwitchInput(
                           value: enabled,
                           onChanged: (value) => service.setStatus(
@@ -112,9 +111,9 @@ class ProfileView extends StatelessWidget {
                   ),
                 _profileTile(
                   leadingIcon: Assets.images.moon.path,
-                  title: 'Dark theme', //LocaleKeys.biometryWord.tr(),
+                  title: LocaleKeys.darkTheme.tr(),
                   trailing: CommonSwitchInput(
-                    value: darkThemeEnabled,
+                    value: isDarkThemeEnabled,
                     onChanged: (value) {},
                   ),
                   onPressed: null,

@@ -24,7 +24,7 @@ class ProfilePage extends StatelessWidget {
           return state.when(
             initial: () => const ProfileView(
               appVersion: '',
-              darkThemeEnabled: false,
+              isDarkThemeEnabled: false,
             ),
             data: (
               currentSeed,
@@ -35,7 +35,7 @@ class ProfilePage extends StatelessWidget {
               currentSeed: currentSeed,
               isBiometryAvailable: isBiometryAvailable,
               appVersion: appVersion,
-              darkThemeEnabled: false,
+              isDarkThemeEnabled: false,
             ),
           );
         },
