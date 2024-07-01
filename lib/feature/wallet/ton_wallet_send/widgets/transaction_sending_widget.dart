@@ -57,6 +57,7 @@ class TransactionSendingWidget extends StatelessWidget {
               }
             },
           ),
+        const SizedBox(height: DimensSize.d32),
       ],
     );
   }
