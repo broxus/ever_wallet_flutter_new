@@ -15,6 +15,7 @@ import 'package:ui_components_lib/ui_components_lib.dart';
 class ProfileView extends StatelessWidget {
   const ProfileView({
     required this.appVersion,
+    required this.isDarkThemeEnabled,
     this.isBiometryAvailable = false,
     this.currentSeed,
     super.key,
@@ -23,6 +24,7 @@ class ProfileView extends StatelessWidget {
   final Seed? currentSeed;
   final bool isBiometryAvailable;
   final String appVersion;
+  final bool isDarkThemeEnabled;
 
   @override
   Widget build(BuildContext context) {
@@ -107,6 +109,15 @@ class ProfileView extends StatelessWidget {
                       );
                     },
                   ),
+                _profileTile(
+                  leadingIcon: Assets.images.moon.path,
+                  title: LocaleKeys.darkTheme.tr(),
+                  trailing: CommonSwitchInput(
+                    value: isDarkThemeEnabled,
+                    onChanged: (value) {},
+                  ),
+                  onPressed: null,
+                ),
               ],
             ),
             const SizedBox(height: DimensSize.d16),
