@@ -457,6 +457,22 @@ packages:
       url: "https://pub.dev"
     source: hosted
     version: "0.0.2"
+  elementary:
+    dependency: "direct main"
+    description:
+      name: elementary
+      sha256: "9b8385fac1c2102918a512d7a80ce0babe61af960f3c86902a671b09131d958c"
+      url: "https://pub.dev"
+    source: hosted
+    version: "3.0.0"
+  elementary_helper:
+    dependency: "direct main"
+    description:
+      name: elementary_helper
+      sha256: "2b24eba824c864a50716da269b89bf068a55809acb9671fa9766f7700e49a476"
+      url: "https://pub.dev"
+    source: hosted
+    version: "1.0.1"
   encrypt:
     dependency: transitive
     description:
