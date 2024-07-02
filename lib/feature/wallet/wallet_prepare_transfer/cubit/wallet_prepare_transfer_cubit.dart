@@ -141,6 +141,10 @@ class WalletPrepareTransferCubit extends Cubit<WalletPrepareTransferState> {
 
     final amnt = Fixed.parse(amount, scale: selectedAsset.balance.scale);
 
+    // Temp fix
+    // To work around the lack of state change
+    // from Go to Data when there is no network
+    _updateState();
     emit(
       WalletPrepareTransferState.goNext(
         walletName: _walletName(nekotonRepository, account),
@@ -154,6 +158,7 @@ class WalletPrepareTransferCubit extends Cubit<WalletPrepareTransferState> {
         comment: comment.isEmpty ? null : comment,
       ),
     );
+    _updateState();
   }
 
   void _updateState() {
