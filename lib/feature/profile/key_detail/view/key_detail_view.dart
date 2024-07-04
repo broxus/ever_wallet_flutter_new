@@ -103,6 +103,7 @@ class KeyDetailView extends StatelessWidget {
                       onTabChanged: context.read<KeyDetailCubit>().changeTab,
                       values: accountTabItems,
                       currentValue: tab,
+                      isSmallSize: true,
                     ),
                     if (currentAccounts.isEmpty)
                       Text(

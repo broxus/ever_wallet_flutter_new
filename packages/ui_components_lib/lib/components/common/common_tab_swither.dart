@@ -30,6 +30,7 @@ class CommonTabSwitcher<T> extends StatelessWidget {
     required this.values,
     required this.currentValue,
     this.fillWidth = true,
+    this.isSmallSize = false,
     super.key,
   });
 
@@ -45,6 +46,9 @@ class CommonTabSwitcher<T> extends StatelessWidget {
   /// If widget should fill all available width
   final bool fillWidth;
 
+  /// If we need to make CommonButton without big padding and with small text
+  final bool isSmallSize;
+
   @override
   Widget build(BuildContext context) {
     final colors = context.themeStyle.colors;
@@ -56,7 +60,7 @@ class CommonTabSwitcher<T> extends StatelessWidget {
       padding: const EdgeInsets.all(DimensSize.d4),
       color: colors.appBackground,
       children: values.map((i) {
-        final item = _switcherItem(i, colors);
+        final item = _switcherItem(i, colors, isSmallSize);
 
         if (fillWidth) {
           return Expanded(child: item);
@@ -67,7 +71,11 @@ class CommonTabSwitcher<T> extends StatelessWidget {
     );
   }
 
-  Widget _switcherItem(CommonTabSwitcherItem<T> item, ColorsPalette colors) {
+  Widget _switcherItem(
+    CommonTabSwitcherItem<T> item,
+    ColorsPalette colors, [
+    bool isSmallSize = false,
+  ]) {
     return AnimatedColor(
       color: item.value == currentValue
           ? colors.backgroundSecondary
@@ -81,11 +89,13 @@ class CommonTabSwitcher<T> extends StatelessWidget {
           onPressed: () => onTabChanged(item.value),
           fillWidth: fillWidth,
           backgroundColor: color,
-          padding: const EdgeInsets.all(DimensSize.d4),
+          padding: isSmallSize
+              ? EdgeInsets.zero
+              : const EdgeInsets.all(DimensSize.d4),
           textAlign: TextAlign.center,
           text: item.title,
           trailing: item.trailing,
-          style: StyleRes.primaryBold,
+          style: isSmallSize ? StyleRes.secondaryBold : StyleRes.primaryBold,
           contentColor: colors.textPrimary,
         );
       },
