@@ -8,9 +8,6 @@ import 'package:elementary/elementary.dart';
 import 'package:elementary_helper/elementary_helper.dart';
 import 'package:flutter/material.dart';
 import 'package:nekoton_repository/nekoton_repository.dart' hide Message;
-import 'package:ui_components_lib/components/common/default_app_bar.dart';
-import 'package:ui_components_lib/styles.dart';
-import 'package:ui_components_lib/theme_style.dart';
 import 'package:ui_components_lib/ui_components_lib.dart';
 
 class WalletPrepareTransferPage

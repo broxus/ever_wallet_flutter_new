@@ -46,7 +46,9 @@ class WalletPrepareTransferPageWidgetModel extends CustomWidgetModel<
   );
 
   late final screenState = createEntityNotifier<WalletPrepareTransferData?>()
-    ..loading(WalletPrepareTransferData());
+    ..loading(
+      WalletPrepareTransferData(),
+    );
 
   late final receiverState = createNotifier<String?>();
 
@@ -145,7 +147,7 @@ class WalletPrepareTransferPageWidgetModel extends CustomWidgetModel<
       scale: _selectedAsset?.balance.scale,
     );
 
-    _goNext(addr, amnt, commentController.text.trim());
+    _goNext(addr, amnt);
   }
 
   void setMaxBalance() {
@@ -207,43 +209,45 @@ class WalletPrepareTransferPageWidgetModel extends CustomWidgetModel<
 
   void onSubmittedAmountWord(_) => commentFocus.requestFocus();
 
-  void _goNext(Address receiveAddress, Fixed amount, String? comment) {
+  void _goNext(Address receiveAddress, Fixed amount) {
     final selectedAsset = _selectedAsset;
 
     if (selectedAsset == null) {
       return;
     }
 
-    final queryParameters = <String, String>{};
-
     final accountAddress = widget.address.address;
     final publicKey = _selectedCustodian?.publicKey;
 
+    final comment = commentController.text.trim();
+
+    String? path;
+
     if (selectedAsset.isNative) {
-      queryParameters.addAll({
-        tonWalletSendAddressQueryParam: accountAddress,
-        if (publicKey != null) tonWalletSendPublicKeyQueryParam: publicKey,
-        if (comment != null) tonWalletSendCommentQueryParam: comment,
-        tonWalletSendDestinationQueryParam: receiveAddress.address,
-        tonWalletSendAmountQueryParam: amount.minorUnits.toString(),
-      });
+      path = AppRoute.tonWalletSend.pathWithData(
+        queryParameters: {
+          tonWalletSendAddressQueryParam: accountAddress,
+          if (publicKey != null) tonWalletSendPublicKeyQueryParam: publicKey,
+          if (comment.isNotEmpty) tonWalletSendCommentQueryParam: comment,
+          tonWalletSendDestinationQueryParam: receiveAddress.address,
+          tonWalletSendAmountQueryParam: amount.minorUnits.toString(),
+        },
+      );
     } else {
-      queryParameters.addAll({
-        tokenWalletSendOwnerQueryParam: accountAddress,
-        tokenWalletSendContractQueryParam:
-            selectedAsset.rootTokenContract.address,
-        if (publicKey != null) tokenWalletSendPublicKeyQueryParam: publicKey,
-        if (comment != null) tokenWalletSendCommentQueryParam: comment,
-        tokenWalletSendDestinationQueryParam: receiveAddress.address,
-        tokenWalletSendAmountQueryParam: amount.minorUnits.toString(),
-      });
+      path = AppRoute.tokenWalletSend.pathWithData(
+        queryParameters: {
+          tokenWalletSendOwnerQueryParam: accountAddress,
+          tokenWalletSendContractQueryParam:
+              selectedAsset.rootTokenContract.address,
+          if (publicKey != null) tokenWalletSendPublicKeyQueryParam: publicKey,
+          if (comment.isNotEmpty) tokenWalletSendCommentQueryParam: comment,
+          tokenWalletSendDestinationQueryParam: receiveAddress.address,
+          tokenWalletSendAmountQueryParam: amount.minorUnits.toString(),
+        },
+      );
     }
-    print('!!! $queryParameters');
-    context.goFurther(
-      AppRoute.tokenWalletSend.pathWithData(
-        queryParameters: queryParameters,
-      ),
-    );
+
+    context.goFurther(path);
   }
 
   Future<void> _init() async {
@@ -272,9 +276,13 @@ class WalletPrepareTransferPageWidgetModel extends CustomWidgetModel<
     }
 
     _updateState(
+      walletName: model.getWalletName(acc),
+      account: acc,
+      selectedCustodian: acc.publicKey,
       localCustodians: await model.getLocalCustodiansAsync(
         widget.address,
       ),
+      assets: _assets.values.toList(),
     );
   }
 
