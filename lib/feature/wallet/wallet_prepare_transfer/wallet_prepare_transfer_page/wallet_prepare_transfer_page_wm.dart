@@ -204,6 +204,11 @@ class WalletPrepareTransferPageWidgetModel extends CustomWidgetModel<
       return;
     }
 
+    _updateState(
+      walletName: model.getWalletName(acc),
+      account: acc,
+    );
+
     // If default contract not specified, then native is default and load
     // all existed assets
     final root = widget.rootTokenContract;
