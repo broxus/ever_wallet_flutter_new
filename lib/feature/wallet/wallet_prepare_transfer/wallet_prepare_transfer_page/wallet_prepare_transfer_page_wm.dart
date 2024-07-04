@@ -77,6 +77,8 @@ class WalletPrepareTransferPageWidgetModel extends CustomWidgetModel<
 
   PublicKey? get _selectedCustodian => _data?.selectedCustodian;
 
+  List<WalletPrepareTransferAsset> get assetsList => _assets.values.toList();
+
   @protected
   @override
   void initWidgetModel() {
@@ -227,7 +229,6 @@ class WalletPrepareTransferPageWidgetModel extends CustomWidgetModel<
       localCustodians: await model.getLocalCustodiansAsync(
         widget.address,
       ),
-      assets: _assets.values.toList(),
     );
   }
 
@@ -305,7 +306,6 @@ class WalletPrepareTransferPageWidgetModel extends CustomWidgetModel<
     );
     _assets[(root, symbol)] = selectedAsset;
     _updateState(selectedAsset: selectedAsset);
-
     model.startListeningBalance(selectedAsset);
   }
 
@@ -328,7 +328,7 @@ class WalletPrepareTransferPageWidgetModel extends CustomWidgetModel<
       version: contract.version,
     );
     _assets[(root, contract.symbol)] = selectedAsset;
-    _updateState();
+    _updateState(selectedAsset: selectedAsset);
 
     model.startListeningBalance(selectedAsset);
   }
@@ -348,7 +348,7 @@ class WalletPrepareTransferPageWidgetModel extends CustomWidgetModel<
         selectedCustodian: selectedCustodian,
         localCustodians: localCustodians,
         selectedAsset: selectedAsset,
-        assets: assets,
+        assets: assets ?? assetsList,
       ),
     );
   }
