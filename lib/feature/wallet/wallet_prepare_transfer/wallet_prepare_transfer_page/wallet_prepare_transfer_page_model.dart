@@ -2,11 +2,11 @@ import 'dart:async';
 
 import 'package:app/app/service/service.dart';
 import 'package:app/data/models/token_contract_asset.dart';
+import 'package:app/feature/wallet/wallet_prepare_transfer/wallet_prepare_transfer_page/data/wallet_prepare_balance_data.dart';
 import 'package:app/feature/wallet/wallet_prepare_transfer/wallet_prepare_transfer_page/data/wallet_prepare_transfer_asset.dart';
 import 'package:app/feature/wallet/wallet_prepare_transfer/wallet_prepare_transfer_page/wallet_prepare_transfer_page.dart';
 import 'package:collection/collection.dart';
 import 'package:elementary/elementary.dart';
-import 'package:flutter/foundation.dart';
 import 'package:logging/logging.dart';
 import 'package:nekoton_repository/nekoton_repository.dart' hide Message;
 
@@ -40,6 +40,11 @@ class WalletPrepareTransferPageModel extends ElementaryModel {
   /// or address for TonWallet)
   final Address _address;
   final Address? _rootTokenContract;
+  final AssetsService _assetsService;
+  final NekotonRepository _nekotonRepository;
+  final MessengerService _messengerService;
+
+  final _balanceDataSc = StreamController<WalletPrepareBalanceData>();
 
   /// Subscription for list of wallets (Ton/Token)
   StreamSubscription<dynamic>? _walletsSubscription;
@@ -48,6 +53,9 @@ class WalletPrepareTransferPageModel extends ElementaryModel {
   StreamSubscription<dynamic>? _currentWalletSubscription;
 
   StreamSubscription<dynamic>? _contractSubscription;
+
+  Stream<WalletPrepareBalanceData> get balanceDataStream =>
+      _balanceDataSc.stream;
 
   TransportStrategy get currentTransport => _nekotonRepository.currentTransport;
 
@@ -59,14 +67,11 @@ class WalletPrepareTransferPageModel extends ElementaryModel {
 
   final _logger = Logger('WalletPrepareTransferCubit');
 
-  final AssetsService _assetsService;
-  final NekotonRepository _nekotonRepository;
-  final MessengerService _messengerService;
-
   @override
   void dispose() {
     _closeBalanceSubs();
     _contractSubscription?.cancel();
+    _balanceDataSc.close();
     super.dispose();
   }
 
@@ -110,21 +115,16 @@ class WalletPrepareTransferPageModel extends ElementaryModel {
     );
   }
 
-  void startListeningBalance(
-    WalletPrepareTransferAsset? contract,
-    NativeUpdateCallback onNativeUpdate,
-    TokenUpdateCallback onTokenUpdate,
-    ValueChanged<Exception?> onError,
-  ) {
+  void startListeningBalance(WalletPrepareTransferAsset? contract) {
     _closeBalanceSubs();
     if (contract == null) {
       return;
     }
 
     if (contract.isNative) {
-      _subscribeNativeBalance(contract, onNativeUpdate, onError);
+      _subscribeNativeBalance(contract);
     } else {
-      _subscribeTokenBalance(contract, onTokenUpdate, onError);
+      _subscribeTokenBalance(contract);
     }
   }
 
@@ -138,11 +138,7 @@ class WalletPrepareTransferPageModel extends ElementaryModel {
   }
 
   /// Subscription for native token to find balance
-  void _subscribeNativeBalance(
-    WalletPrepareTransferAsset contract,
-    NativeUpdateCallback onNativeUpdate,
-    ValueChanged<Exception?> onError,
-  ) {
+  void _subscribeNativeBalance(WalletPrepareTransferAsset contract) {
     final root = contract.rootTokenContract;
     _walletsSubscription = _walletsStream.listen(
       (wallets) {
@@ -156,7 +152,7 @@ class WalletPrepareTransferPageModel extends ElementaryModel {
         if (walletState.hasError) {
           final error = walletState.error;
           if (error is Exception) {
-            onError(error);
+            _balanceDataSc.add(WalletPrepareErrorBalanceData(error));
           }
 
           return;
@@ -172,18 +168,20 @@ class WalletPrepareTransferPageModel extends ElementaryModel {
         final symbol = currentTransport.nativeTokenTicker;
 
         _currentWalletSubscription = wallet.fieldUpdatesStream.listen((_) {
-          onNativeUpdate(root, symbol, wallet.contractState.balance);
+          _balanceDataSc.add(
+            WalletPrepareNativeBalanceData(
+              root: root,
+              symbol: symbol,
+              balance: wallet.contractState.balance,
+            ),
+          );
         });
       },
     );
   }
 
   /// Subscription for token wallet to find balance
-  void _subscribeTokenBalance(
-    WalletPrepareTransferAsset contract,
-    TokenUpdateCallback onTokenUpdate,
-    ValueChanged<Exception?> onError,
-  ) {
+  void _subscribeTokenBalance(WalletPrepareTransferAsset contract) {
     final root = contract.rootTokenContract;
     final symbol = contract.tokenSymbol;
     _walletsSubscription = _tokenWalletsStream.listen((wallets) {
@@ -198,7 +196,7 @@ class WalletPrepareTransferPageModel extends ElementaryModel {
       if (walletState.hasError) {
         final error = walletState.error;
         if (error is Exception) {
-          onError(error);
+          _balanceDataSc.add(WalletPrepareErrorBalanceData(error));
         }
 
         return;
@@ -209,7 +207,13 @@ class WalletPrepareTransferPageModel extends ElementaryModel {
       if (wallet != null) {
         _walletsSubscription?.cancel();
         _currentWalletSubscription = wallet.fieldUpdatesStream.listen((_) {
-          onTokenUpdate(root, symbol, wallet.moneyBalance);
+          _balanceDataSc.add(
+            WalletPrepareTokenBalanceData(
+              root: root,
+              symbol: symbol,
+              money: wallet.moneyBalance,
+            ),
+          );
         });
       }
     });

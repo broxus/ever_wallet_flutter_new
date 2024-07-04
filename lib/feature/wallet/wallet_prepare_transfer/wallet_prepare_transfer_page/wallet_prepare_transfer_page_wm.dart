@@ -8,6 +8,7 @@ import 'package:app/core/wm/custom_wm.dart';
 import 'package:app/data/models/token_contract_asset.dart';
 import 'package:app/di/di.dart';
 import 'package:app/feature/qr_scanner/qr_scanner.dart';
+import 'package:app/feature/wallet/wallet_prepare_transfer/wallet_prepare_transfer_page/data/wallet_prepare_balance_data.dart';
 import 'package:app/feature/wallet/wallet_prepare_transfer/wallet_prepare_transfer_page/data/wallet_prepare_transfer_asset.dart';
 import 'package:app/feature/wallet/wallet_prepare_transfer/wallet_prepare_transfer_page/data/wallet_prepare_transfer_data.dart';
 import 'package:app/feature/wallet/wallet_prepare_transfer/wallet_prepare_transfer_page/wallet_prepare_transfer_page.dart';
@@ -94,6 +95,8 @@ class WalletPrepareTransferPageWidgetModel extends CustomWidgetModel<
       }
       _prevSelectedAsset = _selectedAsset;
     });
+
+    model.balanceDataStream.listen(_onUpdateBalanceData);
   }
 
   String? getSeedName(PublicKey custodian) => model.getSeedName(custodian);
@@ -110,9 +113,6 @@ class WalletPrepareTransferPageWidgetModel extends CustomWidgetModel<
 
     model.startListeningBalance(
       _assets[(widget.rootTokenContract, widget.tokenSymbol)],
-      _onNativeUpdate,
-      _onTokenUpdate,
-      _onFieldError,
     );
   }
 
@@ -301,12 +301,7 @@ class WalletPrepareTransferPageWidgetModel extends CustomWidgetModel<
     _assets[(root, symbol)] = selectedAsset;
     _updateState(selectedAsset: selectedAsset);
 
-    model.startListeningBalance(
-      selectedAsset,
-      _onNativeUpdate,
-      _onTokenUpdate,
-      _onFieldError,
-    );
+    model.startListeningBalance(selectedAsset);
   }
 
   Future<void> _findSpecifiedContract(Address root) async {
@@ -330,12 +325,7 @@ class WalletPrepareTransferPageWidgetModel extends CustomWidgetModel<
     _assets[(root, contract.symbol)] = selectedAsset;
     _updateState();
 
-    model.startListeningBalance(
-      selectedAsset,
-      _onNativeUpdate,
-      _onTokenUpdate,
-      _onFieldError,
-    );
+    model.startListeningBalance(selectedAsset);
   }
 
   void _updateState({
@@ -358,14 +348,36 @@ class WalletPrepareTransferPageWidgetModel extends CustomWidgetModel<
     );
   }
 
-  void _onNativeUpdate(Address root, String symbol, BigInt balance) {
-    final updated = _assets[(root, symbol)]?.copyWith(
-      Money.fromBigIntWithCurrency(
-        balance,
-        Currencies()[symbol]!,
-      ),
-    );
-    if (updated == null) {
+  void _onUpdateBalanceData(WalletPrepareBalanceData value) {
+    if (value is WalletPrepareErrorBalanceData) {
+      screenState.error(value.error);
+      return;
+    }
+
+    WalletPrepareTransferAsset? updated;
+    Address? root;
+    String? symbol;
+
+    if (value is WalletPrepareNativeBalanceData) {
+      root = value.root;
+      symbol = value.symbol;
+      final balance = value.balance;
+
+      updated = _assets[(root, symbol)]?.copyWith(
+        Money.fromBigIntWithCurrency(
+          balance,
+          Currencies()[symbol]!,
+        ),
+      );
+    } else if (value is WalletPrepareTokenBalanceData) {
+      root = value.root;
+      symbol = value.symbol;
+      final money = value.money;
+
+      updated = _assets[(root, symbol)]?.copyWith(money);
+    }
+
+    if (updated == null || root == null || symbol == null) {
       return;
     }
 
@@ -374,22 +386,6 @@ class WalletPrepareTransferPageWidgetModel extends CustomWidgetModel<
         _selectedAsset?.tokenSymbol == symbol) {
       _updateState(selectedAsset: updated);
     }
-  }
-
-  void _onTokenUpdate(Address root, String symbol, Money money) {
-    final updated = _assets[(root, symbol)]?.copyWith(money);
-    if (updated == null) {
-      return;
-    }
-    _assets[(root, symbol)] = updated;
-    if (_selectedAsset?.rootTokenContract == root &&
-        _selectedAsset?.tokenSymbol == symbol) {
-      _updateState(selectedAsset: updated);
-    }
-  }
-
-  void _onFieldError(Exception? error) {
-    screenState.error(error);
   }
 
   void _onUpdateContractsForAccount(List<TokenContractAsset> contracts) {
