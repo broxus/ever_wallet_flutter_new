@@ -56,7 +56,7 @@ class WalletPrepareTransferPage
         );
       },
       builder: (_, data) {
-        if (data == null) {
+        if (data == null || data.isEmpty) {
           return _DefaultBody(
             child: _EmptyText(address: address),
           );

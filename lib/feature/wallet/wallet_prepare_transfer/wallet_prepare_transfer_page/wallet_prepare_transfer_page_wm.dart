@@ -216,7 +216,7 @@ class WalletPrepareTransferPageWidgetModel extends CustomWidgetModel<
           _tokenSymbol == transport.nativeTokenTicker) {
         _createNativeContract();
       } else {
-        await _findSpecifiedContract(root);
+        unawaited(_findSpecifiedContract(root));
       }
     }
 
@@ -278,7 +278,7 @@ class WalletPrepareTransferPageWidgetModel extends CustomWidgetModel<
         queryParameters: {
           tokenWalletSendOwnerQueryParam: accountAddress,
           tokenWalletSendContractQueryParam:
-          selectedAsset.rootTokenContract.address,
+              selectedAsset.rootTokenContract.address,
           if (publicKey != null) tokenWalletSendPublicKeyQueryParam: publicKey,
           if (comment.isNotEmpty) tokenWalletSendCommentQueryParam: comment,
           tokenWalletSendDestinationQueryParam: receiveAddress.address,
