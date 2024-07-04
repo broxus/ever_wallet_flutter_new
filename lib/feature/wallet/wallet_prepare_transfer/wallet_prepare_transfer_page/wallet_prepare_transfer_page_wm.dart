@@ -33,7 +33,6 @@ WalletPrepareTransferPageWidgetModel
       inject(),
       inject(),
       inject(),
-      inject(),
     ),
   );
 }

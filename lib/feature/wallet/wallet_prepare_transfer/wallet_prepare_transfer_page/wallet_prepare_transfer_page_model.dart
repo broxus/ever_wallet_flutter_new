@@ -4,7 +4,6 @@ import 'package:app/app/service/service.dart';
 import 'package:app/data/models/token_contract_asset.dart';
 import 'package:app/feature/wallet/wallet_prepare_transfer/wallet_prepare_transfer_page/data/wallet_prepare_transfer_asset.dart';
 import 'package:app/feature/wallet/wallet_prepare_transfer/wallet_prepare_transfer_page/wallet_prepare_transfer_page.dart';
-import 'package:app/generated/generated.dart';
 import 'package:collection/collection.dart';
 import 'package:elementary/elementary.dart';
 import 'package:flutter/foundation.dart';
@@ -33,7 +32,6 @@ class WalletPrepareTransferPageModel extends ElementaryModel {
     this._address,
     this._rootTokenContract,
     this._assetsService,
-    this._balanceService,
     this._nekotonRepository,
     this._messengerService,
   ) : super(errorHandler: errorHandler);
@@ -62,7 +60,6 @@ class WalletPrepareTransferPageModel extends ElementaryModel {
   final _logger = Logger('WalletPrepareTransferCubit');
 
   final AssetsService _assetsService;
-  final BalanceService _balanceService;
   final NekotonRepository _nekotonRepository;
   final MessengerService _messengerService;
 
