@@ -1,7 +1,6 @@
 import 'package:elementary/elementary.dart';
 import 'package:flutter/material.dart';
 import 'temp_wm.dart';
-export 'temp_wm.dart';
 
 class $Temp$ extends ElementaryWidget<$Temp$WidgetModel> {
   const $Temp$({
