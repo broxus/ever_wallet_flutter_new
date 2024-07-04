@@ -71,8 +71,6 @@ class WalletPrepareTransferPageWidgetModel extends CustomWidgetModel<
 
   final _assets = <(Address, String), WalletPrepareTransferAsset>{};
 
-  WalletPrepareTransferAsset? _prevSelectedAsset;
-
   WalletPrepareTransferData? get _data => screenState.value.data;
 
   WalletPrepareTransferAsset? get _selectedAsset => _data?.selectedAsset;
@@ -84,19 +82,7 @@ class WalletPrepareTransferPageWidgetModel extends CustomWidgetModel<
   void initWidgetModel() {
     super.initWidgetModel();
     _init();
-    receiverController.addListener(
-      () => receiverState.accept(receiverController.text),
-    );
-
-    screenState.addListener(() {
-      if (_prevSelectedAsset?.rootTokenContract !=
-          _selectedAsset?.rootTokenContract) {
-        amountController.clear();
-      }
-      _prevSelectedAsset = _selectedAsset;
-    });
-
-    model.balanceDataStream.listen(_onUpdateBalanceData);
+    _initListeners();
   }
 
   String? getSeedName(PublicKey custodian) => model.getSeedName(custodian);
@@ -186,14 +172,15 @@ class WalletPrepareTransferPageWidgetModel extends CustomWidgetModel<
 
   Future<void> onPressedPastAddress() async {
     final data = await Clipboard.getData(Clipboard.kTextPlain);
-    if (data != null && data.text != null) {
-      final addr = data.text!.trim();
-      if (await validateAddress(Address(address: addr))) {
-        receiverController.text = addr;
-        receiverFocus.unfocus();
-      } else {
-        model.showError(LocaleKeys.addressIsWrong.tr());
-      }
+    final text = data?.text?.trim();
+    if (text == null) {
+      model.showError(LocaleKeys.addressIsWrong.tr());
+      return;
+    }
+
+    if (await validateAddress(Address(address: text))) {
+      receiverController.text = text;
+      receiverFocus.unfocus();
     }
   }
 
@@ -207,47 +194,6 @@ class WalletPrepareTransferPageWidgetModel extends CustomWidgetModel<
   void onSubmittedReceiverAddress(_) => amountFocus.requestFocus();
 
   void onSubmittedAmountWord(_) => commentFocus.requestFocus();
-
-  void _goNext(Address receiveAddress, Fixed amount) {
-    final selectedAsset = _selectedAsset;
-
-    if (selectedAsset == null) {
-      return;
-    }
-
-    final accountAddress = widget.address.address;
-    final publicKey = _selectedCustodian?.publicKey;
-
-    final comment = commentController.text.trim();
-
-    String? path;
-
-    if (selectedAsset.isNative) {
-      path = AppRoute.tonWalletSend.pathWithData(
-        queryParameters: {
-          tonWalletSendAddressQueryParam: accountAddress,
-          if (publicKey != null) tonWalletSendPublicKeyQueryParam: publicKey,
-          if (comment.isNotEmpty) tonWalletSendCommentQueryParam: comment,
-          tonWalletSendDestinationQueryParam: receiveAddress.address,
-          tonWalletSendAmountQueryParam: amount.minorUnits.toString(),
-        },
-      );
-    } else {
-      path = AppRoute.tokenWalletSend.pathWithData(
-        queryParameters: {
-          tokenWalletSendOwnerQueryParam: accountAddress,
-          tokenWalletSendContractQueryParam:
-              selectedAsset.rootTokenContract.address,
-          if (publicKey != null) tokenWalletSendPublicKeyQueryParam: publicKey,
-          if (comment.isNotEmpty) tokenWalletSendCommentQueryParam: comment,
-          tokenWalletSendDestinationQueryParam: receiveAddress.address,
-          tokenWalletSendAmountQueryParam: amount.minorUnits.toString(),
-        },
-      );
-    }
-
-    context.goFurther(path);
-  }
 
   Future<void> _init() async {
     final acc = model.findAccountByAddress(widget.address);
@@ -283,6 +229,65 @@ class WalletPrepareTransferPageWidgetModel extends CustomWidgetModel<
       ),
       assets: _assets.values.toList(),
     );
+  }
+
+  void _initListeners() {
+    receiverController.addListener(
+      () => receiverState.accept(receiverController.text),
+    );
+
+    WalletPrepareTransferAsset? prevSelectedAsset;
+
+    screenState.addListener(() {
+      if (prevSelectedAsset?.rootTokenContract !=
+          _selectedAsset?.rootTokenContract) {
+        amountController.clear();
+      }
+      prevSelectedAsset = _selectedAsset;
+    });
+
+    model.balanceDataStream.listen(_onUpdateBalanceData);
+  }
+
+  void _goNext(Address receiveAddress, Fixed amount) {
+    final selectedAsset = _selectedAsset;
+
+    if (selectedAsset == null) {
+      return;
+    }
+
+    final accountAddress = widget.address.address;
+    final publicKey = _selectedCustodian?.publicKey;
+
+    final comment = commentController.text.trim();
+
+    String? path;
+
+    if (selectedAsset.isNative) {
+      path = AppRoute.tonWalletSend.pathWithData(
+        queryParameters: {
+          tonWalletSendAddressQueryParam: accountAddress,
+          if (publicKey != null) tonWalletSendPublicKeyQueryParam: publicKey,
+          if (comment.isNotEmpty) tonWalletSendCommentQueryParam: comment,
+          tonWalletSendDestinationQueryParam: receiveAddress.address,
+          tonWalletSendAmountQueryParam: amount.minorUnits.toString(),
+        },
+      );
+    } else {
+      path = AppRoute.tokenWalletSend.pathWithData(
+        queryParameters: {
+          tokenWalletSendOwnerQueryParam: accountAddress,
+          tokenWalletSendContractQueryParam:
+          selectedAsset.rootTokenContract.address,
+          if (publicKey != null) tokenWalletSendPublicKeyQueryParam: publicKey,
+          if (comment.isNotEmpty) tokenWalletSendCommentQueryParam: comment,
+          tokenWalletSendDestinationQueryParam: receiveAddress.address,
+          tokenWalletSendAmountQueryParam: amount.minorUnits.toString(),
+        },
+      );
+    }
+
+    context.goFurther(path);
   }
 
   void _createNativeContract() {
