@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:ui_components_lib/components/common/switcher/common_tab_switcher_style.dart';
 import 'package:ui_components_lib/ui_components_lib.dart';
 
 /// Definition of tab item for [CommonTabSwitcher]
@@ -30,7 +31,7 @@ class CommonTabSwitcher<T> extends StatelessWidget {
     required this.values,
     required this.currentValue,
     this.fillWidth = true,
-    this.isSmallSize = false,
+    this.style = CommonTabSwitcherStyle.usual,
     super.key,
   });
 
@@ -46,8 +47,8 @@ class CommonTabSwitcher<T> extends StatelessWidget {
   /// If widget should fill all available width
   final bool fillWidth;
 
-  /// If we need to make CommonButton without big padding and with small text
-  final bool isSmallSize;
+  /// If we need to make CommonButton with some differs
+  final CommonTabSwitcherStyle style;
 
   @override
   Widget build(BuildContext context) {
@@ -60,7 +61,7 @@ class CommonTabSwitcher<T> extends StatelessWidget {
       padding: const EdgeInsets.all(DimensSize.d4),
       color: colors.appBackground,
       children: values.map((i) {
-        final item = _switcherItem(i, colors, isSmallSize);
+        final item = _switcherItem(i, colors, style);
 
         if (fillWidth) {
           return Expanded(child: item);
@@ -73,9 +74,9 @@ class CommonTabSwitcher<T> extends StatelessWidget {
 
   Widget _switcherItem(
     CommonTabSwitcherItem<T> item,
-    ColorsPalette colors, [
-    bool isSmallSize = false,
-  ]) {
+    ColorsPalette colors,
+    CommonTabSwitcherStyle style,
+  ) {
     return AnimatedColor(
       color: item.value == currentValue
           ? colors.backgroundSecondary
@@ -89,13 +90,17 @@ class CommonTabSwitcher<T> extends StatelessWidget {
           onPressed: () => onTabChanged(item.value),
           fillWidth: fillWidth,
           backgroundColor: color,
-          padding: isSmallSize
-              ? EdgeInsets.zero
-              : const EdgeInsets.all(DimensSize.d4),
+          padding: switch (style) {
+            CommonTabSwitcherStyle.small => EdgeInsets.zero,
+            _ => const EdgeInsets.all(DimensSize.d4),
+          },
           textAlign: TextAlign.center,
           text: item.title,
           trailing: item.trailing,
-          style: isSmallSize ? StyleRes.secondaryBold : StyleRes.primaryBold,
+          style: switch (style) {
+            CommonTabSwitcherStyle.small => StyleRes.secondaryBold,
+            _ => StyleRes.primaryBold,
+          },
           contentColor: colors.textPrimary,
         );
       },
