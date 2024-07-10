@@ -78,7 +78,6 @@ class WalletPrepareTransferPage
 
 class _DefaultBody extends StatelessWidget {
   const _DefaultBody({
-    super.key,
     this.child,
   });
 
@@ -102,7 +101,6 @@ class _DataBody extends StatelessWidget {
     this.selectedAsset,
     this.assets,
     this.walletName,
-    super.key,
   });
 
   final WalletPrepareTransferPageWidgetModel _wm;
@@ -147,7 +145,6 @@ class _DataBody extends StatelessWidget {
 class _EmptyText extends StatelessWidget {
   const _EmptyText({
     required this.address,
-    super.key,
   });
 
   final Address address;

@@ -1,4 +1,3 @@
-
 import 'package:app/generated/assets.gen.dart';
 import 'package:elementary_helper/elementary_helper.dart';
 import 'package:flutter/material.dart';

@@ -73,7 +73,7 @@ class WalletPrepareTransferView extends StatelessWidget {
                           CommonSheetDropdownItem<PublicKey>(
                             value: c,
                             title: _wm.getSeedName(c) ?? c.toEllipseString(),
-                          )
+                          ),
                       ],
                       titleText: LocaleKeys.custodianWord.tr(),
                       currentValue: selectedCustodian,
