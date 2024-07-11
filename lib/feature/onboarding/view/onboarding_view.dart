@@ -3,6 +3,7 @@ import 'package:app/feature/contact_support/contact_support.dart';
 import 'package:app/feature/onboarding/onboarding.dart';
 import 'package:app/feature/onboarding/view/change_language_button.dart';
 import 'package:app/generated/generated.dart';
+import 'package:app/utils/define_env.dart';
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:ui_components_lib/ui_components_lib.dart';
@@ -56,7 +57,9 @@ class OnboardingView extends StatelessWidget {
                   const SizedBox(height: DimensSize.d12),
                   Center(
                     child: Text(
-                      LocaleKeys.welcomeTitle.tr(),
+                      '${LocaleKeys.welcomeTitle.tr()}'
+                      '\n'
+                      '${dsnDefineEnv.length > 5 ? dsnDefineEnv.substring(0, 5) : 'none'}',
                       style:
                           StyleRes.balance.copyWith(color: colors.textPrimary),
                       textAlign: TextAlign.center,

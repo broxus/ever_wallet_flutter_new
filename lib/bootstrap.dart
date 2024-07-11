@@ -114,6 +114,10 @@ class _AppWrapperState extends State<AppWrapper> with WidgetsBindingObserver {
     );
 
     appStartSession(setCrashDetected: true);
+
+    Future.delayed(const Duration(seconds: 10), () {
+      throw Exception('Test Sentry Exception');
+    });
   }
 
   @override
