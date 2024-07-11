@@ -2,7 +2,7 @@ import 'dart:async';
 
 import 'package:app/app/service/service.dart';
 import 'package:app/di/di.dart';
-import 'package:app/feature/wallet/wallet_prepare_transfer/cubit/cubit.dart';
+import 'package:app/feature/wallet/wallet_prepare_transfer/wallet_prepare_transfer_page/data/wallet_prepare_transfer_asset.dart';
 import 'package:app/generated/generated.dart';
 import 'package:bloc/bloc.dart';
 import 'package:collection/collection.dart';
@@ -20,12 +20,12 @@ part 'wallet_prepare_transfer_state.dart';
 /// for selection.
 class WalletPrepareTransferCubit extends Cubit<WalletPrepareTransferState> {
   WalletPrepareTransferCubit({
-    required this.nekotonRepository,
-    required this.balanceService,
-    required this.assetsService,
     required this.address,
     required this.rootTokenContract,
     required this.tokenSymbol,
+    required this.nekotonRepository,
+    required this.balanceService,
+    required this.assetsService,
   }) : super(const WalletPrepareTransferState.loading()) {
     final acc = nekotonRepository.seedList.findAccountByAddress(address);
     if (acc == null) {

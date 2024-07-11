@@ -134,7 +134,7 @@ packages:
     description:
       path: "."
       ref: main
-      resolved-ref: "855704004bb53f767f9b4a633c289a86dc289e4c"
+      resolved-ref: c424e78cf41d95c8ca4b938e1e6a7aed7fe752a3
       url: "https://github.com/broxus/flutter_templates.git"
     source: git
     version: "1.0.0"
@@ -457,6 +457,22 @@ packages:
       url: "https://pub.dev"
     source: hosted
     version: "0.0.2"
+  elementary:
+    dependency: "direct main"
+    description:
+      name: elementary
+      sha256: "9b8385fac1c2102918a512d7a80ce0babe61af960f3c86902a671b09131d958c"
+      url: "https://pub.dev"
+    source: hosted
+    version: "3.0.0"
+  elementary_helper:
+    dependency: "direct main"
+    description:
+      name: elementary_helper
+      sha256: "2b24eba824c864a50716da269b89bf068a55809acb9671fa9766f7700e49a476"
+      url: "https://pub.dev"
+    source: hosted
+    version: "1.0.1"
   encrypt:
     dependency: transitive
     description:
@@ -607,18 +623,18 @@ packages:
     dependency: transitive
     description:
       name: flutter_gen_core
-      sha256: b9894396b2a790cc2d6eb3ed86e5e113aaed993765b21d4b981c9da4476e0f52
+      sha256: d8e828ad015a8511624491b78ad8e3f86edb7993528b1613aefbb4ad95947795
       url: "https://pub.dev"
     source: hosted
-    version: "5.5.0+1"
+    version: "5.6.0"
   flutter_gen_runner:
     dependency: "direct dev"
     description:
       name: flutter_gen_runner
-      sha256: b4c4c54e4dd89022f5e405fe96f16781be2dfbeabe8a70ccdf73b7af1302c655
+      sha256: "931b03f77c164df0a4815aac0efc619a6ac8ec4cada55025119fca4894dada90"
       url: "https://pub.dev"
     source: hosted
-    version: "5.5.0+1"
+    version: "5.6.0"
   flutter_inappwebview:
     dependency: "direct main"
     description:
@@ -798,10 +814,10 @@ packages:
     dependency: "direct main"
     description:
       name: freezed_annotation
-      sha256: c3fd9336eb55a38cc1bbd79ab17573113a8deccd0ecbbf926cca3c62803b5c2d
+      sha256: f9f6597ac43cc262fa7d7f2e65259a6060c23a560525d1f2631be374540f2a9b
       url: "https://pub.dev"
     source: hosted
-    version: "2.4.1"
+    version: "2.4.3"
   frontend_server_client:
     dependency: transitive
     description:
@@ -1392,10 +1408,10 @@ packages:
     dependency: transitive
     description:
       name: path_provider_windows
-      sha256: "8bc9f22eee8690981c22aa7fc602f5c85b497a6fb2ceb35ee5a5e5ed85ad8170"
+      sha256: bd6f00dbd873bfb70d0761682da2b3a2c2fccc2b9e84c495821639601d81afe7
       url: "https://pub.dev"
     source: hosted
-    version: "2.2.1"
+    version: "2.3.0"
   permission_handler:
     dependency: "direct main"
     description:
@@ -1552,10 +1568,10 @@ packages:
     dependency: transitive
     description:
       name: puppeteer
-      sha256: c45c51b4ad8d70acdffeb1cfb9d16b60a7eaab7bfef314dd5b02c3607269b556
+      sha256: de3f921154e5d336b14cdc05b674ac3db5701a5338f3cb0042868a5146f16e67
       url: "https://pub.dev"
     source: hosted
-    version: "3.11.0"
+    version: "3.12.0"
   qr:
     dependency: transitive
     description:
@@ -1830,10 +1846,10 @@ packages:
     dependency: "direct main"
     description:
       name: string_extensions
-      sha256: d441a02a3dadfe32b6db09d0fa03a78b041e4ac333e04c2779d7aa70da026e91
+      sha256: e131bf36ce436e75bce8f01dd13f8c72c407215b5c0c03185e59c651a526aec0
       url: "https://pub.dev"
     source: hosted
-    version: "0.7.1"
+    version: "0.7.2"
   string_scanner:
     dependency: transitive
     description:
