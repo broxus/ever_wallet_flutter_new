@@ -6,10 +6,12 @@ class ThemeStyleV2 extends ThemeExtension<ThemeStyleV2> {
   /// {@macro theme_style}
   ThemeStyleV2({
     required this.colors,
+    required this.textStyles,
   });
 
   /// The palette of colors in the project.
   final ColorsPaletteV2 colors;
+  final TextStylesV2 textStyles;
 
   /// Do not supported
   @override
@@ -26,7 +28,7 @@ class ThemeStyleV2 extends ThemeExtension<ThemeStyleV2> {
 
 /// Getting theme style from context
 extension ThemeContextExtension on BuildContext {
-  ThemeStyleV2 get themeStyle {
-    return Theme.of(this).extension<ThemeStyleV2>()!;
+  ThemeStyleV2? get themeStyle {
+    return Theme.of(this).extension<ThemeStyleV2>();
   }
 }

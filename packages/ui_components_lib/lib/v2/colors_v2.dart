@@ -12,6 +12,10 @@ class ColorsPaletteV2 {
     required this.background1,
     required this.background2,
     required this.background3,
+    required this.backgroundAlpha,
+    required this.backgroundNegativeAlpha,
+    required this.backgroundWarningAlpha,
+    required this.backgroundPositiveAlpha,
     required this.content0,
     required this.content1,
     required this.content2,
@@ -28,6 +32,9 @@ class ColorsPaletteV2 {
     required this.contentNegative,
     required this.contentWarning,
     required this.contentPositive,
+    required this.contentNegative1,
+    required this.contentWarning1,
+    required this.contentPositive1,
     required this.borderNegative,
     required this.borderWarning,
     required this.borderPositive,
@@ -65,11 +72,18 @@ class ColorsPaletteV2 {
   final Color backgroundNegative;
   final Color backgroundWarning;
   final Color backgroundPositive;
+  final Color backgroundAlpha;
+  final Color backgroundNegativeAlpha;
+  final Color backgroundWarningAlpha;
+  final Color backgroundPositiveAlpha;
 
   ///Extensions-content
   final Color contentNegative;
+  final Color contentNegative1;
   final Color contentWarning;
+  final Color contentWarning1;
   final Color contentPositive;
+  final Color contentPositive1;
 
   ///Extensions-border
   final Color borderNegative;
