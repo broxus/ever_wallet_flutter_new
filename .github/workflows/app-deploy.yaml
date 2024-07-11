@@ -65,14 +65,20 @@ jobs:
       # Build and deploy to FAD
       - name: Build and deploy to FAD
         if: inputs.deploy_target == 'fad' || inputs.deploy_target == ''
-        run: melos build:deploy_fad -- --dart-define=SENTRY_DSN=${{ env.SENTRY_DSN }}
+        run: melos build:deploy_fad
+        env:
+          SENTRY_DSN: ${{ env.SENTRY_DSN }}
 
       # Build and deploy to STORE
       - name: Build and deploy to STORE
         if: inputs.deploy_target == 'store'
-        run: melos build:deploy_store -- --dart-define=SENTRY_DSN=${{ env.SENTRY_DSN }}
+        run: melos build:deploy_store
+        env:
+          SENTRY_DSN: ${{ env.SENTRY_DSN }}
 
       # Build and deploy to FAD and STORE
       - name: Build and deploy to FAD and STORE
         if: inputs.deploy_target == 'fad_store'
-        run: melos build:deploy_fad_store -- --dart-define=SENTRY_DSN=${{ env.SENTRY_DSN }}
+        run: melos build:deploy_fad_store
+        env:
+          SENTRY_DSN: ${{ env.SENTRY_DSN }}
