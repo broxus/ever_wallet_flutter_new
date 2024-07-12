@@ -51,10 +51,8 @@ class PrimaryTextField extends StatelessWidget {
   Widget build(BuildContext context) {
     final themeStyle = context.themeStyleV2;
 
-    // TODO(knightforce): use needed textstyle and color from thee
     final hintTextStyle = themeStyle?.textStyles.labelLarge.copyWith(
       color: themeStyle.colors.content1,
-      height: 1,
     );
 
     return BaseTextField(
@@ -69,16 +67,13 @@ class PrimaryTextField extends StatelessWidget {
       borderRadius: BorderRadius.circular(16),
       height: height ?? sizeType.height,
       isAutofocus: isAutofocus,
-      // TODO(knightforce): use needed textstyle and color from thee
-      textStyle: themeStyle?.textStyles.labelLarge.copyWith(
-        color: ColorsResV2.p100,
-        height: 1,
+      textStyle: themeStyle?.textStyles.labelSmall.copyWith(
+        color: themeStyle.colors.primaryA,
       ),
       disabledTextStyle: hintTextStyle,
       hintTextStyle: hintTextStyle,
-      labelTextStyle: themeStyle?.textStyles.labelLarge.copyWith(
-        color: themeStyle.colors.content2,
-        height: 1,
+      labelTextStyle: themeStyle?.textStyles.labelSmall.copyWith(
+        color: themeStyle.colors.content3,
       ),
       controller: textEditingController,
       inputFormatters: inputFormatters,
