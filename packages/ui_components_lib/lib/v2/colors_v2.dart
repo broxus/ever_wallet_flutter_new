@@ -25,6 +25,7 @@ class ColorsPaletteV2 {
     required this.border2,
     required this.borderAlpha,
     required this.borderFocus,
+    required this.borderDisabled,
     required this.backgroundOverlay,
     required this.backgroundNegative,
     required this.backgroundWarning,
@@ -66,6 +67,7 @@ class ColorsPaletteV2 {
   final Color border2;
   final Color borderAlpha;
   final Color borderFocus;
+  final Color borderDisabled;
 
   ///Extensions-background
   final Color backgroundOverlay;
