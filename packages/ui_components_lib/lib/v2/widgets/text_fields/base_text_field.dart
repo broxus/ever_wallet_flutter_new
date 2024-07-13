@@ -1,10 +1,14 @@
+import 'dart:math';
+
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:flutter_form_builder/flutter_form_builder.dart';
 import 'package:ui_components_lib/v2/utils/state_mixins.dart';
 
 class BaseTextField extends StatefulWidget {
   const BaseTextField({
     super.key,
+    this.name,
     this.hintText,
     this.labelText,
     this.errorText,
@@ -47,6 +51,7 @@ class BaseTextField extends StatefulWidget {
     this.postfixes,
   });
 
+  final String? name;
   final String? hintText;
   final String? labelText;
   final Color? activeBackgroundColor;
@@ -93,11 +98,25 @@ class BaseTextField extends StatefulWidget {
 }
 
 class _BaseTextFieldState extends State<BaseTextField> with StateMixin {
+  static final _r = Random();
+
   late final _controller = widget.controller ?? TextEditingController();
 
   late final _focusNode = widget.focusNode ?? FocusNode();
 
+  String? _localName;
+
+  final _counterText = '';
+
   bool _isError = false;
+
+  String get _name {
+    if (widget.name != null) {
+      return widget.name!;
+    }
+
+    return _localName ??= _r.nextDouble().toString();
+  }
 
   bool get _isEnable => widget.isEnable;
 
@@ -182,24 +201,23 @@ class _BaseTextFieldState extends State<BaseTextField> with StateMixin {
   Widget build(BuildContext context) {
     final postfixes = widget.postfixes;
 
-    return Opacity(
-      opacity: _opacity,
-      child: Column(
-        mainAxisSize: MainAxisSize.min,
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          Container(
-            decoration: BoxDecoration(
-              color: _backgroundColor,
-              border: _border,
-              borderRadius: _borderRadius,
-            ),
-            child: ClipRRect(
-              borderRadius: _borderRadius,
-              child: Row(
-                children: [
-                  if (widget.labelText != null) _Label(widget.labelText!),
-                  TextFormField(
+    return Column(
+      mainAxisSize: MainAxisSize.min,
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        Flexible(
+          child: _Container(
+            height: widget.height,
+            backgroundColor: _backgroundColor,
+            border: _border,
+            borderRadius: _borderRadius,
+            opacity: _opacity,
+            child: Row(
+              children: [
+                if (widget.labelText != null) _Label(widget.labelText!),
+                Flexible(
+                  child: FormBuilderTextField(
+                    name: _name,
                     decoration: InputDecoration(
                       filled: true,
                       contentPadding: widget.contentPadding,
@@ -208,7 +226,7 @@ class _BaseTextFieldState extends State<BaseTextField> with StateMixin {
                       labelStyle: _labelTextStyle,
                       errorStyle: const TextStyle(fontSize: 0),
                       fillColor: _backgroundColor,
-                      counterText: "",
+                      counterText: _counterText,
                       enabled: _isEnable,
                       enabledBorder: InputBorder.none,
                       disabledBorder: InputBorder.none,
@@ -219,7 +237,7 @@ class _BaseTextFieldState extends State<BaseTextField> with StateMixin {
                     ),
                     keyboardType: widget.keyboardType,
                     obscureText: widget.isObscureText,
-                    onFieldSubmitted: widget.onSubmit,
+                    onSubmitted: widget.onSubmit,
                     onChanged: widget.onChanged,
                     textInputAction: widget.textInputAction,
                     controller: _controller,
@@ -234,18 +252,18 @@ class _BaseTextFieldState extends State<BaseTextField> with StateMixin {
                     minLines: widget.minLines,
                     validator: _validate,
                   ),
-                  if (postfixes != null && postfixes.isNotEmpty)
-                    for (final action in postfixes) action,
-                ],
-              ),
+                ),
+                if (postfixes != null && postfixes.isNotEmpty)
+                  for (final action in postfixes) action,
+              ],
             ),
           ),
-          if (_errorText != null)
-            Flexible(
-              child: _ErrorText(_errorText!),
-            ),
-        ],
-      ),
+        ),
+        if (_errorText != null)
+          Flexible(
+            child: _ErrorText(_errorText!),
+          ),
+      ],
     );
   }
 
@@ -276,6 +294,45 @@ class _BaseTextFieldState extends State<BaseTextField> with StateMixin {
   }
 }
 
+class _Container extends StatelessWidget {
+  const _Container({
+    required this.borderRadius,
+    required this.child,
+    required this.opacity,
+    this.height,
+    this.backgroundColor,
+    this.border,
+  });
+
+  final Widget child;
+  final double? height;
+  final Color? backgroundColor;
+  final BoxBorder? border;
+  final BorderRadiusGeometry borderRadius;
+  final double opacity;
+
+  @override
+  Widget build(BuildContext context) {
+    return SizedBox(
+      height: height,
+      child: Opacity(
+        opacity: opacity,
+        child: DecoratedBox(
+          decoration: BoxDecoration(
+            color: backgroundColor,
+            border: border,
+            borderRadius: borderRadius,
+          ),
+          child: ClipRRect(
+            borderRadius: borderRadius,
+            child: child,
+          ),
+        ),
+      ),
+    );
+  }
+}
+
 class _Label extends StatelessWidget {
   const _Label(this.text);
 
@@ -288,12 +345,9 @@ class _Label extends StatelessWidget {
 }
 
 class _ErrorText extends StatelessWidget {
-  final String _text;
+  const _ErrorText(this._text);
 
-  const _ErrorText(
-    this._text, {
-    Key? key,
-  }) : super(key: key);
+  final String _text;
 
   @override
   Widget build(BuildContext context) {
@@ -301,8 +355,6 @@ class _ErrorText extends StatelessWidget {
       padding: const EdgeInsets.only(top: 8),
       child: Text(
         _text,
-
-        /// TODO
       ),
     );
   }

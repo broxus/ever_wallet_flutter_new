@@ -15,7 +15,12 @@ class StoryV2 extends StatelessWidget {
           child: child,
         );
       },
-      stories: const [],
+      stories: [
+        Story(
+          name: 'Widgets/TextFields',
+          builder: (_) => const TextFieldsStoryV2(),
+        ),
+      ],
     );
   }
 }

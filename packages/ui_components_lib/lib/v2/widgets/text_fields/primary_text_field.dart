@@ -1,11 +1,13 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:lucide_icons_flutter/lucide_icons.dart';
 import 'package:ui_components_lib/ui_components_lib.dart';
 import 'package:ui_components_lib/v2/widgets/text_fields/base_text_field.dart';
 
 class PrimaryTextField extends StatelessWidget {
   const PrimaryTextField({
     super.key,
+    this.name,
     this.hintText,
     this.labelText,
     this.errorText,
@@ -27,6 +29,7 @@ class PrimaryTextField extends StatelessWidget {
     this.onChanged,
   });
 
+  final String? name;
   final String? hintText;
   final String? labelText;
   final String? errorText;
@@ -56,6 +59,7 @@ class PrimaryTextField extends StatelessWidget {
     );
 
     return BaseTextField(
+      name: name,
       hintText: hintText,
       labelText: labelText,
       errorText: errorText,
@@ -64,7 +68,7 @@ class PrimaryTextField extends StatelessWidget {
       disabledBorder: _getBorder(color: themeStyle?.colors.borderDisabled),
       focusedBorder: _getBorder(color: themeStyle?.colors.borderFocus),
       errorBorder: _getBorder(color: themeStyle?.colors.borderNegative),
-      borderRadius: BorderRadius.circular(16),
+      borderRadius: BorderRadius.circular(DimensSize.d20),
       height: height ?? sizeType.height,
       isAutofocus: isAutofocus,
       textStyle: themeStyle?.textStyles.labelSmall.copyWith(
@@ -90,8 +94,11 @@ class PrimaryTextField extends StatelessWidget {
       enabledOpacity: 1,
       disabledOpacity: .5,
       postfixes: [
-        /// TODO
-        if (errorType == PrimaryTextFieldErrorType.outline) const Placeholder(),
+        if (errorType == PrimaryTextFieldErrorType.outline)
+          const Icon(
+            LucideIcons.triangleAlert,
+            size: DimensSize.d20,
+          ),
       ],
     );
   }
@@ -108,8 +115,8 @@ class PrimaryTextField extends StatelessWidget {
 }
 
 enum PrimaryTextFieldSizeType {
-  large(56),
-  medium(48);
+  large(DimensSize.d56),
+  medium(DimensSize.d48);
 
   const PrimaryTextFieldSizeType(this.height);
 
