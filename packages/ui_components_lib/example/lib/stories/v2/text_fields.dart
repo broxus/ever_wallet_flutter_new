@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:ui_components_lib/ui_components_lib.dart';
+import 'package:ui_components_lib/v2/widgets/text_fields/base_text_field.dart';
 import 'package:ui_components_lib/v2/widgets/text_fields/primary_text_field.dart';
 
 /// Page with buttons
@@ -38,6 +39,12 @@ class _TextFieldsStoryV2State extends State<TextFieldsStoryV2> {
               hintText: 'Hint text',
             ),
             const SizedBox(height: DimensSize.d20),
+            const PrimaryTextField(
+              labelText: 'Label:',
+              hintText: 'Medium large field',
+              sizeType: PrimaryTextFieldSizeType.medium,
+            ),
+            const SizedBox(height: DimensSize.d20),
             PrimaryTextField(
               labelText: 'Label:',
               hintText: 'Hint text',
@@ -59,13 +66,13 @@ class _TextFieldsStoryV2State extends State<TextFieldsStoryV2> {
             const SizedBox(height: DimensSize.d20),
             const PrimaryTextField(
               labelText: 'Label:',
-              hintText: 'Error',
+              hintText: 'No error text',
               isShowError: true,
             ),
             const SizedBox(height: DimensSize.d20),
             const PrimaryTextField(
               labelText: 'Label:',
-              hintText: 'Error with text',
+              hintText: 'Outline error',
               isShowError: true,
               errorText: 'Error text',
             ),
@@ -74,7 +81,7 @@ class _TextFieldsStoryV2State extends State<TextFieldsStoryV2> {
               labelText: 'Label:',
               hintText: 'Inline error',
               isShowError: true,
-              errorType: PrimaryTextFieldErrorType.inline,
+              errorType: TextFieldErrorType.inline,
             ),
             const SizedBox(height: DimensSize.d40),
           ],

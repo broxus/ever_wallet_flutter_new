@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-import 'package:lucide_icons_flutter/lucide_icons.dart';
 import 'package:ui_components_lib/ui_components_lib.dart';
 import 'package:ui_components_lib/v2/widgets/text_fields/base_text_field.dart';
 
@@ -11,7 +10,7 @@ class PrimaryTextField extends StatelessWidget {
     this.hintText,
     this.labelText,
     this.errorText,
-    this.errorType = PrimaryTextFieldErrorType.outline,
+    this.errorType = TextFieldErrorType.outline,
     this.height,
     this.sizeType = PrimaryTextFieldSizeType.large,
     this.isAutofocus = false,
@@ -27,13 +26,14 @@ class PrimaryTextField extends StatelessWidget {
     this.textInputAction,
     this.onSubmit,
     this.onChanged,
+    this.suffix,
   });
 
   final String? name;
   final String? hintText;
   final String? labelText;
   final String? errorText;
-  final PrimaryTextFieldErrorType? errorType;
+  final TextFieldErrorType? errorType;
   final double? height;
   final PrimaryTextFieldSizeType sizeType;
   final bool isAutofocus;
@@ -49,11 +49,7 @@ class PrimaryTextField extends StatelessWidget {
   final ValueChanged<String?>? onSubmit;
   final ValueChanged<String?>? onChanged;
   final TextInputAction? textInputAction;
-
-  String? get _errorText => switch (errorType) {
-        PrimaryTextFieldErrorType.inline => null,
-        _ => errorText,
-      };
+  final Widget? suffix;
 
   @override
   Widget build(BuildContext context) {
@@ -69,7 +65,7 @@ class PrimaryTextField extends StatelessWidget {
     return BaseTextField(
       name: name,
       hintText: hintText,
-      errorText: _errorText,
+      errorText: errorText,
       activeBackgroundColor: themeStyle?.colors.background1,
       enabledBorder: _getBorder(
         color: themeStyle?.colors.border0,
@@ -132,20 +128,7 @@ class PrimaryTextField extends StatelessWidget {
       textInputAction: textInputAction,
       enabledOpacity: 1,
       disabledOpacity: .5,
-      suffixBuilder: ({
-        required bool isShowError,
-      }) {
-        return Row(
-          mainAxisSize: MainAxisSize.min,
-          children: [
-            if (errorType == PrimaryTextFieldErrorType.inline)
-              const Icon(
-                LucideIcons.triangleAlert,
-                size: DimensSize.d20,
-              ),
-          ],
-        );
-      },
+      suffix: suffix,
     );
   }
 
@@ -172,9 +155,4 @@ enum PrimaryTextFieldSizeType {
   const PrimaryTextFieldSizeType(this.height);
 
   final double height;
-}
-
-enum PrimaryTextFieldErrorType {
-  inline,
-  outline,
 }

@@ -3,11 +3,9 @@ import 'dart:math';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_form_builder/flutter_form_builder.dart';
+import 'package:lucide_icons_flutter/lucide_icons.dart';
+import 'package:ui_components_lib/dimens.dart';
 import 'package:ui_components_lib/v2/utils/state_mixins.dart';
-
-typedef SuffixBuilder = Widget Function({
-  required bool isShowError,
-});
 
 class BaseTextField extends StatefulWidget {
   const BaseTextField({
@@ -15,7 +13,7 @@ class BaseTextField extends StatefulWidget {
     this.name,
     this.hintText,
     this.prefixIcon,
-    this.suffixBuilder,
+    this.suffix,
     this.errorText,
     this.errorTextStyle,
     this.activeBackgroundColor,
@@ -48,17 +46,18 @@ class BaseTextField extends StatefulWidget {
     this.onChanged,
     this.textInputAction,
     this.maxLength,
-    this.maxLines,
+    this.maxLines = 1,
     this.minLines,
     this.enabledOpacity,
     this.disabledOpacity,
     this.postfixes,
+    this.errorType = TextFieldErrorType.outline,
   });
 
   final String? name;
   final String? hintText;
   final Widget? prefixIcon;
-  final SuffixBuilder? suffixBuilder;
+  final Widget? suffix;
   final Color? activeBackgroundColor;
   final Color? disableBackgroundColor;
   final Color? focusedBackgroundColor;
@@ -96,6 +95,7 @@ class BaseTextField extends StatefulWidget {
   final double? enabledOpacity;
   final double? disabledOpacity;
   final List<Widget>? postfixes;
+  final TextFieldErrorType errorType;
 
   @override
   State<BaseTextField> createState() => _BaseTextFieldState();
@@ -131,9 +131,7 @@ class _BaseTextFieldState extends State<BaseTextField> with StateMixin {
   bool get _isShowError => widget.isShowError ?? _isError;
 
   String? get _errorText {
-    return _isShowError
-        ? widget.errorText ?? widget.validator?.call(_text)
-        : null;
+    return widget.errorText ?? widget.validator?.call(_text);
   }
 
   BorderRadiusGeometry get _borderRadius =>
@@ -215,15 +213,21 @@ class _BaseTextFieldState extends State<BaseTextField> with StateMixin {
                 prefixIconConstraints: const BoxConstraints(),
                 prefixIcon: widget.prefixIcon,
                 suffixIconConstraints: const BoxConstraints(),
-                suffixIcon: widget.suffixBuilder == null
-                    ? null
-                    : Align(
-                        widthFactor: 1,
-                        heightFactor: 1,
-                        child: widget.suffixBuilder!(
-                          isShowError: _isShowError,
+                suffixIcon: Align(
+                  widthFactor: 1,
+                  heightFactor: 1,
+                  child: Row(
+                    mainAxisSize: MainAxisSize.min,
+                    children: [
+                      if (_isShowError &&
+                          widget.errorType == TextFieldErrorType.inline)
+                        const Icon(
+                          LucideIcons.triangleAlert,
+                          size: DimensSize.d20,
                         ),
-                      ),
+                    ],
+                  ),
+                ),
               ),
               keyboardType: widget.keyboardType,
               obscureText: widget.isObscureText,
@@ -244,10 +248,10 @@ class _BaseTextFieldState extends State<BaseTextField> with StateMixin {
             ),
           ),
         ),
-        if (_errorText != null)
+        if (_isShowError && widget.errorType == TextFieldErrorType.outline)
           Flexible(
             child: _ErrorText(
-              text: _errorText!,
+              text: _errorText,
               style: widget.errorTextStyle,
             ),
           ),
@@ -312,21 +316,30 @@ class _Container extends StatelessWidget {
 
 class _ErrorText extends StatelessWidget {
   const _ErrorText({
-    required this.text,
+    this.text,
     this.style,
   });
 
-  final String text;
+  final String? text;
   final TextStyle? style;
 
   @override
   Widget build(BuildContext context) {
+    if (text == null) {
+      return const SizedBox.shrink();
+    }
+
     return Padding(
-      padding: const EdgeInsets.only(top: 8),
+      padding: const EdgeInsets.only(top: 0),
       child: Text(
-        text,
+        text!,
         style: style,
       ),
     );
   }
+}
+
+enum TextFieldErrorType {
+  inline,
+  outline,
 }
