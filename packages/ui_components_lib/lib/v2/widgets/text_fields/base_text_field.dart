@@ -41,7 +41,6 @@ class BaseTextField extends StatefulWidget {
     this.isObscureText = false,
     this.isEnabled = true,
     this.isShowError,
-    this.contentPadding = EdgeInsets.zero,
     this.onSubmit,
     this.onChanged,
     this.textInputAction,
@@ -85,7 +84,6 @@ class BaseTextField extends StatefulWidget {
   final bool isObscureText;
   final bool isEnabled;
   final bool? isShowError;
-  final EdgeInsetsGeometry contentPadding;
   final ValueChanged<String?>? onSubmit;
   final ValueChanged<String?>? onChanged;
   final TextInputAction? textInputAction;
@@ -165,6 +163,7 @@ class _BaseTextFieldState extends State<BaseTextField> with StateMixin {
   @override
   void initState() {
     _focusNode.addListener(_onChangeFocus);
+
     super.initState();
   }
 
@@ -198,7 +197,6 @@ class _BaseTextFieldState extends State<BaseTextField> with StateMixin {
               name: _name,
               decoration: InputDecoration(
                 filled: true,
-                contentPadding: widget.contentPadding,
                 hintText: widget.hintText,
                 hintStyle: _hintTextStyle,
                 errorStyle: const TextStyle(fontSize: 0),
@@ -225,6 +223,7 @@ class _BaseTextFieldState extends State<BaseTextField> with StateMixin {
                           LucideIcons.triangleAlert,
                           size: DimensSize.d20,
                         ),
+                      const SizedBox(width: DimensSize.d8),
                     ],
                   ),
                 ),

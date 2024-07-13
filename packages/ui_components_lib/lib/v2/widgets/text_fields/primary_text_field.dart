@@ -85,11 +85,6 @@ class PrimaryTextField extends StatelessWidget {
       ),
       borderRadius: radius,
       height: height ?? sizeType.height,
-      contentPadding: const EdgeInsets.only(
-        right: DimensSize.d8,
-        top: DimensSize.d8,
-        bottom: DimensSize.d8,
-      ),
       prefixIcon: labelText == null
           ? const SizedBox(
               width: DimensSize.d16,
