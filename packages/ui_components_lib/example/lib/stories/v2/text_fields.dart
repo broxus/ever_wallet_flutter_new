@@ -1,4 +1,3 @@
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:ui_components_lib/ui_components_lib.dart';
 import 'package:ui_components_lib/v2/widgets/text_fields/primary_text_field.dart';
@@ -12,8 +11,7 @@ class TextFieldsStoryV2 extends StatefulWidget {
 }
 
 class _TextFieldsStoryV2State extends State<TextFieldsStoryV2> {
-  final _textController0 = TextEditingController()
-    ..text = 'Initial value';
+  final _textController0 = TextEditingController()..text = 'Initial value';
 
   @override
   void dispose() {
@@ -24,7 +22,7 @@ class _TextFieldsStoryV2State extends State<TextFieldsStoryV2> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: const DefaultAppBar(titleText: 'TextFields v2'),
+      appBar: AppBar(title: const Text('TextFields v2')),
       body: SingleChildScrollView(
         padding: const EdgeInsets.all(DimensSize.d16),
         child: Column(

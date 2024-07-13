@@ -56,6 +56,7 @@ class PrimaryTextField extends StatelessWidget {
 
     final hintTextStyle = themeStyle?.textStyles.labelLarge.copyWith(
       color: themeStyle.colors.content1,
+      height: 1,
     );
 
     return BaseTextField(
@@ -73,11 +74,13 @@ class PrimaryTextField extends StatelessWidget {
       isAutofocus: isAutofocus,
       textStyle: themeStyle?.textStyles.labelSmall.copyWith(
         color: themeStyle.colors.primaryA,
+        height: 1,
       ),
       disabledTextStyle: hintTextStyle,
       hintTextStyle: hintTextStyle,
       labelTextStyle: themeStyle?.textStyles.labelSmall.copyWith(
         color: themeStyle.colors.content3,
+        height: 1,
       ),
       controller: textEditingController,
       inputFormatters: inputFormatters,

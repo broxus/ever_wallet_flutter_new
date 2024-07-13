@@ -4,11 +4,9 @@ import 'package:ui_components_lib/ui_components_lib.dart';
 
 void main() {
   runApp(
-    MaterialApp(
+    const MaterialApp(
       debugShowCheckedModeBanner: false,
-      theme: everPredefinedLightTheme(),
-      darkTheme: everPredefinedDarkTheme(),
-      home: const StoryWidget(),
+      home: StoryWidget(),
     ),
   );
 }

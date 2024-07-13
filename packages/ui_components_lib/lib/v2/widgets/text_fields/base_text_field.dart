@@ -3,6 +3,7 @@ import 'dart:math';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_form_builder/flutter_form_builder.dart';
+import 'package:ui_components_lib/dimens.dart';
 import 'package:ui_components_lib/v2/utils/state_mixins.dart';
 
 class BaseTextField extends StatefulWidget {
@@ -225,8 +226,9 @@ class _BaseTextFieldState extends State<BaseTextField> with StateMixin {
                       hintStyle: _hintTextStyle,
                       labelStyle: _labelTextStyle,
                       errorStyle: const TextStyle(fontSize: 0),
-                      fillColor: _backgroundColor,
+                      fillColor: Colors.transparent,
                       counterText: _counterText,
+                      isDense: true,
                       enabled: _isEnable,
                       enabledBorder: InputBorder.none,
                       disabledBorder: InputBorder.none,
@@ -325,7 +327,15 @@ class _Container extends StatelessWidget {
           ),
           child: ClipRRect(
             borderRadius: borderRadius,
-            child: child,
+            child: Padding(
+              padding: const EdgeInsets.only(
+                left: DimensSize.d16,
+                right: DimensSize.d8,
+                top: DimensSize.d8,
+                bottom: DimensSize.d8,
+              ),
+              child: child,
+            ),
           ),
         ),
       ),
