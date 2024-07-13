@@ -263,11 +263,11 @@ class _BaseTextFieldState extends State<BaseTextField> with StateMixin {
   String? _validate(String? text) {
     final validator = widget.validator;
 
-    if (validator == null) {
-      return null;
-    }
+    var isSuccess = !(widget.isShowError ?? false);
 
-    final isSuccess = validator.call(text) == null;
+    if (validator != null) {
+      isSuccess = isSuccess && validator.call(text) == null;
+    }
 
     _onValidate(isSuccess);
 
