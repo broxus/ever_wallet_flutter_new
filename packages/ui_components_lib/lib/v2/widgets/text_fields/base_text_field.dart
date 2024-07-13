@@ -3,16 +3,21 @@ import 'dart:math';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_form_builder/flutter_form_builder.dart';
-import 'package:ui_components_lib/dimens.dart';
 import 'package:ui_components_lib/v2/utils/state_mixins.dart';
+
+typedef SuffixBuilder = Widget Function({
+  required bool isShowError,
+});
 
 class BaseTextField extends StatefulWidget {
   const BaseTextField({
     super.key,
     this.name,
     this.hintText,
-    this.labelText,
+    this.prefixIcon,
+    this.suffixBuilder,
     this.errorText,
+    this.errorTextStyle,
     this.activeBackgroundColor,
     this.disableBackgroundColor,
     this.focusedBackgroundColor,
@@ -29,8 +34,6 @@ class BaseTextField extends StatefulWidget {
     this.disabledTextStyle,
     this.hintTextStyle,
     this.disabledHintTextStyle,
-    this.labelTextStyle,
-    this.disabledLabelTextStyle,
     this.controller,
     this.inputFormatters,
     this.validator,
@@ -38,7 +41,7 @@ class BaseTextField extends StatefulWidget {
     this.keyboardType = TextInputType.text,
     this.fillColor,
     this.isObscureText = false,
-    this.isEnable = true,
+    this.isEnabled = true,
     this.isShowError,
     this.contentPadding = EdgeInsets.zero,
     this.onSubmit,
@@ -54,17 +57,19 @@ class BaseTextField extends StatefulWidget {
 
   final String? name;
   final String? hintText;
-  final String? labelText;
+  final Widget? prefixIcon;
+  final SuffixBuilder? suffixBuilder;
   final Color? activeBackgroundColor;
   final Color? disableBackgroundColor;
   final Color? focusedBackgroundColor;
   final Color? errorBackgroundColor;
-  final Border? enabledBorder;
-  final Border? disabledBorder;
-  final Border? focusedBorder;
-  final Border? errorBorder;
+  final InputBorder? enabledBorder;
+  final InputBorder? disabledBorder;
+  final InputBorder? focusedBorder;
+  final InputBorder? errorBorder;
   final BorderRadiusGeometry? borderRadius;
   final String? errorText;
+  final TextStyle? errorTextStyle;
   final double? height;
   final AutovalidateMode autovalidateMode;
   final bool isAutofocus;
@@ -72,8 +77,6 @@ class BaseTextField extends StatefulWidget {
   final TextStyle? disabledTextStyle;
   final TextStyle? hintTextStyle;
   final TextStyle? disabledHintTextStyle;
-  final TextStyle? labelTextStyle;
-  final TextStyle? disabledLabelTextStyle;
   final TextEditingController? controller;
   final List<TextInputFormatter>? inputFormatters;
   final FormFieldValidator<String>? validator;
@@ -81,7 +84,7 @@ class BaseTextField extends StatefulWidget {
   final TextInputType keyboardType;
   final Color? fillColor;
   final bool isObscureText;
-  final bool isEnable;
+  final bool isEnabled;
   final bool? isShowError;
   final EdgeInsetsGeometry contentPadding;
   final ValueChanged<String?>? onSubmit;
@@ -119,7 +122,7 @@ class _BaseTextFieldState extends State<BaseTextField> with StateMixin {
     return _localName ??= _r.nextDouble().toString();
   }
 
-  bool get _isEnable => widget.isEnable;
+  bool get _isEnabled => widget.isEnabled;
 
   bool get _isFocused => _focusNode.hasFocus;
 
@@ -133,25 +136,12 @@ class _BaseTextFieldState extends State<BaseTextField> with StateMixin {
         : null;
   }
 
-  BoxBorder? get _border {
-    Border? result;
-    if (!_isEnable) {
-      result = widget.disabledBorder;
-    } else if (_isShowError) {
-      result = widget.errorBorder;
-    } else if (_isFocused) {
-      result = widget.focusedBorder;
-    }
-
-    return result ?? widget.enabledBorder;
-  }
-
   BorderRadiusGeometry get _borderRadius =>
       widget.borderRadius ?? BorderRadius.zero;
 
   Color? get _backgroundColor {
     Color? result;
-    if (!_isEnable) {
+    if (!_isEnabled) {
       result = widget.disableBackgroundColor;
     } else if (_isShowError) {
       result = widget.errorBackgroundColor;
@@ -163,15 +153,11 @@ class _BaseTextFieldState extends State<BaseTextField> with StateMixin {
   }
 
   TextStyle? get _textStyle {
-    return _isEnable ? widget.textStyle : widget.disabledTextStyle;
+    return _isEnabled ? widget.textStyle : widget.disabledTextStyle;
   }
 
   TextStyle? get _hintTextStyle {
-    return _isEnable ? widget.hintTextStyle : widget.disabledHintTextStyle;
-  }
-
-  TextStyle? get _labelTextStyle {
-    return _isEnable ? widget.labelTextStyle : widget.disabledLabelTextStyle;
+    return _isEnabled ? widget.hintTextStyle : widget.disabledHintTextStyle;
   }
 
   double get _opacity {
@@ -200,8 +186,6 @@ class _BaseTextFieldState extends State<BaseTextField> with StateMixin {
 
   @override
   Widget build(BuildContext context) {
-    final postfixes = widget.postfixes;
-
     return Column(
       mainAxisSize: MainAxisSize.min,
       crossAxisAlignment: CrossAxisAlignment.start,
@@ -209,61 +193,63 @@ class _BaseTextFieldState extends State<BaseTextField> with StateMixin {
         Flexible(
           child: _Container(
             height: widget.height,
-            backgroundColor: _backgroundColor,
-            border: _border,
             borderRadius: _borderRadius,
             opacity: _opacity,
-            child: Row(
-              children: [
-                if (widget.labelText != null) _Label(widget.labelText!),
-                Flexible(
-                  child: FormBuilderTextField(
-                    name: _name,
-                    decoration: InputDecoration(
-                      filled: true,
-                      contentPadding: widget.contentPadding,
-                      hintText: widget.hintText,
-                      hintStyle: _hintTextStyle,
-                      labelStyle: _labelTextStyle,
-                      errorStyle: const TextStyle(fontSize: 0),
-                      fillColor: Colors.transparent,
-                      counterText: _counterText,
-                      isDense: true,
-                      enabled: _isEnable,
-                      enabledBorder: InputBorder.none,
-                      disabledBorder: InputBorder.none,
-                      focusedBorder: InputBorder.none,
-                      errorBorder: InputBorder.none,
-                      focusedErrorBorder: InputBorder.none,
-                      border: InputBorder.none,
-                    ),
-                    keyboardType: widget.keyboardType,
-                    obscureText: widget.isObscureText,
-                    onSubmitted: widget.onSubmit,
-                    onChanged: widget.onChanged,
-                    textInputAction: widget.textInputAction,
-                    controller: _controller,
-                    focusNode: _focusNode,
-                    readOnly: !_isEnable,
-                    style: _textStyle,
-                    autovalidateMode: widget.autovalidateMode,
-                    inputFormatters: widget.inputFormatters,
-                    autofocus: widget.isAutofocus,
-                    maxLength: widget.maxLength,
-                    maxLines: widget.maxLines,
-                    minLines: widget.minLines,
-                    validator: _validate,
-                  ),
-                ),
-                if (postfixes != null && postfixes.isNotEmpty)
-                  for (final action in postfixes) action,
-              ],
+            child: FormBuilderTextField(
+              enabled: _isEnabled,
+              name: _name,
+              decoration: InputDecoration(
+                filled: true,
+                contentPadding: widget.contentPadding,
+                hintText: widget.hintText,
+                hintStyle: _hintTextStyle,
+                errorStyle: const TextStyle(fontSize: 0),
+                fillColor: _backgroundColor,
+                counterText: _counterText,
+                enabledBorder: widget.enabledBorder,
+                disabledBorder: widget.disabledBorder,
+                focusedBorder: widget.focusedBorder,
+                errorBorder: widget.errorBorder,
+                focusedErrorBorder: widget.errorBorder,
+                border: widget.enabledBorder,
+                prefixIconConstraints: const BoxConstraints(),
+                prefixIcon: widget.prefixIcon,
+                suffixIconConstraints: const BoxConstraints(),
+                suffixIcon: widget.suffixBuilder == null
+                    ? null
+                    : Align(
+                        widthFactor: 1,
+                        heightFactor: 1,
+                        child: widget.suffixBuilder!(
+                          isShowError: _isShowError,
+                        ),
+                      ),
+              ),
+              keyboardType: widget.keyboardType,
+              obscureText: widget.isObscureText,
+              onSubmitted: widget.onSubmit,
+              onChanged: widget.onChanged,
+              textInputAction: widget.textInputAction,
+              controller: _controller,
+              focusNode: _focusNode,
+              readOnly: !_isEnabled,
+              style: _textStyle,
+              autovalidateMode: widget.autovalidateMode,
+              inputFormatters: widget.inputFormatters,
+              autofocus: widget.isAutofocus,
+              maxLength: widget.maxLength,
+              maxLines: widget.maxLines,
+              minLines: widget.minLines,
+              validator: _validate,
             ),
           ),
         ),
         if (_errorText != null)
           Flexible(
-            child: _ErrorText(_errorText!),
+            child: _ErrorText(
+              text: _errorText!,
+              style: widget.errorTextStyle,
+            ),
           ),
       ],
     );
@@ -302,14 +288,10 @@ class _Container extends StatelessWidget {
     required this.child,
     required this.opacity,
     this.height,
-    this.backgroundColor,
-    this.border,
   });
 
   final Widget child;
   final double? height;
-  final Color? backgroundColor;
-  final BoxBorder? border;
   final BorderRadiusGeometry borderRadius;
   final double opacity;
 
@@ -319,52 +301,31 @@ class _Container extends StatelessWidget {
       height: height,
       child: Opacity(
         opacity: opacity,
-        child: DecoratedBox(
-          decoration: BoxDecoration(
-            color: backgroundColor,
-            border: border,
-            borderRadius: borderRadius,
-          ),
-          child: ClipRRect(
-            borderRadius: borderRadius,
-            child: Padding(
-              padding: const EdgeInsets.only(
-                left: DimensSize.d16,
-                right: DimensSize.d8,
-                top: DimensSize.d8,
-                bottom: DimensSize.d8,
-              ),
-              child: child,
-            ),
-          ),
+        child: ClipRRect(
+          borderRadius: borderRadius,
+          child: child,
         ),
       ),
     );
   }
 }
 
-class _Label extends StatelessWidget {
-  const _Label(this.text);
+class _ErrorText extends StatelessWidget {
+  const _ErrorText({
+    required this.text,
+    this.style,
+  });
 
   final String text;
-
-  @override
-  Widget build(BuildContext context) {
-    return Text(text);
-  }
-}
-
-class _ErrorText extends StatelessWidget {
-  const _ErrorText(this._text);
-
-  final String _text;
+  final TextStyle? style;
 
   @override
   Widget build(BuildContext context) {
     return Padding(
       padding: const EdgeInsets.only(top: 8),
       child: Text(
-        _text,
+        text,
+        style: style,
       ),
     );
   }

@@ -12,10 +12,12 @@ class TextFieldsStoryV2 extends StatefulWidget {
 
 class _TextFieldsStoryV2State extends State<TextFieldsStoryV2> {
   final _textController0 = TextEditingController()..text = 'Initial value';
+  final _textController1 = TextEditingController()..text = 'Disabled value';
 
   @override
   void dispose() {
     _textController0.dispose();
+    _textController1.dispose();
     super.dispose();
   }
 
@@ -38,8 +40,41 @@ class _TextFieldsStoryV2State extends State<TextFieldsStoryV2> {
             const SizedBox(height: DimensSize.d20),
             PrimaryTextField(
               labelText: 'Label:',
-              hintText: 'Hint value',
+              hintText: 'Hint text',
               textEditingController: _textController0,
+            ),
+            const SizedBox(height: DimensSize.d20),
+            const PrimaryTextField(
+              labelText: 'Label:',
+              hintText: 'Disabled hint',
+              isEnabled: false,
+            ),
+            const SizedBox(height: DimensSize.d20),
+            PrimaryTextField(
+              labelText: 'Label:',
+              hintText: 'Disabled hint',
+              isEnabled: false,
+              textEditingController: _textController1,
+            ),
+            const SizedBox(height: DimensSize.d20),
+            const PrimaryTextField(
+              labelText: 'Label:',
+              hintText: 'Error',
+              isShowError: true,
+            ),
+            const SizedBox(height: DimensSize.d20),
+            const PrimaryTextField(
+              labelText: 'Label:',
+              hintText: 'Error with text',
+              isShowError: true,
+              errorText: 'Error text',
+            ),
+            const SizedBox(height: DimensSize.d20),
+            const PrimaryTextField(
+              labelText: 'Label:',
+              hintText: 'Inline error',
+              isShowError: true,
+              errorType: PrimaryTextFieldErrorType.inline,
             ),
             const SizedBox(height: DimensSize.d40),
           ],

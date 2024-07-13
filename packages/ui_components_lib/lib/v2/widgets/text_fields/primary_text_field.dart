@@ -22,7 +22,7 @@ class PrimaryTextField extends StatelessWidget {
     this.keyboardType = TextInputType.text,
     this.fillColor,
     this.isObscureText = false,
-    this.isEnable = true,
+    this.isEnabled = true,
     this.isShowError,
     this.textInputAction,
     this.onSubmit,
@@ -44,33 +44,73 @@ class PrimaryTextField extends StatelessWidget {
   final TextInputType keyboardType;
   final Color? fillColor;
   final bool isObscureText;
-  final bool isEnable;
+  final bool isEnabled;
   final bool? isShowError;
   final ValueChanged<String?>? onSubmit;
   final ValueChanged<String?>? onChanged;
   final TextInputAction? textInputAction;
 
+  String? get _errorText => switch (errorType) {
+        PrimaryTextFieldErrorType.inline => null,
+        _ => errorText,
+      };
+
   @override
   Widget build(BuildContext context) {
     final themeStyle = context.themeStyleV2;
 
-    final hintTextStyle = themeStyle?.textStyles.labelLarge.copyWith(
+    final hintTextStyle = themeStyle?.textStyles.labelSmall.copyWith(
       color: themeStyle.colors.content1,
       height: 1,
     );
 
+    final radius = BorderRadius.circular(DimensSize.d20);
+
     return BaseTextField(
       name: name,
       hintText: hintText,
-      labelText: labelText,
-      errorText: errorText,
+      errorText: _errorText,
       activeBackgroundColor: themeStyle?.colors.background1,
-      enabledBorder: _getBorder(color: themeStyle?.colors.border0),
-      disabledBorder: _getBorder(color: themeStyle?.colors.borderDisabled),
-      focusedBorder: _getBorder(color: themeStyle?.colors.borderFocus),
-      errorBorder: _getBorder(color: themeStyle?.colors.borderNegative),
-      borderRadius: BorderRadius.circular(DimensSize.d20),
+      enabledBorder: _getBorder(
+        color: themeStyle?.colors.border0,
+        radius: radius,
+      ),
+      disabledBorder: _getBorder(
+        color: themeStyle?.colors.borderDisabled,
+        radius: radius,
+      ),
+      focusedBorder: _getBorder(
+        color: themeStyle?.colors.borderFocus,
+        radius: radius,
+      ),
+      errorBorder: _getBorder(
+        color: themeStyle?.colors.borderNegative,
+        radius: radius,
+      ),
+      borderRadius: radius,
       height: height ?? sizeType.height,
+      contentPadding: const EdgeInsets.only(
+        right: DimensSize.d8,
+        top: DimensSize.d8,
+        bottom: DimensSize.d8,
+      ),
+      prefixIcon: labelText == null
+          ? const SizedBox(
+              width: DimensSize.d16,
+            )
+          : Padding(
+              padding: const EdgeInsets.only(
+                left: DimensSize.d16,
+                right: DimensSize.d4,
+              ),
+              child: Text(
+                labelText!,
+                style: themeStyle?.textStyles.labelSmall.copyWith(
+                  color: themeStyle.colors.content3,
+                  height: 1,
+                ),
+              ),
+            ),
       isAutofocus: isAutofocus,
       textStyle: themeStyle?.textStyles.labelSmall.copyWith(
         color: themeStyle.colors.primaryA,
@@ -78,10 +118,6 @@ class PrimaryTextField extends StatelessWidget {
       ),
       disabledTextStyle: hintTextStyle,
       hintTextStyle: hintTextStyle,
-      labelTextStyle: themeStyle?.textStyles.labelSmall.copyWith(
-        color: themeStyle.colors.content3,
-        height: 1,
-      ),
       controller: textEditingController,
       inputFormatters: inputFormatters,
       validator: validator,
@@ -89,30 +125,42 @@ class PrimaryTextField extends StatelessWidget {
       keyboardType: keyboardType,
       fillColor: fillColor,
       isObscureText: isObscureText,
-      isEnable: isEnable,
+      isEnabled: isEnabled,
       isShowError: isShowError,
       onSubmit: onSubmit,
       onChanged: onChanged,
       textInputAction: textInputAction,
       enabledOpacity: 1,
       disabledOpacity: .5,
-      postfixes: [
-        if (errorType == PrimaryTextFieldErrorType.outline)
-          const Icon(
-            LucideIcons.triangleAlert,
-            size: DimensSize.d20,
-          ),
-      ],
+      suffixBuilder: ({
+        required bool isShowError,
+      }) {
+        return Row(
+          mainAxisSize: MainAxisSize.min,
+          children: [
+            if (errorType == PrimaryTextFieldErrorType.inline)
+              const Icon(
+                LucideIcons.triangleAlert,
+                size: DimensSize.d20,
+              ),
+          ],
+        );
+      },
     );
   }
 
-  Border? _getBorder({
+  OutlineInputBorder? _getBorder({
     Color? color,
+    required BorderRadius radius,
   }) {
     return color == null
         ? null
-        : Border.all(
-            color: color,
+        : OutlineInputBorder(
+            borderSide: BorderSide(
+              color: color,
+            ),
+            borderRadius: radius,
+            gapPadding: 0,
           );
   }
 }
