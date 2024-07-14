@@ -67,7 +67,7 @@ class _TextFieldsStoryV2State extends State<TextFieldsStoryV2> {
             const PrimaryTextField(
               labelText: 'Label:',
               hintText: 'No error text',
-              isShowError: true,
+              isShowErrorForced: true,
             ),
             const SizedBox(height: DimensSize.d20),
             const PrimaryTextField(
@@ -79,7 +79,7 @@ class _TextFieldsStoryV2State extends State<TextFieldsStoryV2> {
             const PrimaryTextField(
               labelText: 'Label:',
               hintText: 'Inline error',
-              isShowError: true,
+              isShowErrorForced: true,
               errorType: TextFieldErrorType.inline,
             ),
             const SizedBox(height: DimensSize.d20),

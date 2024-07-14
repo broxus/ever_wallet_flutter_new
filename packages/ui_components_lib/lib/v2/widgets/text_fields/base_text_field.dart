@@ -41,7 +41,7 @@ class BaseTextField extends StatefulWidget {
     this.isAutofocus = false,
     this.isObscureText = false,
     this.isEnabled = true,
-    this.isShowError,
+    this.isShowErrorForced,
     this.onSubmit,
     this.onChanged,
     this.textInputAction,
@@ -96,7 +96,7 @@ class BaseTextField extends StatefulWidget {
   final double? disabledOpacity;
   final List<Widget>? postfixes;
   final TextFieldErrorType errorType;
-  final bool? isShowError;
+  final bool? isShowErrorForced;
 
   @override
   State<BaseTextField> createState() => _BaseTextFieldState();
@@ -113,7 +113,7 @@ class _BaseTextFieldState extends State<BaseTextField> with StateMixin {
 
   final _counterText = '';
 
-  String? _errorText;
+  String? _validatorErrorText;
 
   String get _name {
     if (widget.name != null) {
@@ -128,7 +128,8 @@ class _BaseTextFieldState extends State<BaseTextField> with StateMixin {
   bool get _isFocused => _focusNode.hasFocus;
 
   bool get _isShowedError {
-    return widget.isShowError ?? (widget.errorText ?? _errorText) != null;
+    return widget.isShowErrorForced ??
+        (widget.errorText ?? _validatorErrorText) != null;
   }
 
   BoxBorder? get _border {
@@ -269,7 +270,7 @@ class _BaseTextFieldState extends State<BaseTextField> with StateMixin {
         if (_isShowedError && widget.errorType == TextFieldErrorType.outline)
           Flexible(
             child: _ErrorText(
-              text: widget.errorText ?? _errorText,
+              text: widget.errorText ?? _validatorErrorText,
               style: widget.errorTextStyle,
             ),
           ),
@@ -293,10 +294,10 @@ class _BaseTextFieldState extends State<BaseTextField> with StateMixin {
   }
 
   void _onValidate(String? validatorErrorText) {
-    if (_errorText == validatorErrorText) {
+    if (_validatorErrorText == validatorErrorText) {
       return;
     }
-    Future(() => setStateSafe(() => _errorText = validatorErrorText));
+    Future(() => setStateSafe(() => _validatorErrorText = validatorErrorText));
   }
 
   void _onChangeFocus() {

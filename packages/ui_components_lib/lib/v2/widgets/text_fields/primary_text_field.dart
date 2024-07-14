@@ -23,7 +23,7 @@ class PrimaryTextField extends StatelessWidget {
     this.fillColor,
     this.isObscureText = false,
     this.isEnabled = true,
-    this.isShowError,
+    this.isShowErrorForced,
     this.textInputAction,
     this.onSubmit,
     this.onChanged,
@@ -46,7 +46,7 @@ class PrimaryTextField extends StatelessWidget {
   final Color? fillColor;
   final bool isObscureText;
   final bool isEnabled;
-  final bool? isShowError;
+  final bool? isShowErrorForced;
   final ValueChanged<String?>? onSubmit;
   final ValueChanged<String?>? onChanged;
   final TextInputAction? textInputAction;
@@ -124,7 +124,7 @@ class PrimaryTextField extends StatelessWidget {
       fillColor: fillColor,
       isObscureText: isObscureText,
       isEnabled: isEnabled,
-      isShowError: isShowError,
+      isShowErrorForced: isShowErrorForced,
       onSubmit: onSubmit,
       onChanged: onChanged,
       textInputAction: textInputAction,
