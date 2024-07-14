@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:lucide_icons_flutter/lucide_icons.dart';
 import 'package:ui_components_lib/ui_components_lib.dart';
 import 'package:ui_components_lib/v2/widgets/text_fields/base_text_field.dart';
 
@@ -33,7 +34,7 @@ class PrimaryTextField extends StatelessWidget {
   final String? hintText;
   final String? labelText;
   final String? errorText;
-  final TextFieldErrorType? errorType;
+  final TextFieldErrorType errorType;
   final double? height;
   final PrimaryTextFieldSizeType sizeType;
   final bool isAutofocus;
@@ -67,28 +68,19 @@ class PrimaryTextField extends StatelessWidget {
       hintText: hintText,
       errorText: errorText,
       activeBackgroundColor: themeStyle?.colors.background1,
-      enabledBorder: _getBorder(
-        color: themeStyle?.colors.border0,
-        radius: radius,
-      ),
-      disabledBorder: _getBorder(
-        color: themeStyle?.colors.borderDisabled,
-        radius: radius,
-      ),
-      focusedBorder: _getBorder(
-        color: themeStyle?.colors.borderFocus,
-        radius: radius,
-      ),
-      errorBorder: _getBorder(
-        color: themeStyle?.colors.borderNegative,
-        radius: radius,
-      ),
+      enabledBorder: _getBorder(color: themeStyle?.colors.border0),
+      disabledBorder: _getBorder(color: themeStyle?.colors.borderDisabled),
+      focusedBorder: _getBorder(color: themeStyle?.colors.borderFocus),
+      errorBorder: _getBorder(color: themeStyle?.colors.borderNegative),
       borderRadius: radius,
       height: height ?? sizeType.height,
+      errorType: errorType,
+      contentPadding: const EdgeInsets.only(
+        left: DimensSize.d16,
+        right: DimensSize.d4,
+      ),
       prefixIcon: labelText == null
-          ? const SizedBox(
-              width: DimensSize.d16,
-            )
+          ? null
           : Padding(
               padding: const EdgeInsets.only(
                 left: DimensSize.d16,
@@ -107,6 +99,21 @@ class PrimaryTextField extends StatelessWidget {
         color: themeStyle.colors.primaryA,
         height: 1,
       ),
+      errorTextStyle: themeStyle?.textStyles.paragraphSmall.copyWith(
+        color: themeStyle.colors.contentNegative,
+        fontWeight: FontWeight.w400,
+        height: 1,
+      ),
+      errorInlineIcon: Padding(
+        padding: const EdgeInsets.all(DimensSize.d18),
+        child: Center(
+          child: Icon(
+            LucideIcons.triangleAlert,
+            size: DimensSize.d20,
+            color: themeStyle?.colors.contentNegative,
+          ),
+        ),
+      ),
       disabledTextStyle: hintTextStyle,
       hintTextStyle: hintTextStyle,
       controller: textEditingController,
@@ -123,23 +130,12 @@ class PrimaryTextField extends StatelessWidget {
       textInputAction: textInputAction,
       enabledOpacity: 1,
       disabledOpacity: .5,
-      suffix: suffix,
+      suffixIcon: suffix,
     );
   }
 
-  OutlineInputBorder? _getBorder({
-    Color? color,
-    required BorderRadius radius,
-  }) {
-    return color == null
-        ? null
-        : OutlineInputBorder(
-            borderSide: BorderSide(
-              color: color,
-            ),
-            borderRadius: radius,
-            gapPadding: 0,
-          );
+  BoxBorder? _getBorder({Color? color}) {
+    return color == null ? null : Border.all(color: color);
   }
 }
 

@@ -3,7 +3,6 @@ import 'dart:math';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_form_builder/flutter_form_builder.dart';
-import 'package:lucide_icons_flutter/lucide_icons.dart';
 import 'package:ui_components_lib/dimens.dart';
 import 'package:ui_components_lib/v2/utils/state_mixins.dart';
 
@@ -13,7 +12,9 @@ class BaseTextField extends StatefulWidget {
     this.name,
     this.hintText,
     this.prefixIcon,
-    this.suffix,
+    this.suffixIcon,
+    this.errorInlineIcon,
+    this.contentPadding = EdgeInsets.zero,
     this.errorText,
     this.errorTextStyle,
     this.activeBackgroundColor,
@@ -45,8 +46,8 @@ class BaseTextField extends StatefulWidget {
     this.onChanged,
     this.textInputAction,
     this.maxLength,
-    this.maxLines = 1,
     this.minLines,
+    this.maxLines,
     this.enabledOpacity,
     this.disabledOpacity,
     this.postfixes,
@@ -56,15 +57,17 @@ class BaseTextField extends StatefulWidget {
   final String? name;
   final String? hintText;
   final Widget? prefixIcon;
-  final Widget? suffix;
+  final Widget? suffixIcon;
+  final Widget? errorInlineIcon;
+  final EdgeInsetsGeometry contentPadding;
   final Color? activeBackgroundColor;
   final Color? disableBackgroundColor;
   final Color? focusedBackgroundColor;
   final Color? errorBackgroundColor;
-  final InputBorder? enabledBorder;
-  final InputBorder? disabledBorder;
-  final InputBorder? focusedBorder;
-  final InputBorder? errorBorder;
+  final BoxBorder? enabledBorder;
+  final BoxBorder? disabledBorder;
+  final BoxBorder? focusedBorder;
+  final BoxBorder? errorBorder;
   final BorderRadiusGeometry? borderRadius;
   final String? errorText;
   final TextStyle? errorTextStyle;
@@ -132,6 +135,19 @@ class _BaseTextFieldState extends State<BaseTextField> with StateMixin {
     return widget.errorText ?? widget.validator?.call(_text);
   }
 
+  BoxBorder? get _border {
+    BoxBorder? result;
+    if (!_isEnabled) {
+      result = widget.disabledBorder;
+    } else if (_isShowError) {
+      result = widget.errorBorder;
+    } else if (_isFocused) {
+      result = widget.focusedBorder;
+    }
+
+    return result ?? widget.enabledBorder;
+  }
+
   BorderRadiusGeometry get _borderRadius =>
       widget.borderRadius ?? BorderRadius.zero;
 
@@ -157,7 +173,11 @@ class _BaseTextFieldState extends State<BaseTextField> with StateMixin {
   }
 
   double get _opacity {
-    return widget.enabledOpacity ?? widget.disabledOpacity ?? 1;
+    if (_isEnabled) {
+      return widget.enabledOpacity ?? 1;
+    }
+
+    return widget.disabledOpacity ?? 1;
   }
 
   @override
@@ -190,7 +210,9 @@ class _BaseTextFieldState extends State<BaseTextField> with StateMixin {
         Flexible(
           child: _Container(
             height: widget.height,
+            color: _backgroundColor,
             borderRadius: _borderRadius,
+            border: _border,
             opacity: _opacity,
             child: FormBuilderTextField(
               enabled: _isEnabled,
@@ -200,14 +222,15 @@ class _BaseTextFieldState extends State<BaseTextField> with StateMixin {
                 hintText: widget.hintText,
                 hintStyle: _hintTextStyle,
                 errorStyle: const TextStyle(fontSize: 0),
-                fillColor: _backgroundColor,
+                fillColor: Colors.transparent,
+                contentPadding: widget.contentPadding,
                 counterText: _counterText,
-                enabledBorder: widget.enabledBorder,
-                disabledBorder: widget.disabledBorder,
-                focusedBorder: widget.focusedBorder,
-                errorBorder: widget.errorBorder,
-                focusedErrorBorder: widget.errorBorder,
-                border: widget.enabledBorder,
+                enabledBorder: InputBorder.none,
+                disabledBorder: InputBorder.none,
+                focusedBorder: InputBorder.none,
+                errorBorder: InputBorder.none,
+                focusedErrorBorder: InputBorder.none,
+                border: InputBorder.none,
                 prefixIconConstraints: const BoxConstraints(),
                 prefixIcon: widget.prefixIcon,
                 suffixIconConstraints: const BoxConstraints(),
@@ -217,13 +240,11 @@ class _BaseTextFieldState extends State<BaseTextField> with StateMixin {
                   child: Row(
                     mainAxisSize: MainAxisSize.min,
                     children: [
+                      if (widget.suffixIcon != null) widget.suffixIcon!,
                       if (_isShowError &&
-                          widget.errorType == TextFieldErrorType.inline)
-                        const Icon(
-                          LucideIcons.triangleAlert,
-                          size: DimensSize.d20,
-                        ),
-                      const SizedBox(width: DimensSize.d8),
+                          widget.errorType == TextFieldErrorType.inline &&
+                          widget.errorInlineIcon != null)
+                        widget.errorInlineIcon!,
                     ],
                   ),
                 ),
@@ -243,6 +264,8 @@ class _BaseTextFieldState extends State<BaseTextField> with StateMixin {
               maxLength: widget.maxLength,
               maxLines: widget.maxLines,
               minLines: widget.minLines,
+              expands: true,
+              textAlignVertical: TextAlignVertical.center,
               validator: _validate,
             ),
           ),
@@ -262,11 +285,11 @@ class _BaseTextFieldState extends State<BaseTextField> with StateMixin {
   String? _validate(String? text) {
     final validator = widget.validator;
 
-    var isSuccess = !(widget.isShowError ?? false);
-
-    if (validator != null) {
-      isSuccess = isSuccess && validator.call(text) == null;
+    if (validator == null) {
+      return null;
     }
+
+    final isSuccess = validator.call(text) == null;
 
     _onValidate(isSuccess);
 
@@ -289,14 +312,18 @@ class _Container extends StatelessWidget {
   const _Container({
     required this.borderRadius,
     required this.child,
+    required this.border,
     required this.opacity,
+    this.color,
     this.height,
   });
 
   final Widget child;
-  final double? height;
   final BorderRadiusGeometry borderRadius;
   final double opacity;
+  final BoxBorder? border;
+  final Color? color;
+  final double? height;
 
   @override
   Widget build(BuildContext context) {
@@ -304,9 +331,16 @@ class _Container extends StatelessWidget {
       height: height,
       child: Opacity(
         opacity: opacity,
-        child: ClipRRect(
-          borderRadius: borderRadius,
-          child: child,
+        child: DecoratedBox(
+          decoration: BoxDecoration(
+            borderRadius: borderRadius,
+            border: border,
+            color: color,
+          ),
+          child: ClipRRect(
+            borderRadius: borderRadius,
+            child: child,
+          ),
         ),
       ),
     );
@@ -329,7 +363,7 @@ class _ErrorText extends StatelessWidget {
     }
 
     return Padding(
-      padding: const EdgeInsets.only(top: 0),
+      padding: const EdgeInsets.only(top: DimensSize.d8),
       child: Text(
         text!,
         style: style,
