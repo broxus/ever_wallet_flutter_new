@@ -27,7 +27,7 @@ class PrimaryTextField extends StatelessWidget {
     this.textInputAction,
     this.onSubmit,
     this.onChanged,
-    this.suffix,
+    this.suffixes,
   });
 
   final String? name;
@@ -50,7 +50,7 @@ class PrimaryTextField extends StatelessWidget {
   final ValueChanged<String?>? onSubmit;
   final ValueChanged<String?>? onChanged;
   final TextInputAction? textInputAction;
-  final Widget? suffix;
+  final List<Widget>? suffixes;
 
   @override
   Widget build(BuildContext context) {
@@ -68,6 +68,7 @@ class PrimaryTextField extends StatelessWidget {
       hintText: hintText,
       errorText: errorText,
       activeBackgroundColor: themeStyle?.colors.background1,
+      cursorColor: themeStyle?.colors.primaryA,
       enabledBorder: _getBorder(color: themeStyle?.colors.border0),
       disabledBorder: _getBorder(color: themeStyle?.colors.borderDisabled),
       focusedBorder: _getBorder(color: themeStyle?.colors.borderFocus),
@@ -105,7 +106,7 @@ class PrimaryTextField extends StatelessWidget {
         height: 1,
       ),
       errorInlineIcon: Padding(
-        padding: const EdgeInsets.all(DimensSize.d18),
+        padding: const EdgeInsets.only(right: DimensSize.d10),
         child: Center(
           child: Icon(
             LucideIcons.triangleAlert,
@@ -130,7 +131,13 @@ class PrimaryTextField extends StatelessWidget {
       textInputAction: textInputAction,
       enabledOpacity: 1,
       disabledOpacity: .5,
-      suffixIcon: suffix,
+      suffixIcon: suffixes == null
+          ? null
+          : Row(
+              mainAxisSize: MainAxisSize.min,
+              mainAxisAlignment: MainAxisAlignment.end,
+              children: suffixes!,
+            ),
     );
   }
 

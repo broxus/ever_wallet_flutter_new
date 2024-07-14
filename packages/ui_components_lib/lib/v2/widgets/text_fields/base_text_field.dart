@@ -21,6 +21,7 @@ class BaseTextField extends StatefulWidget {
     this.disableBackgroundColor,
     this.focusedBackgroundColor,
     this.errorBackgroundColor,
+    this.cursorColor,
     this.enabledBorder,
     this.disabledBorder,
     this.focusedBorder,
@@ -64,6 +65,7 @@ class BaseTextField extends StatefulWidget {
   final Color? disableBackgroundColor;
   final Color? focusedBackgroundColor;
   final Color? errorBackgroundColor;
+  final Color? cursorColor;
   final BoxBorder? enabledBorder;
   final BoxBorder? disabledBorder;
   final BoxBorder? focusedBorder;
@@ -205,65 +207,73 @@ class _BaseTextFieldState extends State<BaseTextField> with StateMixin {
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
         Flexible(
-          child: _Container(
-            height: widget.height,
-            color: _backgroundColor,
-            borderRadius: _borderRadius,
-            border: _border,
-            opacity: _opacity,
-            child: FormBuilderTextField(
-              enabled: _isEnabled,
-              name: _name,
-              decoration: InputDecoration(
-                filled: true,
-                hintText: widget.hintText,
-                hintStyle: _hintTextStyle,
-                errorStyle: const TextStyle(fontSize: 0),
-                fillColor: Colors.transparent,
-                contentPadding: widget.contentPadding,
-                counterText: _counterText,
-                enabledBorder: InputBorder.none,
-                disabledBorder: InputBorder.none,
-                focusedBorder: InputBorder.none,
-                errorBorder: InputBorder.none,
-                focusedErrorBorder: InputBorder.none,
-                border: InputBorder.none,
-                prefixIconConstraints: const BoxConstraints(),
-                prefixIcon: widget.prefixIcon,
-                suffixIconConstraints: const BoxConstraints(),
-                suffixIcon: Align(
-                  widthFactor: 1,
-                  heightFactor: 1,
-                  child: Row(
-                    mainAxisSize: MainAxisSize.min,
-                    children: [
-                      if (widget.suffixIcon != null) widget.suffixIcon!,
-                      if (_isShowedError &&
-                          widget.errorType == TextFieldErrorType.inline &&
-                          widget.errorInlineIcon != null)
-                        widget.errorInlineIcon!,
-                    ],
+          child: IgnorePointer(
+            ignoring: !_isEnabled,
+            child: _Container(
+              height: widget.height,
+              color: _backgroundColor,
+              borderRadius: _borderRadius,
+              border: _border,
+              opacity: _opacity,
+              child: FormBuilderTextField(
+                enabled: _isEnabled,
+                name: _name,
+                cursorColor: widget.cursorColor,
+                decoration: InputDecoration(
+                  filled: true,
+                  hintText: widget.hintText,
+                  hintStyle: _hintTextStyle,
+                  errorStyle: const TextStyle(fontSize: 0),
+                  fillColor: Colors.transparent,
+                  contentPadding: widget.contentPadding,
+                  counterText: _counterText,
+                  enabledBorder: InputBorder.none,
+                  disabledBorder: InputBorder.none,
+                  focusedBorder: InputBorder.none,
+                  errorBorder: InputBorder.none,
+                  focusedErrorBorder: InputBorder.none,
+                  border: InputBorder.none,
+                  prefixIconConstraints: const BoxConstraints(),
+                  prefixIcon: widget.prefixIcon,
+                  suffixIconConstraints: const BoxConstraints(),
+                  suffixIcon: Align(
+                    widthFactor: 1,
+                    heightFactor: 1,
+                    child: Row(
+                      mainAxisSize: MainAxisSize.min,
+                      mainAxisAlignment: MainAxisAlignment.end,
+                      children: [
+                        if (widget.suffixIcon != null)
+                          Flexible(
+                            child: widget.suffixIcon!,
+                          ),
+                        if (_isShowedError &&
+                            widget.errorType == TextFieldErrorType.inline &&
+                            widget.errorInlineIcon != null)
+                          widget.errorInlineIcon!,
+                      ],
+                    ),
                   ),
                 ),
+                keyboardType: widget.keyboardType,
+                obscureText: widget.isObscureText,
+                onSubmitted: widget.onSubmit,
+                onChanged: widget.onChanged,
+                textInputAction: widget.textInputAction,
+                controller: _controller,
+                focusNode: _focusNode,
+                readOnly: !_isEnabled,
+                style: _textStyle,
+                autovalidateMode: widget.autovalidateMode,
+                inputFormatters: widget.inputFormatters,
+                autofocus: widget.isAutofocus,
+                maxLength: widget.maxLength,
+                maxLines: widget.maxLines,
+                minLines: widget.minLines,
+                expands: true,
+                textAlignVertical: TextAlignVertical.center,
+                validator: _validate,
               ),
-              keyboardType: widget.keyboardType,
-              obscureText: widget.isObscureText,
-              onSubmitted: widget.onSubmit,
-              onChanged: widget.onChanged,
-              textInputAction: widget.textInputAction,
-              controller: _controller,
-              focusNode: _focusNode,
-              readOnly: !_isEnabled,
-              style: _textStyle,
-              autovalidateMode: widget.autovalidateMode,
-              inputFormatters: widget.inputFormatters,
-              autofocus: widget.isAutofocus,
-              maxLength: widget.maxLength,
-              maxLines: widget.maxLines,
-              minLines: widget.minLines,
-              expands: true,
-              textAlignVertical: TextAlignVertical.center,
-              validator: _validate,
             ),
           ),
         ),

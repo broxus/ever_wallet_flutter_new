@@ -1,3 +1,4 @@
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:ui_components_lib/ui_components_lib.dart';
 import 'package:ui_components_lib/v2/widgets/text_fields/base_text_field.dart';
@@ -92,6 +93,31 @@ class _TextFieldsStoryV2State extends State<TextFieldsStoryV2> {
                 }
                 return text.length < 5 ? null : 'Length is ${text.length}';
               },
+            ),
+            const SizedBox(height: DimensSize.d20),
+            PrimaryTextField(
+              labelText: 'Label:',
+              hintText: 'Suffixes',
+              isShowErrorForced: true,
+              errorType: TextFieldErrorType.inline,
+              suffixes: [
+                Container(
+                  width: 40,
+                  height: 40,
+                  color: Colors.grey,
+                  alignment: Alignment.center,
+                  margin: const EdgeInsets.symmetric(horizontal: 8),
+                  child: const Text('S0'),
+                ),
+                Container(
+                  width: 40,
+                  height: 40,
+                  color: Colors.grey,
+                  alignment: Alignment.center,
+                  margin: const EdgeInsets.only(right: 10),
+                  child: const Text('S1'),
+                ),
+              ],
             ),
             const SizedBox(height: DimensSize.d40),
           ],
