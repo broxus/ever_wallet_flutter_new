@@ -73,7 +73,6 @@ class _TextFieldsStoryV2State extends State<TextFieldsStoryV2> {
             const PrimaryTextField(
               labelText: 'Label:',
               hintText: 'Outline error',
-              isShowError: true,
               errorText: 'Error text',
             ),
             const SizedBox(height: DimensSize.d20),
@@ -87,12 +86,11 @@ class _TextFieldsStoryV2State extends State<TextFieldsStoryV2> {
             PrimaryTextField(
               labelText: 'Label:',
               hintText: 'Validator length < 5',
-              errorType: TextFieldErrorType.inline,
               validator: (String? text) {
                 if (text == null) {
                   return null;
                 }
-                return text.length < 5 ? null : '';
+                return text.length < 5 ? null : 'Length is ${text.length}';
               },
             ),
             const SizedBox(height: DimensSize.d40),

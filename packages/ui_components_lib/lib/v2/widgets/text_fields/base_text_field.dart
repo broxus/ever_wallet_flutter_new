@@ -28,7 +28,6 @@ class BaseTextField extends StatefulWidget {
     this.borderRadius,
     this.height,
     this.autovalidateMode = AutovalidateMode.onUserInteraction,
-    this.isAutofocus = false,
     this.textStyle,
     this.disabledTextStyle,
     this.hintTextStyle,
@@ -39,6 +38,7 @@ class BaseTextField extends StatefulWidget {
     this.focusNode,
     this.keyboardType = TextInputType.text,
     this.fillColor,
+    this.isAutofocus = false,
     this.isObscureText = false,
     this.isEnabled = true,
     this.isShowError,
@@ -86,7 +86,6 @@ class BaseTextField extends StatefulWidget {
   final Color? fillColor;
   final bool isObscureText;
   final bool isEnabled;
-  final bool? isShowError;
   final ValueChanged<String?>? onSubmit;
   final ValueChanged<String?>? onChanged;
   final TextInputAction? textInputAction;
@@ -97,6 +96,7 @@ class BaseTextField extends StatefulWidget {
   final double? disabledOpacity;
   final List<Widget>? postfixes;
   final TextFieldErrorType errorType;
+  final bool? isShowError;
 
   @override
   State<BaseTextField> createState() => _BaseTextFieldState();
@@ -113,7 +113,7 @@ class _BaseTextFieldState extends State<BaseTextField> with StateMixin {
 
   final _counterText = '';
 
-  bool _isError = false;
+  String? _errorText;
 
   String get _name {
     if (widget.name != null) {
@@ -127,19 +127,15 @@ class _BaseTextFieldState extends State<BaseTextField> with StateMixin {
 
   bool get _isFocused => _focusNode.hasFocus;
 
-  String get _text => _controller.text;
-
-  bool get _isShowError => widget.isShowError ?? _isError;
-
-  String? get _errorText {
-    return widget.errorText ?? widget.validator?.call(_text);
+  bool get _isShowedError {
+    return widget.isShowError ?? (widget.errorText ?? _errorText) != null;
   }
 
   BoxBorder? get _border {
     BoxBorder? result;
     if (!_isEnabled) {
       result = widget.disabledBorder;
-    } else if (_isShowError) {
+    } else if (_isShowedError) {
       result = widget.errorBorder;
     } else if (_isFocused) {
       result = widget.focusedBorder;
@@ -155,7 +151,7 @@ class _BaseTextFieldState extends State<BaseTextField> with StateMixin {
     Color? result;
     if (!_isEnabled) {
       result = widget.disableBackgroundColor;
-    } else if (_isShowError) {
+    } else if (_isShowedError) {
       result = widget.errorBackgroundColor;
     } else if (_isFocused) {
       result = widget.focusedBackgroundColor;
@@ -241,7 +237,7 @@ class _BaseTextFieldState extends State<BaseTextField> with StateMixin {
                     mainAxisSize: MainAxisSize.min,
                     children: [
                       if (widget.suffixIcon != null) widget.suffixIcon!,
-                      if (_isShowError &&
+                      if (_isShowedError &&
                           widget.errorType == TextFieldErrorType.inline &&
                           widget.errorInlineIcon != null)
                         widget.errorInlineIcon!,
@@ -270,10 +266,10 @@ class _BaseTextFieldState extends State<BaseTextField> with StateMixin {
             ),
           ),
         ),
-        if (_isShowError && widget.errorType == TextFieldErrorType.outline)
+        if (_isShowedError && widget.errorType == TextFieldErrorType.outline)
           Flexible(
             child: _ErrorText(
-              text: _errorText,
+              text: widget.errorText ?? _errorText,
               style: widget.errorTextStyle,
             ),
           ),
@@ -289,18 +285,18 @@ class _BaseTextFieldState extends State<BaseTextField> with StateMixin {
       return null;
     }
 
-    final isSuccess = validator.call(text) == null;
+    final validatorErrorText = validator.call(text);
 
-    _onValidate(isSuccess);
+    _onValidate(validatorErrorText);
 
-    return isSuccess ? null : '';
+    return validatorErrorText == null ? null : '';
   }
 
-  void _onValidate(bool isSuccess) {
-    if (_isError == !isSuccess) {
+  void _onValidate(String? validatorErrorText) {
+    if (_errorText == validatorErrorText) {
       return;
     }
-    Future(() => setStateSafe(() => _isError = !isSuccess));
+    Future(() => setStateSafe(() => _errorText = validatorErrorText));
   }
 
   void _onChangeFocus() {
