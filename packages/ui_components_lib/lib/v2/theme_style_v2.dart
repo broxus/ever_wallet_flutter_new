@@ -27,8 +27,8 @@ class ThemeStyleV2 extends ThemeExtension<ThemeStyleV2> {
 }
 
 /// Getting theme style from context
-extension ThemeContextExtension on BuildContext {
-  ThemeStyleV2? get themeStyle {
+extension ThemeContextExtensionV2 on BuildContext {
+  ThemeStyleV2? get themeStyleV2 {
     return Theme.of(this).extension<ThemeStyleV2>();
   }
 }

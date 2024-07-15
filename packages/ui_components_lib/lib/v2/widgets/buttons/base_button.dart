@@ -29,8 +29,8 @@ abstract class BaseButton extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final themeStyle = ThemeStyleV2(colors: colors, textStyles: textStyles);
-    final style = getButtonStyle(themeStyle);
+    final themeStyle = context.themeStyleV2;
+    final style = getButtonStyle(themeStyle!);
     final buttonStyle = ButtonStyle(
       elevation: MaterialStateProperty.all(0),
       textStyle: MaterialStateProperty.resolveWith<TextStyle>(

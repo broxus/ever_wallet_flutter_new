@@ -619,6 +619,14 @@ packages:
       url: "https://pub.dev"
     source: hosted
     version: "6.0.3"
+  flutter_form_builder:
+    dependency: transitive
+    description:
+      name: flutter_form_builder
+      sha256: "560eb5e367d81170c6ade1e7ae63ecc5167936ae2cdfaae8a345e91bce19d2f2"
+      url: "https://pub.dev"
+    source: hosted
+    version: "9.2.1"
   flutter_gen_core:
     dependency: transitive
     description:
@@ -802,6 +810,14 @@ packages:
     description: flutter
     source: sdk
     version: "0.0.0"
+  form_builder_validators:
+    dependency: transitive
+    description:
+      name: form_builder_validators
+      sha256: "19aa5282b7cede82d0025ab031a98d0554b84aa2ba40f12013471a3b3e22bf02"
+      url: "https://pub.dev"
+    source: hosted
+    version: "9.1.0"
   freezed:
     dependency: "direct dev"
     description:
@@ -1172,6 +1188,14 @@ packages:
       url: "https://pub.dev"
     source: hosted
     version: "1.2.0"
+  lucide_icons_flutter:
+    dependency: transitive
+    description:
+      name: lucide_icons_flutter
+      sha256: e8212d1b6b968bec58b1267c990c4878236e2a3edd8f3f43a81b00f6faa95397
+      url: "https://pub.dev"
+    source: hosted
+    version: "1.1.2"
   matcher:
     dependency: transitive
     description:
