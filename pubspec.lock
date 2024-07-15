@@ -1188,6 +1188,14 @@ packages:
       url: "https://pub.dev"
     source: hosted
     version: "1.2.0"
+  lucide_icons_flutter:
+    dependency: transitive
+    description:
+      name: lucide_icons_flutter
+      sha256: e8212d1b6b968bec58b1267c990c4878236e2a3edd8f3f43a81b00f6faa95397
+      url: "https://pub.dev"
+    source: hosted
+    version: "1.1.2"
   matcher:
     dependency: transitive
     description:

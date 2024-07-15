@@ -12,8 +12,9 @@ import 'package:ui_components_lib/v2/utils/state_mixins.dart';
 ///
 /// The widget also supports verification via FormField using [validator].
 ///
-/// If [validator] is specified and it returns a text value, then the input will be
-/// visible below the input field. If empty text is returned, only the border will be red.
+/// If [validator] is specified and it returns a text value, then the input
+/// will be visible below the input field. If empty text is returned,
+/// only the border will be red.
 /// You can force the error text to be passed instead of the validator
 /// and force the error to be displayed.
 /// Forced display without forced text and validator -
