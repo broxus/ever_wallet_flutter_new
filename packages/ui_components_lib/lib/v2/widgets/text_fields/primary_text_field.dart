@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:lucide_icons_flutter/lucide_icons.dart';
 import 'package:ui_components_lib/ui_components_lib.dart';
+import 'package:ui_components_lib/v2/opac_v2.dart';
 import 'package:ui_components_lib/v2/widgets/text_fields/base_text_field.dart';
 
 /// {@template base_text_field}
@@ -100,7 +101,7 @@ class PrimaryTextField extends StatelessWidget {
             ),
       isAutofocus: isAutofocus,
       textStyle: themeStyle?.textStyles.labelSmall.copyWith(
-        color: themeStyle.colors.primaryA,
+        color: themeStyle.colors.content0,
         height: 1,
       ),
       errorTextStyle: themeStyle?.textStyles.paragraphSmall.copyWith(
@@ -131,8 +132,8 @@ class PrimaryTextField extends StatelessWidget {
       onSubmit: onSubmit,
       onChanged: onChanged,
       textInputAction: textInputAction,
-      enabledOpacity: 1,
-      disabledOpacity: .5,
+      enabledOpacity: OpacV2.opac100,
+      disabledOpacity: OpacV2.opac50,
       suffixIcon: suffixes == null
           ? null
           : Row(

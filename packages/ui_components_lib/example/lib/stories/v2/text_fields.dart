@@ -12,8 +12,8 @@ class TextFieldsStoryV2 extends StatefulWidget {
 }
 
 class _TextFieldsStoryV2State extends State<TextFieldsStoryV2> {
-  final _textController0 = TextEditingController()..text = 'Initial value';
-  final _textController1 = TextEditingController()..text = 'Disabled value';
+  final _textController0 = TextEditingController(text: 'Initial value');
+  final _textController1 = TextEditingController(text: 'Disabled value');
 
   @override
   void dispose() {
@@ -103,7 +103,7 @@ class _TextFieldsStoryV2State extends State<TextFieldsStoryV2> {
                 Container(
                   width: 40,
                   height: 40,
-                  color: Colors.grey,
+                  color: context.themeStyleV2?.colors.background3,
                   alignment: Alignment.center,
                   margin: const EdgeInsets.symmetric(horizontal: 8),
                   child: const Text('S0'),
@@ -111,7 +111,7 @@ class _TextFieldsStoryV2State extends State<TextFieldsStoryV2> {
                 Container(
                   width: 40,
                   height: 40,
-                  color: Colors.grey,
+                  color: context.themeStyleV2?.colors.background3,
                   alignment: Alignment.center,
                   margin: const EdgeInsets.only(right: 10),
                   child: const Text('S1'),
