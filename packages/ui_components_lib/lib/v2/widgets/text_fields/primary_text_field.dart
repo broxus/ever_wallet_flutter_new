@@ -33,6 +33,7 @@ class PrimaryTextField extends StatelessWidget {
     this.onChanged,
     this.suffixes,
     this.contentPadding,
+    this.errorInlineIconPadding,
   });
 
   final String? name;
@@ -57,6 +58,7 @@ class PrimaryTextField extends StatelessWidget {
   final TextInputAction? textInputAction;
   final List<Widget>? suffixes;
   final EdgeInsets? contentPadding;
+  final EdgeInsets? errorInlineIconPadding;
 
   @override
   Widget build(BuildContext context) {
@@ -111,7 +113,10 @@ class PrimaryTextField extends StatelessWidget {
         color: themeStyle.colors.contentNegative,
       ),
       errorInlineIcon: Padding(
-        padding: const EdgeInsets.symmetric(horizontal: DimensSize.d14),
+        padding: errorInlineIconPadding ??
+            const EdgeInsets.symmetric(
+              horizontal: DimensSize.d14,
+            ),
         child: Center(
           child: Icon(
             LucideIcons.triangleAlert,
