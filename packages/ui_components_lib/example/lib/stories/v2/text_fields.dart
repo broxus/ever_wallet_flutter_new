@@ -113,7 +113,6 @@ class _TextFieldsStoryV2State extends State<TextFieldsStoryV2> {
                   height: 40,
                   color: context.themeStyleV2?.colors.background3,
                   alignment: Alignment.center,
-                  margin: const EdgeInsets.only(right: 10),
                   child: const Text('S1'),
                 ),
               ],

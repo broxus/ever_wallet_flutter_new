@@ -32,6 +32,7 @@ class PrimaryTextField extends StatelessWidget {
     this.onSubmit,
     this.onChanged,
     this.suffixes,
+    this.contentPadding,
   });
 
   final String? name;
@@ -55,6 +56,7 @@ class PrimaryTextField extends StatelessWidget {
   final ValueChanged<String?>? onChanged;
   final TextInputAction? textInputAction;
   final List<Widget>? suffixes;
+  final EdgeInsets? contentPadding;
 
   @override
   Widget build(BuildContext context) {
@@ -80,10 +82,11 @@ class PrimaryTextField extends StatelessWidget {
       borderRadius: radius,
       height: height ?? sizeType.height,
       errorType: errorType,
-      contentPadding: const EdgeInsets.only(
-        left: DimensSize.d16,
-        right: DimensSize.d4,
-      ),
+      contentPadding: contentPadding ??
+          const EdgeInsets.only(
+            left: DimensSize.d16,
+            right: DimensSize.d4,
+          ),
       prefixIcon: labelText == null
           ? null
           : Padding(
@@ -106,10 +109,9 @@ class PrimaryTextField extends StatelessWidget {
       ),
       errorTextStyle: themeStyle?.textStyles.paragraphSmall.copyWith(
         color: themeStyle.colors.contentNegative,
-        fontWeight: FontWeight.w400,
       ),
       errorInlineIcon: Padding(
-        padding: const EdgeInsets.only(right: DimensSize.d10),
+        padding: const EdgeInsets.symmetric(horizontal: DimensSize.d14),
         child: Center(
           child: Icon(
             LucideIcons.triangleAlert,
