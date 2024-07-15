@@ -1612,8 +1612,8 @@ class InpageProvider extends ProviderApi {
     final info = await nr.computeStorageFee(
       config: config.config,
       account: input.state.boc,
-      utime: input.timestamp?.toInt()
-          ?? NtpTime.now().millisecondsSinceEpoch ~/ 1000,
+      utime: input.timestamp?.toInt() ??
+          NtpTime.now().millisecondsSinceEpoch ~/ 1000,
       isMasterchain: input.masterchain,
     );
 
