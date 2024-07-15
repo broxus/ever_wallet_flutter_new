@@ -4,6 +4,9 @@ import 'package:lucide_icons_flutter/lucide_icons.dart';
 import 'package:ui_components_lib/ui_components_lib.dart';
 import 'package:ui_components_lib/v2/widgets/text_fields/base_text_field.dart';
 
+/// {@template base_text_field}
+/// Primary text field v2,
+/// {@endtemplate}
 class PrimaryTextField extends StatelessWidget {
   const PrimaryTextField({
     super.key,
@@ -103,7 +106,6 @@ class PrimaryTextField extends StatelessWidget {
       errorTextStyle: themeStyle?.textStyles.paragraphSmall.copyWith(
         color: themeStyle.colors.contentNegative,
         fontWeight: FontWeight.w400,
-        height: 1,
       ),
       errorInlineIcon: Padding(
         padding: const EdgeInsets.only(right: DimensSize.d10),

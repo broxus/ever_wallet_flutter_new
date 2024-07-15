@@ -6,6 +6,19 @@ import 'package:flutter_form_builder/flutter_form_builder.dart';
 import 'package:ui_components_lib/dimens.dart';
 import 'package:ui_components_lib/v2/utils/state_mixins.dart';
 
+/// {@template base_text_field}
+/// Default text field v2,
+/// This widget is built based on the flutter_form_builder library
+///
+/// The widget also supports verification via FormField using [validator].
+///
+/// If [validator] is specified and it returns a text value, then the input will be
+/// visible below the input field. If empty text is returned, only the border will be red.
+/// You can force the error text to be passed instead of the validator
+/// and force the error to be displayed.
+/// Forced display without forced text and validator -
+/// will display the error only as a border
+/// {@endtemplate}
 class BaseTextField extends StatefulWidget {
   const BaseTextField({
     super.key,
@@ -55,11 +68,22 @@ class BaseTextField extends StatefulWidget {
     this.errorType = TextFieldErrorType.outline,
   });
 
+  /// Necessary if you plan to use getting the value of a field through a form
   final String? name;
+
+  /// Placeholder
   final String? hintText;
+
+  /// Widget before text
   final Widget? prefixIcon;
+
+  /// Widget after text
   final Widget? suffixIcon;
+
+  /// Widget for error inside TextField, instead message
   final Widget? errorInlineIcon;
+
+  /// Padding inside TextField
   final EdgeInsetsGeometry contentPadding;
   final Color? activeBackgroundColor;
   final Color? disableBackgroundColor;
@@ -94,10 +118,21 @@ class BaseTextField extends StatefulWidget {
   final int? maxLength;
   final int? maxLines;
   final int? minLines;
+
+  /// isEnabled == true
   final double? enabledOpacity;
+
+  /// isEnabled == false
   final double? disabledOpacity;
+
+  /// Postfix as List
   final List<Widget>? postfixes;
+
+  /// inline - error icon [errorInlineIcon]
+  /// outline - text under field
   final TextFieldErrorType errorType;
+
+  /// Forced show erroe
   final bool? isShowErrorForced;
 
   @override
