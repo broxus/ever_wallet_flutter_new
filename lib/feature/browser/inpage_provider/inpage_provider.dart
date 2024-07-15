@@ -1599,4 +1599,40 @@ class InpageProvider extends ProviderApi {
       rethrow;
     }
   }
+
+  @override
+  Future<ComputeStorageFeeOutput> computeStorageFee(
+    ComputeStorageFeeInput input,
+  ) async {
+    _checkPermissions(permissions: permissionsService.getPermissions(origin));
+
+    final transport = nekotonRepository.currentTransport.transport;
+    final config = await transport.getBlockchainConfig();
+
+    final info = await nr.computeStorageFee(
+      config: config.config,
+      account: input.state.boc,
+      utime: input.timestamp?.toInt() ??
+          NtpTime.now().millisecondsSinceEpoch ~/ 1000,
+      isMasterchain: input.masterchain,
+    );
+
+    return ComputeStorageFeeOutput(
+      info.storageFee,
+      info.storageFeeDebt,
+      info.accountStatus,
+      info.freezeDueLimit,
+      info.deleteDueLimit,
+    );
+  }
+
+  @override
+  Future<AddNetworkOutput> addNetwork(AddNetworkInput input) {
+    throw UnimplementedError();
+  }
+
+  @override
+  Future<ChangeNetworkOutput> changeNetwork(ChangeNetworkInput input) {
+    throw UnimplementedError();
+  }
 }
