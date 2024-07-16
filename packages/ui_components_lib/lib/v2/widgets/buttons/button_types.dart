@@ -10,6 +10,7 @@ class AccentButton extends BaseButton {
     super.child,
     super.icon,
     super.postfixIcon,
+    super.buttonSize,
     super.key,
   });
 }
@@ -23,6 +24,7 @@ class PrimaryButton extends BaseButton {
     super.child,
     super.icon,
     super.postfixIcon,
+    super.buttonSize,
     super.key,
   });
 }
@@ -36,6 +38,7 @@ class FloatButton extends BaseButton {
     super.child,
     super.icon,
     super.postfixIcon,
+    super.buttonSize,
     super.key,
   });
 }
@@ -49,6 +52,7 @@ class GhostButton extends BaseButton {
     super.child,
     super.icon,
     super.postfixIcon,
+    super.buttonSize,
     super.key,
   });
 }
@@ -62,6 +66,7 @@ class DestructiveButton extends BaseButton {
     super.child,
     super.icon,
     super.postfixIcon,
+    super.buttonSize,
     super.key,
   });
 }

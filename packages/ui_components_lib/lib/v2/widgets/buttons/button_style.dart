@@ -6,7 +6,7 @@ enum ButtonStyleType { ghost, accent, primary, float, destructive }
 
 class AppButtonStyle {
   AppButtonStyle.ghost(ColorsPaletteV2 colors, TextStylesV2 textStyles)
-      : backgroundColor = colors.backgroundAlpha,
+      : backgroundColor = ColorsResV2.transparent,
         iconColor = colors.content0,
         buttonTextStyle = textStyles.labelMedium,
         borderColor = colors.borderFocus.withOpacity(OpacV2.opac50);
@@ -31,7 +31,7 @@ class AppButtonStyle {
 
   AppButtonStyle.destructive(ColorsPaletteV2 colors, TextStylesV2 textStyles)
       : backgroundColor = colors.backgroundNegative,
-        iconColor = colors.contentNegative,
+        iconColor = colors.content0,
         buttonTextStyle = textStyles.labelMedium,
         borderColor = colors.borderFocus.withOpacity(OpacV2.opac50);
 

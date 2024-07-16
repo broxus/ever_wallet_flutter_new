@@ -3,7 +3,6 @@ import 'package:ui_components_lib/v2/ui_components_lib_v2.dart';
 import 'package:ui_components_lib/v2/widgets/buttons/button.dart';
 
 abstract class BaseButton extends StatelessWidget {
-
   const BaseButton({
     required this.buttonShape,
     this.child,
@@ -45,14 +44,19 @@ abstract class BaseButton extends StatelessWidget {
           buttonSize,
         ),
       ),
-      //overlayColor:MaterialStateProperty.resolveWith<Color>(_getClrBkground),
       backgroundColor: MaterialStateProperty.resolveWith<Color>(
         (Set<MaterialState> states) => _getColorBackground(states, style),
+      ),
+      overlayColor: MaterialStateProperty.resolveWith<Color>(
+        (Set<MaterialState> states) => _getColorOverlay(
+          states,
+          style,
+        ),
       ),
       foregroundColor: MaterialStateProperty.resolveWith<Color?>(
         (Set<MaterialState> states) => _getColorForeground(
           states,
-          style.iconColor,
+          style,
         ),
       ),
       padding: MaterialStateProperty.resolveWith(
@@ -63,29 +67,44 @@ abstract class BaseButton extends StatelessWidget {
     );
     final child = this.child ?? Text(title ?? '', textAlign: TextAlign.center);
 
-    return ElevatedButton(
-      onPressed: onPressed,
-      style: buttonStyle,
-      child: Row(
-        mainAxisAlignment: MainAxisAlignment.center,
-        children: isLoading
-            ? [_progressIndicator()]
-            : [
-                if (icon != null) Icon(icon, size: _iconSize(buttonSize)),
-                child,
-                if (postfixIcon != null)
-                  Icon(postfixIcon, size: _iconSize(buttonSize)),
-              ],
-      ),
-    );
+    return buttonShape == ButtonShape.pill ||
+            buttonShape == ButtonShape.rectangle
+        ? ElevatedButton(
+            onPressed: isLoading ? null : onPressed,
+            style: buttonStyle,
+            child: Row(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: isLoading
+                  ? [_progressIndicator(style.iconColor)]
+                  : [
+                      if (icon != null) Icon(icon, size: _iconSize(buttonSize)),
+                      if (icon != null) const SizedBox(width: DimensSizeV2.d8),
+                      child,
+                      if (postfixIcon != null)
+                        const SizedBox(width: DimensSizeV2.d8),
+                      if (postfixIcon != null)
+                        Icon(postfixIcon, size: _iconSize(buttonSize)),
+                    ],
+            ),
+          )
+        : SizedBox(
+            width: _getFabSize(buttonSize),
+            height: _getFabSize(buttonSize),
+            child: ElevatedButton(
+              style: buttonStyle,
+              onPressed: isLoading ? null : onPressed,
+              child: Icon(icon, size: _iconSize(buttonSize)),
+            ),
+          );
   }
 
-  Widget _progressIndicator() {
+  Widget _progressIndicator(Color color) {
     return SizedBox(
       width: _iconSize(buttonSize),
       height: _iconSize(buttonSize),
-      child: const CircularProgressIndicator(
+      child: CircularProgressIndicator(
         strokeWidth: 1.5,
+        color: color.withOpacity(OpacV2.opac50),
       ),
     );
   }
@@ -128,18 +147,31 @@ abstract class BaseButton extends StatelessWidget {
 
   Color _getColorBackground(Set<MaterialState> states, AppButtonStyle style) {
     if (states.contains(MaterialState.pressed)) {
-      return style.backgroundColor.withOpacity(OpacV2.opac80);
+      return style.backgroundColor.withOpacity(
+        style.backgroundColor.opacity * OpacV2.opac80,
+      );
     }
     if (states.contains(MaterialState.disabled)) {
-      return style.backgroundColor.withOpacity(OpacV2.opac50);
+      return style.backgroundColor
+          .withOpacity(style.backgroundColor.opacity * OpacV2.opac50);
     }
 
     return style.backgroundColor;
   }
 
-  Color _getColorForeground(Set<MaterialState> states, Color color) {
-    return color;
+  Color _getColorForeground(Set<MaterialState> states, AppButtonStyle style) {
+    if (states.contains(MaterialState.pressed)) {
+      return style.iconColor.withOpacity(OpacV2.opac80);
+    }
+    if (states.contains(MaterialState.disabled)) {
+      return style.iconColor.withOpacity(OpacV2.opac50);
+    }
+    return style.iconColor;
   }
+
+  Color _getColorOverlay(Set<MaterialState> states, AppButtonStyle style) =>
+      style.backgroundColor
+          .withOpacity(style.backgroundColor.opacity * OpacV2.opac80);
 
   double _getBorderRadius(ButtonShape shape, ButtonSize size) {
     if (shape == ButtonShape.rectangle || shape == ButtonShape.square) {
@@ -152,7 +184,7 @@ abstract class BaseButton extends StatelessWidget {
           return DimensRadiusV2.radius8;
       }
     } else {
-      return 9999; // TODO(malochka): extract
+      return DimensRadiusV2.theBiggest;
     }
   }
 
@@ -174,7 +206,7 @@ abstract class BaseButton extends StatelessWidget {
       case ButtonSize.medium:
         return DimensSizeV2.d16;
       case ButtonSize.small:
-        return DimensSizeV2.d12;
+        return DimensSizeV2.d8;
     }
   }
 
@@ -186,6 +218,17 @@ abstract class BaseButton extends StatelessWidget {
         return DimensSizeV2.d16;
       case ButtonSize.small:
         return DimensSizeV2.d16;
+    }
+  }
+
+  double _getFabSize(ButtonSize size) {
+    switch (size) {
+      case ButtonSize.large:
+        return DimensSizeV2.d56;
+      case ButtonSize.medium:
+        return DimensSizeV2.d48;
+      case ButtonSize.small:
+        return DimensSizeV2.d40;
     }
   }
 }

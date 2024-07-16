@@ -16,6 +16,7 @@ class DimensSizeV2 {
   static const double d40 = 40;
   static const double d44 = 44;
   static const double d48 = 48;
+  static const double d56 = 56;
 }
 
 class DimensStrokeV2 {
@@ -33,4 +34,5 @@ class DimensRadiusV2 {
   static const double radius16 = 16;
   static const double radius24 = 24;
   static const double radius32 = 32;
+  static const double theBiggest = 1000;
 }
