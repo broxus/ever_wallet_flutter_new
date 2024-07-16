@@ -31,7 +31,7 @@ abstract class BaseButton extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final themeStyle = context.themeStyleV2;
-    final style = getButtonStyleByType(themeStyle!);
+    final style = getButtonStyleByType(themeStyle);
     final buttonStyle = getButtonStyle(themeStyle, style);
     final child = this.child ?? Text(title ?? '', textAlign: TextAlign.center);
 
