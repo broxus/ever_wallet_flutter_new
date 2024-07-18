@@ -22,63 +22,6 @@ class PrimarySegmentControl extends StatelessWidget {
   final String? title;
   final String? value;
 
-  @override
-  Widget build(BuildContext context) {
-    final themeStyle = context.themeStyleV2;
-    final style = _getSegmentStyle(themeStyle);
-    return Container(
-      padding: _padding,
-      decoration: BoxDecoration(
-        borderRadius: BorderRadius.circular(_borderRadius),
-        color: style.backgroundColor,
-      ),
-      child: Row(
-        children: [
-          Icon(
-            icon,
-            color: style.iconColor,
-            size: _iconSize,
-          ),
-          if (title != null) const SizedBox(width: DimensSize.d8),
-          if (title != null)
-            Text(
-              title!,
-              style: style.titleTextStyle,
-            ),
-          if (value != null) const SizedBox(width: DimensSize.d8),
-          if (value != null)
-            Text(
-              value!,
-              style: style.valueTextStyle,
-            ),
-        ],
-      ),
-    );
-  }
-
-  SegmentControlStyle _getSegmentStyle(ThemeStyleV2 theme) {
-    switch (state) {
-      case SegmentControlState.normal:
-        return SegmentControlStyle.normal(
-          theme.colors,
-          theme.textStyles,
-          size,
-        );
-      case SegmentControlState.selected:
-        return SegmentControlStyle.selected(
-          theme.colors,
-          theme.textStyles,
-          size,
-        );
-      case SegmentControlState.disabled:
-        return SegmentControlStyle.disabled(
-          theme.colors,
-          theme.textStyles,
-          size,
-        );
-    }
-  }
-
   double get _iconSize {
     switch (size) {
       case SegmentControlSize.large:
@@ -118,6 +61,67 @@ class PrimarySegmentControl extends StatelessWidget {
         return DimensRadiusV2.radius12;
       case SegmentControlSize.small:
         return DimensRadiusV2.radius8;
+    }
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    final themeStyle = context.themeStyleV2;
+    final style = _getSegmentStyle(themeStyle);
+    return Container(
+      padding: _padding,
+      decoration: BoxDecoration(
+        borderRadius: BorderRadius.circular(_borderRadius),
+        color: style.backgroundColor,
+      ),
+      child: Row(
+        children: [
+          Icon(
+            icon,
+            color: style.iconColor,
+            size: _iconSize,
+          ),
+          if (title != null)
+            Padding(
+              padding: const EdgeInsets.only(left: DimensSize.d8),
+              child: Text(
+                title!,
+                style: style.titleTextStyle,
+              ),
+            ),
+          if (value != null)
+            Padding(
+              padding: const EdgeInsets.only(left: DimensSize.d8),
+              child: Text(
+                value!,
+                style: style.valueTextStyle,
+              ),
+            ),
+        ],
+      ),
+    );
+  }
+
+  SegmentControlStyle _getSegmentStyle(ThemeStyleV2 theme) {
+    switch (state) {
+      case SegmentControlState.normal:
+        return SegmentControlStyle.normal(
+          theme.colors,
+          theme.textStyles,
+          size,
+        );
+      case SegmentControlState.selected:
+        return SegmentControlStyle.selected(
+          theme.colors,
+          theme.textStyles,
+          size,
+        );
+      case SegmentControlState.disabled:
+        return SegmentControlStyle.disabled(
+          theme.colors,
+          theme.textStyles,
+          size,
+        );
     }
   }
 }
