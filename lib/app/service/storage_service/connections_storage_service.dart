@@ -14,6 +14,7 @@ import 'package:rxdart/rxdart.dart';
 const _connectionsDomain = 'connections';
 const _connectionsKey = 'connections';
 const _currentConnectionIdKey = 'current_connection_id';
+const _globalIdMapKey = 'global_id_map';
 
 /// This is a wrapper-class above [EncryptedStorage] that provides methods
 /// to interact with custom connection - related data.
@@ -32,6 +33,9 @@ class ConnectionsStorageService extends AbstractStorageService {
   /// Subject of currect connection id
   final _currentConnectionIdSubject = BehaviorSubject<String>();
 
+  // Subject of map(id -> globalId)
+  final _globalIdMapSubject = BehaviorSubject<Map<String, int>>();
+
   /// Stream of [ConnectionData] items
   BehaviorSubject<List<ConnectionData>> get connectionsStream =>
       _connectionsSubject;
@@ -40,11 +44,18 @@ class ConnectionsStorageService extends AbstractStorageService {
   BehaviorSubject<String> get currentConnectionIdStream =>
       _currentConnectionIdSubject;
 
+  /// Stream of map(id -> globalId)
+  BehaviorSubject<Map<String, int>> get globalIdMapStream =>
+      _globalIdMapSubject;
+
   /// Get last cached [ConnectionData] items
   List<ConnectionData> get connections => _connectionsSubject.valueOrNull ?? [];
 
   /// Get last cached current connection id
   String get currentConnectionId => _currentConnectionIdSubject.value;
+
+  /// Get last cached globalId map
+  Map<String, int> get globalIdMap => _globalIdMapSubject.valueOrNull ?? {};
 
   /// Stream of currect connection id
   Stream<ConnectionData> get currentConnectionStream => Rx.combineLatest2(
@@ -91,6 +102,10 @@ class ConnectionsStorageService extends AbstractStorageService {
   /// Put current connection id to stream
   Future<void> _streamedCurrentConnectionId() async =>
       _currentConnectionIdSubject.add(await readCurrentConnectionId());
+
+  /// Put globalId map to stream
+  Future<void> _streamedGlobalIdMap() async =>
+      _globalIdMapSubject.add(await readGlobalIdMap());
 
   /// Read list of [ConnectionData] items from presets and storage
   Future<List<ConnectionData>> readConnections() async {
@@ -156,6 +171,27 @@ class ConnectionsStorageService extends AbstractStorageService {
     return currentId;
   }
 
+  /// Read globalId map from storage
+  Future<Map<String, int>> readGlobalIdMap() async {
+    var map = <String, int>{};
+    final encoded = await _storage.get(
+      _globalIdMapKey,
+      domain: _connectionsDomain,
+    );
+
+    if (encoded != null) {
+      final decoded = jsonDecode(encoded) as Map<String, dynamic>;
+      map = decoded.cast<String, int>();
+    }
+
+    final text = map.entries
+        .map((entry) => '${entry.key}: ${entry.value}')
+        .join(',\n');
+    _log.info('Global ids:\n$text');
+
+    return map;
+  }
+
   /// Save list of [ConnectionData] items to storage
   Future<void> _saveConnections(List<ConnectionData> connections) async {
     await _storage.set(
@@ -187,6 +223,17 @@ class ConnectionsStorageService extends AbstractStorageService {
     await _streamedCurrentConnectionId();
   }
 
+  /// Save globalId map to storage
+  Future<void> _saveGlobalIdMap(Map<String, int> map) async {
+    await _storage.set(
+      _globalIdMapKey,
+      jsonEncode(map),
+      domain: _connectionsDomain,
+    );
+
+    await _streamedGlobalIdMap();
+  }
+
   /// Clear [ConnectionData] list
   Future<void> clear() async {
     await _storage.delete(
@@ -199,8 +246,14 @@ class ConnectionsStorageService extends AbstractStorageService {
       domain: _connectionsDomain,
     );
 
+    await _storage.delete(
+      _globalIdMapKey,
+      domain: _connectionsDomain,
+    );
+
     await _streamedConnections();
     await _streamedCurrentConnectionId();
+    await _streamedGlobalIdMap();
   }
 
   /// Add [ConnectionData] item
@@ -267,10 +320,16 @@ class ConnectionsStorageService extends AbstractStorageService {
     return updateConnection(preset);
   }
 
+  Future<void> addOrUpdateGlobalId(String id, int globalId) async {
+    globalIdMap[id] = globalId;
+    await _saveGlobalIdMap(globalIdMap);
+  }
+
   @override
   Future<void> init() => Future.wait([
         _streamedConnections(),
         _streamedCurrentConnectionId(),
+        _streamedGlobalIdMap(),
       ]);
 
   @override

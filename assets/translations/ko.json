@@ -467,5 +467,7 @@
   "tryAgain": "Try again",
   "connectingNetworkFailed": "Connecting network failed, please, try another network.",
   "creatingSubscriptionFailed": "Creating subscription failed",
-  "suchTokenCannotBeSubscribed": "Such token cannot be subscribed now"
+  "suchTokenCannotBeSubscribed": "Such token cannot be subscribed now",
+  "addNetworkExistError": "Network already exists",
+  "addNetworkIdError": "Network ids do not match"
 }

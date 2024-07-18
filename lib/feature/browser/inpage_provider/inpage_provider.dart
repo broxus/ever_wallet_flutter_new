@@ -3,6 +3,7 @@ import 'dart:async';
 import 'package:app/app/service/service.dart' as s;
 import 'package:app/data/models/models.dart';
 import 'package:app/di/di.dart';
+import 'package:app/feature/browser/inpage_provider/inpage_provider_extensions.dart';
 import 'package:app/generated/generated.dart';
 import 'package:app/utils/constants.dart';
 import 'package:app/utils/utils.dart';
@@ -22,6 +23,8 @@ class InpageProvider extends ProviderApi {
     required this.approvalsService,
     required this.permissionsService,
     required this.nekotonRepository,
+    required this.connectionsStorageService,
+    required this.connectionService,
   });
 
   final _logger = Logger('InpageProvider');
@@ -31,6 +34,8 @@ class InpageProvider extends ProviderApi {
   final s.BrowserApprovalsService approvalsService;
   final s.PermissionsService permissionsService;
   final nr.NekotonRepository nekotonRepository;
+  final s.ConnectionsStorageService connectionsStorageService;
+  final s.ConnectionService connectionService;
 
   Uri? url;
   Uri? get origin => url == null ? null : Uri.parse(url!.origin);
@@ -1627,12 +1632,99 @@ class InpageProvider extends ProviderApi {
   }
 
   @override
-  Future<AddNetworkOutput> addNetwork(AddNetworkInput input) {
-    throw UnimplementedError();
+  Future<AddNetworkOutput> addNetwork(AddNetworkInput input) async {
+    _checkPermissions(permissions: permissionsService.getPermissions(origin));
+
+    if (await _hasNetwork(input.network.networkId.toInt())) {
+      throw s.ApprovalsHandleException(LocaleKeys.addNetworkExistError.tr());
+    }
+
+    final transport = await connectionService.createTransport(
+        input.network.connectionData,
+    );
+    final networkId = await transport.getNetworkId();
+    final description = await transport.getNetworkDescription();
+    transport.dispose();
+
+    if (input.network.networkId != networkId) {
+      throw s.ApprovalsHandleException(LocaleKeys.addNetworkIdError.tr());
+    }
+
+    final connection = await approvalsService.addNetwork(
+      origin: origin!,
+      addNetwork: input.network,
+      switchNetwork: input.switchNetwork ?? false,
+    );
+
+    return AddNetworkOutput(
+      Network(
+        connection.name,
+        description,
+        connection.networkConnection,
+        connection.networkConfig,
+      ),
+    );
   }
 
   @override
-  Future<ChangeNetworkOutput> changeNetwork(ChangeNetworkInput input) {
-    throw UnimplementedError();
+  Future<ChangeNetworkOutput> changeNetwork(ChangeNetworkInput input) async {
+    _checkPermissions(permissions: permissionsService.getPermissions(origin));
+
+    ConnectionData connection;
+    NetworkDescription description;
+
+    final currentNetworkId =
+      await nekotonRepository.currentTransport.transport.getNetworkId();
+
+    if (input.networkId == currentNetworkId) {
+      connection = connectionsStorageService.currentConnection;
+      description = await nekotonRepository.currentTransport.transport
+          .getNetworkDescription();
+    } else {
+      connection = await approvalsService.changeNetwork(
+        origin: origin!,
+        networkId: input.networkId.toInt(),
+      );
+      final transport = await connectionService.createTransport(connection);
+      description = await transport.getNetworkDescription();
+      transport.dispose();
+    }
+
+    return ChangeNetworkOutput(
+      Network(
+        connection.name,
+        description,
+        connection.networkConnection,
+        connection.networkConfig,
+      ),
+    );
+  }
+
+  Future<bool> _hasNetwork(int networkId) async {
+    final connections = connectionsStorageService.connections;
+    final globalIdMap = connectionsStorageService.globalIdMap;
+
+    for (final connection in connections) {
+      var globalId = globalIdMap[connection.id];
+
+      if (globalId == null) {
+        nr.Transport? transport;
+        try {
+          transport = await connectionService.createTransport(connection);
+          globalId = await transport.getNetworkId();
+
+          await connectionsStorageService
+            .addOrUpdateGlobalId(connection.id, globalId);
+        } finally {
+          transport?.dispose();
+        }
+      }
+
+      if (networkId == globalId) {
+        return true;
+      }
+    }
+
+    return false;
   }
 }

@@ -3,6 +3,7 @@ import 'dart:async';
 import 'package:app/data/models/models.dart';
 import 'package:injectable/injectable.dart';
 import 'package:nekoton_repository/nekoton_repository.dart';
+import 'package:nekoton_webview/nekoton_webview.dart' as nw;
 import 'package:rxdart/rxdart.dart';
 
 /// Exception that can be thrown during handling any callbacks.
@@ -211,6 +212,50 @@ class BrowserApprovalsService {
       bounce: bounce,
       payload: payload,
       knownPayload: knownPayload,
+      completer: completer,
+    );
+
+    _approvalsSubject.add(request);
+
+    return completer.future;
+  }
+
+  /// Request user to change selected network.
+  /// Action requires user agreement
+  /// Returns [ConnectionData] item
+  /// Typically, exception must be [ApprovalsHandleException] or [FfiException]
+  Future<ConnectionData> changeNetwork({
+    required Uri origin,
+    required int networkId,
+  }) async {
+    final completer = Completer<ConnectionData>();
+
+    final request = ApprovalRequest.changeNetwork(
+      origin: origin,
+      networkId: networkId,
+      completer: completer,
+    );
+
+    _approvalsSubject.add(request);
+
+    return completer.future;
+  }
+
+  /// Request user to add a new network.
+  /// Action requires user agreement
+  /// Returns [ConnectionData] item
+  /// Typically, exception must be [ApprovalsHandleException] or [FfiException]
+  Future<ConnectionData> addNetwork({
+    required Uri origin,
+    required nw.AddNetwork addNetwork,
+    required bool switchNetwork,
+  }) async {
+    final completer = Completer<ConnectionData>();
+
+    final request = ApprovalRequest.addNetwork(
+      origin: origin,
+      addNetwork: addNetwork,
+      switchNetwork: switchNetwork,
       completer: completer,
     );
 

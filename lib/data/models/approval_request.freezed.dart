@@ -55,6 +55,12 @@ mixin _$ApprovalRequest {
             KnownPayload? knownPayload,
             Completer<(PublicKey, String)> completer)
         sendMessage,
+    required TResult Function(
+            Uri origin, int networkId, Completer<ConnectionData> completer)
+        changeNetwork,
+    required TResult Function(Uri origin, nw.AddNetwork addNetwork,
+            bool switchNetwork, Completer<ConnectionData> completer)
+        addNetwork,
   }) =>
       throw _privateConstructorUsedError;
   @optionalTypeArgs
@@ -90,6 +96,12 @@ mixin _$ApprovalRequest {
             KnownPayload? knownPayload,
             Completer<(PublicKey, String)> completer)?
         sendMessage,
+    TResult? Function(
+            Uri origin, int networkId, Completer<ConnectionData> completer)?
+        changeNetwork,
+    TResult? Function(Uri origin, nw.AddNetwork addNetwork, bool switchNetwork,
+            Completer<ConnectionData> completer)?
+        addNetwork,
   }) =>
       throw _privateConstructorUsedError;
   @optionalTypeArgs
@@ -125,6 +137,12 @@ mixin _$ApprovalRequest {
             KnownPayload? knownPayload,
             Completer<(PublicKey, String)> completer)?
         sendMessage,
+    TResult Function(
+            Uri origin, int networkId, Completer<ConnectionData> completer)?
+        changeNetwork,
+    TResult Function(Uri origin, nw.AddNetwork addNetwork, bool switchNetwork,
+            Completer<ConnectionData> completer)?
+        addNetwork,
     required TResult orElse(),
   }) =>
       throw _privateConstructorUsedError;
@@ -138,6 +156,8 @@ mixin _$ApprovalRequest {
     required TResult Function(_DecryptData value) decryptData,
     required TResult Function(_CallContractMethod value) callContractMethod,
     required TResult Function(_SendMessage value) sendMessage,
+    required TResult Function(_ChangeNetwork value) changeNetwork,
+    required TResult Function(_AddNetwork value) addNetwork,
   }) =>
       throw _privateConstructorUsedError;
   @optionalTypeArgs
@@ -150,6 +170,8 @@ mixin _$ApprovalRequest {
     TResult? Function(_DecryptData value)? decryptData,
     TResult? Function(_CallContractMethod value)? callContractMethod,
     TResult? Function(_SendMessage value)? sendMessage,
+    TResult? Function(_ChangeNetwork value)? changeNetwork,
+    TResult? Function(_AddNetwork value)? addNetwork,
   }) =>
       throw _privateConstructorUsedError;
   @optionalTypeArgs
@@ -162,6 +184,8 @@ mixin _$ApprovalRequest {
     TResult Function(_DecryptData value)? decryptData,
     TResult Function(_CallContractMethod value)? callContractMethod,
     TResult Function(_SendMessage value)? sendMessage,
+    TResult Function(_ChangeNetwork value)? changeNetwork,
+    TResult Function(_AddNetwork value)? addNetwork,
     required TResult orElse(),
   }) =>
       throw _privateConstructorUsedError;
@@ -338,6 +362,12 @@ class _$RequestPermissionsImpl implements _RequestPermissions {
             KnownPayload? knownPayload,
             Completer<(PublicKey, String)> completer)
         sendMessage,
+    required TResult Function(
+            Uri origin, int networkId, Completer<ConnectionData> completer)
+        changeNetwork,
+    required TResult Function(Uri origin, nw.AddNetwork addNetwork,
+            bool switchNetwork, Completer<ConnectionData> completer)
+        addNetwork,
   }) {
     return requestPermissions(origin, permissions, completer);
   }
@@ -376,6 +406,12 @@ class _$RequestPermissionsImpl implements _RequestPermissions {
             KnownPayload? knownPayload,
             Completer<(PublicKey, String)> completer)?
         sendMessage,
+    TResult? Function(
+            Uri origin, int networkId, Completer<ConnectionData> completer)?
+        changeNetwork,
+    TResult? Function(Uri origin, nw.AddNetwork addNetwork, bool switchNetwork,
+            Completer<ConnectionData> completer)?
+        addNetwork,
   }) {
     return requestPermissions?.call(origin, permissions, completer);
   }
@@ -414,6 +450,12 @@ class _$RequestPermissionsImpl implements _RequestPermissions {
             KnownPayload? knownPayload,
             Completer<(PublicKey, String)> completer)?
         sendMessage,
+    TResult Function(
+            Uri origin, int networkId, Completer<ConnectionData> completer)?
+        changeNetwork,
+    TResult Function(Uri origin, nw.AddNetwork addNetwork, bool switchNetwork,
+            Completer<ConnectionData> completer)?
+        addNetwork,
     required TResult orElse(),
   }) {
     if (requestPermissions != null) {
@@ -433,6 +475,8 @@ class _$RequestPermissionsImpl implements _RequestPermissions {
     required TResult Function(_DecryptData value) decryptData,
     required TResult Function(_CallContractMethod value) callContractMethod,
     required TResult Function(_SendMessage value) sendMessage,
+    required TResult Function(_ChangeNetwork value) changeNetwork,
+    required TResult Function(_AddNetwork value) addNetwork,
   }) {
     return requestPermissions(this);
   }
@@ -448,6 +492,8 @@ class _$RequestPermissionsImpl implements _RequestPermissions {
     TResult? Function(_DecryptData value)? decryptData,
     TResult? Function(_CallContractMethod value)? callContractMethod,
     TResult? Function(_SendMessage value)? sendMessage,
+    TResult? Function(_ChangeNetwork value)? changeNetwork,
+    TResult? Function(_AddNetwork value)? addNetwork,
   }) {
     return requestPermissions?.call(this);
   }
@@ -463,6 +509,8 @@ class _$RequestPermissionsImpl implements _RequestPermissions {
     TResult Function(_DecryptData value)? decryptData,
     TResult Function(_CallContractMethod value)? callContractMethod,
     TResult Function(_SendMessage value)? sendMessage,
+    TResult Function(_ChangeNetwork value)? changeNetwork,
+    TResult Function(_AddNetwork value)? addNetwork,
     required TResult orElse(),
   }) {
     if (requestPermissions != null) {
@@ -653,6 +701,12 @@ class _$ChangeAccountImpl implements _ChangeAccount {
             KnownPayload? knownPayload,
             Completer<(PublicKey, String)> completer)
         sendMessage,
+    required TResult Function(
+            Uri origin, int networkId, Completer<ConnectionData> completer)
+        changeNetwork,
+    required TResult Function(Uri origin, nw.AddNetwork addNetwork,
+            bool switchNetwork, Completer<ConnectionData> completer)
+        addNetwork,
   }) {
     return changeAccount(
         origin, permissions, previousSelectedAccount, completer);
@@ -692,6 +746,12 @@ class _$ChangeAccountImpl implements _ChangeAccount {
             KnownPayload? knownPayload,
             Completer<(PublicKey, String)> completer)?
         sendMessage,
+    TResult? Function(
+            Uri origin, int networkId, Completer<ConnectionData> completer)?
+        changeNetwork,
+    TResult? Function(Uri origin, nw.AddNetwork addNetwork, bool switchNetwork,
+            Completer<ConnectionData> completer)?
+        addNetwork,
   }) {
     return changeAccount?.call(
         origin, permissions, previousSelectedAccount, completer);
@@ -731,6 +791,12 @@ class _$ChangeAccountImpl implements _ChangeAccount {
             KnownPayload? knownPayload,
             Completer<(PublicKey, String)> completer)?
         sendMessage,
+    TResult Function(
+            Uri origin, int networkId, Completer<ConnectionData> completer)?
+        changeNetwork,
+    TResult Function(Uri origin, nw.AddNetwork addNetwork, bool switchNetwork,
+            Completer<ConnectionData> completer)?
+        addNetwork,
     required TResult orElse(),
   }) {
     if (changeAccount != null) {
@@ -751,6 +817,8 @@ class _$ChangeAccountImpl implements _ChangeAccount {
     required TResult Function(_DecryptData value) decryptData,
     required TResult Function(_CallContractMethod value) callContractMethod,
     required TResult Function(_SendMessage value) sendMessage,
+    required TResult Function(_ChangeNetwork value) changeNetwork,
+    required TResult Function(_AddNetwork value) addNetwork,
   }) {
     return changeAccount(this);
   }
@@ -766,6 +834,8 @@ class _$ChangeAccountImpl implements _ChangeAccount {
     TResult? Function(_DecryptData value)? decryptData,
     TResult? Function(_CallContractMethod value)? callContractMethod,
     TResult? Function(_SendMessage value)? sendMessage,
+    TResult? Function(_ChangeNetwork value)? changeNetwork,
+    TResult? Function(_AddNetwork value)? addNetwork,
   }) {
     return changeAccount?.call(this);
   }
@@ -781,6 +851,8 @@ class _$ChangeAccountImpl implements _ChangeAccount {
     TResult Function(_DecryptData value)? decryptData,
     TResult Function(_CallContractMethod value)? callContractMethod,
     TResult Function(_SendMessage value)? sendMessage,
+    TResult Function(_ChangeNetwork value)? changeNetwork,
+    TResult Function(_AddNetwork value)? addNetwork,
     required TResult orElse(),
   }) {
     if (changeAccount != null) {
@@ -963,6 +1035,12 @@ class _$AddTip3TokenImpl implements _AddTip3Token {
             KnownPayload? knownPayload,
             Completer<(PublicKey, String)> completer)
         sendMessage,
+    required TResult Function(
+            Uri origin, int networkId, Completer<ConnectionData> completer)
+        changeNetwork,
+    required TResult Function(Uri origin, nw.AddNetwork addNetwork,
+            bool switchNetwork, Completer<ConnectionData> completer)
+        addNetwork,
   }) {
     return addTip3Token(origin, account, details, completer);
   }
@@ -1001,6 +1079,12 @@ class _$AddTip3TokenImpl implements _AddTip3Token {
             KnownPayload? knownPayload,
             Completer<(PublicKey, String)> completer)?
         sendMessage,
+    TResult? Function(
+            Uri origin, int networkId, Completer<ConnectionData> completer)?
+        changeNetwork,
+    TResult? Function(Uri origin, nw.AddNetwork addNetwork, bool switchNetwork,
+            Completer<ConnectionData> completer)?
+        addNetwork,
   }) {
     return addTip3Token?.call(origin, account, details, completer);
   }
@@ -1039,6 +1123,12 @@ class _$AddTip3TokenImpl implements _AddTip3Token {
             KnownPayload? knownPayload,
             Completer<(PublicKey, String)> completer)?
         sendMessage,
+    TResult Function(
+            Uri origin, int networkId, Completer<ConnectionData> completer)?
+        changeNetwork,
+    TResult Function(Uri origin, nw.AddNetwork addNetwork, bool switchNetwork,
+            Completer<ConnectionData> completer)?
+        addNetwork,
     required TResult orElse(),
   }) {
     if (addTip3Token != null) {
@@ -1058,6 +1148,8 @@ class _$AddTip3TokenImpl implements _AddTip3Token {
     required TResult Function(_DecryptData value) decryptData,
     required TResult Function(_CallContractMethod value) callContractMethod,
     required TResult Function(_SendMessage value) sendMessage,
+    required TResult Function(_ChangeNetwork value) changeNetwork,
+    required TResult Function(_AddNetwork value) addNetwork,
   }) {
     return addTip3Token(this);
   }
@@ -1073,6 +1165,8 @@ class _$AddTip3TokenImpl implements _AddTip3Token {
     TResult? Function(_DecryptData value)? decryptData,
     TResult? Function(_CallContractMethod value)? callContractMethod,
     TResult? Function(_SendMessage value)? sendMessage,
+    TResult? Function(_ChangeNetwork value)? changeNetwork,
+    TResult? Function(_AddNetwork value)? addNetwork,
   }) {
     return addTip3Token?.call(this);
   }
@@ -1088,6 +1182,8 @@ class _$AddTip3TokenImpl implements _AddTip3Token {
     TResult Function(_DecryptData value)? decryptData,
     TResult Function(_CallContractMethod value)? callContractMethod,
     TResult Function(_SendMessage value)? sendMessage,
+    TResult Function(_ChangeNetwork value)? changeNetwork,
+    TResult Function(_AddNetwork value)? addNetwork,
     required TResult orElse(),
   }) {
     if (addTip3Token != null) {
@@ -1262,6 +1358,12 @@ class _$SignDataImpl implements _SignData {
             KnownPayload? knownPayload,
             Completer<(PublicKey, String)> completer)
         sendMessage,
+    required TResult Function(
+            Uri origin, int networkId, Completer<ConnectionData> completer)
+        changeNetwork,
+    required TResult Function(Uri origin, nw.AddNetwork addNetwork,
+            bool switchNetwork, Completer<ConnectionData> completer)
+        addNetwork,
   }) {
     return signData(origin, publicKey, data, completer);
   }
@@ -1300,6 +1402,12 @@ class _$SignDataImpl implements _SignData {
             KnownPayload? knownPayload,
             Completer<(PublicKey, String)> completer)?
         sendMessage,
+    TResult? Function(
+            Uri origin, int networkId, Completer<ConnectionData> completer)?
+        changeNetwork,
+    TResult? Function(Uri origin, nw.AddNetwork addNetwork, bool switchNetwork,
+            Completer<ConnectionData> completer)?
+        addNetwork,
   }) {
     return signData?.call(origin, publicKey, data, completer);
   }
@@ -1338,6 +1446,12 @@ class _$SignDataImpl implements _SignData {
             KnownPayload? knownPayload,
             Completer<(PublicKey, String)> completer)?
         sendMessage,
+    TResult Function(
+            Uri origin, int networkId, Completer<ConnectionData> completer)?
+        changeNetwork,
+    TResult Function(Uri origin, nw.AddNetwork addNetwork, bool switchNetwork,
+            Completer<ConnectionData> completer)?
+        addNetwork,
     required TResult orElse(),
   }) {
     if (signData != null) {
@@ -1357,6 +1471,8 @@ class _$SignDataImpl implements _SignData {
     required TResult Function(_DecryptData value) decryptData,
     required TResult Function(_CallContractMethod value) callContractMethod,
     required TResult Function(_SendMessage value) sendMessage,
+    required TResult Function(_ChangeNetwork value) changeNetwork,
+    required TResult Function(_AddNetwork value) addNetwork,
   }) {
     return signData(this);
   }
@@ -1372,6 +1488,8 @@ class _$SignDataImpl implements _SignData {
     TResult? Function(_DecryptData value)? decryptData,
     TResult? Function(_CallContractMethod value)? callContractMethod,
     TResult? Function(_SendMessage value)? sendMessage,
+    TResult? Function(_ChangeNetwork value)? changeNetwork,
+    TResult? Function(_AddNetwork value)? addNetwork,
   }) {
     return signData?.call(this);
   }
@@ -1387,6 +1505,8 @@ class _$SignDataImpl implements _SignData {
     TResult Function(_DecryptData value)? decryptData,
     TResult Function(_CallContractMethod value)? callContractMethod,
     TResult Function(_SendMessage value)? sendMessage,
+    TResult Function(_ChangeNetwork value)? changeNetwork,
+    TResult Function(_AddNetwork value)? addNetwork,
     required TResult orElse(),
   }) {
     if (signData != null) {
@@ -1561,6 +1681,12 @@ class _$EncryptDataImpl implements _EncryptData {
             KnownPayload? knownPayload,
             Completer<(PublicKey, String)> completer)
         sendMessage,
+    required TResult Function(
+            Uri origin, int networkId, Completer<ConnectionData> completer)
+        changeNetwork,
+    required TResult Function(Uri origin, nw.AddNetwork addNetwork,
+            bool switchNetwork, Completer<ConnectionData> completer)
+        addNetwork,
   }) {
     return encryptData(origin, publicKey, data, completer);
   }
@@ -1599,6 +1725,12 @@ class _$EncryptDataImpl implements _EncryptData {
             KnownPayload? knownPayload,
             Completer<(PublicKey, String)> completer)?
         sendMessage,
+    TResult? Function(
+            Uri origin, int networkId, Completer<ConnectionData> completer)?
+        changeNetwork,
+    TResult? Function(Uri origin, nw.AddNetwork addNetwork, bool switchNetwork,
+            Completer<ConnectionData> completer)?
+        addNetwork,
   }) {
     return encryptData?.call(origin, publicKey, data, completer);
   }
@@ -1637,6 +1769,12 @@ class _$EncryptDataImpl implements _EncryptData {
             KnownPayload? knownPayload,
             Completer<(PublicKey, String)> completer)?
         sendMessage,
+    TResult Function(
+            Uri origin, int networkId, Completer<ConnectionData> completer)?
+        changeNetwork,
+    TResult Function(Uri origin, nw.AddNetwork addNetwork, bool switchNetwork,
+            Completer<ConnectionData> completer)?
+        addNetwork,
     required TResult orElse(),
   }) {
     if (encryptData != null) {
@@ -1656,6 +1794,8 @@ class _$EncryptDataImpl implements _EncryptData {
     required TResult Function(_DecryptData value) decryptData,
     required TResult Function(_CallContractMethod value) callContractMethod,
     required TResult Function(_SendMessage value) sendMessage,
+    required TResult Function(_ChangeNetwork value) changeNetwork,
+    required TResult Function(_AddNetwork value) addNetwork,
   }) {
     return encryptData(this);
   }
@@ -1671,6 +1811,8 @@ class _$EncryptDataImpl implements _EncryptData {
     TResult? Function(_DecryptData value)? decryptData,
     TResult? Function(_CallContractMethod value)? callContractMethod,
     TResult? Function(_SendMessage value)? sendMessage,
+    TResult? Function(_ChangeNetwork value)? changeNetwork,
+    TResult? Function(_AddNetwork value)? addNetwork,
   }) {
     return encryptData?.call(this);
   }
@@ -1686,6 +1828,8 @@ class _$EncryptDataImpl implements _EncryptData {
     TResult Function(_DecryptData value)? decryptData,
     TResult Function(_CallContractMethod value)? callContractMethod,
     TResult Function(_SendMessage value)? sendMessage,
+    TResult Function(_ChangeNetwork value)? changeNetwork,
+    TResult Function(_AddNetwork value)? addNetwork,
     required TResult orElse(),
   }) {
     if (encryptData != null) {
@@ -1870,6 +2014,12 @@ class _$DecryptDataImpl implements _DecryptData {
             KnownPayload? knownPayload,
             Completer<(PublicKey, String)> completer)
         sendMessage,
+    required TResult Function(
+            Uri origin, int networkId, Completer<ConnectionData> completer)
+        changeNetwork,
+    required TResult Function(Uri origin, nw.AddNetwork addNetwork,
+            bool switchNetwork, Completer<ConnectionData> completer)
+        addNetwork,
   }) {
     return decryptData(origin, recipientPublicKey, sourcePublicKey, completer);
   }
@@ -1908,6 +2058,12 @@ class _$DecryptDataImpl implements _DecryptData {
             KnownPayload? knownPayload,
             Completer<(PublicKey, String)> completer)?
         sendMessage,
+    TResult? Function(
+            Uri origin, int networkId, Completer<ConnectionData> completer)?
+        changeNetwork,
+    TResult? Function(Uri origin, nw.AddNetwork addNetwork, bool switchNetwork,
+            Completer<ConnectionData> completer)?
+        addNetwork,
   }) {
     return decryptData?.call(
         origin, recipientPublicKey, sourcePublicKey, completer);
@@ -1947,6 +2103,12 @@ class _$DecryptDataImpl implements _DecryptData {
             KnownPayload? knownPayload,
             Completer<(PublicKey, String)> completer)?
         sendMessage,
+    TResult Function(
+            Uri origin, int networkId, Completer<ConnectionData> completer)?
+        changeNetwork,
+    TResult Function(Uri origin, nw.AddNetwork addNetwork, bool switchNetwork,
+            Completer<ConnectionData> completer)?
+        addNetwork,
     required TResult orElse(),
   }) {
     if (decryptData != null) {
@@ -1967,6 +2129,8 @@ class _$DecryptDataImpl implements _DecryptData {
     required TResult Function(_DecryptData value) decryptData,
     required TResult Function(_CallContractMethod value) callContractMethod,
     required TResult Function(_SendMessage value) sendMessage,
+    required TResult Function(_ChangeNetwork value) changeNetwork,
+    required TResult Function(_AddNetwork value) addNetwork,
   }) {
     return decryptData(this);
   }
@@ -1982,6 +2146,8 @@ class _$DecryptDataImpl implements _DecryptData {
     TResult? Function(_DecryptData value)? decryptData,
     TResult? Function(_CallContractMethod value)? callContractMethod,
     TResult? Function(_SendMessage value)? sendMessage,
+    TResult? Function(_ChangeNetwork value)? changeNetwork,
+    TResult? Function(_AddNetwork value)? addNetwork,
   }) {
     return decryptData?.call(this);
   }
@@ -1997,6 +2163,8 @@ class _$DecryptDataImpl implements _DecryptData {
     TResult Function(_DecryptData value)? decryptData,
     TResult Function(_CallContractMethod value)? callContractMethod,
     TResult Function(_SendMessage value)? sendMessage,
+    TResult Function(_ChangeNetwork value)? changeNetwork,
+    TResult Function(_AddNetwork value)? addNetwork,
     required TResult orElse(),
   }) {
     if (decryptData != null) {
@@ -2201,6 +2369,12 @@ class _$CallContractMethodImpl implements _CallContractMethod {
             KnownPayload? knownPayload,
             Completer<(PublicKey, String)> completer)
         sendMessage,
+    required TResult Function(
+            Uri origin, int networkId, Completer<ConnectionData> completer)
+        changeNetwork,
+    required TResult Function(Uri origin, nw.AddNetwork addNetwork,
+            bool switchNetwork, Completer<ConnectionData> completer)
+        addNetwork,
   }) {
     return callContractMethod(origin, publicKey, recipient, payload, completer);
   }
@@ -2239,6 +2413,12 @@ class _$CallContractMethodImpl implements _CallContractMethod {
             KnownPayload? knownPayload,
             Completer<(PublicKey, String)> completer)?
         sendMessage,
+    TResult? Function(
+            Uri origin, int networkId, Completer<ConnectionData> completer)?
+        changeNetwork,
+    TResult? Function(Uri origin, nw.AddNetwork addNetwork, bool switchNetwork,
+            Completer<ConnectionData> completer)?
+        addNetwork,
   }) {
     return callContractMethod?.call(
         origin, publicKey, recipient, payload, completer);
@@ -2278,6 +2458,12 @@ class _$CallContractMethodImpl implements _CallContractMethod {
             KnownPayload? knownPayload,
             Completer<(PublicKey, String)> completer)?
         sendMessage,
+    TResult Function(
+            Uri origin, int networkId, Completer<ConnectionData> completer)?
+        changeNetwork,
+    TResult Function(Uri origin, nw.AddNetwork addNetwork, bool switchNetwork,
+            Completer<ConnectionData> completer)?
+        addNetwork,
     required TResult orElse(),
   }) {
     if (callContractMethod != null) {
@@ -2298,6 +2484,8 @@ class _$CallContractMethodImpl implements _CallContractMethod {
     required TResult Function(_DecryptData value) decryptData,
     required TResult Function(_CallContractMethod value) callContractMethod,
     required TResult Function(_SendMessage value) sendMessage,
+    required TResult Function(_ChangeNetwork value) changeNetwork,
+    required TResult Function(_AddNetwork value) addNetwork,
   }) {
     return callContractMethod(this);
   }
@@ -2313,6 +2501,8 @@ class _$CallContractMethodImpl implements _CallContractMethod {
     TResult? Function(_DecryptData value)? decryptData,
     TResult? Function(_CallContractMethod value)? callContractMethod,
     TResult? Function(_SendMessage value)? sendMessage,
+    TResult? Function(_ChangeNetwork value)? changeNetwork,
+    TResult? Function(_AddNetwork value)? addNetwork,
   }) {
     return callContractMethod?.call(this);
   }
@@ -2328,6 +2518,8 @@ class _$CallContractMethodImpl implements _CallContractMethod {
     TResult Function(_DecryptData value)? decryptData,
     TResult Function(_CallContractMethod value)? callContractMethod,
     TResult Function(_SendMessage value)? sendMessage,
+    TResult Function(_ChangeNetwork value)? changeNetwork,
+    TResult Function(_AddNetwork value)? addNetwork,
     required TResult orElse(),
   }) {
     if (callContractMethod != null) {
@@ -2568,6 +2760,12 @@ class _$SendMessageImpl implements _SendMessage {
             KnownPayload? knownPayload,
             Completer<(PublicKey, String)> completer)
         sendMessage,
+    required TResult Function(
+            Uri origin, int networkId, Completer<ConnectionData> completer)
+        changeNetwork,
+    required TResult Function(Uri origin, nw.AddNetwork addNetwork,
+            bool switchNetwork, Completer<ConnectionData> completer)
+        addNetwork,
   }) {
     return sendMessage(origin, sender, recipient, amount, bounce, payload,
         knownPayload, completer);
@@ -2607,6 +2805,12 @@ class _$SendMessageImpl implements _SendMessage {
             KnownPayload? knownPayload,
             Completer<(PublicKey, String)> completer)?
         sendMessage,
+    TResult? Function(
+            Uri origin, int networkId, Completer<ConnectionData> completer)?
+        changeNetwork,
+    TResult? Function(Uri origin, nw.AddNetwork addNetwork, bool switchNetwork,
+            Completer<ConnectionData> completer)?
+        addNetwork,
   }) {
     return sendMessage?.call(origin, sender, recipient, amount, bounce, payload,
         knownPayload, completer);
@@ -2646,6 +2850,12 @@ class _$SendMessageImpl implements _SendMessage {
             KnownPayload? knownPayload,
             Completer<(PublicKey, String)> completer)?
         sendMessage,
+    TResult Function(
+            Uri origin, int networkId, Completer<ConnectionData> completer)?
+        changeNetwork,
+    TResult Function(Uri origin, nw.AddNetwork addNetwork, bool switchNetwork,
+            Completer<ConnectionData> completer)?
+        addNetwork,
     required TResult orElse(),
   }) {
     if (sendMessage != null) {
@@ -2666,6 +2876,8 @@ class _$SendMessageImpl implements _SendMessage {
     required TResult Function(_DecryptData value) decryptData,
     required TResult Function(_CallContractMethod value) callContractMethod,
     required TResult Function(_SendMessage value) sendMessage,
+    required TResult Function(_ChangeNetwork value) changeNetwork,
+    required TResult Function(_AddNetwork value) addNetwork,
   }) {
     return sendMessage(this);
   }
@@ -2681,6 +2893,8 @@ class _$SendMessageImpl implements _SendMessage {
     TResult? Function(_DecryptData value)? decryptData,
     TResult? Function(_CallContractMethod value)? callContractMethod,
     TResult? Function(_SendMessage value)? sendMessage,
+    TResult? Function(_ChangeNetwork value)? changeNetwork,
+    TResult? Function(_AddNetwork value)? addNetwork,
   }) {
     return sendMessage?.call(this);
   }
@@ -2696,6 +2910,8 @@ class _$SendMessageImpl implements _SendMessage {
     TResult Function(_DecryptData value)? decryptData,
     TResult Function(_CallContractMethod value)? callContractMethod,
     TResult Function(_SendMessage value)? sendMessage,
+    TResult Function(_ChangeNetwork value)? changeNetwork,
+    TResult Function(_AddNetwork value)? addNetwork,
     required TResult orElse(),
   }) {
     if (sendMessage != null) {
@@ -2731,5 +2947,615 @@ abstract class _SendMessage implements ApprovalRequest {
   @override
   @JsonKey(ignore: true)
   _$$SendMessageImplCopyWith<_$SendMessageImpl> get copyWith =>
+      throw _privateConstructorUsedError;
+}
+
+/// @nodoc
+abstract class _$$ChangeNetworkImplCopyWith<$Res>
+    implements $ApprovalRequestCopyWith<$Res> {
+  factory _$$ChangeNetworkImplCopyWith(
+          _$ChangeNetworkImpl value, $Res Function(_$ChangeNetworkImpl) then) =
+      __$$ChangeNetworkImplCopyWithImpl<$Res>;
+  @override
+  @useResult
+  $Res call({Uri origin, int networkId, Completer<ConnectionData> completer});
+}
+
+/// @nodoc
+class __$$ChangeNetworkImplCopyWithImpl<$Res>
+    extends _$ApprovalRequestCopyWithImpl<$Res, _$ChangeNetworkImpl>
+    implements _$$ChangeNetworkImplCopyWith<$Res> {
+  __$$ChangeNetworkImplCopyWithImpl(
+      _$ChangeNetworkImpl _value, $Res Function(_$ChangeNetworkImpl) _then)
+      : super(_value, _then);
+
+  @pragma('vm:prefer-inline')
+  @override
+  $Res call({
+    Object? origin = null,
+    Object? networkId = null,
+    Object? completer = null,
+  }) {
+    return _then(_$ChangeNetworkImpl(
+      origin: null == origin
+          ? _value.origin
+          : origin // ignore: cast_nullable_to_non_nullable
+              as Uri,
+      networkId: null == networkId
+          ? _value.networkId
+          : networkId // ignore: cast_nullable_to_non_nullable
+              as int,
+      completer: null == completer
+          ? _value.completer
+          : completer // ignore: cast_nullable_to_non_nullable
+              as Completer<ConnectionData>,
+    ));
+  }
+}
+
+/// @nodoc
+
+class _$ChangeNetworkImpl implements _ChangeNetwork {
+  const _$ChangeNetworkImpl(
+      {required this.origin, required this.networkId, required this.completer});
+
+  @override
+  final Uri origin;
+  @override
+  final int networkId;
+  @override
+  final Completer<ConnectionData> completer;
+
+  @override
+  String toString() {
+    return 'ApprovalRequest.changeNetwork(origin: $origin, networkId: $networkId, completer: $completer)';
+  }
+
+  @override
+  bool operator ==(Object other) {
+    return identical(this, other) ||
+        (other.runtimeType == runtimeType &&
+            other is _$ChangeNetworkImpl &&
+            (identical(other.origin, origin) || other.origin == origin) &&
+            (identical(other.networkId, networkId) ||
+                other.networkId == networkId) &&
+            (identical(other.completer, completer) ||
+                other.completer == completer));
+  }
+
+  @override
+  int get hashCode => Object.hash(runtimeType, origin, networkId, completer);
+
+  @JsonKey(ignore: true)
+  @override
+  @pragma('vm:prefer-inline')
+  _$$ChangeNetworkImplCopyWith<_$ChangeNetworkImpl> get copyWith =>
+      __$$ChangeNetworkImplCopyWithImpl<_$ChangeNetworkImpl>(this, _$identity);
+
+  @override
+  @optionalTypeArgs
+  TResult when<TResult extends Object?>({
+    required TResult Function(Uri origin, List<Permission> permissions,
+            Completer<Permissions> completer)
+        requestPermissions,
+    required TResult Function(Uri origin, List<Permission> permissions,
+            Address? previousSelectedAccount, Completer<Permissions> completer)
+        changeAccount,
+    required TResult Function(Uri origin, Address account,
+            TokenContractAsset details, Completer<void> completer)
+        addTip3Token,
+    required TResult Function(Uri origin, PublicKey publicKey, String data,
+            Completer<String> completer)
+        signData,
+    required TResult Function(Uri origin, PublicKey publicKey, String data,
+            Completer<String> completer)
+        encryptData,
+    required TResult Function(Uri origin, PublicKey recipientPublicKey,
+            PublicKey sourcePublicKey, Completer<String> completer)
+        decryptData,
+    required TResult Function(
+            Uri origin,
+            PublicKey publicKey,
+            Address recipient,
+            FunctionCall payload,
+            Completer<String> completer)
+        callContractMethod,
+    required TResult Function(
+            Uri origin,
+            Address sender,
+            Address recipient,
+            @amountJsonConverter BigInt amount,
+            bool bounce,
+            String? payload,
+            KnownPayload? knownPayload,
+            Completer<(PublicKey, String)> completer)
+        sendMessage,
+    required TResult Function(
+            Uri origin, int networkId, Completer<ConnectionData> completer)
+        changeNetwork,
+    required TResult Function(Uri origin, nw.AddNetwork addNetwork,
+            bool switchNetwork, Completer<ConnectionData> completer)
+        addNetwork,
+  }) {
+    return changeNetwork(origin, networkId, completer);
+  }
+
+  @override
+  @optionalTypeArgs
+  TResult? whenOrNull<TResult extends Object?>({
+    TResult? Function(Uri origin, List<Permission> permissions,
+            Completer<Permissions> completer)?
+        requestPermissions,
+    TResult? Function(Uri origin, List<Permission> permissions,
+            Address? previousSelectedAccount, Completer<Permissions> completer)?
+        changeAccount,
+    TResult? Function(Uri origin, Address account, TokenContractAsset details,
+            Completer<void> completer)?
+        addTip3Token,
+    TResult? Function(Uri origin, PublicKey publicKey, String data,
+            Completer<String> completer)?
+        signData,
+    TResult? Function(Uri origin, PublicKey publicKey, String data,
+            Completer<String> completer)?
+        encryptData,
+    TResult? Function(Uri origin, PublicKey recipientPublicKey,
+            PublicKey sourcePublicKey, Completer<String> completer)?
+        decryptData,
+    TResult? Function(Uri origin, PublicKey publicKey, Address recipient,
+            FunctionCall payload, Completer<String> completer)?
+        callContractMethod,
+    TResult? Function(
+            Uri origin,
+            Address sender,
+            Address recipient,
+            @amountJsonConverter BigInt amount,
+            bool bounce,
+            String? payload,
+            KnownPayload? knownPayload,
+            Completer<(PublicKey, String)> completer)?
+        sendMessage,
+    TResult? Function(
+            Uri origin, int networkId, Completer<ConnectionData> completer)?
+        changeNetwork,
+    TResult? Function(Uri origin, nw.AddNetwork addNetwork, bool switchNetwork,
+            Completer<ConnectionData> completer)?
+        addNetwork,
+  }) {
+    return changeNetwork?.call(origin, networkId, completer);
+  }
+
+  @override
+  @optionalTypeArgs
+  TResult maybeWhen<TResult extends Object?>({
+    TResult Function(Uri origin, List<Permission> permissions,
+            Completer<Permissions> completer)?
+        requestPermissions,
+    TResult Function(Uri origin, List<Permission> permissions,
+            Address? previousSelectedAccount, Completer<Permissions> completer)?
+        changeAccount,
+    TResult Function(Uri origin, Address account, TokenContractAsset details,
+            Completer<void> completer)?
+        addTip3Token,
+    TResult Function(Uri origin, PublicKey publicKey, String data,
+            Completer<String> completer)?
+        signData,
+    TResult Function(Uri origin, PublicKey publicKey, String data,
+            Completer<String> completer)?
+        encryptData,
+    TResult Function(Uri origin, PublicKey recipientPublicKey,
+            PublicKey sourcePublicKey, Completer<String> completer)?
+        decryptData,
+    TResult Function(Uri origin, PublicKey publicKey, Address recipient,
+            FunctionCall payload, Completer<String> completer)?
+        callContractMethod,
+    TResult Function(
+            Uri origin,
+            Address sender,
+            Address recipient,
+            @amountJsonConverter BigInt amount,
+            bool bounce,
+            String? payload,
+            KnownPayload? knownPayload,
+            Completer<(PublicKey, String)> completer)?
+        sendMessage,
+    TResult Function(
+            Uri origin, int networkId, Completer<ConnectionData> completer)?
+        changeNetwork,
+    TResult Function(Uri origin, nw.AddNetwork addNetwork, bool switchNetwork,
+            Completer<ConnectionData> completer)?
+        addNetwork,
+    required TResult orElse(),
+  }) {
+    if (changeNetwork != null) {
+      return changeNetwork(origin, networkId, completer);
+    }
+    return orElse();
+  }
+
+  @override
+  @optionalTypeArgs
+  TResult map<TResult extends Object?>({
+    required TResult Function(_RequestPermissions value) requestPermissions,
+    required TResult Function(_ChangeAccount value) changeAccount,
+    required TResult Function(_AddTip3Token value) addTip3Token,
+    required TResult Function(_SignData value) signData,
+    required TResult Function(_EncryptData value) encryptData,
+    required TResult Function(_DecryptData value) decryptData,
+    required TResult Function(_CallContractMethod value) callContractMethod,
+    required TResult Function(_SendMessage value) sendMessage,
+    required TResult Function(_ChangeNetwork value) changeNetwork,
+    required TResult Function(_AddNetwork value) addNetwork,
+  }) {
+    return changeNetwork(this);
+  }
+
+  @override
+  @optionalTypeArgs
+  TResult? mapOrNull<TResult extends Object?>({
+    TResult? Function(_RequestPermissions value)? requestPermissions,
+    TResult? Function(_ChangeAccount value)? changeAccount,
+    TResult? Function(_AddTip3Token value)? addTip3Token,
+    TResult? Function(_SignData value)? signData,
+    TResult? Function(_EncryptData value)? encryptData,
+    TResult? Function(_DecryptData value)? decryptData,
+    TResult? Function(_CallContractMethod value)? callContractMethod,
+    TResult? Function(_SendMessage value)? sendMessage,
+    TResult? Function(_ChangeNetwork value)? changeNetwork,
+    TResult? Function(_AddNetwork value)? addNetwork,
+  }) {
+    return changeNetwork?.call(this);
+  }
+
+  @override
+  @optionalTypeArgs
+  TResult maybeMap<TResult extends Object?>({
+    TResult Function(_RequestPermissions value)? requestPermissions,
+    TResult Function(_ChangeAccount value)? changeAccount,
+    TResult Function(_AddTip3Token value)? addTip3Token,
+    TResult Function(_SignData value)? signData,
+    TResult Function(_EncryptData value)? encryptData,
+    TResult Function(_DecryptData value)? decryptData,
+    TResult Function(_CallContractMethod value)? callContractMethod,
+    TResult Function(_SendMessage value)? sendMessage,
+    TResult Function(_ChangeNetwork value)? changeNetwork,
+    TResult Function(_AddNetwork value)? addNetwork,
+    required TResult orElse(),
+  }) {
+    if (changeNetwork != null) {
+      return changeNetwork(this);
+    }
+    return orElse();
+  }
+}
+
+abstract class _ChangeNetwork implements ApprovalRequest {
+  const factory _ChangeNetwork(
+          {required final Uri origin,
+          required final int networkId,
+          required final Completer<ConnectionData> completer}) =
+      _$ChangeNetworkImpl;
+
+  @override
+  Uri get origin;
+  int get networkId;
+  @override
+  Completer<ConnectionData> get completer;
+  @override
+  @JsonKey(ignore: true)
+  _$$ChangeNetworkImplCopyWith<_$ChangeNetworkImpl> get copyWith =>
+      throw _privateConstructorUsedError;
+}
+
+/// @nodoc
+abstract class _$$AddNetworkImplCopyWith<$Res>
+    implements $ApprovalRequestCopyWith<$Res> {
+  factory _$$AddNetworkImplCopyWith(
+          _$AddNetworkImpl value, $Res Function(_$AddNetworkImpl) then) =
+      __$$AddNetworkImplCopyWithImpl<$Res>;
+  @override
+  @useResult
+  $Res call(
+      {Uri origin,
+      nw.AddNetwork addNetwork,
+      bool switchNetwork,
+      Completer<ConnectionData> completer});
+}
+
+/// @nodoc
+class __$$AddNetworkImplCopyWithImpl<$Res>
+    extends _$ApprovalRequestCopyWithImpl<$Res, _$AddNetworkImpl>
+    implements _$$AddNetworkImplCopyWith<$Res> {
+  __$$AddNetworkImplCopyWithImpl(
+      _$AddNetworkImpl _value, $Res Function(_$AddNetworkImpl) _then)
+      : super(_value, _then);
+
+  @pragma('vm:prefer-inline')
+  @override
+  $Res call({
+    Object? origin = null,
+    Object? addNetwork = null,
+    Object? switchNetwork = null,
+    Object? completer = null,
+  }) {
+    return _then(_$AddNetworkImpl(
+      origin: null == origin
+          ? _value.origin
+          : origin // ignore: cast_nullable_to_non_nullable
+              as Uri,
+      addNetwork: null == addNetwork
+          ? _value.addNetwork
+          : addNetwork // ignore: cast_nullable_to_non_nullable
+              as nw.AddNetwork,
+      switchNetwork: null == switchNetwork
+          ? _value.switchNetwork
+          : switchNetwork // ignore: cast_nullable_to_non_nullable
+              as bool,
+      completer: null == completer
+          ? _value.completer
+          : completer // ignore: cast_nullable_to_non_nullable
+              as Completer<ConnectionData>,
+    ));
+  }
+}
+
+/// @nodoc
+
+class _$AddNetworkImpl implements _AddNetwork {
+  const _$AddNetworkImpl(
+      {required this.origin,
+      required this.addNetwork,
+      required this.switchNetwork,
+      required this.completer});
+
+  @override
+  final Uri origin;
+  @override
+  final nw.AddNetwork addNetwork;
+  @override
+  final bool switchNetwork;
+  @override
+  final Completer<ConnectionData> completer;
+
+  @override
+  String toString() {
+    return 'ApprovalRequest.addNetwork(origin: $origin, addNetwork: $addNetwork, switchNetwork: $switchNetwork, completer: $completer)';
+  }
+
+  @override
+  bool operator ==(Object other) {
+    return identical(this, other) ||
+        (other.runtimeType == runtimeType &&
+            other is _$AddNetworkImpl &&
+            (identical(other.origin, origin) || other.origin == origin) &&
+            (identical(other.addNetwork, addNetwork) ||
+                other.addNetwork == addNetwork) &&
+            (identical(other.switchNetwork, switchNetwork) ||
+                other.switchNetwork == switchNetwork) &&
+            (identical(other.completer, completer) ||
+                other.completer == completer));
+  }
+
+  @override
+  int get hashCode =>
+      Object.hash(runtimeType, origin, addNetwork, switchNetwork, completer);
+
+  @JsonKey(ignore: true)
+  @override
+  @pragma('vm:prefer-inline')
+  _$$AddNetworkImplCopyWith<_$AddNetworkImpl> get copyWith =>
+      __$$AddNetworkImplCopyWithImpl<_$AddNetworkImpl>(this, _$identity);
+
+  @override
+  @optionalTypeArgs
+  TResult when<TResult extends Object?>({
+    required TResult Function(Uri origin, List<Permission> permissions,
+            Completer<Permissions> completer)
+        requestPermissions,
+    required TResult Function(Uri origin, List<Permission> permissions,
+            Address? previousSelectedAccount, Completer<Permissions> completer)
+        changeAccount,
+    required TResult Function(Uri origin, Address account,
+            TokenContractAsset details, Completer<void> completer)
+        addTip3Token,
+    required TResult Function(Uri origin, PublicKey publicKey, String data,
+            Completer<String> completer)
+        signData,
+    required TResult Function(Uri origin, PublicKey publicKey, String data,
+            Completer<String> completer)
+        encryptData,
+    required TResult Function(Uri origin, PublicKey recipientPublicKey,
+            PublicKey sourcePublicKey, Completer<String> completer)
+        decryptData,
+    required TResult Function(
+            Uri origin,
+            PublicKey publicKey,
+            Address recipient,
+            FunctionCall payload,
+            Completer<String> completer)
+        callContractMethod,
+    required TResult Function(
+            Uri origin,
+            Address sender,
+            Address recipient,
+            @amountJsonConverter BigInt amount,
+            bool bounce,
+            String? payload,
+            KnownPayload? knownPayload,
+            Completer<(PublicKey, String)> completer)
+        sendMessage,
+    required TResult Function(
+            Uri origin, int networkId, Completer<ConnectionData> completer)
+        changeNetwork,
+    required TResult Function(Uri origin, nw.AddNetwork addNetwork,
+            bool switchNetwork, Completer<ConnectionData> completer)
+        addNetwork,
+  }) {
+    return addNetwork(origin, this.addNetwork, switchNetwork, completer);
+  }
+
+  @override
+  @optionalTypeArgs
+  TResult? whenOrNull<TResult extends Object?>({
+    TResult? Function(Uri origin, List<Permission> permissions,
+            Completer<Permissions> completer)?
+        requestPermissions,
+    TResult? Function(Uri origin, List<Permission> permissions,
+            Address? previousSelectedAccount, Completer<Permissions> completer)?
+        changeAccount,
+    TResult? Function(Uri origin, Address account, TokenContractAsset details,
+            Completer<void> completer)?
+        addTip3Token,
+    TResult? Function(Uri origin, PublicKey publicKey, String data,
+            Completer<String> completer)?
+        signData,
+    TResult? Function(Uri origin, PublicKey publicKey, String data,
+            Completer<String> completer)?
+        encryptData,
+    TResult? Function(Uri origin, PublicKey recipientPublicKey,
+            PublicKey sourcePublicKey, Completer<String> completer)?
+        decryptData,
+    TResult? Function(Uri origin, PublicKey publicKey, Address recipient,
+            FunctionCall payload, Completer<String> completer)?
+        callContractMethod,
+    TResult? Function(
+            Uri origin,
+            Address sender,
+            Address recipient,
+            @amountJsonConverter BigInt amount,
+            bool bounce,
+            String? payload,
+            KnownPayload? knownPayload,
+            Completer<(PublicKey, String)> completer)?
+        sendMessage,
+    TResult? Function(
+            Uri origin, int networkId, Completer<ConnectionData> completer)?
+        changeNetwork,
+    TResult? Function(Uri origin, nw.AddNetwork addNetwork, bool switchNetwork,
+            Completer<ConnectionData> completer)?
+        addNetwork,
+  }) {
+    return addNetwork?.call(origin, this.addNetwork, switchNetwork, completer);
+  }
+
+  @override
+  @optionalTypeArgs
+  TResult maybeWhen<TResult extends Object?>({
+    TResult Function(Uri origin, List<Permission> permissions,
+            Completer<Permissions> completer)?
+        requestPermissions,
+    TResult Function(Uri origin, List<Permission> permissions,
+            Address? previousSelectedAccount, Completer<Permissions> completer)?
+        changeAccount,
+    TResult Function(Uri origin, Address account, TokenContractAsset details,
+            Completer<void> completer)?
+        addTip3Token,
+    TResult Function(Uri origin, PublicKey publicKey, String data,
+            Completer<String> completer)?
+        signData,
+    TResult Function(Uri origin, PublicKey publicKey, String data,
+            Completer<String> completer)?
+        encryptData,
+    TResult Function(Uri origin, PublicKey recipientPublicKey,
+            PublicKey sourcePublicKey, Completer<String> completer)?
+        decryptData,
+    TResult Function(Uri origin, PublicKey publicKey, Address recipient,
+            FunctionCall payload, Completer<String> completer)?
+        callContractMethod,
+    TResult Function(
+            Uri origin,
+            Address sender,
+            Address recipient,
+            @amountJsonConverter BigInt amount,
+            bool bounce,
+            String? payload,
+            KnownPayload? knownPayload,
+            Completer<(PublicKey, String)> completer)?
+        sendMessage,
+    TResult Function(
+            Uri origin, int networkId, Completer<ConnectionData> completer)?
+        changeNetwork,
+    TResult Function(Uri origin, nw.AddNetwork addNetwork, bool switchNetwork,
+            Completer<ConnectionData> completer)?
+        addNetwork,
+    required TResult orElse(),
+  }) {
+    if (addNetwork != null) {
+      return addNetwork(origin, this.addNetwork, switchNetwork, completer);
+    }
+    return orElse();
+  }
+
+  @override
+  @optionalTypeArgs
+  TResult map<TResult extends Object?>({
+    required TResult Function(_RequestPermissions value) requestPermissions,
+    required TResult Function(_ChangeAccount value) changeAccount,
+    required TResult Function(_AddTip3Token value) addTip3Token,
+    required TResult Function(_SignData value) signData,
+    required TResult Function(_EncryptData value) encryptData,
+    required TResult Function(_DecryptData value) decryptData,
+    required TResult Function(_CallContractMethod value) callContractMethod,
+    required TResult Function(_SendMessage value) sendMessage,
+    required TResult Function(_ChangeNetwork value) changeNetwork,
+    required TResult Function(_AddNetwork value) addNetwork,
+  }) {
+    return addNetwork(this);
+  }
+
+  @override
+  @optionalTypeArgs
+  TResult? mapOrNull<TResult extends Object?>({
+    TResult? Function(_RequestPermissions value)? requestPermissions,
+    TResult? Function(_ChangeAccount value)? changeAccount,
+    TResult? Function(_AddTip3Token value)? addTip3Token,
+    TResult? Function(_SignData value)? signData,
+    TResult? Function(_EncryptData value)? encryptData,
+    TResult? Function(_DecryptData value)? decryptData,
+    TResult? Function(_CallContractMethod value)? callContractMethod,
+    TResult? Function(_SendMessage value)? sendMessage,
+    TResult? Function(_ChangeNetwork value)? changeNetwork,
+    TResult? Function(_AddNetwork value)? addNetwork,
+  }) {
+    return addNetwork?.call(this);
+  }
+
+  @override
+  @optionalTypeArgs
+  TResult maybeMap<TResult extends Object?>({
+    TResult Function(_RequestPermissions value)? requestPermissions,
+    TResult Function(_ChangeAccount value)? changeAccount,
+    TResult Function(_AddTip3Token value)? addTip3Token,
+    TResult Function(_SignData value)? signData,
+    TResult Function(_EncryptData value)? encryptData,
+    TResult Function(_DecryptData value)? decryptData,
+    TResult Function(_CallContractMethod value)? callContractMethod,
+    TResult Function(_SendMessage value)? sendMessage,
+    TResult Function(_ChangeNetwork value)? changeNetwork,
+    TResult Function(_AddNetwork value)? addNetwork,
+    required TResult orElse(),
+  }) {
+    if (addNetwork != null) {
+      return addNetwork(this);
+    }
+    return orElse();
+  }
+}
+
+abstract class _AddNetwork implements ApprovalRequest {
+  const factory _AddNetwork(
+      {required final Uri origin,
+      required final nw.AddNetwork addNetwork,
+      required final bool switchNetwork,
+      required final Completer<ConnectionData> completer}) = _$AddNetworkImpl;
+
+  @override
+  Uri get origin;
+  nw.AddNetwork get addNetwork;
+  bool get switchNetwork;
+  @override
+  Completer<ConnectionData> get completer;
+  @override
+  @JsonKey(ignore: true)
+  _$$AddNetworkImplCopyWith<_$AddNetworkImpl> get copyWith =>
       throw _privateConstructorUsedError;
 }

@@ -151,6 +151,21 @@ class _ApprovalsListenerWidgetState extends State<ApprovalsListenerWidget> {
           knownPayload: knownPayload,
           completer: completer,
         ),
+        changeNetwork: (
+          origin,
+          networkId,
+          completer
+        ) {
+          // TODO
+        },
+        addNetwork: (
+          origin,
+          addNetwork,
+          switchNetwork,
+          completer
+        ) {
+          // TODO
+        },
       ),
     );
     super.initState();

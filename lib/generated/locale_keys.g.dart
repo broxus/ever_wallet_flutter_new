@@ -476,4 +476,6 @@ abstract class LocaleKeys {
   static const connectingNetworkFailed = 'connectingNetworkFailed';
   static const creatingSubscriptionFailed = 'creatingSubscriptionFailed';
   static const suchTokenCannotBeSubscribed = 'suchTokenCannotBeSubscribed';
+  static const addNetworkExistError = 'addNetworkExistError';
+  static const addNetworkIdError = 'addNetworkIdError';
 }

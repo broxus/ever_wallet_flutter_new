@@ -27,20 +27,20 @@ sealed class ConnectionData with _$ConnectionData {
 
   factory ConnectionData.gqlCustom({
     required String name,
-    required String group,
     required List<String> endpoints,
-    required NetworkType networkType,
     required bool isLocal,
     required String blockExplorerUrl,
     required String manifestUrl,
     required String nativeTokenTicker,
     Duration? timeout,
     String? id,
+    String? group,
+    NetworkType networkType = NetworkType.custom,
   }) =>
       ConnectionData.gql(
         id: id ?? const Uuid().v4(),
         name: name,
-        group: group,
+        group: group ?? const Uuid().v4(),
         endpoints: endpoints,
         timeout: timeout ?? defaultNetworkTimeout,
         networkType: networkType,
@@ -97,18 +97,18 @@ sealed class ConnectionData with _$ConnectionData {
 
   factory ConnectionData.protoCustom({
     required String name,
-    required String group,
     required String endpoint,
-    required NetworkType networkType,
     required String blockExplorerUrl,
     required String manifestUrl,
     required String nativeTokenTicker,
     String? id,
+    String? group,
+    NetworkType networkType = NetworkType.custom,
   }) =>
       ConnectionData.proto(
         id: id ?? const Uuid().v4(),
         name: name,
-        group: group,
+        group: group ?? const Uuid().v4(),
         endpoint: endpoint,
         networkType: networkType,
         blockExplorerUrl: blockExplorerUrl,
@@ -160,18 +160,18 @@ sealed class ConnectionData with _$ConnectionData {
 
   factory ConnectionData.jrpcCustom({
     required String name,
-    required String group,
     required String endpoint,
-    required NetworkType networkType,
     required String blockExplorerUrl,
     required String manifestUrl,
     required String nativeTokenTicker,
     String? id,
+    String? group,
+    NetworkType networkType = NetworkType.custom,
   }) =>
       ConnectionData.jrpc(
         id: id ?? const Uuid().v4(),
         name: name,
-        group: group,
+        group: group ?? const Uuid().v4(),
         endpoint: endpoint,
         networkType: networkType,
         blockExplorerUrl: blockExplorerUrl,
