@@ -1,3 +1,4 @@
+import 'package:ui_components_lib/v2/theme_style_v2.dart';
 import 'package:ui_components_lib/v2/widgets/buttons/button.dart';
 
 class FloatButton extends BaseButton {
@@ -12,4 +13,8 @@ class FloatButton extends BaseButton {
     super.buttonSize,
     super.key,
   });
+
+  @override
+  AppButtonStyle getStyle(ThemeStyleV2 theme) =>
+      AppButtonStyle.float(theme.colors, theme.textStyles);
 }

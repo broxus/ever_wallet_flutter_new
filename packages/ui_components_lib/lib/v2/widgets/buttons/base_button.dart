@@ -28,47 +28,68 @@ abstract class BaseButton extends StatelessWidget {
   final IconData? icon;
   final IconData? postfixIcon;
 
+  AppButtonStyle getStyle(ThemeStyleV2 theme);
+
+  String test() {
+    switch (buttonShape) {
+      case ButtonShape.rectangle:
+        return 'test';
+      case ButtonShape.square:
+        return 'test';
+      case ButtonShape.circle:
+        return 'test';
+      case ButtonShape.pill:
+        return 'test';
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
     final themeStyle = context.themeStyleV2;
-    final style = getButtonStyleByType(themeStyle);
+    final style = getStyle(themeStyle);
     final buttonStyle = getButtonStyle(themeStyle, style);
     final child = this.child ?? Text(title ?? '', textAlign: TextAlign.center);
 
-    return buttonShape == ButtonShape.pill ||
-            buttonShape == ButtonShape.rectangle
-        ? ElevatedButton(
-            onPressed: isLoading ? null : onPressed,
-            style: buttonStyle,
-            child: Row(
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: isLoading
-                  ? [
-                      _ProgressIndicatorWidget(
-                        color: style.iconColor,
-                        size: _iconSize,
+    switch (buttonShape) {
+      case ButtonShape.pill:
+      case ButtonShape.rectangle:
+        return ElevatedButton(
+          onPressed: isLoading ? null : onPressed,
+          style: buttonStyle,
+          child: isLoading
+              ? _ProgressIndicatorWidget(
+                  color: style.iconColor,
+                  size: _iconSize,
+                )
+              : Row(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    if (icon != null)
+                      Padding(
+                        padding: const EdgeInsets.only(right: DimensSizeV2.d8),
+                        child: Icon(icon, size: _iconSize),
                       ),
-                    ]
-                  : [
-                      if (icon != null) Icon(icon, size: _iconSize),
-                      if (icon != null) const SizedBox(width: DimensSizeV2.d8),
-                      child,
-                      if (postfixIcon != null)
-                        const SizedBox(width: DimensSizeV2.d8),
-                      if (postfixIcon != null)
-                        Icon(postfixIcon, size: _iconSize),
-                    ],
-            ),
-          )
-        : SizedBox(
-            width: fabSize,
-            height: fabSize,
-            child: ElevatedButton(
-              style: buttonStyle,
-              onPressed: isLoading ? null : onPressed,
-              child: Icon(icon, size: _iconSize),
-            ),
-          );
+                    child,
+                    if (postfixIcon != null)
+                      Padding(
+                        padding: const EdgeInsets.only(left: DimensSizeV2.d8),
+                        child: Icon(postfixIcon, size: _iconSize),
+                      ),
+                  ],
+                ),
+        );
+      case ButtonShape.square:
+      case ButtonShape.circle:
+        return SizedBox(
+          width: fabSize,
+          height: fabSize,
+          child: ElevatedButton(
+            style: buttonStyle,
+            onPressed: isLoading ? null : onPressed,
+            child: Icon(icon, size: _iconSize),
+          ),
+        );
+    }
   }
 
   ButtonStyle getButtonStyle(ThemeStyleV2 themeStyle, AppButtonStyle style) {
@@ -230,23 +251,6 @@ abstract class BaseButton extends StatelessWidget {
         return DimensSizeV2.d48;
       case ButtonSize.small:
         return DimensSizeV2.d40;
-    }
-  }
-
-  AppButtonStyle getButtonStyleByType(ThemeStyleV2 theme) {
-    switch (runtimeType) {
-      case GhostButton:
-        return AppButtonStyle.ghost(theme.colors, theme.textStyles);
-      case AccentButton:
-        return AppButtonStyle.accent(theme.colors, theme.textStyles);
-      case PrimaryButton:
-        return AppButtonStyle.primary(theme.colors, theme.textStyles);
-      case FloatButton:
-        return AppButtonStyle.float(theme.colors, theme.textStyles);
-      case DestructiveButton:
-        return AppButtonStyle.destructive(theme.colors, theme.textStyles);
-      default:
-        return AppButtonStyle.ghost(theme.colors, theme.textStyles);
     }
   }
 }
