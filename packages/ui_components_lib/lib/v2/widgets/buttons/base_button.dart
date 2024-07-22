@@ -28,18 +28,52 @@ abstract class BaseButton extends StatelessWidget {
   final IconData? icon;
   final IconData? postfixIcon;
 
-  AppButtonStyle getStyle(ThemeStyleV2 theme);
+  double get _paddingByButtonSize {
+    switch (buttonSize) {
+      case ButtonSize.large:
+        return DimensSizeV2.d18;
+      case ButtonSize.medium:
+        return DimensSizeV2.d16;
+      case ButtonSize.small:
+        return DimensSizeV2.d8;
+    }
+  }
 
-  String test() {
-    switch (buttonShape) {
-      case ButtonShape.rectangle:
-        return 'test';
-      case ButtonShape.square:
-        return 'test';
-      case ButtonShape.circle:
-        return 'test';
-      case ButtonShape.pill:
-        return 'test';
+  double get _iconSize {
+    switch (buttonSize) {
+      case ButtonSize.large:
+        return DimensSizeV2.d20;
+      case ButtonSize.medium:
+        return DimensSizeV2.d16;
+      case ButtonSize.small:
+        return DimensSizeV2.d16;
+    }
+  }
+
+  double get _fabSize {
+    switch (buttonSize) {
+      case ButtonSize.large:
+        return DimensSizeV2.d56;
+      case ButtonSize.medium:
+        return DimensSizeV2.d48;
+      case ButtonSize.small:
+        return DimensSizeV2.d40;
+    }
+  }
+
+  double get _borderRadius {
+    if (buttonShape == ButtonShape.rectangle ||
+        buttonShape == ButtonShape.square) {
+      switch (buttonSize) {
+        case ButtonSize.large:
+          return DimensRadiusV2.radius16;
+        case ButtonSize.medium:
+          return DimensRadiusV2.radius12;
+        case ButtonSize.small:
+          return DimensRadiusV2.radius8;
+      }
+    } else {
+      return DimensRadiusV2.theBiggest;
     }
   }
 
@@ -47,7 +81,7 @@ abstract class BaseButton extends StatelessWidget {
   Widget build(BuildContext context) {
     final themeStyle = context.themeStyleV2;
     final style = getStyle(themeStyle);
-    final buttonStyle = getButtonStyle(themeStyle, style);
+    final buttonStyle = _getButtonStyle(themeStyle, style);
     final child = this.child ?? Text(title ?? '', textAlign: TextAlign.center);
 
     switch (buttonShape) {
@@ -81,8 +115,8 @@ abstract class BaseButton extends StatelessWidget {
       case ButtonShape.square:
       case ButtonShape.circle:
         return SizedBox(
-          width: fabSize,
-          height: fabSize,
+          width: _fabSize,
+          height: _fabSize,
           child: ElevatedButton(
             style: buttonStyle,
             onPressed: isLoading ? null : onPressed,
@@ -92,7 +126,10 @@ abstract class BaseButton extends StatelessWidget {
     }
   }
 
-  ButtonStyle getButtonStyle(ThemeStyleV2 themeStyle, AppButtonStyle style) {
+  @protected
+  AppButtonStyle getStyle(ThemeStyleV2 theme);
+
+  ButtonStyle _getButtonStyle(ThemeStyleV2 themeStyle, AppButtonStyle style) {
     return ButtonStyle(
       elevation: MaterialStateProperty.all(0),
       textStyle: MaterialStateProperty.resolveWith<TextStyle>(
@@ -124,7 +161,7 @@ abstract class BaseButton extends StatelessWidget {
       ),
       padding: MaterialStateProperty.resolveWith(
         (_) => EdgeInsets.all(
-          paddingByButtonSize,
+          _paddingByButtonSize,
         ),
       ),
     );
@@ -162,7 +199,7 @@ abstract class BaseButton extends StatelessWidget {
             : Colors.transparent,
         width: DimensSizeV2.d2,
       ),
-      borderRadius: BorderRadius.circular(borderRadius),
+      borderRadius: BorderRadius.circular(_borderRadius),
     );
   }
 
@@ -194,22 +231,6 @@ abstract class BaseButton extends StatelessWidget {
       style.backgroundColor
           .withOpacity(style.backgroundColor.opacity * OpacV2.opac80);
 
-  double get borderRadius {
-    if (buttonShape == ButtonShape.rectangle ||
-        buttonShape == ButtonShape.square) {
-      switch (buttonSize) {
-        case ButtonSize.large:
-          return DimensRadiusV2.radius16;
-        case ButtonSize.medium:
-          return DimensRadiusV2.radius12;
-        case ButtonSize.small:
-          return DimensRadiusV2.radius8;
-      }
-    } else {
-      return DimensRadiusV2.theBiggest;
-    }
-  }
-
   TextStyle _getTextStyleBySize(TextStylesV2 styles) {
     switch (buttonSize) {
       case ButtonSize.large:
@@ -218,39 +239,6 @@ abstract class BaseButton extends StatelessWidget {
         return styles.labelSmall;
       case ButtonSize.small:
         return styles.labelSmall;
-    }
-  }
-
-  double get paddingByButtonSize {
-    switch (buttonSize) {
-      case ButtonSize.large:
-        return DimensSizeV2.d18;
-      case ButtonSize.medium:
-        return DimensSizeV2.d16;
-      case ButtonSize.small:
-        return DimensSizeV2.d8;
-    }
-  }
-
-  double get _iconSize {
-    switch (buttonSize) {
-      case ButtonSize.large:
-        return DimensSizeV2.d20;
-      case ButtonSize.medium:
-        return DimensSizeV2.d16;
-      case ButtonSize.small:
-        return DimensSizeV2.d16;
-    }
-  }
-
-  double get fabSize {
-    switch (buttonSize) {
-      case ButtonSize.large:
-        return DimensSizeV2.d56;
-      case ButtonSize.medium:
-        return DimensSizeV2.d48;
-      case ButtonSize.small:
-        return DimensSizeV2.d40;
     }
   }
 }
