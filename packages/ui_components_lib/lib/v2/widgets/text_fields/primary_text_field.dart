@@ -64,7 +64,7 @@ class PrimaryTextField extends StatelessWidget {
   Widget build(BuildContext context) {
     final themeStyle = context.themeStyleV2;
 
-    final hintTextStyle = themeStyle?.textStyles.labelSmall.copyWith(
+    final hintTextStyle = themeStyle.textStyles.labelSmall.copyWith(
       color: themeStyle.colors.content1,
       height: 1,
     );
@@ -75,12 +75,12 @@ class PrimaryTextField extends StatelessWidget {
       name: name,
       hintText: hintText,
       errorText: errorText,
-      activeBackgroundColor: themeStyle?.colors.background1,
-      cursorColor: themeStyle?.colors.primaryA,
-      enabledBorder: _getBorder(color: themeStyle?.colors.border0),
-      disabledBorder: _getBorder(color: themeStyle?.colors.borderDisabled),
-      focusedBorder: _getBorder(color: themeStyle?.colors.borderFocus),
-      errorBorder: _getBorder(color: themeStyle?.colors.borderNegative),
+      activeBackgroundColor: themeStyle.colors.background1,
+      cursorColor: themeStyle.colors.primaryA,
+      enabledBorder: _getBorder(color: themeStyle.colors.border0),
+      disabledBorder: _getBorder(color: themeStyle.colors.borderDisabled),
+      focusedBorder: _getBorder(color: themeStyle.colors.borderFocus),
+      errorBorder: _getBorder(color: themeStyle.colors.borderNegative),
       borderRadius: radius,
       height: height ?? sizeType.height,
       errorType: errorType,
@@ -98,18 +98,18 @@ class PrimaryTextField extends StatelessWidget {
               ),
               child: Text(
                 labelText!,
-                style: themeStyle?.textStyles.labelSmall.copyWith(
+                style: themeStyle.textStyles.labelSmall.copyWith(
                   color: themeStyle.colors.content3,
                   height: 1,
                 ),
               ),
             ),
       isAutofocus: isAutofocus,
-      textStyle: themeStyle?.textStyles.labelSmall.copyWith(
+      textStyle: themeStyle.textStyles.labelSmall.copyWith(
         color: themeStyle.colors.content0,
         height: 1,
       ),
-      errorTextStyle: themeStyle?.textStyles.paragraphSmall.copyWith(
+      errorTextStyle: themeStyle.textStyles.paragraphSmall.copyWith(
         color: themeStyle.colors.contentNegative,
       ),
       errorInlineIcon: Padding(
@@ -121,7 +121,7 @@ class PrimaryTextField extends StatelessWidget {
           child: Icon(
             LucideIcons.triangleAlert,
             size: DimensSize.d20,
-            color: themeStyle?.colors.contentNegative,
+            color: themeStyle.colors.contentNegative,
           ),
         ),
       ),
