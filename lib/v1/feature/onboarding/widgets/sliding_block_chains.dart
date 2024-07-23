@@ -13,6 +13,7 @@ const _scrollOffset = 0.5;
 const _scrollPeriod = 30;
 
 @Deprecated('v2')
+
 /// Panel of sliding block chains on main screen of onboarding
 class SlidingBlockChains extends StatefulWidget {
   const SlidingBlockChains({super.key});
