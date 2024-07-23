@@ -2,8 +2,8 @@ import 'dart:convert';
 
 import 'package:app/app/router/router.dart';
 import 'package:app/data/models/models.dart';
-import 'package:app/feature/add_seed/add_seed_enable_biometry/add_seed_enable_biometry.dart';
 import 'package:app/feature/network/network.dart';
+import 'package:app/v1/feature/add_seed/add_seed_enable_biometry/add_seed_enable_biometry.dart';
 import 'package:app/feature/wallet/wallet.dart';
 import 'package:app/feature/wallet/widgets/account_asset_tab/select_new_asset/select_new_asset.dart';
 import 'package:go_router/go_router.dart';

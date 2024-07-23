@@ -33,16 +33,16 @@ class BootstrapService {
 
   Future<void> init(AppBuildType appBuildType) async {
     try {
-      await coreStep(appBuildType);
+      await _coreStep(appBuildType);
 
       _bootstrapStepSubject.add(BootstrapSteps.storage);
-      await storageStep();
+      await _storageStep();
 
       _bootstrapStepSubject.add(BootstrapSteps.connection);
-      await connectionStep();
+      await _connectionStep();
 
       _bootstrapStepSubject.add(BootstrapSteps.features);
-      await featureStep();
+      await _featureStep();
 
       _bootstrapStepSubject.add(BootstrapSteps.completed);
     } catch (e, t) {
@@ -58,9 +58,9 @@ class BootstrapService {
 
     // ignore: avoid-missing-enum-constant-in-map
     final steps = <BootstrapSteps, AsyncFunc>{
-      BootstrapSteps.storage: storageStep,
-      BootstrapSteps.connection: connectionStep,
-      BootstrapSteps.features: featureStep,
+      BootstrapSteps.storage: _storageStep,
+      BootstrapSteps.connection: _connectionStep,
+      BootstrapSteps.features: _featureStep,
     };
 
     try {
@@ -87,12 +87,12 @@ class BootstrapService {
 
   /// This step can not be failed during initialization, so we do not let
   /// it to be re-runed (if failed - that's gg).
-  Future<void> coreStep(AppBuildType appBuildType) async {
+  Future<void> _coreStep(AppBuildType appBuildType) async {
     await configureAppVersion();
     await configureLogger(appBuildType);
   }
 
-  Future<void> storageStep() async {
+  Future<void> _storageStep() async {
     await configureEncryptedStorage();
     await configureNavigationService();
     await migrateStorage();
@@ -103,11 +103,11 @@ class BootstrapService {
     await configureBiometry();
   }
 
-  Future<void> connectionStep() async {
+  Future<void> _connectionStep() async {
     await configureConnectionService();
   }
 
-  Future<void> featureStep() async {
+  Future<void> _featureStep() async {
     await configureFeatureServices();
   }
 }
