@@ -12,6 +12,7 @@ class ColorsPaletteV2 {
     required this.background1,
     required this.background2,
     required this.background3,
+    required this.backgroundAccent,
     required this.backgroundAlpha,
     required this.backgroundNegativeAlpha,
     required this.backgroundWarningAlpha,
@@ -54,6 +55,7 @@ class ColorsPaletteV2 {
   final Color background1;
   final Color background2;
   final Color background3;
+  final Color backgroundAccent;
 
   ///Content-semantic
   final Color content0;
