@@ -21,6 +21,7 @@ const delayBeforeCompleteChecking = Duration(seconds: 1);
 /// [availableAnswers] list.
 @Deprecated('Use v2 version')
 class CheckSeedPhraseCubit extends Cubit<CheckSeedPhraseCubitState> {
+  @Deprecated('Use v2 version')
   factory CheckSeedPhraseCubit(
     List<String> originalPhrase,
     VoidCallback completeChecking,
@@ -35,6 +36,7 @@ class CheckSeedPhraseCubit extends Cubit<CheckSeedPhraseCubitState> {
     );
   }
 
+  @Deprecated('Use v2 version')
   CheckSeedPhraseCubit._(
     this.originalPhrase,
     this.completeChecking,

@@ -17,6 +17,7 @@ import 'package:ui_components_lib/ui_components_lib.dart';
 /// it here, so password should be stored after creating, here we just enable it
 @Deprecated('Use v2 version')
 class AddSeedEnableBiometryPage extends StatelessWidget {
+  @Deprecated('Use v2 version')
   const AddSeedEnableBiometryPage({super.key});
 
   @override

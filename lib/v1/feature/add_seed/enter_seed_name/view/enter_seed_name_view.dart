@@ -1,3 +1,5 @@
+// ignore_for_file: deprecated_member_use_from_same_package
+
 import 'package:app/generated/generated.dart';
 import 'package:flutter/material.dart';
 import 'package:ui_components_lib/ui_components_lib.dart';
@@ -13,6 +15,7 @@ typedef EnterSeedNameCompleteCallback = void Function(String? name);
 @Deprecated('Use v2 version')
 class EnterSeedNameView extends StatefulWidget {
   /// {@macro enter_seed_name_view}
+  @Deprecated('Use v2 version')
   const EnterSeedNameView({
     required this.callback,
     super.key,

@@ -1,10 +1,12 @@
+// ignore_for_file: deprecated_member_use_from_same_package
+
 import 'package:app/app/router/page_transitions.dart';
 import 'package:app/app/router/router.dart';
 import 'package:app/app/service/service.dart';
 import 'package:app/di/di.dart';
 import 'package:app/feature/error/error.dart';
 import 'package:app/feature/root/root.dart';
-import 'package:app/v1/feature/onboarding/onboarding.dart';
+import 'package:app/v2/feature/onboarding/onboarding.dart';
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:logging/logging.dart';

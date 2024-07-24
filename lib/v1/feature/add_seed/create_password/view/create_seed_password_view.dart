@@ -1,5 +1,5 @@
-import 'package:app/v1/feature/add_seed/create_password/create_password.dart';
 import 'package:app/generated/generated.dart';
+import 'package:app/v1/feature/add_seed/create_password/create_password.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:ui_components_lib/ui_components_lib.dart';
@@ -14,6 +14,7 @@ const _minPasswordLength = 8;
 @Deprecated('Use v2 version')
 class CreateSeedPasswordView extends StatelessWidget {
   /// {@macro create_password_widget}
+  @Deprecated('Use v2 version')
   const CreateSeedPasswordView({
     required this.needBiometryIfPossible,
     super.key,

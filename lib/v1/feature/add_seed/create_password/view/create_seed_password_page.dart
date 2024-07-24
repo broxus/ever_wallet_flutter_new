@@ -1,3 +1,5 @@
+// ignore_for_file: deprecated_member_use_from_same_package
+
 import 'package:app/app/router/app_route.dart';
 import 'package:app/v1/feature/add_seed/create_password/create_password.dart';
 import 'package:flutter/material.dart';
@@ -11,6 +13,7 @@ import 'package:ui_components_lib/ui_components_lib.dart';
 @Deprecated('Use v2 version')
 class CreateSeedPasswordOnboardingPage extends StatelessWidget {
   /// {@macro create_seed_password_onboarding_page}
+  @Deprecated('Use v2 version')
   const CreateSeedPasswordOnboardingPage({
     required this.phrase,
     super.key,
