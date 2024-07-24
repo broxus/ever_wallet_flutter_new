@@ -3,7 +3,6 @@
 abstract class LocaleKeys {
   static const createNewWallet = 'createNewWallet';
   static const signInWithPhrase = 'signInWithPhrase';
-  static const welcomeTitle = 'welcomeTitle';
   static const supportTokenAndAccessEverscale =
       'supportTokenAndAccessEverscale';
   static const byProcessingAcceptLicense = 'byProcessingAcceptLicense';
@@ -476,4 +475,10 @@ abstract class LocaleKeys {
   static const connectingNetworkFailed = 'connectingNetworkFailed';
   static const creatingSubscriptionFailed = 'creatingSubscriptionFailed';
   static const suchTokenCannotBeSubscribed = 'suchTokenCannotBeSubscribed';
+  static const welcomeTitle = 'welcomeTitle';
+  static const welcomeSubtitle = 'welcomeSubtitle';
+  static const welcomeGetNewWallet = 'welcomeGetNewWallet';
+  static const welcomeIHaveOne = 'welcomeIHaveOne';
+  static const welcomeYouAccept = 'welcomeYouAccept';
+  static const welcomeLicenceAgreement = 'welcomeLicenceAgreement';
 }

@@ -30,6 +30,7 @@ GoRoute get manageSeedAccountsRoute {
     name: AppRoute.manageSeedsAccounts.name,
     builder: (_, __) => const ManageSeedsAccountsPage(),
     routes: [
+      // ignore: deprecated_member_use_from_same_package
       addSeedNamedRoute,
       seedDetailRoute,
     ],

@@ -1,8 +1,10 @@
+// ignore_for_file: deprecated_member_use_from_same_package
+
 import 'package:app/app/router/app_route.dart';
 import 'package:app/feature/contact_support/contact_support.dart';
+import 'package:app/generated/generated.dart';
 import 'package:app/v1/feature/onboarding/onboarding.dart';
 import 'package:app/v1/feature/onboarding/view/change_language_button.dart';
-import 'package:app/generated/generated.dart';
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:ui_components_lib/ui_components_lib.dart';

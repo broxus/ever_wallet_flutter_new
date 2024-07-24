@@ -1,5 +1,5 @@
-import 'package:app/v1/feature/add_seed/create_seed/create_seed.dart';
 import 'package:app/generated/generated.dart';
+import 'package:app/v1/feature/add_seed/create_seed/create_seed.dart';
 import 'package:collection/collection.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -14,6 +14,7 @@ typedef CreateSeedCompleteCallback = void Function(List<String> phrase);
 @Deprecated('Use v2 version')
 class CreateSeedView extends StatelessWidget {
   /// {@macro create_seed_view}
+  @Deprecated('Use v2 version')
   const CreateSeedView({
     required this.skipCallback,
     required this.checkCallback,

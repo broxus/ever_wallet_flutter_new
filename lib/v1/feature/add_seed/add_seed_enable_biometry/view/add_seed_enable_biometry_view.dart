@@ -7,6 +7,7 @@ import 'package:ui_components_lib/ui_components_lib.dart';
 
 @Deprecated('Use v2 version')
 class AddSeedEnableBiometryView extends StatelessWidget {
+  @Deprecated('Use v2 version')
   const AddSeedEnableBiometryView({
     required this.isFace,
     super.key,

@@ -12,6 +12,7 @@ part 'add_seed_enable_biometry_cubit.freezed.dart';
 /// Cubit to enable biometry for newly added seed phrase from onboarding.
 @Deprecated('Use v2 version')
 class AddSeedEnableBiometryCubit extends Cubit<AddSeedEnableBiometryState> {
+  @Deprecated('Use v2 version')
   AddSeedEnableBiometryCubit(
     this.biometryService,
     this.nekotonRepository,

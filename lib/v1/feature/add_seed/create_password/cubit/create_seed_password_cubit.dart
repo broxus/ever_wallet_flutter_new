@@ -13,6 +13,7 @@ part 'create_seed_password_state.dart';
 /// Cubit for creating seed password.
 @Deprecated('Use v2 version')
 class CreateSeedPasswordCubit extends Cubit<CreateSeedPasswordState> {
+  @Deprecated('Use v2 version')
   CreateSeedPasswordCubit({
     required this.phrase,
     required this.completeCallback,

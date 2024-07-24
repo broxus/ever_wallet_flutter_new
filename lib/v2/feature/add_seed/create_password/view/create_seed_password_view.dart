@@ -1,3 +1,4 @@
+import 'package:app/generated/generated.dart';
 import 'package:app/v2/feature/add_seed/create_password/create_password.dart';
 import 'package:app/v2/feature/add_seed/create_password/model/password_status.dart';
 import 'package:app/v2/feature/add_seed/create_password/widgets/icon_eye_widget.dart';
@@ -98,10 +99,8 @@ class CreateSeedPasswordView extends StatelessWidget {
                   ),
                 ),
                 AccentButton(
-                  title: 'Continue',
-                  onPressed: state.status == PasswordStatus.match
-                      ? cubit.nextAction
-                      : null,
+                  title: LocaleKeys.continueWord.tr(),
+                  onPressed: state.status == PasswordStatus.match ? cubit.nextAction : null,
                   isLoading: state.isLoading,
                   buttonShape: ButtonShape.pill,
                 ),

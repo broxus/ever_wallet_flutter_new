@@ -1,7 +1,6 @@
 {
   "createNewWallet": "Create a new wallet",
   "signInWithPhrase": "Sign in with seed phrase",
-  "welcomeTitle": "Welcome\nto Sparx Wallet",
   "supportTokenAndAccessEverscale": "Token support and access to all TVM-based DApps",
   "byProcessingAcceptLicense": "By proceeding, you accept Sparx Wallet License Agreement. ",
   "readHere": "Read here",
@@ -467,5 +466,24 @@
   "tryAgain": "Try again",
   "connectingNetworkFailed": "Connecting network failed, please, try another network.",
   "creatingSubscriptionFailed": "Creating subscription failed",
-  "suchTokenCannotBeSubscribed": "Such token cannot be subscribed now"
+  "suchTokenCannotBeSubscribed": "Such token cannot be subscribed now",
+
+  "welcomeTitle": "Welcome\nto Sparx Wallet",
+  "welcomeSubtitle": "Support for tokens and access to all TVM-based DApps",
+  "welcomeGetNewWallet": "Get a new wallet",
+  "welcomeIHaveOne": "I already have one",
+  "welcomeYouAccept": "By proceeding, you accept the ",
+  "welcomeLicenceAgreement": "Sparx Wallet License Agreement",
+  "confirmPasswordTitle": "Choose a password",
+  "confirmPasswordSubtitle": "Please use a password you’ll remember. It can’t be recovered.",
+  "confirmSetPasswordHint": "Set your password",
+  "confirmRepeatPasswordHint": "Repeat your password",
+  "confirmWeakPasswordTitle": "Password too weak",
+  "confirmWeakPasswordSubtitle": "Password should contain at least 8 characters. Please update your password.",
+  "confirmMustMatchTitle": "Passwords must match",
+  "confirmMustMatchSubtitle": "To continue, re-enter your password exactly as before.",
+  "confirmPasswordsMatchTitle": "Passwords match",
+  "confirmPasswordsMatchSubtitle": "In order to continue, re-enter your password exactly the same as before",
+  "faceIdContent": "Use Face ID to avoid re-entering your passcode.",
+  "touchIdContent": "Use Touch ID to avoid re-entering your passcode."
 }

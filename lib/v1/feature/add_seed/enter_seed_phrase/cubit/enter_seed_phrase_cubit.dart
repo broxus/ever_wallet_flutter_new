@@ -1,9 +1,9 @@
 import 'package:app/app/service/messenger/message.dart';
 import 'package:app/app/service/messenger/service/messenger_service.dart';
 import 'package:app/di/di.dart';
+import 'package:app/generated/locale_keys.g.dart';
 import 'package:app/v1/feature/add_seed/constants.dart';
 import 'package:app/v1/feature/add_seed/enter_seed_phrase/cubit/cubit.dart';
-import 'package:app/generated/locale_keys.g.dart';
 import 'package:bloc/bloc.dart';
 import 'package:collection/collection.dart';
 import 'package:easy_localization/easy_localization.dart';
@@ -15,7 +15,6 @@ import 'package:nekoton_repository/nekoton_repository.dart' hide Message;
 import 'package:ui_components_lib/ui_components_lib.dart';
 
 part 'enter_seed_phrase_cubit.freezed.dart';
-
 part 'enter_seed_phrase_state.dart';
 
 /// Regexp that helps splitting seed phrase into words.
@@ -33,6 +32,7 @@ typedef EnterSeedPhraseConfirmCallback = void Function(List<String> phrase);
 /// Cubit that manages the state of the seed phrase entering page.
 @Deprecated('Use v2 version')
 class EnterSeedPhraseCubit extends Cubit<EnterSeedPhraseState> {
+  @Deprecated('Use v2 version')
   EnterSeedPhraseCubit(this.confirmCallback)
       : super(const EnterSeedPhraseState.initial());
 

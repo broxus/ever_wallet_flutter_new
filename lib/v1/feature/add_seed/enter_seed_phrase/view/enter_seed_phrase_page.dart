@@ -13,6 +13,7 @@ import 'package:ui_components_lib/ui_components_lib.dart';
 @Deprecated('Use v2 version')
 class EnterSeedPhrasePage extends StatelessWidget {
   /// {@macro enter_seed_phrase_page}
+  @Deprecated('Use v2 version')
   const EnterSeedPhrasePage({super.key});
 
   @override

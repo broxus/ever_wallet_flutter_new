@@ -1,8 +1,8 @@
 import 'package:app/app/service/messenger/message.dart';
 import 'package:app/app/service/messenger/service/messenger_service.dart';
 import 'package:app/di/di.dart';
-import 'package:app/v1/feature/add_seed/check_seed_phrase/check_seed_phrase.dart';
 import 'package:app/generated/generated.dart';
+import 'package:app/v1/feature/add_seed/check_seed_phrase/check_seed_phrase.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:ui_components_lib/ui_components_lib.dart';
@@ -13,6 +13,7 @@ const _errorDelayDuration = Duration(seconds: 3);
 /// Screen that allows user to check seed phrase for correctness.
 @Deprecated('Use v2 version')
 class CheckSeedPhraseView extends StatelessWidget {
+  @Deprecated('Use v2 version')
   const CheckSeedPhraseView({super.key});
 
   @override

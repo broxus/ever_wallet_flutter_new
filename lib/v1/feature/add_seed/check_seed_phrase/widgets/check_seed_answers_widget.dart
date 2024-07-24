@@ -12,6 +12,7 @@ import 'package:ui_components_lib/ui_components_lib.dart';
 @Deprecated('Use v2 version')
 class CheckSeedAnswersWidget extends StatelessWidget {
   /// {@macro check_seed_answers_widget}
+  @Deprecated('Use v2 version')
   const CheckSeedAnswersWidget({
     required this.userAnswers,
     required this.currentIndex,
