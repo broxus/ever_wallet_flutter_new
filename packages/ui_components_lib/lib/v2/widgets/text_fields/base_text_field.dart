@@ -306,7 +306,6 @@ class _BaseTextFieldState extends State<BaseTextField> with StateMixin {
                 maxLength: widget.maxLength,
                 maxLines: widget.maxLines,
                 minLines: widget.minLines,
-                expands: true,
                 textAlignVertical: TextAlignVertical.center,
                 validator: _validate,
               ),
