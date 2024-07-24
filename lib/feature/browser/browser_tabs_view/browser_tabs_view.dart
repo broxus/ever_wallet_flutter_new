@@ -25,54 +25,24 @@ class _BrowserTabsViewState extends State<BrowserTabsView> {
         final currentTabId = currentTab?.id;
         final tabs = context.read<BrowserTabsBloc>().state.tabs;
         final tabsState = context.read<BrowserTabsBloc>().state.tabsState;
-
-        stackViews
-          // replace changed
-          ..forEachIndexed(
-            (index, view) {
-              final newTab = tabs.firstWhereOrNull(
-                (tab) =>
-                    view.tab.id == tab.id &&
-                    (view.tab != tab || view.tabState != tabsState[tab.id]),
-              );
-              if (newTab == null) return;
-              stackViews[index] = BrowserTabView(
-                tab: newTab,
-                tabState: tabsState[newTab.id] ?? const BrowserTabState(),
-                key: ValueKey(newTab.id),
-              );
-            },
-          )
-          // remove views with non-existent tabs
-          ..removeWhere(
-            (view) => tabs.indexWhere((tab) => tab.id == view.tab.id) < 0,
-          )
-          // remove new views
-          ..addAll(
-            tabs
-                .where(
-                  (tab) =>
-                      stackViews.indexWhere((view) => view.tab.id == tab.id) <
-                      0,
-                )
-                .map(
-                  (tab) => BrowserTabView(
-                    tab: tab,
-                    tabState: tabsState[tab.id] ?? const BrowserTabState(),
-                    key: ValueKey(tab.id),
-                  ),
-                ),
-          );
-
-        final currentTabIndex =
-            stackViews.indexWhere((view) => view.tab.id == currentTabId);
-
         final showStartView = currentTab?.url.toString().isEmpty ?? true;
+        final index = tabs.indexWhere((tab) => tab.id == currentTabId);
+
+        final stackViews = tabs
+            .map(
+              (tab) => BrowserTabView(
+                tab: tab,
+                tabState: tabsState[tab.id] ?? const BrowserTabState(),
+                active: tab.id == currentTabId,
+                key: ValueKey(tab.id),
+              ),
+            )
+            .toList();
 
         return Stack(
           children: [
             IndexedStack(
-              index: currentTabIndex,
+              index: index,
               children: stackViews,
             ),
             if (showStartView) const BrowserStartPage(),
