@@ -25,6 +25,7 @@ enum EnterSeedNameCommand {
 @Deprecated('Use v2 version')
 class EnterSeedNamePage extends StatelessWidget {
   /// {@macro enter_seed_name_create_page}
+  @Deprecated('Use v2 version')
   const EnterSeedNamePage({
     required this.commandName,
     super.key,

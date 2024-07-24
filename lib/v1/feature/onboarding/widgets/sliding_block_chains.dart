@@ -1,3 +1,5 @@
+// ignore_for_file: deprecated_member_use_from_same_package
+
 import 'dart:async';
 
 import 'package:collection/collection.dart';
@@ -16,6 +18,7 @@ const _scrollPeriod = 30;
 
 /// Panel of sliding block chains on main screen of onboarding
 class SlidingBlockChains extends StatefulWidget {
+  @Deprecated('Use v2 version')
   const SlidingBlockChains({super.key});
 
   @override

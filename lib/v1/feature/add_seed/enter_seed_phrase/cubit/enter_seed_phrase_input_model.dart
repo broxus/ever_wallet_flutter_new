@@ -10,6 +10,7 @@ part 'enter_seed_phrase_input_model.freezed.dart';
 @Deprecated('Use v2 version')
 @freezed
 class EnterSeedPhraseInputModel with _$EnterSeedPhraseInputModel {
+  @Deprecated('Use v2 version')
   const factory EnterSeedPhraseInputModel.input({
     required TextEditingController controller,
     required FocusNode focus,
@@ -17,6 +18,7 @@ class EnterSeedPhraseInputModel with _$EnterSeedPhraseInputModel {
     required bool hasError,
   }) = EnterSeedPhraseInput;
 
+  @Deprecated('Use v2 version')
   const factory EnterSeedPhraseInputModel.entered({
     required String text,
     required int index,

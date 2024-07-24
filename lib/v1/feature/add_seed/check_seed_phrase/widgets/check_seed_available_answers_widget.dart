@@ -10,6 +10,7 @@ import 'package:ui_components_lib/ui_components_lib.dart';
 @Deprecated('Use v2 version')
 class CheckSeedAvailableAnswersWidget extends StatelessWidget {
   /// {@macro check_seed_available_answers_widget}
+  @Deprecated('Use v2 version')
   const CheckSeedAvailableAnswersWidget({
     required this.availableAnswers,
     required this.selectedAnswers,

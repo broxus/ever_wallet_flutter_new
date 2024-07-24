@@ -1,3 +1,5 @@
+// ignore_for_file: deprecated_member_use_from_same_package
+
 import 'package:app/app/router/page_transitions.dart';
 import 'package:app/app/router/router.dart';
 import 'package:app/app/service/service.dart';

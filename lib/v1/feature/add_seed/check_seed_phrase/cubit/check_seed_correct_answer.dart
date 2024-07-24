@@ -3,6 +3,7 @@ import 'package:flutter/foundation.dart';
 @Deprecated('Use v2 version')
 @immutable
 class CheckSeedCorrectAnswer {
+  @Deprecated('Use v2 version')
   const CheckSeedCorrectAnswer(this.word, this.wordIndex);
 
   /// If word is empty string then user doesn't answered

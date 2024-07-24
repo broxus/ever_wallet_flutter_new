@@ -1,5 +1,5 @@
-import 'package:app/v1/feature/add_seed/enter_seed_phrase/cubit/cubit.dart';
 import 'package:app/generated/generated.dart';
+import 'package:app/v1/feature/add_seed/enter_seed_phrase/cubit/cubit.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:ui_components_lib/ui_components_lib.dart';
@@ -12,6 +12,7 @@ const _gridColumnCount = 2;
 @Deprecated('Use v2 version')
 class EnterSeedPhraseView extends StatelessWidget {
   /// {@macro enter_seed_phrase_view}
+  @Deprecated('Use v2 version')
   const EnterSeedPhraseView({super.key});
 
   @override
