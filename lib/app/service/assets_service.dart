@@ -196,12 +196,10 @@ class AssetsService {
     try {
       if (transport.transport.disposed) return null;
 
-      final tokenRootDetails =
-          (await TokenWallet.getTokenRootDetailsFromTokenWallet(
+      final tokenRootDetails = await TokenWallet.getTokenRootDetails(
         transport: transport.transport,
-        address: rootTokenContract,
-      ))
-              .item2;
+        tokenRoot: rootTokenContract,
+      );
 
       asset = TokenContractAsset(
         name: tokenRootDetails.name,

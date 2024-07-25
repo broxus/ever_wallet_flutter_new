@@ -43,7 +43,7 @@ dependencies:
   mobile_scanner: 3.4.1
   money2: ^4.0.0
   money2_improver: ^1.3.1
-  nekoton_repository: 0.36.0-dev.3
+  nekoton_repository: 0.36.0-dev.4
   nekoton_webview: 0.1.8-dev.0
   ntp: ^2.0.0
   #  package_info_plus: ^4.1.0
