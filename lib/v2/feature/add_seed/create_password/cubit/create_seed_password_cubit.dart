@@ -72,29 +72,27 @@ class CreateSeedPasswordCubit extends Cubit<CreateSeedPasswordState> {
   }
 
   Future<void> nextAction() async {
-    if (formKey.currentState?.validate() ?? false) {
-      emit(state.copyWith(isLoading: true));
-      final nekoton = inject<NekotonRepository>();
-      final currentKeyService = inject<CurrentKeyService>();
-      try {
-        final publicKey = await nekoton.addSeed(
-          phrase: phrase,
-          password: passwordController.text,
-          name: name,
-        );
-        if (setCurrentKey) {
-          await currentKeyService.changeCurrentKey(publicKey);
-        }
-        await inject<BiometryService>().setKeyPassword(
-          publicKey: publicKey,
-          password: passwordController.text,
-        );
-        completeCallback();
-      } catch (e) {
-        Logger('CreateSeedPasswordCubit').severe(e);
-        emit(state.copyWith(isLoading: false));
-        inject<MessengerService>().show(Message.error(message: e.toString()));
+    emit(state.copyWith(isLoading: true));
+    final nekoton = inject<NekotonRepository>();
+    final currentKeyService = inject<CurrentKeyService>();
+    try {
+      final publicKey = await nekoton.addSeed(
+        phrase: phrase,
+        password: passwordController.text,
+        name: name,
+      );
+      if (setCurrentKey) {
+        await currentKeyService.changeCurrentKey(publicKey);
       }
+      await inject<BiometryService>().setKeyPassword(
+        publicKey: publicKey,
+        password: passwordController.text,
+      );
+      completeCallback();
+    } catch (e) {
+      Logger('CreateSeedPasswordCubit').severe(e);
+      emit(state.copyWith(isLoading: false));
+      inject<MessengerService>().show(Message.error(message: e.toString()));
     }
   }
 

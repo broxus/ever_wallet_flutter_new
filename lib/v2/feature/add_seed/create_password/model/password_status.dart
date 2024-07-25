@@ -1,4 +1,4 @@
-import 'package:app/generated/assets.gen.dart';
+import 'package:app/generated/generated.dart';
 
 enum PasswordStatus { initial, tooWeak, mustMatch, match }
 
@@ -8,11 +8,11 @@ extension PasswordStatusExtension on PasswordStatus {
       case PasswordStatus.initial:
         return null;
       case PasswordStatus.tooWeak:
-        return 'Password too weak';
+        return LocaleKeys.confirmWeakPasswordTitle.tr();
       case PasswordStatus.mustMatch:
-        return 'Passwords must match';
+        return LocaleKeys.confirmMustMatchTitle.tr();
       case PasswordStatus.match:
-        return 'Passwords match';
+        return LocaleKeys.confirmPasswordsMatchTitle.tr();
     }
   }
 
@@ -20,11 +20,11 @@ extension PasswordStatusExtension on PasswordStatus {
     switch (this) {
       case PasswordStatus.initial:
       case PasswordStatus.tooWeak:
-        return 'Password should contain at least 8 characters. Please update your password.';
+        return LocaleKeys.confirmWeakPasswordSubtitle.tr();
       case PasswordStatus.mustMatch:
-        return 'To continue, re-enter your password exactly as before.';
+        return LocaleKeys.confirmMustMatchSubtitle.tr();
       case PasswordStatus.match:
-        return 'In order to continue, re-enter your password exactly the same as before';
+        return LocaleKeys.confirmPasswordsMatchSubtitle.tr();
     }
   }
 

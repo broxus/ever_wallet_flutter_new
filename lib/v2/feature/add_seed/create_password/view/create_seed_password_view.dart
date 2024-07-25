@@ -38,21 +38,21 @@ class CreateSeedPasswordView extends StatelessWidget {
                       children: [
                         Center(
                           child: Text(
-                            'Choose a password',
+                            LocaleKeys.confirmPasswordTitle.tr(),
                             style: themeStyle.textStyles.headingLarge,
                             textAlign: TextAlign.center,
                           ),
                         ),
                         const SizedBox(height: DimensSize.d8),
                         Text(
-                          'Please use a password you’ll remember. It can’t be recovered.',
+                          LocaleKeys.confirmPasswordSubtitle.tr(),
                           style: themeStyle.textStyles.paragraphMedium,
                           textAlign: TextAlign.center,
                         ),
                         const SizedBox(height: DimensSize.d24),
                         PrimaryTextField(
                           keyboardType: TextInputType.visiblePassword,
-                          hintText: 'Set your password',
+                          hintText: LocaleKeys.confirmSetPasswordHint.tr(),
                           suffixes: [
                             IconEyeWidget(
                               onPressed: () {
@@ -63,7 +63,7 @@ class CreateSeedPasswordView extends StatelessWidget {
                                 }
                               },
                               isTurnedOn: state.obscurePassword,
-                            )
+                            ),
                           ],
                           isObscureText: !state.obscurePassword,
                           textEditingController: cubit.passwordController,
@@ -71,7 +71,7 @@ class CreateSeedPasswordView extends StatelessWidget {
                         const SizedBox(height: DimensSize.d8),
                         PrimaryTextField(
                           keyboardType: TextInputType.visiblePassword,
-                          hintText: 'Repeat your password',
+                          hintText: LocaleKeys.confirmRepeatPasswordHint.tr(),
                           suffixes: [
                             IconEyeWidget(
                               onPressed: () {
@@ -82,7 +82,7 @@ class CreateSeedPasswordView extends StatelessWidget {
                                 }
                               },
                               isTurnedOn: state.obscureConfirm,
-                            )
+                            ),
                           ],
                           isObscureText: !state.obscureConfirm,
                           textEditingController: cubit.confirmController,
@@ -100,7 +100,9 @@ class CreateSeedPasswordView extends StatelessWidget {
                 ),
                 AccentButton(
                   title: LocaleKeys.continueWord.tr(),
-                  onPressed: state.status == PasswordStatus.match ? cubit.nextAction : null,
+                  onPressed: state.status == PasswordStatus.match
+                      ? cubit.nextAction
+                      : null,
                   isLoading: state.isLoading,
                   buttonShape: ButtonShape.pill,
                 ),

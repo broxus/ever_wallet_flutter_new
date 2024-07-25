@@ -74,7 +74,7 @@ class CreateSeedPasswordProfilePage extends StatelessWidget {
           appBar: DefaultAppBar(
             onClosePressed: (context) => context.maybePop(),
           ),
-          body: CreateSeedPasswordView(needBiometryIfPossible: false),
+          body: const CreateSeedPasswordView(needBiometryIfPossible: false),
         ),
       ),
     );

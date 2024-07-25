@@ -2,10 +2,10 @@ import 'dart:convert';
 
 import 'package:app/app/router/router.dart';
 import 'package:app/v1/feature/add_seed/check_seed_phrase/check_seed_phrase.dart';
-import 'package:app/v1/feature/add_seed/create_password/create_password.dart';
 import 'package:app/v1/feature/add_seed/create_seed/create_seed.dart';
 import 'package:app/v1/feature/add_seed/enter_seed_name/enter_seed_name.dart';
 import 'package:app/v1/feature/add_seed/enter_seed_phrase/enter_seed_phrase.dart';
+import 'package:app/v2/feature/add_seed/create_password/create_password.dart';
 import 'package:go_router/go_router.dart';
 
 /// Name for phrase from queryParams to create or import seed.
