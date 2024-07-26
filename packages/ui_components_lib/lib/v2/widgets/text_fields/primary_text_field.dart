@@ -148,7 +148,7 @@ class PrimaryTextField extends StatelessWidget {
               mainAxisAlignment: MainAxisAlignment.end,
               children: suffixes!,
             ),
-      maxLines: 1,
+      maxLines: isObscureText ? 1 : null,
     );
   }
 

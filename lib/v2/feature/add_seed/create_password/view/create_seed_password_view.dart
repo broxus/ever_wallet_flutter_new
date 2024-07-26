@@ -62,10 +62,10 @@ class CreateSeedPasswordView extends StatelessWidget {
                                   cubit.hidePassword();
                                 }
                               },
-                              isTurnedOn: state.obscurePassword,
+                              isTurnedOn: !state.obscurePassword,
                             ),
                           ],
-                          isObscureText: !state.obscurePassword,
+                          isObscureText: state.obscurePassword,
                           textEditingController: cubit.passwordController,
                         ),
                         const SizedBox(height: DimensSize.d8),
@@ -81,10 +81,10 @@ class CreateSeedPasswordView extends StatelessWidget {
                                   cubit.hideConfirm();
                                 }
                               },
-                              isTurnedOn: state.obscureConfirm,
+                              isTurnedOn: !state.obscureConfirm,
                             ),
                           ],
-                          isObscureText: !state.obscureConfirm,
+                          isObscureText: state.obscureConfirm,
                           textEditingController: cubit.confirmController,
                           textInputAction: TextInputAction.done,
                         ),
