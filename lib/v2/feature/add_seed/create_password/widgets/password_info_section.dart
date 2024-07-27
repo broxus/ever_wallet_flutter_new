@@ -15,8 +15,8 @@ class PasswordInfoSection extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final icon = status.getSvgIconByStatus();
-    final title = status.titleByStatus;
+    final icon = status.svgUriIcon;
+    final title = status.title;
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
@@ -41,7 +41,7 @@ class PasswordInfoSection extends StatelessWidget {
         ),
         const SizedBox(height: DimensSizeV2.d8),
         Text(
-          status.subtitleByStatus,
+          status.subtitle,
           style: themeStyle.textStyles.paragraphXSmall,
         ),
       ],

@@ -3,7 +3,7 @@ import 'package:app/generated/generated.dart';
 enum PasswordStatus { initial, tooWeak, mustMatch, match }
 
 extension PasswordStatusExtension on PasswordStatus {
-  String? get titleByStatus {
+  String? get title {
     switch (this) {
       case PasswordStatus.initial:
         return null;
@@ -16,7 +16,7 @@ extension PasswordStatusExtension on PasswordStatus {
     }
   }
 
-  String get subtitleByStatus {
+  String get subtitle {
     switch (this) {
       case PasswordStatus.initial:
       case PasswordStatus.tooWeak:
@@ -28,7 +28,7 @@ extension PasswordStatusExtension on PasswordStatus {
     }
   }
 
-  String? getSvgIconByStatus() {
+  String? get svgUriIcon {
     switch (this) {
       case PasswordStatus.initial:
         return null;
