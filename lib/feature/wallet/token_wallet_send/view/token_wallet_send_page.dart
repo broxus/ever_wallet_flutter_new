@@ -2,7 +2,6 @@ import 'package:app/app/router/router.dart';
 import 'package:app/di/di.dart';
 import 'package:app/feature/wallet/wallet.dart';
 import 'package:app/generated/generated.dart';
-import 'package:app/utils/constants.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
@@ -90,8 +89,11 @@ class TokenWalletSendPage extends StatelessWidget {
               fee: fee,
               error: error,
             ),
-            readyToSend: (fee, tokenCurrency) =>
-                _confirmPage(fee: fee, tokenCurrency: tokenCurrency),
+            readyToSend: (fee, tokenCurrency, attachedAmount) => _confirmPage(
+              fee: fee,
+              tokenCurrency: tokenCurrency,
+              attachedAmount: attachedAmount,
+            ),
             sending: (canClose) => Scaffold(
               body: Padding(
                 padding: const EdgeInsets.all(DimensSize.d16),
@@ -110,6 +112,7 @@ class TokenWalletSendPage extends StatelessWidget {
     required Currency tokenCurrency,
     BigInt? fee,
     String? error,
+    BigInt? attachedAmount,
   }) {
     return Scaffold(
       appBar: DefaultAppBar(
@@ -123,7 +126,7 @@ class TokenWalletSendPage extends StatelessWidget {
         publicKey: publicKey,
         fee: fee,
         feeError: error,
-        attachedAmount: attachedAmount ?? defaultAttachAmount,
+        attachedAmount: attachedAmount,
         tokenCurrency: tokenCurrency,
       ),
     );

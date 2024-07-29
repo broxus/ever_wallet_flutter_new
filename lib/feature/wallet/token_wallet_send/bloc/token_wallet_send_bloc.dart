@@ -24,11 +24,10 @@ class TokenWalletSendBloc
     required this.publicKey,
     required this.destination,
     required this.tokenAmount,
-    required BigInt? attachedAmount,
+    required this.attachedAmount,
     required this.comment,
     required this.resultMessage,
-  })  : attachedAmount = attachedAmount ?? defaultAttachAmount,
-        super(const TokenWalletSendState.init()) {
+  }) : super(const TokenWalletSendState.init()) {
     _registerHandlers();
   }
 
@@ -55,7 +54,7 @@ class TokenWalletSendBloc
   late BigInt sendAmount;
 
   /// Attached amount in native tokens, that should be added to transaction.
-  final BigInt attachedAmount;
+  final BigInt? attachedAmount;
 
   /// Comment for transaction
   final String? comment;
@@ -128,7 +127,6 @@ class TokenWalletSendBloc
         expiration: defaultSendTimeout,
       );
       _unsignedMessage = unsignedMessage;
-
       fees = await nekotonRepository.estimateFees(
         address: owner,
         message: unsignedMessage,
@@ -163,7 +161,7 @@ class TokenWalletSendBloc
         return;
       }
 
-      emit(TokenWalletSendState.readyToSend(fees!, tokenCurrency));
+      emit(TokenWalletSendState.readyToSend(fees!, tokenCurrency, sendAmount));
     } on FfiException catch (e, t) {
       _logger.severe('_handleSend', e, t);
       emit(TokenWalletSendState.calculatingError(e.message, tokenCurrency));
@@ -211,11 +209,11 @@ class TokenWalletSendBloc
     } on FfiException catch (e, t) {
       _logger.severe('_handleSend', e, t);
       inject<MessengerService>().show(Message.error(message: e.message));
-      emit(TokenWalletSendState.readyToSend(fees!, tokenCurrency));
+      emit(TokenWalletSendState.readyToSend(fees!, tokenCurrency, sendAmount));
     } on Exception catch (e, t) {
       _logger.severe('_handleSend', e, t);
       inject<MessengerService>().show(Message.error(message: e.toString()));
-      emit(TokenWalletSendState.readyToSend(fees!, tokenCurrency));
+      emit(TokenWalletSendState.readyToSend(fees!, tokenCurrency, sendAmount));
     }
   }
 

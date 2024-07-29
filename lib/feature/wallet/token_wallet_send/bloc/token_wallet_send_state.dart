@@ -21,6 +21,7 @@ class TokenWalletSendState with _$TokenWalletSendState {
   const factory TokenWalletSendState.readyToSend(
     BigInt fee,
     Currency tokenCurrency,
+    BigInt attachedAmount,
   ) = _Ready;
 
   /// Transaction is sending.

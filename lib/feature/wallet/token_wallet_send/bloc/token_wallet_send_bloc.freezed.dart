@@ -626,7 +626,9 @@ mixin _$TokenWalletSendState {
     required TResult Function(Currency tokenCurrency) loading,
     required TResult Function(String error, Currency tokenCurrency, BigInt? fee)
         calculatingError,
-    required TResult Function(BigInt fee, Currency tokenCurrency) readyToSend,
+    required TResult Function(
+            BigInt fee, Currency tokenCurrency, BigInt attachedAmount)
+        readyToSend,
     required TResult Function(bool canClose) sending,
     required TResult Function(
             BigInt fee, Currency tokenCurrency, Transaction transaction)
@@ -640,7 +642,9 @@ mixin _$TokenWalletSendState {
     TResult? Function(Currency tokenCurrency)? loading,
     TResult? Function(String error, Currency tokenCurrency, BigInt? fee)?
         calculatingError,
-    TResult? Function(BigInt fee, Currency tokenCurrency)? readyToSend,
+    TResult? Function(
+            BigInt fee, Currency tokenCurrency, BigInt attachedAmount)?
+        readyToSend,
     TResult? Function(bool canClose)? sending,
     TResult? Function(
             BigInt fee, Currency tokenCurrency, Transaction transaction)?
@@ -654,7 +658,8 @@ mixin _$TokenWalletSendState {
     TResult Function(Currency tokenCurrency)? loading,
     TResult Function(String error, Currency tokenCurrency, BigInt? fee)?
         calculatingError,
-    TResult Function(BigInt fee, Currency tokenCurrency)? readyToSend,
+    TResult Function(BigInt fee, Currency tokenCurrency, BigInt attachedAmount)?
+        readyToSend,
     TResult Function(bool canClose)? sending,
     TResult Function(
             BigInt fee, Currency tokenCurrency, Transaction transaction)?
@@ -759,7 +764,9 @@ class _$InitImpl implements _Init {
     required TResult Function(Currency tokenCurrency) loading,
     required TResult Function(String error, Currency tokenCurrency, BigInt? fee)
         calculatingError,
-    required TResult Function(BigInt fee, Currency tokenCurrency) readyToSend,
+    required TResult Function(
+            BigInt fee, Currency tokenCurrency, BigInt attachedAmount)
+        readyToSend,
     required TResult Function(bool canClose) sending,
     required TResult Function(
             BigInt fee, Currency tokenCurrency, Transaction transaction)
@@ -776,7 +783,9 @@ class _$InitImpl implements _Init {
     TResult? Function(Currency tokenCurrency)? loading,
     TResult? Function(String error, Currency tokenCurrency, BigInt? fee)?
         calculatingError,
-    TResult? Function(BigInt fee, Currency tokenCurrency)? readyToSend,
+    TResult? Function(
+            BigInt fee, Currency tokenCurrency, BigInt attachedAmount)?
+        readyToSend,
     TResult? Function(bool canClose)? sending,
     TResult? Function(
             BigInt fee, Currency tokenCurrency, Transaction transaction)?
@@ -793,7 +802,8 @@ class _$InitImpl implements _Init {
     TResult Function(Currency tokenCurrency)? loading,
     TResult Function(String error, Currency tokenCurrency, BigInt? fee)?
         calculatingError,
-    TResult Function(BigInt fee, Currency tokenCurrency)? readyToSend,
+    TResult Function(BigInt fee, Currency tokenCurrency, BigInt attachedAmount)?
+        readyToSend,
     TResult Function(bool canClose)? sending,
     TResult Function(
             BigInt fee, Currency tokenCurrency, Transaction transaction)?
@@ -925,7 +935,9 @@ class _$SubscribeErrorImpl implements _SubscribeError {
     required TResult Function(Currency tokenCurrency) loading,
     required TResult Function(String error, Currency tokenCurrency, BigInt? fee)
         calculatingError,
-    required TResult Function(BigInt fee, Currency tokenCurrency) readyToSend,
+    required TResult Function(
+            BigInt fee, Currency tokenCurrency, BigInt attachedAmount)
+        readyToSend,
     required TResult Function(bool canClose) sending,
     required TResult Function(
             BigInt fee, Currency tokenCurrency, Transaction transaction)
@@ -942,7 +954,9 @@ class _$SubscribeErrorImpl implements _SubscribeError {
     TResult? Function(Currency tokenCurrency)? loading,
     TResult? Function(String error, Currency tokenCurrency, BigInt? fee)?
         calculatingError,
-    TResult? Function(BigInt fee, Currency tokenCurrency)? readyToSend,
+    TResult? Function(
+            BigInt fee, Currency tokenCurrency, BigInt attachedAmount)?
+        readyToSend,
     TResult? Function(bool canClose)? sending,
     TResult? Function(
             BigInt fee, Currency tokenCurrency, Transaction transaction)?
@@ -959,7 +973,8 @@ class _$SubscribeErrorImpl implements _SubscribeError {
     TResult Function(Currency tokenCurrency)? loading,
     TResult Function(String error, Currency tokenCurrency, BigInt? fee)?
         calculatingError,
-    TResult Function(BigInt fee, Currency tokenCurrency)? readyToSend,
+    TResult Function(BigInt fee, Currency tokenCurrency, BigInt attachedAmount)?
+        readyToSend,
     TResult Function(bool canClose)? sending,
     TResult Function(
             BigInt fee, Currency tokenCurrency, Transaction transaction)?
@@ -1098,7 +1113,9 @@ class _$LoadingImpl implements _Loading {
     required TResult Function(Currency tokenCurrency) loading,
     required TResult Function(String error, Currency tokenCurrency, BigInt? fee)
         calculatingError,
-    required TResult Function(BigInt fee, Currency tokenCurrency) readyToSend,
+    required TResult Function(
+            BigInt fee, Currency tokenCurrency, BigInt attachedAmount)
+        readyToSend,
     required TResult Function(bool canClose) sending,
     required TResult Function(
             BigInt fee, Currency tokenCurrency, Transaction transaction)
@@ -1115,7 +1132,9 @@ class _$LoadingImpl implements _Loading {
     TResult? Function(Currency tokenCurrency)? loading,
     TResult? Function(String error, Currency tokenCurrency, BigInt? fee)?
         calculatingError,
-    TResult? Function(BigInt fee, Currency tokenCurrency)? readyToSend,
+    TResult? Function(
+            BigInt fee, Currency tokenCurrency, BigInt attachedAmount)?
+        readyToSend,
     TResult? Function(bool canClose)? sending,
     TResult? Function(
             BigInt fee, Currency tokenCurrency, Transaction transaction)?
@@ -1132,7 +1151,8 @@ class _$LoadingImpl implements _Loading {
     TResult Function(Currency tokenCurrency)? loading,
     TResult Function(String error, Currency tokenCurrency, BigInt? fee)?
         calculatingError,
-    TResult Function(BigInt fee, Currency tokenCurrency)? readyToSend,
+    TResult Function(BigInt fee, Currency tokenCurrency, BigInt attachedAmount)?
+        readyToSend,
     TResult Function(bool canClose)? sending,
     TResult Function(
             BigInt fee, Currency tokenCurrency, Transaction transaction)?
@@ -1288,7 +1308,9 @@ class _$CalculatingErrorImpl implements _CalculatingError {
     required TResult Function(Currency tokenCurrency) loading,
     required TResult Function(String error, Currency tokenCurrency, BigInt? fee)
         calculatingError,
-    required TResult Function(BigInt fee, Currency tokenCurrency) readyToSend,
+    required TResult Function(
+            BigInt fee, Currency tokenCurrency, BigInt attachedAmount)
+        readyToSend,
     required TResult Function(bool canClose) sending,
     required TResult Function(
             BigInt fee, Currency tokenCurrency, Transaction transaction)
@@ -1305,7 +1327,9 @@ class _$CalculatingErrorImpl implements _CalculatingError {
     TResult? Function(Currency tokenCurrency)? loading,
     TResult? Function(String error, Currency tokenCurrency, BigInt? fee)?
         calculatingError,
-    TResult? Function(BigInt fee, Currency tokenCurrency)? readyToSend,
+    TResult? Function(
+            BigInt fee, Currency tokenCurrency, BigInt attachedAmount)?
+        readyToSend,
     TResult? Function(bool canClose)? sending,
     TResult? Function(
             BigInt fee, Currency tokenCurrency, Transaction transaction)?
@@ -1322,7 +1346,8 @@ class _$CalculatingErrorImpl implements _CalculatingError {
     TResult Function(Currency tokenCurrency)? loading,
     TResult Function(String error, Currency tokenCurrency, BigInt? fee)?
         calculatingError,
-    TResult Function(BigInt fee, Currency tokenCurrency)? readyToSend,
+    TResult Function(BigInt fee, Currency tokenCurrency, BigInt attachedAmount)?
+        readyToSend,
     TResult Function(bool canClose)? sending,
     TResult Function(
             BigInt fee, Currency tokenCurrency, Transaction transaction)?
@@ -1401,7 +1426,7 @@ abstract class _$$ReadyImplCopyWith<$Res> {
           _$ReadyImpl value, $Res Function(_$ReadyImpl) then) =
       __$$ReadyImplCopyWithImpl<$Res>;
   @useResult
-  $Res call({BigInt fee, Currency tokenCurrency});
+  $Res call({BigInt fee, Currency tokenCurrency, BigInt attachedAmount});
 }
 
 /// @nodoc
@@ -1417,6 +1442,7 @@ class __$$ReadyImplCopyWithImpl<$Res>
   $Res call({
     Object? fee = null,
     Object? tokenCurrency = null,
+    Object? attachedAmount = null,
   }) {
     return _then(_$ReadyImpl(
       null == fee
@@ -1427,6 +1453,10 @@ class __$$ReadyImplCopyWithImpl<$Res>
           ? _value.tokenCurrency
           : tokenCurrency // ignore: cast_nullable_to_non_nullable
               as Currency,
+      null == attachedAmount
+          ? _value.attachedAmount
+          : attachedAmount // ignore: cast_nullable_to_non_nullable
+              as BigInt,
     ));
   }
 }
@@ -1434,16 +1464,18 @@ class __$$ReadyImplCopyWithImpl<$Res>
 /// @nodoc
 
 class _$ReadyImpl implements _Ready {
-  const _$ReadyImpl(this.fee, this.tokenCurrency);
+  const _$ReadyImpl(this.fee, this.tokenCurrency, this.attachedAmount);
 
   @override
   final BigInt fee;
   @override
   final Currency tokenCurrency;
+  @override
+  final BigInt attachedAmount;
 
   @override
   String toString() {
-    return 'TokenWalletSendState.readyToSend(fee: $fee, tokenCurrency: $tokenCurrency)';
+    return 'TokenWalletSendState.readyToSend(fee: $fee, tokenCurrency: $tokenCurrency, attachedAmount: $attachedAmount)';
   }
 
   @override
@@ -1453,11 +1485,14 @@ class _$ReadyImpl implements _Ready {
             other is _$ReadyImpl &&
             (identical(other.fee, fee) || other.fee == fee) &&
             (identical(other.tokenCurrency, tokenCurrency) ||
-                other.tokenCurrency == tokenCurrency));
+                other.tokenCurrency == tokenCurrency) &&
+            (identical(other.attachedAmount, attachedAmount) ||
+                other.attachedAmount == attachedAmount));
   }
 
   @override
-  int get hashCode => Object.hash(runtimeType, fee, tokenCurrency);
+  int get hashCode =>
+      Object.hash(runtimeType, fee, tokenCurrency, attachedAmount);
 
   @JsonKey(ignore: true)
   @override
@@ -1473,13 +1508,15 @@ class _$ReadyImpl implements _Ready {
     required TResult Function(Currency tokenCurrency) loading,
     required TResult Function(String error, Currency tokenCurrency, BigInt? fee)
         calculatingError,
-    required TResult Function(BigInt fee, Currency tokenCurrency) readyToSend,
+    required TResult Function(
+            BigInt fee, Currency tokenCurrency, BigInt attachedAmount)
+        readyToSend,
     required TResult Function(bool canClose) sending,
     required TResult Function(
             BigInt fee, Currency tokenCurrency, Transaction transaction)
         sent,
   }) {
-    return readyToSend(fee, tokenCurrency);
+    return readyToSend(fee, tokenCurrency, attachedAmount);
   }
 
   @override
@@ -1490,13 +1527,15 @@ class _$ReadyImpl implements _Ready {
     TResult? Function(Currency tokenCurrency)? loading,
     TResult? Function(String error, Currency tokenCurrency, BigInt? fee)?
         calculatingError,
-    TResult? Function(BigInt fee, Currency tokenCurrency)? readyToSend,
+    TResult? Function(
+            BigInt fee, Currency tokenCurrency, BigInt attachedAmount)?
+        readyToSend,
     TResult? Function(bool canClose)? sending,
     TResult? Function(
             BigInt fee, Currency tokenCurrency, Transaction transaction)?
         sent,
   }) {
-    return readyToSend?.call(fee, tokenCurrency);
+    return readyToSend?.call(fee, tokenCurrency, attachedAmount);
   }
 
   @override
@@ -1507,7 +1546,8 @@ class _$ReadyImpl implements _Ready {
     TResult Function(Currency tokenCurrency)? loading,
     TResult Function(String error, Currency tokenCurrency, BigInt? fee)?
         calculatingError,
-    TResult Function(BigInt fee, Currency tokenCurrency)? readyToSend,
+    TResult Function(BigInt fee, Currency tokenCurrency, BigInt attachedAmount)?
+        readyToSend,
     TResult Function(bool canClose)? sending,
     TResult Function(
             BigInt fee, Currency tokenCurrency, Transaction transaction)?
@@ -1515,7 +1555,7 @@ class _$ReadyImpl implements _Ready {
     required TResult orElse(),
   }) {
     if (readyToSend != null) {
-      return readyToSend(fee, tokenCurrency);
+      return readyToSend(fee, tokenCurrency, attachedAmount);
     }
     return orElse();
   }
@@ -1568,11 +1608,12 @@ class _$ReadyImpl implements _Ready {
 }
 
 abstract class _Ready implements TokenWalletSendState {
-  const factory _Ready(final BigInt fee, final Currency tokenCurrency) =
-      _$ReadyImpl;
+  const factory _Ready(final BigInt fee, final Currency tokenCurrency,
+      final BigInt attachedAmount) = _$ReadyImpl;
 
   BigInt get fee;
   Currency get tokenCurrency;
+  BigInt get attachedAmount;
   @JsonKey(ignore: true)
   _$$ReadyImplCopyWith<_$ReadyImpl> get copyWith =>
       throw _privateConstructorUsedError;
@@ -1648,7 +1689,9 @@ class _$SendingImpl implements _Sending {
     required TResult Function(Currency tokenCurrency) loading,
     required TResult Function(String error, Currency tokenCurrency, BigInt? fee)
         calculatingError,
-    required TResult Function(BigInt fee, Currency tokenCurrency) readyToSend,
+    required TResult Function(
+            BigInt fee, Currency tokenCurrency, BigInt attachedAmount)
+        readyToSend,
     required TResult Function(bool canClose) sending,
     required TResult Function(
             BigInt fee, Currency tokenCurrency, Transaction transaction)
@@ -1665,7 +1708,9 @@ class _$SendingImpl implements _Sending {
     TResult? Function(Currency tokenCurrency)? loading,
     TResult? Function(String error, Currency tokenCurrency, BigInt? fee)?
         calculatingError,
-    TResult? Function(BigInt fee, Currency tokenCurrency)? readyToSend,
+    TResult? Function(
+            BigInt fee, Currency tokenCurrency, BigInt attachedAmount)?
+        readyToSend,
     TResult? Function(bool canClose)? sending,
     TResult? Function(
             BigInt fee, Currency tokenCurrency, Transaction transaction)?
@@ -1682,7 +1727,8 @@ class _$SendingImpl implements _Sending {
     TResult Function(Currency tokenCurrency)? loading,
     TResult Function(String error, Currency tokenCurrency, BigInt? fee)?
         calculatingError,
-    TResult Function(BigInt fee, Currency tokenCurrency)? readyToSend,
+    TResult Function(BigInt fee, Currency tokenCurrency, BigInt attachedAmount)?
+        readyToSend,
     TResult Function(bool canClose)? sending,
     TResult Function(
             BigInt fee, Currency tokenCurrency, Transaction transaction)?
@@ -1847,7 +1893,9 @@ class _$SentImpl implements _Sent {
     required TResult Function(Currency tokenCurrency) loading,
     required TResult Function(String error, Currency tokenCurrency, BigInt? fee)
         calculatingError,
-    required TResult Function(BigInt fee, Currency tokenCurrency) readyToSend,
+    required TResult Function(
+            BigInt fee, Currency tokenCurrency, BigInt attachedAmount)
+        readyToSend,
     required TResult Function(bool canClose) sending,
     required TResult Function(
             BigInt fee, Currency tokenCurrency, Transaction transaction)
@@ -1864,7 +1912,9 @@ class _$SentImpl implements _Sent {
     TResult? Function(Currency tokenCurrency)? loading,
     TResult? Function(String error, Currency tokenCurrency, BigInt? fee)?
         calculatingError,
-    TResult? Function(BigInt fee, Currency tokenCurrency)? readyToSend,
+    TResult? Function(
+            BigInt fee, Currency tokenCurrency, BigInt attachedAmount)?
+        readyToSend,
     TResult? Function(bool canClose)? sending,
     TResult? Function(
             BigInt fee, Currency tokenCurrency, Transaction transaction)?
@@ -1881,7 +1931,8 @@ class _$SentImpl implements _Sent {
     TResult Function(Currency tokenCurrency)? loading,
     TResult Function(String error, Currency tokenCurrency, BigInt? fee)?
         calculatingError,
-    TResult Function(BigInt fee, Currency tokenCurrency)? readyToSend,
+    TResult Function(BigInt fee, Currency tokenCurrency, BigInt attachedAmount)?
+        readyToSend,
     TResult Function(bool canClose)? sending,
     TResult Function(
             BigInt fee, Currency tokenCurrency, Transaction transaction)?
