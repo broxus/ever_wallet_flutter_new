@@ -50,7 +50,8 @@ class OnboardingView extends StatelessWidget {
                 const SizedBox(height: DimensSize.d24),
                 AccentButton(
                   title: LocaleKeys.welcomeGetNewWallet.tr(),
-                  onPressed: () => context.goFurther(AppRoute.createSeed.path),
+                  onPressed: () =>
+                      context.goFurther(AppRoute.importWallet.path),
                   buttonShape: ButtonShape.pill,
                 ),
                 const SizedBox(height: DimensSize.d8),

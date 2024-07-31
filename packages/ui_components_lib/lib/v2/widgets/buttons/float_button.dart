@@ -12,6 +12,8 @@ class FloatButton extends BaseButton {
     super.postfixIcon,
     super.buttonSize,
     super.key,
+    super.isFullWidth,
+    super.backgroundBlur = 25,
   });
 
   @override

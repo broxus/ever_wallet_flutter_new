@@ -5,7 +5,10 @@ import 'package:app/v1/feature/add_seed/check_seed_phrase/check_seed_phrase.dart
 import 'package:app/v1/feature/add_seed/create_password/create_password.dart';
 import 'package:app/v1/feature/add_seed/create_seed/create_seed.dart';
 import 'package:app/v1/feature/add_seed/enter_seed_name/enter_seed_name.dart';
-import 'package:app/v1/feature/add_seed/enter_seed_phrase/enter_seed_phrase.dart';
+import 'package:app/v2/feature/add_seed/add_existing_wallet/view/view.dart';
+import 'package:app/v2/feature/add_seed/enter_seed_phrase/enter_seed_phrase.dart';
+import 'package:app/v2/feature/add_seed/create_password/create_password.dart';
+import 'package:app/v2/feature/add_seed/import_wallet/import_wallet.dart';
 import 'package:go_router/go_router.dart';
 
 /// Name for phrase from queryParams to create or import seed.
@@ -46,7 +49,6 @@ GoRoute createSeedNoNamedRoute(GoRoute passwordRoute) {
 /// Route that allows to enter a seed phrase without entering name.
 /// This route may be used in onboarding or profile section, depends
 /// on [passwordRoute].
-@Deprecated('Use v2 version')
 GoRoute enterSeedNoNamedRoute(GoRoute passwordRoute) {
   return GoRoute(
     path: AppRoute.enterSeed.path,
@@ -54,6 +56,20 @@ GoRoute enterSeedNoNamedRoute(GoRoute passwordRoute) {
     routes: [
       passwordRoute,
     ],
+  );
+}
+
+GoRoute get addExistingWalletRoute {
+  return GoRoute(
+    path: AppRoute.addExistingWallet.path,
+    builder: (_, __) => const AddExistingWalletPage(),
+  );
+}
+
+GoRoute get importWalletRoute {
+  return GoRoute(
+    path: AppRoute.importWallet.path,
+    builder: (_, __) => const ImportWalletPage(),
   );
 }
 

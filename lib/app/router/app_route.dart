@@ -136,6 +136,16 @@ enum AppRoute {
     'enterSeed/:$enterSeedNameNamePathParam',
     isSaveLocation: true,
   ),
+  addExistingWallet(
+    '',
+    'addExistingWallet',
+    isSaveLocation: true,
+  ),
+  importWallet(
+    '',
+    'importWallet',
+    isSaveLocation: true,
+  ),
 
   // command flag means: 'import' - import, 'create' (or other) - create,
   // see <enterSeedNameImportCommand> and <enterSeedNameCreateCommand>.

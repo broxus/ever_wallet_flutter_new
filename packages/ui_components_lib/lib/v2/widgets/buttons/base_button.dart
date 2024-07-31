@@ -1,3 +1,5 @@
+import 'dart:ui';
+
 import 'package:flutter/material.dart';
 import 'package:ui_components_lib/v2/ui_components_lib_v2.dart';
 import 'package:ui_components_lib/v2/widgets/buttons/button.dart';
@@ -15,6 +17,8 @@ abstract class BaseButton extends StatelessWidget {
     this.isLoading = false,
     this.icon,
     this.postfixIcon,
+    this.isFullWidth = true,
+    this.backgroundBlur,
     super.key,
   });
 
@@ -27,6 +31,8 @@ abstract class BaseButton extends StatelessWidget {
   final double? width;
   final IconData? icon;
   final IconData? postfixIcon;
+  final bool isFullWidth;
+  final double? backgroundBlur;
 
   double get _paddingByButtonSize {
     switch (buttonSize) {
@@ -87,30 +93,41 @@ abstract class BaseButton extends StatelessWidget {
     switch (buttonShape) {
       case ButtonShape.pill:
       case ButtonShape.rectangle:
-        return ElevatedButton(
-          onPressed: isLoading ? null : onPressed,
-          style: buttonStyle,
-          child: isLoading
-              ? _ProgressIndicatorWidget(
-                  color: style.iconColor,
-                  size: _iconSize,
-                )
-              : Row(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  children: [
-                    if (icon != null)
-                      Padding(
-                        padding: const EdgeInsets.only(right: DimensSizeV2.d8),
-                        child: Icon(icon, size: _iconSize),
-                      ),
-                    child,
-                    if (postfixIcon != null)
-                      Padding(
-                        padding: const EdgeInsets.only(left: DimensSizeV2.d8),
-                        child: Icon(postfixIcon, size: _iconSize),
-                      ),
-                  ],
-                ),
+        return ClipRRect(
+          borderRadius: BorderRadius.circular(_borderRadius),
+          child: BackdropFilter(
+            filter: ImageFilter.blur(
+              sigmaX: backgroundBlur ?? 0,
+              sigmaY: backgroundBlur ?? 0,
+            ),
+            child: ElevatedButton(
+              onPressed: isLoading ? null : onPressed,
+              style: buttonStyle,
+              child: isLoading
+                  ? _ProgressIndicatorWidget(
+                      color: style.iconColor,
+                      size: _iconSize,
+                    )
+                  : Row(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      mainAxisSize:
+                          isFullWidth ? MainAxisSize.max : MainAxisSize.min,
+                      children: [
+                        if (icon != null)
+                          Padding(
+                            padding: const EdgeInsets.only(right: DimensSizeV2.d8),
+                            child: Icon(icon, size: _iconSize),
+                          ),
+                        child,
+                        if (postfixIcon != null)
+                          Padding(
+                            padding: const EdgeInsets.only(left: DimensSizeV2.d8),
+                            child: Icon(postfixIcon, size: _iconSize),
+                          ),
+                      ],
+                    ),
+            ),
+          ),
         );
       case ButtonShape.square:
       case ButtonShape.circle:
