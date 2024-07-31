@@ -115,13 +115,15 @@ abstract class BaseButton extends StatelessWidget {
                       children: [
                         if (icon != null)
                           Padding(
-                            padding: const EdgeInsets.only(right: DimensSizeV2.d8),
+                            padding:
+                                const EdgeInsets.only(right: DimensSizeV2.d8),
                             child: Icon(icon, size: _iconSize),
                           ),
                         child,
                         if (postfixIcon != null)
                           Padding(
-                            padding: const EdgeInsets.only(left: DimensSizeV2.d8),
+                            padding:
+                                const EdgeInsets.only(left: DimensSizeV2.d8),
                             child: Icon(postfixIcon, size: _iconSize),
                           ),
                       ],

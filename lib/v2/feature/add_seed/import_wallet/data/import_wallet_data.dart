@@ -13,7 +13,7 @@ class ImportWalletData {
   }) {
     return ImportWalletData(
       isPasted: isPasted ?? this.isPasted,
-      words: words  ,
+      words: words,
     );
   }
 }

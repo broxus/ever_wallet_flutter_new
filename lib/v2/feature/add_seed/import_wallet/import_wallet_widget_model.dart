@@ -1,14 +1,13 @@
 import 'package:app/app/service/messenger/message.dart';
 import 'package:app/app/service/messenger/service/messenger_service.dart';
+import 'package:app/core/wm/custom_wm.dart';
 import 'package:app/di/di.dart';
 import 'package:app/generated/generated.dart';
+import 'package:app/v2/feature/add_seed/import_wallet/import_wallet.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:nekoton_repository/nekoton_repository.dart' hide Message;
 import 'package:ui_components_lib/constants.dart';
-
-import 'package:app/core/wm/custom_wm.dart';
-import 'package:app/v2/feature/add_seed/import_wallet/import_wallet.dart';
 
 final seedSplitRegExp = RegExp(r'[ |;,:\n.]');
 
@@ -25,7 +24,7 @@ class ImportWalletWidgetModel
     extends CustomWidgetModel<ImportWalletView, ImportWalletModel> {
   ImportWalletWidgetModel(this._messengerService, super.model);
 
-  MessengerService _messengerService;
+  final MessengerService _messengerService;
 
   late final screenState = createEntityNotifier<ImportWalletData?>()
     ..loading(ImportWalletData());
@@ -66,7 +65,7 @@ class ImportWalletWidgetModel
 
   void deleteWords() {
     _isPasted = false;
-    _updateState(isPasted: _isPasted, words: null);
+    _updateState(isPasted: _isPasted);
   }
 
   void _updateState({

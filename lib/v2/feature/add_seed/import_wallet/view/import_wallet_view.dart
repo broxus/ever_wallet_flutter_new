@@ -1,3 +1,8 @@
+// ignore_for_file: invalid_use_of_visible_for_testing_member
+// ignore_for_file: invalid_use_of_protected_member
+
+import 'package:app/generated/generated.dart';
+import 'package:app/v2/feature/add_seed/import_wallet/import_wallet.dart';
 import 'package:elementary/elementary.dart';
 import 'package:elementary_helper/elementary_helper.dart';
 import 'package:flutter/cupertino.dart';
@@ -6,8 +11,6 @@ import 'package:lucide_icons_flutter/lucide_icons.dart';
 import 'package:ui_components_lib/ui_components_lib.dart';
 import 'package:ui_components_lib/v2/dimens_v2.dart';
 import 'package:ui_components_lib/v2/widgets/buttons/button.dart';
-
-import '../import_wallet.dart';
 
 class ImportWalletView extends ElementaryWidget<ImportWalletWidgetModel> {
   const ImportWalletView({
@@ -34,14 +37,17 @@ class ImportWalletView extends ElementaryWidget<ImportWalletWidgetModel> {
               children: [
                 Image.asset(
                   'assets/images/seed_phrase_icon.png',
-                  width: 56,
-                  height: 56,
+                  width: DimensSizeV2.d56,
+                  height: DimensSizeV2.d56,
                 ),
                 const SizedBox(height: DimensSizeV2.d16),
-                Text('Import wallet', style: theme.textStyles.headingLarge),
+                Text(
+                  LocaleKeys.importWalletScreenTitle.tr(),
+                  style: theme.textStyles.headingLarge,
+                ),
                 const SizedBox(height: DimensSizeV2.d8),
                 Text(
-                  'Enter your secret recovery phrase to securely import your wallet.',
+                  LocaleKeys.importWalletScreenSubtitle.tr(),
                   style: theme.textStyles.paragraphMedium,
                   textAlign: TextAlign.center,
                 ),
@@ -85,30 +91,32 @@ class ImportWalletView extends ElementaryWidget<ImportWalletWidgetModel> {
                       Center(
                         child: FloatButton(
                           buttonShape: ButtonShape.pill,
-                          title: 'Paste from clipboard',
+                          title: LocaleKeys.importWalletPasteClipboard.tr(),
                           onPressed: () {
                             wm.pasteWords();
                           },
                           icon: LucideIcons.arrowDown,
                           isFullWidth: false,
                         ),
-                      )
+                      ),
                   ],
                 ),
                 const SizedBox(height: DimensSizeV2.d24),
                 GhostButton(
                   buttonShape: ButtonShape.pill,
-                  title: 'Import manually',
+                  title: LocaleKeys.importWalletManuallyButtonText.tr(),
                   onPressed: () {},
                   icon: LucideIcons.pencilLine,
                 ),
                 const Spacer(),
                 AccentButton(
                   buttonShape: ButtonShape.pill,
-                  title: 'Import',
-                  onPressed: isPasted ? () {
-                    wm.import();
-                  } : null,
+                  title: LocaleKeys.importWalletButtonText.tr(),
+                  onPressed: isPasted
+                      ? () {
+                          wm.import();
+                        }
+                      : null,
                   icon: LucideIcons.textCursorInput,
                 ),
               ],
@@ -133,7 +141,11 @@ class _ListWords extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final words = this.words ?? List.generate(12, (index) => '^*#!#\$^*');
+    final words = this.words ??
+        List.generate(
+          12,
+          (index) => r'^*#!#$^*',
+        );
     final halfLength = (words.length / 2).floor();
 
     final firstColumnWords = words.sublist(0, halfLength);

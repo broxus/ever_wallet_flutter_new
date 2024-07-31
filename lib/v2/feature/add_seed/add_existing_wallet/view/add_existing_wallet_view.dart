@@ -1,3 +1,4 @@
+import 'package:app/generated/generated.dart';
 import 'package:flutter/material.dart';
 import 'package:lucide_icons_flutter/lucide_icons.dart';
 import 'package:ui_components_lib/ui_components_lib.dart';
@@ -18,20 +19,20 @@ class AddExistingWalletView extends StatelessWidget {
         child: Column(
           children: [
             const Spacer(),
-            Text('Add an existing wallet',
-                style: theme.textStyles.headingLarge),
+            Text(
+              LocaleKeys.addExistingWalletTitle.tr(),
+              style: theme.textStyles.headingLarge,
+            ),
             const SizedBox(height: DimensSizeV2.d8),
             Text(
-              'Choose how you’d like to import your existing '
-              'wallet into Sparx.',
+              LocaleKeys.addExistingWalletSubtitle.tr(),
               style: theme.textStyles.paragraphMedium,
               textAlign: TextAlign.center,
             ),
             const Spacer(),
             PrimaryButton(
               buttonShape: ButtonShape.pill,
-              title: 'Use '
-                  'secret recovery phrase',
+              title: LocaleKeys.useSecretPhraseTitle.tr(),
               onPressed: () {},
               icon: LucideIcons.textCursorInput,
             ),

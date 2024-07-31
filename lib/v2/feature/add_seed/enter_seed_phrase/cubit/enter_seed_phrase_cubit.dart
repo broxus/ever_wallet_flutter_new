@@ -357,7 +357,8 @@ class EnterSeedPhraseCubit extends Cubit<EnterSeedPhraseState> {
         !focus.hasFocus &&
         inputModel is EnterSeedPhraseInput) {
       // if input entered, not focused and not completed yet
-      _inputModels[index] = _inputModels[index] = EnterSeedPhraseInputModel.input(
+      _inputModels[index] =
+          _inputModels[index] = EnterSeedPhraseInputModel.input(
         controller: controller,
         focus: focus,
         index: index,

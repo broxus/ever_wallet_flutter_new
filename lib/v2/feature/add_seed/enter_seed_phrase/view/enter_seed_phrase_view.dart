@@ -5,9 +5,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:lucide_icons_flutter/lucide_icons.dart';
 import 'package:ui_components_lib/ui_components_lib.dart';
 import 'package:ui_components_lib/v2/dimens_v2.dart';
-import 'package:ui_components_lib/v2/widgets/buttons/accent_button.dart';
 import 'package:ui_components_lib/v2/widgets/buttons/button.dart';
-import 'package:ui_components_lib/v2/widgets/segment_control/primary_segment_control.dart';
 import 'package:ui_components_lib/v2/widgets/segment_control/segment_control.dart';
 import 'package:ui_components_lib/v2/widgets/text_fields/primary_text_field.dart';
 
@@ -24,10 +22,7 @@ class EnterSeedPhraseView extends StatelessWidget {
   Widget build(BuildContext context) {
     final colors = context.themeStyle.colors;
     final theme = context.themeStyleV2;
-    final bottomPadding = MediaQuery
-        .of(context)
-        .viewInsets
-        .bottom;
+    final bottomPadding = MediaQuery.of(context).viewInsets.bottom;
     final hasBottomPadding = bottomPadding >= commonButtonHeight;
 
     return SafeArea(
@@ -38,12 +33,12 @@ class EnterSeedPhraseView extends StatelessWidget {
           children: [
             Image.asset(
               'assets/images/seed_phrase_icon.png',
-              width: 56,
-              height: 56,
+              width: DimensSizeV2.d56,
+              height: DimensSizeV2.d56,
             ),
             const SizedBox(height: DimensSizeV2.d16),
             Text(
-              'Enter seed phrase',
+              LocaleKeys.enterSeedPhrase.tr(),
               style: theme.textStyles.headingLarge,
             ),
             Padding(
@@ -53,7 +48,7 @@ class EnterSeedPhraseView extends StatelessWidget {
                 right: DimensSizeV2.d16,
               ),
               child: Text(
-                'You can paste all the words from the clipboard into the first box.',
+                LocaleKeys.pasteSeedIntoFirstBox.tr(),
                 style: theme.textStyles.paragraphMedium,
                 textAlign: TextAlign.center,
               ),
@@ -88,40 +83,38 @@ class EnterSeedPhraseView extends StatelessWidget {
     return BlocBuilder<EnterSeedPhraseCubit, EnterSeedPhraseState>(
       builder: (context, state) {
         final cubit = context.read<EnterSeedPhraseCubit>();
-        final colors = context.themeStyle.colors;
-        final bottomPadding = MediaQuery
-            .of(context)
-            .viewInsets
-            .bottom;
+        final bottomPadding = MediaQuery.of(context).viewInsets.bottom;
         final isKeyboardOpen = bottomPadding >= commonButtonHeight;
 
         return state.when(
           initial: () => const SizedBox.shrink(),
-          tab: (allowedValues,
-              currentValue,
-              inputsModels,
-              displayPasteButton,) =>
+          tab: (
+            allowedValues,
+            currentValue,
+            inputsModels,
+            displayPasteButton,
+          ) =>
               SingleChildScrollView(
-                child: Form(
-                  key: cubit.formKey,
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      if (!isKeyboardOpen) ...[
-                        const SizedBox(height: DimensSize.d24),
-                        _tabs(
-                          allowedValues,
-                          cubit,
-                          currentValue,
-                          displayPasteButton,
-                        ),
-                      ],
-                      _inputs(inputsModels, currentValue),
-                      const SizedBox(height: DimensSize.d16),
-                    ],
-                  ),
-                ),
+            child: Form(
+              key: cubit.formKey,
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  if (!isKeyboardOpen) ...[
+                    const SizedBox(height: DimensSize.d24),
+                    _tabs(
+                      allowedValues,
+                      cubit,
+                      currentValue,
+                      displayPasteButton,
+                    ),
+                  ],
+                  _inputs(inputsModels, currentValue),
+                  const SizedBox(height: DimensSize.d16),
+                ],
               ),
+            ),
+          ),
         );
       },
     );
@@ -129,19 +122,19 @@ class EnterSeedPhraseView extends StatelessWidget {
 
   /// [currentValue] starts with 0
   // ignore: long-method
-  Widget _inputBuild(EnterSeedPhraseInputModel input,
-      int currentValue,) {
+  Widget _inputBuild(
+    EnterSeedPhraseInputModel input,
+    int currentValue,
+  ) {
     final displayIndex = input.index + 1;
     final indexText = NumberFormat('00').format(displayIndex);
 
     return Builder(
       builder: (context) {
         final cubit = context.read<EnterSeedPhraseCubit>();
-        final colors = context.themeStyle.colors;
 
         return input.when(
           entered: (text, index, hasError) {
-            print("text = $text");
             return PrimaryTextField(
               key: Key('SeedInput-$index'),
               height: DimensSize.d48,
@@ -227,22 +220,12 @@ class EnterSeedPhraseView extends StatelessWidget {
     );
   }
 
-  Widget _itemBuilder(BuildContext context, String suggestion) {
-    final colors = context.themeStyle.colors;
-
-    return ListTile(
-      tileColor: Colors.transparent,
-      title: Text(
-        suggestion,
-        style: StyleRes.primaryRegular.copyWith(color: colors.textPrimary),
-      ),
-    );
-  }
-
-  Widget _tabs(List<int> allowedValues,
-      EnterSeedPhraseCubit cubit,
-      int currentValue,
-      bool displayPasteButton,) {
+  Widget _tabs(
+    List<int> allowedValues,
+    EnterSeedPhraseCubit cubit,
+    int currentValue,
+    bool displayPasteButton,
+  ) {
     return Builder(
       builder: (context) {
         return Row(
@@ -251,17 +234,20 @@ class EnterSeedPhraseView extends StatelessWidget {
               child: SingleChildScrollView(
                 scrollDirection: Axis.horizontal,
                 child: Row(
-                  children:
-                    allowedValues.map((value) =>
-                        GestureDetector(
+                  children: allowedValues
+                      .map(
+                        (value) => GestureDetector(
                           onTap: () => cubit.changeTab(value),
                           child: PrimarySegmentControl(
                             size: SegmentControlSize.small,
-                            state: value == currentValue ? SegmentControlState
-                                .selected : SegmentControlState.normal,
+                            state: value == currentValue
+                                ? SegmentControlState.selected
+                                : SegmentControlState.normal,
                             title: LocaleKeys.wordsCount.plural(value),
                           ),
-                        ),).toList(),
+                        ),
+                      )
+                      .toList(),
                 ),
               ),
             ),
@@ -269,7 +255,7 @@ class EnterSeedPhraseView extends StatelessWidget {
               buttonShape: ButtonShape.pill,
               buttonSize: ButtonSize.small,
               onPressed:
-              displayPasteButton ? cubit.pastePhrase : cubit.clearFields,
+                  displayPasteButton ? cubit.pastePhrase : cubit.clearFields,
               title: displayPasteButton
                   ? LocaleKeys.pasteAll.tr()
                   : LocaleKeys.clearAll.tr(),
