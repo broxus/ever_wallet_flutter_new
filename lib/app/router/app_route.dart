@@ -407,7 +407,7 @@ extension NavigationHelper on BuildContext {
     } else {
       // old location do not have query, new one may have it, we dont care
       resultLocation = resultLocation.replace(
-        path: '${resultLocation.path}/$location',
+        path: '${resultLocation.path}/${newLocation.path}',
         queryParameters: newLocation.queryParameters,
       );
     }

@@ -1,5 +1,6 @@
 import 'package:app/app/service/service.dart';
 import 'package:app/di/di.dart';
+import 'package:app/v2/feature/add_seed/create_password/model/password_status.dart';
 import 'package:flutter/widgets.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:freezed_annotation/freezed_annotation.dart';
@@ -10,6 +11,8 @@ part 'create_seed_password_cubit.freezed.dart';
 
 part 'create_seed_password_state.dart';
 
+const _minPasswordLength = 8;
+
 /// Cubit for creating seed password.
 class CreateSeedPasswordCubit extends Cubit<CreateSeedPasswordState> {
   CreateSeedPasswordCubit({
@@ -18,12 +21,8 @@ class CreateSeedPasswordCubit extends Cubit<CreateSeedPasswordState> {
     this.setCurrentKey = false,
     this.name,
   }) : super(CreateSeedPasswordState.initial()) {
-    passwordController.addListener(() {
-      formKey.currentState?.reset();
-    });
-    confirmController.addListener(() {
-      formKey.currentState?.reset();
-    });
+    passwordController.addListener(_validate);
+    confirmController.addListener(_validate);
   }
 
   /// Callback that calls when seed is created
@@ -73,28 +72,38 @@ class CreateSeedPasswordCubit extends Cubit<CreateSeedPasswordState> {
   }
 
   Future<void> nextAction() async {
-    if (formKey.currentState?.validate() ?? false) {
-      emit(state.copyWith(isLoading: true));
-      final nekoton = inject<NekotonRepository>();
-      final currentKeyService = inject<CurrentKeyService>();
-      try {
-        final publicKey = await nekoton.addSeed(
-          phrase: phrase,
-          password: passwordController.text,
-          name: name,
-        );
-        if (setCurrentKey) {
-          await currentKeyService.changeCurrentKey(publicKey);
-        }
-        await inject<BiometryService>().setKeyPassword(
-          publicKey: publicKey,
-          password: passwordController.text,
-        );
-        completeCallback();
-      } catch (e) {
-        Logger('CreateSeedPasswordCubit').severe(e);
-        emit(state.copyWith(isLoading: false));
-        inject<MessengerService>().show(Message.error(message: e.toString()));
+    emit(state.copyWith(isLoading: true));
+    final nekoton = inject<NekotonRepository>();
+    final currentKeyService = inject<CurrentKeyService>();
+    try {
+      final publicKey = await nekoton.addSeed(
+        phrase: phrase,
+        password: passwordController.text,
+        name: name,
+      );
+      if (setCurrentKey) {
+        await currentKeyService.changeCurrentKey(publicKey);
+      }
+      await inject<BiometryService>().setKeyPassword(
+        publicKey: publicKey,
+        password: passwordController.text,
+      );
+      completeCallback();
+    } catch (e) {
+      Logger('CreateSeedPasswordCubit').severe(e);
+      emit(state.copyWith(isLoading: false));
+      inject<MessengerService>().show(Message.error(message: e.toString()));
+    }
+  }
+
+  void _validate() {
+    if (passwordController.text.length < _minPasswordLength) {
+      emit(state.copyWith(status: PasswordStatus.tooWeak));
+    } else {
+      if (passwordController.text != confirmController.text) {
+        emit(state.copyWith(status: PasswordStatus.mustMatch));
+      } else {
+        emit(state.copyWith(status: PasswordStatus.match));
       }
     }
   }
