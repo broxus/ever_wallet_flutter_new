@@ -152,7 +152,6 @@ GoRouter getRouter(BuildContext _) {
           const OnboardingPage(),
         ),
         routes: [
-          //addExistingWalletRoute,
           importWalletRoute,
           createSeedNoNamedOnboardingRoute,
           enterSeedNoNamedOnboardingRoute,

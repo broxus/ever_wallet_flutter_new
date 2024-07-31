@@ -56,8 +56,7 @@ class ImportWalletWidgetModel
     if (words.isEmpty) {
       _showValidateError(LocaleKeys.incorrectWordsFormat.tr());
       return;
-    }
-    {
+    } else {
       _isPasted = true;
       _updateState(isPasted: _isPasted, words: words);
     }

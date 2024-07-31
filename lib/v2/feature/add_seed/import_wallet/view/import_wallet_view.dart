@@ -105,7 +105,9 @@ class ImportWalletView extends ElementaryWidget<ImportWalletWidgetModel> {
                 GhostButton(
                   buttonShape: ButtonShape.pill,
                   title: LocaleKeys.importWalletManuallyButtonText.tr(),
-                  onPressed: () {},
+                  onPressed: () {
+                    ///here add to navigation to AppRoute.enterSeed.path
+                  },
                   icon: LucideIcons.pencilLine,
                 ),
                 const Spacer(),
@@ -115,6 +117,8 @@ class ImportWalletView extends ElementaryWidget<ImportWalletWidgetModel> {
                   onPressed: isPasted
                       ? () {
                           wm.import();
+
+                          ///here add to navigation to Confirm password
                         }
                       : null,
                   icon: LucideIcons.textCursorInput,
