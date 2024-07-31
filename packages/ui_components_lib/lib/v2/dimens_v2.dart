@@ -4,6 +4,7 @@ class DimensSizeV2 {
   static const double d0 = 0;
   static const double d2 = 2;
   static const double d4 = 4;
+  static const double d6 = 6;
   static const double d8 = 8;
   static const double d12 = 12;
   static const double d16 = 16;

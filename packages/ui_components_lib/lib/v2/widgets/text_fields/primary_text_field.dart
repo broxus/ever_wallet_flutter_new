@@ -72,7 +72,7 @@ class PrimaryTextField extends StatelessWidget {
       height: 1,
     );
 
-    final radius = BorderRadius.circular(DimensSize.d20);
+    final radius = BorderRadius.circular(DimensSize.d16);
 
     return BaseTextField(
       name: name,
@@ -152,6 +152,7 @@ class PrimaryTextField extends StatelessWidget {
               mainAxisAlignment: MainAxisAlignment.end,
               children: suffixes!,
             ),
+      maxLines: isObscureText ? 1 : null,
     );
   }
 
