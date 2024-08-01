@@ -4,7 +4,7 @@ import 'package:lucide_icons_flutter/lucide_icons.dart';
 import 'package:ui_components_lib/ui_components_lib.dart';
 import 'package:ui_components_lib/v2/ui_components_lib_v2.dart';
 
-const defaultAppBarHeight = 64.0;
+const defaultAppBarHeight = 72.0;
 
 /// Type of closing screen
 enum CloseType {
@@ -28,7 +28,7 @@ typedef DefaultAppBarCloseAction = void Function(BuildContext context);
 typedef DefaultAppBarCanPopAction = bool Function(BuildContext context);
 
 /// Default width or height of appbar button
-const appBarButtonSize = DimensSize.d44;
+const appBarButtonSize = DimensSizeV2.d48;
 
 /// {@template default_appbar}
 /// Default appbar for authorized zone.
@@ -145,10 +145,7 @@ class DefaultAppBar extends StatelessWidget implements PreferredSizeWidget {
 
   @override
   Widget build(BuildContext context) {
-    final colors = context.themeStyle.colors;
-
-    final title = buildTitle(colors);
-
+    final title = buildTitle(context.themeStyleV2);
     final isShowLeadingClose =
         _showLeadingClose && defaultCanPopAction(context);
 
@@ -156,6 +153,8 @@ class DefaultAppBar extends StatelessWidget implements PreferredSizeWidget {
         (isShowLeadingClose
             ? FloatButton(
                 buttonShape: ButtonShape.circle,
+                icon: LucideIcons.arrowLeft,
+                buttonSize: ButtonSize.medium,
                 onPressed: () {
                   if (onClosePressed != null) {
                     onClosePressed!(context);
@@ -163,13 +162,11 @@ class DefaultAppBar extends StatelessWidget implements PreferredSizeWidget {
                     defaultPopAction(context);
                   }
                 },
-                icon: LucideIcons.arrowLeft,
-                buttonSize: ButtonSize.medium,
               )
             : null);
 
     return Padding(
-      padding: const EdgeInsets.symmetric(horizontal: DimensSize.d16),
+      padding: const EdgeInsets.symmetric(horizontal: DimensSizeV2.d16),
       child: AppBar(
         backgroundColor: backgroundColor ?? Colors.transparent,
         surfaceTintColor: Colors.transparent,
@@ -215,12 +212,12 @@ class DefaultAppBar extends StatelessWidget implements PreferredSizeWidget {
     ];
   }
 
-  Widget? buildTitle(ColorsPalette colors) {
+  Widget? buildTitle(ThemeStyleV2 theme) {
     Widget? subtitleTop;
     if (subtitleTopText != null) {
       subtitleTop = Text(
         subtitleTopText!,
-        style: StyleRes.addRegular.copyWith(color: colors.textSecondary),
+        style: theme.textStyles.labelSmall,
       );
     } else if (subtitleTopWidget != null) {
       subtitleTop = subtitleTopWidget;
@@ -230,7 +227,7 @@ class DefaultAppBar extends StatelessWidget implements PreferredSizeWidget {
     if (subtitleBottomText != null) {
       subtitleBottom = Text(
         subtitleBottomText!,
-        style: StyleRes.addRegular.copyWith(color: colors.textSecondary),
+        style: theme.textStyles.labelSmall,
       );
     } else if (subtitleBottomWidget != null) {
       subtitleBottom = subtitleBottomWidget;
@@ -240,7 +237,7 @@ class DefaultAppBar extends StatelessWidget implements PreferredSizeWidget {
     if (titleText != null) {
       title = Text(
         titleText!,
-        style: StyleRes.button.copyWith(color: colors.textPrimary),
+        style: theme.textStyles.headingMedium,
       );
     } else if (titleWidget != null) {
       title = titleWidget;
