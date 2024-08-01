@@ -1,0 +1,134 @@
+import 'dart:async';
+
+import 'package:app/app/service/service.dart';
+import 'package:app/data/models/models.dart';
+import 'package:bloc/bloc.dart';
+import 'package:collection/collection.dart';
+import 'package:freezed_annotation/freezed_annotation.dart';
+import 'package:nekoton_repository/nekoton_repository.dart';
+
+part 'token_wallet_asset_state.dart';
+
+part 'token_wallet_asset_cubit.freezed.dart';
+
+class TokenWalletAssetCubit extends Cubit<TokenWalletAssetState> {
+  TokenWalletAssetCubit({
+    required this.balanceService,
+    required this.asset,
+    required this.owner,
+    required this.currencyConvertService,
+    required this.nekotonRepository,
+    required this.balanceStorage,
+  }) : super(const TokenWalletAssetState.data()) {
+    _walletsSubscription =
+        nekotonRepository.tokenWalletsStream.listen((wallets) {
+      final walletState = wallets.firstWhereOrNull(
+        (w) => w.owner == owner && w.rootTokenContract == asset.address,
+      );
+
+      final oldWallet = _wallet?.wallet;
+      final wallet = walletState?.wallet;
+      // wallet not iniaitlized or transport of wallet changed
+      if (wallet != null &&
+          (oldWallet == null ||
+              oldWallet.transport.connectionParamsHash !=
+                  wallet.transport.connectionParamsHash)) {
+        _wallet = walletState;
+        _closeSubs();
+
+        _thisWalletSubscription = wallet.fieldUpdatesStream.listen((_) {
+          _cachedTokenBalance = wallet.moneyBalance;
+
+          _tryUpdateBalances();
+          _updateState();
+        });
+        _balanceSubscription = balanceService
+            .tokenWalletBalanceStream(
+          owner: owner,
+          rootTokenContract: asset.address,
+        )
+            .listen((balance) {
+          _cachedFiatBalance = currencyConvertService.convert(balance);
+
+          _tryUpdateBalances();
+          _updateState();
+        });
+      } else if (walletState?.hasError ?? false) {
+        emit(
+          TokenWalletAssetState.subscribeError(
+            error: walletState!.error!,
+            isLoading: false,
+          ),
+        );
+      }
+    });
+
+    final balances =
+        balanceStorage.balances[owner]?.tokenBalance(asset.address);
+    if (balances != null) {
+      _cachedFiatBalance = balances.fiatBalance;
+      _cachedTokenBalance = balances.tokenBalance;
+      _updateState();
+    }
+  }
+
+  final BalanceStorageService balanceStorage;
+  final TokenContractAsset asset;
+  final Address owner;
+  final BalanceService balanceService;
+  final CurrencyConvertService currencyConvertService;
+  final NekotonRepository nekotonRepository;
+
+  StreamSubscription<dynamic>? _walletsSubscription;
+  StreamSubscription<dynamic>? _thisWalletSubscription;
+  StreamSubscription<dynamic>? _balanceSubscription;
+
+  Money? _cachedFiatBalance;
+  Money? _cachedTokenBalance;
+
+  TokenWalletState? _wallet;
+
+  @override
+  Future<void> close() {
+    _walletsSubscription?.cancel();
+    _closeSubs();
+
+    return super.close();
+  }
+
+  Future<void> retry() async {
+    final st = state;
+    if (st is _SubscribeError) {
+      emit(st.copyWith(isLoading: true));
+      await nekotonRepository.retryTokenSubscription(owner, asset.address);
+      emit(st.copyWith(isLoading: false));
+    }
+  }
+
+  void _closeSubs() {
+    _thisWalletSubscription?.cancel();
+    _balanceSubscription?.cancel();
+  }
+
+  void _tryUpdateBalances() {
+    if (_cachedFiatBalance != null && _cachedTokenBalance != null) {
+      balanceStorage.setBalances(
+        accountAddress: owner,
+        balance: AccountBalanceModel(
+          rootTokenContract: asset.address,
+          fiatBalance: _cachedFiatBalance!,
+          tokenBalance: _cachedTokenBalance!,
+        ),
+      );
+    }
+  }
+
+  void _updateState() {
+    emit(
+      TokenWalletAssetState.data(
+        fiatBalance: _cachedFiatBalance,
+        tokenBalance: _cachedTokenBalance,
+      ),
+    );
+  }
+}
