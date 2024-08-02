@@ -488,4 +488,16 @@ abstract class LocaleKeys {
   static const welcomeIHaveOne = 'welcomeIHaveOne';
   static const welcomeYouAccept = 'welcomeYouAccept';
   static const welcomeLicenceAgreement = 'welcomeLicenceAgreement';
+  static const confirmPasswordTitle = 'confirmPasswordTitle';
+  static const confirmPasswordSubtitle = 'confirmPasswordSubtitle';
+  static const confirmSetPasswordHint = 'confirmSetPasswordHint';
+  static const confirmRepeatPasswordHint = 'confirmRepeatPasswordHint';
+  static const confirmWeakPasswordTitle = 'confirmWeakPasswordTitle';
+  static const confirmWeakPasswordSubtitle = 'confirmWeakPasswordSubtitle';
+  static const confirmMustMatchTitle = 'confirmMustMatchTitle';
+  static const confirmMustMatchSubtitle = 'confirmMustMatchSubtitle';
+  static const confirmPasswordsMatchTitle = 'confirmPasswordsMatchTitle';
+  static const confirmPasswordsMatchSubtitle = 'confirmPasswordsMatchSubtitle';
+  static const faceIdContent = 'faceIdContent';
+  static const touchIdContent = 'touchIdContent';
 }

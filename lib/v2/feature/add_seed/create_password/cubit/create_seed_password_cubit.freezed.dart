@@ -19,6 +19,7 @@ mixin _$CreateSeedPasswordState {
   bool get obscurePassword => throw _privateConstructorUsedError;
   bool get obscureConfirm => throw _privateConstructorUsedError;
   bool get isLoading => throw _privateConstructorUsedError;
+  PasswordStatus get status => throw _privateConstructorUsedError;
 
   @JsonKey(ignore: true)
   $CreateSeedPasswordStateCopyWith<CreateSeedPasswordState> get copyWith =>
@@ -31,7 +32,11 @@ abstract class $CreateSeedPasswordStateCopyWith<$Res> {
           $Res Function(CreateSeedPasswordState) then) =
       _$CreateSeedPasswordStateCopyWithImpl<$Res, CreateSeedPasswordState>;
   @useResult
-  $Res call({bool obscurePassword, bool obscureConfirm, bool isLoading});
+  $Res call(
+      {bool obscurePassword,
+      bool obscureConfirm,
+      bool isLoading,
+      PasswordStatus status});
 }
 
 /// @nodoc
@@ -51,6 +56,7 @@ class _$CreateSeedPasswordStateCopyWithImpl<$Res,
     Object? obscurePassword = null,
     Object? obscureConfirm = null,
     Object? isLoading = null,
+    Object? status = null,
   }) {
     return _then(_value.copyWith(
       obscurePassword: null == obscurePassword
@@ -65,6 +71,10 @@ class _$CreateSeedPasswordStateCopyWithImpl<$Res,
           ? _value.isLoading
           : isLoading // ignore: cast_nullable_to_non_nullable
               as bool,
+      status: null == status
+          ? _value.status
+          : status // ignore: cast_nullable_to_non_nullable
+              as PasswordStatus,
     ) as $Val);
   }
 }
@@ -78,7 +88,11 @@ abstract class _$$CreateSeedPasswordStateImplCopyWith<$Res>
       __$$CreateSeedPasswordStateImplCopyWithImpl<$Res>;
   @override
   @useResult
-  $Res call({bool obscurePassword, bool obscureConfirm, bool isLoading});
+  $Res call(
+      {bool obscurePassword,
+      bool obscureConfirm,
+      bool isLoading,
+      PasswordStatus status});
 }
 
 /// @nodoc
@@ -97,6 +111,7 @@ class __$$CreateSeedPasswordStateImplCopyWithImpl<$Res>
     Object? obscurePassword = null,
     Object? obscureConfirm = null,
     Object? isLoading = null,
+    Object? status = null,
   }) {
     return _then(_$CreateSeedPasswordStateImpl(
       obscurePassword: null == obscurePassword
@@ -111,6 +126,10 @@ class __$$CreateSeedPasswordStateImplCopyWithImpl<$Res>
           ? _value.isLoading
           : isLoading // ignore: cast_nullable_to_non_nullable
               as bool,
+      status: null == status
+          ? _value.status
+          : status // ignore: cast_nullable_to_non_nullable
+              as PasswordStatus,
     ));
   }
 }
@@ -121,7 +140,8 @@ class _$CreateSeedPasswordStateImpl implements _CreateSeedPasswordState {
   const _$CreateSeedPasswordStateImpl(
       {required this.obscurePassword,
       required this.obscureConfirm,
-      required this.isLoading});
+      required this.isLoading,
+      required this.status});
 
   @override
   final bool obscurePassword;
@@ -129,10 +149,12 @@ class _$CreateSeedPasswordStateImpl implements _CreateSeedPasswordState {
   final bool obscureConfirm;
   @override
   final bool isLoading;
+  @override
+  final PasswordStatus status;
 
   @override
   String toString() {
-    return 'CreateSeedPasswordState(obscurePassword: $obscurePassword, obscureConfirm: $obscureConfirm, isLoading: $isLoading)';
+    return 'CreateSeedPasswordState(obscurePassword: $obscurePassword, obscureConfirm: $obscureConfirm, isLoading: $isLoading, status: $status)';
   }
 
   @override
@@ -145,12 +167,13 @@ class _$CreateSeedPasswordStateImpl implements _CreateSeedPasswordState {
             (identical(other.obscureConfirm, obscureConfirm) ||
                 other.obscureConfirm == obscureConfirm) &&
             (identical(other.isLoading, isLoading) ||
-                other.isLoading == isLoading));
+                other.isLoading == isLoading) &&
+            (identical(other.status, status) || other.status == status));
   }
 
   @override
-  int get hashCode =>
-      Object.hash(runtimeType, obscurePassword, obscureConfirm, isLoading);
+  int get hashCode => Object.hash(
+      runtimeType, obscurePassword, obscureConfirm, isLoading, status);
 
   @JsonKey(ignore: true)
   @override
@@ -164,7 +187,8 @@ abstract class _CreateSeedPasswordState implements CreateSeedPasswordState {
   const factory _CreateSeedPasswordState(
       {required final bool obscurePassword,
       required final bool obscureConfirm,
-      required final bool isLoading}) = _$CreateSeedPasswordStateImpl;
+      required final bool isLoading,
+      required final PasswordStatus status}) = _$CreateSeedPasswordStateImpl;
 
   @override
   bool get obscurePassword;
@@ -172,6 +196,8 @@ abstract class _CreateSeedPasswordState implements CreateSeedPasswordState {
   bool get obscureConfirm;
   @override
   bool get isLoading;
+  @override
+  PasswordStatus get status;
   @override
   @JsonKey(ignore: true)
   _$$CreateSeedPasswordStateImplCopyWith<_$CreateSeedPasswordStateImpl>

@@ -198,6 +198,17 @@ class $AssetsImagesGen {
   SvgGenImage get historyFill =>
       const SvgGenImage('assets/images/history_fill.svg');
 
+  /// File path: assets/images/ic_match.svg
+  SvgGenImage get icMatch => const SvgGenImage('assets/images/ic_match.svg');
+
+  /// File path: assets/images/ic_not_match.svg
+  SvgGenImage get icNotMatch =>
+      const SvgGenImage('assets/images/ic_not_match.svg');
+
+  /// File path: assets/images/ic_too_weak.svg
+  SvgGenImage get icTooWeak =>
+      const SvgGenImage('assets/images/ic_too_weak.svg');
+
   /// File path: assets/images/import.svg
   SvgGenImage get import => const SvgGenImage('assets/images/import.svg');
 
@@ -369,6 +380,9 @@ class $AssetsImagesGen {
         fingerSmall,
         history,
         historyFill,
+        icMatch,
+        icNotMatch,
+        icTooWeak,
         import,
         importFill,
         key,

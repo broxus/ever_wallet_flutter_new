@@ -19,6 +19,7 @@ class CreateSeedPasswordOnboardingPage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final themeStyle = context.themeStyleV2;
     return BlocProvider<CreateSeedPasswordCubit>(
       create: (context) => CreateSeedPasswordCubit(
         phrase: phrase,
@@ -31,6 +32,7 @@ class CreateSeedPasswordOnboardingPage extends StatelessWidget {
         onTap: () => FocusScope.of(context).unfocus(),
         child: Scaffold(
           resizeToAvoidBottomInset: true,
+          backgroundColor: themeStyle.colors.background0,
           appBar: DefaultAppBar(
             onClosePressed: (context) => context.maybePop(),
           ),
