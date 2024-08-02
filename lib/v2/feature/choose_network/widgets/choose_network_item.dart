@@ -70,8 +70,7 @@ class _Icon extends StatelessWidget {
   Widget build(BuildContext context) {
     return DecoratedBox(
       decoration: BoxDecoration(
-        // TODO(knightforce): awaiting design.
-        color: const Color(0xFF3C4067),
+        color: context.themeStyleV2.colors.background2,
         borderRadius: BorderRadius.circular(
           DimensRadiusV2.radius32,
         ),
