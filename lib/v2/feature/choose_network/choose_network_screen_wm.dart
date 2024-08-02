@@ -18,6 +18,7 @@ ChooseNetworkScreenWidgetModel defaultChooseNetworkScreenWidgetModelFactory(
     ChooseNetworkScreenModel(
       createPrimaryErrorHandler(context),
       inject(),
+      inject(),
     ),
   );
 }

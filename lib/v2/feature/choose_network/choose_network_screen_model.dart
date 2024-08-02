@@ -1,3 +1,5 @@
+import 'package:app/app/service/messenger/message.dart';
+import 'package:app/app/service/messenger/service/messenger_service.dart';
 import 'package:app/app/service/nekoton_related/connection_service/network_presets.dart';
 import 'package:app/app/service/storage_service/connections_storage_service.dart';
 import 'package:app/v2/feature/choose_network/choose_network_screen.dart';
@@ -10,9 +12,11 @@ class ChooseNetworkScreenModel extends ElementaryModel {
   ChooseNetworkScreenModel(
     ErrorHandler errorHandler,
     this._connectionsStorageService,
+    this._messengerService,
   ) : super(errorHandler: errorHandler);
 
   final ConnectionsStorageService _connectionsStorageService;
+  final MessengerService _messengerService;
 
   final connectionsState = StateNotifier<List<ChooseNetworkItemData>>(
     initValue: [],
@@ -33,8 +37,12 @@ class ChooseNetworkScreenModel extends ElementaryModel {
   Future<bool> selectType(String id) async {
     try {
       await _connectionsStorageService.saveCurrentConnectionId(id);
-    } on Object catch (_) {
-      // TODO(knightforce): show error with elementary error handler
+    } on Object catch (e) {
+      _messengerService.show(
+        Message.error(
+          message: e.toString(),
+        ),
+      );
       return false;
     }
 
