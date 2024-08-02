@@ -3,11 +3,11 @@ import 'package:app/v2/feature/add_seed/enter_seed_phrase/cubit/cubit.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:lucide_icons_flutter/lucide_icons.dart';
+import 'package:ui_components_lib/components/input/common_input_style_v2.dart';
 import 'package:ui_components_lib/ui_components_lib.dart';
 import 'package:ui_components_lib/v2/dimens_v2.dart';
 import 'package:ui_components_lib/v2/widgets/buttons/button.dart';
 import 'package:ui_components_lib/v2/widgets/segment_control/segment_control.dart';
-import 'package:ui_components_lib/v2/widgets/text_fields/primary_text_field.dart';
 
 const _gridColumnCount = 2;
 
@@ -60,7 +60,7 @@ class EnterSeedPhraseView extends StatelessWidget {
                 thickness: DimensStroke.small,
               ),
             Expanded(
-              child: _buildPhrasesList(),
+              child: _buildPhrasesList(theme),
             ),
             SizedBox(
               // subtract commonButtonHeight to avoid button above keyboard
@@ -79,7 +79,7 @@ class EnterSeedPhraseView extends StatelessWidget {
   }
 
   // ignore:long-method
-  Widget _buildPhrasesList() {
+  Widget _buildPhrasesList(ThemeStyleV2 theme) {
     return BlocBuilder<EnterSeedPhraseCubit, EnterSeedPhraseState>(
       builder: (context, state) {
         final cubit = context.read<EnterSeedPhraseCubit>();
@@ -109,7 +109,7 @@ class EnterSeedPhraseView extends StatelessWidget {
                       displayPasteButton,
                     ),
                   ],
-                  _inputs(inputsModels, currentValue),
+                  _inputs(theme, inputsModels, currentValue),
                   const SizedBox(height: DimensSize.d16),
                 ],
               ),
@@ -123,6 +123,7 @@ class EnterSeedPhraseView extends StatelessWidget {
   /// [currentValue] starts with 0
   // ignore: long-method
   Widget _inputBuild(
+    ThemeStyleV2 themeStyleV2,
     EnterSeedPhraseInputModel input,
     int currentValue,
   ) {
@@ -132,29 +133,11 @@ class EnterSeedPhraseView extends StatelessWidget {
     return Builder(
       builder: (context) {
         final cubit = context.read<EnterSeedPhraseCubit>();
+        final colors = context.themeStyle.colors;
 
         return input.when(
           entered: (text, index, hasError) {
-            return PrimaryTextField(
-              key: Key('SeedInput-$index'),
-              height: DimensSize.d48,
-              //textEditingController: controller,
-              /*suggestionsCallback: (_) => cubit.suggestionsCallback
-              (controller),
-              itemBuilder: _itemBuilder,
-              onSuggestionSelected: (suggestion) =>
-                  cubit.onSuggestionSelected(suggestion, index),"*/
-              //focusNode: focus,
-              // show error border if field is empty
-              validator: (v) => v?.isEmpty ?? true ? '' : null,
-              // IntrinsicWidth to force Center match prefixIconConstraints
-              labelText: indexText,
-              onSubmit: (_) => cubit.nextOrConfirm(index),
-              textInputAction: index == currentValue - 1
-                  ? TextInputAction.done
-                  : TextInputAction.next,
-            );
-            /*return PressScaleWidget(
+            return PressScaleWidget(
               onPressed: () => cubit.clearInputModel(index),
               child: CommonCard(
                 width: double.infinity,
@@ -162,32 +145,17 @@ class EnterSeedPhraseView extends StatelessWidget {
                 leadingText: indexText,
                 titleText: text,
                 trailingChild:
-                CommonIconWidget.svg(svg: Assets.images.trash.path),
+                    CommonIconWidget.svg(svg: Assets.images.trash.path),
                 borderColor: hasError ? colors.alert : null,
               ),
-            );*/
+            );
           },
           input: (controller, focus, index, hasError) {
-            return PrimaryTextField(
-              key: Key('SeedInput-$index'),
-              height: DimensSize.d48,
-              textEditingController: controller,
-              /*suggestionsCallback: (_) => cubit.suggestionsCallback
-              (controller),
-              itemBuilder: _itemBuilder,
-              onSuggestionSelected: (suggestion) =>
-                  cubit.onSuggestionSelected(suggestion, index),"*/
-              focusNode: focus,
-              // show error border if field is empty
-              //validator: (v) => v?.isEmpty ?? true ? '' : null,
-              // IntrinsicWidth to force Center match prefixIconConstraints
-              labelText: indexText,
-              onSubmit: (_) => cubit.nextOrConfirm(index),
-              textInputAction: index == currentValue - 1
-                  ? TextInputAction.done
-                  : TextInputAction.next,
-            );
-            /*return CommonInput(
+            return CommonInput(
+              hintStyle: themeStyleV2.textStyles.labelSmall,
+              inactiveBorderColor: themeStyleV2.colors.border0,
+              textStyle: themeStyleV2.textStyles.labelSmall,
+              suggestionBackground: themeStyleV2.colors.background1,
               key: Key('SeedInput-$index'),
               height: DimensSize.d48,
               controller: controller,
@@ -198,6 +166,7 @@ class EnterSeedPhraseView extends StatelessWidget {
               focusNode: focus,
               // show error border if field is empty
               validator: (v) => v?.isEmpty ?? true ? '' : null,
+              needClearButton: false,
               // IntrinsicWidth to force Center match prefixIconConstraints
               prefixIcon: IntrinsicWidth(
                 child: Center(
@@ -213,10 +182,23 @@ class EnterSeedPhraseView extends StatelessWidget {
               textInputAction: index == currentValue - 1
                   ? TextInputAction.done
                   : TextInputAction.next,
-            );*/
+              v2Style: CommonInputStyleV2(themeStyleV2),
+            );
           },
         );
       },
+    );
+  }
+
+  Widget _itemBuilder(BuildContext context, String suggestion) {
+    final theme = context.themeStyleV2;
+
+    return ListTile(
+      tileColor: Colors.transparent,
+      title: Text(
+        suggestion,
+        style: theme.textStyles.labelSmall,
+      ),
     );
   }
 
@@ -267,7 +249,11 @@ class EnterSeedPhraseView extends StatelessWidget {
     );
   }
 
-  Widget _inputs(List<EnterSeedPhraseInputModel> inputs, int currentValue) {
+  Widget _inputs(
+    ThemeStyleV2 themeStyleV2,
+    List<EnterSeedPhraseInputModel> inputs,
+    int currentValue,
+  ) {
     return ContainerRow(
       padding: const EdgeInsets.symmetric(vertical: DimensSize.d16),
       children: [
@@ -275,7 +261,7 @@ class EnterSeedPhraseView extends StatelessWidget {
           child: SeparatedColumn(
             children: inputs
                 .getRange(0, currentValue ~/ _gridColumnCount)
-                .map((input) => _inputBuild(input, currentValue))
+                .map((input) => _inputBuild(themeStyleV2, input, currentValue))
                 .toList(),
           ),
         ),
@@ -283,7 +269,7 @@ class EnterSeedPhraseView extends StatelessWidget {
           child: SeparatedColumn(
             children: inputs
                 .getRange(currentValue ~/ _gridColumnCount, currentValue)
-                .map((input) => _inputBuild(input, currentValue))
+                .map((input) => _inputBuild(themeStyleV2, input, currentValue))
                 .toList(),
           ),
         ),

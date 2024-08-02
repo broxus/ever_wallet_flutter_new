@@ -114,7 +114,6 @@ class PrimaryTextField extends StatelessWidget {
       ),
       errorTextStyle: themeStyle.textStyles.paragraphSmall.copyWith(
         color: themeStyle.colors.contentNegative,
-        fontSize: 1,
       ),
       errorInlineIcon: Padding(
         padding: errorInlineIconPadding ??
