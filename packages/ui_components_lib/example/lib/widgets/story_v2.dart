@@ -1,6 +1,7 @@
 import 'package:example/stories/v2/buttons.dart';
 import 'package:example/stories/v2/segment_contols.dart';
 import 'package:example/stories/v2/text_fields.dart';
+import 'package:example/stories/v2/texts.dart';
 import 'package:example/stories/v2/toasts.dart';
 import 'package:flutter/material.dart';
 import 'package:storybook_flutter/storybook_flutter.dart';
@@ -25,6 +26,10 @@ class StoryV2 extends StatelessWidget {
           Story(
             name: 'Widgets/TextFields',
             builder: (_) => const TextFieldsStoryV2(),
+          ),
+          Story(
+            name: 'Widgets/Texts',
+            builder: (_) => const TextsStoryV2(),
           ),
           Story(
             name: 'Widgets/Buttons',

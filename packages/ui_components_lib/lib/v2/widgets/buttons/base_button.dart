@@ -2,7 +2,6 @@ import 'dart:ui';
 
 import 'package:flutter/material.dart';
 import 'package:ui_components_lib/v2/ui_components_lib_v2.dart';
-import 'package:ui_components_lib/v2/widgets/buttons/button.dart';
 
 //It's base class for button, in this button we handle all parameters like
 //shape, styles, size
@@ -104,9 +103,14 @@ abstract class BaseButton extends StatelessWidget {
               onPressed: isLoading ? null : onPressed,
               style: buttonStyle,
               child: isLoading
-                  ? _ProgressIndicatorWidget(
-                      color: style.iconColor,
-                      size: _iconSize,
+                  ? Row(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: [
+                        _ProgressIndicatorWidget(
+                          color: style.iconColor,
+                          size: _iconSize,
+                        ),
+                      ],
                     )
                   : Row(
                       mainAxisAlignment: MainAxisAlignment.center,

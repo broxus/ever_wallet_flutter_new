@@ -5,9 +5,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:lucide_icons_flutter/lucide_icons.dart';
 import 'package:ui_components_lib/components/input/common_input_style_v2.dart';
 import 'package:ui_components_lib/ui_components_lib.dart';
-import 'package:ui_components_lib/v2/dimens_v2.dart';
-import 'package:ui_components_lib/v2/widgets/buttons/button.dart';
-import 'package:ui_components_lib/v2/widgets/segment_control/segment_control.dart';
+import 'package:ui_components_lib/v2/ui_components_lib_v2.dart';
 
 const _gridColumnCount = 2;
 
@@ -47,10 +45,8 @@ class EnterSeedPhraseView extends StatelessWidget {
                 left: DimensSizeV2.d16,
                 right: DimensSizeV2.d16,
               ),
-              child: Text(
+              child: PrimaryText(
                 LocaleKeys.pasteSeedIntoFirstBox.tr(),
-                style: theme.textStyles.paragraphMedium,
-                textAlign: TextAlign.center,
               ),
             ),
             if (hasBottomPadding)

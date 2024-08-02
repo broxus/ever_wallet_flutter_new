@@ -6,3 +6,4 @@ export 'opac_v2.dart';
 export 'predefined_theme_v2.dart';
 export 'text_styles_v2.dart';
 export 'theme_style_v2.dart';
+export 'widgets/widgets.dart';

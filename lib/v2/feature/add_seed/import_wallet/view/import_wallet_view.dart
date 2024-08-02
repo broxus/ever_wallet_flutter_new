@@ -9,8 +9,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:lucide_icons_flutter/lucide_icons.dart';
 import 'package:ui_components_lib/ui_components_lib.dart';
-import 'package:ui_components_lib/v2/dimens_v2.dart';
-import 'package:ui_components_lib/v2/widgets/buttons/button.dart';
+import 'package:ui_components_lib/v2/ui_components_lib_v2.dart';
 
 class ImportWalletView extends ElementaryWidget<ImportWalletWidgetModel> {
   const ImportWalletView({
@@ -46,11 +45,7 @@ class ImportWalletView extends ElementaryWidget<ImportWalletWidgetModel> {
                   style: theme.textStyles.headingLarge,
                 ),
                 const SizedBox(height: DimensSizeV2.d8),
-                Text(
-                  LocaleKeys.importWalletScreenSubtitle.tr(),
-                  style: theme.textStyles.paragraphMedium,
-                  textAlign: TextAlign.center,
-                ),
+                PrimaryText(LocaleKeys.importWalletScreenSubtitle.tr()),
                 const SizedBox(height: DimensSizeV2.d24),
                 Stack(
                   alignment: Alignment.center,

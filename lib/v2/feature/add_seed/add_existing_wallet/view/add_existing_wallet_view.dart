@@ -2,8 +2,7 @@ import 'package:app/generated/generated.dart';
 import 'package:flutter/material.dart';
 import 'package:lucide_icons_flutter/lucide_icons.dart';
 import 'package:ui_components_lib/ui_components_lib.dart';
-import 'package:ui_components_lib/v2/dimens_v2.dart';
-import 'package:ui_components_lib/v2/widgets/buttons/button.dart';
+import 'package:ui_components_lib/v2/ui_components_lib_v2.dart';
 
 class AddExistingWalletView extends StatelessWidget {
   const AddExistingWalletView({super.key});
@@ -24,11 +23,7 @@ class AddExistingWalletView extends StatelessWidget {
               style: theme.textStyles.headingLarge,
             ),
             const SizedBox(height: DimensSizeV2.d8),
-            Text(
-              LocaleKeys.addExistingWalletSubtitle.tr(),
-              style: theme.textStyles.paragraphMedium,
-              textAlign: TextAlign.center,
-            ),
+            PrimaryText(LocaleKeys.addExistingWalletSubtitle.tr()),
             const Spacer(),
             PrimaryButton(
               buttonShape: ButtonShape.pill,
