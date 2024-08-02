@@ -2,6 +2,7 @@ import 'package:app/app/service/messenger/message.dart';
 import 'package:app/app/service/messenger/service/messenger_service.dart';
 import 'package:app/app/service/nekoton_related/connection_service/network_presets.dart';
 import 'package:app/app/service/storage_service/connections_storage_service.dart';
+import 'package:app/generated/generated.dart';
 import 'package:app/v2/feature/choose_network/choose_network_screen.dart';
 import 'package:app/v2/feature/choose_network/data/choose_network_item_data.dart';
 import 'package:elementary/elementary.dart';
@@ -60,7 +61,9 @@ class ChooseNetworkScreenModel extends ElementaryModel {
           list.add(
             ChooseNetworkItemData(
               id: everMainnetProtoID,
-              networkType: ChooseNetworkType.ever,
+              icon: Assets.images.everVector,
+              title: LocaleKeys.everscale.tr(),
+              description: LocaleKeys.chooseNetworkEverDescription.tr(),
             ),
           );
           continue;
@@ -68,7 +71,9 @@ class ChooseNetworkScreenModel extends ElementaryModel {
           list.add(
             ChooseNetworkItemData(
               id: venomMainnetProtoID,
-              networkType: ChooseNetworkType.venom,
+              icon: Assets.images.venomVector,
+              title: LocaleKeys.venom.tr(),
+              description: LocaleKeys.chooseNetworkVenomDescription.tr(),
             ),
           );
           continue;

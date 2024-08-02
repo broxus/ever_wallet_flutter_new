@@ -5,21 +5,19 @@ import 'package:lucide_icons_flutter/lucide_icons.dart';
 import 'package:ui_components_lib/v2/ui_components_lib_v2.dart';
 
 class ChooseNetworkItem extends StatelessWidget {
-  const ChooseNetworkItem({
-    required this.id,
-    required this.networkType,
+  const ChooseNetworkItem(
+    this.data, {
     required this.onPressed,
     super.key,
   });
 
-  final String id;
-  final ChooseNetworkType networkType;
+  final ChooseNetworkItemData data;
   final ValueChanged<String> onPressed;
 
   @override
   Widget build(BuildContext context) {
     return GestureDetector(
-      onTap: () => onPressed(id),
+      onTap: () => onPressed(data.id),
       child: PrimaryCard(
         borderRadius: BorderRadius.circular(DimensSizeV2.d24),
         margin: const EdgeInsets.only(
@@ -36,14 +34,14 @@ class ChooseNetworkItem extends StatelessWidget {
               children: [
                 Padding(
                   padding: const EdgeInsets.only(right: DimensSizeV2.d12),
-                  child: _Icon(networkType),
+                  child: _Icon(data.icon),
                 ),
                 Flexible(
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
-                      _Name(networkType),
-                      _Description(networkType),
+                      _Name(data.title),
+                      _Description(data.description),
                     ],
                   ),
                 ),
@@ -62,9 +60,9 @@ class ChooseNetworkItem extends StatelessWidget {
 }
 
 class _Icon extends StatelessWidget {
-  const _Icon(this.networkType);
+  const _Icon(this.icon);
 
-  final ChooseNetworkType networkType;
+  final SvgGenImage icon;
 
   @override
   Widget build(BuildContext context) {
@@ -79,16 +77,10 @@ class _Icon extends StatelessWidget {
         width: DimensSizeV2.d32,
         height: DimensSizeV2.d32,
         child: Center(
-          child: switch (networkType) {
-            ChooseNetworkType.ever => Assets.images.everVector.svg(
-                width: DimensSizeV2.d16,
-                height: DimensSizeV2.d16,
-              ),
-            ChooseNetworkType.venom => Assets.images.venomVector.svg(
-                width: DimensSizeV2.d16,
-                height: DimensSizeV2.d16,
-              ),
-          },
+          child: icon.svg(
+            width: DimensSizeV2.d16,
+            height: DimensSizeV2.d16,
+          ),
         ),
       ),
     );
@@ -96,35 +88,29 @@ class _Icon extends StatelessWidget {
 }
 
 class _Name extends StatelessWidget {
-  const _Name(this.networkType);
+  const _Name(this.title);
 
-  final ChooseNetworkType networkType;
+  final String title;
 
   @override
   Widget build(BuildContext context) {
     return PrimaryText(
-        switch (networkType) {
-          ChooseNetworkType.ever => LocaleKeys.everscale.tr(),
-          ChooseNetworkType.venom => LocaleKeys.venom.tr(),
-        },
-        type: PrimaryTextType.titleSmall,
-        textAlign: TextAlign.start);
+      title,
+      type: PrimaryTextType.titleSmall,
+      textAlign: TextAlign.start,
+    );
   }
 }
 
 class _Description extends StatelessWidget {
-  const _Description(this.networkType);
+  const _Description(this.description);
 
-  final ChooseNetworkType networkType;
+  final String description;
 
   @override
   Widget build(BuildContext context) {
     return PrimaryText(
-      switch (networkType) {
-        ChooseNetworkType.ever => LocaleKeys.chooseNetworkEverDescription.tr(),
-        ChooseNetworkType.venom =>
-          LocaleKeys.chooseNetworkVenomDescription.tr(),
-      },
+      description,
       type: PrimaryTextType.descriptionSmall,
       textAlign: TextAlign.start,
     );

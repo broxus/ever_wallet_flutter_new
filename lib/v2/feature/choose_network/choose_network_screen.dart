@@ -67,8 +67,7 @@ class ChooseNetworkScreen
                         children: [
                           for (final item in items)
                             ChooseNetworkItem(
-                              id: item.id,
-                              networkType: item.networkType,
+                              item,
                               onPressed: wm.onPressedType,
                             ),
                         ],
