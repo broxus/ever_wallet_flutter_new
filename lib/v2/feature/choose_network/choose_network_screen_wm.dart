@@ -1,8 +1,10 @@
 import 'package:app/core/error_handler_factory.dart';
 import 'package:app/core/wm/custom_wm.dart';
 import 'package:app/data/models/network_type.dart';
+import 'package:app/di/di.dart';
 import 'package:app/v2/feature/choose_network/choose_network_screen.dart';
 import 'package:app/v2/feature/choose_network/choose_network_screen_model.dart';
+import 'package:app/v2/feature/choose_network/data/choose_network_item_data.dart';
 import 'package:elementary/elementary.dart';
 import 'package:elementary_helper/elementary_helper.dart';
 import 'package:flutter/material.dart';
@@ -16,6 +18,7 @@ ChooseNetworkScreenWidgetModel defaultChooseNetworkScreenWidgetModelFactory(
   return ChooseNetworkScreenWidgetModel(
     ChooseNetworkScreenModel(
       createPrimaryErrorHandler(context),
+      inject(),
     ),
   );
 }
@@ -27,7 +30,7 @@ class ChooseNetworkScreenWidgetModel
     super.model,
   );
 
-  StateNotifier<List<NetworkType>> get connectionsState =>
+  StateNotifier<List<ChooseNetworkItemData>> get connectionsState =>
       model.connectionsState;
 
   Color get backgroundColor => _themeStyle.colors.background0;
@@ -36,8 +39,8 @@ class ChooseNetworkScreenWidgetModel
 
   ThemeStyleV2 get _themeStyle => context.themeStyleV2;
 
-  Future<void> onPressedType(NetworkType type) async {
-    final isSuccess = await model.selectType(type);
+  Future<void> onPressedType(String id) async {
+    final isSuccess = await model.selectType(id);
 
     if (!isSuccess) {
       return;

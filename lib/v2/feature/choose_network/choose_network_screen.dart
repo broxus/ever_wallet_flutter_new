@@ -1,6 +1,7 @@
 import 'package:app/data/models/network_type.dart';
 import 'package:app/generated/generated.dart';
 import 'package:app/v2/feature/choose_network/choose_network_screen_wm.dart';
+import 'package:app/v2/feature/choose_network/data/choose_network_item_data.dart';
 import 'package:app/v2/feature/choose_network/widgets/choose_network_item.dart';
 import 'package:elementary/elementary.dart';
 import 'package:elementary_helper/elementary_helper.dart';
@@ -56,18 +57,19 @@ class ChooseNetworkScreen
                     LocaleKeys.selectNetworkNewWalletDescription.tr(),
                   ),
                   const SizedBox(height: DimensSize.d32),
-                  StateNotifierBuilder<List<NetworkType>>(
+                  StateNotifierBuilder<List<ChooseNetworkItemData>>(
                     listenableState: wm.connectionsState,
-                    builder: (_, List<NetworkType>? items) {
+                    builder: (_, List<ChooseNetworkItemData>? items) {
                       if (items == null) {
                         return const SizedBox.shrink();
                       }
 
                       return Column(
                         children: [
-                          for (final networkType in items)
+                          for (final item in items)
                             ChooseNetworkItem(
-                              networkType: networkType,
+                              id: item.id,
+                              networkType: item.networkType,
                               onPressed: wm.onPressedType,
                             ),
                         ],

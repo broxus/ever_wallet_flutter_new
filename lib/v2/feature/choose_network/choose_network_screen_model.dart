@@ -1,5 +1,8 @@
+import 'package:app/app/service/nekoton_related/connection_service/network_presets.dart';
+import 'package:app/app/service/storage_service/connections_storage_service.dart';
 import 'package:app/data/models/network_type.dart';
 import 'package:app/v2/feature/choose_network/choose_network_screen.dart';
+import 'package:app/v2/feature/choose_network/data/choose_network_item_data.dart';
 import 'package:elementary/elementary.dart';
 import 'package:elementary_helper/elementary_helper.dart';
 
@@ -7,21 +10,18 @@ import 'package:elementary_helper/elementary_helper.dart';
 class ChooseNetworkScreenModel extends ElementaryModel {
   ChooseNetworkScreenModel(
     ErrorHandler errorHandler,
+    this._connectionsStorageService,
   ) : super(errorHandler: errorHandler);
 
-  final connectionsState = StateNotifier<List<NetworkType>>(
+  final ConnectionsStorageService _connectionsStorageService;
+
+  final connectionsState = StateNotifier<List<ChooseNetworkItemData>>(
     initValue: [],
   );
 
   @override
   void init() {
-    // NetworkType
-    connectionsState.accept(
-      [
-        NetworkType.ever,
-        NetworkType.venom,
-      ],
-    );
+    _initNetworksData();
     super.init();
   }
 
@@ -31,7 +31,7 @@ class ChooseNetworkScreenModel extends ElementaryModel {
     super.dispose();
   }
 
-  Future<bool> selectType(NetworkType type) async {
+  Future<bool> selectType(String id) async {
     try {
       // TODO(knightforce): logic
     } on Object catch (_) {
@@ -40,5 +40,36 @@ class ChooseNetworkScreenModel extends ElementaryModel {
     }
 
     return true;
+  }
+
+  void _initNetworksData() {
+    final connections = _connectionsStorageService.connections;
+
+    final list = <ChooseNetworkItemData>[];
+
+    for (final connection in connections) {
+      switch (connection.id) {
+        case everMainnetProtoID:
+          list.add(
+            ChooseNetworkItemData(
+              id: everMainnetProtoID,
+              networkType: ChooseNetworkType.ever,
+            ),
+          );
+          continue;
+        case venomMainnetProtoID:
+          list.add(
+            ChooseNetworkItemData(
+              id: venomMainnetProtoID,
+              networkType: ChooseNetworkType.venom,
+            ),
+          );
+          continue;
+      }
+    }
+
+    connectionsState.accept(
+      list,
+    );
   }
 }

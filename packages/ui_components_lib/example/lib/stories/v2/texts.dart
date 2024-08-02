@@ -1,8 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:ui_components_lib/ui_components_lib.dart';
 import 'package:ui_components_lib/v2/ui_components_lib_v2.dart';
-import 'package:ui_components_lib/v2/widgets/text_fields/base_text_field.dart';
-import 'package:ui_components_lib/v2/widgets/text_fields/primary_text_field.dart';
 
 /// Page with texts
 class TextsStoryV2 extends StatefulWidget {
