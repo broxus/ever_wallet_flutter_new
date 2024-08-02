@@ -1,4 +1,3 @@
-import 'package:app/data/models/network_type.dart';
 import 'package:app/generated/generated.dart';
 import 'package:app/v2/feature/choose_network/choose_network_screen_wm.dart';
 import 'package:app/v2/feature/choose_network/data/choose_network_item_data.dart';

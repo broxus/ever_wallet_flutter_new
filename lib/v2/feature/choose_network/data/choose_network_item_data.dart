@@ -1,5 +1,3 @@
-import 'package:app/data/models/network_type.dart';
-
 class ChooseNetworkItemData {
   ChooseNetworkItemData({
     required this.id,

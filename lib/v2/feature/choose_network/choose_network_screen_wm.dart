@@ -1,6 +1,5 @@
 import 'package:app/core/error_handler_factory.dart';
 import 'package:app/core/wm/custom_wm.dart';
-import 'package:app/data/models/network_type.dart';
 import 'package:app/di/di.dart';
 import 'package:app/v2/feature/choose_network/choose_network_screen.dart';
 import 'package:app/v2/feature/choose_network/choose_network_screen_model.dart';

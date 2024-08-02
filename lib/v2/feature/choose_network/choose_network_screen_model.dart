@@ -1,6 +1,5 @@
 import 'package:app/app/service/nekoton_related/connection_service/network_presets.dart';
 import 'package:app/app/service/storage_service/connections_storage_service.dart';
-import 'package:app/data/models/network_type.dart';
 import 'package:app/v2/feature/choose_network/choose_network_screen.dart';
 import 'package:app/v2/feature/choose_network/data/choose_network_item_data.dart';
 import 'package:elementary/elementary.dart';
@@ -33,7 +32,7 @@ class ChooseNetworkScreenModel extends ElementaryModel {
 
   Future<bool> selectType(String id) async {
     try {
-      // TODO(knightforce): logic
+      await _connectionsStorageService.saveCurrentConnectionId(id);
     } on Object catch (_) {
       // TODO(knightforce): show error with elementary error handler
       return false;
