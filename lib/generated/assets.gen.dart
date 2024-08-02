@@ -167,6 +167,10 @@ class $AssetsImagesGen {
   /// File path: assets/images/ever_coin.svg
   SvgGenImage get everCoin => const SvgGenImage('assets/images/ever_coin.svg');
 
+  /// File path: assets/images/ever_vector.svg
+  SvgGenImage get everVector =>
+      const SvgGenImage('assets/images/ever_vector.svg');
+
   /// File path: assets/images/exit.svg
   SvgGenImage get exit => const SvgGenImage('assets/images/exit.svg');
 
@@ -227,6 +231,10 @@ class $AssetsImagesGen {
   /// File path: assets/images/navigation.svg
   SvgGenImage get navigation =>
       const SvgGenImage('assets/images/navigation.svg');
+
+  /// File path: assets/images/network_earth.png
+  AssetGenImage get networkEarth =>
+      const AssetGenImage('assets/images/network_earth.png');
 
   /// Directory path: assets/images/onboarding
   $AssetsImagesOnboardingGen get onboarding =>
@@ -301,6 +309,10 @@ class $AssetsImagesGen {
   /// File path: assets/images/venom.svg
   SvgGenImage get venom => const SvgGenImage('assets/images/venom.svg');
 
+  /// File path: assets/images/venom_vector.svg
+  SvgGenImage get venomVector =>
+      const SvgGenImage('assets/images/venom_vector.svg');
+
   /// File path: assets/images/wallet.svg
   SvgGenImage get wallet => const SvgGenImage('assets/images/wallet.svg');
 
@@ -308,7 +320,7 @@ class $AssetsImagesGen {
   SvgGenImage get web => const SvgGenImage('assets/images/web.svg');
 
   /// List of all assets
-  List<SvgGenImage> get values => [
+  List<dynamic> get values => [
         nft,
         accountType,
         alarm,
@@ -348,6 +360,7 @@ class $AssetsImagesGen {
         edit,
         ever,
         everCoin,
+        everVector,
         exit,
         export,
         exportFill,
@@ -365,6 +378,7 @@ class $AssetsImagesGen {
         navigateBack,
         navigateForward,
         navigation,
+        networkEarth,
         openedEye,
         paste,
         person,
@@ -385,6 +399,7 @@ class $AssetsImagesGen {
         support,
         trash,
         venom,
+        venomVector,
         wallet,
         web
       ];
@@ -599,6 +614,87 @@ class Assets {
   static const $AssetsAbiGen abi = $AssetsAbiGen();
   static const $AssetsImagesGen images = $AssetsImagesGen();
   static const $AssetsTranslationsGen translations = $AssetsTranslationsGen();
+}
+
+class AssetGenImage {
+  const AssetGenImage(
+    this._assetName, {
+    this.size,
+    this.flavors = const {},
+  });
+
+  final String _assetName;
+
+  final Size? size;
+  final Set<String> flavors;
+
+  Image image({
+    Key? key,
+    AssetBundle? bundle,
+    ImageFrameBuilder? frameBuilder,
+    ImageErrorWidgetBuilder? errorBuilder,
+    String? semanticLabel,
+    bool excludeFromSemantics = false,
+    double? scale,
+    double? width,
+    double? height,
+    Color? color,
+    Animation<double>? opacity,
+    BlendMode? colorBlendMode,
+    BoxFit? fit,
+    AlignmentGeometry alignment = Alignment.center,
+    ImageRepeat repeat = ImageRepeat.noRepeat,
+    Rect? centerSlice,
+    bool matchTextDirection = false,
+    bool gaplessPlayback = false,
+    bool isAntiAlias = false,
+    String? package,
+    FilterQuality filterQuality = FilterQuality.low,
+    int? cacheWidth,
+    int? cacheHeight,
+  }) {
+    return Image.asset(
+      _assetName,
+      key: key,
+      bundle: bundle,
+      frameBuilder: frameBuilder,
+      errorBuilder: errorBuilder,
+      semanticLabel: semanticLabel,
+      excludeFromSemantics: excludeFromSemantics,
+      scale: scale,
+      width: width,
+      height: height,
+      color: color,
+      opacity: opacity,
+      colorBlendMode: colorBlendMode,
+      fit: fit,
+      alignment: alignment,
+      repeat: repeat,
+      centerSlice: centerSlice,
+      matchTextDirection: matchTextDirection,
+      gaplessPlayback: gaplessPlayback,
+      isAntiAlias: isAntiAlias,
+      package: package,
+      filterQuality: filterQuality,
+      cacheWidth: cacheWidth,
+      cacheHeight: cacheHeight,
+    );
+  }
+
+  ImageProvider provider({
+    AssetBundle? bundle,
+    String? package,
+  }) {
+    return AssetImage(
+      _assetName,
+      bundle: bundle,
+      package: package,
+    );
+  }
+
+  String get path => _assetName;
+
+  String get keyName => _assetName;
 }
 
 class SvgGenImage {

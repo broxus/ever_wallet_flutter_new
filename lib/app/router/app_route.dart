@@ -13,11 +13,16 @@ enum AppRoute {
     'bootstrapFailed',
     '/bootstrapFailed/:$bootstrapFailedIndexPathParam',
   ),
-
   onboarding(
     'onboarding',
     '/onboarding',
     isSaveLocation: true,
+  ),
+
+  /// Network selection
+  chooseNetwork(
+    'chooseNetwork',
+    'chooseNetwork',
   ),
 
   /// Wallet section
@@ -387,6 +392,7 @@ extension NavigationHelper on BuildContext {
   void goFurther(
     String location, {
     bool preserveQueryParams = false,
+    Object? extra,
   }) {
     if (!mounted) return;
 
@@ -413,6 +419,7 @@ extension NavigationHelper on BuildContext {
     }
     return GoRouter.of(this).go(
       Uri.decodeComponent(resultLocation.toString()),
+      extra: extra,
     );
   }
 
