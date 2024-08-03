@@ -30,7 +30,7 @@ class EnterSeedPhraseView extends StatelessWidget {
         child: Column(
           children: [
             Image.asset(
-              'assets/images/seed_phrase_icon.png',
+              Assets.images.seedPhraseIcon.path,
               width: DimensSizeV2.d56,
               height: DimensSizeV2.d56,
             ),
@@ -212,20 +212,19 @@ class EnterSeedPhraseView extends StatelessWidget {
               child: SingleChildScrollView(
                 scrollDirection: Axis.horizontal,
                 child: Row(
-                  children: allowedValues
-                      .map(
-                        (value) => GestureDetector(
-                          onTap: () => cubit.changeTab(value),
-                          child: PrimarySegmentControl(
-                            size: SegmentControlSize.small,
-                            state: value == currentValue
-                                ? SegmentControlState.selected
-                                : SegmentControlState.normal,
-                            title: LocaleKeys.wordsCount.plural(value),
-                          ),
+                  children: [
+                    for (final value in allowedValues)
+                      GestureDetector(
+                        onTap: () => cubit.changeTab(value),
+                        child: PrimarySegmentControl(
+                          size: SegmentControlSize.small,
+                          state: value == currentValue
+                              ? SegmentControlState.selected
+                              : SegmentControlState.normal,
+                          title: LocaleKeys.wordsCount.plural(value),
                         ),
-                      )
-                      .toList(),
+                      ),
+                  ],
                 ),
               ),
             ),
@@ -255,18 +254,24 @@ class EnterSeedPhraseView extends StatelessWidget {
       children: [
         Expanded(
           child: SeparatedColumn(
-            children: inputs
-                .getRange(0, currentValue ~/ _gridColumnCount)
-                .map((input) => _inputBuild(themeStyleV2, input, currentValue))
-                .toList(),
+            children: [
+              for (final input in inputs.getRange(
+                0,
+                currentValue ~/ _gridColumnCount,
+              ))
+                _inputBuild(themeStyleV2, input, currentValue),
+            ],
           ),
         ),
         Expanded(
           child: SeparatedColumn(
-            children: inputs
-                .getRange(currentValue ~/ _gridColumnCount, currentValue)
-                .map((input) => _inputBuild(themeStyleV2, input, currentValue))
-                .toList(),
+            children: [
+              for (final input in inputs.getRange(
+                currentValue ~/ _gridColumnCount,
+                currentValue,
+              ))
+                _inputBuild(themeStyleV2, input, currentValue),
+            ],
           ),
         ),
       ],

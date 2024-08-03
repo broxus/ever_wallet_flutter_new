@@ -99,6 +99,7 @@ class __$$InitialImplCopyWithImpl<$Res>
 
 /// @nodoc
 
+@Deprecated('Use v2 version')
 class _$InitialImpl implements _Initial {
   const _$InitialImpl();
 
@@ -239,6 +240,7 @@ class __$$TabImplCopyWithImpl<$Res>
 
 /// @nodoc
 
+@Deprecated('Use v2 version')
 class _$TabImpl implements _Tab {
   const _$TabImpl(
       {required final List<int> allowedValues,

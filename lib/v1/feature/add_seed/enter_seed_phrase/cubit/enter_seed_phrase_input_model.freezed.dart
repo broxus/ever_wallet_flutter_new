@@ -162,6 +162,7 @@ class __$$EnterSeedPhraseInputImplCopyWithImpl<$Res>
 
 /// @nodoc
 
+@Deprecated('Use v2 version')
 class _$EnterSeedPhraseInputImpl implements EnterSeedPhraseInput {
   const _$EnterSeedPhraseInputImpl(
       {required this.controller,
@@ -344,6 +345,7 @@ class __$$EnterSeedPhraseEnteredImplCopyWithImpl<$Res>
 
 /// @nodoc
 
+@Deprecated('Use v2 version')
 class _$EnterSeedPhraseEnteredImpl implements EnterSeedPhraseEntered {
   const _$EnterSeedPhraseEnteredImpl(
       {required this.text, required this.index, required this.hasError});

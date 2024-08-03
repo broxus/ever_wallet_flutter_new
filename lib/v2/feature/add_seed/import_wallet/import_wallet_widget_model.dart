@@ -33,7 +33,7 @@ class ImportWalletWidgetModel
 
   bool get isPasted => _isPasted;
 
-  Future<void> import() => model.import();
+  Future<void> onPressedImport() => model.import();
 
   Future<void> pasteWords() async {
     final clipboard = await Clipboard.getData(Clipboard.kTextPlain);

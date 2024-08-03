@@ -111,9 +111,7 @@ class ImportWalletView extends ElementaryWidget<ImportWalletWidgetModel> {
                   title: LocaleKeys.importWalletButtonText.tr(),
                   onPressed: isPasted
                       ? () {
-                          wm.import();
-
-                          ///here add to navigation to Confirm password
+                          wm.onPressedImport();
                         }
                       : null,
                   icon: LucideIcons.textCursorInput,
@@ -156,40 +154,40 @@ class _ListWords extends StatelessWidget {
         Expanded(
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
-            children: List.generate(
-              firstColumnWords.length,
-              (index) => Padding(
-                //add padding between rows
-                padding: index != firstColumnWords.length - 1
-                    ? const EdgeInsets.only(bottom: DimensSizeV2.d12)
-                    : EdgeInsets.zero,
-                child: _WordWithIndex(
-                  theme: theme,
-                  word: firstColumnWords[index],
-                  index: index,
-                  isMasked: isMasked,
+            children: [
+              for (int index = 0; index < firstColumnWords.length; index++)
+                Padding(
+                  //add padding between rows
+                  padding: index != firstColumnWords.length - 1
+                      ? const EdgeInsets.only(bottom: DimensSizeV2.d12)
+                      : EdgeInsets.zero,
+                  child: _WordWithIndex(
+                    theme: theme,
+                    word: firstColumnWords[index],
+                    index: index,
+                    isMasked: isMasked,
+                  ),
                 ),
-              ),
-            ),
+            ],
           ),
         ),
         Expanded(
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
-            children: List.generate(
-              secondColumnWords.length,
-              (index) => Padding(
-                padding: index != firstColumnWords.length - 1
-                    ? const EdgeInsets.only(bottom: DimensSizeV2.d12)
-                    : EdgeInsets.zero,
-                child: _WordWithIndex(
-                  theme: theme,
-                  word: secondColumnWords[index],
-                  index: index + halfLength,
-                  isMasked: isMasked,
+            children: [
+              for (int index = 0; index < secondColumnWords.length; index++)
+                Padding(
+                  padding: index != secondColumnWords.length - 1
+                      ? const EdgeInsets.only(bottom: DimensSizeV2.d12)
+                      : EdgeInsets.zero,
+                  child: _WordWithIndex(
+                    theme: theme,
+                    word: secondColumnWords[index],
+                    index: index + halfLength,
+                    isMasked: isMasked,
+                  ),
                 ),
-              ),
-            ),
+            ],
           ),
         ),
       ],

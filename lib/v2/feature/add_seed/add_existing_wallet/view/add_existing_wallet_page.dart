@@ -1,3 +1,4 @@
+import 'package:app/generated/assets.gen.dart';
 import 'package:app/v2/feature/add_seed/add_existing_wallet/view/view.dart';
 import 'package:flutter/material.dart';
 import 'package:ui_components_lib/ui_components_lib.dart';
@@ -14,9 +15,9 @@ class AddExistingWalletPage extends StatelessWidget {
       backgroundColor: theme.colors.background0,
       appBar: const DefaultAppBar(),
       body: Container(
-        decoration: const BoxDecoration(
+        decoration: BoxDecoration(
           image: DecorationImage(
-            image: AssetImage('assets/images/blur_background.png'),
+            image: AssetImage(Assets.images.blurBackground.path),
             fit: BoxFit.cover,
           ),
         ),
