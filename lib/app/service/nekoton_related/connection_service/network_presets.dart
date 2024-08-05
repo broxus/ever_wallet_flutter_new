@@ -3,7 +3,6 @@ import 'package:app/data/models/network_type.dart';
 
 const defaultNetworkTimeout = Duration(milliseconds: 60000);
 
-
 const defaultConnectionkId = everMainnetProtoID;
 
 final networkPresets = [..._everPresets, ..._venomPresets, ..._customPresets];
