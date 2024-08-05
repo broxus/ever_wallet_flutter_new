@@ -72,6 +72,10 @@ class $AssetsImagesGen {
   SvgGenImage get arrowsLeftRight =>
       const SvgGenImage('assets/images/arrows_left_right.svg');
 
+  /// File path: assets/images/blur_background.png
+  AssetGenImage get blurBackground =>
+      const AssetGenImage('assets/images/blur_background.png');
+
   /// File path: assets/images/browser_card_01.svg
   SvgGenImage get browserCard01 =>
       const SvgGenImage('assets/images/browser_card_01.svg');
@@ -292,6 +296,10 @@ class $AssetsImagesGen {
   SvgGenImage get searchEmpty =>
       const SvgGenImage('assets/images/search_empty.svg');
 
+  /// File path: assets/images/seed_phrase_icon.png
+  AssetGenImage get seedPhraseIcon =>
+      const AssetGenImage('assets/images/seed_phrase_icon.png');
+
   /// File path: assets/images/settings.svg
   SvgGenImage get settings => const SvgGenImage('assets/images/settings.svg');
 
@@ -344,6 +352,7 @@ class $AssetsImagesGen {
         arrowUp,
         arrowUpFlat,
         arrowsLeftRight,
+        blurBackground,
         browserCard01,
         browserCard02,
         burger,
@@ -405,6 +414,7 @@ class $AssetsImagesGen {
         scan,
         search,
         searchEmpty,
+        seedPhraseIcon,
         settings,
         share,
         sparxLogoSmall,

@@ -500,4 +500,13 @@ abstract class LocaleKeys {
   static const confirmPasswordsMatchSubtitle = 'confirmPasswordsMatchSubtitle';
   static const faceIdContent = 'faceIdContent';
   static const touchIdContent = 'touchIdContent';
+  static const addExistingWalletTitle = 'addExistingWalletTitle';
+  static const addExistingWalletSubtitle = 'addExistingWalletSubtitle';
+  static const useSecretPhraseTitle = 'useSecretPhraseTitle';
+  static const importWalletScreenTitle = 'importWalletScreenTitle';
+  static const importWalletScreenSubtitle = 'importWalletScreenSubtitle';
+  static const importWalletButtonText = 'importWalletButtonText';
+  static const importWalletManuallyButtonText =
+      'importWalletManuallyButtonText';
+  static const importWalletPasteClipboard = 'importWalletPasteClipboard';
 }

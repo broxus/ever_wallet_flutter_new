@@ -154,6 +154,7 @@ GoRouter getRouter(BuildContext _) {
         ),
         routes: [
           chooseNetworkRoute,
+          importWalletRoute,
           createSeedNoNamedOnboardingRoute,
           enterSeedNoNamedOnboardingRoute,
         ],

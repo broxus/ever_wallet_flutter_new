@@ -9,7 +9,7 @@ import 'package:ui_components_lib/v2/widgets/segment_control/segment_control.dar
 class PrimarySegmentControl extends StatelessWidget {
   const PrimarySegmentControl({
     required this.state,
-    required this.icon,
+    this.icon,
     this.size = SegmentControlSize.large,
     this.title,
     this.value,
@@ -18,7 +18,7 @@ class PrimarySegmentControl extends StatelessWidget {
 
   final SegmentControlSize size;
   final SegmentControlState state;
-  final IconData icon;
+  final IconData? icon;
   final String? title;
   final String? value;
 
@@ -76,14 +76,17 @@ class PrimarySegmentControl extends StatelessWidget {
       ),
       child: Row(
         children: [
-          Icon(
-            icon,
-            color: style.iconColor,
-            size: _iconSize,
-          ),
+          if (icon != null)
+            Icon(
+              icon,
+              color: style.iconColor,
+              size: _iconSize,
+            ),
           if (title != null)
             Padding(
-              padding: const EdgeInsets.only(left: DimensSize.d8),
+              padding: icon != null
+                  ? const EdgeInsets.only(left: DimensSize.d8)
+                  : EdgeInsets.zero,
               child: Text(
                 title!,
                 style: style.titleTextStyle,

@@ -490,5 +490,13 @@
   "confirmPasswordsMatchTitle": "Passwords match",
   "confirmPasswordsMatchSubtitle": "In order to continue, re-enter your password exactly the same as before",
   "faceIdContent": "Use Face ID to avoid re-entering your passcode.",
-  "touchIdContent": "Use Touch ID to avoid re-entering your passcode."
+  "touchIdContent": "Use Touch ID to avoid re-entering your passcode.",
+  "addExistingWalletTitle": "Add an existing wallet",
+  "addExistingWalletSubtitle": "Choose how you’d like to import your existing wallet into Sparx.",
+  "useSecretPhraseTitle": "Use secret recovery phrase",
+  "importWalletScreenTitle": "Import wallet",
+  "importWalletScreenSubtitle": "Enter your secret recovery phrase to securely import your wallet.",
+  "importWalletButtonText": "Import",
+  "importWalletManuallyButtonText": "Import manually",
+  "importWalletPasteClipboard": "Paste from clipboard"
 }

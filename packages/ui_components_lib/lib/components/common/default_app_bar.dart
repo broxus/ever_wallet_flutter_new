@@ -1,7 +1,9 @@
 import 'package:flutter/material.dart';
+import 'package:lucide_icons_flutter/lucide_icons.dart';
 import 'package:flutter/services.dart';
 import 'package:lucide_icons_flutter/lucide_icons.dart';
 import 'package:ui_components_lib/ui_components_lib.dart';
+import 'package:ui_components_lib/v2/ui_components_lib_v2.dart';
 import 'package:ui_components_lib/v2/ui_components_lib_v2.dart';
 import 'package:ui_components_lib/v2/widgets/buttons/button.dart';
 
@@ -158,7 +160,6 @@ class DefaultAppBar extends StatelessWidget implements PreferredSizeWidget {
             ? FloatButton(
                 buttonShape: ButtonShape.circle,
                 onPressed: () {
-                  print('!!!');
                   if (onClosePressed != null) {
                     onClosePressed!(context);
                   } else {

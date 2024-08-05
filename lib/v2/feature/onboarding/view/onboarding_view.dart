@@ -56,7 +56,7 @@ class OnboardingView extends StatelessWidget {
                       AppRoute.chooseNetwork.path,
                       extra: ChooseNetworkScreenRouteData(
                         onSuccess: () {
-                          context.goFurther(AppRoute.createSeed.path);
+                          context.goFurther(AppRoute.importWallet.path);
                         },
                       ),
                     );
