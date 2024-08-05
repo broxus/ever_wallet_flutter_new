@@ -1,7 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_typeahead/flutter_typeahead.dart';
+import 'package:ui_components_lib/components/input/common_input_style_v2.dart';
 import 'package:ui_components_lib/ui_components_lib.dart';
+import 'package:ui_components_lib/v2/dimens_v2.dart';
 
 /// Default height for input
 const commonInputHeight = DimensSize.d56;
@@ -60,6 +62,7 @@ class CommonInput extends StatefulWidget {
     this.maxLength,
     this.outerActions,
     this.enabled = true,
+    this.v2Style,
   });
 
   /// Height of input field
@@ -183,6 +186,10 @@ class CommonInput extends StatefulWidget {
 
   /// Flag to enable/disable input
   final bool enabled;
+
+  ///remove after refactoring enter_seed_phrase_view
+  ///only for fast fix
+  final CommonInputStyleV2? v2Style;
 
   @override
   State<CommonInput> createState() => _CommonInputState();
@@ -509,31 +516,43 @@ class _CommonInputState extends State<CommonInput> {
               prefixIcon:
                   widget.prefixIcon ?? const SizedBox(width: DimensSize.d16),
               border: SquircleInputBorder(
-                squircleRadius: DimensRadius.medium,
+                squircleRadius: widget.v2Style != null
+                    ? DimensRadius.xMedium
+                    : DimensRadius.medium,
                 borderSide: BorderSide(
                   color: widget.inactiveBorderColor ?? colors.strokePrimary,
                 ),
               ),
               enabledBorder: SquircleInputBorder(
-                squircleRadius: DimensRadius.medium,
+                squircleRadius: widget.v2Style != null
+                    ? DimensRadius.xMedium
+                    : DimensRadius.medium,
                 borderSide: BorderSide(
                   color: widget.inactiveBorderColor ?? colors.strokePrimary,
                 ),
               ),
               focusedBorder: SquircleInputBorder(
-                squircleRadius: DimensRadius.medium,
+                squircleRadius: widget.v2Style != null
+                    ? DimensRadius.xMedium
+                    : DimensRadius.medium,
                 borderSide: BorderSide(
-                  color: colors.strokeContrast,
+                  color: widget.v2Style != null
+                      ? widget.v2Style!.borderColor
+                      : colors.strokeContrast,
                 ),
               ),
               errorBorder: SquircleInputBorder(
-                squircleRadius: DimensRadius.medium,
+                squircleRadius: widget.v2Style != null
+                    ? DimensRadius.xMedium
+                    : DimensRadius.medium,
                 borderSide: BorderSide(
                   color: widget.errorColor ?? colors.alert,
                 ),
               ),
               focusedErrorBorder: SquircleInputBorder(
-                squircleRadius: DimensRadius.medium,
+                squircleRadius: widget.v2Style != null
+                    ? DimensRadius.xMedium
+                    : DimensRadius.medium,
                 borderSide: BorderSide(
                   color: widget.errorColor ?? colors.alert,
                 ),
@@ -543,7 +562,9 @@ class _CommonInputState extends State<CommonInput> {
           suggestionsCallback: suggestionsCallback,
           itemSeparatorBuilder: (_, __) => Divider(
             height: suggestionDividerSize,
-            color: colors.strokeSecondary,
+            color: widget.v2Style != null
+                ? widget.v2Style!.borderSuggestionColor
+                : colors.strokeSecondary,
             thickness: suggestionDividerSize,
           ),
           itemBuilder: widget.itemBuilder ??
@@ -551,8 +572,15 @@ class _CommonInputState extends State<CommonInput> {
                   _defaultSuggestionItemBuilder(context, item, colors),
           suggestionsBoxDecoration: SuggestionsBoxDecoration(
             hasScrollbar: false,
-            constraints: const BoxConstraints(maxWidth: DimensSize.d168),
-            shape: const SquircleShapeBorder(cornerRadius: DimensRadius.medium),
+            constraints: BoxConstraints(
+              maxWidth:
+                  widget.v2Style != null ? double.infinity : DimensSize.d168,
+            ),
+            shape: SquircleShapeBorder(
+              cornerRadius: widget.v2Style != null
+                  ? DimensSizeV2.d12
+                  : DimensRadius.medium,
+            ),
             color: widget.suggestionBackground ?? colors.backgroundSecondary,
           ),
           onSuggestionSelected: onSuggestionSelected,

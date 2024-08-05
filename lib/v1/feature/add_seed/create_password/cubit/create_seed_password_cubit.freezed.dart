@@ -117,6 +117,7 @@ class __$$CreateSeedPasswordStateImplCopyWithImpl<$Res>
 
 /// @nodoc
 
+@Deprecated('Use v2 version')
 class _$CreateSeedPasswordStateImpl implements _CreateSeedPasswordState {
   const _$CreateSeedPasswordStateImpl(
       {required this.obscurePassword,

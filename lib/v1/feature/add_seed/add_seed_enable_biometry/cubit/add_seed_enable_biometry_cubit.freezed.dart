@@ -99,6 +99,7 @@ class __$$InitImplCopyWithImpl<$Res>
 
 /// @nodoc
 
+@Deprecated('Use v2 version')
 class _$InitImpl implements _Init {
   const _$InitImpl();
 
@@ -220,6 +221,7 @@ class __$$AskImplCopyWithImpl<$Res>
 
 /// @nodoc
 
+@Deprecated('Use v2 version')
 class _$AskImpl implements _Ask {
   const _$AskImpl({required this.isFaceBiometry});
 
@@ -345,6 +347,7 @@ class __$$CompletedImplCopyWithImpl<$Res>
 
 /// @nodoc
 
+@Deprecated('Use v2 version')
 class _$CompletedImpl implements _Completed {
   const _$CompletedImpl();
 

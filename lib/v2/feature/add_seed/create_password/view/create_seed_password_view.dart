@@ -6,8 +6,7 @@ import 'package:app/v2/feature/add_seed/create_password/widgets/password_info_se
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:ui_components_lib/ui_components_lib.dart';
-import 'package:ui_components_lib/v2/widgets/buttons/button.dart';
-import 'package:ui_components_lib/v2/widgets/text_fields/primary_text_field.dart';
+import 'package:ui_components_lib/v2/ui_components_lib_v2.dart';
 
 class CreateSeedPasswordView extends StatelessWidget {
   const CreateSeedPasswordView({
@@ -44,11 +43,7 @@ class CreateSeedPasswordView extends StatelessWidget {
                           ),
                         ),
                         const SizedBox(height: DimensSize.d8),
-                        Text(
-                          LocaleKeys.confirmPasswordSubtitle.tr(),
-                          style: themeStyle.textStyles.paragraphMedium,
-                          textAlign: TextAlign.center,
-                        ),
+                        PrimaryText(LocaleKeys.confirmPasswordSubtitle.tr()),
                         const SizedBox(height: DimensSize.d24),
                         PrimaryTextField(
                           keyboardType: TextInputType.visiblePassword,
