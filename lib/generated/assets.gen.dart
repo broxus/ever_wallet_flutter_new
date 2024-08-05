@@ -171,6 +171,10 @@ class $AssetsImagesGen {
   /// File path: assets/images/ever_coin.svg
   SvgGenImage get everCoin => const SvgGenImage('assets/images/ever_coin.svg');
 
+  /// File path: assets/images/ever_vector.svg
+  SvgGenImage get everVector =>
+      const SvgGenImage('assets/images/ever_vector.svg');
+
   /// File path: assets/images/exit.svg
   SvgGenImage get exit => const SvgGenImage('assets/images/exit.svg');
 
@@ -242,6 +246,10 @@ class $AssetsImagesGen {
   /// File path: assets/images/navigation.svg
   SvgGenImage get navigation =>
       const SvgGenImage('assets/images/navigation.svg');
+
+  /// File path: assets/images/network_earth.png
+  AssetGenImage get networkEarth =>
+      const AssetGenImage('assets/images/network_earth.png');
 
   /// Directory path: assets/images/onboarding
   $AssetsImagesOnboardingGen get onboarding =>
@@ -320,6 +328,10 @@ class $AssetsImagesGen {
   /// File path: assets/images/venom.svg
   SvgGenImage get venom => const SvgGenImage('assets/images/venom.svg');
 
+  /// File path: assets/images/venom_vector.svg
+  SvgGenImage get venomVector =>
+      const SvgGenImage('assets/images/venom_vector.svg');
+
   /// File path: assets/images/wallet.svg
   SvgGenImage get wallet => const SvgGenImage('assets/images/wallet.svg');
 
@@ -368,6 +380,7 @@ class $AssetsImagesGen {
         edit,
         ever,
         everCoin,
+        everVector,
         exit,
         export,
         exportFill,
@@ -388,6 +401,7 @@ class $AssetsImagesGen {
         navigateBack,
         navigateForward,
         navigation,
+        networkEarth,
         openedEye,
         paste,
         person,
@@ -409,6 +423,7 @@ class $AssetsImagesGen {
         support,
         trash,
         venom,
+        venomVector,
         wallet,
         web
       ];

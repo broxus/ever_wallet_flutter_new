@@ -9,8 +9,13 @@ abstract class LocaleKeys {
   static const readHere = 'readHere';
   static const skipWord = 'skipWord';
   static const letsCheckSeedPhrase = 'letsCheckSeedPhrase';
+  static const chooseNetwork = 'chooseNetwork';
+  static const chooseNetworkEverDescription = 'chooseNetworkEverDescription';
+  static const chooseNetworkVenomDescription = 'chooseNetworkVenomDescription';
   static const checkSeedPhraseCorrectly = 'checkSeedPhraseCorrectly';
   static const seedIsWrong = 'seedIsWrong';
+  static const selectNetworkNewWalletDescription =
+      'selectNetworkNewWalletDescription';
   static const wordWord = 'wordWord';
   static const createPassword = 'createPassword';
   static const createPasswordDescription = 'createPasswordDescription';
@@ -397,6 +402,7 @@ abstract class LocaleKeys {
   static const permissionsNotGranted = 'permissionsNotGranted';
   static const addAsset = 'addAsset';
   static const versionWord = 'versionWord';
+  static const venom = 'venom';
   static const symbolWord = 'symbolWord';
   static const decimalsWord = 'decimalsWord';
   static const ownerAddress = 'ownerAddress';
@@ -448,6 +454,7 @@ abstract class LocaleKeys {
   static const cancelUnstakingNote = 'cancelUnstakingNote';
   static const unstakingCancelled = 'unstakingCancelled';
   static const exchangeRate = 'exchangeRate';
+  static const everscale = 'everscale';
   static const averageApy = 'averageApy';
   static const stakingInitError = 'stakingInitError';
   static const stakingNotEnoughBalanceToStake =

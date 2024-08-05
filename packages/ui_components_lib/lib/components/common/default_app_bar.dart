@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:lucide_icons_flutter/lucide_icons.dart';
 import 'package:ui_components_lib/ui_components_lib.dart';
 import 'package:ui_components_lib/v2/ui_components_lib_v2.dart';
@@ -53,6 +54,7 @@ class DefaultAppBar extends StatelessWidget implements PreferredSizeWidget {
     this.subtitleTopWidget,
     this.subtitleBottomWidget,
     this.leadingWidth = appBarButtonSize,
+    this.systemOverlayStyle,
   });
 
   /// This is a default action of [DefaultAppBar] that is used with leading
@@ -129,6 +131,8 @@ class DefaultAppBar extends StatelessWidget implements PreferredSizeWidget {
   /// Width of leading widget, default [appBarButtonSize]
   final double leadingWidth;
 
+  final SystemUiOverlayStyle? systemOverlayStyle;
+
   bool get _hasActions => actions?.isNotEmpty ?? false;
 
   bool get _hasAnyActions => _hasActions || _showActionsClose;
@@ -183,6 +187,7 @@ class DefaultAppBar extends StatelessWidget implements PreferredSizeWidget {
               ),
         actions: _hasAnyActions ? _actionsWidget(context) : null,
         title: title,
+        systemOverlayStyle: systemOverlayStyle,
       ),
     );
   }

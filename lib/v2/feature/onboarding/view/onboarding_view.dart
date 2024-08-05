@@ -1,5 +1,6 @@
 import 'package:app/app/router/app_route.dart';
 import 'package:app/generated/generated.dart';
+import 'package:app/v2/feature/choose_network/route_data.dart';
 import 'package:app/v2/feature/onboarding/onboarding.dart';
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
@@ -50,14 +51,31 @@ class OnboardingView extends StatelessWidget {
                 const SizedBox(height: DimensSize.d24),
                 AccentButton(
                   title: LocaleKeys.welcomeGetNewWallet.tr(),
-                  onPressed: () =>
-                      context.goFurther(AppRoute.importWallet.path),
+                  onPressed: () {
+                    context.goFurther(
+                      AppRoute.chooseNetwork.path,
+                      extra: ChooseNetworkScreenRouteData(
+                        onSuccess: () {
+                          context.goFurther(AppRoute.importWallet.path);
+                        },
+                      ),
+                    );
+                  },
                   buttonShape: ButtonShape.pill,
                 ),
                 const SizedBox(height: DimensSize.d8),
                 PrimaryButton(
                   title: LocaleKeys.welcomeIHaveOne.tr(),
-                  onPressed: () => context.goFurther(AppRoute.enterSeed.path),
+                  onPressed: () {
+                    context.goFurther(
+                      AppRoute.chooseNetwork.path,
+                      extra: ChooseNetworkScreenRouteData(
+                        onSuccess: () {
+                          context.goFurther(AppRoute.enterSeed.path);
+                        },
+                      ),
+                    );
+                  },
                   buttonShape: ButtonShape.pill,
                 ),
                 const SizedBox(height: DimensSize.d16),

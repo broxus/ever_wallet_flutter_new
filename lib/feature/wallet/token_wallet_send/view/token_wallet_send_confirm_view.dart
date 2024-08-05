@@ -14,16 +14,16 @@ class TokenWalletSendConfirmView extends StatelessWidget {
     required this.amount,
     required this.comment,
     required this.publicKey,
-    required this.attachedAmount,
     required this.tokenCurrency,
     this.fee,
     this.feeError,
+    this.attachedAmount,
     super.key,
   });
 
   final Address recipient;
   final BigInt amount;
-  final BigInt attachedAmount;
+  final BigInt? attachedAmount;
   final BigInt? fee;
   final String? comment;
   final Currency tokenCurrency;
@@ -66,7 +66,7 @@ class TokenWalletSendConfirmView extends StatelessWidget {
                   title: LocaleKeys.attachedAmount.tr(),
                   valueChild: MoneyWidget(
                     money: Money.fromBigIntWithCurrency(
-                      attachedAmount,
+                      attachedAmount ?? BigInt.zero,
                       Currencies()[inject<NekotonRepository>()
                           .currentTransport
                           .nativeTokenTicker]!,
