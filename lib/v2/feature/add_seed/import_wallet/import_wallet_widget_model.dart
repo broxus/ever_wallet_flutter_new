@@ -1,39 +1,57 @@
-import 'package:app/app/service/messenger/message.dart';
-import 'package:app/app/service/messenger/service/messenger_service.dart';
 import 'package:app/core/wm/custom_wm.dart';
 import 'package:app/di/di.dart';
 import 'package:app/generated/generated.dart';
+import 'package:app/v2/feature/add_seed/constants.dart';
 import 'package:app/v2/feature/add_seed/import_wallet/import_wallet.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:logging/logging.dart';
 import 'package:nekoton_repository/nekoton_repository.dart' hide Message;
-import 'package:ui_components_lib/constants.dart';
 
 final seedSplitRegExp = RegExp(r'[ |;,:\n.]');
+const wordsCount = 12;
 
 ImportWalletWidgetModel defaultImportWalletWidgetModelFactory(
   BuildContext context,
 ) {
-  return ImportWalletWidgetModel(
-    inject(),
-    ImportWalletModel(),
-  );
+  return ImportWalletWidgetModel(ImportWalletModel(inject()));
 }
 
 class ImportWalletWidgetModel
     extends CustomWidgetModel<ImportWalletView, ImportWalletModel> {
-  ImportWalletWidgetModel(this._messengerService, super.model);
+  ImportWalletWidgetModel(super.model);
 
-  final MessengerService _messengerService;
+  final _log = Logger('ImportWalletWidgetModel');
 
   late final screenState = createEntityNotifier<ImportWalletData?>()
     ..loading(ImportWalletData());
 
   ImportWalletData? get _data => screenState.value.data;
 
-  bool get isPasted => _isPasted;
-
-  Future<void> onPressedImport() => model.import();
+  Future<void> onPressedImport() async {
+    String? error;
+    try {
+      FocusManager.instance.primaryFocus?.unfocus();
+      if (screenState.value.data?.words?.isNotEmpty ?? false) {
+        await deriveFromPhrase(
+          phrase: screenState.value.data!.words!.join(' '),
+          mnemonicType: defaultMnemonicType,
+        );
+        await model.import();
+      } else {
+        model.showValidateError(LocaleKeys.incorrectWordsFormat.tr());
+      }
+    } on Exception catch (e, s) {
+      _log.severe('confirmAction', e, s);
+      error = e.toString();
+    } on FfiException catch (e, s) {
+      _log.severe('confirmAction FfiException', e, s);
+      error = LocaleKeys.wrongSeed.tr();
+    }
+    if (error != null) {
+      model.showValidateError(error);
+    }
+  }
 
   Future<void> pasteWords() async {
     final clipboard = await Clipboard.getData(Clipboard.kTextPlain);
@@ -41,7 +59,6 @@ class ImportWalletWidgetModel
             ?.replaceAll(RegExp(r'\\s+'), ' ')
             .split(seedSplitRegExp) ??
         <String>[];
-    _isPasted = true;
     if (words.isNotEmpty) {
       for (final word in words) {
         if (!await _isWordValid(word)) {
@@ -54,27 +71,38 @@ class ImportWalletWidgetModel
     }
 
     if (words.isEmpty) {
-      _showValidateError(LocaleKeys.incorrectWordsFormat.tr());
+      model.showValidateError(LocaleKeys.incorrectWordsFormat.tr());
       return;
     } else {
-      _isPasted = true;
-      _updateState(isPasted: _isPasted, words: words);
+      final halfLength = (words.length / 2).floor();
+
+      final firstColumnWords = words.sublist(0, halfLength);
+      final secondColumnWords = words.sublist(halfLength);
+      _updateState(
+        isPasted: true,
+        words: words,
+        firstColumnWords: firstColumnWords,
+        secondColumnWords: secondColumnWords,
+      );
     }
   }
 
   void deleteWords() {
-    _isPasted = false;
-    _updateState(isPasted: _isPasted);
+    _updateState(isPasted: false);
   }
 
   void _updateState({
     bool? isPasted,
     List<String>? words,
+    List<String>? firstColumnWords,
+    List<String>? secondColumnWords,
   }) {
     screenState.content(
       _data?.copyWith(
         isPasted: isPasted,
         words: words,
+        firstColumnWords: firstColumnWords,
+        secondColumnWords: secondColumnWords,
       ),
     );
   }
@@ -87,15 +115,4 @@ class ImportWalletWidgetModel
 
     return false;
   }
-
-  void _showValidateError(String message) {
-    _messengerService.show(
-      Message.error(
-        message: message,
-        debounceTime: defaultInfoMessageDebounceDuration,
-      ),
-    );
-  }
-
-  bool _isPasted = false;
 }

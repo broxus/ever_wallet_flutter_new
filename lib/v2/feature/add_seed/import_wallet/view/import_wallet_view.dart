@@ -27,7 +27,7 @@ class ImportWalletView extends ElementaryWidget<ImportWalletWidgetModel> {
     return EntityStateNotifierBuilder<ImportWalletData?>(
       listenableEntityState: wm.screenState,
       builder: (_, data) {
-        final isPasted = wm.isPasted;
+        final isPasted = data?.isPasted ?? false;
         return SafeArea(
           minimum: const EdgeInsets.only(bottom: DimensSize.d24),
           child: Padding(
@@ -60,7 +60,8 @@ class ImportWalletView extends ElementaryWidget<ImportWalletWidgetModel> {
                       width: double.infinity,
                       child: _ListWords(
                         theme: theme,
-                        words: data?.words,
+                        firstColumnWords: data?.firstColumnWords,
+                        secondColumnWords: data?.secondColumnWords,
                         isMasked: isPasted,
                       ),
                     ),
@@ -128,25 +129,29 @@ class ImportWalletView extends ElementaryWidget<ImportWalletWidgetModel> {
 class _ListWords extends StatelessWidget {
   const _ListWords({
     required this.theme,
-    required this.words,
+    required this.firstColumnWords,
+    required this.secondColumnWords,
     required this.isMasked,
   });
 
   final ThemeStyleV2 theme;
-  final List<String>? words;
+  final List<String>? firstColumnWords;
+  final List<String>? secondColumnWords;
   final bool isMasked;
 
   @override
   Widget build(BuildContext context) {
-    final words = this.words ??
+    final halfLength = (wordsCount / 2).floor();
+    final firstColumnWords = this.firstColumnWords ??
         List.generate(
-          12,
+          halfLength,
           (index) => r'^*#!#$^*',
         );
-    final halfLength = (words.length / 2).floor();
-
-    final firstColumnWords = words.sublist(0, halfLength);
-    final secondColumnWords = words.sublist(halfLength);
+    final secondColumnWords = this.secondColumnWords ??
+        List.generate(
+          halfLength,
+          (index) => r'^*#!#$^*',
+        );
 
     return Row(
       mainAxisAlignment: MainAxisAlignment.center,
