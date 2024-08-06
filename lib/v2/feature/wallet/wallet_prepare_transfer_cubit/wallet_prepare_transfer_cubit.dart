@@ -290,7 +290,7 @@ class WalletPrepareTransferCubit extends Cubit<WalletPrepareTransferState> {
 
         _currentWalletSubscription = wallet.fieldUpdatesStream.listen((_) {
           final updated = _assets[(root, symbol)]?.copyWith(
-            Money.fromBigIntWithCurrency(
+            balance: Money.fromBigIntWithCurrency(
               wallet.contractState.balance,
               Currencies()[symbol]!,
             ),
@@ -333,7 +333,7 @@ class WalletPrepareTransferCubit extends Cubit<WalletPrepareTransferState> {
         _walletsSubscription?.cancel();
         _currentWalletSubscription = wallet.fieldUpdatesStream.listen((_) {
           final updated =
-              _assets[(root, symbol)]?.copyWith(wallet.moneyBalance);
+              _assets[(root, symbol)]?.copyWith(balance: wallet.moneyBalance);
           if (updated != null) {
             _assets[(root, symbol)] = updated;
             if (selectedAsset.rootTokenContract == root &&

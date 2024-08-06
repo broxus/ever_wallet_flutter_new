@@ -8,6 +8,7 @@ environment:
   flutter: ">=3.10.3"
 
 dependencies:
+  auto_size_text_field: ^2.2.3
   barcode_widget: ^2.0.4
   bloc: ^8.1.4
   bloc_event_transformers: ^1.0.1
@@ -113,3 +114,4 @@ flutter:
     - assets/images/onboarding/
     - assets/images/lang_icons/
     - assets/images/stever/
+    - assets/images/user_avatar/

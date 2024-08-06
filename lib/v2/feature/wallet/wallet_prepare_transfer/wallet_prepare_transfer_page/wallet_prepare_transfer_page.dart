@@ -117,8 +117,7 @@ class _DataBody extends StatelessWidget {
       onTap: () => FocusScope.of(context).unfocus(),
       child: Scaffold(
         appBar: DefaultAppBar(
-          titleText: walletName,
-          subtitleBottomText: account?.address.toEllipseString(),
+          titleText: LocaleKeys.sendYourFunds.tr(),
         ),
         body: Builder(
           builder: (context) {

@@ -1,3 +1,4 @@
+import 'package:app/data/models/models.dart';
 import 'package:equatable/equatable.dart';
 import 'package:flutter/foundation.dart';
 import 'package:nekoton_repository/nekoton_repository.dart';
@@ -13,6 +14,7 @@ class WalletPrepareTransferAsset extends Equatable {
     required this.title,
     required this.tokenSymbol,
     this.version,
+    this.currency,
   });
 
   /// Contract of token.
@@ -39,18 +41,26 @@ class WalletPrepareTransferAsset extends Equatable {
   /// Null for native token
   final TokenWalletVersion? version;
 
+  final CustomCurrency? currency;
+
   /// Copy asset with new balance
-  WalletPrepareTransferAsset copyWith(Money balance) =>
+  WalletPrepareTransferAsset copyWith({
+    Money? balance,
+    CustomCurrency? currency,
+  }) =>
       WalletPrepareTransferAsset(
         title: title,
         rootTokenContract: rootTokenContract,
-        balance: balance,
+        balance: balance ?? this.balance,
         isNative: isNative,
         logoURI: logoURI,
         version: version,
         tokenSymbol: tokenSymbol,
+        currency: currency ?? this.currency,
       );
 
   @override
   List<Object?> get props => [rootTokenContract, balance, tokenSymbol];
+
+  (Address, String) get key => (rootTokenContract, tokenSymbol);
 }

@@ -1,7 +1,7 @@
 import 'dart:async';
 
 import 'package:app/app/service/service.dart';
-import 'package:app/data/models/token_contract_asset.dart';
+import 'package:app/data/models/models.dart';
 import 'package:app/v2/feature/wallet/wallet_prepare_transfer/wallet_prepare_transfer_page/data/wallet_prepare_balance_data.dart';
 import 'package:app/v2/feature/wallet/wallet_prepare_transfer/wallet_prepare_transfer_page/data/wallet_prepare_transfer_asset.dart';
 import 'package:app/v2/feature/wallet/wallet_prepare_transfer/wallet_prepare_transfer_page/wallet_prepare_transfer_page.dart';
@@ -34,6 +34,7 @@ class WalletPrepareTransferPageModel extends ElementaryModel {
     this._assetsService,
     this._nekotonRepository,
     this._messengerService,
+    this._currenciesService,
   ) : super(errorHandler: errorHandler);
 
   /// Address of account that will be used to send funds (owner for TokenWallet,
@@ -43,6 +44,7 @@ class WalletPrepareTransferPageModel extends ElementaryModel {
   final AssetsService _assetsService;
   final NekotonRepository _nekotonRepository;
   final MessengerService _messengerService;
+  final CurrenciesService _currenciesService;
 
   final _balanceDataSc = StreamController<WalletPrepareBalanceData>();
 
@@ -135,6 +137,19 @@ class WalletPrepareTransferPageModel extends ElementaryModel {
 
       _contractSubscription?.cancel();
     });
+  }
+
+  Future<CustomCurrency?> getCurrencyForContract(
+    Address rootTokenContract,
+  ) async {
+    final currency = _currenciesService
+        .currencies(currentTransport.networkType)
+        .firstWhereOrNull((currency) => currency.address == rootTokenContract);
+
+    return currency ?? await _currenciesService.getCurrencyForContract(
+      currentTransport,
+      rootTokenContract,
+    );
   }
 
   /// Subscription for native token to find balance
