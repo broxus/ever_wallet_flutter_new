@@ -406,29 +406,31 @@ extension NavigationHelper on BuildContext {
   }) {
     if (!mounted) return;
 
-    final currentLocation = inject<NavigationService>().state.location;
-    final newLocation = Uri.parse(location);
-    var resultLocation = Uri.parse(currentLocation);
-    // We have query params in old path that we should preserve, so we must
-    // update it manually
-    if (resultLocation.hasQuery && preserveQueryParams) {
-      final query = <String, dynamic>{}
-        ..addAll(resultLocation.queryParameters)
-        ..addAll(newLocation.queryParameters);
-
-      resultLocation = resultLocation.replace(
-        path: '${resultLocation.path}/${newLocation.path}',
-        queryParameters: query,
-      );
-    } else {
-      // old location do not have query, new one may have it, we dont care
-      resultLocation = resultLocation.replace(
-        path: '${resultLocation.path}/${newLocation.path}',
-        queryParameters: newLocation.queryParameters,
-      );
-    }
     return GoRouter.of(this).go(
-      Uri.decodeComponent(resultLocation.toString()),
+      Uri.decodeComponent(
+        _getUriLocation(
+          location,
+          preserveQueryParams: preserveQueryParams,
+        ).toString(),
+      ),
+      extra: extra,
+    );
+  }
+
+  Future<T?> pushFurther<T>(
+    String location, {
+    bool preserveQueryParams = false,
+    Object? extra,
+  }) async {
+    if (!mounted) return null;
+
+    return GoRouter.of(this).push<T>(
+      Uri.decodeComponent(
+        _getUriLocation(
+          location,
+          preserveQueryParams: preserveQueryParams,
+        ).toString(),
+      ),
       extra: extra,
     );
   }
@@ -463,5 +465,33 @@ extension NavigationHelper on BuildContext {
     clearQueryParams();
 
     GoRouter.of(this).pop<T>(result);
+  }
+
+  Uri _getUriLocation(
+    String location, {
+    bool preserveQueryParams = false,
+  }) {
+    final currentLocation = inject<NavigationService>().state.location;
+    final newLocation = Uri.parse(location);
+    var resultLocation = Uri.parse(currentLocation);
+    // We have query params in old path that we should preserve, so we must
+    // update it manually
+    if (resultLocation.hasQuery && preserveQueryParams) {
+      final query = <String, dynamic>{}
+        ..addAll(resultLocation.queryParameters)
+        ..addAll(newLocation.queryParameters);
+
+      resultLocation = resultLocation.replace(
+        path: '${resultLocation.path}/${newLocation.path}',
+        queryParameters: query,
+      );
+    } else {
+      // old location do not have query, new one may have it, we dont care
+      resultLocation = resultLocation.replace(
+        path: '${resultLocation.path}/${newLocation.path}',
+        queryParameters: newLocation.queryParameters,
+      );
+    }
+    return resultLocation;
   }
 }
