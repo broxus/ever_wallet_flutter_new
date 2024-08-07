@@ -1,13 +1,14 @@
 import 'package:app/app/router/router.dart';
 import 'package:app/di/di.dart';
+import 'package:app/generated/generated.dart';
 import 'package:app/v2/feature/wallet/ton_wallet_send/view/ton_wallet_send_confirm_view.dart';
 import 'package:app/v2/feature/wallet/wallet.dart';
-import 'package:app/generated/generated.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
 import 'package:nekoton_repository/nekoton_repository.dart';
 import 'package:ui_components_lib/ui_components_lib.dart';
+import 'package:ui_components_lib/v2/ui_components_lib_v2.dart';
 
 /// Page that allows send funds from TonWalelt (native token).
 class TonWalletSendPage extends StatelessWidget {
@@ -61,6 +62,7 @@ class TonWalletSendPage extends StatelessWidget {
         comment: comment,
         publicKey: publicKey,
         nekotonRepository: inject(),
+        currenciesService: inject(),
         resultMessage:
             resultMessage ?? LocaleKeys.transactionSentSuccessfully.tr(),
       )..add(const TonWalletSendEvent.prepare()),
@@ -90,7 +92,7 @@ class TonWalletSendPage extends StatelessWidget {
             readyToSend: (fee) => _confirmPage(fee: fee),
             sending: (canClose) => Scaffold(
               body: Padding(
-                padding: const EdgeInsets.all(DimensSize.d16),
+                padding: const EdgeInsets.all(DimensSizeV2.d16),
                 child: TransactionSendingWidget(
                   canClose: canClose,
                   completeCloseCallback: completeCloseCallback,
@@ -110,14 +112,18 @@ class TonWalletSendPage extends StatelessWidget {
         onClosePressed: (context) => context.pop(),
         titleText: LocaleKeys.confirmTransaction.tr(),
       ),
-      body: TonWalletSendConfirmView(
-        recipient: destination,
-        amount: amount,
-        attachedAmount: attachedAmount,
-        comment: comment,
-        publicKey: publicKey,
-        fee: fee,
-        feeError: error,
+      body: Padding(
+        padding: const EdgeInsets.symmetric(
+          horizontal: DimensSizeV2.d16,
+        ),
+        child: TonWalletSendConfirmView(
+          recipient: destination,
+          amount: amount,
+          comment: comment,
+          publicKey: publicKey,
+          fee: fee,
+          feeError: error,
+        ),
       ),
     );
   }

@@ -502,5 +502,7 @@
   "toInputLabel": "To:",
   "balance": "Balance {}",
   "addComment": "Add comment",
-  "addCommentHint": "Will be visible for everyone"
+  "addCommentHint": "Will be visible for everyone",
+  "networkFee": "Network fee",
+  "password": "Password"
 }

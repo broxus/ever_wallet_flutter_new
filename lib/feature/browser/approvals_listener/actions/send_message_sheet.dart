@@ -200,6 +200,7 @@ class SendMessageSheet extends StatelessWidget {
                     comment: comment,
                     publicKey: selected,
                     nekotonRepository: inject(),
+                    currenciesService: inject(),
                     needRepack: false,
                     resultMessage: LocaleKeys.transactionSentSuccessfully.tr(),
                   )

@@ -1,8 +1,10 @@
 import 'package:app/app/service/service.dart';
+import 'package:app/data/models/models.dart';
 import 'package:app/di/di.dart';
 import 'package:app/generated/generated.dart';
 import 'package:app/utils/constants.dart';
 import 'package:bloc/bloc.dart';
+import 'package:collection/collection.dart';
 import 'package:freezed_annotation/freezed_annotation.dart';
 import 'package:logging/logging.dart';
 import 'package:nekoton_repository/nekoton_repository.dart' hide Message;
@@ -18,6 +20,7 @@ part 'ton_wallet_send_bloc.freezed.dart';
 class TonWalletSendBloc extends Bloc<TonWalletSendEvent, TonWalletSendState> {
   TonWalletSendBloc({
     required this.nekotonRepository,
+    required this.currenciesService,
     required this.address,
     required this.publicKey,
     required this.destination,
@@ -31,6 +34,7 @@ class TonWalletSendBloc extends Bloc<TonWalletSendEvent, TonWalletSendState> {
 
   final _logger = Logger('TonWalletSendBloc');
   final NekotonRepository nekotonRepository;
+  final CurrenciesService currenciesService;
 
   /// Address of TonWallet that will be used to send funds
   final Address address;
@@ -60,6 +64,10 @@ class TonWalletSendBloc extends Bloc<TonWalletSendEvent, TonWalletSendState> {
   /// Fee for transaction after calculating it in [_handlePrepare]
   BigInt? fees;
 
+  KeyAccount? account;
+
+  CustomCurrency? currency;
+
   late UnsignedMessage unsignedMessage;
   UnsignedMessage? _unsignedMessage;
 
@@ -76,6 +84,15 @@ class TonWalletSendBloc extends Bloc<TonWalletSendEvent, TonWalletSendState> {
 
   Future<void> _handlePrepare(Emitter<TonWalletSendState> emit) async {
     try {
+      final transport = nekotonRepository.currentTransport;
+
+      account = nekotonRepository.seedList.findAccountByAddress(address);
+      currency = currenciesService
+        .currencies(transport.networkType)
+        .firstWhereOrNull(
+          (c) => c.address == transport.nativeTokenAddress,
+        ) ?? await currenciesService.getCurrencyForNativeToken(transport);
+
       if (needRepack) {
         repackedDestination = await repackAddress(destination);
       }

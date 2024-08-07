@@ -1,14 +1,15 @@
+import 'package:app/generated/generated.dart';
 import 'package:app/v2/feature/wallet/wallet_prepare_transfer/wallet_prepare_transfer_page/data/wallet_prepare_transfer_asset.dart';
 import 'package:app/v2/feature/wallet/wallet_prepare_transfer/wallet_prepare_transfer_page/data/wallet_prepare_transfer_data.dart';
 import 'package:app/v2/feature/wallet/wallet_prepare_transfer/wallet_prepare_transfer_page/wallet_prepare_transfer_page_wm.dart';
 import 'package:app/v2/feature/wallet/wallet_prepare_transfer/wallet_prepare_transfer_page/widgets/wallet_prepare_transfer_view.dart';
 import 'package:app/v2/feature/wallet/widgets/wallet_subscribe_error_widget.dart';
-import 'package:app/generated/generated.dart';
 import 'package:elementary/elementary.dart';
 import 'package:elementary_helper/elementary_helper.dart';
 import 'package:flutter/material.dart';
 import 'package:nekoton_repository/nekoton_repository.dart' hide Message;
 import 'package:ui_components_lib/ui_components_lib.dart';
+import 'package:ui_components_lib/v2/dimens_v2.dart';
 
 class WalletPrepareTransferPage
     extends ElementaryWidget<WalletPrepareTransferPageWidgetModel> {
@@ -123,7 +124,7 @@ class _DataBody extends StatelessWidget {
           builder: (context) {
             return Padding(
               padding: const EdgeInsets.symmetric(
-                horizontal: DimensSize.d16,
+                horizontal: DimensSizeV2.d16,
               ),
               child: WalletPrepareTransferView(
                 _wm,
