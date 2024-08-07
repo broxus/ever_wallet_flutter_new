@@ -9,10 +9,8 @@ import 'package:ui_components_lib/ui_components_lib.dart';
 /// {@template create_seed_page}
 /// Starting page for seed creation.
 /// {@endtemplate}
-@Deprecated('Use v2 version')
 class CreateSeedPage extends StatelessWidget {
   /// {@macro create_seed_page}
-  @Deprecated('Use v2 version')
   const CreateSeedPage({super.key});
 
   @override

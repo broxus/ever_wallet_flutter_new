@@ -1,21 +1,16 @@
-// ignore_for_file: deprecated_member_use_from_same_package
-
 import 'package:app/generated/generated.dart';
 import 'package:flutter/material.dart';
 import 'package:ui_components_lib/ui_components_lib.dart';
 
 /// Callback to make any action after user entered seed phrase name.
-@Deprecated('Use v2 version')
 typedef EnterSeedNameCompleteCallback = void Function(String? name);
 
 /// {@template enter_seed_name_view}
 /// Screen that allows user to enter name for seed phrase.
 /// Result name will be passed to [callback].
 /// {@endtemplate}
-@Deprecated('Use v2 version')
 class EnterSeedNameView extends StatefulWidget {
   /// {@macro enter_seed_name_view}
-  @Deprecated('Use v2 version')
   const EnterSeedNameView({
     required this.callback,
     super.key,

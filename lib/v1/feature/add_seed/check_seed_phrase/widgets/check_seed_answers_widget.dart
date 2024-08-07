@@ -9,10 +9,8 @@ import 'package:ui_components_lib/ui_components_lib.dart';
 /// [currentIndex] displays which of [userAnswers] must be displayed as current.
 /// [clearAnswer] calls if user taps on any word.
 /// {@endtemplate}
-@Deprecated('Use v2 version')
 class CheckSeedAnswersWidget extends StatelessWidget {
   /// {@macro check_seed_answers_widget}
-  @Deprecated('Use v2 version')
   const CheckSeedAnswersWidget({
     required this.userAnswers,
     required this.currentIndex,

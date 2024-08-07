@@ -123,7 +123,6 @@ class __$$InitialImplCopyWithImpl<$Res>
 
 /// @nodoc
 
-@Deprecated('Use v2 version')
 class _$InitialImpl with DiagnosticableTreeMixin implements _Initial {
   const _$InitialImpl();
 
@@ -291,7 +290,6 @@ class __$$AnswerImplCopyWithImpl<$Res>
 
 /// @nodoc
 
-@Deprecated('Use v2 version')
 class _$AnswerImpl with DiagnosticableTreeMixin implements _Answer {
   const _$AnswerImpl(final List<String> availableAnswers,
       final List<CheckSeedCorrectAnswer> userAnswers, this.currentAnswerIndex)
@@ -506,7 +504,6 @@ class __$$CorrectImplCopyWithImpl<$Res>
 
 /// @nodoc
 
-@Deprecated('Use v2 version')
 class _$CorrectImpl with DiagnosticableTreeMixin implements _Correct {
   const _$CorrectImpl(final List<String> availableAnswers,
       final List<CheckSeedCorrectAnswer> userAnswers)
@@ -711,7 +708,6 @@ class __$$ErrorImplCopyWithImpl<$Res>
 
 /// @nodoc
 
-@Deprecated('Use v2 version')
 class _$ErrorImpl with DiagnosticableTreeMixin implements _Error {
   const _$ErrorImpl(final List<String> availableAnswers,
       final List<CheckSeedCorrectAnswer> userAnswers)

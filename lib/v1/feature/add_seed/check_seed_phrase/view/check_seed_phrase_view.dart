@@ -11,9 +11,7 @@ const _errorDisplayDuration = Duration(seconds: 2);
 const _errorDelayDuration = Duration(seconds: 3);
 
 /// Screen that allows user to check seed phrase for correctness.
-@Deprecated('Use v2 version')
 class CheckSeedPhraseView extends StatelessWidget {
-  @Deprecated('Use v2 version')
   const CheckSeedPhraseView({super.key});
 
   @override
