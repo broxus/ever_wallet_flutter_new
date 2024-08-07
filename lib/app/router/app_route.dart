@@ -417,24 +417,6 @@ extension NavigationHelper on BuildContext {
     );
   }
 
-  Future<T?> pushFurther<T>(
-    String location, {
-    bool preserveQueryParams = false,
-    Object? extra,
-  }) async {
-    if (!mounted) return null;
-
-    return GoRouter.of(this).push<T>(
-      Uri.decodeComponent(
-        _getUriLocation(
-          location,
-          preserveQueryParams: preserveQueryParams,
-        ).toString(),
-      ),
-      extra: extra,
-    );
-  }
-
   /// Navigate to current location, but without query parameters.
   void clearQueryParams() {
     if (!mounted) return;
@@ -468,28 +450,28 @@ extension NavigationHelper on BuildContext {
   }
 
   Uri _getUriLocation(
-    String location, {
+    String path, {
     bool preserveQueryParams = false,
   }) {
-    final currentLocation = inject<NavigationService>().state.location;
-    final newLocation = Uri.parse(location);
-    var resultLocation = Uri.parse(currentLocation);
+    final location = Uri.parse(inject<NavigationService>().state.location);
+    final pathUri = Uri.parse(path);
+    late Uri resultLocation;
     // We have query params in old path that we should preserve, so we must
     // update it manually
-    if (resultLocation.hasQuery && preserveQueryParams) {
+    if (location.hasQuery && preserveQueryParams) {
       final query = <String, dynamic>{}
-        ..addAll(resultLocation.queryParameters)
-        ..addAll(newLocation.queryParameters);
+        ..addAll(location.queryParameters)
+        ..addAll(pathUri.queryParameters);
 
-      resultLocation = resultLocation.replace(
-        path: '${resultLocation.path}/${newLocation.path}',
+      resultLocation = location.replace(
+        path: '${location.path}/${pathUri.path}',
         queryParameters: query,
       );
     } else {
       // old location do not have query, new one may have it, we dont care
-      resultLocation = resultLocation.replace(
-        path: '${resultLocation.path}/${newLocation.path}',
-        queryParameters: newLocation.queryParameters,
+      resultLocation = location.replace(
+        path: '${location.path}/${pathUri.path}',
+        queryParameters: pathUri.queryParameters,
       );
     }
     return resultLocation;
