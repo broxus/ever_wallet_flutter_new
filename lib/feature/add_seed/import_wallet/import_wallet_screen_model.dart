@@ -3,8 +3,8 @@ import 'package:app/app/service/messenger/service/messenger_service.dart';
 import 'package:elementary/elementary.dart';
 import 'package:ui_components_lib/ui_components_lib.dart';
 
-class ImportWalletModel extends ElementaryModel {
-  ImportWalletModel(
+class ImportWalletScreenModel extends ElementaryModel {
+  ImportWalletScreenModel(
     this._messengerService,
   );
 
@@ -17,9 +17,5 @@ class ImportWalletModel extends ElementaryModel {
         debounceTime: defaultInfoMessageDebounceDuration,
       ),
     );
-  }
-
-  Future<void> import() async {
-    ///here add to navigation to Confirm password
   }
 }

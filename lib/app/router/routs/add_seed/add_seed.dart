@@ -5,7 +5,7 @@ import 'package:app/feature/add_seed/add_existing_wallet/view/add_existing_walle
 import 'package:app/feature/add_seed/add_seed_enable_biometry/view/add_seed_enable_biometry_page.dart';
 import 'package:app/feature/add_seed/create_password/view/create_seed_password_page.dart';
 import 'package:app/feature/add_seed/enter_seed_phrase/view/enter_seed_phrase_page.dart';
-import 'package:app/feature/add_seed/import_wallet/import_wallet_page.dart';
+import 'package:app/feature/add_seed/import_wallet/import_wallet_screen.dart';
 import 'package:app/v1/feature/add_seed/check_seed_phrase/check_seed_phrase.dart';
 import 'package:app/v1/feature/add_seed/create_seed/create_seed.dart';
 import 'package:app/v1/feature/add_seed/enter_seed_name/view/enter_seed_name_page.dart';
@@ -71,7 +71,6 @@ GoRoute get addExistingWalletRoute {
     builder: (_, __) => const AddExistingWalletPage(),
     routes: [
       importWalletRoute,
-      enterSeedOnboardingRoute,
     ],
   );
 }
@@ -79,7 +78,11 @@ GoRoute get addExistingWalletRoute {
 GoRoute get importWalletRoute {
   return GoRoute(
     path: AppRoute.importWallet.path,
-    builder: (_, __) => const ImportWalletPage(),
+    builder: (_, __) => const ImportWalletScreen(),
+    routes: [
+      enterSeedOnboardingRoute,
+      createOnboardingSeedPasswordRoute,
+    ],
   );
 }
 

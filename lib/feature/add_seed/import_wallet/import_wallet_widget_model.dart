@@ -1,8 +1,12 @@
+import 'dart:convert';
+
+import 'package:app/app/router/app_route.dart';
+import 'package:app/app/router/routs/add_seed/add_seed.dart';
 import 'package:app/core/wm/custom_wm.dart';
 import 'package:app/di/di.dart';
 import 'package:app/feature/add_seed/import_wallet/data/import_wallet_data.dart';
-import 'package:app/feature/add_seed/import_wallet/import_wallet_model.dart';
-import 'package:app/feature/add_seed/import_wallet/view/import_wallet_view.dart';
+import 'package:app/feature/add_seed/import_wallet/import_wallet_screen.dart';
+import 'package:app/feature/add_seed/import_wallet/import_wallet_screen_model.dart';
 import 'package:app/feature/constants.dart';
 import 'package:app/generated/generated.dart';
 import 'package:flutter/material.dart';
@@ -13,15 +17,15 @@ import 'package:nekoton_repository/nekoton_repository.dart' hide Message;
 final seedSplitRegExp = RegExp(r'[ |;,:\n.]');
 const wordsCount = 12;
 
-ImportWalletWidgetModel defaultImportWalletWidgetModelFactory(
+ImportWalletScreenWidgetModel defaultImportWalletWidgetModelFactory(
   BuildContext context,
 ) {
-  return ImportWalletWidgetModel(ImportWalletModel(inject()));
+  return ImportWalletScreenWidgetModel(ImportWalletScreenModel(inject()));
 }
 
-class ImportWalletWidgetModel
-    extends CustomWidgetModel<ImportWalletView, ImportWalletModel> {
-  ImportWalletWidgetModel(super.model);
+class ImportWalletScreenWidgetModel
+    extends CustomWidgetModel<ImportWalletScreen, ImportWalletScreenModel> {
+  ImportWalletScreenWidgetModel(super.model);
 
   final _log = Logger('ImportWalletWidgetModel');
 
@@ -34,12 +38,20 @@ class ImportWalletWidgetModel
     String? error;
     try {
       FocusManager.instance.primaryFocus?.unfocus();
-      if (screenState.value.data?.words?.isNotEmpty ?? false) {
+
+      final words = screenState.value.data?.words;
+
+      if (words != null && words.isNotEmpty) {
         await deriveFromPhrase(
-          phrase: screenState.value.data!.words!.join(' '),
+          phrase: words.join(' '),
           mnemonicType: defaultMnemonicType,
         );
-        await model.import();
+        if (!context.mounted) return;
+        context.goFurther(
+          AppRoute.createSeedPassword.pathWithData(
+            queryParameters: {addSeedPhraseQueryParam: jsonEncode(words)},
+          ),
+        );
       } else {
         model.showValidateError(LocaleKeys.incorrectWordsFormat.tr());
       }
@@ -91,6 +103,10 @@ class ImportWalletWidgetModel
 
   void deleteWords() {
     _updateState(isPasted: false);
+  }
+
+  void onPressedManual() {
+    context.goFurther(AppRoute.enterSeed.path);
   }
 
   void _updateState({
