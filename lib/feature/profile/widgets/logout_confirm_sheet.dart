@@ -8,7 +8,6 @@ import 'package:ui_components_lib/ui_components_lib.dart';
 Future<bool> showLogOutConfirmSheet(BuildContext context) async {
   final result = await showCommonBottomSheet<bool>(
     context: context,
-    title: LocaleKeys.areYouSure.tr(),
     useAppBackgroundColor: true,
     centerTitle: true,
     body: (_, __) => const LogOutConfirmSheet(),
@@ -27,12 +26,19 @@ class LogOutConfirmSheet extends StatelessWidget {
     return SeparatedColumn(
       mainAxisSize: MainAxisSize.min,
       children: [
+        const SizedBox(height: DimensSize.d32),
+        Text(
+          LocaleKeys.areYouSure.tr(),
+          textAlign: TextAlign.center,
+          style: StyleRes.h1,
+        ),
+        const SizedBox(height: DimensSize.d16),
         Text(
           LocaleKeys.logoutConfirmText.tr(),
           textAlign: TextAlign.center,
           style: StyleRes.primaryRegular.copyWith(color: colors.textPrimary),
         ),
-        const SizedBox(height: DimensSize.d16),
+        const SizedBox(height: DimensSize.d24),
         CommonButton(
           buttonType: EverButtonType.secondary,
           contentColor: colors.alert,
@@ -44,6 +50,7 @@ class LogOutConfirmSheet extends StatelessWidget {
           text: LocaleKeys.cancelWord.tr(),
           onPressed: () => Navigator.of(context).pop(false),
         ),
+        const SizedBox(height: DimensSize.d32),
       ],
     );
   }

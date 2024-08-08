@@ -3,6 +3,7 @@ import 'dart:async';
 import 'package:app/app/router/app_route.dart';
 import 'package:app/app/service/service.dart';
 import 'package:app/bootstrap/bootstrap.dart';
+import 'package:app/bootstrap/sentry.dart';
 import 'package:app/di/di.dart';
 import 'package:bloc/bloc.dart';
 import 'package:easy_localization/easy_localization.dart';
@@ -47,13 +48,19 @@ Future<void> bootstrap(
 
       await inject<BootstrapService>().init(appBuildType);
 
+      await SentryWorker.instance.init(appBuildType);
+
       FlutterError.onError = (details) {
         log.severe(details.exceptionAsString(), details, details.stack);
+        SentryWorker.instance.captureException(
+          details.exception,
+          stackTrace: details.stack,
+        );
       };
 
       PlatformDispatcher.instance.onError = (error, stack) {
         log.severe(null, error, stack);
-
+        SentryWorker.instance.captureException(error, stackTrace: stack);
         return true;
       };
 
@@ -79,7 +86,10 @@ Future<void> bootstrap(
         ),
       );
     },
-    (error, stackTrace) => log.severe(error.toString(), error, stackTrace),
+    (error, stackTrace) async {
+      log.severe(error.toString(), error, stackTrace);
+      SentryWorker.instance.captureException(error, stackTrace: stackTrace);
+    },
   );
 }
 

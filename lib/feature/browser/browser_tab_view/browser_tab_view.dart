@@ -35,11 +35,13 @@ class BrowserTabView extends StatefulWidget {
   const BrowserTabView({
     required this.tab,
     required this.tabState,
+    required this.active,
     super.key,
   });
 
   final BrowserTab tab;
   final BrowserTabState tabState;
+  final bool active;
 
   @override
   State<BrowserTabView> createState() => _BrowserTabViewState();
@@ -85,18 +87,24 @@ class _BrowserTabViewState extends State<BrowserTabView> {
   void didUpdateWidget(BrowserTabView oldWidget) {
     super.didUpdateWidget(oldWidget);
 
-    _handleUrlChanged(widget.tab, oldWidget.tab);
+    final activated = oldWidget.active == false && widget.active == true;
+
+    _handleUrlChanged(widget.tab, oldWidget.tab, activated);
     _handleTabChanged(widget.tab, oldWidget.tab);
   }
 
-  Future<void> _handleUrlChanged(BrowserTab newTab, BrowserTab oldTab) async {
+  Future<void> _handleUrlChanged(
+    BrowserTab newTab,
+    BrowserTab oldTab,
+    bool activated,
+  ) async {
     final url = await _webViewController?.getUrl();
 
     _log.finest('URL: $url');
 
     // Reload the webview if the tab URL changed and the new URL is not the same
     // as the current URL.
-    if (newTab.url != oldTab.url && url != newTab.url) {
+    if ((newTab.url != oldTab.url || activated) && url != newTab.url) {
       await _webViewController?.loadUrl(
         urlRequest: URLRequest(
           url: newTab.url,
@@ -304,7 +312,7 @@ class _BrowserTabViewState extends State<BrowserTabView> {
       providerApi: _inpageProvider,
     );
 
-    if (widget.tab.url.toString().isNotEmpty) {
+    if (widget.tab.url.toString().isNotEmpty && widget.active) {
       await controller.loadUrl(urlRequest: URLRequest(url: widget.tab.url));
     }
   }
@@ -543,6 +551,7 @@ class _BrowserTabViewState extends State<BrowserTabView> {
     }
 
     if (context.mounted) {
+      // ignore: use_build_context_synchronously
       context.read<BrowserTabsBloc>().add(
             BrowserTabsEvent.setState(
               id: widget.tab.id,

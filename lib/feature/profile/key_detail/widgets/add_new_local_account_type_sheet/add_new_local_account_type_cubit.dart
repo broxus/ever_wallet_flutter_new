@@ -41,6 +41,13 @@ class AddNewLocalAccountTypeCubit extends Cubit<AddNewLocalAccountTypeState> {
     availableAccounts = List<WalletType>.from(
       nekotonRepository.currentTransport.availableWalletTypes,
     );
+    const account = WalletType.multisig(MultisigType.multisig2);
+    if (availableAccounts.contains(account)) {
+      //move multisig2 to the end
+      availableAccounts
+        ..remove(account)
+        ..add(account);
+    }
     defaultAccount = nekotonRepository.currentTransport.defaultWalletType;
 
     // remove default as it will be displayed separately

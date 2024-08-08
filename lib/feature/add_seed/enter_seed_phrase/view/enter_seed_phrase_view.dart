@@ -201,6 +201,7 @@ class EnterSeedPhraseView extends StatelessWidget {
               ),
             ),
             CommonButton.ghost(
+              padding: const EdgeInsets.symmetric(horizontal: DimensSize.d4),
               leading: CommonButtonIconWidget.svg(
                 svg: displayPasteButton
                     ? Assets.images.paste.path

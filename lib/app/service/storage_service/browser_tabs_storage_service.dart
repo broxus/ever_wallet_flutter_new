@@ -134,8 +134,16 @@ class BrowserTabsStorageService extends AbstractStorageService {
   /// Set browser tab
   Future<void> setBrowserTab(BrowserTab tab) async {
     final id = tab.id;
-    final tabs = [...browserTabs]..removeWhere((tab) => tab.id == id);
-    await saveBrowserTabs([...tabs, tab]);
+    final index = browserTabs.indexWhere((tab) => tab.id == id);
+    final tabs = [...browserTabs];
+
+    if (index == -1) {
+      tabs.add(tab);
+    } else {
+      tabs[index] = tab;
+    }
+
+    await saveBrowserTabs(tabs);
   }
 
   /// Remove browser tab by id

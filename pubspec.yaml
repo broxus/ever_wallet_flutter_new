@@ -1,6 +1,6 @@
 name: app
 description: EVER Wallet Flutter app
-version: 2.0.0+1
+version: 2.0.0+3
 publish_to: none
 
 environment:
@@ -9,80 +9,89 @@ environment:
 
 dependencies:
   barcode_widget: ^2.0.4
-  bloc: ^8.1.2
+  bloc: ^8.1.4
   bloc_event_transformers: ^1.0.1
-  cached_network_image: ^3.3.0
+  cached_network_image: ^3.3.1
   clock: ^1.1.1
-  collection: ^1.17.0
-  crypto: ^3.0.2
+  collection: ^1.18.0
+  crypto: ^3.0.3
   dotted_border: ^2.1.0
-  easy_localization: ^3.0.3
+  easy_localization: ^3.0.6
   easy_logger: ^0.0.2
-  encrypted_storage: 0.1.2
+  elementary: ^3.0.0
+  elementary_helper: ^1.0.1
+  encrypted_storage: 0.1.3
   equatable: ^2.0.5
-  fancy_logger: 0.1.4
-  favicon: ^1.1.1
+  fancy_logger: 0.1.5
+  favicon: ^1.1.2
   flutter:
     sdk: flutter
-  flutter_bloc: ^8.1.3
-  flutter_email_sender: ^6.0.2
-  flutter_inappwebview: ^5.8.0
-  flutter_svg: ^2.0.7
+  flutter_bloc: ^8.1.5
+  flutter_email_sender: ^6.0.3
+  flutter_inappwebview: ^5.0.0
+  flutter_svg: ^2.0.10+1
   freezed_annotation: ^2.4.1
-  get_it: ^7.6.4
-  go_router: ^11.1.4
+  get_it: ^7.7.0
+  go_router: ^14.0.1
   hive_flutter: ^1.1.0
-  http: ^0.13.6
-  http_proxy: ^1.2.1
+  http: ^1.2.1
   image_picker: ^1.0.4
-  injectable: ^2.3.1
-  json_annotation: ^4.8.1
-  local_auth: ^2.1.7
-  logging: 1.1.1
-  mobile_scanner: ^3.4.1
+  injectable: ^2.4.1
+  json_annotation: ^4.9.0
+  local_auth: ^2.2.0
+  logging: 1.2.0
+  mobile_scanner: 3.4.1
   money2: ^4.0.0
-  money2_improver: ^1.3.3
-  nekoton_repository: ^0.33.0
-  nekoton_webview: ^0.1.7
+  money2_improver: ^1.3.1
+  nekoton_repository: 0.36.0-dev.6
+  nekoton_webview: 0.1.8-dev.0
   ntp: ^2.0.0
-  package_info_plus: ^4.1.0
-  path_provider: ^2.1.1
-  permission_handler: ^11.0.1
+  #  package_info_plus: ^4.1.0
+  package_info_plus: ^8.0.0
+  path_provider: ^2.1.3
+  permission_handler: ^11.3.1
+  render_metrics:
+    #    Temporarily. Before the adoption of the PR
+    #    https://github:com/surfstudio/flutter-render-metrics/pull/27:
+    git:
+      url: https://github.com/knightsforce/flutter-render-metrics
+      ref: optional-render-manager
   rxdart: ^0.27.7
-  share_plus: 7.2.0
-  shared_preferences: ^2.2.2
-  string_extensions: ^0.6.12
+  sentry_flutter: ^7.0.0
+  share_plus: 9.0.0
+  shared_preferences: ^2.2.3
+  string_extensions: ^0.7.1
   ui_components_lib:
     path: packages/ui_components_lib
-  url_launcher: ^6.1.14
+  url_launcher: ^6.2.6
   uuid: ^3.0.7
   visibility_detector: ^0.4.0+2
 
 dev_dependencies:
-  bloc_test: ^9.1.3
+  bloc_test: ^9.1.7
   broxus_flutter_analysis:
     git:
       url: https://github.com/broxus/flutter_templates.git
       ref: main
-  build_runner: ^2.4.6
+  build_runner: ^2.4.9
   custom_lint: ^0.5.3
   datetime_avoid_lint:
     path: packages/datetime_avoid_lint
-  flutter_gen_runner: ^5.3.2
+  flutter_gen_runner: ^5.4.0
   flutter_secure_storage: ^9.0.0
   flutter_test:
     sdk: flutter
-  freezed: ^2.4.1
-  googleapis_auth: ^1.4.1
-  hive_generator: ^2.0.0
-  injectable_generator: ^2.4.1
+  freezed: ^2.5.2
+  googleapis_auth: ^1.6.0
+  hive_generator: ^2.0.1
+  injectable_generator: ^2.6.1
   integration_test:
     sdk: flutter
-  intl: ^0.18.0
-  json_serializable: ^6.7.1
-  melos: ^3.1.1
-  mocktail: ^1.0.1
-  test: ^1.22.0
+  intl: ^0.18.1
+  json_serializable: ^6.8.0
+  melos: ^6.0.0
+  mocktail: ^1.0.3
+  test: ^1.21.0
 
 flutter_gen:
   output: lib/generated/

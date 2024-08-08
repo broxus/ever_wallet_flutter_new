@@ -34,7 +34,8 @@ class ConnectionService {
     _log.info('setUp: starting with ${connection.name}');
     await _updateTransportByConnection(connection);
 
-    _storageService.currentConnectionStream.listen((connection) async {
+    // skip 1 due to duplicate events
+    _storageService.currentConnectionStream.skip(1).listen((connection) async {
       _log.info('setUp: switching to ${connection.name}');
       await _updateTransportByConnection(connection);
     });

@@ -7,6 +7,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:nekoton_repository/nekoton_repository.dart' hide Message;
+import 'package:ui_components_lib/components/common/switcher/common_tab_switcher_style.dart';
 import 'package:ui_components_lib/ui_components_lib.dart';
 
 class KeyDetailView extends StatelessWidget {
@@ -103,6 +104,7 @@ class KeyDetailView extends StatelessWidget {
                       onTabChanged: context.read<KeyDetailCubit>().changeTab,
                       values: accountTabItems,
                       currentValue: tab,
+                      style: CommonTabSwitcherStyle.small,
                     ),
                     if (currentAccounts.isEmpty)
                       Text(

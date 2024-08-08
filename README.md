@@ -133,23 +133,53 @@ App build number is defined in `pubspec.yaml` file. However, there is a `tools/g
 
 ### Local .secrets file 🔑
 
-Just copy `secrets/.secrets.example` to `secrets/.secrets` and fill it with your secrets.
+Application secret data is located in the project root in the `secrets` folder.
 
-**Warning: don't commit this file!**
+```markdown
+├── lib
+├── ...
+├── secrets/
+│   ├── secrets.tar.gpg
+│   ├── .secrets.example
+│   └── .secrets
+```
 
-**Warning: FASTLANE_USER and is YOUR OWN credentials, that will be used only to renew iOS certificates and provisioning profiles**
+`secrets.tar.gpg` encrypted archive for secure storage of confidential data
+
+`.secrets.example` example/template for your own .secrets file 
+
+`.secrets` file for your own secrets. Not in the repository, you need to create it yourself. To create just copy `secrets/.secrets.example` to `secrets/.secrets` and fill it with your secrets.
+
+This file contains secret keys used when running commands.
+
+Example contents of a .secrets file:
+
+```markdown
+export SECRET_PASSPHRASE="abc"
+export MATCH_PASSWORD="qwerty"
+export FASTLANE_USER="example@gmail.com"
+export FASTLANE_PASSWORD="pass"
+```
+
+**Warning: don't commit .secrets file!**
+
+**FASTLANE_USER and FASTLANE_PASSWORD are YOUR OWN credentials, that will be used only to renew iOS certificates and provisioning profiles.**
+
+`FASTLANE_USER` should be set to your Apple Developer login.
+`FASTLANE_PASSWORD` should be your Apple Developer password.
 
 Other secrets you can get from your teammates:
 
 `SECRET_PASSPHRASE`: passphrase the GPG tarball (with secrets)
-
-`MATCH_PASSWORD`: passphrase for iOS provisioning profiles and certificates
+`MATCH_PASSWORD`: passphrase for iOS provisioning profiles and certificates. Used for Fastlane's [match](https://docs.fastlane.tools/actions/match/) command.
 
 ### Github Secrets 🔑
 
 `BOT_ACCESS_TOKEN`: Personal access token (PAT) used to fetch the repository. We should use PAT and not default GITHUB_TOKEN because ["When you use the repository's GITHUB_TOKEN to perform tasks, events triggered by the GITHUB_TOKEN, with the exception of workflow_dispatch and repository_dispatch, will not create a new workflow run"](https://docs.github.com/en/actions/using-workflows/triggering-a-workflow#triggering-a-workflow-from-a-workflow). We want to trigger a workflow from the workflow (to run tests), so we need to use PAT. This thing is used in `version` workflow.
 
 `SECRET_PASSPHRASE` and `MATCH_PASSWORD` is the same as in local `.secrets` file.
+
+**Warning: `SECRET_PASSPHRASE` needs to be located in CI/CD (when using Github Actions, located in the Secrets of the repository) to decrypt the gpg file.**
 
 ### File with secrets: secrets/secrets.tar.gpg 🔒📁
 
@@ -159,20 +189,93 @@ This file contains all secrets and is encrypted with GPG. To decrypt it, run the
 $ melos decrypt-secrets
 ```
 
-To update the file with secrets, create directory structure as mentioned above, cd to it and run the following command:
+This command will place the secrets files in the necessary directories: the `/secrets`, `/android` and `/ios` folders.
+
+When performing a build via Github Actions, secrets are temporarily located in the required folders. After building the application, `scripts/clean.sh` is run to remove secrets.
+
+#### Create secrets
+
+To create a gpg file with secrets, create a directory structure somewhere:
+
+```markdown
+somefolder/
+├── android/
+│   ├── your_keystore_name.keystore
+│   ├── fastlane/
+│   │   ├── GooglePlayServiceAccount.json
+│   │   └── key.properties
+├── fastlane/
+│   ├── FirebaseADKey.json
+│   └── FirebaseAPIKey.json
+├── ios/
+│   ├── fastlane/
+│   │   └── YourDeveloperAppleAuthKey.p8
+├── secrets/
+│   ├── ios-provisioning-key
+│   ├── ios-provisioning-key.pub
+│   └── sentry-dsn.txt
+```
+
+`/android/your_keystore_name.keystore` Keystore file in jks format. Used to sign an APK file
+
+`/android/fastlane/GooglePlayServiceAccount.json` File with Google service account credentials for interacting with the Google API and Google Play Developer API.
+
+`/android/key.properties` File with data for signing APK files.
+
+`/fastlane/FirebaseADKey.json` Needed to interact with the Firebase API. Contains data for scripts to interact with Firebase services.
+
+`/fastlane/FirebaseAPIKey.json` Used to update the build number in Firebase Realtime Database.
+
+`/ios/fastlane/YourDeveloperAppleAuthKey.p8` Required to work with the App Store Connect API.
+
+`/secrets/ios-provisioning-key` Provisioning Profile file
+
+`/secrets/ios-provisioning-key.pub` Apple public key to run match_assure.
+
+`/secrets/sentry-dsn.txt` Text file with dns for working with sentry.
+
+After that, in the directory with the created directories, run the command:
+
+```sh
+$ tar -cf secrets.tar *
+$ gpg --symmetric --cipher-algo AES256 secrets.tar
+```
+
+#### Update secrets
+
+To update secrets, decrypt the gpg file.
+
+You will be asked to enter the passphrase. This passphrase **should be** `SECRET_PASSPHRASE` from `.secrets` file:
+
+```sh
+$ gpg --output secrets.tar --decrypt secrets.tar.gpg
+```
+
+Unpack the archive:
+
+```sh
+tar -xf secrets.tar
+```
+
+Update the necessary files and package them again:
 
 ```sh
 $ tar c * > secrets.tar
 $ gpg --symmetric --cipher-algo AES256 secrets.tar
 ```
 
-You will be asked to enter the passphrase. This passphrase **should be** `SECRET_PASSPHRASE` from `.secrets` file.
-
 Resulting secrets.tar.gpg file should be placed in `secrets` directory in the root of the project.
+
+Make sure that the old gpg file does not end up in the archive.
+
+**Warning: When archiving the contents in secrets folder, do not forget to exclude unnecessary files, such old gpg file and .secrets with your personal data**
 
 ## iOS certificates and provisioning profiles 📜
 
-For iOS we use [match](https://docs.fastlane.tools/actions/match/) to manage certificates and provisioning profiles. It's configured in `ios/fastlane/Matchfile`. To renew certificates and provisioning profiles after adding new devices to the Apple Developer Account, run the following command:
+For iOS we use [match](https://docs.fastlane.tools/actions/match/) to manage certificates and provisioning profiles. It's configured in `ios/fastlane/Matchfile`.  
+There is no need to manually create certificates and profiles; match will do everything for you and save it. 
+
+To renew certificates and provisioning profiles after adding new devices to the Apple Developer Account, run the following command:
 
 ```sh
 $ melos build:ios_match_new_devices
@@ -183,6 +286,71 @@ If you configuring a new machine, you should run the following command to instal
 ```sh
 $ melos build:ios_match_assure
 ```
+
+The password for executing match commands is taken from the .secrets/MATCH_PASSWORD file.
+
+Warning: If there are problems with the certificates or they are out of date, use a set of commands to create new certificates:
+
+```sh
+fastlane match nuke development
+fastlane match nuke distribution
+melos run build:ios_match_assure
+```
+This will not cause problems even if other application certificates are affected.
+
+#### Possible problems
+
+#### If the 6-digit code is not entered
+
+When running the `melos run build:ios_match_assure` command through the terminal or another fastlane command that requires entering a 6-digit apple verification code, the code may be ignored by the terminal. Instead of entering code, a line break occurs.
+
+To work around this issue, in the project root or another location, create a text file fastlane_session.txt (the name can be anything).
+
+Manually or via command:
+```sh
+$ touch fastlane_session.txt 
+```
+
+Create a token to work with the fastlane session:
+
+```sh
+$ fastlane spaceauth -u YOUE_APPLE_ID  
+```
+
+Copy the token from the console and paste it into the fastlane_session.txt file.
+Remove extra characters such as `\n`
+
+Example contents of the fastlane_session.txt file:
+
+```yaml
+---
+- !ruby/object:HTTP::Cookie
+  name: abcdefg
+  value: ABCDEFG111111cf12345a12
+  for_domain: true
+  path: "/"
+  secure: true
+  httponly: true
+  expires:
+  max_age:
+  created_at: 2024-06-07 23:51:26.367930000 +07:00
+  accessed_at: 2024-06-07 23:51:26.372267000 +07:00
+- !ruby/object:HTTP::Cookie
+  name: ABCDE
+  ...
+```
+
+In the terminal, run the command to set the FASTLANE_SESSION environment variable with the value from the fastlane_session.txt file.
+
+```sh
+$ export FASTLANE_SESSION=$(cat fastlane_session.txt)
+```
+
+After this, fastlane commands will no longer require the 6-digit Apple verification code.
+
+#### It takes a long time to clone the repository when running melos build:ios_match_new_devices
+
+If it takes a long time to clone the repository when you run the `melos build:ios_match_new_devices` command, you most likely do not have enough rights. Contact your administrator.
 
 ## Deploy 🚀
 
@@ -211,6 +379,13 @@ $ melos build:deploy_fad_store
 
 Each of these commands will increment the build number before building the app.
 
+**Warning: To use Sentry, don't forget to pass the dsn via dart-define.**
+
+Example:
+```markdown
+melos build:deploy_fad -- --dart-define=SENTRY_DSN="your_dsn"
+```
+
 ## Coverage 📊
 
 To view the generated coverage report you can use [lcov](https://github.com/linux-test-project/lcov).
@@ -230,6 +405,24 @@ The app can be built with several flavors. Each of them determines the logging l
 We also have logs from nekoton, and level transformation matrix is in `packages/nekoton_repository/lib/src/nekoton_repository.dart`.
 
 Console colors are defined in fancy_logger package.
+
+## Crash analytics
+
+[Sentry](https://sentry.io) is used to intercept global errors and crash analytics.
+
+Sentry does not run in the development build type.
+
+Dsn is passed through dart-define using the SENTRY_DSN environment variable.
+
+Examples:
+
+```markdown
+melos build:deploy_fad -- --dart-define=SENTRY_DSN="your_dsn"
+```
+
+```markdown
+flutter run --dart-define=SENTRY_DSN="your_sentry_dsn_value"
+```
 
 ## Working with Translations 🌐
 

@@ -45,8 +45,8 @@ class _CrashDetectorServiceWidgetState
         return;
       }
 
-      // ignore: use_build_context_synchronously
       await showContactSupportSheet(
+        // ignore: use_build_context_synchronously
         context: ctx,
         mode: ContactSupportMode.initiatedByCrash,
       );

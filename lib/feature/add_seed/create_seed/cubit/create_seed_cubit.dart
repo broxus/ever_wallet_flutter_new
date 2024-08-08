@@ -19,7 +19,7 @@ class CreateSeedCubit extends Cubit<CreateSeedCubitState> {
 
   Future<void> copySeed() async {
     final st = state;
-    if (st is _$_Generated) {
+    if (st is _$GeneratedImpl) {
       emit(st.copyWith(isCopied: true));
       await Clipboard.setData(
         ClipboardData(text: st.words.join(' ')),

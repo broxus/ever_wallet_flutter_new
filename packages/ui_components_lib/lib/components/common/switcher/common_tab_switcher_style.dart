@@ -1,0 +1,1 @@
+enum CommonTabSwitcherStyle { small, usual }

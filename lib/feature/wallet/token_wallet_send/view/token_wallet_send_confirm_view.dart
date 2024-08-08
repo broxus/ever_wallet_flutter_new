@@ -14,16 +14,16 @@ class TokenWalletSendConfirmView extends StatelessWidget {
     required this.amount,
     required this.comment,
     required this.publicKey,
-    required this.attachedAmount,
     required this.tokenCurrency,
     this.fee,
     this.feeError,
+    this.attachedAmount,
     super.key,
   });
 
   final Address recipient;
   final BigInt amount;
-  final BigInt attachedAmount;
+  final BigInt? attachedAmount;
   final BigInt? fee;
   final String? comment;
   final Currency tokenCurrency;
@@ -66,7 +66,7 @@ class TokenWalletSendConfirmView extends StatelessWidget {
                   title: LocaleKeys.attachedAmount.tr(),
                   valueChild: MoneyWidget(
                     money: Money.fromBigIntWithCurrency(
-                      attachedAmount,
+                      attachedAmount ?? BigInt.zero,
                       Currencies()[inject<NekotonRepository>()
                           .currentTransport
                           .nativeTokenTicker]!,
@@ -103,29 +103,31 @@ class TokenWalletSendConfirmView extends StatelessWidget {
             fillWidth: true,
             isLoading: isLoading,
             text: LocaleKeys.sendWord.tr(),
-            onPressed: () {
-              showCommonBottomSheet<void>(
-                context: context,
-                title: LocaleKeys.enterPasswordTo.tr(
-                  args: [LocaleKeys.sendYourFunds.tr().toLowerCase()],
-                ),
-                useAppBackgroundColor: true,
-                body: (_, __) => Builder(
-                  builder: (c) {
-                    return EnterPasswordWidget(
-                      // ignore: prefer-extracting-callbacks
-                      onPasswordEntered: (value) {
-                        Navigator.of(c).pop();
-                        context
-                            .read<TokenWalletSendBloc>()
-                            .add(TokenWalletSendEvent.send(value));
-                      },
-                      publicKey: publicKey,
+            onPressed: feeError != null || fee == null
+                ? null
+                : () {
+                    showCommonBottomSheet<void>(
+                      context: context,
+                      title: LocaleKeys.enterPasswordTo.tr(
+                        args: [LocaleKeys.sendYourFunds.tr().toLowerCase()],
+                      ),
+                      useAppBackgroundColor: true,
+                      body: (_, __) => Builder(
+                        builder: (c) {
+                          return EnterPasswordWidget(
+                            // ignore: prefer-extracting-callbacks
+                            onPasswordEntered: (value) {
+                              Navigator.of(c).pop();
+                              context
+                                  .read<TokenWalletSendBloc>()
+                                  .add(TokenWalletSendEvent.send(value));
+                            },
+                            publicKey: publicKey,
+                          );
+                        },
+                      ),
                     );
                   },
-                ),
-              );
-            },
           ),
         ),
       ],

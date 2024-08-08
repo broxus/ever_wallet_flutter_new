@@ -1,0 +1,6 @@
+framework module flutter_email_sender {
+  umbrella header "flutter_email_sender-umbrella.h"
+
+  export *
+  module * { export * }
+}
