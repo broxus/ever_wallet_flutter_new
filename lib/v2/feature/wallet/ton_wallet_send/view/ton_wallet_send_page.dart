@@ -63,6 +63,7 @@ class TonWalletSendPage extends StatelessWidget {
         publicKey: publicKey,
         nekotonRepository: inject(),
         currenciesService: inject(),
+        messengerService: inject(),
         resultMessage:
             resultMessage ?? LocaleKeys.transactionSentSuccessfully.tr(),
       )..add(const TonWalletSendEvent.prepare()),
@@ -90,41 +91,43 @@ class TonWalletSendPage extends StatelessWidget {
             calculatingError: (error, fee) =>
                 _confirmPage(fee: fee, error: error),
             readyToSend: (fee) => _confirmPage(fee: fee),
-            sending: (canClose) => Scaffold(
-              body: Padding(
-                padding: const EdgeInsets.all(DimensSizeV2.d16),
-                child: TransactionSendingWidget(
-                  canClose: canClose,
-                  completeCloseCallback: completeCloseCallback,
-                ),
-              ),
-            ),
-            sent: (fee, _) => _confirmPage(fee: fee),
+            sending: _sendingPage,
+            sent: (fee, _) => _sendingPage(true),
           );
         },
       ),
     );
   }
 
-  Widget _confirmPage({BigInt? fee, String? error}) {
-    return Scaffold(
-      appBar: DefaultAppBar(
-        onClosePressed: (context) => context.pop(),
-        titleText: LocaleKeys.confirmTransaction.tr(),
+  Widget _confirmPage({BigInt? fee, String? error}) => Scaffold(
+    appBar: DefaultAppBar(
+      onClosePressed: (context) => context.pop(),
+      titleText: LocaleKeys.confirmTransaction.tr(),
+    ),
+    body: Padding(
+      padding: const EdgeInsets.symmetric(
+        horizontal: DimensSizeV2.d16,
       ),
-      body: Padding(
-        padding: const EdgeInsets.symmetric(
-          horizontal: DimensSizeV2.d16,
-        ),
-        child: TonWalletSendConfirmView(
-          recipient: destination,
-          amount: amount,
-          comment: comment,
-          publicKey: publicKey,
-          fee: fee,
-          feeError: error,
-        ),
+      child: TonWalletSendConfirmView(
+        recipient: destination,
+        amount: amount,
+        comment: comment,
+        publicKey: publicKey,
+        fee: fee,
+        feeError: error,
       ),
-    );
-  }
+    ),
+  );
+
+  Widget _sendingPage(bool canClose) => Scaffold(
+    body: Padding(
+      padding: const EdgeInsets.symmetric(
+        horizontal: DimensSizeV2.d16,
+      ),
+      child: TransactionSendingWidget(
+        canClose: canClose,
+        completeCloseCallback: completeCloseCallback,
+      ),
+    ),
+  );
 }

@@ -1,6 +1,5 @@
 import 'package:app/app/service/service.dart';
 import 'package:app/data/models/models.dart';
-import 'package:app/di/di.dart';
 import 'package:app/generated/generated.dart';
 import 'package:app/utils/constants.dart';
 import 'package:bloc/bloc.dart';
@@ -21,6 +20,7 @@ class TonWalletSendBloc extends Bloc<TonWalletSendEvent, TonWalletSendState> {
   TonWalletSendBloc({
     required this.nekotonRepository,
     required this.currenciesService,
+    required this.messengerService,
     required this.address,
     required this.publicKey,
     required this.destination,
@@ -35,6 +35,7 @@ class TonWalletSendBloc extends Bloc<TonWalletSendEvent, TonWalletSendState> {
   final _logger = Logger('TonWalletSendBloc');
   final NekotonRepository nekotonRepository;
   final CurrenciesService currenciesService;
+  final MessengerService messengerService;
 
   /// Address of TonWallet that will be used to send funds
   final Address address;
@@ -66,10 +67,14 @@ class TonWalletSendBloc extends Bloc<TonWalletSendEvent, TonWalletSendState> {
 
   KeyAccount? account;
 
-  CustomCurrency? currency;
+  CustomCurrency? nativeCurrency;
 
   late UnsignedMessage unsignedMessage;
   UnsignedMessage? _unsignedMessage;
+
+  TransportStrategy get transport => nekotonRepository.currentTransport;
+
+  Currency get currency => Currencies()[transport.nativeTokenTicker]!;
 
   void _registerHandlers() {
     on<_Prepare>((event, emit) => _handlePrepare(emit));
@@ -84,10 +89,8 @@ class TonWalletSendBloc extends Bloc<TonWalletSendEvent, TonWalletSendState> {
 
   Future<void> _handlePrepare(Emitter<TonWalletSendState> emit) async {
     try {
-      final transport = nekotonRepository.currentTransport;
-
       account = nekotonRepository.seedList.findAccountByAddress(address);
-      currency = currenciesService
+      nativeCurrency = currenciesService
         .currencies(transport.networkType)
         .firstWhereOrNull(
           (c) => c.address == transport.nativeTokenAddress,
@@ -124,9 +127,7 @@ class TonWalletSendBloc extends Bloc<TonWalletSendEvent, TonWalletSendState> {
       }
 
       final wallet = walletState.wallet!;
-
       final balance = wallet.contractState.balance;
-
       final isPossibleToSendMessage = balance > (fees! + amount);
 
       if (!isPossibleToSendMessage) {
@@ -179,19 +180,17 @@ class TonWalletSendBloc extends Bloc<TonWalletSendEvent, TonWalletSendState> {
         destination: repackedDestination,
       );
 
-      inject<MessengerService>().show(
-        Message.successful(message: resultMessage),
-      );
+      messengerService.show(Message.successful(message: resultMessage));
       if (!isClosed) {
         add(TonWalletSendEvent.completeSend(transaction));
       }
     } on FfiException catch (e, t) {
       _logger.severe('_handleSend', e, t);
-      inject<MessengerService>().show(Message.error(message: e.message));
+      messengerService.show(Message.error(message: e.message));
       emit(TonWalletSendState.readyToSend(fees!));
     } on Exception catch (e, t) {
       _logger.severe('_handleSend', e, t);
-      inject<MessengerService>().show(Message.error(message: e.toString()));
+      messengerService.show(Message.error(message: e.toString()));
       emit(TonWalletSendState.readyToSend(fees!));
     }
   }

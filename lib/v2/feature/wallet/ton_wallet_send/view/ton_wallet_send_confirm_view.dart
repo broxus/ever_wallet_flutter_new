@@ -1,4 +1,3 @@
-import 'package:app/di/di.dart';
 import 'package:app/feature/profile/profile.dart';
 import 'package:app/generated/generated.dart';
 import 'package:app/v2/feature/wallet/wallet.dart';
@@ -33,13 +32,12 @@ class TonWalletSendConfirmView extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final bloc = context.read<TonWalletSendBloc>();
-    final transport = inject<NekotonRepository>().currentTransport;
-    final iconPath = transport.nativeTokenIcon;
+    final iconPath = bloc.transport.nativeTokenIcon;
     final theme = context.themeStyleV2;
     final isLoading = fee == null && feeError == null;
-    final currency = Currencies()[transport.nativeTokenTicker]!;
+    final currency = bloc.currency;
 
-    final price = Fixed.parse(bloc.currency?.price ?? '0');
+    final price = Fixed.parse(bloc.nativeCurrency?.price ?? '0');
     final amountMoney = Money.fromBigIntWithCurrency(amount, currency);
     final feeMoney = Money.fromBigIntWithCurrency(fee ?? BigInt.zero, currency);
     final aaMoney = Money.fromBigIntWithCurrency(
@@ -186,12 +184,6 @@ class TonWalletSendConfirmView extends StatelessWidget {
   Widget _value(ThemeStyleV2 theme, String text) => Text(text,
     style: theme.textStyles.paragraphSmall.copyWith(
       color: theme.colors.content0,
-    ),
-  );
-
-  Widget _hint(ThemeStyleV2 theme, String text) => Text(text,
-    style: theme.textStyles.labelXSmall.copyWith(
-      color: theme.colors.content3,
     ),
   );
 
