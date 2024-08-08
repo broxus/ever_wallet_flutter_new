@@ -36,7 +36,7 @@ jobs:
           channel: 'stable'
           cache: true
           cache-key: flutter-:os:-:channel:-:version:-:arch:-:hash:-${{ hashFiles('**/pubspec.lock') }}
-      - uses: bluefireteam/melos-action@v2
+      - uses: bluefireteam/melos-action@v3
       - name: Generate dart code
         run: melos codegen --no-select
       - name: Setup Pages
