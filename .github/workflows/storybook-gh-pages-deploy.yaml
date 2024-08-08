@@ -44,7 +44,7 @@ jobs:
       - name: Build web app
         run: melos build:storybook -- --base-href /${{ github.event.repository.name }}/
       - name: Upload artifact
-        uses: actions/upload-pages-artifact@v1
+        uses: actions/upload-pages-artifact@v3
         with:
           path: "packages/ui_components_lib/example/build/web"
 
