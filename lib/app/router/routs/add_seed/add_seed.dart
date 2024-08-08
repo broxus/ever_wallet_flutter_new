@@ -67,6 +67,7 @@ GoRoute get enterSeedOnboardingRoute {
 
 GoRoute get addExistingWalletRoute {
   return GoRoute(
+    name: AppRoute.addExistingWallet.name,
     path: AppRoute.addExistingWallet.path,
     builder: (_, __) => const AddExistingWalletPage(),
     routes: [

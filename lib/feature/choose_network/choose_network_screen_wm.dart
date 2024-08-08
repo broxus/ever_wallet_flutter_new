@@ -8,6 +8,7 @@ import 'package:elementary/elementary.dart';
 import 'package:elementary_helper/elementary_helper.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
+import 'package:go_router/go_router.dart';
 import 'package:ui_components_lib/v2/ui_components_lib_v2.dart';
 
 /// Factory method for creating [ChooseNetworkScreenWidgetModel]
@@ -42,10 +43,10 @@ class ChooseNetworkScreenWidgetModel
   Future<void> onPressedType(String id) async {
     final isSuccess = await model.selectType(id);
 
-    if (!isSuccess) {
-      return;
-    }
+    final isCanPop = contextSafe?.canPop() ?? false;
 
-    widget.onSuccess?.call();
+    if (isCanPop) {
+      contextSafe?.pop(isSuccess);
+    }
   }
 }
