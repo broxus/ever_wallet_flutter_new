@@ -1,5 +1,5 @@
-import 'package:app/v1/feature/wallet/wallet.dart';
 import 'package:app/feature/widgets/change_notifier_listener.dart';
+import 'package:app/v1/feature/wallet/wallet.dart';
 import 'package:flutter/material.dart';
 import 'package:nekoton_repository/nekoton_repository.dart';
 import 'package:render_metrics/render_metrics.dart';

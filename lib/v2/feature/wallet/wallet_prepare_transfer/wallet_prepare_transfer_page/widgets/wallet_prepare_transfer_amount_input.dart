@@ -111,9 +111,8 @@ class WalletPrepareTransferAmountInput extends StatelessWidget {
   Widget _fieldBuilder(FormFieldState<String> state) {
     final theme = state.context.themeStyleV2;
     final inputStyle = theme.textStyles.headingLarge.copyWith(
-      color: state.hasError
-          ? theme.colors.contentNegative
-          : theme.colors.content0,
+      color:
+          state.hasError ? theme.colors.contentNegative : theme.colors.content0,
     );
     final price = Fixed.parse(selectedAsset?.currency?.price ?? '0');
     final amount = Fixed.parse(state.value.nullIf('') ?? '0');
@@ -177,11 +176,10 @@ class WalletPrepareTransferAmountInput extends StatelessWidget {
   String? _validator(String? value) => selectedAsset == null
       ? null
       : CurrencyTextInputValidator(
-        selectedAsset!.balance.currency,
-        emptyError: LocaleKeys.amountIsEmpty.tr(),
-        error: LocaleKeys.amountIsWrong.tr(),
-        max: selectedAsset!.balance.amount,
-        maxError: LocaleKeys.insufficientFunds.tr(),
-      ).validate(value);
+          selectedAsset!.balance.currency,
+          emptyError: LocaleKeys.amountIsEmpty.tr(),
+          error: LocaleKeys.amountIsWrong.tr(),
+          max: selectedAsset!.balance.amount,
+          maxError: LocaleKeys.insufficientFunds.tr(),
+        ).validate(value);
 }
-

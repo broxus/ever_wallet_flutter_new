@@ -27,7 +27,8 @@ class AccountInfo extends StatelessWidget {
         vertical: DimensSizeV2.d12,
       ),
       children: [
-        Image.asset(Assets.images.userAvatar.userAvatar.path,
+        Image.asset(
+          Assets.images.userAvatar.userAvatar.path,
           width: DimensSizeV2.d40,
           height: DimensSizeV2.d40,
         ),
@@ -46,13 +47,12 @@ class AccountInfo extends StatelessWidget {
               Text(
                 '$address • $pk',
                 style: theme.textStyles.labelXSmall.copyWith(
-                    color: theme.colors.content3,
+                  color: theme.colors.content3,
                 ),
               ),
             ],
           ),
         ),
-
       ],
     );
   }

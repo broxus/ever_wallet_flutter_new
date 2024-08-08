@@ -8,11 +8,9 @@ import 'package:freezed_annotation/freezed_annotation.dart';
 import 'package:logging/logging.dart';
 import 'package:nekoton_repository/nekoton_repository.dart' hide Message;
 
-part 'ton_wallet_send_state.dart';
-
-part 'ton_wallet_send_event.dart';
-
 part 'ton_wallet_send_bloc.freezed.dart';
+part 'ton_wallet_send_event.dart';
+part 'ton_wallet_send_state.dart';
 
 /// Bloc that allows prepare transaction to send native funds from [TonWallet]
 /// for confirmation and send transaction.
@@ -90,11 +88,11 @@ class TonWalletSendBloc extends Bloc<TonWalletSendEvent, TonWalletSendState> {
   Future<void> _handlePrepare(Emitter<TonWalletSendState> emit) async {
     try {
       account = nekotonRepository.seedList.findAccountByAddress(address);
-      nativeCurrency = currenciesService
-        .currencies(transport.networkType)
-        .firstWhereOrNull(
-          (c) => c.address == transport.nativeTokenAddress,
-        ) ?? await currenciesService.getCurrencyForNativeToken(transport);
+      nativeCurrency =
+          currenciesService.currencies(transport.networkType).firstWhereOrNull(
+                    (c) => c.address == transport.nativeTokenAddress,
+                  ) ??
+              await currenciesService.getCurrencyForNativeToken(transport);
 
       if (needRepack) {
         repackedDestination = await repackAddress(destination);

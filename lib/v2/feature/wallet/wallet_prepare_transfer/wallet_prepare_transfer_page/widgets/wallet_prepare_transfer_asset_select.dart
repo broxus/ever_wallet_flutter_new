@@ -5,7 +5,6 @@ import 'package:flutter/material.dart';
 import 'package:lucide_icons_flutter/lucide_icons.dart';
 import 'package:nekoton_repository/nekoton_repository.dart';
 import 'package:ui_components_lib/ui_components_lib.dart';
-import 'package:ui_components_lib/v2/dimens_v2.dart';
 import 'package:ui_components_lib/v2/ui_components_lib_v2.dart';
 
 class WalletPrepareTransferAssetSelect extends StatelessWidget {
@@ -29,26 +28,24 @@ class WalletPrepareTransferAssetSelect extends StatelessWidget {
     return PressScaleWidget(
       onPressed: values.length == 1 ? null : () => _openSelectSheet(context),
       child: SeparatedRow(
-        separatorSize: DimensSizeV2.d8,
         children: [
-          if (currentValue != null)
-            ...[
-              TokenWalletIconWidget(
-                size: DimensSizeV2.d20,
-                address: currentValue!.rootTokenContract,
-                logoURI: currentValue!.logoURI,
-                version: currentValue!.version ?? TokenWalletVersion.tip3,
+          if (currentValue != null) ...[
+            TokenWalletIconWidget(
+              size: DimensSizeV2.d20,
+              address: currentValue!.rootTokenContract,
+              logoURI: currentValue!.logoURI,
+              version: currentValue!.version ?? TokenWalletVersion.tip3,
+            ),
+            Flexible(
+              child: Text(
+                currentValue!.title,
+                style: theme.textStyles.labelMedium,
+                overflow: TextOverflow.ellipsis,
+                softWrap: false,
+                maxLines: 1,
               ),
-              Flexible(
-                child: Text(
-                  currentValue!.title,
-                  style: theme.textStyles.labelMedium,
-                  overflow: TextOverflow.ellipsis,
-                  softWrap: false,
-                  maxLines: 1,
-                ),
-              ),
-            ],
+            ),
+          ],
           Icon(
             LucideIcons.chevronDown,
             color: theme.colors.content0,
@@ -59,29 +56,31 @@ class WalletPrepareTransferAssetSelect extends StatelessWidget {
     );
   }
 
-  Widget _itemBuilder(WalletPrepareTransferAsset asset, {
+  Widget _itemBuilder(
+    WalletPrepareTransferAsset asset, {
     bool isSelected = false,
     VoidCallback? onPressed,
-  }) => Builder(
-    builder: (context) {
-      final colors = context.themeStyle.colors;
+  }) =>
+      Builder(
+        builder: (context) {
+          final colors = context.themeStyle.colors;
 
-      return CommonListTile(
-        leading: TokenWalletIconWidget(
-          address: asset.rootTokenContract,
-          logoURI: asset.logoURI,
-          // tip3 for native
-          version: asset.version ?? TokenWalletVersion.tip3,
-        ),
-        padding: EdgeInsets.zero,
-        onPressed: onPressed,
-        titleText: asset.title,
-        trailing: isSelected
-            ? Icon(Icons.check_rounded, color: colors.textPrimary)
-            : null,
+          return CommonListTile(
+            leading: TokenWalletIconWidget(
+              address: asset.rootTokenContract,
+              logoURI: asset.logoURI,
+              // tip3 for native
+              version: asset.version ?? TokenWalletVersion.tip3,
+            ),
+            padding: EdgeInsets.zero,
+            onPressed: onPressed,
+            titleText: asset.title,
+            trailing: isSelected
+                ? Icon(Icons.check_rounded, color: colors.textPrimary)
+                : null,
+          );
+        },
       );
-    },
-  );
 
   void _openSelectSheet(BuildContext context) {
     showCommonBottomSheet<void>(
@@ -96,16 +95,18 @@ class WalletPrepareTransferAssetSelect extends StatelessWidget {
               padding: EdgeInsets.symmetric(vertical: DimensSize.d12),
               child: CommonDivider(),
             ),
-            children: values.map(
-              (asset) => _itemBuilder(
-                asset,
-                isSelected: asset == currentValue,
-                onPressed: () {
-                  Navigator.of(context).pop();
-                  onChanged(asset);
-                },
-              ),
-            ).toList(),
+            children: values
+                .map(
+                  (asset) => _itemBuilder(
+                    asset,
+                    isSelected: asset == currentValue,
+                    onPressed: () {
+                      Navigator.of(context).pop();
+                      onChanged(asset);
+                    },
+                  ),
+                )
+                .toList(),
           ),
         );
       },

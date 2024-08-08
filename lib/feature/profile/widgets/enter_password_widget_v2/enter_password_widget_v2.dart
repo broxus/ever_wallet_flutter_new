@@ -1,6 +1,7 @@
 import 'package:app/app/service/service.dart';
 import 'package:app/di/di.dart';
 import 'package:app/feature/profile/profile.dart';
+import 'package:app/feature/profile/widgets/enter_password_widget_v2/enter_password_cubit.dart';
 import 'package:app/generated/generated.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -8,8 +9,6 @@ import 'package:lucide_icons_flutter/lucide_icons.dart';
 import 'package:nekoton_repository/nekoton_repository.dart';
 import 'package:ui_components_lib/ui_components_lib.dart';
 import 'package:ui_components_lib/v2/ui_components_lib_v2.dart';
-
-import 'enter_password_cubit.dart';
 
 /// This is a widget that allows user to enter password for any action or
 /// user biometry if available.
@@ -88,37 +87,36 @@ class _EnterPasswordWidgetV2State extends State<EnterPasswordWidgetV2> {
   }
 
   Widget _biometryBody(bool isFace) => Builder(
-    builder: (context) => AccentButton(
-      buttonShape: ButtonShape.pill,
-      title: widget.title ?? LocaleKeys.submitWord.tr(),
-      isLoading: widget.isLoading ?? false,
-      icon: isFace ? LucideIcons.scanFace : LucideIcons.fingerprint,
-      onPressed: () => context
-          .read<EnterPasswordCubit>()
-          .requestBiometry(isFace),
-    ),
-  );
-
-  Widget _passwordBody() => Builder(
-    builder: (context) => SeparatedColumn(
-      mainAxisSize: MainAxisSize.min,
-      separatorSize: DimensSizeV2.d8,
-      children: [
-        PasswordInputV2(
-          controller: _passwordController,
-          submit: () => context
-              .read<EnterPasswordCubit>()
-              .enterPassword(_passwordController.text),
-        ),
-        AccentButton(
+        builder: (context) => AccentButton(
           buttonShape: ButtonShape.pill,
           title: widget.title ?? LocaleKeys.submitWord.tr(),
           isLoading: widget.isLoading ?? false,
-          onPressed: () => context
-              .read<EnterPasswordCubit>()
-              .enterPassword(_passwordController.text),
+          icon: isFace ? LucideIcons.scanFace : LucideIcons.fingerprint,
+          onPressed: () => context.read<EnterPasswordCubit>().requestBiometry(
+                isFace: isFace,
+              ),
         ),
-      ],
-    ),
-  );
+      );
+
+  Widget _passwordBody() => Builder(
+        builder: (context) => SeparatedColumn(
+          mainAxisSize: MainAxisSize.min,
+          children: [
+            PasswordInputV2(
+              controller: _passwordController,
+              submit: () => context
+                  .read<EnterPasswordCubit>()
+                  .enterPassword(_passwordController.text),
+            ),
+            AccentButton(
+              buttonShape: ButtonShape.pill,
+              title: widget.title ?? LocaleKeys.submitWord.tr(),
+              isLoading: widget.isLoading ?? false,
+              onPressed: () => context
+                  .read<EnterPasswordCubit>()
+                  .enterPassword(_passwordController.text),
+            ),
+          ],
+        ),
+      );
 }

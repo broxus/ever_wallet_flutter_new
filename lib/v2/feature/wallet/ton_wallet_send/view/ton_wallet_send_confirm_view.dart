@@ -53,9 +53,7 @@ class TonWalletSendConfirmView extends StatelessWidget {
             child: SeparatedColumn(
               separatorSize: DimensSize.d16,
               children: [
-                if (bloc.account != null)
-                  AccountInfo(account: bloc.account!),
-
+                if (bloc.account != null) AccountInfo(account: bloc.account!),
                 PrimaryCard(
                   padding: const EdgeInsets.symmetric(
                     horizontal: DimensSizeV2.d16,
@@ -113,7 +111,8 @@ class TonWalletSendConfirmView extends StatelessWidget {
                                 if (!price.isZero)
                                   AmountWidget.fromMoney(
                                     amount: aaMoney.exchangeToUSD(price),
-                                    style: theme.textStyles.labelXSmall.copyWith(
+                                    style:
+                                        theme.textStyles.labelXSmall.copyWith(
                                       color: theme.colors.content3,
                                     ),
                                     sign: '~ ',
@@ -135,8 +134,7 @@ class TonWalletSendConfirmView extends StatelessWidget {
                                 amount: feeMoney,
                                 sign: '~ ',
                               ),
-                              if (feeError != null)
-                                _error(theme, feeError!),
+                              if (feeError != null) _error(theme, feeError!),
                             ],
                           ),
                         ],
@@ -175,23 +173,26 @@ class TonWalletSendConfirmView extends StatelessWidget {
     );
   }
 
-  Widget _label(ThemeStyleV2 theme, String text) => Text(text,
-    style: theme.textStyles.labelSmall.copyWith(
-      color: theme.colors.content3,
-    ),
-  );
+  Widget _label(ThemeStyleV2 theme, String text) => Text(
+        text,
+        style: theme.textStyles.labelSmall.copyWith(
+          color: theme.colors.content3,
+        ),
+      );
 
-  Widget _value(ThemeStyleV2 theme, String text) => Text(text,
-    style: theme.textStyles.paragraphSmall.copyWith(
-      color: theme.colors.content0,
-    ),
-  );
+  Widget _value(ThemeStyleV2 theme, String text) => Text(
+        text,
+        style: theme.textStyles.paragraphSmall.copyWith(
+          color: theme.colors.content0,
+        ),
+      );
 
-  Widget _error(ThemeStyleV2 theme, String text) => Text(text,
-    style: theme.textStyles.labelSmall.copyWith(
-      color: theme.colors.negative,
-    ),
-  );
+  Widget _error(ThemeStyleV2 theme, String text) => Text(
+        text,
+        style: theme.textStyles.labelSmall.copyWith(
+          color: theme.colors.negative,
+        ),
+      );
 }
 
 extension on Money {

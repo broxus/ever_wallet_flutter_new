@@ -132,7 +132,8 @@ class CurrenciesService {
   /// this currency to storage and return.
   Future<CustomCurrency?> getCurrencyForNativeToken(
     TransportStrategy transport,
-  ) => getCurrencyForContract(transport, transport.nativeTokenAddress);
+  ) =>
+      getCurrencyForContract(transport, transport.nativeTokenAddress);
 
   /// Update all currencies for [assets] and its token contracts in scope of
   /// [transport]. All currencies will be saved to storage.

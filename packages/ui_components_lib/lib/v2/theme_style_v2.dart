@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-
 import 'package:ui_components_lib/v2/ui_components_lib_v2.dart';
 
 class ThemeStyleV2 extends ThemeExtension<ThemeStyleV2> {

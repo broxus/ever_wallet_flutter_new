@@ -146,10 +146,11 @@ class WalletPrepareTransferPageModel extends ElementaryModel {
         .currencies(currentTransport.networkType)
         .firstWhereOrNull((currency) => currency.address == rootTokenContract);
 
-    return currency ?? await _currenciesService.getCurrencyForContract(
-      currentTransport,
-      rootTokenContract,
-    );
+    return currency ??
+        await _currenciesService.getCurrencyForContract(
+          currentTransport,
+          rootTokenContract,
+        );
   }
 
   /// Subscription for native token to find balance

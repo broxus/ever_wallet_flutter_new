@@ -39,7 +39,7 @@ class EnterPasswordCubit extends Cubit<EnterPasswordState> {
     }
   }
 
-  Future<void> requestBiometry(bool isFace) async {
+  Future<void> requestBiometry({required bool isFace}) async {
     try {
       // If we get password from biometry, we suppose it is always valid.
       final password = await biometryService.getKeyPassword(

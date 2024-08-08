@@ -56,9 +56,7 @@ class TokenWalletSendConfirmView extends StatelessWidget {
               mainAxisSize: MainAxisSize.min,
               separatorSize: DimensSize.d16,
               children: [
-                if (bloc.account != null)
-                  AccountInfo(account: bloc.account!),
-
+                if (bloc.account != null) AccountInfo(account: bloc.account!),
                 PrimaryCard(
                   padding: const EdgeInsets.symmetric(
                     horizontal: DimensSizeV2.d16,
@@ -80,12 +78,13 @@ class TokenWalletSendConfirmView extends StatelessWidget {
                               AmountWidget.fromMoney(
                                 amount: amountMoney,
                                 icon: tokenAsset != null
-                                  ? TokenWalletIconWidget(
-                                    address: tokenAsset.address,
-                                    logoURI: tokenAsset.logoURI,
-                                    version: tokenAsset.version,
-                                    size: DimensSizeV2.d20,
-                                  ) : null,
+                                    ? TokenWalletIconWidget(
+                                        address: tokenAsset.address,
+                                        logoURI: tokenAsset.logoURI,
+                                        version: tokenAsset.version,
+                                        size: DimensSizeV2.d20,
+                                      )
+                                    : null,
                               ),
                               if (!tokenPrice.isZero)
                                 AmountWidget.fromMoney(
@@ -142,8 +141,7 @@ class TokenWalletSendConfirmView extends StatelessWidget {
                                 amount: feeMoney,
                                 sign: '~ ',
                               ),
-                              if (feeError != null)
-                                _error(theme, feeError!),
+                              if (feeError != null) _error(theme, feeError!),
                             ],
                           ),
                         ],
@@ -182,32 +180,35 @@ class TokenWalletSendConfirmView extends StatelessWidget {
     );
   }
 
-  Widget _label(ThemeStyleV2 theme, String text) => Text(text,
-    style: theme.textStyles.labelSmall.copyWith(
-      color: theme.colors.content3,
-    ),
-  );
+  Widget _label(ThemeStyleV2 theme, String text) => Text(
+        text,
+        style: theme.textStyles.labelSmall.copyWith(
+          color: theme.colors.content3,
+        ),
+      );
 
-  Widget _value(ThemeStyleV2 theme, String text) => Text(text,
-    style: theme.textStyles.paragraphSmall.copyWith(
-      color: theme.colors.content0,
-    ),
-  );
+  Widget _value(ThemeStyleV2 theme, String text) => Text(
+        text,
+        style: theme.textStyles.paragraphSmall.copyWith(
+          color: theme.colors.content0,
+        ),
+      );
 
-  Widget _error(ThemeStyleV2 theme, String text) => Text(text,
-    style: theme.textStyles.labelSmall.copyWith(
-      color: theme.colors.negative,
-    ),
-  );
+  Widget _error(ThemeStyleV2 theme, String text) => Text(
+        text,
+        style: theme.textStyles.labelSmall.copyWith(
+          color: theme.colors.negative,
+        ),
+      );
 }
 
 extension on Money {
   Money exchangeToUSD(Fixed price) => exchangeTo(
-    ExchangeRate.fromFixed(
-      price,
-      fromCode: currency.code,
-      toCode: 'USD',
-      toScale: 2,
-    ),
-  );
+        ExchangeRate.fromFixed(
+          price,
+          fromCode: currency.code,
+          toCode: 'USD',
+          toScale: 2,
+        ),
+      );
 }

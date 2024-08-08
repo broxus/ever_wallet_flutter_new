@@ -37,7 +37,8 @@ class ShapedContainerRow extends StatelessWidget {
   /// Outer padding of container, default is horizontal: DimensSizeV2.d16
   final EdgeInsets margin;
 
-  /// Inner padding of container, around content, default is all: DimensSizeV2.d16
+  /// Inner padding of container, around content
+  /// default is all: DimensSizeV2.d16
   final EdgeInsets padding;
 
   /// See <ContainerColumn.separatorSize>

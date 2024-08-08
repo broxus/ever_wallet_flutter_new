@@ -8,9 +8,7 @@ import 'package:logging/logging.dart';
 import 'package:nekoton_repository/nekoton_repository.dart' hide Message;
 
 part 'wallet_deploy_bloc.freezed.dart';
-
 part 'wallet_deploy_event.dart';
-
 part 'wallet_deploy_state.dart';
 
 enum WalletDeployType { standard, multisig }

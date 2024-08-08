@@ -100,34 +100,34 @@ class TonWalletSendPage extends StatelessWidget {
   }
 
   Widget _confirmPage({BigInt? fee, String? error}) => Scaffold(
-    appBar: DefaultAppBar(
-      onClosePressed: (context) => context.pop(),
-      titleText: LocaleKeys.confirmTransaction.tr(),
-    ),
-    body: Padding(
-      padding: const EdgeInsets.symmetric(
-        horizontal: DimensSizeV2.d16,
-      ),
-      child: TonWalletSendConfirmView(
-        recipient: destination,
-        amount: amount,
-        comment: comment,
-        publicKey: publicKey,
-        fee: fee,
-        feeError: error,
-      ),
-    ),
-  );
+        appBar: DefaultAppBar(
+          onClosePressed: (context) => context.pop(),
+          titleText: LocaleKeys.confirmTransaction.tr(),
+        ),
+        body: Padding(
+          padding: const EdgeInsets.symmetric(
+            horizontal: DimensSizeV2.d16,
+          ),
+          child: TonWalletSendConfirmView(
+            recipient: destination,
+            amount: amount,
+            comment: comment,
+            publicKey: publicKey,
+            fee: fee,
+            feeError: error,
+          ),
+        ),
+      );
 
   Widget _sendingPage(bool canClose) => Scaffold(
-    body: Padding(
-      padding: const EdgeInsets.symmetric(
-        horizontal: DimensSizeV2.d16,
-      ),
-      child: TransactionSendingWidget(
-        canClose: canClose,
-        completeCloseCallback: completeCloseCallback,
-      ),
-    ),
-  );
+        body: Padding(
+          padding: const EdgeInsets.symmetric(
+            horizontal: DimensSizeV2.d16,
+          ),
+          child: TransactionSendingWidget(
+            canClose: canClose,
+            completeCloseCallback: completeCloseCallback,
+          ),
+        ),
+      );
 }

@@ -101,15 +101,15 @@ class TokenWalletSendBloc
   Future<void> _handlePrepare(Emitter<TokenWalletSendState> emit) async {
     try {
       account = nekotonRepository.seedList.findAccountByAddress(owner);
-      nativeCurrency = currenciesService
-          .currencies(transport.networkType)
-          .firstWhereOrNull(
-            (c) => c.address == transport.nativeTokenAddress,
-      ) ?? await currenciesService.getCurrencyForNativeToken(transport);
+      nativeCurrency =
+          currenciesService.currencies(transport.networkType).firstWhereOrNull(
+                    (c) => c.address == transport.nativeTokenAddress,
+                  ) ??
+              await currenciesService.getCurrencyForNativeToken(transport);
       tokenCustomCurrency = currenciesService
-          .currencies(transport.networkType)
-          .firstWhereOrNull((c) => c.address == rootTokenContract)
-          ?? await currenciesService.getCurrencyForContract(
+              .currencies(transport.networkType)
+              .firstWhereOrNull((c) => c.address == rootTokenContract) ??
+          await currenciesService.getCurrencyForContract(
             transport,
             rootTokenContract,
           );

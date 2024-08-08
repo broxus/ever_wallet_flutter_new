@@ -1,9 +1,9 @@
 import 'package:app/app/service/service.dart';
 import 'package:app/di/di.dart';
 import 'package:app/feature/profile/profile.dart';
+import 'package:app/generated/generated.dart';
 import 'package:app/v2/feature/wallet/wallet.dart';
 import 'package:app/v2/feature/wallet/widgets/account_card/account_card_cubit.dart';
-import 'package:app/generated/generated.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';

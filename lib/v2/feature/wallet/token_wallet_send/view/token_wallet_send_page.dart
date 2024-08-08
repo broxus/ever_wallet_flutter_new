@@ -107,33 +107,34 @@ class TokenWalletSendPage extends StatelessWidget {
     BigInt? fee,
     String? error,
     BigInt? attachedAmount,
-  }) => Scaffold(
-    appBar: DefaultAppBar(
-      onClosePressed: (context) => context.pop(),
-      titleText: LocaleKeys.confirmTransaction.tr(),
-    ),
-    body: Padding(
-      padding: const EdgeInsets.symmetric(
-        horizontal: DimensSizeV2.d16,
-      ),
-      child: TokenWalletSendConfirmView(
-        recipient: destination,
-        amount: amount,
-        comment: comment,
-        publicKey: publicKey,
-        fee: fee,
-        feeError: error,
-        attachedAmount: attachedAmount,
-      ),
-    ),
-  );
+  }) =>
+      Scaffold(
+        appBar: DefaultAppBar(
+          onClosePressed: (context) => context.pop(),
+          titleText: LocaleKeys.confirmTransaction.tr(),
+        ),
+        body: Padding(
+          padding: const EdgeInsets.symmetric(
+            horizontal: DimensSizeV2.d16,
+          ),
+          child: TokenWalletSendConfirmView(
+            recipient: destination,
+            amount: amount,
+            comment: comment,
+            publicKey: publicKey,
+            fee: fee,
+            feeError: error,
+            attachedAmount: attachedAmount,
+          ),
+        ),
+      );
 
   Widget _sendingPage(bool canClose) => Scaffold(
-    body: Padding(
-      padding: const EdgeInsets.symmetric(
-        horizontal: DimensSizeV2.d16,
-      ),
-      child: TransactionSendingWidget(canClose: canClose),
-    ),
-  );
+        body: Padding(
+          padding: const EdgeInsets.symmetric(
+            horizontal: DimensSizeV2.d16,
+          ),
+          child: TransactionSendingWidget(canClose: canClose),
+        ),
+      );
 }

@@ -42,8 +42,7 @@ class WalletPrepareTransferView extends StatelessWidget {
               child: SeparatedColumn(
                 separatorSize: DimensSize.d16,
                 children: [
-                  if (account != null)
-                    AccountInfo(account: account!),
+                  if (account != null) AccountInfo(account: account!),
                   if (localCustodians != null && localCustodians!.length > 1)
                     CommonSelectDropdown<PublicKey>(
                       values: [
@@ -57,7 +56,6 @@ class WalletPrepareTransferView extends StatelessWidget {
                       currentValue: selectedCustodian,
                       onChanged: _wm.onChangedCustodian,
                     ),
-
                   PrimaryTextField(
                     labelText: LocaleKeys.toInputLabel.tr(),
                     hintText: LocaleKeys.receiverAddress.tr(),
@@ -70,7 +68,6 @@ class WalletPrepareTransferView extends StatelessWidget {
                         : null,
                     suffixes: [_buildReceiverSuffix()],
                   ),
-
                   WalletPrepareTransferAmountInput(
                     controller: _wm.amountController,
                     focusNode: _wm.amountFocus,
@@ -80,7 +77,6 @@ class WalletPrepareTransferView extends StatelessWidget {
                     onMaxAmount: _wm.setMaxBalance,
                     onSubmitted: _wm.onSubmittedAmountWord,
                   ),
-
                   _buildCommentWidget(),
                 ],
               ),
@@ -98,50 +94,49 @@ class WalletPrepareTransferView extends StatelessWidget {
   }
 
   Widget _buildReceiverSuffix() => StateNotifierBuilder(
-    listenableState: _wm.receiverState,
-    builder: (_, value) => value?.isNotEmpty ?? false
-        ? Padding(
-          padding: const EdgeInsets.only(right: DimensSize.d8),
-          child: PrimaryButton(
-            buttonShape: ButtonShape.square,
-            icon: LucideIcons.x,
-            onPressed: _wm.onPressedReceiverClear,
-            buttonSize: ButtonSize.small,
-          ),
-        )
-        : const SizedBox.shrink(),
-  );
+        listenableState: _wm.receiverState,
+        builder: (_, value) => value?.isNotEmpty ?? false
+            ? Padding(
+                padding: const EdgeInsets.only(right: DimensSize.d8),
+                child: PrimaryButton(
+                  buttonShape: ButtonShape.square,
+                  icon: LucideIcons.x,
+                  onPressed: _wm.onPressedReceiverClear,
+                  buttonSize: ButtonSize.small,
+                ),
+              )
+            : const SizedBox.shrink(),
+      );
 
   Widget _buildCommentWidget() => StateNotifierBuilder(
-    listenableState: _wm.commentState,
-    builder: (context, value) => value ?? false
-        ? SeparatedColumn(
-          separatorSize: DimensSizeV2.d8,
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            PrimaryTextField(
-              hintText: LocaleKeys.commentWord.tr(),
-              textEditingController: _wm.commentController,
-              focusNode: _wm.commentFocus,
-              onSubmit: (_) => _wm.onPressedNext(),
-            ),
-            Text(
-              LocaleKeys.addCommentHint.tr(),
-              style: context.themeStyleV2.textStyles.labelXSmall.copyWith(
-                color: context.themeStyleV2.colors.content3,
+        listenableState: _wm.commentState,
+        builder: (context, value) => value ?? false
+            ? SeparatedColumn(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  PrimaryTextField(
+                    hintText: LocaleKeys.commentWord.tr(),
+                    textEditingController: _wm.commentController,
+                    focusNode: _wm.commentFocus,
+                    onSubmit: (_) => _wm.onPressedNext(),
+                  ),
+                  Text(
+                    LocaleKeys.addCommentHint.tr(),
+                    style: context.themeStyleV2.textStyles.labelXSmall.copyWith(
+                      color: context.themeStyleV2.colors.content3,
+                    ),
+                  ),
+                ],
+              )
+            : GhostButton(
+                buttonShape: ButtonShape.rectangle,
+                buttonSize: ButtonSize.medium,
+                title: LocaleKeys.addComment.tr(),
+                icon: LucideIcons.plus,
+                onPressed: () {
+                  _wm.commentState.accept(true);
+                  _wm.commentFocus.requestFocus();
+                },
               ),
-            ),
-          ],
-        )
-      : GhostButton(
-        buttonShape: ButtonShape.rectangle,
-        buttonSize: ButtonSize.medium,
-        title: LocaleKeys.addComment.tr(),
-        icon: LucideIcons.plus,
-        onPressed: () {
-          _wm.commentState.accept(true);
-          _wm.commentFocus.requestFocus();
-        },
-      ),
-  );
+      );
 }

@@ -36,10 +36,10 @@ class AmountWidget extends StatelessWidget {
     return Row(
       mainAxisSize: MainAxisSize.min,
       children: [
-        if (icon != null)
-          ...[icon!, const SizedBox(width: 8)],
+        if (icon != null) ...[icon!, const SizedBox(width: 8)],
         Flexible(
-          child: Text('${sign ?? ''}$amount',
+          child: Text(
+            '${sign ?? ''}$amount',
             style: style ?? theme.textStyles.labelSmall,
             overflow: TextOverflow.ellipsis,
             softWrap: false,

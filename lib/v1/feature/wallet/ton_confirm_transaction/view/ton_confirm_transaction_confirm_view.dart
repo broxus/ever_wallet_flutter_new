@@ -1,7 +1,7 @@
 import 'package:app/di/di.dart';
 import 'package:app/feature/profile/profile.dart';
-import 'package:app/v1/feature/wallet/ton_confirm_transaction/bloc/bloc.dart';
 import 'package:app/generated/generated.dart';
+import 'package:app/v1/feature/wallet/ton_confirm_transaction/bloc/bloc.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:nekoton_repository/nekoton_repository.dart';

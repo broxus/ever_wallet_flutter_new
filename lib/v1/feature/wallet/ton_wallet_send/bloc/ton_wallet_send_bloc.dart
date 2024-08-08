@@ -7,11 +7,9 @@ import 'package:freezed_annotation/freezed_annotation.dart';
 import 'package:logging/logging.dart';
 import 'package:nekoton_repository/nekoton_repository.dart' hide Message;
 
-part 'ton_wallet_send_state.dart';
-
-part 'ton_wallet_send_event.dart';
-
 part 'ton_wallet_send_bloc.freezed.dart';
+part 'ton_wallet_send_event.dart';
+part 'ton_wallet_send_state.dart';
 
 /// Bloc that allows prepare transaction to send native funds from [TonWallet]
 /// for confirmation and send transaction.
