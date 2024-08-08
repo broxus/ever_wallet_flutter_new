@@ -74,7 +74,7 @@ class TokenWalletSendPage extends StatelessWidget {
       child: BlocConsumer<TokenWalletSendBloc, TokenWalletSendState>(
         listener: (context, state) {
           state.whenOrNull(
-            sent: (_, __, ___) => context.goNamed(AppRoute.wallet.name),
+            sent: (_, __) => context.goNamed(AppRoute.wallet.name),
           );
         },
         builder: (context, state) {
@@ -86,7 +86,7 @@ class TokenWalletSendPage extends StatelessWidget {
                 child: WalletSubscribeErrorWidget(error: error),
               ),
             ),
-            loading: () => _confirmPage(),
+            loading: _confirmPage,
             calculatingError: (error, fee) => _confirmPage(
               fee: fee,
               error: error,
