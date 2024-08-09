@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:money2/money2.dart';
 import 'package:money2_improver/money2_improver.dart';
-import 'package:ui_components_lib/v2/theme_style_v2.dart';
+import 'package:ui_components_lib/v2/ui_components_lib_v2.dart';
 
 class AmountWidget extends StatelessWidget {
   const AmountWidget({
@@ -36,7 +36,7 @@ class AmountWidget extends StatelessWidget {
     return Row(
       mainAxisSize: MainAxisSize.min,
       children: [
-        if (icon != null) ...[icon!, const SizedBox(width: 8)],
+        if (icon != null) ...[icon!, const SizedBox(width: DimensSizeV2.d8)],
         Flexible(
           child: Text(
             '${sign ?? ''}$amount',
@@ -46,7 +46,7 @@ class AmountWidget extends StatelessWidget {
             maxLines: 1,
           ),
         ),
-        const SizedBox(width: 4),
+        const SizedBox(width: DimensSizeV2.d4),
         Text(symbol, style: style ?? theme.textStyles.labelSmall),
       ],
     );
