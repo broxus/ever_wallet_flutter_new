@@ -1,3 +1,4 @@
+import 'dart:async';
 import 'dart:convert';
 
 import 'package:app/app/router/app_route.dart';
@@ -39,29 +40,37 @@ class WelcomeScreenWidgetModel
       await model.createSeed(),
     );
 
-    await _goToSelectNetwork();
-
-    contextSafe?.goFurther(
-      AppRoute.createSeedPassword.pathWithData(
-        queryParameters: {
-          addSeedPhraseQueryParam: seedData,
-        },
+    unawaited(
+      _goNext(
+        () => contextSafe?.goFurther(
+          AppRoute.createSeedPassword.pathWithData(
+            queryParameters: {
+              addSeedPhraseQueryParam: seedData,
+            },
+          ),
+        ),
       ),
     );
   }
 
-  Future<void> onPressedWalletLogin() async {
-    await _goToSelectNetwork();
-
-    contextSafe?.goFurther(
-      AppRoute.addExistingWallet.path,
+  void onPressedWalletLogin() {
+    _goNext(
+      () => contextSafe?.goFurther(
+        AppRoute.addExistingWallet.path,
+      ),
     );
   }
 
-  Future<void>? _goToSelectNetwork() {
-    return contextSafe?.pushFurther(
+  Future<void> _goNext(VoidCallback callback) async {
+    final isSuccess = await contextSafe?.pushFurther<bool>(
       AppRoute.chooseNetwork.path,
     );
+
+    if (isSuccess != true) {
+      return;
+    }
+
+    callback();
   }
 
   void onLinkTap() => launchUrlString(_decentralizationPolicyLink);
