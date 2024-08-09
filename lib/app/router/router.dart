@@ -6,8 +6,8 @@ import 'package:app/app/router/routs/network/network.dart';
 import 'package:app/app/service/service.dart';
 import 'package:app/di/di.dart';
 import 'package:app/feature/error/error.dart';
+import 'package:app/feature/onboarding/screen/welcome/welcome_screen.dart';
 import 'package:app/feature/root/root.dart';
-import 'package:app/v2/feature/onboarding/onboarding.dart';
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:logging/logging.dart';
@@ -150,13 +150,15 @@ GoRouter getRouter(BuildContext _) {
         pageBuilder: (context, state) => onboardingTransitionPageBuilder(
           context,
           state,
-          const OnboardingPage(),
+          const WelcomeScreen(),
         ),
         routes: [
-          chooseNetworkRoute,
-          importWalletRoute,
-          createSeedNoNamedOnboardingRoute,
-          enterSeedNoNamedOnboardingRoute,
+          chooseNetworkRoute(
+            routes: [
+              createOnboardingSeedPasswordRoute,
+              addExistingWalletRoute,
+            ],
+          ),
         ],
       ),
       StatefulShellRoute.indexedStack(

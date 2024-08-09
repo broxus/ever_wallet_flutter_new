@@ -19,9 +19,7 @@ const delayBeforeCompleteChecking = Duration(seconds: 1);
 /// It generates random order of words that user can select from.
 /// Cubit must be initialized by calling [initAnswers] to generate
 /// [availableAnswers] list.
-@Deprecated('Use v2 version')
 class CheckSeedPhraseCubit extends Cubit<CheckSeedPhraseCubitState> {
-  @Deprecated('Use v2 version')
   factory CheckSeedPhraseCubit(
     List<String> originalPhrase,
     VoidCallback completeChecking,
@@ -36,7 +34,6 @@ class CheckSeedPhraseCubit extends Cubit<CheckSeedPhraseCubitState> {
     );
   }
 
-  @Deprecated('Use v2 version')
   CheckSeedPhraseCubit._(
     this.originalPhrase,
     this.completeChecking,

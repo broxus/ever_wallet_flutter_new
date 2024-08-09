@@ -93,7 +93,6 @@ class __$$InitialImplCopyWithImpl<$Res>
 
 /// @nodoc
 
-@Deprecated('Use v2 version')
 class _$InitialImpl implements _Initial {
   const _$InitialImpl();
 
@@ -216,7 +215,6 @@ class __$$GeneratedImplCopyWithImpl<$Res>
 
 /// @nodoc
 
-@Deprecated('Use v2 version')
 class _$GeneratedImpl implements _Generated {
   const _$GeneratedImpl(
       {required final List<String> words, required this.isCopied})

@@ -406,29 +406,13 @@ extension NavigationHelper on BuildContext {
   }) {
     if (!mounted) return;
 
-    final currentLocation = inject<NavigationService>().state.location;
-    final newLocation = Uri.parse(location);
-    var resultLocation = Uri.parse(currentLocation);
-    // We have query params in old path that we should preserve, so we must
-    // update it manually
-    if (resultLocation.hasQuery && preserveQueryParams) {
-      final query = <String, dynamic>{}
-        ..addAll(resultLocation.queryParameters)
-        ..addAll(newLocation.queryParameters);
-
-      resultLocation = resultLocation.replace(
-        path: '${resultLocation.path}/${newLocation.path}',
-        queryParameters: query,
-      );
-    } else {
-      // old location do not have query, new one may have it, we dont care
-      resultLocation = resultLocation.replace(
-        path: '${resultLocation.path}/${newLocation.path}',
-        queryParameters: newLocation.queryParameters,
-      );
-    }
     return GoRouter.of(this).go(
-      Uri.decodeComponent(resultLocation.toString()),
+      Uri.decodeComponent(
+        _getUriLocation(
+          location,
+          preserveQueryParams: preserveQueryParams,
+        ).toString(),
+      ),
       extra: extra,
     );
   }
@@ -463,5 +447,33 @@ extension NavigationHelper on BuildContext {
     clearQueryParams();
 
     GoRouter.of(this).pop<T>(result);
+  }
+
+  Uri _getUriLocation(
+    String path, {
+    bool preserveQueryParams = false,
+  }) {
+    final location = Uri.parse(inject<NavigationService>().state.location);
+    final pathUri = Uri.parse(path);
+    late Uri resultLocation;
+    // We have query params in old path that we should preserve, so we must
+    // update it manually
+    if (location.hasQuery && preserveQueryParams) {
+      final query = <String, dynamic>{}
+        ..addAll(location.queryParameters)
+        ..addAll(pathUri.queryParameters);
+
+      resultLocation = location.replace(
+        path: '${location.path}/${pathUri.path}',
+        queryParameters: query,
+      );
+    } else {
+      // old location do not have query, new one may have it, we dont care
+      resultLocation = location.replace(
+        path: '${location.path}/${pathUri.path}',
+        queryParameters: pathUri.queryParameters,
+      );
+    }
+    return resultLocation;
   }
 }

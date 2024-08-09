@@ -4,7 +4,6 @@ import 'package:flutter/material.dart';
 import 'package:ui_components_lib/ui_components_lib.dart';
 
 /// Commands that will be used to choose where to navigate after entering name
-@Deprecated('Use v2 version')
 enum EnterSeedNameCommand {
   import,
   create;
@@ -22,10 +21,8 @@ enum EnterSeedNameCommand {
 /// Page that allows user to enter seed name, used only in profile section as
 /// a STARTING screen in seed CREATING or IMPORTING flows.
 /// {@endtemplate}
-@Deprecated('Use v2 version')
 class EnterSeedNamePage extends StatelessWidget {
   /// {@macro enter_seed_name_create_page}
-  @Deprecated('Use v2 version')
   const EnterSeedNamePage({
     required this.commandName,
     super.key,

@@ -9,9 +9,7 @@ part 'create_seed_state.dart';
 part 'create_seed_cubit.freezed.dart';
 
 /// Cubit that helps generating seed phrase.
-@Deprecated('Use v2 version')
 class CreateSeedCubit extends Cubit<CreateSeedCubitState> {
-  @Deprecated('Use v2 version')
   CreateSeedCubit() : super(const CreateSeedCubitState.initial());
 
   Future<void> init() async {

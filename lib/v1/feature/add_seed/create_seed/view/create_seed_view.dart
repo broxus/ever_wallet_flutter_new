@@ -11,10 +11,8 @@ typedef CreateSeedCompleteCallback = void Function(List<String> phrase);
 /// {@template create_seed_view}
 /// Widget that allows user to create random seed phrase, copy it and check
 /// {@endtemplate}
-@Deprecated('Use v2 version')
 class CreateSeedView extends StatelessWidget {
   /// {@macro create_seed_view}
-  @Deprecated('Use v2 version')
   const CreateSeedView({
     required this.skipCallback,
     required this.checkCallback,
