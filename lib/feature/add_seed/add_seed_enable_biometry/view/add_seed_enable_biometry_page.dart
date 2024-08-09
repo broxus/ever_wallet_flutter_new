@@ -1,6 +1,7 @@
 import 'package:app/app/service/service.dart';
 import 'package:app/di/di.dart';
-import 'package:app/feature/add_seed/add_seed_enable_biometry/add_seed_enable_biometry.dart';
+import 'package:app/feature/add_seed/add_seed_enable_biometry/cubit/add_seed_enable_biometry_cubit.dart';
+import 'package:app/feature/add_seed/add_seed_enable_biometry/view/add_seed_enable_biometry_view.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
@@ -20,9 +21,11 @@ class AddSeedEnableBiometryPage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final themeStyle = context.themeStyleV2;
     return SafeArea(
       minimum: const EdgeInsets.only(bottom: DimensSize.d16),
       child: Scaffold(
+        backgroundColor: themeStyle.colors.background0,
         body: BlocProvider<AddSeedEnableBiometryCubit>(
           create: (_) => AddSeedEnableBiometryCubit(
             inject<BiometryService>(),

@@ -7,11 +7,13 @@ class CreateSeedPasswordState with _$CreateSeedPasswordState {
     required bool obscurePassword,
     required bool obscureConfirm,
     required bool isLoading,
+    required PasswordStatus status,
   }) = _CreateSeedPasswordState;
 
   factory CreateSeedPasswordState.initial() => const CreateSeedPasswordState(
         obscurePassword: true,
         obscureConfirm: true,
         isLoading: false,
+        status: PasswordStatus.initial,
       );
 }

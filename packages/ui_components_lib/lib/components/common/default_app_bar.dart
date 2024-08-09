@@ -1,5 +1,8 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
+import 'package:lucide_icons_flutter/lucide_icons.dart';
 import 'package:ui_components_lib/ui_components_lib.dart';
+import 'package:ui_components_lib/v2/ui_components_lib_v2.dart';
 
 const defaultAppBarHeight = 64.0;
 
@@ -51,6 +54,7 @@ class DefaultAppBar extends StatelessWidget implements PreferredSizeWidget {
     this.subtitleTopWidget,
     this.subtitleBottomWidget,
     this.leadingWidth = appBarButtonSize,
+    this.systemOverlayStyle,
   });
 
   /// This is a default action of [DefaultAppBar] that is used with leading
@@ -127,6 +131,8 @@ class DefaultAppBar extends StatelessWidget implements PreferredSizeWidget {
   /// Width of leading widget, default [appBarButtonSize]
   final double leadingWidth;
 
+  final SystemUiOverlayStyle? systemOverlayStyle;
+
   bool get _hasActions => actions?.isNotEmpty ?? false;
 
   bool get _hasAnyActions => _hasActions || _showActionsClose;
@@ -142,12 +148,14 @@ class DefaultAppBar extends StatelessWidget implements PreferredSizeWidget {
     final colors = context.themeStyle.colors;
 
     final title = buildTitle(colors);
+
+    final isShowLeadingClose =
+        _showLeadingClose && defaultCanPopAction(context);
+
     final leading = this.leading ??
-        (_showLeadingClose && defaultCanPopAction(context)
-            ? CommonIconButton.icon(
-                icon: Icons.arrow_back_rounded,
-                size: CommonIconButtonSize.small,
-                buttonType: EverButtonType.secondary,
+        (isShowLeadingClose
+            ? FloatButton(
+                buttonShape: ButtonShape.circle,
                 onPressed: () {
                   if (onClosePressed != null) {
                     onClosePressed!(context);
@@ -155,6 +163,8 @@ class DefaultAppBar extends StatelessWidget implements PreferredSizeWidget {
                     defaultPopAction(context);
                   }
                 },
+                icon: LucideIcons.arrowLeft,
+                buttonSize: ButtonSize.medium,
               )
             : null);
 
@@ -168,7 +178,7 @@ class DefaultAppBar extends StatelessWidget implements PreferredSizeWidget {
         scrolledUnderElevation: 0,
         titleSpacing: DimensSize.d8,
         centerTitle: centerTitle,
-        leadingWidth: leadingWidth,
+        leadingWidth: isShowLeadingClose ? DimensSizeV2.d48 : leadingWidth,
         leading: leading == null
             ? null
             : Align(
@@ -177,6 +187,7 @@ class DefaultAppBar extends StatelessWidget implements PreferredSizeWidget {
               ),
         actions: _hasAnyActions ? _actionsWidget(context) : null,
         title: title,
+        systemOverlayStyle: systemOverlayStyle,
       ),
     );
   }

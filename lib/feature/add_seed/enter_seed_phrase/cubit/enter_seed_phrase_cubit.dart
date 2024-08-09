@@ -1,8 +1,8 @@
 import 'package:app/app/service/messenger/message.dart';
 import 'package:app/app/service/messenger/service/messenger_service.dart';
 import 'package:app/di/di.dart';
-import 'package:app/feature/add_seed/constants.dart';
-import 'package:app/feature/add_seed/enter_seed_phrase/cubit/cubit.dart';
+import 'package:app/feature/add_seed/enter_seed_phrase/cubit/enter_seed_phrase_input_model.dart';
+import 'package:app/feature/constants.dart';
 import 'package:app/generated/locale_keys.g.dart';
 import 'package:bloc/bloc.dart';
 import 'package:collection/collection.dart';
@@ -219,7 +219,7 @@ class EnterSeedPhraseCubit extends Cubit<EnterSeedPhraseState> {
 
     if (words.isNotEmpty && words.length == _currentValue) {
       for (final word in words) {
-        if (!await _isWordValid(word)) {
+        if (!await _checkIsWordValid(word)) {
           words.clear();
           break;
         }
@@ -274,7 +274,7 @@ class EnterSeedPhraseCubit extends Cubit<EnterSeedPhraseState> {
   }
 
   /// [word] is valid if it is in list of hints for this word.
-  Future<bool> _isWordValid(String word) async {
+  Future<bool> _checkIsWordValid(String word) async {
     final hints = await getHints(input: word);
     if (hints.contains(word)) {
       return true;
@@ -293,7 +293,8 @@ class EnterSeedPhraseCubit extends Cubit<EnterSeedPhraseState> {
 
     for (var index = 0; index < _currentValue; index++) {
       final input = _inputModels[index];
-      if (input is EnterSeedPhraseEntered && !await _isWordValid(input.text)) {
+      if (input is EnterSeedPhraseEntered &&
+          !await _checkIsWordValid(input.text)) {
         hasWrongWords = true;
         _inputModels[index] = _inputModels[index].copyWith(hasError: true);
       }
@@ -357,8 +358,10 @@ class EnterSeedPhraseCubit extends Cubit<EnterSeedPhraseState> {
         !focus.hasFocus &&
         inputModel is EnterSeedPhraseInput) {
       // if input entered, not focused and not completed yet
-      _inputModels[index] = EnterSeedPhraseInputModel.entered(
-        text: controller.text,
+      _inputModels[index] =
+          _inputModels[index] = EnterSeedPhraseInputModel.input(
+        controller: controller,
+        focus: focus,
         index: index,
         hasError: false,
       );

@@ -1,8 +1,12 @@
-import 'package:app/feature/add_seed/enter_seed_phrase/cubit/cubit.dart';
+import 'package:app/feature/add_seed/enter_seed_phrase/cubit/enter_seed_phrase_cubit.dart';
+import 'package:app/feature/add_seed/enter_seed_phrase/cubit/enter_seed_phrase_input_model.dart';
 import 'package:app/generated/generated.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:lucide_icons_flutter/lucide_icons.dart';
+import 'package:ui_components_lib/components/input/common_input_style_v2.dart';
 import 'package:ui_components_lib/ui_components_lib.dart';
+import 'package:ui_components_lib/v2/ui_components_lib_v2.dart';
 
 const _gridColumnCount = 2;
 
@@ -16,15 +20,36 @@ class EnterSeedPhraseView extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final colors = context.themeStyle.colors;
+    final theme = context.themeStyleV2;
     final bottomPadding = MediaQuery.of(context).viewInsets.bottom;
     final hasBottomPadding = bottomPadding >= commonButtonHeight;
 
     return SafeArea(
-      minimum: const EdgeInsets.only(bottom: DimensSize.d16),
+      minimum: const EdgeInsets.only(bottom: DimensSizeV2.d16),
       child: Padding(
-        padding: const EdgeInsets.symmetric(horizontal: DimensSize.d16),
+        padding: const EdgeInsets.symmetric(horizontal: DimensSizeV2.d16),
         child: Column(
           children: [
+            Image.asset(
+              Assets.images.seedPhraseIcon.path,
+              width: DimensSizeV2.d56,
+              height: DimensSizeV2.d56,
+            ),
+            const SizedBox(height: DimensSizeV2.d16),
+            Text(
+              LocaleKeys.enterSeedPhrase.tr(),
+              style: theme.textStyles.headingLarge,
+            ),
+            Padding(
+              padding: const EdgeInsets.only(
+                top: DimensSizeV2.d8,
+                left: DimensSizeV2.d16,
+                right: DimensSizeV2.d16,
+              ),
+              child: PrimaryText(
+                LocaleKeys.pasteSeedIntoFirstBox.tr(),
+              ),
+            ),
             if (hasBottomPadding)
               Divider(
                 color: colors.strokePrimary,
@@ -32,17 +57,17 @@ class EnterSeedPhraseView extends StatelessWidget {
                 thickness: DimensStroke.small,
               ),
             Expanded(
-              child: _buildPhrasesList(),
+              child: _buildPhrasesList(theme),
             ),
             SizedBox(
               // subtract commonButtonHeight to avoid button above keyboard
               height: hasBottomPadding ? bottomPadding - commonButtonHeight : 0,
             ),
-            CommonButton.primary(
-              text: LocaleKeys.confirm.tr(),
+            AccentButton(
+              buttonShape: ButtonShape.pill,
+              title: LocaleKeys.confirm.tr(),
               onPressed: () =>
                   context.read<EnterSeedPhraseCubit>().confirmAction(),
-              fillWidth: true,
             ),
           ],
         ),
@@ -51,11 +76,10 @@ class EnterSeedPhraseView extends StatelessWidget {
   }
 
   // ignore:long-method
-  Widget _buildPhrasesList() {
+  Widget _buildPhrasesList(ThemeStyleV2 theme) {
     return BlocBuilder<EnterSeedPhraseCubit, EnterSeedPhraseState>(
       builder: (context, state) {
         final cubit = context.read<EnterSeedPhraseCubit>();
-        final colors = context.themeStyle.colors;
         final bottomPadding = MediaQuery.of(context).viewInsets.bottom;
         final isKeyboardOpen = bottomPadding >= commonButtonHeight;
 
@@ -74,16 +98,6 @@ class EnterSeedPhraseView extends StatelessWidget {
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   if (!isKeyboardOpen) ...[
-                    Text(
-                      LocaleKeys.enterSeedPhrase.tr(),
-                      style: StyleRes.h1.copyWith(color: colors.textPrimary),
-                    ),
-                    const SizedBox(height: DimensSize.d12),
-                    Text(
-                      LocaleKeys.pasteSeedIntoFirstBox.tr(),
-                      style: StyleRes.primaryRegular
-                          .copyWith(color: colors.textPrimary),
-                    ),
                     const SizedBox(height: DimensSize.d24),
                     _tabs(
                       allowedValues,
@@ -92,7 +106,7 @@ class EnterSeedPhraseView extends StatelessWidget {
                       displayPasteButton,
                     ),
                   ],
-                  _inputs(inputsModels, currentValue),
+                  _inputs(theme, inputsModels, currentValue),
                   const SizedBox(height: DimensSize.d16),
                 ],
               ),
@@ -106,6 +120,7 @@ class EnterSeedPhraseView extends StatelessWidget {
   /// [currentValue] starts with 0
   // ignore: long-method
   Widget _inputBuild(
+    ThemeStyleV2 themeStyleV2,
     EnterSeedPhraseInputModel input,
     int currentValue,
   ) {
@@ -134,6 +149,10 @@ class EnterSeedPhraseView extends StatelessWidget {
           },
           input: (controller, focus, index, hasError) {
             return CommonInput(
+              hintStyle: themeStyleV2.textStyles.labelSmall,
+              inactiveBorderColor: themeStyleV2.colors.border0,
+              textStyle: themeStyleV2.textStyles.labelSmall,
+              suggestionBackground: themeStyleV2.colors.background1,
               key: Key('SeedInput-$index'),
               height: DimensSize.d48,
               controller: controller,
@@ -160,6 +179,7 @@ class EnterSeedPhraseView extends StatelessWidget {
               textInputAction: index == currentValue - 1
                   ? TextInputAction.done
                   : TextInputAction.next,
+              v2Style: CommonInputStyleV2(themeStyleV2),
             );
           },
         );
@@ -168,13 +188,13 @@ class EnterSeedPhraseView extends StatelessWidget {
   }
 
   Widget _itemBuilder(BuildContext context, String suggestion) {
-    final colors = context.themeStyle.colors;
+    final theme = context.themeStyleV2;
 
     return ListTile(
       tileColor: Colors.transparent,
       title: Text(
         suggestion,
-        style: StyleRes.primaryRegular.copyWith(color: colors.textPrimary),
+        style: theme.textStyles.labelSmall,
       ),
     );
   }
@@ -192,26 +212,32 @@ class EnterSeedPhraseView extends StatelessWidget {
             Expanded(
               child: SingleChildScrollView(
                 scrollDirection: Axis.horizontal,
-                child: CommonTabBar<int>(
-                  values: allowedValues,
-                  selectedValue: currentValue,
-                  onChanged: cubit.changeTab,
-                  builder: (_, v) => LocaleKeys.wordsCount.plural(v),
+                child: Row(
+                  children: [
+                    for (final value in allowedValues)
+                      GestureDetector(
+                        onTap: () => cubit.changeTab(value),
+                        child: PrimarySegmentControl(
+                          size: SegmentControlSize.small,
+                          state: value == currentValue
+                              ? SegmentControlState.selected
+                              : SegmentControlState.normal,
+                          title: LocaleKeys.wordsCount.plural(value),
+                        ),
+                      ),
+                  ],
                 ),
               ),
             ),
-            CommonButton.ghost(
-              padding: const EdgeInsets.symmetric(horizontal: DimensSize.d4),
-              leading: CommonButtonIconWidget.svg(
-                svg: displayPasteButton
-                    ? Assets.images.paste.path
-                    : Assets.images.close.path,
-              ),
+            GhostButton(
+              buttonShape: ButtonShape.pill,
+              buttonSize: ButtonSize.small,
               onPressed:
                   displayPasteButton ? cubit.pastePhrase : cubit.clearFields,
-              text: displayPasteButton
+              title: displayPasteButton
                   ? LocaleKeys.pasteAll.tr()
                   : LocaleKeys.clearAll.tr(),
+              icon: LucideIcons.arrowDownToDot,
             ),
           ],
         );
@@ -220,6 +246,7 @@ class EnterSeedPhraseView extends StatelessWidget {
   }
 
   Widget _inputs(
+    ThemeStyleV2 themeStyleV2,
     List<EnterSeedPhraseInputModel> inputs,
     int currentValue,
   ) {
@@ -228,18 +255,24 @@ class EnterSeedPhraseView extends StatelessWidget {
       children: [
         Expanded(
           child: SeparatedColumn(
-            children: inputs
-                .getRange(0, currentValue ~/ _gridColumnCount)
-                .map((input) => _inputBuild(input, currentValue))
-                .toList(),
+            children: [
+              for (final input in inputs.getRange(
+                0,
+                currentValue ~/ _gridColumnCount,
+              ))
+                _inputBuild(themeStyleV2, input, currentValue),
+            ],
           ),
         ),
         Expanded(
           child: SeparatedColumn(
-            children: inputs
-                .getRange(currentValue ~/ _gridColumnCount, currentValue)
-                .map((input) => _inputBuild(input, currentValue))
-                .toList(),
+            children: [
+              for (final input in inputs.getRange(
+                currentValue ~/ _gridColumnCount,
+                currentValue,
+              ))
+                _inputBuild(themeStyleV2, input, currentValue),
+            ],
           ),
         ),
       ],

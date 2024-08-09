@@ -3,15 +3,19 @@
 abstract class LocaleKeys {
   static const createNewWallet = 'createNewWallet';
   static const signInWithPhrase = 'signInWithPhrase';
-  static const welcomeTitle = 'welcomeTitle';
   static const supportTokenAndAccessEverscale =
       'supportTokenAndAccessEverscale';
   static const byProcessingAcceptLicense = 'byProcessingAcceptLicense';
   static const readHere = 'readHere';
   static const skipWord = 'skipWord';
   static const letsCheckSeedPhrase = 'letsCheckSeedPhrase';
+  static const chooseNetwork = 'chooseNetwork';
+  static const chooseNetworkEverDescription = 'chooseNetworkEverDescription';
+  static const chooseNetworkVenomDescription = 'chooseNetworkVenomDescription';
   static const checkSeedPhraseCorrectly = 'checkSeedPhraseCorrectly';
   static const seedIsWrong = 'seedIsWrong';
+  static const selectNetworkNewWalletDescription =
+      'selectNetworkNewWalletDescription';
   static const wordWord = 'wordWord';
   static const createPassword = 'createPassword';
   static const createPasswordDescription = 'createPasswordDescription';
@@ -398,6 +402,7 @@ abstract class LocaleKeys {
   static const permissionsNotGranted = 'permissionsNotGranted';
   static const addAsset = 'addAsset';
   static const versionWord = 'versionWord';
+  static const venom = 'venom';
   static const symbolWord = 'symbolWord';
   static const decimalsWord = 'decimalsWord';
   static const ownerAddress = 'ownerAddress';
@@ -449,6 +454,7 @@ abstract class LocaleKeys {
   static const cancelUnstakingNote = 'cancelUnstakingNote';
   static const unstakingCancelled = 'unstakingCancelled';
   static const exchangeRate = 'exchangeRate';
+  static const everscale = 'everscale';
   static const averageApy = 'averageApy';
   static const stakingInitError = 'stakingInitError';
   static const stakingNotEnoughBalanceToStake =
@@ -476,4 +482,31 @@ abstract class LocaleKeys {
   static const connectingNetworkFailed = 'connectingNetworkFailed';
   static const creatingSubscriptionFailed = 'creatingSubscriptionFailed';
   static const suchTokenCannotBeSubscribed = 'suchTokenCannotBeSubscribed';
+  static const welcomeTitle = 'welcomeTitle';
+  static const welcomeSubtitle = 'welcomeSubtitle';
+  static const welcomeGetNewWallet = 'welcomeGetNewWallet';
+  static const welcomeIHaveOne = 'welcomeIHaveOne';
+  static const welcomeYouAccept = 'welcomeYouAccept';
+  static const welcomeLicenceAgreement = 'welcomeLicenceAgreement';
+  static const confirmPasswordTitle = 'confirmPasswordTitle';
+  static const confirmPasswordSubtitle = 'confirmPasswordSubtitle';
+  static const confirmSetPasswordHint = 'confirmSetPasswordHint';
+  static const confirmRepeatPasswordHint = 'confirmRepeatPasswordHint';
+  static const confirmWeakPasswordTitle = 'confirmWeakPasswordTitle';
+  static const confirmWeakPasswordSubtitle = 'confirmWeakPasswordSubtitle';
+  static const confirmMustMatchTitle = 'confirmMustMatchTitle';
+  static const confirmMustMatchSubtitle = 'confirmMustMatchSubtitle';
+  static const confirmPasswordsMatchTitle = 'confirmPasswordsMatchTitle';
+  static const confirmPasswordsMatchSubtitle = 'confirmPasswordsMatchSubtitle';
+  static const faceIdContent = 'faceIdContent';
+  static const touchIdContent = 'touchIdContent';
+  static const addExistingWalletTitle = 'addExistingWalletTitle';
+  static const addExistingWalletSubtitle = 'addExistingWalletSubtitle';
+  static const useSecretPhraseTitle = 'useSecretPhraseTitle';
+  static const importWalletScreenTitle = 'importWalletScreenTitle';
+  static const importWalletScreenSubtitle = 'importWalletScreenSubtitle';
+  static const importWalletButtonText = 'importWalletButtonText';
+  static const importWalletManuallyButtonText =
+      'importWalletManuallyButtonText';
+  static const importWalletPasteClipboard = 'importWalletPasteClipboard';
 }

@@ -716,10 +716,10 @@ packages:
     dependency: transitive
     description:
       name: flutter_nekoton_bridge
-      sha256: "4fc48653acc8639682afa65239bbcc25a68dabb10f0bdaccd7c03445b3032aa7"
+      sha256: "9afa8a3435d61fe8481b74174047ae168f1d15a38fff68d1e23dce8abc3be123"
       url: "https://pub.dev"
     source: hosted
-    version: "1.28.0-dev.5"
+    version: "1.28.0-dev.6"
   flutter_plugin_android_lifecycle:
     dependency: transitive
     description:
@@ -1189,7 +1189,7 @@ packages:
     source: hosted
     version: "1.2.0"
   lucide_icons_flutter:
-    dependency: transitive
+    dependency: "direct main"
     description:
       name: lucide_icons_flutter
       sha256: e8212d1b6b968bec58b1267c990c4878236e2a3edd8f3f43a81b00f6faa95397
@@ -1288,10 +1288,10 @@ packages:
     dependency: transitive
     description:
       name: nekoton_bridge
-      sha256: "6061e1b5e90934ee21bc7a815a054ba3c9f15695d9be55fd08e8be38d85795a7"
+      sha256: dfb031270a4604166a583b93e9af948f30dc770cbf7899b4a112f99766be88b2
       url: "https://pub.dev"
     source: hosted
-    version: "1.20.0-dev.3"
+    version: "1.20.0-dev.4"
   nekoton_repository:
     dependency: "direct main"
     description:

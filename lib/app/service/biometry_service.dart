@@ -31,6 +31,17 @@ class BiometryService {
   /// If biometry enabled and available (if not available, then not enabled)
   bool get enabled => storage.isBiometryEnabled;
 
+  /// Check if biometry available on device
+  Future<bool> get _isAvailable async {
+    if (!await _localAuth.canCheckBiometrics) return false;
+    if (!await _localAuth.isDeviceSupported()) return false;
+    if ((await _localAuth.getAvailableBiometrics()).isEmpty) {
+      return false;
+    }
+
+    return true;
+  }
+
   /// Init biometry settings and subscriptions
   Future<void> init() async {
     _availabilitySubject.add(await _isAvailable);
@@ -126,17 +137,6 @@ class BiometryService {
       _availabilitySubject.add(await _isAvailable);
       rethrow;
     }
-  }
-
-  /// Check if biometry available on device
-  Future<bool> get _isAvailable async {
-    if (!await _localAuth.canCheckBiometrics) return false;
-    if (!await _localAuth.isDeviceSupported()) return false;
-    if ((await _localAuth.getAvailableBiometrics()).isEmpty) {
-      return false;
-    }
-
-    return true;
   }
 
   /// Get list of available biometry types.

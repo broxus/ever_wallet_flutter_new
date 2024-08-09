@@ -1,7 +1,8 @@
 import 'dart:convert';
 
 import 'package:app/app/router/router.dart';
-import 'package:app/feature/add_seed/enter_seed_phrase/enter_seed_phrase.dart';
+import 'package:app/feature/add_seed/enter_seed_phrase/cubit/enter_seed_phrase_cubit.dart';
+import 'package:app/feature/add_seed/enter_seed_phrase/view/enter_seed_phrase_view.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
@@ -16,6 +17,7 @@ class EnterSeedPhrasePage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final theme = context.themeStyleV2;
     return BlocProvider<EnterSeedPhraseCubit>(
       create: (context) => EnterSeedPhraseCubit(
         // ignore: prefer-extracting-callbacks
@@ -38,10 +40,11 @@ class EnterSeedPhrasePage extends StatelessWidget {
       )..init(),
       child: GestureDetector(
         onTap: () => FocusScope.of(context).unfocus(),
-        child: const Scaffold(
+        child: Scaffold(
+          backgroundColor: theme.colors.background0,
           resizeToAvoidBottomInset: false,
-          appBar: DefaultAppBar(),
-          body: EnterSeedPhraseView(),
+          appBar: const DefaultAppBar(),
+          body: const EnterSeedPhraseView(),
         ),
       ),
     );
