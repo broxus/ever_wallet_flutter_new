@@ -5,7 +5,7 @@ import 'package:app/app/service/service.dart';
 import 'package:app/di/di.dart';
 import 'package:app/feature/profile/profile.dart';
 import 'package:app/generated/generated.dart';
-import 'package:app/v2/feature/add_seed/enter_seed_name/enter_seed_name.dart';
+import 'package:app/v1/feature/add_seed/enter_seed_name/enter_seed_name.dart';
 import 'package:app/v2/feature/wallet/wallet.dart';
 import 'package:app/v2/feature/wallet/widgets/wallet_account_actions/wallet_account_actions_cubit.dart';
 import 'package:flutter/material.dart';

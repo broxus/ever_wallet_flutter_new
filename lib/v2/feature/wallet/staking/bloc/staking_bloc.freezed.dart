@@ -15,6 +15,954 @@ final _privateConstructorUsedError = UnsupportedError(
     'It seems like you constructed your class using `MyClass._()`. This constructor is only meant to be used by freezed and you are not supposed to need it nor use it.\nPlease check the documentation here for more information: https://github.com/rrousselGit/freezed#adding-getters-and-methods-to-our-models');
 
 /// @nodoc
+mixin _$StakingBlocEvent {
+  @optionalTypeArgs
+  TResult when<TResult extends Object?>({
+    required TResult Function() init,
+    required TResult Function() selectMax,
+    required TResult Function() doAction,
+    required TResult Function(List<StEverWithdrawRequest> requests)
+        updateResuests,
+    required TResult Function(StakingPageType type) changeTab,
+    required TResult Function(Fixed value) updateReceive,
+  }) =>
+      throw _privateConstructorUsedError;
+  @optionalTypeArgs
+  TResult? whenOrNull<TResult extends Object?>({
+    TResult? Function()? init,
+    TResult? Function()? selectMax,
+    TResult? Function()? doAction,
+    TResult? Function(List<StEverWithdrawRequest> requests)? updateResuests,
+    TResult? Function(StakingPageType type)? changeTab,
+    TResult? Function(Fixed value)? updateReceive,
+  }) =>
+      throw _privateConstructorUsedError;
+  @optionalTypeArgs
+  TResult maybeWhen<TResult extends Object?>({
+    TResult Function()? init,
+    TResult Function()? selectMax,
+    TResult Function()? doAction,
+    TResult Function(List<StEverWithdrawRequest> requests)? updateResuests,
+    TResult Function(StakingPageType type)? changeTab,
+    TResult Function(Fixed value)? updateReceive,
+    required TResult orElse(),
+  }) =>
+      throw _privateConstructorUsedError;
+  @optionalTypeArgs
+  TResult map<TResult extends Object?>({
+    required TResult Function(_Init value) init,
+    required TResult Function(_SelectMax value) selectMax,
+    required TResult Function(_DoAction value) doAction,
+    required TResult Function(_UpdateRequests value) updateResuests,
+    required TResult Function(_ChangeTab value) changeTab,
+    required TResult Function(_UpdateReceive value) updateReceive,
+  }) =>
+      throw _privateConstructorUsedError;
+  @optionalTypeArgs
+  TResult? mapOrNull<TResult extends Object?>({
+    TResult? Function(_Init value)? init,
+    TResult? Function(_SelectMax value)? selectMax,
+    TResult? Function(_DoAction value)? doAction,
+    TResult? Function(_UpdateRequests value)? updateResuests,
+    TResult? Function(_ChangeTab value)? changeTab,
+    TResult? Function(_UpdateReceive value)? updateReceive,
+  }) =>
+      throw _privateConstructorUsedError;
+  @optionalTypeArgs
+  TResult maybeMap<TResult extends Object?>({
+    TResult Function(_Init value)? init,
+    TResult Function(_SelectMax value)? selectMax,
+    TResult Function(_DoAction value)? doAction,
+    TResult Function(_UpdateRequests value)? updateResuests,
+    TResult Function(_ChangeTab value)? changeTab,
+    TResult Function(_UpdateReceive value)? updateReceive,
+    required TResult orElse(),
+  }) =>
+      throw _privateConstructorUsedError;
+}
+
+/// @nodoc
+abstract class $StakingBlocEventCopyWith<$Res> {
+  factory $StakingBlocEventCopyWith(
+          StakingBlocEvent value, $Res Function(StakingBlocEvent) then) =
+      _$StakingBlocEventCopyWithImpl<$Res, StakingBlocEvent>;
+}
+
+/// @nodoc
+class _$StakingBlocEventCopyWithImpl<$Res, $Val extends StakingBlocEvent>
+    implements $StakingBlocEventCopyWith<$Res> {
+  _$StakingBlocEventCopyWithImpl(this._value, this._then);
+
+  // ignore: unused_field
+  final $Val _value;
+  // ignore: unused_field
+  final $Res Function($Val) _then;
+}
+
+/// @nodoc
+abstract class _$$InitImplCopyWith<$Res> {
+  factory _$$InitImplCopyWith(
+          _$InitImpl value, $Res Function(_$InitImpl) then) =
+      __$$InitImplCopyWithImpl<$Res>;
+}
+
+/// @nodoc
+class __$$InitImplCopyWithImpl<$Res>
+    extends _$StakingBlocEventCopyWithImpl<$Res, _$InitImpl>
+    implements _$$InitImplCopyWith<$Res> {
+  __$$InitImplCopyWithImpl(_$InitImpl _value, $Res Function(_$InitImpl) _then)
+      : super(_value, _then);
+}
+
+/// @nodoc
+
+class _$InitImpl implements _Init {
+  const _$InitImpl();
+
+  @override
+  String toString() {
+    return 'StakingBlocEvent.init()';
+  }
+
+  @override
+  bool operator ==(Object other) {
+    return identical(this, other) ||
+        (other.runtimeType == runtimeType && other is _$InitImpl);
+  }
+
+  @override
+  int get hashCode => runtimeType.hashCode;
+
+  @override
+  @optionalTypeArgs
+  TResult when<TResult extends Object?>({
+    required TResult Function() init,
+    required TResult Function() selectMax,
+    required TResult Function() doAction,
+    required TResult Function(List<StEverWithdrawRequest> requests)
+        updateResuests,
+    required TResult Function(StakingPageType type) changeTab,
+    required TResult Function(Fixed value) updateReceive,
+  }) {
+    return init();
+  }
+
+  @override
+  @optionalTypeArgs
+  TResult? whenOrNull<TResult extends Object?>({
+    TResult? Function()? init,
+    TResult? Function()? selectMax,
+    TResult? Function()? doAction,
+    TResult? Function(List<StEverWithdrawRequest> requests)? updateResuests,
+    TResult? Function(StakingPageType type)? changeTab,
+    TResult? Function(Fixed value)? updateReceive,
+  }) {
+    return init?.call();
+  }
+
+  @override
+  @optionalTypeArgs
+  TResult maybeWhen<TResult extends Object?>({
+    TResult Function()? init,
+    TResult Function()? selectMax,
+    TResult Function()? doAction,
+    TResult Function(List<StEverWithdrawRequest> requests)? updateResuests,
+    TResult Function(StakingPageType type)? changeTab,
+    TResult Function(Fixed value)? updateReceive,
+    required TResult orElse(),
+  }) {
+    if (init != null) {
+      return init();
+    }
+    return orElse();
+  }
+
+  @override
+  @optionalTypeArgs
+  TResult map<TResult extends Object?>({
+    required TResult Function(_Init value) init,
+    required TResult Function(_SelectMax value) selectMax,
+    required TResult Function(_DoAction value) doAction,
+    required TResult Function(_UpdateRequests value) updateResuests,
+    required TResult Function(_ChangeTab value) changeTab,
+    required TResult Function(_UpdateReceive value) updateReceive,
+  }) {
+    return init(this);
+  }
+
+  @override
+  @optionalTypeArgs
+  TResult? mapOrNull<TResult extends Object?>({
+    TResult? Function(_Init value)? init,
+    TResult? Function(_SelectMax value)? selectMax,
+    TResult? Function(_DoAction value)? doAction,
+    TResult? Function(_UpdateRequests value)? updateResuests,
+    TResult? Function(_ChangeTab value)? changeTab,
+    TResult? Function(_UpdateReceive value)? updateReceive,
+  }) {
+    return init?.call(this);
+  }
+
+  @override
+  @optionalTypeArgs
+  TResult maybeMap<TResult extends Object?>({
+    TResult Function(_Init value)? init,
+    TResult Function(_SelectMax value)? selectMax,
+    TResult Function(_DoAction value)? doAction,
+    TResult Function(_UpdateRequests value)? updateResuests,
+    TResult Function(_ChangeTab value)? changeTab,
+    TResult Function(_UpdateReceive value)? updateReceive,
+    required TResult orElse(),
+  }) {
+    if (init != null) {
+      return init(this);
+    }
+    return orElse();
+  }
+}
+
+abstract class _Init implements StakingBlocEvent {
+  const factory _Init() = _$InitImpl;
+}
+
+/// @nodoc
+abstract class _$$SelectMaxImplCopyWith<$Res> {
+  factory _$$SelectMaxImplCopyWith(
+          _$SelectMaxImpl value, $Res Function(_$SelectMaxImpl) then) =
+      __$$SelectMaxImplCopyWithImpl<$Res>;
+}
+
+/// @nodoc
+class __$$SelectMaxImplCopyWithImpl<$Res>
+    extends _$StakingBlocEventCopyWithImpl<$Res, _$SelectMaxImpl>
+    implements _$$SelectMaxImplCopyWith<$Res> {
+  __$$SelectMaxImplCopyWithImpl(
+      _$SelectMaxImpl _value, $Res Function(_$SelectMaxImpl) _then)
+      : super(_value, _then);
+}
+
+/// @nodoc
+
+class _$SelectMaxImpl implements _SelectMax {
+  const _$SelectMaxImpl();
+
+  @override
+  String toString() {
+    return 'StakingBlocEvent.selectMax()';
+  }
+
+  @override
+  bool operator ==(Object other) {
+    return identical(this, other) ||
+        (other.runtimeType == runtimeType && other is _$SelectMaxImpl);
+  }
+
+  @override
+  int get hashCode => runtimeType.hashCode;
+
+  @override
+  @optionalTypeArgs
+  TResult when<TResult extends Object?>({
+    required TResult Function() init,
+    required TResult Function() selectMax,
+    required TResult Function() doAction,
+    required TResult Function(List<StEverWithdrawRequest> requests)
+        updateResuests,
+    required TResult Function(StakingPageType type) changeTab,
+    required TResult Function(Fixed value) updateReceive,
+  }) {
+    return selectMax();
+  }
+
+  @override
+  @optionalTypeArgs
+  TResult? whenOrNull<TResult extends Object?>({
+    TResult? Function()? init,
+    TResult? Function()? selectMax,
+    TResult? Function()? doAction,
+    TResult? Function(List<StEverWithdrawRequest> requests)? updateResuests,
+    TResult? Function(StakingPageType type)? changeTab,
+    TResult? Function(Fixed value)? updateReceive,
+  }) {
+    return selectMax?.call();
+  }
+
+  @override
+  @optionalTypeArgs
+  TResult maybeWhen<TResult extends Object?>({
+    TResult Function()? init,
+    TResult Function()? selectMax,
+    TResult Function()? doAction,
+    TResult Function(List<StEverWithdrawRequest> requests)? updateResuests,
+    TResult Function(StakingPageType type)? changeTab,
+    TResult Function(Fixed value)? updateReceive,
+    required TResult orElse(),
+  }) {
+    if (selectMax != null) {
+      return selectMax();
+    }
+    return orElse();
+  }
+
+  @override
+  @optionalTypeArgs
+  TResult map<TResult extends Object?>({
+    required TResult Function(_Init value) init,
+    required TResult Function(_SelectMax value) selectMax,
+    required TResult Function(_DoAction value) doAction,
+    required TResult Function(_UpdateRequests value) updateResuests,
+    required TResult Function(_ChangeTab value) changeTab,
+    required TResult Function(_UpdateReceive value) updateReceive,
+  }) {
+    return selectMax(this);
+  }
+
+  @override
+  @optionalTypeArgs
+  TResult? mapOrNull<TResult extends Object?>({
+    TResult? Function(_Init value)? init,
+    TResult? Function(_SelectMax value)? selectMax,
+    TResult? Function(_DoAction value)? doAction,
+    TResult? Function(_UpdateRequests value)? updateResuests,
+    TResult? Function(_ChangeTab value)? changeTab,
+    TResult? Function(_UpdateReceive value)? updateReceive,
+  }) {
+    return selectMax?.call(this);
+  }
+
+  @override
+  @optionalTypeArgs
+  TResult maybeMap<TResult extends Object?>({
+    TResult Function(_Init value)? init,
+    TResult Function(_SelectMax value)? selectMax,
+    TResult Function(_DoAction value)? doAction,
+    TResult Function(_UpdateRequests value)? updateResuests,
+    TResult Function(_ChangeTab value)? changeTab,
+    TResult Function(_UpdateReceive value)? updateReceive,
+    required TResult orElse(),
+  }) {
+    if (selectMax != null) {
+      return selectMax(this);
+    }
+    return orElse();
+  }
+}
+
+abstract class _SelectMax implements StakingBlocEvent {
+  const factory _SelectMax() = _$SelectMaxImpl;
+}
+
+/// @nodoc
+abstract class _$$DoActionImplCopyWith<$Res> {
+  factory _$$DoActionImplCopyWith(
+          _$DoActionImpl value, $Res Function(_$DoActionImpl) then) =
+      __$$DoActionImplCopyWithImpl<$Res>;
+}
+
+/// @nodoc
+class __$$DoActionImplCopyWithImpl<$Res>
+    extends _$StakingBlocEventCopyWithImpl<$Res, _$DoActionImpl>
+    implements _$$DoActionImplCopyWith<$Res> {
+  __$$DoActionImplCopyWithImpl(
+      _$DoActionImpl _value, $Res Function(_$DoActionImpl) _then)
+      : super(_value, _then);
+}
+
+/// @nodoc
+
+class _$DoActionImpl implements _DoAction {
+  const _$DoActionImpl();
+
+  @override
+  String toString() {
+    return 'StakingBlocEvent.doAction()';
+  }
+
+  @override
+  bool operator ==(Object other) {
+    return identical(this, other) ||
+        (other.runtimeType == runtimeType && other is _$DoActionImpl);
+  }
+
+  @override
+  int get hashCode => runtimeType.hashCode;
+
+  @override
+  @optionalTypeArgs
+  TResult when<TResult extends Object?>({
+    required TResult Function() init,
+    required TResult Function() selectMax,
+    required TResult Function() doAction,
+    required TResult Function(List<StEverWithdrawRequest> requests)
+        updateResuests,
+    required TResult Function(StakingPageType type) changeTab,
+    required TResult Function(Fixed value) updateReceive,
+  }) {
+    return doAction();
+  }
+
+  @override
+  @optionalTypeArgs
+  TResult? whenOrNull<TResult extends Object?>({
+    TResult? Function()? init,
+    TResult? Function()? selectMax,
+    TResult? Function()? doAction,
+    TResult? Function(List<StEverWithdrawRequest> requests)? updateResuests,
+    TResult? Function(StakingPageType type)? changeTab,
+    TResult? Function(Fixed value)? updateReceive,
+  }) {
+    return doAction?.call();
+  }
+
+  @override
+  @optionalTypeArgs
+  TResult maybeWhen<TResult extends Object?>({
+    TResult Function()? init,
+    TResult Function()? selectMax,
+    TResult Function()? doAction,
+    TResult Function(List<StEverWithdrawRequest> requests)? updateResuests,
+    TResult Function(StakingPageType type)? changeTab,
+    TResult Function(Fixed value)? updateReceive,
+    required TResult orElse(),
+  }) {
+    if (doAction != null) {
+      return doAction();
+    }
+    return orElse();
+  }
+
+  @override
+  @optionalTypeArgs
+  TResult map<TResult extends Object?>({
+    required TResult Function(_Init value) init,
+    required TResult Function(_SelectMax value) selectMax,
+    required TResult Function(_DoAction value) doAction,
+    required TResult Function(_UpdateRequests value) updateResuests,
+    required TResult Function(_ChangeTab value) changeTab,
+    required TResult Function(_UpdateReceive value) updateReceive,
+  }) {
+    return doAction(this);
+  }
+
+  @override
+  @optionalTypeArgs
+  TResult? mapOrNull<TResult extends Object?>({
+    TResult? Function(_Init value)? init,
+    TResult? Function(_SelectMax value)? selectMax,
+    TResult? Function(_DoAction value)? doAction,
+    TResult? Function(_UpdateRequests value)? updateResuests,
+    TResult? Function(_ChangeTab value)? changeTab,
+    TResult? Function(_UpdateReceive value)? updateReceive,
+  }) {
+    return doAction?.call(this);
+  }
+
+  @override
+  @optionalTypeArgs
+  TResult maybeMap<TResult extends Object?>({
+    TResult Function(_Init value)? init,
+    TResult Function(_SelectMax value)? selectMax,
+    TResult Function(_DoAction value)? doAction,
+    TResult Function(_UpdateRequests value)? updateResuests,
+    TResult Function(_ChangeTab value)? changeTab,
+    TResult Function(_UpdateReceive value)? updateReceive,
+    required TResult orElse(),
+  }) {
+    if (doAction != null) {
+      return doAction(this);
+    }
+    return orElse();
+  }
+}
+
+abstract class _DoAction implements StakingBlocEvent {
+  const factory _DoAction() = _$DoActionImpl;
+}
+
+/// @nodoc
+abstract class _$$UpdateRequestsImplCopyWith<$Res> {
+  factory _$$UpdateRequestsImplCopyWith(_$UpdateRequestsImpl value,
+          $Res Function(_$UpdateRequestsImpl) then) =
+      __$$UpdateRequestsImplCopyWithImpl<$Res>;
+  @useResult
+  $Res call({List<StEverWithdrawRequest> requests});
+}
+
+/// @nodoc
+class __$$UpdateRequestsImplCopyWithImpl<$Res>
+    extends _$StakingBlocEventCopyWithImpl<$Res, _$UpdateRequestsImpl>
+    implements _$$UpdateRequestsImplCopyWith<$Res> {
+  __$$UpdateRequestsImplCopyWithImpl(
+      _$UpdateRequestsImpl _value, $Res Function(_$UpdateRequestsImpl) _then)
+      : super(_value, _then);
+
+  @pragma('vm:prefer-inline')
+  @override
+  $Res call({
+    Object? requests = null,
+  }) {
+    return _then(_$UpdateRequestsImpl(
+      null == requests
+          ? _value._requests
+          : requests // ignore: cast_nullable_to_non_nullable
+              as List<StEverWithdrawRequest>,
+    ));
+  }
+}
+
+/// @nodoc
+
+class _$UpdateRequestsImpl implements _UpdateRequests {
+  const _$UpdateRequestsImpl(final List<StEverWithdrawRequest> requests)
+      : _requests = requests;
+
+  final List<StEverWithdrawRequest> _requests;
+  @override
+  List<StEverWithdrawRequest> get requests {
+    if (_requests is EqualUnmodifiableListView) return _requests;
+    // ignore: implicit_dynamic_type
+    return EqualUnmodifiableListView(_requests);
+  }
+
+  @override
+  String toString() {
+    return 'StakingBlocEvent.updateResuests(requests: $requests)';
+  }
+
+  @override
+  bool operator ==(Object other) {
+    return identical(this, other) ||
+        (other.runtimeType == runtimeType &&
+            other is _$UpdateRequestsImpl &&
+            const DeepCollectionEquality().equals(other._requests, _requests));
+  }
+
+  @override
+  int get hashCode =>
+      Object.hash(runtimeType, const DeepCollectionEquality().hash(_requests));
+
+  @JsonKey(ignore: true)
+  @override
+  @pragma('vm:prefer-inline')
+  _$$UpdateRequestsImplCopyWith<_$UpdateRequestsImpl> get copyWith =>
+      __$$UpdateRequestsImplCopyWithImpl<_$UpdateRequestsImpl>(
+          this, _$identity);
+
+  @override
+  @optionalTypeArgs
+  TResult when<TResult extends Object?>({
+    required TResult Function() init,
+    required TResult Function() selectMax,
+    required TResult Function() doAction,
+    required TResult Function(List<StEverWithdrawRequest> requests)
+        updateResuests,
+    required TResult Function(StakingPageType type) changeTab,
+    required TResult Function(Fixed value) updateReceive,
+  }) {
+    return updateResuests(requests);
+  }
+
+  @override
+  @optionalTypeArgs
+  TResult? whenOrNull<TResult extends Object?>({
+    TResult? Function()? init,
+    TResult? Function()? selectMax,
+    TResult? Function()? doAction,
+    TResult? Function(List<StEverWithdrawRequest> requests)? updateResuests,
+    TResult? Function(StakingPageType type)? changeTab,
+    TResult? Function(Fixed value)? updateReceive,
+  }) {
+    return updateResuests?.call(requests);
+  }
+
+  @override
+  @optionalTypeArgs
+  TResult maybeWhen<TResult extends Object?>({
+    TResult Function()? init,
+    TResult Function()? selectMax,
+    TResult Function()? doAction,
+    TResult Function(List<StEverWithdrawRequest> requests)? updateResuests,
+    TResult Function(StakingPageType type)? changeTab,
+    TResult Function(Fixed value)? updateReceive,
+    required TResult orElse(),
+  }) {
+    if (updateResuests != null) {
+      return updateResuests(requests);
+    }
+    return orElse();
+  }
+
+  @override
+  @optionalTypeArgs
+  TResult map<TResult extends Object?>({
+    required TResult Function(_Init value) init,
+    required TResult Function(_SelectMax value) selectMax,
+    required TResult Function(_DoAction value) doAction,
+    required TResult Function(_UpdateRequests value) updateResuests,
+    required TResult Function(_ChangeTab value) changeTab,
+    required TResult Function(_UpdateReceive value) updateReceive,
+  }) {
+    return updateResuests(this);
+  }
+
+  @override
+  @optionalTypeArgs
+  TResult? mapOrNull<TResult extends Object?>({
+    TResult? Function(_Init value)? init,
+    TResult? Function(_SelectMax value)? selectMax,
+    TResult? Function(_DoAction value)? doAction,
+    TResult? Function(_UpdateRequests value)? updateResuests,
+    TResult? Function(_ChangeTab value)? changeTab,
+    TResult? Function(_UpdateReceive value)? updateReceive,
+  }) {
+    return updateResuests?.call(this);
+  }
+
+  @override
+  @optionalTypeArgs
+  TResult maybeMap<TResult extends Object?>({
+    TResult Function(_Init value)? init,
+    TResult Function(_SelectMax value)? selectMax,
+    TResult Function(_DoAction value)? doAction,
+    TResult Function(_UpdateRequests value)? updateResuests,
+    TResult Function(_ChangeTab value)? changeTab,
+    TResult Function(_UpdateReceive value)? updateReceive,
+    required TResult orElse(),
+  }) {
+    if (updateResuests != null) {
+      return updateResuests(this);
+    }
+    return orElse();
+  }
+}
+
+abstract class _UpdateRequests implements StakingBlocEvent {
+  const factory _UpdateRequests(final List<StEverWithdrawRequest> requests) =
+      _$UpdateRequestsImpl;
+
+  List<StEverWithdrawRequest> get requests;
+  @JsonKey(ignore: true)
+  _$$UpdateRequestsImplCopyWith<_$UpdateRequestsImpl> get copyWith =>
+      throw _privateConstructorUsedError;
+}
+
+/// @nodoc
+abstract class _$$ChangeTabImplCopyWith<$Res> {
+  factory _$$ChangeTabImplCopyWith(
+          _$ChangeTabImpl value, $Res Function(_$ChangeTabImpl) then) =
+      __$$ChangeTabImplCopyWithImpl<$Res>;
+  @useResult
+  $Res call({StakingPageType type});
+}
+
+/// @nodoc
+class __$$ChangeTabImplCopyWithImpl<$Res>
+    extends _$StakingBlocEventCopyWithImpl<$Res, _$ChangeTabImpl>
+    implements _$$ChangeTabImplCopyWith<$Res> {
+  __$$ChangeTabImplCopyWithImpl(
+      _$ChangeTabImpl _value, $Res Function(_$ChangeTabImpl) _then)
+      : super(_value, _then);
+
+  @pragma('vm:prefer-inline')
+  @override
+  $Res call({
+    Object? type = null,
+  }) {
+    return _then(_$ChangeTabImpl(
+      null == type
+          ? _value.type
+          : type // ignore: cast_nullable_to_non_nullable
+              as StakingPageType,
+    ));
+  }
+}
+
+/// @nodoc
+
+class _$ChangeTabImpl implements _ChangeTab {
+  const _$ChangeTabImpl(this.type);
+
+  @override
+  final StakingPageType type;
+
+  @override
+  String toString() {
+    return 'StakingBlocEvent.changeTab(type: $type)';
+  }
+
+  @override
+  bool operator ==(Object other) {
+    return identical(this, other) ||
+        (other.runtimeType == runtimeType &&
+            other is _$ChangeTabImpl &&
+            (identical(other.type, type) || other.type == type));
+  }
+
+  @override
+  int get hashCode => Object.hash(runtimeType, type);
+
+  @JsonKey(ignore: true)
+  @override
+  @pragma('vm:prefer-inline')
+  _$$ChangeTabImplCopyWith<_$ChangeTabImpl> get copyWith =>
+      __$$ChangeTabImplCopyWithImpl<_$ChangeTabImpl>(this, _$identity);
+
+  @override
+  @optionalTypeArgs
+  TResult when<TResult extends Object?>({
+    required TResult Function() init,
+    required TResult Function() selectMax,
+    required TResult Function() doAction,
+    required TResult Function(List<StEverWithdrawRequest> requests)
+        updateResuests,
+    required TResult Function(StakingPageType type) changeTab,
+    required TResult Function(Fixed value) updateReceive,
+  }) {
+    return changeTab(type);
+  }
+
+  @override
+  @optionalTypeArgs
+  TResult? whenOrNull<TResult extends Object?>({
+    TResult? Function()? init,
+    TResult? Function()? selectMax,
+    TResult? Function()? doAction,
+    TResult? Function(List<StEverWithdrawRequest> requests)? updateResuests,
+    TResult? Function(StakingPageType type)? changeTab,
+    TResult? Function(Fixed value)? updateReceive,
+  }) {
+    return changeTab?.call(type);
+  }
+
+  @override
+  @optionalTypeArgs
+  TResult maybeWhen<TResult extends Object?>({
+    TResult Function()? init,
+    TResult Function()? selectMax,
+    TResult Function()? doAction,
+    TResult Function(List<StEverWithdrawRequest> requests)? updateResuests,
+    TResult Function(StakingPageType type)? changeTab,
+    TResult Function(Fixed value)? updateReceive,
+    required TResult orElse(),
+  }) {
+    if (changeTab != null) {
+      return changeTab(type);
+    }
+    return orElse();
+  }
+
+  @override
+  @optionalTypeArgs
+  TResult map<TResult extends Object?>({
+    required TResult Function(_Init value) init,
+    required TResult Function(_SelectMax value) selectMax,
+    required TResult Function(_DoAction value) doAction,
+    required TResult Function(_UpdateRequests value) updateResuests,
+    required TResult Function(_ChangeTab value) changeTab,
+    required TResult Function(_UpdateReceive value) updateReceive,
+  }) {
+    return changeTab(this);
+  }
+
+  @override
+  @optionalTypeArgs
+  TResult? mapOrNull<TResult extends Object?>({
+    TResult? Function(_Init value)? init,
+    TResult? Function(_SelectMax value)? selectMax,
+    TResult? Function(_DoAction value)? doAction,
+    TResult? Function(_UpdateRequests value)? updateResuests,
+    TResult? Function(_ChangeTab value)? changeTab,
+    TResult? Function(_UpdateReceive value)? updateReceive,
+  }) {
+    return changeTab?.call(this);
+  }
+
+  @override
+  @optionalTypeArgs
+  TResult maybeMap<TResult extends Object?>({
+    TResult Function(_Init value)? init,
+    TResult Function(_SelectMax value)? selectMax,
+    TResult Function(_DoAction value)? doAction,
+    TResult Function(_UpdateRequests value)? updateResuests,
+    TResult Function(_ChangeTab value)? changeTab,
+    TResult Function(_UpdateReceive value)? updateReceive,
+    required TResult orElse(),
+  }) {
+    if (changeTab != null) {
+      return changeTab(this);
+    }
+    return orElse();
+  }
+}
+
+abstract class _ChangeTab implements StakingBlocEvent {
+  const factory _ChangeTab(final StakingPageType type) = _$ChangeTabImpl;
+
+  StakingPageType get type;
+  @JsonKey(ignore: true)
+  _$$ChangeTabImplCopyWith<_$ChangeTabImpl> get copyWith =>
+      throw _privateConstructorUsedError;
+}
+
+/// @nodoc
+abstract class _$$UpdateReceiveImplCopyWith<$Res> {
+  factory _$$UpdateReceiveImplCopyWith(
+          _$UpdateReceiveImpl value, $Res Function(_$UpdateReceiveImpl) then) =
+      __$$UpdateReceiveImplCopyWithImpl<$Res>;
+  @useResult
+  $Res call({Fixed value});
+}
+
+/// @nodoc
+class __$$UpdateReceiveImplCopyWithImpl<$Res>
+    extends _$StakingBlocEventCopyWithImpl<$Res, _$UpdateReceiveImpl>
+    implements _$$UpdateReceiveImplCopyWith<$Res> {
+  __$$UpdateReceiveImplCopyWithImpl(
+      _$UpdateReceiveImpl _value, $Res Function(_$UpdateReceiveImpl) _then)
+      : super(_value, _then);
+
+  @pragma('vm:prefer-inline')
+  @override
+  $Res call({
+    Object? value = null,
+  }) {
+    return _then(_$UpdateReceiveImpl(
+      null == value
+          ? _value.value
+          : value // ignore: cast_nullable_to_non_nullable
+              as Fixed,
+    ));
+  }
+}
+
+/// @nodoc
+
+class _$UpdateReceiveImpl implements _UpdateReceive {
+  const _$UpdateReceiveImpl(this.value);
+
+  @override
+  final Fixed value;
+
+  @override
+  String toString() {
+    return 'StakingBlocEvent.updateReceive(value: $value)';
+  }
+
+  @override
+  bool operator ==(Object other) {
+    return identical(this, other) ||
+        (other.runtimeType == runtimeType &&
+            other is _$UpdateReceiveImpl &&
+            (identical(other.value, value) || other.value == value));
+  }
+
+  @override
+  int get hashCode => Object.hash(runtimeType, value);
+
+  @JsonKey(ignore: true)
+  @override
+  @pragma('vm:prefer-inline')
+  _$$UpdateReceiveImplCopyWith<_$UpdateReceiveImpl> get copyWith =>
+      __$$UpdateReceiveImplCopyWithImpl<_$UpdateReceiveImpl>(this, _$identity);
+
+  @override
+  @optionalTypeArgs
+  TResult when<TResult extends Object?>({
+    required TResult Function() init,
+    required TResult Function() selectMax,
+    required TResult Function() doAction,
+    required TResult Function(List<StEverWithdrawRequest> requests)
+        updateResuests,
+    required TResult Function(StakingPageType type) changeTab,
+    required TResult Function(Fixed value) updateReceive,
+  }) {
+    return updateReceive(value);
+  }
+
+  @override
+  @optionalTypeArgs
+  TResult? whenOrNull<TResult extends Object?>({
+    TResult? Function()? init,
+    TResult? Function()? selectMax,
+    TResult? Function()? doAction,
+    TResult? Function(List<StEverWithdrawRequest> requests)? updateResuests,
+    TResult? Function(StakingPageType type)? changeTab,
+    TResult? Function(Fixed value)? updateReceive,
+  }) {
+    return updateReceive?.call(value);
+  }
+
+  @override
+  @optionalTypeArgs
+  TResult maybeWhen<TResult extends Object?>({
+    TResult Function()? init,
+    TResult Function()? selectMax,
+    TResult Function()? doAction,
+    TResult Function(List<StEverWithdrawRequest> requests)? updateResuests,
+    TResult Function(StakingPageType type)? changeTab,
+    TResult Function(Fixed value)? updateReceive,
+    required TResult orElse(),
+  }) {
+    if (updateReceive != null) {
+      return updateReceive(value);
+    }
+    return orElse();
+  }
+
+  @override
+  @optionalTypeArgs
+  TResult map<TResult extends Object?>({
+    required TResult Function(_Init value) init,
+    required TResult Function(_SelectMax value) selectMax,
+    required TResult Function(_DoAction value) doAction,
+    required TResult Function(_UpdateRequests value) updateResuests,
+    required TResult Function(_ChangeTab value) changeTab,
+    required TResult Function(_UpdateReceive value) updateReceive,
+  }) {
+    return updateReceive(this);
+  }
+
+  @override
+  @optionalTypeArgs
+  TResult? mapOrNull<TResult extends Object?>({
+    TResult? Function(_Init value)? init,
+    TResult? Function(_SelectMax value)? selectMax,
+    TResult? Function(_DoAction value)? doAction,
+    TResult? Function(_UpdateRequests value)? updateResuests,
+    TResult? Function(_ChangeTab value)? changeTab,
+    TResult? Function(_UpdateReceive value)? updateReceive,
+  }) {
+    return updateReceive?.call(this);
+  }
+
+  @override
+  @optionalTypeArgs
+  TResult maybeMap<TResult extends Object?>({
+    TResult Function(_Init value)? init,
+    TResult Function(_SelectMax value)? selectMax,
+    TResult Function(_DoAction value)? doAction,
+    TResult Function(_UpdateRequests value)? updateResuests,
+    TResult Function(_ChangeTab value)? changeTab,
+    TResult Function(_UpdateReceive value)? updateReceive,
+    required TResult orElse(),
+  }) {
+    if (updateReceive != null) {
+      return updateReceive(this);
+    }
+    return orElse();
+  }
+}
+
+abstract class _UpdateReceive implements StakingBlocEvent {
+  const factory _UpdateReceive(final Fixed value) = _$UpdateReceiveImpl;
+
+  Fixed get value;
+  @JsonKey(ignore: true)
+  _$$UpdateReceiveImplCopyWith<_$UpdateReceiveImpl> get copyWith =>
+      throw _privateConstructorUsedError;
+}
+
+/// @nodoc
 mixin _$StakingBlocState {
   @optionalTypeArgs
   TResult when<TResult extends Object?>({
@@ -1088,953 +2036,5 @@ abstract class _StakingState implements StakingBlocState {
   double? get apy;
   @JsonKey(ignore: true)
   _$$StakingStateImplCopyWith<_$StakingStateImpl> get copyWith =>
-      throw _privateConstructorUsedError;
-}
-
-/// @nodoc
-mixin _$StakingBlocEvent {
-  @optionalTypeArgs
-  TResult when<TResult extends Object?>({
-    required TResult Function() init,
-    required TResult Function() selectMax,
-    required TResult Function() doAction,
-    required TResult Function(List<StEverWithdrawRequest> requests)
-        updateResuests,
-    required TResult Function(StakingPageType type) changeTab,
-    required TResult Function(Fixed value) updateReceive,
-  }) =>
-      throw _privateConstructorUsedError;
-  @optionalTypeArgs
-  TResult? whenOrNull<TResult extends Object?>({
-    TResult? Function()? init,
-    TResult? Function()? selectMax,
-    TResult? Function()? doAction,
-    TResult? Function(List<StEverWithdrawRequest> requests)? updateResuests,
-    TResult? Function(StakingPageType type)? changeTab,
-    TResult? Function(Fixed value)? updateReceive,
-  }) =>
-      throw _privateConstructorUsedError;
-  @optionalTypeArgs
-  TResult maybeWhen<TResult extends Object?>({
-    TResult Function()? init,
-    TResult Function()? selectMax,
-    TResult Function()? doAction,
-    TResult Function(List<StEverWithdrawRequest> requests)? updateResuests,
-    TResult Function(StakingPageType type)? changeTab,
-    TResult Function(Fixed value)? updateReceive,
-    required TResult orElse(),
-  }) =>
-      throw _privateConstructorUsedError;
-  @optionalTypeArgs
-  TResult map<TResult extends Object?>({
-    required TResult Function(_Init value) init,
-    required TResult Function(_SelectMax value) selectMax,
-    required TResult Function(_DoAction value) doAction,
-    required TResult Function(_UpdateRequests value) updateResuests,
-    required TResult Function(_ChangeTab value) changeTab,
-    required TResult Function(_UpdateReceive value) updateReceive,
-  }) =>
-      throw _privateConstructorUsedError;
-  @optionalTypeArgs
-  TResult? mapOrNull<TResult extends Object?>({
-    TResult? Function(_Init value)? init,
-    TResult? Function(_SelectMax value)? selectMax,
-    TResult? Function(_DoAction value)? doAction,
-    TResult? Function(_UpdateRequests value)? updateResuests,
-    TResult? Function(_ChangeTab value)? changeTab,
-    TResult? Function(_UpdateReceive value)? updateReceive,
-  }) =>
-      throw _privateConstructorUsedError;
-  @optionalTypeArgs
-  TResult maybeMap<TResult extends Object?>({
-    TResult Function(_Init value)? init,
-    TResult Function(_SelectMax value)? selectMax,
-    TResult Function(_DoAction value)? doAction,
-    TResult Function(_UpdateRequests value)? updateResuests,
-    TResult Function(_ChangeTab value)? changeTab,
-    TResult Function(_UpdateReceive value)? updateReceive,
-    required TResult orElse(),
-  }) =>
-      throw _privateConstructorUsedError;
-}
-
-/// @nodoc
-abstract class $StakingBlocEventCopyWith<$Res> {
-  factory $StakingBlocEventCopyWith(
-          StakingBlocEvent value, $Res Function(StakingBlocEvent) then) =
-      _$StakingBlocEventCopyWithImpl<$Res, StakingBlocEvent>;
-}
-
-/// @nodoc
-class _$StakingBlocEventCopyWithImpl<$Res, $Val extends StakingBlocEvent>
-    implements $StakingBlocEventCopyWith<$Res> {
-  _$StakingBlocEventCopyWithImpl(this._value, this._then);
-
-  // ignore: unused_field
-  final $Val _value;
-  // ignore: unused_field
-  final $Res Function($Val) _then;
-}
-
-/// @nodoc
-abstract class _$$InitImplCopyWith<$Res> {
-  factory _$$InitImplCopyWith(
-          _$InitImpl value, $Res Function(_$InitImpl) then) =
-      __$$InitImplCopyWithImpl<$Res>;
-}
-
-/// @nodoc
-class __$$InitImplCopyWithImpl<$Res>
-    extends _$StakingBlocEventCopyWithImpl<$Res, _$InitImpl>
-    implements _$$InitImplCopyWith<$Res> {
-  __$$InitImplCopyWithImpl(_$InitImpl _value, $Res Function(_$InitImpl) _then)
-      : super(_value, _then);
-}
-
-/// @nodoc
-
-class _$InitImpl implements _Init {
-  const _$InitImpl();
-
-  @override
-  String toString() {
-    return 'StakingBlocEvent.init()';
-  }
-
-  @override
-  bool operator ==(Object other) {
-    return identical(this, other) ||
-        (other.runtimeType == runtimeType && other is _$InitImpl);
-  }
-
-  @override
-  int get hashCode => runtimeType.hashCode;
-
-  @override
-  @optionalTypeArgs
-  TResult when<TResult extends Object?>({
-    required TResult Function() init,
-    required TResult Function() selectMax,
-    required TResult Function() doAction,
-    required TResult Function(List<StEverWithdrawRequest> requests)
-        updateResuests,
-    required TResult Function(StakingPageType type) changeTab,
-    required TResult Function(Fixed value) updateReceive,
-  }) {
-    return init();
-  }
-
-  @override
-  @optionalTypeArgs
-  TResult? whenOrNull<TResult extends Object?>({
-    TResult? Function()? init,
-    TResult? Function()? selectMax,
-    TResult? Function()? doAction,
-    TResult? Function(List<StEverWithdrawRequest> requests)? updateResuests,
-    TResult? Function(StakingPageType type)? changeTab,
-    TResult? Function(Fixed value)? updateReceive,
-  }) {
-    return init?.call();
-  }
-
-  @override
-  @optionalTypeArgs
-  TResult maybeWhen<TResult extends Object?>({
-    TResult Function()? init,
-    TResult Function()? selectMax,
-    TResult Function()? doAction,
-    TResult Function(List<StEverWithdrawRequest> requests)? updateResuests,
-    TResult Function(StakingPageType type)? changeTab,
-    TResult Function(Fixed value)? updateReceive,
-    required TResult orElse(),
-  }) {
-    if (init != null) {
-      return init();
-    }
-    return orElse();
-  }
-
-  @override
-  @optionalTypeArgs
-  TResult map<TResult extends Object?>({
-    required TResult Function(_Init value) init,
-    required TResult Function(_SelectMax value) selectMax,
-    required TResult Function(_DoAction value) doAction,
-    required TResult Function(_UpdateRequests value) updateResuests,
-    required TResult Function(_ChangeTab value) changeTab,
-    required TResult Function(_UpdateReceive value) updateReceive,
-  }) {
-    return init(this);
-  }
-
-  @override
-  @optionalTypeArgs
-  TResult? mapOrNull<TResult extends Object?>({
-    TResult? Function(_Init value)? init,
-    TResult? Function(_SelectMax value)? selectMax,
-    TResult? Function(_DoAction value)? doAction,
-    TResult? Function(_UpdateRequests value)? updateResuests,
-    TResult? Function(_ChangeTab value)? changeTab,
-    TResult? Function(_UpdateReceive value)? updateReceive,
-  }) {
-    return init?.call(this);
-  }
-
-  @override
-  @optionalTypeArgs
-  TResult maybeMap<TResult extends Object?>({
-    TResult Function(_Init value)? init,
-    TResult Function(_SelectMax value)? selectMax,
-    TResult Function(_DoAction value)? doAction,
-    TResult Function(_UpdateRequests value)? updateResuests,
-    TResult Function(_ChangeTab value)? changeTab,
-    TResult Function(_UpdateReceive value)? updateReceive,
-    required TResult orElse(),
-  }) {
-    if (init != null) {
-      return init(this);
-    }
-    return orElse();
-  }
-}
-
-abstract class _Init implements StakingBlocEvent {
-  const factory _Init() = _$InitImpl;
-}
-
-/// @nodoc
-abstract class _$$SelectMaxImplCopyWith<$Res> {
-  factory _$$SelectMaxImplCopyWith(
-          _$SelectMaxImpl value, $Res Function(_$SelectMaxImpl) then) =
-      __$$SelectMaxImplCopyWithImpl<$Res>;
-}
-
-/// @nodoc
-class __$$SelectMaxImplCopyWithImpl<$Res>
-    extends _$StakingBlocEventCopyWithImpl<$Res, _$SelectMaxImpl>
-    implements _$$SelectMaxImplCopyWith<$Res> {
-  __$$SelectMaxImplCopyWithImpl(
-      _$SelectMaxImpl _value, $Res Function(_$SelectMaxImpl) _then)
-      : super(_value, _then);
-}
-
-/// @nodoc
-
-class _$SelectMaxImpl implements _SelectMax {
-  const _$SelectMaxImpl();
-
-  @override
-  String toString() {
-    return 'StakingBlocEvent.selectMax()';
-  }
-
-  @override
-  bool operator ==(Object other) {
-    return identical(this, other) ||
-        (other.runtimeType == runtimeType && other is _$SelectMaxImpl);
-  }
-
-  @override
-  int get hashCode => runtimeType.hashCode;
-
-  @override
-  @optionalTypeArgs
-  TResult when<TResult extends Object?>({
-    required TResult Function() init,
-    required TResult Function() selectMax,
-    required TResult Function() doAction,
-    required TResult Function(List<StEverWithdrawRequest> requests)
-        updateResuests,
-    required TResult Function(StakingPageType type) changeTab,
-    required TResult Function(Fixed value) updateReceive,
-  }) {
-    return selectMax();
-  }
-
-  @override
-  @optionalTypeArgs
-  TResult? whenOrNull<TResult extends Object?>({
-    TResult? Function()? init,
-    TResult? Function()? selectMax,
-    TResult? Function()? doAction,
-    TResult? Function(List<StEverWithdrawRequest> requests)? updateResuests,
-    TResult? Function(StakingPageType type)? changeTab,
-    TResult? Function(Fixed value)? updateReceive,
-  }) {
-    return selectMax?.call();
-  }
-
-  @override
-  @optionalTypeArgs
-  TResult maybeWhen<TResult extends Object?>({
-    TResult Function()? init,
-    TResult Function()? selectMax,
-    TResult Function()? doAction,
-    TResult Function(List<StEverWithdrawRequest> requests)? updateResuests,
-    TResult Function(StakingPageType type)? changeTab,
-    TResult Function(Fixed value)? updateReceive,
-    required TResult orElse(),
-  }) {
-    if (selectMax != null) {
-      return selectMax();
-    }
-    return orElse();
-  }
-
-  @override
-  @optionalTypeArgs
-  TResult map<TResult extends Object?>({
-    required TResult Function(_Init value) init,
-    required TResult Function(_SelectMax value) selectMax,
-    required TResult Function(_DoAction value) doAction,
-    required TResult Function(_UpdateRequests value) updateResuests,
-    required TResult Function(_ChangeTab value) changeTab,
-    required TResult Function(_UpdateReceive value) updateReceive,
-  }) {
-    return selectMax(this);
-  }
-
-  @override
-  @optionalTypeArgs
-  TResult? mapOrNull<TResult extends Object?>({
-    TResult? Function(_Init value)? init,
-    TResult? Function(_SelectMax value)? selectMax,
-    TResult? Function(_DoAction value)? doAction,
-    TResult? Function(_UpdateRequests value)? updateResuests,
-    TResult? Function(_ChangeTab value)? changeTab,
-    TResult? Function(_UpdateReceive value)? updateReceive,
-  }) {
-    return selectMax?.call(this);
-  }
-
-  @override
-  @optionalTypeArgs
-  TResult maybeMap<TResult extends Object?>({
-    TResult Function(_Init value)? init,
-    TResult Function(_SelectMax value)? selectMax,
-    TResult Function(_DoAction value)? doAction,
-    TResult Function(_UpdateRequests value)? updateResuests,
-    TResult Function(_ChangeTab value)? changeTab,
-    TResult Function(_UpdateReceive value)? updateReceive,
-    required TResult orElse(),
-  }) {
-    if (selectMax != null) {
-      return selectMax(this);
-    }
-    return orElse();
-  }
-}
-
-abstract class _SelectMax implements StakingBlocEvent {
-  const factory _SelectMax() = _$SelectMaxImpl;
-}
-
-/// @nodoc
-abstract class _$$DoActionImplCopyWith<$Res> {
-  factory _$$DoActionImplCopyWith(
-          _$DoActionImpl value, $Res Function(_$DoActionImpl) then) =
-      __$$DoActionImplCopyWithImpl<$Res>;
-}
-
-/// @nodoc
-class __$$DoActionImplCopyWithImpl<$Res>
-    extends _$StakingBlocEventCopyWithImpl<$Res, _$DoActionImpl>
-    implements _$$DoActionImplCopyWith<$Res> {
-  __$$DoActionImplCopyWithImpl(
-      _$DoActionImpl _value, $Res Function(_$DoActionImpl) _then)
-      : super(_value, _then);
-}
-
-/// @nodoc
-
-class _$DoActionImpl implements _DoAction {
-  const _$DoActionImpl();
-
-  @override
-  String toString() {
-    return 'StakingBlocEvent.doAction()';
-  }
-
-  @override
-  bool operator ==(Object other) {
-    return identical(this, other) ||
-        (other.runtimeType == runtimeType && other is _$DoActionImpl);
-  }
-
-  @override
-  int get hashCode => runtimeType.hashCode;
-
-  @override
-  @optionalTypeArgs
-  TResult when<TResult extends Object?>({
-    required TResult Function() init,
-    required TResult Function() selectMax,
-    required TResult Function() doAction,
-    required TResult Function(List<StEverWithdrawRequest> requests)
-        updateResuests,
-    required TResult Function(StakingPageType type) changeTab,
-    required TResult Function(Fixed value) updateReceive,
-  }) {
-    return doAction();
-  }
-
-  @override
-  @optionalTypeArgs
-  TResult? whenOrNull<TResult extends Object?>({
-    TResult? Function()? init,
-    TResult? Function()? selectMax,
-    TResult? Function()? doAction,
-    TResult? Function(List<StEverWithdrawRequest> requests)? updateResuests,
-    TResult? Function(StakingPageType type)? changeTab,
-    TResult? Function(Fixed value)? updateReceive,
-  }) {
-    return doAction?.call();
-  }
-
-  @override
-  @optionalTypeArgs
-  TResult maybeWhen<TResult extends Object?>({
-    TResult Function()? init,
-    TResult Function()? selectMax,
-    TResult Function()? doAction,
-    TResult Function(List<StEverWithdrawRequest> requests)? updateResuests,
-    TResult Function(StakingPageType type)? changeTab,
-    TResult Function(Fixed value)? updateReceive,
-    required TResult orElse(),
-  }) {
-    if (doAction != null) {
-      return doAction();
-    }
-    return orElse();
-  }
-
-  @override
-  @optionalTypeArgs
-  TResult map<TResult extends Object?>({
-    required TResult Function(_Init value) init,
-    required TResult Function(_SelectMax value) selectMax,
-    required TResult Function(_DoAction value) doAction,
-    required TResult Function(_UpdateRequests value) updateResuests,
-    required TResult Function(_ChangeTab value) changeTab,
-    required TResult Function(_UpdateReceive value) updateReceive,
-  }) {
-    return doAction(this);
-  }
-
-  @override
-  @optionalTypeArgs
-  TResult? mapOrNull<TResult extends Object?>({
-    TResult? Function(_Init value)? init,
-    TResult? Function(_SelectMax value)? selectMax,
-    TResult? Function(_DoAction value)? doAction,
-    TResult? Function(_UpdateRequests value)? updateResuests,
-    TResult? Function(_ChangeTab value)? changeTab,
-    TResult? Function(_UpdateReceive value)? updateReceive,
-  }) {
-    return doAction?.call(this);
-  }
-
-  @override
-  @optionalTypeArgs
-  TResult maybeMap<TResult extends Object?>({
-    TResult Function(_Init value)? init,
-    TResult Function(_SelectMax value)? selectMax,
-    TResult Function(_DoAction value)? doAction,
-    TResult Function(_UpdateRequests value)? updateResuests,
-    TResult Function(_ChangeTab value)? changeTab,
-    TResult Function(_UpdateReceive value)? updateReceive,
-    required TResult orElse(),
-  }) {
-    if (doAction != null) {
-      return doAction(this);
-    }
-    return orElse();
-  }
-}
-
-abstract class _DoAction implements StakingBlocEvent {
-  const factory _DoAction() = _$DoActionImpl;
-}
-
-/// @nodoc
-abstract class _$$UpdateRequestsImplCopyWith<$Res> {
-  factory _$$UpdateRequestsImplCopyWith(_$UpdateRequestsImpl value,
-          $Res Function(_$UpdateRequestsImpl) then) =
-      __$$UpdateRequestsImplCopyWithImpl<$Res>;
-  @useResult
-  $Res call({List<StEverWithdrawRequest> requests});
-}
-
-/// @nodoc
-class __$$UpdateRequestsImplCopyWithImpl<$Res>
-    extends _$StakingBlocEventCopyWithImpl<$Res, _$UpdateRequestsImpl>
-    implements _$$UpdateRequestsImplCopyWith<$Res> {
-  __$$UpdateRequestsImplCopyWithImpl(
-      _$UpdateRequestsImpl _value, $Res Function(_$UpdateRequestsImpl) _then)
-      : super(_value, _then);
-
-  @pragma('vm:prefer-inline')
-  @override
-  $Res call({
-    Object? requests = null,
-  }) {
-    return _then(_$UpdateRequestsImpl(
-      null == requests
-          ? _value._requests
-          : requests // ignore: cast_nullable_to_non_nullable
-              as List<StEverWithdrawRequest>,
-    ));
-  }
-}
-
-/// @nodoc
-
-class _$UpdateRequestsImpl implements _UpdateRequests {
-  const _$UpdateRequestsImpl(final List<StEverWithdrawRequest> requests)
-      : _requests = requests;
-
-  final List<StEverWithdrawRequest> _requests;
-  @override
-  List<StEverWithdrawRequest> get requests {
-    if (_requests is EqualUnmodifiableListView) return _requests;
-    // ignore: implicit_dynamic_type
-    return EqualUnmodifiableListView(_requests);
-  }
-
-  @override
-  String toString() {
-    return 'StakingBlocEvent.updateResuests(requests: $requests)';
-  }
-
-  @override
-  bool operator ==(Object other) {
-    return identical(this, other) ||
-        (other.runtimeType == runtimeType &&
-            other is _$UpdateRequestsImpl &&
-            const DeepCollectionEquality().equals(other._requests, _requests));
-  }
-
-  @override
-  int get hashCode =>
-      Object.hash(runtimeType, const DeepCollectionEquality().hash(_requests));
-
-  @JsonKey(ignore: true)
-  @override
-  @pragma('vm:prefer-inline')
-  _$$UpdateRequestsImplCopyWith<_$UpdateRequestsImpl> get copyWith =>
-      __$$UpdateRequestsImplCopyWithImpl<_$UpdateRequestsImpl>(
-          this, _$identity);
-
-  @override
-  @optionalTypeArgs
-  TResult when<TResult extends Object?>({
-    required TResult Function() init,
-    required TResult Function() selectMax,
-    required TResult Function() doAction,
-    required TResult Function(List<StEverWithdrawRequest> requests)
-        updateResuests,
-    required TResult Function(StakingPageType type) changeTab,
-    required TResult Function(Fixed value) updateReceive,
-  }) {
-    return updateResuests(requests);
-  }
-
-  @override
-  @optionalTypeArgs
-  TResult? whenOrNull<TResult extends Object?>({
-    TResult? Function()? init,
-    TResult? Function()? selectMax,
-    TResult? Function()? doAction,
-    TResult? Function(List<StEverWithdrawRequest> requests)? updateResuests,
-    TResult? Function(StakingPageType type)? changeTab,
-    TResult? Function(Fixed value)? updateReceive,
-  }) {
-    return updateResuests?.call(requests);
-  }
-
-  @override
-  @optionalTypeArgs
-  TResult maybeWhen<TResult extends Object?>({
-    TResult Function()? init,
-    TResult Function()? selectMax,
-    TResult Function()? doAction,
-    TResult Function(List<StEverWithdrawRequest> requests)? updateResuests,
-    TResult Function(StakingPageType type)? changeTab,
-    TResult Function(Fixed value)? updateReceive,
-    required TResult orElse(),
-  }) {
-    if (updateResuests != null) {
-      return updateResuests(requests);
-    }
-    return orElse();
-  }
-
-  @override
-  @optionalTypeArgs
-  TResult map<TResult extends Object?>({
-    required TResult Function(_Init value) init,
-    required TResult Function(_SelectMax value) selectMax,
-    required TResult Function(_DoAction value) doAction,
-    required TResult Function(_UpdateRequests value) updateResuests,
-    required TResult Function(_ChangeTab value) changeTab,
-    required TResult Function(_UpdateReceive value) updateReceive,
-  }) {
-    return updateResuests(this);
-  }
-
-  @override
-  @optionalTypeArgs
-  TResult? mapOrNull<TResult extends Object?>({
-    TResult? Function(_Init value)? init,
-    TResult? Function(_SelectMax value)? selectMax,
-    TResult? Function(_DoAction value)? doAction,
-    TResult? Function(_UpdateRequests value)? updateResuests,
-    TResult? Function(_ChangeTab value)? changeTab,
-    TResult? Function(_UpdateReceive value)? updateReceive,
-  }) {
-    return updateResuests?.call(this);
-  }
-
-  @override
-  @optionalTypeArgs
-  TResult maybeMap<TResult extends Object?>({
-    TResult Function(_Init value)? init,
-    TResult Function(_SelectMax value)? selectMax,
-    TResult Function(_DoAction value)? doAction,
-    TResult Function(_UpdateRequests value)? updateResuests,
-    TResult Function(_ChangeTab value)? changeTab,
-    TResult Function(_UpdateReceive value)? updateReceive,
-    required TResult orElse(),
-  }) {
-    if (updateResuests != null) {
-      return updateResuests(this);
-    }
-    return orElse();
-  }
-}
-
-abstract class _UpdateRequests implements StakingBlocEvent {
-  const factory _UpdateRequests(final List<StEverWithdrawRequest> requests) =
-      _$UpdateRequestsImpl;
-
-  List<StEverWithdrawRequest> get requests;
-  @JsonKey(ignore: true)
-  _$$UpdateRequestsImplCopyWith<_$UpdateRequestsImpl> get copyWith =>
-      throw _privateConstructorUsedError;
-}
-
-/// @nodoc
-abstract class _$$ChangeTabImplCopyWith<$Res> {
-  factory _$$ChangeTabImplCopyWith(
-          _$ChangeTabImpl value, $Res Function(_$ChangeTabImpl) then) =
-      __$$ChangeTabImplCopyWithImpl<$Res>;
-  @useResult
-  $Res call({StakingPageType type});
-}
-
-/// @nodoc
-class __$$ChangeTabImplCopyWithImpl<$Res>
-    extends _$StakingBlocEventCopyWithImpl<$Res, _$ChangeTabImpl>
-    implements _$$ChangeTabImplCopyWith<$Res> {
-  __$$ChangeTabImplCopyWithImpl(
-      _$ChangeTabImpl _value, $Res Function(_$ChangeTabImpl) _then)
-      : super(_value, _then);
-
-  @pragma('vm:prefer-inline')
-  @override
-  $Res call({
-    Object? type = null,
-  }) {
-    return _then(_$ChangeTabImpl(
-      null == type
-          ? _value.type
-          : type // ignore: cast_nullable_to_non_nullable
-              as StakingPageType,
-    ));
-  }
-}
-
-/// @nodoc
-
-class _$ChangeTabImpl implements _ChangeTab {
-  const _$ChangeTabImpl(this.type);
-
-  @override
-  final StakingPageType type;
-
-  @override
-  String toString() {
-    return 'StakingBlocEvent.changeTab(type: $type)';
-  }
-
-  @override
-  bool operator ==(Object other) {
-    return identical(this, other) ||
-        (other.runtimeType == runtimeType &&
-            other is _$ChangeTabImpl &&
-            (identical(other.type, type) || other.type == type));
-  }
-
-  @override
-  int get hashCode => Object.hash(runtimeType, type);
-
-  @JsonKey(ignore: true)
-  @override
-  @pragma('vm:prefer-inline')
-  _$$ChangeTabImplCopyWith<_$ChangeTabImpl> get copyWith =>
-      __$$ChangeTabImplCopyWithImpl<_$ChangeTabImpl>(this, _$identity);
-
-  @override
-  @optionalTypeArgs
-  TResult when<TResult extends Object?>({
-    required TResult Function() init,
-    required TResult Function() selectMax,
-    required TResult Function() doAction,
-    required TResult Function(List<StEverWithdrawRequest> requests)
-        updateResuests,
-    required TResult Function(StakingPageType type) changeTab,
-    required TResult Function(Fixed value) updateReceive,
-  }) {
-    return changeTab(type);
-  }
-
-  @override
-  @optionalTypeArgs
-  TResult? whenOrNull<TResult extends Object?>({
-    TResult? Function()? init,
-    TResult? Function()? selectMax,
-    TResult? Function()? doAction,
-    TResult? Function(List<StEverWithdrawRequest> requests)? updateResuests,
-    TResult? Function(StakingPageType type)? changeTab,
-    TResult? Function(Fixed value)? updateReceive,
-  }) {
-    return changeTab?.call(type);
-  }
-
-  @override
-  @optionalTypeArgs
-  TResult maybeWhen<TResult extends Object?>({
-    TResult Function()? init,
-    TResult Function()? selectMax,
-    TResult Function()? doAction,
-    TResult Function(List<StEverWithdrawRequest> requests)? updateResuests,
-    TResult Function(StakingPageType type)? changeTab,
-    TResult Function(Fixed value)? updateReceive,
-    required TResult orElse(),
-  }) {
-    if (changeTab != null) {
-      return changeTab(type);
-    }
-    return orElse();
-  }
-
-  @override
-  @optionalTypeArgs
-  TResult map<TResult extends Object?>({
-    required TResult Function(_Init value) init,
-    required TResult Function(_SelectMax value) selectMax,
-    required TResult Function(_DoAction value) doAction,
-    required TResult Function(_UpdateRequests value) updateResuests,
-    required TResult Function(_ChangeTab value) changeTab,
-    required TResult Function(_UpdateReceive value) updateReceive,
-  }) {
-    return changeTab(this);
-  }
-
-  @override
-  @optionalTypeArgs
-  TResult? mapOrNull<TResult extends Object?>({
-    TResult? Function(_Init value)? init,
-    TResult? Function(_SelectMax value)? selectMax,
-    TResult? Function(_DoAction value)? doAction,
-    TResult? Function(_UpdateRequests value)? updateResuests,
-    TResult? Function(_ChangeTab value)? changeTab,
-    TResult? Function(_UpdateReceive value)? updateReceive,
-  }) {
-    return changeTab?.call(this);
-  }
-
-  @override
-  @optionalTypeArgs
-  TResult maybeMap<TResult extends Object?>({
-    TResult Function(_Init value)? init,
-    TResult Function(_SelectMax value)? selectMax,
-    TResult Function(_DoAction value)? doAction,
-    TResult Function(_UpdateRequests value)? updateResuests,
-    TResult Function(_ChangeTab value)? changeTab,
-    TResult Function(_UpdateReceive value)? updateReceive,
-    required TResult orElse(),
-  }) {
-    if (changeTab != null) {
-      return changeTab(this);
-    }
-    return orElse();
-  }
-}
-
-abstract class _ChangeTab implements StakingBlocEvent {
-  const factory _ChangeTab(final StakingPageType type) = _$ChangeTabImpl;
-
-  StakingPageType get type;
-  @JsonKey(ignore: true)
-  _$$ChangeTabImplCopyWith<_$ChangeTabImpl> get copyWith =>
-      throw _privateConstructorUsedError;
-}
-
-/// @nodoc
-abstract class _$$UpdateReceiveImplCopyWith<$Res> {
-  factory _$$UpdateReceiveImplCopyWith(
-          _$UpdateReceiveImpl value, $Res Function(_$UpdateReceiveImpl) then) =
-      __$$UpdateReceiveImplCopyWithImpl<$Res>;
-  @useResult
-  $Res call({Fixed value});
-}
-
-/// @nodoc
-class __$$UpdateReceiveImplCopyWithImpl<$Res>
-    extends _$StakingBlocEventCopyWithImpl<$Res, _$UpdateReceiveImpl>
-    implements _$$UpdateReceiveImplCopyWith<$Res> {
-  __$$UpdateReceiveImplCopyWithImpl(
-      _$UpdateReceiveImpl _value, $Res Function(_$UpdateReceiveImpl) _then)
-      : super(_value, _then);
-
-  @pragma('vm:prefer-inline')
-  @override
-  $Res call({
-    Object? value = null,
-  }) {
-    return _then(_$UpdateReceiveImpl(
-      null == value
-          ? _value.value
-          : value // ignore: cast_nullable_to_non_nullable
-              as Fixed,
-    ));
-  }
-}
-
-/// @nodoc
-
-class _$UpdateReceiveImpl implements _UpdateReceive {
-  const _$UpdateReceiveImpl(this.value);
-
-  @override
-  final Fixed value;
-
-  @override
-  String toString() {
-    return 'StakingBlocEvent.updateReceive(value: $value)';
-  }
-
-  @override
-  bool operator ==(Object other) {
-    return identical(this, other) ||
-        (other.runtimeType == runtimeType &&
-            other is _$UpdateReceiveImpl &&
-            (identical(other.value, value) || other.value == value));
-  }
-
-  @override
-  int get hashCode => Object.hash(runtimeType, value);
-
-  @JsonKey(ignore: true)
-  @override
-  @pragma('vm:prefer-inline')
-  _$$UpdateReceiveImplCopyWith<_$UpdateReceiveImpl> get copyWith =>
-      __$$UpdateReceiveImplCopyWithImpl<_$UpdateReceiveImpl>(this, _$identity);
-
-  @override
-  @optionalTypeArgs
-  TResult when<TResult extends Object?>({
-    required TResult Function() init,
-    required TResult Function() selectMax,
-    required TResult Function() doAction,
-    required TResult Function(List<StEverWithdrawRequest> requests)
-        updateResuests,
-    required TResult Function(StakingPageType type) changeTab,
-    required TResult Function(Fixed value) updateReceive,
-  }) {
-    return updateReceive(value);
-  }
-
-  @override
-  @optionalTypeArgs
-  TResult? whenOrNull<TResult extends Object?>({
-    TResult? Function()? init,
-    TResult? Function()? selectMax,
-    TResult? Function()? doAction,
-    TResult? Function(List<StEverWithdrawRequest> requests)? updateResuests,
-    TResult? Function(StakingPageType type)? changeTab,
-    TResult? Function(Fixed value)? updateReceive,
-  }) {
-    return updateReceive?.call(value);
-  }
-
-  @override
-  @optionalTypeArgs
-  TResult maybeWhen<TResult extends Object?>({
-    TResult Function()? init,
-    TResult Function()? selectMax,
-    TResult Function()? doAction,
-    TResult Function(List<StEverWithdrawRequest> requests)? updateResuests,
-    TResult Function(StakingPageType type)? changeTab,
-    TResult Function(Fixed value)? updateReceive,
-    required TResult orElse(),
-  }) {
-    if (updateReceive != null) {
-      return updateReceive(value);
-    }
-    return orElse();
-  }
-
-  @override
-  @optionalTypeArgs
-  TResult map<TResult extends Object?>({
-    required TResult Function(_Init value) init,
-    required TResult Function(_SelectMax value) selectMax,
-    required TResult Function(_DoAction value) doAction,
-    required TResult Function(_UpdateRequests value) updateResuests,
-    required TResult Function(_ChangeTab value) changeTab,
-    required TResult Function(_UpdateReceive value) updateReceive,
-  }) {
-    return updateReceive(this);
-  }
-
-  @override
-  @optionalTypeArgs
-  TResult? mapOrNull<TResult extends Object?>({
-    TResult? Function(_Init value)? init,
-    TResult? Function(_SelectMax value)? selectMax,
-    TResult? Function(_DoAction value)? doAction,
-    TResult? Function(_UpdateRequests value)? updateResuests,
-    TResult? Function(_ChangeTab value)? changeTab,
-    TResult? Function(_UpdateReceive value)? updateReceive,
-  }) {
-    return updateReceive?.call(this);
-  }
-
-  @override
-  @optionalTypeArgs
-  TResult maybeMap<TResult extends Object?>({
-    TResult Function(_Init value)? init,
-    TResult Function(_SelectMax value)? selectMax,
-    TResult Function(_DoAction value)? doAction,
-    TResult Function(_UpdateRequests value)? updateResuests,
-    TResult Function(_ChangeTab value)? changeTab,
-    TResult Function(_UpdateReceive value)? updateReceive,
-    required TResult orElse(),
-  }) {
-    if (updateReceive != null) {
-      return updateReceive(this);
-    }
-    return orElse();
-  }
-}
-
-abstract class _UpdateReceive implements StakingBlocEvent {
-  const factory _UpdateReceive(final Fixed value) = _$UpdateReceiveImpl;
-
-  Fixed get value;
-  @JsonKey(ignore: true)
-  _$$UpdateReceiveImplCopyWith<_$UpdateReceiveImpl> get copyWith =>
       throw _privateConstructorUsedError;
 }

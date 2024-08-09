@@ -15,6 +15,537 @@ final _privateConstructorUsedError = UnsupportedError(
     'It seems like you constructed your class using `MyClass._()`. This constructor is only meant to be used by freezed and you are not supposed to need it nor use it.\nPlease check the documentation here for more information: https://github.com/rrousselGit/freezed#adding-getters-and-methods-to-our-models');
 
 /// @nodoc
+mixin _$ActionStakingBlocEvent {
+  @optionalTypeArgs
+  TResult when<TResult extends Object?>({
+    required TResult Function() init,
+    required TResult Function(BigInt amount, PublicKey accountKey) stake,
+    required TResult Function(
+            BigInt amount, PublicKey accountKey, int withdrawHours)
+        unstake,
+  }) =>
+      throw _privateConstructorUsedError;
+  @optionalTypeArgs
+  TResult? whenOrNull<TResult extends Object?>({
+    TResult? Function()? init,
+    TResult? Function(BigInt amount, PublicKey accountKey)? stake,
+    TResult? Function(BigInt amount, PublicKey accountKey, int withdrawHours)?
+        unstake,
+  }) =>
+      throw _privateConstructorUsedError;
+  @optionalTypeArgs
+  TResult maybeWhen<TResult extends Object?>({
+    TResult Function()? init,
+    TResult Function(BigInt amount, PublicKey accountKey)? stake,
+    TResult Function(BigInt amount, PublicKey accountKey, int withdrawHours)?
+        unstake,
+    required TResult orElse(),
+  }) =>
+      throw _privateConstructorUsedError;
+  @optionalTypeArgs
+  TResult map<TResult extends Object?>({
+    required TResult Function(_Init value) init,
+    required TResult Function(_Stake value) stake,
+    required TResult Function(_Unstake value) unstake,
+  }) =>
+      throw _privateConstructorUsedError;
+  @optionalTypeArgs
+  TResult? mapOrNull<TResult extends Object?>({
+    TResult? Function(_Init value)? init,
+    TResult? Function(_Stake value)? stake,
+    TResult? Function(_Unstake value)? unstake,
+  }) =>
+      throw _privateConstructorUsedError;
+  @optionalTypeArgs
+  TResult maybeMap<TResult extends Object?>({
+    TResult Function(_Init value)? init,
+    TResult Function(_Stake value)? stake,
+    TResult Function(_Unstake value)? unstake,
+    required TResult orElse(),
+  }) =>
+      throw _privateConstructorUsedError;
+}
+
+/// @nodoc
+abstract class $ActionStakingBlocEventCopyWith<$Res> {
+  factory $ActionStakingBlocEventCopyWith(ActionStakingBlocEvent value,
+          $Res Function(ActionStakingBlocEvent) then) =
+      _$ActionStakingBlocEventCopyWithImpl<$Res, ActionStakingBlocEvent>;
+}
+
+/// @nodoc
+class _$ActionStakingBlocEventCopyWithImpl<$Res,
+        $Val extends ActionStakingBlocEvent>
+    implements $ActionStakingBlocEventCopyWith<$Res> {
+  _$ActionStakingBlocEventCopyWithImpl(this._value, this._then);
+
+  // ignore: unused_field
+  final $Val _value;
+  // ignore: unused_field
+  final $Res Function($Val) _then;
+}
+
+/// @nodoc
+abstract class _$$InitImplCopyWith<$Res> {
+  factory _$$InitImplCopyWith(
+          _$InitImpl value, $Res Function(_$InitImpl) then) =
+      __$$InitImplCopyWithImpl<$Res>;
+}
+
+/// @nodoc
+class __$$InitImplCopyWithImpl<$Res>
+    extends _$ActionStakingBlocEventCopyWithImpl<$Res, _$InitImpl>
+    implements _$$InitImplCopyWith<$Res> {
+  __$$InitImplCopyWithImpl(_$InitImpl _value, $Res Function(_$InitImpl) _then)
+      : super(_value, _then);
+}
+
+/// @nodoc
+
+class _$InitImpl implements _Init {
+  const _$InitImpl();
+
+  @override
+  String toString() {
+    return 'ActionStakingBlocEvent.init()';
+  }
+
+  @override
+  bool operator ==(Object other) {
+    return identical(this, other) ||
+        (other.runtimeType == runtimeType && other is _$InitImpl);
+  }
+
+  @override
+  int get hashCode => runtimeType.hashCode;
+
+  @override
+  @optionalTypeArgs
+  TResult when<TResult extends Object?>({
+    required TResult Function() init,
+    required TResult Function(BigInt amount, PublicKey accountKey) stake,
+    required TResult Function(
+            BigInt amount, PublicKey accountKey, int withdrawHours)
+        unstake,
+  }) {
+    return init();
+  }
+
+  @override
+  @optionalTypeArgs
+  TResult? whenOrNull<TResult extends Object?>({
+    TResult? Function()? init,
+    TResult? Function(BigInt amount, PublicKey accountKey)? stake,
+    TResult? Function(BigInt amount, PublicKey accountKey, int withdrawHours)?
+        unstake,
+  }) {
+    return init?.call();
+  }
+
+  @override
+  @optionalTypeArgs
+  TResult maybeWhen<TResult extends Object?>({
+    TResult Function()? init,
+    TResult Function(BigInt amount, PublicKey accountKey)? stake,
+    TResult Function(BigInt amount, PublicKey accountKey, int withdrawHours)?
+        unstake,
+    required TResult orElse(),
+  }) {
+    if (init != null) {
+      return init();
+    }
+    return orElse();
+  }
+
+  @override
+  @optionalTypeArgs
+  TResult map<TResult extends Object?>({
+    required TResult Function(_Init value) init,
+    required TResult Function(_Stake value) stake,
+    required TResult Function(_Unstake value) unstake,
+  }) {
+    return init(this);
+  }
+
+  @override
+  @optionalTypeArgs
+  TResult? mapOrNull<TResult extends Object?>({
+    TResult? Function(_Init value)? init,
+    TResult? Function(_Stake value)? stake,
+    TResult? Function(_Unstake value)? unstake,
+  }) {
+    return init?.call(this);
+  }
+
+  @override
+  @optionalTypeArgs
+  TResult maybeMap<TResult extends Object?>({
+    TResult Function(_Init value)? init,
+    TResult Function(_Stake value)? stake,
+    TResult Function(_Unstake value)? unstake,
+    required TResult orElse(),
+  }) {
+    if (init != null) {
+      return init(this);
+    }
+    return orElse();
+  }
+}
+
+abstract class _Init implements ActionStakingBlocEvent {
+  const factory _Init() = _$InitImpl;
+}
+
+/// @nodoc
+abstract class _$$StakeImplCopyWith<$Res> {
+  factory _$$StakeImplCopyWith(
+          _$StakeImpl value, $Res Function(_$StakeImpl) then) =
+      __$$StakeImplCopyWithImpl<$Res>;
+  @useResult
+  $Res call({BigInt amount, PublicKey accountKey});
+
+  $PublicKeyCopyWith<$Res> get accountKey;
+}
+
+/// @nodoc
+class __$$StakeImplCopyWithImpl<$Res>
+    extends _$ActionStakingBlocEventCopyWithImpl<$Res, _$StakeImpl>
+    implements _$$StakeImplCopyWith<$Res> {
+  __$$StakeImplCopyWithImpl(
+      _$StakeImpl _value, $Res Function(_$StakeImpl) _then)
+      : super(_value, _then);
+
+  @pragma('vm:prefer-inline')
+  @override
+  $Res call({
+    Object? amount = null,
+    Object? accountKey = null,
+  }) {
+    return _then(_$StakeImpl(
+      amount: null == amount
+          ? _value.amount
+          : amount // ignore: cast_nullable_to_non_nullable
+              as BigInt,
+      accountKey: null == accountKey
+          ? _value.accountKey
+          : accountKey // ignore: cast_nullable_to_non_nullable
+              as PublicKey,
+    ));
+  }
+
+  @override
+  @pragma('vm:prefer-inline')
+  $PublicKeyCopyWith<$Res> get accountKey {
+    return $PublicKeyCopyWith<$Res>(_value.accountKey, (value) {
+      return _then(_value.copyWith(accountKey: value));
+    });
+  }
+}
+
+/// @nodoc
+
+class _$StakeImpl implements _Stake {
+  const _$StakeImpl({required this.amount, required this.accountKey});
+
+// in native tokens
+  @override
+  final BigInt amount;
+  @override
+  final PublicKey accountKey;
+
+  @override
+  String toString() {
+    return 'ActionStakingBlocEvent.stake(amount: $amount, accountKey: $accountKey)';
+  }
+
+  @override
+  bool operator ==(Object other) {
+    return identical(this, other) ||
+        (other.runtimeType == runtimeType &&
+            other is _$StakeImpl &&
+            (identical(other.amount, amount) || other.amount == amount) &&
+            (identical(other.accountKey, accountKey) ||
+                other.accountKey == accountKey));
+  }
+
+  @override
+  int get hashCode => Object.hash(runtimeType, amount, accountKey);
+
+  @JsonKey(ignore: true)
+  @override
+  @pragma('vm:prefer-inline')
+  _$$StakeImplCopyWith<_$StakeImpl> get copyWith =>
+      __$$StakeImplCopyWithImpl<_$StakeImpl>(this, _$identity);
+
+  @override
+  @optionalTypeArgs
+  TResult when<TResult extends Object?>({
+    required TResult Function() init,
+    required TResult Function(BigInt amount, PublicKey accountKey) stake,
+    required TResult Function(
+            BigInt amount, PublicKey accountKey, int withdrawHours)
+        unstake,
+  }) {
+    return stake(amount, accountKey);
+  }
+
+  @override
+  @optionalTypeArgs
+  TResult? whenOrNull<TResult extends Object?>({
+    TResult? Function()? init,
+    TResult? Function(BigInt amount, PublicKey accountKey)? stake,
+    TResult? Function(BigInt amount, PublicKey accountKey, int withdrawHours)?
+        unstake,
+  }) {
+    return stake?.call(amount, accountKey);
+  }
+
+  @override
+  @optionalTypeArgs
+  TResult maybeWhen<TResult extends Object?>({
+    TResult Function()? init,
+    TResult Function(BigInt amount, PublicKey accountKey)? stake,
+    TResult Function(BigInt amount, PublicKey accountKey, int withdrawHours)?
+        unstake,
+    required TResult orElse(),
+  }) {
+    if (stake != null) {
+      return stake(amount, accountKey);
+    }
+    return orElse();
+  }
+
+  @override
+  @optionalTypeArgs
+  TResult map<TResult extends Object?>({
+    required TResult Function(_Init value) init,
+    required TResult Function(_Stake value) stake,
+    required TResult Function(_Unstake value) unstake,
+  }) {
+    return stake(this);
+  }
+
+  @override
+  @optionalTypeArgs
+  TResult? mapOrNull<TResult extends Object?>({
+    TResult? Function(_Init value)? init,
+    TResult? Function(_Stake value)? stake,
+    TResult? Function(_Unstake value)? unstake,
+  }) {
+    return stake?.call(this);
+  }
+
+  @override
+  @optionalTypeArgs
+  TResult maybeMap<TResult extends Object?>({
+    TResult Function(_Init value)? init,
+    TResult Function(_Stake value)? stake,
+    TResult Function(_Unstake value)? unstake,
+    required TResult orElse(),
+  }) {
+    if (stake != null) {
+      return stake(this);
+    }
+    return orElse();
+  }
+}
+
+abstract class _Stake implements ActionStakingBlocEvent {
+  const factory _Stake(
+      {required final BigInt amount,
+      required final PublicKey accountKey}) = _$StakeImpl;
+
+// in native tokens
+  BigInt get amount;
+  PublicKey get accountKey;
+  @JsonKey(ignore: true)
+  _$$StakeImplCopyWith<_$StakeImpl> get copyWith =>
+      throw _privateConstructorUsedError;
+}
+
+/// @nodoc
+abstract class _$$UnstakeImplCopyWith<$Res> {
+  factory _$$UnstakeImplCopyWith(
+          _$UnstakeImpl value, $Res Function(_$UnstakeImpl) then) =
+      __$$UnstakeImplCopyWithImpl<$Res>;
+  @useResult
+  $Res call({BigInt amount, PublicKey accountKey, int withdrawHours});
+
+  $PublicKeyCopyWith<$Res> get accountKey;
+}
+
+/// @nodoc
+class __$$UnstakeImplCopyWithImpl<$Res>
+    extends _$ActionStakingBlocEventCopyWithImpl<$Res, _$UnstakeImpl>
+    implements _$$UnstakeImplCopyWith<$Res> {
+  __$$UnstakeImplCopyWithImpl(
+      _$UnstakeImpl _value, $Res Function(_$UnstakeImpl) _then)
+      : super(_value, _then);
+
+  @pragma('vm:prefer-inline')
+  @override
+  $Res call({
+    Object? amount = null,
+    Object? accountKey = null,
+    Object? withdrawHours = null,
+  }) {
+    return _then(_$UnstakeImpl(
+      amount: null == amount
+          ? _value.amount
+          : amount // ignore: cast_nullable_to_non_nullable
+              as BigInt,
+      accountKey: null == accountKey
+          ? _value.accountKey
+          : accountKey // ignore: cast_nullable_to_non_nullable
+              as PublicKey,
+      withdrawHours: null == withdrawHours
+          ? _value.withdrawHours
+          : withdrawHours // ignore: cast_nullable_to_non_nullable
+              as int,
+    ));
+  }
+
+  @override
+  @pragma('vm:prefer-inline')
+  $PublicKeyCopyWith<$Res> get accountKey {
+    return $PublicKeyCopyWith<$Res>(_value.accountKey, (value) {
+      return _then(_value.copyWith(accountKey: value));
+    });
+  }
+}
+
+/// @nodoc
+
+class _$UnstakeImpl implements _Unstake {
+  const _$UnstakeImpl(
+      {required this.amount,
+      required this.accountKey,
+      required this.withdrawHours});
+
+// in staking tokens
+  @override
+  final BigInt amount;
+  @override
+  final PublicKey accountKey;
+  @override
+  final int withdrawHours;
+
+  @override
+  String toString() {
+    return 'ActionStakingBlocEvent.unstake(amount: $amount, accountKey: $accountKey, withdrawHours: $withdrawHours)';
+  }
+
+  @override
+  bool operator ==(Object other) {
+    return identical(this, other) ||
+        (other.runtimeType == runtimeType &&
+            other is _$UnstakeImpl &&
+            (identical(other.amount, amount) || other.amount == amount) &&
+            (identical(other.accountKey, accountKey) ||
+                other.accountKey == accountKey) &&
+            (identical(other.withdrawHours, withdrawHours) ||
+                other.withdrawHours == withdrawHours));
+  }
+
+  @override
+  int get hashCode =>
+      Object.hash(runtimeType, amount, accountKey, withdrawHours);
+
+  @JsonKey(ignore: true)
+  @override
+  @pragma('vm:prefer-inline')
+  _$$UnstakeImplCopyWith<_$UnstakeImpl> get copyWith =>
+      __$$UnstakeImplCopyWithImpl<_$UnstakeImpl>(this, _$identity);
+
+  @override
+  @optionalTypeArgs
+  TResult when<TResult extends Object?>({
+    required TResult Function() init,
+    required TResult Function(BigInt amount, PublicKey accountKey) stake,
+    required TResult Function(
+            BigInt amount, PublicKey accountKey, int withdrawHours)
+        unstake,
+  }) {
+    return unstake(amount, accountKey, withdrawHours);
+  }
+
+  @override
+  @optionalTypeArgs
+  TResult? whenOrNull<TResult extends Object?>({
+    TResult? Function()? init,
+    TResult? Function(BigInt amount, PublicKey accountKey)? stake,
+    TResult? Function(BigInt amount, PublicKey accountKey, int withdrawHours)?
+        unstake,
+  }) {
+    return unstake?.call(amount, accountKey, withdrawHours);
+  }
+
+  @override
+  @optionalTypeArgs
+  TResult maybeWhen<TResult extends Object?>({
+    TResult Function()? init,
+    TResult Function(BigInt amount, PublicKey accountKey)? stake,
+    TResult Function(BigInt amount, PublicKey accountKey, int withdrawHours)?
+        unstake,
+    required TResult orElse(),
+  }) {
+    if (unstake != null) {
+      return unstake(amount, accountKey, withdrawHours);
+    }
+    return orElse();
+  }
+
+  @override
+  @optionalTypeArgs
+  TResult map<TResult extends Object?>({
+    required TResult Function(_Init value) init,
+    required TResult Function(_Stake value) stake,
+    required TResult Function(_Unstake value) unstake,
+  }) {
+    return unstake(this);
+  }
+
+  @override
+  @optionalTypeArgs
+  TResult? mapOrNull<TResult extends Object?>({
+    TResult? Function(_Init value)? init,
+    TResult? Function(_Stake value)? stake,
+    TResult? Function(_Unstake value)? unstake,
+  }) {
+    return unstake?.call(this);
+  }
+
+  @override
+  @optionalTypeArgs
+  TResult maybeMap<TResult extends Object?>({
+    TResult Function(_Init value)? init,
+    TResult Function(_Stake value)? stake,
+    TResult Function(_Unstake value)? unstake,
+    required TResult orElse(),
+  }) {
+    if (unstake != null) {
+      return unstake(this);
+    }
+    return orElse();
+  }
+}
+
+abstract class _Unstake implements ActionStakingBlocEvent {
+  const factory _Unstake(
+      {required final BigInt amount,
+      required final PublicKey accountKey,
+      required final int withdrawHours}) = _$UnstakeImpl;
+
+// in staking tokens
+  BigInt get amount;
+  PublicKey get accountKey;
+  int get withdrawHours;
+  @JsonKey(ignore: true)
+  _$$UnstakeImplCopyWith<_$UnstakeImpl> get copyWith =>
+      throw _privateConstructorUsedError;
+}
+
+/// @nodoc
 mixin _$ActionStakingBlocState {
   @optionalTypeArgs
   TResult when<TResult extends Object?>({
@@ -1213,536 +1744,5 @@ abstract class _GoUnstake implements ActionStakingBlocState {
   Address get stakeContractAddress;
   @JsonKey(ignore: true)
   _$$GoUnstakeImplCopyWith<_$GoUnstakeImpl> get copyWith =>
-      throw _privateConstructorUsedError;
-}
-
-/// @nodoc
-mixin _$ActionStakingBlocEvent {
-  @optionalTypeArgs
-  TResult when<TResult extends Object?>({
-    required TResult Function() init,
-    required TResult Function(BigInt amount, PublicKey accountKey) stake,
-    required TResult Function(
-            BigInt amount, PublicKey accountKey, int withdrawHours)
-        unstake,
-  }) =>
-      throw _privateConstructorUsedError;
-  @optionalTypeArgs
-  TResult? whenOrNull<TResult extends Object?>({
-    TResult? Function()? init,
-    TResult? Function(BigInt amount, PublicKey accountKey)? stake,
-    TResult? Function(BigInt amount, PublicKey accountKey, int withdrawHours)?
-        unstake,
-  }) =>
-      throw _privateConstructorUsedError;
-  @optionalTypeArgs
-  TResult maybeWhen<TResult extends Object?>({
-    TResult Function()? init,
-    TResult Function(BigInt amount, PublicKey accountKey)? stake,
-    TResult Function(BigInt amount, PublicKey accountKey, int withdrawHours)?
-        unstake,
-    required TResult orElse(),
-  }) =>
-      throw _privateConstructorUsedError;
-  @optionalTypeArgs
-  TResult map<TResult extends Object?>({
-    required TResult Function(_Init value) init,
-    required TResult Function(_Stake value) stake,
-    required TResult Function(_Unstake value) unstake,
-  }) =>
-      throw _privateConstructorUsedError;
-  @optionalTypeArgs
-  TResult? mapOrNull<TResult extends Object?>({
-    TResult? Function(_Init value)? init,
-    TResult? Function(_Stake value)? stake,
-    TResult? Function(_Unstake value)? unstake,
-  }) =>
-      throw _privateConstructorUsedError;
-  @optionalTypeArgs
-  TResult maybeMap<TResult extends Object?>({
-    TResult Function(_Init value)? init,
-    TResult Function(_Stake value)? stake,
-    TResult Function(_Unstake value)? unstake,
-    required TResult orElse(),
-  }) =>
-      throw _privateConstructorUsedError;
-}
-
-/// @nodoc
-abstract class $ActionStakingBlocEventCopyWith<$Res> {
-  factory $ActionStakingBlocEventCopyWith(ActionStakingBlocEvent value,
-          $Res Function(ActionStakingBlocEvent) then) =
-      _$ActionStakingBlocEventCopyWithImpl<$Res, ActionStakingBlocEvent>;
-}
-
-/// @nodoc
-class _$ActionStakingBlocEventCopyWithImpl<$Res,
-        $Val extends ActionStakingBlocEvent>
-    implements $ActionStakingBlocEventCopyWith<$Res> {
-  _$ActionStakingBlocEventCopyWithImpl(this._value, this._then);
-
-  // ignore: unused_field
-  final $Val _value;
-  // ignore: unused_field
-  final $Res Function($Val) _then;
-}
-
-/// @nodoc
-abstract class _$$InitImplCopyWith<$Res> {
-  factory _$$InitImplCopyWith(
-          _$InitImpl value, $Res Function(_$InitImpl) then) =
-      __$$InitImplCopyWithImpl<$Res>;
-}
-
-/// @nodoc
-class __$$InitImplCopyWithImpl<$Res>
-    extends _$ActionStakingBlocEventCopyWithImpl<$Res, _$InitImpl>
-    implements _$$InitImplCopyWith<$Res> {
-  __$$InitImplCopyWithImpl(_$InitImpl _value, $Res Function(_$InitImpl) _then)
-      : super(_value, _then);
-}
-
-/// @nodoc
-
-class _$InitImpl implements _Init {
-  const _$InitImpl();
-
-  @override
-  String toString() {
-    return 'ActionStakingBlocEvent.init()';
-  }
-
-  @override
-  bool operator ==(Object other) {
-    return identical(this, other) ||
-        (other.runtimeType == runtimeType && other is _$InitImpl);
-  }
-
-  @override
-  int get hashCode => runtimeType.hashCode;
-
-  @override
-  @optionalTypeArgs
-  TResult when<TResult extends Object?>({
-    required TResult Function() init,
-    required TResult Function(BigInt amount, PublicKey accountKey) stake,
-    required TResult Function(
-            BigInt amount, PublicKey accountKey, int withdrawHours)
-        unstake,
-  }) {
-    return init();
-  }
-
-  @override
-  @optionalTypeArgs
-  TResult? whenOrNull<TResult extends Object?>({
-    TResult? Function()? init,
-    TResult? Function(BigInt amount, PublicKey accountKey)? stake,
-    TResult? Function(BigInt amount, PublicKey accountKey, int withdrawHours)?
-        unstake,
-  }) {
-    return init?.call();
-  }
-
-  @override
-  @optionalTypeArgs
-  TResult maybeWhen<TResult extends Object?>({
-    TResult Function()? init,
-    TResult Function(BigInt amount, PublicKey accountKey)? stake,
-    TResult Function(BigInt amount, PublicKey accountKey, int withdrawHours)?
-        unstake,
-    required TResult orElse(),
-  }) {
-    if (init != null) {
-      return init();
-    }
-    return orElse();
-  }
-
-  @override
-  @optionalTypeArgs
-  TResult map<TResult extends Object?>({
-    required TResult Function(_Init value) init,
-    required TResult Function(_Stake value) stake,
-    required TResult Function(_Unstake value) unstake,
-  }) {
-    return init(this);
-  }
-
-  @override
-  @optionalTypeArgs
-  TResult? mapOrNull<TResult extends Object?>({
-    TResult? Function(_Init value)? init,
-    TResult? Function(_Stake value)? stake,
-    TResult? Function(_Unstake value)? unstake,
-  }) {
-    return init?.call(this);
-  }
-
-  @override
-  @optionalTypeArgs
-  TResult maybeMap<TResult extends Object?>({
-    TResult Function(_Init value)? init,
-    TResult Function(_Stake value)? stake,
-    TResult Function(_Unstake value)? unstake,
-    required TResult orElse(),
-  }) {
-    if (init != null) {
-      return init(this);
-    }
-    return orElse();
-  }
-}
-
-abstract class _Init implements ActionStakingBlocEvent {
-  const factory _Init() = _$InitImpl;
-}
-
-/// @nodoc
-abstract class _$$StakeImplCopyWith<$Res> {
-  factory _$$StakeImplCopyWith(
-          _$StakeImpl value, $Res Function(_$StakeImpl) then) =
-      __$$StakeImplCopyWithImpl<$Res>;
-  @useResult
-  $Res call({BigInt amount, PublicKey accountKey});
-
-  $PublicKeyCopyWith<$Res> get accountKey;
-}
-
-/// @nodoc
-class __$$StakeImplCopyWithImpl<$Res>
-    extends _$ActionStakingBlocEventCopyWithImpl<$Res, _$StakeImpl>
-    implements _$$StakeImplCopyWith<$Res> {
-  __$$StakeImplCopyWithImpl(
-      _$StakeImpl _value, $Res Function(_$StakeImpl) _then)
-      : super(_value, _then);
-
-  @pragma('vm:prefer-inline')
-  @override
-  $Res call({
-    Object? amount = null,
-    Object? accountKey = null,
-  }) {
-    return _then(_$StakeImpl(
-      amount: null == amount
-          ? _value.amount
-          : amount // ignore: cast_nullable_to_non_nullable
-              as BigInt,
-      accountKey: null == accountKey
-          ? _value.accountKey
-          : accountKey // ignore: cast_nullable_to_non_nullable
-              as PublicKey,
-    ));
-  }
-
-  @override
-  @pragma('vm:prefer-inline')
-  $PublicKeyCopyWith<$Res> get accountKey {
-    return $PublicKeyCopyWith<$Res>(_value.accountKey, (value) {
-      return _then(_value.copyWith(accountKey: value));
-    });
-  }
-}
-
-/// @nodoc
-
-class _$StakeImpl implements _Stake {
-  const _$StakeImpl({required this.amount, required this.accountKey});
-
-// in native tokens
-  @override
-  final BigInt amount;
-  @override
-  final PublicKey accountKey;
-
-  @override
-  String toString() {
-    return 'ActionStakingBlocEvent.stake(amount: $amount, accountKey: $accountKey)';
-  }
-
-  @override
-  bool operator ==(Object other) {
-    return identical(this, other) ||
-        (other.runtimeType == runtimeType &&
-            other is _$StakeImpl &&
-            (identical(other.amount, amount) || other.amount == amount) &&
-            (identical(other.accountKey, accountKey) ||
-                other.accountKey == accountKey));
-  }
-
-  @override
-  int get hashCode => Object.hash(runtimeType, amount, accountKey);
-
-  @JsonKey(ignore: true)
-  @override
-  @pragma('vm:prefer-inline')
-  _$$StakeImplCopyWith<_$StakeImpl> get copyWith =>
-      __$$StakeImplCopyWithImpl<_$StakeImpl>(this, _$identity);
-
-  @override
-  @optionalTypeArgs
-  TResult when<TResult extends Object?>({
-    required TResult Function() init,
-    required TResult Function(BigInt amount, PublicKey accountKey) stake,
-    required TResult Function(
-            BigInt amount, PublicKey accountKey, int withdrawHours)
-        unstake,
-  }) {
-    return stake(amount, accountKey);
-  }
-
-  @override
-  @optionalTypeArgs
-  TResult? whenOrNull<TResult extends Object?>({
-    TResult? Function()? init,
-    TResult? Function(BigInt amount, PublicKey accountKey)? stake,
-    TResult? Function(BigInt amount, PublicKey accountKey, int withdrawHours)?
-        unstake,
-  }) {
-    return stake?.call(amount, accountKey);
-  }
-
-  @override
-  @optionalTypeArgs
-  TResult maybeWhen<TResult extends Object?>({
-    TResult Function()? init,
-    TResult Function(BigInt amount, PublicKey accountKey)? stake,
-    TResult Function(BigInt amount, PublicKey accountKey, int withdrawHours)?
-        unstake,
-    required TResult orElse(),
-  }) {
-    if (stake != null) {
-      return stake(amount, accountKey);
-    }
-    return orElse();
-  }
-
-  @override
-  @optionalTypeArgs
-  TResult map<TResult extends Object?>({
-    required TResult Function(_Init value) init,
-    required TResult Function(_Stake value) stake,
-    required TResult Function(_Unstake value) unstake,
-  }) {
-    return stake(this);
-  }
-
-  @override
-  @optionalTypeArgs
-  TResult? mapOrNull<TResult extends Object?>({
-    TResult? Function(_Init value)? init,
-    TResult? Function(_Stake value)? stake,
-    TResult? Function(_Unstake value)? unstake,
-  }) {
-    return stake?.call(this);
-  }
-
-  @override
-  @optionalTypeArgs
-  TResult maybeMap<TResult extends Object?>({
-    TResult Function(_Init value)? init,
-    TResult Function(_Stake value)? stake,
-    TResult Function(_Unstake value)? unstake,
-    required TResult orElse(),
-  }) {
-    if (stake != null) {
-      return stake(this);
-    }
-    return orElse();
-  }
-}
-
-abstract class _Stake implements ActionStakingBlocEvent {
-  const factory _Stake(
-      {required final BigInt amount,
-      required final PublicKey accountKey}) = _$StakeImpl;
-
-// in native tokens
-  BigInt get amount;
-  PublicKey get accountKey;
-  @JsonKey(ignore: true)
-  _$$StakeImplCopyWith<_$StakeImpl> get copyWith =>
-      throw _privateConstructorUsedError;
-}
-
-/// @nodoc
-abstract class _$$UnstakeImplCopyWith<$Res> {
-  factory _$$UnstakeImplCopyWith(
-          _$UnstakeImpl value, $Res Function(_$UnstakeImpl) then) =
-      __$$UnstakeImplCopyWithImpl<$Res>;
-  @useResult
-  $Res call({BigInt amount, PublicKey accountKey, int withdrawHours});
-
-  $PublicKeyCopyWith<$Res> get accountKey;
-}
-
-/// @nodoc
-class __$$UnstakeImplCopyWithImpl<$Res>
-    extends _$ActionStakingBlocEventCopyWithImpl<$Res, _$UnstakeImpl>
-    implements _$$UnstakeImplCopyWith<$Res> {
-  __$$UnstakeImplCopyWithImpl(
-      _$UnstakeImpl _value, $Res Function(_$UnstakeImpl) _then)
-      : super(_value, _then);
-
-  @pragma('vm:prefer-inline')
-  @override
-  $Res call({
-    Object? amount = null,
-    Object? accountKey = null,
-    Object? withdrawHours = null,
-  }) {
-    return _then(_$UnstakeImpl(
-      amount: null == amount
-          ? _value.amount
-          : amount // ignore: cast_nullable_to_non_nullable
-              as BigInt,
-      accountKey: null == accountKey
-          ? _value.accountKey
-          : accountKey // ignore: cast_nullable_to_non_nullable
-              as PublicKey,
-      withdrawHours: null == withdrawHours
-          ? _value.withdrawHours
-          : withdrawHours // ignore: cast_nullable_to_non_nullable
-              as int,
-    ));
-  }
-
-  @override
-  @pragma('vm:prefer-inline')
-  $PublicKeyCopyWith<$Res> get accountKey {
-    return $PublicKeyCopyWith<$Res>(_value.accountKey, (value) {
-      return _then(_value.copyWith(accountKey: value));
-    });
-  }
-}
-
-/// @nodoc
-
-class _$UnstakeImpl implements _Unstake {
-  const _$UnstakeImpl(
-      {required this.amount,
-      required this.accountKey,
-      required this.withdrawHours});
-
-// in staking tokens
-  @override
-  final BigInt amount;
-  @override
-  final PublicKey accountKey;
-  @override
-  final int withdrawHours;
-
-  @override
-  String toString() {
-    return 'ActionStakingBlocEvent.unstake(amount: $amount, accountKey: $accountKey, withdrawHours: $withdrawHours)';
-  }
-
-  @override
-  bool operator ==(Object other) {
-    return identical(this, other) ||
-        (other.runtimeType == runtimeType &&
-            other is _$UnstakeImpl &&
-            (identical(other.amount, amount) || other.amount == amount) &&
-            (identical(other.accountKey, accountKey) ||
-                other.accountKey == accountKey) &&
-            (identical(other.withdrawHours, withdrawHours) ||
-                other.withdrawHours == withdrawHours));
-  }
-
-  @override
-  int get hashCode =>
-      Object.hash(runtimeType, amount, accountKey, withdrawHours);
-
-  @JsonKey(ignore: true)
-  @override
-  @pragma('vm:prefer-inline')
-  _$$UnstakeImplCopyWith<_$UnstakeImpl> get copyWith =>
-      __$$UnstakeImplCopyWithImpl<_$UnstakeImpl>(this, _$identity);
-
-  @override
-  @optionalTypeArgs
-  TResult when<TResult extends Object?>({
-    required TResult Function() init,
-    required TResult Function(BigInt amount, PublicKey accountKey) stake,
-    required TResult Function(
-            BigInt amount, PublicKey accountKey, int withdrawHours)
-        unstake,
-  }) {
-    return unstake(amount, accountKey, withdrawHours);
-  }
-
-  @override
-  @optionalTypeArgs
-  TResult? whenOrNull<TResult extends Object?>({
-    TResult? Function()? init,
-    TResult? Function(BigInt amount, PublicKey accountKey)? stake,
-    TResult? Function(BigInt amount, PublicKey accountKey, int withdrawHours)?
-        unstake,
-  }) {
-    return unstake?.call(amount, accountKey, withdrawHours);
-  }
-
-  @override
-  @optionalTypeArgs
-  TResult maybeWhen<TResult extends Object?>({
-    TResult Function()? init,
-    TResult Function(BigInt amount, PublicKey accountKey)? stake,
-    TResult Function(BigInt amount, PublicKey accountKey, int withdrawHours)?
-        unstake,
-    required TResult orElse(),
-  }) {
-    if (unstake != null) {
-      return unstake(amount, accountKey, withdrawHours);
-    }
-    return orElse();
-  }
-
-  @override
-  @optionalTypeArgs
-  TResult map<TResult extends Object?>({
-    required TResult Function(_Init value) init,
-    required TResult Function(_Stake value) stake,
-    required TResult Function(_Unstake value) unstake,
-  }) {
-    return unstake(this);
-  }
-
-  @override
-  @optionalTypeArgs
-  TResult? mapOrNull<TResult extends Object?>({
-    TResult? Function(_Init value)? init,
-    TResult? Function(_Stake value)? stake,
-    TResult? Function(_Unstake value)? unstake,
-  }) {
-    return unstake?.call(this);
-  }
-
-  @override
-  @optionalTypeArgs
-  TResult maybeMap<TResult extends Object?>({
-    TResult Function(_Init value)? init,
-    TResult Function(_Stake value)? stake,
-    TResult Function(_Unstake value)? unstake,
-    required TResult orElse(),
-  }) {
-    if (unstake != null) {
-      return unstake(this);
-    }
-    return orElse();
-  }
-}
-
-abstract class _Unstake implements ActionStakingBlocEvent {
-  const factory _Unstake(
-      {required final BigInt amount,
-      required final PublicKey accountKey,
-      required final int withdrawHours}) = _$UnstakeImpl;
-
-// in staking tokens
-  BigInt get amount;
-  PublicKey get accountKey;
-  int get withdrawHours;
-  @JsonKey(ignore: true)
-  _$$UnstakeImplCopyWith<_$UnstakeImpl> get copyWith =>
       throw _privateConstructorUsedError;
 }
