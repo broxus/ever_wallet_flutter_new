@@ -1,10 +1,10 @@
+import 'dart:async';
 import 'dart:convert';
 
 import 'package:app/app/router/app_route.dart';
 import 'package:app/app/router/routs/add_seed/add_seed.dart';
 import 'package:app/core/error_handler_factory.dart';
 import 'package:app/core/wm/custom_wm.dart';
-import 'package:app/feature/choose_network/route_data.dart';
 import 'package:app/feature/onboarding/screen/welcome/welcome_screen.dart';
 import 'package:app/feature/onboarding/screen/welcome/welcome_screen_model.dart';
 import 'package:elementary/elementary.dart';
@@ -35,34 +35,42 @@ class WelcomeScreenWidgetModel
 
   ThemeStyleV2 get themeStyle => context.themeStyleV2;
 
-  void onPressedCreateWallet() {
-    context.goFurther(
-      AppRoute.chooseNetwork.path,
-      extra: ChooseNetworkScreenRouteData(
-        onSuccess: () async {
-          context.goFurther(
-            AppRoute.createSeedPassword.pathWithData(
-              queryParameters: {
-                addSeedPhraseQueryParam: jsonEncode(
-                  await model.createSeed(),
-                ),
-              },
-            ),
-          );
-        },
+  Future<void> onPressedCreateWallet() async {
+    final seedData = jsonEncode(
+      await model.createSeed(),
+    );
+
+    unawaited(
+      _goNext(
+        () => contextSafe?.goFurther(
+          AppRoute.createSeedPassword.pathWithData(
+            queryParameters: {
+              addSeedPhraseQueryParam: seedData,
+            },
+          ),
+        ),
       ),
     );
   }
 
   void onPressedWalletLogin() {
-    context.goFurther(
-      AppRoute.chooseNetwork.path,
-      extra: ChooseNetworkScreenRouteData(
-        onSuccess: () {
-          context.goFurther(AppRoute.addExistingWallet.path);
-        },
+    _goNext(
+      () => contextSafe?.goFurther(
+        AppRoute.addExistingWallet.path,
       ),
     );
+  }
+
+  Future<void> _goNext(VoidCallback callback) async {
+    final isSuccess = await contextSafe?.pushFurther<bool>(
+      AppRoute.chooseNetwork.path,
+    );
+
+    if (isSuccess != true) {
+      return;
+    }
+
+    callback();
   }
 
   void onLinkTap() => launchUrlString(_decentralizationPolicyLink);

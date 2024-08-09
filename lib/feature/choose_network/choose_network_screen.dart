@@ -9,22 +9,17 @@ import 'package:flutter/services.dart';
 import 'package:ui_components_lib/ui_components_lib.dart';
 import 'package:ui_components_lib/v2/ui_components_lib_v2.dart';
 
-typedef SuccessCallback = void Function();
-
 /// Network selection screen
 class ChooseNetworkScreen
     extends ElementaryWidget<ChooseNetworkScreenWidgetModel> {
   const ChooseNetworkScreen({
     Key? key,
-    this.onSuccess,
     WidgetModelFactory<ChooseNetworkScreenWidgetModel> wmFactory =
         defaultChooseNetworkScreenWidgetModelFactory,
   }) : super(
           wmFactory,
           key: key,
         );
-
-  final SuccessCallback? onSuccess;
 
   @override
   Widget build(ChooseNetworkScreenWidgetModel wm) {

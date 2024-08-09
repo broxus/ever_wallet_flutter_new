@@ -142,7 +142,7 @@ enum AppRoute {
     isSaveLocation: true,
   ),
   addExistingWallet(
-    '',
+    'addExistingWallet',
     'addExistingWallet',
     isSaveLocation: true,
   ),
@@ -417,6 +417,26 @@ extension NavigationHelper on BuildContext {
     );
   }
 
+  Future<T?> pushFurther<T>(
+    String location, {
+    bool preserveQueryParams = false,
+    Object? extra,
+  }) async {
+    if (!mounted) {
+      return null;
+    }
+
+    return GoRouter.of(this).push<T>(
+      Uri.decodeComponent(
+        _getUriLocation(
+          location,
+          preserveQueryParams: preserveQueryParams,
+        ).toString(),
+      ),
+      extra: extra,
+    );
+  }
+
   /// Navigate to current location, but without query parameters.
   void clearQueryParams() {
     if (!mounted) return;
@@ -474,6 +494,7 @@ extension NavigationHelper on BuildContext {
         queryParameters: pathUri.queryParameters,
       );
     }
+
     return resultLocation;
   }
 }
