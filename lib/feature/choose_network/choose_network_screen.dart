@@ -1,7 +1,7 @@
-import 'package:app/generated/generated.dart';
 import 'package:app/feature/choose_network/choose_network_screen_wm.dart';
 import 'package:app/feature/choose_network/data/choose_network_item_data.dart';
 import 'package:app/feature/choose_network/widgets/choose_network_item.dart';
+import 'package:app/generated/generated.dart';
 import 'package:elementary/elementary.dart';
 import 'package:elementary_helper/elementary_helper.dart';
 import 'package:flutter/material.dart';

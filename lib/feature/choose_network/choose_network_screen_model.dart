@@ -2,9 +2,9 @@ import 'package:app/app/service/messenger/message.dart';
 import 'package:app/app/service/messenger/service/messenger_service.dart';
 import 'package:app/app/service/nekoton_related/connection_service/network_presets.dart';
 import 'package:app/app/service/storage_service/connections_storage_service.dart';
-import 'package:app/generated/generated.dart';
 import 'package:app/feature/choose_network/choose_network_screen.dart';
 import 'package:app/feature/choose_network/data/choose_network_item_data.dart';
+import 'package:app/generated/generated.dart';
 import 'package:elementary/elementary.dart';
 import 'package:elementary_helper/elementary_helper.dart';
 
