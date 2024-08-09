@@ -135,6 +135,7 @@ class CommonBottomSheetWidget extends StatelessWidget {
     const dragWidgetSize = DimensSize.d4;
     const dragWidgetMargin = DimensSize.d8;
     final colors = context.themeStyle.colors;
+    final theme = context.themeStyleV2;
 
     final bodyWidget = Column(
       mainAxisSize: MainAxisSize.min,
@@ -186,8 +187,8 @@ class CommonBottomSheetWidget extends StatelessWidget {
 
     return Material(
       color: useAppBackgroundColor
-          ? colors.appBackground
-          : colors.backgroundSecondary,
+          ? theme.colors.background0
+          : theme.colors.background1,
       child: SafeArea(
         minimum: avoidBottomInsets
             ? const EdgeInsets.only(bottom: DimensSize.d24)

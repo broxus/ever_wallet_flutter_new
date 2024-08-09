@@ -110,6 +110,12 @@ class BiometryService {
     }
   }
 
+  /// Check if password of [publicKey] was stored before.
+  Future<bool> hasKeyPassword(PublicKey publicKey) async {
+    final password = await storage.getKeyPassword(publicKey);
+    return password != null;
+  }
+
   /// This method typically called after password of seed was changed.
   /// If biometry enabled - update password of [publicKey] in storage
   /// even if there was no password before, because if biometry enabled, we must

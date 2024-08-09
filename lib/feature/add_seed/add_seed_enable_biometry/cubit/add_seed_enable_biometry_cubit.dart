@@ -5,9 +5,8 @@ import 'package:freezed_annotation/freezed_annotation.dart';
 import 'package:local_auth/local_auth.dart';
 import 'package:nekoton_repository/nekoton_repository.dart';
 
-part 'add_seed_enable_biometry_state.dart';
-
 part 'add_seed_enable_biometry_cubit.freezed.dart';
+part 'add_seed_enable_biometry_state.dart';
 
 /// Cubit to enable biometry for newly added seed phrase from onboarding.
 class AddSeedEnableBiometryCubit extends Cubit<AddSeedEnableBiometryState> {

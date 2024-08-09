@@ -94,6 +94,40 @@ ThemeData everPredefinedDarkTheme() {
   );
 }
 
+ThemeStyle getEverDefaultTheme() {
+  const colors = ColorsPalette(
+    textPrimary: ColorsRes.white,
+    textSecondary: ColorsRes.grey898989,
+    textContrast: ColorsRes.black,
+    appBackground: ColorsRes.black,
+    backgroundPrimary: ColorsRes.white,
+    backgroundSecondary: ColorsRes.black303030,
+    loading: ColorsRes.grey3C3C3C,
+    strokePrimary: ColorsRes.black454545,
+    strokeSecondary: ColorsRes.black3C3C3C,
+    strokeContrast: ColorsRes.white,
+    alert: ColorsRes.redDark,
+    apply: ColorsRes.greenDark,
+    blue: ColorsRes.blue,
+    blueSecond: ColorsRes.blueSecond,
+    labelYellow: ColorsRes.yellow,
+    labelOrange: ColorsRes.orange,
+    lightBlue: ColorsRes.blue344347,
+    lightGreen: ColorsRes.green374236,
+    lightOrange: ColorsRes.orange463D2D,
+    lightRed: ColorsRes.red443926,
+    gradient: ColorsRes.gradientDark,
+  );
+
+  return ThemeStyle(
+    colors: colors,
+    styles: StylesPalette(
+      buttonTextStyle: StyleRes.button,
+      buttonsStyle: _mapButtonStyle(colors),
+    ),
+  );
+}
+
 Map<EverButtonType, EverButtonStyle> _mapButtonStyle(ColorsPalette colors) {
   return {
     EverButtonType.primary: EverButtonStyle(

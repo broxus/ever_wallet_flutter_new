@@ -325,6 +325,10 @@ class $AssetsImagesGen {
   /// File path: assets/images/trash.svg
   SvgGenImage get trash => const SvgGenImage('assets/images/trash.svg');
 
+  /// Directory path: assets/images/user_avatar
+  $AssetsImagesUserAvatarGen get userAvatar =>
+      const $AssetsImagesUserAvatarGen();
+
   /// File path: assets/images/venom.svg
   SvgGenImage get venom => const SvgGenImage('assets/images/venom.svg');
 
@@ -486,6 +490,17 @@ class $AssetsImagesSteverGen {
 
   /// List of all assets
   List<SvgGenImage> get values => [stever, steverDefi];
+}
+
+class $AssetsImagesUserAvatarGen {
+  const $AssetsImagesUserAvatarGen();
+
+  /// File path: assets/images/user_avatar/user_avatar.png
+  AssetGenImage get userAvatar =>
+      const AssetGenImage('assets/images/user_avatar/user_avatar.png');
+
+  /// List of all assets
+  List<AssetGenImage> get values => [userAvatar];
 }
 
 class $AssetsImagesOnboardingLayer1Gen {
