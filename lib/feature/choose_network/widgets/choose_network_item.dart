@@ -1,6 +1,5 @@
 import 'package:app/feature/choose_network/data/choose_network_item_data.dart';
 import 'package:app/generated/generated.dart';
-import 'package:app/feature/choose_network/data/choose_network_item_data.dart';
 import 'package:flutter/material.dart';
 import 'package:lucide_icons_flutter/lucide_icons.dart';
 import 'package:ui_components_lib/v2/ui_components_lib_v2.dart';
