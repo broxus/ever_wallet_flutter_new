@@ -1,5 +1,7 @@
 import 'package:app/app/router/app_route.dart';
 import 'package:app/feature/choose_network/choose_network_screen.dart';
+import 'package:app/feature/choose_network/choose_network_screen.dart';
+import 'package:app/feature/choose_network/route_data.dart';
 import 'package:go_router/go_router.dart';
 
 const chooseNetworkNextPathQueryParam = 'chooseNetworkNextPath';

@@ -1,3 +1,4 @@
+import 'package:app/feature/choose_network/data/choose_network_item_data.dart';
 import 'package:app/generated/generated.dart';
 import 'package:app/feature/choose_network/data/choose_network_item_data.dart';
 import 'package:flutter/material.dart';
