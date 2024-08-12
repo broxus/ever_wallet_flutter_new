@@ -9,11 +9,9 @@ import 'package:flutter/foundation.dart';
 import 'package:freezed_annotation/freezed_annotation.dart';
 import 'package:logging/logging.dart';
 
-part 'browser_tabs_event.dart';
-
-part 'browser_tabs_state.dart';
-
 part 'browser_tabs_bloc.freezed.dart';
+part 'browser_tabs_event.dart';
+part 'browser_tabs_state.dart';
 
 final _emptyUri = Uri.parse('');
 

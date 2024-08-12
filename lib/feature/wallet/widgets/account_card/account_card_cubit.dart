@@ -8,9 +8,8 @@ import 'package:freezed_annotation/freezed_annotation.dart';
 import 'package:nekoton_repository/nekoton_repository.dart';
 import 'package:rxdart/rxdart.dart';
 
-part 'account_card_cubit_state.dart';
-
 part 'account_card_cubit.freezed.dart';
+part 'account_card_cubit_state.dart';
 
 const _withdrawUpdateDebounce = Duration(seconds: 3);
 

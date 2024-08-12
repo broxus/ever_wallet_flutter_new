@@ -1,7 +1,7 @@
 import 'dart:async';
 
 import 'package:app/app/service/service.dart';
-import 'package:app/data/models/token_contract_asset.dart';
+import 'package:app/data/models/models.dart';
 import 'package:app/feature/wallet/wallet_prepare_transfer/wallet_prepare_transfer_page/data/wallet_prepare_balance_data.dart';
 import 'package:app/feature/wallet/wallet_prepare_transfer/wallet_prepare_transfer_page/data/wallet_prepare_transfer_asset.dart';
 import 'package:app/feature/wallet/wallet_prepare_transfer/wallet_prepare_transfer_page/wallet_prepare_transfer_page.dart';
@@ -29,20 +29,24 @@ typedef TokenContractsUpdateCallback = void Function(
 class WalletPrepareTransferPageModel extends ElementaryModel {
   WalletPrepareTransferPageModel(
     ErrorHandler errorHandler,
-    this._address,
-    this._rootTokenContract,
+    this.address,
+    this.rootTokenContract,
+    this.tokenSymbol,
     this._assetsService,
     this._nekotonRepository,
     this._messengerService,
+    this._currenciesService,
   ) : super(errorHandler: errorHandler);
 
   /// Address of account that will be used to send funds (owner for TokenWallet,
   /// or address for TonWallet)
-  final Address _address;
-  final Address? _rootTokenContract;
+  final Address address;
+  final Address? rootTokenContract;
+  final String? tokenSymbol;
   final AssetsService _assetsService;
   final NekotonRepository _nekotonRepository;
   final MessengerService _messengerService;
+  final CurrenciesService _currenciesService;
 
   final _balanceDataSc = StreamController<WalletPrepareBalanceData>();
 
@@ -100,11 +104,11 @@ class WalletPrepareTransferPageModel extends ElementaryModel {
   }
 
   Future<TokenContractAsset?> getTokenContractAsset(Address root) async {
-    if (_rootTokenContract == null) {
+    if (rootTokenContract == null) {
       return null;
     }
     return _assetsService.getTokenContractAsset(
-      _rootTokenContract!,
+      rootTokenContract!,
       currentTransport,
     );
   }
@@ -130,11 +134,25 @@ class WalletPrepareTransferPageModel extends ElementaryModel {
 
   void findExistedContracts(TokenContractsUpdateCallback onUpdate) {
     _contractSubscription =
-        _assetsService.contractsForAccount(_address).listen((contracts) {
+        _assetsService.contractsForAccount(address).listen((contracts) {
       onUpdate(contracts);
 
       _contractSubscription?.cancel();
     });
+  }
+
+  Future<CustomCurrency?> getCurrencyForContract(
+    Address rootTokenContract,
+  ) async {
+    final currency = _currenciesService
+        .currencies(currentTransport.networkType)
+        .firstWhereOrNull((currency) => currency.address == rootTokenContract);
+
+    return currency ??
+        await _currenciesService.getCurrencyForContract(
+          currentTransport,
+          rootTokenContract,
+        );
   }
 
   /// Subscription for native token to find balance
@@ -143,7 +161,7 @@ class WalletPrepareTransferPageModel extends ElementaryModel {
     _walletsSubscription = _walletsStream.listen(
       (wallets) {
         final walletState =
-            wallets.firstWhereOrNull((w) => w.address == _address);
+            wallets.firstWhereOrNull((w) => w.address == address);
 
         if (walletState == null) {
           return;
@@ -186,7 +204,7 @@ class WalletPrepareTransferPageModel extends ElementaryModel {
     final symbol = contract.tokenSymbol;
     _walletsSubscription = _tokenWalletsStream.listen((wallets) {
       final walletState = wallets.firstWhereOrNull(
-        (w) => w.owner == _address && w.rootTokenContract == root,
+        (w) => w.owner == address && w.rootTokenContract == root,
       );
 
       if (walletState == null) {

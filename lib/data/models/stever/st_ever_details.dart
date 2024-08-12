@@ -2,7 +2,6 @@ import 'package:freezed_annotation/freezed_annotation.dart';
 import 'package:nekoton_repository/nekoton_repository.dart';
 
 part 'st_ever_details.freezed.dart';
-
 part 'st_ever_details.g.dart';
 
 /// This is not full contract info, but only used fields here

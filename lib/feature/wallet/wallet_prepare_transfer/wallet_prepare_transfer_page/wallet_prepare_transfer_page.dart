@@ -9,13 +9,14 @@ import 'package:elementary_helper/elementary_helper.dart';
 import 'package:flutter/material.dart';
 import 'package:nekoton_repository/nekoton_repository.dart' hide Message;
 import 'package:ui_components_lib/ui_components_lib.dart';
+import 'package:ui_components_lib/v2/dimens_v2.dart';
 
 class WalletPrepareTransferPage
     extends ElementaryWidget<WalletPrepareTransferPageWidgetModel> {
   WalletPrepareTransferPage({
-    required this.address,
-    this.rootTokenContract,
-    this.tokenSymbol,
+    required Address address,
+    Address? rootTokenContract,
+    String? tokenSymbol,
     Key? key,
     WidgetModelFactory<WalletPrepareTransferPageWidgetModel>? wmFactory,
   })  : assert(
@@ -30,20 +31,10 @@ class WalletPrepareTransferPage
                     ctx,
                     address,
                     rootTokenContract,
+                    tokenSymbol,
                   ),
           key: key,
         );
-
-  /// Address of account, that should be used to send funds
-  final Address address;
-
-  /// Contract of token (native or not) that will be locked to send funds
-  final Address? rootTokenContract;
-
-  /// Symbol that is used together with [rootTokenContract] because native token
-  /// and wraped native token has the same contract address and this leads to
-  /// error.
-  final String? tokenSymbol;
 
   @override
   Widget build(WalletPrepareTransferPageWidgetModel wm) {
@@ -58,7 +49,7 @@ class WalletPrepareTransferPage
       builder: (_, data) {
         if (data == null || data.isEmpty) {
           return _DefaultBody(
-            child: _EmptyText(address: address),
+            child: _EmptyText(address: wm.address),
           );
         }
 
@@ -117,25 +108,20 @@ class _DataBody extends StatelessWidget {
       onTap: () => FocusScope.of(context).unfocus(),
       child: Scaffold(
         appBar: DefaultAppBar(
-          titleText: walletName,
-          subtitleBottomText: account?.address.toEllipseString(),
+          titleText: LocaleKeys.sendYourFunds.tr(),
         ),
-        body: Builder(
-          builder: (context) {
-            return Padding(
-              padding: const EdgeInsets.symmetric(
-                horizontal: DimensSize.d16,
-              ),
-              child: WalletPrepareTransferView(
-                _wm,
-                account: account,
-                selectedCustodian: selectedCustodian,
-                localCustodians: localCustodians,
-                selectedAsset: selectedAsset,
-                assets: assets,
-              ),
-            );
-          },
+        body: Padding(
+          padding: const EdgeInsets.symmetric(
+            horizontal: DimensSizeV2.d16,
+          ),
+          child: WalletPrepareTransferView(
+            _wm,
+            account: account,
+            selectedCustodian: selectedCustodian,
+            localCustodians: localCustodians,
+            selectedAsset: selectedAsset,
+            assets: assets,
+          ),
         ),
       ),
     );

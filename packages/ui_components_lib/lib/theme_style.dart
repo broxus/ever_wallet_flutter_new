@@ -52,6 +52,6 @@ class ThemeStyle extends ThemeExtension<ThemeStyle> {
 extension ThemeContextExtension on BuildContext {
   /// Getter for [ThemeStyle]
   ThemeStyle get themeStyle {
-    return Theme.of(this).extension<ThemeStyle>()!;
+    return Theme.of(this).extension<ThemeStyle>() ?? getEverDefaultTheme();
   }
 }

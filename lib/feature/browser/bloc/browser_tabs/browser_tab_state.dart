@@ -2,6 +2,7 @@ import 'dart:ui';
 
 import 'package:flutter_inappwebview/flutter_inappwebview.dart';
 import 'package:freezed_annotation/freezed_annotation.dart';
+
 part 'browser_tab_state.freezed.dart';
 
 enum BrowserTabStateType {

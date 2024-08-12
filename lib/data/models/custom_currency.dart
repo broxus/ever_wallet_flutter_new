@@ -3,7 +3,6 @@ import 'package:freezed_annotation/freezed_annotation.dart';
 import 'package:nekoton_repository/nekoton_repository.dart';
 
 part 'custom_currency.freezed.dart';
-
 part 'custom_currency.g.dart';
 
 @freezed

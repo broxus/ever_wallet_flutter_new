@@ -15,6 +15,608 @@ final _privateConstructorUsedError = UnsupportedError(
     'It seems like you constructed your class using `MyClass._()`. This constructor is only meant to be used by freezed and you are not supposed to need it nor use it.\nPlease check the documentation here for more information: https://github.com/rrousselGit/freezed#adding-getters-and-methods-to-our-models');
 
 /// @nodoc
+mixin _$TonWalletSendEvent {
+  @optionalTypeArgs
+  TResult when<TResult extends Object?>({
+    required TResult Function() prepare,
+    required TResult Function(String password) send,
+    required TResult Function() allowCloseSend,
+    required TResult Function(Transaction transaction) completeSend,
+  }) =>
+      throw _privateConstructorUsedError;
+  @optionalTypeArgs
+  TResult? whenOrNull<TResult extends Object?>({
+    TResult? Function()? prepare,
+    TResult? Function(String password)? send,
+    TResult? Function()? allowCloseSend,
+    TResult? Function(Transaction transaction)? completeSend,
+  }) =>
+      throw _privateConstructorUsedError;
+  @optionalTypeArgs
+  TResult maybeWhen<TResult extends Object?>({
+    TResult Function()? prepare,
+    TResult Function(String password)? send,
+    TResult Function()? allowCloseSend,
+    TResult Function(Transaction transaction)? completeSend,
+    required TResult orElse(),
+  }) =>
+      throw _privateConstructorUsedError;
+  @optionalTypeArgs
+  TResult map<TResult extends Object?>({
+    required TResult Function(_Prepare value) prepare,
+    required TResult Function(_Send value) send,
+    required TResult Function(_AllowCloseSend value) allowCloseSend,
+    required TResult Function(_CompleteSend value) completeSend,
+  }) =>
+      throw _privateConstructorUsedError;
+  @optionalTypeArgs
+  TResult? mapOrNull<TResult extends Object?>({
+    TResult? Function(_Prepare value)? prepare,
+    TResult? Function(_Send value)? send,
+    TResult? Function(_AllowCloseSend value)? allowCloseSend,
+    TResult? Function(_CompleteSend value)? completeSend,
+  }) =>
+      throw _privateConstructorUsedError;
+  @optionalTypeArgs
+  TResult maybeMap<TResult extends Object?>({
+    TResult Function(_Prepare value)? prepare,
+    TResult Function(_Send value)? send,
+    TResult Function(_AllowCloseSend value)? allowCloseSend,
+    TResult Function(_CompleteSend value)? completeSend,
+    required TResult orElse(),
+  }) =>
+      throw _privateConstructorUsedError;
+}
+
+/// @nodoc
+abstract class $TonWalletSendEventCopyWith<$Res> {
+  factory $TonWalletSendEventCopyWith(
+          TonWalletSendEvent value, $Res Function(TonWalletSendEvent) then) =
+      _$TonWalletSendEventCopyWithImpl<$Res, TonWalletSendEvent>;
+}
+
+/// @nodoc
+class _$TonWalletSendEventCopyWithImpl<$Res, $Val extends TonWalletSendEvent>
+    implements $TonWalletSendEventCopyWith<$Res> {
+  _$TonWalletSendEventCopyWithImpl(this._value, this._then);
+
+  // ignore: unused_field
+  final $Val _value;
+  // ignore: unused_field
+  final $Res Function($Val) _then;
+}
+
+/// @nodoc
+abstract class _$$PrepareImplCopyWith<$Res> {
+  factory _$$PrepareImplCopyWith(
+          _$PrepareImpl value, $Res Function(_$PrepareImpl) then) =
+      __$$PrepareImplCopyWithImpl<$Res>;
+}
+
+/// @nodoc
+class __$$PrepareImplCopyWithImpl<$Res>
+    extends _$TonWalletSendEventCopyWithImpl<$Res, _$PrepareImpl>
+    implements _$$PrepareImplCopyWith<$Res> {
+  __$$PrepareImplCopyWithImpl(
+      _$PrepareImpl _value, $Res Function(_$PrepareImpl) _then)
+      : super(_value, _then);
+}
+
+/// @nodoc
+
+class _$PrepareImpl implements _Prepare {
+  const _$PrepareImpl();
+
+  @override
+  String toString() {
+    return 'TonWalletSendEvent.prepare()';
+  }
+
+  @override
+  bool operator ==(Object other) {
+    return identical(this, other) ||
+        (other.runtimeType == runtimeType && other is _$PrepareImpl);
+  }
+
+  @override
+  int get hashCode => runtimeType.hashCode;
+
+  @override
+  @optionalTypeArgs
+  TResult when<TResult extends Object?>({
+    required TResult Function() prepare,
+    required TResult Function(String password) send,
+    required TResult Function() allowCloseSend,
+    required TResult Function(Transaction transaction) completeSend,
+  }) {
+    return prepare();
+  }
+
+  @override
+  @optionalTypeArgs
+  TResult? whenOrNull<TResult extends Object?>({
+    TResult? Function()? prepare,
+    TResult? Function(String password)? send,
+    TResult? Function()? allowCloseSend,
+    TResult? Function(Transaction transaction)? completeSend,
+  }) {
+    return prepare?.call();
+  }
+
+  @override
+  @optionalTypeArgs
+  TResult maybeWhen<TResult extends Object?>({
+    TResult Function()? prepare,
+    TResult Function(String password)? send,
+    TResult Function()? allowCloseSend,
+    TResult Function(Transaction transaction)? completeSend,
+    required TResult orElse(),
+  }) {
+    if (prepare != null) {
+      return prepare();
+    }
+    return orElse();
+  }
+
+  @override
+  @optionalTypeArgs
+  TResult map<TResult extends Object?>({
+    required TResult Function(_Prepare value) prepare,
+    required TResult Function(_Send value) send,
+    required TResult Function(_AllowCloseSend value) allowCloseSend,
+    required TResult Function(_CompleteSend value) completeSend,
+  }) {
+    return prepare(this);
+  }
+
+  @override
+  @optionalTypeArgs
+  TResult? mapOrNull<TResult extends Object?>({
+    TResult? Function(_Prepare value)? prepare,
+    TResult? Function(_Send value)? send,
+    TResult? Function(_AllowCloseSend value)? allowCloseSend,
+    TResult? Function(_CompleteSend value)? completeSend,
+  }) {
+    return prepare?.call(this);
+  }
+
+  @override
+  @optionalTypeArgs
+  TResult maybeMap<TResult extends Object?>({
+    TResult Function(_Prepare value)? prepare,
+    TResult Function(_Send value)? send,
+    TResult Function(_AllowCloseSend value)? allowCloseSend,
+    TResult Function(_CompleteSend value)? completeSend,
+    required TResult orElse(),
+  }) {
+    if (prepare != null) {
+      return prepare(this);
+    }
+    return orElse();
+  }
+}
+
+abstract class _Prepare implements TonWalletSendEvent {
+  const factory _Prepare() = _$PrepareImpl;
+}
+
+/// @nodoc
+abstract class _$$SendImplCopyWith<$Res> {
+  factory _$$SendImplCopyWith(
+          _$SendImpl value, $Res Function(_$SendImpl) then) =
+      __$$SendImplCopyWithImpl<$Res>;
+  @useResult
+  $Res call({String password});
+}
+
+/// @nodoc
+class __$$SendImplCopyWithImpl<$Res>
+    extends _$TonWalletSendEventCopyWithImpl<$Res, _$SendImpl>
+    implements _$$SendImplCopyWith<$Res> {
+  __$$SendImplCopyWithImpl(_$SendImpl _value, $Res Function(_$SendImpl) _then)
+      : super(_value, _then);
+
+  @pragma('vm:prefer-inline')
+  @override
+  $Res call({
+    Object? password = null,
+  }) {
+    return _then(_$SendImpl(
+      null == password
+          ? _value.password
+          : password // ignore: cast_nullable_to_non_nullable
+              as String,
+    ));
+  }
+}
+
+/// @nodoc
+
+class _$SendImpl implements _Send {
+  const _$SendImpl(this.password);
+
+  @override
+  final String password;
+
+  @override
+  String toString() {
+    return 'TonWalletSendEvent.send(password: $password)';
+  }
+
+  @override
+  bool operator ==(Object other) {
+    return identical(this, other) ||
+        (other.runtimeType == runtimeType &&
+            other is _$SendImpl &&
+            (identical(other.password, password) ||
+                other.password == password));
+  }
+
+  @override
+  int get hashCode => Object.hash(runtimeType, password);
+
+  @JsonKey(ignore: true)
+  @override
+  @pragma('vm:prefer-inline')
+  _$$SendImplCopyWith<_$SendImpl> get copyWith =>
+      __$$SendImplCopyWithImpl<_$SendImpl>(this, _$identity);
+
+  @override
+  @optionalTypeArgs
+  TResult when<TResult extends Object?>({
+    required TResult Function() prepare,
+    required TResult Function(String password) send,
+    required TResult Function() allowCloseSend,
+    required TResult Function(Transaction transaction) completeSend,
+  }) {
+    return send(password);
+  }
+
+  @override
+  @optionalTypeArgs
+  TResult? whenOrNull<TResult extends Object?>({
+    TResult? Function()? prepare,
+    TResult? Function(String password)? send,
+    TResult? Function()? allowCloseSend,
+    TResult? Function(Transaction transaction)? completeSend,
+  }) {
+    return send?.call(password);
+  }
+
+  @override
+  @optionalTypeArgs
+  TResult maybeWhen<TResult extends Object?>({
+    TResult Function()? prepare,
+    TResult Function(String password)? send,
+    TResult Function()? allowCloseSend,
+    TResult Function(Transaction transaction)? completeSend,
+    required TResult orElse(),
+  }) {
+    if (send != null) {
+      return send(password);
+    }
+    return orElse();
+  }
+
+  @override
+  @optionalTypeArgs
+  TResult map<TResult extends Object?>({
+    required TResult Function(_Prepare value) prepare,
+    required TResult Function(_Send value) send,
+    required TResult Function(_AllowCloseSend value) allowCloseSend,
+    required TResult Function(_CompleteSend value) completeSend,
+  }) {
+    return send(this);
+  }
+
+  @override
+  @optionalTypeArgs
+  TResult? mapOrNull<TResult extends Object?>({
+    TResult? Function(_Prepare value)? prepare,
+    TResult? Function(_Send value)? send,
+    TResult? Function(_AllowCloseSend value)? allowCloseSend,
+    TResult? Function(_CompleteSend value)? completeSend,
+  }) {
+    return send?.call(this);
+  }
+
+  @override
+  @optionalTypeArgs
+  TResult maybeMap<TResult extends Object?>({
+    TResult Function(_Prepare value)? prepare,
+    TResult Function(_Send value)? send,
+    TResult Function(_AllowCloseSend value)? allowCloseSend,
+    TResult Function(_CompleteSend value)? completeSend,
+    required TResult orElse(),
+  }) {
+    if (send != null) {
+      return send(this);
+    }
+    return orElse();
+  }
+}
+
+abstract class _Send implements TonWalletSendEvent {
+  const factory _Send(final String password) = _$SendImpl;
+
+  String get password;
+  @JsonKey(ignore: true)
+  _$$SendImplCopyWith<_$SendImpl> get copyWith =>
+      throw _privateConstructorUsedError;
+}
+
+/// @nodoc
+abstract class _$$AllowCloseSendImplCopyWith<$Res> {
+  factory _$$AllowCloseSendImplCopyWith(_$AllowCloseSendImpl value,
+          $Res Function(_$AllowCloseSendImpl) then) =
+      __$$AllowCloseSendImplCopyWithImpl<$Res>;
+}
+
+/// @nodoc
+class __$$AllowCloseSendImplCopyWithImpl<$Res>
+    extends _$TonWalletSendEventCopyWithImpl<$Res, _$AllowCloseSendImpl>
+    implements _$$AllowCloseSendImplCopyWith<$Res> {
+  __$$AllowCloseSendImplCopyWithImpl(
+      _$AllowCloseSendImpl _value, $Res Function(_$AllowCloseSendImpl) _then)
+      : super(_value, _then);
+}
+
+/// @nodoc
+
+class _$AllowCloseSendImpl implements _AllowCloseSend {
+  const _$AllowCloseSendImpl();
+
+  @override
+  String toString() {
+    return 'TonWalletSendEvent.allowCloseSend()';
+  }
+
+  @override
+  bool operator ==(Object other) {
+    return identical(this, other) ||
+        (other.runtimeType == runtimeType && other is _$AllowCloseSendImpl);
+  }
+
+  @override
+  int get hashCode => runtimeType.hashCode;
+
+  @override
+  @optionalTypeArgs
+  TResult when<TResult extends Object?>({
+    required TResult Function() prepare,
+    required TResult Function(String password) send,
+    required TResult Function() allowCloseSend,
+    required TResult Function(Transaction transaction) completeSend,
+  }) {
+    return allowCloseSend();
+  }
+
+  @override
+  @optionalTypeArgs
+  TResult? whenOrNull<TResult extends Object?>({
+    TResult? Function()? prepare,
+    TResult? Function(String password)? send,
+    TResult? Function()? allowCloseSend,
+    TResult? Function(Transaction transaction)? completeSend,
+  }) {
+    return allowCloseSend?.call();
+  }
+
+  @override
+  @optionalTypeArgs
+  TResult maybeWhen<TResult extends Object?>({
+    TResult Function()? prepare,
+    TResult Function(String password)? send,
+    TResult Function()? allowCloseSend,
+    TResult Function(Transaction transaction)? completeSend,
+    required TResult orElse(),
+  }) {
+    if (allowCloseSend != null) {
+      return allowCloseSend();
+    }
+    return orElse();
+  }
+
+  @override
+  @optionalTypeArgs
+  TResult map<TResult extends Object?>({
+    required TResult Function(_Prepare value) prepare,
+    required TResult Function(_Send value) send,
+    required TResult Function(_AllowCloseSend value) allowCloseSend,
+    required TResult Function(_CompleteSend value) completeSend,
+  }) {
+    return allowCloseSend(this);
+  }
+
+  @override
+  @optionalTypeArgs
+  TResult? mapOrNull<TResult extends Object?>({
+    TResult? Function(_Prepare value)? prepare,
+    TResult? Function(_Send value)? send,
+    TResult? Function(_AllowCloseSend value)? allowCloseSend,
+    TResult? Function(_CompleteSend value)? completeSend,
+  }) {
+    return allowCloseSend?.call(this);
+  }
+
+  @override
+  @optionalTypeArgs
+  TResult maybeMap<TResult extends Object?>({
+    TResult Function(_Prepare value)? prepare,
+    TResult Function(_Send value)? send,
+    TResult Function(_AllowCloseSend value)? allowCloseSend,
+    TResult Function(_CompleteSend value)? completeSend,
+    required TResult orElse(),
+  }) {
+    if (allowCloseSend != null) {
+      return allowCloseSend(this);
+    }
+    return orElse();
+  }
+}
+
+abstract class _AllowCloseSend implements TonWalletSendEvent {
+  const factory _AllowCloseSend() = _$AllowCloseSendImpl;
+}
+
+/// @nodoc
+abstract class _$$CompleteSendImplCopyWith<$Res> {
+  factory _$$CompleteSendImplCopyWith(
+          _$CompleteSendImpl value, $Res Function(_$CompleteSendImpl) then) =
+      __$$CompleteSendImplCopyWithImpl<$Res>;
+  @useResult
+  $Res call({Transaction transaction});
+
+  $TransactionCopyWith<$Res> get transaction;
+}
+
+/// @nodoc
+class __$$CompleteSendImplCopyWithImpl<$Res>
+    extends _$TonWalletSendEventCopyWithImpl<$Res, _$CompleteSendImpl>
+    implements _$$CompleteSendImplCopyWith<$Res> {
+  __$$CompleteSendImplCopyWithImpl(
+      _$CompleteSendImpl _value, $Res Function(_$CompleteSendImpl) _then)
+      : super(_value, _then);
+
+  @pragma('vm:prefer-inline')
+  @override
+  $Res call({
+    Object? transaction = null,
+  }) {
+    return _then(_$CompleteSendImpl(
+      null == transaction
+          ? _value.transaction
+          : transaction // ignore: cast_nullable_to_non_nullable
+              as Transaction,
+    ));
+  }
+
+  @override
+  @pragma('vm:prefer-inline')
+  $TransactionCopyWith<$Res> get transaction {
+    return $TransactionCopyWith<$Res>(_value.transaction, (value) {
+      return _then(_value.copyWith(transaction: value));
+    });
+  }
+}
+
+/// @nodoc
+
+class _$CompleteSendImpl implements _CompleteSend {
+  const _$CompleteSendImpl(this.transaction);
+
+  @override
+  final Transaction transaction;
+
+  @override
+  String toString() {
+    return 'TonWalletSendEvent.completeSend(transaction: $transaction)';
+  }
+
+  @override
+  bool operator ==(Object other) {
+    return identical(this, other) ||
+        (other.runtimeType == runtimeType &&
+            other is _$CompleteSendImpl &&
+            (identical(other.transaction, transaction) ||
+                other.transaction == transaction));
+  }
+
+  @override
+  int get hashCode => Object.hash(runtimeType, transaction);
+
+  @JsonKey(ignore: true)
+  @override
+  @pragma('vm:prefer-inline')
+  _$$CompleteSendImplCopyWith<_$CompleteSendImpl> get copyWith =>
+      __$$CompleteSendImplCopyWithImpl<_$CompleteSendImpl>(this, _$identity);
+
+  @override
+  @optionalTypeArgs
+  TResult when<TResult extends Object?>({
+    required TResult Function() prepare,
+    required TResult Function(String password) send,
+    required TResult Function() allowCloseSend,
+    required TResult Function(Transaction transaction) completeSend,
+  }) {
+    return completeSend(transaction);
+  }
+
+  @override
+  @optionalTypeArgs
+  TResult? whenOrNull<TResult extends Object?>({
+    TResult? Function()? prepare,
+    TResult? Function(String password)? send,
+    TResult? Function()? allowCloseSend,
+    TResult? Function(Transaction transaction)? completeSend,
+  }) {
+    return completeSend?.call(transaction);
+  }
+
+  @override
+  @optionalTypeArgs
+  TResult maybeWhen<TResult extends Object?>({
+    TResult Function()? prepare,
+    TResult Function(String password)? send,
+    TResult Function()? allowCloseSend,
+    TResult Function(Transaction transaction)? completeSend,
+    required TResult orElse(),
+  }) {
+    if (completeSend != null) {
+      return completeSend(transaction);
+    }
+    return orElse();
+  }
+
+  @override
+  @optionalTypeArgs
+  TResult map<TResult extends Object?>({
+    required TResult Function(_Prepare value) prepare,
+    required TResult Function(_Send value) send,
+    required TResult Function(_AllowCloseSend value) allowCloseSend,
+    required TResult Function(_CompleteSend value) completeSend,
+  }) {
+    return completeSend(this);
+  }
+
+  @override
+  @optionalTypeArgs
+  TResult? mapOrNull<TResult extends Object?>({
+    TResult? Function(_Prepare value)? prepare,
+    TResult? Function(_Send value)? send,
+    TResult? Function(_AllowCloseSend value)? allowCloseSend,
+    TResult? Function(_CompleteSend value)? completeSend,
+  }) {
+    return completeSend?.call(this);
+  }
+
+  @override
+  @optionalTypeArgs
+  TResult maybeMap<TResult extends Object?>({
+    TResult Function(_Prepare value)? prepare,
+    TResult Function(_Send value)? send,
+    TResult Function(_AllowCloseSend value)? allowCloseSend,
+    TResult Function(_CompleteSend value)? completeSend,
+    required TResult orElse(),
+  }) {
+    if (completeSend != null) {
+      return completeSend(this);
+    }
+    return orElse();
+  }
+}
+
+abstract class _CompleteSend implements TonWalletSendEvent {
+  const factory _CompleteSend(final Transaction transaction) =
+      _$CompleteSendImpl;
+
+  Transaction get transaction;
+  @JsonKey(ignore: true)
+  _$$CompleteSendImplCopyWith<_$CompleteSendImpl> get copyWith =>
+      throw _privateConstructorUsedError;
+}
+
+/// @nodoc
 mixin _$TonWalletSendState {
   @optionalTypeArgs
   TResult when<TResult extends Object?>({
@@ -1037,607 +1639,5 @@ abstract class _Sent implements TonWalletSendState {
   Transaction get transaction;
   @JsonKey(ignore: true)
   _$$SentImplCopyWith<_$SentImpl> get copyWith =>
-      throw _privateConstructorUsedError;
-}
-
-/// @nodoc
-mixin _$TonWalletSendEvent {
-  @optionalTypeArgs
-  TResult when<TResult extends Object?>({
-    required TResult Function() prepare,
-    required TResult Function(String password) send,
-    required TResult Function() allowCloseSend,
-    required TResult Function(Transaction transaction) completeSend,
-  }) =>
-      throw _privateConstructorUsedError;
-  @optionalTypeArgs
-  TResult? whenOrNull<TResult extends Object?>({
-    TResult? Function()? prepare,
-    TResult? Function(String password)? send,
-    TResult? Function()? allowCloseSend,
-    TResult? Function(Transaction transaction)? completeSend,
-  }) =>
-      throw _privateConstructorUsedError;
-  @optionalTypeArgs
-  TResult maybeWhen<TResult extends Object?>({
-    TResult Function()? prepare,
-    TResult Function(String password)? send,
-    TResult Function()? allowCloseSend,
-    TResult Function(Transaction transaction)? completeSend,
-    required TResult orElse(),
-  }) =>
-      throw _privateConstructorUsedError;
-  @optionalTypeArgs
-  TResult map<TResult extends Object?>({
-    required TResult Function(_Prepare value) prepare,
-    required TResult Function(_Send value) send,
-    required TResult Function(_AllowCloseSend value) allowCloseSend,
-    required TResult Function(_CompleteSend value) completeSend,
-  }) =>
-      throw _privateConstructorUsedError;
-  @optionalTypeArgs
-  TResult? mapOrNull<TResult extends Object?>({
-    TResult? Function(_Prepare value)? prepare,
-    TResult? Function(_Send value)? send,
-    TResult? Function(_AllowCloseSend value)? allowCloseSend,
-    TResult? Function(_CompleteSend value)? completeSend,
-  }) =>
-      throw _privateConstructorUsedError;
-  @optionalTypeArgs
-  TResult maybeMap<TResult extends Object?>({
-    TResult Function(_Prepare value)? prepare,
-    TResult Function(_Send value)? send,
-    TResult Function(_AllowCloseSend value)? allowCloseSend,
-    TResult Function(_CompleteSend value)? completeSend,
-    required TResult orElse(),
-  }) =>
-      throw _privateConstructorUsedError;
-}
-
-/// @nodoc
-abstract class $TonWalletSendEventCopyWith<$Res> {
-  factory $TonWalletSendEventCopyWith(
-          TonWalletSendEvent value, $Res Function(TonWalletSendEvent) then) =
-      _$TonWalletSendEventCopyWithImpl<$Res, TonWalletSendEvent>;
-}
-
-/// @nodoc
-class _$TonWalletSendEventCopyWithImpl<$Res, $Val extends TonWalletSendEvent>
-    implements $TonWalletSendEventCopyWith<$Res> {
-  _$TonWalletSendEventCopyWithImpl(this._value, this._then);
-
-  // ignore: unused_field
-  final $Val _value;
-  // ignore: unused_field
-  final $Res Function($Val) _then;
-}
-
-/// @nodoc
-abstract class _$$PrepareImplCopyWith<$Res> {
-  factory _$$PrepareImplCopyWith(
-          _$PrepareImpl value, $Res Function(_$PrepareImpl) then) =
-      __$$PrepareImplCopyWithImpl<$Res>;
-}
-
-/// @nodoc
-class __$$PrepareImplCopyWithImpl<$Res>
-    extends _$TonWalletSendEventCopyWithImpl<$Res, _$PrepareImpl>
-    implements _$$PrepareImplCopyWith<$Res> {
-  __$$PrepareImplCopyWithImpl(
-      _$PrepareImpl _value, $Res Function(_$PrepareImpl) _then)
-      : super(_value, _then);
-}
-
-/// @nodoc
-
-class _$PrepareImpl implements _Prepare {
-  const _$PrepareImpl();
-
-  @override
-  String toString() {
-    return 'TonWalletSendEvent.prepare()';
-  }
-
-  @override
-  bool operator ==(Object other) {
-    return identical(this, other) ||
-        (other.runtimeType == runtimeType && other is _$PrepareImpl);
-  }
-
-  @override
-  int get hashCode => runtimeType.hashCode;
-
-  @override
-  @optionalTypeArgs
-  TResult when<TResult extends Object?>({
-    required TResult Function() prepare,
-    required TResult Function(String password) send,
-    required TResult Function() allowCloseSend,
-    required TResult Function(Transaction transaction) completeSend,
-  }) {
-    return prepare();
-  }
-
-  @override
-  @optionalTypeArgs
-  TResult? whenOrNull<TResult extends Object?>({
-    TResult? Function()? prepare,
-    TResult? Function(String password)? send,
-    TResult? Function()? allowCloseSend,
-    TResult? Function(Transaction transaction)? completeSend,
-  }) {
-    return prepare?.call();
-  }
-
-  @override
-  @optionalTypeArgs
-  TResult maybeWhen<TResult extends Object?>({
-    TResult Function()? prepare,
-    TResult Function(String password)? send,
-    TResult Function()? allowCloseSend,
-    TResult Function(Transaction transaction)? completeSend,
-    required TResult orElse(),
-  }) {
-    if (prepare != null) {
-      return prepare();
-    }
-    return orElse();
-  }
-
-  @override
-  @optionalTypeArgs
-  TResult map<TResult extends Object?>({
-    required TResult Function(_Prepare value) prepare,
-    required TResult Function(_Send value) send,
-    required TResult Function(_AllowCloseSend value) allowCloseSend,
-    required TResult Function(_CompleteSend value) completeSend,
-  }) {
-    return prepare(this);
-  }
-
-  @override
-  @optionalTypeArgs
-  TResult? mapOrNull<TResult extends Object?>({
-    TResult? Function(_Prepare value)? prepare,
-    TResult? Function(_Send value)? send,
-    TResult? Function(_AllowCloseSend value)? allowCloseSend,
-    TResult? Function(_CompleteSend value)? completeSend,
-  }) {
-    return prepare?.call(this);
-  }
-
-  @override
-  @optionalTypeArgs
-  TResult maybeMap<TResult extends Object?>({
-    TResult Function(_Prepare value)? prepare,
-    TResult Function(_Send value)? send,
-    TResult Function(_AllowCloseSend value)? allowCloseSend,
-    TResult Function(_CompleteSend value)? completeSend,
-    required TResult orElse(),
-  }) {
-    if (prepare != null) {
-      return prepare(this);
-    }
-    return orElse();
-  }
-}
-
-abstract class _Prepare implements TonWalletSendEvent {
-  const factory _Prepare() = _$PrepareImpl;
-}
-
-/// @nodoc
-abstract class _$$SendImplCopyWith<$Res> {
-  factory _$$SendImplCopyWith(
-          _$SendImpl value, $Res Function(_$SendImpl) then) =
-      __$$SendImplCopyWithImpl<$Res>;
-  @useResult
-  $Res call({String password});
-}
-
-/// @nodoc
-class __$$SendImplCopyWithImpl<$Res>
-    extends _$TonWalletSendEventCopyWithImpl<$Res, _$SendImpl>
-    implements _$$SendImplCopyWith<$Res> {
-  __$$SendImplCopyWithImpl(_$SendImpl _value, $Res Function(_$SendImpl) _then)
-      : super(_value, _then);
-
-  @pragma('vm:prefer-inline')
-  @override
-  $Res call({
-    Object? password = null,
-  }) {
-    return _then(_$SendImpl(
-      null == password
-          ? _value.password
-          : password // ignore: cast_nullable_to_non_nullable
-              as String,
-    ));
-  }
-}
-
-/// @nodoc
-
-class _$SendImpl implements _Send {
-  const _$SendImpl(this.password);
-
-  @override
-  final String password;
-
-  @override
-  String toString() {
-    return 'TonWalletSendEvent.send(password: $password)';
-  }
-
-  @override
-  bool operator ==(Object other) {
-    return identical(this, other) ||
-        (other.runtimeType == runtimeType &&
-            other is _$SendImpl &&
-            (identical(other.password, password) ||
-                other.password == password));
-  }
-
-  @override
-  int get hashCode => Object.hash(runtimeType, password);
-
-  @JsonKey(ignore: true)
-  @override
-  @pragma('vm:prefer-inline')
-  _$$SendImplCopyWith<_$SendImpl> get copyWith =>
-      __$$SendImplCopyWithImpl<_$SendImpl>(this, _$identity);
-
-  @override
-  @optionalTypeArgs
-  TResult when<TResult extends Object?>({
-    required TResult Function() prepare,
-    required TResult Function(String password) send,
-    required TResult Function() allowCloseSend,
-    required TResult Function(Transaction transaction) completeSend,
-  }) {
-    return send(password);
-  }
-
-  @override
-  @optionalTypeArgs
-  TResult? whenOrNull<TResult extends Object?>({
-    TResult? Function()? prepare,
-    TResult? Function(String password)? send,
-    TResult? Function()? allowCloseSend,
-    TResult? Function(Transaction transaction)? completeSend,
-  }) {
-    return send?.call(password);
-  }
-
-  @override
-  @optionalTypeArgs
-  TResult maybeWhen<TResult extends Object?>({
-    TResult Function()? prepare,
-    TResult Function(String password)? send,
-    TResult Function()? allowCloseSend,
-    TResult Function(Transaction transaction)? completeSend,
-    required TResult orElse(),
-  }) {
-    if (send != null) {
-      return send(password);
-    }
-    return orElse();
-  }
-
-  @override
-  @optionalTypeArgs
-  TResult map<TResult extends Object?>({
-    required TResult Function(_Prepare value) prepare,
-    required TResult Function(_Send value) send,
-    required TResult Function(_AllowCloseSend value) allowCloseSend,
-    required TResult Function(_CompleteSend value) completeSend,
-  }) {
-    return send(this);
-  }
-
-  @override
-  @optionalTypeArgs
-  TResult? mapOrNull<TResult extends Object?>({
-    TResult? Function(_Prepare value)? prepare,
-    TResult? Function(_Send value)? send,
-    TResult? Function(_AllowCloseSend value)? allowCloseSend,
-    TResult? Function(_CompleteSend value)? completeSend,
-  }) {
-    return send?.call(this);
-  }
-
-  @override
-  @optionalTypeArgs
-  TResult maybeMap<TResult extends Object?>({
-    TResult Function(_Prepare value)? prepare,
-    TResult Function(_Send value)? send,
-    TResult Function(_AllowCloseSend value)? allowCloseSend,
-    TResult Function(_CompleteSend value)? completeSend,
-    required TResult orElse(),
-  }) {
-    if (send != null) {
-      return send(this);
-    }
-    return orElse();
-  }
-}
-
-abstract class _Send implements TonWalletSendEvent {
-  const factory _Send(final String password) = _$SendImpl;
-
-  String get password;
-  @JsonKey(ignore: true)
-  _$$SendImplCopyWith<_$SendImpl> get copyWith =>
-      throw _privateConstructorUsedError;
-}
-
-/// @nodoc
-abstract class _$$AllowCloseSendImplCopyWith<$Res> {
-  factory _$$AllowCloseSendImplCopyWith(_$AllowCloseSendImpl value,
-          $Res Function(_$AllowCloseSendImpl) then) =
-      __$$AllowCloseSendImplCopyWithImpl<$Res>;
-}
-
-/// @nodoc
-class __$$AllowCloseSendImplCopyWithImpl<$Res>
-    extends _$TonWalletSendEventCopyWithImpl<$Res, _$AllowCloseSendImpl>
-    implements _$$AllowCloseSendImplCopyWith<$Res> {
-  __$$AllowCloseSendImplCopyWithImpl(
-      _$AllowCloseSendImpl _value, $Res Function(_$AllowCloseSendImpl) _then)
-      : super(_value, _then);
-}
-
-/// @nodoc
-
-class _$AllowCloseSendImpl implements _AllowCloseSend {
-  const _$AllowCloseSendImpl();
-
-  @override
-  String toString() {
-    return 'TonWalletSendEvent.allowCloseSend()';
-  }
-
-  @override
-  bool operator ==(Object other) {
-    return identical(this, other) ||
-        (other.runtimeType == runtimeType && other is _$AllowCloseSendImpl);
-  }
-
-  @override
-  int get hashCode => runtimeType.hashCode;
-
-  @override
-  @optionalTypeArgs
-  TResult when<TResult extends Object?>({
-    required TResult Function() prepare,
-    required TResult Function(String password) send,
-    required TResult Function() allowCloseSend,
-    required TResult Function(Transaction transaction) completeSend,
-  }) {
-    return allowCloseSend();
-  }
-
-  @override
-  @optionalTypeArgs
-  TResult? whenOrNull<TResult extends Object?>({
-    TResult? Function()? prepare,
-    TResult? Function(String password)? send,
-    TResult? Function()? allowCloseSend,
-    TResult? Function(Transaction transaction)? completeSend,
-  }) {
-    return allowCloseSend?.call();
-  }
-
-  @override
-  @optionalTypeArgs
-  TResult maybeWhen<TResult extends Object?>({
-    TResult Function()? prepare,
-    TResult Function(String password)? send,
-    TResult Function()? allowCloseSend,
-    TResult Function(Transaction transaction)? completeSend,
-    required TResult orElse(),
-  }) {
-    if (allowCloseSend != null) {
-      return allowCloseSend();
-    }
-    return orElse();
-  }
-
-  @override
-  @optionalTypeArgs
-  TResult map<TResult extends Object?>({
-    required TResult Function(_Prepare value) prepare,
-    required TResult Function(_Send value) send,
-    required TResult Function(_AllowCloseSend value) allowCloseSend,
-    required TResult Function(_CompleteSend value) completeSend,
-  }) {
-    return allowCloseSend(this);
-  }
-
-  @override
-  @optionalTypeArgs
-  TResult? mapOrNull<TResult extends Object?>({
-    TResult? Function(_Prepare value)? prepare,
-    TResult? Function(_Send value)? send,
-    TResult? Function(_AllowCloseSend value)? allowCloseSend,
-    TResult? Function(_CompleteSend value)? completeSend,
-  }) {
-    return allowCloseSend?.call(this);
-  }
-
-  @override
-  @optionalTypeArgs
-  TResult maybeMap<TResult extends Object?>({
-    TResult Function(_Prepare value)? prepare,
-    TResult Function(_Send value)? send,
-    TResult Function(_AllowCloseSend value)? allowCloseSend,
-    TResult Function(_CompleteSend value)? completeSend,
-    required TResult orElse(),
-  }) {
-    if (allowCloseSend != null) {
-      return allowCloseSend(this);
-    }
-    return orElse();
-  }
-}
-
-abstract class _AllowCloseSend implements TonWalletSendEvent {
-  const factory _AllowCloseSend() = _$AllowCloseSendImpl;
-}
-
-/// @nodoc
-abstract class _$$CompleteSendImplCopyWith<$Res> {
-  factory _$$CompleteSendImplCopyWith(
-          _$CompleteSendImpl value, $Res Function(_$CompleteSendImpl) then) =
-      __$$CompleteSendImplCopyWithImpl<$Res>;
-  @useResult
-  $Res call({Transaction transaction});
-
-  $TransactionCopyWith<$Res> get transaction;
-}
-
-/// @nodoc
-class __$$CompleteSendImplCopyWithImpl<$Res>
-    extends _$TonWalletSendEventCopyWithImpl<$Res, _$CompleteSendImpl>
-    implements _$$CompleteSendImplCopyWith<$Res> {
-  __$$CompleteSendImplCopyWithImpl(
-      _$CompleteSendImpl _value, $Res Function(_$CompleteSendImpl) _then)
-      : super(_value, _then);
-
-  @pragma('vm:prefer-inline')
-  @override
-  $Res call({
-    Object? transaction = null,
-  }) {
-    return _then(_$CompleteSendImpl(
-      null == transaction
-          ? _value.transaction
-          : transaction // ignore: cast_nullable_to_non_nullable
-              as Transaction,
-    ));
-  }
-
-  @override
-  @pragma('vm:prefer-inline')
-  $TransactionCopyWith<$Res> get transaction {
-    return $TransactionCopyWith<$Res>(_value.transaction, (value) {
-      return _then(_value.copyWith(transaction: value));
-    });
-  }
-}
-
-/// @nodoc
-
-class _$CompleteSendImpl implements _CompleteSend {
-  const _$CompleteSendImpl(this.transaction);
-
-  @override
-  final Transaction transaction;
-
-  @override
-  String toString() {
-    return 'TonWalletSendEvent.completeSend(transaction: $transaction)';
-  }
-
-  @override
-  bool operator ==(Object other) {
-    return identical(this, other) ||
-        (other.runtimeType == runtimeType &&
-            other is _$CompleteSendImpl &&
-            (identical(other.transaction, transaction) ||
-                other.transaction == transaction));
-  }
-
-  @override
-  int get hashCode => Object.hash(runtimeType, transaction);
-
-  @JsonKey(ignore: true)
-  @override
-  @pragma('vm:prefer-inline')
-  _$$CompleteSendImplCopyWith<_$CompleteSendImpl> get copyWith =>
-      __$$CompleteSendImplCopyWithImpl<_$CompleteSendImpl>(this, _$identity);
-
-  @override
-  @optionalTypeArgs
-  TResult when<TResult extends Object?>({
-    required TResult Function() prepare,
-    required TResult Function(String password) send,
-    required TResult Function() allowCloseSend,
-    required TResult Function(Transaction transaction) completeSend,
-  }) {
-    return completeSend(transaction);
-  }
-
-  @override
-  @optionalTypeArgs
-  TResult? whenOrNull<TResult extends Object?>({
-    TResult? Function()? prepare,
-    TResult? Function(String password)? send,
-    TResult? Function()? allowCloseSend,
-    TResult? Function(Transaction transaction)? completeSend,
-  }) {
-    return completeSend?.call(transaction);
-  }
-
-  @override
-  @optionalTypeArgs
-  TResult maybeWhen<TResult extends Object?>({
-    TResult Function()? prepare,
-    TResult Function(String password)? send,
-    TResult Function()? allowCloseSend,
-    TResult Function(Transaction transaction)? completeSend,
-    required TResult orElse(),
-  }) {
-    if (completeSend != null) {
-      return completeSend(transaction);
-    }
-    return orElse();
-  }
-
-  @override
-  @optionalTypeArgs
-  TResult map<TResult extends Object?>({
-    required TResult Function(_Prepare value) prepare,
-    required TResult Function(_Send value) send,
-    required TResult Function(_AllowCloseSend value) allowCloseSend,
-    required TResult Function(_CompleteSend value) completeSend,
-  }) {
-    return completeSend(this);
-  }
-
-  @override
-  @optionalTypeArgs
-  TResult? mapOrNull<TResult extends Object?>({
-    TResult? Function(_Prepare value)? prepare,
-    TResult? Function(_Send value)? send,
-    TResult? Function(_AllowCloseSend value)? allowCloseSend,
-    TResult? Function(_CompleteSend value)? completeSend,
-  }) {
-    return completeSend?.call(this);
-  }
-
-  @override
-  @optionalTypeArgs
-  TResult maybeMap<TResult extends Object?>({
-    TResult Function(_Prepare value)? prepare,
-    TResult Function(_Send value)? send,
-    TResult Function(_AllowCloseSend value)? allowCloseSend,
-    TResult Function(_CompleteSend value)? completeSend,
-    required TResult orElse(),
-  }) {
-    if (completeSend != null) {
-      return completeSend(this);
-    }
-    return orElse();
-  }
-}
-
-abstract class _CompleteSend implements TonWalletSendEvent {
-  const factory _CompleteSend(final Transaction transaction) =
-      _$CompleteSendImpl;
-
-  Transaction get transaction;
-  @JsonKey(ignore: true)
-  _$$CompleteSendImplCopyWith<_$CompleteSendImpl> get copyWith =>
       throw _privateConstructorUsedError;
 }

@@ -13,9 +13,9 @@ import 'package:freezed_annotation/freezed_annotation.dart';
 import 'package:logging/logging.dart';
 import 'package:nekoton_repository/nekoton_repository.dart' hide Message;
 
-part 'staking_bloc_state.dart';
-part 'staking_bloc_event.dart';
 part 'staking_bloc.freezed.dart';
+part 'staking_bloc_event.dart';
+part 'staking_bloc_state.dart';
 
 const _defaultWithdrawHours = 36;
 final _maxPossibleStakeComission = BigInt.parse('100000000'); // 0.1 EVER

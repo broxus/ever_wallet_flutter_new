@@ -6,7 +6,6 @@ import 'package:freezed_annotation/freezed_annotation.dart';
 import 'package:nekoton_repository/nekoton_repository.dart';
 
 part 'key_detail_cubit.freezed.dart';
-
 part 'key_detail_state.dart';
 
 /// Cubit of detail key page, displays different pages of accounts, depends on

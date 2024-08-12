@@ -5,9 +5,8 @@ import 'package:bloc/bloc.dart';
 import 'package:freezed_annotation/freezed_annotation.dart';
 import 'package:nekoton_repository/nekoton_repository.dart';
 
-part 'manage_seeds_accounts_state.dart';
-
 part 'manage_seeds_accounts_cubit.freezed.dart';
+part 'manage_seeds_accounts_state.dart';
 
 /// This is a bloc that displays list of user's seeds.
 ///

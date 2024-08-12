@@ -4,9 +4,8 @@ import 'package:bloc/bloc.dart';
 import 'package:freezed_annotation/freezed_annotation.dart';
 import 'package:nekoton_repository/nekoton_repository.dart';
 
-part 'change_seed_password_state.dart';
-
 part 'change_seed_password_cubit.freezed.dart';
+part 'change_seed_password_state.dart';
 
 /// Cubit that allows change password of seed
 class ChangeSeedPasswordCubit extends Cubit<ChangeSeedPasswordState> {

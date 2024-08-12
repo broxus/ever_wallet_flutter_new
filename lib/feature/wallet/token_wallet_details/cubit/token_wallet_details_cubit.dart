@@ -6,9 +6,8 @@ import 'package:collection/collection.dart';
 import 'package:freezed_annotation/freezed_annotation.dart';
 import 'package:nekoton_repository/nekoton_repository.dart';
 
-part 'token_wallet_details_state.dart';
-
 part 'token_wallet_details_cubit.freezed.dart';
+part 'token_wallet_details_state.dart';
 
 /// Cubit that allows loading balance for the [TokenWallet] (history loads
 /// separately) in widget.

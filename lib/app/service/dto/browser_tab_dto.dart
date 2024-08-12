@@ -7,7 +7,6 @@ import 'package:freezed_annotation/freezed_annotation.dart';
 import 'package:hive_flutter/hive_flutter.dart';
 
 part 'browser_tab_dto.freezed.dart';
-
 part 'browser_tab_dto.g.dart';
 
 @freezed

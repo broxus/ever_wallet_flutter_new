@@ -7,9 +7,8 @@ import 'package:freezed_annotation/freezed_annotation.dart';
 import 'package:logging/logging.dart';
 import 'package:nekoton_repository/nekoton_repository.dart';
 
-part 'account_detail_state.dart';
-
 part 'account_detail_cubit.freezed.dart';
+part 'account_detail_state.dart';
 
 /// Cubit for account detail page
 class AccountDetailCubit extends Cubit<AccountDetailState> {

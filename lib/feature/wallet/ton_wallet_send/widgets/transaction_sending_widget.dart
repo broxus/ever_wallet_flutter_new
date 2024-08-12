@@ -3,6 +3,7 @@ import 'package:app/generated/generated.dart';
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:ui_components_lib/ui_components_lib.dart';
+import 'package:ui_components_lib/v2/ui_components_lib_v2.dart';
 
 /// Widget that allows display process of sending transaction to blockchain.
 /// If [canClose] is true, then 'Okay' button will be visible and user will be
@@ -23,12 +24,14 @@ class TransactionSendingWidget extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final theme = context.themeStyleV2;
+
     return SeparatedColumn(
       children: [
         Expanded(
           child: Center(
             child: SeparatedColumn(
-              separatorSize: DimensSize.d16,
+              separatorSize: DimensSizeV2.d16,
               mainAxisSize: MainAxisSize.min,
               children: [
                 const CommonCircularProgressIndicator(
@@ -36,9 +39,7 @@ class TransactionSendingWidget extends StatelessWidget {
                 ),
                 Text(
                   LocaleKeys.transactionIsSending.tr(),
-                  style: StyleRes.primaryRegular.copyWith(
-                    color: context.themeStyle.colors.textPrimary,
-                  ),
+                  style: theme.textStyles.headingLarge,
                   textAlign: TextAlign.center,
                 ),
               ],
@@ -46,9 +47,9 @@ class TransactionSendingWidget extends StatelessWidget {
           ),
         ),
         if (canClose)
-          CommonButton.primary(
-            fillWidth: true,
-            text: LocaleKeys.okayWord.tr(),
+          PrimaryButton(
+            buttonShape: ButtonShape.pill,
+            title: LocaleKeys.okayWord.tr(),
             onPressed: () {
               if (completeCloseCallback != null) {
                 completeCloseCallback!(context);
@@ -57,7 +58,7 @@ class TransactionSendingWidget extends StatelessWidget {
               }
             },
           ),
-        const SizedBox(height: DimensSize.d32),
+        const SizedBox(height: DimensSizeV2.d16),
       ],
     );
   }

@@ -7,9 +7,7 @@ import 'package:freezed_annotation/freezed_annotation.dart';
 import 'package:nekoton_repository/nekoton_repository.dart' hide Message;
 
 part 'profile_bloc.freezed.dart';
-
 part 'profile_event.dart';
-
 part 'profile_state.dart';
 
 /// Bloc for profile page that stores current key in state and some settings.

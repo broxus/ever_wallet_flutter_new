@@ -7,9 +7,8 @@ import 'package:collection/collection.dart';
 import 'package:freezed_annotation/freezed_annotation.dart';
 import 'package:nekoton_repository/nekoton_repository.dart';
 
-part 'wallet_account_actions_state.dart';
-
 part 'wallet_account_actions_cubit.freezed.dart';
+part 'wallet_account_actions_state.dart';
 
 /// Action that describes behavior for account.
 enum WalletAccountActionBehavior {

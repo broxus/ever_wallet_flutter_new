@@ -5,9 +5,9 @@ import 'package:app/data/models/models.dart';
 import 'package:bloc/bloc.dart';
 import 'package:freezed_annotation/freezed_annotation.dart';
 
+part 'browser_bookmarks_bloc.freezed.dart';
 part 'browser_bookmarks_event.dart';
 part 'browser_bookmarks_state.dart';
-part 'browser_bookmarks_bloc.freezed.dart';
 
 class BrowserBookmarksBloc
     extends Bloc<BrowserBookmarksEvent, BrowserBookmarksState> {

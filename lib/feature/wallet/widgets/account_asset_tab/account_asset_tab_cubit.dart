@@ -6,9 +6,8 @@ import 'package:bloc/bloc.dart';
 import 'package:freezed_annotation/freezed_annotation.dart';
 import 'package:nekoton_repository/nekoton_repository.dart';
 
-part 'account_asset_tab_state.dart';
-
 part 'account_asset_tab_cubit.freezed.dart';
+part 'account_asset_tab_state.dart';
 
 /// Cubit to assets tab from wallet bottom panel.
 /// This cubit allows tracking contracts for account with [tonWallet]
