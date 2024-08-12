@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 
 import 'package:ui_components_lib/ui_components_lib.dart';
+import 'package:ui_components_lib/v2/ui_components_lib_v2.dart';
 
 const _defaultListTileScaleRation = 2.5;
 const _defaultSubtitleMaxLines = 2;
@@ -21,14 +22,14 @@ class CommonListTile extends StatelessWidget {
     this.subtitleChild,
     this.leading,
     this.trailing,
-    super.key,
     this.height = DimensSize.d56,
     this.backgroundColor,
-    this.squircleRadius = DimensRadius.xMedium,
-    this.padding = const EdgeInsets.symmetric(horizontal: DimensSize.d8),
+    this.squircleRadius = DimensRadiusV2.radius16,
+    this.padding = const EdgeInsets.symmetric(horizontal: DimensSizeV2.d8),
     this.contentColor,
     this.invertTitleSubtitleStyles = false,
     this.subtitleMaxLines = _defaultSubtitleMaxLines,
+    super.key,
   });
 
   /// Press callback of tile
@@ -52,7 +53,6 @@ class CommonListTile extends StatelessWidget {
   /// Widget that renders on the right side of tile
   final Widget? trailing;
 
-  /// Default height of tile, [DimensSize.d56] by default.
   /// If height is null, then tile will wrap its content by height.
   final double? height;
 
@@ -62,7 +62,7 @@ class CommonListTile extends StatelessWidget {
   /// Radius of squircle shape if [backgroundColor] is not null.
   final double squircleRadius;
 
-  /// Padding of content inside tile, default is horizontal: DimensSize.d8.
+  /// Padding of content inside tile, default is horizontal: DimensSizeV2.d8.
   final EdgeInsets padding;
 
   /// Color of text and icons inside tile
@@ -78,19 +78,19 @@ class CommonListTile extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final colors = context.themeStyle.colors;
+    final theme = context.themeStyleV2;
 
     final subtitle = subtitleText != null
         ? Text(
             subtitleText!,
             style: (invertTitleSubtitleStyles
-                    ? StyleRes.button
-                    : StyleRes.addRegular)
+                    ? theme.textStyles.labelMedium
+                    : theme.textStyles.labelXSmall)
                 .copyWith(
               color: contentColor ??
                   (invertTitleSubtitleStyles
-                      ? colors.textPrimary
-                      : colors.textSecondary),
+                      ? theme.colors.content0
+                      : theme.colors.content3),
             ),
             maxLines: subtitleMaxLines,
             overflow: subtitleMaxLines == null ? null : TextOverflow.ellipsis,
@@ -102,13 +102,13 @@ class CommonListTile extends StatelessWidget {
         ? Text(
             titleText!,
             style: (invertTitleSubtitleStyles
-                    ? StyleRes.addRegular
-                    : StyleRes.button)
+                    ? theme.textStyles.labelXSmall
+                    : theme.textStyles.labelMedium)
                 .copyWith(
               color: contentColor ??
                   (invertTitleSubtitleStyles
-                      ? colors.textSecondary
-                      : colors.textPrimary),
+                      ? theme.colors.content3
+                      : theme.colors.content0),
             ),
             maxLines: subtitle == null ? null : 1,
             overflow: subtitle == null ? null : TextOverflow.ellipsis,
@@ -130,11 +130,12 @@ class CommonListTile extends StatelessWidget {
           height: height,
           children: [
             if (leading != null) leading!,
-            Expanded(
+            Flexible(
+              fit: trailing != null ? FlexFit.tight : FlexFit.loose,
               child: SeparatedColumn(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 mainAxisAlignment: MainAxisAlignment.center,
-                separatorSize: DimensSize.d4,
+                separatorSize: DimensSizeV2.d4,
                 children: [
                   if (title != null) title,
                   if (subtitle != null) subtitle,
@@ -143,7 +144,7 @@ class CommonListTile extends StatelessWidget {
             ),
             if (trailing != null)
               EverButtonStyleProvider(
-                contentColor: contentColor ?? colors.textSecondary,
+                contentColor: contentColor ?? theme.colors.content0,
                 child: trailing!,
               ),
           ],

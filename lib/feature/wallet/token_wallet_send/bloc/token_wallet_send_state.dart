@@ -8,19 +8,17 @@ class TokenWalletSendState with _$TokenWalletSendState {
     Object error,
   ) = _SubscribeError;
 
-  const factory TokenWalletSendState.loading(Currency tokenCurrency) = _Loading;
+  const factory TokenWalletSendState.loading() = _Loading;
 
   /// Error during prepare process
   const factory TokenWalletSendState.calculatingError(
-    String error,
-    Currency tokenCurrency, [
+    String error, [
     BigInt? fee,
   ]) = _CalculatingError;
 
   /// Blockchain fee loaded, allow user send transaction
   const factory TokenWalletSendState.readyToSend(
     BigInt fee,
-    Currency tokenCurrency,
     BigInt attachedAmount,
   ) = _Ready;
 
@@ -33,7 +31,6 @@ class TokenWalletSendState with _$TokenWalletSendState {
   /// Transaction sent successfully
   const factory TokenWalletSendState.sent(
     BigInt fee,
-    Currency tokenCurrency,
     Transaction transaction,
   ) = _Sent;
 }

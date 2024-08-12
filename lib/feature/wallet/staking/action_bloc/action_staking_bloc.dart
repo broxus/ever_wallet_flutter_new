@@ -6,9 +6,9 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:freezed_annotation/freezed_annotation.dart';
 import 'package:nekoton_repository/nekoton_repository.dart';
 
-part 'action_staking_bloc_state.dart';
-part 'action_staking_bloc_event.dart';
 part 'action_staking_bloc.freezed.dart';
+part 'action_staking_bloc_event.dart';
+part 'action_staking_bloc_state.dart';
 
 /// Helper bloc that can prepare transaction for sending before open send screen
 class ActionStakingBloc

@@ -3,9 +3,8 @@ import 'package:bloc/bloc.dart';
 import 'package:freezed_annotation/freezed_annotation.dart';
 import 'package:nekoton_repository/nekoton_repository.dart';
 
-part 'export_seed_state.dart';
-
 part 'export_seed_cubit.freezed.dart';
+part 'export_seed_state.dart';
 
 /// Cubit that enters user password and exports seed phrase.
 class ExportSeedCubit extends Cubit<ExportSeedState> {

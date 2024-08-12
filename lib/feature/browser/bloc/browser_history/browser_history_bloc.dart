@@ -5,11 +5,9 @@ import 'package:app/data/models/models.dart';
 import 'package:bloc/bloc.dart';
 import 'package:freezed_annotation/freezed_annotation.dart';
 
-part 'browser_history_event.dart';
-
-part 'browser_history_state.dart';
-
 part 'browser_history_bloc.freezed.dart';
+part 'browser_history_event.dart';
+part 'browser_history_state.dart';
 
 class BrowserHistoryBloc
     extends Bloc<BrowserHistoryEvent, BrowserHistoryState> {

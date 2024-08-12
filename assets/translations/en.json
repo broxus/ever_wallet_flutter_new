@@ -498,5 +498,11 @@
   "importWalletScreenSubtitle": "Enter your secret recovery phrase to securely import your wallet.",
   "importWalletButtonText": "Import",
   "importWalletManuallyButtonText": "Import manually",
-  "importWalletPasteClipboard": "Paste from clipboard"
+  "importWalletPasteClipboard": "Paste from clipboard",
+  "toInputLabel": "To:",
+  "balance": "Balance {}",
+  "addComment": "Add comment",
+  "addCommentHint": "Will be visible for everyone",
+  "networkFee": "Network fee",
+  "password": "Password"
 }

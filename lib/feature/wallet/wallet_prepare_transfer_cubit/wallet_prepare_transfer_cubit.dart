@@ -11,7 +11,6 @@ import 'package:logging/logging.dart';
 import 'package:nekoton_repository/nekoton_repository.dart' hide Message;
 
 part 'wallet_prepare_transfer_cubit.freezed.dart';
-
 part 'wallet_prepare_transfer_state.dart';
 
 /// Cubit that allows prepare sending native token for TonWallet with [address].
@@ -290,7 +289,7 @@ class WalletPrepareTransferCubit extends Cubit<WalletPrepareTransferState> {
 
         _currentWalletSubscription = wallet.fieldUpdatesStream.listen((_) {
           final updated = _assets[(root, symbol)]?.copyWith(
-            Money.fromBigIntWithCurrency(
+            balance: Money.fromBigIntWithCurrency(
               wallet.contractState.balance,
               Currencies()[symbol]!,
             ),
@@ -333,7 +332,7 @@ class WalletPrepareTransferCubit extends Cubit<WalletPrepareTransferState> {
         _walletsSubscription?.cancel();
         _currentWalletSubscription = wallet.fieldUpdatesStream.listen((_) {
           final updated =
-              _assets[(root, symbol)]?.copyWith(wallet.moneyBalance);
+              _assets[(root, symbol)]?.copyWith(balance: wallet.moneyBalance);
           if (updated != null) {
             _assets[(root, symbol)] = updated;
             if (selectedAsset.rootTokenContract == root &&

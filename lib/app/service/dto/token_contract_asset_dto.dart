@@ -7,7 +7,6 @@ import 'package:hive_flutter/hive_flutter.dart';
 import 'package:nekoton_repository/nekoton_repository.dart';
 
 part 'token_contract_asset_dto.freezed.dart';
-
 part 'token_contract_asset_dto.g.dart';
 
 @freezed

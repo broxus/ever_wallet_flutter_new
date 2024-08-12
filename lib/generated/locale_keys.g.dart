@@ -509,4 +509,10 @@ abstract class LocaleKeys {
   static const importWalletManuallyButtonText =
       'importWalletManuallyButtonText';
   static const importWalletPasteClipboard = 'importWalletPasteClipboard';
+  static const toInputLabel = 'toInputLabel';
+  static const balance = 'balance';
+  static const addComment = 'addComment';
+  static const addCommentHint = 'addCommentHint';
+  static const networkFee = 'networkFee';
+  static const password = 'password';
 }

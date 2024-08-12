@@ -7,6 +7,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
 import 'package:nekoton_repository/nekoton_repository.dart';
 import 'package:ui_components_lib/ui_components_lib.dart';
+import 'package:ui_components_lib/v2/ui_components_lib_v2.dart';
 
 /// Page that allows to send not native token from [TokenWallet] to
 /// [destination].
@@ -64,13 +65,16 @@ class TokenWalletSendPage extends StatelessWidget {
         comment: comment,
         publicKey: publicKey,
         nekotonRepository: inject(),
+        currenciesService: inject(),
+        messengerService: inject(),
+        assetsService: inject(),
         resultMessage:
             resultMessage ?? LocaleKeys.transactionSentSuccessfully.tr(),
       )..add(const TokenWalletSendEvent.prepare()),
       child: BlocConsumer<TokenWalletSendBloc, TokenWalletSendState>(
         listener: (context, state) {
           state.whenOrNull(
-            sent: (_, __, ___) => context.goNamed(AppRoute.wallet.name),
+            sent: (_, __) => context.goNamed(AppRoute.wallet.name),
           );
         },
         builder: (context, state) {
@@ -82,26 +86,17 @@ class TokenWalletSendPage extends StatelessWidget {
                 child: WalletSubscribeErrorWidget(error: error),
               ),
             ),
-            loading: (tokenCurrency) =>
-                _confirmPage(tokenCurrency: tokenCurrency),
-            calculatingError: (error, tokenCurrency, fee) => _confirmPage(
-              tokenCurrency: tokenCurrency,
+            loading: _confirmPage,
+            calculatingError: (error, fee) => _confirmPage(
               fee: fee,
               error: error,
             ),
-            readyToSend: (fee, tokenCurrency, attachedAmount) => _confirmPage(
+            readyToSend: (fee, attachedAmount) => _confirmPage(
               fee: fee,
-              tokenCurrency: tokenCurrency,
               attachedAmount: attachedAmount,
             ),
-            sending: (canClose) => Scaffold(
-              body: Padding(
-                padding: const EdgeInsets.all(DimensSize.d16),
-                child: TransactionSendingWidget(canClose: canClose),
-              ),
-            ),
-            sent: (fee, tokenCurrency, _) =>
-                _confirmPage(fee: fee, tokenCurrency: tokenCurrency),
+            sending: _sendingPage,
+            sent: (_, __) => _sendingPage(false),
           );
         },
       ),
@@ -109,26 +104,37 @@ class TokenWalletSendPage extends StatelessWidget {
   }
 
   Widget _confirmPage({
-    required Currency tokenCurrency,
     BigInt? fee,
     String? error,
     BigInt? attachedAmount,
-  }) {
-    return Scaffold(
-      appBar: DefaultAppBar(
-        onClosePressed: (context) => context.pop(),
-        titleText: LocaleKeys.confirmTransaction.tr(),
-      ),
-      body: TokenWalletSendConfirmView(
-        recipient: destination,
-        amount: amount,
-        comment: comment,
-        publicKey: publicKey,
-        fee: fee,
-        feeError: error,
-        attachedAmount: attachedAmount,
-        tokenCurrency: tokenCurrency,
-      ),
-    );
-  }
+  }) =>
+      Scaffold(
+        appBar: DefaultAppBar(
+          onClosePressed: (context) => context.pop(),
+          titleText: LocaleKeys.confirmTransaction.tr(),
+        ),
+        body: Padding(
+          padding: const EdgeInsets.symmetric(
+            horizontal: DimensSizeV2.d16,
+          ),
+          child: TokenWalletSendConfirmView(
+            recipient: destination,
+            amount: amount,
+            comment: comment,
+            publicKey: publicKey,
+            fee: fee,
+            feeError: error,
+            attachedAmount: attachedAmount,
+          ),
+        ),
+      );
+
+  Widget _sendingPage(bool canClose) => Scaffold(
+        body: Padding(
+          padding: const EdgeInsets.symmetric(
+            horizontal: DimensSizeV2.d16,
+          ),
+          child: TransactionSendingWidget(canClose: canClose),
+        ),
+      );
 }

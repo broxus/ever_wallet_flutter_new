@@ -1,11 +1,14 @@
 import 'package:app/feature/wallet/wallet.dart';
 import 'package:app/feature/wallet/wallet_prepare_transfer/wallet_prepare_transfer_page/data/wallet_prepare_transfer_asset.dart';
 import 'package:app/feature/wallet/wallet_prepare_transfer/wallet_prepare_transfer_page/wallet_prepare_transfer_page_wm.dart';
-import 'package:app/feature/wallet/wallet_prepare_transfer/wallet_prepare_transfer_page/widgets/wallet_prepare_address_suffix_icon.dart';
+import 'package:app/feature/wallet/wallet_prepare_transfer/wallet_prepare_transfer_page/widgets/wallet_prepare_transfer_amount_input.dart';
 import 'package:app/generated/generated.dart';
+import 'package:elementary_helper/elementary_helper.dart';
 import 'package:flutter/material.dart';
+import 'package:lucide_icons_flutter/lucide_icons.dart';
 import 'package:nekoton_repository/nekoton_repository.dart' hide Message;
 import 'package:ui_components_lib/ui_components_lib.dart';
+import 'package:ui_components_lib/v2/ui_components_lib_v2.dart';
 
 /// View for Ton/Token Wallet to prepare transfer
 
@@ -30,8 +33,6 @@ class WalletPrepareTransferView extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final colors = context.themeStyle.colors;
-
     return Form(
       key: _wm.formKey,
       child: Column(
@@ -41,31 +42,7 @@ class WalletPrepareTransferView extends StatelessWidget {
               child: SeparatedColumn(
                 separatorSize: DimensSize.d16,
                 children: [
-                  Text(
-                    LocaleKeys.sendYourFunds.tr(),
-                    style: StyleRes.h1.copyWith(color: colors.textPrimary),
-                  ),
-                  if (assets != null)
-                    CommonSelectDropdown<WalletPrepareTransferAsset>(
-                      values: [
-                        for (final asset in assets!)
-                          CommonSheetDropdownItem<WalletPrepareTransferAsset>(
-                            value: asset,
-                            title: asset.title,
-                            icon: TokenWalletIconWidget(
-                              size: DimensSize.d32,
-                              address: asset.rootTokenContract,
-                              logoURI: asset.logoURI,
-                              // tip3 for native
-                              version: asset.version ?? TokenWalletVersion.tip3,
-                            ),
-                          ),
-                      ],
-                      titleText: LocaleKeys.assetsWord.tr(),
-                      currentValue: selectedAsset,
-                      sheetTitle: LocaleKeys.selectToken.tr(),
-                      onChanged: _wm.onChangeAsset,
-                    ),
+                  if (account != null) AccountInfo(account: account!),
                   if (localCustodians != null && localCustodians!.length > 1)
                     CommonSelectDropdown<PublicKey>(
                       values: [
@@ -79,76 +56,35 @@ class WalletPrepareTransferView extends StatelessWidget {
                       currentValue: selectedCustodian,
                       onChanged: _wm.onChangedCustodian,
                     ),
-                  CommonInput(
-                    titleText: LocaleKeys.receiverAddress.tr(),
-                    controller: _wm.receiverController,
+                  PrimaryTextField(
+                    labelText: LocaleKeys.toInputLabel.tr(),
+                    hintText: LocaleKeys.receiverAddress.tr(),
+                    textEditingController: _wm.receiverController,
                     focusNode: _wm.receiverFocus,
-                    onSubmitted: _wm.onSubmittedReceiverAddress,
+                    onSubmit: _wm.onSubmittedReceiverAddress,
                     inputFormatters: [_wm.addressFilterFormatter],
                     validator: (value) => value?.isEmpty ?? true
                         ? LocaleKeys.addressIsEmpty.tr()
                         : null,
-                    suffixIconConstraints: BoxConstraints(
-                      minHeight: commonInputHeight,
-                      // ignore: no-magic-number
-                      minWidth: CommonIconButtonSize.small.value * 2,
-                    ),
-                    suffixIcon: WalletPrepareAddressSuffixIcon(
-                      receiverState: _wm.receiverState,
-                      onPressedClear: _wm.onPressedReceiverClear,
-                      onPressedPastAddress: _wm.onPressedPastAddress,
-                      onPressedScan: _wm.onPressedScan,
-                    ),
+                    suffixes: [_buildReceiverSuffix()],
                   ),
-                  CommonInput(
-                    titleText: LocaleKeys.amountWord.tr(),
-                    subtitleText: LocaleKeys.amountAvailable.tr(
-                      args: selectedAsset == null
-                          ? null
-                          : [selectedAsset!.balance.formatImproved()],
-                    ),
+                  WalletPrepareTransferAmountInput(
                     controller: _wm.amountController,
                     focusNode: _wm.amountFocus,
+                    assets: assets,
+                    selectedAsset: selectedAsset,
+                    onSelectedAssetChanged: _wm.onChangeAsset,
+                    onMaxAmount: _wm.setMaxBalance,
                     onSubmitted: _wm.onSubmittedAmountWord,
-                    validator: (value) => selectedAsset == null
-                        ? null
-                        : CurrencyTextInputValidator(
-                            selectedAsset!.balance.currency,
-                            emptyError: LocaleKeys.amountIsEmpty.tr(),
-                            error: LocaleKeys.amountIsWrong.tr(),
-                            max: selectedAsset!.balance.amount,
-                            maxError: LocaleKeys.insufficientFunds.tr(),
-                          ).validate(value),
-                    inputFormatters: [
-                      if (selectedAsset != null)
-                        CurrencyTextInputFormatter(
-                          selectedAsset!.balance.currency,
-                        ),
-                    ],
-                    suffixIconConstraints: const BoxConstraints(
-                      minWidth: DimensSize.d64,
-                      minHeight: commonInputHeight,
-                    ),
-                    suffixIcon: SmallButton(
-                      buttonType: EverButtonType.ghost,
-                      text: LocaleKeys.maxWord.tr(),
-                      contentColor: colors.blue,
-                      onPressed: _wm.setMaxBalance,
-                    ),
                   ),
-                  CommonInput(
-                    titleText: LocaleKeys.commentWord.tr(),
-                    controller: _wm.commentController,
-                    focusNode: _wm.commentFocus,
-                    onSubmitted: (_) => _wm.onPressedNext(),
-                  ),
+                  _buildCommentWidget(),
                 ],
               ),
             ),
           ),
-          CommonButton.primary(
-            fillWidth: true,
-            text: LocaleKeys.nextWord.tr(),
+          AccentButton(
+            buttonShape: ButtonShape.pill,
+            title: LocaleKeys.continueWord.tr(),
             onPressed: _wm.onPressedNext,
           ),
           const SizedBox(height: DimensSize.d16),
@@ -156,4 +92,51 @@ class WalletPrepareTransferView extends StatelessWidget {
       ),
     );
   }
+
+  Widget _buildReceiverSuffix() => StateNotifierBuilder(
+        listenableState: _wm.receiverState,
+        builder: (_, value) => value?.isNotEmpty ?? false
+            ? Padding(
+                padding: const EdgeInsets.only(right: DimensSize.d8),
+                child: PrimaryButton(
+                  buttonShape: ButtonShape.square,
+                  icon: LucideIcons.x,
+                  onPressed: _wm.onPressedReceiverClear,
+                  buttonSize: ButtonSize.small,
+                ),
+              )
+            : const SizedBox.shrink(),
+      );
+
+  Widget _buildCommentWidget() => StateNotifierBuilder(
+        listenableState: _wm.commentState,
+        builder: (context, value) => value ?? false
+            ? SeparatedColumn(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  PrimaryTextField(
+                    hintText: LocaleKeys.commentWord.tr(),
+                    textEditingController: _wm.commentController,
+                    focusNode: _wm.commentFocus,
+                    onSubmit: (_) => _wm.onPressedNext(),
+                  ),
+                  Text(
+                    LocaleKeys.addCommentHint.tr(),
+                    style: context.themeStyleV2.textStyles.labelXSmall.copyWith(
+                      color: context.themeStyleV2.colors.content3,
+                    ),
+                  ),
+                ],
+              )
+            : GhostButton(
+                buttonShape: ButtonShape.rectangle,
+                buttonSize: ButtonSize.medium,
+                title: LocaleKeys.addComment.tr(),
+                icon: LucideIcons.plus,
+                onPressed: () {
+                  _wm.commentState.accept(true);
+                  _wm.commentFocus.requestFocus();
+                },
+              ),
+      );
 }

@@ -25,12 +25,15 @@ WalletPrepareTransferPageWidgetModel
   BuildContext context,
   Address address,
   Address? rootTokenContract,
+  String? tokenSymbol,
 ) {
   return WalletPrepareTransferPageWidgetModel(
     WalletPrepareTransferPageModel(
       createPrimaryErrorHandler(context),
       address,
       rootTokenContract,
+      tokenSymbol,
+      inject(),
       inject(),
       inject(),
       inject(),
@@ -52,6 +55,8 @@ class WalletPrepareTransferPageWidgetModel extends CustomWidgetModel<
 
   late final receiverState = createNotifier<String?>();
 
+  late final commentState = createNotifier(false);
+
   final formKey = GlobalKey<FormState>();
 
   late final receiverController = createTextEditingController();
@@ -67,9 +72,9 @@ class WalletPrepareTransferPageWidgetModel extends CustomWidgetModel<
     RegExp(r'\s'),
   );
 
-  late final _tokenSymbol = widget.tokenSymbol;
-
   final _assets = <(Address, String), WalletPrepareTransferAsset>{};
+
+  StreamSubscription<dynamic>? _currencySubscription;
 
   WalletPrepareTransferData? get _data => screenState.value.data;
 
@@ -79,12 +84,20 @@ class WalletPrepareTransferPageWidgetModel extends CustomWidgetModel<
 
   List<WalletPrepareTransferAsset> get assetsList => _assets.values.toList();
 
+  Address get address => model.address;
+
   @protected
   @override
   void initWidgetModel() {
     super.initWidgetModel();
     _init();
     _initListeners();
+  }
+
+  @override
+  void dispose() {
+    _currencySubscription?.cancel();
+    super.dispose();
   }
 
   String? getSeedName(PublicKey custodian) => model.getSeedName(custodian);
@@ -98,10 +111,9 @@ class WalletPrepareTransferPageWidgetModel extends CustomWidgetModel<
     }
 
     _updateState(selectedAsset: asset);
+    unawaited(_updateAssetCurrency());
 
-    model.startListeningBalance(
-      _assets[(widget.rootTokenContract, widget.tokenSymbol)],
-    );
+    model.startListeningBalance(_assets[asset.key]);
   }
 
   void onChangedCustodian(PublicKey custodian) {
@@ -198,7 +210,7 @@ class WalletPrepareTransferPageWidgetModel extends CustomWidgetModel<
   void onSubmittedAmountWord(_) => commentFocus.requestFocus();
 
   Future<void> _init() async {
-    final acc = model.findAccountByAddress(widget.address);
+    final acc = model.findAccountByAddress(model.address);
     if (acc == null) {
       screenState.content(null);
       return;
@@ -211,7 +223,7 @@ class WalletPrepareTransferPageWidgetModel extends CustomWidgetModel<
 
     // If default contract not specified, then native is default and load
     // all existed assets
-    final root = widget.rootTokenContract;
+    final root = model.rootTokenContract;
 
     if (root == null) {
       _createNativeContract();
@@ -220,7 +232,7 @@ class WalletPrepareTransferPageWidgetModel extends CustomWidgetModel<
       final transport = model.currentTransport;
       // if default contract is specified, then lock it
       if (root == transport.nativeTokenAddress &&
-          _tokenSymbol == transport.nativeTokenTicker) {
+          model.tokenSymbol == transport.nativeTokenTicker) {
         _createNativeContract();
       } else {
         unawaited(_findSpecifiedContract(root));
@@ -231,9 +243,7 @@ class WalletPrepareTransferPageWidgetModel extends CustomWidgetModel<
       walletName: model.getWalletName(acc),
       account: acc,
       selectedCustodian: acc.publicKey,
-      localCustodians: await model.getLocalCustodiansAsync(
-        widget.address,
-      ),
+      localCustodians: await model.getLocalCustodiansAsync(model.address),
     );
   }
 
@@ -262,7 +272,7 @@ class WalletPrepareTransferPageWidgetModel extends CustomWidgetModel<
       return;
     }
 
-    final accountAddress = widget.address.address;
+    final accountAddress = model.address.address;
     final publicKey = _selectedCustodian?.publicKey;
 
     final comment = commentController.text.trim();
@@ -296,6 +306,21 @@ class WalletPrepareTransferPageWidgetModel extends CustomWidgetModel<
     context.goFurther(path);
   }
 
+  Future<void> _updateAssetCurrency() async {
+    if (_selectedAsset?.currency != null) return;
+
+    final currency = await model.getCurrencyForContract(
+      _selectedAsset!.rootTokenContract,
+    );
+
+    if (currency != null) {
+      final selectedAsset = _selectedAsset!.copyWith(currency: currency);
+
+      _assets[selectedAsset.key] = selectedAsset;
+      _updateState(selectedAsset: selectedAsset);
+    }
+  }
+
   void _createNativeContract() {
     final transport = model.currentTransport;
     final root = transport.nativeTokenAddress;
@@ -311,6 +336,7 @@ class WalletPrepareTransferPageWidgetModel extends CustomWidgetModel<
     );
     _assets[(root, symbol)] = selectedAsset;
     _updateState(selectedAsset: selectedAsset);
+    unawaited(_updateAssetCurrency());
     model.startListeningBalance(selectedAsset);
   }
 
@@ -334,7 +360,7 @@ class WalletPrepareTransferPageWidgetModel extends CustomWidgetModel<
     );
     _assets[(root, contract.symbol)] = selectedAsset;
     _updateState(selectedAsset: selectedAsset);
-
+    unawaited(_updateAssetCurrency());
     model.startListeningBalance(selectedAsset);
   }
 
@@ -374,7 +400,7 @@ class WalletPrepareTransferPageWidgetModel extends CustomWidgetModel<
       final balance = value.balance;
 
       updated = _assets[(root, symbol)]?.copyWith(
-        Money.fromBigIntWithCurrency(
+        balance: Money.fromBigIntWithCurrency(
           balance,
           Currencies()[symbol]!,
         ),
@@ -384,7 +410,7 @@ class WalletPrepareTransferPageWidgetModel extends CustomWidgetModel<
       symbol = value.symbol;
       final money = value.money;
 
-      updated = _assets[(root, symbol)]?.copyWith(money);
+      updated = _assets[(root, symbol)]?.copyWith(balance: money);
     }
 
     if (updated == null || root == null || symbol == null) {

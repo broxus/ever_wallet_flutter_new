@@ -3,7 +3,6 @@ import 'package:app/data/models/ton_assets_manifest_version.dart';
 import 'package:freezed_annotation/freezed_annotation.dart';
 
 part 'ton_assets_manifest.freezed.dart';
-
 part 'ton_assets_manifest.g.dart';
 
 @freezed

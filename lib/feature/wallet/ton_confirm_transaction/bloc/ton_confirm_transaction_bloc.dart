@@ -8,9 +8,7 @@ import 'package:logging/logging.dart';
 import 'package:nekoton_repository/nekoton_repository.dart' hide Message;
 
 part 'ton_confirm_transaction_bloc.freezed.dart';
-
 part 'ton_confirm_transaction_event.dart';
-
 part 'ton_confirm_transaction_state.dart';
 
 /// Bloc that allows prepare transaction confirmation for multisig wallet.

@@ -6,9 +6,8 @@ import 'package:flutter/material.dart';
 import 'package:freezed_annotation/freezed_annotation.dart';
 import 'package:nekoton_repository/nekoton_repository.dart';
 
-part 'wallet_state.dart';
-
 part 'wallet_cubit.freezed.dart';
+part 'wallet_state.dart';
 
 /// Cubit for main wallet screen.
 /// This cubit allows changing accounts in scope of current key and explore

@@ -4,9 +4,8 @@ import 'package:bloc/bloc.dart';
 import 'package:freezed_annotation/freezed_annotation.dart';
 import 'package:nekoton_repository/nekoton_repository.dart' hide Message;
 
-part 'add_new_local_account_type_state.dart';
-
 part 'add_new_local_account_type_cubit.freezed.dart';
+part 'add_new_local_account_type_state.dart';
 
 /// Cubit for selecting new type of account for creating for [publicKey].
 class AddNewLocalAccountTypeCubit extends Cubit<AddNewLocalAccountTypeState> {

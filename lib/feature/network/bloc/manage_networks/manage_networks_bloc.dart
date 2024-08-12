@@ -8,9 +8,9 @@ import 'package:collection/collection.dart';
 import 'package:freezed_annotation/freezed_annotation.dart';
 import 'package:logging/logging.dart';
 
+part 'manage_networks_bloc.freezed.dart';
 part 'manage_networks_event.dart';
 part 'manage_networks_state.dart';
-part 'manage_networks_bloc.freezed.dart';
 
 class ManageNetworksBloc
     extends Bloc<ManageNetworksEvent, ManageNetworksState> {

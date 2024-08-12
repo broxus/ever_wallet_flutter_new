@@ -3,7 +3,7 @@ import 'package:app/app/view/app_root_widgets.dart';
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
-import 'package:ui_components_lib/ui_components_lib.dart';
+import 'package:ui_components_lib/v2/ui_components_lib_v2.dart';
 
 class AppView extends StatefulWidget {
   const AppView({super.key});
@@ -35,8 +35,8 @@ class _AppViewState extends State<AppView> {
       localizationsDelegates: context.localizationDelegates,
       supportedLocales: context.supportedLocales,
       locale: context.locale,
-      theme: everPredefinedLightTheme(),
-      darkTheme: everPredefinedDarkTheme(),
+      theme: getPredefinedLightTheme(),
+      darkTheme: getPredefinedDarkTheme(),
       builder: (context, child) => MediaQuery(
         data: MediaQuery.of(context).copyWith(
           textScaler: TextScaler.noScaling,
