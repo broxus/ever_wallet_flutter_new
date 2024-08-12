@@ -22,32 +22,28 @@ class AddSeedEnableBiometryPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final themeStyle = context.themeStyleV2;
-    return SafeArea(
-      minimum: const EdgeInsets.only(bottom: DimensSize.d16),
-      child: Scaffold(
-        backgroundColor: themeStyle.colors.background0,
-        body: BlocProvider<AddSeedEnableBiometryCubit>(
-          create: (_) => AddSeedEnableBiometryCubit(
-            inject<BiometryService>(),
-            inject<NekotonRepository>(),
-          )..init(),
-          child: BlocConsumer<AddSeedEnableBiometryCubit,
-              AddSeedEnableBiometryState>(
-            listener: (context, state) => state.whenOrNull(
-              completed: () => context.pop(),
-            ),
-            builder: (context, state) {
-              return state.when(
-                completed: () => const SizedBox.shrink(),
-                init: () => const SizedBox.shrink(),
-                ask: (isFace) => Padding(
-                  padding:
-                      const EdgeInsets.symmetric(horizontal: DimensSize.d16),
-                  child: AddSeedEnableBiometryView(isFace: isFace),
-                ),
-              );
-            },
+    return Scaffold(
+      backgroundColor: themeStyle.colors.background0,
+      body: BlocProvider<AddSeedEnableBiometryCubit>(
+        create: (_) => AddSeedEnableBiometryCubit(
+          inject<BiometryService>(),
+          inject<NekotonRepository>(),
+        )..init(),
+        child: BlocConsumer<AddSeedEnableBiometryCubit,
+            AddSeedEnableBiometryState>(
+          listener: (context, state) => state.whenOrNull(
+            completed: () => context.pop(),
           ),
+          builder: (context, state) {
+            return state.when(
+              completed: () => const SizedBox.shrink(),
+              init: () => const SizedBox.shrink(),
+              ask: (isFace) => Padding(
+                padding: const EdgeInsets.symmetric(horizontal: DimensSize.d16),
+                child: AddSeedEnableBiometryView(isFace: isFace),
+              ),
+            );
+          },
         ),
       ),
     );
