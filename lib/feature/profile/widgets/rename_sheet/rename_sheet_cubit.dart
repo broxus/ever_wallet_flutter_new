@@ -2,9 +2,8 @@ import 'package:bloc/bloc.dart';
 import 'package:freezed_annotation/freezed_annotation.dart';
 import 'package:nekoton_repository/nekoton_repository.dart';
 
-part 'rename_sheet_state.dart';
-
 part 'rename_sheet_cubit.freezed.dart';
+part 'rename_sheet_state.dart';
 
 /// Cubit of sheet that renames key or seed phrase.
 /// Same logic for both of them, but seed/key depends difference needs only for

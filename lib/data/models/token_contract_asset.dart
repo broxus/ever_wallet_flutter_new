@@ -3,7 +3,6 @@ import 'package:freezed_annotation/freezed_annotation.dart';
 import 'package:nekoton_repository/nekoton_repository.dart';
 
 part 'token_contract_asset.freezed.dart';
-
 part 'token_contract_asset.g.dart';
 
 @freezed

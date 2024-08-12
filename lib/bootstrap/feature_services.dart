@@ -1,6 +1,5 @@
 import 'package:app/app/service/service.dart';
 import 'package:app/di/di.dart';
-
 import 'package:logging/logging.dart';
 
 /// This is a method that allows configure some feature-related services

@@ -2,7 +2,6 @@ import 'package:app/data/models/account_interaction.dart';
 import 'package:freezed_annotation/freezed_annotation.dart';
 
 part 'permissions.freezed.dart';
-
 part 'permissions.g.dart';
 
 @freezed

@@ -7,9 +7,8 @@ import 'package:app/utils/utils.dart';
 import 'package:bloc/bloc.dart';
 import 'package:freezed_annotation/freezed_annotation.dart';
 
-part 'messenger_state.dart';
-
 part 'messenger_cubit.freezed.dart';
+part 'messenger_state.dart';
 
 /// Cubit that process messages and shows them to the user. It is not a bloc
 /// because nextMessage() should immediately return next message to show and

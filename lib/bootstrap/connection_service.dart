@@ -1,7 +1,6 @@
 import 'package:app/app/service/nekoton_related/connection_service/connection_service.dart';
 import 'package:app/di/di.dart';
 import 'package:flutter/widgets.dart';
-
 // import 'package:http_proxy/http_proxy.dart';
 import 'package:logging/logging.dart';
 import 'package:nekoton_repository/nekoton_repository.dart';

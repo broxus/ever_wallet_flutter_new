@@ -7,7 +7,6 @@ import 'package:hive_flutter/hive_flutter.dart';
 import 'package:nekoton_repository/nekoton_repository.dart';
 
 part 'currency_dto.freezed.dart';
-
 part 'currency_dto.g.dart';
 
 @freezed

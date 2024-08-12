@@ -2,9 +2,9 @@ import 'package:app/app/service/service.dart';
 import 'package:bloc/bloc.dart';
 import 'package:freezed_annotation/freezed_annotation.dart';
 
+part 'browser_favicons_bloc.freezed.dart';
 part 'browser_favicons_event.dart';
 part 'browser_favicons_state.dart';
-part 'browser_favicons_bloc.freezed.dart';
 
 class BrowserFaviconsBloc
     extends Bloc<BrowserFaviconsEvent, BrowserFaviconsState> {

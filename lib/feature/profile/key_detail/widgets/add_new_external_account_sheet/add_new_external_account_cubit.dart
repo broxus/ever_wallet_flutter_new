@@ -5,9 +5,8 @@ import 'package:bloc/bloc.dart';
 import 'package:freezed_annotation/freezed_annotation.dart';
 import 'package:nekoton_repository/nekoton_repository.dart' hide Message;
 
-part 'add_new_external_account_state.dart';
-
 part 'add_new_external_account_cubit.freezed.dart';
+part 'add_new_external_account_state.dart';
 
 /// Cubit that allows to add new external account to [publicKey]
 class AddNewExternalAccountCubit extends Cubit<AddNewExternalAccountState> {

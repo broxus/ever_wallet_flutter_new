@@ -1,4 +1,5 @@
 import 'dart:math' as math;
+
 import 'package:app/di/di.dart';
 import 'package:app/feature/profile/seed_detail/widgets/derive_keys_sheet/derive_keys_cubit.dart';
 import 'package:app/generated/generated.dart';

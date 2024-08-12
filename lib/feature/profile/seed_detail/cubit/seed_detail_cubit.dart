@@ -5,9 +5,8 @@ import 'package:bloc/bloc.dart';
 import 'package:freezed_annotation/freezed_annotation.dart';
 import 'package:nekoton_repository/nekoton_repository.dart';
 
-part 'seed_detail_state.dart';
-
 part 'seed_detail_cubit.freezed.dart';
+part 'seed_detail_state.dart';
 
 /// Cubit for <SeedDetailPage>
 class SeedDetailCubit extends Cubit<SeedDetailState> {
