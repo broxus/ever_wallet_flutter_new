@@ -40,7 +40,7 @@ jobs:
       - name: Generate dart code
         run: melos codegen --no-select
       - name: Setup Pages
-        uses: actions/configure-pages@v3
+        uses: actions/configure-pages@v5
       - name: Build web app
         run: melos build:storybook -- --base-href /${{ github.event.repository.name }}/
       - name: Upload artifact
