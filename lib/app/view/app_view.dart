@@ -37,7 +37,12 @@ class _AppViewState extends State<AppView> {
       locale: context.locale,
       theme: everPredefinedLightTheme(),
       darkTheme: everPredefinedDarkTheme(),
-      builder: (context, child) => AppRootWidgets(child: child ?? Container()),
+      builder: (context, child) => MediaQuery(
+        data: MediaQuery.of(context).copyWith(
+          textScaler: TextScaler.noScaling,
+        ),
+        child: AppRootWidgets(child: child ?? Container()),
+      ),
     );
   }
 }
