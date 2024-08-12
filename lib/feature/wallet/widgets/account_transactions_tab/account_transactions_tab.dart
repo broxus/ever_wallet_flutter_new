@@ -1,10 +1,10 @@
 import 'package:app/app/service/service.dart';
 import 'package:app/di/di.dart';
-import 'package:app/generated/generated.dart';
-import 'package:app/utils/utils.dart';
 import 'package:app/feature/wallet/widgets/account_transactions_tab/account_transactions_tab_cubit.dart';
 import 'package:app/feature/wallet/widgets/account_transactions_tab/models/account_transaction_item.dart';
 import 'package:app/feature/wallet/widgets/account_transactions_tab/widgets/widgets.dart';
+import 'package:app/generated/generated.dart';
+import 'package:app/utils/utils.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:nekoton_repository/nekoton_repository.dart';

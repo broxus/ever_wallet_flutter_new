@@ -8,12 +8,12 @@ import 'package:app/core/wm/custom_wm.dart';
 import 'package:app/data/models/token_contract_asset.dart';
 import 'package:app/di/di.dart';
 import 'package:app/feature/qr_scanner/qr_scanner.dart';
-import 'package:app/generated/generated.dart';
 import 'package:app/feature/wallet/wallet_prepare_transfer/wallet_prepare_transfer_page/data/wallet_prepare_balance_data.dart';
 import 'package:app/feature/wallet/wallet_prepare_transfer/wallet_prepare_transfer_page/data/wallet_prepare_transfer_asset.dart';
 import 'package:app/feature/wallet/wallet_prepare_transfer/wallet_prepare_transfer_page/data/wallet_prepare_transfer_data.dart';
 import 'package:app/feature/wallet/wallet_prepare_transfer/wallet_prepare_transfer_page/wallet_prepare_transfer_page.dart';
 import 'package:app/feature/wallet/wallet_prepare_transfer/wallet_prepare_transfer_page/wallet_prepare_transfer_page_model.dart';
+import 'package:app/generated/generated.dart';
 import 'package:elementary/elementary.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter/widgets.dart';
@@ -25,12 +25,14 @@ WalletPrepareTransferPageWidgetModel
   BuildContext context,
   Address address,
   Address? rootTokenContract,
+  String? tokenSymbol,
 ) {
   return WalletPrepareTransferPageWidgetModel(
     WalletPrepareTransferPageModel(
       createPrimaryErrorHandler(context),
       address,
       rootTokenContract,
+      tokenSymbol,
       inject(),
       inject(),
       inject(),
@@ -70,8 +72,6 @@ class WalletPrepareTransferPageWidgetModel extends CustomWidgetModel<
     RegExp(r'\s'),
   );
 
-  late final _tokenSymbol = widget.tokenSymbol;
-
   final _assets = <(Address, String), WalletPrepareTransferAsset>{};
 
   StreamSubscription<dynamic>? _currencySubscription;
@@ -83,6 +83,8 @@ class WalletPrepareTransferPageWidgetModel extends CustomWidgetModel<
   PublicKey? get _selectedCustodian => _data?.selectedCustodian;
 
   List<WalletPrepareTransferAsset> get assetsList => _assets.values.toList();
+
+  Address get address => model.address;
 
   @protected
   @override
@@ -208,7 +210,7 @@ class WalletPrepareTransferPageWidgetModel extends CustomWidgetModel<
   void onSubmittedAmountWord(_) => commentFocus.requestFocus();
 
   Future<void> _init() async {
-    final acc = model.findAccountByAddress(widget.address);
+    final acc = model.findAccountByAddress(model.address);
     if (acc == null) {
       screenState.content(null);
       return;
@@ -221,7 +223,7 @@ class WalletPrepareTransferPageWidgetModel extends CustomWidgetModel<
 
     // If default contract not specified, then native is default and load
     // all existed assets
-    final root = widget.rootTokenContract;
+    final root = model.rootTokenContract;
 
     if (root == null) {
       _createNativeContract();
@@ -230,7 +232,7 @@ class WalletPrepareTransferPageWidgetModel extends CustomWidgetModel<
       final transport = model.currentTransport;
       // if default contract is specified, then lock it
       if (root == transport.nativeTokenAddress &&
-          _tokenSymbol == transport.nativeTokenTicker) {
+          model.tokenSymbol == transport.nativeTokenTicker) {
         _createNativeContract();
       } else {
         unawaited(_findSpecifiedContract(root));
@@ -241,9 +243,7 @@ class WalletPrepareTransferPageWidgetModel extends CustomWidgetModel<
       walletName: model.getWalletName(acc),
       account: acc,
       selectedCustodian: acc.publicKey,
-      localCustodians: await model.getLocalCustodiansAsync(
-        widget.address,
-      ),
+      localCustodians: await model.getLocalCustodiansAsync(model.address),
     );
   }
 
@@ -272,7 +272,7 @@ class WalletPrepareTransferPageWidgetModel extends CustomWidgetModel<
       return;
     }
 
-    final accountAddress = widget.address.address;
+    final accountAddress = model.address.address;
     final publicKey = _selectedCustodian?.publicKey;
 
     final comment = commentController.text.trim();

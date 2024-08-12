@@ -1,9 +1,9 @@
 import 'package:app/app/router/router.dart';
 import 'package:app/di/di.dart';
-import 'package:app/generated/generated.dart';
 import 'package:app/feature/wallet/ton_confirm_transaction/view/ton_confirm_transaction_confirm_view.dart';
 import 'package:app/feature/wallet/ton_confirm_transaction/view/ton_confirm_transaction_prepare.dart';
 import 'package:app/feature/wallet/wallet.dart';
+import 'package:app/generated/generated.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';

@@ -1,9 +1,9 @@
-import 'package:app/generated/generated.dart';
 import 'package:app/feature/wallet/wallet_prepare_transfer/wallet_prepare_transfer_page/data/wallet_prepare_transfer_asset.dart';
 import 'package:app/feature/wallet/wallet_prepare_transfer/wallet_prepare_transfer_page/data/wallet_prepare_transfer_data.dart';
 import 'package:app/feature/wallet/wallet_prepare_transfer/wallet_prepare_transfer_page/wallet_prepare_transfer_page_wm.dart';
 import 'package:app/feature/wallet/wallet_prepare_transfer/wallet_prepare_transfer_page/widgets/wallet_prepare_transfer_view.dart';
 import 'package:app/feature/wallet/widgets/wallet_subscribe_error_widget.dart';
+import 'package:app/generated/generated.dart';
 import 'package:elementary/elementary.dart';
 import 'package:elementary_helper/elementary_helper.dart';
 import 'package:flutter/material.dart';
@@ -14,9 +14,9 @@ import 'package:ui_components_lib/v2/dimens_v2.dart';
 class WalletPrepareTransferPage
     extends ElementaryWidget<WalletPrepareTransferPageWidgetModel> {
   WalletPrepareTransferPage({
-    required this.address,
-    this.rootTokenContract,
-    this.tokenSymbol,
+    required Address address,
+    Address? rootTokenContract,
+    String? tokenSymbol,
     Key? key,
     WidgetModelFactory<WalletPrepareTransferPageWidgetModel>? wmFactory,
   })  : assert(
@@ -31,20 +31,10 @@ class WalletPrepareTransferPage
                     ctx,
                     address,
                     rootTokenContract,
+                    tokenSymbol,
                   ),
           key: key,
         );
-
-  /// Address of account, that should be used to send funds
-  final Address address;
-
-  /// Contract of token (native or not) that will be locked to send funds
-  final Address? rootTokenContract;
-
-  /// Symbol that is used together with [rootTokenContract] because native token
-  /// and wraped native token has the same contract address and this leads to
-  /// error.
-  final String? tokenSymbol;
 
   @override
   Widget build(WalletPrepareTransferPageWidgetModel wm) {
@@ -59,7 +49,7 @@ class WalletPrepareTransferPage
       builder: (_, data) {
         if (data == null || data.isEmpty) {
           return _DefaultBody(
-            child: _EmptyText(address: address),
+            child: _EmptyText(address: wm.address),
           );
         }
 
@@ -120,22 +110,18 @@ class _DataBody extends StatelessWidget {
         appBar: DefaultAppBar(
           titleText: LocaleKeys.sendYourFunds.tr(),
         ),
-        body: Builder(
-          builder: (context) {
-            return Padding(
-              padding: const EdgeInsets.symmetric(
-                horizontal: DimensSizeV2.d16,
-              ),
-              child: WalletPrepareTransferView(
-                _wm,
-                account: account,
-                selectedCustodian: selectedCustodian,
-                localCustodians: localCustodians,
-                selectedAsset: selectedAsset,
-                assets: assets,
-              ),
-            );
-          },
+        body: Padding(
+          padding: const EdgeInsets.symmetric(
+            horizontal: DimensSizeV2.d16,
+          ),
+          child: WalletPrepareTransferView(
+            _wm,
+            account: account,
+            selectedCustodian: selectedCustodian,
+            localCustodians: localCustodians,
+            selectedAsset: selectedAsset,
+            assets: assets,
+          ),
         ),
       ),
     );

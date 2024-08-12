@@ -2,8 +2,8 @@ import 'dart:async';
 
 import 'package:app/app/service/service.dart';
 import 'package:app/di/di.dart';
-import 'package:app/generated/generated.dart';
 import 'package:app/feature/wallet/wallet_prepare_transfer/wallet_prepare_transfer_page/data/wallet_prepare_transfer_asset.dart';
+import 'package:app/generated/generated.dart';
 import 'package:bloc/bloc.dart';
 import 'package:collection/collection.dart';
 import 'package:freezed_annotation/freezed_annotation.dart';
