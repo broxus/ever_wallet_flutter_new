@@ -1,6 +1,8 @@
+import 'package:app/app/service/network_connection/network_connection_service.dart';
 import 'package:app/app/service/service.dart';
 import 'package:app/di/di.dart';
 import 'package:app/feature/add_seed/create_password/model/password_status.dart';
+import 'package:app/generated/generated.dart';
 import 'package:flutter/widgets.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:freezed_annotation/freezed_annotation.dart';
@@ -8,6 +10,7 @@ import 'package:logging/logging.dart';
 import 'package:nekoton_repository/nekoton_repository.dart' hide Message;
 
 part 'create_seed_password_cubit.freezed.dart';
+
 part 'create_seed_password_state.dart';
 
 const _minPasswordLength = 8;
@@ -44,6 +47,9 @@ class CreateSeedPasswordCubit extends Cubit<CreateSeedPasswordState> {
 
   final formKey = GlobalKey<FormState>();
 
+  final _networkConnectionService = inject<NetworkConnectionService>();
+  final _messengerService = inject<MessengerService>();
+
   @override
   Future<void> close() {
     passwordController.dispose();
@@ -71,6 +77,17 @@ class CreateSeedPasswordCubit extends Cubit<CreateSeedPasswordState> {
   }
 
   Future<void> nextAction() async {
+    final isConnected = await _networkConnectionService.isConnected;
+
+    if (!isConnected) {
+      _messengerService.show(
+        Message.error(
+          message: LocaleKeys.connectingNetworkFailed.tr(),
+        ),
+      );
+      return;
+    }
+
     emit(state.copyWith(isLoading: true));
     final nekoton = inject<NekotonRepository>();
     final currentKeyService = inject<CurrentKeyService>();
@@ -91,7 +108,7 @@ class CreateSeedPasswordCubit extends Cubit<CreateSeedPasswordState> {
     } catch (e) {
       Logger('CreateSeedPasswordCubit').severe(e);
       emit(state.copyWith(isLoading: false));
-      inject<MessengerService>().show(Message.error(message: e.toString()));
+      _messengerService.show(Message.error(message: e.toString()));
     }
   }
 

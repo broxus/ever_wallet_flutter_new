@@ -1,6 +1,7 @@
 import 'package:app/app/service/messenger/message.dart';
 import 'package:app/app/service/messenger/service/messenger_service.dart';
 import 'package:app/app/service/nekoton_related/connection_service/network_presets.dart';
+import 'package:app/app/service/network_connection/network_connection_service.dart';
 import 'package:app/app/service/storage_service/connections_storage_service.dart';
 import 'package:app/feature/choose_network/choose_network_screen.dart';
 import 'package:app/feature/choose_network/data/choose_network_item_data.dart';
@@ -14,14 +15,18 @@ class ChooseNetworkScreenModel extends ElementaryModel {
     ErrorHandler errorHandler,
     this._connectionsStorageService,
     this._messengerService,
+    this._networkConnectionService,
   ) : super(errorHandler: errorHandler);
 
   final ConnectionsStorageService _connectionsStorageService;
   final MessengerService _messengerService;
+  final NetworkConnectionService _networkConnectionService;
 
   final connectionsState = StateNotifier<List<ChooseNetworkItemData>>(
     initValue: [],
   );
+
+  Future<bool> get isConnected => _networkConnectionService.isConnected;
 
   @override
   void init() {
@@ -82,6 +87,14 @@ class ChooseNetworkScreenModel extends ElementaryModel {
 
     connectionsState.accept(
       list,
+    );
+  }
+
+  void showConnectionError() {
+    _messengerService.show(
+      Message.error(
+        message: LocaleKeys.connectingNetworkFailed.tr(),
+      ),
     );
   }
 }

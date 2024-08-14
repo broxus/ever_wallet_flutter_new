@@ -5,6 +5,7 @@ import 'package:app/app/router/app_route.dart';
 import 'package:app/app/router/routs/add_seed/add_seed.dart';
 import 'package:app/core/error_handler_factory.dart';
 import 'package:app/core/wm/custom_wm.dart';
+import 'package:app/di/di.dart';
 import 'package:app/feature/onboarding/screen/welcome/welcome_screen.dart';
 import 'package:app/feature/onboarding/screen/welcome/welcome_screen_model.dart';
 import 'package:elementary/elementary.dart';
@@ -19,6 +20,8 @@ WelcomeScreenWidgetModel defaultWelcomeScreenWidgetModelFactory(
   return WelcomeScreenWidgetModel(
     WelcomeScreenModel(
       createPrimaryErrorHandler(context),
+      inject(),
+      inject(),
     ),
   );
 }
@@ -62,6 +65,11 @@ class WelcomeScreenWidgetModel
   }
 
   Future<void> _goNext(VoidCallback callback) async {
+    if (!await model.isConnected) {
+      model.showConnectionError();
+      return;
+    }
+
     final isSuccess = await contextSafe?.pushFurther<bool>(
       AppRoute.chooseNetwork.path,
     );

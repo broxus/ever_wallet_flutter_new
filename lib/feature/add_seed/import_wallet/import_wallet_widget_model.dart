@@ -20,7 +20,12 @@ const wordsCount = 12;
 ImportWalletScreenWidgetModel defaultImportWalletWidgetModelFactory(
   BuildContext context,
 ) {
-  return ImportWalletScreenWidgetModel(ImportWalletScreenModel(inject()));
+  return ImportWalletScreenWidgetModel(
+    ImportWalletScreenModel(
+      inject(),
+      inject(),
+    ),
+  );
 }
 
 class ImportWalletScreenWidgetModel
@@ -35,6 +40,11 @@ class ImportWalletScreenWidgetModel
   ImportWalletData? get _data => screenState.value.data;
 
   Future<void> onPressedImport() async {
+    if (!await model.isConnected) {
+      model.showConnectionError();
+      return;
+    }
+
     String? error;
     try {
       FocusManager.instance.primaryFocus?.unfocus();

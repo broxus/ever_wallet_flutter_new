@@ -1,5 +1,6 @@
 import 'package:app/app/service/messenger/message.dart';
 import 'package:app/app/service/messenger/service/messenger_service.dart';
+import 'package:app/app/service/network_connection/network_connection_service.dart';
 import 'package:app/di/di.dart';
 import 'package:app/feature/add_seed/enter_seed_phrase/cubit/enter_seed_phrase_input_model.dart';
 import 'package:app/feature/constants.dart';
@@ -15,6 +16,7 @@ import 'package:nekoton_repository/nekoton_repository.dart' hide Message;
 import 'package:ui_components_lib/ui_components_lib.dart';
 
 part 'enter_seed_phrase_cubit.freezed.dart';
+
 part 'enter_seed_phrase_state.dart';
 
 /// Regexp that helps splitting seed phrase into words.
@@ -46,6 +48,9 @@ class EnterSeedPhraseCubit extends Cubit<EnterSeedPhraseState> {
 
   /// Models of input
   late List<EnterSeedPhraseInputModel> _inputModels;
+
+  final _messengerService = inject<MessengerService>();
+  final _networkConnectionService = inject<NetworkConnectionService>();
 
   @override
   Future<void> close() {
@@ -146,6 +151,16 @@ class EnterSeedPhraseCubit extends Cubit<EnterSeedPhraseState> {
   }
 
   Future<void> confirmAction() async {
+    if (!await _networkConnectionService.isConnected) {
+      _messengerService.show(
+        Message.error(
+          message: LocaleKeys.connectingNetworkFailed.tr(),
+        ),
+      );
+      return;
+    }
+
+    ////
     if (await _validateFormWithError()) {
       String? error;
       try {
