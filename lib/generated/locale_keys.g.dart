@@ -515,4 +515,7 @@ abstract class LocaleKeys {
   static const addCommentHint = 'addCommentHint';
   static const networkFee = 'networkFee';
   static const password = 'password';
+  static const website = 'website';
+  static const accountInteractionType = 'accountInteractionType';
+  static const basicInteractionType = 'basicInteractionType';
 }

@@ -504,5 +504,8 @@
   "addComment": "Add comment",
   "addCommentHint": "Will be visible for everyone",
   "networkFee": "Network fee",
-  "password": "Password"
+  "password": "Password",
+  "website": "Website",
+  "accountInteractionType": "Account interaction",
+  "basicInteractionType": "Basic"
 }
