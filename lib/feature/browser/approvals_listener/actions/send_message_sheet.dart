@@ -6,11 +6,13 @@ import 'package:app/feature/profile/profile.dart';
 import 'package:app/feature/wallet/wallet.dart';
 import 'package:app/feature/wallet/wallet_prepare_transfer_cubit/wallet_prepare_transfer_cubit.dart';
 import 'package:app/generated/generated.dart';
+import 'package:app/v1/feature/wallet/widgets/account_transactions_tab/detail/details.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:nekoton_repository/nekoton_repository.dart' hide Message;
 import 'package:ui_components_lib/ui_components_lib.dart';
+
 
 /// Helper function that allows show sheet to ask user password and initiator
 /// publicKey to make [TonWallet.send] action.

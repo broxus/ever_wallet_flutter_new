@@ -1,8 +1,11 @@
 import 'package:app/feature/wallet/wallet.dart';
-import 'package:app/generated/generated.dart';
+import 'package:app/v2/feature/wallet/widgets/account_transactions_tab/account_transactions_tab.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/widgets.dart';
 import 'package:nekoton_repository/nekoton_repository.dart';
 import 'package:ui_components_lib/ui_components_lib.dart';
+import 'package:ui_components_lib/v2/ui_components_lib_v2.dart';
 
 enum WalletBottomPanelTab { asset, transactions }
 
@@ -29,45 +32,54 @@ class _WalletBottomPanelState extends State<WalletBottomPanel> {
 
   @override
   Widget build(BuildContext context) {
-    return ValueListenableBuilder<WalletBottomPanelTab>(
-      valueListenable: currentTabNotifier,
-      builder: (_, value, __) {
-        return CustomScrollView(
-          controller: widget.scrollController,
-          slivers: [
-            SliverToBoxAdapter(
-              child: Padding(
-                padding: const EdgeInsets.symmetric(horizontal: DimensSize.d16),
-                child: CommonTabSwitcher(
-                  onTabChanged: (v) => currentTabNotifier.value = v,
-                  values: [
-                    CommonTabSwitcherItem(
-                      title: LocaleKeys.assetsWord.tr(),
-                      value: WalletBottomPanelTab.asset,
-                    ),
-                    CommonTabSwitcherItem(
-                      title: LocaleKeys.transactionsWord.tr(),
-                      value: WalletBottomPanelTab.transactions,
-                    ),
-                  ],
-                  currentValue: value,
+    final theme = context.themeStyleV2;
+    return DecoratedBox(
+      decoration: BoxDecoration(color: theme.colors.background1),
+      child: ValueListenableBuilder<WalletBottomPanelTab>(
+        valueListenable: currentTabNotifier,
+        builder: (_, value, __) {
+          return CustomScrollView(
+            controller: widget.scrollController,
+            slivers: [
+              SliverToBoxAdapter(
+                child: Padding(
+                  padding:
+                      const EdgeInsets.symmetric(horizontal: DimensSize.d16),
+                  child: SwitcherSegmentControls(
+                    currentValue: value,
+                    values: const [
+                      PrimarySegmentControl(
+                        state: SegmentControlState.normal,
+                        title: 'Assets',
+                        value: WalletBottomPanelTab.asset,
+                        size: SegmentControlSize.medium,
+                      ),
+                      PrimarySegmentControl(
+                        state: SegmentControlState.selected,
+                        title: 'Transactions',
+                        value: WalletBottomPanelTab.transactions,
+                        size: SegmentControlSize.medium,
+                      ),
+                    ],
+                    onTabChanged: (v) => currentTabNotifier.value = v,
+                  ),
                 ),
               ),
-            ),
-            switch (value) {
-              WalletBottomPanelTab.asset =>
-                AccountAssetsTab(account: widget.currentAccount),
-              WalletBottomPanelTab.transactions => AccountTransactionsTab(
-                  account: widget.currentAccount,
-                  scrollController: widget.scrollController,
-                ),
-            },
-            const SliverToBoxAdapter(
-              child: SafeArea(child: SizedBox(height: DimensSize.d8)),
-            ),
-          ],
-        );
-      },
+              switch (value) {
+                WalletBottomPanelTab.asset =>
+                  AccountAssetsTab(account: widget.currentAccount),
+                WalletBottomPanelTab.transactions => AccountTransactionsTab(
+                    account: widget.currentAccount,
+                    scrollController: widget.scrollController,
+                  ),
+              },
+              const SliverToBoxAdapter(
+                child: SafeArea(child: SizedBox(height: DimensSize.d8)),
+              ),
+            ],
+          );
+        },
+      ),
     );
   }
 }

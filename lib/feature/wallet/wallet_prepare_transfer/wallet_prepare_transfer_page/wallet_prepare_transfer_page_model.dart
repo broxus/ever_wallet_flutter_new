@@ -61,7 +61,8 @@ class WalletPrepareTransferPageModel extends ElementaryModel {
   Stream<WalletPrepareBalanceData> get balanceDataStream =>
       _balanceDataSc.stream;
 
-  TransportStrategy get currentTransport => _nekotonRepository.currentTransport;
+  TransportStrategy get  currentTransport => _nekotonRepository
+      .currentTransport;
 
   Stream<List<TonWalletState>> get _walletsStream =>
       _nekotonRepository.walletsStream;

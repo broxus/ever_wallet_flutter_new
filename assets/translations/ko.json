@@ -504,5 +504,12 @@
   "addComment": "Add comment",
   "addCommentHint": "Will be visible for everyone",
   "networkFee": "Network fee",
-  "password": "Password"
+  "password": "Password",
+  "transactionExpired": "Expired",
+  "transactionCompleted": "Completed",
+  "received": "Received",
+  "sent": "Sent",
+  "info": "Info",
+  "detailedInfo": "Detailed info",
+  "multisigWord": "Multisig"
 }

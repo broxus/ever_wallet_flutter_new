@@ -44,7 +44,9 @@ class _WalletViewState extends State<WalletView> {
 
   @override
   Widget build(BuildContext context) {
+    final theme = context.themeStyleV2;
     return CommonSlidingPanel(
+      backgroundColor: theme.colors.background1,
       maxHeightSizePercent: 1,
       minHeight: _panelHeight,
       panelController: _panelController,
