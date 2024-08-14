@@ -160,7 +160,6 @@ class EnterSeedPhraseCubit extends Cubit<EnterSeedPhraseState> {
       return;
     }
 
-    ////
     if (await _validateFormWithError()) {
       String? error;
       try {
