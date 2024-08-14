@@ -33,9 +33,16 @@ mixin NotifierSubscriptionsMixin<W extends ElementaryWidget,
   }
 
   /// Create [StateNotifier] and add to the notifier collection
-  StateNotifier<T?> createNotifier<T>([T? initValue]) {
+  StateNotifier<T> createNotifier<T>([T? initValue]) {
     return _subscriptionsCollection.add(
-      StateNotifier<T?>(initValue: initValue),
+      StateNotifier<T>(initValue: initValue),
+    );
+  }
+
+  /// Create [ValueNotifier] and add to the notifier collection
+  ValueNotifier<T> createValueNotifier<T>(T initValue) {
+    return _subscriptionsCollection.add(
+      ValueNotifier<T>(initValue),
     );
   }
 
