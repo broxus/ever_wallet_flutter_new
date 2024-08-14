@@ -82,13 +82,15 @@ class _SelectAccountWidget extends StatelessWidget {
                       shrinkWrap: true,
                       itemCount: accounts?.length ?? 0,
                       itemBuilder: (_, index) {
-                        final account = accounts![index];
-                        return AccountListItemWidget(
-                          key: ValueKey(account.address),
-                          account: account,
-                          active: account.address == selected?.address,
-                          onTap: () => wm.onSelectedChanged(account),
-                        );
+                        final account = accounts?[index];
+                        return account == null
+                            ? const SizedBox.shrink()
+                            : AccountListItemWidget(
+                                key: ValueKey(account.address),
+                                account: account,
+                                active: account.address == selected?.address,
+                                onTap: () => wm.onSelectedChanged(account),
+                              );
                       },
                       separatorBuilder: (_, __) => CommonDivider(
                         color: theme.colors.border0,

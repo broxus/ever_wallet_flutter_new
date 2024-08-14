@@ -21,8 +21,6 @@ class WebsiteInfoWidgetModel
     extends CustomWidgetModel<WebsiteInfoWidget, WebsiteInfoModel> {
   WebsiteInfoWidgetModel(super.model);
 
-  late final Uri uri;
-
   late final _faviconUrl = createNotifier<String?>();
 
   ListenableState<String?> get faviconUrl => _faviconUrl;
@@ -33,13 +31,11 @@ class WebsiteInfoWidgetModel
   void initWidgetModel() {
     super.initWidgetModel();
 
-    uri = widget.uri;
-
-    _getFaviconUrl(uri);
+    _getFaviconUrl();
   }
 
-  Future<void> _getFaviconUrl(Uri uri) async {
-    final url = await model.getFaviconUrl(uri);
+  Future<void> _getFaviconUrl() async {
+    final url = await model.getFaviconUrl(widget.uri);
 
     if (url != null) {
       _faviconUrl.accept(url);

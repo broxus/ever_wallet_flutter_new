@@ -28,15 +28,14 @@ class RequestPermissionsWidgetModel extends CustomWidgetModel<
     RequestPermissionsWidget, RequestPermissionsModel> {
   RequestPermissionsWidgetModel(super.model);
 
-  late final Uri origin;
-  late final ScrollController scrollController;
+  late final Uri origin = widget.origin;
+  late final ScrollController scrollController = widget.scrollController;
 
   late final searchController = createTextEditingController();
   late final _step = createValueNotifier(RequestPermissionsStep.account);
-  late final _selected = createNotifier<KeyAccount?>();
-  late final _accounts = createNotifier<List<KeyAccount>>();
-  late final _faviconUrl = createNotifier<String?>();
-  late final _permissions = createNotifier<Set<Permission>>();
+  late final _selected = createNotifier(_initialSelectedAccount);
+  late final _accounts = createNotifier(model.accounts);
+  late final _permissions = createNotifier(widget.permissions.toSet());
 
   ValueListenable<RequestPermissionsStep> get step => _step;
 
@@ -44,25 +43,13 @@ class RequestPermissionsWidgetModel extends CustomWidgetModel<
 
   ListenableState<KeyAccount?> get selected => _selected;
 
-  ListenableState<String?> get faviconUrl => _faviconUrl;
-
   ListenableState<Set<Permission>> get permissions => _permissions;
 
-  @override
-  void initWidgetModel() {
-    super.initWidgetModel();
-
-    final account = model.accounts.firstWhereOrNull(
-      (a) => a.address == widget.previousSelectedAccount,
-    );
-
-    _selected.accept(account ?? model.accounts.firstOrNull);
-    _accounts.accept(model.accounts);
-    _permissions.accept(widget.permissions.toSet());
-
-    origin = widget.origin;
-    scrollController = widget.scrollController;
-  }
+  KeyAccount? get _initialSelectedAccount =>
+      model.accounts.firstWhereOrNull(
+        (a) => a.address == widget.previousSelectedAccount,
+      ) ??
+      model.accounts.firstOrNull;
 
   void onNext() {
     if (_selected.value == null) return;

@@ -57,7 +57,7 @@ class WebsiteInfoWidget extends ElementaryWidget<WebsiteInfoWidgetModel> {
                     ),
                   ),
                   Text(
-                    wm.uri.origin,
+                    uri.origin,
                     style: wm.theme.textStyles.labelSmall,
                     overflow: TextOverflow.ellipsis,
                     softWrap: false,

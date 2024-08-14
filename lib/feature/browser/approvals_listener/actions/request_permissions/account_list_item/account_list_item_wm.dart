@@ -24,7 +24,7 @@ class AccountListItemWidgetModel
   AccountListItemWidgetModel(super.model);
 
   final _balance = StateNotifier<Money?>();
-  final _active = StateNotifier<bool>();
+  late final _active = StateNotifier<bool>(initValue: widget.active);
   late final StreamSubscription<Money> _subscription;
 
   ListenableState<Money?> get balance => _balance;
@@ -36,8 +36,6 @@ class AccountListItemWidgetModel
 
     _subscription =
         model.getBalanceStream(widget.account.address).listen(_balance.accept);
-
-    _active.accept(widget.active);
   }
 
   @override
