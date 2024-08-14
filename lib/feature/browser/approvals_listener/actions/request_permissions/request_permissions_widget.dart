@@ -61,8 +61,8 @@ class _SelectAccountWidget extends StatelessWidget {
               PrimaryTextField(
                 textEditingController: wm.searchController,
                 hintText: LocaleKeys.searchWord.tr(),
-                onChanged: (_) => wm.onSearch,
-                onSubmit: (_) => wm.onSearch,
+                onChanged: (_) => wm.onSearch(),
+                onSubmit: (_) => wm.onSearch(),
               ),
               Flexible(
                 child: Container(
@@ -84,6 +84,7 @@ class _SelectAccountWidget extends StatelessWidget {
                       itemBuilder: (_, index) {
                         final account = accounts![index];
                         return AccountListItemWidget(
+                          key: ValueKey(account.address),
                           account: account,
                           active: account.address == selected?.address,
                           onTap: () => wm.onSelectedChanged(account),
