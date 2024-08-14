@@ -57,13 +57,7 @@ class _SelectAccountWidget extends StatelessWidget {
           child: SeparatedColumn(
             separatorSize: DimensSizeV2.d12,
             children: [
-              StateNotifierBuilder(
-                listenableState: wm.faviconUrl,
-                builder: (_, value) => WebsiteInfo(
-                  uri: wm.origin,
-                  faviconUrl: value,
-                ),
-              ),
+              WebsiteInfoWidget(uri: wm.origin),
               PrimaryTextField(
                 textEditingController: wm.searchController,
                 hintText: LocaleKeys.searchWord.tr(),
@@ -138,13 +132,7 @@ class _ConfirmPermissionsWidget extends StatelessWidget {
                   account: account,
                   color: theme.colors.background2,
                 ),
-                StateNotifierBuilder(
-                  listenableState: wm.faviconUrl,
-                  builder: (_, value) => WebsiteInfo(
-                    uri: wm.origin,
-                    faviconUrl: value,
-                  ),
-                ),
+                WebsiteInfoWidget(uri: wm.origin),
                 PrimaryCard(
                   color: theme.colors.background2,
                   borderRadius: BorderRadius.circular(DimensRadiusV2.radius12),

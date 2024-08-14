@@ -21,7 +21,6 @@ RequestPermissionsWidgetModel defaultRequestPermissionsWidgetModelFactory(
         createPrimaryErrorHandler(context),
         inject(),
         inject(),
-        inject(),
       ),
     );
 
@@ -63,16 +62,6 @@ class RequestPermissionsWidgetModel extends CustomWidgetModel<
 
     origin = widget.origin;
     scrollController = widget.scrollController;
-
-    _getFaviconUrl(origin);
-  }
-
-  Future<void> _getFaviconUrl(Uri uri) async {
-    final url = await model.getFaviconUrl(uri);
-
-    if (url != null) {
-      _faviconUrl.accept(url);
-    }
   }
 
   void onNext() {
