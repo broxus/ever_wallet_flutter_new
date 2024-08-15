@@ -1,6 +1,7 @@
-import 'package:app/app/router/router.dart';
+import 'package:app/app/router/routs/add_seed/add_seed.dart';
 import 'package:app/core/error_handler_factory.dart';
 import 'package:app/core/wm/custom_wm.dart';
+import 'package:app/core/wm/navigation_wm_mixin.dart';
 import 'package:app/di/di.dart';
 import 'package:app/feature/add_seed/create_password/model/password_status.dart';
 import 'package:app/feature/add_seed/create_password/screens/create_seed_password/create_seed_password_screen.dart';
@@ -28,7 +29,8 @@ CreateSeedPasswordScreenWidgetModel
 
 /// [WidgetModel] для [CreateSeedPasswordScreen]
 class CreateSeedPasswordScreenWidgetModel extends CustomWidgetModel<
-    CreateSeedPasswordScreen, CreateSeedPasswordScreenModel> {
+    CreateSeedPasswordScreen,
+    CreateSeedPasswordScreenModel> with NavigationMixin {
   CreateSeedPasswordScreenWidgetModel(
     super.model,
   );
@@ -59,6 +61,14 @@ class CreateSeedPasswordScreenWidgetModel extends CustomWidgetModel<
     passwordController.addListener(_validate);
     confirmController.addListener(_validate);
     super.initWidgetModel();
+  }
+
+  void pop() {
+    goPop(
+      removeQueries: [
+        addSeedPhraseQueryParam,
+      ],
+    );
   }
 
   Future<void> onPressedNext() async {

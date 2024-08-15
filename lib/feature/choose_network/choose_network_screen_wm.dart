@@ -55,7 +55,10 @@ class ChooseNetworkScreenWidgetModel
     };
 
     if (nextPath != null) {
-      contextSafe?.goFurther(nextPath);
+      contextSafe?.goFurther(
+        nextPath,
+        preserveQueryParams: true,
+      );
     } else if (isCanPop) {
       contextSafe?.pop(isSuccess);
     }

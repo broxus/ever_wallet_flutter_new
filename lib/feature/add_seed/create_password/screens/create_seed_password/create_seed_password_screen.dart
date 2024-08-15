@@ -1,3 +1,4 @@
+import 'package:app/app/router/router.dart';
 import 'package:app/feature/add_seed/create_password/model/password_status.dart';
 import 'package:app/feature/add_seed/create_password/screens/create_seed_password/create_seed_password_screen_wm.dart';
 import 'package:app/feature/add_seed/create_password/view/create_seed_password_view.dart';
@@ -28,7 +29,9 @@ class CreateSeedPasswordScreen
       child: Scaffold(
         resizeToAvoidBottomInset: true,
         backgroundColor: wm.themeStyle.colors.background0,
-        appBar: const DefaultAppBar(),
+        appBar: DefaultAppBar(
+          onClosePressed: (_) => wm.pop(),
+        ),
         body: DoubleSourceBuilder<bool, PasswordStatus>(
           firstSource: wm.loadState,
           secondSource: wm.passwordStatusState,

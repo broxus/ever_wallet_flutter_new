@@ -1,3 +1,4 @@
+import 'package:app/app/router/router.dart';
 import 'package:app/feature/add_seed/add_existing_wallet/view/add_existing_wallet_view.dart';
 import 'package:app/generated/assets.gen.dart';
 import 'package:flutter/material.dart';
@@ -13,7 +14,9 @@ class AddExistingWalletPage extends StatelessWidget {
     return Scaffold(
       resizeToAvoidBottomInset: false,
       backgroundColor: theme.colors.background0,
-      appBar: const DefaultAppBar(),
+      appBar: DefaultAppBar(
+        onClosePressed: (context) => context.maybePop(),
+      ),
       body: Container(
         decoration: BoxDecoration(
           image: DecorationImage(
