@@ -29,7 +29,7 @@ class TonWalletMultisigOrdinaryTransactionWidget extends StatelessWidget {
         MaterialPageRoute<void>(
           builder: (_) => TonWalletMultisigOrdinaryTransactionDetailsPage(
             transaction: transaction,
-              price: price,
+            price: price,
           ),
         ),
       ),

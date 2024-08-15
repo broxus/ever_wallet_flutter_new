@@ -66,7 +66,6 @@ class WalletTransactionDetailsDefaultBody extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final theme = context.themeStyleV2;
-    //final price = Fixed.parse(bloc.nativeCurrency?.price ?? '0');
     return ShapedContainerColumn(
       color: theme.colors.background1,
       mainAxisSize: MainAxisSize.min,

@@ -43,7 +43,7 @@ class TokenWalletTransactionWidget extends StatelessWidget {
           builder: (_) => TokenWalletOrdinaryTransactionDetailsPage(
             transaction: transaction,
             tokenCurrency: transactionValue.currency,
-              price: price,
+            price: price,
           ),
         ),
       ),

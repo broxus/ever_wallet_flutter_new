@@ -13,7 +13,6 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:nekoton_repository/nekoton_repository.dart' hide Message;
 import 'package:ui_components_lib/ui_components_lib.dart';
 
-
 /// Helper function that allows show sheet to ask user password and initiator
 /// publicKey to make [TonWallet.send] action.
 // ignore_for_file: avoid-unused-parameters

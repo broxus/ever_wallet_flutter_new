@@ -35,7 +35,7 @@ class PrimaryChip extends StatelessWidget {
             color: _getColorContent(theme, type),
             size: DimensSizeV2.d16,
           ),
-          const SizedBox(width: 4),
+          const SizedBox(width: DimensSizeV2.d4),
           Text(
             text,
             style: theme.textStyles.labelXSmall.copyWith(
