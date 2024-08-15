@@ -196,8 +196,6 @@ abstract class _$$AccountsImplCopyWith<$Res> {
       __$$AccountsImplCopyWithImpl<$Res>;
   @useResult
   $Res call({TonWalletAsset tonWallet, List<TokenContractAsset>? tokens});
-
-  $TonWalletAssetCopyWith<$Res> get tonWallet;
 }
 
 /// @nodoc
@@ -211,11 +209,11 @@ class __$$AccountsImplCopyWithImpl<$Res>
   @pragma('vm:prefer-inline')
   @override
   $Res call({
-    Object? tonWallet = null,
+    Object? tonWallet = freezed,
     Object? tokens = freezed,
   }) {
     return _then(_$AccountsImpl(
-      null == tonWallet
+      freezed == tonWallet
           ? _value.tonWallet
           : tonWallet // ignore: cast_nullable_to_non_nullable
               as TonWalletAsset,
@@ -224,14 +222,6 @@ class __$$AccountsImplCopyWithImpl<$Res>
           : tokens // ignore: cast_nullable_to_non_nullable
               as List<TokenContractAsset>?,
     ));
-  }
-
-  @override
-  @pragma('vm:prefer-inline')
-  $TonWalletAssetCopyWith<$Res> get tonWallet {
-    return $TonWalletAssetCopyWith<$Res>(_value.tonWallet, (value) {
-      return _then(_value.copyWith(tonWallet: value));
-    });
   }
 }
 
@@ -263,14 +253,15 @@ class _$AccountsImpl implements _Accounts {
     return identical(this, other) ||
         (other.runtimeType == runtimeType &&
             other is _$AccountsImpl &&
-            (identical(other.tonWallet, tonWallet) ||
-                other.tonWallet == tonWallet) &&
+            const DeepCollectionEquality().equals(other.tonWallet, tonWallet) &&
             const DeepCollectionEquality().equals(other._tokens, _tokens));
   }
 
   @override
   int get hashCode => Object.hash(
-      runtimeType, tonWallet, const DeepCollectionEquality().hash(_tokens));
+      runtimeType,
+      const DeepCollectionEquality().hash(tonWallet),
+      const DeepCollectionEquality().hash(_tokens));
 
   @JsonKey(ignore: true)
   @override

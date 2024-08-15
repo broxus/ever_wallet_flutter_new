@@ -1,6 +1,7 @@
 import 'dart:async';
 
 import 'package:app/app/service/service.dart';
+import 'package:app/data/models/custom_currency.dart';
 import 'package:app/v2/feature/wallet/widgets/account_transactions_tab/models/account_transaction_item.dart';
 import 'package:bloc/bloc.dart';
 import 'package:collection/collection.dart';
@@ -19,6 +20,7 @@ class AccountTransactionsTabCubit extends Cubit<AccountTransactionsTabState> {
   AccountTransactionsTabCubit({
     required this.walletStorage,
     required this.nekotonRepository,
+    required this.currenciesService,
     required this.account,
   }) : super(const AccountTransactionsTabState.loading()) {
     _walletSubscription = Rx.combineLatest2<TonWalletState?, TransportStrategy,
@@ -43,12 +45,17 @@ class AccountTransactionsTabCubit extends Cubit<AccountTransactionsTabState> {
         _createSubs(wallet, transport);
       },
     );
+    _initNativeCurrency();
   }
 
   final _logger = Logger('AccountTransactionsTabCubit');
   final TonWalletStorageService walletStorage;
   final NekotonRepository nekotonRepository;
+  final CurrenciesService currenciesService;
   final KeyAccount account;
+  CustomCurrency? _nativeCurrency;
+
+  TransportStrategy get _transport => nekotonRepository.currentTransport;
 
   /// If not null, then [_transactionsState] will check for coming new
   /// transactions and there is no new, then canLoadMore will be false.
@@ -80,10 +87,11 @@ class AccountTransactionsTabCubit extends Cubit<AccountTransactionsTabState> {
   /// NOTE: this method may be called multiple times
   void tryPreloadTransactions() {
     final lastPrevLt = state.whenOrNull(
-      transactions: (transactions, _, __) => _lastLt(transactions),
+      transactions: (transactions, _, __, ___) => _lastLt(transactions),
     );
     final (isLoading, canLoadMore) = state.maybeWhen(
-      transactions: (_, isLoading, canLoadMore) => (isLoading, canLoadMore),
+      transactions: (_, isLoading, canLoadMore, ___) =>
+          (isLoading, canLoadMore),
       orElse: () => (true, false),
     );
     if (isLoading || !canLoadMore || lastPrevLt == null) {
@@ -106,6 +114,14 @@ class AccountTransactionsTabCubit extends Cubit<AccountTransactionsTabState> {
     _ordinaryTransactionsSub?.cancel();
     _expiredTransactionsSub?.cancel();
     _pendingTransactionsSub?.cancel();
+  }
+
+  Future<void> _initNativeCurrency() async {
+    _nativeCurrency =
+        currenciesService.currencies(_transport.networkType).firstWhereOrNull(
+              (c) => c.address == _transport.nativeTokenAddress,
+        ) ??
+            await currenciesService.getCurrencyForNativeToken(_transport);
   }
 
   // ignore: long-method
@@ -280,7 +296,7 @@ class AccountTransactionsTabCubit extends Cubit<AccountTransactionsTabState> {
       ]..sort((a, b) => b.compareTo(a));
 
       var canLoadMore = state.maybeWhen(
-        transactions: (_, __, canLoadMore) => canLoadMore,
+        transactions: (_, __, canLoadMore, ___) => canLoadMore,
         orElse: () => true,
       );
       final lastLt = _lastLt(transactions);
@@ -297,6 +313,7 @@ class AccountTransactionsTabCubit extends Cubit<AccountTransactionsTabState> {
           transactions: transactions,
           isLoading: isLoading,
           canLoadMore: canLoadMore,
+          nativeCurrency: _nativeCurrency,
         ),
       );
     }

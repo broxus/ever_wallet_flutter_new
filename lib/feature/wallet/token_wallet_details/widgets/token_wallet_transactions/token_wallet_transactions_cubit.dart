@@ -1,6 +1,7 @@
 import 'dart:async';
 
 import 'package:app/app/service/service.dart';
+import 'package:app/data/models/custom_currency.dart';
 import 'package:bloc/bloc.dart';
 import 'package:collection/collection.dart';
 import 'package:freezed_annotation/freezed_annotation.dart';
@@ -18,8 +19,10 @@ class TokenWalletTransactionsCubit extends Cubit<TokenWalletTransactionsState> {
     required this.owner,
     required this.rootTokenContract,
     required this.nekotonRepository,
+    required this.currenciesService,
     required this.walletStorage,
   }) : super(const TokenWalletTransactionsState.loading()) {
+    _init();
     _walletSubscription = Rx.combineLatest2<TokenWalletState?,
         TransportStrategy, (TokenWalletState?, TransportStrategy)>(
       nekotonRepository.tokenWalletsStream.map(
@@ -50,20 +53,32 @@ class TokenWalletTransactionsCubit extends Cubit<TokenWalletTransactionsState> {
   final Address owner;
   final Address rootTokenContract;
   final NekotonRepository nekotonRepository;
+  final CurrenciesService currenciesService;
   final TokenWalletStorageService walletStorage;
+
+  TransportStrategy get _transport => nekotonRepository.currentTransport;
 
   /// If not null, then [_transactionsState] will check for coming new
   /// transactions and there is no new, then canLoadMore will be false.
   String? _lastLtWhenPreloaded;
+  CustomCurrency? _tokenCustomCurrency;
 
   /// Called from UI when user scrolled to the end of the list.
   /// NOTE: this method may be called multiple times
   void tryPreloadTransactions() {
     final lastPrevLt = state.whenOrNull(
-      transactions: (transactions, _, __, ___) => _lastLt(transactions),
+      transactions: (
+        transactions,
+        _,
+        __,
+        ___,
+        ____,
+      ) =>
+          _lastLt(transactions),
     );
     final (isLoading, canLoadMore) = state.maybeWhen(
-      transactions: (_, __, isLoading, canLoadMore) => (isLoading, canLoadMore),
+      transactions: (_, __, isLoading, canLoadMore, ___) =>
+          (isLoading, canLoadMore),
       orElse: () => (true, false),
     );
 
@@ -94,6 +109,16 @@ class TokenWalletTransactionsCubit extends Cubit<TokenWalletTransactionsState> {
 
   void _closeSubs() {
     _ordinaryTransactionsSub?.cancel();
+  }
+
+  Future<void> _init() async {
+    _tokenCustomCurrency = currenciesService
+            .currencies(_transport.networkType)
+            .firstWhereOrNull((c) => c.address == rootTokenContract) ??
+        await currenciesService.getCurrencyForContract(
+          _transport,
+          rootTokenContract,
+        );
   }
 
   void _createSubs(TokenWallet wallet, Transport transport) {
@@ -145,7 +170,7 @@ class TokenWalletTransactionsCubit extends Cubit<TokenWalletTransactionsState> {
         ..sort((a, b) => b.date.compareTo(a.date));
 
       var canLoadMore = state.maybeWhen(
-        transactions: (_, __, ___, canLoadMore) => canLoadMore,
+        transactions: (_, __, ___, canLoadMore, ____) => canLoadMore,
         orElse: () => true,
       );
       final lastLt = _lastLt(transactions);
@@ -163,6 +188,7 @@ class TokenWalletTransactionsCubit extends Cubit<TokenWalletTransactionsState> {
           tokenCurrency: _cachedCurrency!,
           isLoading: isLoading,
           canLoadMore: canLoadMore,
+          tokenCustomCurrency: _tokenCustomCurrency,
         ),
       );
     }

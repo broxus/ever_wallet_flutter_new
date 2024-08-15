@@ -10,10 +10,12 @@ class TonWalletMultisigExpiredTransactionWidget extends StatelessWidget {
   const TonWalletMultisigExpiredTransactionWidget({
     required this.transaction,
     required this.displayDate,
+    required this.price,
     super.key,
   });
 
   final TonWalletMultisigExpiredTransaction transaction;
+  final Fixed price;
   final bool displayDate;
 
   @override
@@ -27,6 +29,7 @@ class TonWalletMultisigExpiredTransactionWidget extends StatelessWidget {
         MaterialPageRoute<void>(
           builder: (_) => TonWalletMultisigExpiredTransactionDetailsPage(
             transaction: transaction,
+            price: price,
           ),
         ),
       ),

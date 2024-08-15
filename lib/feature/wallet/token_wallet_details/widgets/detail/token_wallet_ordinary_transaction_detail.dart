@@ -13,11 +13,13 @@ class TokenWalletOrdinaryTransactionDetailsPage extends StatelessWidget {
   const TokenWalletOrdinaryTransactionDetailsPage({
     required this.transaction,
     required this.tokenCurrency,
+    required this.price,
     super.key,
   });
 
   final TokenWalletOrdinaryTransaction transaction;
   final Currency tokenCurrency;
+  final Fixed price;
 
   @override
   Widget build(BuildContext context) {
@@ -55,6 +57,7 @@ class TokenWalletOrdinaryTransactionDetailsPage extends StatelessWidget {
               hash: transaction.hash,
               recipientOrSender: transaction.address,
               type: LocaleKeys.ordinaryWord.tr(),
+              price: price,
             ),
           ],
         ),

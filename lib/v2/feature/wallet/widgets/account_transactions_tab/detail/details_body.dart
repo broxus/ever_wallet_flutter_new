@@ -28,6 +28,7 @@ class WalletTransactionDetailsDefaultBody extends StatelessWidget {
     this.comment,
     this.info,
     this.tonIconPath,
+    this.price,
     super.key,
   });
 
@@ -60,6 +61,7 @@ class WalletTransactionDetailsDefaultBody extends StatelessWidget {
   /// Type of transaction, that exists for TokenWallet
   final String? info;
   final String? tonIconPath;
+  final Fixed? price;
 
   @override
   Widget build(BuildContext context) {
@@ -84,8 +86,16 @@ class WalletTransactionDetailsDefaultBody extends StatelessWidget {
             sign: isIncoming ? '+' : '-',
           ),
           tonIconPath: tonIconPath,
+          convertedValueWidget: price != null
+              ? AmountWidget.fromMoney(
+                  amount: value.exchangeToUSD(price!),
+                  style: theme.textStyles.labelXSmall.copyWith(
+                    color: theme.colors.content3,
+                  ),
+                  sign: '~ ',
+                )
+              : null,
         ),
-        //sign: isIncoming ? '+' : '-',
         WalletTransactionDetailsItem(
           title: LocaleKeys.networkFee.tr(),
           valueWidget: AmountWidget.fromMoney(
@@ -163,4 +173,15 @@ class WalletTransactionDetailsDefaultBody extends StatelessWidget {
       Message.successful(message: copyMessage),
     );
   }
+}
+
+extension on Money {
+  Money exchangeToUSD(Fixed price) => exchangeTo(
+        ExchangeRate.fromFixed(
+          price,
+          fromCode: currency.code,
+          toCode: 'USD',
+          toScale: 10,
+        ),
+      );
 }

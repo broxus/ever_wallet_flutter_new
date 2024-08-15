@@ -20,6 +20,7 @@ class AccountTransactionsTabCubit extends Cubit<AccountTransactionsTabState> {
     required this.walletStorage,
     required this.nekotonRepository,
     required this.account,
+    required this.currenciesService,
   }) : super(const AccountTransactionsTabState.loading()) {
     _walletSubscription = Rx.combineLatest2<TonWalletState?, TransportStrategy,
         (TonWalletState?, TransportStrategy)>(
@@ -48,6 +49,7 @@ class AccountTransactionsTabCubit extends Cubit<AccountTransactionsTabState> {
   final _logger = Logger('AccountTransactionsTabCubit');
   final TonWalletStorageService walletStorage;
   final NekotonRepository nekotonRepository;
+  final CurrenciesService currenciesService;
   final KeyAccount account;
 
   /// If not null, then [_transactionsState] will check for coming new

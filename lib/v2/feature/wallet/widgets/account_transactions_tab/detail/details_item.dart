@@ -88,6 +88,7 @@ class WalletTransactionDetailsItem extends StatelessWidget {
     this.onPressed,
     this.walletAsset,
     this.tonIconPath,
+    this.convertedValueWidget,
     super.key,
   });
 
@@ -99,6 +100,7 @@ class WalletTransactionDetailsItem extends StatelessWidget {
   final VoidCallback? onPressed;
   final WalletPrepareTransferAsset? walletAsset;
   final String? tonIconPath;
+  final Widget? convertedValueWidget;
 
   @override
   Widget build(BuildContext context) {
@@ -134,33 +136,44 @@ class WalletTransactionDetailsItem extends StatelessWidget {
                 onPressed: onPressed,
               ),
             if (icon == null)
-              Row(
+              Column(
+                crossAxisAlignment: CrossAxisAlignment.end,
                 children: [
-                  if (walletAsset != null)
-                    Padding(
-                      padding: const EdgeInsets.only(right: DimensSizeV2.d8),
-                      child: TokenWalletIconWidget(
-                        size: DimensSizeV2.d20,
-                        address: walletAsset!.rootTokenContract,
-                        logoURI: walletAsset!.logoURI,
-                        version:
-                            walletAsset!.version ?? TokenWalletVersion.tip3,
-                      ),
-                    ),
-                  if (tonIconPath != null)
-                    Padding(
-                      padding: const EdgeInsets.only(right: DimensSizeV2.d8),
-                      child: TonWalletIconWidget(
-                        path: tonIconPath!,
-                        size: DimensSizeV2.d20,
-                      ),
-                    ),
-                  if (value != null)
-                    Text(
-                      value!,
-                      style: theme.textStyles.labelSmall,
-                    ),
-                  if (valueWidget != null) valueWidget!,
+                  Row(
+                    children: [
+                      if (walletAsset != null)
+                        Padding(
+                          padding:
+                              const EdgeInsets.only(right: DimensSizeV2.d8),
+                          child: TokenWalletIconWidget(
+                            size: DimensSizeV2.d20,
+                            address: walletAsset!.rootTokenContract,
+                            logoURI: walletAsset!.logoURI,
+                            version:
+                                walletAsset!.version ?? TokenWalletVersion.tip3,
+                          ),
+                        ),
+                      if (tonIconPath != null)
+                        Padding(
+                          padding:
+                              const EdgeInsets.only(right: DimensSizeV2.d8),
+                          child: TonWalletIconWidget(
+                            path: tonIconPath!,
+                            size: DimensSizeV2.d20,
+                          ),
+                        ),
+                      if (value != null)
+                        Text(
+                          value!,
+                          style: theme.textStyles.labelSmall,
+                        ),
+                      if (valueWidget != null) valueWidget!,
+                    ],
+                  ),
+                  if (convertedValueWidget != null) ...[
+                    const SizedBox(height: DimensSizeV2.d4),
+                    convertedValueWidget!,
+                  ],
                 ],
               ),
           ],

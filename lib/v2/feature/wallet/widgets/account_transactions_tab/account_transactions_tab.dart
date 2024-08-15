@@ -33,6 +33,7 @@ class AccountTransactionsTab extends StatelessWidget {
         account: account,
         nekotonRepository: inject<NekotonRepository>(),
         walletStorage: inject<TonWalletStorageService>(),
+        currenciesService: inject<CurrenciesService>(),
       ),
       child:
           BlocBuilder<AccountTransactionsTabCubit, AccountTransactionsTabState>(
@@ -51,7 +52,7 @@ class AccountTransactionsTab extends StatelessWidget {
               ),
             ),
             loading: () => const SliverToBoxAdapter(child: SizedBox.shrink()),
-            transactions: (transactions, isLoading, _) {
+            transactions: (transactions, isLoading, _, currency) {
               return ScrollControllerPreloadListener(
                 preleloadAction: () => context
                     .read<AccountTransactionsTabCubit>()
@@ -77,7 +78,11 @@ class AccountTransactionsTab extends StatelessWidget {
                       padding: const EdgeInsets.symmetric(
                         horizontal: DimensSize.d16,
                       ),
-                      child: _transactionItem(trans, displayDate),
+                      child: _transactionItem(
+                        trans,
+                        displayDate,
+                        Fixed.parse(currency?.price ?? '0'),
+                      ),
                     );
                   },
                 ),
@@ -92,11 +97,13 @@ class AccountTransactionsTab extends StatelessWidget {
   Widget _transactionItem(
     AccountTransactionItem<dynamic> trans,
     bool displayDate,
+    Fixed price,
   ) {
     return switch (trans.type) {
       AccountTransactionType.ordinary => TonWalletOrdinaryTransactionWidget(
           transaction: trans.transaction as TonWalletOrdinaryTransaction,
           displayDate: displayDate,
+          price: price,
         ),
       AccountTransactionType.pending => TonWalletPendingTransactionWidget(
           transaction: trans.transaction as TonWalletPendingTransaction,
@@ -111,16 +118,19 @@ class AccountTransactionsTab extends StatelessWidget {
           transaction:
               trans.transaction as TonWalletMultisigOrdinaryTransaction,
           displayDate: displayDate,
+          price: price,
         ),
       AccountTransactionType.multisigPending =>
         TonWalletMultisigPendingTransactionWidget(
           transaction: trans.transaction as TonWalletMultisigPendingTransaction,
           displayDate: displayDate,
+          price: price,
         ),
       AccountTransactionType.multisigExpired =>
         TonWalletMultisigExpiredTransactionWidget(
           transaction: trans.transaction as TonWalletMultisigExpiredTransaction,
           displayDate: displayDate,
+          price: price,
         ),
     };
   }

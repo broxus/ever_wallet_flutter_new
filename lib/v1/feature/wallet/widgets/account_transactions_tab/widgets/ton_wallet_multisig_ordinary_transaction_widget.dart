@@ -1,7 +1,7 @@
 import 'package:app/di/di.dart';
+import 'package:app/v1/feature/wallet/widgets/account_transactions_tab/detail/details.dart';
 import 'package:app/v1/feature/wallet/widgets/account_transactions_tab/widgets/ton_wallet_transaction_status_body.dart';
 import 'package:app/v1/feature/wallet/widgets/account_transactions_tab/widgets/ton_wallet_transaction_widget.dart';
-import 'package:app/v2/feature/wallet/widgets/account_transactions_tab/detail/details.dart';
 import 'package:flutter/material.dart';
 import 'package:nekoton_repository/nekoton_repository.dart';
 

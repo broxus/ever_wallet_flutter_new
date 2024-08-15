@@ -33,6 +33,7 @@ class TokenWalletTransactionsWidget extends StatelessWidget {
         rootTokenContract: rootTokenContract,
         nekotonRepository: inject(),
         walletStorage: inject(),
+        currenciesService: inject(),
       ),
       child: BlocBuilder<TokenWalletTransactionsCubit,
           TokenWalletTransactionsState>(
@@ -49,7 +50,13 @@ class TokenWalletTransactionsWidget extends StatelessWidget {
               ),
             ),
             loading: () => const SliverToBoxAdapter(child: SizedBox.shrink()),
-            transactions: (transactions, currency, isLoading, _) {
+            transactions: (
+              transactions,
+              currency,
+              isLoading,
+              _,
+              customCurrency,
+            ) {
               return ScrollControllerPreloadListener(
                 preleloadAction: () => context
                     .read<TokenWalletTransactionsCubit>()
@@ -90,6 +97,7 @@ class TokenWalletTransactionsWidget extends StatelessWidget {
                           trans.value,
                           currency,
                         ),
+                        price: Fixed.parse(customCurrency?.price ?? '0'),
                       ),
                     );
                   },

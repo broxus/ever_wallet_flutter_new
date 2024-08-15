@@ -12,11 +12,13 @@ class TonWalletMultisigPendingTransactionWidget extends StatelessWidget {
   const TonWalletMultisigPendingTransactionWidget({
     required this.transaction,
     required this.displayDate,
+    required this.price,
     super.key,
   });
 
   final TonWalletMultisigPendingTransaction transaction;
   final bool displayDate;
+  final Fixed price;
 
   @override
   Widget build(BuildContext context) {
@@ -30,6 +32,7 @@ class TonWalletMultisigPendingTransactionWidget extends StatelessWidget {
         MaterialPageRoute<void>(
           builder: (_) => TonWalletMultisigPendingTransactionDetailsPage(
             transaction: transaction,
+            price: price,
           ),
         ),
       ),

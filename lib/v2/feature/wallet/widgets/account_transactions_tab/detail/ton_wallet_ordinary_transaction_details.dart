@@ -10,10 +10,12 @@ import 'package:ui_components_lib/ui_components_lib.dart';
 class TonWalletOrdinaryTransactionDetailsPage extends StatelessWidget {
   const TonWalletOrdinaryTransactionDetailsPage({
     required this.transaction,
+    required this.price,
     super.key,
   });
 
   final TonWalletOrdinaryTransaction transaction;
+  final Fixed price;
 
   @override
   Widget build(BuildContext context) {
@@ -58,6 +60,7 @@ class TonWalletOrdinaryTransactionDetailsPage extends StatelessWidget {
               info: methodData?.$1,
               type: LocaleKeys.ordinaryWord.tr(),
               tonIconPath: tonIconPath,
+              price: price,
             ),
           ],
         ),

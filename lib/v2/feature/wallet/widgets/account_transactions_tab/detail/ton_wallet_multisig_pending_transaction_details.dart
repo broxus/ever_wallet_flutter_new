@@ -14,10 +14,12 @@ import 'package:ui_components_lib/ui_components_lib.dart';
 class TonWalletMultisigPendingTransactionDetailsPage extends StatelessWidget {
   const TonWalletMultisigPendingTransactionDetailsPage({
     required this.transaction,
+    required this.price,
     super.key,
   });
 
   final TonWalletMultisigPendingTransaction transaction;
+  final Fixed price;
 
   @override
   Widget build(BuildContext context) {
@@ -99,6 +101,7 @@ class TonWalletMultisigPendingTransactionDetailsPage extends StatelessWidget {
               info: methodData?.$1,
               type: LocaleKeys.multisigWord.tr(),
               tonIconPath: tonIconPath,
+              price: price,
             ),
             TonWalletTransactionCustodiansDetails(
               confirmations: transaction.confirmations,

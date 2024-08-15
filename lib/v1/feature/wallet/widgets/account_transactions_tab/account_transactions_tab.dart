@@ -32,6 +32,7 @@ class AccountTransactionsTab extends StatelessWidget {
         account: account,
         nekotonRepository: inject<NekotonRepository>(),
         walletStorage: inject<TonWalletStorageService>(),
+        currenciesService: inject<CurrenciesService>(),
       ),
       child:
           BlocBuilder<AccountTransactionsTabCubit, AccountTransactionsTabState>(

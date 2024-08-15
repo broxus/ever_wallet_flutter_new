@@ -10,11 +10,13 @@ class TonWalletOrdinaryTransactionWidget extends StatelessWidget {
   const TonWalletOrdinaryTransactionWidget({
     required this.transaction,
     required this.displayDate,
+    required this.price,
     super.key,
   });
 
   final TonWalletOrdinaryTransaction transaction;
   final bool displayDate;
+  final Fixed price;
 
   @override
   Widget build(BuildContext context) {
@@ -28,6 +30,7 @@ class TonWalletOrdinaryTransactionWidget extends StatelessWidget {
         MaterialPageRoute<void>(
           builder: (_) => TonWalletOrdinaryTransactionDetailsPage(
             transaction: transaction,
+            price: price,
           ),
         ),
       ),

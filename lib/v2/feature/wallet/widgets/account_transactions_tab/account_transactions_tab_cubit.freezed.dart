@@ -21,7 +21,7 @@ mixin _$AccountTransactionsTabState {
     required TResult Function() empty,
     required TResult Function() loading,
     required TResult Function(List<AccountTransactionItem<Object>> transactions,
-            bool isLoading, bool canLoadMore)
+            bool isLoading, bool canLoadMore, CustomCurrency? nativeCurrency)
         transactions,
   }) =>
       throw _privateConstructorUsedError;
@@ -30,7 +30,7 @@ mixin _$AccountTransactionsTabState {
     TResult? Function()? empty,
     TResult? Function()? loading,
     TResult? Function(List<AccountTransactionItem<Object>> transactions,
-            bool isLoading, bool canLoadMore)?
+            bool isLoading, bool canLoadMore, CustomCurrency? nativeCurrency)?
         transactions,
   }) =>
       throw _privateConstructorUsedError;
@@ -39,7 +39,7 @@ mixin _$AccountTransactionsTabState {
     TResult Function()? empty,
     TResult Function()? loading,
     TResult Function(List<AccountTransactionItem<Object>> transactions,
-            bool isLoading, bool canLoadMore)?
+            bool isLoading, bool canLoadMore, CustomCurrency? nativeCurrency)?
         transactions,
     required TResult orElse(),
   }) =>
@@ -130,7 +130,7 @@ class _$EmptyImpl implements _Empty {
     required TResult Function() empty,
     required TResult Function() loading,
     required TResult Function(List<AccountTransactionItem<Object>> transactions,
-            bool isLoading, bool canLoadMore)
+            bool isLoading, bool canLoadMore, CustomCurrency? nativeCurrency)
         transactions,
   }) {
     return empty();
@@ -142,7 +142,7 @@ class _$EmptyImpl implements _Empty {
     TResult? Function()? empty,
     TResult? Function()? loading,
     TResult? Function(List<AccountTransactionItem<Object>> transactions,
-            bool isLoading, bool canLoadMore)?
+            bool isLoading, bool canLoadMore, CustomCurrency? nativeCurrency)?
         transactions,
   }) {
     return empty?.call();
@@ -154,7 +154,7 @@ class _$EmptyImpl implements _Empty {
     TResult Function()? empty,
     TResult Function()? loading,
     TResult Function(List<AccountTransactionItem<Object>> transactions,
-            bool isLoading, bool canLoadMore)?
+            bool isLoading, bool canLoadMore, CustomCurrency? nativeCurrency)?
         transactions,
     required TResult orElse(),
   }) {
@@ -244,7 +244,7 @@ class _$LoadingImpl implements _Loading {
     required TResult Function() empty,
     required TResult Function() loading,
     required TResult Function(List<AccountTransactionItem<Object>> transactions,
-            bool isLoading, bool canLoadMore)
+            bool isLoading, bool canLoadMore, CustomCurrency? nativeCurrency)
         transactions,
   }) {
     return loading();
@@ -256,7 +256,7 @@ class _$LoadingImpl implements _Loading {
     TResult? Function()? empty,
     TResult? Function()? loading,
     TResult? Function(List<AccountTransactionItem<Object>> transactions,
-            bool isLoading, bool canLoadMore)?
+            bool isLoading, bool canLoadMore, CustomCurrency? nativeCurrency)?
         transactions,
   }) {
     return loading?.call();
@@ -268,7 +268,7 @@ class _$LoadingImpl implements _Loading {
     TResult Function()? empty,
     TResult Function()? loading,
     TResult Function(List<AccountTransactionItem<Object>> transactions,
-            bool isLoading, bool canLoadMore)?
+            bool isLoading, bool canLoadMore, CustomCurrency? nativeCurrency)?
         transactions,
     required TResult orElse(),
   }) {
@@ -326,7 +326,10 @@ abstract class _$$TransactionsImplCopyWith<$Res> {
   $Res call(
       {List<AccountTransactionItem<Object>> transactions,
       bool isLoading,
-      bool canLoadMore});
+      bool canLoadMore,
+      CustomCurrency? nativeCurrency});
+
+  $CustomCurrencyCopyWith<$Res>? get nativeCurrency;
 }
 
 /// @nodoc
@@ -343,6 +346,7 @@ class __$$TransactionsImplCopyWithImpl<$Res>
     Object? transactions = null,
     Object? isLoading = null,
     Object? canLoadMore = null,
+    Object? nativeCurrency = freezed,
   }) {
     return _then(_$TransactionsImpl(
       transactions: null == transactions
@@ -357,7 +361,23 @@ class __$$TransactionsImplCopyWithImpl<$Res>
           ? _value.canLoadMore
           : canLoadMore // ignore: cast_nullable_to_non_nullable
               as bool,
+      nativeCurrency: freezed == nativeCurrency
+          ? _value.nativeCurrency
+          : nativeCurrency // ignore: cast_nullable_to_non_nullable
+              as CustomCurrency?,
     ));
+  }
+
+  @override
+  @pragma('vm:prefer-inline')
+  $CustomCurrencyCopyWith<$Res>? get nativeCurrency {
+    if (_value.nativeCurrency == null) {
+      return null;
+    }
+
+    return $CustomCurrencyCopyWith<$Res>(_value.nativeCurrency!, (value) {
+      return _then(_value.copyWith(nativeCurrency: value));
+    });
   }
 }
 
@@ -367,7 +387,8 @@ class _$TransactionsImpl implements _Transactions {
   const _$TransactionsImpl(
       {required final List<AccountTransactionItem<Object>> transactions,
       required this.isLoading,
-      required this.canLoadMore})
+      required this.canLoadMore,
+      required this.nativeCurrency})
       : _transactions = transactions;
 
   final List<AccountTransactionItem<Object>> _transactions;
@@ -382,10 +403,12 @@ class _$TransactionsImpl implements _Transactions {
   final bool isLoading;
   @override
   final bool canLoadMore;
+  @override
+  final CustomCurrency? nativeCurrency;
 
   @override
   String toString() {
-    return 'AccountTransactionsTabState.transactions(transactions: $transactions, isLoading: $isLoading, canLoadMore: $canLoadMore)';
+    return 'AccountTransactionsTabState.transactions(transactions: $transactions, isLoading: $isLoading, canLoadMore: $canLoadMore, nativeCurrency: $nativeCurrency)';
   }
 
   @override
@@ -398,7 +421,9 @@ class _$TransactionsImpl implements _Transactions {
             (identical(other.isLoading, isLoading) ||
                 other.isLoading == isLoading) &&
             (identical(other.canLoadMore, canLoadMore) ||
-                other.canLoadMore == canLoadMore));
+                other.canLoadMore == canLoadMore) &&
+            (identical(other.nativeCurrency, nativeCurrency) ||
+                other.nativeCurrency == nativeCurrency));
   }
 
   @override
@@ -406,7 +431,8 @@ class _$TransactionsImpl implements _Transactions {
       runtimeType,
       const DeepCollectionEquality().hash(_transactions),
       isLoading,
-      canLoadMore);
+      canLoadMore,
+      nativeCurrency);
 
   @JsonKey(ignore: true)
   @override
@@ -420,10 +446,11 @@ class _$TransactionsImpl implements _Transactions {
     required TResult Function() empty,
     required TResult Function() loading,
     required TResult Function(List<AccountTransactionItem<Object>> transactions,
-            bool isLoading, bool canLoadMore)
+            bool isLoading, bool canLoadMore, CustomCurrency? nativeCurrency)
         transactions,
   }) {
-    return transactions(this.transactions, isLoading, canLoadMore);
+    return transactions(
+        this.transactions, isLoading, canLoadMore, nativeCurrency);
   }
 
   @override
@@ -432,10 +459,11 @@ class _$TransactionsImpl implements _Transactions {
     TResult? Function()? empty,
     TResult? Function()? loading,
     TResult? Function(List<AccountTransactionItem<Object>> transactions,
-            bool isLoading, bool canLoadMore)?
+            bool isLoading, bool canLoadMore, CustomCurrency? nativeCurrency)?
         transactions,
   }) {
-    return transactions?.call(this.transactions, isLoading, canLoadMore);
+    return transactions?.call(
+        this.transactions, isLoading, canLoadMore, nativeCurrency);
   }
 
   @override
@@ -444,12 +472,13 @@ class _$TransactionsImpl implements _Transactions {
     TResult Function()? empty,
     TResult Function()? loading,
     TResult Function(List<AccountTransactionItem<Object>> transactions,
-            bool isLoading, bool canLoadMore)?
+            bool isLoading, bool canLoadMore, CustomCurrency? nativeCurrency)?
         transactions,
     required TResult orElse(),
   }) {
     if (transactions != null) {
-      return transactions(this.transactions, isLoading, canLoadMore);
+      return transactions(
+          this.transactions, isLoading, canLoadMore, nativeCurrency);
     }
     return orElse();
   }
@@ -493,11 +522,13 @@ abstract class _Transactions implements AccountTransactionsTabState {
   const factory _Transactions(
       {required final List<AccountTransactionItem<Object>> transactions,
       required final bool isLoading,
-      required final bool canLoadMore}) = _$TransactionsImpl;
+      required final bool canLoadMore,
+      required final CustomCurrency? nativeCurrency}) = _$TransactionsImpl;
 
   List<AccountTransactionItem<Object>> get transactions;
   bool get isLoading;
   bool get canLoadMore;
+  CustomCurrency? get nativeCurrency;
   @JsonKey(ignore: true)
   _$$TransactionsImplCopyWith<_$TransactionsImpl> get copyWith =>
       throw _privateConstructorUsedError;
