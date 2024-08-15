@@ -1,5 +1,6 @@
 import 'package:app/feature/choose_network/choose_network_screen_wm.dart';
 import 'package:app/feature/choose_network/data/choose_network_item_data.dart';
+import 'package:app/feature/choose_network/data/next_step.dart';
 import 'package:app/feature/choose_network/widgets/choose_network_item.dart';
 import 'package:app/generated/generated.dart';
 import 'package:elementary/elementary.dart';
@@ -9,17 +10,22 @@ import 'package:flutter/services.dart';
 import 'package:ui_components_lib/ui_components_lib.dart';
 import 'package:ui_components_lib/v2/ui_components_lib_v2.dart';
 
+const chooseNetworkScreenNextStepQuery = 'chooseNetworkNextStep';
+
 /// Network selection screen
 class ChooseNetworkScreen
     extends ElementaryWidget<ChooseNetworkScreenWidgetModel> {
   const ChooseNetworkScreen({
     Key? key,
+    this.nextStep,
     WidgetModelFactory<ChooseNetworkScreenWidgetModel> wmFactory =
         defaultChooseNetworkScreenWidgetModelFactory,
   }) : super(
           wmFactory,
           key: key,
         );
+
+  final ChooseNetworkScreenNextStep? nextStep;
 
   @override
   Widget build(ChooseNetworkScreenWidgetModel wm) {

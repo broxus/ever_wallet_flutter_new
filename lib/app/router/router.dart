@@ -153,9 +153,12 @@ GoRouter getRouter(BuildContext _) {
           const WelcomeScreen(),
         ),
         routes: [
-          chooseNetworkRoute(),
-          createOnboardingSeedPasswordRoute,
-          addExistingWalletRoute,
+          chooseNetworkRoute(
+            routes: [
+              createOnboardingSeedPasswordRoute,
+              addExistingWalletRoute,
+            ],
+          ),
         ],
       ),
       StatefulShellRoute.indexedStack(

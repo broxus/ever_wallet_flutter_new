@@ -1,10 +1,10 @@
 import 'dart:async';
-import 'dart:convert';
 
 import 'package:app/app/router/app_route.dart';
-import 'package:app/app/router/routs/add_seed/add_seed.dart';
 import 'package:app/core/error_handler_factory.dart';
 import 'package:app/core/wm/custom_wm.dart';
+import 'package:app/feature/choose_network/choose_network_screen.dart';
+import 'package:app/feature/choose_network/data/next_step.dart';
 import 'package:app/feature/onboarding/screen/welcome/welcome_screen.dart';
 import 'package:app/feature/onboarding/screen/welcome/welcome_screen_model.dart';
 import 'package:elementary/elementary.dart';
@@ -36,41 +36,21 @@ class WelcomeScreenWidgetModel
   ThemeStyleV2 get themeStyle => context.themeStyleV2;
 
   Future<void> onPressedCreateWallet() async {
-    final seedData = jsonEncode(
-      await model.createSeed(),
-    );
-
-    unawaited(
-      _goNext(
-        () => contextSafe?.goFurther(
-          AppRoute.createSeedPassword.pathWithData(
-            queryParameters: {
-              addSeedPhraseQueryParam: seedData,
-            },
-          ),
-        ),
-      ),
-    );
+    _goNext(ChooseNetworkScreenNextStep.createWallet);
   }
 
   void onPressedWalletLogin() {
-    _goNext(
-      () => contextSafe?.goFurther(
-        AppRoute.addExistingWallet.path,
-      ),
-    );
+    _goNext(ChooseNetworkScreenNextStep.importSeed);
   }
 
-  Future<void> _goNext(VoidCallback callback) async {
-    final isSuccess = await contextSafe?.pushFurther<bool>(
-      AppRoute.chooseNetwork.path,
+  void _goNext(ChooseNetworkScreenNextStep nextStep) {
+    contextSafe?.goFurther(
+      AppRoute.chooseNetwork.pathWithData(
+        queryParameters: {
+          chooseNetworkScreenNextStepQuery: nextStep.value,
+        },
+      ),
     );
-
-    if (isSuccess != true) {
-      return;
-    }
-
-    callback();
   }
 
   void onLinkTap() => launchUrlString(_decentralizationPolicyLink);
