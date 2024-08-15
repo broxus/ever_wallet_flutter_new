@@ -1,6 +1,5 @@
 import 'package:app/di/di.dart';
-import 'package:app/feature/wallet/widgets/account_transactions_tab/detail/details_body.dart';
-import 'package:app/feature/wallet/widgets/account_transactions_tab/detail/details_body_with_see_explorer.dart';
+import 'package:app/feature/wallet/widgets/account_transactions_tab/detail/details.dart';
 import 'package:app/feature/wallet/widgets/account_transactions_tab/widgets/ton_wallet_transaction_status_body.dart';
 import 'package:app/generated/generated.dart';
 import 'package:flutter/material.dart';
@@ -8,18 +7,18 @@ import 'package:nekoton_repository/nekoton_repository.dart';
 import 'package:ui_components_lib/components/common/common.dart';
 import 'package:ui_components_lib/dimens.dart';
 import 'package:ui_components_lib/v2/theme_style_v2.dart';
+import 'package:ui_components_lib/v2/ui_components_lib_v2.dart';
 
-/// Page that displays information about ordinary transaction for TonWallet
-class TokenWalletOrdinaryTransactionDetailsPage extends StatelessWidget {
-  const TokenWalletOrdinaryTransactionDetailsPage({
+/// Page that displays information about multisig ordinary transaction for
+/// TonWallet
+class TonWalletMultisigOrdinaryTransactionDetailsPage extends StatelessWidget {
+  const TonWalletMultisigOrdinaryTransactionDetailsPage({
     required this.transaction,
-    required this.tokenCurrency,
     required this.price,
     super.key,
   });
 
-  final TokenWalletOrdinaryTransaction transaction;
-  final Currency tokenCurrency;
+  final TonWalletMultisigOrdinaryTransaction transaction;
   final Fixed price;
 
   @override
@@ -28,6 +27,10 @@ class TokenWalletOrdinaryTransactionDetailsPage extends StatelessWidget {
     final ticker =
         inject<NekotonRepository>().currentTransport.nativeTokenTicker;
 
+    final methodData =
+        transaction.walletInteractionInfo?.method.toRepresentableData();
+    final tonIconPath =
+        inject<NekotonRepository>().currentTransport.nativeTokenIcon;
     final theme = context.themeStyleV2;
 
     return Scaffold(
@@ -53,12 +56,20 @@ class TokenWalletOrdinaryTransactionDetailsPage extends StatelessWidget {
               ),
               value: Money.fromBigIntWithCurrency(
                 transaction.value,
-                tokenCurrency,
+                Currencies()[ticker]!,
               ),
               hash: transaction.hash,
               recipientOrSender: transaction.address,
-              type: LocaleKeys.ordinaryWord.tr(),
+              comment: transaction.comment,
+              info: methodData?.$1,
+              type: LocaleKeys.multisigWord.tr(),
+              tonIconPath: tonIconPath,
               price: price,
+            ),
+            TonWalletTransactionCustodiansDetails(
+              confirmations: transaction.confirmations,
+              custodians: transaction.custodians,
+              initiator: transaction.creator,
             ),
           ],
         ),

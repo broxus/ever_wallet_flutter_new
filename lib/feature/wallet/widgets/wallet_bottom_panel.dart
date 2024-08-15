@@ -1,5 +1,5 @@
 import 'package:app/feature/wallet/wallet.dart';
-import 'package:app/v2/feature/wallet/widgets/account_transactions_tab/account_transactions_tab.dart';
+import 'package:app/feature/wallet/widgets/account_transactions_tab/account_transactions_tab.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
