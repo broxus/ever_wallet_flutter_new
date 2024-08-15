@@ -1,6 +1,5 @@
 import 'package:app/feature/add_seed/create_password/cubit/create_seed_password_cubit.dart';
 import 'package:app/feature/add_seed/create_password/model/password_status.dart';
-import 'package:app/feature/add_seed/create_password/widgets/icon_eye_widget.dart';
 import 'package:app/feature/add_seed/create_password/widgets/password_info_section.dart';
 import 'package:app/generated/generated.dart';
 import 'package:flutter/material.dart';
@@ -45,41 +44,13 @@ class CreateSeedPasswordView extends StatelessWidget {
                         const SizedBox(height: DimensSize.d8),
                         PrimaryText(LocaleKeys.confirmPasswordSubtitle.tr()),
                         const SizedBox(height: DimensSize.d24),
-                        PrimaryTextField(
-                          keyboardType: TextInputType.visiblePassword,
+                        SecureTextField(
                           hintText: LocaleKeys.confirmSetPasswordHint.tr(),
-                          suffixes: [
-                            IconEyeWidget(
-                              onPressed: () {
-                                if (state.obscurePassword) {
-                                  cubit.showPassword();
-                                } else {
-                                  cubit.hidePassword();
-                                }
-                              },
-                              isTurnedOn: !state.obscurePassword,
-                            ),
-                          ],
-                          isObscureText: state.obscurePassword,
                           textEditingController: cubit.passwordController,
                         ),
                         const SizedBox(height: DimensSize.d8),
-                        PrimaryTextField(
-                          keyboardType: TextInputType.visiblePassword,
+                        SecureTextField(
                           hintText: LocaleKeys.confirmRepeatPasswordHint.tr(),
-                          suffixes: [
-                            IconEyeWidget(
-                              onPressed: () {
-                                if (state.obscureConfirm) {
-                                  cubit.showConfirm();
-                                } else {
-                                  cubit.hideConfirm();
-                                }
-                              },
-                              isTurnedOn: !state.obscureConfirm,
-                            ),
-                          ],
-                          isObscureText: state.obscureConfirm,
                           textEditingController: cubit.confirmController,
                           textInputAction: TextInputAction.done,
                         ),

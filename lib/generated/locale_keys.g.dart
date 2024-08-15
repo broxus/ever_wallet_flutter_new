@@ -496,5 +496,8 @@ abstract class  LocaleKeys {
   static const info = 'info';
   static const detailedInfo = 'detailedInfo';
   static const multisigWord = 'multisigWord';
+  static const website = 'website';
+  static const accountInteractionType = 'accountInteractionType';
+  static const basicInteractionType = 'basicInteractionType';
 
 }

@@ -21,18 +21,18 @@ class _BrowserTabsViewState extends State<BrowserTabsView> {
     return BlocBuilder<BrowserTabsBloc, BrowserTabsState>(
       buildWhen: _buildWhen,
       builder: (context, state) {
-        final currentTab = context.read<BrowserTabsBloc>().activeTab;
+        final currentTab = state.tabs.firstWhereOrNull(
+          (t) => t.id == state.currentTabId,
+        );
         final currentTabId = currentTab?.id;
-        final tabs = context.read<BrowserTabsBloc>().state.tabs;
-        final tabsState = context.read<BrowserTabsBloc>().state.tabsState;
         final showStartView = currentTab?.url.toString().isEmpty ?? true;
-        final index = tabs.indexWhere((tab) => tab.id == currentTabId);
+        final index = state.tabs.indexWhere((tab) => tab.id == currentTabId);
 
-        final stackViews = tabs
+        final stackViews = state.tabs
             .map(
               (tab) => BrowserTabView(
                 tab: tab,
-                tabState: tabsState[tab.id] ?? const BrowserTabState(),
+                tabState: state.tabsState[tab.id] ?? const BrowserTabState(),
                 active: tab.id == currentTabId,
                 key: ValueKey(tab.id),
               ),

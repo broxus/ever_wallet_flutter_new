@@ -511,5 +511,8 @@
   "sent": "Sent",
   "info": "Info",
   "detailedInfo": "Detailed info",
-  "multisigWord": "Multisig"
+  "multisigWord": "Multisig",
+  "website": "Website",
+  "accountInteractionType": "Account interaction",
+  "basicInteractionType": "Basic"
 }
