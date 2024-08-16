@@ -4,7 +4,6 @@ import 'package:app/app/router/app_route.dart';
 import 'package:app/core/error_handler_factory.dart';
 import 'package:app/core/wm/custom_wm.dart';
 import 'package:app/feature/choose_network/choose_network_screen.dart';
-import 'package:app/feature/choose_network/data/next_step.dart';
 import 'package:app/feature/onboarding/screen/welcome/welcome_screen.dart';
 import 'package:app/feature/onboarding/screen/welcome/welcome_screen_model.dart';
 import 'package:elementary/elementary.dart';
@@ -36,18 +35,18 @@ class WelcomeScreenWidgetModel
   ThemeStyleV2 get themeStyle => context.themeStyleV2;
 
   Future<void> onPressedCreateWallet() async {
-    _goNext(ChooseNetworkScreenNextStep.createWallet);
+    _goNext(AppRoute.createSeedPassword.path);
   }
 
   void onPressedWalletLogin() {
-    _goNext(ChooseNetworkScreenNextStep.importSeed);
+    _goNext(AppRoute.addExistingWallet.path);
   }
 
-  void _goNext(ChooseNetworkScreenNextStep nextStep) {
+  void _goNext(String nextStep) {
     contextSafe?.goFurther(
       AppRoute.chooseNetwork.pathWithData(
         queryParameters: {
-          chooseNetworkScreenNextStepQuery: nextStep.value,
+          chooseNetworkScreenNextStepQuery: nextStep,
         },
       ),
     );

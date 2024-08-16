@@ -1,6 +1,5 @@
 import 'package:app/feature/choose_network/choose_network_screen_wm.dart';
 import 'package:app/feature/choose_network/data/choose_network_item_data.dart';
-import 'package:app/feature/choose_network/data/next_step.dart';
 import 'package:app/feature/choose_network/widgets/choose_network_item.dart';
 import 'package:app/generated/generated.dart';
 import 'package:elementary/elementary.dart';
@@ -25,7 +24,7 @@ class ChooseNetworkScreen
           key: key,
         );
 
-  final ChooseNetworkScreenNextStep? nextStep;
+  final String? nextStep;
 
   @override
   Widget build(ChooseNetworkScreenWidgetModel wm) {

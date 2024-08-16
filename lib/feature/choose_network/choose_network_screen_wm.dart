@@ -5,7 +5,6 @@ import 'package:app/di/di.dart';
 import 'package:app/feature/choose_network/choose_network_screen.dart';
 import 'package:app/feature/choose_network/choose_network_screen_model.dart';
 import 'package:app/feature/choose_network/data/choose_network_item_data.dart';
-import 'package:app/feature/choose_network/data/next_step.dart';
 import 'package:elementary/elementary.dart';
 import 'package:elementary_helper/elementary_helper.dart';
 import 'package:flutter/material.dart';
@@ -47,12 +46,7 @@ class ChooseNetworkScreenWidgetModel
 
     final isCanPop = contextSafe?.canPop() ?? false;
 
-    final nextPath = switch (widget.nextStep) {
-      ChooseNetworkScreenNextStep.createWallet =>
-        AppRoute.createSeedPassword.path,
-      ChooseNetworkScreenNextStep.importSeed => AppRoute.addExistingWallet.path,
-      _ => null,
-    };
+    final nextPath = widget.nextStep;
 
     if (nextPath != null) {
       contextSafe?.goFurther(
