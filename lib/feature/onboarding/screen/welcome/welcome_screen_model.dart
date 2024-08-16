@@ -18,7 +18,7 @@ class WelcomeScreenModel extends ElementaryModel {
   final NetworkConnectionService _networkConnectionService;
   final MessengerService _messengerService;
 
-  Future<bool> get isConnected => _networkConnectionService.isConnected;
+  Future<bool> get isConnected => _networkConnectionService.isExistInternet;
 
   Future<List<String>> createSeed() async {
     final seed = await generateKey(accountType: defaultMnemonicType);

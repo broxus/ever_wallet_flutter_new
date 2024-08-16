@@ -1,13 +1,17 @@
-import 'package:connectivity_plus/connectivity_plus.dart';
 import 'package:injectable/injectable.dart';
+import 'package:internet_connection_checker_plus/internet_connection_checker_plus.dart';
 
 @singleton
 class NetworkConnectionService {
-  final _connectivity = Connectivity();
+  final _internetConnection = InternetConnection();
 
-  Future<bool> get isConnected async {
-    final connections = await _connectivity.checkConnectivity();
+  Future<bool> get isExistInternet async =>
+      _checkInternet(await _internetConnection.internetStatus);
 
-    return !connections.contains(ConnectivityResult.none);
+  bool _checkInternet(InternetStatus status) {
+    return switch (status) {
+      InternetStatus.disconnected => false,
+      _ => true,
+    };
   }
 }

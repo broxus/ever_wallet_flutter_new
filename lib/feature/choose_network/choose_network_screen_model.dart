@@ -26,7 +26,7 @@ class ChooseNetworkScreenModel extends ElementaryModel {
     initValue: [],
   );
 
-  Future<bool> get isConnected => _networkConnectionService.isConnected;
+  Future<bool> get isConnected => _networkConnectionService.isExistInternet;
 
   @override
   void init() {

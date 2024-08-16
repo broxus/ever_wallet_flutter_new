@@ -331,7 +331,7 @@ packages:
     source: hosted
     version: "3.0.0"
   connectivity_plus:
-    dependency: "direct main"
+    dependency: transitive
     description:
       name: connectivity_plus
       sha256: "2056db5241f96cdc0126bd94459fc4cdc13876753768fc7a31c425e50a7177d0"
@@ -1100,6 +1100,14 @@ packages:
     description: flutter
     source: sdk
     version: "0.0.0"
+  internet_connection_checker_plus:
+    dependency: "direct dev"
+    description:
+      name: internet_connection_checker_plus
+      sha256: ea3f14695e5c2baa6daba5121a971338a69e7d615cbf1e47ae39f31234cc668c
+      url: "https://pub.dev"
+    source: hosted
+    version: "2.5.1"
   intl:
     dependency: "direct dev"
     description:

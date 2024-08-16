@@ -61,7 +61,7 @@ class CreateSeedPasswordCubit extends Cubit<CreateSeedPasswordState> {
   }
 
   Future<void> nextAction() async {
-    final isConnected = await _networkConnectionService.isConnected;
+    final isConnected = await _networkConnectionService.isExistInternet;
 
     if (!isConnected) {
       _messengerService.show(

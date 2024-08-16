@@ -14,7 +14,7 @@ class ImportWalletScreenModel extends ElementaryModel {
   final MessengerService _messengerService;
   final NetworkConnectionService _networkConnectionService;
 
-  Future<bool> get isConnected => _networkConnectionService.isConnected;
+  Future<bool> get isConnected => _networkConnectionService.isExistInternet;
 
   void showValidateError(String message) {
     _messengerService.show(

@@ -151,7 +151,7 @@ class EnterSeedPhraseCubit extends Cubit<EnterSeedPhraseState> {
   }
 
   Future<void> confirmAction() async {
-    if (!await _networkConnectionService.isConnected) {
+    if (!await _networkConnectionService.isExistInternet) {
       _messengerService.show(
         Message.error(
           message: LocaleKeys.connectingNetworkFailed.tr(),

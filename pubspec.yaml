@@ -15,7 +15,6 @@ dependencies:
   cached_network_image: ^3.3.1
   clock: ^1.1.1
   collection: ^1.18.0
-  connectivity_plus: ^6.0.5
   crypto: ^3.0.3
   dotted_border: ^2.1.0
   easy_localization: ^3.0.6
@@ -90,6 +89,7 @@ dev_dependencies:
   injectable_generator: ^2.6.1
   integration_test:
     sdk: flutter
+  internet_connection_checker_plus: ^2.5.1
   intl: ^0.18.1
   json_serializable: ^6.8.0
   melos: ^6.0.0
