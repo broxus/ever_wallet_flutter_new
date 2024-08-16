@@ -1101,7 +1101,7 @@ packages:
     source: sdk
     version: "0.0.0"
   internet_connection_checker_plus:
-    dependency: "direct dev"
+    dependency: "direct main"
     description:
       name: internet_connection_checker_plus
       sha256: ea3f14695e5c2baa6daba5121a971338a69e7d615cbf1e47ae39f31234cc668c
