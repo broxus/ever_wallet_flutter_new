@@ -14,12 +14,14 @@ class PrimaryCard extends StatelessWidget {
       right: DimensSizeV2.d12,
     ),
     this.borderRadius,
+    this.color,
   });
 
   final Widget? child;
   final BorderRadiusGeometry? borderRadius;
   final EdgeInsetsGeometry margin;
   final EdgeInsetsGeometry padding;
+  final Color? color;
 
   @override
   Widget build(BuildContext context) {
@@ -29,7 +31,7 @@ class PrimaryCard extends StatelessWidget {
       padding: margin,
       child: DecoratedBox(
         decoration: BoxDecoration(
-          color: theme.colors.background1,
+          color: color ?? theme.colors.background1,
           borderRadius: borderRadius,
         ),
         child: Padding(

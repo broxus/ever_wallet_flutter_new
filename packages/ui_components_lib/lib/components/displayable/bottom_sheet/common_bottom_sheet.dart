@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:modal_bottom_sheet/modal_bottom_sheet.dart';
 import 'package:ui_components_lib/ui_components_lib.dart';
+import 'package:ui_components_lib/v2/dimens_v2.dart';
 
 /// Builder for body parameter of [showCommonBottomSheet].
 /// This allows get [ScrollController] of modal sheet and use it in scroll box.
@@ -25,7 +26,7 @@ Future<T?> showCommonBottomSheet<T>({
   required CommonSheetBodyBuilder body,
   String? title,
   String? subtitle,
-  EdgeInsets padding = const EdgeInsets.symmetric(horizontal: DimensSize.d16),
+  EdgeInsets padding = const EdgeInsets.symmetric(horizontal: DimensSizeV2.d16),
   bool expand = false,
   bool dismissible = true,
   bool wrapIntoAnimatedSize = true,
@@ -76,7 +77,7 @@ ModalSheetRoute<T> commonBottomSheetRoute<T>({
   required CommonSheetBodyBuilder body,
   String? title,
   String? subtitle,
-  EdgeInsets padding = const EdgeInsets.symmetric(horizontal: DimensSize.d16),
+  EdgeInsets padding = const EdgeInsets.symmetric(horizontal: DimensSizeV2.d16),
   bool expand = false,
   bool dismissible = true,
   bool wrapIntoAnimatedSize = true,
@@ -132,9 +133,8 @@ class CommonBottomSheetWidget extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    const dragWidgetSize = DimensSize.d4;
-    const dragWidgetMargin = DimensSize.d8;
-    final colors = context.themeStyle.colors;
+    const dragWidgetSize = DimensSizeV2.d4;
+    const dragWidgetMargin = DimensSizeV2.d8;
     final theme = context.themeStyleV2;
 
     final bodyWidget = Column(
@@ -143,33 +143,34 @@ class CommonBottomSheetWidget extends StatelessWidget {
       children: <Widget>[
         if (title != null)
           Container(
-            margin: const EdgeInsets.symmetric(horizontal: DimensSize.d16) +
+            margin: const EdgeInsets.symmetric(horizontal: DimensSizeV2.d16) +
                 EdgeInsets.only(
-                  top: DimensSize.d20 + dragWidgetSize + dragWidgetMargin * 2,
-                  bottom: subtitle != null ? DimensSize.d12 : DimensSize.d24,
+                  top: DimensSizeV2.d20 + dragWidgetSize + dragWidgetMargin * 2,
+                  bottom:
+                      subtitle != null ? DimensSizeV2.d12 : DimensSizeV2.d24,
                 ),
             child: Align(
               alignment: centerTitle ? Alignment.center : Alignment.centerLeft,
               child: Text(
                 title!,
-                style: StyleRes.h2.copyWith(color: colors.textPrimary),
+                style: theme.textStyles.headingMedium,
                 textAlign: centerTitle ? TextAlign.center : TextAlign.start,
               ),
             ),
           ),
         if (subtitle != null)
           Container(
-            margin: const EdgeInsets.symmetric(horizontal: DimensSize.d16) +
+            margin: const EdgeInsets.symmetric(horizontal: DimensSizeV2.d16) +
                 EdgeInsets.only(
-                  bottom: DimensSize.d24,
+                  bottom: DimensSizeV2.d24,
                   top: title == null
-                      ? DimensSize.d20 + dragWidgetSize + dragWidgetMargin * 2
+                      ? DimensSizeV2.d20 + dragWidgetSize + dragWidgetMargin * 2
                       : 0,
                 ),
             child: Text(
               subtitle!,
-              style: StyleRes.primaryRegular.copyWith(
-                color: colors.textPrimary,
+              style: theme.textStyles.paragraphMedium.copyWith(
+                color: theme.colors.content1,
               ),
             ),
           ),
@@ -191,7 +192,7 @@ class CommonBottomSheetWidget extends StatelessWidget {
           : theme.colors.background1,
       child: SafeArea(
         minimum: avoidBottomInsets
-            ? const EdgeInsets.only(bottom: DimensSize.d24)
+            ? const EdgeInsets.only(bottom: DimensSizeV2.d24)
             : EdgeInsets.zero,
         child: Padding(
           padding: avoidBottomInsets
@@ -238,7 +239,7 @@ class __ContainerWidgetState extends State<_ContainerWidget> {
   Widget build(BuildContext context) {
     return Container(
       margin: EdgeInsets.only(
-        top: MediaQuery.of(context).padding.top + DimensSize.d24,
+        top: MediaQuery.of(context).padding.top + DimensSizeV2.d24,
       ),
       clipBehavior: Clip.antiAlias,
       decoration: const BoxDecoration(

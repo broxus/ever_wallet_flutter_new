@@ -60,22 +60,6 @@ class CreateSeedPasswordCubit extends Cubit<CreateSeedPasswordState> {
     return super.close();
   }
 
-  void showPassword() {
-    emit(state.copyWith(obscurePassword: false));
-  }
-
-  void hidePassword() {
-    emit(state.copyWith(obscurePassword: true));
-  }
-
-  void showConfirm() {
-    emit(state.copyWith(obscureConfirm: false));
-  }
-
-  void hideConfirm() {
-    emit(state.copyWith(obscureConfirm: true));
-  }
-
   Future<void> nextAction() async {
     final isConnected = await _networkConnectionService.isConnected;
 

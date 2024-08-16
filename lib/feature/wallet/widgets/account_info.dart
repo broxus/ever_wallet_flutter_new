@@ -7,10 +7,12 @@ import 'package:ui_components_lib/v2/ui_components_lib_v2.dart';
 class AccountInfo extends StatelessWidget {
   const AccountInfo({
     required this.account,
+    this.color,
     super.key,
   });
 
   final KeyAccount account;
+  final Color? color;
 
   @override
   Widget build(BuildContext context) {
@@ -19,7 +21,7 @@ class AccountInfo extends StatelessWidget {
     final pk = account.publicKey.toEllipseString();
 
     return ShapedContainerRow(
-      color: theme.colors.background1,
+      color: color ?? theme.colors.background1,
       squircleRadius: DimensSizeV2.d16,
       margin: EdgeInsets.zero,
       padding: const EdgeInsets.symmetric(
