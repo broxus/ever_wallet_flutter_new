@@ -11,21 +11,25 @@ class AddExistingWalletPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final theme = context.themeStyleV2;
-    return Scaffold(
-      resizeToAvoidBottomInset: false,
-      backgroundColor: theme.colors.background0,
-      appBar: DefaultAppBar(
-        onClosePressed: (context) => context.maybePop(),
-      ),
-      body: Container(
-        decoration: BoxDecoration(
-          image: DecorationImage(
-            image: AssetImage(Assets.images.blurBackground.path),
-            fit: BoxFit.cover,
+    return Stack(
+      children: [
+        Scaffold(
+          resizeToAvoidBottomInset: false,
+          backgroundColor: theme.colors.background0,
+          body: Container(
+            decoration: BoxDecoration(
+              image: DecorationImage(
+                image: AssetImage(Assets.images.blurBackground.path),
+                fit: BoxFit.cover,
+              ),
+            ),
+            child: const AddExistingWalletView(),
           ),
         ),
-        child: const AddExistingWalletView(),
-      ),
+        DefaultAppBar(
+          onClosePressed: (context) => context.maybePop(),
+        ),
+      ],
     );
   }
 }
