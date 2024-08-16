@@ -46,11 +46,11 @@ class ChooseNetworkScreen
                     LocaleKeys.chooseNetwork.tr(),
                     type: PrimaryTextType.titleLarge,
                   ), //Choose a network
-                  const SizedBox(height: DimensSize.d8),
+                  SizedBox(height: DimensAdaptiveSize.d8.h),
                   PrimaryText(
                     LocaleKeys.selectNetworkNewWalletDescription.tr(),
                   ),
-                  const SizedBox(height: DimensSize.d32),
+                  SizedBox(height: DimensAdaptiveSize.d32.h),
                   StateNotifierBuilder<List<ChooseNetworkItemData>>(
                     listenableState: wm.connectionsState,
                     builder: (_, List<ChooseNetworkItemData>? items) {
@@ -69,7 +69,7 @@ class ChooseNetworkScreen
                       );
                     },
                   ),
-                  const SizedBox(height: DimensSize.d22),
+                  SizedBox(height: DimensAdaptiveSize.d22.h),
                 ],
               ),
             ),

@@ -10,6 +10,7 @@ import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter/widgets.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:go_router/go_router.dart';
 import 'package:logging/logging.dart';
 import 'package:ui_components_lib/ui_components_lib.dart';
@@ -80,8 +81,10 @@ Future<void> bootstrap(
           path: 'assets/translations',
           fallbackLocale: fallbackLocale,
           useOnlyLangCode: true,
-          child: AppWrapper(
-            builder: builder,
+          child: ScreenUtilWrapper(
+            child: AppWrapper(
+              builder: builder,
+            ),
           ),
         ),
       );
@@ -149,5 +152,23 @@ class _AppWrapperState extends State<AppWrapper> with WidgetsBindingObserver {
   @override
   Widget build(BuildContext context) {
     return widget.builder();
+  }
+}
+
+class ScreenUtilWrapper extends StatelessWidget {
+  const ScreenUtilWrapper({
+    required this.child,
+    super.key,
+  });
+
+  final Widget child;
+
+  @override
+  Widget build(BuildContext context) {
+    return ScreenUtilInit(
+      designSize: const Size(375, 812),
+      minTextAdapt: true,
+      child: child,
+    );
   }
 }
