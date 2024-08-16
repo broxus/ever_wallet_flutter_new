@@ -116,11 +116,7 @@ class ConnectionService {
       );
       _log.finest('updateTransportByConnection completed!');
     } catch (e, t) {
-      inject<MessengerService>().show(
-        Message.error(
-          message: LocaleKeys.connectingNetworkFailed.tr(),
-        ),
-      );
+      inject<MessengerService>().showConnectionError();
       _log.severe('updateTransportByConnection', e, t);
 
       // allow level above to track fail

@@ -42,8 +42,7 @@ class ChooseNetworkScreenWidgetModel
   ThemeStyleV2 get _themeStyle => context.themeStyleV2;
 
   Future<void> onPressedType(String id) async {
-    if (!await model.isConnected) {
-      model.showConnectionError();
+    if (!await model.checkConnection()) {
       return;
     }
 

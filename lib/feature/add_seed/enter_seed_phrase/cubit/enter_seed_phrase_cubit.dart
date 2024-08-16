@@ -5,6 +5,7 @@ import 'package:app/di/di.dart';
 import 'package:app/feature/add_seed/enter_seed_phrase/cubit/enter_seed_phrase_input_model.dart';
 import 'package:app/feature/constants.dart';
 import 'package:app/generated/locale_keys.g.dart';
+import 'package:app/utils/mixins/connection_mixin.dart';
 import 'package:bloc/bloc.dart';
 import 'package:collection/collection.dart';
 import 'package:easy_localization/easy_localization.dart';
@@ -31,7 +32,8 @@ const _autoNavigationDelay = Duration(milliseconds: 500);
 typedef EnterSeedPhraseConfirmCallback = void Function(List<String> phrase);
 
 /// Cubit that manages the state of the seed phrase entering page.
-class EnterSeedPhraseCubit extends Cubit<EnterSeedPhraseState> {
+class EnterSeedPhraseCubit extends Cubit<EnterSeedPhraseState>
+    with ConnectionMixin {
   EnterSeedPhraseCubit(this.confirmCallback)
       : super(const EnterSeedPhraseState.initial());
 
@@ -49,8 +51,13 @@ class EnterSeedPhraseCubit extends Cubit<EnterSeedPhraseState> {
   /// Models of input
   late List<EnterSeedPhraseInputModel> _inputModels;
 
-  final _messengerService = inject<MessengerService>();
-  final _networkConnectionService = inject<NetworkConnectionService>();
+  @override
+  @protected
+  final messengerService = inject<MessengerService>();
+
+  @override
+  @protected
+  final networkConnectionService = inject<NetworkConnectionService>();
 
   @override
   Future<void> close() {
@@ -151,12 +158,7 @@ class EnterSeedPhraseCubit extends Cubit<EnterSeedPhraseState> {
   }
 
   Future<void> confirmAction() async {
-    if (!await _networkConnectionService.isExistInternet) {
-      _messengerService.show(
-        Message.error(
-          message: LocaleKeys.connectingNetworkFailed.tr(),
-        ),
-      );
+    if (!await checkConnection()) {
       return;
     }
 

@@ -40,8 +40,7 @@ class ImportWalletScreenWidgetModel
   ImportWalletData? get _data => screenState.value.data;
 
   Future<void> onPressedImport() async {
-    if (!await model.isConnected) {
-      model.showConnectionError();
+    if (!await model.checkConnection()) {
       return;
     }
 

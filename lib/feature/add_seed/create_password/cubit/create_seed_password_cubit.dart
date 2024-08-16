@@ -2,7 +2,7 @@ import 'package:app/app/service/network_connection/network_connection_service.da
 import 'package:app/app/service/service.dart';
 import 'package:app/di/di.dart';
 import 'package:app/feature/add_seed/create_password/model/password_status.dart';
-import 'package:app/generated/generated.dart';
+import 'package:app/utils/mixins/connection_mixin.dart';
 import 'package:flutter/widgets.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:freezed_annotation/freezed_annotation.dart';
@@ -16,7 +16,8 @@ part 'create_seed_password_state.dart';
 const _minPasswordLength = 8;
 
 /// Cubit for creating seed password.
-class CreateSeedPasswordCubit extends Cubit<CreateSeedPasswordState> {
+class CreateSeedPasswordCubit extends Cubit<CreateSeedPasswordState>
+    with ConnectionMixin {
   CreateSeedPasswordCubit({
     required this.phrase,
     required this.completeCallback,
@@ -47,8 +48,13 @@ class CreateSeedPasswordCubit extends Cubit<CreateSeedPasswordState> {
 
   final formKey = GlobalKey<FormState>();
 
-  final _networkConnectionService = inject<NetworkConnectionService>();
-  final _messengerService = inject<MessengerService>();
+  @override
+  @protected
+  final networkConnectionService = inject<NetworkConnectionService>();
+
+  @override
+  @protected
+  final messengerService = inject<MessengerService>();
 
   @override
   Future<void> close() {
@@ -61,14 +67,7 @@ class CreateSeedPasswordCubit extends Cubit<CreateSeedPasswordState> {
   }
 
   Future<void> nextAction() async {
-    final isConnected = await _networkConnectionService.isExistInternet;
-
-    if (!isConnected) {
-      _messengerService.show(
-        Message.error(
-          message: LocaleKeys.connectingNetworkFailed.tr(),
-        ),
-      );
+    if (!await checkConnection()) {
       return;
     }
 
@@ -92,7 +91,7 @@ class CreateSeedPasswordCubit extends Cubit<CreateSeedPasswordState> {
     } catch (e) {
       Logger('CreateSeedPasswordCubit').severe(e);
       emit(state.copyWith(isLoading: false));
-      _messengerService.show(Message.error(message: e.toString()));
+      messengerService.show(Message.error(message: e.toString()));
     }
   }
 

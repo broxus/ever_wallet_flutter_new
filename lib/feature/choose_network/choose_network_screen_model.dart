@@ -6,27 +6,33 @@ import 'package:app/app/service/storage_service/connections_storage_service.dart
 import 'package:app/feature/choose_network/choose_network_screen.dart';
 import 'package:app/feature/choose_network/data/choose_network_item_data.dart';
 import 'package:app/generated/generated.dart';
+import 'package:app/utils/mixins/connection_mixin.dart';
 import 'package:elementary/elementary.dart';
 import 'package:elementary_helper/elementary_helper.dart';
+import 'package:flutter/foundation.dart';
 
 /// [ElementaryModel] for [ChooseNetworkScreen]
-class ChooseNetworkScreenModel extends ElementaryModel {
+class ChooseNetworkScreenModel extends ElementaryModel with ConnectionMixin {
   ChooseNetworkScreenModel(
     ErrorHandler errorHandler,
     this._connectionsStorageService,
-    this._messengerService,
-    this._networkConnectionService,
+    this.messengerService,
+    this.networkConnectionService,
   ) : super(errorHandler: errorHandler);
 
   final ConnectionsStorageService _connectionsStorageService;
-  final MessengerService _messengerService;
-  final NetworkConnectionService _networkConnectionService;
+
+  @override
+  @protected
+  final MessengerService messengerService;
+
+  @override
+  @protected
+  final NetworkConnectionService networkConnectionService;
 
   final connectionsState = StateNotifier<List<ChooseNetworkItemData>>(
     initValue: [],
   );
-
-  Future<bool> get isConnected => _networkConnectionService.isExistInternet;
 
   @override
   void init() {
@@ -44,7 +50,7 @@ class ChooseNetworkScreenModel extends ElementaryModel {
     try {
       await _connectionsStorageService.saveCurrentConnectionId(id);
     } on Object catch (e) {
-      _messengerService.show(
+      messengerService.show(
         Message.error(
           message: e.toString(),
         ),
@@ -87,14 +93,6 @@ class ChooseNetworkScreenModel extends ElementaryModel {
 
     connectionsState.accept(
       list,
-    );
-  }
-
-  void showConnectionError() {
-    _messengerService.show(
-      Message.error(
-        message: LocaleKeys.connectingNetworkFailed.tr(),
-      ),
     );
   }
 }

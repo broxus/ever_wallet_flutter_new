@@ -65,8 +65,7 @@ class WelcomeScreenWidgetModel
   }
 
   Future<void> _goNext(VoidCallback callback) async {
-    if (!await model.isConnected) {
-      model.showConnectionError();
+    if (!await model.checkConnection()) {
       return;
     }
 
