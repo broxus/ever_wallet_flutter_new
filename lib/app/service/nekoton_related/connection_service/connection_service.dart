@@ -3,7 +3,6 @@ import 'package:app/app/service/service.dart';
 import 'package:app/data/models/connection_data.dart';
 import 'package:app/data/models/network_type.dart';
 import 'package:app/di/di.dart';
-import 'package:app/generated/generated.dart';
 import 'package:injectable/injectable.dart';
 import 'package:logging/logging.dart';
 import 'package:nekoton_repository/nekoton_repository.dart' hide Message;
