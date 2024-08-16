@@ -15,12 +15,10 @@ import 'package:flutter/foundation.dart';
 class ChooseNetworkScreenModel extends ElementaryModel with ConnectionMixin {
   ChooseNetworkScreenModel(
     ErrorHandler errorHandler,
-    this._connectionsStorageService,
     this.messengerService,
     this.networkConnectionService,
+    this._connectionsStorageService,
   ) : super(errorHandler: errorHandler);
-
-  final ConnectionsStorageService _connectionsStorageService;
 
   @override
   @protected
@@ -33,6 +31,8 @@ class ChooseNetworkScreenModel extends ElementaryModel with ConnectionMixin {
   final connectionsState = StateNotifier<List<ChooseNetworkItemData>>(
     initValue: [],
   );
+
+  final ConnectionsStorageService _connectionsStorageService;
 
   @override
   void init() {
