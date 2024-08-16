@@ -520,7 +520,7 @@ extension NavigationHelper on BuildContext {
         queryParameters: pathUri.queryParameters,
       );
     }
-    print('!!! $resultLocation');
+
     return resultLocation;
   }
 }
