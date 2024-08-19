@@ -110,6 +110,7 @@ class DimensElevation {
   static const double medium = 24;
 }
 
+// ignore_for_file: unused_element
 extension on num {
   /// Width platform
   double get wp => isPhoneL ? w : toDouble();
