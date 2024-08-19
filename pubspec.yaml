@@ -81,6 +81,7 @@ dev_dependencies:
   datetime_avoid_lint:
     path: packages/datetime_avoid_lint
   flutter_gen_runner: ^5.4.0
+  flutter_native_splash: ^2.4.0
   flutter_secure_storage: ^9.0.0
   flutter_test:
     sdk: flutter
@@ -116,3 +117,4 @@ flutter:
     - assets/images/lang_icons/
     - assets/images/stever/
     - assets/images/user_avatar/
+    - assets/splash/
