@@ -9,6 +9,7 @@ ${BUILT_PRODUCTS_DIR}/Sentry/Sentry.framework
 ${BUILT_PRODUCTS_DIR}/flutter_email_sender/flutter_email_sender.framework
 ${BUILT_PRODUCTS_DIR}/flutter_inappwebview/flutter_inappwebview.framework
 ${BUILT_PRODUCTS_DIR}/flutter_keyboard_visibility/flutter_keyboard_visibility.framework
+${BUILT_PRODUCTS_DIR}/flutter_native_splash/flutter_native_splash.framework
 ${BUILT_PRODUCTS_DIR}/flutter_nekoton_bridge/flutter_nekoton_bridge.framework
 ${BUILT_PRODUCTS_DIR}/flutter_secure_storage/flutter_secure_storage.framework
 ${BUILT_PRODUCTS_DIR}/image_picker_ios/image_picker_ios.framework
