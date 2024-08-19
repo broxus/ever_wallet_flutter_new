@@ -26,8 +26,13 @@ class AddExistingWalletPage extends StatelessWidget {
             child: const AddExistingWalletView(),
           ),
         ),
-        DefaultAppBar(
-          onClosePressed: (context) => context.maybePop(),
+        Positioned(
+          top: 0,
+          left: 0,
+          right: 0,
+          child: DefaultAppBar(
+            onClosePressed: (context) => context.maybePop(),
+          ),
         ),
       ],
     );
