@@ -1,5 +1,6 @@
 import 'package:app/feature/wallet/wallet.dart';
 import 'package:app/feature/wallet/widgets/account_transactions_tab/account_transactions_tab.dart';
+import 'package:app/generated/generated.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
@@ -47,16 +48,16 @@ class _WalletBottomPanelState extends State<WalletBottomPanel> {
                       const EdgeInsets.symmetric(horizontal: DimensSize.d16),
                   child: SwitcherSegmentControls(
                     currentValue: value,
-                    values: const [
+                    values: [
                       PrimarySegmentControl(
                         state: SegmentControlState.normal,
-                        title: 'Assets',
+                        title: LocaleKeys.assetsWord.tr(),
                         value: WalletBottomPanelTab.asset,
                         size: SegmentControlSize.medium,
                       ),
                       PrimarySegmentControl(
                         state: SegmentControlState.selected,
-                        title: 'Transactions',
+                        title: LocaleKeys.transactionsWord.tr(),
                         value: WalletBottomPanelTab.transactions,
                         size: SegmentControlSize.medium,
                       ),
