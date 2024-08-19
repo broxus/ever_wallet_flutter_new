@@ -20,6 +20,7 @@ ChooseNetworkScreenWidgetModel defaultChooseNetworkScreenWidgetModelFactory(
       createPrimaryErrorHandler(context),
       inject(),
       inject(),
+      inject(),
     ),
   );
 }
@@ -41,6 +42,10 @@ class ChooseNetworkScreenWidgetModel
   ThemeStyleV2 get _themeStyle => context.themeStyleV2;
 
   Future<void> onPressedType(String id) async {
+    if (!await model.checkConnection()) {
+      return;
+    }
+
     final isSuccess = await model.selectType(id);
 
     final isCanPop = contextSafe?.canPop() ?? false;
