@@ -31,20 +31,21 @@ class WelcomeScreen extends ElementaryWidget<WelcomeScreenWidgetModel> {
         backgroundColor: themeStyle.colors.background0,
         resizeToAvoidBottomInset: false,
         body: SafeArea(
-          minimum: EdgeInsets.only(bottom: DimensAdaptiveSize.d16.h),
+          minimum: EdgeInsets.only(bottom: DimensAdaptiveSize.d16.hp),
           child: Column(
             mainAxisAlignment: MainAxisAlignment.end,
             children: [
+              const Spacer(),
               const SlidingBlockChains(),
-              SizedBox(height: DimensAdaptiveSize.d38.h),
+              const Spacer(),
               Padding(
                 padding: EdgeInsets.symmetric(
-                  horizontal: DimensAdaptiveSize.d16.w,
+                  horizontal: DimensAdaptiveSize.d16.wp,
                 ),
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    SizedBox(height: DimensAdaptiveSize.d12.h),
+                    SizedBox(height: DimensAdaptiveSize.d12.hp),
                     Center(
                       child: Text(
                         LocaleKeys.welcomeTitle.tr(),
@@ -52,7 +53,7 @@ class WelcomeScreen extends ElementaryWidget<WelcomeScreenWidgetModel> {
                         textAlign: TextAlign.center,
                       ),
                     ),
-                    SizedBox(height: DimensAdaptiveSize.d12.h),
+                    SizedBox(height: DimensAdaptiveSize.d12.hp),
                     Center(
                       child: Text(
                         LocaleKeys.welcomeSubtitle.tr(),
@@ -61,19 +62,19 @@ class WelcomeScreen extends ElementaryWidget<WelcomeScreenWidgetModel> {
                         textAlign: TextAlign.center,
                       ),
                     ),
-                    SizedBox(height: DimensAdaptiveSize.d24.h),
+                    SizedBox(height: DimensAdaptiveSize.d24.hp),
                     AccentButton(
                       title: LocaleKeys.welcomeGetNewWallet.tr(),
                       onPressed: wm.onPressedCreateWallet,
                       buttonShape: ButtonShape.pill,
                     ),
-                    SizedBox(height: DimensAdaptiveSize.d8.h),
+                    SizedBox(height: DimensAdaptiveSize.d8.hp),
                     PrimaryButton(
                       title: LocaleKeys.welcomeIHaveOne.tr(),
                       onPressed: wm.onPressedWalletLogin,
                       buttonShape: ButtonShape.pill,
                     ),
-                    SizedBox(height: DimensAdaptiveSize.d16.h),
+                    SizedBox(height: DimensAdaptiveSize.d16.hp),
                     Center(
                       child: Text.rich(
                         TextSpan(

@@ -3,6 +3,7 @@
 // add it in the page you wanna use it.
 
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:ui_components_lib/utils/platform_utils.dart';
 
 /// Class that contains all the size used in the app.
 /// If you need add custom size, please add it in page where it's used.
@@ -47,8 +48,8 @@ class DimensAdaptiveSize {
 
   final double v;
 
-  late final double w = v.w;
-  late final double h = v.h;
+  late final double wp = v.wp;
+  late final double hp = v.hp;
 
   static final d4 = DimensAdaptiveSize._(4);
   static final d8 = DimensAdaptiveSize._(8);
@@ -107,4 +108,18 @@ class DimensElevation {
   const DimensElevation._();
 
   static const double medium = 24;
+}
+
+extension on num {
+  /// Width platform
+  double get wp => isPhoneL ? w : toDouble();
+
+  /// Height platform
+  double get hp => isPhoneL ? h : toDouble();
+
+  /// Radius platform
+  double get rp => isPhoneL ? r : toDouble();
+
+  /// sp platform
+  double get spp => isPhoneL ? sp : toDouble();
 }
