@@ -54,6 +54,7 @@ class WalletTransactionDetailsBodyWithExplorerButton extends StatelessWidget {
                 icon: LucideIcons.globe,
                 onPressed: () {
                   Navigator.of(context).pop();
+                  // TODO(oldVersion): extract inject from widget
                   browserNewTab(
                     context,
                     inject<NekotonRepository>()

@@ -166,7 +166,9 @@ class TonWalletTransactionWidget extends StatelessWidget {
                 children: [
                   AmountWidget.fromMoney(
                     amount: transactionValue,
-                    sign: isIncoming ? '+' : '-',
+                    sign: isIncoming
+                        ? LocaleKeys.plusSign.tr()
+                        : LocaleKeys.minusSign.tr(),
                     style: theme.textStyles.labelXSmall.copyWith(
                       color: isIncoming
                           ? theme.colors.contentPositive

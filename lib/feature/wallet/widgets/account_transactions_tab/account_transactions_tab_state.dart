@@ -11,6 +11,6 @@ class AccountTransactionsTabState with _$AccountTransactionsTabState {
     required List<AccountTransactionItem<Object>> transactions,
     required bool isLoading,
     required bool canLoadMore,
-    required CustomCurrency? nativeCurrency,
+    required Fixed price,
   }) = _Transactions;
 }

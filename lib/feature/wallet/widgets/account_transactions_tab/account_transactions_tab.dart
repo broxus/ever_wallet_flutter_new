@@ -58,7 +58,7 @@ class AccountTransactionsTab extends StatelessWidget {
               ),
             ),
             loading: () => const SliverToBoxAdapter(child: SizedBox.shrink()),
-            transactions: (transactions, isLoading, _, currency) {
+            transactions: (transactions, isLoading, _, price) {
               return ScrollControllerPreloadListener(
                 preleloadAction: () => context
                     .read<AccountTransactionsTabCubit>()
@@ -87,7 +87,7 @@ class AccountTransactionsTab extends StatelessWidget {
                       child: _transactionItem(
                         trans,
                         displayDate,
-                        Fixed.parse(currency?.price ?? '0'),
+                        price,
                       ),
                     );
                   },

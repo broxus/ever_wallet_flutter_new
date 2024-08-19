@@ -313,7 +313,7 @@ class AccountTransactionsTabCubit extends Cubit<AccountTransactionsTabState> {
           transactions: transactions,
           isLoading: isLoading,
           canLoadMore: canLoadMore,
-          nativeCurrency: _nativeCurrency,
+          price: Fixed.parse(_nativeCurrency?.price ?? '0'),
         ),
       );
     }

@@ -514,5 +514,8 @@
   "multisigWord": "Multisig",
   "website": "Website",
   "accountInteractionType": "Account interaction",
-  "basicInteractionType": "Basic"
+  "basicInteractionType": "Basic",
+  "plusSign": "+",
+  "minusSign": "-",
+  "approximatelySign": "~"
 }

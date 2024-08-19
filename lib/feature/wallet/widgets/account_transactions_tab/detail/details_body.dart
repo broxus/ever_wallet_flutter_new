@@ -82,7 +82,9 @@ class WalletTransactionDetailsDefaultBody extends StatelessWidget {
           title: LocaleKeys.amountWord.tr(),
           valueWidget: AmountWidget.fromMoney(
             amount: value,
-            sign: isIncoming ? '+' : '-',
+            sign: isIncoming
+                ? LocaleKeys.plusSign.tr()
+                : LocaleKeys.minusSign.tr(),
           ),
           tonIconPath: tonIconPath,
           convertedValueWidget: price != null
@@ -91,7 +93,7 @@ class WalletTransactionDetailsDefaultBody extends StatelessWidget {
                   style: theme.textStyles.labelXSmall.copyWith(
                     color: theme.colors.content3,
                   ),
-                  sign: '~ ',
+                  sign: '${LocaleKeys.approximatelySign.tr()} ',
                 )
               : null,
         ),
@@ -99,7 +101,7 @@ class WalletTransactionDetailsDefaultBody extends StatelessWidget {
           title: LocaleKeys.networkFee.tr(),
           valueWidget: AmountWidget.fromMoney(
             amount: fee,
-            sign: '~ ',
+            sign: '${LocaleKeys.approximatelySign.tr()} ',
           ),
           tonIconPath: tonIconPath,
         ),
@@ -117,8 +119,9 @@ class WalletTransactionDetailsDefaultBody extends StatelessWidget {
           onPressed: () {
             _copy(
               recipientOrSender.address,
-              LocaleKeys.valueCopiedExclamation
-                  .tr(args: [recipientOrSender.toEllipseString()]),
+              LocaleKeys.valueCopiedExclamation.tr(
+                args: [recipientOrSender.toEllipseString()],
+              ),
             );
           },
         ),
