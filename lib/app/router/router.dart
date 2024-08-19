@@ -123,7 +123,6 @@ GoRouter getRouter(BuildContext _) {
         step: step,
       );
 
-      // Redirect if needed
       if (guardRedirect != null) {
         return guardRedirect;
       }
@@ -184,7 +183,7 @@ GoRouter getRouter(BuildContext _) {
       final currentRoute = getRootAppRoute(fullPath: fullPath);
       final isOnboarding = currentRoute == AppRoute.onboarding;
 
-      return ErrorPage(error: state.error, isOnboarding: isOnboarding);
+      return ErrorPage(isOnboarding: isOnboarding);
     },
   );
 

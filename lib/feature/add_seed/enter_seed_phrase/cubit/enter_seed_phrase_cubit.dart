@@ -1,9 +1,11 @@
 import 'package:app/app/service/messenger/message.dart';
 import 'package:app/app/service/messenger/service/messenger_service.dart';
+import 'package:app/app/service/network_connection/network_connection_service.dart';
 import 'package:app/di/di.dart';
 import 'package:app/feature/add_seed/enter_seed_phrase/cubit/enter_seed_phrase_input_model.dart';
 import 'package:app/feature/constants.dart';
 import 'package:app/generated/locale_keys.g.dart';
+import 'package:app/utils/mixins/connection_mixin.dart';
 import 'package:bloc/bloc.dart';
 import 'package:collection/collection.dart';
 import 'package:easy_localization/easy_localization.dart';
@@ -15,6 +17,7 @@ import 'package:nekoton_repository/nekoton_repository.dart' hide Message;
 import 'package:ui_components_lib/ui_components_lib.dart';
 
 part 'enter_seed_phrase_cubit.freezed.dart';
+
 part 'enter_seed_phrase_state.dart';
 
 /// Regexp that helps splitting seed phrase into words.
@@ -29,7 +32,8 @@ const _autoNavigationDelay = Duration(milliseconds: 500);
 typedef EnterSeedPhraseConfirmCallback = void Function(List<String> phrase);
 
 /// Cubit that manages the state of the seed phrase entering page.
-class EnterSeedPhraseCubit extends Cubit<EnterSeedPhraseState> {
+class EnterSeedPhraseCubit extends Cubit<EnterSeedPhraseState>
+    with ConnectionMixin {
   EnterSeedPhraseCubit(this.confirmCallback)
       : super(const EnterSeedPhraseState.initial());
 
@@ -46,6 +50,14 @@ class EnterSeedPhraseCubit extends Cubit<EnterSeedPhraseState> {
 
   /// Models of input
   late List<EnterSeedPhraseInputModel> _inputModels;
+
+  @override
+  @protected
+  final messengerService = inject<MessengerService>();
+
+  @override
+  @protected
+  final networkConnectionService = inject<NetworkConnectionService>();
 
   @override
   Future<void> close() {
@@ -146,6 +158,10 @@ class EnterSeedPhraseCubit extends Cubit<EnterSeedPhraseState> {
   }
 
   Future<void> confirmAction() async {
+    if (!await checkConnection()) {
+      return;
+    }
+
     if (await _validateFormWithError()) {
       String? error;
       try {

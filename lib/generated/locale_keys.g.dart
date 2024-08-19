@@ -400,7 +400,7 @@ abstract class LocaleKeys {
       'specifiedAccountInteractionNotPermitted';
   static const basicInteractionNotPermitted = 'basicInteractionNotPermitted';
   static const permissionsNotGranted = 'permissionsNotGranted';
-  static const addAsset = 'addAsset';
+  static const addAssetTitle = 'addAssetTitle';
   static const versionWord = 'versionWord';
   static const venom = 'venom';
   static const symbolWord = 'symbolWord';
@@ -518,4 +518,9 @@ abstract class LocaleKeys {
   static const website = 'website';
   static const accountInteractionType = 'accountInteractionType';
   static const basicInteractionType = 'basicInteractionType';
+  static const currentBalanceLabel = 'currentBalanceLabel';
+  static const untrastedTokenWarning = 'untrastedTokenWarning';
+  static const phishingExplicitWarning = 'phishingExplicitWarning';
+  static const phishingSameSymbolWarning = 'phishingSameSymbolWarning';
+  static const phishingSuggestionWarning = 'phishingSuggestionWarning';
 }
