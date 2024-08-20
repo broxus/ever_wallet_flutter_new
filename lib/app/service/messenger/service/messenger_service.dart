@@ -1,6 +1,7 @@
 import 'dart:async';
 
 import 'package:app/app/service/messenger/message.dart';
+import 'package:app/generated/generated.dart';
 import 'package:injectable/injectable.dart';
 
 /// Service that shows messages to the user. Keep it simple and stupid, use only
@@ -18,10 +19,19 @@ class MessengerService {
     _messageStreamController.add(message);
   }
 
+  void showConnectionError() {
+    show(
+      Message.error(
+        message: LocaleKeys.connectingNetworkFailed.tr(),
+      ),
+    );
+  }
+
   void clearQueue() {
     _clearQueueStreamController.add(null);
   }
 
   Stream<Message> get messageStream => _messageStreamController.stream;
+
   Stream<void> get clearQueueStream => _clearQueueStreamController.stream;
 }

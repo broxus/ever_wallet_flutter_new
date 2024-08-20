@@ -1,27 +1,38 @@
 import 'package:app/app/service/messenger/message.dart';
 import 'package:app/app/service/messenger/service/messenger_service.dart';
 import 'package:app/app/service/nekoton_related/connection_service/network_presets.dart';
+import 'package:app/app/service/network_connection/network_connection_service.dart';
 import 'package:app/app/service/storage_service/connections_storage_service.dart';
 import 'package:app/feature/choose_network/choose_network_screen.dart';
 import 'package:app/feature/choose_network/data/choose_network_item_data.dart';
 import 'package:app/generated/generated.dart';
+import 'package:app/utils/mixins/connection_mixin.dart';
 import 'package:elementary/elementary.dart';
 import 'package:elementary_helper/elementary_helper.dart';
+import 'package:flutter/foundation.dart';
 
 /// [ElementaryModel] for [ChooseNetworkScreen]
-class ChooseNetworkScreenModel extends ElementaryModel {
+class ChooseNetworkScreenModel extends ElementaryModel with ConnectionMixin {
   ChooseNetworkScreenModel(
     ErrorHandler errorHandler,
+    this.messengerService,
+    this.networkConnectionService,
     this._connectionsStorageService,
-    this._messengerService,
   ) : super(errorHandler: errorHandler);
 
-  final ConnectionsStorageService _connectionsStorageService;
-  final MessengerService _messengerService;
+  @override
+  @protected
+  final MessengerService messengerService;
+
+  @override
+  @protected
+  final NetworkConnectionService networkConnectionService;
 
   final connectionsState = StateNotifier<List<ChooseNetworkItemData>>(
     initValue: [],
   );
+
+  final ConnectionsStorageService _connectionsStorageService;
 
   @override
   void init() {
@@ -39,7 +50,7 @@ class ChooseNetworkScreenModel extends ElementaryModel {
     try {
       await _connectionsStorageService.saveCurrentConnectionId(id);
     } on Object catch (e) {
-      _messengerService.show(
+      messengerService.show(
         Message.error(
           message: e.toString(),
         ),

@@ -23,6 +23,7 @@ ImportWalletScreenWidgetModel defaultImportWalletWidgetModelFactory(
     ImportWalletScreenModel(
       inject(),
       inject(),
+      inject(),
     ),
   );
 }
@@ -41,6 +42,10 @@ class ImportWalletScreenWidgetModel
   int? _currentValue;
 
   Future<void> onPressedImport() async {
+    if (!await model.checkConnection()) {
+      return;
+    }
+
     String? error;
     try {
       FocusManager.instance.primaryFocus?.unfocus();

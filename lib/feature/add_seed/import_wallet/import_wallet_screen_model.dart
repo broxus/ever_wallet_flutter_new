@@ -1,20 +1,31 @@
 import 'package:app/app/service/messenger/message.dart';
 import 'package:app/app/service/messenger/service/messenger_service.dart';
+import 'package:app/app/service/network_connection/network_connection_service.dart';
+import 'package:app/utils/mixins/connection_mixin.dart';
 import 'package:elementary/elementary.dart';
+import 'package:flutter/material.dart';
 import 'package:nekoton_repository/nekoton_repository.dart' hide Message;
 import 'package:ui_components_lib/ui_components_lib.dart';
 
-class ImportWalletScreenModel extends ElementaryModel {
+class ImportWalletScreenModel extends ElementaryModel with ConnectionMixin {
   ImportWalletScreenModel(
-    this._messengerService,
-    this._nekotonRepository,
+    this.messengerService,
+    this.nekotonRepository,
+    this.networkConnectionService,
   );
 
-  final MessengerService _messengerService;
-  final NekotonRepository _nekotonRepository;
+  @override
+  @protected
+  final MessengerService messengerService;
+
+  @override
+  @protected
+  final NetworkConnectionService networkConnectionService;
+
+  final NekotonRepository nekotonRepository;
 
   void showValidateError(String message) {
-    _messengerService.show(
+    messengerService.show(
       Message.error(
         message: message,
         debounceTime: defaultInfoMessageDebounceDuration,
@@ -23,5 +34,5 @@ class ImportWalletScreenModel extends ElementaryModel {
   }
 
   List<int> get allowedValues =>
-      _nekotonRepository.currentTransport.seedPhraseWordsCount;
+      nekotonRepository.currentTransport.seedPhraseWordsCount;
 }
