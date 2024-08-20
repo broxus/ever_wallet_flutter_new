@@ -1,9 +1,7 @@
 import 'package:app/app/service/service.dart';
-import 'package:app/data/models/models.dart';
 import 'package:app/generated/generated.dart';
 import 'package:app/utils/constants.dart';
 import 'package:bloc/bloc.dart';
-import 'package:collection/collection.dart';
 import 'package:freezed_annotation/freezed_annotation.dart';
 import 'package:logging/logging.dart';
 import 'package:nekoton_repository/nekoton_repository.dart' hide Message;
@@ -18,9 +16,7 @@ class TokenWalletSendBloc
     extends Bloc<TokenWalletSendEvent, TokenWalletSendState> {
   TokenWalletSendBloc({
     required this.nekotonRepository,
-    required this.currenciesService,
     required this.messengerService,
-    required this.assetsService,
     required this.owner,
     required this.rootTokenContract,
     required this.publicKey,
@@ -35,9 +31,7 @@ class TokenWalletSendBloc
 
   final _logger = Logger('TokenWalletSendBloc');
   final NekotonRepository nekotonRepository;
-  final CurrenciesService currenciesService;
   final MessengerService messengerService;
-  final AssetsService assetsService;
 
   /// Address of account for token.
   final Address owner;
@@ -71,11 +65,8 @@ class TokenWalletSendBloc
   BigInt? fees;
 
   late Currency tokenCurrency;
-  TokenContractAsset? tokenAsset;
 
   KeyAccount? account;
-  CustomCurrency? nativeCurrency;
-  CustomCurrency? tokenCustomCurrency;
 
   late UnsignedMessage unsignedMessage;
   UnsignedMessage? _unsignedMessage;
@@ -101,23 +92,6 @@ class TokenWalletSendBloc
   Future<void> _handlePrepare(Emitter<TokenWalletSendState> emit) async {
     try {
       account = nekotonRepository.seedList.findAccountByAddress(owner);
-      nativeCurrency =
-          currenciesService.currencies(transport.networkType).firstWhereOrNull(
-                    (c) => c.address == transport.nativeTokenAddress,
-                  ) ??
-              await currenciesService.getCurrencyForNativeToken(transport);
-      tokenCustomCurrency = currenciesService
-              .currencies(transport.networkType)
-              .firstWhereOrNull((c) => c.address == rootTokenContract) ??
-          await currenciesService.getCurrencyForContract(
-            transport,
-            rootTokenContract,
-          );
-
-      tokenAsset = await assetsService.getTokenContractAsset(
-        rootTokenContract,
-        transport,
-      );
 
       final tokenWalletState = await nekotonRepository.tokenWalletsStream
           .expand((e) => e)

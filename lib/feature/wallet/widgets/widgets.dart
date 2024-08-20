@@ -8,6 +8,7 @@ export 'account_transactions_tab/detail/details.dart';
 export 'account_transactions_tab/widgets/widgets.dart';
 export 'add_new_account_card.dart';
 export 'receive_sheet.dart';
+export 'token_transfer_info/token_transfer_info.dart';
 export 'wallet_account_actions/wallet_account_actions.dart';
 export 'wallet_accounts_body.dart';
 export 'wallet_bottom_panel.dart';

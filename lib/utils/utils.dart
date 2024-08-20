@@ -74,3 +74,7 @@ String convertRetrySubscribeErrorToText(Object error) {
 
   return LocaleKeys.creatingSubscriptionFailed.tr();
 }
+
+extension FunctionalExt<T> on T {
+  R let<R>(R Function(T that) block) => block(this);
+}

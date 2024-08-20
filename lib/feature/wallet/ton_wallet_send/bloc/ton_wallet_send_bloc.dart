@@ -1,9 +1,7 @@
 import 'package:app/app/service/service.dart';
-import 'package:app/data/models/models.dart';
 import 'package:app/generated/generated.dart';
 import 'package:app/utils/constants.dart';
 import 'package:bloc/bloc.dart';
-import 'package:collection/collection.dart';
 import 'package:freezed_annotation/freezed_annotation.dart';
 import 'package:logging/logging.dart';
 import 'package:nekoton_repository/nekoton_repository.dart' hide Message;
@@ -17,7 +15,6 @@ part 'ton_wallet_send_state.dart';
 class TonWalletSendBloc extends Bloc<TonWalletSendEvent, TonWalletSendState> {
   TonWalletSendBloc({
     required this.nekotonRepository,
-    required this.currenciesService,
     required this.messengerService,
     required this.address,
     required this.publicKey,
@@ -32,7 +29,6 @@ class TonWalletSendBloc extends Bloc<TonWalletSendEvent, TonWalletSendState> {
 
   final _logger = Logger('TonWalletSendBloc');
   final NekotonRepository nekotonRepository;
-  final CurrenciesService currenciesService;
   final MessengerService messengerService;
 
   /// Address of TonWallet that will be used to send funds
@@ -65,8 +61,6 @@ class TonWalletSendBloc extends Bloc<TonWalletSendEvent, TonWalletSendState> {
 
   KeyAccount? account;
 
-  CustomCurrency? nativeCurrency;
-
   late UnsignedMessage unsignedMessage;
   UnsignedMessage? _unsignedMessage;
 
@@ -88,11 +82,6 @@ class TonWalletSendBloc extends Bloc<TonWalletSendEvent, TonWalletSendState> {
   Future<void> _handlePrepare(Emitter<TonWalletSendState> emit) async {
     try {
       account = nekotonRepository.seedList.findAccountByAddress(address);
-      nativeCurrency =
-          currenciesService.currencies(transport.networkType).firstWhereOrNull(
-                    (c) => c.address == transport.nativeTokenAddress,
-                  ) ??
-              await currenciesService.getCurrencyForNativeToken(transport);
 
       if (needRepack) {
         repackedDestination = await repackAddress(destination);

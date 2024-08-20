@@ -62,7 +62,6 @@ class TonWalletSendPage extends StatelessWidget {
         comment: comment,
         publicKey: publicKey,
         nekotonRepository: inject(),
-        currenciesService: inject(),
         messengerService: inject(),
         resultMessage:
             resultMessage ?? LocaleKeys.transactionSentSuccessfully.tr(),
