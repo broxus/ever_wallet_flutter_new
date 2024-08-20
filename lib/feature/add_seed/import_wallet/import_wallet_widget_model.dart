@@ -15,24 +15,30 @@ import 'package:logging/logging.dart';
 import 'package:nekoton_repository/nekoton_repository.dart' hide Message;
 
 final seedSplitRegExp = RegExp(r'[ |;,:\n.]');
-const wordsCount = 12;
 
 ImportWalletScreenWidgetModel defaultImportWalletWidgetModelFactory(
   BuildContext context,
 ) {
-  return ImportWalletScreenWidgetModel(ImportWalletScreenModel(inject()));
+  return ImportWalletScreenWidgetModel(
+    ImportWalletScreenModel(
+      inject(),
+      inject(),
+    ),
+  );
 }
 
 class ImportWalletScreenWidgetModel
     extends CustomWidgetModel<ImportWalletScreen, ImportWalletScreenModel> {
-  ImportWalletScreenWidgetModel(super.model);
-
-  final _log = Logger('ImportWalletWidgetModel');
+  ImportWalletScreenWidgetModel(super.model) {
+    _init();
+  }
 
   late final screenState = createEntityNotifier<ImportWalletData?>()
     ..loading(ImportWalletData());
 
   ImportWalletData? get _data => screenState.value.data;
+  final _log = Logger('ImportWalletWidgetModel');
+  int? _currentValue;
 
   Future<void> onPressedImport() async {
     String? error;
@@ -65,6 +71,11 @@ class ImportWalletScreenWidgetModel
     if (error != null) {
       model.showValidateError(error);
     }
+  }
+
+  void onChangeTab(int value) {
+    _currentValue = value;
+    _updateState(selectedValue: _currentValue);
   }
 
   Future<void> pasteWords() async {
@@ -109,8 +120,21 @@ class ImportWalletScreenWidgetModel
     context.goFurther(AppRoute.enterSeed.path);
   }
 
+  void _init() {
+    final allowedValues = model.allowedValues;
+    if (model.allowedValues.isNotEmpty) {
+      _currentValue = allowedValues.first;
+      _updateState(
+        allowedValues: allowedValues,
+        selectedValue: _currentValue,
+      );
+    }
+  }
+
   void _updateState({
     bool? isPasted,
+    List<int>? allowedValues,
+    int? selectedValue,
     List<String>? words,
     List<String>? firstColumnWords,
     List<String>? secondColumnWords,
@@ -118,6 +142,8 @@ class ImportWalletScreenWidgetModel
     screenState.content(
       _data?.copyWith(
         isPasted: isPasted,
+        allowedData: allowedValues,
+        selectedValue: selectedValue,
         words: words,
         firstColumnWords: firstColumnWords,
         secondColumnWords: secondColumnWords,

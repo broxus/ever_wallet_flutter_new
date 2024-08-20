@@ -73,13 +73,13 @@ class SegmentControlsV2 extends StatelessWidget {
                   state: SegmentControlState.normal,
                   icon: LucideIcons.notebook,
                   size: SegmentControlSize.medium,
-                  title: 'B',
+                  title: 'B', value: '1',
                 ),
                 PrimarySegmentControl(
                   state: SegmentControlState.normal,
                   icon: LucideIcons.snowflake,
                   size: SegmentControlSize.medium,
-                  title: 'C',
+                  title: 'C', value: '1',
                 ),
                 PrimarySegmentControl(
                   state: SegmentControlState.normal,
