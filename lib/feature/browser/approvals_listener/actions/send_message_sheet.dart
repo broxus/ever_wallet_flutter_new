@@ -5,6 +5,7 @@ import 'package:app/di/di.dart';
 import 'package:app/feature/profile/profile.dart';
 import 'package:app/feature/wallet/wallet.dart';
 import 'package:app/feature/wallet/wallet_prepare_transfer_cubit/wallet_prepare_transfer_cubit.dart';
+import 'package:app/feature/wallet/widgets/account_transactions_tab/detail/details.dart';
 import 'package:app/generated/generated.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';

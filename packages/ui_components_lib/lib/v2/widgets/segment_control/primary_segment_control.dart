@@ -6,13 +6,13 @@ import 'package:ui_components_lib/v2/widgets/segment_control/segment_control.dar
 //if you need to select segment, pass SegmentControlState.selected
 //example state : user.id == client.id ? SegmentControlState.selected :
 // SegmentControlState.normal
-class PrimarySegmentControl extends StatelessWidget {
+class PrimarySegmentControl<T> extends StatelessWidget {
   const PrimarySegmentControl({
     required this.state,
+    required this.value,
     this.icon,
     this.size = SegmentControlSize.large,
     this.title,
-    this.value,
     super.key,
   });
 
@@ -20,7 +20,7 @@ class PrimarySegmentControl extends StatelessWidget {
   final SegmentControlState state;
   final IconData? icon;
   final String? title;
-  final String? value;
+  final T value;
 
   double get _iconSize {
     switch (size) {
@@ -64,6 +64,22 @@ class PrimarySegmentControl extends StatelessWidget {
     }
   }
 
+  PrimarySegmentControl<T> copyWith({
+    SegmentControlSize? size,
+    SegmentControlState? state,
+    IconData? icon,
+    String? title,
+    T? value,
+  }) {
+    return PrimarySegmentControl<T>(
+      size: size ?? this.size,
+      state: state ?? this.state,
+      icon: icon ?? this.icon,
+      title: title ?? this.title,
+      value: value ?? this.value,
+    );
+  }
+
   @override
   Widget build(BuildContext context) {
     final themeStyle = context.themeStyleV2;
@@ -75,6 +91,7 @@ class PrimarySegmentControl extends StatelessWidget {
         color: style.backgroundColor,
       ),
       child: Row(
+        mainAxisAlignment: MainAxisAlignment.center,
         children: [
           if (icon != null)
             Icon(
@@ -90,14 +107,6 @@ class PrimarySegmentControl extends StatelessWidget {
               child: Text(
                 title!,
                 style: style.titleTextStyle,
-              ),
-            ),
-          if (value != null)
-            Padding(
-              padding: const EdgeInsets.only(left: DimensSize.d8),
-              child: Text(
-                value!,
-                style: style.valueTextStyle,
               ),
             ),
         ],

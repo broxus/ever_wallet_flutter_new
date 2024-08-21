@@ -21,7 +21,7 @@ mixin _$AccountTransactionsTabState {
     required TResult Function() empty,
     required TResult Function() loading,
     required TResult Function(List<AccountTransactionItem<Object>> transactions,
-            bool isLoading, bool canLoadMore)
+            bool isLoading, bool canLoadMore, Fixed price)
         transactions,
   }) =>
       throw _privateConstructorUsedError;
@@ -30,7 +30,7 @@ mixin _$AccountTransactionsTabState {
     TResult? Function()? empty,
     TResult? Function()? loading,
     TResult? Function(List<AccountTransactionItem<Object>> transactions,
-            bool isLoading, bool canLoadMore)?
+            bool isLoading, bool canLoadMore, Fixed price)?
         transactions,
   }) =>
       throw _privateConstructorUsedError;
@@ -39,7 +39,7 @@ mixin _$AccountTransactionsTabState {
     TResult Function()? empty,
     TResult Function()? loading,
     TResult Function(List<AccountTransactionItem<Object>> transactions,
-            bool isLoading, bool canLoadMore)?
+            bool isLoading, bool canLoadMore, Fixed price)?
         transactions,
     required TResult orElse(),
   }) =>
@@ -130,7 +130,7 @@ class _$EmptyImpl implements _Empty {
     required TResult Function() empty,
     required TResult Function() loading,
     required TResult Function(List<AccountTransactionItem<Object>> transactions,
-            bool isLoading, bool canLoadMore)
+            bool isLoading, bool canLoadMore, Fixed price)
         transactions,
   }) {
     return empty();
@@ -142,7 +142,7 @@ class _$EmptyImpl implements _Empty {
     TResult? Function()? empty,
     TResult? Function()? loading,
     TResult? Function(List<AccountTransactionItem<Object>> transactions,
-            bool isLoading, bool canLoadMore)?
+            bool isLoading, bool canLoadMore, Fixed price)?
         transactions,
   }) {
     return empty?.call();
@@ -154,7 +154,7 @@ class _$EmptyImpl implements _Empty {
     TResult Function()? empty,
     TResult Function()? loading,
     TResult Function(List<AccountTransactionItem<Object>> transactions,
-            bool isLoading, bool canLoadMore)?
+            bool isLoading, bool canLoadMore, Fixed price)?
         transactions,
     required TResult orElse(),
   }) {
@@ -244,7 +244,7 @@ class _$LoadingImpl implements _Loading {
     required TResult Function() empty,
     required TResult Function() loading,
     required TResult Function(List<AccountTransactionItem<Object>> transactions,
-            bool isLoading, bool canLoadMore)
+            bool isLoading, bool canLoadMore, Fixed price)
         transactions,
   }) {
     return loading();
@@ -256,7 +256,7 @@ class _$LoadingImpl implements _Loading {
     TResult? Function()? empty,
     TResult? Function()? loading,
     TResult? Function(List<AccountTransactionItem<Object>> transactions,
-            bool isLoading, bool canLoadMore)?
+            bool isLoading, bool canLoadMore, Fixed price)?
         transactions,
   }) {
     return loading?.call();
@@ -268,7 +268,7 @@ class _$LoadingImpl implements _Loading {
     TResult Function()? empty,
     TResult Function()? loading,
     TResult Function(List<AccountTransactionItem<Object>> transactions,
-            bool isLoading, bool canLoadMore)?
+            bool isLoading, bool canLoadMore, Fixed price)?
         transactions,
     required TResult orElse(),
   }) {
@@ -326,7 +326,8 @@ abstract class _$$TransactionsImplCopyWith<$Res> {
   $Res call(
       {List<AccountTransactionItem<Object>> transactions,
       bool isLoading,
-      bool canLoadMore});
+      bool canLoadMore,
+      Fixed price});
 }
 
 /// @nodoc
@@ -343,6 +344,7 @@ class __$$TransactionsImplCopyWithImpl<$Res>
     Object? transactions = null,
     Object? isLoading = null,
     Object? canLoadMore = null,
+    Object? price = null,
   }) {
     return _then(_$TransactionsImpl(
       transactions: null == transactions
@@ -357,6 +359,10 @@ class __$$TransactionsImplCopyWithImpl<$Res>
           ? _value.canLoadMore
           : canLoadMore // ignore: cast_nullable_to_non_nullable
               as bool,
+      price: null == price
+          ? _value.price
+          : price // ignore: cast_nullable_to_non_nullable
+              as Fixed,
     ));
   }
 }
@@ -367,7 +373,8 @@ class _$TransactionsImpl implements _Transactions {
   const _$TransactionsImpl(
       {required final List<AccountTransactionItem<Object>> transactions,
       required this.isLoading,
-      required this.canLoadMore})
+      required this.canLoadMore,
+      required this.price})
       : _transactions = transactions;
 
   final List<AccountTransactionItem<Object>> _transactions;
@@ -382,10 +389,12 @@ class _$TransactionsImpl implements _Transactions {
   final bool isLoading;
   @override
   final bool canLoadMore;
+  @override
+  final Fixed price;
 
   @override
   String toString() {
-    return 'AccountTransactionsTabState.transactions(transactions: $transactions, isLoading: $isLoading, canLoadMore: $canLoadMore)';
+    return 'AccountTransactionsTabState.transactions(transactions: $transactions, isLoading: $isLoading, canLoadMore: $canLoadMore, price: $price)';
   }
 
   @override
@@ -398,7 +407,8 @@ class _$TransactionsImpl implements _Transactions {
             (identical(other.isLoading, isLoading) ||
                 other.isLoading == isLoading) &&
             (identical(other.canLoadMore, canLoadMore) ||
-                other.canLoadMore == canLoadMore));
+                other.canLoadMore == canLoadMore) &&
+            (identical(other.price, price) || other.price == price));
   }
 
   @override
@@ -406,7 +416,8 @@ class _$TransactionsImpl implements _Transactions {
       runtimeType,
       const DeepCollectionEquality().hash(_transactions),
       isLoading,
-      canLoadMore);
+      canLoadMore,
+      price);
 
   @JsonKey(ignore: true)
   @override
@@ -420,10 +431,10 @@ class _$TransactionsImpl implements _Transactions {
     required TResult Function() empty,
     required TResult Function() loading,
     required TResult Function(List<AccountTransactionItem<Object>> transactions,
-            bool isLoading, bool canLoadMore)
+            bool isLoading, bool canLoadMore, Fixed price)
         transactions,
   }) {
-    return transactions(this.transactions, isLoading, canLoadMore);
+    return transactions(this.transactions, isLoading, canLoadMore, price);
   }
 
   @override
@@ -432,10 +443,10 @@ class _$TransactionsImpl implements _Transactions {
     TResult? Function()? empty,
     TResult? Function()? loading,
     TResult? Function(List<AccountTransactionItem<Object>> transactions,
-            bool isLoading, bool canLoadMore)?
+            bool isLoading, bool canLoadMore, Fixed price)?
         transactions,
   }) {
-    return transactions?.call(this.transactions, isLoading, canLoadMore);
+    return transactions?.call(this.transactions, isLoading, canLoadMore, price);
   }
 
   @override
@@ -444,12 +455,12 @@ class _$TransactionsImpl implements _Transactions {
     TResult Function()? empty,
     TResult Function()? loading,
     TResult Function(List<AccountTransactionItem<Object>> transactions,
-            bool isLoading, bool canLoadMore)?
+            bool isLoading, bool canLoadMore, Fixed price)?
         transactions,
     required TResult orElse(),
   }) {
     if (transactions != null) {
-      return transactions(this.transactions, isLoading, canLoadMore);
+      return transactions(this.transactions, isLoading, canLoadMore, price);
     }
     return orElse();
   }
@@ -493,11 +504,13 @@ abstract class _Transactions implements AccountTransactionsTabState {
   const factory _Transactions(
       {required final List<AccountTransactionItem<Object>> transactions,
       required final bool isLoading,
-      required final bool canLoadMore}) = _$TransactionsImpl;
+      required final bool canLoadMore,
+      required final Fixed price}) = _$TransactionsImpl;
 
   List<AccountTransactionItem<Object>> get transactions;
   bool get isLoading;
   bool get canLoadMore;
+  Fixed get price;
   @JsonKey(ignore: true)
   _$$TransactionsImplCopyWith<_$TransactionsImpl> get copyWith =>
       throw _privateConstructorUsedError;

@@ -1,6 +1,6 @@
 import 'package:app/app/service/service.dart';
 import 'package:app/di/di.dart';
-import 'package:app/feature/wallet/wallet.dart';
+import 'package:app/feature/wallet/widgets/account_transactions_tab/detail/details_item.dart';
 import 'package:app/generated/generated.dart';
 import 'package:nekoton_repository/nekoton_repository.dart';
 import 'package:ui_components_lib/ui_components_lib.dart';
