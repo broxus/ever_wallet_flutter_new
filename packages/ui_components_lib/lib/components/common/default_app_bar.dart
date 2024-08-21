@@ -155,36 +155,34 @@ class DefaultAppBar extends StatelessWidget implements PreferredSizeWidget {
                 buttonShape: ButtonShape.circle,
                 icon: LucideIcons.arrowLeft,
                 buttonSize: ButtonSize.medium,
-                onPressed: () {
-                  if (onClosePressed != null) {
-                    onClosePressed!(context);
-                  } else {
-                    defaultPopAction(context);
-                  }
-                },
+                onPressed: () => _onPressedBack(context),
               )
             : null);
 
-    return Padding(
-      padding: const EdgeInsets.symmetric(horizontal: DimensSizeV2.d16),
-      child: AppBar(
-        backgroundColor: backgroundColor ?? Colors.transparent,
-        surfaceTintColor: Colors.transparent,
-        toolbarHeight: preferredSize.height,
-        elevation: 0,
-        scrolledUnderElevation: 0,
-        titleSpacing: DimensSize.d8,
-        centerTitle: centerTitle,
-        leadingWidth: isShowLeadingClose ? DimensSizeV2.d48 : leadingWidth,
-        leading: leading == null
-            ? null
-            : Align(
-                alignment: Alignment.centerLeft,
-                child: leading,
-              ),
-        actions: _hasAnyActions ? _actionsWidget(context) : null,
-        title: title,
-        systemOverlayStyle: systemOverlayStyle,
+    return PopScope(
+      canPop: false,
+      onPopInvoked: (_) => _onPressedBack(context),
+      child: Padding(
+        padding: const EdgeInsets.symmetric(horizontal: DimensSizeV2.d16),
+        child: AppBar(
+          backgroundColor: backgroundColor ?? Colors.transparent,
+          surfaceTintColor: Colors.transparent,
+          toolbarHeight: preferredSize.height,
+          elevation: 0,
+          scrolledUnderElevation: 0,
+          titleSpacing: DimensSize.d8,
+          centerTitle: centerTitle,
+          leadingWidth: isShowLeadingClose ? DimensSizeV2.d48 : leadingWidth,
+          leading: leading == null
+              ? null
+              : Align(
+                  alignment: Alignment.centerLeft,
+                  child: leading,
+                ),
+          actions: _hasAnyActions ? _actionsWidget(context) : null,
+          title: title,
+          systemOverlayStyle: systemOverlayStyle,
+        ),
       ),
     );
   }
@@ -261,5 +259,13 @@ class DefaultAppBar extends StatelessWidget implements PreferredSizeWidget {
     }
 
     return anyTitle;
+  }
+
+  void _onPressedBack(BuildContext context) {
+    if (onClosePressed != null) {
+      onClosePressed!(context);
+    } else {
+      defaultPopAction(context);
+    }
   }
 }

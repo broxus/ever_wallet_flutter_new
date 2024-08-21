@@ -30,6 +30,7 @@ dependencies:
   flutter_bloc: ^8.1.5
   flutter_email_sender: ^6.0.3
   flutter_inappwebview: ^5.0.0
+  flutter_screenutil: ^5.9.3
   flutter_svg: ^2.0.10+1
   freezed_annotation: ^2.4.1
   frontend_server_client: ^4.0.0

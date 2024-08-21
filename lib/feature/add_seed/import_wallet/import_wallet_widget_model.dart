@@ -58,8 +58,11 @@ class ImportWalletScreenWidgetModel
         if (!context.mounted) return;
         context.goFurther(
           AppRoute.createSeedPassword.pathWithData(
-            queryParameters: {addSeedPhraseQueryParam: jsonEncode(words)},
+            queryParameters: {
+              addSeedPhraseQueryParam: jsonEncode(words),
+            },
           ),
+          preserveQueryParams: true,
         );
       } else {
         model.showValidateError(LocaleKeys.incorrectWordsFormat.tr());
@@ -115,7 +118,10 @@ class ImportWalletScreenWidgetModel
   }
 
   void onPressedManual() {
-    context.goFurther(AppRoute.enterSeed.path);
+    context.goFurther(
+      AppRoute.enterSeed.path,
+      preserveQueryParams: true,
+    );
   }
 
   void _updateState({

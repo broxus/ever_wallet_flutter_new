@@ -11,6 +11,6 @@ export 'opac.dart';
 export 'predefined_theme.dart';
 export 'styles.dart';
 export 'theme_style.dart';
-export 'utils.dart';
+export 'utils/utils.dart';
 export 'v2/colors_v2.dart';
 export 'v2/theme_style_v2.dart';

@@ -2,7 +2,13 @@ import 'package:app/app/service/service.dart';
 import 'package:app/di/di.dart';
 import 'package:app/feature/wallet/widgets/account_transactions_tab/account_transactions_tab_cubit.dart';
 import 'package:app/feature/wallet/widgets/account_transactions_tab/models/account_transaction_item.dart';
-import 'package:app/feature/wallet/widgets/account_transactions_tab/widgets/widgets.dart';
+import 'package:app/feature/wallet/widgets/account_transactions_tab/widgets/scroll_controller_preload_listener.dart';
+import 'package:app/feature/wallet/widgets/account_transactions_tab/widgets/ton_wallet_expired_transaction_widget.dart';
+import 'package:app/feature/wallet/widgets/account_transactions_tab/widgets/ton_wallet_multisig_expired_transaction_widget.dart';
+import 'package:app/feature/wallet/widgets/account_transactions_tab/widgets/ton_wallet_multisig_ordinary_transaction_widget.dart';
+import 'package:app/feature/wallet/widgets/account_transactions_tab/widgets/ton_wallet_multisig_pending_transaction_widget.dart';
+import 'package:app/feature/wallet/widgets/account_transactions_tab/widgets/ton_wallet_ordinary_transaction_widget.dart';
+import 'package:app/feature/wallet/widgets/account_transactions_tab/widgets/ton_wallet_pending_transaction_widget.dart';
 import 'package:app/generated/generated.dart';
 import 'package:app/utils/utils.dart';
 import 'package:flutter/material.dart';
@@ -27,11 +33,13 @@ class AccountTransactionsTab extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final theme = context.themeStyleV2;
     return BlocProvider<AccountTransactionsTabCubit>(
       create: (_) => AccountTransactionsTabCubit(
         account: account,
         nekotonRepository: inject<NekotonRepository>(),
         walletStorage: inject<TonWalletStorageService>(),
+        currenciesService: inject<CurrenciesService>(),
       ),
       child:
           BlocBuilder<AccountTransactionsTabCubit, AccountTransactionsTabState>(
@@ -50,7 +58,7 @@ class AccountTransactionsTab extends StatelessWidget {
               ),
             ),
             loading: () => const SliverToBoxAdapter(child: SizedBox.shrink()),
-            transactions: (transactions, isLoading, _) {
+            transactions: (transactions, isLoading, _, price) {
               return ScrollControllerPreloadListener(
                 preleloadAction: () => context
                     .read<AccountTransactionsTabCubit>()
@@ -71,11 +79,16 @@ class AccountTransactionsTab extends StatelessWidget {
                     final displayDate =
                         prev == null || !prev.date.isSameDay(trans.date);
 
-                    return Padding(
+                    return Container(
+                      color: theme.colors.background1,
                       padding: const EdgeInsets.symmetric(
                         horizontal: DimensSize.d16,
                       ),
-                      child: _transactionItem(trans, displayDate),
+                      child: _transactionItem(
+                        trans,
+                        displayDate,
+                        price,
+                      ),
                     );
                   },
                 ),
@@ -90,11 +103,13 @@ class AccountTransactionsTab extends StatelessWidget {
   Widget _transactionItem(
     AccountTransactionItem<dynamic> trans,
     bool displayDate,
+    Fixed price,
   ) {
     return switch (trans.type) {
       AccountTransactionType.ordinary => TonWalletOrdinaryTransactionWidget(
           transaction: trans.transaction as TonWalletOrdinaryTransaction,
           displayDate: displayDate,
+          price: price,
         ),
       AccountTransactionType.pending => TonWalletPendingTransactionWidget(
           transaction: trans.transaction as TonWalletPendingTransaction,
@@ -109,16 +124,19 @@ class AccountTransactionsTab extends StatelessWidget {
           transaction:
               trans.transaction as TonWalletMultisigOrdinaryTransaction,
           displayDate: displayDate,
+          price: price,
         ),
       AccountTransactionType.multisigPending =>
         TonWalletMultisigPendingTransactionWidget(
           transaction: trans.transaction as TonWalletMultisigPendingTransaction,
           displayDate: displayDate,
+          price: price,
         ),
       AccountTransactionType.multisigExpired =>
         TonWalletMultisigExpiredTransactionWidget(
           transaction: trans.transaction as TonWalletMultisigExpiredTransaction,
           displayDate: displayDate,
+          price: price,
         ),
     };
   }

@@ -1,5 +1,7 @@
 import 'package:app/di/di.dart';
-import 'package:app/feature/wallet/wallet.dart';
+import 'package:app/feature/wallet/widgets/account_transactions_tab/detail/ton_wallet_multisig_expired_transaction_details.dart';
+import 'package:app/feature/wallet/widgets/account_transactions_tab/widgets/ton_wallet_transaction_status_body.dart';
+import 'package:app/feature/wallet/widgets/account_transactions_tab/widgets/ton_wallet_transaction_widget.dart';
 import 'package:flutter/material.dart';
 import 'package:nekoton_repository/nekoton_repository.dart';
 
@@ -8,10 +10,12 @@ class TonWalletMultisigExpiredTransactionWidget extends StatelessWidget {
   const TonWalletMultisigExpiredTransactionWidget({
     required this.transaction,
     required this.displayDate,
+    required this.price,
     super.key,
   });
 
   final TonWalletMultisigExpiredTransaction transaction;
+  final Fixed price;
   final bool displayDate;
 
   @override
@@ -25,6 +29,7 @@ class TonWalletMultisigExpiredTransactionWidget extends StatelessWidget {
         MaterialPageRoute<void>(
           builder: (_) => TonWalletMultisigExpiredTransactionDetailsPage(
             transaction: transaction,
+            price: price,
           ),
         ),
       ),

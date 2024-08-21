@@ -1,50 +1,43 @@
 import 'package:app/di/di.dart';
-import 'package:app/feature/wallet/wallet.dart';
+import 'package:app/feature/wallet/widgets/account_transactions_tab/detail/details_body.dart';
+import 'package:app/feature/wallet/widgets/account_transactions_tab/detail/details_body_with_see_explorer.dart';
+import 'package:app/feature/wallet/widgets/account_transactions_tab/widgets/ton_wallet_transaction_status_body.dart';
 import 'package:app/generated/generated.dart';
 import 'package:flutter/material.dart';
 import 'package:nekoton_repository/nekoton_repository.dart';
 import 'package:ui_components_lib/components/common/common.dart';
 import 'package:ui_components_lib/dimens.dart';
+import 'package:ui_components_lib/v2/theme_style_v2.dart';
 
 /// Page that displays information about ordinary transaction for TonWallet
 class TokenWalletOrdinaryTransactionDetailsPage extends StatelessWidget {
   const TokenWalletOrdinaryTransactionDetailsPage({
     required this.transaction,
     required this.tokenCurrency,
+    required this.price,
     super.key,
   });
 
   final TokenWalletOrdinaryTransaction transaction;
   final Currency tokenCurrency;
+  final Fixed price;
 
   @override
   Widget build(BuildContext context) {
+    // TODO(malochka): move it in widget_model or model, old implementation
     final ticker =
         inject<NekotonRepository>().currentTransport.nativeTokenTicker;
 
-    String? type;
-
-    if (transaction.incomingTransfer != null) {
-      type = LocaleKeys.tokenIncomingTransfer.tr();
-    }
-    if (transaction.outgoingTransfer != null) {
-      type = LocaleKeys.tokenOutgoingTransfer.tr();
-    }
-    if (transaction.swapBack != null) {
-      type = LocaleKeys.swapBack.tr();
-    }
-    if (transaction.accept != null) {
-      type = LocaleKeys.acceptWord.tr();
-    }
-    if (transaction.transferBounced != null) {
-      type = LocaleKeys.transferBounced.tr();
-    }
-    if (transaction.swapBackBounced != null) {
-      type = LocaleKeys.swapBackBounced.tr();
-    }
+    final theme = context.themeStyleV2;
 
     return Scaffold(
-      appBar: const DefaultAppBar(),
+      appBar: DefaultAppBar(
+        titleWidget: Text(
+          LocaleKeys.detailedInfo.tr(),
+          style: theme.textStyles.headingMedium,
+        ),
+      ),
+      backgroundColor: theme.colors.background0,
       body: WalletTransactionDetailsBodyWithExplorerButton(
         transactionHash: transaction.hash,
         body: SeparatedColumn(
@@ -64,7 +57,8 @@ class TokenWalletOrdinaryTransactionDetailsPage extends StatelessWidget {
               ),
               hash: transaction.hash,
               recipientOrSender: transaction.address,
-              type: type,
+              type: LocaleKeys.ordinaryWord.tr(),
+              price: price,
             ),
           ],
         ),

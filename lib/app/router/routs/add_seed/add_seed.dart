@@ -3,6 +3,7 @@ import 'dart:convert';
 import 'package:app/app/router/router.dart';
 import 'package:app/feature/add_seed/add_existing_wallet/view/add_existing_wallet_page.dart';
 import 'package:app/feature/add_seed/add_seed_enable_biometry/view/add_seed_enable_biometry_page.dart';
+import 'package:app/feature/add_seed/create_password/screens/create_seed_password/create_seed_password_screen.dart';
 import 'package:app/feature/add_seed/create_password/view/create_seed_password_page.dart';
 import 'package:app/feature/add_seed/enter_seed_phrase/view/enter_seed_phrase_page.dart';
 import 'package:app/feature/add_seed/import_wallet/import_wallet_screen.dart';
@@ -91,12 +92,7 @@ GoRoute get createOnboardingSeedPasswordRoute {
   return GoRoute(
     path: AppRoute.createSeedPassword.path,
     builder: (_, GoRouterState state) {
-      return CreateSeedPasswordOnboardingPage(
-        phrase: (jsonDecode(
-          state.uri.queryParameters[addSeedPhraseQueryParam]!,
-        ) as List<dynamic>)
-            .cast<String>(),
-      );
+      return const CreateSeedPasswordScreen();
     },
     routes: [
       seedEnableBiometryRoute,

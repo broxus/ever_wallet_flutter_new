@@ -30,7 +30,10 @@ class AddExistingWalletView extends StatelessWidget {
               buttonShape: ButtonShape.pill,
               title: LocaleKeys.useSecretPhraseTitle.tr(),
               onPressed: () {
-                context.goFurther(AppRoute.importWallet.path);
+                context.goFurther(
+                  AppRoute.importWallet.path,
+                  preserveQueryParams: true,
+                );
               },
               icon: LucideIcons.textCursorInput,
             ),

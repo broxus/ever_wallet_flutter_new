@@ -3,6 +3,7 @@ import 'package:app/app/service/service.dart';
 import 'package:app/data/models/models.dart';
 import 'package:app/di/di.dart';
 import 'package:app/feature/wallet/wallet.dart';
+import 'package:app/feature/wallet/widgets/account_transactions_tab/widgets/ton_wallet_transaction_status_body.dart';
 import 'package:app/generated/generated.dart';
 import 'package:app/utils/utils.dart';
 import 'package:flutter/material.dart';
@@ -162,10 +163,6 @@ class CancelUnstakingPage extends StatelessWidget {
             ? DateFormat('MM.dd, HH:mm', context.locale.languageCode)
             : DateFormat('MM.dd.y, HH:mm', context.locale.languageCode);
 
-        final statusWidget = tonWalletTransactionStatusBody(
-          TonWalletTransactionStatus.unstakingInProgress,
-        );
-
         return Padding(
           padding: const EdgeInsets.symmetric(
             horizontal: DimensSize.d16,
@@ -173,7 +170,7 @@ class CancelUnstakingPage extends StatelessWidget {
           ),
           child: SeparatedRow(
             children: [
-              if (statusWidget != null) statusWidget,
+              TonWalletTransactionStatus.unstakingInProgress.chipByStatus,
               Expanded(
                 child: Text(
                   formatter.format(date),
