@@ -94,10 +94,10 @@ packages:
     dependency: transitive
     description:
       name: fixed
-      sha256: "0d55e0a083026060f0b50c7f6e00d40a772d6a6b5e1812bc6e57c75ea58c21cc"
+      sha256: bcf2f5630a07c8cc85d82c69790cad3221e8cf19005348f07da8845784bbc7ed
       url: "https://pub.dev"
     source: hosted
-    version: "4.3.0"
+    version: "5.0.0"
   flutter:
     dependency: "direct main"
     description: flutter
@@ -306,18 +306,19 @@ packages:
     dependency: transitive
     description:
       name: money2
-      sha256: "56392ba00b4ed36822d68189ae0769a7b8bd0225c41bcf1f6f765077c69455ff"
+      sha256: a13032c13d74d50bf919ec4016282d6e5a39be44936b2dce11b4b4b9abacfe43
       url: "https://pub.dev"
     source: hosted
-    version: "4.1.0"
+    version: "5.2.1"
   money2_improver:
     dependency: transitive
     description:
-      name: money2_improver
-      sha256: "03651e9ad33692781ebd707bf7c379cdd3f04117202f400a62896a5a5055278e"
-      url: "https://pub.dev"
-    source: hosted
-    version: "1.3.3"
+      path: "."
+      ref: HEAD
+      resolved-ref: "4cd990030196f64a6a7b10b10b42478f2c5d62a7"
+      url: "https://github.com/broxus/money2_improver"
+    source: git
+    version: "2.0.0"
   nested:
     dependency: transitive
     description:

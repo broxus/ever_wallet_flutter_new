@@ -170,7 +170,7 @@ class TokenWalletDetailsPage extends StatelessWidget {
             children: [
               _header(contractName, tokenBalance, fiatBalance),
               if (tokenBalance != null && error == null)
-                _actions(canSend, context, tokenBalance.currency.code),
+                _actions(canSend, context, tokenBalance.currency.isoCode),
             ],
           ),
           panelBuilder: (context, controller) => CustomScrollView(

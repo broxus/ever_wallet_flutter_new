@@ -55,7 +55,7 @@ class StakingInProgress extends StatelessWidget {
                   walletCancelUnstakingWithdrawHorsQueryParam:
                       withdrawHours.toString(),
                   walletCancelUnstakingStakingCurrencyCodeQueryParam:
-                      stakeCurrency.code,
+                      stakeCurrency.isoCode,
                   walletCancelUnstakingAttachedFeeQueryParam:
                       attachedFee.toString(),
                 },

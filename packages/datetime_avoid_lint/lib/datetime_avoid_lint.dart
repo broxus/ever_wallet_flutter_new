@@ -38,10 +38,12 @@ class MyCustomLintCode extends DartLintRule {
     // for example, use recursive visitor for nodes
     context.registry.addMethodInvocation((node) {
       final s = node.toString();
-      if (s.contains('now()')) {
-        if (s.contains('DateTime') || s.contains('clock')) {
-          reporter.reportErrorForNode(code, node);
-        }
+      if (!s.contains('now()') || code is! LintCode) {
+        return;
+      }
+
+      if (s.contains('DateTime') || s.contains('clock')) {
+        reporter.atNode(node, code as LintCode);
       }
     });
   }
