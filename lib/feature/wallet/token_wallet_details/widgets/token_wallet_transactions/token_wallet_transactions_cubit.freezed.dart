@@ -20,8 +20,12 @@ mixin _$TokenWalletTransactionsState {
   TResult when<TResult extends Object?>({
     required TResult Function() empty,
     required TResult Function() loading,
-    required TResult Function(List<TokenWalletOrdinaryTransaction> transactions,
-            Currency tokenCurrency, bool isLoading, bool canLoadMore)
+    required TResult Function(
+            List<TokenWalletOrdinaryTransaction> transactions,
+            Currency tokenCurrency,
+            bool isLoading,
+            bool canLoadMore,
+            CustomCurrency? tokenCustomCurrency)
         transactions,
   }) =>
       throw _privateConstructorUsedError;
@@ -29,8 +33,12 @@ mixin _$TokenWalletTransactionsState {
   TResult? whenOrNull<TResult extends Object?>({
     TResult? Function()? empty,
     TResult? Function()? loading,
-    TResult? Function(List<TokenWalletOrdinaryTransaction> transactions,
-            Currency tokenCurrency, bool isLoading, bool canLoadMore)?
+    TResult? Function(
+            List<TokenWalletOrdinaryTransaction> transactions,
+            Currency tokenCurrency,
+            bool isLoading,
+            bool canLoadMore,
+            CustomCurrency? tokenCustomCurrency)?
         transactions,
   }) =>
       throw _privateConstructorUsedError;
@@ -38,8 +46,12 @@ mixin _$TokenWalletTransactionsState {
   TResult maybeWhen<TResult extends Object?>({
     TResult Function()? empty,
     TResult Function()? loading,
-    TResult Function(List<TokenWalletOrdinaryTransaction> transactions,
-            Currency tokenCurrency, bool isLoading, bool canLoadMore)?
+    TResult Function(
+            List<TokenWalletOrdinaryTransaction> transactions,
+            Currency tokenCurrency,
+            bool isLoading,
+            bool canLoadMore,
+            CustomCurrency? tokenCustomCurrency)?
         transactions,
     required TResult orElse(),
   }) =>
@@ -129,8 +141,12 @@ class _$EmptyImpl implements _Empty {
   TResult when<TResult extends Object?>({
     required TResult Function() empty,
     required TResult Function() loading,
-    required TResult Function(List<TokenWalletOrdinaryTransaction> transactions,
-            Currency tokenCurrency, bool isLoading, bool canLoadMore)
+    required TResult Function(
+            List<TokenWalletOrdinaryTransaction> transactions,
+            Currency tokenCurrency,
+            bool isLoading,
+            bool canLoadMore,
+            CustomCurrency? tokenCustomCurrency)
         transactions,
   }) {
     return empty();
@@ -141,8 +157,12 @@ class _$EmptyImpl implements _Empty {
   TResult? whenOrNull<TResult extends Object?>({
     TResult? Function()? empty,
     TResult? Function()? loading,
-    TResult? Function(List<TokenWalletOrdinaryTransaction> transactions,
-            Currency tokenCurrency, bool isLoading, bool canLoadMore)?
+    TResult? Function(
+            List<TokenWalletOrdinaryTransaction> transactions,
+            Currency tokenCurrency,
+            bool isLoading,
+            bool canLoadMore,
+            CustomCurrency? tokenCustomCurrency)?
         transactions,
   }) {
     return empty?.call();
@@ -153,8 +173,12 @@ class _$EmptyImpl implements _Empty {
   TResult maybeWhen<TResult extends Object?>({
     TResult Function()? empty,
     TResult Function()? loading,
-    TResult Function(List<TokenWalletOrdinaryTransaction> transactions,
-            Currency tokenCurrency, bool isLoading, bool canLoadMore)?
+    TResult Function(
+            List<TokenWalletOrdinaryTransaction> transactions,
+            Currency tokenCurrency,
+            bool isLoading,
+            bool canLoadMore,
+            CustomCurrency? tokenCustomCurrency)?
         transactions,
     required TResult orElse(),
   }) {
@@ -243,8 +267,12 @@ class _$LoadingImpl implements _Loading {
   TResult when<TResult extends Object?>({
     required TResult Function() empty,
     required TResult Function() loading,
-    required TResult Function(List<TokenWalletOrdinaryTransaction> transactions,
-            Currency tokenCurrency, bool isLoading, bool canLoadMore)
+    required TResult Function(
+            List<TokenWalletOrdinaryTransaction> transactions,
+            Currency tokenCurrency,
+            bool isLoading,
+            bool canLoadMore,
+            CustomCurrency? tokenCustomCurrency)
         transactions,
   }) {
     return loading();
@@ -255,8 +283,12 @@ class _$LoadingImpl implements _Loading {
   TResult? whenOrNull<TResult extends Object?>({
     TResult? Function()? empty,
     TResult? Function()? loading,
-    TResult? Function(List<TokenWalletOrdinaryTransaction> transactions,
-            Currency tokenCurrency, bool isLoading, bool canLoadMore)?
+    TResult? Function(
+            List<TokenWalletOrdinaryTransaction> transactions,
+            Currency tokenCurrency,
+            bool isLoading,
+            bool canLoadMore,
+            CustomCurrency? tokenCustomCurrency)?
         transactions,
   }) {
     return loading?.call();
@@ -267,8 +299,12 @@ class _$LoadingImpl implements _Loading {
   TResult maybeWhen<TResult extends Object?>({
     TResult Function()? empty,
     TResult Function()? loading,
-    TResult Function(List<TokenWalletOrdinaryTransaction> transactions,
-            Currency tokenCurrency, bool isLoading, bool canLoadMore)?
+    TResult Function(
+            List<TokenWalletOrdinaryTransaction> transactions,
+            Currency tokenCurrency,
+            bool isLoading,
+            bool canLoadMore,
+            CustomCurrency? tokenCustomCurrency)?
         transactions,
     required TResult orElse(),
   }) {
@@ -327,7 +363,10 @@ abstract class _$$TransactionsImplCopyWith<$Res> {
       {List<TokenWalletOrdinaryTransaction> transactions,
       Currency tokenCurrency,
       bool isLoading,
-      bool canLoadMore});
+      bool canLoadMore,
+      CustomCurrency? tokenCustomCurrency});
+
+  $CustomCurrencyCopyWith<$Res>? get tokenCustomCurrency;
 }
 
 /// @nodoc
@@ -345,6 +384,7 @@ class __$$TransactionsImplCopyWithImpl<$Res>
     Object? tokenCurrency = null,
     Object? isLoading = null,
     Object? canLoadMore = null,
+    Object? tokenCustomCurrency = freezed,
   }) {
     return _then(_$TransactionsImpl(
       transactions: null == transactions
@@ -363,7 +403,23 @@ class __$$TransactionsImplCopyWithImpl<$Res>
           ? _value.canLoadMore
           : canLoadMore // ignore: cast_nullable_to_non_nullable
               as bool,
+      tokenCustomCurrency: freezed == tokenCustomCurrency
+          ? _value.tokenCustomCurrency
+          : tokenCustomCurrency // ignore: cast_nullable_to_non_nullable
+              as CustomCurrency?,
     ));
+  }
+
+  @override
+  @pragma('vm:prefer-inline')
+  $CustomCurrencyCopyWith<$Res>? get tokenCustomCurrency {
+    if (_value.tokenCustomCurrency == null) {
+      return null;
+    }
+
+    return $CustomCurrencyCopyWith<$Res>(_value.tokenCustomCurrency!, (value) {
+      return _then(_value.copyWith(tokenCustomCurrency: value));
+    });
   }
 }
 
@@ -374,7 +430,8 @@ class _$TransactionsImpl implements _Transactions {
       {required final List<TokenWalletOrdinaryTransaction> transactions,
       required this.tokenCurrency,
       required this.isLoading,
-      required this.canLoadMore})
+      required this.canLoadMore,
+      required this.tokenCustomCurrency})
       : _transactions = transactions;
 
   final List<TokenWalletOrdinaryTransaction> _transactions;
@@ -391,10 +448,12 @@ class _$TransactionsImpl implements _Transactions {
   final bool isLoading;
   @override
   final bool canLoadMore;
+  @override
+  final CustomCurrency? tokenCustomCurrency;
 
   @override
   String toString() {
-    return 'TokenWalletTransactionsState.transactions(transactions: $transactions, tokenCurrency: $tokenCurrency, isLoading: $isLoading, canLoadMore: $canLoadMore)';
+    return 'TokenWalletTransactionsState.transactions(transactions: $transactions, tokenCurrency: $tokenCurrency, isLoading: $isLoading, canLoadMore: $canLoadMore, tokenCustomCurrency: $tokenCustomCurrency)';
   }
 
   @override
@@ -409,7 +468,9 @@ class _$TransactionsImpl implements _Transactions {
             (identical(other.isLoading, isLoading) ||
                 other.isLoading == isLoading) &&
             (identical(other.canLoadMore, canLoadMore) ||
-                other.canLoadMore == canLoadMore));
+                other.canLoadMore == canLoadMore) &&
+            (identical(other.tokenCustomCurrency, tokenCustomCurrency) ||
+                other.tokenCustomCurrency == tokenCustomCurrency));
   }
 
   @override
@@ -418,7 +479,8 @@ class _$TransactionsImpl implements _Transactions {
       const DeepCollectionEquality().hash(_transactions),
       tokenCurrency,
       isLoading,
-      canLoadMore);
+      canLoadMore,
+      tokenCustomCurrency);
 
   @JsonKey(ignore: true)
   @override
@@ -431,12 +493,16 @@ class _$TransactionsImpl implements _Transactions {
   TResult when<TResult extends Object?>({
     required TResult Function() empty,
     required TResult Function() loading,
-    required TResult Function(List<TokenWalletOrdinaryTransaction> transactions,
-            Currency tokenCurrency, bool isLoading, bool canLoadMore)
+    required TResult Function(
+            List<TokenWalletOrdinaryTransaction> transactions,
+            Currency tokenCurrency,
+            bool isLoading,
+            bool canLoadMore,
+            CustomCurrency? tokenCustomCurrency)
         transactions,
   }) {
-    return transactions(
-        this.transactions, tokenCurrency, isLoading, canLoadMore);
+    return transactions(this.transactions, tokenCurrency, isLoading,
+        canLoadMore, tokenCustomCurrency);
   }
 
   @override
@@ -444,12 +510,16 @@ class _$TransactionsImpl implements _Transactions {
   TResult? whenOrNull<TResult extends Object?>({
     TResult? Function()? empty,
     TResult? Function()? loading,
-    TResult? Function(List<TokenWalletOrdinaryTransaction> transactions,
-            Currency tokenCurrency, bool isLoading, bool canLoadMore)?
+    TResult? Function(
+            List<TokenWalletOrdinaryTransaction> transactions,
+            Currency tokenCurrency,
+            bool isLoading,
+            bool canLoadMore,
+            CustomCurrency? tokenCustomCurrency)?
         transactions,
   }) {
-    return transactions?.call(
-        this.transactions, tokenCurrency, isLoading, canLoadMore);
+    return transactions?.call(this.transactions, tokenCurrency, isLoading,
+        canLoadMore, tokenCustomCurrency);
   }
 
   @override
@@ -457,14 +527,18 @@ class _$TransactionsImpl implements _Transactions {
   TResult maybeWhen<TResult extends Object?>({
     TResult Function()? empty,
     TResult Function()? loading,
-    TResult Function(List<TokenWalletOrdinaryTransaction> transactions,
-            Currency tokenCurrency, bool isLoading, bool canLoadMore)?
+    TResult Function(
+            List<TokenWalletOrdinaryTransaction> transactions,
+            Currency tokenCurrency,
+            bool isLoading,
+            bool canLoadMore,
+            CustomCurrency? tokenCustomCurrency)?
         transactions,
     required TResult orElse(),
   }) {
     if (transactions != null) {
-      return transactions(
-          this.transactions, tokenCurrency, isLoading, canLoadMore);
+      return transactions(this.transactions, tokenCurrency, isLoading,
+          canLoadMore, tokenCustomCurrency);
     }
     return orElse();
   }
@@ -509,12 +583,14 @@ abstract class _Transactions implements TokenWalletTransactionsState {
       {required final List<TokenWalletOrdinaryTransaction> transactions,
       required final Currency tokenCurrency,
       required final bool isLoading,
-      required final bool canLoadMore}) = _$TransactionsImpl;
+      required final bool canLoadMore,
+      required final CustomCurrency? tokenCustomCurrency}) = _$TransactionsImpl;
 
   List<TokenWalletOrdinaryTransaction> get transactions;
   Currency get tokenCurrency;
   bool get isLoading;
   bool get canLoadMore;
+  CustomCurrency? get tokenCustomCurrency;
   @JsonKey(ignore: true)
   _$$TransactionsImplCopyWith<_$TransactionsImpl> get copyWith =>
       throw _privateConstructorUsedError;

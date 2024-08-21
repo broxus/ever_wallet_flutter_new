@@ -1,5 +1,7 @@
 import 'package:app/di/di.dart';
-import 'package:app/feature/wallet/wallet.dart';
+import 'package:app/feature/wallet/widgets/account_transactions_tab/detail/ton_wallet_multisig_pending_transaction_details.dart';
+import 'package:app/feature/wallet/widgets/account_transactions_tab/widgets/ton_wallet_transaction_status_body.dart';
+import 'package:app/feature/wallet/widgets/account_transactions_tab/widgets/ton_wallet_transaction_widget.dart';
 import 'package:app/generated/generated.dart';
 import 'package:flutter/material.dart';
 import 'package:nekoton_repository/nekoton_repository.dart';
@@ -10,11 +12,13 @@ class TonWalletMultisigPendingTransactionWidget extends StatelessWidget {
   const TonWalletMultisigPendingTransactionWidget({
     required this.transaction,
     required this.displayDate,
+    required this.price,
     super.key,
   });
 
   final TonWalletMultisigPendingTransaction transaction;
   final bool displayDate;
+  final Fixed price;
 
   @override
   Widget build(BuildContext context) {
@@ -28,6 +32,7 @@ class TonWalletMultisigPendingTransactionWidget extends StatelessWidget {
         MaterialPageRoute<void>(
           builder: (_) => TonWalletMultisigPendingTransactionDetailsPage(
             transaction: transaction,
+            price: price,
           ),
         ),
       ),

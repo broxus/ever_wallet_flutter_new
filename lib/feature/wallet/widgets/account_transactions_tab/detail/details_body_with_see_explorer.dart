@@ -1,10 +1,12 @@
-import 'package:app/feature/wallet/wallet.dart';
+import 'package:app/di/di.dart';
+import 'package:app/feature/browser/utils.dart';
+import 'package:app/generated/generated.dart';
 import 'package:flutter/material.dart';
+import 'package:lucide_icons_flutter/lucide_icons.dart';
+import 'package:nekoton_repository/nekoton_repository.dart';
 import 'package:ui_components_lib/ui_components_lib.dart';
+import 'package:ui_components_lib/v2/ui_components_lib_v2.dart';
 
-/// Widget that wraps [body] in stack and adds [SeeInExplorerButton].
-/// [body] automatically wraps with scroll widget.
-/// Works for Ton/Token wallets
 class WalletTransactionDetailsBodyWithExplorerButton extends StatelessWidget {
   const WalletTransactionDetailsBodyWithExplorerButton({
     required this.body,
@@ -40,16 +42,27 @@ class WalletTransactionDetailsBodyWithExplorerButton extends StatelessWidget {
           ),
         ),
         Positioned(
-          bottom: DimensSize.d16,
+          bottom: DimensSize.d32,
           left: DimensSize.d16,
           right: DimensSize.d16,
           child: SeparatedColumn(
             mainAxisSize: MainAxisSize.min,
             children: [
               if (action != null) action!,
-              SeeInExplorerButton(
-                transactionHash: transactionHash,
-                isSecondary: action != null,
+              PrimaryButton(
+                title: LocaleKeys.seeInExplorer.tr(),
+                icon: LucideIcons.globe,
+                onPressed: () {
+                  Navigator.of(context).pop();
+                  // TODO(oldVersion): extract inject from widget
+                  browserNewTab(
+                    context,
+                    inject<NekotonRepository>()
+                        .currentTransport
+                        .transactionExplorerLink(transactionHash),
+                  );
+                },
+                buttonShape: ButtonShape.pill,
               ),
             ],
           ),

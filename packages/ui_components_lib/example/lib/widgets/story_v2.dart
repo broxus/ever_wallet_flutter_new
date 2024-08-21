@@ -1,4 +1,5 @@
 import 'package:example/stories/v2/buttons.dart';
+import 'package:example/stories/v2/chips.dart';
 import 'package:example/stories/v2/segment_contols.dart';
 import 'package:example/stories/v2/text_fields.dart';
 import 'package:example/stories/v2/texts.dart';
@@ -42,6 +43,10 @@ class StoryV2 extends StatelessWidget {
           Story(
             name: 'Widgets/Toasts',
             builder: (_) => const ToastsV2(),
+          ),
+          Story(
+            name: 'Widgets/Chips',
+            builder: (_) => const ChipsV2(),
           ),
         ],
       ),

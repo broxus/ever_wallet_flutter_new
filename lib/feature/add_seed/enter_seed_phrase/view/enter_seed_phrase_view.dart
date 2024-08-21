@@ -223,7 +223,7 @@ class EnterSeedPhraseView extends StatelessWidget {
                               ? SegmentControlState.selected
                               : SegmentControlState.normal,
                           title: LocaleKeys.wordsCount.plural(value),
-                          value: currentValue,
+                          value: value,
                         ),
                       ),
                   ],

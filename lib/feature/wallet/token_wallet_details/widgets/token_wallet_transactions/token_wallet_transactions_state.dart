@@ -12,5 +12,6 @@ class TokenWalletTransactionsState with _$TokenWalletTransactionsState {
     required Currency tokenCurrency,
     required bool isLoading,
     required bool canLoadMore,
+    required CustomCurrency? tokenCustomCurrency,
   }) = _Transactions;
 }
