@@ -181,9 +181,9 @@ extension on Money {
   Money exchangeToUSD(Fixed price) => exchangeTo(
         ExchangeRate.fromFixed(
           price,
-          fromCode: currency.code,
-          toCode: 'USD',
-          toScale: 10,
+          fromIsoCode: currency.isoCode,
+          toIsoCode: 'USD',
+          toDecimalDigits: 10,
         ),
       );
 }
