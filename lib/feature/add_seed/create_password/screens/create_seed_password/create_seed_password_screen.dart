@@ -1,4 +1,3 @@
-import 'package:app/app/router/router.dart';
 import 'package:app/feature/add_seed/create_password/model/password_status.dart';
 import 'package:app/feature/add_seed/create_password/screens/create_seed_password/create_seed_password_screen_wm.dart';
 import 'package:app/feature/add_seed/create_password/view/create_seed_password_view.dart';

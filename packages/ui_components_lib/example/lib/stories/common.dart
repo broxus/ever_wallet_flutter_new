@@ -172,7 +172,7 @@ class _CommonStoryState extends State<CommonStory> {
             const SizedBox(height: DimensSize.d24),
 
             // containers
-            const Text('DIFFERENT CONTAINERS', style: StyleRes.h2),
+            Text('DIFFERENT CONTAINERS', style: StyleRes.h2),
             const SizedBox(height: DimensSize.d8),
             ShapedContainerColumn(
               titleText: 'ShapedContainerColumn',
