@@ -11,8 +11,8 @@ class CreateSeedPasswordView extends StatelessWidget {
     required this.passwordController,
     required this.confirmController,
     required this.onPressedNext,
-    this.passwordStatus,
     required this.isLoading,
+    this.passwordStatus,
     super.key,
   });
 
