@@ -1,11 +1,9 @@
 import 'dart:async';
-import 'dart:convert';
 
 import 'package:app/app/router/app_route.dart';
-import 'package:app/app/router/routs/add_seed/add_seed.dart';
 import 'package:app/core/error_handler_factory.dart';
 import 'package:app/core/wm/custom_wm.dart';
-import 'package:app/di/di.dart';
+import 'package:app/feature/choose_network/choose_network_screen.dart';
 import 'package:app/feature/onboarding/screen/welcome/welcome_screen.dart';
 import 'package:app/feature/onboarding/screen/welcome/welcome_screen_model.dart';
 import 'package:elementary/elementary.dart';
@@ -20,8 +18,6 @@ WelcomeScreenWidgetModel defaultWelcomeScreenWidgetModelFactory(
   return WelcomeScreenWidgetModel(
     WelcomeScreenModel(
       createPrimaryErrorHandler(context),
-      inject(),
-      inject(),
     ),
   );
 }
@@ -39,45 +35,21 @@ class WelcomeScreenWidgetModel
   ThemeStyleV2 get themeStyle => context.themeStyleV2;
 
   Future<void> onPressedCreateWallet() async {
-    final seedData = jsonEncode(
-      await model.createSeed(),
-    );
-
-    unawaited(
-      _goNext(
-        () => contextSafe?.goFurther(
-          AppRoute.createSeedPassword.pathWithData(
-            queryParameters: {
-              addSeedPhraseQueryParam: seedData,
-            },
-          ),
-        ),
-      ),
-    );
+    _goNext(AppRoute.createSeedPassword.path);
   }
 
   void onPressedWalletLogin() {
-    _goNext(
-      () => contextSafe?.goFurther(
-        AppRoute.addExistingWallet.path,
-      ),
-    );
+    _goNext(AppRoute.addExistingWallet.path);
   }
 
-  Future<void> _goNext(VoidCallback callback) async {
-    if (!await model.checkConnection()) {
-      return;
-    }
-
-    final isSuccess = await contextSafe?.pushFurther<bool>(
-      AppRoute.chooseNetwork.path,
+  void _goNext(String nextStep) {
+    contextSafe?.goFurther(
+      AppRoute.chooseNetwork.pathWithData(
+        queryParameters: {
+          chooseNetworkScreenNextStepQuery: nextStep,
+        },
+      ),
     );
-
-    if (isSuccess != true) {
-      return;
-    }
-
-    callback();
   }
 
   void onLinkTap() => launchUrlString(_decentralizationPolicyLink);

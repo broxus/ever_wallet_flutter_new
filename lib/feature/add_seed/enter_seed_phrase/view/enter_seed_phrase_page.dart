@@ -43,7 +43,9 @@ class EnterSeedPhrasePage extends StatelessWidget {
         child: Scaffold(
           backgroundColor: theme.colors.background0,
           resizeToAvoidBottomInset: false,
-          appBar: const DefaultAppBar(),
+          appBar: DefaultAppBar(
+            onClosePressed: (context) => context.maybePop(),
+          ),
           body: const EnterSeedPhraseView(),
         ),
       ),

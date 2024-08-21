@@ -1,3 +1,4 @@
+import 'package:app/app/router/app_route.dart';
 import 'package:app/core/error_handler_factory.dart';
 import 'package:app/core/wm/custom_wm.dart';
 import 'package:app/di/di.dart';
@@ -50,7 +51,14 @@ class ChooseNetworkScreenWidgetModel
 
     final isCanPop = contextSafe?.canPop() ?? false;
 
-    if (isCanPop) {
+    final nextPath = widget.nextStep;
+
+    if (nextPath != null) {
+      contextSafe?.goFurther(
+        nextPath,
+        preserveQueryParams: true,
+      );
+    } else if (isCanPop) {
       contextSafe?.pop(isSuccess);
     }
   }
