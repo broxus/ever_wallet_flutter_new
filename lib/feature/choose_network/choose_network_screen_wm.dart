@@ -1,3 +1,4 @@
+import 'package:app/app/router/app_route.dart';
 import 'package:app/core/error_handler_factory.dart';
 import 'package:app/core/wm/custom_wm.dart';
 import 'package:app/di/di.dart';
@@ -18,6 +19,7 @@ ChooseNetworkScreenWidgetModel defaultChooseNetworkScreenWidgetModelFactory(
   return ChooseNetworkScreenWidgetModel(
     ChooseNetworkScreenModel(
       createPrimaryErrorHandler(context),
+      inject(),
       inject(),
       inject(),
     ),
@@ -41,11 +43,22 @@ class ChooseNetworkScreenWidgetModel
   ThemeStyleV2 get _themeStyle => context.themeStyleV2;
 
   Future<void> onPressedType(String id) async {
+    if (!await model.checkConnection()) {
+      return;
+    }
+
     final isSuccess = await model.selectType(id);
 
     final isCanPop = contextSafe?.canPop() ?? false;
 
-    if (isCanPop) {
+    final nextPath = widget.nextStep;
+
+    if (nextPath != null) {
+      contextSafe?.goFurther(
+        nextPath,
+        preserveQueryParams: true,
+      );
+    } else if (isCanPop) {
       contextSafe?.pop(isSuccess);
     }
   }

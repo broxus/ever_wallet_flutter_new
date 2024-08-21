@@ -11,7 +11,11 @@ GoRoute chooseNetworkRoute({
     name: AppRoute.chooseNetwork.name,
     path: AppRoute.chooseNetwork.path,
     builder: (_, state) {
-      return const ChooseNetworkScreen();
+      final nextStep =
+          state.uri.queryParameters[chooseNetworkScreenNextStepQuery];
+      return ChooseNetworkScreen(
+        nextStep: nextStep,
+      );
     },
     routes: routes,
   );

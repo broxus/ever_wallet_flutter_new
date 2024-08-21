@@ -1,6 +1,8 @@
+import 'package:app/app/service/network_connection/network_connection_service.dart';
 import 'package:app/app/service/service.dart';
 import 'package:app/di/di.dart';
 import 'package:app/feature/add_seed/create_password/model/password_status.dart';
+import 'package:app/utils/mixins/connection_mixin.dart';
 import 'package:flutter/widgets.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:freezed_annotation/freezed_annotation.dart';
@@ -8,12 +10,14 @@ import 'package:logging/logging.dart';
 import 'package:nekoton_repository/nekoton_repository.dart' hide Message;
 
 part 'create_seed_password_cubit.freezed.dart';
+
 part 'create_seed_password_state.dart';
 
 const _minPasswordLength = 8;
 
 /// Cubit for creating seed password.
-class CreateSeedPasswordCubit extends Cubit<CreateSeedPasswordState> {
+class CreateSeedPasswordCubit extends Cubit<CreateSeedPasswordState>
+    with ConnectionMixin {
   CreateSeedPasswordCubit({
     required this.phrase,
     required this.completeCallback,
@@ -45,6 +49,14 @@ class CreateSeedPasswordCubit extends Cubit<CreateSeedPasswordState> {
   final formKey = GlobalKey<FormState>();
 
   @override
+  @protected
+  final networkConnectionService = inject<NetworkConnectionService>();
+
+  @override
+  @protected
+  final messengerService = inject<MessengerService>();
+
+  @override
   Future<void> close() {
     passwordController.dispose();
     confirmController.dispose();
@@ -55,6 +67,10 @@ class CreateSeedPasswordCubit extends Cubit<CreateSeedPasswordState> {
   }
 
   Future<void> nextAction() async {
+    if (!await checkConnection()) {
+      return;
+    }
+
     emit(state.copyWith(isLoading: true));
     final nekoton = inject<NekotonRepository>();
     final currentKeyService = inject<CurrentKeyService>();
@@ -75,7 +91,7 @@ class CreateSeedPasswordCubit extends Cubit<CreateSeedPasswordState> {
     } catch (e) {
       Logger('CreateSeedPasswordCubit').severe(e);
       emit(state.copyWith(isLoading: false));
-      inject<MessengerService>().show(Message.error(message: e.toString()));
+      messengerService.show(Message.error(message: e.toString()));
     }
   }
 

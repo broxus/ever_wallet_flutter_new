@@ -5,43 +5,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
 import 'package:ui_components_lib/ui_components_lib.dart';
 
-/// {@template create_seed_password_onboarding_page}
-/// Entry point to create seed password from onboarding.
-/// {@endtemplate}
-class CreateSeedPasswordOnboardingPage extends StatelessWidget {
-  /// {@macro create_seed_password_onboarding_page}
-  const CreateSeedPasswordOnboardingPage({
-    required this.phrase,
-    super.key,
-  });
-
-  final List<String> phrase;
-
-  @override
-  Widget build(BuildContext context) {
-    final themeStyle = context.themeStyleV2;
-    return BlocProvider<CreateSeedPasswordCubit>(
-      create: (context) => CreateSeedPasswordCubit(
-        phrase: phrase,
-        setCurrentKey: true,
-        // Redundant because of guard, but we need to pass it down.
-        // ignore: no-empty-block
-        completeCallback: () {},
-      ),
-      child: GestureDetector(
-        onTap: () => FocusScope.of(context).unfocus(),
-        child: Scaffold(
-          resizeToAvoidBottomInset: true,
-          backgroundColor: themeStyle.colors.background0,
-          appBar: DefaultAppBar(
-            onClosePressed: (context) => context.maybePop(),
-          ),
-          body: const CreateSeedPasswordView(needBiometryIfPossible: true),
-        ),
-      ),
-    );
-  }
-}
+typedef _Cubit = CreateSeedPasswordCubit;
 
 /// {@template create_seed_password_profile_page}
 /// Entry point to create seed password from profile.
@@ -74,7 +38,24 @@ class CreateSeedPasswordProfilePage extends StatelessWidget {
           appBar: DefaultAppBar(
             onClosePressed: (context) => context.maybePop(),
           ),
-          body: const CreateSeedPasswordView(needBiometryIfPossible: false),
+          body: Builder(
+            builder: (context) {
+              final cubit = context.read<_Cubit>();
+
+              return BlocBuilder<_Cubit, CreateSeedPasswordState>(
+                builder: (context, state) {
+                  return CreateSeedPasswordView(
+                    needBiometryIfPossible: false,
+                    passwordController: cubit.passwordController,
+                    confirmController: cubit.confirmController,
+                    onPressedNext: cubit.nextAction,
+                    passwordStatus: state.status,
+                    isLoading: state.isLoading,
+                  );
+                },
+              );
+            },
+          ),
         ),
       ),
     );

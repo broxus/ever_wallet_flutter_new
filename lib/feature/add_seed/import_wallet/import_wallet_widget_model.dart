@@ -20,7 +20,12 @@ const wordsCount = 12;
 ImportWalletScreenWidgetModel defaultImportWalletWidgetModelFactory(
   BuildContext context,
 ) {
-  return ImportWalletScreenWidgetModel(ImportWalletScreenModel(inject()));
+  return ImportWalletScreenWidgetModel(
+    ImportWalletScreenModel(
+      inject(),
+      inject(),
+    ),
+  );
 }
 
 class ImportWalletScreenWidgetModel
@@ -35,6 +40,10 @@ class ImportWalletScreenWidgetModel
   ImportWalletData? get _data => screenState.value.data;
 
   Future<void> onPressedImport() async {
+    if (!await model.checkConnection()) {
+      return;
+    }
+
     String? error;
     try {
       FocusManager.instance.primaryFocus?.unfocus();
@@ -49,8 +58,11 @@ class ImportWalletScreenWidgetModel
         if (!context.mounted) return;
         context.goFurther(
           AppRoute.createSeedPassword.pathWithData(
-            queryParameters: {addSeedPhraseQueryParam: jsonEncode(words)},
+            queryParameters: {
+              addSeedPhraseQueryParam: jsonEncode(words),
+            },
           ),
+          preserveQueryParams: true,
         );
       } else {
         model.showValidateError(LocaleKeys.incorrectWordsFormat.tr());
@@ -106,7 +118,10 @@ class ImportWalletScreenWidgetModel
   }
 
   void onPressedManual() {
-    context.goFurther(AppRoute.enterSeed.path);
+    context.goFurther(
+      AppRoute.enterSeed.path,
+      preserveQueryParams: true,
+    );
   }
 
   void _updateState({
