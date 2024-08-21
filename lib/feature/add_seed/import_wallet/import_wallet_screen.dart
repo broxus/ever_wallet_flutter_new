@@ -1,6 +1,7 @@
 // ignore_for_file: invalid_use_of_visible_for_testing_member
 // ignore_for_file: invalid_use_of_protected_member
 
+import 'package:app/app/router/router.dart';
 import 'package:app/feature/add_seed/import_wallet/data/import_wallet_data.dart';
 import 'package:app/feature/add_seed/import_wallet/import_wallet_widget_model.dart';
 import 'package:app/generated/generated.dart';
@@ -28,7 +29,9 @@ class ImportWalletScreen
     return Scaffold(
       resizeToAvoidBottomInset: false,
       backgroundColor: theme.colors.background0,
-      appBar: const DefaultAppBar(),
+      appBar: DefaultAppBar(
+        onClosePressed: (context) => context.maybePop(),
+      ),
       body: EntityStateNotifierBuilder<ImportWalletData?>(
         listenableEntityState: wm.screenState,
         builder: (_, data) {

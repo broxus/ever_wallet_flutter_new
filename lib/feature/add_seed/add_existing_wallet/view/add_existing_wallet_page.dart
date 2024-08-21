@@ -1,3 +1,4 @@
+import 'package:app/app/router/router.dart';
 import 'package:app/feature/add_seed/add_existing_wallet/view/add_existing_wallet_view.dart';
 import 'package:app/generated/assets.gen.dart';
 import 'package:flutter/material.dart';
@@ -10,19 +11,30 @@ class AddExistingWalletPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final theme = context.themeStyleV2;
-    return Scaffold(
-      resizeToAvoidBottomInset: false,
-      backgroundColor: theme.colors.background0,
-      appBar: const DefaultAppBar(),
-      body: Container(
-        decoration: BoxDecoration(
-          image: DecorationImage(
-            image: AssetImage(Assets.images.blurBackground.path),
-            fit: BoxFit.cover,
+    return Stack(
+      children: [
+        Scaffold(
+          resizeToAvoidBottomInset: false,
+          backgroundColor: theme.colors.background0,
+          body: Container(
+            decoration: BoxDecoration(
+              image: DecorationImage(
+                image: AssetImage(Assets.images.blurBackground.path),
+                fit: BoxFit.cover,
+              ),
+            ),
+            child: const AddExistingWalletView(),
           ),
         ),
-        child: const AddExistingWalletView(),
-      ),
+        Positioned(
+          top: 0,
+          left: 0,
+          right: 0,
+          child: DefaultAppBar(
+            onClosePressed: (context) => context.maybePop(),
+          ),
+        ),
+      ],
     );
   }
 }

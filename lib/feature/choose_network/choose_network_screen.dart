@@ -9,17 +9,22 @@ import 'package:flutter/services.dart';
 import 'package:ui_components_lib/ui_components_lib.dart';
 import 'package:ui_components_lib/v2/ui_components_lib_v2.dart';
 
+const chooseNetworkScreenNextStepQuery = 'chooseNetworkNextStep';
+
 /// Network selection screen
 class ChooseNetworkScreen
     extends ElementaryWidget<ChooseNetworkScreenWidgetModel> {
   const ChooseNetworkScreen({
     Key? key,
+    this.nextStep,
     WidgetModelFactory<ChooseNetworkScreenWidgetModel> wmFactory =
         defaultChooseNetworkScreenWidgetModelFactory,
   }) : super(
           wmFactory,
           key: key,
         );
+
+  final String? nextStep;
 
   @override
   Widget build(ChooseNetworkScreenWidgetModel wm) {
@@ -46,11 +51,11 @@ class ChooseNetworkScreen
                     LocaleKeys.chooseNetwork.tr(),
                     type: PrimaryTextType.titleLarge,
                   ), //Choose a network
-                  const SizedBox(height: DimensSize.d8),
+                  SizedBox(height: DimensAdaptiveSize.d8.hp),
                   PrimaryText(
                     LocaleKeys.selectNetworkNewWalletDescription.tr(),
                   ),
-                  const SizedBox(height: DimensSize.d32),
+                  SizedBox(height: DimensAdaptiveSize.d32.hp),
                   StateNotifierBuilder<List<ChooseNetworkItemData>>(
                     listenableState: wm.connectionsState,
                     builder: (_, List<ChooseNetworkItemData>? items) {
@@ -69,7 +74,7 @@ class ChooseNetworkScreen
                       );
                     },
                   ),
-                  const SizedBox(height: DimensSize.d22),
+                  SizedBox(height: DimensAdaptiveSize.d22.hp),
                 ],
               ),
             ),

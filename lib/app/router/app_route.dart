@@ -166,6 +166,7 @@ enum AppRoute {
   createSeedPassword(
     '',
     'createSeedPassword',
+    isSaveLocation: true,
   ),
   enableBiometryAfterOnboarding(
     '',
@@ -437,6 +438,26 @@ extension NavigationHelper on BuildContext {
     );
   }
 
+  void _removeQueryParams(
+    List<String> removeQueries,
+  ) {
+    final uri = Uri.parse(inject<NavigationService>().state.location);
+
+    final queryParameters = {...uri.queryParameters};
+
+    for (final param in removeQueries) {
+      queryParameters.remove(param);
+    }
+
+    final resultLocation = uri.replace(
+      queryParameters: queryParameters,
+    );
+
+    return GoRouter.of(this).go(
+      Uri.decodeComponent(resultLocation.toString()),
+    );
+  }
+
   /// Navigate to current location, but without query parameters.
   void clearQueryParams() {
     if (!mounted) return;
@@ -452,9 +473,14 @@ extension NavigationHelper on BuildContext {
   }
 
   /// Pop current screen if possible.
-  void maybePop({bool preserveQueryParams = true}) {
+  void maybePop({
+    bool preserveQueryParams = true,
+    List<String>? removeQueries,
+  }) {
     if (!preserveQueryParams) {
       clearQueryParams();
+    } else if (removeQueries != null) {
+      _removeQueryParams(removeQueries);
     }
 
     final goRouter = GoRouter.of(this);
