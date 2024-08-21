@@ -15,7 +15,7 @@ on:
 
 jobs:
   version_bump:
-    uses: broxus/flutter_templates/.github/workflows/version.yaml@flutter-3.24.0
+    uses: broxus/flutter_templates/.github/workflows/version.yaml@main
     with:
       version_parameters: ${{ inputs.version_parameters }}
       user_name: 'nesquikm'
