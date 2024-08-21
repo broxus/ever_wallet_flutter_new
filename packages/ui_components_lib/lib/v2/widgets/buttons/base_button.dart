@@ -302,7 +302,7 @@ abstract class BaseButton extends StatelessWidget {
       style.backgroundColor
           .withOpacity(style.backgroundColor.opacity * OpacV2.opac80);
 
-  TextStyle _getTextStyleBySize(TextSxktylesV2 styles) {
+  TextStyle _getTextStyleBySize(TextStylesV2 styles) {
     switch (buttonSize) {
       case ButtonSize.large:
         return styles.labelMedium;
