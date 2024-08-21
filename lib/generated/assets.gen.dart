@@ -433,6 +433,21 @@ class $AssetsImagesGen {
       ];
 }
 
+class $AssetsSplashGen {
+  const $AssetsSplashGen();
+
+  /// File path: assets/splash/ic_splash_banner.png
+  AssetGenImage get icSplashBanner =>
+      const AssetGenImage('assets/splash/ic_splash_banner.png');
+
+  /// File path: assets/splash/ic_splash_logo.png
+  AssetGenImage get icSplashLogo =>
+      const AssetGenImage('assets/splash/ic_splash_logo.png');
+
+  /// List of all assets
+  List<AssetGenImage> get values => [icSplashBanner, icSplashLogo];
+}
+
 class $AssetsTranslationsGen {
   const $AssetsTranslationsGen();
 
@@ -652,6 +667,7 @@ class Assets {
 
   static const $AssetsAbiGen abi = $AssetsAbiGen();
   static const $AssetsImagesGen images = $AssetsImagesGen();
+  static const $AssetsSplashGen splash = $AssetsSplashGen();
   static const $AssetsTranslationsGen translations = $AssetsTranslationsGen();
 }
 
