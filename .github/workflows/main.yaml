@@ -14,7 +14,7 @@ jobs:
     uses: VeryGoodOpenSource/very_good_workflows/.github/workflows/semantic_pull_request.yml@v1
 
   build_and_test:
-    uses: broxus/flutter_templates/.github/workflows/run-melos.yaml@main
+    uses: broxus/flutter_templates/.github/workflows/run-melos.yaml@flutter-3.24.0
     secrets: inherit
     with:
       runner: macos-latest
