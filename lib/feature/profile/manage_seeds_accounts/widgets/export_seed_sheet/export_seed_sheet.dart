@@ -15,7 +15,6 @@ ModalRoute<void> exportSeedSheetRoute(PublicKey publicKey) {
     title: LocaleKeys.enterPasswordTo.tr(
       args: [LocaleKeys.exportWord.tr().toLowerCase()],
     ),
-    useAppBackgroundColor: true,
     body: (_, __) => BlocProvider<ExportSeedCubit>(
       create: (_) => ExportSeedCubit(
         inject<NekotonRepository>(),
