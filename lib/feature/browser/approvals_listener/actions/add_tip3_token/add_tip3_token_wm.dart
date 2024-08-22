@@ -35,8 +35,6 @@ class AddTip3TokenWidgetModel
     extends CustomWidgetModel<AddTip3TokenWidget, AddTip3TokenModel> {
   AddTip3TokenWidgetModel(super.model);
 
-  late final account = model.getAccount(widget.account);
-
   late final _balance = createNotifier<Money>();
   late final _asset = createNotifier<TokenContractAsset>();
   late final _status = createNotifier<TokenStatus>();

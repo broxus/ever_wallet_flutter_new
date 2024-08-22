@@ -102,9 +102,10 @@ class _EnterPasswordWidgetV2State extends State<EnterPasswordWidgetV2> {
         builder: (context) => SeparatedColumn(
           mainAxisSize: MainAxisSize.min,
           children: [
-            PasswordInputV2(
-              controller: _passwordController,
-              submit: () => context
+            SecureTextField(
+              hintText: LocaleKeys.password.tr(),
+              textEditingController: _passwordController,
+              onSubmit: (_) => context
                   .read<EnterPasswordCubit>()
                   .enterPassword(_passwordController.text),
             ),

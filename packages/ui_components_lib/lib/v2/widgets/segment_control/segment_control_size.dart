@@ -1,1 +1,1 @@
-enum SegmentControlSize { large, medium, small }
+enum SegmentControlSize { large, medium, small, xsmall }

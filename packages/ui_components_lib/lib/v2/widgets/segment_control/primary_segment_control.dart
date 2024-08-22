@@ -8,8 +8,8 @@ import 'package:ui_components_lib/v2/widgets/segment_control/segment_control.dar
 // SegmentControlState.normal
 class PrimarySegmentControl<T> extends StatelessWidget {
   const PrimarySegmentControl({
-    required this.state,
     required this.value,
+    this.state = SegmentControlState.normal,
     this.icon,
     this.size = SegmentControlSize.large,
     this.title,
@@ -30,6 +30,8 @@ class PrimarySegmentControl<T> extends StatelessWidget {
         return DimensSizeV2.d16;
       case SegmentControlSize.small:
         return DimensSizeV2.d16;
+      case SegmentControlSize.xsmall:
+        return DimensSizeV2.d12;
     }
   }
 
@@ -50,6 +52,11 @@ class PrimarySegmentControl<T> extends StatelessWidget {
           vertical: DimensSizeV2.d16,
           horizontal: DimensSizeV2.d16,
         );
+      case SegmentControlSize.xsmall:
+        return const EdgeInsets.symmetric(
+          vertical: DimensSizeV2.d12,
+          horizontal: DimensSizeV2.d12,
+        );
     }
   }
 
@@ -60,6 +67,7 @@ class PrimarySegmentControl<T> extends StatelessWidget {
       case SegmentControlSize.medium:
         return DimensRadiusV2.radius12;
       case SegmentControlSize.small:
+      case SegmentControlSize.xsmall:
         return DimensRadiusV2.radius8;
     }
   }

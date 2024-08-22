@@ -537,4 +537,7 @@ abstract class LocaleKeys {
   static const collapse = 'collapse';
   static const metadata = 'metadata';
   static const contract = 'contract';
+  static const sign = 'sign';
+  static const encrypt = 'encrypt';
+  static const decrypt = 'decrypt';
 }

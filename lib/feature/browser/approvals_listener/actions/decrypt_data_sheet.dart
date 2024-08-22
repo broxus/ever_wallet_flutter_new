@@ -6,49 +6,43 @@ import 'package:nekoton_repository/nekoton_repository.dart' hide Message;
 import 'package:ui_components_lib/ui_components_lib.dart';
 import 'package:ui_components_lib/v2/ui_components_lib_v2.dart';
 
-/// Helper function that shows sheet to call contract method.
-/// Is used by `executeLocal`, `sendExternalMessage`,
-/// and `sendExternalMessageDelayed` inpage-provider methods.
+/// Helper function that shows sheet to decrypt data.
 ///
 /// Returns password if user entered it or null.
-Future<String?> showCallContractMethodSheet({
+Future<String?> showDecryptDataSheet({
   required BuildContext context,
   required Uri origin,
   required Address account,
-  required PublicKey publicKey,
-  required Address recipient,
-  required FunctionCall payload,
+  required PublicKey recipientPublicKey,
+  required PublicKey sourcePublicKey,
 }) {
   return showCommonBottomSheet(
     context: context,
-    title: LocaleKeys.callContractMethod.tr(),
+    title: LocaleKeys.encryptData.tr(),
     centerTitle: true,
-    body: (_, controller) => _CallContractMethod(
+    body: (_, controller) => _DecryptData(
       origin: origin,
       account: account,
-      publicKey: publicKey,
-      recipient: recipient,
-      payload: payload,
+      recipientPublicKey: recipientPublicKey,
+      sourcePublicKey: sourcePublicKey,
       scrollController: controller,
     ),
   );
 }
 
-class _CallContractMethod extends StatelessWidget {
-  const _CallContractMethod({
+class _DecryptData extends StatelessWidget {
+  const _DecryptData({
     required this.origin,
     required this.account,
-    required this.publicKey,
-    required this.recipient,
-    required this.payload,
+    required this.recipientPublicKey,
+    required this.sourcePublicKey,
     required this.scrollController,
   });
 
   final Uri origin;
   final Address account;
-  final PublicKey publicKey;
-  final Address recipient;
-  final FunctionCall payload;
+  final PublicKey recipientPublicKey;
+  final PublicKey sourcePublicKey;
   final ScrollController scrollController;
 
   @override
@@ -67,29 +61,35 @@ class _CallContractMethod extends StatelessWidget {
               children: [
                 AccountInfoWidget(account: account),
                 WebsiteInfoWidget(uri: origin),
-                ExpandableCard(
-                  collapsedHeight: DimensSizeV2.d256,
+                PrimaryCard(
+                  color: theme.colors.background2,
+                  borderRadius: BorderRadius.circular(DimensRadiusV2.radius12),
+                  padding: const EdgeInsets.all(DimensSizeV2.d16),
                   child: SeparatedColumn(
-                    separatorSize: DimensSizeV2.d16,
-                    crossAxisAlignment: CrossAxisAlignment.stretch,
+                    crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
                       Text(
-                        LocaleKeys.metadata.tr(),
+                        LocaleKeys.sourcePublicKey.tr(),
                         style: theme.textStyles.labelSmall.copyWith(
                           color: theme.colors.content3,
                         ),
                       ),
-                      FunctionCallBody(payload: payload, contract: recipient),
+                      Text(
+                        sourcePublicKey.publicKey,
+                        style: theme.textStyles.labelSmall.copyWith(
+                          color: theme.colors.content0,
+                        ),
+                      ),
                     ],
                   ),
-                ),
+                )
               ],
             ),
           ),
         ),
         EnterPasswordWidgetV2(
-          publicKey: publicKey,
-          title: LocaleKeys.confirm.tr(),
+          publicKey: recipientPublicKey,
+          title: LocaleKeys.decrypt.tr(),
           onPasswordEntered: (String password) =>
               Navigator.of(context).pop(password),
         ),
