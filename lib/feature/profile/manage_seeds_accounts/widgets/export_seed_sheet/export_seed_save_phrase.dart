@@ -5,11 +5,13 @@ import 'package:collection/collection.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:ui_components_lib/ui_components_lib.dart';
+import 'package:ui_components_lib/v2/widgets/widgets.dart';
 
 /// Helper method that displays [ExportSeedSavePhrase] sheet.
-ModalRoute<void> exportSeedSavePhraseRoute(List<String> phrase) {
+ModalRoute<void> exportSeedSavePhraseRoute(
+    BuildContext context, List<String> phrase) {
   return commonBottomSheetRoute(
-    useAppBackgroundColor: true,
+    titleTextStyle: context.themeStyleV2.textStyles.headingLarge,
     title: LocaleKeys.saveSeedPhrase.tr(),
     body: (_, controller) => ExportSeedSavePhrase(
       phrase: phrase,
@@ -47,22 +49,22 @@ class ExportSeedSavePhrase extends StatelessWidget {
   }
 
   Widget _textPair(String word, int index) {
-    final indexText = NumberFormat('00').format(index);
+    final indexText = NumberFormat('0').format(index);
 
-    return CommonCard(
-      alignment: Alignment.center,
-      width: double.infinity,
-      titleText: word,
-      leadingText: indexText,
+    return IgnorePointer(
+      child: PrimaryTextField(
+        textEditingController: TextEditingController(text: word),
+        labelText: indexText,
+      ),
     );
   }
 
   Widget _copyButton() {
     return Builder(
       builder: (context) {
-        return CommonButton.primary(
-          fillWidth: true,
-          text: LocaleKeys.copyWords.tr(),
+        return PrimaryButton(
+          buttonShape: ButtonShape.pill,
+          title: LocaleKeys.copyWords.tr(),
           onPressed: () {
             inject<MessengerService>().show(
               Message.successful(
