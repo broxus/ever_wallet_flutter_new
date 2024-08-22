@@ -68,9 +68,11 @@ class _BrowserSearchBarInputState extends State<BrowserSearchBarInput> {
 
   @override
   Widget build(BuildContext context) {
-    final colors = context.themeStyle.colors;
-    final textStyle = StyleRes.primaryRegular.copyWith(
-      color: _focused ? colors.textPrimary : colors.textSecondary,
+    final themeStyle = context.themeStyleV2;
+    final colors = themeStyle.colors;
+
+    final textStyle = themeStyle.textStyles.labelMedium.copyWith(
+      color: colors.content3,
     );
 
     final prefixIcon = _getPrefixIcon();
@@ -80,50 +82,45 @@ class _BrowserSearchBarInputState extends State<BrowserSearchBarInput> {
 
     final shareButton = _getShareButton();
 
-    return Material(
-      color: colors.backgroundSecondary,
-      child: SizedBox(
-        height: DimensSize.d64,
-        child: Padding(
-          padding: const EdgeInsets.symmetric(horizontal: DimensSize.d16),
-          child: Row(
-            children: [
-              Expanded(
-                child: Stack(
-                  alignment: Alignment.center,
-                  children: [
-                    CommonInput(
-                      fillColor: colors.appBackground,
-                      controller: _textEditingController,
-                      needClearButton: false,
-                      height: DimensSize.d40,
-                      autocorrect: false,
-                      hintText: widget.hintText,
-                      prefixIcon: prefixIcon,
-                      onSubmitted: _onSubmitted,
-                      focusNode: _focusNode,
-                      inactiveBorderColor: Colors.transparent,
-                      enabledBorderColor: Colors.transparent,
-                      focusedBorderColor: Colors.transparent,
-                      textStyle: textStyle,
-                      prefixIconConstraints: prefixIconDecoration,
-                    ),
-                    if (shareButton != null)
-                      Positioned(
-                        right: 0,
-                        child: shareButton,
-                      ),
-                  ],
+    return _Container(
+      child: Row(
+        children: [
+          Expanded(
+            child: Stack(
+              alignment: Alignment.center,
+              children: [
+                CommonInput(
+                  fillColor: colors.background1,
+                  controller: _textEditingController,
+                  needClearButton: false,
+                  height: DimensSize.d40,
+                  autocorrect: false,
+                  hintText: _focused ? null : widget.hintText,
+                  prefixIcon: prefixIcon,
+                  onSubmitted: _onSubmitted,
+                  focusNode: _focusNode,
+                  inactiveBorderColor: Colors.transparent,
+                  enabledBorderColor: Colors.transparent,
+                  focusedBorderColor: Colors.transparent,
+                  textStyle: textStyle,
+                  textAlign: _focused ? TextAlign.start : TextAlign.center,
+                  prefixIconConstraints: prefixIconDecoration,
+                  cursorColor: colors.primaryA,
                 ),
-              ),
-              if (_focused)
-                CommonButton.ghost(
-                  text: widget.cancelText,
-                  onPressed: _onCancel,
-                ),
-            ],
+                if (shareButton != null)
+                  Positioned(
+                    right: 0,
+                    child: shareButton,
+                  ),
+              ],
+            ),
           ),
-        ),
+          if (_focused)
+            CommonButton.ghost(
+              text: widget.cancelText,
+              onPressed: _onCancel,
+            ),
+        ],
       ),
     );
   }
@@ -162,6 +159,7 @@ class _BrowserSearchBarInputState extends State<BrowserSearchBarInput> {
   }
 
   bool get _isSecure => widget.uri?.isScheme('https') ?? false;
+
   bool get _isEmpty => _textEditingController.text.isEmpty;
 
   Widget? _getPrefixIcon() {
@@ -227,6 +225,37 @@ class _BrowserSearchBarInputState extends State<BrowserSearchBarInput> {
               icon: icondata,
               color: colors.textSecondary,
             ),
+    );
+  }
+}
+
+class _Container extends StatelessWidget {
+  const _Container({
+    required this.child,
+  });
+
+  final Widget child;
+
+  @override
+  Widget build(BuildContext context) {
+    return Material(
+      type: MaterialType.transparency,
+      child: SizedBox(
+        height: DimensSize.d64,
+        child: DecoratedBox(
+          decoration: BoxDecoration(
+            border: Border(
+              bottom: BorderSide(
+                color: context.themeStyleV2.colors.borderAlpha,
+              ),
+            ),
+          ),
+          child: Padding(
+            padding: const EdgeInsets.symmetric(horizontal: DimensSize.d16),
+            child: child,
+          ),
+        ),
+      ),
     );
   }
 }

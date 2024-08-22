@@ -47,7 +47,9 @@ class CommonInput extends StatefulWidget {
     this.needClearButton = true,
     this.suggestionBackground,
     this.textStyle,
+    this.textAlign = TextAlign.start,
     this.hintStyle,
+    this.cursorColor,
     this.enabledBorderColor,
     this.inactiveBorderColor,
     this.focusedBorderColor,
@@ -132,6 +134,8 @@ class CommonInput extends StatefulWidget {
   /// Callback for suggestion selection, no need for TextField
   final SuggestionSelectionCallback<String>? onSuggestionSelected;
 
+  final Color? cursorColor;
+
   /// Border color for input with focus
   final Color? enabledBorderColor;
 
@@ -157,6 +161,8 @@ class CommonInput extends StatefulWidget {
   /// [StyleRes.primaryRegular] and [ColorsPalette.textPrimary]
   /// or [ColorsPalette.textSecondary] if the input is not enabled.
   final TextStyle? textStyle;
+
+  final TextAlign textAlign;
 
   /// Style for label text, default [StyleRes.primaryRegular] and
   /// [ColorsPalette.textSecondary].
@@ -403,11 +409,12 @@ class _CommonInputState extends State<CommonInput> {
         keyboardType: widget.keyboardType ?? TextInputType.text,
         onChanged: widget.onChanged,
         textInputAction: widget.textInputAction ?? TextInputAction.next,
-        cursorColor: widget.textStyle?.color ?? color,
+        cursorColor: widget.cursorColor ?? widget.textStyle?.color ?? color,
         onSubmitted: widget.onSubmitted,
         autocorrect: widget.autocorrect,
         enableSuggestions: widget.enableSuggestions,
         inputFormatters: widget.inputFormatters,
+        textAlign: widget.textAlign,
         decoration: InputDecoration(
           filled: true,
           fillColor: widget.fillColor ?? colors.backgroundSecondary,
