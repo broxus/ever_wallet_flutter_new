@@ -1,7 +1,5 @@
 // ignore_for_file: invalid_use_of_visible_for_testing_member
 // ignore_for_file: invalid_use_of_protected_member
-import 'package:app/feature/contact_support/widgets/contact_support/contact_support_mode.dart';
-import 'package:app/feature/contact_support/widgets/contact_support/contact_support_sheet.dart';
 import 'package:app/feature/localization/bloc/localization_bloc.dart';
 import 'package:app/feature/onboarding/screen/welcome/welcome_screen_wm.dart';
 import 'package:app/feature/onboarding/widgets/sliding_block_chains.dart';
@@ -50,12 +48,7 @@ class WelcomeScreen extends ElementaryWidget<WelcomeScreenWidgetModel> {
                   child: FloatButton(
                     buttonShape: ButtonShape.circle,
                     icon: LucideIcons.headset,
-                    onPressed: () {
-                      showContactSupportSheet(
-                        context: wm.context,
-                        mode: ContactSupportMode.initiatedByUser,
-                      );
-                    },
+                    onPressed: wm.onClickSupport,
                     buttonSize: ButtonSize.medium,
                   ),
                 ),
