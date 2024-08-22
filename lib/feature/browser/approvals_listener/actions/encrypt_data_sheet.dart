@@ -47,28 +47,28 @@ class _EncryptData extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) => SeparatedColumn(
-    separatorSize: DimensSizeV2.d12,
-    children: [
-      Expanded(
-        child: SingleChildScrollView(
-          controller: scrollController,
-          child: SeparatedColumn(
-            separatorSize: DimensSizeV2.d12,
-            crossAxisAlignment: CrossAxisAlignment.stretch,
-            children: [
-              AccountInfoWidget(account: account),
-              WebsiteInfoWidget(uri: origin),
-              DataCard(data: data),
-            ],
+        separatorSize: DimensSizeV2.d12,
+        children: [
+          Expanded(
+            child: SingleChildScrollView(
+              controller: scrollController,
+              child: SeparatedColumn(
+                separatorSize: DimensSizeV2.d12,
+                crossAxisAlignment: CrossAxisAlignment.stretch,
+                children: [
+                  AccountInfoWidget(account: account),
+                  WebsiteInfoWidget(uri: origin),
+                  DataCard(data: data),
+                ],
+              ),
+            ),
           ),
-        ),
-      ),
-      EnterPasswordWidgetV2(
-        publicKey: publicKey,
-        title: LocaleKeys.encrypt.tr(),
-        onPasswordEntered: (String password) =>
-            Navigator.of(context).pop(password),
-      ),
-    ],
-  );
+          EnterPasswordWidgetV2(
+            publicKey: publicKey,
+            title: LocaleKeys.encrypt.tr(),
+            onPasswordEntered: (String password) =>
+                Navigator.of(context).pop(password),
+          ),
+        ],
+      );
 }
