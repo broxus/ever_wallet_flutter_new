@@ -1,5 +1,6 @@
 import 'package:app/di/di.dart';
 import 'package:app/feature/wallet/wallet.dart';
+import 'package:app/feature/wallet/widgets/account_transactions_tab/account_transactions_tab.dart';
 import 'package:app/generated/generated.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -33,12 +34,14 @@ class TonWalletDetailsPage extends StatelessWidget {
               initial: () => const SizedBox.shrink(),
               empty: () => const SizedBox.shrink(),
               subscribeError: (walletName, account, error, isLoading) => _body(
+                context: context,
                 walletName: walletName,
                 account: account,
                 error: error,
                 isLoadingError: isLoading,
               ),
               data: (walletName, account, tokenBalance, fiatBalance) => _body(
+                context: context,
                 walletName: walletName,
                 account: account,
                 tokenBalance: tokenBalance,
@@ -83,6 +86,7 @@ class TonWalletDetailsPage extends StatelessWidget {
 
   // ignore: long-method
   Widget _body({
+    required BuildContext context,
     required String walletName,
     required KeyAccount account,
     Money? tokenBalance,
@@ -90,10 +94,12 @@ class TonWalletDetailsPage extends StatelessWidget {
     Object? error,
     bool isLoadingError = false,
   }) {
+    final theme = context.themeStyleV2;
     return CommonSlidingPanel(
       // ignore: no-magic-number
       minHeightSizePercent: 0.65,
       maxHeightSizePercent: 1,
+      backgroundColor: theme.colors.background1,
       body: SeparatedColumn(
         mainAxisSize: MainAxisSize.min,
         separatorSize: DimensSize.d24,

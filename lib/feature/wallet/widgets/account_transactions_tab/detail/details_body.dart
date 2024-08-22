@@ -1,9 +1,17 @@
-import 'package:app/feature/wallet/wallet.dart';
+import 'package:app/app/service/messenger/message.dart';
+import 'package:app/app/service/messenger/service/messenger_service.dart';
+import 'package:app/di/di.dart';
+import 'package:app/feature/wallet/widgets/account_transactions_tab/detail/details.dart';
+import 'package:app/feature/wallet/widgets/account_transactions_tab/widgets/ton_wallet_transaction_status_body.dart';
 import 'package:app/generated/generated.dart';
 import 'package:app/utils/utils.dart';
 import 'package:flutter/material.dart';
-import 'package:nekoton_repository/nekoton_repository.dart';
+import 'package:flutter/services.dart';
+import 'package:lucide_icons_flutter/lucide_icons.dart';
+import 'package:nekoton_repository/nekoton_repository.dart' hide Message;
 import 'package:ui_components_lib/ui_components_lib.dart';
+import 'package:ui_components_lib/v2/dimens_v2.dart';
+import 'package:ui_components_lib/v2/widgets/widgets.dart';
 
 /// Body of transaction for Ton/Token Wallets that contains main information
 /// about transaction (date, hash, value, fee, sender/recipient).
@@ -16,8 +24,11 @@ class WalletTransactionDetailsDefaultBody extends StatelessWidget {
     required this.fee,
     required this.status,
     required this.isIncoming,
+    required this.type,
     this.comment,
-    this.type,
+    this.info,
+    this.tonIconPath,
+    this.price,
     super.key,
   });
 
@@ -42,138 +53,137 @@ class WalletTransactionDetailsDefaultBody extends StatelessWidget {
   /// Status of transaction
   final TonWalletTransactionStatus status;
 
+  final String type;
+
   /// Comment of transaction
   final String? comment;
 
   /// Type of transaction, that exists for TokenWallet
-  final String? type;
+  final String? info;
+  final String? tonIconPath;
+  final Fixed? price;
 
   @override
   Widget build(BuildContext context) {
-    return SeparatedColumn(
-      crossAxisAlignment: CrossAxisAlignment.start,
-      separatorSize: DimensSize.d16,
+    final theme = context.themeStyleV2;
+    return ShapedContainerColumn(
+      color: theme.colors.background1,
       mainAxisSize: MainAxisSize.min,
+      separatorSize: DimensSize.d16,
       children: [
-        Padding(
-          padding: const EdgeInsets.symmetric(horizontal: DimensSize.d16),
-          child: Text(
-            LocaleKeys.transactionInformation.tr(),
-            style: StyleRes.h1
-                .copyWith(color: context.themeStyle.colors.textPrimary),
-          ),
+        const SizedBox.shrink(),
+        _statusDateRow(context, theme),
+        const Divider(),
+        WalletTransactionDetailsItem(
+          title: LocaleKeys.typeWord.tr(),
+          value: type,
         ),
-        ShapedContainerColumn(
-          mainAxisSize: MainAxisSize.min,
-          separator: const Padding(
-            padding: EdgeInsets.symmetric(vertical: DimensSize.d8),
-            child: CommonDivider(),
+        WalletTransactionDetailsItem(
+          title: LocaleKeys.amountWord.tr(),
+          valueWidget: AmountWidget.fromMoney(
+            amount: value,
+            sign: isIncoming
+                ? LocaleKeys.plusSign.tr()
+                : LocaleKeys.minusSign.tr(),
           ),
-          children: [
-            _statusDateRow(),
-            TonWalletTransactionDetailsItem(
-              title: isIncoming
-                  ? LocaleKeys.senderWord.tr()
-                  : LocaleKeys.recipientWord.tr(),
-              content: recipientOrSender.address,
-              copyValue: recipientOrSender.address,
-              copyMessage: LocaleKeys.valueCopiedExclamation.tr(
+          tonIconPath: tonIconPath,
+          convertedValueWidget: price != null
+              ? AmountWidget.fromMoney(
+                  amount: value.exchangeToUSD(price!),
+                  style: theme.textStyles.labelXSmall.copyWith(
+                    color: theme.colors.content3,
+                  ),
+                  sign: '${LocaleKeys.approximatelySign.tr()} ',
+                )
+              : null,
+        ),
+        WalletTransactionDetailsItem(
+          title: LocaleKeys.networkFee.tr(),
+          valueWidget: AmountWidget.fromMoney(
+            amount: fee,
+            sign: '${LocaleKeys.approximatelySign.tr()} ',
+          ),
+          tonIconPath: tonIconPath,
+        ),
+        if (info != null)
+          WalletTransactionDetailsItem(
+            title: LocaleKeys.info.tr(),
+            value: info,
+          ),
+        WalletTransactionDetailsItem(
+          title: isIncoming
+              ? LocaleKeys.senderWord.tr()
+              : LocaleKeys.recipientWord.tr(),
+          subtitle: recipientOrSender.toEllipseString(),
+          icon: LucideIcons.copy,
+          onPressed: () {
+            _copy(
+              recipientOrSender.address,
+              LocaleKeys.valueCopiedExclamation.tr(
                 args: [recipientOrSender.toEllipseString()],
               ),
-            ),
-            TonWalletTransactionDetailsItem(
-              title: LocaleKeys.hashId.tr(),
-              content: hash,
-              copyValue: hash,
-              copyMessage: LocaleKeys.valueCopiedExclamation.tr(args: [hash]),
-            ),
-            TonWalletTransactionDetailsItem(
-              title: LocaleKeys.amountWord.tr(),
-              contentChild: MoneyWidget(
-                money: value,
-                style: MoneyWidgetStyle.primary,
-                sign: isIncoming ? 0 : -1,
-              ),
-            ),
-            TonWalletTransactionDetailsItem(
-              title: LocaleKeys.blockchainFee.tr(),
-              contentChild:
-                  MoneyWidget(money: fee, style: MoneyWidgetStyle.primary),
-            ),
-            if (comment != null && comment!.isNotEmpty)
-              TonWalletTransactionDetailsItem(
-                title: LocaleKeys.commentWord.tr(),
-                content: comment,
-              ),
-            if (type != null)
-              TonWalletTransactionDetailsItem(
-                title: LocaleKeys.typeWord.tr(),
-                content: type,
-              ),
-          ],
+            );
+          },
+        ),
+        WalletTransactionDetailsItem(
+          title: LocaleKeys.hashId.tr(),
+          subtitle: toEllipseString(hash),
+          icon: LucideIcons.copy,
+          onPressed: () {
+            _copy(hash, LocaleKeys.valueCopiedExclamation.tr(args: [hash]));
+          },
         ),
       ],
     );
   }
 
-  Widget _statusDateRow() {
-    return Builder(
-      builder: (context) {
-        final colors = context.themeStyle.colors;
-        final formatter = date.year == NtpTime.now().year
-            ? DateFormat('MM.dd, HH:mm', context.locale.languageCode)
-            : DateFormat('MM.dd.y, HH:mm', context.locale.languageCode);
+  Widget _statusDateRow(BuildContext context, ThemeStyleV2 theme) {
+    final colors = context.themeStyle.colors;
+    final formatter = date.year == NtpTime.now().year
+        ? DateFormat('MM.dd, HH:mm:ss', context.locale.languageCode)
+        : DateFormat('MM.dd.y, HH:mm:ss', context.locale.languageCode);
 
-        final statusWidget = tonWalletTransactionStatusBody(status);
-
-        return SeparatedRow(
+    return Row(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            if (statusWidget != null) statusWidget,
-            Expanded(
-              child: Text(
-                formatter.format(date),
-                style: StyleRes.addRegular.copyWith(
-                  color: colors.textSecondary,
-                ),
-                textAlign: TextAlign.right,
+            Text(
+              isIncoming ? LocaleKeys.received.tr() : LocaleKeys.sent.tr(),
+              style: theme.textStyles.headingMedium,
+            ),
+            const SizedBox(height: DimensSizeV2.d4),
+            Text(
+              formatter.format(date),
+              style: StyleRes.addRegular.copyWith(
+                color: colors.textSecondary,
               ),
+              textAlign: TextAlign.right,
             ),
           ],
-        );
-      },
+        ),
+        const Spacer(),
+        status.chipByStatus,
+      ],
+    );
+  }
+
+  void _copy(String value, String copyMessage) {
+    Clipboard.setData(ClipboardData(text: value));
+    inject<MessengerService>().show(
+      Message.successful(message: copyMessage),
     );
   }
 }
 
-/// Body of transaction for TonWallet that contains additional information,
-/// that is mapped based on transaction data.
-class WalletTransactionAdditionalBody extends StatelessWidget {
-  const WalletTransactionAdditionalBody({
-    required this.children,
-    this.type,
-    super.key,
-  });
-
-  /// Type of transaction
-  final String? type;
-  final List<Widget> children;
-
-  @override
-  Widget build(BuildContext context) {
-    return ShapedContainerColumn(
-      mainAxisSize: MainAxisSize.min,
-      separator: const Padding(
-        padding: EdgeInsets.symmetric(vertical: DimensSize.d8),
-        child: CommonDivider(),
-      ),
-      children: [
-        if (type != null)
-          TonWalletTransactionDetailsItem(
-            title: LocaleKeys.typeWord.tr(),
-            content: type,
-          ),
-        ...children,
-      ],
-    );
-  }
+extension on Money {
+  Money exchangeToUSD(Fixed price) => exchangeTo(
+        ExchangeRate.fromFixed(
+          price,
+          fromIsoCode: currency.isoCode,
+          toIsoCode: 'USD',
+          toDecimalDigits: 10,
+        ),
+      );
 }

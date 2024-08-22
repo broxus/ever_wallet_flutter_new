@@ -1,4 +1,5 @@
 import 'package:app/feature/browser/approvals_listener/actions/send_message/send_message.dart';
+import 'package:app/feature/wallet/widgets/account_transactions_tab/detail/details.dart';
 import 'package:app/generated/generated.dart';
 import 'package:flutter/material.dart';
 import 'package:nekoton_repository/nekoton_repository.dart' hide Message;

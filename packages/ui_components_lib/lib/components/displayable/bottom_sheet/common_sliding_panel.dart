@@ -29,6 +29,7 @@ class CommonSlidingPanel extends StatefulWidget {
     this.scrollController,
     this.panelController,
     this.crossAxisAlignment = CrossAxisAlignment.start,
+    this.backgroundColor,
   });
 
   /// See [SlidingUpPanel.panelBuilder]
@@ -70,6 +71,7 @@ class CommonSlidingPanel extends StatefulWidget {
 
   /// Alignment for [panelBuilder] content.
   final CrossAxisAlignment crossAxisAlignment;
+  final Color? backgroundColor;
 
   @override
   State<CommonSlidingPanel> createState() => _CommonSlidingPanelState();
@@ -110,7 +112,7 @@ class _CommonSlidingPanelState extends State<CommonSlidingPanel> {
           borderRadius: const BorderRadius.vertical(
             top: Radius.circular(DimensRadius.large),
           ),
-          color: colors.backgroundSecondary,
+          color: widget.backgroundColor ?? colors.backgroundSecondary,
           // ignore: prefer-extracting-callbacks
           panelBuilder: () {
             return Material(

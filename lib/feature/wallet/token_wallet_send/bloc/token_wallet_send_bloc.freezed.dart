@@ -467,8 +467,6 @@ abstract class _$$CompleteSendImplCopyWith<$Res> {
       __$$CompleteSendImplCopyWithImpl<$Res>;
   @useResult
   $Res call({Transaction transaction});
-
-  $TransactionCopyWith<$Res> get transaction;
 }
 
 /// @nodoc
@@ -482,22 +480,14 @@ class __$$CompleteSendImplCopyWithImpl<$Res>
   @pragma('vm:prefer-inline')
   @override
   $Res call({
-    Object? transaction = null,
+    Object? transaction = freezed,
   }) {
     return _then(_$CompleteSendImpl(
-      null == transaction
+      freezed == transaction
           ? _value.transaction
           : transaction // ignore: cast_nullable_to_non_nullable
               as Transaction,
     ));
-  }
-
-  @override
-  @pragma('vm:prefer-inline')
-  $TransactionCopyWith<$Res> get transaction {
-    return $TransactionCopyWith<$Res>(_value.transaction, (value) {
-      return _then(_value.copyWith(transaction: value));
-    });
   }
 }
 
@@ -519,12 +509,13 @@ class _$CompleteSendImpl implements _CompleteSend {
     return identical(this, other) ||
         (other.runtimeType == runtimeType &&
             other is _$CompleteSendImpl &&
-            (identical(other.transaction, transaction) ||
-                other.transaction == transaction));
+            const DeepCollectionEquality()
+                .equals(other.transaction, transaction));
   }
 
   @override
-  int get hashCode => Object.hash(runtimeType, transaction);
+  int get hashCode => Object.hash(
+      runtimeType, const DeepCollectionEquality().hash(transaction));
 
   @JsonKey(ignore: true)
   @override
@@ -1652,8 +1643,6 @@ abstract class _$$SentImplCopyWith<$Res> {
       __$$SentImplCopyWithImpl<$Res>;
   @useResult
   $Res call({BigInt fee, Transaction transaction});
-
-  $TransactionCopyWith<$Res> get transaction;
 }
 
 /// @nodoc
@@ -1667,26 +1656,18 @@ class __$$SentImplCopyWithImpl<$Res>
   @override
   $Res call({
     Object? fee = null,
-    Object? transaction = null,
+    Object? transaction = freezed,
   }) {
     return _then(_$SentImpl(
       null == fee
           ? _value.fee
           : fee // ignore: cast_nullable_to_non_nullable
               as BigInt,
-      null == transaction
+      freezed == transaction
           ? _value.transaction
           : transaction // ignore: cast_nullable_to_non_nullable
               as Transaction,
     ));
-  }
-
-  @override
-  @pragma('vm:prefer-inline')
-  $TransactionCopyWith<$Res> get transaction {
-    return $TransactionCopyWith<$Res>(_value.transaction, (value) {
-      return _then(_value.copyWith(transaction: value));
-    });
   }
 }
 
@@ -1711,12 +1692,13 @@ class _$SentImpl implements _Sent {
         (other.runtimeType == runtimeType &&
             other is _$SentImpl &&
             (identical(other.fee, fee) || other.fee == fee) &&
-            (identical(other.transaction, transaction) ||
-                other.transaction == transaction));
+            const DeepCollectionEquality()
+                .equals(other.transaction, transaction));
   }
 
   @override
-  int get hashCode => Object.hash(runtimeType, fee, transaction);
+  int get hashCode => Object.hash(
+      runtimeType, fee, const DeepCollectionEquality().hash(transaction));
 
   @JsonKey(ignore: true)
   @override

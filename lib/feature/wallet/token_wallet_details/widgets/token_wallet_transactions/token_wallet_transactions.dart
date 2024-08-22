@@ -1,6 +1,7 @@
 import 'package:app/di/di.dart';
 import 'package:app/feature/wallet/token_wallet_details/widgets/token_wallet_transactions/token_wallet_transactions_cubit.dart';
 import 'package:app/feature/wallet/wallet.dart';
+import 'package:app/feature/wallet/widgets/account_transactions_tab/widgets/scroll_controller_preload_listener.dart';
 import 'package:app/generated/generated.dart';
 import 'package:app/utils/utils.dart';
 import 'package:flutter/material.dart';
@@ -32,6 +33,7 @@ class TokenWalletTransactionsWidget extends StatelessWidget {
         rootTokenContract: rootTokenContract,
         nekotonRepository: inject(),
         walletStorage: inject(),
+        currenciesService: inject(),
       ),
       child: BlocBuilder<TokenWalletTransactionsCubit,
           TokenWalletTransactionsState>(
@@ -48,7 +50,13 @@ class TokenWalletTransactionsWidget extends StatelessWidget {
               ),
             ),
             loading: () => const SliverToBoxAdapter(child: SizedBox.shrink()),
-            transactions: (transactions, currency, isLoading, _) {
+            transactions: (
+              transactions,
+              currency,
+              isLoading,
+              _,
+              customCurrency,
+            ) {
               return ScrollControllerPreloadListener(
                 preleloadAction: () => context
                     .read<TokenWalletTransactionsCubit>()
@@ -89,6 +97,7 @@ class TokenWalletTransactionsWidget extends StatelessWidget {
                           trans.value,
                           currency,
                         ),
+                        price: Fixed.parse(customCurrency?.price ?? '0'),
                       ),
                     );
                   },

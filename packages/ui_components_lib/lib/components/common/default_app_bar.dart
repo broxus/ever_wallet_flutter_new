@@ -161,6 +161,8 @@ class DefaultAppBar extends StatelessWidget implements PreferredSizeWidget {
 
     return PopScope(
       canPop: false,
+      // TODO(knightforce): use onPopInvokedWithResult
+      // ignore: deprecated_member_use
       onPopInvoked: (_) => _onPressedBack(context),
       child: Padding(
         padding: const EdgeInsets.symmetric(horizontal: DimensSizeV2.d16),

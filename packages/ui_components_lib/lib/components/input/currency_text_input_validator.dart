@@ -34,7 +34,7 @@ class CurrencyTextInputValidator {
           max != null && maxError != null || max == null && maxError == null,
           'maxError must be provided when max is provided',
         ) {
-    _scale = currency.scale;
+    _scale = currency.decimalDigits;
 
     _fullRegExp = CurrencyTextInputFormatter.createRegExp(
       currency: currency,

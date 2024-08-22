@@ -159,18 +159,20 @@ class TokenWalletDetailsPage extends StatelessWidget {
     return Builder(
       builder: (context) {
         final colors = context.themeStyle.colors;
+        final theme = context.themeStyleV2;
 
         return CommonSlidingPanel(
           // ignore: no-magic-number
           minHeightSizePercent: 0.65,
           maxHeightSizePercent: 1,
+          backgroundColor: theme.colors.background1,
           body: SeparatedColumn(
             mainAxisSize: MainAxisSize.min,
             separatorSize: DimensSize.d24,
             children: [
               _header(contractName, tokenBalance, fiatBalance),
               if (tokenBalance != null && error == null)
-                _actions(canSend, context, tokenBalance.currency.code),
+                _actions(canSend, context, tokenBalance.currency.isoCode),
             ],
           ),
           panelBuilder: (context, controller) => CustomScrollView(

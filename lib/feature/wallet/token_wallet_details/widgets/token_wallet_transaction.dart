@@ -12,6 +12,7 @@ class TokenWalletTransactionWidget extends StatelessWidget {
     required this.transactionValue,
     required this.displayDate,
     required this.transactionFee,
+    required this.price,
     super.key,
   });
 
@@ -29,6 +30,7 @@ class TokenWalletTransactionWidget extends StatelessWidget {
   /// This is external decision that could use comparing this transaction and
   /// prev one.
   final bool displayDate;
+  final Fixed price;
 
   @override
   Widget build(BuildContext context) {
@@ -41,6 +43,7 @@ class TokenWalletTransactionWidget extends StatelessWidget {
           builder: (_) => TokenWalletOrdinaryTransactionDetailsPage(
             transaction: transaction,
             tokenCurrency: transactionValue.currency,
+            price: price,
           ),
         ),
       ),
