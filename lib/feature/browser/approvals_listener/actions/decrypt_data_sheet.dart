@@ -82,7 +82,7 @@ class _DecryptData extends StatelessWidget {
                       ),
                     ],
                   ),
-                )
+                ),
               ],
             ),
           ),

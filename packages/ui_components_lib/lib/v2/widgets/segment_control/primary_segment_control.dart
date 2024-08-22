@@ -8,8 +8,8 @@ import 'package:ui_components_lib/v2/widgets/segment_control/segment_control.dar
 // SegmentControlState.normal
 class PrimarySegmentControl<T> extends StatelessWidget {
   const PrimarySegmentControl({
+    required this.state,
     required this.value,
-    this.state = SegmentControlState.normal,
     this.icon,
     this.size = SegmentControlSize.large,
     this.title,

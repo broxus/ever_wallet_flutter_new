@@ -56,16 +56,19 @@ class _DataCardState extends State<DataCard> {
                 title: _DisplayType.base64.name,
                 value: _DisplayType.base64,
                 size: SegmentControlSize.xsmall,
+                state: SegmentControlState.normal,
               ),
               PrimarySegmentControl(
                 title: _DisplayType.hex.name,
                 value: _DisplayType.hex,
                 size: SegmentControlSize.xsmall,
+                state: SegmentControlState.normal,
               ),
               PrimarySegmentControl(
                 title: _DisplayType.utf8.name,
                 value: _DisplayType.utf8,
                 size: SegmentControlSize.xsmall,
+                state: SegmentControlState.normal,
               ),
             ],
             onTabChanged: (value) => setState(() {
