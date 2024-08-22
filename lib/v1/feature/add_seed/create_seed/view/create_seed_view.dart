@@ -3,7 +3,9 @@ import 'package:app/v1/feature/add_seed/create_seed/create_seed.dart';
 import 'package:collection/collection.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:lucide_icons_flutter/lucide_icons.dart';
 import 'package:ui_components_lib/ui_components_lib.dart';
+import 'package:ui_components_lib/v2/ui_components_lib_v2.dart';
 
 /// Callback that calls if user taps skip checking or check phrase.
 typedef CreateSeedCompleteCallback = void Function(List<String> phrase);
@@ -24,7 +26,7 @@ class CreateSeedView extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final colors = context.themeStyle.colors;
+    final theme = context.themeStyleV2;
 
     return SafeArea(
       minimum: const EdgeInsets.only(bottom: DimensSize.d16),
@@ -39,15 +41,14 @@ class CreateSeedView extends StatelessWidget {
                   children: [
                     Text(
                       LocaleKeys.saveSeedPhrase.tr(),
-                      style: StyleRes.h1.copyWith(color: colors.textPrimary),
+                      style: theme.textStyles.headingXLarge,
                     ),
-                    const SizedBox(height: DimensSize.d12),
+                    const SizedBox(height: DimensSizeV2.d12),
                     Text(
                       LocaleKeys.saveSeedWarning.tr(),
-                      style: StyleRes.primaryRegular
-                          .copyWith(color: colors.textPrimary),
+                      style: theme.textStyles.paragraphMedium,
                     ),
-                    const SizedBox(height: DimensSize.d24),
+                    const SizedBox(height: DimensSizeV2.d24),
                     BlocBuilder<CreateSeedCubit, CreateSeedCubitState>(
                       builder: (context, state) {
                         return state.when(
@@ -57,7 +58,7 @@ class CreateSeedView extends StatelessWidget {
                               mainAxisSize: MainAxisSize.min,
                               children: [
                                 _wordsField(words),
-                                const SizedBox(height: DimensSize.d4),
+                                const SizedBox(height: DimensSizeV2.d4),
                                 _copyButton(isCopied),
                               ],
                             );
@@ -65,7 +66,7 @@ class CreateSeedView extends StatelessWidget {
                         );
                       },
                     ),
-                    const SizedBox(height: DimensSize.d8),
+                    const SizedBox(height: DimensSizeV2.d8),
                   ],
                 ),
               ),
@@ -79,17 +80,18 @@ class CreateSeedView extends StatelessWidget {
 
                 return Column(
                   children: [
-                    CommonButton.primary(
-                      text: LocaleKeys.checkSeedPhrase.tr(),
+                    AccentButton(
+                      buttonShape: ButtonShape.pill,
+                      title: LocaleKeys.checkSeedPhrase.tr(),
                       onPressed: () => checkCallback(words),
-                      fillWidth: true,
                     ),
-                    const SizedBox(height: DimensSize.d8),
-                    CommonButton.secondary(
-                      text: LocaleKeys.skipTakeRisk.tr(),
+                    const SizedBox(height: DimensSizeV2.d8),
+                    PrimaryButton(
+                      buttonShape: ButtonShape.pill,
+                      title: LocaleKeys.skipTakeRisk.tr(),
                       onPressed: () => skipCallback(words),
-                      fillWidth: true,
                     ),
+                    const SizedBox(height: DimensSizeV2.d12),
                   ],
                 );
               },
@@ -101,30 +103,38 @@ class CreateSeedView extends StatelessWidget {
   }
 
   Widget _textPair(String word, int index) {
-    final indexText = NumberFormat('00').format(index);
+    final indexText = NumberFormat('0').format(index);
 
-    return CommonCard(titleText: word, leadingText: indexText);
+    return IgnorePointer(
+      child: PrimaryTextField(
+        labelText: indexText,
+        textEditingController: TextEditingController(text: word),
+        sizeType: PrimaryTextFieldSizeType.medium,
+      ),
+    );
   }
 
   Widget _copyButton(bool copied) {
     return Builder(
       builder: (context) {
-        final colors = context.themeStyle.colors;
         final cubit = context.read<CreateSeedCubit>();
 
         if (copied) {
-          return CommonButton(
-            buttonType: EverButtonType.ghost,
-            contentDisabledColor: colors.apply,
-            trailing: CommonButtonIconWidget.svg(svg: Assets.images.check.path),
-            text: LocaleKeys.copiedExclamation.tr(),
+          return GhostButton(
+            buttonShape: ButtonShape.pill,
+            buttonSize: ButtonSize.small,
+            postfixIcon: LucideIcons.checkCheck,
+            title: LocaleKeys.copiedExclamation.tr(),
+            onPressed: () {},
           );
         }
 
-        return CommonButton.ghost(
-          trailing: CommonButtonIconWidget.svg(svg: Assets.images.copy.path),
-          text: LocaleKeys.copyWords.tr(),
+        return GhostButton(
+          buttonSize: ButtonSize.small,
+          postfixIcon: LucideIcons.copy,
+          title: LocaleKeys.copyWords.tr(),
           onPressed: cubit.copySeed,
+          buttonShape: ButtonShape.pill,
         );
       },
     );

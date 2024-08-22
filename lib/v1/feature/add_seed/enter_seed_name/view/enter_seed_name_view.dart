@@ -1,6 +1,8 @@
 import 'package:app/generated/generated.dart';
 import 'package:flutter/material.dart';
 import 'package:ui_components_lib/ui_components_lib.dart';
+import 'package:ui_components_lib/v2/dimens_v2.dart';
+import 'package:ui_components_lib/v2/widgets/widgets.dart';
 
 /// Callback to make any action after user entered seed phrase name.
 typedef EnterSeedNameCompleteCallback = void Function(String? name);
@@ -35,6 +37,7 @@ class _EnterSeedNameViewState extends State<EnterSeedNameView> {
   @override
   Widget build(BuildContext context) {
     final colors = context.themeStyle.colors;
+    final theme = context.themeStyleV2;
 
     return SafeArea(
       child: Padding(
@@ -48,29 +51,29 @@ class _EnterSeedNameViewState extends State<EnterSeedNameView> {
                   children: [
                     Text(
                       LocaleKeys.enterSeedNameScreenTitle.tr(),
-                      style: StyleRes.h1.copyWith(color: colors.textPrimary),
+                      style: theme.textStyles.headingXLarge,
                     ),
-                    const SizedBox(height: DimensSize.d12),
+                    const SizedBox(height: DimensSizeV2.d12),
                     Text(
                       LocaleKeys.enterSeedNameScreenDescription.tr(),
-                      style: StyleRes.primaryRegular
-                          .copyWith(color: colors.textPrimary),
+                      style: theme.textStyles.paragraphMedium,
                     ),
-                    const SizedBox(height: DimensSize.d24),
-                    CommonInput(
-                      controller: nameController,
-                      titleText: LocaleKeys.seedName.tr(),
-                      onSubmitted: (_) => _nextAction(),
+                    const SizedBox(height: DimensSizeV2.d24),
+                    PrimaryTextField(
+                      textEditingController: nameController,
+                      hintText: LocaleKeys.seedName.tr(),
+                      onSubmit: (_) => _nextAction(),
                     ),
                   ],
                 ),
               ),
             ),
-            CommonButton.primary(
-              text: LocaleKeys.continueWord.tr(),
+            AccentButton(
+              buttonShape: ButtonShape.pill,
+              title: LocaleKeys.continueWord.tr(),
               onPressed: _nextAction,
-              fillWidth: true,
             ),
+            const SizedBox(height: DimensSizeV2.d12),
           ],
         ),
       ),

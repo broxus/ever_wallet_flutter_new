@@ -6,8 +6,11 @@ import 'package:app/generated/generated.dart';
 import 'package:app/v1/feature/add_seed/enter_seed_name/enter_seed_name.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:lucide_icons_flutter/lucide_icons.dart';
 import 'package:nekoton_repository/nekoton_repository.dart';
 import 'package:ui_components_lib/ui_components_lib.dart';
+import 'package:ui_components_lib/v2/dimens_v2.dart';
+import 'package:ui_components_lib/v2/ui_components_lib_v2.dart';
 
 /// Main widget that displays content of manage seeds and accounts feature
 class ManageSeedsAccountsView extends StatelessWidget {
@@ -17,7 +20,7 @@ class ManageSeedsAccountsView extends StatelessWidget {
   Widget build(BuildContext context) {
     return BlocBuilder<ManageSeedsAccountsCubit, ManageSeedsAccountsState>(
       builder: (context, state) {
-        final colors = context.themeStyle.colors;
+        final theme = context.themeStyleV2;
 
         return Padding(
           padding: const EdgeInsets.symmetric(
@@ -27,13 +30,20 @@ class ManageSeedsAccountsView extends StatelessWidget {
           child: SeparatedColumn(
             separatorSize: DimensSize.d16,
             children: [
-              Text(
-                LocaleKeys.manageSeedsAndAccounts.tr(),
-                style: StyleRes.h1.copyWith(color: colors.textPrimary),
+              Padding(
+                padding: const EdgeInsets.symmetric(
+                  horizontal: DimensSizeV2.d40,
+                ),
+                child: Text(
+                  LocaleKeys.manageSeedsAndAccounts.tr(),
+                  style: theme.textStyles.headingLarge,
+                  textAlign: TextAlign.center,
+                ),
               ),
               Expanded(
                 child: SingleChildScrollView(
                   child: ShapedContainerColumn(
+                    color: theme.colors.background1,
                     margin: EdgeInsets.zero,
                     separator: const Padding(
                       padding: EdgeInsets.symmetric(vertical: DimensSize.d4),
@@ -52,11 +62,10 @@ class ManageSeedsAccountsView extends StatelessWidget {
                 ),
               ),
               const SizedBox(height: DimensSize.d8),
-              CommonButton(
-                leading: CommonButtonIconWidget.svg(
-                  svg: Assets.images.plus.path,
-                ),
-                text: LocaleKeys.addSeedPhrase.tr(),
+              PrimaryButton(
+                buttonShape: ButtonShape.pill,
+                postfixIcon: LucideIcons.plus,
+                title: LocaleKeys.addSeedPhrase.tr(),
                 onPressed: () => _showAddSeedSheet(context),
               ),
             ],
@@ -97,7 +106,7 @@ class ManageSeedsAccountsView extends StatelessWidget {
   }) {
     return Builder(
       builder: (context) {
-        final colors = context.themeStyle.colors;
+        final theme = context.themeStyleV2;
 
         return CommonListTile(
           padding: EdgeInsets.zero,
@@ -110,6 +119,7 @@ class ManageSeedsAccountsView extends StatelessWidget {
           ),
           leading: CommonBackgroundedIconWidget.svg(
             svg: Assets.images.sparxLogoSmall.path,
+            backgroundColor: theme.colors.backgroundAlpha,
             useDefaultColor: false,
           ),
           titleText: seed.name,
@@ -123,10 +133,10 @@ class ManageSeedsAccountsView extends StatelessWidget {
               if (currentSeed?.publicKey == seed.publicKey)
                 CommonIconWidget.svg(
                   svg: Assets.images.check.path,
-                  color: colors.textPrimary,
+                  color: theme.colors.content0,
                 ),
               CommonIconButton.svg(
-                color: colors.textSecondary,
+                color: theme.colors.content0,
                 svg: Assets.images.settings.path,
                 buttonType: EverButtonType.ghost,
                 size: CommonIconButtonSize.xsmall,

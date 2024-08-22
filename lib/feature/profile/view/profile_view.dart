@@ -9,8 +9,11 @@ import 'package:app/generated/locale_keys.g.dart';
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:lucide_icons_flutter/lucide_icons.dart';
 import 'package:nekoton_repository/nekoton_repository.dart';
 import 'package:ui_components_lib/ui_components_lib.dart';
+import 'package:ui_components_lib/v2/dimens_v2.dart';
+import 'package:ui_components_lib/v2/ui_components_lib_v2.dart';
 
 class ProfileView extends StatelessWidget {
   const ProfileView({
@@ -29,44 +32,51 @@ class ProfileView extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final service = inject<BiometryService>();
-    final colors = context.themeStyle.colors;
+    final theme = context.themeStyleV2;
     final mq = MediaQuery.of(context);
 
     return Scaffold(
+      backgroundColor: theme.colors.background1,
       body: SingleChildScrollView(
         child: Column(
           children: [
-            SizedBox(height: mq.padding.top + DimensSize.d32),
+            SizedBox(height: mq.padding.top + DimensSizeV2.d32),
             Text(
               LocaleKeys.currentSeed.tr(),
-              style: StyleRes.addRegular.copyWith(color: colors.textSecondary),
+              style: theme.textStyles.labelXSmall,
             ),
-            const SizedBox(height: DimensSize.d4),
+            const SizedBox(height: DimensSizeV2.d4),
             Text(
               currentSeed?.name ?? '',
-              style: StyleRes.h2.copyWith(color: colors.textPrimary),
+              style: theme.textStyles.headingLarge,
             ),
-            const SizedBox(height: DimensSize.d16),
-            CommonButton.secondary(
-              text: LocaleKeys.exportSeedPhrase.tr(),
-              trailing: CommonIconWidget.svg(svg: Assets.images.export.path),
+            const SizedBox(height: DimensSizeV2.d16),
+            PrimaryButton(
+              isFullWidth: false,
+              buttonShape: ButtonShape.pill,
+              title: LocaleKeys.exportSeedPhrase.tr(),
+              postfixIcon: LucideIcons.share,
               onPressed: currentSeed == null
                   ? null
                   : () => Navigator.of(context, rootNavigator: true)
                       .push(exportSeedSheetRoute(currentSeed!.publicKey)),
             ),
-            const SizedBox(height: DimensSize.d32),
+            const SizedBox(height: DimensSizeV2.d32),
             ShapedContainerColumn(
+              color: theme.colors.background2,
               separator: const CommonDivider(),
               children: [
                 _profileTile(
                   leadingIcon: Assets.images.settings.path,
                   title: LocaleKeys.manageSeedsAndAccounts.tr(),
-                  trailing: CommonButtonIconWidget.svg(
-                    svg: Assets.images.caretRight.path,
+                  trailing: const Icon(
+                    LucideIcons.chevronRight,
+                    size: DimensSizeV2.d20,
                   ),
                   onPressed: () =>
                       context.goFurther(AppRoute.manageSeedsAccounts.path),
+                  backgroundColor: theme.colors.backgroundAlpha,
+                  iconColor: theme.colors.content0,
                 ),
                 // _profileTile(
                 //   leadingIcon: Assets.images.currency.path,
@@ -80,13 +90,16 @@ class ProfileView extends StatelessWidget {
                 _profileTile(
                   leadingIcon: Assets.images.planetInner.path,
                   title: LocaleKeys.languageWord.tr(),
-                  trailing: CommonButtonIconWidget.svg(
-                    svg: Assets.images.caretRight.path,
+                  trailing: const Icon(
+                    LucideIcons.chevronRight,
+                    size: DimensSizeV2.d20,
                   ),
                   // ignore: no-empty-block
                   onPressed: () => showLocalizationSheet(
                     context: context,
                   ),
+                  backgroundColor: theme.colors.backgroundAlpha,
+                  iconColor: theme.colors.content0,
                 ),
                 if (isBiometryAvailable)
                   StreamBuilder<bool>(
@@ -106,55 +119,44 @@ class ProfileView extends StatelessWidget {
                           ),
                         ),
                         onPressed: null,
+                        backgroundColor: theme.colors.backgroundAlpha,
+                        iconColor: theme.colors.content0,
                       );
                     },
                   ),
                 _profileTile(
-                  leadingIcon: Assets.images.moon.path,
-                  title: LocaleKeys.darkTheme.tr(),
-                  trailing: CommonSwitchInput(
-                    value: isDarkThemeEnabled,
-                    onChanged: (value) {},
-                  ),
-                  onPressed: null,
-                ),
-              ],
-            ),
-            const SizedBox(height: DimensSize.d16),
-            ShapedContainerColumn(
-              separator: const CommonDivider(),
-              children: [
-                _profileTile(
                   leadingIcon: Assets.images.support.path,
                   title: LocaleKeys.contactSupport.tr(),
-                  trailing: CommonButtonIconWidget.svg(
-                    svg: Assets.images.caretRight.path,
+                  trailing: const Icon(
+                    LucideIcons.chevronRight,
+                    size: DimensSizeV2.d20,
                   ),
                   onPressed: () => showContactSupportSheet(
                     context: context,
                     mode: ContactSupportMode.initiatedByUser,
                   ),
+                  backgroundColor: theme.colors.backgroundAlpha,
+                  iconColor: theme.colors.content0,
                 ),
               ],
             ),
-            const SizedBox(height: DimensSize.d40),
-            CommonButton(
-              padding: const EdgeInsets.symmetric(horizontal: DimensSize.d24),
-              buttonType: EverButtonType.ghost,
-              contentColor: colors.alert,
-              onPressed: () => _logOutConfirm(context),
-              text: LocaleKeys.logOut.tr(),
-              trailing: CommonButtonIconWidget.svg(
-                svg: Assets.images.exit.path,
+            const SizedBox(height: DimensSizeV2.d40),
+            Padding(
+              padding: const EdgeInsets.symmetric(horizontal: DimensSizeV2.d24),
+              child: DestructiveButton(
+                buttonShape: ButtonShape.pill,
+                onPressed: () => _logOutConfirm(context),
+                title: LocaleKeys.logOut.tr(),
+                icon: LucideIcons.logOut,
               ),
             ),
-            const SizedBox(height: DimensSize.d8),
+            const SizedBox(height: DimensSizeV2.d16),
             Text(
               '${LocaleKeys.versionWord.tr()} $appVersion',
               textAlign: TextAlign.center,
-              style: StyleRes.addRegular.copyWith(color: colors.textSecondary),
+              style: theme.textStyles.labelXSmall
+                  .copyWith(color: theme.colors.content3),
             ),
-            const SizedBox(height: DimensSize.d16),
           ],
         ),
       ),
@@ -168,10 +170,16 @@ class ProfileView extends StatelessWidget {
     required String title,
     required Widget trailing,
     required VoidCallback? onPressed,
+    required Color backgroundColor,
+    required Color iconColor,
   }) {
     return CommonListTile(
       titleText: title,
-      leading: CommonBackgroundedIconWidget.svg(svg: leadingIcon),
+      leading: CommonBackgroundedIconWidget.svg(
+        svg: leadingIcon,
+        iconColor: iconColor,
+        backgroundColor: backgroundColor,
+      ),
       trailing: trailing,
       onPressed: onPressed,
     );
