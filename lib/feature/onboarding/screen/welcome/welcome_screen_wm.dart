@@ -56,7 +56,7 @@ class WelcomeScreenWidgetModel
   void onLinkTap() => launchUrlString(_decentralizationPolicyLink);
 
   void onClickSupport() => showContactSupportSheet(
-    context: context,
-    mode: ContactSupportMode.initiatedByUser,
-  );
+        context: context,
+        mode: ContactSupportMode.initiatedByUser,
+      );
 }
