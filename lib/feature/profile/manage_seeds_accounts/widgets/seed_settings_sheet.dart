@@ -30,12 +30,13 @@ class SeedSettingsSheet extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final colors = context.themeStyle.colors;
+    final colors = context.themeStyleV2.colors;
     final currentKeyService = inject<CurrentKeyService>();
 
     final currentKey = currentKeyService.currentKey;
 
     return ShapedContainerColumn(
+      color: colors.background2,
       margin: EdgeInsets.zero,
       mainAxisSize: MainAxisSize.min,
       separator: const CommonDivider(),
@@ -49,7 +50,7 @@ class SeedSettingsSheet extends StatelessWidget {
             titleText: LocaleKeys.useThisSeed.tr(),
             trailing: CommonIconWidget.svg(
               svg: Assets.images.checkSquare.path,
-              color: colors.textPrimary,
+              color: colors.content0,
             ),
           ),
         CommonListTile(
@@ -59,7 +60,7 @@ class SeedSettingsSheet extends StatelessWidget {
           titleText: LocaleKeys.renameWord.tr(),
           trailing: CommonIconWidget.svg(
             svg: Assets.images.edit.path,
-            color: colors.textPrimary,
+            color: colors.content0,
           ),
         ),
         CommonListTile(
@@ -69,7 +70,7 @@ class SeedSettingsSheet extends StatelessWidget {
           titleText: LocaleKeys.exportWord.tr(),
           trailing: CommonIconWidget.svg(
             svg: Assets.images.exportFill.path,
-            color: colors.textPrimary,
+            color: colors.content0,
           ),
         ),
         CommonListTile(
@@ -79,7 +80,7 @@ class SeedSettingsSheet extends StatelessWidget {
           titleText: LocaleKeys.changePassword.tr(),
           trailing: CommonIconWidget.svg(
             svg: Assets.images.lock.path,
-            color: colors.textPrimary,
+            color: colors.content0,
           ),
         ),
         if (publicKey != currentKey)
@@ -87,7 +88,7 @@ class SeedSettingsSheet extends StatelessWidget {
             onPressed: () => Navigator.of(context)
               ..pop()
               ..push(deleteSeedSheetRoute(publicKey)),
-            contentColor: colors.alert,
+            contentColor: colors.contentNegative,
             titleText: LocaleKeys.deleteWord.tr(),
             trailing: CommonIconWidget.svg(svg: Assets.images.trash.path),
           ),
