@@ -47,7 +47,7 @@ class ImportWalletScreen
                     child: Column(
                       children: [
                         Image.asset(
-                          'assets/images/seed_phrase_icon.png',
+                          Assets.images.seedPhraseIcon.path,
                           width: DimensSizeV2.d56,
                           height: DimensSizeV2.d56,
                         ),
@@ -59,24 +59,26 @@ class ImportWalletScreen
                         const SizedBox(height: DimensSizeV2.d8),
                         PrimaryText(LocaleKeys.importWalletScreenSubtitle.tr()),
                         const SizedBox(height: DimensSizeV2.d24),
-                        if ((data?.allowedData?.length ?? 0) > 1) ...[
-                          SwitcherSegmentControls<int>(
-                            currentValue: data?.selectedValue ?? 0,
-                            values: [
-                              for (final value in data!.allowedData!)
-                                PrimarySegmentControl(
-                                  state: SegmentControlState.normal,
-                                  title: LocaleKeys.wordsCount.plural(value),
-                                  value: value,
-                                  size: SegmentControlSize.medium,
-                                ),
-                            ],
-                            onTabChanged: (v) {
-                              wm.onChangeTab(v);
-                            },
+                        if ((data?.allowedData?.length ?? 0) > 1)
+                          Padding(
+                            padding:
+                                const EdgeInsets.only(bottom: DimensSizeV2.d12),
+                            child: SwitcherSegmentControls<int>(
+                              currentValue: data?.selectedValue ?? 0,
+                              values: [
+                                for (final value in data!.allowedData!)
+                                  PrimarySegmentControl(
+                                    state: SegmentControlState.normal,
+                                    title: LocaleKeys.wordsCount.plural(value),
+                                    value: value,
+                                    size: SegmentControlSize.medium,
+                                  ),
+                              ],
+                              onTabChanged: (v) {
+                                wm.onChangeTab(v);
+                              },
+                            ),
                           ),
-                          const SizedBox(height: DimensSizeV2.d12),
-                        ],
                         Stack(
                           alignment: Alignment.center,
                           children: [
