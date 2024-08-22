@@ -6,6 +6,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:nekoton_repository/nekoton_repository.dart' hide Message;
 import 'package:ui_components_lib/ui_components_lib.dart';
+import 'package:ui_components_lib/v2/widgets/widgets.dart';
 
 export 'rename_sheet_cubit.dart';
 
@@ -15,13 +16,14 @@ export 'rename_sheet_cubit.dart';
 ///
 /// Snackbar will contains 'seed' if [renameSeed] is true and 'key' if false.
 ModalRoute<void> showRenameSheet(
+  BuildContext context,
   PublicKey publicKey, {
   bool renameSeed = false,
   bool isCustodian = false,
 }) {
   return commonBottomSheetRoute(
+    titleTextStyle: context.themeStyleV2.textStyles.headingLarge,
     title: LocaleKeys.enterNewName.tr(),
-    useAppBackgroundColor: true,
     body: (_, __) => BlocProvider<RenameSheetCubit>(
       create: (_) => RenameSheetCubit(
         nekotonRepository: inject<NekotonRepository>(),
@@ -62,10 +64,10 @@ class _RenameSheetState extends State<RenameSheet> {
       mainAxisSize: MainAxisSize.min,
       separatorSize: DimensSize.d24,
       children: [
-        CommonInput(
-          controller: _nameController,
-          titleText: LocaleKeys.nameWord.tr(),
-          onSubmitted: (_) => _rename(context),
+        PrimaryTextField(
+          textEditingController: _nameController,
+          hintText: LocaleKeys.nameWord.tr(),
+          onSubmit: (_) => _rename(context),
         ),
         BlocConsumer<RenameSheetCubit, RenameSheetState>(
           listener: (context, state) {
@@ -92,11 +94,11 @@ class _RenameSheetState extends State<RenameSheet> {
             final isLoading =
                 state.maybeWhen(loading: () => true, orElse: () => false);
 
-            return CommonButton.primary(
-              fillWidth: true,
+            return PrimaryButton(
+              buttonShape: ButtonShape.pill,
               isLoading: isLoading,
               onPressed: () => _rename(context),
-              text: LocaleKeys.renameWord.tr(),
+              title: LocaleKeys.renameWord.tr(),
             );
           },
         ),

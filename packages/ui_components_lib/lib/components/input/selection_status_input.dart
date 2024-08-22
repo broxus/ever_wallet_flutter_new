@@ -32,7 +32,6 @@ class _SelectionStatusInputState extends State<SelectionStatusInput> {
 
   @override
   Widget build(BuildContext context) {
-    final colors = context.themeStyle.colors;
     final theme = context.themeStyleV2;
     Color? backgroundColor;
     Color? borderColor;

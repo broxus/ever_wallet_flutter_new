@@ -36,7 +36,6 @@ class _EnterSeedNameViewState extends State<EnterSeedNameView> {
 
   @override
   Widget build(BuildContext context) {
-    final colors = context.themeStyle.colors;
     final theme = context.themeStyleV2;
 
     return SafeArea(

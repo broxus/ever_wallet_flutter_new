@@ -63,7 +63,7 @@ class KeySettingsSheet extends StatelessWidget {
         CommonListTile(
           onPressed: () => Navigator.of(context)
             ..pop()
-            ..push(showRenameSheet(publicKey)),
+            ..push(showRenameSheet(context, publicKey)),
           titleText: LocaleKeys.renameWord.tr(),
           trailing: CommonIconWidget.svg(
             svg: Assets.images.edit.path,

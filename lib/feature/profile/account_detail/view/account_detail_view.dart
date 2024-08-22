@@ -149,7 +149,7 @@ class AccountDetailView extends StatelessWidget {
             buttonType: EverButtonType.ghost,
             color: colors.textSecondary,
             onPressed: () => Navigator.of(context).push(
-              showRenameSheet(custodian.publicKey, isCustodian: true),
+              showRenameSheet(context, custodian.publicKey, isCustodian: true),
             ),
           ),
         );

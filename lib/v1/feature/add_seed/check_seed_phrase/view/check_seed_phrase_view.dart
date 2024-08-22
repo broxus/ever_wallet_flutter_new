@@ -5,7 +5,6 @@ import 'package:app/generated/generated.dart';
 import 'package:app/v1/feature/add_seed/check_seed_phrase/check_seed_phrase.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:ui_components_lib/ui_components_lib.dart';
 import 'package:ui_components_lib/v2/ui_components_lib_v2.dart';
 
 const _errorDisplayDuration = Duration(seconds: 2);
@@ -17,7 +16,6 @@ class CheckSeedPhraseView extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final colors = context.themeStyle.colors;
     final theme = context.themeStyleV2;
 
     return SafeArea(

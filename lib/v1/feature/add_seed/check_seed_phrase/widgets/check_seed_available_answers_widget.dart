@@ -1,5 +1,4 @@
 import 'package:app/v1/feature/add_seed/check_seed_phrase/check_seed_phrase.dart';
-import 'package:dotted_border/dotted_border.dart';
 import 'package:flutter/material.dart';
 import 'package:ui_components_lib/ui_components_lib.dart';
 import 'package:ui_components_lib/v2/ui_components_lib_v2.dart';
