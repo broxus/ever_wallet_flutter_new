@@ -57,8 +57,12 @@ class ProfileView extends StatelessWidget {
               postfixIcon: LucideIcons.share,
               onPressed: currentSeed == null
                   ? null
-                  : () => Navigator.of(context, rootNavigator: true)
-                      .push(exportSeedSheetRoute(currentSeed!.publicKey)),
+                  : () => Navigator.of(context, rootNavigator: true).push(
+                        exportSeedSheetRoute(
+                          context,
+                          currentSeed!.publicKey,
+                        ),
+                      ),
             ),
             const SizedBox(height: DimensSizeV2.d32),
             ShapedContainerColumn(

@@ -11,12 +11,18 @@ class SecureTextField extends StatefulWidget {
     this.isInitObscure = true,
     this.textEditingController,
     this.textInputAction,
+    this.onSubmit,
+    this.focusNode,
+    this.validator,
   });
 
   final String? hintText;
   final bool isInitObscure;
   final TextEditingController? textEditingController;
   final TextInputAction? textInputAction;
+  final ValueChanged<String?>? onSubmit;
+  final FocusNode? focusNode;
+  final FormFieldValidator<String>? validator;
 
   @override
   State<SecureTextField> createState() => _SecureTextFieldState();
@@ -39,6 +45,9 @@ class _SecureTextFieldState extends State<SecureTextField> {
       isObscureText: _isObscure,
       textEditingController: widget.textEditingController,
       textInputAction: widget.textInputAction,
+      onSubmit: widget.onSubmit,
+      focusNode: widget.focusNode,
+      validator: widget.validator,
     );
   }
 

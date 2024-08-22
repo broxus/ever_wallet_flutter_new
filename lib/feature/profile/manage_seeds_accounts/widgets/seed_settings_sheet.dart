@@ -66,7 +66,7 @@ class SeedSettingsSheet extends StatelessWidget {
         CommonListTile(
           onPressed: () => Navigator.of(context)
             ..pop()
-            ..push(exportSeedSheetRoute(publicKey)),
+            ..push(exportSeedSheetRoute(context, publicKey)),
           titleText: LocaleKeys.exportWord.tr(),
           trailing: CommonIconWidget.svg(
             svg: Assets.images.exportFill.path,
@@ -76,7 +76,7 @@ class SeedSettingsSheet extends StatelessWidget {
         CommonListTile(
           onPressed: () => Navigator.of(context)
             ..pop()
-            ..push(changeSeedPasswordSheetRoute(publicKey)),
+            ..push(changeSeedPasswordSheetRoute(context, publicKey)),
           titleText: LocaleKeys.changePassword.tr(),
           trailing: CommonIconWidget.svg(
             svg: Assets.images.lock.path,
