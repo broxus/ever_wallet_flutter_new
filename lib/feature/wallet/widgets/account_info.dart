@@ -8,17 +8,26 @@ class AccountInfo extends StatelessWidget {
   const AccountInfo({
     required this.account,
     this.color,
+    this.subtitle,
     super.key,
   });
 
   final KeyAccount account;
   final Color? color;
+  final Widget? subtitle;
 
   @override
   Widget build(BuildContext context) {
     final theme = context.themeStyleV2;
     final address = account.address.toEllipseString();
     final pk = account.publicKey.toEllipseString();
+
+    final defautSubtitle = Text(
+      '$address • $pk',
+      style: theme.textStyles.labelXSmall.copyWith(
+        color: theme.colors.content3,
+      ),
+    );
 
     return ShapedContainerRow(
       color: color ?? theme.colors.background1,
@@ -46,12 +55,7 @@ class AccountInfo extends StatelessWidget {
                 softWrap: false,
                 maxLines: 1,
               ),
-              Text(
-                '$address • $pk',
-                style: theme.textStyles.labelXSmall.copyWith(
-                  color: theme.colors.content3,
-                ),
-              ),
+              subtitle ?? defautSubtitle,
             ],
           ),
         ),

@@ -65,9 +65,7 @@ class TokenWalletSendPage extends StatelessWidget {
         comment: comment,
         publicKey: publicKey,
         nekotonRepository: inject(),
-        currenciesService: inject(),
         messengerService: inject(),
-        assetsService: inject(),
         resultMessage:
             resultMessage ?? LocaleKeys.transactionSentSuccessfully.tr(),
       )..add(const TokenWalletSendEvent.prepare()),

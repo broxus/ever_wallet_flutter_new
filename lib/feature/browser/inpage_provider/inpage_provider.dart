@@ -1137,7 +1137,9 @@ class InpageProvider extends ProviderApi {
         recipient: repackedRecipient,
         amount: amount,
         bounce: input.bounce,
-        payload: body,
+        payload: input.payload != null
+            ? nr.FunctionCall.fromJson(input.payload!.toJson())
+            : null,
         knownPayload: knownPayload,
       );
 
@@ -1237,7 +1239,9 @@ class InpageProvider extends ProviderApi {
         recipient: repackedRecipient,
         amount: amount,
         bounce: input.bounce,
-        payload: body,
+        payload: input.payload != null
+            ? nr.FunctionCall.fromJson(input.payload!.toJson())
+            : null,
         knownPayload: knownPayload,
       );
 

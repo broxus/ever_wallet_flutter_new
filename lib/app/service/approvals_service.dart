@@ -198,7 +198,7 @@ class BrowserApprovalsService {
     required Address recipient,
     required BigInt amount,
     required bool bounce,
-    required String? payload,
+    required FunctionCall? payload,
     required KnownPayload? knownPayload,
   }) async {
     final completer = Completer<(PublicKey, String)>();
