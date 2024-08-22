@@ -111,7 +111,7 @@ class DimensElevation {
 }
 
 // ignore_for_file: unused_element
-extension on num {
+extension ScreenutilExtention on num {
   /// Width platform
   double get wp => isPhoneL ? w : toDouble();
 

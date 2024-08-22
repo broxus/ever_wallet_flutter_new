@@ -13,7 +13,7 @@ class CurrencyTextInputFormatter extends TextInputFormatter {
     this.allowNegative = false,
     this.includeTicker = false,
   }) {
-    _tickerString = includeTicker ? ' ${currency.code}' : '';
+    _tickerString = includeTicker ? ' ${currency.isoCode}' : '';
     _fullRegExp = createRegExp(
       currency: currency,
       allowNegative: allowNegative,
@@ -44,9 +44,9 @@ class CurrencyTextInputFormatter extends TextInputFormatter {
     required bool allowNegative,
     required bool includeTicker,
   }) {
-    final scale = currency.scale;
+    final scale = currency.decimalDigits;
     final decimalSeparator = scale > 0 ? currency.decimalSeparator : '';
-    final tickerString = includeTicker ? ' ${currency.code}' : '';
+    final tickerString = includeTicker ? ' ${currency.isoCode}' : '';
 
     final minusSignExp = allowNegative ? '(?<minus>-?)' : '(?<minus>)';
     const integerExp = '(?<integer>[0-9]*)';

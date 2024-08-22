@@ -161,8 +161,9 @@ class StakingView extends StatelessWidget {
             path: imagePath,
             size: DimensSize.d16,
           ),
-          titleText:
-              LocaleKeys.tokenAmount.tr(args: [currentBalance.currency.code]),
+          titleText: LocaleKeys.tokenAmount.tr(
+            args: [currentBalance.currency.isoCode],
+          ),
           controller: inputController,
           hintText: '0.0',
           inputFormatters: [
@@ -195,7 +196,7 @@ class StakingView extends StatelessWidget {
           titleText: LocaleKeys.exchangeRate.tr(),
           subtitleText:
               // ignore: lines_longer_than_80_chars, no-magic-number, binary-expression-operand-order
-              '1 ${currentBalance.currency.code} ≈ ${(1 * (exchangeRate ?? 1)).toStringAsFixed(4)} ${receiveCurrency.code}',
+              '1 ${currentBalance.currency.isoCode} ≈ ${(1 * (exchangeRate ?? 1)).toStringAsFixed(4)} ${receiveCurrency.isoCode}',
         ),
         CommonListTile(
           invertTitleSubtitleStyles: true,

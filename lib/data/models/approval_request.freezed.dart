@@ -51,7 +51,7 @@ mixin _$ApprovalRequest {
             Address recipient,
             @amountJsonConverter BigInt amount,
             bool bounce,
-            String? payload,
+            FunctionCall? payload,
             KnownPayload? knownPayload,
             Completer<(PublicKey, String)> completer)
         sendMessage,
@@ -86,7 +86,7 @@ mixin _$ApprovalRequest {
             Address recipient,
             @amountJsonConverter BigInt amount,
             bool bounce,
-            String? payload,
+            FunctionCall? payload,
             KnownPayload? knownPayload,
             Completer<(PublicKey, String)> completer)?
         sendMessage,
@@ -121,7 +121,7 @@ mixin _$ApprovalRequest {
             Address recipient,
             @amountJsonConverter BigInt amount,
             bool bounce,
-            String? payload,
+            FunctionCall? payload,
             KnownPayload? knownPayload,
             Completer<(PublicKey, String)> completer)?
         sendMessage,
@@ -334,7 +334,7 @@ class _$RequestPermissionsImpl implements _RequestPermissions {
             Address recipient,
             @amountJsonConverter BigInt amount,
             bool bounce,
-            String? payload,
+            FunctionCall? payload,
             KnownPayload? knownPayload,
             Completer<(PublicKey, String)> completer)
         sendMessage,
@@ -372,7 +372,7 @@ class _$RequestPermissionsImpl implements _RequestPermissions {
             Address recipient,
             @amountJsonConverter BigInt amount,
             bool bounce,
-            String? payload,
+            FunctionCall? payload,
             KnownPayload? knownPayload,
             Completer<(PublicKey, String)> completer)?
         sendMessage,
@@ -410,7 +410,7 @@ class _$RequestPermissionsImpl implements _RequestPermissions {
             Address recipient,
             @amountJsonConverter BigInt amount,
             bool bounce,
-            String? payload,
+            FunctionCall? payload,
             KnownPayload? knownPayload,
             Completer<(PublicKey, String)> completer)?
         sendMessage,
@@ -649,7 +649,7 @@ class _$ChangeAccountImpl implements _ChangeAccount {
             Address recipient,
             @amountJsonConverter BigInt amount,
             bool bounce,
-            String? payload,
+            FunctionCall? payload,
             KnownPayload? knownPayload,
             Completer<(PublicKey, String)> completer)
         sendMessage,
@@ -688,7 +688,7 @@ class _$ChangeAccountImpl implements _ChangeAccount {
             Address recipient,
             @amountJsonConverter BigInt amount,
             bool bounce,
-            String? payload,
+            FunctionCall? payload,
             KnownPayload? knownPayload,
             Completer<(PublicKey, String)> completer)?
         sendMessage,
@@ -727,7 +727,7 @@ class _$ChangeAccountImpl implements _ChangeAccount {
             Address recipient,
             @amountJsonConverter BigInt amount,
             bool bounce,
-            String? payload,
+            FunctionCall? payload,
             KnownPayload? knownPayload,
             Completer<(PublicKey, String)> completer)?
         sendMessage,
@@ -959,7 +959,7 @@ class _$AddTip3TokenImpl implements _AddTip3Token {
             Address recipient,
             @amountJsonConverter BigInt amount,
             bool bounce,
-            String? payload,
+            FunctionCall? payload,
             KnownPayload? knownPayload,
             Completer<(PublicKey, String)> completer)
         sendMessage,
@@ -997,7 +997,7 @@ class _$AddTip3TokenImpl implements _AddTip3Token {
             Address recipient,
             @amountJsonConverter BigInt amount,
             bool bounce,
-            String? payload,
+            FunctionCall? payload,
             KnownPayload? knownPayload,
             Completer<(PublicKey, String)> completer)?
         sendMessage,
@@ -1035,7 +1035,7 @@ class _$AddTip3TokenImpl implements _AddTip3Token {
             Address recipient,
             @amountJsonConverter BigInt amount,
             bool bounce,
-            String? payload,
+            FunctionCall? payload,
             KnownPayload? knownPayload,
             Completer<(PublicKey, String)> completer)?
         sendMessage,
@@ -1258,7 +1258,7 @@ class _$SignDataImpl implements _SignData {
             Address recipient,
             @amountJsonConverter BigInt amount,
             bool bounce,
-            String? payload,
+            FunctionCall? payload,
             KnownPayload? knownPayload,
             Completer<(PublicKey, String)> completer)
         sendMessage,
@@ -1296,7 +1296,7 @@ class _$SignDataImpl implements _SignData {
             Address recipient,
             @amountJsonConverter BigInt amount,
             bool bounce,
-            String? payload,
+            FunctionCall? payload,
             KnownPayload? knownPayload,
             Completer<(PublicKey, String)> completer)?
         sendMessage,
@@ -1334,7 +1334,7 @@ class _$SignDataImpl implements _SignData {
             Address recipient,
             @amountJsonConverter BigInt amount,
             bool bounce,
-            String? payload,
+            FunctionCall? payload,
             KnownPayload? knownPayload,
             Completer<(PublicKey, String)> completer)?
         sendMessage,
@@ -1557,7 +1557,7 @@ class _$EncryptDataImpl implements _EncryptData {
             Address recipient,
             @amountJsonConverter BigInt amount,
             bool bounce,
-            String? payload,
+            FunctionCall? payload,
             KnownPayload? knownPayload,
             Completer<(PublicKey, String)> completer)
         sendMessage,
@@ -1595,7 +1595,7 @@ class _$EncryptDataImpl implements _EncryptData {
             Address recipient,
             @amountJsonConverter BigInt amount,
             bool bounce,
-            String? payload,
+            FunctionCall? payload,
             KnownPayload? knownPayload,
             Completer<(PublicKey, String)> completer)?
         sendMessage,
@@ -1633,7 +1633,7 @@ class _$EncryptDataImpl implements _EncryptData {
             Address recipient,
             @amountJsonConverter BigInt amount,
             bool bounce,
-            String? payload,
+            FunctionCall? payload,
             KnownPayload? knownPayload,
             Completer<(PublicKey, String)> completer)?
         sendMessage,
@@ -1866,7 +1866,7 @@ class _$DecryptDataImpl implements _DecryptData {
             Address recipient,
             @amountJsonConverter BigInt amount,
             bool bounce,
-            String? payload,
+            FunctionCall? payload,
             KnownPayload? knownPayload,
             Completer<(PublicKey, String)> completer)
         sendMessage,
@@ -1904,7 +1904,7 @@ class _$DecryptDataImpl implements _DecryptData {
             Address recipient,
             @amountJsonConverter BigInt amount,
             bool bounce,
-            String? payload,
+            FunctionCall? payload,
             KnownPayload? knownPayload,
             Completer<(PublicKey, String)> completer)?
         sendMessage,
@@ -1943,7 +1943,7 @@ class _$DecryptDataImpl implements _DecryptData {
             Address recipient,
             @amountJsonConverter BigInt amount,
             bool bounce,
-            String? payload,
+            FunctionCall? payload,
             KnownPayload? knownPayload,
             Completer<(PublicKey, String)> completer)?
         sendMessage,
@@ -2197,7 +2197,7 @@ class _$CallContractMethodImpl implements _CallContractMethod {
             Address recipient,
             @amountJsonConverter BigInt amount,
             bool bounce,
-            String? payload,
+            FunctionCall? payload,
             KnownPayload? knownPayload,
             Completer<(PublicKey, String)> completer)
         sendMessage,
@@ -2235,7 +2235,7 @@ class _$CallContractMethodImpl implements _CallContractMethod {
             Address recipient,
             @amountJsonConverter BigInt amount,
             bool bounce,
-            String? payload,
+            FunctionCall? payload,
             KnownPayload? knownPayload,
             Completer<(PublicKey, String)> completer)?
         sendMessage,
@@ -2274,7 +2274,7 @@ class _$CallContractMethodImpl implements _CallContractMethod {
             Address recipient,
             @amountJsonConverter BigInt amount,
             bool bounce,
-            String? payload,
+            FunctionCall? payload,
             KnownPayload? knownPayload,
             Completer<(PublicKey, String)> completer)?
         sendMessage,
@@ -2372,12 +2372,13 @@ abstract class _$$SendMessageImplCopyWith<$Res>
       Address recipient,
       @amountJsonConverter BigInt amount,
       bool bounce,
-      String? payload,
+      FunctionCall? payload,
       KnownPayload? knownPayload,
       Completer<(PublicKey, String)> completer});
 
   $AddressCopyWith<$Res> get sender;
   $AddressCopyWith<$Res> get recipient;
+  $FunctionCallCopyWith<$Res>? get payload;
   $KnownPayloadCopyWith<$Res>? get knownPayload;
 }
 
@@ -2425,7 +2426,7 @@ class __$$SendMessageImplCopyWithImpl<$Res>
       payload: freezed == payload
           ? _value.payload
           : payload // ignore: cast_nullable_to_non_nullable
-              as String?,
+              as FunctionCall?,
       knownPayload: freezed == knownPayload
           ? _value.knownPayload
           : knownPayload // ignore: cast_nullable_to_non_nullable
@@ -2450,6 +2451,18 @@ class __$$SendMessageImplCopyWithImpl<$Res>
   $AddressCopyWith<$Res> get recipient {
     return $AddressCopyWith<$Res>(_value.recipient, (value) {
       return _then(_value.copyWith(recipient: value));
+    });
+  }
+
+  @override
+  @pragma('vm:prefer-inline')
+  $FunctionCallCopyWith<$Res>? get payload {
+    if (_value.payload == null) {
+      return null;
+    }
+
+    return $FunctionCallCopyWith<$Res>(_value.payload!, (value) {
+      return _then(_value.copyWith(payload: value));
     });
   }
 
@@ -2491,7 +2504,7 @@ class _$SendMessageImpl implements _SendMessage {
   @override
   final bool bounce;
   @override
-  final String? payload;
+  final FunctionCall? payload;
   @override
   final KnownPayload? knownPayload;
   @override
@@ -2564,7 +2577,7 @@ class _$SendMessageImpl implements _SendMessage {
             Address recipient,
             @amountJsonConverter BigInt amount,
             bool bounce,
-            String? payload,
+            FunctionCall? payload,
             KnownPayload? knownPayload,
             Completer<(PublicKey, String)> completer)
         sendMessage,
@@ -2603,7 +2616,7 @@ class _$SendMessageImpl implements _SendMessage {
             Address recipient,
             @amountJsonConverter BigInt amount,
             bool bounce,
-            String? payload,
+            FunctionCall? payload,
             KnownPayload? knownPayload,
             Completer<(PublicKey, String)> completer)?
         sendMessage,
@@ -2642,7 +2655,7 @@ class _$SendMessageImpl implements _SendMessage {
             Address recipient,
             @amountJsonConverter BigInt amount,
             bool bounce,
-            String? payload,
+            FunctionCall? payload,
             KnownPayload? knownPayload,
             Completer<(PublicKey, String)> completer)?
         sendMessage,
@@ -2712,7 +2725,7 @@ abstract class _SendMessage implements ApprovalRequest {
           required final Address recipient,
           @amountJsonConverter required final BigInt amount,
           required final bool bounce,
-          required final String? payload,
+          required final FunctionCall? payload,
           required final KnownPayload? knownPayload,
           required final Completer<(PublicKey, String)> completer}) =
       _$SendMessageImpl;
@@ -2724,7 +2737,7 @@ abstract class _SendMessage implements ApprovalRequest {
   @amountJsonConverter
   BigInt get amount;
   bool get bounce;
-  String? get payload;
+  FunctionCall? get payload;
   KnownPayload? get knownPayload;
   @override
   Completer<(PublicKey, String)> get completer;

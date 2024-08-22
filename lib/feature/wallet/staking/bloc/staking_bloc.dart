@@ -209,7 +209,7 @@ class StakingBloc extends Bloc<StakingBlocEvent, StakingBlocState> {
   Fixed get _currentValue {
     return Fixed.fromNum(
       num.tryParse(_inputController.text) ?? 0.0,
-      scale: _currentCurrency.scale,
+      scale: _currentCurrency.decimalDigits,
     );
   }
 
@@ -326,7 +326,7 @@ class StakingBloc extends Bloc<StakingBlocEvent, StakingBlocState> {
             message: LocaleKeys.stakingNotEnoughBalanceToStake.tr(
               args: [
                 comissionMoney.formatImproved(),
-                comissionMoney.currency.code,
+                comissionMoney.currency.isoCode,
               ],
             ),
           ),

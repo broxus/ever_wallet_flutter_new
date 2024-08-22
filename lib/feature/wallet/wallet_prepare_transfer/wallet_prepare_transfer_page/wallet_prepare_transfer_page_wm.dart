@@ -143,7 +143,7 @@ class WalletPrepareTransferPageWidgetModel extends CustomWidgetModel<
 
     final amnt = Fixed.parse(
       amountController.text.trim(),
-      scale: _selectedAsset?.balance.scale,
+      scale: _selectedAsset?.balance.decimalDigits,
     );
 
     _goNext(addr, amnt);
@@ -169,7 +169,7 @@ class WalletPrepareTransferPageWidgetModel extends CustomWidgetModel<
           LocaleKeys.sendingNotEnoughBalanceToSend.tr(
             args: [
               comission.formatImproved(),
-              comission.currency.code,
+              comission.currency.isoCode,
             ],
           ),
         );

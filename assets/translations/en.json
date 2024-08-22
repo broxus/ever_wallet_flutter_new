@@ -522,5 +522,9 @@
   "untrastedTokenWarning": "This token is not published in the official assets repository. Add it with caution if you trust the source.",
   "phishingExplicitWarning":"Token has the symbol from the trusted list but a different root contract address. Be careful: it may be a phishing attempt.",
   "phishingSameSymbolWarning":"You already have a token with the same symbol. Be careful: it may be a phishing attempt.",
-  "phishingSuggestionWarning":"You have already added a token with the same symbol before, however the new one is in the official assets repository. This may be a new version and you might consider deleting the previous one."
+  "phishingSuggestionWarning":"You have already added a token with the same symbol before, however the new one is in the official assets repository. This may be a new version and you might consider deleting the previous one.",
+  "expand": "Expand",
+  "collapse": "Collapse",
+  "metadata": "Metadata",
+  "contract": "Contract"
 }

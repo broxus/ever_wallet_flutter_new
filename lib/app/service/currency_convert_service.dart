@@ -22,8 +22,8 @@ class CurrencyConvertService {
     Currency.create('USD', 5, symbol: 'USD', pattern: moneyPattern(5)),
   ];
 
-  /// Returns [Currency.code] of currency for real world
-  String get currentFiatCode => fiatSupportedMoney.first.code;
+  /// Returns [Currency.isoCode] of currency for real world
+  String get currentFiatCode => fiatSupportedMoney.first.isoCode;
 
   /// Convert amount [usdAmount] in USD currency to [currency] (aka USD, euro,
   /// won etc), if [currency] is null, then [currentFiatCode] will be used.
