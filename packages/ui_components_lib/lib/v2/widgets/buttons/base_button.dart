@@ -154,12 +154,22 @@ abstract class BaseButton extends StatelessWidget {
 
   ButtonStyle _getButtonStyle(ThemeStyleV2 themeStyle, AppButtonStyle style) {
     return ButtonStyle(
+      // TODO(MolochkoAndrew): update
+      //ignore: deprecated_member_use
       elevation: MaterialStateProperty.all(0),
+      // TODO(MolochkoAndrew): update
+      //ignore: deprecated_member_use
       textStyle: MaterialStateProperty.resolveWith<TextStyle>(
+        // TODO(MolochkoAndrew): update
+        //ignore: deprecated_member_use
         (Set<MaterialState> states) =>
             _getTextStyle(states, themeStyle.textStyles, buttonSize),
       ),
+      // TODO(MolochkoAndrew): update
+      //ignore: deprecated_member_use
       shape: MaterialStateProperty.resolveWith<RoundedRectangleBorder>(
+        // TODO(MolochkoAndrew): update
+        //ignore: deprecated_member_use
         (Set<MaterialState> states) => _getBorder(
           states,
           style,
@@ -167,21 +177,35 @@ abstract class BaseButton extends StatelessWidget {
           buttonSize,
         ),
       ),
+      // TODO(MolochkoAndrew): update
+      //ignore: deprecated_member_use
       backgroundColor: MaterialStateProperty.resolveWith<Color>(
+        // TODO(MolochkoAndrew): update
+        //ignore: deprecated_member_use
         (Set<MaterialState> states) => _getColorBackground(states, style),
       ),
+      // TODO(MolochkoAndrew): update
+      //ignore: deprecated_member_use
       overlayColor: MaterialStateProperty.resolveWith<Color>(
+        // TODO(MolochkoAndrew): update
+        //ignore: deprecated_member_use
         (Set<MaterialState> states) => _getColorOverlay(
           states,
           style,
         ),
       ),
+      // TODO(MolochkoAndrew): update
+      //ignore: deprecated_member_use
       foregroundColor: MaterialStateProperty.resolveWith<Color?>(
+        // TODO(MolochkoAndrew): update
+        //ignore: deprecated_member_use
         (Set<MaterialState> states) => _getColorForeground(
           states,
           style,
         ),
       ),
+      // TODO(MolochkoAndrew): update
+      //ignore: deprecated_member_use
       padding: MaterialStateProperty.resolveWith(
         (_) => EdgeInsets.all(
           _paddingByButtonSize,
@@ -191,16 +215,22 @@ abstract class BaseButton extends StatelessWidget {
   }
 
   TextStyle _getTextStyle(
+    // TODO(MolochkoAndrew): update
+    //ignore: deprecated_member_use
     Set<MaterialState> states,
     TextStylesV2 styles,
     ButtonSize size,
   ) {
     final color = styles.labelMedium.color;
+    // TODO(MolochkoAndrew): update
+    //ignore: deprecated_member_use
     if (states.contains(MaterialState.pressed)) {
       return _getTextStyleBySize(styles).copyWith(
         color: color?.withOpacity(OpacV2.opac80),
       );
     }
+    // TODO(MolochkoAndrew): update
+    //ignore: deprecated_member_use
     if (states.contains(MaterialState.disabled)) {
       return _getTextStyleBySize(styles).copyWith(
         color: color?.withOpacity(OpacV2.opac50),
@@ -210,6 +240,8 @@ abstract class BaseButton extends StatelessWidget {
   }
 
   RoundedRectangleBorder _getBorder(
+    // TODO(MolochkoAndrew): update
+    //ignore: deprecated_member_use
     Set<MaterialState> states,
     AppButtonStyle style,
     ButtonShape shape,
@@ -217,6 +249,8 @@ abstract class BaseButton extends StatelessWidget {
   ) {
     return RoundedRectangleBorder(
       side: BorderSide(
+        // TODO(MolochkoAndrew): update
+        //ignore: deprecated_member_use
         color: states.contains(MaterialState.focused)
             ? style.borderColor
             : Colors.transparent,
@@ -226,12 +260,18 @@ abstract class BaseButton extends StatelessWidget {
     );
   }
 
+  // TODO(MolochkoAndrew): update
+  //ignore: deprecated_member_use
   Color _getColorBackground(Set<MaterialState> states, AppButtonStyle style) {
+    // TODO(MolochkoAndrew): update
+    //ignore: deprecated_member_use
     if (states.contains(MaterialState.pressed)) {
       return style.backgroundColor.withOpacity(
         style.backgroundColor.opacity * OpacV2.opac80,
       );
     }
+    // TODO(MolochkoAndrew): update
+    //ignore: deprecated_member_use
     if (states.contains(MaterialState.disabled)) {
       return style.backgroundColor
           .withOpacity(style.backgroundColor.opacity * OpacV2.opac50);
@@ -240,16 +280,24 @@ abstract class BaseButton extends StatelessWidget {
     return style.backgroundColor;
   }
 
+  // TODO(MolochkoAndrew): update
+  //ignore: deprecated_member_use
   Color _getColorForeground(Set<MaterialState> states, AppButtonStyle style) {
+    // TODO(MolochkoAndrew): update
+    //ignore: deprecated_member_use
     if (states.contains(MaterialState.pressed)) {
       return style.iconColor.withOpacity(OpacV2.opac80);
     }
+    // TODO(MolochkoAndrew): update
+    //ignore: deprecated_member_use
     if (states.contains(MaterialState.disabled)) {
       return style.iconColor.withOpacity(OpacV2.opac50);
     }
     return style.iconColor;
   }
 
+  // TODO(MolochkoAndrew): update
+  //ignore: deprecated_member_use
   Color _getColorOverlay(Set<MaterialState> states, AppButtonStyle style) =>
       style.backgroundColor
           .withOpacity(style.backgroundColor.opacity * OpacV2.opac80);

@@ -33,6 +33,7 @@ dependencies:
   flutter_screenutil: ^5.9.3
   flutter_svg: ^2.0.10+1
   freezed_annotation: ^2.4.1
+  frontend_server_client: ^4.0.0
   get_it: ^7.7.0
   go_router: ^14.0.1
   hive_flutter: ^1.1.0
@@ -45,12 +46,16 @@ dependencies:
   logging: 1.2.0
   lucide_icons_flutter: ^1.1.2
   mobile_scanner: 3.4.1
-  money2: ^4.0.0
-  money2_improver: ^1.3.1
-  nekoton_repository: 0.36.0-dev.6
+  money2: ^5.2.1
+  money2_improver:
+    git:
+      url: https://github.com/broxus/money2_improver
+  nekoton_repository:
+    git:
+      url: https://github.com/broxus/nekoton_repository.git
+      ref: update-dependencies
   nekoton_webview: 0.1.8-dev.0
   ntp: ^2.0.0
-  #  package_info_plus: ^4.1.0
   package_info_plus: ^8.0.0
   path_provider: ^2.1.3
   permission_handler: ^11.3.1
@@ -77,7 +82,7 @@ dev_dependencies:
     git:
       url: https://github.com/broxus/flutter_templates.git
       ref: main
-  build_runner: ^2.4.9
+  build_runner: ^2.4.12
   custom_lint: ^0.5.3
   datetime_avoid_lint:
     path: packages/datetime_avoid_lint
@@ -92,7 +97,7 @@ dev_dependencies:
   injectable_generator: ^2.6.1
   integration_test:
     sdk: flutter
-  intl: ^0.18.1
+  intl: ^0.19.0
   json_serializable: ^6.8.0
   melos: ^6.0.0
   mocktail: ^1.0.3

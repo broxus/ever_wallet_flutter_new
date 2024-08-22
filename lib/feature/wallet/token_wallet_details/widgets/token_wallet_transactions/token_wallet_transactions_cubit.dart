@@ -89,6 +89,7 @@ class TokenWalletTransactionsCubit extends Cubit<TokenWalletTransactionsState> {
     _preloadTransactions(lastPrevLt);
   }
 
+  // ignore: use_late_for_private_fields_and_variables
   Currency? _cachedCurrency;
 
   /// List of ordinary transactions and flag that sign that transactions was
