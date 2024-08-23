@@ -1,5 +1,3 @@
-import 'dart:convert';
-
 import 'package:app/app/router/app_route.dart';
 import 'package:app/app/router/routs/add_seed/add_seed.dart';
 import 'package:app/core/wm/custom_wm.dart';
@@ -53,15 +51,17 @@ class ImportWalletScreenWidgetModel
       final words = screenState.value.data?.words;
 
       if (words != null && words.isNotEmpty) {
+        final phrase = words.join(' ');
+
         await deriveFromPhrase(
-          phrase: words.join(' '),
+          phrase: phrase,
           mnemonicType: defaultMnemonicType,
         );
         if (!context.mounted) return;
         context.goFurther(
           AppRoute.createSeedPassword.pathWithData(
             queryParameters: {
-              addSeedPhraseQueryParam: jsonEncode(words),
+              addSeedPhraseQueryParam: phrase,
             },
           ),
           preserveQueryParams: true,
