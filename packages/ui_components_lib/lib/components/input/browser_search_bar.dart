@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:ui_components_lib/ui_components_lib.dart';
+import 'package:ui_components_lib/v2/dimens_v2.dart';
 
 class BrowserSearchBarInput extends StatefulWidget {
   const BrowserSearchBarInput({
@@ -72,6 +73,10 @@ class _BrowserSearchBarInputState extends State<BrowserSearchBarInput> {
     final colors = themeStyle.colors;
 
     final textStyle = themeStyle.textStyles.labelMedium.copyWith(
+      color: colors.content0,
+    );
+
+    final hintStyle = themeStyle.textStyles.labelMedium.copyWith(
       color: colors.content3,
     );
 
@@ -103,6 +108,7 @@ class _BrowserSearchBarInputState extends State<BrowserSearchBarInput> {
                   enabledBorderColor: Colors.transparent,
                   focusedBorderColor: Colors.transparent,
                   textStyle: textStyle,
+                  hintStyle: hintStyle,
                   textAlign: _focused ? TextAlign.start : TextAlign.center,
                   prefixIconConstraints: prefixIconDecoration,
                   cursorColor: colors.primaryA,
@@ -115,10 +121,24 @@ class _BrowserSearchBarInputState extends State<BrowserSearchBarInput> {
               ],
             ),
           ),
-          if (_focused)
-            CommonButton.ghost(
-              text: widget.cancelText,
-              onPressed: _onCancel,
+          if (_focused && widget.cancelText != null)
+            GestureDetector(
+              behavior: HitTestBehavior.opaque,
+              onTap: _onCancel,
+              child: Padding(
+                padding: const EdgeInsets.only(
+                  top: DimensSizeV2.d10,
+                  bottom: DimensSizeV2.d10,
+                  left: DimensSizeV2.d18,
+                  right: DimensSizeV2.d6,
+                ),
+                child: Center(
+                  child: Text(
+                    widget.cancelText!,
+                    style: themeStyle.textStyles.labelMedium,
+                  ),
+                ),
+              ),
             ),
         ],
       ),
