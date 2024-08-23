@@ -1,5 +1,3 @@
-import 'dart:convert';
-
 import 'package:app/app/router/router.dart';
 import 'package:app/feature/add_seed/enter_seed_phrase/cubit/enter_seed_phrase_cubit.dart';
 import 'package:app/feature/add_seed/enter_seed_phrase/view/enter_seed_phrase_view.dart';
@@ -31,7 +29,9 @@ class EnterSeedPhrasePage extends StatelessWidget {
           if (route != AppRoute.createSeedPassword) {
             context.goFurther(
               AppRoute.createSeedPassword.pathWithData(
-                queryParameters: {addSeedPhraseQueryParam: jsonEncode(phrase)},
+                queryParameters: {
+                  addSeedPhraseQueryParam: phrase,
+                },
               ),
               preserveQueryParams: true,
             );
