@@ -37,6 +37,7 @@ Future<T?> showCommonBottomSheet<T>({
   bool useAppBackgroundColor = false,
   bool centerTitle = false,
   TextStyle? titleTextStyle,
+  bool centerSubtitle = false,
 }) {
   return showCustomModalBottomSheet<T>(
     expand: expand,
@@ -56,6 +57,7 @@ Future<T?> showCommonBottomSheet<T>({
       subtitle: subtitle,
       title: title,
       centerTitle: centerTitle,
+      centerSubtitle: centerSubtitle,
       body: body,
       titleTextStyle: titleTextStyle,
     ),
@@ -89,6 +91,7 @@ ModalSheetRoute<T> commonBottomSheetRoute<T>({
   bool useAppBackgroundColor = false,
   bool centerTitle = false,
   TextStyle? titleTextStyle,
+  bool centerSubtitle = false,
 }) {
   return ModalSheetRoute<T>(
     builder: (_) => CommonBottomSheetWidget(
@@ -101,6 +104,7 @@ ModalSheetRoute<T> commonBottomSheetRoute<T>({
       body: body,
       centerTitle: centerTitle,
       titleTextStyle: titleTextStyle,
+      centerSubtitle: centerSubtitle,
     ),
     expanded: expand,
     isDismissible: dismissible,
@@ -121,6 +125,7 @@ class CommonBottomSheetWidget extends StatelessWidget {
     required this.openFullScreen,
     required this.useAppBackgroundColor,
     required this.centerTitle,
+    required this.centerSubtitle,
     this.title,
     this.subtitle,
     this.titleTextStyle,
@@ -136,6 +141,7 @@ class CommonBottomSheetWidget extends StatelessWidget {
   final bool useAppBackgroundColor;
   final bool centerTitle;
   final TextStyle? titleTextStyle;
+  final bool centerSubtitle;
 
   @override
   Widget build(BuildContext context) {
@@ -175,6 +181,7 @@ class CommonBottomSheetWidget extends StatelessWidget {
                 ),
             child: Text(
               subtitle!,
+              textAlign: centerSubtitle ? TextAlign.center : TextAlign.left,
               style: theme.textStyles.paragraphMedium.copyWith(
                 color: theme.colors.content1,
               ),

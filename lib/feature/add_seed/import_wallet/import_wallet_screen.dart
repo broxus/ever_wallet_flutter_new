@@ -38,85 +38,119 @@ class ImportWalletScreen
           final isPasted = data?.isPasted ?? false;
           return SafeArea(
             minimum: const EdgeInsets.only(bottom: DimensSize.d24),
-            child: Padding(
-              padding: const EdgeInsets.symmetric(horizontal: DimensSize.d16),
-              child: Column(
-                children: [
-                  Image.asset(
-                    'assets/images/seed_phrase_icon.png',
-                    width: DimensSizeV2.d56,
-                    height: DimensSizeV2.d56,
-                  ),
-                  const SizedBox(height: DimensSizeV2.d16),
-                  Text(
-                    LocaleKeys.importWalletScreenTitle.tr(),
-                    style: theme.textStyles.headingLarge,
-                  ),
-                  const SizedBox(height: DimensSizeV2.d8),
-                  PrimaryText(LocaleKeys.importWalletScreenSubtitle.tr()),
-                  const SizedBox(height: DimensSizeV2.d24),
-                  Stack(
-                    alignment: Alignment.center,
-                    children: [
-                      Container(
-                        decoration: BoxDecoration(
-                          color: theme.colors.background1,
-                          borderRadius:
-                              BorderRadius.circular(DimensRadiusV2.radius16),
+            child: Column(
+              children: [
+                Expanded(
+                  child: SingleChildScrollView(
+                    padding:
+                        const EdgeInsets.symmetric(horizontal: DimensSize.d16),
+                    child: Column(
+                      children: [
+                        Image.asset(
+                          Assets.images.seedPhraseIcon.path,
+                          width: DimensSizeV2.d56,
+                          height: DimensSizeV2.d56,
                         ),
-                        padding: const EdgeInsets.all(DimensSizeV2.d32),
-                        width: double.infinity,
-                        child: _ListWords(
-                          theme: theme,
-                          firstColumnWords: data?.firstColumnWords,
-                          secondColumnWords: data?.secondColumnWords,
-                          isMasked: isPasted,
+                        const SizedBox(height: DimensSizeV2.d16),
+                        Text(
+                          LocaleKeys.importWalletScreenTitle.tr(),
+                          style: theme.textStyles.headingLarge,
                         ),
-                      ),
-                      if (isPasted)
-                        Positioned(
-                          bottom: 1,
-                          right: 1,
-                          child: Padding(
-                            padding: const EdgeInsets.only(
-                              bottom: DimensSizeV2.d8,
-                              right: DimensSizeV2.d8,
-                            ),
-                            child: FloatButton(
-                              buttonShape: ButtonShape.circle,
-                              icon: LucideIcons.trash2,
-                              onPressed: wm.deleteWords,
+                        const SizedBox(height: DimensSizeV2.d8),
+                        PrimaryText(LocaleKeys.importWalletScreenSubtitle.tr()),
+                        const SizedBox(height: DimensSizeV2.d24),
+                        if ((data?.allowedData?.length ?? 0) > 1)
+                          Padding(
+                            padding:
+                                const EdgeInsets.only(bottom: DimensSizeV2.d12),
+                            child: SwitcherSegmentControls<int>(
+                              currentValue: data?.selectedValue ?? 0,
+                              values: [
+                                for (final value in data!.allowedData!)
+                                  PrimarySegmentControl(
+                                    state: SegmentControlState.normal,
+                                    title: LocaleKeys.wordsCount.plural(value),
+                                    value: value,
+                                    size: SegmentControlSize.medium,
+                                  ),
+                              ],
+                              onTabChanged: (v) {
+                                wm.onChangeTab(v);
+                              },
                             ),
                           ),
-                        )
-                      else
-                        Center(
-                          child: FloatButton(
-                            buttonShape: ButtonShape.pill,
-                            title: LocaleKeys.importWalletPasteClipboard.tr(),
-                            onPressed: wm.pasteWords,
-                            icon: LucideIcons.arrowDown,
-                            isFullWidth: false,
-                          ),
+                        Stack(
+                          alignment: Alignment.center,
+                          children: [
+                            Container(
+                              decoration: BoxDecoration(
+                                color: theme.colors.background1,
+                                borderRadius: BorderRadius.circular(
+                                  DimensRadiusV2.radius16,
+                                ),
+                              ),
+                              padding: const EdgeInsets.all(DimensSizeV2.d32),
+                              width: double.infinity,
+                              child: _ListWords(
+                                theme: theme,
+                                firstColumnWords: data?.firstColumnWords,
+                                secondColumnWords: data?.secondColumnWords,
+                                isMasked: isPasted,
+                                wordsCount: data?.selectedValue ?? 0,
+                              ),
+                            ),
+                            if (isPasted)
+                              Positioned(
+                                bottom: 1,
+                                right: 1,
+                                child: Padding(
+                                  padding: const EdgeInsets.only(
+                                    bottom: DimensSizeV2.d8,
+                                    right: DimensSizeV2.d8,
+                                  ),
+                                  child: FloatButton(
+                                    buttonShape: ButtonShape.circle,
+                                    icon: LucideIcons.trash2,
+                                    onPressed: wm.deleteWords,
+                                  ),
+                                ),
+                              )
+                            else
+                              Center(
+                                child: FloatButton(
+                                  buttonShape: ButtonShape.pill,
+                                  title: LocaleKeys.importWalletPasteClipboard
+                                      .tr(),
+                                  onPressed: wm.pasteWords,
+                                  icon: LucideIcons.arrowDown,
+                                  isFullWidth: false,
+                                ),
+                              ),
+                          ],
                         ),
-                    ],
+                        const SizedBox(height: DimensSizeV2.d24),
+                        GhostButton(
+                          buttonShape: ButtonShape.pill,
+                          title: LocaleKeys.importWalletManuallyButtonText.tr(),
+                          onPressed: wm.onPressedManual,
+                          icon: LucideIcons.pencilLine,
+                        ),
+                      ],
+                    ),
                   ),
-                  const SizedBox(height: DimensSizeV2.d24),
-                  GhostButton(
-                    buttonShape: ButtonShape.pill,
-                    title: LocaleKeys.importWalletManuallyButtonText.tr(),
-                    onPressed: wm.onPressedManual,
-                    icon: LucideIcons.pencilLine,
+                ),
+                Padding(
+                  padding: const EdgeInsets.symmetric(
+                    horizontal: DimensSizeV2.d16,
                   ),
-                  const Spacer(),
-                  AccentButton(
+                  child: AccentButton(
                     buttonShape: ButtonShape.pill,
                     title: LocaleKeys.importWalletButtonText.tr(),
                     onPressed: isPasted ? wm.onPressedImport : null,
                     icon: LucideIcons.textCursorInput,
                   ),
-                ],
-              ),
+                ),
+              ],
             ),
           );
         },
@@ -131,12 +165,14 @@ class _ListWords extends StatelessWidget {
     required this.firstColumnWords,
     required this.secondColumnWords,
     required this.isMasked,
+    required this.wordsCount,
   });
 
   final ThemeStyleV2 theme;
   final List<String>? firstColumnWords;
   final List<String>? secondColumnWords;
   final bool isMasked;
+  final int wordsCount;
 
   @override
   Widget build(BuildContext context) {

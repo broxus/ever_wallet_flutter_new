@@ -29,7 +29,7 @@ const _legacySeedPhraseLength = 24;
 const _autoNavigationDelay = Duration(milliseconds: 500);
 
 /// Callback that will be called when user correctly enter seed phrase.
-typedef EnterSeedPhraseConfirmCallback = void Function(List<String> phrase);
+typedef EnterSeedPhraseConfirmCallback = void Function(String phrase);
 
 /// Cubit that manages the state of the seed phrase entering page.
 class EnterSeedPhraseCubit extends Cubit<EnterSeedPhraseState>
@@ -166,14 +166,23 @@ class EnterSeedPhraseCubit extends Cubit<EnterSeedPhraseState>
       String? error;
       try {
         FocusManager.instance.primaryFocus?.unfocus();
-        final phrase =
-            _controllers.take(_currentValue).map((e) => e.text).toList();
+
+        final buffer = StringBuffer();
+
+        for (var i = 0; i < _currentValue; i++) {
+          buffer
+            ..write(_controllers[i].text.trim())
+            ..write(' ');
+        }
+
+        final phrase = buffer.toString().trimRight();
+
         final mnemonicType = _currentValue == _legacySeedPhraseLength
             ? const MnemonicType.legacy()
             : defaultMnemonicType;
 
         await deriveFromPhrase(
-          phrase: phrase.join(' '),
+          phrase: phrase,
           mnemonicType: mnemonicType,
         );
         confirmCallback(phrase);

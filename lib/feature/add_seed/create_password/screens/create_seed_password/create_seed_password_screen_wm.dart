@@ -14,8 +14,9 @@ import 'package:ui_components_lib/v2/ui_components_lib_v2.dart';
 /// Factory method for creating [CreateSeedPasswordScreenWidgetModel]
 CreateSeedPasswordScreenWidgetModel
     defaultCreateSeedPasswordScreenWidgetModelFactory(
-  BuildContext context,
-) {
+  BuildContext context, {
+  String? phrase,
+}) {
   return CreateSeedPasswordScreenWidgetModel(
     CreateSeedPasswordScreenModel(
       createPrimaryErrorHandler(context),
@@ -23,6 +24,7 @@ CreateSeedPasswordScreenWidgetModel
       inject(),
       inject(),
       inject(),
+      phrase,
     ),
   );
 }

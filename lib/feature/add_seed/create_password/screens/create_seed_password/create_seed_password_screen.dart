@@ -12,12 +12,16 @@ import 'package:ui_components_lib/ui_components_lib.dart';
 /// {@endtemplate}
 class CreateSeedPasswordScreen
     extends ElementaryWidget<CreateSeedPasswordScreenWidgetModel> {
-  const CreateSeedPasswordScreen({
+  CreateSeedPasswordScreen({
     Key? key,
-    WidgetModelFactory<CreateSeedPasswordScreenWidgetModel> wmFactory =
-        defaultCreateSeedPasswordScreenWidgetModelFactory,
+    WidgetModelFactory<CreateSeedPasswordScreenWidgetModel>? wmFactory,
+    String? phrase,
   }) : super(
-          wmFactory,
+          wmFactory ??
+              (context) => defaultCreateSeedPasswordScreenWidgetModelFactory(
+                    context,
+                    phrase: phrase,
+                  ),
           key: key,
         );
 
