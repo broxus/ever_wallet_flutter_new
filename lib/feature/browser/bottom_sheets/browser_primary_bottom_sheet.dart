@@ -49,6 +49,16 @@ class BrowserPrimarySheet extends StatelessWidget {
       mainAxisSize: MainAxisSize.min,
       separator: const CommonDivider(),
       children: [
+        _Tile(
+          titleText: LocaleKeys.browserHistory.tr(),
+          onPressed: () {
+            Navigator.of(context).pop();
+            context.goNamed(AppRoute.browserHistory.name);
+          },
+          trailing: CommonButtonIconWidget.svg(
+            svg: Assets.images.historyFill.path,
+          ),
+        ),
         if (refreshEnabled)
           _Tile(
             titleText: LocaleKeys.browserRefresh.tr(),
@@ -59,7 +69,6 @@ class BrowserPrimarySheet extends StatelessWidget {
             trailing: CommonButtonIconWidget.svg(
               svg: Assets.images.refresh.path,
             ),
-            backgroundColor: colors.background2,
           ),
         if (addToBookmarksEnabled)
           _Tile(
@@ -71,19 +80,7 @@ class BrowserPrimarySheet extends StatelessWidget {
             trailing: CommonButtonIconWidget.svg(
               svg: Assets.images.star.path,
             ),
-            backgroundColor: colors.background2,
           ),
-        _Tile(
-          titleText: LocaleKeys.browserHistory.tr(),
-          onPressed: () {
-            Navigator.of(context).pop();
-            context.goNamed(AppRoute.browserHistory.name);
-          },
-          trailing: CommonButtonIconWidget.svg(
-            svg: Assets.images.history.path,
-          ),
-          backgroundColor: colors.background2,
-        ),
       ],
     );
   }
@@ -94,24 +91,27 @@ class _Tile extends StatelessWidget {
     required this.titleText,
     required this.onPressed,
     required this.trailing,
-    required this.backgroundColor,
   });
 
   final String titleText;
   final VoidCallback onPressed;
   final Widget trailing;
-  final Color backgroundColor;
 
   @override
   Widget build(BuildContext context) {
+    final theme = context.themeStyleV2;
+
     return CommonListTile(
-      titleText: titleText,
+      titleChild: Text(
+        titleText,
+        style: theme.textStyles.labelMedium,
+      ),
       padding: const EdgeInsets.symmetric(
         vertical: DimensSizeV2.d18,
         horizontal: DimensSizeV2.d24,
       ),
       onPressed: onPressed,
-      backgroundColor: backgroundColor,
+      backgroundColor: theme.colors.background2,
       trailing: trailing,
     );
   }
