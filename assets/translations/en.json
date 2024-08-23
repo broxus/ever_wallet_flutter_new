@@ -526,5 +526,8 @@
   "expand": "Expand",
   "collapse": "Collapse",
   "metadata": "Metadata",
-  "contract": "Contract"
+  "contract": "Contract",
+  "sign": "Sign",
+  "encrypt": "Encrypt",
+  "decrypt": "Decrypt"
 }

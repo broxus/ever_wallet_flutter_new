@@ -100,6 +100,7 @@ class BrowserApprovalsService {
   /// Typically, exception must be [ApprovalsHandleException] or [FfiException]
   Future<String> signData({
     required Uri origin,
+    required Address account,
     required PublicKey publicKey,
     required String data,
   }) async {
@@ -107,6 +108,7 @@ class BrowserApprovalsService {
 
     final request = ApprovalRequest.signData(
       origin: origin,
+      account: account,
       publicKey: publicKey,
       data: data,
       completer: completer,
@@ -123,6 +125,7 @@ class BrowserApprovalsService {
   /// Typically, exception must be [ApprovalsHandleException] or [FfiException]
   Future<String> encryptData({
     required Uri origin,
+    required Address account,
     required PublicKey publicKey,
     required String data,
   }) async {
@@ -130,6 +133,7 @@ class BrowserApprovalsService {
 
     final request = ApprovalRequest.encryptData(
       origin: origin,
+      account: account,
       publicKey: publicKey,
       data: data,
       completer: completer,
@@ -146,6 +150,7 @@ class BrowserApprovalsService {
   /// Typically, exception must be [ApprovalsHandleException] or [FfiException]
   Future<String> decryptData({
     required Uri origin,
+    required Address account,
     required PublicKey recipientPublicKey,
     required PublicKey sourcePublicKey,
   }) async {
@@ -153,6 +158,7 @@ class BrowserApprovalsService {
 
     final request = ApprovalRequest.decryptData(
       origin: origin,
+      account: account,
       recipientPublicKey: recipientPublicKey,
       sourcePublicKey: sourcePublicKey,
       completer: completer,
@@ -169,6 +175,7 @@ class BrowserApprovalsService {
   /// Typically, exception must be [ApprovalsHandleException] or [FfiException]
   Future<String> callContractMethod({
     required Uri origin,
+    required Address account,
     required PublicKey publicKey,
     required Address recipient,
     required FunctionCall payload,
@@ -177,6 +184,7 @@ class BrowserApprovalsService {
 
     final request = ApprovalRequest.callContractMethod(
       origin: origin,
+      account: account,
       publicKey: publicKey,
       recipient: recipient,
       payload: payload,
