@@ -35,6 +35,9 @@ class InpageProvider extends ProviderApi {
   Uri? url;
   Uri? get origin => url == null ? null : Uri.parse(url!.origin);
 
+  // TODO(komarov): method that will check accountInteraction and return
+  // [AccountInteraction] instance if checked successfully
+
   /// Check [permissions] if it contains [basic] (if true) and [account]
   /// (if true) and if accountInteraction.address == accountAddress if it's
   /// specified.
@@ -273,14 +276,17 @@ class InpageProvider extends ProviderApi {
     final sourceKey = nr.PublicKey(
       publicKey: input.encryptedData.sourcePublicKey,
     );
+    final permissions = permissionsService.getPermissions(origin);
+
     _checkPermissions(
-      permissions: permissionsService.getPermissions(origin),
+      permissions: permissions,
       account: true,
       publicKey: publicKey,
     );
 
     final password = await approvalsService.decryptData(
       origin: origin!,
+      account: permissions!.accountInteraction!.address,
       recipientPublicKey: publicKey,
       sourcePublicKey: sourceKey,
     );
@@ -334,14 +340,17 @@ class InpageProvider extends ProviderApi {
   @override
   Future<EncryptDataOutput> encryptData(EncryptDataInput input) async {
     final publicKey = nr.PublicKey(publicKey: input.publicKey);
+    final permissions = permissionsService.getPermissions(origin);
+
     _checkPermissions(
-      permissions: permissionsService.getPermissions(origin),
+      permissions: permissions,
       account: true,
       publicKey: publicKey,
     );
 
     final password = await approvalsService.encryptData(
       origin: origin!,
+      account: permissions!.accountInteraction!.address,
       publicKey: publicKey,
       data: input.data,
     );
@@ -467,9 +476,10 @@ class InpageProvider extends ProviderApi {
         final publicKey =
             nr.PublicKey(publicKey: header['publicKey']! as String);
         final call = FunctionCall.fromJson(payload as Map<String, dynamic>);
+        final permissions = permissionsService.getPermissions(origin);
 
         _checkPermissions(
-          permissions: permissionsService.getPermissions(origin),
+          permissions: permissions,
           account: true,
           publicKey: publicKey,
         );
@@ -493,6 +503,7 @@ class InpageProvider extends ProviderApi {
               payload: nr.FunctionCall.fromJson(call.toJson()),
               publicKey: publicKey,
               recipient: repackedAddress,
+              account: permissions!.accountInteraction!.address,
             );
             final transport = nekotonRepository.currentTransport.transport;
 
@@ -883,9 +894,10 @@ class InpageProvider extends ProviderApi {
   ) async {
     final publicKey = nr.PublicKey(publicKey: input.publicKey);
     final recipient = nr.Address(address: input.recipient);
+    final permissions = permissionsService.getPermissions(origin);
 
     _checkPermissions(
-      permissions: permissionsService.getPermissions(origin),
+      permissions: permissions,
       account: true,
       publicKey: publicKey,
     );
@@ -923,6 +935,7 @@ class InpageProvider extends ProviderApi {
         payload: nr.FunctionCall.fromJson(input.payload.toJson()),
         publicKey: publicKey,
         recipient: recipient,
+        account: permissions!.accountInteraction!.address,
       );
       final transport = nekotonRepository.currentTransport.transport;
 
@@ -984,9 +997,10 @@ class InpageProvider extends ProviderApi {
   ) async {
     final publicKey = nr.PublicKey(publicKey: input.publicKey);
     final recipient = nr.Address(address: input.recipient);
+    final permissions = permissionsService.getPermissions(origin);
 
     _checkPermissions(
-      permissions: permissionsService.getPermissions(origin),
+      permissions: permissions,
       account: true,
       publicKey: publicKey,
     );
@@ -1024,6 +1038,7 @@ class InpageProvider extends ProviderApi {
         payload: nr.FunctionCall.fromJson(input.payload.toJson()),
         publicKey: publicKey,
         recipient: recipient,
+        account: permissions!.accountInteraction!.address,
       );
       final transport = nekotonRepository.currentTransport.transport;
 
@@ -1407,14 +1422,17 @@ class InpageProvider extends ProviderApi {
   Future<SignDataOutput> signData(SignDataInput input) async {
     final publicKey = nr.PublicKey(publicKey: input.publicKey);
     final withSignatureId = input.withSignatureId;
+    final permissions = permissionsService.getPermissions(origin);
+
     _checkPermissions(
-      permissions: permissionsService.getPermissions(origin),
+      permissions: permissions,
       account: true,
       publicKey: publicKey,
     );
 
     final password = await approvalsService.signData(
       origin: origin!,
+      account: permissions!.accountInteraction!.address,
       publicKey: publicKey,
       data: input.data,
     );
@@ -1447,14 +1465,17 @@ class InpageProvider extends ProviderApi {
   @override
   Future<SignDataRawOutput> signDataRaw(SignDataRawInput input) async {
     final publicKey = nr.PublicKey(publicKey: input.publicKey);
+    final permissions = permissionsService.getPermissions(origin);
+
     _checkPermissions(
-      permissions: permissionsService.getPermissions(origin),
+      permissions: permissions,
       account: true,
       publicKey: publicKey,
     );
 
     final password = await approvalsService.signData(
       origin: origin!,
+      account: permissions!.accountInteraction!.address,
       publicKey: publicKey,
       data: input.data,
     );

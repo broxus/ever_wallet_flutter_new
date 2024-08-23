@@ -29,17 +29,22 @@ mixin _$ApprovalRequest {
     required TResult Function(Uri origin, Address account,
             TokenContractAsset details, Completer<void> completer)
         addTip3Token,
-    required TResult Function(Uri origin, PublicKey publicKey, String data,
-            Completer<String> completer)
+    required TResult Function(Uri origin, Address account, PublicKey publicKey,
+            String data, Completer<String> completer)
         signData,
-    required TResult Function(Uri origin, PublicKey publicKey, String data,
-            Completer<String> completer)
+    required TResult Function(Uri origin, Address account, PublicKey publicKey,
+            String data, Completer<String> completer)
         encryptData,
-    required TResult Function(Uri origin, PublicKey recipientPublicKey,
-            PublicKey sourcePublicKey, Completer<String> completer)
+    required TResult Function(
+            Uri origin,
+            Address account,
+            PublicKey recipientPublicKey,
+            PublicKey sourcePublicKey,
+            Completer<String> completer)
         decryptData,
     required TResult Function(
             Uri origin,
+            Address account,
             PublicKey publicKey,
             Address recipient,
             FunctionCall payload,
@@ -68,17 +73,22 @@ mixin _$ApprovalRequest {
     TResult? Function(Uri origin, Address account, TokenContractAsset details,
             Completer<void> completer)?
         addTip3Token,
-    TResult? Function(Uri origin, PublicKey publicKey, String data,
-            Completer<String> completer)?
+    TResult? Function(Uri origin, Address account, PublicKey publicKey,
+            String data, Completer<String> completer)?
         signData,
-    TResult? Function(Uri origin, PublicKey publicKey, String data,
-            Completer<String> completer)?
+    TResult? Function(Uri origin, Address account, PublicKey publicKey,
+            String data, Completer<String> completer)?
         encryptData,
-    TResult? Function(Uri origin, PublicKey recipientPublicKey,
+    TResult? Function(Uri origin, Address account, PublicKey recipientPublicKey,
             PublicKey sourcePublicKey, Completer<String> completer)?
         decryptData,
-    TResult? Function(Uri origin, PublicKey publicKey, Address recipient,
-            FunctionCall payload, Completer<String> completer)?
+    TResult? Function(
+            Uri origin,
+            Address account,
+            PublicKey publicKey,
+            Address recipient,
+            FunctionCall payload,
+            Completer<String> completer)?
         callContractMethod,
     TResult? Function(
             Uri origin,
@@ -103,17 +113,22 @@ mixin _$ApprovalRequest {
     TResult Function(Uri origin, Address account, TokenContractAsset details,
             Completer<void> completer)?
         addTip3Token,
-    TResult Function(Uri origin, PublicKey publicKey, String data,
-            Completer<String> completer)?
+    TResult Function(Uri origin, Address account, PublicKey publicKey,
+            String data, Completer<String> completer)?
         signData,
-    TResult Function(Uri origin, PublicKey publicKey, String data,
-            Completer<String> completer)?
+    TResult Function(Uri origin, Address account, PublicKey publicKey,
+            String data, Completer<String> completer)?
         encryptData,
-    TResult Function(Uri origin, PublicKey recipientPublicKey,
+    TResult Function(Uri origin, Address account, PublicKey recipientPublicKey,
             PublicKey sourcePublicKey, Completer<String> completer)?
         decryptData,
-    TResult Function(Uri origin, PublicKey publicKey, Address recipient,
-            FunctionCall payload, Completer<String> completer)?
+    TResult Function(
+            Uri origin,
+            Address account,
+            PublicKey publicKey,
+            Address recipient,
+            FunctionCall payload,
+            Completer<String> completer)?
         callContractMethod,
     TResult Function(
             Uri origin,
@@ -312,17 +327,22 @@ class _$RequestPermissionsImpl implements _RequestPermissions {
     required TResult Function(Uri origin, Address account,
             TokenContractAsset details, Completer<void> completer)
         addTip3Token,
-    required TResult Function(Uri origin, PublicKey publicKey, String data,
-            Completer<String> completer)
+    required TResult Function(Uri origin, Address account, PublicKey publicKey,
+            String data, Completer<String> completer)
         signData,
-    required TResult Function(Uri origin, PublicKey publicKey, String data,
-            Completer<String> completer)
+    required TResult Function(Uri origin, Address account, PublicKey publicKey,
+            String data, Completer<String> completer)
         encryptData,
-    required TResult Function(Uri origin, PublicKey recipientPublicKey,
-            PublicKey sourcePublicKey, Completer<String> completer)
+    required TResult Function(
+            Uri origin,
+            Address account,
+            PublicKey recipientPublicKey,
+            PublicKey sourcePublicKey,
+            Completer<String> completer)
         decryptData,
     required TResult Function(
             Uri origin,
+            Address account,
             PublicKey publicKey,
             Address recipient,
             FunctionCall payload,
@@ -354,17 +374,22 @@ class _$RequestPermissionsImpl implements _RequestPermissions {
     TResult? Function(Uri origin, Address account, TokenContractAsset details,
             Completer<void> completer)?
         addTip3Token,
-    TResult? Function(Uri origin, PublicKey publicKey, String data,
-            Completer<String> completer)?
+    TResult? Function(Uri origin, Address account, PublicKey publicKey,
+            String data, Completer<String> completer)?
         signData,
-    TResult? Function(Uri origin, PublicKey publicKey, String data,
-            Completer<String> completer)?
+    TResult? Function(Uri origin, Address account, PublicKey publicKey,
+            String data, Completer<String> completer)?
         encryptData,
-    TResult? Function(Uri origin, PublicKey recipientPublicKey,
+    TResult? Function(Uri origin, Address account, PublicKey recipientPublicKey,
             PublicKey sourcePublicKey, Completer<String> completer)?
         decryptData,
-    TResult? Function(Uri origin, PublicKey publicKey, Address recipient,
-            FunctionCall payload, Completer<String> completer)?
+    TResult? Function(
+            Uri origin,
+            Address account,
+            PublicKey publicKey,
+            Address recipient,
+            FunctionCall payload,
+            Completer<String> completer)?
         callContractMethod,
     TResult? Function(
             Uri origin,
@@ -392,17 +417,22 @@ class _$RequestPermissionsImpl implements _RequestPermissions {
     TResult Function(Uri origin, Address account, TokenContractAsset details,
             Completer<void> completer)?
         addTip3Token,
-    TResult Function(Uri origin, PublicKey publicKey, String data,
-            Completer<String> completer)?
+    TResult Function(Uri origin, Address account, PublicKey publicKey,
+            String data, Completer<String> completer)?
         signData,
-    TResult Function(Uri origin, PublicKey publicKey, String data,
-            Completer<String> completer)?
+    TResult Function(Uri origin, Address account, PublicKey publicKey,
+            String data, Completer<String> completer)?
         encryptData,
-    TResult Function(Uri origin, PublicKey recipientPublicKey,
+    TResult Function(Uri origin, Address account, PublicKey recipientPublicKey,
             PublicKey sourcePublicKey, Completer<String> completer)?
         decryptData,
-    TResult Function(Uri origin, PublicKey publicKey, Address recipient,
-            FunctionCall payload, Completer<String> completer)?
+    TResult Function(
+            Uri origin,
+            Address account,
+            PublicKey publicKey,
+            Address recipient,
+            FunctionCall payload,
+            Completer<String> completer)?
         callContractMethod,
     TResult Function(
             Uri origin,
@@ -627,17 +657,22 @@ class _$ChangeAccountImpl implements _ChangeAccount {
     required TResult Function(Uri origin, Address account,
             TokenContractAsset details, Completer<void> completer)
         addTip3Token,
-    required TResult Function(Uri origin, PublicKey publicKey, String data,
-            Completer<String> completer)
+    required TResult Function(Uri origin, Address account, PublicKey publicKey,
+            String data, Completer<String> completer)
         signData,
-    required TResult Function(Uri origin, PublicKey publicKey, String data,
-            Completer<String> completer)
+    required TResult Function(Uri origin, Address account, PublicKey publicKey,
+            String data, Completer<String> completer)
         encryptData,
-    required TResult Function(Uri origin, PublicKey recipientPublicKey,
-            PublicKey sourcePublicKey, Completer<String> completer)
+    required TResult Function(
+            Uri origin,
+            Address account,
+            PublicKey recipientPublicKey,
+            PublicKey sourcePublicKey,
+            Completer<String> completer)
         decryptData,
     required TResult Function(
             Uri origin,
+            Address account,
             PublicKey publicKey,
             Address recipient,
             FunctionCall payload,
@@ -670,17 +705,22 @@ class _$ChangeAccountImpl implements _ChangeAccount {
     TResult? Function(Uri origin, Address account, TokenContractAsset details,
             Completer<void> completer)?
         addTip3Token,
-    TResult? Function(Uri origin, PublicKey publicKey, String data,
-            Completer<String> completer)?
+    TResult? Function(Uri origin, Address account, PublicKey publicKey,
+            String data, Completer<String> completer)?
         signData,
-    TResult? Function(Uri origin, PublicKey publicKey, String data,
-            Completer<String> completer)?
+    TResult? Function(Uri origin, Address account, PublicKey publicKey,
+            String data, Completer<String> completer)?
         encryptData,
-    TResult? Function(Uri origin, PublicKey recipientPublicKey,
+    TResult? Function(Uri origin, Address account, PublicKey recipientPublicKey,
             PublicKey sourcePublicKey, Completer<String> completer)?
         decryptData,
-    TResult? Function(Uri origin, PublicKey publicKey, Address recipient,
-            FunctionCall payload, Completer<String> completer)?
+    TResult? Function(
+            Uri origin,
+            Address account,
+            PublicKey publicKey,
+            Address recipient,
+            FunctionCall payload,
+            Completer<String> completer)?
         callContractMethod,
     TResult? Function(
             Uri origin,
@@ -709,17 +749,22 @@ class _$ChangeAccountImpl implements _ChangeAccount {
     TResult Function(Uri origin, Address account, TokenContractAsset details,
             Completer<void> completer)?
         addTip3Token,
-    TResult Function(Uri origin, PublicKey publicKey, String data,
-            Completer<String> completer)?
+    TResult Function(Uri origin, Address account, PublicKey publicKey,
+            String data, Completer<String> completer)?
         signData,
-    TResult Function(Uri origin, PublicKey publicKey, String data,
-            Completer<String> completer)?
+    TResult Function(Uri origin, Address account, PublicKey publicKey,
+            String data, Completer<String> completer)?
         encryptData,
-    TResult Function(Uri origin, PublicKey recipientPublicKey,
+    TResult Function(Uri origin, Address account, PublicKey recipientPublicKey,
             PublicKey sourcePublicKey, Completer<String> completer)?
         decryptData,
-    TResult Function(Uri origin, PublicKey publicKey, Address recipient,
-            FunctionCall payload, Completer<String> completer)?
+    TResult Function(
+            Uri origin,
+            Address account,
+            PublicKey publicKey,
+            Address recipient,
+            FunctionCall payload,
+            Completer<String> completer)?
         callContractMethod,
     TResult Function(
             Uri origin,
@@ -937,17 +982,22 @@ class _$AddTip3TokenImpl implements _AddTip3Token {
     required TResult Function(Uri origin, Address account,
             TokenContractAsset details, Completer<void> completer)
         addTip3Token,
-    required TResult Function(Uri origin, PublicKey publicKey, String data,
-            Completer<String> completer)
+    required TResult Function(Uri origin, Address account, PublicKey publicKey,
+            String data, Completer<String> completer)
         signData,
-    required TResult Function(Uri origin, PublicKey publicKey, String data,
-            Completer<String> completer)
+    required TResult Function(Uri origin, Address account, PublicKey publicKey,
+            String data, Completer<String> completer)
         encryptData,
-    required TResult Function(Uri origin, PublicKey recipientPublicKey,
-            PublicKey sourcePublicKey, Completer<String> completer)
+    required TResult Function(
+            Uri origin,
+            Address account,
+            PublicKey recipientPublicKey,
+            PublicKey sourcePublicKey,
+            Completer<String> completer)
         decryptData,
     required TResult Function(
             Uri origin,
+            Address account,
             PublicKey publicKey,
             Address recipient,
             FunctionCall payload,
@@ -979,17 +1029,22 @@ class _$AddTip3TokenImpl implements _AddTip3Token {
     TResult? Function(Uri origin, Address account, TokenContractAsset details,
             Completer<void> completer)?
         addTip3Token,
-    TResult? Function(Uri origin, PublicKey publicKey, String data,
-            Completer<String> completer)?
+    TResult? Function(Uri origin, Address account, PublicKey publicKey,
+            String data, Completer<String> completer)?
         signData,
-    TResult? Function(Uri origin, PublicKey publicKey, String data,
-            Completer<String> completer)?
+    TResult? Function(Uri origin, Address account, PublicKey publicKey,
+            String data, Completer<String> completer)?
         encryptData,
-    TResult? Function(Uri origin, PublicKey recipientPublicKey,
+    TResult? Function(Uri origin, Address account, PublicKey recipientPublicKey,
             PublicKey sourcePublicKey, Completer<String> completer)?
         decryptData,
-    TResult? Function(Uri origin, PublicKey publicKey, Address recipient,
-            FunctionCall payload, Completer<String> completer)?
+    TResult? Function(
+            Uri origin,
+            Address account,
+            PublicKey publicKey,
+            Address recipient,
+            FunctionCall payload,
+            Completer<String> completer)?
         callContractMethod,
     TResult? Function(
             Uri origin,
@@ -1017,17 +1072,22 @@ class _$AddTip3TokenImpl implements _AddTip3Token {
     TResult Function(Uri origin, Address account, TokenContractAsset details,
             Completer<void> completer)?
         addTip3Token,
-    TResult Function(Uri origin, PublicKey publicKey, String data,
-            Completer<String> completer)?
+    TResult Function(Uri origin, Address account, PublicKey publicKey,
+            String data, Completer<String> completer)?
         signData,
-    TResult Function(Uri origin, PublicKey publicKey, String data,
-            Completer<String> completer)?
+    TResult Function(Uri origin, Address account, PublicKey publicKey,
+            String data, Completer<String> completer)?
         encryptData,
-    TResult Function(Uri origin, PublicKey recipientPublicKey,
+    TResult Function(Uri origin, Address account, PublicKey recipientPublicKey,
             PublicKey sourcePublicKey, Completer<String> completer)?
         decryptData,
-    TResult Function(Uri origin, PublicKey publicKey, Address recipient,
-            FunctionCall payload, Completer<String> completer)?
+    TResult Function(
+            Uri origin,
+            Address account,
+            PublicKey publicKey,
+            Address recipient,
+            FunctionCall payload,
+            Completer<String> completer)?
         callContractMethod,
     TResult Function(
             Uri origin,
@@ -1126,10 +1186,12 @@ abstract class _$$SignDataImplCopyWith<$Res>
   @useResult
   $Res call(
       {Uri origin,
+      Address account,
       PublicKey publicKey,
       String data,
       Completer<String> completer});
 
+  $AddressCopyWith<$Res> get account;
   $PublicKeyCopyWith<$Res> get publicKey;
 }
 
@@ -1145,6 +1207,7 @@ class __$$SignDataImplCopyWithImpl<$Res>
   @override
   $Res call({
     Object? origin = null,
+    Object? account = null,
     Object? publicKey = null,
     Object? data = null,
     Object? completer = null,
@@ -1154,6 +1217,10 @@ class __$$SignDataImplCopyWithImpl<$Res>
           ? _value.origin
           : origin // ignore: cast_nullable_to_non_nullable
               as Uri,
+      account: null == account
+          ? _value.account
+          : account // ignore: cast_nullable_to_non_nullable
+              as Address,
       publicKey: null == publicKey
           ? _value.publicKey
           : publicKey // ignore: cast_nullable_to_non_nullable
@@ -1171,6 +1238,14 @@ class __$$SignDataImplCopyWithImpl<$Res>
 
   @override
   @pragma('vm:prefer-inline')
+  $AddressCopyWith<$Res> get account {
+    return $AddressCopyWith<$Res>(_value.account, (value) {
+      return _then(_value.copyWith(account: value));
+    });
+  }
+
+  @override
+  @pragma('vm:prefer-inline')
   $PublicKeyCopyWith<$Res> get publicKey {
     return $PublicKeyCopyWith<$Res>(_value.publicKey, (value) {
       return _then(_value.copyWith(publicKey: value));
@@ -1183,12 +1258,15 @@ class __$$SignDataImplCopyWithImpl<$Res>
 class _$SignDataImpl implements _SignData {
   const _$SignDataImpl(
       {required this.origin,
+      required this.account,
       required this.publicKey,
       required this.data,
       required this.completer});
 
   @override
   final Uri origin;
+  @override
+  final Address account;
   @override
   final PublicKey publicKey;
   @override
@@ -1198,7 +1276,7 @@ class _$SignDataImpl implements _SignData {
 
   @override
   String toString() {
-    return 'ApprovalRequest.signData(origin: $origin, publicKey: $publicKey, data: $data, completer: $completer)';
+    return 'ApprovalRequest.signData(origin: $origin, account: $account, publicKey: $publicKey, data: $data, completer: $completer)';
   }
 
   @override
@@ -1207,6 +1285,7 @@ class _$SignDataImpl implements _SignData {
         (other.runtimeType == runtimeType &&
             other is _$SignDataImpl &&
             (identical(other.origin, origin) || other.origin == origin) &&
+            (identical(other.account, account) || other.account == account) &&
             (identical(other.publicKey, publicKey) ||
                 other.publicKey == publicKey) &&
             (identical(other.data, data) || other.data == data) &&
@@ -1216,7 +1295,7 @@ class _$SignDataImpl implements _SignData {
 
   @override
   int get hashCode =>
-      Object.hash(runtimeType, origin, publicKey, data, completer);
+      Object.hash(runtimeType, origin, account, publicKey, data, completer);
 
   @JsonKey(ignore: true)
   @override
@@ -1236,17 +1315,22 @@ class _$SignDataImpl implements _SignData {
     required TResult Function(Uri origin, Address account,
             TokenContractAsset details, Completer<void> completer)
         addTip3Token,
-    required TResult Function(Uri origin, PublicKey publicKey, String data,
-            Completer<String> completer)
+    required TResult Function(Uri origin, Address account, PublicKey publicKey,
+            String data, Completer<String> completer)
         signData,
-    required TResult Function(Uri origin, PublicKey publicKey, String data,
-            Completer<String> completer)
+    required TResult Function(Uri origin, Address account, PublicKey publicKey,
+            String data, Completer<String> completer)
         encryptData,
-    required TResult Function(Uri origin, PublicKey recipientPublicKey,
-            PublicKey sourcePublicKey, Completer<String> completer)
+    required TResult Function(
+            Uri origin,
+            Address account,
+            PublicKey recipientPublicKey,
+            PublicKey sourcePublicKey,
+            Completer<String> completer)
         decryptData,
     required TResult Function(
             Uri origin,
+            Address account,
             PublicKey publicKey,
             Address recipient,
             FunctionCall payload,
@@ -1263,7 +1347,7 @@ class _$SignDataImpl implements _SignData {
             Completer<(PublicKey, String)> completer)
         sendMessage,
   }) {
-    return signData(origin, publicKey, data, completer);
+    return signData(origin, account, publicKey, data, completer);
   }
 
   @override
@@ -1278,17 +1362,22 @@ class _$SignDataImpl implements _SignData {
     TResult? Function(Uri origin, Address account, TokenContractAsset details,
             Completer<void> completer)?
         addTip3Token,
-    TResult? Function(Uri origin, PublicKey publicKey, String data,
-            Completer<String> completer)?
+    TResult? Function(Uri origin, Address account, PublicKey publicKey,
+            String data, Completer<String> completer)?
         signData,
-    TResult? Function(Uri origin, PublicKey publicKey, String data,
-            Completer<String> completer)?
+    TResult? Function(Uri origin, Address account, PublicKey publicKey,
+            String data, Completer<String> completer)?
         encryptData,
-    TResult? Function(Uri origin, PublicKey recipientPublicKey,
+    TResult? Function(Uri origin, Address account, PublicKey recipientPublicKey,
             PublicKey sourcePublicKey, Completer<String> completer)?
         decryptData,
-    TResult? Function(Uri origin, PublicKey publicKey, Address recipient,
-            FunctionCall payload, Completer<String> completer)?
+    TResult? Function(
+            Uri origin,
+            Address account,
+            PublicKey publicKey,
+            Address recipient,
+            FunctionCall payload,
+            Completer<String> completer)?
         callContractMethod,
     TResult? Function(
             Uri origin,
@@ -1301,7 +1390,7 @@ class _$SignDataImpl implements _SignData {
             Completer<(PublicKey, String)> completer)?
         sendMessage,
   }) {
-    return signData?.call(origin, publicKey, data, completer);
+    return signData?.call(origin, account, publicKey, data, completer);
   }
 
   @override
@@ -1316,17 +1405,22 @@ class _$SignDataImpl implements _SignData {
     TResult Function(Uri origin, Address account, TokenContractAsset details,
             Completer<void> completer)?
         addTip3Token,
-    TResult Function(Uri origin, PublicKey publicKey, String data,
-            Completer<String> completer)?
+    TResult Function(Uri origin, Address account, PublicKey publicKey,
+            String data, Completer<String> completer)?
         signData,
-    TResult Function(Uri origin, PublicKey publicKey, String data,
-            Completer<String> completer)?
+    TResult Function(Uri origin, Address account, PublicKey publicKey,
+            String data, Completer<String> completer)?
         encryptData,
-    TResult Function(Uri origin, PublicKey recipientPublicKey,
+    TResult Function(Uri origin, Address account, PublicKey recipientPublicKey,
             PublicKey sourcePublicKey, Completer<String> completer)?
         decryptData,
-    TResult Function(Uri origin, PublicKey publicKey, Address recipient,
-            FunctionCall payload, Completer<String> completer)?
+    TResult Function(
+            Uri origin,
+            Address account,
+            PublicKey publicKey,
+            Address recipient,
+            FunctionCall payload,
+            Completer<String> completer)?
         callContractMethod,
     TResult Function(
             Uri origin,
@@ -1341,7 +1435,7 @@ class _$SignDataImpl implements _SignData {
     required TResult orElse(),
   }) {
     if (signData != null) {
-      return signData(origin, publicKey, data, completer);
+      return signData(origin, account, publicKey, data, completer);
     }
     return orElse();
   }
@@ -1399,12 +1493,14 @@ class _$SignDataImpl implements _SignData {
 abstract class _SignData implements ApprovalRequest {
   const factory _SignData(
       {required final Uri origin,
+      required final Address account,
       required final PublicKey publicKey,
       required final String data,
       required final Completer<String> completer}) = _$SignDataImpl;
 
   @override
   Uri get origin;
+  Address get account;
   PublicKey get publicKey;
   String get data;
   @override
@@ -1425,10 +1521,12 @@ abstract class _$$EncryptDataImplCopyWith<$Res>
   @useResult
   $Res call(
       {Uri origin,
+      Address account,
       PublicKey publicKey,
       String data,
       Completer<String> completer});
 
+  $AddressCopyWith<$Res> get account;
   $PublicKeyCopyWith<$Res> get publicKey;
 }
 
@@ -1444,6 +1542,7 @@ class __$$EncryptDataImplCopyWithImpl<$Res>
   @override
   $Res call({
     Object? origin = null,
+    Object? account = null,
     Object? publicKey = null,
     Object? data = null,
     Object? completer = null,
@@ -1453,6 +1552,10 @@ class __$$EncryptDataImplCopyWithImpl<$Res>
           ? _value.origin
           : origin // ignore: cast_nullable_to_non_nullable
               as Uri,
+      account: null == account
+          ? _value.account
+          : account // ignore: cast_nullable_to_non_nullable
+              as Address,
       publicKey: null == publicKey
           ? _value.publicKey
           : publicKey // ignore: cast_nullable_to_non_nullable
@@ -1470,6 +1573,14 @@ class __$$EncryptDataImplCopyWithImpl<$Res>
 
   @override
   @pragma('vm:prefer-inline')
+  $AddressCopyWith<$Res> get account {
+    return $AddressCopyWith<$Res>(_value.account, (value) {
+      return _then(_value.copyWith(account: value));
+    });
+  }
+
+  @override
+  @pragma('vm:prefer-inline')
   $PublicKeyCopyWith<$Res> get publicKey {
     return $PublicKeyCopyWith<$Res>(_value.publicKey, (value) {
       return _then(_value.copyWith(publicKey: value));
@@ -1482,12 +1593,15 @@ class __$$EncryptDataImplCopyWithImpl<$Res>
 class _$EncryptDataImpl implements _EncryptData {
   const _$EncryptDataImpl(
       {required this.origin,
+      required this.account,
       required this.publicKey,
       required this.data,
       required this.completer});
 
   @override
   final Uri origin;
+  @override
+  final Address account;
   @override
   final PublicKey publicKey;
   @override
@@ -1497,7 +1611,7 @@ class _$EncryptDataImpl implements _EncryptData {
 
   @override
   String toString() {
-    return 'ApprovalRequest.encryptData(origin: $origin, publicKey: $publicKey, data: $data, completer: $completer)';
+    return 'ApprovalRequest.encryptData(origin: $origin, account: $account, publicKey: $publicKey, data: $data, completer: $completer)';
   }
 
   @override
@@ -1506,6 +1620,7 @@ class _$EncryptDataImpl implements _EncryptData {
         (other.runtimeType == runtimeType &&
             other is _$EncryptDataImpl &&
             (identical(other.origin, origin) || other.origin == origin) &&
+            (identical(other.account, account) || other.account == account) &&
             (identical(other.publicKey, publicKey) ||
                 other.publicKey == publicKey) &&
             (identical(other.data, data) || other.data == data) &&
@@ -1515,7 +1630,7 @@ class _$EncryptDataImpl implements _EncryptData {
 
   @override
   int get hashCode =>
-      Object.hash(runtimeType, origin, publicKey, data, completer);
+      Object.hash(runtimeType, origin, account, publicKey, data, completer);
 
   @JsonKey(ignore: true)
   @override
@@ -1535,17 +1650,22 @@ class _$EncryptDataImpl implements _EncryptData {
     required TResult Function(Uri origin, Address account,
             TokenContractAsset details, Completer<void> completer)
         addTip3Token,
-    required TResult Function(Uri origin, PublicKey publicKey, String data,
-            Completer<String> completer)
+    required TResult Function(Uri origin, Address account, PublicKey publicKey,
+            String data, Completer<String> completer)
         signData,
-    required TResult Function(Uri origin, PublicKey publicKey, String data,
-            Completer<String> completer)
+    required TResult Function(Uri origin, Address account, PublicKey publicKey,
+            String data, Completer<String> completer)
         encryptData,
-    required TResult Function(Uri origin, PublicKey recipientPublicKey,
-            PublicKey sourcePublicKey, Completer<String> completer)
+    required TResult Function(
+            Uri origin,
+            Address account,
+            PublicKey recipientPublicKey,
+            PublicKey sourcePublicKey,
+            Completer<String> completer)
         decryptData,
     required TResult Function(
             Uri origin,
+            Address account,
             PublicKey publicKey,
             Address recipient,
             FunctionCall payload,
@@ -1562,7 +1682,7 @@ class _$EncryptDataImpl implements _EncryptData {
             Completer<(PublicKey, String)> completer)
         sendMessage,
   }) {
-    return encryptData(origin, publicKey, data, completer);
+    return encryptData(origin, account, publicKey, data, completer);
   }
 
   @override
@@ -1577,17 +1697,22 @@ class _$EncryptDataImpl implements _EncryptData {
     TResult? Function(Uri origin, Address account, TokenContractAsset details,
             Completer<void> completer)?
         addTip3Token,
-    TResult? Function(Uri origin, PublicKey publicKey, String data,
-            Completer<String> completer)?
+    TResult? Function(Uri origin, Address account, PublicKey publicKey,
+            String data, Completer<String> completer)?
         signData,
-    TResult? Function(Uri origin, PublicKey publicKey, String data,
-            Completer<String> completer)?
+    TResult? Function(Uri origin, Address account, PublicKey publicKey,
+            String data, Completer<String> completer)?
         encryptData,
-    TResult? Function(Uri origin, PublicKey recipientPublicKey,
+    TResult? Function(Uri origin, Address account, PublicKey recipientPublicKey,
             PublicKey sourcePublicKey, Completer<String> completer)?
         decryptData,
-    TResult? Function(Uri origin, PublicKey publicKey, Address recipient,
-            FunctionCall payload, Completer<String> completer)?
+    TResult? Function(
+            Uri origin,
+            Address account,
+            PublicKey publicKey,
+            Address recipient,
+            FunctionCall payload,
+            Completer<String> completer)?
         callContractMethod,
     TResult? Function(
             Uri origin,
@@ -1600,7 +1725,7 @@ class _$EncryptDataImpl implements _EncryptData {
             Completer<(PublicKey, String)> completer)?
         sendMessage,
   }) {
-    return encryptData?.call(origin, publicKey, data, completer);
+    return encryptData?.call(origin, account, publicKey, data, completer);
   }
 
   @override
@@ -1615,17 +1740,22 @@ class _$EncryptDataImpl implements _EncryptData {
     TResult Function(Uri origin, Address account, TokenContractAsset details,
             Completer<void> completer)?
         addTip3Token,
-    TResult Function(Uri origin, PublicKey publicKey, String data,
-            Completer<String> completer)?
+    TResult Function(Uri origin, Address account, PublicKey publicKey,
+            String data, Completer<String> completer)?
         signData,
-    TResult Function(Uri origin, PublicKey publicKey, String data,
-            Completer<String> completer)?
+    TResult Function(Uri origin, Address account, PublicKey publicKey,
+            String data, Completer<String> completer)?
         encryptData,
-    TResult Function(Uri origin, PublicKey recipientPublicKey,
+    TResult Function(Uri origin, Address account, PublicKey recipientPublicKey,
             PublicKey sourcePublicKey, Completer<String> completer)?
         decryptData,
-    TResult Function(Uri origin, PublicKey publicKey, Address recipient,
-            FunctionCall payload, Completer<String> completer)?
+    TResult Function(
+            Uri origin,
+            Address account,
+            PublicKey publicKey,
+            Address recipient,
+            FunctionCall payload,
+            Completer<String> completer)?
         callContractMethod,
     TResult Function(
             Uri origin,
@@ -1640,7 +1770,7 @@ class _$EncryptDataImpl implements _EncryptData {
     required TResult orElse(),
   }) {
     if (encryptData != null) {
-      return encryptData(origin, publicKey, data, completer);
+      return encryptData(origin, account, publicKey, data, completer);
     }
     return orElse();
   }
@@ -1698,12 +1828,14 @@ class _$EncryptDataImpl implements _EncryptData {
 abstract class _EncryptData implements ApprovalRequest {
   const factory _EncryptData(
       {required final Uri origin,
+      required final Address account,
       required final PublicKey publicKey,
       required final String data,
       required final Completer<String> completer}) = _$EncryptDataImpl;
 
   @override
   Uri get origin;
+  Address get account;
   PublicKey get publicKey;
   String get data;
   @override
@@ -1724,10 +1856,12 @@ abstract class _$$DecryptDataImplCopyWith<$Res>
   @useResult
   $Res call(
       {Uri origin,
+      Address account,
       PublicKey recipientPublicKey,
       PublicKey sourcePublicKey,
       Completer<String> completer});
 
+  $AddressCopyWith<$Res> get account;
   $PublicKeyCopyWith<$Res> get recipientPublicKey;
   $PublicKeyCopyWith<$Res> get sourcePublicKey;
 }
@@ -1744,6 +1878,7 @@ class __$$DecryptDataImplCopyWithImpl<$Res>
   @override
   $Res call({
     Object? origin = null,
+    Object? account = null,
     Object? recipientPublicKey = null,
     Object? sourcePublicKey = null,
     Object? completer = null,
@@ -1753,6 +1888,10 @@ class __$$DecryptDataImplCopyWithImpl<$Res>
           ? _value.origin
           : origin // ignore: cast_nullable_to_non_nullable
               as Uri,
+      account: null == account
+          ? _value.account
+          : account // ignore: cast_nullable_to_non_nullable
+              as Address,
       recipientPublicKey: null == recipientPublicKey
           ? _value.recipientPublicKey
           : recipientPublicKey // ignore: cast_nullable_to_non_nullable
@@ -1766,6 +1905,14 @@ class __$$DecryptDataImplCopyWithImpl<$Res>
           : completer // ignore: cast_nullable_to_non_nullable
               as Completer<String>,
     ));
+  }
+
+  @override
+  @pragma('vm:prefer-inline')
+  $AddressCopyWith<$Res> get account {
+    return $AddressCopyWith<$Res>(_value.account, (value) {
+      return _then(_value.copyWith(account: value));
+    });
   }
 
   @override
@@ -1790,12 +1937,15 @@ class __$$DecryptDataImplCopyWithImpl<$Res>
 class _$DecryptDataImpl implements _DecryptData {
   const _$DecryptDataImpl(
       {required this.origin,
+      required this.account,
       required this.recipientPublicKey,
       required this.sourcePublicKey,
       required this.completer});
 
   @override
   final Uri origin;
+  @override
+  final Address account;
   @override
   final PublicKey recipientPublicKey;
   @override
@@ -1805,7 +1955,7 @@ class _$DecryptDataImpl implements _DecryptData {
 
   @override
   String toString() {
-    return 'ApprovalRequest.decryptData(origin: $origin, recipientPublicKey: $recipientPublicKey, sourcePublicKey: $sourcePublicKey, completer: $completer)';
+    return 'ApprovalRequest.decryptData(origin: $origin, account: $account, recipientPublicKey: $recipientPublicKey, sourcePublicKey: $sourcePublicKey, completer: $completer)';
   }
 
   @override
@@ -1814,6 +1964,7 @@ class _$DecryptDataImpl implements _DecryptData {
         (other.runtimeType == runtimeType &&
             other is _$DecryptDataImpl &&
             (identical(other.origin, origin) || other.origin == origin) &&
+            (identical(other.account, account) || other.account == account) &&
             (identical(other.recipientPublicKey, recipientPublicKey) ||
                 other.recipientPublicKey == recipientPublicKey) &&
             (identical(other.sourcePublicKey, sourcePublicKey) ||
@@ -1823,8 +1974,8 @@ class _$DecryptDataImpl implements _DecryptData {
   }
 
   @override
-  int get hashCode => Object.hash(
-      runtimeType, origin, recipientPublicKey, sourcePublicKey, completer);
+  int get hashCode => Object.hash(runtimeType, origin, account,
+      recipientPublicKey, sourcePublicKey, completer);
 
   @JsonKey(ignore: true)
   @override
@@ -1844,17 +1995,22 @@ class _$DecryptDataImpl implements _DecryptData {
     required TResult Function(Uri origin, Address account,
             TokenContractAsset details, Completer<void> completer)
         addTip3Token,
-    required TResult Function(Uri origin, PublicKey publicKey, String data,
-            Completer<String> completer)
+    required TResult Function(Uri origin, Address account, PublicKey publicKey,
+            String data, Completer<String> completer)
         signData,
-    required TResult Function(Uri origin, PublicKey publicKey, String data,
-            Completer<String> completer)
+    required TResult Function(Uri origin, Address account, PublicKey publicKey,
+            String data, Completer<String> completer)
         encryptData,
-    required TResult Function(Uri origin, PublicKey recipientPublicKey,
-            PublicKey sourcePublicKey, Completer<String> completer)
+    required TResult Function(
+            Uri origin,
+            Address account,
+            PublicKey recipientPublicKey,
+            PublicKey sourcePublicKey,
+            Completer<String> completer)
         decryptData,
     required TResult Function(
             Uri origin,
+            Address account,
             PublicKey publicKey,
             Address recipient,
             FunctionCall payload,
@@ -1871,7 +2027,8 @@ class _$DecryptDataImpl implements _DecryptData {
             Completer<(PublicKey, String)> completer)
         sendMessage,
   }) {
-    return decryptData(origin, recipientPublicKey, sourcePublicKey, completer);
+    return decryptData(
+        origin, account, recipientPublicKey, sourcePublicKey, completer);
   }
 
   @override
@@ -1886,17 +2043,22 @@ class _$DecryptDataImpl implements _DecryptData {
     TResult? Function(Uri origin, Address account, TokenContractAsset details,
             Completer<void> completer)?
         addTip3Token,
-    TResult? Function(Uri origin, PublicKey publicKey, String data,
-            Completer<String> completer)?
+    TResult? Function(Uri origin, Address account, PublicKey publicKey,
+            String data, Completer<String> completer)?
         signData,
-    TResult? Function(Uri origin, PublicKey publicKey, String data,
-            Completer<String> completer)?
+    TResult? Function(Uri origin, Address account, PublicKey publicKey,
+            String data, Completer<String> completer)?
         encryptData,
-    TResult? Function(Uri origin, PublicKey recipientPublicKey,
+    TResult? Function(Uri origin, Address account, PublicKey recipientPublicKey,
             PublicKey sourcePublicKey, Completer<String> completer)?
         decryptData,
-    TResult? Function(Uri origin, PublicKey publicKey, Address recipient,
-            FunctionCall payload, Completer<String> completer)?
+    TResult? Function(
+            Uri origin,
+            Address account,
+            PublicKey publicKey,
+            Address recipient,
+            FunctionCall payload,
+            Completer<String> completer)?
         callContractMethod,
     TResult? Function(
             Uri origin,
@@ -1910,7 +2072,7 @@ class _$DecryptDataImpl implements _DecryptData {
         sendMessage,
   }) {
     return decryptData?.call(
-        origin, recipientPublicKey, sourcePublicKey, completer);
+        origin, account, recipientPublicKey, sourcePublicKey, completer);
   }
 
   @override
@@ -1925,17 +2087,22 @@ class _$DecryptDataImpl implements _DecryptData {
     TResult Function(Uri origin, Address account, TokenContractAsset details,
             Completer<void> completer)?
         addTip3Token,
-    TResult Function(Uri origin, PublicKey publicKey, String data,
-            Completer<String> completer)?
+    TResult Function(Uri origin, Address account, PublicKey publicKey,
+            String data, Completer<String> completer)?
         signData,
-    TResult Function(Uri origin, PublicKey publicKey, String data,
-            Completer<String> completer)?
+    TResult Function(Uri origin, Address account, PublicKey publicKey,
+            String data, Completer<String> completer)?
         encryptData,
-    TResult Function(Uri origin, PublicKey recipientPublicKey,
+    TResult Function(Uri origin, Address account, PublicKey recipientPublicKey,
             PublicKey sourcePublicKey, Completer<String> completer)?
         decryptData,
-    TResult Function(Uri origin, PublicKey publicKey, Address recipient,
-            FunctionCall payload, Completer<String> completer)?
+    TResult Function(
+            Uri origin,
+            Address account,
+            PublicKey publicKey,
+            Address recipient,
+            FunctionCall payload,
+            Completer<String> completer)?
         callContractMethod,
     TResult Function(
             Uri origin,
@@ -1951,7 +2118,7 @@ class _$DecryptDataImpl implements _DecryptData {
   }) {
     if (decryptData != null) {
       return decryptData(
-          origin, recipientPublicKey, sourcePublicKey, completer);
+          origin, account, recipientPublicKey, sourcePublicKey, completer);
     }
     return orElse();
   }
@@ -2009,12 +2176,14 @@ class _$DecryptDataImpl implements _DecryptData {
 abstract class _DecryptData implements ApprovalRequest {
   const factory _DecryptData(
       {required final Uri origin,
+      required final Address account,
       required final PublicKey recipientPublicKey,
       required final PublicKey sourcePublicKey,
       required final Completer<String> completer}) = _$DecryptDataImpl;
 
   @override
   Uri get origin;
+  Address get account;
   PublicKey get recipientPublicKey;
   PublicKey get sourcePublicKey;
   @override
@@ -2035,11 +2204,13 @@ abstract class _$$CallContractMethodImplCopyWith<$Res>
   @useResult
   $Res call(
       {Uri origin,
+      Address account,
       PublicKey publicKey,
       Address recipient,
       FunctionCall payload,
       Completer<String> completer});
 
+  $AddressCopyWith<$Res> get account;
   $PublicKeyCopyWith<$Res> get publicKey;
   $AddressCopyWith<$Res> get recipient;
   $FunctionCallCopyWith<$Res> get payload;
@@ -2057,6 +2228,7 @@ class __$$CallContractMethodImplCopyWithImpl<$Res>
   @override
   $Res call({
     Object? origin = null,
+    Object? account = null,
     Object? publicKey = null,
     Object? recipient = null,
     Object? payload = null,
@@ -2067,6 +2239,10 @@ class __$$CallContractMethodImplCopyWithImpl<$Res>
           ? _value.origin
           : origin // ignore: cast_nullable_to_non_nullable
               as Uri,
+      account: null == account
+          ? _value.account
+          : account // ignore: cast_nullable_to_non_nullable
+              as Address,
       publicKey: null == publicKey
           ? _value.publicKey
           : publicKey // ignore: cast_nullable_to_non_nullable
@@ -2084,6 +2260,14 @@ class __$$CallContractMethodImplCopyWithImpl<$Res>
           : completer // ignore: cast_nullable_to_non_nullable
               as Completer<String>,
     ));
+  }
+
+  @override
+  @pragma('vm:prefer-inline')
+  $AddressCopyWith<$Res> get account {
+    return $AddressCopyWith<$Res>(_value.account, (value) {
+      return _then(_value.copyWith(account: value));
+    });
   }
 
   @override
@@ -2116,6 +2300,7 @@ class __$$CallContractMethodImplCopyWithImpl<$Res>
 class _$CallContractMethodImpl implements _CallContractMethod {
   const _$CallContractMethodImpl(
       {required this.origin,
+      required this.account,
       required this.publicKey,
       required this.recipient,
       required this.payload,
@@ -2123,6 +2308,8 @@ class _$CallContractMethodImpl implements _CallContractMethod {
 
   @override
   final Uri origin;
+  @override
+  final Address account;
   @override
   final PublicKey publicKey;
   @override
@@ -2134,7 +2321,7 @@ class _$CallContractMethodImpl implements _CallContractMethod {
 
   @override
   String toString() {
-    return 'ApprovalRequest.callContractMethod(origin: $origin, publicKey: $publicKey, recipient: $recipient, payload: $payload, completer: $completer)';
+    return 'ApprovalRequest.callContractMethod(origin: $origin, account: $account, publicKey: $publicKey, recipient: $recipient, payload: $payload, completer: $completer)';
   }
 
   @override
@@ -2143,6 +2330,7 @@ class _$CallContractMethodImpl implements _CallContractMethod {
         (other.runtimeType == runtimeType &&
             other is _$CallContractMethodImpl &&
             (identical(other.origin, origin) || other.origin == origin) &&
+            (identical(other.account, account) || other.account == account) &&
             (identical(other.publicKey, publicKey) ||
                 other.publicKey == publicKey) &&
             (identical(other.recipient, recipient) ||
@@ -2154,7 +2342,7 @@ class _$CallContractMethodImpl implements _CallContractMethod {
 
   @override
   int get hashCode => Object.hash(
-      runtimeType, origin, publicKey, recipient, payload, completer);
+      runtimeType, origin, account, publicKey, recipient, payload, completer);
 
   @JsonKey(ignore: true)
   @override
@@ -2175,17 +2363,22 @@ class _$CallContractMethodImpl implements _CallContractMethod {
     required TResult Function(Uri origin, Address account,
             TokenContractAsset details, Completer<void> completer)
         addTip3Token,
-    required TResult Function(Uri origin, PublicKey publicKey, String data,
-            Completer<String> completer)
+    required TResult Function(Uri origin, Address account, PublicKey publicKey,
+            String data, Completer<String> completer)
         signData,
-    required TResult Function(Uri origin, PublicKey publicKey, String data,
-            Completer<String> completer)
+    required TResult Function(Uri origin, Address account, PublicKey publicKey,
+            String data, Completer<String> completer)
         encryptData,
-    required TResult Function(Uri origin, PublicKey recipientPublicKey,
-            PublicKey sourcePublicKey, Completer<String> completer)
+    required TResult Function(
+            Uri origin,
+            Address account,
+            PublicKey recipientPublicKey,
+            PublicKey sourcePublicKey,
+            Completer<String> completer)
         decryptData,
     required TResult Function(
             Uri origin,
+            Address account,
             PublicKey publicKey,
             Address recipient,
             FunctionCall payload,
@@ -2202,7 +2395,8 @@ class _$CallContractMethodImpl implements _CallContractMethod {
             Completer<(PublicKey, String)> completer)
         sendMessage,
   }) {
-    return callContractMethod(origin, publicKey, recipient, payload, completer);
+    return callContractMethod(
+        origin, account, publicKey, recipient, payload, completer);
   }
 
   @override
@@ -2217,17 +2411,22 @@ class _$CallContractMethodImpl implements _CallContractMethod {
     TResult? Function(Uri origin, Address account, TokenContractAsset details,
             Completer<void> completer)?
         addTip3Token,
-    TResult? Function(Uri origin, PublicKey publicKey, String data,
-            Completer<String> completer)?
+    TResult? Function(Uri origin, Address account, PublicKey publicKey,
+            String data, Completer<String> completer)?
         signData,
-    TResult? Function(Uri origin, PublicKey publicKey, String data,
-            Completer<String> completer)?
+    TResult? Function(Uri origin, Address account, PublicKey publicKey,
+            String data, Completer<String> completer)?
         encryptData,
-    TResult? Function(Uri origin, PublicKey recipientPublicKey,
+    TResult? Function(Uri origin, Address account, PublicKey recipientPublicKey,
             PublicKey sourcePublicKey, Completer<String> completer)?
         decryptData,
-    TResult? Function(Uri origin, PublicKey publicKey, Address recipient,
-            FunctionCall payload, Completer<String> completer)?
+    TResult? Function(
+            Uri origin,
+            Address account,
+            PublicKey publicKey,
+            Address recipient,
+            FunctionCall payload,
+            Completer<String> completer)?
         callContractMethod,
     TResult? Function(
             Uri origin,
@@ -2241,7 +2440,7 @@ class _$CallContractMethodImpl implements _CallContractMethod {
         sendMessage,
   }) {
     return callContractMethod?.call(
-        origin, publicKey, recipient, payload, completer);
+        origin, account, publicKey, recipient, payload, completer);
   }
 
   @override
@@ -2256,17 +2455,22 @@ class _$CallContractMethodImpl implements _CallContractMethod {
     TResult Function(Uri origin, Address account, TokenContractAsset details,
             Completer<void> completer)?
         addTip3Token,
-    TResult Function(Uri origin, PublicKey publicKey, String data,
-            Completer<String> completer)?
+    TResult Function(Uri origin, Address account, PublicKey publicKey,
+            String data, Completer<String> completer)?
         signData,
-    TResult Function(Uri origin, PublicKey publicKey, String data,
-            Completer<String> completer)?
+    TResult Function(Uri origin, Address account, PublicKey publicKey,
+            String data, Completer<String> completer)?
         encryptData,
-    TResult Function(Uri origin, PublicKey recipientPublicKey,
+    TResult Function(Uri origin, Address account, PublicKey recipientPublicKey,
             PublicKey sourcePublicKey, Completer<String> completer)?
         decryptData,
-    TResult Function(Uri origin, PublicKey publicKey, Address recipient,
-            FunctionCall payload, Completer<String> completer)?
+    TResult Function(
+            Uri origin,
+            Address account,
+            PublicKey publicKey,
+            Address recipient,
+            FunctionCall payload,
+            Completer<String> completer)?
         callContractMethod,
     TResult Function(
             Uri origin,
@@ -2282,7 +2486,7 @@ class _$CallContractMethodImpl implements _CallContractMethod {
   }) {
     if (callContractMethod != null) {
       return callContractMethod(
-          origin, publicKey, recipient, payload, completer);
+          origin, account, publicKey, recipient, payload, completer);
     }
     return orElse();
   }
@@ -2340,6 +2544,7 @@ class _$CallContractMethodImpl implements _CallContractMethod {
 abstract class _CallContractMethod implements ApprovalRequest {
   const factory _CallContractMethod(
       {required final Uri origin,
+      required final Address account,
       required final PublicKey publicKey,
       required final Address recipient,
       required final FunctionCall payload,
@@ -2347,6 +2552,7 @@ abstract class _CallContractMethod implements ApprovalRequest {
 
   @override
   Uri get origin;
+  Address get account;
   PublicKey get publicKey;
   Address get recipient;
   FunctionCall get payload;
@@ -2555,17 +2761,22 @@ class _$SendMessageImpl implements _SendMessage {
     required TResult Function(Uri origin, Address account,
             TokenContractAsset details, Completer<void> completer)
         addTip3Token,
-    required TResult Function(Uri origin, PublicKey publicKey, String data,
-            Completer<String> completer)
+    required TResult Function(Uri origin, Address account, PublicKey publicKey,
+            String data, Completer<String> completer)
         signData,
-    required TResult Function(Uri origin, PublicKey publicKey, String data,
-            Completer<String> completer)
+    required TResult Function(Uri origin, Address account, PublicKey publicKey,
+            String data, Completer<String> completer)
         encryptData,
-    required TResult Function(Uri origin, PublicKey recipientPublicKey,
-            PublicKey sourcePublicKey, Completer<String> completer)
+    required TResult Function(
+            Uri origin,
+            Address account,
+            PublicKey recipientPublicKey,
+            PublicKey sourcePublicKey,
+            Completer<String> completer)
         decryptData,
     required TResult Function(
             Uri origin,
+            Address account,
             PublicKey publicKey,
             Address recipient,
             FunctionCall payload,
@@ -2598,17 +2809,22 @@ class _$SendMessageImpl implements _SendMessage {
     TResult? Function(Uri origin, Address account, TokenContractAsset details,
             Completer<void> completer)?
         addTip3Token,
-    TResult? Function(Uri origin, PublicKey publicKey, String data,
-            Completer<String> completer)?
+    TResult? Function(Uri origin, Address account, PublicKey publicKey,
+            String data, Completer<String> completer)?
         signData,
-    TResult? Function(Uri origin, PublicKey publicKey, String data,
-            Completer<String> completer)?
+    TResult? Function(Uri origin, Address account, PublicKey publicKey,
+            String data, Completer<String> completer)?
         encryptData,
-    TResult? Function(Uri origin, PublicKey recipientPublicKey,
+    TResult? Function(Uri origin, Address account, PublicKey recipientPublicKey,
             PublicKey sourcePublicKey, Completer<String> completer)?
         decryptData,
-    TResult? Function(Uri origin, PublicKey publicKey, Address recipient,
-            FunctionCall payload, Completer<String> completer)?
+    TResult? Function(
+            Uri origin,
+            Address account,
+            PublicKey publicKey,
+            Address recipient,
+            FunctionCall payload,
+            Completer<String> completer)?
         callContractMethod,
     TResult? Function(
             Uri origin,
@@ -2637,17 +2853,22 @@ class _$SendMessageImpl implements _SendMessage {
     TResult Function(Uri origin, Address account, TokenContractAsset details,
             Completer<void> completer)?
         addTip3Token,
-    TResult Function(Uri origin, PublicKey publicKey, String data,
-            Completer<String> completer)?
+    TResult Function(Uri origin, Address account, PublicKey publicKey,
+            String data, Completer<String> completer)?
         signData,
-    TResult Function(Uri origin, PublicKey publicKey, String data,
-            Completer<String> completer)?
+    TResult Function(Uri origin, Address account, PublicKey publicKey,
+            String data, Completer<String> completer)?
         encryptData,
-    TResult Function(Uri origin, PublicKey recipientPublicKey,
+    TResult Function(Uri origin, Address account, PublicKey recipientPublicKey,
             PublicKey sourcePublicKey, Completer<String> completer)?
         decryptData,
-    TResult Function(Uri origin, PublicKey publicKey, Address recipient,
-            FunctionCall payload, Completer<String> completer)?
+    TResult Function(
+            Uri origin,
+            Address account,
+            PublicKey publicKey,
+            Address recipient,
+            FunctionCall payload,
+            Completer<String> completer)?
         callContractMethod,
     TResult Function(
             Uri origin,

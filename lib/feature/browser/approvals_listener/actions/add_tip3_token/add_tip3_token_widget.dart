@@ -49,11 +49,7 @@ class AddTip3TokenWidget extends ElementaryWidget<AddTip3TokenWidgetModel> {
             child: SeparatedColumn(
               separatorSize: DimensSizeV2.d12,
               children: [
-                if (wm.account != null)
-                  AccountInfo(
-                    account: wm.account!,
-                    color: theme.colors.background2,
-                  ),
+                AccountInfoWidget(account: account),
                 WebsiteInfoWidget(uri: origin),
                 PrimaryCard(
                   color: theme.colors.background2,

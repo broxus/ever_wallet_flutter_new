@@ -1,6 +1,5 @@
 import 'package:app/app/service/service.dart';
 import 'package:app/di/di.dart';
-import 'package:app/feature/profile/profile.dart';
 import 'package:app/feature/profile/widgets/enter_password_widget_v2/enter_password_cubit.dart';
 import 'package:app/generated/generated.dart';
 import 'package:flutter/material.dart';
@@ -102,9 +101,10 @@ class _EnterPasswordWidgetV2State extends State<EnterPasswordWidgetV2> {
         builder: (context) => SeparatedColumn(
           mainAxisSize: MainAxisSize.min,
           children: [
-            PasswordInputV2(
-              controller: _passwordController,
-              submit: () => context
+            SecureTextField(
+              hintText: LocaleKeys.password.tr(),
+              textEditingController: _passwordController,
+              onSubmit: (_) => context
                   .read<EnterPasswordCubit>()
                   .enterPassword(_passwordController.text),
             ),

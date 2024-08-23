@@ -11,12 +11,14 @@ class SecureTextField extends StatefulWidget {
     this.isInitObscure = true,
     this.textEditingController,
     this.textInputAction,
+    this.onSubmit,
   });
 
   final String? hintText;
   final bool isInitObscure;
   final TextEditingController? textEditingController;
   final TextInputAction? textInputAction;
+  final ValueChanged<String?>? onSubmit;
 
   @override
   State<SecureTextField> createState() => _SecureTextFieldState();
@@ -39,6 +41,7 @@ class _SecureTextFieldState extends State<SecureTextField> {
       isObscureText: _isObscure,
       textEditingController: widget.textEditingController,
       textInputAction: widget.textInputAction,
+      onSubmit: widget.onSubmit,
     );
   }
 
