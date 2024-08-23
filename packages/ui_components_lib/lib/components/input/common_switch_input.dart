@@ -50,7 +50,7 @@ class _CommonSwitchInputState extends State<CommonSwitchInput> {
   }
 
   Widget _onBuild(FormFieldState<bool> state) {
-    final colors = context.themeStyle.colors;
+    final colors = context.themeStyleV2.colors;
     field = state;
 
     return GestureDetector(
@@ -61,11 +61,11 @@ class _CommonSwitchInputState extends State<CommonSwitchInput> {
       child: CommonSwitcher(
         value: widget.value,
         backgroundColor: state.hasError
-            ? colors.alert
+            ? colors.contentNegative
             : widget.value
-                ? colors.strokeContrast
-                : colors.strokePrimary,
-        thumbColor: widget.thumbColor ?? colors.backgroundSecondary,
+                ? colors.backgroundAlpha
+                : colors.backgroundAlpha,
+        thumbColor: widget.thumbColor ?? colors.content0,
         thumbSize: DimensSize.d20,
         thumbChild: widget.thumbChild,
       ),
