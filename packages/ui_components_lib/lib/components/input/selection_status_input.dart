@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 
 import 'package:ui_components_lib/ui_components_lib.dart';
+import 'package:ui_components_lib/v2/dimens_v2.dart';
+import 'package:ui_components_lib/v2/opac_v2.dart';
 
 enum SelectionStatus { unfocus, focus, completed }
 
@@ -30,21 +32,25 @@ class _SelectionStatusInputState extends State<SelectionStatusInput> {
 
   @override
   Widget build(BuildContext context) {
-    final colors = context.themeStyle.colors;
+    final theme = context.themeStyleV2;
     Color? backgroundColor;
     Color? borderColor;
     Color contentColor;
 
     switch (widget.status) {
       case SelectionStatus.unfocus:
-        borderColor = colors.strokePrimary;
-        contentColor = isPressed ? colors.textPrimary : colors.textSecondary;
+        borderColor = theme.colors.borderFocus.withOpacity(OpacV2.opac25);
+        contentColor = isPressed
+            ? theme.colors.content3.withOpacity(OpacV2.opac50)
+            : theme.colors.content3.withOpacity(OpacV2.opac50);
       case SelectionStatus.focus:
-        borderColor = colors.strokeContrast;
-        contentColor = isPressed ? colors.textSecondary : colors.textPrimary;
+        borderColor = theme.colors.borderFocus;
+        contentColor =
+            isPressed ? theme.colors.content3 : theme.colors.content3;
       case SelectionStatus.completed:
-        backgroundColor = colors.backgroundPrimary;
-        contentColor = isPressed ? colors.textSecondary : colors.textContrast;
+        backgroundColor = theme.colors.backgroundAccent;
+        contentColor =
+            isPressed ? theme.colors.content0 : theme.colors.content0;
     }
 
     return EverButtonStyleProvider(
@@ -55,7 +61,7 @@ class _SelectionStatusInputState extends State<SelectionStatusInput> {
         child: Material(
           color: backgroundColor ?? Colors.transparent,
           shape: SquircleBoxBorder(
-            squircleRadius: DimensRadius.medium,
+            squircleRadius: DimensRadiusV2.theBiggest,
             borderSide: BorderSide(color: borderColor ?? Colors.transparent),
           ),
           child: InkWell(
@@ -73,7 +79,8 @@ class _SelectionStatusInputState extends State<SelectionStatusInput> {
                   builder: (_, color) {
                     return Text(
                       widget.title,
-                      style: StyleRes.button.copyWith(color: color),
+                      style: theme.textStyles.labelSmall
+                          .copyWith(color: contentColor),
                     );
                   },
                 ),

@@ -16,18 +16,20 @@ class CreateSeedPasswordScreenModel extends ElementaryModel {
     this._currentKeyService,
     this._messengerService,
     this._nekotonRepository,
+    this._phrase,
   ) : super(errorHandler: errorHandler);
 
   final BiometryService _biometryService;
   final CurrentKeyService _currentKeyService;
   final MessengerService _messengerService;
   final NekotonRepository _nekotonRepository;
+  final String? _phrase;
 
   Future<void> next({
     required String password,
   }) async {
     try {
-      final phrase = await _createSeed();
+      final phrase = _phrase?.split(' ') ?? await _createSeed();
 
       final publicKey = await _nekotonRepository.addSeed(
         phrase: phrase,

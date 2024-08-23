@@ -5,13 +5,16 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:nekoton_repository/nekoton_repository.dart';
 import 'package:ui_components_lib/ui_components_lib.dart';
+import 'package:ui_components_lib/v2/ui_components_lib_v2.dart';
 
 /// Helper function to display AddNewLocalAccountTypeSheet
 ModalRoute<void> showAddNewLocalAccountTypeSheet({
+  required BuildContext context,
   required PublicKey publicKey,
   required String name,
 }) {
   return commonBottomSheetRoute(
+    titleTextStyle: context.themeStyleV2.textStyles.headingLarge,
     title: LocaleKeys.newAccountType.tr(),
     body: (_, scrollController) => BlocProvider<AddNewLocalAccountTypeCubit>(
       create: (_) => AddNewLocalAccountTypeCubit(
@@ -88,9 +91,9 @@ class AddNewLocalAccountTypeSheet extends StatelessWidget {
                     ),
                   ),
                 ),
-                CommonButton.primary(
-                  fillWidth: true,
-                  text: LocaleKeys.confirm.tr(),
+                PrimaryButton(
+                  buttonShape: ButtonShape.pill,
+                  title: LocaleKeys.confirm.tr(),
                   onPressed: () => context
                       .read<AddNewLocalAccountTypeCubit>()
                       .createAccount(),
@@ -117,14 +120,14 @@ class AddNewLocalAccountTypeSheet extends StatelessWidget {
 
     return Builder(
       builder: (context) {
-        final colors = context.themeStyle.colors;
+        final theme = context.themeStyleV2;
 
         return CommonListTile(
           height: DimensSize.d40,
           titleChild: Text(
             isDefault ? LocaleKeys.accountDefault.tr(args: [name]) : name,
-            style: StyleRes.button.copyWith(
-              color: isDefault ? colors.textSecondary : colors.textPrimary,
+            style: theme.textStyles.labelMedium.copyWith(
+              color: isDefault ? theme.colors.content3 : theme.colors.content0,
             ),
           ),
           onPressed: isCreated

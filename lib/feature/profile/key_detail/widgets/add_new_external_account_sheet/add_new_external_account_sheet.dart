@@ -5,6 +5,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:nekoton_repository/nekoton_repository.dart';
 import 'package:ui_components_lib/ui_components_lib.dart';
+import 'package:ui_components_lib/v2/ui_components_lib_v2.dart';
 
 /// Helper method to display [AddNewExternalAccountSheet].
 Future<void> showAddNewExternalAccountSheet({
@@ -13,7 +14,7 @@ Future<void> showAddNewExternalAccountSheet({
 }) {
   return showCommonBottomSheet(
     context: context,
-    useAppBackgroundColor: true,
+    titleTextStyle: context.themeStyleV2.textStyles.headingLarge,
     title: LocaleKeys.addExistingAccount.tr(),
     subtitle: LocaleKeys.addExistingAccountDescription.tr(),
     body: (_, scrollController) => BlocProvider<AddNewExternalAccountCubit>(
@@ -72,23 +73,23 @@ class _AddNewExternalAccountSheetState
 
           return SeparatedColumn(
             mainAxisSize: MainAxisSize.min,
-            separatorSize: DimensSize.d16,
+            separatorSize: DimensSizeV2.d16,
             children: [
-              CommonInput(
-                controller: addressController,
-                titleText: LocaleKeys.addressWord.tr(),
-                onSubmitted: (_) => nameFocus.requestFocus(),
+              PrimaryTextField(
+                textEditingController: addressController,
+                hintText: LocaleKeys.addressWord.tr(),
+                onSubmit: (_) => nameFocus.requestFocus(),
               ),
-              CommonInput(
-                controller: nameController,
+              PrimaryTextField(
+                textEditingController: nameController,
                 focusNode: nameFocus,
-                titleText: LocaleKeys.nameWord.tr(),
-                onSubmitted: (_) => _createAccount(context),
+                hintText: LocaleKeys.nameWord.tr(),
+                onSubmit: (_) => _createAccount(context),
               ),
-              CommonButton.primary(
-                fillWidth: true,
+              PrimaryButton(
+                buttonShape: ButtonShape.pill,
                 isLoading: isLoading,
-                text: LocaleKeys.confirm.tr(),
+                title: LocaleKeys.confirm.tr(),
                 onPressed: () => _createAccount(context),
               ),
             ],

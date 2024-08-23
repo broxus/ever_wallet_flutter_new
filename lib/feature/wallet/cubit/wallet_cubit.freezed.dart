@@ -325,6 +325,8 @@ abstract class _$$AccountsImplCopyWith<$Res> {
       PublicKey currentKey,
       KeyAccount? currentAccount,
       PageController controller});
+
+  $PublicKeyCopyWith<$Res> get currentKey;
 }
 
 /// @nodoc
@@ -339,7 +341,7 @@ class __$$AccountsImplCopyWithImpl<$Res>
   @override
   $Res call({
     Object? list = null,
-    Object? currentKey = freezed,
+    Object? currentKey = null,
     Object? currentAccount = freezed,
     Object? controller = null,
   }) {
@@ -348,7 +350,7 @@ class __$$AccountsImplCopyWithImpl<$Res>
           ? _value._list
           : list // ignore: cast_nullable_to_non_nullable
               as List<KeyAccount>,
-      currentKey: freezed == currentKey
+      currentKey: null == currentKey
           ? _value.currentKey
           : currentKey // ignore: cast_nullable_to_non_nullable
               as PublicKey,
@@ -361,6 +363,14 @@ class __$$AccountsImplCopyWithImpl<$Res>
           : controller // ignore: cast_nullable_to_non_nullable
               as PageController,
     ));
+  }
+
+  @override
+  @pragma('vm:prefer-inline')
+  $PublicKeyCopyWith<$Res> get currentKey {
+    return $PublicKeyCopyWith<$Res>(_value.currentKey, (value) {
+      return _then(_value.copyWith(currentKey: value));
+    });
   }
 }
 
@@ -400,8 +410,8 @@ class _$AccountsImpl implements _Accounts {
         (other.runtimeType == runtimeType &&
             other is _$AccountsImpl &&
             const DeepCollectionEquality().equals(other._list, _list) &&
-            const DeepCollectionEquality()
-                .equals(other.currentKey, currentKey) &&
+            (identical(other.currentKey, currentKey) ||
+                other.currentKey == currentKey) &&
             (identical(other.currentAccount, currentAccount) ||
                 other.currentAccount == currentAccount) &&
             (identical(other.controller, controller) ||
@@ -412,7 +422,7 @@ class _$AccountsImpl implements _Accounts {
   int get hashCode => Object.hash(
       runtimeType,
       const DeepCollectionEquality().hash(_list),
-      const DeepCollectionEquality().hash(currentKey),
+      currentKey,
       currentAccount,
       controller);
 

@@ -10,12 +10,15 @@ import 'package:nekoton_repository/nekoton_repository.dart' hide Message;
 import 'package:ui_components_lib/ui_components_lib.dart';
 
 /// Helper method that shows the [ExportSeedSheet] bottom sheet.
-ModalRoute<void> exportSeedSheetRoute(PublicKey publicKey) {
+ModalRoute<void> exportSeedSheetRoute(
+  BuildContext context,
+  PublicKey publicKey,
+) {
   return commonBottomSheetRoute<void>(
+    titleTextStyle: context.themeStyleV2.textStyles.headingLarge,
     title: LocaleKeys.enterPasswordTo.tr(
       args: [LocaleKeys.exportWord.tr().toLowerCase()],
     ),
-    useAppBackgroundColor: true,
     body: (_, __) => BlocProvider<ExportSeedCubit>(
       create: (_) => ExportSeedCubit(
         inject<NekotonRepository>(),
@@ -46,7 +49,7 @@ class ExportSeedSheet extends StatelessWidget {
           success: (phrase) {
             Navigator.of(context)
               ..pop()
-              ..push(exportSeedSavePhraseRoute(phrase));
+              ..push(exportSeedSavePhraseRoute(context, phrase));
           },
         );
       },

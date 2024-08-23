@@ -30,6 +30,7 @@ class ApprovalRequest with _$ApprovalRequest {
 
   const factory ApprovalRequest.signData({
     required Uri origin,
+    required Address account,
     required PublicKey publicKey,
     required String data,
     required Completer<String> completer,
@@ -37,6 +38,7 @@ class ApprovalRequest with _$ApprovalRequest {
 
   const factory ApprovalRequest.encryptData({
     required Uri origin,
+    required Address account,
     required PublicKey publicKey,
     required String data,
     required Completer<String> completer,
@@ -44,6 +46,7 @@ class ApprovalRequest with _$ApprovalRequest {
 
   const factory ApprovalRequest.decryptData({
     required Uri origin,
+    required Address account,
     required PublicKey recipientPublicKey,
     required PublicKey sourcePublicKey,
     required Completer<String> completer,
@@ -51,6 +54,7 @@ class ApprovalRequest with _$ApprovalRequest {
 
   const factory ApprovalRequest.callContractMethod({
     required Uri origin,
+    required Address account,
     required PublicKey publicKey,
     required Address recipient,
     required FunctionCall payload,
@@ -63,7 +67,7 @@ class ApprovalRequest with _$ApprovalRequest {
     required Address recipient,
     @amountJsonConverter required BigInt amount,
     required bool bounce,
-    required String? payload,
+    required FunctionCall? payload,
     required KnownPayload? knownPayload,
     required Completer<(PublicKey, String)> completer,
   }) = _SendMessage;

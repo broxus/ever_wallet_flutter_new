@@ -78,3 +78,7 @@ String convertRetrySubscribeErrorToText(Object error) {
 String toEllipseString(String value) => value.length > 6
     ? '${value.substring(0, 6)}...${value.substring(value.length - 4)}'
     : value;
+
+extension FunctionalExt<T> on T {
+  R let<R>(R Function(T that) block) => block(this);
+}

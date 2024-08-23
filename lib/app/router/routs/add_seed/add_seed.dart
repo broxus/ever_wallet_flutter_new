@@ -92,7 +92,9 @@ GoRoute get createOnboardingSeedPasswordRoute {
   return GoRoute(
     path: AppRoute.createSeedPassword.path,
     builder: (_, GoRouterState state) {
-      return const CreateSeedPasswordScreen();
+      return CreateSeedPasswordScreen(
+        phrase: state.uri.queryParameters[addSeedPhraseQueryParam],
+      );
     },
     routes: [
       seedEnableBiometryRoute,

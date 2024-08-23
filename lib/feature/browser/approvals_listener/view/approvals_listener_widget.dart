@@ -1,5 +1,4 @@
 import 'dart:async';
-import 'dart:collection';
 
 import 'package:app/app/service/service.dart';
 import 'package:app/data/models/models.dart';
@@ -78,6 +77,7 @@ class _ApprovalsListenerWidgetState extends State<ApprovalsListenerWidget> {
         ),
         signData: (
           origin,
+          account,
           publicKey,
           data,
           completer,
@@ -85,12 +85,14 @@ class _ApprovalsListenerWidgetState extends State<ApprovalsListenerWidget> {
             signData(
           context: context,
           origin: origin,
+          account: account,
           publicKey: publicKey,
           data: data,
           completer: completer,
         ),
         encryptData: (
           origin,
+          account,
           publicKey,
           data,
           completer,
@@ -98,12 +100,14 @@ class _ApprovalsListenerWidgetState extends State<ApprovalsListenerWidget> {
             encryptData(
           context: context,
           origin: origin,
+          account: account,
           publicKey: publicKey,
           data: data,
           completer: completer,
         ),
         decryptData: (
           origin,
+          account,
           recipientPublicKey,
           sourcePublicKey,
           completer,
@@ -111,12 +115,14 @@ class _ApprovalsListenerWidgetState extends State<ApprovalsListenerWidget> {
             decryptData(
           context: context,
           origin: origin,
+          account: account,
           recipientPublicKey: recipientPublicKey,
           sourcePublicKey: sourcePublicKey,
           completer: completer,
         ),
         callContractMethod: (
           origin,
+          account,
           publicKey,
           recipient,
           payload,
@@ -125,6 +131,7 @@ class _ApprovalsListenerWidgetState extends State<ApprovalsListenerWidget> {
             callContractMethod(
           context: context,
           origin: origin,
+          account: account,
           publicKey: publicKey,
           recipient: recipient,
           payload: payload,
@@ -147,7 +154,7 @@ class _ApprovalsListenerWidgetState extends State<ApprovalsListenerWidget> {
           recipient: recipient,
           amount: amount,
           bounce: bounce,
-          comment: payload,
+          payload: payload,
           knownPayload: knownPayload,
           completer: completer,
         ),
@@ -269,20 +276,18 @@ class _ApprovalsListenerWidgetState extends State<ApprovalsListenerWidget> {
   Future<void> signData({
     required BuildContext context,
     required Uri origin,
+    required Address account,
     required PublicKey publicKey,
     required String data,
     required Completer<String> completer,
   }) async {
     try {
-      final result = await showAskPasswordApprovalsSheet(
+      final result = await showSignDataSheet(
         context: context,
-        sheetTitle: LocaleKeys.signData.tr(),
+        origin: origin,
+        account: account,
         publicKey: publicKey,
-        data: LinkedHashMap.fromEntries([
-          MapEntry(LocaleKeys.originWord.tr(), origin.host),
-          MapEntry(LocaleKeys.publicKey.tr(), publicKey.publicKey),
-          MapEntry(LocaleKeys.dataWord.tr(), data),
-        ]),
+        data: data,
       );
 
       if (result != null) {
@@ -298,20 +303,18 @@ class _ApprovalsListenerWidgetState extends State<ApprovalsListenerWidget> {
   Future<void> encryptData({
     required BuildContext context,
     required Uri origin,
+    required Address account,
     required PublicKey publicKey,
     required String data,
     required Completer<String> completer,
   }) async {
     try {
-      final result = await showAskPasswordApprovalsSheet(
+      final result = await showEncryptDataSheet(
         context: context,
-        sheetTitle: LocaleKeys.encryptData.tr(),
+        origin: origin,
+        account: account,
         publicKey: publicKey,
-        data: LinkedHashMap.fromEntries([
-          MapEntry(LocaleKeys.originWord.tr(), origin.host),
-          MapEntry(LocaleKeys.publicKey.tr(), publicKey.publicKey),
-          MapEntry(LocaleKeys.dataWord.tr(), data),
-        ]),
+        data: data,
       );
 
       if (result != null) {
@@ -327,20 +330,18 @@ class _ApprovalsListenerWidgetState extends State<ApprovalsListenerWidget> {
   Future<void> decryptData({
     required BuildContext context,
     required Uri origin,
+    required Address account,
     required PublicKey recipientPublicKey,
     required PublicKey sourcePublicKey,
     required Completer<String> completer,
   }) async {
     try {
-      final result = await showAskPasswordApprovalsSheet(
+      final result = await showDecryptDataSheet(
         context: context,
-        sheetTitle: LocaleKeys.decryptData.tr(),
-        publicKey: recipientPublicKey,
-        data: LinkedHashMap.fromEntries([
-          MapEntry(LocaleKeys.originWord.tr(), origin.host),
-          MapEntry(LocaleKeys.publicKey.tr(), recipientPublicKey.publicKey),
-          MapEntry(LocaleKeys.sourcePublicKey.tr(), sourcePublicKey.publicKey),
-        ]),
+        origin: origin,
+        account: account,
+        recipientPublicKey: recipientPublicKey,
+        sourcePublicKey: sourcePublicKey,
       );
 
       if (result != null) {
@@ -356,22 +357,20 @@ class _ApprovalsListenerWidgetState extends State<ApprovalsListenerWidget> {
   Future<void> callContractMethod({
     required BuildContext context,
     required Uri origin,
+    required Address account,
     required PublicKey publicKey,
     required Address recipient,
     required FunctionCall payload,
     required Completer<String> completer,
   }) async {
     try {
-      final result = await showAskPasswordApprovalsSheet(
+      final result = await showCallContractMethodSheet(
         context: context,
-        sheetTitle: LocaleKeys.callContractMethod.tr(),
+        origin: origin,
+        account: account,
         publicKey: publicKey,
-        data: LinkedHashMap.fromEntries([
-          MapEntry(LocaleKeys.originWord.tr(), origin.host),
-          MapEntry(LocaleKeys.publicKey.tr(), publicKey.publicKey),
-          MapEntry(LocaleKeys.recipientAddress.tr(), recipient.address),
-          MapEntry(LocaleKeys.methodWord.tr(), payload.method),
-        ]),
+        recipient: recipient,
+        payload: payload,
       );
 
       if (result != null) {
@@ -391,7 +390,7 @@ class _ApprovalsListenerWidgetState extends State<ApprovalsListenerWidget> {
     required Address recipient,
     required BigInt amount,
     required bool bounce,
-    required String? comment,
+    required FunctionCall? payload,
     required KnownPayload? knownPayload,
     required Completer<(PublicKey, String)> completer,
   }) async {
@@ -403,7 +402,7 @@ class _ApprovalsListenerWidgetState extends State<ApprovalsListenerWidget> {
         recipient: recipient,
         amount: amount,
         bounce: bounce,
-        comment: comment,
+        payload: payload,
         knownPayload: knownPayload,
       );
 

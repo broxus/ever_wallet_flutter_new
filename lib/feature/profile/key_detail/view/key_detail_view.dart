@@ -6,9 +6,10 @@ import 'package:app/generated/generated.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:lucide_icons_flutter/lucide_icons.dart';
 import 'package:nekoton_repository/nekoton_repository.dart' hide Message;
-import 'package:ui_components_lib/components/common/switcher/common_tab_switcher_style.dart';
 import 'package:ui_components_lib/ui_components_lib.dart';
+import 'package:ui_components_lib/v2/ui_components_lib_v2.dart';
 
 class KeyDetailView extends StatelessWidget {
   KeyDetailView({
@@ -23,19 +24,23 @@ class KeyDetailView extends StatelessWidget {
   final KeyDetailAccountsTab tab;
 
   late final accountTabItems = [
-    CommonTabSwitcherItem(
+    PrimarySegmentControl(
       title: LocaleKeys.myAccounts.tr(),
       value: KeyDetailAccountsTab.local,
+      state: SegmentControlState.normal,
+      size: SegmentControlSize.small,
     ),
-    CommonTabSwitcherItem(
+    PrimarySegmentControl(
+      state: SegmentControlState.normal,
       title: LocaleKeys.externalAccounts.tr(),
       value: KeyDetailAccountsTab.external,
+      size: SegmentControlSize.small,
     ),
   ];
 
   @override
   Widget build(BuildContext context) {
-    final colors = context.themeStyle.colors;
+    final theme = context.themeStyleV2;
 
     final currentAccounts = tab == KeyDetailAccountsTab.local
         ? seedKey.accountList.localAccounts
@@ -53,65 +58,76 @@ class KeyDetailView extends StatelessWidget {
                   children: [
                     Text(
                       LocaleKeys.publicKey.tr(),
-                      style: StyleRes.addRegular
-                          .copyWith(color: colors.textSecondary),
+                      style: theme.textStyles.labelXSmall.copyWith(
+                        color: theme.colors.content3,
+                      ),
                     ),
                     Text(
                       seedKey.name,
-                      style: StyleRes.h1.copyWith(color: colors.textPrimary),
+                      style: theme.textStyles.headingLarge,
                     ),
                   ],
                 ),
                 ShapedContainerColumn(
-                  separatorSize: DimensSize.d16,
+                  separatorSize: 0,
+                  color: theme.colors.background1,
                   children: [
-                    _headerItem(
-                      title: LocaleKeys.currentSeed.tr(),
-                      subtitle: seedName,
+                    Padding(
+                      padding: const EdgeInsets.symmetric(
+                        vertical: DimensSizeV2.d16,
+                      ),
+                      child: _headerItem(
+                        title: LocaleKeys.currentSeed.tr(),
+                        subtitle: seedName,
+                      ),
                     ),
                     const CommonDivider(),
-                    _headerItem(
-                      title: LocaleKeys.publicKey.tr(),
-                      subtitle: seedKey.publicKey.publicKey,
-                      isPrimary: false,
-                      action: CommonIconButton.svg(
-                        svg: Assets.images.copy.path,
-                        buttonType: EverButtonType.ghost,
-                        size: CommonIconButtonSize.xsmall,
-                        color: colors.textSecondary,
-                        onPressed: () {
-                          Clipboard.setData(
-                            ClipboardData(text: seedKey.publicKey.publicKey),
-                          );
-                          inject<MessengerService>().show(
-                            Message.successful(
-                              message: LocaleKeys.valueCopiedExclamation.tr(
-                                args: [seedKey.publicKey.toEllipseString()],
+                    Padding(
+                      padding: const EdgeInsets.symmetric(
+                        vertical: DimensSizeV2.d16,
+                      ),
+                      child: _headerItem(
+                        title: LocaleKeys.publicKey.tr(),
+                        subtitle: seedKey.publicKey.publicKey,
+                        isPrimary: false,
+                        action: CommonIconButton.svg(
+                          svg: Assets.images.copy.path,
+                          buttonType: EverButtonType.ghost,
+                          size: CommonIconButtonSize.xsmall,
+                          color: theme.colors.content3,
+                          onPressed: () {
+                            Clipboard.setData(
+                              ClipboardData(text: seedKey.publicKey.publicKey),
+                            );
+                            inject<MessengerService>().show(
+                              Message.successful(
+                                message: LocaleKeys.valueCopiedExclamation.tr(
+                                  args: [seedKey.publicKey.toEllipseString()],
+                                ),
                               ),
-                            ),
-                          );
-                        },
+                            );
+                          },
+                        ),
                       ),
                     ),
                   ],
                 ),
                 ShapedContainerColumn(
+                  color: theme.colors.background1,
                   mainAxisSize: MainAxisSize.min,
                   separatorSize: DimensSize.d16,
                   crossAxisAlignment: CrossAxisAlignment.center,
                   children: [
-                    CommonTabSwitcher(
+                    SwitcherSegmentControls(
                       onTabChanged: context.read<KeyDetailCubit>().changeTab,
                       values: accountTabItems,
                       currentValue: tab,
-                      style: CommonTabSwitcherStyle.small,
                     ),
                     if (currentAccounts.isEmpty)
                       Text(
                         LocaleKeys.noAccountsYet.tr(),
-                        style: StyleRes.addRegular.copyWith(
-                          color: colors.textSecondary,
-                        ),
+                        style: theme.textStyles.labelXSmall
+                            .copyWith(color: theme.colors.content3),
                       )
                     else
                       SeparatedColumn(
@@ -131,10 +147,10 @@ class KeyDetailView extends StatelessWidget {
         ),
         Padding(
           padding: const EdgeInsets.symmetric(horizontal: DimensSize.d16),
-          child: CommonButton.primary(
-            fillWidth: true,
-            leading: CommonButtonIconWidget.svg(svg: Assets.images.plus.path),
-            text: LocaleKeys.addNewAccount.tr(),
+          child: PrimaryButton(
+            buttonShape: ButtonShape.pill,
+            postfixIcon: LucideIcons.plus,
+            title: LocaleKeys.addNewAccount.tr(),
             onPressed: () {
               switch (tab) {
                 case KeyDetailAccountsTab.local:
@@ -163,7 +179,7 @@ class KeyDetailView extends StatelessWidget {
   }) {
     return Builder(
       builder: (context) {
-        final colors = context.themeStyle.colors;
+        final theme = context.themeStyleV2;
 
         return SeparatedColumn(
           separatorSize: DimensSize.d4,
@@ -173,15 +189,14 @@ class KeyDetailView extends StatelessWidget {
               height: null,
               titleChild: Text(
                 title,
-                style:
-                    StyleRes.addRegular.copyWith(color: colors.textSecondary),
+                style: theme.textStyles.labelXSmall
+                    .copyWith(color: theme.colors.content3),
               ),
               subtitleChild: Text(
                 subtitle,
-                style: (isPrimary ? StyleRes.primaryBold : StyleRes.addBold)
-                    .copyWith(
-                  color: colors.textPrimary,
-                ),
+                style: isPrimary
+                    ? theme.textStyles.labelMedium
+                    : theme.textStyles.labelSmall,
               ),
               trailing: action,
               backgroundColor: Colors.transparent,
@@ -195,7 +210,7 @@ class KeyDetailView extends StatelessWidget {
   Widget _accountItem(KeyAccount account) {
     return Builder(
       builder: (context) {
-        final colors = context.themeStyle.colors;
+        final colors = context.themeStyleV2.colors;
 
         return CommonListTile(
           padding: EdgeInsets.zero,
@@ -208,6 +223,7 @@ class KeyDetailView extends StatelessWidget {
           ),
           leading: CommonBackgroundedIconWidget.svg(
             svg: Assets.images.person.path,
+            backgroundColor: colors.backgroundAlpha,
           ),
           titleText: account.name,
           subtitleText: account.address.toEllipseString(),
@@ -218,12 +234,12 @@ class KeyDetailView extends StatelessWidget {
               if (account.isHidden)
                 CommonIconWidget.svg(
                   svg: Assets.images.closedEye.path,
-                  color: colors.textPrimary,
+                  color: colors.content0,
                 ),
               CommonIconButton.svg(
                 svg: Assets.images.settings.path,
                 buttonType: EverButtonType.ghost,
-                color: colors.textSecondary,
+                color: colors.content0,
                 size: CommonIconButtonSize.xsmall,
                 onPressed: () => showAccountSettingsSheet(
                   context: context,

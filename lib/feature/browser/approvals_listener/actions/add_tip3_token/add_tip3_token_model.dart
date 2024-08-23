@@ -13,9 +13,6 @@ class AddTip3TokenModel extends ElementaryModel {
   final NekotonRepository _nekotonRepository;
   final AssetsService _assetsService;
 
-  KeyAccount? getAccount(Address address) =>
-      _nekotonRepository.seedList.findAccountByAddress(address);
-
   Future<TokenWalletState?> getTokenWallet({
     required Address owner,
     required Address rootTokenContract,

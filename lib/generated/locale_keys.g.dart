@@ -533,4 +533,11 @@ abstract class LocaleKeys {
   static const phishingExplicitWarning = 'phishingExplicitWarning';
   static const phishingSameSymbolWarning = 'phishingSameSymbolWarning';
   static const phishingSuggestionWarning = 'phishingSuggestionWarning';
+  static const expand = 'expand';
+  static const collapse = 'collapse';
+  static const metadata = 'metadata';
+  static const contract = 'contract';
+  static const sign = 'sign';
+  static const encrypt = 'encrypt';
+  static const decrypt = 'decrypt';
 }

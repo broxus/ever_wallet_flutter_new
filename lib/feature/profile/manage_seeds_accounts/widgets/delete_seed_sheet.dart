@@ -3,13 +3,17 @@ import 'package:app/generated/generated.dart';
 import 'package:flutter/material.dart';
 import 'package:nekoton_repository/nekoton_repository.dart';
 import 'package:ui_components_lib/ui_components_lib.dart';
+import 'package:ui_components_lib/v2/ui_components_lib_v2.dart';
 
 /// Helper method that shows the [DeleteSeedSheet] bottom sheet.
-ModalRoute<void> deleteSeedSheetRoute(PublicKey publicKey) {
+ModalRoute<void> deleteSeedSheetRoute(
+  BuildContext context,
+  PublicKey publicKey,
+) {
   return commonBottomSheetRoute<void>(
+    titleTextStyle: context.themeStyleV2.textStyles.headingLarge,
     title: LocaleKeys.deleteSeedPhrase.tr(),
     subtitle: LocaleKeys.deleteSeedPhraseDescription.tr(),
-    useAppBackgroundColor: true,
     body: (_, __) => DeleteSeedSheet(publicKey: publicKey),
   );
 }
@@ -25,7 +29,7 @@ class DeleteSeedSheet extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final colors = context.themeStyle.colors;
+    final theme = context.themeStyleV2;
     final seed = inject<NekotonRepository>().seedList.findSeed(publicKey);
 
     return SeparatedColumn(
@@ -34,6 +38,7 @@ class DeleteSeedSheet extends StatelessWidget {
           Expanded(
             child: SingleChildScrollView(
               child: ShapedContainerColumn(
+                color: theme.colors.background2,
                 margin: EdgeInsets.zero,
                 separatorSize: DimensSize.d16,
                 mainAxisSize: MainAxisSize.min,
@@ -79,10 +84,9 @@ class DeleteSeedSheet extends StatelessWidget {
             ),
           ),
         if (seed != null)
-          CommonButton(
-            buttonType: EverButtonType.secondary,
-            contentColor: colors.alert,
-            text: LocaleKeys.deleteWord.tr(),
+          DestructiveButton(
+            buttonShape: ButtonShape.pill,
+            title: LocaleKeys.deleteWord.tr(),
             onPressed: () {
               inject<NekotonRepository>()
                   .seedList
@@ -91,9 +95,9 @@ class DeleteSeedSheet extends StatelessWidget {
               Navigator.of(context).pop();
             },
           ),
-        CommonButton.primary(
-          fillWidth: true,
-          text: LocaleKeys.cancelWord.tr(),
+        PrimaryButton(
+          buttonShape: ButtonShape.pill,
+          title: LocaleKeys.cancelWord.tr(),
           onPressed: () => Navigator.of(context).pop(),
         ),
       ],

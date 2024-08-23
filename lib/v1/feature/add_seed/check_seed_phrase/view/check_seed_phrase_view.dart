@@ -5,7 +5,7 @@ import 'package:app/generated/generated.dart';
 import 'package:app/v1/feature/add_seed/check_seed_phrase/check_seed_phrase.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:ui_components_lib/ui_components_lib.dart';
+import 'package:ui_components_lib/v2/ui_components_lib_v2.dart';
 
 const _errorDisplayDuration = Duration(seconds: 2);
 const _errorDelayDuration = Duration(seconds: 3);
@@ -16,12 +16,12 @@ class CheckSeedPhraseView extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final colors = context.themeStyle.colors;
+    final theme = context.themeStyleV2;
 
     return SafeArea(
-      minimum: const EdgeInsets.only(bottom: DimensSize.d24),
+      minimum: const EdgeInsets.only(bottom: DimensSizeV2.d24),
       child: Padding(
-        padding: const EdgeInsets.symmetric(horizontal: DimensSize.d16),
+        padding: const EdgeInsets.symmetric(horizontal: DimensSizeV2.d16),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
@@ -32,15 +32,14 @@ class CheckSeedPhraseView extends StatelessWidget {
                   children: [
                     Text(
                       LocaleKeys.letsCheckSeedPhrase.tr(),
-                      style: StyleRes.h1.copyWith(color: colors.textPrimary),
+                      style: theme.textStyles.headingXLarge,
                     ),
-                    const SizedBox(height: DimensSize.d12),
+                    const SizedBox(height: DimensSizeV2.d12),
                     Text(
                       LocaleKeys.checkSeedPhraseCorrectly.tr(),
-                      style: StyleRes.primaryRegular
-                          .copyWith(color: colors.textPrimary),
+                      style: theme.textStyles.paragraphMedium,
                     ),
-                    const SizedBox(height: DimensSize.d24),
+                    const SizedBox(height: DimensSizeV2.d24),
                     BlocConsumer<CheckSeedPhraseCubit,
                         CheckSeedPhraseCubitState>(
                       listener: (context, state) => state.maybeWhen<void>(
@@ -71,7 +70,7 @@ class CheckSeedPhraseView extends StatelessWidget {
                 ),
               ),
             ),
-            const SizedBox(height: DimensSize.d12),
+            const SizedBox(height: DimensSizeV2.d12),
             BlocBuilder<CheckSeedPhraseCubit, CheckSeedPhraseCubitState>(
               builder: (context, state) => state.when(
                 initial: Container.new,
