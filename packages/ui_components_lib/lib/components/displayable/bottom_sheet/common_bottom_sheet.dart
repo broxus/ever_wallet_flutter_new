@@ -36,6 +36,7 @@ Future<T?> showCommonBottomSheet<T>({
   Color? barrierColor,
   bool useAppBackgroundColor = false,
   bool centerTitle = false,
+  bool centerSubtitle = false,
 }) {
   return showCustomModalBottomSheet<T>(
     expand: expand,
@@ -55,6 +56,7 @@ Future<T?> showCommonBottomSheet<T>({
       subtitle: subtitle,
       title: title,
       centerTitle: centerTitle,
+      centerSubtitle: centerSubtitle,
       body: body,
     ),
   );
@@ -86,6 +88,7 @@ ModalSheetRoute<T> commonBottomSheetRoute<T>({
   Color? barrierColor,
   bool useAppBackgroundColor = false,
   bool centerTitle = false,
+  bool centerSubtitle = false,
 }) {
   return ModalSheetRoute<T>(
     builder: (_) => CommonBottomSheetWidget(
@@ -97,6 +100,7 @@ ModalSheetRoute<T> commonBottomSheetRoute<T>({
       title: title,
       body: body,
       centerTitle: centerTitle,
+      centerSubtitle: centerSubtitle,
     ),
     expanded: expand,
     isDismissible: dismissible,
@@ -117,6 +121,7 @@ class CommonBottomSheetWidget extends StatelessWidget {
     required this.openFullScreen,
     required this.useAppBackgroundColor,
     required this.centerTitle,
+    required this.centerSubtitle,
     this.title,
     this.subtitle,
     super.key,
@@ -130,6 +135,7 @@ class CommonBottomSheetWidget extends StatelessWidget {
   final bool openFullScreen;
   final bool useAppBackgroundColor;
   final bool centerTitle;
+  final bool centerSubtitle;
 
   @override
   Widget build(BuildContext context) {
@@ -153,7 +159,7 @@ class CommonBottomSheetWidget extends StatelessWidget {
               alignment: centerTitle ? Alignment.center : Alignment.centerLeft,
               child: Text(
                 title!,
-                style: theme.textStyles.headingMedium,
+                style: theme.textStyles.headingLarge,
                 textAlign: centerTitle ? TextAlign.center : TextAlign.start,
               ),
             ),
@@ -169,6 +175,7 @@ class CommonBottomSheetWidget extends StatelessWidget {
                 ),
             child: Text(
               subtitle!,
+              textAlign: centerSubtitle ? TextAlign.center : TextAlign.left,
               style: theme.textStyles.paragraphMedium.copyWith(
                 color: theme.colors.content1,
               ),

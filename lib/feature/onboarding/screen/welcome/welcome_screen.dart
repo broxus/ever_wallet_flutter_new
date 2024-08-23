@@ -1,3 +1,5 @@
+// ignore_for_file: invalid_use_of_visible_for_testing_member
+// ignore_for_file: invalid_use_of_protected_member
 import 'package:app/feature/localization/bloc/localization_bloc.dart';
 import 'package:app/feature/onboarding/screen/welcome/welcome_screen_wm.dart';
 import 'package:app/feature/onboarding/widgets/sliding_block_chains.dart';
@@ -7,6 +9,7 @@ import 'package:elementary/elementary.dart';
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:lucide_icons_flutter/lucide_icons.dart';
 import 'package:ui_components_lib/ui_components_lib.dart';
 import 'package:ui_components_lib/v2/ui_components_lib_v2.dart';
 
@@ -35,6 +38,21 @@ class WelcomeScreen extends ElementaryWidget<WelcomeScreenWidgetModel> {
           child: Column(
             mainAxisAlignment: MainAxisAlignment.end,
             children: [
+              Align(
+                alignment: Alignment.centerRight,
+                child: Padding(
+                  padding: const EdgeInsets.only(
+                    right: DimensSizeV2.d16,
+                    top: DimensSizeV2.d12,
+                  ),
+                  child: FloatButton(
+                    buttonShape: ButtonShape.circle,
+                    icon: LucideIcons.headset,
+                    onPressed: wm.onClickSupport,
+                    buttonSize: ButtonSize.medium,
+                  ),
+                ),
+              ),
               const Spacer(),
               const SlidingBlockChains(),
               const Spacer(),
