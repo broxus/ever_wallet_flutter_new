@@ -86,7 +86,12 @@ class _BrowserStartViewState extends State<BrowserStartView> {
       child: ColoredBox(
         color: colors.background0,
         child: CustomScrollView(
-          slivers: slivers,
+          slivers: [
+            ...slivers,
+            const SliverToBoxAdapter(
+              child: _KeyboardPadding(),
+            ),
+          ],
         ),
       ),
     );
@@ -144,7 +149,7 @@ class _BrowserStartViewState extends State<BrowserStartView> {
 
     return [
       SliverPadding(
-        padding: const EdgeInsets.symmetric(vertical: DimensSize.d16),
+        padding: const EdgeInsets.symmetric(vertical: DimensSize.d20),
         sliver: SliverList.builder(
           itemCount: filteredItems.length,
           itemBuilder: (_, index) => _searchResultItemBuilder(
@@ -156,44 +161,26 @@ class _BrowserStartViewState extends State<BrowserStartView> {
   }
 
   Widget _searchResultItemBuilder(BrowserBookmarkItem item) {
-    final faviconUrl =
-        context.watch<BrowserFaviconsBloc>().getFaviconUrl(item.url) ?? '';
-
     return Padding(
-      key: ValueKey(item.id),
-      padding: const EdgeInsets.symmetric(
-        vertical: DimensSize.d4,
-        horizontal: DimensSize.d16,
+      padding: const EdgeInsets.only(
+        bottom: DimensSizeV2.d8,
+        left: DimensSizeV2.d16,
+        right: DimensSizeV2.d16,
       ),
-      child: SeparatedRow(
-        children: [
-          Expanded(
-            child: ShapedContainerColumn(
-              mainAxisSize: MainAxisSize.min,
-              margin: EdgeInsets.zero,
-              children: [
-                CommonListTile(
-                  titleText: item.title,
-                  subtitleText: item.url.toString(),
-                  leading: CachedNetworkImage(
-                    height: DimensSize.d40,
-                    width: DimensSize.d40,
-                    imageUrl: faviconUrl,
-                    placeholder: (_, __) =>
-                        const CommonCircularProgressIndicator(),
-                    errorWidget: (_, __, ___) => CommonIconWidget.svg(
-                      svg: Assets.images.web.path,
-                    ),
-                  ),
-                  trailing: CommonButtonIconWidget.svg(
-                    svg: Assets.images.caretRight.path,
-                  ),
-                  onPressed: () => _onItemPressed(item),
-                ),
-              ],
-            ),
-          ),
-        ],
+      child: _ResourceItem(
+        onPressed: () => _onItemPressed(item),
+        title: item.title,
+        url: item.url,
+        trailing: SvgPicture.asset(
+          Assets.images.caretRight.path,
+          width: DimensSizeV2.d20,
+          height: DimensSizeV2.d20,
+          colorFilter: context.themeStyleV2.colors.content0.colorFilter,
+        ),
+        padding: const EdgeInsets.symmetric(
+          vertical: DimensSizeV2.d8,
+          horizontal: DimensSizeV2.d16,
+        ),
       ),
     );
   }
@@ -292,54 +279,12 @@ class _BrowserStartViewState extends State<BrowserStartView> {
   }
 
   Widget _itemBuilder(BrowserBookmarkItem item) {
-    final faviconUrl =
-        context.watch<BrowserFaviconsBloc>().getFaviconUrl(item.url) ?? '';
-
-    return PressScaleWidget(
+    return _ResourceItem(
+      key: ValueKey(item.id),
       onPressed: () => _onItemPressed(item),
       onLongPress: () => _onItemLongPressed(item),
-      child: Container(
-        key: ValueKey(item.id),
-        decoration: BoxDecoration(
-          color: _themeStyleV2.colors.background1,
-          borderRadius: BorderRadius.circular(DimensSizeV2.d12),
-        ),
-        padding: const EdgeInsets.all(DimensSizeV2.d8),
-        child: Row(
-          children: [
-            CachedNetworkImage(
-              height: DimensSize.d40,
-              width: DimensSize.d40,
-              imageUrl: faviconUrl,
-              placeholder: (_, __) => const CommonCircularProgressIndicator(),
-              errorWidget: (_, __, ___) => CommonIconWidget.svg(
-                svg: Assets.images.web.path,
-              ),
-            ),
-            const SizedBox(width: DimensSizeV2.d8),
-            Flexible(
-              child: Column(
-                mainAxisSize: MainAxisSize.min,
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  Text(
-                    item.title,
-                    style: _themeStyleV2.textStyles.labelSmall,
-                    overflow: TextOverflow.ellipsis,
-                  ),
-                  const SizedBox(height: DimensSizeV2.d2),
-                  // TODO(knightforce): Bad practice transform in build
-                  Text(
-                    item.url.toString(),
-                    style: _themeStyleV2.textStyles.labelXSmall,
-                    overflow: TextOverflow.ellipsis,
-                  ),
-                ],
-              ),
-            ),
-          ],
-        ),
-      ),
+      title: item.title,
+      url: item.url,
     );
   }
 
@@ -456,5 +401,100 @@ class _BrowserStartViewState extends State<BrowserStartView> {
     context.read<BrowserTabsBloc>().add(
           BrowserTabsEvent.setUrl(id: currentTabId, uri: url),
         );
+  }
+}
+
+class _KeyboardPadding extends StatelessWidget {
+  const _KeyboardPadding();
+
+  @override
+  Widget build(BuildContext context) {
+    return AnimatedPadding(
+      padding: MediaQuery.of(context).viewInsets,
+      duration: const Duration(milliseconds: 250),
+    );
+  }
+}
+
+class _ResourceItem extends StatelessWidget {
+  const _ResourceItem({
+    required this.title,
+    required this.url,
+    required this.onPressed,
+    this.onLongPress,
+    this.trailing,
+    this.padding,
+    super.key,
+  });
+
+  final String title;
+  final Uri url;
+  final VoidCallback onPressed;
+  final VoidCallback? onLongPress;
+  final Widget? trailing;
+  final EdgeInsets? padding;
+
+  @override
+  Widget build(BuildContext context) {
+    final faviconUrl =
+        context.watch<BrowserFaviconsBloc>().getFaviconUrl(url) ?? '';
+
+    final themeStyleV2 = context.themeStyleV2;
+
+    return PressScaleWidget(
+      onPressed: onPressed,
+      onLongPress: onLongPress,
+      child: Container(
+        decoration: BoxDecoration(
+          color: themeStyleV2.colors.background1,
+          borderRadius: BorderRadius.circular(DimensSizeV2.d12),
+        ),
+        padding: padding ?? const EdgeInsets.all(DimensSizeV2.d8),
+        child: Row(
+          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+          children: [
+            Flexible(
+              child: Row(
+                mainAxisSize: MainAxisSize.min,
+                children: [
+                  CachedNetworkImage(
+                    height: DimensSize.d40,
+                    width: DimensSize.d40,
+                    imageUrl: faviconUrl,
+                    placeholder: (_, __) =>
+                        const CommonCircularProgressIndicator(),
+                    errorWidget: (_, __, ___) => CommonIconWidget.svg(
+                      svg: Assets.images.web.path,
+                    ),
+                  ),
+                  const SizedBox(width: DimensSizeV2.d8),
+                  Flexible(
+                    child: Column(
+                      mainAxisSize: MainAxisSize.min,
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        Text(
+                          title,
+                          style: themeStyleV2.textStyles.labelSmall,
+                          overflow: TextOverflow.ellipsis,
+                        ),
+                        const SizedBox(height: DimensSizeV2.d2),
+                        // TODO(knightforce): Bad practice transform in build
+                        Text(
+                          url.toString(),
+                          style: themeStyleV2.textStyles.labelXSmall,
+                          overflow: TextOverflow.ellipsis,
+                        ),
+                      ],
+                    ),
+                  ),
+                ],
+              ),
+            ),
+            if (trailing != null) trailing!,
+          ],
+        ),
+      ),
+    );
   }
 }
