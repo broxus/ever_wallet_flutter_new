@@ -145,48 +145,22 @@ class CommonBottomSheetWidget extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    const dragWidgetSize = DimensSizeV2.d4;
-    const dragWidgetMargin = DimensSizeV2.d8;
     final theme = context.themeStyleV2;
 
     final bodyWidget = Column(
       mainAxisSize: MainAxisSize.min,
       crossAxisAlignment: CrossAxisAlignment.start,
       children: <Widget>[
-        if (title != null)
-          Container(
-            margin: const EdgeInsets.symmetric(horizontal: DimensSizeV2.d16) +
-                EdgeInsets.only(
-                  top: DimensSizeV2.d20 + dragWidgetSize + dragWidgetMargin * 2,
-                  bottom:
-                      subtitle != null ? DimensSizeV2.d12 : DimensSizeV2.d24,
-                ),
-            child: Align(
-              alignment: centerTitle ? Alignment.center : Alignment.centerLeft,
-              child: Text(
-                title!,
-                style: titleTextStyle ?? theme.textStyles.headingMedium,
-                textAlign: centerTitle ? TextAlign.center : TextAlign.start,
-              ),
-            ),
-          ),
-        if (subtitle != null)
-          Container(
-            margin: const EdgeInsets.symmetric(horizontal: DimensSizeV2.d16) +
-                EdgeInsets.only(
-                  bottom: DimensSizeV2.d24,
-                  top: title == null
-                      ? DimensSizeV2.d20 + dragWidgetSize + dragWidgetMargin * 2
-                      : 0,
-                ),
-            child: Text(
-              subtitle!,
-              textAlign: centerSubtitle ? TextAlign.center : TextAlign.left,
-              style: theme.textStyles.paragraphMedium.copyWith(
-                color: theme.colors.content1,
-              ),
-            ),
-          ),
+        if (title != null || subtitle != null)
+          _Header(
+            title: title,
+            subtitle: subtitle,
+            isCenterTitle: centerTitle,
+            isCenterSubTitle: centerSubtitle,
+            titleTextStyle: titleTextStyle,
+          )
+        else
+          const SizedBox(height: DimensSizeV2.d32),
         Flexible(
           child: Padding(
             padding: padding,
@@ -222,8 +196,8 @@ class CommonBottomSheetWidget extends StatelessWidget {
                 left: 0,
                 right: 0,
                 child: SheetDraggableLine(
-                  height: dragWidgetSize,
-                  verticalMargin: dragWidgetMargin,
+                  height: DimensSizeV2.d4,
+                  verticalMargin: DimensSizeV2.d8,
                 ),
               ),
             ],
@@ -276,6 +250,70 @@ class __ContainerWidgetState extends State<_ContainerWidget> {
               )
             : widget.child,
       ),
+    );
+  }
+}
+
+class _Header extends StatelessWidget {
+  const _Header({
+    this.title,
+    this.subtitle,
+    this.titleTextStyle,
+    this.isCenterTitle = false,
+    this.isCenterSubTitle = false,
+  });
+
+  final String? title;
+  final String? subtitle;
+  final bool isCenterTitle;
+  final bool isCenterSubTitle;
+  final TextStyle? titleTextStyle;
+
+  static const _top = DimensSizeV2.d20 + DimensSizeV2.d4 + DimensSizeV2.d8 * 2;
+
+  @override
+  Widget build(BuildContext context) {
+    final theme = context.themeStyleV2;
+    final textStyles = theme.textStyles;
+
+    return Column(
+      mainAxisSize: MainAxisSize.min,
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        if (title != null)
+          Container(
+            margin: const EdgeInsets.symmetric(horizontal: DimensSizeV2.d16) +
+                EdgeInsets.only(
+                  top: _top,
+                  bottom:
+                      subtitle != null ? DimensSizeV2.d12 : DimensSizeV2.d24,
+                ),
+            child: Align(
+              alignment:
+                  isCenterTitle ? Alignment.center : Alignment.centerLeft,
+              child: Text(
+                title!,
+                style: titleTextStyle ?? textStyles.headingMedium,
+                textAlign: isCenterTitle ? TextAlign.center : TextAlign.start,
+              ),
+            ),
+          ),
+        if (subtitle != null)
+          Container(
+            margin: const EdgeInsets.symmetric(horizontal: DimensSizeV2.d16) +
+                EdgeInsets.only(
+                  bottom: DimensSizeV2.d24,
+                  top: title == null ? _top : 0,
+                ),
+            child: Text(
+              subtitle!,
+              textAlign: isCenterSubTitle ? TextAlign.center : TextAlign.left,
+              style: textStyles.paragraphMedium.copyWith(
+                color: theme.colors.content1,
+              ),
+            ),
+          ),
+      ],
     );
   }
 }
