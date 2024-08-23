@@ -16,7 +16,7 @@ void showDeriveKeysSheetPassword(
     title: LocaleKeys.enterPasswordTo.tr(
       args: [LocaleKeys.addKey.tr().toLowerCase()],
     ),
-    useAppBackgroundColor: true,
+    titleTextStyle: context.themeStyleV2.textStyles.headingLarge,
     body: (_, __) => DeriveKeysEnterPasswordSheet(publicKey: publicKey),
   );
 }
@@ -36,7 +36,7 @@ class DeriveKeysEnterPasswordSheet extends StatelessWidget {
       publicKey: publicKey,
       onPasswordEntered: (password) => Navigator.of(context)
         ..pop()
-        ..push(deriveKeysSheet(publicKey, password)),
+        ..push(deriveKeysSheet(context, publicKey, password)),
     );
   }
 }

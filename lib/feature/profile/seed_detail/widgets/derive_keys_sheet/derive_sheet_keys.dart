@@ -7,13 +7,18 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:nekoton_repository/nekoton_repository.dart';
 import 'package:ui_components_lib/ui_components_lib.dart';
+import 'package:ui_components_lib/v2/ui_components_lib_v2.dart';
 
 /// Helper method that displays [DeriveKeysSheet] sheet.
 /// Showing this sheet means, that [password] is correct for [publicKey].
-ModalRoute<void> deriveKeysSheet(PublicKey publicKey, String password) {
+ModalRoute<void> deriveKeysSheet(
+  BuildContext context,
+  PublicKey publicKey,
+  String password,
+) {
   return commonBottomSheetRoute(
+    titleTextStyle: context.themeStyleV2.textStyles.headingLarge,
     title: LocaleKeys.selectKeysYouNeed.tr(),
-    useAppBackgroundColor: true,
     padding: EdgeInsets.zero,
     body: (_, controller) => BlocProvider<DeriveKeysCubit>(
       create: (context) => DeriveKeysCubit(
@@ -139,11 +144,11 @@ class DeriveKeysSheet extends StatelessWidget {
   }) {
     return Builder(
       builder: (context) {
-        final colors = context.themeStyle.colors;
+        final theme = context.themeStyleV2;
 
         return Container(
           padding: const EdgeInsets.symmetric(horizontal: DimensSize.d16),
-          color: colors.backgroundSecondary,
+          color: theme.colors.background1,
           child: SeparatedRow(
             children: [
               CommonIconButton.svg(
@@ -205,8 +210,8 @@ class DeriveKeysSheet extends StatelessWidget {
                               '${index + 1}',
                               style: StyleRes.button.copyWith(
                                 color: index == currentPageIndex
-                                    ? colors.textPrimary
-                                    : colors.textSecondary,
+                                    ? theme.colors.content0
+                                    : theme.colors.content3,
                               ),
                             ),
                           ),
@@ -233,11 +238,11 @@ class DeriveKeysSheet extends StatelessWidget {
   Widget _selectButton(bool isLoading) {
     return Builder(
       builder: (context) {
-        return CommonButton.primary(
-          fillWidth: true,
+        return PrimaryButton(
           isLoading: isLoading,
-          text: LocaleKeys.selectWord.tr(),
+          title: LocaleKeys.selectWord.tr(),
           onPressed: () => context.read<DeriveKeysCubit>().select(),
+          buttonShape: ButtonShape.pill,
         );
       },
     );
@@ -251,6 +256,7 @@ class DeriveKeysSheet extends StatelessWidget {
     return Builder(
       builder: (context) {
         final colors = context.themeStyle.colors;
+        final theme = context.themeStyleV2;
         final disabled = key == masterKey;
 
         return CommonListTile(
@@ -261,6 +267,7 @@ class DeriveKeysSheet extends StatelessWidget {
                   : context.read<DeriveKeysCubit>().checkKey(key),
           leading: CommonBackgroundedIconWidget.svg(
             svg: Assets.images.key.path,
+            backgroundColor: theme.colors.backgroundAlpha,
           ),
           titleText: name ?? key.toEllipseString(),
           trailing: CommonIconWidget.svg(

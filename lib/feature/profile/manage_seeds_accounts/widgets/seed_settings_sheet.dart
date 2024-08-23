@@ -13,7 +13,7 @@ void showSeedSettingsSheet(
 ) {
   showCommonBottomSheet<void>(
     context: context,
-    useAppBackgroundColor: true,
+    titleTextStyle: context.themeStyleV2.textStyles.headingLarge,
     title: LocaleKeys.settingsOfSeed.tr(),
     body: (_, __) => SeedSettingsSheet(publicKey: publicKey),
   );
@@ -87,7 +87,7 @@ class SeedSettingsSheet extends StatelessWidget {
           CommonListTile(
             onPressed: () => Navigator.of(context)
               ..pop()
-              ..push(deleteSeedSheetRoute(publicKey)),
+              ..push(deleteSeedSheetRoute(context, publicKey)),
             contentColor: colors.contentNegative,
             titleText: LocaleKeys.deleteWord.tr(),
             trailing: CommonIconWidget.svg(svg: Assets.images.trash.path),
