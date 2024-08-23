@@ -3,6 +3,7 @@ import 'package:app/generated/generated.dart';
 import 'package:flutter/material.dart';
 import 'package:nekoton_repository/nekoton_repository.dart';
 import 'package:ui_components_lib/ui_components_lib.dart';
+import 'package:ui_components_lib/v2/ui_components_lib_v2.dart';
 
 /// This is a helper method to display AddNewLocalAccountSheet.
 Future<void> showAddNewLocalAccountSheet({
@@ -11,7 +12,7 @@ Future<void> showAddNewLocalAccountSheet({
 }) {
   return showCommonBottomSheet(
     context: context,
-    useAppBackgroundColor: true,
+    titleTextStyle: context.themeStyleV2.textStyles.headingLarge,
     title: LocaleKeys.newAccountName.tr(),
     subtitle: LocaleKeys.newAccountNameDescription.tr(),
     body: (_, scrollController) => AddNewLocalAccountSheet(
@@ -55,16 +56,16 @@ class _AddNewLocalAccountSheetState extends State<AddNewLocalAccountSheet> {
       controller: widget.controller,
       child: SeparatedColumn(
         mainAxisSize: MainAxisSize.min,
-        separatorSize: DimensSize.d24,
+        separatorSize: DimensSizeV2.d24,
         children: [
-          CommonInput(
-            titleText: LocaleKeys.nameWord.tr(),
-            controller: nameController,
-            onSubmitted: (_) => _goNext(context),
+          PrimaryTextField(
+            hintText: LocaleKeys.nameWord.tr(),
+            textEditingController: nameController,
+            onSubmit: (_) => _goNext(context),
           ),
-          CommonButton.primary(
-            fillWidth: true,
-            text: LocaleKeys.continueWord.tr(),
+          PrimaryButton(
+            buttonShape: ButtonShape.pill,
+            title: LocaleKeys.continueWord.tr(),
             onPressed: () => _goNext(context),
           ),
         ],
@@ -76,6 +77,7 @@ class _AddNewLocalAccountSheetState extends State<AddNewLocalAccountSheet> {
     ..pop()
     ..push(
       showAddNewLocalAccountTypeSheet(
+        context: context,
         name: nameController.text,
         publicKey: widget.publicKey,
       ),

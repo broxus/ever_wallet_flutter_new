@@ -20,7 +20,7 @@ Future<void> showAccountSettingsSheet({
 }) {
   return showCommonBottomSheet(
     context: context,
-    useAppBackgroundColor: true,
+    titleTextStyle: context.themeStyleV2.textStyles.headingLarge,
     title: LocaleKeys.settingsOfAccount.tr(),
     body: (_, __) => AccountSettingsSheet(
       address: address,
@@ -58,9 +58,10 @@ class AccountSettingsSheet extends StatelessWidget {
     final account =
         inject<NekotonRepository>().seedList.findAccountByAddress(address);
 
-    final colors = context.themeStyle.colors;
+    final colors = context.themeStyleV2.colors;
 
     return ShapedContainerColumn(
+      color: colors.background2,
       mainAxisSize: MainAxisSize.min,
       separator: const CommonDivider(),
       margin: EdgeInsets.zero,
@@ -80,7 +81,7 @@ class AccountSettingsSheet extends StatelessWidget {
                       account.hide();
                     }
                   },
-                  contentColor: colors.textPrimary,
+                  contentColor: colors.content0,
                   trailing: CommonButtonIconWidget.svg(
                     svg: account.isHidden
                         ? Assets.images.openedEye.path
@@ -92,9 +93,9 @@ class AccountSettingsSheet extends StatelessWidget {
                 onPressed: () {
                   Navigator.of(context)
                     ..pop()
-                    ..push(getRenameAccountSheet(address));
+                    ..push(getRenameAccountSheet(context, address));
                 },
-                contentColor: colors.textPrimary,
+                contentColor: colors.content0,
                 trailing: CommonButtonIconWidget.svg(
                   svg: Assets.images.edit.path,
                 ),
@@ -114,7 +115,7 @@ class AccountSettingsSheet extends StatelessWidget {
                       ),
                     );
                   },
-                  contentColor: colors.textPrimary,
+                  contentColor: colors.content0,
                   trailing: CommonButtonIconWidget.svg(
                     svg: Assets.images.copy.path,
                   ),
@@ -131,18 +132,18 @@ class AccountSettingsSheet extends StatelessWidget {
                           .accountExplorerLink(account.address),
                     );
                   },
-                  contentColor: colors.textPrimary,
+                  contentColor: colors.content0,
                   trailing: CommonButtonIconWidget.svg(
                     svg: Assets.images.planetInner.path,
                   ),
                 ),
               CommonListTile(
                 titleText: LocaleKeys.deleteWord.tr(),
-                contentColor: colors.alert,
+                contentColor: colors.contentNegative,
                 onPressed: () {
                   Navigator.of(context)
                     ..pop()
-                    ..push(deleteAccountSheetRoute(account));
+                    ..push(deleteAccountSheetRoute(context, account));
                 },
                 trailing: CommonButtonIconWidget.svg(
                   svg: Assets.images.trash.path,
