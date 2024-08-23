@@ -46,9 +46,6 @@ class CheckSeedAnswersWidget extends StatelessWidget {
               ? answer.word
               : '${LocaleKeys.wordWord.tr()} #${answer.wordIndex + 1}',
           onPressed: isSelected ? () => clearAnswer(answer.word) : null,
-          icon: isSelected
-              ? CommonButtonIconWidget.svg(svg: Assets.images.trash.path)
-              : null,
           status: isCurrent
               ? SelectionStatus.focus
               : isSelected

@@ -4,11 +4,12 @@ import 'package:app/generated/generated.dart';
 import 'package:flutter/material.dart';
 import 'package:nekoton_repository/nekoton_repository.dart' hide Message;
 import 'package:ui_components_lib/ui_components_lib.dart';
+import 'package:ui_components_lib/v2/ui_components_lib_v2.dart';
 
 /// Helper function to show [AccountRenameSheet].
-ModalRoute<void> getRenameAccountSheet(Address address) {
+ModalRoute<void> getRenameAccountSheet(BuildContext context, Address address) {
   return commonBottomSheetRoute(
-    useAppBackgroundColor: true,
+    titleTextStyle: context.themeStyleV2.textStyles.headingLarge,
     title: LocaleKeys.enterNewName.tr(),
     body: (_, __) => AccountRenameSheet(address: address),
   );
@@ -42,14 +43,14 @@ class _AccountRenameSheetState extends State<AccountRenameSheet> {
       mainAxisSize: MainAxisSize.min,
       separatorSize: DimensSize.d16,
       children: [
-        CommonInput(
-          controller: nameController,
-          titleText: LocaleKeys.nameWord.tr(),
-          onSubmitted: (_) => _renameAccount(context),
+        PrimaryTextField(
+          textEditingController: nameController,
+          hintText: LocaleKeys.nameWord.tr(),
+          onSubmit: (_) => _renameAccount(context),
         ),
-        CommonButton.primary(
-          fillWidth: true,
-          text: LocaleKeys.renameWord.tr(),
+        PrimaryButton(
+          buttonShape: ButtonShape.pill,
+          title: LocaleKeys.renameWord.tr(),
           onPressed: () => _renameAccount(context),
         ),
       ],

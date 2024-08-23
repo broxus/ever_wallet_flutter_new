@@ -4,8 +4,10 @@ import 'package:app/generated/generated.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
+import 'package:lucide_icons_flutter/lucide_icons.dart';
 import 'package:nekoton_repository/nekoton_repository.dart';
 import 'package:ui_components_lib/ui_components_lib.dart';
+import 'package:ui_components_lib/v2/ui_components_lib_v2.dart';
 
 class SeedDetailView extends StatelessWidget {
   const SeedDetailView({
@@ -37,30 +39,31 @@ class SeedDetailView extends StatelessWidget {
   ) {
     return Builder(
       builder: (context) {
-        final colors = context.themeStyle.colors;
+        final theme = context.themeStyleV2;
 
         return ContainerColumn(
-          separatorSize: DimensSize.d16,
-          padding: const EdgeInsets.all(DimensSize.d16),
+          separatorSize: DimensSizeV2.d16,
+          padding: const EdgeInsets.all(DimensSizeV2.d16),
           children: [
             SeparatedColumn(
-              separatorSize: DimensSize.d4,
+              separatorSize: DimensSizeV2.d4,
               children: [
                 if (isCurrentSeed)
                   Text(
                     LocaleKeys.currentSeed.tr(),
-                    style: StyleRes.addRegular
-                        .copyWith(color: colors.textSecondary),
+                    style: theme.textStyles.labelXSmall
+                        .copyWith(color: theme.colors.content3),
                   ),
                 Text(
                   seed.name,
-                  style: StyleRes.h1.copyWith(color: colors.textPrimary),
+                  style: theme.textStyles.headingLarge,
                 ),
               ],
             ),
             Expanded(
               child: SingleChildScrollView(
                 child: ShapedContainerColumn(
+                  color: theme.colors.background1,
                   margin: EdgeInsets.zero,
                   titleText: LocaleKeys.keysWord.tr(),
                   mainAxisSize: MainAxisSize.min,
@@ -75,9 +78,10 @@ class SeedDetailView extends StatelessWidget {
                 ),
               ),
             ),
-            CommonButton(
-              text: LocaleKeys.addKey.tr(),
-              leading: CommonButtonIconWidget.svg(svg: Assets.images.plus.path),
+            PrimaryButton(
+              buttonShape: ButtonShape.pill,
+              title: LocaleKeys.addKey.tr(),
+              postfixIcon: LucideIcons.plus,
               onPressed: () => showDeriveKeysSheetPassword(context, publicKey),
             ),
           ],
@@ -93,7 +97,7 @@ class SeedDetailView extends StatelessWidget {
   ) {
     return Builder(
       builder: (context) {
-        final colors = context.themeStyle.colors;
+        final colors = context.themeStyleV2.colors;
 
         return Column(
           children: [
@@ -108,6 +112,7 @@ class SeedDetailView extends StatelessWidget {
               padding: EdgeInsets.zero,
               leading: CommonBackgroundedIconWidget.svg(
                 svg: Assets.images.key.path,
+                backgroundColor: colors.backgroundAlpha,
               ),
               titleText: key.name,
               trailing: SeparatedRow(
@@ -116,11 +121,11 @@ class SeedDetailView extends StatelessWidget {
                   if (currentPublicKey == key.publicKey)
                     CommonIconWidget.svg(
                       svg: Assets.images.check.path,
-                      color: colors.textPrimary,
+                      color: colors.content0,
                     ),
                   CommonIconButton.svg(
                     svg: Assets.images.settings.path,
-                    color: colors.textSecondary,
+                    color: colors.content0,
                     buttonType: EverButtonType.ghost,
                     size: CommonIconButtonSize.xsmall,
                     onPressed: () => showKeySettingsSheet(

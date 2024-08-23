@@ -16,7 +16,7 @@ void showKeySettingsSheet({
 }) {
   showCommonBottomSheet<void>(
     context: context,
-    useAppBackgroundColor: true,
+    titleTextStyle: context.themeStyleV2.textStyles.headingLarge,
     title: LocaleKeys.settingsOfKey.tr(),
     body: (_, __) => KeySettingsSheet(
       publicKey: publicKey,
@@ -38,13 +38,14 @@ class KeySettingsSheet extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final colors = context.themeStyle.colors;
+    final colors = context.themeStyleV2.colors;
     final currentKeyService = inject<CurrentKeyService>();
 
     final currentKey = currentKeyService.currentKey;
 
     return ShapedContainerColumn(
       margin: EdgeInsets.zero,
+      color: colors.background2,
       mainAxisSize: MainAxisSize.min,
       separator: const CommonDivider(),
       children: [
@@ -57,17 +58,17 @@ class KeySettingsSheet extends StatelessWidget {
             titleText: LocaleKeys.useThisKey.tr(),
             trailing: CommonIconWidget.svg(
               svg: Assets.images.checkSquare.path,
-              color: colors.textPrimary,
+              color: colors.content0,
             ),
           ),
         CommonListTile(
           onPressed: () => Navigator.of(context)
             ..pop()
-            ..push(showRenameSheet(publicKey)),
+            ..push(showRenameSheet(context, publicKey)),
           titleText: LocaleKeys.renameWord.tr(),
           trailing: CommonIconWidget.svg(
             svg: Assets.images.edit.path,
-            color: colors.textPrimary,
+            color: colors.content0,
           ),
         ),
         CommonListTile(
@@ -85,15 +86,15 @@ class KeySettingsSheet extends StatelessWidget {
           titleText: LocaleKeys.copyKey.tr(),
           trailing: CommonIconWidget.svg(
             svg: Assets.images.copy.path,
-            color: colors.textPrimary,
+            color: colors.content0,
           ),
         ),
         if (publicKey != currentKey && !isMaster)
           CommonListTile(
             onPressed: () => Navigator.of(context)
               ..pop()
-              ..push(deleteKeySheetRoute(publicKey)),
-            contentColor: colors.alert,
+              ..push(deleteKeySheetRoute(context, publicKey)),
+            contentColor: colors.contentNegative,
             titleText: LocaleKeys.deleteWord.tr(),
             trailing: CommonIconWidget.svg(svg: Assets.images.trash.path),
           ),

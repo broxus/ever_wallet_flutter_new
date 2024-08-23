@@ -1,20 +1,23 @@
 import 'package:app/app/service/service.dart';
 import 'package:app/di/di.dart';
 import 'package:app/feature/profile/manage_seeds_accounts/widgets/change_seed_password/change_seed_password_cubit.dart';
-import 'package:app/feature/profile/profile.dart';
 import 'package:app/generated/generated.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:nekoton_repository/nekoton_repository.dart' hide Message;
 import 'package:ui_components_lib/ui_components_lib.dart';
+import 'package:ui_components_lib/v2/widgets/widgets.dart';
 
 const _minPasswordLength = 8;
 
 /// Helper method that shows the [ChangeSeedPasswordSheet] bottom sheet.
-ModalRoute<void> changeSeedPasswordSheetRoute(PublicKey publicKey) {
+ModalRoute<void> changeSeedPasswordSheetRoute(
+  BuildContext context,
+  PublicKey publicKey,
+) {
   return commonBottomSheetRoute<void>(
+    titleTextStyle: context.themeStyleV2.textStyles.headingLarge,
     title: LocaleKeys.changeSeedPassword.tr(),
-    useAppBackgroundColor: true,
     body: (_, __) => BlocProvider<ChangeSeedPasswordCubit>(
       create: (_) => ChangeSeedPasswordCubit(
         inject<NekotonRepository>(),
@@ -74,24 +77,22 @@ class _ChangeSeedPasswordSheetState extends State<ChangeSeedPasswordSheet> {
               mainAxisSize: MainAxisSize.min,
               separatorSize: DimensSize.d24,
               children: [
-                PasswordInput(
-                  controller: _oldPasswordController,
+                SecureTextField(
+                  textEditingController: _oldPasswordController,
                   validator: _inputValidator,
-                  submit: _newPasswordFocus.requestFocus,
-                  title: LocaleKeys.yourPassword.tr(),
-                  subtitle: LocaleKeys.passwordDescription.tr(),
+                  onSubmit: (_) => _newPasswordFocus.requestFocus(),
+                  hintText: LocaleKeys.yourPassword.tr(),
                 ),
-                PasswordInput(
-                  controller: _newPasswordController,
-                  focus: _newPasswordFocus,
+                SecureTextField(
+                  textEditingController: _newPasswordController,
+                  focusNode: _newPasswordFocus,
                   validator: _inputValidator,
-                  title: LocaleKeys.newPassword.tr(),
-                  subtitle: LocaleKeys.passwordDescription.tr(),
-                  submit: () => _changePassword(context),
+                  hintText: LocaleKeys.newPassword.tr(),
+                  onSubmit: (_) => _changePassword(context),
                 ),
-                CommonButton.primary(
-                  text: LocaleKeys.submitWord.tr(),
-                  fillWidth: true,
+                PrimaryButton(
+                  buttonShape: ButtonShape.pill,
+                  title: LocaleKeys.submitWord.tr(),
                   onPressed: () => _changePassword(context),
                 ),
               ],

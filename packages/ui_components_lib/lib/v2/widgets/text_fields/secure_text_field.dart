@@ -12,6 +12,8 @@ class SecureTextField extends StatefulWidget {
     this.textEditingController,
     this.textInputAction,
     this.onSubmit,
+    this.focusNode,
+    this.validator,
   });
 
   final String? hintText;
@@ -19,6 +21,8 @@ class SecureTextField extends StatefulWidget {
   final TextEditingController? textEditingController;
   final TextInputAction? textInputAction;
   final ValueChanged<String?>? onSubmit;
+  final FocusNode? focusNode;
+  final FormFieldValidator<String>? validator;
 
   @override
   State<SecureTextField> createState() => _SecureTextFieldState();
@@ -42,6 +46,8 @@ class _SecureTextFieldState extends State<SecureTextField> {
       textEditingController: widget.textEditingController,
       textInputAction: widget.textInputAction,
       onSubmit: widget.onSubmit,
+      focusNode: widget.focusNode,
+      validator: widget.validator,
     );
   }
 

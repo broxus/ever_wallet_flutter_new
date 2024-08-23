@@ -13,7 +13,7 @@ void showSeedSettingsSheet(
 ) {
   showCommonBottomSheet<void>(
     context: context,
-    useAppBackgroundColor: true,
+    titleTextStyle: context.themeStyleV2.textStyles.headingLarge,
     title: LocaleKeys.settingsOfSeed.tr(),
     body: (_, __) => SeedSettingsSheet(publicKey: publicKey),
   );
@@ -30,12 +30,13 @@ class SeedSettingsSheet extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final colors = context.themeStyle.colors;
+    final colors = context.themeStyleV2.colors;
     final currentKeyService = inject<CurrentKeyService>();
 
     final currentKey = currentKeyService.currentKey;
 
     return ShapedContainerColumn(
+      color: colors.background2,
       margin: EdgeInsets.zero,
       mainAxisSize: MainAxisSize.min,
       separator: const CommonDivider(),
@@ -49,45 +50,45 @@ class SeedSettingsSheet extends StatelessWidget {
             titleText: LocaleKeys.useThisSeed.tr(),
             trailing: CommonIconWidget.svg(
               svg: Assets.images.checkSquare.path,
-              color: colors.textPrimary,
+              color: colors.content0,
             ),
           ),
         CommonListTile(
           onPressed: () => Navigator.of(context)
             ..pop()
-            ..push(showRenameSheet(publicKey, renameSeed: true)),
+            ..push(showRenameSheet(context, publicKey, renameSeed: true)),
           titleText: LocaleKeys.renameWord.tr(),
           trailing: CommonIconWidget.svg(
             svg: Assets.images.edit.path,
-            color: colors.textPrimary,
+            color: colors.content0,
           ),
         ),
         CommonListTile(
           onPressed: () => Navigator.of(context)
             ..pop()
-            ..push(exportSeedSheetRoute(publicKey)),
+            ..push(exportSeedSheetRoute(context, publicKey)),
           titleText: LocaleKeys.exportWord.tr(),
           trailing: CommonIconWidget.svg(
             svg: Assets.images.exportFill.path,
-            color: colors.textPrimary,
+            color: colors.content0,
           ),
         ),
         CommonListTile(
           onPressed: () => Navigator.of(context)
             ..pop()
-            ..push(changeSeedPasswordSheetRoute(publicKey)),
+            ..push(changeSeedPasswordSheetRoute(context, publicKey)),
           titleText: LocaleKeys.changePassword.tr(),
           trailing: CommonIconWidget.svg(
             svg: Assets.images.lock.path,
-            color: colors.textPrimary,
+            color: colors.content0,
           ),
         ),
         if (publicKey != currentKey)
           CommonListTile(
             onPressed: () => Navigator.of(context)
               ..pop()
-              ..push(deleteSeedSheetRoute(publicKey)),
-            contentColor: colors.alert,
+              ..push(deleteSeedSheetRoute(context, publicKey)),
+            contentColor: colors.contentNegative,
             titleText: LocaleKeys.deleteWord.tr(),
             trailing: CommonIconWidget.svg(svg: Assets.images.trash.path),
           ),

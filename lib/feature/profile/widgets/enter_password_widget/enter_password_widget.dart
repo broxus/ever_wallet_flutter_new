@@ -1,12 +1,12 @@
 import 'package:app/app/service/service.dart';
 import 'package:app/di/di.dart';
-import 'package:app/feature/profile/profile.dart';
 import 'package:app/feature/profile/widgets/enter_password_widget/enter_password_cubit.dart';
 import 'package:app/generated/generated.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:nekoton_repository/nekoton_repository.dart';
 import 'package:ui_components_lib/ui_components_lib.dart';
+import 'package:ui_components_lib/v2/widgets/widgets.dart';
 
 /// This is a widget that allows user to enter password for any action or
 /// user biometry if available.
@@ -104,15 +104,13 @@ class _EnterPasswordWidgetState extends State<EnterPasswordWidget> {
           mainAxisSize: MainAxisSize.min,
           separatorSize: DimensSize.d24,
           children: [
-            PasswordInput(
-              controller: _passwordController,
-              submit: () => context
-                  .read<EnterPasswordCubit>()
-                  .enterPassword(_passwordController.text),
+            SecureTextField(
+              hintText: LocaleKeys.yourPassword.tr(),
+              textEditingController: _passwordController,
             ),
-            CommonButton.primary(
-              fillWidth: true,
-              text: LocaleKeys.submitWord.tr(),
+            PrimaryButton(
+              buttonShape: ButtonShape.pill,
+              title: LocaleKeys.submitWord.tr(),
               onPressed: () => context
                   .read<EnterPasswordCubit>()
                   .enterPassword(_passwordController.text),
