@@ -7,6 +7,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:nekoton_repository/nekoton_repository.dart' hide Message;
 import 'package:ui_components_lib/ui_components_lib.dart';
+import 'package:ui_components_lib/v2/ui_components_lib_v2.dart';
 
 class AccountDetailView extends StatelessWidget {
   const AccountDetailView({
@@ -23,26 +24,25 @@ class AccountDetailView extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final colors = context.themeStyle.colors;
+    final theme = context.themeStyleV2;
 
     return SingleChildScrollView(
-      padding: const EdgeInsets.symmetric(horizontal: DimensSize.d16),
+      padding: const EdgeInsets.symmetric(horizontal: DimensSizeV2.d16),
       child: SeparatedColumn(
         mainAxisSize: MainAxisSize.min,
-        separatorSize: DimensSize.d16,
+        separatorSize: DimensSizeV2.d16,
         children: [
           SeparatedColumn(
             mainAxisSize: MainAxisSize.min,
-            separatorSize: DimensSize.d4,
+            separatorSize: DimensSizeV2.d4,
             children: [
               Text(
                 LocaleKeys.accountWord.tr(),
-                style: StyleRes.addRegular.copyWith(
-                  color: colors.textSecondary,
-                ),
+                style: theme.textStyles.labelXSmall,
               ),
               Text(
                 account.name,
-                style: StyleRes.h1.copyWith(color: colors.textPrimary),
+                style: theme.textStyles.headingLarge,
                 maxLines: 1,
                 overflow: TextOverflow.ellipsis,
                 softWrap: false,
@@ -50,15 +50,17 @@ class AccountDetailView extends StatelessWidget {
             ],
           ),
           CommonCard(
+            backgroundColor: theme.colors.background2,
             topSubtitleText: LocaleKeys.totalBalance.tr(),
             titleChild: MoneyWidget(
               money: balance,
               style: MoneyWidgetStyle.primary,
             ),
-            height: DimensSize.d76,
+            height: DimensSizeV2.d76,
             width: double.infinity,
           ),
           ShapedContainerColumn(
+            color: theme.colors.background2,
             mainAxisSize: MainAxisSize.min,
             margin: EdgeInsets.zero,
             padding: EdgeInsets.zero,
@@ -66,9 +68,9 @@ class AccountDetailView extends StatelessWidget {
             separator: const CommonDivider(),
             children: [
               BarcodeWidget(
-                margin: const EdgeInsets.all(DimensSize.d32),
-                width: DimensSize.d148,
-                height: DimensSize.d148,
+                margin: const EdgeInsets.all(DimensSizeV2.d32),
+                width: DimensSizeV2.d148,
+                height: DimensSizeV2.d148,
                 data: account.address.address,
                 barcode: Barcode.qrCode(),
                 color: colors.textPrimary,
@@ -76,16 +78,16 @@ class AccountDetailView extends StatelessWidget {
               CommonListTile(
                 onPressed: _copyAddress,
                 height: null,
-                padding: const EdgeInsets.all(DimensSize.d16),
+                padding: const EdgeInsets.all(DimensSizeV2.d16),
                 titleChild: Text(
                   LocaleKeys.addressWord.tr(),
-                  style:
-                      StyleRes.addRegular.copyWith(color: colors.textSecondary),
+                  style: theme.textStyles.labelXSmall,
                 ),
                 subtitleChild: Text(
                   account.address.address,
-                  style:
-                      StyleRes.addRegular.copyWith(color: colors.textPrimary),
+                  style: theme.textStyles.labelXSmall.copyWith(
+                    color: theme.colors.content3,
+                  ),
                 ),
                 trailing: CommonIconWidget.svg(svg: Assets.images.copy.path),
               ),
@@ -93,9 +95,9 @@ class AccountDetailView extends StatelessWidget {
           ),
           CommonListTile(
             titleText: LocaleKeys.displayOnMainScreen.tr(),
-            padding: const EdgeInsets.all(DimensSize.d16),
+            padding: const EdgeInsets.all(DimensSizeV2.d16),
             height: null,
-            backgroundColor: colors.backgroundSecondary,
+            backgroundColor: theme.colors.background2,
             trailing: CommonSwitchInput(
               value: !account.isHidden,
               onChanged: (_) => _changeVisibility(),
@@ -103,6 +105,7 @@ class AccountDetailView extends StatelessWidget {
           ),
           if (custodians.isNotEmpty)
             ShapedContainerColumn(
+              color: theme.colors.background2,
               mainAxisSize: MainAxisSize.min,
               margin: EdgeInsets.zero,
               crossAxisAlignment: CrossAxisAlignment.center,
