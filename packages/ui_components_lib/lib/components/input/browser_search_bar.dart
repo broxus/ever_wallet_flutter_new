@@ -199,7 +199,9 @@ class _BrowserSearchBarInputState extends State<BrowserSearchBarInput> {
       return _getIcon(
         widget.searchSvg,
         Icons.search,
-        const EdgeInsets.only(right: DimensSizeV2.d8),
+        const EdgeInsets.only(
+          left: DimensSizeV2.d12,
+        ),
       );
     }
 

@@ -125,8 +125,9 @@ class _HistoryViewState extends State<HistoryView> {
             if (!isHistoryEmpty)
               SliverPersistentHeader(
                 floating: true,
-                delegate:
-                    SearchBarHeaderDelegate(controller: _searchController),
+                delegate: SearchBarHeaderDelegate(
+                  controller: _searchController,
+                ),
               ),
             if (_showTopDivider)
               SliverPersistentHeader(
