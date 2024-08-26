@@ -5,9 +5,9 @@ import 'package:app/app/router/router.dart';
 import 'package:app/data/models/models.dart';
 import 'package:app/feature/browser/browser.dart';
 import 'package:app/feature/browser/browser_tabs_view/predefined_items.dart';
+import 'package:app/feature/browser/widgets/browser_resource_Item.dart';
 import 'package:app/generated/generated.dart';
 import 'package:app/utils/utils.dart';
-import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -161,16 +161,19 @@ class _BrowserStartViewState extends State<BrowserStartView> {
   }
 
   Widget _searchResultItemBuilder(BrowserBookmarkItem item) {
+    final faviconUrl = _getFaviconUrl(item.url);
+
     return Padding(
       padding: const EdgeInsets.only(
         bottom: DimensSizeV2.d8,
         left: DimensSizeV2.d16,
         right: DimensSizeV2.d16,
       ),
-      child: _ResourceItem(
+      child: BrowserResourceItem(
         onPressed: () => _onItemPressed(item),
         title: item.title,
-        url: item.url,
+        faviconUrl: faviconUrl,
+        subTitle: faviconUrl,
         trailing: SvgPicture.asset(
           Assets.images.caretRight.path,
           width: DimensSizeV2.d20,
@@ -279,12 +282,15 @@ class _BrowserStartViewState extends State<BrowserStartView> {
   }
 
   Widget _itemBuilder(BrowserBookmarkItem item) {
-    return _ResourceItem(
+    final faviconUrl = _getFaviconUrl(item.url);
+
+    return BrowserResourceItem(
       key: ValueKey(item.id),
       onPressed: () => _onItemPressed(item),
       onLongPress: () => _onItemLongPressed(item),
       title: item.title,
-      url: item.url,
+      subTitle: faviconUrl,
+      faviconUrl: faviconUrl,
     );
   }
 
@@ -402,6 +408,10 @@ class _BrowserStartViewState extends State<BrowserStartView> {
           BrowserTabsEvent.setUrl(id: currentTabId, uri: url),
         );
   }
+
+  String _getFaviconUrl(Uri url) {
+    return context.watch<BrowserFaviconsBloc>().getFaviconUrl(url) ?? '';
+  }
 }
 
 class _KeyboardPadding extends StatelessWidget {
@@ -412,89 +422,6 @@ class _KeyboardPadding extends StatelessWidget {
     return AnimatedPadding(
       padding: MediaQuery.of(context).viewInsets,
       duration: const Duration(milliseconds: 250),
-    );
-  }
-}
-
-class _ResourceItem extends StatelessWidget {
-  const _ResourceItem({
-    required this.title,
-    required this.url,
-    required this.onPressed,
-    this.onLongPress,
-    this.trailing,
-    this.padding,
-    super.key,
-  });
-
-  final String title;
-  final Uri url;
-  final VoidCallback onPressed;
-  final VoidCallback? onLongPress;
-  final Widget? trailing;
-  final EdgeInsets? padding;
-
-  @override
-  Widget build(BuildContext context) {
-    final faviconUrl =
-        context.watch<BrowserFaviconsBloc>().getFaviconUrl(url) ?? '';
-
-    final themeStyleV2 = context.themeStyleV2;
-
-    return PressScaleWidget(
-      onPressed: onPressed,
-      onLongPress: onLongPress,
-      child: Container(
-        decoration: BoxDecoration(
-          color: themeStyleV2.colors.background1,
-          borderRadius: BorderRadius.circular(DimensSizeV2.d12),
-        ),
-        padding: padding ?? const EdgeInsets.all(DimensSizeV2.d8),
-        child: Row(
-          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-          children: [
-            Flexible(
-              child: Row(
-                mainAxisSize: MainAxisSize.min,
-                children: [
-                  CachedNetworkImage(
-                    height: DimensSize.d40,
-                    width: DimensSize.d40,
-                    imageUrl: faviconUrl,
-                    placeholder: (_, __) =>
-                        const CommonCircularProgressIndicator(),
-                    errorWidget: (_, __, ___) => CommonIconWidget.svg(
-                      svg: Assets.images.web.path,
-                    ),
-                  ),
-                  const SizedBox(width: DimensSizeV2.d8),
-                  Flexible(
-                    child: Column(
-                      mainAxisSize: MainAxisSize.min,
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        Text(
-                          title,
-                          style: themeStyleV2.textStyles.labelSmall,
-                          overflow: TextOverflow.ellipsis,
-                        ),
-                        const SizedBox(height: DimensSizeV2.d2),
-                        // TODO(knightforce): Bad practice transform in build
-                        Text(
-                          url.toString(),
-                          style: themeStyleV2.textStyles.labelXSmall,
-                          overflow: TextOverflow.ellipsis,
-                        ),
-                      ],
-                    ),
-                  ),
-                ],
-              ),
-            ),
-            if (trailing != null) trailing!,
-          ],
-        ),
-      ),
     );
   }
 }
