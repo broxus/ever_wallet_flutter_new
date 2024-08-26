@@ -49,16 +49,6 @@ class BrowserPrimarySheet extends StatelessWidget {
       mainAxisSize: MainAxisSize.min,
       separator: const CommonDivider(),
       children: [
-        _Tile(
-          titleText: LocaleKeys.browserHistory.tr(),
-          onPressed: () {
-            Navigator.of(context).pop();
-            context.goNamed(AppRoute.browserHistory.name);
-          },
-          trailing: CommonButtonIconWidget.svg(
-            svg: Assets.images.historyFill.path,
-          ),
-        ),
         if (refreshEnabled)
           _Tile(
             titleText: LocaleKeys.browserRefresh.tr(),
@@ -81,6 +71,16 @@ class BrowserPrimarySheet extends StatelessWidget {
               svg: Assets.images.star.path,
             ),
           ),
+        _Tile(
+          titleText: LocaleKeys.browserHistory.tr(),
+          onPressed: () {
+            Navigator.of(context).pop();
+            context.goNamed(AppRoute.browserHistory.name);
+          },
+          trailing: CommonButtonIconWidget.svg(
+            svg: Assets.images.historyFill.path,
+          ),
+        ),
       ],
     );
   }
