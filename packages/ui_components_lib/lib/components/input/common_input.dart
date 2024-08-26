@@ -65,6 +65,7 @@ class CommonInput extends StatefulWidget {
     this.outerActions,
     this.enabled = true,
     this.v2Style,
+    this.radius = DimensRadius.medium,
   });
 
   /// Height of input field
@@ -196,6 +197,8 @@ class CommonInput extends StatefulWidget {
   ///remove after refactoring enter_seed_phrase_view
   ///only for fast fix
   final CommonInputStyleV2? v2Style;
+
+  final double radius;
 
   @override
   State<CommonInput> createState() => _CommonInputState();
@@ -430,31 +433,31 @@ class _CommonInputState extends State<CommonInput> {
           prefixIcon:
               widget.prefixIcon ?? const SizedBox(width: DimensSize.d16),
           border: SquircleInputBorder(
-            squircleRadius: DimensRadius.medium,
+            squircleRadius: widget.radius,
             borderSide: BorderSide(
               color: widget.inactiveBorderColor ?? colors.strokePrimary,
             ),
           ),
           enabledBorder: SquircleInputBorder(
-            squircleRadius: DimensRadius.medium,
+            squircleRadius: widget.radius,
             borderSide: BorderSide(
               color: widget.enabledBorderColor ?? colors.strokePrimary,
             ),
           ),
           focusedBorder: SquircleInputBorder(
-            squircleRadius: DimensRadius.medium,
+            squircleRadius: widget.radius,
             borderSide: BorderSide(
               color: widget.focusedBorderColor ?? colors.strokeContrast,
             ),
           ),
           errorBorder: SquircleInputBorder(
-            squircleRadius: DimensRadius.medium,
+            squircleRadius: widget.radius,
             borderSide: BorderSide(
               color: widget.errorColor ?? colors.alert,
             ),
           ),
           focusedErrorBorder: SquircleInputBorder(
-            squircleRadius: DimensRadius.medium,
+            squircleRadius: widget.radius,
             borderSide: BorderSide(
               color: widget.errorColor ?? colors.alert,
             ),

@@ -181,6 +181,9 @@ class $AssetsImagesGen {
   /// File path: assets/images/export.svg
   SvgGenImage get export => const SvgGenImage('assets/images/export.svg');
 
+  /// File path: assets/images/export2.svg
+  SvgGenImage get export2 => const SvgGenImage('assets/images/export2.svg');
+
   /// File path: assets/images/export_fill.svg
   SvgGenImage get exportFill =>
       const SvgGenImage('assets/images/export_fill.svg');

@@ -35,6 +35,13 @@ class _BrowserSearchBarInputState extends State<BrowserSearchBarInput> {
   late final TextEditingController _textEditingController;
   bool _focused = false;
 
+  TextAlign get _textAlign {
+    if (_isSecure) {
+      return TextAlign.start;
+    }
+    return _focused ? TextAlign.start : TextAlign.center;
+  }
+
   @override
   void didUpdateWidget(covariant BrowserSearchBarInput oldWidget) {
     super.didUpdateWidget(oldWidget);
@@ -73,19 +80,12 @@ class _BrowserSearchBarInputState extends State<BrowserSearchBarInput> {
     final colors = themeStyle.colors;
 
     final textStyle = themeStyle.textStyles.labelMedium.copyWith(
-      color: colors.content0,
+      color: _isSecure ? colors.content3 : colors.content0,
     );
 
     final hintStyle = themeStyle.textStyles.labelMedium.copyWith(
       color: colors.content3,
     );
-
-    final prefixIcon = _getPrefixIcon();
-    final prefixIconDecoration = prefixIcon != null
-        ? BoxConstraints.tight(const Size.square(DimensSize.d32))
-        : null;
-
-    final shareButton = _getShareButton();
 
     return _Container(
       child: Row(
@@ -101,7 +101,7 @@ class _BrowserSearchBarInputState extends State<BrowserSearchBarInput> {
                   height: DimensSize.d40,
                   autocorrect: false,
                   hintText: _focused ? null : widget.hintText,
-                  prefixIcon: prefixIcon,
+                  prefixIcon: _getPrefixIcon(),
                   onSubmitted: _onSubmitted,
                   focusNode: _focusNode,
                   inactiveBorderColor: Colors.transparent,
@@ -109,14 +109,22 @@ class _BrowserSearchBarInputState extends State<BrowserSearchBarInput> {
                   focusedBorderColor: Colors.transparent,
                   textStyle: textStyle,
                   hintStyle: hintStyle,
-                  textAlign: _focused ? TextAlign.start : TextAlign.center,
-                  prefixIconConstraints: prefixIconDecoration,
+                  textAlign: _textAlign,
+                  prefixIconConstraints: const BoxConstraints(),
                   cursorColor: colors.primaryA,
+                  radius: DimensRadius.xMedium,
                 ),
-                if (shareButton != null)
+                if (!_focused && !_isEmpty)
                   Positioned(
+                    top: 0,
+                    bottom: 0,
                     right: 0,
-                    child: shareButton,
+                    child: _ShareButton(
+                      svgUri: widget.shareSvg,
+                      onPressed: _isEmpty || widget.onShared == null
+                          ? null
+                          : () => widget.onShared?.call(widget.uri),
+                    ),
                   ),
               ],
             ),
@@ -188,62 +196,49 @@ class _BrowserSearchBarInputState extends State<BrowserSearchBarInput> {
     }
 
     if (_isEmpty) {
-      return _getIcon(widget.searchSvg, Icons.search);
+      return _getIcon(
+        widget.searchSvg,
+        Icons.search,
+        const EdgeInsets.only(right: DimensSizeV2.d8),
+      );
     }
 
     if (_isSecure) {
-      return _getIcon(widget.secureSvg, Icons.lock);
+      return _getIcon(
+        widget.secureSvg,
+        Icons.lock,
+        const EdgeInsets.only(
+          left: DimensSizeV2.d12,
+          right: DimensSizeV2.d7,
+        ),
+      );
     }
 
     return null;
   }
 
-  Widget? _getShareButton() {
-    if (_focused || _isEmpty) {
-      return null;
-    }
-
-    final onShared = _isEmpty || widget.onShared == null
-        ? null
-        : () => widget.onShared?.call(widget.uri);
-
-    return _getButton(widget.shareSvg, Icons.share, onShared);
-  }
-
-  Widget? _getButton(
-    String? svg,
-    IconData icondata,
-    VoidCallback? onPressed,
-  ) {
-    return svg != null
-        ? CommonIconButton.svg(
-            svg: svg,
-            buttonType: EverButtonType.ghost,
-            onPressed: onPressed,
-          )
-        : CommonIconButton.icon(
-            icon: icondata,
-            buttonType: EverButtonType.ghost,
-            onPressed: onPressed,
-          );
-  }
-
   // TODO(Odrin): we should add all the icons in the ui kit library
   // and get rid of this method
-  Widget? _getIcon(String? svg, IconData icondata) {
-    final colors = context.themeStyle.colors;
-
+  Widget? _getIcon(
+    String? svg,
+    IconData iconData,
+    EdgeInsets padding,
+  ) {
+    final colors = context.themeStyleV2.colors;
     return Padding(
-      padding: const EdgeInsets.all(DimensSize.d8),
+      padding: padding,
       child: svg != null
           ? CommonIconWidget.svg(
               svg: svg,
-              color: colors.textSecondary,
-              size: DimensSize.d20,
+              color: colors.content3,
+              width: DimensSize.d14,
+              height: DimensSize.d14,
             )
           : CommonIconWidget.icon(
-              icon: icondata,
-              color: colors.textSecondary,
+              icon: iconData,
+              color: colors.content3,
+              width: DimensSize.d14,
+              height: DimensSize.d14,
             ),
     );
   }
@@ -275,6 +270,35 @@ class _Container extends StatelessWidget {
             child: child,
           ),
         ),
+      ),
+    );
+  }
+}
+
+class _ShareButton extends StatelessWidget {
+  const _ShareButton({
+    this.svgUri,
+    this.onPressed,
+  });
+
+  final String? svgUri;
+  final VoidCallback? onPressed;
+
+  @override
+  Widget build(BuildContext context) {
+    // TODO(Odrin): we should add all the icons in the ui kit library
+    // and get rid of this method
+
+    return CommonIconButton(
+      svg: svgUri,
+      icon: svgUri == null ? Icons.share : null,
+      buttonType: EverButtonType.ghost,
+      onPressed: onPressed,
+      width: DimensSizeV2.d20,
+      height: DimensSizeV2.d20,
+      padding: const EdgeInsets.only(
+        left: DimensSizeV2.d10,
+        right: DimensSizeV2.d22,
       ),
     );
   }
