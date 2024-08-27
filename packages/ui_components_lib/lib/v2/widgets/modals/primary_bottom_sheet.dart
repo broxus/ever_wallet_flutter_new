@@ -8,6 +8,7 @@ Future<void> showPrimaryBottomSheet({
   String? assetsPath,
   String? title,
   String? subtitle,
+  Widget? content,
   BaseButton? firstButton,
   BaseButton? secondButton,
   EdgeInsets padding = const EdgeInsets.symmetric(horizontal: DimensSizeV2.d16),
@@ -28,6 +29,7 @@ Future<void> showPrimaryBottomSheet({
     builder: (_) => _ContentBottomSheet(
       padding: padding,
       subtitle: subtitle,
+      content: content,
       title: title,
       assetsPath: assetsPath,
       firstButton: firstButton,
@@ -42,6 +44,7 @@ class _ContentBottomSheet extends StatelessWidget {
     this.assetsPath,
     this.title,
     this.subtitle,
+    this.content,
     this.firstButton,
     this.secondButton,
   });
@@ -49,6 +52,7 @@ class _ContentBottomSheet extends StatelessWidget {
   final String? assetsPath;
   final String? title;
   final String? subtitle;
+  final Widget? content;
   final EdgeInsets padding;
   final BaseButton? firstButton;
   final BaseButton? secondButton;
@@ -90,6 +94,7 @@ class _ContentBottomSheet extends StatelessWidget {
                   textAlign: TextAlign.center,
                 ),
               ),
+            if (content != null) content!,
             if (firstButton != null)
               Padding(
                 padding: const EdgeInsets.only(bottom: DimensSize.d12),

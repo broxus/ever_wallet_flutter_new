@@ -516,5 +516,12 @@ abstract class  LocaleKeys {
   static const decrypt = 'decrypt';
   static const notBackedUpTitle = 'notBackedUpTitle';
   static const notBackedUpSubtitle = 'notBackedUpSubtitle';
+  static const backedUpTitleModal = 'backedUpTitleModal';
+  static const backedUpSubtitleModal = 'backedUpSubtitleModal';
+  static const backedUpManuallyButton = 'backedUpManuallyButton';
+  static const keepThisSafeTitleModal = 'keepThisSafeTitleModal';
+  static const keepThisSafeSubtitleModal = 'keepThisSafeSubtitleModal';
+  static const keepThisSafeContentModal = 'keepThisSafeContentModal';
+  static const gotItButton = 'gotItButton';
 
 }

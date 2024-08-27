@@ -175,6 +175,10 @@ class $AssetsImagesGen {
   SvgGenImage get everVector =>
       const SvgGenImage('assets/images/ever_vector.svg');
 
+  /// File path: assets/images/exclamation_mark.png
+  AssetGenImage get exclamationMark =>
+      const AssetGenImage('assets/images/exclamation_mark.png');
+
   /// File path: assets/images/exit.svg
   SvgGenImage get exit => const SvgGenImage('assets/images/exit.svg');
 
@@ -389,6 +393,7 @@ class $AssetsImagesGen {
         ever,
         everCoin,
         everVector,
+        exclamationMark,
         exit,
         export,
         exportFill,

@@ -3,6 +3,7 @@ import 'package:app/feature/widgets/change_notifier_listener.dart';
 import 'package:app/generated/assets.gen.dart';
 import 'package:app/generated/generated.dart';
 import 'package:flutter/material.dart';
+import 'package:hive_flutter/hive_flutter.dart';
 import 'package:lucide_icons_flutter/lucide_icons.dart';
 import 'package:nekoton_repository/nekoton_repository.dart';
 import 'package:render_metrics/render_metrics.dart';
@@ -154,16 +155,45 @@ class _BackUpBadge extends StatelessWidget {
       onTap: () {
         showPrimaryBottomSheet(
           context: context,
-          title: 'Back up your '
-              'wallet',
-          subtitle: 'Don’t lose your wallet! Save an encrypted '
-              'copy to iCloud or back it up manually.',
+          title: LocaleKeys.backedUpTitleModal.tr(),
+          subtitle: LocaleKeys.backedUpSubtitleModal.tr(),
           assetsPath: Assets.images.seedPhraseIcon.path,
           firstButton: PrimaryButton(
             buttonShape: ButtonShape.pill,
-            title: 'Back up manually',
+            title: LocaleKeys.backedUpManuallyButton.tr(),
             postfixIcon: LucideIcons.penLine,
-            onPressed: (){},
+            onPressed: () {
+              showPrimaryBottomSheet(
+                context: context,
+                title: LocaleKeys.keepThisSafeTitleModal.tr(),
+                subtitle: LocaleKeys.keepThisSafeSubtitleModal.tr(),
+                assetsPath: Assets.images.exclamationMark.path,
+                firstButton: AccentButton(
+                  buttonShape: ButtonShape.pill,
+                  title: LocaleKeys.gotItButton.tr(),
+                  postfixIcon: LucideIcons.check,
+                  onPressed: () {},
+                ),
+                content: Container(
+                  padding: const EdgeInsets.symmetric(
+                    vertical: DimensSizeV2.d8,
+                    horizontal: DimensSizeV2.d16,
+                  ),
+                  margin: const EdgeInsets.only(bottom: DimensSizeV2.d24),
+                  decoration: BoxDecoration(
+                    color: theme.colors.background2,
+                    borderRadius: BorderRadius.circular(
+                      DimensRadiusV2.radius12,
+                    ),
+                  ),
+                  child: Text(
+                    LocaleKeys.keepThisSafeContentModal.tr(),
+                    style: theme.textStyles.labelMedium,
+                    textAlign: TextAlign.center,
+                  ),
+                ),
+              );
+            },
           ),
         );
       },
