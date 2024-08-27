@@ -1,4 +1,5 @@
 import 'package:app/app/router/router.dart';
+import 'package:app/feature/browser/widgets/browser_modal_item.dart';
 import 'package:app/generated/generated.dart';
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
@@ -50,7 +51,7 @@ class BrowserPrimarySheet extends StatelessWidget {
       separator: const CommonDivider(),
       children: [
         if (refreshEnabled)
-          _Tile(
+          BrowserModalItem(
             titleText: LocaleKeys.browserRefresh.tr(),
             onPressed: () {
               Navigator.of(context).pop();
@@ -61,7 +62,7 @@ class BrowserPrimarySheet extends StatelessWidget {
             ),
           ),
         if (addToBookmarksEnabled)
-          _Tile(
+          BrowserModalItem(
             titleText: LocaleKeys.browserAddToBookmarks.tr(),
             onPressed: () {
               Navigator.of(context).pop();
@@ -71,7 +72,7 @@ class BrowserPrimarySheet extends StatelessWidget {
               svg: Assets.images.star.path,
             ),
           ),
-        _Tile(
+        BrowserModalItem(
           titleText: LocaleKeys.browserHistory.tr(),
           onPressed: () {
             Navigator.of(context).pop();
@@ -82,37 +83,6 @@ class BrowserPrimarySheet extends StatelessWidget {
           ),
         ),
       ],
-    );
-  }
-}
-
-class _Tile extends StatelessWidget {
-  const _Tile({
-    required this.titleText,
-    required this.onPressed,
-    required this.trailing,
-  });
-
-  final String titleText;
-  final VoidCallback onPressed;
-  final Widget trailing;
-
-  @override
-  Widget build(BuildContext context) {
-    final theme = context.themeStyleV2;
-
-    return CommonListTile(
-      titleChild: Text(
-        titleText,
-        style: theme.textStyles.labelMedium,
-      ),
-      padding: const EdgeInsets.symmetric(
-        vertical: DimensSizeV2.d18,
-        horizontal: DimensSizeV2.d24,
-      ),
-      onPressed: onPressed,
-      backgroundColor: theme.colors.background2,
-      trailing: trailing,
     );
   }
 }

@@ -1,7 +1,7 @@
+import 'package:app/feature/browser/widgets/browser_checked_modal_item.dart';
 import 'package:app/generated/generated.dart';
 import 'package:flutter/material.dart';
 import 'package:ui_components_lib/ui_components_lib.dart';
-import 'package:ui_components_lib/v2/dimens_v2.dart';
 import 'package:ui_components_lib/v2/ui_components_lib_v2.dart';
 
 typedef OnClearPressedCallback = void Function({
@@ -62,7 +62,7 @@ class _BrowserHistorySheetState extends State<BrowserHistorySheet> {
       mainAxisSize: MainAxisSize.min,
       crossAxisAlignment: CrossAxisAlignment.stretch,
       children: [
-        _Item(
+        BrowserCheckedModalItem(
           titleText: LocaleKeys.browserHistory.tr(),
           subtitleText: LocaleKeys.browserClearHistory.tr(),
           svgUri: Assets.images.historyFill.path,
@@ -74,7 +74,7 @@ class _BrowserHistorySheetState extends State<BrowserHistorySheet> {
               : null,
         ),
         const _Divider(),
-        _Item(
+        BrowserCheckedModalItem(
           titleText: LocaleKeys.browserClearCookies.tr(),
           subtitleText: LocaleKeys.browserClearCookiesDescription.tr(),
           svgUri: Assets.images.key.path,
@@ -84,7 +84,7 @@ class _BrowserHistorySheetState extends State<BrowserHistorySheet> {
           },
         ),
         const _Divider(),
-        _Item(
+        BrowserCheckedModalItem(
           titleText: LocaleKeys.browserClearCache.tr(),
           svgUri: Assets.images.camera.path,
           isSelected: _clearCache,
@@ -113,52 +113,15 @@ class _BrowserHistorySheetState extends State<BrowserHistorySheet> {
   }
 }
 
-class _Item extends StatelessWidget {
-  const _Item({
-    required this.titleText,
-    required this.svgUri,
-    this.subtitleText,
-    this.onPressed,
-    this.isSelected = false,
-  });
-
-  final String titleText;
-  final String? subtitleText;
-  final String svgUri;
-  final VoidCallback? onPressed;
-  final bool isSelected;
-
-  @override
-  Widget build(BuildContext context) {
-    final color = context.themeStyleV2.colors;
-
-    return CommonListTile(
-      titleText: titleText,
-      subtitleText: subtitleText,
-      padding: EdgeInsets.zero,
-      height: null,
-      leading: CommonBackgroundedIconWidget.svg(
-        svg: svgUri,
-        backgroundColor: color.backgroundAlpha,
-        iconColor: color.content0,
-      ),
-      trailing: CommonCheckbox(
-        checked: isSelected,
-        color: Colors.white,
-      ),
-      onPressed: onPressed,
-    );
-  }
-}
-
 class _Divider extends StatelessWidget {
   const _Divider();
 
   @override
   Widget build(BuildContext context) {
-    return const Padding(
-      padding: EdgeInsets.symmetric(vertical: DimensSizeV2.d16),
-      child: CommonDivider(),
+    return const CommonDivider(
+      margin: EdgeInsets.symmetric(
+        vertical: DimensSizeV2.d16,
+      ),
     );
   }
 }

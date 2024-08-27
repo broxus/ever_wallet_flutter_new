@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:ui_components_lib/ui_components_lib.dart';
 
 /// Default thickness and height of [CommonDivider]
@@ -11,16 +12,24 @@ const _commonDividerSize = 1.0;
 /// {@endtemplate}
 class CommonDivider extends StatelessWidget {
   /// {@macro common_divider}
-  const CommonDivider({super.key, this.color});
+  const CommonDivider({
+    super.key,
+    this.color,
+    this.margin = EdgeInsets.zero,
+  });
 
   final Color? color;
+  final EdgeInsetsGeometry margin;
 
   @override
   Widget build(BuildContext context) {
-    return Divider(
-      height: _commonDividerSize,
-      thickness: _commonDividerSize,
-      color: color ?? context.themeStyleV2.colors.borderAlpha,
+    return Padding(
+      padding: margin,
+      child: Divider(
+        height: _commonDividerSize,
+        thickness: _commonDividerSize,
+        color: color ?? context.themeStyleV2.colors.borderAlpha,
+      ),
     );
   }
 }
