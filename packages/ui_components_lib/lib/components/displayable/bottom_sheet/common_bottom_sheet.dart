@@ -93,6 +93,7 @@ ModalSheetRoute<T> commonBottomSheetRoute<T>({
   bool useAppBackgroundColor = false,
   bool centerTitle = false,
   TextStyle? titleTextStyle,
+  EdgeInsetsGeometry? titleMargin,
   bool centerSubtitle = false,
 }) {
   return ModalSheetRoute<T>(
@@ -106,6 +107,7 @@ ModalSheetRoute<T> commonBottomSheetRoute<T>({
       body: body,
       centerTitle: centerTitle,
       titleTextStyle: titleTextStyle,
+      titleMargin: titleMargin,
       centerSubtitle: centerSubtitle,
     ),
     expanded: expand,
@@ -145,7 +147,7 @@ class CommonBottomSheetWidget extends StatelessWidget {
   final bool centerTitle;
   final TextStyle? titleTextStyle;
   final bool centerSubtitle;
-  final EdgeInsets? titleMargin;
+  final EdgeInsetsGeometry? titleMargin;
 
   @override
   Widget build(BuildContext context) {
@@ -274,7 +276,7 @@ class _Header extends StatelessWidget {
   final bool isCenterTitle;
   final bool isCenterSubTitle;
   final TextStyle? titleTextStyle;
-  final EdgeInsets? titleMargin;
+  final EdgeInsetsGeometry? titleMargin;
 
   static const _top = DimensSizeV2.d20 + DimensSizeV2.d4 + DimensSizeV2.d8 * 2;
 

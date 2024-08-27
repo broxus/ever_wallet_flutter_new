@@ -100,7 +100,10 @@ class _BrowserBookmarkSheetState extends State<BrowserBookmarkSheet> {
     Navigator.of(context)
       ..pop()
       ..push(
-        showBrowserBookmarkRenameSheet(item: widget.item),
+        showBrowserBookmarkRenameSheet(
+          item: widget.item,
+          titleTextStyle: context.themeStyleV2.textStyles.headingLarge,
+        ),
       );
   }
 
