@@ -115,8 +115,6 @@ class _HistoryViewState extends State<HistoryView> {
       },
     );
 
-    widgets = widgets.isNotEmpty ? widgets : [_emptyBuilder()];
-
     return Stack(
       alignment: AlignmentDirectional.bottomCenter,
       children: [
@@ -129,11 +127,15 @@ class _HistoryViewState extends State<HistoryView> {
                   controller: _searchController,
                 ),
               ),
-            ...widgets,
+            if (widgets.isNotEmpty) ...widgets,
             _bottomSpacerBuilder(isEditing),
           ],
           controller: _scrollController,
         ),
+        if (widgets.isEmpty)
+          Positioned.fill(
+            child: _emptyBuilder(),
+          ),
         _buttonsBuilder(isEditing),
       ],
     );
@@ -159,7 +161,6 @@ class _HistoryViewState extends State<HistoryView> {
   }
 
   Widget _itemBuilder(BrowserHistoryItem item, {required bool isEditing}) {
-    final colors = context.themeStyle.colors;
     final faviconUrl =
         context.watch<BrowserFaviconsBloc>().getFaviconUrl(item.url) ?? '';
 
@@ -271,23 +272,34 @@ class _HistoryViewState extends State<HistoryView> {
   Widget _emptyBuilder() {
     final isHistoryEmpty = context.watch<BrowserHistoryBloc>().isHistoryEmpty;
 
-    return SliverFillRemaining(
+    final style = context.themeStyleV2;
+
+    // TODO(knightforce): temp realisation, before refactoring.
+    return Transform.translate(
+      offset: const Offset(0, -DimensSizeV2.d60),
       child: Center(
-        child: SeparatedColumn(
+        child: Column(
           mainAxisSize: MainAxisSize.min,
           children: [
-            CommonIconWidget.svg(
-              svg: isHistoryEmpty
-                  ? Assets.images.history.path
-                  : Assets.images.searchEmpty.path,
-              size: DimensSize.d56,
-            ),
+            if (isHistoryEmpty)
+              Icon(
+                LucideIcons.clock,
+                size: DimensSizeV2.d56,
+                color: style.colors.content3,
+              )
+            else
+              CommonIconWidget.svg(
+                svg: Assets.images.searchEmpty.path,
+                width: DimensSize.d56,
+                height: DimensSize.d56,
+              ),
+            const SizedBox(height: DimensSizeV2.d21),
             Text(
               isHistoryEmpty
                   ? LocaleKeys.browserHistoryEmpty.tr()
                   : LocaleKeys.browserHistoryEmptySearch.tr(),
-              style: StyleRes.primaryRegular.copyWith(
-                color: context.themeStyle.colors.textSecondary,
+              style: style.textStyles.labelMedium.copyWith(
+                color: style.colors.content3,
               ),
             ),
           ],
