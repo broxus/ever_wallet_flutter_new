@@ -7,30 +7,32 @@ import 'package:ui_components_lib/v2/ui_components_lib_v2.dart';
 
 class Toast extends StatelessWidget {
   const Toast({
-    required this.description,
     required this.type,
+    this.icon,
+    this.description,
     this.isShowingIcon = true,
     this.heading,
     this.actions,
+    this.onTapClosed,
     super.key,
   });
 
-  final String description;
   final ToastType type;
+  final IconData? icon;
+  final String? description;
   final bool isShowingIcon;
   final String? heading;
   final List<Widget>? actions;
+  final VoidCallback? onTapClosed;
 
   @override
   Widget build(BuildContext context) {
     final themeStyle = context.themeStyleV2;
     final toastStyle = _getToastStyleByType(themeStyle);
     return Container(
-      padding: const EdgeInsets.only(
-        left: DimensSizeV2.d16,
-        right: DimensSizeV2.d16,
-        bottom: DimensSizeV2.d16,
-        top: DimensSizeV2.d12,
+      padding: const EdgeInsets.symmetric(
+        horizontal: DimensSizeV2.d16,
+        vertical: DimensSizeV2.d12,
       ),
       decoration: BoxDecoration(
         color: toastStyle.backgroundColor,
@@ -43,7 +45,7 @@ class Toast extends StatelessWidget {
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               Icon(
-                LucideIcons.triangleAlert,
+                icon,
                 size: DimensSize.d20,
                 color: toastStyle.iconColor,
               ),
@@ -58,22 +60,26 @@ class Toast extends StatelessWidget {
                         style: themeStyle.textStyles.headingXSmall
                             .copyWith(height: 1.5),
                       ),
-                    Text(
-                      description,
-                      style: themeStyle.textStyles.paragraphSmall
-                          .copyWith(color: themeStyle.colors.content0),
-                    ),
+                    if (description != null)
+                      Text(
+                        description!,
+                        style: themeStyle.textStyles.paragraphSmall
+                            .copyWith(color: themeStyle.colors.content0),
+                      ),
                   ],
                 ),
               ),
-              Icon(
-                LucideIcons.x,
-                size: DimensSize.d20,
-                color: themeStyle.colors.content0,
+              GestureDetector(
+                onTap: onTapClosed,
+                child: Icon(
+                  LucideIcons.x,
+                  size: DimensSize.d20,
+                  color: themeStyle.colors.content0,
+                ),
               ),
             ],
           ),
-          if (actions != null)
+          if (actions?.isNotEmpty ?? false)
             Padding(
               padding: const EdgeInsets.only(top: DimensSizeV2.d16),
               child: Row(

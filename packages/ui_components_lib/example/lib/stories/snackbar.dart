@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:lucide_icons_flutter/lucide_icons.dart';
 import 'package:ui_components_lib/ui_components_lib.dart';
+import 'package:ui_components_lib/v2/ui_components_lib_v2.dart';
 
 /// Page with snackbars
 class SnackbarStory extends StatelessWidget {
@@ -19,10 +21,11 @@ class SnackbarStory extends StatelessWidget {
               onPressed: () {
                 showSnackbar(
                   context: context,
-                  type: SnackbarType.info,
-                  message: 'Default snackbar',
-                  duration: const Duration(seconds: 3),
-                  icon: buildIcon(SnackbarType.info),
+                  toast: const Toast(
+                    type: ToastType.warning,
+                    icon: LucideIcons.triangleAlert,
+                    description: 'Warning',
+                  ),
                 );
               },
             ),
@@ -31,10 +34,11 @@ class SnackbarStory extends StatelessWidget {
               text: 'Error snackbar',
               onPressed: () => showSnackbar(
                 context: context,
-                type: SnackbarType.error,
-                icon: buildIcon(SnackbarType.error),
-                message: 'Error snackbar',
-                duration: const Duration(seconds: 3),
+                toast: const Toast(
+                  type: ToastType.error,
+                  icon: LucideIcons.triangle,
+                  description: 'Error',
+                ),
               ),
             ),
             const SizedBox(height: 20),
@@ -42,16 +46,24 @@ class SnackbarStory extends StatelessWidget {
               text: 'Snackbar with action',
               onPressed: () => showSnackbar(
                 context: context,
-                type: SnackbarType.info,
-                icon: buildIcon(SnackbarType.info),
-                message: 'Action snackbar',
-                duration: const Duration(seconds: 3),
-                actionText: 'Action',
-                onAction: () => showSnackbar(
-                  context: context,
-                  type: SnackbarType.info,
-                  message: 'Another snackbar',
-                  duration: const Duration(seconds: 3),
+                toast: Toast(
+                  type: ToastType.success,
+                  description: 'Success with action',
+                  icon: LucideIcons.triangleAlert,
+                  actions: [
+                    FloatButton(
+                      buttonShape: ButtonShape.rectangle,
+                      buttonSize: ButtonSize.small,
+                      title: 'Okay',
+                      onPressed: () {},
+                    ),
+                    GhostButton(
+                      buttonShape: ButtonShape.rectangle,
+                      buttonSize: ButtonSize.small,
+                      title: 'Contact Support',
+                      onPressed: () {},
+                    ),
+                  ],
                 ),
               ),
             ),
@@ -60,25 +72,16 @@ class SnackbarStory extends StatelessWidget {
               text: 'Successful snackbar',
               onPressed: () => showSnackbar(
                 context: context,
-                type: SnackbarType.successful,
-                icon: buildIcon(SnackbarType.successful),
-                message: 'Successful snackbar',
-                duration: const Duration(seconds: 3),
+                toast: const Toast(
+                  type: ToastType.success,
+                  description: 'Success',
+                  icon: LucideIcons.triangleAlert,
+                ),
               ),
             ),
           ],
         ),
       ),
-    );
-  }
-
-  Widget buildIcon(SnackbarType type) {
-    return CommonIconWidget.icon(
-      icon: switch (type) {
-        SnackbarType.error => Icons.error,
-        SnackbarType.info => Icons.add_alert_rounded,
-        SnackbarType.successful => Icons.check_circle,
-      },
     );
   }
 }

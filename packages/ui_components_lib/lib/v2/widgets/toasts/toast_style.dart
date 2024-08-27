@@ -3,7 +3,8 @@ import 'package:ui_components_lib/v2/ui_components_lib_v2.dart';
 
 class ToastStyle {
   ToastStyle.normal(ColorsPaletteV2 colors)
-      : backgroundColor = colors.backgroundAlpha,
+      // TODO(malochka): remove it after redisgn toasts
+      : backgroundColor = const Color(0xff606060),
         borderColor = colors.borderAlpha,
         iconColor = colors.content3;
 
