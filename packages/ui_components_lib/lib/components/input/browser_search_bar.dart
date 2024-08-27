@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:ui_components_lib/ui_components_lib.dart';
+import 'package:ui_components_lib/v2/dimens_v2.dart';
 
 class BrowserSearchBarInput extends StatefulWidget {
   const BrowserSearchBarInput({
@@ -33,6 +34,13 @@ class _BrowserSearchBarInputState extends State<BrowserSearchBarInput> {
   late final FocusNode _focusNode;
   late final TextEditingController _textEditingController;
   bool _focused = false;
+
+  TextAlign get _textAlign {
+    if (_isSecure) {
+      return TextAlign.start;
+    }
+    return _focused ? TextAlign.start : TextAlign.center;
+  }
 
   @override
   void didUpdateWidget(covariant BrowserSearchBarInput oldWidget) {
@@ -68,62 +76,79 @@ class _BrowserSearchBarInputState extends State<BrowserSearchBarInput> {
 
   @override
   Widget build(BuildContext context) {
-    final colors = context.themeStyle.colors;
-    final textStyle = StyleRes.primaryRegular.copyWith(
-      color: _focused ? colors.textPrimary : colors.textSecondary,
+    final themeStyle = context.themeStyleV2;
+    final colors = themeStyle.colors;
+
+    final textStyle = themeStyle.textStyles.labelMedium.copyWith(
+      color: _isSecure ? colors.content3 : colors.content0,
     );
 
-    final prefixIcon = _getPrefixIcon();
-    final prefixIconDecoration = prefixIcon != null
-        ? BoxConstraints.tight(const Size.square(DimensSize.d32))
-        : null;
+    final hintStyle = themeStyle.textStyles.labelMedium.copyWith(
+      color: colors.content3,
+    );
 
-    final shareButton = _getShareButton();
-
-    return Material(
-      color: colors.backgroundSecondary,
-      child: SizedBox(
-        height: DimensSize.d64,
-        child: Padding(
-          padding: const EdgeInsets.symmetric(horizontal: DimensSize.d16),
-          child: Row(
-            children: [
-              Expanded(
-                child: Stack(
-                  alignment: Alignment.center,
-                  children: [
-                    CommonInput(
-                      fillColor: colors.appBackground,
-                      controller: _textEditingController,
-                      needClearButton: false,
-                      height: DimensSize.d40,
-                      autocorrect: false,
-                      hintText: widget.hintText,
-                      prefixIcon: prefixIcon,
-                      onSubmitted: _onSubmitted,
-                      focusNode: _focusNode,
-                      inactiveBorderColor: Colors.transparent,
-                      enabledBorderColor: Colors.transparent,
-                      focusedBorderColor: Colors.transparent,
-                      textStyle: textStyle,
-                      prefixIconConstraints: prefixIconDecoration,
+    return _Container(
+      child: Row(
+        children: [
+          Expanded(
+            child: Stack(
+              alignment: Alignment.center,
+              children: [
+                CommonInput(
+                  fillColor: colors.background1,
+                  controller: _textEditingController,
+                  needClearButton: false,
+                  height: DimensSize.d40,
+                  autocorrect: false,
+                  hintText: _focused ? null : widget.hintText,
+                  prefixIcon: _getPrefixIcon(),
+                  onSubmitted: _onSubmitted,
+                  focusNode: _focusNode,
+                  inactiveBorderColor: Colors.transparent,
+                  enabledBorderColor: Colors.transparent,
+                  focusedBorderColor: Colors.transparent,
+                  textStyle: textStyle,
+                  hintStyle: hintStyle,
+                  textAlign: _textAlign,
+                  prefixIconConstraints: const BoxConstraints(),
+                  cursorColor: colors.primaryA,
+                  radius: DimensRadius.xMedium,
+                ),
+                if (!_focused && !_isEmpty)
+                  Positioned(
+                    top: 0,
+                    bottom: 0,
+                    right: 0,
+                    child: _ShareButton(
+                      svgUri: widget.shareSvg,
+                      onPressed: _isEmpty || widget.onShared == null
+                          ? null
+                          : () => widget.onShared?.call(widget.uri),
                     ),
-                    if (shareButton != null)
-                      Positioned(
-                        right: 0,
-                        child: shareButton,
-                      ),
-                  ],
+                  ),
+              ],
+            ),
+          ),
+          if (_focused && widget.cancelText != null)
+            GestureDetector(
+              behavior: HitTestBehavior.opaque,
+              onTap: _onCancel,
+              child: Padding(
+                padding: const EdgeInsets.only(
+                  top: DimensSizeV2.d10,
+                  bottom: DimensSizeV2.d10,
+                  left: DimensSizeV2.d18,
+                  right: DimensSizeV2.d6,
+                ),
+                child: Center(
+                  child: Text(
+                    widget.cancelText!,
+                    style: themeStyle.textStyles.labelMedium,
+                  ),
                 ),
               ),
-              if (_focused)
-                CommonButton.ghost(
-                  text: widget.cancelText,
-                  onPressed: _onCancel,
-                ),
-            ],
-          ),
-        ),
+            ),
+        ],
       ),
     );
   }
@@ -162,6 +187,7 @@ class _BrowserSearchBarInputState extends State<BrowserSearchBarInput> {
   }
 
   bool get _isSecure => widget.uri?.isScheme('https') ?? false;
+
   bool get _isEmpty => _textEditingController.text.isEmpty;
 
   Widget? _getPrefixIcon() {
@@ -170,63 +196,112 @@ class _BrowserSearchBarInputState extends State<BrowserSearchBarInput> {
     }
 
     if (_isEmpty) {
-      return _getIcon(widget.searchSvg, Icons.search);
+      return _getIcon(
+        widget.searchSvg,
+        Icons.search,
+        const EdgeInsets.only(
+          left: DimensSizeV2.d12,
+        ),
+      );
     }
 
     if (_isSecure) {
-      return _getIcon(widget.secureSvg, Icons.lock);
+      return _getIcon(
+        widget.secureSvg,
+        Icons.lock,
+        const EdgeInsets.only(
+          left: DimensSizeV2.d12,
+          right: DimensSizeV2.d7,
+        ),
+      );
     }
 
     return null;
   }
 
-  Widget? _getShareButton() {
-    if (_focused || _isEmpty) {
-      return null;
-    }
-
-    final onShared = _isEmpty || widget.onShared == null
-        ? null
-        : () => widget.onShared?.call(widget.uri);
-
-    return _getButton(widget.shareSvg, Icons.share, onShared);
-  }
-
-  Widget? _getButton(
-    String? svg,
-    IconData icondata,
-    VoidCallback? onPressed,
-  ) {
-    return svg != null
-        ? CommonIconButton.svg(
-            svg: svg,
-            buttonType: EverButtonType.ghost,
-            onPressed: onPressed,
-          )
-        : CommonIconButton.icon(
-            icon: icondata,
-            buttonType: EverButtonType.ghost,
-            onPressed: onPressed,
-          );
-  }
-
   // TODO(Odrin): we should add all the icons in the ui kit library
   // and get rid of this method
-  Widget? _getIcon(String? svg, IconData icondata) {
-    final colors = context.themeStyle.colors;
-
+  Widget? _getIcon(
+    String? svg,
+    IconData iconData,
+    EdgeInsets padding,
+  ) {
+    final colors = context.themeStyleV2.colors;
     return Padding(
-      padding: const EdgeInsets.all(DimensSize.d8),
+      padding: padding,
       child: svg != null
           ? CommonIconWidget.svg(
               svg: svg,
-              color: colors.textSecondary,
-              size: DimensSize.d20,
+              color: colors.content3,
+              width: DimensSize.d14,
+              height: DimensSize.d14,
             )
           : CommonIconWidget.icon(
-              icon: icondata,
-              color: colors.textSecondary,
+              icon: iconData,
+              color: colors.content3,
+              width: DimensSize.d14,
+              height: DimensSize.d14,
             ),
+    );
+  }
+}
+
+class _Container extends StatelessWidget {
+  const _Container({
+    required this.child,
+  });
+
+  final Widget child;
+
+  @override
+  Widget build(BuildContext context) {
+    return Material(
+      type: MaterialType.transparency,
+      child: SizedBox(
+        height: DimensSize.d64,
+        child: DecoratedBox(
+          decoration: BoxDecoration(
+            border: Border(
+              bottom: BorderSide(
+                color: context.themeStyleV2.colors.borderAlpha,
+              ),
+            ),
+          ),
+          child: Padding(
+            padding: const EdgeInsets.symmetric(horizontal: DimensSize.d16),
+            child: child,
+          ),
+        ),
+      ),
+    );
+  }
+}
+
+class _ShareButton extends StatelessWidget {
+  const _ShareButton({
+    this.svgUri,
+    this.onPressed,
+  });
+
+  final String? svgUri;
+  final VoidCallback? onPressed;
+
+  @override
+  Widget build(BuildContext context) {
+    // TODO(Odrin): we should add all the icons in the ui kit library
+    // and get rid of this method
+
+    return CommonIconButton(
+      svg: svgUri,
+      icon: svgUri == null ? Icons.share : null,
+      buttonType: EverButtonType.ghost,
+      onPressed: onPressed,
+      width: DimensSizeV2.d20,
+      height: DimensSizeV2.d20,
+      padding: const EdgeInsets.only(
+        left: DimensSizeV2.d10,
+        right: DimensSizeV2.d22,
+      ),
     );
   }
 }

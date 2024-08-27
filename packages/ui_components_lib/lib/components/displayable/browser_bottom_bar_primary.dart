@@ -17,6 +17,7 @@ class BrowserBottomBarPrimary extends StatelessWidget {
     this.onCountIndicatorPressed,
     this.onDotsPressed,
   });
+
   static const height = DimensSize.d64;
 
   final String? backSvg;
@@ -34,57 +35,62 @@ class BrowserBottomBarPrimary extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final colors = context.themeStyle.colors;
+    final colors = context.themeStyleV2.colors;
 
     return ColoredBox(
-      color: colors.backgroundSecondary,
+      color: colors.background1,
       child: SizedBox(
         height: DimensSize.d64,
-        child: Row(
-          children: [
-            Expanded(
-              child: _getIconButton(
-                backSvg,
-                Icons.arrow_back_ios,
-                onBackPressed,
+        child: Padding(
+          padding: const EdgeInsets.symmetric(
+            horizontal: DimensSize.d24,
+          ),
+          child: Row(
+            children: [
+              Expanded(
+                child: _getIconButton(
+                  backSvg,
+                  Icons.arrow_back_ios,
+                  onBackPressed,
+                ),
               ),
-            ),
-            Expanded(
-              child: _getIconButton(
-                forwardSvg,
-                Icons.arrow_forward_ios,
-                onForwardPressed,
+              Expanded(
+                child: _getIconButton(
+                  forwardSvg,
+                  Icons.arrow_forward_ios,
+                  onForwardPressed,
+                ),
               ),
-            ),
-            Expanded(
-              child: _getIconButton(
-                plusSvg,
-                Icons.add_circle,
-                onPlusPressed,
+              Expanded(
+                child: _getIconButton(
+                  plusSvg,
+                  Icons.add_circle,
+                  onPlusPressed,
+                ),
               ),
-            ),
-            Expanded(
-              child: tabCount == 0
-                  ? _getIconButton(
-                      historySvg,
-                      Icons.watch_later_outlined,
-                      onHistoryPressed,
-                    )
-                  : Center(
-                      child: CountIndicator(
-                        count: tabCount,
-                        onPressed: onCountIndicatorPressed,
+              Expanded(
+                child: tabCount == 0
+                    ? _getIconButton(
+                        historySvg,
+                        Icons.watch_later_outlined,
+                        onHistoryPressed,
+                      )
+                    : Center(
+                        child: CountIndicator(
+                          count: tabCount,
+                          onPressed: onCountIndicatorPressed,
+                        ),
                       ),
-                    ),
-            ),
-            Expanded(
-              child: _getIconButton(
-                dotsSvg,
-                Icons.menu,
-                onDotsPressed,
               ),
-            ),
-          ],
+              Expanded(
+                child: _getIconButton(
+                  dotsSvg,
+                  Icons.menu,
+                  onDotsPressed,
+                ),
+              ),
+            ],
+          ),
         ),
       ),
     );

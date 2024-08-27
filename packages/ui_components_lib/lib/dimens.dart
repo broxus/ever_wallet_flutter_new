@@ -15,6 +15,7 @@ class DimensSize {
   static const double d4 = 4;
   static const double d8 = 8;
   static const double d10 = 10;
+  static const double d11 = 11;
   static const double d12 = 12;
   static const double d14 = 14;
   static const double d16 = 16;

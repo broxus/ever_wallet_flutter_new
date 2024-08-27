@@ -4,7 +4,7 @@ import 'package:app/feature/browser/tabs/tab_view.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
-import 'package:ui_components_lib/ui_components_lib.dart';
+import 'package:ui_components_lib/v2/ui_components_lib_v2.dart';
 
 // TODO(nesquikm): We should calculate this value based on the screen size
 const _cardAspectRatio = 0.8;
@@ -26,28 +26,27 @@ class _TabsViewState extends State<TabsView> {
     return Column(
       children: [
         Expanded(
-          child: Padding(
+          child: GridView.count(
+            // ignore: no-magic-number
             padding: const EdgeInsets.only(
-              left: DimensSize.d16,
-              right: DimensSize.d16,
-              top: DimensSize.d24,
+              top: DimensSizeV2.d24,
+              bottom: DimensSizeV2.d16,
+              left: DimensSizeV2.d16,
+              right: DimensSizeV2.d16,
             ),
-            child: GridView.count(
-              // ignore: no-magic-number
-              crossAxisCount: 2,
-              crossAxisSpacing: DimensSize.d8,
-              mainAxisSpacing: DimensSize.d12,
-              childAspectRatio: _cardAspectRatio,
-              children: [
-                for (final tab in tabs)
-                  TabView(
-                    tab: tab,
-                    key: ValueKey(tab.id),
-                    onPressed: () => _onChangeTab(tab.id),
-                    onClosePressed: () => _onCloseTab(tab.id, tabs.length == 1),
-                  ),
-              ],
-            ),
+            crossAxisCount: 2,
+            crossAxisSpacing: DimensSizeV2.d8,
+            mainAxisSpacing: DimensSizeV2.d12,
+            childAspectRatio: _cardAspectRatio,
+            children: [
+              for (final tab in tabs)
+                TabView(
+                  tab: tab,
+                  key: ValueKey(tab.id),
+                  onPressed: () => _onChangeTab(tab.id),
+                  onClosePressed: () => _onCloseTab(tab.id, tabs.length == 1),
+                ),
+            ],
           ),
         ),
         const BrowserBottomMenuTabs(),

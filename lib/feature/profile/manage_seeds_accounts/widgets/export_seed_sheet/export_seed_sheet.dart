@@ -49,7 +49,12 @@ class ExportSeedSheet extends StatelessWidget {
           success: (phrase) {
             Navigator.of(context)
               ..pop()
-              ..push(exportSeedSavePhraseRoute(context, phrase));
+              ..push(
+                exportSeedSavePhraseRoute(
+                  context.themeStyleV2.textStyles.headingLarge,
+                  phrase,
+                ),
+              );
           },
         );
       },

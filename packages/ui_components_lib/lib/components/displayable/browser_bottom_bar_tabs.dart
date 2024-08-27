@@ -1,56 +1,52 @@
 import 'package:flutter/material.dart';
 import 'package:ui_components_lib/ui_components_lib.dart';
+import 'package:ui_components_lib/v2/ui_components_lib_v2.dart';
 
 class BrowserBottomBarTabs extends StatelessWidget {
   const BrowserBottomBarTabs({
-    super.key,
+    required this.closeAllText,
+    required this.doneText,
     this.plusSvg,
-    this.closeAllText,
-    this.doneText,
     this.onPlusPressed,
     this.onCloseAllPressed,
     this.onDonePressed,
+    super.key,
   });
 
   final String? plusSvg;
   final VoidCallback? onPlusPressed;
   final VoidCallback? onCloseAllPressed;
   final VoidCallback? onDonePressed;
-  final String? closeAllText;
-  final String? doneText;
+  final String closeAllText;
+  final String doneText;
 
   @override
   Widget build(BuildContext context) {
-    final colors = context.themeStyle.colors;
+    final colors = context.themeStyleV2.colors;
 
     return ColoredBox(
-      color: colors.backgroundSecondary,
+      color: colors.background1,
       child: SizedBox(
-        height: DimensSize.d64,
+        height: DimensSizeV2.d64,
         child: Row(
+          mainAxisAlignment: MainAxisAlignment.center,
           children: [
             Expanded(
-              child: Center(
-                // TODO(Odrin): this button should be red
-                child: SmallButton.ghost(
-                  text: closeAllText ?? 'Close All',
-                  onPressed: onCloseAllPressed,
-                ),
+              child: _TextButton(
+                title: closeAllText,
+                onPressed: onCloseAllPressed,
+                color: colors.contentNegative,
               ),
             ),
-            Expanded(
-              child: _getIconButton(
-                plusSvg,
-                Icons.add_circle,
-                onPlusPressed,
-              ),
+            _PlusButton(
+              svgUri: plusSvg,
+              iconData: Icons.add_circle,
+              onPressed: onPlusPressed,
             ),
             Expanded(
-              child: Center(
-                child: SmallButton.ghost(
-                  text: doneText ?? 'Done',
-                  onPressed: onDonePressed,
-                ),
+              child: _TextButton(
+                title: doneText,
+                onPressed: onDonePressed,
               ),
             ),
           ],
@@ -58,29 +54,69 @@ class BrowserBottomBarTabs extends StatelessWidget {
       ),
     );
   }
+}
 
-  // TODO(Odrin): we should add all the icons in the ui kit library
-  // and get rid of this method
-  Widget _getIconButton(
-    String? svg,
-    IconData icondata,
-    VoidCallback? onPressed,
-  ) {
+class _PlusButton extends StatelessWidget {
+  const _PlusButton({
+    required this.iconData,
+    required this.onPressed,
+    this.svgUri,
+  });
+
+  final String? svgUri;
+  final IconData iconData;
+  final VoidCallback? onPressed;
+
+  @override
+  Widget build(BuildContext context) {
     return Padding(
       padding: const EdgeInsets.all(DimensSize.d8),
-      child: svg != null
+      child: svgUri != null
           ? CommonIconButton.svg(
               size: CommonIconButtonSize.small,
-              svg: svg,
+              svg: svgUri!,
               buttonType: EverButtonType.ghost,
               onPressed: onPressed,
             )
           : CommonIconButton.icon(
               size: CommonIconButtonSize.small,
-              icon: icondata,
+              icon: iconData,
               buttonType: EverButtonType.ghost,
               onPressed: onPressed,
             ),
+    );
+  }
+}
+
+class _TextButton extends StatelessWidget {
+  const _TextButton({
+    required this.title,
+    this.onPressed,
+    this.color,
+  });
+
+  final String title;
+  final VoidCallback? onPressed;
+  final Color? color;
+
+  @override
+  Widget build(BuildContext context) {
+    final themeStyle = context.themeStyleV2;
+
+    return GestureDetector(
+      onTap: onPressed,
+      behavior: HitTestBehavior.opaque,
+      child: Center(
+        child: Text(
+          title,
+          // TODO(knightforce): check style from designer
+          style: themeStyle.textStyles.labelSmall.copyWith(
+            fontWeight: FontWeight.w600,
+            color: color,
+            height: 1,
+          ),
+        ),
+      ),
     );
   }
 }

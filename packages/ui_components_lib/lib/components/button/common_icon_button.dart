@@ -17,6 +17,9 @@ class CommonIconButton extends StatefulWidget {
     this.icon,
     this.svg,
     this.size,
+    this.width,
+    this.height,
+    this.padding,
     this.color,
     this.backgroundColor,
     this.isLoading = false,
@@ -34,6 +37,9 @@ class CommonIconButton extends StatefulWidget {
     FocusNode? focusNode,
     Key? key,
     CommonIconButtonSize? size,
+    double? width,
+    double? height,
+    EdgeInsets? padding,
     Color? color,
     bool? isLoading,
   }) =>
@@ -45,6 +51,9 @@ class CommonIconButton extends StatefulWidget {
         key: key,
         svg: svg,
         size: size,
+        width: width,
+        height: height,
+        padding: padding,
         color: color,
         isLoading: isLoading ?? false,
       );
@@ -58,6 +67,9 @@ class CommonIconButton extends StatefulWidget {
     FocusNode? focusNode,
     Key? key,
     CommonIconButtonSize? size,
+    double? width,
+    double? height,
+    EdgeInsets? padding,
     Color? color,
     bool? isLoading,
   }) =>
@@ -69,6 +81,9 @@ class CommonIconButton extends StatefulWidget {
         key: key,
         icon: icon,
         size: size,
+        width: width,
+        height: height,
+        padding: padding,
         color: color,
         isLoading: isLoading ?? false,
       );
@@ -94,6 +109,10 @@ class CommonIconButton extends StatefulWidget {
   /// Size of button, default is [CommonIconButtonSize.medium]
   final CommonIconButtonSize? size;
 
+  final double? width;
+
+  final double? height;
+
   /// Color of icon, if not specified, then color from [EverButtonStyle]
   /// is used.
   final Color? color;
@@ -105,6 +124,8 @@ class CommonIconButton extends StatefulWidget {
   /// If circular loading indicator should be displayed
   final bool isLoading;
 
+  final EdgeInsets? padding;
+
   @override
   State<CommonIconButton> createState() => _CommonIconButtonState();
 }
@@ -113,6 +134,9 @@ class _CommonIconButtonState extends State<CommonIconButton> {
   bool isPressed = false;
 
   EdgeInsets get _innerPadding {
+    if (widget.padding != null) {
+      return widget.padding!;
+    }
     final size = (widget.size ?? CommonIconButtonSize.medium).value;
 
     // ignore: no-magic-number

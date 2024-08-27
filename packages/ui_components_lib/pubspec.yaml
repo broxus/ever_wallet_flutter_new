@@ -18,7 +18,7 @@ dependencies:
   lucide_icons_flutter: ^1.1.2
   modal_bottom_sheet: ^3.0.0
   money2: ^5.2.1
-#  money2: ^4.0.0
+  #  money2: ^4.0.0
   money2_improver:
     git:
       url: https://github.com/broxus/money2_improver
@@ -39,6 +39,9 @@ dev_dependencies:
 flutter:
   uses-material-design: true
   generate: true
+
+  assets:
+    - assets/images/
 
   fonts:
     - family: Inter

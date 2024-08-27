@@ -17,6 +17,8 @@ class CommonIconWidget extends StatelessWidget {
     this.icon,
     this.svg,
     this.size,
+    this.width,
+    this.height,
     super.key,
     this.color,
     this.avoidContentColor = false,
@@ -30,12 +32,16 @@ class CommonIconWidget extends StatelessWidget {
     required IconData icon,
     Color? color,
     double? size,
+    double? width,
+    double? height,
     bool avoidContentColor = false,
     Key? key,
   }) =>
       CommonIconWidget(
         icon: icon,
         size: size,
+        width: width,
+        height: height,
         key: key,
         color: color,
         avoidContentColor: avoidContentColor,
@@ -46,12 +52,16 @@ class CommonIconWidget extends StatelessWidget {
     required String svg,
     Color? color,
     double? size,
+    double? width,
+    double? height,
     bool avoidContentColor = false,
     Key? key,
   }) =>
       CommonIconWidget(
         svg: svg,
         size: size,
+        width: width,
+        height: height,
         key: key,
         color: color,
         avoidContentColor: avoidContentColor,
@@ -65,6 +75,10 @@ class CommonIconWidget extends StatelessWidget {
 
   /// Size for image
   final double? size;
+
+  final double? width;
+
+  final double? height;
 
   /// Color of image, if not specified then color of EverButtonStyleProvider
   /// is used, if it's absent too, then icon renders its own color.
@@ -95,6 +109,8 @@ class CommonIconWidget extends StatelessWidget {
             ? null
             : ui.ColorFilter.mode(color, ui.BlendMode.srcIn),
         theme: SvgTheme(fontSize: size ?? defaultCommonIconSize),
+        width: width,
+        height: height,
       );
     }
 

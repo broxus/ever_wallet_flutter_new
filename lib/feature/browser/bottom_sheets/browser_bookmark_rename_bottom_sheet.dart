@@ -6,13 +6,22 @@ import 'package:app/generated/generated.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:ui_components_lib/ui_components_lib.dart';
+import 'package:ui_components_lib/v2/ui_components_lib_v2.dart';
 
 /// Helper function to show [BrowserBookmarkRenameSheet].
 ModalRoute<void> showBrowserBookmarkRenameSheet({
   required BrowserBookmarkItem item,
+  TextStyle? titleTextStyle,
 }) {
   return commonBottomSheetRoute(
     title: LocaleKeys.browserBookmarkRenameEnterName.tr(),
+    titleTextStyle: titleTextStyle,
+    titleMargin: const EdgeInsets.only(
+      top: DimensSizeV2.d32,
+      bottom: DimensSizeV2.d24,
+      left: DimensSizeV2.d16,
+      right: DimensSizeV2.d16,
+    ),
     body: (_, __) => BrowserBookmarkRenameSheet(
       item: item,
     ),
@@ -65,17 +74,17 @@ class _BrowserBookmarkRenameSheetState
         builder: (context) {
           return SeparatedColumn(
             mainAxisSize: MainAxisSize.min,
-            separatorSize: DimensSize.d24,
+            separatorSize: DimensSizeV2.d24,
             children: [
-              CommonInput(
-                controller: _nameController,
-                titleText: LocaleKeys.browserBookmarkRenameName.tr(),
-                onSubmitted: (_) => _onRename(context),
+              PrimaryTextField(
+                textEditingController: _nameController,
+                hintText: LocaleKeys.browserBookmarkRenameName.tr(),
+                onSubmit: (_) => _onRename(context),
               ),
-              CommonButton.primary(
-                fillWidth: true,
+              PrimaryButton(
+                buttonShape: ButtonShape.pill,
+                title: LocaleKeys.browserBookmarkRenameWord.tr(),
                 onPressed: _canRename() ? () => _onRename(context) : null,
-                text: LocaleKeys.browserBookmarkRenameWord.tr(),
               ),
             ],
           );

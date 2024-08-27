@@ -5,14 +5,15 @@ import 'package:app/app/router/router.dart';
 import 'package:app/data/models/models.dart';
 import 'package:app/feature/browser/browser.dart';
 import 'package:app/feature/browser/browser_tabs_view/predefined_items.dart';
+import 'package:app/feature/browser/widgets/browser_resource_Item.dart';
 import 'package:app/generated/generated.dart';
 import 'package:app/utils/utils.dart';
-import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
 import 'package:ui_components_lib/ui_components_lib.dart';
+import 'package:ui_components_lib/v2/ui_components_lib_v2.dart';
 
 /// Item count limit for each section
 const _itemCountLimit = 6;
@@ -42,6 +43,8 @@ class _BrowserStartViewState extends State<BrowserStartView> {
   final _globalKey = GlobalKey();
   DateTime? _lastScreenshotTime;
 
+  ThemeStyleV2 get _themeStyleV2 => context.themeStyleV2;
+
   @override
   void dispose() {
     _cardController.dispose();
@@ -50,7 +53,7 @@ class _BrowserStartViewState extends State<BrowserStartView> {
 
   @override
   Widget build(BuildContext context) {
-    final colors = context.themeStyle.colors;
+    final colors = _themeStyleV2.colors;
     final bookmarkItems =
         context.watch<BrowserBookmarksBloc>().getSortedItems();
     final searchText = context.watch<BrowserTabsBloc>().state.searchText;
@@ -81,9 +84,19 @@ class _BrowserStartViewState extends State<BrowserStartView> {
     return RepaintBoundary(
       key: _globalKey,
       child: ColoredBox(
-        color: colors.appBackground,
+        color: colors.background0,
         child: CustomScrollView(
-          slivers: slivers,
+          slivers: [
+            ...slivers,
+            const SliverPadding(
+              padding: EdgeInsets.only(
+                bottom: DimensSizeV2.d16,
+              ),
+            ),
+            const SliverToBoxAdapter(
+              child: _KeyboardPadding(),
+            ),
+          ],
         ),
       ),
     );
@@ -141,7 +154,7 @@ class _BrowserStartViewState extends State<BrowserStartView> {
 
     return [
       SliverPadding(
-        padding: const EdgeInsets.symmetric(vertical: DimensSize.d16),
+        padding: const EdgeInsets.symmetric(vertical: DimensSize.d20),
         sliver: SliverList.builder(
           itemCount: filteredItems.length,
           itemBuilder: (_, index) => _searchResultItemBuilder(
@@ -153,44 +166,29 @@ class _BrowserStartViewState extends State<BrowserStartView> {
   }
 
   Widget _searchResultItemBuilder(BrowserBookmarkItem item) {
-    final faviconUrl =
-        context.watch<BrowserFaviconsBloc>().getFaviconUrl(item.url) ?? '';
+    final faviconUrl = _getFaviconUrl(item.url);
 
     return Padding(
-      key: ValueKey(item.id),
-      padding: const EdgeInsets.symmetric(
-        vertical: DimensSize.d4,
-        horizontal: DimensSize.d16,
+      padding: const EdgeInsets.only(
+        bottom: DimensSizeV2.d8,
+        left: DimensSizeV2.d16,
+        right: DimensSizeV2.d16,
       ),
-      child: SeparatedRow(
-        children: [
-          Expanded(
-            child: ShapedContainerColumn(
-              mainAxisSize: MainAxisSize.min,
-              margin: EdgeInsets.zero,
-              children: [
-                CommonListTile(
-                  titleText: item.title,
-                  subtitleText: item.url.toString(),
-                  leading: CachedNetworkImage(
-                    height: DimensSize.d40,
-                    width: DimensSize.d40,
-                    imageUrl: faviconUrl,
-                    placeholder: (_, __) =>
-                        const CommonCircularProgressIndicator(),
-                    errorWidget: (_, __, ___) => CommonIconWidget.svg(
-                      svg: Assets.images.web.path,
-                    ),
-                  ),
-                  trailing: CommonButtonIconWidget.svg(
-                    svg: Assets.images.caretRight.path,
-                  ),
-                  onPressed: () => _onItemPressed(item),
-                ),
-              ],
-            ),
-          ),
-        ],
+      child: BrowserResourceItem(
+        onPressed: () => _onItemPressed(item),
+        title: item.title,
+        faviconUrl: faviconUrl,
+        subTitle: faviconUrl,
+        trailing: SvgPicture.asset(
+          Assets.images.caretRight.path,
+          width: DimensSizeV2.d20,
+          height: DimensSizeV2.d20,
+          colorFilter: context.themeStyleV2.colors.content0.colorFilter,
+        ),
+        padding: const EdgeInsets.symmetric(
+          vertical: DimensSizeV2.d8,
+          horizontal: DimensSizeV2.d16,
+        ),
       ),
     );
   }
@@ -244,7 +242,7 @@ class _BrowserStartViewState extends State<BrowserStartView> {
             crossAxisCount: 2,
             mainAxisSpacing: DimensSize.d8,
             crossAxisSpacing: DimensSize.d8,
-            mainAxisExtent: DimensSize.d92,
+            mainAxisExtent: DimensSize.d56,
           ),
           itemBuilder: (_, index) => _itemBuilder(
             sortedLimitedItems[index],
@@ -260,19 +258,21 @@ class _BrowserStartViewState extends State<BrowserStartView> {
     String? buttonText,
     VoidCallback? buttonOnPressed,
   }) {
+    final textStyles = _themeStyleV2.textStyles;
+
     return SliverToBoxAdapter(
       child: Padding(
         padding: const EdgeInsets.only(
           left: DimensSize.d16,
-          top: DimensSize.d8,
-          bottom: DimensSize.d8,
+          top: DimensSize.d24,
+          bottom: DimensSize.d20,
         ),
         child: Row(
           children: [
             Expanded(
               child: Text(
                 title,
-                style: StyleRes.primaryBold,
+                style: textStyles.headingLarge,
               ),
             ),
             if (buttonText != null)
@@ -287,37 +287,15 @@ class _BrowserStartViewState extends State<BrowserStartView> {
   }
 
   Widget _itemBuilder(BrowserBookmarkItem item) {
-    final faviconUrl =
-        context.watch<BrowserFaviconsBloc>().getFaviconUrl(item.url) ?? '';
+    final faviconUrl = _getFaviconUrl(item.url);
 
-    return SeparatedRow(
+    return BrowserResourceItem(
       key: ValueKey(item.id),
-      children: [
-        Expanded(
-          child: ShapedContainerColumn(
-            mainAxisSize: MainAxisSize.min,
-            margin: EdgeInsets.zero,
-            children: [
-              CommonListTile(
-                titleText: item.title,
-                subtitleText: item.url.toString(),
-                leading: CachedNetworkImage(
-                  height: DimensSize.d40,
-                  width: DimensSize.d40,
-                  imageUrl: faviconUrl,
-                  placeholder: (_, __) =>
-                      const CommonCircularProgressIndicator(),
-                  errorWidget: (_, __, ___) => CommonIconWidget.svg(
-                    svg: Assets.images.web.path,
-                  ),
-                ),
-                onPressed: () => _onItemPressed(item),
-                onLongPressed: () => _onItemLongPressed(item),
-              ),
-            ],
-          ),
-        ),
-      ],
+      onPressed: () => _onItemPressed(item),
+      onLongPress: () => _onItemLongPressed(item),
+      title: item.title,
+      subTitle: faviconUrl,
+      faviconUrl: faviconUrl,
     );
   }
 
@@ -351,9 +329,17 @@ class _BrowserStartViewState extends State<BrowserStartView> {
           child: SizedBox(
             height: _cardHeight,
             child: PageView.builder(
+              padEnds: false,
               controller: _cardController,
-              itemBuilder: (_, index) =>
-                  _cardItemBuilder(_predefinedCards[index]),
+              itemBuilder: (_, index) {
+                return Padding(
+                  padding: EdgeInsets.only(
+                    left: index == 0 ? DimensSizeV2.d16 : 0,
+                    right: DimensSizeV2.d12,
+                  ),
+                  child: _cardItemBuilder(_predefinedCards[index]),
+                );
+              },
               itemCount: _predefinedCards.length,
             ),
           ),
@@ -363,51 +349,49 @@ class _BrowserStartViewState extends State<BrowserStartView> {
   }
 
   Widget _cardItemBuilder(BrowserCard card) {
-    final colors = context.themeStyle.colors;
+    final colors = _themeStyleV2.colors;
+    final textStyles = _themeStyleV2.textStyles;
 
-    return Padding(
-      padding: const EdgeInsets.symmetric(
-        horizontal: DimensSize.d8,
-      ),
-      child: InkWell(
-        onTap: () => _onCardPressed(card),
-        child: ShapedContainerRow(
-          color: colors.blue,
-          mainAxisSize: MainAxisSize.min,
-          margin: EdgeInsets.zero,
-          padding: EdgeInsets.zero,
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            Expanded(
-              child: Padding(
-                padding: const EdgeInsets.symmetric(
-                  horizontal: DimensSize.d16,
-                  vertical: DimensSize.d20,
-                ),
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    Text(
-                      card.title,
-                      style: StyleRes.primaryBold.copyWith(
-                        color: colors.textContrast,
-                      ),
+    return InkWell(
+      onTap: () => _onCardPressed(card),
+      child: ShapedContainerRow(
+        color: colors.backgroundAccent,
+        mainAxisSize: MainAxisSize.min,
+        margin: EdgeInsets.zero,
+        padding: EdgeInsets.zero,
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          Expanded(
+            child: Padding(
+              padding: const EdgeInsets.only(
+                top: DimensSize.d20,
+                bottom: DimensSize.d20,
+                left: DimensSize.d16,
+              ),
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                mainAxisSize: MainAxisSize.min,
+                children: [
+                  Text(
+                    card.title,
+                    style: textStyles.labelMedium.copyWith(
+                      height: 24 / 16,
                     ),
-                    Text(
-                      card.description,
-                      style: StyleRes.addRegular.copyWith(
-                        color: colors.textContrast,
-                      ),
+                  ),
+                  Text(
+                    card.description,
+                    style: textStyles.labelXSmall.copyWith(
+                      height: 15.6 / 12,
                     ),
-                  ],
-                ),
+                  ),
+                ],
               ),
             ),
-            CommonIconWidget.svg(
-              svg: card.imagePath,
-            ),
-          ],
-        ),
+          ),
+          CommonIconWidget.svg(
+            svg: card.imagePath,
+          ),
+        ],
       ),
     );
   }
@@ -428,5 +412,21 @@ class _BrowserStartViewState extends State<BrowserStartView> {
     context.read<BrowserTabsBloc>().add(
           BrowserTabsEvent.setUrl(id: currentTabId, uri: url),
         );
+  }
+
+  String _getFaviconUrl(Uri url) {
+    return context.watch<BrowserFaviconsBloc>().getFaviconUrl(url) ?? '';
+  }
+}
+
+class _KeyboardPadding extends StatelessWidget {
+  const _KeyboardPadding();
+
+  @override
+  Widget build(BuildContext context) {
+    return AnimatedPadding(
+      padding: MediaQuery.of(context).viewInsets,
+      duration: const Duration(milliseconds: 250),
+    );
   }
 }
