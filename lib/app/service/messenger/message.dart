@@ -1,8 +1,10 @@
 import 'dart:convert';
-import 'dart:ui';
 
 import 'package:crypto/crypto.dart';
+import 'package:flutter/material.dart';
+import 'package:lucide_icons_flutter/lucide_icons.dart';
 import 'package:ui_components_lib/ui_components_lib.dart';
+import 'package:ui_components_lib/v2/ui_components_lib_v2.dart';
 
 enum MessageType {
   /// Just a regular message
@@ -86,4 +88,44 @@ class Message {
   final Duration debounceTime;
 
   final String hashString;
+
+  Toast get toastByMessage {
+    return Toast(
+      type: _toastType,
+      description: message,
+      icon: _icon,
+      actions: [
+        if (actionText != null)
+          FloatButton(
+            buttonShape: ButtonShape.rectangle,
+            buttonSize: ButtonSize.small,
+            title: actionText,
+            onPressed: onAction,
+            backgroundBlur: 0,
+          ),
+      ],
+    );
+  }
+
+  ToastType get _toastType {
+    switch (type.snackbarType) {
+      case SnackbarType.info:
+        return ToastType.normal;
+      case SnackbarType.error:
+        return ToastType.error;
+      case SnackbarType.successful:
+        return ToastType.success;
+    }
+  }
+
+  IconData? get _icon {
+    switch (type.snackbarType) {
+      case SnackbarType.info:
+        return null;
+      case SnackbarType.error:
+        return LucideIcons.triangleAlert;
+      case SnackbarType.successful:
+        return LucideIcons.check;
+    }
+  }
 }

@@ -3,6 +3,7 @@ import 'dart:math';
 
 import 'package:flutter/material.dart';
 import 'package:ui_components_lib/ui_components_lib.dart';
+import 'package:ui_components_lib/v2/ui_components_lib_v2.dart';
 
 /// Page with read only controls
 class ReadOnlyStory extends StatefulWidget {
@@ -54,8 +55,10 @@ class _ReadOnlyStoryState extends State<ReadOnlyStory> {
                 onPressed: () {
                   showSnackbar(
                     context: context,
-                    type: SnackbarType.info,
-                    message: 'Pressed',
+                    toast: const Toast(
+                      type: ToastType.normal,
+                      description: 'Pressed',
+                    ),
                     duration: const Duration(seconds: 3),
                   );
                 },
@@ -66,8 +69,10 @@ class _ReadOnlyStoryState extends State<ReadOnlyStory> {
                 onPressed: () {
                   showSnackbar(
                     context: context,
-                    type: SnackbarType.info,
-                    message: 'Pressed',
+                    toast: const Toast(
+                      type: ToastType.normal,
+                      description: 'Pressed',
+                    ),
                     duration: const Duration(seconds: 3),
                   );
                 },
