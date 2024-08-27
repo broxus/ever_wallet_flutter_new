@@ -9,6 +9,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:nekoton_repository/nekoton_repository.dart';
 import 'package:ui_components_lib/ui_components_lib.dart';
+import 'package:ui_components_lib/v2/ui_components_lib_v2.dart';
 
 /// Tab from <WalletBottomPanel> that allows display list of assets(tokens)
 /// related to [account] and manage them.
@@ -22,44 +23,41 @@ class AccountAssetsTab extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return SliverPadding(
-      padding: const EdgeInsets.symmetric(horizontal: DimensSize.d16),
-      sliver: BlocProvider<AccountAssetTabCubit>(
-        create: (_) => AccountAssetTabCubit(
-          account,
-          inject<AssetsService>(),
-        ),
-        child: BlocBuilder<AccountAssetTabCubit, AccountAssetTabState>(
-          builder: (context, state) {
-            final assets = state.when(
-              empty: () => <Widget>[],
-              accounts: (tonWallet, contracts) {
-                return <Widget>[
-                  TonWalletAssetWidget(tonWallet: tonWallet),
-                  ...?contracts?.map(
-                    (e) => TokenWalletAssetWidget(
-                      key: ValueKey(e.address),
-                      asset: e,
-                      owner: tonWallet.address,
-                    ),
+    return BlocProvider<AccountAssetTabCubit>(
+      create: (_) => AccountAssetTabCubit(
+        account,
+        inject<AssetsService>(),
+      ),
+      child: BlocBuilder<AccountAssetTabCubit, AccountAssetTabState>(
+        builder: (context, state) {
+          final assets = state.when(
+            empty: () => <Widget>[],
+            accounts: (tonWallet, contracts) {
+              return <Widget>[
+                TonWalletAssetWidget(tonWallet: tonWallet),
+                ...?contracts?.map(
+                  (e) => TokenWalletAssetWidget(
+                    key: ValueKey(e.address),
+                    asset: e,
+                    owner: tonWallet.address,
                   ),
-                ];
-              },
-            );
+                ),
+              ];
+            },
+          );
 
-            return SliverList.separated(
-              itemCount: assets.length + 1,
-              separatorBuilder: (context, index) => index == assets.length - 1
-                  ? const SizedBox(height: DimensSize.d16)
-                  : const Padding(
-                      padding: EdgeInsets.symmetric(vertical: DimensSize.d8),
-                      child: CommonDivider(),
-                    ),
-              itemBuilder: (context, index) {
-                if (index == assets.length) {
-                  return CommonButton.primary(
-                    fillWidth: true,
-                    text: LocaleKeys.manageAssets.tr(),
+          return ListView.separated(
+            shrinkWrap: true,
+            physics: const NeverScrollableScrollPhysics(),
+            itemCount: assets.length + 1,
+            separatorBuilder: (_, __) => const SizedBox(height: DimensSize.d24),
+            itemBuilder: (context, index) {
+              if (index == assets.length) {
+                return Padding(
+                  padding: const EdgeInsets.only(top: DimensSizeV2.d16),
+                  child: PrimaryButton(
+                    buttonShape: ButtonShape.pill,
+                    title: LocaleKeys.manageAssets.tr(),
                     onPressed: () => context.goFurther(
                       AppRoute.selectNewAsset.pathWithData(
                         pathParameters: {
@@ -68,14 +66,14 @@ class AccountAssetsTab extends StatelessWidget {
                         },
                       ),
                     ),
-                  );
-                }
+                  ),
+                );
+              }
 
-                return assets[index];
-              },
-            );
-          },
-        ),
+              return assets[index];
+            },
+          );
+        },
       ),
     );
   }

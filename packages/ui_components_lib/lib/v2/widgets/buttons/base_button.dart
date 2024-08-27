@@ -106,7 +106,7 @@ abstract class BaseButton extends StatelessWidget {
                   ? Row(
                       mainAxisAlignment: MainAxisAlignment.center,
                       children: [
-                        _ProgressIndicatorWidget(
+                        ProgressIndicatorWidget(
                           color: style.iconColor,
                           size: _iconSize,
                         ),
@@ -311,27 +311,5 @@ abstract class BaseButton extends StatelessWidget {
       case ButtonSize.small:
         return styles.labelSmall;
     }
-  }
-}
-
-class _ProgressIndicatorWidget extends StatelessWidget {
-  const _ProgressIndicatorWidget({
-    required this.color,
-    required this.size,
-  });
-
-  final Color color;
-  final double size;
-
-  @override
-  Widget build(BuildContext context) {
-    return SizedBox(
-      width: size,
-      height: size,
-      child: CircularProgressIndicator(
-        strokeWidth: 1.5,
-        color: color.withOpacity(OpacV2.opac50),
-      ),
-    );
   }
 }
