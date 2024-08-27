@@ -88,6 +88,11 @@ class _BrowserStartViewState extends State<BrowserStartView> {
         child: CustomScrollView(
           slivers: [
             ...slivers,
+            const SliverPadding(
+              padding: EdgeInsets.only(
+                bottom: DimensSizeV2.d16,
+              ),
+            ),
             const SliverToBoxAdapter(
               child: _KeyboardPadding(),
             ),
