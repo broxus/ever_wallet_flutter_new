@@ -1,7 +1,9 @@
 import 'dart:ui' as ui;
 
 import 'package:flutter/material.dart';
+import 'package:ui_components_lib/res/images.dart';
 import 'package:ui_components_lib/ui_components_lib.dart';
+import 'package:ui_components_lib/v2/dimens_v2.dart';
 
 /// {@template common_checkbox_input}
 ///
@@ -98,67 +100,24 @@ class CommonCheckbox extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return SizedBox(
-      width: DimensSize.d20,
-      height: DimensSize.d20,
-      child: CustomPaint(
-        // This is strange to use painter, but we cant import svg's here
-        painter: _CheckboxPainter(
-          color: color,
-          checked: checked,
-        ),
-      ),
-    );
+    return checked
+        ? CommonIconWidget.svg(
+            svg: AssetsImages.checkedUri,
+            size: DimensSizeV2.d20,
+          )
+        : SizedBox(
+            width: DimensSizeV2.d20,
+            height: DimensSizeV2.d20,
+            child: DecoratedBox(
+              decoration: BoxDecoration(
+                border: Border.all(
+                  color: context.themeStyleV2.colors.borderAlpha,
+                ),
+                borderRadius: BorderRadius.circular(
+                  DimensRadiusV2.radius6,
+                ),
+              ),
+            ),
+          );
   }
-}
-
-class _CheckboxPainter extends CustomPainter {
-  _CheckboxPainter({
-    required this.checked,
-    required this.color,
-  });
-
-  final bool checked;
-  final Color color;
-
-  @override
-  void paint(Canvas canvas, Size size) {
-    final width = size.width;
-    final height = size.height;
-
-    canvas
-      ..saveLayer(Offset.zero & size, Paint())
-      ..drawRRect(
-        ui.RRect.fromLTRBR(
-          0,
-          0,
-          width,
-          height,
-          const Radius.circular(DimensRadius.small),
-        ),
-        Paint()
-          ..color = color
-          ..style = checked ? PaintingStyle.fill : PaintingStyle.stroke,
-      );
-    if (checked) {
-      final checkPath = Path()
-        ..moveTo(width * 0.3, height * 0.5)
-        ..lineTo(width * 0.45, height * 0.65)
-        ..lineTo(width * 0.7, height * 0.35);
-      canvas.drawPath(
-        checkPath,
-        Paint()
-          ..style = PaintingStyle.stroke
-          ..blendMode = BlendMode.clear
-          ..strokeWidth = DimensStroke.medium
-          ..strokeJoin = StrokeJoin.round
-          ..strokeCap = StrokeCap.round,
-      );
-    }
-    canvas.restore();
-  }
-
-  @override
-  bool shouldRepaint(covariant _CheckboxPainter oldDelegate) =>
-      oldDelegate.checked != checked || oldDelegate.color != color;
 }

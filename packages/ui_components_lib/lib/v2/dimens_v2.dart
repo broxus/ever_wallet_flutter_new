@@ -2,6 +2,7 @@ class DimensSizeV2 {
   const DimensSizeV2._();
 
   static const double d0 = 0;
+  static const double d1 = 1;
   static const double d2 = 2;
   static const double d3 = 3;
   static const double d4 = 4;
@@ -43,6 +44,7 @@ class DimensStrokeV2 {
 class DimensRadiusV2 {
   const DimensRadiusV2._();
 
+  static const double radius6 = 6;
   static const double radius8 = 8;
   static const double radius12 = 12;
   static const double radius16 = 16;

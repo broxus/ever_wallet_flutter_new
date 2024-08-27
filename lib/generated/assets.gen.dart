@@ -390,6 +390,7 @@ class $AssetsImagesGen {
         everVector,
         exit,
         export,
+        export2,
         exportFill,
         faceId,
         finger,

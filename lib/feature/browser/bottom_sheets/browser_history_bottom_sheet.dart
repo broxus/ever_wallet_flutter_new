@@ -1,6 +1,8 @@
 import 'package:app/generated/generated.dart';
 import 'package:flutter/material.dart';
 import 'package:ui_components_lib/ui_components_lib.dart';
+import 'package:ui_components_lib/v2/dimens_v2.dart';
+import 'package:ui_components_lib/v2/ui_components_lib_v2.dart';
 
 typedef OnClearPressedCallback = void Function({
   required bool clearHistory,
@@ -16,10 +18,17 @@ Future<void> showBrowserHistorySheet({
 }) {
   return showCommonBottomSheet(
     title: LocaleKeys.browserHistoryClear.tr(),
+    titleTextStyle: context.themeStyleV2.textStyles.headingLarge,
     context: context,
     body: (_, __) => BrowserHistorySheet(
       clearHistoryEnabled: clearHistoryEnabled,
       onClearPressed: onClearPressed,
+    ),
+    titleMargin: const EdgeInsets.only(
+      top: DimensSizeV2.d32,
+      bottom: DimensSizeV2.d12,
+      left: DimensSizeV2.d16,
+      right: DimensSizeV2.d16,
     ),
   );
 }
@@ -49,66 +58,47 @@ class _BrowserHistorySheetState extends State<BrowserHistorySheet> {
         _clearCookies ||
         _clearCache;
 
-    return SeparatedColumn(
+    return Column(
       mainAxisSize: MainAxisSize.min,
-      separator: const CommonDivider(),
+      crossAxisAlignment: CrossAxisAlignment.stretch,
       children: [
-        CommonListTile(
+        _Item(
           titleText: LocaleKeys.browserHistory.tr(),
           subtitleText: LocaleKeys.browserClearHistory.tr(),
-          leading: CommonBackgroundedIconWidget.svg(
-            svg: Assets.images.historyFill.path,
-          ),
-          trailing: CommonCheckboxInput(
-            checked: _clearHistory && widget.clearHistoryEnabled,
-            onChanged: widget.clearHistoryEnabled
-                ? (value) => setState(
-                      () => _clearHistory = value,
-                    )
-                : null,
-          ),
+          svgUri: Assets.images.historyFill.path,
+          isSelected: _clearHistory && widget.clearHistoryEnabled,
           onPressed: widget.clearHistoryEnabled
               ? () {
                   setState(() => _clearHistory = !_clearHistory);
                 }
               : null,
         ),
-        CommonListTile(
+        const _Divider(),
+        _Item(
           titleText: LocaleKeys.browserClearCookies.tr(),
           subtitleText: LocaleKeys.browserClearCookiesDescription.tr(),
-          leading: CommonBackgroundedIconWidget.svg(
-            svg: Assets.images.key.path,
-          ),
-          trailing: CommonCheckboxInput(
-            checked: _clearCookies,
-            onChanged: (value) {
-              setState(() => _clearCookies = value);
-            },
-          ),
+          svgUri: Assets.images.key.path,
+          isSelected: _clearCookies,
           onPressed: () {
             setState(() => _clearCookies = !_clearCookies);
           },
         ),
-        CommonListTile(
+        const _Divider(),
+        _Item(
           titleText: LocaleKeys.browserClearCache.tr(),
-          leading: CommonBackgroundedIconWidget.svg(
-            svg: Assets.images.camera.path,
-          ),
-          trailing: CommonCheckboxInput(
-            checked: _clearCache,
-            onChanged: (value) {
-              setState(() => _clearCache = value);
-            },
-          ),
+          svgUri: Assets.images.camera.path,
+          isSelected: _clearCache,
           onPressed: () {
             setState(() => _clearCache = !_clearCache);
           },
         ),
-        CommonButton.primary(
-          text: LocaleKeys.browserHistoryClear.tr(),
+        const SizedBox(height: DimensSizeV2.d24),
+        PrimaryButton(
+          buttonShape: ButtonShape.pill,
+          title: LocaleKeys.browserHistoryClear.tr(),
           onPressed: clearEnabled ? _onClearPressed : null,
-          fillWidth: true,
         ),
+        const SizedBox(height: DimensSizeV2.d16),
       ],
     );
   }
@@ -120,5 +110,55 @@ class _BrowserHistorySheetState extends State<BrowserHistorySheet> {
       clearCache: _clearCache,
     );
     Navigator.of(context).pop();
+  }
+}
+
+class _Item extends StatelessWidget {
+  const _Item({
+    required this.titleText,
+    required this.svgUri,
+    this.subtitleText,
+    this.onPressed,
+    this.isSelected = false,
+  });
+
+  final String titleText;
+  final String? subtitleText;
+  final String svgUri;
+  final VoidCallback? onPressed;
+  final bool isSelected;
+
+  @override
+  Widget build(BuildContext context) {
+    final color = context.themeStyleV2.colors;
+
+    return CommonListTile(
+      titleText: titleText,
+      subtitleText: subtitleText,
+      padding: EdgeInsets.zero,
+      height: null,
+      leading: CommonBackgroundedIconWidget.svg(
+        svg: svgUri,
+        backgroundColor: color.backgroundAlpha,
+        iconColor: color.content0,
+      ),
+      trailing: CommonCheckbox(
+        checked: isSelected,
+        color: Colors.white,
+      ),
+      onPressed: onPressed,
+    );
+  }
+}
+
+class _Divider extends StatelessWidget {
+  const _Divider();
+
+  @override
+  Widget build(BuildContext context) {
+    return const Padding(
+      padding: EdgeInsets.symmetric(vertical: DimensSizeV2.d16),
+      child: CommonDivider(),
+    );
   }
 }

@@ -27,6 +27,7 @@ Future<T?> showCommonBottomSheet<T>({
   String? title,
   String? subtitle,
   EdgeInsets padding = const EdgeInsets.symmetric(horizontal: DimensSizeV2.d16),
+  EdgeInsets? titleMargin,
   bool expand = false,
   bool dismissible = true,
   bool wrapIntoAnimatedSize = true,
@@ -60,6 +61,7 @@ Future<T?> showCommonBottomSheet<T>({
       centerSubtitle: centerSubtitle,
       body: body,
       titleTextStyle: titleTextStyle,
+      titleMargin: titleMargin,
     ),
   );
 }
@@ -129,6 +131,7 @@ class CommonBottomSheetWidget extends StatelessWidget {
     this.title,
     this.subtitle,
     this.titleTextStyle,
+    this.titleMargin,
     super.key,
   });
 
@@ -142,6 +145,7 @@ class CommonBottomSheetWidget extends StatelessWidget {
   final bool centerTitle;
   final TextStyle? titleTextStyle;
   final bool centerSubtitle;
+  final EdgeInsets? titleMargin;
 
   @override
   Widget build(BuildContext context) {
@@ -158,6 +162,7 @@ class CommonBottomSheetWidget extends StatelessWidget {
             isCenterTitle: centerTitle,
             isCenterSubTitle: centerSubtitle,
             titleTextStyle: titleTextStyle,
+            titleMargin: titleMargin,
           )
         else
           const SizedBox(height: DimensSizeV2.d32),
@@ -261,6 +266,7 @@ class _Header extends StatelessWidget {
     this.titleTextStyle,
     this.isCenterTitle = false,
     this.isCenterSubTitle = false,
+    this.titleMargin,
   });
 
   final String? title;
@@ -268,6 +274,7 @@ class _Header extends StatelessWidget {
   final bool isCenterTitle;
   final bool isCenterSubTitle;
   final TextStyle? titleTextStyle;
+  final EdgeInsets? titleMargin;
 
   static const _top = DimensSizeV2.d20 + DimensSizeV2.d4 + DimensSizeV2.d8 * 2;
 
@@ -282,11 +289,13 @@ class _Header extends StatelessWidget {
       children: [
         if (title != null)
           Container(
-            margin: const EdgeInsets.symmetric(horizontal: DimensSizeV2.d16) +
+            margin: titleMargin ??
                 EdgeInsets.only(
                   top: _top,
                   bottom:
                       subtitle != null ? DimensSizeV2.d12 : DimensSizeV2.d24,
+                  left: DimensSizeV2.d16,
+                  right: DimensSizeV2.d16,
                 ),
             child: Align(
               alignment:
