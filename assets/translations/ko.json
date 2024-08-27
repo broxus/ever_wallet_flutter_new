@@ -529,5 +529,7 @@
   "contract": "Contract",
   "sign": "Sign",
   "encrypt": "Encrypt",
-  "decrypt": "Decrypt"
+  "decrypt": "Decrypt",
+  "notBackedUpTitle": "Not backed up",
+  "notBackedUpSubtitle": "Your seed phrase isn’t backed up. Back it up now to ensure you can restore it if needed."
 }
