@@ -4,7 +4,6 @@ import 'package:app/feature/browser/tabs/tab_view.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
-import 'package:ui_components_lib/ui_components_lib.dart';
 import 'package:ui_components_lib/v2/ui_components_lib_v2.dart';
 
 // TODO(nesquikm): We should calculate this value based on the screen size

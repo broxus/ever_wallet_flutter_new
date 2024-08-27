@@ -109,7 +109,7 @@ class _TextButton extends StatelessWidget {
       child: Center(
         child: Text(
           title,
-          // TODO(knightforce) check style from designer
+          // TODO(knightforce): check style from designer
           style: themeStyle.textStyles.labelSmall.copyWith(
             fontWeight: FontWeight.w600,
             color: color,

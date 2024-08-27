@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:ui_components_lib/ui_components_lib.dart';
 
 /// Default thickness and height of [CommonDivider]

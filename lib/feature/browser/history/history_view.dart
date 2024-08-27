@@ -89,7 +89,7 @@ class _HistoryViewState extends State<HistoryView> {
       },
     );
 
-    var widgets = sectioned.entries
+    final widgets = sectioned.entries
         .sorted((a, b) => a.key.compareTo(b.key))
         .fold<List<Widget>>(
       [],
