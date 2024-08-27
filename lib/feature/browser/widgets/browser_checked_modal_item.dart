@@ -35,7 +35,7 @@ class BrowserCheckedModalItem extends StatelessWidget {
       ),
       trailing: CommonCheckbox(
         checked: isSelected,
-        color: Colors.white,
+        color: color.content0,
       ),
       onPressed: onPressed,
       contentColor: contentColor,
