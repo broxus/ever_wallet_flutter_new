@@ -5,16 +5,10 @@ import 'package:ui_components_lib/ui_components_lib.dart';
 
 class WalletView extends StatefulWidget {
   const WalletView({
-    required this.controller,
-    required this.list,
     required this.currentAccount,
-    required this.publicKey,
     super.key,
   });
 
-  final PageController controller;
-  final List<KeyAccount> list;
-  final PublicKey publicKey;
   final KeyAccount? currentAccount;
 
   @override
@@ -38,14 +32,8 @@ class _WalletViewState extends State<WalletView> {
       child: CustomScrollView(
         controller: _controller,
         slivers: [
-          WalletAccountsBody(
-            accounts: widget.list,
-            publicKey: widget.publicKey,
-            currentAccount: widget.currentAccount,
-            controller: widget.controller,
-          ),
+          WalletAccountsBody(account: widget.currentAccount),
           WalletBottomPanel(
-            key: Key('WalletBottomPanel-${widget.currentAccount!.address}'),
             currentAccount: widget.currentAccount!,
             scrollController: _controller,
           ),

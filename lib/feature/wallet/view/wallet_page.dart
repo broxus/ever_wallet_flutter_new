@@ -39,12 +39,7 @@ class WalletPage extends StatelessWidget {
                 currentAccount,
                 controller,
               ) =>
-                  WalletView(
-                publicKey: currentKey,
-                controller: controller,
-                list: list,
-                currentAccount: currentAccount,
-              ),
+                  WalletView(currentAccount: currentAccount),
               orElse: () => const SizedBox.shrink(),
             );
           },

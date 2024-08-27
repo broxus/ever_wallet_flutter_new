@@ -33,14 +33,17 @@ abstract class BaseButton extends StatelessWidget {
   final bool isFullWidth;
   final double? backgroundBlur;
 
-  double get _paddingByButtonSize {
+  EdgeInsetsGeometry get _paddingByButtonSize {
     switch (buttonSize) {
       case ButtonSize.large:
-        return DimensSizeV2.d18;
+        return const EdgeInsets.all(DimensSizeV2.d18);
       case ButtonSize.medium:
-        return DimensSizeV2.d16;
+        return const EdgeInsets.all(DimensSizeV2.d16);
       case ButtonSize.small:
-        return DimensSizeV2.d8;
+        return const EdgeInsets.symmetric(
+            horizontal: DimensSizeV2.d24,
+            vertical: DimensSizeV2.d8,
+        );
     }
   }
 
@@ -207,9 +210,7 @@ abstract class BaseButton extends StatelessWidget {
       // TODO(MolochkoAndrew): update
       //ignore: deprecated_member_use
       padding: MaterialStateProperty.resolveWith(
-        (_) => EdgeInsets.all(
-          _paddingByButtonSize,
-        ),
+        (_) => _paddingByButtonSize,
       ),
     );
   }
