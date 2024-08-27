@@ -19,8 +19,8 @@ const _minPasswordLength = 8;
 class CreateSeedPasswordCubit extends Cubit<CreateSeedPasswordState>
     with ConnectionMixin {
   CreateSeedPasswordCubit({
-    required this.phrase,
     required this.completeCallback,
+    this.phrase,
     this.setCurrentKey = false,
     this.name,
   }) : super(CreateSeedPasswordState.initial()) {
@@ -32,7 +32,7 @@ class CreateSeedPasswordCubit extends Cubit<CreateSeedPasswordState>
   final VoidCallback completeCallback;
 
   /// Phrase that must be used to create seed
-  final List<String> phrase;
+  final String? phrase;
 
   /// Name of seed phrase if provided
   final String? name;
@@ -67,7 +67,7 @@ class CreateSeedPasswordCubit extends Cubit<CreateSeedPasswordState>
   }
 
   Future<void> nextAction() async {
-    if (!await checkConnection()) {
+    if (phrase == null || !await checkConnection()) {
       return;
     }
 
@@ -76,7 +76,7 @@ class CreateSeedPasswordCubit extends Cubit<CreateSeedPasswordState>
     final currentKeyService = inject<CurrentKeyService>();
     try {
       final publicKey = await nekoton.addSeed(
-        phrase: phrase,
+        phrase: phrase!.split(' '),
         password: passwordController.text,
         name: name,
       );

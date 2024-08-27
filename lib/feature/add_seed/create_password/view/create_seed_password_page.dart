@@ -13,12 +13,12 @@ typedef _Cubit = CreateSeedPasswordCubit;
 class CreateSeedPasswordProfilePage extends StatelessWidget {
   /// {@macro create_seed_password_profile_page}
   const CreateSeedPasswordProfilePage({
-    required this.phrase,
     required this.name,
+    this.phrase,
     super.key,
   });
 
-  final List<String> phrase;
+  final String? phrase;
   final String? name;
 
   @override

@@ -116,10 +116,7 @@ GoRoute get createSeedNoNamedProfileRoute {
     GoRoute(
       path: AppRoute.createSeedPassword.path,
       builder: (_, state) => CreateSeedPasswordProfilePage(
-        phrase: (jsonDecode(
-          state.uri.queryParameters[addSeedPhraseQueryParam]!,
-        ) as List<dynamic>)
-            .cast<String>(),
+        phrase: state.uri.queryParameters[addSeedPhraseQueryParam],
         name: state.pathParameters[enterSeedNameNamePathParam],
       ),
     ),
@@ -132,10 +129,7 @@ GoRoute get enterSeedNoNamedProfileRoute {
     GoRoute(
       path: AppRoute.createSeedPassword.path,
       builder: (_, GoRouterState state) => CreateSeedPasswordProfilePage(
-        phrase: (jsonDecode(
-          state.uri.queryParameters[addSeedPhraseQueryParam]!,
-        ) as List<dynamic>)
-            .cast<String>(),
+        phrase: state.uri.queryParameters[addSeedPhraseQueryParam],
         name: state.pathParameters[enterSeedNameNamePathParam],
       ),
     ),
@@ -149,10 +143,7 @@ GoRoute get createSeedNamedProfileRoute {
   final passwordRoute = GoRoute(
     path: AppRoute.createSeedPassword.path,
     builder: (_, GoRouterState state) => CreateSeedPasswordProfilePage(
-      phrase: (jsonDecode(
-        state.uri.queryParameters[addSeedPhraseQueryParam]!,
-      ) as List<dynamic>)
-          .cast<String>(),
+      phrase: state.uri.queryParameters[addSeedPhraseQueryParam],
       name: state.pathParameters[enterSeedNameNamePathParam],
     ),
   );
@@ -188,13 +179,12 @@ GoRoute get enterSeedNamedProfileRoute {
     routes: [
       GoRoute(
         path: AppRoute.createSeedPassword.path,
-        builder: (_, GoRouterState state) => CreateSeedPasswordProfilePage(
-          phrase: (jsonDecode(
-            state.uri.queryParameters[addSeedPhraseQueryParam]!,
-          ) as List<dynamic>)
-              .cast<String>(),
-          name: state.pathParameters[enterSeedNameNamePathParam],
-        ),
+        builder: (_, GoRouterState state) {
+          return CreateSeedPasswordProfilePage(
+            phrase: state.uri.queryParameters[addSeedPhraseQueryParam],
+            name: state.pathParameters[enterSeedNameNamePathParam],
+          );
+        },
       ),
     ],
   );
