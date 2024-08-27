@@ -165,32 +165,14 @@ class _BackUpBadge extends StatelessWidget {
             onPressed: () {
               showPrimaryBottomSheet(
                 context: context,
-                title: LocaleKeys.keepThisSafeTitleModal.tr(),
-                subtitle: LocaleKeys.keepThisSafeSubtitleModal.tr(),
-                assetsPath: Assets.images.exclamationMark.path,
+                title: LocaleKeys.goodJobTitleModal.tr(),
+                subtitle: LocaleKeys.goodJobSubtitleModal.tr(),
+                assetsPath: Assets.images.circleCheck.path,
                 firstButton: AccentButton(
                   buttonShape: ButtonShape.pill,
                   title: LocaleKeys.gotItButton.tr(),
                   postfixIcon: LucideIcons.check,
                   onPressed: () {},
-                ),
-                content: Container(
-                  padding: const EdgeInsets.symmetric(
-                    vertical: DimensSizeV2.d8,
-                    horizontal: DimensSizeV2.d16,
-                  ),
-                  margin: const EdgeInsets.only(bottom: DimensSizeV2.d24),
-                  decoration: BoxDecoration(
-                    color: theme.colors.background2,
-                    borderRadius: BorderRadius.circular(
-                      DimensRadiusV2.radius12,
-                    ),
-                  ),
-                  child: Text(
-                    LocaleKeys.keepThisSafeContentModal.tr(),
-                    style: theme.textStyles.labelMedium,
-                    textAlign: TextAlign.center,
-                  ),
                 ),
               );
             },

@@ -523,5 +523,7 @@ abstract class  LocaleKeys {
   static const keepThisSafeSubtitleModal = 'keepThisSafeSubtitleModal';
   static const keepThisSafeContentModal = 'keepThisSafeContentModal';
   static const gotItButton = 'gotItButton';
+  static const goodJobTitleModal = 'goodJobTitleModal';
+  static const goodJobSubtitleModal = 'goodJobSubtitleModal';
 
 }

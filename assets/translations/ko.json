@@ -538,5 +538,7 @@
   "keepThisSafeTitleModal": "Keep this safe",
   "keepThisSafeSubtitleModal": "Don't forget this password! It is separate from your Apple iCloud password, and you should save it in a secure location.",
   "keepThisSafeContentModal": "You'll need it to restore your wallet from the backup in the future.",
-  "gotItButton": "Got It"
+  "gotItButton": "Got It",
+  "goodJobTitleModal": "Good Job!",
+  "goodJobSubtitleModal": "You can come back here anytime to back up and check your seed phrase."
 }

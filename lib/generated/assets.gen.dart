@@ -135,6 +135,10 @@ class $AssetsImagesGen {
   /// File path: assets/images/choose.svg
   SvgGenImage get choose => const SvgGenImage('assets/images/choose.svg');
 
+  /// File path: assets/images/circle_check.png
+  AssetGenImage get circleCheck =>
+      const AssetGenImage('assets/images/circle_check.png');
+
   /// File path: assets/images/close.svg
   SvgGenImage get close => const SvgGenImage('assets/images/close.svg');
 
@@ -381,6 +385,7 @@ class $AssetsImagesGen {
         checkRounded,
         checkSquare,
         choose,
+        circleCheck,
         close,
         closeAnother,
         closedEye,
