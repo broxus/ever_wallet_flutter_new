@@ -146,7 +146,7 @@ abstract class BaseButton extends StatelessWidget {
           child: ElevatedButton(
             style: buttonStyle,
             onPressed: isLoading ? null : onPressed,
-            child: Icon(icon, size: _iconSize),
+            child: this.child ?? Icon(icon, size: _iconSize),
           ),
         );
     }
@@ -210,7 +210,10 @@ abstract class BaseButton extends StatelessWidget {
       // TODO(MolochkoAndrew): update
       //ignore: deprecated_member_use
       padding: MaterialStateProperty.resolveWith(
-        (_) => _paddingByButtonSize,
+        (_) => switch(buttonShape) {
+          ButtonShape.circle || ButtonShape.square => EdgeInsets.zero,
+          _ => _paddingByButtonSize,
+        },
       ),
     );
   }

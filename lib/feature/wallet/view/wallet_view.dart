@@ -3,26 +3,15 @@ import 'package:flutter/material.dart';
 import 'package:nekoton_repository/nekoton_repository.dart';
 import 'package:ui_components_lib/ui_components_lib.dart';
 
-class WalletView extends StatefulWidget {
+class WalletView extends StatelessWidget {
   const WalletView({
     required this.currentAccount,
+    required this.scrollController,
     super.key,
   });
 
   final KeyAccount? currentAccount;
-
-  @override
-  State<WalletView> createState() => _WalletViewState();
-}
-
-class _WalletViewState extends State<WalletView> {
-  late final ScrollController _controller;
-
-  @override
-  void initState() {
-    _controller = ScrollController();
-    super.initState();
-  }
+  final ScrollController scrollController;
 
   @override
   Widget build(BuildContext context) {
@@ -30,12 +19,12 @@ class _WalletViewState extends State<WalletView> {
 
     return SafeArea(
       child: CustomScrollView(
-        controller: _controller,
+        controller: scrollController,
         slivers: [
-          WalletAccountsBody(account: widget.currentAccount),
+          WalletAccountsBody(account: currentAccount),
           WalletBottomPanel(
-            currentAccount: widget.currentAccount!,
-            scrollController: _controller,
+            currentAccount: currentAccount!,
+            scrollController: scrollController,
           ),
           SliverFillRemaining(
             hasScrollBody: false,

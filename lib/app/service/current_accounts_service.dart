@@ -1,6 +1,7 @@
 import 'dart:async';
 
 import 'package:app/app/service/service.dart';
+import 'package:collection/collection.dart';
 import 'package:injectable/injectable.dart';
 import 'package:nekoton_repository/nekoton_repository.dart';
 import 'package:rxdart/rxdart.dart';
@@ -105,6 +106,18 @@ class CurrentAccountsService {
     }
 
     _currentActiveAccountSubject.add((index, current));
+  }
+
+  /// Try updating current active account for [currentAccounts]
+  void changeCurrentActiveAccount(KeyAccount account) {
+    if (currentActiveAccount?.$2 == account) return;
+
+    final index = currentAccounts?.displayAccounts.indexOf(account);
+
+    if (index != null && index != -1) {
+      _tryStartPolling(account.address);
+      _currentActiveAccountSubject.add((index, account));
+    }
   }
 
   /// Subscriptions for listening Ton/Token wallets to start its polling when

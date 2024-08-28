@@ -23,6 +23,7 @@ class AccountCard extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    // TODO(komarov): elementary
     return BlocProvider(
       create: (_) => AccountCardCubit(
         nekotonRepository: inject<NekotonRepository>(),

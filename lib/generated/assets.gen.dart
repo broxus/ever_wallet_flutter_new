@@ -254,6 +254,10 @@ class $AssetsImagesGen {
   AssetGenImage get networkEarth =>
       const AssetGenImage('assets/images/network_earth.png');
 
+  /// File path: assets/images/network_ever.svg
+  SvgGenImage get networkEver =>
+      const SvgGenImage('assets/images/network_ever.svg');
+
   /// Directory path: assets/images/onboarding
   $AssetsImagesOnboardingGen get onboarding =>
       const $AssetsImagesOnboardingGen();
@@ -410,6 +414,7 @@ class $AssetsImagesGen {
         navigateForward,
         navigation,
         networkEarth,
+        networkEver,
         openedEye,
         paste,
         person,

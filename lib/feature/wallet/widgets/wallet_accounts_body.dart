@@ -47,6 +47,7 @@ class WalletAccountsBody extends StatelessWidget {
 
   Future<void> _showSelectAccountSheet(BuildContext context) async {
     if (!context.mounted) return;
-    // TODO(komarov): show bottom sheet
+
+    await showSelectAccountSheet(context);
   }
 }
