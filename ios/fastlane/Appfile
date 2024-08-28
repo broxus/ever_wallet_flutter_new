@@ -1,4 +1,4 @@
-app_identifier("com.broxus.crystal.app") # The bundle identifier of your app
+app_identifier("com.broxus.sparx.app") # The bundle identifier of your app
 
 itc_team_id("122210899") # App Store Connect Team ID
 team_id("6RL7DV43Y2") # Developer Portal Team ID

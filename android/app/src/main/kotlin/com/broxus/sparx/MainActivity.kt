@@ -1,4 +1,4 @@
-package com.broxus.crystal.app
+package com.broxus.sparx.app
 
 import io.flutter.embedding.android.FlutterFragmentActivity
 
