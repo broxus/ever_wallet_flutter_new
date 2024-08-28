@@ -1,6 +1,6 @@
 name: app
-description: EVER Wallet Flutter app
-version: 2.0.0+3
+description: SparX Wallet Flutter app
+version: 1.0.0
 publish_to: none
 
 environment:
