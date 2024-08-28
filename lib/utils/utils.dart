@@ -5,6 +5,7 @@ import 'package:app/di/di.dart';
 import 'package:app/generated/generated.dart';
 import 'package:clock/clock.dart';
 import 'package:json_annotation/json_annotation.dart';
+import 'package:money2_fixer/money2_fixer.dart';
 import 'package:nekoton_repository/nekoton_repository.dart';
 
 extension DateX on DateTime {
@@ -35,7 +36,7 @@ class _MoneyFromStringJsonConverter
   const _MoneyFromStringJsonConverter();
 
   @override
-  Money fromJson(Map<String, dynamic> json) => MoneyImprover.fromJson(json);
+  Money fromJson(Map<String, dynamic> json) => MoneyFixer.fromJson(json);
 
   @override
   Map<String, dynamic> toJson(Money object) => object.toJson();

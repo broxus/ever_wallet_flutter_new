@@ -47,9 +47,7 @@ dependencies:
   lucide_icons_flutter: ^1.1.2
   mobile_scanner: 3.4.1
   money2: ^5.2.1
-  money2_improver:
-    git:
-      url: https://github.com/broxus/money2_improver
+  money2_fixer: 2.0.0
   nekoton_repository:
     git:
       url: https://github.com/broxus/nekoton_repository.git
