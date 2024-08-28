@@ -37,10 +37,10 @@ class AccountCard extends StatelessWidget {
           return state.when<Widget>(
             subscribeError: (account, walletName, error, isLoading) =>
                 WalletSubscribeErrorWidget(
-                  error: error,
-                  isLoadingError: isLoading,
-                  onRetryPressed: _onRetry,
-                ),
+              error: error,
+              isLoadingError: isLoading,
+              onRetryPressed: _onRetry,
+            ),
             data: (account, walletName, balance, custodians) => _AccountCard(
               account: account,
               balance: balance,
@@ -107,14 +107,14 @@ class _AccountCard extends StatelessWidget {
           ),
         ),
         balance?.let(
-          (balance) => AmountWidget(
-            amount: balance.formatImproved(),
-            style: theme.textStyles.displayMedium,
-            sign: r'$',
-          ),
-        ) ?? const ProgressIndicatorWidget(size: DimensSizeV2.d52),
+              (balance) => AmountWidget(
+                amount: balance.formatImproved(),
+                style: theme.textStyles.displayMedium,
+                sign: r'$',
+              ),
+            ) ??
+            const ProgressIndicatorWidget(size: DimensSizeV2.d52),
       ],
     );
   }
 }
-

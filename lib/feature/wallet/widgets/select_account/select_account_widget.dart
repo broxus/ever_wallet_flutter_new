@@ -36,7 +36,7 @@ class SelectAccountWidget extends ElementaryWidget<SelectAccountWidgetModel> {
             builder: (_, list, currentAccount) => ListView.builder(
               itemCount: list?.length ?? 0,
               itemBuilder: (_, index) => list?.let(
-                    (list) {
+                (list) {
                   final account = list[index];
 
                   return _AccountItem(
@@ -118,12 +118,11 @@ class _AccountItem extends StatelessWidget {
                     style: theme.textStyles.labelXSmall.copyWith(
                       color: theme.colors.content3,
                     ),
-                  )
+                  ),
                 ],
               ),
             ),
-            if (active)
-              const Icon(LucideIcons.check, size: DimensSizeV2.d20),
+            if (active) const Icon(LucideIcons.check, size: DimensSizeV2.d20),
           ],
         ),
       ),

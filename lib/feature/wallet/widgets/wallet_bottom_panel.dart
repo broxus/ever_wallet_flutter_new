@@ -74,14 +74,13 @@ class _WalletBottomPanelState extends State<WalletBottomPanel> {
                   onTabChanged: (v) => currentTabNotifier.value = v,
                 ),
                 switch (value) {
-                  WalletBottomPanelTab.asset =>
-                      AccountAssetsTab(
-                        account: widget.currentAccount,
-                      ),
+                  WalletBottomPanelTab.asset => AccountAssetsTab(
+                      account: widget.currentAccount,
+                    ),
                   WalletBottomPanelTab.transactions => AccountTransactionsTab(
-                    account: widget.currentAccount,
-                    scrollController: widget.scrollController,
-                  ),
+                      account: widget.currentAccount,
+                      scrollController: widget.scrollController,
+                    ),
                 },
               ],
             );

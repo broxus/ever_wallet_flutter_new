@@ -13,11 +13,11 @@ WalletAppBarWidgetModel defaultWalletAppBarWidgetModelFactory(
   BuildContext context,
 ) =>
     WalletAppBarWidgetModel(
-        WalletAppBarModel(
-          createPrimaryErrorHandler(context),
-          inject(),
-          inject(),
-        ),
+      WalletAppBarModel(
+        createPrimaryErrorHandler(context),
+        inject(),
+        inject(),
+      ),
     );
 
 class WalletAppBarWidgetModel

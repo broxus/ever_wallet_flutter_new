@@ -41,7 +41,7 @@ class WalletAccountActions extends StatelessWidget {
           ? const IgnorePointer(
               child: _ActionList(action: WalletAccountActionBehavior.send),
             )
-            // TODO(komarov): elementary
+          // TODO(komarov): elementary
           : BlocProvider<WalletAccountActionsCubit>(
               key: Key('WalletAccountActions-${account.address}'),
               create: (_) => WalletAccountActionsCubit(
