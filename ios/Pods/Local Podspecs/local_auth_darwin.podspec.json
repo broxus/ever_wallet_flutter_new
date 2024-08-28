@@ -17,13 +17,23 @@
   "documentation_url": "https://pub.dev/packages/local_auth_darwin",
   "source_files": "local_auth_darwin/Sources/local_auth_darwin/**/*.{h,m}",
   "public_header_files": "local_auth_darwin/Sources/local_auth_darwin/include/**/*.h",
-  "dependencies": {
-    "Flutter": [
+  "ios": {
+    "dependencies": {
+      "Flutter": [
 
-    ]
+      ]
+    }
+  },
+  "osx": {
+    "dependencies": {
+      "FlutterMacOS": [
+
+      ]
+    }
   },
   "platforms": {
-    "ios": "12.0"
+    "ios": "12.0",
+    "osx": "10.14"
   },
   "pod_target_xcconfig": {
     "DEFINES_MODULE": "YES"
