@@ -38,7 +38,7 @@ class WalletView extends StatelessWidget {
                 child: Container(color: theme.colors.background1),
               ),
             ],
-          )
+          ),
         ],
       ),
     );
