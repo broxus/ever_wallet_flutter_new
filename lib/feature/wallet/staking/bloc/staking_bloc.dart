@@ -11,6 +11,7 @@ import 'package:bloc_event_transformers/bloc_event_transformers.dart';
 import 'package:flutter/widgets.dart';
 import 'package:freezed_annotation/freezed_annotation.dart';
 import 'package:logging/logging.dart';
+import 'package:money2_fixer/money2_fixer.dart';
 import 'package:nekoton_repository/nekoton_repository.dart' hide Message;
 
 part 'staking_bloc.freezed.dart';
