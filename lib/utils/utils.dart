@@ -5,7 +5,6 @@ import 'package:app/di/di.dart';
 import 'package:app/generated/generated.dart';
 import 'package:clock/clock.dart';
 import 'package:json_annotation/json_annotation.dart';
-import 'package:money2_fixer/money2_fixer.dart';
 import 'package:nekoton_repository/nekoton_repository.dart';
 
 extension DateX on DateTime {
