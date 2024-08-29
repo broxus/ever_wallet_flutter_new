@@ -38,8 +38,8 @@ jobs:
           cache: true
           cache-key: flutter-:os:-:channel:-:version:-:arch:-:hash:-${{ hashFiles('**/pubspec.lock') }}
       - uses: bluefireteam/melos-action@v3
-        if: inputs.deploy_target != 'store_ios'
       - uses: actions/setup-java@v4
+        if: inputs.deploy_target != 'store_ios'
         with:
           distribution: zulu
           java-version: "17.x"
@@ -49,8 +49,8 @@ jobs:
         run: melos decrypt-secrets
 
       # iOS certs
-        if: inputs.deploy_target != 'store_android'
       - name: Making sure the iOS certificates and profiles are installed
+        if: inputs.deploy_target != 'store_android'
         run: melos build:ios_match_assure
 
       # Dart/Flutter
@@ -68,7 +68,7 @@ jobs:
 
       # Build and deploy to FAD
       - name: Build and deploy to FAD
-        if: inputs.deploy_target == 'fad' || inputs.deploy_target == ''
+        if: inputs.deploy_target == 'fad'
         run: melos build:deploy_fad
         env:
           SENTRY_DSN: ${{ env.SENTRY_DSN }}
