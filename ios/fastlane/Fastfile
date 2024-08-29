@@ -47,9 +47,12 @@ platform :ios do
   desc "Assure there is correct iOS certs and profiles"
   lane :match_assure do
     setup_ci if ENV['CI']
-    match(type: "appstore", readonly: is_ci)
+    if ENV['DEPLOY_TARGET'] == "store" || ENV['DEPLOY_TARGET'] == "ios_store"
+      match(type: "appstore", readonly: is_ci)
+    else
+      match(type: "adhoc", readonly: is_ci)
+    end
     match(type: "development", readonly: is_ci)
-    match(type: "adhoc", readonly: is_ci)
   end
 
   desc "Register new devices already added through devportal to adhoc and development certs and profiles"
