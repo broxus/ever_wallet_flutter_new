@@ -541,4 +541,8 @@ abstract class LocaleKeys {
   static const encrypt = 'encrypt';
   static const decrypt = 'decrypt';
   static const accounts = 'accounts';
+  static const accountSettings = 'accountSettings';
+  static const viewInExplorer = 'viewInExplorer';
+  static const hideAccount = 'hideAccount';
+  static const advancedSettings = 'advancedSettings';
 }

@@ -2,6 +2,7 @@ import 'package:app/core/error_handler_factory.dart';
 import 'package:app/core/wm/custom_wm.dart';
 import 'package:app/di/di.dart';
 import 'package:app/feature/network/bottom_sheets/bottom_sheets.dart';
+import 'package:app/feature/wallet/widgets/account_settings/account_settings.dart';
 import 'package:app/feature/wallet/widgets/wallet_app_bar/wallet_app_bar_model.dart';
 import 'package:app/feature/wallet/widgets/wallet_app_bar/wallet_app_bar_widget.dart';
 import 'package:elementary_helper/elementary_helper.dart';
@@ -38,6 +39,10 @@ class WalletAppBarWidgetModel
   }
 
   void onSettings() {
-    // TODO(komarov): account options
+    if (currentAccount.value == null) return;
+    showAccountSettingsSheet(
+      context: context,
+      account: currentAccount.value!,
+    );
   }
 }

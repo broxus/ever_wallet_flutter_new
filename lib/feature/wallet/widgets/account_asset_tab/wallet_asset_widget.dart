@@ -80,9 +80,11 @@ class WalletAssetWidget extends StatelessWidget {
           Flexible(
             fit: FlexFit.tight,
             child: fiatBalance == null
-                ? ProgressIndicatorWidget(
-                    size: DimensSizeV2.d16,
-                    color: theme.colors.content0,
+                ? Center(
+                    child: ProgressIndicatorWidget(
+                      size: DimensSizeV2.d16,
+                      color: theme.colors.content0,
+                    ),
                   )
                 : AmountWidget(
                     mainAxisAlignment: MainAxisAlignment.end,

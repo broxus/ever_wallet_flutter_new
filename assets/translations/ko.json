@@ -530,5 +530,9 @@
   "sign": "Sign",
   "encrypt": "Encrypt",
   "decrypt": "Decrypt",
-  "accounts": "Accounts"
+  "accounts": "Accounts",
+  "accountSettings": "Account settings",
+  "viewInExplorer": "View in Explorer",
+  "hideAccount": "Hide account",
+  "advancedSettings": "Advanced settings"
 }

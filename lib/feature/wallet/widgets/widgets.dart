@@ -3,7 +3,6 @@ export 'account_asset_tab/token_wallet_asset/token_wallet_icon.dart';
 export 'account_asset_tab/ton_wallet_asset/ton_wallet_icon.dart';
 export 'account_card/account_card.dart';
 export 'account_info.dart';
-export 'add_new_account_card.dart';
 export 'receive_sheet.dart';
 export 'select_account/select_account.dart';
 export 'token_transfer_info/token_transfer_info.dart';
