@@ -72,9 +72,12 @@ class _BackgroundState extends State<_Background> {
   @override
   Widget build(BuildContext context) {
     final size = MediaQuery.of(context).size;
+    final offset = widget.scrollController.hasClients
+        ? widget.scrollController.offset
+        : 0.0;
 
     return Positioned(
-      top: -widget.scrollController.offset,
+      top: -offset,
       left: 0,
       width: size.width,
       child: Image.asset(
