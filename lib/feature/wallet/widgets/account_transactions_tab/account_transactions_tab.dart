@@ -15,6 +15,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:nekoton_repository/nekoton_repository.dart';
 import 'package:ui_components_lib/ui_components_lib.dart';
+import 'package:ui_components_lib/v2/ui_components_lib_v2.dart';
 
 /// Tab from <WalletBottomPanel> that allows display list of transactions
 /// related to TonWallet for [account].
@@ -34,6 +35,7 @@ class AccountTransactionsTab extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final theme = context.themeStyleV2;
+
     return BlocProvider<AccountTransactionsTabCubit>(
       create: (_) => AccountTransactionsTabCubit(
         account: account,
@@ -47,24 +49,25 @@ class AccountTransactionsTab extends StatelessWidget {
           final colors = context.themeStyle.colors;
 
           return state.when(
-            empty: () => SliverFillRemaining(
-              child: Center(
-                child: Text(
-                  LocaleKeys.historyIsEmpty.tr(),
-                  style: StyleRes.primaryBold.copyWith(
-                    color: colors.textPrimary,
-                  ),
-                ),
+            empty: () => Text(
+              LocaleKeys.historyIsEmpty.tr(),
+              style: StyleRes.primaryBold.copyWith(
+                color: colors.textPrimary,
               ),
             ),
-            loading: () => const SliverToBoxAdapter(child: SizedBox.shrink()),
+            loading: () => ProgressIndicatorWidget(
+              size: DimensSizeV2.d32,
+              color: theme.colors.content0,
+            ),
             transactions: (transactions, isLoading, _, price) {
               return ScrollControllerPreloadListener(
                 preleloadAction: () => context
                     .read<AccountTransactionsTabCubit>()
                     .tryPreloadTransactions(),
                 scrollController: scrollController,
-                child: SliverList.builder(
+                child: ListView.builder(
+                  shrinkWrap: true,
+                  physics: const NeverScrollableScrollPhysics(),
                   itemCount: transactions.length + (isLoading ? 1 : 0),
                   itemBuilder: (context, index) {
                     if (index == transactions.length) {
@@ -79,16 +82,10 @@ class AccountTransactionsTab extends StatelessWidget {
                     final displayDate =
                         prev == null || !prev.date.isSameDay(trans.date);
 
-                    return Container(
-                      color: theme.colors.background1,
-                      padding: const EdgeInsets.symmetric(
-                        horizontal: DimensSize.d16,
-                      ),
-                      child: _transactionItem(
-                        trans,
-                        displayDate,
-                        price,
-                      ),
+                    return _transactionItem(
+                      trans,
+                      displayDate,
+                      price,
                     );
                   },
                 ),

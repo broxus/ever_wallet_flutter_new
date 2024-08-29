@@ -205,6 +205,10 @@ class $AssetsImagesGen {
   SvgGenImage get historyFill =>
       const SvgGenImage('assets/images/history_fill.svg');
 
+  /// Directory path: assets/images/homescreen_bg
+  $AssetsImagesHomescreenBgGen get homescreenBg =>
+      const $AssetsImagesHomescreenBgGen();
+
   /// File path: assets/images/ic_match.svg
   SvgGenImage get icMatch => const SvgGenImage('assets/images/ic_match.svg');
 
@@ -253,6 +257,10 @@ class $AssetsImagesGen {
   /// File path: assets/images/network_earth.png
   AssetGenImage get networkEarth =>
       const AssetGenImage('assets/images/network_earth.png');
+
+  /// File path: assets/images/network_ever.svg
+  SvgGenImage get networkEver =>
+      const SvgGenImage('assets/images/network_ever.svg');
 
   /// Directory path: assets/images/onboarding
   $AssetsImagesOnboardingGen get onboarding =>
@@ -410,6 +418,7 @@ class $AssetsImagesGen {
         navigateForward,
         navigation,
         networkEarth,
+        networkEver,
         openedEye,
         paste,
         person,
@@ -463,6 +472,17 @@ class $AssetsTranslationsGen {
 
   /// List of all assets
   List<String> get values => [en, ko];
+}
+
+class $AssetsImagesHomescreenBgGen {
+  const $AssetsImagesHomescreenBgGen();
+
+  /// File path: assets/images/homescreen_bg/homescreen_bg.png
+  AssetGenImage get homescreenBg =>
+      const AssetGenImage('assets/images/homescreen_bg/homescreen_bg.png');
+
+  /// List of all assets
+  List<AssetGenImage> get values => [homescreenBg];
 }
 
 class $AssetsImagesLangIconsGen {

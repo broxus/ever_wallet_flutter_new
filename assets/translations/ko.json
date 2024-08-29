@@ -529,5 +529,6 @@
   "contract": "Contract",
   "sign": "Sign",
   "encrypt": "Encrypt",
-  "decrypt": "Decrypt"
+  "decrypt": "Decrypt",
+  "accounts": "Accounts"
 }

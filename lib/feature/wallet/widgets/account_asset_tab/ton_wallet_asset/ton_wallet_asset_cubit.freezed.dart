@@ -16,29 +16,35 @@ final _privateConstructorUsedError = UnsupportedError(
 
 /// @nodoc
 mixin _$TonWalletAssetState {
+  String get tokenName => throw _privateConstructorUsedError;
   String get iconPath => throw _privateConstructorUsedError;
   @optionalTypeArgs
   TResult when<TResult extends Object?>({
-    required TResult Function(
-            String iconPath, Money? fiatBalance, Money? tokenBalance)
+    required TResult Function(String tokenName, String iconPath,
+            Money? fiatBalance, Money? tokenBalance)
         data,
-    required TResult Function(String iconPath, Object error, bool isLoading)
+    required TResult Function(
+            String tokenName, String iconPath, Object error, bool isLoading)
         subscribeError,
   }) =>
       throw _privateConstructorUsedError;
   @optionalTypeArgs
   TResult? whenOrNull<TResult extends Object?>({
-    TResult? Function(String iconPath, Money? fiatBalance, Money? tokenBalance)?
+    TResult? Function(String tokenName, String iconPath, Money? fiatBalance,
+            Money? tokenBalance)?
         data,
-    TResult? Function(String iconPath, Object error, bool isLoading)?
+    TResult? Function(
+            String tokenName, String iconPath, Object error, bool isLoading)?
         subscribeError,
   }) =>
       throw _privateConstructorUsedError;
   @optionalTypeArgs
   TResult maybeWhen<TResult extends Object?>({
-    TResult Function(String iconPath, Money? fiatBalance, Money? tokenBalance)?
+    TResult Function(String tokenName, String iconPath, Money? fiatBalance,
+            Money? tokenBalance)?
         data,
-    TResult Function(String iconPath, Object error, bool isLoading)?
+    TResult Function(
+            String tokenName, String iconPath, Object error, bool isLoading)?
         subscribeError,
     required TResult orElse(),
   }) =>
@@ -74,7 +80,7 @@ abstract class $TonWalletAssetStateCopyWith<$Res> {
           TonWalletAssetState value, $Res Function(TonWalletAssetState) then) =
       _$TonWalletAssetStateCopyWithImpl<$Res, TonWalletAssetState>;
   @useResult
-  $Res call({String iconPath});
+  $Res call({String tokenName, String iconPath});
 }
 
 /// @nodoc
@@ -90,9 +96,14 @@ class _$TonWalletAssetStateCopyWithImpl<$Res, $Val extends TonWalletAssetState>
   @pragma('vm:prefer-inline')
   @override
   $Res call({
+    Object? tokenName = null,
     Object? iconPath = null,
   }) {
     return _then(_value.copyWith(
+      tokenName: null == tokenName
+          ? _value.tokenName
+          : tokenName // ignore: cast_nullable_to_non_nullable
+              as String,
       iconPath: null == iconPath
           ? _value.iconPath
           : iconPath // ignore: cast_nullable_to_non_nullable
@@ -109,7 +120,11 @@ abstract class _$$DataImplCopyWith<$Res>
       __$$DataImplCopyWithImpl<$Res>;
   @override
   @useResult
-  $Res call({String iconPath, Money? fiatBalance, Money? tokenBalance});
+  $Res call(
+      {String tokenName,
+      String iconPath,
+      Money? fiatBalance,
+      Money? tokenBalance});
 }
 
 /// @nodoc
@@ -122,11 +137,16 @@ class __$$DataImplCopyWithImpl<$Res>
   @pragma('vm:prefer-inline')
   @override
   $Res call({
+    Object? tokenName = null,
     Object? iconPath = null,
     Object? fiatBalance = freezed,
     Object? tokenBalance = freezed,
   }) {
     return _then(_$DataImpl(
+      tokenName: null == tokenName
+          ? _value.tokenName
+          : tokenName // ignore: cast_nullable_to_non_nullable
+              as String,
       iconPath: null == iconPath
           ? _value.iconPath
           : iconPath // ignore: cast_nullable_to_non_nullable
@@ -147,8 +167,13 @@ class __$$DataImplCopyWithImpl<$Res>
 
 class _$DataImpl implements _Data {
   const _$DataImpl(
-      {required this.iconPath, this.fiatBalance, this.tokenBalance});
+      {required this.tokenName,
+      required this.iconPath,
+      this.fiatBalance,
+      this.tokenBalance});
 
+  @override
+  final String tokenName;
   @override
   final String iconPath;
   @override
@@ -158,7 +183,7 @@ class _$DataImpl implements _Data {
 
   @override
   String toString() {
-    return 'TonWalletAssetState.data(iconPath: $iconPath, fiatBalance: $fiatBalance, tokenBalance: $tokenBalance)';
+    return 'TonWalletAssetState.data(tokenName: $tokenName, iconPath: $iconPath, fiatBalance: $fiatBalance, tokenBalance: $tokenBalance)';
   }
 
   @override
@@ -166,6 +191,8 @@ class _$DataImpl implements _Data {
     return identical(this, other) ||
         (other.runtimeType == runtimeType &&
             other is _$DataImpl &&
+            (identical(other.tokenName, tokenName) ||
+                other.tokenName == tokenName) &&
             (identical(other.iconPath, iconPath) ||
                 other.iconPath == iconPath) &&
             (identical(other.fiatBalance, fiatBalance) ||
@@ -176,7 +203,7 @@ class _$DataImpl implements _Data {
 
   @override
   int get hashCode =>
-      Object.hash(runtimeType, iconPath, fiatBalance, tokenBalance);
+      Object.hash(runtimeType, tokenName, iconPath, fiatBalance, tokenBalance);
 
   @JsonKey(ignore: true)
   @override
@@ -187,37 +214,42 @@ class _$DataImpl implements _Data {
   @override
   @optionalTypeArgs
   TResult when<TResult extends Object?>({
-    required TResult Function(
-            String iconPath, Money? fiatBalance, Money? tokenBalance)
+    required TResult Function(String tokenName, String iconPath,
+            Money? fiatBalance, Money? tokenBalance)
         data,
-    required TResult Function(String iconPath, Object error, bool isLoading)
+    required TResult Function(
+            String tokenName, String iconPath, Object error, bool isLoading)
         subscribeError,
   }) {
-    return data(iconPath, fiatBalance, tokenBalance);
+    return data(tokenName, iconPath, fiatBalance, tokenBalance);
   }
 
   @override
   @optionalTypeArgs
   TResult? whenOrNull<TResult extends Object?>({
-    TResult? Function(String iconPath, Money? fiatBalance, Money? tokenBalance)?
+    TResult? Function(String tokenName, String iconPath, Money? fiatBalance,
+            Money? tokenBalance)?
         data,
-    TResult? Function(String iconPath, Object error, bool isLoading)?
+    TResult? Function(
+            String tokenName, String iconPath, Object error, bool isLoading)?
         subscribeError,
   }) {
-    return data?.call(iconPath, fiatBalance, tokenBalance);
+    return data?.call(tokenName, iconPath, fiatBalance, tokenBalance);
   }
 
   @override
   @optionalTypeArgs
   TResult maybeWhen<TResult extends Object?>({
-    TResult Function(String iconPath, Money? fiatBalance, Money? tokenBalance)?
+    TResult Function(String tokenName, String iconPath, Money? fiatBalance,
+            Money? tokenBalance)?
         data,
-    TResult Function(String iconPath, Object error, bool isLoading)?
+    TResult Function(
+            String tokenName, String iconPath, Object error, bool isLoading)?
         subscribeError,
     required TResult orElse(),
   }) {
     if (data != null) {
-      return data(iconPath, fiatBalance, tokenBalance);
+      return data(tokenName, iconPath, fiatBalance, tokenBalance);
     }
     return orElse();
   }
@@ -256,10 +288,13 @@ class _$DataImpl implements _Data {
 
 abstract class _Data implements TonWalletAssetState {
   const factory _Data(
-      {required final String iconPath,
+      {required final String tokenName,
+      required final String iconPath,
       final Money? fiatBalance,
       final Money? tokenBalance}) = _$DataImpl;
 
+  @override
+  String get tokenName;
   @override
   String get iconPath;
   Money? get fiatBalance;
@@ -278,7 +313,7 @@ abstract class _$$SubscribeErrorImplCopyWith<$Res>
       __$$SubscribeErrorImplCopyWithImpl<$Res>;
   @override
   @useResult
-  $Res call({String iconPath, Object error, bool isLoading});
+  $Res call({String tokenName, String iconPath, Object error, bool isLoading});
 }
 
 /// @nodoc
@@ -292,11 +327,16 @@ class __$$SubscribeErrorImplCopyWithImpl<$Res>
   @pragma('vm:prefer-inline')
   @override
   $Res call({
+    Object? tokenName = null,
     Object? iconPath = null,
     Object? error = null,
     Object? isLoading = null,
   }) {
     return _then(_$SubscribeErrorImpl(
+      tokenName: null == tokenName
+          ? _value.tokenName
+          : tokenName // ignore: cast_nullable_to_non_nullable
+              as String,
       iconPath: null == iconPath
           ? _value.iconPath
           : iconPath // ignore: cast_nullable_to_non_nullable
@@ -314,8 +354,13 @@ class __$$SubscribeErrorImplCopyWithImpl<$Res>
 
 class _$SubscribeErrorImpl implements _SubscribeError {
   const _$SubscribeErrorImpl(
-      {required this.iconPath, required this.error, required this.isLoading});
+      {required this.tokenName,
+      required this.iconPath,
+      required this.error,
+      required this.isLoading});
 
+  @override
+  final String tokenName;
   @override
   final String iconPath;
   @override
@@ -325,7 +370,7 @@ class _$SubscribeErrorImpl implements _SubscribeError {
 
   @override
   String toString() {
-    return 'TonWalletAssetState.subscribeError(iconPath: $iconPath, error: $error, isLoading: $isLoading)';
+    return 'TonWalletAssetState.subscribeError(tokenName: $tokenName, iconPath: $iconPath, error: $error, isLoading: $isLoading)';
   }
 
   @override
@@ -333,6 +378,8 @@ class _$SubscribeErrorImpl implements _SubscribeError {
     return identical(this, other) ||
         (other.runtimeType == runtimeType &&
             other is _$SubscribeErrorImpl &&
+            (identical(other.tokenName, tokenName) ||
+                other.tokenName == tokenName) &&
             (identical(other.iconPath, iconPath) ||
                 other.iconPath == iconPath) &&
             const DeepCollectionEquality().equals(other.error, error) &&
@@ -341,7 +388,7 @@ class _$SubscribeErrorImpl implements _SubscribeError {
   }
 
   @override
-  int get hashCode => Object.hash(runtimeType, iconPath,
+  int get hashCode => Object.hash(runtimeType, tokenName, iconPath,
       const DeepCollectionEquality().hash(error), isLoading);
 
   @JsonKey(ignore: true)
@@ -354,37 +401,42 @@ class _$SubscribeErrorImpl implements _SubscribeError {
   @override
   @optionalTypeArgs
   TResult when<TResult extends Object?>({
-    required TResult Function(
-            String iconPath, Money? fiatBalance, Money? tokenBalance)
+    required TResult Function(String tokenName, String iconPath,
+            Money? fiatBalance, Money? tokenBalance)
         data,
-    required TResult Function(String iconPath, Object error, bool isLoading)
+    required TResult Function(
+            String tokenName, String iconPath, Object error, bool isLoading)
         subscribeError,
   }) {
-    return subscribeError(iconPath, error, isLoading);
+    return subscribeError(tokenName, iconPath, error, isLoading);
   }
 
   @override
   @optionalTypeArgs
   TResult? whenOrNull<TResult extends Object?>({
-    TResult? Function(String iconPath, Money? fiatBalance, Money? tokenBalance)?
+    TResult? Function(String tokenName, String iconPath, Money? fiatBalance,
+            Money? tokenBalance)?
         data,
-    TResult? Function(String iconPath, Object error, bool isLoading)?
+    TResult? Function(
+            String tokenName, String iconPath, Object error, bool isLoading)?
         subscribeError,
   }) {
-    return subscribeError?.call(iconPath, error, isLoading);
+    return subscribeError?.call(tokenName, iconPath, error, isLoading);
   }
 
   @override
   @optionalTypeArgs
   TResult maybeWhen<TResult extends Object?>({
-    TResult Function(String iconPath, Money? fiatBalance, Money? tokenBalance)?
+    TResult Function(String tokenName, String iconPath, Money? fiatBalance,
+            Money? tokenBalance)?
         data,
-    TResult Function(String iconPath, Object error, bool isLoading)?
+    TResult Function(
+            String tokenName, String iconPath, Object error, bool isLoading)?
         subscribeError,
     required TResult orElse(),
   }) {
     if (subscribeError != null) {
-      return subscribeError(iconPath, error, isLoading);
+      return subscribeError(tokenName, iconPath, error, isLoading);
     }
     return orElse();
   }
@@ -423,10 +475,13 @@ class _$SubscribeErrorImpl implements _SubscribeError {
 
 abstract class _SubscribeError implements TonWalletAssetState {
   const factory _SubscribeError(
-      {required final String iconPath,
+      {required final String tokenName,
+      required final String iconPath,
       required final Object error,
       required final bool isLoading}) = _$SubscribeErrorImpl;
 
+  @override
+  String get tokenName;
   @override
   String get iconPath;
   Object get error;

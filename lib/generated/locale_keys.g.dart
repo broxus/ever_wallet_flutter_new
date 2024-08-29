@@ -540,4 +540,5 @@ abstract class LocaleKeys {
   static const sign = 'sign';
   static const encrypt = 'encrypt';
   static const decrypt = 'decrypt';
+  static const accounts = 'accounts';
 }

@@ -107,6 +107,18 @@ class CurrentAccountsService {
     _currentActiveAccountSubject.add((index, current));
   }
 
+  /// Try updating current active account for [currentAccounts]
+  void changeCurrentActiveAccount(KeyAccount account) {
+    if (currentActiveAccount?.$2 == account) return;
+
+    final index = currentAccounts?.displayAccounts.indexOf(account);
+
+    if (index != null && index != -1) {
+      _tryStartPolling(account.address);
+      _currentActiveAccountSubject.add((index, account));
+    }
+  }
+
   /// Subscriptions for listening Ton/Token wallets to start its polling when
   /// their account is selected in [currentActiveAccount].
   StreamSubscription<dynamic>? _tonWalletSubscription;
