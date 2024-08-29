@@ -14,8 +14,6 @@ class WalletPageWidget extends ElementaryWidget<WalletPageWidgetModel> {
   @override
   Widget build(WalletPageWidgetModel wm) {
     return Scaffold(
-      // backgroundColor: Colors.transparent,
-      // appBar: const WalletAppBarWidget(),
       body: StateNotifierBuilder(
         listenableState: wm.currentAccount,
         builder: (_, currentAccount) =>

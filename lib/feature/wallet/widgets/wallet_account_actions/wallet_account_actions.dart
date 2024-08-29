@@ -97,7 +97,6 @@ class _ActionList extends StatelessWidget {
       child: SizedBox(
         height: DimensSizeV2.d74,
         child: SeparatedRow(
-          // separatorSize: DimensSizeV2.d0,
           separator: VerticalDivider(
             width: DimensStroke.small,
             thickness: DimensStroke.small,
