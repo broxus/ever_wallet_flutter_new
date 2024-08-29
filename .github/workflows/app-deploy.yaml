@@ -16,8 +16,8 @@ on:
           - "fad"
           - "store"
           - "fad_store"
-          - "ios_store"
-          - "android_store"
+          - "store_ios"
+          - "store_android"
 
 jobs:
   build_and_deploy:
