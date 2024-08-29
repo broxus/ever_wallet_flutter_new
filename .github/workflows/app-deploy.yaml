@@ -52,8 +52,6 @@ jobs:
       - name: Making sure the iOS certificates and profiles are installed
         if: inputs.deploy_target != 'store_android'
         run: melos build:ios_match_assure
-        env:
-          DEPLOY_TARGET: ${{ inputs.deploy_target }}
 
       # Dart/Flutter
       - name: Generate dart code
