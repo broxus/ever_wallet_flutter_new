@@ -405,7 +405,7 @@
 				PRODUCT_BUNDLE_IDENTIFIER = com.broxus.sparx.app;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE_SPECIFIER = "match Development com.broxus.sparx.app";
-				"PROVISIONING_PROFILE_SPECIFIER[sdk=iphoneos*]" = sparx_prod;
+				"PROVISIONING_PROFILE_SPECIFIER[sdk=iphoneos*]" = "match AppStore com.broxus.sparx.app";
 				STRIP_STYLE = "non-global";
 				SWIFT_OBJC_BRIDGING_HEADER = "Runner/Runner-Bridging-Header.h";
 				SWIFT_VERSION = 5.0;
@@ -487,7 +487,7 @@
 				PRODUCT_BUNDLE_IDENTIFIER = com.broxus.sparx.app;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE_SPECIFIER = "match AdHoc com.broxus.sparx.app";
-				"PROVISIONING_PROFILE_SPECIFIER[sdk=iphoneos*]" = sparx_prod;
+				"PROVISIONING_PROFILE_SPECIFIER[sdk=iphoneos*]" = "match AppStore com.broxus.sparx.app";
 				STRIP_STYLE = "non-global";
 				SWIFT_OBJC_BRIDGING_HEADER = "Runner/Runner-Bridging-Header.h";
 				SWIFT_VERSION = 5.0;
@@ -625,7 +625,7 @@
 				PRODUCT_BUNDLE_IDENTIFIER = com.broxus.sparx.app;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE_SPECIFIER = "match Development com.broxus.sparx.app";
-				"PROVISIONING_PROFILE_SPECIFIER[sdk=iphoneos*]" = sparx_prod;
+				"PROVISIONING_PROFILE_SPECIFIER[sdk=iphoneos*]" = "match AppStore com.broxus.sparx.app";
 				STRIP_STYLE = "non-global";
 				SWIFT_OBJC_BRIDGING_HEADER = "Runner/Runner-Bridging-Header.h";
 				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
@@ -655,7 +655,7 @@
 				PRODUCT_BUNDLE_IDENTIFIER = com.broxus.sparx.app;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE_SPECIFIER = "match AppStore com.broxus.sparx.app";
-				"PROVISIONING_PROFILE_SPECIFIER[sdk=iphoneos*]" = sparx_prod;
+				"PROVISIONING_PROFILE_SPECIFIER[sdk=iphoneos*]" = "match AppStore com.broxus.sparx.app";
 				STRIP_STYLE = "non-global";
 				SWIFT_OBJC_BRIDGING_HEADER = "Runner/Runner-Bridging-Header.h";
 				SWIFT_VERSION = 5.0;
