@@ -16,6 +16,8 @@ on:
           - "fad"
           - "store"
           - "fad_store"
+          - "store_ios"
+          - "store_android"
 
 jobs:
   build_and_deploy:
@@ -36,6 +38,7 @@ jobs:
           cache: true
           cache-key: flutter-:os:-:channel:-:version:-:arch:-:hash:-${{ hashFiles('**/pubspec.lock') }}
       - uses: bluefireteam/melos-action@v3
+        if: inputs.deploy_target != 'store_ios'
       - uses: actions/setup-java@v4
         with:
           distribution: zulu
@@ -46,6 +49,7 @@ jobs:
         run: melos decrypt-secrets
 
       # iOS certs
+        if: inputs.deploy_target != 'store_android'
       - name: Making sure the iOS certificates and profiles are installed
         run: melos build:ios_match_assure
 
@@ -80,5 +84,19 @@ jobs:
       - name: Build and deploy to FAD and STORE
         if: inputs.deploy_target == 'fad_store'
         run: melos build:deploy_fad_store
+        env:
+          SENTRY_DSN: ${{ env.SENTRY_DSN }}
+
+      # Build and deploy to Test Flight
+      - name: Build and deploy to Test Flight
+        if: inputs.deploy_target == 'store_ios'
+        run: melos build:deploy_store_ios
+        env:
+          SENTRY_DSN: ${{ env.SENTRY_DSN }}
+
+      # Build and deploy to Google Play
+      - name: Build and deploy to Google Play
+        if: inputs.deploy_target == 'store_android'
+        run: melos build:deploy_store_android
         env:
           SENTRY_DSN: ${{ env.SENTRY_DSN }}
