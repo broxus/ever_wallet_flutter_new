@@ -18,7 +18,9 @@ final _privateConstructorUsedError = UnsupportedError(
 mixin _$AccountRemovedEvent {
   AssetsList get account => throw _privateConstructorUsedError;
 
-  @JsonKey(ignore: true)
+  /// Create a copy of AccountRemovedEvent
+  /// with the given fields replaced by the non-null parameter values.
+  @JsonKey(includeFromJson: false, includeToJson: false)
   $AccountRemovedEventCopyWith<AccountRemovedEvent> get copyWith =>
       throw _privateConstructorUsedError;
 }
@@ -44,6 +46,8 @@ class _$AccountRemovedEventCopyWithImpl<$Res, $Val extends AccountRemovedEvent>
   // ignore: unused_field
   final $Res Function($Val) _then;
 
+  /// Create a copy of AccountRemovedEvent
+  /// with the given fields replaced by the non-null parameter values.
   @pragma('vm:prefer-inline')
   @override
   $Res call({
@@ -57,6 +61,8 @@ class _$AccountRemovedEventCopyWithImpl<$Res, $Val extends AccountRemovedEvent>
     ) as $Val);
   }
 
+  /// Create a copy of AccountRemovedEvent
+  /// with the given fields replaced by the non-null parameter values.
   @override
   @pragma('vm:prefer-inline')
   $AssetsListCopyWith<$Res> get account {
@@ -88,6 +94,8 @@ class __$$AccountRemovedEventImplCopyWithImpl<$Res>
       $Res Function(_$AccountRemovedEventImpl) _then)
       : super(_value, _then);
 
+  /// Create a copy of AccountRemovedEvent
+  /// with the given fields replaced by the non-null parameter values.
   @pragma('vm:prefer-inline')
   @override
   $Res call({
@@ -126,7 +134,9 @@ class _$AccountRemovedEventImpl implements _AccountRemovedEvent {
   @override
   int get hashCode => Object.hash(runtimeType, account);
 
-  @JsonKey(ignore: true)
+  /// Create a copy of AccountRemovedEvent
+  /// with the given fields replaced by the non-null parameter values.
+  @JsonKey(includeFromJson: false, includeToJson: false)
   @override
   @pragma('vm:prefer-inline')
   _$$AccountRemovedEventImplCopyWith<_$AccountRemovedEventImpl> get copyWith =>
@@ -140,8 +150,11 @@ abstract class _AccountRemovedEvent implements AccountRemovedEvent {
 
   @override
   AssetsList get account;
+
+  /// Create a copy of AccountRemovedEvent
+  /// with the given fields replaced by the non-null parameter values.
   @override
-  @JsonKey(ignore: true)
+  @JsonKey(includeFromJson: false, includeToJson: false)
   _$$AccountRemovedEventImplCopyWith<_$AccountRemovedEventImpl> get copyWith =>
       throw _privateConstructorUsedError;
 }

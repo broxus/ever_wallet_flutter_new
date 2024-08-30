@@ -102,6 +102,9 @@ class _$BrowserHistoryEventCopyWithImpl<$Res, $Val extends BrowserHistoryEvent>
   final $Val _value;
   // ignore: unused_field
   final $Res Function($Val) _then;
+
+  /// Create a copy of BrowserHistoryEvent
+  /// with the given fields replaced by the non-null parameter values.
 }
 
 /// @nodoc
@@ -121,6 +124,8 @@ class __$$AddImplCopyWithImpl<$Res>
   __$$AddImplCopyWithImpl(_$AddImpl _value, $Res Function(_$AddImpl) _then)
       : super(_value, _then);
 
+  /// Create a copy of BrowserHistoryEvent
+  /// with the given fields replaced by the non-null parameter values.
   @pragma('vm:prefer-inline')
   @override
   $Res call({
@@ -134,6 +139,8 @@ class __$$AddImplCopyWithImpl<$Res>
     ));
   }
 
+  /// Create a copy of BrowserHistoryEvent
+  /// with the given fields replaced by the non-null parameter values.
   @override
   @pragma('vm:prefer-inline')
   $BrowserHistoryItemCopyWith<$Res> get item {
@@ -167,7 +174,9 @@ class _$AddImpl implements _Add {
   @override
   int get hashCode => Object.hash(runtimeType, item);
 
-  @JsonKey(ignore: true)
+  /// Create a copy of BrowserHistoryEvent
+  /// with the given fields replaced by the non-null parameter values.
+  @JsonKey(includeFromJson: false, includeToJson: false)
   @override
   @pragma('vm:prefer-inline')
   _$$AddImplCopyWith<_$AddImpl> get copyWith =>
@@ -270,7 +279,10 @@ abstract class _Add implements BrowserHistoryEvent {
   const factory _Add({required final BrowserHistoryItem item}) = _$AddImpl;
 
   BrowserHistoryItem get item;
-  @JsonKey(ignore: true)
+
+  /// Create a copy of BrowserHistoryEvent
+  /// with the given fields replaced by the non-null parameter values.
+  @JsonKey(includeFromJson: false, includeToJson: false)
   _$$AddImplCopyWith<_$AddImpl> get copyWith =>
       throw _privateConstructorUsedError;
 }
@@ -292,6 +304,8 @@ class __$$AddMultipleImplCopyWithImpl<$Res>
       _$AddMultipleImpl _value, $Res Function(_$AddMultipleImpl) _then)
       : super(_value, _then);
 
+  /// Create a copy of BrowserHistoryEvent
+  /// with the given fields replaced by the non-null parameter values.
   @pragma('vm:prefer-inline')
   @override
   $Res call({
@@ -337,7 +351,9 @@ class _$AddMultipleImpl implements _AddMultiple {
   int get hashCode =>
       Object.hash(runtimeType, const DeepCollectionEquality().hash(_items));
 
-  @JsonKey(ignore: true)
+  /// Create a copy of BrowserHistoryEvent
+  /// with the given fields replaced by the non-null parameter values.
+  @JsonKey(includeFromJson: false, includeToJson: false)
   @override
   @pragma('vm:prefer-inline')
   _$$AddMultipleImplCopyWith<_$AddMultipleImpl> get copyWith =>
@@ -441,7 +457,10 @@ abstract class _AddMultiple implements BrowserHistoryEvent {
       _$AddMultipleImpl;
 
   List<BrowserHistoryItem> get items;
-  @JsonKey(ignore: true)
+
+  /// Create a copy of BrowserHistoryEvent
+  /// with the given fields replaced by the non-null parameter values.
+  @JsonKey(includeFromJson: false, includeToJson: false)
   _$$AddMultipleImplCopyWith<_$AddMultipleImpl> get copyWith =>
       throw _privateConstructorUsedError;
 }
@@ -463,6 +482,8 @@ class __$$RemoveImplCopyWithImpl<$Res>
       _$RemoveImpl _value, $Res Function(_$RemoveImpl) _then)
       : super(_value, _then);
 
+  /// Create a copy of BrowserHistoryEvent
+  /// with the given fields replaced by the non-null parameter values.
   @pragma('vm:prefer-inline')
   @override
   $Res call({
@@ -501,7 +522,9 @@ class _$RemoveImpl implements _Remove {
   @override
   int get hashCode => Object.hash(runtimeType, id);
 
-  @JsonKey(ignore: true)
+  /// Create a copy of BrowserHistoryEvent
+  /// with the given fields replaced by the non-null parameter values.
+  @JsonKey(includeFromJson: false, includeToJson: false)
   @override
   @pragma('vm:prefer-inline')
   _$$RemoveImplCopyWith<_$RemoveImpl> get copyWith =>
@@ -604,7 +627,10 @@ abstract class _Remove implements BrowserHistoryEvent {
   const factory _Remove({required final String id}) = _$RemoveImpl;
 
   String get id;
-  @JsonKey(ignore: true)
+
+  /// Create a copy of BrowserHistoryEvent
+  /// with the given fields replaced by the non-null parameter values.
+  @JsonKey(includeFromJson: false, includeToJson: false)
   _$$RemoveImplCopyWith<_$RemoveImpl> get copyWith =>
       throw _privateConstructorUsedError;
 }
@@ -623,6 +649,9 @@ class __$$ClearImplCopyWithImpl<$Res>
   __$$ClearImplCopyWithImpl(
       _$ClearImpl _value, $Res Function(_$ClearImpl) _then)
       : super(_value, _then);
+
+  /// Create a copy of BrowserHistoryEvent
+  /// with the given fields replaced by the non-null parameter values.
 }
 
 /// @nodoc
@@ -756,6 +785,8 @@ class __$$SetImplCopyWithImpl<$Res>
   __$$SetImplCopyWithImpl(_$SetImpl _value, $Res Function(_$SetImpl) _then)
       : super(_value, _then);
 
+  /// Create a copy of BrowserHistoryEvent
+  /// with the given fields replaced by the non-null parameter values.
   @pragma('vm:prefer-inline')
   @override
   $Res call({
@@ -801,7 +832,9 @@ class _$SetImpl implements _Set {
   int get hashCode =>
       Object.hash(runtimeType, const DeepCollectionEquality().hash(_items));
 
-  @JsonKey(ignore: true)
+  /// Create a copy of BrowserHistoryEvent
+  /// with the given fields replaced by the non-null parameter values.
+  @JsonKey(includeFromJson: false, includeToJson: false)
   @override
   @pragma('vm:prefer-inline')
   _$$SetImplCopyWith<_$SetImpl> get copyWith =>
@@ -905,7 +938,10 @@ abstract class _Set implements BrowserHistoryEvent {
       _$SetImpl;
 
   List<BrowserHistoryItem> get items;
-  @JsonKey(ignore: true)
+
+  /// Create a copy of BrowserHistoryEvent
+  /// with the given fields replaced by the non-null parameter values.
+  @JsonKey(includeFromJson: false, includeToJson: false)
   _$$SetImplCopyWith<_$SetImpl> get copyWith =>
       throw _privateConstructorUsedError;
 }
@@ -927,6 +963,8 @@ class __$$SetSearchStringImplCopyWithImpl<$Res>
       _$SetSearchStringImpl _value, $Res Function(_$SetSearchStringImpl) _then)
       : super(_value, _then);
 
+  /// Create a copy of BrowserHistoryEvent
+  /// with the given fields replaced by the non-null parameter values.
   @pragma('vm:prefer-inline')
   @override
   $Res call({
@@ -965,7 +1003,9 @@ class _$SetSearchStringImpl implements _SetSearchString {
   @override
   int get hashCode => Object.hash(runtimeType, value);
 
-  @JsonKey(ignore: true)
+  /// Create a copy of BrowserHistoryEvent
+  /// with the given fields replaced by the non-null parameter values.
+  @JsonKey(includeFromJson: false, includeToJson: false)
   @override
   @pragma('vm:prefer-inline')
   _$$SetSearchStringImplCopyWith<_$SetSearchStringImpl> get copyWith =>
@@ -1070,7 +1110,10 @@ abstract class _SetSearchString implements BrowserHistoryEvent {
       _$SetSearchStringImpl;
 
   String get value;
-  @JsonKey(ignore: true)
+
+  /// Create a copy of BrowserHistoryEvent
+  /// with the given fields replaced by the non-null parameter values.
+  @JsonKey(includeFromJson: false, includeToJson: false)
   _$$SetSearchStringImplCopyWith<_$SetSearchStringImpl> get copyWith =>
       throw _privateConstructorUsedError;
 }
@@ -1092,6 +1135,8 @@ class __$$SetIsEditingImplCopyWithImpl<$Res>
       _$SetIsEditingImpl _value, $Res Function(_$SetIsEditingImpl) _then)
       : super(_value, _then);
 
+  /// Create a copy of BrowserHistoryEvent
+  /// with the given fields replaced by the non-null parameter values.
   @pragma('vm:prefer-inline')
   @override
   $Res call({
@@ -1130,7 +1175,9 @@ class _$SetIsEditingImpl implements _SetIsEditing {
   @override
   int get hashCode => Object.hash(runtimeType, value);
 
-  @JsonKey(ignore: true)
+  /// Create a copy of BrowserHistoryEvent
+  /// with the given fields replaced by the non-null parameter values.
+  @JsonKey(includeFromJson: false, includeToJson: false)
   @override
   @pragma('vm:prefer-inline')
   _$$SetIsEditingImplCopyWith<_$SetIsEditingImpl> get copyWith =>
@@ -1233,7 +1280,10 @@ abstract class _SetIsEditing implements BrowserHistoryEvent {
   const factory _SetIsEditing({required final bool value}) = _$SetIsEditingImpl;
 
   bool get value;
-  @JsonKey(ignore: true)
+
+  /// Create a copy of BrowserHistoryEvent
+  /// with the given fields replaced by the non-null parameter values.
+  @JsonKey(includeFromJson: false, includeToJson: false)
   _$$SetIsEditingImplCopyWith<_$SetIsEditingImpl> get copyWith =>
       throw _privateConstructorUsedError;
 }
@@ -1244,7 +1294,9 @@ mixin _$BrowserHistoryState {
   String get searchString => throw _privateConstructorUsedError;
   bool get isEditing => throw _privateConstructorUsedError;
 
-  @JsonKey(ignore: true)
+  /// Create a copy of BrowserHistoryState
+  /// with the given fields replaced by the non-null parameter values.
+  @JsonKey(includeFromJson: false, includeToJson: false)
   $BrowserHistoryStateCopyWith<BrowserHistoryState> get copyWith =>
       throw _privateConstructorUsedError;
 }
@@ -1269,6 +1321,8 @@ class _$BrowserHistoryStateCopyWithImpl<$Res, $Val extends BrowserHistoryState>
   // ignore: unused_field
   final $Res Function($Val) _then;
 
+  /// Create a copy of BrowserHistoryState
+  /// with the given fields replaced by the non-null parameter values.
   @pragma('vm:prefer-inline')
   @override
   $Res call({
@@ -1313,6 +1367,8 @@ class __$$BrowserHistoryStateImplCopyWithImpl<$Res>
       $Res Function(_$BrowserHistoryStateImpl) _then)
       : super(_value, _then);
 
+  /// Create a copy of BrowserHistoryState
+  /// with the given fields replaced by the non-null parameter values.
   @pragma('vm:prefer-inline')
   @override
   $Res call({
@@ -1380,7 +1436,9 @@ class _$BrowserHistoryStateImpl implements _BrowserHistoryState {
   int get hashCode => Object.hash(runtimeType,
       const DeepCollectionEquality().hash(_items), searchString, isEditing);
 
-  @JsonKey(ignore: true)
+  /// Create a copy of BrowserHistoryState
+  /// with the given fields replaced by the non-null parameter values.
+  @JsonKey(includeFromJson: false, includeToJson: false)
   @override
   @pragma('vm:prefer-inline')
   _$$BrowserHistoryStateImplCopyWith<_$BrowserHistoryStateImpl> get copyWith =>
@@ -1400,8 +1458,11 @@ abstract class _BrowserHistoryState implements BrowserHistoryState {
   String get searchString;
   @override
   bool get isEditing;
+
+  /// Create a copy of BrowserHistoryState
+  /// with the given fields replaced by the non-null parameter values.
   @override
-  @JsonKey(ignore: true)
+  @JsonKey(includeFromJson: false, includeToJson: false)
   _$$BrowserHistoryStateImplCopyWith<_$BrowserHistoryStateImpl> get copyWith =>
       throw _privateConstructorUsedError;
 }

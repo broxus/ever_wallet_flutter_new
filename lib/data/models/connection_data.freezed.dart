@@ -199,8 +199,13 @@ mixin _$ConnectionData {
     required TResult orElse(),
   }) =>
       throw _privateConstructorUsedError;
+
+  /// Serializes this ConnectionData to a JSON map.
   Map<String, dynamic> toJson() => throw _privateConstructorUsedError;
-  @JsonKey(ignore: true)
+
+  /// Create a copy of ConnectionData
+  /// with the given fields replaced by the non-null parameter values.
+  @JsonKey(includeFromJson: false, includeToJson: false)
   $ConnectionDataCopyWith<ConnectionData> get copyWith =>
       throw _privateConstructorUsedError;
 }
@@ -234,6 +239,8 @@ class _$ConnectionDataCopyWithImpl<$Res, $Val extends ConnectionData>
   // ignore: unused_field
   final $Res Function($Val) _then;
 
+  /// Create a copy of ConnectionData
+  /// with the given fields replaced by the non-null parameter values.
   @pragma('vm:prefer-inline')
   @override
   $Res call({
@@ -325,6 +332,8 @@ class __$$ConnectionDataGqlImplCopyWithImpl<$Res>
       $Res Function(_$ConnectionDataGqlImpl) _then)
       : super(_value, _then);
 
+  /// Create a copy of ConnectionData
+  /// with the given fields replaced by the non-null parameter values.
   @pragma('vm:prefer-inline')
   @override
   $Res call({
@@ -492,7 +501,7 @@ class _$ConnectionDataGqlImpl implements _ConnectionDataGql {
                 other.sortingOrder == sortingOrder));
   }
 
-  @JsonKey(ignore: true)
+  @JsonKey(includeFromJson: false, includeToJson: false)
   @override
   int get hashCode => Object.hash(
       runtimeType,
@@ -510,7 +519,9 @@ class _$ConnectionDataGqlImpl implements _ConnectionDataGql {
       canBeEdited,
       sortingOrder);
 
-  @JsonKey(ignore: true)
+  /// Create a copy of ConnectionData
+  /// with the given fields replaced by the non-null parameter values.
+  @JsonKey(includeFromJson: false, includeToJson: false)
   @override
   @pragma('vm:prefer-inline')
   _$$ConnectionDataGqlImplCopyWith<_$ConnectionDataGqlImpl> get copyWith =>
@@ -788,8 +799,11 @@ abstract class _ConnectionDataGql implements ConnectionData {
   bool get canBeEdited;
   @override
   double get sortingOrder;
+
+  /// Create a copy of ConnectionData
+  /// with the given fields replaced by the non-null parameter values.
   @override
-  @JsonKey(ignore: true)
+  @JsonKey(includeFromJson: false, includeToJson: false)
   _$$ConnectionDataGqlImplCopyWith<_$ConnectionDataGqlImpl> get copyWith =>
       throw _privateConstructorUsedError;
 }
@@ -824,6 +838,8 @@ class __$$ConnectionDataProtoImplCopyWithImpl<$Res>
       $Res Function(_$ConnectionDataProtoImpl) _then)
       : super(_value, _then);
 
+  /// Create a copy of ConnectionData
+  /// with the given fields replaced by the non-null parameter values.
   @pragma('vm:prefer-inline')
   @override
   $Res call({
@@ -966,7 +982,7 @@ class _$ConnectionDataProtoImpl implements _ConnectionDataProto {
                 other.sortingOrder == sortingOrder));
   }
 
-  @JsonKey(ignore: true)
+  @JsonKey(includeFromJson: false, includeToJson: false)
   @override
   int get hashCode => Object.hash(
       runtimeType,
@@ -982,7 +998,9 @@ class _$ConnectionDataProtoImpl implements _ConnectionDataProto {
       canBeEdited,
       sortingOrder);
 
-  @JsonKey(ignore: true)
+  /// Create a copy of ConnectionData
+  /// with the given fields replaced by the non-null parameter values.
+  @JsonKey(includeFromJson: false, includeToJson: false)
   @override
   @pragma('vm:prefer-inline')
   _$$ConnectionDataProtoImplCopyWith<_$ConnectionDataProtoImpl> get copyWith =>
@@ -1220,8 +1238,11 @@ abstract class _ConnectionDataProto implements ConnectionData {
   bool get canBeEdited;
   @override
   double get sortingOrder;
+
+  /// Create a copy of ConnectionData
+  /// with the given fields replaced by the non-null parameter values.
   @override
-  @JsonKey(ignore: true)
+  @JsonKey(includeFromJson: false, includeToJson: false)
   _$$ConnectionDataProtoImplCopyWith<_$ConnectionDataProtoImpl> get copyWith =>
       throw _privateConstructorUsedError;
 }
@@ -1256,6 +1277,8 @@ class __$$ConnectionDataJrpcImplCopyWithImpl<$Res>
       $Res Function(_$ConnectionDataJrpcImpl) _then)
       : super(_value, _then);
 
+  /// Create a copy of ConnectionData
+  /// with the given fields replaced by the non-null parameter values.
   @pragma('vm:prefer-inline')
   @override
   $Res call({
@@ -1398,7 +1421,7 @@ class _$ConnectionDataJrpcImpl implements _ConnectionDataJrpc {
                 other.sortingOrder == sortingOrder));
   }
 
-  @JsonKey(ignore: true)
+  @JsonKey(includeFromJson: false, includeToJson: false)
   @override
   int get hashCode => Object.hash(
       runtimeType,
@@ -1414,7 +1437,9 @@ class _$ConnectionDataJrpcImpl implements _ConnectionDataJrpc {
       canBeEdited,
       sortingOrder);
 
-  @JsonKey(ignore: true)
+  /// Create a copy of ConnectionData
+  /// with the given fields replaced by the non-null parameter values.
+  @JsonKey(includeFromJson: false, includeToJson: false)
   @override
   @pragma('vm:prefer-inline')
   _$$ConnectionDataJrpcImplCopyWith<_$ConnectionDataJrpcImpl> get copyWith =>
@@ -1652,8 +1677,11 @@ abstract class _ConnectionDataJrpc implements ConnectionData {
   bool get canBeEdited;
   @override
   double get sortingOrder;
+
+  /// Create a copy of ConnectionData
+  /// with the given fields replaced by the non-null parameter values.
   @override
-  @JsonKey(ignore: true)
+  @JsonKey(includeFromJson: false, includeToJson: false)
   _$$ConnectionDataJrpcImplCopyWith<_$ConnectionDataJrpcImpl> get copyWith =>
       throw _privateConstructorUsedError;
 }

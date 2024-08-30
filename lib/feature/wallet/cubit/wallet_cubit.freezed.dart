@@ -84,6 +84,9 @@ class _$WalletStateCopyWithImpl<$Res, $Val extends WalletState>
   final $Val _value;
   // ignore: unused_field
   final $Res Function($Val) _then;
+
+  /// Create a copy of WalletState
+  /// with the given fields replaced by the non-null parameter values.
 }
 
 /// @nodoc
@@ -100,6 +103,9 @@ class __$$InitialImplCopyWithImpl<$Res>
   __$$InitialImplCopyWithImpl(
       _$InitialImpl _value, $Res Function(_$InitialImpl) _then)
       : super(_value, _then);
+
+  /// Create a copy of WalletState
+  /// with the given fields replaced by the non-null parameter values.
 }
 
 /// @nodoc
@@ -214,6 +220,9 @@ class __$$EmptyImplCopyWithImpl<$Res>
   __$$EmptyImplCopyWithImpl(
       _$EmptyImpl _value, $Res Function(_$EmptyImpl) _then)
       : super(_value, _then);
+
+  /// Create a copy of WalletState
+  /// with the given fields replaced by the non-null parameter values.
 }
 
 /// @nodoc
@@ -337,6 +346,8 @@ class __$$AccountsImplCopyWithImpl<$Res>
       _$AccountsImpl _value, $Res Function(_$AccountsImpl) _then)
       : super(_value, _then);
 
+  /// Create a copy of WalletState
+  /// with the given fields replaced by the non-null parameter values.
   @pragma('vm:prefer-inline')
   @override
   $Res call({
@@ -365,6 +376,8 @@ class __$$AccountsImplCopyWithImpl<$Res>
     ));
   }
 
+  /// Create a copy of WalletState
+  /// with the given fields replaced by the non-null parameter values.
   @override
   @pragma('vm:prefer-inline')
   $PublicKeyCopyWith<$Res> get currentKey {
@@ -426,7 +439,9 @@ class _$AccountsImpl implements _Accounts {
       currentAccount,
       controller);
 
-  @JsonKey(ignore: true)
+  /// Create a copy of WalletState
+  /// with the given fields replaced by the non-null parameter values.
+  @JsonKey(includeFromJson: false, includeToJson: false)
   @override
   @pragma('vm:prefer-inline')
   _$$AccountsImplCopyWith<_$AccountsImpl> get copyWith =>
@@ -518,7 +533,10 @@ abstract class _Accounts implements WalletState {
   PublicKey get currentKey;
   KeyAccount? get currentAccount;
   PageController get controller;
-  @JsonKey(ignore: true)
+
+  /// Create a copy of WalletState
+  /// with the given fields replaced by the non-null parameter values.
+  @JsonKey(includeFromJson: false, includeToJson: false)
   _$$AccountsImplCopyWith<_$AccountsImpl> get copyWith =>
       throw _privateConstructorUsedError;
 }

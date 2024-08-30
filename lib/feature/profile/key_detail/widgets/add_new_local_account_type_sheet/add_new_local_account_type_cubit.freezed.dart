@@ -93,6 +93,9 @@ class _$AddNewLocalAccountTypeStateCopyWithImpl<$Res,
   final $Val _value;
   // ignore: unused_field
   final $Res Function($Val) _then;
+
+  /// Create a copy of AddNewLocalAccountTypeState
+  /// with the given fields replaced by the non-null parameter values.
 }
 
 /// @nodoc
@@ -109,6 +112,9 @@ class __$$InitialImplCopyWithImpl<$Res>
   __$$InitialImplCopyWithImpl(
       _$InitialImpl _value, $Res Function(_$InitialImpl) _then)
       : super(_value, _then);
+
+  /// Create a copy of AddNewLocalAccountTypeState
+  /// with the given fields replaced by the non-null parameter values.
 }
 
 /// @nodoc
@@ -239,6 +245,8 @@ class __$$DataImplCopyWithImpl<$Res>
   __$$DataImplCopyWithImpl(_$DataImpl _value, $Res Function(_$DataImpl) _then)
       : super(_value, _then);
 
+  /// Create a copy of AddNewLocalAccountTypeState
+  /// with the given fields replaced by the non-null parameter values.
   @pragma('vm:prefer-inline')
   @override
   $Res call({
@@ -272,6 +280,8 @@ class __$$DataImplCopyWithImpl<$Res>
     ));
   }
 
+  /// Create a copy of AddNewLocalAccountTypeState
+  /// with the given fields replaced by the non-null parameter values.
   @override
   @pragma('vm:prefer-inline')
   $WalletTypeCopyWith<$Res> get defaultAccount {
@@ -280,6 +290,8 @@ class __$$DataImplCopyWithImpl<$Res>
     });
   }
 
+  /// Create a copy of AddNewLocalAccountTypeState
+  /// with the given fields replaced by the non-null parameter values.
   @override
   @pragma('vm:prefer-inline')
   $WalletTypeCopyWith<$Res>? get currentSelected {
@@ -360,7 +372,9 @@ class _$DataImpl implements _Data {
       currentSelected,
       isCompleted);
 
-  @JsonKey(ignore: true)
+  /// Create a copy of AddNewLocalAccountTypeState
+  /// with the given fields replaced by the non-null parameter values.
+  @JsonKey(includeFromJson: false, includeToJson: false)
   @override
   @pragma('vm:prefer-inline')
   _$$DataImplCopyWith<_$DataImpl> get copyWith =>
@@ -463,7 +477,10 @@ abstract class _Data implements AddNewLocalAccountTypeState {
   List<WalletType> get createdAccounts;
   WalletType? get currentSelected;
   bool get isCompleted;
-  @JsonKey(ignore: true)
+
+  /// Create a copy of AddNewLocalAccountTypeState
+  /// with the given fields replaced by the non-null parameter values.
+  @JsonKey(includeFromJson: false, includeToJson: false)
   _$$DataImplCopyWith<_$DataImpl> get copyWith =>
       throw _privateConstructorUsedError;
 }

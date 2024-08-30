@@ -38,8 +38,12 @@ mixin _$TokenContractAsset {
   String? get totalSupply => throw _privateConstructorUsedError;
   String? get logoURI => throw _privateConstructorUsedError;
 
+  /// Serializes this TokenContractAsset to a JSON map.
   Map<String, dynamic> toJson() => throw _privateConstructorUsedError;
-  @JsonKey(ignore: true)
+
+  /// Create a copy of TokenContractAsset
+  /// with the given fields replaced by the non-null parameter values.
+  @JsonKey(includeFromJson: false, includeToJson: false)
   $TokenContractAssetCopyWith<TokenContractAsset> get copyWith =>
       throw _privateConstructorUsedError;
 }
@@ -79,6 +83,8 @@ class _$TokenContractAssetCopyWithImpl<$Res, $Val extends TokenContractAsset>
   // ignore: unused_field
   final $Res Function($Val) _then;
 
+  /// Create a copy of TokenContractAsset
+  /// with the given fields replaced by the non-null parameter values.
   @pragma('vm:prefer-inline')
   @override
   $Res call({
@@ -142,6 +148,8 @@ class _$TokenContractAssetCopyWithImpl<$Res, $Val extends TokenContractAsset>
     ) as $Val);
   }
 
+  /// Create a copy of TokenContractAsset
+  /// with the given fields replaced by the non-null parameter values.
   @override
   @pragma('vm:prefer-inline')
   $AddressCopyWith<$Res> get address {
@@ -150,6 +158,8 @@ class _$TokenContractAssetCopyWithImpl<$Res, $Val extends TokenContractAsset>
     });
   }
 
+  /// Create a copy of TokenContractAsset
+  /// with the given fields replaced by the non-null parameter values.
   @override
   @pragma('vm:prefer-inline')
   $AddressCopyWith<$Res>? get ownerAddress {
@@ -200,6 +210,8 @@ class __$$TokenContractAssetImplCopyWithImpl<$Res>
       $Res Function(_$TokenContractAssetImpl) _then)
       : super(_value, _then);
 
+  /// Create a copy of TokenContractAsset
+  /// with the given fields replaced by the non-null parameter values.
   @pragma('vm:prefer-inline')
   @override
   $Res call({
@@ -340,7 +352,7 @@ class _$TokenContractAssetImpl implements _TokenContractAsset {
             (identical(other.logoURI, logoURI) || other.logoURI == logoURI));
   }
 
-  @JsonKey(ignore: true)
+  @JsonKey(includeFromJson: false, includeToJson: false)
   @override
   int get hashCode => Object.hash(
       runtimeType,
@@ -356,7 +368,9 @@ class _$TokenContractAssetImpl implements _TokenContractAsset {
       totalSupply,
       logoURI);
 
-  @JsonKey(ignore: true)
+  /// Create a copy of TokenContractAsset
+  /// with the given fields replaced by the non-null parameter values.
+  @JsonKey(includeFromJson: false, includeToJson: false)
   @override
   @pragma('vm:prefer-inline')
   _$$TokenContractAssetImplCopyWith<_$TokenContractAssetImpl> get copyWith =>
@@ -395,19 +409,19 @@ abstract class _TokenContractAsset implements TokenContractAsset {
   @override
   String get symbol;
   @override
-  int get decimals;
-  @override // address of rootTokenContract
+  int get decimals; // address of rootTokenContract
+  @override
   Address get address;
   @override
   NetworkType get networkType;
   @override
-  TokenWalletVersion get version;
-  @override // true if custom, false if system
+  TokenWalletVersion get version; // true if custom, false if system
+  @override
   bool get isCustom;
   @override
-  int? get chainId;
-  @override // address of owner that could be set when loaded in
+  int? get chainId; // address of owner that could be set when loaded in
 // <TonWallet.getTokenRootDetailsFromTokenWallet>, may be optional
+  @override
   @JsonKey(includeToJson: false, includeFromJson: false)
   Address? get ownerAddress;
   @override
@@ -415,8 +429,11 @@ abstract class _TokenContractAsset implements TokenContractAsset {
   String? get totalSupply;
   @override
   String? get logoURI;
+
+  /// Create a copy of TokenContractAsset
+  /// with the given fields replaced by the non-null parameter values.
   @override
-  @JsonKey(ignore: true)
+  @JsonKey(includeFromJson: false, includeToJson: false)
   _$$TokenContractAssetImplCopyWith<_$TokenContractAssetImpl> get copyWith =>
       throw _privateConstructorUsedError;
 }

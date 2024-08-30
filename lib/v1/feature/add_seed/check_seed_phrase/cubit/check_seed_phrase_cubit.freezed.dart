@@ -103,6 +103,9 @@ class _$CheckSeedPhraseCubitStateCopyWithImpl<$Res,
   final $Val _value;
   // ignore: unused_field
   final $Res Function($Val) _then;
+
+  /// Create a copy of CheckSeedPhraseCubitState
+  /// with the given fields replaced by the non-null parameter values.
 }
 
 /// @nodoc
@@ -119,6 +122,9 @@ class __$$InitialImplCopyWithImpl<$Res>
   __$$InitialImplCopyWithImpl(
       _$InitialImpl _value, $Res Function(_$InitialImpl) _then)
       : super(_value, _then);
+
+  /// Create a copy of CheckSeedPhraseCubitState
+  /// with the given fields replaced by the non-null parameter values.
 }
 
 /// @nodoc
@@ -264,6 +270,8 @@ class __$$AnswerImplCopyWithImpl<$Res>
       _$AnswerImpl _value, $Res Function(_$AnswerImpl) _then)
       : super(_value, _then);
 
+  /// Create a copy of CheckSeedPhraseCubitState
+  /// with the given fields replaced by the non-null parameter values.
   @pragma('vm:prefer-inline')
   @override
   $Res call({
@@ -351,7 +359,9 @@ class _$AnswerImpl with DiagnosticableTreeMixin implements _Answer {
       const DeepCollectionEquality().hash(_userAnswers),
       currentAnswerIndex);
 
-  @JsonKey(ignore: true)
+  /// Create a copy of CheckSeedPhraseCubitState
+  /// with the given fields replaced by the non-null parameter values.
+  @JsonKey(includeFromJson: false, includeToJson: false)
   @override
   @pragma('vm:prefer-inline')
   _$$AnswerImplCopyWith<_$AnswerImpl> get copyWith =>
@@ -459,7 +469,10 @@ abstract class _Answer implements CheckSeedPhraseCubitState {
   List<String> get availableAnswers;
   List<CheckSeedCorrectAnswer> get userAnswers;
   int get currentAnswerIndex;
-  @JsonKey(ignore: true)
+
+  /// Create a copy of CheckSeedPhraseCubitState
+  /// with the given fields replaced by the non-null parameter values.
+  @JsonKey(includeFromJson: false, includeToJson: false)
   _$$AnswerImplCopyWith<_$AnswerImpl> get copyWith =>
       throw _privateConstructorUsedError;
 }
@@ -483,6 +496,8 @@ class __$$CorrectImplCopyWithImpl<$Res>
       _$CorrectImpl _value, $Res Function(_$CorrectImpl) _then)
       : super(_value, _then);
 
+  /// Create a copy of CheckSeedPhraseCubitState
+  /// with the given fields replaced by the non-null parameter values.
   @pragma('vm:prefer-inline')
   @override
   $Res call({
@@ -558,7 +573,9 @@ class _$CorrectImpl with DiagnosticableTreeMixin implements _Correct {
       const DeepCollectionEquality().hash(_availableAnswers),
       const DeepCollectionEquality().hash(_userAnswers));
 
-  @JsonKey(ignore: true)
+  /// Create a copy of CheckSeedPhraseCubitState
+  /// with the given fields replaced by the non-null parameter values.
+  @JsonKey(includeFromJson: false, includeToJson: false)
   @override
   @pragma('vm:prefer-inline')
   _$$CorrectImplCopyWith<_$CorrectImpl> get copyWith =>
@@ -663,7 +680,10 @@ abstract class _Correct implements CheckSeedPhraseCubitState {
 
   List<String> get availableAnswers;
   List<CheckSeedCorrectAnswer> get userAnswers;
-  @JsonKey(ignore: true)
+
+  /// Create a copy of CheckSeedPhraseCubitState
+  /// with the given fields replaced by the non-null parameter values.
+  @JsonKey(includeFromJson: false, includeToJson: false)
   _$$CorrectImplCopyWith<_$CorrectImpl> get copyWith =>
       throw _privateConstructorUsedError;
 }
@@ -687,6 +707,8 @@ class __$$ErrorImplCopyWithImpl<$Res>
       _$ErrorImpl _value, $Res Function(_$ErrorImpl) _then)
       : super(_value, _then);
 
+  /// Create a copy of CheckSeedPhraseCubitState
+  /// with the given fields replaced by the non-null parameter values.
   @pragma('vm:prefer-inline')
   @override
   $Res call({
@@ -762,7 +784,9 @@ class _$ErrorImpl with DiagnosticableTreeMixin implements _Error {
       const DeepCollectionEquality().hash(_availableAnswers),
       const DeepCollectionEquality().hash(_userAnswers));
 
-  @JsonKey(ignore: true)
+  /// Create a copy of CheckSeedPhraseCubitState
+  /// with the given fields replaced by the non-null parameter values.
+  @JsonKey(includeFromJson: false, includeToJson: false)
   @override
   @pragma('vm:prefer-inline')
   _$$ErrorImplCopyWith<_$ErrorImpl> get copyWith =>
@@ -867,7 +891,10 @@ abstract class _Error implements CheckSeedPhraseCubitState {
 
   List<String> get availableAnswers;
   List<CheckSeedCorrectAnswer> get userAnswers;
-  @JsonKey(ignore: true)
+
+  /// Create a copy of CheckSeedPhraseCubitState
+  /// with the given fields replaced by the non-null parameter values.
+  @JsonKey(includeFromJson: false, includeToJson: false)
   _$$ErrorImplCopyWith<_$ErrorImpl> get copyWith =>
       throw _privateConstructorUsedError;
 }

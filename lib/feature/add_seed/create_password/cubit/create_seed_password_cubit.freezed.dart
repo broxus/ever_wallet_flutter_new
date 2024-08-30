@@ -19,7 +19,9 @@ mixin _$CreateSeedPasswordState {
   bool get isLoading => throw _privateConstructorUsedError;
   PasswordStatus get status => throw _privateConstructorUsedError;
 
-  @JsonKey(ignore: true)
+  /// Create a copy of CreateSeedPasswordState
+  /// with the given fields replaced by the non-null parameter values.
+  @JsonKey(includeFromJson: false, includeToJson: false)
   $CreateSeedPasswordStateCopyWith<CreateSeedPasswordState> get copyWith =>
       throw _privateConstructorUsedError;
 }
@@ -44,6 +46,8 @@ class _$CreateSeedPasswordStateCopyWithImpl<$Res,
   // ignore: unused_field
   final $Res Function($Val) _then;
 
+  /// Create a copy of CreateSeedPasswordState
+  /// with the given fields replaced by the non-null parameter values.
   @pragma('vm:prefer-inline')
   @override
   $Res call({
@@ -85,6 +89,8 @@ class __$$CreateSeedPasswordStateImplCopyWithImpl<$Res>
       $Res Function(_$CreateSeedPasswordStateImpl) _then)
       : super(_value, _then);
 
+  /// Create a copy of CreateSeedPasswordState
+  /// with the given fields replaced by the non-null parameter values.
   @pragma('vm:prefer-inline')
   @override
   $Res call({
@@ -133,7 +139,9 @@ class _$CreateSeedPasswordStateImpl implements _CreateSeedPasswordState {
   @override
   int get hashCode => Object.hash(runtimeType, isLoading, status);
 
-  @JsonKey(ignore: true)
+  /// Create a copy of CreateSeedPasswordState
+  /// with the given fields replaced by the non-null parameter values.
+  @JsonKey(includeFromJson: false, includeToJson: false)
   @override
   @pragma('vm:prefer-inline')
   _$$CreateSeedPasswordStateImplCopyWith<_$CreateSeedPasswordStateImpl>
@@ -150,8 +158,11 @@ abstract class _CreateSeedPasswordState implements CreateSeedPasswordState {
   bool get isLoading;
   @override
   PasswordStatus get status;
+
+  /// Create a copy of CreateSeedPasswordState
+  /// with the given fields replaced by the non-null parameter values.
   @override
-  @JsonKey(ignore: true)
+  @JsonKey(includeFromJson: false, includeToJson: false)
   _$$CreateSeedPasswordStateImplCopyWith<_$CreateSeedPasswordStateImpl>
       get copyWith => throw _privateConstructorUsedError;
 }

@@ -63,7 +63,9 @@ mixin _$EnterSeedPhraseInputModel {
   }) =>
       throw _privateConstructorUsedError;
 
-  @JsonKey(ignore: true)
+  /// Create a copy of EnterSeedPhraseInputModel
+  /// with the given fields replaced by the non-null parameter values.
+  @JsonKey(includeFromJson: false, includeToJson: false)
   $EnterSeedPhraseInputModelCopyWith<EnterSeedPhraseInputModel> get copyWith =>
       throw _privateConstructorUsedError;
 }
@@ -88,6 +90,8 @@ class _$EnterSeedPhraseInputModelCopyWithImpl<$Res,
   // ignore: unused_field
   final $Res Function($Val) _then;
 
+  /// Create a copy of EnterSeedPhraseInputModel
+  /// with the given fields replaced by the non-null parameter values.
   @pragma('vm:prefer-inline')
   @override
   $Res call({
@@ -131,6 +135,8 @@ class __$$EnterSeedPhraseInputImplCopyWithImpl<$Res>
       $Res Function(_$EnterSeedPhraseInputImpl) _then)
       : super(_value, _then);
 
+  /// Create a copy of EnterSeedPhraseInputModel
+  /// with the given fields replaced by the non-null parameter values.
   @pragma('vm:prefer-inline')
   @override
   $Res call({
@@ -200,7 +206,9 @@ class _$EnterSeedPhraseInputImpl implements EnterSeedPhraseInput {
   int get hashCode =>
       Object.hash(runtimeType, controller, focus, index, hasError);
 
-  @JsonKey(ignore: true)
+  /// Create a copy of EnterSeedPhraseInputModel
+  /// with the given fields replaced by the non-null parameter values.
+  @JsonKey(includeFromJson: false, includeToJson: false)
   @override
   @pragma('vm:prefer-inline')
   _$$EnterSeedPhraseInputImplCopyWith<_$EnterSeedPhraseInputImpl>
@@ -290,8 +298,11 @@ abstract class EnterSeedPhraseInput implements EnterSeedPhraseInputModel {
   int get index;
   @override
   bool get hasError;
+
+  /// Create a copy of EnterSeedPhraseInputModel
+  /// with the given fields replaced by the non-null parameter values.
   @override
-  @JsonKey(ignore: true)
+  @JsonKey(includeFromJson: false, includeToJson: false)
   _$$EnterSeedPhraseInputImplCopyWith<_$EnterSeedPhraseInputImpl>
       get copyWith => throw _privateConstructorUsedError;
 }
@@ -318,6 +329,8 @@ class __$$EnterSeedPhraseEnteredImplCopyWithImpl<$Res>
       $Res Function(_$EnterSeedPhraseEnteredImpl) _then)
       : super(_value, _then);
 
+  /// Create a copy of EnterSeedPhraseInputModel
+  /// with the given fields replaced by the non-null parameter values.
   @pragma('vm:prefer-inline')
   @override
   $Res call({
@@ -374,7 +387,9 @@ class _$EnterSeedPhraseEnteredImpl implements EnterSeedPhraseEntered {
   @override
   int get hashCode => Object.hash(runtimeType, text, index, hasError);
 
-  @JsonKey(ignore: true)
+  /// Create a copy of EnterSeedPhraseInputModel
+  /// with the given fields replaced by the non-null parameter values.
+  @JsonKey(includeFromJson: false, includeToJson: false)
   @override
   @pragma('vm:prefer-inline')
   _$$EnterSeedPhraseEnteredImplCopyWith<_$EnterSeedPhraseEnteredImpl>
@@ -461,8 +476,11 @@ abstract class EnterSeedPhraseEntered implements EnterSeedPhraseInputModel {
   int get index;
   @override
   bool get hasError;
+
+  /// Create a copy of EnterSeedPhraseInputModel
+  /// with the given fields replaced by the non-null parameter values.
   @override
-  @JsonKey(ignore: true)
+  @JsonKey(includeFromJson: false, includeToJson: false)
   _$$EnterSeedPhraseEnteredImplCopyWith<_$EnterSeedPhraseEnteredImpl>
       get copyWith => throw _privateConstructorUsedError;
 }

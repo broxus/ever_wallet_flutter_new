@@ -97,6 +97,9 @@ class _$StakingBlocEventCopyWithImpl<$Res, $Val extends StakingBlocEvent>
   final $Val _value;
   // ignore: unused_field
   final $Res Function($Val) _then;
+
+  /// Create a copy of StakingBlocEvent
+  /// with the given fields replaced by the non-null parameter values.
 }
 
 /// @nodoc
@@ -112,6 +115,9 @@ class __$$InitImplCopyWithImpl<$Res>
     implements _$$InitImplCopyWith<$Res> {
   __$$InitImplCopyWithImpl(_$InitImpl _value, $Res Function(_$InitImpl) _then)
       : super(_value, _then);
+
+  /// Create a copy of StakingBlocEvent
+  /// with the given fields replaced by the non-null parameter values.
 }
 
 /// @nodoc
@@ -239,6 +245,9 @@ class __$$SelectMaxImplCopyWithImpl<$Res>
   __$$SelectMaxImplCopyWithImpl(
       _$SelectMaxImpl _value, $Res Function(_$SelectMaxImpl) _then)
       : super(_value, _then);
+
+  /// Create a copy of StakingBlocEvent
+  /// with the given fields replaced by the non-null parameter values.
 }
 
 /// @nodoc
@@ -366,6 +375,9 @@ class __$$DoActionImplCopyWithImpl<$Res>
   __$$DoActionImplCopyWithImpl(
       _$DoActionImpl _value, $Res Function(_$DoActionImpl) _then)
       : super(_value, _then);
+
+  /// Create a copy of StakingBlocEvent
+  /// with the given fields replaced by the non-null parameter values.
 }
 
 /// @nodoc
@@ -496,6 +508,8 @@ class __$$UpdateRequestsImplCopyWithImpl<$Res>
       _$UpdateRequestsImpl _value, $Res Function(_$UpdateRequestsImpl) _then)
       : super(_value, _then);
 
+  /// Create a copy of StakingBlocEvent
+  /// with the given fields replaced by the non-null parameter values.
   @pragma('vm:prefer-inline')
   @override
   $Res call({
@@ -541,7 +555,9 @@ class _$UpdateRequestsImpl implements _UpdateRequests {
   int get hashCode =>
       Object.hash(runtimeType, const DeepCollectionEquality().hash(_requests));
 
-  @JsonKey(ignore: true)
+  /// Create a copy of StakingBlocEvent
+  /// with the given fields replaced by the non-null parameter values.
+  @JsonKey(includeFromJson: false, includeToJson: false)
   @override
   @pragma('vm:prefer-inline')
   _$$UpdateRequestsImplCopyWith<_$UpdateRequestsImpl> get copyWith =>
@@ -641,7 +657,10 @@ abstract class _UpdateRequests implements StakingBlocEvent {
       _$UpdateRequestsImpl;
 
   List<StEverWithdrawRequest> get requests;
-  @JsonKey(ignore: true)
+
+  /// Create a copy of StakingBlocEvent
+  /// with the given fields replaced by the non-null parameter values.
+  @JsonKey(includeFromJson: false, includeToJson: false)
   _$$UpdateRequestsImplCopyWith<_$UpdateRequestsImpl> get copyWith =>
       throw _privateConstructorUsedError;
 }
@@ -663,6 +682,8 @@ class __$$ChangeTabImplCopyWithImpl<$Res>
       _$ChangeTabImpl _value, $Res Function(_$ChangeTabImpl) _then)
       : super(_value, _then);
 
+  /// Create a copy of StakingBlocEvent
+  /// with the given fields replaced by the non-null parameter values.
   @pragma('vm:prefer-inline')
   @override
   $Res call({
@@ -701,7 +722,9 @@ class _$ChangeTabImpl implements _ChangeTab {
   @override
   int get hashCode => Object.hash(runtimeType, type);
 
-  @JsonKey(ignore: true)
+  /// Create a copy of StakingBlocEvent
+  /// with the given fields replaced by the non-null parameter values.
+  @JsonKey(includeFromJson: false, includeToJson: false)
   @override
   @pragma('vm:prefer-inline')
   _$$ChangeTabImplCopyWith<_$ChangeTabImpl> get copyWith =>
@@ -799,7 +822,10 @@ abstract class _ChangeTab implements StakingBlocEvent {
   const factory _ChangeTab(final StakingPageType type) = _$ChangeTabImpl;
 
   StakingPageType get type;
-  @JsonKey(ignore: true)
+
+  /// Create a copy of StakingBlocEvent
+  /// with the given fields replaced by the non-null parameter values.
+  @JsonKey(includeFromJson: false, includeToJson: false)
   _$$ChangeTabImplCopyWith<_$ChangeTabImpl> get copyWith =>
       throw _privateConstructorUsedError;
 }
@@ -821,6 +847,8 @@ class __$$UpdateReceiveImplCopyWithImpl<$Res>
       _$UpdateReceiveImpl _value, $Res Function(_$UpdateReceiveImpl) _then)
       : super(_value, _then);
 
+  /// Create a copy of StakingBlocEvent
+  /// with the given fields replaced by the non-null parameter values.
   @pragma('vm:prefer-inline')
   @override
   $Res call({
@@ -859,7 +887,9 @@ class _$UpdateReceiveImpl implements _UpdateReceive {
   @override
   int get hashCode => Object.hash(runtimeType, value);
 
-  @JsonKey(ignore: true)
+  /// Create a copy of StakingBlocEvent
+  /// with the given fields replaced by the non-null parameter values.
+  @JsonKey(includeFromJson: false, includeToJson: false)
   @override
   @pragma('vm:prefer-inline')
   _$$UpdateReceiveImplCopyWith<_$UpdateReceiveImpl> get copyWith =>
@@ -957,7 +987,10 @@ abstract class _UpdateReceive implements StakingBlocEvent {
   const factory _UpdateReceive(final Fixed value) = _$UpdateReceiveImpl;
 
   Fixed get value;
-  @JsonKey(ignore: true)
+
+  /// Create a copy of StakingBlocEvent
+  /// with the given fields replaced by the non-null parameter values.
+  @JsonKey(includeFromJson: false, includeToJson: false)
   _$$UpdateReceiveImplCopyWith<_$UpdateReceiveImpl> get copyWith =>
       throw _privateConstructorUsedError;
 }
@@ -1077,6 +1110,9 @@ class _$StakingBlocStateCopyWithImpl<$Res, $Val extends StakingBlocState>
   final $Val _value;
   // ignore: unused_field
   final $Res Function($Val) _then;
+
+  /// Create a copy of StakingBlocState
+  /// with the given fields replaced by the non-null parameter values.
 }
 
 /// @nodoc
@@ -1093,6 +1129,9 @@ class __$$PreparingImplCopyWithImpl<$Res>
   __$$PreparingImplCopyWithImpl(
       _$PreparingImpl _value, $Res Function(_$PreparingImpl) _then)
       : super(_value, _then);
+
+  /// Create a copy of StakingBlocState
+  /// with the given fields replaced by the non-null parameter values.
 }
 
 /// @nodoc
@@ -1252,6 +1291,9 @@ class __$$InitErrorImplCopyWithImpl<$Res>
   __$$InitErrorImplCopyWithImpl(
       _$InitErrorImpl _value, $Res Function(_$InitErrorImpl) _then)
       : super(_value, _then);
+
+  /// Create a copy of StakingBlocState
+  /// with the given fields replaced by the non-null parameter values.
 }
 
 /// @nodoc
@@ -1414,6 +1456,8 @@ class __$$SubscribeErrorImplCopyWithImpl<$Res>
       _$SubscribeErrorImpl _value, $Res Function(_$SubscribeErrorImpl) _then)
       : super(_value, _then);
 
+  /// Create a copy of StakingBlocState
+  /// with the given fields replaced by the non-null parameter values.
   @pragma('vm:prefer-inline')
   @override
   $Res call({
@@ -1450,7 +1494,9 @@ class _$SubscribeErrorImpl implements _SubscribeError {
   int get hashCode =>
       Object.hash(runtimeType, const DeepCollectionEquality().hash(error));
 
-  @JsonKey(ignore: true)
+  /// Create a copy of StakingBlocState
+  /// with the given fields replaced by the non-null parameter values.
+  @JsonKey(includeFromJson: false, includeToJson: false)
   @override
   @pragma('vm:prefer-inline')
   _$$SubscribeErrorImplCopyWith<_$SubscribeErrorImpl> get copyWith =>
@@ -1581,7 +1627,10 @@ abstract class _SubscribeError implements StakingBlocState {
   const factory _SubscribeError(final Object error) = _$SubscribeErrorImpl;
 
   Object get error;
-  @JsonKey(ignore: true)
+
+  /// Create a copy of StakingBlocState
+  /// with the given fields replaced by the non-null parameter values.
+  @JsonKey(includeFromJson: false, includeToJson: false)
   _$$SubscribeErrorImplCopyWith<_$SubscribeErrorImpl> get copyWith =>
       throw _privateConstructorUsedError;
 }
@@ -1619,6 +1668,8 @@ class __$$StakingStateImplCopyWithImpl<$Res>
       _$StakingStateImpl _value, $Res Function(_$StakingStateImpl) _then)
       : super(_value, _then);
 
+  /// Create a copy of StakingBlocState
+  /// with the given fields replaced by the non-null parameter values.
   @pragma('vm:prefer-inline')
   @override
   $Res call({
@@ -1697,6 +1748,8 @@ class __$$StakingStateImplCopyWithImpl<$Res>
     ));
   }
 
+  /// Create a copy of StakingBlocState
+  /// with the given fields replaced by the non-null parameter values.
   @override
   @pragma('vm:prefer-inline')
   $PublicKeyCopyWith<$Res> get accountKey {
@@ -1829,7 +1882,9 @@ class _$StakingStateImpl implements _StakingState {
       const DeepCollectionEquality().hash(_requests),
       apy);
 
-  @JsonKey(ignore: true)
+  /// Create a copy of StakingBlocState
+  /// with the given fields replaced by the non-null parameter values.
+  @JsonKey(includeFromJson: false, includeToJson: false)
   @override
   @pragma('vm:prefer-inline')
   _$$StakingStateImplCopyWith<_$StakingStateImpl> get copyWith =>
@@ -2034,7 +2089,10 @@ abstract class _StakingState implements StakingBlocState {
   Money? get receiveBalance; // Pending withdraw requests
   List<StEverWithdrawRequest>? get requests; // Average profit
   double? get apy;
-  @JsonKey(ignore: true)
+
+  /// Create a copy of StakingBlocState
+  /// with the given fields replaced by the non-null parameter values.
+  @JsonKey(includeFromJson: false, includeToJson: false)
   _$$StakingStateImplCopyWith<_$StakingStateImpl> get copyWith =>
       throw _privateConstructorUsedError;
 }
