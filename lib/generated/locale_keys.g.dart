@@ -140,6 +140,7 @@ abstract class LocaleKeys {
   static const networkNameHint = 'networkNameHint';
   static const networkEndpoint = 'networkEndpoint';
   static const networkEndpointHint = 'networkEndpointHint';
+  static const networkAdditionalEndpointHint = 'networkAdditionalEndpointHint';
   static const networkEndpointLocal = 'networkEndpointLocal';
   static const networkCurrencySymbol = 'networkCurrencySymbol';
   static const networkCurrencySymbolHint = 'networkCurrencySymbolHint';
@@ -158,6 +159,7 @@ abstract class LocaleKeys {
   static const networkAddedSheetTitle = 'networkAddedSheetTitle';
   static const networkAddedSheetSwitch = 'networkAddedSheetSwitch';
   static const networkAddedSheetContinue = 'networkAddedSheetContinue';
+  static const networkDeleteTitle = 'networkDeleteTitle';
   static const networkDeleted = 'networkDeleted';
   static const networkDeletedUndo = 'networkDeletedUndo';
   static const networkSaved = 'networkSaved';
@@ -545,4 +547,5 @@ abstract class LocaleKeys {
   static const viewInExplorer = 'viewInExplorer';
   static const hideAccount = 'hideAccount';
   static const advancedSettings = 'advancedSettings';
+  static const backToSettings = 'backToSettings';
 }
