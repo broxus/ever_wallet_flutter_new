@@ -78,7 +78,8 @@ class SeedDetailView extends StatelessWidget {
                 ),
               ),
             ),
-            PrimaryButton(
+            if (!seed.masterKey.isLegacy)
+              PrimaryButton(
               buttonShape: ButtonShape.pill,
               title: LocaleKeys.addKey.tr(),
               postfixIcon: LucideIcons.plus,
