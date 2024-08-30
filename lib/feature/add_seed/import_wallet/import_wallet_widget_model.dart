@@ -13,6 +13,7 @@ import 'package:logging/logging.dart';
 import 'package:nekoton_repository/nekoton_repository.dart' hide Message;
 
 final seedSplitRegExp = RegExp(r'[ |;,:\n.]');
+const _legacySeedPhraseLength = 24;
 
 ImportWalletScreenWidgetModel defaultImportWalletWidgetModelFactory(
   BuildContext context,
@@ -53,9 +54,13 @@ class ImportWalletScreenWidgetModel
       if (words != null && words.isNotEmpty) {
         final phrase = words.join(' ');
 
+        final mnemonicType = _currentValue == _legacySeedPhraseLength
+            ? const MnemonicType.legacy()
+            : defaultMnemonicType;
+
         await deriveFromPhrase(
           phrase: phrase,
-          mnemonicType: defaultMnemonicType,
+          mnemonicType: mnemonicType,
         );
         if (!context.mounted) return;
         context.goFurther(
