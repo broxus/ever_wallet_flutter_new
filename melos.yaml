@@ -103,7 +103,7 @@ scripts:
 
   build:ios_match_assure:
     description: Making sure the iOS certificates and profiles are installed
-    run: bash scripts/ios-match-assure.sh $DEPLOY_TARGET
+    run: bash scripts/ios-match-assure.sh
 
   build:ios_match_new_devices:
     description: Registering new devices already added through devportal
