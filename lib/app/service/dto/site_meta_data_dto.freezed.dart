@@ -25,7 +25,9 @@ mixin _$SiteMetaDataDto {
   @HiveField(3)
   String? get description => throw _privateConstructorUsedError;
 
-  @JsonKey(ignore: true)
+  /// Create a copy of SiteMetaDataDto
+  /// with the given fields replaced by the non-null parameter values.
+  @JsonKey(includeFromJson: false, includeToJson: false)
   $SiteMetaDataDtoCopyWith<SiteMetaDataDto> get copyWith =>
       throw _privateConstructorUsedError;
 }
@@ -53,6 +55,8 @@ class _$SiteMetaDataDtoCopyWithImpl<$Res, $Val extends SiteMetaDataDto>
   // ignore: unused_field
   final $Res Function($Val) _then;
 
+  /// Create a copy of SiteMetaDataDto
+  /// with the given fields replaced by the non-null parameter values.
   @pragma('vm:prefer-inline')
   @override
   $Res call({
@@ -105,6 +109,8 @@ class __$$SiteMetaDataDtoImplCopyWithImpl<$Res>
       _$SiteMetaDataDtoImpl _value, $Res Function(_$SiteMetaDataDtoImpl) _then)
       : super(_value, _then);
 
+  /// Create a copy of SiteMetaDataDto
+  /// with the given fields replaced by the non-null parameter values.
   @pragma('vm:prefer-inline')
   @override
   $Res call({
@@ -177,7 +183,9 @@ class _$SiteMetaDataDtoImpl implements _SiteMetaDataDto {
   @override
   int get hashCode => Object.hash(runtimeType, url, title, image, description);
 
-  @JsonKey(ignore: true)
+  /// Create a copy of SiteMetaDataDto
+  /// with the given fields replaced by the non-null parameter values.
+  @JsonKey(includeFromJson: false, includeToJson: false)
   @override
   @pragma('vm:prefer-inline')
   _$$SiteMetaDataDtoImplCopyWith<_$SiteMetaDataDtoImpl> get copyWith =>
@@ -204,8 +212,11 @@ abstract class _SiteMetaDataDto implements SiteMetaDataDto {
   @override
   @HiveField(3)
   String? get description;
+
+  /// Create a copy of SiteMetaDataDto
+  /// with the given fields replaced by the non-null parameter values.
   @override
-  @JsonKey(ignore: true)
+  @JsonKey(includeFromJson: false, includeToJson: false)
   _$$SiteMetaDataDtoImplCopyWith<_$SiteMetaDataDtoImpl> get copyWith =>
       throw _privateConstructorUsedError;
 }

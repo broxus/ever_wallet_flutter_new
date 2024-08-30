@@ -19,7 +19,9 @@ mixin _$BrowserBasicAuthCreds {
   String get username => throw _privateConstructorUsedError;
   String get password => throw _privateConstructorUsedError;
 
-  @JsonKey(ignore: true)
+  /// Create a copy of BrowserBasicAuthCreds
+  /// with the given fields replaced by the non-null parameter values.
+  @JsonKey(includeFromJson: false, includeToJson: false)
   $BrowserBasicAuthCredsCopyWith<BrowserBasicAuthCreds> get copyWith =>
       throw _privateConstructorUsedError;
 }
@@ -44,6 +46,8 @@ class _$BrowserBasicAuthCredsCopyWithImpl<$Res,
   // ignore: unused_field
   final $Res Function($Val) _then;
 
+  /// Create a copy of BrowserBasicAuthCreds
+  /// with the given fields replaced by the non-null parameter values.
   @pragma('vm:prefer-inline')
   @override
   $Res call({
@@ -84,6 +88,8 @@ class __$$BrowserBasicAuthCredsImplCopyWithImpl<$Res>
       $Res Function(_$BrowserBasicAuthCredsImpl) _then)
       : super(_value, _then);
 
+  /// Create a copy of BrowserBasicAuthCreds
+  /// with the given fields replaced by the non-null parameter values.
   @pragma('vm:prefer-inline')
   @override
   $Res call({
@@ -133,7 +139,9 @@ class _$BrowserBasicAuthCredsImpl implements _BrowserBasicAuthCreds {
   @override
   int get hashCode => Object.hash(runtimeType, username, password);
 
-  @JsonKey(ignore: true)
+  /// Create a copy of BrowserBasicAuthCreds
+  /// with the given fields replaced by the non-null parameter values.
+  @JsonKey(includeFromJson: false, includeToJson: false)
   @override
   @pragma('vm:prefer-inline')
   _$$BrowserBasicAuthCredsImplCopyWith<_$BrowserBasicAuthCredsImpl>
@@ -150,8 +158,11 @@ abstract class _BrowserBasicAuthCreds implements BrowserBasicAuthCreds {
   String get username;
   @override
   String get password;
+
+  /// Create a copy of BrowserBasicAuthCreds
+  /// with the given fields replaced by the non-null parameter values.
   @override
-  @JsonKey(ignore: true)
+  @JsonKey(includeFromJson: false, includeToJson: false)
   _$$BrowserBasicAuthCredsImplCopyWith<_$BrowserBasicAuthCredsImpl>
       get copyWith => throw _privateConstructorUsedError;
 }
@@ -170,7 +181,9 @@ mixin _$BrowserTabState {
   Map<String, BrowserBasicAuthCreds> get basicAuthCreds =>
       throw _privateConstructorUsedError;
 
-  @JsonKey(ignore: true)
+  /// Create a copy of BrowserTabState
+  /// with the given fields replaced by the non-null parameter values.
+  @JsonKey(includeFromJson: false, includeToJson: false)
   $BrowserTabStateCopyWith<BrowserTabState> get copyWith =>
       throw _privateConstructorUsedError;
 }
@@ -204,6 +217,8 @@ class _$BrowserTabStateCopyWithImpl<$Res, $Val extends BrowserTabState>
   // ignore: unused_field
   final $Res Function($Val) _then;
 
+  /// Create a copy of BrowserTabState
+  /// with the given fields replaced by the non-null parameter values.
   @pragma('vm:prefer-inline')
   @override
   $Res call({
@@ -292,6 +307,8 @@ class __$$BrowserTabStateImplCopyWithImpl<$Res>
       _$BrowserTabStateImpl _value, $Res Function(_$BrowserTabStateImpl) _then)
       : super(_value, _then);
 
+  /// Create a copy of BrowserTabState
+  /// with the given fields replaced by the non-null parameter values.
   @pragma('vm:prefer-inline')
   @override
   $Res call({
@@ -446,7 +463,9 @@ class _$BrowserTabStateImpl extends _BrowserTabState {
       refresh,
       const DeepCollectionEquality().hash(_basicAuthCreds));
 
-  @JsonKey(ignore: true)
+  /// Create a copy of BrowserTabState
+  /// with the given fields replaced by the non-null parameter values.
+  @JsonKey(includeFromJson: false, includeToJson: false)
   @override
   @pragma('vm:prefer-inline')
   _$$BrowserTabStateImplCopyWith<_$BrowserTabStateImpl> get copyWith =>
@@ -489,8 +508,11 @@ abstract class _BrowserTabState extends BrowserTabState {
   VoidCallback? get refresh;
   @override
   Map<String, BrowserBasicAuthCreds> get basicAuthCreds;
+
+  /// Create a copy of BrowserTabState
+  /// with the given fields replaced by the non-null parameter values.
   @override
-  @JsonKey(ignore: true)
+  @JsonKey(includeFromJson: false, includeToJson: false)
   _$$BrowserTabStateImplCopyWith<_$BrowserTabStateImpl> get copyWith =>
       throw _privateConstructorUsedError;
 }

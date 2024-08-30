@@ -116,6 +116,9 @@ class _$WalletDeployEventCopyWithImpl<$Res, $Val extends WalletDeployEvent>
   final $Val _value;
   // ignore: unused_field
   final $Res Function($Val) _then;
+
+  /// Create a copy of WalletDeployEvent
+  /// with the given fields replaced by the non-null parameter values.
 }
 
 /// @nodoc
@@ -132,6 +135,9 @@ class __$$PrevStepImplCopyWithImpl<$Res>
   __$$PrevStepImplCopyWithImpl(
       _$PrevStepImpl _value, $Res Function(_$PrevStepImpl) _then)
       : super(_value, _then);
+
+  /// Create a copy of WalletDeployEvent
+  /// with the given fields replaced by the non-null parameter values.
 }
 
 /// @nodoc
@@ -281,6 +287,8 @@ class __$$ChangeTypeImplCopyWithImpl<$Res>
       _$ChangeTypeImpl _value, $Res Function(_$ChangeTypeImpl) _then)
       : super(_value, _then);
 
+  /// Create a copy of WalletDeployEvent
+  /// with the given fields replaced by the non-null parameter values.
   @pragma('vm:prefer-inline')
   @override
   $Res call({
@@ -319,7 +327,9 @@ class _$ChangeTypeImpl implements _ChangeType {
   @override
   int get hashCode => Object.hash(runtimeType, type);
 
-  @JsonKey(ignore: true)
+  /// Create a copy of WalletDeployEvent
+  /// with the given fields replaced by the non-null parameter values.
+  @JsonKey(includeFromJson: false, includeToJson: false)
   @override
   @pragma('vm:prefer-inline')
   _$$ChangeTypeImplCopyWith<_$ChangeTypeImpl> get copyWith =>
@@ -436,7 +446,10 @@ abstract class _ChangeType implements WalletDeployEvent {
   const factory _ChangeType(final WalletDeployType type) = _$ChangeTypeImpl;
 
   WalletDeployType get type;
-  @JsonKey(ignore: true)
+
+  /// Create a copy of WalletDeployEvent
+  /// with the given fields replaced by the non-null parameter values.
+  @JsonKey(includeFromJson: false, includeToJson: false)
   _$$ChangeTypeImplCopyWith<_$ChangeTypeImpl> get copyWith =>
       throw _privateConstructorUsedError;
 }
@@ -458,6 +471,8 @@ class __$$UpdateMultisigDataImplCopyWithImpl<$Res>
       $Res Function(_$UpdateMultisigDataImpl) _then)
       : super(_value, _then);
 
+  /// Create a copy of WalletDeployEvent
+  /// with the given fields replaced by the non-null parameter values.
   @pragma('vm:prefer-inline')
   @override
   $Res call({
@@ -515,7 +530,9 @@ class _$UpdateMultisigDataImpl implements _UpdateMultisigData {
   int get hashCode => Object.hash(runtimeType,
       const DeepCollectionEquality().hash(_custodians), requireConfirmations);
 
-  @JsonKey(ignore: true)
+  /// Create a copy of WalletDeployEvent
+  /// with the given fields replaced by the non-null parameter values.
+  @JsonKey(includeFromJson: false, includeToJson: false)
   @override
   @pragma('vm:prefer-inline')
   _$$UpdateMultisigDataImplCopyWith<_$UpdateMultisigDataImpl> get copyWith =>
@@ -636,7 +653,10 @@ abstract class _UpdateMultisigData implements WalletDeployEvent {
 
   List<PublicKey> get custodians;
   int get requireConfirmations;
-  @JsonKey(ignore: true)
+
+  /// Create a copy of WalletDeployEvent
+  /// with the given fields replaced by the non-null parameter values.
+  @JsonKey(includeFromJson: false, includeToJson: false)
   _$$UpdateMultisigDataImplCopyWith<_$UpdateMultisigDataImpl> get copyWith =>
       throw _privateConstructorUsedError;
 }
@@ -655,6 +675,9 @@ class __$$DeployStandardImplCopyWithImpl<$Res>
   __$$DeployStandardImplCopyWithImpl(
       _$DeployStandardImpl _value, $Res Function(_$DeployStandardImpl) _then)
       : super(_value, _then);
+
+  /// Create a copy of WalletDeployEvent
+  /// with the given fields replaced by the non-null parameter values.
 }
 
 /// @nodoc
@@ -804,6 +827,8 @@ class __$$DeployMultisigImplCopyWithImpl<$Res>
       _$DeployMultisigImpl _value, $Res Function(_$DeployMultisigImpl) _then)
       : super(_value, _then);
 
+  /// Create a copy of WalletDeployEvent
+  /// with the given fields replaced by the non-null parameter values.
   @pragma('vm:prefer-inline')
   @override
   $Res call({
@@ -861,7 +886,9 @@ class _$DeployMultisigImpl implements _DeployMultisig {
   int get hashCode => Object.hash(runtimeType,
       const DeepCollectionEquality().hash(_custodians), requireConfirmations);
 
-  @JsonKey(ignore: true)
+  /// Create a copy of WalletDeployEvent
+  /// with the given fields replaced by the non-null parameter values.
+  @JsonKey(includeFromJson: false, includeToJson: false)
   @override
   @pragma('vm:prefer-inline')
   _$$DeployMultisigImplCopyWith<_$DeployMultisigImpl> get copyWith =>
@@ -982,7 +1009,10 @@ abstract class _DeployMultisig implements WalletDeployEvent {
 
   List<PublicKey> get custodians;
   int get requireConfirmations;
-  @JsonKey(ignore: true)
+
+  /// Create a copy of WalletDeployEvent
+  /// with the given fields replaced by the non-null parameter values.
+  @JsonKey(includeFromJson: false, includeToJson: false)
   _$$DeployMultisigImplCopyWith<_$DeployMultisigImpl> get copyWith =>
       throw _privateConstructorUsedError;
 }
@@ -1004,6 +1034,8 @@ class __$$ConfirmDeployImplCopyWithImpl<$Res>
       _$ConfirmDeployImpl _value, $Res Function(_$ConfirmDeployImpl) _then)
       : super(_value, _then);
 
+  /// Create a copy of WalletDeployEvent
+  /// with the given fields replaced by the non-null parameter values.
   @pragma('vm:prefer-inline')
   @override
   $Res call({
@@ -1043,7 +1075,9 @@ class _$ConfirmDeployImpl implements _ConfirmDeploy {
   @override
   int get hashCode => Object.hash(runtimeType, password);
 
-  @JsonKey(ignore: true)
+  /// Create a copy of WalletDeployEvent
+  /// with the given fields replaced by the non-null parameter values.
+  @JsonKey(includeFromJson: false, includeToJson: false)
   @override
   @pragma('vm:prefer-inline')
   _$$ConfirmDeployImplCopyWith<_$ConfirmDeployImpl> get copyWith =>
@@ -1160,7 +1194,10 @@ abstract class _ConfirmDeploy implements WalletDeployEvent {
   const factory _ConfirmDeploy(final String password) = _$ConfirmDeployImpl;
 
   String get password;
-  @JsonKey(ignore: true)
+
+  /// Create a copy of WalletDeployEvent
+  /// with the given fields replaced by the non-null parameter values.
+  @JsonKey(includeFromJson: false, includeToJson: false)
   _$$ConfirmDeployImplCopyWith<_$ConfirmDeployImpl> get copyWith =>
       throw _privateConstructorUsedError;
 }
@@ -1179,6 +1216,9 @@ class __$$AllowCloseDeployImplCopyWithImpl<$Res>
   __$$AllowCloseDeployImplCopyWithImpl(_$AllowCloseDeployImpl _value,
       $Res Function(_$AllowCloseDeployImpl) _then)
       : super(_value, _then);
+
+  /// Create a copy of WalletDeployEvent
+  /// with the given fields replaced by the non-null parameter values.
 }
 
 /// @nodoc
@@ -1330,6 +1370,8 @@ class __$$CompleteDeployImplCopyWithImpl<$Res>
       _$CompleteDeployImpl _value, $Res Function(_$CompleteDeployImpl) _then)
       : super(_value, _then);
 
+  /// Create a copy of WalletDeployEvent
+  /// with the given fields replaced by the non-null parameter values.
   @pragma('vm:prefer-inline')
   @override
   $Res call({
@@ -1343,6 +1385,8 @@ class __$$CompleteDeployImplCopyWithImpl<$Res>
     ));
   }
 
+  /// Create a copy of WalletDeployEvent
+  /// with the given fields replaced by the non-null parameter values.
   @override
   @pragma('vm:prefer-inline')
   $TransactionCopyWith<$Res> get transaction {
@@ -1377,7 +1421,9 @@ class _$CompleteDeployImpl implements _CompleteDeploy {
   @override
   int get hashCode => Object.hash(runtimeType, transaction);
 
-  @JsonKey(ignore: true)
+  /// Create a copy of WalletDeployEvent
+  /// with the given fields replaced by the non-null parameter values.
+  @JsonKey(includeFromJson: false, includeToJson: false)
   @override
   @pragma('vm:prefer-inline')
   _$$CompleteDeployImplCopyWith<_$CompleteDeployImpl> get copyWith =>
@@ -1496,7 +1542,10 @@ abstract class _CompleteDeploy implements WalletDeployEvent {
       _$CompleteDeployImpl;
 
   Transaction get transaction;
-  @JsonKey(ignore: true)
+
+  /// Create a copy of WalletDeployEvent
+  /// with the given fields replaced by the non-null parameter values.
+  @JsonKey(includeFromJson: false, includeToJson: false)
   _$$CompleteDeployImplCopyWith<_$CompleteDeployImpl> get copyWith =>
       throw _privateConstructorUsedError;
 }
@@ -1615,6 +1664,9 @@ class _$WalletDeployStateCopyWithImpl<$Res, $Val extends WalletDeployState>
   final $Val _value;
   // ignore: unused_field
   final $Res Function($Val) _then;
+
+  /// Create a copy of WalletDeployState
+  /// with the given fields replaced by the non-null parameter values.
 }
 
 /// @nodoc
@@ -1631,6 +1683,9 @@ class __$$StandardImplCopyWithImpl<$Res>
   __$$StandardImplCopyWithImpl(
       _$StandardImpl _value, $Res Function(_$StandardImpl) _then)
       : super(_value, _then);
+
+  /// Create a copy of WalletDeployState
+  /// with the given fields replaced by the non-null parameter values.
 }
 
 /// @nodoc
@@ -1792,6 +1847,8 @@ class __$$MultisigImplCopyWithImpl<$Res>
       _$MultisigImpl _value, $Res Function(_$MultisigImpl) _then)
       : super(_value, _then);
 
+  /// Create a copy of WalletDeployState
+  /// with the given fields replaced by the non-null parameter values.
   @pragma('vm:prefer-inline')
   @override
   $Res call({
@@ -1849,7 +1906,9 @@ class _$MultisigImpl implements _Multisig {
   int get hashCode => Object.hash(runtimeType,
       const DeepCollectionEquality().hash(_custodians), requireConfirmations);
 
-  @JsonKey(ignore: true)
+  /// Create a copy of WalletDeployState
+  /// with the given fields replaced by the non-null parameter values.
+  @JsonKey(includeFromJson: false, includeToJson: false)
   @override
   @pragma('vm:prefer-inline')
   _$$MultisigImplCopyWith<_$MultisigImpl> get copyWith =>
@@ -1981,7 +2040,10 @@ abstract class _Multisig implements WalletDeployState {
 
   List<PublicKey> get custodians;
   int get requireConfirmations;
-  @JsonKey(ignore: true)
+
+  /// Create a copy of WalletDeployState
+  /// with the given fields replaced by the non-null parameter values.
+  @JsonKey(includeFromJson: false, includeToJson: false)
   _$$MultisigImplCopyWith<_$MultisigImpl> get copyWith =>
       throw _privateConstructorUsedError;
 }
@@ -2008,6 +2070,8 @@ class __$$CalculatingErrorImplCopyWithImpl<$Res>
       $Res Function(_$CalculatingErrorImpl) _then)
       : super(_value, _then);
 
+  /// Create a copy of WalletDeployState
+  /// with the given fields replaced by the non-null parameter values.
   @pragma('vm:prefer-inline')
   @override
   $Res call({
@@ -2095,7 +2159,9 @@ class _$CalculatingErrorImpl implements _CalculatingError {
   int get hashCode => Object.hash(runtimeType, error, fee, balance,
       const DeepCollectionEquality().hash(_custodians), requireConfirmations);
 
-  @JsonKey(ignore: true)
+  /// Create a copy of WalletDeployState
+  /// with the given fields replaced by the non-null parameter values.
+  @JsonKey(includeFromJson: false, includeToJson: false)
   @override
   @pragma('vm:prefer-inline')
   _$$CalculatingErrorImplCopyWith<_$CalculatingErrorImpl> get copyWith =>
@@ -2237,7 +2303,10 @@ abstract class _CalculatingError implements WalletDeployState {
   BigInt? get balance;
   List<PublicKey>? get custodians;
   int? get requireConfirmations;
-  @JsonKey(ignore: true)
+
+  /// Create a copy of WalletDeployState
+  /// with the given fields replaced by the non-null parameter values.
+  @JsonKey(includeFromJson: false, includeToJson: false)
   _$$CalculatingErrorImplCopyWith<_$CalculatingErrorImpl> get copyWith =>
       throw _privateConstructorUsedError;
 }
@@ -2263,6 +2332,8 @@ class __$$ReadyToDeployImplCopyWithImpl<$Res>
       _$ReadyToDeployImpl _value, $Res Function(_$ReadyToDeployImpl) _then)
       : super(_value, _then);
 
+  /// Create a copy of WalletDeployState
+  /// with the given fields replaced by the non-null parameter values.
   @pragma('vm:prefer-inline')
   @override
   $Res call({
@@ -2341,7 +2412,9 @@ class _$ReadyToDeployImpl implements _ReadyToDeploy {
   int get hashCode => Object.hash(runtimeType, fee, balance,
       const DeepCollectionEquality().hash(_custodians), requireConfirmations);
 
-  @JsonKey(ignore: true)
+  /// Create a copy of WalletDeployState
+  /// with the given fields replaced by the non-null parameter values.
+  @JsonKey(includeFromJson: false, includeToJson: false)
   @override
   @pragma('vm:prefer-inline')
   _$$ReadyToDeployImplCopyWith<_$ReadyToDeployImpl> get copyWith =>
@@ -2477,7 +2550,10 @@ abstract class _ReadyToDeploy implements WalletDeployState {
   BigInt get balance;
   List<PublicKey>? get custodians;
   int? get requireConfirmations;
-  @JsonKey(ignore: true)
+
+  /// Create a copy of WalletDeployState
+  /// with the given fields replaced by the non-null parameter values.
+  @JsonKey(includeFromJson: false, includeToJson: false)
   _$$ReadyToDeployImplCopyWith<_$ReadyToDeployImpl> get copyWith =>
       throw _privateConstructorUsedError;
 }
@@ -2499,6 +2575,8 @@ class __$$DeployingImplCopyWithImpl<$Res>
       _$DeployingImpl _value, $Res Function(_$DeployingImpl) _then)
       : super(_value, _then);
 
+  /// Create a copy of WalletDeployState
+  /// with the given fields replaced by the non-null parameter values.
   @pragma('vm:prefer-inline')
   @override
   $Res call({
@@ -2538,7 +2616,9 @@ class _$DeployingImpl implements _Deploying {
   @override
   int get hashCode => Object.hash(runtimeType, canClose);
 
-  @JsonKey(ignore: true)
+  /// Create a copy of WalletDeployState
+  /// with the given fields replaced by the non-null parameter values.
+  @JsonKey(includeFromJson: false, includeToJson: false)
   @override
   @pragma('vm:prefer-inline')
   _$$DeployingImplCopyWith<_$DeployingImpl> get copyWith =>
@@ -2667,7 +2747,10 @@ abstract class _Deploying implements WalletDeployState {
   const factory _Deploying({required final bool canClose}) = _$DeployingImpl;
 
   bool get canClose;
-  @JsonKey(ignore: true)
+
+  /// Create a copy of WalletDeployState
+  /// with the given fields replaced by the non-null parameter values.
+  @JsonKey(includeFromJson: false, includeToJson: false)
   _$$DeployingImplCopyWith<_$DeployingImpl> get copyWith =>
       throw _privateConstructorUsedError;
 }
@@ -2696,6 +2779,8 @@ class __$$DeployedImplCopyWithImpl<$Res>
       _$DeployedImpl _value, $Res Function(_$DeployedImpl) _then)
       : super(_value, _then);
 
+  /// Create a copy of WalletDeployState
+  /// with the given fields replaced by the non-null parameter values.
   @pragma('vm:prefer-inline')
   @override
   $Res call({
@@ -2729,6 +2814,8 @@ class __$$DeployedImplCopyWithImpl<$Res>
     ));
   }
 
+  /// Create a copy of WalletDeployState
+  /// with the given fields replaced by the non-null parameter values.
   @override
   @pragma('vm:prefer-inline')
   $TransactionCopyWith<$Res> get transaction {
@@ -2792,7 +2879,9 @@ class _$DeployedImpl implements _Deployed {
   int get hashCode => Object.hash(runtimeType, fee, balance, transaction,
       const DeepCollectionEquality().hash(_custodians), requireConfirmations);
 
-  @JsonKey(ignore: true)
+  /// Create a copy of WalletDeployState
+  /// with the given fields replaced by the non-null parameter values.
+  @JsonKey(includeFromJson: false, includeToJson: false)
   @override
   @pragma('vm:prefer-inline')
   _$$DeployedImplCopyWith<_$DeployedImpl> get copyWith =>
@@ -2933,7 +3022,10 @@ abstract class _Deployed implements WalletDeployState {
   Transaction get transaction;
   List<PublicKey>? get custodians;
   int? get requireConfirmations;
-  @JsonKey(ignore: true)
+
+  /// Create a copy of WalletDeployState
+  /// with the given fields replaced by the non-null parameter values.
+  @JsonKey(includeFromJson: false, includeToJson: false)
   _$$DeployedImplCopyWith<_$DeployedImpl> get copyWith =>
       throw _privateConstructorUsedError;
 }
@@ -2955,6 +3047,8 @@ class __$$SubscribeErrorImplCopyWithImpl<$Res>
       _$SubscribeErrorImpl _value, $Res Function(_$SubscribeErrorImpl) _then)
       : super(_value, _then);
 
+  /// Create a copy of WalletDeployState
+  /// with the given fields replaced by the non-null parameter values.
   @pragma('vm:prefer-inline')
   @override
   $Res call({
@@ -2991,7 +3085,9 @@ class _$SubscribeErrorImpl implements _SubscribeError {
   int get hashCode =>
       Object.hash(runtimeType, const DeepCollectionEquality().hash(error));
 
-  @JsonKey(ignore: true)
+  /// Create a copy of WalletDeployState
+  /// with the given fields replaced by the non-null parameter values.
+  @JsonKey(includeFromJson: false, includeToJson: false)
   @override
   @pragma('vm:prefer-inline')
   _$$SubscribeErrorImplCopyWith<_$SubscribeErrorImpl> get copyWith =>
@@ -3121,7 +3217,10 @@ abstract class _SubscribeError implements WalletDeployState {
   const factory _SubscribeError(final Object error) = _$SubscribeErrorImpl;
 
   Object get error;
-  @JsonKey(ignore: true)
+
+  /// Create a copy of WalletDeployState
+  /// with the given fields replaced by the non-null parameter values.
+  @JsonKey(includeFromJson: false, includeToJson: false)
   _$$SubscribeErrorImplCopyWith<_$SubscribeErrorImpl> get copyWith =>
       throw _privateConstructorUsedError;
 }

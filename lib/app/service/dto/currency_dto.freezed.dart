@@ -39,7 +39,9 @@ mixin _$CurrencyDto {
   @HiveField(10)
   int get transactionsCount24h => throw _privateConstructorUsedError;
 
-  @JsonKey(ignore: true)
+  /// Create a copy of CurrencyDto
+  /// with the given fields replaced by the non-null parameter values.
+  @JsonKey(includeFromJson: false, includeToJson: false)
   $CurrencyDtoCopyWith<CurrencyDto> get copyWith =>
       throw _privateConstructorUsedError;
 }
@@ -74,6 +76,8 @@ class _$CurrencyDtoCopyWithImpl<$Res, $Val extends CurrencyDto>
   // ignore: unused_field
   final $Res Function($Val) _then;
 
+  /// Create a copy of CurrencyDto
+  /// with the given fields replaced by the non-null parameter values.
   @pragma('vm:prefer-inline')
   @override
   $Res call({
@@ -168,6 +172,8 @@ class __$$CurrencyDtoImplCopyWithImpl<$Res>
       _$CurrencyDtoImpl _value, $Res Function(_$CurrencyDtoImpl) _then)
       : super(_value, _then);
 
+  /// Create a copy of CurrencyDto
+  /// with the given fields replaced by the non-null parameter values.
   @pragma('vm:prefer-inline')
   @override
   $Res call({
@@ -328,7 +334,9 @@ class _$CurrencyDtoImpl implements _CurrencyDto {
       fee24h,
       transactionsCount24h);
 
-  @JsonKey(ignore: true)
+  /// Create a copy of CurrencyDto
+  /// with the given fields replaced by the non-null parameter values.
+  @JsonKey(includeFromJson: false, includeToJson: false)
   @override
   @pragma('vm:prefer-inline')
   _$$CurrencyDtoImplCopyWith<_$CurrencyDtoImpl> get copyWith =>
@@ -383,8 +391,11 @@ abstract class _CurrencyDto implements CurrencyDto {
   @override
   @HiveField(10)
   int get transactionsCount24h;
+
+  /// Create a copy of CurrencyDto
+  /// with the given fields replaced by the non-null parameter values.
   @override
-  @JsonKey(ignore: true)
+  @JsonKey(includeFromJson: false, includeToJson: false)
   _$$CurrencyDtoImplCopyWith<_$CurrencyDtoImpl> get copyWith =>
       throw _privateConstructorUsedError;
 }

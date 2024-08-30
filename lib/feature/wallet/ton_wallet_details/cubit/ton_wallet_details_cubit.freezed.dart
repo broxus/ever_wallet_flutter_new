@@ -97,6 +97,9 @@ class _$TonWalletDetailsStateCopyWithImpl<$Res,
   final $Val _value;
   // ignore: unused_field
   final $Res Function($Val) _then;
+
+  /// Create a copy of TonWalletDetailsState
+  /// with the given fields replaced by the non-null parameter values.
 }
 
 /// @nodoc
@@ -113,6 +116,9 @@ class __$$InitialImplCopyWithImpl<$Res>
   __$$InitialImplCopyWithImpl(
       _$InitialImpl _value, $Res Function(_$InitialImpl) _then)
       : super(_value, _then);
+
+  /// Create a copy of TonWalletDetailsState
+  /// with the given fields replaced by the non-null parameter values.
 }
 
 /// @nodoc
@@ -239,6 +245,9 @@ class __$$EmptyImplCopyWithImpl<$Res>
   __$$EmptyImplCopyWithImpl(
       _$EmptyImpl _value, $Res Function(_$EmptyImpl) _then)
       : super(_value, _then);
+
+  /// Create a copy of TonWalletDetailsState
+  /// with the given fields replaced by the non-null parameter values.
 }
 
 /// @nodoc
@@ -369,6 +378,8 @@ class __$$SubscribeErrorImplCopyWithImpl<$Res>
       _$SubscribeErrorImpl _value, $Res Function(_$SubscribeErrorImpl) _then)
       : super(_value, _then);
 
+  /// Create a copy of TonWalletDetailsState
+  /// with the given fields replaced by the non-null parameter values.
   @pragma('vm:prefer-inline')
   @override
   $Res call({
@@ -435,7 +446,9 @@ class _$SubscribeErrorImpl implements _SubscribeError {
   int get hashCode => Object.hash(runtimeType, walletName, account,
       const DeepCollectionEquality().hash(error), isLoading);
 
-  @JsonKey(ignore: true)
+  /// Create a copy of TonWalletDetailsState
+  /// with the given fields replaced by the non-null parameter values.
+  @JsonKey(includeFromJson: false, includeToJson: false)
   @override
   @pragma('vm:prefer-inline')
   _$$SubscribeErrorImplCopyWith<_$SubscribeErrorImpl> get copyWith =>
@@ -540,7 +553,10 @@ abstract class _SubscribeError implements TonWalletDetailsState {
   KeyAccount get account;
   Object get error;
   bool get isLoading;
-  @JsonKey(ignore: true)
+
+  /// Create a copy of TonWalletDetailsState
+  /// with the given fields replaced by the non-null parameter values.
+  @JsonKey(includeFromJson: false, includeToJson: false)
   _$$SubscribeErrorImplCopyWith<_$SubscribeErrorImpl> get copyWith =>
       throw _privateConstructorUsedError;
 }
@@ -565,6 +581,8 @@ class __$$DataImplCopyWithImpl<$Res>
   __$$DataImplCopyWithImpl(_$DataImpl _value, $Res Function(_$DataImpl) _then)
       : super(_value, _then);
 
+  /// Create a copy of TonWalletDetailsState
+  /// with the given fields replaced by the non-null parameter values.
   @pragma('vm:prefer-inline')
   @override
   $Res call({
@@ -635,7 +653,9 @@ class _$DataImpl implements _Data {
   int get hashCode =>
       Object.hash(runtimeType, walletName, account, tokenBalance, fiatBalance);
 
-  @JsonKey(ignore: true)
+  /// Create a copy of TonWalletDetailsState
+  /// with the given fields replaced by the non-null parameter values.
+  @JsonKey(includeFromJson: false, includeToJson: false)
   @override
   @pragma('vm:prefer-inline')
   _$$DataImplCopyWith<_$DataImpl> get copyWith =>
@@ -739,7 +759,10 @@ abstract class _Data implements TonWalletDetailsState {
   KeyAccount get account;
   Money get tokenBalance;
   Money get fiatBalance;
-  @JsonKey(ignore: true)
+
+  /// Create a copy of TonWalletDetailsState
+  /// with the given fields replaced by the non-null parameter values.
+  @JsonKey(includeFromJson: false, includeToJson: false)
   _$$DataImplCopyWith<_$DataImpl> get copyWith =>
       throw _privateConstructorUsedError;
 }

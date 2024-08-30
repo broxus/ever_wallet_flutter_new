@@ -174,6 +174,9 @@ class _$BrowserTabsEventCopyWithImpl<$Res, $Val extends BrowserTabsEvent>
   final $Val _value;
   // ignore: unused_field
   final $Res Function($Val) _then;
+
+  /// Create a copy of BrowserTabsEvent
+  /// with the given fields replaced by the non-null parameter values.
 }
 
 /// @nodoc
@@ -191,6 +194,8 @@ class __$$AddImplCopyWithImpl<$Res>
   __$$AddImplCopyWithImpl(_$AddImpl _value, $Res Function(_$AddImpl) _then)
       : super(_value, _then);
 
+  /// Create a copy of BrowserTabsEvent
+  /// with the given fields replaced by the non-null parameter values.
   @pragma('vm:prefer-inline')
   @override
   $Res call({
@@ -237,7 +242,9 @@ class _$AddImpl with DiagnosticableTreeMixin implements _Add {
   @override
   int get hashCode => Object.hash(runtimeType, uri);
 
-  @JsonKey(ignore: true)
+  /// Create a copy of BrowserTabsEvent
+  /// with the given fields replaced by the non-null parameter values.
+  @JsonKey(includeFromJson: false, includeToJson: false)
   @override
   @pragma('vm:prefer-inline')
   _$$AddImplCopyWith<_$AddImpl> get copyWith =>
@@ -412,7 +419,10 @@ abstract class _Add implements BrowserTabsEvent {
   const factory _Add({required final Uri uri}) = _$AddImpl;
 
   Uri get uri;
-  @JsonKey(ignore: true)
+
+  /// Create a copy of BrowserTabsEvent
+  /// with the given fields replaced by the non-null parameter values.
+  @JsonKey(includeFromJson: false, includeToJson: false)
   _$$AddImplCopyWith<_$AddImpl> get copyWith =>
       throw _privateConstructorUsedError;
 }
@@ -431,6 +441,9 @@ class __$$AddEmptyImplCopyWithImpl<$Res>
   __$$AddEmptyImplCopyWithImpl(
       _$AddEmptyImpl _value, $Res Function(_$AddEmptyImpl) _then)
       : super(_value, _then);
+
+  /// Create a copy of BrowserTabsEvent
+  /// with the given fields replaced by the non-null parameter values.
 }
 
 /// @nodoc
@@ -644,6 +657,8 @@ class __$$SetUrlImplCopyWithImpl<$Res>
       _$SetUrlImpl _value, $Res Function(_$SetUrlImpl) _then)
       : super(_value, _then);
 
+  /// Create a copy of BrowserTabsEvent
+  /// with the given fields replaced by the non-null parameter values.
   @pragma('vm:prefer-inline')
   @override
   $Res call({
@@ -699,7 +714,9 @@ class _$SetUrlImpl with DiagnosticableTreeMixin implements _SetUrl {
   @override
   int get hashCode => Object.hash(runtimeType, id, uri);
 
-  @JsonKey(ignore: true)
+  /// Create a copy of BrowserTabsEvent
+  /// with the given fields replaced by the non-null parameter values.
+  @JsonKey(includeFromJson: false, includeToJson: false)
   @override
   @pragma('vm:prefer-inline')
   _$$SetUrlImplCopyWith<_$SetUrlImpl> get copyWith =>
@@ -876,7 +893,10 @@ abstract class _SetUrl implements BrowserTabsEvent {
 
   String get id;
   Uri get uri;
-  @JsonKey(ignore: true)
+
+  /// Create a copy of BrowserTabsEvent
+  /// with the given fields replaced by the non-null parameter values.
+  @JsonKey(includeFromJson: false, includeToJson: false)
   _$$SetUrlImplCopyWith<_$SetUrlImpl> get copyWith =>
       throw _privateConstructorUsedError;
 }
@@ -898,6 +918,8 @@ class __$$SetScreenshotImplCopyWithImpl<$Res>
       _$SetScreenshotImpl _value, $Res Function(_$SetScreenshotImpl) _then)
       : super(_value, _then);
 
+  /// Create a copy of BrowserTabsEvent
+  /// with the given fields replaced by the non-null parameter values.
   @pragma('vm:prefer-inline')
   @override
   $Res call({
@@ -955,7 +977,9 @@ class _$SetScreenshotImpl
   @override
   int get hashCode => Object.hash(runtimeType, id, imageId);
 
-  @JsonKey(ignore: true)
+  /// Create a copy of BrowserTabsEvent
+  /// with the given fields replaced by the non-null parameter values.
+  @JsonKey(includeFromJson: false, includeToJson: false)
   @override
   @pragma('vm:prefer-inline')
   _$$SetScreenshotImplCopyWith<_$SetScreenshotImpl> get copyWith =>
@@ -1133,7 +1157,10 @@ abstract class _SetScreenshot implements BrowserTabsEvent {
 
   String get id;
   String get imageId;
-  @JsonKey(ignore: true)
+
+  /// Create a copy of BrowserTabsEvent
+  /// with the given fields replaced by the non-null parameter values.
+  @JsonKey(includeFromJson: false, includeToJson: false)
   _$$SetScreenshotImplCopyWith<_$SetScreenshotImpl> get copyWith =>
       throw _privateConstructorUsedError;
 }
@@ -1166,6 +1193,8 @@ class __$$SetStateImplCopyWithImpl<$Res>
       _$SetStateImpl _value, $Res Function(_$SetStateImpl) _then)
       : super(_value, _then);
 
+  /// Create a copy of BrowserTabsEvent
+  /// with the given fields replaced by the non-null parameter values.
   @pragma('vm:prefer-inline')
   @override
   $Res call({
@@ -1339,7 +1368,9 @@ class _$SetStateImpl with DiagnosticableTreeMixin implements _SetState {
       refresh,
       const DeepCollectionEquality().hash(_basicAuthCreds));
 
-  @JsonKey(ignore: true)
+  /// Create a copy of BrowserTabsEvent
+  /// with the given fields replaced by the non-null parameter values.
+  @JsonKey(includeFromJson: false, includeToJson: false)
   @override
   @pragma('vm:prefer-inline')
   _$$SetStateImplCopyWith<_$SetStateImpl> get copyWith =>
@@ -1539,7 +1570,10 @@ abstract class _SetState implements BrowserTabsEvent {
   VoidCallback? get goForward;
   VoidCallback? get refresh;
   Map<String, BrowserBasicAuthCreds>? get basicAuthCreds;
-  @JsonKey(ignore: true)
+
+  /// Create a copy of BrowserTabsEvent
+  /// with the given fields replaced by the non-null parameter values.
+  @JsonKey(includeFromJson: false, includeToJson: false)
   _$$SetStateImplCopyWith<_$SetStateImpl> get copyWith =>
       throw _privateConstructorUsedError;
 }
@@ -1561,6 +1595,8 @@ class __$$RemoveImplCopyWithImpl<$Res>
       _$RemoveImpl _value, $Res Function(_$RemoveImpl) _then)
       : super(_value, _then);
 
+  /// Create a copy of BrowserTabsEvent
+  /// with the given fields replaced by the non-null parameter values.
   @pragma('vm:prefer-inline')
   @override
   $Res call({
@@ -1607,7 +1643,9 @@ class _$RemoveImpl with DiagnosticableTreeMixin implements _Remove {
   @override
   int get hashCode => Object.hash(runtimeType, id);
 
-  @JsonKey(ignore: true)
+  /// Create a copy of BrowserTabsEvent
+  /// with the given fields replaced by the non-null parameter values.
+  @JsonKey(includeFromJson: false, includeToJson: false)
   @override
   @pragma('vm:prefer-inline')
   _$$RemoveImplCopyWith<_$RemoveImpl> get copyWith =>
@@ -1782,7 +1820,10 @@ abstract class _Remove implements BrowserTabsEvent {
   const factory _Remove({required final String id}) = _$RemoveImpl;
 
   String get id;
-  @JsonKey(ignore: true)
+
+  /// Create a copy of BrowserTabsEvent
+  /// with the given fields replaced by the non-null parameter values.
+  @JsonKey(includeFromJson: false, includeToJson: false)
   _$$RemoveImplCopyWith<_$RemoveImpl> get copyWith =>
       throw _privateConstructorUsedError;
 }
@@ -1804,6 +1845,8 @@ class __$$SetActiveImplCopyWithImpl<$Res>
       _$SetActiveImpl _value, $Res Function(_$SetActiveImpl) _then)
       : super(_value, _then);
 
+  /// Create a copy of BrowserTabsEvent
+  /// with the given fields replaced by the non-null parameter values.
   @pragma('vm:prefer-inline')
   @override
   $Res call({
@@ -1850,7 +1893,9 @@ class _$SetActiveImpl with DiagnosticableTreeMixin implements _SetActive {
   @override
   int get hashCode => Object.hash(runtimeType, id);
 
-  @JsonKey(ignore: true)
+  /// Create a copy of BrowserTabsEvent
+  /// with the given fields replaced by the non-null parameter values.
+  @JsonKey(includeFromJson: false, includeToJson: false)
   @override
   @pragma('vm:prefer-inline')
   _$$SetActiveImplCopyWith<_$SetActiveImpl> get copyWith =>
@@ -2025,7 +2070,10 @@ abstract class _SetActive implements BrowserTabsEvent {
   const factory _SetActive({required final String id}) = _$SetActiveImpl;
 
   String get id;
-  @JsonKey(ignore: true)
+
+  /// Create a copy of BrowserTabsEvent
+  /// with the given fields replaced by the non-null parameter values.
+  @JsonKey(includeFromJson: false, includeToJson: false)
   _$$SetActiveImplCopyWith<_$SetActiveImpl> get copyWith =>
       throw _privateConstructorUsedError;
 }
@@ -2044,6 +2092,9 @@ class __$$CloseAllImplCopyWithImpl<$Res>
   __$$CloseAllImplCopyWithImpl(
       _$CloseAllImpl _value, $Res Function(_$CloseAllImpl) _then)
       : super(_value, _then);
+
+  /// Create a copy of BrowserTabsEvent
+  /// with the given fields replaced by the non-null parameter values.
 }
 
 /// @nodoc
@@ -2257,6 +2308,8 @@ class __$$SetTabsImplCopyWithImpl<$Res>
       _$SetTabsImpl _value, $Res Function(_$SetTabsImpl) _then)
       : super(_value, _then);
 
+  /// Create a copy of BrowserTabsEvent
+  /// with the given fields replaced by the non-null parameter values.
   @pragma('vm:prefer-inline')
   @override
   $Res call({
@@ -2309,7 +2362,9 @@ class _$SetTabsImpl with DiagnosticableTreeMixin implements _SetTabs {
   int get hashCode =>
       Object.hash(runtimeType, const DeepCollectionEquality().hash(_tabs));
 
-  @JsonKey(ignore: true)
+  /// Create a copy of BrowserTabsEvent
+  /// with the given fields replaced by the non-null parameter values.
+  @JsonKey(includeFromJson: false, includeToJson: false)
   @override
   @pragma('vm:prefer-inline')
   _$$SetTabsImplCopyWith<_$SetTabsImpl> get copyWith =>
@@ -2485,7 +2540,10 @@ abstract class _SetTabs implements BrowserTabsEvent {
       _$SetTabsImpl;
 
   List<BrowserTab> get tabs;
-  @JsonKey(ignore: true)
+
+  /// Create a copy of BrowserTabsEvent
+  /// with the given fields replaced by the non-null parameter values.
+  @JsonKey(includeFromJson: false, includeToJson: false)
   _$$SetTabsImplCopyWith<_$SetTabsImpl> get copyWith =>
       throw _privateConstructorUsedError;
 }
@@ -2507,6 +2565,8 @@ class __$$SetActiveTabIdImplCopyWithImpl<$Res>
       _$SetActiveTabIdImpl _value, $Res Function(_$SetActiveTabIdImpl) _then)
       : super(_value, _then);
 
+  /// Create a copy of BrowserTabsEvent
+  /// with the given fields replaced by the non-null parameter values.
   @pragma('vm:prefer-inline')
   @override
   $Res call({
@@ -2555,7 +2615,9 @@ class _$SetActiveTabIdImpl
   @override
   int get hashCode => Object.hash(runtimeType, id);
 
-  @JsonKey(ignore: true)
+  /// Create a copy of BrowserTabsEvent
+  /// with the given fields replaced by the non-null parameter values.
+  @JsonKey(includeFromJson: false, includeToJson: false)
   @override
   @pragma('vm:prefer-inline')
   _$$SetActiveTabIdImplCopyWith<_$SetActiveTabIdImpl> get copyWith =>
@@ -2732,7 +2794,10 @@ abstract class _SetActiveTabId implements BrowserTabsEvent {
       _$SetActiveTabIdImpl;
 
   String? get id;
-  @JsonKey(ignore: true)
+
+  /// Create a copy of BrowserTabsEvent
+  /// with the given fields replaced by the non-null parameter values.
+  @JsonKey(includeFromJson: false, includeToJson: false)
   _$$SetActiveTabIdImplCopyWith<_$SetActiveTabIdImpl> get copyWith =>
       throw _privateConstructorUsedError;
 }
@@ -2751,6 +2816,9 @@ class __$$ClearCacheImplCopyWithImpl<$Res>
   __$$ClearCacheImplCopyWithImpl(
       _$ClearCacheImpl _value, $Res Function(_$ClearCacheImpl) _then)
       : super(_value, _then);
+
+  /// Create a copy of BrowserTabsEvent
+  /// with the given fields replaced by the non-null parameter values.
 }
 
 /// @nodoc
@@ -2961,6 +3029,9 @@ class __$$CacheClearedImplCopyWithImpl<$Res>
   __$$CacheClearedImplCopyWithImpl(
       _$CacheClearedImpl _value, $Res Function(_$CacheClearedImpl) _then)
       : super(_value, _then);
+
+  /// Create a copy of BrowserTabsEvent
+  /// with the given fields replaced by the non-null parameter values.
 }
 
 /// @nodoc
@@ -3175,6 +3246,8 @@ class __$$SetSearchTextImplCopyWithImpl<$Res>
       _$SetSearchTextImpl _value, $Res Function(_$SetSearchTextImpl) _then)
       : super(_value, _then);
 
+  /// Create a copy of BrowserTabsEvent
+  /// with the given fields replaced by the non-null parameter values.
   @pragma('vm:prefer-inline')
   @override
   $Res call({
@@ -3223,7 +3296,9 @@ class _$SetSearchTextImpl
   @override
   int get hashCode => Object.hash(runtimeType, text);
 
-  @JsonKey(ignore: true)
+  /// Create a copy of BrowserTabsEvent
+  /// with the given fields replaced by the non-null parameter values.
+  @JsonKey(includeFromJson: false, includeToJson: false)
   @override
   @pragma('vm:prefer-inline')
   _$$SetSearchTextImplCopyWith<_$SetSearchTextImpl> get copyWith =>
@@ -3399,7 +3474,10 @@ abstract class _SetSearchText implements BrowserTabsEvent {
       _$SetSearchTextImpl;
 
   String get text;
-  @JsonKey(ignore: true)
+
+  /// Create a copy of BrowserTabsEvent
+  /// with the given fields replaced by the non-null parameter values.
+  @JsonKey(includeFromJson: false, includeToJson: false)
   _$$SetSearchTextImplCopyWith<_$SetSearchTextImpl> get copyWith =>
       throw _privateConstructorUsedError;
 }
@@ -3413,7 +3491,9 @@ mixin _$BrowserTabsState {
   bool get clearCacheOnNextTab => throw _privateConstructorUsedError;
   String get searchText => throw _privateConstructorUsedError;
 
-  @JsonKey(ignore: true)
+  /// Create a copy of BrowserTabsState
+  /// with the given fields replaced by the non-null parameter values.
+  @JsonKey(includeFromJson: false, includeToJson: false)
   $BrowserTabsStateCopyWith<BrowserTabsState> get copyWith =>
       throw _privateConstructorUsedError;
 }
@@ -3442,6 +3522,8 @@ class _$BrowserTabsStateCopyWithImpl<$Res, $Val extends BrowserTabsState>
   // ignore: unused_field
   final $Res Function($Val) _then;
 
+  /// Create a copy of BrowserTabsState
+  /// with the given fields replaced by the non-null parameter values.
   @pragma('vm:prefer-inline')
   @override
   $Res call({
@@ -3500,6 +3582,8 @@ class __$$BrowserTabsStateImplCopyWithImpl<$Res>
       $Res Function(_$BrowserTabsStateImpl) _then)
       : super(_value, _then);
 
+  /// Create a copy of BrowserTabsState
+  /// with the given fields replaced by the non-null parameter values.
   @pragma('vm:prefer-inline')
   @override
   $Res call({
@@ -3613,7 +3697,9 @@ class _$BrowserTabsStateImpl
       clearCacheOnNextTab,
       searchText);
 
-  @JsonKey(ignore: true)
+  /// Create a copy of BrowserTabsState
+  /// with the given fields replaced by the non-null parameter values.
+  @JsonKey(includeFromJson: false, includeToJson: false)
   @override
   @pragma('vm:prefer-inline')
   _$$BrowserTabsStateImplCopyWith<_$BrowserTabsStateImpl> get copyWith =>
@@ -3639,8 +3725,11 @@ abstract class _BrowserTabsState implements BrowserTabsState {
   bool get clearCacheOnNextTab;
   @override
   String get searchText;
+
+  /// Create a copy of BrowserTabsState
+  /// with the given fields replaced by the non-null parameter values.
   @override
-  @JsonKey(ignore: true)
+  @JsonKey(includeFromJson: false, includeToJson: false)
   _$$BrowserTabsStateImplCopyWith<_$BrowserTabsStateImpl> get copyWith =>
       throw _privateConstructorUsedError;
 }

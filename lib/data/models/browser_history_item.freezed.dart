@@ -27,8 +27,12 @@ mixin _$BrowserHistoryItem {
   Uri get url => throw _privateConstructorUsedError;
   DateTime get visitTime => throw _privateConstructorUsedError;
 
+  /// Serializes this BrowserHistoryItem to a JSON map.
   Map<String, dynamic> toJson() => throw _privateConstructorUsedError;
-  @JsonKey(ignore: true)
+
+  /// Create a copy of BrowserHistoryItem
+  /// with the given fields replaced by the non-null parameter values.
+  @JsonKey(includeFromJson: false, includeToJson: false)
   $BrowserHistoryItemCopyWith<BrowserHistoryItem> get copyWith =>
       throw _privateConstructorUsedError;
 }
@@ -53,6 +57,8 @@ class _$BrowserHistoryItemCopyWithImpl<$Res, $Val extends BrowserHistoryItem>
   // ignore: unused_field
   final $Res Function($Val) _then;
 
+  /// Create a copy of BrowserHistoryItem
+  /// with the given fields replaced by the non-null parameter values.
   @pragma('vm:prefer-inline')
   @override
   $Res call({
@@ -103,6 +109,8 @@ class __$$BrowserHistoryItemDtoImplCopyWithImpl<$Res>
       $Res Function(_$BrowserHistoryItemDtoImpl) _then)
       : super(_value, _then);
 
+  /// Create a copy of BrowserHistoryItem
+  /// with the given fields replaced by the non-null parameter values.
   @pragma('vm:prefer-inline')
   @override
   $Res call({
@@ -173,11 +181,13 @@ class _$BrowserHistoryItemDtoImpl extends _BrowserHistoryItemDto {
                 other.visitTime == visitTime));
   }
 
-  @JsonKey(ignore: true)
+  @JsonKey(includeFromJson: false, includeToJson: false)
   @override
   int get hashCode => Object.hash(runtimeType, id, title, url, visitTime);
 
-  @JsonKey(ignore: true)
+  /// Create a copy of BrowserHistoryItem
+  /// with the given fields replaced by the non-null parameter values.
+  @JsonKey(includeFromJson: false, includeToJson: false)
   @override
   @pragma('vm:prefer-inline')
   _$$BrowserHistoryItemDtoImplCopyWith<_$BrowserHistoryItemDtoImpl>
@@ -203,9 +213,8 @@ abstract class _BrowserHistoryItemDto extends BrowserHistoryItem {
   factory _BrowserHistoryItemDto.fromJson(Map<String, dynamic> json) =
       _$BrowserHistoryItemDtoImpl.fromJson;
 
-  @override
-
   /// The id of the tab.
+  @override
   String get id;
   @override
   String get title;
@@ -214,8 +223,11 @@ abstract class _BrowserHistoryItemDto extends BrowserHistoryItem {
   Uri get url;
   @override
   DateTime get visitTime;
+
+  /// Create a copy of BrowserHistoryItem
+  /// with the given fields replaced by the non-null parameter values.
   @override
-  @JsonKey(ignore: true)
+  @JsonKey(includeFromJson: false, includeToJson: false)
   _$$BrowserHistoryItemDtoImplCopyWith<_$BrowserHistoryItemDtoImpl>
       get copyWith => throw _privateConstructorUsedError;
 }

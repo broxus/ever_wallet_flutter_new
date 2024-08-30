@@ -23,7 +23,9 @@ mixin _$AccountInteractionDto {
   @HiveField(2)
   WalletContractTypeDto get contractType => throw _privateConstructorUsedError;
 
-  @JsonKey(ignore: true)
+  /// Create a copy of AccountInteractionDto
+  /// with the given fields replaced by the non-null parameter values.
+  @JsonKey(includeFromJson: false, includeToJson: false)
   $AccountInteractionDtoCopyWith<AccountInteractionDto> get copyWith =>
       throw _privateConstructorUsedError;
 }
@@ -51,6 +53,8 @@ class _$AccountInteractionDtoCopyWithImpl<$Res,
   // ignore: unused_field
   final $Res Function($Val) _then;
 
+  /// Create a copy of AccountInteractionDto
+  /// with the given fields replaced by the non-null parameter values.
   @pragma('vm:prefer-inline')
   @override
   $Res call({
@@ -99,6 +103,8 @@ class __$$AccountInteractionDtoImplCopyWithImpl<$Res>
       $Res Function(_$AccountInteractionDtoImpl) _then)
       : super(_value, _then);
 
+  /// Create a copy of AccountInteractionDto
+  /// with the given fields replaced by the non-null parameter values.
   @pragma('vm:prefer-inline')
   @override
   $Res call({
@@ -163,7 +169,9 @@ class _$AccountInteractionDtoImpl implements _AccountInteractionDto {
   int get hashCode =>
       Object.hash(runtimeType, address, publicKey, contractType);
 
-  @JsonKey(ignore: true)
+  /// Create a copy of AccountInteractionDto
+  /// with the given fields replaced by the non-null parameter values.
+  @JsonKey(includeFromJson: false, includeToJson: false)
   @override
   @pragma('vm:prefer-inline')
   _$$AccountInteractionDtoImplCopyWith<_$AccountInteractionDtoImpl>
@@ -187,8 +195,11 @@ abstract class _AccountInteractionDto implements AccountInteractionDto {
   @override
   @HiveField(2)
   WalletContractTypeDto get contractType;
+
+  /// Create a copy of AccountInteractionDto
+  /// with the given fields replaced by the non-null parameter values.
   @override
-  @JsonKey(ignore: true)
+  @JsonKey(includeFromJson: false, includeToJson: false)
   _$$AccountInteractionDtoImplCopyWith<_$AccountInteractionDtoImpl>
       get copyWith => throw _privateConstructorUsedError;
 }

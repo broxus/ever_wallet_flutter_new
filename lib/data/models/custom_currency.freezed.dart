@@ -34,8 +34,12 @@ mixin _$CustomCurrency {
   int get transactionsCount24h => throw _privateConstructorUsedError;
   NetworkType get networkType => throw _privateConstructorUsedError;
 
+  /// Serializes this CustomCurrency to a JSON map.
   Map<String, dynamic> toJson() => throw _privateConstructorUsedError;
-  @JsonKey(ignore: true)
+
+  /// Create a copy of CustomCurrency
+  /// with the given fields replaced by the non-null parameter values.
+  @JsonKey(includeFromJson: false, includeToJson: false)
   $CustomCurrencyCopyWith<CustomCurrency> get copyWith =>
       throw _privateConstructorUsedError;
 }
@@ -73,6 +77,8 @@ class _$CustomCurrencyCopyWithImpl<$Res, $Val extends CustomCurrency>
   // ignore: unused_field
   final $Res Function($Val) _then;
 
+  /// Create a copy of CustomCurrency
+  /// with the given fields replaced by the non-null parameter values.
   @pragma('vm:prefer-inline')
   @override
   $Res call({
@@ -141,6 +147,8 @@ class _$CustomCurrencyCopyWithImpl<$Res, $Val extends CustomCurrency>
     ) as $Val);
   }
 
+  /// Create a copy of CustomCurrency
+  /// with the given fields replaced by the non-null parameter values.
   @override
   @pragma('vm:prefer-inline')
   $AddressCopyWith<$Res> get address {
@@ -184,6 +192,8 @@ class __$$CustomCurrencyImplCopyWithImpl<$Res>
       _$CustomCurrencyImpl _value, $Res Function(_$CustomCurrencyImpl) _then)
       : super(_value, _then);
 
+  /// Create a copy of CustomCurrency
+  /// with the given fields replaced by the non-null parameter values.
   @pragma('vm:prefer-inline')
   @override
   $Res call({
@@ -332,7 +342,7 @@ class _$CustomCurrencyImpl implements _CustomCurrency {
                 other.networkType == networkType));
   }
 
-  @JsonKey(ignore: true)
+  @JsonKey(includeFromJson: false, includeToJson: false)
   @override
   int get hashCode => Object.hash(
       runtimeType,
@@ -349,7 +359,9 @@ class _$CustomCurrencyImpl implements _CustomCurrency {
       transactionsCount24h,
       networkType);
 
-  @JsonKey(ignore: true)
+  /// Create a copy of CustomCurrency
+  /// with the given fields replaced by the non-null parameter values.
+  @JsonKey(includeFromJson: false, includeToJson: false)
   @override
   @pragma('vm:prefer-inline')
   _$$CustomCurrencyImplCopyWith<_$CustomCurrencyImpl> get copyWith =>
@@ -385,9 +397,9 @@ abstract class _CustomCurrency implements CustomCurrency {
   @override
   String get currency;
   @override
-  Address get address;
-  @override // Price in USD
+  Address get address; // Price in USD
 // TODO(nesquikm): refactor to use Currency and Money
+  @override
   String get price;
   @override
   String get priceChange;
@@ -407,8 +419,11 @@ abstract class _CustomCurrency implements CustomCurrency {
   int get transactionsCount24h;
   @override
   NetworkType get networkType;
+
+  /// Create a copy of CustomCurrency
+  /// with the given fields replaced by the non-null parameter values.
   @override
-  @JsonKey(ignore: true)
+  @JsonKey(includeFromJson: false, includeToJson: false)
   _$$CustomCurrencyImplCopyWith<_$CustomCurrencyImpl> get copyWith =>
       throw _privateConstructorUsedError;
 }

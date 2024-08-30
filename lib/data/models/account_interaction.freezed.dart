@@ -24,8 +24,12 @@ mixin _$AccountInteraction {
   PublicKey get publicKey => throw _privateConstructorUsedError;
   WalletContractType get contractType => throw _privateConstructorUsedError;
 
+  /// Serializes this AccountInteraction to a JSON map.
   Map<String, dynamic> toJson() => throw _privateConstructorUsedError;
-  @JsonKey(ignore: true)
+
+  /// Create a copy of AccountInteraction
+  /// with the given fields replaced by the non-null parameter values.
+  @JsonKey(includeFromJson: false, includeToJson: false)
   $AccountInteractionCopyWith<AccountInteraction> get copyWith =>
       throw _privateConstructorUsedError;
 }
@@ -53,6 +57,8 @@ class _$AccountInteractionCopyWithImpl<$Res, $Val extends AccountInteraction>
   // ignore: unused_field
   final $Res Function($Val) _then;
 
+  /// Create a copy of AccountInteraction
+  /// with the given fields replaced by the non-null parameter values.
   @pragma('vm:prefer-inline')
   @override
   $Res call({
@@ -76,6 +82,8 @@ class _$AccountInteractionCopyWithImpl<$Res, $Val extends AccountInteraction>
     ) as $Val);
   }
 
+  /// Create a copy of AccountInteraction
+  /// with the given fields replaced by the non-null parameter values.
   @override
   @pragma('vm:prefer-inline')
   $AddressCopyWith<$Res> get address {
@@ -84,6 +92,8 @@ class _$AccountInteractionCopyWithImpl<$Res, $Val extends AccountInteraction>
     });
   }
 
+  /// Create a copy of AccountInteraction
+  /// with the given fields replaced by the non-null parameter values.
   @override
   @pragma('vm:prefer-inline')
   $PublicKeyCopyWith<$Res> get publicKey {
@@ -118,6 +128,8 @@ class __$$AccountInteractionImplCopyWithImpl<$Res>
       $Res Function(_$AccountInteractionImpl) _then)
       : super(_value, _then);
 
+  /// Create a copy of AccountInteraction
+  /// with the given fields replaced by the non-null parameter values.
   @pragma('vm:prefer-inline')
   @override
   $Res call({
@@ -177,12 +189,14 @@ class _$AccountInteractionImpl implements _AccountInteraction {
                 other.contractType == contractType));
   }
 
-  @JsonKey(ignore: true)
+  @JsonKey(includeFromJson: false, includeToJson: false)
   @override
   int get hashCode =>
       Object.hash(runtimeType, address, publicKey, contractType);
 
-  @JsonKey(ignore: true)
+  /// Create a copy of AccountInteraction
+  /// with the given fields replaced by the non-null parameter values.
+  @JsonKey(includeFromJson: false, includeToJson: false)
   @override
   @pragma('vm:prefer-inline')
   _$$AccountInteractionImplCopyWith<_$AccountInteractionImpl> get copyWith =>
@@ -213,8 +227,11 @@ abstract class _AccountInteraction implements AccountInteraction {
   PublicKey get publicKey;
   @override
   WalletContractType get contractType;
+
+  /// Create a copy of AccountInteraction
+  /// with the given fields replaced by the non-null parameter values.
   @override
-  @JsonKey(ignore: true)
+  @JsonKey(includeFromJson: false, includeToJson: false)
   _$$AccountInteractionImplCopyWith<_$AccountInteractionImpl> get copyWith =>
       throw _privateConstructorUsedError;
 }

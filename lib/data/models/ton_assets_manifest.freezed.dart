@@ -28,8 +28,12 @@ mixin _$TonAssetsManifest {
   String get timestamp => throw _privateConstructorUsedError;
   List<TokenContractAsset> get tokens => throw _privateConstructorUsedError;
 
+  /// Serializes this TonAssetsManifest to a JSON map.
   Map<String, dynamic> toJson() => throw _privateConstructorUsedError;
-  @JsonKey(ignore: true)
+
+  /// Create a copy of TonAssetsManifest
+  /// with the given fields replaced by the non-null parameter values.
+  @JsonKey(includeFromJson: false, includeToJson: false)
   $TonAssetsManifestCopyWith<TonAssetsManifest> get copyWith =>
       throw _privateConstructorUsedError;
 }
@@ -61,6 +65,8 @@ class _$TonAssetsManifestCopyWithImpl<$Res, $Val extends TonAssetsManifest>
   // ignore: unused_field
   final $Res Function($Val) _then;
 
+  /// Create a copy of TonAssetsManifest
+  /// with the given fields replaced by the non-null parameter values.
   @pragma('vm:prefer-inline')
   @override
   $Res call({
@@ -99,6 +105,8 @@ class _$TonAssetsManifestCopyWithImpl<$Res, $Val extends TonAssetsManifest>
     ) as $Val);
   }
 
+  /// Create a copy of TonAssetsManifest
+  /// with the given fields replaced by the non-null parameter values.
   @override
   @pragma('vm:prefer-inline')
   $TonAssetsManifestVersionCopyWith<$Res> get version {
@@ -136,6 +144,8 @@ class __$$TonAssetsManifestImplCopyWithImpl<$Res>
       $Res Function(_$TonAssetsManifestImpl) _then)
       : super(_value, _then);
 
+  /// Create a copy of TonAssetsManifest
+  /// with the given fields replaced by the non-null parameter values.
   @pragma('vm:prefer-inline')
   @override
   $Res call({
@@ -235,7 +245,7 @@ class _$TonAssetsManifestImpl implements _TonAssetsManifest {
             const DeepCollectionEquality().equals(other._tokens, _tokens));
   }
 
-  @JsonKey(ignore: true)
+  @JsonKey(includeFromJson: false, includeToJson: false)
   @override
   int get hashCode => Object.hash(
       runtimeType,
@@ -246,7 +256,9 @@ class _$TonAssetsManifestImpl implements _TonAssetsManifest {
       timestamp,
       const DeepCollectionEquality().hash(_tokens));
 
-  @JsonKey(ignore: true)
+  /// Create a copy of TonAssetsManifest
+  /// with the given fields replaced by the non-null parameter values.
+  @JsonKey(includeFromJson: false, includeToJson: false)
   @override
   @pragma('vm:prefer-inline')
   _$$TonAssetsManifestImplCopyWith<_$TonAssetsManifestImpl> get copyWith =>
@@ -287,8 +299,11 @@ abstract class _TonAssetsManifest implements TonAssetsManifest {
   String get timestamp;
   @override
   List<TokenContractAsset> get tokens;
+
+  /// Create a copy of TonAssetsManifest
+  /// with the given fields replaced by the non-null parameter values.
   @override
-  @JsonKey(ignore: true)
+  @JsonKey(includeFromJson: false, includeToJson: false)
   _$$TonAssetsManifestImplCopyWith<_$TonAssetsManifestImpl> get copyWith =>
       throw _privateConstructorUsedError;
 }

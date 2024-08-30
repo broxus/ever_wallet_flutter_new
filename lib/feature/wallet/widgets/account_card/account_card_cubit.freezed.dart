@@ -70,7 +70,9 @@ mixin _$AccountCardState {
   }) =>
       throw _privateConstructorUsedError;
 
-  @JsonKey(ignore: true)
+  /// Create a copy of AccountCardState
+  /// with the given fields replaced by the non-null parameter values.
+  @JsonKey(includeFromJson: false, includeToJson: false)
   $AccountCardStateCopyWith<AccountCardState> get copyWith =>
       throw _privateConstructorUsedError;
 }
@@ -94,6 +96,8 @@ class _$AccountCardStateCopyWithImpl<$Res, $Val extends AccountCardState>
   // ignore: unused_field
   final $Res Function($Val) _then;
 
+  /// Create a copy of AccountCardState
+  /// with the given fields replaced by the non-null parameter values.
   @pragma('vm:prefer-inline')
   @override
   $Res call({
@@ -135,6 +139,8 @@ class __$$DataImplCopyWithImpl<$Res>
   __$$DataImplCopyWithImpl(_$DataImpl _value, $Res Function(_$DataImpl) _then)
       : super(_value, _then);
 
+  /// Create a copy of AccountCardState
+  /// with the given fields replaced by the non-null parameter values.
   @pragma('vm:prefer-inline')
   @override
   $Res call({
@@ -205,7 +211,9 @@ class _$DataImpl implements _Data {
   int get hashCode =>
       Object.hash(runtimeType, account, walletName, balance, custodiansString);
 
-  @JsonKey(ignore: true)
+  /// Create a copy of AccountCardState
+  /// with the given fields replaced by the non-null parameter values.
+  @JsonKey(includeFromJson: false, includeToJson: false)
   @override
   @pragma('vm:prefer-inline')
   _$$DataImplCopyWith<_$DataImpl> get copyWith =>
@@ -294,13 +302,16 @@ abstract class _Data implements AccountCardState {
       final String? custodiansString}) = _$DataImpl;
 
   @override
-  KeyAccount get account;
-  @override // name of WalletType
+  KeyAccount get account; // name of WalletType
+  @override
   String get walletName;
   Money? get balance;
   String? get custodiansString;
+
+  /// Create a copy of AccountCardState
+  /// with the given fields replaced by the non-null parameter values.
   @override
-  @JsonKey(ignore: true)
+  @JsonKey(includeFromJson: false, includeToJson: false)
   _$$DataImplCopyWith<_$DataImpl> get copyWith =>
       throw _privateConstructorUsedError;
 }
@@ -325,6 +336,8 @@ class __$$SubscribeErrorImplCopyWithImpl<$Res>
       _$SubscribeErrorImpl _value, $Res Function(_$SubscribeErrorImpl) _then)
       : super(_value, _then);
 
+  /// Create a copy of AccountCardState
+  /// with the given fields replaced by the non-null parameter values.
   @pragma('vm:prefer-inline')
   @override
   $Res call({
@@ -392,7 +405,9 @@ class _$SubscribeErrorImpl implements _SubscribeError {
   int get hashCode => Object.hash(runtimeType, account, walletName,
       const DeepCollectionEquality().hash(error), isLoading);
 
-  @JsonKey(ignore: true)
+  /// Create a copy of AccountCardState
+  /// with the given fields replaced by the non-null parameter values.
+  @JsonKey(includeFromJson: false, includeToJson: false)
   @override
   @pragma('vm:prefer-inline')
   _$$SubscribeErrorImplCopyWith<_$SubscribeErrorImpl> get copyWith =>
@@ -482,13 +497,16 @@ abstract class _SubscribeError implements AccountCardState {
       required final bool isLoading}) = _$SubscribeErrorImpl;
 
   @override
-  KeyAccount get account;
-  @override // name of WalletType
+  KeyAccount get account; // name of WalletType
+  @override
   String get walletName;
   Object get error;
   bool get isLoading;
+
+  /// Create a copy of AccountCardState
+  /// with the given fields replaced by the non-null parameter values.
   @override
-  @JsonKey(ignore: true)
+  @JsonKey(includeFromJson: false, includeToJson: false)
   _$$SubscribeErrorImplCopyWith<_$SubscribeErrorImpl> get copyWith =>
       throw _privateConstructorUsedError;
 }

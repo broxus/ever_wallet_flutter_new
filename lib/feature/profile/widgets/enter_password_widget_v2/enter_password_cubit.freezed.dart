@@ -88,6 +88,9 @@ class _$EnterPasswordStateCopyWithImpl<$Res, $Val extends EnterPasswordState>
   final $Val _value;
   // ignore: unused_field
   final $Res Function($Val) _then;
+
+  /// Create a copy of EnterPasswordState
+  /// with the given fields replaced by the non-null parameter values.
 }
 
 /// @nodoc
@@ -104,6 +107,9 @@ class __$$InitialImplCopyWithImpl<$Res>
   __$$InitialImplCopyWithImpl(
       _$InitialImpl _value, $Res Function(_$InitialImpl) _then)
       : super(_value, _then);
+
+  /// Create a copy of EnterPasswordState
+  /// with the given fields replaced by the non-null parameter values.
 }
 
 /// @nodoc
@@ -225,6 +231,8 @@ class __$$BiometryImplCopyWithImpl<$Res>
       _$BiometryImpl _value, $Res Function(_$BiometryImpl) _then)
       : super(_value, _then);
 
+  /// Create a copy of EnterPasswordState
+  /// with the given fields replaced by the non-null parameter values.
   @pragma('vm:prefer-inline')
   @override
   $Res call({
@@ -263,7 +271,9 @@ class _$BiometryImpl implements _Biometry {
   @override
   int get hashCode => Object.hash(runtimeType, isFace);
 
-  @JsonKey(ignore: true)
+  /// Create a copy of EnterPasswordState
+  /// with the given fields replaced by the non-null parameter values.
+  @JsonKey(includeFromJson: false, includeToJson: false)
   @override
   @pragma('vm:prefer-inline')
   _$$BiometryImplCopyWith<_$BiometryImpl> get copyWith =>
@@ -352,7 +362,10 @@ abstract class _Biometry implements EnterPasswordState {
   const factory _Biometry({required final bool isFace}) = _$BiometryImpl;
 
   bool get isFace;
-  @JsonKey(ignore: true)
+
+  /// Create a copy of EnterPasswordState
+  /// with the given fields replaced by the non-null parameter values.
+  @JsonKey(includeFromJson: false, includeToJson: false)
   _$$BiometryImplCopyWith<_$BiometryImpl> get copyWith =>
       throw _privateConstructorUsedError;
 }
@@ -371,6 +384,9 @@ class __$$PasswordImplCopyWithImpl<$Res>
   __$$PasswordImplCopyWithImpl(
       _$PasswordImpl _value, $Res Function(_$PasswordImpl) _then)
       : super(_value, _then);
+
+  /// Create a copy of EnterPasswordState
+  /// with the given fields replaced by the non-null parameter values.
 }
 
 /// @nodoc
@@ -492,6 +508,8 @@ class __$$EnteredImplCopyWithImpl<$Res>
       _$EnteredImpl _value, $Res Function(_$EnteredImpl) _then)
       : super(_value, _then);
 
+  /// Create a copy of EnterPasswordState
+  /// with the given fields replaced by the non-null parameter values.
   @pragma('vm:prefer-inline')
   @override
   $Res call({
@@ -553,7 +571,9 @@ class _$EnteredImpl implements _Entered {
   int get hashCode =>
       Object.hash(runtimeType, password, fromBiometry, isFaceBiometry);
 
-  @JsonKey(ignore: true)
+  /// Create a copy of EnterPasswordState
+  /// with the given fields replaced by the non-null parameter values.
+  @JsonKey(includeFromJson: false, includeToJson: false)
   @override
   @pragma('vm:prefer-inline')
   _$$EnteredImplCopyWith<_$EnteredImpl> get copyWith =>
@@ -647,7 +667,10 @@ abstract class _Entered implements EnterPasswordState {
   String get password;
   bool get fromBiometry;
   bool get isFaceBiometry;
-  @JsonKey(ignore: true)
+
+  /// Create a copy of EnterPasswordState
+  /// with the given fields replaced by the non-null parameter values.
+  @JsonKey(includeFromJson: false, includeToJson: false)
   _$$EnteredImplCopyWith<_$EnteredImpl> get copyWith =>
       throw _privateConstructorUsedError;
 }
