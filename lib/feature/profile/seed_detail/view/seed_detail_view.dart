@@ -80,11 +80,12 @@ class SeedDetailView extends StatelessWidget {
             ),
             if (!seed.masterKey.isLegacy)
               PrimaryButton(
-              buttonShape: ButtonShape.pill,
-              title: LocaleKeys.addKey.tr(),
-              postfixIcon: LucideIcons.plus,
-              onPressed: () => showDeriveKeysSheetPassword(context, publicKey),
-            ),
+                buttonShape: ButtonShape.pill,
+                title: LocaleKeys.addKey.tr(),
+                postfixIcon: LucideIcons.plus,
+                onPressed: () =>
+                    showDeriveKeysSheetPassword(context, publicKey),
+              ),
           ],
         );
       },
