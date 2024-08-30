@@ -36,7 +36,7 @@ platform :ios do
   lane :deploy_fad do |options|
     setup_ci if ENV['CI']
     firebase_app_distribution(
-      app: "1:1017783238389:ios:a0ab19a124c910702e4fbc",
+      app: "1:1017783238389:ios:a8de9ade8f221b782e4fbc",
       groups: "qa",
       ipa_path: "../build/ios/ipa/App.ipa",
       service_credentials_file: "../fastlane/FirebaseADKey.json",
