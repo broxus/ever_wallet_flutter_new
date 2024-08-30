@@ -85,6 +85,7 @@ class _ContentBottomSheet extends StatelessWidget {
                     child: Text(
                       title!,
                       style: theme.textStyles.headingLarge,
+                      textAlign: TextAlign.center,
                     ),
                   ),
                 if (subtitle != null)

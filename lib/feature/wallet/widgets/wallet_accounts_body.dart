@@ -1,15 +1,10 @@
 import 'package:app/feature/wallet/wallet.dart';
+import 'package:app/feature/wallet/wallet_backup/back_up_badge.dart';
 import 'package:app/feature/widgets/change_notifier_listener.dart';
-import 'package:app/generated/assets.gen.dart';
-import 'package:app/generated/generated.dart';
 import 'package:flutter/material.dart';
-import 'package:hive_flutter/hive_flutter.dart';
-import 'package:lucide_icons_flutter/lucide_icons.dart';
 import 'package:nekoton_repository/nekoton_repository.dart';
 import 'package:render_metrics/render_metrics.dart';
 import 'package:ui_components_lib/ui_components_lib.dart';
-import 'package:ui_components_lib/v2/ui_components_lib_v2.dart';
-import 'package:ui_components_lib/v2/widgets/modals/primary_bottom_sheet.dart';
 
 const walletAccountCardHeight = DimensSize.d220;
 const walletAccountsPageIndicatorHeight = DimensSize.d8;
@@ -90,7 +85,7 @@ class _WalletAccountsBodyState extends State<WalletAccountsBody> {
           child: SeparatedColumn(
             mainAxisSize: MainAxisSize.min,
             children: [
-              const _BackUpBadge(),
+              BackUpBadge(widget.currentAccount),
               _pageIndicators(list.length + 1),
               RenderMetricsObject(
                 id: _renderId,
@@ -141,86 +136,6 @@ class _WalletAccountsBodyState extends State<WalletAccountsBody> {
           ),
         );
       },
-    );
-  }
-}
-
-class _BackUpBadge extends StatelessWidget {
-  const _BackUpBadge();
-
-  @override
-  Widget build(BuildContext context) {
-    final theme = context.themeStyleV2;
-    return GestureDetector(
-      onTap: () {
-        showPrimaryBottomSheet(
-          context: context,
-          title: LocaleKeys.backedUpTitleModal.tr(),
-          subtitle: LocaleKeys.backedUpSubtitleModal.tr(),
-          assetsPath: Assets.images.seedPhraseIcon.path,
-          firstButton: PrimaryButton(
-            buttonShape: ButtonShape.pill,
-            title: LocaleKeys.backedUpManuallyButton.tr(),
-            postfixIcon: LucideIcons.penLine,
-            onPressed: () {
-              showPrimaryBottomSheet(
-                context: context,
-                title: LocaleKeys.goodJobTitleModal.tr(),
-                subtitle: LocaleKeys.goodJobSubtitleModal.tr(),
-                assetsPath: Assets.images.circleCheck.path,
-                firstButton: AccentButton(
-                  buttonShape: ButtonShape.pill,
-                  title: LocaleKeys.gotItButton.tr(),
-                  postfixIcon: LucideIcons.check,
-                  onPressed: () {},
-                ),
-              );
-            },
-          ),
-        );
-      },
-      child: Container(
-        padding: const EdgeInsets.only(left: DimensSizeV2.d16),
-        decoration: BoxDecoration(
-          color: theme.colors.background1,
-          borderRadius: BorderRadius.circular(DimensRadiusV2.radius16),
-        ),
-        child: Stack(
-          children: [
-            Padding(
-              padding: const EdgeInsets.only(right: DimensSizeV2.d100),
-              child: Flexible(
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    const SizedBox(height: DimensSizeV2.d12),
-                    Text(
-                      LocaleKeys.notBackedUpTitle.tr(),
-                      style: theme.textStyles.headingXSmall,
-                    ),
-                    Text(
-                      LocaleKeys.notBackedUpSubtitle.tr(),
-                      style: theme.textStyles.paragraphXSmall,
-                    ),
-                    const SizedBox(height: DimensSizeV2.d16),
-                  ],
-                ),
-              ),
-            ),
-            Positioned.fill(
-              child: Align(
-                alignment: Alignment.centerRight,
-                child: ClipRRect(
-                  borderRadius: BorderRadius.circular(DimensRadiusV2.radius16),
-                  child: Image.asset(
-                    Assets.images.lockBackup.path,
-                  ),
-                ),
-              ),
-            )
-          ],
-        ),
-      ),
     );
   }
 }
