@@ -121,4 +121,7 @@ flutter:
     - assets/images/lang_icons/
     - assets/images/stever/
     - assets/images/user_avatar/
+    - assets/images/homescreen_bg/
+    - assets/images/alert_octagon_fill/
+    - assets/images/check_circle_fill/
     - assets/splash/

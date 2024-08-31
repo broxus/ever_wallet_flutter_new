@@ -41,6 +41,7 @@ class TokenTransferInfoWidget
       borderRadius: BorderRadius.circular(DimensRadiusV2.radius16),
       color: color,
       child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           _InfoRow(
             label: LocaleKeys.amountWord.tr(),

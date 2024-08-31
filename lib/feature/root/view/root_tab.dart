@@ -2,7 +2,8 @@ import 'package:app/app/router/router.dart';
 import 'package:app/generated/generated.dart';
 import 'package:flutter/material.dart';
 import 'package:logging/logging.dart';
-import 'package:ui_components_lib/ui_components_lib.dart';
+import 'package:lucide_icons_flutter/lucide_icons.dart';
+import 'package:ui_components_lib/v2/ui_components_lib_v2.dart';
 
 enum RootTab {
   wallet(AppRoute.wallet),
@@ -13,10 +14,10 @@ enum RootTab {
 
   final AppRoute route;
 
-  String get icon => switch (this) {
-        RootTab.wallet => Assets.images.wallet.path,
-        RootTab.browser => Assets.images.navigation.path,
-        RootTab.profile => Assets.images.person.path,
+  IconData get icon => switch (this) {
+        RootTab.wallet => LucideIcons.wallet,
+        RootTab.browser => LucideIcons.compass,
+        RootTab.profile => LucideIcons.box,
       };
 
   String get title => switch (this) {
@@ -25,15 +26,11 @@ enum RootTab {
         RootTab.profile => LocaleKeys.profileWord.tr(),
       };
 
-  BottomNavigationBarItem item(BuildContext context) {
-    final colors = context.themeStyle.colors;
-
-    return BottomNavigationBarItem(
-      icon: CommonIconWidget.svg(svg: icon, color: colors.textSecondary),
-      activeIcon: CommonIconWidget.svg(svg: icon, color: colors.blue),
-      label: title,
-    );
-  }
+  BottomNavigationBarItem item() => BottomNavigationBarItem(
+        icon: Icon(icon, size: DimensSizeV2.d24),
+        label: title,
+        tooltip: title,
+      );
 
   static RootTab getByPath(String path) {
     // ignore: prefer-enums-by-name

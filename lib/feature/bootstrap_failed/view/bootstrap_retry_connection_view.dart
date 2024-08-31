@@ -1,6 +1,6 @@
 import 'package:app/di/di.dart';
 import 'package:app/feature/bootstrap_failed/bootstrap_failed.dart';
-import 'package:app/feature/network/network.dart';
+import 'package:app/feature/network/bottom_sheets/select_network/select_network_widget.dart';
 import 'package:app/generated/generated.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -36,7 +36,7 @@ class BootstrapRetryConnectionView extends StatelessWidget {
               ),
             ),
             const Expanded(
-              child: SelectNetworkSheet(
+              child: SelectNetworkWidget(
                 needPopAfterAction: false,
               ),
             ),

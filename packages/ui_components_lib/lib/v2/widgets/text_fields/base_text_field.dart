@@ -67,6 +67,8 @@ class BaseTextField extends StatefulWidget {
     this.disabledOpacity,
     this.postfixes,
     this.errorType = TextFieldErrorType.outline,
+    this.enableSuggestions = false,
+    this.autocorrect = false,
   });
 
   /// Necessary if you plan to use getting the value of a field through a form
@@ -119,6 +121,8 @@ class BaseTextField extends StatefulWidget {
   final int? maxLength;
   final int? maxLines;
   final int? minLines;
+  final bool enableSuggestions;
+  final bool autocorrect;
 
   /// isEnabled == true
   final double? enabledOpacity;
@@ -309,6 +313,8 @@ class _BaseTextFieldState extends State<BaseTextField> with StateMixin {
                 textAlignVertical: TextAlignVertical.center,
                 expands: !widget.isObscureText,
                 validator: _validate,
+                enableSuggestions: widget.enableSuggestions,
+                autocorrect: widget.autocorrect,
               ),
             ),
           ),
