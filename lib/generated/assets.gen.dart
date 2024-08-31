@@ -244,6 +244,9 @@ class $AssetsImagesGen {
   /// File path: assets/images/lock.svg
   SvgGenImage get lock => const SvgGenImage('assets/images/lock.svg');
 
+  /// File path: assets/images/logo.svg
+  SvgGenImage get logo => const SvgGenImage('assets/images/logo.svg');
+
   /// File path: assets/images/minus.svg
   SvgGenImage get minus => const SvgGenImage('assets/images/minus.svg');
 
@@ -428,6 +431,7 @@ class $AssetsImagesGen {
         importFill,
         key,
         lock,
+        logo,
         minus,
         moon,
         navigateBack,
