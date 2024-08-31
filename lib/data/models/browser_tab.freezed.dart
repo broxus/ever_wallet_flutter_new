@@ -36,8 +36,12 @@ mixin _$BrowserTab {
   /// The sorting position of the tab.
   double get sortingOrder => throw _privateConstructorUsedError;
 
+  /// Serializes this BrowserTab to a JSON map.
   Map<String, dynamic> toJson() => throw _privateConstructorUsedError;
-  @JsonKey(ignore: true)
+
+  /// Create a copy of BrowserTab
+  /// with the given fields replaced by the non-null parameter values.
+  @JsonKey(includeFromJson: false, includeToJson: false)
   $BrowserTabCopyWith<BrowserTab> get copyWith =>
       throw _privateConstructorUsedError;
 }
@@ -66,6 +70,8 @@ class _$BrowserTabCopyWithImpl<$Res, $Val extends BrowserTab>
   // ignore: unused_field
   final $Res Function($Val) _then;
 
+  /// Create a copy of BrowserTab
+  /// with the given fields replaced by the non-null parameter values.
   @pragma('vm:prefer-inline')
   @override
   $Res call({
@@ -124,6 +130,8 @@ class __$$BrowserTabImplCopyWithImpl<$Res>
       _$BrowserTabImpl _value, $Res Function(_$BrowserTabImpl) _then)
       : super(_value, _then);
 
+  /// Create a copy of BrowserTab
+  /// with the given fields replaced by the non-null parameter values.
   @pragma('vm:prefer-inline')
   @override
   $Res call({
@@ -211,12 +219,14 @@ class _$BrowserTabImpl extends _BrowserTab {
                 other.sortingOrder == sortingOrder));
   }
 
-  @JsonKey(ignore: true)
+  @JsonKey(includeFromJson: false, includeToJson: false)
   @override
   int get hashCode =>
       Object.hash(runtimeType, id, url, imageId, title, sortingOrder);
 
-  @JsonKey(ignore: true)
+  /// Create a copy of BrowserTab
+  /// with the given fields replaced by the non-null parameter values.
+  @JsonKey(includeFromJson: false, includeToJson: false)
   @override
   @pragma('vm:prefer-inline')
   _$$BrowserTabImplCopyWith<_$BrowserTabImpl> get copyWith =>
@@ -242,29 +252,31 @@ abstract class _BrowserTab extends BrowserTab {
   factory _BrowserTab.fromJson(Map<String, dynamic> json) =
       _$BrowserTabImpl.fromJson;
 
-  @override
-
   /// The id of the tab.
-  String get id;
   @override
+  String get id;
 
   /// The url of the tab.
+  @override
   @uriJsonConverter
   Uri get url;
-  @override
 
   /// The screenshot id of the tab.
-  String? get imageId;
   @override
+  String? get imageId;
 
   /// The title of the tab.
-  String? get title;
   @override
+  String? get title;
 
   /// The sorting position of the tab.
-  double get sortingOrder;
   @override
-  @JsonKey(ignore: true)
+  double get sortingOrder;
+
+  /// Create a copy of BrowserTab
+  /// with the given fields replaced by the non-null parameter values.
+  @override
+  @JsonKey(includeFromJson: false, includeToJson: false)
   _$$BrowserTabImplCopyWith<_$BrowserTabImpl> get copyWith =>
       throw _privateConstructorUsedError;
 }

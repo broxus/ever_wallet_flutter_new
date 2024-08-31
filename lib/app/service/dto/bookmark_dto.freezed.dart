@@ -23,7 +23,9 @@ mixin _$BookmarkDto {
   @HiveField(2)
   String get url => throw _privateConstructorUsedError;
 
-  @JsonKey(ignore: true)
+  /// Create a copy of BookmarkDto
+  /// with the given fields replaced by the non-null parameter values.
+  @JsonKey(includeFromJson: false, includeToJson: false)
   $BookmarkDtoCopyWith<BookmarkDto> get copyWith =>
       throw _privateConstructorUsedError;
 }
@@ -50,6 +52,8 @@ class _$BookmarkDtoCopyWithImpl<$Res, $Val extends BookmarkDto>
   // ignore: unused_field
   final $Res Function($Val) _then;
 
+  /// Create a copy of BookmarkDto
+  /// with the given fields replaced by the non-null parameter values.
   @pragma('vm:prefer-inline')
   @override
   $Res call({
@@ -96,6 +100,8 @@ class __$$BookmarkDtoImplCopyWithImpl<$Res>
       _$BookmarkDtoImpl _value, $Res Function(_$BookmarkDtoImpl) _then)
       : super(_value, _then);
 
+  /// Create a copy of BookmarkDto
+  /// with the given fields replaced by the non-null parameter values.
   @pragma('vm:prefer-inline')
   @override
   $Res call({
@@ -157,7 +163,9 @@ class _$BookmarkDtoImpl implements _BookmarkDto {
   @override
   int get hashCode => Object.hash(runtimeType, id, name, url);
 
-  @JsonKey(ignore: true)
+  /// Create a copy of BookmarkDto
+  /// with the given fields replaced by the non-null parameter values.
+  @JsonKey(includeFromJson: false, includeToJson: false)
   @override
   @pragma('vm:prefer-inline')
   _$$BookmarkDtoImplCopyWith<_$BookmarkDtoImpl> get copyWith =>
@@ -179,8 +187,11 @@ abstract class _BookmarkDto implements BookmarkDto {
   @override
   @HiveField(2)
   String get url;
+
+  /// Create a copy of BookmarkDto
+  /// with the given fields replaced by the non-null parameter values.
   @override
-  @JsonKey(ignore: true)
+  @JsonKey(includeFromJson: false, includeToJson: false)
   _$$BookmarkDtoImplCopyWith<_$BookmarkDtoImpl> get copyWith =>
       throw _privateConstructorUsedError;
 }

@@ -27,8 +27,12 @@ mixin _$StEverDetails {
       throw _privateConstructorUsedError; // Time before withdrawing in secodns
   String get withdrawHoldTime => throw _privateConstructorUsedError;
 
+  /// Serializes this StEverDetails to a JSON map.
   Map<String, dynamic> toJson() => throw _privateConstructorUsedError;
-  @JsonKey(ignore: true)
+
+  /// Create a copy of StEverDetails
+  /// with the given fields replaced by the non-null parameter values.
+  @JsonKey(includeFromJson: false, includeToJson: false)
   $StEverDetailsCopyWith<StEverDetails> get copyWith =>
       throw _privateConstructorUsedError;
 }
@@ -55,6 +59,8 @@ class _$StEverDetailsCopyWithImpl<$Res, $Val extends StEverDetails>
   // ignore: unused_field
   final $Res Function($Val) _then;
 
+  /// Create a copy of StEverDetails
+  /// with the given fields replaced by the non-null parameter values.
   @pragma('vm:prefer-inline')
   @override
   $Res call({
@@ -101,6 +107,8 @@ class __$$StEverDetailsImplCopyWithImpl<$Res>
       _$StEverDetailsImpl _value, $Res Function(_$StEverDetailsImpl) _then)
       : super(_value, _then);
 
+  /// Create a copy of StEverDetails
+  /// with the given fields replaced by the non-null parameter values.
   @pragma('vm:prefer-inline')
   @override
   $Res call({
@@ -164,12 +172,14 @@ class _$StEverDetailsImpl implements _StEverDetails {
                 other.withdrawHoldTime == withdrawHoldTime));
   }
 
-  @JsonKey(ignore: true)
+  @JsonKey(includeFromJson: false, includeToJson: false)
   @override
   int get hashCode =>
       Object.hash(runtimeType, stEverSupply, totalAssets, withdrawHoldTime);
 
-  @JsonKey(ignore: true)
+  /// Create a copy of StEverDetails
+  /// with the given fields replaced by the non-null parameter values.
+  @JsonKey(includeFromJson: false, includeToJson: false)
   @override
   @pragma('vm:prefer-inline')
   _$$StEverDetailsImplCopyWith<_$StEverDetailsImpl> get copyWith =>
@@ -197,11 +207,14 @@ abstract class _StEverDetails implements StEverDetails {
   BigInt get stEverSupply;
   @override
   @amountJsonConverter
-  BigInt get totalAssets;
-  @override // Time before withdrawing in secodns
-  String get withdrawHoldTime;
+  BigInt get totalAssets; // Time before withdrawing in secodns
   @override
-  @JsonKey(ignore: true)
+  String get withdrawHoldTime;
+
+  /// Create a copy of StEverDetails
+  /// with the given fields replaced by the non-null parameter values.
+  @override
+  @JsonKey(includeFromJson: false, includeToJson: false)
   _$$StEverDetailsImplCopyWith<_$StEverDetailsImpl> get copyWith =>
       throw _privateConstructorUsedError;
 }

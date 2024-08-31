@@ -50,7 +50,9 @@ mixin _$ContactSupportEvent {
   }) =>
       throw _privateConstructorUsedError;
 
-  @JsonKey(ignore: true)
+  /// Create a copy of ContactSupportEvent
+  /// with the given fields replaced by the non-null parameter values.
+  @JsonKey(includeFromJson: false, includeToJson: false)
   $ContactSupportEventCopyWith<ContactSupportEvent> get copyWith =>
       throw _privateConstructorUsedError;
 }
@@ -74,6 +76,8 @@ class _$ContactSupportEventCopyWithImpl<$Res, $Val extends ContactSupportEvent>
   // ignore: unused_field
   final $Res Function($Val) _then;
 
+  /// Create a copy of ContactSupportEvent
+  /// with the given fields replaced by the non-null parameter values.
   @pragma('vm:prefer-inline')
   @override
   $Res call({
@@ -107,6 +111,8 @@ class __$$SendEmailImplCopyWithImpl<$Res>
       _$SendEmailImpl _value, $Res Function(_$SendEmailImpl) _then)
       : super(_value, _then);
 
+  /// Create a copy of ContactSupportEvent
+  /// with the given fields replaced by the non-null parameter values.
   @pragma('vm:prefer-inline')
   @override
   $Res call({
@@ -145,7 +151,9 @@ class _$SendEmailImpl implements _SendEmail {
   @override
   int get hashCode => Object.hash(runtimeType, mode);
 
-  @JsonKey(ignore: true)
+  /// Create a copy of ContactSupportEvent
+  /// with the given fields replaced by the non-null parameter values.
+  @JsonKey(includeFromJson: false, includeToJson: false)
   @override
   @pragma('vm:prefer-inline')
   _$$SendEmailImplCopyWith<_$SendEmailImpl> get copyWith =>
@@ -213,8 +221,11 @@ abstract class _SendEmail implements ContactSupportEvent {
 
   @override
   ContactSupportMode get mode;
+
+  /// Create a copy of ContactSupportEvent
+  /// with the given fields replaced by the non-null parameter values.
   @override
-  @JsonKey(ignore: true)
+  @JsonKey(includeFromJson: false, includeToJson: false)
   _$$SendEmailImplCopyWith<_$SendEmailImpl> get copyWith =>
       throw _privateConstructorUsedError;
 }
@@ -277,6 +288,9 @@ class _$ContactSupportStateCopyWithImpl<$Res, $Val extends ContactSupportState>
   final $Val _value;
   // ignore: unused_field
   final $Res Function($Val) _then;
+
+  /// Create a copy of ContactSupportState
+  /// with the given fields replaced by the non-null parameter values.
 }
 
 /// @nodoc
@@ -293,6 +307,9 @@ class __$$InitialImplCopyWithImpl<$Res>
   __$$InitialImplCopyWithImpl(
       _$InitialImpl _value, $Res Function(_$InitialImpl) _then)
       : super(_value, _then);
+
+  /// Create a copy of ContactSupportState
+  /// with the given fields replaced by the non-null parameter values.
 }
 
 /// @nodoc
@@ -394,6 +411,9 @@ class __$$BusyImplCopyWithImpl<$Res>
     implements _$$BusyImplCopyWith<$Res> {
   __$$BusyImplCopyWithImpl(_$BusyImpl _value, $Res Function(_$BusyImpl) _then)
       : super(_value, _then);
+
+  /// Create a copy of ContactSupportState
+  /// with the given fields replaced by the non-null parameter values.
 }
 
 /// @nodoc

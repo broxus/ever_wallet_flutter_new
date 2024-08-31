@@ -79,6 +79,9 @@ class _$EnterSeedPhraseStateCopyWithImpl<$Res,
   final $Val _value;
   // ignore: unused_field
   final $Res Function($Val) _then;
+
+  /// Create a copy of EnterSeedPhraseState
+  /// with the given fields replaced by the non-null parameter values.
 }
 
 /// @nodoc
@@ -95,6 +98,9 @@ class __$$InitialImplCopyWithImpl<$Res>
   __$$InitialImplCopyWithImpl(
       _$InitialImpl _value, $Res Function(_$InitialImpl) _then)
       : super(_value, _then);
+
+  /// Create a copy of EnterSeedPhraseState
+  /// with the given fields replaced by the non-null parameter values.
 }
 
 /// @nodoc
@@ -208,6 +214,8 @@ class __$$TabImplCopyWithImpl<$Res>
   __$$TabImplCopyWithImpl(_$TabImpl _value, $Res Function(_$TabImpl) _then)
       : super(_value, _then);
 
+  /// Create a copy of EnterSeedPhraseState
+  /// with the given fields replaced by the non-null parameter values.
   @pragma('vm:prefer-inline')
   @override
   $Res call({
@@ -296,7 +304,9 @@ class _$TabImpl implements _Tab {
       const DeepCollectionEquality().hash(_inputs),
       displayPasteButton);
 
-  @JsonKey(ignore: true)
+  /// Create a copy of EnterSeedPhraseState
+  /// with the given fields replaced by the non-null parameter values.
+  @JsonKey(includeFromJson: false, includeToJson: false)
   @override
   @pragma('vm:prefer-inline')
   _$$TabImplCopyWith<_$TabImpl> get copyWith =>
@@ -382,7 +392,10 @@ abstract class _Tab implements EnterSeedPhraseState {
   int get currentValue;
   List<EnterSeedPhraseInputModel> get inputs;
   bool get displayPasteButton;
-  @JsonKey(ignore: true)
+
+  /// Create a copy of EnterSeedPhraseState
+  /// with the given fields replaced by the non-null parameter values.
+  @JsonKey(includeFromJson: false, includeToJson: false)
   _$$TabImplCopyWith<_$TabImpl> get copyWith =>
       throw _privateConstructorUsedError;
 }

@@ -83,6 +83,9 @@ class _$ActionStakingBlocEventCopyWithImpl<$Res,
   final $Val _value;
   // ignore: unused_field
   final $Res Function($Val) _then;
+
+  /// Create a copy of ActionStakingBlocEvent
+  /// with the given fields replaced by the non-null parameter values.
 }
 
 /// @nodoc
@@ -98,6 +101,9 @@ class __$$InitImplCopyWithImpl<$Res>
     implements _$$InitImplCopyWith<$Res> {
   __$$InitImplCopyWithImpl(_$InitImpl _value, $Res Function(_$InitImpl) _then)
       : super(_value, _then);
+
+  /// Create a copy of ActionStakingBlocEvent
+  /// with the given fields replaced by the non-null parameter values.
 }
 
 /// @nodoc
@@ -215,6 +221,8 @@ class __$$StakeImplCopyWithImpl<$Res>
       _$StakeImpl _value, $Res Function(_$StakeImpl) _then)
       : super(_value, _then);
 
+  /// Create a copy of ActionStakingBlocEvent
+  /// with the given fields replaced by the non-null parameter values.
   @pragma('vm:prefer-inline')
   @override
   $Res call({
@@ -233,6 +241,8 @@ class __$$StakeImplCopyWithImpl<$Res>
     ));
   }
 
+  /// Create a copy of ActionStakingBlocEvent
+  /// with the given fields replaced by the non-null parameter values.
   @override
   @pragma('vm:prefer-inline')
   $PublicKeyCopyWith<$Res> get accountKey {
@@ -271,7 +281,9 @@ class _$StakeImpl implements _Stake {
   @override
   int get hashCode => Object.hash(runtimeType, amount, accountKey);
 
-  @JsonKey(ignore: true)
+  /// Create a copy of ActionStakingBlocEvent
+  /// with the given fields replaced by the non-null parameter values.
+  @JsonKey(includeFromJson: false, includeToJson: false)
   @override
   @pragma('vm:prefer-inline')
   _$$StakeImplCopyWith<_$StakeImpl> get copyWith =>
@@ -358,7 +370,10 @@ abstract class _Stake implements ActionStakingBlocEvent {
 // in native tokens
   BigInt get amount;
   PublicKey get accountKey;
-  @JsonKey(ignore: true)
+
+  /// Create a copy of ActionStakingBlocEvent
+  /// with the given fields replaced by the non-null parameter values.
+  @JsonKey(includeFromJson: false, includeToJson: false)
   _$$StakeImplCopyWith<_$StakeImpl> get copyWith =>
       throw _privateConstructorUsedError;
 }
@@ -382,6 +397,8 @@ class __$$UnstakeImplCopyWithImpl<$Res>
       _$UnstakeImpl _value, $Res Function(_$UnstakeImpl) _then)
       : super(_value, _then);
 
+  /// Create a copy of ActionStakingBlocEvent
+  /// with the given fields replaced by the non-null parameter values.
   @pragma('vm:prefer-inline')
   @override
   $Res call({
@@ -405,6 +422,8 @@ class __$$UnstakeImplCopyWithImpl<$Res>
     ));
   }
 
+  /// Create a copy of ActionStakingBlocEvent
+  /// with the given fields replaced by the non-null parameter values.
   @override
   @pragma('vm:prefer-inline')
   $PublicKeyCopyWith<$Res> get accountKey {
@@ -451,7 +470,9 @@ class _$UnstakeImpl implements _Unstake {
   int get hashCode =>
       Object.hash(runtimeType, amount, accountKey, withdrawHours);
 
-  @JsonKey(ignore: true)
+  /// Create a copy of ActionStakingBlocEvent
+  /// with the given fields replaced by the non-null parameter values.
+  @JsonKey(includeFromJson: false, includeToJson: false)
   @override
   @pragma('vm:prefer-inline')
   _$$UnstakeImplCopyWith<_$UnstakeImpl> get copyWith =>
@@ -540,7 +561,10 @@ abstract class _Unstake implements ActionStakingBlocEvent {
   BigInt get amount;
   PublicKey get accountKey;
   int get withdrawHours;
-  @JsonKey(ignore: true)
+
+  /// Create a copy of ActionStakingBlocEvent
+  /// with the given fields replaced by the non-null parameter values.
+  @JsonKey(includeFromJson: false, includeToJson: false)
   _$$UnstakeImplCopyWith<_$UnstakeImpl> get copyWith =>
       throw _privateConstructorUsedError;
 }
@@ -660,6 +684,9 @@ class _$ActionStakingBlocStateCopyWithImpl<$Res,
   final $Val _value;
   // ignore: unused_field
   final $Res Function($Val) _then;
+
+  /// Create a copy of ActionStakingBlocState
+  /// with the given fields replaced by the non-null parameter values.
 }
 
 /// @nodoc
@@ -676,6 +703,9 @@ class __$$NothingImplCopyWithImpl<$Res>
   __$$NothingImplCopyWithImpl(
       _$NothingImpl _value, $Res Function(_$NothingImpl) _then)
       : super(_value, _then);
+
+  /// Create a copy of ActionStakingBlocState
+  /// with the given fields replaced by the non-null parameter values.
 }
 
 /// @nodoc
@@ -834,6 +864,9 @@ class __$$InProgressImplCopyWithImpl<$Res>
   __$$InProgressImplCopyWithImpl(
       _$InProgressImpl _value, $Res Function(_$InProgressImpl) _then)
       : super(_value, _then);
+
+  /// Create a copy of ActionStakingBlocState
+  /// with the given fields replaced by the non-null parameter values.
 }
 
 /// @nodoc
@@ -992,6 +1025,9 @@ class __$$ShowHowItWorksImplCopyWithImpl<$Res>
   __$$ShowHowItWorksImplCopyWithImpl(
       _$ShowHowItWorksImpl _value, $Res Function(_$ShowHowItWorksImpl) _then)
       : super(_value, _then);
+
+  /// Create a copy of ActionStakingBlocState
+  /// with the given fields replaced by the non-null parameter values.
 }
 
 /// @nodoc
@@ -1163,6 +1199,8 @@ class __$$GoStakeImplCopyWithImpl<$Res>
       _$GoStakeImpl _value, $Res Function(_$GoStakeImpl) _then)
       : super(_value, _then);
 
+  /// Create a copy of ActionStakingBlocState
+  /// with the given fields replaced by the non-null parameter values.
   @pragma('vm:prefer-inline')
   @override
   $Res call({
@@ -1201,6 +1239,8 @@ class __$$GoStakeImplCopyWithImpl<$Res>
     ));
   }
 
+  /// Create a copy of ActionStakingBlocState
+  /// with the given fields replaced by the non-null parameter values.
   @override
   @pragma('vm:prefer-inline')
   $AddressCopyWith<$Res> get destination {
@@ -1209,6 +1249,8 @@ class __$$GoStakeImplCopyWithImpl<$Res>
     });
   }
 
+  /// Create a copy of ActionStakingBlocState
+  /// with the given fields replaced by the non-null parameter values.
   @override
   @pragma('vm:prefer-inline')
   $AddressCopyWith<$Res> get sender {
@@ -1217,6 +1259,8 @@ class __$$GoStakeImplCopyWithImpl<$Res>
     });
   }
 
+  /// Create a copy of ActionStakingBlocState
+  /// with the given fields replaced by the non-null parameter values.
   @override
   @pragma('vm:prefer-inline')
   $PublicKeyCopyWith<$Res> get accountKey {
@@ -1276,7 +1320,9 @@ class _$GoStakeImpl implements _GoStake {
   int get hashCode => Object.hash(runtimeType, payload, amount, destination,
       sender, accountKey, attachedFee);
 
-  @JsonKey(ignore: true)
+  /// Create a copy of ActionStakingBlocState
+  /// with the given fields replaced by the non-null parameter values.
+  @JsonKey(includeFromJson: false, includeToJson: false)
   @override
   @pragma('vm:prefer-inline')
   _$$GoStakeImplCopyWith<_$GoStakeImpl> get copyWith =>
@@ -1419,7 +1465,10 @@ abstract class _GoStake implements ActionStakingBlocState {
   Address get sender;
   PublicKey get accountKey;
   BigInt get attachedFee;
-  @JsonKey(ignore: true)
+
+  /// Create a copy of ActionStakingBlocState
+  /// with the given fields replaced by the non-null parameter values.
+  @JsonKey(includeFromJson: false, includeToJson: false)
   _$$GoStakeImplCopyWith<_$GoStakeImpl> get copyWith =>
       throw _privateConstructorUsedError;
 }
@@ -1454,6 +1503,8 @@ class __$$GoUnstakeImplCopyWithImpl<$Res>
       _$GoUnstakeImpl _value, $Res Function(_$GoUnstakeImpl) _then)
       : super(_value, _then);
 
+  /// Create a copy of ActionStakingBlocState
+  /// with the given fields replaced by the non-null parameter values.
   @pragma('vm:prefer-inline')
   @override
   $Res call({
@@ -1502,6 +1553,8 @@ class __$$GoUnstakeImplCopyWithImpl<$Res>
     ));
   }
 
+  /// Create a copy of ActionStakingBlocState
+  /// with the given fields replaced by the non-null parameter values.
   @override
   @pragma('vm:prefer-inline')
   $AddressCopyWith<$Res> get destination {
@@ -1510,6 +1563,8 @@ class __$$GoUnstakeImplCopyWithImpl<$Res>
     });
   }
 
+  /// Create a copy of ActionStakingBlocState
+  /// with the given fields replaced by the non-null parameter values.
   @override
   @pragma('vm:prefer-inline')
   $AddressCopyWith<$Res> get sender {
@@ -1518,6 +1573,8 @@ class __$$GoUnstakeImplCopyWithImpl<$Res>
     });
   }
 
+  /// Create a copy of ActionStakingBlocState
+  /// with the given fields replaced by the non-null parameter values.
   @override
   @pragma('vm:prefer-inline')
   $PublicKeyCopyWith<$Res> get accountKey {
@@ -1526,6 +1583,8 @@ class __$$GoUnstakeImplCopyWithImpl<$Res>
     });
   }
 
+  /// Create a copy of ActionStakingBlocState
+  /// with the given fields replaced by the non-null parameter values.
   @override
   @pragma('vm:prefer-inline')
   $AddressCopyWith<$Res> get stakeContractAddress {
@@ -1595,7 +1654,9 @@ class _$GoUnstakeImpl implements _GoUnstake {
   int get hashCode => Object.hash(runtimeType, payload, amount, destination,
       sender, accountKey, attachedFee, withdrawHours, stakeContractAddress);
 
-  @JsonKey(ignore: true)
+  /// Create a copy of ActionStakingBlocState
+  /// with the given fields replaced by the non-null parameter values.
+  @JsonKey(includeFromJson: false, includeToJson: false)
   @override
   @pragma('vm:prefer-inline')
   _$$GoUnstakeImplCopyWith<_$GoUnstakeImpl> get copyWith =>
@@ -1742,7 +1803,10 @@ abstract class _GoUnstake implements ActionStakingBlocState {
   BigInt get attachedFee;
   int get withdrawHours;
   Address get stakeContractAddress;
-  @JsonKey(ignore: true)
+
+  /// Create a copy of ActionStakingBlocState
+  /// with the given fields replaced by the non-null parameter values.
+  @JsonKey(includeFromJson: false, includeToJson: false)
   _$$GoUnstakeImplCopyWith<_$GoUnstakeImpl> get copyWith =>
       throw _privateConstructorUsedError;
 }

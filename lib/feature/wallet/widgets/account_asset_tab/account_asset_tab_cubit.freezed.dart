@@ -79,6 +79,9 @@ class _$AccountAssetTabStateCopyWithImpl<$Res,
   final $Val _value;
   // ignore: unused_field
   final $Res Function($Val) _then;
+
+  /// Create a copy of AccountAssetTabState
+  /// with the given fields replaced by the non-null parameter values.
 }
 
 /// @nodoc
@@ -95,6 +98,9 @@ class __$$EmptyImplCopyWithImpl<$Res>
   __$$EmptyImplCopyWithImpl(
       _$EmptyImpl _value, $Res Function(_$EmptyImpl) _then)
       : super(_value, _then);
+
+  /// Create a copy of AccountAssetTabState
+  /// with the given fields replaced by the non-null parameter values.
 }
 
 /// @nodoc
@@ -208,6 +214,8 @@ class __$$AccountsImplCopyWithImpl<$Res>
       _$AccountsImpl _value, $Res Function(_$AccountsImpl) _then)
       : super(_value, _then);
 
+  /// Create a copy of AccountAssetTabState
+  /// with the given fields replaced by the non-null parameter values.
   @pragma('vm:prefer-inline')
   @override
   $Res call({
@@ -226,6 +234,8 @@ class __$$AccountsImplCopyWithImpl<$Res>
     ));
   }
 
+  /// Create a copy of AccountAssetTabState
+  /// with the given fields replaced by the non-null parameter values.
   @override
   @pragma('vm:prefer-inline')
   $TonWalletAssetCopyWith<$Res> get tonWallet {
@@ -272,7 +282,9 @@ class _$AccountsImpl implements _Accounts {
   int get hashCode => Object.hash(
       runtimeType, tonWallet, const DeepCollectionEquality().hash(_tokens));
 
-  @JsonKey(ignore: true)
+  /// Create a copy of AccountAssetTabState
+  /// with the given fields replaced by the non-null parameter values.
+  @JsonKey(includeFromJson: false, includeToJson: false)
   @override
   @pragma('vm:prefer-inline')
   _$$AccountsImplCopyWith<_$AccountsImpl> get copyWith =>
@@ -353,7 +365,10 @@ abstract class _Accounts implements AccountAssetTabState {
 
   TonWalletAsset get tonWallet;
   List<TokenContractAsset>? get tokens;
-  @JsonKey(ignore: true)
+
+  /// Create a copy of AccountAssetTabState
+  /// with the given fields replaced by the non-null parameter values.
+  @JsonKey(includeFromJson: false, includeToJson: false)
   _$$AccountsImplCopyWith<_$AccountsImpl> get copyWith =>
       throw _privateConstructorUsedError;
 }

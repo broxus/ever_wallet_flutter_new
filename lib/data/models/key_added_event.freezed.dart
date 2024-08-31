@@ -18,7 +18,9 @@ final _privateConstructorUsedError = UnsupportedError(
 mixin _$KeyAddedEvent {
   KeyStoreEntry get key => throw _privateConstructorUsedError;
 
-  @JsonKey(ignore: true)
+  /// Create a copy of KeyAddedEvent
+  /// with the given fields replaced by the non-null parameter values.
+  @JsonKey(includeFromJson: false, includeToJson: false)
   $KeyAddedEventCopyWith<KeyAddedEvent> get copyWith =>
       throw _privateConstructorUsedError;
 }
@@ -44,6 +46,8 @@ class _$KeyAddedEventCopyWithImpl<$Res, $Val extends KeyAddedEvent>
   // ignore: unused_field
   final $Res Function($Val) _then;
 
+  /// Create a copy of KeyAddedEvent
+  /// with the given fields replaced by the non-null parameter values.
   @pragma('vm:prefer-inline')
   @override
   $Res call({
@@ -57,6 +61,8 @@ class _$KeyAddedEventCopyWithImpl<$Res, $Val extends KeyAddedEvent>
     ) as $Val);
   }
 
+  /// Create a copy of KeyAddedEvent
+  /// with the given fields replaced by the non-null parameter values.
   @override
   @pragma('vm:prefer-inline')
   $KeyStoreEntryCopyWith<$Res> get key {
@@ -88,6 +94,8 @@ class __$$KeyAddedEventImplCopyWithImpl<$Res>
       _$KeyAddedEventImpl _value, $Res Function(_$KeyAddedEventImpl) _then)
       : super(_value, _then);
 
+  /// Create a copy of KeyAddedEvent
+  /// with the given fields replaced by the non-null parameter values.
   @pragma('vm:prefer-inline')
   @override
   $Res call({
@@ -126,7 +134,9 @@ class _$KeyAddedEventImpl implements _KeyAddedEvent {
   @override
   int get hashCode => Object.hash(runtimeType, key);
 
-  @JsonKey(ignore: true)
+  /// Create a copy of KeyAddedEvent
+  /// with the given fields replaced by the non-null parameter values.
+  @JsonKey(includeFromJson: false, includeToJson: false)
   @override
   @pragma('vm:prefer-inline')
   _$$KeyAddedEventImplCopyWith<_$KeyAddedEventImpl> get copyWith =>
@@ -138,8 +148,11 @@ abstract class _KeyAddedEvent implements KeyAddedEvent {
 
   @override
   KeyStoreEntry get key;
+
+  /// Create a copy of KeyAddedEvent
+  /// with the given fields replaced by the non-null parameter values.
   @override
-  @JsonKey(ignore: true)
+  @JsonKey(includeFromJson: false, includeToJson: false)
   _$$KeyAddedEventImplCopyWith<_$KeyAddedEventImpl> get copyWith =>
       throw _privateConstructorUsedError;
 }

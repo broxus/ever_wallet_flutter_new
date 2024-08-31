@@ -22,7 +22,9 @@ mixin _$PermissionsDto {
   AccountInteractionDto? get accountInteraction =>
       throw _privateConstructorUsedError;
 
-  @JsonKey(ignore: true)
+  /// Create a copy of PermissionsDto
+  /// with the given fields replaced by the non-null parameter values.
+  @JsonKey(includeFromJson: false, includeToJson: false)
   $PermissionsDtoCopyWith<PermissionsDto> get copyWith =>
       throw _privateConstructorUsedError;
 }
@@ -50,6 +52,8 @@ class _$PermissionsDtoCopyWithImpl<$Res, $Val extends PermissionsDto>
   // ignore: unused_field
   final $Res Function($Val) _then;
 
+  /// Create a copy of PermissionsDto
+  /// with the given fields replaced by the non-null parameter values.
   @pragma('vm:prefer-inline')
   @override
   $Res call({
@@ -68,6 +72,8 @@ class _$PermissionsDtoCopyWithImpl<$Res, $Val extends PermissionsDto>
     ) as $Val);
   }
 
+  /// Create a copy of PermissionsDto
+  /// with the given fields replaced by the non-null parameter values.
   @override
   @pragma('vm:prefer-inline')
   $AccountInteractionDtoCopyWith<$Res>? get accountInteraction {
@@ -106,6 +112,8 @@ class __$$PermissionsDtoImplCopyWithImpl<$Res>
       _$PermissionsDtoImpl _value, $Res Function(_$PermissionsDtoImpl) _then)
       : super(_value, _then);
 
+  /// Create a copy of PermissionsDto
+  /// with the given fields replaced by the non-null parameter values.
   @pragma('vm:prefer-inline')
   @override
   $Res call({
@@ -157,7 +165,9 @@ class _$PermissionsDtoImpl implements _PermissionsDto {
   @override
   int get hashCode => Object.hash(runtimeType, basic, accountInteraction);
 
-  @JsonKey(ignore: true)
+  /// Create a copy of PermissionsDto
+  /// with the given fields replaced by the non-null parameter values.
+  @JsonKey(includeFromJson: false, includeToJson: false)
   @override
   @pragma('vm:prefer-inline')
   _$$PermissionsDtoImplCopyWith<_$PermissionsDtoImpl> get copyWith =>
@@ -177,8 +187,11 @@ abstract class _PermissionsDto implements PermissionsDto {
   @override
   @HiveField(1)
   AccountInteractionDto? get accountInteraction;
+
+  /// Create a copy of PermissionsDto
+  /// with the given fields replaced by the non-null parameter values.
   @override
-  @JsonKey(ignore: true)
+  @JsonKey(includeFromJson: false, includeToJson: false)
   _$$PermissionsDtoImplCopyWith<_$PermissionsDtoImpl> get copyWith =>
       throw _privateConstructorUsedError;
 }

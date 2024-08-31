@@ -84,6 +84,9 @@ class _$TonWalletSendEventCopyWithImpl<$Res, $Val extends TonWalletSendEvent>
   final $Val _value;
   // ignore: unused_field
   final $Res Function($Val) _then;
+
+  /// Create a copy of TonWalletSendEvent
+  /// with the given fields replaced by the non-null parameter values.
 }
 
 /// @nodoc
@@ -100,6 +103,9 @@ class __$$PrepareImplCopyWithImpl<$Res>
   __$$PrepareImplCopyWithImpl(
       _$PrepareImpl _value, $Res Function(_$PrepareImpl) _then)
       : super(_value, _then);
+
+  /// Create a copy of TonWalletSendEvent
+  /// with the given fields replaced by the non-null parameter values.
 }
 
 /// @nodoc
@@ -216,6 +222,8 @@ class __$$SendImplCopyWithImpl<$Res>
   __$$SendImplCopyWithImpl(_$SendImpl _value, $Res Function(_$SendImpl) _then)
       : super(_value, _then);
 
+  /// Create a copy of TonWalletSendEvent
+  /// with the given fields replaced by the non-null parameter values.
   @pragma('vm:prefer-inline')
   @override
   $Res call({
@@ -255,7 +263,9 @@ class _$SendImpl implements _Send {
   @override
   int get hashCode => Object.hash(runtimeType, password);
 
-  @JsonKey(ignore: true)
+  /// Create a copy of TonWalletSendEvent
+  /// with the given fields replaced by the non-null parameter values.
+  @JsonKey(includeFromJson: false, includeToJson: false)
   @override
   @pragma('vm:prefer-inline')
   _$$SendImplCopyWith<_$SendImpl> get copyWith =>
@@ -340,7 +350,10 @@ abstract class _Send implements TonWalletSendEvent {
   const factory _Send(final String password) = _$SendImpl;
 
   String get password;
-  @JsonKey(ignore: true)
+
+  /// Create a copy of TonWalletSendEvent
+  /// with the given fields replaced by the non-null parameter values.
+  @JsonKey(includeFromJson: false, includeToJson: false)
   _$$SendImplCopyWith<_$SendImpl> get copyWith =>
       throw _privateConstructorUsedError;
 }
@@ -359,6 +372,9 @@ class __$$AllowCloseSendImplCopyWithImpl<$Res>
   __$$AllowCloseSendImplCopyWithImpl(
       _$AllowCloseSendImpl _value, $Res Function(_$AllowCloseSendImpl) _then)
       : super(_value, _then);
+
+  /// Create a copy of TonWalletSendEvent
+  /// with the given fields replaced by the non-null parameter values.
 }
 
 /// @nodoc
@@ -478,6 +494,8 @@ class __$$CompleteSendImplCopyWithImpl<$Res>
       _$CompleteSendImpl _value, $Res Function(_$CompleteSendImpl) _then)
       : super(_value, _then);
 
+  /// Create a copy of TonWalletSendEvent
+  /// with the given fields replaced by the non-null parameter values.
   @pragma('vm:prefer-inline')
   @override
   $Res call({
@@ -491,6 +509,8 @@ class __$$CompleteSendImplCopyWithImpl<$Res>
     ));
   }
 
+  /// Create a copy of TonWalletSendEvent
+  /// with the given fields replaced by the non-null parameter values.
   @override
   @pragma('vm:prefer-inline')
   $TransactionCopyWith<$Res> get transaction {
@@ -525,7 +545,9 @@ class _$CompleteSendImpl implements _CompleteSend {
   @override
   int get hashCode => Object.hash(runtimeType, transaction);
 
-  @JsonKey(ignore: true)
+  /// Create a copy of TonWalletSendEvent
+  /// with the given fields replaced by the non-null parameter values.
+  @JsonKey(includeFromJson: false, includeToJson: false)
   @override
   @pragma('vm:prefer-inline')
   _$$CompleteSendImplCopyWith<_$CompleteSendImpl> get copyWith =>
@@ -611,7 +633,10 @@ abstract class _CompleteSend implements TonWalletSendEvent {
       _$CompleteSendImpl;
 
   Transaction get transaction;
-  @JsonKey(ignore: true)
+
+  /// Create a copy of TonWalletSendEvent
+  /// with the given fields replaced by the non-null parameter values.
+  @JsonKey(includeFromJson: false, includeToJson: false)
   _$$CompleteSendImplCopyWith<_$CompleteSendImpl> get copyWith =>
       throw _privateConstructorUsedError;
 }
@@ -698,6 +723,9 @@ class _$TonWalletSendStateCopyWithImpl<$Res, $Val extends TonWalletSendState>
   final $Val _value;
   // ignore: unused_field
   final $Res Function($Val) _then;
+
+  /// Create a copy of TonWalletSendState
+  /// with the given fields replaced by the non-null parameter values.
 }
 
 /// @nodoc
@@ -714,6 +742,9 @@ class __$$LoadingImplCopyWithImpl<$Res>
   __$$LoadingImplCopyWithImpl(
       _$LoadingImpl _value, $Res Function(_$LoadingImpl) _then)
       : super(_value, _then);
+
+  /// Create a copy of TonWalletSendState
+  /// with the given fields replaced by the non-null parameter values.
 }
 
 /// @nodoc
@@ -843,6 +874,8 @@ class __$$CalculatingErrorImplCopyWithImpl<$Res>
       $Res Function(_$CalculatingErrorImpl) _then)
       : super(_value, _then);
 
+  /// Create a copy of TonWalletSendState
+  /// with the given fields replaced by the non-null parameter values.
   @pragma('vm:prefer-inline')
   @override
   $Res call({
@@ -889,7 +922,9 @@ class _$CalculatingErrorImpl implements _CalculatingError {
   @override
   int get hashCode => Object.hash(runtimeType, error, fee);
 
-  @JsonKey(ignore: true)
+  /// Create a copy of TonWalletSendState
+  /// with the given fields replaced by the non-null parameter values.
+  @JsonKey(includeFromJson: false, includeToJson: false)
   @override
   @pragma('vm:prefer-inline')
   _$$CalculatingErrorImplCopyWith<_$CalculatingErrorImpl> get copyWith =>
@@ -989,7 +1024,10 @@ abstract class _CalculatingError implements TonWalletSendState {
 
   String get error;
   BigInt? get fee;
-  @JsonKey(ignore: true)
+
+  /// Create a copy of TonWalletSendState
+  /// with the given fields replaced by the non-null parameter values.
+  @JsonKey(includeFromJson: false, includeToJson: false)
   _$$CalculatingErrorImplCopyWith<_$CalculatingErrorImpl> get copyWith =>
       throw _privateConstructorUsedError;
 }
@@ -1011,6 +1049,8 @@ class __$$SubscribeErrorImplCopyWithImpl<$Res>
       _$SubscribeErrorImpl _value, $Res Function(_$SubscribeErrorImpl) _then)
       : super(_value, _then);
 
+  /// Create a copy of TonWalletSendState
+  /// with the given fields replaced by the non-null parameter values.
   @pragma('vm:prefer-inline')
   @override
   $Res call({
@@ -1047,7 +1087,9 @@ class _$SubscribeErrorImpl implements _SubscribeError {
   int get hashCode =>
       Object.hash(runtimeType, const DeepCollectionEquality().hash(error));
 
-  @JsonKey(ignore: true)
+  /// Create a copy of TonWalletSendState
+  /// with the given fields replaced by the non-null parameter values.
+  @JsonKey(includeFromJson: false, includeToJson: false)
   @override
   @pragma('vm:prefer-inline')
   _$$SubscribeErrorImplCopyWith<_$SubscribeErrorImpl> get copyWith =>
@@ -1145,7 +1187,10 @@ abstract class _SubscribeError implements TonWalletSendState {
   const factory _SubscribeError(final Object error) = _$SubscribeErrorImpl;
 
   Object get error;
-  @JsonKey(ignore: true)
+
+  /// Create a copy of TonWalletSendState
+  /// with the given fields replaced by the non-null parameter values.
+  @JsonKey(includeFromJson: false, includeToJson: false)
   _$$SubscribeErrorImplCopyWith<_$SubscribeErrorImpl> get copyWith =>
       throw _privateConstructorUsedError;
 }
@@ -1167,6 +1212,8 @@ class __$$ReadyImplCopyWithImpl<$Res>
       _$ReadyImpl _value, $Res Function(_$ReadyImpl) _then)
       : super(_value, _then);
 
+  /// Create a copy of TonWalletSendState
+  /// with the given fields replaced by the non-null parameter values.
   @pragma('vm:prefer-inline')
   @override
   $Res call({
@@ -1205,7 +1252,9 @@ class _$ReadyImpl implements _Ready {
   @override
   int get hashCode => Object.hash(runtimeType, fee);
 
-  @JsonKey(ignore: true)
+  /// Create a copy of TonWalletSendState
+  /// with the given fields replaced by the non-null parameter values.
+  @JsonKey(includeFromJson: false, includeToJson: false)
   @override
   @pragma('vm:prefer-inline')
   _$$ReadyImplCopyWith<_$ReadyImpl> get copyWith =>
@@ -1302,7 +1351,10 @@ abstract class _Ready implements TonWalletSendState {
   const factory _Ready(final BigInt fee) = _$ReadyImpl;
 
   BigInt get fee;
-  @JsonKey(ignore: true)
+
+  /// Create a copy of TonWalletSendState
+  /// with the given fields replaced by the non-null parameter values.
+  @JsonKey(includeFromJson: false, includeToJson: false)
   _$$ReadyImplCopyWith<_$ReadyImpl> get copyWith =>
       throw _privateConstructorUsedError;
 }
@@ -1324,6 +1376,8 @@ class __$$SendingImplCopyWithImpl<$Res>
       _$SendingImpl _value, $Res Function(_$SendingImpl) _then)
       : super(_value, _then);
 
+  /// Create a copy of TonWalletSendState
+  /// with the given fields replaced by the non-null parameter values.
   @pragma('vm:prefer-inline')
   @override
   $Res call({
@@ -1363,7 +1417,9 @@ class _$SendingImpl implements _Sending {
   @override
   int get hashCode => Object.hash(runtimeType, canClose);
 
-  @JsonKey(ignore: true)
+  /// Create a copy of TonWalletSendState
+  /// with the given fields replaced by the non-null parameter values.
+  @JsonKey(includeFromJson: false, includeToJson: false)
   @override
   @pragma('vm:prefer-inline')
   _$$SendingImplCopyWith<_$SendingImpl> get copyWith =>
@@ -1460,7 +1516,10 @@ abstract class _Sending implements TonWalletSendState {
   const factory _Sending({required final bool canClose}) = _$SendingImpl;
 
   bool get canClose;
-  @JsonKey(ignore: true)
+
+  /// Create a copy of TonWalletSendState
+  /// with the given fields replaced by the non-null parameter values.
+  @JsonKey(includeFromJson: false, includeToJson: false)
   _$$SendingImplCopyWith<_$SendingImpl> get copyWith =>
       throw _privateConstructorUsedError;
 }
@@ -1483,6 +1542,8 @@ class __$$SentImplCopyWithImpl<$Res>
   __$$SentImplCopyWithImpl(_$SentImpl _value, $Res Function(_$SentImpl) _then)
       : super(_value, _then);
 
+  /// Create a copy of TonWalletSendState
+  /// with the given fields replaced by the non-null parameter values.
   @pragma('vm:prefer-inline')
   @override
   $Res call({
@@ -1501,6 +1562,8 @@ class __$$SentImplCopyWithImpl<$Res>
     ));
   }
 
+  /// Create a copy of TonWalletSendState
+  /// with the given fields replaced by the non-null parameter values.
   @override
   @pragma('vm:prefer-inline')
   $TransactionCopyWith<$Res> get transaction {
@@ -1538,7 +1601,9 @@ class _$SentImpl implements _Sent {
   @override
   int get hashCode => Object.hash(runtimeType, fee, transaction);
 
-  @JsonKey(ignore: true)
+  /// Create a copy of TonWalletSendState
+  /// with the given fields replaced by the non-null parameter values.
+  @JsonKey(includeFromJson: false, includeToJson: false)
   @override
   @pragma('vm:prefer-inline')
   _$$SentImplCopyWith<_$SentImpl> get copyWith =>
@@ -1637,7 +1702,10 @@ abstract class _Sent implements TonWalletSendState {
 
   BigInt get fee;
   Transaction get transaction;
-  @JsonKey(ignore: true)
+
+  /// Create a copy of TonWalletSendState
+  /// with the given fields replaced by the non-null parameter values.
+  @JsonKey(includeFromJson: false, includeToJson: false)
   _$$SentImplCopyWith<_$SentImpl> get copyWith =>
       throw _privateConstructorUsedError;
 }

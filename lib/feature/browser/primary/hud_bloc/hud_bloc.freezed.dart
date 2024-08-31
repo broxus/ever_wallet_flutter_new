@@ -71,6 +71,9 @@ class _$HudEventCopyWithImpl<$Res, $Val extends HudEvent>
   final $Val _value;
   // ignore: unused_field
   final $Res Function($Val) _then;
+
+  /// Create a copy of HudEvent
+  /// with the given fields replaced by the non-null parameter values.
 }
 
 /// @nodoc
@@ -86,6 +89,9 @@ class __$$ShowImplCopyWithImpl<$Res>
     implements _$$ShowImplCopyWith<$Res> {
   __$$ShowImplCopyWithImpl(_$ShowImpl _value, $Res Function(_$ShowImpl) _then)
       : super(_value, _then);
+
+  /// Create a copy of HudEvent
+  /// with the given fields replaced by the non-null parameter values.
 }
 
 /// @nodoc
@@ -187,6 +193,9 @@ class __$$HideImplCopyWithImpl<$Res>
     implements _$$HideImplCopyWith<$Res> {
   __$$HideImplCopyWithImpl(_$HideImpl _value, $Res Function(_$HideImpl) _then)
       : super(_value, _then);
+
+  /// Create a copy of HudEvent
+  /// with the given fields replaced by the non-null parameter values.
 }
 
 /// @nodoc
@@ -332,6 +341,9 @@ class _$HudStateCopyWithImpl<$Res, $Val extends HudState>
   final $Val _value;
   // ignore: unused_field
   final $Res Function($Val) _then;
+
+  /// Create a copy of HudState
+  /// with the given fields replaced by the non-null parameter values.
 }
 
 /// @nodoc
@@ -348,6 +360,9 @@ class __$$VisibleImplCopyWithImpl<$Res>
   __$$VisibleImplCopyWithImpl(
       _$VisibleImpl _value, $Res Function(_$VisibleImpl) _then)
       : super(_value, _then);
+
+  /// Create a copy of HudState
+  /// with the given fields replaced by the non-null parameter values.
 }
 
 /// @nodoc
@@ -450,6 +465,9 @@ class __$$InvisibleImplCopyWithImpl<$Res>
   __$$InvisibleImplCopyWithImpl(
       _$InvisibleImpl _value, $Res Function(_$InvisibleImpl) _then)
       : super(_value, _then);
+
+  /// Create a copy of HudState
+  /// with the given fields replaced by the non-null parameter values.
 }
 
 /// @nodoc

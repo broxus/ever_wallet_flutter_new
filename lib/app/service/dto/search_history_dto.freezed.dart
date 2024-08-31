@@ -21,7 +21,9 @@ mixin _$SearchHistoryDto {
   @HiveField(1)
   DateTime get openTime => throw _privateConstructorUsedError;
 
-  @JsonKey(ignore: true)
+  /// Create a copy of SearchHistoryDto
+  /// with the given fields replaced by the non-null parameter values.
+  @JsonKey(includeFromJson: false, includeToJson: false)
   $SearchHistoryDtoCopyWith<SearchHistoryDto> get copyWith =>
       throw _privateConstructorUsedError;
 }
@@ -45,6 +47,8 @@ class _$SearchHistoryDtoCopyWithImpl<$Res, $Val extends SearchHistoryDto>
   // ignore: unused_field
   final $Res Function($Val) _then;
 
+  /// Create a copy of SearchHistoryDto
+  /// with the given fields replaced by the non-null parameter values.
   @pragma('vm:prefer-inline')
   @override
   $Res call({
@@ -83,6 +87,8 @@ class __$$SearchHistoryDtoImplCopyWithImpl<$Res>
       $Res Function(_$SearchHistoryDtoImpl) _then)
       : super(_value, _then);
 
+  /// Create a copy of SearchHistoryDto
+  /// with the given fields replaced by the non-null parameter values.
   @pragma('vm:prefer-inline')
   @override
   $Res call({
@@ -134,7 +140,9 @@ class _$SearchHistoryDtoImpl implements _SearchHistoryDto {
   @override
   int get hashCode => Object.hash(runtimeType, url, openTime);
 
-  @JsonKey(ignore: true)
+  /// Create a copy of SearchHistoryDto
+  /// with the given fields replaced by the non-null parameter values.
+  @JsonKey(includeFromJson: false, includeToJson: false)
   @override
   @pragma('vm:prefer-inline')
   _$$SearchHistoryDtoImplCopyWith<_$SearchHistoryDtoImpl> get copyWith =>
@@ -153,8 +161,11 @@ abstract class _SearchHistoryDto implements SearchHistoryDto {
   @override
   @HiveField(1)
   DateTime get openTime;
+
+  /// Create a copy of SearchHistoryDto
+  /// with the given fields replaced by the non-null parameter values.
   @override
-  @JsonKey(ignore: true)
+  @JsonKey(includeFromJson: false, includeToJson: false)
   _$$SearchHistoryDtoImplCopyWith<_$SearchHistoryDtoImpl> get copyWith =>
       throw _privateConstructorUsedError;
 }
