@@ -143,6 +143,9 @@ class _$WalletPrepareTransferStateCopyWithImpl<$Res,
   final $Val _value;
   // ignore: unused_field
   final $Res Function($Val) _then;
+
+  /// Create a copy of WalletPrepareTransferState
+  /// with the given fields replaced by the non-null parameter values.
 }
 
 /// @nodoc
@@ -159,6 +162,9 @@ class __$$LoadingImplCopyWithImpl<$Res>
   __$$LoadingImplCopyWithImpl(
       _$LoadingImpl _value, $Res Function(_$LoadingImpl) _then)
       : super(_value, _then);
+
+  /// Create a copy of WalletPrepareTransferState
+  /// with the given fields replaced by the non-null parameter values.
 }
 
 /// @nodoc
@@ -330,6 +336,9 @@ class __$$EmptyImplCopyWithImpl<$Res>
   __$$EmptyImplCopyWithImpl(
       _$EmptyImpl _value, $Res Function(_$EmptyImpl) _then)
       : super(_value, _then);
+
+  /// Create a copy of WalletPrepareTransferState
+  /// with the given fields replaced by the non-null parameter values.
 }
 
 /// @nodoc
@@ -504,6 +513,8 @@ class __$$SubscribeErrorImplCopyWithImpl<$Res>
       _$SubscribeErrorImpl _value, $Res Function(_$SubscribeErrorImpl) _then)
       : super(_value, _then);
 
+  /// Create a copy of WalletPrepareTransferState
+  /// with the given fields replaced by the non-null parameter values.
   @pragma('vm:prefer-inline')
   @override
   $Res call({
@@ -540,7 +551,9 @@ class _$SubscribeErrorImpl implements _SubscribeError {
   int get hashCode =>
       Object.hash(runtimeType, const DeepCollectionEquality().hash(error));
 
-  @JsonKey(ignore: true)
+  /// Create a copy of WalletPrepareTransferState
+  /// with the given fields replaced by the non-null parameter values.
+  @JsonKey(includeFromJson: false, includeToJson: false)
   @override
   @pragma('vm:prefer-inline')
   _$$SubscribeErrorImplCopyWith<_$SubscribeErrorImpl> get copyWith =>
@@ -683,7 +696,10 @@ abstract class _SubscribeError implements WalletPrepareTransferState {
   const factory _SubscribeError(final Object error) = _$SubscribeErrorImpl;
 
   Object get error;
-  @JsonKey(ignore: true)
+
+  /// Create a copy of WalletPrepareTransferState
+  /// with the given fields replaced by the non-null parameter values.
+  @JsonKey(includeFromJson: false, includeToJson: false)
   _$$SubscribeErrorImplCopyWith<_$SubscribeErrorImpl> get copyWith =>
       throw _privateConstructorUsedError;
 }
@@ -712,6 +728,8 @@ class __$$DataImplCopyWithImpl<$Res>
   __$$DataImplCopyWithImpl(_$DataImpl _value, $Res Function(_$DataImpl) _then)
       : super(_value, _then);
 
+  /// Create a copy of WalletPrepareTransferState
+  /// with the given fields replaced by the non-null parameter values.
   @pragma('vm:prefer-inline')
   @override
   $Res call({
@@ -750,6 +768,8 @@ class __$$DataImplCopyWithImpl<$Res>
     ));
   }
 
+  /// Create a copy of WalletPrepareTransferState
+  /// with the given fields replaced by the non-null parameter values.
   @override
   @pragma('vm:prefer-inline')
   $PublicKeyCopyWith<$Res> get selectedCustodian {
@@ -828,7 +848,9 @@ class _$DataImpl implements _Data {
       selectedAsset,
       const DeepCollectionEquality().hash(_assets));
 
-  @JsonKey(ignore: true)
+  /// Create a copy of WalletPrepareTransferState
+  /// with the given fields replaced by the non-null parameter values.
+  @JsonKey(includeFromJson: false, includeToJson: false)
   @override
   @pragma('vm:prefer-inline')
   _$$DataImplCopyWith<_$DataImpl> get copyWith =>
@@ -984,7 +1006,10 @@ abstract class _Data implements WalletPrepareTransferState {
   List<PublicKey> get localCustodians;
   WalletPrepareTransferAsset get selectedAsset;
   List<WalletPrepareTransferAsset> get assets;
-  @JsonKey(ignore: true)
+
+  /// Create a copy of WalletPrepareTransferState
+  /// with the given fields replaced by the non-null parameter values.
+  @JsonKey(includeFromJson: false, includeToJson: false)
   _$$DataImplCopyWith<_$DataImpl> get copyWith =>
       throw _privateConstructorUsedError;
 }
@@ -1018,6 +1043,8 @@ class __$$GoNextImplCopyWithImpl<$Res>
       _$GoNextImpl _value, $Res Function(_$GoNextImpl) _then)
       : super(_value, _then);
 
+  /// Create a copy of WalletPrepareTransferState
+  /// with the given fields replaced by the non-null parameter values.
   @pragma('vm:prefer-inline')
   @override
   $Res call({
@@ -1071,6 +1098,8 @@ class __$$GoNextImplCopyWithImpl<$Res>
     ));
   }
 
+  /// Create a copy of WalletPrepareTransferState
+  /// with the given fields replaced by the non-null parameter values.
   @override
   @pragma('vm:prefer-inline')
   $PublicKeyCopyWith<$Res> get selectedCustodian {
@@ -1079,6 +1108,8 @@ class __$$GoNextImplCopyWithImpl<$Res>
     });
   }
 
+  /// Create a copy of WalletPrepareTransferState
+  /// with the given fields replaced by the non-null parameter values.
   @override
   @pragma('vm:prefer-inline')
   $AddressCopyWith<$Res> get receiveAddress {
@@ -1174,7 +1205,9 @@ class _$GoNextImpl implements _GoNext {
       amount,
       comment);
 
-  @JsonKey(ignore: true)
+  /// Create a copy of WalletPrepareTransferState
+  /// with the given fields replaced by the non-null parameter values.
+  @JsonKey(includeFromJson: false, includeToJson: false)
   @override
   @pragma('vm:prefer-inline')
   _$$GoNextImplCopyWith<_$GoNextImpl> get copyWith =>
@@ -1336,7 +1369,10 @@ abstract class _GoNext implements WalletPrepareTransferState {
   Address get receiveAddress;
   Fixed get amount;
   String? get comment;
-  @JsonKey(ignore: true)
+
+  /// Create a copy of WalletPrepareTransferState
+  /// with the given fields replaced by the non-null parameter values.
+  @JsonKey(includeFromJson: false, includeToJson: false)
   _$$GoNextImplCopyWith<_$GoNextImpl> get copyWith =>
       throw _privateConstructorUsedError;
 }

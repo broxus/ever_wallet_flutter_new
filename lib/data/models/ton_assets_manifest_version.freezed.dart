@@ -25,8 +25,12 @@ mixin _$TonAssetsManifestVersion {
   int get minor => throw _privateConstructorUsedError;
   int get patch => throw _privateConstructorUsedError;
 
+  /// Serializes this TonAssetsManifestVersion to a JSON map.
   Map<String, dynamic> toJson() => throw _privateConstructorUsedError;
-  @JsonKey(ignore: true)
+
+  /// Create a copy of TonAssetsManifestVersion
+  /// with the given fields replaced by the non-null parameter values.
+  @JsonKey(includeFromJson: false, includeToJson: false)
   $TonAssetsManifestVersionCopyWith<TonAssetsManifestVersion> get copyWith =>
       throw _privateConstructorUsedError;
 }
@@ -51,6 +55,8 @@ class _$TonAssetsManifestVersionCopyWithImpl<$Res,
   // ignore: unused_field
   final $Res Function($Val) _then;
 
+  /// Create a copy of TonAssetsManifestVersion
+  /// with the given fields replaced by the non-null parameter values.
   @pragma('vm:prefer-inline')
   @override
   $Res call({
@@ -97,6 +103,8 @@ class __$$TonAssetsManifestVersionImplCopyWithImpl<$Res>
       $Res Function(_$TonAssetsManifestVersionImpl) _then)
       : super(_value, _then);
 
+  /// Create a copy of TonAssetsManifestVersion
+  /// with the given fields replaced by the non-null parameter values.
   @pragma('vm:prefer-inline')
   @override
   $Res call({
@@ -152,11 +160,13 @@ class _$TonAssetsManifestVersionImpl implements _TonAssetsManifestVersion {
             (identical(other.patch, patch) || other.patch == patch));
   }
 
-  @JsonKey(ignore: true)
+  @JsonKey(includeFromJson: false, includeToJson: false)
   @override
   int get hashCode => Object.hash(runtimeType, major, minor, patch);
 
-  @JsonKey(ignore: true)
+  /// Create a copy of TonAssetsManifestVersion
+  /// with the given fields replaced by the non-null parameter values.
+  @JsonKey(includeFromJson: false, includeToJson: false)
   @override
   @pragma('vm:prefer-inline')
   _$$TonAssetsManifestVersionImplCopyWith<_$TonAssetsManifestVersionImpl>
@@ -186,8 +196,11 @@ abstract class _TonAssetsManifestVersion implements TonAssetsManifestVersion {
   int get minor;
   @override
   int get patch;
+
+  /// Create a copy of TonAssetsManifestVersion
+  /// with the given fields replaced by the non-null parameter values.
   @override
-  @JsonKey(ignore: true)
+  @JsonKey(includeFromJson: false, includeToJson: false)
   _$$TonAssetsManifestVersionImplCopyWith<_$TonAssetsManifestVersionImpl>
       get copyWith => throw _privateConstructorUsedError;
 }

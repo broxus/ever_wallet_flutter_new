@@ -82,6 +82,9 @@ class _$SelectNewAssetStateCopyWithImpl<$Res, $Val extends SelectNewAssetState>
   final $Val _value;
   // ignore: unused_field
   final $Res Function($Val) _then;
+
+  /// Create a copy of SelectNewAssetState
+  /// with the given fields replaced by the non-null parameter values.
 }
 
 /// @nodoc
@@ -98,6 +101,9 @@ class __$$CompletedImplCopyWithImpl<$Res>
   __$$CompletedImplCopyWithImpl(
       _$CompletedImpl _value, $Res Function(_$CompletedImpl) _then)
       : super(_value, _then);
+
+  /// Create a copy of SelectNewAssetState
+  /// with the given fields replaced by the non-null parameter values.
 }
 
 /// @nodoc
@@ -217,6 +223,8 @@ class __$$DataImplCopyWithImpl<$Res>
   __$$DataImplCopyWithImpl(_$DataImpl _value, $Res Function(_$DataImpl) _then)
       : super(_value, _then);
 
+  /// Create a copy of SelectNewAssetState
+  /// with the given fields replaced by the non-null parameter values.
   @pragma('vm:prefer-inline')
   @override
   $Res call({
@@ -305,7 +313,9 @@ class _$DataImpl implements _Data {
   int get hashCode => Object.hash(runtimeType, tab, isLoading, showButton,
       account, const DeepCollectionEquality().hash(_contracts));
 
-  @JsonKey(ignore: true)
+  /// Create a copy of SelectNewAssetState
+  /// with the given fields replaced by the non-null parameter values.
+  @JsonKey(includeFromJson: false, includeToJson: false)
   @override
   @pragma('vm:prefer-inline')
   _$$DataImplCopyWith<_$DataImpl> get copyWith =>
@@ -397,7 +407,10 @@ abstract class _Data implements SelectNewAssetState {
   bool get showButton;
   KeyAccount? get account;
   List<(TokenContractAsset, bool)>? get contracts;
-  @JsonKey(ignore: true)
+
+  /// Create a copy of SelectNewAssetState
+  /// with the given fields replaced by the non-null parameter values.
+  @JsonKey(includeFromJson: false, includeToJson: false)
   _$$DataImplCopyWith<_$DataImpl> get copyWith =>
       throw _privateConstructorUsedError;
 }

@@ -80,6 +80,9 @@ class _$AddSeedEnableBiometryStateCopyWithImpl<$Res,
   final $Val _value;
   // ignore: unused_field
   final $Res Function($Val) _then;
+
+  /// Create a copy of AddSeedEnableBiometryState
+  /// with the given fields replaced by the non-null parameter values.
 }
 
 /// @nodoc
@@ -95,6 +98,9 @@ class __$$InitImplCopyWithImpl<$Res>
     implements _$$InitImplCopyWith<$Res> {
   __$$InitImplCopyWithImpl(_$InitImpl _value, $Res Function(_$InitImpl) _then)
       : super(_value, _then);
+
+  /// Create a copy of AddSeedEnableBiometryState
+  /// with the given fields replaced by the non-null parameter values.
 }
 
 /// @nodoc
@@ -204,6 +210,8 @@ class __$$AskImplCopyWithImpl<$Res>
   __$$AskImplCopyWithImpl(_$AskImpl _value, $Res Function(_$AskImpl) _then)
       : super(_value, _then);
 
+  /// Create a copy of AddSeedEnableBiometryState
+  /// with the given fields replaced by the non-null parameter values.
   @pragma('vm:prefer-inline')
   @override
   $Res call({
@@ -243,7 +251,9 @@ class _$AskImpl implements _Ask {
   @override
   int get hashCode => Object.hash(runtimeType, isFaceBiometry);
 
-  @JsonKey(ignore: true)
+  /// Create a copy of AddSeedEnableBiometryState
+  /// with the given fields replaced by the non-null parameter values.
+  @JsonKey(includeFromJson: false, includeToJson: false)
   @override
   @pragma('vm:prefer-inline')
   _$$AskImplCopyWith<_$AskImpl> get copyWith =>
@@ -322,7 +332,10 @@ abstract class _Ask implements AddSeedEnableBiometryState {
   const factory _Ask({required final bool isFaceBiometry}) = _$AskImpl;
 
   bool get isFaceBiometry;
-  @JsonKey(ignore: true)
+
+  /// Create a copy of AddSeedEnableBiometryState
+  /// with the given fields replaced by the non-null parameter values.
+  @JsonKey(includeFromJson: false, includeToJson: false)
   _$$AskImplCopyWith<_$AskImpl> get copyWith =>
       throw _privateConstructorUsedError;
 }
@@ -341,6 +354,9 @@ class __$$CompletedImplCopyWithImpl<$Res>
   __$$CompletedImplCopyWithImpl(
       _$CompletedImpl _value, $Res Function(_$CompletedImpl) _then)
       : super(_value, _then);
+
+  /// Create a copy of AddSeedEnableBiometryState
+  /// with the given fields replaced by the non-null parameter values.
 }
 
 /// @nodoc

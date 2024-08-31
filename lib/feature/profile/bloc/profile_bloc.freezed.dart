@@ -79,6 +79,9 @@ class _$ProfileEventCopyWithImpl<$Res, $Val extends ProfileEvent>
   final $Val _value;
   // ignore: unused_field
   final $Res Function($Val) _then;
+
+  /// Create a copy of ProfileEvent
+  /// with the given fields replaced by the non-null parameter values.
 }
 
 /// @nodoc
@@ -95,6 +98,9 @@ class __$$InitializeImplCopyWithImpl<$Res>
   __$$InitializeImplCopyWithImpl(
       _$InitializeImpl _value, $Res Function(_$InitializeImpl) _then)
       : super(_value, _then);
+
+  /// Create a copy of ProfileEvent
+  /// with the given fields replaced by the non-null parameter values.
 }
 
 /// @nodoc
@@ -204,6 +210,9 @@ class __$$LogOutImplCopyWithImpl<$Res>
   __$$LogOutImplCopyWithImpl(
       _$LogOutImpl _value, $Res Function(_$LogOutImpl) _then)
       : super(_value, _then);
+
+  /// Create a copy of ProfileEvent
+  /// with the given fields replaced by the non-null parameter values.
 }
 
 /// @nodoc
@@ -316,6 +325,8 @@ class __$$UpdateDataImplCopyWithImpl<$Res>
       _$UpdateDataImpl _value, $Res Function(_$UpdateDataImpl) _then)
       : super(_value, _then);
 
+  /// Create a copy of ProfileEvent
+  /// with the given fields replaced by the non-null parameter values.
   @pragma('vm:prefer-inline')
   @override
   $Res call({
@@ -366,7 +377,9 @@ class _$UpdateDataImpl implements _UpdateData {
   int get hashCode =>
       Object.hash(runtimeType, currentSeed, isBiometryAvailable);
 
-  @JsonKey(ignore: true)
+  /// Create a copy of ProfileEvent
+  /// with the given fields replaced by the non-null parameter values.
+  @JsonKey(includeFromJson: false, includeToJson: false)
   @override
   @pragma('vm:prefer-inline')
   _$$UpdateDataImplCopyWith<_$UpdateDataImpl> get copyWith =>
@@ -449,7 +462,10 @@ abstract class _UpdateData implements ProfileEvent {
 
   Seed? get currentSeed;
   bool get isBiometryAvailable;
-  @JsonKey(ignore: true)
+
+  /// Create a copy of ProfileEvent
+  /// with the given fields replaced by the non-null parameter values.
+  @JsonKey(includeFromJson: false, includeToJson: false)
   _$$UpdateDataImplCopyWith<_$UpdateDataImpl> get copyWith =>
       throw _privateConstructorUsedError;
 }
@@ -518,6 +534,9 @@ class _$ProfileStateCopyWithImpl<$Res, $Val extends ProfileState>
   final $Val _value;
   // ignore: unused_field
   final $Res Function($Val) _then;
+
+  /// Create a copy of ProfileState
+  /// with the given fields replaced by the non-null parameter values.
 }
 
 /// @nodoc
@@ -534,6 +553,9 @@ class __$$InitialImplCopyWithImpl<$Res>
   __$$InitialImplCopyWithImpl(
       _$InitialImpl _value, $Res Function(_$InitialImpl) _then)
       : super(_value, _then);
+
+  /// Create a copy of ProfileState
+  /// with the given fields replaced by the non-null parameter values.
 }
 
 /// @nodoc
@@ -644,6 +666,8 @@ class __$$DataImplCopyWithImpl<$Res>
   __$$DataImplCopyWithImpl(_$DataImpl _value, $Res Function(_$DataImpl) _then)
       : super(_value, _then);
 
+  /// Create a copy of ProfileState
+  /// with the given fields replaced by the non-null parameter values.
   @pragma('vm:prefer-inline')
   @override
   $Res call({
@@ -705,7 +729,9 @@ class _$DataImpl implements _Data {
   int get hashCode =>
       Object.hash(runtimeType, currentSeed, isBiometryAvailable, appVersion);
 
-  @JsonKey(ignore: true)
+  /// Create a copy of ProfileState
+  /// with the given fields replaced by the non-null parameter values.
+  @JsonKey(includeFromJson: false, includeToJson: false)
   @override
   @pragma('vm:prefer-inline')
   _$$DataImplCopyWith<_$DataImpl> get copyWith =>
@@ -789,7 +815,10 @@ abstract class _Data implements ProfileState {
   Seed get currentSeed;
   bool get isBiometryAvailable;
   String get appVersion;
-  @JsonKey(ignore: true)
+
+  /// Create a copy of ProfileState
+  /// with the given fields replaced by the non-null parameter values.
+  @JsonKey(includeFromJson: false, includeToJson: false)
   _$$DataImplCopyWith<_$DataImpl> get copyWith =>
       throw _privateConstructorUsedError;
 }
