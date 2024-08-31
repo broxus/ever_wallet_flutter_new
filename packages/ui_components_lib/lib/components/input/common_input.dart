@@ -47,7 +47,9 @@ class CommonInput extends StatefulWidget {
     this.needClearButton = true,
     this.suggestionBackground,
     this.textStyle,
+    this.textAlign = TextAlign.start,
     this.hintStyle,
+    this.cursorColor,
     this.enabledBorderColor,
     this.inactiveBorderColor,
     this.focusedBorderColor,
@@ -63,6 +65,7 @@ class CommonInput extends StatefulWidget {
     this.outerActions,
     this.enabled = true,
     this.v2Style,
+    this.radius = DimensRadius.medium,
   });
 
   /// Height of input field
@@ -132,6 +135,8 @@ class CommonInput extends StatefulWidget {
   /// Callback for suggestion selection, no need for TextField
   final SuggestionSelectionCallback<String>? onSuggestionSelected;
 
+  final Color? cursorColor;
+
   /// Border color for input with focus
   final Color? enabledBorderColor;
 
@@ -157,6 +162,8 @@ class CommonInput extends StatefulWidget {
   /// [StyleRes.primaryRegular] and [ColorsPalette.textPrimary]
   /// or [ColorsPalette.textSecondary] if the input is not enabled.
   final TextStyle? textStyle;
+
+  final TextAlign textAlign;
 
   /// Style for label text, default [StyleRes.primaryRegular] and
   /// [ColorsPalette.textSecondary].
@@ -190,6 +197,8 @@ class CommonInput extends StatefulWidget {
   ///remove after refactoring enter_seed_phrase_view
   ///only for fast fix
   final CommonInputStyleV2? v2Style;
+
+  final double radius;
 
   @override
   State<CommonInput> createState() => _CommonInputState();
@@ -403,11 +412,12 @@ class _CommonInputState extends State<CommonInput> {
         keyboardType: widget.keyboardType ?? TextInputType.text,
         onChanged: widget.onChanged,
         textInputAction: widget.textInputAction ?? TextInputAction.next,
-        cursorColor: widget.textStyle?.color ?? color,
+        cursorColor: widget.cursorColor ?? widget.textStyle?.color ?? color,
         onSubmitted: widget.onSubmitted,
         autocorrect: widget.autocorrect,
         enableSuggestions: widget.enableSuggestions,
         inputFormatters: widget.inputFormatters,
+        textAlign: widget.textAlign,
         decoration: InputDecoration(
           filled: true,
           fillColor: widget.fillColor ?? colors.backgroundSecondary,
@@ -423,31 +433,31 @@ class _CommonInputState extends State<CommonInput> {
           prefixIcon:
               widget.prefixIcon ?? const SizedBox(width: DimensSize.d16),
           border: SquircleInputBorder(
-            squircleRadius: DimensRadius.medium,
+            squircleRadius: widget.radius,
             borderSide: BorderSide(
               color: widget.inactiveBorderColor ?? colors.strokePrimary,
             ),
           ),
           enabledBorder: SquircleInputBorder(
-            squircleRadius: DimensRadius.medium,
+            squircleRadius: widget.radius,
             borderSide: BorderSide(
               color: widget.enabledBorderColor ?? colors.strokePrimary,
             ),
           ),
           focusedBorder: SquircleInputBorder(
-            squircleRadius: DimensRadius.medium,
+            squircleRadius: widget.radius,
             borderSide: BorderSide(
               color: widget.focusedBorderColor ?? colors.strokeContrast,
             ),
           ),
           errorBorder: SquircleInputBorder(
-            squircleRadius: DimensRadius.medium,
+            squircleRadius: widget.radius,
             borderSide: BorderSide(
               color: widget.errorColor ?? colors.alert,
             ),
           ),
           focusedErrorBorder: SquircleInputBorder(
-            squircleRadius: DimensRadius.medium,
+            squircleRadius: widget.radius,
             borderSide: BorderSide(
               color: widget.errorColor ?? colors.alert,
             ),

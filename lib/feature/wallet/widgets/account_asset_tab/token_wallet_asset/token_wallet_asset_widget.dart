@@ -58,6 +58,7 @@ class TokenWalletAssetWidget extends StatelessWidget {
     return Builder(
       builder: (context) {
         return WalletAssetWidget(
+          name: asset.name,
           tokenBalance: tokenBalance,
           fiatBalance: fiatBalance,
           error: error,

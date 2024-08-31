@@ -34,52 +34,58 @@ class _WalletBottomPanelState extends State<WalletBottomPanel> {
   @override
   Widget build(BuildContext context) {
     final theme = context.themeStyleV2;
-    return DecoratedBox(
-      decoration: BoxDecoration(color: theme.colors.background1),
-      child: ValueListenableBuilder<WalletBottomPanelTab>(
-        valueListenable: currentTabNotifier,
-        builder: (_, value, __) {
-          return CustomScrollView(
-            controller: widget.scrollController,
-            slivers: [
-              SliverToBoxAdapter(
-                child: Padding(
-                  padding:
-                      const EdgeInsets.symmetric(horizontal: DimensSize.d16),
-                  child: SwitcherSegmentControls(
-                    currentValue: value,
-                    values: [
-                      PrimarySegmentControl(
-                        state: SegmentControlState.normal,
-                        title: LocaleKeys.assetsWord.tr(),
-                        value: WalletBottomPanelTab.asset,
-                        size: SegmentControlSize.medium,
-                      ),
-                      PrimarySegmentControl(
-                        state: SegmentControlState.selected,
-                        title: LocaleKeys.transactionsWord.tr(),
-                        value: WalletBottomPanelTab.transactions,
-                        size: SegmentControlSize.medium,
-                      ),
-                    ],
-                    onTabChanged: (v) => currentTabNotifier.value = v,
-                  ),
+
+    return SliverToBoxAdapter(
+      child: Container(
+        decoration: BoxDecoration(
+          color: theme.colors.background1,
+          borderRadius: const BorderRadius.vertical(
+            top: Radius.circular(DimensRadiusV2.radius24),
+          ),
+        ),
+        padding: const EdgeInsets.only(
+          top: DimensSizeV2.d24,
+          left: DimensSizeV2.d16,
+          right: DimensSizeV2.d16,
+          bottom: DimensSizeV2.d48,
+        ),
+        child: ValueListenableBuilder<WalletBottomPanelTab>(
+          valueListenable: currentTabNotifier,
+          builder: (_, value, __) {
+            return SeparatedColumn(
+              separatorSize: DimensSizeV2.d24,
+              children: [
+                SwitcherSegmentControls(
+                  currentValue: value,
+                  values: [
+                    PrimarySegmentControl(
+                      state: SegmentControlState.normal,
+                      title: LocaleKeys.assetsWord.tr(),
+                      value: WalletBottomPanelTab.asset,
+                      size: SegmentControlSize.xsmall,
+                    ),
+                    PrimarySegmentControl(
+                      state: SegmentControlState.normal,
+                      title: LocaleKeys.transactionsWord.tr(),
+                      value: WalletBottomPanelTab.transactions,
+                      size: SegmentControlSize.xsmall,
+                    ),
+                  ],
+                  onTabChanged: (v) => currentTabNotifier.value = v,
                 ),
-              ),
-              switch (value) {
-                WalletBottomPanelTab.asset =>
-                  AccountAssetsTab(account: widget.currentAccount),
-                WalletBottomPanelTab.transactions => AccountTransactionsTab(
-                    account: widget.currentAccount,
-                    scrollController: widget.scrollController,
-                  ),
-              },
-              const SliverToBoxAdapter(
-                child: SafeArea(child: SizedBox(height: DimensSize.d8)),
-              ),
-            ],
-          );
-        },
+                switch (value) {
+                  WalletBottomPanelTab.asset => AccountAssetsTab(
+                      account: widget.currentAccount,
+                    ),
+                  WalletBottomPanelTab.transactions => AccountTransactionsTab(
+                      account: widget.currentAccount,
+                      scrollController: widget.scrollController,
+                    ),
+                },
+              ],
+            );
+          },
+        ),
       ),
     );
   }

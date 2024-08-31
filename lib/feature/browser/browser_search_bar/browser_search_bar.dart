@@ -32,7 +32,7 @@ class BrowserSearchBar extends StatelessWidget {
           onShared: _onShared,
           searchSvg: Assets.images.search.path,
           secureSvg: Assets.images.lock.path,
-          shareSvg: Assets.images.export.path,
+          shareSvg: Assets.images.export2.path,
         );
       },
     );

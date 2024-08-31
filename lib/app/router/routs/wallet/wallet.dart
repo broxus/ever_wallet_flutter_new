@@ -78,7 +78,7 @@ StatefulShellBranch get walletBranch {
       GoRoute(
         name: AppRoute.wallet.name,
         path: AppRoute.wallet.path,
-        builder: (context, state) => const WalletPage(),
+        builder: (context, state) => const WalletPageWidget(),
         routes: [
           GoRoute(
             path: AppRoute.enableBiometryAfterOnboarding.path,

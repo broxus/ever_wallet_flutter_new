@@ -9,11 +9,11 @@ import 'package:ui_components_lib/v2/widgets/widgets.dart';
 
 /// Helper method that displays [ExportSeedSavePhrase] sheet.
 ModalRoute<void> exportSeedSavePhraseRoute(
-  BuildContext context,
+  TextStyle titleTextStyle,
   List<String> phrase,
 ) {
   return commonBottomSheetRoute(
-    titleTextStyle: context.themeStyleV2.textStyles.headingLarge,
+    titleTextStyle: titleTextStyle,
     title: LocaleKeys.saveSeedPhrase.tr(),
     body: (_, controller) => ExportSeedSavePhrase(
       phrase: phrase,

@@ -83,7 +83,10 @@ class _ReadOnlyStoryState extends State<ReadOnlyStory> {
               const BrowserBottomBarPrimary(
                 tabCount: 1,
               ),
-              const BrowserBottomBarTabs(),
+              const BrowserBottomBarTabs(
+                closeAllText: 'Close All',
+                doneText: 'Done',
+              ),
             ],
           ),
         ),

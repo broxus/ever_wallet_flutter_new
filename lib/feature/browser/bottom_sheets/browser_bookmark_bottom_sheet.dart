@@ -2,11 +2,13 @@ import 'package:app/app/service/service.dart';
 import 'package:app/data/models/models.dart';
 import 'package:app/di/di.dart';
 import 'package:app/feature/browser/browser.dart';
+import 'package:app/feature/browser/widgets/browser_modal_item.dart';
 import 'package:app/generated/generated.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:share_plus/share_plus.dart';
 import 'package:ui_components_lib/ui_components_lib.dart';
+import 'package:ui_components_lib/v2/ui_components_lib_v2.dart';
 
 /// Helper function to show [BrowserBookmarkSheet].
 Future<void> showBrowserBookmarkSheet({
@@ -15,9 +17,16 @@ Future<void> showBrowserBookmarkSheet({
 }) {
   return showCommonBottomSheet(
     title: LocaleKeys.browserBookmarkSettings.tr(),
+    titleTextStyle: context.themeStyleV2.textStyles.headingLarge,
     context: context,
     body: (_, __) => BrowserBookmarkSheet(
       item: item,
+    ),
+    titleMargin: const EdgeInsets.only(
+      top: DimensSizeV2.d32,
+      bottom: DimensSizeV2.d12,
+      left: DimensSizeV2.d16,
+      right: DimensSizeV2.d16,
     ),
   );
 }
@@ -37,7 +46,7 @@ class BrowserBookmarkSheet extends StatefulWidget {
 class _BrowserBookmarkSheetState extends State<BrowserBookmarkSheet> {
   @override
   Widget build(BuildContext context) {
-    final colors = context.themeStyle.colors;
+    final colors = context.themeStyleV2.colors;
 
     return BlocProvider<BrowserBookmarksBloc>(
       create: (context) => BrowserBookmarksBloc(
@@ -46,33 +55,33 @@ class _BrowserBookmarkSheetState extends State<BrowserBookmarkSheet> {
       child: Builder(
         builder: (context) {
           return ShapedContainerColumn(
+            color: colors.background2,
             margin: EdgeInsets.zero,
+            padding: EdgeInsets.zero,
             mainAxisSize: MainAxisSize.min,
             separator: const CommonDivider(),
             children: [
-              CommonListTile(
+              BrowserModalItem(
                 onPressed: () => _onSharePressed(context),
                 titleText: LocaleKeys.browserBookmarkShare.tr(),
                 trailing: CommonIconWidget.svg(
-                  svg: Assets.images.share.path,
-                  color: colors.textPrimary,
+                  svg: Assets.images.export2.path,
                 ),
               ),
-              CommonListTile(
+              BrowserModalItem(
                 onPressed: () => _onRenamePressed(context),
                 titleText: LocaleKeys.browserBookmarkRename.tr(),
                 trailing: CommonIconWidget.svg(
                   svg: Assets.images.edit.path,
-                  color: colors.textPrimary,
                 ),
               ),
-              CommonListTile(
+              BrowserModalItem(
                 onPressed: () => _onDeletePressed(context),
                 titleText: LocaleKeys.browserBookmarkDelete.tr(),
                 trailing: CommonIconWidget.svg(
                   svg: Assets.images.trash.path,
                 ),
-                contentColor: colors.alert,
+                contentColor: colors.contentNegative,
               ),
             ],
           );
@@ -91,7 +100,10 @@ class _BrowserBookmarkSheetState extends State<BrowserBookmarkSheet> {
     Navigator.of(context)
       ..pop()
       ..push(
-        showBrowserBookmarkRenameSheet(item: widget.item),
+        showBrowserBookmarkRenameSheet(
+          item: widget.item,
+          titleTextStyle: context.themeStyleV2.textStyles.headingLarge,
+        ),
       );
   }
 

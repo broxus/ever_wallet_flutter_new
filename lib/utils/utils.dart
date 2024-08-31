@@ -80,5 +80,5 @@ String toEllipseString(String value) => value.length > 6
     : value;
 
 extension FunctionalExt<T> on T {
-  R let<R>(R Function(T that) block) => block(this);
+  R let<R>(R Function(T value) block) => block(this);
 }
