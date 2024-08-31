@@ -1,7 +1,9 @@
 import 'package:app/core/error_handler_factory.dart';
 import 'package:app/core/wm/custom_wm.dart';
+import 'package:app/data/models/models.dart';
 import 'package:app/di/di.dart';
 import 'package:app/feature/network/bottom_sheets/bottom_sheets.dart';
+import 'package:app/feature/wallet/widgets/account_settings/account_settings.dart';
 import 'package:app/feature/wallet/widgets/wallet_app_bar/wallet_app_bar_model.dart';
 import 'package:app/feature/wallet/widgets/wallet_app_bar/wallet_app_bar_widget.dart';
 import 'package:elementary_helper/elementary_helper.dart';
@@ -17,6 +19,7 @@ WalletAppBarWidgetModel defaultWalletAppBarWidgetModelFactory(
         createPrimaryErrorHandler(context),
         inject(),
         inject(),
+        inject(),
       ),
     );
 
@@ -26,10 +29,13 @@ class WalletAppBarWidgetModel
 
   late final _currentAccount = createNotifierFromStream(model.currentAccount);
   late final _walletState = createNotifierFromStream(model.walletState);
+  late final _connection = createNotifierFromStream(model.connection);
 
   ListenableState<KeyAccount?> get currentAccount => _currentAccount;
 
   ListenableState<TonWalletState?> get walletState => _walletState;
+
+  ListenableState<ConnectionData?> get connection => _connection;
 
   ThemeStyleV2 get theme => context.themeStyleV2;
 
@@ -38,6 +44,10 @@ class WalletAppBarWidgetModel
   }
 
   void onSettings() {
-    // TODO(komarov): account options
+    if (currentAccount.value == null) return;
+    showAccountSettingsSheet(
+      context: context,
+      account: currentAccount.value!,
+    );
   }
 }

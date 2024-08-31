@@ -1,3 +1,4 @@
+import 'package:app/feature/network/network.dart';
 import 'package:app/feature/wallet/widgets/wallet_app_bar/wallet_app_bar_wm.dart';
 import 'package:app/generated/generated.dart';
 import 'package:app/utils/utils.dart';
@@ -21,8 +22,6 @@ class WalletAppBarWidget extends ElementaryWidget<WalletAppBarWidgetModel>
 
   @override
   Widget build(WalletAppBarWidgetModel wm) {
-    final theme = wm.theme;
-
     return SafeArea(
       child: Padding(
         padding: const EdgeInsets.symmetric(
@@ -53,14 +52,13 @@ class WalletAppBarWidget extends ElementaryWidget<WalletAppBarWidgetModel>
                   buttonShape: ButtonShape.circle,
                   buttonSize: ButtonSize.small,
                   onPressed: wm.onNetwork,
-                  child: SvgPicture.asset(
-                    Assets.images.networkEver.path,
-                    colorFilter: ColorFilter.mode(
-                      theme.colors.content0,
-                      BlendMode.srcIn,
-                    ),
-                    width: DimensSizeV2.d16,
-                    height: DimensSizeV2.d16,
+                  child: StateNotifierBuilder(
+                    listenableState: wm.connection,
+                    builder: (_, connection) =>
+                        connection?.let(
+                          (value) => NetworkIcon(type: value.networkType),
+                        ) ??
+                        const SizedBox.shrink(),
                   ),
                 ),
                 FloatButton(

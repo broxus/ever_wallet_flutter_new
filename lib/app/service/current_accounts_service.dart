@@ -25,6 +25,8 @@ class CurrentAccountsService {
 
   final _currentAccountsSubject = BehaviorSubject<AccountList?>.seeded(null);
 
+  // TODO(komarov): refactor -> store active account address and
+  //  get account from _currentAccountsSubject
   final _currentActiveAccountSubject =
       BehaviorSubject<(int, KeyAccount?)>.seeded((-1, null));
 
@@ -208,6 +210,16 @@ class CurrentAccountsService {
     final accounts = currentAccounts?.displayAccounts;
     if (currentAccount == null && accounts != null && accounts.isNotEmpty) {
       updateCurrentActiveAccount(0);
+    }
+
+    if (currentAccount != null) {
+      final updated = list.findAccountByAddress(currentAccount.address);
+
+      if (updated != null && updated.name != currentAccount.name) {
+        _currentActiveAccountSubject.add(
+          (currentActiveAccount!.$1, updated),
+        );
+      }
     }
   }
 

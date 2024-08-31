@@ -8,11 +8,14 @@ import 'package:collection/collection.dart';
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:lucide_icons_flutter/lucide_icons.dart';
 import 'package:ui_components_lib/ui_components_lib.dart';
+import 'package:ui_components_lib/v2/ui_components_lib_v2.dart';
 
 const _maxNetworkNameLength = 32;
 const _maxCurrencySymbolLength = 16;
 
+// TODO(komarov): refactor
 class EditNetworkView extends StatefulWidget {
   EditNetworkView({required this.connection, super.key})
       : editable = connection?.canBeEdited ?? true;
@@ -110,19 +113,18 @@ class _EditNetworkViewState extends State<EditNetworkView> {
       key: _formKey,
       child: SliverToBoxAdapter(
         child: Padding(
-          padding: const EdgeInsets.symmetric(
-            horizontal: DimensSize.d16,
-          ),
+          padding: const EdgeInsets.all(DimensSizeV2.d16),
           child: SeparatedColumn(
+            separatorSize: DimensSizeV2.d24,
             mainAxisSize: MainAxisSize.min,
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              ..._typeBuilder(),
-              ..._nameBuilder(),
-              ..._endpointsBuilder(),
-              ..._currencySymbolBuilder(),
-              ..._blockExplorerBuilder(),
-              ..._tockenListBuilder(),
+              _typeBuilder(),
+              _nameBuilder(),
+              _endpointsBuilder(),
+              _currencySymbolBuilder(),
+              _blockExplorerBuilder(),
+              _tockenListBuilder(),
             ],
           ),
         ),
@@ -130,63 +132,47 @@ class _EditNetworkViewState extends State<EditNetworkView> {
     );
   }
 
-  List<Widget> _typeBuilder() {
-    return [
-      Padding(
-        padding: const EdgeInsets.only(
-          top: DimensSize.d12,
-        ),
-        child: Text(
-          LocaleKeys.networkType.tr(),
-          style: StyleRes.secondaryBold,
+  Widget _typeBuilder() {
+    return _FormField(
+      label: LocaleKeys.networkType.tr(),
+      child: PrimaryCard(
+        padding: EdgeInsets.zero,
+        borderRadius: BorderRadius.circular(DimensRadiusV2.radius16),
+        child: SeparatedColumn(
+          mainAxisSize: MainAxisSize.min,
+          separator: const CommonDivider(),
+          children: [
+            _typeComponentBuilder(
+              LocaleKeys.networkTypeJRPC.tr(),
+              ConnectionType.jrpc,
+            ),
+            _typeComponentBuilder(
+              LocaleKeys.networkTypeGraphQL.tr(),
+              ConnectionType.gql,
+            ),
+            _typeComponentBuilder(
+              LocaleKeys.networkTypeProto.tr(),
+              ConnectionType.proto,
+            ),
+          ],
         ),
       ),
-      ShapedContainerColumn(
-        margin: EdgeInsets.zero,
-        mainAxisSize: MainAxisSize.min,
-        separator: const CommonDivider(),
-        children: [
-          _typeComponentBuilder(
-            LocaleKeys.networkTypeJRPC.tr(),
-            ConnectionType.jrpc,
-          ),
-          _typeComponentBuilder(
-            LocaleKeys.networkTypeGraphQL.tr(),
-            ConnectionType.gql,
-          ),
-          _typeComponentBuilder(
-            LocaleKeys.networkTypeProto.tr(),
-            ConnectionType.proto,
-          ),
-        ],
-      ),
-    ];
+    );
   }
 
-  List<Widget> _nameBuilder() {
-    return [
-      Padding(
-        padding: const EdgeInsets.only(
-          top: DimensSize.d12,
-        ),
-        child: Text(
-          LocaleKeys.networkName.tr(),
-          style: StyleRes.secondaryBold,
-        ),
-      ),
-      CommonInput(
-        controller: _nameController,
-        needClearButton: false,
-        autocorrect: false,
+  Widget _nameBuilder() {
+    return _FormField(
+      label: LocaleKeys.networkName.tr(),
+      child: PrimaryTextField(
+        textEditingController: _nameController,
         hintText: LocaleKeys.networkNameHint.tr(),
-        enabled: widget.editable,
+        isEnabled: widget.editable,
         validator: _nameValidator.validate,
-        validateMode: AutovalidateMode.onUserInteraction,
       ),
-    ];
+    );
   }
 
-  List<Widget> _endpointsBuilder() {
+  Widget _endpointsBuilder() {
     void onLocalChanged({required bool value}) {
       if (!widget.editable) {
         return;
@@ -196,192 +182,163 @@ class _EditNetworkViewState extends State<EditNetworkView> {
       });
     }
 
-    return [
-      Padding(
-        padding: const EdgeInsets.only(
-          top: DimensSize.d12,
-        ),
-        child: Text(
-          LocaleKeys.networkEndpoint.plural(
-            _endpointsControllers.length,
-          ),
-          style: StyleRes.secondaryBold,
-        ),
-      ),
-      ..._endpointsControllers.mapIndexed(_endpointItemBuilder),
-      if (_connectionType.enableLocal)
-        Row(
-          children: [
-            Expanded(
-              child: Text(
-                LocaleKeys.networkEndpointLocal.tr(),
-                style: StyleRes.secondaryBold,
-              ),
-            ),
-            CommonSwitchInput(
-              value: _isLocal,
-              onChanged: (value) => onLocalChanged(value: value),
-            ),
-          ],
-        ),
-    ];
-  }
-
-  Widget _endpointItemBuilder(int index, TextEditingController controller) {
-    final colors = context.themeStyle.colors;
     void onAdd() {
       setState(() {
         _endpointsControllers.add(TextEditingController());
       });
     }
 
+    return _FormField(
+      label: LocaleKeys.networkEndpoint.plural(_endpointsControllers.length),
+      trailing: widget.editable && _connectionType.enableMultipleEndpoints
+          ? GhostButton(
+              buttonShape: ButtonShape.square,
+              buttonSize: ButtonSize.small,
+              icon: LucideIcons.plus,
+              onPressed: onAdd,
+            )
+          : null,
+      child: SeparatedColumn(
+        children: [
+          ..._endpointsControllers.mapIndexed(_endpointItemBuilder),
+          if (_connectionType.enableLocal)
+            Row(
+              children: [
+                Expanded(
+                  child: Text(
+                    LocaleKeys.networkEndpointLocal.tr(),
+                    style: StyleRes.secondaryBold,
+                  ),
+                ),
+                CommonSwitchInput(
+                  value: _isLocal,
+                  onChanged: (value) => onLocalChanged(value: value),
+                ),
+              ],
+            ),
+        ],
+      ),
+    );
+  }
+
+  Widget _endpointItemBuilder(int index, TextEditingController controller) {
     void onRemove() {
       setState(() {
         _endpointsControllers.removeAt(index);
       });
     }
 
-    return SeparatedRow(
-      children: [
-        Expanded(
-          child: CommonInput(
-            controller: controller,
-            needClearButton: false,
-            autocorrect: false,
-            hintText: LocaleKeys.networkEndpointHint.tr(),
-            suffixIcon: index == 0 &&
-                    widget.editable &&
-                    _connectionType.enableMultipleEndpoints
-                ? CommonIconButton.svg(
-                    color: colors.blue,
-                    svg: Assets.images.plus.path,
-                    buttonType: EverButtonType.ghost,
-                    onPressed: onAdd,
-                  )
-                : null,
-            enabled: widget.editable,
-            validator: _nonOptionalUrlValidator.validate,
-            validateMode: AutovalidateMode.onUserInteraction,
-          ),
-        ),
+    return PrimaryTextField(
+      textEditingController: controller,
+      hintText: index == 0
+          ? LocaleKeys.networkEndpointHint.tr()
+          : LocaleKeys.networkAdditionalEndpointHint.tr(),
+      isEnabled: widget.editable,
+      validator: _nonOptionalUrlValidator.validate,
+      suffixes: [
         if (index > 0 && widget.editable)
-          CommonIconButton.svg(
-            color: colors.alert,
-            svg: Assets.images.trash.path,
-            buttonType: EverButtonType.secondary,
-            onPressed: onRemove,
+          Padding(
+            padding: const EdgeInsets.only(right: DimensSizeV2.d8),
+            child: PrimaryButton(
+              buttonShape: ButtonShape.square,
+              buttonSize: ButtonSize.small,
+              icon: LucideIcons.trash,
+              onPressed: onRemove,
+            ),
           ),
       ],
     );
   }
 
-  List<Widget> _currencySymbolBuilder() {
-    return [
-      Padding(
-        padding: const EdgeInsets.only(
-          top: DimensSize.d12,
-        ),
-        child: Text(
-          LocaleKeys.networkCurrencySymbol.tr(),
-          style: StyleRes.secondaryBold,
-        ),
-      ),
-      CommonInput(
-        controller: _currencySymbolController,
-        needClearButton: false,
-        autocorrect: false,
+  Widget _currencySymbolBuilder() {
+    return _FormField(
+      label: LocaleKeys.networkCurrencySymbol.tr(),
+      child: PrimaryTextField(
+        textEditingController: _currencySymbolController,
         hintText: LocaleKeys.networkCurrencySymbolHint.tr(),
-        enabled: widget.editable,
+        isEnabled: widget.editable,
         validator: _currencySymbolValidator.validate,
-        validateMode: AutovalidateMode.onUserInteraction,
       ),
-    ];
+    );
   }
 
-  List<Widget> _blockExplorerBuilder() {
-    return [
-      Padding(
-        padding: const EdgeInsets.only(
-          top: DimensSize.d12,
-        ),
-        child: Text(
-          LocaleKeys.networkBlockExplorer.tr(),
-          style: StyleRes.secondaryBold,
-        ),
-      ),
-      CommonInput(
-        controller: _blockExplorerUrlController,
-        needClearButton: false,
-        autocorrect: false,
+  Widget _blockExplorerBuilder() {
+    return _FormField(
+      label: LocaleKeys.networkBlockExplorer.tr(),
+      child: PrimaryTextField(
+        textEditingController: _blockExplorerUrlController,
         hintText: LocaleKeys.networkBlockExplorerHint.tr(),
-        enabled: widget.editable,
+        isEnabled: widget.editable,
         validator: _optionalUrlValidator.validate,
-        validateMode: AutovalidateMode.onUserInteraction,
       ),
-    ];
+    );
   }
 
-  List<Widget> _tockenListBuilder() {
-    final colors = context.themeStyle.colors;
+  Widget _tockenListBuilder() {
+    final theme = context.themeStyleV2;
 
-    return [
-      Padding(
-        padding: const EdgeInsets.only(
-          top: DimensSize.d12,
-        ),
-        child: Text(
-          LocaleKeys.networkTokenList.tr(),
-          style: StyleRes.secondaryBold,
-        ),
-      ),
-      CommonInput(
-        controller: _manifestUrlController,
-        needClearButton: false,
-        autocorrect: false,
-        hintText: LocaleKeys.networkTokenListHint.tr(),
-        enabled: widget.editable,
-        validator: _optionalUrlValidator.validate,
-        validateMode: AutovalidateMode.onUserInteraction,
-      ),
-      Text.rich(
-        TextSpan(
-          children: [
+    return _FormField(
+      label: LocaleKeys.networkTokenList.tr(),
+      child: SeparatedColumn(
+        children: [
+          PrimaryTextField(
+            textEditingController: _manifestUrlController,
+            hintText: LocaleKeys.networkTokenListHint.tr(),
+            isEnabled: widget.editable,
+            validator: _optionalUrlValidator.validate,
+          ),
+          Text.rich(
             TextSpan(
-              text: LocaleKeys.networkTokenListText.tr(),
-              style: StyleRes.addRegular,
+              children: [
+                TextSpan(
+                  text: LocaleKeys.networkTokenListText.tr(),
+                  style: theme.textStyles.labelXSmall.copyWith(
+                    color: theme.colors.content3,
+                  ),
+                ),
+                TextSpan(
+                  text: LocaleKeys.networkTokenListTextLink.tr(),
+                  style: theme.textStyles.labelXSmall.copyWith(
+                    color: theme.colors.content0,
+                  ),
+                  recognizer: TapGestureRecognizer()
+                    ..onTap = _onTokenListTextLinkTap,
+                ),
+              ],
             ),
-            TextSpan(
-              text: LocaleKeys.networkTokenListTextLink.tr(),
-              style: StyleRes.addRegular.copyWith(color: colors.blue),
-              recognizer: TapGestureRecognizer()
-                ..onTap = _onTokenListTextLinkTap,
-            ),
-          ],
-        ),
-        textAlign: TextAlign.center,
+            textAlign: TextAlign.center,
+          ),
+        ],
       ),
-      const SizedBox(height: DimensSize.d16),
-    ];
+    );
   }
 
   Widget _typeComponentBuilder(String title, ConnectionType type) {
+    final theme = context.themeStyleV2;
     final onPressed = widget.editable
         ? () {
             _onChangeType(type);
           }
         : null;
 
-    return CommonListTile(
-      titleText: title,
-      trailing: CommonCheckboxInput(
-        checked: _connectionType == type,
-        onChanged: onPressed != null
-            ? (value) {
-                if (value) onPressed.call();
-              }
-            : null,
+    return GestureDetector(
+      onTap: onPressed,
+      behavior: HitTestBehavior.translucent,
+      child: SizedBox(
+        height: DimensSizeV2.d56,
+        child: Padding(
+          padding: const EdgeInsets.symmetric(horizontal: DimensSizeV2.d16),
+          child: SeparatedRow(
+            children: [
+              Expanded(
+                child: Text(title, style: theme.textStyles.labelSmall),
+              ),
+              if (_connectionType == type)
+                const Icon(LucideIcons.check, size: DimensSizeV2.d20),
+            ],
+          ),
+        ),
       ),
-      onPressed: onPressed,
     );
   }
 
@@ -397,41 +354,33 @@ class _EditNetworkViewState extends State<EditNetworkView> {
   }
 
   Widget _buttonsBuilder() {
-    final colors = context.themeStyle.colors;
+    final theme = context.themeStyleV2;
 
     final saveButtonText = widget.connection == null
         ? LocaleKeys.networkAdd.tr()
         : LocaleKeys.networkSave.tr();
 
-    return Container(
-      decoration: BoxDecoration(
-        gradient: LinearGradient(
-          begin: Alignment.topCenter,
-          end: Alignment.bottomCenter,
-          colors: colors.gradient,
-        ),
-      ),
+    return ColoredBox(
+      color: theme.colors.background0,
       child: SafeArea(
-        minimum: const EdgeInsets.only(
-          bottom: DimensSize.d32,
-          left: DimensSize.d16,
-          right: DimensSize.d16,
-          top: DimensSize.d16,
+        minimum: const EdgeInsets.symmetric(
+          vertical: DimensSizeV2.d12,
+          horizontal: DimensSizeV2.d16,
         ),
         child: SeparatedColumn(
           mainAxisSize: MainAxisSize.min,
           children: [
-            if (_deleteEnabled)
-              CommonButton.secondary(
-                text: LocaleKeys.networkDelete.tr(),
-                onPressed: _onDelete,
-                fillWidth: true,
-              ),
             if (_saveEnabled)
-              CommonButton.primary(
-                text: saveButtonText,
+              AccentButton(
+                buttonShape: ButtonShape.pill,
+                title: saveButtonText,
                 onPressed: _onSave,
-                fillWidth: true,
+              ),
+            if (_deleteEnabled)
+              DestructiveButton(
+                buttonShape: ButtonShape.pill,
+                title: LocaleKeys.networkDelete.tr(),
+                onPressed: _onDelete,
               ),
           ],
         ),
@@ -445,26 +394,33 @@ class _EditNetworkViewState extends State<EditNetworkView> {
     return SliverSafeArea(
       sliver: SliverToBoxAdapter(
         child: SizedBox(
-          height: buttonCount * commonButtonHeight + DimensSize.d16,
+          height: buttonCount * commonButtonHeight + DimensSizeV2.d16,
         ),
       ),
-      minimum: const EdgeInsets.only(bottom: DimensSize.d16),
+      minimum: const EdgeInsets.only(bottom: DimensSizeV2.d16),
     );
   }
 
   void _onTokenListTextLinkTap() =>
       browserNewTab(context, LocaleKeys.networkTokenListTextLinkUrl.tr());
 
-  void _onDelete() {
-    context.read<ManageNetworksBloc>().add(
-          ManageNetworksEvent.removeConnection(
-            id: widget.connection!.id,
-          ),
-        );
-    context.clearQueryParamsAndPop();
+  Future<void> _onDelete() async {
+    final result = await showDeleteNetworkConfirmationSheet(
+      context: context,
+      networkName: widget.connection!.name,
+    );
+
+    if ((result ?? false) && mounted) {
+      context.read<ManageNetworksBloc>().add(
+            ManageNetworksEvent.removeConnection(
+              id: widget.connection!.id,
+            ),
+          );
+      context.clearQueryParamsAndPop();
+    }
   }
 
-  void _onSave() {
+  Future<void> _onSave() async {
     if (!_formKey.currentState!.validate()) {
       return;
     }
@@ -481,13 +437,15 @@ class _EditNetworkViewState extends State<EditNetworkView> {
 
     context.read<ManageNetworksBloc>().add(event);
 
-    context.clearQueryParamsAndPop();
-
     if (widget.connection == null) {
-      showSwitchToThisNetworkSheet(
+      await showSwitchToThisNetworkSheet(
         context: context,
         connectionId: connection.id,
       );
+    }
+
+    if (mounted) {
+      context.clearQueryParamsAndPop();
     }
   }
 
@@ -645,6 +603,43 @@ class _EditNetworkViewState extends State<EditNetworkView> {
         ___________,
       ) =>
           false,
+    );
+  }
+}
+
+class _FormField extends StatelessWidget {
+  const _FormField({
+    required this.label,
+    required this.child,
+    this.trailing,
+  });
+
+  final String label;
+  final Widget? trailing;
+  final Widget child;
+
+  @override
+  Widget build(BuildContext context) {
+    final theme = context.themeStyleV2;
+    final text = Text(
+      label,
+      style: theme.textStyles.headingXSmall.copyWith(
+        color: theme.colors.content3,
+      ),
+    );
+
+    return SeparatedColumn(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        if (trailing != null)
+          SeparatedRow(
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            children: [text, trailing!],
+          )
+        else
+          text,
+        child,
+      ],
     );
   }
 }

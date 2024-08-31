@@ -145,7 +145,7 @@
   "networkTypeGraphQL": "GraphQL",
   "networkTypeProto": "Proto",
   "networkName": "Network name",
-  "networkNameHint": "Enter name",
+  "networkNameHint": "Enter network name",
   "networkEndpoint": {
     "zero": "Endpoints (URLs)",
     "one": "Endpoint (URL)",
@@ -153,6 +153,7 @@
     "other": "Endpoints (URLs)"
   },
   "networkEndpointHint": "Enter endpoint",
+  "networkAdditionalEndpointHint": "Enter an additional endpoint",
   "networkEndpointLocal": "Local",
   "networkCurrencySymbol": "Currency Symbol (Optional)",
   "networkCurrencySymbolHint": "Enter currency symbol",
@@ -168,9 +169,10 @@
   "networkDelete": "Delete network",
   "networkAdd": "Add custom network",
   "networkSave": "Apply changes",
-  "networkAddedSheetTitle": "The network has been added successfully",
+  "networkAddedSheetTitle": "Network added successfully",
   "networkAddedSheetSwitch": "Switch to this network",
   "networkAddedSheetContinue": "Continue without switching",
+  "networkDeleteTitle": "You’re deleting {}. Are you sure?",
   "networkDeleted": "The network has been deleted",
   "networkDeletedUndo": "Undo",
   "networkSaved": "Edited successfully",
@@ -530,5 +532,10 @@
   "sign": "Sign",
   "encrypt": "Encrypt",
   "decrypt": "Decrypt",
-  "accounts": "Accounts"
+  "accounts": "Accounts",
+  "accountSettings": "Account settings",
+  "viewInExplorer": "View in Explorer",
+  "hideAccount": "Hide account",
+  "advancedSettings": "Advanced settings",
+  "backToSettings": "Back to Settings"
 }
