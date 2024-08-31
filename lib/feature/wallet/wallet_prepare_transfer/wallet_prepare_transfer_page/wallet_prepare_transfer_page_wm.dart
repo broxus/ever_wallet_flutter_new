@@ -17,7 +17,6 @@ import 'package:app/generated/generated.dart';
 import 'package:elementary/elementary.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter/widgets.dart';
-import 'package:money2_fixer/money2_fixer.dart';
 import 'package:nekoton_repository/nekoton_repository.dart';
 
 /// Factory method for creating [WalletPrepareTransferPageWidgetModel]
