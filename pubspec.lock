@@ -768,12 +768,11 @@ packages:
   flutter_nekoton_bridge:
     dependency: transitive
     description:
-      path: "packages/flutter_nekoton_bridge"
-      ref: update-dependencies
-      resolved-ref: "39a53e71ffec0668e4384a61c3fc5a9695b7687c"
-      url: "https://github.com/broxus/nekoton_bridge.git"
-    source: git
-    version: "1.28.0-dev.6"
+      name: flutter_nekoton_bridge
+      sha256: "9bb76274fdae47b41f38eaa7f0e4d022d3235c0f694432a451150398b75935fc"
+      url: "https://pub.dev"
+    source: hosted
+    version: "2.0.0"
   flutter_plugin_android_lifecycle:
     dependency: transitive
     description:
@@ -1346,6 +1345,14 @@ packages:
       url: "https://pub.dev"
     source: hosted
     version: "5.2.1"
+  money2_fixer:
+    dependency: transitive
+    description:
+      name: money2_fixer
+      sha256: a25da989330d68a878fc6cf69224963b478e3b90486d5fdade6fce4a7c0686fb
+      url: "https://pub.dev"
+    source: hosted
+    version: "2.0.0"
   money2_improver:
     dependency: "direct main"
     description:
@@ -1366,18 +1373,17 @@ packages:
   nekoton_bridge:
     dependency: transitive
     description:
-      path: "packages/nekoton_bridge"
-      ref: update-dependencies
-      resolved-ref: "39a53e71ffec0668e4384a61c3fc5a9695b7687c"
-      url: "https://github.com/broxus/nekoton_bridge.git"
-    source: git
-    version: "1.20.0-dev.4"
+      name: nekoton_bridge
+      sha256: "8cad6647a61baa372d140422efccd2fff2cdd549467a48d328e60dd6e1036111"
+      url: "https://pub.dev"
+    source: hosted
+    version: "2.0.0"
   nekoton_repository:
     dependency: "direct main"
     description:
       path: "."
       ref: update-dependencies
-      resolved-ref: "57ef66d3434b3484f9a8758cb75484fd49d82a17"
+      resolved-ref: c26765ea2885bc7520628351474974a756d94fb7
       url: "https://github.com/broxus/nekoton_repository.git"
     source: git
     version: "0.36.0-dev.7"
