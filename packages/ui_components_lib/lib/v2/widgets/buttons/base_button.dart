@@ -33,14 +33,17 @@ abstract class BaseButton extends StatelessWidget {
   final bool isFullWidth;
   final double? backgroundBlur;
 
-  double get _paddingByButtonSize {
+  EdgeInsetsGeometry get _paddingByButtonSize {
     switch (buttonSize) {
       case ButtonSize.large:
-        return DimensSizeV2.d18;
+        return const EdgeInsets.all(DimensSizeV2.d18);
       case ButtonSize.medium:
-        return DimensSizeV2.d16;
+        return const EdgeInsets.all(DimensSizeV2.d16);
       case ButtonSize.small:
-        return DimensSizeV2.d8;
+        return const EdgeInsets.symmetric(
+          horizontal: DimensSizeV2.d24,
+          vertical: DimensSizeV2.d8,
+        );
     }
   }
 
@@ -106,7 +109,7 @@ abstract class BaseButton extends StatelessWidget {
                   ? Row(
                       mainAxisAlignment: MainAxisAlignment.center,
                       children: [
-                        _ProgressIndicatorWidget(
+                        ProgressIndicatorWidget(
                           color: style.iconColor,
                           size: _iconSize,
                         ),
@@ -143,7 +146,7 @@ abstract class BaseButton extends StatelessWidget {
           child: ElevatedButton(
             style: buttonStyle,
             onPressed: isLoading ? null : onPressed,
-            child: Icon(icon, size: _iconSize),
+            child: this.child ?? Icon(icon, size: _iconSize),
           ),
         );
     }
@@ -207,9 +210,10 @@ abstract class BaseButton extends StatelessWidget {
       // TODO(MolochkoAndrew): update
       //ignore: deprecated_member_use
       padding: MaterialStateProperty.resolveWith(
-        (_) => EdgeInsets.all(
-          _paddingByButtonSize,
-        ),
+        (_) => switch (buttonShape) {
+          ButtonShape.circle || ButtonShape.square => EdgeInsets.zero,
+          _ => _paddingByButtonSize,
+        },
       ),
     );
   }
@@ -311,27 +315,5 @@ abstract class BaseButton extends StatelessWidget {
       case ButtonSize.small:
         return styles.labelSmall;
     }
-  }
-}
-
-class _ProgressIndicatorWidget extends StatelessWidget {
-  const _ProgressIndicatorWidget({
-    required this.color,
-    required this.size,
-  });
-
-  final Color color;
-  final double size;
-
-  @override
-  Widget build(BuildContext context) {
-    return SizedBox(
-      width: size,
-      height: size,
-      child: CircularProgressIndicator(
-        strokeWidth: 1.5,
-        color: color.withOpacity(OpacV2.opac50),
-      ),
-    );
   }
 }

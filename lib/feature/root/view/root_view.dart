@@ -5,6 +5,7 @@ import 'package:app/feature/root/view/root_tab.dart';
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:ui_components_lib/ui_components_lib.dart';
+import 'package:ui_components_lib/v2/ui_components_lib_v2.dart';
 
 class RootView extends StatefulWidget {
   const RootView({required this.child, super.key});
@@ -16,9 +17,22 @@ class RootView extends StatefulWidget {
 }
 
 class _RootViewState extends State<RootView> {
+  late final NavigationService _navigationService;
+
+  int get _tabIndex => RootTab.getByPath(
+        getRootPath(fullPath: _navigationService.state.fullPath),
+      ).index;
+
+  @override
+  void initState() {
+    super.initState();
+
+    _navigationService = inject<NavigationService>();
+  }
+
   @override
   Widget build(BuildContext context) {
-    final colors = context.themeStyle.colors;
+    final theme = context.themeStyleV2;
     final route =
         getCurrentAppRoute(fullPath: GoRouterState.of(context).fullPath);
     final isBottomNavigationBarVisible = route.isBottomNavigationBarVisible;
@@ -49,47 +63,39 @@ class _RootViewState extends State<RootView> {
         duration: defaultAnimationDuration,
         offset: Offset(0, isBottomNavigationBarVisible ? 0 : 1.0),
         child: Container(
-          clipBehavior: Clip.hardEdge,
-          decoration: BoxDecoration(
-            boxShadow: [
-              BoxShadow(
-                color: colors.strokeSecondary,
-                spreadRadius: DimensStroke.small,
-              ),
-            ],
-            borderRadius: const BorderRadius.vertical(
-              top: Radius.circular(DimensRadius.large),
-            ),
+          padding: const EdgeInsets.symmetric(
+            horizontal: DimensSizeV2.d48,
           ),
-          child: BottomNavigationBar(
-            type: BottomNavigationBarType.fixed,
-            backgroundColor: colors.backgroundSecondary,
-            selectedItemColor: colors.blue,
-            unselectedItemColor: colors.textSecondary,
-            selectedLabelStyle: StyleRes.addBold,
-            unselectedLabelStyle: StyleRes.addBold,
-            items: _getItems(context),
-            currentIndex: _tabIndex(context),
-            onTap: (int index) => _onTap(context, index),
+          color: theme.colors.background1,
+          child: Theme(
+            data: Theme.of(context).copyWith(
+              splashColor: Colors.transparent,
+              highlightColor: Colors.transparent,
+            ),
+            child: BottomNavigationBar(
+              landscapeLayout: BottomNavigationBarLandscapeLayout.centered,
+              showSelectedLabels: false,
+              showUnselectedLabels: false,
+              elevation: DimensSizeV2.d0,
+              type: BottomNavigationBarType.fixed,
+              backgroundColor: theme.colors.background1,
+              selectedItemColor: theme.colors.content0,
+              unselectedItemColor: theme.colors.content3,
+              items: _getItems(),
+              currentIndex: _tabIndex,
+              onTap: _onTap,
+            ),
           ),
         ),
       ),
     );
   }
 
-  List<BottomNavigationBarItem> _getItems(BuildContext context) =>
-      RootTab.values.map((tab) => tab.item(context)).toList();
+  List<BottomNavigationBarItem> _getItems() =>
+      RootTab.values.map((tab) => tab.item()).toList();
 
-  void _onTap(BuildContext context, int value) {
+  void _onTap(int value) {
     final tab = RootTab.values[value];
     context.goNamed(tab.name);
-  }
-
-  int _tabIndex(BuildContext _) {
-    return RootTab.getByPath(
-      getRootPath(
-        fullPath: inject<NavigationService>().state.fullPath,
-      ),
-    ).index;
   }
 }

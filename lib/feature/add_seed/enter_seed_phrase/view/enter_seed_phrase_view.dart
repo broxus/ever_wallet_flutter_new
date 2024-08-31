@@ -153,6 +153,7 @@ class EnterSeedPhraseView extends StatelessWidget {
               inactiveBorderColor: themeStyleV2.colors.border0,
               textStyle: themeStyleV2.textStyles.labelSmall,
               suggestionBackground: themeStyleV2.colors.background1,
+              keyboardType: TextInputType.visiblePassword,
               key: Key('SeedInput-$index'),
               height: DimensSize.d48,
               controller: controller,

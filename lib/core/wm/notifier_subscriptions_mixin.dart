@@ -1,3 +1,5 @@
+import 'dart:async';
+
 import 'package:elementary/elementary.dart';
 import 'package:elementary_helper/elementary_helper.dart';
 import 'package:flutter/widgets.dart';
@@ -21,14 +23,35 @@ class _NotifierSubscriptionsCollection {
   }
 }
 
+/// Collection [StreamSubscription]]
+class _StreamSubscriptionsCollection {
+  final _subscriptions = <StreamSubscription<dynamic>>[];
+
+  /// Add [StreamSubscription] or its successor to the subscription collection
+  T add<T extends StreamSubscription<dynamic>>(T subscription) {
+    _subscriptions.add(subscription);
+    return subscription;
+  }
+
+  /// Cancels all [StreamSubscription] and clears the collection
+  void dispose() {
+    for (final subscription in _subscriptions) {
+      subscription.cancel();
+    }
+    _subscriptions.clear();
+  }
+}
+
 mixin NotifierSubscriptionsMixin<W extends ElementaryWidget,
     M extends ElementaryModel> on WidgetModel<W, M> {
   late final _subscriptionsCollection = _NotifierSubscriptionsCollection();
+  late final _streamSubscriptionsCollection = _StreamSubscriptionsCollection();
 
   @override
   @mustCallSuper
   void dispose() {
     _subscriptionsCollection.dispose();
+    _streamSubscriptionsCollection.dispose();
     super.dispose();
   }
 
@@ -72,5 +95,16 @@ mixin NotifierSubscriptionsMixin<W extends ElementaryWidget,
   /// Create [ScrollController] and add to the informants collectionx
   ScrollController createScrollController() {
     return _subscriptionsCollection.add(ScrollController());
+  }
+
+  /// Create [StateNotifier] from [Stream] and add to the notifier collection
+  StateNotifier<T> createNotifierFromStream<T>(Stream<T> stream) {
+    final notifier = StateNotifier<T>();
+
+    _streamSubscriptionsCollection.add(
+      stream.listen(notifier.accept),
+    );
+
+    return _subscriptionsCollection.add(notifier);
   }
 }

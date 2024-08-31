@@ -25,6 +25,8 @@ class CurrentAccountsService {
 
   final _currentAccountsSubject = BehaviorSubject<AccountList?>.seeded(null);
 
+  // TODO(komarov): refactor -> store active account address and
+  //  get account from _currentAccountsSubject
   final _currentActiveAccountSubject =
       BehaviorSubject<(int, KeyAccount?)>.seeded((-1, null));
 
@@ -105,6 +107,18 @@ class CurrentAccountsService {
     }
 
     _currentActiveAccountSubject.add((index, current));
+  }
+
+  /// Try updating current active account for [currentAccounts]
+  void changeCurrentActiveAccount(KeyAccount account) {
+    if (currentActiveAccount?.$2 == account) return;
+
+    final index = currentAccounts?.displayAccounts.indexOf(account);
+
+    if (index != null && index != -1) {
+      _tryStartPolling(account.address);
+      _currentActiveAccountSubject.add((index, account));
+    }
   }
 
   /// Subscriptions for listening Ton/Token wallets to start its polling when
@@ -196,6 +210,16 @@ class CurrentAccountsService {
     final accounts = currentAccounts?.displayAccounts;
     if (currentAccount == null && accounts != null && accounts.isNotEmpty) {
       updateCurrentActiveAccount(0);
+    }
+
+    if (currentAccount != null) {
+      final updated = list.findAccountByAddress(currentAccount.address);
+
+      if (updated != null && updated.name != currentAccount.name) {
+        _currentActiveAccountSubject.add(
+          (currentActiveAccount!.$1, updated),
+        );
+      }
     }
   }
 
