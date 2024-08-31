@@ -5,8 +5,7 @@ import 'package:app/data/models/models.dart';
 import 'package:encrypted_storage/encrypted_storage.dart';
 import 'package:injectable/injectable.dart';
 import 'package:logging/logging.dart';
-import 'package:money2_improver/money2_improver.dart';
-import 'package:nekoton_repository/nekoton_repository.dart' hide FixedFixer;
+import 'package:nekoton_repository/nekoton_repository.dart';
 import 'package:rxdart/rxdart.dart';
 
 const _overallBalancesDomain = 'overallBalancesDomain';
@@ -57,7 +56,7 @@ class BalanceStorageService extends AbstractStorageService {
     return encoded.map(
       (key, value) => MapEntry(
         Address(address: key),
-        FixedImprover.fromJson(jsonDecode(value) as Map<String, dynamic>),
+        FixedFixer.fromJson(jsonDecode(value) as Map<String, dynamic>),
       ),
     );
   }

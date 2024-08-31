@@ -8,8 +8,8 @@
     <string>app-store</string>
     <key>provisioningProfiles</key>
     <dict>
-        <key>com.broxus.crystal.app</key>
-        <string>match AppStore com.broxus.crystal.app</string>
+        <key>com.broxus.sparx.app</key>
+        <string>match AppStore com.broxus.sparx.app</string>
     </dict>
     <key>signingCertificate</key>
     <string>iOS Distribution</string>

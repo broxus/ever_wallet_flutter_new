@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:money2_improver/money2_improver.dart';
+import 'package:money2_fixer/money2_fixer.dart';
 import 'package:ui_components_lib/ui_components_lib.dart';
 
 export 'package:money2/money2.dart';

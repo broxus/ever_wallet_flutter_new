@@ -1,5 +1,5 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-    package="com.broxus.crystal.app">
+    package="com.broxus.sparx.app">
    <application
         android:label="${appName}"
         android:icon="@mipmap/ic_launcher">

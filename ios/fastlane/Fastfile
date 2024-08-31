@@ -25,7 +25,7 @@ platform :ios do
       key_filepath: "fastlane/AuthKey_L4N29B6Z42.p8",
     )
     upload_to_testflight(
-      ipa: "../build/ios/ipa/App.ipa",
+      ipa: "../build/ios/ipa/SparX Wallet.ipa",
       skip_waiting_for_build_processing: true,
       api_key: api_key,
       changelog: "#{options[:changelog_string]}"
@@ -36,9 +36,9 @@ platform :ios do
   lane :deploy_fad do |options|
     setup_ci if ENV['CI']
     firebase_app_distribution(
-      app: "1:1017783238389:ios:a0ab19a124c910702e4fbc",
+      app: "1:1017783238389:ios:a8de9ade8f221b782e4fbc",
       groups: "qa",
-      ipa_path: "../build/ios/ipa/App.ipa",
+      ipa_path: "../build/ios/ipa/SparX Wallet.ipa",
       service_credentials_file: "../fastlane/FirebaseADKey.json",
       release_notes_file:  "../fastlane/changelog.txt",
     )
