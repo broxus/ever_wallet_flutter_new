@@ -548,5 +548,9 @@
   "viewInExplorer": "View in Explorer",
   "hideAccount": "Hide account",
   "advancedSettings": "Advanced settings",
-  "backToSettings": "Back to Settings"
+  "backToSettings": "Back to Settings",
+  "check": "Check",
+  "checkPhrasesLabel": "Check phrases",
+  "manualBackupTitleDialog": "Manual backup",
+  "manualBackupSubtitleDialog": "Save your secret recovery phrase in a secure place that only you control."
 }

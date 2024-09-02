@@ -1,4 +1,6 @@
+import 'package:app/app/router/app_route.dart';
 import 'package:app/feature/wallet/wallet_backup/check_phrase/check_phrase_dialog.dart';
+import 'package:app/feature/wallet/wallet_backup/good_job_back_up_dialog.dart';
 import 'package:app/feature/wallet/wallet_backup/manual_backup/manual_back_up_data.dart';
 import 'package:app/feature/wallet/wallet_backup/manual_backup/manual_back_up_wm.dart';
 import 'package:app/generated/generated.dart';
@@ -12,21 +14,31 @@ import 'package:ui_components_lib/v2/widgets/modals/primary_bottom_sheet.dart';
 void showManualBackupDialog(BuildContext context, List<String> words) {
   showPrimaryBottomSheet(
     context: context,
-    title: 'Manual backup',
-    subtitle:
-        'Save your secret recovery phrase in a secure place that only you control.',
-    firstButton: AccentButton(
-      buttonShape: ButtonShape.pill,
-      title: LocaleKeys.checkSeedPhrase.tr(),
-      icon: LucideIcons.textCursorInput,
-      onPressed: () {
-        showCheckPhraseDialog(context);
+    title: LocaleKeys.manualBackupTitleDialog.tr(),
+    subtitle: LocaleKeys.manualBackupSubtitleDialog.tr(),
+    firstButton: LayoutBuilder(
+      builder: (context, constraints) {
+        return AccentButton(
+          buttonShape: ButtonShape.pill,
+          title: LocaleKeys.checkPhrasesLabel.tr(),
+          icon: LucideIcons.textCursorInput,
+          onPressed: () {
+            showCheckPhraseDialog(context, words);
+          },
+        );
       },
     ),
-    secondButton: PrimaryButton(
-      buttonShape: ButtonShape.pill,
-      title: LocaleKeys.skipTakeRisk.tr(),
-      onPressed: () {},
+    secondButton: LayoutBuilder(
+      builder: (context, _) {
+        return PrimaryButton(
+          buttonShape: ButtonShape.pill,
+          title: LocaleKeys.skipTakeRisk.tr(),
+          onPressed: () {
+            context.maybePop(); //close current dialog
+            showGoodJobDialog(context);
+          },
+        );
+      },
     ),
     content: ContentManualBackup(words: words),
   );
@@ -83,9 +95,9 @@ class ContentManualBackup extends ElementaryWidget<ManualBackUpWidgetModel> {
 }
 
 class _ListWords extends StatelessWidget {
-  final List<String> words;
-
   const _ListWords(this.words);
+
+  final List<String> words;
 
   @override
   Widget build(BuildContext context) {

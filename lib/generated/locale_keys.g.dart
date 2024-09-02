@@ -533,5 +533,9 @@ abstract class  LocaleKeys {
   static const hideAccount = 'hideAccount';
   static const advancedSettings = 'advancedSettings';
   static const backToSettings = 'backToSettings';
+  static const check = 'check';
+  static const checkPhrasesLabel = 'checkPhrasesLabel';
+  static const manualBackupTitleDialog = 'manualBackupTitleDialog';
+  static const manualBackupSubtitleDialog = 'manualBackupSubtitleDialog';
 
 }

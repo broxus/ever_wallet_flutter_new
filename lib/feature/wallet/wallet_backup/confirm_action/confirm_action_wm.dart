@@ -1,3 +1,4 @@
+// ignore_for_file: use_build_context_synchronously
 import 'dart:async';
 
 import 'package:app/app/router/app_route.dart';
@@ -67,6 +68,7 @@ class ConfirmActionWidgetModel
     if (seed != null) {
       try {
         final phrase = await seed.export(password);
+
         context.maybePop();
         showManualBackupDialog(context, phrase);
       } catch (_) {

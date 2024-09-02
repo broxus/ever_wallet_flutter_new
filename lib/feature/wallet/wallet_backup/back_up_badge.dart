@@ -5,7 +5,7 @@ import 'package:nekoton_repository/nekoton_repository.dart';
 import 'package:ui_components_lib/v2/ui_components_lib_v2.dart';
 
 class BackUpBadge extends StatelessWidget {
-  const BackUpBadge(this.currentAccount);
+  const BackUpBadge(this.currentAccount, {super.key});
 
   final KeyAccount? currentAccount;
 
@@ -14,20 +14,6 @@ class BackUpBadge extends StatelessWidget {
     final theme = context.themeStyleV2;
     return GestureDetector(
       onTap: () {
-        /*showPrimaryBottomSheet(
-          context: context,
-          title: LocaleKeys.backedUpTitleModal.tr(),
-          subtitle: LocaleKeys.backedUpSubtitleModal.tr(),
-          assetsPath: Assets.images.seedPhraseIcon.path,
-          firstButton: PrimaryButton(
-            buttonShape: ButtonShape.pill,
-            title: LocaleKeys.backedUpManuallyButton.tr(),
-            postfixIcon: LucideIcons.penLine,
-            onPressed: () {
-              showManualBackupDialog(context);
-            },
-          ),
-        );*/
         showConfirmActionDialog(context, currentAccount);
       },
       child: Container(
@@ -40,22 +26,20 @@ class BackUpBadge extends StatelessWidget {
           children: [
             Padding(
               padding: const EdgeInsets.only(right: DimensSizeV2.d100),
-              child: Flexible(
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    const SizedBox(height: DimensSizeV2.d12),
-                    Text(
-                      LocaleKeys.notBackedUpTitle.tr(),
-                      style: theme.textStyles.headingXSmall,
-                    ),
-                    Text(
-                      LocaleKeys.notBackedUpSubtitle.tr(),
-                      style: theme.textStyles.paragraphXSmall,
-                    ),
-                    const SizedBox(height: DimensSizeV2.d16),
-                  ],
-                ),
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  const SizedBox(height: DimensSizeV2.d12),
+                  Text(
+                    LocaleKeys.notBackedUpTitle.tr(),
+                    style: theme.textStyles.headingXSmall,
+                  ),
+                  Text(
+                    LocaleKeys.notBackedUpSubtitle.tr(),
+                    style: theme.textStyles.paragraphXSmall,
+                  ),
+                  const SizedBox(height: DimensSizeV2.d16),
+                ],
               ),
             ),
             Positioned.fill(

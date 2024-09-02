@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:lucide_icons_flutter/lucide_icons.dart';
 import 'package:modal_bottom_sheet/modal_bottom_sheet.dart';
 import 'package:ui_components_lib/ui_components_lib.dart';
 import 'package:ui_components_lib/v2/ui_components_lib_v2.dart';
@@ -9,13 +10,14 @@ Future<void> showPrimaryBottomSheet({
   String? title,
   String? subtitle,
   Widget? content,
-  BaseButton? firstButton,
-  BaseButton? secondButton,
+  Widget? firstButton,
+  Widget? secondButton,
   EdgeInsets padding = const EdgeInsets.symmetric(horizontal: DimensSizeV2.d16),
   bool expand = false,
   bool dismissible = true,
   bool wrapIntoAnimatedSize = true,
   bool useRootNavigator = true,
+  bool showBackButton = false,
 }) {
   return showCustomModalBottomSheet(
     expand: expand,
@@ -34,6 +36,7 @@ Future<void> showPrimaryBottomSheet({
       assetsPath: assetsPath,
       firstButton: firstButton,
       secondButton: secondButton,
+      showBackButton: showBackButton,
     ),
   );
 }
@@ -41,6 +44,7 @@ Future<void> showPrimaryBottomSheet({
 class _ContentBottomSheet extends StatelessWidget {
   const _ContentBottomSheet({
     required this.padding,
+    required this.showBackButton,
     this.assetsPath,
     this.title,
     this.subtitle,
@@ -54,62 +58,79 @@ class _ContentBottomSheet extends StatelessWidget {
   final String? subtitle;
   final Widget? content;
   final EdgeInsets padding;
-  final BaseButton? firstButton;
-  final BaseButton? secondButton;
+  final Widget? firstButton;
+  final Widget? secondButton;
+  final bool showBackButton;
 
   @override
   Widget build(BuildContext context) {
     final theme = context.themeStyleV2;
     return Material(
+      color: theme.colors.background1,
       child: Stack(
         children: [
-          Container(
-            decoration: BoxDecoration(color: theme.colors.background1),
-            padding: padding,
-            child: Column(
-              mainAxisSize: MainAxisSize.min,
-              children: [
-                const SizedBox(height: DimensSizeV2.d56),
-                if (assetsPath != null)
-                  Padding(
-                    padding: const EdgeInsets.only(bottom: DimensSizeV2.d16),
-                    child: Image.asset(
-                      assetsPath!,
-                      width: DimensSizeV2.d56,
-                      height: DimensSizeV2.d56,
+          SingleChildScrollView(
+            child: Container(
+              decoration: BoxDecoration(color: theme.colors.background1),
+              padding: padding,
+              child: Column(
+                mainAxisSize: MainAxisSize.min,
+                children: [
+                  const SizedBox(height: DimensSizeV2.d16),
+                  if (showBackButton)
+                    Align(
+                      alignment: Alignment.centerLeft,
+                      child: Padding(
+                        padding: const EdgeInsets.only(top: DimensSizeV2.d12),
+                        child: FloatButton(
+                          buttonShape: ButtonShape.circle,
+                          icon: LucideIcons.arrowLeft,
+                          onPressed: Navigator.of(context).pop,
+                        ),
+                      ),
                     ),
-                  ),
-                if (title != null)
-                  Padding(
-                    padding: const EdgeInsets.only(bottom: DimensSizeV2.d8),
-                    child: Text(
-                      title!,
-                      style: theme.textStyles.headingLarge,
-                      textAlign: TextAlign.center,
+                  const SizedBox(height: DimensSizeV2.d40),
+                  if (assetsPath != null)
+                    Padding(
+                      padding: const EdgeInsets.only(bottom: DimensSizeV2.d16),
+                      child: Image.asset(
+                        assetsPath!,
+                        width: DimensSizeV2.d56,
+                        height: DimensSizeV2.d56,
+                      ),
                     ),
-                  ),
-                if (subtitle != null)
-                  Padding(
-                    padding: const EdgeInsets.only(bottom: DimensSizeV2.d24),
-                    child: Text(
-                      subtitle!,
-                      style: theme.textStyles.paragraphMedium,
-                      textAlign: TextAlign.center,
+                  if (title != null)
+                    Padding(
+                      padding: const EdgeInsets.only(bottom: DimensSizeV2.d8),
+                      child: Text(
+                        title!,
+                        style: theme.textStyles.headingLarge,
+                        textAlign: TextAlign.center,
+                      ),
                     ),
-                  ),
-                if (content != null) content!,
-                if (firstButton != null)
-                  Padding(
-                    padding: const EdgeInsets.only(bottom: DimensSize.d12),
-                    child: firstButton,
-                  ),
-                if (secondButton != null)
-                  Padding(
-                    padding: const EdgeInsets.only(bottom: DimensSize.d12),
-                    child: secondButton,
-                  ),
-                const SizedBox(height: DimensSizeV2.d32),
-              ],
+                  if (subtitle != null)
+                    Padding(
+                      padding: const EdgeInsets.only(bottom: DimensSizeV2.d24),
+                      child: Text(
+                        subtitle!,
+                        style: theme.textStyles.paragraphMedium,
+                        textAlign: TextAlign.center,
+                      ),
+                    ),
+                  if (content != null) content!,
+                  if (firstButton != null)
+                    Padding(
+                      padding: const EdgeInsets.only(bottom: DimensSize.d12),
+                      child: firstButton,
+                    ),
+                  if (secondButton != null)
+                    Padding(
+                      padding: const EdgeInsets.only(bottom: DimensSize.d12),
+                      child: secondButton,
+                    ),
+                  const SizedBox(height: DimensSizeV2.d32),
+                ],
+              ),
             ),
           ),
           Row(
