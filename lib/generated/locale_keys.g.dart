@@ -257,7 +257,7 @@ abstract class LocaleKeys {
   static const searchWord = 'searchWord';
   static const customToken = 'customToken';
   static const enterAssetName = 'enterAssetName';
-  static const saveWord = 'saveWord';
+  static const saveChanges = 'saveChanges';
   static const selectNewAssets = 'selectNewAssets';
   static const sorryNoAssetsFound = 'sorryNoAssetsFound';
   static const rootTokenContract = 'rootTokenContract';

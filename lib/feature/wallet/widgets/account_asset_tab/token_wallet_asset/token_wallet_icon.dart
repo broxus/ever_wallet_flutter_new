@@ -3,6 +3,7 @@ import 'package:app/generated/generated.dart';
 import 'package:flutter/material.dart';
 import 'package:nekoton_repository/nekoton_repository.dart';
 import 'package:ui_components_lib/ui_components_lib.dart';
+import 'package:ui_components_lib/v2/ui_components_lib_v2.dart';
 
 /// Widget that is able to display icon for TokenWallet
 class TokenWalletIconWidget extends StatelessWidget {
@@ -27,9 +28,12 @@ class TokenWalletIconWidget extends StatelessWidget {
       child: Stack(
         children: [
           ClipOval(
-            child: logoURI != null
+            child: logoURI != null && logoURI!.isNotEmpty
                 ? TonWalletIconWidget(path: logoURI!, size: size)
-                : CustomPaint(painter: _AvatarPainter(address.address)),
+                : SvgPicture.asset(
+                    Assets.images.tokenDefaultIcon.path,
+                    width: size,
+                  ),
           ),
           if (version == TokenWalletVersion.oldTip3v4)
             const Positioned(
