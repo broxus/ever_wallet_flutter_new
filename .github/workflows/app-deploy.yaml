@@ -32,6 +32,13 @@ jobs:
         with:
           fetch-depth: 20
 
+      - name: Clear Gradle Cache and temp files
+        run: |
+          rm -rf ~/.gradle/caches/
+          rm -rf ~/.gradle/wrapper/
+          rm -rf build/
+          rm -rf android/.gradle/
+
       - uses: subosito/flutter-action@v2
         with:
           flutter-version: '3.24.0'
