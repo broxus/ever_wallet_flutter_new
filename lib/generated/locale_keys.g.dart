@@ -532,4 +532,39 @@ abstract class LocaleKeys {
   static const hideAccount = 'hideAccount';
   static const advancedSettings = 'advancedSettings';
   static const backToSettings = 'backToSettings';
+  static const createNewAccount = 'createNewAccount';
+  static const addExternalAccount = 'addExternalAccount';
+  static const confirmAction = 'confirmAction';
+  static const enterYourPassword = 'enterYourPassword';
+  static const useFaceID = 'useFaceID';
+  static const useFingerprint = 'useFingerprint';
+  static const accountName = 'accountName';
+  static const defaultWord = 'defaultWord';
+  static const multisignatureWord = 'multisignatureWord';
+  static const forExperiencedUsers = 'forExperiencedUsers';
+  static const walletDescriptionSurfWallet = 'walletDescriptionSurfWallet';
+  static const walletDescriptionWalletV3 = 'walletDescriptionWalletV3';
+  static const walletDescriptionSafeMultisigWallet =
+      'walletDescriptionSafeMultisigWallet';
+  static const walletDescriptionSafeMultisigWallet24h =
+      'walletDescriptionSafeMultisigWallet24h';
+  static const walletDescriptionSetcodeMultisigWallet =
+      'walletDescriptionSetcodeMultisigWallet';
+  static const walletDescriptionSetcodeMultisigWallet24h =
+      'walletDescriptionSetcodeMultisigWallet24h';
+  static const walletDescriptionBridgeMultisigWallet =
+      'walletDescriptionBridgeMultisigWallet';
+  static const walletDescriptionHighloadWalletV2 =
+      'walletDescriptionHighloadWalletV2';
+  static const walletDescriptionMultisig2 = 'walletDescriptionMultisig2';
+  static const walletDescriptionMultisig2_1 = 'walletDescriptionMultisig2_1';
+  static const walletDescriptionEverWallet = 'walletDescriptionEverWallet';
+  static const deprecatedTypes = 'deprecatedTypes';
+  static const deprecatedTypesHint = 'deprecatedTypesHint';
+  static const newAccount = 'newAccount';
+  static const createAccountError = 'createAccountError';
+  static const accountAddedSheetTitle = 'accountAddedSheetTitle';
+  static const accountAddedSheetSubtitle = 'accountAddedSheetSubtitle';
+  static const accountAddedSheetSwitch = 'accountAddedSheetSwitch';
+  static const accountAddedSheetContinue = 'accountAddedSheetContinue';
 }

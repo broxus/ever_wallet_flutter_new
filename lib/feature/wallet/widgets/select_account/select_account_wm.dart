@@ -2,7 +2,7 @@ import 'package:app/app/router/router.dart';
 import 'package:app/core/error_handler_factory.dart';
 import 'package:app/core/wm/custom_wm.dart';
 import 'package:app/di/di.dart';
-import 'package:app/feature/profile/key_detail/widgets/add_new_local_account_sheet.dart';
+import 'package:app/feature/wallet/add_account/add_account.dart';
 import 'package:app/feature/wallet/widgets/select_account/select_account_model.dart';
 import 'package:app/feature/wallet/widgets/select_account/select_account_widget.dart';
 import 'package:app/utils/utils.dart';
@@ -70,7 +70,8 @@ class SelectAccountWidgetModel
     final publicKey = _currentAccount.value?.publicKey;
 
     if (publicKey != null) {
-      showAddNewLocalAccountSheet(
+      Navigator.of(context).pop();
+      showAddNewAccountSheet(
         context: context,
         publicKey: publicKey,
       );
