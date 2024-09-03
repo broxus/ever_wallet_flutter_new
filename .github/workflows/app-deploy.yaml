@@ -47,8 +47,8 @@ jobs:
           distribution: zulu
           java-version: "17.x"
 
-      - uses: actions/checkout@v3
       - uses: nttld/setup-ndk@v1
+        if: inputs.deploy_target != 'store_ios'
         with:
           ndk-version: r26d
           local-cache: true
