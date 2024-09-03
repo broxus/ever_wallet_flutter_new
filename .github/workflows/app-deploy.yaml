@@ -50,7 +50,7 @@ jobs:
       - uses: nttld/setup-ndk@v1
         if: inputs.deploy_target != 'store_ios'
         with:
-          ndk-version: r26d
+          ndk-version: r23c
           local-cache: true
 
       # Secrets
