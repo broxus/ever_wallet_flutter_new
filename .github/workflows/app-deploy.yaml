@@ -16,7 +16,9 @@ on:
           - "fad"
           - "store"
           - "fad_store"
+          - "ios_fad"
           - "ios_store"
+          - "android_fad"
           - "android_store"
 
 jobs:
@@ -27,6 +29,27 @@ jobs:
       MATCH_PASSWORD: ${{ secrets.MATCH_PASSWORD }}
 
     steps:
+      - name: Set IS_IOS variable
+        run: |
+          case "${{ inputs.deploy_target }}" in
+            fad|store|fad_store|ios_fad|ios_store)
+             echo "IS_IOS=true" >> $GITHUB_ENV
+             ;;
+            *)
+             echo "IS_IOS=false" >> $GITHUB_ENV
+             ;;
+            esac
+
+      - name: Set IS_ANDROID variable
+        run: |
+          case "${{ inputs.deploy_target }}" in
+            fad|store|fad_store|android_fad|android_store)
+              echo "IS_ANDROID=true" >> $GITHUB_ENV
+              ;;
+            *)
+              echo "IS_ANDROID=false" >> $GITHUB_ENV
+              ;;
+          esac
       # Setup
       - uses: actions/checkout@v4
         with:
@@ -49,13 +72,13 @@ jobs:
       - uses: bluefireteam/melos-action@v3
 
       - uses: actions/setup-java@v4
-        if: inputs.deploy_target != 'store_ios'
+        if: ${{ env.IS_ANDROID == 'true' }}
         with:
           distribution: zulu
           java-version: "17.x"
 
       - uses: nttld/setup-ndk@v1
-        if: inputs.deploy_target != 'store_ios'
+        if: ${{ env.IS_ANDROID == 'true' }}
         with:
           ndk-version: r23c
           local-cache: true
@@ -66,7 +89,7 @@ jobs:
 
       # iOS certs
       - name: Making sure the iOS certificates and profiles are installed
-        if: inputs.deploy_target != 'store_android'
+        if: ${{ env.IS_IOS == 'true' }}
         run: melos build:ios_match_assure
 
       # Dart/Flutter
@@ -82,37 +105,32 @@ jobs:
             echo "SENTRY_DSN=$SENTRY_DSN" >> $GITHUB_ENV
           fi
 
-      # Build and deploy to FAD
-      - name: Build and deploy to FAD
-        if: inputs.deploy_target == 'fad'
-        run: melos build:deploy_fad
-        env:
-          SENTRY_DSN: ${{ env.SENTRY_DSN }}
-
-      # Build and deploy to STORE
-      - name: Build and deploy to STORE
-        if: inputs.deploy_target == 'store'
-        run: melos build:deploy_store
-        env:
-          SENTRY_DSN: ${{ env.SENTRY_DSN }}
-
-      # Build and deploy to FAD and STORE
-      - name: Build and deploy to FAD and STORE
-        if: inputs.deploy_target == 'fad_store'
-        run: melos build:deploy_fad_store
-        env:
-          SENTRY_DSN: ${{ env.SENTRY_DSN }}
-
-      # Build and deploy to Test Flight
-      - name: Build and deploy to Test Flight
-        if: inputs.deploy_target == 'ios_store'
-        run: melos build:deploy_ios_store
-        env:
-          SENTRY_DSN: ${{ env.SENTRY_DSN }}
-
-      # Build and deploy to Google Play
-      - name: Build and deploy to Google Play
-        if: inputs.deploy_target == 'android_store'
-        run: melos build:deploy_android_store
+      - name: Build and deploy
+        run: |
+          if [ "${{ inputs.deploy_target }}" == "fad" ]; then
+            echo "Running: build and deploy to FAD"
+            melos build:deploy_fad
+          elif [ "${{ inputs.deploy_target }}" == "store" ]; then
+            echo "Running: build and deploy to STORE"
+            melos build:deploy_store
+          elif [ "${{ inputs.deploy_target }}" == "fad_store" ]; then
+            echo "Running: build and deploy to FAD and STORE"
+            melos build:deploy_fad_store
+          elif [ "${{ inputs.deploy_target }}" == "ios_fad" ]; then
+            echo "Running: build and deploy to IOS FAD"
+            melos build:deploy_ios_fad
+          elif [ "${{ inputs.deploy_target }}" == "ios_store" ]; then
+            echo "Running: build and deploy to Test Flight"
+            melos build:deploy_ios_store
+          elif [ "${{ inputs.deploy_target }}" == "android_fad" ]; then
+            echo "Running: build and deploy to ANDROID FAD"
+            melos build:deploy_android_fad
+          elif [ "${{ inputs.deploy_target }}" == "android_store" ]; then
+            echo "Running: build and deploy to Google Play"
+            melos build:deploy_android_store
+          else
+            echo "Unknown deploy target: ${{ inputs.deploy_target }}"
+            exit 1
+          fi
         env:
           SENTRY_DSN: ${{ env.SENTRY_DSN }}
