@@ -60,7 +60,6 @@ jobs:
       - name: Get build number
         id: get_build_number
         run: |
-          echo "#️⃣ Getting next build number..."
           BUILD_NUMBER=$(bash scripts/get-build-number.sh)
           if [ -z "$BUILD_NUMBER" ]; then
             echo "Error: Build number is not specified."
@@ -118,6 +117,10 @@ jobs:
             SENTRY_DSN=$(cat ./secrets/sentry-dsn.txt)
             echo "SENTRY_DSN=$SENTRY_DSN" >> $GITHUB_ENV
           fi
+
+      - name: Display Build Number
+        run:
+          echo "Number is = ${{ needs.setup.outputs.build_number }}"
 
       - name: Build and deploy
         run: |
