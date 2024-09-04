@@ -92,12 +92,6 @@ jobs:
       MATCH_PASSWORD: ${{ secrets.MATCH_PASSWORD }}
 
     steps:
-      - name: Mask sensitive data
-        run: |
-          echo "::add-mask::${{ secrets.SECRET_PASSPHRASE }}"
-          echo "::add-mask::${{ secrets.MATCH_PASSWORD }}"
-          echo "::add-mask::${{ env.SENTRY_DSN }}"
-
       - uses: actions/checkout@v4
         with:
           fetch-depth: 1
@@ -148,6 +142,10 @@ jobs:
             echo "SENTRY_DSN=$SENTRY_DSN" >> $GITHUB_ENV
           fi
 
+      - name: Mask SENTRY_DSN
+        run: |
+          echo "::add-mask::${{ env.SENTRY_DSN }}"
+
       - name: Display Build Number
         run:
           echo "Number is = ${{ needs.setup.outputs.build_number }}"
@@ -187,12 +185,6 @@ jobs:
       MATCH_PASSWORD: ${{ secrets.MATCH_PASSWORD }}
 
     steps:
-      - name: Mask sensitive data
-        run: |
-          echo "::add-mask::${{ secrets.SECRET_PASSPHRASE }}"
-          echo "::add-mask::${{ secrets.MATCH_PASSWORD }}"
-          echo "::add-mask::${{ env.SENTRY_DSN }}"
-
       - uses: actions/checkout@v4
         with:
           fetch-depth: 1
@@ -248,6 +240,10 @@ jobs:
             SENTRY_DSN=$(cat ./secrets/sentry-dsn.txt)
             echo "SENTRY_DSN=$SENTRY_DSN" >> $GITHUB_ENV
           fi
+
+      - name: Mask SENTRY_DSN
+        run: |
+          echo "::add-mask::${{ env.SENTRY_DSN }}"
 
       - name: Display Build Number
         run:
