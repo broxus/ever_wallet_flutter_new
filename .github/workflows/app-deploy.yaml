@@ -132,6 +132,11 @@ jobs:
         run: |
           rm -rf build/app/outputs
 
+      - name: Clean temp files
+        run: |
+          rm -rf /tmp/*
+          rm -rf /var/tmp/*
+
       ###### Android
       - name: Set Android target variable based on deploy_target
         if: ${{ env.IS_ANDROID == 'true' }}
