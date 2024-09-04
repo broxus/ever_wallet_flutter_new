@@ -178,7 +178,9 @@ jobs:
   # Android deploy
   android-deploy:
     needs: [ setup, ios-deploy ]
-    if: ${{ needs.setup.result == 'success' && (needs.ios-deploy.result == 'success' || needs.ios-deploy.result == 'failure') && (inputs.deploy_target == 'fad' || inputs.deploy_target == 'store' || inputs.deploy_target == 'android_fad' || inputs.deploy_target == 'android_store') }}
+
+    if: ${{ inputs.deploy_target == 'fad' || inputs.deploy_target == 'store' || inputs.deploy_target == 'android_fad' || inputs.deploy_target == 'android_store' }}
+
     runs-on: macos-latest
     env:
       SECRET_PASSPHRASE: ${{ secrets.SECRET_PASSPHRASE }}
