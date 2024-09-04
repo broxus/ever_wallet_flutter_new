@@ -27,7 +27,9 @@ mixin _$BrowserTabDto {
   @HiveField(4)
   Uint8List? get screenshot => throw _privateConstructorUsedError;
 
-  @JsonKey(ignore: true)
+  /// Create a copy of BrowserTabDto
+  /// with the given fields replaced by the non-null parameter values.
+  @JsonKey(includeFromJson: false, includeToJson: false)
   $BrowserTabDtoCopyWith<BrowserTabDto> get copyWith =>
       throw _privateConstructorUsedError;
 }
@@ -56,6 +58,8 @@ class _$BrowserTabDtoCopyWithImpl<$Res, $Val extends BrowserTabDto>
   // ignore: unused_field
   final $Res Function($Val) _then;
 
+  /// Create a copy of BrowserTabDto
+  /// with the given fields replaced by the non-null parameter values.
   @pragma('vm:prefer-inline')
   @override
   $Res call({
@@ -114,6 +118,8 @@ class __$$BrowserTabImplCopyWithImpl<$Res>
       _$BrowserTabImpl _value, $Res Function(_$BrowserTabImpl) _then)
       : super(_value, _then);
 
+  /// Create a copy of BrowserTabDto
+  /// with the given fields replaced by the non-null parameter values.
   @pragma('vm:prefer-inline')
   @override
   $Res call({
@@ -198,7 +204,9 @@ class _$BrowserTabImpl implements _BrowserTab {
   int get hashCode => Object.hash(runtimeType, url, image, title,
       lastScrollPosition, const DeepCollectionEquality().hash(screenshot));
 
-  @JsonKey(ignore: true)
+  /// Create a copy of BrowserTabDto
+  /// with the given fields replaced by the non-null parameter values.
+  @JsonKey(includeFromJson: false, includeToJson: false)
   @override
   @pragma('vm:prefer-inline')
   _$$BrowserTabImplCopyWith<_$BrowserTabImpl> get copyWith =>
@@ -228,8 +236,11 @@ abstract class _BrowserTab implements BrowserTabDto {
   @override
   @HiveField(4)
   Uint8List? get screenshot;
+
+  /// Create a copy of BrowserTabDto
+  /// with the given fields replaced by the non-null parameter values.
   @override
-  @JsonKey(ignore: true)
+  @JsonKey(includeFromJson: false, includeToJson: false)
   _$$BrowserTabImplCopyWith<_$BrowserTabImpl> get copyWith =>
       throw _privateConstructorUsedError;
 }

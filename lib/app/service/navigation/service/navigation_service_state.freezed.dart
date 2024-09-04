@@ -24,8 +24,12 @@ mixin _$NavigationServiceState {
   String get location => throw _privateConstructorUsedError;
   String get fullPath => throw _privateConstructorUsedError;
 
+  /// Serializes this NavigationServiceState to a JSON map.
   Map<String, dynamic> toJson() => throw _privateConstructorUsedError;
-  @JsonKey(ignore: true)
+
+  /// Create a copy of NavigationServiceState
+  /// with the given fields replaced by the non-null parameter values.
+  @JsonKey(includeFromJson: false, includeToJson: false)
   $NavigationServiceStateCopyWith<NavigationServiceState> get copyWith =>
       throw _privateConstructorUsedError;
 }
@@ -50,6 +54,8 @@ class _$NavigationServiceStateCopyWithImpl<$Res,
   // ignore: unused_field
   final $Res Function($Val) _then;
 
+  /// Create a copy of NavigationServiceState
+  /// with the given fields replaced by the non-null parameter values.
   @pragma('vm:prefer-inline')
   @override
   $Res call({
@@ -91,6 +97,8 @@ class __$$NavigationServiceStateImplCopyWithImpl<$Res>
       $Res Function(_$NavigationServiceStateImpl) _then)
       : super(_value, _then);
 
+  /// Create a copy of NavigationServiceState
+  /// with the given fields replaced by the non-null parameter values.
   @pragma('vm:prefer-inline')
   @override
   $Res call({
@@ -140,11 +148,13 @@ class _$NavigationServiceStateImpl implements _NavigationServiceState {
                 other.fullPath == fullPath));
   }
 
-  @JsonKey(ignore: true)
+  @JsonKey(includeFromJson: false, includeToJson: false)
   @override
   int get hashCode => Object.hash(runtimeType, location, fullPath);
 
-  @JsonKey(ignore: true)
+  /// Create a copy of NavigationServiceState
+  /// with the given fields replaced by the non-null parameter values.
+  @JsonKey(includeFromJson: false, includeToJson: false)
   @override
   @pragma('vm:prefer-inline')
   _$$NavigationServiceStateImplCopyWith<_$NavigationServiceStateImpl>
@@ -171,8 +181,11 @@ abstract class _NavigationServiceState implements NavigationServiceState {
   String get location;
   @override
   String get fullPath;
+
+  /// Create a copy of NavigationServiceState
+  /// with the given fields replaced by the non-null parameter values.
   @override
-  @JsonKey(ignore: true)
+  @JsonKey(includeFromJson: false, includeToJson: false)
   _$$NavigationServiceStateImplCopyWith<_$NavigationServiceStateImpl>
       get copyWith => throw _privateConstructorUsedError;
 }

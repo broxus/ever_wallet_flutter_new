@@ -21,7 +21,9 @@ mixin _$SignedMessageWithAdditionalInfo {
   @amountJsonConverter
   BigInt? get amount => throw _privateConstructorUsedError;
 
-  @JsonKey(ignore: true)
+  /// Create a copy of SignedMessageWithAdditionalInfo
+  /// with the given fields replaced by the non-null parameter values.
+  @JsonKey(includeFromJson: false, includeToJson: false)
   $SignedMessageWithAdditionalInfoCopyWith<SignedMessageWithAdditionalInfo>
       get copyWith => throw _privateConstructorUsedError;
 }
@@ -53,6 +55,8 @@ class _$SignedMessageWithAdditionalInfoCopyWithImpl<$Res,
   // ignore: unused_field
   final $Res Function($Val) _then;
 
+  /// Create a copy of SignedMessageWithAdditionalInfo
+  /// with the given fields replaced by the non-null parameter values.
   @pragma('vm:prefer-inline')
   @override
   $Res call({
@@ -76,6 +80,8 @@ class _$SignedMessageWithAdditionalInfoCopyWithImpl<$Res,
     ) as $Val);
   }
 
+  /// Create a copy of SignedMessageWithAdditionalInfo
+  /// with the given fields replaced by the non-null parameter values.
   @override
   @pragma('vm:prefer-inline')
   $SignedMessageCopyWith<$Res> get message {
@@ -113,6 +119,8 @@ class __$$SignedMessageWithAdditionalInfoImplCopyWithImpl<$Res>
       $Res Function(_$SignedMessageWithAdditionalInfoImpl) _then)
       : super(_value, _then);
 
+  /// Create a copy of SignedMessageWithAdditionalInfo
+  /// with the given fields replaced by the non-null parameter values.
   @pragma('vm:prefer-inline')
   @override
   $Res call({
@@ -170,7 +178,9 @@ class _$SignedMessageWithAdditionalInfoImpl
   @override
   int get hashCode => Object.hash(runtimeType, message, dst, amount);
 
-  @JsonKey(ignore: true)
+  /// Create a copy of SignedMessageWithAdditionalInfo
+  /// with the given fields replaced by the non-null parameter values.
+  @JsonKey(includeFromJson: false, includeToJson: false)
   @override
   @pragma('vm:prefer-inline')
   _$$SignedMessageWithAdditionalInfoImplCopyWith<
@@ -194,8 +204,11 @@ abstract class _SignedMessageWithAdditionalInfo
   @override
   @amountJsonConverter
   BigInt? get amount;
+
+  /// Create a copy of SignedMessageWithAdditionalInfo
+  /// with the given fields replaced by the non-null parameter values.
   @override
-  @JsonKey(ignore: true)
+  @JsonKey(includeFromJson: false, includeToJson: false)
   _$$SignedMessageWithAdditionalInfoImplCopyWith<
           _$SignedMessageWithAdditionalInfoImpl>
       get copyWith => throw _privateConstructorUsedError;

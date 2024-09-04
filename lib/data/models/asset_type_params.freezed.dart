@@ -22,8 +22,12 @@ AssetTypeParams _$AssetTypeParamsFromJson(Map<String, dynamic> json) {
 mixin _$AssetTypeParams {
   String get rootContract => throw _privateConstructorUsedError;
 
+  /// Serializes this AssetTypeParams to a JSON map.
   Map<String, dynamic> toJson() => throw _privateConstructorUsedError;
-  @JsonKey(ignore: true)
+
+  /// Create a copy of AssetTypeParams
+  /// with the given fields replaced by the non-null parameter values.
+  @JsonKey(includeFromJson: false, includeToJson: false)
   $AssetTypeParamsCopyWith<AssetTypeParams> get copyWith =>
       throw _privateConstructorUsedError;
 }
@@ -47,6 +51,8 @@ class _$AssetTypeParamsCopyWithImpl<$Res, $Val extends AssetTypeParams>
   // ignore: unused_field
   final $Res Function($Val) _then;
 
+  /// Create a copy of AssetTypeParams
+  /// with the given fields replaced by the non-null parameter values.
   @pragma('vm:prefer-inline')
   @override
   $Res call({
@@ -80,6 +86,8 @@ class __$$AssetTypeParamsImplCopyWithImpl<$Res>
       _$AssetTypeParamsImpl _value, $Res Function(_$AssetTypeParamsImpl) _then)
       : super(_value, _then);
 
+  /// Create a copy of AssetTypeParams
+  /// with the given fields replaced by the non-null parameter values.
   @pragma('vm:prefer-inline')
   @override
   $Res call({
@@ -119,11 +127,13 @@ class _$AssetTypeParamsImpl implements _AssetTypeParams {
                 other.rootContract == rootContract));
   }
 
-  @JsonKey(ignore: true)
+  @JsonKey(includeFromJson: false, includeToJson: false)
   @override
   int get hashCode => Object.hash(runtimeType, rootContract);
 
-  @JsonKey(ignore: true)
+  /// Create a copy of AssetTypeParams
+  /// with the given fields replaced by the non-null parameter values.
+  @JsonKey(includeFromJson: false, includeToJson: false)
   @override
   @pragma('vm:prefer-inline')
   _$$AssetTypeParamsImplCopyWith<_$AssetTypeParamsImpl> get copyWith =>
@@ -147,8 +157,11 @@ abstract class _AssetTypeParams implements AssetTypeParams {
 
   @override
   String get rootContract;
+
+  /// Create a copy of AssetTypeParams
+  /// with the given fields replaced by the non-null parameter values.
   @override
-  @JsonKey(ignore: true)
+  @JsonKey(includeFromJson: false, includeToJson: false)
   _$$AssetTypeParamsImplCopyWith<_$AssetTypeParamsImpl> get copyWith =>
       throw _privateConstructorUsedError;
 }

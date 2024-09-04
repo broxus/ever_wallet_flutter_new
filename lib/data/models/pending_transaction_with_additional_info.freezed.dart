@@ -27,8 +27,12 @@ mixin _$PendingTransactionWithAdditionalInfo {
   int get createdAt => throw _privateConstructorUsedError;
   String? get dst => throw _privateConstructorUsedError;
 
+  /// Serializes this PendingTransactionWithAdditionalInfo to a JSON map.
   Map<String, dynamic> toJson() => throw _privateConstructorUsedError;
-  @JsonKey(ignore: true)
+
+  /// Create a copy of PendingTransactionWithAdditionalInfo
+  /// with the given fields replaced by the non-null parameter values.
+  @JsonKey(includeFromJson: false, includeToJson: false)
   $PendingTransactionWithAdditionalInfoCopyWith<
           PendingTransactionWithAdditionalInfo>
       get copyWith => throw _privateConstructorUsedError;
@@ -62,6 +66,8 @@ class _$PendingTransactionWithAdditionalInfoCopyWithImpl<$Res,
   // ignore: unused_field
   final $Res Function($Val) _then;
 
+  /// Create a copy of PendingTransactionWithAdditionalInfo
+  /// with the given fields replaced by the non-null parameter values.
   @pragma('vm:prefer-inline')
   @override
   $Res call({
@@ -90,6 +96,8 @@ class _$PendingTransactionWithAdditionalInfoCopyWithImpl<$Res,
     ) as $Val);
   }
 
+  /// Create a copy of PendingTransactionWithAdditionalInfo
+  /// with the given fields replaced by the non-null parameter values.
   @override
   @pragma('vm:prefer-inline')
   $PendingTransactionCopyWith<$Res> get transaction {
@@ -128,6 +136,8 @@ class __$$PendingTransactionWithAdditionalInfoImplCopyWithImpl<$Res>
       $Res Function(_$PendingTransactionWithAdditionalInfoImpl) _then)
       : super(_value, _then);
 
+  /// Create a copy of PendingTransactionWithAdditionalInfo
+  /// with the given fields replaced by the non-null parameter values.
   @pragma('vm:prefer-inline')
   @override
   $Res call({
@@ -200,12 +210,14 @@ class _$PendingTransactionWithAdditionalInfoImpl
             (identical(other.dst, dst) || other.dst == dst));
   }
 
-  @JsonKey(ignore: true)
+  @JsonKey(includeFromJson: false, includeToJson: false)
   @override
   int get hashCode =>
       Object.hash(runtimeType, transaction, amount, createdAt, dst);
 
-  @JsonKey(ignore: true)
+  /// Create a copy of PendingTransactionWithAdditionalInfo
+  /// with the given fields replaced by the non-null parameter values.
+  @JsonKey(includeFromJson: false, includeToJson: false)
   @override
   @pragma('vm:prefer-inline')
   _$$PendingTransactionWithAdditionalInfoImplCopyWith<
@@ -243,8 +255,11 @@ abstract class _PendingTransactionWithAdditionalInfo
   int get createdAt;
   @override
   String? get dst;
+
+  /// Create a copy of PendingTransactionWithAdditionalInfo
+  /// with the given fields replaced by the non-null parameter values.
   @override
-  @JsonKey(ignore: true)
+  @JsonKey(includeFromJson: false, includeToJson: false)
   _$$PendingTransactionWithAdditionalInfoImplCopyWith<
           _$PendingTransactionWithAdditionalInfoImpl>
       get copyWith => throw _privateConstructorUsedError;

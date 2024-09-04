@@ -97,6 +97,9 @@ class _$BrowserBookmarksEventCopyWithImpl<$Res,
   final $Val _value;
   // ignore: unused_field
   final $Res Function($Val) _then;
+
+  /// Create a copy of BrowserBookmarksEvent
+  /// with the given fields replaced by the non-null parameter values.
 }
 
 /// @nodoc
@@ -118,6 +121,8 @@ class __$$SetItemImplCopyWithImpl<$Res>
       _$SetItemImpl _value, $Res Function(_$SetItemImpl) _then)
       : super(_value, _then);
 
+  /// Create a copy of BrowserBookmarksEvent
+  /// with the given fields replaced by the non-null parameter values.
   @pragma('vm:prefer-inline')
   @override
   $Res call({
@@ -131,6 +136,8 @@ class __$$SetItemImplCopyWithImpl<$Res>
     ));
   }
 
+  /// Create a copy of BrowserBookmarksEvent
+  /// with the given fields replaced by the non-null parameter values.
   @override
   @pragma('vm:prefer-inline')
   $BrowserBookmarkItemCopyWith<$Res> get item {
@@ -164,7 +171,9 @@ class _$SetItemImpl implements _SetItem {
   @override
   int get hashCode => Object.hash(runtimeType, item);
 
-  @JsonKey(ignore: true)
+  /// Create a copy of BrowserBookmarksEvent
+  /// with the given fields replaced by the non-null parameter values.
+  @JsonKey(includeFromJson: false, includeToJson: false)
   @override
   @pragma('vm:prefer-inline')
   _$$SetItemImplCopyWith<_$SetItemImpl> get copyWith =>
@@ -262,7 +271,10 @@ abstract class _SetItem implements BrowserBookmarksEvent {
       _$SetItemImpl;
 
   BrowserBookmarkItem get item;
-  @JsonKey(ignore: true)
+
+  /// Create a copy of BrowserBookmarksEvent
+  /// with the given fields replaced by the non-null parameter values.
+  @JsonKey(includeFromJson: false, includeToJson: false)
   _$$SetItemImplCopyWith<_$SetItemImpl> get copyWith =>
       throw _privateConstructorUsedError;
 }
@@ -284,6 +296,8 @@ class __$$RemoveImplCopyWithImpl<$Res>
       _$RemoveImpl _value, $Res Function(_$RemoveImpl) _then)
       : super(_value, _then);
 
+  /// Create a copy of BrowserBookmarksEvent
+  /// with the given fields replaced by the non-null parameter values.
   @pragma('vm:prefer-inline')
   @override
   $Res call({
@@ -322,7 +336,9 @@ class _$RemoveImpl implements _Remove {
   @override
   int get hashCode => Object.hash(runtimeType, id);
 
-  @JsonKey(ignore: true)
+  /// Create a copy of BrowserBookmarksEvent
+  /// with the given fields replaced by the non-null parameter values.
+  @JsonKey(includeFromJson: false, includeToJson: false)
   @override
   @pragma('vm:prefer-inline')
   _$$RemoveImplCopyWith<_$RemoveImpl> get copyWith =>
@@ -419,7 +435,10 @@ abstract class _Remove implements BrowserBookmarksEvent {
   const factory _Remove({required final String id}) = _$RemoveImpl;
 
   String get id;
-  @JsonKey(ignore: true)
+
+  /// Create a copy of BrowserBookmarksEvent
+  /// with the given fields replaced by the non-null parameter values.
+  @JsonKey(includeFromJson: false, includeToJson: false)
   _$$RemoveImplCopyWith<_$RemoveImpl> get copyWith =>
       throw _privateConstructorUsedError;
 }
@@ -438,6 +457,9 @@ class __$$ClearImplCopyWithImpl<$Res>
   __$$ClearImplCopyWithImpl(
       _$ClearImpl _value, $Res Function(_$ClearImpl) _then)
       : super(_value, _then);
+
+  /// Create a copy of BrowserBookmarksEvent
+  /// with the given fields replaced by the non-null parameter values.
 }
 
 /// @nodoc
@@ -565,6 +587,8 @@ class __$$SetImplCopyWithImpl<$Res>
   __$$SetImplCopyWithImpl(_$SetImpl _value, $Res Function(_$SetImpl) _then)
       : super(_value, _then);
 
+  /// Create a copy of BrowserBookmarksEvent
+  /// with the given fields replaced by the non-null parameter values.
   @pragma('vm:prefer-inline')
   @override
   $Res call({
@@ -610,7 +634,9 @@ class _$SetImpl implements _Set {
   int get hashCode =>
       Object.hash(runtimeType, const DeepCollectionEquality().hash(_items));
 
-  @JsonKey(ignore: true)
+  /// Create a copy of BrowserBookmarksEvent
+  /// with the given fields replaced by the non-null parameter values.
+  @JsonKey(includeFromJson: false, includeToJson: false)
   @override
   @pragma('vm:prefer-inline')
   _$$SetImplCopyWith<_$SetImpl> get copyWith =>
@@ -708,7 +734,10 @@ abstract class _Set implements BrowserBookmarksEvent {
       _$SetImpl;
 
   List<BrowserBookmarkItem> get items;
-  @JsonKey(ignore: true)
+
+  /// Create a copy of BrowserBookmarksEvent
+  /// with the given fields replaced by the non-null parameter values.
+  @JsonKey(includeFromJson: false, includeToJson: false)
   _$$SetImplCopyWith<_$SetImpl> get copyWith =>
       throw _privateConstructorUsedError;
 }
@@ -730,6 +759,8 @@ class __$$SetSearchStringImplCopyWithImpl<$Res>
       _$SetSearchStringImpl _value, $Res Function(_$SetSearchStringImpl) _then)
       : super(_value, _then);
 
+  /// Create a copy of BrowserBookmarksEvent
+  /// with the given fields replaced by the non-null parameter values.
   @pragma('vm:prefer-inline')
   @override
   $Res call({
@@ -768,7 +799,9 @@ class _$SetSearchStringImpl implements _SetSearchString {
   @override
   int get hashCode => Object.hash(runtimeType, value);
 
-  @JsonKey(ignore: true)
+  /// Create a copy of BrowserBookmarksEvent
+  /// with the given fields replaced by the non-null parameter values.
+  @JsonKey(includeFromJson: false, includeToJson: false)
   @override
   @pragma('vm:prefer-inline')
   _$$SetSearchStringImplCopyWith<_$SetSearchStringImpl> get copyWith =>
@@ -867,7 +900,10 @@ abstract class _SetSearchString implements BrowserBookmarksEvent {
       _$SetSearchStringImpl;
 
   String get value;
-  @JsonKey(ignore: true)
+
+  /// Create a copy of BrowserBookmarksEvent
+  /// with the given fields replaced by the non-null parameter values.
+  @JsonKey(includeFromJson: false, includeToJson: false)
   _$$SetSearchStringImplCopyWith<_$SetSearchStringImpl> get copyWith =>
       throw _privateConstructorUsedError;
 }
@@ -889,6 +925,8 @@ class __$$SetIsEditingImplCopyWithImpl<$Res>
       _$SetIsEditingImpl _value, $Res Function(_$SetIsEditingImpl) _then)
       : super(_value, _then);
 
+  /// Create a copy of BrowserBookmarksEvent
+  /// with the given fields replaced by the non-null parameter values.
   @pragma('vm:prefer-inline')
   @override
   $Res call({
@@ -927,7 +965,9 @@ class _$SetIsEditingImpl implements _SetIsEditing {
   @override
   int get hashCode => Object.hash(runtimeType, value);
 
-  @JsonKey(ignore: true)
+  /// Create a copy of BrowserBookmarksEvent
+  /// with the given fields replaced by the non-null parameter values.
+  @JsonKey(includeFromJson: false, includeToJson: false)
   @override
   @pragma('vm:prefer-inline')
   _$$SetIsEditingImplCopyWith<_$SetIsEditingImpl> get copyWith =>
@@ -1024,7 +1064,10 @@ abstract class _SetIsEditing implements BrowserBookmarksEvent {
   const factory _SetIsEditing({required final bool value}) = _$SetIsEditingImpl;
 
   bool get value;
-  @JsonKey(ignore: true)
+
+  /// Create a copy of BrowserBookmarksEvent
+  /// with the given fields replaced by the non-null parameter values.
+  @JsonKey(includeFromJson: false, includeToJson: false)
   _$$SetIsEditingImplCopyWith<_$SetIsEditingImpl> get copyWith =>
       throw _privateConstructorUsedError;
 }
@@ -1034,7 +1077,9 @@ mixin _$BrowserBookmarksState {
   List<BrowserBookmarkItem> get items => throw _privateConstructorUsedError;
   bool get isEditing => throw _privateConstructorUsedError;
 
-  @JsonKey(ignore: true)
+  /// Create a copy of BrowserBookmarksState
+  /// with the given fields replaced by the non-null parameter values.
+  @JsonKey(includeFromJson: false, includeToJson: false)
   $BrowserBookmarksStateCopyWith<BrowserBookmarksState> get copyWith =>
       throw _privateConstructorUsedError;
 }
@@ -1059,6 +1104,8 @@ class _$BrowserBookmarksStateCopyWithImpl<$Res,
   // ignore: unused_field
   final $Res Function($Val) _then;
 
+  /// Create a copy of BrowserBookmarksState
+  /// with the given fields replaced by the non-null parameter values.
   @pragma('vm:prefer-inline')
   @override
   $Res call({
@@ -1099,6 +1146,8 @@ class __$$BrowserBookmarksStateImplCopyWithImpl<$Res>
       $Res Function(_$BrowserBookmarksStateImpl) _then)
       : super(_value, _then);
 
+  /// Create a copy of BrowserBookmarksState
+  /// with the given fields replaced by the non-null parameter values.
   @pragma('vm:prefer-inline')
   @override
   $Res call({
@@ -1155,7 +1204,9 @@ class _$BrowserBookmarksStateImpl implements _BrowserBookmarksState {
   int get hashCode => Object.hash(
       runtimeType, const DeepCollectionEquality().hash(_items), isEditing);
 
-  @JsonKey(ignore: true)
+  /// Create a copy of BrowserBookmarksState
+  /// with the given fields replaced by the non-null parameter values.
+  @JsonKey(includeFromJson: false, includeToJson: false)
   @override
   @pragma('vm:prefer-inline')
   _$$BrowserBookmarksStateImplCopyWith<_$BrowserBookmarksStateImpl>
@@ -1172,8 +1223,11 @@ abstract class _BrowserBookmarksState implements BrowserBookmarksState {
   List<BrowserBookmarkItem> get items;
   @override
   bool get isEditing;
+
+  /// Create a copy of BrowserBookmarksState
+  /// with the given fields replaced by the non-null parameter values.
   @override
-  @JsonKey(ignore: true)
+  @JsonKey(includeFromJson: false, includeToJson: false)
   _$$BrowserBookmarksStateImplCopyWith<_$BrowserBookmarksStateImpl>
       get copyWith => throw _privateConstructorUsedError;
 }

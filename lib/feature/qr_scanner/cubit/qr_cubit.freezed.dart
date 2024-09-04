@@ -81,6 +81,9 @@ class _$QrCubitStateCopyWithImpl<$Res, $Val extends QrCubitState>
   final $Val _value;
   // ignore: unused_field
   final $Res Function($Val) _then;
+
+  /// Create a copy of QrCubitState
+  /// with the given fields replaced by the non-null parameter values.
 }
 
 /// @nodoc
@@ -97,6 +100,9 @@ class __$$LoadingImplCopyWithImpl<$Res>
   __$$LoadingImplCopyWithImpl(
       _$LoadingImpl _value, $Res Function(_$LoadingImpl) _then)
       : super(_value, _then);
+
+  /// Create a copy of QrCubitState
+  /// with the given fields replaced by the non-null parameter values.
 }
 
 /// @nodoc
@@ -208,6 +214,9 @@ class __$$GivePermissionsImplCopyWithImpl<$Res>
   __$$GivePermissionsImplCopyWithImpl(
       _$GivePermissionsImpl _value, $Res Function(_$GivePermissionsImpl) _then)
       : super(_value, _then);
+
+  /// Create a copy of QrCubitState
+  /// with the given fields replaced by the non-null parameter values.
 }
 
 /// @nodoc
@@ -322,6 +331,8 @@ class __$$ScanningImplCopyWithImpl<$Res>
       _$ScanningImpl _value, $Res Function(_$ScanningImpl) _then)
       : super(_value, _then);
 
+  /// Create a copy of QrCubitState
+  /// with the given fields replaced by the non-null parameter values.
   @pragma('vm:prefer-inline')
   @override
   $Res call({
@@ -369,7 +380,9 @@ class _$ScanningImpl implements _Scanning {
   @override
   int get hashCode => Object.hash(runtimeType, controller, data);
 
-  @JsonKey(ignore: true)
+  /// Create a copy of QrCubitState
+  /// with the given fields replaced by the non-null parameter values.
+  @JsonKey(includeFromJson: false, includeToJson: false)
   @override
   @pragma('vm:prefer-inline')
   _$$ScanningImplCopyWith<_$ScanningImpl> get copyWith =>
@@ -454,7 +467,10 @@ abstract class _Scanning implements QrCubitState {
 
   MobileScannerController get controller;
   String? get data;
-  @JsonKey(ignore: true)
+
+  /// Create a copy of QrCubitState
+  /// with the given fields replaced by the non-null parameter values.
+  @JsonKey(includeFromJson: false, includeToJson: false)
   _$$ScanningImplCopyWith<_$ScanningImpl> get copyWith =>
       throw _privateConstructorUsedError;
 }

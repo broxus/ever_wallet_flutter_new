@@ -73,6 +73,9 @@ class _$BrowserFaviconsEventCopyWithImpl<$Res,
   final $Val _value;
   // ignore: unused_field
   final $Res Function($Val) _then;
+
+  /// Create a copy of BrowserFaviconsEvent
+  /// with the given fields replaced by the non-null parameter values.
 }
 
 /// @nodoc
@@ -92,6 +95,8 @@ class __$$FetchItemsImplCopyWithImpl<$Res>
       _$FetchItemsImpl _value, $Res Function(_$FetchItemsImpl) _then)
       : super(_value, _then);
 
+  /// Create a copy of BrowserFaviconsEvent
+  /// with the given fields replaced by the non-null parameter values.
   @pragma('vm:prefer-inline')
   @override
   $Res call({
@@ -136,7 +141,9 @@ class _$FetchItemsImpl implements _FetchItems {
   int get hashCode =>
       Object.hash(runtimeType, const DeepCollectionEquality().hash(_uris));
 
-  @JsonKey(ignore: true)
+  /// Create a copy of BrowserFaviconsEvent
+  /// with the given fields replaced by the non-null parameter values.
+  @JsonKey(includeFromJson: false, includeToJson: false)
   @override
   @pragma('vm:prefer-inline')
   _$$FetchItemsImplCopyWith<_$FetchItemsImpl> get copyWith =>
@@ -209,7 +216,10 @@ abstract class _FetchItems implements BrowserFaviconsEvent {
   const factory _FetchItems({required final List<Uri> uris}) = _$FetchItemsImpl;
 
   List<Uri> get uris;
-  @JsonKey(ignore: true)
+
+  /// Create a copy of BrowserFaviconsEvent
+  /// with the given fields replaced by the non-null parameter values.
+  @JsonKey(includeFromJson: false, includeToJson: false)
   _$$FetchItemsImplCopyWith<_$FetchItemsImpl> get copyWith =>
       throw _privateConstructorUsedError;
 }
@@ -231,6 +241,8 @@ class __$$SetItemImplCopyWithImpl<$Res>
       _$SetItemImpl _value, $Res Function(_$SetItemImpl) _then)
       : super(_value, _then);
 
+  /// Create a copy of BrowserFaviconsEvent
+  /// with the given fields replaced by the non-null parameter values.
   @pragma('vm:prefer-inline')
   @override
   $Res call({
@@ -278,7 +290,9 @@ class _$SetItemImpl implements _SetItem {
   @override
   int get hashCode => Object.hash(runtimeType, uri, faviconURL);
 
-  @JsonKey(ignore: true)
+  /// Create a copy of BrowserFaviconsEvent
+  /// with the given fields replaced by the non-null parameter values.
+  @JsonKey(includeFromJson: false, includeToJson: false)
   @override
   @pragma('vm:prefer-inline')
   _$$SetItemImplCopyWith<_$SetItemImpl> get copyWith =>
@@ -354,7 +368,10 @@ abstract class _SetItem implements BrowserFaviconsEvent {
 
   Uri get uri;
   String? get faviconURL;
-  @JsonKey(ignore: true)
+
+  /// Create a copy of BrowserFaviconsEvent
+  /// with the given fields replaced by the non-null parameter values.
+  @JsonKey(includeFromJson: false, includeToJson: false)
   _$$SetItemImplCopyWith<_$SetItemImpl> get copyWith =>
       throw _privateConstructorUsedError;
 }
@@ -363,7 +380,9 @@ abstract class _SetItem implements BrowserFaviconsEvent {
 mixin _$BrowserFaviconsState {
   Map<Uri, String?> get items => throw _privateConstructorUsedError;
 
-  @JsonKey(ignore: true)
+  /// Create a copy of BrowserFaviconsState
+  /// with the given fields replaced by the non-null parameter values.
+  @JsonKey(includeFromJson: false, includeToJson: false)
   $BrowserFaviconsStateCopyWith<BrowserFaviconsState> get copyWith =>
       throw _privateConstructorUsedError;
 }
@@ -388,6 +407,8 @@ class _$BrowserFaviconsStateCopyWithImpl<$Res,
   // ignore: unused_field
   final $Res Function($Val) _then;
 
+  /// Create a copy of BrowserFaviconsState
+  /// with the given fields replaced by the non-null parameter values.
   @pragma('vm:prefer-inline')
   @override
   $Res call({
@@ -421,6 +442,8 @@ class __$$BrowserFaviconsStateImplCopyWithImpl<$Res>
       $Res Function(_$BrowserFaviconsStateImpl) _then)
       : super(_value, _then);
 
+  /// Create a copy of BrowserFaviconsState
+  /// with the given fields replaced by the non-null parameter values.
   @pragma('vm:prefer-inline')
   @override
   $Res call({
@@ -466,7 +489,9 @@ class _$BrowserFaviconsStateImpl implements _BrowserFaviconsState {
   int get hashCode =>
       Object.hash(runtimeType, const DeepCollectionEquality().hash(_items));
 
-  @JsonKey(ignore: true)
+  /// Create a copy of BrowserFaviconsState
+  /// with the given fields replaced by the non-null parameter values.
+  @JsonKey(includeFromJson: false, includeToJson: false)
   @override
   @pragma('vm:prefer-inline')
   _$$BrowserFaviconsStateImplCopyWith<_$BrowserFaviconsStateImpl>
@@ -481,8 +506,11 @@ abstract class _BrowserFaviconsState implements BrowserFaviconsState {
 
   @override
   Map<Uri, String?> get items;
+
+  /// Create a copy of BrowserFaviconsState
+  /// with the given fields replaced by the non-null parameter values.
   @override
-  @JsonKey(ignore: true)
+  @JsonKey(includeFromJson: false, includeToJson: false)
   _$$BrowserFaviconsStateImplCopyWith<_$BrowserFaviconsStateImpl>
       get copyWith => throw _privateConstructorUsedError;
 }

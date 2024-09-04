@@ -50,7 +50,9 @@ mixin _$NavigationEvent {
   }) =>
       throw _privateConstructorUsedError;
 
-  @JsonKey(ignore: true)
+  /// Create a copy of NavigationEvent
+  /// with the given fields replaced by the non-null parameter values.
+  @JsonKey(includeFromJson: false, includeToJson: false)
   $NavigationEventCopyWith<NavigationEvent> get copyWith =>
       throw _privateConstructorUsedError;
 }
@@ -76,6 +78,8 @@ class _$NavigationEventCopyWithImpl<$Res, $Val extends NavigationEvent>
   // ignore: unused_field
   final $Res Function($Val) _then;
 
+  /// Create a copy of NavigationEvent
+  /// with the given fields replaced by the non-null parameter values.
   @pragma('vm:prefer-inline')
   @override
   $Res call({
@@ -89,6 +93,8 @@ class _$NavigationEventCopyWithImpl<$Res, $Val extends NavigationEvent>
     ) as $Val);
   }
 
+  /// Create a copy of NavigationEvent
+  /// with the given fields replaced by the non-null parameter values.
   @override
   @pragma('vm:prefer-inline')
   $NavigationServiceStateCopyWith<$Res> get state {
@@ -120,6 +126,8 @@ class __$$NavigatedToImplCopyWithImpl<$Res>
       _$NavigatedToImpl _value, $Res Function(_$NavigatedToImpl) _then)
       : super(_value, _then);
 
+  /// Create a copy of NavigationEvent
+  /// with the given fields replaced by the non-null parameter values.
   @pragma('vm:prefer-inline')
   @override
   $Res call({
@@ -158,7 +166,9 @@ class _$NavigatedToImpl implements _NavigatedTo {
   @override
   int get hashCode => Object.hash(runtimeType, state);
 
-  @JsonKey(ignore: true)
+  /// Create a copy of NavigationEvent
+  /// with the given fields replaced by the non-null parameter values.
+  @JsonKey(includeFromJson: false, includeToJson: false)
   @override
   @pragma('vm:prefer-inline')
   _$$NavigatedToImplCopyWith<_$NavigatedToImpl> get copyWith =>
@@ -227,8 +237,11 @@ abstract class _NavigatedTo implements NavigationEvent {
 
   @override
   NavigationServiceState get state;
+
+  /// Create a copy of NavigationEvent
+  /// with the given fields replaced by the non-null parameter values.
   @override
-  @JsonKey(ignore: true)
+  @JsonKey(includeFromJson: false, includeToJson: false)
   _$$NavigatedToImplCopyWith<_$NavigatedToImpl> get copyWith =>
       throw _privateConstructorUsedError;
 }
@@ -238,7 +251,9 @@ mixin _$NavigationState {
   NavigationServiceState? get state => throw _privateConstructorUsedError;
   NavigationServiceState? get oldState => throw _privateConstructorUsedError;
 
-  @JsonKey(ignore: true)
+  /// Create a copy of NavigationState
+  /// with the given fields replaced by the non-null parameter values.
+  @JsonKey(includeFromJson: false, includeToJson: false)
   $NavigationStateCopyWith<NavigationState> get copyWith =>
       throw _privateConstructorUsedError;
 }
@@ -265,6 +280,8 @@ class _$NavigationStateCopyWithImpl<$Res, $Val extends NavigationState>
   // ignore: unused_field
   final $Res Function($Val) _then;
 
+  /// Create a copy of NavigationState
+  /// with the given fields replaced by the non-null parameter values.
   @pragma('vm:prefer-inline')
   @override
   $Res call({
@@ -283,6 +300,8 @@ class _$NavigationStateCopyWithImpl<$Res, $Val extends NavigationState>
     ) as $Val);
   }
 
+  /// Create a copy of NavigationState
+  /// with the given fields replaced by the non-null parameter values.
   @override
   @pragma('vm:prefer-inline')
   $NavigationServiceStateCopyWith<$Res>? get state {
@@ -295,6 +314,8 @@ class _$NavigationStateCopyWithImpl<$Res, $Val extends NavigationState>
     });
   }
 
+  /// Create a copy of NavigationState
+  /// with the given fields replaced by the non-null parameter values.
   @override
   @pragma('vm:prefer-inline')
   $NavigationServiceStateCopyWith<$Res>? get oldState {
@@ -332,6 +353,8 @@ class __$$NavigationStateImplCopyWithImpl<$Res>
       _$NavigationStateImpl _value, $Res Function(_$NavigationStateImpl) _then)
       : super(_value, _then);
 
+  /// Create a copy of NavigationState
+  /// with the given fields replaced by the non-null parameter values.
   @pragma('vm:prefer-inline')
   @override
   $Res call({
@@ -379,7 +402,9 @@ class _$NavigationStateImpl implements _NavigationState {
   @override
   int get hashCode => Object.hash(runtimeType, state, oldState);
 
-  @JsonKey(ignore: true)
+  /// Create a copy of NavigationState
+  /// with the given fields replaced by the non-null parameter values.
+  @JsonKey(includeFromJson: false, includeToJson: false)
   @override
   @pragma('vm:prefer-inline')
   _$$NavigationStateImplCopyWith<_$NavigationStateImpl> get copyWith =>
@@ -396,8 +421,11 @@ abstract class _NavigationState implements NavigationState {
   NavigationServiceState? get state;
   @override
   NavigationServiceState? get oldState;
+
+  /// Create a copy of NavigationState
+  /// with the given fields replaced by the non-null parameter values.
   @override
-  @JsonKey(ignore: true)
+  @JsonKey(includeFromJson: false, includeToJson: false)
   _$$NavigationStateImplCopyWith<_$NavigationStateImpl> get copyWith =>
       throw _privateConstructorUsedError;
 }

@@ -181,7 +181,9 @@ mixin _$ApprovalRequest {
   }) =>
       throw _privateConstructorUsedError;
 
-  @JsonKey(ignore: true)
+  /// Create a copy of ApprovalRequest
+  /// with the given fields replaced by the non-null parameter values.
+  @JsonKey(includeFromJson: false, includeToJson: false)
   $ApprovalRequestCopyWith<ApprovalRequest> get copyWith =>
       throw _privateConstructorUsedError;
 }
@@ -205,6 +207,8 @@ class _$ApprovalRequestCopyWithImpl<$Res, $Val extends ApprovalRequest>
   // ignore: unused_field
   final $Res Function($Val) _then;
 
+  /// Create a copy of ApprovalRequest
+  /// with the given fields replaced by the non-null parameter values.
   @pragma('vm:prefer-inline')
   @override
   $Res call({
@@ -241,6 +245,8 @@ class __$$RequestPermissionsImplCopyWithImpl<$Res>
       $Res Function(_$RequestPermissionsImpl) _then)
       : super(_value, _then);
 
+  /// Create a copy of ApprovalRequest
+  /// with the given fields replaced by the non-null parameter values.
   @pragma('vm:prefer-inline')
   @override
   $Res call({
@@ -308,7 +314,9 @@ class _$RequestPermissionsImpl implements _RequestPermissions {
   int get hashCode => Object.hash(runtimeType, origin,
       const DeepCollectionEquality().hash(_permissions), completer);
 
-  @JsonKey(ignore: true)
+  /// Create a copy of ApprovalRequest
+  /// with the given fields replaced by the non-null parameter values.
+  @JsonKey(includeFromJson: false, includeToJson: false)
   @override
   @pragma('vm:prefer-inline')
   _$$RequestPermissionsImplCopyWith<_$RequestPermissionsImpl> get copyWith =>
@@ -514,8 +522,11 @@ abstract class _RequestPermissions implements ApprovalRequest {
   List<Permission> get permissions;
   @override
   Completer<Permissions> get completer;
+
+  /// Create a copy of ApprovalRequest
+  /// with the given fields replaced by the non-null parameter values.
   @override
-  @JsonKey(ignore: true)
+  @JsonKey(includeFromJson: false, includeToJson: false)
   _$$RequestPermissionsImplCopyWith<_$RequestPermissionsImpl> get copyWith =>
       throw _privateConstructorUsedError;
 }
@@ -545,6 +556,8 @@ class __$$ChangeAccountImplCopyWithImpl<$Res>
       _$ChangeAccountImpl _value, $Res Function(_$ChangeAccountImpl) _then)
       : super(_value, _then);
 
+  /// Create a copy of ApprovalRequest
+  /// with the given fields replaced by the non-null parameter values.
   @pragma('vm:prefer-inline')
   @override
   $Res call({
@@ -573,6 +586,8 @@ class __$$ChangeAccountImplCopyWithImpl<$Res>
     ));
   }
 
+  /// Create a copy of ApprovalRequest
+  /// with the given fields replaced by the non-null parameter values.
   @override
   @pragma('vm:prefer-inline')
   $AddressCopyWith<$Res>? get previousSelectedAccount {
@@ -639,7 +654,9 @@ class _$ChangeAccountImpl implements _ChangeAccount {
       previousSelectedAccount,
       completer);
 
-  @JsonKey(ignore: true)
+  /// Create a copy of ApprovalRequest
+  /// with the given fields replaced by the non-null parameter values.
+  @JsonKey(includeFromJson: false, includeToJson: false)
   @override
   @pragma('vm:prefer-inline')
   _$$ChangeAccountImplCopyWith<_$ChangeAccountImpl> get copyWith =>
@@ -848,8 +865,11 @@ abstract class _ChangeAccount implements ApprovalRequest {
   Address? get previousSelectedAccount;
   @override
   Completer<Permissions> get completer;
+
+  /// Create a copy of ApprovalRequest
+  /// with the given fields replaced by the non-null parameter values.
   @override
-  @JsonKey(ignore: true)
+  @JsonKey(includeFromJson: false, includeToJson: false)
   _$$ChangeAccountImplCopyWith<_$ChangeAccountImpl> get copyWith =>
       throw _privateConstructorUsedError;
 }
@@ -880,6 +900,8 @@ class __$$AddTip3TokenImplCopyWithImpl<$Res>
       _$AddTip3TokenImpl _value, $Res Function(_$AddTip3TokenImpl) _then)
       : super(_value, _then);
 
+  /// Create a copy of ApprovalRequest
+  /// with the given fields replaced by the non-null parameter values.
   @pragma('vm:prefer-inline')
   @override
   $Res call({
@@ -908,6 +930,8 @@ class __$$AddTip3TokenImplCopyWithImpl<$Res>
     ));
   }
 
+  /// Create a copy of ApprovalRequest
+  /// with the given fields replaced by the non-null parameter values.
   @override
   @pragma('vm:prefer-inline')
   $AddressCopyWith<$Res> get account {
@@ -916,6 +940,8 @@ class __$$AddTip3TokenImplCopyWithImpl<$Res>
     });
   }
 
+  /// Create a copy of ApprovalRequest
+  /// with the given fields replaced by the non-null parameter values.
   @override
   @pragma('vm:prefer-inline')
   $TokenContractAssetCopyWith<$Res> get details {
@@ -964,7 +990,9 @@ class _$AddTip3TokenImpl implements _AddTip3Token {
   int get hashCode =>
       Object.hash(runtimeType, origin, account, details, completer);
 
-  @JsonKey(ignore: true)
+  /// Create a copy of ApprovalRequest
+  /// with the given fields replaced by the non-null parameter values.
+  @JsonKey(includeFromJson: false, includeToJson: false)
   @override
   @pragma('vm:prefer-inline')
   _$$AddTip3TokenImplCopyWith<_$AddTip3TokenImpl> get copyWith =>
@@ -1170,8 +1198,11 @@ abstract class _AddTip3Token implements ApprovalRequest {
   TokenContractAsset get details;
   @override
   Completer<void> get completer;
+
+  /// Create a copy of ApprovalRequest
+  /// with the given fields replaced by the non-null parameter values.
   @override
-  @JsonKey(ignore: true)
+  @JsonKey(includeFromJson: false, includeToJson: false)
   _$$AddTip3TokenImplCopyWith<_$AddTip3TokenImpl> get copyWith =>
       throw _privateConstructorUsedError;
 }
@@ -1203,6 +1234,8 @@ class __$$SignDataImplCopyWithImpl<$Res>
       _$SignDataImpl _value, $Res Function(_$SignDataImpl) _then)
       : super(_value, _then);
 
+  /// Create a copy of ApprovalRequest
+  /// with the given fields replaced by the non-null parameter values.
   @pragma('vm:prefer-inline')
   @override
   $Res call({
@@ -1236,6 +1269,8 @@ class __$$SignDataImplCopyWithImpl<$Res>
     ));
   }
 
+  /// Create a copy of ApprovalRequest
+  /// with the given fields replaced by the non-null parameter values.
   @override
   @pragma('vm:prefer-inline')
   $AddressCopyWith<$Res> get account {
@@ -1244,6 +1279,8 @@ class __$$SignDataImplCopyWithImpl<$Res>
     });
   }
 
+  /// Create a copy of ApprovalRequest
+  /// with the given fields replaced by the non-null parameter values.
   @override
   @pragma('vm:prefer-inline')
   $PublicKeyCopyWith<$Res> get publicKey {
@@ -1297,7 +1334,9 @@ class _$SignDataImpl implements _SignData {
   int get hashCode =>
       Object.hash(runtimeType, origin, account, publicKey, data, completer);
 
-  @JsonKey(ignore: true)
+  /// Create a copy of ApprovalRequest
+  /// with the given fields replaced by the non-null parameter values.
+  @JsonKey(includeFromJson: false, includeToJson: false)
   @override
   @pragma('vm:prefer-inline')
   _$$SignDataImplCopyWith<_$SignDataImpl> get copyWith =>
@@ -1505,8 +1544,11 @@ abstract class _SignData implements ApprovalRequest {
   String get data;
   @override
   Completer<String> get completer;
+
+  /// Create a copy of ApprovalRequest
+  /// with the given fields replaced by the non-null parameter values.
   @override
-  @JsonKey(ignore: true)
+  @JsonKey(includeFromJson: false, includeToJson: false)
   _$$SignDataImplCopyWith<_$SignDataImpl> get copyWith =>
       throw _privateConstructorUsedError;
 }
@@ -1538,6 +1580,8 @@ class __$$EncryptDataImplCopyWithImpl<$Res>
       _$EncryptDataImpl _value, $Res Function(_$EncryptDataImpl) _then)
       : super(_value, _then);
 
+  /// Create a copy of ApprovalRequest
+  /// with the given fields replaced by the non-null parameter values.
   @pragma('vm:prefer-inline')
   @override
   $Res call({
@@ -1571,6 +1615,8 @@ class __$$EncryptDataImplCopyWithImpl<$Res>
     ));
   }
 
+  /// Create a copy of ApprovalRequest
+  /// with the given fields replaced by the non-null parameter values.
   @override
   @pragma('vm:prefer-inline')
   $AddressCopyWith<$Res> get account {
@@ -1579,6 +1625,8 @@ class __$$EncryptDataImplCopyWithImpl<$Res>
     });
   }
 
+  /// Create a copy of ApprovalRequest
+  /// with the given fields replaced by the non-null parameter values.
   @override
   @pragma('vm:prefer-inline')
   $PublicKeyCopyWith<$Res> get publicKey {
@@ -1632,7 +1680,9 @@ class _$EncryptDataImpl implements _EncryptData {
   int get hashCode =>
       Object.hash(runtimeType, origin, account, publicKey, data, completer);
 
-  @JsonKey(ignore: true)
+  /// Create a copy of ApprovalRequest
+  /// with the given fields replaced by the non-null parameter values.
+  @JsonKey(includeFromJson: false, includeToJson: false)
   @override
   @pragma('vm:prefer-inline')
   _$$EncryptDataImplCopyWith<_$EncryptDataImpl> get copyWith =>
@@ -1840,8 +1890,11 @@ abstract class _EncryptData implements ApprovalRequest {
   String get data;
   @override
   Completer<String> get completer;
+
+  /// Create a copy of ApprovalRequest
+  /// with the given fields replaced by the non-null parameter values.
   @override
-  @JsonKey(ignore: true)
+  @JsonKey(includeFromJson: false, includeToJson: false)
   _$$EncryptDataImplCopyWith<_$EncryptDataImpl> get copyWith =>
       throw _privateConstructorUsedError;
 }
@@ -1874,6 +1927,8 @@ class __$$DecryptDataImplCopyWithImpl<$Res>
       _$DecryptDataImpl _value, $Res Function(_$DecryptDataImpl) _then)
       : super(_value, _then);
 
+  /// Create a copy of ApprovalRequest
+  /// with the given fields replaced by the non-null parameter values.
   @pragma('vm:prefer-inline')
   @override
   $Res call({
@@ -1907,6 +1962,8 @@ class __$$DecryptDataImplCopyWithImpl<$Res>
     ));
   }
 
+  /// Create a copy of ApprovalRequest
+  /// with the given fields replaced by the non-null parameter values.
   @override
   @pragma('vm:prefer-inline')
   $AddressCopyWith<$Res> get account {
@@ -1915,6 +1972,8 @@ class __$$DecryptDataImplCopyWithImpl<$Res>
     });
   }
 
+  /// Create a copy of ApprovalRequest
+  /// with the given fields replaced by the non-null parameter values.
   @override
   @pragma('vm:prefer-inline')
   $PublicKeyCopyWith<$Res> get recipientPublicKey {
@@ -1923,6 +1982,8 @@ class __$$DecryptDataImplCopyWithImpl<$Res>
     });
   }
 
+  /// Create a copy of ApprovalRequest
+  /// with the given fields replaced by the non-null parameter values.
   @override
   @pragma('vm:prefer-inline')
   $PublicKeyCopyWith<$Res> get sourcePublicKey {
@@ -1977,7 +2038,9 @@ class _$DecryptDataImpl implements _DecryptData {
   int get hashCode => Object.hash(runtimeType, origin, account,
       recipientPublicKey, sourcePublicKey, completer);
 
-  @JsonKey(ignore: true)
+  /// Create a copy of ApprovalRequest
+  /// with the given fields replaced by the non-null parameter values.
+  @JsonKey(includeFromJson: false, includeToJson: false)
   @override
   @pragma('vm:prefer-inline')
   _$$DecryptDataImplCopyWith<_$DecryptDataImpl> get copyWith =>
@@ -2188,8 +2251,11 @@ abstract class _DecryptData implements ApprovalRequest {
   PublicKey get sourcePublicKey;
   @override
   Completer<String> get completer;
+
+  /// Create a copy of ApprovalRequest
+  /// with the given fields replaced by the non-null parameter values.
   @override
-  @JsonKey(ignore: true)
+  @JsonKey(includeFromJson: false, includeToJson: false)
   _$$DecryptDataImplCopyWith<_$DecryptDataImpl> get copyWith =>
       throw _privateConstructorUsedError;
 }
@@ -2224,6 +2290,8 @@ class __$$CallContractMethodImplCopyWithImpl<$Res>
       $Res Function(_$CallContractMethodImpl) _then)
       : super(_value, _then);
 
+  /// Create a copy of ApprovalRequest
+  /// with the given fields replaced by the non-null parameter values.
   @pragma('vm:prefer-inline')
   @override
   $Res call({
@@ -2262,6 +2330,8 @@ class __$$CallContractMethodImplCopyWithImpl<$Res>
     ));
   }
 
+  /// Create a copy of ApprovalRequest
+  /// with the given fields replaced by the non-null parameter values.
   @override
   @pragma('vm:prefer-inline')
   $AddressCopyWith<$Res> get account {
@@ -2270,6 +2340,8 @@ class __$$CallContractMethodImplCopyWithImpl<$Res>
     });
   }
 
+  /// Create a copy of ApprovalRequest
+  /// with the given fields replaced by the non-null parameter values.
   @override
   @pragma('vm:prefer-inline')
   $PublicKeyCopyWith<$Res> get publicKey {
@@ -2278,6 +2350,8 @@ class __$$CallContractMethodImplCopyWithImpl<$Res>
     });
   }
 
+  /// Create a copy of ApprovalRequest
+  /// with the given fields replaced by the non-null parameter values.
   @override
   @pragma('vm:prefer-inline')
   $AddressCopyWith<$Res> get recipient {
@@ -2286,6 +2360,8 @@ class __$$CallContractMethodImplCopyWithImpl<$Res>
     });
   }
 
+  /// Create a copy of ApprovalRequest
+  /// with the given fields replaced by the non-null parameter values.
   @override
   @pragma('vm:prefer-inline')
   $FunctionCallCopyWith<$Res> get payload {
@@ -2344,7 +2420,9 @@ class _$CallContractMethodImpl implements _CallContractMethod {
   int get hashCode => Object.hash(
       runtimeType, origin, account, publicKey, recipient, payload, completer);
 
-  @JsonKey(ignore: true)
+  /// Create a copy of ApprovalRequest
+  /// with the given fields replaced by the non-null parameter values.
+  @JsonKey(includeFromJson: false, includeToJson: false)
   @override
   @pragma('vm:prefer-inline')
   _$$CallContractMethodImplCopyWith<_$CallContractMethodImpl> get copyWith =>
@@ -2558,8 +2636,11 @@ abstract class _CallContractMethod implements ApprovalRequest {
   FunctionCall get payload;
   @override
   Completer<String> get completer;
+
+  /// Create a copy of ApprovalRequest
+  /// with the given fields replaced by the non-null parameter values.
   @override
-  @JsonKey(ignore: true)
+  @JsonKey(includeFromJson: false, includeToJson: false)
   _$$CallContractMethodImplCopyWith<_$CallContractMethodImpl> get copyWith =>
       throw _privateConstructorUsedError;
 }
@@ -2596,6 +2677,8 @@ class __$$SendMessageImplCopyWithImpl<$Res>
       _$SendMessageImpl _value, $Res Function(_$SendMessageImpl) _then)
       : super(_value, _then);
 
+  /// Create a copy of ApprovalRequest
+  /// with the given fields replaced by the non-null parameter values.
   @pragma('vm:prefer-inline')
   @override
   $Res call({
@@ -2644,6 +2727,8 @@ class __$$SendMessageImplCopyWithImpl<$Res>
     ));
   }
 
+  /// Create a copy of ApprovalRequest
+  /// with the given fields replaced by the non-null parameter values.
   @override
   @pragma('vm:prefer-inline')
   $AddressCopyWith<$Res> get sender {
@@ -2652,6 +2737,8 @@ class __$$SendMessageImplCopyWithImpl<$Res>
     });
   }
 
+  /// Create a copy of ApprovalRequest
+  /// with the given fields replaced by the non-null parameter values.
   @override
   @pragma('vm:prefer-inline')
   $AddressCopyWith<$Res> get recipient {
@@ -2660,6 +2747,8 @@ class __$$SendMessageImplCopyWithImpl<$Res>
     });
   }
 
+  /// Create a copy of ApprovalRequest
+  /// with the given fields replaced by the non-null parameter values.
   @override
   @pragma('vm:prefer-inline')
   $FunctionCallCopyWith<$Res>? get payload {
@@ -2672,6 +2761,8 @@ class __$$SendMessageImplCopyWithImpl<$Res>
     });
   }
 
+  /// Create a copy of ApprovalRequest
+  /// with the given fields replaced by the non-null parameter values.
   @override
   @pragma('vm:prefer-inline')
   $KnownPayloadCopyWith<$Res>? get knownPayload {
@@ -2743,7 +2834,9 @@ class _$SendMessageImpl implements _SendMessage {
   int get hashCode => Object.hash(runtimeType, origin, sender, recipient,
       amount, bounce, payload, knownPayload, completer);
 
-  @JsonKey(ignore: true)
+  /// Create a copy of ApprovalRequest
+  /// with the given fields replaced by the non-null parameter values.
+  @JsonKey(includeFromJson: false, includeToJson: false)
   @override
   @pragma('vm:prefer-inline')
   _$$SendMessageImplCopyWith<_$SendMessageImpl> get copyWith =>
@@ -2962,8 +3055,11 @@ abstract class _SendMessage implements ApprovalRequest {
   KnownPayload? get knownPayload;
   @override
   Completer<(PublicKey, String)> get completer;
+
+  /// Create a copy of ApprovalRequest
+  /// with the given fields replaced by the non-null parameter values.
   @override
-  @JsonKey(ignore: true)
+  @JsonKey(includeFromJson: false, includeToJson: false)
   _$$SendMessageImplCopyWith<_$SendMessageImpl> get copyWith =>
       throw _privateConstructorUsedError;
 }

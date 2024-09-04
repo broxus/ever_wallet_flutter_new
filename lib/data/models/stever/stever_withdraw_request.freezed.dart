@@ -25,8 +25,12 @@ mixin _$StEverWithdrawRequest {
   StEverWithdrawRequestData get data => throw _privateConstructorUsedError;
   Address get accountAddress => throw _privateConstructorUsedError;
 
+  /// Serializes this StEverWithdrawRequest to a JSON map.
   Map<String, dynamic> toJson() => throw _privateConstructorUsedError;
-  @JsonKey(ignore: true)
+
+  /// Create a copy of StEverWithdrawRequest
+  /// with the given fields replaced by the non-null parameter values.
+  @JsonKey(includeFromJson: false, includeToJson: false)
   $StEverWithdrawRequestCopyWith<StEverWithdrawRequest> get copyWith =>
       throw _privateConstructorUsedError;
 }
@@ -55,6 +59,8 @@ class _$StEverWithdrawRequestCopyWithImpl<$Res,
   // ignore: unused_field
   final $Res Function($Val) _then;
 
+  /// Create a copy of StEverWithdrawRequest
+  /// with the given fields replaced by the non-null parameter values.
   @pragma('vm:prefer-inline')
   @override
   $Res call({
@@ -78,6 +84,8 @@ class _$StEverWithdrawRequestCopyWithImpl<$Res,
     ) as $Val);
   }
 
+  /// Create a copy of StEverWithdrawRequest
+  /// with the given fields replaced by the non-null parameter values.
   @override
   @pragma('vm:prefer-inline')
   $StEverWithdrawRequestDataCopyWith<$Res> get data {
@@ -86,6 +94,8 @@ class _$StEverWithdrawRequestCopyWithImpl<$Res,
     });
   }
 
+  /// Create a copy of StEverWithdrawRequest
+  /// with the given fields replaced by the non-null parameter values.
   @override
   @pragma('vm:prefer-inline')
   $AddressCopyWith<$Res> get accountAddress {
@@ -122,6 +132,8 @@ class __$$StEverWithdrawRequestImplCopyWithImpl<$Res>
       $Res Function(_$StEverWithdrawRequestImpl) _then)
       : super(_value, _then);
 
+  /// Create a copy of StEverWithdrawRequest
+  /// with the given fields replaced by the non-null parameter values.
   @pragma('vm:prefer-inline')
   @override
   $Res call({
@@ -178,11 +190,13 @@ class _$StEverWithdrawRequestImpl implements _StEverWithdrawRequest {
                 other.accountAddress == accountAddress));
   }
 
-  @JsonKey(ignore: true)
+  @JsonKey(includeFromJson: false, includeToJson: false)
   @override
   int get hashCode => Object.hash(runtimeType, nonce, data, accountAddress);
 
-  @JsonKey(ignore: true)
+  /// Create a copy of StEverWithdrawRequest
+  /// with the given fields replaced by the non-null parameter values.
+  @JsonKey(includeFromJson: false, includeToJson: false)
   @override
   @pragma('vm:prefer-inline')
   _$$StEverWithdrawRequestImplCopyWith<_$StEverWithdrawRequestImpl>
@@ -212,8 +226,11 @@ abstract class _StEverWithdrawRequest implements StEverWithdrawRequest {
   StEverWithdrawRequestData get data;
   @override
   Address get accountAddress;
+
+  /// Create a copy of StEverWithdrawRequest
+  /// with the given fields replaced by the non-null parameter values.
   @override
-  @JsonKey(ignore: true)
+  @JsonKey(includeFromJson: false, includeToJson: false)
   _$$StEverWithdrawRequestImplCopyWith<_$StEverWithdrawRequestImpl>
       get copyWith => throw _privateConstructorUsedError;
 }
@@ -230,8 +247,12 @@ mixin _$StEverWithdrawRequestData {
   @timestampFromStringJsonConverter
   DateTime get timestamp => throw _privateConstructorUsedError;
 
+  /// Serializes this StEverWithdrawRequestData to a JSON map.
   Map<String, dynamic> toJson() => throw _privateConstructorUsedError;
-  @JsonKey(ignore: true)
+
+  /// Create a copy of StEverWithdrawRequestData
+  /// with the given fields replaced by the non-null parameter values.
+  @JsonKey(includeFromJson: false, includeToJson: false)
   $StEverWithdrawRequestDataCopyWith<StEverWithdrawRequestData> get copyWith =>
       throw _privateConstructorUsedError;
 }
@@ -258,6 +279,8 @@ class _$StEverWithdrawRequestDataCopyWithImpl<$Res,
   // ignore: unused_field
   final $Res Function($Val) _then;
 
+  /// Create a copy of StEverWithdrawRequestData
+  /// with the given fields replaced by the non-null parameter values.
   @pragma('vm:prefer-inline')
   @override
   $Res call({
@@ -301,6 +324,8 @@ class __$$StEverWithdrawRequestDataImplCopyWithImpl<$Res>
       $Res Function(_$StEverWithdrawRequestDataImpl) _then)
       : super(_value, _then);
 
+  /// Create a copy of StEverWithdrawRequestData
+  /// with the given fields replaced by the non-null parameter values.
   @pragma('vm:prefer-inline')
   @override
   $Res call({
@@ -352,11 +377,13 @@ class _$StEverWithdrawRequestDataImpl implements _StEverWithdrawRequestData {
                 other.timestamp == timestamp));
   }
 
-  @JsonKey(ignore: true)
+  @JsonKey(includeFromJson: false, includeToJson: false)
   @override
   int get hashCode => Object.hash(runtimeType, amount, timestamp);
 
-  @JsonKey(ignore: true)
+  /// Create a copy of StEverWithdrawRequestData
+  /// with the given fields replaced by the non-null parameter values.
+  @JsonKey(includeFromJson: false, includeToJson: false)
   @override
   @pragma('vm:prefer-inline')
   _$$StEverWithdrawRequestDataImplCopyWith<_$StEverWithdrawRequestDataImpl>
@@ -386,8 +413,11 @@ abstract class _StEverWithdrawRequestData implements StEverWithdrawRequestData {
   @override
   @timestampFromStringJsonConverter
   DateTime get timestamp;
+
+  /// Create a copy of StEverWithdrawRequestData
+  /// with the given fields replaced by the non-null parameter values.
   @override
-  @JsonKey(ignore: true)
+  @JsonKey(includeFromJson: false, includeToJson: false)
   _$$StEverWithdrawRequestDataImplCopyWith<_$StEverWithdrawRequestDataImpl>
       get copyWith => throw _privateConstructorUsedError;
 }

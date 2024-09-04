@@ -31,7 +31,9 @@ mixin _$TokenContractAssetDto {
   @HiveField(5)
   String? get logoURI => throw _privateConstructorUsedError;
 
-  @JsonKey(ignore: true)
+  /// Create a copy of TokenContractAssetDto
+  /// with the given fields replaced by the non-null parameter values.
+  @JsonKey(includeFromJson: false, includeToJson: false)
   $TokenContractAssetDtoCopyWith<TokenContractAssetDto> get copyWith =>
       throw _privateConstructorUsedError;
 }
@@ -63,6 +65,8 @@ class _$TokenContractAssetDtoCopyWithImpl<$Res,
   // ignore: unused_field
   final $Res Function($Val) _then;
 
+  /// Create a copy of TokenContractAssetDto
+  /// with the given fields replaced by the non-null parameter values.
   @pragma('vm:prefer-inline')
   @override
   $Res call({
@@ -135,6 +139,8 @@ class __$$TokenContractAssetDtoImplCopyWithImpl<$Res>
       $Res Function(_$TokenContractAssetDtoImpl) _then)
       : super(_value, _then);
 
+  /// Create a copy of TokenContractAssetDto
+  /// with the given fields replaced by the non-null parameter values.
   @pragma('vm:prefer-inline')
   @override
   $Res call({
@@ -238,7 +244,9 @@ class _$TokenContractAssetDtoImpl implements _TokenContractAssetDto {
   int get hashCode => Object.hash(
       runtimeType, name, symbol, decimals, address, version, chainId, logoURI);
 
-  @JsonKey(ignore: true)
+  /// Create a copy of TokenContractAssetDto
+  /// with the given fields replaced by the non-null parameter values.
+  @JsonKey(includeFromJson: false, includeToJson: false)
   @override
   @pragma('vm:prefer-inline')
   _$$TokenContractAssetDtoImplCopyWith<_$TokenContractAssetDtoImpl>
@@ -277,8 +285,11 @@ abstract class _TokenContractAssetDto implements TokenContractAssetDto {
   @override
   @HiveField(5)
   String? get logoURI;
+
+  /// Create a copy of TokenContractAssetDto
+  /// with the given fields replaced by the non-null parameter values.
   @override
-  @JsonKey(ignore: true)
+  @JsonKey(includeFromJson: false, includeToJson: false)
   _$$TokenContractAssetDtoImplCopyWith<_$TokenContractAssetDtoImpl>
       get copyWith => throw _privateConstructorUsedError;
 }
