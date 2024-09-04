@@ -86,9 +86,9 @@ jobs:
       - name: Set target variable based on deploy_target
         run: |
           echo "deploy_target is = ${{ inputs.deploy_target }}"
-          if [ "${{ inputs.deploy_target }}" == "fad" || "${{ inputs.deploy_target }}" = "ios_fad" ]; then
+          if [[ "${{ inputs.deploy_target }}" == "fad" || "${{ inputs.deploy_target }}" = "ios_fad" ]]; then
             echo "ios_target=ios_fad" >> $GITHUB_ENV
-          elif [ "${{ inputs.deploy_target }}" == "store" || "${{ inputs.deploy_target }}" ==  "ios_store" ]; then
+          elif [[ "${{ inputs.deploy_target }}" == "store" || "${{ inputs.deploy_target }}" ==  "ios_store" ]]; then
             echo "ios_target=ios_store" >> $GITHUB_ENV
           fi
 
@@ -158,9 +158,9 @@ jobs:
       - name: Set target variable based on deploy_target
         run: |
           echo "deploy_target is = ${{ inputs.deploy_target }}"
-          if [ "${{ inputs.deploy_target }}" == "fad" || "${{ inputs.deploy_target }}" = "android_fad" ]; then
+          if [[ "${{ inputs.deploy_target }}" == "fad" || "${{ inputs.deploy_target }}" = "android_fad" ]]; then
             echo "android_target=android_fad" >> $GITHUB_ENV
-          elif [ "${{ inputs.deploy_target }}" == "store" || "${{ inputs.deploy_target }}" ==  "android_store" ]; then
+          elif [[ "${{ inputs.deploy_target }}" == "store" || "${{ inputs.deploy_target }}" ==  "android_store" ]]; then
             echo "android_target=android_store" >> $GITHUB_ENV
           fi
 
