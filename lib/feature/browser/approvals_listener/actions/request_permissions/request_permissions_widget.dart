@@ -168,15 +168,7 @@ class _ConfirmPermissionsWidget extends StatelessWidget {
                                     style: theme.textStyles.labelSmall,
                                   ),
                                   const Spacer(),
-                                  // TODO(Komarov): custom switch.
                                   Switch(
-                                    activeColor: theme.colors.primaryA,
-                                    activeTrackColor: theme.colors.accent,
-                                    inactiveThumbColor: theme.colors.primaryA,
-                                    inactiveTrackColor:
-                                        theme.colors.backgroundAlpha,
-                                    materialTapTargetSize:
-                                        MaterialTapTargetSize.shrinkWrap,
                                     value: basic ?? false,
                                     onChanged: (value) => wm.onPermissionSwitch(
                                       permission: Permission.basic,
@@ -192,15 +184,7 @@ class _ConfirmPermissionsWidget extends StatelessWidget {
                                     style: theme.textStyles.labelSmall,
                                   ),
                                   const Spacer(),
-                                  // TODO(Komarov): custom switch.
                                   Switch(
-                                    activeColor: theme.colors.primaryA,
-                                    activeTrackColor: theme.colors.accent,
-                                    inactiveThumbColor: theme.colors.primaryA,
-                                    inactiveTrackColor:
-                                        theme.colors.backgroundAlpha,
-                                    materialTapTargetSize:
-                                        MaterialTapTargetSize.shrinkWrap,
                                     value: accountInteraction ?? false,
                                     onChanged: (value) => wm.onPermissionSwitch(
                                       permission: Permission.accountInteraction,
