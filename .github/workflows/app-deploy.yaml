@@ -134,8 +134,8 @@ jobs:
 
       - name: Clean temp files
         run: |
-          rm -rf /tmp/*
-          rm -rf /var/tmp/*
+          sudo rm -rf /tmp/*
+          sudo rm -rf /var/tmp/*
 
       ###### Android
       - name: Set Android target variable based on deploy_target
