@@ -117,10 +117,6 @@ scripts:
     description: Build and deploy to Testflight and Google Play internal
     run: bash scripts/build.sh store
 
-  build:deploy_fad_store:
-    description: Build and deploy to FAD, Testflight and Google Play internal
-    run: bash scripts/build.sh fad_store
-
   build:deploy_ios_fad:
     description: Build and deploy to IOS FAD
     run: bash scripts/build.sh ios_fad

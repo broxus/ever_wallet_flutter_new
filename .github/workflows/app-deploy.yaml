@@ -15,7 +15,6 @@ on:
         options:
           - "fad"
           - "store"
-          - "fad_store"
           - "ios_fad"
           - "ios_store"
           - "android_fad"
@@ -32,7 +31,7 @@ jobs:
       - name: Set IS_IOS variable
         run: |
           case "${{ inputs.deploy_target }}" in
-            fad|store|fad_store|ios_fad|ios_store)
+            fad|store|ios_fad|ios_store)
              echo "IS_IOS=true" >> $GITHUB_ENV
              ;;
             *)
@@ -43,7 +42,7 @@ jobs:
       - name: Set IS_ANDROID variable
         run: |
           case "${{ inputs.deploy_target }}" in
-            fad|store|fad_store|android_fad|android_store)
+            fad|store|android_fad|android_store)
               echo "IS_ANDROID=true" >> $GITHUB_ENV
               ;;
             *)
@@ -113,9 +112,6 @@ jobs:
           elif [ "${{ inputs.deploy_target }}" == "store" ]; then
             echo "Running: build and deploy to STORE"
             melos build:deploy_store
-          elif [ "${{ inputs.deploy_target }}" == "fad_store" ]; then
-            echo "Running: build and deploy to FAD and STORE"
-            melos build:deploy_fad_store
           elif [ "${{ inputs.deploy_target }}" == "ios_fad" ]; then
             echo "Running: build and deploy to IOS FAD"
             melos build:deploy_ios_fad
