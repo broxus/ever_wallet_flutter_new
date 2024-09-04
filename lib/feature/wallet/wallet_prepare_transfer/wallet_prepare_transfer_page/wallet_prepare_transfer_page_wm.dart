@@ -142,7 +142,7 @@ class WalletPrepareTransferPageWidgetModel extends CustomWidgetModel<
     }
 
     final amnt = Fixed.parse(
-      amountController.text.trim(),
+      amountController.text.trim().replaceAll(',', '.'),
       scale: _selectedAsset?.balance.decimalDigits,
     );
 
