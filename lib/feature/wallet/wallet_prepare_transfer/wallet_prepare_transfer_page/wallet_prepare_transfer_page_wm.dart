@@ -142,7 +142,7 @@ class WalletPrepareTransferPageWidgetModel extends CustomWidgetModel<
     }
 
     final amnt = Fixed.parse(
-      amountController.text.trim(),
+      amountController.text.trim().replaceAll(',', '.'),
       scale: _selectedAsset?.balance.decimalDigits,
     );
 
@@ -208,6 +208,16 @@ class WalletPrepareTransferPageWidgetModel extends CustomWidgetModel<
   void onSubmittedReceiverAddress(_) => amountFocus.requestFocus();
 
   void onSubmittedAmountWord(_) => commentFocus.requestFocus();
+
+  String? validateAddressField(String? value) {
+    if (value?.isEmpty ?? true) {
+      return LocaleKeys.addressIsEmpty.tr();
+    }
+    if (_selectedAsset?.isNative != true && model.address.address == value) {
+      return LocaleKeys.invalidReceiverAddress.tr();
+    }
+    return null;
+  }
 
   Future<void> _init() async {
     final acc = model.findAccountByAddress(model.address);

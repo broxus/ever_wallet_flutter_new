@@ -51,6 +51,15 @@ ThemeData getPredefinedLightTheme() {
     appBarTheme: const AppBarTheme(
       systemOverlayStyle: SystemUiOverlayStyle.light,
     ),
+    switchTheme: SwitchThemeData(
+      thumbColor: WidgetStatePropertyAll(colors.primaryA),
+      trackColor: WidgetStateProperty.resolveWith((states) {
+        if (states.contains(WidgetState.selected)) return colors.accent;
+        return colors.backgroundAlpha;
+      }),
+      trackOutlineColor: const WidgetStatePropertyAll(Colors.transparent),
+      materialTapTargetSize: MaterialTapTargetSize.shrinkWrap,
+    ),
     extensions: [
       ThemeStyleV2(
         colors: colors,
@@ -108,6 +117,15 @@ ThemeData getPredefinedDarkTheme() {
     scaffoldBackgroundColor: colors.background0,
     appBarTheme: const AppBarTheme(
       systemOverlayStyle: SystemUiOverlayStyle.light,
+    ),
+    switchTheme: SwitchThemeData(
+      thumbColor: WidgetStatePropertyAll(colors.primaryA),
+      trackColor: WidgetStateProperty.resolveWith((states) {
+        if (states.contains(WidgetState.selected)) return colors.accent;
+        return colors.backgroundAlpha;
+      }),
+      trackOutlineColor: const WidgetStatePropertyAll(Colors.transparent),
+      materialTapTargetSize: MaterialTapTargetSize.shrinkWrap,
     ),
     extensions: [
       ThemeStyleV2(

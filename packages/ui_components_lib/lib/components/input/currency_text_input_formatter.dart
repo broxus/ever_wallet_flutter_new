@@ -8,16 +8,19 @@ class CurrencyTextInputFormatter extends TextInputFormatter {
   /// [allowNegative] determines whether negative values are allowed.
   /// [includeTicker] determines whether the currency ticker is included in the
   /// validation.
+  /// [decimalSeparators] allows to pass a list of valid decimal separators
   CurrencyTextInputFormatter(
     this.currency, {
     this.allowNegative = false,
     this.includeTicker = false,
+    this.decimalSeparators,
   }) {
     _tickerString = includeTicker ? ' ${currency.isoCode}' : '';
     _fullRegExp = createRegExp(
       currency: currency,
       allowNegative: allowNegative,
       includeTicker: includeTicker,
+      decimalSeparators: decimalSeparators,
     );
   }
 
@@ -29,12 +32,14 @@ class CurrencyTextInputFormatter extends TextInputFormatter {
       validator.currency,
       allowNegative: validator.allowNegative,
       includeTicker: validator.includeTicker,
+      decimalSeparators: validator.decimalSeparators,
     );
   }
 
   final Currency currency;
   final bool allowNegative;
   final bool includeTicker;
+  final List<String>? decimalSeparators;
 
   late final String _tickerString;
   late final RegExp _fullRegExp;
@@ -43,9 +48,12 @@ class CurrencyTextInputFormatter extends TextInputFormatter {
     required Currency currency,
     required bool allowNegative,
     required bool includeTicker,
+    List<String>? decimalSeparators,
   }) {
     final scale = currency.decimalDigits;
-    final decimalSeparator = scale > 0 ? currency.decimalSeparator : '';
+    final decimalSeparator = scale > 0
+        ? (decimalSeparators ?? [currency.decimalSeparator]).join('|')
+        : '';
     final tickerString = includeTicker ? ' ${currency.isoCode}' : '';
 
     final minusSignExp = allowNegative ? '(?<minus>-?)' : '(?<minus>)';
