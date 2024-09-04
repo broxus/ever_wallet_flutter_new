@@ -49,26 +49,101 @@ jobs:
               echo "IS_ANDROID=false" >> $GITHUB_ENV
               ;;
           esac
-      # Setup
+
       - uses: actions/checkout@v4
         with:
-          fetch-depth: 20
+          fetch-depth: 1
 
-      - name: Clear Gradle Cache and temp files
-        run: |
-          rm -rf ~/.gradle/caches/
-          rm -rf ~/.gradle/wrapper/
-          rm -rf build/
-          rm -rf android/.gradle/
-
-      - uses: subosito/flutter-action@v2
+      - name: Setup flutter
+        uses: subosito/flutter-action@v2
         with:
           flutter-version: '3.24.0'
           channel: 'stable'
           cache: true
           cache-key: flutter-:os:-:channel:-:version:-:arch:-:hash:-${{ hashFiles('**/pubspec.lock') }}
 
+      - name: Install Dart dependencies
+        run: dart pub get
+
       - uses: bluefireteam/melos-action@v3
+
+      - name: Decrypt secrets
+        run: melos decrypt-secrets
+
+      - name: Read Sentry DSN
+        id: read_sentry_dsn
+        run: |
+          if [ -f ./secrets/sentry-dsn.txt ]; then
+            SENTRY_DSN=$(cat ./secrets/sentry-dsn.txt)
+            echo "SENTRY_DSN=$SENTRY_DSN" >> $GITHUB_ENV
+            echo "::add-mask::$SENTRY_DSN"
+          fi
+
+      - name: Get build number
+        id: get_build_number
+        run: |
+          BUILD_NUMBER=$(bash scripts/get-build-number.sh)
+          if [ -z "$BUILD_NUMBER" ]; then
+            echo "Error: Build number is not specified."
+            exit 1
+          fi
+          echo "#️⃣ New build number: $BUILD_NUMBER"
+          echo "BUILD_NUMBER=$BUILD_NUMBER" >> $GITHUB_ENV
+
+      ##### iOS
+      - name: Set iOS target variable based on deploy_target
+        if: ${{ env.IS_IOS == 'true' }}
+        run: |
+          echo "deploy_target is = ${{ inputs.deploy_target }}"
+          if [[ "${{ inputs.deploy_target }}" == "fad" || "${{ inputs.deploy_target }}" = "ios_fad" ]]; then
+            echo "IOS_TARGET=ios_fad" >> $GITHUB_ENV
+          elif [[ "${{ inputs.deploy_target }}" == "store" || "${{ inputs.deploy_target }}" ==  "ios_store" ]]; then
+            echo "IOS_TARGET=ios_store" >> $GITHUB_ENV
+          fi
+          echo "IOS_TARGET is set to = ${{ env.IOS_TARGET }}"
+
+      - name: Making sure the iOS certificates and profiles are installed
+        if: ${{ env.IS_IOS == 'true' }}
+        run: melos build:ios_match_assure
+
+      - name: iOS generate dart code
+        if: ${{ env.IS_IOS == 'true' }}
+        run: melos codegen --no-select
+
+      - name: Build and deploy iOS
+        if: ${{ env.IS_IOS == 'true' }}
+        run: |
+          bash scripts/build.sh ${{ env.IOS_TARGET }} ${{ env.BUILD_NUMBER }}
+        env:
+          SENTRY_DSN: ${{ env.SENTRY_DSN }}
+
+      ###### Anyway clear iOS files
+
+      - name: Clean Xcode Derived Data
+        run: |
+          rm -rf ~/Library/Developer/Xcode/DerivedData
+
+      - name: Clean CocoaPods cache
+        run: |
+          pod cache clean --all
+          rm -rf ios/Pods
+          rm -rf ios/Podfile.lock
+
+      - name: Clean builds
+        run: |
+          rm -rf build/app/outputs
+
+      ###### Android
+      - name: Set Android target variable based on deploy_target
+        if: ${{ env.IS_ANDROID == 'true' }}
+        run: |
+          echo "deploy_target is = ${{ inputs.deploy_target }}"
+          if [[ "${{ inputs.deploy_target }}" == "fad" || "${{ inputs.deploy_target }}" = "android_fad" ]]; then
+            echo "ANDROID_TARGET=android_fad" >> $GITHUB_ENV
+          elif [[ "${{ inputs.deploy_target }}" == "store" || "${{ inputs.deploy_target }}" ==  "android_store" ]]; then
+            echo "ANDROID_TARGET=android_store" >> $GITHUB_ENV
+          fi
+          echo "ANDROID_TARGET is set to = ${{ env.ANDROID_TARGET }}"
 
       - uses: actions/setup-java@v4
         if: ${{ env.IS_ANDROID == 'true' }}
@@ -76,57 +151,13 @@ jobs:
           distribution: zulu
           java-version: "17.x"
 
-      - uses: nttld/setup-ndk@v1
-        if: ${{ env.IS_ANDROID == 'true' }}
-        with:
-          ndk-version: r23c
-          local-cache: true
-
-      # Secrets
-      - name: Decrypt secrets
-        run: melos decrypt-secrets
-
-      # iOS certs
-      - name: Making sure the iOS certificates and profiles are installed
-        if: ${{ env.IS_IOS == 'true' }}
-        run: melos build:ios_match_assure
-
-      # Dart/Flutter
-      - name: Generate dart code
+      - name: Android generate dart code
+        if: ${{ env.IS_IOS != 'true' && env.IS_ANDROID == 'true' }}
         run: melos codegen --no-select
 
-      # Read Sentry DSN
-      - name: Read Sentry DSN
-        id: read_sentry_dsn
+      - name: Build and deploy Android
+        if: ${{ env.IS_ANDROID == 'true' }}
         run: |
-          if [ -f ./secrets/sentry-dsn.txt ]; then
-            SENTRY_DSN=$(cat ./secrets/sentry-dsn.txt)
-            echo "SENTRY_DSN=$SENTRY_DSN" >> $GITHUB_ENV
-          fi
-
-      - name: Build and deploy
-        run: |
-          if [ "${{ inputs.deploy_target }}" == "fad" ]; then
-            echo "Running: build and deploy to FAD"
-            melos build:deploy_fad
-          elif [ "${{ inputs.deploy_target }}" == "store" ]; then
-            echo "Running: build and deploy to STORE"
-            melos build:deploy_store
-          elif [ "${{ inputs.deploy_target }}" == "ios_fad" ]; then
-            echo "Running: build and deploy to IOS FAD"
-            melos build:deploy_ios_fad
-          elif [ "${{ inputs.deploy_target }}" == "ios_store" ]; then
-            echo "Running: build and deploy to Test Flight"
-            melos build:deploy_ios_store
-          elif [ "${{ inputs.deploy_target }}" == "android_fad" ]; then
-            echo "Running: build and deploy to ANDROID FAD"
-            melos build:deploy_android_fad
-          elif [ "${{ inputs.deploy_target }}" == "android_store" ]; then
-            echo "Running: build and deploy to Google Play"
-            melos build:deploy_android_store
-          else
-            echo "Unknown deploy target: ${{ inputs.deploy_target }}"
-            exit 1
-          fi
+          bash scripts/build.sh ${{ env.ANDROID_TARGET }} ${{ needs.setup.outputs.BUILD_NUMBER }}
         env:
           SENTRY_DSN: ${{ env.SENTRY_DSN }}
