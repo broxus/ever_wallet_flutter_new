@@ -174,7 +174,7 @@ jobs:
 
   # Android deploy
   android-deploy:
-    needs: [ setup, ios-deploy ]
+    needs: setup
 
     if: ${{ inputs.deploy_target == 'fad' || inputs.deploy_target == 'store' || inputs.deploy_target == 'android_fad' || inputs.deploy_target == 'android_store' }}
 
