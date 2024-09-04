@@ -352,6 +352,10 @@ class $AssetsImagesGen {
   /// File path: assets/images/support.svg
   SvgGenImage get support => const SvgGenImage('assets/images/support.svg');
 
+  /// File path: assets/images/token_default_icon.svg
+  SvgGenImage get tokenDefaultIcon =>
+      const SvgGenImage('assets/images/token_default_icon.svg');
+
   /// File path: assets/images/trash.svg
   SvgGenImage get trash => const SvgGenImage('assets/images/trash.svg');
 
@@ -460,6 +464,7 @@ class $AssetsImagesGen {
         stake,
         star,
         support,
+        tokenDefaultIcon,
         trash,
         venom,
         venomVector,

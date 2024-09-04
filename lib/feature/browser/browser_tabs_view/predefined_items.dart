@@ -1,7 +1,6 @@
 // ignore_for_file: no-magic-number
 
 import 'package:app/data/models/models.dart';
-import 'package:app/generated/generated.dart';
 
 class BrowserCard {
   BrowserCard({

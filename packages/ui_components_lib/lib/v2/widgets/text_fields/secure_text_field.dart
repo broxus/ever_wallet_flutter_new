@@ -14,6 +14,7 @@ class SecureTextField extends StatefulWidget {
     this.onSubmit,
     this.focusNode,
     this.validator,
+    this.isAutofocus = false,
   });
 
   final String? hintText;
@@ -23,6 +24,7 @@ class SecureTextField extends StatefulWidget {
   final ValueChanged<String?>? onSubmit;
   final FocusNode? focusNode;
   final FormFieldValidator<String>? validator;
+  final bool isAutofocus;
 
   @override
   State<SecureTextField> createState() => _SecureTextFieldState();
@@ -48,6 +50,7 @@ class _SecureTextFieldState extends State<SecureTextField> {
       onSubmit: widget.onSubmit,
       focusNode: widget.focusNode,
       validator: widget.validator,
+      isAutofocus: widget.isAutofocus,
     );
   }
 

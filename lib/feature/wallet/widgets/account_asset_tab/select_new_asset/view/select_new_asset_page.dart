@@ -8,6 +8,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
 import 'package:nekoton_repository/nekoton_repository.dart';
 import 'package:ui_components_lib/ui_components_lib.dart';
+import 'package:ui_components_lib/v2/ui_components_lib_v2.dart';
 
 /// Entry point to screen where user can add new asset(contract) to account with
 /// [address].
@@ -38,7 +39,6 @@ class _SelectNewAssetPageState extends State<SelectNewAssetPage> {
     return GestureDetector(
       onTap: () => FocusScope.of(context).unfocus(),
       child: Scaffold(
-        backgroundColor: context.themeStyle.colors.backgroundSecondary,
         appBar: DefaultAppBar(
           titleText: LocaleKeys.selectNewAssets.tr(),
         ),
@@ -57,11 +57,12 @@ class _SelectNewAssetPageState extends State<SelectNewAssetPage> {
                 completed: () => const SizedBox.shrink(),
                 data: (tab, isLoading, showButton, account, contracts) {
                   return Padding(
-                    padding: const EdgeInsets.symmetric(
-                      horizontal: DimensSize.d16,
-                      vertical: DimensSize.d12,
+                    padding: const EdgeInsets.only(
+                      top: DimensSizeV2.d16,
+                      left: DimensSizeV2.d16,
+                      right: DimensSizeV2.d16,
                     ),
-                    child: SeparatedColumn(
+                    child: Column(
                       mainAxisSize: MainAxisSize.min,
                       children: [
                         ChangeNotifierListener(
@@ -71,23 +72,28 @@ class _SelectNewAssetPageState extends State<SelectNewAssetPage> {
 
                             if (hasFocus) return const SizedBox.shrink();
 
-                            return CommonTabSwitcher<SelectNewAssetTabs>(
-                              onTabChanged:
-                                  context.read<SelectNewAssetCubit>().changeTab,
+                            return SwitcherSegmentControls<SelectNewAssetTabs>(
+                              currentValue: tab,
                               values: [
-                                CommonTabSwitcherItem(
+                                PrimarySegmentControl(
                                   title: LocaleKeys.searchWord.tr(),
                                   value: SelectNewAssetTabs.select,
+                                  size: SegmentControlSize.xsmall,
+                                  state: SegmentControlState.normal,
                                 ),
-                                CommonTabSwitcherItem(
+                                PrimarySegmentControl(
                                   title: LocaleKeys.customToken.tr(),
                                   value: SelectNewAssetTabs.custom,
+                                  size: SegmentControlSize.xsmall,
+                                  state: SegmentControlState.normal,
                                 ),
                               ],
-                              currentValue: tab,
+                              onTabChanged:
+                                  context.read<SelectNewAssetCubit>().changeTab,
                             );
                           },
                         ),
+                        const SizedBox(height: DimensSizeV2.d16),
                         Expanded(
                           child: switch (tab) {
                             SelectNewAssetTabs.select =>
@@ -107,14 +113,16 @@ class _SelectNewAssetPageState extends State<SelectNewAssetPage> {
                         AnimatedSize(
                           duration: defaultAnimationDuration,
                           child: SizedBox(
-                            height: showButton ? commonButtonHeight : 0.0,
-                            child: CommonButton.primary(
-                              fillWidth: true,
-                              isLoading: isLoading,
-                              text: LocaleKeys.saveWord.tr(),
-                              onPressed: () => context
-                                  .read<SelectNewAssetCubit>()
-                                  .saveChanges(),
+                            height: showButton ? DimensSizeV2.d74 : 0.0,
+                            child: Center(
+                              child: PrimaryButton(
+                                buttonShape: ButtonShape.pill,
+                                title: LocaleKeys.saveChanges.tr(),
+                                isLoading: isLoading,
+                                onPressed: () => context
+                                    .read<SelectNewAssetCubit>()
+                                    .saveChanges(),
+                              ),
                             ),
                           ),
                         ),
