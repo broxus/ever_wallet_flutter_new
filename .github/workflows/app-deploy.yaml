@@ -60,13 +60,11 @@ jobs:
         id: get_build_number
         run: |
           bash scripts/get-build-number.sh
-          
+          echo "build_number=$BUILD_NUMBER" >> $GITHUB_ENV
           if [ -z "$BUILD_NUMBER" ]; then
             echo "Error: Build number is not specified."
             exit 1
           fi
-          
-          echo "build_number=$BUILD_NUMBER" >> $GITHUB_ENV
 
   # iOS deploy
   ios-deploy:
