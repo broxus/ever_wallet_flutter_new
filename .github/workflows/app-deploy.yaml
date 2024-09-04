@@ -85,14 +85,15 @@ jobs:
 
       - name: Set target variable based on deploy_target
         run: |
+          echo "deploy_target is = ${{ inputs.deploy_target }}"
           if [ "${{ inputs.deploy_target }}" == "fad" || "${{ inputs.deploy_target }}" = "ios_fad" ]; then
-            echo "target=ios_fad" >> $GITHUB_ENV
+            echo "ios_target=ios_fad" >> $GITHUB_ENV
           elif [ "${{ inputs.deploy_target }}" == "store" || "${{ inputs.deploy_target }}" ==  "ios_store" ]; then
-            echo "target=ios_store" >> $GITHUB_ENV
+            echo "ios_target=ios_store" >> $GITHUB_ENV
           fi
 
-      - name: Display target value
-        run: echo "Target is set to = ${{ env.target }}"
+      - name: Display ios_target value
+        run: echo "ios_target is set to = ${{ env.ios_target }}"
 
       - name: Setup Flutter
         uses: subosito/flutter-action@v2
@@ -134,7 +135,7 @@ jobs:
 
       - name: Build and deploy
         run: |
-          bash scripts/build.sh ${{ env.target }} ${{ needs.setup.outputs.build_number }}
+          bash scripts/build.sh ${{ env.ios_target }} ${{ needs.setup.outputs.build_number }}
         env:
           SENTRY_DSN: ${{ env.SENTRY_DSN }}
 
@@ -156,14 +157,15 @@ jobs:
 
       - name: Set target variable based on deploy_target
         run: |
+          echo "deploy_target is = ${{ inputs.deploy_target }}"
           if [ "${{ inputs.deploy_target }}" == "fad" || "${{ inputs.deploy_target }}" = "android_fad" ]; then
-            echo "target=android_fad" >> $GITHUB_ENV
+            echo "android_target=android_fad" >> $GITHUB_ENV
           elif [ "${{ inputs.deploy_target }}" == "store" || "${{ inputs.deploy_target }}" ==  "android_store" ]; then
-            echo "target=android_store" >> $GITHUB_ENV
+            echo "android_target=android_store" >> $GITHUB_ENV
           fi
 
-      - name: Display target value
-        run: echo "Target is set to = ${{ env.target }}"
+      - name: Display android_target value
+        run: echo "android_target is set to = ${{ env.android_target }}"
 
       - name: Setup Flutter
         uses: subosito/flutter-action@v2
@@ -202,6 +204,6 @@ jobs:
 
       - name: Build and deploy
         run: |
-          bash scripts/build.sh ${{ env.target }} ${{ needs.setup.outputs.build_number }}
+          bash scripts/build.sh ${{ env.android_target }} ${{ needs.setup.outputs.build_number }}
         env:
           SENTRY_DSN: ${{ env.SENTRY_DSN }}
