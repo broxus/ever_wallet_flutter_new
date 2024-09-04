@@ -89,6 +89,7 @@ jobs:
             echo "target=ios_fad" >> $GITHUB_ENV
           elif [ "${{ inputs.deploy_target }}" == "store" || "${{ inputs.deploy_target }}" ==  "ios_store" ]; then
             echo "target=ios_store" >> $GITHUB_ENV
+          fi
 
       - name: Display target value
         run: echo "Target is set to = ${{ env.target }}"
@@ -159,6 +160,7 @@ jobs:
             echo "target=android_fad" >> $GITHUB_ENV
           elif [ "${{ inputs.deploy_target }}" == "store" || "${{ inputs.deploy_target }}" ==  "android_store" ]; then
             echo "target=android_store" >> $GITHUB_ENV
+          fi
 
       - name: Display target value
         run: echo "Target is set to = ${{ env.target }}"
