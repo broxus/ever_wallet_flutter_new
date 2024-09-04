@@ -59,6 +59,7 @@ jobs:
       - name: Get build number
         id: get_build_number
         run: |
+          echo "#️⃣ Getting next build number..."
           BUILD_NUMBER=$(bash scripts/get-build-number.sh)
           if [ -z "$BUILD_NUMBER" ]; then
             echo "Error: Build number is not specified."
