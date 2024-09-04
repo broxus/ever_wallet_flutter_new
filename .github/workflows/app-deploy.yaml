@@ -64,6 +64,7 @@ jobs:
             echo "Error: Build number is not specified."
             exit 1
           fi
+          echo "#️⃣ New build number: $BUILD_NUMBER"
           echo "build_number=$BUILD_NUMBER" >> $GITHUB_ENV
 
   # iOS deploy

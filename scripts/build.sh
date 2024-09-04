@@ -17,7 +17,7 @@ if [ -z "$build_number" ]; then
     exit 1
 fi
 
-export $BUILD_NUMBER_STRING="$build_number"
+export $BUILD_NUMBER_STRING="--build-number=$build_number"
 
 source scripts/get-changelog.sh
 
