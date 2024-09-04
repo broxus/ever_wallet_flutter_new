@@ -27,11 +27,21 @@ jobs:
       build_number: ${{ steps.get_build_number.outputs.build_number }}
       flutter_version: '3.24.0'
     steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 1
+
       - name: Get build number
         id: get_build_number
         run: |
           bash scripts/get-build-number.sh
-          echo "::set-output name=build_number::$BUILD_NUMBER"
+          
+          if [ -z "$BUILD_NUMBER" ]; then
+            echo "Error: Build number is not specified."
+            exit 1
+          fi
+          
+          echo "build_number=$BUILD_NUMBER" >> $GITHUB_ENV
 
   # iOS deploy
   ios-deploy:
@@ -136,6 +146,6 @@ jobs:
 
       - name: Build and deploy
         run: |
-          bash scripts/build.sh ${{ inputs.deploy_target }} ${{ needs.setup.outputs.build_number }}
+          bash scripts/build.sh ${{ inputs.deploy_target }} ${{ env.build_number }}
         env:
           SENTRY_DSN: ${{ env.SENTRY_DSN }}
