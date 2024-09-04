@@ -157,6 +157,6 @@ jobs:
       - name: Build and deploy Android
         if: ${{ env.IS_ANDROID == 'true' }}
         run: |
-          bash scripts/build.sh ${{ env.ANDROID_TARGET }} ${{ needs.setup.outputs.BUILD_NUMBER }}
+          bash scripts/build.sh ${{ env.ANDROID_TARGET }} ${{ env.BUILD_NUMBER }}
         env:
           SENTRY_DSN: ${{ env.SENTRY_DSN }}
