@@ -87,7 +87,6 @@ class AddAccountTypeModel extends ElementaryModel {
           .map((seedList) => seedList.findSeedKey(derivedKey!))
           .whereNotNull()
           .first;
-      // return _nekotonRepository.seedList.findSeedKey(derivedKey);
     }
 
     return null;

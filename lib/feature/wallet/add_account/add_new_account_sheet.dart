@@ -83,20 +83,21 @@ class AddNewAccountSheet extends StatelessWidget {
                     Icon(
                       LucideIcons.import,
                       size: DimensSizeV2.d20,
-                      color: theme.colors.content0.withOpacity(0.2),
+                      color: theme.colors.content0.withOpacity(OpacV2.opac20),
                     ),
                     Expanded(
                       child: Text(
                         LocaleKeys.addExternalAccount.tr(),
                         style: theme.textStyles.labelMedium.copyWith(
-                          color: theme.colors.content0.withOpacity(0.2),
+                          color:
+                              theme.colors.content0.withOpacity(OpacV2.opac20),
                         ),
                       ),
                     ),
                     Icon(
                       LucideIcons.chevronRight,
                       size: DimensSizeV2.d20,
-                      color: theme.colors.content0.withOpacity(0.2),
+                      color: theme.colors.content0.withOpacity(OpacV2.opac20),
                     ),
                   ],
                 ),
