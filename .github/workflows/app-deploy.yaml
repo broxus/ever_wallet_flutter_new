@@ -92,6 +92,12 @@ jobs:
       MATCH_PASSWORD: ${{ secrets.MATCH_PASSWORD }}
 
     steps:
+      - name: Mask sensitive data
+        run: |
+          echo "::add-mask::${{ secrets.SECRET_PASSPHRASE }}"
+          echo "::add-mask::${{ secrets.MATCH_PASSWORD }}"
+          echo "::add-mask::${{ env.SENTRY_DSN }}"
+
       - uses: actions/checkout@v4
         with:
           fetch-depth: 1
@@ -155,19 +161,16 @@ jobs:
       - name: Clean Xcode Derived Data
         run: |
           rm -rf ~/Library/Developer/Xcode/DerivedData
-          echo "Xcode Derived Data removed"
 
       - name: Clean CocoaPods cache
         run: |
           pod cache clean --all
           rm -rf ios/Pods
           rm -rf ios/Podfile.lock
-          echo "CocoaPods cache and Pods removed"
 
       - name: Remove Flutter
         run: |
           rm -rf $FLUTTER_ROOT
-          echo "Flutter removed to free up space"
 
       - name: Clean Dart dependencies
         run: |
@@ -184,6 +187,12 @@ jobs:
       MATCH_PASSWORD: ${{ secrets.MATCH_PASSWORD }}
 
     steps:
+      - name: Mask sensitive data
+        run: |
+          echo "::add-mask::${{ secrets.SECRET_PASSPHRASE }}"
+          echo "::add-mask::${{ secrets.MATCH_PASSWORD }}"
+          echo "::add-mask::${{ env.SENTRY_DSN }}"
+
       - uses: actions/checkout@v4
         with:
           fetch-depth: 1
@@ -239,6 +248,10 @@ jobs:
             SENTRY_DSN=$(cat ./secrets/sentry-dsn.txt)
             echo "SENTRY_DSN=$SENTRY_DSN" >> $GITHUB_ENV
           fi
+
+      - name: Display Build Number
+        run:
+          echo "Number is = ${{ needs.setup.outputs.build_number }}"
 
       - name: Build and deploy
         run: |
