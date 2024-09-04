@@ -140,11 +140,8 @@ jobs:
           if [ -f ./secrets/sentry-dsn.txt ]; then
             SENTRY_DSN=$(cat ./secrets/sentry-dsn.txt)
             echo "SENTRY_DSN=$SENTRY_DSN" >> $GITHUB_ENV
+            echo "::add-mask::$SENTRY_DSN"
           fi
-
-      - name: Mask SENTRY_DSN
-        run: |
-          echo "::add-mask::${{ env.SENTRY_DSN }}"
 
       - name: Display Build Number
         run:
@@ -241,11 +238,8 @@ jobs:
           if [ -f ./secrets/sentry-dsn.txt ]; then
             SENTRY_DSN=$(cat ./secrets/sentry-dsn.txt)
             echo "SENTRY_DSN=$SENTRY_DSN" >> $GITHUB_ENV
+            echo "::add-mask::$SENTRY_DSN"
           fi
-
-      - name: Mask SENTRY_DSN
-        run: |
-          echo "::add-mask::${{ env.SENTRY_DSN }}"
 
       - name: Display Build Number
         run:
