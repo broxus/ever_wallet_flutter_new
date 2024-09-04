@@ -1,10 +1,9 @@
-name: Deploy main app
+name: App Deploy
 
 on:
   push:
     branches:
       - main
-  # Allows you to run this workflow manually from the Actions tab
   workflow_dispatch:
     inputs:
       deploy_target:
@@ -22,115 +21,52 @@ on:
           - "android_store"
 
 jobs:
-  build_and_deploy:
-    runs-on: macos-latest
-    env:
-      SECRET_PASSPHRASE: ${{ secrets.SECRET_PASSPHRASE }}
-      MATCH_PASSWORD: ${{ secrets.MATCH_PASSWORD }}
-
+  setup:
+    runs-on: ubuntu-latest
     steps:
-      - name: Set IS_IOS variable
-        run: |
-          case "${{ inputs.deploy_target }}" in
-            fad|store|fad_store|ios_fad|ios_store)
-             echo "IS_IOS=true" >> $GITHUB_ENV
-             ;;
-            *)
-             echo "IS_IOS=false" >> $GITHUB_ENV
-             ;;
-            esac
+      - name: Checkout code
+        uses: actions/checkout@v4
 
-      - name: Set IS_ANDROID variable
-        run: |
-          case "${{ inputs.deploy_target }}" in
-            fad|store|fad_store|android_fad|android_store)
-              echo "IS_ANDROID=true" >> $GITHUB_ENV
-              ;;
-            *)
-              echo "IS_ANDROID=false" >> $GITHUB_ENV
-              ;;
-          esac
-      # Setup
-      - uses: actions/checkout@v4
-        with:
-          fetch-depth: 20
-
-      - name: Clear Gradle Cache and temp files
-        run: |
-          rm -rf ~/.gradle/caches/
-          rm -rf ~/.gradle/wrapper/
-          rm -rf build/
-          rm -rf android/.gradle/
-
-      - uses: subosito/flutter-action@v2
+      - name: Setup Flutter
+        uses: subosito/flutter-action@v2
         with:
           flutter-version: '3.24.0'
           channel: 'stable'
           cache: true
           cache-key: flutter-:os:-:channel:-:version:-:arch:-:hash:-${{ hashFiles('**/pubspec.lock') }}
 
-      - uses: bluefireteam/melos-action@v3
-
-      - uses: actions/setup-java@v4
-        if: ${{ env.IS_ANDROID == 'true' }}
+  ios-deploy:
+    runs-on: ubuntu-latest
+    if: ${{ contains(['fad', 'store', 'fad_store', 'ios_fad', 'ios_store'], inputs.deploy_target) }}
+    steps:
+      - name: Running iOS Deploy
+        uses: actions/github-script@v7
         with:
-          distribution: zulu
-          java-version: "17.x"
+          script: |
+            github.rest.actions.createWorkflowDispatch({
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              workflow_id: './deploy/ios-deploy.yaml',
+              ref: context.ref,
+              inputs: {
+                deploy_target: '${{ inputs.deploy_target }}',
+              }
+            })
 
-      - uses: nttld/setup-ndk@v1
-        if: ${{ env.IS_ANDROID == 'true' }}
+  android-deploy:
+    runs-on: ubuntu-latest
+    if: ${{ contains(['fad', 'store', 'fad_store', 'android_fad', 'android_store'], inputs.deploy_target) }}
+    steps:
+      - name: Running Android Deploy
+        uses: actions/github-script@v7
         with:
-          ndk-version: r23c
-          local-cache: true
-
-      # Secrets
-      - name: Decrypt secrets
-        run: melos decrypt-secrets
-
-      # iOS certs
-      - name: Making sure the iOS certificates and profiles are installed
-        if: ${{ env.IS_IOS == 'true' }}
-        run: melos build:ios_match_assure
-
-      # Dart/Flutter
-      - name: Generate dart code
-        run: melos codegen --no-select
-
-      # Read Sentry DSN
-      - name: Read Sentry DSN
-        id: read_sentry_dsn
-        run: |
-          if [ -f ./secrets/sentry-dsn.txt ]; then
-            SENTRY_DSN=$(cat ./secrets/sentry-dsn.txt)
-            echo "SENTRY_DSN=$SENTRY_DSN" >> $GITHUB_ENV
-          fi
-
-      - name: Build and deploy
-        run: |
-          if [ "${{ inputs.deploy_target }}" == "fad" ]; then
-            echo "Running: build and deploy to FAD"
-            melos build:deploy_fad
-          elif [ "${{ inputs.deploy_target }}" == "store" ]; then
-            echo "Running: build and deploy to STORE"
-            melos build:deploy_store
-          elif [ "${{ inputs.deploy_target }}" == "fad_store" ]; then
-            echo "Running: build and deploy to FAD and STORE"
-            melos build:deploy_fad_store
-          elif [ "${{ inputs.deploy_target }}" == "ios_fad" ]; then
-            echo "Running: build and deploy to IOS FAD"
-            melos build:deploy_ios_fad
-          elif [ "${{ inputs.deploy_target }}" == "ios_store" ]; then
-            echo "Running: build and deploy to Test Flight"
-            melos build:deploy_ios_store
-          elif [ "${{ inputs.deploy_target }}" == "android_fad" ]; then
-            echo "Running: build and deploy to ANDROID FAD"
-            melos build:deploy_android_fad
-          elif [ "${{ inputs.deploy_target }}" == "android_store" ]; then
-            echo "Running: build and deploy to Google Play"
-            melos build:deploy_android_store
-          else
-            echo "Unknown deploy target: ${{ inputs.deploy_target }}"
-            exit 1
-          fi
-        env:
-          SENTRY_DSN: ${{ env.SENTRY_DSN }}
+          script: |
+            github.rest.actions.createWorkflowDispatch({
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              workflow_id: './deploy/android-deploy.yaml',
+              ref: context.ref,
+              inputs: {
+                deploy_target: '${{ inputs.deploy_target }}',
+              }
+            })

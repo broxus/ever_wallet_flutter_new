@@ -1,0 +1,51 @@
+name: Deploy Android App
+
+on:
+  workflow_dispatch:
+    inputs:
+      deploy_target:
+        description: "Deploy target for Android"
+        required: true
+        default: "fad"
+
+jobs:
+  build_and_deploy:
+    runs-on: macos-latest
+    env:
+      SECRET_PASSPHRASE: ${{ secrets.SECRET_PASSPHRASE }}
+      MATCH_PASSWORD: ${{ secrets.MATCH_PASSWORD }}
+
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 10
+
+      - uses: bluefireteam/melos-action@v3
+
+      - uses: actions/setup-java@v4
+        with:
+          distribution: zulu
+          java-version: "17.x"
+
+      # Secrets
+      - name: Decrypt secrets
+        run: melos decrypt-secrets
+
+      # Dart/Flutter
+      - name: Generate dart code
+        run: melos codegen --no-select
+
+      # Read Sentry DSN
+      - name: Read Sentry DSN
+        id: read_sentry_dsn
+        run: |
+          if [ -f ./secrets/sentry-dsn.txt ]; then
+            SENTRY_DSN=$(cat ./secrets/sentry-dsn.txt)
+            echo "SENTRY_DSN=$SENTRY_DSN" >> $GITHUB_ENV
+          fi
+
+      - name: Build and deploy
+        run: |
+          bash scripts/build.sh ${{ inputs.deploy_target }}
+        env:
+          SENTRY_DSN: ${{ env.SENTRY_DSN }}
