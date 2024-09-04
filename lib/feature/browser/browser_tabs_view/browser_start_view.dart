@@ -5,7 +5,7 @@ import 'package:app/app/router/router.dart';
 import 'package:app/data/models/models.dart';
 import 'package:app/feature/browser/browser.dart';
 import 'package:app/feature/browser/browser_tabs_view/predefined_items.dart';
-import 'package:app/feature/browser/widgets/browser_resource_Item.dart';
+import 'package:app/feature/browser/widgets/browser_resource_item.dart';
 import 'package:app/generated/generated.dart';
 import 'package:app/utils/utils.dart';
 import 'package:flutter/material.dart';
