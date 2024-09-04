@@ -48,6 +48,10 @@ jobs:
       - name: Install Dart dependencies
         run: dart pub get
 
+      # Secrets
+      - name: Decrypt secrets
+        run: melos decrypt-secrets
+
       - name: Get build number
         id: get_build_number
         run: |
