@@ -21,19 +21,19 @@ export BUILD_NUMBER_STRING
 source scripts/get-changelog.sh
 
 case "$deploy_target" in
-  "fad"|"ios_fad"|"fad_store")
+  "ios_fad")
     source scripts/build-binary/fad-ipa.sh
     source scripts/deploy/fad-ipa.sh
     ;;
-  "fad"|"android_fad"|"fad_store")
-    source scripts/build-binary/fad-apk.sh
-    source scripts/deploy/fad-apk.sh
-    ;;
-  "store"|"fad_store"|"ios_store")
+  "ios_store")
     source scripts/build-binary/store-ipa.sh
     source scripts/deploy/store-ipa.sh
     ;;
-  "store"|"fad_store"|"android_store")
+  "android_fad")
+    source scripts/build-binary/fad-apk.sh
+    source scripts/deploy/fad-apk.sh
+    ;;
+  "android_store")
     source scripts/build-binary/store-aab.sh
     source scripts/deploy/store-aab.sh
     ;;
