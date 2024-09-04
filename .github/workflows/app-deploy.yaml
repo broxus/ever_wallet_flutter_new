@@ -67,6 +67,19 @@ jobs:
           echo "#️⃣ New build number: $BUILD_NUMBER"
           echo "build_number=$BUILD_NUMBER" >> $GITHUB_OUTPUT
 
+      - name: Check Flutter Path
+        run: echo "Flutter path is = $FLUTTER_ROOT"
+
+      - name: Remove Flutter
+        run: |
+          rm -rf $FLUTTER_ROOT
+          echo "Flutter removed to free up space"
+
+      - name: Clean Dart dependencies
+        run: |
+          rm -rf .dart_tool/
+          rm -rf $HOME/.pub-cache/
+
   # iOS deploy
   ios-deploy:
     needs: setup
@@ -139,13 +152,33 @@ jobs:
         env:
           SENTRY_DSN: ${{ env.SENTRY_DSN }}
 
+      - name: Clean Xcode Derived Data
+        run: |
+          rm -rf ~/Library/Developer/Xcode/DerivedData
+          echo "Xcode Derived Data removed"
+
+      - name: Clean CocoaPods cache
+        run: |
+          pod cache clean --all
+          rm -rf ios/Pods
+          rm -rf ios/Podfile.lock
+          echo "CocoaPods cache and Pods removed"
+
+      - name: Remove Flutter
+        run: |
+          rm -rf $FLUTTER_ROOT
+          echo "Flutter removed to free up space"
+
+      - name: Clean Dart dependencies
+        run: |
+          rm -rf .dart_tool/
+          rm -rf $HOME/.pub-cache/
+
   # Android deploy
   android-deploy:
-    needs: setup
+    needs: [ setup, ios-deploy ]
+    if: ${{ needs.setup.result == 'success' && (needs.ios-deploy.result == 'success' || needs.ios-deploy.result == 'failure') && (inputs.deploy_target == 'fad' || inputs.deploy_target == 'store' || inputs.deploy_target == 'android_fad' || inputs.deploy_target == 'android_store') }}
     runs-on: macos-latest
-
-    if: ${{ inputs.deploy_target == 'fad' || inputs.deploy_target == 'store' || inputs.deploy_target == 'android_fad' || inputs.deploy_target == 'android_store' }}
-
     env:
       SECRET_PASSPHRASE: ${{ secrets.SECRET_PASSPHRASE }}
       MATCH_PASSWORD: ${{ secrets.MATCH_PASSWORD }}
@@ -212,3 +245,13 @@ jobs:
           bash scripts/build.sh ${{ env.android_target }} ${{ needs.setup.outputs.build_number }}
         env:
           SENTRY_DSN: ${{ env.SENTRY_DSN }}
+
+      - name: Remove Flutter
+        run: |
+          rm -rf $FLUTTER_ROOT
+          echo "Flutter removed to free up space"
+
+      - name: Clean Dart dependencies
+        run: |
+          rm -rf .dart_tool/
+          rm -rf $HOME/.pub-cache/
