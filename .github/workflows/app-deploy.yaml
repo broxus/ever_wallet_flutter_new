@@ -123,11 +123,10 @@ jobs:
         run: |
           rm -rf ~/Library/Developer/Xcode/DerivedData
 
-      - name: Clean CocoaPods cache
+      - name: Clean iOS
         run: |
           pod cache clean --all
-          rm -rf ios/Pods
-          rm -rf ios/Podfile.lock
+          rm -rf ios
 
       - name: Clean builds
         run: |
