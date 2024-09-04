@@ -184,6 +184,11 @@ jobs:
       MATCH_PASSWORD: ${{ secrets.MATCH_PASSWORD }}
 
     steps:
+      - name: Reinstall existing fastlane plugin
+        run: | 
+          sudo gem uninstall fastlane-plugin-firebase_app_distribution
+          gem install fastlane-plugin-firebase_app_distribution --user-install
+
       - uses: actions/checkout@v4
         with:
           fetch-depth: 1
