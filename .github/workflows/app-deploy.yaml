@@ -43,7 +43,7 @@ jobs:
 
   ios-deploy:
     runs-on: ubuntu-latest
-    if: ${{ contains(['fad', 'store', 'fad_store', 'ios_fad', 'ios_store'], inputs.deploy_target) }}
+    if: ${{ inputs.deploy_target == 'fad' || inputs.deploy_target == 'store' || inputs.deploy_target == 'fad_store' || inputs.deploy_target == 'ios_fad' || inputs.deploy_target == 'ios_store' }}
     steps:
       - name: Running iOS Deploy
         uses: actions/github-script@v7
@@ -62,7 +62,7 @@ jobs:
 
   android-deploy:
     runs-on: ubuntu-latest
-    if: ${{ contains(['fad', 'store', 'fad_store', 'android_fad', 'android_store'], inputs.deploy_target) }}
+    if: ${{ inputs.deploy_target == 'fad' || inputs.deploy_target == 'store' || inputs.deploy_target == 'fad_store' || inputs.deploy_target == 'android_fad' || inputs.deploy_target == 'android_store' }}
     steps:
       - name: Running Android Deploy
         uses: actions/github-script@v7
