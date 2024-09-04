@@ -93,6 +93,9 @@ jobs:
           cache: true
           cache-key: flutter-:os:-:channel:-:version:-:arch:-:hash:-${{ hashFiles('**/pubspec.lock') }}
 
+      - name: Display Flutter version
+        run: flutter --version
+
       - uses: bluefireteam/melos-action@v3
 
       # Secrets
@@ -146,6 +149,9 @@ jobs:
           cache: true
           cache-key: flutter-:os:-:channel:-:version:-:arch:-:hash:-${{ hashFiles('**/pubspec.lock') }}
 
+      - name: Display Flutter version
+        run: flutter --version
+
       - uses: bluefireteam/melos-action@v3
 
       - uses: actions/setup-java@v4
@@ -172,6 +178,6 @@ jobs:
 
       - name: Build and deploy
         run: |
-          bash scripts/build.sh ${{ inputs.deploy_target }} ${{ env.build_number }}
+          bash scripts/build.sh ${{ inputs.deploy_target }} ${{ needs.setup.outputs.build_number }}
         env:
           SENTRY_DSN: ${{ env.SENTRY_DSN }}
