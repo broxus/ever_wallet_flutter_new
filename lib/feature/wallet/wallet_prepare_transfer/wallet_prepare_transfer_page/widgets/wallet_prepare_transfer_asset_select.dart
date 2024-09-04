@@ -63,21 +63,48 @@ class WalletPrepareTransferAssetSelect extends StatelessWidget {
   }) =>
       Builder(
         builder: (context) {
-          final colors = context.themeStyle.colors;
+          final theme = context.themeStyleV2;
 
-          return CommonListTile(
-            leading: TokenWalletIconWidget(
-              address: asset.rootTokenContract,
-              logoURI: asset.logoURI,
-              // tip3 for native
-              version: asset.version ?? TokenWalletVersion.tip3,
+          return GestureDetector(
+            onTap: onPressed,
+            behavior: HitTestBehavior.translucent,
+            child: Padding(
+              padding: const EdgeInsets.symmetric(vertical: DimensSizeV2.d8),
+              child: SeparatedRow(
+                children: [
+                  TokenWalletIconWidget(
+                    address: asset.rootTokenContract,
+                    logoURI: asset.logoURI,
+                    // tip3 for native
+                    version: asset.version ?? TokenWalletVersion.tip3,
+                  ),
+                  Expanded(
+                    child: SeparatedColumn(
+                      separatorSize: DimensSizeV2.d4,
+                      mainAxisSize: MainAxisSize.min,
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        AmountWidget.fromMoney(
+                          amount: asset.balance,
+                          style: theme.textStyles.labelSmall,
+                        ),
+                        Text(
+                          asset.title,
+                          style: theme.textStyles.labelXSmall.copyWith(
+                            color: theme.colors.content3,
+                          ),
+                          overflow: TextOverflow.ellipsis,
+                          softWrap: false,
+                          maxLines: 1,
+                        ),
+                      ],
+                    ),
+                  ),
+                  if (isSelected)
+                    const Icon(LucideIcons.check, size: DimensSizeV2.d20),
+                ],
+              ),
             ),
-            padding: EdgeInsets.zero,
-            onPressed: onPressed,
-            titleText: asset.title,
-            trailing: isSelected
-                ? Icon(Icons.check_rounded, color: colors.textPrimary)
-                : null,
           );
         },
       );
@@ -86,15 +113,13 @@ class WalletPrepareTransferAssetSelect extends StatelessWidget {
     showCommonBottomSheet<void>(
       context: context,
       title: LocaleKeys.selectToken.tr(),
+      centerTitle: true,
       body: (context, scrollController) {
         return SingleChildScrollView(
           controller: scrollController,
-          padding: const EdgeInsets.only(top: DimensSize.d16),
+          padding: const EdgeInsets.only(top: DimensSizeV2.d16),
           child: SeparatedColumn(
-            separator: const Padding(
-              padding: EdgeInsets.symmetric(vertical: DimensSize.d12),
-              child: CommonDivider(),
-            ),
+            separatorSize: DimensSizeV2.d12,
             children: values
                 .map(
                   (asset) => _itemBuilder(

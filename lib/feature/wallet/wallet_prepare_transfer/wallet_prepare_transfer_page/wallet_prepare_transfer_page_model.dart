@@ -5,6 +5,7 @@ import 'package:app/data/models/models.dart';
 import 'package:app/feature/wallet/wallet_prepare_transfer/wallet_prepare_transfer_page/data/wallet_prepare_balance_data.dart';
 import 'package:app/feature/wallet/wallet_prepare_transfer/wallet_prepare_transfer_page/data/wallet_prepare_transfer_asset.dart';
 import 'package:app/feature/wallet/wallet_prepare_transfer/wallet_prepare_transfer_page/wallet_prepare_transfer_page.dart';
+import 'package:app/utils/utils.dart';
 import 'package:collection/collection.dart';
 import 'package:elementary/elementary.dart';
 import 'package:logging/logging.dart';
@@ -69,7 +70,7 @@ class WalletPrepareTransferPageModel extends ElementaryModel {
   Stream<List<TokenWalletState>> get _tokenWalletsStream =>
       _nekotonRepository.tokenWalletsStream;
 
-  final _logger = Logger('WalletPrepareTransferCubit');
+  final _logger = Logger('WalletPrepareTransferPageModel');
 
   @override
   void dispose() {
@@ -144,15 +145,47 @@ class WalletPrepareTransferPageModel extends ElementaryModel {
   Future<CustomCurrency?> getCurrencyForContract(
     Address rootTokenContract,
   ) async {
-    final currency = _currenciesService
-        .currencies(currentTransport.networkType)
-        .firstWhereOrNull((currency) => currency.address == rootTokenContract);
+    try {
+      final currency = _currenciesService
+          .currencies(currentTransport.networkType)
+          .firstWhereOrNull(
+            (currency) => currency.address == rootTokenContract,
+          );
 
-    return currency ??
-        await _currenciesService.getCurrencyForContract(
-          currentTransport,
-          rootTokenContract,
-        );
+      return currency ??
+          await _currenciesService.getCurrencyForContract(
+            currentTransport,
+            rootTokenContract,
+          );
+    } catch (e, t) {
+      _logger.info('getCurrencyForContract($rootTokenContract)', e, t);
+      return null;
+    }
+  }
+
+  Future<Money?> getBalance(WalletPrepareTransferAsset asset) async {
+    Money? balance;
+
+    if (asset.isNative) {
+      final walletState = _nekotonRepository.wallets.firstWhereOrNull(
+        (item) => item.address == address,
+      );
+      balance = walletState?.wallet?.contractState.balance.let(
+        (balance) => Money.fromBigIntWithCurrency(
+          balance,
+          Currencies()[currentTransport.nativeTokenTicker]!,
+        ),
+      );
+    } else {
+      final root = asset.rootTokenContract;
+      final walletState = _nekotonRepository.tokenWallets.firstWhereOrNull(
+        (wallet) => wallet.owner == address && wallet.rootTokenContract == root,
+      );
+
+      balance = walletState?.wallet?.moneyBalance;
+    }
+
+    return balance;
   }
 
   /// Subscription for native token to find balance
