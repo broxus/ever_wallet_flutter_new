@@ -550,5 +550,6 @@
   "accountAddedSheetTitle": "New account has been added successfully",
   "accountAddedSheetSubtitle": "When adding a new account, a new public key was also added. They were connected with each other.",
   "accountAddedSheetSwitch": "Switch to this account",
-  "accountAddedSheetContinue": "Continue without switching"
+  "accountAddedSheetContinue": "Continue without switching",
+  "invalidReceiverAddress": "Invalid receiver address"
 }

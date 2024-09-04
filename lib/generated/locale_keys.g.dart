@@ -567,4 +567,5 @@ abstract class LocaleKeys {
   static const accountAddedSheetSubtitle = 'accountAddedSheetSubtitle';
   static const accountAddedSheetSwitch = 'accountAddedSheetSwitch';
   static const accountAddedSheetContinue = 'accountAddedSheetContinue';
+  static const invalidReceiverAddress = 'invalidReceiverAddress';
 }

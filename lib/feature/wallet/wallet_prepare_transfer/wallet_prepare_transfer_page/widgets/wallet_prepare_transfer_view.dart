@@ -63,9 +63,7 @@ class WalletPrepareTransferView extends StatelessWidget {
                     focusNode: _wm.receiverFocus,
                     onSubmit: _wm.onSubmittedReceiverAddress,
                     inputFormatters: [_wm.addressFilterFormatter],
-                    validator: (value) => value?.isEmpty ?? true
-                        ? LocaleKeys.addressIsEmpty.tr()
-                        : null,
+                    validator: _wm.validateAddressField,
                     suffixes: [_buildReceiverSuffix()],
                   ),
                   WalletPrepareTransferAmountInput(
