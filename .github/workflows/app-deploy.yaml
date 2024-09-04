@@ -23,9 +23,13 @@ on:
 jobs:
   setup:
     runs-on: ubuntu-latest
+    outputs:
+      build_number: ${{ steps.get_build_number.outputs.build_number }}
     steps:
       - name: Checkout code
         uses: actions/checkout@v4
+        with:
+          fetch-depth: 1
 
       - name: Setup Flutter
         uses: subosito/flutter-action@v2
@@ -41,40 +45,93 @@ jobs:
           bash scripts/get-build-number.sh
           echo "::set-output name=build_number::$BUILD_NUMBER"
 
+  # iOS deploy
   ios-deploy:
-    runs-on: ubuntu-latest
-    if: ${{ inputs.deploy_target == 'fad' || inputs.deploy_target == 'store' || inputs.deploy_target == 'fad_store' || inputs.deploy_target == 'ios_fad' || inputs.deploy_target == 'ios_store' }}
-    steps:
-      - name: Running iOS Deploy
-        uses: actions/github-script@v7
-        with:
-          script: |
-            github.rest.actions.createWorkflowDispatch({
-              owner: context.repo.owner,
-              repo: context.repo.repo,
-              workflow_id: 'ios-deploy.yaml',
-              ref: context.ref,
-              inputs: {
-                deploy_target: '${{ inputs.deploy_target }}',
-                build_number: '${{ needs.setup.outputs.build_number }}',
-              }
-            })
+    needs: setup
+    runs-on: macos-latest
 
-  android-deploy:
-    runs-on: ubuntu-latest
-    if: ${{ inputs.deploy_target == 'fad' || inputs.deploy_target == 'store' || inputs.deploy_target == 'fad_store' || inputs.deploy_target == 'android_fad' || inputs.deploy_target == 'android_store' }}
+    if: ${{ inputs.deploy_target == 'fad' || inputs.deploy_target == 'store' || inputs.deploy_target == 'fad_store' || inputs.deploy_target == 'ios_fad' || inputs.deploy_target == 'ios_store' }}
+
+    env:
+      SECRET_PASSPHRASE: ${{ secrets.SECRET_PASSPHRASE }}
+      MATCH_PASSWORD: ${{ secrets.MATCH_PASSWORD }}
+
     steps:
-      - name: Running Android Deploy
-        uses: actions/github-script@v7
+      - uses: actions/checkout@v4
         with:
-          script: |
-            github.rest.actions.createWorkflowDispatch({
-              owner: context.repo.owner,
-              repo: context.repo.repo,
-              workflow_id: 'android-deploy.yaml',
-              ref: context.ref,
-              inputs: {
-                deploy_target: '${{ inputs.deploy_target }}',
-                build_number: '${{ needs.setup.outputs.build_number }}',
-              }
-            })
+          fetch-depth: 1
+
+      - uses: bluefireteam/melos-action@v3
+
+      # Secrets
+      - name: Decrypt secrets
+        run: melos decrypt-secrets
+
+      # iOS certs
+      - name: Making sure the iOS certificates and profiles are installed
+        run: melos build:ios_match_assure
+
+      # Dart/Flutter
+      - name: Generate dart code
+        run: melos codegen --no-select
+
+      # Read Sentry DSN
+      - name: Read Sentry DSN
+        id: read_sentry_dsn
+        run: |
+          if [ -f ./secrets/sentry-dsn.txt ]; then
+            SENTRY_DSN=$(cat ./secrets/sentry-dsn.txt)
+            echo "SENTRY_DSN=$SENTRY_DSN" >> $GITHUB_ENV
+          fi
+
+      - name: Build and deploy
+        run: |
+          bash scripts/build.sh ${{ inputs.deploy_target }} ${{ needs.setup.outputs.build_number }}
+        env:
+          SENTRY_DSN: ${{ env.SENTRY_DSN }}
+
+  # Android deploy
+  android-deploy:
+    needs: setup
+    runs-on: macos-latest
+
+    if: ${{ inputs.deploy_target == 'fad' || inputs.deploy_target == 'store' || inputs.deploy_target == 'fad_store' || inputs.deploy_target == 'android_fad' || inputs.deploy_target == 'android_store' }}
+
+    env:
+      SECRET_PASSPHRASE: ${{ secrets.SECRET_PASSPHRASE }}
+      MATCH_PASSWORD: ${{ secrets.MATCH_PASSWORD }}
+
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 1
+
+      - uses: bluefireteam/melos-action@v3
+
+      - uses: actions/setup-java@v4
+        with:
+          distribution: zulu
+          java-version: "17.x"
+
+      # Secrets
+      - name: Decrypt secrets
+        run: melos decrypt-secrets
+
+      # Dart/Flutter
+      - name: Generate dart code
+        run: melos codegen --no-select
+
+      # Read Sentry DSN
+      - name: Read Sentry DSN
+        id: read_sentry_dsn
+        run: |
+          if [ -f ./secrets/sentry-dsn.txt ]; then
+            SENTRY_DSN=$(cat ./secrets/sentry-dsn.txt)
+            echo "SENTRY_DSN=$SENTRY_DSN" >> $GITHUB_ENV
+          fi
+
+      - name: Build and deploy
+        run: |
+          bash scripts/build.sh ${{ inputs.deploy_target }} ${{ needs.setup.outputs.build_number }}
+        env:
+          SENTRY_DSN: ${{ env.SENTRY_DSN }}

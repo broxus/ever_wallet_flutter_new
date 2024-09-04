@@ -2,6 +2,11 @@
 set -e
 set -o pipefail
 
+if [ -z "$SENTRY_DSN" ]; then
+    echo "Error: SENTRY_DSN is not specified."
+    exit 1
+fi
+
 export SENTRY_DSN
 
 deploy_target="$1"
