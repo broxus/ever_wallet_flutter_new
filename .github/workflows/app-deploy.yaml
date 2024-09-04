@@ -218,11 +218,6 @@ jobs:
           distribution: zulu
           java-version: "17.x"
 
-      - uses: nttld/setup-ndk@v1
-        with:
-          ndk-version: r23c
-          local-cache: true
-
       # Secrets
       - name: Decrypt secrets
         run: melos decrypt-secrets
