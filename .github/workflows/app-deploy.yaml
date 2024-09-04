@@ -66,7 +66,7 @@ jobs:
             exit 1
           fi
           echo "#️⃣ New build number: $BUILD_NUMBER"
-          echo "build_number=$BUILD_NUMBER" >> $GITHUB_ENV
+          echo "build_number=$BUILD_NUMBER" >> $GITHUB_OUTPUT
 
   # iOS deploy
   ios-deploy:
