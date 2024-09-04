@@ -310,9 +310,10 @@ class WalletPrepareTransferPageWidgetModel extends CustomWidgetModel<
   }
 
   Future<void> _updateAsset(WalletPrepareTransferAsset asset) async {
-    final currency = asset.currency ?? await model.getCurrencyForContract(
-      asset.rootTokenContract,
-    );
+    final currency = asset.currency ??
+        await model.getCurrencyForContract(
+          asset.rootTokenContract,
+        );
     final balance =
         await model.getBalance(asset) ?? _zeroBalance(asset.tokenSymbol);
 
