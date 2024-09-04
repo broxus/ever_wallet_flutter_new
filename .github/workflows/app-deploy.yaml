@@ -48,6 +48,8 @@ jobs:
       - name: Install Dart dependencies
         run: dart pub get
 
+      - uses: bluefireteam/melos-action@v3
+
       # Secrets
       - name: Decrypt secrets
         run: melos decrypt-secrets
