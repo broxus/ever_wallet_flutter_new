@@ -12,6 +12,7 @@ deploy_target="$1"
 build_number="$2"
 
 if [ -z "$build_number" ]; then
+    echo "Error: Build number is not specified."
     exit 1
 fi
 
