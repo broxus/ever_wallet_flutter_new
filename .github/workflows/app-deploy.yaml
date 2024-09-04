@@ -45,6 +45,9 @@ jobs:
           cache: true
           cache-key: flutter-:os:-:channel:-:version:-:arch:-:hash:-${{ hashFiles('**/pubspec.lock') }}
 
+      - name: Install Dart dependencies
+        run: dart pub get
+
       - name: Get build number
         id: get_build_number
         run: |
