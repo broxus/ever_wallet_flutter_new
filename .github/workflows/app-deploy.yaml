@@ -25,11 +25,25 @@ jobs:
     runs-on: ubuntu-latest
     outputs:
       build_number: ${{ steps.get_build_number.outputs.build_number }}
-      flutter_version: '3.24.0'
+      flutter_version: ${{ steps.set_output.outputs.flutter_version }}
+    env:
+      FLUTTER_VERSION: '3.24.0'
     steps:
       - uses: actions/checkout@v4
         with:
           fetch-depth: 1
+
+      - name: Set output for flutter_version
+        id: set_output
+        run: echo "flutter_version=${FLUTTER_VERSION}" >> $GITHUB_ENV
+
+      - name: Setup Flutter
+        uses: subosito/flutter-action@v2
+        with:
+          flutter-version: ${{ env.FLUTTER_VERSION }}
+          channel: 'stable'
+          cache: true
+          cache-key: flutter-:os:-:channel:-:version:-:arch:-:hash:-${{ hashFiles('**/pubspec.lock') }}
 
       - name: Get build number
         id: get_build_number
