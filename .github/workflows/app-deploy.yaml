@@ -149,7 +149,10 @@ jobs:
 
       - name: Build and deploy
         run: |
-          bash scripts/build.sh ${{ env.ios_target }} ${{ needs.setup.outputs.build_number }}
+          bash scripts/build.sh \
+          --deploy-target ${{ env.ios_target }} \
+          --build-number ${{ needs.setup.outputs.build_number }} \
+          --upload true
 
       - name: Clean Xcode Derived Data
         run: |
@@ -235,7 +238,10 @@ jobs:
 
       - name: Build and deploy
         run: |
-          bash scripts/build.sh ${{ env.android_target }} ${{ needs.setup.outputs.build_number }}
+          bash scripts/build.sh \
+          --deploy-target ${{ env.android_target }} \
+          --build-number ${{ needs.setup.outputs.build_number }} \
+          --upload true
 
       - name: Remove Flutter
         run: |

@@ -2,16 +2,35 @@
 set -e
 set -o pipefail
 
-deploy_target="$1"
-build_number="$2"
+deploy_target=""
+build_number=""
+upload="false"
+
+while [[ "$#" -gt 0 ]]; do
+    case $1 in
+        --deploy-target) deploy_target="$2"; shift ;;
+        --build-number) build_number="$2"; shift ;;
+        --upload) upload="$2"; shift ;;
+        *) echo "Unknown parameter passed: $1"; exit 1 ;;
+    esac
+    shift
+done
+
+function build() {
+  source "scripts/build-binary/$1"
+}
+
+function upload() {
+  if [[ "$upload" == "true" ]]; then
+   source "scripts/deploy/$1"
+  fi
+}
 
 CURRENT_BRANCH=$(git rev-parse --abbrev-ref HEAD)
 
-if [[ "$deploy_target" == "ios_store" || "$deploy_target" == "android_store" ]]; then
-  if [ "$CURRENT_BRANCH" != "main" ]; then
-    echo "🚫 Error: Deployment to the store is only allowed from the 'main' branch."
-    exit 1
-  fi
+if [[ "$upload" == "true" && "$CURRENT_BRANCH" != "main" && ("$deploy_target" == "ios_store" || "$deploy_target" == "android_store") ]]; then
+  echo "🚫 Error: Deployment to the store is only allowed from the 'main' branch."
+  exit 1
 fi
 
 if [ -f ./secrets/sentry-dsn.txt ]; then
@@ -30,7 +49,13 @@ fi
 
 export SENTRY_DSN
 
-if [ -z "$build_number" ]; then
+if [[ "$build_number" == "auto" ]]; then
+  echo "Build number is 'auto', generating one automatically..."
+  build_number=$(bash scripts/get-build-number.sh)
+  echo "Generated Build Number: $build_number"
+fi
+
+if [[ -z "$build_number" || "$build_number" == "auto" ]]; then
     echo "Error: Build number is not specified."
     exit 1
 fi
@@ -42,20 +67,20 @@ source scripts/get-changelog.sh
 
 case "$deploy_target" in
   "ios_fad")
-    source scripts/build-binary/fad-ipa.sh
-    source scripts/deploy/fad-ipa.sh
+    build "fad-ipa.sh"
+    upload "fad-ipa.sh"
     ;;
   "ios_store")
-    source scripts/build-binary/store-ipa.sh
-    source scripts/deploy/store-ipa.sh
+    build "store-ipa.sh"
+    upload "store-ipa.sh"
     ;;
   "android_fad")
-    source scripts/build-binary/fad-apk.sh
-    source scripts/deploy/fad-apk.sh
+    build "fad-apk.sh"
+    upload "fad-apk.sh"
     ;;
   "android_store")
-    source scripts/build-binary/store-aab.sh
-    source scripts/deploy/store-aab.sh
+    build "store-aab.sh"
+    upload "store-aab.sh"
     ;;
   *)
     echo "Unknown deploy target: $deploy_target"
