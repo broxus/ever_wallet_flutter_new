@@ -360,7 +360,27 @@ All deployment scripts are gathering changelog from git commits and adding it to
 
 ### Deploy using GitHub Actions
 
-We already have a workflow for deploying main app to Firebase App Distribution, TestFlight and Google Play closed testing. It's called `app=deploy` and it's triggered by pushing to the main branch or manually from any branch. You can choose the desired deployment when triggering the workflow manually. It will deploy to FAD when its triggered by pushing to the main branch.
+We already have a workflow for deploying main app to Firebase App Distribution, TestFlight and Google Play. It's called `Deploy app`.
+
+Deployment to fab is triggered when the `test` branch is updated, or when manually launched from any branch except main.
+Deployment to store is triggered when manually launched from the `main` branch.
+
+Deployment to FAD is triggered when the `dev` branch is updated.  
+
+Manually running the deploy `melos run deploy_fad` from any branch **except** `main`.  
+Running `melos run deploy_ios` deploys iOS to FAD.   
+Running `melos run deploy_android` deploys Android to FAD.
+
+Deployment to store is triggered when manually launched from the `main` branch.
+
+#### Available options for deploying in workflow:
+
+- **ios_fad** - launches iOS deploy to FAD.
+- **ios_store** - launches iOS deploy to Test Flight.  
+- **android_fad** - launches Android deploy to FAD.  
+- **android_store** - launches Android deploy to Google Play.
+- **fad** - launches iOS and Android deploy to FAD.  
+- **store** - launches iOS and Android deploy to Test Flight and Google Play.  
 
 We also have a workflow for deploying storybook to GitHub Pages. It's called `storybook-gh-pages-deploy` and it's triggered by pushing to the main branch or manually from any branch.
 

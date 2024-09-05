@@ -143,16 +143,6 @@ jobs:
       - name: Generate dart code
         run: melos codegen --no-select
 
-      # Read Sentry DSN
-      - name: Read Sentry DSN
-        id: read_sentry_dsn
-        run: |
-          if [ -f ./secrets/sentry-dsn.txt ]; then
-            SENTRY_DSN=$(cat ./secrets/sentry-dsn.txt)
-            echo "SENTRY_DSN=$SENTRY_DSN" >> $GITHUB_ENV
-            echo "::add-mask::$SENTRY_DSN"
-          fi
-
       - name: Display Build Number
         run:
           echo "Number is = ${{ needs.setup.outputs.build_number }}"
@@ -160,8 +150,6 @@ jobs:
       - name: Build and deploy
         run: |
           bash scripts/build.sh ${{ env.ios_target }} ${{ needs.setup.outputs.build_number }}
-        env:
-          SENTRY_DSN: ${{ env.SENTRY_DSN }}
 
       - name: Clean Xcode Derived Data
         run: |
@@ -241,16 +229,6 @@ jobs:
       - name: Generate dart code
         run: melos codegen --no-select
 
-      # Read Sentry DSN
-      - name: Read Sentry DSN
-        id: read_sentry_dsn
-        run: |
-          if [ -f ./secrets/sentry-dsn.txt ]; then
-            SENTRY_DSN=$(cat ./secrets/sentry-dsn.txt)
-            echo "SENTRY_DSN=$SENTRY_DSN" >> $GITHUB_ENV
-            echo "::add-mask::$SENTRY_DSN"
-          fi
-
       - name: Display Build Number
         run:
           echo "Number is = ${{ needs.setup.outputs.build_number }}"
@@ -258,8 +236,6 @@ jobs:
       - name: Build and deploy
         run: |
           bash scripts/build.sh ${{ env.android_target }} ${{ needs.setup.outputs.build_number }}
-        env:
-          SENTRY_DSN: ${{ env.SENTRY_DSN }}
 
       - name: Remove Flutter
         run: |

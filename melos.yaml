@@ -109,6 +109,25 @@ scripts:
     description: Registering new devices already added through devportal
     run: bash scripts/ios-match-new-devices.sh
 
+  deploy_fad_ios:
+    description: Deploy iOS app to fad
+    run: |
+      BUILD_NUMBER=$(bash scripts/get-build-number.sh)
+      bash scripts/build.sh ios_fad $BUILD_NUMBER
+
+  deploy_fad_android:
+    description: Deploy Android app to fad
+    run: |
+      BUILD_NUMBER=$(bash scripts/get-build-number.sh)
+      bash scripts/build.sh android_fad $BUILD_NUMBER
+
+  deploy_fad:
+    description: Deploy app to fad
+    run: |
+      BUILD_NUMBER=$(bash scripts/get-build-number.sh)
+      bash scripts/build.sh ios_fad $BUILD_NUMBER
+      bash scripts/build.sh android_fad $BUILD_NUMBER
+
 command:
   clean:
     hooks:
