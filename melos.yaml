@@ -109,6 +109,60 @@ scripts:
     description: Registering new devices already added through devportal
     run: bash scripts/ios-match-new-devices.sh
 
+  build_android_store:
+    description: Build android store
+    run: |
+      bash scripts/build.sh \
+      --deploy-target android_store \
+      --build-number auto \
+      --upload false
+
+  deploy_fad_ios:
+    description: Deploy iOS app to fad
+    run: |
+      bash scripts/build.sh \
+      --deploy-target ios_fad \
+      --build-number auto \
+      --upload true
+
+  deploy_fad_android:
+    description: Deploy Android app to fad
+    run: |
+      bash scripts/build.sh \
+      --deploy-target android_fad \
+      --build-number auto \
+      --upload true
+
+  deploy_fad:
+    description: Deploy app to fad
+    run: |
+      BUILD_NUMBER=$(bash scripts/get-build-number.sh)
+      
+      bash scripts/build.sh \
+      --deploy-target ios_fad \
+      --build-number $BUILD_NUMBER \
+      --upload true
+      
+      bash scripts/build.sh \
+      --deploy-target android_fad \
+      --build-number $BUILD_NUMBER \
+      --upload true
+
+  deploy_store:
+    description: Deploy app to store
+    run: |
+      BUILD_NUMBER=$(bash scripts/get-build-number.sh)
+      
+      bash scripts/build.sh \
+      --deploy-target ios_store \
+      --build-number $BUILD_NUMBER \
+      --upload true
+      
+      bash scripts/build.sh \
+      --deploy-target android_store \
+      --build-number $BUILD_NUMBER \
+      --upload true
+
 command:
   clean:
     hooks:

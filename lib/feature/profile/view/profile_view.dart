@@ -81,6 +81,7 @@ class ProfileView extends StatelessWidget {
                   backgroundColor: theme.colors.backgroundAlpha,
                   iconColor: theme.colors.content0,
                 ),
+                // TODO(knightforce): temp
                 // _profileTile(
                 //   leadingIcon: Assets.images.currency.path,
                 //   title: LocaleKeys.currencyWord.tr(),
@@ -90,20 +91,21 @@ class ProfileView extends StatelessWidget {
                 //   // ignore: no-empty-block
                 //   onPressed: () {},
                 // ),
-                _profileTile(
-                  leadingIcon: Assets.images.planetInner.path,
-                  title: LocaleKeys.languageWord.tr(),
-                  trailing: const Icon(
-                    LucideIcons.chevronRight,
-                    size: DimensSizeV2.d20,
-                  ),
-                  // ignore: no-empty-block
-                  onPressed: () => showLocalizationSheet(
-                    context: context,
-                  ),
-                  backgroundColor: theme.colors.backgroundAlpha,
-                  iconColor: theme.colors.content0,
-                ),
+                // TODO(knightforce): temp
+                // _profileTile(
+                //   leadingIcon: Assets.images.planetInner.path,
+                //   title: LocaleKeys.languageWord.tr(),
+                //   trailing: const Icon(
+                //     LucideIcons.chevronRight,
+                //     size: DimensSizeV2.d20,
+                //   ),
+                //   // ignore: no-empty-block
+                //   onPressed: () => showLocalizationSheet(
+                //     context: context,
+                //   ),
+                //   backgroundColor: theme.colors.backgroundAlpha,
+                //   iconColor: theme.colors.content0,
+                // ),
                 if (isBiometryAvailable)
                   StreamBuilder<bool>(
                     stream: service.enabledStream,
