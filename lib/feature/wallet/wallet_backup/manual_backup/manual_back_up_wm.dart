@@ -43,10 +43,4 @@ class ManualBackUpWidgetModel
       screenState.content(ManualBackUpData(isCopied: false));
     });
   }
-
-  void clickCheckPhrase() {
-    
-  }
-
-  void clickSkip() {}
 }

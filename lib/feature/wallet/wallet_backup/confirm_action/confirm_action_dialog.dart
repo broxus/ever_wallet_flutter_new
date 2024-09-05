@@ -37,17 +37,20 @@ class ContentConfirmAction extends ElementaryWidget<ConfirmActionWidgetModel> {
         return Column(
           children: [
             Text(
-              'Confirm action',
+              LocaleKeys.confirmAction.tr(),
               style: theme.textStyles.headingMedium,
             ),
             const SizedBox(height: DimensSizeV2.d24),
-            if (wm.account != null) AccountInfo(account: wm.account!, color:
-            theme.colors.background2,),
+            if (wm.account != null)
+              AccountInfo(
+                account: wm.account!,
+                color: theme.colors.background2,
+              ),
             const SizedBox(height: DimensSizeV2.d16),
             SecureTextField(
               textEditingController: wm.passwordController,
               validator: (_) => data?.error,
-              hintText: 'Enter your password',
+              hintText: LocaleKeys.enterYourPassword,
             ),
             const SizedBox(height: DimensSizeV2.d28),
             AccentButton(
