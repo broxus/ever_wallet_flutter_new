@@ -1,5 +1,5 @@
 import 'package:app/data/models/models.dart';
-import 'package:app/feature/browser/approvals_listener/actions/request_permissions/account_list_item/account_list_item.dart';
+import 'package:app/feature/browser/approvals_listener/actions/request_permissions/account_list_item.dart';
 import 'package:app/feature/browser/approvals_listener/actions/request_permissions/request_permissions_wm.dart';
 import 'package:app/feature/browser/approvals_listener/actions/widgets/widgets.dart';
 import 'package:app/feature/wallet/wallet.dart';
@@ -79,15 +79,15 @@ class _SelectAccountWidget extends StatelessWidget {
                     firstSource: wm.accounts,
                     secondSource: wm.selected,
                     builder: (_, accounts, selected) => ListView.separated(
-                      shrinkWrap: true,
                       itemCount: accounts?.length ?? 0,
                       itemBuilder: (_, index) {
                         final account = accounts?[index];
                         return account == null
                             ? const SizedBox.shrink()
-                            : AccountListItemWidget(
+                            : AccountListItem(
                                 key: ValueKey(account.address),
                                 account: account,
+                                balance: wm.getBalanceEntity(account),
                                 active: account.address == selected?.address,
                                 onTap: () => wm.onSelectedChanged(account),
                               );
@@ -168,15 +168,7 @@ class _ConfirmPermissionsWidget extends StatelessWidget {
                                     style: theme.textStyles.labelSmall,
                                   ),
                                   const Spacer(),
-                                  // TODO(Komarov): custom switch.
                                   Switch(
-                                    activeColor: theme.colors.primaryA,
-                                    activeTrackColor: theme.colors.accent,
-                                    inactiveThumbColor: theme.colors.primaryA,
-                                    inactiveTrackColor:
-                                        theme.colors.backgroundAlpha,
-                                    materialTapTargetSize:
-                                        MaterialTapTargetSize.shrinkWrap,
                                     value: basic ?? false,
                                     onChanged: (value) => wm.onPermissionSwitch(
                                       permission: Permission.basic,
@@ -192,15 +184,7 @@ class _ConfirmPermissionsWidget extends StatelessWidget {
                                     style: theme.textStyles.labelSmall,
                                   ),
                                   const Spacer(),
-                                  // TODO(Komarov): custom switch.
                                   Switch(
-                                    activeColor: theme.colors.primaryA,
-                                    activeTrackColor: theme.colors.accent,
-                                    inactiveThumbColor: theme.colors.primaryA,
-                                    inactiveTrackColor:
-                                        theme.colors.backgroundAlpha,
-                                    materialTapTargetSize:
-                                        MaterialTapTargetSize.shrinkWrap,
                                     value: accountInteraction ?? false,
                                     onChanged: (value) => wm.onPermissionSwitch(
                                       permission: Permission.accountInteraction,

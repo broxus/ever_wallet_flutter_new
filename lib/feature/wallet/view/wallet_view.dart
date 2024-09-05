@@ -1,87 +1,94 @@
 import 'package:app/feature/wallet/wallet.dart';
+import 'package:app/generated/generated.dart';
 import 'package:flutter/material.dart';
 import 'package:nekoton_repository/nekoton_repository.dart';
 import 'package:ui_components_lib/ui_components_lib.dart';
 
-class WalletView extends StatefulWidget {
+class WalletView extends StatelessWidget {
   const WalletView({
-    required this.controller,
-    required this.list,
     required this.currentAccount,
-    required this.publicKey,
+    required this.scrollController,
     super.key,
   });
 
-  final PageController controller;
-  final List<KeyAccount> list;
-  final PublicKey publicKey;
   final KeyAccount? currentAccount;
-
-  @override
-  State<WalletView> createState() => _WalletViewState();
-}
-
-class _WalletViewState extends State<WalletView> {
-  final _panelController = PanelController();
-
-  bool _isMountPanel = false;
-  late double _panelHeight = 100;
-
-  @override
-  void didUpdateWidget(covariant WalletView oldWidget) {
-    if (oldWidget.currentAccount != null &&
-        widget.currentAccount == null &&
-        _panelController.isAttached) {
-      _panelController.hide();
-    }
-    if (oldWidget.currentAccount == null &&
-        widget.currentAccount != null &&
-        _panelController.isAttached) {
-      _panelController.show();
-    }
-    super.didUpdateWidget(oldWidget);
-  }
+  final ScrollController scrollController;
 
   @override
   Widget build(BuildContext context) {
     final theme = context.themeStyleV2;
-    return CommonSlidingPanel(
-      backgroundColor: theme.colors.background1,
-      maxHeightSizePercent: 1,
-      minHeight: _panelHeight,
-      panelController: _panelController,
-      panelBuilder: (context, scrollController) {
-        if (widget.currentAccount == null) {
-          return const SizedBox.shrink();
-        }
 
-        return WalletBottomPanel(
-          key: Key('WalletBottomPanel-${widget.currentAccount!.address}'),
-          currentAccount: widget.currentAccount!,
-          scrollController: scrollController,
-        );
-      },
-      body: WalletAccountsBody(
-        accounts: widget.list,
-        publicKey: widget.publicKey,
-        currentAccount: widget.currentAccount,
-        controller: widget.controller,
-        onMount: _onMount,
+    return SafeArea(
+      child: Stack(
+        children: [
+          _Background(scrollController: scrollController),
+          CustomScrollView(
+            controller: scrollController,
+            slivers: [
+              const SliverToBoxAdapter(
+                child: WalletAppBarWidget(),
+              ),
+              WalletAccountsBody(account: currentAccount),
+              WalletBottomPanel(
+                currentAccount: currentAccount!,
+                scrollController: scrollController,
+              ),
+              SliverFillRemaining(
+                hasScrollBody: false,
+                child: Container(color: theme.colors.background1),
+              ),
+            ],
+          ),
+        ],
+      ),
+    );
+  }
+}
+
+class _Background extends StatefulWidget {
+  const _Background({
+    required this.scrollController,
+  });
+
+  final ScrollController scrollController;
+
+  @override
+  State<_Background> createState() => _BackgroundState();
+}
+
+class _BackgroundState extends State<_Background> {
+  @override
+  void initState() {
+    widget.scrollController.addListener(_listener);
+    super.initState();
+  }
+
+  @override
+  void dispose() {
+    widget.scrollController.removeListener(_listener);
+    super.dispose();
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    final size = MediaQuery.of(context).size;
+    final offset = widget.scrollController.hasClients
+        ? widget.scrollController.offset
+        : 0.0;
+
+    return Positioned(
+      top: -offset,
+      left: 0,
+      width: size.width,
+      child: Image.asset(
+        Assets.images.homescreenBg.homescreenBg.path,
+        height: size.width,
+        width: size.width,
+        fit: BoxFit.contain,
+        alignment: Alignment.topCenter,
       ),
     );
   }
 
-  void _onMount(double bottom) {
-    if (_isMountPanel || bottom == 0) {
-      return;
-    }
-
-    _isMountPanel = true;
-
-    final mq = MediaQuery.of(context);
-
-    setState(() {
-      _panelHeight = mq.size.height - (bottom + DimensSize.d48);
-    });
-  }
+  void _listener() => setState(() {});
 }

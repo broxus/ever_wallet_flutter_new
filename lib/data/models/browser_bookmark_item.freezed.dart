@@ -26,8 +26,12 @@ mixin _$BrowserBookmarkItem {
   Uri get url => throw _privateConstructorUsedError;
   double get sortingOrder => throw _privateConstructorUsedError;
 
+  /// Serializes this BrowserBookmarkItem to a JSON map.
   Map<String, dynamic> toJson() => throw _privateConstructorUsedError;
-  @JsonKey(ignore: true)
+
+  /// Create a copy of BrowserBookmarkItem
+  /// with the given fields replaced by the non-null parameter values.
+  @JsonKey(includeFromJson: false, includeToJson: false)
   $BrowserBookmarkItemCopyWith<BrowserBookmarkItem> get copyWith =>
       throw _privateConstructorUsedError;
 }
@@ -55,6 +59,8 @@ class _$BrowserBookmarkItemCopyWithImpl<$Res, $Val extends BrowserBookmarkItem>
   // ignore: unused_field
   final $Res Function($Val) _then;
 
+  /// Create a copy of BrowserBookmarkItem
+  /// with the given fields replaced by the non-null parameter values.
   @pragma('vm:prefer-inline')
   @override
   $Res call({
@@ -107,6 +113,8 @@ class __$$BrowserBookmarkItemImplCopyWithImpl<$Res>
       $Res Function(_$BrowserBookmarkItemImpl) _then)
       : super(_value, _then);
 
+  /// Create a copy of BrowserBookmarkItem
+  /// with the given fields replaced by the non-null parameter values.
   @pragma('vm:prefer-inline')
   @override
   $Res call({
@@ -175,11 +183,13 @@ class _$BrowserBookmarkItemImpl implements _BrowserBookmarkItem {
                 other.sortingOrder == sortingOrder));
   }
 
-  @JsonKey(ignore: true)
+  @JsonKey(includeFromJson: false, includeToJson: false)
   @override
   int get hashCode => Object.hash(runtimeType, id, title, url, sortingOrder);
 
-  @JsonKey(ignore: true)
+  /// Create a copy of BrowserBookmarkItem
+  /// with the given fields replaced by the non-null parameter values.
+  @JsonKey(includeFromJson: false, includeToJson: false)
   @override
   @pragma('vm:prefer-inline')
   _$$BrowserBookmarkItemImplCopyWith<_$BrowserBookmarkItemImpl> get copyWith =>
@@ -213,8 +223,11 @@ abstract class _BrowserBookmarkItem implements BrowserBookmarkItem {
   Uri get url;
   @override
   double get sortingOrder;
+
+  /// Create a copy of BrowserBookmarkItem
+  /// with the given fields replaced by the non-null parameter values.
   @override
-  @JsonKey(ignore: true)
+  @JsonKey(includeFromJson: false, includeToJson: false)
   _$$BrowserBookmarkItemImplCopyWith<_$BrowserBookmarkItemImpl> get copyWith =>
       throw _privateConstructorUsedError;
 }

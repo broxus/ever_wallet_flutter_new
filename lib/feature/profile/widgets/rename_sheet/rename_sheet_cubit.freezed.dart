@@ -78,6 +78,9 @@ class _$RenameSheetStateCopyWithImpl<$Res, $Val extends RenameSheetState>
   final $Val _value;
   // ignore: unused_field
   final $Res Function($Val) _then;
+
+  /// Create a copy of RenameSheetState
+  /// with the given fields replaced by the non-null parameter values.
 }
 
 /// @nodoc
@@ -96,6 +99,9 @@ class __$$RenameSheetStateLoadingImplCopyWithImpl<$Res>
       _$RenameSheetStateLoadingImpl _value,
       $Res Function(_$RenameSheetStateLoadingImpl) _then)
       : super(_value, _then);
+
+  /// Create a copy of RenameSheetState
+  /// with the given fields replaced by the non-null parameter values.
 }
 
 /// @nodoc
@@ -205,6 +211,9 @@ class __$$RenameSheetStateInitImplCopyWithImpl<$Res>
   __$$RenameSheetStateInitImplCopyWithImpl(_$RenameSheetStateInitImpl _value,
       $Res Function(_$RenameSheetStateInitImpl) _then)
       : super(_value, _then);
+
+  /// Create a copy of RenameSheetState
+  /// with the given fields replaced by the non-null parameter values.
 }
 
 /// @nodoc
@@ -320,6 +329,8 @@ class __$$RenameSheetStateCompletedImplCopyWithImpl<$Res>
       $Res Function(_$RenameSheetStateCompletedImpl) _then)
       : super(_value, _then);
 
+  /// Create a copy of RenameSheetState
+  /// with the given fields replaced by the non-null parameter values.
   @pragma('vm:prefer-inline')
   @override
   $Res call({
@@ -358,7 +369,9 @@ class _$RenameSheetStateCompletedImpl implements _RenameSheetStateCompleted {
   @override
   int get hashCode => Object.hash(runtimeType, isSeed);
 
-  @JsonKey(ignore: true)
+  /// Create a copy of RenameSheetState
+  /// with the given fields replaced by the non-null parameter values.
+  @JsonKey(includeFromJson: false, includeToJson: false)
   @override
   @pragma('vm:prefer-inline')
   _$$RenameSheetStateCompletedImplCopyWith<_$RenameSheetStateCompletedImpl>
@@ -439,7 +452,10 @@ abstract class _RenameSheetStateCompleted implements RenameSheetState {
       _$RenameSheetStateCompletedImpl;
 
   bool get isSeed;
-  @JsonKey(ignore: true)
+
+  /// Create a copy of RenameSheetState
+  /// with the given fields replaced by the non-null parameter values.
+  @JsonKey(includeFromJson: false, includeToJson: false)
   _$$RenameSheetStateCompletedImplCopyWith<_$RenameSheetStateCompletedImpl>
       get copyWith => throw _privateConstructorUsedError;
 }

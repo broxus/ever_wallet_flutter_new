@@ -19,6 +19,7 @@ class TonWalletAssetCubit extends Cubit<TonWalletAssetState> {
     required this.balanceStorage,
   }) : super(
           TonWalletAssetState.data(
+            tokenName: nekotonRepository.currentTransport.nativeTokenTicker,
             iconPath: nekotonRepository.currentTransport.nativeTokenIcon,
           ),
         ) {
@@ -56,6 +57,7 @@ class TonWalletAssetCubit extends Cubit<TonWalletAssetState> {
       } else if (walletState?.hasError ?? false) {
         emit(
           TonWalletAssetState.subscribeError(
+            tokenName: nekotonRepository.currentTransport.nativeTokenTicker,
             iconPath: nekotonRepository.currentTransport.nativeTokenIcon,
             error: walletState!.error!,
             isLoading: false,
@@ -129,6 +131,7 @@ class TonWalletAssetCubit extends Cubit<TonWalletAssetState> {
   void _updateState() {
     emit(
       TonWalletAssetState.data(
+        tokenName: nekotonRepository.currentTransport.nativeTokenTicker,
         iconPath: nekotonRepository.currentTransport.nativeTokenIcon,
         fiatBalance: _cachedFiatBalance,
         tokenBalance: _cachedTokenBalance,

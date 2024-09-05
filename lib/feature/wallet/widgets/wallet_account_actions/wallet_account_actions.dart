@@ -1,5 +1,3 @@
-// ignore_for_file: deprecated_member_use_from_same_package
-
 import 'package:app/app/router/router.dart';
 import 'package:app/app/service/service.dart';
 import 'package:app/di/di.dart';
@@ -7,13 +5,14 @@ import 'package:app/feature/profile/profile.dart';
 import 'package:app/feature/wallet/wallet.dart';
 import 'package:app/feature/wallet/widgets/wallet_account_actions/wallet_account_actions_cubit.dart';
 import 'package:app/generated/generated.dart';
+import 'package:app/utils/utils.dart';
 import 'package:app/v1/feature/add_seed/enter_seed_name/enter_seed_name.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:lucide_icons_flutter/lucide_icons.dart';
 import 'package:nekoton_repository/nekoton_repository.dart' hide Message;
 import 'package:ui_components_lib/ui_components_lib.dart';
-
-const walletActionButtonSize = CommonIconButtonSize.medium;
+import 'package:ui_components_lib/v2/ui_components_lib_v2.dart';
 
 /// Row with actions for current account.
 /// If account is null, then no actions available.
@@ -39,7 +38,10 @@ class WalletAccountActions extends StatelessWidget {
       opacity: account == null ? 0 : 1,
       duration: const Duration(milliseconds: 400),
       child: account == null
-          ? _emptyActions()
+          ? const IgnorePointer(
+              child: _ActionList(action: WalletAccountActionBehavior.send),
+            )
+          // TODO(komarov): elementary
           : BlocProvider<WalletAccountActionsCubit>(
               key: Key('WalletAccountActions-${account.address}'),
               create: (_) => WalletAccountActionsCubit(
@@ -51,28 +53,96 @@ class WalletAccountActions extends StatelessWidget {
                   WalletAccountActionsState>(
                 builder: (context, state) {
                   return state.when(
-                    loading: (hasStake) => _actionsList(
+                    loading: (hasStake) => _ActionList(
                       action: WalletAccountActionBehavior.send,
-                      hasStake: hasStake,
+                      hasStake: hasStake && allowStake,
+                      sendSpecified: sendSpecified,
                     ),
-                    data: (action, hasStake, hasStakeActions) {
-                      return _actionsList(
-                        account: account,
-                        action: action,
-                        hasStake: hasStake,
-                        hasStakeActions: hasStakeActions,
-                      );
-                    },
+                    data: (action, hasStake, hasStakeActions) => _ActionList(
+                      account: account,
+                      action: action,
+                      hasStake: hasStake && allowStake,
+                      hasStakeActions: hasStakeActions,
+                      sendSpecified: sendSpecified,
+                    ),
                   );
                 },
               ),
             ),
     );
   }
+}
 
-  String _actionIcon(WalletAccountActionBehavior action) => switch (action) {
-        WalletAccountActionBehavior.deploy => Assets.images.deploy.path,
-        _ => Assets.images.arrowUp.path,
+class _ActionList extends StatelessWidget {
+  const _ActionList({
+    required this.action,
+    this.account,
+    this.hasStake = false,
+    this.hasStakeActions = false,
+    this.sendSpecified = false,
+  });
+
+  final WalletAccountActionBehavior action;
+  final KeyAccount? account;
+  final bool hasStake;
+  final bool hasStakeActions;
+  final bool sendSpecified;
+
+  @override
+  Widget build(BuildContext context) {
+    final theme = context.themeStyleV2;
+
+    return Padding(
+      padding: const EdgeInsets.symmetric(vertical: DimensSizeV2.d32),
+      child: SizedBox(
+        height: DimensSizeV2.d74,
+        child: SeparatedRow(
+          separator: VerticalDivider(
+            width: DimensStroke.small,
+            thickness: DimensStroke.small,
+            color: theme.colors.borderAlpha,
+          ),
+          mainAxisAlignment: MainAxisAlignment.center,
+          crossAxisAlignment: CrossAxisAlignment.stretch,
+          children: [
+            _Button(
+              label: LocaleKeys.receiveWord.tr(),
+              icon: LucideIcons.arrowDown,
+              onPressed: account?.let(
+                (value) => () => showReceiveFundsSheet(context, value.address),
+              ),
+            ),
+            _Button(
+              label: _actionTitle(action),
+              icon: _actionIcon(action),
+              onPressed: account?.let((_) => _actionOnPressed(context)),
+            ),
+            if (hasStake)
+              _Button(
+                label: LocaleKeys.stakeWord.tr(),
+                icon: LucideIcons.layers2,
+                badge: hasStakeActions,
+                onPressed: account?.let(
+                  (account) => () {
+                    context.goFurther(
+                      AppRoute.walletStake.pathWithData(
+                        pathParameters: {
+                          walletStakeAddressPathParam: account.address.address,
+                        },
+                      ),
+                    );
+                  },
+                ),
+              ),
+          ],
+        ),
+      ),
+    );
+  }
+
+  IconData _actionIcon(WalletAccountActionBehavior action) => switch (action) {
+        WalletAccountActionBehavior.deploy => LucideIcons.settings,
+        _ => LucideIcons.arrowUp,
       };
 
   String _actionTitle(WalletAccountActionBehavior action) => switch (action) {
@@ -80,11 +150,7 @@ class WalletAccountActions extends StatelessWidget {
         _ => LocaleKeys.sendWord.tr(),
       };
 
-  VoidCallback _actionOnPressed(
-    BuildContext context,
-    WalletAccountActionBehavior action,
-  ) =>
-      switch (action) {
+  VoidCallback _actionOnPressed(BuildContext context) => switch (action) {
         WalletAccountActionBehavior.send => () {
             if (sendSpecified) {
               final transport = inject<NekotonRepository>().currentTransport;
@@ -92,7 +158,7 @@ class WalletAccountActions extends StatelessWidget {
                 AppRoute.walletPrepareTransferSpecified.pathWithData(
                   pathParameters: {
                     walletPrepareTransferAddressPathParam:
-                        currentAccount!.address.address,
+                        account!.address.address,
                     walletPrepareTransferRootTokenAddressPathParam:
                         transport.nativeTokenAddress.address,
                     walletPrepareTransferSymbolPathParam:
@@ -105,7 +171,7 @@ class WalletAccountActions extends StatelessWidget {
                 AppRoute.walletPrepareTransfer.pathWithData(
                   pathParameters: {
                     walletPrepareTransferAddressPathParam:
-                        currentAccount!.address.address,
+                        account!.address.address,
                   },
                 ),
               );
@@ -115,9 +181,8 @@ class WalletAccountActions extends StatelessWidget {
         WalletAccountActionBehavior.deploy => () => context.goFurther(
               AppRoute.walletDeploy.pathWithData(
                 pathParameters: {
-                  walletDeployAddressPathParam: currentAccount!.address.address,
-                  walletDeployPublicKeyPathParam:
-                      currentAccount!.publicKey.publicKey,
+                  walletDeployAddressPathParam: account!.address.address,
+                  walletDeployPublicKeyPathParam: account!.publicKey.publicKey,
                 },
               ),
             ),
@@ -130,56 +195,6 @@ class WalletAccountActions extends StatelessWidget {
               ),
             ),
       };
-
-  Widget _buttonItem({
-    required String svg,
-    required VoidCallback? onPressed,
-    required String title,
-    bool showPoint = false,
-  }) {
-    return Builder(
-      builder: (context) {
-        final colors = context.themeStyle.colors;
-
-        final button = CommonIconButton.svg(
-          svg: svg,
-          buttonType: EverButtonType.primary,
-          onPressed: onPressed,
-          size: walletActionButtonSize,
-        );
-
-        return SeparatedColumn(
-          mainAxisSize: MainAxisSize.min,
-          children: [
-            if (showPoint)
-              Stack(
-                children: [
-                  button,
-                  Positioned(
-                    top: DimensStroke.medium,
-                    right: DimensStroke.medium,
-                    child: Container(
-                      width: DimensSize.d12,
-                      height: DimensSize.d12,
-                      decoration: BoxDecoration(
-                        shape: BoxShape.circle,
-                        color: colors.blue,
-                      ),
-                    ),
-                  ),
-                ],
-              )
-            else
-              button,
-            Text(
-              title,
-              style: StyleRes.addBold.copyWith(color: colors.textPrimary),
-            ),
-          ],
-        );
-      },
-    );
-  }
 
   Future<void> _showAddSeedSheet(BuildContext context) async {
     if (!context.mounted) return;
@@ -207,55 +222,45 @@ class WalletAccountActions extends StatelessWidget {
       }
     }
   }
+}
 
-  Widget _actionsList({
-    required WalletAccountActionBehavior action,
-    KeyAccount? account,
-    bool hasStake = false,
-    bool hasStakeActions = false,
-  }) {
-    return Builder(
-      builder: (context) {
-        return SeparatedRow(
-          separatorSize: DimensSize.d32,
-          mainAxisAlignment: MainAxisAlignment.center,
+class _Button extends StatelessWidget {
+  const _Button({
+    required this.label,
+    required this.icon,
+    required this.onPressed,
+    this.badge,
+  });
+
+  final String label;
+  final IconData icon;
+  final bool? badge;
+  final VoidCallback? onPressed;
+
+  @override
+  Widget build(BuildContext context) {
+    final theme = context.themeStyleV2;
+
+    return GestureDetector(
+      behavior: HitTestBehavior.translucent,
+      onTap: onPressed,
+      child: SizedBox(
+        width: 104,
+        child: Column(
           children: [
-            _buttonItem(
-              svg: Assets.images.arrowDown.path,
-              onPressed: account == null
-                  ? null
-                  : () => showReceiveFundsSheet(context, account.address),
-              title: LocaleKeys.receiveWord.tr(),
+            Padding(
+              padding: const EdgeInsets.all(DimensSizeV2.d18),
+              child: Icon(icon, size: DimensSizeV2.d20),
             ),
-            _buttonItem(
-              onPressed:
-                  account == null ? null : _actionOnPressed(context, action),
-              svg: _actionIcon(action),
-              title: _actionTitle(action),
-            ),
-            if (hasStake && allowStake)
-              _buttonItem(
-                svg: Assets.images.stake.path,
-                onPressed: account == null
-                    ? null
-                    : () => context.goFurther(
-                          AppRoute.walletStake.pathWithData(
-                            pathParameters: {
-                              walletStakeAddressPathParam:
-                                  currentAccount!.address.address,
-                            },
-                          ),
-                        ),
-                title: LocaleKeys.stakeWord.tr(),
-                showPoint: hasStakeActions,
+            Text(
+              label,
+              style: theme.textStyles.labelXSmall.copyWith(
+                color: theme.colors.content3,
               ),
+            ),
           ],
-        );
-      },
+        ),
+      ),
     );
   }
-
-  Widget _emptyActions() => IgnorePointer(
-        child: _actionsList(action: WalletAccountActionBehavior.send),
-      );
 }

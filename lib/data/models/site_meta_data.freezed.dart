@@ -25,8 +25,12 @@ mixin _$SiteMetaData {
   String? get image => throw _privateConstructorUsedError;
   String? get description => throw _privateConstructorUsedError;
 
+  /// Serializes this SiteMetaData to a JSON map.
   Map<String, dynamic> toJson() => throw _privateConstructorUsedError;
-  @JsonKey(ignore: true)
+
+  /// Create a copy of SiteMetaData
+  /// with the given fields replaced by the non-null parameter values.
+  @JsonKey(includeFromJson: false, includeToJson: false)
   $SiteMetaDataCopyWith<SiteMetaData> get copyWith =>
       throw _privateConstructorUsedError;
 }
@@ -50,6 +54,8 @@ class _$SiteMetaDataCopyWithImpl<$Res, $Val extends SiteMetaData>
   // ignore: unused_field
   final $Res Function($Val) _then;
 
+  /// Create a copy of SiteMetaData
+  /// with the given fields replaced by the non-null parameter values.
   @pragma('vm:prefer-inline')
   @override
   $Res call({
@@ -98,6 +104,8 @@ class __$$SiteMetaDataImplCopyWithImpl<$Res>
       _$SiteMetaDataImpl _value, $Res Function(_$SiteMetaDataImpl) _then)
       : super(_value, _then);
 
+  /// Create a copy of SiteMetaData
+  /// with the given fields replaced by the non-null parameter values.
   @pragma('vm:prefer-inline')
   @override
   $Res call({
@@ -162,11 +170,13 @@ class _$SiteMetaDataImpl implements _SiteMetaData {
                 other.description == description));
   }
 
-  @JsonKey(ignore: true)
+  @JsonKey(includeFromJson: false, includeToJson: false)
   @override
   int get hashCode => Object.hash(runtimeType, url, title, image, description);
 
-  @JsonKey(ignore: true)
+  /// Create a copy of SiteMetaData
+  /// with the given fields replaced by the non-null parameter values.
+  @JsonKey(includeFromJson: false, includeToJson: false)
   @override
   @pragma('vm:prefer-inline')
   _$$SiteMetaDataImplCopyWith<_$SiteMetaDataImpl> get copyWith =>
@@ -198,8 +208,11 @@ abstract class _SiteMetaData implements SiteMetaData {
   String? get image;
   @override
   String? get description;
+
+  /// Create a copy of SiteMetaData
+  /// with the given fields replaced by the non-null parameter values.
   @override
-  @JsonKey(ignore: true)
+  @JsonKey(includeFromJson: false, includeToJson: false)
   _$$SiteMetaDataImplCopyWith<_$SiteMetaDataImpl> get copyWith =>
       throw _privateConstructorUsedError;
 }

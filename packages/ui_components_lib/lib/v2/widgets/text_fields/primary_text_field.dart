@@ -23,6 +23,7 @@ class PrimaryTextField extends StatelessWidget {
     this.textEditingController,
     this.inputFormatters,
     this.validator,
+    this.autovalidateMode = AutovalidateMode.onUserInteraction,
     this.focusNode,
     this.keyboardType = TextInputType.text,
     this.fillColor,
@@ -62,6 +63,7 @@ class PrimaryTextField extends StatelessWidget {
   final EdgeInsets? contentPadding;
   final EdgeInsets? errorInlineIconPadding;
   final SuggestionsCallback<String>? suggestionsCallback;
+  final AutovalidateMode autovalidateMode;
 
   @override
   Widget build(BuildContext context) {
@@ -133,6 +135,7 @@ class PrimaryTextField extends StatelessWidget {
       controller: textEditingController,
       inputFormatters: inputFormatters,
       validator: validator,
+      autovalidateMode: autovalidateMode,
       focusNode: focusNode,
       keyboardType: keyboardType,
       fillColor: fillColor,

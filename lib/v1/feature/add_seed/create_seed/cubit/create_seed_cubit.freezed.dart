@@ -73,6 +73,9 @@ class _$CreateSeedCubitStateCopyWithImpl<$Res,
   final $Val _value;
   // ignore: unused_field
   final $Res Function($Val) _then;
+
+  /// Create a copy of CreateSeedCubitState
+  /// with the given fields replaced by the non-null parameter values.
 }
 
 /// @nodoc
@@ -89,6 +92,9 @@ class __$$InitialImplCopyWithImpl<$Res>
   __$$InitialImplCopyWithImpl(
       _$InitialImpl _value, $Res Function(_$InitialImpl) _then)
       : super(_value, _then);
+
+  /// Create a copy of CreateSeedCubitState
+  /// with the given fields replaced by the non-null parameter values.
 }
 
 /// @nodoc
@@ -194,6 +200,8 @@ class __$$GeneratedImplCopyWithImpl<$Res>
       _$GeneratedImpl _value, $Res Function(_$GeneratedImpl) _then)
       : super(_value, _then);
 
+  /// Create a copy of CreateSeedCubitState
+  /// with the given fields replaced by the non-null parameter values.
   @pragma('vm:prefer-inline')
   @override
   $Res call({
@@ -250,7 +258,9 @@ class _$GeneratedImpl implements _Generated {
   int get hashCode => Object.hash(
       runtimeType, const DeepCollectionEquality().hash(_words), isCopied);
 
-  @JsonKey(ignore: true)
+  /// Create a copy of CreateSeedCubitState
+  /// with the given fields replaced by the non-null parameter values.
+  @JsonKey(includeFromJson: false, includeToJson: false)
   @override
   @pragma('vm:prefer-inline')
   _$$GeneratedImplCopyWith<_$GeneratedImpl> get copyWith =>
@@ -326,7 +336,10 @@ abstract class _Generated implements CreateSeedCubitState {
 
   List<String> get words;
   bool get isCopied;
-  @JsonKey(ignore: true)
+
+  /// Create a copy of CreateSeedCubitState
+  /// with the given fields replaced by the non-null parameter values.
+  @JsonKey(includeFromJson: false, includeToJson: false)
   _$$GeneratedImplCopyWith<_$GeneratedImpl> get copyWith =>
       throw _privateConstructorUsedError;
 }

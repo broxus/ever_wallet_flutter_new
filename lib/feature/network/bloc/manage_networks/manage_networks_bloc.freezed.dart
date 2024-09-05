@@ -106,6 +106,9 @@ class _$ManageNetworksEventCopyWithImpl<$Res, $Val extends ManageNetworksEvent>
   final $Val _value;
   // ignore: unused_field
   final $Res Function($Val) _then;
+
+  /// Create a copy of ManageNetworksEvent
+  /// with the given fields replaced by the non-null parameter values.
 }
 
 /// @nodoc
@@ -128,6 +131,8 @@ class __$$setCurrentConnectionIdImplCopyWithImpl<$Res>
       $Res Function(_$setCurrentConnectionIdImpl) _then)
       : super(_value, _then);
 
+  /// Create a copy of ManageNetworksEvent
+  /// with the given fields replaced by the non-null parameter values.
   @pragma('vm:prefer-inline')
   @override
   $Res call({
@@ -166,7 +171,9 @@ class _$setCurrentConnectionIdImpl implements _setCurrentConnectionId {
   @override
   int get hashCode => Object.hash(runtimeType, id);
 
-  @JsonKey(ignore: true)
+  /// Create a copy of ManageNetworksEvent
+  /// with the given fields replaced by the non-null parameter values.
+  @JsonKey(includeFromJson: false, includeToJson: false)
   @override
   @pragma('vm:prefer-inline')
   _$$setCurrentConnectionIdImplCopyWith<_$setCurrentConnectionIdImpl>
@@ -275,7 +282,10 @@ abstract class _setCurrentConnectionId implements ManageNetworksEvent {
       _$setCurrentConnectionIdImpl;
 
   String get id;
-  @JsonKey(ignore: true)
+
+  /// Create a copy of ManageNetworksEvent
+  /// with the given fields replaced by the non-null parameter values.
+  @JsonKey(includeFromJson: false, includeToJson: false)
   _$$setCurrentConnectionIdImplCopyWith<_$setCurrentConnectionIdImpl>
       get copyWith => throw _privateConstructorUsedError;
 }
@@ -297,6 +307,8 @@ class __$$setConnectionsImplCopyWithImpl<$Res>
       _$setConnectionsImpl _value, $Res Function(_$setConnectionsImpl) _then)
       : super(_value, _then);
 
+  /// Create a copy of ManageNetworksEvent
+  /// with the given fields replaced by the non-null parameter values.
   @pragma('vm:prefer-inline')
   @override
   $Res call({
@@ -343,7 +355,9 @@ class _$setConnectionsImpl implements _setConnections {
   int get hashCode => Object.hash(
       runtimeType, const DeepCollectionEquality().hash(_connections));
 
-  @JsonKey(ignore: true)
+  /// Create a copy of ManageNetworksEvent
+  /// with the given fields replaced by the non-null parameter values.
+  @JsonKey(includeFromJson: false, includeToJson: false)
   @override
   @pragma('vm:prefer-inline')
   _$$setConnectionsImplCopyWith<_$setConnectionsImpl> get copyWith =>
@@ -452,7 +466,10 @@ abstract class _setConnections implements ManageNetworksEvent {
       {required final List<ConnectionData> connections}) = _$setConnectionsImpl;
 
   List<ConnectionData> get connections;
-  @JsonKey(ignore: true)
+
+  /// Create a copy of ManageNetworksEvent
+  /// with the given fields replaced by the non-null parameter values.
+  @JsonKey(includeFromJson: false, includeToJson: false)
   _$$setConnectionsImplCopyWith<_$setConnectionsImpl> get copyWith =>
       throw _privateConstructorUsedError;
 }
@@ -477,6 +494,8 @@ class __$$updateCurrentConnectionIdImplCopyWithImpl<$Res>
       $Res Function(_$updateCurrentConnectionIdImpl) _then)
       : super(_value, _then);
 
+  /// Create a copy of ManageNetworksEvent
+  /// with the given fields replaced by the non-null parameter values.
   @pragma('vm:prefer-inline')
   @override
   $Res call({
@@ -515,7 +534,9 @@ class _$updateCurrentConnectionIdImpl implements _updateCurrentConnectionId {
   @override
   int get hashCode => Object.hash(runtimeType, id);
 
-  @JsonKey(ignore: true)
+  /// Create a copy of ManageNetworksEvent
+  /// with the given fields replaced by the non-null parameter values.
+  @JsonKey(includeFromJson: false, includeToJson: false)
   @override
   @pragma('vm:prefer-inline')
   _$$updateCurrentConnectionIdImplCopyWith<_$updateCurrentConnectionIdImpl>
@@ -624,7 +645,10 @@ abstract class _updateCurrentConnectionId implements ManageNetworksEvent {
       _$updateCurrentConnectionIdImpl;
 
   String get id;
-  @JsonKey(ignore: true)
+
+  /// Create a copy of ManageNetworksEvent
+  /// with the given fields replaced by the non-null parameter values.
+  @JsonKey(includeFromJson: false, includeToJson: false)
   _$$updateCurrentConnectionIdImplCopyWith<_$updateCurrentConnectionIdImpl>
       get copyWith => throw _privateConstructorUsedError;
 }
@@ -648,6 +672,8 @@ class __$$addConnectionImplCopyWithImpl<$Res>
       _$addConnectionImpl _value, $Res Function(_$addConnectionImpl) _then)
       : super(_value, _then);
 
+  /// Create a copy of ManageNetworksEvent
+  /// with the given fields replaced by the non-null parameter values.
   @pragma('vm:prefer-inline')
   @override
   $Res call({
@@ -661,6 +687,8 @@ class __$$addConnectionImplCopyWithImpl<$Res>
     ));
   }
 
+  /// Create a copy of ManageNetworksEvent
+  /// with the given fields replaced by the non-null parameter values.
   @override
   @pragma('vm:prefer-inline')
   $ConnectionDataCopyWith<$Res> get connection {
@@ -695,7 +723,9 @@ class _$addConnectionImpl implements _addConnection {
   @override
   int get hashCode => Object.hash(runtimeType, connection);
 
-  @JsonKey(ignore: true)
+  /// Create a copy of ManageNetworksEvent
+  /// with the given fields replaced by the non-null parameter values.
+  @JsonKey(includeFromJson: false, includeToJson: false)
   @override
   @pragma('vm:prefer-inline')
   _$$addConnectionImplCopyWith<_$addConnectionImpl> get copyWith =>
@@ -803,7 +833,10 @@ abstract class _addConnection implements ManageNetworksEvent {
       _$addConnectionImpl;
 
   ConnectionData get connection;
-  @JsonKey(ignore: true)
+
+  /// Create a copy of ManageNetworksEvent
+  /// with the given fields replaced by the non-null parameter values.
+  @JsonKey(includeFromJson: false, includeToJson: false)
   _$$addConnectionImplCopyWith<_$addConnectionImpl> get copyWith =>
       throw _privateConstructorUsedError;
 }
@@ -827,6 +860,8 @@ class __$$updateConnectionImplCopyWithImpl<$Res>
       $Res Function(_$updateConnectionImpl) _then)
       : super(_value, _then);
 
+  /// Create a copy of ManageNetworksEvent
+  /// with the given fields replaced by the non-null parameter values.
   @pragma('vm:prefer-inline')
   @override
   $Res call({
@@ -840,6 +875,8 @@ class __$$updateConnectionImplCopyWithImpl<$Res>
     ));
   }
 
+  /// Create a copy of ManageNetworksEvent
+  /// with the given fields replaced by the non-null parameter values.
   @override
   @pragma('vm:prefer-inline')
   $ConnectionDataCopyWith<$Res> get connection {
@@ -874,7 +911,9 @@ class _$updateConnectionImpl implements _updateConnection {
   @override
   int get hashCode => Object.hash(runtimeType, connection);
 
-  @JsonKey(ignore: true)
+  /// Create a copy of ManageNetworksEvent
+  /// with the given fields replaced by the non-null parameter values.
+  @JsonKey(includeFromJson: false, includeToJson: false)
   @override
   @pragma('vm:prefer-inline')
   _$$updateConnectionImplCopyWith<_$updateConnectionImpl> get copyWith =>
@@ -983,7 +1022,10 @@ abstract class _updateConnection implements ManageNetworksEvent {
       _$updateConnectionImpl;
 
   ConnectionData get connection;
-  @JsonKey(ignore: true)
+
+  /// Create a copy of ManageNetworksEvent
+  /// with the given fields replaced by the non-null parameter values.
+  @JsonKey(includeFromJson: false, includeToJson: false)
   _$$updateConnectionImplCopyWith<_$updateConnectionImpl> get copyWith =>
       throw _privateConstructorUsedError;
 }
@@ -1005,6 +1047,8 @@ class __$$removeConnectionImplCopyWithImpl<$Res>
       $Res Function(_$removeConnectionImpl) _then)
       : super(_value, _then);
 
+  /// Create a copy of ManageNetworksEvent
+  /// with the given fields replaced by the non-null parameter values.
   @pragma('vm:prefer-inline')
   @override
   $Res call({
@@ -1043,7 +1087,9 @@ class _$removeConnectionImpl implements _removeConnection {
   @override
   int get hashCode => Object.hash(runtimeType, id);
 
-  @JsonKey(ignore: true)
+  /// Create a copy of ManageNetworksEvent
+  /// with the given fields replaced by the non-null parameter values.
+  @JsonKey(includeFromJson: false, includeToJson: false)
   @override
   @pragma('vm:prefer-inline')
   _$$removeConnectionImplCopyWith<_$removeConnectionImpl> get copyWith =>
@@ -1152,7 +1198,10 @@ abstract class _removeConnection implements ManageNetworksEvent {
       _$removeConnectionImpl;
 
   String get id;
-  @JsonKey(ignore: true)
+
+  /// Create a copy of ManageNetworksEvent
+  /// with the given fields replaced by the non-null parameter values.
+  @JsonKey(includeFromJson: false, includeToJson: false)
   _$$removeConnectionImplCopyWith<_$removeConnectionImpl> get copyWith =>
       throw _privateConstructorUsedError;
 }
@@ -1174,6 +1223,8 @@ class __$$revertConnectionImplCopyWithImpl<$Res>
       $Res Function(_$revertConnectionImpl) _then)
       : super(_value, _then);
 
+  /// Create a copy of ManageNetworksEvent
+  /// with the given fields replaced by the non-null parameter values.
   @pragma('vm:prefer-inline')
   @override
   $Res call({
@@ -1212,7 +1263,9 @@ class _$revertConnectionImpl implements _revertConnection {
   @override
   int get hashCode => Object.hash(runtimeType, id);
 
-  @JsonKey(ignore: true)
+  /// Create a copy of ManageNetworksEvent
+  /// with the given fields replaced by the non-null parameter values.
+  @JsonKey(includeFromJson: false, includeToJson: false)
   @override
   @pragma('vm:prefer-inline')
   _$$revertConnectionImplCopyWith<_$revertConnectionImpl> get copyWith =>
@@ -1321,7 +1374,10 @@ abstract class _revertConnection implements ManageNetworksEvent {
       _$revertConnectionImpl;
 
   String get id;
-  @JsonKey(ignore: true)
+
+  /// Create a copy of ManageNetworksEvent
+  /// with the given fields replaced by the non-null parameter values.
+  @JsonKey(includeFromJson: false, includeToJson: false)
   _$$revertConnectionImplCopyWith<_$revertConnectionImpl> get copyWith =>
       throw _privateConstructorUsedError;
 }
@@ -1331,7 +1387,9 @@ mixin _$ManageNetworksState {
   String get currentConnectionId => throw _privateConstructorUsedError;
   List<ConnectionData> get connections => throw _privateConstructorUsedError;
 
-  @JsonKey(ignore: true)
+  /// Create a copy of ManageNetworksState
+  /// with the given fields replaced by the non-null parameter values.
+  @JsonKey(includeFromJson: false, includeToJson: false)
   $ManageNetworksStateCopyWith<ManageNetworksState> get copyWith =>
       throw _privateConstructorUsedError;
 }
@@ -1355,6 +1413,8 @@ class _$ManageNetworksStateCopyWithImpl<$Res, $Val extends ManageNetworksState>
   // ignore: unused_field
   final $Res Function($Val) _then;
 
+  /// Create a copy of ManageNetworksState
+  /// with the given fields replaced by the non-null parameter values.
   @pragma('vm:prefer-inline')
   @override
   $Res call({
@@ -1393,6 +1453,8 @@ class __$$ManageNetworksStateImplCopyWithImpl<$Res>
       $Res Function(_$ManageNetworksStateImpl) _then)
       : super(_value, _then);
 
+  /// Create a copy of ManageNetworksState
+  /// with the given fields replaced by the non-null parameter values.
   @pragma('vm:prefer-inline')
   @override
   $Res call({
@@ -1450,7 +1512,9 @@ class _$ManageNetworksStateImpl implements _ManageNetworksState {
   int get hashCode => Object.hash(runtimeType, currentConnectionId,
       const DeepCollectionEquality().hash(_connections));
 
-  @JsonKey(ignore: true)
+  /// Create a copy of ManageNetworksState
+  /// with the given fields replaced by the non-null parameter values.
+  @JsonKey(includeFromJson: false, includeToJson: false)
   @override
   @pragma('vm:prefer-inline')
   _$$ManageNetworksStateImplCopyWith<_$ManageNetworksStateImpl> get copyWith =>
@@ -1468,8 +1532,11 @@ abstract class _ManageNetworksState implements ManageNetworksState {
   String get currentConnectionId;
   @override
   List<ConnectionData> get connections;
+
+  /// Create a copy of ManageNetworksState
+  /// with the given fields replaced by the non-null parameter values.
   @override
-  @JsonKey(ignore: true)
+  @JsonKey(includeFromJson: false, includeToJson: false)
   _$$ManageNetworksStateImplCopyWith<_$ManageNetworksStateImpl> get copyWith =>
       throw _privateConstructorUsedError;
 }

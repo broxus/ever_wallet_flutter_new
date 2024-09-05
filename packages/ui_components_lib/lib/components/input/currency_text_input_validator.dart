@@ -26,6 +26,7 @@ class CurrencyTextInputValidator {
     this.minError,
     this.max,
     this.maxError,
+    this.decimalSeparators,
   })  : assert(
           min != null && minError != null || min == null && minError == null,
           'minError must be provided when min is provided',
@@ -40,6 +41,7 @@ class CurrencyTextInputValidator {
       currency: currency,
       allowNegative: allowNegative,
       includeTicker: includeTicker,
+      decimalSeparators: decimalSeparators,
     );
   }
 
@@ -72,6 +74,7 @@ class CurrencyTextInputValidator {
       minError: minError,
       max: max,
       maxError: maxError,
+      decimalSeparators: formatter.decimalSeparators,
     );
   }
 
@@ -84,6 +87,7 @@ class CurrencyTextInputValidator {
   final String? minError;
   final Fixed? max;
   final String? maxError;
+  final List<String>? decimalSeparators;
 
   late final RegExp _fullRegExp;
   late int _scale;
@@ -149,6 +153,7 @@ class CurrencyTextInputValidator {
   String? minError,
   Fixed? max,
   String? maxError,
+  List<String>? decimalSeparators,
 }) {
   final validator = CurrencyTextInputValidator(
     currency,
@@ -160,6 +165,7 @@ class CurrencyTextInputValidator {
     minError: minError,
     max: max,
     maxError: maxError,
+    decimalSeparators: decimalSeparators,
   );
   final formatter = CurrencyTextInputFormatter.fromValidator(validator);
 

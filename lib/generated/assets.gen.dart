@@ -7,10 +7,10 @@
 // ignore_for_file: type=lint
 // ignore_for_file: directives_ordering,unnecessary_import,implicit_dynamic_list_literal,deprecated_member_use
 
-import 'package:flutter/widgets.dart';
 import 'package:flutter/services.dart';
-import 'package:flutter_svg/flutter_svg.dart';
-import 'package:vector_graphics/vector_graphics.dart';
+import 'package:flutter/widgets.dart';
+import 'package:flutter_svg/flutter_svg.dart' as _svg;
+import 'package:vector_graphics/vector_graphics.dart' as _vg;
 
 class $AssetsAbiGen {
   const $AssetsAbiGen();
@@ -44,6 +44,10 @@ class $AssetsImagesGen {
 
   /// File path: assets/images/alert.svg
   SvgGenImage get alert => const SvgGenImage('assets/images/alert.svg');
+
+  /// Directory path: assets/images/alert_octagon_fill
+  $AssetsImagesAlertOctagonFillGen get alertOctagonFill =>
+      const $AssetsImagesAlertOctagonFillGen();
 
   /// File path: assets/images/alert_rounded.svg
   SvgGenImage get alertRounded =>
@@ -119,6 +123,10 @@ class $AssetsImagesGen {
 
   /// File path: assets/images/check.svg
   SvgGenImage get check => const SvgGenImage('assets/images/check.svg');
+
+  /// Directory path: assets/images/check_circle_fill
+  $AssetsImagesCheckCircleFillGen get checkCircleFill =>
+      const $AssetsImagesCheckCircleFillGen();
 
   /// File path: assets/images/check_empty.svg
   SvgGenImage get checkEmpty =>
@@ -205,6 +213,10 @@ class $AssetsImagesGen {
   SvgGenImage get historyFill =>
       const SvgGenImage('assets/images/history_fill.svg');
 
+  /// Directory path: assets/images/homescreen_bg
+  $AssetsImagesHomescreenBgGen get homescreenBg =>
+      const $AssetsImagesHomescreenBgGen();
+
   /// File path: assets/images/ic_match.svg
   SvgGenImage get icMatch => const SvgGenImage('assets/images/ic_match.svg');
 
@@ -232,6 +244,9 @@ class $AssetsImagesGen {
   /// File path: assets/images/lock.svg
   SvgGenImage get lock => const SvgGenImage('assets/images/lock.svg');
 
+  /// File path: assets/images/logo.svg
+  SvgGenImage get logo => const SvgGenImage('assets/images/logo.svg');
+
   /// File path: assets/images/minus.svg
   SvgGenImage get minus => const SvgGenImage('assets/images/minus.svg');
 
@@ -250,9 +265,21 @@ class $AssetsImagesGen {
   SvgGenImage get navigation =>
       const SvgGenImage('assets/images/navigation.svg');
 
+  /// File path: assets/images/network_default.svg
+  SvgGenImage get networkDefault =>
+      const SvgGenImage('assets/images/network_default.svg');
+
   /// File path: assets/images/network_earth.png
   AssetGenImage get networkEarth =>
       const AssetGenImage('assets/images/network_earth.png');
+
+  /// File path: assets/images/network_ever.svg
+  SvgGenImage get networkEver =>
+      const SvgGenImage('assets/images/network_ever.svg');
+
+  /// File path: assets/images/network_venom.svg
+  SvgGenImage get networkVenom =>
+      const SvgGenImage('assets/images/network_venom.svg');
 
   /// Directory path: assets/images/onboarding
   $AssetsImagesOnboardingGen get onboarding =>
@@ -324,6 +351,10 @@ class $AssetsImagesGen {
 
   /// File path: assets/images/support.svg
   SvgGenImage get support => const SvgGenImage('assets/images/support.svg');
+
+  /// File path: assets/images/token_default_icon.svg
+  SvgGenImage get tokenDefaultIcon =>
+      const SvgGenImage('assets/images/token_default_icon.svg');
 
   /// File path: assets/images/trash.svg
   SvgGenImage get trash => const SvgGenImage('assets/images/trash.svg');
@@ -404,12 +435,16 @@ class $AssetsImagesGen {
         importFill,
         key,
         lock,
+        logo,
         minus,
         moon,
         navigateBack,
         navigateForward,
         navigation,
+        networkDefault,
         networkEarth,
+        networkEver,
+        networkVenom,
         openedEye,
         paste,
         person,
@@ -429,6 +464,7 @@ class $AssetsImagesGen {
         stake,
         star,
         support,
+        tokenDefaultIcon,
         trash,
         venom,
         venomVector,
@@ -463,6 +499,39 @@ class $AssetsTranslationsGen {
 
   /// List of all assets
   List<String> get values => [en, ko];
+}
+
+class $AssetsImagesAlertOctagonFillGen {
+  const $AssetsImagesAlertOctagonFillGen();
+
+  /// File path: assets/images/alert_octagon_fill/alert_octagon_fill.png
+  AssetGenImage get alertOctagonFill => const AssetGenImage(
+      'assets/images/alert_octagon_fill/alert_octagon_fill.png');
+
+  /// List of all assets
+  List<AssetGenImage> get values => [alertOctagonFill];
+}
+
+class $AssetsImagesCheckCircleFillGen {
+  const $AssetsImagesCheckCircleFillGen();
+
+  /// File path: assets/images/check_circle_fill/check_circle_fill.png
+  AssetGenImage get checkCircleFill => const AssetGenImage(
+      'assets/images/check_circle_fill/check_circle_fill.png');
+
+  /// List of all assets
+  List<AssetGenImage> get values => [checkCircleFill];
+}
+
+class $AssetsImagesHomescreenBgGen {
+  const $AssetsImagesHomescreenBgGen();
+
+  /// File path: assets/images/homescreen_bg/homescreen_bg.png
+  AssetGenImage get homescreenBg =>
+      const AssetGenImage('assets/images/homescreen_bg/homescreen_bg.png');
+
+  /// List of all assets
+  List<AssetGenImage> get values => [homescreenBg];
 }
 
 class $AssetsImagesLangIconsGen {
@@ -774,7 +843,7 @@ class SvgGenImage {
   final Set<String> flavors;
   final bool _isVecFormat;
 
-  SvgPicture svg({
+  _svg.SvgPicture svg({
     Key? key,
     bool matchTextDirection = false,
     AssetBundle? bundle,
@@ -787,29 +856,29 @@ class SvgGenImage {
     WidgetBuilder? placeholderBuilder,
     String? semanticsLabel,
     bool excludeFromSemantics = false,
-    SvgTheme? theme,
+    _svg.SvgTheme? theme,
     ColorFilter? colorFilter,
     Clip clipBehavior = Clip.hardEdge,
     @deprecated Color? color,
     @deprecated BlendMode colorBlendMode = BlendMode.srcIn,
     @deprecated bool cacheColorFilter = false,
   }) {
-    final BytesLoader loader;
+    final _svg.BytesLoader loader;
     if (_isVecFormat) {
-      loader = AssetBytesLoader(
+      loader = _vg.AssetBytesLoader(
         _assetName,
         assetBundle: bundle,
         packageName: package,
       );
     } else {
-      loader = SvgAssetLoader(
+      loader = _svg.SvgAssetLoader(
         _assetName,
         assetBundle: bundle,
         packageName: package,
         theme: theme,
       );
     }
-    return SvgPicture(
+    return _svg.SvgPicture(
       loader,
       key: key,
       matchTextDirection: matchTextDirection,

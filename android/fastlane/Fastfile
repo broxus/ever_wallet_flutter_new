@@ -35,7 +35,7 @@ platform :android do
   desc "Deploy a new build to the FAD"
   lane :deploy_fad do |options|
     firebase_app_distribution(
-      app: "1:1017783238389:android:23c9e07bee6cc2ef2e4fbc",
+      app: "1:1017783238389:android:de95e7bcfdb82f8f2e4fbc",
       groups: "qa",
       android_artifact_type: "APK",
       android_artifact_path: "../build/app/outputs/flutter-apk/app-production-release.apk",

@@ -26,8 +26,12 @@ mixin _$AccountBalanceModel {
   @moneyFromStringJsonConverter
   Money get tokenBalance => throw _privateConstructorUsedError;
 
+  /// Serializes this AccountBalanceModel to a JSON map.
   Map<String, dynamic> toJson() => throw _privateConstructorUsedError;
-  @JsonKey(ignore: true)
+
+  /// Create a copy of AccountBalanceModel
+  /// with the given fields replaced by the non-null parameter values.
+  @JsonKey(includeFromJson: false, includeToJson: false)
   $AccountBalanceModelCopyWith<AccountBalanceModel> get copyWith =>
       throw _privateConstructorUsedError;
 }
@@ -56,6 +60,8 @@ class _$AccountBalanceModelCopyWithImpl<$Res, $Val extends AccountBalanceModel>
   // ignore: unused_field
   final $Res Function($Val) _then;
 
+  /// Create a copy of AccountBalanceModel
+  /// with the given fields replaced by the non-null parameter values.
   @pragma('vm:prefer-inline')
   @override
   $Res call({
@@ -79,6 +85,8 @@ class _$AccountBalanceModelCopyWithImpl<$Res, $Val extends AccountBalanceModel>
     ) as $Val);
   }
 
+  /// Create a copy of AccountBalanceModel
+  /// with the given fields replaced by the non-null parameter values.
   @override
   @pragma('vm:prefer-inline')
   $AddressCopyWith<$Res> get rootTokenContract {
@@ -113,6 +121,8 @@ class __$$AccountBalanceModelImplCopyWithImpl<$Res>
       $Res Function(_$AccountBalanceModelImpl) _then)
       : super(_value, _then);
 
+  /// Create a copy of AccountBalanceModel
+  /// with the given fields replaced by the non-null parameter values.
   @pragma('vm:prefer-inline')
   @override
   $Res call({
@@ -175,12 +185,14 @@ class _$AccountBalanceModelImpl implements _AccountBalanceModel {
                 other.tokenBalance == tokenBalance));
   }
 
-  @JsonKey(ignore: true)
+  @JsonKey(includeFromJson: false, includeToJson: false)
   @override
   int get hashCode =>
       Object.hash(runtimeType, rootTokenContract, fiatBalance, tokenBalance);
 
-  @JsonKey(ignore: true)
+  /// Create a copy of AccountBalanceModel
+  /// with the given fields replaced by the non-null parameter values.
+  @JsonKey(includeFromJson: false, includeToJson: false)
   @override
   @pragma('vm:prefer-inline')
   _$$AccountBalanceModelImplCopyWith<_$AccountBalanceModelImpl> get copyWith =>
@@ -213,8 +225,11 @@ abstract class _AccountBalanceModel implements AccountBalanceModel {
   @override
   @moneyFromStringJsonConverter
   Money get tokenBalance;
+
+  /// Create a copy of AccountBalanceModel
+  /// with the given fields replaced by the non-null parameter values.
   @override
-  @JsonKey(ignore: true)
+  @JsonKey(includeFromJson: false, includeToJson: false)
   _$$AccountBalanceModelImplCopyWith<_$AccountBalanceModelImpl> get copyWith =>
       throw _privateConstructorUsedError;
 }

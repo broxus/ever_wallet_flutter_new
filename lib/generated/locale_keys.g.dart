@@ -140,6 +140,7 @@ abstract class LocaleKeys {
   static const networkNameHint = 'networkNameHint';
   static const networkEndpoint = 'networkEndpoint';
   static const networkEndpointHint = 'networkEndpointHint';
+  static const networkAdditionalEndpointHint = 'networkAdditionalEndpointHint';
   static const networkEndpointLocal = 'networkEndpointLocal';
   static const networkCurrencySymbol = 'networkCurrencySymbol';
   static const networkCurrencySymbolHint = 'networkCurrencySymbolHint';
@@ -158,6 +159,7 @@ abstract class LocaleKeys {
   static const networkAddedSheetTitle = 'networkAddedSheetTitle';
   static const networkAddedSheetSwitch = 'networkAddedSheetSwitch';
   static const networkAddedSheetContinue = 'networkAddedSheetContinue';
+  static const networkDeleteTitle = 'networkDeleteTitle';
   static const networkDeleted = 'networkDeleted';
   static const networkDeletedUndo = 'networkDeletedUndo';
   static const networkSaved = 'networkSaved';
@@ -224,24 +226,6 @@ abstract class LocaleKeys {
   static const browserBookmarks = 'browserBookmarks';
   static const browserPopularResources = 'browserPopularResources';
   static const browserSeeAll = 'browserSeeAll';
-  static const browserLink01Title = 'browserLink01Title';
-  static const browserLink01Url = 'browserLink01Url';
-  static const browserLink02Title = 'browserLink02Title';
-  static const browserLink02Url = 'browserLink02Url';
-  static const browserLink03Title = 'browserLink03Title';
-  static const browserLink03Url = 'browserLink03Url';
-  static const browserLink04Title = 'browserLink04Title';
-  static const browserLink04Url = 'browserLink04Url';
-  static const browserLink05Title = 'browserLink05Title';
-  static const browserLink05Url = 'browserLink05Url';
-  static const browserLink06Title = 'browserLink06Title';
-  static const browserLink06Url = 'browserLink06Url';
-  static const browserCardLink01Title = 'browserCardLink01Title';
-  static const browserCardLink01Description = 'browserCardLink01Description';
-  static const browserCardLink01Url = 'browserCardLink01Url';
-  static const browserCardLink02Title = 'browserCardLink02Title';
-  static const browserCardLink02Description = 'browserCardLink02Description';
-  static const browserCardLink02Url = 'browserCardLink02Url';
   static const browserBookmarkSettings = 'browserBookmarkSettings';
   static const browserBookmarkShare = 'browserBookmarkShare';
   static const browserBookmarkRename = 'browserBookmarkRename';
@@ -273,7 +257,7 @@ abstract class LocaleKeys {
   static const searchWord = 'searchWord';
   static const customToken = 'customToken';
   static const enterAssetName = 'enterAssetName';
-  static const saveWord = 'saveWord';
+  static const saveChanges = 'saveChanges';
   static const selectNewAssets = 'selectNewAssets';
   static const sorryNoAssetsFound = 'sorryNoAssetsFound';
   static const rootTokenContract = 'rootTokenContract';
@@ -282,6 +266,7 @@ abstract class LocaleKeys {
   static const oldWord = 'oldWord';
   static const feesWord = 'feesWord';
   static const feesWithData = 'feesWithData';
+  static const startExploring = 'startExploring';
   static const statusWord = 'statusWord';
   static const leftForConfirmation = 'leftForConfirmation';
   static const transactionStatusWaitingConfirmation =
@@ -515,6 +500,7 @@ abstract class LocaleKeys {
   static const addCommentHint = 'addCommentHint';
   static const networkFee = 'networkFee';
   static const password = 'password';
+  static const exploreConnectFavoriteSites = 'exploreConnectFavoriteSites';
   static const transactionExpired = 'transactionExpired';
   static const transactionCompleted = 'transactionCompleted';
   static const received = 'received';
@@ -540,4 +526,46 @@ abstract class LocaleKeys {
   static const sign = 'sign';
   static const encrypt = 'encrypt';
   static const decrypt = 'decrypt';
+  static const accounts = 'accounts';
+  static const accountSettings = 'accountSettings';
+  static const viewInExplorer = 'viewInExplorer';
+  static const hideAccount = 'hideAccount';
+  static const advancedSettings = 'advancedSettings';
+  static const backToSettings = 'backToSettings';
+  static const createNewAccount = 'createNewAccount';
+  static const addExternalAccount = 'addExternalAccount';
+  static const confirmAction = 'confirmAction';
+  static const enterYourPassword = 'enterYourPassword';
+  static const useFaceID = 'useFaceID';
+  static const useFingerprint = 'useFingerprint';
+  static const accountName = 'accountName';
+  static const defaultWord = 'defaultWord';
+  static const multisignatureWord = 'multisignatureWord';
+  static const forExperiencedUsers = 'forExperiencedUsers';
+  static const walletDescriptionSurfWallet = 'walletDescriptionSurfWallet';
+  static const walletDescriptionWalletV3 = 'walletDescriptionWalletV3';
+  static const walletDescriptionSafeMultisigWallet =
+      'walletDescriptionSafeMultisigWallet';
+  static const walletDescriptionSafeMultisigWallet24h =
+      'walletDescriptionSafeMultisigWallet24h';
+  static const walletDescriptionSetcodeMultisigWallet =
+      'walletDescriptionSetcodeMultisigWallet';
+  static const walletDescriptionSetcodeMultisigWallet24h =
+      'walletDescriptionSetcodeMultisigWallet24h';
+  static const walletDescriptionBridgeMultisigWallet =
+      'walletDescriptionBridgeMultisigWallet';
+  static const walletDescriptionHighloadWalletV2 =
+      'walletDescriptionHighloadWalletV2';
+  static const walletDescriptionMultisig2 = 'walletDescriptionMultisig2';
+  static const walletDescriptionMultisig2_1 = 'walletDescriptionMultisig2_1';
+  static const walletDescriptionEverWallet = 'walletDescriptionEverWallet';
+  static const deprecatedTypes = 'deprecatedTypes';
+  static const deprecatedTypesHint = 'deprecatedTypesHint';
+  static const newAccount = 'newAccount';
+  static const createAccountError = 'createAccountError';
+  static const accountAddedSheetTitle = 'accountAddedSheetTitle';
+  static const accountAddedSheetSubtitle = 'accountAddedSheetSubtitle';
+  static const accountAddedSheetSwitch = 'accountAddedSheetSwitch';
+  static const accountAddedSheetContinue = 'accountAddedSheetContinue';
+  static const invalidReceiverAddress = 'invalidReceiverAddress';
 }

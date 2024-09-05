@@ -1,15 +1,16 @@
 import 'package:flutter/material.dart';
 import 'package:money2/money2.dart';
-import 'package:money2_improver/money2_improver.dart';
+import 'package:money2_fixer/money2_fixer.dart';
 import 'package:ui_components_lib/v2/ui_components_lib_v2.dart';
 
 class AmountWidget extends StatelessWidget {
   const AmountWidget({
     required this.amount,
-    required this.symbol,
+    this.symbol,
     this.icon,
     this.style,
     this.sign,
+    this.mainAxisAlignment,
     super.key,
   });
 
@@ -18,16 +19,18 @@ class AmountWidget extends StatelessWidget {
     this.icon,
     this.style,
     this.sign,
+    this.mainAxisAlignment,
     super.key,
     String? pattern,
   })  : amount = amount.formatImproved(pattern: pattern),
         symbol = amount.currency.symbol;
 
   final String amount;
-  final String symbol;
+  final String? symbol;
   final Widget? icon;
   final TextStyle? style;
   final String? sign;
+  final MainAxisAlignment? mainAxisAlignment;
 
   @override
   Widget build(BuildContext context) {
@@ -35,6 +38,7 @@ class AmountWidget extends StatelessWidget {
 
     return Row(
       mainAxisSize: MainAxisSize.min,
+      mainAxisAlignment: mainAxisAlignment ?? MainAxisAlignment.start,
       children: [
         if (icon != null) icon!,
         if (icon != null) const SizedBox(width: DimensSizeV2.d8),
@@ -47,8 +51,9 @@ class AmountWidget extends StatelessWidget {
             maxLines: 1,
           ),
         ),
-        const SizedBox(width: DimensSizeV2.d4),
-        Text(symbol, style: style ?? theme.textStyles.labelSmall),
+        if (symbol != null) const SizedBox(width: DimensSizeV2.d4),
+        if (symbol != null)
+          Text(symbol!, style: style ?? theme.textStyles.labelSmall),
       ],
     );
   }

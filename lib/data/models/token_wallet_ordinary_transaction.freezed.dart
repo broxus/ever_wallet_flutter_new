@@ -35,7 +35,9 @@ mixin _$TokenWalletOrdinaryTransaction {
   String? get transferBounced => throw _privateConstructorUsedError;
   String? get swapBackBounced => throw _privateConstructorUsedError;
 
-  @JsonKey(ignore: true)
+  /// Create a copy of TokenWalletOrdinaryTransaction
+  /// with the given fields replaced by the non-null parameter values.
+  @JsonKey(includeFromJson: false, includeToJson: false)
   $TokenWalletOrdinaryTransactionCopyWith<TokenWalletOrdinaryTransaction>
       get copyWith => throw _privateConstructorUsedError;
 }
@@ -81,6 +83,8 @@ class _$TokenWalletOrdinaryTransactionCopyWithImpl<$Res,
   // ignore: unused_field
   final $Res Function($Val) _then;
 
+  /// Create a copy of TokenWalletOrdinaryTransaction
+  /// with the given fields replaced by the non-null parameter values.
   @pragma('vm:prefer-inline')
   @override
   $Res call({
@@ -159,6 +163,8 @@ class _$TokenWalletOrdinaryTransactionCopyWithImpl<$Res,
     ) as $Val);
   }
 
+  /// Create a copy of TokenWalletOrdinaryTransaction
+  /// with the given fields replaced by the non-null parameter values.
   @override
   @pragma('vm:prefer-inline')
   $AddressCopyWith<$Res> get address {
@@ -167,6 +173,8 @@ class _$TokenWalletOrdinaryTransactionCopyWithImpl<$Res,
     });
   }
 
+  /// Create a copy of TokenWalletOrdinaryTransaction
+  /// with the given fields replaced by the non-null parameter values.
   @override
   @pragma('vm:prefer-inline')
   $TokenIncomingTransferCopyWith<$Res>? get incomingTransfer {
@@ -180,6 +188,8 @@ class _$TokenWalletOrdinaryTransactionCopyWithImpl<$Res,
     });
   }
 
+  /// Create a copy of TokenWalletOrdinaryTransaction
+  /// with the given fields replaced by the non-null parameter values.
   @override
   @pragma('vm:prefer-inline')
   $TokenOutgoingTransferCopyWith<$Res>? get outgoingTransfer {
@@ -193,6 +203,8 @@ class _$TokenWalletOrdinaryTransactionCopyWithImpl<$Res,
     });
   }
 
+  /// Create a copy of TokenWalletOrdinaryTransaction
+  /// with the given fields replaced by the non-null parameter values.
   @override
   @pragma('vm:prefer-inline')
   $TokenSwapBackCopyWith<$Res>? get swapBack {
@@ -251,6 +263,8 @@ class __$$TokenWalletOrdinaryTransactionImplCopyWithImpl<$Res>
       $Res Function(_$TokenWalletOrdinaryTransactionImpl) _then)
       : super(_value, _then);
 
+  /// Create a copy of TokenWalletOrdinaryTransaction
+  /// with the given fields replaced by the non-null parameter values.
   @pragma('vm:prefer-inline')
   @override
   $Res call({
@@ -432,7 +446,9 @@ class _$TokenWalletOrdinaryTransactionImpl
       transferBounced,
       swapBackBounced);
 
-  @JsonKey(ignore: true)
+  /// Create a copy of TokenWalletOrdinaryTransaction
+  /// with the given fields replaced by the non-null parameter values.
+  @JsonKey(includeFromJson: false, includeToJson: false)
   @override
   @pragma('vm:prefer-inline')
   _$$TokenWalletOrdinaryTransactionImplCopyWith<
@@ -489,8 +505,11 @@ abstract class _TokenWalletOrdinaryTransaction
   String? get transferBounced;
   @override
   String? get swapBackBounced;
+
+  /// Create a copy of TokenWalletOrdinaryTransaction
+  /// with the given fields replaced by the non-null parameter values.
   @override
-  @JsonKey(ignore: true)
+  @JsonKey(includeFromJson: false, includeToJson: false)
   _$$TokenWalletOrdinaryTransactionImplCopyWith<
           _$TokenWalletOrdinaryTransactionImpl>
       get copyWith => throw _privateConstructorUsedError;

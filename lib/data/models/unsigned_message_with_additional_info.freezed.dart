@@ -21,7 +21,9 @@ mixin _$UnsignedMessageWithAdditionalInfo {
   @amountJsonConverter
   BigInt? get amount => throw _privateConstructorUsedError;
 
-  @JsonKey(ignore: true)
+  /// Create a copy of UnsignedMessageWithAdditionalInfo
+  /// with the given fields replaced by the non-null parameter values.
+  @JsonKey(includeFromJson: false, includeToJson: false)
   $UnsignedMessageWithAdditionalInfoCopyWith<UnsignedMessageWithAdditionalInfo>
       get copyWith => throw _privateConstructorUsedError;
 }
@@ -51,6 +53,8 @@ class _$UnsignedMessageWithAdditionalInfoCopyWithImpl<$Res,
   // ignore: unused_field
   final $Res Function($Val) _then;
 
+  /// Create a copy of UnsignedMessageWithAdditionalInfo
+  /// with the given fields replaced by the non-null parameter values.
   @pragma('vm:prefer-inline')
   @override
   $Res call({
@@ -100,6 +104,8 @@ class __$$UnsignedMessageWithAdditionalInfoImplCopyWithImpl<$Res>
       $Res Function(_$UnsignedMessageWithAdditionalInfoImpl) _then)
       : super(_value, _then);
 
+  /// Create a copy of UnsignedMessageWithAdditionalInfo
+  /// with the given fields replaced by the non-null parameter values.
   @pragma('vm:prefer-inline')
   @override
   $Res call({
@@ -157,7 +163,9 @@ class _$UnsignedMessageWithAdditionalInfoImpl
   @override
   int get hashCode => Object.hash(runtimeType, message, dst, amount);
 
-  @JsonKey(ignore: true)
+  /// Create a copy of UnsignedMessageWithAdditionalInfo
+  /// with the given fields replaced by the non-null parameter values.
+  @JsonKey(includeFromJson: false, includeToJson: false)
   @override
   @pragma('vm:prefer-inline')
   _$$UnsignedMessageWithAdditionalInfoImplCopyWith<
@@ -181,8 +189,11 @@ abstract class _UnsignedMessageWithAdditionalInfo
   @override
   @amountJsonConverter
   BigInt? get amount;
+
+  /// Create a copy of UnsignedMessageWithAdditionalInfo
+  /// with the given fields replaced by the non-null parameter values.
   @override
-  @JsonKey(ignore: true)
+  @JsonKey(includeFromJson: false, includeToJson: false)
   _$$UnsignedMessageWithAdditionalInfoImplCopyWith<
           _$UnsignedMessageWithAdditionalInfoImpl>
       get copyWith => throw _privateConstructorUsedError;

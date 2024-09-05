@@ -5,7 +5,8 @@ import 'package:app/di/di.dart';
 import 'package:app/generated/generated.dart';
 import 'package:clock/clock.dart';
 import 'package:json_annotation/json_annotation.dart';
-import 'package:nekoton_repository/nekoton_repository.dart';
+import 'package:money2_fixer/money2_fixer.dart';
+import 'package:nekoton_repository/nekoton_repository.dart' hide MoneyFixer;
 
 extension DateX on DateTime {
   bool isSameDay(DateTime other) {
@@ -35,7 +36,7 @@ class _MoneyFromStringJsonConverter
   const _MoneyFromStringJsonConverter();
 
   @override
-  Money fromJson(Map<String, dynamic> json) => MoneyImprover.fromJson(json);
+  Money fromJson(Map<String, dynamic> json) => MoneyFixer.fromJson(json);
 
   @override
   Map<String, dynamic> toJson(Money object) => object.toJson();
@@ -80,5 +81,5 @@ String toEllipseString(String value) => value.length > 6
     : value;
 
 extension FunctionalExt<T> on T {
-  R let<R>(R Function(T that) block) => block(this);
+  R let<R>(R Function(T value) block) => block(this);
 }

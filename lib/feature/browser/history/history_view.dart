@@ -3,7 +3,7 @@ import 'package:app/app/service/service.dart';
 import 'package:app/data/models/models.dart';
 import 'package:app/di/di.dart';
 import 'package:app/feature/browser/browser.dart';
-import 'package:app/feature/browser/widgets/browser_resource_Item.dart';
+import 'package:app/feature/browser/widgets/browser_resource_item.dart';
 import 'package:app/generated/generated.dart';
 import 'package:app/utils/utils.dart';
 import 'package:collection/collection.dart';

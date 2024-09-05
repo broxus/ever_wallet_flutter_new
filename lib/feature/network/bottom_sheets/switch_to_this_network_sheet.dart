@@ -5,6 +5,7 @@ import 'package:app/generated/generated.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:ui_components_lib/ui_components_lib.dart';
+import 'package:ui_components_lib/v2/ui_components_lib_v2.dart';
 
 /// Helper function to show [SwitchToThisNetworkSheet].
 Future<void> showSwitchToThisNetworkSheet({
@@ -13,7 +14,6 @@ Future<void> showSwitchToThisNetworkSheet({
 }) {
   return showCommonBottomSheet(
     context: context,
-    title: LocaleKeys.networkAddedSheetTitle.tr(),
     body: (_, __) => SwitchToThisNetworkSheet(
       connectionId: connectionId,
     ),
@@ -42,19 +42,33 @@ class _SwitchToThisNetworkSheetState extends State<SwitchToThisNetworkSheet> {
       ),
       child: Builder(
         builder: (context) {
-          return SeparatedColumn(
+          final theme = context.themeStyleV2;
+          return Column(
             mainAxisSize: MainAxisSize.min,
-            separatorSize: DimensSize.d24,
             children: [
-              CommonButton.primary(
-                fillWidth: true,
-                onPressed: () => _onSwitch(context),
-                text: LocaleKeys.networkAddedSheetSwitch.tr(),
+              const SizedBox(height: DimensSizeV2.d24),
+              Image.asset(
+                Assets.images.checkCircleFill.checkCircleFill.path,
+                height: DimensSizeV2.d56,
+                width: DimensSizeV2.d56,
               ),
-              CommonButton.secondary(
-                fillWidth: true,
+              const SizedBox(height: DimensSizeV2.d16),
+              Text(
+                LocaleKeys.networkAddedSheetTitle.tr(),
+                style: theme.textStyles.headingLarge,
+                textAlign: TextAlign.center,
+              ),
+              const SizedBox(height: DimensSizeV2.d24),
+              AccentButton(
+                buttonShape: ButtonShape.pill,
+                title: LocaleKeys.networkAddedSheetSwitch.tr(),
+                onPressed: () => _onSwitch(context),
+              ),
+              const SizedBox(height: DimensSizeV2.d8),
+              PrimaryButton(
+                buttonShape: ButtonShape.pill,
+                title: LocaleKeys.networkAddedSheetContinue.tr(),
                 onPressed: () => _onContinue(context),
-                text: LocaleKeys.networkAddedSheetContinue.tr(),
               ),
             ],
           );

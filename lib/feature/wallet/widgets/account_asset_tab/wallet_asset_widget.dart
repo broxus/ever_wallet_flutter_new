@@ -1,12 +1,14 @@
-import 'package:app/generated/generated.dart';
-import 'package:app/utils/utils.dart';
 import 'package:flutter/material.dart';
+import 'package:lucide_icons_flutter/lucide_icons.dart';
+import 'package:money2_fixer/money2_fixer.dart';
 import 'package:ui_components_lib/ui_components_lib.dart';
+import 'package:ui_components_lib/v2/ui_components_lib_v2.dart';
 
 /// Default widget that displays information about Ton/Token wallet and allows
 /// interacting with it.
 class WalletAssetWidget extends StatelessWidget {
   const WalletAssetWidget({
+    required this.name,
     required this.tokenBalance,
     required this.fiatBalance,
     required this.icon,
@@ -16,6 +18,9 @@ class WalletAssetWidget extends StatelessWidget {
     this.error,
     super.key,
   });
+
+  /// Token name
+  final String name;
 
   /// Balance of token
   final Money? tokenBalance;
@@ -37,55 +42,67 @@ class WalletAssetWidget extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final colors = context.themeStyle.colors;
+    final theme = context.themeStyleV2;
 
-    return CommonListTile(
-      leading: icon,
-      titleChild: error != null
-          ? Text(
-              convertRetrySubscribeErrorToText(error!),
-              style: StyleRes.primaryRegular.copyWith(
-                color: colors.textPrimary,
-              ),
-            )
-          : tokenBalance == null
-              ? _loader(1)
-              : MoneyWidget(
-                  money: tokenBalance!,
-                  style: MoneyWidgetStyle.primary,
+    return GestureDetector(
+      onTap: onPressed,
+      child: SeparatedRow(
+        separatorSize: DimensSizeV2.d12,
+        children: [
+          icon,
+          Expanded(
+            flex: 2,
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Text(
+                  name,
+                  style: theme.textStyles.headingXSmall,
+                  overflow: TextOverflow.ellipsis,
+                  softWrap: false,
+                  maxLines: 1,
                 ),
-      subtitleChild: error != null
-          ? null
-          : fiatBalance == null
-              // ignore: no-magic-number
-              ? _loader(2)
-              : MoneyWidget(
-                  money: fiatBalance!,
-                  style: MoneyWidgetStyle.secondary,
-                ),
-      onPressed: onPressed,
-      trailing: error != null
-          ? CommonIconButton.svg(
-              svg: Assets.images.refresh.path,
-              size: CommonIconButtonSize.small,
-              buttonType: EverButtonType.primary,
+                if (tokenBalance == null)
+                  ProgressIndicatorWidget(
+                    size: DimensSizeV2.d16,
+                    color: theme.colors.content3,
+                  )
+                else
+                  AmountWidget.fromMoney(
+                    amount: tokenBalance!,
+                    style: theme.textStyles.labelXSmall.copyWith(
+                      color: theme.colors.content3,
+                    ),
+                  ),
+              ],
+            ),
+          ),
+          Flexible(
+            fit: FlexFit.tight,
+            child: fiatBalance == null
+                ? Center(
+                    child: ProgressIndicatorWidget(
+                      size: DimensSizeV2.d16,
+                      color: theme.colors.content0,
+                    ),
+                  )
+                : AmountWidget(
+                    mainAxisAlignment: MainAxisAlignment.end,
+                    amount: fiatBalance!.formatImproved(),
+                    style: theme.textStyles.headingXSmall,
+                    sign: r'$',
+                  ),
+          ),
+          if (error != null && onRetryPressed != null)
+            GhostButton(
+              buttonShape: ButtonShape.circle,
+              buttonSize: ButtonSize.small,
+              icon: LucideIcons.refreshCw,
               isLoading: isRetryLoading,
-              onPressed: onRetryPressed == null
-                  ? null
-                  : () => onRetryPressed!(context),
-            )
-          : CommonIconWidget.svg(svg: Assets.images.caretRight.path),
-    );
-  }
-
-  Widget _loader(int part) {
-    return LayoutBuilder(
-      builder: (context, constraints) {
-        return CommonLoader(
-          width: constraints.maxWidth / part,
-          height: DimensSize.d16,
-        );
-      },
+              onPressed: () => onRetryPressed!(context),
+            ),
+        ],
+      ),
     );
   }
 }

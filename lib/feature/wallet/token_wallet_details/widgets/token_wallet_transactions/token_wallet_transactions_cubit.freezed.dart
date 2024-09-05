@@ -99,6 +99,9 @@ class _$TokenWalletTransactionsStateCopyWithImpl<$Res,
   final $Val _value;
   // ignore: unused_field
   final $Res Function($Val) _then;
+
+  /// Create a copy of TokenWalletTransactionsState
+  /// with the given fields replaced by the non-null parameter values.
 }
 
 /// @nodoc
@@ -115,6 +118,9 @@ class __$$EmptyImplCopyWithImpl<$Res>
   __$$EmptyImplCopyWithImpl(
       _$EmptyImpl _value, $Res Function(_$EmptyImpl) _then)
       : super(_value, _then);
+
+  /// Create a copy of TokenWalletTransactionsState
+  /// with the given fields replaced by the non-null parameter values.
 }
 
 /// @nodoc
@@ -241,6 +247,9 @@ class __$$LoadingImplCopyWithImpl<$Res>
   __$$LoadingImplCopyWithImpl(
       _$LoadingImpl _value, $Res Function(_$LoadingImpl) _then)
       : super(_value, _then);
+
+  /// Create a copy of TokenWalletTransactionsState
+  /// with the given fields replaced by the non-null parameter values.
 }
 
 /// @nodoc
@@ -377,6 +386,8 @@ class __$$TransactionsImplCopyWithImpl<$Res>
       _$TransactionsImpl _value, $Res Function(_$TransactionsImpl) _then)
       : super(_value, _then);
 
+  /// Create a copy of TokenWalletTransactionsState
+  /// with the given fields replaced by the non-null parameter values.
   @pragma('vm:prefer-inline')
   @override
   $Res call({
@@ -410,6 +421,8 @@ class __$$TransactionsImplCopyWithImpl<$Res>
     ));
   }
 
+  /// Create a copy of TokenWalletTransactionsState
+  /// with the given fields replaced by the non-null parameter values.
   @override
   @pragma('vm:prefer-inline')
   $CustomCurrencyCopyWith<$Res>? get tokenCustomCurrency {
@@ -482,7 +495,9 @@ class _$TransactionsImpl implements _Transactions {
       canLoadMore,
       tokenCustomCurrency);
 
-  @JsonKey(ignore: true)
+  /// Create a copy of TokenWalletTransactionsState
+  /// with the given fields replaced by the non-null parameter values.
+  @JsonKey(includeFromJson: false, includeToJson: false)
   @override
   @pragma('vm:prefer-inline')
   _$$TransactionsImplCopyWith<_$TransactionsImpl> get copyWith =>
@@ -591,7 +606,10 @@ abstract class _Transactions implements TokenWalletTransactionsState {
   bool get isLoading;
   bool get canLoadMore;
   CustomCurrency? get tokenCustomCurrency;
-  @JsonKey(ignore: true)
+
+  /// Create a copy of TokenWalletTransactionsState
+  /// with the given fields replaced by the non-null parameter values.
+  @JsonKey(includeFromJson: false, includeToJson: false)
   _$$TransactionsImplCopyWith<_$TransactionsImpl> get copyWith =>
       throw _privateConstructorUsedError;
 }

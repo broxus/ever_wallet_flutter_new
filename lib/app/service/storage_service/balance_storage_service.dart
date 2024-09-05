@@ -56,7 +56,7 @@ class BalanceStorageService extends AbstractStorageService {
     return encoded.map(
       (key, value) => MapEntry(
         Address(address: key),
-        FixedImprover.fromJson(jsonDecode(value) as Map<String, dynamic>),
+        FixedFixer.fromJson(jsonDecode(value) as Map<String, dynamic>),
       ),
     );
   }

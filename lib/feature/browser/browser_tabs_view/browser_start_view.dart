@@ -5,7 +5,7 @@ import 'package:app/app/router/router.dart';
 import 'package:app/data/models/models.dart';
 import 'package:app/feature/browser/browser.dart';
 import 'package:app/feature/browser/browser_tabs_view/predefined_items.dart';
-import 'package:app/feature/browser/widgets/browser_resource_Item.dart';
+import 'package:app/feature/browser/widgets/browser_resource_item.dart';
 import 'package:app/generated/generated.dart';
 import 'package:app/utils/utils.dart';
 import 'package:flutter/material.dart';
@@ -62,24 +62,42 @@ class _BrowserStartViewState extends State<BrowserStartView> {
       _saveScreenshot();
     }
 
-    final slivers = searchText.isEmpty
-        ? [
+    late List<Widget> slivers;
+
+    final isAllEmpty = bookmarkItems.isEmpty &&
+        _predefinedItems.isEmpty &&
+        _predefinedCards.isEmpty;
+
+    if (searchText.isEmpty) {
+      if (isAllEmpty) {
+        slivers = [
+          const SliverFillRemaining(
+            child: _EmptyBody(),
+          ),
+        ];
+      } else {
+        slivers = [
+          if (bookmarkItems.isNotEmpty)
             ..._sectionBuilder(
               title: LocaleKeys.browserBookmarks.tr(),
               items: bookmarkItems,
               buttonText: LocaleKeys.browserSeeAll.tr(),
               buttonOnPressed: _onSeeAllPressed,
             ),
+          if (_predefinedItems.isNotEmpty)
             ..._sectionBuilder(
               title: LocaleKeys.browserPopularResources.tr(),
               items: _predefinedItems,
             ),
-            ..._cardsBuilder(),
-          ]
-        : _searchResultBuilder(
-            items: [...bookmarkItems, ..._predefinedItems],
-            searchText: searchText,
-          );
+          if (_predefinedCards.isNotEmpty) ..._cardsBuilder(),
+        ];
+      }
+    } else {
+      slivers = _searchResultBuilder(
+        items: [...bookmarkItems, ..._predefinedItems],
+        searchText: searchText,
+      );
+    }
 
     return RepaintBoundary(
       key: _globalKey,
@@ -427,6 +445,48 @@ class _KeyboardPadding extends StatelessWidget {
     return AnimatedPadding(
       padding: MediaQuery.of(context).viewInsets,
       duration: const Duration(milliseconds: 250),
+    );
+  }
+}
+
+class _EmptyBody extends StatelessWidget {
+  const _EmptyBody();
+
+  @override
+  Widget build(BuildContext context) {
+    final theme = context.themeStyleV2;
+
+    return Padding(
+      padding: const EdgeInsets.symmetric(
+        horizontal: DimensSizeV2.d16,
+      ),
+      child: Column(
+        mainAxisAlignment: MainAxisAlignment.center,
+        children: [
+          CommonIconWidget.svg(
+            svg: Assets.images.logo.path,
+            size: DimensSizeV2.d160,
+          ),
+          Padding(
+            padding: const EdgeInsets.only(
+              top: DimensSizeV2.d16,
+              bottom: DimensSizeV2.d8,
+            ),
+            child: Text(
+              LocaleKeys.startExploring.tr(),
+              style: theme.textStyles.headingMedium,
+              textAlign: TextAlign.center,
+            ),
+          ),
+          Text(
+            LocaleKeys.exploreConnectFavoriteSites.tr(),
+            style: theme.textStyles.paragraphMedium.copyWith(
+              color: theme.colors.content1,
+            ),
+            textAlign: TextAlign.center,
+          ),
+        ],
+      ),
     );
   }
 }

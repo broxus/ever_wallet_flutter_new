@@ -80,6 +80,9 @@ class _$AddNewExternalAccountStateCopyWithImpl<$Res,
   final $Val _value;
   // ignore: unused_field
   final $Res Function($Val) _then;
+
+  /// Create a copy of AddNewExternalAccountState
+  /// with the given fields replaced by the non-null parameter values.
 }
 
 /// @nodoc
@@ -96,6 +99,9 @@ class __$$InitialImplCopyWithImpl<$Res>
   __$$InitialImplCopyWithImpl(
       _$InitialImpl _value, $Res Function(_$InitialImpl) _then)
       : super(_value, _then);
+
+  /// Create a copy of AddNewExternalAccountState
+  /// with the given fields replaced by the non-null parameter values.
 }
 
 /// @nodoc
@@ -204,6 +210,9 @@ class __$$CompletedImplCopyWithImpl<$Res>
   __$$CompletedImplCopyWithImpl(
       _$CompletedImpl _value, $Res Function(_$CompletedImpl) _then)
       : super(_value, _then);
+
+  /// Create a copy of AddNewExternalAccountState
+  /// with the given fields replaced by the non-null parameter values.
 }
 
 /// @nodoc
@@ -312,6 +321,9 @@ class __$$LoadingImplCopyWithImpl<$Res>
   __$$LoadingImplCopyWithImpl(
       _$LoadingImpl _value, $Res Function(_$LoadingImpl) _then)
       : super(_value, _then);
+
+  /// Create a copy of AddNewExternalAccountState
+  /// with the given fields replaced by the non-null parameter values.
 }
 
 /// @nodoc

@@ -7,6 +7,7 @@ import 'package:app/data/models/models.dart';
 import 'package:app/feature/add_seed/add_seed_enable_biometry/add_seed_enable_biometry.dart';
 import 'package:app/feature/add_seed/add_seed_enable_biometry/view/add_seed_enable_biometry_page.dart';
 import 'package:app/feature/network/network.dart';
+import 'package:app/feature/wallet/add_account/add_account.dart';
 import 'package:app/feature/wallet/wallet.dart';
 import 'package:app/feature/wallet/widgets/account_asset_tab/select_new_asset/select_new_asset.dart';
 import 'package:go_router/go_router.dart';
@@ -71,6 +72,9 @@ const walletCancelUnstakingStakingCurrencyCodeQueryParam =
 const walletCancelUnstakingAttachedFeeQueryParam =
     'walletCancelUnstakingStakingAttachedFee';
 
+const walletCreatePublicKeyQueryParam = 'walletCreatePublicKey';
+const walletCreatePasswordQueryParam = 'walletCreatePassword';
+
 /// Branch that is root for wallet.
 StatefulShellBranch get walletBranch {
   return StatefulShellBranch(
@@ -78,7 +82,7 @@ StatefulShellBranch get walletBranch {
       GoRoute(
         name: AppRoute.wallet.name,
         path: AppRoute.wallet.path,
-        builder: (context, state) => const WalletPage(),
+        builder: (context, state) => const WalletPageWidget(),
         routes: [
           GoRoute(
             path: AppRoute.enableBiometryAfterOnboarding.path,
@@ -90,6 +94,15 @@ StatefulShellBranch get walletBranch {
               address: Address(
                 address: state.pathParameters[selectNewAssetAddressPathParam]!,
               ),
+            ),
+          ),
+          GoRoute(
+            path: AppRoute.walletAddAccount.path,
+            builder: (_, state) => AddAccountPage(
+              publicKey:
+                  state.uri.queryParameters[walletCreatePublicKeyQueryParam]!,
+              password:
+                  state.uri.queryParameters[walletCreatePasswordQueryParam]!,
             ),
           ),
           addSeedNamedRoute,

@@ -1,13 +1,14 @@
 import 'package:app/feature/wallet/wallet_prepare_transfer/wallet_prepare_transfer_page/data/wallet_prepare_transfer_asset.dart';
 import 'package:app/feature/wallet/wallet_prepare_transfer/wallet_prepare_transfer_page/widgets/wallet_prepare_transfer_asset_select.dart';
 import 'package:app/generated/generated.dart';
+import 'package:app/utils/utils.dart';
 import 'package:auto_size_text_field/auto_size_text_field.dart';
 import 'package:flutter/material.dart';
 import 'package:string_extensions/string_extensions.dart';
 import 'package:ui_components_lib/ui_components_lib.dart';
 import 'package:ui_components_lib/v2/ui_components_lib_v2.dart';
 
-class WalletPrepareTransferAmountInput extends StatelessWidget {
+class WalletPrepareTransferAmountInput extends StatefulWidget {
   const WalletPrepareTransferAmountInput({
     required this.focusNode,
     required this.controller,
@@ -34,9 +35,33 @@ class WalletPrepareTransferAmountInput extends StatelessWidget {
   final ValueChanged<String> onSubmitted;
 
   @override
+  State<WalletPrepareTransferAmountInput> createState() =>
+      _WalletPrepareTransferAmountInputState();
+}
+
+class _WalletPrepareTransferAmountInputState
+    extends State<WalletPrepareTransferAmountInput> {
+  CurrencyTextInputFormatter? formatter;
+  CurrencyTextInputValidator? validator;
+
+  @override
+  void initState() {
+    _updateFormatterValidator();
+    super.initState();
+  }
+
+  @override
+  void didUpdateWidget(covariant WalletPrepareTransferAmountInput oldWidget) {
+    if (oldWidget.selectedAsset != widget.selectedAsset) {
+      _updateFormatterValidator();
+    }
+    super.didUpdateWidget(oldWidget);
+  }
+
+  @override
   Widget build(BuildContext context) {
     final theme = context.themeStyleV2;
-    final balance = selectedAsset?.balance.amount.toString() ?? '';
+    final balance = widget.selectedAsset?.balance.amount.toString() ?? '';
 
     return Container(
       width: double.maxFinite,
@@ -61,9 +86,9 @@ class WalletPrepareTransferAmountInput extends StatelessWidget {
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
                       WalletPrepareTransferAssetSelect(
-                        values: assets ?? [],
-                        currentValue: selectedAsset,
-                        onChanged: onSelectedAssetChanged,
+                        values: widget.assets ?? [],
+                        currentValue: widget.selectedAsset,
+                        onChanged: widget.onSelectedAssetChanged,
                       ),
                       Text(
                         LocaleKeys.balance.tr(args: [balance]),
@@ -81,7 +106,7 @@ class WalletPrepareTransferAmountInput extends StatelessWidget {
                   title: LocaleKeys.maxWord.tr(),
                   buttonShape: ButtonShape.rectangle,
                   buttonSize: ButtonSize.small,
-                  onPressed: onMaxAmount,
+                  onPressed: widget.onMaxAmount,
                 ),
               ],
             ),
@@ -94,11 +119,11 @@ class WalletPrepareTransferAmountInput extends StatelessWidget {
             ),
             child: GestureDetector(
               behavior: HitTestBehavior.translucent,
-              onTap: focusNode.requestFocus,
+              onTap: widget.focusNode.requestFocus,
               child: FormField<String>(
-                initialValue: controller.text,
+                initialValue: widget.controller.text,
                 autovalidateMode: AutovalidateMode.onUserInteraction,
-                validator: _validator,
+                validator: validator?.validate,
                 builder: _fieldBuilder,
               ),
             ),
@@ -114,7 +139,7 @@ class WalletPrepareTransferAmountInput extends StatelessWidget {
       color:
           state.hasError ? theme.colors.contentNegative : theme.colors.content0,
     );
-    final price = Fixed.parse(selectedAsset?.currency?.price ?? '0');
+    final price = Fixed.parse(widget.selectedAsset?.currency?.price ?? '0');
     final amount = Fixed.parse(state.value.nullIf('') ?? '0');
     final usd = Fixed.copyWith(amount * price, scale: 2);
 
@@ -125,8 +150,8 @@ class WalletPrepareTransferAmountInput extends StatelessWidget {
           children: [
             Flexible(
               child: AutoSizeTextField(
-                controller: controller,
-                focusNode: focusNode,
+                controller: widget.controller,
+                focusNode: widget.focusNode,
                 style: inputStyle,
                 decoration: InputDecoration(
                   border: InputBorder.none,
@@ -138,17 +163,14 @@ class WalletPrepareTransferAmountInput extends StatelessWidget {
                 keyboardType: const TextInputType.numberWithOptions(
                   decimal: true,
                 ),
-                inputFormatters: [
-                  if (selectedAsset != null)
-                    CurrencyTextInputFormatter(selectedAsset!.balance.currency),
-                ],
+                inputFormatters: formatter?.let((formatter) => [formatter]),
                 fullwidth: false,
                 onChanged: state.didChange,
-                onSubmitted: onSubmitted,
+                onSubmitted: widget.onSubmitted,
               ),
             ),
             Text(
-              selectedAsset?.tokenSymbol ?? '',
+              widget.selectedAsset?.tokenSymbol ?? '',
               style: theme.textStyles.headingLarge.copyWith(
                 color: theme.colors.content3,
               ),
@@ -173,13 +195,21 @@ class WalletPrepareTransferAmountInput extends StatelessWidget {
     );
   }
 
-  String? _validator(String? value) => selectedAsset == null
-      ? null
-      : CurrencyTextInputValidator(
-          selectedAsset!.balance.currency,
-          emptyError: LocaleKeys.amountIsEmpty.tr(),
-          error: LocaleKeys.amountIsWrong.tr(),
-          max: selectedAsset!.balance.amount,
-          maxError: LocaleKeys.insufficientFunds.tr(),
-        ).validate(value);
+  void _updateFormatterValidator() {
+    if (widget.selectedAsset == null) {
+      formatter = null;
+      validator = null;
+    } else {
+      final (f, v) = createCurrencyTextInputFormatterValidator(
+        widget.selectedAsset!.balance.currency,
+        emptyError: LocaleKeys.amountIsEmpty.tr(),
+        error: LocaleKeys.amountIsWrong.tr(),
+        max: widget.selectedAsset!.balance.amount,
+        maxError: LocaleKeys.insufficientFunds.tr(),
+        decimalSeparators: ['.', ','],
+      );
+      formatter = f;
+      validator = v;
+    }
+  }
 }

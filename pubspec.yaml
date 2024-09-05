@@ -1,6 +1,6 @@
 name: app
-description: EVER Wallet Flutter app
-version: 2.0.0+3
+description: SparX Wallet Flutter app
+version: 1.0.1
 publish_to: none
 
 environment:
@@ -47,13 +47,11 @@ dependencies:
   lucide_icons_flutter: ^1.1.2
   mobile_scanner: 3.4.1
   money2: ^5.2.1
-  money2_improver:
-    git:
-      url: https://github.com/broxus/money2_improver
+  money2_fixer: 2.0.0
   nekoton_repository:
     git:
       url: https://github.com/broxus/nekoton_repository.git
-      ref: update-dependencies
+      ref: feature/derive-key
   nekoton_webview: 0.1.8-dev.0
   ntp: ^2.0.0
   package_info_plus: ^8.0.0
@@ -123,4 +121,7 @@ flutter:
     - assets/images/lang_icons/
     - assets/images/stever/
     - assets/images/user_avatar/
+    - assets/images/homescreen_bg/
+    - assets/images/alert_octagon_fill/
+    - assets/images/check_circle_fill/
     - assets/splash/
