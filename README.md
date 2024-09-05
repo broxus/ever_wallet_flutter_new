@@ -386,6 +386,19 @@ We also have a workflow for deploying storybook to GitHub Pages. It's called `st
 
 ### Deploy from local machine
 
+For deployment from a local machine, melos is used.
+
+- **build_android_store** - build Android `aab` from any branch
+- **deploy_fad_ios** - build and send iOS `ipa` from any branch
+- **deploy_fad_android** - build and send Android `apk` from any branch
+- **deploy_fad** - build and send Android `apk` and iOS `ipa` from any branch
+- **deploy_store** - build and send Android `aab` and iOS `ipa` from the main branch
+
+The `melos deploy_store*` commands only work from the `main` branch, so as not to accidentally upload unnecessary code to production.  
+
+The `melos build_*` commands work from any branch - in case of manual build.  
+Unlike `deploy_store*` commands, randomly running `build_*` will only build aab and/or ipa locally and will not push anything extra or untested to the store.
+
 ```sh
 # To deploy to Firebase App Distribution just run the following command:
 $ melos build:deploy_fad
