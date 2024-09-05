@@ -3,7 +3,7 @@ name: Deploy app
 on:
   push:
     branches:
-      - main
+      - test
   workflow_dispatch:
     inputs:
       deploy_target:
@@ -185,7 +185,7 @@ jobs:
 
     steps:
       - name: Reinstall existing fastlane plugin
-        run: | 
+        run: |
           sudo gem uninstall fastlane-plugin-firebase_app_distribution
           gem install fastlane-plugin-firebase_app_distribution --user-install
 
