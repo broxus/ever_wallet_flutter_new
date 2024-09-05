@@ -34,6 +34,16 @@ jobs:
         with:
           fetch-depth: 1
 
+      - name: Check deploy target and branch
+        run: |
+          if [[ "${{ github.ref }}" != "refs/heads/main" && 
+                ( "${{ inputs.deploy_target }}" == "store" || 
+                  "${{ inputs.deploy_target }}" == "ios_store" || 
+                  "${{ inputs.deploy_target }}" == "android_store" ) ]]; then
+            echo "🚫 Error: Deployment to store, ios_store, or android_store is only allowed from the 'main' branch."
+            exit 1
+          fi
+
       - name: Set output for flutter_version
         id: set_output
         run: |
