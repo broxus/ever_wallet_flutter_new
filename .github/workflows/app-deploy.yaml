@@ -176,10 +176,10 @@ jobs:
   # Android deploy
   android-deploy:
     needs: setup
+    runs-on: ubuntu-latest
 
     if: ${{ inputs.deploy_target == 'fad' || inputs.deploy_target == 'store' || inputs.deploy_target == 'android_fad' || inputs.deploy_target == 'android_store' }}
 
-    runs-on: ubuntu-latest
     env:
       SECRET_PASSPHRASE: ${{ secrets.SECRET_PASSPHRASE }}
       MATCH_PASSWORD: ${{ secrets.MATCH_PASSWORD }}
