@@ -1,3 +1,4 @@
+import 'package:app/app/service/service.dart';
 import 'package:app/core/error_handler_factory.dart';
 import 'package:app/core/wm/custom_wm.dart';
 import 'package:app/data/models/models.dart';
@@ -36,6 +37,12 @@ class RequestPermissionsWidgetModel extends CustomWidgetModel<
   late final _selected = createNotifier(_initialSelectedAccount);
   late final _accounts = createNotifier(model.accounts);
   late final _permissions = createNotifier(widget.permissions.toSet());
+  late final _zeroBalance = Money.fromBigIntWithCurrency(
+    BigInt.zero,
+    Currencies()[model.symbol] ??
+        Currency.create(model.symbol, 0, pattern: moneyPattern(0)),
+  );
+  final _balances = <Address, ListenableState<Money>>{};
 
   ValueListenable<RequestPermissionsStep> get step => _step;
 
@@ -116,5 +123,20 @@ class RequestPermissionsWidgetModel extends CustomWidgetModel<
 
     model.setPermissions(origin, result);
     Navigator.of(context).pop(result);
+  }
+
+  ListenableState<Money> getBalanceEntity(KeyAccount account) {
+    var entity = _balances[account.address];
+
+    if (entity == null) {
+      final notifier = createNotifier<Money>();
+      entity = _balances[account.address] = notifier;
+
+      model
+          .getBalance(account)
+          .then((value) => notifier.accept(value ?? _zeroBalance));
+    }
+
+    return entity;
   }
 }
