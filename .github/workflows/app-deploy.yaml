@@ -3,7 +3,7 @@ name: Deploy app
 on:
   push:
     branches:
-      - main
+      - test
   workflow_dispatch:
     inputs:
       deploy_target:
@@ -33,6 +33,16 @@ jobs:
       - uses: actions/checkout@v4
         with:
           fetch-depth: 1
+
+      - name: Check deploy target and branch
+        run: |
+          if [[ "${{ github.ref }}" != "refs/heads/main" && 
+                ( "${{ inputs.deploy_target }}" == "store" || 
+                  "${{ inputs.deploy_target }}" == "ios_store" || 
+                  "${{ inputs.deploy_target }}" == "android_store" ) ]]; then
+            echo "🚫 Error: Deployment to store, ios_store, or android_store is only allowed from the 'main' branch."
+            exit 1
+          fi
 
       - name: Set output for flutter_version
         id: set_output
@@ -185,7 +195,7 @@ jobs:
 
     steps:
       - name: Reinstall existing fastlane plugin
-        run: | 
+        run: |
           sudo gem uninstall fastlane-plugin-firebase_app_distribution
           gem install fastlane-plugin-firebase_app_distribution --user-install
 
