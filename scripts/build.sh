@@ -2,14 +2,23 @@
 set -e
 set -o pipefail
 
+deploy_target="$1"
+build_number="$2"
+
+CURRENT_BRANCH=$(git rev-parse --abbrev-ref HEAD)
+
+if [[ "$deploy_target" == "ios_store" || "$deploy_target" == "android_store" ]]; then
+  if [ "$CURRENT_BRANCH" != "main" ]; then
+    echo "🚫 Error: Deployment to the store is only allowed from the 'main' branch."
+    exit 1
+  fi
+fi
+
 if [ -z "$SENTRY_DSN" ]; then
     exit 1
 fi
 
 export SENTRY_DSN
-
-deploy_target="$1"
-build_number="$2"
 
 if [ -z "$build_number" ]; then
     echo "Error: Build number is not specified."
