@@ -372,9 +372,6 @@ $ melos build:deploy_fad
 
 # To deploy to TestFlight and Google Play closed testing just run the following command:
 $ melos build:deploy_store
-
-# Also you can deploy it to Firebase App Distribution, TestFlight and Google Play closed testing at once:
-$ melos build:deploy_fad_store
 ```
 
 Each of these commands will increment the build number before building the app.

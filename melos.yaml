@@ -109,26 +109,6 @@ scripts:
     description: Registering new devices already added through devportal
     run: bash scripts/ios-match-new-devices.sh
 
-  build:deploy_fad:
-    description: Build and deploy to FAD
-    run: bash scripts/build-deploy-fad.sh
-
-  build:deploy_store:
-    description: Build and deploy to Testflight and Google Play internal
-    run: bash scripts/build-deploy-store.sh
-
-  build:deploy_fad_store:
-    description: Build and deploy to FAD, Testflight and Google Play internal
-    run: bash scripts/build-deploy-fad-store.sh
-
-  build:deploy_ios_store:
-    description: Build and deploy to Test Flight
-    run: bash scripts/build-deploy-ios-store.sh
-
-  build:deploy_android_store:
-    description: Build and deploy to Google Play
-    run: bash scripts/build-deploy-android-store.sh
-
 command:
   clean:
     hooks:
