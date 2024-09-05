@@ -1,4 +1,5 @@
 import 'package:app/app/router/router.dart';
+import 'package:app/app/service/service.dart';
 import 'package:app/core/error_handler_factory.dart';
 import 'package:app/core/wm/custom_wm.dart';
 import 'package:app/di/di.dart';
@@ -31,6 +32,12 @@ class SelectAccountWidgetModel
   late final _accounts = createNotifierFromStream(model.accounts);
   late final _currentAccount = createNotifierFromStream(model.currentAccount);
   late final _list = createNotifier(_accounts.value);
+  late final _zeroBalance = Money.fromBigIntWithCurrency(
+    BigInt.zero,
+    Currencies()[model.symbol] ??
+        Currency.create(model.symbol, 0, pattern: moneyPattern(0)),
+  );
+  final _balances = <Address, ListenableState<Money>>{};
 
   ListenableState<List<KeyAccount>> get list => _list;
 
@@ -83,5 +90,20 @@ class SelectAccountWidgetModel
     context
       ..goNamed(AppRoute.profile.name)
       ..goFurther(AppRoute.manageSeedsAccounts.path);
+  }
+
+  ListenableState<Money> getBalanceEntity(KeyAccount account) {
+    var entity = _balances[account.address];
+
+    if (entity == null) {
+      final notifier = createNotifier<Money>();
+      entity = _balances[account.address] = notifier;
+
+      model
+          .getBalance(account)
+          .then((value) => notifier.accept(value ?? _zeroBalance));
+    }
+
+    return entity;
   }
 }
