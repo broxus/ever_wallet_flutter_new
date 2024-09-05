@@ -2,7 +2,17 @@
 set -e
 set -o pipefail
 
+if [ -f ./secrets/sentry-dsn.txt ]; then
+    SENTRY_DSN=$(cat ./secrets/sentry-dsn.txt)
+    export SENTRY_DSN
+    echo "SENTRY_DSN is successfully read"
+else
+    echo "Error: Sentry DSN file not found"
+    exit 1
+fi
+
 if [ -z "$SENTRY_DSN" ]; then
+  echo "Error: env SENTRY_DSN is empty"
     exit 1
 fi
 
