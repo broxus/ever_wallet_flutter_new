@@ -4,7 +4,9 @@ import 'package:app/feature/wallet/widgets/account_asset_tab/token_wallet_asset/
 import 'package:app/generated/generated.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:lucide_icons_flutter/lucide_icons.dart';
 import 'package:ui_components_lib/ui_components_lib.dart';
+import 'package:ui_components_lib/v2/ui_components_lib_v2.dart';
 
 /// Widget that allows user select asset(contract) from list of loaded assets.
 class SelectNewAssetSelectTab extends StatefulWidget {
@@ -44,26 +46,44 @@ class _SelectNewAssetSelectTabState extends State<SelectNewAssetSelectTab> {
 
         return SingleChildScrollView(
           child: SeparatedColumn(
+            separatorSize: DimensSizeV2.d16,
             children: [
-              CommonInput(
+              PrimaryTextField(
                 hintText: LocaleKeys.enterAssetName.tr(),
-                controller: searchController,
-                prefixIconConstraints: BoxConstraints.loose(
-                  const Size(DimensSize.d40, DimensSize.d20),
-                ),
-                prefixIcon: Padding(
-                  padding: const EdgeInsets.only(
-                    left: DimensSize.d12,
-                    right: DimensSize.d8,
-                  ),
-                  child: SvgPicture.asset(
-                    Assets.images.search.path,
-                    width: DimensSize.d20,
-                    height: DimensSize.d20,
-                  ),
-                ),
+                textEditingController: searchController,
+                suffixes: [
+                  if (value.text.isEmpty)
+                    const Padding(
+                      padding: EdgeInsets.only(
+                        right: DimensSizeV2.d20,
+                      ),
+                      child: Icon(
+                        LucideIcons.search,
+                        size: DimensSizeV2.d16,
+                      ),
+                    ),
+                  if (value.text.isNotEmpty)
+                    Padding(
+                      padding: const EdgeInsets.only(
+                        right: DimensSizeV2.d8,
+                      ),
+                      child: FloatButton(
+                        buttonShape: ButtonShape.square,
+                        buttonSize: ButtonSize.small,
+                        icon: LucideIcons.x,
+                        onPressed: searchController.clear,
+                      ),
+                    ),
+                ],
               ),
-              if (found.isEmpty) _emptyBody() else ...found,
+              if (found.isEmpty)
+                _emptyBody()
+              else
+                SeparatedColumn(
+                  mainAxisSize: MainAxisSize.min,
+                  separatorSize: DimensSizeV2.d12,
+                  children: found.toList(),
+                ),
             ],
           ),
         );
@@ -74,18 +94,18 @@ class _SelectNewAssetSelectTabState extends State<SelectNewAssetSelectTab> {
   Widget _emptyBody() {
     return Builder(
       builder: (context) {
-        final colors = context.themeStyle.colors;
+        final theme = context.themeStyleV2;
 
         return Padding(
-          padding: const EdgeInsets.all(DimensSize.d20),
+          padding: const EdgeInsets.all(DimensSizeV2.d20),
           child: SeparatedColumn(
-            separatorSize: DimensSize.d12,
+            separatorSize: DimensSizeV2.d12,
             children: [
               SvgPicture.asset(Assets.images.searchEmpty.path),
               Text(
                 LocaleKeys.sorryNoAssetsFound.tr(),
-                style: StyleRes.primaryRegular.copyWith(
-                  color: colors.textSecondary,
+                style: theme.textStyles.headingSmall.copyWith(
+                  color: theme.colors.content3,
                 ),
                 textAlign: TextAlign.center,
               ),
@@ -116,24 +136,53 @@ class SelectNewAssetItem extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return CommonListTile(
-      height: DimensSize.d68,
-      leading: TokenWalletIconWidget(
-        logoURI: asset.logoURI,
-        address: asset.address,
-        version: asset.version,
-      ),
-      titleText: asset.symbol,
-      subtitleText: asset.name,
-      trailing: CommonSwitchInput(
-        value: isSelected,
-        onChanged: (v) {
-          if (v) {
-            context.read<SelectNewAssetCubit>().enableAsset(asset.address);
-          } else {
-            context.read<SelectNewAssetCubit>().disableAsset(asset.address);
-          }
-        },
+    final theme = context.themeStyleV2;
+
+    return Padding(
+      padding: const EdgeInsets.symmetric(vertical: DimensSizeV2.d8),
+      child: SeparatedRow(
+        children: [
+          TokenWalletIconWidget(
+            logoURI: asset.logoURI,
+            address: asset.address,
+            version: asset.version,
+          ),
+          Expanded(
+            child: SeparatedColumn(
+              separatorSize: DimensSizeV2.d4,
+              mainAxisSize: MainAxisSize.min,
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Text(
+                  asset.symbol,
+                  style: theme.textStyles.labelSmall,
+                  overflow: TextOverflow.ellipsis,
+                  softWrap: false,
+                  maxLines: 1,
+                ),
+                Text(
+                  asset.name,
+                  style: theme.textStyles.labelXSmall.copyWith(
+                    color: theme.colors.content3,
+                  ),
+                  overflow: TextOverflow.ellipsis,
+                  softWrap: false,
+                  maxLines: 1,
+                ),
+              ],
+            ),
+          ),
+          Switch(
+            value: isSelected,
+            onChanged: (v) {
+              if (v) {
+                context.read<SelectNewAssetCubit>().enableAsset(asset.address);
+              } else {
+                context.read<SelectNewAssetCubit>().disableAsset(asset.address);
+              }
+            },
+          ),
+        ],
       ),
     );
   }

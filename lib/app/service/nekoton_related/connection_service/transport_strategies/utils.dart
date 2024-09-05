@@ -14,7 +14,7 @@ String getDefaultAccountName(WalletType walletType) => walletType.when(
           case MultisigType.bridgeMultisigWallet:
             return 'BridgeMultisig';
           case MultisigType.surfWallet:
-            return 'Surf';
+            return 'Surf wallet';
           case MultisigType.multisig2:
             return 'Multisig2';
           case MultisigType.multisig2_1:
@@ -22,6 +22,6 @@ String getDefaultAccountName(WalletType walletType) => walletType.when(
         }
       },
       everWallet: () => 'EVER Wallet',
-      walletV3: () => 'WalletV3',
+      walletV3: () => 'Wallet V3',
       highloadWalletV2: () => 'HighloadWalletV2',
     );

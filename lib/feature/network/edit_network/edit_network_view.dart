@@ -210,7 +210,7 @@ class _EditNetworkViewState extends State<EditNetworkView> {
                     style: StyleRes.secondaryBold,
                   ),
                 ),
-                CommonSwitchInput(
+                Switch(
                   value: _isLocal,
                   onChanged: (value) => onLocalChanged(value: value),
                 ),

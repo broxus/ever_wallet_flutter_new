@@ -103,7 +103,7 @@ class WalletPrepareTransferPageWidgetModel extends CustomWidgetModel<
   String? getSeedName(PublicKey custodian) => model.getSeedName(custodian);
 
   void onChangeAsset(WalletPrepareTransferAsset newAsset) {
-    final asset = _assets[(newAsset.rootTokenContract, newAsset.tokenSymbol)];
+    final asset = _assets[newAsset.key];
     if (_selectedAsset?.rootTokenContract == newAsset.rootTokenContract &&
             _selectedAsset?.tokenSymbol == newAsset.tokenSymbol ||
         asset == null) {
@@ -111,7 +111,7 @@ class WalletPrepareTransferPageWidgetModel extends CustomWidgetModel<
     }
 
     _updateState(selectedAsset: asset);
-    unawaited(_updateAssetCurrency());
+    unawaited(_updateAsset(asset));
 
     model.startListeningBalance(_assets[asset.key]);
   }
@@ -142,7 +142,7 @@ class WalletPrepareTransferPageWidgetModel extends CustomWidgetModel<
     }
 
     final amnt = Fixed.parse(
-      amountController.text.trim(),
+      amountController.text.trim().replaceAll(',', '.'),
       scale: _selectedAsset?.balance.decimalDigits,
     );
 
@@ -209,6 +209,16 @@ class WalletPrepareTransferPageWidgetModel extends CustomWidgetModel<
 
   void onSubmittedAmountWord(_) => commentFocus.requestFocus();
 
+  String? validateAddressField(String? value) {
+    if (value?.isEmpty ?? true) {
+      return LocaleKeys.addressIsEmpty.tr();
+    }
+    if (_selectedAsset?.isNative != true && model.address.address == value) {
+      return LocaleKeys.invalidReceiverAddress.tr();
+    }
+    return null;
+  }
+
   Future<void> _init() async {
     final acc = model.findAccountByAddress(model.address);
     if (acc == null) {
@@ -225,18 +235,11 @@ class WalletPrepareTransferPageWidgetModel extends CustomWidgetModel<
     // all existed assets
     final root = model.rootTokenContract;
 
-    if (root == null) {
-      _createNativeContract();
-      model.findExistedContracts(_onUpdateContractsForAccount);
-    } else {
-      final transport = model.currentTransport;
-      // if default contract is specified, then lock it
-      if (root == transport.nativeTokenAddress &&
-          model.tokenSymbol == transport.nativeTokenTicker) {
-        _createNativeContract();
-      } else {
-        unawaited(_findSpecifiedContract(root));
-      }
+    _createNativeContract();
+    model.findExistedContracts(_onUpdateContractsForAccount);
+
+    if (root != null && root != model.currentTransport.nativeTokenAddress) {
+      unawaited(_findSpecifiedContract(root));
     }
 
     _updateState(
@@ -306,25 +309,29 @@ class WalletPrepareTransferPageWidgetModel extends CustomWidgetModel<
     context.goFurther(path);
   }
 
-  Future<void> _updateAssetCurrency() async {
-    if (_selectedAsset?.currency != null) return;
+  Future<void> _updateAsset(WalletPrepareTransferAsset asset) async {
+    final currency = asset.currency ??
+        await model.getCurrencyForContract(
+          asset.rootTokenContract,
+        );
+    final balance =
+        await model.getBalance(asset) ?? _zeroBalance(asset.tokenSymbol);
 
-    final currency = await model.getCurrencyForContract(
-      _selectedAsset!.rootTokenContract,
+    final updatedAsset = asset.copyWith(
+      currency: currency,
+      balance: balance,
     );
 
-    if (currency != null) {
-      final selectedAsset = _selectedAsset!.copyWith(currency: currency);
+    _assets[updatedAsset.key] = updatedAsset;
 
-      _assets[selectedAsset.key] = selectedAsset;
-      _updateState(selectedAsset: selectedAsset);
+    if (updatedAsset.key == _selectedAsset?.key) {
+      _updateState(selectedAsset: updatedAsset);
     }
   }
 
   void _createNativeContract() {
     final transport = model.currentTransport;
     final root = transport.nativeTokenAddress;
-    final symbol = transport.nativeTokenTicker;
 
     final selectedAsset = WalletPrepareTransferAsset(
       rootTokenContract: root,
@@ -334,9 +341,9 @@ class WalletPrepareTransferPageWidgetModel extends CustomWidgetModel<
       logoURI: transport.nativeTokenIcon,
       title: transport.nativeTokenTicker,
     );
-    _assets[(root, symbol)] = selectedAsset;
+    _assets[selectedAsset.key] = selectedAsset;
     _updateState(selectedAsset: selectedAsset);
-    unawaited(_updateAssetCurrency());
+    unawaited(_updateAsset(selectedAsset));
     model.startListeningBalance(selectedAsset);
   }
 
@@ -358,9 +365,9 @@ class WalletPrepareTransferPageWidgetModel extends CustomWidgetModel<
       title: contract.name,
       version: contract.version,
     );
-    _assets[(root, contract.symbol)] = selectedAsset;
+    _assets[selectedAsset.key] = selectedAsset;
     _updateState(selectedAsset: selectedAsset);
-    unawaited(_updateAssetCurrency());
+    unawaited(_updateAsset(selectedAsset));
     model.startListeningBalance(selectedAsset);
   }
 
@@ -425,22 +432,25 @@ class WalletPrepareTransferPageWidgetModel extends CustomWidgetModel<
   }
 
   void _onUpdateContractsForAccount(List<TokenContractAsset> contracts) {
-    _assets.addEntries(
-      contracts.map(
-        (e) => MapEntry(
-          (e.address, e.symbol),
-          WalletPrepareTransferAsset(
-            rootTokenContract: e.address,
-            isNative: false,
-            balance: _zeroBalance(e.symbol),
-            tokenSymbol: e.symbol,
-            logoURI: e.logoURI,
-            title: e.name,
-            version: e.version,
-          ),
-        ),
+    final assets = contracts.map(
+      (e) => WalletPrepareTransferAsset(
+        rootTokenContract: e.address,
+        isNative: false,
+        balance: _zeroBalance(e.symbol),
+        tokenSymbol: e.symbol,
+        logoURI: e.logoURI,
+        title: e.name,
+        version: e.version,
       ),
     );
+    final entries = assets.map((asset) => MapEntry(asset.key, asset));
+
+    _assets.addEntries(entries);
+
+    for (final asset in assets) {
+      _updateAsset(asset);
+    }
+
     _updateState();
   }
 

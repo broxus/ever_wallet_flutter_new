@@ -76,7 +76,6 @@ class _InfoCard extends StatelessWidget {
               padding: const EdgeInsets.all(DimensSizeV2.d12),
               child: Center(
                 child: BarcodeWidget(
-                  // margin: const EdgeInsets.all(DimensSizeV2.d12),
                   width: DimensSizeV2.d74,
                   height: DimensSizeV2.d74,
                   data: account.address.address,

@@ -51,7 +51,7 @@ dependencies:
   nekoton_repository:
     git:
       url: https://github.com/broxus/nekoton_repository.git
-      ref: update-dependencies
+      ref: feature/derive-key
   nekoton_webview: 0.1.8-dev.0
   ntp: ^2.0.0
   package_info_plus: ^8.0.0
