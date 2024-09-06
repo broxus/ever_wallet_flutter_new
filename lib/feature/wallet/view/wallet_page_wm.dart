@@ -1,3 +1,6 @@
+import 'dart:async';
+
+import 'package:app/app/service/secure_storage_service.dart';
 import 'package:app/core/error_handler_factory.dart';
 import 'package:app/core/wm/custom_wm.dart';
 import 'package:app/di/di.dart';
@@ -14,6 +17,7 @@ WalletPageWidgetModel defaultWalletPageWidgetModelFactory(
       WalletPageModel(
         createPrimaryErrorHandler(context),
         inject(),
+        SecureStorageService(),
       ),
     );
 
@@ -26,4 +30,36 @@ class WalletPageWidgetModel
   late final _currentAccount = createNotifierFromStream(model.currentAccount);
 
   ListenableState<KeyAccount?> get currentAccount => _currentAccount;
+  bool isShowingBadge = true;
+
+  void hideShowingBadge() {
+    final address = currentAccount.value?.address.address;
+    isShowingBadge = false;
+    if (address != null) {
+      model.hideShowingBadge(address);
+    }
+  }
+
+  Future<void> checkBadge(KeyAccount? account) async {
+    //check user create new wallet or login
+    final isNewUser = await model.isNewUser();
+    if (isNewUser != null) {
+      if (isNewUser) {
+        isShowingBadge = true;
+      } else {
+        isShowingBadge = false;
+        if (account != null) {
+          unawaited(model.hideShowingBadge(account.address.address));
+        }
+      }
+      unawaited(model.resetValueNewUser());
+      return;
+    }
+    if (account != null) {
+      isShowingBadge =
+          await model.isShowingBadge(account.address.address) ?? true;
+    } else {
+      isShowingBadge = true;
+    }
+  }
 }

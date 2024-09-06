@@ -17,8 +17,10 @@ import 'package:ui_components_lib/v2/ui_components_lib_v2.dart';
 ConfirmActionWidgetModel defaultConfirmActionWidgetModelFactory(
   BuildContext context,
   KeyAccount? account,
+  VoidCallback finishedBackupCallback,
 ) {
   return ConfirmActionWidgetModel(
+    finishedBackupCallback,
     ConfirmActionModel(
       createPrimaryErrorHandler(context),
       account,
@@ -32,8 +34,11 @@ ConfirmActionWidgetModel defaultConfirmActionWidgetModelFactory(
 class ConfirmActionWidgetModel
     extends CustomWidgetModel<ContentConfirmAction, ConfirmActionModel> {
   ConfirmActionWidgetModel(
+    this.finishedBackupCallback,
     super.model,
   );
+
+  final VoidCallback finishedBackupCallback;
 
   ThemeStyleV2 get themeStyle => context.themeStyleV2;
 
@@ -53,7 +58,6 @@ class ConfirmActionWidgetModel
   void onClickConfirm() {
     screenState.content(ConfirmActionData(isLoading: true));
     final publicKey = model.currentSeed?.publicKey;
-    //loading
     if (publicKey != null) {
       _export(publicKey, passwordController.text);
     }
@@ -70,7 +74,14 @@ class ConfirmActionWidgetModel
         final phrase = await seed.export(password);
 
         context.maybePop();
-        showManualBackupDialog(context, phrase);
+        showManualBackupDialog(
+          context,
+          phrase,
+          account?.address.address ??
+              ''
+                  '',
+          finishedBackupCallback,
+        );
       } catch (_) {
         screenState
             .content(ConfirmActionData(error: LocaleKeys.passwordIsWrong.tr()));

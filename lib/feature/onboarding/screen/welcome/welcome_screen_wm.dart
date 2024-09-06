@@ -1,6 +1,7 @@
 import 'dart:async';
 
 import 'package:app/app/router/app_route.dart';
+import 'package:app/app/service/secure_storage_service.dart';
 import 'package:app/core/error_handler_factory.dart';
 import 'package:app/core/wm/custom_wm.dart';
 import 'package:app/feature/choose_network/choose_network_screen.dart';
@@ -19,6 +20,7 @@ WelcomeScreenWidgetModel defaultWelcomeScreenWidgetModelFactory(
   return WelcomeScreenWidgetModel(
     WelcomeScreenModel(
       createPrimaryErrorHandler(context),
+      SecureStorageService(),
     ),
   );
 }
@@ -36,10 +38,12 @@ class WelcomeScreenWidgetModel
   ThemeStyleV2 get themeStyle => context.themeStyleV2;
 
   Future<void> onPressedCreateWallet() async {
+    unawaited(model.saveUserNew(userWithNewWallet: true));
     _goNext(AppRoute.createSeedPassword.path);
   }
 
   void onPressedWalletLogin() {
+    model.saveUserNew(userWithNewWallet: false);
     _goNext(AppRoute.addExistingWallet.path);
   }
 

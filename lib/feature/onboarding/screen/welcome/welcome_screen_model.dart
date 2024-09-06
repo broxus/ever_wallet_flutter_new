@@ -1,3 +1,4 @@
+import 'package:app/app/service/secure_storage_service.dart';
 import 'package:app/feature/onboarding/screen/welcome/welcome_screen.dart';
 import 'package:elementary/elementary.dart';
 
@@ -5,5 +6,11 @@ import 'package:elementary/elementary.dart';
 class WelcomeScreenModel extends ElementaryModel {
   WelcomeScreenModel(
     ErrorHandler errorHandler,
+    this._storageService,
   ) : super(errorHandler: errorHandler);
+
+  final SecureStorageService _storageService;
+
+  Future<void> saveUserNew({required bool userWithNewWallet}) => _storageService
+      .addToStorage(StorageConstants.userWithNewWallet, userWithNewWallet);
 }

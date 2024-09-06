@@ -11,10 +11,14 @@ import 'package:ui_components_lib/v2/ui_components_lib_v2.dart';
 class WalletAccountsBody extends StatelessWidget {
   const WalletAccountsBody({
     required this.account,
+    required this.isShowingBadge,
+    required this.finishedBackupCallback,
     super.key,
   });
 
   final KeyAccount? account;
+  final bool isShowingBadge;
+  final VoidCallback finishedBackupCallback;
 
   @override
   Widget build(BuildContext context) {
@@ -41,7 +45,7 @@ class WalletAccountsBody extends StatelessWidget {
               currentAccount: account,
             ),
             const SizedBox(height: DimensSizeV2.d16),
-            BackUpBadge(account),
+            if (isShowingBadge) BackUpBadge(account, finishedBackupCallback),
             const SizedBox(height: DimensSizeV2.d16),
           ],
         ),

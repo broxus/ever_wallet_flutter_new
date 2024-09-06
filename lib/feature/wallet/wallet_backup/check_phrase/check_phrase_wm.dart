@@ -2,6 +2,7 @@ import 'dart:async';
 import 'dart:math';
 
 import 'package:app/app/router/app_route.dart';
+import 'package:app/app/service/secure_storage_service.dart';
 import 'package:app/core/error_handler_factory.dart';
 import 'package:app/core/wm/custom_wm.dart';
 import 'package:app/di/di.dart';
@@ -21,12 +22,17 @@ const defaultCheckAnswersAmount = 9;
 CheckPhraseWidgetModel defaultCheckPhraseWidgetModelFactory(
   BuildContext context,
   List<String> words,
+  String address,
+  VoidCallback finishedBackupCallback,
 ) {
   return CheckPhraseWidgetModel(
+    finishedBackupCallback,
     CheckPhraseModel(
       createPrimaryErrorHandler(context),
       inject(),
+      SecureStorageService(),
       words,
+      address,
     ),
   );
 }
@@ -35,10 +41,13 @@ CheckPhraseWidgetModel defaultCheckPhraseWidgetModelFactory(
 class CheckPhraseWidgetModel
     extends CustomWidgetModel<ContentCheckPhrase, CheckPhraseModel> {
   CheckPhraseWidgetModel(
+    this.finishedBackupCallback,
     super.model,
   ) {
     _init();
   }
+
+  final VoidCallback finishedBackupCallback;
 
   ThemeStyleV2 get themeStyle => context.themeStyleV2;
 
@@ -74,6 +83,15 @@ class CheckPhraseWidgetModel
       userAnswers![answerIndex] = userAnswers![answerIndex].copyWith(word: '');
       _checkNewAnswer();
     }
+  }
+
+  void clickSkip() {
+    model.setShowingBackUpFlag();
+    finishedBackupCallback();
+    context
+      ..maybePop() //close manual backup dialog
+      ..maybePop(); //close current dialog
+    showGoodJobDialog(context);
   }
 
   Future<void> _init() async {
@@ -118,6 +136,8 @@ class CheckPhraseWidgetModel
       model.showValidateError(LocaleKeys.seedIsMissing.tr());
     } else {
       // TODO(malochka): think about get rid of maybePop method
+      model.setShowingBackUpFlag();
+      finishedBackupCallback();
       context
         ..maybePop() //close manual backup
         ..maybePop(); //close check your seed phrase

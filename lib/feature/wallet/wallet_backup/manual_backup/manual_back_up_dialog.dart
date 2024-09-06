@@ -1,6 +1,3 @@
-import 'package:app/app/router/app_route.dart';
-import 'package:app/feature/wallet/wallet_backup/check_phrase/check_phrase_dialog.dart';
-import 'package:app/feature/wallet/wallet_backup/good_job_back_up_dialog.dart';
 import 'package:app/feature/wallet/wallet_backup/manual_backup/manual_back_up_data.dart';
 import 'package:app/feature/wallet/wallet_backup/manual_backup/manual_back_up_wm.dart';
 import 'package:app/generated/generated.dart';
@@ -11,48 +8,39 @@ import 'package:lucide_icons_flutter/lucide_icons.dart';
 import 'package:ui_components_lib/v2/ui_components_lib_v2.dart';
 import 'package:ui_components_lib/v2/widgets/modals/primary_bottom_sheet.dart';
 
-void showManualBackupDialog(BuildContext context, List<String> words) {
+void showManualBackupDialog(
+  BuildContext context,
+  List<String> words,
+  String address,
+  VoidCallback finishedBackupCallback,
+) {
   showPrimaryBottomSheet(
     context: context,
     title: LocaleKeys.manualBackupTitleDialog.tr(),
     subtitle: LocaleKeys.manualBackupSubtitleDialog.tr(),
-    firstButton: LayoutBuilder(
-      builder: (context, constraints) {
-        return AccentButton(
-          buttonShape: ButtonShape.pill,
-          title: LocaleKeys.checkPhrasesLabel.tr(),
-          icon: LucideIcons.textCursorInput,
-          onPressed: () {
-            showCheckPhraseDialog(context, words);
-          },
-        );
-      },
+    content: ContentManualBackup(
+      words: words,
+      address: address,
+      finishedBackupCallback: finishedBackupCallback,
     ),
-    secondButton: LayoutBuilder(
-      builder: (context, _) {
-        return PrimaryButton(
-          buttonShape: ButtonShape.pill,
-          title: LocaleKeys.skipTakeRisk.tr(),
-          onPressed: () {
-            context.maybePop(); //close current dialog
-            showGoodJobDialog(context);
-          },
-        );
-      },
-    ),
-    content: ContentManualBackup(words: words),
   );
 }
 
 class ContentManualBackup extends ElementaryWidget<ManualBackUpWidgetModel> {
   ContentManualBackup({
     required List<String> words,
+    required String address,
+    required VoidCallback finishedBackupCallback,
     Key? key,
     WidgetModelFactory<ManualBackUpWidgetModel>? wmFactory,
   }) : super(
           wmFactory ??
-              (context) =>
-                  defaultManualBackUpWidgetModelFactory(context, words),
+              (context) => defaultManualBackUpWidgetModelFactory(
+                    context,
+                    words,
+                    address,
+                    finishedBackupCallback,
+                  ),
           key: key,
         );
 
@@ -89,6 +77,28 @@ class ContentManualBackup extends ElementaryWidget<ManualBackUpWidgetModel> {
           },
         ),
         const SizedBox(height: DimensSizeV2.d24),
+        LayoutBuilder(
+          builder: (context, constraints) {
+            return AccentButton(
+              buttonShape: ButtonShape.pill,
+              title: LocaleKeys.checkPhrasesLabel.tr(),
+              icon: LucideIcons.textCursorInput,
+              onPressed: () => wm.clickCheckPhrase(
+                context,
+              ),
+            );
+          },
+        ),
+        const SizedBox(height: DimensSizeV2.d8),
+        LayoutBuilder(
+          builder: (context, _) {
+            return PrimaryButton(
+              buttonShape: ButtonShape.pill,
+              title: LocaleKeys.skipTakeRisk.tr(),
+              onPressed: () => wm.clickSkip(context),
+            );
+          },
+        ),
       ],
     );
   }

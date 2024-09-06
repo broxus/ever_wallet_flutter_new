@@ -1,7 +1,5 @@
-import 'package:app/app/router/app_route.dart';
 import 'package:app/feature/wallet/wallet_backup/check_phrase/check_phrase_data.dart';
 import 'package:app/feature/wallet/wallet_backup/check_phrase/check_phrase_wm.dart';
-import 'package:app/feature/wallet/wallet_backup/good_job_back_up_dialog.dart';
 import 'package:app/generated/generated.dart';
 import 'package:app/v1/feature/add_seed/check_seed_phrase/widgets/check_seed_answers_widget.dart';
 import 'package:app/v1/feature/add_seed/check_seed_phrase/widgets/check_seed_available_answers_widget.dart';
@@ -11,38 +9,40 @@ import 'package:flutter/cupertino.dart';
 import 'package:ui_components_lib/v2/ui_components_lib_v2.dart';
 import 'package:ui_components_lib/v2/widgets/modals/primary_bottom_sheet.dart';
 
-void showCheckPhraseDialog(BuildContext context, List<String> words) {
+void showCheckPhraseDialog(
+  BuildContext context,
+  List<String> words,
+  String address,
+  VoidCallback finishedBackupCallback,
+) {
   showPrimaryBottomSheet(
     context: context,
     title: LocaleKeys.letsCheckSeedPhrase.tr(),
     subtitle: LocaleKeys.checkSeedPhraseCorrectly.tr(),
-    secondButton: LayoutBuilder(
-      builder: (context, _) {
-        return PrimaryButton(
-          buttonShape: ButtonShape.pill,
-          title: LocaleKeys.skipTakeRisk.tr(),
-          onPressed: () {
-            context
-              ..maybePop() //close manual backup dialog
-              ..maybePop(); //close current dialog
-            showGoodJobDialog(context);
-          },
-        );
-      },
-    ),
     showBackButton: true,
-    content: ContentCheckPhrase(words: words),
+    content: ContentCheckPhrase(
+      words: words,
+      address: address,
+      finishedBackupCallback: finishedBackupCallback,
+    ),
   );
 }
 
 class ContentCheckPhrase extends ElementaryWidget<CheckPhraseWidgetModel> {
   ContentCheckPhrase({
     required List<String> words,
+    required String address,
+    required VoidCallback finishedBackupCallback,
     Key? key,
     WidgetModelFactory<CheckPhraseWidgetModel>? wmFactory,
   }) : super(
           wmFactory ??
-              (context) => defaultCheckPhraseWidgetModelFactory(context, words),
+              (context) => defaultCheckPhraseWidgetModelFactory(
+                    context,
+                    words,
+                    address,
+                    finishedBackupCallback,
+                  ),
           key: key,
         );
 
@@ -74,6 +74,17 @@ class ContentCheckPhrase extends ElementaryWidget<CheckPhraseWidgetModel> {
                 onPressed: data?.isAllChosen ?? false ? wm.checkPhrase : null,
               ),
               const SizedBox(height: DimensSizeV2.d8),
+              LayoutBuilder(
+                builder: (context, _) {
+                  return PrimaryButton(
+                    buttonShape: ButtonShape.pill,
+                    title: LocaleKeys.skipTakeRisk.tr(),
+                    onPressed: () {
+                      wm.clickSkip();
+                    },
+                  );
+                },
+              ),
             ],
           );
         } else {

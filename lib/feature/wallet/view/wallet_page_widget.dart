@@ -16,15 +16,19 @@ class WalletPageWidget extends ElementaryWidget<WalletPageWidgetModel> {
     return Scaffold(
       body: StateNotifierBuilder(
         listenableState: wm.currentAccount,
-        builder: (_, currentAccount) =>
-            currentAccount?.let(
+        builder: (_, currentAccount) {
+          wm.checkBadge(currentAccount);
+          return currentAccount?.let(
               (value) => WalletView(
                 key: ValueKey(value),
                 currentAccount: value,
                 scrollController: wm.scrollController,
+                isShowingBadge: wm.isShowingBadge,
+                finishedBackupCallback: wm.hideShowingBadge,
               ),
             ) ??
-            const SizedBox.shrink(),
+            const SizedBox.shrink();
+        },
       ),
     );
   }
