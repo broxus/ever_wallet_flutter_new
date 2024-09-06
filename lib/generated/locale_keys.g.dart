@@ -1,9 +1,10 @@
 // DO NOT EDIT. This is code generated via package:easy_localization/generate.dart
 
-abstract class  LocaleKeys {
+abstract class LocaleKeys {
   static const createNewWallet = 'createNewWallet';
   static const signInWithPhrase = 'signInWithPhrase';
-  static const supportTokenAndAccessEverscale = 'supportTokenAndAccessEverscale';
+  static const supportTokenAndAccessEverscale =
+      'supportTokenAndAccessEverscale';
   static const byProcessingAcceptLicense = 'byProcessingAcceptLicense';
   static const readHere = 'readHere';
   static const skipWord = 'skipWord';
@@ -13,7 +14,8 @@ abstract class  LocaleKeys {
   static const chooseNetworkVenomDescription = 'chooseNetworkVenomDescription';
   static const checkSeedPhraseCorrectly = 'checkSeedPhraseCorrectly';
   static const seedIsWrong = 'seedIsWrong';
-  static const selectNetworkNewWalletDescription = 'selectNetworkNewWalletDescription';
+  static const selectNetworkNewWalletDescription =
+      'selectNetworkNewWalletDescription';
   static const wordWord = 'wordWord';
   static const createPassword = 'createPassword';
   static const createPasswordDescription = 'createPasswordDescription';
@@ -33,7 +35,8 @@ abstract class  LocaleKeys {
   static const copyWords = 'copyWords';
   static const copyWord = 'copyWord';
   static const enterSeedNameScreenTitle = 'enterSeedNameScreenTitle';
-  static const enterSeedNameScreenDescription = 'enterSeedNameScreenDescription';
+  static const enterSeedNameScreenDescription =
+      'enterSeedNameScreenDescription';
   static const seedName = 'seedName';
   static const continueWord = 'continueWord';
   static const confirm = 'confirm';
@@ -171,21 +174,35 @@ abstract class  LocaleKeys {
   static const langKorean = 'langKorean';
   static const chooseLanguage = 'chooseLanguage';
   static const contactSupport = 'contactSupport';
-  static const contactSupportBottomSheetHeaderInitiatedByUser = 'contactSupportBottomSheetHeaderInitiatedByUser';
-  static const contactSupportBottomSheetTextInitiatedByUser = 'contactSupportBottomSheetTextInitiatedByUser';
-  static const contactSupportBottomSheetButtonInitiatedByUser = 'contactSupportBottomSheetButtonInitiatedByUser';
-  static const contactSupportBottomSheetHeaderInitiatedByCrash = 'contactSupportBottomSheetHeaderInitiatedByCrash';
-  static const contactSupportBottomSheetTextInitiatedByCrash = 'contactSupportBottomSheetTextInitiatedByCrash';
-  static const contactSupportBottomSheetButtonInitiatedByCrash = 'contactSupportBottomSheetButtonInitiatedByCrash';
-  static const contactSupportEmailToInitiatedByUser = 'contactSupportEmailToInitiatedByUser';
-  static const contactSupportEmailSubjectInitiatedByUser = 'contactSupportEmailSubjectInitiatedByUser';
-  static const contactSupportEmailBodyInitiatedByUser = 'contactSupportEmailBodyInitiatedByUser';
-  static const contactSupportEmailToInitiatedByCrash = 'contactSupportEmailToInitiatedByCrash';
-  static const contactSupportEmailSubjectInitiatedByCrash = 'contactSupportEmailSubjectInitiatedByCrash';
-  static const contactSupportEmailBodyInitiatedByCrash = 'contactSupportEmailBodyInitiatedByCrash';
+  static const contactSupportBottomSheetHeaderInitiatedByUser =
+      'contactSupportBottomSheetHeaderInitiatedByUser';
+  static const contactSupportBottomSheetTextInitiatedByUser =
+      'contactSupportBottomSheetTextInitiatedByUser';
+  static const contactSupportBottomSheetButtonInitiatedByUser =
+      'contactSupportBottomSheetButtonInitiatedByUser';
+  static const contactSupportBottomSheetHeaderInitiatedByCrash =
+      'contactSupportBottomSheetHeaderInitiatedByCrash';
+  static const contactSupportBottomSheetTextInitiatedByCrash =
+      'contactSupportBottomSheetTextInitiatedByCrash';
+  static const contactSupportBottomSheetButtonInitiatedByCrash =
+      'contactSupportBottomSheetButtonInitiatedByCrash';
+  static const contactSupportEmailToInitiatedByUser =
+      'contactSupportEmailToInitiatedByUser';
+  static const contactSupportEmailSubjectInitiatedByUser =
+      'contactSupportEmailSubjectInitiatedByUser';
+  static const contactSupportEmailBodyInitiatedByUser =
+      'contactSupportEmailBodyInitiatedByUser';
+  static const contactSupportEmailToInitiatedByCrash =
+      'contactSupportEmailToInitiatedByCrash';
+  static const contactSupportEmailSubjectInitiatedByCrash =
+      'contactSupportEmailSubjectInitiatedByCrash';
+  static const contactSupportEmailBodyInitiatedByCrash =
+      'contactSupportEmailBodyInitiatedByCrash';
   static const contactSupportCantCreateFile = 'contactSupportCantCreateFile';
-  static const contactSupportCantFindEmailClient = 'contactSupportCantFindEmailClient';
-  static const contactSupportCantFindEmailClientShare = 'contactSupportCantFindEmailClientShare';
+  static const contactSupportCantFindEmailClient =
+      'contactSupportCantFindEmailClient';
+  static const contactSupportCantFindEmailClientShare =
+      'contactSupportCantFindEmailClientShare';
   static const browserCloseAll = 'browserCloseAll';
   static const browserDone = 'browserDone';
   static const browserSearchURL = 'browserSearchURL';
@@ -203,7 +220,8 @@ abstract class  LocaleKeys {
   static const browserHistoryDone = 'browserHistoryDone';
   static const browserClearHistory = 'browserClearHistory';
   static const browserClearCookies = 'browserClearCookies';
-  static const browserClearCookiesDescription = 'browserClearCookiesDescription';
+  static const browserClearCookiesDescription =
+      'browserClearCookiesDescription';
   static const browserClearCache = 'browserClearCache';
   static const browserBookmarks = 'browserBookmarks';
   static const browserPopularResources = 'browserPopularResources';
@@ -214,7 +232,8 @@ abstract class  LocaleKeys {
   static const browserBookmarkDelete = 'browserBookmarkDelete';
   static const browserBookmarkDeleted = 'browserBookmarkDeleted';
   static const browserBookmarkDeletedUndo = 'browserBookmarkDeletedUndo';
-  static const browserBookmarkRenameEnterName = 'browserBookmarkRenameEnterName';
+  static const browserBookmarkRenameEnterName =
+      'browserBookmarkRenameEnterName';
   static const browserBookmarkRenameName = 'browserBookmarkRenameName';
   static const browserBookmarkRenameWord = 'browserBookmarkRenameWord';
   static const browserBookmarksEdit = 'browserBookmarksEdit';
@@ -226,7 +245,8 @@ abstract class  LocaleKeys {
   static const browserBookmarksDeletedUndo = 'browserBookmarksDeletedUndo';
   static const browserStartEmptySearch = 'browserStartEmptySearch';
   static const browserEnterBasicAuthTitle = 'browserEnterBasicAuthTitle';
-  static const browserEnterBasicAuthDescription = 'browserEnterBasicAuthDescription';
+  static const browserEnterBasicAuthDescription =
+      'browserEnterBasicAuthDescription';
   static const browserEnterBasicAuthUsername = 'browserEnterBasicAuthUsername';
   static const browserEnterBasicAuthPassword = 'browserEnterBasicAuthPassword';
   static const browserEnterBasicSignIn = 'browserEnterBasicSignIn';
@@ -249,7 +269,8 @@ abstract class  LocaleKeys {
   static const startExploring = 'startExploring';
   static const statusWord = 'statusWord';
   static const leftForConfirmation = 'leftForConfirmation';
-  static const transactionStatusWaitingConfirmation = 'transactionStatusWaitingConfirmation';
+  static const transactionStatusWaitingConfirmation =
+      'transactionStatusWaitingConfirmation';
   static const transactionStatusInProgress = 'transactionStatusInProgress';
   static const transactionStatusExpired = 'transactionStatusExpired';
   static const addressToReceiveFunds = 'addressToReceiveFunds';
@@ -358,8 +379,10 @@ abstract class  LocaleKeys {
   static const rejectWord = 'rejectWord';
   static const accountAddress = 'accountAddress';
   static const accountPublicKey = 'accountPublicKey';
-  static const accountInteractionNotPermitted = 'accountInteractionNotPermitted';
-  static const specifiedAccountInteractionNotPermitted = 'specifiedAccountInteractionNotPermitted';
+  static const accountInteractionNotPermitted =
+      'accountInteractionNotPermitted';
+  static const specifiedAccountInteractionNotPermitted =
+      'specifiedAccountInteractionNotPermitted';
   static const basicInteractionNotPermitted = 'basicInteractionNotPermitted';
   static const permissionsNotGranted = 'permissionsNotGranted';
   static const addAssetTitle = 'addAssetTitle';
@@ -419,7 +442,8 @@ abstract class  LocaleKeys {
   static const everscale = 'everscale';
   static const averageApy = 'averageApy';
   static const stakingInitError = 'stakingInitError';
-  static const stakingNotEnoughBalanceToStake = 'stakingNotEnoughBalanceToStake';
+  static const stakingNotEnoughBalanceToStake =
+      'stakingNotEnoughBalanceToStake';
   static const sendingNotEnoughBalanceToSend = 'sendingNotEnoughBalanceToSend';
   static const cancelUnstakingCheckTitle = 'cancelUnstakingCheckTitle';
   static const cancelUnstakingCheckSubtitle = 'cancelUnstakingCheckSubtitle';
@@ -437,7 +461,8 @@ abstract class  LocaleKeys {
   static const areYouSure = 'areYouSure';
   static const logoutConfirmText = 'logoutConfirmText';
   static const initializationRerunFailed = 'initializationRerunFailed';
-  static const initializationFailedDescription = 'initializationFailedDescription';
+  static const initializationFailedDescription =
+      'initializationFailedDescription';
   static const tryAgain = 'tryAgain';
   static const connectingNetworkFailed = 'connectingNetworkFailed';
   static const creatingSubscriptionFailed = 'creatingSubscriptionFailed';
@@ -466,7 +491,8 @@ abstract class  LocaleKeys {
   static const importWalletScreenTitle = 'importWalletScreenTitle';
   static const importWalletScreenSubtitle = 'importWalletScreenSubtitle';
   static const importWalletButtonText = 'importWalletButtonText';
-  static const importWalletManuallyButtonText = 'importWalletManuallyButtonText';
+  static const importWalletManuallyButtonText =
+      'importWalletManuallyButtonText';
   static const importWalletPasteClipboard = 'importWalletPasteClipboard';
   static const toInputLabel = 'toInputLabel';
   static const balance = 'balance';
@@ -533,12 +559,18 @@ abstract class  LocaleKeys {
   static const forExperiencedUsers = 'forExperiencedUsers';
   static const walletDescriptionSurfWallet = 'walletDescriptionSurfWallet';
   static const walletDescriptionWalletV3 = 'walletDescriptionWalletV3';
-  static const walletDescriptionSafeMultisigWallet = 'walletDescriptionSafeMultisigWallet';
-  static const walletDescriptionSafeMultisigWallet24h = 'walletDescriptionSafeMultisigWallet24h';
-  static const walletDescriptionSetcodeMultisigWallet = 'walletDescriptionSetcodeMultisigWallet';
-  static const walletDescriptionSetcodeMultisigWallet24h = 'walletDescriptionSetcodeMultisigWallet24h';
-  static const walletDescriptionBridgeMultisigWallet = 'walletDescriptionBridgeMultisigWallet';
-  static const walletDescriptionHighloadWalletV2 = 'walletDescriptionHighloadWalletV2';
+  static const walletDescriptionSafeMultisigWallet =
+      'walletDescriptionSafeMultisigWallet';
+  static const walletDescriptionSafeMultisigWallet24h =
+      'walletDescriptionSafeMultisigWallet24h';
+  static const walletDescriptionSetcodeMultisigWallet =
+      'walletDescriptionSetcodeMultisigWallet';
+  static const walletDescriptionSetcodeMultisigWallet24h =
+      'walletDescriptionSetcodeMultisigWallet24h';
+  static const walletDescriptionBridgeMultisigWallet =
+      'walletDescriptionBridgeMultisigWallet';
+  static const walletDescriptionHighloadWalletV2 =
+      'walletDescriptionHighloadWalletV2';
   static const walletDescriptionMultisig2 = 'walletDescriptionMultisig2';
   static const walletDescriptionMultisig2_1 = 'walletDescriptionMultisig2_1';
   static const walletDescriptionEverWallet = 'walletDescriptionEverWallet';
@@ -551,5 +583,4 @@ abstract class  LocaleKeys {
   static const accountAddedSheetSwitch = 'accountAddedSheetSwitch';
   static const accountAddedSheetContinue = 'accountAddedSheetContinue';
   static const invalidReceiverAddress = 'invalidReceiverAddress';
-
 }

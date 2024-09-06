@@ -28,13 +28,15 @@ class WalletPageWidgetModel
   late final scrollController = createScrollController();
 
   late final _currentAccount = createNotifierFromStream(model.currentAccount);
+  late final _isShowingBadgeNotifier = StateNotifier<bool>();
 
   ListenableState<KeyAccount?> get currentAccount => _currentAccount;
-  bool isShowingBadge = true;
+
+  ListenableState<bool> get isShowingBadge => _isShowingBadgeNotifier;
 
   void hideShowingBadge() {
     final address = currentAccount.value?.address.address;
-    isShowingBadge = false;
+    _isShowingBadgeNotifier.accept(false);
     if (address != null) {
       model.hideShowingBadge(address);
     }
@@ -45,9 +47,9 @@ class WalletPageWidgetModel
     final isNewUser = await model.isNewUser();
     if (isNewUser != null) {
       if (isNewUser) {
-        isShowingBadge = true;
+        _isShowingBadgeNotifier.accept(true);
       } else {
-        isShowingBadge = false;
+        _isShowingBadgeNotifier.accept(false);
         if (account != null) {
           unawaited(model.hideShowingBadge(account.address.address));
         }
@@ -56,10 +58,11 @@ class WalletPageWidgetModel
       return;
     }
     if (account != null) {
-      isShowingBadge =
-          await model.isShowingBadge(account.address.address) ?? true;
+      _isShowingBadgeNotifier.accept(
+        await model.isShowingBadge(account.address.address) ?? true,
+      );
     } else {
-      isShowingBadge = true;
+      _isShowingBadgeNotifier.accept(true);
     }
   }
 }

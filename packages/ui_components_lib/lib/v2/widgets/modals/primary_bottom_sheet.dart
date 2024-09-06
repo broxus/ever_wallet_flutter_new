@@ -51,6 +51,7 @@ class _ContentBottomSheet extends StatelessWidget {
     this.content,
     this.firstButton,
     this.secondButton,
+    this.avoidBottomInsets = true,
   });
 
   final String? assetsPath;
@@ -61,93 +62,110 @@ class _ContentBottomSheet extends StatelessWidget {
   final Widget? firstButton;
   final Widget? secondButton;
   final bool showBackButton;
+  final bool avoidBottomInsets;
 
   @override
   Widget build(BuildContext context) {
     final theme = context.themeStyleV2;
     return Material(
       color: theme.colors.background1,
-      child: Stack(
-        children: [
-          SingleChildScrollView(
-            child: Container(
-              decoration: BoxDecoration(color: theme.colors.background1),
-              padding: padding,
-              child: Column(
-                mainAxisSize: MainAxisSize.min,
-                children: [
-                  const SizedBox(height: DimensSizeV2.d16),
-                  if (showBackButton)
-                    Align(
-                      alignment: Alignment.centerLeft,
-                      child: Padding(
-                        padding: const EdgeInsets.only(top: DimensSizeV2.d12),
-                        child: FloatButton(
-                          buttonShape: ButtonShape.circle,
-                          icon: LucideIcons.arrowLeft,
-                          onPressed: Navigator.of(context).pop,
-                        ),
-                      ),
-                    ),
-                  const SizedBox(height: DimensSizeV2.d40),
-                  if (assetsPath != null)
-                    Padding(
-                      padding: const EdgeInsets.only(bottom: DimensSizeV2.d16),
-                      child: Image.asset(
-                        assetsPath!,
-                        width: DimensSizeV2.d56,
-                        height: DimensSizeV2.d56,
-                      ),
-                    ),
-                  if (title != null)
-                    Padding(
-                      padding: const EdgeInsets.only(bottom: DimensSizeV2.d8),
-                      child: Text(
-                        title!,
-                        style: theme.textStyles.headingLarge,
-                        textAlign: TextAlign.center,
-                      ),
-                    ),
-                  if (subtitle != null)
-                    Padding(
-                      padding: const EdgeInsets.only(bottom: DimensSizeV2.d24),
-                      child: Text(
-                        subtitle!,
-                        style: theme.textStyles.paragraphMedium,
-                        textAlign: TextAlign.center,
-                      ),
-                    ),
-                  if (content != null) content!,
-                  if (firstButton != null)
-                    Padding(
-                      padding: const EdgeInsets.only(bottom: DimensSize.d12),
-                      child: firstButton,
-                    ),
-                  if (secondButton != null)
-                    Padding(
-                      padding: const EdgeInsets.only(bottom: DimensSize.d12),
-                      child: secondButton,
-                    ),
-                  const SizedBox(height: DimensSizeV2.d32),
-                ],
-              ),
-            ),
-          ),
-          Row(
-            mainAxisAlignment: MainAxisAlignment.center,
+      child: SafeArea(
+        minimum: avoidBottomInsets
+            ? const EdgeInsets.only(bottom: DimensSizeV2.d4)
+            : EdgeInsets.zero,
+        child: Padding(
+          padding: avoidBottomInsets
+              ? MediaQuery.of(context).viewInsets
+              : EdgeInsets.zero,
+          child: Stack(
             children: [
-              Container(
-                margin: const EdgeInsets.only(top: DimensSizeV2.d12),
-                width: DimensSizeV2.d40,
-                height: DimensSizeV2.d4,
-                decoration: BoxDecoration(
-                  borderRadius: BorderRadius.circular(DimensSizeV2.d2),
-                  color: theme.colors.backgroundAlpha,
+              SingleChildScrollView(
+                child: Container(
+                  decoration: BoxDecoration(color: theme.colors.background1),
+                  padding: padding,
+                  child: Column(
+                    mainAxisSize: MainAxisSize.min,
+                    children: [
+                      const SizedBox(height: DimensSizeV2.d16),
+                      if (showBackButton)
+                        Align(
+                          alignment: Alignment.centerLeft,
+                          child: Padding(
+                            padding:
+                                const EdgeInsets.only(top: DimensSizeV2.d12),
+                            child: FloatButton(
+                              buttonShape: ButtonShape.circle,
+                              icon: LucideIcons.arrowLeft,
+                              onPressed: Navigator.of(context).pop,
+                            ),
+                          ),
+                        ),
+                      const SizedBox(height: DimensSizeV2.d40),
+                      if (assetsPath != null)
+                        Padding(
+                          padding:
+                              const EdgeInsets.only(bottom: DimensSizeV2.d16),
+                          child: Image.asset(
+                            assetsPath!,
+                            width: DimensSizeV2.d56,
+                            height: DimensSizeV2.d56,
+                          ),
+                        ),
+                      if (title != null)
+                        Padding(
+                          padding:
+                              const EdgeInsets.only(bottom: DimensSizeV2.d8),
+                          child: Text(
+                            title!,
+                            style: theme.textStyles.headingLarge,
+                            textAlign: TextAlign.center,
+                          ),
+                        ),
+                      if (subtitle != null)
+                        Padding(
+                          padding:
+                              const EdgeInsets.only(bottom: DimensSizeV2.d24),
+                          child: Text(
+                            subtitle!,
+                            style: theme.textStyles.paragraphMedium,
+                            textAlign: TextAlign.center,
+                          ),
+                        ),
+                      if (content != null) content!,
+                      if (firstButton != null)
+                        Padding(
+                          padding:
+                              const EdgeInsets.only(bottom: DimensSize.d12),
+                          child: firstButton,
+                        ),
+                      if (secondButton != null)
+                        Padding(
+                          padding:
+                              const EdgeInsets.only(bottom: DimensSize.d12),
+                          child: secondButton,
+                        ),
+                      const SizedBox(height: DimensSizeV2.d32),
+                    ],
+                  ),
                 ),
+              ),
+              Row(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  Container(
+                    margin: const EdgeInsets.only(top: DimensSizeV2.d12),
+                    width: DimensSizeV2.d40,
+                    height: DimensSizeV2.d4,
+                    decoration: BoxDecoration(
+                      borderRadius: BorderRadius.circular(DimensSizeV2.d2),
+                      color: theme.colors.backgroundAlpha,
+                    ),
+                  ),
+                ],
               ),
             ],
           ),
-        ],
+        ),
       ),
     );
   }

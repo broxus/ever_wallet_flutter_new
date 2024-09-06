@@ -19,15 +19,18 @@ class WalletPageWidget extends ElementaryWidget<WalletPageWidgetModel> {
         builder: (_, currentAccount) {
           wm.checkBadge(currentAccount);
           return currentAccount?.let(
-              (value) => WalletView(
-                key: ValueKey(value),
-                currentAccount: value,
-                scrollController: wm.scrollController,
-                isShowingBadge: wm.isShowingBadge,
-                finishedBackupCallback: wm.hideShowingBadge,
-              ),
-            ) ??
-            const SizedBox.shrink();
+                (value) => StateNotifierBuilder(
+                  listenableState: wm.isShowingBadge,
+                  builder: (_, isShowingBadge) => WalletView(
+                    key: ValueKey(value),
+                    currentAccount: value,
+                    scrollController: wm.scrollController,
+                    isShowingBadge: isShowingBadge ?? false,
+                    finishedBackupCallback: wm.hideShowingBadge,
+                  ),
+                ),
+              ) ??
+              const SizedBox.shrink();
         },
       ),
     );
