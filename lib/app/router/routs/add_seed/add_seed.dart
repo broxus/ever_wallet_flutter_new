@@ -1,5 +1,3 @@
-import 'dart:convert';
-
 import 'package:app/app/router/router.dart';
 import 'package:app/feature/add_seed/add_existing_wallet/view/add_existing_wallet_page.dart';
 import 'package:app/feature/add_seed/add_seed_enable_biometry/view/add_seed_enable_biometry_page.dart';
@@ -24,6 +22,8 @@ const enterSeedNameNamePathParam = 'nameParam';
 /// Route that allows to create a seed phrase without entering name.
 /// This route may be used in onboarding or profile section, depends
 /// on [passwordRoute].
+
+// TODO(knightforce): check is used
 @Deprecated('Use v2 version')
 GoRoute createSeedNoNamedRoute(GoRoute passwordRoute) {
   return GoRoute(
@@ -33,10 +33,7 @@ GoRoute createSeedNoNamedRoute(GoRoute passwordRoute) {
       GoRoute(
         path: AppRoute.checkSeed.path,
         builder: (_, state) => CheckSeedPhrasePage(
-          phrase: (jsonDecode(
-            state.uri.queryParameters[addSeedPhraseQueryParam]!,
-          ) as List<dynamic>)
-              .cast<String>(),
+          phrase: state.uri.queryParameters[addSeedPhraseQueryParam],
         ),
         routes: [
           passwordRoute,
@@ -155,10 +152,7 @@ GoRoute get createSeedNamedProfileRoute {
       GoRoute(
         path: AppRoute.checkSeed.path,
         builder: (_, state) => CheckSeedPhrasePage(
-          phrase: (jsonDecode(
-            state.uri.queryParameters[addSeedPhraseQueryParam]!,
-          ) as List<dynamic>)
-              .cast<String>(),
+          phrase: state.uri.queryParameters[addSeedPhraseQueryParam],
         ),
         routes: [
           passwordRoute,

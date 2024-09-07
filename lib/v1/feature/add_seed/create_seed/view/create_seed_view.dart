@@ -8,7 +8,7 @@ import 'package:ui_components_lib/ui_components_lib.dart';
 import 'package:ui_components_lib/v2/ui_components_lib_v2.dart';
 
 /// Callback that calls if user taps skip checking or check phrase.
-typedef CreateSeedCompleteCallback = void Function(List<String> phrase);
+typedef CreateSeedCompleteCallback = void Function(String phrase);
 
 /// {@template create_seed_view}
 /// Widget that allows user to create random seed phrase, copy it and check
@@ -83,13 +83,13 @@ class CreateSeedView extends StatelessWidget {
                     AccentButton(
                       buttonShape: ButtonShape.pill,
                       title: LocaleKeys.checkSeedPhrase.tr(),
-                      onPressed: () => checkCallback(words),
+                      onPressed: () => checkCallback(words.join(' ')),
                     ),
                     const SizedBox(height: DimensSizeV2.d8),
                     PrimaryButton(
                       buttonShape: ButtonShape.pill,
                       title: LocaleKeys.skipTakeRisk.tr(),
-                      onPressed: () => skipCallback(words),
+                      onPressed: () => skipCallback(words.join(' ')),
                     ),
                     const SizedBox(height: DimensSizeV2.d12),
                   ],

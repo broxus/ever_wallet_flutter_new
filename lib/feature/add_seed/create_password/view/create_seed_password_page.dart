@@ -28,7 +28,8 @@ class CreateSeedPasswordProfilePage extends StatelessWidget {
         phrase: phrase,
         name: name,
         // When we do this flow from profile, navigate to profile root
-        completeCallback: () => context.pop(AppRoute.profile.name),
+        completeCallback: () =>
+            context.goNamed(AppRoute.manageSeedsAccounts.name),
       ),
       child: GestureDetector(
         onTap: () => FocusScope.of(context).unfocus(),

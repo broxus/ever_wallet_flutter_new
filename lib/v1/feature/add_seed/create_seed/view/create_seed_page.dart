@@ -22,19 +22,19 @@ class CreateSeedPage extends StatelessWidget {
         appBar: const DefaultAppBar(),
         body: CreateSeedView(
           // ignore: prefer-extracting-callbacks
-          checkCallback: (List<String> phrase) {
+          checkCallback: (String phrase) {
             context.goFurther(
               AppRoute.checkSeed.pathWithData(
-                queryParameters: {addSeedPhraseQueryParam: jsonEncode(phrase)},
+                queryParameters: {addSeedPhraseQueryParam: phrase},
               ),
               preserveQueryParams: true,
             );
           },
           // ignore: prefer-extracting-callbacks
-          skipCallback: (List<String> phrase) {
+          skipCallback: (String phrase) {
             context.goFurther(
               AppRoute.createSeedPassword.pathWithData(
-                queryParameters: {addSeedPhraseQueryParam: jsonEncode(phrase)},
+                queryParameters: {addSeedPhraseQueryParam: phrase},
               ),
               preserveQueryParams: true,
             );

@@ -1,4 +1,5 @@
 import 'package:app/app/router/app_route.dart';
+import 'package:app/app/router/routs/add_seed/add_seed.dart';
 import 'package:app/generated/generated.dart';
 import 'package:app/v1/feature/add_seed/check_seed_phrase/check_seed_phrase.dart';
 import 'package:flutter/material.dart';
@@ -15,17 +16,21 @@ class CheckSeedPhrasePage extends StatelessWidget {
     super.key,
   });
 
-  final List<String> phrase;
+  final String? phrase;
 
-  void _navigateToPassword(BuildContext context) =>
-      context.goFurther(AppRoute.createSeedPassword.path);
+  void _navigateToPassword(BuildContext context, String? phrase) =>
+      context.goFurther(AppRoute.createSeedPassword.pathWithData(
+        queryParameters: {
+          if (phrase != null) addSeedPhraseQueryParam: phrase,
+        },
+      ));
 
   @override
   Widget build(BuildContext context) {
     return BlocProvider<CheckSeedPhraseCubit>(
       create: (context) => CheckSeedPhraseCubit(
         phrase,
-        () => _navigateToPassword(context),
+        (String? phrase) => _navigateToPassword(context, phrase),
       )..initAnswers(),
       child: Scaffold(
         appBar: DefaultAppBar(
@@ -34,7 +39,7 @@ class CheckSeedPhrasePage extends StatelessWidget {
             CommonButton.ghost(
               padding: EdgeInsets.zero,
               text: LocaleKeys.skipWord.tr(),
-              onPressed: () => _navigateToPassword(context),
+              onPressed: () => _navigateToPassword(context, phrase),
             ),
           ],
         ),
