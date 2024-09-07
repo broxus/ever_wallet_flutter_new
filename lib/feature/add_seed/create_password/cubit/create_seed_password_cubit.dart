@@ -1,5 +1,6 @@
 import 'package:app/app/service/network_connection/network_connection_service.dart';
 import 'package:app/app/service/service.dart';
+import 'package:app/data/models/seed/seed_phrase_model.dart';
 import 'package:app/di/di.dart';
 import 'package:app/feature/add_seed/create_password/model/password_status.dart';
 import 'package:app/utils/mixins/connection_mixin.dart';
@@ -20,7 +21,7 @@ class CreateSeedPasswordCubit extends Cubit<CreateSeedPasswordState>
     with ConnectionMixin {
   CreateSeedPasswordCubit({
     required this.completeCallback,
-    this.phrase,
+    required this.seedPhrase,
     this.setCurrentKey = false,
     this.name,
   }) : super(CreateSeedPasswordState.initial()) {
@@ -32,7 +33,7 @@ class CreateSeedPasswordCubit extends Cubit<CreateSeedPasswordState>
   final VoidCallback completeCallback;
 
   /// Phrase that must be used to create seed
-  final String? phrase;
+  final SeedPhraseModel seedPhrase;
 
   /// Name of seed phrase if provided
   final String? name;
@@ -67,7 +68,7 @@ class CreateSeedPasswordCubit extends Cubit<CreateSeedPasswordState>
   }
 
   Future<void> nextAction() async {
-    if (phrase == null || !await checkConnection()) {
+    if (seedPhrase.isEmpty || !await checkConnection()) {
       return;
     }
 
@@ -76,7 +77,7 @@ class CreateSeedPasswordCubit extends Cubit<CreateSeedPasswordState>
     final currentKeyService = inject<CurrentKeyService>();
     try {
       final publicKey = await nekoton.addSeed(
-        phrase: phrase!.split(' '),
+        phrase: seedPhrase.words,
         password: passwordController.text,
         name: name,
       );

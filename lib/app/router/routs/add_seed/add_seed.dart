@@ -1,4 +1,5 @@
 import 'package:app/app/router/router.dart';
+import 'package:app/data/models/seed/seed_phrase_model.dart';
 import 'package:app/feature/add_seed/add_existing_wallet/view/add_existing_wallet_page.dart';
 import 'package:app/feature/add_seed/add_seed_enable_biometry/view/add_seed_enable_biometry_page.dart';
 import 'package:app/feature/add_seed/create_password/screens/create_seed_password/create_seed_password_screen.dart';
@@ -33,7 +34,9 @@ GoRoute createSeedNoNamedRoute(GoRoute passwordRoute) {
       GoRoute(
         path: AppRoute.checkSeed.path,
         builder: (_, state) => CheckSeedPhrasePage(
-          phrase: state.uri.queryParameters[addSeedPhraseQueryParam],
+          seed: SeedPhraseModel(
+            state.uri.queryParameters[addSeedPhraseQueryParam],
+          ),
         ),
         routes: [
           passwordRoute,
@@ -90,7 +93,9 @@ GoRoute get createOnboardingSeedPasswordRoute {
     path: AppRoute.createSeedPassword.path,
     builder: (_, GoRouterState state) {
       return CreateSeedPasswordScreen(
-        phrase: state.uri.queryParameters[addSeedPhraseQueryParam],
+        phrase: SeedPhraseModel(
+          state.uri.queryParameters[addSeedPhraseQueryParam],
+        ),
       );
     },
     routes: [
@@ -113,7 +118,9 @@ GoRoute get createSeedNoNamedProfileRoute {
     GoRoute(
       path: AppRoute.createSeedPassword.path,
       builder: (_, state) => CreateSeedPasswordProfilePage(
-        phrase: state.uri.queryParameters[addSeedPhraseQueryParam],
+        seedPhrase: SeedPhraseModel(
+          state.uri.queryParameters[addSeedPhraseQueryParam],
+        ),
         name: state.pathParameters[enterSeedNameNamePathParam],
       ),
     ),
@@ -126,7 +133,9 @@ GoRoute get enterSeedNoNamedProfileRoute {
     GoRoute(
       path: AppRoute.createSeedPassword.path,
       builder: (_, GoRouterState state) => CreateSeedPasswordProfilePage(
-        phrase: state.uri.queryParameters[addSeedPhraseQueryParam],
+        seedPhrase: SeedPhraseModel(
+          state.uri.queryParameters[addSeedPhraseQueryParam],
+        ),
         name: state.pathParameters[enterSeedNameNamePathParam],
       ),
     ),
@@ -140,7 +149,9 @@ GoRoute get createSeedNamedProfileRoute {
   final passwordRoute = GoRoute(
     path: AppRoute.createSeedPassword.path,
     builder: (_, GoRouterState state) => CreateSeedPasswordProfilePage(
-      phrase: state.uri.queryParameters[addSeedPhraseQueryParam],
+      seedPhrase: SeedPhraseModel(
+        state.uri.queryParameters[addSeedPhraseQueryParam],
+      ),
       name: state.pathParameters[enterSeedNameNamePathParam],
     ),
   );
@@ -152,7 +163,9 @@ GoRoute get createSeedNamedProfileRoute {
       GoRoute(
         path: AppRoute.checkSeed.path,
         builder: (_, state) => CheckSeedPhrasePage(
-          phrase: state.uri.queryParameters[addSeedPhraseQueryParam],
+          seed: SeedPhraseModel(
+            state.uri.queryParameters[addSeedPhraseQueryParam],
+          ),
         ),
         routes: [
           passwordRoute,
@@ -175,7 +188,9 @@ GoRoute get enterSeedNamedProfileRoute {
         path: AppRoute.createSeedPassword.path,
         builder: (_, GoRouterState state) {
           return CreateSeedPasswordProfilePage(
-            phrase: state.uri.queryParameters[addSeedPhraseQueryParam],
+            seedPhrase: SeedPhraseModel(
+              state.uri.queryParameters[addSeedPhraseQueryParam],
+            ),
             name: state.pathParameters[enterSeedNameNamePathParam],
           );
         },

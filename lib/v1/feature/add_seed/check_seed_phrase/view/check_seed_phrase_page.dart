@@ -1,5 +1,6 @@
 import 'package:app/app/router/app_route.dart';
 import 'package:app/app/router/routs/add_seed/add_seed.dart';
+import 'package:app/data/models/seed/seed_phrase_model.dart';
 import 'package:app/generated/generated.dart';
 import 'package:app/v1/feature/add_seed/check_seed_phrase/check_seed_phrase.dart';
 import 'package:flutter/material.dart';
@@ -12,17 +13,17 @@ import 'package:ui_components_lib/ui_components_lib.dart';
 class CheckSeedPhrasePage extends StatelessWidget {
   /// {@macro check_seed_phrase_page}
   const CheckSeedPhrasePage({
-    required this.phrase,
+    required this.seed,
     super.key,
   });
 
-  final String? phrase;
+  final SeedPhraseModel seed;
 
-  void _navigateToPassword(BuildContext context, String? phrase) =>
+  void _navigateToPassword(BuildContext context, SeedPhraseModel? seed) =>
       context.goFurther(
         AppRoute.createSeedPassword.pathWithData(
           queryParameters: {
-            if (phrase != null) addSeedPhraseQueryParam: phrase,
+            if (seed != null) addSeedPhraseQueryParam: seed.phrase,
           },
         ),
       );
@@ -31,8 +32,8 @@ class CheckSeedPhrasePage extends StatelessWidget {
   Widget build(BuildContext context) {
     return BlocProvider<CheckSeedPhraseCubit>(
       create: (context) => CheckSeedPhraseCubit(
-        phrase,
-        (String? phrase) => _navigateToPassword(context, phrase),
+        seed,
+        (SeedPhraseModel seed) => _navigateToPassword(context, seed),
       )..initAnswers(),
       child: Scaffold(
         appBar: DefaultAppBar(
@@ -41,7 +42,7 @@ class CheckSeedPhrasePage extends StatelessWidget {
             CommonButton.ghost(
               padding: EdgeInsets.zero,
               text: LocaleKeys.skipWord.tr(),
-              onPressed: () => _navigateToPassword(context, phrase),
+              onPressed: () => _navigateToPassword(context, seed),
             ),
           ],
         ),

@@ -1,4 +1,5 @@
 import 'package:app/app/router/app_route.dart';
+import 'package:app/data/models/seed/seed_phrase_model.dart';
 import 'package:app/feature/add_seed/create_password/create_password.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -14,18 +15,18 @@ class CreateSeedPasswordProfilePage extends StatelessWidget {
   /// {@macro create_seed_password_profile_page}
   const CreateSeedPasswordProfilePage({
     required this.name,
-    this.phrase,
+    required this.seedPhrase,
     super.key,
   });
 
-  final String? phrase;
+  final SeedPhraseModel seedPhrase;
   final String? name;
 
   @override
   Widget build(BuildContext context) {
     return BlocProvider<CreateSeedPasswordCubit>(
       create: (context) => CreateSeedPasswordCubit(
-        phrase: phrase,
+        seedPhrase: seedPhrase,
         name: name,
         // When we do this flow from profile, navigate to profile root
         completeCallback: () =>

@@ -2,6 +2,7 @@ import 'package:app/app/service/biometry_service.dart';
 import 'package:app/app/service/messenger/message.dart';
 import 'package:app/app/service/messenger/service/messenger_service.dart';
 import 'package:app/app/service/nekoton_related/current_key_service.dart';
+import 'package:app/data/models/seed/seed_phrase_model.dart';
 import 'package:app/feature/add_seed/create_password/screens/create_seed_password/create_seed_password_screen.dart';
 import 'package:app/feature/constants.dart';
 import 'package:elementary/elementary.dart';
@@ -23,16 +24,22 @@ class CreateSeedPasswordScreenModel extends ElementaryModel {
   final CurrentKeyService _currentKeyService;
   final MessengerService _messengerService;
   final NekotonRepository _nekotonRepository;
-  final String? _phrase;
+  final SeedPhraseModel? _phrase;
 
   Future<void> next({
     required String password,
   }) async {
+    late SeedPhraseModel seed;
+
     try {
-      final phrase = _phrase?.split(' ') ?? await _createSeed();
+      if (_phrase?.isNotEmpty ?? false) {
+        seed = _phrase!;
+      } else {
+        seed = await _createSeed();
+      }
 
       final publicKey = await _nekotonRepository.addSeed(
-        phrase: phrase,
+        phrase: seed.words,
         password: password,
       );
 
@@ -48,8 +55,8 @@ class CreateSeedPasswordScreenModel extends ElementaryModel {
     }
   }
 
-  Future<List<String>> _createSeed() async {
+  Future<SeedPhraseModel> _createSeed() async {
     final seed = await generateKey(accountType: defaultMnemonicType);
-    return seed.words;
+    return SeedPhraseModel.fromWords(seed.words);
   }
 }
