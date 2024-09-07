@@ -161,7 +161,11 @@ class DefaultAppBar extends StatelessWidget implements PreferredSizeWidget {
 
     return PopScope(
       canPop: false,
-      onPopInvokedWithResult: (_, __) {
+      onPopInvokedWithResult: (didPop, result) {
+        if (didPop) {
+          return;
+        }
+
         WidgetsBinding.instance.addPostFrameCallback((_) {
           _onPressedBack(context);
         });
