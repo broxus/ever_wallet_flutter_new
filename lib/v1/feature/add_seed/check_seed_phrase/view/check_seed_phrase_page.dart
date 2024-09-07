@@ -19,11 +19,13 @@ class CheckSeedPhrasePage extends StatelessWidget {
   final String? phrase;
 
   void _navigateToPassword(BuildContext context, String? phrase) =>
-      context.goFurther(AppRoute.createSeedPassword.pathWithData(
-        queryParameters: {
-          if (phrase != null) addSeedPhraseQueryParam: phrase,
-        },
-      ));
+      context.goFurther(
+        AppRoute.createSeedPassword.pathWithData(
+          queryParameters: {
+            if (phrase != null) addSeedPhraseQueryParam: phrase,
+          },
+        ),
+      );
 
   @override
   Widget build(BuildContext context) {
