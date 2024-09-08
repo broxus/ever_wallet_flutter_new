@@ -2,7 +2,6 @@ import 'package:app/app/router/app_route.dart';
 import 'package:app/app/service/service.dart';
 import 'package:app/di/di.dart';
 import 'package:app/feature/contact_support/contact_support.dart';
-import 'package:app/feature/localization/localization.dart';
 import 'package:app/feature/profile/profile.dart';
 import 'package:app/generated/assets.gen.dart';
 import 'package:app/generated/locale_keys.g.dart';

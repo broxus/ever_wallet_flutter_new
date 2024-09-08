@@ -1,3 +1,4 @@
+import 'package:app/data/models/seed/seed_phrase_model.dart';
 import 'package:app/feature/add_seed/create_password/model/password_status.dart';
 import 'package:app/feature/add_seed/create_password/screens/create_seed_password/create_seed_password_screen_wm.dart';
 import 'package:app/feature/add_seed/create_password/view/create_seed_password_view.dart';
@@ -15,7 +16,7 @@ class CreateSeedPasswordScreen
   CreateSeedPasswordScreen({
     Key? key,
     WidgetModelFactory<CreateSeedPasswordScreenWidgetModel>? wmFactory,
-    String? phrase,
+    SeedPhraseModel? phrase,
   }) : super(
           wmFactory ??
               (context) => defaultCreateSeedPasswordScreenWidgetModelFactory(

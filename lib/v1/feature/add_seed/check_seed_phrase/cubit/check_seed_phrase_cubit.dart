@@ -1,5 +1,6 @@
 import 'dart:math';
 
+import 'package:app/data/models/seed/seed_phrase_model.dart';
 import 'package:app/v1/feature/add_seed/check_seed_phrase/cubit/cubit.dart';
 import 'package:bloc/bloc.dart';
 import 'package:collection/collection.dart';
@@ -8,6 +9,7 @@ import 'package:freezed_annotation/freezed_annotation.dart';
 import 'package:nekoton_repository/nekoton_repository.dart';
 
 part 'check_seed_phrase_cubit.freezed.dart';
+
 part 'check_seed_phrase_state.dart';
 
 const defaultWordsToCheckAmount = 3;
@@ -20,13 +22,13 @@ const delayBeforeCompleteChecking = Duration(seconds: 1);
 /// [availableAnswers] list.
 class CheckSeedPhraseCubit extends Cubit<CheckSeedPhraseCubitState> {
   factory CheckSeedPhraseCubit(
-    List<String> originalPhrase,
-    VoidCallback completeChecking,
+    SeedPhraseModel seed,
+    ValueChanged<SeedPhraseModel> completeChecking,
   ) {
-    final correct = _selectCorrectAnswers(originalPhrase);
+    final correct = _selectCorrectAnswers(seed);
 
     return CheckSeedPhraseCubit._(
-      originalPhrase,
+      seed,
       completeChecking,
       correct,
       correct.map((e) => e.copyWith(word: '')).toList(),
@@ -34,13 +36,13 @@ class CheckSeedPhraseCubit extends Cubit<CheckSeedPhraseCubitState> {
   }
 
   CheckSeedPhraseCubit._(
-    this.originalPhrase,
+    this.seed,
     this.completeChecking,
     this._correctAnswers,
     this.userAnswers,
   ) : super(const CheckSeedPhraseCubitState.initial());
 
-  final List<String> originalPhrase;
+  final SeedPhraseModel seed;
   final List<CheckSeedCorrectAnswer> _correctAnswers;
   late final List<String> availableAnswers;
 
@@ -48,7 +50,7 @@ class CheckSeedPhraseCubit extends Cubit<CheckSeedPhraseCubitState> {
   final List<CheckSeedCorrectAnswer> userAnswers;
 
   /// Navigate to other screen
-  final VoidCallback completeChecking;
+  final ValueChanged<SeedPhraseModel> completeChecking;
 
   /// if null - all words selected
   int? currentCheckIndex = 0;
@@ -111,7 +113,9 @@ class CheckSeedPhraseCubit extends Cubit<CheckSeedPhraseCubitState> {
           List.of(userAnswers),
         ),
       );
-      Future<void>.delayed(delayBeforeCompleteChecking, completeChecking);
+      Future<void>.delayed(delayBeforeCompleteChecking, () {
+        completeChecking(seed);
+      });
     }
   }
 
@@ -136,13 +140,17 @@ class CheckSeedPhraseCubit extends Cubit<CheckSeedPhraseCubitState> {
 
   /// Correct answers for internal checks
   static List<CheckSeedCorrectAnswer> _selectCorrectAnswers(
-    List<String> phrase,
+    SeedPhraseModel seed,
   ) {
+    if (seed.isEmpty) {
+      return [];
+    }
+
     final rng = Random();
     final indices = <int>[];
 
     while (indices.length < defaultWordsToCheckAmount) {
-      final number = rng.nextInt(phrase.length);
+      final number = rng.nextInt(seed.wordsCount);
 
       if (indices.contains(number)) {
         continue;
@@ -154,7 +162,11 @@ class CheckSeedPhraseCubit extends Cubit<CheckSeedPhraseCubitState> {
     indices.sort();
 
     return [
-      for (final index in indices) CheckSeedCorrectAnswer(phrase[index], index),
+      for (final index in indices)
+        CheckSeedCorrectAnswer(
+          seed.words[index],
+          index,
+        ),
     ];
   }
 

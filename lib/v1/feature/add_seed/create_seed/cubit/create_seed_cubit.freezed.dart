@@ -19,19 +19,19 @@ mixin _$CreateSeedCubitState {
   @optionalTypeArgs
   TResult when<TResult extends Object?>({
     required TResult Function() initial,
-    required TResult Function(List<String> words, bool isCopied) generated,
+    required TResult Function(SeedPhraseModel seed, bool isCopied) generated,
   }) =>
       throw _privateConstructorUsedError;
   @optionalTypeArgs
   TResult? whenOrNull<TResult extends Object?>({
     TResult? Function()? initial,
-    TResult? Function(List<String> words, bool isCopied)? generated,
+    TResult? Function(SeedPhraseModel seed, bool isCopied)? generated,
   }) =>
       throw _privateConstructorUsedError;
   @optionalTypeArgs
   TResult maybeWhen<TResult extends Object?>({
     TResult Function()? initial,
-    TResult Function(List<String> words, bool isCopied)? generated,
+    TResult Function(SeedPhraseModel seed, bool isCopied)? generated,
     required TResult orElse(),
   }) =>
       throw _privateConstructorUsedError;
@@ -120,7 +120,7 @@ class _$InitialImpl implements _Initial {
   @optionalTypeArgs
   TResult when<TResult extends Object?>({
     required TResult Function() initial,
-    required TResult Function(List<String> words, bool isCopied) generated,
+    required TResult Function(SeedPhraseModel seed, bool isCopied) generated,
   }) {
     return initial();
   }
@@ -129,7 +129,7 @@ class _$InitialImpl implements _Initial {
   @optionalTypeArgs
   TResult? whenOrNull<TResult extends Object?>({
     TResult? Function()? initial,
-    TResult? Function(List<String> words, bool isCopied)? generated,
+    TResult? Function(SeedPhraseModel seed, bool isCopied)? generated,
   }) {
     return initial?.call();
   }
@@ -138,7 +138,7 @@ class _$InitialImpl implements _Initial {
   @optionalTypeArgs
   TResult maybeWhen<TResult extends Object?>({
     TResult Function()? initial,
-    TResult Function(List<String> words, bool isCopied)? generated,
+    TResult Function(SeedPhraseModel seed, bool isCopied)? generated,
     required TResult orElse(),
   }) {
     if (initial != null) {
@@ -189,7 +189,7 @@ abstract class _$$GeneratedImplCopyWith<$Res> {
           _$GeneratedImpl value, $Res Function(_$GeneratedImpl) then) =
       __$$GeneratedImplCopyWithImpl<$Res>;
   @useResult
-  $Res call({List<String> words, bool isCopied});
+  $Res call({SeedPhraseModel seed, bool isCopied});
 }
 
 /// @nodoc
@@ -205,14 +205,14 @@ class __$$GeneratedImplCopyWithImpl<$Res>
   @pragma('vm:prefer-inline')
   @override
   $Res call({
-    Object? words = null,
+    Object? seed = null,
     Object? isCopied = null,
   }) {
     return _then(_$GeneratedImpl(
-      words: null == words
-          ? _value._words
-          : words // ignore: cast_nullable_to_non_nullable
-              as List<String>,
+      seed: null == seed
+          ? _value.seed
+          : seed // ignore: cast_nullable_to_non_nullable
+              as SeedPhraseModel,
       isCopied: null == isCopied
           ? _value.isCopied
           : isCopied // ignore: cast_nullable_to_non_nullable
@@ -224,24 +224,16 @@ class __$$GeneratedImplCopyWithImpl<$Res>
 /// @nodoc
 
 class _$GeneratedImpl implements _Generated {
-  const _$GeneratedImpl(
-      {required final List<String> words, required this.isCopied})
-      : _words = words;
+  const _$GeneratedImpl({required this.seed, required this.isCopied});
 
-  final List<String> _words;
   @override
-  List<String> get words {
-    if (_words is EqualUnmodifiableListView) return _words;
-    // ignore: implicit_dynamic_type
-    return EqualUnmodifiableListView(_words);
-  }
-
+  final SeedPhraseModel seed;
   @override
   final bool isCopied;
 
   @override
   String toString() {
-    return 'CreateSeedCubitState.generated(words: $words, isCopied: $isCopied)';
+    return 'CreateSeedCubitState.generated(seed: $seed, isCopied: $isCopied)';
   }
 
   @override
@@ -249,14 +241,13 @@ class _$GeneratedImpl implements _Generated {
     return identical(this, other) ||
         (other.runtimeType == runtimeType &&
             other is _$GeneratedImpl &&
-            const DeepCollectionEquality().equals(other._words, _words) &&
+            (identical(other.seed, seed) || other.seed == seed) &&
             (identical(other.isCopied, isCopied) ||
                 other.isCopied == isCopied));
   }
 
   @override
-  int get hashCode => Object.hash(
-      runtimeType, const DeepCollectionEquality().hash(_words), isCopied);
+  int get hashCode => Object.hash(runtimeType, seed, isCopied);
 
   /// Create a copy of CreateSeedCubitState
   /// with the given fields replaced by the non-null parameter values.
@@ -270,29 +261,29 @@ class _$GeneratedImpl implements _Generated {
   @optionalTypeArgs
   TResult when<TResult extends Object?>({
     required TResult Function() initial,
-    required TResult Function(List<String> words, bool isCopied) generated,
+    required TResult Function(SeedPhraseModel seed, bool isCopied) generated,
   }) {
-    return generated(words, isCopied);
+    return generated(seed, isCopied);
   }
 
   @override
   @optionalTypeArgs
   TResult? whenOrNull<TResult extends Object?>({
     TResult? Function()? initial,
-    TResult? Function(List<String> words, bool isCopied)? generated,
+    TResult? Function(SeedPhraseModel seed, bool isCopied)? generated,
   }) {
-    return generated?.call(words, isCopied);
+    return generated?.call(seed, isCopied);
   }
 
   @override
   @optionalTypeArgs
   TResult maybeWhen<TResult extends Object?>({
     TResult Function()? initial,
-    TResult Function(List<String> words, bool isCopied)? generated,
+    TResult Function(SeedPhraseModel seed, bool isCopied)? generated,
     required TResult orElse(),
   }) {
     if (generated != null) {
-      return generated(words, isCopied);
+      return generated(seed, isCopied);
     }
     return orElse();
   }
@@ -331,10 +322,10 @@ class _$GeneratedImpl implements _Generated {
 
 abstract class _Generated implements CreateSeedCubitState {
   const factory _Generated(
-      {required final List<String> words,
+      {required final SeedPhraseModel seed,
       required final bool isCopied}) = _$GeneratedImpl;
 
-  List<String> get words;
+  SeedPhraseModel get seed;
   bool get isCopied;
 
   /// Create a copy of CreateSeedCubitState
