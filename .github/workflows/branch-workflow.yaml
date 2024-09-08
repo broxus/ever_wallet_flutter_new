@@ -1,0 +1,19 @@
+name: Check branch
+
+on:
+  pull_request:
+    branches:
+      - main
+
+jobs:
+  prevent-dev-merge:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Check source branch
+        run: |
+          if [[ "${{ github.event.pull_request.head.ref }}" == "dev" ]]; then
+            echo "Merging from 'dev' to 'main' is not allowed."
+            exit 1
+          else
+            echo "Merge allowed."
+          fi

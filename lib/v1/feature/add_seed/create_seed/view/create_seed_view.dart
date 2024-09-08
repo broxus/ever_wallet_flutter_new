@@ -1,3 +1,4 @@
+import 'package:app/data/models/seed/seed_phrase_model.dart';
 import 'package:app/generated/generated.dart';
 import 'package:app/v1/feature/add_seed/create_seed/create_seed.dart';
 import 'package:collection/collection.dart';
@@ -8,7 +9,7 @@ import 'package:ui_components_lib/ui_components_lib.dart';
 import 'package:ui_components_lib/v2/ui_components_lib_v2.dart';
 
 /// Callback that calls if user taps skip checking or check phrase.
-typedef CreateSeedCompleteCallback = void Function(List<String> phrase);
+typedef CreateSeedCompleteCallback = ValueChanged<SeedPhraseModel>;
 
 /// {@template create_seed_view}
 /// Widget that allows user to create random seed phrase, copy it and check
@@ -53,11 +54,11 @@ class CreateSeedView extends StatelessWidget {
                       builder: (context, state) {
                         return state.when(
                           initial: Container.new,
-                          generated: (words, isCopied) {
+                          generated: (seed, isCopied) {
                             return Column(
                               mainAxisSize: MainAxisSize.min,
                               children: [
-                                _wordsField(words),
+                                _wordsField(seed),
                                 const SizedBox(height: DimensSizeV2.d4),
                                 _copyButton(isCopied),
                               ],
@@ -73,9 +74,9 @@ class CreateSeedView extends StatelessWidget {
             ),
             BlocBuilder<CreateSeedCubit, CreateSeedCubitState>(
               builder: (context, state) {
-                final words = state.maybeWhen(
-                  generated: (words, _) => words,
-                  orElse: () => const <String>[],
+                final seed = state.maybeWhen(
+                  generated: (seed, _) => seed,
+                  orElse: SeedPhraseModel.empty,
                 );
 
                 return Column(
@@ -83,13 +84,13 @@ class CreateSeedView extends StatelessWidget {
                     AccentButton(
                       buttonShape: ButtonShape.pill,
                       title: LocaleKeys.checkSeedPhrase.tr(),
-                      onPressed: () => checkCallback(words),
+                      onPressed: () => checkCallback(seed),
                     ),
                     const SizedBox(height: DimensSizeV2.d8),
                     PrimaryButton(
                       buttonShape: ButtonShape.pill,
                       title: LocaleKeys.skipTakeRisk.tr(),
-                      onPressed: () => skipCallback(words),
+                      onPressed: () => skipCallback(seed),
                     ),
                     const SizedBox(height: DimensSizeV2.d12),
                   ],
@@ -140,14 +141,14 @@ class CreateSeedView extends StatelessWidget {
     );
   }
 
-  Widget _wordsField(List<String> words) {
-    final lengthHalf = words.length ~/ 2;
+  Widget _wordsField(SeedPhraseModel seed) {
+    final lengthHalf = seed.wordsCount ~/ 2;
 
     return SeparatedRow(
       children: [
         Expanded(
           child: SeparatedColumn(
-            children: words
+            children: seed.words
                 .getRange(0, lengthHalf)
                 .mapIndexed((i, word) => _textPair(word, i + 1))
                 .toList(),
@@ -155,8 +156,8 @@ class CreateSeedView extends StatelessWidget {
         ),
         Expanded(
           child: SeparatedColumn(
-            children: words
-                .getRange(lengthHalf, words.length)
+            children: seed.words
+                .getRange(lengthHalf, seed.wordsCount)
                 .mapIndexed(
                   (i, word) => _textPair(word, i + lengthHalf + 1),
                 )
