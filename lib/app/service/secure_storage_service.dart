@@ -7,17 +7,24 @@ class SecureStorageService {
     aOptions: AndroidOptions(encryptedSharedPreferences: true),
   );
 
-  Future<void> addToStorage<T>(String key, T value) async {
+  Future<void> addValue<T>(String key, T value) async {
     await _storage.write(key: key, value: value.toString());
   }
 
-  Future<bool?> getFromStorage(String key) async {
+  Future<T?> getValue<T>(String key) async {
     final value = await _storage.read(key: key);
     if (value == null) {
       return null;
     }
 
-    return value.toLowerCase() == 'true';
+    if (T == bool) {
+      return (value.toLowerCase() == 'true') as T;
+    } else if (T == int) {
+      return int.tryParse(value) as T?;
+    } else if (T == double) {
+      return double.tryParse(value) as T?;
+    }
+    return value as T;
   }
 
   Future<void> cleanStorage(String key) async {

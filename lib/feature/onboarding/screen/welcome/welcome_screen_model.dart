@@ -12,5 +12,5 @@ class WelcomeScreenModel extends ElementaryModel {
   final SecureStorageService _storageService;
 
   Future<void> saveUserNew({required bool userWithNewWallet}) => _storageService
-      .addToStorage(StorageConstants.userWithNewWallet, userWithNewWallet);
+      .addValue(StorageConstants.userWithNewWallet, userWithNewWallet);
 }

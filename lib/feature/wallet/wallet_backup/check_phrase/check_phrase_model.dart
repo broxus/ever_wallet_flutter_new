@@ -28,7 +28,7 @@ class CheckPhraseModel extends ElementaryModel {
   }
 
   void setShowingBackUpFlag() {
-    storage.addToStorage(
+    storage.addValue(
       address + StorageConstants.showingManualBackupBadge,
       false,
     );

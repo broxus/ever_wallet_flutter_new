@@ -14,7 +14,7 @@ class ManualBackUpModel extends ElementaryModel {
   final String address;
 
   void setShowingBackUpFlag() {
-    storage.addToStorage(
+    storage.addValue(
       address + StorageConstants.showingManualBackupBadge,
       true,
     );

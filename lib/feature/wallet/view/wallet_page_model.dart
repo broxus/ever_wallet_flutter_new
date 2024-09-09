@@ -19,7 +19,7 @@ class WalletPageModel extends ElementaryModel {
       );
 
   Future<bool?> isNewUser() async {
-    return _storageService.getFromStorage(StorageConstants.userWithNewWallet);
+    return _storageService.getValue(StorageConstants.userWithNewWallet);
   }
 
   Future<void> resetValueNewUser() async {
@@ -30,11 +30,11 @@ class WalletPageModel extends ElementaryModel {
 
   Future<bool?> isShowingBadge(String address) async {
     return _storageService
-        .getFromStorage(address + StorageConstants.showingManualBackupBadge);
+        .getValue(address + StorageConstants.showingManualBackupBadge);
   }
 
   Future<void> hideShowingBadge(String address) async {
-    return _storageService.addToStorage(
+    return _storageService.addValue(
       address + StorageConstants.showingManualBackupBadge,
       false,
     );
