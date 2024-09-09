@@ -139,7 +139,6 @@ class _BrowserTabViewState extends State<BrowserTabView> {
       crossPlatform: InAppWebViewOptions(
         clearCache: clearCache,
         applicationNameForUserAgent: 'EverWalletBrowser',
-        transparentBackground: true,
       ),
     );
 
