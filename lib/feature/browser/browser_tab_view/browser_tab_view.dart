@@ -107,7 +107,7 @@ class _BrowserTabViewState extends State<BrowserTabView> {
     if ((newTab.url != oldTab.url || activated) && url != newTab.url) {
       await _webViewController?.loadUrl(
         urlRequest: URLRequest(
-          url: newTab.url,
+          url: WebUri.uri(newTab.url),
         ),
       );
     }
@@ -314,7 +314,11 @@ class _BrowserTabViewState extends State<BrowserTabView> {
     );
 
     if (widget.tab.url.toString().isNotEmpty && widget.active) {
-      await controller.loadUrl(urlRequest: URLRequest(url: widget.tab.url));
+      await controller.loadUrl(
+        urlRequest: URLRequest(
+          url: WebUri.uri(widget.tab.url),
+        ),
+      );
     }
   }
 
