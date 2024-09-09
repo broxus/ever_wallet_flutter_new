@@ -143,6 +143,10 @@ class $AssetsImagesGen {
   /// File path: assets/images/choose.svg
   SvgGenImage get choose => const SvgGenImage('assets/images/choose.svg');
 
+  /// File path: assets/images/circle_check.png
+  AssetGenImage get circleCheck =>
+      const AssetGenImage('assets/images/circle_check.png');
+
   /// File path: assets/images/close.svg
   SvgGenImage get close => const SvgGenImage('assets/images/close.svg');
 
@@ -182,6 +186,10 @@ class $AssetsImagesGen {
   /// File path: assets/images/ever_vector.svg
   SvgGenImage get everVector =>
       const SvgGenImage('assets/images/ever_vector.svg');
+
+  /// File path: assets/images/exclamation_mark.png
+  AssetGenImage get exclamationMark =>
+      const AssetGenImage('assets/images/exclamation_mark.png');
 
   /// File path: assets/images/exit.svg
   SvgGenImage get exit => const SvgGenImage('assets/images/exit.svg');
@@ -243,6 +251,10 @@ class $AssetsImagesGen {
 
   /// File path: assets/images/lock.svg
   SvgGenImage get lock => const SvgGenImage('assets/images/lock.svg');
+
+  /// File path: assets/images/lock_backup.png
+  AssetGenImage get lockBackup =>
+      const AssetGenImage('assets/images/lock_backup.png');
 
   /// File path: assets/images/logo.svg
   SvgGenImage get logo => const SvgGenImage('assets/images/logo.svg');
@@ -407,6 +419,7 @@ class $AssetsImagesGen {
         checkRounded,
         checkSquare,
         choose,
+        circleCheck,
         close,
         closeAnother,
         closedEye,
@@ -419,6 +432,7 @@ class $AssetsImagesGen {
         ever,
         everCoin,
         everVector,
+        exclamationMark,
         exit,
         export,
         export2,
@@ -435,6 +449,7 @@ class $AssetsImagesGen {
         importFill,
         key,
         lock,
+        lockBackup,
         logo,
         minus,
         moon,
