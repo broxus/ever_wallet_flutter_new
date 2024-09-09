@@ -8,6 +8,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:nekoton_repository/nekoton_repository.dart';
 import 'package:ui_components_lib/ui_components_lib.dart';
+import 'package:ui_components_lib/v2/ui_components_lib_v2.dart';
 
 /// Widget that allows load transaction for [TokenWallet] and map them into
 /// pretty ui.
@@ -67,7 +68,9 @@ class TokenWalletTransactionsWidget extends StatelessWidget {
                   itemBuilder: (context, index) {
                     if (index == transactions.length) {
                       return const Padding(
-                        padding: EdgeInsets.all(DimensSize.d16),
+                        padding: EdgeInsets.symmetric(
+                          vertical: DimensSizeV2.d16,
+                        ),
                         child: Center(child: CommonCircularProgressIndicator()),
                       );
                     }
@@ -82,23 +85,18 @@ class TokenWalletTransactionsWidget extends StatelessWidget {
                         .currentTransport
                         .nativeTokenTicker;
 
-                    return Padding(
-                      padding: const EdgeInsets.symmetric(
-                        horizontal: DimensSize.d16,
+                    return TokenWalletTransactionWidget(
+                      transaction: trans,
+                      displayDate: displayDate,
+                      transactionFee: Money.fromBigIntWithCurrency(
+                        trans.fees,
+                        Currencies()[ticker]!,
                       ),
-                      child: TokenWalletTransactionWidget(
-                        transaction: trans,
-                        displayDate: displayDate,
-                        transactionFee: Money.fromBigIntWithCurrency(
-                          trans.fees,
-                          Currencies()[ticker]!,
-                        ),
-                        transactionValue: Money.fromBigIntWithCurrency(
-                          trans.value,
-                          currency,
-                        ),
-                        price: Fixed.parse(customCurrency?.price ?? '0'),
+                      transactionValue: Money.fromBigIntWithCurrency(
+                        trans.value,
+                        currency,
                       ),
+                      price: Fixed.parse(customCurrency?.price ?? '0'),
                     );
                   },
                 ),
