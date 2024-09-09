@@ -117,23 +117,24 @@ class _ActionList extends StatelessWidget {
               icon: _actionIcon(action),
               onPressed: account?.let((_) => _actionOnPressed(context)),
             ),
-            if (hasStake)
-              _Button(
-                label: LocaleKeys.stakeWord.tr(),
-                icon: LucideIcons.layers2,
-                badge: hasStakeActions,
-                onPressed: account?.let(
-                  (account) => () {
-                    context.goFurther(
-                      AppRoute.walletStake.pathWithData(
-                        pathParameters: {
-                          walletStakeAddressPathParam: account.address.address,
-                        },
-                      ),
-                    );
-                  },
-                ),
-              ),
+            // TODO(knightforce): temp
+            // if (hasStake)
+            //   _Button(
+            //     label: LocaleKeys.stakeWord.tr(),
+            //     icon: LucideIcons.layers2,
+            //     badge: hasStakeActions,
+            //     onPressed: account?.let(
+            //       (account) => () {
+            //         context.goFurther(
+            //           AppRoute.walletStake.pathWithData(
+            //             pathParameters: {
+            //               walletStakeAddressPathParam: account.address.address,
+            //             },
+            //           ),
+            //         );
+            //       },
+            //     ),
+            //   ),
           ],
         ),
       ),
