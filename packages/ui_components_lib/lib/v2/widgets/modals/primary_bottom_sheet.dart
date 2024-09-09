@@ -51,7 +51,6 @@ class _ContentBottomSheet extends StatelessWidget {
     this.content,
     this.firstButton,
     this.secondButton,
-    this.avoidBottomInsets = true,
   });
 
   final String? assetsPath;
@@ -62,7 +61,6 @@ class _ContentBottomSheet extends StatelessWidget {
   final Widget? firstButton;
   final Widget? secondButton;
   final bool showBackButton;
-  final bool avoidBottomInsets;
 
   @override
   Widget build(BuildContext context) {
@@ -70,13 +68,9 @@ class _ContentBottomSheet extends StatelessWidget {
     return Material(
       color: theme.colors.background1,
       child: SafeArea(
-        minimum: avoidBottomInsets
-            ? const EdgeInsets.only(bottom: DimensSizeV2.d4)
-            : EdgeInsets.zero,
+        minimum: const EdgeInsets.only(bottom: DimensSizeV2.d4),
         child: Padding(
-          padding: avoidBottomInsets
-              ? MediaQuery.of(context).viewInsets
-              : EdgeInsets.zero,
+          padding: MediaQuery.of(context).viewInsets,
           child: Stack(
             children: [
               SingleChildScrollView(

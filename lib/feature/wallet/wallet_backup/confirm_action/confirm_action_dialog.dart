@@ -68,7 +68,7 @@ class ContentConfirmAction extends ElementaryWidget<ConfirmActionWidgetModel> {
               buttonShape: ButtonShape.pill,
               title: LocaleKeys.confirm.tr(),
               isLoading: data?.isLoading ?? false,
-              onPressed: () => wm.onClickConfirm(),
+              onPressed: wm.onClickConfirm,
             ),
           ],
         );

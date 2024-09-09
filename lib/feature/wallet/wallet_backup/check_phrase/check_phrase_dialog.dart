@@ -79,9 +79,7 @@ class ContentCheckPhrase extends ElementaryWidget<CheckPhraseWidgetModel> {
                   return PrimaryButton(
                     buttonShape: ButtonShape.pill,
                     title: LocaleKeys.skipTakeRisk.tr(),
-                    onPressed: () {
-                      wm.clickSkip();
-                    },
+                    onPressed: wm.clickSkip,
                   );
                 },
               ),
