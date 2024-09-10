@@ -93,6 +93,7 @@ class WalletTransactionDetailsDefaultBody extends StatelessWidget {
                     color: theme.colors.content3,
                   ),
                   sign: '${LocaleKeys.approximatelySign.tr()} ',
+                  useDefaultFormat: true,
                 )
               : null,
         ),

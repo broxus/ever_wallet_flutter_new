@@ -129,6 +129,7 @@ class _AccountItem extends StatelessWidget {
                                 child: AmountWidget.fromMoney(
                                   amount: balance,
                                   style: textStyle,
+                                  useDefaultFormat: true,
                                 ),
                               ),
                             ) ??
