@@ -568,4 +568,6 @@ abstract class LocaleKeys {
   static const accountAddedSheetSwitch = 'accountAddedSheetSwitch';
   static const accountAddedSheetContinue = 'accountAddedSheetContinue';
   static const invalidReceiverAddress = 'invalidReceiverAddress';
+  static const deleteBookmarksQuestion = 'deleteBookmarksQuestion';
+  static const deleteBookmarksDescription = 'deleteBookmarksDescription';
 }

@@ -551,5 +551,7 @@
   "accountAddedSheetSubtitle": "When adding a new account, a new public key was also added. They were connected with each other.",
   "accountAddedSheetSwitch": "Switch to this account",
   "accountAddedSheetContinue": "Continue without switching",
-  "invalidReceiverAddress": "Invalid receiver address"
+  "invalidReceiverAddress": "Invalid receiver address",
+  "deleteBookmarksQuestion": "Are you sure you want\nto delete all bookmarks?",
+  "deleteBookmarksDescription": "All bookmarks will be permanently deleted"
 }

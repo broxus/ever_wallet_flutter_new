@@ -1,5 +1,6 @@
 import 'package:app/app/router/router.dart';
 import 'package:app/data/models/models.dart';
+import 'package:app/feature/browser/bookmarks/widgets/bookmarks_clear_bottom_sheet.dart';
 import 'package:app/feature/browser/browser.dart';
 import 'package:app/feature/browser/widgets/browser_resource_section.dart';
 import 'package:app/feature/browser/widgets/buttons_edit_section.dart';
@@ -91,7 +92,12 @@ class _BookmarksViewState extends State<BookmarksView> {
           clearText: LocaleKeys.browserBookmarksClear.tr(),
           doneText: LocaleKeys.browserBookmarksDone.tr(),
           onPressedEdit: () => _setIsEditing(true),
-          onPressedClear: _onClearPressed,
+          onPressedClear: () {
+            showBrowserClearBookmarksSheet(
+              context: context,
+              onClearPressed: _onClearPressed,
+            );
+          },
           onPressedDone: () => _setIsEditing(false),
         ),
       ],
