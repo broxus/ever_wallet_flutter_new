@@ -140,7 +140,7 @@ class _BrowserTabViewState extends State<BrowserTabView> {
       clearCache: clearCache,
       applicationNameForUserAgent: 'EverWalletBrowser',
       transparentBackground: true,
-      useShouldOverrideUrlLoading: true,
+      // useShouldOverrideUrlLoading: true,
     );
 
     return BlocProvider<BrowserViewEventsListenerCubit>(
@@ -167,7 +167,7 @@ class _BrowserTabViewState extends State<BrowserTabView> {
                 onReceivedHttpError: _onReceivedHttpError,
                 onTitleChanged: _onTitleChanged,
                 onReceivedHttpAuthRequest: _onReceivedHttpAuthRequest,
-                shouldOverrideUrlLoading: _shouldOverrideUrlLoading,
+                // shouldOverrideUrlLoading: _shouldOverrideUrlLoading,
               );
             },
           ),
