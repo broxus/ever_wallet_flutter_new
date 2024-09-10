@@ -27,7 +27,6 @@ class WelcomeScreen extends ElementaryWidget<WelcomeScreenWidgetModel> {
   @override
   Widget build(WelcomeScreenWidgetModel wm) {
     final themeStyle = wm.themeStyle;
-    
 
     return BlocProvider<LocalizationBloc>(
       create: localizationBlocFactory,

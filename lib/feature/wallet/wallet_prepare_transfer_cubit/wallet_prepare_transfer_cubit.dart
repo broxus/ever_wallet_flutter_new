@@ -1,9 +1,7 @@
 import 'dart:async';
 
 import 'package:app/app/service/service.dart';
-import 'package:app/di/di.dart';
 import 'package:app/feature/wallet/wallet_prepare_transfer/wallet_prepare_transfer_page/data/wallet_prepare_transfer_asset.dart';
-import 'package:app/generated/generated.dart';
 import 'package:bloc/bloc.dart';
 import 'package:collection/collection.dart';
 import 'package:freezed_annotation/freezed_annotation.dart';
@@ -11,7 +9,6 @@ import 'package:logging/logging.dart';
 import 'package:nekoton_repository/nekoton_repository.dart' hide Message;
 
 part 'wallet_prepare_transfer_cubit.freezed.dart';
-
 part 'wallet_prepare_transfer_state.dart';
 
 /// Cubit that allows prepare sending native token for TonWallet with [address].

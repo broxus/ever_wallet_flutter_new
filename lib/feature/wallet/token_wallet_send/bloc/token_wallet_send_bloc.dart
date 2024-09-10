@@ -1,3 +1,5 @@
+// ignore_for_file: use_build_context_synchronously
+
 import 'package:app/app/service/service.dart';
 import 'package:app/generated/generated.dart';
 import 'package:app/utils/constants.dart';

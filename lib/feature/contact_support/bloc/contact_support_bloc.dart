@@ -1,3 +1,5 @@
+// ignore_for_file: use_build_context_synchronously
+
 import 'package:app/app/service/messenger/messenger.dart';
 import 'package:app/di/di.dart';
 import 'package:app/feature/contact_support/contact_support.dart';
