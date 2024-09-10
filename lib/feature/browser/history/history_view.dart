@@ -3,7 +3,7 @@ import 'package:app/app/service/service.dart';
 import 'package:app/data/models/models.dart';
 import 'package:app/di/di.dart';
 import 'package:app/feature/browser/browser.dart';
-import 'package:app/feature/browser/widgets/browser_resource_item.dart';
+import 'package:app/feature/browser/widgets/browser_resource_section.dart';
 import 'package:app/generated/generated.dart';
 import 'package:app/utils/utils.dart';
 import 'package:collection/collection.dart';
@@ -164,45 +164,28 @@ class _HistoryViewState extends State<HistoryView> {
     final faviconUrl =
         context.watch<BrowserFaviconsBloc>().getFaviconUrl(item.url) ?? '';
 
-    return Padding(
+    return BrowserResourceSection(
       key: ValueKey(item.id),
-      padding: const EdgeInsets.only(
-        bottom: DimensSizeV2.d8,
-        left: DimensSize.d16,
-        right: DimensSize.d16,
+      faviconUrl: faviconUrl,
+      titleText: item.title,
+      subTitleText: item.url.toString(),
+      trailing: SvgPicture.asset(
+        Assets.images.caretRight.path,
+        width: DimensSizeV2.d20,
+        height: DimensSizeV2.d20,
+        colorFilter: context.themeStyleV2.colors.content0.colorFilter,
       ),
-      child: Row(
-        children: [
-          Expanded(
-            child: BrowserResourceItem(
-              key: ValueKey(item.id),
-              faviconUrl: faviconUrl,
-              title: item.title,
-              subTitle: item.url.toString(),
-              trailing: SvgPicture.asset(
-                Assets.images.caretRight.path,
-                width: DimensSizeV2.d20,
-                height: DimensSizeV2.d20,
-                colorFilter: context.themeStyleV2.colors.content0.colorFilter,
-              ),
-              padding: const EdgeInsets.symmetric(
-                vertical: DimensSizeV2.d8,
-                horizontal: DimensSizeV2.d16,
-              ),
-              onPressed: () => _onItemPressed(item),
-            ),
-          ),
-          if (isEditing)
-            Padding(
+      postfix: isEditing
+          ? Padding(
               padding: const EdgeInsets.only(left: DimensSizeV2.d4),
               child: GhostButton(
                 buttonShape: ButtonShape.circle,
                 icon: LucideIcons.trash2,
                 onPressed: () => _removeHistoryItem(item),
               ),
-            ),
-        ],
-      ),
+            )
+          : null,
+      onPressed: () => _onItemPressed(item),
     );
   }
 
