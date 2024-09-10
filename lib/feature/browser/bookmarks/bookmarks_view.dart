@@ -2,6 +2,7 @@ import 'package:app/app/router/router.dart';
 import 'package:app/data/models/models.dart';
 import 'package:app/feature/browser/browser.dart';
 import 'package:app/feature/browser/widgets/browser_resource_section.dart';
+import 'package:app/feature/browser/widgets/buttons_edit_section.dart';
 import 'package:app/generated/generated.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -76,11 +77,23 @@ class _BookmarksViewState extends State<BookmarksView> {
               itemCount: items.length,
               onReorder: _onReorder,
             ),
-            _bottomSpacerBuilder(),
+            SliverToBoxAdapter(
+              child: SizedBox(
+                height: isEditing ? DimensSizeV2.d190 : DimensSizeV2.d128,
+              ),
+            ),
           ],
           controller: _scrollController,
         ),
-        _buttonsBuilder(),
+        ButtonsEditSection(
+          isEditing: isEditing,
+          editText: LocaleKeys.browserBookmarksEdit.tr(),
+          clearText: LocaleKeys.browserBookmarksClear.tr(),
+          doneText: LocaleKeys.browserBookmarksDone.tr(),
+          onPressedEdit: () => _setIsEditing(true),
+          onPressedClear: _onClearPressed,
+          onPressedDone: () => _setIsEditing(false),
+        ),
       ],
     );
   }
@@ -91,6 +104,8 @@ class _BookmarksViewState extends State<BookmarksView> {
     required int index,
     required bool isEditing,
   }) {
+    final colors = context.themeStyleV2.colors;
+
     final faviconUrl =
         context.watch<BrowserFaviconsBloc>().getFaviconUrl(item.url) ?? '';
 
@@ -108,13 +123,19 @@ class _BookmarksViewState extends State<BookmarksView> {
         index: index,
         enabled: isEditing,
         child: Padding(
-          padding: const EdgeInsets.symmetric(horizontal: DimensSizeV2.d16),
+          padding: const EdgeInsets.symmetric(
+            horizontal: DimensSizeV2.d16,
+          ),
           child: SvgPicture.asset(
             isEditing
                 ? Assets.images.burger.path
                 : Assets.images.caretRight.path,
             width: DimensSizeV2.d20,
             height: DimensSizeV2.d20,
+            colorFilter: isEditing
+                ? colors.content3.colorFilter
+                : colors.content0.colorFilter,
+            //
           ),
         ),
       ),
@@ -129,63 +150,6 @@ class _BookmarksViewState extends State<BookmarksView> {
             )
           : null,
       onPressed: () => _onItemPressed(item),
-    );
-  }
-
-  Widget _buttonsBuilder() {
-    final colors = context.themeStyle.colors;
-
-    final isEditing = context.watch<BrowserBookmarksBloc>().state.isEditing;
-
-    return Container(
-      decoration: BoxDecoration(
-        gradient: LinearGradient(
-          begin: Alignment.topCenter,
-          end: Alignment.bottomCenter,
-          colors: colors.gradient,
-        ),
-      ),
-      child: SafeArea(
-        minimum: const EdgeInsets.all(DimensSize.d16),
-        child: SeparatedColumn(
-          mainAxisSize: MainAxisSize.min,
-          children: isEditing
-              ? [
-                  CommonButton.secondary(
-                    text: LocaleKeys.browserBookmarksClear.tr(),
-                    onPressed: _onClearPressed,
-                    fillWidth: true,
-                  ),
-                  CommonButton.primary(
-                    text: LocaleKeys.browserBookmarksDone.tr(),
-                    onPressed: () => _setIsEditing(false),
-                    fillWidth: true,
-                  ),
-                ]
-              : [
-                  CommonButton.primary(
-                    text: LocaleKeys.browserBookmarksEdit.tr(),
-                    onPressed: () => _setIsEditing(true),
-                    fillWidth: true,
-                  ),
-                ],
-        ),
-      ),
-    );
-  }
-
-  Widget _bottomSpacerBuilder() {
-    final isEditing = context.watch<BrowserBookmarksBloc>().state.isEditing;
-
-    return SliverSafeArea(
-      sliver: SliverToBoxAdapter(
-        child: SizedBox(
-          height: isEditing
-              ? commonButtonHeight + commonButtonHeight + DimensSize.d16
-              : commonButtonHeight + DimensSize.d16,
-        ),
-      ),
-      minimum: const EdgeInsets.only(bottom: DimensSize.d16),
     );
   }
 
