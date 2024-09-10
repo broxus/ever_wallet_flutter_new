@@ -1,12 +1,14 @@
 import 'package:app/app/router/router.dart';
 import 'package:app/data/models/models.dart';
 import 'package:app/feature/browser/browser.dart';
+import 'package:app/feature/browser/widgets/browser_resource_section.dart';
 import 'package:app/generated/generated.dart';
-import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
+import 'package:lucide_icons_flutter/lucide_icons.dart';
 import 'package:ui_components_lib/ui_components_lib.dart';
+import 'package:ui_components_lib/v2/ui_components_lib_v2.dart';
 
 class BookmarksView extends StatefulWidget {
   const BookmarksView({super.key});
@@ -89,62 +91,44 @@ class _BookmarksViewState extends State<BookmarksView> {
     required int index,
     required bool isEditing,
   }) {
-    final colors = context.themeStyle.colors;
     final faviconUrl =
         context.watch<BrowserFaviconsBloc>().getFaviconUrl(item.url) ?? '';
 
-    final trailing = isEditing
-        ? ReorderableDragStartListener(
-            index: index,
-            child: CommonButtonIconWidget.svg(
-              svg: Assets.images.burger.path,
-            ),
-          )
-        : CommonButtonIconWidget.svg(
-            svg: Assets.images.caretRight.path,
-          );
-
-    return Padding(
+    return BrowserResourceSection(
       key: ValueKey(item.id),
-      padding: const EdgeInsets.symmetric(
-        vertical: DimensSize.d4,
-        horizontal: DimensSize.d16,
+      faviconUrl: faviconUrl,
+      titleText: item.title,
+      subTitleText: item.url.toString(),
+      padding: const EdgeInsets.only(
+        top: DimensSizeV2.d8,
+        bottom: DimensSizeV2.d8,
+        left: DimensSizeV2.d16,
       ),
-      child: SeparatedRow(
-        children: [
-          Expanded(
-            child: ShapedContainerColumn(
-              mainAxisSize: MainAxisSize.min,
-              margin: EdgeInsets.zero,
-              children: [
-                CommonListTile(
-                  titleText: item.title,
-                  subtitleText: item.url.toString(),
-                  leading: CachedNetworkImage(
-                    height: DimensSize.d40,
-                    width: DimensSize.d40,
-                    imageUrl: faviconUrl,
-                    placeholder: (_, __) =>
-                        const CommonCircularProgressIndicator(),
-                    errorWidget: (_, __, ___) => CommonIconWidget.svg(
-                      svg: Assets.images.web.path,
-                    ),
-                  ),
-                  trailing: trailing,
-                  onPressed: () => _onItemPressed(item),
-                ),
-              ],
-            ),
+      trailing: ReorderableDragStartListener(
+        index: index,
+        enabled: isEditing,
+        child: Padding(
+          padding: const EdgeInsets.symmetric(horizontal: DimensSizeV2.d16),
+          child: SvgPicture.asset(
+            isEditing
+                ? Assets.images.burger.path
+                : Assets.images.caretRight.path,
+            width: DimensSizeV2.d20,
+            height: DimensSizeV2.d20,
           ),
-          if (isEditing)
-            CommonIconButton.svg(
-              svg: Assets.images.trash.path,
-              buttonType: EverButtonType.secondary,
-              color: colors.alert,
-              onPressed: () => _removeBookmarkItem(item),
-            ),
-        ],
+        ),
       ),
+      postfix: isEditing
+          ? Padding(
+              padding: const EdgeInsets.only(left: DimensSizeV2.d4),
+              child: GhostButton(
+                buttonShape: ButtonShape.circle,
+                icon: LucideIcons.trash2,
+                onPressed: () => _removeBookmarkItem(item),
+              ),
+            )
+          : null,
+      onPressed: () => _onItemPressed(item),
     );
   }
 

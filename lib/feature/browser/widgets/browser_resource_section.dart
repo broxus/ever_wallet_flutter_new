@@ -40,10 +40,11 @@ class BrowserResourceSection extends StatelessWidget {
               title: titleText,
               subTitle: subTitleText,
               trailing: trailing,
-              padding: const EdgeInsets.symmetric(
-                vertical: DimensSizeV2.d8,
-                horizontal: DimensSizeV2.d16,
-              ),
+              padding: padding ??
+                  const EdgeInsets.symmetric(
+                    vertical: DimensSizeV2.d8,
+                    horizontal: DimensSizeV2.d16,
+                  ),
               onPressed: onPressed,
             ),
           ),

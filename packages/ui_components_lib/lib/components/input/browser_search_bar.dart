@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:ui_components_lib/ui_components_lib.dart';
-import 'package:ui_components_lib/v2/dimens_v2.dart';
 
 class BrowserSearchBarInput extends StatefulWidget {
   const BrowserSearchBarInput({
