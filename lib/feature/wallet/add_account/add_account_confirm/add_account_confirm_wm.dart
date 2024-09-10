@@ -61,7 +61,7 @@ class AddAccountConfirmWidgetModel
     );
 
     if (!isCorrect) {
-      model.showWrongPassword();
+      model.showWrongPassword(context);
     } else if (contextSafe != null) {
       Navigator.of(contextSafe!).pop();
       contextSafe!.goFurther(

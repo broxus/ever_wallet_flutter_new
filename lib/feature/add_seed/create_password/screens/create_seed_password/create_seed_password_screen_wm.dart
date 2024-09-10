@@ -78,6 +78,7 @@ class CreateSeedPasswordScreenWidgetModel extends CustomWidgetModel<
     _loadState.accept(true);
 
     await model.next(
+      context: context,
       password: passwordController.text,
     );
 

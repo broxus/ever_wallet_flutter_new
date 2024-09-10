@@ -126,44 +126,6 @@ class WalletPrepareTransferCubit extends Cubit<WalletPrepareTransferState> {
     _updateState();
   }
 
-  Future<void> nextAction({
-    required String receiverAddress,
-    required String amount,
-    required String comment,
-  }) async {
-    final addr = Address(address: receiverAddress);
-    if (!await validateAddress(addr)) {
-      inject<MessengerService>()
-          .show(Message.error(message: LocaleKeys.addressIsWrong.tr()));
-
-      return;
-    }
-
-    final amnt = Fixed.parse(
-      amount,
-      scale: selectedAsset.balance.decimalDigits,
-    );
-
-    // Temp fix
-    // To work around the lack of state change
-    // from Go to Data when there is no network
-    _updateState();
-    emit(
-      WalletPrepareTransferState.goNext(
-        walletName: _walletName(nekotonRepository, account),
-        account: account,
-        localCustodians: _cachedLocalCustodians,
-        selectedCustodian: _selectedCustodian,
-        assets: _assets.values.toList(),
-        selectedAsset: selectedAsset,
-        receiveAddress: addr,
-        amount: amnt,
-        comment: comment.isEmpty ? null : comment,
-      ),
-    );
-    _updateState();
-  }
-
   void _updateState() {
     if (isClosed) return;
 

@@ -49,7 +49,7 @@ class CreateSeedPasswordProfilePage extends StatelessWidget {
                     needBiometryIfPossible: false,
                     passwordController: cubit.passwordController,
                     confirmController: cubit.confirmController,
-                    onPressedNext: cubit.nextAction,
+                    onPressedNext: () => cubit.nextAction(context),
                     passwordStatus: state.status,
                     isLoading: state.isLoading,
                   );

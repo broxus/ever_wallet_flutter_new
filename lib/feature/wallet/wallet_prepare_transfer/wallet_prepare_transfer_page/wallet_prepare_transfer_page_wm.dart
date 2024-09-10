@@ -136,7 +136,7 @@ class WalletPrepareTransferPageWidgetModel extends CustomWidgetModel<
     );
 
     if (!await validateAddress(addr)) {
-      model.showError(LocaleKeys.addressIsWrong.tr());
+      model.showError(context, LocaleKeys.addressIsWrong.tr());
 
       return;
     }
@@ -166,6 +166,7 @@ class WalletPrepareTransferPageWidgetModel extends CustomWidgetModel<
       final amountMinusComission = available - comission;
       if (amountMinusComission.amount < Fixed.zero) {
         model.showError(
+          context,
           LocaleKeys.sendingNotEnoughBalanceToSend.tr(
             args: [
               comission.formatImproved(),
@@ -188,7 +189,7 @@ class WalletPrepareTransferPageWidgetModel extends CustomWidgetModel<
     final data = await Clipboard.getData(Clipboard.kTextPlain);
     final text = data?.text?.trim();
     if (text == null) {
-      model.showError(LocaleKeys.addressIsWrong.tr());
+      model.showError(context, LocaleKeys.addressIsWrong.tr());
       return;
     }
 

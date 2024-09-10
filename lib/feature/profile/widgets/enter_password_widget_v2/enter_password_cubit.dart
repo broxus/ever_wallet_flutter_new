@@ -2,11 +2,13 @@ import 'package:app/app/service/service.dart';
 import 'package:app/di/di.dart';
 import 'package:app/generated/generated.dart';
 import 'package:bloc/bloc.dart';
+import 'package:flutter/material.dart';
 import 'package:freezed_annotation/freezed_annotation.dart';
 import 'package:local_auth/local_auth.dart';
 import 'package:nekoton_repository/nekoton_repository.dart' hide Message;
 
 part 'enter_password_cubit.freezed.dart';
+
 part 'enter_password_state.dart';
 
 /// Cubit for widget that allows enter password.
@@ -59,9 +61,9 @@ class EnterPasswordCubit extends Cubit<EnterPasswordState> {
 
   /// User entered password, validate it and emit do next action.
   /// If biometry is enabled, save password to storage.
-  Future<void> enterPassword(String password) async {
+  Future<void> enterPassword(BuildContext context, String password) async {
     if (password.isEmpty) {
-      _showWrongPassword();
+      _showWrongPassword(context);
 
       return;
     }
@@ -76,7 +78,7 @@ class EnterPasswordCubit extends Cubit<EnterPasswordState> {
     );
 
     if (!correct) {
-      _showWrongPassword();
+      _showWrongPassword(context);
 
       return;
     }
@@ -97,9 +99,9 @@ class EnterPasswordCubit extends Cubit<EnterPasswordState> {
     );
   }
 
-  void _showWrongPassword() {
+  void _showWrongPassword(BuildContext context) {
     inject<MessengerService>().show(
-      Message.error(message: LocaleKeys.passwordIsWrong.tr()),
+      Message.error(context: context, message: LocaleKeys.passwordIsWrong.tr()),
     );
   }
 

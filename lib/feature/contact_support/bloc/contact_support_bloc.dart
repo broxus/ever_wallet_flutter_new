@@ -3,16 +3,20 @@ import 'package:app/di/di.dart';
 import 'package:app/feature/contact_support/contact_support.dart';
 import 'package:app/generated/generated.dart';
 import 'package:bloc/bloc.dart';
+import 'package:flutter/material.dart';
 import 'package:freezed_annotation/freezed_annotation.dart';
 import 'package:logging/logging.dart';
 
 part 'contact_support_bloc.freezed.dart';
+
 part 'contact_support_event.dart';
+
 part 'contact_support_state.dart';
 
 class ContactSupportBloc
     extends Bloc<ContactSupportEvent, ContactSupportState> {
-  ContactSupportBloc() : super(const ContactSupportState.initial()) {
+  ContactSupportBloc(this.context)
+      : super(const ContactSupportState.initial()) {
     on<ContactSupportEvent>((event, emit) async {
       await event.map(
         sendEmail: (event) async {
@@ -25,6 +29,7 @@ class ContactSupportBloc
             emit(const ContactSupportState.initial());
             inject<MessengerService>().show(
               Message.error(
+                context: context,
                 message: LocaleKeys.contactSupportCantCreateFile.tr(),
               ),
             );
@@ -38,6 +43,7 @@ class ContactSupportBloc
               emit(const ContactSupportState.initial());
               inject<MessengerService>().show(
                 Message.error(
+                  context: context,
                   message: LocaleKeys.contactSupportCantFindEmailClient.tr(),
                   actionText:
                       LocaleKeys.contactSupportCantFindEmailClientShare.tr(),
@@ -52,5 +58,7 @@ class ContactSupportBloc
       );
     });
   }
+
+  final BuildContext context;
   final _log = Logger('ContactSupportBloc');
 }

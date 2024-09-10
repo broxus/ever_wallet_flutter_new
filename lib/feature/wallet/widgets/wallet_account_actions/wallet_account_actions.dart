@@ -190,6 +190,7 @@ class _ActionList extends StatelessWidget {
         WalletAccountActionBehavior.sendLocalCustodiansNeeded => () =>
             inject<MessengerService>().show(
               Message.error(
+                context: context,
                 message: LocaleKeys.toSendMultisigAddCustodian.tr(),
                 actionText: LocaleKeys.addWord.tr(),
                 onAction: () => _showAddSeedSheet(context),

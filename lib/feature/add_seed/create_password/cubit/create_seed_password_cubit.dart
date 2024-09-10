@@ -67,8 +67,8 @@ class CreateSeedPasswordCubit extends Cubit<CreateSeedPasswordState>
     return super.close();
   }
 
-  Future<void> nextAction() async {
-    if (seedPhrase.isEmpty || !await checkConnection()) {
+  Future<void> nextAction(BuildContext context) async {
+    if (seedPhrase.isEmpty || !await checkConnection(context)) {
       return;
     }
 
@@ -92,7 +92,8 @@ class CreateSeedPasswordCubit extends Cubit<CreateSeedPasswordState>
     } catch (e) {
       Logger('CreateSeedPasswordCubit').severe(e);
       emit(state.copyWith(isLoading: false));
-      messengerService.show(Message.error(message: e.toString()));
+      messengerService
+          .show(Message.error(context: context, message: e.toString()));
     }
   }
 

@@ -18,6 +18,7 @@ class EnterSeedPhrasePage extends StatelessWidget {
     final theme = context.themeStyleV2;
     return BlocProvider<EnterSeedPhraseCubit>(
       create: (context) => EnterSeedPhraseCubit(
+        context,
         // ignore: prefer-extracting-callbacks
         (phrase) {
           final path =
