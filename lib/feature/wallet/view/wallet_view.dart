@@ -22,33 +22,31 @@ class WalletView extends StatelessWidget {
   Widget build(BuildContext context) {
     final theme = context.themeStyleV2;
 
-    return SafeArea(
-      child: Stack(
-        children: [
-          _Background(scrollController: scrollController),
-          CustomScrollView(
-            controller: scrollController,
-            slivers: [
-              const SliverToBoxAdapter(
-                child: WalletAppBarWidget(),
-              ),
-              WalletAccountsBody(
-                account: currentAccount,
-                isShowingBadge: isShowingBadge,
-                finishedBackupCallback: finishedBackupCallback,
-              ),
-              WalletBottomPanel(
-                currentAccount: currentAccount!,
-                scrollController: scrollController,
-              ),
-              SliverFillRemaining(
-                hasScrollBody: false,
-                child: Container(color: theme.colors.background1),
-              ),
-            ],
-          ),
-        ],
-      ),
+    return Stack(
+      children: [
+        _Background(scrollController: scrollController),
+        CustomScrollView(
+          controller: scrollController,
+          slivers: [
+            const SliverToBoxAdapter(
+              child: WalletAppBarWidget(),
+            ),
+            WalletAccountsBody(
+              account: currentAccount,
+              isShowingBadge: isShowingBadge,
+              finishedBackupCallback: finishedBackupCallback,
+            ),
+            WalletBottomPanel(
+              currentAccount: currentAccount!,
+              scrollController: scrollController,
+            ),
+            SliverFillRemaining(
+              hasScrollBody: false,
+              child: Container(color: theme.colors.background1),
+            ),
+          ],
+        ),
+      ],
     );
   }
 }

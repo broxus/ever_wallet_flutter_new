@@ -41,7 +41,7 @@ class ImportWalletScreenWidgetModel
   int? _currentValue;
 
   Future<void> onPressedImport() async {
-    if (!await model.checkConnection()) {
+    if (!await model.checkConnection(context)) {
       return;
     }
 
@@ -72,7 +72,7 @@ class ImportWalletScreenWidgetModel
           preserveQueryParams: true,
         );
       } else {
-        model.showValidateError(LocaleKeys.incorrectWordsFormat.tr());
+        model.showValidateError(context, LocaleKeys.incorrectWordsFormat.tr());
       }
     } on Exception catch (e, s) {
       _log.severe('confirmAction', e, s);
@@ -82,7 +82,7 @@ class ImportWalletScreenWidgetModel
       error = LocaleKeys.wrongSeed.tr();
     }
     if (error != null) {
-      model.showValidateError(error);
+      model.showValidateError(context, error);
     }
   }
 
@@ -109,7 +109,7 @@ class ImportWalletScreenWidgetModel
     }
 
     if (words.isEmpty) {
-      model.showValidateError(LocaleKeys.incorrectWordsFormat.tr());
+      model.showValidateError(context, LocaleKeys.incorrectWordsFormat.tr());
       return;
     } else {
       final halfLength = (words.length / 2).floor();

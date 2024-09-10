@@ -66,7 +66,7 @@ class _SelectNewAssetCustomEnterState extends State<SelectNewAssetCustomEnter> {
                               buttonShape: ButtonShape.square,
                               buttonSize: ButtonSize.small,
                               icon: LucideIcons.arrowDownToDot,
-                              onPressed: _paste,
+                              onPressed: () => _paste(context),
                             ),
                           );
                         }
@@ -124,10 +124,10 @@ class _SelectNewAssetCustomEnterState extends State<SelectNewAssetCustomEnter> {
 
     context
         .read<SelectNewAssetCubit>()
-        .addCustom(Address(address: addressController.text.trim()));
+        .addCustom(context, Address(address: addressController.text.trim()));
   }
 
-  Future<void> _paste() async {
+  Future<void> _paste(BuildContext context) async {
     final clipboard = await Clipboard.getData(Clipboard.kTextPlain);
     final text = clipboard?.text;
     if (text == null) return;
@@ -137,7 +137,10 @@ class _SelectNewAssetCustomEnterState extends State<SelectNewAssetCustomEnter> {
       addressController.text = text;
     } else {
       inject<MessengerService>().show(
-        Message.error(message: LocaleKeys.invalidRootTokenContract.tr()),
+        Message.error(
+          context: context,
+          message: LocaleKeys.invalidRootTokenContract.tr(),
+        ),
       );
     }
   }

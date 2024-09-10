@@ -2,6 +2,7 @@ import 'package:app/app/service/current_seed_service.dart';
 import 'package:app/app/service/messenger/message.dart';
 import 'package:app/app/service/messenger/service/messenger_service.dart';
 import 'package:elementary/elementary.dart';
+import 'package:flutter/material.dart';
 import 'package:nekoton_repository/nekoton_repository.dart' hide Message;
 import 'package:ui_components_lib/ui_components_lib.dart';
 
@@ -24,9 +25,10 @@ class ConfirmActionModel extends ElementaryModel {
   Seed? findSeed(PublicKey publicKey) =>
       nekotonRepository.seedList.findSeed(publicKey);
 
-  void showValidateError(String message) {
+  void showValidateError(BuildContext context, String message) {
     messengerService.show(
       Message.error(
+        context: context,
         message: message,
         debounceTime: defaultInfoMessageDebounceDuration,
       ),

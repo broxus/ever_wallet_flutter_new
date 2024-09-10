@@ -4,20 +4,24 @@ import 'package:app/app/service/messenger/cubit/messenger_cubit.dart';
 import 'package:app/app/service/service.dart';
 import 'package:bloc_test/bloc_test.dart';
 import 'package:clock/clock.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:test/test.dart';
 
 void main() {
   final message0 = Message(
+    context: null,
     message: 'message0',
     type: MessageType.info,
   );
 
   final message1 = Message(
+    context: null,
     message: 'message1',
     type: MessageType.info,
   );
 
   final message2 = Message(
+    context: null,
     message: 'message2',
     type: MessageType.info,
   );

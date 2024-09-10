@@ -32,6 +32,7 @@ class StakingPage extends StatelessWidget {
           )..add(const ActionStakingBlocEvent.init()),
           child: BlocProvider<StakingBloc>(
             create: (context) => StakingBloc(
+              context: context,
               accountAddress: accountAddress,
               nekotonRepository: inject(),
               currencyConvert: inject(),

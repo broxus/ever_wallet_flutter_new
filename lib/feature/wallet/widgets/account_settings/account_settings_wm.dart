@@ -48,7 +48,7 @@ class AccountSettingsWidgetModel
   }
 
   void onCopyAddress() {
-    model.copyAddress(widget.account.address);
+    model.copyAddress(context, widget.account.address);
   }
 
   void onHideAccount() {

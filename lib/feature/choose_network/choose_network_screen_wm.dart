@@ -43,11 +43,11 @@ class ChooseNetworkScreenWidgetModel
   ThemeStyleV2 get _themeStyle => context.themeStyleV2;
 
   Future<void> onPressedType(String id) async {
-    if (!await model.checkConnection()) {
+    if (!await model.checkConnection(context)) {
       return;
     }
 
-    final isSuccess = await model.selectType(id);
+    final isSuccess = await model.selectType(context, id);
 
     final isCanPop = contextSafe?.canPop() ?? false;
 

@@ -133,7 +133,7 @@ class CheckPhraseWidgetModel
       }
     }
     if (hasError) {
-      model.showValidateError(LocaleKeys.seedIsMissing.tr());
+      model.showValidateError(context, LocaleKeys.seedIsMissing.tr());
     } else {
       // TODO(malochka): think about get rid of maybePop method
       model.setShowingBackUpFlag();

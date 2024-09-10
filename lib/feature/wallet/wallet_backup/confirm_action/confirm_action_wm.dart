@@ -87,7 +87,7 @@ class ConfirmActionWidgetModel
             .content(ConfirmActionData(error: LocaleKeys.passwordIsWrong.tr()));
       }
     } else {
-      model.showValidateError(LocaleKeys.seedIsMissing.tr());
+      model.showValidateError(context, LocaleKeys.seedIsMissing.tr());
     }
   }
 }

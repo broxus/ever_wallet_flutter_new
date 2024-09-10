@@ -5,6 +5,7 @@ import 'package:app/app/service/nekoton_related/current_key_service.dart';
 import 'package:app/feature/add_seed/create_password/screens/create_seed_password/create_seed_password_screen.dart';
 import 'package:app/feature/constants.dart';
 import 'package:elementary/elementary.dart';
+import 'package:flutter/material.dart';
 import 'package:logging/logging.dart';
 import 'package:nekoton_repository/nekoton_repository.dart' hide Message;
 
@@ -26,6 +27,7 @@ class CreateSeedPasswordScreenModel extends ElementaryModel {
   final String? _phrase;
 
   Future<void> next({
+    required BuildContext context,
     required String password,
   }) async {
     try {
@@ -44,7 +46,9 @@ class CreateSeedPasswordScreenModel extends ElementaryModel {
       );
     } catch (e) {
       Logger('CreateSeedPasswordCubit').severe(e);
-      _messengerService.show(Message.error(message: e.toString()));
+      _messengerService.show(
+        Message.error(context: context, message: e.toString()),
+      );
     }
   }
 

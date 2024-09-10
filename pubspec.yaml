@@ -40,6 +40,7 @@ dependencies:
   hive_flutter: ^1.1.0
   http: ^1.2.1
   image_picker: ^1.0.4
+  in_app_notification: ^1.1.2
   injectable: ^2.4.1
   internet_connection_checker_plus: ^2.5.1
   json_annotation: ^4.9.0

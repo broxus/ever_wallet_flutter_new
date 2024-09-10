@@ -76,7 +76,7 @@ class AccountDetailView extends StatelessWidget {
                 color: colors.textPrimary,
               ),
               CommonListTile(
-                onPressed: _copyAddress,
+                onPressed: () => _copyAddress(context),
                 height: null,
                 padding: const EdgeInsets.all(DimensSizeV2.d16),
                 titleChild: Text(
@@ -118,12 +118,13 @@ class AccountDetailView extends StatelessWidget {
     );
   }
 
-  void _copyAddress() {
+  void _copyAddress(BuildContext context) {
     Clipboard.setData(
       ClipboardData(text: account.address.address),
     );
     inject<MessengerService>().show(
       Message.successful(
+        context: context,
         message: LocaleKeys.valueCopiedExclamation.tr(
           args: [account.address.toEllipseString()],
         ),
