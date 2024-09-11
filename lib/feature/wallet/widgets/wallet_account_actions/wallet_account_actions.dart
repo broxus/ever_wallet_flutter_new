@@ -14,7 +14,6 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:lucide_icons_flutter/lucide_icons.dart';
 import 'package:nekoton_repository/nekoton_repository.dart' hide Message;
 import 'package:ui_components_lib/ui_components_lib.dart';
-import 'package:ui_components_lib/v2/ui_components_lib_v2.dart';
 
 /// Row with actions for current account.
 /// If account is null, then no actions available.
@@ -130,7 +129,8 @@ class _ActionList extends StatelessWidget {
             //         context.goFurther(
             //           AppRoute.walletStake.pathWithData(
             //             pathParameters: {
-            //               walletStakeAddressPathParam: account.address.address,
+            //               walletStakeAddressPathParam:
+            //               account.address.address,
             //             },
             //           ),
             //         );
@@ -232,6 +232,7 @@ class _Button extends StatelessWidget {
     required this.label,
     required this.icon,
     required this.onPressed,
+    // ignore: unused_element
     this.badge,
   });
 

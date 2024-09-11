@@ -1,7 +1,6 @@
 import 'package:app/feature/add_seed/create_password/model/password_status.dart';
 import 'package:flutter/material.dart';
 import 'package:ui_components_lib/ui_components_lib.dart';
-import 'package:ui_components_lib/v2/dimens_v2.dart';
 
 class PasswordInfoSection extends StatelessWidget {
   const PasswordInfoSection({
