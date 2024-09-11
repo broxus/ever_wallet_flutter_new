@@ -2,7 +2,6 @@ import 'package:app/app/router/app_route.dart';
 import 'package:app/app/service/service.dart';
 import 'package:app/di/di.dart';
 import 'package:app/feature/contact_support/contact_support.dart';
-import 'package:app/feature/localization/localization.dart';
 import 'package:app/feature/profile/profile.dart';
 import 'package:app/generated/assets.gen.dart';
 import 'package:app/generated/locale_keys.g.dart';
@@ -81,6 +80,7 @@ class ProfileView extends StatelessWidget {
                   backgroundColor: theme.colors.backgroundAlpha,
                   iconColor: theme.colors.content0,
                 ),
+                // TODO(knightforce): temp
                 // _profileTile(
                 //   leadingIcon: Assets.images.currency.path,
                 //   title: LocaleKeys.currencyWord.tr(),
@@ -90,20 +90,21 @@ class ProfileView extends StatelessWidget {
                 //   // ignore: no-empty-block
                 //   onPressed: () {},
                 // ),
-                _profileTile(
-                  leadingIcon: Assets.images.planetInner.path,
-                  title: LocaleKeys.languageWord.tr(),
-                  trailing: const Icon(
-                    LucideIcons.chevronRight,
-                    size: DimensSizeV2.d20,
-                  ),
-                  // ignore: no-empty-block
-                  onPressed: () => showLocalizationSheet(
-                    context: context,
-                  ),
-                  backgroundColor: theme.colors.backgroundAlpha,
-                  iconColor: theme.colors.content0,
-                ),
+                // TODO(knightforce): temp
+                // _profileTile(
+                //   leadingIcon: Assets.images.planetInner.path,
+                //   title: LocaleKeys.languageWord.tr(),
+                //   trailing: const Icon(
+                //     LucideIcons.chevronRight,
+                //     size: DimensSizeV2.d20,
+                //   ),
+                //   // ignore: no-empty-block
+                //   onPressed: () => showLocalizationSheet(
+                //     context: context,
+                //   ),
+                //   backgroundColor: theme.colors.backgroundAlpha,
+                //   iconColor: theme.colors.content0,
+                // ),
                 if (isBiometryAvailable)
                   StreamBuilder<bool>(
                     stream: service.enabledStream,

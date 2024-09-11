@@ -10,7 +10,7 @@ void main() {
         'getting new numbers and compare them',
         () async {
           Future<int> runQuery() async {
-            final regex = RegExp('New build number: ([0-9]+)');
+            final regex = RegExp('([0-9]+)');
 
             final result = await Process.run(
               'sh',

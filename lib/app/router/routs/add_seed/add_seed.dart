@@ -1,6 +1,5 @@
-import 'dart:convert';
-
 import 'package:app/app/router/router.dart';
+import 'package:app/data/models/seed/seed_phrase_model.dart';
 import 'package:app/feature/add_seed/add_existing_wallet/view/add_existing_wallet_page.dart';
 import 'package:app/feature/add_seed/add_seed_enable_biometry/view/add_seed_enable_biometry_page.dart';
 import 'package:app/feature/add_seed/create_password/screens/create_seed_password/create_seed_password_screen.dart';
@@ -24,6 +23,8 @@ const enterSeedNameNamePathParam = 'nameParam';
 /// Route that allows to create a seed phrase without entering name.
 /// This route may be used in onboarding or profile section, depends
 /// on [passwordRoute].
+
+// TODO(knightforce): check is used
 @Deprecated('Use v2 version')
 GoRoute createSeedNoNamedRoute(GoRoute passwordRoute) {
   return GoRoute(
@@ -33,10 +34,9 @@ GoRoute createSeedNoNamedRoute(GoRoute passwordRoute) {
       GoRoute(
         path: AppRoute.checkSeed.path,
         builder: (_, state) => CheckSeedPhrasePage(
-          phrase: (jsonDecode(
-            state.uri.queryParameters[addSeedPhraseQueryParam]!,
-          ) as List<dynamic>)
-              .cast<String>(),
+          seed: SeedPhraseModel(
+            state.uri.queryParameters[addSeedPhraseQueryParam],
+          ),
         ),
         routes: [
           passwordRoute,
@@ -93,7 +93,9 @@ GoRoute get createOnboardingSeedPasswordRoute {
     path: AppRoute.createSeedPassword.path,
     builder: (_, GoRouterState state) {
       return CreateSeedPasswordScreen(
-        phrase: state.uri.queryParameters[addSeedPhraseQueryParam],
+        phrase: SeedPhraseModel(
+          state.uri.queryParameters[addSeedPhraseQueryParam],
+        ),
       );
     },
     routes: [
@@ -116,10 +118,9 @@ GoRoute get createSeedNoNamedProfileRoute {
     GoRoute(
       path: AppRoute.createSeedPassword.path,
       builder: (_, state) => CreateSeedPasswordProfilePage(
-        phrase: (jsonDecode(
-          state.uri.queryParameters[addSeedPhraseQueryParam]!,
-        ) as List<dynamic>)
-            .cast<String>(),
+        seedPhrase: SeedPhraseModel(
+          state.uri.queryParameters[addSeedPhraseQueryParam],
+        ),
         name: state.pathParameters[enterSeedNameNamePathParam],
       ),
     ),
@@ -132,10 +133,9 @@ GoRoute get enterSeedNoNamedProfileRoute {
     GoRoute(
       path: AppRoute.createSeedPassword.path,
       builder: (_, GoRouterState state) => CreateSeedPasswordProfilePage(
-        phrase: (jsonDecode(
-          state.uri.queryParameters[addSeedPhraseQueryParam]!,
-        ) as List<dynamic>)
-            .cast<String>(),
+        seedPhrase: SeedPhraseModel(
+          state.uri.queryParameters[addSeedPhraseQueryParam],
+        ),
         name: state.pathParameters[enterSeedNameNamePathParam],
       ),
     ),
@@ -149,10 +149,9 @@ GoRoute get createSeedNamedProfileRoute {
   final passwordRoute = GoRoute(
     path: AppRoute.createSeedPassword.path,
     builder: (_, GoRouterState state) => CreateSeedPasswordProfilePage(
-      phrase: (jsonDecode(
-        state.uri.queryParameters[addSeedPhraseQueryParam]!,
-      ) as List<dynamic>)
-          .cast<String>(),
+      seedPhrase: SeedPhraseModel(
+        state.uri.queryParameters[addSeedPhraseQueryParam],
+      ),
       name: state.pathParameters[enterSeedNameNamePathParam],
     ),
   );
@@ -164,10 +163,9 @@ GoRoute get createSeedNamedProfileRoute {
       GoRoute(
         path: AppRoute.checkSeed.path,
         builder: (_, state) => CheckSeedPhrasePage(
-          phrase: (jsonDecode(
-            state.uri.queryParameters[addSeedPhraseQueryParam]!,
-          ) as List<dynamic>)
-              .cast<String>(),
+          seed: SeedPhraseModel(
+            state.uri.queryParameters[addSeedPhraseQueryParam],
+          ),
         ),
         routes: [
           passwordRoute,
@@ -188,13 +186,14 @@ GoRoute get enterSeedNamedProfileRoute {
     routes: [
       GoRoute(
         path: AppRoute.createSeedPassword.path,
-        builder: (_, GoRouterState state) => CreateSeedPasswordProfilePage(
-          phrase: (jsonDecode(
-            state.uri.queryParameters[addSeedPhraseQueryParam]!,
-          ) as List<dynamic>)
-              .cast<String>(),
-          name: state.pathParameters[enterSeedNameNamePathParam],
-        ),
+        builder: (_, GoRouterState state) {
+          return CreateSeedPasswordProfilePage(
+            seedPhrase: SeedPhraseModel(
+              state.uri.queryParameters[addSeedPhraseQueryParam],
+            ),
+            name: state.pathParameters[enterSeedNameNamePathParam],
+          );
+        },
       ),
     ],
   );

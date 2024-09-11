@@ -2,6 +2,7 @@ import 'package:app/app/router/routs/add_seed/add_seed.dart';
 import 'package:app/core/error_handler_factory.dart';
 import 'package:app/core/wm/custom_wm.dart';
 import 'package:app/core/wm/navigation_wm_mixin.dart';
+import 'package:app/data/models/seed/seed_phrase_model.dart';
 import 'package:app/di/di.dart';
 import 'package:app/feature/add_seed/create_password/model/password_status.dart';
 import 'package:app/feature/add_seed/create_password/screens/create_seed_password/create_seed_password_screen.dart';
@@ -15,7 +16,7 @@ import 'package:ui_components_lib/v2/ui_components_lib_v2.dart';
 CreateSeedPasswordScreenWidgetModel
     defaultCreateSeedPasswordScreenWidgetModelFactory(
   BuildContext context, {
-  String? phrase,
+  SeedPhraseModel? phrase,
 }) {
   return CreateSeedPasswordScreenWidgetModel(
     CreateSeedPasswordScreenModel(

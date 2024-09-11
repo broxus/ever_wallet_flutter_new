@@ -109,25 +109,59 @@ scripts:
     description: Registering new devices already added through devportal
     run: bash scripts/ios-match-new-devices.sh
 
-  build:deploy_fad:
-    description: Build and deploy to FAD
-    run: bash scripts/build-deploy-fad.sh
+  build_android_store:
+    description: Build android store
+    run: |
+      bash scripts/build.sh \
+      --deploy-target android_store \
+      --build-number auto \
+      --upload false
 
-  build:deploy_store:
-    description: Build and deploy to Testflight and Google Play internal
-    run: bash scripts/build-deploy-store.sh
+  deploy_fad_ios:
+    description: Deploy iOS app to fad
+    run: |
+      bash scripts/build.sh \
+      --deploy-target ios_fad \
+      --build-number auto \
+      --upload true
 
-  build:deploy_fad_store:
-    description: Build and deploy to FAD, Testflight and Google Play internal
-    run: bash scripts/build-deploy-fad-store.sh
+  deploy_fad_android:
+    description: Deploy Android app to fad
+    run: |
+      bash scripts/build.sh \
+      --deploy-target android_fad \
+      --build-number auto \
+      --upload true
 
-  build:deploy_ios_store:
-    description: Build and deploy to Test Flight
-    run: bash scripts/build-deploy-ios-store.sh
+  deploy_fad:
+    description: Deploy app to fad
+    run: |
+      BUILD_NUMBER=$(bash scripts/get-build-number.sh)
+      
+      bash scripts/build.sh \
+      --deploy-target ios_fad \
+      --build-number $BUILD_NUMBER \
+      --upload true
+      
+      bash scripts/build.sh \
+      --deploy-target android_fad \
+      --build-number $BUILD_NUMBER \
+      --upload true
 
-  build:deploy_android_store:
-    description: Build and deploy to Google Play
-    run: bash scripts/build-deploy-android-store.sh
+  deploy_store:
+    description: Deploy app to store
+    run: |
+      BUILD_NUMBER=$(bash scripts/get-build-number.sh)
+      
+      bash scripts/build.sh \
+      --deploy-target ios_store \
+      --build-number $BUILD_NUMBER \
+      --upload true
+      
+      bash scripts/build.sh \
+      --deploy-target android_store \
+      --build-number $BUILD_NUMBER \
+      --upload true
 
 command:
   clean:
