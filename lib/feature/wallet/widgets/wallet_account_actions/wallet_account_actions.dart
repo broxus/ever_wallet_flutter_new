@@ -1,3 +1,5 @@
+// ignore_for_file: lines_longer_than_80_chars, unused_element
+
 import 'package:app/app/router/router.dart';
 import 'package:app/app/service/service.dart';
 import 'package:app/di/di.dart';
