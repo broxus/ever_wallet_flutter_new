@@ -211,10 +211,12 @@ class TokenWalletSendBloc
         destination: repackedDestination,
       );
 
-      messengerService.show(Message.successful(
-        context: context,
-        message: resultMessage,
-      ));
+      messengerService.show(
+        Message.successful(
+          context: context,
+          message: resultMessage,
+        ),
+      );
       if (!isClosed) {
         add(TokenWalletSendEvent.completeSend(transaction));
       }
