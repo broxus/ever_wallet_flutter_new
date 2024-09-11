@@ -6,7 +6,6 @@ import 'package:flutter/widgets.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:in_app_notification/in_app_notification.dart';
 import 'package:ui_components_lib/ui_components_lib.dart';
-import 'package:ui_components_lib/v2/dimens_v2.dart';
 
 class MessengerServiceWidget extends StatefulWidget {
   const MessengerServiceWidget({
