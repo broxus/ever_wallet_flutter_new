@@ -96,7 +96,7 @@ class AddNewLocalAccountTypeSheet extends StatelessWidget {
                   title: LocaleKeys.confirm.tr(),
                   onPressed: () => context
                       .read<AddNewLocalAccountTypeCubit>()
-                      .createAccount(),
+                      .createAccount(context),
                 ),
               ],
             );

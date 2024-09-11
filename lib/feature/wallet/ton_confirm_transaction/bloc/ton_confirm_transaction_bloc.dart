@@ -1,14 +1,19 @@
+// ignore_for_file: use_build_context_synchronously
+
 import 'package:app/app/service/service.dart';
 import 'package:app/di/di.dart';
 import 'package:app/generated/generated.dart';
 import 'package:app/utils/constants.dart';
 import 'package:bloc/bloc.dart';
+import 'package:flutter/material.dart';
 import 'package:freezed_annotation/freezed_annotation.dart';
 import 'package:logging/logging.dart';
 import 'package:nekoton_repository/nekoton_repository.dart' hide Message;
 
 part 'ton_confirm_transaction_bloc.freezed.dart';
+
 part 'ton_confirm_transaction_event.dart';
+
 part 'ton_confirm_transaction_state.dart';
 
 /// Bloc that allows prepare transaction confirmation for multisig wallet.
@@ -17,6 +22,7 @@ part 'ton_confirm_transaction_state.dart';
 class TonConfirmTransactionBloc
     extends Bloc<TonConfirmTransactionEvent, TonConfirmTransactionState> {
   TonConfirmTransactionBloc({
+    required this.context,
     required this.nekotonRepository,
     required this.walletAddress,
     required this.localCustodians,
@@ -36,6 +42,7 @@ class TonConfirmTransactionBloc
   }
 
   final _logger = Logger('TonConfirmTransactionBloc');
+  final BuildContext context;
   final NekotonRepository nekotonRepository;
 
   /// Address of wallet which will be used to confirm transaction
@@ -182,6 +189,7 @@ class TonConfirmTransactionBloc
 
       inject<MessengerService>().show(
         Message.successful(
+          context: context,
           message: LocaleKeys.transactionSentSuccessfully.tr(),
         ),
       );
@@ -190,11 +198,14 @@ class TonConfirmTransactionBloc
       }
     } on FfiException catch (e, t) {
       _logger.severe('_handleSend', e, t);
-      inject<MessengerService>().show(Message.error(message: e.message));
+      inject<MessengerService>().show(
+        Message.error(context: context, message: e.message),
+      );
       emit(TonConfirmTransactionState.readyToSend(fees!, selectedCustodian));
     } on Exception catch (e, t) {
       _logger.severe('_handleSend', e, t);
-      inject<MessengerService>().show(Message.error(message: e.toString()));
+      inject<MessengerService>()
+          .show(Message.error(context: context, message: e.toString()));
       emit(TonConfirmTransactionState.readyToSend(fees!, selectedCustodian));
     }
   }

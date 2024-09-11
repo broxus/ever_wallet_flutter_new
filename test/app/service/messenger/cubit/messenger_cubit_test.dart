@@ -8,16 +8,19 @@ import 'package:test/test.dart';
 
 void main() {
   final message0 = Message(
+    context: null,
     message: 'message0',
     type: MessageType.info,
   );
 
   final message1 = Message(
+    context: null,
     message: 'message1',
     type: MessageType.info,
   );
 
   final message2 = Message(
+    context: null,
     message: 'message2',
     type: MessageType.info,
   );

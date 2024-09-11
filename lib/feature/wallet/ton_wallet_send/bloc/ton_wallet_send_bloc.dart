@@ -1,19 +1,25 @@
+// ignore_for_file: use_build_context_synchronously
+
 import 'package:app/app/service/service.dart';
 import 'package:app/generated/generated.dart';
 import 'package:app/utils/constants.dart';
 import 'package:bloc/bloc.dart';
+import 'package:flutter/material.dart';
 import 'package:freezed_annotation/freezed_annotation.dart';
 import 'package:logging/logging.dart';
 import 'package:nekoton_repository/nekoton_repository.dart' hide Message;
 
 part 'ton_wallet_send_bloc.freezed.dart';
+
 part 'ton_wallet_send_event.dart';
+
 part 'ton_wallet_send_state.dart';
 
 /// Bloc that allows prepare transaction to send native funds from [TonWallet]
 /// for confirmation and send transaction.
 class TonWalletSendBloc extends Bloc<TonWalletSendEvent, TonWalletSendState> {
   TonWalletSendBloc({
+    required this.context,
     required this.nekotonRepository,
     required this.messengerService,
     required this.address,
@@ -28,6 +34,7 @@ class TonWalletSendBloc extends Bloc<TonWalletSendEvent, TonWalletSendState> {
   }
 
   final _logger = Logger('TonWalletSendBloc');
+  final BuildContext context;
   final NekotonRepository nekotonRepository;
   final MessengerService messengerService;
 
@@ -167,17 +174,20 @@ class TonWalletSendBloc extends Bloc<TonWalletSendEvent, TonWalletSendState> {
         destination: repackedDestination,
       );
 
-      messengerService.show(Message.successful(message: resultMessage));
+      messengerService
+          .show(Message.successful(context: context, message: resultMessage));
       if (!isClosed) {
         add(TonWalletSendEvent.completeSend(transaction));
       }
     } on FfiException catch (e, t) {
       _logger.severe('_handleSend', e, t);
-      messengerService.show(Message.error(message: e.message));
+      messengerService
+          .show(Message.error(context: context, message: e.message));
       emit(TonWalletSendState.readyToSend(fees!));
     } on Exception catch (e, t) {
       _logger.severe('_handleSend', e, t);
-      messengerService.show(Message.error(message: e.toString()));
+      messengerService
+          .show(Message.error(context: context, message: e.toString()));
       emit(TonWalletSendState.readyToSend(fees!));
     }
   }

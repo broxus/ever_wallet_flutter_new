@@ -1,3 +1,5 @@
+// ignore_for_file: use_build_context_synchronously
+
 import 'dart:async';
 
 import 'package:app/app/service/service.dart';
@@ -6,10 +8,12 @@ import 'package:app/di/di.dart';
 import 'package:app/generated/generated.dart';
 import 'package:bloc/bloc.dart';
 import 'package:collection/collection.dart';
+import 'package:flutter/material.dart';
 import 'package:freezed_annotation/freezed_annotation.dart';
 import 'package:nekoton_repository/nekoton_repository.dart' hide Message;
 
 part 'select_new_asset_cubit.freezed.dart';
+
 part 'select_new_asset_state.dart';
 
 enum SelectNewAssetTabs { select, custom }
@@ -103,13 +107,16 @@ class SelectNewAssetCubit extends Cubit<SelectNewAssetState> {
     _updateState();
   }
 
-  Future<void> addCustom(Address address) async {
+  Future<void> addCustom(BuildContext context, Address address) async {
     final isValid = await validateAddress(address);
     if (isValid) {
       await _cachedAccount?.addTokenWallet(address);
     } else {
       inject<MessengerService>().show(
-        Message.error(message: LocaleKeys.invalidRootTokenContract.tr()),
+        Message.error(
+          context: context,
+          message: LocaleKeys.invalidRootTokenContract.tr(),
+        ),
       );
     }
   }

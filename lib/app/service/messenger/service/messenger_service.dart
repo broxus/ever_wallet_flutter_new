@@ -2,6 +2,7 @@ import 'dart:async';
 
 import 'package:app/app/service/messenger/message.dart';
 import 'package:app/generated/generated.dart';
+import 'package:flutter/material.dart';
 import 'package:injectable/injectable.dart';
 
 /// Service that shows messages to the user. Keep it simple and stupid, use only
@@ -19,9 +20,10 @@ class MessengerService {
     _messageStreamController.add(message);
   }
 
-  void showConnectionError() {
+  void showConnectionError(BuildContext? context) {
     show(
       Message.error(
+        context: context,
         message: LocaleKeys.connectingNetworkFailed.tr(),
       ),
     );

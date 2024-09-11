@@ -24,9 +24,10 @@ class ImportWalletScreenModel extends ElementaryModel with ConnectionMixin {
 
   final NekotonRepository nekotonRepository;
 
-  void showValidateError(String message) {
+  void showValidateError(BuildContext context, String message) {
     messengerService.show(
       Message.error(
+        context: context,
         message: message,
         debounceTime: defaultInfoMessageDebounceDuration,
       ),

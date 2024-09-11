@@ -1,3 +1,5 @@
+// ignore_for_file: use_build_context_synchronously
+
 import 'dart:async';
 import 'dart:io';
 
@@ -12,6 +14,7 @@ import 'package:mobile_scanner/mobile_scanner.dart' hide Address;
 import 'package:nekoton_repository/nekoton_repository.dart' hide Message;
 
 part 'qr_cubit.freezed.dart';
+
 part 'qr_cubit_state.dart';
 
 enum SettingsOpenType { camera, photos }
@@ -31,6 +34,7 @@ enum QrScanType {
 /// Cubit that helps with scanning QR codes via camera or taking image.
 class QrCubit extends Cubit<QrCubitState> {
   QrCubit({
+    required this.context,
     required this.permissionsService,
     required this.type,
     required this.lifecycleService,
@@ -52,6 +56,7 @@ class QrCubit extends Cubit<QrCubitState> {
     });
   }
 
+  final BuildContext context;
   final QrScanType type;
   final AppLifecycleService lifecycleService;
   final AppPermissionsService permissionsService;
@@ -112,6 +117,7 @@ class QrCubit extends Cubit<QrCubitState> {
     } else {
       inject<MessengerService>().show(
         Message.error(
+          context: context,
           message: LocaleKeys.givePhotosPermission.tr(),
           actionText: LocaleKeys.giveWord.tr(),
           onAction: () => openSettings(SettingsOpenType.photos),
@@ -136,6 +142,7 @@ class QrCubit extends Cubit<QrCubitState> {
     } else {
       inject<MessengerService>().show(
         Message.error(
+          context: context,
           message: LocaleKeys.scannedDataIsNot.tr(
             args: [type.description.toLowerCase()],
           ),

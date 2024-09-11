@@ -72,7 +72,7 @@ class ReceiveFundsSheet extends StatelessWidget {
                 ),
                 const SizedBox(height: DimensSize.d8),
                 SmallButton.ghost(
-                  onPressed: _copyAddress,
+                  onPressed: () => _copyAddress(context),
                   text: LocaleKeys.copyWord.tr(),
                   leading: CommonButtonIconWidget.svg(
                     svg: Assets.images.copy.path,
@@ -94,10 +94,11 @@ class ReceiveFundsSheet extends StatelessWidget {
     );
   }
 
-  void _copyAddress() {
+  void _copyAddress(BuildContext context) {
     Clipboard.setData(ClipboardData(text: address.address));
     inject<MessengerService>().show(
       Message.successful(
+        context: context,
         message: LocaleKeys.valueCopiedExclamation.tr(
           args: [address.toEllipseString()],
         ),

@@ -106,7 +106,7 @@ class _EnterPasswordWidgetV2State extends State<EnterPasswordWidgetV2> {
               textEditingController: _passwordController,
               onSubmit: (_) => context
                   .read<EnterPasswordCubit>()
-                  .enterPassword(_passwordController.text),
+                  .enterPassword(context, _passwordController.text),
             ),
             AccentButton(
               buttonShape: ButtonShape.pill,
@@ -114,7 +114,7 @@ class _EnterPasswordWidgetV2State extends State<EnterPasswordWidgetV2> {
               isLoading: widget.isLoading ?? false,
               onPressed: () => context
                   .read<EnterPasswordCubit>()
-                  .enterPassword(_passwordController.text),
+                  .enterPassword(context, _passwordController.text),
             ),
           ],
         ),

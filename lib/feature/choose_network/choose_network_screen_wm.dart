@@ -1,3 +1,5 @@
+// ignore_for_file: use_build_context_synchronously
+
 import 'package:app/app/router/app_route.dart';
 import 'package:app/core/error_handler_factory.dart';
 import 'package:app/core/wm/custom_wm.dart';
@@ -43,11 +45,11 @@ class ChooseNetworkScreenWidgetModel
   ThemeStyleV2 get _themeStyle => context.themeStyleV2;
 
   Future<void> onPressedType(String id) async {
-    if (!await model.checkConnection()) {
+    if (!await model.checkConnection(context)) {
       return;
     }
 
-    final isSuccess = await model.selectType(id);
+    final isSuccess = await model.selectType(context, id);
 
     final isCanPop = contextSafe?.canPop() ?? false;
 

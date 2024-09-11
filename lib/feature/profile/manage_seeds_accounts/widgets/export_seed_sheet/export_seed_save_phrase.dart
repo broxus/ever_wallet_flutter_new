@@ -70,6 +70,7 @@ class ExportSeedSavePhrase extends StatelessWidget {
           onPressed: () {
             inject<MessengerService>().show(
               Message.successful(
+                context: context,
                 message: LocaleKeys.copiedExclamation.tr(),
               ),
             );

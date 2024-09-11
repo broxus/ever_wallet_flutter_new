@@ -117,6 +117,7 @@ class WalletTransactionDetailsDefaultBody extends StatelessWidget {
           icon: LucideIcons.copy,
           onPressed: () {
             _copy(
+              context,
               recipientOrSender.address,
               LocaleKeys.valueCopiedExclamation.tr(
                 args: [recipientOrSender.toEllipseString()],
@@ -129,7 +130,11 @@ class WalletTransactionDetailsDefaultBody extends StatelessWidget {
           subtitle: toEllipseString(hash),
           icon: LucideIcons.copy,
           onPressed: () {
-            _copy(hash, LocaleKeys.valueCopiedExclamation.tr(args: [hash]));
+            _copy(
+              context,
+              hash,
+              LocaleKeys.valueCopiedExclamation.tr(args: [hash]),
+            );
           },
         ),
       ],
@@ -168,10 +173,10 @@ class WalletTransactionDetailsDefaultBody extends StatelessWidget {
     );
   }
 
-  void _copy(String value, String copyMessage) {
+  void _copy(BuildContext context, String value, String copyMessage) {
     Clipboard.setData(ClipboardData(text: value));
     inject<MessengerService>().show(
-      Message.successful(message: copyMessage),
+      Message.successful(context: context, message: copyMessage),
     );
   }
 }

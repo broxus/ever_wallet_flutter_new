@@ -192,6 +192,7 @@ class _ActionList extends StatelessWidget {
         WalletAccountActionBehavior.sendLocalCustodiansNeeded => () =>
             inject<MessengerService>().show(
               Message.error(
+                context: context,
                 message: LocaleKeys.toSendMultisigAddCustodian.tr(),
                 actionText: LocaleKeys.addWord.tr(),
                 onAction: () => _showAddSeedSheet(context),
@@ -232,7 +233,6 @@ class _Button extends StatelessWidget {
     required this.label,
     required this.icon,
     required this.onPressed,
-    // ignore: unused_element
     this.badge,
   });
 

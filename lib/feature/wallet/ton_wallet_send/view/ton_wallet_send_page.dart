@@ -55,6 +55,7 @@ class TonWalletSendPage extends StatelessWidget {
   Widget build(BuildContext context) {
     return BlocProvider<TonWalletSendBloc>(
       create: (_) => TonWalletSendBloc(
+        context: context,
         destination: destination,
         amount: amount + (attachedAmount ?? BigInt.zero),
         address: address,
