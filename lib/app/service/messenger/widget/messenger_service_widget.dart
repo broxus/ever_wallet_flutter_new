@@ -71,14 +71,14 @@ class _MessengerServiceWidgetState extends State<MessengerServiceWidget> {
         child: Padding(
           padding: const EdgeInsets.symmetric(
             horizontal: DimensSizeV2.d16,
-            //vertical: DimensSizeV2.d56,
+            vertical: DimensSizeV2.d48,
           ),
           child: message.toastByMessage(() {
             _onDismiss();
             InAppNotification.dismiss(context: context);
           }),
         ),
-        context: context,
+        context: ctx,
         onTap: _onDismiss,
         duration: message.duration,
       );
@@ -94,17 +94,19 @@ class _MessengerServiceWidgetState extends State<MessengerServiceWidget> {
 
   @override
   Widget build(BuildContext context) {
-    return BlocListener<MessengerCubit, MessengerState>(
-      bloc: _cubit,
-      listener: (ctx, state) {
-        if (state.messagesToShow.isNotEmpty) {
-          final context = state.messagesToShow.last.context;
-          _showNextMessage(context);
-        } else {
-          _showNextMessage(null);
-        }
-      },
-      child: widget.child,
+    return SafeArea(
+      child: BlocListener<MessengerCubit, MessengerState>(
+        bloc: _cubit,
+        listener: (ctx, state) {
+          if (state.messagesToShow.isNotEmpty) {
+            final context = state.messagesToShow.last.context;
+            _showNextMessage(context);
+          } else {
+            _showNextMessage(null);
+          }
+        },
+        child: widget.child,
+      ),
     );
   }
 }
