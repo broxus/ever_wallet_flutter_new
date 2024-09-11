@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:modal_bottom_sheet/modal_bottom_sheet.dart';
 import 'package:ui_components_lib/ui_components_lib.dart';
-import 'package:ui_components_lib/v2/dimens_v2.dart';
 
 /// Builder for body parameter of [showCommonBottomSheet].
 /// This allows get [ScrollController] of modal sheet and use it in scroll box.
@@ -28,6 +27,7 @@ Future<T?> showCommonBottomSheet<T>({
   String? subtitle,
   EdgeInsets padding = const EdgeInsets.symmetric(horizontal: DimensSizeV2.d16),
   EdgeInsets? titleMargin,
+  EdgeInsets? subtitleMargin,
   bool expand = false,
   bool dismissible = true,
   bool wrapIntoAnimatedSize = true,
@@ -38,6 +38,7 @@ Future<T?> showCommonBottomSheet<T>({
   bool useAppBackgroundColor = false,
   bool centerTitle = false,
   TextStyle? titleTextStyle,
+  TextStyle? subtitleStyle,
   bool centerSubtitle = false,
 }) {
   return showCustomModalBottomSheet<T>(
@@ -61,7 +62,9 @@ Future<T?> showCommonBottomSheet<T>({
       centerSubtitle: centerSubtitle,
       body: body,
       titleTextStyle: titleTextStyle,
+      subtitleStyle: subtitleStyle,
       titleMargin: titleMargin,
+      subtitleMargin: subtitleMargin,
     ),
   );
 }
@@ -93,7 +96,9 @@ ModalSheetRoute<T> commonBottomSheetRoute<T>({
   bool useAppBackgroundColor = false,
   bool centerTitle = false,
   TextStyle? titleTextStyle,
+  TextStyle? subtitleStyle,
   EdgeInsetsGeometry? titleMargin,
+  EdgeInsetsGeometry? subtitleMargin,
   bool centerSubtitle = false,
 }) {
   return ModalSheetRoute<T>(
@@ -107,7 +112,9 @@ ModalSheetRoute<T> commonBottomSheetRoute<T>({
       body: body,
       centerTitle: centerTitle,
       titleTextStyle: titleTextStyle,
+      subtitleStyle: subtitleStyle,
       titleMargin: titleMargin,
+      subtitleMargin: subtitleMargin,
       centerSubtitle: centerSubtitle,
     ),
     expanded: expand,
@@ -133,7 +140,9 @@ class CommonBottomSheetWidget extends StatelessWidget {
     this.title,
     this.subtitle,
     this.titleTextStyle,
+    this.subtitleStyle,
     this.titleMargin,
+    this.subtitleMargin,
     super.key,
   });
 
@@ -146,8 +155,10 @@ class CommonBottomSheetWidget extends StatelessWidget {
   final bool useAppBackgroundColor;
   final bool centerTitle;
   final TextStyle? titleTextStyle;
+  final TextStyle? subtitleStyle;
   final bool centerSubtitle;
   final EdgeInsetsGeometry? titleMargin;
+  final EdgeInsetsGeometry? subtitleMargin;
 
   @override
   Widget build(BuildContext context) {
@@ -164,7 +175,9 @@ class CommonBottomSheetWidget extends StatelessWidget {
             isCenterTitle: centerTitle,
             isCenterSubTitle: centerSubtitle,
             titleTextStyle: titleTextStyle,
+            subtitleStyle: subtitleStyle,
             titleMargin: titleMargin,
+            subtitleMargin: subtitleMargin,
           )
         else
           const SizedBox(height: DimensSizeV2.d32),
@@ -266,9 +279,11 @@ class _Header extends StatelessWidget {
     this.title,
     this.subtitle,
     this.titleTextStyle,
+    this.subtitleStyle,
     this.isCenterTitle = false,
     this.isCenterSubTitle = false,
     this.titleMargin,
+    this.subtitleMargin,
   });
 
   final String? title;
@@ -276,7 +291,9 @@ class _Header extends StatelessWidget {
   final bool isCenterTitle;
   final bool isCenterSubTitle;
   final TextStyle? titleTextStyle;
+  final TextStyle? subtitleStyle;
   final EdgeInsetsGeometry? titleMargin;
+  final EdgeInsetsGeometry? subtitleMargin;
 
   static const _top = DimensSizeV2.d20 + DimensSizeV2.d4 + DimensSizeV2.d8 * 2;
 
@@ -299,29 +316,31 @@ class _Header extends StatelessWidget {
                   left: DimensSizeV2.d16,
                   right: DimensSizeV2.d16,
                 ),
-            child: Align(
-              alignment:
-                  isCenterTitle ? Alignment.center : Alignment.centerLeft,
-              child: Text(
-                title!,
-                style: titleTextStyle ?? textStyles.headingMedium,
-                textAlign: isCenterTitle ? TextAlign.center : TextAlign.start,
-              ),
+            alignment: isCenterTitle ? Alignment.center : Alignment.centerLeft,
+            child: Text(
+              title!,
+              style: titleTextStyle ?? textStyles.headingMedium,
+              textAlign: isCenterTitle ? TextAlign.center : TextAlign.start,
             ),
           ),
         if (subtitle != null)
           Container(
-            margin: const EdgeInsets.symmetric(horizontal: DimensSizeV2.d16) +
+            margin: subtitleMargin ??
                 EdgeInsets.only(
-                  bottom: DimensSizeV2.d24,
                   top: title == null ? _top : 0,
+                  bottom: DimensSizeV2.d24,
+                  left: DimensSizeV2.d16,
+                  right: DimensSizeV2.d16,
                 ),
+            alignment:
+                isCenterSubTitle ? Alignment.center : Alignment.centerLeft,
             child: Text(
               subtitle!,
               textAlign: isCenterSubTitle ? TextAlign.center : TextAlign.left,
-              style: textStyles.paragraphMedium.copyWith(
-                color: theme.colors.content1,
-              ),
+              style: subtitleStyle ??
+                  textStyles.paragraphMedium.copyWith(
+                    color: theme.colors.content1,
+                  ),
             ),
           ),
       ],

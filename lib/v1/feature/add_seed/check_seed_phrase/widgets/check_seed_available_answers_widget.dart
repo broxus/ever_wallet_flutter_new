@@ -13,6 +13,7 @@ class CheckSeedAvailableAnswersWidget extends StatelessWidget {
     required this.availableAnswers,
     required this.selectedAnswers,
     required this.selectAnswer,
+    this.isEnabledWidget = true,
     super.key,
   });
 
@@ -24,22 +25,30 @@ class CheckSeedAvailableAnswersWidget extends StatelessWidget {
 
   /// Callback that will be called when user tap on answer (it also can revert)
   final ValueChanged<String> selectAnswer;
+  final bool isEnabledWidget;
 
   @override
   Widget build(BuildContext context) {
-    return SafeArea(
-      minimum: const EdgeInsets.only(bottom: DimensSize.d12),
-      child: SeparatedColumn(
-        mainAxisSize: MainAxisSize.min,
-        children: [
-          for (var index = 0; index < defaultWordsToCheckAmount; index++)
-            _answersRow(
-              availableAnswers.sublist(
-                index * defaultWordsToCheckAmount,
-                index * defaultWordsToCheckAmount + defaultWordsToCheckAmount,
-              ),
-            ),
-        ],
+    return Opacity(
+      opacity: isEnabledWidget ? OpacV2.opac100 : OpacV2.opac50,
+      child: IgnorePointer(
+        ignoring: !isEnabledWidget,
+        child: SafeArea(
+          minimum: const EdgeInsets.only(bottom: DimensSize.d12),
+          child: SeparatedColumn(
+            mainAxisSize: MainAxisSize.min,
+            children: [
+              for (var index = 0; index < defaultWordsToCheckAmount; index++)
+                _answersRow(
+                  availableAnswers.sublist(
+                    index * defaultWordsToCheckAmount,
+                    index * defaultWordsToCheckAmount +
+                        defaultWordsToCheckAmount,
+                  ),
+                ),
+            ],
+          ),
+        ),
       ),
     );
   }

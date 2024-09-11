@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:ui_components_lib/ui_components_lib.dart';
-import 'package:ui_components_lib/v2/ui_components_lib_v2.dart';
 
 class BrowserModalItem extends StatelessWidget {
   const BrowserModalItem({

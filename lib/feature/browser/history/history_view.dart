@@ -3,7 +3,8 @@ import 'package:app/app/service/service.dart';
 import 'package:app/data/models/models.dart';
 import 'package:app/di/di.dart';
 import 'package:app/feature/browser/browser.dart';
-import 'package:app/feature/browser/widgets/browser_resource_item.dart';
+import 'package:app/feature/browser/widgets/browser_resource_section.dart';
+import 'package:app/feature/browser/widgets/buttons_edit_section.dart';
 import 'package:app/generated/generated.dart';
 import 'package:app/utils/utils.dart';
 import 'package:collection/collection.dart';
@@ -128,7 +129,11 @@ class _HistoryViewState extends State<HistoryView> {
                 ),
               ),
             if (widgets.isNotEmpty) ...widgets,
-            _bottomSpacerBuilder(isEditing),
+            SliverToBoxAdapter(
+              child: SizedBox(
+                height: isEditing ? DimensSizeV2.d190 : DimensSizeV2.d128,
+              ),
+            ),
           ],
           controller: _scrollController,
         ),
@@ -136,7 +141,21 @@ class _HistoryViewState extends State<HistoryView> {
           Positioned.fill(
             child: _emptyBuilder(),
           ),
-        _buttonsBuilder(isEditing),
+        ButtonsEditSection(
+          isEditing: isEditing,
+          editText: LocaleKeys.browserHistoryEdit.tr(),
+          clearText: LocaleKeys.browserHistoryClear.tr(),
+          doneText: LocaleKeys.browserHistoryDone.tr(),
+          onPressedEdit: () => _setIsEditing(true),
+          onPressedClear: () {
+            showBrowserHistorySheet(
+              context: context,
+              clearHistoryEnabled: !isHistoryEmpty,
+              onClearPressed: _onClearPressed,
+            );
+          },
+          onPressedDone: () => _setIsEditing(false),
+        ),
       ],
     );
   }
@@ -164,98 +183,28 @@ class _HistoryViewState extends State<HistoryView> {
     final faviconUrl =
         context.watch<BrowserFaviconsBloc>().getFaviconUrl(item.url) ?? '';
 
-    return Padding(
+    return BrowserResourceSection(
       key: ValueKey(item.id),
-      padding: const EdgeInsets.only(
-        bottom: DimensSizeV2.d8,
-        left: DimensSize.d16,
-        right: DimensSize.d16,
+      faviconUrl: faviconUrl,
+      titleText: item.title,
+      subTitleText: item.url.toString(),
+      trailing: SvgPicture.asset(
+        Assets.images.caretRight.path,
+        width: DimensSizeV2.d20,
+        height: DimensSizeV2.d20,
+        colorFilter: context.themeStyleV2.colors.content0.colorFilter,
       ),
-      child: Row(
-        children: [
-          Expanded(
-            child: BrowserResourceItem(
-              key: ValueKey(item.id),
-              faviconUrl: faviconUrl,
-              title: item.title,
-              subTitle: item.url.toString(),
-              trailing: SvgPicture.asset(
-                Assets.images.caretRight.path,
-                width: DimensSizeV2.d20,
-                height: DimensSizeV2.d20,
-                colorFilter: context.themeStyleV2.colors.content0.colorFilter,
-              ),
-              padding: const EdgeInsets.symmetric(
-                vertical: DimensSizeV2.d8,
-                horizontal: DimensSizeV2.d16,
-              ),
-              onPressed: () => _onItemPressed(item),
-            ),
-          ),
-          if (isEditing)
-            Padding(
+      postfix: isEditing
+          ? Padding(
               padding: const EdgeInsets.only(left: DimensSizeV2.d4),
               child: GhostButton(
                 buttonShape: ButtonShape.circle,
                 icon: LucideIcons.trash2,
                 onPressed: () => _removeHistoryItem(item),
               ),
-            ),
-        ],
-      ),
-    );
-  }
-
-  Widget _buttonsBuilder(bool isEditing) {
-    final isHistoryEmpty = context.watch<BrowserHistoryBloc>().isHistoryEmpty;
-
-    return Container(
-      decoration: BoxDecoration(
-        color: context.themeStyleV2.colors.background0,
-      ),
-      padding: const EdgeInsets.only(
-        top: DimensSizeV2.d12,
-        bottom: DimensSizeV2.d50,
-        left: DimensSizeV2.d16,
-        right: DimensSizeV2.d16,
-      ),
-      child: isEditing
-          ? Column(
-              mainAxisSize: MainAxisSize.min,
-              crossAxisAlignment: CrossAxisAlignment.stretch,
-              children: [
-                DestructiveButton(
-                  buttonShape: ButtonShape.pill,
-                  title: LocaleKeys.browserHistoryClear.tr(),
-                  onPressed: () {
-                    showBrowserHistorySheet(
-                      context: context,
-                      clearHistoryEnabled: !isHistoryEmpty,
-                      onClearPressed: _onClearPressed,
-                    );
-                  },
-                ),
-                const SizedBox(height: DimensSizeV2.d8),
-                PrimaryButton(
-                  buttonShape: ButtonShape.pill,
-                  title: LocaleKeys.browserHistoryDone.tr(),
-                  onPressed: () => _setIsEditing(false),
-                ),
-              ],
             )
-          : PrimaryButton(
-              buttonShape: ButtonShape.pill,
-              title: LocaleKeys.browserHistoryEdit.tr(),
-              onPressed: () => _setIsEditing(true),
-            ),
-    );
-  }
-
-  Widget _bottomSpacerBuilder(bool isEditing) {
-    return SliverToBoxAdapter(
-      child: SizedBox(
-        height: isEditing ? DimensSizeV2.d190 : DimensSizeV2.d128,
-      ),
+          : null,
+      onPressed: () => _onItemPressed(item),
     );
   }
 
