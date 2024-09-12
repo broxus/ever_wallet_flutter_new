@@ -1,4 +1,7 @@
+import 'dart:io';
+
 import 'package:app/app/service/service.dart';
+import 'package:app_settings/app_settings.dart';
 import 'package:injectable/injectable.dart';
 import 'package:local_auth/local_auth.dart';
 import 'package:nekoton_repository/nekoton_repository.dart';
@@ -33,11 +36,13 @@ class BiometryService {
 
   /// Check if biometry available on device
   Future<bool> get _isAvailable async {
+    if (Platform.isIOS) {
+      return _localAuth.isDeviceSupported();
+    }
+
     if (!await _localAuth.canCheckBiometrics) return false;
     if (!await _localAuth.isDeviceSupported()) return false;
-    if ((await _localAuth.getAvailableBiometrics()).isEmpty) {
-      return false;
-    }
+    if ((await _localAuth.getAvailableBiometrics()).isEmpty) return false;
 
     return true;
   }
@@ -134,6 +139,11 @@ class BiometryService {
 
   /// Try to authenticate user with biometry or throw exception.
   Future<bool> _authenticate(String localizedReason) async {
+    if (Platform.isIOS && !await _localAuth.canCheckBiometrics) {
+      await AppSettings.openAppSettings();
+      return false;
+    }
+
     try {
       return await _localAuth.authenticate(
         localizedReason: localizedReason,
