@@ -144,7 +144,7 @@ class _BrowserTabViewState extends State<BrowserTabView> {
           );
     }
 
-    final initialOptions = InAppWebViewSettings(
+    final initialSettings = InAppWebViewSettings(
       clearCache: clearCache,
       applicationNameForUserAgent: 'EverWalletBrowser',
       transparentBackground: true,
@@ -164,7 +164,7 @@ class _BrowserTabViewState extends State<BrowserTabView> {
               return InAppWebView(
                 key: ValueKey(widget.tab.id),
                 pullToRefreshController: _pullToRefreshController,
-                initialSettings: initialOptions,
+                initialSettings: initialSettings,
                 onOverScrolled: _onOverScrolled,
                 onScrollChanged: _onScrollChanged,
                 onWebViewCreated: (c) => _onWebViewCreated(c, context),
