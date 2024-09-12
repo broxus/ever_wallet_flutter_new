@@ -113,7 +113,7 @@ class _EnterPasswordWidgetState extends State<EnterPasswordWidget> {
               title: LocaleKeys.submitWord.tr(),
               onPressed: () => context
                   .read<EnterPasswordCubit>()
-                  .enterPassword(_passwordController.text),
+                  .enterPassword(context, _passwordController.text),
             ),
           ],
         );

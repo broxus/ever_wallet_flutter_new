@@ -101,6 +101,7 @@ class _AddNewExternalAccountSheetState
 
   void _createAccount(BuildContext context) =>
       context.read<AddNewExternalAccountCubit>().createAccount(
+            context,
             addressController.text,
             nameController.text,
           );

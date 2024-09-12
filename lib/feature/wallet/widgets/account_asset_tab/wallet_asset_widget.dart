@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:lucide_icons_flutter/lucide_icons.dart';
-import 'package:money2_fixer/money2_fixer.dart';
 import 'package:ui_components_lib/ui_components_lib.dart';
 import 'package:ui_components_lib/v2/ui_components_lib_v2.dart';
 
@@ -73,6 +72,7 @@ class WalletAssetWidget extends StatelessWidget {
                     style: theme.textStyles.labelXSmall.copyWith(
                       color: theme.colors.content3,
                     ),
+                    useDefaultFormat: true,
                   ),
               ],
             ),
@@ -86,11 +86,10 @@ class WalletAssetWidget extends StatelessWidget {
                       color: theme.colors.content0,
                     ),
                   )
-                : AmountWidget(
+                : AmountWidget.dollars(
                     mainAxisAlignment: MainAxisAlignment.end,
-                    amount: fiatBalance!.formatImproved(),
+                    amount: fiatBalance!,
                     style: theme.textStyles.headingXSmall,
-                    sign: r'$',
                   ),
           ),
           if (error != null && onRetryPressed != null)

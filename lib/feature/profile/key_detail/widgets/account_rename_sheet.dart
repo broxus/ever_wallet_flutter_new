@@ -69,6 +69,7 @@ class _AccountRenameSheetState extends State<AccountRenameSheet> {
     account?.rename(name);
     inject<MessengerService>().show(
       Message.successful(
+        context: context,
         message: LocaleKeys.valueRenamed.tr(
           args: [LocaleKeys.accountWord.tr()],
         ),

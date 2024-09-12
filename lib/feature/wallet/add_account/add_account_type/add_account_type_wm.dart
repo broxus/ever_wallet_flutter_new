@@ -1,3 +1,5 @@
+// ignore_for_file: use_build_context_synchronously
+
 import 'dart:async';
 
 import 'package:app/app/router/router.dart';
@@ -88,9 +90,9 @@ class AddAccountTypeWidgetModel
         contextSafe!.goNamed(AppRoute.wallet.name);
       }
     } on FfiException catch (e) {
-      model.showError(e.message);
+      model.showError(context, e.message);
     } on Exception catch (e) {
-      model.showError(e.toString());
+      model.showError(context, e.toString());
     } finally {
       _loading.value = false;
     }

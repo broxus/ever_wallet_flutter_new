@@ -8,6 +8,7 @@ environment:
   flutter: ">=3.10.3"
 
 dependencies:
+  app_settings: ^5.1.1
   auto_size_text_field: ^2.2.3
   barcode_widget: ^2.0.4
   bloc: ^8.1.4
@@ -40,6 +41,7 @@ dependencies:
   hive_flutter: ^1.1.0
   http: ^1.2.1
   image_picker: ^1.0.4
+  in_app_notification: ^1.1.2
   injectable: ^2.4.1
   internet_connection_checker_plus: ^2.5.1
   json_annotation: ^4.9.0

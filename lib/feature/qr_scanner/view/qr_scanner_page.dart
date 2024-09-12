@@ -39,6 +39,7 @@ class _QrScannerPageState extends State<QrScannerPage> {
       backgroundColor: colors.backgroundPrimary,
       body: BlocProvider<QrCubit>(
         create: (_) => QrCubit(
+          context: context,
           lifecycleService: inject(),
           permissionsService: inject(),
           type: widget.type,
@@ -92,7 +93,7 @@ class _QrScannerPageState extends State<QrScannerPage> {
                     textAlign: TextAlign.center,
                     text: LocaleKeys.uploadPhotoFromGallery.tr(),
                     contentColor: colors.textContrast,
-                    onPressed: context.read<QrCubit>().tryScanPhoto,
+                    onPressed: () => context.read<QrCubit>().tryScanPhoto(),
                     leading: CommonButtonIconWidget.svg(
                       svg: Assets.images.camera.path,
                     ),

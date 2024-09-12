@@ -23,6 +23,7 @@ class WalletDeployPage extends StatelessWidget {
   Widget build(BuildContext context) {
     return BlocProvider(
       create: (_) => WalletDeployBloc(
+        context: context,
         address: address,
         publicKey: publicKey,
         nekotonRepository: inject(),

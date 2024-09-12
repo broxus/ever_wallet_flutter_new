@@ -24,6 +24,7 @@ enum StakingPageType { stake, unstake, inProgress }
 
 class StakingBloc extends Bloc<StakingBlocEvent, StakingBlocState> {
   StakingBloc({
+    required this.context,
     required this.accountAddress,
     required this.nekotonRepository,
     required this.currencyConvert,
@@ -38,6 +39,7 @@ class StakingBloc extends Bloc<StakingBlocEvent, StakingBlocState> {
 
   final _logger = Logger('StakingBloc');
   final Address accountAddress;
+  final BuildContext context;
   final NekotonRepository nekotonRepository;
   final CurrencyConvertService currencyConvert;
   final CurrenciesService currenciesService;
@@ -323,6 +325,7 @@ class StakingBloc extends Bloc<StakingBlocEvent, StakingBlocState> {
       if (max.amount < Fixed.zero) {
         inject<MessengerService>().show(
           Message.error(
+            context: context,
             message: LocaleKeys.stakingNotEnoughBalanceToStake.tr(
               args: [
                 comissionMoney.formatImproved(),
