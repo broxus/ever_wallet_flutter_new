@@ -130,7 +130,7 @@ class WalletTransactionDetailsItem extends StatelessWidget {
                       subtitle!,
                       style: isSubtitleError
                           ? theme.textStyles.labelXSmall
-                          .copyWith(color: theme.colors.contentNegative)
+                              .copyWith(color: theme.colors.contentNegative)
                           : theme.textStyles.labelSmall,
                     ),
                 ],
