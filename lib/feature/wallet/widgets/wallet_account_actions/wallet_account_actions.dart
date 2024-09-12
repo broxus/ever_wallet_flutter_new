@@ -232,7 +232,6 @@ class _Button extends StatelessWidget {
     required this.label,
     required this.icon,
     required this.onPressed,
-    // ignore: unused_element
     this.badge,
   });
 
