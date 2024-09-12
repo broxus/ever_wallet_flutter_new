@@ -49,7 +49,15 @@ class BrowserTabView extends StatefulWidget {
 }
 
 class _BrowserTabViewState extends State<BrowserTabView> {
-  static const _overrideSchemes = ['wc'];
+  static const _allowSchemes = [
+    'http',
+    'https',
+    'file',
+    'chrome',
+    'data',
+    'javascript',
+    'about',
+  ];
 
   // Last SANE Y position (i.e. not overscrolled)
   int? _lastScrollY;
@@ -140,7 +148,7 @@ class _BrowserTabViewState extends State<BrowserTabView> {
       clearCache: clearCache,
       applicationNameForUserAgent: 'EverWalletBrowser',
       transparentBackground: true,
-      // useShouldOverrideUrlLoading: true,
+      useShouldOverrideUrlLoading: true,
     );
 
     return BlocProvider<BrowserViewEventsListenerCubit>(
@@ -167,7 +175,7 @@ class _BrowserTabViewState extends State<BrowserTabView> {
                 onReceivedHttpError: _onReceivedHttpError,
                 onTitleChanged: _onTitleChanged,
                 onReceivedHttpAuthRequest: _onReceivedHttpAuthRequest,
-                // shouldOverrideUrlLoading: _shouldOverrideUrlLoading,
+                shouldOverrideUrlLoading: _shouldOverrideUrlLoading,
               );
             },
           ),
@@ -592,11 +600,8 @@ class _BrowserTabViewState extends State<BrowserTabView> {
 
     final scheme = navigationAction.request.url?.scheme;
 
-    if (_overrideSchemes.contains(scheme)) {
-      await launchUrl(
-        url,
-        mode: LaunchMode.externalApplication,
-      );
+    if (!_allowSchemes.contains(scheme) && await canLaunchUrl(url)) {
+      await launchUrl(url);
 
       return NavigationActionPolicy.CANCEL;
     }
