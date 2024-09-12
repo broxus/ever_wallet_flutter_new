@@ -87,6 +87,7 @@ class WalletPrepareTransferAssetSelect extends StatelessWidget {
                         AmountWidget.fromMoney(
                           amount: asset.balance,
                           style: theme.textStyles.labelSmall,
+                          useDefaultFormat: true,
                         ),
                         Text(
                           asset.title,

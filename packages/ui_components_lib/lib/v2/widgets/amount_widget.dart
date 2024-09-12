@@ -20,10 +20,21 @@ class AmountWidget extends StatelessWidget {
     this.style,
     this.sign,
     this.mainAxisAlignment,
+    bool useDefaultFormat = false,
     super.key,
-    String? pattern,
-  })  : amount = amount.formatImproved(pattern: pattern),
+  })  : amount =
+            useDefaultFormat ? _defaultFormat(amount) : amount.formatImproved(),
         symbol = amount.currency.symbol;
+
+  AmountWidget.dollars({
+    required Money amount,
+    this.style,
+    this.mainAxisAlignment,
+    super.key,
+  })  : amount = _defaultFormat(amount),
+        sign = r'$',
+        symbol = null,
+        icon = null;
 
   final String amount;
   final String? symbol;
@@ -57,4 +68,28 @@ class AmountWidget extends StatelessWidget {
       ],
     );
   }
+}
+
+String _moneyPattern(int decimal) => '0.${'#' * decimal}';
+
+String _defaultFormat(Money value) {
+  final d = value.toDouble();
+
+  if (value.currency.isoCode == 'USD') {
+    if (d < 0.001) {
+      return value.formatImproved(pattern: _moneyPattern(4));
+    } else if (d < 0.01) {
+      return value.formatImproved(pattern: _moneyPattern(3));
+    }
+
+    return value.formatImproved(pattern: _moneyPattern(2));
+  }
+
+  if (d < 1) {
+    return value.formatImproved(pattern: _moneyPattern(8));
+  } else if (d < 1000) {
+    return value.formatImproved(pattern: _moneyPattern(4));
+  }
+
+  return value.formatImproved(pattern: _moneyPattern(0));
 }

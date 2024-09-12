@@ -108,10 +108,9 @@ class _AccountCard extends StatelessWidget {
           ),
         ),
         balance?.let(
-              (balance) => AmountWidget(
-                amount: balance.formatImproved(),
+              (balance) => AmountWidget.dollars(
+                amount: balance,
                 style: theme.textStyles.displayMedium,
-                sign: r'$',
               ),
             ) ??
             const ProgressIndicatorWidget(size: DimensSizeV2.d52),
