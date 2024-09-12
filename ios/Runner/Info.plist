@@ -31,8 +31,11 @@
 	<string>$(FLUTTER_BUILD_NUMBER)</string>
 	<key>LSApplicationQueriesSchemes</key>
 	<array>
-		<string>metamask</string>
-		<string>trust</string>
+        <string>http</string>
+		<string>https</string>
+        <string>metamask</string>
+        <string>wc</string>
+        <string>trust</string>
 	</array>
 	<key>LSRequiresIPhoneOS</key>
 	<true/>
