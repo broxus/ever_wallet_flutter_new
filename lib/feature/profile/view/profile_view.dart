@@ -115,7 +115,7 @@ class ProfileView extends StatelessWidget {
                       return _profileTile(
                         leadingIcon: Assets.images.fingerSmall.path,
                         title: LocaleKeys.biometryWord.tr(),
-                        trailing: CommonSwitchInput(
+                        trailing: Switch(
                           value: enabled,
                           onChanged: (value) => service.setStatus(
                             localizedReason: LocaleKeys.biometryAuthReason.tr(),
