@@ -10,7 +10,6 @@ import 'package:local_auth/local_auth.dart';
 import 'package:nekoton_repository/nekoton_repository.dart' hide Message;
 
 part 'enter_password_cubit.freezed.dart';
-
 part 'enter_password_state.dart';
 
 /// Cubit for widget that allows enter password.

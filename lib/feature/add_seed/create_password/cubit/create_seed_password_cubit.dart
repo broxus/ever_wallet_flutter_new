@@ -13,7 +13,6 @@ import 'package:logging/logging.dart';
 import 'package:nekoton_repository/nekoton_repository.dart' hide Message;
 
 part 'create_seed_password_cubit.freezed.dart';
-
 part 'create_seed_password_state.dart';
 
 const _minPasswordLength = 8;

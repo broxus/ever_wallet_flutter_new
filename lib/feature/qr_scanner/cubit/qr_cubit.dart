@@ -14,7 +14,6 @@ import 'package:mobile_scanner/mobile_scanner.dart' hide Address;
 import 'package:nekoton_repository/nekoton_repository.dart' hide Message;
 
 part 'qr_cubit.freezed.dart';
-
 part 'qr_cubit_state.dart';
 
 enum SettingsOpenType { camera, photos }

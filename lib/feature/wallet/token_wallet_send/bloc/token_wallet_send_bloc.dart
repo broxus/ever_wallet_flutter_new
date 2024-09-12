@@ -10,9 +10,7 @@ import 'package:logging/logging.dart';
 import 'package:nekoton_repository/nekoton_repository.dart' hide Message;
 
 part 'token_wallet_send_bloc.freezed.dart';
-
 part 'token_wallet_send_event.dart';
-
 part 'token_wallet_send_state.dart';
 
 /// Bloc that allows to prepare not native token from [TokenWallet] for

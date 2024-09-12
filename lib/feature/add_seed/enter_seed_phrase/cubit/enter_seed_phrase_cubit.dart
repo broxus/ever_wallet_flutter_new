@@ -17,7 +17,6 @@ import 'package:nekoton_repository/nekoton_repository.dart' hide Message;
 import 'package:ui_components_lib/ui_components_lib.dart';
 
 part 'enter_seed_phrase_cubit.freezed.dart';
-
 part 'enter_seed_phrase_state.dart';
 
 /// Regexp that helps splitting seed phrase into words.
