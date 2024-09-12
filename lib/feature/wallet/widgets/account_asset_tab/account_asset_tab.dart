@@ -46,9 +46,7 @@ class AccountAssetsTab extends StatelessWidget {
             },
           );
 
-          return ListView.separated(
-            shrinkWrap: true,
-            physics: const NeverScrollableScrollPhysics(),
+          return SliverList.separated(
             itemCount: assets.length + 1,
             separatorBuilder: (_, __) => const SizedBox(height: DimensSize.d24),
             itemBuilder: (context, index) {

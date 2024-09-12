@@ -106,21 +106,21 @@ class _ActionList extends StatelessWidget {
           mainAxisAlignment: MainAxisAlignment.center,
           crossAxisAlignment: CrossAxisAlignment.stretch,
           children: [
-            _Button(
+            WalletActionButton(
               label: LocaleKeys.receiveWord.tr(),
               icon: LucideIcons.arrowDown,
               onPressed: account?.let(
                 (value) => () => showReceiveFundsSheet(context, value.address),
               ),
             ),
-            _Button(
+            WalletActionButton(
               label: _actionTitle(action),
               icon: _actionIcon(action),
               onPressed: account?.let((_) => _actionOnPressed(context)),
             ),
             // TODO(knightforce): temp
             // if (hasStake)
-            //   _Button(
+            //   WalletActionButton(
             //     label: LocaleKeys.stakeWord.tr(),
             //     icon: LucideIcons.layers2,
             //     badge: hasStakeActions,
@@ -225,46 +225,5 @@ class _ActionList extends StatelessWidget {
           );
       }
     }
-  }
-}
-
-class _Button extends StatelessWidget {
-  const _Button({
-    required this.label,
-    required this.icon,
-    required this.onPressed,
-    this.badge,
-  });
-
-  final String label;
-  final IconData icon;
-  final bool? badge;
-  final VoidCallback? onPressed;
-
-  @override
-  Widget build(BuildContext context) {
-    final theme = context.themeStyleV2;
-
-    return GestureDetector(
-      behavior: HitTestBehavior.translucent,
-      onTap: onPressed,
-      child: SizedBox(
-        width: 104,
-        child: Column(
-          children: [
-            Padding(
-              padding: const EdgeInsets.all(DimensSizeV2.d18),
-              child: Icon(icon, size: DimensSizeV2.d20),
-            ),
-            Text(
-              label,
-              style: theme.textStyles.labelXSmall.copyWith(
-                color: theme.colors.content3,
-              ),
-            ),
-          ],
-        ),
-      ),
-    );
   }
 }

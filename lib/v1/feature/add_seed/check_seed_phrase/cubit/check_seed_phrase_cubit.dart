@@ -9,7 +9,6 @@ import 'package:freezed_annotation/freezed_annotation.dart';
 import 'package:nekoton_repository/nekoton_repository.dart';
 
 part 'check_seed_phrase_cubit.freezed.dart';
-
 part 'check_seed_phrase_state.dart';
 
 const defaultWordsToCheckAmount = 3;

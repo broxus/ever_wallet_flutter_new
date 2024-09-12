@@ -13,7 +13,6 @@ import 'package:freezed_annotation/freezed_annotation.dart';
 import 'package:nekoton_repository/nekoton_repository.dart' hide Message;
 
 part 'select_new_asset_cubit.freezed.dart';
-
 part 'select_new_asset_state.dart';
 
 enum SelectNewAssetTabs { select, custom }

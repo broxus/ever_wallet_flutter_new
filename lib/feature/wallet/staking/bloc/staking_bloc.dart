@@ -14,9 +14,7 @@ import 'package:logging/logging.dart';
 import 'package:nekoton_repository/nekoton_repository.dart' hide Message;
 
 part 'staking_bloc.freezed.dart';
-
 part 'staking_bloc_event.dart';
-
 part 'staking_bloc_state.dart';
 
 const _defaultWithdrawHours = 36;
