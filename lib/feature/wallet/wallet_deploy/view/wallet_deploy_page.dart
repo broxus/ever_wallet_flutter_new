@@ -98,9 +98,11 @@ class WalletDeployPage extends StatelessWidget {
   Widget _scaffold(Widget body, {bool canPrev = false}) {
     return Builder(
       builder: (context) {
+        final colors = context.themeStyleV2.colors;
         return GestureDetector(
           onTap: () => FocusScope.of(context).unfocus(),
           child: Scaffold(
+            backgroundColor: colors.background0,
             appBar: DefaultAppBar(
               titleText: canPrev
                   ? LocaleKeys.deployWallet.tr()
