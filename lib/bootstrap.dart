@@ -5,8 +5,8 @@ import 'package:app/app/service/service.dart';
 import 'package:app/bootstrap/bootstrap.dart';
 import 'package:app/bootstrap/sentry.dart';
 import 'package:app/di/di.dart';
+import 'package:app/generated/generated.dart';
 import 'package:bloc/bloc.dart';
-import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter/widgets.dart';
@@ -117,6 +117,8 @@ class _AppWrapperState extends State<AppWrapper> with WidgetsBindingObserver {
     );
 
     appStartSession(setCrashDetected: true);
+    // put it here so system faceid check window will appear after splashscreen
+    _checkBiometry();
   }
 
   @override
@@ -152,6 +154,19 @@ class _AppWrapperState extends State<AppWrapper> with WidgetsBindingObserver {
   @override
   Widget build(BuildContext context) {
     return widget.builder();
+  }
+
+  Future<void> _checkBiometry() async {
+    final biometryService = inject<BiometryService>();
+    final location = inject<NavigationService>().savedState.location;
+    final canUpdateStatus = await biometryService.canUpdateStatus();
+
+    if (canUpdateStatus && location == AppRoute.profile.path) {
+      await biometryService.setStatus(
+        localizedReason: LocaleKeys.biometryAuthReason.tr(),
+        isEnabled: true,
+      );
+    }
   }
 }
 

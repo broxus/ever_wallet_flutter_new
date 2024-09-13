@@ -14,7 +14,7 @@ StatefulShellBranch get profileBranch {
       GoRoute(
         name: AppRoute.profile.name,
         path: AppRoute.profile.path,
-        builder: (context, state) => const ProfilePage(),
+        builder: (context, state) => const ProfilePageWidget(),
         routes: [
           manageSeedAccountsRoute,
         ],

@@ -1,13 +1,11 @@
 import 'package:app/app/router/app_route.dart';
-import 'package:app/app/service/service.dart';
-import 'package:app/di/di.dart';
 import 'package:app/feature/contact_support/contact_support.dart';
 import 'package:app/feature/profile/profile.dart';
 import 'package:app/generated/assets.gen.dart';
 import 'package:app/generated/locale_keys.g.dart';
 import 'package:easy_localization/easy_localization.dart';
+import 'package:elementary_helper/elementary_helper.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:lucide_icons_flutter/lucide_icons.dart';
 import 'package:nekoton_repository/nekoton_repository.dart';
 import 'package:ui_components_lib/ui_components_lib.dart';
@@ -16,20 +14,25 @@ import 'package:ui_components_lib/v2/ui_components_lib_v2.dart';
 class ProfileView extends StatelessWidget {
   const ProfileView({
     required this.appVersion,
-    required this.isDarkThemeEnabled,
-    this.isBiometryAvailable = false,
-    this.currentSeed,
+    required this.currentSeed,
+    required this.isBiometryAvailable,
+    required this.isBiometryEnabled,
+    required this.onLogout,
+    required this.onBiomentryChanged,
+    this.isDarkThemeEnabled = false,
     super.key,
   });
 
-  final Seed? currentSeed;
-  final bool isBiometryAvailable;
+  final ListenableState<Seed?> currentSeed;
+  final ListenableState<bool> isBiometryAvailable;
+  final ListenableState<bool> isBiometryEnabled;
   final String appVersion;
   final bool isDarkThemeEnabled;
+  final VoidCallback onLogout;
+  final ValueChanged<bool> onBiomentryChanged;
 
   @override
   Widget build(BuildContext context) {
-    final service = inject<BiometryService>();
     final theme = context.themeStyleV2;
     final mq = MediaQuery.of(context);
 
@@ -44,24 +47,30 @@ class ProfileView extends StatelessWidget {
               style: theme.textStyles.labelXSmall,
             ),
             const SizedBox(height: DimensSizeV2.d4),
-            Text(
-              currentSeed?.name ?? '',
-              style: theme.textStyles.headingLarge,
+            StateNotifierBuilder(
+              listenableState: currentSeed,
+              builder: (_, currentSeed) => Text(
+                currentSeed?.name ?? '',
+                style: theme.textStyles.headingLarge,
+              ),
             ),
             const SizedBox(height: DimensSizeV2.d16),
-            PrimaryButton(
-              isFullWidth: false,
-              buttonShape: ButtonShape.pill,
-              title: LocaleKeys.exportSeedPhrase.tr(),
-              postfixIcon: LucideIcons.share,
-              onPressed: currentSeed == null
-                  ? null
-                  : () => Navigator.of(context, rootNavigator: true).push(
-                        exportSeedSheetRoute(
-                          context,
-                          currentSeed!.publicKey,
+            StateNotifierBuilder(
+              listenableState: currentSeed,
+              builder: (_, currentSeed) => PrimaryButton(
+                isFullWidth: false,
+                buttonShape: ButtonShape.pill,
+                title: LocaleKeys.exportSeedPhrase.tr(),
+                postfixIcon: LucideIcons.share,
+                onPressed: currentSeed == null
+                    ? null
+                    : () => Navigator.of(context, rootNavigator: true).push(
+                          exportSeedSheetRoute(
+                            context,
+                            currentSeed.publicKey,
+                          ),
                         ),
-                      ),
+              ),
             ),
             const SizedBox(height: DimensSizeV2.d32),
             ShapedContainerColumn(
@@ -105,29 +114,24 @@ class ProfileView extends StatelessWidget {
                 //   backgroundColor: theme.colors.backgroundAlpha,
                 //   iconColor: theme.colors.content0,
                 // ),
-                if (isBiometryAvailable)
-                  StreamBuilder<bool>(
-                    stream: service.enabledStream,
-                    initialData: service.enabled,
-                    builder: (context, snapshot) {
-                      final enabled = snapshot.data ?? false;
-
-                      return _profileTile(
-                        leadingIcon: Assets.images.fingerSmall.path,
-                        title: LocaleKeys.biometryWord.tr(),
-                        trailing: CommonSwitchInput(
-                          value: enabled,
-                          onChanged: (value) => service.setStatus(
-                            localizedReason: LocaleKeys.biometryAuthReason.tr(),
-                            isEnabled: !enabled,
-                          ),
-                        ),
-                        onPressed: null,
-                        backgroundColor: theme.colors.backgroundAlpha,
-                        iconColor: theme.colors.content0,
-                      );
-                    },
-                  ),
+                DoubleSourceBuilder(
+                  firstSource: isBiometryAvailable,
+                  secondSource: isBiometryEnabled,
+                  builder: (_, available, enabled) {
+                    if (available != true) return const SizedBox.shrink();
+                    return _profileTile(
+                      leadingIcon: Assets.images.fingerSmall.path,
+                      title: LocaleKeys.biometryWord.tr(),
+                      trailing: Switch(
+                        value: enabled ?? false,
+                        onChanged: onBiomentryChanged,
+                      ),
+                      onPressed: null,
+                      backgroundColor: theme.colors.backgroundAlpha,
+                      iconColor: theme.colors.content0,
+                    );
+                  },
+                ),
                 _profileTile(
                   leadingIcon: Assets.images.support.path,
                   title: LocaleKeys.contactSupport.tr(),
@@ -193,7 +197,7 @@ class ProfileView extends StatelessWidget {
     final confirmed = await showLogOutConfirmSheet(context);
 
     if (confirmed && context.mounted) {
-      context.read<ProfileBloc>().add(const ProfileEvent.logOut());
+      onLogout();
     }
   }
 }
