@@ -12,6 +12,7 @@ import 'package:flutter_inappwebview/flutter_inappwebview.dart';
 import 'package:logging/logging.dart';
 import 'package:nekoton_webview/nekoton_webview.dart';
 import 'package:ui_components_lib/ui_components_lib.dart';
+import 'package:url_launcher/url_launcher.dart';
 
 // Scroll position of the webview, used to hide the HUD when the user scrolls
 // further than a certain threshold.
@@ -48,6 +49,16 @@ class BrowserTabView extends StatefulWidget {
 }
 
 class _BrowserTabViewState extends State<BrowserTabView> {
+  static const _allowSchemes = [
+    'http',
+    'https',
+    'file',
+    'chrome',
+    'data',
+    'javascript',
+    'about',
+  ];
+
   // Last SANE Y position (i.e. not overscrolled)
   int? _lastScrollY;
 
@@ -107,7 +118,7 @@ class _BrowserTabViewState extends State<BrowserTabView> {
     if ((newTab.url != oldTab.url || activated) && url != newTab.url) {
       await _webViewController?.loadUrl(
         urlRequest: URLRequest(
-          url: newTab.url,
+          url: WebUri.uri(newTab.url),
         ),
       );
     }
@@ -133,13 +144,11 @@ class _BrowserTabViewState extends State<BrowserTabView> {
           );
     }
 
-    final initialOptions = InAppWebViewGroupOptions(
-      ios: IOSInAppWebViewOptions(),
-      android: AndroidInAppWebViewOptions(),
-      crossPlatform: InAppWebViewOptions(
-        clearCache: clearCache,
-        applicationNameForUserAgent: 'EverWalletBrowser',
-      ),
+    final initialSettings = InAppWebViewSettings(
+      clearCache: clearCache,
+      applicationNameForUserAgent: 'EverWalletBrowser',
+      transparentBackground: true,
+      useShouldOverrideUrlLoading: true,
     );
 
     return BlocProvider<BrowserViewEventsListenerCubit>(
@@ -155,17 +164,18 @@ class _BrowserTabViewState extends State<BrowserTabView> {
               return InAppWebView(
                 key: ValueKey(widget.tab.id),
                 pullToRefreshController: _pullToRefreshController,
-                initialOptions: initialOptions,
+                initialSettings: initialSettings,
                 onOverScrolled: _onOverScrolled,
                 onScrollChanged: _onScrollChanged,
                 onWebViewCreated: (c) => _onWebViewCreated(c, context),
                 onLoadStart: _onLoadStart,
                 onLoadStop: _onLoadStop,
                 onProgressChanged: _onProgressChanged,
-                onLoadError: _onLoadError,
-                onLoadHttpError: _onLoadHttpError,
+                onReceivedError: _onReceivedError,
+                onReceivedHttpError: _onReceivedHttpError,
                 onTitleChanged: _onTitleChanged,
                 onReceivedHttpAuthRequest: _onReceivedHttpAuthRequest,
+                shouldOverrideUrlLoading: _shouldOverrideUrlLoading,
               );
             },
           ),
@@ -313,7 +323,11 @@ class _BrowserTabViewState extends State<BrowserTabView> {
     );
 
     if (widget.tab.url.toString().isNotEmpty && widget.active) {
-      await controller.loadUrl(urlRequest: URLRequest(url: widget.tab.url));
+      await controller.loadUrl(
+        urlRequest: URLRequest(
+          url: WebUri.uri(widget.tab.url),
+        ),
+      );
     }
   }
 
@@ -349,30 +363,36 @@ class _BrowserTabViewState extends State<BrowserTabView> {
     _saveScreenshot();
   }
 
-  void _onLoadError(
+  void _onReceivedError(
     _,
-    Uri? url,
-    int code,
-    String message,
+    WebResourceRequest request,
+    WebResourceError error,
   ) {
     _pullToRefreshController?.endRefreshing();
     _log.warning(
-      'Failed to load $url: $code $message',
+      'Failed to load ${request.url}: ${error.type} ${error.description}',
     );
     _setState(
       state: BrowserTabStateType.error,
-      errorMessage: '$message $url',
+      errorMessage: '${error.description} ${request.url}',
     );
   }
 
-  void _onLoadHttpError(_, Uri? url, int statusCode, String description) {
+  void _onReceivedHttpError(
+    InAppWebViewController controller,
+    WebResourceRequest request,
+    WebResourceResponse errorResponse,
+  ) {
     _pullToRefreshController?.endRefreshing();
     _log.warning(
-      'Failed to load $url: HTTP $statusCode $description',
+      'Failed to load ${request.url}: '
+      'HTTP ${errorResponse.statusCode} '
+      '${errorResponse.reasonPhrase}',
     );
     _setState(
       state: BrowserTabStateType.error,
-      errorMessage: '$description $statusCode',
+      // TODO(knightforce): create error description
+      errorMessage: '${errorResponse.reasonPhrase} ${errorResponse.statusCode}',
     );
   }
 
@@ -399,7 +419,7 @@ class _BrowserTabViewState extends State<BrowserTabView> {
     final colors = context.themeStyle.colors;
     _pullToRefreshController = _pullToRefreshController ??
         PullToRefreshController(
-          options: PullToRefreshOptions(
+          settings: PullToRefreshSettings(
             color: colors.textSecondary,
           ),
           onRefresh: _onRefresh,
@@ -566,6 +586,27 @@ class _BrowserTabViewState extends State<BrowserTabView> {
       password: entered.password,
       action: HttpAuthResponseAction.PROCEED,
     );
+  }
+
+  Future<NavigationActionPolicy> _shouldOverrideUrlLoading(
+    InAppWebViewController controller,
+    NavigationAction navigationAction,
+  ) async {
+    final url = navigationAction.request.url;
+
+    if (url == null) {
+      return NavigationActionPolicy.ALLOW;
+    }
+
+    final scheme = navigationAction.request.url?.scheme;
+
+    if (!_allowSchemes.contains(scheme) && await canLaunchUrl(url)) {
+      await launchUrl(url);
+
+      return NavigationActionPolicy.CANCEL;
+    }
+
+    return NavigationActionPolicy.ALLOW;
   }
 }
 
