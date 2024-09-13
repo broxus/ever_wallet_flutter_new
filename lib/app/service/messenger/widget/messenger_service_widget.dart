@@ -70,7 +70,6 @@ class _MessengerServiceWidgetState extends State<MessengerServiceWidget> {
         child: Padding(
           padding: const EdgeInsets.symmetric(
             horizontal: DimensSizeV2.d16,
-            vertical: DimensSizeV2.d48,
           ),
           child: message.toastByMessage(() {
             _onDismiss();
@@ -93,19 +92,17 @@ class _MessengerServiceWidgetState extends State<MessengerServiceWidget> {
 
   @override
   Widget build(BuildContext context) {
-    return SafeArea(
-      child: BlocListener<MessengerCubit, MessengerState>(
-        bloc: _cubit,
-        listener: (ctx, state) {
-          if (state.messagesToShow.isNotEmpty) {
-            final context = state.messagesToShow.last.context;
-            _showNextMessage(context);
-          } else {
-            _showNextMessage(null);
-          }
-        },
-        child: widget.child,
-      ),
+    return BlocListener<MessengerCubit, MessengerState>(
+      bloc: _cubit,
+      listener: (ctx, state) {
+        if (state.messagesToShow.isNotEmpty) {
+          final context = state.messagesToShow.last.context;
+          _showNextMessage(context);
+        } else {
+          _showNextMessage(null);
+        }
+      },
+      child: widget.child,
     );
   }
 }
