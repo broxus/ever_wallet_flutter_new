@@ -81,6 +81,7 @@ class TokenTransferInfoWidget
                               color: theme.colors.content3,
                             ),
                             sign: '~ ',
+                            useDefaultFormat: true,
                           ),
                         )
                       : const SizedBox.shrink(),
@@ -117,6 +118,7 @@ class TokenTransferInfoWidget
                           color: theme.colors.content3,
                         ),
                         sign: '~ ',
+                        useDefaultFormat: true,
                       ),
                   ],
                 ),

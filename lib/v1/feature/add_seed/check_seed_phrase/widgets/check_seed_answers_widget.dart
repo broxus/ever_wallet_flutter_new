@@ -1,6 +1,5 @@
 import 'package:app/generated/generated.dart';
 import 'package:app/v1/feature/add_seed/check_seed_phrase/check_seed_phrase.dart';
-import 'package:collection/collection.dart';
 import 'package:flutter/material.dart';
 import 'package:ui_components_lib/ui_components_lib.dart';
 
@@ -30,8 +29,13 @@ class CheckSeedAnswersWidget extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return SeparatedColumn(
-      children: userAnswers.mapIndexed(_answerBuilder).toList(),
+    return SeparatedRow(
+      children: [
+        for (int i = 0; i < userAnswers.length; i++)
+          Expanded(
+            child: _answerBuilder(i, userAnswers[i]),
+          ),
+      ],
     );
   }
 
@@ -46,7 +50,7 @@ class CheckSeedAnswersWidget extends StatelessWidget {
               ? answer.word
               : '${LocaleKeys.wordWord.tr()} #${answer.wordIndex + 1}',
           onPressed: isSelected ? () => clearAnswer(answer.word) : null,
-          status: isCurrent
+          status: (isCurrent && !isSelected)
               ? SelectionStatus.focus
               : isSelected
                   ? SelectionStatus.completed

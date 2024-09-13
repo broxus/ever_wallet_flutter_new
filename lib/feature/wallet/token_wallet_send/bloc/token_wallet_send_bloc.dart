@@ -1,7 +1,10 @@
+// ignore_for_file: use_build_context_synchronously
+
 import 'package:app/app/service/service.dart';
 import 'package:app/generated/generated.dart';
 import 'package:app/utils/constants.dart';
 import 'package:bloc/bloc.dart';
+import 'package:flutter/material.dart';
 import 'package:freezed_annotation/freezed_annotation.dart';
 import 'package:logging/logging.dart';
 import 'package:nekoton_repository/nekoton_repository.dart' hide Message;
@@ -15,6 +18,7 @@ part 'token_wallet_send_state.dart';
 class TokenWalletSendBloc
     extends Bloc<TokenWalletSendEvent, TokenWalletSendState> {
   TokenWalletSendBloc({
+    required this.context,
     required this.nekotonRepository,
     required this.messengerService,
     required this.owner,
@@ -30,6 +34,7 @@ class TokenWalletSendBloc
   }
 
   final _logger = Logger('TokenWalletSendBloc');
+  final BuildContext context;
   final NekotonRepository nekotonRepository;
   final MessengerService messengerService;
 
@@ -204,17 +209,28 @@ class TokenWalletSendBloc
         destination: repackedDestination,
       );
 
-      messengerService.show(Message.successful(message: resultMessage));
+      messengerService.show(
+        Message.successful(
+          context: context,
+          message: resultMessage,
+        ),
+      );
       if (!isClosed) {
         add(TokenWalletSendEvent.completeSend(transaction));
       }
     } on FfiException catch (e, t) {
       _logger.severe('_handleSend', e, t);
-      messengerService.show(Message.error(message: e.message));
+      messengerService.show(
+        Message.error(
+          context: context,
+          message: e.message,
+        ),
+      );
       emit(TokenWalletSendState.readyToSend(fees!, sendAmount));
     } on Exception catch (e, t) {
       _logger.severe('_handleSend', e, t);
-      messengerService.show(Message.error(message: e.toString()));
+      messengerService
+          .show(Message.error(context: context, message: e.toString()));
       emit(TokenWalletSendState.readyToSend(fees!, sendAmount));
     }
   }

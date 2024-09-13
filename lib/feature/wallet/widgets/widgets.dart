@@ -8,6 +8,7 @@ export 'select_account/select_account.dart';
 export 'token_transfer_info/token_transfer_info.dart';
 export 'wallet_account_actions/wallet_account_actions.dart';
 export 'wallet_accounts_body.dart';
+export 'wallet_action_button.dart';
 export 'wallet_app_bar/wallet_app_bar.dart';
 export 'wallet_bottom_panel.dart';
 export 'wallet_subscribe_error_widget.dart';

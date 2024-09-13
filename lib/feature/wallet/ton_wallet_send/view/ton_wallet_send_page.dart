@@ -8,7 +8,6 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
 import 'package:nekoton_repository/nekoton_repository.dart';
 import 'package:ui_components_lib/ui_components_lib.dart';
-import 'package:ui_components_lib/v2/ui_components_lib_v2.dart';
 
 /// Page that allows send funds from TonWalelt (native token).
 class TonWalletSendPage extends StatelessWidget {
@@ -56,6 +55,7 @@ class TonWalletSendPage extends StatelessWidget {
   Widget build(BuildContext context) {
     return BlocProvider<TonWalletSendBloc>(
       create: (_) => TonWalletSendBloc(
+        context: context,
         destination: destination,
         amount: amount + (attachedAmount ?? BigInt.zero),
         address: address,

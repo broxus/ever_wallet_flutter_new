@@ -1,11 +1,15 @@
+// ignore_for_file: lines_longer_than_80_chars
+
 import 'package:app/feature/wallet/wallet.dart';
 import 'package:app/generated/generated.dart';
 import 'package:collection/collection.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:lucide_icons_flutter/lucide_icons.dart';
 import 'package:nekoton_repository/nekoton_repository.dart';
 import 'package:ui_components_lib/ui_components_lib.dart';
+import 'package:ui_components_lib/v2/ui_components_lib_v2.dart';
 
 final _alphanumeric = RegExp(r'^[a-zA-Z0-9]+$');
 
@@ -102,7 +106,7 @@ class _WalletDeployMultisigBodyState extends State<WalletDeployMultisigBody> {
 
   @override
   Widget build(BuildContext context) {
-    final colors = context.themeStyle.colors;
+    final textStyles = context.themeStyleV2.textStyles;
 
     return Stack(
       children: [
@@ -137,23 +141,46 @@ class _WalletDeployMultisigBodyState extends State<WalletDeployMultisigBody> {
                                       ),
                                     ),
                           ),
-                          CommonInput(
-                            controller: requireConfirmationController,
-                            titleText: LocaleKeys.evaluationConfirmation.tr(),
-                            subtitleText: LocaleKeys.outOfNumber.tr(
-                              args: [custodianControllers.length.toString()],
-                            ),
-                            keyboardType: TextInputType.number,
-                            textInputAction: TextInputAction.next,
-                            onSubmitted: (_) =>
-                                custodianFocuses.first.requestFocus(),
-                            inputFormatters: [
-                              FilteringTextInputFormatter.deny(RegExp(r'\s')),
-                              FilteringTextInputFormatter.allow(
-                                RegExp('[0-9]'),
+                          Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              RichText(
+                                text: TextSpan(
+                                  text:
+                                      '${LocaleKeys.evaluationConfirmation.tr()} ',
+                                  style: textStyles.labelSmall,
+                                  children: [
+                                    TextSpan(
+                                      text: LocaleKeys.outOfNumber.tr(
+                                        args: [
+                                          custodianControllers.length
+                                              .toString(),
+                                        ],
+                                      ),
+                                      style: textStyles.paragraphXSmall,
+                                    ),
+                                  ],
+                                ),
+                              ),
+                              const SizedBox(height: DimensSizeV2.d8),
+                              PrimaryTextField(
+                                textEditingController:
+                                    requireConfirmationController,
+                                keyboardType: TextInputType.number,
+                                textInputAction: TextInputAction.next,
+                                onSubmit: (_) =>
+                                    custodianFocuses.first.requestFocus(),
+                                inputFormatters: [
+                                  FilteringTextInputFormatter.deny(
+                                    RegExp(r'\s'),
+                                  ),
+                                  FilteringTextInputFormatter.allow(
+                                    RegExp('[0-9]'),
+                                  ),
+                                ],
+                                validator: _validateRequireConfirmations,
                               ),
                             ],
-                            validator: _validateRequireConfirmations,
                           ),
                         ],
                       );
@@ -161,17 +188,14 @@ class _WalletDeployMultisigBodyState extends State<WalletDeployMultisigBody> {
                   ),
                   Text(
                     LocaleKeys.custodiansWord.tr(),
-                    style: StyleRes.h2.copyWith(color: colors.textPrimary),
+                    style: textStyles.headingLarge,
                   ),
                   ...custodianControllers.mapIndexed(_custodianItem),
-                  CommonButton(
-                    buttonType: EverButtonType.ghost,
-                    leading: CommonButtonIconWidget.svg(
-                      svg: Assets.images.plus.path,
-                    ),
-                    text: LocaleKeys.addOneMorePublicKey.tr(),
+                  GhostButton(
+                    icon: LucideIcons.plus,
+                    title: LocaleKeys.addOneMorePublicKey.tr(),
                     onPressed: _addOneCustodian,
-                    textAlign: TextAlign.center,
+                    buttonShape: ButtonShape.pill,
                   ),
                 ],
               ),
@@ -182,9 +206,9 @@ class _WalletDeployMultisigBodyState extends State<WalletDeployMultisigBody> {
           bottom: DimensSize.d16,
           left: DimensSize.d16,
           right: DimensSize.d16,
-          child: CommonButton.primary(
-            fillWidth: true,
-            text: LocaleKeys.nextWord.tr(),
+          child: PrimaryButton(
+            buttonShape: ButtonShape.pill,
+            title: LocaleKeys.nextWord.tr(),
             onPressed: () => _next(context),
           ),
         ),
@@ -195,39 +219,47 @@ class _WalletDeployMultisigBodyState extends State<WalletDeployMultisigBody> {
   Widget _custodianItem(int index, TextEditingController controller) {
     return Builder(
       builder: (context) {
-        final colors = context.themeStyle.colors;
-
-        return CommonInput(
-          key: ValueKey(controller.hashCode),
-          controller: controller,
-          focusNode: custodianFocuses[index],
-          titleText: LocaleKeys.publicKeyOfCustodianNumber
-              .tr(args: [(index + 1).toString()]),
-          textInputAction: index == custodianControllers.length - 1
-              ? TextInputAction.done
-              : TextInputAction.next,
-          onSubmitted: (value) {
-            if (index != custodianControllers.length - 1) {
-              custodianFocuses[index + 1].requestFocus();
-            } else {
-              _next(context);
-            }
-          },
-          maxLength: publicKeyLength,
-          suffixIcon: _custodianSuffixIcon(controller, index),
-          inputFormatters: [
-            FilteringTextInputFormatter.deny(RegExp(r'\s')),
-            FilteringTextInputFormatter.allow(RegExp('[a-fA-F0-9]')),
-          ],
-          validator: _validatePublicKey,
-          outerActions: [
+        return Row(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            Expanded(
+              child: PrimaryTextField(
+                key: ValueKey(controller.hashCode),
+                textEditingController: controller,
+                focusNode: custodianFocuses[index],
+                hintText: LocaleKeys.publicKeyOfCustodianNumber
+                    .tr(args: [(index + 1).toString()]),
+                textInputAction: index == custodianControllers.length - 1
+                    ? TextInputAction.done
+                    : TextInputAction.next,
+                onSubmit: (value) {
+                  if (index != custodianControllers.length - 1) {
+                    custodianFocuses[index + 1].requestFocus();
+                  } else {
+                    _next(context);
+                  }
+                },
+                maxLength: publicKeyLength,
+                suffixes: [_custodianSuffixIcon(controller, index)],
+                inputFormatters: [
+                  FilteringTextInputFormatter.deny(RegExp(r'\s')),
+                  FilteringTextInputFormatter.allow(RegExp('[a-fA-F0-9]')),
+                ],
+                validator: _validatePublicKey,
+              ),
+            ),
             if (index >= minConfirmationsCount)
-              CommonIconButton.svg(
-                svg: Assets.images.trash.path,
-                buttonType: EverButtonType.secondary,
-                color: colors.alert,
-                onPressed: () => _removeCustodian(index),
-                size: CommonIconButtonSize.small,
+              Padding(
+                padding: const EdgeInsets.only(
+                  left: DimensSizeV2.d8,
+                  top: DimensSizeV2.d4,
+                ),
+                child: DestructiveButton(
+                  buttonShape: ButtonShape.circle,
+                  icon: LucideIcons.trash,
+                  buttonSize: ButtonSize.medium,
+                  onPressed: () => _removeCustodian(index),
+                ),
               ),
           ],
         );
@@ -239,27 +271,26 @@ class _WalletDeployMultisigBodyState extends State<WalletDeployMultisigBody> {
     TextEditingController controller,
     int index,
   ) {
-    return ValueListenableBuilder<TextEditingValue>(
-      valueListenable: controller,
-      builder: (context, value, _) {
-        final colors = context.themeStyle.colors;
-
-        return value.text.isNotEmpty
-            ? CommonIconButton.icon(
-                buttonType: EverButtonType.ghost,
-                icon: Icons.clear_rounded,
-                size: CommonIconButtonSize.medium,
-                onPressed: controller.clear,
-                color: colors.textSecondary,
-              )
-            : CommonIconButton.svg(
-                buttonType: EverButtonType.ghost,
-                svg: Assets.images.paste.path,
-                size: CommonIconButtonSize.medium,
-                onPressed: () => _pasteCustodian(index),
-                color: colors.blue,
-              );
-      },
+    return Padding(
+      padding: const EdgeInsets.only(right: DimensSize.d8),
+      child: ValueListenableBuilder<TextEditingValue>(
+        valueListenable: controller,
+        builder: (context, value, _) {
+          return value.text.isNotEmpty
+              ? PrimaryButton(
+                  buttonShape: ButtonShape.square,
+                  icon: LucideIcons.x,
+                  buttonSize: ButtonSize.small,
+                  onPressed: controller.clear,
+                )
+              : PrimaryButton(
+                  buttonShape: ButtonShape.square,
+                  icon: LucideIcons.clipboardPaste,
+                  buttonSize: ButtonSize.small,
+                  onPressed: () => _pasteCustodian(index),
+                );
+        },
+      ),
     );
   }
 

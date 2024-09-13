@@ -34,7 +34,7 @@ class BootstrapFailedRerunView extends StatelessWidget {
                     text: LocaleKeys.tryAgain.tr(),
                     isLoading: isLoading,
                     onPressed: () =>
-                        context.read<BootstrapRerunCubit>().rerun(),
+                        context.read<BootstrapRerunCubit>().rerun(context),
                   );
                 },
               ),

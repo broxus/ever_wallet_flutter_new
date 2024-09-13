@@ -31,7 +31,7 @@ Future<void> showContactSupportSheet({
     centerTitle: true,
     centerSubtitle: true,
     body: (_, __) => BlocProvider(
-      create: (context) => ContactSupportBloc(),
+      create: ContactSupportBloc.new,
       child: BlocListener<ContactSupportBloc, ContactSupportState>(
         listener: (context, state) {
           state.whenOrNull(

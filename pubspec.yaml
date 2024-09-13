@@ -8,6 +8,7 @@ environment:
   flutter: ">=3.10.3"
 
 dependencies:
+  app_settings: ^5.1.1
   auto_size_text_field: ^2.2.3
   barcode_widget: ^2.0.4
   bloc: ^8.1.4
@@ -31,6 +32,7 @@ dependencies:
   flutter_email_sender: ^6.0.3
   flutter_inappwebview: ^6.0.0
   flutter_screenutil: ^5.9.3
+  flutter_secure_storage: ^9.2.2
   flutter_svg: ^2.0.10+1
   freezed_annotation: ^2.4.1
   frontend_server_client: ^4.0.0
@@ -39,6 +41,7 @@ dependencies:
   hive_flutter: ^1.1.0
   http: ^1.2.1
   image_picker: ^1.0.4
+  in_app_notification: ^1.1.2
   injectable: ^2.4.1
   internet_connection_checker_plus: ^2.5.1
   json_annotation: ^4.9.0
@@ -90,7 +93,6 @@ dev_dependencies:
     path: packages/datetime_avoid_lint
   flutter_gen_runner: ^5.4.0
   flutter_native_splash: ^2.4.0
-  flutter_secure_storage: ^9.0.0
   flutter_test:
     sdk: flutter
   freezed: ^2.5.2

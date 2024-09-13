@@ -5,7 +5,6 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 import 'package:nekoton_repository/nekoton_repository.dart';
-import 'package:ui_components_lib/ui_components_lib.dart';
 import 'package:ui_components_lib/v2/ui_components_lib_v2.dart';
 
 enum WalletBottomPanelTab { asset, transactions }
@@ -35,43 +34,47 @@ class _WalletBottomPanelState extends State<WalletBottomPanel> {
   Widget build(BuildContext context) {
     final theme = context.themeStyleV2;
 
-    return SliverToBoxAdapter(
-      child: Container(
-        decoration: BoxDecoration(
-          color: theme.colors.background1,
-          borderRadius: const BorderRadius.vertical(
-            top: Radius.circular(DimensRadiusV2.radius24),
-          ),
+    return DecoratedSliver(
+      decoration: BoxDecoration(
+        color: theme.colors.background1,
+        borderRadius: const BorderRadius.vertical(
+          top: Radius.circular(DimensRadiusV2.radius24),
         ),
+      ),
+      sliver: SliverPadding(
         padding: const EdgeInsets.only(
           top: DimensSizeV2.d24,
           left: DimensSizeV2.d16,
           right: DimensSizeV2.d16,
           bottom: DimensSizeV2.d48,
         ),
-        child: ValueListenableBuilder<WalletBottomPanelTab>(
+        sliver: ValueListenableBuilder<WalletBottomPanelTab>(
           valueListenable: currentTabNotifier,
           builder: (_, value, __) {
-            return SeparatedColumn(
-              separatorSize: DimensSizeV2.d24,
-              children: [
-                SwitcherSegmentControls(
-                  currentValue: value,
-                  values: [
-                    PrimarySegmentControl(
-                      state: SegmentControlState.normal,
-                      title: LocaleKeys.assetsWord.tr(),
-                      value: WalletBottomPanelTab.asset,
-                      size: SegmentControlSize.xsmall,
+            return SliverMainAxisGroup(
+              slivers: [
+                SliverToBoxAdapter(
+                  child: Padding(
+                    padding: const EdgeInsets.only(bottom: DimensSizeV2.d24),
+                    child: SwitcherSegmentControls(
+                      currentValue: value,
+                      values: [
+                        PrimarySegmentControl(
+                          state: SegmentControlState.normal,
+                          title: LocaleKeys.assetsWord.tr(),
+                          value: WalletBottomPanelTab.asset,
+                          size: SegmentControlSize.xsmall,
+                        ),
+                        PrimarySegmentControl(
+                          state: SegmentControlState.normal,
+                          title: LocaleKeys.transactionsWord.tr(),
+                          value: WalletBottomPanelTab.transactions,
+                          size: SegmentControlSize.xsmall,
+                        ),
+                      ],
+                      onTabChanged: (v) => currentTabNotifier.value = v,
                     ),
-                    PrimarySegmentControl(
-                      state: SegmentControlState.normal,
-                      title: LocaleKeys.transactionsWord.tr(),
-                      value: WalletBottomPanelTab.transactions,
-                      size: SegmentControlSize.xsmall,
-                    ),
-                  ],
-                  onTabChanged: (v) => currentTabNotifier.value = v,
+                  ),
                 ),
                 switch (value) {
                   WalletBottomPanelTab.asset => AccountAssetsTab(

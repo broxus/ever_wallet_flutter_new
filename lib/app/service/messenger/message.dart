@@ -25,6 +25,7 @@ enum MessageType {
 class Message {
   Message({
     required this.type,
+    required this.context,
     required this.message,
     this.duration = defaultMessageDisplayDuration,
     this.debounceTime = defaultInfoMessageDebounceDuration,
@@ -34,12 +35,14 @@ class Message {
 
   factory Message.error({
     required String message,
+    BuildContext? context,
     Duration duration = defaultMessageDisplayDuration,
     Duration debounceTime = defaultErrorMessageDebounceDuration,
     String? actionText,
     VoidCallback? onAction,
   }) =>
       Message(
+        context: context,
         type: MessageType.error,
         message: message,
         duration: duration,
@@ -50,12 +53,14 @@ class Message {
 
   factory Message.info({
     required String message,
+    BuildContext? context,
     Duration duration = defaultMessageDisplayDuration,
     Duration debounceTime = defaultInfoMessageDebounceDuration,
     String? actionText,
     VoidCallback? onAction,
   }) =>
       Message(
+        context: context,
         type: MessageType.info,
         message: message,
         duration: duration,
@@ -66,12 +71,14 @@ class Message {
 
   factory Message.successful({
     required String message,
+    BuildContext? context,
     Duration duration = defaultMessageDisplayDuration,
     Duration debounceTime = defaultInfoMessageDebounceDuration,
     String? actionText,
     VoidCallback? onAction,
   }) =>
       Message(
+        context: context,
         type: MessageType.successful,
         message: message,
         duration: duration,
@@ -80,6 +87,7 @@ class Message {
         onAction: onAction,
       );
 
+  final BuildContext? context;
   final MessageType type;
   final String message;
   final Duration duration;
@@ -89,9 +97,10 @@ class Message {
 
   final String hashString;
 
-  Toast get toastByMessage {
+  Toast toastByMessage(VoidCallback onTapClosed) {
     return Toast(
       type: _toastType,
+      onTapClosed: onTapClosed,
       description: message,
       icon: _icon,
       actions: [
