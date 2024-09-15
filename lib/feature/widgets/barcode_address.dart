@@ -29,6 +29,9 @@ class BarcodeAddress extends StatelessWidget {
       crossAxisAlignment: CrossAxisAlignment.center,
       separatorSize: 0,
       margin: EdgeInsets.zero,
+      padding: const EdgeInsets.symmetric(
+        horizontal: DimensSizeV2.d32,
+      ),
       color: colors.background2,
       children: [
         BarcodeWidget(
