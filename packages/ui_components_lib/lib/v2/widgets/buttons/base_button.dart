@@ -18,6 +18,7 @@ abstract class BaseButton extends StatelessWidget {
     this.postfixIcon,
     this.isFullWidth = true,
     this.backgroundBlur,
+    this.padding,
     super.key,
   });
 
@@ -32,19 +33,18 @@ abstract class BaseButton extends StatelessWidget {
   final IconData? postfixIcon;
   final bool isFullWidth;
   final double? backgroundBlur;
+  final EdgeInsetsGeometry? padding;
 
   EdgeInsetsGeometry get _paddingByButtonSize {
-    switch (buttonSize) {
-      case ButtonSize.large:
-        return const EdgeInsets.all(DimensSizeV2.d18);
-      case ButtonSize.medium:
-        return const EdgeInsets.all(DimensSizeV2.d16);
-      case ButtonSize.small:
-        return const EdgeInsets.symmetric(
-          horizontal: DimensSizeV2.d24,
-          vertical: DimensSizeV2.d8,
-        );
-    }
+    return padding ??
+        switch (buttonSize) {
+          ButtonSize.large => const EdgeInsets.all(DimensSizeV2.d18),
+          ButtonSize.medium => const EdgeInsets.all(DimensSizeV2.d16),
+          ButtonSize.small => const EdgeInsets.symmetric(
+              horizontal: DimensSizeV2.d24,
+              vertical: DimensSizeV2.d8,
+            ),
+        };
   }
 
   double get _iconSize {
