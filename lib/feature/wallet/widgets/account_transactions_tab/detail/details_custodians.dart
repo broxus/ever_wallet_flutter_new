@@ -32,7 +32,10 @@ class TonWalletTransactionCustodiansDetails extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final theme = context.themeStyleV2;
+
     return ShapedContainerColumn(
+      color: theme.colors.background1,
       titleText: LocaleKeys.signaturesWord.tr(),
       subtitleText: requiredConfirmations == null
           ? null
