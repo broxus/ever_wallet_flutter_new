@@ -12,6 +12,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:lucide_icons_flutter/lucide_icons.dart';
 import 'package:ui_components_lib/ui_components_lib.dart';
 import 'package:ui_components_lib/v2/ui_components_lib_v2.dart';
+import 'package:ui_components_lib/v2/widgets/adaptive_footer_single_child_scroll_view.dart';
 
 /// Onboarding welcome screen
 class WelcomeScreen extends ElementaryWidget<WelcomeScreenWidgetModel> {
@@ -35,89 +36,92 @@ class WelcomeScreen extends ElementaryWidget<WelcomeScreenWidgetModel> {
         resizeToAvoidBottomInset: false,
         body: SafeArea(
           minimum: EdgeInsets.only(bottom: DimensAdaptiveSize.d16.hp),
-          child: Column(
-            mainAxisAlignment: MainAxisAlignment.end,
-            children: [
-              Align(
-                alignment: Alignment.centerRight,
-                child: Padding(
-                  padding: const EdgeInsets.only(
-                    right: DimensSizeV2.d16,
-                    top: DimensSizeV2.d12,
-                  ),
-                  child: FloatButton(
-                    buttonShape: ButtonShape.circle,
-                    icon: LucideIcons.headset,
-                    onPressed: wm.onClickSupport,
-                    buttonSize: ButtonSize.medium,
-                  ),
-                ),
+          child: AdaptiveFooterSingleChildScrollView(
+            footer: Padding(
+              padding: EdgeInsets.symmetric(
+                horizontal: DimensAdaptiveSize.d16.wp,
               ),
-              const Spacer(),
-              const SlidingBlockChains(),
-              const Spacer(),
-              Padding(
-                padding: EdgeInsets.symmetric(
-                  horizontal: DimensAdaptiveSize.d16.wp,
-                ),
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    SizedBox(height: DimensAdaptiveSize.d12.hp),
-                    Center(
-                      child: Text(
-                        LocaleKeys.welcomeTitle.tr(),
-                        style: themeStyle.textStyles.displayMedium,
-                        textAlign: TextAlign.center,
+              child: Column(
+                mainAxisSize: MainAxisSize.min,
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  SizedBox(height: DimensAdaptiveSize.d12.hp),
+                  Center(
+                    child: Text(
+                      LocaleKeys.welcomeTitle.tr(),
+                      style: themeStyle.textStyles.displayMedium,
+                      textAlign: TextAlign.center,
+                    ),
+                  ),
+                  SizedBox(height: DimensAdaptiveSize.d12.hp),
+                  Center(
+                    child: Text(
+                      LocaleKeys.welcomeSubtitle.tr(),
+                      style: themeStyle.textStyles.paragraphMedium
+                          .copyWith(color: themeStyle.colors.content0),
+                      textAlign: TextAlign.center,
+                    ),
+                  ),
+                  SizedBox(height: DimensAdaptiveSize.d24.hp),
+                  AccentButton(
+                    title: LocaleKeys.welcomeGetNewWallet.tr(),
+                    onPressed: wm.onPressedCreateWallet,
+                    buttonShape: ButtonShape.pill,
+                  ),
+                  SizedBox(height: DimensAdaptiveSize.d8.hp),
+                  PrimaryButton(
+                    title: LocaleKeys.welcomeIHaveOne.tr(),
+                    onPressed: wm.onPressedWalletLogin,
+                    buttonShape: ButtonShape.pill,
+                  ),
+                  SizedBox(height: DimensAdaptiveSize.d16.hp),
+                  Center(
+                    child: Text.rich(
+                      TextSpan(
+                        children: [
+                          TextSpan(
+                            text: LocaleKeys.welcomeYouAccept.tr(),
+                            style: themeStyle.textStyles.paragraphXSmall
+                                .copyWith(color: themeStyle.colors.content3),
+                          ),
+                          TextSpan(
+                            text: LocaleKeys.welcomeLicenceAgreement.tr(),
+                            style: themeStyle.textStyles.paragraphXSmall
+                                .copyWith(color: themeStyle.colors.content0),
+                            recognizer: TapGestureRecognizer()
+                              ..onTap = wm.onLinkTap,
+                          ),
+                        ],
                       ),
+                      textAlign: TextAlign.center,
                     ),
-                    SizedBox(height: DimensAdaptiveSize.d12.hp),
-                    Center(
-                      child: Text(
-                        LocaleKeys.welcomeSubtitle.tr(),
-                        style: themeStyle.textStyles.paragraphMedium
-                            .copyWith(color: themeStyle.colors.content0),
-                        textAlign: TextAlign.center,
-                      ),
-                    ),
-                    SizedBox(height: DimensAdaptiveSize.d24.hp),
-                    AccentButton(
-                      title: LocaleKeys.welcomeGetNewWallet.tr(),
-                      onPressed: wm.onPressedCreateWallet,
-                      buttonShape: ButtonShape.pill,
-                    ),
-                    SizedBox(height: DimensAdaptiveSize.d8.hp),
-                    PrimaryButton(
-                      title: LocaleKeys.welcomeIHaveOne.tr(),
-                      onPressed: wm.onPressedWalletLogin,
-                      buttonShape: ButtonShape.pill,
-                    ),
-                    SizedBox(height: DimensAdaptiveSize.d16.hp),
-                    Center(
-                      child: Text.rich(
-                        TextSpan(
-                          children: [
-                            TextSpan(
-                              text: LocaleKeys.welcomeYouAccept.tr(),
-                              style: themeStyle.textStyles.paragraphXSmall
-                                  .copyWith(color: themeStyle.colors.content3),
-                            ),
-                            TextSpan(
-                              text: LocaleKeys.welcomeLicenceAgreement.tr(),
-                              style: themeStyle.textStyles.paragraphXSmall
-                                  .copyWith(color: themeStyle.colors.content0),
-                              recognizer: TapGestureRecognizer()
-                                ..onTap = wm.onLinkTap,
-                            ),
-                          ],
-                        ),
-                        textAlign: TextAlign.center,
-                      ),
-                    ),
-                  ],
-                ),
+                  ),
+                ],
               ),
-            ],
+            ),
+            child: Column(
+              mainAxisAlignment: MainAxisAlignment.end,
+              children: [
+                Align(
+                  alignment: Alignment.centerRight,
+                  child: Padding(
+                    padding: const EdgeInsets.only(
+                      top: DimensSizeV2.d12,
+                      bottom: DimensSizeV2.d50,
+                      right: DimensSizeV2.d16,
+                    ),
+                    child: FloatButton(
+                      buttonShape: ButtonShape.circle,
+                      icon: LucideIcons.headset,
+                      onPressed: wm.onClickSupport,
+                      buttonSize: ButtonSize.medium,
+                    ),
+                  ),
+                ),
+                const SlidingBlockChains(),
+                const SizedBox(height: DimensSizeV2.d38),
+              ],
+            ),
           ),
         ),
       ),

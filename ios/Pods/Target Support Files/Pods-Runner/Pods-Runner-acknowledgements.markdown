@@ -1590,7 +1590,7 @@ OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
    limitations under the License.
 
 
-## flutter_inappwebview
+## flutter_inappwebview_ios
 
                                  Apache License
                            Version 2.0, January 2004
@@ -1780,7 +1780,7 @@ OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
       same "printed page" as the copyright notice for easier
       identification within third-party archives.
 
-   Copyright 2022 Lorenzo Pichilli
+   Copyright 2023 Lorenzo Pichilli
 
    Licensed under the Apache License, Version 2.0 (the "License");
    you may not use this file except in compliance with the License.
