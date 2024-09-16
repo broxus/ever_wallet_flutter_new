@@ -147,7 +147,6 @@ class _BrowserTabViewState extends State<BrowserTabView> {
     final initialSettings = InAppWebViewSettings(
       clearCache: clearCache,
       applicationNameForUserAgent: 'EverWalletBrowser',
-      transparentBackground: true,
       useShouldOverrideUrlLoading: true,
     );
 
