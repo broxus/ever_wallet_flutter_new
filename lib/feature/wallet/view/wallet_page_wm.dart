@@ -23,7 +23,9 @@ WalletPageWidgetModel defaultWalletPageWidgetModelFactory(
 
 class WalletPageWidgetModel
     extends CustomWidgetModel<WalletPageWidget, WalletPageModel> {
-  WalletPageWidgetModel(super.model);
+  WalletPageWidgetModel(super.model) {
+    _checkBadge();
+  }
 
   late final scrollController = createScrollController();
 
@@ -42,8 +44,9 @@ class WalletPageWidgetModel
     }
   }
 
-  Future<void> checkBadge(KeyAccount? account) async {
+  Future<void> _checkBadge() async {
     //check user create new wallet or login
+    final account = _currentAccount.value;
     final isNewUser = await model.isNewUser();
     if (isNewUser != null) {
       if (isNewUser) {

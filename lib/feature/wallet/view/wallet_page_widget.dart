@@ -17,7 +17,6 @@ class WalletPageWidget extends ElementaryWidget<WalletPageWidgetModel> {
       body: StateNotifierBuilder(
         listenableState: wm.currentAccount,
         builder: (_, currentAccount) {
-          wm.checkBadge(currentAccount);
           return currentAccount?.let(
                 (value) => StateNotifierBuilder(
                   listenableState: wm.isShowingBadge,
