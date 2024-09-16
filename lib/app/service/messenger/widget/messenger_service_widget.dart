@@ -59,35 +59,26 @@ class _MessengerServiceWidgetState extends State<MessengerServiceWidget> {
     }
 
     _isSnackbarShown = true;
-    if (context != null) {
-      Timer(message.duration, () {
-        if (_isSnackbarShown) {
-          _onDismiss();
-        }
-      });
+    Timer(message.duration, () {
+      if (_isSnackbarShown) {
+        _onDismiss();
+      }
+    });
 
-      InAppNotification.show(
-        child: Padding(
-          padding: const EdgeInsets.symmetric(
-            horizontal: DimensSizeV2.d16,
-          ),
-          child: message.toastByMessage(() {
-            _onDismiss();
-            InAppNotification.dismiss(context: context);
-          }),
+    InAppNotification.show(
+      child: Padding(
+        padding: const EdgeInsets.symmetric(
+          horizontal: DimensSizeV2.d16,
         ),
-        context: ctx,
-        onTap: _onDismiss,
-        duration: message.duration,
-      );
-    } else {
-      showSnackbar(
-        context: ctx,
-        toast: message.toastByMessage(_onDismiss),
-        duration: message.duration,
-        onDismiss: _onDismiss,
-      );
-    }
+        child: message.toastByMessage(() {
+          _onDismiss();
+          InAppNotification.dismiss(context: ctx);
+        }),
+      ),
+      context: ctx,
+      onTap: _onDismiss,
+      duration: message.duration,
+    );
   }
 
   @override
