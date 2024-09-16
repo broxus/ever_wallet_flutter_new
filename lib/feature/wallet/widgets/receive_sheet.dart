@@ -1,12 +1,11 @@
-import 'package:app/app/service/service.dart';
-import 'package:app/di/di.dart';
+import 'package:app/feature/widgets/barcode_address.dart';
 import 'package:app/generated/generated.dart';
-import 'package:barcode_widget/barcode_widget.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
+import 'package:lucide_icons_flutter/lucide_icons.dart';
 import 'package:nekoton_repository/nekoton_repository.dart' hide Message;
 import 'package:share_plus/share_plus.dart';
 import 'package:ui_components_lib/ui_components_lib.dart';
+import 'package:ui_components_lib/v2/ui_components_lib_v2.dart';
 
 /// Helper function to show [ReceiveFundsSheet].
 void showReceiveFundsSheet(
@@ -15,8 +14,8 @@ void showReceiveFundsSheet(
 ) {
   showCommonBottomSheet<void>(
     context: context,
-    useAppBackgroundColor: true,
     title: LocaleKeys.addressToReceiveFunds.tr(),
+    titleTextStyle: context.themeStyleV2.textStyles.headingLarge,
     body: (_, __) => ReceiveFundsSheet(address: address),
   );
 }
@@ -34,75 +33,20 @@ class ReceiveFundsSheet extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final colors = context.themeStyle.colors;
-
-    return SeparatedColumn(
+    return Column(
       mainAxisSize: MainAxisSize.min,
-      separatorSize: DimensSize.d24,
       children: [
-        ShapedContainerColumn(
-          margin: EdgeInsets.zero,
-          mainAxisSize: MainAxisSize.min,
-          crossAxisAlignment: CrossAxisAlignment.center,
-          separatorSize: 0,
-          children: [
-            BarcodeWidget(
-              margin: const EdgeInsets.all(DimensSize.d32),
-              width: DimensSize.d148,
-              height: DimensSize.d148,
-              data: address.address,
-              barcode: Barcode.qrCode(),
-              color: colors.textPrimary,
-            ),
-            SeparatedColumn(
-              mainAxisSize: MainAxisSize.min,
-              separatorSize: DimensSize.d4,
-              children: [
-                Text(
-                  LocaleKeys.addressWord.tr(),
-                  style: StyleRes.addRegular.copyWith(
-                    color: colors.textSecondary,
-                  ),
-                ),
-                Text(
-                  address.address,
-                  style: StyleRes.addRegular.copyWith(
-                    color: colors.textPrimary,
-                  ),
-                ),
-                const SizedBox(height: DimensSize.d8),
-                SmallButton.ghost(
-                  onPressed: () => _copyAddress(context),
-                  text: LocaleKeys.copyWord.tr(),
-                  leading: CommonButtonIconWidget.svg(
-                    svg: Assets.images.copy.path,
-                  ),
-                ),
-              ],
-            ),
-          ],
+        BarcodeAddress(
+          address: address,
         ),
-        CommonButton.primary(
-          fillWidth: true,
-          leading: CommonButtonIconWidget.svg(
-            svg: Assets.images.share.path,
-          ),
-          text: LocaleKeys.shareWord.tr(),
+        const SizedBox(height: DimensSizeV2.d16),
+        PrimaryButton(
+          buttonShape: ButtonShape.pill,
+          icon: LucideIcons.share2,
+          title: LocaleKeys.shareWord.tr(),
           onPressed: () => Share.share(address.address),
         ),
       ],
-    );
-  }
-
-  void _copyAddress(BuildContext context) {
-    Clipboard.setData(ClipboardData(text: address.address));
-    inject<MessengerService>().show(
-      Message.successful(
-        context: context,
-        message: LocaleKeys.valueCopiedExclamation.tr(
-          args: [address.toEllipseString()],
-        ),
-      ),
     );
   }
 }
