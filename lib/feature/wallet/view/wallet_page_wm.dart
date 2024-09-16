@@ -21,7 +21,8 @@ WalletPageWidgetModel defaultWalletPageWidgetModelFactory(
       ),
     );
 
-class WalletPageWidgetModel extends CustomWidgetModel<WalletPageWidget, WalletPageModel> {
+class WalletPageWidgetModel
+    extends CustomWidgetModel<WalletPageWidget, WalletPageModel> {
   WalletPageWidgetModel(super.model) {
     _checkBadge();
   }
