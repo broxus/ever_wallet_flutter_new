@@ -17,6 +17,7 @@ import 'package:app/feature/wallet/wallet_prepare_transfer/wallet_prepare_transf
 import 'package:app/feature/wallet/wallet_prepare_transfer/wallet_prepare_transfer_page/wallet_prepare_transfer_page_model.dart';
 import 'package:app/generated/generated.dart';
 import 'package:elementary/elementary.dart';
+import 'package:flutter/foundation.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter/widgets.dart';
 import 'package:nekoton_repository/nekoton_repository.dart';
@@ -75,6 +76,7 @@ class WalletPrepareTransferPageWidgetModel extends CustomWidgetModel<
   );
 
   final _assets = <(Address, String), WalletPrepareTransferAsset>{};
+  late final _assetsList = createValueNotifier(_assets.values.toList());
 
   StreamSubscription<dynamic>? _currencySubscription;
 
@@ -84,7 +86,7 @@ class WalletPrepareTransferPageWidgetModel extends CustomWidgetModel<
 
   PublicKey? get _selectedCustodian => _data?.selectedCustodian;
 
-  List<WalletPrepareTransferAsset> get assetsList => _assets.values.toList();
+  ValueListenable<List<WalletPrepareTransferAsset>> get assets => _assetsList;
 
   Address get address => model.address;
 
@@ -325,7 +327,7 @@ class WalletPrepareTransferPageWidgetModel extends CustomWidgetModel<
       balance: balance,
     );
 
-    _assets[updatedAsset.key] = updatedAsset;
+    _updateAssets((assets) => assets[updatedAsset.key] = updatedAsset);
 
     if (updatedAsset.key == _selectedAsset?.key) {
       _updateState(selectedAsset: updatedAsset);
@@ -344,7 +346,8 @@ class WalletPrepareTransferPageWidgetModel extends CustomWidgetModel<
       logoURI: transport.nativeTokenIcon,
       title: transport.nativeTokenTicker,
     );
-    _assets[selectedAsset.key] = selectedAsset;
+
+    _updateAssets((assets) => assets[selectedAsset.key] = selectedAsset);
     _updateState(selectedAsset: selectedAsset);
     unawaited(_updateAsset(selectedAsset));
     model.startListeningBalance(selectedAsset);
@@ -368,7 +371,8 @@ class WalletPrepareTransferPageWidgetModel extends CustomWidgetModel<
       title: contract.name,
       version: contract.version,
     );
-    _assets[selectedAsset.key] = selectedAsset;
+
+    _updateAssets((assets) => assets[selectedAsset.key] = selectedAsset);
     _updateState(selectedAsset: selectedAsset);
     unawaited(_updateAsset(selectedAsset));
     model.startListeningBalance(selectedAsset);
@@ -380,7 +384,6 @@ class WalletPrepareTransferPageWidgetModel extends CustomWidgetModel<
     PublicKey? selectedCustodian,
     List<PublicKey>? localCustodians,
     WalletPrepareTransferAsset? selectedAsset,
-    List<WalletPrepareTransferAsset>? assets,
   }) {
     screenState.content(
       _data?.copyWith(
@@ -389,7 +392,6 @@ class WalletPrepareTransferPageWidgetModel extends CustomWidgetModel<
         selectedCustodian: selectedCustodian,
         localCustodians: localCustodians,
         selectedAsset: selectedAsset,
-        assets: assets ?? assetsList,
       ),
     );
   }
@@ -427,7 +429,8 @@ class WalletPrepareTransferPageWidgetModel extends CustomWidgetModel<
       return;
     }
 
-    _assets[(root, symbol)] = updated;
+    _updateAssets((assets) => assets[(root!, symbol!)] = updated!);
+
     if (_selectedAsset?.rootTokenContract == root &&
         _selectedAsset?.tokenSymbol == symbol) {
       _updateState(selectedAsset: updated);
@@ -448,13 +451,21 @@ class WalletPrepareTransferPageWidgetModel extends CustomWidgetModel<
     );
     final entries = assets.map((asset) => MapEntry(asset.key, asset));
 
-    _assets.addEntries(entries);
+    _updateAssets((assets) => assets.addEntries(entries));
 
     for (final asset in assets) {
       _updateAsset(asset);
     }
 
     _updateState();
+  }
+
+  void _updateAssets(
+    void Function(Map<(Address, String), WalletPrepareTransferAsset> aseets)
+        updater,
+  ) {
+    updater(_assets);
+    _assetsList.value = _assets.values.toList();
   }
 
   Money _zeroBalance(String symbol) {
@@ -464,6 +475,7 @@ class WalletPrepareTransferPageWidgetModel extends CustomWidgetModel<
           Currency.create(
             symbol,
             0,
+            symbol: symbol,
             pattern: moneyPattern(0),
           ),
     );
