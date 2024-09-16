@@ -323,6 +323,7 @@ class WalletPrepareTransferCubit extends Cubit<WalletPrepareTransferState> {
           Currency.create(
             symbol,
             0,
+            symbol: symbol,
             pattern: moneyPattern(0),
           ),
     );

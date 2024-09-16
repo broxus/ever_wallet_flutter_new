@@ -1,6 +1,7 @@
 import 'package:app/feature/wallet/wallet_prepare_transfer/wallet_prepare_transfer_page/data/wallet_prepare_transfer_asset.dart';
 import 'package:app/feature/wallet/widgets/account_asset_tab/token_wallet_asset/token_wallet_icon.dart';
 import 'package:app/generated/generated.dart';
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:lucide_icons_flutter/lucide_icons.dart';
 import 'package:nekoton_repository/nekoton_repository.dart';
@@ -15,7 +16,7 @@ class WalletPrepareTransferAssetSelect extends StatelessWidget {
     super.key,
   });
 
-  final List<WalletPrepareTransferAsset> values;
+  final ValueListenable<List<WalletPrepareTransferAsset>> values;
 
   final WalletPrepareTransferAsset? currentValue;
 
@@ -26,7 +27,7 @@ class WalletPrepareTransferAssetSelect extends StatelessWidget {
     final theme = context.themeStyleV2;
 
     return PressScaleWidget(
-      onPressed: values.length == 1 ? null : () => _openSelectSheet(context),
+      onPressed: () => _openSelectSheet(context),
       child: SeparatedRow(
         children: [
           if (currentValue != null) ...[
@@ -119,20 +120,23 @@ class WalletPrepareTransferAssetSelect extends StatelessWidget {
         return SingleChildScrollView(
           controller: scrollController,
           padding: const EdgeInsets.only(top: DimensSizeV2.d16),
-          child: SeparatedColumn(
-            separatorSize: DimensSizeV2.d12,
-            children: values
-                .map(
-                  (asset) => _itemBuilder(
-                    asset,
-                    isSelected: asset == currentValue,
-                    onPressed: () {
-                      Navigator.of(context).pop();
-                      onChanged(asset);
-                    },
-                  ),
-                )
-                .toList(),
+          child: ValueListenableBuilder(
+            valueListenable: values,
+            builder: (_, values, __) => SeparatedColumn(
+              separatorSize: DimensSizeV2.d12,
+              children: values
+                  .map(
+                    (asset) => _itemBuilder(
+                      asset,
+                      isSelected: asset == currentValue,
+                      onPressed: () {
+                        Navigator.of(context).pop();
+                        onChanged(asset);
+                      },
+                    ),
+                  )
+                  .toList(),
+            ),
           ),
         );
       },

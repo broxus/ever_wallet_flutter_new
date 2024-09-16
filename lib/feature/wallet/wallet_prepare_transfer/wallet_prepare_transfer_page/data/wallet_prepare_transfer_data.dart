@@ -8,7 +8,6 @@ class WalletPrepareTransferData {
     this.selectedCustodian,
     this.localCustodians,
     this.selectedAsset,
-    this.assets,
   });
 
   final String? walletName;
@@ -16,15 +15,13 @@ class WalletPrepareTransferData {
   final PublicKey? selectedCustodian;
   final List<PublicKey>? localCustodians;
   final WalletPrepareTransferAsset? selectedAsset;
-  final List<WalletPrepareTransferAsset>? assets;
 
   bool get isEmpty =>
       walletName == null &&
       account == null &&
       selectedCustodian == null &&
       localCustodians == null &&
-      selectedAsset == null &&
-      assets == null;
+      selectedAsset == null;
 
   WalletPrepareTransferData copyWith({
     String? walletName,
@@ -32,7 +29,6 @@ class WalletPrepareTransferData {
     PublicKey? selectedCustodian,
     List<PublicKey>? localCustodians,
     WalletPrepareTransferAsset? selectedAsset,
-    List<WalletPrepareTransferAsset>? assets,
   }) {
     return WalletPrepareTransferData(
       walletName: walletName ?? this.walletName,
@@ -40,7 +36,6 @@ class WalletPrepareTransferData {
       selectedCustodian: selectedCustodian ?? this.selectedCustodian,
       localCustodians: localCustodians ?? this.localCustodians,
       selectedAsset: selectedAsset ?? this.selectedAsset,
-      assets: assets ?? this.assets,
     );
   }
 }

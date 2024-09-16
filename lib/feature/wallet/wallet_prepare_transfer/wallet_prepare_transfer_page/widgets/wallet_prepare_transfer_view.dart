@@ -19,7 +19,6 @@ class WalletPrepareTransferView extends StatelessWidget {
     this.localCustodians,
     this.selectedCustodian,
     this.selectedAsset,
-    this.assets,
     super.key,
   });
 
@@ -29,7 +28,6 @@ class WalletPrepareTransferView extends StatelessWidget {
   final List<PublicKey>? localCustodians;
   final PublicKey? selectedCustodian;
   final WalletPrepareTransferAsset? selectedAsset;
-  final List<WalletPrepareTransferAsset>? assets;
 
   @override
   Widget build(BuildContext context) {
@@ -69,7 +67,7 @@ class WalletPrepareTransferView extends StatelessWidget {
                   WalletPrepareTransferAmountInput(
                     controller: _wm.amountController,
                     focusNode: _wm.amountFocus,
-                    assets: assets,
+                    assets: _wm.assets,
                     selectedAsset: selectedAsset,
                     onSelectedAssetChanged: _wm.onChangeAsset,
                     onMaxAmount: _wm.setMaxBalance,
