@@ -9,4 +9,6 @@ abstract interface class IIdentifyIconsService {
   IdentifyColor get initialColor;
 
   void setColor(String key, IdentifyColor color);
+
+  Future<IdentifyColor> getColor(String key);
 }

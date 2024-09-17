@@ -1,0 +1,63 @@
+import 'package:app/app/service/identify/identy_colors.dart';
+import 'package:app/core/error_handler_factory.dart';
+import 'package:app/core/wm/custom_wm.dart';
+import 'package:app/di/di.dart';
+import 'package:app/feature/wallet/widgets/account_settings/widgets/change_color_bottom_sheet/change_color_bottom_sheet.dart';
+import 'package:app/feature/wallet/widgets/account_settings/widgets/change_color_bottom_sheet/change_color_bottom_sheet_model.dart';
+import 'package:elementary/elementary.dart';
+import 'package:elementary_helper/elementary_helper.dart';
+import 'package:flutter/widgets.dart';
+import 'package:ui_components_lib/ui_components_lib.dart';
+import 'package:ui_components_lib/v2/text_styles_v2.dart';
+
+/// Factory method for creating [ChangeColorBottomSheetWidgetModel]
+ChangeColorBottomSheetWidgetModel
+    defaultChangeColorBottomSheetWidgetModelFactory(
+  BuildContext context,
+) {
+  return ChangeColorBottomSheetWidgetModel(
+    ChangeColorBottomSheetModel(
+      createPrimaryErrorHandler(context),
+      inject(),
+    ),
+  );
+}
+
+/// [WidgetModel] для [ChangeColorBottomSheet]
+class ChangeColorBottomSheetWidgetModel extends CustomWidgetModel<
+    ChangeColorBottomSheet, ChangeColorBottomSheetModel> {
+  ChangeColorBottomSheetWidgetModel(
+    super.model,
+  );
+
+  late final selectedColorState = StateNotifier<IdentifyColor?>();
+
+  List<IdentifyColor> get availableColors => model.availableColors;
+
+  TextStylesV2 get textStyle => _theme.textStyles;
+
+  ThemeStyleV2 get _theme => context.themeStyleV2;
+
+  @override
+  void initWidgetModel() {
+    _init();
+    super.initWidgetModel();
+  }
+
+  void onPressedBack() {
+    _back();
+  }
+
+  void onPressedColor(IdentifyColor color) {
+    selectedColorState.accept(color);
+    _back();
+  }
+
+  Future<void> _init() async {
+    selectedColorState.accept(await model.getColor(widget.publicKey.publicKey));
+  }
+
+  void _back() {
+    Navigator.of(context).pop();
+  }
+}

@@ -37,4 +37,9 @@ class IdentifyIconsService implements IIdentifyIconsService {
   void setColor(String key, IdentifyColor identifyColor) {
     _accountsColors.setColor(key, identifyColor);
   }
+
+  @override
+  Future<IdentifyColor> getColor(String key) {
+    return _accountsColors.getColor(key);
+  }
 }
