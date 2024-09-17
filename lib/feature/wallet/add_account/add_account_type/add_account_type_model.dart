@@ -61,7 +61,8 @@ class AddAccountTypeModel extends ElementaryModel {
       }
     }
 
-    final addedKeys = seed.subKeys.map((item) => item.publicKey).toSet();
+    final addedKeys = seed.subKeys.map((item) => item.publicKey).toSet()
+      ..add(seed.publicKey);
     final keys = await seed.getKeysToDerive(password);
     PublicKey? derivedKey;
 
