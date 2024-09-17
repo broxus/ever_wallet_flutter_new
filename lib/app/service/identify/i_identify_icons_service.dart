@@ -1,11 +1,12 @@
-import 'dart:ui';
+import 'package:app/app/service/identify/accounts_colors_collection.dart';
+import 'package:app/app/service/identify/identy_colors.dart';
 
 abstract interface class IIdentifyIconsService {
-  abstract final List<Color> availableColors;
+  abstract final List<IdentifyColor> availableColors;
 
-  Stream<Map<String, Color>> get cacheStream;
+  Stream<AccountsColorsCollection> get accountsColorsStream;
 
-  Color get initialColor;
+  IdentifyColor get initialColor;
 
-  Future<void> setColor(String key, Color color);
+  void setColor(String key, IdentifyColor color);
 }

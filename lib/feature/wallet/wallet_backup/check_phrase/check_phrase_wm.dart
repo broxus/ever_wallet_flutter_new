@@ -30,7 +30,7 @@ CheckPhraseWidgetModel defaultCheckPhraseWidgetModelFactory(
     CheckPhraseModel(
       createPrimaryErrorHandler(context),
       inject(),
-      SecureStorageService(),
+      inject(),
       words,
       address,
     ),

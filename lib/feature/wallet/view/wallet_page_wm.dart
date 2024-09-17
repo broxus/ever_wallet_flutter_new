@@ -17,7 +17,7 @@ WalletPageWidgetModel defaultWalletPageWidgetModelFactory(
       WalletPageModel(
         createPrimaryErrorHandler(context),
         inject(),
-        SecureStorageService(),
+        inject(),
       ),
     );
 

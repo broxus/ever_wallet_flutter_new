@@ -1,5 +1,7 @@
 import 'package:app/feature/wallet/widgets/account_settings/account_settings_wm.dart';
 import 'package:app/feature/wallet/widgets/account_settings/info_card.dart';
+import 'package:app/feature/wallet/widgets/account_settings/widgets/account_settings_button.dart';
+import 'package:app/feature/wallet/widgets/account_settings/widgets/change_color_button/account_settings_change_color_button.dart';
 import 'package:app/generated/generated.dart';
 import 'package:elementary/elementary.dart';
 import 'package:elementary_helper/elementary_helper.dart';
@@ -31,6 +33,7 @@ class AccountSettingsWidget
         StateNotifierBuilder(
           listenableState: wm.displayAccounts,
           builder: (_, list) => _ButtonsCard(
+            publicKey: account.publicKey,
             onViewInExplorer: wm.onViewInExplorer,
             onCopyAddress: wm.onCopyAddress,
             onRename: wm.onRename,
@@ -51,12 +54,14 @@ class AccountSettingsWidget
 
 class _ButtonsCard extends StatelessWidget {
   const _ButtonsCard({
+    required this.publicKey,
     required this.onViewInExplorer,
     required this.onRename,
     required this.onCopyAddress,
     required this.onHideAccount,
   });
 
+  final PublicKey publicKey;
   final VoidCallback onViewInExplorer;
   final VoidCallback onRename;
   final VoidCallback onCopyAddress;
@@ -78,75 +83,32 @@ class _ButtonsCard extends StatelessWidget {
           color: theme.colors.borderAlpha,
         ),
         children: [
-          _Button(
+          AccountSettingsButton(
             label: LocaleKeys.viewInExplorer.tr(),
             icon: LucideIcons.globe,
             onTap: onViewInExplorer,
           ),
-          _Button(
+          AccountSettingsButton(
             label: LocaleKeys.renameWord.tr(),
             icon: LucideIcons.pencilLine,
             onTap: onRename,
           ),
-          _Button(
+          AccountSettingsChangeColorButton(
+            publicKey: publicKey,
+          ),
+          AccountSettingsButton(
             label: LocaleKeys.copyAddress.tr(),
             icon: LucideIcons.copy,
             onTap: onCopyAddress,
           ),
           if (onHideAccount != null)
-            _Button(
+            AccountSettingsButton(
               label: LocaleKeys.hideAccount.tr(),
               icon: LucideIcons.eyeOff,
               color: theme.colors.contentNegative,
               onTap: onHideAccount!,
             ),
         ],
-      ),
-    );
-  }
-}
-
-class _Button extends StatelessWidget {
-  const _Button({
-    required this.label,
-    required this.icon,
-    required this.onTap,
-    this.color,
-  });
-
-  final String label;
-  final IconData icon;
-  final VoidCallback onTap;
-  final Color? color;
-
-  @override
-  Widget build(BuildContext context) {
-    final theme = context.themeStyleV2;
-
-    return GestureDetector(
-      behavior: HitTestBehavior.translucent,
-      onTap: onTap,
-      child: Container(
-        height: DimensSizeV2.d56,
-        padding: const EdgeInsets.symmetric(
-          horizontal: DimensSizeV2.d24,
-        ),
-        child: Row(
-          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-          children: [
-            Text(
-              label,
-              style: theme.textStyles.labelMedium.copyWith(
-                color: color ?? theme.colors.content0,
-              ),
-            ),
-            Icon(
-              icon,
-              size: DimensSizeV2.d20,
-              color: color ?? theme.colors.content0,
-            ),
-          ],
-        ),
       ),
     );
   }
