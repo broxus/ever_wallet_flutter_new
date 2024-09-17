@@ -25,7 +25,6 @@ class BrowserModalItem extends StatelessWidget {
         style: theme.textStyles.labelMedium.copyWith(color: contentColor),
       ),
       padding: const EdgeInsets.symmetric(
-        vertical: DimensSizeV2.d18,
         horizontal: DimensSizeV2.d24,
       ),
       onPressed: onPressed,
