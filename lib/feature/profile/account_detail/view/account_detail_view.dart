@@ -97,7 +97,7 @@ class AccountDetailView extends StatelessWidget {
             padding: const EdgeInsets.all(DimensSizeV2.d16),
             height: null,
             backgroundColor: theme.colors.background2,
-            trailing: CommonSwitchInput(
+            trailing: Switch(
               value: !account.isHidden,
               onChanged: (_) => _changeVisibility(),
             ),

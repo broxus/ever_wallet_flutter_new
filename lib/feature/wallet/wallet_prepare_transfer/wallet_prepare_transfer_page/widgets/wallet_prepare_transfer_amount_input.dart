@@ -141,7 +141,14 @@ class _WalletPrepareTransferAmountInputState
           state.hasError ? theme.colors.contentNegative : theme.colors.content0,
     );
     final price = Fixed.parse(widget.selectedAsset?.currency?.price ?? '0');
-    final amount = Fixed.parse(state.value.nullIf('') ?? '0');
+
+    late Fixed amount;
+    try {
+      amount = Fixed.parse(state.value.nullIf('') ?? '0');
+    } catch (e) {
+      amount = Fixed.parse('0');
+    }
+
     final usd = Fixed.copyWith(amount * price, scale: 2);
 
     return Column(
