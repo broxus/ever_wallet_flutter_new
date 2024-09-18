@@ -66,72 +66,78 @@ class AddAccountTypeWidget extends ElementaryWidget<AddAccountTypeWidgetModel> {
                     ),
                   ),
                 ),
-                const SizedBox(height: DimensSizeV2.d24),
-                Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  children: [
-                    Text(
-                      LocaleKeys.deprecatedTypes.tr(),
-                      style: theme.textStyles.labelSmall,
-                    ),
-                    StateNotifierBuilder(
-                      listenableState: wm.showDeprecated,
-                      builder: (_, value) => Switch(
-                        value: value ?? false,
-                        onChanged: wm.onShowDeprecatedChanged,
-                      ),
-                    ),
-                  ],
-                ),
-                const SizedBox(height: DimensSizeV2.d8),
-                SeparatedRow(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    Icon(
-                      LucideIcons.octagonAlert,
-                      size: DimensSizeV2.d20,
-                      color: theme.colors.content3,
-                    ),
-                    Flexible(
-                      child: Text(
-                        LocaleKeys.deprecatedTypesHint.tr(),
-                        style: theme.textStyles.labelXSmall.copyWith(
-                          color: theme.colors.content3,
-                        ),
-                      ),
-                    ),
-                  ],
-                ),
-                const SizedBox(height: DimensSizeV2.d12),
-                DoubleSourceBuilder(
-                  firstSource: wm.selected,
-                  secondSource: wm.showDeprecated,
-                  builder: (_, selected, showDeprecated) {
-                    if (showDeprecated != true) {
-                      return const SizedBox.shrink();
-                    }
-
-                    return PrimaryCard(
-                      padding: EdgeInsets.zero,
-                      color: theme.colors.background1,
-                      borderRadius:
-                          BorderRadius.circular(DimensRadiusV2.radius12),
-                      child: SeparatedColumn(
-                        mainAxisSize: MainAxisSize.min,
-                        separator: const CommonDivider(),
+                if (wm.isEverscale)
+                  Column(
+                    mainAxisSize: MainAxisSize.min,
+                    children: [
+                      const SizedBox(height: DimensSizeV2.d24),
+                      Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
                         children: [
-                          for (final type in wm.deprecatedTypes)
-                            _WalletType(
-                              name: wm.getWalletName(type),
-                              description: _getDescription(type),
-                              checked: type == selected,
-                              onTap: () => wm.onSelect(type),
+                          Text(
+                            LocaleKeys.deprecatedTypes.tr(),
+                            style: theme.textStyles.labelSmall,
+                          ),
+                          StateNotifierBuilder(
+                            listenableState: wm.showDeprecated,
+                            builder: (_, value) => Switch(
+                              value: value ?? false,
+                              onChanged: wm.onShowDeprecatedChanged,
                             ),
+                          ),
                         ],
                       ),
-                    );
-                  },
-                ),
+                      const SizedBox(height: DimensSizeV2.d8),
+                      SeparatedRow(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          Icon(
+                            LucideIcons.octagonAlert,
+                            size: DimensSizeV2.d20,
+                            color: theme.colors.content3,
+                          ),
+                          Flexible(
+                            child: Text(
+                              LocaleKeys.deprecatedTypesHint.tr(),
+                              style: theme.textStyles.labelXSmall.copyWith(
+                                color: theme.colors.content3,
+                              ),
+                            ),
+                          ),
+                        ],
+                      ),
+                      const SizedBox(height: DimensSizeV2.d12),
+                      DoubleSourceBuilder(
+                        firstSource: wm.selected,
+                        secondSource: wm.showDeprecated,
+                        builder: (_, selected, showDeprecated) {
+                          if (showDeprecated != true) {
+                            return const SizedBox.shrink();
+                          }
+
+                          return PrimaryCard(
+                            padding: EdgeInsets.zero,
+                            color: theme.colors.background1,
+                            borderRadius:
+                                BorderRadius.circular(DimensRadiusV2.radius12),
+                            child: SeparatedColumn(
+                              mainAxisSize: MainAxisSize.min,
+                              separator: const CommonDivider(),
+                              children: [
+                                for (final type in wm.deprecatedTypes)
+                                  _WalletType(
+                                    name: wm.getWalletName(type),
+                                    description: _getDescription(type),
+                                    checked: type == selected,
+                                    onTap: () => wm.onSelect(type),
+                                  ),
+                              ],
+                            ),
+                          );
+                        },
+                      ),
+                    ],
+                  ),
               ],
             ),
           ),

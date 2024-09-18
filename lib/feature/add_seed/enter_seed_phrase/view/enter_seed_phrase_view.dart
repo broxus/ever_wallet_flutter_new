@@ -149,6 +149,7 @@ class EnterSeedPhraseView extends StatelessWidget {
           },
           input: (controller, focus, index, hasError) {
             return CommonInput(
+              autocorrect: false,
               hintStyle: themeStyleV2.textStyles.labelSmall,
               inactiveBorderColor: themeStyleV2.colors.border0,
               textStyle: themeStyleV2.textStyles.labelSmall,
