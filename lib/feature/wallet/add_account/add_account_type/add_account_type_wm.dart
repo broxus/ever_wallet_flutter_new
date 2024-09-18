@@ -3,8 +3,10 @@
 import 'dart:async';
 
 import 'package:app/app/router/router.dart';
+import 'package:app/app/service/service.dart';
 import 'package:app/core/error_handler_factory.dart';
 import 'package:app/core/wm/custom_wm.dart';
+import 'package:app/data/models/models.dart';
 import 'package:app/di/di.dart';
 import 'package:app/feature/wallet/add_account/add_account.dart';
 import 'package:app/feature/wallet/add_account/add_account_type/add_account_type_model.dart';
@@ -54,6 +56,8 @@ class AddAccountTypeWidgetModel
   ListenableState<bool> get showDeprecated => _showDeprecated;
 
   ThemeStyleV2 get theme => context.themeStyleV2;
+
+  bool get isEverscale => model.transport.networkType == NetworkType.ever;
 
   @override
   void initWidgetModel() {
