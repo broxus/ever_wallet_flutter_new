@@ -1,7 +1,12 @@
+import 'package:app/app/service/messenger/messenger.dart';
+import 'package:app/app/service/messenger/service/messenger_service.dart';
+import 'package:app/di/di.dart';
 import 'package:app/generated/generated.dart';
 import 'package:barcode_widget/barcode_widget.dart';
 import 'package:flutter/material.dart';
-import 'package:nekoton_repository/nekoton_repository.dart';
+import 'package:flutter/services.dart';
+import 'package:lucide_icons_flutter/lucide_icons.dart';
+import 'package:nekoton_repository/nekoton_repository.dart' hide Message;
 import 'package:ui_components_lib/ui_components_lib.dart';
 import 'package:ui_components_lib/v2/widgets/widgets.dart';
 
@@ -67,7 +72,8 @@ class _Detail extends StatelessWidget {
           Flexible(
             child: _Item(
               titleText: LocaleKeys.addressWord.tr(),
-              descriptionText: account.address.toString(),
+              descriptionText: account.address.address,
+              onPressed: () => _copyText(context, account.address.address),
             ),
           ),
           Divider(
@@ -78,10 +84,25 @@ class _Detail extends StatelessWidget {
           Flexible(
             child: _Item(
               titleText: LocaleKeys.publicKey.tr(),
-              descriptionText: account.publicKey.toString(),
+              descriptionText: account.publicKey.publicKey,
+              onPressed: () => _copyText(context, account.publicKey.publicKey),
             ),
           ),
         ],
+      ),
+    );
+  }
+
+  void _copyText(BuildContext context, String text) {
+    Clipboard.setData(
+      ClipboardData(text: text),
+    );
+    inject<MessengerService>().show(
+      Message.successful(
+        context: context,
+        message: LocaleKeys.valueCopiedExclamation.tr(
+          args: [text],
+        ),
       ),
     );
   }
@@ -91,33 +112,55 @@ class _Item extends StatelessWidget {
   const _Item({
     required this.titleText,
     required this.descriptionText,
+    required this.onPressed,
   });
 
   final String titleText;
   final String descriptionText;
+  final VoidCallback onPressed;
 
   @override
   Widget build(BuildContext context) {
     final theme = context.themeStyleV2;
 
-    return Padding(
-      padding: const EdgeInsets.all(DimensSizeV2.d12),
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        mainAxisSize: MainAxisSize.min,
-        children: [
-          Text(
-            titleText,
-            style: theme.textStyles.labelXSmall.copyWith(
-              color: theme.colors.content3,
+    return GestureDetector(
+      onTap: onPressed,
+      behavior: HitTestBehavior.opaque,
+      child: Padding(
+        padding: const EdgeInsets.all(DimensSizeV2.d12),
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          mainAxisSize: MainAxisSize.min,
+          children: [
+            Text(
+              titleText,
+              style: theme.textStyles.labelXSmall.copyWith(
+                color: theme.colors.content3,
+              ),
             ),
-          ),
-          const SizedBox(height: DimensSizeV2.d4),
-          Text(
-            descriptionText,
-            style: theme.textStyles.labelXSmall,
-          ),
-        ],
+            const SizedBox(height: DimensSizeV2.d4),
+            RichText(
+              text: TextSpan(
+                style: theme.textStyles.labelXSmall,
+                children: [
+                  TextSpan(
+                    text: descriptionText,
+                  ),
+                  const TextSpan(
+                    text: ' ',
+                  ),
+                  const WidgetSpan(
+                    alignment: PlaceholderAlignment.top,
+                    child: Icon(
+                      LucideIcons.copy,
+                      size: DimensSizeV2.d18,
+                    ),
+                  ),
+                ],
+              ),
+            ),
+          ],
+        ),
       ),
     );
   }
