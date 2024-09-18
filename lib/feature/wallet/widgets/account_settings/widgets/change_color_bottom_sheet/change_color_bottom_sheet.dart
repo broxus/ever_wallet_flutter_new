@@ -125,11 +125,9 @@ class _ItemColor extends StatelessWidget {
       behavior: HitTestBehavior.opaque,
       child: Padding(
         padding: padding,
-        child: _ItemWrapper(
+        child: _Wrapper(
           isVisible: isSelected,
-          child: SizedBox(
-            width: DimensSizeV2.d64,
-            height: double.infinity,
+          child: SizedBox.expand(
             child: DecoratedBox(
               decoration: BoxDecoration(
                 color: color,
@@ -143,8 +141,8 @@ class _ItemColor extends StatelessWidget {
   }
 }
 
-class _ItemWrapper extends StatelessWidget {
-  const _ItemWrapper({
+class _Wrapper extends StatelessWidget {
+  const _Wrapper({
     required this.isVisible,
     required this.child,
   });
@@ -156,7 +154,9 @@ class _ItemWrapper extends StatelessWidget {
   Widget build(BuildContext context) {
     return SizedBox(
       height: DimensSizeV2.d64,
-      child: DecoratedBox(
+      width: DimensSizeV2.d64,
+      child: AnimatedContainer(
+        duration: const Duration(milliseconds: 200),
         decoration: BoxDecoration(
           shape: BoxShape.circle,
           border: Border.all(
