@@ -8,7 +8,6 @@ import 'package:app/feature/wallet/widgets/account_settings/widgets/change_color
 import 'package:elementary/elementary.dart';
 import 'package:elementary_helper/elementary_helper.dart';
 import 'package:flutter/widgets.dart';
-import 'package:nekoton_repository/nekoton_repository.dart';
 
 /// Factory method for creating [AccountSettingsChangeColorButtonWidgetModel]
 AccountSettingsChangeColorButtonWidgetModel

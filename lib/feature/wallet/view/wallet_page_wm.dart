@@ -1,6 +1,5 @@
 import 'dart:async';
 
-import 'package:app/app/service/secure_storage_service.dart';
 import 'package:app/core/error_handler_factory.dart';
 import 'package:app/core/wm/custom_wm.dart';
 import 'package:app/di/di.dart';

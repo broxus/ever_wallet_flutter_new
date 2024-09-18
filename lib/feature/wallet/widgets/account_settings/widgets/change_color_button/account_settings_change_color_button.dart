@@ -5,7 +5,6 @@ import 'package:app/generated/generated.dart';
 import 'package:elementary/elementary.dart';
 import 'package:elementary_helper/elementary_helper.dart';
 import 'package:flutter/material.dart';
-import 'package:nekoton_repository/nekoton_repository.dart';
 import 'package:ui_components_lib/v2/dimens_v2.dart';
 
 class AccountSettingsChangeColorButton

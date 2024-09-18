@@ -9,12 +9,11 @@ import 'package:elementary/elementary.dart';
 import 'package:elementary_helper/elementary_helper.dart';
 import 'package:flutter/widgets.dart';
 import 'package:jdenticon_dart/jdenticon_dart.dart';
-import 'package:nekoton_repository/nekoton_repository.dart';
 
 /// Factory method for creating [UserAvatarWidgetModel]
 UserAvatarWidgetModel defaultUserAvatarWidgetModelFactory(
   BuildContext context, {
-  Address? address,
+  String? address,
 }) {
   return UserAvatarWidgetModel(
     UserAvatarModel(
@@ -45,7 +44,7 @@ class UserAvatarWidgetModel
   }
 
   Future<void> _init() async {
-    final address = widget.address?.address;
+    final address = widget.address;
 
     if (address == null) {
       _setAssetSvg();

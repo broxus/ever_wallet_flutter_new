@@ -1,6 +1,7 @@
 import 'package:app/feature/wallet/widgets/select_account/select_account_wm.dart';
 import 'package:app/generated/generated.dart';
 import 'package:app/utils/utils.dart';
+import 'package:app/widgets/user_avatar/user_avatar.dart';
 import 'package:elementary/elementary.dart';
 import 'package:elementary_helper/elementary_helper.dart';
 import 'package:flutter/material.dart';
@@ -101,10 +102,8 @@ class _AccountItem extends StatelessWidget {
         padding: const EdgeInsets.symmetric(vertical: DimensSizeV2.d12),
         child: SeparatedRow(
           children: [
-            Image.asset(
-              Assets.images.userAvatar.userAvatar.path,
-              width: DimensSizeV2.d40,
-              height: DimensSizeV2.d40,
+            UserAvatar(
+              address: address,
             ),
             Expanded(
               child: SeparatedColumn(

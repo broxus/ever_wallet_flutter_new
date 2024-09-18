@@ -6,7 +6,6 @@ import 'package:app/app/service/identify/identy_colors.dart';
 import 'package:app/widgets/user_avatar/user_avatar.dart';
 import 'package:elementary/elementary.dart';
 import 'package:elementary_helper/elementary_helper.dart';
-import 'package:nekoton_repository/nekoton_repository.dart';
 
 /// [ElementaryModel] for [UserAvatar]
 class UserAvatarModel extends ElementaryModel {
@@ -16,7 +15,7 @@ class UserAvatarModel extends ElementaryModel {
     this.address,
   ) : super(errorHandler: errorHandler);
 
-  final Address? address;
+  final String? address;
 
   late final _colorState = StateNotifier<IdentifyColor>(
     initValue: _identifyIconsService.initialColor,
@@ -28,11 +27,9 @@ class UserAvatarModel extends ElementaryModel {
 
   ListenableState<IdentifyColor> get colorState => _colorState;
 
-  String? get _address => address?.address;
-
   @override
   void init() {
-    if (_address != null) {
+    if (address != null) {
       _sc = _identifyIconsService.accountsColorsStream.listen(_onUpdateColor);
     }
     super.init();
@@ -45,8 +42,8 @@ class UserAvatarModel extends ElementaryModel {
   }
 
   Future<void> _onUpdateColor(AccountsColorsCollection collection) async {
-    if (_address != null) {
-      _colorState.accept(await collection.getColor(_address!));
+    if (address != null) {
+      _colorState.accept(await collection.getColor(address!));
     }
   }
 }
