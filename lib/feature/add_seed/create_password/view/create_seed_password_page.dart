@@ -4,6 +4,7 @@ import 'package:app/feature/add_seed/create_password/create_password.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
+import 'package:nekoton_repository/nekoton_repository.dart';
 import 'package:ui_components_lib/ui_components_lib.dart';
 
 typedef _Cubit = CreateSeedPasswordCubit;
@@ -16,11 +17,13 @@ class CreateSeedPasswordProfilePage extends StatelessWidget {
   const CreateSeedPasswordProfilePage({
     required this.name,
     required this.seedPhrase,
+    required this.type,
     super.key,
   });
 
   final SeedPhraseModel seedPhrase;
   final String? name;
+  final SeedAddType type;
 
   @override
   Widget build(BuildContext context) {
@@ -31,6 +34,7 @@ class CreateSeedPasswordProfilePage extends StatelessWidget {
         // When we do this flow from profile, navigate to profile root
         completeCallback: () =>
             context.goNamed(AppRoute.manageSeedsAccounts.name),
+        type: type,
       ),
       child: GestureDetector(
         onTap: () => FocusScope.of(context).unfocus(),

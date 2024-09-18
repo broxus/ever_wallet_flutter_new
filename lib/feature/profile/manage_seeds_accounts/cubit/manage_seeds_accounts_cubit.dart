@@ -5,7 +5,10 @@ import 'package:bloc/bloc.dart';
 import 'package:freezed_annotation/freezed_annotation.dart';
 import 'package:nekoton_repository/nekoton_repository.dart';
 
+import '../../../../app/service/secure_storage_service.dart';
+
 part 'manage_seeds_accounts_cubit.freezed.dart';
+
 part 'manage_seeds_accounts_state.dart';
 
 /// This is a bloc that displays list of user's seeds.
@@ -15,6 +18,7 @@ class ManageSeedsAccountsCubit extends Cubit<ManageSeedsAccountsState> {
   ManageSeedsAccountsCubit(
     this.nekotonRepository,
     this.currentSeedService,
+    this.storageService,
   ) : super(
           ManageSeedsAccountsState.data(
             currentSeed: currentSeedService.currentSeed,
@@ -24,6 +28,7 @@ class ManageSeedsAccountsCubit extends Cubit<ManageSeedsAccountsState> {
 
   final NekotonRepository nekotonRepository;
   final CurrentSeedService currentSeedService;
+  final SecureStorageService storageService;
 
   late StreamSubscription<SeedList> _seedListSubscription;
   late StreamSubscription<Seed?> _currentSeedSubscription;
@@ -51,6 +56,14 @@ class ManageSeedsAccountsCubit extends Cubit<ManageSeedsAccountsState> {
     );
     _seedListSubscription = nekotonRepository.seedListStream.skip(1).listen(
       (seeds) {
+        if (seeds.seeds.last.masterKey.accountList.allAccounts.isNotEmpty) {
+          final address = seeds.seeds.last.masterKey.accountList.allAccounts
+              .first.address.address;
+          storageService.addValue(
+            address + StorageConstants.showingManualBackupBadge,
+            seeds.seeds.last.addType == SeedAddType.create,
+          );
+        }
         emit(
           ManageSeedsAccountsState.data(
             currentSeed: currentSeedService.currentSeed,
