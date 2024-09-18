@@ -10,6 +10,7 @@ import 'package:app/v1/feature/add_seed/check_seed_phrase/check_seed_phrase.dart
 import 'package:app/v1/feature/add_seed/create_seed/create_seed.dart';
 import 'package:app/v1/feature/add_seed/enter_seed_name/view/enter_seed_name_page.dart';
 import 'package:go_router/go_router.dart';
+import 'package:nekoton_repository/nekoton_repository.dart';
 
 /// Name for phrase from queryParams to create or import seed.
 const addSeedPhraseQueryParam = 'addSeedPhrase';
@@ -122,6 +123,7 @@ GoRoute get createSeedNoNamedProfileRoute {
           state.uri.queryParameters[addSeedPhraseQueryParam],
         ),
         name: state.pathParameters[enterSeedNameNamePathParam],
+        type: SeedAddType.create,
       ),
     ),
   );
@@ -137,6 +139,7 @@ GoRoute get enterSeedNoNamedProfileRoute {
           state.uri.queryParameters[addSeedPhraseQueryParam],
         ),
         name: state.pathParameters[enterSeedNameNamePathParam],
+        type: SeedAddType.import,
       ),
     ),
   );
@@ -153,6 +156,7 @@ GoRoute get createSeedNamedProfileRoute {
         state.uri.queryParameters[addSeedPhraseQueryParam],
       ),
       name: state.pathParameters[enterSeedNameNamePathParam],
+      type: SeedAddType.create,
     ),
   );
 
@@ -192,6 +196,7 @@ GoRoute get enterSeedNamedProfileRoute {
               state.uri.queryParameters[addSeedPhraseQueryParam],
             ),
             name: state.pathParameters[enterSeedNameNamePathParam],
+            type: SeedAddType.import,
           );
         },
       ),

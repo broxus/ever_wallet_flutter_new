@@ -23,6 +23,7 @@ class CreateSeedPasswordCubit extends Cubit<CreateSeedPasswordState>
   CreateSeedPasswordCubit({
     required this.completeCallback,
     required this.seedPhrase,
+    required this.type,
     this.setCurrentKey = false,
     this.name,
   }) : super(CreateSeedPasswordState.initial()) {
@@ -41,6 +42,7 @@ class CreateSeedPasswordCubit extends Cubit<CreateSeedPasswordState>
 
   /// If true, then current key will be set as default (provided in onboarding)
   final bool setCurrentKey;
+  final SeedAddType type;
 
   final passwordController = TextEditingController();
   final confirmController = TextEditingController();
@@ -81,6 +83,7 @@ class CreateSeedPasswordCubit extends Cubit<CreateSeedPasswordState>
         phrase: seedPhrase.words,
         password: passwordController.text,
         name: name,
+        addType: type,
       );
       if (setCurrentKey) {
         await currentKeyService.changeCurrentKey(publicKey);
