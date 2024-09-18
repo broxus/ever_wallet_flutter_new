@@ -23,7 +23,7 @@ WalletPageWidgetModel defaultWalletPageWidgetModelFactory(
 class WalletPageWidgetModel
     extends CustomWidgetModel<WalletPageWidget, WalletPageModel> {
   WalletPageWidgetModel(super.model) {
-    _checkBadge();
+    _currentAccount.addListener(_onAccountChanged);
   }
 
   late final scrollController = createScrollController();
@@ -41,6 +41,10 @@ class WalletPageWidgetModel
     if (address != null) {
       model.hideShowingBadge(address);
     }
+  }
+
+  void _onAccountChanged() {
+    _checkBadge();
   }
 
   Future<void> _checkBadge() async {

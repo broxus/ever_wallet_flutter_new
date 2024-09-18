@@ -234,8 +234,8 @@ void main() {
     );
 
     /// Seeds
-    expect(await accountSeedStorage.readSeedNames(), {_publicKey: 'name'});
-    expect(accountSeedStorage.seedNames, {_publicKey: 'name'});
+    expect(await accountSeedStorage.readSeedMeta(), {_publicKey: 'name'});
+    expect(accountSeedStorage.seedMeta, {_publicKey: 'name'});
 
     /// Passwords
     expect(await storage.getKeyPassword(_publicKey), _password);
@@ -481,12 +481,12 @@ void main() {
 
       /// Seeds
       expect(
-        (await accountSeedStorage.readSeedNames())
+        (await accountSeedStorage.readSeedMeta())
             .map((key, value) => MapEntry(key.publicKey, value)),
         hive.seeds,
       );
       expect(
-        accountSeedStorage.seedNames
+        accountSeedStorage.seedMeta
             .map((key, value) => MapEntry(key.publicKey, value)),
         hive.seeds,
       );
