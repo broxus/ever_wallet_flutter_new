@@ -33,7 +33,7 @@ class AccountSettingsWidget
         StateNotifierBuilder(
           listenableState: wm.displayAccounts,
           builder: (_, list) => _ButtonsCard(
-            publicKey: account.publicKey,
+            address: account.address.address,
             onViewInExplorer: wm.onViewInExplorer,
             onCopyAddress: wm.onCopyAddress,
             onRename: wm.onRename,
@@ -54,14 +54,14 @@ class AccountSettingsWidget
 
 class _ButtonsCard extends StatelessWidget {
   const _ButtonsCard({
-    required this.publicKey,
+    required this.address,
     required this.onViewInExplorer,
     required this.onRename,
     required this.onCopyAddress,
     required this.onHideAccount,
   });
 
-  final PublicKey publicKey;
+  final String address;
   final VoidCallback onViewInExplorer;
   final VoidCallback onRename;
   final VoidCallback onCopyAddress;
@@ -84,7 +84,7 @@ class _ButtonsCard extends StatelessWidget {
         ),
         children: [
           AccountSettingsButton(
-            label: LocaleKeys.viewInExplorer.tr(),
+            label: LocaleKeys.seeInExplorer.tr(),
             icon: LucideIcons.globe,
             onTap: onViewInExplorer,
           ),
@@ -94,7 +94,7 @@ class _ButtonsCard extends StatelessWidget {
             onTap: onRename,
           ),
           AccountSettingsChangeColorButton(
-            publicKey: publicKey,
+            address: address,
           ),
           AccountSettingsButton(
             label: LocaleKeys.copyAddress.tr(),

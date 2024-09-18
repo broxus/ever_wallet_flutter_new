@@ -1,4 +1,4 @@
-import 'package:app/feature/widgets/barcode_address.dart';
+import 'package:app/widgets/barcode_address.dart';
 import 'package:app/generated/generated.dart';
 import 'package:flutter/material.dart';
 import 'package:lucide_icons_flutter/lucide_icons.dart';

@@ -11,7 +11,7 @@ import 'package:ui_components_lib/v2/dimens_v2.dart';
 class AccountSettingsChangeColorButton
     extends ElementaryWidget<AccountSettingsChangeColorButtonWidgetModel> {
   AccountSettingsChangeColorButton({
-    required PublicKey publicKey,
+    required String address,
     Key? key,
     WidgetModelFactory<AccountSettingsChangeColorButtonWidgetModel>? wmFactory,
   }) : super(
@@ -19,7 +19,7 @@ class AccountSettingsChangeColorButton
               (ctx) =>
                   defaultAccountSettingsChangeColorButtonWidgetModelFactory(
                     ctx,
-                    publicKey: publicKey,
+                    address: address,
                   ),
           key: key,
         );

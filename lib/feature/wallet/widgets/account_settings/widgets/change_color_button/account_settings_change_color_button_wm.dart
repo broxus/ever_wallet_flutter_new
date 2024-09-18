@@ -14,15 +14,15 @@ import 'package:nekoton_repository/nekoton_repository.dart';
 AccountSettingsChangeColorButtonWidgetModel
     defaultAccountSettingsChangeColorButtonWidgetModelFactory(
   BuildContext context, {
-  required PublicKey publicKey,
+  required String address,
 }) {
   return AccountSettingsChangeColorButtonWidgetModel(
     AccountSettingsChangeColorButtonModel(
       createPrimaryErrorHandler(context),
       inject(),
-      publicKey,
+      address,
     ),
-    publicKey,
+    address,
   );
 }
 
@@ -31,17 +31,17 @@ class AccountSettingsChangeColorButtonWidgetModel extends CustomWidgetModel<
     AccountSettingsChangeColorButton, AccountSettingsChangeColorButtonModel> {
   AccountSettingsChangeColorButtonWidgetModel(
     super.model,
-    this._publicKey,
+    this._address,
   );
 
-  StateNotifier<IdentifyColor> get colorState => model.colorState;
+  ListenableState<IdentifyColor> get colorState => model.colorState;
 
-  final PublicKey _publicKey;
+  final String _address;
 
   void onPressed() {
     showChangeColorBottomSheet(
       context: context,
-      publicKey: _publicKey,
+      address: _address,
     );
   }
 }

@@ -3,7 +3,6 @@ import 'package:app/app/service/identify/i_identify_icons_service.dart';
 import 'package:app/app/service/identify/identy_colors.dart';
 import 'package:app/feature/wallet/widgets/account_settings/widgets/change_color_bottom_sheet/change_color_bottom_sheet.dart';
 import 'package:elementary/elementary.dart';
-import 'package:nekoton_repository/nekoton_repository.dart';
 
 /// [ElementaryModel] for [ChangeColorBottomSheet]
 class ChangeColorBottomSheetModel extends ElementaryModel {
@@ -20,7 +19,7 @@ class ChangeColorBottomSheetModel extends ElementaryModel {
   Future<IdentifyColor> getColor(String key) =>
       _identifyIconsService.getColor(key);
 
-  void setColor(PublicKey publicKey, IdentifyColor color) {
-    _identifyIconsService.setColor(publicKey.publicKey, color);
+  void setColor(String address, IdentifyColor color) {
+    _identifyIconsService.setColor(address, color);
   }
 }

@@ -1,7 +1,7 @@
 import 'package:app/app/service/service.dart';
 import 'package:app/di/di.dart';
 import 'package:app/feature/wallet/widgets/account_asset_tab/select_new_asset/select_new_asset.dart';
-import 'package:app/feature/widgets/change_notifier_listener.dart';
+import 'package:app/widgets/change_notifier_listener.dart';
 import 'package:app/generated/generated.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
