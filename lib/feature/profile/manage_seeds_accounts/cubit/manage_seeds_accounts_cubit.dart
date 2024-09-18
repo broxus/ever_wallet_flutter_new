@@ -1,14 +1,12 @@
 import 'dart:async';
 
+import 'package:app/app/service/secure_storage_service.dart';
 import 'package:app/app/service/service.dart';
 import 'package:bloc/bloc.dart';
 import 'package:freezed_annotation/freezed_annotation.dart';
 import 'package:nekoton_repository/nekoton_repository.dart';
 
-import '../../../../app/service/secure_storage_service.dart';
-
 part 'manage_seeds_accounts_cubit.freezed.dart';
-
 part 'manage_seeds_accounts_state.dart';
 
 /// This is a bloc that displays list of user's seeds.
