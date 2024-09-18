@@ -71,7 +71,7 @@ class _AdaptiveFooterSingleChildScrollViewState
 
     _width = width;
     _height = height;
-    setStatePostFrame();
+    setStateSafePostFrame();
   }
 }
 
