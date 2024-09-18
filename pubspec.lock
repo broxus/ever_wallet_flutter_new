@@ -1444,12 +1444,11 @@ packages:
   nekoton_repository:
     dependency: "direct main"
     description:
-      path: "."
-      ref: "feature/derive-key"
-      resolved-ref: "35afee91f56b45921387b0ce7541b48be1962541"
-      url: "https://github.com/broxus/nekoton_repository.git"
-    source: git
-    version: "0.36.0-dev.7"
+      name: nekoton_repository
+      sha256: e87e8a9c9b18f699ff06cc7ecc23689c31c4aa6326ea552f7c38d5199a4eeaab
+      url: "https://pub.dev"
+    source: hosted
+    version: "0.37.0-dev.0"
   nekoton_webview:
     dependency: "direct main"
     description:
