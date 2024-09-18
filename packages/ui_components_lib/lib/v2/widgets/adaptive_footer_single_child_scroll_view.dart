@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:ui_components_lib/v2/utils/state_mixins.dart';
 
 class AdaptiveFooterSingleChildScrollView extends StatefulWidget {
   const AdaptiveFooterSingleChildScrollView({
@@ -20,7 +21,7 @@ class AdaptiveFooterSingleChildScrollView extends StatefulWidget {
 }
 
 class _AdaptiveFooterSingleChildScrollViewState
-    extends State<AdaptiveFooterSingleChildScrollView> {
+    extends State<AdaptiveFooterSingleChildScrollView> with StateMixin {
   double? _width;
 
   double? _height;
@@ -70,7 +71,7 @@ class _AdaptiveFooterSingleChildScrollViewState
 
     _width = width;
     _height = height;
-    WidgetsBinding.instance.addPostFrameCallback((_) => setState(() {}));
+    setStatePostFrame();
   }
 }
 

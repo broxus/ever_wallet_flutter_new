@@ -9,4 +9,10 @@ mixin StateMixin<T extends StatefulWidget> on State<T> {
   }
 
   void setStateSafeFuture([VoidCallback? fn]) => Future(() => setStateSafe(fn));
+
+  void setStatePostFrame([VoidCallback? fn]) {
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      setStateSafe(fn);
+    });
+  }
 }
