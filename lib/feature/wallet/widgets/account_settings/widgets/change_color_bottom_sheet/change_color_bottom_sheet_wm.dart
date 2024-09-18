@@ -34,9 +34,14 @@ class ChangeColorBottomSheetWidgetModel extends CustomWidgetModel<
 
   List<IdentifyColor> get availableColors => model.availableColors;
 
+  late final count = availableColors.length;
+  late final lastIndex = count - 1;
+
   TextStylesV2 get textStyle => _theme.textStyles;
 
   ThemeStyleV2 get _theme => context.themeStyleV2;
+
+  IdentifyColor? get _selectedColor => selectedColorState.value;
 
   @override
   void initWidgetModel() {
@@ -50,6 +55,16 @@ class ChangeColorBottomSheetWidgetModel extends CustomWidgetModel<
 
   void onPressedColor(IdentifyColor color) {
     selectedColorState.accept(color);
+  }
+
+  void onPressedSave() {
+    final color = _selectedColor;
+
+    if (color == null) {
+      return;
+    }
+
+    model.setColor(widget.publicKey, color);
     _back();
   }
 

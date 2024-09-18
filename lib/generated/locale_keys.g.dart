@@ -586,4 +586,5 @@ abstract class LocaleKeys {
   static const invalidReceiverAddress = 'invalidReceiverAddress';
   static const deleteBookmarksQuestion = 'deleteBookmarksQuestion';
   static const deleteBookmarksDescription = 'deleteBookmarksDescription';
+  static const save = 'save';
 }
