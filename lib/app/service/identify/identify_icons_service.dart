@@ -36,6 +36,7 @@ class IdentifyIconsService implements IIdentifyIconsService {
   @override
   void setColor(String key, IdentifyColor identifyColor) {
     _accountsColors.setColor(key, identifyColor);
+    _accountsColorsSubject.add(_accountsColors);
   }
 
   @override
