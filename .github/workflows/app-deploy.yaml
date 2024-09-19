@@ -95,7 +95,7 @@ jobs:
     needs: setup
     runs-on: macos-latest
 
-    if: ${{ inputs.deploy_target == 'fad' || inputs.deploy_target == 'store' || inputs.deploy_target == 'ios_fad' || inputs.deploy_target == 'ios_store' }}
+    if: ${{ inputs.deploy_target == '' || inputs.deploy_target == 'fad' || inputs.deploy_target == 'store' || inputs.deploy_target == 'ios_fad' || inputs.deploy_target == 'ios_store' }}
 
     env:
       SECRET_PASSPHRASE: ${{ secrets.SECRET_PASSPHRASE }}
@@ -178,7 +178,7 @@ jobs:
     needs: setup
     runs-on: ubuntu-latest
 
-    if: ${{ inputs.deploy_target == 'fad' || inputs.deploy_target == 'store' || inputs.deploy_target == 'android_fad' || inputs.deploy_target == 'android_store' }}
+    if: ${{ inputs.deploy_target == '' || inputs.deploy_target == 'fad' || inputs.deploy_target == 'store' || inputs.deploy_target == 'android_fad' || inputs.deploy_target == 'android_store' }}
 
     env:
       SECRET_PASSPHRASE: ${{ secrets.SECRET_PASSPHRASE }}
