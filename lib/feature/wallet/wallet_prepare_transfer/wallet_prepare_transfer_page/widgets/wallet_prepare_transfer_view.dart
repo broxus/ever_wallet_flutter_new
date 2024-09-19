@@ -91,17 +91,31 @@ class WalletPrepareTransferView extends StatelessWidget {
 
   Widget _buildReceiverSuffix() => StateNotifierBuilder(
         listenableState: _wm.receiverState,
-        builder: (_, value) => value?.isNotEmpty ?? false
-            ? Padding(
-                padding: const EdgeInsets.only(right: DimensSize.d8),
-                child: PrimaryButton(
-                  buttonShape: ButtonShape.square,
-                  icon: LucideIcons.x,
-                  onPressed: _wm.onPressedReceiverClear,
-                  buttonSize: ButtonSize.small,
-                ),
-              )
-            : const SizedBox.shrink(),
+        builder: (_, value) {
+          if (value?.isEmpty ?? true) {
+            return Padding(
+              padding: const EdgeInsets.only(
+                right: DimensSizeV2.d8,
+              ),
+              child: FloatButton(
+                buttonShape: ButtonShape.square,
+                buttonSize: ButtonSize.small,
+                icon: LucideIcons.arrowDownToDot,
+                onPressed: _wm.onPressedPastAddress,
+              ),
+            );
+          } else {
+            return Padding(
+              padding: const EdgeInsets.only(right: DimensSize.d8),
+              child: PrimaryButton(
+                buttonShape: ButtonShape.square,
+                icon: LucideIcons.x,
+                onPressed: _wm.onPressedReceiverClear,
+                buttonSize: ButtonSize.small,
+              ),
+            );
+          }
+        },
       );
 
   Widget _buildCommentWidget() => StateNotifierBuilder(

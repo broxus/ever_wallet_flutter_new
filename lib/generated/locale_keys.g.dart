@@ -373,6 +373,7 @@ abstract class LocaleKeys {
   static const selectAccount = 'selectAccount';
   static const grantPermissions = 'grantPermissions';
   static const changeAccount = 'changeAccount';
+  static const changeColor = 'changeColor';
   static const originWord = 'originWord';
   static const requestedPermissions = 'requestedPermissions';
   static const allowWord = 'allowWord';
@@ -585,4 +586,5 @@ abstract class LocaleKeys {
   static const invalidReceiverAddress = 'invalidReceiverAddress';
   static const deleteBookmarksQuestion = 'deleteBookmarksQuestion';
   static const deleteBookmarksDescription = 'deleteBookmarksDescription';
+  static const save = 'save';
 }
