@@ -28,6 +28,8 @@ import '../app/service/currencies_service.dart' as _i308;
 import '../app/service/currency_convert_service.dart' as _i27;
 import '../app/service/current_accounts_service.dart' as _i402;
 import '../app/service/current_seed_service.dart' as _i244;
+import '../app/service/identify/i_identify_icons_service.dart' as _i958;
+import '../app/service/identify/identify_icons_service.dart' as _i316;
 import '../app/service/localization/service/localization_service.dart' as _i5;
 import '../app/service/messenger/service/messenger_service.dart' as _i980;
 import '../app/service/navigation/service/navigation_service.dart' as _i451;
@@ -40,6 +42,7 @@ import '../app/service/ntp_service.dart' as _i68;
 import '../app/service/permissions_service.dart' as _i473;
 import '../app/service/remote/dns_resolve_service.dart' as _i391;
 import '../app/service/remote/http_service.dart' as _i126;
+import '../app/service/secure_storage_service.dart' as _i365;
 import '../app/service/service.dart' as _i128;
 import '../app/service/staking_service.dart' as _i209;
 import '../app/service/storage_service/account_seed_storage_service.dart'
@@ -100,6 +103,8 @@ extension GetItInjectableX on _i174.GetIt {
     gh.singleton<_i391.DnsResolveService>(() => _i391.DnsResolveService());
     gh.singleton<_i654.BrowserApprovalsService>(
         () => _i654.BrowserApprovalsService());
+    gh.lazySingleton<_i365.SecureStorageService>(
+        () => _i365.SecureStorageService());
     gh.singleton<_i29.BrowserPermissionsStorageService>(() =>
         _i29.BrowserPermissionsStorageService(gh<_i426.EncryptedStorage>()));
     gh.singleton<_i1020.BalanceStorageService>(
@@ -144,6 +149,8 @@ extension GetItInjectableX on _i174.GetIt {
           gh<_i128.GeneralStorageService>(),
           gh<_i771.NekotonRepository>(),
         ));
+    gh.lazySingleton<_i958.IIdentifyIconsService>(
+        () => _i316.IdentifyIconsService(gh<_i365.SecureStorageService>()));
     gh.singleton<_i747.NekotonStorageService>(
         () => _i747.NekotonStorageService(gh<_i426.EncryptedStorage>()));
     gh.singleton<_i575.BiometryService>(() => _i575.BiometryService(

@@ -368,6 +368,7 @@
   "selectAccount": "Select account",
   "grantPermissions": "Grant permissions",
   "changeAccount": "Change account",
+  "changeColor": "Change color",
   "originWord": "Origin",
   "requestedPermissions": "Requested permissions",
   "allowWord": "Allow",
@@ -568,5 +569,6 @@
   "accountAddedSheetContinue": "Continue without switching",
   "invalidReceiverAddress": "Invalid receiver address",
   "deleteBookmarksQuestion": "Are you sure you want\nto delete all bookmarks?",
-  "deleteBookmarksDescription": "All bookmarks will be permanently deleted"
+  "deleteBookmarksDescription": "All bookmarks will be permanently deleted",
+  "save": "Save"
 }

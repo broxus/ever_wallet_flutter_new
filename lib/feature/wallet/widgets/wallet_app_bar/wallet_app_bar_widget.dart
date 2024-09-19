@@ -1,7 +1,7 @@
 import 'package:app/feature/network/network.dart';
 import 'package:app/feature/wallet/widgets/wallet_app_bar/wallet_app_bar_wm.dart';
-import 'package:app/generated/generated.dart';
 import 'package:app/utils/utils.dart';
+import 'package:app/widgets/user_avatar/user_avatar.dart';
 import 'package:elementary/elementary.dart';
 import 'package:elementary_helper/elementary_helper.dart';
 import 'package:flutter/material.dart';
@@ -96,10 +96,8 @@ class _AccountInfo extends StatelessWidget {
     return SeparatedRow(
       children: [
         ClipOval(
-          child: Image.asset(
-            Assets.images.userAvatar.userAvatar.path,
-            width: DimensSizeV2.d40,
-            height: DimensSizeV2.d40,
+          child: UserAvatar(
+            address: account.address.address,
           ),
         ),
         Flexible(

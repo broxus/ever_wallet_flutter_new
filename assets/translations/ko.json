@@ -368,6 +368,7 @@
   "selectAccount": "Select account",
   "grantPermissions": "Grant permissions",
   "changeAccount": "Change account",
+  "changeColor": "Change color",
   "originWord": "Origin",
   "requestedPermissions": "Requested permissions",
   "allowWord": "Allow",
@@ -506,9 +507,9 @@
   "approximatelySign": "~",
   "currentBalanceLabel": "Current balance",
   "untrastedTokenWarning": "This token is not published in the official assets repository. Add it with caution if you trust the source.",
-  "phishingExplicitWarning":"Token has the symbol from the trusted list but a different root contract address. Be careful: it may be a phishing attempt.",
-  "phishingSameSymbolWarning":"You already have a token with the same symbol. Be careful: it may be a phishing attempt.",
-  "phishingSuggestionWarning":"You have already added a token with the same symbol before, however the new one is in the official assets repository. This may be a new version and you might consider deleting the previous one.",
+  "phishingExplicitWarning": "Token has the symbol from the trusted list but a different root contract address. Be careful: it may be a phishing attempt.",
+  "phishingSameSymbolWarning": "You already have a token with the same symbol. Be careful: it may be a phishing attempt.",
+  "phishingSuggestionWarning": "You have already added a token with the same symbol before, however the new one is in the official assets repository. This may be a new version and you might consider deleting the previous one.",
   "expand": "Expand",
   "collapse": "Collapse",
   "metadata": "Metadata",
@@ -568,5 +569,6 @@
   "accountAddedSheetContinue": "Continue without switching",
   "invalidReceiverAddress": "Invalid receiver address",
   "deleteBookmarksQuestion": "Are you sure you want\nto delete all bookmarks?",
-  "deleteBookmarksDescription": "All bookmarks will be permanently deleted"
+  "deleteBookmarksDescription": "All bookmarks will be permanently deleted",
+  "save": "Save"
 }
