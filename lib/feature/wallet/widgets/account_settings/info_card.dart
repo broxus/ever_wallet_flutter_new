@@ -1,5 +1,4 @@
 import 'package:app/app/service/messenger/messenger.dart';
-import 'package:app/app/service/messenger/service/messenger_service.dart';
 import 'package:app/di/di.dart';
 import 'package:app/generated/generated.dart';
 import 'package:barcode_widget/barcode_widget.dart';
