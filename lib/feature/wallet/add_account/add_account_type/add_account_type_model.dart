@@ -49,7 +49,7 @@ class AddAccountTypeModel extends ElementaryModel {
     required PublicKey publicKey,
     required String password,
   }) async {
-    final seed = _nekotonRepository.seedList.findSeed(publicKey)!;
+    final seed = _nekotonRepository.seedList.findSeedByAnyPublicKey(publicKey)!;
 
     if (!seed.masterKey.createdAccountTypes.contains(walletType)) {
       return seed.masterKey;
