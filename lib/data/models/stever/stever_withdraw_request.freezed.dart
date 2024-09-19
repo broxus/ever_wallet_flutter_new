@@ -23,6 +23,7 @@ StEverWithdrawRequest _$StEverWithdrawRequestFromJson(
 mixin _$StEverWithdrawRequest {
   String get nonce => throw _privateConstructorUsedError;
   StEverWithdrawRequestData get data => throw _privateConstructorUsedError;
+  @AddressConverter()
   Address get accountAddress => throw _privateConstructorUsedError;
 
   /// Serializes this StEverWithdrawRequest to a JSON map.
@@ -42,7 +43,9 @@ abstract class $StEverWithdrawRequestCopyWith<$Res> {
       _$StEverWithdrawRequestCopyWithImpl<$Res, StEverWithdrawRequest>;
   @useResult
   $Res call(
-      {String nonce, StEverWithdrawRequestData data, Address accountAddress});
+      {String nonce,
+      StEverWithdrawRequestData data,
+      @AddressConverter() Address accountAddress});
 
   $StEverWithdrawRequestDataCopyWith<$Res> get data;
   $AddressCopyWith<$Res> get accountAddress;
@@ -115,7 +118,9 @@ abstract class _$$StEverWithdrawRequestImplCopyWith<$Res>
   @override
   @useResult
   $Res call(
-      {String nonce, StEverWithdrawRequestData data, Address accountAddress});
+      {String nonce,
+      StEverWithdrawRequestData data,
+      @AddressConverter() Address accountAddress});
 
   @override
   $StEverWithdrawRequestDataCopyWith<$Res> get data;
@@ -162,7 +167,9 @@ class __$$StEverWithdrawRequestImplCopyWithImpl<$Res>
 @JsonSerializable()
 class _$StEverWithdrawRequestImpl implements _StEverWithdrawRequest {
   const _$StEverWithdrawRequestImpl(
-      {required this.nonce, required this.data, required this.accountAddress});
+      {required this.nonce,
+      required this.data,
+      @AddressConverter() required this.accountAddress});
 
   factory _$StEverWithdrawRequestImpl.fromJson(Map<String, dynamic> json) =>
       _$$StEverWithdrawRequestImplFromJson(json);
@@ -172,6 +179,7 @@ class _$StEverWithdrawRequestImpl implements _StEverWithdrawRequest {
   @override
   final StEverWithdrawRequestData data;
   @override
+  @AddressConverter()
   final Address accountAddress;
 
   @override
@@ -213,9 +221,10 @@ class _$StEverWithdrawRequestImpl implements _StEverWithdrawRequest {
 
 abstract class _StEverWithdrawRequest implements StEverWithdrawRequest {
   const factory _StEverWithdrawRequest(
-      {required final String nonce,
-      required final StEverWithdrawRequestData data,
-      required final Address accountAddress}) = _$StEverWithdrawRequestImpl;
+          {required final String nonce,
+          required final StEverWithdrawRequestData data,
+          @AddressConverter() required final Address accountAddress}) =
+      _$StEverWithdrawRequestImpl;
 
   factory _StEverWithdrawRequest.fromJson(Map<String, dynamic> json) =
       _$StEverWithdrawRequestImpl.fromJson;
@@ -225,6 +234,7 @@ abstract class _StEverWithdrawRequest implements StEverWithdrawRequest {
   @override
   StEverWithdrawRequestData get data;
   @override
+  @AddressConverter()
   Address get accountAddress;
 
   /// Create a copy of StEverWithdrawRequest

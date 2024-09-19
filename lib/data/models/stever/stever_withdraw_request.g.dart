@@ -12,7 +12,8 @@ _$StEverWithdrawRequestImpl _$$StEverWithdrawRequestImplFromJson(
       nonce: json['nonce'] as String,
       data: StEverWithdrawRequestData.fromJson(
           json['data'] as Map<String, dynamic>),
-      accountAddress: Address.fromJson(json['accountAddress'] as String),
+      accountAddress:
+          const AddressConverter().fromJson(json['accountAddress'] as String),
     );
 
 Map<String, dynamic> _$$StEverWithdrawRequestImplToJson(
@@ -20,7 +21,8 @@ Map<String, dynamic> _$$StEverWithdrawRequestImplToJson(
     <String, dynamic>{
       'nonce': instance.nonce,
       'data': instance.data.toJson(),
-      'accountAddress': instance.accountAddress.toJson(),
+      'accountAddress':
+          const AddressConverter().toJson(instance.accountAddress),
     };
 
 _$StEverWithdrawRequestDataImpl _$$StEverWithdrawRequestDataImplFromJson(

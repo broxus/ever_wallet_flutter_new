@@ -8,48 +8,48 @@ environment:
   flutter: ">=3.10.3"
 
 dependencies:
-  app_settings: ^5.1.1
-  auto_size_text_field: ^2.2.3
-  barcode_widget: ^2.0.4
-  bloc: ^8.1.4
-  bloc_event_transformers: ^1.0.1
-  cached_network_image: ^3.3.1
-  clock: ^1.1.1
-  collection: ^1.18.0
-  crypto: ^3.0.3
-  dotted_border: ^2.1.0
-  easy_localization: ^3.0.6
-  easy_logger: ^0.0.2
-  elementary: ^3.0.0
-  elementary_helper: ^1.0.1
+  app_settings: 5.1.1
+  auto_size_text_field: 2.2.3
+  barcode_widget: 2.0.4
+  bloc: 8.1.4
+  bloc_event_transformers: 1.0.1
+  cached_network_image: 3.3.1
+  clock: 1.1.1
+  collection: 1.18.0
+  crypto: 3.0.5
+  dotted_border: 2.1.0
+  easy_localization: 3.0.6
+  easy_logger: 0.0.2
+  elementary: 3.0.0
+  elementary_helper: 1.0.1
   encrypted_storage: 0.1.3
-  equatable: ^2.0.5
+  equatable: 2.0.5
   fancy_logger: 0.1.5
-  favicon: ^1.1.2
+  favicon: 1.1.2
   flutter:
     sdk: flutter
-  flutter_bloc: ^8.1.5
-  flutter_email_sender: ^6.0.3
-  flutter_inappwebview: ^6.0.0
-  flutter_screenutil: ^5.9.3
-  flutter_secure_storage: ^9.2.2
-  flutter_svg: ^2.0.10+1
-  freezed_annotation: ^2.4.1
-  frontend_server_client: ^4.0.0
-  get_it: ^7.7.0
-  go_router: ^14.2.7
-  hive_flutter: ^1.1.0
-  http: ^1.2.1
-  image_picker: ^1.0.4
-  in_app_notification: ^1.1.2
-  injectable: ^2.4.1
-  internet_connection_checker_plus: ^2.5.1
-  json_annotation: ^4.9.0
-  local_auth: ^2.2.0
+  flutter_bloc: 8.1.5
+  flutter_email_sender: 6.0.3
+  flutter_inappwebview: 6.0.0
+  flutter_screenutil: 5.9.3
+  flutter_secure_storage: 9.2.2
+  flutter_svg: 2.0.10+1
+  freezed_annotation: 2.4.4
+  frontend_server_client: 4.0.0
+  get_it: 7.7.0
+  go_router: 14.2.7
+  hive_flutter: 1.1.0
+  http: 1.2.1
+  image_picker: 1.0.4
+  in_app_notification: 1.1.2
+  injectable: 2.4.4
+  internet_connection_checker_plus: 2.5.1
+  json_annotation: 4.9.0
+  local_auth: 2.2.0
   logging: 1.2.0
-  lucide_icons_flutter: ^1.1.2
+  lucide_icons_flutter: 1.1.2
   mobile_scanner: 3.4.1
-  money2: ^5.2.1
+  money2: 5.2.1
   money2_fixer: 2.0.0
   nekoton_repository: 0.37.0-dev.0
 #  nekoton_webview: 0.1.8-dev.0
@@ -57,51 +57,51 @@ dependencies:
     git:
       url: https://github.com/broxus/nekoton_webview
       ref: update-dependencies
-  ntp: ^2.0.0
+  ntp: 2.0.0
   package_info_plus: ^8.0.0
-  path_provider: ^2.1.3
-  permission_handler: ^11.3.1
+  path_provider: 2.1.3
+  permission_handler: 11.3.1
   render_metrics:
     #    Temporarily. Before the adoption of the PR
     #    https://github:com/surfstudio/flutter-render-metrics/pull/27:
     git:
       url: https://github.com/knightsforce/flutter-render-metrics
       ref: optional-render-manager
-  rxdart: ^0.27.7
+  rxdart: 0.27.7
   sentry_flutter: ^7.0.0
   share_plus: 9.0.0
-  shared_preferences: ^2.2.3
-  string_extensions: ^0.7.1
+  shared_preferences: 2.2.3
+  string_extensions: 0.7.1
   ui_components_lib:
     path: packages/ui_components_lib
-  url_launcher: ^6.2.6
-  uuid: ^3.0.7
-  visibility_detector: ^0.4.0+2
+  url_launcher: 6.2.6
+  uuid: 3.0.7
+  visibility_detector: 0.4.0+2
 
 dev_dependencies:
-  bloc_test: ^9.1.7
+  bloc_test: 9.1.7
   broxus_flutter_analysis:
     git:
       url: https://github.com/broxus/flutter_templates.git
       ref: main
-  build_runner: ^2.4.12
-  custom_lint: ^0.5.3
+  build_runner: 2.4.12
+  custom_lint: 0.5.5
   datetime_avoid_lint:
     path: packages/datetime_avoid_lint
-  flutter_gen_runner: ^5.4.0
-  flutter_native_splash: ^2.4.0
+  flutter_gen_runner: 5.4.0
+  flutter_native_splash: 2.4.0
   flutter_test:
     sdk: flutter
-  freezed: ^2.5.2
-  googleapis_auth: ^1.6.0
-  hive_generator: ^2.0.1
-  injectable_generator: ^2.6.1
+  freezed: 2.5.7
+  googleapis_auth: 1.6.0
+  hive_generator: 2.0.1
+  injectable_generator: 2.6.1
   integration_test:
     sdk: flutter
-  intl: ^0.19.0
-  json_serializable: ^6.8.0
-  melos: ^6.0.0
-  mocktail: ^1.0.3
+  intl: 0.19.0
+  json_serializable: 6.8.0
+  melos: 6.0.0
+  mocktail: 1.0.3
   test: ^1.21.0
 
 flutter_gen:
