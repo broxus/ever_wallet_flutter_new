@@ -1,3 +1,4 @@
+import 'package:app/utils/json/nekoton_address_converter.dart';
 import 'package:app/utils/utils.dart';
 import 'package:collection/collection.dart';
 import 'package:freezed_annotation/freezed_annotation.dart';
@@ -7,23 +8,13 @@ part 'account_balance.freezed.dart';
 
 part 'account_balance.g.dart';
 
-class AddressConverter implements JsonConverter<Address, String> {
-  const AddressConverter();
-
-  @override
-  Address fromJson(String json) => Address(address: json);
-
-  @override
-  String toJson(Address object) => object.address;
-}
-
 /// Model of cached fiat and token balance that could be saved and restored
 /// to access balance before creating subscription.
 @immutable
 @freezed
 class AccountBalanceModel with _$AccountBalanceModel {
   const factory AccountBalanceModel({
-    @AddressConverter() required Address rootTokenContract,
+    @NekotonAddressConverter() required Address rootTokenContract,
     @moneyFromStringJsonConverter required Money fiatBalance,
     @moneyFromStringJsonConverter required Money tokenBalance,
   }) = _AccountBalanceModel;

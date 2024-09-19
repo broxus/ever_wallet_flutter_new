@@ -23,7 +23,7 @@ StEverWithdrawRequest _$StEverWithdrawRequestFromJson(
 mixin _$StEverWithdrawRequest {
   String get nonce => throw _privateConstructorUsedError;
   StEverWithdrawRequestData get data => throw _privateConstructorUsedError;
-  @AddressConverter()
+  @NekotonAddressConverter()
   Address get accountAddress => throw _privateConstructorUsedError;
 
   /// Serializes this StEverWithdrawRequest to a JSON map.
@@ -45,7 +45,7 @@ abstract class $StEverWithdrawRequestCopyWith<$Res> {
   $Res call(
       {String nonce,
       StEverWithdrawRequestData data,
-      @AddressConverter() Address accountAddress});
+      @NekotonAddressConverter() Address accountAddress});
 
   $StEverWithdrawRequestDataCopyWith<$Res> get data;
   $AddressCopyWith<$Res> get accountAddress;
@@ -120,7 +120,7 @@ abstract class _$$StEverWithdrawRequestImplCopyWith<$Res>
   $Res call(
       {String nonce,
       StEverWithdrawRequestData data,
-      @AddressConverter() Address accountAddress});
+      @NekotonAddressConverter() Address accountAddress});
 
   @override
   $StEverWithdrawRequestDataCopyWith<$Res> get data;
@@ -169,7 +169,7 @@ class _$StEverWithdrawRequestImpl implements _StEverWithdrawRequest {
   const _$StEverWithdrawRequestImpl(
       {required this.nonce,
       required this.data,
-      @AddressConverter() required this.accountAddress});
+      @NekotonAddressConverter() required this.accountAddress});
 
   factory _$StEverWithdrawRequestImpl.fromJson(Map<String, dynamic> json) =>
       _$$StEverWithdrawRequestImplFromJson(json);
@@ -179,7 +179,7 @@ class _$StEverWithdrawRequestImpl implements _StEverWithdrawRequest {
   @override
   final StEverWithdrawRequestData data;
   @override
-  @AddressConverter()
+  @NekotonAddressConverter()
   final Address accountAddress;
 
   @override
@@ -223,7 +223,7 @@ abstract class _StEverWithdrawRequest implements StEverWithdrawRequest {
   const factory _StEverWithdrawRequest(
           {required final String nonce,
           required final StEverWithdrawRequestData data,
-          @AddressConverter() required final Address accountAddress}) =
+          @NekotonAddressConverter() required final Address accountAddress}) =
       _$StEverWithdrawRequestImpl;
 
   factory _StEverWithdrawRequest.fromJson(Map<String, dynamic> json) =
@@ -234,7 +234,7 @@ abstract class _StEverWithdrawRequest implements StEverWithdrawRequest {
   @override
   StEverWithdrawRequestData get data;
   @override
-  @AddressConverter()
+  @NekotonAddressConverter()
   Address get accountAddress;
 
   /// Create a copy of StEverWithdrawRequest
