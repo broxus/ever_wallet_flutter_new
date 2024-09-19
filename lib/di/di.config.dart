@@ -179,6 +179,7 @@ extension GetItInjectableX on _i174.GetIt {
         () => _i402.CurrentAccountsService(
               gh<_i771.NekotonRepository>(),
               gh<_i128.CurrentKeyService>(),
+              gh<_i426.EncryptedStorage>(),
             ));
     gh.singleton<_i308.CurrenciesService>(() => _i308.CurrenciesService(
           httpService: gh<_i128.HttpService>(),
