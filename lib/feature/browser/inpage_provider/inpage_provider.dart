@@ -2,7 +2,6 @@ import 'dart:async';
 
 import 'package:app/app/service/service.dart' as s;
 import 'package:app/data/models/models.dart';
-import 'package:app/di/di.dart';
 import 'package:app/generated/generated.dart';
 import 'package:app/utils/constants.dart';
 import 'package:app/utils/utils.dart';
@@ -22,6 +21,8 @@ class InpageProvider extends ProviderApi {
     required this.approvalsService,
     required this.permissionsService,
     required this.nekotonRepository,
+    required this.messengerService,
+    required this.assetsService,
   });
 
   final _logger = Logger('InpageProvider');
@@ -31,6 +32,8 @@ class InpageProvider extends ProviderApi {
   final s.BrowserApprovalsService approvalsService;
   final s.PermissionsService permissionsService;
   final nr.NekotonRepository nekotonRepository;
+  final s.MessengerService messengerService;
+  final s.AssetsService assetsService;
 
   Uri? url;
   Uri? get origin => url == null ? null : Uri.parse(url!.origin);
@@ -126,7 +129,7 @@ class InpageProvider extends ProviderApi {
           break;
         }
 
-        final details = await inject<s.AssetsService>().getTokenContractAsset(
+        final details = await assetsService.getTokenContractAsset(
           rootTokenContract,
           transport,
         );
@@ -1603,10 +1606,10 @@ class InpageProvider extends ProviderApi {
       return await super.call(method, params);
     } on s.ApprovalsHandleException catch (e, t) {
       _logger.severe(method, e.message, t);
-      inject<s.MessengerService>().show(s.Message.error(message: e.message));
+      messengerService.show(s.Message.error(message: e.message));
       rethrow;
     } on nr.ExecuteLocalException catch (e) {
-      inject<s.MessengerService>().show(
+      messengerService.show(
         s.Message.error(
           message: LocaleKeys.contractWithErrorCode.tr(args: [e.errorCode]),
         ),
@@ -1614,11 +1617,11 @@ class InpageProvider extends ProviderApi {
       rethrow;
     } on nr.FfiException catch (e, t) {
       _logger.severe(method, e, t);
-      inject<s.MessengerService>().show(s.Message.error(message: e.message));
+      messengerService.show(s.Message.error(message: e.message));
       rethrow;
     } catch (e, t) {
       _logger.severe(method, e, t);
-      inject<s.MessengerService>().show(
+      messengerService.show(
         s.Message.error(message: LocaleKeys.browserErrorTitle.tr()),
       );
       rethrow;
