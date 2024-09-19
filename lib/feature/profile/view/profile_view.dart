@@ -5,6 +5,7 @@ import 'package:app/generated/assets.gen.dart';
 import 'package:app/generated/locale_keys.g.dart';
 import 'package:easy_localization/easy_localization.dart';
 import 'package:elementary_helper/elementary_helper.dart';
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:lucide_icons_flutter/lucide_icons.dart';
 import 'package:nekoton_repository/nekoton_repository.dart';
@@ -118,7 +119,10 @@ class ProfileView extends StatelessWidget {
                   firstSource: isBiometryAvailable,
                   secondSource: isBiometryEnabled,
                   builder: (_, available, enabled) {
-                    if (available != true) return const SizedBox.shrink();
+                    if (available != true &&
+                        defaultTargetPlatform != TargetPlatform.iOS) {
+                      return const SizedBox.shrink();
+                    }
                     return _profileTile(
                       leadingIcon: Assets.images.fingerSmall.path,
                       title: LocaleKeys.biometryWord.tr(),
