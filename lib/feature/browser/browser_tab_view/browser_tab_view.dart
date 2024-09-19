@@ -81,6 +81,8 @@ class _BrowserTabViewState extends State<BrowserTabView> {
     approvalsService: inject(),
     permissionsService: inject(),
     nekotonRepository: inject(),
+    messengerService: inject(),
+    assetsService: inject(),
   );
 
   Timer? _screenshotTimer;
