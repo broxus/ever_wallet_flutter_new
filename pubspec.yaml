@@ -51,10 +51,7 @@ dependencies:
   mobile_scanner: 3.4.1
   money2: ^5.2.1
   money2_fixer: 2.0.0
-  nekoton_repository:
-    git:
-      url: https://github.com/broxus/nekoton_repository.git
-      ref: feature/derive-key
+  nekoton_repository: 0.37.0-dev.0
 #  nekoton_webview: 0.1.8-dev.0
   nekoton_webview:
     git:
