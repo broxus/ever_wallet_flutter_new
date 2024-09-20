@@ -64,29 +64,4 @@ class SelectAccountModel extends ElementaryModel {
     }
     return wallet;
   }
-
-  Future<Money?> getBalance(KeyAccount account) async {
-    final wallet = _nekotonRepository.walletsMap[account.address]?.wallet ??
-        await _getWallet(account);
-
-    return Money.fromBigIntWithCurrency(
-      wallet.contractState.balance,
-      Currencies()[currentTransport.nativeTokenTicker]!,
-    );
-  }
-
-  Future<TonWallet> _getWallet(KeyAccount account) async {
-    TonWallet? wallet;
-    try {
-      wallet = await TonWallet.subscribe(
-        transport: currentTransport.transport,
-        workchainId: account.workchain,
-        publicKey: account.publicKey,
-        walletType: account.account.tonWallet.contract,
-      );
-    } finally {
-      wallet?.dispose();
-    }
-    return wallet;
-  }
 }
