@@ -19,7 +19,7 @@ class AddAccountResultModel extends ElementaryModel {
 
     if (account != null) {
       await _currentKeyService.changeCurrentKey(account.publicKey);
-      _currentAccountsService.changeCurrentActiveAccount(account);
+      await _currentAccountsService.changeCurrentActiveAccount(account);
     }
   }
 }

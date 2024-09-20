@@ -37,7 +37,7 @@ class SelectAccountModel extends ElementaryModel {
 
   Future<void> changeCurrentAccount(KeyAccount account) async {
     await _currentKeyService.changeCurrentKey(account.publicKey);
-    _currentAccountsService.changeCurrentActiveAccount(account);
+    await _currentAccountsService.changeCurrentActiveAccount(account);
   }
 
   Future<Money?> getBalance(KeyAccount account) async {
