@@ -66,7 +66,7 @@ class CurrentAccountsService {
   (int, KeyAccount?)? get currentActiveAccount =>
       _currentActiveAccountSubject.valueOrNull;
 
-  void init() {
+  Future<void> init() async {
     // skip 1 to avoid duplicate calls
     _nekotonRepository.seedListStream.skip(1).listen(
           (list) => _updateAccountsList(list, _currentKeyService.currentKey),
@@ -80,28 +80,7 @@ class CurrentAccountsService {
       _currentKeyService.currentKey,
     );
 
-    _initCurrentAccount();
-  }
-
-  Future<void> _initCurrentAccount() async {
-    final address = await _storage.get(
-      _currentAddress,
-      domain: _preferencesKey,
-    );
-
-    if (address == null) {
-      return;
-    }
-
-    final account = currentAccounts?.allAccounts.firstWhereOrNull(
-      (KeyAccount account) => account.address.address == address,
-    );
-
-    if (account == null) {
-      return;
-    }
-
-    unawaited(changeCurrentActiveAccount(account));
+    await _initCurrentAccount();
   }
 
   /// Try updating current active account for [currentAccounts], this will try
@@ -161,6 +140,27 @@ class CurrentAccountsService {
   /// their account is selected in [currentActiveAccount].
   StreamSubscription<dynamic>? _tonWalletSubscription;
   StreamSubscription<dynamic>? _tokenWalletSubscription;
+
+  Future<void> _initCurrentAccount() async {
+    final address = await _storage.get(
+      _currentAddress,
+      domain: _preferencesKey,
+    );
+
+    if (address == null) {
+      return;
+    }
+
+    final account = currentAccounts?.allAccounts.firstWhereOrNull(
+      (KeyAccount account) => account.address.address == address,
+    );
+
+    if (account == null) {
+      return;
+    }
+
+    unawaited(changeCurrentActiveAccount(account));
+  }
 
   /// Start listening for wallet subscriptions and when subscription will be
   /// created, start polling.
