@@ -1,8 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-import 'package:lucide_icons_flutter/lucide_icons.dart';
+import 'package:ui_components_lib/components/button/app_bar_back_button.dart';
 import 'package:ui_components_lib/ui_components_lib.dart';
-import 'package:ui_components_lib/v2/ui_components_lib_v2.dart';
 
 const defaultAppBarHeight = 72.0;
 
@@ -151,10 +150,7 @@ class DefaultAppBar extends StatelessWidget implements PreferredSizeWidget {
 
     final leading = this.leading ??
         (isShowLeadingClose
-            ? FloatButton(
-                buttonShape: ButtonShape.circle,
-                icon: LucideIcons.arrowLeft,
-                buttonSize: ButtonSize.medium,
+            ? AppBarBackButton(
                 onPressed: () => _onPressedBack(context),
               )
             : null);

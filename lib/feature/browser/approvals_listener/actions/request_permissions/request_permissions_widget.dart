@@ -102,10 +102,13 @@ class _SelectAccountWidget extends StatelessWidget {
             ],
           ),
         ),
-        AccentButton(
-          buttonShape: ButtonShape.pill,
-          title: LocaleKeys.nextWord.tr(),
-          onPressed: wm.onNext,
+        StateNotifierBuilder(
+          listenableState: wm.selected,
+          builder: (_, value) => AccentButton(
+            buttonShape: ButtonShape.pill,
+            title: LocaleKeys.nextWord.tr(),
+            onPressed: value != null ? wm.onNext : null,
+          ),
         ),
       ],
     );

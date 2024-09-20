@@ -60,15 +60,14 @@ class CommonSelectDropdown<T> extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final colors = context.themeStyle.colors;
+    final theme = context.themeStyleV2;
 
     final title = titleChild ??
         (titleText == null
             ? null
             : Text(
                 titleText!,
-                style:
-                    StyleRes.secondaryBold.copyWith(color: colors.textPrimary),
+                style: theme.textStyles.labelMedium,
               ));
 
     final subtitle = subtitleChild ??
@@ -76,8 +75,7 @@ class CommonSelectDropdown<T> extends StatelessWidget {
             ? null
             : Text(
                 subtitleText!,
-                style:
-                    StyleRes.addRegular.copyWith(color: colors.textSecondary),
+                style: theme.textStyles.labelSmall,
               ));
 
     return PressScaleWidget(
@@ -92,32 +90,35 @@ class CommonSelectDropdown<T> extends StatelessWidget {
                 if (subtitle != null) subtitle,
               ],
             ),
-          Container(
-            padding: const EdgeInsets.symmetric(
-              horizontal: DimensSize.d16,
-              vertical: DimensSize.d12,
-            ),
-            decoration: BoxDecoration(
-              color: colors.backgroundSecondary,
-              border: SquircleBoxBorder(
-                squircleRadius: DimensRadius.medium,
-                borderSide: BorderSide(color: colors.strokePrimary),
+          ClipRRect(
+            borderRadius: BorderRadius.circular(DimensRadiusV2.radius16),
+            child: Container(
+              padding: const EdgeInsets.symmetric(
+                horizontal: DimensSize.d16,
+                vertical: DimensSize.d12,
               ),
-            ),
-            child: SeparatedRow(
-              children: [
-                Expanded(
-                  child: currentValue == null
-                      ? const SizedBox.shrink()
-                      : _itemBuilder(
-                          values.firstWhere((e) => e.value == currentValue),
-                        ),
+              decoration: BoxDecoration(
+                color: theme.colors.background1,
+                border: SquircleBoxBorder(
+                  squircleRadius: DimensRadiusV2.radius16,
+                  borderSide: BorderSide(color: theme.colors.border0),
                 ),
-                Icon(
-                  Icons.keyboard_arrow_right_rounded,
-                  color: colors.textPrimary,
-                ),
-              ],
+              ),
+              child: SeparatedRow(
+                children: [
+                  Expanded(
+                    child: currentValue == null
+                        ? const SizedBox.shrink()
+                        : _itemBuilder(
+                            values.firstWhere((e) => e.value == currentValue),
+                          ),
+                  ),
+                  Icon(
+                    Icons.keyboard_arrow_right_rounded,
+                    color: theme.colors.content0,
+                  ),
+                ],
+              ),
             ),
           ),
         ],

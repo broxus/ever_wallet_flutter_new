@@ -1,7 +1,10 @@
+// ignore_for_file: use_build_context_synchronously
+
 import 'package:app/app/service/service.dart';
 import 'package:app/di/di.dart';
 import 'package:app/generated/generated.dart';
 import 'package:bloc/bloc.dart';
+import 'package:flutter/material.dart';
 import 'package:freezed_annotation/freezed_annotation.dart';
 import 'package:nekoton_repository/nekoton_repository.dart' hide Message;
 
@@ -19,7 +22,11 @@ class AddNewExternalAccountCubit extends Cubit<AddNewExternalAccountState> {
   final PublicKey publicKey;
   final NekotonRepository nekotonRepository;
 
-  Future<void> createAccount(String addressString, String name) async {
+  Future<void> createAccount(
+    BuildContext context,
+    String addressString,
+    String name,
+  ) async {
     final seedKey = nekotonRepository.seedList.findSeedKey(publicKey);
     if (seedKey == null) return;
 
@@ -30,7 +37,7 @@ class AddNewExternalAccountCubit extends Cubit<AddNewExternalAccountState> {
     try {
       final isCorrect = await validateAddress(address);
       if (!isCorrect) {
-        _showError(LocaleKeys.addressIsWrong.tr());
+        _showError(context, LocaleKeys.addressIsWrong.tr());
         emit(const AddNewExternalAccountState.initial());
 
         return;
@@ -42,12 +49,13 @@ class AddNewExternalAccountCubit extends Cubit<AddNewExternalAccountState> {
       );
       emit(const AddNewExternalAccountState.completed());
     } catch (e) {
-      _showError(LocaleKeys.keyIsNotCustodian.tr());
+      _showError(context, LocaleKeys.keyIsNotCustodian.tr());
       emit(const AddNewExternalAccountState.initial());
     }
   }
 
-  void _showError(String error) {
-    inject<MessengerService>().show(Message.error(message: error));
+  void _showError(BuildContext context, String error) {
+    inject<MessengerService>()
+        .show(Message.error(context: context, message: error));
   }
 }

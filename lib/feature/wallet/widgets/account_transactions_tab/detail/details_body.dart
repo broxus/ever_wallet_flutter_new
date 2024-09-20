@@ -10,7 +10,6 @@ import 'package:flutter/services.dart';
 import 'package:lucide_icons_flutter/lucide_icons.dart';
 import 'package:nekoton_repository/nekoton_repository.dart' hide Message;
 import 'package:ui_components_lib/ui_components_lib.dart';
-import 'package:ui_components_lib/v2/dimens_v2.dart';
 import 'package:ui_components_lib/v2/widgets/widgets.dart';
 
 /// Body of transaction for Ton/Token Wallets that contains main information
@@ -94,6 +93,7 @@ class WalletTransactionDetailsDefaultBody extends StatelessWidget {
                     color: theme.colors.content3,
                   ),
                   sign: '${LocaleKeys.approximatelySign.tr()} ',
+                  useDefaultFormat: true,
                 )
               : null,
         ),
@@ -118,6 +118,7 @@ class WalletTransactionDetailsDefaultBody extends StatelessWidget {
           icon: LucideIcons.copy,
           onPressed: () {
             _copy(
+              context,
               recipientOrSender.address,
               LocaleKeys.valueCopiedExclamation.tr(
                 args: [recipientOrSender.toEllipseString()],
@@ -130,7 +131,11 @@ class WalletTransactionDetailsDefaultBody extends StatelessWidget {
           subtitle: toEllipseString(hash),
           icon: LucideIcons.copy,
           onPressed: () {
-            _copy(hash, LocaleKeys.valueCopiedExclamation.tr(args: [hash]));
+            _copy(
+              context,
+              hash,
+              LocaleKeys.valueCopiedExclamation.tr(args: [hash]),
+            );
           },
         ),
       ],
@@ -169,10 +174,10 @@ class WalletTransactionDetailsDefaultBody extends StatelessWidget {
     );
   }
 
-  void _copy(String value, String copyMessage) {
+  void _copy(BuildContext context, String value, String copyMessage) {
     Clipboard.setData(ClipboardData(text: value));
     inject<MessengerService>().show(
-      Message.successful(message: copyMessage),
+      Message.successful(context: context, message: copyMessage),
     );
   }
 }

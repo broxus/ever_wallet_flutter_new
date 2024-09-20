@@ -1,3 +1,5 @@
+// ignore_for_file: use_build_context_synchronously
+
 import 'package:app/app/service/messenger/message.dart';
 import 'package:app/app/service/messenger/service/messenger_service.dart';
 import 'package:app/app/service/nekoton_related/connection_service/network_presets.dart';
@@ -9,7 +11,7 @@ import 'package:app/generated/generated.dart';
 import 'package:app/utils/mixins/connection_mixin.dart';
 import 'package:elementary/elementary.dart';
 import 'package:elementary_helper/elementary_helper.dart';
-import 'package:flutter/foundation.dart';
+import 'package:flutter/material.dart';
 
 /// [ElementaryModel] for [ChooseNetworkScreen]
 class ChooseNetworkScreenModel extends ElementaryModel with ConnectionMixin {
@@ -46,12 +48,13 @@ class ChooseNetworkScreenModel extends ElementaryModel with ConnectionMixin {
     super.dispose();
   }
 
-  Future<bool> selectType(String id) async {
+  Future<bool> selectType(BuildContext context, String id) async {
     try {
       await _connectionsStorageService.saveCurrentConnectionId(id);
     } on Object catch (e) {
       messengerService.show(
         Message.error(
+          context: context,
           message: e.toString(),
         ),
       );

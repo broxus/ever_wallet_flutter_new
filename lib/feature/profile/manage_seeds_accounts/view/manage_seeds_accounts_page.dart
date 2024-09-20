@@ -1,3 +1,4 @@
+import 'package:app/app/service/secure_storage_service.dart';
 import 'package:app/app/service/service.dart';
 import 'package:app/di/di.dart';
 import 'package:app/feature/profile/manage_seeds_accounts/manage_seeds_accounts.dart';
@@ -16,6 +17,7 @@ class ManageSeedsAccountsPage extends StatelessWidget {
       create: (_) => ManageSeedsAccountsCubit(
         inject<NekotonRepository>(),
         inject<CurrentSeedService>(),
+        inject<SecureStorageService>(),
       )..init(),
       child: const Scaffold(
         appBar: DefaultAppBar(),

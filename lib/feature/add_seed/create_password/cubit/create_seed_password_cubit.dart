@@ -1,3 +1,5 @@
+// ignore_for_file: use_build_context_synchronously
+
 import 'package:app/app/service/network_connection/network_connection_service.dart';
 import 'package:app/app/service/service.dart';
 import 'package:app/data/models/seed/seed_phrase_model.dart';
@@ -11,7 +13,6 @@ import 'package:logging/logging.dart';
 import 'package:nekoton_repository/nekoton_repository.dart' hide Message;
 
 part 'create_seed_password_cubit.freezed.dart';
-
 part 'create_seed_password_state.dart';
 
 const _minPasswordLength = 8;
@@ -22,6 +23,7 @@ class CreateSeedPasswordCubit extends Cubit<CreateSeedPasswordState>
   CreateSeedPasswordCubit({
     required this.completeCallback,
     required this.seedPhrase,
+    required this.type,
     this.setCurrentKey = false,
     this.name,
   }) : super(CreateSeedPasswordState.initial()) {
@@ -40,6 +42,7 @@ class CreateSeedPasswordCubit extends Cubit<CreateSeedPasswordState>
 
   /// If true, then current key will be set as default (provided in onboarding)
   final bool setCurrentKey;
+  final SeedAddType type;
 
   final passwordController = TextEditingController();
   final confirmController = TextEditingController();
@@ -67,8 +70,8 @@ class CreateSeedPasswordCubit extends Cubit<CreateSeedPasswordState>
     return super.close();
   }
 
-  Future<void> nextAction() async {
-    if (seedPhrase.isEmpty || !await checkConnection()) {
+  Future<void> nextAction(BuildContext context) async {
+    if (seedPhrase.isEmpty || !await checkConnection(context)) {
       return;
     }
 
@@ -80,6 +83,7 @@ class CreateSeedPasswordCubit extends Cubit<CreateSeedPasswordState>
         phrase: seedPhrase.words,
         password: passwordController.text,
         name: name,
+        addType: type,
       );
       if (setCurrentKey) {
         await currentKeyService.changeCurrentKey(publicKey);
@@ -92,7 +96,8 @@ class CreateSeedPasswordCubit extends Cubit<CreateSeedPasswordState>
     } catch (e) {
       Logger('CreateSeedPasswordCubit').severe(e);
       emit(state.copyWith(isLoading: false));
-      messengerService.show(Message.error(message: e.toString()));
+      messengerService
+          .show(Message.error(context: context, message: e.toString()));
     }
   }
 

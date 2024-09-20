@@ -99,9 +99,11 @@ class SelectAccountWidgetModel
       final notifier = createNotifier<Money>();
       entity = _balances[account.address] = notifier;
 
-      model
-          .getBalance(account)
-          .then((value) => notifier.accept(value ?? _zeroBalance));
+      model.getBalance(account).then((value) {
+        if (isMounted) {
+          notifier.accept(value ?? _zeroBalance);
+        }
+      });
     }
 
     return entity;

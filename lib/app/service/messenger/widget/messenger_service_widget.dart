@@ -1,7 +1,10 @@
+import 'dart:async';
+
 import 'package:app/app/service/messenger/cubit/messenger_cubit.dart';
 import 'package:app/app/service/service.dart';
 import 'package:flutter/widgets.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:in_app_notification/in_app_notification.dart';
 import 'package:ui_components_lib/ui_components_lib.dart';
 
 class MessengerServiceWidget extends StatefulWidget {
@@ -35,10 +38,10 @@ class _MessengerServiceWidgetState extends State<MessengerServiceWidget> {
 
   void _onDismiss() {
     _isSnackbarShown = false;
-    _showNextMessage();
+    _showNextMessage(context);
   }
 
-  void _showNextMessage() {
+  void _showNextMessage(BuildContext? context) {
     // Wait for the current snackbar to be dismissed
     if (_isSnackbarShown) {
       return;
@@ -56,12 +59,25 @@ class _MessengerServiceWidgetState extends State<MessengerServiceWidget> {
     }
 
     _isSnackbarShown = true;
+    Timer(message.duration, () {
+      if (_isSnackbarShown) {
+        _onDismiss();
+      }
+    });
 
-    showSnackbar(
+    InAppNotification.show(
+      child: Padding(
+        padding: const EdgeInsets.symmetric(
+          horizontal: DimensSizeV2.d16,
+        ),
+        child: message.toastByMessage(() {
+          _onDismiss();
+          InAppNotification.dismiss(context: ctx);
+        }),
+      ),
       context: ctx,
-      toast: message.toastByMessage,
+      onTap: _onDismiss,
       duration: message.duration,
-      onDismiss: _onDismiss,
     );
   }
 
@@ -69,7 +85,14 @@ class _MessengerServiceWidgetState extends State<MessengerServiceWidget> {
   Widget build(BuildContext context) {
     return BlocListener<MessengerCubit, MessengerState>(
       bloc: _cubit,
-      listener: (_, __) => _showNextMessage(),
+      listener: (ctx, state) {
+        if (state.messagesToShow.isNotEmpty) {
+          final context = state.messagesToShow.last.context;
+          _showNextMessage(context);
+        } else {
+          _showNextMessage(null);
+        }
+      },
       child: widget.child,
     );
   }

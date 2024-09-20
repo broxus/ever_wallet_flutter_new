@@ -17,7 +17,6 @@ import 'package:nekoton_repository/nekoton_repository.dart' hide Message;
 import 'package:ui_components_lib/ui_components_lib.dart';
 
 part 'enter_seed_phrase_cubit.freezed.dart';
-
 part 'enter_seed_phrase_state.dart';
 
 /// Regexp that helps splitting seed phrase into words.
@@ -34,11 +33,12 @@ typedef EnterSeedPhraseConfirmCallback = void Function(String phrase);
 /// Cubit that manages the state of the seed phrase entering page.
 class EnterSeedPhraseCubit extends Cubit<EnterSeedPhraseState>
     with ConnectionMixin {
-  EnterSeedPhraseCubit(this.confirmCallback)
+  EnterSeedPhraseCubit(this.context, this.confirmCallback)
       : super(const EnterSeedPhraseState.initial());
 
   final _log = Logger('EnterSeedPhraseCubit');
 
+  final BuildContext context;
   final EnterSeedPhraseConfirmCallback confirmCallback;
 
   final formKey = GlobalKey<FormState>();
@@ -158,7 +158,7 @@ class EnterSeedPhraseCubit extends Cubit<EnterSeedPhraseState>
   }
 
   Future<void> confirmAction() async {
-    if (!await checkConnection()) {
+    if (!await checkConnection(context)) {
       return;
     }
 
@@ -341,6 +341,7 @@ class EnterSeedPhraseCubit extends Cubit<EnterSeedPhraseState>
   void _showValidateError(String message) {
     inject<MessengerService>().show(
       Message.error(
+        context: context,
         message: message,
         debounceTime: defaultInfoMessageDebounceDuration,
       ),

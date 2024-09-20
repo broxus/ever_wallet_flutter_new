@@ -8,12 +8,17 @@ class RequestPermissionsModel extends ElementaryModel {
     ErrorHandler errorHandler,
     this._nekotonRepository,
     this._permissionsService,
+    this._currentAccountsService,
   ) : super(errorHandler: errorHandler);
 
   final NekotonRepository _nekotonRepository;
   final PermissionsService _permissionsService;
+  final CurrentAccountsService _currentAccountsService;
 
   String get symbol => currentTransport.nativeTokenTicker;
+
+  KeyAccount? get currentAccount =>
+      _currentAccountsService.currentActiveAccount?.$2;
 
   List<KeyAccount> get accounts => _nekotonRepository.seedList.seeds
       .expand(

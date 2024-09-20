@@ -1,5 +1,5 @@
-import 'package:app/generated/generated.dart';
 import 'package:app/utils/utils.dart';
+import 'package:app/widgets/user_avatar/user_avatar.dart';
 import 'package:elementary_helper/elementary_helper.dart';
 import 'package:flutter/material.dart';
 import 'package:lucide_icons_flutter/lucide_icons.dart';
@@ -38,10 +38,8 @@ class AccountListItem extends StatelessWidget {
           padding: const EdgeInsets.all(DimensSizeV2.d16),
           child: SeparatedRow(
             children: [
-              Image.asset(
-                Assets.images.userAvatar.userAvatar.path,
-                width: DimensSizeV2.d40,
-                height: DimensSizeV2.d40,
+              UserAvatar(
+                address: address,
               ),
               Expanded(
                 child: SeparatedColumn(
@@ -67,6 +65,7 @@ class AccountListItem extends StatelessWidget {
                                   child: AmountWidget.fromMoney(
                                     amount: balance,
                                     style: textStyle,
+                                    useDefaultFormat: true,
                                   ),
                                 ),
                               ) ??

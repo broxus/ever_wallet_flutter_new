@@ -1,8 +1,15 @@
+import 'dart:async';
+import 'dart:io';
+
 import 'package:app/app/service/service.dart';
+import 'package:app_settings/app_settings.dart';
 import 'package:injectable/injectable.dart';
 import 'package:local_auth/local_auth.dart';
 import 'package:nekoton_repository/nekoton_repository.dart';
 import 'package:rxdart/rxdart.dart';
+import 'package:shared_preferences/shared_preferences.dart';
+
+const _biometrySettingsOpened = 'biometrySettingsOpened';
 
 class BiometryNotAuthException implements Exception {}
 
@@ -33,11 +40,13 @@ class BiometryService {
 
   /// Check if biometry available on device
   Future<bool> get _isAvailable async {
+    if (Platform.isIOS) {
+      return _localAuth.isDeviceSupported();
+    }
+
     if (!await _localAuth.canCheckBiometrics) return false;
     if (!await _localAuth.isDeviceSupported()) return false;
-    if ((await _localAuth.getAvailableBiometrics()).isEmpty) {
-      return false;
-    }
+    if ((await _localAuth.getAvailableBiometrics()).isEmpty) return false;
 
     return true;
   }
@@ -58,6 +67,35 @@ class BiometryService {
 
     // clear all passwords if biometry was disabled
     enabledStream.where((e) => !e).listen((e) => storage.clearKeyPasswords());
+  }
+
+  /// On iOS checks face id permission and opens system setting if permission
+  /// is not granted. Returns true if permission have already been granted.
+  /// On Android always returns true.
+  Future<bool> checkBiometryPermission() async {
+    if (!Platform.isIOS) return true;
+    if (await _localAuth.canCheckBiometrics) return true;
+
+    final prefs = await SharedPreferences.getInstance();
+    await prefs.setBool(_biometrySettingsOpened, true);
+    await AppSettings.openAppSettings();
+
+    return false;
+  }
+
+  /// On iOS checks if can enable biometry after system setting was open.
+  /// On Android always returns false.
+  Future<bool> canUpdateStatus() async {
+    if (!Platform.isIOS) return false;
+
+    final prefs = await SharedPreferences.getInstance();
+    try {
+      final settingsOpened = prefs.getBool(_biometrySettingsOpened) ?? false;
+
+      return settingsOpened && !enabled && await _localAuth.canCheckBiometrics;
+    } finally {
+      await prefs.remove(_biometrySettingsOpened);
+    }
   }
 
   /// Update status of enabled biometry.

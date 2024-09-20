@@ -37,6 +37,7 @@ class PrimaryTextField extends StatelessWidget {
     this.contentPadding,
     this.errorInlineIconPadding,
     this.suggestionsCallback,
+    this.maxLength,
   });
 
   final String? name;
@@ -64,6 +65,7 @@ class PrimaryTextField extends StatelessWidget {
   final EdgeInsets? errorInlineIconPadding;
   final SuggestionsCallback<String>? suggestionsCallback;
   final AutovalidateMode autovalidateMode;
+  final int? maxLength;
 
   @override
   Widget build(BuildContext context) {
@@ -155,6 +157,7 @@ class PrimaryTextField extends StatelessWidget {
               children: suffixes!,
             ),
       maxLines: isObscureText ? 1 : null,
+      maxLength: maxLength,
     );
   }
 

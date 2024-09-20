@@ -82,6 +82,7 @@ class WalletTransactionDetailsItem extends StatelessWidget {
   const WalletTransactionDetailsItem({
     required this.title,
     this.subtitle,
+    this.isSubtitleError = false,
     this.icon,
     this.value,
     this.valueWidget,
@@ -94,6 +95,7 @@ class WalletTransactionDetailsItem extends StatelessWidget {
 
   final String title;
   final String? subtitle;
+  final bool isSubtitleError;
   final IconData? icon;
   final String? value;
   final Widget? valueWidget;
@@ -113,21 +115,26 @@ class WalletTransactionDetailsItem extends StatelessWidget {
           crossAxisAlignment: CrossAxisAlignment.start,
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
           children: [
-            Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                Text(
-                  title,
-                  style: theme.textStyles.labelSmall
-                      .copyWith(color: theme.colors.content3),
-                ),
-                const SizedBox(height: DimensSizeV2.d2),
-                if (subtitle != null)
+            Flexible(
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
                   Text(
-                    subtitle!,
-                    style: theme.textStyles.labelSmall,
+                    title,
+                    style: theme.textStyles.labelSmall
+                        .copyWith(color: theme.colors.content3),
                   ),
-              ],
+                  const SizedBox(height: DimensSizeV2.d2),
+                  if (subtitle != null)
+                    Text(
+                      subtitle!,
+                      style: isSubtitleError
+                          ? theme.textStyles.labelXSmall
+                              .copyWith(color: theme.colors.contentNegative)
+                          : theme.textStyles.labelSmall,
+                    ),
+                ],
+              ),
             ),
             if (icon != null)
               FloatButton(

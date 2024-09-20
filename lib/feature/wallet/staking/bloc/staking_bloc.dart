@@ -8,13 +8,16 @@ import 'package:app/feature/wallet/staking/staking.dart';
 import 'package:app/generated/generated.dart';
 import 'package:bloc/bloc.dart';
 import 'package:bloc_event_transformers/bloc_event_transformers.dart';
+import 'package:collection/collection.dart';
 import 'package:flutter/widgets.dart';
 import 'package:freezed_annotation/freezed_annotation.dart';
 import 'package:logging/logging.dart';
 import 'package:nekoton_repository/nekoton_repository.dart' hide Message;
 
 part 'staking_bloc.freezed.dart';
+
 part 'staking_bloc_event.dart';
+
 part 'staking_bloc_state.dart';
 
 const _defaultWithdrawHours = 36;
@@ -24,6 +27,7 @@ enum StakingPageType { stake, unstake, inProgress }
 
 class StakingBloc extends Bloc<StakingBlocEvent, StakingBlocState> {
   StakingBloc({
+    required this.context,
     required this.accountAddress,
     required this.nekotonRepository,
     required this.currencyConvert,
@@ -38,6 +42,7 @@ class StakingBloc extends Bloc<StakingBlocEvent, StakingBlocState> {
 
   final _logger = Logger('StakingBloc');
   final Address accountAddress;
+  final BuildContext context;
   final NekotonRepository nekotonRepository;
   final CurrencyConvertService currencyConvert;
   final CurrenciesService currenciesService;
@@ -176,11 +181,12 @@ class StakingBloc extends Bloc<StakingBlocEvent, StakingBlocState> {
           Duration(seconds: int.tryParse(_details.withdrawHoldTime) ?? 0)
               .inHours;
       withdrawHours = 0 <= time && time <= 24 ? time + 36 : time + 18;
-      final local = nekotonRepository.getLocalCustodians(accountAddress)?.first;
-      if (local == null) {
+      final account = nekotonRepository.accountsStorage.accounts
+          .firstWhereOrNull((item) => item.address == accountAddress);
+      if (account == null) {
         throw Exception();
       }
-      accountPublicKey = local;
+      accountPublicKey = account.publicKey;
 
       // Do it last because if user don't have address, then method can throw
       // error
@@ -323,6 +329,7 @@ class StakingBloc extends Bloc<StakingBlocEvent, StakingBlocState> {
       if (max.amount < Fixed.zero) {
         inject<MessengerService>().show(
           Message.error(
+            context: context,
             message: LocaleKeys.stakingNotEnoughBalanceToStake.tr(
               args: [
                 comissionMoney.formatImproved(),

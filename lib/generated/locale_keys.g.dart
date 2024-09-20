@@ -373,6 +373,7 @@ abstract class LocaleKeys {
   static const selectAccount = 'selectAccount';
   static const grantPermissions = 'grantPermissions';
   static const changeAccount = 'changeAccount';
+  static const changeColor = 'changeColor';
   static const originWord = 'originWord';
   static const requestedPermissions = 'requestedPermissions';
   static const allowWord = 'allowWord';
@@ -526,12 +527,27 @@ abstract class LocaleKeys {
   static const sign = 'sign';
   static const encrypt = 'encrypt';
   static const decrypt = 'decrypt';
+  static const notBackedUpTitle = 'notBackedUpTitle';
+  static const notBackedUpSubtitle = 'notBackedUpSubtitle';
+  static const backedUpTitleModal = 'backedUpTitleModal';
+  static const backedUpSubtitleModal = 'backedUpSubtitleModal';
+  static const backedUpManuallyButton = 'backedUpManuallyButton';
+  static const keepThisSafeTitleModal = 'keepThisSafeTitleModal';
+  static const keepThisSafeSubtitleModal = 'keepThisSafeSubtitleModal';
+  static const keepThisSafeContentModal = 'keepThisSafeContentModal';
+  static const gotItButton = 'gotItButton';
+  static const goodJobTitleModal = 'goodJobTitleModal';
+  static const goodJobSubtitleModal = 'goodJobSubtitleModal';
   static const accounts = 'accounts';
   static const accountSettings = 'accountSettings';
   static const viewInExplorer = 'viewInExplorer';
   static const hideAccount = 'hideAccount';
   static const advancedSettings = 'advancedSettings';
   static const backToSettings = 'backToSettings';
+  static const check = 'check';
+  static const checkPhrasesLabel = 'checkPhrasesLabel';
+  static const manualBackupTitleDialog = 'manualBackupTitleDialog';
+  static const manualBackupSubtitleDialog = 'manualBackupSubtitleDialog';
   static const createNewAccount = 'createNewAccount';
   static const addExternalAccount = 'addExternalAccount';
   static const confirmAction = 'confirmAction';
@@ -568,4 +584,7 @@ abstract class LocaleKeys {
   static const accountAddedSheetSwitch = 'accountAddedSheetSwitch';
   static const accountAddedSheetContinue = 'accountAddedSheetContinue';
   static const invalidReceiverAddress = 'invalidReceiverAddress';
+  static const deleteBookmarksQuestion = 'deleteBookmarksQuestion';
+  static const deleteBookmarksDescription = 'deleteBookmarksDescription';
+  static const save = 'save';
 }

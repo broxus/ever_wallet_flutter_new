@@ -2,13 +2,12 @@ import 'package:app/generated/assets.gen.dart';
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:ui_components_lib/ui_components_lib.dart';
-import 'package:ui_components_lib/v2/ui_components_lib_v2.dart';
 
 class BrowserResourceItem extends StatelessWidget {
   const BrowserResourceItem({
-    required this.title,
-    required this.faviconUrl,
-    required this.onPressed,
+    this.title,
+    this.faviconUrl,
+    this.onPressed,
     this.subTitle,
     this.onLongPress,
     this.trailing,
@@ -16,10 +15,10 @@ class BrowserResourceItem extends StatelessWidget {
     super.key,
   });
 
-  final String title;
-  final String faviconUrl;
+  final String? title;
+  final String? faviconUrl;
   final String? subTitle;
-  final VoidCallback onPressed;
+  final VoidCallback? onPressed;
   final VoidCallback? onLongPress;
   final Widget? trailing;
   final EdgeInsets? padding;
@@ -47,7 +46,7 @@ class BrowserResourceItem extends StatelessWidget {
                   CachedNetworkImage(
                     height: DimensSize.d40,
                     width: DimensSize.d40,
-                    imageUrl: faviconUrl,
+                    imageUrl: faviconUrl ?? '',
                     placeholder: (_, __) =>
                         const CommonCircularProgressIndicator(),
                     errorWidget: (_, __, ___) => CommonIconWidget.svg(
@@ -61,7 +60,7 @@ class BrowserResourceItem extends StatelessWidget {
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
                         Text(
-                          title,
+                          title ?? '',
                           style: themeStyleV2.textStyles.labelSmall,
                           overflow: TextOverflow.ellipsis,
                         ),

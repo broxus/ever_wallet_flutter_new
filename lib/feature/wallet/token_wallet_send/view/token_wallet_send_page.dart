@@ -7,7 +7,6 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
 import 'package:nekoton_repository/nekoton_repository.dart';
 import 'package:ui_components_lib/ui_components_lib.dart';
-import 'package:ui_components_lib/v2/ui_components_lib_v2.dart';
 
 /// Page that allows to send not native token from [TokenWallet] to
 /// [destination].
@@ -57,6 +56,7 @@ class TokenWalletSendPage extends StatelessWidget {
   Widget build(BuildContext context) {
     return BlocProvider<TokenWalletSendBloc>(
       create: (_) => TokenWalletSendBloc(
+        context: context,
         destination: destination,
         tokenAmount: amount,
         owner: owner,

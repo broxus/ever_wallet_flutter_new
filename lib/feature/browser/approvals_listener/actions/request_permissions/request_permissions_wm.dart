@@ -22,6 +22,7 @@ RequestPermissionsWidgetModel defaultRequestPermissionsWidgetModelFactory(
         createPrimaryErrorHandler(context),
         inject(),
         inject(),
+        inject(),
       ),
     );
 
@@ -56,6 +57,7 @@ class RequestPermissionsWidgetModel extends CustomWidgetModel<
       model.accounts.firstWhereOrNull(
         (a) => a.address == widget.previousSelectedAccount,
       ) ??
+      model.currentAccount ??
       model.accounts.firstOrNull;
 
   void onNext() {

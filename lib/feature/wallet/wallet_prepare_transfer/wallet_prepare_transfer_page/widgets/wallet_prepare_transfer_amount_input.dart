@@ -3,6 +3,7 @@ import 'package:app/feature/wallet/wallet_prepare_transfer/wallet_prepare_transf
 import 'package:app/generated/generated.dart';
 import 'package:app/utils/utils.dart';
 import 'package:auto_size_text_field/auto_size_text_field.dart';
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:string_extensions/string_extensions.dart';
 import 'package:ui_components_lib/ui_components_lib.dart';
@@ -24,7 +25,7 @@ class WalletPrepareTransferAmountInput extends StatefulWidget {
 
   final TextEditingController controller;
 
-  final List<WalletPrepareTransferAsset>? assets;
+  final ValueListenable<List<WalletPrepareTransferAsset>> assets;
 
   final WalletPrepareTransferAsset? selectedAsset;
 
@@ -86,7 +87,7 @@ class _WalletPrepareTransferAmountInputState
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
                       WalletPrepareTransferAssetSelect(
-                        values: widget.assets ?? [],
+                        values: widget.assets,
                         currentValue: widget.selectedAsset,
                         onChanged: widget.onSelectedAssetChanged,
                       ),
@@ -140,7 +141,14 @@ class _WalletPrepareTransferAmountInputState
           state.hasError ? theme.colors.contentNegative : theme.colors.content0,
     );
     final price = Fixed.parse(widget.selectedAsset?.currency?.price ?? '0');
-    final amount = Fixed.parse(state.value.nullIf('') ?? '0');
+
+    late Fixed amount;
+    try {
+      amount = Fixed.parse(state.value.nullIf('') ?? '0');
+    } catch (e) {
+      amount = Fixed.parse('0');
+    }
+
     final usd = Fixed.copyWith(amount * price, scale: 2);
 
     return Column(
