@@ -1,5 +1,6 @@
 import 'package:app/feature/profile/profile.dart';
 import 'package:app/generated/generated.dart';
+import 'package:app/utils/constants.dart';
 import 'package:flutter/material.dart';
 import 'package:nekoton_repository/nekoton_repository.dart';
 import 'package:ui_components_lib/ui_components_lib.dart';
@@ -59,6 +60,7 @@ class _AddNewLocalAccountSheetState extends State<AddNewLocalAccountSheet> {
         separatorSize: DimensSizeV2.d24,
         children: [
           PrimaryTextField(
+            maxLength: maxLengthForMainEntities,
             hintText: LocaleKeys.nameWord.tr(),
             textEditingController: nameController,
             onSubmit: (_) => _goNext(context),

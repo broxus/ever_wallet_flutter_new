@@ -557,7 +557,7 @@
   "walletDescriptionBridgeMultisigWallet": "Modified multisig. Requires deployment.",
   "walletDescriptionHighloadWalletV2": "Small legacy contract with one custodian and advanced replay protection. Deploys automatically.",
   "walletDescriptionMultisig2": "Multisig contract with upgradable code. Requires deployment.",
-  "walletDescriptionMultisig2.1": "For experienced users",
+  "walletDescriptionMultisig2_1": "For experienced users",
   "walletDescriptionEverWallet": "Recommended",
   "deprecatedTypes": "Deprecated types",
   "deprecatedTypesHint": "We do not recommend using old contract types to create new accounts",

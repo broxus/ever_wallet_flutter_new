@@ -1,9 +1,14 @@
 import 'dart:async';
 
 import 'package:app/app/service/service.dart';
+import 'package:collection/collection.dart';
+import 'package:encrypted_storage/encrypted_storage.dart';
 import 'package:injectable/injectable.dart';
 import 'package:nekoton_repository/nekoton_repository.dart';
 import 'package:rxdart/rxdart.dart';
+
+const _currentAddress = 'current_address';
+const _preferencesKey = 'preferences_key';
 
 /// Support service that listen for seed list and current key and emits
 /// current account list from current key and seed list.
@@ -18,10 +23,12 @@ class CurrentAccountsService {
   CurrentAccountsService(
     this._nekotonRepository,
     this._currentKeyService,
+    this._storage,
   );
 
   final NekotonRepository _nekotonRepository;
   final CurrentKeyService _currentKeyService;
+  final EncryptedStorage _storage;
 
   final _currentAccountsSubject = BehaviorSubject<AccountList?>.seeded(null);
 
@@ -59,7 +66,7 @@ class CurrentAccountsService {
   (int, KeyAccount?)? get currentActiveAccount =>
       _currentActiveAccountSubject.valueOrNull;
 
-  void init() {
+  Future<void> init() async {
     // skip 1 to avoid duplicate calls
     _nekotonRepository.seedListStream.skip(1).listen(
           (list) => _updateAccountsList(list, _currentKeyService.currentKey),
@@ -72,6 +79,8 @@ class CurrentAccountsService {
       _nekotonRepository.seedList,
       _currentKeyService.currentKey,
     );
+
+    await _initCurrentAccount();
   }
 
   /// Try updating current active account for [currentAccounts], this will try
@@ -110,7 +119,7 @@ class CurrentAccountsService {
   }
 
   /// Try updating current active account for [currentAccounts]
-  void changeCurrentActiveAccount(KeyAccount account) {
+  Future<void> changeCurrentActiveAccount(KeyAccount account) async {
     if (currentActiveAccount?.$2 == account) return;
 
     final index = currentAccounts?.displayAccounts.indexOf(account);
@@ -119,12 +128,39 @@ class CurrentAccountsService {
       _tryStartPolling(account.address);
       _currentActiveAccountSubject.add((index, account));
     }
+
+    await _storage.set(
+      _currentAddress,
+      account.address.address,
+      domain: _preferencesKey,
+    );
   }
 
   /// Subscriptions for listening Ton/Token wallets to start its polling when
   /// their account is selected in [currentActiveAccount].
   StreamSubscription<dynamic>? _tonWalletSubscription;
   StreamSubscription<dynamic>? _tokenWalletSubscription;
+
+  Future<void> _initCurrentAccount() async {
+    final address = await _storage.get(
+      _currentAddress,
+      domain: _preferencesKey,
+    );
+
+    if (address == null) {
+      return;
+    }
+
+    final account = currentAccounts?.allAccounts.firstWhereOrNull(
+      (KeyAccount account) => account.address.address == address,
+    );
+
+    if (account == null) {
+      return;
+    }
+
+    unawaited(changeCurrentActiveAccount(account));
+  }
 
   /// Start listening for wallet subscriptions and when subscription will be
   /// created, start polling.

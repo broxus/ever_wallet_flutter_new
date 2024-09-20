@@ -8,6 +8,7 @@ import 'package:logging/logging.dart';
 import 'package:nekoton_repository/nekoton_repository.dart';
 
 part 'account_detail_cubit.freezed.dart';
+
 part 'account_detail_state.dart';
 
 /// Cubit for account detail page
@@ -87,6 +88,9 @@ class AccountDetailCubit extends Cubit<AccountDetailState> {
 
       _balanceSub =
           balanceService.accountOverallBalance(address).listen((balance) {
+        if (balance == null) {
+          return;
+        }
         _cachedBalance = convertBalance(balance);
         _updateDataState();
       });

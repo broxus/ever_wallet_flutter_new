@@ -103,7 +103,7 @@ class _AccountItem extends StatelessWidget {
         child: SeparatedRow(
           children: [
             UserAvatar(
-              address: address,
+              address: account.address.address,
             ),
             Expanded(
               child: SeparatedColumn(
