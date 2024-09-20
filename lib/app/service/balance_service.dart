@@ -26,7 +26,7 @@ class BalanceService {
   /// If you need to get amount without subscriptions, use [getKeyBalance] or
   /// [getAccountBalance].
   // ignore: long-method
-  Stream<Fixed> accountOverallBalance(Address address) {
+  Stream<Fixed?> accountOverallBalance(Address address) {
     return Rx.combineLatest3<TonWalletState?, TransportStrategy, KeyAccount?,
         (TonWalletState?, TransportStrategy, KeyAccount?)>(
       // subscribe for wallet appearing, because it can happens later
@@ -36,12 +36,14 @@ class BalanceService {
       nekotonRepository.seedListStream
           .map((list) => list.findAccountByAddress(address)),
       (a, b, c) => (a, b, c),
-    ).flatMap<Fixed>((value) {
+    ).flatMap<Fixed?>((value) {
       final wallet = value.$1?.wallet;
       final transport = value.$2;
       final account = value.$3;
 
-      if (wallet == null || account == null) return Stream.value(Fixed.zero);
+      if (wallet == null || account == null) {
+        return Stream.value(null);
+      }
 
       /// Balance for native wallet, concatenate changing of balance
       /// of wallet and currency updating.
@@ -103,7 +105,14 @@ class BalanceService {
       return Rx.combineLatestList(
         [tonWalletBalanceStream, ...tokenWalletsBalances],
       ).map(
-        (e) => e.fold(Fixed.zero, (previous, element) => previous + element),
+        (e) {
+          return e.fold(
+            Fixed.zero,
+            (previous, Fixed element) {
+              return (previous ?? Fixed.zero) + element;
+            },
+          );
+        },
       );
     }).onErrorReturnWith((e, st) {
       _logger.severe('accountOverallBalance', e, st);

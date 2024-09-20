@@ -9,6 +9,7 @@ import 'package:nekoton_repository/nekoton_repository.dart';
 import 'package:rxdart/rxdart.dart';
 
 part 'account_card_cubit.freezed.dart';
+
 part 'account_card_cubit_state.dart';
 
 const _withdrawUpdateDebounce = Duration(seconds: 3);
@@ -55,7 +56,7 @@ class AccountCardCubit extends Cubit<AccountCardState> {
   late StreamSubscription<List<TonWalletState>> _walletsSubscription;
   StreamSubscription<void>? _thisWalletSubscription;
   StreamSubscription<void>? _withdrawRequestSubscription;
-  StreamSubscription<Fixed>? _balanceSubscription;
+  StreamSubscription<Fixed?>? _balanceSubscription;
 
   Fixed _cachedFiatBalance = Fixed.zero;
 
@@ -109,7 +110,8 @@ class AccountCardCubit extends Cubit<AccountCardState> {
       });
       _balanceSubscription =
           balanceService.accountOverallBalance(wState.address).listen((fiat) {
-        if (fiat == Fixed.zero && _cachedFiatBalance == Fixed.zero) {
+        if (fiat == null ||
+            (fiat == Fixed.zero && _cachedFiatBalance == Fixed.zero)) {
           return;
         }
         _cachedFiatBalance = fiat;

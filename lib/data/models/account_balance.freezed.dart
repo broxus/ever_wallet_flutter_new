@@ -20,6 +20,7 @@ AccountBalanceModel _$AccountBalanceModelFromJson(Map<String, dynamic> json) {
 
 /// @nodoc
 mixin _$AccountBalanceModel {
+  @NekotonAddressConverter()
   Address get rootTokenContract => throw _privateConstructorUsedError;
   @moneyFromStringJsonConverter
   Money get fiatBalance => throw _privateConstructorUsedError;
@@ -43,7 +44,7 @@ abstract class $AccountBalanceModelCopyWith<$Res> {
       _$AccountBalanceModelCopyWithImpl<$Res, AccountBalanceModel>;
   @useResult
   $Res call(
-      {Address rootTokenContract,
+      {@NekotonAddressConverter() Address rootTokenContract,
       @moneyFromStringJsonConverter Money fiatBalance,
       @moneyFromStringJsonConverter Money tokenBalance});
 
@@ -105,7 +106,7 @@ abstract class _$$AccountBalanceModelImplCopyWith<$Res>
   @override
   @useResult
   $Res call(
-      {Address rootTokenContract,
+      {@NekotonAddressConverter() Address rootTokenContract,
       @moneyFromStringJsonConverter Money fiatBalance,
       @moneyFromStringJsonConverter Money tokenBalance});
 
@@ -151,7 +152,7 @@ class __$$AccountBalanceModelImplCopyWithImpl<$Res>
 @JsonSerializable()
 class _$AccountBalanceModelImpl implements _AccountBalanceModel {
   const _$AccountBalanceModelImpl(
-      {required this.rootTokenContract,
+      {@NekotonAddressConverter() required this.rootTokenContract,
       @moneyFromStringJsonConverter required this.fiatBalance,
       @moneyFromStringJsonConverter required this.tokenBalance});
 
@@ -159,6 +160,7 @@ class _$AccountBalanceModelImpl implements _AccountBalanceModel {
       _$$AccountBalanceModelImplFromJson(json);
 
   @override
+  @NekotonAddressConverter()
   final Address rootTokenContract;
   @override
   @moneyFromStringJsonConverter
@@ -209,7 +211,7 @@ class _$AccountBalanceModelImpl implements _AccountBalanceModel {
 
 abstract class _AccountBalanceModel implements AccountBalanceModel {
   const factory _AccountBalanceModel(
-          {required final Address rootTokenContract,
+          {@NekotonAddressConverter() required final Address rootTokenContract,
           @moneyFromStringJsonConverter required final Money fiatBalance,
           @moneyFromStringJsonConverter required final Money tokenBalance}) =
       _$AccountBalanceModelImpl;
@@ -218,6 +220,7 @@ abstract class _AccountBalanceModel implements AccountBalanceModel {
       _$AccountBalanceModelImpl.fromJson;
 
   @override
+  @NekotonAddressConverter()
   Address get rootTokenContract;
   @override
   @moneyFromStringJsonConverter
