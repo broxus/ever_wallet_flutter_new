@@ -1,5 +1,6 @@
 import 'package:app/feature/wallet/add_account/add_account_type/add_account_type_wm.dart';
 import 'package:app/generated/generated.dart';
+import 'package:app/utils/constants.dart';
 import 'package:elementary/elementary.dart';
 import 'package:elementary_helper/elementary_helper.dart';
 import 'package:flutter/material.dart';
@@ -32,6 +33,7 @@ class AddAccountTypeWidget extends ElementaryWidget<AddAccountTypeWidgetModel> {
               mainAxisSize: MainAxisSize.min,
               children: [
                 PrimaryTextField(
+                  maxLength: maxLengthForMainEntities,
                   textEditingController: wm.controller,
                   hintText: LocaleKeys.accountName.tr(),
                   isAutofocus: true,

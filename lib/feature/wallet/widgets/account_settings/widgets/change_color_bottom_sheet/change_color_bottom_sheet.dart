@@ -44,25 +44,14 @@ class ChangeColorBottomSheet
         Row(
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
           children: [
-            Expanded(
-              child: Align(
-                alignment: Alignment.centerLeft,
-                child: AppBarBackButton(
-                  onPressed: wm.onPressedBack,
-                ),
-              ),
+            AppBarBackButton(
+              onPressed: wm.onPressedBack,
             ),
-            Expanded(
-              child: Align(
-                child: Text(
-                  LocaleKeys.changeColor.tr(),
-                  style: wm.textStyle.headingMedium,
-                ),
-              ),
+            Text(
+              LocaleKeys.changeColor.tr(),
+              style: wm.textStyle.headingMedium,
             ),
-            const Expanded(
-              child: SizedBox.shrink(),
-            ),
+            const SizedBox(width: DimensSizeV2.d48),
           ],
         ),
         const SizedBox(height: DimensSizeV2.d28),

@@ -1,4 +1,5 @@
 import 'package:app/generated/generated.dart';
+import 'package:app/utils/constants.dart';
 import 'package:flutter/material.dart';
 import 'package:ui_components_lib/ui_components_lib.dart';
 import 'package:ui_components_lib/v2/widgets/widgets.dart';
@@ -58,6 +59,7 @@ class _EnterSeedNameViewState extends State<EnterSeedNameView> {
                     ),
                     const SizedBox(height: DimensSizeV2.d24),
                     PrimaryTextField(
+                      maxLength: maxLengthForMainEntities,
                       textEditingController: nameController,
                       hintText: LocaleKeys.seedName.tr(),
                       onSubmit: (_) => _nextAction(),
