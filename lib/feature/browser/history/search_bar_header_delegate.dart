@@ -30,6 +30,7 @@ class SearchBarHeaderDelegate extends SliverPersistentHeaderDelegate {
           ),
           child: PrimaryTextField(
             hintText: LocaleKeys.browserSearch.tr(),
+            textEditingController: controller,
             suffixes: [
               Padding(
                 padding: const EdgeInsets.only(right: DimensSize.d20),
