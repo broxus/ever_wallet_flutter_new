@@ -39,7 +39,7 @@ class AccountListItem extends StatelessWidget {
           child: SeparatedRow(
             children: [
               UserAvatar(
-                address: address,
+                address: account.address.address,
               ),
               Expanded(
                 child: SeparatedColumn(
