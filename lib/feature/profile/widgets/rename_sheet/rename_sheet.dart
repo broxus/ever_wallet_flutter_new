@@ -2,6 +2,7 @@ import 'package:app/app/service/service.dart';
 import 'package:app/di/di.dart';
 import 'package:app/feature/profile/widgets/rename_sheet/rename_sheet_cubit.dart';
 import 'package:app/generated/generated.dart';
+import 'package:app/utils/constants.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:nekoton_repository/nekoton_repository.dart' hide Message;
@@ -65,6 +66,7 @@ class _RenameSheetState extends State<RenameSheet> {
       separatorSize: DimensSize.d24,
       children: [
         PrimaryTextField(
+          maxLength: maxLengthForMainEntities,
           textEditingController: _nameController,
           hintText: LocaleKeys.nameWord.tr(),
           onSubmit: (_) => _rename(context),
