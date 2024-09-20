@@ -18,8 +18,12 @@ class AddAccountConfirmModel extends ElementaryModel {
   final NekotonRepository _nekotonRepository;
 
   Future<List<BiometricType>> getAvailableBiometry(PublicKey publicKey) async {
+    final seed = _nekotonRepository.seedList.findSeedByAnyPublicKey(publicKey);
+    if (seed == null) return [];
+
     final isBiometryEnabled = _biometryService.enabled;
-    final hasKeyPassword = await _biometryService.hasKeyPassword(publicKey);
+    final hasKeyPassword =
+        await _biometryService.hasKeyPassword(seed.publicKey);
 
     if (isBiometryEnabled && hasKeyPassword) {
       return _biometryService.getAvailableBiometry();
@@ -29,9 +33,12 @@ class AddAccountConfirmModel extends ElementaryModel {
   }
 
   Future<String?> requestBiometry(PublicKey publicKey) async {
+    final seed = _nekotonRepository.seedList.findSeedByAnyPublicKey(publicKey);
+    if (seed == null) return null;
+
     try {
       final password = await _biometryService.getKeyPassword(
-        publicKey: publicKey,
+        publicKey: seed.publicKey,
         localizedReason: LocaleKeys.biometryAuthReason.tr(),
       );
 
