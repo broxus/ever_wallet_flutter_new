@@ -31,6 +31,7 @@ class UserAvatar extends ElementaryWidget<UserAvatarWidgetModel> {
           if (data == null) {
             return const SizedBox.shrink();
           }
+
           return switch (data.type) {
             AvatarType.asset => Image.asset(
                 data.path,
@@ -41,16 +42,10 @@ class UserAvatar extends ElementaryWidget<UserAvatarWidgetModel> {
               ),
             AvatarType.raw => ClipRRect(
                 borderRadius: BorderRadius.circular(DimensRadiusV2.radius12),
-                child: DecoratedBox(
-                  decoration: BoxDecoration(
-                    color: data.color,
-                  ),
-                  child: SvgPicture.string(
-                    data.path,
-                    width: double.infinity,
-                    height: double.infinity,
-                    // colorFilter: identifyColor?.backgroundColor.colorFilter,
-                  ),
+                child: SvgPicture.string(
+                  data.path,
+                  width: double.infinity,
+                  height: double.infinity,
                 ),
               ),
           };

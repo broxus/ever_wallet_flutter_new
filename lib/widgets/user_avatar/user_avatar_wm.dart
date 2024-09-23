@@ -47,13 +47,13 @@ class UserAvatarWidgetModel
 
   void _onUpdateIdentify() {
     final address = widget.address;
+    final identify = model.identifyState.value;
 
     if (address == null) {
-      _setAssetSvg();
+      _setAssetSvg(identify?.color);
       return;
     }
 
-    final identify = model.identifyState.value;
     try {
       final result = identify == null
           ? Jdenticon.toSvg(address)
@@ -77,15 +77,16 @@ class UserAvatarWidgetModel
         ),
       );
     } catch (_) {
-      _setAssetSvg();
+      _setAssetSvg(identify?.color);
     }
   }
 
-  void _setAssetSvg() {
+  void _setAssetSvg([Color? color]) {
     _avatarState.accept(
       AvatarData(
         type: AvatarType.asset,
         path: Assets.images.userAvatar.userAvatar.path,
+        color: color,
       ),
     );
   }
