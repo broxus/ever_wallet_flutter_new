@@ -40,6 +40,6 @@ class AccountSettingsChangeColorButtonModel extends ElementaryModel {
   }
 
   Future<void> _onUpdateColor(AccountsColorsCollection collection) async {
-    _colorState.accept(await collection.getColor(address));
+    _colorState.accept(await collection.getData(address));
   }
 }

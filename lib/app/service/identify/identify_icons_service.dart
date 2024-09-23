@@ -34,13 +34,13 @@ class IdentifyIconsService implements IIdentifyIconsService {
   AccountsColorsCollection get _accountsColors => _accountsColorsSubject.value;
 
   @override
-  void setColor(String key, IdentifyIconData identifyColor) {
-    _accountsColors.setColor(key, identifyColor);
+  void setData(String key, IdentifyIconData identifyColor) {
+    _accountsColors.setData(key, identifyColor);
     _accountsColorsSubject.add(_accountsColors);
   }
 
   @override
-  Future<IdentifyIconData> getColor(String key) {
-    return _accountsColors.getColor(key);
+  Future<IdentifyIconData> getData(String key) {
+    return _accountsColors.getData(key);
   }
 }

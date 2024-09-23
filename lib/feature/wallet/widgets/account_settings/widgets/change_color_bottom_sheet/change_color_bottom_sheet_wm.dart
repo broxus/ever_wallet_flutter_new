@@ -37,7 +37,8 @@ class ChangeColorBottomSheetWidgetModel extends CustomWidgetModel<
   late final count = availableColors.length;
   late final lastIndex = count - 1;
 
-  ListenableState<IdentifyIconData?> get selectedColorState => _selectedColorState;
+  ListenableState<IdentifyIconData?> get selectedColorState =>
+      _selectedColorState;
 
   TextStylesV2 get textStyle => _theme.textStyles;
 
@@ -66,12 +67,12 @@ class ChangeColorBottomSheetWidgetModel extends CustomWidgetModel<
       return;
     }
 
-    model.setColor(widget.address, color);
+    model.setData(widget.address, color);
     _back();
   }
 
   Future<void> _init() async {
-    _selectedColorState.accept(await model.getColor(widget.address));
+    _selectedColorState.accept(await model.getData(widget.address));
   }
 
   void _back() {

@@ -1,4 +1,3 @@
-import 'package:app/app/service/identify/identy_icon_data.dart';
 import 'package:app/widgets/user_avatar/user_avatar_wm.dart';
 import 'package:elementary/elementary.dart';
 import 'package:elementary_helper/elementary_helper.dart';
@@ -26,30 +25,28 @@ class UserAvatar extends ElementaryWidget<UserAvatarWidgetModel> {
     return SizedBox(
       width: DimensSizeV2.d40,
       height: DimensSizeV2.d40,
-      child: DoubleSourceBuilder<AvatarData?, IdentifyIconData>(
-        firstSource: wm.iconState,
-        secondSource: wm.identifyState,
-        builder: (_, svgData, identifyColor) {
-          if (svgData == null) {
+      child: StateNotifierBuilder<AvatarData?>(
+        listenableState: wm.avatarState,
+        builder: (_, data) {
+          if (data == null) {
             return const SizedBox.shrink();
           }
-
-          return switch (svgData.type) {
+          return switch (data.type) {
             AvatarType.asset => Image.asset(
-                svgData.path,
+                data.path,
                 width: double.infinity,
                 height: double.infinity,
-                color: identifyColor?.backgroundColor,
+                color: data.color,
                 colorBlendMode: BlendMode.modulate,
               ),
             AvatarType.raw => ClipRRect(
                 borderRadius: BorderRadius.circular(DimensRadiusV2.radius12),
                 child: DecoratedBox(
                   decoration: BoxDecoration(
-                    color: identifyColor?.backgroundColor,
+                    color: data.color,
                   ),
                   child: SvgPicture.string(
-                    svgData.path,
+                    data.path,
                     width: double.infinity,
                     height: double.infinity,
                     // colorFilter: identifyColor?.backgroundColor.colorFilter,

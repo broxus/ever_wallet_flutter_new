@@ -16,10 +16,10 @@ class ChangeColorBottomSheetModel extends ElementaryModel {
   List<IdentifyIconData> get availableColors =>
       _identifyIconsService.availableColors;
 
-  Future<IdentifyIconData> getColor(String key) =>
-      _identifyIconsService.getColor(key);
+  Future<IdentifyIconData> getData(String key) =>
+      _identifyIconsService.getData(key);
 
-  void setColor(String address, IdentifyIconData color) {
-    _identifyIconsService.setColor(address, color);
+  void setData(String address, IdentifyIconData color) {
+    _identifyIconsService.setData(address, color);
   }
 }

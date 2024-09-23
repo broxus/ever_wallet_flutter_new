@@ -5,62 +5,67 @@ enum IdentifyIconData {
     hues: [267],
     lightness: _defaultLightness,
     saturation: _defaultSaturation,
+    bacColor: '#7c3cdeff',
     // jdenticon web 0x7c3cdeff transform to Flutter color:
-    backgroundColor: Color(0xff7c3cde),
+    color: Color(0xff7c3cde),
   ),
   blue(
     hues: [254],
     lightness: _defaultLightness,
     saturation: _defaultSaturation,
+    bacColor: '#3c6adeff',
     // jdenticon web 0x3c6adeff transform to Flutter color:
-    backgroundColor: Color(0xff3c6ade),
+    color: Color(0xff3c6ade),
   ),
   green(
     hues: [107],
     lightness: _defaultLightness,
     saturation: _defaultSaturation,
+    bacColor: '#80de3cff',
     // jdenticon web 0x80de3cff transform to Flutter color:
-    backgroundColor: Color(0xff80de3c),
+    color: Color(0xff80de3c),
   ),
   pink(
     hues: [309],
     lightness: _defaultLightness,
     saturation: Saturation(color: 1, grayscale: 1),
+    bacColor: '#fe76dfff',
     // jdenticon web 0xfe76dfff transform to Flutter color:
-    backgroundColor: Color(0xfffe76df),
+    color: Color(0xfffe76df),
   ),
   orange(
     hues: [19],
     lightness: _defaultLightness,
     saturation: _defaultSaturation,
+    bacColor: '#ff6f2fff',
     // jdenticon web 0xff6f2fff transform to Flutter color:
-    backgroundColor: Color(0xffff6f2f),
+    color: Color(0xffff6f2f),
   );
 
   const IdentifyIconData({
     required this.hues,
     required this.lightness,
     required this.saturation,
-    required this.backgroundColor,
+    required this.color,
+    required this.bacColor,
   });
 
   final List<int> hues;
   final Lightness lightness;
   final Saturation saturation;
-  final Color backgroundColor;
+  final String bacColor;
+  final Color color;
 
-  String get colorStr => '#${color.value.toRadixString(16).substring(2)}';
-
-  Color get color => backgroundColor;
-
-  static IdentifyIconData? byInt(int? value) {
-    for (final ic in IdentifyIconData.values) {
-      if (ic.backgroundColor.value == value) {
-        return ic;
-      }
+  static IdentifyIconData? byNameOrNull(String? name) {
+    if (name == null) {
+      return null;
     }
 
-    return null;
+    try {
+      return IdentifyIconData.values.byName(name);
+    } catch (_) {
+      return null;
+    }
   }
 }
 

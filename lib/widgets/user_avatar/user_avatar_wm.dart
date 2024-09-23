@@ -1,4 +1,3 @@
-import 'package:app/app/service/identify/identy_icon_data.dart';
 import 'package:app/core/error_handler_factory.dart';
 import 'package:app/core/wm/custom_wm.dart';
 import 'package:app/di/di.dart';
@@ -32,11 +31,9 @@ class UserAvatarWidgetModel
     super.model,
   );
 
-  late final _iconState = createNotifier<AvatarData?>();
+  late final _avatarState = createNotifier<AvatarData?>();
 
-  ListenableState<AvatarData?> get iconState => _iconState;
-
-  ListenableState<IdentifyIconData> get identifyState => model.identifyState;
+  ListenableState<AvatarData?> get avatarState => _avatarState;
 
   @override
   void initWidgetModel() {
@@ -45,6 +42,10 @@ class UserAvatarWidgetModel
   }
 
   Future<void> _init() async {
+    model.identifyState.addListener(_onUpdateIdentify);
+  }
+
+  void _onUpdateIdentify() {
     final address = widget.address;
 
     if (address == null) {
@@ -52,9 +53,8 @@ class UserAvatarWidgetModel
       return;
     }
 
-    final identify = identifyState.value;
+    final identify = model.identifyState.value;
     try {
-      print('!!! $identify');
       final result = identify == null
           ? Jdenticon.toSvg(address)
           : Jdenticon.toSvg(
@@ -65,13 +65,15 @@ class UserAvatarWidgetModel
               grayscaleLightnessMaxValue: identify.lightness.grayscale.max,
               colorSaturation: identify.saturation.color,
               grayscaleSaturation: identify.saturation.grayscale,
+              backColor: identify.bacColor,
               hues: identify.hues,
             );
 
-      _iconState.accept(
+      _avatarState.accept(
         AvatarData(
           type: AvatarType.raw,
           path: result,
+          color: identify?.color,
         ),
       );
     } catch (_) {
@@ -80,7 +82,7 @@ class UserAvatarWidgetModel
   }
 
   void _setAssetSvg() {
-    _iconState.accept(
+    _avatarState.accept(
       AvatarData(
         type: AvatarType.asset,
         path: Assets.images.userAvatar.userAvatar.path,
@@ -93,10 +95,12 @@ class AvatarData {
   AvatarData({
     required this.type,
     required this.path,
+    this.color,
   });
 
   final AvatarType type;
   final String path;
+  final Color? color;
 }
 
 enum AvatarType {

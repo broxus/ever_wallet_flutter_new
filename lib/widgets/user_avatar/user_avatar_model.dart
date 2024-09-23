@@ -38,12 +38,13 @@ class UserAvatarModel extends ElementaryModel {
   @override
   void dispose() {
     _sc?.cancel();
+    _identifyState.dispose();
     super.dispose();
   }
 
   Future<void> _onUpdateColor(AccountsColorsCollection collection) async {
     if (address != null) {
-      _identifyState.accept(await collection.getColor(address!));
+      _identifyState.accept(await collection.getData(address!));
     }
   }
 }

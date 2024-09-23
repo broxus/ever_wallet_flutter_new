@@ -8,7 +8,7 @@ abstract interface class IIdentifyIconsService {
 
   IdentifyIconData get initialColor;
 
-  void setColor(String key, IdentifyIconData color);
+  void setData(String key, IdentifyIconData color);
 
-  Future<IdentifyIconData> getColor(String key);
+  Future<IdentifyIconData> getData(String key);
 }

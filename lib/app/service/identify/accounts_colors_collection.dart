@@ -4,34 +4,34 @@ import 'package:app/app/service/secure_storage_service.dart';
 class AccountsColorsCollection {
   AccountsColorsCollection(
     this._secureStorageService,
-    this._initialColor,
+    this._initialData,
   );
 
   final _map = <String, IdentifyIconData>{};
 
   final SecureStorageService _secureStorageService;
 
-  final IdentifyIconData _initialColor;
+  final IdentifyIconData _initialData;
 
-  Future<void> setColor(String key, IdentifyIconData identifyColor) async {
+  Future<void> setData(String key, IdentifyIconData identifyColor) async {
     _map[key] = identifyColor;
 
     try {
-      await _secureStorageService.addValue<int>(
+      await _secureStorageService.addValue<String>(
         key,
-        identifyColor.backgroundColor.value,
+        identifyColor.name,
       );
     } finally {}
   }
 
-  Future<IdentifyIconData> getColor(String key) async {
+  Future<IdentifyIconData> getData(String key) async {
     try {
-      return _map[key] ??= IdentifyIconData.byInt(
-            await _secureStorageService.getValue<int>(key),
+      return _map[key] ??= IdentifyIconData.byNameOrNull(
+            await _secureStorageService.getValue<String>(key),
           ) ??
-          _initialColor;
+          _initialData;
     } catch (_) {
-      return _initialColor;
+      return _initialData;
     }
   }
 }
