@@ -1,4 +1,4 @@
-import 'package:app/app/service/identify/identy_colors.dart';
+import 'package:app/app/service/identify/identy_icon_data.dart';
 import 'package:app/widgets/user_avatar/user_avatar_wm.dart';
 import 'package:elementary/elementary.dart';
 import 'package:elementary_helper/elementary_helper.dart';
@@ -26,9 +26,9 @@ class UserAvatar extends ElementaryWidget<UserAvatarWidgetModel> {
     return SizedBox(
       width: DimensSizeV2.d40,
       height: DimensSizeV2.d40,
-      child: DoubleSourceBuilder<AvatarData?, IdentifyColor>(
+      child: DoubleSourceBuilder<AvatarData?, IdentifyIconData>(
         firstSource: wm.iconState,
-        secondSource: wm.colorState,
+        secondSource: wm.identifyState,
         builder: (_, svgData, identifyColor) {
           if (svgData == null) {
             return const SizedBox.shrink();
@@ -39,14 +39,22 @@ class UserAvatar extends ElementaryWidget<UserAvatarWidgetModel> {
                 svgData.path,
                 width: double.infinity,
                 height: double.infinity,
-                color: identifyColor?.color,
+                color: identifyColor?.backgroundColor,
                 colorBlendMode: BlendMode.modulate,
               ),
-            AvatarType.raw => SvgPicture.string(
-                svgData.path,
-                width: double.infinity,
-                height: double.infinity,
-                colorFilter: identifyColor?.color.colorFilter,
+            AvatarType.raw => ClipRRect(
+                borderRadius: BorderRadius.circular(DimensRadiusV2.radius12),
+                child: DecoratedBox(
+                  decoration: BoxDecoration(
+                    color: identifyColor?.backgroundColor,
+                  ),
+                  child: SvgPicture.string(
+                    svgData.path,
+                    width: double.infinity,
+                    height: double.infinity,
+                    // colorFilter: identifyColor?.backgroundColor.colorFilter,
+                  ),
+                ),
               ),
           };
         },

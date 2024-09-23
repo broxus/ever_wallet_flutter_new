@@ -2,7 +2,7 @@ import 'dart:async';
 
 import 'package:app/app/service/identify/accounts_colors_collection.dart';
 import 'package:app/app/service/identify/i_identify_icons_service.dart';
-import 'package:app/app/service/identify/identy_colors.dart';
+import 'package:app/app/service/identify/identy_icon_data.dart';
 import 'package:app/feature/wallet/widgets/account_settings/widgets/change_color_button/account_settings_change_color_button.dart';
 import 'package:elementary/elementary.dart';
 import 'package:elementary_helper/elementary_helper.dart';
@@ -17,7 +17,7 @@ class AccountSettingsChangeColorButtonModel extends ElementaryModel {
 
   final String address;
 
-  late final _colorState = StateNotifier<IdentifyColor>(
+  late final _colorState = StateNotifier<IdentifyIconData>(
     initValue: _identifyIconsService.initialColor,
   );
 
@@ -25,7 +25,7 @@ class AccountSettingsChangeColorButtonModel extends ElementaryModel {
 
   StreamSubscription<AccountsColorsCollection>? _sc;
 
-  ListenableState<IdentifyColor> get colorState => _colorState;
+  ListenableState<IdentifyIconData> get colorState => _colorState;
 
   @override
   void init() {

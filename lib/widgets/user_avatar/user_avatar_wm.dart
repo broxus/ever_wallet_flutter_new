@@ -1,4 +1,4 @@
-import 'package:app/app/service/identify/identy_colors.dart';
+import 'package:app/app/service/identify/identy_icon_data.dart';
 import 'package:app/core/error_handler_factory.dart';
 import 'package:app/core/wm/custom_wm.dart';
 import 'package:app/di/di.dart';
@@ -7,6 +7,7 @@ import 'package:app/widgets/user_avatar/user_avatar.dart';
 import 'package:app/widgets/user_avatar/user_avatar_model.dart';
 import 'package:elementary/elementary.dart';
 import 'package:elementary_helper/elementary_helper.dart';
+import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 import 'package:jdenticon_dart/jdenticon_dart.dart';
 
@@ -35,7 +36,7 @@ class UserAvatarWidgetModel
 
   ListenableState<AvatarData?> get iconState => _iconState;
 
-  ListenableState<IdentifyColor> get colorState => model.colorState;
+  ListenableState<IdentifyIconData> get identifyState => model.identifyState;
 
   @override
   void initWidgetModel() {
@@ -51,11 +52,26 @@ class UserAvatarWidgetModel
       return;
     }
 
+    final identify = identifyState.value;
     try {
+      print('!!! $identify');
+      final result = identify == null
+          ? Jdenticon.toSvg(address)
+          : Jdenticon.toSvg(
+              address,
+              colorLightnessMinValue: identify.lightness.colorMin,
+              colorLightnessMaxValue: identify.lightness.colorMax,
+              grayscaleLightnessMinValue: identify.lightness.grayscale.min,
+              grayscaleLightnessMaxValue: identify.lightness.grayscale.max,
+              colorSaturation: identify.saturation.color,
+              grayscaleSaturation: identify.saturation.grayscale,
+              hues: identify.hues,
+            );
+
       _iconState.accept(
         AvatarData(
           type: AvatarType.raw,
-          path: Jdenticon.toSvg(address),
+          path: result,
         ),
       );
     } catch (_) {
