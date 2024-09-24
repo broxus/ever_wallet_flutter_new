@@ -12,7 +12,8 @@ class SecureStorageService {
   }
 
   Future<T?> getValue<T>(String key) async {
-    final value = await _storage.read(key: key);
+    final value =
+        await _storage.read(key: key, iOptions: IOSOptions.defaultOptions);
     if (value == null) {
       return null;
     }
