@@ -1,4 +1,4 @@
-import 'package:app/app/service/identify/identy_colors.dart';
+import 'package:app/app/service/identify/identy_icon_data.dart';
 import 'package:app/feature/wallet/widgets/account_settings/widgets/account_settings_button.dart';
 import 'package:app/feature/wallet/widgets/account_settings/widgets/change_color_button/account_settings_change_color_button_wm.dart';
 import 'package:app/generated/generated.dart';
@@ -25,9 +25,9 @@ class AccountSettingsChangeColorButton
 
   @override
   Widget build(AccountSettingsChangeColorButtonWidgetModel wm) {
-    return StateNotifierBuilder<IdentifyColor>(
+    return StateNotifierBuilder<IdentifyIconData>(
       listenableState: wm.colorState,
-      builder: (_, IdentifyColor? ic) {
+      builder: (_, IdentifyIconData? ic) {
         return AccountSettingsButton(
           label: LocaleKeys.changeColor.tr(),
           iconWidget: SizedBox(

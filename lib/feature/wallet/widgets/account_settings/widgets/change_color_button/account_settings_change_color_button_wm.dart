@@ -1,4 +1,4 @@
-import 'package:app/app/service/identify/identy_colors.dart';
+import 'package:app/app/service/identify/identy_icon_data.dart';
 import 'package:app/core/error_handler_factory.dart';
 import 'package:app/core/wm/custom_wm.dart';
 import 'package:app/di/di.dart';
@@ -33,7 +33,7 @@ class AccountSettingsChangeColorButtonWidgetModel extends CustomWidgetModel<
     this._address,
   );
 
-  ListenableState<IdentifyColor> get colorState => model.colorState;
+  ListenableState<IdentifyIconData> get colorState => model.colorState;
 
   final String _address;
 

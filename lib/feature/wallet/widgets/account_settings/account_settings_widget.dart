@@ -89,17 +89,17 @@ class _ButtonsCard extends StatelessWidget {
             onTap: onViewInExplorer,
           ),
           AccountSettingsButton(
+            label: LocaleKeys.copyAddress.tr(),
+            icon: LucideIcons.copy,
+            onTap: onCopyAddress,
+          ),
+          AccountSettingsButton(
             label: LocaleKeys.renameWord.tr(),
             icon: LucideIcons.pencilLine,
             onTap: onRename,
           ),
           AccountSettingsChangeColorButton(
             address: address,
-          ),
-          AccountSettingsButton(
-            label: LocaleKeys.copyAddress.tr(),
-            icon: LucideIcons.copy,
-            onTap: onCopyAddress,
           ),
           if (onHideAccount != null)
             AccountSettingsButton(
