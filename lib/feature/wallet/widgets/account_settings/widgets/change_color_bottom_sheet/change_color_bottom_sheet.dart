@@ -1,4 +1,4 @@
-import 'package:app/app/service/identify/identy_colors.dart';
+import 'package:app/app/service/identify/identy_icon_data.dart';
 import 'package:app/feature/wallet/widgets/account_settings/widgets/change_color_bottom_sheet/change_color_bottom_sheet_wm.dart';
 import 'package:app/generated/generated.dart';
 import 'package:elementary/elementary.dart';
@@ -56,9 +56,9 @@ class ChangeColorBottomSheet
         ),
         const SizedBox(height: DimensSizeV2.d28),
         Flexible(
-          child: StateNotifierBuilder<IdentifyColor?>(
+          child: StateNotifierBuilder<IdentifyIconData?>(
             listenableState: wm.selectedColorState,
-            builder: (_, IdentifyColor? selectedColor) {
+            builder: (_, IdentifyIconData? selectedColor) {
               return SizedBox(
                 height: DimensSizeV2.d64,
                 child: Row(
@@ -66,7 +66,7 @@ class ChangeColorBottomSheet
                   children: [
                     for (var i = 0; i < wm.count; i++)
                       _ItemColor(
-                        key: ValueKey(wm.availableColors[i].color.value),
+                        key: ValueKey(wm.availableColors[i].color),
                         color: wm.availableColors[i].color,
                         isSelected: wm.availableColors[i] == selectedColor,
                         onPressed: () =>

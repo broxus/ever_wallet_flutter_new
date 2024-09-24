@@ -1,6 +1,6 @@
 import 'package:app/app/service/identify/accounts_colors_collection.dart';
 import 'package:app/app/service/identify/i_identify_icons_service.dart';
-import 'package:app/app/service/identify/identy_colors.dart';
+import 'package:app/app/service/identify/identy_icon_data.dart';
 import 'package:app/app/service/secure_storage_service.dart';
 import 'package:injectable/injectable.dart';
 import 'package:rxdart/rxdart.dart';
@@ -10,7 +10,7 @@ class IdentifyIconsService implements IIdentifyIconsService {
   IdentifyIconsService(this._secureStorageService);
 
   @override
-  final availableColors = IdentifyColor.values;
+  final availableColors = IdentifyIconData.values;
 
   final SecureStorageService _secureStorageService;
 
@@ -29,18 +29,18 @@ class IdentifyIconsService implements IIdentifyIconsService {
       _accountsColorsSubject.stream;
 
   @override
-  IdentifyColor get initialColor => availableColors[_initialIndex];
+  IdentifyIconData get initialColor => availableColors[_initialIndex];
 
   AccountsColorsCollection get _accountsColors => _accountsColorsSubject.value;
 
   @override
-  void setColor(String key, IdentifyColor identifyColor) {
-    _accountsColors.setColor(key, identifyColor);
+  void setData(String key, IdentifyIconData identifyColor) {
+    _accountsColors.setData(key, identifyColor);
     _accountsColorsSubject.add(_accountsColors);
   }
 
   @override
-  Future<IdentifyColor> getColor(String key) {
-    return _accountsColors.getColor(key);
+  Future<IdentifyIconData> getData(String key) {
+    return _accountsColors.getData(key);
   }
 }
