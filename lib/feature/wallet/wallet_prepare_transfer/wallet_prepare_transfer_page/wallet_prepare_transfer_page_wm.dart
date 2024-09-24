@@ -16,6 +16,7 @@ import 'package:app/feature/wallet/wallet_prepare_transfer/wallet_prepare_transf
 import 'package:app/feature/wallet/wallet_prepare_transfer/wallet_prepare_transfer_page/wallet_prepare_transfer_page.dart';
 import 'package:app/feature/wallet/wallet_prepare_transfer/wallet_prepare_transfer_page/wallet_prepare_transfer_page_model.dart';
 import 'package:app/generated/generated.dart';
+import 'package:app/widgets/amount_input/amount_input_asset.dart';
 import 'package:elementary/elementary.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/services.dart';
@@ -106,7 +107,7 @@ class WalletPrepareTransferPageWidgetModel extends CustomWidgetModel<
 
   String? getSeedName(PublicKey custodian) => model.getSeedName(custodian);
 
-  void onChangeAsset(WalletPrepareTransferAsset newAsset) {
+  void onChangeAsset(AmountInputAsset newAsset) {
     final asset = _assets[newAsset.key];
     if (_selectedAsset?.rootTokenContract == newAsset.rootTokenContract &&
             _selectedAsset?.tokenSymbol == newAsset.tokenSymbol ||

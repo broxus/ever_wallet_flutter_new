@@ -1,7 +1,7 @@
-import 'package:app/feature/wallet/wallet_prepare_transfer/wallet_prepare_transfer_page/data/wallet_prepare_transfer_asset.dart';
-import 'package:app/feature/wallet/wallet_prepare_transfer/wallet_prepare_transfer_page/widgets/wallet_prepare_transfer_asset_select.dart';
 import 'package:app/generated/generated.dart';
 import 'package:app/utils/utils.dart';
+import 'package:app/widgets/amount_input/amount_input_asset.dart';
+import 'package:app/widgets/amount_input/amount_input_asset_select.dart';
 import 'package:auto_size_text_field/auto_size_text_field.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
@@ -9,39 +9,31 @@ import 'package:string_extensions/string_extensions.dart';
 import 'package:ui_components_lib/ui_components_lib.dart';
 import 'package:ui_components_lib/v2/ui_components_lib_v2.dart';
 
-class WalletPrepareTransferAmountInput extends StatefulWidget {
-  const WalletPrepareTransferAmountInput({
-    required this.focusNode,
+class AmountInput extends StatefulWidget {
+  const AmountInput({
     required this.controller,
     required this.selectedAsset,
-    required this.assets,
-    required this.onSelectedAssetChanged,
     required this.onMaxAmount,
     required this.onSubmitted,
+    this.focusNode,
+    this.assets,
+    this.onSelectedAssetChanged,
     super.key,
   });
 
-  final FocusNode focusNode;
-
+  final FocusNode? focusNode;
   final TextEditingController controller;
-
-  final ValueListenable<List<WalletPrepareTransferAsset>> assets;
-
-  final WalletPrepareTransferAsset? selectedAsset;
-
-  final ValueChanged<WalletPrepareTransferAsset> onSelectedAssetChanged;
-
+  final ValueListenable<List<AmountInputAsset>>? assets;
+  final AmountInputAsset? selectedAsset;
+  final ValueChanged<AmountInputAsset>? onSelectedAssetChanged;
   final VoidCallback onMaxAmount;
-
   final ValueChanged<String> onSubmitted;
 
   @override
-  State<WalletPrepareTransferAmountInput> createState() =>
-      _WalletPrepareTransferAmountInputState();
+  State<AmountInput> createState() => _AmountInputState();
 }
 
-class _WalletPrepareTransferAmountInputState
-    extends State<WalletPrepareTransferAmountInput> {
+class _AmountInputState extends State<AmountInput> {
   CurrencyTextInputFormatter? formatter;
   CurrencyTextInputValidator? validator;
 
@@ -52,7 +44,7 @@ class _WalletPrepareTransferAmountInputState
   }
 
   @override
-  void didUpdateWidget(covariant WalletPrepareTransferAmountInput oldWidget) {
+  void didUpdateWidget(covariant AmountInput oldWidget) {
     if (oldWidget.selectedAsset != widget.selectedAsset) {
       _updateFormatterValidator();
     }
@@ -86,7 +78,7 @@ class _WalletPrepareTransferAmountInputState
                     separatorSize: DimensSizeV2.d4,
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
-                      WalletPrepareTransferAssetSelect(
+                      AmountInputAssetSelect(
                         values: widget.assets,
                         currentValue: widget.selectedAsset,
                         onChanged: widget.onSelectedAssetChanged,
@@ -120,7 +112,7 @@ class _WalletPrepareTransferAmountInputState
             ),
             child: GestureDetector(
               behavior: HitTestBehavior.translucent,
-              onTap: widget.focusNode.requestFocus,
+              onTap: widget.focusNode?.requestFocus,
               child: FormField<String>(
                 initialValue: widget.controller.text,
                 autovalidateMode: AutovalidateMode.onUserInteraction,

@@ -20,6 +20,8 @@ class StakingInProgress extends StatelessWidget {
     required this.withdrawHours,
     required this.stakeCurrency,
     required this.attachedFee,
+    required this.tokenPrice,
+    required this.everPrice,
     super.key,
   });
 
@@ -30,6 +32,8 @@ class StakingInProgress extends StatelessWidget {
   final int withdrawHours;
   final Currency stakeCurrency;
   final BigInt attachedFee;
+  final String tokenPrice;
+  final String everPrice;
 
   @override
   Widget build(BuildContext context) {
@@ -59,6 +63,8 @@ class StakingInProgress extends StatelessWidget {
                       stakeCurrency.isoCode,
                   walletCancelUnstakingAttachedFeeQueryParam:
                       attachedFee.toString(),
+                  walletCancelUnstakingTokenPriceQueryParam: tokenPrice,
+                  walletCancelUnstakingEverPriceQueryParam: everPrice,
                 },
               ),
             ),

@@ -1,8 +1,8 @@
 import 'package:app/feature/wallet/wallet.dart';
 import 'package:app/feature/wallet/wallet_prepare_transfer/wallet_prepare_transfer_page/data/wallet_prepare_transfer_asset.dart';
 import 'package:app/feature/wallet/wallet_prepare_transfer/wallet_prepare_transfer_page/wallet_prepare_transfer_page_wm.dart';
-import 'package:app/feature/wallet/wallet_prepare_transfer/wallet_prepare_transfer_page/widgets/wallet_prepare_transfer_amount_input.dart';
 import 'package:app/generated/generated.dart';
+import 'package:app/widgets/amount_input/amount_input.dart';
 import 'package:elementary_helper/elementary_helper.dart';
 import 'package:flutter/material.dart';
 import 'package:lucide_icons_flutter/lucide_icons.dart';
@@ -64,7 +64,7 @@ class WalletPrepareTransferView extends StatelessWidget {
                     validator: _wm.validateAddressField,
                     suffixes: [_buildReceiverSuffix()],
                   ),
-                  WalletPrepareTransferAmountInput(
+                  AmountInput(
                     controller: _wm.amountController,
                     focusNode: _wm.amountFocus,
                     assets: _wm.assets,

@@ -1,6 +1,6 @@
-import 'package:app/feature/wallet/wallet_prepare_transfer/wallet_prepare_transfer_page/data/wallet_prepare_transfer_asset.dart';
 import 'package:app/feature/wallet/widgets/account_asset_tab/token_wallet_asset/token_wallet_icon.dart';
 import 'package:app/generated/generated.dart';
+import 'package:app/widgets/amount_input/amount_input_asset.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:lucide_icons_flutter/lucide_icons.dart';
@@ -8,26 +8,26 @@ import 'package:nekoton_repository/nekoton_repository.dart';
 import 'package:ui_components_lib/ui_components_lib.dart';
 import 'package:ui_components_lib/v2/ui_components_lib_v2.dart';
 
-class WalletPrepareTransferAssetSelect extends StatelessWidget {
-  const WalletPrepareTransferAssetSelect({
-    required this.values,
+class AmountInputAssetSelect extends StatelessWidget {
+  const AmountInputAssetSelect({
     required this.currentValue,
-    required this.onChanged,
+    this.values,
+    this.onChanged,
     super.key,
   });
 
-  final ValueListenable<List<WalletPrepareTransferAsset>> values;
+  final ValueListenable<List<AmountInputAsset>>? values;
 
-  final WalletPrepareTransferAsset? currentValue;
+  final AmountInputAsset? currentValue;
 
-  final ValueChanged<WalletPrepareTransferAsset> onChanged;
+  final ValueChanged<AmountInputAsset>? onChanged;
 
   @override
   Widget build(BuildContext context) {
     final theme = context.themeStyleV2;
 
     return PressScaleWidget(
-      onPressed: () => _openSelectSheet(context),
+      onPressed: values != null ? () => _openSelectSheet(context) : null,
       child: SeparatedRow(
         children: [
           if (currentValue != null) ...[
@@ -58,7 +58,7 @@ class WalletPrepareTransferAssetSelect extends StatelessWidget {
   }
 
   Widget _itemBuilder(
-    WalletPrepareTransferAsset asset, {
+    AmountInputAsset asset, {
     bool isSelected = false,
     VoidCallback? onPressed,
   }) =>
@@ -121,7 +121,7 @@ class WalletPrepareTransferAssetSelect extends StatelessWidget {
           controller: scrollController,
           padding: const EdgeInsets.only(top: DimensSizeV2.d16),
           child: ValueListenableBuilder(
-            valueListenable: values,
+            valueListenable: values!,
             builder: (_, values, __) => SeparatedColumn(
               separatorSize: DimensSizeV2.d12,
               children: values
@@ -131,7 +131,7 @@ class WalletPrepareTransferAssetSelect extends StatelessWidget {
                       isSelected: asset == currentValue,
                       onPressed: () {
                         Navigator.of(context).pop();
-                        onChanged(asset);
+                        onChanged?.call(asset);
                       },
                     ),
                   )

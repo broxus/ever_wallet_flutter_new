@@ -12,13 +12,18 @@ class PrimarySegmentControl<T> extends StatelessWidget {
     this.icon,
     this.size = SegmentControlSize.large,
     this.title,
+    this.titleSpan,
     super.key,
-  });
+  }) : assert(
+          title == null || titleSpan == null,
+          'title and titleSpan cant be provided simultaneously',
+        );
 
   final SegmentControlSize size;
   final SegmentControlState state;
   final IconData? icon;
   final String? title;
+  final InlineSpan? titleSpan;
   final T value;
 
   double get _iconSize {
@@ -76,6 +81,7 @@ class PrimarySegmentControl<T> extends StatelessWidget {
     SegmentControlState? state,
     IconData? icon,
     String? title,
+    InlineSpan? titleSpan,
     T? value,
   }) {
     return PrimarySegmentControl<T>(
@@ -83,6 +89,7 @@ class PrimarySegmentControl<T> extends StatelessWidget {
       state: state ?? this.state,
       icon: icon ?? this.icon,
       title: title ?? this.title,
+      titleSpan: titleSpan ?? this.titleSpan,
       value: value ?? this.value,
     );
   }
@@ -97,7 +104,7 @@ class PrimarySegmentControl<T> extends StatelessWidget {
         borderRadius: BorderRadius.circular(_borderRadius),
         color: style.backgroundColor,
       ),
-      child: Row(
+      child: SeparatedRow(
         mainAxisAlignment: MainAxisAlignment.center,
         children: [
           if (icon != null)
@@ -107,15 +114,9 @@ class PrimarySegmentControl<T> extends StatelessWidget {
               size: _iconSize,
             ),
           if (title != null)
-            Padding(
-              padding: icon != null
-                  ? const EdgeInsets.only(left: DimensSize.d8)
-                  : EdgeInsets.zero,
-              child: Text(
-                title!,
-                style: style.titleTextStyle,
-              ),
-            ),
+            Text(title!, style: style.titleTextStyle),
+          if (titleSpan != null)
+            Text.rich(titleSpan!, style: style.titleTextStyle),
         ],
       ),
     );

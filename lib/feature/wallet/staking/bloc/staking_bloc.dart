@@ -6,6 +6,7 @@ import 'package:app/data/models/models.dart';
 import 'package:app/di/di.dart';
 import 'package:app/feature/wallet/staking/staking.dart';
 import 'package:app/generated/generated.dart';
+import 'package:app/widgets/amount_input/amount_input_asset.dart';
 import 'package:bloc/bloc.dart';
 import 'package:bloc_event_transformers/bloc_event_transformers.dart';
 import 'package:collection/collection.dart';
@@ -25,6 +26,7 @@ final _maxPossibleStakeComission = BigInt.parse('100000000'); // 0.1 EVER
 
 enum StakingPageType { stake, unstake, inProgress }
 
+// TODO(komarov): refactor
 class StakingBloc extends Bloc<StakingBlocEvent, StakingBlocState> {
   StakingBloc({
     required this.context,
@@ -81,6 +83,9 @@ class StakingBloc extends Bloc<StakingBlocEvent, StakingBlocState> {
         staking.stakeDepositAttachedFee + _maxPossibleStakeComission,
         _nativeCurrency,
       );
+
+  CustomCurrency get everWalletCurrency => _everWalletCurrency;
+  CustomCurrency get stEverWalletCurrency => _stEverWalletCurrency;
 
   void _registerHandlers() {
     on<_Init>((_, emit) => _init(emit));
@@ -214,7 +219,7 @@ class StakingBloc extends Bloc<StakingBlocEvent, StakingBlocState> {
   /// Get input value as Fixed based on [_currentCurrency]
   Fixed get _currentValue {
     return Fixed.fromNum(
-      num.tryParse(_inputController.text) ?? 0.0,
+      num.tryParse(_inputController.text.trim().replaceAll(',', '.')) ?? 0.0,
       scale: _currentCurrency.decimalDigits,
     );
   }
@@ -261,6 +266,10 @@ class StakingBloc extends Bloc<StakingBlocEvent, StakingBlocState> {
     BigInt attachedAmount;
     double exchangeRate;
     Currency receiveCurrency;
+    Address rootTokenContract;
+    CustomCurrency currency;
+    var title = '';
+    var tokenSymbol = '';
     var imagePath = '';
 
     switch (_type) {
@@ -275,7 +284,12 @@ class StakingBloc extends Bloc<StakingBlocEvent, StakingBlocState> {
         );
         exchangeRate = _details.stEverSupply / _details.totalAssets;
         imagePath = nekotonRepository.currentTransport.nativeTokenIcon;
+        tokenSymbol = nekotonRepository.currentTransport.nativeTokenTicker;
+        title = nekotonRepository.currentTransport.nativeTokenTicker;
+        rootTokenContract =
+            nekotonRepository.currentTransport.nativeTokenAddress;
         receiveCurrency = _stEverWallet.moneyBalance.currency;
+        currency = _everWalletCurrency;
       case StakingPageType.unstake:
         attachedAmount = staking.stakeWithdrawAttachedFee;
         balance = _stEverWallet.moneyBalance;
@@ -284,11 +298,17 @@ class StakingBloc extends Bloc<StakingBlocEvent, StakingBlocState> {
         );
         exchangeRate = _details.totalAssets / _details.stEverSupply;
         imagePath = Assets.images.stever.stever.path;
+        tokenSymbol = _stEverWallet.symbol.name;
+        title = _stEverWallet.symbol.fullName;
+        rootTokenContract = _stEverWallet.symbol.rootTokenContract;
         receiveCurrency = _nativeCurrency;
+        currency = _stEverWalletCurrency;
       case StakingPageType.inProgress:
         attachedAmount = staking.stakeRemovePendingWithdrawAttachedFee;
         exchangeRate = _details.totalAssets / _details.stEverSupply;
         receiveCurrency = _stEverWallet.moneyBalance.currency;
+        rootTokenContract = _stEverWallet.symbol.rootTokenContract;
+        currency = _stEverWalletCurrency;
         // fake balance
         balance =
             Money.fromBigIntWithCurrency(BigInt.zero, Currency.create('-', 0));
@@ -305,11 +325,9 @@ class StakingBloc extends Bloc<StakingBlocEvent, StakingBlocState> {
     return StakingBlocState.data(
       type: _type,
       inputController: _inputController,
-      currentBalance: balance,
       enteredPrice: enteredPrice,
       attachedAmount: attachedAmount,
       exchangeRate: exchangeRate,
-      imagePath: imagePath,
       requests: _requests,
       receiveBalance: _receive,
       canSubmitAction: canPress,
@@ -317,11 +335,20 @@ class StakingBloc extends Bloc<StakingBlocEvent, StakingBlocState> {
       apy: apy,
       receiveCurrency: receiveCurrency,
       accountKey: accountPublicKey,
+      asset: AmountInputAsset(
+        rootTokenContract: rootTokenContract,
+        isNative: _type == StakingPageType.stake,
+        balance: balance,
+        logoURI: imagePath,
+        title: title,
+        tokenSymbol: tokenSymbol,
+        currency: currency,
+      ),
     );
   }
 
   void _selectMax() {
-    var max = _dataState.currentBalance;
+    var max = _dataState.asset.balance;
 
     if (_type == StakingPageType.stake) {
       max = max - comissionMoney;
