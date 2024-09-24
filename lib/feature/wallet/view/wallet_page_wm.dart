@@ -56,7 +56,7 @@ class WalletPageWidgetModel
         _isShowingBadgeNotifier.accept(true);
       } else {
         _isShowingBadgeNotifier.accept(false);
-          unawaited(model.hideShowingBadge(account.address.address));
+        unawaited(model.hideShowingBadge(account.address.address));
       }
       unawaited(model.resetValueNewUser());
       return;
