@@ -1,4 +1,3 @@
-import 'package:app/app/service/identify/identy_colors.dart';
 import 'package:app/core/error_handler_factory.dart';
 import 'package:app/core/wm/custom_wm.dart';
 import 'package:app/di/di.dart';
@@ -7,6 +6,7 @@ import 'package:app/widgets/user_avatar/user_avatar.dart';
 import 'package:app/widgets/user_avatar/user_avatar_model.dart';
 import 'package:elementary/elementary.dart';
 import 'package:elementary_helper/elementary_helper.dart';
+import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 import 'package:jdenticon_dart/jdenticon_dart.dart';
 
@@ -31,11 +31,9 @@ class UserAvatarWidgetModel
     super.model,
   );
 
-  late final _iconState = createNotifier<AvatarData?>();
+  late final _avatarState = createNotifier<AvatarData?>();
 
-  ListenableState<AvatarData?> get iconState => _iconState;
-
-  ListenableState<IdentifyColor> get colorState => model.colorState;
+  ListenableState<AvatarData?> get avatarState => _avatarState;
 
   @override
   void initWidgetModel() {
@@ -44,30 +42,51 @@ class UserAvatarWidgetModel
   }
 
   Future<void> _init() async {
+    model.identifyState.addListener(_onUpdateIdentify);
+  }
+
+  void _onUpdateIdentify() {
     final address = widget.address;
+    final identify = model.identifyState.value;
 
     if (address == null) {
-      _setAssetSvg();
+      _setAssetSvg(identify?.color);
       return;
     }
 
     try {
-      _iconState.accept(
+      final result = identify == null
+          ? Jdenticon.toSvg(address)
+          : Jdenticon.toSvg(
+              address,
+              colorLightnessMinValue: identify.lightness.colorMin,
+              colorLightnessMaxValue: identify.lightness.colorMax,
+              grayscaleLightnessMinValue: identify.lightness.grayscale.min,
+              grayscaleLightnessMaxValue: identify.lightness.grayscale.max,
+              colorSaturation: identify.saturation.color,
+              grayscaleSaturation: identify.saturation.grayscale,
+              backColor: identify.bacColor,
+              hues: identify.hues,
+            );
+
+      _avatarState.accept(
         AvatarData(
           type: AvatarType.raw,
-          path: Jdenticon.toSvg(address),
+          path: result,
+          color: identify?.color,
         ),
       );
     } catch (_) {
-      _setAssetSvg();
+      _setAssetSvg(identify?.color);
     }
   }
 
-  void _setAssetSvg() {
-    _iconState.accept(
+  void _setAssetSvg([Color? color]) {
+    _avatarState.accept(
       AvatarData(
         type: AvatarType.asset,
         path: Assets.images.userAvatar.userAvatar.path,
+        color: color,
       ),
     );
   }
@@ -77,10 +96,12 @@ class AvatarData {
   AvatarData({
     required this.type,
     required this.path,
+    this.color,
   });
 
   final AvatarType type;
   final String path;
+  final Color? color;
 }
 
 enum AvatarType {

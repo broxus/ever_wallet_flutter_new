@@ -82,6 +82,7 @@ class _BrowserStartViewState extends State<BrowserStartView> {
               items: bookmarkItems,
               buttonText: LocaleKeys.browserSeeAll.tr(),
               buttonOnPressed: _onSeeAllPressed,
+              isAlwaysShowButton: true,
             ),
           if (_predefinedItems.isNotEmpty)
             ..._sectionBuilder(
@@ -237,6 +238,7 @@ class _BrowserStartViewState extends State<BrowserStartView> {
     required List<BrowserBookmarkItem> items,
     String? buttonText,
     VoidCallback? buttonOnPressed,
+    bool isAlwaysShowButton = false,
   }) {
     if (items.isEmpty) {
       return [];
@@ -244,7 +246,7 @@ class _BrowserStartViewState extends State<BrowserStartView> {
 
     final sortedLimitedItems = items.take(_itemCountLimit).toList();
 
-    final buttonEnabled = items.length > _itemCountLimit;
+    final buttonEnabled = isAlwaysShowButton || items.length > _itemCountLimit;
 
     return [
       _sectionHeaderBuilder(

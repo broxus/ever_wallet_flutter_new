@@ -51,14 +51,12 @@ class WalletPageWidgetModel
     //check user create new wallet or login
     final account = _currentAccount.value;
     final isNewUser = await model.isNewUser();
-    if (isNewUser != null) {
+    if (isNewUser != null && account != null) {
       if (isNewUser) {
         _isShowingBadgeNotifier.accept(true);
       } else {
         _isShowingBadgeNotifier.accept(false);
-        if (account != null) {
-          unawaited(model.hideShowingBadge(account.address.address));
-        }
+        unawaited(model.hideShowingBadge(account.address.address));
       }
       unawaited(model.resetValueNewUser());
       return;

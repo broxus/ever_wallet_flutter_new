@@ -27,6 +27,7 @@ class WalletView extends StatelessWidget {
         children: [
           _Background(scrollController: scrollController),
           CustomScrollView(
+            physics: const ClampingScrollPhysics(),
             controller: scrollController,
             slivers: [
               const SliverToBoxAdapter(

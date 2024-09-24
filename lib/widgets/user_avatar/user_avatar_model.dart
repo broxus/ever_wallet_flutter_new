@@ -2,7 +2,7 @@ import 'dart:async';
 
 import 'package:app/app/service/identify/accounts_colors_collection.dart';
 import 'package:app/app/service/identify/i_identify_icons_service.dart';
-import 'package:app/app/service/identify/identy_colors.dart';
+import 'package:app/app/service/identify/identy_icon_data.dart';
 import 'package:app/widgets/user_avatar/user_avatar.dart';
 import 'package:elementary/elementary.dart';
 import 'package:elementary_helper/elementary_helper.dart';
@@ -17,7 +17,7 @@ class UserAvatarModel extends ElementaryModel {
 
   final String? address;
 
-  late final _colorState = StateNotifier<IdentifyColor>(
+  late final _identifyState = StateNotifier<IdentifyIconData>(
     initValue: _identifyIconsService.initialColor,
   );
 
@@ -25,7 +25,7 @@ class UserAvatarModel extends ElementaryModel {
 
   StreamSubscription<AccountsColorsCollection>? _sc;
 
-  ListenableState<IdentifyColor> get colorState => _colorState;
+  ListenableState<IdentifyIconData> get identifyState => _identifyState;
 
   @override
   void init() {
@@ -38,12 +38,13 @@ class UserAvatarModel extends ElementaryModel {
   @override
   void dispose() {
     _sc?.cancel();
+    _identifyState.dispose();
     super.dispose();
   }
 
   Future<void> _onUpdateColor(AccountsColorsCollection collection) async {
     if (address != null) {
-      _colorState.accept(await collection.getColor(address!));
+      _identifyState.accept(await collection.getData(address!));
     }
   }
 }

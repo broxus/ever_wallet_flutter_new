@@ -1,37 +1,37 @@
-import 'package:app/app/service/identify/identy_colors.dart';
+import 'package:app/app/service/identify/identy_icon_data.dart';
 import 'package:app/app/service/secure_storage_service.dart';
 
 class AccountsColorsCollection {
   AccountsColorsCollection(
     this._secureStorageService,
-    this._initialColor,
+    this._initialData,
   );
 
-  final _map = <String, IdentifyColor>{};
+  final _map = <String, IdentifyIconData>{};
 
   final SecureStorageService _secureStorageService;
 
-  final IdentifyColor _initialColor;
+  final IdentifyIconData _initialData;
 
-  Future<void> setColor(String key, IdentifyColor identifyColor) async {
+  Future<void> setData(String key, IdentifyIconData identifyColor) async {
     _map[key] = identifyColor;
 
     try {
-      await _secureStorageService.addValue<int>(
+      await _secureStorageService.addValue<String>(
         key,
-        identifyColor.color.value,
+        identifyColor.name,
       );
     } finally {}
   }
 
-  Future<IdentifyColor> getColor(String key) async {
+  Future<IdentifyIconData> getData(String key) async {
     try {
-      return _map[key] ??= IdentifyColor.byInt(
-            await _secureStorageService.getValue<int>(key),
+      return _map[key] ??= IdentifyIconData.byNameOrNull(
+            await _secureStorageService.getValue<String>(key),
           ) ??
-          _initialColor;
+          _initialData;
     } catch (_) {
-      return _initialColor;
+      return _initialData;
     }
   }
 }

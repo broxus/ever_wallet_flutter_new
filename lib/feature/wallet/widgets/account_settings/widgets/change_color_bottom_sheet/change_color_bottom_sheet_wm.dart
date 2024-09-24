@@ -1,4 +1,4 @@
-import 'package:app/app/service/identify/identy_colors.dart';
+import 'package:app/app/service/identify/identy_icon_data.dart';
 import 'package:app/core/error_handler_factory.dart';
 import 'package:app/core/wm/custom_wm.dart';
 import 'package:app/di/di.dart';
@@ -30,20 +30,21 @@ class ChangeColorBottomSheetWidgetModel extends CustomWidgetModel<
     super.model,
   );
 
-  late final _selectedColorState = StateNotifier<IdentifyColor?>();
+  late final _selectedColorState = StateNotifier<IdentifyIconData?>();
 
-  List<IdentifyColor> get availableColors => model.availableColors;
+  List<IdentifyIconData> get availableColors => model.availableColors;
 
   late final count = availableColors.length;
   late final lastIndex = count - 1;
 
-  ListenableState<IdentifyColor?> get selectedColorState => _selectedColorState;
+  ListenableState<IdentifyIconData?> get selectedColorState =>
+      _selectedColorState;
 
   TextStylesV2 get textStyle => _theme.textStyles;
 
   ThemeStyleV2 get _theme => context.themeStyleV2;
 
-  IdentifyColor? get _selectedColor => _selectedColorState.value;
+  IdentifyIconData? get _selectedColor => _selectedColorState.value;
 
   @override
   void initWidgetModel() {
@@ -55,7 +56,7 @@ class ChangeColorBottomSheetWidgetModel extends CustomWidgetModel<
     _back();
   }
 
-  void onPressedColor(IdentifyColor color) {
+  void onPressedColor(IdentifyIconData color) {
     _selectedColorState.accept(color);
   }
 
@@ -66,12 +67,12 @@ class ChangeColorBottomSheetWidgetModel extends CustomWidgetModel<
       return;
     }
 
-    model.setColor(widget.address, color);
+    model.setData(widget.address, color);
     _back();
   }
 
   Future<void> _init() async {
-    _selectedColorState.accept(await model.getColor(widget.address));
+    _selectedColorState.accept(await model.getData(widget.address));
   }
 
   void _back() {
