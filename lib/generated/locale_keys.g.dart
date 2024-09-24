@@ -10,8 +10,6 @@ abstract class LocaleKeys {
   static const skipWord = 'skipWord';
   static const letsCheckSeedPhrase = 'letsCheckSeedPhrase';
   static const chooseNetwork = 'chooseNetwork';
-  static const chooseNetworkEverDescription = 'chooseNetworkEverDescription';
-  static const chooseNetworkVenomDescription = 'chooseNetworkVenomDescription';
   static const checkSeedPhraseCorrectly = 'checkSeedPhraseCorrectly';
   static const seedIsWrong = 'seedIsWrong';
   static const selectNetworkNewWalletDescription =
