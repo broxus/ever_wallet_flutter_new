@@ -86,11 +86,11 @@ extension FunctionalExt<T> on T {
 
 extension MoneyExt on Money {
   Money exchangeToUSD(Fixed price) => exchangeTo(
-    ExchangeRate.fromFixed(
-      price,
-      fromIsoCode: currency.isoCode,
-      toIsoCode: 'USD',
-      toDecimalDigits: 2,
-    ),
-  );
+        ExchangeRate.fromFixed(
+          price,
+          fromIsoCode: currency.isoCode,
+          toIsoCode: 'USD',
+          toDecimalDigits: 2,
+        ),
+      );
 }

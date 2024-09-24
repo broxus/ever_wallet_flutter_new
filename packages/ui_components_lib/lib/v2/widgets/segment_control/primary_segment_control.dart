@@ -113,8 +113,7 @@ class PrimarySegmentControl<T> extends StatelessWidget {
               color: style.iconColor,
               size: _iconSize,
             ),
-          if (title != null)
-            Text(title!, style: style.titleTextStyle),
+          if (title != null) Text(title!, style: style.titleTextStyle),
           if (titleSpan != null)
             Text.rich(titleSpan!, style: style.titleTextStyle),
         ],

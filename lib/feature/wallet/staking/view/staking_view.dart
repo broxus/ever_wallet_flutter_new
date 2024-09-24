@@ -177,7 +177,6 @@ class StakingView extends StatelessWidget {
   }
 }
 
-
 class _InfoField extends StatelessWidget {
   const _InfoField({
     required this.currentCurrency,

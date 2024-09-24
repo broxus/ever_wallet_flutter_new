@@ -128,8 +128,7 @@ class _ActionList extends StatelessWidget {
                     context.goFurther(
                       AppRoute.walletStake.pathWithData(
                         pathParameters: {
-                          walletStakeAddressPathParam:
-                          account.address.address,
+                          walletStakeAddressPathParam: account.address.address,
                         },
                       ),
                     );

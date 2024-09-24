@@ -107,8 +107,8 @@ class CancelUnstakingPage extends StatelessWidget {
                     WalletTransactionDetailsItem(
                       title: LocaleKeys.exchangeRate.tr(),
                       value:
-                        // ignore: lines_longer_than_80_chars, no-magic-number, binary-expression-operand-order
-                        '1 ${inject<NekotonRepository>().currentTransport.nativeTokenTicker} ≈ ${(1 * exchangeRate).toStringAsFixed(4)} ${stakeCurrency.isoCode}',
+                          // ignore: lines_longer_than_80_chars, no-magic-number, binary-expression-operand-order
+                          '1 ${inject<NekotonRepository>().currentTransport.nativeTokenTicker} ≈ ${(1 * exchangeRate).toStringAsFixed(4)} ${stakeCurrency.isoCode}',
                     ),
                     WalletTransactionDetailsItem(
                       title: LocaleKeys.receiveWord.tr(),
@@ -116,13 +116,13 @@ class CancelUnstakingPage extends StatelessWidget {
                       tonIconPath: Assets.images.stever.stever.path,
                       convertedValueWidget: everPrice != null
                           ? AmountWidget.fromMoney(
-                        amount: everMoney.exchangeToUSD(everPrice!),
-                        style: theme.textStyles.labelXSmall.copyWith(
-                          color: theme.colors.content3,
-                        ),
-                        sign: '~ ',
-                        useDefaultFormat: true,
-                      )
+                              amount: everMoney.exchangeToUSD(everPrice!),
+                              style: theme.textStyles.labelXSmall.copyWith(
+                                color: theme.colors.content3,
+                              ),
+                              sign: '~ ',
+                              useDefaultFormat: true,
+                            )
                           : null,
                     ),
                   ],
