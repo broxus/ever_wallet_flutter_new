@@ -3,6 +3,7 @@ import 'package:app/app/service/service.dart';
 import 'package:app/data/models/models.dart';
 import 'package:app/di/di.dart';
 import 'package:app/feature/wallet/wallet.dart';
+import 'package:app/feature/wallet/widgets/account_transactions_tab/detail/details.dart';
 import 'package:app/feature/wallet/widgets/account_transactions_tab/widgets/ton_wallet_transaction_status_body.dart';
 import 'package:app/generated/generated.dart';
 import 'package:app/utils/utils.dart';
@@ -10,7 +11,9 @@ import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:nekoton_repository/nekoton_repository.dart';
 import 'package:ui_components_lib/ui_components_lib.dart';
+import 'package:ui_components_lib/v2/ui_components_lib_v2.dart';
 
+// TODO(komarov): refactor
 /// Screen that allows user to cancel pending withdraw request
 class CancelUnstakingPage extends StatelessWidget {
   const CancelUnstakingPage({
@@ -20,6 +23,8 @@ class CancelUnstakingPage extends StatelessWidget {
     required this.withdrawHours,
     required this.stakeCurrency,
     required this.attachedFee,
+    required this.tokenPrice,
+    required this.everPrice,
     super.key,
   });
 
@@ -30,10 +35,12 @@ class CancelUnstakingPage extends StatelessWidget {
   final int withdrawHours;
   final Currency stakeCurrency;
   final BigInt attachedFee;
+  final Fixed? tokenPrice;
+  final Fixed? everPrice;
 
   @override
   Widget build(BuildContext context) {
-    final colors = context.themeStyle.colors;
+    final theme = context.themeStyleV2;
     final steverMoney = Money.fromBigIntWithCurrency(
       request.data.amount,
       stakeCurrency,
@@ -45,108 +52,95 @@ class CancelUnstakingPage extends StatelessWidget {
     );
 
     return Scaffold(
-      appBar: const DefaultAppBar(),
+      appBar: DefaultAppBar(
+        titleText: LocaleKeys.transactionInformation.tr(),
+      ),
       body: Stack(
         children: [
           Positioned.fill(
-            bottom: commonButtonHeight + DimensSize.d16,
+            bottom: DimensSizeV2.d90,
             child: SingleChildScrollView(
-              child: SeparatedColumn(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                separatorSize: DimensSize.d16,
-                mainAxisSize: MainAxisSize.min,
-                children: [
-                  Padding(
-                    padding: const EdgeInsets.symmetric(
-                      horizontal: DimensSize.d16,
-                    ),
-                    child: Text(
-                      LocaleKeys.transactionInformation.tr(),
-                      style: StyleRes.h1.copyWith(
-                        color: context.themeStyle.colors.textPrimary,
+              padding: const EdgeInsets.symmetric(
+                horizontal: DimensSizeV2.d16,
+                vertical: DimensSizeV2.d8,
+              ),
+              child: PrimaryCard(
+                padding: const EdgeInsets.symmetric(
+                  horizontal: DimensSize.d16,
+                  vertical: DimensSize.d8,
+                ),
+                borderRadius: BorderRadius.circular(DimensRadiusV2.radius12),
+                child: SeparatedColumn(
+                  separatorSize: DimensSizeV2.d16,
+                  mainAxisSize: MainAxisSize.min,
+                  children: [
+                    const SizedBox.shrink(),
+                    _statusDateRow(context),
+                    Text(
+                      LocaleKeys.withdrawHoursNote.tr(
+                        args: [withdrawHours.toString()],
+                      ),
+                      style: StyleRes.secondaryRegular.copyWith(
+                        color: theme.colors.content3,
                       ),
                     ),
-                  ),
-                  ShapedContainerColumn(
-                    mainAxisSize: MainAxisSize.min,
-                    padding: const EdgeInsets.symmetric(
-                      vertical: DimensSize.d16,
+                    const Divider(),
+                    WalletTransactionDetailsItem(
+                      title: LocaleKeys.typeWord.tr(),
+                      value: LocaleKeys.liquidStaking.tr(),
                     ),
-                    separator: const Padding(
-                      padding: EdgeInsets.symmetric(vertical: DimensSize.d8),
-                      child: CommonDivider(),
+                    WalletTransactionDetailsItem(
+                      title: LocaleKeys.unstakeAmount.tr(),
+                      valueWidget: AmountWidget.fromMoney(amount: steverMoney),
+                      tonIconPath: Assets.images.stever.stever.path,
+                      convertedValueWidget: tokenPrice != null
+                          ? AmountWidget.fromMoney(
+                              amount: steverMoney.exchangeToUSD(tokenPrice!),
+                              style: theme.textStyles.labelXSmall.copyWith(
+                                color: theme.colors.content3,
+                              ),
+                              sign: '~ ',
+                              useDefaultFormat: true,
+                            )
+                          : null,
                     ),
-                    children: [
-                      _statusDateRow(),
-                      Padding(
-                        padding: const EdgeInsets.symmetric(
-                          horizontal: DimensSize.d16,
-                        ),
-                        child: Text(
-                          LocaleKeys.withdrawHoursNote.tr(
-                            args: [withdrawHours.toString()],
-                          ),
-                          style: StyleRes.secondaryRegular.copyWith(
-                            color: colors.textSecondary,
-                          ),
-                        ),
-                      ),
-                      CommonListTile(
-                        invertTitleSubtitleStyles: true,
-                        padding: const EdgeInsets.symmetric(
-                          horizontal: DimensSize.d16,
-                        ),
-                        titleText: LocaleKeys.typeWord.tr(),
-                        subtitleText: LocaleKeys.liquidStaking.tr(),
-                      ),
-                      CommonListTile(
-                        invertTitleSubtitleStyles: true,
-                        padding: const EdgeInsets.symmetric(
-                          horizontal: DimensSize.d16,
-                        ),
-                        titleText: LocaleKeys.unstakeAmount.tr(),
-                        subtitleChild: MoneyWidget(
-                          money: steverMoney,
-                          style: MoneyWidgetStyle.primary,
-                        ),
-                      ),
-                      CommonListTile(
-                        invertTitleSubtitleStyles: true,
-                        padding: const EdgeInsets.symmetric(
-                          horizontal: DimensSize.d16,
-                        ),
-                        titleText: LocaleKeys.exchangeRate.tr(),
-                        subtitleText:
-                            // ignore: lines_longer_than_80_chars, no-magic-number, binary-expression-operand-order
-                            '1 ${inject<NekotonRepository>().currentTransport.nativeTokenTicker} ≈ ${(1 * exchangeRate).toStringAsFixed(4)} ${stakeCurrency.isoCode}',
-                      ),
-                      CommonListTile(
-                        invertTitleSubtitleStyles: true,
-                        padding: const EdgeInsets.symmetric(
-                          horizontal: DimensSize.d16,
-                        ),
-                        titleText: LocaleKeys.receiveWord.tr(),
-                        subtitleChild: MoneyWidget(
-                          money: everMoney,
-                          style: MoneyWidgetStyle.primary,
-                          signValue: '~',
-                        ),
-                      ),
-                    ],
-                  ),
-                ],
+                    WalletTransactionDetailsItem(
+                      title: LocaleKeys.exchangeRate.tr(),
+                      value:
+                          // ignore: lines_longer_than_80_chars, no-magic-number, binary-expression-operand-order
+                          '1 ${inject<NekotonRepository>().currentTransport.nativeTokenTicker} ≈ ${(1 * exchangeRate).toStringAsFixed(4)} ${stakeCurrency.isoCode}',
+                    ),
+                    WalletTransactionDetailsItem(
+                      title: LocaleKeys.receiveWord.tr(),
+                      valueWidget: AmountWidget.fromMoney(amount: everMoney),
+                      tonIconPath: Assets.images.stever.stever.path,
+                      convertedValueWidget: everPrice != null
+                          ? AmountWidget.fromMoney(
+                              amount: everMoney.exchangeToUSD(everPrice!),
+                              style: theme.textStyles.labelXSmall.copyWith(
+                                color: theme.colors.content3,
+                              ),
+                              sign: '~ ',
+                              useDefaultFormat: true,
+                            )
+                          : null,
+                    ),
+                  ],
+                ),
               ),
             ),
           ),
           Positioned(
-            bottom: DimensSize.d16,
-            left: DimensSize.d16,
-            right: DimensSize.d16,
-            child: CommonButton(
-              buttonType: EverButtonType.secondary,
-              contentColor: colors.alert,
-              text: LocaleKeys.cancelUnstaking.tr(),
-              onPressed: () => tryCancelUnstaking(context),
+            bottom: DimensSizeV2.d0,
+            left: DimensSizeV2.d0,
+            right: DimensSizeV2.d0,
+            child: Padding(
+              padding: const EdgeInsets.all(DimensSizeV2.d16),
+              child: DestructiveButton(
+                buttonShape: ButtonShape.pill,
+                title: LocaleKeys.cancelUnstaking.tr(),
+                onPressed: () => tryCancelUnstaking(context),
+              ),
             ),
           ),
         ],
@@ -154,36 +148,24 @@ class CancelUnstakingPage extends StatelessWidget {
     );
   }
 
-  Widget _statusDateRow() {
-    return Builder(
-      builder: (context) {
-        final date = request.data.timestamp;
-        final colors = context.themeStyle.colors;
-        final formatter = date.year == NtpTime.now().year
-            ? DateFormat('MM.dd, HH:mm', context.locale.languageCode)
-            : DateFormat('MM.dd.y, HH:mm', context.locale.languageCode);
+  Widget _statusDateRow(BuildContext context) {
+    final date = request.data.timestamp;
+    final theme = context.themeStyleV2;
+    final formatter = date.year == NtpTime.now().year
+        ? DateFormat('MM.dd, HH:mm', context.locale.languageCode)
+        : DateFormat('MM.dd.y, HH:mm', context.locale.languageCode);
 
-        return Padding(
-          padding: const EdgeInsets.symmetric(
-            horizontal: DimensSize.d16,
-            vertical: DimensSize.d8,
+    return Row(
+      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+      children: [
+        Text(
+          formatter.format(date),
+          style: theme.textStyles.labelXSmall.copyWith(
+            color: theme.colors.content3,
           ),
-          child: SeparatedRow(
-            children: [
-              TonWalletTransactionStatus.unstakingInProgress.chipByStatus,
-              Expanded(
-                child: Text(
-                  formatter.format(date),
-                  style: StyleRes.addRegular.copyWith(
-                    color: colors.textSecondary,
-                  ),
-                  textAlign: TextAlign.right,
-                ),
-              ),
-            ],
-          ),
-        );
-      },
+        ),
+        TonWalletTransactionStatus.unstakingInProgress.chipByStatus,
+      ],
     );
   }
 

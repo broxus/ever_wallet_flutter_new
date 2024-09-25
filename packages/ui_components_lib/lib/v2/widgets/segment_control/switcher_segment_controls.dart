@@ -7,11 +7,13 @@ class SwitcherSegmentControls<T> extends StatelessWidget {
     required this.currentValue,
     required this.values,
     required this.onTabChanged,
+    this.fullWidth = true,
     super.key,
   });
 
   final T currentValue;
   final List<PrimarySegmentControl<T>> values;
+  final bool fullWidth;
   final ValueChanged<T> onTabChanged;
 
   @override
@@ -24,9 +26,11 @@ class SwitcherSegmentControls<T> extends StatelessWidget {
       ),
       padding: const EdgeInsets.all(DimensSizeV2.d4),
       child: Row(
+        mainAxisSize: fullWidth ? MainAxisSize.max : MainAxisSize.min,
         children: [
           for (final segment in values)
-            Expanded(
+            Flexible(
+              fit: fullWidth ? FlexFit.tight : FlexFit.loose,
               child: GestureDetector(
                 onTap: () => onTabChanged(segment.value),
                 child: segment.copyWith(

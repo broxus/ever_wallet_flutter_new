@@ -2,10 +2,13 @@ import 'package:app/data/models/models.dart';
 import 'package:app/di/di.dart';
 import 'package:app/feature/wallet/wallet.dart';
 import 'package:app/generated/generated.dart';
+import 'package:app/widgets/amount_input/amount_input.dart';
+import 'package:app/widgets/amount_input/amount_input_asset.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:nekoton_repository/nekoton_repository.dart';
 import 'package:ui_components_lib/ui_components_lib.dart';
+import 'package:ui_components_lib/v2/ui_components_lib_v2.dart';
 
 extension on StakingPageType {
   String get title {
@@ -26,12 +29,11 @@ class StakingView extends StatelessWidget {
     // ignore: avoid_positional_boolean_parameters
     this.canSubmitAction,
     this.inputController,
-    this.imagePath,
     this.exchangeRate,
     this.receiveCurrency,
     this.accountPublicKey,
-    this.currentBalance,
     this.enteredPrice,
+    this.asset,
     this.receiveBalance,
     this.requests,
     this.apy, {
@@ -43,9 +45,6 @@ class StakingView extends StatelessWidget {
 
   /// Amount in EVER that will be attached to action
   final BigInt attachedAmount;
-
-  final String imagePath;
-
   final int withdrawTime;
   final bool canSubmitAction;
   final TextEditingController inputController;
@@ -53,9 +52,6 @@ class StakingView extends StatelessWidget {
 
   /// How many stevers could be received for evers
   final double? exchangeRate;
-
-  /// Balance of current selected token (stake-ever, unstake-stever)
-  final Money currentBalance;
 
   /// Price in real curreny of entered tokens
   final Money enteredPrice;
@@ -71,34 +67,69 @@ class StakingView extends StatelessWidget {
   /// Average profit
   final double? apy;
 
+  final AmountInputAsset asset;
+
   @override
   Widget build(BuildContext context) {
+    final theme = context.themeStyleV2;
+    final bloc = context.read<StakingBloc>();
+
     return SeparatedColumn(
-      separatorSize: DimensSize.d16,
+      separatorSize: DimensSizeV2.d16,
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
         SingleChildScrollView(
           scrollDirection: Axis.horizontal,
-          child: CommonTabBar<StakingPageType>(
-            selectedValue: type,
-            onChanged: (type) => context
-                .read<StakingBloc>()
-                .add(StakingBlocEvent.changeTab(type)),
+          child: SwitcherSegmentControls<StakingPageType>(
+            fullWidth: false,
+            currentValue: type,
             values: [
-              StakingPageType.stake,
-              StakingPageType.unstake,
+              PrimarySegmentControl(
+                title: StakingPageType.stake.title,
+                value: StakingPageType.stake,
+                size: SegmentControlSize.xsmall,
+                state: SegmentControlState.normal,
+              ),
+              PrimarySegmentControl(
+                title: StakingPageType.unstake.title,
+                value: StakingPageType.unstake,
+                size: SegmentControlSize.xsmall,
+                state: SegmentControlState.normal,
+              ),
               if (requests != null && requests!.isNotEmpty)
-                StakingPageType.inProgress,
+                PrimarySegmentControl(
+                  titleSpan: TextSpan(
+                    children: [
+                      TextSpan(text: StakingPageType.inProgress.title),
+                      const WidgetSpan(
+                        child: SizedBox(width: DimensSizeV2.d8),
+                      ),
+                      TextSpan(
+                        text: requests?.length.toString() ?? '0',
+                        style: TextStyle(
+                          color: Colors.white,
+                          background: Paint()
+                            ..strokeWidth = DimensSizeV2.d8
+                            ..color = theme.colors.backgroundAccent
+                            ..style = PaintingStyle.stroke
+                            ..strokeJoin = StrokeJoin.round,
+                        ),
+                      ),
+                    ],
+                  ),
+                  value: StakingPageType.inProgress,
+                  size: SegmentControlSize.xsmall,
+                  state: SegmentControlState.normal,
+                ),
             ],
-            builder: (_, e) => e.title,
-            trailingBuilder: (_, e) => e == StakingPageType.inProgress
-                ? _pendingWithdrawIndicator()
-                : null,
+            onTabChanged: (value) => context
+                .read<StakingBloc>()
+                .add(StakingBlocEvent.changeTab(value)),
           ),
         ),
         switch (type) {
-          StakingPageType.stake => _stakeUnstakeBody(),
-          StakingPageType.unstake => _stakeUnstakeBody(),
+          StakingPageType.stake => _stakeUnstakeBody(context),
+          StakingPageType.unstake => _stakeUnstakeBody(context),
           StakingPageType.inProgress => StakingInProgress(
               requests: requests ?? [],
               accountKey: accountPublicKey,
@@ -106,128 +137,141 @@ class StakingView extends StatelessWidget {
               stakeCurrency: receiveCurrency,
               attachedFee: attachedAmount,
               withdrawHours: withdrawTime,
+              everPrice: bloc.everWalletCurrency.price,
+              tokenPrice: bloc.stEverWalletCurrency.price,
             ),
         },
       ],
     );
   }
 
-  Widget _pendingWithdrawIndicator() {
-    return Builder(
-      builder: (context) {
-        final textColor = EverButtonStyleProvider.of(context).contentColor;
-        final colors = context.themeStyle.colors;
-
-        return Container(
-          width: DimensSize.d20,
-          height: DimensSize.d20,
-          alignment: Alignment.center,
-          decoration: BoxDecoration(
-            color: colors.blue,
-            shape: BoxShape.circle,
-          ),
-          child: Text(
-            requests?.length.toString() ?? '0',
-            style: StyleRes.addBold.copyWith(color: textColor),
-          ),
-        );
-      },
-    );
-  }
-
-  Widget _stakeUnstakeBody() {
+  Widget _stakeUnstakeBody(BuildContext context) {
     return SeparatedColumn(
       crossAxisAlignment: CrossAxisAlignment.start,
-      separatorSize: DimensSize.d4,
+      separatorSize: DimensSizeV2.d4,
       children: [
-        _inputField(),
-        MoneyWidget(
-          money: currentBalance,
-          style: MoneyWidgetStyle.secondary,
+        AmountInput(
+          controller: inputController,
+          selectedAsset: asset,
+          onMaxAmount: () => context
+              .read<StakingBloc>()
+              .add(const StakingBlocEvent.selectMax()),
+          onSubmitted: (value) => inputController.text = value,
         ),
-        const SizedBox(height: DimensSize.d12),
-        _infoField(),
+        const SizedBox(height: DimensSizeV2.d12),
+        _InfoField(
+          currentCurrency: asset.balance.currency,
+          receiveCurrency: receiveCurrency,
+          exchangeRate: exchangeRate ?? 1,
+          attachedAmount: Money.fromBigIntWithCurrency(
+            attachedAmount,
+            Currencies()[inject<NekotonRepository>()
+                .currentTransport
+                .nativeTokenTicker]!,
+          ),
+          receiveBalance: receiveBalance,
+          apy: apy,
+        ),
       ],
     );
   }
+}
 
-  Widget _inputField() {
-    return Builder(
-      builder: (context) {
-        final colors = context.themeStyle.colors;
+class _InfoField extends StatelessWidget {
+  const _InfoField({
+    required this.currentCurrency,
+    required this.receiveCurrency,
+    required this.exchangeRate,
+    required this.attachedAmount,
+    this.receiveBalance,
+    this.apy,
+  });
 
-        return CommonInput(
-          titleChild: TonWalletIconWidget(
-            path: imagePath,
-            size: DimensSize.d16,
+  final Currency currentCurrency;
+  final Currency receiveCurrency;
+  final double exchangeRate;
+  final Money attachedAmount;
+  final Money? receiveBalance;
+  final double? apy;
+
+  @override
+  Widget build(BuildContext context) {
+    final theme = context.themeStyleV2;
+
+    return PrimaryCard(
+      padding: const EdgeInsets.all(DimensSizeV2.d16),
+      borderRadius: BorderRadius.circular(DimensRadiusV2.radius16),
+      // color: color,
+      child: SeparatedColumn(
+        separatorSize: DimensSizeV2.d16,
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          _InfoRow(
+            label: LocaleKeys.exchangeRate.tr(),
+            child: Text(
+              // ignore: lines_longer_than_80_chars, no-magic-number, binary-expression-operand-order
+              '1 ${currentCurrency.isoCode} ≈ ${(1 * exchangeRate).toStringAsFixed(4)} ${receiveCurrency.isoCode}',
+              style: theme.textStyles.labelSmall,
+              overflow: TextOverflow.ellipsis,
+              softWrap: false,
+              maxLines: 1,
+            ),
           ),
-          titleText: LocaleKeys.tokenAmount.tr(
-            args: [currentBalance.currency.isoCode],
+          _InfoRow(
+            label: LocaleKeys.attachedAmount.tr(),
+            child: AmountWidget.fromMoney(
+              amount: attachedAmount,
+            ),
           ),
-          controller: inputController,
-          hintText: '0.0',
-          inputFormatters: [
-            CurrencyTextInputFormatter(currentBalance.currency),
-          ],
-          suffixIconConstraints: const BoxConstraints(
-            minHeight: commonInputHeight,
-            minWidth: DimensSize.d56,
-          ),
-          suffixIcon: SmallButton(
-            onPressed: () => context
-                .read<StakingBloc>()
-                .add(const StakingBlocEvent.selectMax()),
-            buttonType: EverButtonType.ghost,
-            contentColor: colors.blue,
-            text: LocaleKeys.maxWord.tr(),
-          ),
-        );
-      },
+          if (receiveBalance != null)
+            _InfoRow(
+              label: LocaleKeys.receiveWord.tr(),
+              child: AmountWidget.fromMoney(
+                amount: receiveBalance!,
+                sign: receiveBalance!.amount == Fixed.zero ? '' : '~',
+              ),
+            ),
+          if (apy != null)
+            _InfoRow(
+              label: LocaleKeys.averageApy.tr(),
+              child: Text(
+                '${apy!.toStringAsFixed(2)} %',
+                style: theme.textStyles.labelSmall,
+                overflow: TextOverflow.ellipsis,
+                softWrap: false,
+                maxLines: 1,
+              ),
+            ),
+        ],
+      ),
     );
   }
+}
 
-  Widget _infoField() {
-    return ShapedContainerColumn(
-      margin: EdgeInsets.zero,
-      padding: EdgeInsets.zero,
+class _InfoRow extends StatelessWidget {
+  const _InfoRow({
+    required this.label,
+    required this.child,
+  });
+
+  final String label;
+  final Widget child;
+
+  @override
+  Widget build(BuildContext context) {
+    final theme = context.themeStyleV2;
+
+    return SeparatedRow(
+      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+      crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        CommonListTile(
-          invertTitleSubtitleStyles: true,
-          titleText: LocaleKeys.exchangeRate.tr(),
-          subtitleText:
-              // ignore: lines_longer_than_80_chars, no-magic-number, binary-expression-operand-order
-              '1 ${currentBalance.currency.isoCode} ≈ ${(1 * (exchangeRate ?? 1)).toStringAsFixed(4)} ${receiveCurrency.isoCode}',
-        ),
-        CommonListTile(
-          invertTitleSubtitleStyles: true,
-          titleText: LocaleKeys.attachedAmount.tr(),
-          subtitleChild: MoneyWidget(
-            money: Money.fromBigIntWithCurrency(
-              attachedAmount,
-              Currencies()[inject<NekotonRepository>()
-                  .currentTransport
-                  .nativeTokenTicker]!,
-            ),
-            style: MoneyWidgetStyle.primary,
+        Text(
+          label,
+          style: theme.textStyles.labelSmall.copyWith(
+            color: theme.colors.content3,
           ),
         ),
-        if (receiveBalance != null)
-          CommonListTile(
-            invertTitleSubtitleStyles: true,
-            titleText: LocaleKeys.receiveWord.tr(),
-            subtitleChild: MoneyWidget(
-              money: receiveBalance!,
-              style: MoneyWidgetStyle.primary,
-              signValue: receiveBalance!.amount == Fixed.zero ? '' : '~',
-            ),
-          ),
-        if (apy != null)
-          CommonListTile(
-            invertTitleSubtitleStyles: true,
-            titleText: LocaleKeys.averageApy.tr(),
-            // ignore: no-magic-number
-            subtitleText: '${apy!.toStringAsFixed(2)} %',
-          ),
+        Flexible(child: child),
       ],
     );
   }

@@ -181,14 +181,3 @@ class WalletTransactionDetailsDefaultBody extends StatelessWidget {
     );
   }
 }
-
-extension on Money {
-  Money exchangeToUSD(Fixed price) => exchangeTo(
-        ExchangeRate.fromFixed(
-          price,
-          fromIsoCode: currency.isoCode,
-          toIsoCode: 'USD',
-          toDecimalDigits: 10,
-        ),
-      );
-}

@@ -71,6 +71,10 @@ const walletCancelUnstakingStakingCurrencyCodeQueryParam =
     'walletCancelUnstakingStakingCurrencyCode';
 const walletCancelUnstakingAttachedFeeQueryParam =
     'walletCancelUnstakingStakingAttachedFee';
+const walletCancelUnstakingTokenPriceQueryParam =
+    'walletCancelUnstakingTokenPrice';
+const walletCancelUnstakingEverPriceQueryParam =
+    'walletCancelUnstakingEverPrice';
 
 const walletCreatePublicKeyQueryParam = 'walletCreatePublicKey';
 const walletCreatePasswordQueryParam = 'walletCreatePassword';
@@ -364,6 +368,14 @@ GoRoute get cancelUnstakingRoute {
           walletCancelUnstakingStakingCurrencyCodeQueryParam]!]!,
       withdrawHours: int.parse(
         state.uri.queryParameters[walletCancelUnstakingWithdrawHorsQueryParam]!,
+      ),
+      tokenPrice: Fixed.tryParse(
+        state.uri.queryParameters[walletCancelUnstakingTokenPriceQueryParam] ??
+            '',
+      ),
+      everPrice: Fixed.tryParse(
+        state.uri.queryParameters[walletCancelUnstakingEverPriceQueryParam] ??
+            '',
       ),
     ),
     routes: [
