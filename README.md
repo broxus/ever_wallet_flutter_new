@@ -350,7 +350,11 @@ After this, fastlane commands will no longer require the 6-digit Apple verificat
 
 #### It takes a long time to clone the repository when running melos build:ios_match_new_devices
 
-If it takes a long time to clone the repository when you run the `melos build:ios_match_new_devices` command, you most likely do not have enough rights. Contact your administrator.
+If cloning the repository takes a long time when running the command `melos build:ios_match_new_devices`, then possible reasons:
+1) Insufficient rights. Contact the administrator.
+2) You need an ssh key.
+- To do this, [create a key and add it to github](https://docs.github.com/en/authentication/connecting-to-github-with-ssh/adding-a-new-ssh-key-to-your-github-account).
+- After that, you may need to run the command `cd ~/.ssh/; ssh-add` in the terminal.
 
 ## Deploy 🚀
 

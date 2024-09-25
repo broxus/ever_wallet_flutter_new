@@ -4,6 +4,7 @@ import 'package:app/data/models/models.dart';
 import 'package:app/di/di.dart';
 import 'package:app/feature/wallet/widgets/token_transfer_info/token_transfer_info_model.dart';
 import 'package:app/feature/wallet/widgets/token_transfer_info/token_transfer_info_widget.dart';
+import 'package:app/utils/utils.dart';
 import 'package:elementary_helper/elementary_helper.dart';
 import 'package:flutter/material.dart';
 import 'package:nekoton_repository/nekoton_repository.dart';
@@ -112,15 +113,4 @@ class TokenTransferInfoWidgetModel
 
     _tokenAsset.accept(tokenAsset);
   }
-}
-
-extension on Money {
-  Money exchangeToUSD(Fixed price) => exchangeTo(
-        ExchangeRate.fromFixed(
-          price,
-          fromIsoCode: currency.isoCode,
-          toIsoCode: 'USD',
-          toDecimalDigits: 2,
-        ),
-      );
 }
