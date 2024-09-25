@@ -7,8 +7,6 @@
   "skipWord": "Skip",
   "letsCheckSeedPhrase": "Let’s check your seed phrase",
   "chooseNetwork": "Choose a network",
-  "chooseNetworkEverDescription": "Benefit from fast transactions,\nscalability, and seamless integration\nwith decentralized applications.",
-  "chooseNetworkVenomDescription": "Access a range of digital assets and\nservices with ease, thanks to its\nstreamlined and efficient blockchain\ninfrastructure.",
   "checkSeedPhraseCorrectly": "We’ll verify that you wrote your seed phrase correctly. Please select the correct words to continue.",
   "seedIsWrong": "The seed phrase is wrong",
   "selectNetworkNewWalletDescription": "Select the network for your new wallet.\nThis will determine the blockchain and\ncryptocurrency you'll be using.",
