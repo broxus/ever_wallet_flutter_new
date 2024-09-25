@@ -91,7 +91,11 @@ class ImportWalletScreenWidgetModel
 
   void onChangeTab(int value) {
     _currentValue = value;
-    _updateState(selectedValue: _currentValue);
+    _updateState(
+      isPasted: false,
+      selectedValue: _currentValue,
+      seed: SeedPhraseModel.empty(),
+    );
   }
 
   Future<void> pasteWords() async {
@@ -111,6 +115,9 @@ class ImportWalletScreenWidgetModel
         }
       }
     }
+
+    // print('!!! ${}');
+    //print('!!! ${_currentValue}');
 
     if (seed.isEmpty) {
       model.showValidateError(context, LocaleKeys.incorrectWordsFormat.tr());
