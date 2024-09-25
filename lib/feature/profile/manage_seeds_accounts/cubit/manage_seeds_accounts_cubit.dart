@@ -7,6 +7,7 @@ import 'package:freezed_annotation/freezed_annotation.dart';
 import 'package:nekoton_repository/nekoton_repository.dart';
 
 part 'manage_seeds_accounts_cubit.freezed.dart';
+
 part 'manage_seeds_accounts_state.dart';
 
 /// This is a bloc that displays list of user's seeds.
@@ -17,6 +18,7 @@ class ManageSeedsAccountsCubit extends Cubit<ManageSeedsAccountsState> {
     this.nekotonRepository,
     this.currentSeedService,
     this.storageService,
+    this.currentAccountsService,
   ) : super(
           ManageSeedsAccountsState.data(
             currentSeed: currentSeedService.currentSeed,
@@ -27,6 +29,7 @@ class ManageSeedsAccountsCubit extends Cubit<ManageSeedsAccountsState> {
   final NekotonRepository nekotonRepository;
   final CurrentSeedService currentSeedService;
   final SecureStorageService storageService;
+  final CurrentAccountsService currentAccountsService;
 
   late StreamSubscription<SeedList> _seedListSubscription;
   late StreamSubscription<Seed?> _currentSeedSubscription;
@@ -44,6 +47,7 @@ class ManageSeedsAccountsCubit extends Cubit<ManageSeedsAccountsState> {
     _currentSeedSubscription =
         currentSeedService.currentSeedStream.skip(1).listen(
       (currentSeed) {
+        currentAccountsService.updateCurrentActiveAccount(0);
         emit(
           ManageSeedsAccountsState.data(
             currentSeed: currentSeed,
