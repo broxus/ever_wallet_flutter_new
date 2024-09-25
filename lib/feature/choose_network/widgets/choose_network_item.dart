@@ -28,29 +28,27 @@ class ChooseNetworkItem extends StatelessWidget {
         child: Row(
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
           children: [
-            Row(
-              mainAxisSize: MainAxisSize.min,
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                Padding(
-                  padding: const EdgeInsets.only(right: DimensSizeV2.d12),
-                  child: _Icon(data.icon),
-                ),
-                Flexible(
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      _Name(data.title),
-                      _Description(data.description),
-                    ],
+            Flexible(
+              child: Row(
+                mainAxisSize: MainAxisSize.min,
+                children: [
+                  Padding(
+                    padding: const EdgeInsets.only(right: DimensSizeV2.d12),
+                    child: _Icon(data.icon),
                   ),
-                ),
-              ],
+                  Flexible(
+                    child: _Name(data.title),
+                  ),
+                ],
+              ),
             ),
-            Icon(
-              LucideIcons.chevronRight,
-              size: DimensSizeV2.d20,
-              color: context.themeStyleV2.colors.primaryA,
+            Padding(
+              padding: const EdgeInsets.only(left: DimensSizeV2.d24),
+              child: Icon(
+                LucideIcons.chevronRight,
+                size: DimensSizeV2.d20,
+                color: context.themeStyleV2.colors.primaryA,
+              ),
             ),
           ],
         ),
@@ -97,21 +95,6 @@ class _Name extends StatelessWidget {
     return PrimaryText(
       title,
       type: PrimaryTextType.titleSmall,
-      textAlign: TextAlign.start,
-    );
-  }
-}
-
-class _Description extends StatelessWidget {
-  const _Description(this.description);
-
-  final String description;
-
-  @override
-  Widget build(BuildContext context) {
-    return PrimaryText(
-      description,
-      type: PrimaryTextType.descriptionSmall,
       textAlign: TextAlign.start,
     );
   }

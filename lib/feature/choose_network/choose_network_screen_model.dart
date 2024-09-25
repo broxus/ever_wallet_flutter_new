@@ -77,7 +77,6 @@ class ChooseNetworkScreenModel extends ElementaryModel with ConnectionMixin {
               id: everMainnetProtoID,
               icon: Assets.images.everVector,
               title: LocaleKeys.everscale.tr(),
-              description: LocaleKeys.chooseNetworkEverDescription.tr(),
             ),
           );
           continue;
@@ -87,7 +86,6 @@ class ChooseNetworkScreenModel extends ElementaryModel with ConnectionMixin {
               id: venomMainnetProtoID,
               icon: Assets.images.venomVector,
               title: LocaleKeys.venom.tr(),
-              description: LocaleKeys.chooseNetworkVenomDescription.tr(),
             ),
           );
           continue;
