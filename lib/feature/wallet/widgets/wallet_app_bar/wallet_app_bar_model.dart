@@ -30,11 +30,6 @@ class WalletAppBarModel extends ElementaryModel {
         ),
       );
 
-  Stream<ConnectionData?> get connection => CombineLatestStream.combine2(
-        _storageService.currentConnectionIdStream,
-        _storageService.connectionsStream,
-        (id, connections) => connections.firstWhereOrNull(
-          (item) => item.id == id,
-        ),
-      );
+  Stream<ConnectionData> get connection =>
+      _storageService.currentConnectionStream;
 }
