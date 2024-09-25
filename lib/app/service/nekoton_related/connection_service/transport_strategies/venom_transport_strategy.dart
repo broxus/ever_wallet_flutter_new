@@ -28,7 +28,7 @@ class VenomTransportStrategy extends TransportStrategy {
 
   @override
   String currencyUrl(String currencyAddress) =>
-      'https://testnetapi.web3.world/v1/currencies/$currencyAddress';
+      'https://api.web3.world/v1/currencies/$currencyAddress';
 
   @override
   String defaultAccountName(WalletType walletType) => walletType.when(
@@ -72,7 +72,7 @@ class VenomTransportStrategy extends TransportStrategy {
   @override
   final nativeTokenAddress = const Address(
     address:
-        '0:28237a5d5abb32413a79b5f98573074d3b39b72121305d9c9c97912fc06d843c',
+        '0:77d36848bb159fa485628bc38dc37eadb74befa514395e09910f601b841f749e',
   );
 
   @override
