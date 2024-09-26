@@ -95,7 +95,7 @@ class _ChangeSeedPasswordSheetState extends State<ChangeSeedPasswordSheet> {
                 ),
                 PrimaryButton(
                   buttonShape: ButtonShape.pill,
-                  title: LocaleKeys.submitWord.tr(),
+                  title: LocaleKeys.changeWord.tr(),
                   onPressed: () => _changePassword(context),
                 ),
               ],
