@@ -114,11 +114,16 @@ class CurrencyTextInputValidator {
       return error;
     }
 
-    if (min != null && Fixed.parse(value, scale: _scale) < min!) {
+    final amount = Fixed.parse(
+      value.trim().replaceAll(',', '.'),
+      scale: _scale,
+    );
+
+    if (min != null && amount < min!) {
       return minError;
     }
 
-    if (max != null && Fixed.parse(value, scale: _scale) > max!) {
+    if (max != null && amount > max!) {
       return maxError;
     }
 
