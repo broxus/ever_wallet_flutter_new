@@ -588,4 +588,7 @@ abstract class LocaleKeys {
   static const deleteBookmarksQuestion = 'deleteBookmarksQuestion';
   static const deleteBookmarksDescription = 'deleteBookmarksDescription';
   static const save = 'save';
+  static const newSeedPhraseSwitchTitle = 'newSeedPhraseSwitchTitle';
+  static const newSeedPhraseSwitchSubtitle = 'newSeedPhraseSwitchSubtitle';
+  static const newSeedPhraseSwitchButton = 'newSeedPhraseSwitchButton';
 }

@@ -571,5 +571,8 @@
   "invalidReceiverAddress": "Invalid receiver address",
   "deleteBookmarksQuestion": "Are you sure you want\nto delete all bookmarks?",
   "deleteBookmarksDescription": "All bookmarks will be permanently deleted",
-  "save": "Save"
+  "save": "Save",
+  "newSeedPhraseSwitchTitle": "New seed phrase added successfully",
+  "newSeedPhraseSwitchSubtitle": "Make sure you save your seed phrase. You can start using it right now.",
+  "newSeedPhraseSwitchButton": "Switch to this seed phrase"
 }
