@@ -146,36 +146,27 @@ class _AmountInputState extends State<AmountInput> {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        Row(
-          children: [
-            Flexible(
-              child: AutoSizeTextField(
-                controller: widget.controller,
-                focusNode: widget.focusNode,
-                style: inputStyle,
-                decoration: InputDecoration(
-                  border: InputBorder.none,
-                  isDense: true,
-                  contentPadding: EdgeInsets.zero,
-                  hintText: '0',
-                  hintStyle: inputStyle,
-                ),
-                keyboardType: const TextInputType.numberWithOptions(
-                  decimal: true,
-                ),
-                inputFormatters: formatter?.let((formatter) => [formatter]),
-                fullwidth: false,
-                onChanged: state.didChange,
-                onSubmitted: widget.onSubmitted,
-              ),
+        Align(
+          alignment: Alignment.centerLeft,
+          child: AutoSizeTextField(
+            controller: widget.controller,
+            focusNode: widget.focusNode,
+            style: inputStyle,
+            decoration: InputDecoration(
+              border: InputBorder.none,
+              isDense: true,
+              contentPadding: EdgeInsets.zero,
+              hintText: '0',
+              hintStyle: inputStyle,
             ),
-            Text(
-              widget.selectedAsset?.tokenSymbol ?? '',
-              style: theme.textStyles.headingLarge.copyWith(
-                color: theme.colors.content3,
-              ),
+            keyboardType: const TextInputType.numberWithOptions(
+              decimal: true,
             ),
-          ],
+            inputFormatters: formatter?.let((formatter) => [formatter]),
+            fullwidth: false,
+            onChanged: state.didChange,
+            onSubmitted: widget.onSubmitted,
+          ),
         ),
         if (!state.hasError)
           Text(
