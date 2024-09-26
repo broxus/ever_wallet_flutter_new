@@ -72,6 +72,7 @@ abstract class LocaleKeys {
   static const copyAddress = 'copyAddress';
   static const exportWord = 'exportWord';
   static const changePassword = 'changePassword';
+  static const changeWord = 'changeWord';
   static const deleteWord = 'deleteWord';
   static const deleteSeedPhrase = 'deleteSeedPhrase';
   static const deleteKey = 'deleteKey';
@@ -215,6 +216,7 @@ abstract class LocaleKeys {
   static const browserHistoryEmptySearch = 'browserHistoryEmptySearch';
   static const browserHistoryEdit = 'browserHistoryEdit';
   static const browserHistoryClear = 'browserHistoryClear';
+  static const clearWord = 'clearWord';
   static const browserHistoryDone = 'browserHistoryDone';
   static const browserClearHistory = 'browserClearHistory';
   static const browserClearCookies = 'browserClearCookies';
@@ -447,6 +449,7 @@ abstract class LocaleKeys {
   static const cancelUnstakingCheckTitle = 'cancelUnstakingCheckTitle';
   static const cancelUnstakingCheckSubtitle = 'cancelUnstakingCheckSubtitle';
   static const yesImSure = 'yesImSure';
+  static const yesDeleteAll = 'yesDeleteAll';
   static const liquidStaking = 'liquidStaking';
   static const unstakeAmount = 'unstakeAmount';
   static const textFieldShouldNotBeEmpty = 'textFieldShouldNotBeEmpty';

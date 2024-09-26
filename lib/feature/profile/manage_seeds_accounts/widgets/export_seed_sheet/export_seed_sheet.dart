@@ -63,6 +63,7 @@ class ExportSeedSheet extends StatelessWidget {
           onPasswordEntered: (password) =>
               context.read<ExportSeedCubit>().export(password),
           publicKey: publicKey,
+          buttonText: LocaleKeys.exportWord.tr(),
         );
       },
     );

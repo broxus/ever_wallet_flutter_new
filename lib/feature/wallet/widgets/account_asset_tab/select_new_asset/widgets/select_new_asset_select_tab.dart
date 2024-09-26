@@ -104,7 +104,7 @@ class _SelectNewAssetSelectTabState extends State<SelectNewAssetSelectTab> {
               SvgPicture.asset(Assets.images.searchEmpty.path),
               Text(
                 LocaleKeys.sorryNoAssetsFound.tr(),
-                style: theme.textStyles.headingSmall.copyWith(
+                style: theme.textStyles.paragraphSmall.copyWith(
                   color: theme.colors.content3,
                 ),
                 textAlign: TextAlign.center,
