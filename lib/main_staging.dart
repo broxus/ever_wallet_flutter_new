@@ -1,9 +1,9 @@
-import 'package:app/app/app.dart';
+import 'package:app/app/view/app.dart';
 import 'package:app/bootstrap.dart';
 
 void main() {
   bootstrap(
-    () => const AppPage(),
+    () => const App(),
     AppBuildType.staging,
   );
 }
