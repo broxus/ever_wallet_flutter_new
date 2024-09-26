@@ -74,6 +74,10 @@ class $AssetsImagesGen {
   SvgGenImage get arrowsLeftRight =>
       const SvgGenImage('assets/images/arrows_left_right.svg');
 
+  /// File path: assets/images/bg_internet.png
+  AssetGenImage get bgInternet =>
+      const AssetGenImage('assets/images/bg_internet.png');
+
   /// File path: assets/images/blur_background.png
   AssetGenImage get blurBackground =>
       const AssetGenImage('assets/images/blur_background.png');
@@ -394,6 +398,7 @@ class $AssetsImagesGen {
         arrowUp,
         arrowUpFlat,
         arrowsLeftRight,
+        bgInternet,
         blurBackground,
         browserCard01,
         browserCard02,

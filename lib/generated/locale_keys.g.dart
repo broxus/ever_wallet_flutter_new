@@ -588,4 +588,6 @@ abstract class LocaleKeys {
   static const deleteBookmarksQuestion = 'deleteBookmarksQuestion';
   static const deleteBookmarksDescription = 'deleteBookmarksDescription';
   static const save = 'save';
+  static const oopsNoInternet = 'oopsNoInternet';
+  static const offlineCheckConnection = 'offlineCheckConnection';
 }

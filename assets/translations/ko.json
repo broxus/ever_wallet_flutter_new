@@ -571,5 +571,7 @@
   "invalidReceiverAddress": "Invalid receiver address",
   "deleteBookmarksQuestion": "Are you sure you want\nto delete all bookmarks?",
   "deleteBookmarksDescription": "All bookmarks will be permanently deleted",
-  "save": "Save"
+  "save": "Save",
+  "oopsNoInternet": "Oops, no internet connection",
+  "offlineCheckConnection": "You’re currently offline. Please check your connection and try again"
 }
