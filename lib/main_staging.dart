@@ -1,9 +1,6 @@
-import 'package:app/app/view/app.dart';
-import 'package:app/bootstrap.dart';
+import 'package:app/core/app_build_type.dart';
+import 'package:app/runner.dart';
 
 void main() {
-  bootstrap(
-    () => const App(),
-    AppBuildType.staging,
-  );
+  run(AppBuildType.staging);
 }

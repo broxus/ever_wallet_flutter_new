@@ -13,6 +13,10 @@ enum AppRoute {
     'bootstrapFailed',
     '/bootstrapFailed/:$bootstrapFailedIndexPathParam',
   ),
+  splash(
+    'splash',
+    '/splash',
+  ),
   noInternet(
     'noInternet',
     '/noInternet',

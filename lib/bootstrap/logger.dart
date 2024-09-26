@@ -1,5 +1,5 @@
 import 'package:app/app/service/service.dart';
-import 'package:app/bootstrap.dart';
+import 'package:app/core/app_build_type.dart';
 import 'package:app/di/di.dart';
 import 'package:fancy_logger/fancy_logger.dart';
 import 'package:logging/logging.dart';

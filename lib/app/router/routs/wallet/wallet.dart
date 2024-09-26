@@ -8,6 +8,7 @@ import 'package:app/feature/add_seed/add_seed_enable_biometry/add_seed_enable_bi
 import 'package:app/feature/add_seed/add_seed_enable_biometry/view/add_seed_enable_biometry_page.dart';
 import 'package:app/feature/network/network.dart';
 import 'package:app/feature/no_internet/no_internet_screen.dart';
+import 'package:app/feature/splash/splash_screen.dart';
 import 'package:app/feature/wallet/add_account/add_account.dart';
 import 'package:app/feature/wallet/wallet.dart';
 import 'package:app/feature/wallet/widgets/account_asset_tab/select_new_asset/select_new_asset.dart';
@@ -389,5 +390,12 @@ GoRoute get noInternetRoute {
   return GoRoute(
     path: AppRoute.noInternet.path,
     builder: (_, state) => const NoInternetScreen(),
+  );
+}
+
+GoRoute get splashScreenRoute {
+  return GoRoute(
+    path: AppRoute.splash.path,
+    builder: (_, state) => const SplashScreen(),
   );
 }

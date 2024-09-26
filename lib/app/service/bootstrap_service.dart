@@ -1,5 +1,5 @@
-import 'package:app/bootstrap.dart';
 import 'package:app/bootstrap/bootstrap.dart';
+import 'package:app/core/app_build_type.dart';
 import 'package:injectable/injectable.dart';
 import 'package:logging/logging.dart';
 import 'package:rxdart/rxdart.dart';

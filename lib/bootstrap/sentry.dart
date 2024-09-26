@@ -1,4 +1,4 @@
-import 'package:app/bootstrap.dart';
+import 'package:app/core/app_build_type.dart';
 import 'package:app/utils/define_env.dart';
 import 'package:logging/logging.dart';
 import 'package:sentry_flutter/sentry_flutter.dart';

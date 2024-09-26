@@ -139,10 +139,11 @@ GoRouter getRouter(BuildContext _) {
       // Nothing to do, return null
       return null;
     },
-    // Initial location from NavigationService
-    initialLocation: inject<NavigationService>().savedState.location,
+    initialLocation: AppRoute.splash.path,
     routes: [
       bootstrapFailedRoute,
+      noInternetRoute,
+      splashScreenRoute,
       GoRoute(
         name: AppRoute.onboarding.name,
         path: AppRoute.onboarding.path,
