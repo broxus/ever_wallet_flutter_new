@@ -571,5 +571,22 @@
   "invalidReceiverAddress": "Invalid receiver address",
   "deleteBookmarksQuestion": "Are you sure you want\nto delete all bookmarks?",
   "deleteBookmarksDescription": "All bookmarks will be permanently deleted",
-  "save": "Save"
+  "save": "Save",
+  "txTreeSimulationErrorComputePhase": {
+    "0": "Execution failed on ",
+    "1": " with exit code {}."
+  },
+  "txTreeSimulationErrorActionPhase": {
+    "0": "Action phase failed on ",
+    "1": " with exit code {}."
+  },
+  "txTreeSimulationErrorFrozen": {
+    "0": "Account ",
+    "1": " will be frozen due to storage fee debt."
+  },
+  "txTreeSimulationErrorDeleted": {
+    "0": "Account ",
+    "1": " will be deleted due to storage fee debt."
+  },
+  "txTreeSimulationErrorHint": "Please contact technical support."
 }

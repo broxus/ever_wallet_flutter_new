@@ -10,7 +10,9 @@ import 'package:logging/logging.dart';
 import 'package:nekoton_repository/nekoton_repository.dart' hide Message;
 
 part 'ton_wallet_send_bloc.freezed.dart';
+
 part 'ton_wallet_send_event.dart';
+
 part 'ton_wallet_send_state.dart';
 
 /// Bloc that allows prepare transaction to send native funds from [TonWallet]
@@ -69,6 +71,8 @@ class TonWalletSendBloc extends Bloc<TonWalletSendEvent, TonWalletSendState> {
   late UnsignedMessage unsignedMessage;
   UnsignedMessage? _unsignedMessage;
 
+  List<TxTreeSimulationErrorItem>? txErrors;
+
   TransportStrategy get transport => nekotonRepository.currentTransport;
 
   Currency get currency => Currencies()[transport.nativeTokenTicker]!;
@@ -102,8 +106,11 @@ class TonWalletSendBloc extends Bloc<TonWalletSendEvent, TonWalletSendState> {
         expiration: defaultSendTimeout,
       );
       _unsignedMessage = unsignedMessage;
-
       fees = await nekotonRepository.estimateFees(
+        address: address,
+        message: unsignedMessage,
+      );
+      txErrors = await nekotonRepository.simulateTransactionTree(
         address: address,
         message: unsignedMessage,
       );
@@ -133,7 +140,7 @@ class TonWalletSendBloc extends Bloc<TonWalletSendEvent, TonWalletSendState> {
         return;
       }
 
-      emit(TonWalletSendState.readyToSend(fees!));
+      emit(TonWalletSendState.readyToSend(fees!, txErrors));
     } on FfiException catch (e, t) {
       _logger.severe('_handleSend', e, t);
       emit(TonWalletSendState.calculatingError(e.message));
@@ -181,12 +188,12 @@ class TonWalletSendBloc extends Bloc<TonWalletSendEvent, TonWalletSendState> {
       _logger.severe('_handleSend', e, t);
       messengerService
           .show(Message.error(context: context, message: e.message));
-      emit(TonWalletSendState.readyToSend(fees!));
+      emit(TonWalletSendState.readyToSend(fees!, txErrors));
     } on Exception catch (e, t) {
       _logger.severe('_handleSend', e, t);
       messengerService
           .show(Message.error(context: context, message: e.toString()));
-      emit(TonWalletSendState.readyToSend(fees!));
+      emit(TonWalletSendState.readyToSend(fees!, txErrors));
     }
   }
 
