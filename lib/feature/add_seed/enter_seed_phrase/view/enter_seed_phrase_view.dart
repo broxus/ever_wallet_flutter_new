@@ -240,7 +240,9 @@ class EnterSeedPhraseView extends StatelessWidget {
               title: displayPasteButton
                   ? LocaleKeys.pasteAll.tr()
                   : LocaleKeys.clearAll.tr(),
-              icon: LucideIcons.arrowDownToDot,
+              icon: displayPasteButton
+                  ? LucideIcons.arrowDownToDot
+                  : LucideIcons.trash2,
             ),
           ],
         );

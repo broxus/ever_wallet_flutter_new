@@ -171,7 +171,7 @@ class _BrowserTabViewState extends State<BrowserTabView> {
                 onWebViewCreated: (c) => _onWebViewCreated(c, context),
                 onLoadStart: _onLoadStart,
                 onLoadStop: _onLoadStop,
-                onProgressChanged: _onProgressChanged,
+                onLoadResource: _onLoadResource,
                 onReceivedError: _onReceivedError,
                 onReceivedHttpError: _onReceivedHttpError,
                 onTitleChanged: _onTitleChanged,
@@ -350,18 +350,19 @@ class _BrowserTabViewState extends State<BrowserTabView> {
     _saveScreenshot(force: true);
   }
 
-  void _onProgressChanged(
+  Future<void> _onLoadResource(
+    InAppWebViewController controller,
     _,
-    int progress,
-  ) {
+  ) async {
     // Seems very strange, but they do it in example ¯\_(ツ)_/¯
     // ignore: no-magic-number
-    if (progress == 100) {
-      _pullToRefreshController?.endRefreshing();
-    }
 
-    _setState(progress: progress);
-    _saveScreenshot();
+    final progress = await controller.getProgress();
+    if (progress == 100) {
+      unawaited(_pullToRefreshController?.endRefreshing());
+    }
+    unawaited(_setState(progress: progress));
+    unawaited(_saveScreenshot());
   }
 
   void _onReceivedError(

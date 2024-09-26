@@ -61,7 +61,7 @@ class TokenWalletSendConfirmView extends StatelessWidget {
         ),
         EnterPasswordWidgetV2(
           publicKey: publicKey,
-          title: LocaleKeys.confirmTransaction.tr(),
+          title: LocaleKeys.confirm.tr(),
           isLoading: isLoading,
           onPasswordEntered: (pwd) => bloc.add(TokenWalletSendEvent.send(pwd)),
         ),

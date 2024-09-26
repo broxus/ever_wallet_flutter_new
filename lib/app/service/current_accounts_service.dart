@@ -32,8 +32,6 @@ class CurrentAccountsService {
 
   final _currentAccountsSubject = BehaviorSubject<AccountList?>.seeded(null);
 
-  // TODO(komarov): refactor -> store active account address and
-  //  get account from _currentAccountsSubject
   final _currentActiveAccountSubject =
       BehaviorSubject<(int, KeyAccount?)>.seeded((-1, null));
 
@@ -172,7 +170,7 @@ class CurrentAccountsService {
       ..stopPollingToken();
 
     _tonWalletSubscription = _nekotonRepository.walletsStream.listen((wallets) {
-      if (wallets.map((e) => e.address).contains(address)) {
+      if (_nekotonRepository.walletsMap.containsKey(address)) {
         _nekotonRepository.startPolling(address);
         _tonWalletSubscription?.cancel();
       }
@@ -181,11 +179,14 @@ class CurrentAccountsService {
     _tokenWalletSubscription =
         _nekotonRepository.tokenWalletsStream.listen((wallets) {
       wallets.where((w) => w.owner == address).forEach((w) {
-        _nekotonRepository.startPollingToken(
-          w.owner,
-          w.rootTokenContract,
-          stopPrevious: false,
-        );
+        final key = (w.owner, w.rootTokenContract);
+        if (_nekotonRepository.tokenWalletsMap.containsKey(key)) {
+          _nekotonRepository.startPollingToken(
+            w.owner,
+            w.rootTokenContract,
+            stopPrevious: false,
+          );
+        }
         // ignore cancelling sub, because we do not know how many tokens could
         // be here and duplicate startPolling will be ignored
       });

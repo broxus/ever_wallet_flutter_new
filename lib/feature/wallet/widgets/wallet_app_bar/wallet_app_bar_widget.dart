@@ -95,10 +95,8 @@ class _AccountInfo extends StatelessWidget {
 
     return SeparatedRow(
       children: [
-        ClipOval(
-          child: UserAvatar(
-            address: account.address.address,
-          ),
+        UserAvatar(
+          address: account.address.address,
         ),
         Flexible(
           child: Column(

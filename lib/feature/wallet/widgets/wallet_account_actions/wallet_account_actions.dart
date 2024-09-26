@@ -118,25 +118,23 @@ class _ActionList extends StatelessWidget {
               icon: _actionIcon(action),
               onPressed: account?.let((_) => _actionOnPressed(context)),
             ),
-            // TODO(knightforce): temp
-            // if (hasStake)
-            //   WalletActionButton(
-            //     label: LocaleKeys.stakeWord.tr(),
-            //     icon: LucideIcons.layers2,
-            //     badge: hasStakeActions,
-            //     onPressed: account?.let(
-            //       (account) => () {
-            //         context.goFurther(
-            //           AppRoute.walletStake.pathWithData(
-            //             pathParameters: {
-            //               walletStakeAddressPathParam:
-            //               account.address.address,
-            //             },
-            //           ),
-            //         );
-            //       },
-            //     ),
-            //   ),
+            if (hasStake)
+              WalletActionButton(
+                label: LocaleKeys.stakeWord.tr(),
+                icon: LucideIcons.layers2,
+                badge: hasStakeActions,
+                onPressed: account?.let(
+                  (account) => () {
+                    context.goFurther(
+                      AppRoute.walletStake.pathWithData(
+                        pathParameters: {
+                          walletStakeAddressPathParam: account.address.address,
+                        },
+                      ),
+                    );
+                  },
+                ),
+              ),
           ],
         ),
       ),

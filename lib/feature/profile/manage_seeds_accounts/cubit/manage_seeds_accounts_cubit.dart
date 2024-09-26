@@ -1,3 +1,4 @@
+// ignore_for_file: cascade_invocations
 import 'dart:async';
 
 import 'package:app/app/service/secure_storage_service.dart';
@@ -7,6 +8,7 @@ import 'package:freezed_annotation/freezed_annotation.dart';
 import 'package:nekoton_repository/nekoton_repository.dart';
 
 part 'manage_seeds_accounts_cubit.freezed.dart';
+
 part 'manage_seeds_accounts_state.dart';
 
 /// This is a bloc that displays list of user's seeds.
@@ -17,6 +19,7 @@ class ManageSeedsAccountsCubit extends Cubit<ManageSeedsAccountsState> {
     this.nekotonRepository,
     this.currentSeedService,
     this.storageService,
+    this.currentAccountsService,
   ) : super(
           ManageSeedsAccountsState.data(
             currentSeed: currentSeedService.currentSeed,
@@ -27,6 +30,7 @@ class ManageSeedsAccountsCubit extends Cubit<ManageSeedsAccountsState> {
   final NekotonRepository nekotonRepository;
   final CurrentSeedService currentSeedService;
   final SecureStorageService storageService;
+  final CurrentAccountsService currentAccountsService;
 
   late StreamSubscription<SeedList> _seedListSubscription;
   late StreamSubscription<Seed?> _currentSeedSubscription;
@@ -44,6 +48,7 @@ class ManageSeedsAccountsCubit extends Cubit<ManageSeedsAccountsState> {
     _currentSeedSubscription =
         currentSeedService.currentSeedStream.skip(1).listen(
       (currentSeed) {
+        currentAccountsService.updateCurrentActiveAccount(0);
         emit(
           ManageSeedsAccountsState.data(
             currentSeed: currentSeed,
@@ -54,20 +59,24 @@ class ManageSeedsAccountsCubit extends Cubit<ManageSeedsAccountsState> {
     );
     _seedListSubscription = nekotonRepository.seedListStream.skip(1).listen(
       (seeds) {
-        if (seeds.seeds.last.masterKey.accountList.allAccounts.isNotEmpty) {
-          final address = seeds.seeds.last.masterKey.accountList.allAccounts
-              .first.address.address;
-          storageService.addValue(
-            address + StorageConstants.showingManualBackupBadge,
-            seeds.seeds.last.addType == SeedAddType.create,
+        final list = seeds.seeds;
+        list.sort((a, b) => a.addedAt.compareTo(b.addedAt));
+        if (list.first.addedAt != 0) {
+          if (list.last.masterKey.accountList.allAccounts.isNotEmpty) {
+            final address = list
+                .last.masterKey.accountList.allAccounts.last.address.address;
+            storageService.addValue(
+              address + StorageConstants.showingManualBackupBadge,
+              list.last.addType == SeedAddType.create,
+            );
+          }
+          emit(
+            ManageSeedsAccountsState.data(
+              currentSeed: currentSeedService.currentSeed,
+              seeds: _mapSeedList(seeds),
+            ),
           );
         }
-        emit(
-          ManageSeedsAccountsState.data(
-            currentSeed: currentSeedService.currentSeed,
-            seeds: _mapSeedList(seeds),
-          ),
-        );
       },
     );
   }

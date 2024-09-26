@@ -95,7 +95,7 @@ class _BrowserHistorySheetState extends State<BrowserHistorySheet> {
         const SizedBox(height: DimensSizeV2.d24),
         PrimaryButton(
           buttonShape: ButtonShape.pill,
-          title: LocaleKeys.browserHistoryClear.tr(),
+          title: LocaleKeys.clearWord.tr(),
           onPressed: clearEnabled ? _onClearPressed : null,
         ),
         const SizedBox(height: DimensSizeV2.d16),

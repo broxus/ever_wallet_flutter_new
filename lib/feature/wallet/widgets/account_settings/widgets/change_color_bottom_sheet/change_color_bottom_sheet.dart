@@ -1,4 +1,4 @@
-import 'package:app/app/service/identify/identy_colors.dart';
+import 'package:app/app/service/identify/identy_icon_data.dart';
 import 'package:app/feature/wallet/widgets/account_settings/widgets/change_color_bottom_sheet/change_color_bottom_sheet_wm.dart';
 import 'package:app/generated/generated.dart';
 import 'package:elementary/elementary.dart';
@@ -56,21 +56,17 @@ class ChangeColorBottomSheet
         ),
         const SizedBox(height: DimensSizeV2.d28),
         Flexible(
-          child: StateNotifierBuilder<IdentifyColor?>(
+          child: StateNotifierBuilder<IdentifyIconData?>(
             listenableState: wm.selectedColorState,
-            builder: (_, IdentifyColor? selectedColor) {
+            builder: (_, IdentifyIconData? selectedColor) {
               return SizedBox(
                 height: DimensSizeV2.d64,
-                child: ListView(
-                  scrollDirection: Axis.horizontal,
-                  padding: EdgeInsets.zero,
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
                     for (var i = 0; i < wm.count; i++)
                       _ItemColor(
-                        key: ValueKey(wm.availableColors[i].color.value),
-                        padding: i == wm.lastIndex
-                            ? EdgeInsets.zero
-                            : const EdgeInsets.only(right: DimensSizeV2.d6),
+                        key: ValueKey(wm.availableColors[i].color),
                         color: wm.availableColors[i].color,
                         isSelected: wm.availableColors[i] == selectedColor,
                         onPressed: () =>
@@ -98,30 +94,25 @@ class _ItemColor extends StatelessWidget {
     required this.color,
     required this.isSelected,
     required this.onPressed,
-    required this.padding,
     super.key,
   });
 
   final Color color;
   final bool isSelected;
   final VoidCallback onPressed;
-  final EdgeInsetsGeometry padding;
 
   @override
   Widget build(BuildContext context) {
     return GestureDetector(
       onTap: onPressed,
       behavior: HitTestBehavior.opaque,
-      child: Padding(
-        padding: padding,
-        child: _Wrapper(
-          isVisible: isSelected,
-          child: SizedBox.expand(
-            child: DecoratedBox(
-              decoration: BoxDecoration(
-                color: color,
-                shape: BoxShape.circle,
-              ),
+      child: _Wrapper(
+        isVisible: isSelected,
+        child: SizedBox.expand(
+          child: DecoratedBox(
+            decoration: BoxDecoration(
+              color: color,
+              shape: BoxShape.circle,
             ),
           ),
         ),

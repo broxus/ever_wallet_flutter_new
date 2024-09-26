@@ -38,7 +38,7 @@ class AccountInfo extends StatelessWidget {
       ),
       children: [
         UserAvatar(
-          address: address,
+          address: account.address.address,
         ),
         Flexible(
           child: SeparatedColumn(

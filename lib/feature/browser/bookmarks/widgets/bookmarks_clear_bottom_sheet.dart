@@ -30,7 +30,7 @@ Future<void> showBrowserClearBookmarksSheet({
     centerSubtitle: true,
     body: (BuildContext context, __) => PrimaryButton(
       buttonShape: ButtonShape.pill,
-      title: LocaleKeys.yesImSure.tr(),
+      title: LocaleKeys.yesDeleteAll.tr(),
       onPressed: () {
         onClearPressed();
         Navigator.of(context).pop();

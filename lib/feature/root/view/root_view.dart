@@ -1,6 +1,8 @@
 import 'package:app/app/router/router.dart';
 import 'package:app/app/service/service.dart';
 import 'package:app/di/di.dart';
+import 'package:app/event_bus/events/navigation/bottom_navigation_events.dart';
+import 'package:app/event_bus/primary_bus.dart';
 import 'package:app/feature/root/view/root_tab.dart';
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
@@ -95,6 +97,16 @@ class _RootViewState extends State<RootView> {
 
   void _onTap(int value) {
     final tab = RootTab.values[value];
+
+    final prevTab = RootTab.values[_tabIndex];
+
     context.goNamed(tab.name);
+
+    primaryBus.fire(
+      PressBottomNavigationEvent(
+        prevTab: prevTab,
+        currentTab: tab,
+      ),
+    );
   }
 }

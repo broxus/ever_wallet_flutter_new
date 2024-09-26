@@ -91,7 +91,11 @@ class ImportWalletScreenWidgetModel
 
   void onChangeTab(int value) {
     _currentValue = value;
-    _updateState(selectedValue: _currentValue);
+    _updateState(
+      isPasted: false,
+      selectedValue: _currentValue,
+      seed: SeedPhraseModel.empty(),
+    );
   }
 
   Future<void> pasteWords() async {
@@ -112,21 +116,21 @@ class ImportWalletScreenWidgetModel
       }
     }
 
-    if (seed.isEmpty) {
+    if (seed.isEmpty || seed.wordsCount != _currentValue) {
       model.showValidateError(context, LocaleKeys.incorrectWordsFormat.tr());
       return;
-    } else {
-      final halfLength = (seed.wordsCount / 2).floor();
-
-      final firstColumnWords = seed.words.sublist(0, halfLength);
-      final secondColumnWords = seed.words.sublist(halfLength);
-      _updateState(
-        isPasted: true,
-        seed: seed,
-        firstColumnWords: firstColumnWords,
-        secondColumnWords: secondColumnWords,
-      );
     }
+
+    final halfLength = (seed.wordsCount / 2).floor();
+
+    final firstColumnWords = seed.words.sublist(0, halfLength);
+    final secondColumnWords = seed.words.sublist(halfLength);
+    _updateState(
+      isPasted: true,
+      seed: seed,
+      firstColumnWords: firstColumnWords,
+      secondColumnWords: secondColumnWords,
+    );
   }
 
   void deleteWords() {

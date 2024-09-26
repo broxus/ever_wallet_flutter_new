@@ -23,6 +23,7 @@ class EnterPasswordWidget extends StatefulWidget {
   const EnterPasswordWidget({
     required this.onPasswordEntered,
     required this.publicKey,
+    this.buttonText,
     super.key,
   });
 
@@ -32,6 +33,7 @@ class EnterPasswordWidget extends StatefulWidget {
 
   /// Key for which password must be entered.
   final PublicKey publicKey;
+  final String? buttonText;
 
   @override
   State<EnterPasswordWidget> createState() => _EnterPasswordWidgetState();
@@ -110,7 +112,7 @@ class _EnterPasswordWidgetState extends State<EnterPasswordWidget> {
             ),
             PrimaryButton(
               buttonShape: ButtonShape.pill,
-              title: LocaleKeys.submitWord.tr(),
+              title: widget.buttonText ?? LocaleKeys.submitWord.tr(),
               onPressed: () => context
                   .read<EnterPasswordCubit>()
                   .enterPassword(context, _passwordController.text),

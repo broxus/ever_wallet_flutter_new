@@ -1,6 +1,7 @@
 import 'package:app/generated/generated.dart';
 import 'package:flutter/material.dart';
 import 'package:ui_components_lib/ui_components_lib.dart';
+import 'package:ui_components_lib/v2/widgets/widgets.dart';
 
 /// Helper function that displays [StEverHowItWorksSheet]
 Future<void> showStEverHowItWorksSheet(BuildContext context) {
@@ -8,6 +9,7 @@ Future<void> showStEverHowItWorksSheet(BuildContext context) {
     context: context,
     useAppBackgroundColor: true,
     title: LocaleKeys.howLiquidStakingWorks.tr(),
+    centerTitle: true,
     body: (_, scrollController) => StEverHowItWorksSheet(
       scrollController: scrollController,
     ),
@@ -28,51 +30,50 @@ class StEverHowItWorksSheet extends StatelessWidget {
     return SeparatedColumn(
       crossAxisAlignment: CrossAxisAlignment.start,
       mainAxisSize: MainAxisSize.min,
-      separatorSize: DimensSize.d16,
+      separatorSize: DimensSizeV2.d16,
       children: [
         Flexible(
           child: SingleChildScrollView(
             controller: scrollController,
-            child: ShapedContainerColumn(
-              mainAxisSize: MainAxisSize.min,
-              margin: EdgeInsets.zero,
-              padding: const EdgeInsets.symmetric(vertical: DimensSize.d16),
-              separator: const Padding(
-                padding: EdgeInsets.symmetric(vertical: DimensSize.d16),
-                child: CommonDivider(),
+            child: PrimaryCard(
+              padding: EdgeInsets.zero,
+              borderRadius: BorderRadius.circular(DimensRadiusV2.radius12),
+              child: SeparatedColumn(
+                mainAxisSize: MainAxisSize.min,
+                separator: const CommonDivider(),
+                children: [
+                  _step(
+                    icon: Assets.images.ever.svg(
+                      width: DimensSizeV2.d40,
+                      height: DimensSizeV2.d40,
+                    ),
+                    title: LocaleKeys.stakeEverTitle.tr(),
+                    subtitle: LocaleKeys.stakeEverSubtitle.tr(),
+                  ),
+                  _step(
+                    icon: Assets.images.stever.stever.svg(
+                      width: DimensSizeV2.d40,
+                      height: DimensSizeV2.d40,
+                    ),
+                    title: LocaleKeys.receiveSteverTitle.tr(),
+                    subtitle: LocaleKeys.receiveSteverSubtitle.tr(),
+                  ),
+                  _step(
+                    icon: Assets.images.stever.steverDefi.svg(
+                      width: DimensSizeV2.d40,
+                      height: DimensSizeV2.d40,
+                    ),
+                    title: LocaleKeys.useSteverTitle.tr(),
+                    subtitle: LocaleKeys.useSteverSubtitle.tr(),
+                  ),
+                ],
               ),
-              children: [
-                _step(
-                  icon: Assets.images.ever.svg(
-                    width: DimensSize.d40,
-                    height: DimensSize.d40,
-                  ),
-                  title: LocaleKeys.stakeEverTitle.tr(),
-                  subtitle: LocaleKeys.stakeEverSubtitle.tr(),
-                ),
-                _step(
-                  icon: Assets.images.stever.stever.svg(
-                    width: DimensSize.d40,
-                    height: DimensSize.d40,
-                  ),
-                  title: LocaleKeys.receiveSteverTitle.tr(),
-                  subtitle: LocaleKeys.receiveSteverSubtitle.tr(),
-                ),
-                _step(
-                  icon: Assets.images.stever.steverDefi.svg(
-                    width: DimensSize.d40,
-                    height: DimensSize.d40,
-                  ),
-                  title: LocaleKeys.useSteverTitle.tr(),
-                  subtitle: LocaleKeys.useSteverSubtitle.tr(),
-                ),
-              ],
             ),
           ),
         ),
-        CommonButton.primary(
-          fillWidth: true,
-          text: LocaleKeys.gotIt.tr(),
+        PrimaryButton(
+          buttonShape: ButtonShape.pill,
+          title: LocaleKeys.gotIt.tr(),
           onPressed: () => Navigator.of(context).pop(),
         ),
       ],
@@ -86,33 +87,29 @@ class StEverHowItWorksSheet extends StatelessWidget {
   }) {
     return Builder(
       builder: (context) {
-        final colors = context.themeStyle.colors;
+        final theme = context.themeStyleV2;
 
         return Padding(
-          padding: const EdgeInsets.symmetric(horizontal: DimensSize.d16),
+          padding: const EdgeInsets.all(DimensSizeV2.d16),
           child: SeparatedRow(
             crossAxisAlignment: CrossAxisAlignment.start,
-            separatorSize: DimensSize.d12,
+            separatorSize: DimensSizeV2.d12,
             children: [
               icon,
               Expanded(
                 child: SeparatedColumn(
-                  separatorSize: DimensSize.d4,
+                  separatorSize: DimensSizeV2.d4,
                   mainAxisSize: MainAxisSize.min,
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
                     Text(
                       title,
-                      style: StyleRes.primaryRegular.copyWith(
-                        color: colors.textPrimary,
-                      ),
+                      style: theme.textStyles.headingSmall,
                     ),
                     const SizedBox(height: 4),
                     Text(
                       subtitle,
-                      style: StyleRes.secondaryRegular.copyWith(
-                        color: colors.textPrimary,
-                      ),
+                      style: theme.textStyles.paragraphSmall,
                     ),
                   ],
                 ),

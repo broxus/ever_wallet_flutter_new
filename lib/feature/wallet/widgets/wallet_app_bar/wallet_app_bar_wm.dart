@@ -35,7 +35,7 @@ class WalletAppBarWidgetModel
 
   ListenableState<TonWalletState?> get walletState => _walletState;
 
-  ListenableState<ConnectionData?> get connection => _connection;
+  ListenableState<ConnectionData> get connection => _connection;
 
   ThemeStyleV2 get theme => context.themeStyleV2;
 
