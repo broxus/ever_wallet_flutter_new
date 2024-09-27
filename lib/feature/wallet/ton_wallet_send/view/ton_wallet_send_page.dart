@@ -89,7 +89,8 @@ class TonWalletSendPage extends StatelessWidget {
             loading: _confirmPage,
             calculatingError: (error, fee) =>
                 _confirmPage(fee: fee, error: error),
-            readyToSend: (fee) => _confirmPage(fee: fee),
+            readyToSend: (fee, txErrors) =>
+                _confirmPage(fee: fee, txErrors: txErrors),
             sending: _sendingPage,
             sent: (fee, _) => _sendingPage(true),
           );
@@ -98,7 +99,12 @@ class TonWalletSendPage extends StatelessWidget {
     );
   }
 
-  Widget _confirmPage({BigInt? fee, String? error}) => Scaffold(
+  Widget _confirmPage({
+    BigInt? fee,
+    String? error,
+    List<TxTreeSimulationErrorItem>? txErrors,
+  }) =>
+      Scaffold(
         appBar: DefaultAppBar(
           onClosePressed: (context) => context.pop(),
           titleText: LocaleKeys.confirmTransaction.tr(),
@@ -114,6 +120,7 @@ class TonWalletSendPage extends StatelessWidget {
             publicKey: publicKey,
             fee: fee,
             feeError: error,
+            txErrors: txErrors,
           ),
         ),
       );

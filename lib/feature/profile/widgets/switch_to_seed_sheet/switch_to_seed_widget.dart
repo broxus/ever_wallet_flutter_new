@@ -5,8 +5,7 @@ import 'package:flutter/material.dart';
 import 'package:nekoton_repository/nekoton_repository.dart';
 import 'package:ui_components_lib/v2/ui_components_lib_v2.dart';
 
-class SwitchToSeedWidget
-    extends ElementaryWidget<SwitchToSeedWidgetModel> {
+class SwitchToSeedWidget extends ElementaryWidget<SwitchToSeedWidgetModel> {
   const SwitchToSeedWidget({
     required this.publicKey,
     Key? key,

@@ -591,4 +591,25 @@ abstract class LocaleKeys {
   static const newSeedPhraseSwitchTitle = 'newSeedPhraseSwitchTitle';
   static const newSeedPhraseSwitchSubtitle = 'newSeedPhraseSwitchSubtitle';
   static const newSeedPhraseSwitchButton = 'newSeedPhraseSwitchButton';
+  static const txTreeSimulationErrorComputePhase_0 =
+      'txTreeSimulationErrorComputePhase.0';
+  static const txTreeSimulationErrorComputePhase_1 =
+      'txTreeSimulationErrorComputePhase.1';
+  static const txTreeSimulationErrorComputePhase =
+      'txTreeSimulationErrorComputePhase';
+  static const txTreeSimulationErrorActionPhase_0 =
+      'txTreeSimulationErrorActionPhase.0';
+  static const txTreeSimulationErrorActionPhase_1 =
+      'txTreeSimulationErrorActionPhase.1';
+  static const txTreeSimulationErrorActionPhase =
+      'txTreeSimulationErrorActionPhase';
+  static const txTreeSimulationErrorFrozen_0 = 'txTreeSimulationErrorFrozen.0';
+  static const txTreeSimulationErrorFrozen_1 = 'txTreeSimulationErrorFrozen.1';
+  static const txTreeSimulationErrorFrozen = 'txTreeSimulationErrorFrozen';
+  static const txTreeSimulationErrorDeleted_0 =
+      'txTreeSimulationErrorDeleted.0';
+  static const txTreeSimulationErrorDeleted_1 =
+      'txTreeSimulationErrorDeleted.1';
+  static const txTreeSimulationErrorDeleted = 'txTreeSimulationErrorDeleted';
+  static const txTreeSimulationErrorHint = 'txTreeSimulationErrorHint';
 }

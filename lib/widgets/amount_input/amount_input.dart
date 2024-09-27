@@ -134,13 +134,8 @@ class _AmountInputState extends State<AmountInput> {
     );
     final price = Fixed.parse(widget.selectedAsset?.currency?.price ?? '0');
 
-    late Fixed amount;
-    try {
-      amount = Fixed.parse(state.value.nullIf('') ?? '0');
-    } catch (e) {
-      amount = Fixed.parse('0');
-    }
-
+    final value = (state.value.nullIf('') ?? '0').trim().replaceAll(',', '.');
+    final amount = Fixed.tryParse(value) ?? Fixed.zero;
     final usd = Fixed.copyWith(amount * price, scale: 2);
 
     return Column(

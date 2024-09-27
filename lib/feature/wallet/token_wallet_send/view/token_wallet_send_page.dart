@@ -89,9 +89,10 @@ class TokenWalletSendPage extends StatelessWidget {
               fee: fee,
               error: error,
             ),
-            readyToSend: (fee, attachedAmount) => _confirmPage(
+            readyToSend: (fee, attachedAmount, txErrors) => _confirmPage(
               fee: fee,
               attachedAmount: attachedAmount,
+              txErrors: txErrors,
             ),
             sending: _sendingPage,
             sent: (_, __) => _sendingPage(false),
@@ -105,6 +106,7 @@ class TokenWalletSendPage extends StatelessWidget {
     BigInt? fee,
     String? error,
     BigInt? attachedAmount,
+    List<TxTreeSimulationErrorItem>? txErrors,
   }) =>
       Scaffold(
         appBar: DefaultAppBar(
@@ -123,6 +125,7 @@ class TokenWalletSendPage extends StatelessWidget {
             fee: fee,
             feeError: error,
             attachedAmount: attachedAmount,
+            txErrors: txErrors,
           ),
         ),
       );
