@@ -22,22 +22,6 @@ mixin _$CurrencyDto {
   String get address => throw _privateConstructorUsedError;
   @HiveField(2)
   String get price => throw _privateConstructorUsedError;
-  @HiveField(3)
-  String get priceChange => throw _privateConstructorUsedError;
-  @HiveField(4)
-  String get tvl => throw _privateConstructorUsedError;
-  @HiveField(5)
-  String get tvlChange => throw _privateConstructorUsedError;
-  @HiveField(6)
-  String get volume24h => throw _privateConstructorUsedError;
-  @HiveField(7)
-  String get volumeChange24h => throw _privateConstructorUsedError;
-  @HiveField(8)
-  String get volume7d => throw _privateConstructorUsedError;
-  @HiveField(9)
-  String get fee24h => throw _privateConstructorUsedError;
-  @HiveField(10)
-  int get transactionsCount24h => throw _privateConstructorUsedError;
 
   /// Create a copy of CurrencyDto
   /// with the given fields replaced by the non-null parameter values.
@@ -55,15 +39,7 @@ abstract class $CurrencyDtoCopyWith<$Res> {
   $Res call(
       {@HiveField(0) String currency,
       @HiveField(1) String address,
-      @HiveField(2) String price,
-      @HiveField(3) String priceChange,
-      @HiveField(4) String tvl,
-      @HiveField(5) String tvlChange,
-      @HiveField(6) String volume24h,
-      @HiveField(7) String volumeChange24h,
-      @HiveField(8) String volume7d,
-      @HiveField(9) String fee24h,
-      @HiveField(10) int transactionsCount24h});
+      @HiveField(2) String price});
 }
 
 /// @nodoc
@@ -84,14 +60,6 @@ class _$CurrencyDtoCopyWithImpl<$Res, $Val extends CurrencyDto>
     Object? currency = null,
     Object? address = null,
     Object? price = null,
-    Object? priceChange = null,
-    Object? tvl = null,
-    Object? tvlChange = null,
-    Object? volume24h = null,
-    Object? volumeChange24h = null,
-    Object? volume7d = null,
-    Object? fee24h = null,
-    Object? transactionsCount24h = null,
   }) {
     return _then(_value.copyWith(
       currency: null == currency
@@ -106,38 +74,6 @@ class _$CurrencyDtoCopyWithImpl<$Res, $Val extends CurrencyDto>
           ? _value.price
           : price // ignore: cast_nullable_to_non_nullable
               as String,
-      priceChange: null == priceChange
-          ? _value.priceChange
-          : priceChange // ignore: cast_nullable_to_non_nullable
-              as String,
-      tvl: null == tvl
-          ? _value.tvl
-          : tvl // ignore: cast_nullable_to_non_nullable
-              as String,
-      tvlChange: null == tvlChange
-          ? _value.tvlChange
-          : tvlChange // ignore: cast_nullable_to_non_nullable
-              as String,
-      volume24h: null == volume24h
-          ? _value.volume24h
-          : volume24h // ignore: cast_nullable_to_non_nullable
-              as String,
-      volumeChange24h: null == volumeChange24h
-          ? _value.volumeChange24h
-          : volumeChange24h // ignore: cast_nullable_to_non_nullable
-              as String,
-      volume7d: null == volume7d
-          ? _value.volume7d
-          : volume7d // ignore: cast_nullable_to_non_nullable
-              as String,
-      fee24h: null == fee24h
-          ? _value.fee24h
-          : fee24h // ignore: cast_nullable_to_non_nullable
-              as String,
-      transactionsCount24h: null == transactionsCount24h
-          ? _value.transactionsCount24h
-          : transactionsCount24h // ignore: cast_nullable_to_non_nullable
-              as int,
     ) as $Val);
   }
 }
@@ -153,15 +89,7 @@ abstract class _$$CurrencyDtoImplCopyWith<$Res>
   $Res call(
       {@HiveField(0) String currency,
       @HiveField(1) String address,
-      @HiveField(2) String price,
-      @HiveField(3) String priceChange,
-      @HiveField(4) String tvl,
-      @HiveField(5) String tvlChange,
-      @HiveField(6) String volume24h,
-      @HiveField(7) String volumeChange24h,
-      @HiveField(8) String volume7d,
-      @HiveField(9) String fee24h,
-      @HiveField(10) int transactionsCount24h});
+      @HiveField(2) String price});
 }
 
 /// @nodoc
@@ -180,14 +108,6 @@ class __$$CurrencyDtoImplCopyWithImpl<$Res>
     Object? currency = null,
     Object? address = null,
     Object? price = null,
-    Object? priceChange = null,
-    Object? tvl = null,
-    Object? tvlChange = null,
-    Object? volume24h = null,
-    Object? volumeChange24h = null,
-    Object? volume7d = null,
-    Object? fee24h = null,
-    Object? transactionsCount24h = null,
   }) {
     return _then(_$CurrencyDtoImpl(
       currency: null == currency
@@ -202,38 +122,6 @@ class __$$CurrencyDtoImplCopyWithImpl<$Res>
           ? _value.price
           : price // ignore: cast_nullable_to_non_nullable
               as String,
-      priceChange: null == priceChange
-          ? _value.priceChange
-          : priceChange // ignore: cast_nullable_to_non_nullable
-              as String,
-      tvl: null == tvl
-          ? _value.tvl
-          : tvl // ignore: cast_nullable_to_non_nullable
-              as String,
-      tvlChange: null == tvlChange
-          ? _value.tvlChange
-          : tvlChange // ignore: cast_nullable_to_non_nullable
-              as String,
-      volume24h: null == volume24h
-          ? _value.volume24h
-          : volume24h // ignore: cast_nullable_to_non_nullable
-              as String,
-      volumeChange24h: null == volumeChange24h
-          ? _value.volumeChange24h
-          : volumeChange24h // ignore: cast_nullable_to_non_nullable
-              as String,
-      volume7d: null == volume7d
-          ? _value.volume7d
-          : volume7d // ignore: cast_nullable_to_non_nullable
-              as String,
-      fee24h: null == fee24h
-          ? _value.fee24h
-          : fee24h // ignore: cast_nullable_to_non_nullable
-              as String,
-      transactionsCount24h: null == transactionsCount24h
-          ? _value.transactionsCount24h
-          : transactionsCount24h // ignore: cast_nullable_to_non_nullable
-              as int,
     ));
   }
 }
@@ -245,15 +133,7 @@ class _$CurrencyDtoImpl implements _CurrencyDto {
   const _$CurrencyDtoImpl(
       {@HiveField(0) required this.currency,
       @HiveField(1) required this.address,
-      @HiveField(2) required this.price,
-      @HiveField(3) required this.priceChange,
-      @HiveField(4) required this.tvl,
-      @HiveField(5) required this.tvlChange,
-      @HiveField(6) required this.volume24h,
-      @HiveField(7) required this.volumeChange24h,
-      @HiveField(8) required this.volume7d,
-      @HiveField(9) required this.fee24h,
-      @HiveField(10) required this.transactionsCount24h});
+      @HiveField(2) required this.price});
 
   @override
   @HiveField(0)
@@ -264,34 +144,10 @@ class _$CurrencyDtoImpl implements _CurrencyDto {
   @override
   @HiveField(2)
   final String price;
-  @override
-  @HiveField(3)
-  final String priceChange;
-  @override
-  @HiveField(4)
-  final String tvl;
-  @override
-  @HiveField(5)
-  final String tvlChange;
-  @override
-  @HiveField(6)
-  final String volume24h;
-  @override
-  @HiveField(7)
-  final String volumeChange24h;
-  @override
-  @HiveField(8)
-  final String volume7d;
-  @override
-  @HiveField(9)
-  final String fee24h;
-  @override
-  @HiveField(10)
-  final int transactionsCount24h;
 
   @override
   String toString() {
-    return 'CurrencyDto(currency: $currency, address: $address, price: $price, priceChange: $priceChange, tvl: $tvl, tvlChange: $tvlChange, volume24h: $volume24h, volumeChange24h: $volumeChange24h, volume7d: $volume7d, fee24h: $fee24h, transactionsCount24h: $transactionsCount24h)';
+    return 'CurrencyDto(currency: $currency, address: $address, price: $price)';
   }
 
   @override
@@ -302,37 +158,11 @@ class _$CurrencyDtoImpl implements _CurrencyDto {
             (identical(other.currency, currency) ||
                 other.currency == currency) &&
             (identical(other.address, address) || other.address == address) &&
-            (identical(other.price, price) || other.price == price) &&
-            (identical(other.priceChange, priceChange) ||
-                other.priceChange == priceChange) &&
-            (identical(other.tvl, tvl) || other.tvl == tvl) &&
-            (identical(other.tvlChange, tvlChange) ||
-                other.tvlChange == tvlChange) &&
-            (identical(other.volume24h, volume24h) ||
-                other.volume24h == volume24h) &&
-            (identical(other.volumeChange24h, volumeChange24h) ||
-                other.volumeChange24h == volumeChange24h) &&
-            (identical(other.volume7d, volume7d) ||
-                other.volume7d == volume7d) &&
-            (identical(other.fee24h, fee24h) || other.fee24h == fee24h) &&
-            (identical(other.transactionsCount24h, transactionsCount24h) ||
-                other.transactionsCount24h == transactionsCount24h));
+            (identical(other.price, price) || other.price == price));
   }
 
   @override
-  int get hashCode => Object.hash(
-      runtimeType,
-      currency,
-      address,
-      price,
-      priceChange,
-      tvl,
-      tvlChange,
-      volume24h,
-      volumeChange24h,
-      volume7d,
-      fee24h,
-      transactionsCount24h);
+  int get hashCode => Object.hash(runtimeType, currency, address, price);
 
   /// Create a copy of CurrencyDto
   /// with the given fields replaced by the non-null parameter values.
@@ -345,18 +175,9 @@ class _$CurrencyDtoImpl implements _CurrencyDto {
 
 abstract class _CurrencyDto implements CurrencyDto {
   const factory _CurrencyDto(
-          {@HiveField(0) required final String currency,
-          @HiveField(1) required final String address,
-          @HiveField(2) required final String price,
-          @HiveField(3) required final String priceChange,
-          @HiveField(4) required final String tvl,
-          @HiveField(5) required final String tvlChange,
-          @HiveField(6) required final String volume24h,
-          @HiveField(7) required final String volumeChange24h,
-          @HiveField(8) required final String volume7d,
-          @HiveField(9) required final String fee24h,
-          @HiveField(10) required final int transactionsCount24h}) =
-      _$CurrencyDtoImpl;
+      {@HiveField(0) required final String currency,
+      @HiveField(1) required final String address,
+      @HiveField(2) required final String price}) = _$CurrencyDtoImpl;
 
   @override
   @HiveField(0)
@@ -367,30 +188,6 @@ abstract class _CurrencyDto implements CurrencyDto {
   @override
   @HiveField(2)
   String get price;
-  @override
-  @HiveField(3)
-  String get priceChange;
-  @override
-  @HiveField(4)
-  String get tvl;
-  @override
-  @HiveField(5)
-  String get tvlChange;
-  @override
-  @HiveField(6)
-  String get volume24h;
-  @override
-  @HiveField(7)
-  String get volumeChange24h;
-  @override
-  @HiveField(8)
-  String get volume7d;
-  @override
-  @HiveField(9)
-  String get fee24h;
-  @override
-  @HiveField(10)
-  int get transactionsCount24h;
 
   /// Create a copy of CurrencyDto
   /// with the given fields replaced by the non-null parameter values.

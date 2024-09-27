@@ -112,20 +112,23 @@ class CurrenciesService {
     Address rootTokenContract,
   ) async {
     try {
-      final encoded = await httpService.postRequest(
-        endpoint: transport.currencyUrl(rootTokenContract.address),
-      );
+      final endpoint = transport.currencyUrl(rootTokenContract.address);
 
-      final currency = _decodeCurrency(encoded, transport);
+      if (endpoint.isNotEmpty) {
+        final currency = await _fetchCurrency(
+          endpoint: endpoint,
+          transport: transport,
+        );
 
-      await storageService.saveOrUpdateCurrency(currency: currency);
+        await storageService.saveOrUpdateCurrency(currency: currency);
 
-      return currency;
+        return currency;
+      }
     } catch (e, st) {
       _logger.severe('getCurrencyForContract', e, st);
-
-      return null;
     }
+
+    return null;
   }
 
   /// Get single currency for native token in scope of [transport], save
@@ -159,20 +162,29 @@ class CurrenciesService {
 
     for (final rootTokenContract in rootTokenContracts) {
       try {
-        final encoded = await httpService.postRequest(
-          endpoint: transport.currencyUrl(rootTokenContract.address),
-        );
-        final currency = _decodeCurrency(encoded, transport);
+        final endpoint = transport.currencyUrl(rootTokenContract.address);
 
-        await storageService.saveOrUpdateCurrency(currency: currency);
+        if (endpoint.isNotEmpty) {
+          final currency = await _fetchCurrency(
+            endpoint: endpoint,
+            transport: transport,
+          );
+
+          await storageService.saveOrUpdateCurrency(currency: currency);
+        }
       } catch (e, st) {
         _logger.severe('_currencyChangedMapper', e, st);
       }
     }
   }
 
-  CustomCurrency _decodeCurrency(String encoded, TransportStrategy transport) {
+  Future<CustomCurrency> _fetchCurrency({
+    required String endpoint,
+    required TransportStrategy transport,
+  }) async {
+    final encoded = await httpService.postRequest(endpoint: endpoint);
     final decoded = jsonDecode(encoded) as Map<String, dynamic>;
+
     decoded['networkType'] = transport.networkType.name;
 
     return CustomCurrency.fromJson(decoded);
