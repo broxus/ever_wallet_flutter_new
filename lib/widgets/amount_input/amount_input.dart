@@ -34,6 +34,7 @@ class AmountInput extends StatefulWidget {
 }
 
 class _AmountInputState extends State<AmountInput> {
+  final _formFieldKey = GlobalKey<FormFieldState<String>>();
   CurrencyTextInputFormatter? formatter;
   CurrencyTextInputValidator? validator;
 
@@ -99,7 +100,11 @@ class _AmountInputState extends State<AmountInput> {
                   title: LocaleKeys.maxWord.tr(),
                   buttonShape: ButtonShape.rectangle,
                   buttonSize: ButtonSize.small,
-                  onPressed: widget.onMaxAmount,
+                  onPressed: () {
+                    widget.onMaxAmount();
+                    _formFieldKey.currentState
+                        ?.didChange(widget.controller.text);
+                  },
                 ),
               ],
             ),
@@ -114,6 +119,7 @@ class _AmountInputState extends State<AmountInput> {
               behavior: HitTestBehavior.translucent,
               onTap: widget.focusNode?.requestFocus,
               child: FormField<String>(
+                key: _formFieldKey,
                 initialValue: widget.controller.text,
                 autovalidateMode: AutovalidateMode.onUserInteraction,
                 validator: validator?.validate,
