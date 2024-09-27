@@ -572,6 +572,9 @@
   "deleteBookmarksQuestion": "Are you sure you want\nto delete all bookmarks?",
   "deleteBookmarksDescription": "All bookmarks will be permanently deleted",
   "save": "Save",
+  "newSeedPhraseSwitchTitle": "New seed phrase added successfully",
+  "newSeedPhraseSwitchSubtitle": "Make sure you save your seed phrase. You can start using it right now.",
+  "newSeedPhraseSwitchButton": "Switch to this seed phrase",
   "txTreeSimulationErrorComputePhase": {
     "0": "Execution failed on ",
     "1": " with exit code {}."
