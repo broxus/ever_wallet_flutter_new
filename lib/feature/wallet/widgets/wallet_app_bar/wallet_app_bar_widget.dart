@@ -40,6 +40,9 @@ class WalletAppBarWidget extends ElementaryWidget<WalletAppBarWidgetModel>
                       (value) => _AccountInfo(
                         account: value,
                         walletState: walletState,
+                        walletTypeName: wm.getWalletTypeName(
+                          account.account.tonWallet.contract,
+                        ),
                       ),
                     ) ??
                     const SizedBox.shrink(),
@@ -80,15 +83,16 @@ class _AccountInfo extends StatelessWidget {
   const _AccountInfo({
     required this.account,
     required this.walletState,
+    required this.walletTypeName,
   });
 
   final KeyAccount account;
   final TonWalletState? walletState;
+  final String walletTypeName;
 
   @override
   Widget build(BuildContext context) {
     final theme = context.themeStyleV2;
-    final contract = account.account.tonWallet.contract;
     final custodians = walletState?.wallet?.custodians?.length ?? 1;
     final requiredConfirmations =
         walletState?.wallet?.details.requiredConfirmations;
@@ -119,7 +123,7 @@ class _AccountInfo extends StatelessWidget {
                   const SizedBox(width: DimensSizeV2.d4),
                   Flexible(
                     child: Text(
-                      contract.toReadableName(),
+                      walletTypeName,
                       style: theme.textStyles.labelXSmall.copyWith(
                         color: theme.colors.content3,
                       ),
@@ -154,22 +158,4 @@ class _AccountInfo extends StatelessWidget {
       ],
     );
   }
-}
-
-extension on WalletType {
-  String toReadableName() => when(
-        multisig: (type) => switch (type) {
-          MultisigType.safeMultisigWallet => 'SafeMultisig24h',
-          MultisigType.safeMultisigWallet24h => 'SafeMultisig24h',
-          MultisigType.setcodeMultisigWallet => 'SetcodeMultisig',
-          MultisigType.setcodeMultisigWallet24h => 'SetcodeMultisig24h',
-          MultisigType.bridgeMultisigWallet => 'BridgeMultisig',
-          MultisigType.surfWallet => 'Surf wallet',
-          MultisigType.multisig2 => 'Multisig',
-          MultisigType.multisig2_1 => 'Multisig 2.1',
-        },
-        walletV3: () => 'WalletV3',
-        highloadWalletV2: () => 'HighloadWalletV2',
-        everWallet: () => 'EVER Wallet',
-      );
 }
