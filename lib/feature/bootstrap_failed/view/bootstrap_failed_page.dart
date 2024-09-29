@@ -22,8 +22,6 @@ class BootstrapFailedPage extends StatelessWidget {
     return Scaffold(
       appBar: const DefaultAppBar(),
       body: switch (step) {
-        BootstrapSteps.storage ||
-        BootstrapSteps.features ||
         BootstrapSteps.error =>
           const BootstrapFailedRerunView(),
         BootstrapSteps.connection => const BootstrapRetryConnectionView(),

@@ -84,7 +84,7 @@ class _AppWrapperState extends State<AppWrapper> with WidgetsBindingObserver {
   }
 
   Future<void> _checkBiometry() async {
-    final location = _navigationService.savedState.location;
+    final location = _navigationService.state.location;
     final canUpdateStatus = await _biometryService.canUpdateStatus();
 
     if (canUpdateStatus && location == AppRoute.profile.path) {

@@ -3,6 +3,7 @@ import 'package:app/app/view/app.dart';
 import 'package:app/app/view/app_model.dart';
 import 'package:app/core/error_handler_factory.dart';
 import 'package:app/core/wm/custom_wm.dart';
+import 'package:app/di/di.dart';
 import 'package:easy_localization/easy_localization.dart';
 import 'package:elementary/elementary.dart';
 import 'package:flutter/widgets.dart';
@@ -14,6 +15,9 @@ AppWidgetModel defaultAppWidgetModelFactory(
   return AppWidgetModel(
     AppModel(
       createPrimaryErrorHandler(context),
+      inject(),
+      inject(),
+      inject(),
     ),
   );
 }
@@ -24,7 +28,7 @@ class AppWidgetModel extends CustomWidgetModel<App, AppModel> {
     super.model,
   );
 
-  late final router = getRouter(context);
+  late final router = model.appRouter.router;
 
   List<LocalizationsDelegate<dynamic>> get localizationDelegates =>
       context.localizationDelegates;

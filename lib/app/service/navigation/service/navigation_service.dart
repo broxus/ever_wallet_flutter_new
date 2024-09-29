@@ -12,14 +12,27 @@ import 'package:rxdart/rxdart.dart';
 class NavigationService {
   static const _domain = 'NavigationService';
   static const _stateKey = 'state';
+
   // ignore: avoid-global-state
   static GlobalKey<NavigatorState> navigatorKey = GlobalKey<NavigatorState>();
 
-  var _savedState = const NavigationServiceState(location: '', fullPath: '');
+  final _stateSubject = BehaviorSubject<NavigationServiceState>.seeded(
+    const NavigationServiceState(
+      location: '',
+      fullPath: '',
+    ),
+  );
+
+  NavigationServiceState get state => _stateSubject.value;
+
+  ValueStream<NavigationServiceState> get stateStream => _stateSubject.stream;
+
+  // TODO(knightforce): DI
+  late final _encryptedStorage = inject<EncryptedStorage>();
 
   Future<void> init(String initialLocation) async {
     // Get location from storage
-    final encoded = await inject<EncryptedStorage>().get(
+    final encoded = await _encryptedStorage.get(
       _stateKey,
       domain: _domain,
     );
@@ -34,18 +47,8 @@ class NavigationService {
             fullPath: initialLocation,
           );
 
-    // Set it as saved state and add it to the stream
-    _savedState = saved;
     _stateSubject.add(saved);
   }
-
-  final _stateSubject = BehaviorSubject<NavigationServiceState>();
-
-  NavigationServiceState get state => _stateSubject.valueOrNull ?? _savedState;
-
-  ValueStream<NavigationServiceState> get stateStream => _stateSubject.stream;
-
-  NavigationServiceState get savedState => _savedState;
 
   Future<void> setState({
     required NavigationServiceState state,
@@ -55,8 +58,7 @@ class NavigationService {
 
     // If it is supposed to be saved, save it to storage
     if (save) {
-      _savedState = state;
-      await inject<EncryptedStorage>().set(
+      await _encryptedStorage.set(
         _stateKey,
         jsonEncode(state.toJson()),
         domain: _domain,

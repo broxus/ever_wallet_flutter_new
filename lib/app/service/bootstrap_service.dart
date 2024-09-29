@@ -18,6 +18,7 @@ enum BootstrapSteps {
   connection,
   features,
   completed,
+  error,
 }
 
 /// Service that allows initialize app step by step and re-run some operations
@@ -51,6 +52,7 @@ class BootstrapService {
       _bootstrapStepSubject.add(BootstrapSteps.completed);
     } catch (e, t) {
       _log.severe('init', e, t);
+      _bootstrapStepSubject.add(BootstrapSteps.error);
     }
   }
 

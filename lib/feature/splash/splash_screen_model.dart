@@ -18,8 +18,6 @@ class SplashScreenModel extends ElementaryModel {
   final NavigationService _navigationService;
   final NetworkConnectionService _networkConnectionService;
 
-  String get savedLocation => _navigationService.savedState.location;
-
   Future<bool> get isExistInternet => _networkConnectionService.isExistInternet;
 
   Future<void> configure() async {
