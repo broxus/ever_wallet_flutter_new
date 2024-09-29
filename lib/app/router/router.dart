@@ -37,6 +37,12 @@ GoRouter getRouter(BuildContext _) {
     required bool hasSeeds,
     required BootstrapSteps step,
   }) {
+    final isConfigured = step == BootstrapSteps.completed;
+    // step == BootstrapSteps.error
+    if (!isConfigured) {
+      return null;
+    }
+
     final currentRoute = getRootAppRoute(fullPath: fullPath);
 
     if (step != BootstrapSteps.completed &&
@@ -96,6 +102,12 @@ GoRouter getRouter(BuildContext _) {
     restorationScopeId: 'app',
     navigatorKey: NavigationService.navigatorKey,
     redirect: (context, state) {
+      final bootstrapService = inject<BootstrapService>();
+
+      if (!bootstrapService.isConfigured) {
+        return null;
+      }
+
       // Get current location and full path
       final location = state.uri.toString();
       final fullPath = state.fullPath ?? location;
@@ -114,7 +126,7 @@ GoRouter getRouter(BuildContext _) {
 
       // Check if the user has seeds
       final hasSeeds = inject<NekotonRepository>().hasSeeds.value;
-      final step = inject<BootstrapService>().bootstrapStep;
+      final step = bootstrapService.bootstrapStep;
 
       // Check if the user should be redirected
       final guardRedirect = shouldRedirect(

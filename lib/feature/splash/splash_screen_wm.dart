@@ -1,3 +1,5 @@
+import 'dart:io';
+
 import 'package:app/app/router/app_route.dart';
 import 'package:app/core/error_handler_factory.dart';
 import 'package:app/core/wm/custom_wm.dart';
@@ -29,6 +31,8 @@ class SplashScreenWidgetModel
     super.model,
   );
 
+  late final isIos = Platform.isIOS;
+
   @override
   void initWidgetModel() {
     _init();
@@ -44,7 +48,5 @@ class SplashScreenWidgetModel
     }
 
     await model.configure();
-
-    contextSafe?.go(model.savedLocation);
   }
 }

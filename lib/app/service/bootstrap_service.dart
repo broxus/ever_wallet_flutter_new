@@ -13,6 +13,7 @@ typedef AsyncFunc = Future<void> Function();
 /// [features] - failed during creating features
 /// [completed] - everything is ok, app works normally
 enum BootstrapSteps {
+  empty,
   storage,
   connection,
   features,
@@ -25,11 +26,14 @@ enum BootstrapSteps {
 class BootstrapService {
   final _log = Logger('bootstrap');
 
-  final _bootstrapStepSubject = BehaviorSubject<BootstrapSteps>();
+  final _bootstrapStepSubject =
+      BehaviorSubject<BootstrapSteps>.seeded(BootstrapSteps.empty);
 
   Stream<BootstrapSteps> get bootstrapStepStream => _bootstrapStepSubject;
 
   BootstrapSteps get bootstrapStep => _bootstrapStepSubject.value;
+
+  bool get isConfigured => bootstrapStep == BootstrapSteps.completed;
 
   Future<void> init(AppBuildType appBuildType) async {
     try {
