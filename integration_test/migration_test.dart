@@ -107,29 +107,13 @@ const _venomContractAssetSystem = TokenContractAsset(
 const _everCurrency = CustomCurrency(
   address: Address(address: '42:everAddress'),
   currency: 'EVER',
-  fee24h: '',
   price: '',
-  priceChange: '',
-  transactionsCount24h: 0,
-  tvl: '',
-  tvlChange: '',
-  volume7d: '',
-  volume24h: '',
-  volumeChange24h: '',
   networkType: NetworkType.ever,
 );
 const _venomCurrency = CustomCurrency(
   address: Address(address: '69:venomAddress'),
   currency: 'VENOM',
-  fee24h: '',
   price: '',
-  priceChange: '',
-  transactionsCount24h: 0,
-  tvl: '',
-  tvlChange: '',
-  volume7d: '',
-  volume24h: '',
-  volumeChange24h: '',
   networkType: NetworkType.venom,
 );
 const _permissions = Permissions(

@@ -1,4 +1,5 @@
 import 'package:app/data/models/models.dart';
+import 'package:app/generated/generated.dart';
 import 'package:nekoton_repository/nekoton_repository.dart';
 
 /// Transport strategy for any different custom network
@@ -52,7 +53,7 @@ class CustomTransportStrategy extends TransportStrategy {
   final defaultWalletType = const WalletType.everWallet();
 
   @override
-  String get nativeTokenIcon => '';
+  String get nativeTokenIcon => Assets.images.tokenDefaultIcon.path;
 
   @override
   String get nativeTokenTicker => connection.nativeTokenTicker;

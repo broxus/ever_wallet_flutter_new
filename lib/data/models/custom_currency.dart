@@ -7,20 +7,13 @@ part 'custom_currency.g.dart';
 
 @freezed
 class CustomCurrency with _$CustomCurrency {
+  // TODO(nesquikm): refactor to use Currency and Money
   const factory CustomCurrency({
     required String currency,
     required Address address,
-    // Price in USD
-    // TODO(nesquikm): refactor to use Currency and Money
+
+    /// Price in USD
     required String price,
-    required String priceChange,
-    required String tvl,
-    required String tvlChange,
-    required String volume24h,
-    required String volumeChange24h,
-    required String volume7d,
-    required String fee24h,
-    required int transactionsCount24h,
     required NetworkType networkType,
   }) = _CustomCurrency;
 
