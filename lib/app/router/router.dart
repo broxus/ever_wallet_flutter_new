@@ -52,6 +52,9 @@ class AppRouter {
 
   bool get _isConfigured => _bootstrapService.isConfigured;
 
+  String get _currentPath =>
+      router.routerDelegate.currentConfiguration.fullPath;
+
   GoRouter _createRouter() {
     return GoRouter(
       restorationScopeId: 'app',
@@ -221,6 +224,10 @@ class AppRouter {
     } else if (!hasSeeds && currentRoute != AppRoute.onboarding) {
       // Not onboarded, redirect to onboarding
       return AppRoute.onboarding.path;
+    }
+
+    if (_currentPath == AppRoute.splash.path) {
+      return fullPath;
     }
 
     // No need to redirect
