@@ -55,6 +55,10 @@ class AppRouter {
   String get _currentPath =>
       router.routerDelegate.currentConfiguration.fullPath;
 
+  String get _savedLocation => _navigationService.state.location;
+
+  bool get _isExistSavedLocation => _savedLocation.isNotEmpty;
+
   GoRouter _createRouter() {
     return GoRouter(
       restorationScopeId: 'app',
@@ -202,10 +206,6 @@ class AppRouter {
     required bool? hasSeeds,
     required BootstrapSteps step,
   }) {
-    if(hasSeeds == null) {
-      return null;
-    }
-
     final currentRoute = getRootAppRoute(fullPath: fullPath);
 
     if (step == BootstrapSteps.error &&
@@ -217,7 +217,7 @@ class AppRouter {
       );
     }
 
-    if (!_isConfigured) {
+    if (!_isConfigured || hasSeeds == null) {
       return null;
     }
 
@@ -231,7 +231,7 @@ class AppRouter {
     }
 
     if (_currentPath == AppRoute.splash.path) {
-      return fullPath;
+      return _isExistSavedLocation ? _savedLocation : currentRoute.path;
     }
 
     // No need to redirect
