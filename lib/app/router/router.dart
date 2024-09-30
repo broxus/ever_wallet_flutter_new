@@ -83,7 +83,7 @@ class AppRouter {
         // Check if the user should be redirected
         final guardRedirect = _shouldRedirect(
           fullPath: fullPath,
-          hasSeeds: _nekotonRepository.hasSeeds.value,
+          hasSeeds: _nekotonRepository.hasSeeds.valueOrNull,
           step: _bootstrapService.bootstrapStep,
         );
 
@@ -185,7 +185,7 @@ class AppRouter {
     // location and if the user has any seeds and bootstrap completed.
     final redirectLocation = _shouldRedirect(
       fullPath: _navigationService.state.fullPath,
-      hasSeeds: _nekotonRepository.hasSeeds.value,
+      hasSeeds: _nekotonRepository.hasSeeds.valueOrNull,
       step: _bootstrapService.bootstrapStep,
     );
 
@@ -199,9 +199,13 @@ class AppRouter {
   // the user has any seeds.
   String? _shouldRedirect({
     required String fullPath,
-    required bool hasSeeds,
+    required bool? hasSeeds,
     required BootstrapSteps step,
   }) {
+    if(hasSeeds == null) {
+      return null;
+    }
+
     final currentRoute = getRootAppRoute(fullPath: fullPath);
 
     if (step == BootstrapSteps.error &&
