@@ -48,7 +48,7 @@ class AccountSettingsModel extends ElementaryModel {
 
     if (account != null && nextAccount != null) {
       account.hide();
-      _currentAccountsService.changeCurrentActiveAccount(nextAccount);
+      _currentAccountsService.updateCurrentActiveAccount(nextAccount.address);
     }
   }
 }

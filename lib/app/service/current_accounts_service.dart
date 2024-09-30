@@ -1,6 +1,7 @@
 import 'dart:async';
 
 import 'package:app/app/service/service.dart';
+import 'package:app/utils/utils.dart';
 import 'package:collection/collection.dart';
 import 'package:encrypted_storage/encrypted_storage.dart';
 import 'package:injectable/injectable.dart';
@@ -32,8 +33,8 @@ class CurrentAccountsService {
 
   final _currentAccountsSubject = BehaviorSubject<AccountList?>.seeded(null);
 
-  final _currentActiveAccountSubject =
-      BehaviorSubject<(int, KeyAccount?)>.seeded((-1, null));
+  final _currentActiveAccountAddressSubject =
+      BehaviorSubject<Address?>.seeded(null);
 
   /// Get stream of accounts in scope of current active key
   Stream<AccountList?> get currentAccountsStream => _currentAccountsSubject;
@@ -41,28 +42,38 @@ class CurrentAccountsService {
   /// Get accounts in scope of current active key
   AccountList? get currentAccounts => _currentAccountsSubject.valueOrNull;
 
+  Address? get currentActiveAccountAddress =>
+      _currentActiveAccountAddressSubject.valueOrNull;
+
   /// Get stream of current active account in wallet tab.
   /// This will automatically changes when [currentAccountsStream] emits new
   /// accounts for another key.
-  /// 1-st value of record - is index from [currentAccounts], if account is
-  /// null, then -1
   ///
   /// Changes in this stream can also sign you that [currentAccountsStream]
   /// could provide a new value.
   ///
   /// You can affect for this stream, calling [updateCurrentActiveAccount]
-  Stream<(int, KeyAccount?)?> get currentActiveAccountStream =>
-      _currentActiveAccountSubject;
+  Stream<KeyAccount?> get currentActiveAccountStream =>
+      CombineLatestStream.combine2(
+        _currentActiveAccountAddressSubject,
+        _currentAccountsSubject,
+        (address, accounts) => accounts?.allAccounts.firstWhereOrNull(
+          (account) => account.address == address,
+        ),
+      );
 
   /// Get current active account in wallet tab.
   /// This will automatically changes when [currentAccountsStream] emits new
   /// accounts for another key.
-  /// 1-st value of record - is index from [currentAccounts], if account is
-  /// null, then -1
   ///
   /// You can affect for this value, calling [updateCurrentActiveAccount]
-  (int, KeyAccount?)? get currentActiveAccount =>
-      _currentActiveAccountSubject.valueOrNull;
+  KeyAccount? get currentActiveAccount {
+    final address = currentActiveAccountAddress;
+    final accounts = currentAccounts;
+    return accounts?.allAccounts.firstWhereOrNull(
+      (account) => account.address == address,
+    );
+  }
 
   Future<void> init() async {
     // skip 1 to avoid duplicate calls
@@ -73,63 +84,28 @@ class CurrentAccountsService {
           (key) => _updateAccountsList(_nekotonRepository.seedList, key),
         );
 
+    currentActiveAccountStream
+        .map((account) => account?.address)
+        .distinct()
+        .listen(_tryStartPolling);
+
+    await _initCurrentAccount();
+
     _updateAccountsList(
       _nekotonRepository.seedList,
       _currentKeyService.currentKey,
     );
-
-    await _initCurrentAccount();
-  }
-
-  /// Try updating current active account for [currentAccounts], this will try
-  /// to take account for [AccountList.displayAccounts] by index and emit
-  /// it in [currentActiveAccountStream].
-  ///
-  /// If user switched to tab `Add new account`, then index will > -1 and
-  /// account will be null.
-  void updateCurrentActiveAccount(int index) {
-    final accounts = currentAccounts?.displayAccounts;
-    if (accounts == null) {
-      _currentActiveAccountSubject.add((-1, null));
-      _nekotonRepository
-        ..stopPolling()
-        ..stopPollingToken();
-
-      return;
-    }
-
-    final current =
-        index >= 0 && index < accounts.length ? accounts[index] : null;
-
-    if (current != null) {
-      _tryStartPolling(current.address);
-    } else {
-      // add new account tab selected
-      _tonWalletSubscription?.cancel();
-      _tokenWalletSubscription?.cancel();
-
-      _nekotonRepository
-        ..stopPolling()
-        ..stopPollingToken();
-    }
-
-    _currentActiveAccountSubject.add((index, current));
   }
 
   /// Try updating current active account for [currentAccounts]
-  Future<void> changeCurrentActiveAccount(KeyAccount account) async {
-    if (currentActiveAccount?.$2 == account) return;
+  Future<void> updateCurrentActiveAccount(Address address) async {
+    if (currentActiveAccountAddress == address) return;
 
-    final index = currentAccounts?.displayAccounts.indexOf(account);
-
-    if (index != null && index != -1) {
-      _tryStartPolling(account.address);
-      _currentActiveAccountSubject.add((index, account));
-    }
+    _currentActiveAccountAddressSubject.add(address);
 
     await _storage.set(
       _currentAddress,
-      account.address.address,
+      address.address,
       domain: _preferencesKey,
     );
   }
@@ -149,7 +125,10 @@ class CurrentAccountsService {
       return;
     }
 
-    final account = currentAccounts?.allAccounts.firstWhereOrNull(
+    final key = _currentKeyService.currentKey?.let(
+      (value) => _nekotonRepository.seedList.findSeedKey(value),
+    );
+    final account = key?.accountList.allAccounts.firstWhereOrNull(
       (KeyAccount account) => account.address.address == address,
     );
 
@@ -157,17 +136,19 @@ class CurrentAccountsService {
       return;
     }
 
-    unawaited(changeCurrentActiveAccount(account));
+    unawaited(updateCurrentActiveAccount(account.address));
   }
 
   /// Start listening for wallet subscriptions and when subscription will be
   /// created, start polling.
-  void _tryStartPolling(Address address) {
+  void _tryStartPolling(final Address? address) {
     _tonWalletSubscription?.cancel();
     _tokenWalletSubscription?.cancel();
     _nekotonRepository
       ..stopPolling()
       ..stopPollingToken();
+
+    if (address == null) return;
 
     _tonWalletSubscription = _nekotonRepository.walletsStream.listen((wallets) {
       if (_nekotonRepository.walletsMap.containsKey(address)) {
@@ -197,7 +178,7 @@ class CurrentAccountsService {
     if (list == null) {
       // means no accounts for this key and we should be logged out or another
       // accounts will be selected soon
-      _currentActiveAccountSubject.add((-1, null));
+      _currentActiveAccountAddressSubject.add(null);
       _nekotonRepository
         ..stopPolling()
         ..stopPollingToken();
@@ -205,19 +186,21 @@ class CurrentAccountsService {
       return;
     }
 
-    final index = currentActiveAccount?.$1 ?? 0;
-    final currentAccount = currentActiveAccount?.$2;
-    final keyChanged = currentAccount?.publicKey != list.publicKey;
+    final address = currentActiveAccountAddress;
+    final keyChanged = address == null ||
+        list.allAccounts.every(
+          (account) => account.address != address,
+        );
 
-    // key changed, update account index.
-    // do not compare instances, because accounts can be different.
-    //
+    // key changed
     // for init method this will be called anyway.
     if (keyChanged) {
-      updateCurrentActiveAccount(0);
-    } else {
-      // key just updated, so update it
-      updateCurrentActiveAccount(index);
+      final account =
+          list.displayAccounts.firstOrNull ?? list.allAccounts.firstOrNull;
+
+      if (account != null) {
+        updateCurrentActiveAccount(account.address);
+      }
     }
   }
 
@@ -227,7 +210,6 @@ class CurrentAccountsService {
   ) {
     if (currentKey == null) {
       _currentAccountsSubject.add(null);
-
       return;
     }
 
@@ -236,27 +218,12 @@ class CurrentAccountsService {
 
     if (key == null) {
       _currentAccountsSubject.add(null);
-
       return;
     }
 
-    _currentAccountsSubject.add(key.accountList);
-    _updateSubscriptions(key.accountList);
-
-    final currentAccount = currentActiveAccount?.$2;
-    final accounts = currentAccounts?.displayAccounts;
-    if (currentAccount == null && accounts != null && accounts.isNotEmpty) {
-      updateCurrentActiveAccount(0);
-    }
-
-    if (currentAccount != null) {
-      final updated = list.findAccountByAddress(currentAccount.address);
-
-      if (updated != null && updated.name != currentAccount.name) {
-        _currentActiveAccountSubject.add(
-          (currentActiveAccount!.$1, updated),
-        );
-      }
+    if (_currentAccountsSubject.valueOrNull != key.accountList) {
+      _currentAccountsSubject.add(key.accountList);
+      _updateSubscriptions(key.accountList);
     }
   }
 

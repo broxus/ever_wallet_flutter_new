@@ -27,17 +27,15 @@ class SelectAccountModel extends ElementaryModel {
       );
 
   Stream<KeyAccount?> get currentAccount =>
-      _currentAccountsService.currentActiveAccountStream.map(
-        (value) => value?.$2,
-      );
+      _currentAccountsService.currentActiveAccountStream;
 
   String get symbol => currentTransport.nativeTokenTicker;
 
   TransportStrategy get currentTransport => _nekotonRepository.currentTransport;
 
   Future<void> changeCurrentAccount(KeyAccount account) async {
+    await _currentAccountsService.updateCurrentActiveAccount(account.address);
     await _currentKeyService.changeCurrentKey(account.publicKey);
-    await _currentAccountsService.changeCurrentActiveAccount(account);
   }
 
   Future<Money?> getBalance(KeyAccount account) async {

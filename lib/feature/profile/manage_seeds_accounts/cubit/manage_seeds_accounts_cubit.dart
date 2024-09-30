@@ -48,7 +48,6 @@ class ManageSeedsAccountsCubit extends Cubit<ManageSeedsAccountsState> {
     _currentSeedSubscription =
         currentSeedService.currentSeedStream.skip(1).listen(
       (currentSeed) {
-        currentAccountsService.updateCurrentActiveAccount(0);
         emit(
           ManageSeedsAccountsState.data(
             currentSeed: currentSeed,
