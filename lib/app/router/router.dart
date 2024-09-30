@@ -1,14 +1,12 @@
-// ignore_for_file: deprecated_member_use_from_same_package
+// ignore_for_file: lines_longer_than_80_chars
 
 import 'package:app/app/router/page_transitions.dart';
 import 'package:app/app/router/router.dart';
 import 'package:app/app/router/routs/network/network.dart';
 import 'package:app/app/service/service.dart';
-import 'package:app/di/di.dart';
 import 'package:app/feature/error/error.dart';
 import 'package:app/feature/onboarding/screen/welcome/welcome_screen.dart';
 import 'package:app/feature/root/root.dart';
-import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:logging/logging.dart';
 import 'package:nekoton_repository/nekoton_repository.dart';
@@ -16,34 +14,214 @@ import 'package:nekoton_repository/nekoton_repository.dart';
 export 'app_route.dart';
 export 'routs/routs.dart';
 
-// ignore: long-method
-GoRouter getRouter(BuildContext _) {
-  final log = Logger('RouterHelper');
+class AppRouter {
+  AppRouter(
+    this._bootstrapService,
+    this._navigationService,
+    this._nekotonRepository,
+  ) {
+    // Subscribe to hasSeeds to redirect if needed
+    // This is a-la guard, it should redirect to onboarding or wallet depending
+    // on the current location and if the user has any seeds.
+    _nekotonRepository.hasSeeds.listen(_listenSeed);
+
+    // Subscribe to bootstrapStep to redirect if needed
+    // This is a-la guard, it should redirect to onboarding or wallet depending
+    // on the current location and if the user has any seeds.
+    // This happends when user was sent to bootstrap failed screen to make some
+    // action and then bootstrap process was completed.
+    _bootstrapService.bootstrapStepStream.listen(_listenBootstrapStep);
+  }
+
+  // Create a new router
+  late final router = _createRouter();
+
+  final BootstrapService _bootstrapService;
+  final NavigationService _navigationService;
+  final NekotonRepository _nekotonRepository;
+
+  final _log = Logger('RouterHelper');
 
   // Last saved root app route
-  AppRoute? lastRootAppRoute;
+  AppRoute? _lastRootAppRoute;
 
   // Just for debouncing, because setLocation() can be called multiple times
   // with the same location
-  String? lastSetlocation;
+  String? _lastSetlocation;
 
   // Saved subroutes for each root app route
-  final savedSubroutes = <AppRoute, String>{};
+  final _savedSubroutes = <AppRoute, String>{};
+
+  bool get _isConfigured => _bootstrapService.isConfigured;
+
+  String get _currentPath =>
+      router.routerDelegate.currentConfiguration.fullPath;
+
+  String get _savedLocation => _navigationService.state.location;
+
+  bool get _isExistSavedLocation => _savedLocation.isNotEmpty;
+
+  GoRouter _createRouter() {
+    return GoRouter(
+      restorationScopeId: 'app',
+      navigatorKey: NavigationService.navigatorKey,
+      redirect: (context, state) {
+        if (!_bootstrapService.isConfigured) {
+          return null;
+        }
+
+        // Get current location and full path
+        final location = state.uri.toString();
+        final fullPath = state.fullPath ?? location;
+
+        // Get root app route
+        final rootAppRoute = getRootAppRoute(fullPath: fullPath);
+
+        // Get saved subroute for the root app route (if any)
+        final savedSubroute = _savedSubroutes[rootAppRoute];
+
+        // Check if the root app route changed
+        final rootAppRouteChaned = _lastRootAppRoute != rootAppRoute;
+
+        // Set location
+        _setLocation(location, fullPath);
+
+        // Check if the user should be redirected
+        final guardRedirect = _shouldRedirect(
+          fullPath: fullPath,
+          hasSeeds: _nekotonRepository.hasSeeds.valueOrNull,
+          step: _bootstrapService.bootstrapStep,
+        );
+
+        if (guardRedirect != null) {
+          return guardRedirect;
+        }
+
+        // If the root app route changed and there is a saved subroute,
+        // return it
+        // This is for the case when the user navigates to a subroute, then
+        // navigates to another root app route and returns back to the previous
+        // root app route using bottom tab bar. In this case, the subroute
+        // should be restored.
+        if (rootAppRouteChaned && savedSubroute != null) {
+          return savedSubroute;
+        }
+
+        // Nothing to do, return null
+        return null;
+      },
+      initialLocation: AppRoute.splash.path,
+      routes: [
+        bootstrapFailedRoute,
+        noInternetRoute,
+        splashScreenRoute,
+        GoRoute(
+          name: AppRoute.onboarding.name,
+          path: AppRoute.onboarding.path,
+          pageBuilder: (context, state) => onboardingTransitionPageBuilder(
+            context,
+            state,
+            const WelcomeScreen(),
+          ),
+          routes: [
+            chooseNetworkRoute(
+              routes: [
+                createOnboardingSeedPasswordRoute,
+                addExistingWalletRoute,
+              ],
+            ),
+          ],
+        ),
+        StatefulShellRoute.indexedStack(
+          builder: (context, state, navigationShell) => RootPage(
+            child: navigationShell,
+          ),
+          branches: [
+            walletBranch,
+            browserBranch,
+            profileBranch,
+          ],
+        ),
+      ],
+      errorBuilder: (context, state) {
+        // Something went wrong, clear saved subroutes
+        _log.severe('GoRouter error: ${state.error}');
+        _savedSubroutes.clear();
+
+        // Get current location and full path
+        final location = state.uri.toString();
+        final fullPath = state.fullPath ?? location;
+
+        final currentRoute = getRootAppRoute(fullPath: fullPath);
+        final isOnboarding = currentRoute == AppRoute.onboarding;
+
+        return ErrorPage(isOnboarding: isOnboarding);
+      },
+    )
+
+      // Subscribe to routerDelegate changes to set location
+      ..routerDelegate.addListener(
+        () {
+          final currentConfiguration =
+              router.routerDelegate.currentConfiguration;
+          _setLocation(
+            currentConfiguration.uri.toString(),
+            currentConfiguration.fullPath,
+          );
+        },
+      );
+  }
+
+  void _listenSeed(bool hasSeeds) {
+    // Again, check if the user should be redirected depending on the current
+    // location and if the user has any seeds.
+    final redirectLocation = _shouldRedirect(
+      fullPath: _navigationService.state.fullPath,
+      hasSeeds: hasSeeds,
+      step: _bootstrapService.bootstrapStep,
+    );
+
+    // Redirect if needed
+    if (redirectLocation != null) {
+      router.go(redirectLocation);
+    }
+  }
+
+  void _listenBootstrapStep(BootstrapSteps step) {
+    // Again, check if the user should be redirected depending on the current
+    // location and if the user has any seeds and bootstrap completed.
+    final redirectLocation = _shouldRedirect(
+      fullPath: _navigationService.state.fullPath,
+      hasSeeds: _nekotonRepository.hasSeeds.valueOrNull,
+      step: _bootstrapService.bootstrapStep,
+    );
+
+    // Redirect if needed
+    if (redirectLocation != null) {
+      router.go(redirectLocation);
+    }
+  }
 
   // Redirect to onboarding or wallet depending on the current location and if
   // the user has any seeds.
-  String? shouldRedirect({
+  String? _shouldRedirect({
     required String fullPath,
-    required bool hasSeeds,
+    required bool? hasSeeds,
     required BootstrapSteps step,
   }) {
     final currentRoute = getRootAppRoute(fullPath: fullPath);
 
-    if (step != BootstrapSteps.completed &&
+    if (step == BootstrapSteps.error &&
         currentRoute != AppRoute.bootstrapFailedInit) {
       return AppRoute.bootstrapFailedInit.pathWithData(
-        pathParameters: {bootstrapFailedIndexPathParam: step.index.toString()},
+        pathParameters: {
+          bootstrapFailedIndexPathParam: step.index.toString(),
+        },
       );
+    }
+
+    if (!_isConfigured || hasSeeds == null) {
+      return null;
     }
 
     // If the user has seeds and is on onboarding, redirect to wallet
@@ -55,23 +233,27 @@ GoRouter getRouter(BuildContext _) {
       return AppRoute.onboarding.path;
     }
 
+    if (_currentPath == AppRoute.splash.path) {
+      return _isExistSavedLocation ? _savedLocation : currentRoute.path;
+    }
+
     // No need to redirect
     return null;
   }
 
   // Set location, it will be called in multiple places
   // because GoRouter's 'redirect' handler doesn't call it after pop()
-  void setLocation(String location, String fullPath) {
+  void _setLocation(String location, String fullPath) {
     // And because of that, we need to check if the location is the same
     // as the last one to avoid duplicate calls of NavigationService.setLocation
-    if (lastSetlocation == location) {
+    if (_lastSetlocation == location) {
       return;
     }
 
-    lastSetlocation = location;
+    _lastSetlocation = location;
 
     // Set current location in NavigationService
-    inject<NavigationService>().setState(
+    _navigationService.setState(
       state: NavigationServiceState(
         location: location,
         fullPath: fullPath,
@@ -84,157 +266,10 @@ GoRouter getRouter(BuildContext _) {
 
     // Save subroute for the root app route
     if (rootAppRoute.isSaveSubroutes) {
-      savedSubroutes[rootAppRoute] = location;
+      _savedSubroutes[rootAppRoute] = location;
     }
 
     // Save last root app route
-    lastRootAppRoute = rootAppRoute;
+    _lastRootAppRoute = rootAppRoute;
   }
-
-  // Create a new router
-  final router = GoRouter(
-    restorationScopeId: 'app',
-    navigatorKey: NavigationService.navigatorKey,
-    redirect: (context, state) {
-      // Get current location and full path
-      final location = state.uri.toString();
-      final fullPath = state.fullPath ?? location;
-
-      // Get root app route
-      final rootAppRoute = getRootAppRoute(fullPath: fullPath);
-
-      // Get saved subroute for the root app route (if any)
-      final savedSubroute = savedSubroutes[rootAppRoute];
-
-      // Check if the root app route changed
-      final rootAppRouteChaned = lastRootAppRoute != rootAppRoute;
-
-      // Set location
-      setLocation(location, fullPath);
-
-      // Check if the user has seeds
-      final hasSeeds = inject<NekotonRepository>().hasSeeds.value;
-      final step = inject<BootstrapService>().bootstrapStep;
-
-      // Check if the user should be redirected
-      final guardRedirect = shouldRedirect(
-        fullPath: fullPath,
-        hasSeeds: hasSeeds,
-        step: step,
-      );
-
-      if (guardRedirect != null) {
-        return guardRedirect;
-      }
-
-      // If the root app route changed and there is a saved subroute, return it
-      // This is for the case when the user navigates to a subroute, then
-      // navigates to another root app route and returns back to the previous
-      // root app route using bottom tab bar. In this case, the subroute should
-      // be restored.
-      if (rootAppRouteChaned && savedSubroute != null) {
-        return savedSubroute;
-      }
-
-      // Nothing to do, return null
-      return null;
-    },
-    // Initial location from NavigationService
-    initialLocation: inject<NavigationService>().savedState.location,
-    routes: [
-      bootstrapFailedRoute,
-      GoRoute(
-        name: AppRoute.onboarding.name,
-        path: AppRoute.onboarding.path,
-        pageBuilder: (context, state) => onboardingTransitionPageBuilder(
-          context,
-          state,
-          const WelcomeScreen(),
-        ),
-        routes: [
-          chooseNetworkRoute(
-            routes: [
-              createOnboardingSeedPasswordRoute,
-              addExistingWalletRoute,
-            ],
-          ),
-        ],
-      ),
-      StatefulShellRoute.indexedStack(
-        builder: (context, state, navigationShell) => RootPage(
-          child: navigationShell,
-        ),
-        branches: [
-          walletBranch,
-          browserBranch,
-          profileBranch,
-        ],
-      ),
-    ],
-    errorBuilder: (context, state) {
-      // Something went wrong, clear saved subroutes
-      log.severe('GoRouter error: ${state.error}');
-      savedSubroutes.clear();
-
-      // Get current location and full path
-      final location = state.uri.toString();
-      final fullPath = state.fullPath ?? location;
-
-      final currentRoute = getRootAppRoute(fullPath: fullPath);
-      final isOnboarding = currentRoute == AppRoute.onboarding;
-
-      return ErrorPage(isOnboarding: isOnboarding);
-    },
-  );
-
-  // Subscribe to hasSeeds to redirect if needed
-  // This is a-la guard, it should redirect to onboarding or wallet depending
-  // on the current location and if the user has any seeds.
-  inject<NekotonRepository>().hasSeeds.listen((hasSeeds) {
-    // Again, check if the user should be redirected depending on the current
-    // location and if the user has any seeds.
-    final redirectLocation = shouldRedirect(
-      fullPath: inject<NavigationService>().state.fullPath,
-      hasSeeds: hasSeeds,
-      step: inject<BootstrapService>().bootstrapStep,
-    );
-
-    // Redirect if needed
-    if (redirectLocation != null) {
-      router.go(redirectLocation);
-    }
-  });
-
-  // Subscribe to bootstrapStep to redirect if needed
-  // This is a-la guard, it should redirect to onboarding or wallet depending
-  // on the current location and if the user has any seeds.
-  // This happends when user was sent to bootstrap failed screen to make some
-  // action and then bootstrap process was completed.
-  inject<BootstrapService>().bootstrapStepStream.listen((step) {
-    // Again, check if the user should be redirected depending on the current
-    // location and if the user has any seeds and bootstrap completed.
-    final redirectLocation = shouldRedirect(
-      fullPath: inject<NavigationService>().state.fullPath,
-      hasSeeds: inject<NekotonRepository>().hasSeeds.value,
-      step: step,
-    );
-
-    // Redirect if needed
-    if (redirectLocation != null) {
-      router.go(redirectLocation);
-    }
-  });
-
-  // Subscribe to routerDelegate changes to set location
-  router.routerDelegate.addListener(
-    () {
-      final currentConfiguration = router.routerDelegate.currentConfiguration;
-      setLocation(
-        currentConfiguration.uri.toString(),
-        currentConfiguration.fullPath,
-      );
-    },
-  );
-
-  return router;
 }

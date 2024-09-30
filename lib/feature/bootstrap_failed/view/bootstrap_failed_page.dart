@@ -22,12 +22,11 @@ class BootstrapFailedPage extends StatelessWidget {
     return Scaffold(
       appBar: const DefaultAppBar(),
       body: switch (step) {
-        BootstrapSteps.storage => const BootstrapFailedRerunView(),
+        BootstrapSteps.error => const BootstrapFailedRerunView(),
         BootstrapSteps.connection => const BootstrapRetryConnectionView(),
-        BootstrapSteps.features => const BootstrapFailedRerunView(),
 
         // should not be there
-        BootstrapSteps.completed => const SizedBox(),
+        _ => const SizedBox.shrink(),
       },
     );
   }
