@@ -104,6 +104,13 @@ class _CreateSeedPasswordViewState extends State<CreateSeedPasswordView> {
     );
   }
 
+  @override
+  void dispose() {
+    _focusNode.dispose();
+    _scrollController.dispose();
+    super.dispose();
+  }
+
   void _scrollToBottom() {
     WidgetsBinding.instance.addPostFrameCallback((_) {
       if (FocusScope.of(context).hasFocus) {
