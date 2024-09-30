@@ -1,4 +1,3 @@
-import 'package:app/app/router/router.dart';
 import 'package:app/app/view/app.dart';
 import 'package:app/app/view/app_model.dart';
 import 'package:app/core/error_handler_factory.dart';

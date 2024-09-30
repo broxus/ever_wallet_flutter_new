@@ -9,8 +9,6 @@ import 'package:go_router/go_router.dart';
 import 'package:ui_components_lib/ui_components_lib.dart';
 import 'package:ui_components_lib/v2/text_styles_v2.dart';
 
-import '../../main_development.dart';
-
 /// Factory method for creating [NoInternetScreenWidgetModel]
 NoInternetScreenWidgetModel defaultNoInternetScreenWidgetModelFactory(
   BuildContext context,

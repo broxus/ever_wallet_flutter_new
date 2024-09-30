@@ -1,5 +1,4 @@
 import 'package:app/app/service/bootstrap_service.dart';
-import 'package:app/app/service/navigation/service/navigation_service.dart';
 import 'package:app/app/service/network_connection/network_connection_service.dart';
 import 'package:app/feature/splash/splash_screen.dart';
 import 'package:app/runner.dart';
@@ -10,12 +9,10 @@ class SplashScreenModel extends ElementaryModel {
   SplashScreenModel(
     ErrorHandler errorHandler,
     this._bootstrapService,
-    this._navigationService,
     this._networkConnectionService,
   ) : super(errorHandler: errorHandler);
 
   final BootstrapService _bootstrapService;
-  final NavigationService _navigationService;
   final NetworkConnectionService _networkConnectionService;
 
   Future<bool> get isExistInternet => _networkConnectionService.isExistInternet;

@@ -95,11 +95,12 @@ class AppRouter {
           return guardRedirect;
         }
 
-        // If the root app route changed and there is a saved subroute, return it
+        // If the root app route changed and there is a saved subroute,
+        // return it
         // This is for the case when the user navigates to a subroute, then
         // navigates to another root app route and returns back to the previous
-        // root app route using bottom tab bar. In this case, the subroute should
-        // be restored.
+        // root app route using bottom tab bar. In this case, the subroute
+        // should be restored.
         if (rootAppRouteChaned && savedSubroute != null) {
           return savedSubroute;
         }
