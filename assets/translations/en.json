@@ -573,5 +573,25 @@
   "deleteBookmarksDescription": "All bookmarks will be permanently deleted",
   "save": "Save",
   "oopsNoInternet": "Oops, no internet connection",
-  "offlineCheckConnection": "You’re currently offline. Please check your connection and try again"
+  "offlineCheckConnection": "You’re currently offline. Please check your connection and try again",
+  "newSeedPhraseSwitchTitle": "New seed phrase added successfully",
+  "newSeedPhraseSwitchSubtitle": "Make sure you save your seed phrase. You can start using it right now.",
+  "newSeedPhraseSwitchButton": "Switch to this seed phrase",
+  "txTreeSimulationErrorComputePhase": {
+    "0": "Execution failed on ",
+    "1": " with exit code {}."
+  },
+  "txTreeSimulationErrorActionPhase": {
+    "0": "Action phase failed on ",
+    "1": " with exit code {}."
+  },
+  "txTreeSimulationErrorFrozen": {
+    "0": "Account ",
+    "1": " will be frozen due to storage fee debt."
+  },
+  "txTreeSimulationErrorDeleted": {
+    "0": "Account ",
+    "1": " will be deleted due to storage fee debt."
+  },
+  "txTreeSimulationErrorHint": "Please contact technical support."
 }

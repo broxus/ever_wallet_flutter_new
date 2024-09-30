@@ -1,6 +1,9 @@
+// ignore_for_file: use_build_context_synchronously
+
 import 'package:app/app/router/app_route.dart';
 import 'package:app/data/models/seed/seed_phrase_model.dart';
 import 'package:app/feature/add_seed/create_password/create_password.dart';
+import 'package:app/feature/profile/widgets/switch_to_seed_sheet/switch_to_seed_sheet.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
@@ -32,8 +35,12 @@ class CreateSeedPasswordProfilePage extends StatelessWidget {
         seedPhrase: seedPhrase,
         name: name,
         // When we do this flow from profile, navigate to profile root
-        completeCallback: () =>
-            context.goNamed(AppRoute.manageSeedsAccounts.name),
+        completeCallback: (publicKey) {
+          showSwitchToSeedSheet(context: context, publicKey: publicKey)
+              .whenComplete(() {
+            context.goNamed(AppRoute.manageSeedsAccounts.name);
+          });
+        },
         type: type,
       ),
       child: GestureDetector(

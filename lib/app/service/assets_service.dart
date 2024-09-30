@@ -247,6 +247,8 @@ class AssetsService {
   /// Load manifest specified for transport and update system contracts that
   /// user can add to list of its contracts.
   Future<void> _updateSystemContracts(TransportStrategy transport) async {
+    if (transport.manifestUrl.isEmpty) return;
+
     try {
       final encoded = await httpService.getRequest(transport.manifestUrl);
       final decoded = jsonDecode(encoded) as Map<String, dynamic>;

@@ -30,6 +30,8 @@ class WalletAppBarModel extends ElementaryModel {
         ),
       );
 
-  Stream<ConnectionData> get connection =>
+  Stream<ConnectionData> get connectionStream =>
       _storageService.currentConnectionStream;
+
+  TransportStrategy get transport => _nekotonRepository.currentTransport;
 }

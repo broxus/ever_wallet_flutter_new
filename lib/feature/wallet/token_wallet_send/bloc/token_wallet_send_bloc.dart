@@ -76,6 +76,8 @@ class TokenWalletSendBloc
   late UnsignedMessage unsignedMessage;
   UnsignedMessage? _unsignedMessage;
 
+  List<TxTreeSimulationErrorItem>? txErrors;
+
   TransportStrategy get transport => nekotonRepository.currentTransport;
 
   Currency get currency => Currencies()[transport.nativeTokenTicker]!;
@@ -143,6 +145,10 @@ class TokenWalletSendBloc
         address: owner,
         message: unsignedMessage,
       );
+      txErrors = await nekotonRepository.simulateTransactionTree(
+        address: owner,
+        message: unsignedMessage,
+      );
 
       final walletState = await nekotonRepository.walletsStream
           .expand((e) => e)
@@ -170,7 +176,7 @@ class TokenWalletSendBloc
         return;
       }
 
-      emit(TokenWalletSendState.readyToSend(fees!, sendAmount));
+      emit(TokenWalletSendState.readyToSend(fees!, sendAmount, txErrors));
     } on FfiException catch (e, t) {
       _logger.severe('_handleSend', e, t);
       emit(TokenWalletSendState.calculatingError(e.message));
@@ -226,12 +232,12 @@ class TokenWalletSendBloc
           message: e.message,
         ),
       );
-      emit(TokenWalletSendState.readyToSend(fees!, sendAmount));
+      emit(TokenWalletSendState.readyToSend(fees!, sendAmount, txErrors));
     } on Exception catch (e, t) {
       _logger.severe('_handleSend', e, t);
       messengerService
           .show(Message.error(context: context, message: e.toString()));
-      emit(TokenWalletSendState.readyToSend(fees!, sendAmount));
+      emit(TokenWalletSendState.readyToSend(fees!, sendAmount, txErrors));
     }
   }
 

@@ -1,5 +1,5 @@
-import 'package:app/app/service/nekoton_related/connection_service/transport_strategies/utils.dart';
 import 'package:app/data/models/models.dart';
+import 'package:app/generated/generated.dart';
 import 'package:nekoton_repository/nekoton_repository.dart';
 
 /// Transport strategy for any different custom network
@@ -33,14 +33,27 @@ class CustomTransportStrategy extends TransportStrategy {
   String currencyUrl(String currencyAddress) => '';
 
   @override
-  String defaultAccountName(WalletType walletType) =>
-      getDefaultAccountName(walletType);
+  String defaultAccountName(WalletType walletType) => walletType.when(
+        multisig: (type) => switch (type) {
+          MultisigType.safeMultisigWallet => 'SafeMultisig24h',
+          MultisigType.safeMultisigWallet24h => 'SafeMultisig24h',
+          MultisigType.setcodeMultisigWallet => 'SetcodeMultisig',
+          MultisigType.setcodeMultisigWallet24h => 'SetcodeMultisig24h',
+          MultisigType.bridgeMultisigWallet => 'BridgeMultisig',
+          MultisigType.surfWallet => 'Surf wallet',
+          MultisigType.multisig2 => 'Legacy Multisig',
+          MultisigType.multisig2_1 => 'Multisig',
+        },
+        walletV3: () => 'WalletV3',
+        highloadWalletV2: () => 'HighloadWalletV2',
+        everWallet: () => 'Default',
+      );
 
   @override
   final defaultWalletType = const WalletType.everWallet();
 
   @override
-  String get nativeTokenIcon => '';
+  String get nativeTokenIcon => Assets.images.tokenDefaultIcon.path;
 
   @override
   String get nativeTokenTicker => connection.nativeTokenTicker;
