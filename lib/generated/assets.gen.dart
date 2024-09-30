@@ -496,8 +496,13 @@ class $AssetsSplashGen {
   AssetGenImage get icSplashLogo =>
       const AssetGenImage('assets/splash/ic_splash_logo.png');
 
+  /// File path: assets/splash/native_splash.png
+  AssetGenImage get nativeSplash =>
+      const AssetGenImage('assets/splash/native_splash.png');
+
   /// List of all assets
-  List<AssetGenImage> get values => [icSplashBanner, icSplashLogo];
+  List<AssetGenImage> get values =>
+      [icSplashBanner, icSplashLogo, nativeSplash];
 }
 
 class $AssetsTranslationsGen {
