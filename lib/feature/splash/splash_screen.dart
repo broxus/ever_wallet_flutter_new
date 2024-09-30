@@ -46,6 +46,9 @@ class _IosLogo extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Assets.splash.icSplashBanner.image();
+    return Assets.splash.icSplashBanner.image(
+      width: 247,
+      height: 72,
+    );
   }
 }
