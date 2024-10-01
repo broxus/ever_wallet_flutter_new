@@ -1,3 +1,4 @@
+import 'dart:async';
 import 'dart:convert';
 
 import 'package:app/app/service/service.dart';
@@ -21,6 +22,8 @@ class StakingService {
 
   final NekotonRepository nekotonRepository;
   final HttpService httpService;
+
+  FullContractState? _vaultStateCache;
 
   /// Initialize service loading abi from files
   Future<void> init() async {
@@ -217,13 +220,14 @@ class StakingService {
   /// Get contract state for staking valut, can be used to call [runLocal]
   /// methods with this contract.
   Future<FullContractState> getVaultContractState() async {
-    final contractState = await nekotonRepository.currentTransport.transport
+    _vaultStateCache ??= await nekotonRepository.currentTransport.transport
         .getFullContractState(stakingInformation.stakingValutAddress);
-    if (contractState == null) {
+
+    if (_vaultStateCache == null) {
       throw Exception('StEver contract state not provided');
     }
 
-    return contractState;
+    return _vaultStateCache!;
   }
 
   /// Get contract state for user staking, that can be used to call [runLocal]
@@ -258,6 +262,8 @@ class StakingService {
     // ignore: avoid_dynamic_calls, no-magic-number
     return double.parse(decoded['data']?['apy'] as String? ?? '0.0') * 100;
   }
+
+  void resetCache() => _vaultStateCache = null;
 
   Future<String> _abiLoader(String path) => rootBundle.loadString(path);
 }
