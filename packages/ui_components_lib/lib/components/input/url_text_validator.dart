@@ -26,7 +26,10 @@ class UrlTextValidator {
       return null;
     }
 
-    final uri = Uri.parse(value!);
+    final uri = Uri.tryParse(value!);
+    if (uri == null) {
+      return schemeError;
+    }
 
     if (schemeError != null && !uri.hasScheme) {
       return schemeError;
