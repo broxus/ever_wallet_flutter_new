@@ -31,6 +31,7 @@ class Message {
     this.debounceTime = defaultInfoMessageDebounceDuration,
     this.actionText,
     this.onAction,
+    this.topMargin,
   }) : hashString = '${type.name}_${sha256.convert(utf8.encode('message'))}';
 
   factory Message.error({
@@ -58,6 +59,7 @@ class Message {
     Duration debounceTime = defaultInfoMessageDebounceDuration,
     String? actionText,
     VoidCallback? onAction,
+    double? topMargin,
   }) =>
       Message(
         context: context,
@@ -67,6 +69,7 @@ class Message {
         debounceTime: debounceTime,
         actionText: actionText,
         onAction: onAction,
+        topMargin: topMargin,
       );
 
   factory Message.successful({
@@ -96,6 +99,7 @@ class Message {
   final Duration debounceTime;
 
   final String hashString;
+  final double? topMargin;
 
   Toast toastByMessage(VoidCallback onTapClosed) {
     return Toast(
@@ -113,6 +117,7 @@ class Message {
             backgroundBlur: 0,
           ),
       ],
+      topMargin: topMargin,
     );
   }
 

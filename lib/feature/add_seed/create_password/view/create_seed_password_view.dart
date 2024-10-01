@@ -59,15 +59,16 @@ class _CreateSeedPasswordViewState extends State<CreateSeedPasswordView> {
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    Center(
-                      child: Text(
-                        LocaleKeys.confirmPasswordTitle.tr(),
-                        style: themeStyle.textStyles.headingLarge,
-                        textAlign: TextAlign.center,
-                      ),
+                    Text(
+                      LocaleKeys.confirmPasswordTitle.tr(),
+                      style: themeStyle.textStyles.headingLarge,
+                      textAlign: TextAlign.left,
                     ),
                     const SizedBox(height: DimensSize.d8),
-                    PrimaryText(LocaleKeys.confirmPasswordSubtitle.tr()),
+                    PrimaryText(
+                      LocaleKeys.confirmPasswordSubtitle.tr(),
+                      textAlign: TextAlign.left,
+                    ),
                     const SizedBox(height: DimensSize.d24),
                     SecureTextField(
                       focusNode: _focusNode,
