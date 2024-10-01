@@ -8,7 +8,6 @@ import 'package:app/feature/wallet/staking/staking.dart';
 import 'package:app/generated/generated.dart';
 import 'package:app/widgets/amount_input/amount_input_asset.dart';
 import 'package:bloc/bloc.dart';
-import 'package:bloc_event_transformers/bloc_event_transformers.dart';
 import 'package:collection/collection.dart';
 import 'package:flutter/widgets.dart';
 import 'package:freezed_annotation/freezed_annotation.dart';
@@ -37,6 +36,7 @@ class StakingBloc extends Bloc<StakingBlocEvent, StakingBlocState> {
     required this.stakingService,
     required this.actionBloc,
   }) : super(const StakingBlocState.preparing()) {
+    stakingService.resetCache();
     _registerHandlers();
     _inputController
         .addListener(() => add(StakingBlocEvent.updateReceive(_currentValue)));
@@ -85,15 +85,13 @@ class StakingBloc extends Bloc<StakingBlocEvent, StakingBlocState> {
       );
 
   CustomCurrency get everWalletCurrency => _everWalletCurrency;
+
   CustomCurrency get stEverWalletCurrency => _stEverWalletCurrency;
 
   void _registerHandlers() {
     on<_Init>((_, emit) => _init(emit));
     on<_SelectMax>((_, emit) => _selectMax());
-    on<_UpdateReceive>(
-      (event, emit) => _updateReceive(event.value, emit),
-      transformer: debounce(const Duration(seconds: 1)),
-    );
+    on<_UpdateReceive>((event, emit) => _updateReceive(event.value, emit));
     on<_UpdateRequests>((event, emit) {
       _requests = event.requests;
 
@@ -236,15 +234,17 @@ class StakingBloc extends Bloc<StakingBlocEvent, StakingBlocState> {
     try {
       switch (_type) {
         case StakingPageType.stake:
-          final amount =
-              await stakingService.getDepositStEverAmount(value.minorUnits);
+          final amount = value.isZero
+              ? BigInt.zero
+              : await stakingService.getDepositStEverAmount(value.minorUnits);
           _receive = Money.fromBigIntWithCurrency(
             amount,
             _stEverWallet.currency,
           );
         case StakingPageType.unstake:
-          final amount =
-              await stakingService.getWithdrawEverAmount(value.minorUnits);
+          final amount = value.isZero
+              ? BigInt.zero
+              : await stakingService.getWithdrawEverAmount(value.minorUnits);
           _receive = Money.fromBigIntWithCurrency(
             amount,
             _nativeCurrency,
