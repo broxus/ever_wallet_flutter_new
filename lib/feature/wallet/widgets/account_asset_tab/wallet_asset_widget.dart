@@ -45,6 +45,7 @@ class WalletAssetWidget extends StatelessWidget {
 
     return GestureDetector(
       onTap: onPressed,
+      behavior: HitTestBehavior.translucent,
       child: SeparatedRow(
         separatorSize: DimensSizeV2.d12,
         children: [
