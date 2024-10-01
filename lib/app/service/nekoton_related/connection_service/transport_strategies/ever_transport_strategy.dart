@@ -41,7 +41,7 @@ class EverTransportStrategy extends TransportStrategy {
   @override
   String defaultAccountName(WalletType walletType) => walletType.when(
         multisig: (type) => switch (type) {
-          MultisigType.safeMultisigWallet => 'SafeMultisig24h',
+          MultisigType.safeMultisigWallet => 'SafeMultisig',
           MultisigType.safeMultisigWallet24h => 'SafeMultisig24h',
           MultisigType.setcodeMultisigWallet => 'SetcodeMultisig',
           MultisigType.setcodeMultisigWallet24h => 'SetcodeMultisig24h',
@@ -102,8 +102,10 @@ class EverTransportStrategy extends TransportStrategy {
       address:
           '0:6d42d0bc4a6568120ea88bf642edb653d727cfbd35868c47877532de128e71f2',
     ),
-    stakeDepositAttachedFee: BigInt.parse('2000000000'), // 2 EVER
-    stakeRemovePendingWithdrawAttachedFee: BigInt.parse('2000000000'), // 2 EVER
+    stakeDepositAttachedFee: BigInt.parse('2000000000'),
+    // 2 EVER
+    stakeRemovePendingWithdrawAttachedFee: BigInt.parse('2000000000'),
+    // 2 EVER
     stakeWithdrawAttachedFee: BigInt.parse('3000000000'), // 3 EVER
   );
 }
