@@ -480,6 +480,16 @@ class $AssetsImagesGen {
       ];
 }
 
+class $AssetsJsGen {
+  const $AssetsJsGen();
+
+  /// File path: assets/js/nekoton.js
+  String get nekoton => 'assets/js/nekoton.js';
+
+  /// List of all assets
+  List<String> get values => [nekoton];
+}
+
 class $AssetsSplashGen {
   const $AssetsSplashGen();
 
@@ -742,6 +752,7 @@ class Assets {
 
   static const $AssetsAbiGen abi = $AssetsAbiGen();
   static const $AssetsImagesGen images = $AssetsImagesGen();
+  static const $AssetsJsGen js = $AssetsJsGen();
   static const $AssetsSplashGen splash = $AssetsSplashGen();
   static const $AssetsTranslationsGen translations = $AssetsTranslationsGen();
 }

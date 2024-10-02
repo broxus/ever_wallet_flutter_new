@@ -1,4 +1,5 @@
 import 'dart:async';
+import 'dart:collection';
 import 'dart:io';
 
 import 'package:app/data/models/models.dart';
@@ -6,6 +7,7 @@ import 'package:app/di/di.dart';
 import 'package:app/feature/browser/browser.dart';
 import 'package:app/feature/browser/browser_tab_view/browser_error_view.dart';
 import 'package:app/feature/browser/browser_tab_view/browser_view_events_listener/browser_view_events_listener_cubit.dart';
+import 'package:elementary_helper/elementary_helper.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_inappwebview/flutter_inappwebview.dart';
@@ -146,10 +148,12 @@ class _BrowserTabViewState extends State<BrowserTabView> {
           );
     }
 
-    final initialSettings = InAppWebViewSettings(
+    final _initialSettings = InAppWebViewSettings(
       clearCache: clearCache,
       applicationNameForUserAgent: 'EverWalletBrowser',
       useShouldOverrideUrlLoading: true,
+      // thirdPartyCookiesEnabled: false,
+      // sharedCookiesEnabled: true,
     );
 
     return BlocProvider<BrowserViewEventsListenerCubit>(
@@ -157,26 +161,44 @@ class _BrowserTabViewState extends State<BrowserTabView> {
         tabId: widget.tab.id,
         nekotonRepository: inject(),
         permissionsService: inject(),
+        jsService: inject(),
       ),
       child: Stack(
         children: [
           Builder(
             builder: (context) {
-              return InAppWebView(
-                key: ValueKey(widget.tab.id),
-                pullToRefreshController: _pullToRefreshController,
-                initialSettings: initialSettings,
-                onOverScrolled: _onOverScrolled,
-                onScrollChanged: _onScrollChanged,
-                onWebViewCreated: (c) => _onWebViewCreated(c, context),
-                onLoadStart: _onLoadStart,
-                onLoadStop: _onLoadStop,
-                onLoadResource: _onLoadResource,
-                onReceivedError: _onReceivedError,
-                onReceivedHttpError: _onReceivedHttpError,
-                onTitleChanged: _onTitleChanged,
-                onReceivedHttpAuthRequest: _onReceivedHttpAuthRequest,
-                shouldOverrideUrlLoading: _shouldOverrideUrlLoading,
+              return EntityStateNotifierBuilder<String?>(
+                listenableEntityState: context
+                    .read<BrowserViewEventsListenerCubit>()
+                    .nekotonJsState,
+                loadingBuilder: (_, __) => const SizedBox.shrink(),
+                errorBuilder: (_, __, ___) => const SizedBox.shrink(),
+                builder: (_, String? jsStr) {
+                  return InAppWebView(
+                    key: ValueKey(widget.tab.id),
+                    pullToRefreshController: _pullToRefreshController,
+                    initialSettings: _initialSettings,
+                    initialUserScripts: UnmodifiableListView<UserScript>([
+                      if (jsStr != null)
+                        UserScript(
+                          source: jsStr,
+                          injectionTime:
+                              UserScriptInjectionTime.AT_DOCUMENT_START,
+                        ),
+                    ]),
+                    onOverScrolled: _onOverScrolled,
+                    onScrollChanged: _onScrollChanged,
+                    onWebViewCreated: (c) => _onWebViewCreated(c, context),
+                    onLoadStart: _onLoadStart,
+                    onLoadStop: _onLoadStop,
+                    onLoadResource: _onLoadResource,
+                    onReceivedError: _onReceivedError,
+                    onReceivedHttpError: _onReceivedHttpError,
+                    onTitleChanged: _onTitleChanged,
+                    onReceivedHttpAuthRequest: _onReceivedHttpAuthRequest,
+                    shouldOverrideUrlLoading: _shouldOverrideUrlLoading,
+                  );
+                },
               );
             },
           ),
@@ -370,13 +392,9 @@ class _BrowserTabViewState extends State<BrowserTabView> {
     WebResourceRequest request,
     WebResourceError error,
   ) {
-    _pullToRefreshController?.endRefreshing();
+    // _pullToRefreshController?.endRefreshing();
     _log.warning(
       'Failed to load ${request.url}: ${error.type} ${error.description}',
-    );
-    _setState(
-      state: BrowserTabStateType.error,
-      errorMessage: '${error.description} ${request.url}',
     );
   }
 
@@ -390,11 +408,6 @@ class _BrowserTabViewState extends State<BrowserTabView> {
       'Failed to load ${request.url}: '
       'HTTP ${errorResponse.statusCode} '
       '${errorResponse.reasonPhrase}',
-    );
-    _setState(
-      state: BrowserTabStateType.error,
-      // TODO(knightforce): create error description
-      errorMessage: '${errorResponse.reasonPhrase} ${errorResponse.statusCode}',
     );
   }
 
