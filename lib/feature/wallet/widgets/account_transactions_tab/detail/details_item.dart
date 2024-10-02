@@ -88,7 +88,7 @@ class WalletTransactionDetailsItem extends StatelessWidget {
     this.valueWidget,
     this.onPressed,
     this.walletAsset,
-    this.tonIconPath,
+    this.iconPath,
     this.convertedValueWidget,
     super.key,
   });
@@ -101,7 +101,7 @@ class WalletTransactionDetailsItem extends StatelessWidget {
   final Widget? valueWidget;
   final VoidCallback? onPressed;
   final WalletPrepareTransferAsset? walletAsset;
-  final String? tonIconPath;
+  final String? iconPath;
   final Widget? convertedValueWidget;
 
   @override
@@ -115,27 +115,27 @@ class WalletTransactionDetailsItem extends StatelessWidget {
           crossAxisAlignment: CrossAxisAlignment.start,
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
           children: [
-            Flexible(
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
+            Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              mainAxisSize: MainAxisSize.min,
+              children: [
+                Text(
+                  title,
+                  style: theme.textStyles.labelSmall
+                      .copyWith(color: theme.colors.content3),
+                ),
+                const SizedBox(height: DimensSizeV2.d2),
+                if (subtitle != null)
                   Text(
-                    title,
-                    style: theme.textStyles.labelSmall
-                        .copyWith(color: theme.colors.content3),
+                    subtitle!,
+                    style: isSubtitleError
+                        ? theme.textStyles.labelXSmall
+                            .copyWith(color: theme.colors.contentNegative)
+                        : theme.textStyles.labelSmall,
                   ),
-                  const SizedBox(height: DimensSizeV2.d2),
-                  if (subtitle != null)
-                    Text(
-                      subtitle!,
-                      style: isSubtitleError
-                          ? theme.textStyles.labelXSmall
-                              .copyWith(color: theme.colors.contentNegative)
-                          : theme.textStyles.labelSmall,
-                    ),
-                ],
-              ),
+              ],
             ),
+            const SizedBox(width: DimensSizeV2.d8),
             if (icon != null)
               FloatButton(
                 buttonShape: ButtonShape.square,
@@ -143,45 +143,54 @@ class WalletTransactionDetailsItem extends StatelessWidget {
                 onPressed: onPressed,
               ),
             if (icon == null)
-              Column(
-                crossAxisAlignment: CrossAxisAlignment.end,
-                children: [
-                  Row(
-                    children: [
-                      if (walletAsset != null)
-                        Padding(
-                          padding:
-                              const EdgeInsets.only(right: DimensSizeV2.d8),
-                          child: TokenWalletIconWidget(
-                            size: DimensSizeV2.d20,
-                            address: walletAsset!.rootTokenContract,
-                            logoURI: walletAsset!.logoURI,
-                            version:
-                                walletAsset!.version ?? TokenWalletVersion.tip3,
+              Flexible(
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.end,
+                  mainAxisSize: MainAxisSize.min,
+                  children: [
+                    Row(
+                      mainAxisSize: MainAxisSize.min,
+                      children: [
+                        if (walletAsset != null)
+                          Padding(
+                            padding:
+                                const EdgeInsets.only(right: DimensSizeV2.d8),
+                            child: TokenWalletIconWidget(
+                              size: DimensSizeV2.d20,
+                              address: walletAsset!.rootTokenContract,
+                              logoURI: walletAsset!.logoURI,
+                              version: walletAsset!.version ??
+                                  TokenWalletVersion.tip3,
+                            ),
                           ),
-                        ),
-                      if (tonIconPath != null)
-                        Padding(
-                          padding:
-                              const EdgeInsets.only(right: DimensSizeV2.d8),
-                          child: TonWalletIconWidget(
-                            path: tonIconPath!,
-                            size: DimensSizeV2.d20,
+                        if (iconPath != null)
+                          Padding(
+                            padding:
+                                const EdgeInsets.only(right: DimensSizeV2.d8),
+                            child: TonWalletIconWidget(
+                              path: iconPath!,
+                              size: DimensSizeV2.d20,
+                            ),
                           ),
-                        ),
-                      if (value != null)
-                        Text(
-                          value!,
-                          style: theme.textStyles.labelSmall,
-                        ),
-                      if (valueWidget != null) valueWidget!,
+                        if (value != null)
+                          Flexible(
+                            child: Text(
+                              value!,
+                              style: theme.textStyles.labelSmall,
+                              overflow: TextOverflow.ellipsis,
+                              softWrap: false,
+                              maxLines: 1,
+                            ),
+                          ),
+                        if (valueWidget != null) valueWidget!,
+                      ],
+                    ),
+                    if (convertedValueWidget != null) ...[
+                      const SizedBox(height: DimensSizeV2.d4),
+                      convertedValueWidget!,
                     ],
-                  ),
-                  if (convertedValueWidget != null) ...[
-                    const SizedBox(height: DimensSizeV2.d4),
-                    convertedValueWidget!,
                   ],
-                ],
+                ),
               ),
           ],
         ),

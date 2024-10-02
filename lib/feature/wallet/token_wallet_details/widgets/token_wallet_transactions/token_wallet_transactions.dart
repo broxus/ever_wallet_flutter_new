@@ -96,6 +96,7 @@ class TokenWalletTransactionsWidget extends StatelessWidget {
                         currency,
                       ),
                       price: Fixed.parse(customCurrency?.price ?? '0'),
+                      rootTokenContract: rootTokenContract,
                     );
                   },
                 ),

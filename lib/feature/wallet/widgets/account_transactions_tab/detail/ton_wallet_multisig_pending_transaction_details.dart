@@ -101,6 +101,7 @@ class TonWalletMultisigPendingTransactionDetailsPage extends StatelessWidget {
               info: methodData?.$1,
               type: LocaleKeys.multisigWord.tr(),
               tonIconPath: tonIconPath,
+              tokenIconPath: tonIconPath,
               price: price,
             ),
             TonWalletTransactionCustodiansDetails(

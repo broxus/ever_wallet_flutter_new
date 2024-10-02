@@ -75,13 +75,11 @@ class TokenTransferInfoWidget
                   builder: (_, value) => value != null
                       ? Padding(
                           padding: const EdgeInsets.only(top: DimensSizeV2.d4),
-                          child: AmountWidget.fromMoney(
+                          child: AmountWidget.dollars(
                             amount: value,
                             style: theme.textStyles.labelXSmall.copyWith(
                               color: theme.colors.content3,
                             ),
-                            sign: '~ ',
-                            useDefaultFormat: true,
                           ),
                         )
                       : const SizedBox.shrink(),
@@ -112,13 +110,11 @@ class TokenTransferInfoWidget
                       ),
                     ),
                     if (attachedAmountPrice != null)
-                      AmountWidget.fromMoney(
+                      AmountWidget.dollars(
                         amount: attachedAmountPrice,
                         style: theme.textStyles.labelXSmall.copyWith(
                           color: theme.colors.content3,
                         ),
-                        sign: '~ ',
-                        useDefaultFormat: true,
                       ),
                   ],
                 ),
@@ -146,6 +142,7 @@ class TokenTransferInfoWidget
                       wm.nativeCurrency,
                     ),
                     sign: '~ ',
+                    useDefaultFormat: false,
                   ),
                   if (feeError != null)
                     Text(

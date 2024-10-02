@@ -593,5 +593,6 @@
     "0": "Account ",
     "1": " will be deleted due to storage fee debt."
   },
-  "txTreeSimulationErrorHint": "Please contact technical support."
+  "txTreeSimulationErrorHint": "Please contact technical support.",
+  "token": "Token"
 }

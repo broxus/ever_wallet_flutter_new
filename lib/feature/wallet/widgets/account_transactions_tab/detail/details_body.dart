@@ -27,6 +27,7 @@ class WalletTransactionDetailsDefaultBody extends StatelessWidget {
     this.comment,
     this.info,
     this.tonIconPath,
+    this.tokenIconPath,
     this.price,
     super.key,
   });
@@ -60,6 +61,7 @@ class WalletTransactionDetailsDefaultBody extends StatelessWidget {
   /// Type of transaction, that exists for TokenWallet
   final String? info;
   final String? tonIconPath;
+  final String? tokenIconPath;
   final Fixed? price;
 
   @override
@@ -78,22 +80,25 @@ class WalletTransactionDetailsDefaultBody extends StatelessWidget {
           value: type,
         ),
         WalletTransactionDetailsItem(
+          title: LocaleKeys.token.tr(),
+          value: value.currency.symbol,
+        ),
+        WalletTransactionDetailsItem(
           title: LocaleKeys.amountWord.tr(),
           valueWidget: AmountWidget.fromMoney(
             amount: value,
+            includeSymbol: false,
             sign: isIncoming
                 ? LocaleKeys.plusSign.tr()
                 : LocaleKeys.minusSign.tr(),
           ),
-          tonIconPath: tonIconPath,
+          iconPath: tokenIconPath,
           convertedValueWidget: price != null
-              ? AmountWidget.fromMoney(
+              ? AmountWidget.dollars(
                   amount: value.exchangeToUSD(price!),
                   style: theme.textStyles.labelXSmall.copyWith(
                     color: theme.colors.content3,
                   ),
-                  sign: '${LocaleKeys.approximatelySign.tr()} ',
-                  useDefaultFormat: true,
                 )
               : null,
         ),
@@ -101,9 +106,10 @@ class WalletTransactionDetailsDefaultBody extends StatelessWidget {
           title: LocaleKeys.networkFee.tr(),
           valueWidget: AmountWidget.fromMoney(
             amount: fee,
-            sign: '${LocaleKeys.approximatelySign.tr()} ',
+            useDefaultFormat: false,
+            includeSymbol: false,
           ),
-          tonIconPath: tonIconPath,
+          iconPath: tonIconPath,
         ),
         if (info != null)
           WalletTransactionDetailsItem(

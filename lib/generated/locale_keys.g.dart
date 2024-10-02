@@ -614,4 +614,5 @@ abstract class LocaleKeys {
       'txTreeSimulationErrorDeleted.1';
   static const txTreeSimulationErrorDeleted = 'txTreeSimulationErrorDeleted';
   static const txTreeSimulationErrorHint = 'txTreeSimulationErrorHint';
+  static const token = 'token';
 }

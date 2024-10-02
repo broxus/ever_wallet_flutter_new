@@ -60,6 +60,7 @@ class SendMessageWidget extends ElementaryWidget<SendMessageWidgetModel> {
                           style: theme.textStyles.labelXSmall.copyWith(
                             color: theme.colors.content3,
                           ),
+                          useDefaultFormat: false,
                         ),
                       ),
                     ),

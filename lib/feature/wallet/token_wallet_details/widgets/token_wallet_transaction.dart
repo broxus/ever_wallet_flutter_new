@@ -15,6 +15,7 @@ class TokenWalletTransactionWidget extends StatelessWidget {
     required this.displayDate,
     required this.transactionFee,
     required this.price,
+    required this.rootTokenContract,
     super.key,
   });
 
@@ -33,6 +34,7 @@ class TokenWalletTransactionWidget extends StatelessWidget {
   /// prev one.
   final bool displayDate;
   final Fixed price;
+  final Address rootTokenContract;
 
   @override
   Widget build(BuildContext context) {
@@ -46,6 +48,7 @@ class TokenWalletTransactionWidget extends StatelessWidget {
             transaction: transaction,
             tokenCurrency: transactionValue.currency,
             price: price,
+            rootTokenContract: rootTokenContract,
           ),
         ),
       ),
@@ -148,6 +151,7 @@ class TokenWalletTransactionWidget extends StatelessWidget {
                 children: [
                   AmountWidget.fromMoney(
                     amount: transactionValue,
+                    includeSymbol: false,
                     sign: isIncoming
                         ? LocaleKeys.plusSign.tr()
                         : LocaleKeys.minusSign.tr(),

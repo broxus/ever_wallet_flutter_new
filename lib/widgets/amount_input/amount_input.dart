@@ -55,7 +55,7 @@ class _AmountInputState extends State<AmountInput> {
   @override
   Widget build(BuildContext context) {
     final theme = context.themeStyleV2;
-    final balance = widget.selectedAsset?.balance.amount.toString() ?? '';
+    final balance = widget.selectedAsset?.balance.defaultFormat() ?? '';
 
     return Container(
       width: double.maxFinite,
@@ -142,7 +142,7 @@ class _AmountInputState extends State<AmountInput> {
 
     final value = (state.value.nullIf('') ?? '0').trim().replaceAll(',', '.');
     final amount = Fixed.tryParse(value) ?? Fixed.zero;
-    final usd = Fixed.copyWith(amount * price, scale: 2);
+    final usd = Money.fromFixed(amount * price, isoCode: 'USD');
 
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
@@ -170,8 +170,8 @@ class _AmountInputState extends State<AmountInput> {
           ),
         ),
         if (!state.hasError)
-          Text(
-            '$usd USD',
+          AmountWidget.dollars(
+            amount: usd,
             style: theme.textStyles.labelXSmall.copyWith(
               color: theme.colors.content3,
             ),

@@ -55,26 +55,26 @@ class WalletAssetWidget extends StatelessWidget {
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                Text(
-                  name,
-                  style: theme.textStyles.headingXSmall,
-                  overflow: TextOverflow.ellipsis,
-                  softWrap: false,
-                  maxLines: 1,
-                ),
                 if (tokenBalance == null)
                   ProgressIndicatorWidget(
-                    size: DimensSizeV2.d16,
+                    size: DimensSizeV2.d18,
                     color: theme.colors.content3,
                   )
                 else
                   AmountWidget.fromMoney(
                     amount: tokenBalance!,
-                    style: theme.textStyles.labelXSmall.copyWith(
-                      color: theme.colors.content3,
-                    ),
-                    useDefaultFormat: true,
+                    includeSymbol: false,
+                    style: theme.textStyles.labelSmall,
                   ),
+                Text(
+                  name,
+                  style: theme.textStyles.labelXSmall.copyWith(
+                    color: theme.colors.content3,
+                  ),
+                  overflow: TextOverflow.ellipsis,
+                  softWrap: false,
+                  maxLines: 1,
+                ),
               ],
             ),
           ),
