@@ -92,15 +92,13 @@ class CancelUnstakingPage extends StatelessWidget {
                     WalletTransactionDetailsItem(
                       title: LocaleKeys.unstakeAmount.tr(),
                       valueWidget: AmountWidget.fromMoney(amount: steverMoney),
-                      tonIconPath: Assets.images.stever.stever.path,
+                      iconPath: Assets.images.stever.stever.path,
                       convertedValueWidget: tokenPrice != null
-                          ? AmountWidget.fromMoney(
+                          ? AmountWidget.dollars(
                               amount: steverMoney.exchangeToUSD(tokenPrice!),
                               style: theme.textStyles.labelXSmall.copyWith(
                                 color: theme.colors.content3,
                               ),
-                              sign: '~ ',
-                              useDefaultFormat: true,
                             )
                           : null,
                     ),
@@ -113,7 +111,7 @@ class CancelUnstakingPage extends StatelessWidget {
                     WalletTransactionDetailsItem(
                       title: LocaleKeys.receiveWord.tr(),
                       valueWidget: AmountWidget.fromMoney(amount: everMoney),
-                      tonIconPath: Assets.images.stever.stever.path,
+                      iconPath: Assets.images.stever.stever.path,
                       convertedValueWidget: everPrice != null
                           ? AmountWidget.fromMoney(
                               amount: everMoney.exchangeToUSD(everPrice!),
@@ -121,7 +119,6 @@ class CancelUnstakingPage extends StatelessWidget {
                                 color: theme.colors.content3,
                               ),
                               sign: '~ ',
-                              useDefaultFormat: true,
                             )
                           : null,
                     ),

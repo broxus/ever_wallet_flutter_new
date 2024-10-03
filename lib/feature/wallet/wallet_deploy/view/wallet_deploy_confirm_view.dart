@@ -77,6 +77,7 @@ class WalletDeployConfirmView extends StatelessWidget {
                           .nativeTokenTicker]!,
                     ),
                     sign: '${LocaleKeys.approximatelySign.tr()} ',
+                    useDefaultFormat: false,
                   ),
                   subtitle: feeError,
                   isSubtitleError: true,

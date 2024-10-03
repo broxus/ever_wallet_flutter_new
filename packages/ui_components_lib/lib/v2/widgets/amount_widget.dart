@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:money2/money2.dart';
 import 'package:money2_fixer/money2_fixer.dart';
+import 'package:ui_components_lib/utils/utils.dart';
 import 'package:ui_components_lib/v2/ui_components_lib_v2.dart';
 
 class AmountWidget extends StatelessWidget {
@@ -20,18 +21,19 @@ class AmountWidget extends StatelessWidget {
     this.style,
     this.sign,
     this.mainAxisAlignment,
-    bool useDefaultFormat = false,
+    bool useDefaultFormat = true,
+    bool includeSymbol = true,
     super.key,
   })  : amount =
-            useDefaultFormat ? _defaultFormat(amount) : amount.formatImproved(),
-        symbol = amount.currency.symbol;
+            useDefaultFormat ? amount.defaultFormat() : amount.formatImproved(),
+        symbol = includeSymbol ? amount.currency.symbol : null;
 
   AmountWidget.dollars({
     required Money amount,
     this.style,
     this.mainAxisAlignment,
     super.key,
-  })  : amount = _defaultFormat(amount),
+  })  : amount = amount.defaultFormat(),
         sign = r'$',
         symbol = null,
         icon = null;
@@ -68,28 +70,4 @@ class AmountWidget extends StatelessWidget {
       ],
     );
   }
-}
-
-String _moneyPattern(int decimal) => '0.${'#' * decimal}';
-
-String _defaultFormat(Money value) {
-  final d = value.toDouble();
-
-  if (value.currency.isoCode == 'USD') {
-    if (d < 0.001) {
-      return value.formatImproved(pattern: _moneyPattern(4));
-    } else if (d < 0.01) {
-      return value.formatImproved(pattern: _moneyPattern(3));
-    }
-
-    return value.formatImproved(pattern: _moneyPattern(2));
-  }
-
-  if (d < 1) {
-    return value.formatImproved(pattern: _moneyPattern(8));
-  } else if (d < 1000) {
-    return value.formatImproved(pattern: _moneyPattern(4));
-  }
-
-  return value.formatImproved(pattern: _moneyPattern(0));
 }
