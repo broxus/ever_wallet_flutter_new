@@ -61,8 +61,6 @@ class TokenWalletDetailsCubit extends Cubit<TokenWalletDetailsState> {
           );
         } else {
           final wallet = walletState.wallet!;
-          final local = nekotonRepository.getLocalCustodians(owner);
-          _canSend = local != null && local.isNotEmpty;
 
           _thisWalletSubscription = wallet.fieldUpdatesStream.listen((_) {
             _cachedTokenBalance = wallet.moneyBalance;
@@ -79,6 +77,8 @@ class TokenWalletDetailsCubit extends Cubit<TokenWalletDetailsState> {
 
             _updateState();
           });
+
+          _checkLocalCustodians();
         }
       }
     });
@@ -128,5 +128,11 @@ class TokenWalletDetailsCubit extends Cubit<TokenWalletDetailsState> {
         canSend: _canSend,
       ),
     );
+  }
+
+  Future<void> _checkLocalCustodians() async {
+    final local = await nekotonRepository.getLocalCustodians(owner);
+    _canSend = local != null && local.isNotEmpty;
+    _updateState();
   }
 }
