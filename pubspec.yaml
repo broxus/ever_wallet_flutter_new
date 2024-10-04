@@ -53,7 +53,7 @@ dependencies:
   mobile_scanner: 3.4.1
   money2: 5.2.1
   money2_fixer: 2.0.0
-  nekoton_repository: 0.37.0-dev.1
+  nekoton_repository: 0.37.0-dev.3
 #  nekoton_webview: 0.1.8-dev.0
   nekoton_webview:
     git:

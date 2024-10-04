@@ -147,7 +147,7 @@ class StakingBloc extends Bloc<StakingBlocEvent, StakingBlocState> {
       final pair = (accountAddress, staking.stakingRootContractAddress);
       final transport = nekotonRepository.currentTransport;
 
-      final ever = nekotonRepository.getWallet(accountAddress);
+      final ever = await nekotonRepository.getWallet(accountAddress);
       if (ever.hasError) {
         emit(StakingBlocState.subscribeError(ever.error!));
 
@@ -162,7 +162,7 @@ class StakingBloc extends Bloc<StakingBlocEvent, StakingBlocState> {
         );
       }
 
-      final stever = nekotonRepository.getTokenWallet(pair.$1, pair.$2);
+      final stever = await nekotonRepository.getTokenWallet(pair.$1, pair.$2);
       if (stever.hasError) {
         emit(StakingBlocState.subscribeError(stever.error!));
 
