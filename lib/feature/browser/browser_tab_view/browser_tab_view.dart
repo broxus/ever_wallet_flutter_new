@@ -148,12 +148,10 @@ class _BrowserTabViewState extends State<BrowserTabView> {
           );
     }
 
-    final _initialSettings = InAppWebViewSettings(
+    final initialSettings = InAppWebViewSettings(
       clearCache: clearCache,
       applicationNameForUserAgent: 'EverWalletBrowser',
       useShouldOverrideUrlLoading: true,
-      // thirdPartyCookiesEnabled: false,
-      // sharedCookiesEnabled: true,
     );
 
     return BlocProvider<BrowserViewEventsListenerCubit>(
@@ -177,7 +175,7 @@ class _BrowserTabViewState extends State<BrowserTabView> {
                   return InAppWebView(
                     key: ValueKey(widget.tab.id),
                     pullToRefreshController: _pullToRefreshController,
-                    initialSettings: _initialSettings,
+                    initialSettings: initialSettings,
                     initialUserScripts: UnmodifiableListView<UserScript>([
                       if (jsStr != null)
                         UserScript(
