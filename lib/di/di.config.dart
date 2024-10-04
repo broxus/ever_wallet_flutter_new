@@ -16,33 +16,33 @@ import 'package:injectable/injectable.dart' as _i2;
 import 'package:nekoton_repository/nekoton_repository.dart' as _i33;
 import 'package:nekoton_repository/nekoton_repository.module.dart' as _i5;
 
-import '../app/service/app_lifecycle_service.dart' as _i12;
-import '../app/service/app_permissions_service.dart' as _i13;
+import '../app/service/app_lifecycle_service.dart' as _i13;
+import '../app/service/app_permissions_service.dart' as _i14;
 import '../app/service/app_version_service.dart' as _i8;
-import '../app/service/approvals_service.dart' as _i19;
+import '../app/service/approvals_service.dart' as _i20;
 import '../app/service/assets_service.dart' as _i34;
 import '../app/service/balance_service.dart' as _i48;
 import '../app/service/biometry_service.dart' as _i43;
 import '../app/service/bootstrap_service.dart' as _i9;
 import '../app/service/currencies_service.dart' as _i47;
-import '../app/service/currency_convert_service.dart' as _i16;
+import '../app/service/currency_convert_service.dart' as _i17;
 import '../app/service/current_accounts_service.dart' as _i46;
 import '../app/service/current_seed_service.dart' as _i44;
 import '../app/service/identify/i_identify_icons_service.dart' as _i40;
 import '../app/service/identify/identify_icons_service.dart' as _i41;
-import '../app/service/js_servcie.dart' as _i20;
-import '../app/service/localization/service/localization_service.dart' as _i14;
-import '../app/service/messenger/service/messenger_service.dart' as _i11;
-import '../app/service/navigation/service/navigation_service.dart' as _i10;
+import '../app/service/js_servcie.dart' as _i10;
+import '../app/service/localization/service/localization_service.dart' as _i15;
+import '../app/service/messenger/service/messenger_service.dart' as _i12;
+import '../app/service/navigation/service/navigation_service.dart' as _i11;
 import '../app/service/nekoton_related/connection_service/connection_service.dart'
     as _i31;
 import '../app/service/nekoton_related/current_key_service.dart' as _i39;
 import '../app/service/network_connection/network_connection_service.dart'
-    as _i15;
+    as _i16;
 import '../app/service/ntp_service.dart' as _i37;
 import '../app/service/permissions_service.dart' as _i35;
-import '../app/service/remote/dns_resolve_service.dart' as _i18;
-import '../app/service/remote/http_service.dart' as _i17;
+import '../app/service/remote/dns_resolve_service.dart' as _i19;
+import '../app/service/remote/http_service.dart' as _i18;
 import '../app/service/secure_storage_service.dart' as _i21;
 import '../app/service/service.dart' as _i32;
 import '../app/service/staking_service.dart' as _i36;
@@ -89,21 +89,21 @@ extension GetItInjectableX on _i1.GetIt {
         () => _i7.TonWalletStorageService());
     gh.singleton<_i8.AppVersionService>(() => _i8.AppVersionService());
     gh.singleton<_i9.BootstrapService>(() => _i9.BootstrapService());
-    gh.singleton<_i10.NavigationService>(() => _i10.NavigationService());
-    gh.singleton<_i11.MessengerService>(() => _i11.MessengerService());
-    gh.singleton<_i12.AppLifecycleService>(() => _i12.AppLifecycleService());
-    gh.singleton<_i13.AppPermissionsService>(
-        () => _i13.AppPermissionsService());
-    gh.singleton<_i14.LocalizationService>(() => _i14.LocalizationService());
-    gh.singleton<_i15.NetworkConnectionService>(
-        () => _i15.NetworkConnectionService());
-    gh.singleton<_i16.CurrencyConvertService>(
-        () => _i16.CurrencyConvertService());
-    gh.singleton<_i17.HttpService>(() => _i17.HttpService());
-    gh.singleton<_i18.DnsResolveService>(() => _i18.DnsResolveService());
-    gh.singleton<_i19.BrowserApprovalsService>(
-        () => _i19.BrowserApprovalsService());
-    gh.singleton<_i20.JsService>(() => _i20.JsService());
+    gh.singleton<_i10.JsService>(() => _i10.JsService());
+    gh.singleton<_i11.NavigationService>(() => _i11.NavigationService());
+    gh.singleton<_i12.MessengerService>(() => _i12.MessengerService());
+    gh.singleton<_i13.AppLifecycleService>(() => _i13.AppLifecycleService());
+    gh.singleton<_i14.AppPermissionsService>(
+        () => _i14.AppPermissionsService());
+    gh.singleton<_i15.LocalizationService>(() => _i15.LocalizationService());
+    gh.singleton<_i16.NetworkConnectionService>(
+        () => _i16.NetworkConnectionService());
+    gh.singleton<_i17.CurrencyConvertService>(
+        () => _i17.CurrencyConvertService());
+    gh.singleton<_i18.HttpService>(() => _i18.HttpService());
+    gh.singleton<_i19.DnsResolveService>(() => _i19.DnsResolveService());
+    gh.singleton<_i20.BrowserApprovalsService>(
+        () => _i20.BrowserApprovalsService());
     gh.lazySingleton<_i21.SecureStorageService>(
         () => _i21.SecureStorageService());
     gh.singleton<_i22.BrowserPermissionsStorageService>(() =>
