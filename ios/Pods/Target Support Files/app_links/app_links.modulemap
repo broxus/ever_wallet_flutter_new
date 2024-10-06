@@ -1,0 +1,6 @@
+framework module app_links {
+  umbrella header "app_links-umbrella.h"
+
+  export *
+  module * { export * }
+}
