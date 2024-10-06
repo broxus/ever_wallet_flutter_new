@@ -1,9 +1,14 @@
 // ignore_for_file: lines_longer_than_80_chars
 
+import 'dart:async';
+
 import 'package:app/app/router/page_transitions.dart';
 import 'package:app/app/router/router.dart';
 import 'package:app/app/router/routs/network/network.dart';
 import 'package:app/app/service/service.dart';
+import 'package:app/di/di.dart';
+import 'package:app/event_bus/events/app_links/app_links_event.dart';
+import 'package:app/event_bus/primary_bus.dart';
 import 'package:app/feature/error/error.dart';
 import 'package:app/feature/onboarding/screen/welcome/welcome_screen.dart';
 import 'package:app/feature/root/root.dart';
@@ -31,6 +36,9 @@ class AppRouter {
     // This happends when user was sent to bootstrap failed screen to make some
     // action and then bootstrap process was completed.
     _bootstrapService.bootstrapStepStream.listen(_listenBootstrapStep);
+
+    _appLinksNavSubs =
+        primaryBus.on<AppLinksUriEvent>().listen(_listenAppLinks);
   }
 
   // Create a new router
@@ -52,6 +60,8 @@ class AppRouter {
   // Saved subroutes for each root app route
   final _savedSubroutes = <AppRoute, String>{};
 
+  StreamSubscription<AppLinksUriEvent>? _appLinksNavSubs;
+
   bool get _isConfigured => _bootstrapService.isConfigured;
 
   String get _currentPath =>
@@ -60,6 +70,10 @@ class AppRouter {
   String get _savedLocation => _navigationService.state.location;
 
   bool get _isExistSavedLocation => _savedLocation.isNotEmpty;
+
+  void dispose() {
+    _appLinksNavSubs?.cancel();
+  }
 
   GoRouter _createRouter() {
     return GoRouter(
@@ -202,6 +216,24 @@ class AppRouter {
     }
   }
 
+  void _listenAppLinks(AppLinksUriEvent event) {
+    final path = _mapAppLinksEventToPath(event);
+
+    switch (event.strategy) {
+      case Strategy.replace:
+        router.go(path);
+        return;
+      case Strategy.push:
+        router.goFurther(path);
+        return;
+    }
+  }
+
+  String _mapAppLinksEventToPath(AppLinksUriEvent event) {
+    // TODO(knightforce): handle link
+    throw UnimplementedError();
+  }
+
   // Redirect to onboarding or wallet depending on the current location and if
   // the user has any seeds.
   String? _shouldRedirect({
@@ -271,5 +303,124 @@ class AppRouter {
 
     // Save last root app route
     _lastRootAppRoute = rootAppRoute;
+  }
+}
+
+extension RouterExtension on GoRouter {
+  static final _navigationService = inject<NavigationService>();
+
+  void goFurther(
+    String location, {
+    bool preserveQueryParams = false,
+    Object? extra,
+  }) {
+    return go(
+      Uri.decodeComponent(
+        _getUriLocation(
+          location,
+          preserveQueryParams: preserveQueryParams,
+        ).toString(),
+      ),
+      extra: extra,
+    );
+  }
+
+  Future<T?> pushFurther<T>(
+    String location, {
+    bool preserveQueryParams = false,
+    Object? extra,
+  }) async {
+    return push<T>(
+      Uri.decodeComponent(
+        _getUriLocation(
+          location,
+          preserveQueryParams: preserveQueryParams,
+        ).toString(),
+      ),
+      extra: extra,
+    );
+  }
+
+  /// Navigate to current location, but without query parameters.
+  void clearQueryParams() {
+    final currentLocation = inject<NavigationService>().state.location;
+    final resultLocation = Uri.parse(currentLocation).replace(
+      queryParameters: {},
+    );
+
+    return go(
+      Uri.decodeComponent(resultLocation.toString()),
+    );
+  }
+
+  /// Pop current screen if possible.
+  void maybePop({
+    bool preserveQueryParams = true,
+    List<String>? removeQueries,
+  }) {
+    if (!preserveQueryParams) {
+      clearQueryParams();
+    } else if (removeQueries != null) {
+      _removeQueryParams(removeQueries);
+    }
+
+    if (canPop()) {
+      pop();
+    }
+  }
+
+  void clearQueryParamsAndPop<T extends Object?>([T? result]) {
+    clearQueryParams();
+
+    pop<T>(result);
+  }
+
+  void _removeQueryParams(
+    List<String> removeQueries,
+  ) {
+    final uri = Uri.parse(_navigationService.state.location);
+
+    final queryParameters = {...uri.queryParameters};
+
+    for (final param in removeQueries) {
+      queryParameters.remove(param);
+    }
+
+    final resultLocation = uri.replace(
+      queryParameters: queryParameters,
+    );
+
+    return go(
+      Uri.decodeComponent(resultLocation.toString()),
+    );
+  }
+
+  Uri _getUriLocation(
+    String path, {
+    bool preserveQueryParams = false,
+  }) {
+    final location = Uri.parse(inject<NavigationService>().state.location);
+    final pathUri = Uri.parse(path);
+    late Uri resultLocation;
+    // We have query params in old path that we should preserve, so we must
+    // update it manually
+    if (location.hasQuery && preserveQueryParams) {
+      final query = <String, dynamic>{}
+        ..addAll(location.queryParameters)
+        ..addAll(pathUri.queryParameters);
+
+      resultLocation = location.replace(
+        path: '${location.path}/${pathUri.path}',
+        queryParameters: query,
+      );
+    } else {
+      // old location do not have query, new one may have it, we dont care
+      resultLocation = location.replace(
+        path: '${location.path}/${pathUri.path}',
+        queryParameters: pathUri.queryParameters,
+      );
+    }
+
+    return resultLocation;
   }
 }
