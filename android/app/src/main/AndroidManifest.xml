@@ -28,7 +28,7 @@
                 <category android:name="android.intent.category.BROWSABLE" />
 
                 <data
-                    android:host="www.sparxwallet.com"
+                    android:host="l.sparxwallet.com"
                     android:scheme="https" />
             </intent-filter>
             <intent-filter>
