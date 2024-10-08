@@ -8,6 +8,7 @@ import 'package:app/feature/browser/browser.dart';
 import 'package:app/feature/browser/browser_tab_view/browser_error_view.dart';
 import 'package:app/feature/browser/browser_tab_view/browser_view_events_listener/browser_view_events_listener_cubit.dart';
 import 'package:elementary_helper/elementary_helper.dart';
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_inappwebview/flutter_inappwebview.dart';
@@ -152,6 +153,7 @@ class _BrowserTabViewState extends State<BrowserTabView> {
       clearCache: clearCache,
       applicationNameForUserAgent: 'EverWalletBrowser',
       useShouldOverrideUrlLoading: true,
+      isInspectable: kDebugMode,
     );
 
     return BlocProvider<BrowserViewEventsListenerCubit>(
