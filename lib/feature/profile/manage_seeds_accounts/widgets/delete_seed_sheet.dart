@@ -59,26 +59,24 @@ class DeleteSeedSheet extends StatelessWidget {
                       ),
                     ],
                   ),
-                  if (seed.subKeys.isNotEmpty) const CommonDivider(),
-                  if (seed.subKeys.isNotEmpty)
-                    _sectionItem(
-                      LocaleKeys.keysWord.tr(),
-                      seed.subKeys
-                          .map(
-                            (key) => CommonListTile(
-                              leading: CommonBackgroundedIconWidget.svg(
-                                svg: Assets.images.key.path,
-                              ),
-                              titleText: key.name,
-                              subtitleText: LocaleKeys.accountsWithData.plural(
-                                key.accountList.allAccounts.length,
-                                args: ['${key.accountList.allAccounts.length}'],
-                              ),
-                              padding: EdgeInsets.zero,
+                  _sectionItem(
+                    LocaleKeys.keysWord.tr(),
+                    [seed.masterKey, ...seed.subKeys]
+                        .map(
+                          (key) => CommonListTile(
+                            leading: CommonBackgroundedIconWidget.svg(
+                              svg: Assets.images.key.path,
                             ),
-                          )
-                          .toList(),
-                    ),
+                            titleText: key.name,
+                            subtitleText: LocaleKeys.accountsWithData.plural(
+                              key.accountList.allAccounts.length,
+                              args: ['${key.accountList.allAccounts.length}'],
+                            ),
+                            padding: EdgeInsets.zero,
+                          ),
+                        )
+                        .toList(),
+                  ),
                 ],
               ),
             ),
