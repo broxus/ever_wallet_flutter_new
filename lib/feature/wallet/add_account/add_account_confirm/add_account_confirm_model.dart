@@ -11,11 +11,15 @@ class AddAccountConfirmModel extends ElementaryModel {
     this._biometryService,
     this._messengerService,
     this._nekotonRepository,
+    this._currentAccountsService,
   ) : super(errorHandler: errorHandler);
 
   final BiometryService _biometryService;
   final MessengerService _messengerService;
   final NekotonRepository _nekotonRepository;
+  final CurrentAccountsService _currentAccountsService;
+
+  KeyAccount? get account => _currentAccountsService.currentActiveAccount;
 
   Future<List<BiometricType>> getAvailableBiometry(PublicKey publicKey) async {
     final seed = _nekotonRepository.seedList.findSeedByAnyPublicKey(publicKey);
