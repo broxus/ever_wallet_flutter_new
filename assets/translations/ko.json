@@ -143,6 +143,7 @@
   "networkTypeJRPC": "JRPC",
   "networkTypeGraphQL": "GraphQL",
   "networkTypeProto": "Proto",
+  "networkId": "Network id",
   "networkName": "Network name",
   "networkNameHint": "Enter network name",
   "networkEndpoint": {
@@ -594,5 +595,7 @@
     "1": " will be deleted due to storage fee debt."
   },
   "txTreeSimulationErrorHint": "Please contact technical support.",
-  "token": "Token"
+  "token": "Token",
+  "changeNetwork": "Change network",
+  "addNetwork": "Add network"
 }

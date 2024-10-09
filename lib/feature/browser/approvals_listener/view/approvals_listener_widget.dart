@@ -158,6 +158,19 @@ class _ApprovalsListenerWidgetState extends State<ApprovalsListenerWidget> {
           knownPayload: knownPayload,
           completer: completer,
         ),
+        changeNetwork: (
+          origin,
+          networkId,
+          connections,
+          completer,
+        ) =>
+            changeNetwork(
+          context: context,
+          origin: origin,
+          networkId: networkId,
+          connections: connections,
+          completer: completer,
+        ),
       ),
     );
     super.initState();
@@ -411,6 +424,27 @@ class _ApprovalsListenerWidgetState extends State<ApprovalsListenerWidget> {
       } else {
         throw ApprovalsHandleException(LocaleKeys.noPassword.tr());
       }
+    } catch (err, st) {
+      completer.completeError(err, st);
+    }
+  }
+
+  Future<void> changeNetwork({
+    required BuildContext context,
+    required Uri origin,
+    required int networkId,
+    required List<ConnectionData> connections,
+    required Completer<TransportStrategy?> completer,
+  }) async {
+    try {
+      final result = await showChangeNetworkSheet(
+        context: context,
+        origin: origin,
+        networkId: networkId,
+        connections: connections,
+      );
+
+      completer.complete(result);
     } catch (err, st) {
       completer.completeError(err, st);
     }

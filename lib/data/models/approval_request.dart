@@ -71,4 +71,11 @@ class ApprovalRequest with _$ApprovalRequest {
     required KnownPayload? knownPayload,
     required Completer<(PublicKey, String)> completer,
   }) = _SendMessage;
+
+  const factory ApprovalRequest.changeNetwork({
+    required Uri origin,
+    required int networkId,
+    required List<ConnectionData> connections,
+    required Completer<TransportStrategy?> completer,
+  }) = _ChangeNetwork;
 }

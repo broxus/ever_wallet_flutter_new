@@ -226,4 +226,26 @@ class BrowserApprovalsService {
 
     return completer.future;
   }
+
+  /// Ask user's confirmation to change active network.
+  /// Returns activated [TransportStrategy] or null.
+  /// Typically, exception must be [ApprovalsHandleException] or [FfiException]
+  Future<TransportStrategy?> changeNetwork({
+    required Uri origin,
+    required int networkId,
+    required List<ConnectionData> connections,
+  }) async {
+    final completer = Completer<TransportStrategy?>();
+
+    final request = ApprovalRequest.changeNetwork(
+      origin: origin,
+      networkId: networkId,
+      connections: connections,
+      completer: completer,
+    );
+
+    _approvalsSubject.add(request);
+
+    return completer.future;
+  }
 }
