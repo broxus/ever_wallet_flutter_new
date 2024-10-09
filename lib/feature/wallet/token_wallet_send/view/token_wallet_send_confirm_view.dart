@@ -1,6 +1,7 @@
 import 'package:app/feature/profile/profile.dart';
 import 'package:app/feature/wallet/wallet.dart';
 import 'package:app/generated/generated.dart';
+import 'package:app/widgets/widgets.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:nekoton_repository/nekoton_repository.dart';
@@ -16,6 +17,7 @@ class TokenWalletSendConfirmView extends StatelessWidget {
     this.fee,
     this.feeError,
     this.attachedAmount,
+    this.txErrors,
     super.key,
   });
 
@@ -26,6 +28,7 @@ class TokenWalletSendConfirmView extends StatelessWidget {
   final String? comment;
   final String? feeError;
   final PublicKey publicKey;
+  final List<TxTreeSimulationErrorItem>? txErrors;
 
   @override
   Widget build(BuildContext context) {
@@ -35,6 +38,7 @@ class TokenWalletSendConfirmView extends StatelessWidget {
       amount,
       bloc.tokenCurrency,
     );
+    final hasTxError = txErrors?.isNotEmpty ?? false;
 
     return SeparatedColumn(
       crossAxisAlignment: CrossAxisAlignment.start,
@@ -59,12 +63,15 @@ class TokenWalletSendConfirmView extends StatelessWidget {
             ),
           ),
         ),
-        EnterPasswordWidgetV2(
-          publicKey: publicKey,
-          title: LocaleKeys.confirm.tr(),
-          isLoading: isLoading,
-          onPasswordEntered: (pwd) => bloc.add(TokenWalletSendEvent.send(pwd)),
-        ),
+        if (hasTxError) TxTreeSimulationErrorWidget(txErrors: txErrors!),
+        if (!hasTxError)
+          EnterPasswordWidgetV2(
+            publicKey: publicKey,
+            title: LocaleKeys.confirm.tr(),
+            isLoading: isLoading,
+            onPasswordEntered: (pwd) =>
+                bloc.add(TokenWalletSendEvent.send(pwd)),
+          ),
         const SizedBox(height: DimensSize.d16),
       ],
     );

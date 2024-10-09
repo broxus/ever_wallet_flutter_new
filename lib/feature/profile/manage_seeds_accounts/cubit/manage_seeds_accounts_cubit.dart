@@ -48,7 +48,6 @@ class ManageSeedsAccountsCubit extends Cubit<ManageSeedsAccountsState> {
     _currentSeedSubscription =
         currentSeedService.currentSeedStream.skip(1).listen(
       (currentSeed) {
-        currentAccountsService.updateCurrentActiveAccount(0);
         emit(
           ManageSeedsAccountsState.data(
             currentSeed: currentSeed,
@@ -63,12 +62,13 @@ class ManageSeedsAccountsCubit extends Cubit<ManageSeedsAccountsState> {
         list.sort((a, b) => a.addedAt.compareTo(b.addedAt));
         if (list.first.addedAt != 0) {
           if (list.last.masterKey.accountList.allAccounts.isNotEmpty) {
-            final address = list
-                .last.masterKey.accountList.allAccounts.last.address.address;
-            storageService.addValue(
-              address + StorageConstants.showingManualBackupBadge,
-              list.last.addType == SeedAddType.create,
-            );
+            for (final account in list.last.masterKey.accountList.allAccounts) {
+              storageService.addValue(
+                account.address.address +
+                    StorageConstants.showingManualBackupBadge,
+                list.last.addType == SeedAddType.create,
+              );
+            }
           }
           emit(
             ManageSeedsAccountsState.data(

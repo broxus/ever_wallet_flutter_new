@@ -1,4 +1,3 @@
-import 'package:app/app/service/nekoton_related/connection_service/transport_strategies/utils.dart';
 import 'package:app/data/models/models.dart';
 import 'package:app/generated/generated.dart';
 import 'package:nekoton_repository/nekoton_repository.dart';
@@ -40,8 +39,21 @@ class EverTransportStrategy extends TransportStrategy {
       'https://api.flatqube.io/v1/currencies/$currencyAddress';
 
   @override
-  String defaultAccountName(WalletType walletType) =>
-      getDefaultAccountName(walletType);
+  String defaultAccountName(WalletType walletType) => walletType.when(
+        multisig: (type) => switch (type) {
+          MultisigType.safeMultisigWallet => 'SafeMultisig',
+          MultisigType.safeMultisigWallet24h => 'SafeMultisig24h',
+          MultisigType.setcodeMultisigWallet => 'SetcodeMultisig',
+          MultisigType.setcodeMultisigWallet24h => 'SetcodeMultisig24h',
+          MultisigType.bridgeMultisigWallet => 'BridgeMultisig',
+          MultisigType.surfWallet => 'Surf wallet',
+          MultisigType.multisig2 => 'Multisig',
+          MultisigType.multisig2_1 => 'Multisig 2.1',
+        },
+        walletV3: () => 'WalletV3',
+        highloadWalletV2: () => 'HighloadWalletV2',
+        everWallet: () => 'EVER Wallet',
+      );
 
   @override
   final defaultWalletType = const WalletType.everWallet();
@@ -90,8 +102,10 @@ class EverTransportStrategy extends TransportStrategy {
       address:
           '0:6d42d0bc4a6568120ea88bf642edb653d727cfbd35868c47877532de128e71f2',
     ),
-    stakeDepositAttachedFee: BigInt.parse('2000000000'), // 2 EVER
-    stakeRemovePendingWithdrawAttachedFee: BigInt.parse('2000000000'), // 2 EVER
+    stakeDepositAttachedFee: BigInt.parse('2000000000'),
+    // 2 EVER
+    stakeRemovePendingWithdrawAttachedFee: BigInt.parse('2000000000'),
+    // 2 EVER
     stakeWithdrawAttachedFee: BigInt.parse('3000000000'), // 3 EVER
   );
 }

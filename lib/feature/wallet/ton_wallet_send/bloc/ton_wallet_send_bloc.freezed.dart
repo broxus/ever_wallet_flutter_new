@@ -648,7 +648,9 @@ mixin _$TonWalletSendState {
     required TResult Function() loading,
     required TResult Function(String error, BigInt? fee) calculatingError,
     required TResult Function(Object error) subscribeError,
-    required TResult Function(BigInt fee) readyToSend,
+    required TResult Function(
+            BigInt fee, List<TxTreeSimulationErrorItem>? txErrors)
+        readyToSend,
     required TResult Function(bool canClose) sending,
     required TResult Function(BigInt fee, Transaction transaction) sent,
   }) =>
@@ -658,7 +660,8 @@ mixin _$TonWalletSendState {
     TResult? Function()? loading,
     TResult? Function(String error, BigInt? fee)? calculatingError,
     TResult? Function(Object error)? subscribeError,
-    TResult? Function(BigInt fee)? readyToSend,
+    TResult? Function(BigInt fee, List<TxTreeSimulationErrorItem>? txErrors)?
+        readyToSend,
     TResult? Function(bool canClose)? sending,
     TResult? Function(BigInt fee, Transaction transaction)? sent,
   }) =>
@@ -668,7 +671,8 @@ mixin _$TonWalletSendState {
     TResult Function()? loading,
     TResult Function(String error, BigInt? fee)? calculatingError,
     TResult Function(Object error)? subscribeError,
-    TResult Function(BigInt fee)? readyToSend,
+    TResult Function(BigInt fee, List<TxTreeSimulationErrorItem>? txErrors)?
+        readyToSend,
     TResult Function(bool canClose)? sending,
     TResult Function(BigInt fee, Transaction transaction)? sent,
     required TResult orElse(),
@@ -772,7 +776,9 @@ class _$LoadingImpl implements _Loading {
     required TResult Function() loading,
     required TResult Function(String error, BigInt? fee) calculatingError,
     required TResult Function(Object error) subscribeError,
-    required TResult Function(BigInt fee) readyToSend,
+    required TResult Function(
+            BigInt fee, List<TxTreeSimulationErrorItem>? txErrors)
+        readyToSend,
     required TResult Function(bool canClose) sending,
     required TResult Function(BigInt fee, Transaction transaction) sent,
   }) {
@@ -785,7 +791,8 @@ class _$LoadingImpl implements _Loading {
     TResult? Function()? loading,
     TResult? Function(String error, BigInt? fee)? calculatingError,
     TResult? Function(Object error)? subscribeError,
-    TResult? Function(BigInt fee)? readyToSend,
+    TResult? Function(BigInt fee, List<TxTreeSimulationErrorItem>? txErrors)?
+        readyToSend,
     TResult? Function(bool canClose)? sending,
     TResult? Function(BigInt fee, Transaction transaction)? sent,
   }) {
@@ -798,7 +805,8 @@ class _$LoadingImpl implements _Loading {
     TResult Function()? loading,
     TResult Function(String error, BigInt? fee)? calculatingError,
     TResult Function(Object error)? subscribeError,
-    TResult Function(BigInt fee)? readyToSend,
+    TResult Function(BigInt fee, List<TxTreeSimulationErrorItem>? txErrors)?
+        readyToSend,
     TResult Function(bool canClose)? sending,
     TResult Function(BigInt fee, Transaction transaction)? sent,
     required TResult orElse(),
@@ -937,7 +945,9 @@ class _$CalculatingErrorImpl implements _CalculatingError {
     required TResult Function() loading,
     required TResult Function(String error, BigInt? fee) calculatingError,
     required TResult Function(Object error) subscribeError,
-    required TResult Function(BigInt fee) readyToSend,
+    required TResult Function(
+            BigInt fee, List<TxTreeSimulationErrorItem>? txErrors)
+        readyToSend,
     required TResult Function(bool canClose) sending,
     required TResult Function(BigInt fee, Transaction transaction) sent,
   }) {
@@ -950,7 +960,8 @@ class _$CalculatingErrorImpl implements _CalculatingError {
     TResult? Function()? loading,
     TResult? Function(String error, BigInt? fee)? calculatingError,
     TResult? Function(Object error)? subscribeError,
-    TResult? Function(BigInt fee)? readyToSend,
+    TResult? Function(BigInt fee, List<TxTreeSimulationErrorItem>? txErrors)?
+        readyToSend,
     TResult? Function(bool canClose)? sending,
     TResult? Function(BigInt fee, Transaction transaction)? sent,
   }) {
@@ -963,7 +974,8 @@ class _$CalculatingErrorImpl implements _CalculatingError {
     TResult Function()? loading,
     TResult Function(String error, BigInt? fee)? calculatingError,
     TResult Function(Object error)? subscribeError,
-    TResult Function(BigInt fee)? readyToSend,
+    TResult Function(BigInt fee, List<TxTreeSimulationErrorItem>? txErrors)?
+        readyToSend,
     TResult Function(bool canClose)? sending,
     TResult Function(BigInt fee, Transaction transaction)? sent,
     required TResult orElse(),
@@ -1102,7 +1114,9 @@ class _$SubscribeErrorImpl implements _SubscribeError {
     required TResult Function() loading,
     required TResult Function(String error, BigInt? fee) calculatingError,
     required TResult Function(Object error) subscribeError,
-    required TResult Function(BigInt fee) readyToSend,
+    required TResult Function(
+            BigInt fee, List<TxTreeSimulationErrorItem>? txErrors)
+        readyToSend,
     required TResult Function(bool canClose) sending,
     required TResult Function(BigInt fee, Transaction transaction) sent,
   }) {
@@ -1115,7 +1129,8 @@ class _$SubscribeErrorImpl implements _SubscribeError {
     TResult? Function()? loading,
     TResult? Function(String error, BigInt? fee)? calculatingError,
     TResult? Function(Object error)? subscribeError,
-    TResult? Function(BigInt fee)? readyToSend,
+    TResult? Function(BigInt fee, List<TxTreeSimulationErrorItem>? txErrors)?
+        readyToSend,
     TResult? Function(bool canClose)? sending,
     TResult? Function(BigInt fee, Transaction transaction)? sent,
   }) {
@@ -1128,7 +1143,8 @@ class _$SubscribeErrorImpl implements _SubscribeError {
     TResult Function()? loading,
     TResult Function(String error, BigInt? fee)? calculatingError,
     TResult Function(Object error)? subscribeError,
-    TResult Function(BigInt fee)? readyToSend,
+    TResult Function(BigInt fee, List<TxTreeSimulationErrorItem>? txErrors)?
+        readyToSend,
     TResult Function(bool canClose)? sending,
     TResult Function(BigInt fee, Transaction transaction)? sent,
     required TResult orElse(),
@@ -1201,7 +1217,7 @@ abstract class _$$ReadyImplCopyWith<$Res> {
           _$ReadyImpl value, $Res Function(_$ReadyImpl) then) =
       __$$ReadyImplCopyWithImpl<$Res>;
   @useResult
-  $Res call({BigInt fee});
+  $Res call({BigInt fee, List<TxTreeSimulationErrorItem>? txErrors});
 }
 
 /// @nodoc
@@ -1218,12 +1234,17 @@ class __$$ReadyImplCopyWithImpl<$Res>
   @override
   $Res call({
     Object? fee = null,
+    Object? txErrors = freezed,
   }) {
     return _then(_$ReadyImpl(
       null == fee
           ? _value.fee
           : fee // ignore: cast_nullable_to_non_nullable
               as BigInt,
+      freezed == txErrors
+          ? _value._txErrors
+          : txErrors // ignore: cast_nullable_to_non_nullable
+              as List<TxTreeSimulationErrorItem>?,
     ));
   }
 }
@@ -1231,14 +1252,24 @@ class __$$ReadyImplCopyWithImpl<$Res>
 /// @nodoc
 
 class _$ReadyImpl implements _Ready {
-  const _$ReadyImpl(this.fee);
+  const _$ReadyImpl(this.fee, final List<TxTreeSimulationErrorItem>? txErrors)
+      : _txErrors = txErrors;
 
   @override
   final BigInt fee;
+  final List<TxTreeSimulationErrorItem>? _txErrors;
+  @override
+  List<TxTreeSimulationErrorItem>? get txErrors {
+    final value = _txErrors;
+    if (value == null) return null;
+    if (_txErrors is EqualUnmodifiableListView) return _txErrors;
+    // ignore: implicit_dynamic_type
+    return EqualUnmodifiableListView(value);
+  }
 
   @override
   String toString() {
-    return 'TonWalletSendState.readyToSend(fee: $fee)';
+    return 'TonWalletSendState.readyToSend(fee: $fee, txErrors: $txErrors)';
   }
 
   @override
@@ -1246,11 +1277,13 @@ class _$ReadyImpl implements _Ready {
     return identical(this, other) ||
         (other.runtimeType == runtimeType &&
             other is _$ReadyImpl &&
-            (identical(other.fee, fee) || other.fee == fee));
+            (identical(other.fee, fee) || other.fee == fee) &&
+            const DeepCollectionEquality().equals(other._txErrors, _txErrors));
   }
 
   @override
-  int get hashCode => Object.hash(runtimeType, fee);
+  int get hashCode => Object.hash(
+      runtimeType, fee, const DeepCollectionEquality().hash(_txErrors));
 
   /// Create a copy of TonWalletSendState
   /// with the given fields replaced by the non-null parameter values.
@@ -1266,11 +1299,13 @@ class _$ReadyImpl implements _Ready {
     required TResult Function() loading,
     required TResult Function(String error, BigInt? fee) calculatingError,
     required TResult Function(Object error) subscribeError,
-    required TResult Function(BigInt fee) readyToSend,
+    required TResult Function(
+            BigInt fee, List<TxTreeSimulationErrorItem>? txErrors)
+        readyToSend,
     required TResult Function(bool canClose) sending,
     required TResult Function(BigInt fee, Transaction transaction) sent,
   }) {
-    return readyToSend(fee);
+    return readyToSend(fee, txErrors);
   }
 
   @override
@@ -1279,11 +1314,12 @@ class _$ReadyImpl implements _Ready {
     TResult? Function()? loading,
     TResult? Function(String error, BigInt? fee)? calculatingError,
     TResult? Function(Object error)? subscribeError,
-    TResult? Function(BigInt fee)? readyToSend,
+    TResult? Function(BigInt fee, List<TxTreeSimulationErrorItem>? txErrors)?
+        readyToSend,
     TResult? Function(bool canClose)? sending,
     TResult? Function(BigInt fee, Transaction transaction)? sent,
   }) {
-    return readyToSend?.call(fee);
+    return readyToSend?.call(fee, txErrors);
   }
 
   @override
@@ -1292,13 +1328,14 @@ class _$ReadyImpl implements _Ready {
     TResult Function()? loading,
     TResult Function(String error, BigInt? fee)? calculatingError,
     TResult Function(Object error)? subscribeError,
-    TResult Function(BigInt fee)? readyToSend,
+    TResult Function(BigInt fee, List<TxTreeSimulationErrorItem>? txErrors)?
+        readyToSend,
     TResult Function(bool canClose)? sending,
     TResult Function(BigInt fee, Transaction transaction)? sent,
     required TResult orElse(),
   }) {
     if (readyToSend != null) {
-      return readyToSend(fee);
+      return readyToSend(fee, txErrors);
     }
     return orElse();
   }
@@ -1348,9 +1385,12 @@ class _$ReadyImpl implements _Ready {
 }
 
 abstract class _Ready implements TonWalletSendState {
-  const factory _Ready(final BigInt fee) = _$ReadyImpl;
+  const factory _Ready(
+          final BigInt fee, final List<TxTreeSimulationErrorItem>? txErrors) =
+      _$ReadyImpl;
 
   BigInt get fee;
+  List<TxTreeSimulationErrorItem>? get txErrors;
 
   /// Create a copy of TonWalletSendState
   /// with the given fields replaced by the non-null parameter values.
@@ -1431,7 +1471,9 @@ class _$SendingImpl implements _Sending {
     required TResult Function() loading,
     required TResult Function(String error, BigInt? fee) calculatingError,
     required TResult Function(Object error) subscribeError,
-    required TResult Function(BigInt fee) readyToSend,
+    required TResult Function(
+            BigInt fee, List<TxTreeSimulationErrorItem>? txErrors)
+        readyToSend,
     required TResult Function(bool canClose) sending,
     required TResult Function(BigInt fee, Transaction transaction) sent,
   }) {
@@ -1444,7 +1486,8 @@ class _$SendingImpl implements _Sending {
     TResult? Function()? loading,
     TResult? Function(String error, BigInt? fee)? calculatingError,
     TResult? Function(Object error)? subscribeError,
-    TResult? Function(BigInt fee)? readyToSend,
+    TResult? Function(BigInt fee, List<TxTreeSimulationErrorItem>? txErrors)?
+        readyToSend,
     TResult? Function(bool canClose)? sending,
     TResult? Function(BigInt fee, Transaction transaction)? sent,
   }) {
@@ -1457,7 +1500,8 @@ class _$SendingImpl implements _Sending {
     TResult Function()? loading,
     TResult Function(String error, BigInt? fee)? calculatingError,
     TResult Function(Object error)? subscribeError,
-    TResult Function(BigInt fee)? readyToSend,
+    TResult Function(BigInt fee, List<TxTreeSimulationErrorItem>? txErrors)?
+        readyToSend,
     TResult Function(bool canClose)? sending,
     TResult Function(BigInt fee, Transaction transaction)? sent,
     required TResult orElse(),
@@ -1615,7 +1659,9 @@ class _$SentImpl implements _Sent {
     required TResult Function() loading,
     required TResult Function(String error, BigInt? fee) calculatingError,
     required TResult Function(Object error) subscribeError,
-    required TResult Function(BigInt fee) readyToSend,
+    required TResult Function(
+            BigInt fee, List<TxTreeSimulationErrorItem>? txErrors)
+        readyToSend,
     required TResult Function(bool canClose) sending,
     required TResult Function(BigInt fee, Transaction transaction) sent,
   }) {
@@ -1628,7 +1674,8 @@ class _$SentImpl implements _Sent {
     TResult? Function()? loading,
     TResult? Function(String error, BigInt? fee)? calculatingError,
     TResult? Function(Object error)? subscribeError,
-    TResult? Function(BigInt fee)? readyToSend,
+    TResult? Function(BigInt fee, List<TxTreeSimulationErrorItem>? txErrors)?
+        readyToSend,
     TResult? Function(bool canClose)? sending,
     TResult? Function(BigInt fee, Transaction transaction)? sent,
   }) {
@@ -1641,7 +1688,8 @@ class _$SentImpl implements _Sent {
     TResult Function()? loading,
     TResult Function(String error, BigInt? fee)? calculatingError,
     TResult Function(Object error)? subscribeError,
-    TResult Function(BigInt fee)? readyToSend,
+    TResult Function(BigInt fee, List<TxTreeSimulationErrorItem>? txErrors)?
+        readyToSend,
     TResult Function(bool canClose)? sending,
     TResult Function(BigInt fee, Transaction transaction)? sent,
     required TResult orElse(),

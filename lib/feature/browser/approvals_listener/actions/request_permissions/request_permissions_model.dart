@@ -18,7 +18,7 @@ class RequestPermissionsModel extends ElementaryModel {
   String get symbol => currentTransport.nativeTokenTicker;
 
   KeyAccount? get currentAccount =>
-      _currentAccountsService.currentActiveAccount?.$2;
+      _currentAccountsService.currentActiveAccount;
 
   List<KeyAccount> get accounts => _nekotonRepository.seedList.seeds
       .expand(

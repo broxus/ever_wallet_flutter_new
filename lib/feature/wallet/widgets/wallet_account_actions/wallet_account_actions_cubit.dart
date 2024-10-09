@@ -67,8 +67,8 @@ class WalletAccountActionsCubit extends Cubit<WalletAccountActionsState> {
     });
   }
 
-  void _updateWalletData(TonWallet w) {
-    final localCustodians = nekotonRepository.getLocalCustodians(address);
+  Future<void> _updateWalletData(TonWallet w) async {
+    final localCustodians = await nekotonRepository.getLocalCustodians(address);
     final details = w.details;
     final contract = w.contractState;
 

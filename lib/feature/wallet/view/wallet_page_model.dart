@@ -14,9 +14,7 @@ class WalletPageModel extends ElementaryModel {
   final SecureStorageService _storageService;
 
   Stream<KeyAccount?> get currentAccount =>
-      _currentAccountsService.currentActiveAccountStream.map(
-        (value) => value?.$2,
-      );
+      _currentAccountsService.currentActiveAccountStream;
 
   Future<bool?> isNewUser() async {
     return _storageService.getValue(StorageConstants.userWithNewWallet);

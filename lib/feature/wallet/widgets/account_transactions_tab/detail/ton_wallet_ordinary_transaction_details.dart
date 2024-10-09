@@ -20,13 +20,11 @@ class TonWalletOrdinaryTransactionDetailsPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     // TODO(malochka): move it in widget_model or model, old implementation
-    final ticker =
-        inject<NekotonRepository>().currentTransport.nativeTokenTicker;
-
+    final nr = inject<NekotonRepository>();
+    final ticker = nr.currentTransport.nativeTokenTicker;
+    final tonIconPath = nr.currentTransport.nativeTokenIcon;
     final methodData =
         transaction.walletInteractionInfo?.method.toRepresentableData();
-    final tonIconPath =
-        inject<NekotonRepository>().currentTransport.nativeTokenIcon;
     final theme = context.themeStyleV2;
 
     return Scaffold(
@@ -60,6 +58,7 @@ class TonWalletOrdinaryTransactionDetailsPage extends StatelessWidget {
               info: methodData?.$1,
               type: LocaleKeys.ordinaryWord.tr(),
               tonIconPath: tonIconPath,
+              tokenIconPath: tonIconPath,
               price: price,
             ),
           ],

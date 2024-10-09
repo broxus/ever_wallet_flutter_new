@@ -7,6 +7,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:nekoton_repository/nekoton_repository.dart' hide Message;
 import 'package:ui_components_lib/ui_components_lib.dart';
+import 'package:ui_components_lib/v2/widgets/widgets.dart';
 
 class AccountDetailView extends StatelessWidget {
   const AccountDetailView({
@@ -51,9 +52,9 @@ class AccountDetailView extends StatelessWidget {
           CommonCard(
             backgroundColor: theme.colors.background2,
             topSubtitleText: LocaleKeys.totalBalance.tr(),
-            titleChild: MoneyWidget(
-              money: balance,
-              style: MoneyWidgetStyle.primary,
+            titleChild: AmountWidget.dollars(
+              amount: balance,
+              style: theme.textStyles.labelMedium,
             ),
             height: DimensSizeV2.d76,
             width: double.infinity,

@@ -9,6 +9,7 @@ import 'package:encrypted_storage/encrypted_storage.dart';
 import 'package:injectable/injectable.dart';
 import 'package:logging/logging.dart';
 import 'package:rxdart/rxdart.dart';
+import 'package:ui_components_lib/ui_components_lib.dart';
 
 const _browserBookmarksDomain = 'browser_bookmarks';
 const _browserBookmarksKey = 'browser_bookmarks_key';
@@ -86,6 +87,7 @@ class BrowserBookmarksStorageService extends AbstractStorageService {
           message: LocaleKeys.browserBookmarksDeleted.tr(),
           actionText: LocaleKeys.browserBookmarksDeletedUndo.tr(),
           onAction: () => saveBrowserBookmarks(savedbrowserBookmarks),
+          topMargin: DimensSizeV2.d72,
         ),
       );
     }
@@ -112,6 +114,7 @@ class BrowserBookmarksStorageService extends AbstractStorageService {
           message: LocaleKeys.browserBookmarkAdded.tr(),
           actionText: LocaleKeys.browserBookmarkAddedUndo.tr(),
           onAction: () => removeBrowserBookmarkItem(item.id, needUndo: false),
+          topMargin: DimensSizeV2.d72,
         ),
       );
     }
@@ -138,6 +141,7 @@ class BrowserBookmarksStorageService extends AbstractStorageService {
           message: LocaleKeys.browserBookmarkDeleted.tr(),
           actionText: LocaleKeys.browserBookmarkDeletedUndo.tr(),
           onAction: () => setBrowserBookmarkItem(item),
+          topMargin: DimensSizeV2.d72,
         ),
       );
     }

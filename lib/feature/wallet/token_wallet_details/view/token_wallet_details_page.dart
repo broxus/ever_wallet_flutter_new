@@ -126,15 +126,14 @@ class _Body extends StatelessWidget {
               if (tokenBalance != null)
                 AmountWidget.fromMoney(
                   amount: tokenBalance!,
+                  includeSymbol: false,
                   style: theme.textStyles.headingXLarge,
-                  useDefaultFormat: true,
                 ),
               const SizedBox(height: DimensSizeV2.d4),
               if (fiatBalance != null)
-                AmountWidget.fromMoney(
+                AmountWidget.dollars(
                   amount: fiatBalance!,
                   style: theme.textStyles.labelXSmall,
-                  useDefaultFormat: true,
                 ),
               const SizedBox(height: DimensSizeV2.d16),
               SizedBox(

@@ -1,17 +1,21 @@
+import 'package:app/app/service/service.dart';
 import 'package:app/utils/constants.dart';
 import 'package:app/utils/utils.dart';
 import 'package:collection/collection.dart';
 import 'package:elementary/elementary.dart';
-import 'package:nekoton_repository/nekoton_repository.dart';
+import 'package:flutter/material.dart';
+import 'package:nekoton_repository/nekoton_repository.dart' hide Message;
 import 'package:rxdart/rxdart.dart';
 
 class SendMessageModel extends ElementaryModel {
   SendMessageModel(
     ErrorHandler errorHandler,
     this._nekotonRepository,
+    this._messengerService,
   ) : super(errorHandler: errorHandler);
 
   final NekotonRepository _nekotonRepository;
+  final MessengerService _messengerService;
 
   TransportStrategy get transport => _nekotonRepository.currentTransport;
 
@@ -32,7 +36,7 @@ class SendMessageModel extends ElementaryModel {
   Future<List<PublicKey>?> getLocalCustodiansAsync(Address address) =>
       _nekotonRepository.getLocalCustodiansAsync(address);
 
-  Future<BigInt> estimateFees({
+  Future<UnsignedMessage> prepareTransfer({
     required Address address,
     required Address destination,
     required PublicKey? publicKey,
@@ -40,35 +44,42 @@ class SendMessageModel extends ElementaryModel {
     required FunctionCall? payload,
     required bool bounce,
   }) async {
-    UnsignedMessage? message;
+    final body = await payload?.let(
+      (value) => encodeInternalInput(
+        contractAbi: payload.abi,
+        method: payload.method,
+        input: payload.params,
+      ),
+    );
 
-    try {
-      final body = await payload?.let(
-        (value) => encodeInternalInput(
-          contractAbi: payload.abi,
-          method: payload.method,
-          input: payload.params,
-        ),
-      );
+    return _nekotonRepository.prepareTransfer(
+      address: address,
+      publicKey: publicKey,
+      destination: destination,
+      amount: amount,
+      body: body,
+      bounce: bounce,
+      expiration: defaultSendTimeout,
+    );
+  }
 
-      message = await _nekotonRepository.prepareTransfer(
-        address: address,
-        publicKey: publicKey,
-        destination: destination,
-        amount: amount,
-        body: body,
-        bounce: bounce,
-        expiration: defaultSendTimeout,
-      );
-
-      return await _nekotonRepository.estimateFees(
+  Future<BigInt> estimateFees({
+    required Address address,
+    required UnsignedMessage message,
+  }) =>
+      _nekotonRepository.estimateFees(
         address: address,
         message: message,
       );
-    } finally {
-      message?.dispose();
-    }
-  }
+
+  Future<List<TxTreeSimulationErrorItem>> simulateTransactionTree({
+    required Address address,
+    required UnsignedMessage message,
+  }) =>
+      _nekotonRepository.simulateTransactionTree(
+        address: address,
+        message: message,
+      );
 
   String? getSeedName(PublicKey custodian) =>
       _nekotonRepository.seedList.findSeedKey(custodian)?.name;
@@ -81,5 +92,14 @@ class SendMessageModel extends ElementaryModel {
     );
 
     return (details.item1, details.item2);
+  }
+
+  void showError(BuildContext context, String message) {
+    _messengerService.show(
+      Message.error(
+        context: context,
+        message: message,
+      ),
+    );
   }
 }

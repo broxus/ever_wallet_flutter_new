@@ -46,15 +46,15 @@ class _TonWalletDetailsPageState extends State<TonWalletDetailsPage> {
             return state.when(
               initial: () => const SizedBox.shrink(),
               empty: () => const SizedBox.shrink(),
-              subscribeError: (walletName, account, error, isLoading) => _Body(
-                walletName: walletName,
+              subscribeError: (symbol, account, error, isLoading) => _Body(
+                symbol: symbol,
                 account: account,
                 error: error,
                 isLoadingError: isLoading,
                 controller: controller,
               ),
-              data: (walletName, account, tokenBalance, fiatBalance) => _Body(
-                walletName: walletName,
+              data: (symbol, account, tokenBalance, fiatBalance) => _Body(
+                symbol: symbol,
                 account: account,
                 tokenBalance: tokenBalance,
                 fiatBalance: fiatBalance,
@@ -71,7 +71,7 @@ class _TonWalletDetailsPageState extends State<TonWalletDetailsPage> {
 class _Body extends StatelessWidget {
   const _Body({
     required this.account,
-    required this.walletName,
+    required this.symbol,
     required this.controller,
     this.tokenBalance,
     this.fiatBalance,
@@ -80,7 +80,7 @@ class _Body extends StatelessWidget {
   });
 
   final KeyAccount account;
-  final String walletName;
+  final String symbol;
   final Money? tokenBalance;
   final Money? fiatBalance;
   final Object? error;
@@ -98,7 +98,7 @@ class _Body extends StatelessWidget {
             mainAxisSize: MainAxisSize.min,
             children: [
               Text(
-                walletName,
+                symbol,
                 style: theme.textStyles.labelSmall.copyWith(
                   color: theme.colors.content3,
                 ),
@@ -107,15 +107,14 @@ class _Body extends StatelessWidget {
               if (tokenBalance != null)
                 AmountWidget.fromMoney(
                   amount: tokenBalance!,
+                  includeSymbol: false,
                   style: theme.textStyles.headingXLarge,
-                  useDefaultFormat: true,
                 ),
               const SizedBox(height: DimensSizeV2.d4),
               if (fiatBalance != null)
-                AmountWidget.fromMoney(
+                AmountWidget.dollars(
                   amount: fiatBalance!,
                   style: theme.textStyles.labelXSmall,
-                  useDefaultFormat: true,
                 ),
               const SizedBox(height: DimensSizeV2.d16),
               if (error == null)

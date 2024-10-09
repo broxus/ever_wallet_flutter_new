@@ -20,6 +20,7 @@ class TokenWalletSendState with _$TokenWalletSendState {
   const factory TokenWalletSendState.readyToSend(
     BigInt fee,
     BigInt attachedAmount,
+    List<TxTreeSimulationErrorItem>? txErrors,
   ) = _Ready;
 
   /// Transaction is sending.

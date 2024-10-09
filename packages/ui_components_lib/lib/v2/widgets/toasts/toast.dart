@@ -14,6 +14,7 @@ class Toast extends StatelessWidget {
     this.heading,
     this.actions,
     this.onTapClosed,
+    this.topMargin,
     super.key,
   });
 
@@ -24,12 +25,16 @@ class Toast extends StatelessWidget {
   final String? heading;
   final List<Widget>? actions;
   final VoidCallback? onTapClosed;
+  final double? topMargin;
 
   @override
   Widget build(BuildContext context) {
     final themeStyle = context.themeStyleV2;
     final toastStyle = _getToastStyleByType(themeStyle);
     return Container(
+      margin: topMargin != null
+          ? EdgeInsets.only(top: topMargin!)
+          : EdgeInsets.zero,
       padding: const EdgeInsets.symmetric(
         horizontal: DimensSizeV2.d16,
         vertical: DimensSizeV2.d12,
@@ -44,11 +49,12 @@ class Toast extends StatelessWidget {
           Row(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              Icon(
-                icon,
-                size: DimensSize.d20,
-                color: toastStyle.iconColor,
-              ),
+              if (icon != null)
+                Icon(
+                  icon,
+                  size: DimensSize.d20,
+                  color: toastStyle.iconColor,
+                ),
               const SizedBox(width: DimensSize.d8),
               Expanded(
                 child: Column(

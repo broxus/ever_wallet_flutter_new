@@ -34,6 +34,7 @@ class AmountInput extends StatefulWidget {
 }
 
 class _AmountInputState extends State<AmountInput> {
+  final _formFieldKey = GlobalKey<FormFieldState<String>>();
   CurrencyTextInputFormatter? formatter;
   CurrencyTextInputValidator? validator;
 
@@ -54,7 +55,7 @@ class _AmountInputState extends State<AmountInput> {
   @override
   Widget build(BuildContext context) {
     final theme = context.themeStyleV2;
-    final balance = widget.selectedAsset?.balance.amount.toString() ?? '';
+    final balance = widget.selectedAsset?.balance.defaultFormat() ?? '';
 
     return Container(
       width: double.maxFinite,
@@ -99,7 +100,11 @@ class _AmountInputState extends State<AmountInput> {
                   title: LocaleKeys.maxWord.tr(),
                   buttonShape: ButtonShape.rectangle,
                   buttonSize: ButtonSize.small,
-                  onPressed: widget.onMaxAmount,
+                  onPressed: () {
+                    widget.onMaxAmount();
+                    _formFieldKey.currentState
+                        ?.didChange(widget.controller.text);
+                  },
                 ),
               ],
             ),
@@ -114,6 +119,7 @@ class _AmountInputState extends State<AmountInput> {
               behavior: HitTestBehavior.translucent,
               onTap: widget.focusNode?.requestFocus,
               child: FormField<String>(
+                key: _formFieldKey,
                 initialValue: widget.controller.text,
                 autovalidateMode: AutovalidateMode.onUserInteraction,
                 validator: validator?.validate,
@@ -134,14 +140,9 @@ class _AmountInputState extends State<AmountInput> {
     );
     final price = Fixed.parse(widget.selectedAsset?.currency?.price ?? '0');
 
-    late Fixed amount;
-    try {
-      amount = Fixed.parse(state.value.nullIf('') ?? '0');
-    } catch (e) {
-      amount = Fixed.parse('0');
-    }
-
-    final usd = Fixed.copyWith(amount * price, scale: 2);
+    final value = (state.value.nullIf('') ?? '0').trim().replaceAll(',', '.');
+    final amount = Fixed.tryParse(value) ?? Fixed.zero;
+    final usd = Money.fromFixed(amount * price, isoCode: 'USD');
 
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
@@ -169,8 +170,8 @@ class _AmountInputState extends State<AmountInput> {
           ),
         ),
         if (!state.hasError)
-          Text(
-            '$usd USD',
+          AmountWidget.dollars(
+            amount: usd,
             style: theme.textStyles.labelXSmall.copyWith(
               color: theme.colors.content3,
             ),

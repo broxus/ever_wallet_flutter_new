@@ -106,9 +106,7 @@ class ConfirmActionWidgetModel
         showManualBackupDialog(
           context,
           phrase,
-          account?.address.address ??
-              ''
-                  '',
+          account?.address.address ?? '',
           finishedBackupCallback,
         );
       } catch (_) {

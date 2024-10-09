@@ -4,6 +4,7 @@ import 'package:app/feature/profile/profile.dart';
 import 'package:app/feature/wallet/wallet.dart';
 import 'package:app/generated/generated.dart';
 import 'package:app/utils/utils.dart';
+import 'package:app/widgets/widgets.dart';
 import 'package:elementary/elementary.dart';
 import 'package:elementary_helper/elementary_helper.dart';
 import 'package:flutter/material.dart';
@@ -59,6 +60,7 @@ class SendMessageWidget extends ElementaryWidget<SendMessageWidgetModel> {
                           style: theme.textStyles.labelXSmall.copyWith(
                             color: theme.colors.content3,
                           ),
+                          useDefaultFormat: false,
                         ),
                       ),
                     ),
@@ -132,10 +134,21 @@ class SendMessageWidget extends ElementaryWidget<SendMessageWidgetModel> {
           ),
         ),
         if (wm.account != null)
-          EnterPasswordWidgetV2(
-            publicKey: wm.account!.publicKey,
-            title: LocaleKeys.sendWord.tr(),
-            onPasswordEntered: wm.onSubmit,
+          DoubleSourceBuilder(
+            firstSource: wm.isLoading,
+            secondSource: wm.txErrors,
+            builder: (_, isLoading, txErrors) {
+              if (txErrors?.isNotEmpty ?? false) {
+                return TxTreeSimulationErrorWidget(txErrors: txErrors!);
+              }
+
+              return EnterPasswordWidgetV2(
+                isLoading: isLoading,
+                publicKey: wm.account!.publicKey,
+                title: LocaleKeys.sendWord.tr(),
+                onPasswordEntered: wm.onSubmit,
+              );
+            },
           ),
       ],
     );

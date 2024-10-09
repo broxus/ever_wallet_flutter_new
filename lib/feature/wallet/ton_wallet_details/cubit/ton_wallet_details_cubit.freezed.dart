@@ -21,9 +21,9 @@ mixin _$TonWalletDetailsState {
     required TResult Function() initial,
     required TResult Function() empty,
     required TResult Function(
-            String walletName, KeyAccount account, Object error, bool isLoading)
+            String symbol, KeyAccount account, Object error, bool isLoading)
         subscribeError,
-    required TResult Function(String walletName, KeyAccount account,
+    required TResult Function(String symbol, KeyAccount account,
             Money tokenBalance, Money fiatBalance)
         data,
   }) =>
@@ -32,10 +32,10 @@ mixin _$TonWalletDetailsState {
   TResult? whenOrNull<TResult extends Object?>({
     TResult? Function()? initial,
     TResult? Function()? empty,
-    TResult? Function(String walletName, KeyAccount account, Object error,
-            bool isLoading)?
+    TResult? Function(
+            String symbol, KeyAccount account, Object error, bool isLoading)?
         subscribeError,
-    TResult? Function(String walletName, KeyAccount account, Money tokenBalance,
+    TResult? Function(String symbol, KeyAccount account, Money tokenBalance,
             Money fiatBalance)?
         data,
   }) =>
@@ -44,10 +44,10 @@ mixin _$TonWalletDetailsState {
   TResult maybeWhen<TResult extends Object?>({
     TResult Function()? initial,
     TResult Function()? empty,
-    TResult Function(String walletName, KeyAccount account, Object error,
-            bool isLoading)?
+    TResult Function(
+            String symbol, KeyAccount account, Object error, bool isLoading)?
         subscribeError,
-    TResult Function(String walletName, KeyAccount account, Money tokenBalance,
+    TResult Function(String symbol, KeyAccount account, Money tokenBalance,
             Money fiatBalance)?
         data,
     required TResult orElse(),
@@ -146,9 +146,9 @@ class _$InitialImpl implements _Initial {
     required TResult Function() initial,
     required TResult Function() empty,
     required TResult Function(
-            String walletName, KeyAccount account, Object error, bool isLoading)
+            String symbol, KeyAccount account, Object error, bool isLoading)
         subscribeError,
-    required TResult Function(String walletName, KeyAccount account,
+    required TResult Function(String symbol, KeyAccount account,
             Money tokenBalance, Money fiatBalance)
         data,
   }) {
@@ -160,10 +160,10 @@ class _$InitialImpl implements _Initial {
   TResult? whenOrNull<TResult extends Object?>({
     TResult? Function()? initial,
     TResult? Function()? empty,
-    TResult? Function(String walletName, KeyAccount account, Object error,
-            bool isLoading)?
+    TResult? Function(
+            String symbol, KeyAccount account, Object error, bool isLoading)?
         subscribeError,
-    TResult? Function(String walletName, KeyAccount account, Money tokenBalance,
+    TResult? Function(String symbol, KeyAccount account, Money tokenBalance,
             Money fiatBalance)?
         data,
   }) {
@@ -175,10 +175,10 @@ class _$InitialImpl implements _Initial {
   TResult maybeWhen<TResult extends Object?>({
     TResult Function()? initial,
     TResult Function()? empty,
-    TResult Function(String walletName, KeyAccount account, Object error,
-            bool isLoading)?
+    TResult Function(
+            String symbol, KeyAccount account, Object error, bool isLoading)?
         subscribeError,
-    TResult Function(String walletName, KeyAccount account, Money tokenBalance,
+    TResult Function(String symbol, KeyAccount account, Money tokenBalance,
             Money fiatBalance)?
         data,
     required TResult orElse(),
@@ -275,9 +275,9 @@ class _$EmptyImpl implements _Empty {
     required TResult Function() initial,
     required TResult Function() empty,
     required TResult Function(
-            String walletName, KeyAccount account, Object error, bool isLoading)
+            String symbol, KeyAccount account, Object error, bool isLoading)
         subscribeError,
-    required TResult Function(String walletName, KeyAccount account,
+    required TResult Function(String symbol, KeyAccount account,
             Money tokenBalance, Money fiatBalance)
         data,
   }) {
@@ -289,10 +289,10 @@ class _$EmptyImpl implements _Empty {
   TResult? whenOrNull<TResult extends Object?>({
     TResult? Function()? initial,
     TResult? Function()? empty,
-    TResult? Function(String walletName, KeyAccount account, Object error,
-            bool isLoading)?
+    TResult? Function(
+            String symbol, KeyAccount account, Object error, bool isLoading)?
         subscribeError,
-    TResult? Function(String walletName, KeyAccount account, Money tokenBalance,
+    TResult? Function(String symbol, KeyAccount account, Money tokenBalance,
             Money fiatBalance)?
         data,
   }) {
@@ -304,10 +304,10 @@ class _$EmptyImpl implements _Empty {
   TResult maybeWhen<TResult extends Object?>({
     TResult Function()? initial,
     TResult Function()? empty,
-    TResult Function(String walletName, KeyAccount account, Object error,
-            bool isLoading)?
+    TResult Function(
+            String symbol, KeyAccount account, Object error, bool isLoading)?
         subscribeError,
-    TResult Function(String walletName, KeyAccount account, Money tokenBalance,
+    TResult Function(String symbol, KeyAccount account, Money tokenBalance,
             Money fiatBalance)?
         data,
     required TResult orElse(),
@@ -366,8 +366,7 @@ abstract class _$$SubscribeErrorImplCopyWith<$Res> {
           $Res Function(_$SubscribeErrorImpl) then) =
       __$$SubscribeErrorImplCopyWithImpl<$Res>;
   @useResult
-  $Res call(
-      {String walletName, KeyAccount account, Object error, bool isLoading});
+  $Res call({String symbol, KeyAccount account, Object error, bool isLoading});
 }
 
 /// @nodoc
@@ -383,15 +382,15 @@ class __$$SubscribeErrorImplCopyWithImpl<$Res>
   @pragma('vm:prefer-inline')
   @override
   $Res call({
-    Object? walletName = null,
+    Object? symbol = null,
     Object? account = null,
     Object? error = null,
     Object? isLoading = null,
   }) {
     return _then(_$SubscribeErrorImpl(
-      walletName: null == walletName
-          ? _value.walletName
-          : walletName // ignore: cast_nullable_to_non_nullable
+      symbol: null == symbol
+          ? _value.symbol
+          : symbol // ignore: cast_nullable_to_non_nullable
               as String,
       account: null == account
           ? _value.account
@@ -410,13 +409,13 @@ class __$$SubscribeErrorImplCopyWithImpl<$Res>
 
 class _$SubscribeErrorImpl implements _SubscribeError {
   const _$SubscribeErrorImpl(
-      {required this.walletName,
+      {required this.symbol,
       required this.account,
       required this.error,
       required this.isLoading});
 
   @override
-  final String walletName;
+  final String symbol;
   @override
   final KeyAccount account;
   @override
@@ -426,7 +425,7 @@ class _$SubscribeErrorImpl implements _SubscribeError {
 
   @override
   String toString() {
-    return 'TonWalletDetailsState.subscribeError(walletName: $walletName, account: $account, error: $error, isLoading: $isLoading)';
+    return 'TonWalletDetailsState.subscribeError(symbol: $symbol, account: $account, error: $error, isLoading: $isLoading)';
   }
 
   @override
@@ -434,8 +433,7 @@ class _$SubscribeErrorImpl implements _SubscribeError {
     return identical(this, other) ||
         (other.runtimeType == runtimeType &&
             other is _$SubscribeErrorImpl &&
-            (identical(other.walletName, walletName) ||
-                other.walletName == walletName) &&
+            (identical(other.symbol, symbol) || other.symbol == symbol) &&
             (identical(other.account, account) || other.account == account) &&
             const DeepCollectionEquality().equals(other.error, error) &&
             (identical(other.isLoading, isLoading) ||
@@ -443,7 +441,7 @@ class _$SubscribeErrorImpl implements _SubscribeError {
   }
 
   @override
-  int get hashCode => Object.hash(runtimeType, walletName, account,
+  int get hashCode => Object.hash(runtimeType, symbol, account,
       const DeepCollectionEquality().hash(error), isLoading);
 
   /// Create a copy of TonWalletDetailsState
@@ -461,13 +459,13 @@ class _$SubscribeErrorImpl implements _SubscribeError {
     required TResult Function() initial,
     required TResult Function() empty,
     required TResult Function(
-            String walletName, KeyAccount account, Object error, bool isLoading)
+            String symbol, KeyAccount account, Object error, bool isLoading)
         subscribeError,
-    required TResult Function(String walletName, KeyAccount account,
+    required TResult Function(String symbol, KeyAccount account,
             Money tokenBalance, Money fiatBalance)
         data,
   }) {
-    return subscribeError(walletName, account, error, isLoading);
+    return subscribeError(symbol, account, error, isLoading);
   }
 
   @override
@@ -475,14 +473,14 @@ class _$SubscribeErrorImpl implements _SubscribeError {
   TResult? whenOrNull<TResult extends Object?>({
     TResult? Function()? initial,
     TResult? Function()? empty,
-    TResult? Function(String walletName, KeyAccount account, Object error,
-            bool isLoading)?
+    TResult? Function(
+            String symbol, KeyAccount account, Object error, bool isLoading)?
         subscribeError,
-    TResult? Function(String walletName, KeyAccount account, Money tokenBalance,
+    TResult? Function(String symbol, KeyAccount account, Money tokenBalance,
             Money fiatBalance)?
         data,
   }) {
-    return subscribeError?.call(walletName, account, error, isLoading);
+    return subscribeError?.call(symbol, account, error, isLoading);
   }
 
   @override
@@ -490,16 +488,16 @@ class _$SubscribeErrorImpl implements _SubscribeError {
   TResult maybeWhen<TResult extends Object?>({
     TResult Function()? initial,
     TResult Function()? empty,
-    TResult Function(String walletName, KeyAccount account, Object error,
-            bool isLoading)?
+    TResult Function(
+            String symbol, KeyAccount account, Object error, bool isLoading)?
         subscribeError,
-    TResult Function(String walletName, KeyAccount account, Money tokenBalance,
+    TResult Function(String symbol, KeyAccount account, Money tokenBalance,
             Money fiatBalance)?
         data,
     required TResult orElse(),
   }) {
     if (subscribeError != null) {
-      return subscribeError(walletName, account, error, isLoading);
+      return subscribeError(symbol, account, error, isLoading);
     }
     return orElse();
   }
@@ -544,12 +542,12 @@ class _$SubscribeErrorImpl implements _SubscribeError {
 
 abstract class _SubscribeError implements TonWalletDetailsState {
   const factory _SubscribeError(
-      {required final String walletName,
+      {required final String symbol,
       required final KeyAccount account,
       required final Object error,
       required final bool isLoading}) = _$SubscribeErrorImpl;
 
-  String get walletName;
+  String get symbol;
   KeyAccount get account;
   Object get error;
   bool get isLoading;
@@ -568,7 +566,7 @@ abstract class _$$DataImplCopyWith<$Res> {
       __$$DataImplCopyWithImpl<$Res>;
   @useResult
   $Res call(
-      {String walletName,
+      {String symbol,
       KeyAccount account,
       Money tokenBalance,
       Money fiatBalance});
@@ -586,15 +584,15 @@ class __$$DataImplCopyWithImpl<$Res>
   @pragma('vm:prefer-inline')
   @override
   $Res call({
-    Object? walletName = null,
+    Object? symbol = null,
     Object? account = null,
     Object? tokenBalance = null,
     Object? fiatBalance = null,
   }) {
     return _then(_$DataImpl(
-      walletName: null == walletName
-          ? _value.walletName
-          : walletName // ignore: cast_nullable_to_non_nullable
+      symbol: null == symbol
+          ? _value.symbol
+          : symbol // ignore: cast_nullable_to_non_nullable
               as String,
       account: null == account
           ? _value.account
@@ -616,13 +614,13 @@ class __$$DataImplCopyWithImpl<$Res>
 
 class _$DataImpl implements _Data {
   const _$DataImpl(
-      {required this.walletName,
+      {required this.symbol,
       required this.account,
       required this.tokenBalance,
       required this.fiatBalance});
 
   @override
-  final String walletName;
+  final String symbol;
   @override
   final KeyAccount account;
   @override
@@ -632,7 +630,7 @@ class _$DataImpl implements _Data {
 
   @override
   String toString() {
-    return 'TonWalletDetailsState.data(walletName: $walletName, account: $account, tokenBalance: $tokenBalance, fiatBalance: $fiatBalance)';
+    return 'TonWalletDetailsState.data(symbol: $symbol, account: $account, tokenBalance: $tokenBalance, fiatBalance: $fiatBalance)';
   }
 
   @override
@@ -640,8 +638,7 @@ class _$DataImpl implements _Data {
     return identical(this, other) ||
         (other.runtimeType == runtimeType &&
             other is _$DataImpl &&
-            (identical(other.walletName, walletName) ||
-                other.walletName == walletName) &&
+            (identical(other.symbol, symbol) || other.symbol == symbol) &&
             (identical(other.account, account) || other.account == account) &&
             (identical(other.tokenBalance, tokenBalance) ||
                 other.tokenBalance == tokenBalance) &&
@@ -651,7 +648,7 @@ class _$DataImpl implements _Data {
 
   @override
   int get hashCode =>
-      Object.hash(runtimeType, walletName, account, tokenBalance, fiatBalance);
+      Object.hash(runtimeType, symbol, account, tokenBalance, fiatBalance);
 
   /// Create a copy of TonWalletDetailsState
   /// with the given fields replaced by the non-null parameter values.
@@ -667,13 +664,13 @@ class _$DataImpl implements _Data {
     required TResult Function() initial,
     required TResult Function() empty,
     required TResult Function(
-            String walletName, KeyAccount account, Object error, bool isLoading)
+            String symbol, KeyAccount account, Object error, bool isLoading)
         subscribeError,
-    required TResult Function(String walletName, KeyAccount account,
+    required TResult Function(String symbol, KeyAccount account,
             Money tokenBalance, Money fiatBalance)
         data,
   }) {
-    return data(walletName, account, tokenBalance, fiatBalance);
+    return data(symbol, account, tokenBalance, fiatBalance);
   }
 
   @override
@@ -681,14 +678,14 @@ class _$DataImpl implements _Data {
   TResult? whenOrNull<TResult extends Object?>({
     TResult? Function()? initial,
     TResult? Function()? empty,
-    TResult? Function(String walletName, KeyAccount account, Object error,
-            bool isLoading)?
+    TResult? Function(
+            String symbol, KeyAccount account, Object error, bool isLoading)?
         subscribeError,
-    TResult? Function(String walletName, KeyAccount account, Money tokenBalance,
+    TResult? Function(String symbol, KeyAccount account, Money tokenBalance,
             Money fiatBalance)?
         data,
   }) {
-    return data?.call(walletName, account, tokenBalance, fiatBalance);
+    return data?.call(symbol, account, tokenBalance, fiatBalance);
   }
 
   @override
@@ -696,16 +693,16 @@ class _$DataImpl implements _Data {
   TResult maybeWhen<TResult extends Object?>({
     TResult Function()? initial,
     TResult Function()? empty,
-    TResult Function(String walletName, KeyAccount account, Object error,
-            bool isLoading)?
+    TResult Function(
+            String symbol, KeyAccount account, Object error, bool isLoading)?
         subscribeError,
-    TResult Function(String walletName, KeyAccount account, Money tokenBalance,
+    TResult Function(String symbol, KeyAccount account, Money tokenBalance,
             Money fiatBalance)?
         data,
     required TResult orElse(),
   }) {
     if (data != null) {
-      return data(walletName, account, tokenBalance, fiatBalance);
+      return data(symbol, account, tokenBalance, fiatBalance);
     }
     return orElse();
   }
@@ -750,12 +747,12 @@ class _$DataImpl implements _Data {
 
 abstract class _Data implements TonWalletDetailsState {
   const factory _Data(
-      {required final String walletName,
+      {required final String symbol,
       required final KeyAccount account,
       required final Money tokenBalance,
       required final Money fiatBalance}) = _$DataImpl;
 
-  String get walletName;
+  String get symbol;
   KeyAccount get account;
   Money get tokenBalance;
   Money get fiatBalance;
