@@ -52,7 +52,7 @@ String _formatThousands(
   if (decimalPart.isNotEmpty) {
     buffer
       ..write(decimalSeparator)
-      ..write(decimalPart);
+      ..write(decimalPart.first);
   }
 
   return buffer.toString();
