@@ -21,6 +21,7 @@ Future<void> run(
   AppBuildType appBuildType,
 ) async {
   currentAppBuildType = appBuildType;
+
   final log = Logger('bootstrap');
 
   await runZonedGuarded(

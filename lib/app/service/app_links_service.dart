@@ -5,13 +5,22 @@ import 'package:injectable/injectable.dart';
 
 @singleton
 class AppLinksService {
-  final appLinks = AppLinks();
-  late final _linkSubscription = appLinks.uriLinkStream.listen((uri) {
-    primaryBus.fire(AppLinksUriEvent(uri));
-  });
+  final _appLinks = AppLinks();
+  late final _linkSubscription = _appLinks.uriLinkStream.listen(_handleLink);
+
+  Future<void> init() async {
+    final initialUri = await _appLinks.getInitialLink();
+    if (initialUri != null) {
+      _handleLink(initialUri);
+    }
+  }
 
   @disposeMethod
   void dispose() {
     _linkSubscription.cancel();
+  }
+
+  void _handleLink(Uri uri) {
+    primaryBus.fire(AppLinksUriEvent(uri));
   }
 }
