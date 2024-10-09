@@ -1,6 +1,7 @@
 import 'package:app/feature/profile/profile.dart';
 import 'package:app/feature/wallet/wallet.dart';
 import 'package:app/generated/generated.dart';
+import 'package:app/widgets/widgets.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -17,6 +18,7 @@ class TonWalletSendConfirmView extends StatelessWidget {
     this.fee,
     this.attachedAmount,
     this.feeError,
+    this.txErrors,
     super.key,
   });
 
@@ -27,12 +29,14 @@ class TonWalletSendConfirmView extends StatelessWidget {
   final String? comment;
   final String? feeError;
   final PublicKey publicKey;
+  final List<TxTreeSimulationErrorItem>? txErrors;
 
   @override
   Widget build(BuildContext context) {
     final bloc = context.read<TonWalletSendBloc>();
     final isLoading = fee == null && feeError == null;
     final amountMoney = Money.fromBigIntWithCurrency(amount, bloc.currency);
+    final hasTxError = txErrors?.isNotEmpty ?? false;
 
     return SeparatedColumn(
       crossAxisAlignment: CrossAxisAlignment.start,
@@ -55,12 +59,14 @@ class TonWalletSendConfirmView extends StatelessWidget {
             ),
           ),
         ),
-        EnterPasswordWidgetV2(
-          publicKey: publicKey,
-          title: LocaleKeys.confirm.tr(),
-          isLoading: isLoading,
-          onPasswordEntered: (pwd) => bloc.add(TonWalletSendEvent.send(pwd)),
-        ),
+        if (hasTxError) TxTreeSimulationErrorWidget(txErrors: txErrors!),
+        if (!hasTxError)
+          EnterPasswordWidgetV2(
+            publicKey: publicKey,
+            title: LocaleKeys.confirm.tr(),
+            isLoading: isLoading,
+            onPasswordEntered: (pwd) => bloc.add(TonWalletSendEvent.send(pwd)),
+          ),
         const SizedBox(height: DimensSize.d16),
       ],
     );

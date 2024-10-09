@@ -1,3 +1,4 @@
+import 'package:app/app/service/service.dart';
 import 'package:app/di/di.dart';
 import 'package:app/feature/wallet/widgets/account_transactions_tab/detail/details_body.dart';
 import 'package:app/feature/wallet/widgets/account_transactions_tab/detail/details_body_with_see_explorer.dart';
@@ -15,18 +16,23 @@ class TokenWalletOrdinaryTransactionDetailsPage extends StatelessWidget {
     required this.transaction,
     required this.tokenCurrency,
     required this.price,
+    required this.rootTokenContract,
     super.key,
   });
 
   final TokenWalletOrdinaryTransaction transaction;
   final Currency tokenCurrency;
   final Fixed price;
+  final Address rootTokenContract;
 
   @override
   Widget build(BuildContext context) {
     // TODO(malochka): move it in widget_model or model, old implementation
-    final ticker =
-        inject<NekotonRepository>().currentTransport.nativeTokenTicker;
+    final nr = inject<NekotonRepository>();
+    final ticker = nr.currentTransport.nativeTokenTicker;
+    final tonIconPath = nr.currentTransport.nativeTokenIcon;
+    final asset = inject<AssetsService>()
+        .maybeGetTokenContract(rootTokenContract, nr.currentTransport);
 
     final theme = context.themeStyleV2;
 
@@ -59,6 +65,8 @@ class TokenWalletOrdinaryTransactionDetailsPage extends StatelessWidget {
               recipientOrSender: transaction.address,
               type: LocaleKeys.ordinaryWord.tr(),
               price: price,
+              tonIconPath: tonIconPath,
+              tokenIconPath: asset?.logoURI,
             ),
           ],
         ),

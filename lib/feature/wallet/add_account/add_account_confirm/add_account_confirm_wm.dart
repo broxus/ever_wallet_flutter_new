@@ -9,6 +9,8 @@ import 'package:app/feature/wallet/add_account/add_account_confirm/add_account_c
 import 'package:elementary_helper/elementary_helper.dart';
 import 'package:flutter/material.dart';
 import 'package:local_auth/local_auth.dart';
+import 'package:nekoton_repository/nekoton_repository.dart';
+import 'package:ui_components_lib/ui_components_lib.dart';
 
 AddAccountConfirmWidgetModel defaultAddAccountConfirmWidgetModelFactory(
   BuildContext context,
@@ -16,6 +18,7 @@ AddAccountConfirmWidgetModel defaultAddAccountConfirmWidgetModelFactory(
     AddAccountConfirmWidgetModel(
       AddAccountConfirmModel(
         createPrimaryErrorHandler(context),
+        inject(),
         inject(),
         inject(),
         inject(),
@@ -32,6 +35,10 @@ class AddAccountConfirmWidgetModel
 
   ListenableState<List<BiometricType>> get availableBiometry =>
       _availableBiometry;
+
+  KeyAccount? get account => model.account;
+
+  ThemeStyleV2 get theme => context.themeStyleV2;
 
   @override
   void initWidgetModel() {

@@ -43,7 +43,7 @@ class TonWalletDetailsCubit extends Cubit<TonWalletDetailsState> {
         if (walletState.hasError) {
           emit(
             TonWalletDetailsState.subscribeError(
-              walletName: _walletName(nekotonRepository, account),
+              symbol: nekotonRepository.currentTransport.nativeTokenTicker,
               account: account,
               error: walletState.error!,
               isLoading: false,
@@ -106,17 +106,11 @@ class TonWalletDetailsCubit extends Cubit<TonWalletDetailsState> {
   void _updateState() {
     emit(
       TonWalletDetailsState.data(
-        walletName: _walletName(nekotonRepository, account),
+        symbol: nekotonRepository.currentTransport.nativeTokenTicker,
         account: account,
         fiatBalance: _cachedFiatBalance,
         tokenBalance: _cachedTokenBalance,
       ),
     );
-  }
-
-  static String _walletName(NekotonRepository repo, KeyAccount account) {
-    return repo.currentTransport
-        .defaultAccountName(account.account.tonWallet.contract)
-        .toLowerCase();
   }
 }

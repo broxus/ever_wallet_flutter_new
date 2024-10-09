@@ -6,6 +6,7 @@ import 'package:app/core/wm/custom_wm.dart';
 import 'package:app/di/di.dart';
 import 'package:app/feature/browser/approvals_listener/actions/send_message/send_message_model.dart';
 import 'package:app/feature/browser/approvals_listener/actions/send_message/send_message_widget.dart';
+import 'package:app/utils/utils.dart';
 import 'package:elementary_helper/elementary_helper.dart';
 import 'package:flutter/material.dart';
 import 'package:nekoton_repository/nekoton_repository.dart';
@@ -30,6 +31,7 @@ SendMessageWidgetModel defaultSendMessageWidgetModelFactory(
       SendMessageModel(
         createPrimaryErrorHandler(context),
         inject(),
+        inject(),
       ),
     );
 
@@ -42,9 +44,11 @@ class SendMessageWidgetModel
   late final _data = createNotifier<TransferData>();
   late final _fee = createNotifier<BigInt>();
   late final _feeError = createNotifier<String>();
+  late final _txErrors = createNotifier<List<TxTreeSimulationErrorItem>>();
   late final _publicKey = createNotifier(account?.publicKey);
   late final _custodians = createNotifier<List<PublicKey>>();
   late final _balance = createNotifier<Money>();
+  late final _isLoading = createNotifier(false);
   late final StreamSubscription<Money> _subscription;
 
   ListenableState<TransferData> get data => _data;
@@ -53,11 +57,15 @@ class SendMessageWidgetModel
 
   ListenableState<String> get feeError => _feeError;
 
+  ListenableState<List<TxTreeSimulationErrorItem>> get txErrors => _txErrors;
+
   ListenableState<PublicKey> get publicKey => _publicKey;
 
   ListenableState<List<PublicKey>> get custodians => _custodians;
 
   ListenableState<Money?> get balance => _balance;
+
+  ListenableState<bool> get isLoading => _isLoading;
 
   Currency get nativeCurrency =>
       Currencies()[model.transport.nativeTokenTicker]!;
@@ -87,7 +95,7 @@ class SendMessageWidgetModel
         model.getBalanceStream(widget.sender).listen(_balance.accept);
 
     _getCustodians();
-    _estimateFees();
+    _prepareTransfer();
   }
 
   @override
@@ -128,9 +136,11 @@ class SendMessageWidgetModel
     _custodians.accept(custodians);
   }
 
-  Future<void> _estimateFees() async {
+  Future<void> _prepareTransfer() async {
+    UnsignedMessage? message;
+
     try {
-      final fee = await model.estimateFees(
+      message = await model.prepareTransfer(
         address: widget.sender,
         destination: widget.recipient,
         publicKey: account?.publicKey,
@@ -139,11 +149,40 @@ class SendMessageWidgetModel
         bounce: widget.bounce,
       );
 
+      await _estimateFees(message);
+      await _simulateTransactionTree(message);
+    } finally {
+      message?.dispose();
+    }
+  }
+
+  Future<void> _estimateFees(UnsignedMessage message) async {
+    try {
+      final fee = await model.estimateFees(
+        address: widget.sender,
+        message: message,
+      );
+
       _fee.accept(fee);
     } on FfiException catch (e) {
       _feeError.accept(e.message);
     } on Exception catch (e) {
       _feeError.accept(e.toString());
+    }
+  }
+
+  Future<void> _simulateTransactionTree(UnsignedMessage message) async {
+    try {
+      final fee = await model.simulateTransactionTree(
+        address: widget.sender,
+        message: message,
+      );
+
+      _txErrors.accept(fee);
+    } catch (e) {
+      contextSafe?.let(
+        (context) => model.showError(context, e.toString()),
+      );
     }
   }
 }

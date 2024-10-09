@@ -14,7 +14,10 @@ class TonWalletSendState with _$TonWalletSendState {
       _SubscribeError;
 
   /// Blockchain fee loaded, allow user send transaction
-  const factory TonWalletSendState.readyToSend(BigInt fee) = _Ready;
+  const factory TonWalletSendState.readyToSend(
+    BigInt fee,
+    List<TxTreeSimulationErrorItem>? txErrors,
+  ) = _Ready;
 
   /// Transaction is sending.
   /// [canClose] needs to allow user close transaction right after it was sent

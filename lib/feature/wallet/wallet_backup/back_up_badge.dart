@@ -1,6 +1,7 @@
 import 'package:app/feature/wallet/wallet_backup/confirm_action/confirm_action_dialog.dart';
 import 'package:app/generated/generated.dart';
 import 'package:flutter/material.dart';
+import 'package:lucide_icons_flutter/lucide_icons.dart';
 import 'package:nekoton_repository/nekoton_repository.dart';
 import 'package:ui_components_lib/v2/ui_components_lib_v2.dart';
 
@@ -39,9 +40,19 @@ class BackUpBadge extends StatelessWidget {
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   const SizedBox(height: DimensSizeV2.d12),
-                  Text(
-                    LocaleKeys.notBackedUpTitle.tr(),
-                    style: theme.textStyles.headingXSmall,
+                  Row(
+                    children: [
+                      Icon(
+                        LucideIcons.triangleAlert,
+                        size: DimensSizeV2.d20,
+                        color: theme.colors.contentNegative,
+                      ),
+                      const SizedBox(width: DimensSizeV2.d8),
+                      Text(
+                        LocaleKeys.notBackedUpTitle.tr(),
+                        style: theme.textStyles.headingXSmall,
+                      ),
+                    ],
                   ),
                   Text(
                     LocaleKeys.notBackedUpSubtitle.tr(),

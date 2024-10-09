@@ -165,6 +165,7 @@ class TonWalletTransactionWidget extends StatelessWidget {
                 children: [
                   AmountWidget.fromMoney(
                     amount: transactionValue,
+                    includeSymbol: false,
                     sign: isIncoming
                         ? LocaleKeys.plusSign.tr()
                         : LocaleKeys.minusSign.tr(),

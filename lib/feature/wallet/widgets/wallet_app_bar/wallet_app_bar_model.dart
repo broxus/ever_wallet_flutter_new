@@ -18,9 +18,7 @@ class WalletAppBarModel extends ElementaryModel {
   final ConnectionsStorageService _storageService;
 
   Stream<KeyAccount?> get currentAccount =>
-      _currentAccountsService.currentActiveAccountStream.map(
-        (value) => value?.$2,
-      );
+      _currentAccountsService.currentActiveAccountStream;
 
   Stream<TonWalletState?> get walletState => CombineLatestStream.combine2(
         _nekotonRepository.walletsStream,
@@ -30,6 +28,8 @@ class WalletAppBarModel extends ElementaryModel {
         ),
       );
 
-  Stream<ConnectionData> get connection =>
+  Stream<ConnectionData> get connectionStream =>
       _storageService.currentConnectionStream;
+
+  TransportStrategy get transport => _nekotonRepository.currentTransport;
 }

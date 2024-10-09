@@ -13,6 +13,14 @@ enum AppRoute {
     'bootstrapFailed',
     '/bootstrapFailed/:$bootstrapFailedIndexPathParam',
   ),
+  splash(
+    'splash',
+    '/splash',
+  ),
+  noInternet(
+    'noInternet',
+    '/noInternet',
+  ),
   onboarding(
     'onboarding',
     '/onboarding',
@@ -250,7 +258,7 @@ enum AppRoute {
     );
   }
 
-  static AppRoute get defaultRoute => onboarding;
+  static AppRoute get defaultRoute => splash;
 
   // Reconstructs the full path from a [pattern] and path parameters.
   // This thing is directly copied from the go_router package ¯\_(ツ)_/¯

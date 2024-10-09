@@ -1,5 +1,8 @@
-import 'package:app/app/service/service.dart';
-import 'package:flutter/widgets.dart';
+import 'package:app/app/service/crash_detector/widget/crash_detector_service_widget.dart';
+import 'package:app/app/service/localization/widget/localization_service_widget.dart';
+import 'package:app/app/service/messenger/widget/messenger_service_widget.dart';
+import 'package:app/app/service/navigation/widget/navigation_service_widget.dart';
+import 'package:flutter/material.dart';
 import 'package:in_app_notification/in_app_notification.dart';
 
 /// Widget that should be placed at the root of the app

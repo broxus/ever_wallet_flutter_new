@@ -18,7 +18,6 @@ class AccountDetailCubit extends Cubit<AccountDetailState> {
     required this.nekotonRepository,
     required this.balanceService,
     required this.convertService,
-    required this.currentAccountsService,
   }) : super(const AccountDetailState.initial());
 
   final _logger = Logger('AccountDetailCubit');
@@ -27,7 +26,6 @@ class AccountDetailCubit extends Cubit<AccountDetailState> {
   final NekotonRepository nekotonRepository;
   final BalanceService balanceService;
   final CurrencyConvertService convertService;
-  final CurrentAccountsService currentAccountsService;
 
   late StreamSubscription<SeedList> _seedListSubscription;
   StreamSubscription<dynamic>? _balanceSub;
@@ -84,7 +82,6 @@ class AccountDetailCubit extends Cubit<AccountDetailState> {
             _lastTransport!.name) {
       _cachedBalance = convertBalance(Fixed.zero);
       _lastTransport = nekotonRepository.currentTransport.transport;
-      final currentAccounts = currentAccountsService.currentAccounts;
 
       _balanceSub =
           balanceService.accountOverallBalance(address).listen((balance) {
@@ -97,10 +94,7 @@ class AccountDetailCubit extends Cubit<AccountDetailState> {
 
       // if we explore not current account for which subscriptions are created
       // automatically, create subs
-      if (currentAccounts != null &&
-          !currentAccounts.displayAccounts
-              .map((e) => e.address)
-              .contains(address)) {
+      if (!nekotonRepository.walletsMap.containsKey(address)) {
         _subCreatedManually = true;
         _subscribeNative();
 
@@ -166,6 +160,7 @@ class AccountDetailCubit extends Cubit<AccountDetailState> {
   @override
   Future<void> close() {
     _seedListSubscription.cancel();
+    _balanceSub?.cancel();
 
     return super.close();
   }

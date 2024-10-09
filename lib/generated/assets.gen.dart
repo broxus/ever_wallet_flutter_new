@@ -74,6 +74,10 @@ class $AssetsImagesGen {
   SvgGenImage get arrowsLeftRight =>
       const SvgGenImage('assets/images/arrows_left_right.svg');
 
+  /// File path: assets/images/bg_internet.png
+  AssetGenImage get bgInternet =>
+      const AssetGenImage('assets/images/bg_internet.png');
+
   /// File path: assets/images/blur_background.png
   AssetGenImage get blurBackground =>
       const AssetGenImage('assets/images/blur_background.png');
@@ -394,6 +398,7 @@ class $AssetsImagesGen {
         arrowUp,
         arrowUpFlat,
         arrowsLeftRight,
+        bgInternet,
         blurBackground,
         browserCard01,
         browserCard02,
@@ -480,6 +485,19 @@ class $AssetsImagesGen {
       ];
 }
 
+class $AssetsJsGen {
+  const $AssetsJsGen();
+
+  /// File path: assets/js/main.js.LICENSE.txt
+  String get mainJsLICENSE => 'assets/js/main.js.LICENSE.txt';
+
+  /// File path: assets/js/nekoton.js
+  String get nekoton => 'assets/js/nekoton.js';
+
+  /// List of all assets
+  List<String> get values => [mainJsLICENSE, nekoton];
+}
+
 class $AssetsSplashGen {
   const $AssetsSplashGen();
 
@@ -491,8 +509,13 @@ class $AssetsSplashGen {
   AssetGenImage get icSplashLogo =>
       const AssetGenImage('assets/splash/ic_splash_logo.png');
 
+  /// File path: assets/splash/native_splash.png
+  AssetGenImage get nativeSplash =>
+      const AssetGenImage('assets/splash/native_splash.png');
+
   /// List of all assets
-  List<AssetGenImage> get values => [icSplashBanner, icSplashLogo];
+  List<AssetGenImage> get values =>
+      [icSplashBanner, icSplashLogo, nativeSplash];
 }
 
 class $AssetsTranslationsGen {
@@ -742,6 +765,7 @@ class Assets {
 
   static const $AssetsAbiGen abi = $AssetsAbiGen();
   static const $AssetsImagesGen images = $AssetsImagesGen();
+  static const $AssetsJsGen js = $AssetsJsGen();
   static const $AssetsSplashGen splash = $AssetsSplashGen();
   static const $AssetsTranslationsGen translations = $AssetsTranslationsGen();
 }

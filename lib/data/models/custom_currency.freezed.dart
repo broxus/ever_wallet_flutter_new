@@ -21,17 +21,10 @@ CustomCurrency _$CustomCurrencyFromJson(Map<String, dynamic> json) {
 /// @nodoc
 mixin _$CustomCurrency {
   String get currency => throw _privateConstructorUsedError;
-  Address get address => throw _privateConstructorUsedError; // Price in USD
-// TODO(nesquikm): refactor to use Currency and Money
+  Address get address => throw _privateConstructorUsedError;
+
+  /// Price in USD
   String get price => throw _privateConstructorUsedError;
-  String get priceChange => throw _privateConstructorUsedError;
-  String get tvl => throw _privateConstructorUsedError;
-  String get tvlChange => throw _privateConstructorUsedError;
-  String get volume24h => throw _privateConstructorUsedError;
-  String get volumeChange24h => throw _privateConstructorUsedError;
-  String get volume7d => throw _privateConstructorUsedError;
-  String get fee24h => throw _privateConstructorUsedError;
-  int get transactionsCount24h => throw _privateConstructorUsedError;
   NetworkType get networkType => throw _privateConstructorUsedError;
 
   /// Serializes this CustomCurrency to a JSON map.
@@ -54,14 +47,6 @@ abstract class $CustomCurrencyCopyWith<$Res> {
       {String currency,
       Address address,
       String price,
-      String priceChange,
-      String tvl,
-      String tvlChange,
-      String volume24h,
-      String volumeChange24h,
-      String volume7d,
-      String fee24h,
-      int transactionsCount24h,
       NetworkType networkType});
 
   $AddressCopyWith<$Res> get address;
@@ -85,14 +70,6 @@ class _$CustomCurrencyCopyWithImpl<$Res, $Val extends CustomCurrency>
     Object? currency = null,
     Object? address = null,
     Object? price = null,
-    Object? priceChange = null,
-    Object? tvl = null,
-    Object? tvlChange = null,
-    Object? volume24h = null,
-    Object? volumeChange24h = null,
-    Object? volume7d = null,
-    Object? fee24h = null,
-    Object? transactionsCount24h = null,
     Object? networkType = null,
   }) {
     return _then(_value.copyWith(
@@ -108,38 +85,6 @@ class _$CustomCurrencyCopyWithImpl<$Res, $Val extends CustomCurrency>
           ? _value.price
           : price // ignore: cast_nullable_to_non_nullable
               as String,
-      priceChange: null == priceChange
-          ? _value.priceChange
-          : priceChange // ignore: cast_nullable_to_non_nullable
-              as String,
-      tvl: null == tvl
-          ? _value.tvl
-          : tvl // ignore: cast_nullable_to_non_nullable
-              as String,
-      tvlChange: null == tvlChange
-          ? _value.tvlChange
-          : tvlChange // ignore: cast_nullable_to_non_nullable
-              as String,
-      volume24h: null == volume24h
-          ? _value.volume24h
-          : volume24h // ignore: cast_nullable_to_non_nullable
-              as String,
-      volumeChange24h: null == volumeChange24h
-          ? _value.volumeChange24h
-          : volumeChange24h // ignore: cast_nullable_to_non_nullable
-              as String,
-      volume7d: null == volume7d
-          ? _value.volume7d
-          : volume7d // ignore: cast_nullable_to_non_nullable
-              as String,
-      fee24h: null == fee24h
-          ? _value.fee24h
-          : fee24h // ignore: cast_nullable_to_non_nullable
-              as String,
-      transactionsCount24h: null == transactionsCount24h
-          ? _value.transactionsCount24h
-          : transactionsCount24h // ignore: cast_nullable_to_non_nullable
-              as int,
       networkType: null == networkType
           ? _value.networkType
           : networkType // ignore: cast_nullable_to_non_nullable
@@ -170,14 +115,6 @@ abstract class _$$CustomCurrencyImplCopyWith<$Res>
       {String currency,
       Address address,
       String price,
-      String priceChange,
-      String tvl,
-      String tvlChange,
-      String volume24h,
-      String volumeChange24h,
-      String volume7d,
-      String fee24h,
-      int transactionsCount24h,
       NetworkType networkType});
 
   @override
@@ -200,14 +137,6 @@ class __$$CustomCurrencyImplCopyWithImpl<$Res>
     Object? currency = null,
     Object? address = null,
     Object? price = null,
-    Object? priceChange = null,
-    Object? tvl = null,
-    Object? tvlChange = null,
-    Object? volume24h = null,
-    Object? volumeChange24h = null,
-    Object? volume7d = null,
-    Object? fee24h = null,
-    Object? transactionsCount24h = null,
     Object? networkType = null,
   }) {
     return _then(_$CustomCurrencyImpl(
@@ -223,38 +152,6 @@ class __$$CustomCurrencyImplCopyWithImpl<$Res>
           ? _value.price
           : price // ignore: cast_nullable_to_non_nullable
               as String,
-      priceChange: null == priceChange
-          ? _value.priceChange
-          : priceChange // ignore: cast_nullable_to_non_nullable
-              as String,
-      tvl: null == tvl
-          ? _value.tvl
-          : tvl // ignore: cast_nullable_to_non_nullable
-              as String,
-      tvlChange: null == tvlChange
-          ? _value.tvlChange
-          : tvlChange // ignore: cast_nullable_to_non_nullable
-              as String,
-      volume24h: null == volume24h
-          ? _value.volume24h
-          : volume24h // ignore: cast_nullable_to_non_nullable
-              as String,
-      volumeChange24h: null == volumeChange24h
-          ? _value.volumeChange24h
-          : volumeChange24h // ignore: cast_nullable_to_non_nullable
-              as String,
-      volume7d: null == volume7d
-          ? _value.volume7d
-          : volume7d // ignore: cast_nullable_to_non_nullable
-              as String,
-      fee24h: null == fee24h
-          ? _value.fee24h
-          : fee24h // ignore: cast_nullable_to_non_nullable
-              as String,
-      transactionsCount24h: null == transactionsCount24h
-          ? _value.transactionsCount24h
-          : transactionsCount24h // ignore: cast_nullable_to_non_nullable
-              as int,
       networkType: null == networkType
           ? _value.networkType
           : networkType // ignore: cast_nullable_to_non_nullable
@@ -270,14 +167,6 @@ class _$CustomCurrencyImpl implements _CustomCurrency {
       {required this.currency,
       required this.address,
       required this.price,
-      required this.priceChange,
-      required this.tvl,
-      required this.tvlChange,
-      required this.volume24h,
-      required this.volumeChange24h,
-      required this.volume7d,
-      required this.fee24h,
-      required this.transactionsCount24h,
       required this.networkType});
 
   factory _$CustomCurrencyImpl.fromJson(Map<String, dynamic> json) =>
@@ -287,32 +176,16 @@ class _$CustomCurrencyImpl implements _CustomCurrency {
   final String currency;
   @override
   final Address address;
-// Price in USD
-// TODO(nesquikm): refactor to use Currency and Money
+
+  /// Price in USD
   @override
   final String price;
-  @override
-  final String priceChange;
-  @override
-  final String tvl;
-  @override
-  final String tvlChange;
-  @override
-  final String volume24h;
-  @override
-  final String volumeChange24h;
-  @override
-  final String volume7d;
-  @override
-  final String fee24h;
-  @override
-  final int transactionsCount24h;
   @override
   final NetworkType networkType;
 
   @override
   String toString() {
-    return 'CustomCurrency(currency: $currency, address: $address, price: $price, priceChange: $priceChange, tvl: $tvl, tvlChange: $tvlChange, volume24h: $volume24h, volumeChange24h: $volumeChange24h, volume7d: $volume7d, fee24h: $fee24h, transactionsCount24h: $transactionsCount24h, networkType: $networkType)';
+    return 'CustomCurrency(currency: $currency, address: $address, price: $price, networkType: $networkType)';
   }
 
   @override
@@ -324,40 +197,14 @@ class _$CustomCurrencyImpl implements _CustomCurrency {
                 other.currency == currency) &&
             (identical(other.address, address) || other.address == address) &&
             (identical(other.price, price) || other.price == price) &&
-            (identical(other.priceChange, priceChange) ||
-                other.priceChange == priceChange) &&
-            (identical(other.tvl, tvl) || other.tvl == tvl) &&
-            (identical(other.tvlChange, tvlChange) ||
-                other.tvlChange == tvlChange) &&
-            (identical(other.volume24h, volume24h) ||
-                other.volume24h == volume24h) &&
-            (identical(other.volumeChange24h, volumeChange24h) ||
-                other.volumeChange24h == volumeChange24h) &&
-            (identical(other.volume7d, volume7d) ||
-                other.volume7d == volume7d) &&
-            (identical(other.fee24h, fee24h) || other.fee24h == fee24h) &&
-            (identical(other.transactionsCount24h, transactionsCount24h) ||
-                other.transactionsCount24h == transactionsCount24h) &&
             (identical(other.networkType, networkType) ||
                 other.networkType == networkType));
   }
 
   @JsonKey(includeFromJson: false, includeToJson: false)
   @override
-  int get hashCode => Object.hash(
-      runtimeType,
-      currency,
-      address,
-      price,
-      priceChange,
-      tvl,
-      tvlChange,
-      volume24h,
-      volumeChange24h,
-      volume7d,
-      fee24h,
-      transactionsCount24h,
-      networkType);
+  int get hashCode =>
+      Object.hash(runtimeType, currency, address, price, networkType);
 
   /// Create a copy of CustomCurrency
   /// with the given fields replaced by the non-null parameter values.
@@ -381,14 +228,6 @@ abstract class _CustomCurrency implements CustomCurrency {
       {required final String currency,
       required final Address address,
       required final String price,
-      required final String priceChange,
-      required final String tvl,
-      required final String tvlChange,
-      required final String volume24h,
-      required final String volumeChange24h,
-      required final String volume7d,
-      required final String fee24h,
-      required final int transactionsCount24h,
       required final NetworkType networkType}) = _$CustomCurrencyImpl;
 
   factory _CustomCurrency.fromJson(Map<String, dynamic> json) =
@@ -397,26 +236,11 @@ abstract class _CustomCurrency implements CustomCurrency {
   @override
   String get currency;
   @override
-  Address get address; // Price in USD
-// TODO(nesquikm): refactor to use Currency and Money
+  Address get address;
+
+  /// Price in USD
   @override
   String get price;
-  @override
-  String get priceChange;
-  @override
-  String get tvl;
-  @override
-  String get tvlChange;
-  @override
-  String get volume24h;
-  @override
-  String get volumeChange24h;
-  @override
-  String get volume7d;
-  @override
-  String get fee24h;
-  @override
-  int get transactionsCount24h;
   @override
   NetworkType get networkType;
 

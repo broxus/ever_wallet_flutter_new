@@ -13,6 +13,7 @@ import 'package:logging/logging.dart';
 import 'package:nekoton_repository/nekoton_repository.dart' hide Message;
 
 part 'create_seed_password_cubit.freezed.dart';
+
 part 'create_seed_password_state.dart';
 
 const _minPasswordLength = 8;
@@ -32,7 +33,7 @@ class CreateSeedPasswordCubit extends Cubit<CreateSeedPasswordState>
   }
 
   /// Callback that calls when seed is created
-  final VoidCallback completeCallback;
+  final void Function(PublicKey) completeCallback;
 
   /// Phrase that must be used to create seed
   final SeedPhraseModel seedPhrase;
@@ -92,7 +93,7 @@ class CreateSeedPasswordCubit extends Cubit<CreateSeedPasswordState>
         publicKey: publicKey,
         password: passwordController.text,
       );
-      completeCallback();
+      completeCallback(publicKey);
     } catch (e) {
       Logger('CreateSeedPasswordCubit').severe(e);
       emit(state.copyWith(isLoading: false));
