@@ -49,15 +49,19 @@ class AccountTransactionsTab extends StatelessWidget {
           final colors = context.themeStyle.colors;
 
           return state.when(
-            empty: () => Text(
-              LocaleKeys.historyIsEmpty.tr(),
-              style: StyleRes.primaryBold.copyWith(
-                color: colors.textPrimary,
+            empty: () => SliverToBoxAdapter(
+              child: Text(
+                LocaleKeys.historyIsEmpty.tr(),
+                style: StyleRes.primaryBold.copyWith(
+                  color: colors.textPrimary,
+                ),
               ),
             ),
-            loading: () => ProgressIndicatorWidget(
-              size: DimensSizeV2.d32,
-              color: theme.colors.content0,
+            loading: () => SliverToBoxAdapter(
+              child: ProgressIndicatorWidget(
+                size: DimensSizeV2.d32,
+                color: theme.colors.content0,
+              ),
             ),
             transactions: (transactions, isLoading, _, price) {
               return ScrollControllerPreloadListener(
@@ -65,9 +69,7 @@ class AccountTransactionsTab extends StatelessWidget {
                     .read<AccountTransactionsTabCubit>()
                     .tryPreloadTransactions(),
                 scrollController: scrollController,
-                child: ListView.builder(
-                  shrinkWrap: true,
-                  physics: const NeverScrollableScrollPhysics(),
+                child: SliverList.builder(
                   itemCount: transactions.length + (isLoading ? 1 : 0),
                   itemBuilder: (context, index) {
                     if (index == transactions.length) {

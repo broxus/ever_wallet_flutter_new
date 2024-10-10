@@ -7,10 +7,9 @@
 // ignore_for_file: type=lint
 // ignore_for_file: directives_ordering,unnecessary_import,implicit_dynamic_list_literal,deprecated_member_use
 
-import 'package:flutter/services.dart';
 import 'package:flutter/widgets.dart';
-import 'package:flutter_svg/flutter_svg.dart' as _svg;
-import 'package:vector_graphics/vector_graphics.dart' as _vg;
+import 'package:flutter_svg/flutter_svg.dart';
+import 'package:flutter/services.dart';
 
 class $AssetsAbiGen {
   const $AssetsAbiGen();
@@ -45,7 +44,6 @@ class $AssetsImagesGen {
   /// File path: assets/images/alert.svg
   SvgGenImage get alert => const SvgGenImage('assets/images/alert.svg');
 
-  /// Directory path: assets/images/alert_octagon_fill
   $AssetsImagesAlertOctagonFillGen get alertOctagonFill =>
       const $AssetsImagesAlertOctagonFillGen();
 
@@ -75,6 +73,10 @@ class $AssetsImagesGen {
   /// File path: assets/images/arrows_left_right.svg
   SvgGenImage get arrowsLeftRight =>
       const SvgGenImage('assets/images/arrows_left_right.svg');
+
+  /// File path: assets/images/bg_internet.png
+  AssetGenImage get bgInternet =>
+      const AssetGenImage('assets/images/bg_internet.png');
 
   /// File path: assets/images/blur_background.png
   AssetGenImage get blurBackground =>
@@ -124,7 +126,6 @@ class $AssetsImagesGen {
   /// File path: assets/images/check.svg
   SvgGenImage get check => const SvgGenImage('assets/images/check.svg');
 
-  /// Directory path: assets/images/check_circle_fill
   $AssetsImagesCheckCircleFillGen get checkCircleFill =>
       const $AssetsImagesCheckCircleFillGen();
 
@@ -221,7 +222,6 @@ class $AssetsImagesGen {
   SvgGenImage get historyFill =>
       const SvgGenImage('assets/images/history_fill.svg');
 
-  /// Directory path: assets/images/homescreen_bg
   $AssetsImagesHomescreenBgGen get homescreenBg =>
       const $AssetsImagesHomescreenBgGen();
 
@@ -246,7 +246,6 @@ class $AssetsImagesGen {
   /// File path: assets/images/key.svg
   SvgGenImage get key => const SvgGenImage('assets/images/key.svg');
 
-  /// Directory path: assets/images/lang_icons
   $AssetsImagesLangIconsGen get langIcons => const $AssetsImagesLangIconsGen();
 
   /// File path: assets/images/lock.svg
@@ -293,7 +292,6 @@ class $AssetsImagesGen {
   SvgGenImage get networkVenom =>
       const SvgGenImage('assets/images/network_venom.svg');
 
-  /// Directory path: assets/images/onboarding
   $AssetsImagesOnboardingGen get onboarding =>
       const $AssetsImagesOnboardingGen();
 
@@ -358,7 +356,6 @@ class $AssetsImagesGen {
   /// File path: assets/images/star.svg
   SvgGenImage get star => const SvgGenImage('assets/images/star.svg');
 
-  /// Directory path: assets/images/stever
   $AssetsImagesSteverGen get stever => const $AssetsImagesSteverGen();
 
   /// File path: assets/images/support.svg
@@ -371,7 +368,6 @@ class $AssetsImagesGen {
   /// File path: assets/images/trash.svg
   SvgGenImage get trash => const SvgGenImage('assets/images/trash.svg');
 
-  /// Directory path: assets/images/user_avatar
   $AssetsImagesUserAvatarGen get userAvatar =>
       const $AssetsImagesUserAvatarGen();
 
@@ -402,6 +398,7 @@ class $AssetsImagesGen {
         arrowUp,
         arrowUpFlat,
         arrowsLeftRight,
+        bgInternet,
         blurBackground,
         browserCard01,
         browserCard02,
@@ -488,6 +485,19 @@ class $AssetsImagesGen {
       ];
 }
 
+class $AssetsJsGen {
+  const $AssetsJsGen();
+
+  /// File path: assets/js/main.js.LICENSE.txt
+  String get mainJsLICENSE => 'assets/js/main.js.LICENSE.txt';
+
+  /// File path: assets/js/nekoton.js
+  String get nekoton => 'assets/js/nekoton.js';
+
+  /// List of all assets
+  List<String> get values => [mainJsLICENSE, nekoton];
+}
+
 class $AssetsSplashGen {
   const $AssetsSplashGen();
 
@@ -499,8 +509,13 @@ class $AssetsSplashGen {
   AssetGenImage get icSplashLogo =>
       const AssetGenImage('assets/splash/ic_splash_logo.png');
 
+  /// File path: assets/splash/native_splash.png
+  AssetGenImage get nativeSplash =>
+      const AssetGenImage('assets/splash/native_splash.png');
+
   /// List of all assets
-  List<AssetGenImage> get values => [icSplashBanner, icSplashLogo];
+  List<AssetGenImage> get values =>
+      [icSplashBanner, icSplashLogo, nativeSplash];
 }
 
 class $AssetsTranslationsGen {
@@ -567,15 +582,10 @@ class $AssetsImagesLangIconsGen {
 class $AssetsImagesOnboardingGen {
   const $AssetsImagesOnboardingGen();
 
-  /// Directory path: assets/images/onboarding/layer1
   $AssetsImagesOnboardingLayer1Gen get layer1 =>
       const $AssetsImagesOnboardingLayer1Gen();
-
-  /// Directory path: assets/images/onboarding/layer2
   $AssetsImagesOnboardingLayer2Gen get layer2 =>
       const $AssetsImagesOnboardingLayer2Gen();
-
-  /// Directory path: assets/images/onboarding/layer3
   $AssetsImagesOnboardingLayer3Gen get layer3 =>
       const $AssetsImagesOnboardingLayer3Gen();
 }
@@ -755,21 +765,15 @@ class Assets {
 
   static const $AssetsAbiGen abi = $AssetsAbiGen();
   static const $AssetsImagesGen images = $AssetsImagesGen();
+  static const $AssetsJsGen js = $AssetsJsGen();
   static const $AssetsSplashGen splash = $AssetsSplashGen();
   static const $AssetsTranslationsGen translations = $AssetsTranslationsGen();
 }
 
 class AssetGenImage {
-  const AssetGenImage(
-    this._assetName, {
-    this.size,
-    this.flavors = const {},
-  });
+  const AssetGenImage(this._assetName);
 
   final String _assetName;
-
-  final Size? size;
-  final Set<String> flavors;
 
   Image image({
     Key? key,
@@ -841,24 +845,11 @@ class AssetGenImage {
 }
 
 class SvgGenImage {
-  const SvgGenImage(
-    this._assetName, {
-    this.size,
-    this.flavors = const {},
-  }) : _isVecFormat = false;
-
-  const SvgGenImage.vec(
-    this._assetName, {
-    this.size,
-    this.flavors = const {},
-  }) : _isVecFormat = true;
+  const SvgGenImage(this._assetName);
 
   final String _assetName;
-  final Size? size;
-  final Set<String> flavors;
-  final bool _isVecFormat;
 
-  _svg.SvgPicture svg({
+  SvgPicture svg({
     Key? key,
     bool matchTextDirection = false,
     AssetBundle? bundle,
@@ -871,32 +862,19 @@ class SvgGenImage {
     WidgetBuilder? placeholderBuilder,
     String? semanticsLabel,
     bool excludeFromSemantics = false,
-    _svg.SvgTheme? theme,
+    SvgTheme theme = const SvgTheme(),
     ColorFilter? colorFilter,
     Clip clipBehavior = Clip.hardEdge,
     @deprecated Color? color,
     @deprecated BlendMode colorBlendMode = BlendMode.srcIn,
     @deprecated bool cacheColorFilter = false,
   }) {
-    final _svg.BytesLoader loader;
-    if (_isVecFormat) {
-      loader = _vg.AssetBytesLoader(
-        _assetName,
-        assetBundle: bundle,
-        packageName: package,
-      );
-    } else {
-      loader = _svg.SvgAssetLoader(
-        _assetName,
-        assetBundle: bundle,
-        packageName: package,
-        theme: theme,
-      );
-    }
-    return _svg.SvgPicture(
-      loader,
+    return SvgPicture.asset(
+      _assetName,
       key: key,
       matchTextDirection: matchTextDirection,
+      bundle: bundle,
+      package: package,
       width: width,
       height: height,
       fit: fit,
@@ -905,8 +883,10 @@ class SvgGenImage {
       placeholderBuilder: placeholderBuilder,
       semanticsLabel: semanticsLabel,
       excludeFromSemantics: excludeFromSemantics,
-      colorFilter: colorFilter ??
-          (color == null ? null : ColorFilter.mode(color, colorBlendMode)),
+      theme: theme,
+      colorFilter: colorFilter,
+      color: color,
+      colorBlendMode: colorBlendMode,
       clipBehavior: clipBehavior,
       cacheColorFilter: cacheColorFilter,
     );

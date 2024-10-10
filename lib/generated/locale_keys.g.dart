@@ -10,8 +10,6 @@ abstract class LocaleKeys {
   static const skipWord = 'skipWord';
   static const letsCheckSeedPhrase = 'letsCheckSeedPhrase';
   static const chooseNetwork = 'chooseNetwork';
-  static const chooseNetworkEverDescription = 'chooseNetworkEverDescription';
-  static const chooseNetworkVenomDescription = 'chooseNetworkVenomDescription';
   static const checkSeedPhraseCorrectly = 'checkSeedPhraseCorrectly';
   static const seedIsWrong = 'seedIsWrong';
   static const selectNetworkNewWalletDescription =
@@ -74,6 +72,7 @@ abstract class LocaleKeys {
   static const copyAddress = 'copyAddress';
   static const exportWord = 'exportWord';
   static const changePassword = 'changePassword';
+  static const changeWord = 'changeWord';
   static const deleteWord = 'deleteWord';
   static const deleteSeedPhrase = 'deleteSeedPhrase';
   static const deleteKey = 'deleteKey';
@@ -217,6 +216,7 @@ abstract class LocaleKeys {
   static const browserHistoryEmptySearch = 'browserHistoryEmptySearch';
   static const browserHistoryEdit = 'browserHistoryEdit';
   static const browserHistoryClear = 'browserHistoryClear';
+  static const clearWord = 'clearWord';
   static const browserHistoryDone = 'browserHistoryDone';
   static const browserClearHistory = 'browserClearHistory';
   static const browserClearCookies = 'browserClearCookies';
@@ -373,6 +373,7 @@ abstract class LocaleKeys {
   static const selectAccount = 'selectAccount';
   static const grantPermissions = 'grantPermissions';
   static const changeAccount = 'changeAccount';
+  static const changeColor = 'changeColor';
   static const originWord = 'originWord';
   static const requestedPermissions = 'requestedPermissions';
   static const allowWord = 'allowWord';
@@ -448,6 +449,7 @@ abstract class LocaleKeys {
   static const cancelUnstakingCheckTitle = 'cancelUnstakingCheckTitle';
   static const cancelUnstakingCheckSubtitle = 'cancelUnstakingCheckSubtitle';
   static const yesImSure = 'yesImSure';
+  static const yesDeleteAll = 'yesDeleteAll';
   static const liquidStaking = 'liquidStaking';
   static const unstakeAmount = 'unstakeAmount';
   static const textFieldShouldNotBeEmpty = 'textFieldShouldNotBeEmpty';
@@ -583,4 +585,34 @@ abstract class LocaleKeys {
   static const accountAddedSheetSwitch = 'accountAddedSheetSwitch';
   static const accountAddedSheetContinue = 'accountAddedSheetContinue';
   static const invalidReceiverAddress = 'invalidReceiverAddress';
+  static const deleteBookmarksQuestion = 'deleteBookmarksQuestion';
+  static const deleteBookmarksDescription = 'deleteBookmarksDescription';
+  static const save = 'save';
+  static const oopsNoInternet = 'oopsNoInternet';
+  static const offlineCheckConnection = 'offlineCheckConnection';
+  static const newSeedPhraseSwitchTitle = 'newSeedPhraseSwitchTitle';
+  static const newSeedPhraseSwitchSubtitle = 'newSeedPhraseSwitchSubtitle';
+  static const newSeedPhraseSwitchButton = 'newSeedPhraseSwitchButton';
+  static const txTreeSimulationErrorComputePhase_0 =
+      'txTreeSimulationErrorComputePhase.0';
+  static const txTreeSimulationErrorComputePhase_1 =
+      'txTreeSimulationErrorComputePhase.1';
+  static const txTreeSimulationErrorComputePhase =
+      'txTreeSimulationErrorComputePhase';
+  static const txTreeSimulationErrorActionPhase_0 =
+      'txTreeSimulationErrorActionPhase.0';
+  static const txTreeSimulationErrorActionPhase_1 =
+      'txTreeSimulationErrorActionPhase.1';
+  static const txTreeSimulationErrorActionPhase =
+      'txTreeSimulationErrorActionPhase';
+  static const txTreeSimulationErrorFrozen_0 = 'txTreeSimulationErrorFrozen.0';
+  static const txTreeSimulationErrorFrozen_1 = 'txTreeSimulationErrorFrozen.1';
+  static const txTreeSimulationErrorFrozen = 'txTreeSimulationErrorFrozen';
+  static const txTreeSimulationErrorDeleted_0 =
+      'txTreeSimulationErrorDeleted.0';
+  static const txTreeSimulationErrorDeleted_1 =
+      'txTreeSimulationErrorDeleted.1';
+  static const txTreeSimulationErrorDeleted = 'txTreeSimulationErrorDeleted';
+  static const txTreeSimulationErrorHint = 'txTreeSimulationErrorHint';
+  static const token = 'token';
 }

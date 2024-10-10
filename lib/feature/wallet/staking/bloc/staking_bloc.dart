@@ -6,15 +6,18 @@ import 'package:app/data/models/models.dart';
 import 'package:app/di/di.dart';
 import 'package:app/feature/wallet/staking/staking.dart';
 import 'package:app/generated/generated.dart';
+import 'package:app/widgets/amount_input/amount_input_asset.dart';
 import 'package:bloc/bloc.dart';
-import 'package:bloc_event_transformers/bloc_event_transformers.dart';
+import 'package:collection/collection.dart';
 import 'package:flutter/widgets.dart';
 import 'package:freezed_annotation/freezed_annotation.dart';
 import 'package:logging/logging.dart';
 import 'package:nekoton_repository/nekoton_repository.dart' hide Message;
 
 part 'staking_bloc.freezed.dart';
+
 part 'staking_bloc_event.dart';
+
 part 'staking_bloc_state.dart';
 
 const _defaultWithdrawHours = 36;
@@ -22,8 +25,10 @@ final _maxPossibleStakeComission = BigInt.parse('100000000'); // 0.1 EVER
 
 enum StakingPageType { stake, unstake, inProgress }
 
+// TODO(komarov): refactor
 class StakingBloc extends Bloc<StakingBlocEvent, StakingBlocState> {
   StakingBloc({
+    required this.context,
     required this.accountAddress,
     required this.nekotonRepository,
     required this.currencyConvert,
@@ -31,6 +36,7 @@ class StakingBloc extends Bloc<StakingBlocEvent, StakingBlocState> {
     required this.stakingService,
     required this.actionBloc,
   }) : super(const StakingBlocState.preparing()) {
+    stakingService.resetCache();
     _registerHandlers();
     _inputController
         .addListener(() => add(StakingBlocEvent.updateReceive(_currentValue)));
@@ -38,6 +44,7 @@ class StakingBloc extends Bloc<StakingBlocEvent, StakingBlocState> {
 
   final _logger = Logger('StakingBloc');
   final Address accountAddress;
+  final BuildContext context;
   final NekotonRepository nekotonRepository;
   final CurrencyConvertService currencyConvert;
   final CurrenciesService currenciesService;
@@ -77,13 +84,14 @@ class StakingBloc extends Bloc<StakingBlocEvent, StakingBlocState> {
         _nativeCurrency,
       );
 
+  CustomCurrency get everWalletCurrency => _everWalletCurrency;
+
+  CustomCurrency get stEverWalletCurrency => _stEverWalletCurrency;
+
   void _registerHandlers() {
     on<_Init>((_, emit) => _init(emit));
     on<_SelectMax>((_, emit) => _selectMax());
-    on<_UpdateReceive>(
-      (event, emit) => _updateReceive(event.value, emit),
-      transformer: debounce(const Duration(seconds: 1)),
-    );
+    on<_UpdateReceive>((event, emit) => _updateReceive(event.value, emit));
     on<_UpdateRequests>((event, emit) {
       _requests = event.requests;
 
@@ -139,7 +147,7 @@ class StakingBloc extends Bloc<StakingBlocEvent, StakingBlocState> {
       final pair = (accountAddress, staking.stakingRootContractAddress);
       final transport = nekotonRepository.currentTransport;
 
-      final ever = nekotonRepository.getWallet(accountAddress);
+      final ever = await nekotonRepository.getWallet(accountAddress);
       if (ever.hasError) {
         emit(StakingBlocState.subscribeError(ever.error!));
 
@@ -154,7 +162,7 @@ class StakingBloc extends Bloc<StakingBlocEvent, StakingBlocState> {
         );
       }
 
-      final stever = nekotonRepository.getTokenWallet(pair.$1, pair.$2);
+      final stever = await nekotonRepository.getTokenWallet(pair.$1, pair.$2);
       if (stever.hasError) {
         emit(StakingBlocState.subscribeError(stever.error!));
 
@@ -176,11 +184,12 @@ class StakingBloc extends Bloc<StakingBlocEvent, StakingBlocState> {
           Duration(seconds: int.tryParse(_details.withdrawHoldTime) ?? 0)
               .inHours;
       withdrawHours = 0 <= time && time <= 24 ? time + 36 : time + 18;
-      final local = nekotonRepository.getLocalCustodians(accountAddress)?.first;
-      if (local == null) {
+      final account = nekotonRepository.accountsStorage.accounts
+          .firstWhereOrNull((item) => item.address == accountAddress);
+      if (account == null) {
         throw Exception();
       }
-      accountPublicKey = local;
+      accountPublicKey = account.publicKey;
 
       // Do it last because if user don't have address, then method can throw
       // error
@@ -208,7 +217,7 @@ class StakingBloc extends Bloc<StakingBlocEvent, StakingBlocState> {
   /// Get input value as Fixed based on [_currentCurrency]
   Fixed get _currentValue {
     return Fixed.fromNum(
-      num.tryParse(_inputController.text) ?? 0.0,
+      num.tryParse(_inputController.text.trim().replaceAll(',', '.')) ?? 0.0,
       scale: _currentCurrency.decimalDigits,
     );
   }
@@ -225,15 +234,17 @@ class StakingBloc extends Bloc<StakingBlocEvent, StakingBlocState> {
     try {
       switch (_type) {
         case StakingPageType.stake:
-          final amount =
-              await stakingService.getDepositStEverAmount(value.minorUnits);
+          final amount = value.isZero
+              ? BigInt.zero
+              : await stakingService.getDepositStEverAmount(value.minorUnits);
           _receive = Money.fromBigIntWithCurrency(
             amount,
             _stEverWallet.currency,
           );
         case StakingPageType.unstake:
-          final amount =
-              await stakingService.getWithdrawEverAmount(value.minorUnits);
+          final amount = value.isZero
+              ? BigInt.zero
+              : await stakingService.getWithdrawEverAmount(value.minorUnits);
           _receive = Money.fromBigIntWithCurrency(
             amount,
             _nativeCurrency,
@@ -255,6 +266,10 @@ class StakingBloc extends Bloc<StakingBlocEvent, StakingBlocState> {
     BigInt attachedAmount;
     double exchangeRate;
     Currency receiveCurrency;
+    Address rootTokenContract;
+    CustomCurrency currency;
+    var title = '';
+    var tokenSymbol = '';
     var imagePath = '';
 
     switch (_type) {
@@ -269,7 +284,12 @@ class StakingBloc extends Bloc<StakingBlocEvent, StakingBlocState> {
         );
         exchangeRate = _details.stEverSupply / _details.totalAssets;
         imagePath = nekotonRepository.currentTransport.nativeTokenIcon;
+        tokenSymbol = nekotonRepository.currentTransport.nativeTokenTicker;
+        title = nekotonRepository.currentTransport.nativeTokenTicker;
+        rootTokenContract =
+            nekotonRepository.currentTransport.nativeTokenAddress;
         receiveCurrency = _stEverWallet.moneyBalance.currency;
+        currency = _everWalletCurrency;
       case StakingPageType.unstake:
         attachedAmount = staking.stakeWithdrawAttachedFee;
         balance = _stEverWallet.moneyBalance;
@@ -278,11 +298,17 @@ class StakingBloc extends Bloc<StakingBlocEvent, StakingBlocState> {
         );
         exchangeRate = _details.totalAssets / _details.stEverSupply;
         imagePath = Assets.images.stever.stever.path;
+        tokenSymbol = _stEverWallet.symbol.name;
+        title = _stEverWallet.symbol.fullName;
+        rootTokenContract = _stEverWallet.symbol.rootTokenContract;
         receiveCurrency = _nativeCurrency;
+        currency = _stEverWalletCurrency;
       case StakingPageType.inProgress:
         attachedAmount = staking.stakeRemovePendingWithdrawAttachedFee;
         exchangeRate = _details.totalAssets / _details.stEverSupply;
         receiveCurrency = _stEverWallet.moneyBalance.currency;
+        rootTokenContract = _stEverWallet.symbol.rootTokenContract;
+        currency = _stEverWalletCurrency;
         // fake balance
         balance =
             Money.fromBigIntWithCurrency(BigInt.zero, Currency.create('-', 0));
@@ -299,11 +325,9 @@ class StakingBloc extends Bloc<StakingBlocEvent, StakingBlocState> {
     return StakingBlocState.data(
       type: _type,
       inputController: _inputController,
-      currentBalance: balance,
       enteredPrice: enteredPrice,
       attachedAmount: attachedAmount,
       exchangeRate: exchangeRate,
-      imagePath: imagePath,
       requests: _requests,
       receiveBalance: _receive,
       canSubmitAction: canPress,
@@ -311,11 +335,20 @@ class StakingBloc extends Bloc<StakingBlocEvent, StakingBlocState> {
       apy: apy,
       receiveCurrency: receiveCurrency,
       accountKey: accountPublicKey,
+      asset: AmountInputAsset(
+        rootTokenContract: rootTokenContract,
+        isNative: _type == StakingPageType.stake,
+        balance: balance,
+        logoURI: imagePath,
+        title: title,
+        tokenSymbol: tokenSymbol,
+        currency: currency,
+      ),
     );
   }
 
   void _selectMax() {
-    var max = _dataState.currentBalance;
+    var max = _dataState.asset.balance;
 
     if (_type == StakingPageType.stake) {
       max = max - comissionMoney;
@@ -323,6 +356,7 @@ class StakingBloc extends Bloc<StakingBlocEvent, StakingBlocState> {
       if (max.amount < Fixed.zero) {
         inject<MessengerService>().show(
           Message.error(
+            context: context,
             message: LocaleKeys.stakingNotEnoughBalanceToStake.tr(
               args: [
                 comissionMoney.formatImproved(),

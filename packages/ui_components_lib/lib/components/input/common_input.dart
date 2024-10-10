@@ -3,7 +3,6 @@ import 'package:flutter/services.dart';
 import 'package:flutter_typeahead/flutter_typeahead.dart';
 import 'package:ui_components_lib/components/input/common_input_style_v2.dart';
 import 'package:ui_components_lib/ui_components_lib.dart';
-import 'package:ui_components_lib/v2/dimens_v2.dart';
 
 /// Default height for input
 const commonInputHeight = DimensSize.d56;

@@ -8,7 +8,6 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
 import 'package:nekoton_repository/nekoton_repository.dart';
 import 'package:ui_components_lib/ui_components_lib.dart';
-import 'package:ui_components_lib/v2/ui_components_lib_v2.dart';
 
 /// Page that allows send funds from TonWalelt (native token).
 class TonWalletSendPage extends StatelessWidget {
@@ -56,6 +55,7 @@ class TonWalletSendPage extends StatelessWidget {
   Widget build(BuildContext context) {
     return BlocProvider<TonWalletSendBloc>(
       create: (_) => TonWalletSendBloc(
+        context: context,
         destination: destination,
         amount: amount + (attachedAmount ?? BigInt.zero),
         address: address,
@@ -89,7 +89,8 @@ class TonWalletSendPage extends StatelessWidget {
             loading: _confirmPage,
             calculatingError: (error, fee) =>
                 _confirmPage(fee: fee, error: error),
-            readyToSend: (fee) => _confirmPage(fee: fee),
+            readyToSend: (fee, txErrors) =>
+                _confirmPage(fee: fee, txErrors: txErrors),
             sending: _sendingPage,
             sent: (fee, _) => _sendingPage(true),
           );
@@ -98,7 +99,12 @@ class TonWalletSendPage extends StatelessWidget {
     );
   }
 
-  Widget _confirmPage({BigInt? fee, String? error}) => Scaffold(
+  Widget _confirmPage({
+    BigInt? fee,
+    String? error,
+    List<TxTreeSimulationErrorItem>? txErrors,
+  }) =>
+      Scaffold(
         appBar: DefaultAppBar(
           onClosePressed: (context) => context.pop(),
           titleText: LocaleKeys.confirmTransaction.tr(),
@@ -114,6 +120,7 @@ class TonWalletSendPage extends StatelessWidget {
             publicKey: publicKey,
             fee: fee,
             feeError: error,
+            txErrors: txErrors,
           ),
         ),
       );

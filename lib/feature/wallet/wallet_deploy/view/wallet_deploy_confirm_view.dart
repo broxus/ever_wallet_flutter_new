@@ -1,12 +1,14 @@
 import 'package:app/di/di.dart';
 import 'package:app/feature/profile/profile.dart';
 import 'package:app/feature/wallet/wallet.dart';
+import 'package:app/feature/wallet/widgets/account_transactions_tab/detail/details_item.dart';
 import 'package:app/generated/generated.dart';
 import 'package:collection/collection.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:nekoton_repository/nekoton_repository.dart';
 import 'package:ui_components_lib/ui_components_lib.dart';
+import 'package:ui_components_lib/v2/ui_components_lib_v2.dart';
 
 /// Widget, that displays base information for deploying wallet and let user
 /// confirm transaction by entering password.
@@ -31,7 +33,7 @@ class WalletDeployConfirmView extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final isLoading = fee == null && feeError == null;
-    final colors = context.themeStyle.colors;
+    final theme = context.themeStyleV2;
 
     return SeparatedColumn(
       crossAxisAlignment: CrossAxisAlignment.start,
@@ -39,42 +41,46 @@ class WalletDeployConfirmView extends StatelessWidget {
         Expanded(
           child: SingleChildScrollView(
             child: ShapedContainerColumn(
+              padding: const EdgeInsets.symmetric(
+                vertical: DimensSizeV2.d16,
+                horizontal: DimensSizeV2.d16,
+              ),
+              color: theme.colors.background1,
               mainAxisSize: MainAxisSize.min,
               separator: const Padding(
-                padding: EdgeInsets.symmetric(vertical: DimensSize.d8),
+                padding: EdgeInsets.symmetric(vertical: DimensSizeV2.d8),
                 child: CommonDivider(),
               ),
               children: [
                 Text(
                   LocaleKeys.fundsDebitedToDeploy.tr(),
-                  style: StyleRes.secondaryBold
-                      .copyWith(color: colors.textSecondary),
+                  style: theme.textStyles.labelMedium,
                 ),
-                _info(
+                WalletTransactionDetailsItem(
                   title: LocaleKeys.accountBalance.tr(),
-                  valueChild: MoneyWidget(
-                    money: Money.fromBigIntWithCurrency(
+                  valueWidget: AmountWidget.fromMoney(
+                    amount: Money.fromBigIntWithCurrency(
                       balance ?? BigInt.zero,
                       Currencies()[inject<NekotonRepository>()
                           .currentTransport
                           .nativeTokenTicker]!,
                     ),
-                    style: MoneyWidgetStyle.primary,
                   ),
                 ),
-                _info(
-                  title: LocaleKeys.blockchainFee.tr(),
-                  valueChild: MoneyWidget(
-                    money: Money.fromBigIntWithCurrency(
+                WalletTransactionDetailsItem(
+                  title: LocaleKeys.networkFee.tr(),
+                  valueWidget: AmountWidget.fromMoney(
+                    amount: Money.fromBigIntWithCurrency(
                       fee ?? BigInt.zero,
                       Currencies()[inject<NekotonRepository>()
                           .currentTransport
                           .nativeTokenTicker]!,
                     ),
-                    signValue: '~',
-                    style: MoneyWidgetStyle.primary,
+                    sign: '${LocaleKeys.approximatelySign.tr()} ',
+                    useDefaultFormat: false,
                   ),
-                  subtitleError: feeError,
+                  subtitle: feeError,
+                  isSubtitleError: true,
                 ),
                 ...?custodians?.mapIndexed(
                   (index, e) => _info(
@@ -100,10 +106,9 @@ class WalletDeployConfirmView extends StatelessWidget {
         ),
         Padding(
           padding: const EdgeInsets.all(DimensSize.d16),
-          child: CommonButton.primary(
-            fillWidth: true,
+          child: PrimaryButton(
             isLoading: isLoading,
-            text: LocaleKeys.sendWord.tr(),
+            title: LocaleKeys.sendWord.tr(),
             onPressed: feeError != null || fee == null
                 ? null
                 : () {
@@ -129,6 +134,7 @@ class WalletDeployConfirmView extends StatelessWidget {
                       ),
                     );
                   },
+            buttonShape: ButtonShape.pill,
           ),
         ),
       ],

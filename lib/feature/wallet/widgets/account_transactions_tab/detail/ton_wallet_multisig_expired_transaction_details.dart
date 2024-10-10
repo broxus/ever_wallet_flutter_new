@@ -6,7 +6,7 @@ import 'package:flutter/material.dart';
 import 'package:nekoton_repository/nekoton_repository.dart';
 import 'package:ui_components_lib/components/common/common.dart';
 import 'package:ui_components_lib/dimens.dart';
-import 'package:ui_components_lib/v2/theme_style_v2.dart';
+import 'package:ui_components_lib/v2/ui_components_lib_v2.dart';
 
 /// Page that displays information about multisig expired transaction for
 /// TonWallet
@@ -64,6 +64,7 @@ class TonWalletMultisigExpiredTransactionDetailsPage extends StatelessWidget {
               info: methodData?.$1,
               type: LocaleKeys.multisigWord.tr(),
               tonIconPath: tonIconPath,
+              tokenIconPath: tonIconPath,
               price: price,
             ),
             TonWalletTransactionCustodiansDetails(
@@ -71,6 +72,7 @@ class TonWalletMultisigExpiredTransactionDetailsPage extends StatelessWidget {
               custodians: transaction.custodians,
               initiator: transaction.creator,
             ),
+            const SizedBox(height: DimensSizeV2.d32),
           ],
         ),
       ),

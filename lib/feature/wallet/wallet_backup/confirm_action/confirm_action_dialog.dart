@@ -5,6 +5,8 @@ import 'package:app/generated/generated.dart';
 import 'package:elementary/elementary.dart';
 import 'package:elementary_helper/elementary_helper.dart';
 import 'package:flutter/cupertino.dart';
+import 'package:local_auth/local_auth.dart';
+import 'package:lucide_icons_flutter/lucide_icons.dart';
 import 'package:nekoton_repository/nekoton_repository.dart';
 import 'package:ui_components_lib/v2/ui_components_lib_v2.dart';
 import 'package:ui_components_lib/v2/widgets/modals/primary_bottom_sheet.dart';
@@ -61,6 +63,7 @@ class ContentConfirmAction extends ElementaryWidget<ConfirmActionWidgetModel> {
             SecureTextField(
               textEditingController: wm.passwordController,
               validator: (_) => data?.error,
+              isAutofocus: true,
               hintText: LocaleKeys.enterYourPassword.tr(),
             ),
             const SizedBox(height: DimensSizeV2.d28),
@@ -69,6 +72,36 @@ class ContentConfirmAction extends ElementaryWidget<ConfirmActionWidgetModel> {
               title: LocaleKeys.confirm.tr(),
               isLoading: data?.isLoading ?? false,
               onPressed: wm.onClickConfirm,
+            ),
+            StateNotifierBuilder(
+              listenableState: wm.availableBiometry,
+              builder: (_, value) {
+                if (value?.contains(BiometricType.face) ?? false) {
+                  return Padding(
+                    padding: const EdgeInsets.only(top: DimensSizeV2.d8),
+                    child: PrimaryButton(
+                      buttonShape: ButtonShape.pill,
+                      title: LocaleKeys.useFaceID.tr(),
+                      icon: LucideIcons.scanFace,
+                      onPressed: wm.onUseBiometry,
+                    ),
+                  );
+                }
+
+                if (value?.contains(BiometricType.fingerprint) ?? false) {
+                  return Padding(
+                    padding: const EdgeInsets.only(top: DimensSizeV2.d8),
+                    child: PrimaryButton(
+                      buttonShape: ButtonShape.pill,
+                      title: LocaleKeys.useFingerprint.tr(),
+                      icon: LucideIcons.fingerprint,
+                      onPressed: wm.onUseBiometry,
+                    ),
+                  );
+                }
+
+                return const SizedBox.shrink();
+              },
             ),
           ],
         );

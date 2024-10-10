@@ -7,6 +7,8 @@ import 'package:app/data/models/models.dart';
 import 'package:app/feature/add_seed/add_seed_enable_biometry/add_seed_enable_biometry.dart';
 import 'package:app/feature/add_seed/add_seed_enable_biometry/view/add_seed_enable_biometry_page.dart';
 import 'package:app/feature/network/network.dart';
+import 'package:app/feature/no_internet/no_internet_screen.dart';
+import 'package:app/feature/splash/splash_screen.dart';
 import 'package:app/feature/wallet/add_account/add_account.dart';
 import 'package:app/feature/wallet/wallet.dart';
 import 'package:app/feature/wallet/widgets/account_asset_tab/select_new_asset/select_new_asset.dart';
@@ -71,6 +73,10 @@ const walletCancelUnstakingStakingCurrencyCodeQueryParam =
     'walletCancelUnstakingStakingCurrencyCode';
 const walletCancelUnstakingAttachedFeeQueryParam =
     'walletCancelUnstakingStakingAttachedFee';
+const walletCancelUnstakingTokenPriceQueryParam =
+    'walletCancelUnstakingTokenPrice';
+const walletCancelUnstakingEverPriceQueryParam =
+    'walletCancelUnstakingEverPrice';
 
 const walletCreatePublicKeyQueryParam = 'walletCreatePublicKey';
 const walletCreatePasswordQueryParam = 'walletCreatePassword';
@@ -365,9 +371,31 @@ GoRoute get cancelUnstakingRoute {
       withdrawHours: int.parse(
         state.uri.queryParameters[walletCancelUnstakingWithdrawHorsQueryParam]!,
       ),
+      tokenPrice: Fixed.tryParse(
+        state.uri.queryParameters[walletCancelUnstakingTokenPriceQueryParam] ??
+            '',
+      ),
+      everPrice: Fixed.tryParse(
+        state.uri.queryParameters[walletCancelUnstakingEverPriceQueryParam] ??
+            '',
+      ),
     ),
     routes: [
       tonWalletSendRoute,
     ],
+  );
+}
+
+GoRoute get noInternetRoute {
+  return GoRoute(
+    path: AppRoute.noInternet.path,
+    builder: (_, state) => const NoInternetScreen(),
+  );
+}
+
+GoRoute get splashScreenRoute {
+  return GoRoute(
+    path: AppRoute.splash.path,
+    builder: (_, state) => const SplashScreen(),
   );
 }

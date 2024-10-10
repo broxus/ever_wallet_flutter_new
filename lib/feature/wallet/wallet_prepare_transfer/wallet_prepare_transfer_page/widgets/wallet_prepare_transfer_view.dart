@@ -1,8 +1,8 @@
 import 'package:app/feature/wallet/wallet.dart';
 import 'package:app/feature/wallet/wallet_prepare_transfer/wallet_prepare_transfer_page/data/wallet_prepare_transfer_asset.dart';
 import 'package:app/feature/wallet/wallet_prepare_transfer/wallet_prepare_transfer_page/wallet_prepare_transfer_page_wm.dart';
-import 'package:app/feature/wallet/wallet_prepare_transfer/wallet_prepare_transfer_page/widgets/wallet_prepare_transfer_amount_input.dart';
 import 'package:app/generated/generated.dart';
+import 'package:app/widgets/amount_input/amount_input.dart';
 import 'package:elementary_helper/elementary_helper.dart';
 import 'package:flutter/material.dart';
 import 'package:lucide_icons_flutter/lucide_icons.dart';
@@ -19,7 +19,6 @@ class WalletPrepareTransferView extends StatelessWidget {
     this.localCustodians,
     this.selectedCustodian,
     this.selectedAsset,
-    this.assets,
     super.key,
   });
 
@@ -29,7 +28,6 @@ class WalletPrepareTransferView extends StatelessWidget {
   final List<PublicKey>? localCustodians;
   final PublicKey? selectedCustodian;
   final WalletPrepareTransferAsset? selectedAsset;
-  final List<WalletPrepareTransferAsset>? assets;
 
   @override
   Widget build(BuildContext context) {
@@ -66,10 +64,10 @@ class WalletPrepareTransferView extends StatelessWidget {
                     validator: _wm.validateAddressField,
                     suffixes: [_buildReceiverSuffix()],
                   ),
-                  WalletPrepareTransferAmountInput(
+                  AmountInput(
                     controller: _wm.amountController,
                     focusNode: _wm.amountFocus,
-                    assets: assets,
+                    assets: _wm.assets,
                     selectedAsset: selectedAsset,
                     onSelectedAssetChanged: _wm.onChangeAsset,
                     onMaxAmount: _wm.setMaxBalance,
@@ -93,17 +91,31 @@ class WalletPrepareTransferView extends StatelessWidget {
 
   Widget _buildReceiverSuffix() => StateNotifierBuilder(
         listenableState: _wm.receiverState,
-        builder: (_, value) => value?.isNotEmpty ?? false
-            ? Padding(
-                padding: const EdgeInsets.only(right: DimensSize.d8),
-                child: PrimaryButton(
-                  buttonShape: ButtonShape.square,
-                  icon: LucideIcons.x,
-                  onPressed: _wm.onPressedReceiverClear,
-                  buttonSize: ButtonSize.small,
-                ),
-              )
-            : const SizedBox.shrink(),
+        builder: (_, value) {
+          if (value?.isEmpty ?? true) {
+            return Padding(
+              padding: const EdgeInsets.only(
+                right: DimensSizeV2.d8,
+              ),
+              child: FloatButton(
+                buttonShape: ButtonShape.square,
+                buttonSize: ButtonSize.small,
+                icon: LucideIcons.arrowDownToDot,
+                onPressed: _wm.onPressedPastAddress,
+              ),
+            );
+          } else {
+            return Padding(
+              padding: const EdgeInsets.only(right: DimensSize.d8),
+              child: PrimaryButton(
+                buttonShape: ButtonShape.square,
+                icon: LucideIcons.x,
+                onPressed: _wm.onPressedReceiverClear,
+                buttonSize: ButtonSize.small,
+              ),
+            );
+          }
+        },
       );
 
   Widget _buildCommentWidget() => StateNotifierBuilder(

@@ -27,12 +27,39 @@ class SelectAccountModel extends ElementaryModel {
       );
 
   Stream<KeyAccount?> get currentAccount =>
-      _currentAccountsService.currentActiveAccountStream.map(
-        (value) => value?.$2,
-      );
+      _currentAccountsService.currentActiveAccountStream;
+
+  String get symbol => currentTransport.nativeTokenTicker;
+
+  TransportStrategy get currentTransport => _nekotonRepository.currentTransport;
 
   Future<void> changeCurrentAccount(KeyAccount account) async {
+    await _currentAccountsService.updateCurrentActiveAccount(account.address);
     await _currentKeyService.changeCurrentKey(account.publicKey);
-    _currentAccountsService.changeCurrentActiveAccount(account);
+  }
+
+  Future<Money?> getBalance(KeyAccount account) async {
+    final wallet = _nekotonRepository.walletsMap[account.address]?.wallet ??
+        await _getWallet(account);
+
+    return Money.fromBigIntWithCurrency(
+      wallet.contractState.balance,
+      Currencies()[currentTransport.nativeTokenTicker]!,
+    );
+  }
+
+  Future<TonWallet> _getWallet(KeyAccount account) async {
+    TonWallet? wallet;
+    try {
+      wallet = await TonWallet.subscribe(
+        transport: currentTransport.transport,
+        workchainId: account.workchain,
+        publicKey: account.publicKey,
+        walletType: account.account.tonWallet.contract,
+      );
+    } finally {
+      wallet?.dispose();
+    }
+    return wallet;
   }
 }

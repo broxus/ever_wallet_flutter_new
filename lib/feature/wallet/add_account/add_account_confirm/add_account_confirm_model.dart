@@ -1,6 +1,7 @@
 import 'package:app/app/service/service.dart';
 import 'package:app/generated/generated.dart';
 import 'package:elementary/elementary.dart';
+import 'package:flutter/material.dart';
 import 'package:local_auth/local_auth.dart';
 import 'package:nekoton_repository/nekoton_repository.dart' hide Message;
 
@@ -10,15 +11,23 @@ class AddAccountConfirmModel extends ElementaryModel {
     this._biometryService,
     this._messengerService,
     this._nekotonRepository,
+    this._currentAccountsService,
   ) : super(errorHandler: errorHandler);
 
   final BiometryService _biometryService;
   final MessengerService _messengerService;
   final NekotonRepository _nekotonRepository;
+  final CurrentAccountsService _currentAccountsService;
+
+  KeyAccount? get account => _currentAccountsService.currentActiveAccount;
 
   Future<List<BiometricType>> getAvailableBiometry(PublicKey publicKey) async {
+    final seed = _nekotonRepository.seedList.findSeedByAnyPublicKey(publicKey);
+    if (seed == null) return [];
+
     final isBiometryEnabled = _biometryService.enabled;
-    final hasKeyPassword = await _biometryService.hasKeyPassword(publicKey);
+    final hasKeyPassword =
+        await _biometryService.hasKeyPassword(seed.publicKey);
 
     if (isBiometryEnabled && hasKeyPassword) {
       return _biometryService.getAvailableBiometry();
@@ -28,9 +37,12 @@ class AddAccountConfirmModel extends ElementaryModel {
   }
 
   Future<String?> requestBiometry(PublicKey publicKey) async {
+    final seed = _nekotonRepository.seedList.findSeedByAnyPublicKey(publicKey);
+    if (seed == null) return null;
+
     try {
       final password = await _biometryService.getKeyPassword(
-        publicKey: publicKey,
+        publicKey: seed.publicKey,
         localizedReason: LocaleKeys.biometryAuthReason.tr(),
       );
 
@@ -65,9 +77,9 @@ class AddAccountConfirmModel extends ElementaryModel {
     return correct;
   }
 
-  void showWrongPassword() {
+  void showWrongPassword(BuildContext context) {
     _messengerService.show(
-      Message.error(message: LocaleKeys.passwordIsWrong.tr()),
+      Message.error(context: context, message: LocaleKeys.passwordIsWrong.tr()),
     );
   }
 }

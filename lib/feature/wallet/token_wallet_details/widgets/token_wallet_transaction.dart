@@ -2,8 +2,10 @@ import 'package:app/feature/wallet/wallet.dart';
 import 'package:app/generated/generated.dart';
 import 'package:app/utils/utils.dart';
 import 'package:flutter/material.dart';
+import 'package:lucide_icons_flutter/lucide_icons.dart';
 import 'package:nekoton_repository/nekoton_repository.dart';
 import 'package:ui_components_lib/ui_components_lib.dart';
+import 'package:ui_components_lib/v2/ui_components_lib_v2.dart';
 
 /// Widget that displays single transaction for <TokenWallet>
 class TokenWalletTransactionWidget extends StatelessWidget {
@@ -13,6 +15,7 @@ class TokenWalletTransactionWidget extends StatelessWidget {
     required this.displayDate,
     required this.transactionFee,
     required this.price,
+    required this.rootTokenContract,
     super.key,
   });
 
@@ -31,11 +34,12 @@ class TokenWalletTransactionWidget extends StatelessWidget {
   /// prev one.
   final bool displayDate;
   final Fixed price;
+  final Address rootTokenContract;
 
   @override
   Widget build(BuildContext context) {
-    final colors = context.themeStyle.colors;
-    final date = displayDate ? _headerDate() : null;
+    final theme = context.themeStyleV2;
+    final date = displayDate ? _headerDate(theme) : null;
 
     final body = PressScaleWidget(
       onPressed: () => Navigator.of(context, rootNavigator: true).push(
@@ -44,26 +48,22 @@ class TokenWalletTransactionWidget extends StatelessWidget {
             transaction: transaction,
             tokenCurrency: transactionValue.currency,
             price: price,
+            rootTokenContract: rootTokenContract,
           ),
         ),
       ),
       child: Material(
-        shape: const SquircleShapeBorder(cornerRadius: DimensRadius.medium),
-        color: colors.backgroundSecondary,
-        child: Container(
-          decoration: BoxDecoration(
-            border: SquircleBoxBorder(
-              squircleRadius: DimensRadius.medium,
-              borderSide: BorderSide(color: colors.strokeSecondary),
-            ),
-          ),
-          child: _baseTransactionBody(),
-        ),
+        shape: const SquircleShapeBorder(cornerRadius: DimensRadiusV2.radius16),
+        color: theme.colors.background2,
+        child: _baseTransactionBody(theme),
       ),
     );
 
     return date == null
-        ? body
+        ? Padding(
+            padding: const EdgeInsets.only(top: DimensSizeV2.d8),
+            child: body,
+          )
         : SeparatedColumn(
             crossAxisAlignment: CrossAxisAlignment.start,
             mainAxisSize: MainAxisSize.min,
@@ -71,10 +71,9 @@ class TokenWalletTransactionWidget extends StatelessWidget {
           );
   }
 
-  Widget _headerDate() {
+  Widget _headerDate(ThemeStyleV2 theme) {
     return Builder(
       builder: (context) {
-        final colors = context.themeStyle.colors;
         final date = transaction.date;
 
         final now = NtpTime.now();
@@ -86,22 +85,20 @@ class TokenWalletTransactionWidget extends StatelessWidget {
           padding: const EdgeInsets.only(top: DimensSize.d8),
           child: Text(
             formatter.format(date),
-            style: StyleRes.secondaryBold.copyWith(color: colors.textPrimary),
+            style: theme.textStyles.headingXSmall,
           ),
         );
       },
     );
   }
 
-  // ignore: long-method
-  Widget _baseTransactionBody() {
+  Widget _baseTransactionBody(ThemeStyleV2 theme) {
     final isIncoming = !transaction.isOutgoing;
 
     return Builder(
       builder: (context) {
-        final colors = context.themeStyle.colors;
         final transactionTimeFormatter = DateFormat(
-          'H:m',
+          'HH:mm',
           context.locale.languageCode,
         );
 
@@ -110,70 +107,68 @@ class TokenWalletTransactionWidget extends StatelessWidget {
           child: SeparatedRow(
             children: [
               Expanded(
-                child: SeparatedColumn(
-                  separatorSize: DimensSize.d4,
+                child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
                     // amount
-                    SeparatedRow(
-                      separatorSize: DimensSize.d4,
+                    Row(
+                      crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
-                        Container(
-                          width: DimensSize.d16,
-                          height: DimensSize.d16,
-                          padding: const EdgeInsets.all(DimensStroke.medium),
-                          decoration: BoxDecoration(
-                            shape: BoxShape.circle,
-                            color: isIncoming
-                                ? colors.lightGreen
-                                : colors.lightBlue,
-                          ),
-                          child: CommonIconWidget.svg(
-                            svg: isIncoming
-                                ? Assets.images.arrowDownFlat.path
-                                : Assets.images.arrowUpFlat.path,
-                            color: isIncoming ? colors.apply : colors.blue,
-                          ),
+                        Icon(
+                          isIncoming
+                              ? LucideIcons.arrowDown
+                              : LucideIcons.arrowUp,
+                          color: isIncoming
+                              ? theme.colors.contentPositive
+                              : theme.colors.content0,
+                          size: DimensSizeV2.d16,
                         ),
-                        Expanded(
-                          child: MoneyWidget(
-                            money: transactionValue,
-                            style: MoneyWidgetStyle.primary,
-                            sign: isIncoming ? 1 : -1,
-                          ),
-                        ),
-                      ],
-                    ),
-                    // Info
-                    Text.rich(
-                      TextSpan(
-                        children: [
-                          TextSpan(text: transaction.address.toEllipseString()),
-                          if (transactionFee != null &&
-                              transactionFee?.amount != Fixed.zero) ...[
-                            const TextSpan(text: ' • '),
-                            TextSpan(
-                              text: LocaleKeys.feesWithData.tr(
-                                args: [transactionFee!.formatImproved()],
+                        const SizedBox(width: DimensSizeV2.d8),
+                        Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            Text(
+                              isIncoming ? 'Received' : 'Sent',
+                              style: theme.textStyles.labelSmall,
+                            ),
+                            const SizedBox(height: DimensSizeV2.d4),
+                            Text(
+                              transaction.address.toEllipseString(),
+                              style: theme.textStyles.labelXSmall.copyWith(
+                                color: theme.colors.content3,
                               ),
                             ),
                           ],
-                          const TextSpan(text: ' • '),
-                          TextSpan(
-                            text: transactionTimeFormatter
-                                .format(transaction.date),
-                          ),
-                        ],
-                      ),
-                      style: StyleRes.addRegular
-                          .copyWith(color: colors.textSecondary),
+                        ),
+                      ],
                     ),
+                    const SizedBox(height: DimensSizeV2.d4),
                   ],
                 ),
               ),
-              CommonIconWidget.svg(
-                svg: Assets.images.caretRight.path,
-                color: colors.textSecondary,
+              Column(
+                crossAxisAlignment: CrossAxisAlignment.end,
+                children: [
+                  AmountWidget.fromMoney(
+                    amount: transactionValue,
+                    includeSymbol: false,
+                    sign: isIncoming
+                        ? LocaleKeys.plusSign.tr()
+                        : LocaleKeys.minusSign.tr(),
+                    style: theme.textStyles.labelXSmall.copyWith(
+                      color: isIncoming
+                          ? theme.colors.contentPositive
+                          : theme.colors.content0,
+                    ),
+                  ),
+                  const SizedBox(height: DimensSizeV2.d4),
+                  Text(
+                    transactionTimeFormatter.format(transaction.date),
+                    style: theme.textStyles.labelXSmall.copyWith(
+                      color: theme.colors.content3,
+                    ),
+                  ),
+                ],
               ),
             ],
           ),

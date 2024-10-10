@@ -1,6 +1,7 @@
 import 'package:app/app/service/service.dart';
 import 'package:app/generated/generated.dart';
 import 'package:elementary/elementary.dart';
+import 'package:flutter/material.dart';
 import 'package:nekoton_repository/nekoton_repository.dart' hide Message;
 import 'package:rxdart/rxdart.dart';
 
@@ -37,9 +38,9 @@ class AddAccountTypeModel extends ElementaryModel {
     );
   }
 
-  void showError(String message) {
+  void showError(BuildContext context, String message) {
     _messengerService.show(
-      Message.error(message: message),
+      Message.error(context: context, message: message),
     );
   }
 
@@ -48,7 +49,7 @@ class AddAccountTypeModel extends ElementaryModel {
     required PublicKey publicKey,
     required String password,
   }) async {
-    final seed = _nekotonRepository.seedList.findSeed(publicKey)!;
+    final seed = _nekotonRepository.seedList.findSeedByAnyPublicKey(publicKey)!;
 
     if (!seed.masterKey.createdAccountTypes.contains(walletType)) {
       return seed.masterKey;
@@ -60,7 +61,8 @@ class AddAccountTypeModel extends ElementaryModel {
       }
     }
 
-    final addedKeys = seed.subKeys.map((item) => item.publicKey).toSet();
+    final addedKeys = seed.subKeys.map((item) => item.publicKey).toSet()
+      ..add(seed.publicKey);
     final keys = await seed.getKeysToDerive(password);
     PublicKey? derivedKey;
 

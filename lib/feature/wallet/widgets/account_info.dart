@@ -1,8 +1,7 @@
-import 'package:app/generated/generated.dart';
+import 'package:app/widgets/user_avatar/user_avatar.dart';
 import 'package:flutter/material.dart';
 import 'package:nekoton_repository/nekoton_repository.dart' show KeyAccount;
 import 'package:ui_components_lib/ui_components_lib.dart';
-import 'package:ui_components_lib/v2/ui_components_lib_v2.dart';
 
 class AccountInfo extends StatelessWidget {
   const AccountInfo({
@@ -38,10 +37,8 @@ class AccountInfo extends StatelessWidget {
         vertical: DimensSizeV2.d12,
       ),
       children: [
-        Image.asset(
-          Assets.images.userAvatar.userAvatar.path,
-          width: DimensSizeV2.d40,
-          height: DimensSizeV2.d40,
+        UserAvatar(
+          address: account.address.address,
         ),
         Flexible(
           child: SeparatedColumn(

@@ -12,6 +12,7 @@ class PrimaryButton extends BaseButton {
     super.postfixIcon,
     super.buttonSize,
     super.isFullWidth,
+    super.padding,
     super.key,
   });
 

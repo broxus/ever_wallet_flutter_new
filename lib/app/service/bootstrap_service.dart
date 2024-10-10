@@ -1,5 +1,5 @@
-import 'package:app/bootstrap.dart';
 import 'package:app/bootstrap/bootstrap.dart';
+import 'package:app/core/app_build_type.dart';
 import 'package:injectable/injectable.dart';
 import 'package:logging/logging.dart';
 import 'package:rxdart/rxdart.dart';
@@ -13,10 +13,12 @@ typedef AsyncFunc = Future<void> Function();
 /// [features] - failed during creating features
 /// [completed] - everything is ok, app works normally
 enum BootstrapSteps {
+  empty,
   storage,
   connection,
   features,
   completed,
+  error,
 }
 
 /// Service that allows initialize app step by step and re-run some operations
@@ -25,11 +27,14 @@ enum BootstrapSteps {
 class BootstrapService {
   final _log = Logger('bootstrap');
 
-  final _bootstrapStepSubject = BehaviorSubject<BootstrapSteps>();
+  final _bootstrapStepSubject =
+      BehaviorSubject<BootstrapSteps>.seeded(BootstrapSteps.empty);
 
   Stream<BootstrapSteps> get bootstrapStepStream => _bootstrapStepSubject;
 
   BootstrapSteps get bootstrapStep => _bootstrapStepSubject.value;
+
+  bool get isConfigured => bootstrapStep == BootstrapSteps.completed;
 
   Future<void> init(AppBuildType appBuildType) async {
     try {
@@ -47,6 +52,7 @@ class BootstrapService {
       _bootstrapStepSubject.add(BootstrapSteps.completed);
     } catch (e, t) {
       _log.severe('init', e, t);
+      _bootstrapStepSubject.add(BootstrapSteps.error);
     }
   }
 

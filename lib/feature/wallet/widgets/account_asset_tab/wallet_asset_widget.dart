@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:lucide_icons_flutter/lucide_icons.dart';
-import 'package:money2_fixer/money2_fixer.dart';
 import 'package:ui_components_lib/ui_components_lib.dart';
 import 'package:ui_components_lib/v2/ui_components_lib_v2.dart';
 
@@ -46,6 +45,7 @@ class WalletAssetWidget extends StatelessWidget {
 
     return GestureDetector(
       onTap: onPressed,
+      behavior: HitTestBehavior.translucent,
       child: SeparatedRow(
         separatorSize: DimensSizeV2.d12,
         children: [
@@ -55,25 +55,26 @@ class WalletAssetWidget extends StatelessWidget {
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                Text(
-                  name,
-                  style: theme.textStyles.headingXSmall,
-                  overflow: TextOverflow.ellipsis,
-                  softWrap: false,
-                  maxLines: 1,
-                ),
                 if (tokenBalance == null)
                   ProgressIndicatorWidget(
-                    size: DimensSizeV2.d16,
+                    size: DimensSizeV2.d18,
                     color: theme.colors.content3,
                   )
                 else
                   AmountWidget.fromMoney(
                     amount: tokenBalance!,
-                    style: theme.textStyles.labelXSmall.copyWith(
-                      color: theme.colors.content3,
-                    ),
+                    includeSymbol: false,
+                    style: theme.textStyles.labelSmall,
                   ),
+                Text(
+                  name,
+                  style: theme.textStyles.labelXSmall.copyWith(
+                    color: theme.colors.content3,
+                  ),
+                  overflow: TextOverflow.ellipsis,
+                  softWrap: false,
+                  maxLines: 1,
+                ),
               ],
             ),
           ),
@@ -86,11 +87,10 @@ class WalletAssetWidget extends StatelessWidget {
                       color: theme.colors.content0,
                     ),
                   )
-                : AmountWidget(
+                : AmountWidget.dollars(
                     mainAxisAlignment: MainAxisAlignment.end,
-                    amount: fiatBalance!.formatImproved(),
+                    amount: fiatBalance!,
                     style: theme.textStyles.headingXSmall,
-                    sign: r'$',
                   ),
           ),
           if (error != null && onRetryPressed != null)

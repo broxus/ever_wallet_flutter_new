@@ -5,7 +5,7 @@ class CreateSeedCubitState with _$CreateSeedCubitState {
   const factory CreateSeedCubitState.initial() = _Initial;
 
   const factory CreateSeedCubitState.generated({
-    required List<String> words,
+    required SeedPhraseModel seed,
     required bool isCopied,
   }) = _Generated;
 }

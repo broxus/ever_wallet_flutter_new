@@ -29,15 +29,18 @@ class WalletAppBarWidgetModel
 
   late final _currentAccount = createNotifierFromStream(model.currentAccount);
   late final _walletState = createNotifierFromStream(model.walletState);
-  late final _connection = createNotifierFromStream(model.connection);
+  late final _connection = createNotifierFromStream(model.connectionStream);
 
   ListenableState<KeyAccount?> get currentAccount => _currentAccount;
 
   ListenableState<TonWalletState?> get walletState => _walletState;
 
-  ListenableState<ConnectionData?> get connection => _connection;
+  ListenableState<ConnectionData> get connection => _connection;
 
   ThemeStyleV2 get theme => context.themeStyleV2;
+
+  String getWalletTypeName(WalletType walletType) =>
+      model.transport.defaultAccountName(walletType);
 
   void onNetwork() {
     showSelectNetworkSheet(context: context);

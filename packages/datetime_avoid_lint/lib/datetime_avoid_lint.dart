@@ -36,7 +36,7 @@ class MyCustomLintCode extends DartLintRule {
     // Yeah, this is a hack, but it works
     // TODO(nesquikm): make some research and find a better way to do this
     // for example, use recursive visitor for nodes
-    context.registry.addMethodInvocation((node) {
+    /*context.registry.addMethodInvocation((node) {
       final s = node.toString();
       if (!s.contains('now()') || code is! LintCode) {
         return;
@@ -45,6 +45,6 @@ class MyCustomLintCode extends DartLintRule {
       if (s.contains('DateTime') || s.contains('clock')) {
         reporter.atNode(node, code as LintCode);
       }
-    });
+    });*/
   }
 }

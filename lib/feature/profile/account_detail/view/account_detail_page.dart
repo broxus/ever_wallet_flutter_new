@@ -25,7 +25,6 @@ class AccountDetailPage extends StatelessWidget {
         nekotonRepository: inject<NekotonRepository>(),
         balanceService: inject(),
         convertService: inject(),
-        currentAccountsService: inject(),
       )..init(),
       child: BlocConsumer<AccountDetailCubit, AccountDetailState>(
         listener: (context, state) {

@@ -46,6 +46,7 @@ class TonConfirmTransactionPage extends StatelessWidget {
   Widget build(BuildContext context) {
     return BlocProvider<TonConfirmTransactionBloc>(
       create: (_) => TonConfirmTransactionBloc(
+        context: context,
         nekotonRepository: inject(),
         walletAddress: walletAddress,
         amount: amount,

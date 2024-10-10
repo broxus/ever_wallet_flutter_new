@@ -34,11 +34,12 @@ typedef EnterSeedPhraseConfirmCallback = void Function(String phrase);
 /// Cubit that manages the state of the seed phrase entering page.
 class EnterSeedPhraseCubit extends Cubit<EnterSeedPhraseState>
     with ConnectionMixin {
-  EnterSeedPhraseCubit(this.confirmCallback)
+  EnterSeedPhraseCubit(this.context, this.confirmCallback)
       : super(const EnterSeedPhraseState.initial());
 
   final _log = Logger('EnterSeedPhraseCubit');
 
+  final BuildContext context;
   final EnterSeedPhraseConfirmCallback confirmCallback;
 
   final formKey = GlobalKey<FormState>();
@@ -141,6 +142,9 @@ class EnterSeedPhraseCubit extends Cubit<EnterSeedPhraseState>
 
   void changeTab(int value) {
     if (value == _currentValue) return;
+
+    _clearAllInputs();
+
     _currentValue = value;
     formKey.currentState?.reset();
 
@@ -158,7 +162,7 @@ class EnterSeedPhraseCubit extends Cubit<EnterSeedPhraseState>
   }
 
   Future<void> confirmAction() async {
-    if (!await checkConnection()) {
+    if (!await checkConnection(context)) {
       return;
     }
 
@@ -297,6 +301,12 @@ class EnterSeedPhraseCubit extends Cubit<EnterSeedPhraseState>
     }
   }
 
+  void _clearAllInputs() {
+    for (final controller in _controllers) {
+      controller.clear();
+    }
+  }
+
   /// [word] is valid if it is in list of hints for this word.
   Future<bool> _checkIsWordValid(String word) async {
     final hints = await getHints(input: word);
@@ -341,6 +351,7 @@ class EnterSeedPhraseCubit extends Cubit<EnterSeedPhraseState>
   void _showValidateError(String message) {
     inject<MessengerService>().show(
       Message.error(
+        context: context,
         message: message,
         debounceTime: defaultInfoMessageDebounceDuration,
       ),

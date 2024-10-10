@@ -1,8 +1,12 @@
+// ignore_for_file: use_build_context_synchronously
+
 import 'dart:async';
 
 import 'package:app/app/router/router.dart';
+import 'package:app/app/service/service.dart';
 import 'package:app/core/error_handler_factory.dart';
 import 'package:app/core/wm/custom_wm.dart';
+import 'package:app/data/models/models.dart';
 import 'package:app/di/di.dart';
 import 'package:app/feature/wallet/add_account/add_account.dart';
 import 'package:app/feature/wallet/add_account/add_account_type/add_account_type_model.dart';
@@ -53,6 +57,8 @@ class AddAccountTypeWidgetModel
 
   ThemeStyleV2 get theme => context.themeStyleV2;
 
+  bool get isEverscale => model.transport.networkType == NetworkType.ever;
+
   @override
   void initWidgetModel() {
     super.initWidgetModel();
@@ -88,9 +94,9 @@ class AddAccountTypeWidgetModel
         contextSafe!.goNamed(AppRoute.wallet.name);
       }
     } on FfiException catch (e) {
-      model.showError(e.message);
+      model.showError(context, e.message);
     } on Exception catch (e) {
-      model.showError(e.toString());
+      model.showError(context, e.toString());
     } finally {
       _loading.value = false;
     }

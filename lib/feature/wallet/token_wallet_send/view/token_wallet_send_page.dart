@@ -7,7 +7,6 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
 import 'package:nekoton_repository/nekoton_repository.dart';
 import 'package:ui_components_lib/ui_components_lib.dart';
-import 'package:ui_components_lib/v2/ui_components_lib_v2.dart';
 
 /// Page that allows to send not native token from [TokenWallet] to
 /// [destination].
@@ -57,6 +56,7 @@ class TokenWalletSendPage extends StatelessWidget {
   Widget build(BuildContext context) {
     return BlocProvider<TokenWalletSendBloc>(
       create: (_) => TokenWalletSendBloc(
+        context: context,
         destination: destination,
         tokenAmount: amount,
         owner: owner,
@@ -89,9 +89,10 @@ class TokenWalletSendPage extends StatelessWidget {
               fee: fee,
               error: error,
             ),
-            readyToSend: (fee, attachedAmount) => _confirmPage(
+            readyToSend: (fee, attachedAmount, txErrors) => _confirmPage(
               fee: fee,
               attachedAmount: attachedAmount,
+              txErrors: txErrors,
             ),
             sending: _sendingPage,
             sent: (_, __) => _sendingPage(false),
@@ -105,6 +106,7 @@ class TokenWalletSendPage extends StatelessWidget {
     BigInt? fee,
     String? error,
     BigInt? attachedAmount,
+    List<TxTreeSimulationErrorItem>? txErrors,
   }) =>
       Scaffold(
         appBar: DefaultAppBar(
@@ -123,6 +125,7 @@ class TokenWalletSendPage extends StatelessWidget {
             fee: fee,
             feeError: error,
             attachedAmount: attachedAmount,
+            txErrors: txErrors,
           ),
         ),
       );

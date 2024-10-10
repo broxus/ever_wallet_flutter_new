@@ -13,7 +13,6 @@ import 'package:flutter/rendering.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
 import 'package:ui_components_lib/ui_components_lib.dart';
-import 'package:ui_components_lib/v2/ui_components_lib_v2.dart';
 
 /// Item count limit for each section
 const _itemCountLimit = 6;
@@ -83,6 +82,7 @@ class _BrowserStartViewState extends State<BrowserStartView> {
               items: bookmarkItems,
               buttonText: LocaleKeys.browserSeeAll.tr(),
               buttonOnPressed: _onSeeAllPressed,
+              isAlwaysShowButton: true,
             ),
           if (_predefinedItems.isNotEmpty)
             ..._sectionBuilder(
@@ -238,6 +238,7 @@ class _BrowserStartViewState extends State<BrowserStartView> {
     required List<BrowserBookmarkItem> items,
     String? buttonText,
     VoidCallback? buttonOnPressed,
+    bool isAlwaysShowButton = false,
   }) {
     if (items.isEmpty) {
       return [];
@@ -245,7 +246,7 @@ class _BrowserStartViewState extends State<BrowserStartView> {
 
     final sortedLimitedItems = items.take(_itemCountLimit).toList();
 
-    final buttonEnabled = items.length > _itemCountLimit;
+    final buttonEnabled = isAlwaysShowButton || items.length > _itemCountLimit;
 
     return [
       _sectionHeaderBuilder(

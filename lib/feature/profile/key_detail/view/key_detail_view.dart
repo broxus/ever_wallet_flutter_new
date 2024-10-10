@@ -3,6 +3,7 @@ import 'package:app/app/service/service.dart';
 import 'package:app/di/di.dart';
 import 'package:app/feature/profile/profile.dart';
 import 'package:app/generated/generated.dart';
+import 'package:app/widgets/user_avatar/user_avatar.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -101,6 +102,7 @@ class KeyDetailView extends StatelessWidget {
                             );
                             inject<MessengerService>().show(
                               Message.successful(
+                                context: context,
                                 message: LocaleKeys.valueCopiedExclamation.tr(
                                   args: [seedKey.publicKey.toEllipseString()],
                                 ),
@@ -221,9 +223,8 @@ class KeyDetailView extends StatelessWidget {
               },
             ),
           ),
-          leading: CommonBackgroundedIconWidget.svg(
-            svg: Assets.images.person.path,
-            backgroundColor: colors.backgroundAlpha,
+          leading: UserAvatar(
+            address: account.account.address.address,
           ),
           titleText: account.name,
           subtitleText: account.address.toEllipseString(),

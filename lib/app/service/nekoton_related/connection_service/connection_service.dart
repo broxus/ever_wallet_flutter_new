@@ -115,7 +115,7 @@ class ConnectionService {
       );
       _log.finest('updateTransportByConnection completed!');
     } catch (e, t) {
-      inject<MessengerService>().showConnectionError();
+      inject<MessengerService>().showConnectionError(null);
       _log.severe('updateTransportByConnection', e, t);
 
       // allow level above to track fail

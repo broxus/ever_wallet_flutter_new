@@ -18,8 +18,8 @@ class AddAccountResultModel extends ElementaryModel {
     final account = _nekotonRepository.seedList.findAccountByAddress(address);
 
     if (account != null) {
+      await _currentAccountsService.updateCurrentActiveAccount(account.address);
       await _currentKeyService.changeCurrentKey(account.publicKey);
-      _currentAccountsService.changeCurrentActiveAccount(account);
     }
   }
 }

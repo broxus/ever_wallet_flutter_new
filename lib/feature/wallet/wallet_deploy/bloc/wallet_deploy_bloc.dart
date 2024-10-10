@@ -1,8 +1,11 @@
+// ignore_for_file: use_build_context_synchronously
+
 import 'package:app/app/service/service.dart';
 import 'package:app/di/di.dart';
 import 'package:app/generated/generated.dart';
 import 'package:app/utils/constants.dart';
 import 'package:bloc/bloc.dart';
+import 'package:flutter/material.dart';
 import 'package:freezed_annotation/freezed_annotation.dart';
 import 'package:logging/logging.dart';
 import 'package:nekoton_repository/nekoton_repository.dart' hide Message;
@@ -23,6 +26,7 @@ const defaultRequireConfirmations = 3;
 /// 2) Sending transaction to blockchain
 class WalletDeployBloc extends Bloc<WalletDeployEvent, WalletDeployState> {
   WalletDeployBloc({
+    required this.context,
     required this.nekotonRepository,
     required this.address,
     required this.publicKey,
@@ -31,6 +35,7 @@ class WalletDeployBloc extends Bloc<WalletDeployEvent, WalletDeployState> {
   }
 
   final _logger = Logger('WalletDeployBloc');
+  final BuildContext context;
   final NekotonRepository nekotonRepository;
 
   final Address address;
@@ -125,7 +130,8 @@ class WalletDeployBloc extends Bloc<WalletDeployEvent, WalletDeployState> {
       await _handlePrepareDeploy(emit);
     } on FfiException catch (e, t) {
       _logger.severe('_handlePrepareStandard', e, t);
-      inject<MessengerService>().show(Message.error(message: e.message));
+      inject<MessengerService>()
+          .show(Message.error(context: context, message: e.message));
     }
   }
 
@@ -147,7 +153,8 @@ class WalletDeployBloc extends Bloc<WalletDeployEvent, WalletDeployState> {
       await _handlePrepareDeploy(emit, custodians, requireConfirmations);
     } on FfiException catch (e, t) {
       _logger.severe('_handlePrepareMultisig', e, t);
-      inject<MessengerService>().show(Message.error(message: e.message));
+      inject<MessengerService>()
+          .show(Message.error(context: context, message: e.message));
     }
   }
 
@@ -255,6 +262,7 @@ class WalletDeployBloc extends Bloc<WalletDeployEvent, WalletDeployState> {
 
       inject<MessengerService>().show(
         Message.successful(
+          context: context,
           message: LocaleKeys.walletDeployedSuccessfully.tr(),
         ),
       );
@@ -263,7 +271,8 @@ class WalletDeployBloc extends Bloc<WalletDeployEvent, WalletDeployState> {
       }
     } on FfiException catch (e, t) {
       _logger.severe('_handleSend', e, t);
-      inject<MessengerService>().show(Message.error(message: e.message));
+      inject<MessengerService>()
+          .show(Message.error(context: context, message: e.message));
       emit(
         WalletDeployState.readyToDeploy(
           fee: fees!,
@@ -277,7 +286,8 @@ class WalletDeployBloc extends Bloc<WalletDeployEvent, WalletDeployState> {
       );
     } on Exception catch (e, t) {
       _logger.severe('_handleSend', e, t);
-      inject<MessengerService>().show(Message.error(message: e.toString()));
+      inject<MessengerService>()
+          .show(Message.error(context: context, message: e.toString()));
       emit(
         WalletDeployState.readyToDeploy(
           fee: fees!,

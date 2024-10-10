@@ -1,3 +1,5 @@
+// ignore_for_file: lines_longer_than_80_chars, unused_element
+
 import 'package:app/app/router/router.dart';
 import 'package:app/app/service/service.dart';
 import 'package:app/di/di.dart';
@@ -12,7 +14,6 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:lucide_icons_flutter/lucide_icons.dart';
 import 'package:nekoton_repository/nekoton_repository.dart' hide Message;
 import 'package:ui_components_lib/ui_components_lib.dart';
-import 'package:ui_components_lib/v2/ui_components_lib_v2.dart';
 
 /// Row with actions for current account.
 /// If account is null, then no actions available.
@@ -105,20 +106,20 @@ class _ActionList extends StatelessWidget {
           mainAxisAlignment: MainAxisAlignment.center,
           crossAxisAlignment: CrossAxisAlignment.stretch,
           children: [
-            _Button(
+            WalletActionButton(
               label: LocaleKeys.receiveWord.tr(),
               icon: LucideIcons.arrowDown,
               onPressed: account?.let(
                 (value) => () => showReceiveFundsSheet(context, value.address),
               ),
             ),
-            _Button(
+            WalletActionButton(
               label: _actionTitle(action),
               icon: _actionIcon(action),
               onPressed: account?.let((_) => _actionOnPressed(context)),
             ),
-            if (hasStake)
-              _Button(
+            /*if (hasStake)
+              WalletActionButton(
                 label: LocaleKeys.stakeWord.tr(),
                 icon: LucideIcons.layers2,
                 badge: hasStakeActions,
@@ -133,7 +134,7 @@ class _ActionList extends StatelessWidget {
                     );
                   },
                 ),
-              ),
+              ),*/
           ],
         ),
       ),
@@ -189,6 +190,7 @@ class _ActionList extends StatelessWidget {
         WalletAccountActionBehavior.sendLocalCustodiansNeeded => () =>
             inject<MessengerService>().show(
               Message.error(
+                context: context,
                 message: LocaleKeys.toSendMultisigAddCustodian.tr(),
                 actionText: LocaleKeys.addWord.tr(),
                 onAction: () => _showAddSeedSheet(context),
@@ -221,46 +223,5 @@ class _ActionList extends StatelessWidget {
           );
       }
     }
-  }
-}
-
-class _Button extends StatelessWidget {
-  const _Button({
-    required this.label,
-    required this.icon,
-    required this.onPressed,
-    this.badge,
-  });
-
-  final String label;
-  final IconData icon;
-  final bool? badge;
-  final VoidCallback? onPressed;
-
-  @override
-  Widget build(BuildContext context) {
-    final theme = context.themeStyleV2;
-
-    return GestureDetector(
-      behavior: HitTestBehavior.translucent,
-      onTap: onPressed,
-      child: SizedBox(
-        width: 104,
-        child: Column(
-          children: [
-            Padding(
-              padding: const EdgeInsets.all(DimensSizeV2.d18),
-              child: Icon(icon, size: DimensSizeV2.d20),
-            ),
-            Text(
-              label,
-              style: theme.textStyles.labelXSmall.copyWith(
-                color: theme.colors.content3,
-              ),
-            ),
-          ],
-        ),
-      ),
-    );
   }
 }

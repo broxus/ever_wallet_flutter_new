@@ -104,7 +104,7 @@ class _SelectNewAssetSelectTabState extends State<SelectNewAssetSelectTab> {
               SvgPicture.asset(Assets.images.searchEmpty.path),
               Text(
                 LocaleKeys.sorryNoAssetsFound.tr(),
-                style: theme.textStyles.headingSmall.copyWith(
+                style: theme.textStyles.paragraphSmall.copyWith(
                   color: theme.colors.content3,
                 ),
                 textAlign: TextAlign.center,
@@ -138,51 +138,63 @@ class SelectNewAssetItem extends StatelessWidget {
   Widget build(BuildContext context) {
     final theme = context.themeStyleV2;
 
-    return Padding(
-      padding: const EdgeInsets.symmetric(vertical: DimensSizeV2.d8),
-      child: SeparatedRow(
-        children: [
-          TokenWalletIconWidget(
-            logoURI: asset.logoURI,
-            address: asset.address,
-            version: asset.version,
-          ),
-          Expanded(
-            child: SeparatedColumn(
-              separatorSize: DimensSizeV2.d4,
-              mainAxisSize: MainAxisSize.min,
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                Text(
-                  asset.symbol,
-                  style: theme.textStyles.labelSmall,
-                  overflow: TextOverflow.ellipsis,
-                  softWrap: false,
-                  maxLines: 1,
-                ),
-                Text(
-                  asset.name,
-                  style: theme.textStyles.labelXSmall.copyWith(
-                    color: theme.colors.content3,
-                  ),
-                  overflow: TextOverflow.ellipsis,
-                  softWrap: false,
-                  maxLines: 1,
-                ),
-              ],
+    return GestureDetector(
+      behavior: HitTestBehavior.translucent,
+      onTap: () {
+        final cubit = context.read<SelectNewAssetCubit>();
+        if (!isSelected) {
+          cubit.enableAsset(asset.address);
+        } else {
+          cubit.disableAsset(asset.address);
+        }
+      },
+      child: Padding(
+        padding: const EdgeInsets.symmetric(vertical: DimensSizeV2.d8),
+        child: SeparatedRow(
+          children: [
+            TokenWalletIconWidget(
+              logoURI: asset.logoURI,
+              address: asset.address,
+              version: asset.version,
             ),
-          ),
-          Switch(
-            value: isSelected,
-            onChanged: (v) {
-              if (v) {
-                context.read<SelectNewAssetCubit>().enableAsset(asset.address);
-              } else {
-                context.read<SelectNewAssetCubit>().disableAsset(asset.address);
-              }
-            },
-          ),
-        ],
+            Expanded(
+              child: SeparatedColumn(
+                separatorSize: DimensSizeV2.d4,
+                mainAxisSize: MainAxisSize.min,
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Text(
+                    asset.symbol,
+                    style: theme.textStyles.labelSmall,
+                    overflow: TextOverflow.ellipsis,
+                    softWrap: false,
+                    maxLines: 1,
+                  ),
+                  Text(
+                    asset.name,
+                    style: theme.textStyles.labelXSmall.copyWith(
+                      color: theme.colors.content3,
+                    ),
+                    overflow: TextOverflow.ellipsis,
+                    softWrap: false,
+                    maxLines: 1,
+                  ),
+                ],
+              ),
+            ),
+            Switch(
+              value: isSelected,
+              onChanged: (v) {
+                final cubit = context.read<SelectNewAssetCubit>();
+                if (v) {
+                  cubit.enableAsset(asset.address);
+                } else {
+                  cubit.disableAsset(asset.address);
+                }
+              },
+            ),
+          ],
+        ),
       ),
     );
   }

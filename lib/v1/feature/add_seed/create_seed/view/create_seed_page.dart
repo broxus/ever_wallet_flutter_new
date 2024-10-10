@@ -1,6 +1,5 @@
-import 'dart:convert';
-
 import 'package:app/app/router/router.dart';
+import 'package:app/data/models/seed/seed_phrase_model.dart';
 import 'package:app/v1/feature/add_seed/create_seed/create_seed.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -22,19 +21,19 @@ class CreateSeedPage extends StatelessWidget {
         appBar: const DefaultAppBar(),
         body: CreateSeedView(
           // ignore: prefer-extracting-callbacks
-          checkCallback: (List<String> phrase) {
+          checkCallback: (SeedPhraseModel seed) {
             context.goFurther(
               AppRoute.checkSeed.pathWithData(
-                queryParameters: {addSeedPhraseQueryParam: jsonEncode(phrase)},
+                queryParameters: {addSeedPhraseQueryParam: seed.phrase},
               ),
               preserveQueryParams: true,
             );
           },
           // ignore: prefer-extracting-callbacks
-          skipCallback: (List<String> phrase) {
+          skipCallback: (SeedPhraseModel seed) {
             context.goFurther(
               AppRoute.createSeedPassword.pathWithData(
-                queryParameters: {addSeedPhraseQueryParam: jsonEncode(phrase)},
+                queryParameters: {addSeedPhraseQueryParam: seed.phrase},
               ),
               preserveQueryParams: true,
             );

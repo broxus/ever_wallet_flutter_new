@@ -1,5 +1,8 @@
+// ignore_for_file: use_build_context_synchronously
+
 import 'package:app/app/service/network_connection/network_connection_service.dart';
 import 'package:app/app/service/service.dart';
+import 'package:app/data/models/seed/seed_phrase_model.dart';
 import 'package:app/di/di.dart';
 import 'package:app/feature/add_seed/create_password/model/password_status.dart';
 import 'package:app/utils/mixins/connection_mixin.dart';
@@ -19,8 +22,9 @@ const _minPasswordLength = 8;
 class CreateSeedPasswordCubit extends Cubit<CreateSeedPasswordState>
     with ConnectionMixin {
   CreateSeedPasswordCubit({
-    required this.phrase,
     required this.completeCallback,
+    required this.seedPhrase,
+    required this.type,
     this.setCurrentKey = false,
     this.name,
   }) : super(CreateSeedPasswordState.initial()) {
@@ -29,16 +33,17 @@ class CreateSeedPasswordCubit extends Cubit<CreateSeedPasswordState>
   }
 
   /// Callback that calls when seed is created
-  final VoidCallback completeCallback;
+  final void Function(PublicKey) completeCallback;
 
   /// Phrase that must be used to create seed
-  final List<String> phrase;
+  final SeedPhraseModel seedPhrase;
 
   /// Name of seed phrase if provided
   final String? name;
 
   /// If true, then current key will be set as default (provided in onboarding)
   final bool setCurrentKey;
+  final SeedAddType type;
 
   final passwordController = TextEditingController();
   final confirmController = TextEditingController();
@@ -66,8 +71,8 @@ class CreateSeedPasswordCubit extends Cubit<CreateSeedPasswordState>
     return super.close();
   }
 
-  Future<void> nextAction() async {
-    if (!await checkConnection()) {
+  Future<void> nextAction(BuildContext context) async {
+    if (seedPhrase.isEmpty || !await checkConnection(context)) {
       return;
     }
 
@@ -76,9 +81,10 @@ class CreateSeedPasswordCubit extends Cubit<CreateSeedPasswordState>
     final currentKeyService = inject<CurrentKeyService>();
     try {
       final publicKey = await nekoton.addSeed(
-        phrase: phrase,
+        phrase: seedPhrase.words,
         password: passwordController.text,
         name: name,
+        addType: type,
       );
       if (setCurrentKey) {
         await currentKeyService.changeCurrentKey(publicKey);
@@ -87,11 +93,12 @@ class CreateSeedPasswordCubit extends Cubit<CreateSeedPasswordState>
         publicKey: publicKey,
         password: passwordController.text,
       );
-      completeCallback();
+      completeCallback(publicKey);
     } catch (e) {
       Logger('CreateSeedPasswordCubit').severe(e);
       emit(state.copyWith(isLoading: false));
-      messengerService.show(Message.error(message: e.toString()));
+      messengerService
+          .show(Message.error(context: context, message: e.toString()));
     }
   }
 

@@ -83,3 +83,14 @@ String toEllipseString(String value) => value.length > 6
 extension FunctionalExt<T> on T {
   R let<R>(R Function(T value) block) => block(this);
 }
+
+extension MoneyExt on Money {
+  Money exchangeToUSD(Fixed price) => exchangeTo(
+        ExchangeRate.fromFixed(
+          price,
+          fromIsoCode: currency.isoCode,
+          toIsoCode: 'USD',
+          toDecimalDigits: 2,
+        ),
+      );
+}

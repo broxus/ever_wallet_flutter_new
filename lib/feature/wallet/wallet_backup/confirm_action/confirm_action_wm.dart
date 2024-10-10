@@ -10,7 +10,9 @@ import 'package:app/feature/wallet/wallet_backup/confirm_action/confirm_action_d
 import 'package:app/feature/wallet/wallet_backup/confirm_action/confirm_action_model.dart';
 import 'package:app/feature/wallet/wallet_backup/manual_backup/manual_back_up_dialog.dart';
 import 'package:app/generated/generated.dart';
+import 'package:elementary_helper/elementary_helper.dart';
 import 'package:flutter/widgets.dart';
+import 'package:local_auth/local_auth.dart';
 import 'package:nekoton_repository/nekoton_repository.dart';
 import 'package:ui_components_lib/v2/ui_components_lib_v2.dart';
 
@@ -24,6 +26,7 @@ ConfirmActionWidgetModel defaultConfirmActionWidgetModelFactory(
     ConfirmActionModel(
       createPrimaryErrorHandler(context),
       account,
+      inject(),
       inject(),
       inject(),
       inject(),
@@ -44,6 +47,11 @@ class ConfirmActionWidgetModel
 
   KeyAccount? get account => model.account;
 
+  ListenableState<List<BiometricType>> get availableBiometry =>
+      _availableBiometry;
+
+  late final _availableBiometry = createNotifier<List<BiometricType>>();
+
   late final screenState = createEntityNotifier<ConfirmActionData>()
     ..loading(ConfirmActionData());
 
@@ -52,6 +60,7 @@ class ConfirmActionWidgetModel
   @override
   void initWidgetModel() {
     passwordController.addListener(_resetError);
+    _getAvailableBiometry();
     super.initWidgetModel();
   }
 
@@ -60,6 +69,26 @@ class ConfirmActionWidgetModel
     final publicKey = model.currentSeed?.publicKey;
     if (publicKey != null) {
       _export(publicKey, passwordController.text);
+    }
+  }
+
+  Future<void> onUseBiometry() async {
+    //final publicKey = _currentAccount.value?.publicKey;
+    final publicKey = model.currentSeed?.publicKey;
+    if (publicKey != null) {
+      final password = await model.requestBiometry(publicKey);
+
+      if (password != null) {
+        await _export(publicKey, password);
+      }
+    }
+  }
+
+  Future<void> _getAvailableBiometry() async {
+    final publicKey = model.currentSeed?.publicKey;
+    if (publicKey != null) {
+      final available = await model.getAvailableBiometry(publicKey);
+      _availableBiometry.accept(available);
     }
   }
 
@@ -77,9 +106,7 @@ class ConfirmActionWidgetModel
         showManualBackupDialog(
           context,
           phrase,
-          account?.address.address ??
-              ''
-                  '',
+          account?.address.address ?? '',
           finishedBackupCallback,
         );
       } catch (_) {

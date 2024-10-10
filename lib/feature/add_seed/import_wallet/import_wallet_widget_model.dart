@@ -1,6 +1,9 @@
+// ignore_for_file: use_build_context_synchronously
+
 import 'package:app/app/router/app_route.dart';
 import 'package:app/app/router/routs/add_seed/add_seed.dart';
 import 'package:app/core/wm/custom_wm.dart';
+import 'package:app/data/models/seed/seed_phrase_model.dart';
 import 'package:app/di/di.dart';
 import 'package:app/feature/add_seed/import_wallet/data/import_wallet_data.dart';
 import 'package:app/feature/add_seed/import_wallet/import_wallet_screen.dart';
@@ -41,7 +44,7 @@ class ImportWalletScreenWidgetModel
   int? _currentValue;
 
   Future<void> onPressedImport() async {
-    if (!await model.checkConnection()) {
+    if (!await model.checkConnection(context)) {
       return;
     }
 
@@ -49,10 +52,10 @@ class ImportWalletScreenWidgetModel
     try {
       FocusManager.instance.primaryFocus?.unfocus();
 
-      final words = screenState.value.data?.words;
+      final seed = screenState.value.data?.seed;
 
-      if (words != null && words.isNotEmpty) {
-        final phrase = words.join(' ');
+      if (seed != null && seed.isNotEmpty) {
+        final phrase = seed.phrase;
 
         final mnemonicType = _currentValue == _legacySeedPhraseLength
             ? const MnemonicType.legacy()
@@ -72,7 +75,7 @@ class ImportWalletScreenWidgetModel
           preserveQueryParams: true,
         );
       } else {
-        model.showValidateError(LocaleKeys.incorrectWordsFormat.tr());
+        model.showValidateError(context, LocaleKeys.incorrectWordsFormat.tr());
       }
     } on Exception catch (e, s) {
       _log.severe('confirmAction', e, s);
@@ -82,47 +85,52 @@ class ImportWalletScreenWidgetModel
       error = LocaleKeys.wrongSeed.tr();
     }
     if (error != null) {
-      model.showValidateError(error);
+      model.showValidateError(context, error);
     }
   }
 
   void onChangeTab(int value) {
     _currentValue = value;
-    _updateState(selectedValue: _currentValue);
+    _updateState(
+      isPasted: false,
+      selectedValue: _currentValue,
+      seed: SeedPhraseModel.empty(),
+    );
   }
 
   Future<void> pasteWords() async {
     final clipboard = await Clipboard.getData(Clipboard.kTextPlain);
-    final words = clipboard?.text
-            ?.replaceAll(RegExp(r'\\s+'), ' ')
-            .split(seedSplitRegExp) ??
-        <String>[];
-    if (words.isNotEmpty) {
-      for (final word in words) {
+    var seed = SeedPhraseModel.fromWords(
+      clipboard?.text
+              ?.replaceAll(RegExp(r'\\s+'), ' ')
+              .split(seedSplitRegExp) ??
+          <String>[],
+    );
+
+    if (seed.isNotEmpty) {
+      for (final word in seed.words) {
         if (!await _isWordValid(word)) {
-          words.clear();
+          seed = SeedPhraseModel.empty();
           break;
         }
       }
-    } else {
-      words.clear();
     }
 
-    if (words.isEmpty) {
-      model.showValidateError(LocaleKeys.incorrectWordsFormat.tr());
+    if (seed.isEmpty || seed.wordsCount != _currentValue) {
+      model.showValidateError(context, LocaleKeys.incorrectWordsFormat.tr());
       return;
-    } else {
-      final halfLength = (words.length / 2).floor();
-
-      final firstColumnWords = words.sublist(0, halfLength);
-      final secondColumnWords = words.sublist(halfLength);
-      _updateState(
-        isPasted: true,
-        words: words,
-        firstColumnWords: firstColumnWords,
-        secondColumnWords: secondColumnWords,
-      );
     }
+
+    final halfLength = (seed.wordsCount / 2).floor();
+
+    final firstColumnWords = seed.words.sublist(0, halfLength);
+    final secondColumnWords = seed.words.sublist(halfLength);
+    _updateState(
+      isPasted: true,
+      seed: seed,
+      firstColumnWords: firstColumnWords,
+      secondColumnWords: secondColumnWords,
+    );
   }
 
   void deleteWords() {
@@ -151,7 +159,7 @@ class ImportWalletScreenWidgetModel
     bool? isPasted,
     List<int>? allowedValues,
     int? selectedValue,
-    List<String>? words,
+    SeedPhraseModel? seed,
     List<String>? firstColumnWords,
     List<String>? secondColumnWords,
   }) {
@@ -160,7 +168,7 @@ class ImportWalletScreenWidgetModel
         isPasted: isPasted,
         allowedData: allowedValues,
         selectedValue: selectedValue,
-        words: words,
+        seed: seed,
         firstColumnWords: firstColumnWords,
         secondColumnWords: secondColumnWords,
       ),

@@ -10,7 +10,6 @@ import 'package:flutter/services.dart';
 import 'package:lucide_icons_flutter/lucide_icons.dart';
 import 'package:nekoton_repository/nekoton_repository.dart' hide Message;
 import 'package:ui_components_lib/ui_components_lib.dart';
-import 'package:ui_components_lib/v2/dimens_v2.dart';
 import 'package:ui_components_lib/v2/widgets/widgets.dart';
 
 /// Body of transaction for Ton/Token Wallets that contains main information
@@ -28,6 +27,7 @@ class WalletTransactionDetailsDefaultBody extends StatelessWidget {
     this.comment,
     this.info,
     this.tonIconPath,
+    this.tokenIconPath,
     this.price,
     super.key,
   });
@@ -61,6 +61,7 @@ class WalletTransactionDetailsDefaultBody extends StatelessWidget {
   /// Type of transaction, that exists for TokenWallet
   final String? info;
   final String? tonIconPath;
+  final String? tokenIconPath;
   final Fixed? price;
 
   @override
@@ -79,21 +80,25 @@ class WalletTransactionDetailsDefaultBody extends StatelessWidget {
           value: type,
         ),
         WalletTransactionDetailsItem(
+          title: LocaleKeys.token.tr(),
+          value: value.currency.symbol,
+        ),
+        WalletTransactionDetailsItem(
           title: LocaleKeys.amountWord.tr(),
           valueWidget: AmountWidget.fromMoney(
             amount: value,
+            includeSymbol: false,
             sign: isIncoming
                 ? LocaleKeys.plusSign.tr()
                 : LocaleKeys.minusSign.tr(),
           ),
-          tonIconPath: tonIconPath,
+          iconPath: tokenIconPath,
           convertedValueWidget: price != null
-              ? AmountWidget.fromMoney(
+              ? AmountWidget.dollars(
                   amount: value.exchangeToUSD(price!),
                   style: theme.textStyles.labelXSmall.copyWith(
                     color: theme.colors.content3,
                   ),
-                  sign: '${LocaleKeys.approximatelySign.tr()} ',
                 )
               : null,
         ),
@@ -101,9 +106,10 @@ class WalletTransactionDetailsDefaultBody extends StatelessWidget {
           title: LocaleKeys.networkFee.tr(),
           valueWidget: AmountWidget.fromMoney(
             amount: fee,
-            sign: '${LocaleKeys.approximatelySign.tr()} ',
+            useDefaultFormat: false,
+            includeSymbol: false,
           ),
-          tonIconPath: tonIconPath,
+          iconPath: tonIconPath,
         ),
         if (info != null)
           WalletTransactionDetailsItem(
@@ -118,6 +124,7 @@ class WalletTransactionDetailsDefaultBody extends StatelessWidget {
           icon: LucideIcons.copy,
           onPressed: () {
             _copy(
+              context,
               recipientOrSender.address,
               LocaleKeys.valueCopiedExclamation.tr(
                 args: [recipientOrSender.toEllipseString()],
@@ -130,7 +137,11 @@ class WalletTransactionDetailsDefaultBody extends StatelessWidget {
           subtitle: toEllipseString(hash),
           icon: LucideIcons.copy,
           onPressed: () {
-            _copy(hash, LocaleKeys.valueCopiedExclamation.tr(args: [hash]));
+            _copy(
+              context,
+              hash,
+              LocaleKeys.valueCopiedExclamation.tr(args: [hash]),
+            );
           },
         ),
       ],
@@ -169,21 +180,10 @@ class WalletTransactionDetailsDefaultBody extends StatelessWidget {
     );
   }
 
-  void _copy(String value, String copyMessage) {
+  void _copy(BuildContext context, String value, String copyMessage) {
     Clipboard.setData(ClipboardData(text: value));
     inject<MessengerService>().show(
-      Message.successful(message: copyMessage),
+      Message.successful(context: context, message: copyMessage),
     );
   }
-}
-
-extension on Money {
-  Money exchangeToUSD(Fixed price) => exchangeTo(
-        ExchangeRate.fromFixed(
-          price,
-          fromIsoCode: currency.isoCode,
-          toIsoCode: 'USD',
-          toDecimalDigits: 10,
-        ),
-      );
 }

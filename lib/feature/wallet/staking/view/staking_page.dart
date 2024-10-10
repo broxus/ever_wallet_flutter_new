@@ -7,6 +7,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:nekoton_repository/nekoton_repository.dart';
 import 'package:ui_components_lib/ui_components_lib.dart';
+import 'package:ui_components_lib/v2/widgets/widgets.dart';
 
 /// Page that allows user to stake his native token.
 class StakingPage extends StatelessWidget {
@@ -19,6 +20,8 @@ class StakingPage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final theme = context.themeStyleV2;
+
     return GestureDetector(
       onTap: () => FocusScope.of(context).unfocus(),
       child: Scaffold(
@@ -32,6 +35,7 @@ class StakingPage extends StatelessWidget {
           )..add(const ActionStakingBlocEvent.init()),
           child: BlocProvider<StakingBloc>(
             create: (context) => StakingBloc(
+              context: context,
               accountAddress: accountAddress,
               nekotonRepository: inject(),
               currencyConvert: inject(),
@@ -42,14 +46,18 @@ class StakingPage extends StatelessWidget {
             child: Stack(
               children: [
                 Positioned.fill(
-                  bottom: commonButtonHeight + DimensSize.d16,
+                  bottom: DimensSizeV2.d90,
                   child: _stakingViewBuilder(),
                 ),
                 Positioned(
-                  bottom: DimensSize.d16,
-                  right: DimensSize.d16,
-                  left: DimensSize.d16,
-                  child: _buttonBuilder(),
+                  bottom: DimensSizeV2.d0,
+                  right: DimensSizeV2.d0,
+                  left: DimensSizeV2.d0,
+                  child: Container(
+                    padding: const EdgeInsets.all(DimensSizeV2.d16),
+                    color: theme.colors.background0,
+                    child: _buttonBuilder(),
+                  ),
                 ),
               ],
             ),
@@ -63,45 +71,51 @@ class StakingPage extends StatelessWidget {
   Widget _stakingViewBuilder() {
     return Builder(
       builder: (context) {
-        final colors = context.themeStyle.colors;
+        final theme = context.themeStyleV2;
 
         return SingleChildScrollView(
-          padding: const EdgeInsets.all(DimensSize.d16),
-          child: SeparatedColumn(
-            separatorSize: DimensSize.d16,
+          padding: const EdgeInsets.symmetric(
+            horizontal: DimensSizeV2.d16,
+            vertical: DimensSizeV2.d8,
+          ),
+          child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               Text(
                 LocaleKeys.simpleLiquidStaking.tr(),
-                style: StyleRes.h1.copyWith(color: colors.textPrimary),
+                style: theme.textStyles.headingXLarge,
               ),
+              const SizedBox(height: DimensSizeV2.d12),
               Text.rich(
                 TextSpan(
                   children: [
                     TextSpan(
                       text: LocaleKeys.stakeEverReceiverStever.tr(),
-                      style: StyleRes.primaryRegular
-                          .copyWith(color: colors.textPrimary),
+                      style: theme.textStyles.paragraphMedium.copyWith(
+                        color: theme.colors.content3,
+                      ),
                     ),
                     const WidgetSpan(
-                      child: SizedBox(width: DimensSize.d4),
+                      child: SizedBox(width: DimensSizeV2.d4),
                     ),
                     TextSpan(
                       text: LocaleKeys.howItWorks.tr(),
-                      style:
-                          StyleRes.primaryRegular.copyWith(color: colors.blue),
+                      style: theme.textStyles.paragraphMedium.copyWith(
+                        color: theme.colors.primaryA,
+                      ),
                       recognizer: TapGestureRecognizer()
                         ..onTap = () => showStEverHowItWorksSheet(context),
                     ),
                   ],
                 ),
               ),
+              const SizedBox(height: DimensSizeV2.d24),
               BlocBuilder<StakingBloc, StakingBlocState>(
                 builder: (context, state) {
                   return state.when(
                     preparing: () => const Center(
                       child: Padding(
-                        padding: EdgeInsets.all(DimensSize.d16),
+                        padding: EdgeInsets.all(DimensSizeV2.d16),
                         child: CommonCircularProgressIndicator(
                           size: CircularIndicatorSize.large,
                         ),
@@ -112,11 +126,12 @@ class StakingPage extends StatelessWidget {
                     ),
                     initError: () => Center(
                       child: Padding(
-                        padding: const EdgeInsets.all(DimensSize.d16),
+                        padding: const EdgeInsets.all(DimensSizeV2.d16),
                         child: Text(
                           LocaleKeys.stakingInitError.tr(),
-                          style: StyleRes.primaryRegular
-                              .copyWith(color: colors.textPrimary),
+                          style: theme.textStyles.paragraphMedium.copyWith(
+                            color: theme.colors.negative,
+                          ),
                           textAlign: TextAlign.center,
                         ),
                       ),
@@ -215,7 +230,6 @@ class StakingPage extends StatelessWidget {
                 _________,
                 __________,
                 ___________,
-                ____________,
               ) =>
                   switch (type) {
                 StakingPageType.stake => (
@@ -233,9 +247,9 @@ class StakingPage extends StatelessWidget {
 
             if (text == null) return const SizedBox.shrink();
 
-            return CommonButton.primary(
-              text: text,
-              fillWidth: true,
+            return AccentButton(
+              buttonShape: ButtonShape.pill,
+              title: text,
               isLoading: isLoading,
               onPressed: canPress
                   ? () => context

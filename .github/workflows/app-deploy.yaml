@@ -3,7 +3,7 @@ name: Deploy app
 on:
   push:
     branches:
-      - main
+      - test
   workflow_dispatch:
     inputs:
       deploy_target:
@@ -33,6 +33,16 @@ jobs:
       - uses: actions/checkout@v4
         with:
           fetch-depth: 1
+
+      - name: Check deploy target and branch
+        run: |
+          if [[ "${{ github.ref }}" != "refs/heads/main" && 
+                ( "${{ inputs.deploy_target }}" == "store" || 
+                  "${{ inputs.deploy_target }}" == "ios_store" || 
+                  "${{ inputs.deploy_target }}" == "android_store" ) ]]; then
+            echo "🚫 Error: Deployment to store, ios_store, or android_store is only allowed from the 'main' branch."
+            exit 1
+          fi
 
       - name: Set output for flutter_version
         id: set_output
@@ -85,7 +95,7 @@ jobs:
     needs: setup
     runs-on: macos-latest
 
-    if: ${{ inputs.deploy_target == 'fad' || inputs.deploy_target == 'store' || inputs.deploy_target == 'ios_fad' || inputs.deploy_target == 'ios_store' }}
+    if: ${{ inputs.deploy_target == '' || inputs.deploy_target == 'fad' || inputs.deploy_target == 'store' || inputs.deploy_target == 'ios_fad' || inputs.deploy_target == 'ios_store' }}
 
     env:
       SECRET_PASSPHRASE: ${{ secrets.SECRET_PASSPHRASE }}
@@ -99,7 +109,7 @@ jobs:
       - name: Set target variable based on deploy_target
         run: |
           echo "deploy_target is = ${{ inputs.deploy_target }}"
-          if [[ "${{ inputs.deploy_target }}" == "fad" || "${{ inputs.deploy_target }}" = "ios_fad" ]]; then
+          if [[ "${{ inputs.deploy_target }}" == "" || "${{ inputs.deploy_target }}" == "fad" || "${{ inputs.deploy_target }}" = "ios_fad" ]]; then
             echo "ios_target=ios_fad" >> $GITHUB_ENV
           elif [[ "${{ inputs.deploy_target }}" == "store" || "${{ inputs.deploy_target }}" ==  "ios_store" ]]; then
             echo "ios_target=ios_store" >> $GITHUB_ENV
@@ -133,25 +143,16 @@ jobs:
       - name: Generate dart code
         run: melos codegen --no-select
 
-      # Read Sentry DSN
-      - name: Read Sentry DSN
-        id: read_sentry_dsn
-        run: |
-          if [ -f ./secrets/sentry-dsn.txt ]; then
-            SENTRY_DSN=$(cat ./secrets/sentry-dsn.txt)
-            echo "SENTRY_DSN=$SENTRY_DSN" >> $GITHUB_ENV
-            echo "::add-mask::$SENTRY_DSN"
-          fi
-
       - name: Display Build Number
         run:
           echo "Number is = ${{ needs.setup.outputs.build_number }}"
 
       - name: Build and deploy
         run: |
-          bash scripts/build.sh ${{ env.ios_target }} ${{ needs.setup.outputs.build_number }}
-        env:
-          SENTRY_DSN: ${{ env.SENTRY_DSN }}
+          bash scripts/build.sh \
+          --deploy-target ${{ env.ios_target }} \
+          --build-number ${{ needs.setup.outputs.build_number }} \
+          --upload true
 
       - name: Clean Xcode Derived Data
         run: |
@@ -175,17 +176,17 @@ jobs:
   # Android deploy
   android-deploy:
     needs: setup
-
-    if: ${{ inputs.deploy_target == 'fad' || inputs.deploy_target == 'store' || inputs.deploy_target == 'android_fad' || inputs.deploy_target == 'android_store' }}
-
     runs-on: ubuntu-latest
+
+    if: ${{ inputs.deploy_target == '' || inputs.deploy_target == 'fad' || inputs.deploy_target == 'store' || inputs.deploy_target == 'android_fad' || inputs.deploy_target == 'android_store' }}
+
     env:
       SECRET_PASSPHRASE: ${{ secrets.SECRET_PASSPHRASE }}
       MATCH_PASSWORD: ${{ secrets.MATCH_PASSWORD }}
 
     steps:
       - name: Reinstall existing fastlane plugin
-        run: | 
+        run: |
           sudo gem uninstall fastlane-plugin-firebase_app_distribution
           gem install fastlane-plugin-firebase_app_distribution --user-install
 
@@ -196,7 +197,7 @@ jobs:
       - name: Set target variable based on deploy_target
         run: |
           echo "deploy_target is = ${{ inputs.deploy_target }}"
-          if [[ "${{ inputs.deploy_target }}" == "fad" || "${{ inputs.deploy_target }}" = "android_fad" ]]; then
+          if [[ "${{ inputs.deploy_target }}" == "" || "${{ inputs.deploy_target }}" == "fad" || "${{ inputs.deploy_target }}" = "android_fad" ]]; then
             echo "android_target=android_fad" >> $GITHUB_ENV
           elif [[ "${{ inputs.deploy_target }}" == "store" || "${{ inputs.deploy_target }}" ==  "android_store" ]]; then
             echo "android_target=android_store" >> $GITHUB_ENV
@@ -231,25 +232,16 @@ jobs:
       - name: Generate dart code
         run: melos codegen --no-select
 
-      # Read Sentry DSN
-      - name: Read Sentry DSN
-        id: read_sentry_dsn
-        run: |
-          if [ -f ./secrets/sentry-dsn.txt ]; then
-            SENTRY_DSN=$(cat ./secrets/sentry-dsn.txt)
-            echo "SENTRY_DSN=$SENTRY_DSN" >> $GITHUB_ENV
-            echo "::add-mask::$SENTRY_DSN"
-          fi
-
       - name: Display Build Number
         run:
           echo "Number is = ${{ needs.setup.outputs.build_number }}"
 
       - name: Build and deploy
         run: |
-          bash scripts/build.sh ${{ env.android_target }} ${{ needs.setup.outputs.build_number }}
-        env:
-          SENTRY_DSN: ${{ env.SENTRY_DSN }}
+          bash scripts/build.sh \
+          --deploy-target ${{ env.android_target }} \
+          --build-number ${{ needs.setup.outputs.build_number }} \
+          --upload true
 
       - name: Remove Flutter
         run: |

@@ -1,15 +1,15 @@
 import 'package:app/di/di.dart';
 import 'package:app/feature/wallet/wallet.dart';
 import 'package:app/feature/wallet/widgets/account_transactions_tab/account_transactions_tab.dart';
-import 'package:app/generated/generated.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:nekoton_repository/nekoton_repository.dart';
 import 'package:ui_components_lib/ui_components_lib.dart';
+import 'package:ui_components_lib/v2/ui_components_lib_v2.dart';
 
 /// Details page of the [TonWallet], that is used to look though transactions
 /// history and to send tokens.
-class TonWalletDetailsPage extends StatelessWidget {
+class TonWalletDetailsPage extends StatefulWidget {
   const TonWalletDetailsPage({
     required this.address,
     super.key,
@@ -18,12 +18,25 @@ class TonWalletDetailsPage extends StatelessWidget {
   final Address address;
 
   @override
+  State<TonWalletDetailsPage> createState() => _TonWalletDetailsPageState();
+}
+
+class _TonWalletDetailsPageState extends State<TonWalletDetailsPage> {
+  final controller = ScrollController();
+
+  @override
+  void dispose() {
+    controller.dispose();
+    super.dispose();
+  }
+
+  @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: const DefaultAppBar(),
       body: BlocProvider<TonWalletDetailsCubit>(
         create: (_) => TonWalletDetailsCubit(
-          address: address,
+          address: widget.address,
           nekotonRepository: inject(),
           currencyConvertService: inject(),
           balanceService: inject(),
@@ -33,19 +46,19 @@ class TonWalletDetailsPage extends StatelessWidget {
             return state.when(
               initial: () => const SizedBox.shrink(),
               empty: () => const SizedBox.shrink(),
-              subscribeError: (walletName, account, error, isLoading) => _body(
-                context: context,
-                walletName: walletName,
+              subscribeError: (symbol, account, error, isLoading) => _Body(
+                symbol: symbol,
                 account: account,
                 error: error,
                 isLoadingError: isLoading,
+                controller: controller,
               ),
-              data: (walletName, account, tokenBalance, fiatBalance) => _body(
-                context: context,
-                walletName: walletName,
+              data: (symbol, account, tokenBalance, fiatBalance) => _Body(
+                symbol: symbol,
                 account: account,
                 tokenBalance: tokenBalance,
                 fiatBalance: fiatBalance,
+                controller: controller,
               ),
             );
           },
@@ -53,115 +66,104 @@ class TonWalletDetailsPage extends StatelessWidget {
       ),
     );
   }
+}
 
-  Widget _header(
-    String walletName,
-    Money? tokenBalance,
-    Money? fiatBalance,
-  ) {
-    return Builder(
-      builder: (context) {
-        final colors = context.themeStyle.colors;
+class _Body extends StatelessWidget {
+  const _Body({
+    required this.account,
+    required this.symbol,
+    required this.controller,
+    this.tokenBalance,
+    this.fiatBalance,
+    this.error,
+    this.isLoadingError = false,
+  });
 
-        return SeparatedColumn(
-          mainAxisSize: MainAxisSize.min,
-          separatorSize: DimensSize.d4,
-          children: [
-            Text(
-              walletName,
-              style: StyleRes.addRegular.copyWith(color: colors.textSecondary),
-            ),
-            if (tokenBalance != null)
-              MoneyWidget(money: tokenBalance, style: MoneyWidgetStyle.primary),
-            if (fiatBalance != null)
-              MoneyWidget(
-                money: fiatBalance,
-                style: MoneyWidgetStyle.secondary,
-              ),
-          ],
-        );
-      },
-    );
-  }
+  final KeyAccount account;
+  final String symbol;
+  final Money? tokenBalance;
+  final Money? fiatBalance;
+  final Object? error;
+  final bool isLoadingError;
+  final ScrollController controller;
 
-  // ignore: long-method
-  Widget _body({
-    required BuildContext context,
-    required String walletName,
-    required KeyAccount account,
-    Money? tokenBalance,
-    Money? fiatBalance,
-    Object? error,
-    bool isLoadingError = false,
-  }) {
+  @override
+  Widget build(BuildContext context) {
     final theme = context.themeStyleV2;
-    return CommonSlidingPanel(
-      // ignore: no-magic-number
-      minHeightSizePercent: 0.65,
-      maxHeightSizePercent: 1,
-      backgroundColor: theme.colors.background1,
-      body: SeparatedColumn(
-        mainAxisSize: MainAxisSize.min,
-        separatorSize: DimensSize.d24,
-        children: [
-          _header(walletName, tokenBalance, fiatBalance),
-          if (error == null)
-            WalletAccountActions(
-              currentAccount: account,
-              allowStake: false,
-              sendSpecified: true,
-            ),
-        ],
-      ),
-      panelBuilder: (context, controller) => Builder(
-        builder: (context) {
-          final colors = context.themeStyle.colors;
 
-          return CustomScrollView(
-            controller: controller,
-            slivers: error != null
-                ? <Widget>[
-                    SliverFillRemaining(
-                      child: Padding(
-                        padding: const EdgeInsets.symmetric(
-                          horizontal: DimensSize.d16,
-                        ),
-                        child: Center(
-                          child: WalletSubscribeErrorWidget(
-                            error: error,
-                            isLoadingError: isLoadingError,
-                            onRetryPressed: (context) =>
-                                context.read<TonWalletDetailsCubit>().retry(),
-                          ),
-                        ),
-                      ),
+    return CustomScrollView(
+      slivers: [
+        SliverToBoxAdapter(
+          child: Column(
+            mainAxisSize: MainAxisSize.min,
+            children: [
+              Text(
+                symbol,
+                style: theme.textStyles.labelSmall.copyWith(
+                  color: theme.colors.content3,
+                ),
+              ),
+              const SizedBox(height: DimensSizeV2.d12),
+              if (tokenBalance != null)
+                AmountWidget.fromMoney(
+                  amount: tokenBalance!,
+                  includeSymbol: false,
+                  style: theme.textStyles.headingXLarge,
+                ),
+              const SizedBox(height: DimensSizeV2.d4),
+              if (fiatBalance != null)
+                AmountWidget.dollars(
+                  amount: fiatBalance!,
+                  style: theme.textStyles.labelXSmall,
+                ),
+              const SizedBox(height: DimensSizeV2.d16),
+              if (error == null)
+                WalletAccountActions(
+                  currentAccount: account,
+                  allowStake: false,
+                  sendSpecified: true,
+                ),
+              const SizedBox(height: DimensSizeV2.d48),
+            ],
+          ),
+        ),
+        DecoratedSliver(
+          decoration: BoxDecoration(
+            color: theme.colors.background1,
+            borderRadius: const BorderRadius.vertical(
+              top: Radius.circular(DimensRadiusV2.radius24),
+            ),
+          ),
+          sliver: SliverPadding(
+            padding: const EdgeInsets.all(DimensSizeV2.d16),
+            sliver: error == null
+                ? AccountTransactionsTab(
+                    account: account,
+                    scrollController: controller,
+                  )
+                : null,
+          ),
+        ),
+        SliverFillRemaining(
+          hasScrollBody: false,
+          child: Container(
+            color: theme.colors.background1,
+            padding: const EdgeInsets.symmetric(
+              horizontal: DimensSizeV2.d16,
+            ),
+            child: error != null
+                ? Center(
+                    child: WalletSubscribeErrorWidget(
+                      error: error!,
+                      isLoadingError: isLoadingError,
+                      onRetryPressed: (context) =>
+                          context.read<TonWalletDetailsCubit>().retry(),
                     ),
-                  ]
-                : <Widget>[
-                    SliverToBoxAdapter(
-                      child: Padding(
-                        padding: const EdgeInsets.symmetric(
-                          horizontal: DimensSize.d16,
-                        ),
-                        child: Text(
-                          LocaleKeys.transactionsHistory.tr(),
-                          style: StyleRes.h2.copyWith(
-                            color: colors.textPrimary,
-                          ),
-                        ),
-                      ),
-                    ),
-                    AccountTransactionsTab(
-                      account: account,
-                      scrollController: controller,
-                    ),
-                    const SliverToBoxAdapter(
-                      child: SizedBox(height: DimensSize.d8),
-                    ),
-                  ],
-          );
-        },
-      ),
+                  )
+                : null,
+          ),
+        ),
+      ],
     );
   }
 }

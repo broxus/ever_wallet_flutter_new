@@ -55,7 +55,7 @@ class ChooseNetworkScreen
                   PrimaryText(
                     LocaleKeys.selectNetworkNewWalletDescription.tr(),
                   ),
-                  SizedBox(height: DimensAdaptiveSize.d32.hp),
+                  SizedBox(height: DimensAdaptiveSize.d64.hp),
                   StateNotifierBuilder<List<ChooseNetworkItemData>>(
                     listenableState: wm.connectionsState,
                     builder: (_, List<ChooseNetworkItemData>? items) {

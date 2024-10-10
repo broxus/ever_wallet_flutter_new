@@ -1008,12 +1008,11 @@ mixin _$StakingBlocState {
             BigInt attachedAmount,
             bool canSubmitAction,
             TextEditingController inputController,
-            String imagePath,
             double exchangeRate,
             Currency receiveCurrency,
             PublicKey accountKey,
-            Money currentBalance,
             Money enteredPrice,
+            AmountInputAsset asset,
             Money? receiveBalance,
             List<StEverWithdrawRequest>? requests,
             double? apy)
@@ -1031,12 +1030,11 @@ mixin _$StakingBlocState {
             BigInt attachedAmount,
             bool canSubmitAction,
             TextEditingController inputController,
-            String imagePath,
             double exchangeRate,
             Currency receiveCurrency,
             PublicKey accountKey,
-            Money currentBalance,
             Money enteredPrice,
+            AmountInputAsset asset,
             Money? receiveBalance,
             List<StEverWithdrawRequest>? requests,
             double? apy)?
@@ -1054,12 +1052,11 @@ mixin _$StakingBlocState {
             BigInt attachedAmount,
             bool canSubmitAction,
             TextEditingController inputController,
-            String imagePath,
             double exchangeRate,
             Currency receiveCurrency,
             PublicKey accountKey,
-            Money currentBalance,
             Money enteredPrice,
+            AmountInputAsset asset,
             Money? receiveBalance,
             List<StEverWithdrawRequest>? requests,
             double? apy)?
@@ -1165,12 +1162,11 @@ class _$PreparingImpl implements _Preparing {
             BigInt attachedAmount,
             bool canSubmitAction,
             TextEditingController inputController,
-            String imagePath,
             double exchangeRate,
             Currency receiveCurrency,
             PublicKey accountKey,
-            Money currentBalance,
             Money enteredPrice,
+            AmountInputAsset asset,
             Money? receiveBalance,
             List<StEverWithdrawRequest>? requests,
             double? apy)
@@ -1191,12 +1187,11 @@ class _$PreparingImpl implements _Preparing {
             BigInt attachedAmount,
             bool canSubmitAction,
             TextEditingController inputController,
-            String imagePath,
             double exchangeRate,
             Currency receiveCurrency,
             PublicKey accountKey,
-            Money currentBalance,
             Money enteredPrice,
+            AmountInputAsset asset,
             Money? receiveBalance,
             List<StEverWithdrawRequest>? requests,
             double? apy)?
@@ -1217,12 +1212,11 @@ class _$PreparingImpl implements _Preparing {
             BigInt attachedAmount,
             bool canSubmitAction,
             TextEditingController inputController,
-            String imagePath,
             double exchangeRate,
             Currency receiveCurrency,
             PublicKey accountKey,
-            Money currentBalance,
             Money enteredPrice,
+            AmountInputAsset asset,
             Money? receiveBalance,
             List<StEverWithdrawRequest>? requests,
             double? apy)?
@@ -1327,12 +1321,11 @@ class _$InitErrorImpl implements _InitError {
             BigInt attachedAmount,
             bool canSubmitAction,
             TextEditingController inputController,
-            String imagePath,
             double exchangeRate,
             Currency receiveCurrency,
             PublicKey accountKey,
-            Money currentBalance,
             Money enteredPrice,
+            AmountInputAsset asset,
             Money? receiveBalance,
             List<StEverWithdrawRequest>? requests,
             double? apy)
@@ -1353,12 +1346,11 @@ class _$InitErrorImpl implements _InitError {
             BigInt attachedAmount,
             bool canSubmitAction,
             TextEditingController inputController,
-            String imagePath,
             double exchangeRate,
             Currency receiveCurrency,
             PublicKey accountKey,
-            Money currentBalance,
             Money enteredPrice,
+            AmountInputAsset asset,
             Money? receiveBalance,
             List<StEverWithdrawRequest>? requests,
             double? apy)?
@@ -1379,12 +1371,11 @@ class _$InitErrorImpl implements _InitError {
             BigInt attachedAmount,
             bool canSubmitAction,
             TextEditingController inputController,
-            String imagePath,
             double exchangeRate,
             Currency receiveCurrency,
             PublicKey accountKey,
-            Money currentBalance,
             Money enteredPrice,
+            AmountInputAsset asset,
             Money? receiveBalance,
             List<StEverWithdrawRequest>? requests,
             double? apy)?
@@ -1515,12 +1506,11 @@ class _$SubscribeErrorImpl implements _SubscribeError {
             BigInt attachedAmount,
             bool canSubmitAction,
             TextEditingController inputController,
-            String imagePath,
             double exchangeRate,
             Currency receiveCurrency,
             PublicKey accountKey,
-            Money currentBalance,
             Money enteredPrice,
+            AmountInputAsset asset,
             Money? receiveBalance,
             List<StEverWithdrawRequest>? requests,
             double? apy)
@@ -1541,12 +1531,11 @@ class _$SubscribeErrorImpl implements _SubscribeError {
             BigInt attachedAmount,
             bool canSubmitAction,
             TextEditingController inputController,
-            String imagePath,
             double exchangeRate,
             Currency receiveCurrency,
             PublicKey accountKey,
-            Money currentBalance,
             Money enteredPrice,
+            AmountInputAsset asset,
             Money? receiveBalance,
             List<StEverWithdrawRequest>? requests,
             double? apy)?
@@ -1567,12 +1556,11 @@ class _$SubscribeErrorImpl implements _SubscribeError {
             BigInt attachedAmount,
             bool canSubmitAction,
             TextEditingController inputController,
-            String imagePath,
             double exchangeRate,
             Currency receiveCurrency,
             PublicKey accountKey,
-            Money currentBalance,
             Money enteredPrice,
+            AmountInputAsset asset,
             Money? receiveBalance,
             List<StEverWithdrawRequest>? requests,
             double? apy)?
@@ -1647,12 +1635,11 @@ abstract class _$$StakingStateImplCopyWith<$Res> {
       BigInt attachedAmount,
       bool canSubmitAction,
       TextEditingController inputController,
-      String imagePath,
       double exchangeRate,
       Currency receiveCurrency,
       PublicKey accountKey,
-      Money currentBalance,
       Money enteredPrice,
+      AmountInputAsset asset,
       Money? receiveBalance,
       List<StEverWithdrawRequest>? requests,
       double? apy});
@@ -1678,12 +1665,11 @@ class __$$StakingStateImplCopyWithImpl<$Res>
     Object? attachedAmount = null,
     Object? canSubmitAction = null,
     Object? inputController = null,
-    Object? imagePath = null,
     Object? exchangeRate = null,
     Object? receiveCurrency = null,
     Object? accountKey = null,
-    Object? currentBalance = null,
     Object? enteredPrice = null,
+    Object? asset = null,
     Object? receiveBalance = freezed,
     Object? requests = freezed,
     Object? apy = freezed,
@@ -1709,10 +1695,6 @@ class __$$StakingStateImplCopyWithImpl<$Res>
           ? _value.inputController
           : inputController // ignore: cast_nullable_to_non_nullable
               as TextEditingController,
-      imagePath: null == imagePath
-          ? _value.imagePath
-          : imagePath // ignore: cast_nullable_to_non_nullable
-              as String,
       exchangeRate: null == exchangeRate
           ? _value.exchangeRate
           : exchangeRate // ignore: cast_nullable_to_non_nullable
@@ -1725,14 +1707,14 @@ class __$$StakingStateImplCopyWithImpl<$Res>
           ? _value.accountKey
           : accountKey // ignore: cast_nullable_to_non_nullable
               as PublicKey,
-      currentBalance: null == currentBalance
-          ? _value.currentBalance
-          : currentBalance // ignore: cast_nullable_to_non_nullable
-              as Money,
       enteredPrice: null == enteredPrice
           ? _value.enteredPrice
           : enteredPrice // ignore: cast_nullable_to_non_nullable
               as Money,
+      asset: null == asset
+          ? _value.asset
+          : asset // ignore: cast_nullable_to_non_nullable
+              as AmountInputAsset,
       receiveBalance: freezed == receiveBalance
           ? _value.receiveBalance
           : receiveBalance // ignore: cast_nullable_to_non_nullable
@@ -1768,12 +1750,11 @@ class _$StakingStateImpl implements _StakingState {
       required this.attachedAmount,
       required this.canSubmitAction,
       required this.inputController,
-      required this.imagePath,
       required this.exchangeRate,
       required this.receiveCurrency,
       required this.accountKey,
-      required this.currentBalance,
       required this.enteredPrice,
+      required this.asset,
       this.receiveBalance,
       final List<StEverWithdrawRequest>? requests,
       this.apy})
@@ -1791,8 +1772,6 @@ class _$StakingStateImpl implements _StakingState {
   final bool canSubmitAction;
   @override
   final TextEditingController inputController;
-  @override
-  final String imagePath;
 // How many [receiveBalance] could be received for [currentBalance].
 // if we receive stever, then it should be displayed on right side, on left
 // otherwise
@@ -1802,12 +1781,11 @@ class _$StakingStateImpl implements _StakingState {
   final Currency receiveCurrency;
   @override
   final PublicKey accountKey;
-// Balance of current selected token (stake-ever, unstake-stever)
-  @override
-  final Money currentBalance;
 // Price in real curreny of entered tokens
   @override
   final Money enteredPrice;
+  @override
+  final AmountInputAsset asset;
 // Balance of token user select after action (stake-stever, unstake-ever)
   @override
   final Money? receiveBalance;
@@ -1829,7 +1807,7 @@ class _$StakingStateImpl implements _StakingState {
 
   @override
   String toString() {
-    return 'StakingBlocState.data(type: $type, withdrawTime: $withdrawTime, attachedAmount: $attachedAmount, canSubmitAction: $canSubmitAction, inputController: $inputController, imagePath: $imagePath, exchangeRate: $exchangeRate, receiveCurrency: $receiveCurrency, accountKey: $accountKey, currentBalance: $currentBalance, enteredPrice: $enteredPrice, receiveBalance: $receiveBalance, requests: $requests, apy: $apy)';
+    return 'StakingBlocState.data(type: $type, withdrawTime: $withdrawTime, attachedAmount: $attachedAmount, canSubmitAction: $canSubmitAction, inputController: $inputController, exchangeRate: $exchangeRate, receiveCurrency: $receiveCurrency, accountKey: $accountKey, enteredPrice: $enteredPrice, asset: $asset, receiveBalance: $receiveBalance, requests: $requests, apy: $apy)';
   }
 
   @override
@@ -1846,18 +1824,15 @@ class _$StakingStateImpl implements _StakingState {
                 other.canSubmitAction == canSubmitAction) &&
             (identical(other.inputController, inputController) ||
                 other.inputController == inputController) &&
-            (identical(other.imagePath, imagePath) ||
-                other.imagePath == imagePath) &&
             (identical(other.exchangeRate, exchangeRate) ||
                 other.exchangeRate == exchangeRate) &&
             (identical(other.receiveCurrency, receiveCurrency) ||
                 other.receiveCurrency == receiveCurrency) &&
             (identical(other.accountKey, accountKey) ||
                 other.accountKey == accountKey) &&
-            (identical(other.currentBalance, currentBalance) ||
-                other.currentBalance == currentBalance) &&
             (identical(other.enteredPrice, enteredPrice) ||
                 other.enteredPrice == enteredPrice) &&
+            (identical(other.asset, asset) || other.asset == asset) &&
             (identical(other.receiveBalance, receiveBalance) ||
                 other.receiveBalance == receiveBalance) &&
             const DeepCollectionEquality().equals(other._requests, _requests) &&
@@ -1872,12 +1847,11 @@ class _$StakingStateImpl implements _StakingState {
       attachedAmount,
       canSubmitAction,
       inputController,
-      imagePath,
       exchangeRate,
       receiveCurrency,
       accountKey,
-      currentBalance,
       enteredPrice,
+      asset,
       receiveBalance,
       const DeepCollectionEquality().hash(_requests),
       apy);
@@ -1902,12 +1876,11 @@ class _$StakingStateImpl implements _StakingState {
             BigInt attachedAmount,
             bool canSubmitAction,
             TextEditingController inputController,
-            String imagePath,
             double exchangeRate,
             Currency receiveCurrency,
             PublicKey accountKey,
-            Money currentBalance,
             Money enteredPrice,
+            AmountInputAsset asset,
             Money? receiveBalance,
             List<StEverWithdrawRequest>? requests,
             double? apy)
@@ -1919,12 +1892,11 @@ class _$StakingStateImpl implements _StakingState {
         attachedAmount,
         canSubmitAction,
         inputController,
-        imagePath,
         exchangeRate,
         receiveCurrency,
         accountKey,
-        currentBalance,
         enteredPrice,
+        asset,
         receiveBalance,
         requests,
         apy);
@@ -1942,12 +1914,11 @@ class _$StakingStateImpl implements _StakingState {
             BigInt attachedAmount,
             bool canSubmitAction,
             TextEditingController inputController,
-            String imagePath,
             double exchangeRate,
             Currency receiveCurrency,
             PublicKey accountKey,
-            Money currentBalance,
             Money enteredPrice,
+            AmountInputAsset asset,
             Money? receiveBalance,
             List<StEverWithdrawRequest>? requests,
             double? apy)?
@@ -1959,12 +1930,11 @@ class _$StakingStateImpl implements _StakingState {
         attachedAmount,
         canSubmitAction,
         inputController,
-        imagePath,
         exchangeRate,
         receiveCurrency,
         accountKey,
-        currentBalance,
         enteredPrice,
+        asset,
         receiveBalance,
         requests,
         apy);
@@ -1982,12 +1952,11 @@ class _$StakingStateImpl implements _StakingState {
             BigInt attachedAmount,
             bool canSubmitAction,
             TextEditingController inputController,
-            String imagePath,
             double exchangeRate,
             Currency receiveCurrency,
             PublicKey accountKey,
-            Money currentBalance,
             Money enteredPrice,
+            AmountInputAsset asset,
             Money? receiveBalance,
             List<StEverWithdrawRequest>? requests,
             double? apy)?
@@ -2001,12 +1970,11 @@ class _$StakingStateImpl implements _StakingState {
           attachedAmount,
           canSubmitAction,
           inputController,
-          imagePath,
           exchangeRate,
           receiveCurrency,
           accountKey,
-          currentBalance,
           enteredPrice,
+          asset,
           receiveBalance,
           requests,
           apy);
@@ -2059,12 +2027,11 @@ abstract class _StakingState implements StakingBlocState {
       required final BigInt attachedAmount,
       required final bool canSubmitAction,
       required final TextEditingController inputController,
-      required final String imagePath,
       required final double exchangeRate,
       required final Currency receiveCurrency,
       required final PublicKey accountKey,
-      required final Money currentBalance,
       required final Money enteredPrice,
+      required final AmountInputAsset asset,
       final Money? receiveBalance,
       final List<StEverWithdrawRequest>? requests,
       final double? apy}) = _$StakingStateImpl;
@@ -2074,18 +2041,16 @@ abstract class _StakingState implements StakingBlocState {
   int get withdrawTime; // Amount in EVER that will be attached to action
   BigInt get attachedAmount;
   bool get canSubmitAction;
-  TextEditingController get inputController;
-  String
-      get imagePath; // How many [receiveBalance] could be received for [currentBalance].
+  TextEditingController
+      get inputController; // How many [receiveBalance] could be received for [currentBalance].
 // if we receive stever, then it should be displayed on right side, on left
 // otherwise
   double get exchangeRate;
   Currency get receiveCurrency;
-  PublicKey
-      get accountKey; // Balance of current selected token (stake-ever, unstake-stever)
-  Money get currentBalance; // Price in real curreny of entered tokens
-  Money
-      get enteredPrice; // Balance of token user select after action (stake-stever, unstake-ever)
+  PublicKey get accountKey; // Price in real curreny of entered tokens
+  Money get enteredPrice;
+  AmountInputAsset
+      get asset; // Balance of token user select after action (stake-stever, unstake-ever)
   Money? get receiveBalance; // Pending withdraw requests
   List<StEverWithdrawRequest>? get requests; // Average profit
   double? get apy;

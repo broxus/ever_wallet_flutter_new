@@ -1,6 +1,6 @@
 import 'dart:ui' as ui;
-import 'package:flutter/material.dart';
 
+import 'package:flutter/material.dart';
 import 'package:ui_components_lib/ui_components_lib.dart';
 
 /// Default size for [CommonIconWidget]

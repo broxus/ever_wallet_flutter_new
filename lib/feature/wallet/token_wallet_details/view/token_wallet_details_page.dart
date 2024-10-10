@@ -4,12 +4,14 @@ import 'package:app/feature/wallet/wallet.dart';
 import 'package:app/generated/generated.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:lucide_icons_flutter/lucide_icons.dart';
 import 'package:nekoton_repository/nekoton_repository.dart';
 import 'package:ui_components_lib/ui_components_lib.dart';
+import 'package:ui_components_lib/v2/ui_components_lib_v2.dart';
 
 /// Details page of the [TokenWallet], that is used to look though transactions
 /// history and to send/receive tokens.
-class TokenWalletDetailsPage extends StatelessWidget {
+class TokenWalletDetailsPage extends StatefulWidget {
   const TokenWalletDetailsPage({
     required this.owner,
     required this.rootTokenContract,
@@ -20,13 +22,26 @@ class TokenWalletDetailsPage extends StatelessWidget {
   final Address rootTokenContract;
 
   @override
+  State<TokenWalletDetailsPage> createState() => _TokenWalletDetailsPageState();
+}
+
+class _TokenWalletDetailsPageState extends State<TokenWalletDetailsPage> {
+  final controller = ScrollController();
+
+  @override
+  void dispose() {
+    controller.dispose();
+    super.dispose();
+  }
+
+  @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: const DefaultAppBar(),
       body: BlocProvider<TokenWalletDetailsCubit>(
         create: (_) => TokenWalletDetailsCubit(
-          owner: owner,
-          rootTokenContract: rootTokenContract,
+          owner: widget.owner,
+          rootTokenContract: widget.rootTokenContract,
           nekotonRepository: inject(),
           currencyConvertService: inject(),
           balanceService: inject(),
@@ -37,10 +52,13 @@ class TokenWalletDetailsPage extends StatelessWidget {
             return state.when(
               initial: () => const SizedBox.shrink(),
               empty: () => const SizedBox.shrink(),
-              subscribeError: (contractName, error, isLoading) => _body(
+              subscribeError: (contractName, error, isLoading) => _Body(
+                owner: widget.owner,
+                rootTokenContract: widget.rootTokenContract,
                 contractName: contractName,
                 error: error,
                 isLoadingError: isLoading,
+                controller: controller,
               ),
               data: (
                 contractName,
@@ -48,11 +66,14 @@ class TokenWalletDetailsPage extends StatelessWidget {
                 fiatBalance,
                 canSend,
               ) =>
-                  _body(
+                  _Body(
+                owner: widget.owner,
+                rootTokenContract: widget.rootTokenContract,
                 contractName: contractName,
                 tokenBalance: tokenBalance,
                 fiatBalance: fiatBalance,
                 canSend: canSend,
+                controller: controller,
               ),
             );
           },
@@ -60,167 +81,139 @@ class TokenWalletDetailsPage extends StatelessWidget {
       ),
     );
   }
+}
 
-  Widget _header(
-    String contractName,
-    Money? tokenBalance,
-    Money? fiatBalance,
-  ) {
-    return Builder(
-      builder: (context) {
-        final colors = context.themeStyle.colors;
+class _Body extends StatelessWidget {
+  const _Body({
+    required this.owner,
+    required this.rootTokenContract,
+    required this.contractName,
+    required this.controller,
+    this.tokenBalance,
+    this.fiatBalance,
+    this.canSend = false,
+    this.error,
+    this.isLoadingError = false,
+  });
 
-        return SeparatedColumn(
-          mainAxisSize: MainAxisSize.min,
-          separatorSize: DimensSize.d4,
-          children: [
-            Text(
-              contractName,
-              style: StyleRes.addRegular.copyWith(color: colors.textSecondary),
-            ),
-            if (tokenBalance != null)
-              MoneyWidget(money: tokenBalance, style: MoneyWidgetStyle.primary),
-            if (fiatBalance != null)
-              MoneyWidget(
-                money: fiatBalance,
-                style: MoneyWidgetStyle.secondary,
-              ),
-          ],
-        );
-      },
-    );
-  }
+  final Address owner;
+  final Address rootTokenContract;
+  final String contractName;
+  final Money? tokenBalance;
+  final Money? fiatBalance;
+  final bool canSend;
+  final Object? error;
+  final bool isLoadingError;
+  final ScrollController controller;
 
-  Widget _actions(bool canSend, BuildContext context, String ticker) {
-    return SeparatedRow(
-      separatorSize: DimensSize.d32,
-      mainAxisAlignment: MainAxisAlignment.center,
-      children: [
-        _buttonItem(
-          svg: Assets.images.arrowDown.path,
-          onPressed: () => showReceiveFundsSheet(context, owner),
-          title: LocaleKeys.receiveWord.tr(),
-        ),
-        if (canSend)
-          _buttonItem(
-            onPressed: () => context.goFurther(
-              AppRoute.walletPrepareTransferSpecified.pathWithData(
-                pathParameters: {
-                  walletPrepareTransferAddressPathParam: owner.address,
-                  walletPrepareTransferRootTokenAddressPathParam:
-                      rootTokenContract.address,
-                  walletPrepareTransferSymbolPathParam: ticker,
-                },
-              ),
-            ),
-            svg: Assets.images.arrowUp.path,
-            title: LocaleKeys.sendWord.tr(),
-          ),
-      ],
-    );
-  }
+  @override
+  Widget build(BuildContext context) {
+    final theme = context.themeStyleV2;
 
-  Widget _buttonItem({
-    required String svg,
-    required VoidCallback onPressed,
-    required String title,
-  }) {
-    return Builder(
-      builder: (context) {
-        final colors = context.themeStyle.colors;
-
-        return SeparatedColumn(
-          mainAxisSize: MainAxisSize.min,
-          children: [
-            CommonIconButton.svg(
-              svg: svg,
-              buttonType: EverButtonType.primary,
-              onPressed: onPressed,
-            ),
-            Text(
-              title,
-              style: StyleRes.addBold.copyWith(color: colors.textPrimary),
-            ),
-          ],
-        );
-      },
-    );
-  }
-
-  // ignore: long-method
-  Widget _body({
-    required String contractName,
-    Money? tokenBalance,
-    Money? fiatBalance,
-    bool canSend = false,
-    Object? error,
-    bool isLoadingError = false,
-  }) {
-    return Builder(
-      builder: (context) {
-        final colors = context.themeStyle.colors;
-        final theme = context.themeStyleV2;
-
-        return CommonSlidingPanel(
-          // ignore: no-magic-number
-          minHeightSizePercent: 0.65,
-          maxHeightSizePercent: 1,
-          backgroundColor: theme.colors.background1,
-          body: SeparatedColumn(
+    return CustomScrollView(
+      slivers: [
+        SliverToBoxAdapter(
+          child: Column(
             mainAxisSize: MainAxisSize.min,
-            separatorSize: DimensSize.d24,
             children: [
-              _header(contractName, tokenBalance, fiatBalance),
-              if (tokenBalance != null && error == null)
-                _actions(canSend, context, tokenBalance.currency.isoCode),
+              Text(
+                contractName,
+                style: theme.textStyles.labelSmall.copyWith(
+                  color: theme.colors.content3,
+                ),
+              ),
+              const SizedBox(height: DimensSizeV2.d12),
+              if (tokenBalance != null)
+                AmountWidget.fromMoney(
+                  amount: tokenBalance!,
+                  includeSymbol: false,
+                  style: theme.textStyles.headingXLarge,
+                ),
+              const SizedBox(height: DimensSizeV2.d4),
+              if (fiatBalance != null)
+                AmountWidget.dollars(
+                  amount: fiatBalance!,
+                  style: theme.textStyles.labelXSmall,
+                ),
+              const SizedBox(height: DimensSizeV2.d16),
+              SizedBox(
+                height: DimensSizeV2.d74,
+                child: SeparatedRow(
+                  separator: VerticalDivider(
+                    width: DimensStroke.small,
+                    thickness: DimensStroke.small,
+                    color: theme.colors.borderAlpha,
+                  ),
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  crossAxisAlignment: CrossAxisAlignment.stretch,
+                  children: [
+                    WalletActionButton(
+                      label: LocaleKeys.receiveWord.tr(),
+                      icon: LucideIcons.arrowDown,
+                      onPressed: () => showReceiveFundsSheet(context, owner),
+                    ),
+                    if (canSend && tokenBalance != null)
+                      WalletActionButton(
+                        label: LocaleKeys.sendWord.tr(),
+                        icon: LucideIcons.arrowUp,
+                        onPressed: () => context.goFurther(
+                          AppRoute.walletPrepareTransferSpecified.pathWithData(
+                            pathParameters: {
+                              walletPrepareTransferAddressPathParam:
+                                  owner.address,
+                              walletPrepareTransferRootTokenAddressPathParam:
+                                  rootTokenContract.address,
+                              walletPrepareTransferSymbolPathParam:
+                                  tokenBalance!.currency.isoCode,
+                            },
+                          ),
+                        ),
+                      ),
+                  ],
+                ),
+              ),
+              const SizedBox(height: DimensSizeV2.d48),
             ],
           ),
-          panelBuilder: (context, controller) => CustomScrollView(
-            controller: controller,
-            slivers: error != null
-                ? <Widget>[
-                    SliverFillRemaining(
-                      child: Padding(
-                        padding: const EdgeInsets.symmetric(
-                          horizontal: DimensSize.d16,
-                        ),
-                        child: Center(
-                          child: WalletSubscribeErrorWidget(
-                            error: error,
-                            isLoadingError: isLoadingError,
-                            onRetryPressed: (context) =>
-                                context.read<TokenWalletDetailsCubit>().retry(),
-                          ),
-                        ),
-                      ),
-                    ),
-                  ]
-                : <Widget>[
-                    SliverToBoxAdapter(
-                      child: Padding(
-                        padding: const EdgeInsets.symmetric(
-                          horizontal: DimensSize.d16,
-                        ),
-                        child: Text(
-                          LocaleKeys.transactionsHistory.tr(),
-                          style: StyleRes.h2.copyWith(
-                            color: colors.textPrimary,
-                          ),
-                        ),
-                      ),
-                    ),
-                    TokenWalletTransactionsWidget(
-                      rootTokenContract: rootTokenContract,
-                      owner: owner,
-                      scrollController: controller,
-                    ),
-                    const SliverToBoxAdapter(
-                      child: SizedBox(height: DimensSize.d8),
-                    ),
-                  ],
+        ),
+        DecoratedSliver(
+          decoration: BoxDecoration(
+            color: theme.colors.background1,
+            borderRadius: const BorderRadius.vertical(
+              top: Radius.circular(DimensRadiusV2.radius24),
+            ),
           ),
-        );
-      },
+          sliver: SliverPadding(
+            padding: const EdgeInsets.all(DimensSizeV2.d16),
+            sliver: error == null
+                ? TokenWalletTransactionsWidget(
+                    rootTokenContract: rootTokenContract,
+                    owner: owner,
+                    scrollController: controller,
+                  )
+                : null,
+          ),
+        ),
+        SliverFillRemaining(
+          hasScrollBody: false,
+          child: Container(
+            color: theme.colors.background1,
+            padding: const EdgeInsets.symmetric(
+              horizontal: DimensSizeV2.d16,
+            ),
+            child: error != null
+                ? Center(
+                    child: WalletSubscribeErrorWidget(
+                      error: error!,
+                      isLoadingError: isLoadingError,
+                      onRetryPressed: (context) =>
+                          context.read<TokenWalletDetailsCubit>().retry(),
+                    ),
+                  )
+                : null,
+          ),
+        ),
+      ],
     );
   }
 }

@@ -12,7 +12,7 @@ Future<void> configureFeatureServices() async {
     ..finest('CurrentSeedService initialized')
     ..finest('CurrentAccountsService initializating...');
 
-  inject<CurrentAccountsService>().init();
+  await inject<CurrentAccountsService>().init();
   log
     ..finest('CurrentAccountsService initialized')
     ..finest('CurrenciesService initializating...');

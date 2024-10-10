@@ -1,8 +1,8 @@
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
+import 'package:injectable/injectable.dart';
 
+@lazySingleton
 class SecureStorageService {
-  SecureStorageService();
-
   final FlutterSecureStorage _storage = const FlutterSecureStorage(
     aOptions: AndroidOptions(encryptedSharedPreferences: true),
   );
@@ -12,7 +12,8 @@ class SecureStorageService {
   }
 
   Future<T?> getValue<T>(String key) async {
-    final value = await _storage.read(key: key);
+    final value =
+        await _storage.read(key: key, iOptions: IOSOptions.defaultOptions);
     if (value == null) {
       return null;
     }

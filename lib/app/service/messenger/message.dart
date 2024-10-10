@@ -25,21 +25,25 @@ enum MessageType {
 class Message {
   Message({
     required this.type,
+    required this.context,
     required this.message,
     this.duration = defaultMessageDisplayDuration,
     this.debounceTime = defaultInfoMessageDebounceDuration,
     this.actionText,
     this.onAction,
+    this.topMargin,
   }) : hashString = '${type.name}_${sha256.convert(utf8.encode('message'))}';
 
   factory Message.error({
     required String message,
+    BuildContext? context,
     Duration duration = defaultMessageDisplayDuration,
     Duration debounceTime = defaultErrorMessageDebounceDuration,
     String? actionText,
     VoidCallback? onAction,
   }) =>
       Message(
+        context: context,
         type: MessageType.error,
         message: message,
         duration: duration,
@@ -50,28 +54,34 @@ class Message {
 
   factory Message.info({
     required String message,
+    BuildContext? context,
     Duration duration = defaultMessageDisplayDuration,
     Duration debounceTime = defaultInfoMessageDebounceDuration,
     String? actionText,
     VoidCallback? onAction,
+    double? topMargin,
   }) =>
       Message(
+        context: context,
         type: MessageType.info,
         message: message,
         duration: duration,
         debounceTime: debounceTime,
         actionText: actionText,
         onAction: onAction,
+        topMargin: topMargin,
       );
 
   factory Message.successful({
     required String message,
+    BuildContext? context,
     Duration duration = defaultMessageDisplayDuration,
     Duration debounceTime = defaultInfoMessageDebounceDuration,
     String? actionText,
     VoidCallback? onAction,
   }) =>
       Message(
+        context: context,
         type: MessageType.successful,
         message: message,
         duration: duration,
@@ -80,6 +90,7 @@ class Message {
         onAction: onAction,
       );
 
+  final BuildContext? context;
   final MessageType type;
   final String message;
   final Duration duration;
@@ -88,10 +99,12 @@ class Message {
   final Duration debounceTime;
 
   final String hashString;
+  final double? topMargin;
 
-  Toast get toastByMessage {
+  Toast toastByMessage(VoidCallback onTapClosed) {
     return Toast(
       type: _toastType,
+      onTapClosed: onTapClosed,
       description: message,
       icon: _icon,
       actions: [
@@ -104,6 +117,7 @@ class Message {
             backgroundBlur: 0,
           ),
       ],
+      topMargin: topMargin,
     );
   }
 

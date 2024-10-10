@@ -7,7 +7,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:nekoton_repository/nekoton_repository.dart' hide Message;
 import 'package:ui_components_lib/ui_components_lib.dart';
-import 'package:ui_components_lib/v2/ui_components_lib_v2.dart';
+import 'package:ui_components_lib/v2/widgets/widgets.dart';
 
 class AccountDetailView extends StatelessWidget {
   const AccountDetailView({
@@ -52,9 +52,9 @@ class AccountDetailView extends StatelessWidget {
           CommonCard(
             backgroundColor: theme.colors.background2,
             topSubtitleText: LocaleKeys.totalBalance.tr(),
-            titleChild: MoneyWidget(
-              money: balance,
-              style: MoneyWidgetStyle.primary,
+            titleChild: AmountWidget.dollars(
+              amount: balance,
+              style: theme.textStyles.labelMedium,
             ),
             height: DimensSizeV2.d76,
             width: double.infinity,
@@ -76,7 +76,7 @@ class AccountDetailView extends StatelessWidget {
                 color: colors.textPrimary,
               ),
               CommonListTile(
-                onPressed: _copyAddress,
+                onPressed: () => _copyAddress(context),
                 height: null,
                 padding: const EdgeInsets.all(DimensSizeV2.d16),
                 titleChild: Text(
@@ -98,7 +98,7 @@ class AccountDetailView extends StatelessWidget {
             padding: const EdgeInsets.all(DimensSizeV2.d16),
             height: null,
             backgroundColor: theme.colors.background2,
-            trailing: CommonSwitchInput(
+            trailing: Switch(
               value: !account.isHidden,
               onChanged: (_) => _changeVisibility(),
             ),
@@ -118,12 +118,13 @@ class AccountDetailView extends StatelessWidget {
     );
   }
 
-  void _copyAddress() {
+  void _copyAddress(BuildContext context) {
     Clipboard.setData(
       ClipboardData(text: account.address.address),
     );
     inject<MessengerService>().show(
       Message.successful(
+        context: context,
         message: LocaleKeys.valueCopiedExclamation.tr(
           args: [account.address.toEllipseString()],
         ),

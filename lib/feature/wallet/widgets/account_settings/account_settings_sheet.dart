@@ -11,6 +11,10 @@ Future<void> showAccountSettingsSheet({
   return showCommonBottomSheet<void>(
     context: context,
     title: LocaleKeys.accountSettings.tr(),
+    titleMargin: const EdgeInsets.only(
+      top: DimensSizeV2.d52,
+      bottom: DimensSizeV2.d40,
+    ),
     centerTitle: true,
     body: (_, scrollController) => AccountSettingsWidget(
       account: account,

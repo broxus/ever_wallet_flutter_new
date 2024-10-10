@@ -53,7 +53,6 @@ class DeleteAccountSheet extends StatelessWidget {
                 nekotonRepository: inject<NekotonRepository>(),
                 balanceService: inject(),
                 convertService: inject(),
-                currentAccountsService: inject(),
               )..init(),
               child: BlocBuilder<AccountDetailCubit, AccountDetailState>(
                 builder: (context, state) {

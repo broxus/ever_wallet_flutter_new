@@ -1,7 +1,5 @@
 import 'package:flutter/material.dart';
-
 import 'package:ui_components_lib/ui_components_lib.dart';
-import 'package:ui_components_lib/v2/dimens_v2.dart';
 import 'package:ui_components_lib/v2/opac_v2.dart';
 
 enum SelectionStatus { unfocus, focus, completed }
@@ -58,11 +56,13 @@ class _SelectionStatusInputState extends State<SelectionStatusInput> {
       child: SizedBox(
         width: double.infinity,
         height: commonButtonHeight,
-        child: Material(
-          color: backgroundColor ?? Colors.transparent,
-          shape: SquircleBoxBorder(
-            squircleRadius: DimensRadiusV2.theBiggest,
-            borderSide: BorderSide(color: borderColor ?? Colors.transparent),
+        child: Container(
+          decoration: BoxDecoration(
+            color: backgroundColor ?? Colors.transparent,
+            borderRadius: BorderRadius.circular(DimensRadiusV2.theBiggest),
+            border: Border.fromBorderSide(
+              BorderSide(color: borderColor ?? Colors.transparent),
+            ),
           ),
           child: InkWell(
             hoverColor: Colors.transparent,

@@ -2,6 +2,7 @@ import 'package:app/app/service/service.dart';
 import 'package:app/generated/generated.dart';
 import 'package:collection/collection.dart';
 import 'package:elementary/elementary.dart';
+import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:nekoton_repository/nekoton_repository.dart' hide Message;
 
@@ -25,13 +26,14 @@ class AccountSettingsModel extends ElementaryModel {
   String getAccountExplorerLink(Address address) =>
       _nekotonRepository.currentTransport.accountExplorerLink(address);
 
-  void copyAddress(Address address) {
+  void copyAddress(BuildContext context, Address address) {
     Clipboard.setData(
       ClipboardData(text: address.address),
     );
 
     _messengerService.show(
       Message.successful(
+        context: context,
         message: LocaleKeys.valueCopiedExclamation.tr(
           args: [address.toEllipseString()],
         ),
@@ -46,7 +48,7 @@ class AccountSettingsModel extends ElementaryModel {
 
     if (account != null && nextAccount != null) {
       account.hide();
-      _currentAccountsService.changeCurrentActiveAccount(nextAccount);
+      _currentAccountsService.updateCurrentActiveAccount(nextAccount.address);
     }
   }
 }

@@ -1,11 +1,14 @@
+// ignore_for_file: cascade_invocations
 import 'dart:async';
 
+import 'package:app/app/service/secure_storage_service.dart';
 import 'package:app/app/service/service.dart';
 import 'package:bloc/bloc.dart';
 import 'package:freezed_annotation/freezed_annotation.dart';
 import 'package:nekoton_repository/nekoton_repository.dart';
 
 part 'manage_seeds_accounts_cubit.freezed.dart';
+
 part 'manage_seeds_accounts_state.dart';
 
 /// This is a bloc that displays list of user's seeds.
@@ -15,6 +18,8 @@ class ManageSeedsAccountsCubit extends Cubit<ManageSeedsAccountsState> {
   ManageSeedsAccountsCubit(
     this.nekotonRepository,
     this.currentSeedService,
+    this.storageService,
+    this.currentAccountsService,
   ) : super(
           ManageSeedsAccountsState.data(
             currentSeed: currentSeedService.currentSeed,
@@ -24,6 +29,8 @@ class ManageSeedsAccountsCubit extends Cubit<ManageSeedsAccountsState> {
 
   final NekotonRepository nekotonRepository;
   final CurrentSeedService currentSeedService;
+  final SecureStorageService storageService;
+  final CurrentAccountsService currentAccountsService;
 
   late StreamSubscription<SeedList> _seedListSubscription;
   late StreamSubscription<Seed?> _currentSeedSubscription;
@@ -51,12 +58,25 @@ class ManageSeedsAccountsCubit extends Cubit<ManageSeedsAccountsState> {
     );
     _seedListSubscription = nekotonRepository.seedListStream.skip(1).listen(
       (seeds) {
-        emit(
-          ManageSeedsAccountsState.data(
-            currentSeed: currentSeedService.currentSeed,
-            seeds: _mapSeedList(seeds),
-          ),
-        );
+        final list = seeds.seeds;
+        list.sort((a, b) => a.addedAt.compareTo(b.addedAt));
+        if (list.first.addedAt != 0) {
+          if (list.last.masterKey.accountList.allAccounts.isNotEmpty) {
+            for (final account in list.last.masterKey.accountList.allAccounts) {
+              storageService.addValue(
+                account.address.address +
+                    StorageConstants.showingManualBackupBadge,
+                list.last.addType == SeedAddType.create,
+              );
+            }
+          }
+          emit(
+            ManageSeedsAccountsState.data(
+              currentSeed: currentSeedService.currentSeed,
+              seeds: _mapSeedList(seeds),
+            ),
+          );
+        }
       },
     );
   }

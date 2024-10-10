@@ -1,6 +1,7 @@
 import 'package:app/app/service/service.dart';
 import 'package:app/di/di.dart';
 import 'package:app/generated/generated.dart';
+import 'package:app/utils/constants.dart';
 import 'package:flutter/material.dart';
 import 'package:nekoton_repository/nekoton_repository.dart' hide Message;
 import 'package:ui_components_lib/ui_components_lib.dart';
@@ -44,6 +45,7 @@ class _AccountRenameSheetState extends State<AccountRenameSheet> {
       separatorSize: DimensSize.d16,
       children: [
         PrimaryTextField(
+          maxLength: maxLengthForMainEntities,
           textEditingController: nameController,
           hintText: LocaleKeys.nameWord.tr(),
           onSubmit: (_) => _renameAccount(context),
@@ -69,6 +71,7 @@ class _AccountRenameSheetState extends State<AccountRenameSheet> {
     account?.rename(name);
     inject<MessengerService>().show(
       Message.successful(
+        context: context,
         message: LocaleKeys.valueRenamed.tr(
           args: [LocaleKeys.accountWord.tr()],
         ),

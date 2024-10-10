@@ -9,7 +9,6 @@ import 'package:elementary_helper/elementary_helper.dart';
 import 'package:flutter/material.dart';
 import 'package:nekoton_repository/nekoton_repository.dart' hide Message;
 import 'package:ui_components_lib/ui_components_lib.dart';
-import 'package:ui_components_lib/v2/dimens_v2.dart';
 
 class WalletPrepareTransferPage
     extends ElementaryWidget<WalletPrepareTransferPageWidgetModel> {
@@ -59,7 +58,6 @@ class WalletPrepareTransferPage
           selectedCustodian: data.selectedCustodian,
           localCustodians: data.localCustodians,
           selectedAsset: data.selectedAsset,
-          assets: data.assets,
           walletName: data.walletName,
         );
       },
@@ -90,7 +88,6 @@ class _DataBody extends StatelessWidget {
     this.localCustodians,
     this.selectedCustodian,
     this.selectedAsset,
-    this.assets,
     this.walletName,
   });
 
@@ -99,7 +96,6 @@ class _DataBody extends StatelessWidget {
   final List<PublicKey>? localCustodians;
   final PublicKey? selectedCustodian;
   final WalletPrepareTransferAsset? selectedAsset;
-  final List<WalletPrepareTransferAsset>? assets;
   final String? walletName;
 
   @override
@@ -120,7 +116,6 @@ class _DataBody extends StatelessWidget {
             selectedCustodian: selectedCustodian,
             localCustodians: localCustodians,
             selectedAsset: selectedAsset,
-            assets: assets,
           ),
         ),
       ),

@@ -48,6 +48,7 @@ class CheckSeedPhraseView extends StatelessWidget {
                         error: (_, __) {
                           inject<MessengerService>().show(
                             Message.error(
+                              context: context,
                               message: LocaleKeys.seedIsWrong.tr(),
                               duration: _errorDisplayDuration,
                               debounceTime: _errorDelayDuration,

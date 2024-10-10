@@ -70,6 +70,7 @@ class AskPasswordApprovalsSheet extends StatelessWidget {
                         Clipboard.setData(ClipboardData(text: entry.value));
                         inject<MessengerService>().show(
                           Message.successful(
+                            context: context,
                             message: LocaleKeys.copiedExclamation.tr(),
                           ),
                         );
