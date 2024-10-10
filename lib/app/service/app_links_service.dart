@@ -8,20 +8,13 @@ class AppLinksService {
   final _appLinks = BroxusAppLinks();
   late final _linkSubscription = _appLinks.uriStream.listen(_handleLink);
 
-  // Future<void> init() async {
-  //   final initialUri = await _appLinks.getInitialLink();
-  //   if (initialUri != null) {
-  //     _handleLink(initialUri);
-  //   }
-  // }
-
   @disposeMethod
   void dispose() {
     _linkSubscription.cancel();
   }
 
   void _handleLink(Uri uri) {
-    print('!!! $uri');
+    print('!!! DEBUG $uri');
     primaryBus.fire(AppLinksUriEvent(uri));
   }
 }
