@@ -22,6 +22,6 @@ class SplashScreenModel extends ElementaryModel {
 
   Future<void> configure() async {
     await _bootstrapService.init(currentAppBuildType);
-    await _appLinksService.init();
+    // await _appLinksService.init();
   }
 }

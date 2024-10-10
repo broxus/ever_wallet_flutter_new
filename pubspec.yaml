@@ -8,7 +8,9 @@ environment:
   flutter: ">=3.10.3"
 
 dependencies:
-  app_links: ^6.3.2
+#  app_links: ^6.3.2
+  broxus_app_links:
+    path: ../broxus_app_links
   app_settings: 5.1.1
   auto_size_text_field: 2.2.3
   barcode_widget: 2.0.4
