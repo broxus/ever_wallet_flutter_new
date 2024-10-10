@@ -1661,8 +1661,36 @@ class InpageProvider extends ProviderApi {
   }
 
   @override
-  Future<AddNetworkOutput> addNetwork(AddNetworkInput input) {
-    throw UnimplementedError();
+  Future<AddNetworkOutput> addNetwork(AddNetworkInput input) async {
+    _checkPermissions(permissions: permissionsService.getPermissions(origin));
+
+    final networkId = input.network.networkId.toInt();
+    final connections = await _getConnections(networkId);
+
+    if (connections.isNotEmpty) {
+      throw s.ApprovalsHandleException(LocaleKeys.networkAlreadyExists.tr());
+    }
+
+    nr.Transport? transport;
+    try {
+      transport = await connectionService.createTransportByConnection(
+        input.network.getConnection(),
+      );
+
+      if (transport.networkId != input.network.networkId) {
+        throw s.ApprovalsHandleException(LocaleKeys.addNetworkIdError.tr());
+      }
+    } finally {
+      transport?.dispose();
+    }
+
+    final network = await approvalsService.addNetwork(
+      origin: origin!,
+      network: input.network,
+      switchNetwork: input.switchNetwork ?? false,
+    );
+
+    return AddNetworkOutput(network);
   }
 
   @override

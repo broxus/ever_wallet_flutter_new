@@ -8,6 +8,7 @@ import 'package:app/feature/profile/profile.dart';
 import 'package:app/generated/generated.dart';
 import 'package:flutter/material.dart';
 import 'package:nekoton_repository/nekoton_repository.dart';
+import 'package:nekoton_webview/nekoton_webview.dart' show AddNetwork, Network;
 
 /// UI-based listener, that listens for events from [BrowserApprovalsService]
 /// and open dialogs/pages, specified for this actions, allowing user to
@@ -169,6 +170,19 @@ class _ApprovalsListenerWidgetState extends State<ApprovalsListenerWidget> {
           origin: origin,
           networkId: networkId,
           connections: connections,
+          completer: completer,
+        ),
+        addNetwork: (
+          Uri origin,
+          AddNetwork network,
+          bool switchNetwork,
+          Completer<Network?> completer,
+        ) =>
+            addNetwork(
+          context: context,
+          origin: origin,
+          network: network,
+          switchNetwork: switchNetwork,
           completer: completer,
         ),
       ),
@@ -442,6 +456,27 @@ class _ApprovalsListenerWidgetState extends State<ApprovalsListenerWidget> {
         origin: origin,
         networkId: networkId,
         connections: connections,
+      );
+
+      completer.complete(result);
+    } catch (err, st) {
+      completer.completeError(err, st);
+    }
+  }
+
+  Future<void> addNetwork({
+    required BuildContext context,
+    required Uri origin,
+    required AddNetwork network,
+    required bool switchNetwork,
+    required Completer<Network?> completer,
+  }) async {
+    try {
+      final result = await showAddNetworkSheet(
+        context: context,
+        origin: origin,
+        network: network,
+        switchNetwork: switchNetwork,
       );
 
       completer.complete(result);

@@ -40,6 +40,31 @@ class ConnectionService {
     });
   }
 
+  /// Create TransportStrategy based on [ConnectionData.networkType] of
+  /// [connection] data.
+  TransportStrategy createStrategyByConnection(
+    Transport transport,
+    ConnectionData connection,
+  ) {
+    switch (connection.networkType) {
+      case NetworkType.ever:
+        return EverTransportStrategy(
+          transport: transport,
+          connection: connection,
+        );
+      case NetworkType.venom:
+        return VenomTransportStrategy(
+          transport: transport,
+          connection: connection,
+        );
+      case NetworkType.custom:
+        return CustomTransportStrategy(
+          transport: transport,
+          connection: connection,
+        );
+    }
+  }
+
   Future<Transport> createTransportByConnection(ConnectionData connection) {
     return connection.when<Future<Transport>>(
       gql: (
@@ -47,7 +72,6 @@ class ConnectionService {
         name,
         group,
         endpoints,
-        timeout,
         __,
         isLocal,
         ___,
@@ -56,6 +80,9 @@ class ConnectionService {
         ______,
         _______,
         ________,
+        latencyDetectionInterval,
+        maxLatency,
+        endpointSelectionRetryCount,
       ) =>
           _nekotonRepository.createGqlTransport(
         post: _httpService.postTransportData,
@@ -64,6 +91,9 @@ class ConnectionService {
         group: group,
         endpoints: endpoints,
         local: isLocal,
+        latencyDetectionInterval: latencyDetectionInterval,
+        maxLatency: maxLatency,
+        endpointSelectionRetryCount: endpointSelectionRetryCount,
       ),
       proto: (
         _,
@@ -115,7 +145,7 @@ class ConnectionService {
       final transport = await createTransportByConnection(connection);
 
       await _nekotonRepository.updateTransport(
-        _createStrategyByConnection(transport, connection),
+        createStrategyByConnection(transport, connection),
       );
       await _storageService.updateNetworksIds(
         [(connection.id, transport.networkId)],
@@ -128,31 +158,6 @@ class ConnectionService {
 
       // allow level above to track fail
       rethrow;
-    }
-  }
-
-  /// Create TransportStrategy based on [ConnectionData.networkType] of
-  /// [connection] data.
-  TransportStrategy _createStrategyByConnection(
-    Transport transport,
-    ConnectionData connection,
-  ) {
-    switch (connection.networkType) {
-      case NetworkType.ever:
-        return EverTransportStrategy(
-          transport: transport,
-          connection: connection,
-        );
-      case NetworkType.venom:
-        return VenomTransportStrategy(
-          transport: transport,
-          connection: connection,
-        );
-      case NetworkType.custom:
-        return CustomTransportStrategy(
-          transport: transport,
-          connection: connection,
-        );
     }
   }
 }

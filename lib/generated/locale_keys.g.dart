@@ -618,4 +618,9 @@ abstract class LocaleKeys {
   static const token = 'token';
   static const changeNetwork = 'changeNetwork';
   static const addNetwork = 'addNetwork';
+  static const networkAlreadyExists = 'networkAlreadyExists';
+  static const addNetworkIdError = 'addNetworkIdError';
+  static const operationTimeout = 'operationTimeout';
+  static const networkConfig = 'networkConfig';
+  static const connectionData = 'connectionData';
 }

@@ -2,49 +2,53 @@ import 'dart:async';
 
 import 'package:app/core/error_handler_factory.dart';
 import 'package:app/core/wm/custom_wm.dart';
-import 'package:app/data/models/models.dart';
 import 'package:app/di/di.dart';
-import 'package:app/feature/browser/approvals_listener/actions/change_network/change_network_model.dart';
-import 'package:app/feature/browser/approvals_listener/actions/change_network/change_network_widget.dart';
+import 'package:app/feature/browser/approvals_listener/actions/add_network/add_network_model.dart';
+import 'package:app/feature/browser/approvals_listener/actions/add_network/add_network_widget.dart';
+import 'package:app/feature/browser/utils.dart';
 import 'package:app/generated/generated.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:ui_components_lib/v2/ui_components_lib_v2.dart';
 
-ChangeNetworkWidgetModel defaultChangeNetworkWidgetModelFactory(
+AddNetworkWidgetModel defaultAddNetworkWidgetModelFactory(
   BuildContext context,
 ) =>
-    ChangeNetworkWidgetModel(
-      ChangeNetworkModel(
+    AddNetworkWidgetModel(
+      AddNetworkModel(
         createPrimaryErrorHandler(context),
+        inject(),
         inject(),
         inject(),
         inject(),
       ),
     );
 
-class ChangeNetworkWidgetModel
-    extends CustomWidgetModel<ChangeNetworkWidget, ChangeNetworkModel> {
-  ChangeNetworkWidgetModel(super.model);
+class AddNetworkWidgetModel
+    extends CustomWidgetModel<AddNetworkWidget, AddNetworkModel> {
+  AddNetworkWidgetModel(super.model);
 
   late final _loading = createValueNotifier(false);
-  late final _connection = createValueNotifier<ConnectionData>(
-    widget.connections.first,
-  );
+  late final _switchNetwork = createValueNotifier(widget.switchNetwork);
 
   ValueListenable<bool> get loading => _loading;
 
-  ValueListenable<ConnectionData> get connection => _connection;
+  ValueListenable<bool> get switchNetwork => _switchNetwork;
 
   ThemeStyleV2 get theme => context.themeStyleV2;
 
   Future<void> onConfirm() async {
     _loading.value = true;
     try {
-      final strategy = await model.changeNetwork(_connection.value.id);
+      final connection = widget.network.getConnection();
+      final network = await model.addConnection(connection);
+
+      if (_switchNetwork.value) {
+        await model.changeNetwork(connection.id);
+      }
 
       if (contextSafe != null) {
-        Navigator.of(contextSafe!).pop(strategy);
+        Navigator.of(contextSafe!).pop(network);
       }
     } on TimeoutException catch (_) {
       if (contextSafe != null) {
@@ -59,6 +63,6 @@ class ChangeNetworkWidgetModel
     }
   }
 
-  // ignore: use_setters_to_change_properties
-  void onConnectionChanged(ConnectionData value) => _connection.value = value;
+  // ignore: use_setters_to_change_properties, avoid_positional_boolean_parameters
+  void onSwitchChanged(bool value) => _switchNetwork.value = value;
 }

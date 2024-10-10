@@ -51,19 +51,21 @@ extension TransportExtension on TransportStrategy {
       ),
       data.when(
         gql: (
-          id,
-          name,
-          group,
+          _,
+          __,
+          ___,
           endpoints,
-          timeout,
-          networkType,
+          ____,
           isLocal,
-          blockExplorerUrl,
-          manifestUrl,
-          nativeTokenTicker,
-          isPreset,
-          canBeEdited,
-          sortingOrder,
+          _____,
+          ______,
+          _______,
+          ________,
+          _________,
+          __________,
+          ___________,
+          ____________,
+          _____________,
         ) {
           final settings = (transport as GqlTransport).gqlConnection.settings;
           return GqlConnection(
@@ -111,5 +113,58 @@ extension TransportExtension on TransportStrategy {
         data.manifestUrl,
       ),
     );
+  }
+}
+
+extension AddNetworkExtension on AddNetwork {
+  ConnectionData getConnection() {
+    final connection = this.connection as Map<String, dynamic>;
+
+    switch (connection['type']) {
+      case 'graphql':
+        final params = GqlSocketParams.fromJson(
+          connection['data'] as Map<String, dynamic>,
+        );
+        return ConnectionData.gqlCustom(
+          name: name,
+          group: 'custom-$name',
+          manifestUrl: config?.tokensManifestUrl ?? '',
+          blockExplorerUrl: config?.explorerBaseUrl ?? '',
+          nativeTokenTicker: config?.symbol ?? '',
+          endpoints: params.endpoints,
+          isLocal: params.local,
+          latencyDetectionInterval: params.latencyDetectionInterval.toInt(),
+          maxLatency: params.maxLatency.toInt(),
+        );
+
+      case 'proto':
+        final params = JrpcSocketParams.fromJson(
+          connection['data'] as Map<String, dynamic>,
+        );
+        return ConnectionData.protoCustom(
+          name: name,
+          group: 'custom-$name',
+          manifestUrl: config?.tokensManifestUrl ?? '',
+          blockExplorerUrl: config?.explorerBaseUrl ?? '',
+          nativeTokenTicker: config?.symbol ?? '',
+          endpoint: params.endpoint,
+        );
+
+      case 'jrpc':
+        final params = JrpcSocketParams.fromJson(
+          connection['data'] as Map<String, dynamic>,
+        );
+        return ConnectionData.jrpcCustom(
+          name: name,
+          group: 'custom-$name',
+          manifestUrl: config?.tokensManifestUrl ?? '',
+          blockExplorerUrl: config?.explorerBaseUrl ?? '',
+          nativeTokenTicker: config?.symbol ?? '',
+          endpoint: params.endpoint,
+        );
+
+      default:
+        throw Exception('Invalid connection type: ${connection['type']}');
+    }
   }
 }

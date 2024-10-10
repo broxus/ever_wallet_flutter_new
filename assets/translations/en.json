@@ -597,5 +597,10 @@
   "txTreeSimulationErrorHint": "Please contact technical support.",
   "token": "Token",
   "changeNetwork": "Change network",
-  "addNetwork": "Add network"
+  "addNetwork": "Add network",
+  "networkAlreadyExists": "Network already exists",
+  "addNetworkIdError": "Network ids do not match",
+  "operationTimeout": "Operation timeout",
+  "networkConfig": "Network config",
+  "connectionData": "Connection data"
 }

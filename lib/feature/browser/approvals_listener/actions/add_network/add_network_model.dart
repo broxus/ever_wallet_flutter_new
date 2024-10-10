@@ -1,26 +1,48 @@
 import 'package:app/app/service/service.dart';
+import 'package:app/data/models/models.dart';
 import 'package:app/feature/browser/utils.dart';
 import 'package:elementary/elementary.dart';
 import 'package:flutter/material.dart';
 import 'package:nekoton_repository/nekoton_repository.dart' hide Message;
+import 'package:nekoton_webview/nekoton_webview.dart' hide Message;
 
 const _timeLimit = Duration(seconds: 30);
 
-class ChangeNetworkModel extends ElementaryModel {
-  ChangeNetworkModel(
+class AddNetworkModel extends ElementaryModel {
+  AddNetworkModel(
     ErrorHandler errorHandler,
     this._messengerService,
     this._connectionsStorageService,
+    this._connectionService,
     this._nekotonRepository,
   ) : super(errorHandler: errorHandler);
 
   final MessengerService _messengerService;
   final ConnectionsStorageService _connectionsStorageService;
+  final ConnectionService _connectionService;
   final NekotonRepository _nekotonRepository;
 
-  Future<TransportStrategy> changeNetwork(String id) async {
+  Future<Network> addConnection(ConnectionData connection) async {
+    Transport? transport;
+
+    try {
+      await _connectionsStorageService.addConnection(connection);
+
+      transport = await _connectionService.createTransportByConnection(
+        connection,
+      );
+
+      return await _connectionService
+          .createStrategyByConnection(transport, connection)
+          .toNetwork();
+    } finally {
+      transport?.dispose();
+    }
+  }
+
+  Future<void> changeNetwork(String id) async {
     await _connectionsStorageService.saveCurrentConnectionId(id);
-    return _nekotonRepository.currentTransportStream
+    await _nekotonRepository.currentTransportStream
         .firstWhere(
           (strategy) => strategy.connection?.id == id,
         )

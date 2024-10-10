@@ -124,12 +124,14 @@ class _Param extends StatelessWidget {
             color: theme.colors.content3,
           ),
         ),
-        Text(
-          value,
-          style: theme.textStyles.paragraphSmall,
-          overflow: TextOverflow.ellipsis,
-          softWrap: false,
-          maxLines: 1,
+        Flexible(
+          child: Text(
+            value,
+            style: theme.textStyles.paragraphSmall,
+            overflow: TextOverflow.ellipsis,
+            softWrap: false,
+            maxLines: 1,
+          ),
         ),
       ],
     );
