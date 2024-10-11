@@ -9,7 +9,6 @@ import 'package:app/feature/wallet/view/wallet_page_model.dart';
 import 'package:app/feature/wallet/view/wallet_page_widget.dart';
 import 'package:elementary_helper/elementary_helper.dart';
 import 'package:flutter/material.dart';
-import 'package:go_router/go_router.dart';
 import 'package:nekoton_repository/nekoton_repository.dart';
 
 WalletPageWidgetModel defaultWalletPageWidgetModelFactory(
@@ -18,6 +17,7 @@ WalletPageWidgetModel defaultWalletPageWidgetModelFactory(
     WalletPageWidgetModel(
       WalletPageModel(
         createPrimaryErrorHandler(context),
+        inject(),
         inject(),
         inject(),
       ),
@@ -32,7 +32,7 @@ class WalletPageWidgetModel
   late final scrollController = createScrollController();
 
   late final _currentAccount = createNotifierFromStream(model.currentAccount);
-  late final _isShowingBadgeNotifier = StateNotifier<bool>();
+  late final _isShowingBadgeNotifier = createNotifier<bool>();
 
   StreamSubscription<PressBottomNavigationEvent>? _pressWalletSubscribtion;
 
@@ -43,7 +43,6 @@ class WalletPageWidgetModel
   @override
   void initWidgetModel() {
     super.initWidgetModel();
-    GoRouter.of(context);
     _pressWalletSubscribtion = primaryBus
         .on<PressBottomNavigationEvent>()
         .listen(_onPressWalletBottomNavigation);
@@ -56,10 +55,10 @@ class WalletPageWidgetModel
   }
 
   void hideShowingBadge() {
-    final address = currentAccount.value?.address.address;
+    final account = currentAccount.value;
     _isShowingBadgeNotifier.accept(false);
-    if (address != null) {
-      model.hideShowingBadge(address);
+    if (account != null) {
+      model.hideShowingBadge(account);
     }
   }
 
@@ -88,14 +87,14 @@ class WalletPageWidgetModel
         _isShowingBadgeNotifier.accept(true);
       } else {
         _isShowingBadgeNotifier.accept(false);
-        unawaited(model.hideShowingBadge(account.address.address));
+        unawaited(model.hideShowingBadge(account));
       }
       unawaited(model.resetValueNewUser());
       return;
     }
     if (account != null) {
       _isShowingBadgeNotifier.accept(
-        await model.isShowingBadge(account.address.address) ?? true,
+        await model.isShowingBadge(account) ?? true,
       );
     } else {
       _isShowingBadgeNotifier.accept(true);
