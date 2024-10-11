@@ -22,7 +22,7 @@ class ManualBackUpModel extends ElementaryModel {
     final account = nekotonRepository.accountsStorage.accounts
         .firstWhereOrNull((item) => item.address.address == address);
     final masterPublicKey = account?.let(
-          (account) => nekotonRepository.seedList
+      (account) => nekotonRepository.seedList
           .findSeedByAnyPublicKey(account.publicKey)
           ?.masterPublicKey,
     );
