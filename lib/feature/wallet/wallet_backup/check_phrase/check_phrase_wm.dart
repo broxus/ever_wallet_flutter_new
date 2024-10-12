@@ -30,6 +30,7 @@ CheckPhraseWidgetModel defaultCheckPhraseWidgetModelFactory(
       createPrimaryErrorHandler(context),
       inject(),
       inject(),
+      inject(),
       words,
       address,
     ),
