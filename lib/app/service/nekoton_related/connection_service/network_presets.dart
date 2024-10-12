@@ -1,8 +1,6 @@
 import 'package:app/data/models/connection_data.dart';
 import 'package:app/data/models/network_type.dart';
 
-const defaultNetworkTimeout = Duration(milliseconds: 60000);
-
 const defaultConnectionkId = everMainnetProtoID;
 
 final networkPresets = [..._everPresets, ..._venomPresets, ..._customPresets];
@@ -35,7 +33,6 @@ final _everPresets = <ConnectionData>[
     endpoints: [
       'https://mainnet.evercloud.dev/89a3b8f46a484f2ea3bdd364ddaee3a3/graphql',
     ],
-    timeout: defaultNetworkTimeout,
     networkType: NetworkType.ever,
     canBeEdited: false,
     blockExplorerUrl: 'https://everscan.io',

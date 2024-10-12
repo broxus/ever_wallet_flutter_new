@@ -135,6 +135,7 @@ abstract class LocaleKeys {
   static const networkTypeJRPC = 'networkTypeJRPC';
   static const networkTypeGraphQL = 'networkTypeGraphQL';
   static const networkTypeProto = 'networkTypeProto';
+  static const networkId = 'networkId';
   static const networkName = 'networkName';
   static const networkNameHint = 'networkNameHint';
   static const networkEndpoint = 'networkEndpoint';
@@ -615,4 +616,11 @@ abstract class LocaleKeys {
   static const txTreeSimulationErrorDeleted = 'txTreeSimulationErrorDeleted';
   static const txTreeSimulationErrorHint = 'txTreeSimulationErrorHint';
   static const token = 'token';
+  static const changeNetwork = 'changeNetwork';
+  static const addNetwork = 'addNetwork';
+  static const networkAlreadyExists = 'networkAlreadyExists';
+  static const addNetworkIdError = 'addNetworkIdError';
+  static const operationTimeout = 'operationTimeout';
+  static const networkConfig = 'networkConfig';
+  static const connectionData = 'connectionData';
 }

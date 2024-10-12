@@ -3,6 +3,7 @@ import 'dart:async';
 import 'package:app/data/models/models.dart';
 import 'package:freezed_annotation/freezed_annotation.dart';
 import 'package:nekoton_repository/nekoton_repository.dart';
+import 'package:nekoton_webview/nekoton_webview.dart' show AddNetwork, Network;
 
 part 'approval_request.freezed.dart';
 
@@ -71,4 +72,18 @@ class ApprovalRequest with _$ApprovalRequest {
     required KnownPayload? knownPayload,
     required Completer<(PublicKey, String)> completer,
   }) = _SendMessage;
+
+  const factory ApprovalRequest.changeNetwork({
+    required Uri origin,
+    required int networkId,
+    required List<ConnectionData> connections,
+    required Completer<TransportStrategy?> completer,
+  }) = _ChangeNetwork;
+
+  const factory ApprovalRequest.addNetwork({
+    required Uri origin,
+    required AddNetwork network,
+    required bool switchNetwork,
+    required Completer<Network?> completer,
+  }) = _AddNetwork;
 }
