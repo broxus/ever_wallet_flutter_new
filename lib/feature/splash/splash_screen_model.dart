@@ -9,12 +9,10 @@ import 'package:elementary/elementary.dart';
 class SplashScreenModel extends ElementaryModel {
   SplashScreenModel(
     ErrorHandler errorHandler,
-    this._appLinksService,
     this._bootstrapService,
     this._networkConnectionService,
   ) : super(errorHandler: errorHandler);
 
-  final AppLinksService _appLinksService;
   final BootstrapService _bootstrapService;
   final NetworkConnectionService _networkConnectionService;
 
@@ -22,6 +20,5 @@ class SplashScreenModel extends ElementaryModel {
 
   Future<void> configure() async {
     await _bootstrapService.init(currentAppBuildType);
-    // await _appLinksService.init();
   }
 }

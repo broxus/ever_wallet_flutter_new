@@ -1,3 +1,5 @@
+import 'dart:async';
+
 import 'package:app/app/router/router.dart';
 import 'package:app/app/service/service.dart';
 import 'package:app/di/di.dart';
@@ -24,11 +26,21 @@ class _RootViewState extends State<RootView> {
         getRootPath(fullPath: _navigationService.state.fullPath),
       ).index;
 
+  StreamSubscription<BottomNavigationEvent>? _navSubs;
+
   @override
   void initState() {
     super.initState();
 
     _navigationService = inject<NavigationService>();
+    _navSubs =
+        primaryBus.on<ChangeTabBottomNavigationEvent>().listen(_listenNav);
+  }
+
+  @override
+  void dispose() {
+    _navSubs?.cancel();
+    super.dispose();
   }
 
   @override
@@ -96,8 +108,10 @@ class _RootViewState extends State<RootView> {
       RootTab.values.map((tab) => tab.item()).toList();
 
   void _onTap(int value) {
-    final tab = RootTab.values[value];
+    _changeValue(RootTab.values[value]);
+  }
 
+  void _changeValue(RootTab tab) {
     final prevTab = RootTab.values[_tabIndex];
 
     context.goNamed(tab.name);
@@ -108,5 +122,9 @@ class _RootViewState extends State<RootView> {
         currentTab: tab,
       ),
     );
+  }
+
+  void _listenNav(ChangeTabBottomNavigationEvent event) {
+    _changeValue(event.tab);
   }
 }

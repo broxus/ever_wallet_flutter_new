@@ -10,8 +10,7 @@
 #endif
 #endif
 
-#import "AppLinksPlugin.h"
 
-FOUNDATION_EXPORT double app_linksVersionNumber;
-FOUNDATION_EXPORT const unsigned char app_linksVersionString[];
+FOUNDATION_EXPORT double broxus_app_linksVersionNumber;
+FOUNDATION_EXPORT const unsigned char broxus_app_linksVersionString[];
 

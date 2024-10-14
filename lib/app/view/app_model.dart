@@ -23,10 +23,4 @@ class AppModel extends ElementaryModel {
     _navigationService,
     _nekotonRepository,
   );
-
-  @override
-  void dispose() {
-    appRouter.dispose();
-    super.dispose();
-  }
 }

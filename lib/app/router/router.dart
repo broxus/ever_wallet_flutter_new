@@ -1,5 +1,3 @@
-// ignore_for_file: lines_longer_than_80_chars
-
 import 'dart:async';
 
 import 'package:app/app/router/page_transitions.dart';
@@ -7,8 +5,6 @@ import 'package:app/app/router/router.dart';
 import 'package:app/app/router/routs/network/network.dart';
 import 'package:app/app/service/service.dart';
 import 'package:app/di/di.dart';
-import 'package:app/event_bus/events/app_links/app_links_event.dart';
-import 'package:app/event_bus/primary_bus.dart';
 import 'package:app/feature/error/error.dart';
 import 'package:app/feature/onboarding/screen/welcome/welcome_screen.dart';
 import 'package:app/feature/root/root.dart';
@@ -36,9 +32,6 @@ class AppRouter {
     // This happends when user was sent to bootstrap failed screen to make some
     // action and then bootstrap process was completed.
     _bootstrapService.bootstrapStepStream.listen(_listenBootstrapStep);
-
-    _appLinksNavSubs =
-        primaryBus.on<AppLinksUriEvent>().listen(_listenAppLinks);
   }
 
   // Create a new router
@@ -60,8 +53,6 @@ class AppRouter {
   // Saved subroutes for each root app route
   final _savedSubroutes = <AppRoute, String>{};
 
-  StreamSubscription<AppLinksUriEvent>? _appLinksNavSubs;
-
   bool get _isConfigured => _bootstrapService.isConfigured;
 
   String get _currentPath =>
@@ -70,10 +61,6 @@ class AppRouter {
   String get _savedLocation => _navigationService.state.location;
 
   bool get _isExistSavedLocation => _savedLocation.isNotEmpty;
-
-  void dispose() {
-    _appLinksNavSubs?.cancel();
-  }
 
   GoRouter _createRouter() {
     return GoRouter(
@@ -214,24 +201,6 @@ class AppRouter {
     if (redirectLocation != null) {
       router.go(redirectLocation);
     }
-  }
-
-  void _listenAppLinks(AppLinksUriEvent event) {
-    final path = _mapAppLinksEventToPath(event);
-
-    switch (event.strategy) {
-      case Strategy.replace:
-        router.go(path);
-        return;
-      case Strategy.push:
-        router.goFurther(path);
-        return;
-    }
-  }
-
-  String _mapAppLinksEventToPath(AppLinksUriEvent event) {
-    // TODO(knightforce): handle link
-    throw UnimplementedError();
   }
 
   // Redirect to onboarding or wallet depending on the current location and if
