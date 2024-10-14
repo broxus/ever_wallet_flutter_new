@@ -34,7 +34,7 @@ class _RootViewState extends State<RootView> {
 
     _navigationService = inject<NavigationService>();
     _navSubs =
-        primaryBus.on<ChangeTabBottomNavigationEvent>().listen(_listenNav);
+        behaviorBus.on<ChangeTabBottomNavigationEvent>().listen(_listenNav);
   }
 
   @override

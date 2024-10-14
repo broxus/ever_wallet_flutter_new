@@ -27,7 +27,7 @@ class _TabsViewState extends State<TabsView> {
   @override
   void initState() {
     _appLinksNavSubs =
-        primaryBus.on<BrowserAppLinkUriEvent>().listen(_listenAppLinks);
+        behaviorBus.on<BrowserAppLinkUriEvent>().listen(_listenAppLinks);
     super.initState();
   }
 

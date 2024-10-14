@@ -41,7 +41,7 @@ class AppLinksService {
     try {
       final uri = Uri.parse(link);
 
-      primaryBus
+      behaviorBus
         ..fire(ChangeTabBottomNavigationEvent(RootTab.browser))
         ..fire(BrowserAppLinkUriEvent(uri));
     } catch (_) {}
