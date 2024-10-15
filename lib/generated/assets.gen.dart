@@ -248,6 +248,9 @@ class $AssetsImagesGen {
 
   $AssetsImagesLangIconsGen get langIcons => const $AssetsImagesLangIconsGen();
 
+  /// File path: assets/images/lightning.svg
+  SvgGenImage get lightning => const SvgGenImage('assets/images/lightning.svg');
+
   /// File path: assets/images/lock.svg
   SvgGenImage get lock => const SvgGenImage('assets/images/lock.svg');
 
@@ -381,6 +384,8 @@ class $AssetsImagesGen {
   /// File path: assets/images/wallet.svg
   SvgGenImage get wallet => const SvgGenImage('assets/images/wallet.svg');
 
+  $AssetsImagesWalletBgGen get walletBg => const $AssetsImagesWalletBgGen();
+
   /// File path: assets/images/web.svg
   SvgGenImage get web => const SvgGenImage('assets/images/web.svg');
 
@@ -445,6 +450,7 @@ class $AssetsImagesGen {
         import,
         importFill,
         key,
+        lightning,
         lock,
         lockBackup,
         logo,
@@ -483,6 +489,19 @@ class $AssetsImagesGen {
         wallet,
         web
       ];
+}
+
+class $AssetsJsGen {
+  const $AssetsJsGen();
+
+  /// File path: assets/js/main.js.LICENSE.txt
+  String get mainJsLICENSE => 'assets/js/main.js.LICENSE.txt';
+
+  /// File path: assets/js/nekoton.js
+  String get nekoton => 'assets/js/nekoton.js';
+
+  /// List of all assets
+  List<String> get values => [mainJsLICENSE, nekoton];
 }
 
 class $AssetsSplashGen {
@@ -601,6 +620,17 @@ class $AssetsImagesUserAvatarGen {
 
   /// List of all assets
   List<AssetGenImage> get values => [userAvatar];
+}
+
+class $AssetsImagesWalletBgGen {
+  const $AssetsImagesWalletBgGen();
+
+  /// File path: assets/images/wallet_bg/wallet_bg.png
+  AssetGenImage get walletBg =>
+      const AssetGenImage('assets/images/wallet_bg/wallet_bg.png');
+
+  /// List of all assets
+  List<AssetGenImage> get values => [walletBg];
 }
 
 class $AssetsImagesOnboardingLayer1Gen {
@@ -752,6 +782,7 @@ class Assets {
 
   static const $AssetsAbiGen abi = $AssetsAbiGen();
   static const $AssetsImagesGen images = $AssetsImagesGen();
+  static const $AssetsJsGen js = $AssetsJsGen();
   static const $AssetsSplashGen splash = $AssetsSplashGen();
   static const $AssetsTranslationsGen translations = $AssetsTranslationsGen();
 }

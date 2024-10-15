@@ -1,13 +1,16 @@
 import 'dart:async';
 
+import 'package:app/app/service/js_servcie.dart';
 import 'package:app/app/service/service.dart';
 import 'package:bloc/bloc.dart';
+import 'package:elementary_helper/elementary_helper.dart';
 import 'package:flutter_inappwebview/flutter_inappwebview.dart';
 import 'package:freezed_annotation/freezed_annotation.dart';
 import 'package:nekoton_repository/nekoton_repository.dart';
 import 'package:nekoton_webview/nekoton_webview.dart' as nwv;
 
 part 'browser_view_events_listener_cubit.freezed.dart';
+
 part 'browser_view_events_listener_state.dart';
 
 /// This cubit is a listener of events from different parts of application
@@ -18,11 +21,17 @@ class BrowserViewEventsListenerCubit
     required this.nekotonRepository,
     required this.tabId,
     required this.permissionsService,
-  }) : super(const BrowserViewEventsListenerState.empty());
+    required this.jsService,
+  }) : super(const BrowserViewEventsListenerState.empty()) {
+    jsService.loadNekotonJs();
+  }
 
   final NekotonRepository nekotonRepository;
 
   final PermissionsService permissionsService;
+  final JsService jsService;
+
+  EntityValueListenable<String?> get nekotonJsState => jsService.nekotonJsState;
 
   /// Id of the tab
   final String tabId;

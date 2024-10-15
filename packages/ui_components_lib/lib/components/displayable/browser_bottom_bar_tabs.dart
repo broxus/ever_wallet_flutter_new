@@ -26,7 +26,7 @@ class BrowserBottomBarTabs extends StatelessWidget {
     return ColoredBox(
       color: colors.background1,
       child: SizedBox(
-        height: DimensSizeV2.d64,
+        height: DimensSizeV2.d48,
         child: Row(
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
@@ -75,12 +75,14 @@ class _PlusButton extends StatelessWidget {
               size: CommonIconButtonSize.small,
               svg: svgUri!,
               buttonType: EverButtonType.ghost,
+              padding: EdgeInsets.zero,
               onPressed: onPressed,
             )
           : CommonIconButton.icon(
               size: CommonIconButtonSize.small,
               icon: iconData,
               buttonType: EverButtonType.ghost,
+              padding: EdgeInsets.zero,
               onPressed: onPressed,
             ),
     );

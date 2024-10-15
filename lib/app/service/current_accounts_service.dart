@@ -85,9 +85,16 @@ class CurrentAccountsService {
         );
 
     currentActiveAccountStream
-        .map((account) => account?.address)
-        .distinct()
-        .listen(_tryStartPolling);
+        .distinct((prev, next) => prev == null && next == null)
+        .listen(
+      (account) async {
+        if (account != null) {
+          await _updateSubscriptions(account);
+        }
+
+        _tryStartPolling(account);
+      },
+    );
 
     await _initCurrentAccount();
 
@@ -109,11 +116,6 @@ class CurrentAccountsService {
       domain: _preferencesKey,
     );
   }
-
-  /// Subscriptions for listening Ton/Token wallets to start its polling when
-  /// their account is selected in [currentActiveAccount].
-  StreamSubscription<dynamic>? _tonWalletSubscription;
-  StreamSubscription<dynamic>? _tokenWalletSubscription;
 
   Future<void> _initCurrentAccount() async {
     final address = await _storage.get(
@@ -141,37 +143,26 @@ class CurrentAccountsService {
 
   /// Start listening for wallet subscriptions and when subscription will be
   /// created, start polling.
-  void _tryStartPolling(final Address? address) {
-    _tonWalletSubscription?.cancel();
-    _tokenWalletSubscription?.cancel();
+  void _tryStartPolling(final KeyAccount? account) {
     _nekotonRepository
       ..stopPolling()
       ..stopPollingToken();
 
-    if (address == null) return;
+    if (account == null) return;
 
-    _tonWalletSubscription = _nekotonRepository.walletsStream.listen((wallets) {
-      if (_nekotonRepository.walletsMap.containsKey(address)) {
-        _nekotonRepository.startPolling(address);
-        _tonWalletSubscription?.cancel();
-      }
-    });
+    _nekotonRepository.startPolling(account.address);
 
-    _tokenWalletSubscription =
-        _nekotonRepository.tokenWalletsStream.listen((wallets) {
-      wallets.where((w) => w.owner == address).forEach((w) {
-        final key = (w.owner, w.rootTokenContract);
-        if (_nekotonRepository.tokenWalletsMap.containsKey(key)) {
-          _nekotonRepository.startPollingToken(
-            w.owner,
-            w.rootTokenContract,
-            stopPrevious: false,
-          );
-        }
-        // ignore cancelling sub, because we do not know how many tokens could
-        // be here and duplicate startPolling will be ignored
-      });
-    });
+    final networkGroup = _nekotonRepository.currentTransport.transport.group;
+    final tokenWallets =
+        account.account.additionalAssets[networkGroup]?.tokenWallets ?? [];
+
+    for (final wallet in tokenWallets) {
+      _nekotonRepository.startPollingToken(
+        account.address,
+        wallet.rootTokenContract,
+        stopPrevious: false,
+      );
+    }
   }
 
   void _tryUpdatingCurrentActiveAccount(AccountList? list) {
@@ -223,21 +214,21 @@ class CurrentAccountsService {
 
     if (_currentAccountsSubject.valueOrNull != key.accountList) {
       _currentAccountsSubject.add(key.accountList);
-      _updateSubscriptions(key.accountList);
     }
   }
 
   /// Update Ton/Token wallet subscriptions when user changes current active key
   ///
   /// Old subscriptions will be automatically cancelled if haven't complete yet.
-  Future<void> _updateSubscriptions(AccountList accountList) async {
-    final accounts = accountList.displayAccounts;
-
-    await _nekotonRepository.updateSubscriptions(
-      accounts.map((e) => (e.account.tonWallet, e.isExternal)).toList(),
-    );
-    await _nekotonRepository.updateTokenSubscriptions(
-      accounts.map((e) => e.account).toList(),
-    );
+  Future<void> _updateSubscriptions(KeyAccount? account) async {
+    if (account == null) {
+      await _nekotonRepository.updateSubscriptions([]);
+      await _nekotonRepository.updateTokenSubscriptions([]);
+    } else {
+      await _nekotonRepository.updateSubscriptions(
+        [(account.account.tonWallet, account.isExternal)],
+      );
+      await _nekotonRepository.updateTokenSubscriptions([account.account]);
+    }
   }
 }

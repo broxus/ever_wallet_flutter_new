@@ -77,6 +77,8 @@ class AppRouter {
 
         // Get root app route
         final rootAppRoute = getRootAppRoute(fullPath: fullPath);
+        final segments = AppRoute.pathSegments(fullPath: fullPath);
+        final isSubroute = segments.length > 1;
 
         // Get saved subroute for the root app route (if any)
         final savedSubroute = _savedSubroutes[rootAppRoute];
@@ -104,7 +106,8 @@ class AppRouter {
         // navigates to another root app route and returns back to the previous
         // root app route using bottom tab bar. In this case, the subroute
         // should be restored.
-        if (rootAppRouteChaned && savedSubroute != null) {
+        // Skip subroute restoration if navigatad directry to subrout.
+        if (rootAppRouteChaned && !isSubroute && savedSubroute != null) {
           return savedSubroute;
         }
 

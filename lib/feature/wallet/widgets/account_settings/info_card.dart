@@ -30,12 +30,19 @@ class AccountSettingsInfoCard extends StatelessWidget {
           Padding(
             padding: const EdgeInsets.all(DimensSizeV2.d12),
             child: Center(
-              child: BarcodeWidget(
-                width: DimensSizeV2.d74,
-                height: DimensSizeV2.d74,
-                data: account.address.address,
-                barcode: Barcode.qrCode(),
-                backgroundColor: Colors.white,
+              child: Container(
+                decoration: BoxDecoration(
+                  borderRadius: BorderRadius.circular(DimensSizeV2.d8),
+                  color: Colors.white,
+                ),
+                padding: const EdgeInsets.all(DimensSizeV2.d8),
+                child: BarcodeWidget(
+                  width: DimensSizeV2.d72,
+                  height: DimensSizeV2.d72,
+                  data: account.address.address,
+                  barcode: Barcode.qrCode(),
+                  backgroundColor: Colors.white,
+                ),
               ),
             ),
           ),
@@ -72,7 +79,11 @@ class _Detail extends StatelessWidget {
             child: _Item(
               titleText: LocaleKeys.addressWord.tr(),
               descriptionText: account.address.address,
-              onPressed: () => _copyText(context, account.address.address),
+              onPressed: () => _copyText(
+                context: context,
+                value: account.address.address,
+                label: account.address.toEllipseString(),
+              ),
             ),
           ),
           Divider(
@@ -84,7 +95,11 @@ class _Detail extends StatelessWidget {
             child: _Item(
               titleText: LocaleKeys.publicKey.tr(),
               descriptionText: account.publicKey.publicKey,
-              onPressed: () => _copyText(context, account.publicKey.publicKey),
+              onPressed: () => _copyText(
+                context: context,
+                value: account.publicKey.publicKey,
+                label: account.publicKey.toEllipseString(),
+              ),
             ),
           ),
         ],
@@ -92,15 +107,19 @@ class _Detail extends StatelessWidget {
     );
   }
 
-  void _copyText(BuildContext context, String text) {
+  void _copyText({
+    required BuildContext context,
+    required String value,
+    required String label,
+  }) {
     Clipboard.setData(
-      ClipboardData(text: text),
+      ClipboardData(text: value),
     );
     inject<MessengerService>().show(
       Message.successful(
         context: context,
         message: LocaleKeys.valueCopiedExclamation.tr(
-          args: [text],
+          args: [label],
         ),
       ),
     );
@@ -127,7 +146,8 @@ class _Item extends StatelessWidget {
       behavior: HitTestBehavior.opaque,
       child: Padding(
         padding: const EdgeInsets.all(DimensSizeV2.d12),
-        child: Column(
+        child: SeparatedColumn(
+          separatorSize: DimensSizeV2.d4,
           crossAxisAlignment: CrossAxisAlignment.start,
           mainAxisSize: MainAxisSize.min,
           children: [
@@ -137,26 +157,20 @@ class _Item extends StatelessWidget {
                 color: theme.colors.content3,
               ),
             ),
-            const SizedBox(height: DimensSizeV2.d4),
-            RichText(
-              text: TextSpan(
-                style: theme.textStyles.labelXSmall,
-                children: [
-                  TextSpan(
-                    text: descriptionText,
-                  ),
-                  const TextSpan(
-                    text: ' ',
-                  ),
-                  const WidgetSpan(
-                    alignment: PlaceholderAlignment.top,
-                    child: Icon(
-                      LucideIcons.copy,
-                      size: DimensSizeV2.d18,
+            SeparatedRow(
+              separatorSize: DimensSizeV2.d16,
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Expanded(
+                  child: Text(
+                    descriptionText,
+                    style: theme.textStyles.labelXSmall.copyWith(
+                      color: theme.colors.content0,
                     ),
                   ),
-                ],
-              ),
+                ),
+                const Icon(LucideIcons.copy, size: DimensSizeV2.d20),
+              ],
             ),
           ],
         ),

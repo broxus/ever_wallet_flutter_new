@@ -14,7 +14,6 @@ _$ConnectionDataGqlImpl _$$ConnectionDataGqlImplFromJson(
       group: json['group'] as String,
       endpoints:
           (json['endpoints'] as List<dynamic>).map((e) => e as String).toList(),
-      timeout: Duration(microseconds: (json['timeout'] as num).toInt()),
       networkType: $enumDecode(_$NetworkTypeEnumMap, json['networkType']),
       isLocal: json['isLocal'] as bool,
       blockExplorerUrl: json['blockExplorerUrl'] as String,
@@ -23,6 +22,11 @@ _$ConnectionDataGqlImpl _$$ConnectionDataGqlImplFromJson(
       isPreset: json['isPreset'] as bool,
       canBeEdited: json['canBeEdited'] as bool,
       sortingOrder: (json['sortingOrder'] as num).toDouble(),
+      latencyDetectionInterval:
+          (json['latencyDetectionInterval'] as num?)?.toInt(),
+      maxLatency: (json['maxLatency'] as num?)?.toInt(),
+      endpointSelectionRetryCount:
+          (json['endpointSelectionRetryCount'] as num?)?.toInt(),
       $type: json['runtimeType'] as String?,
     );
 
@@ -33,7 +37,6 @@ Map<String, dynamic> _$$ConnectionDataGqlImplToJson(
       'name': instance.name,
       'group': instance.group,
       'endpoints': instance.endpoints,
-      'timeout': instance.timeout.inMicroseconds,
       'networkType': _$NetworkTypeEnumMap[instance.networkType]!,
       'isLocal': instance.isLocal,
       'blockExplorerUrl': instance.blockExplorerUrl,
@@ -42,6 +45,9 @@ Map<String, dynamic> _$$ConnectionDataGqlImplToJson(
       'isPreset': instance.isPreset,
       'canBeEdited': instance.canBeEdited,
       'sortingOrder': instance.sortingOrder,
+      'latencyDetectionInterval': instance.latencyDetectionInterval,
+      'maxLatency': instance.maxLatency,
+      'endpointSelectionRetryCount': instance.endpointSelectionRetryCount,
       'runtimeType': instance.$type,
     };
 

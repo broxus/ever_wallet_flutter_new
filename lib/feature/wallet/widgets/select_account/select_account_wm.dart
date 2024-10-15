@@ -87,9 +87,7 @@ class SelectAccountWidgetModel
 
   void onManageSeedsAndAccounts() {
     Navigator.of(context).pop();
-    context
-      ..goNamed(AppRoute.profile.name)
-      ..goFurther(AppRoute.manageSeedsAccounts.path);
+    context.goNamed(AppRoute.manageSeedsAccounts.name);
   }
 
   ListenableState<Money> getBalanceEntity(KeyAccount account) {

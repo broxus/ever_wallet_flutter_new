@@ -18,7 +18,7 @@ class BrowserBottomBarPrimary extends StatelessWidget {
     this.onDotsPressed,
   });
 
-  static const height = DimensSize.d64;
+  static const height = DimensSize.d48;
 
   final String? backSvg;
   final String? forwardSvg;
@@ -40,7 +40,7 @@ class BrowserBottomBarPrimary extends StatelessWidget {
     return ColoredBox(
       color: colors.background1,
       child: SizedBox(
-        height: DimensSize.d64,
+        height: height,
         child: Padding(
           padding: const EdgeInsets.symmetric(
             horizontal: DimensSize.d24,
@@ -104,18 +104,20 @@ class BrowserBottomBarPrimary extends StatelessWidget {
     VoidCallback? onPressed,
   ) {
     return Padding(
-      padding: const EdgeInsets.all(DimensSize.d8),
+      padding: const EdgeInsets.all(DimensSize.d4),
       child: svg != null
           ? CommonIconButton.svg(
               size: CommonIconButtonSize.small,
               svg: svg,
               buttonType: EverButtonType.ghost,
+              padding: EdgeInsets.zero,
               onPressed: onPressed,
             )
           : CommonIconButton.icon(
               size: CommonIconButtonSize.small,
               icon: icondata,
               buttonType: EverButtonType.ghost,
+              padding: EdgeInsets.zero,
               onPressed: onPressed,
             ),
     );
