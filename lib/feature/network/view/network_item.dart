@@ -34,11 +34,16 @@ class NetworkItem extends StatelessWidget {
           children: [
             ClipOval(
               child: Container(
-                color: color ?? theme.colors.background2,
+                color: color ?? _getBgColor(),
+                //theme.colors.background2,
                 width: DimensSizeV2.d40,
                 height: DimensSizeV2.d40,
+                padding: _getIconOffset(),
                 child: Center(
-                  child: NetworkIcon(type: data.networkType),
+                  child: NetworkIcon(
+                    type: data.networkType,
+                    size: DimensSizeV2.d22,
+                  ),
                 ),
               ),
             ),
@@ -59,4 +64,19 @@ class NetworkItem extends StatelessWidget {
       ),
     );
   }
+
+  Color _getBgColor() => switch (data.networkType) {
+        NetworkType.ever => ColorsResV2.p60,
+        NetworkType.venom => const Color(0xFF4C5AF5),
+        _ => ColorsResV2.p60,
+      };
+
+  EdgeInsetsGeometry? _getIconOffset() => switch (data.networkType) {
+        NetworkType.ever => const EdgeInsets.only(
+            top: DimensSizeV2.d2,
+            right: DimensSizeV2.d2,
+          ),
+        NetworkType.venom => const EdgeInsets.only(left: DimensSizeV2.d1),
+        _ => null,
+      };
 }

@@ -45,56 +45,66 @@ class AccountTransactionsTab extends StatelessWidget {
       ),
       child:
           BlocBuilder<AccountTransactionsTabCubit, AccountTransactionsTabState>(
-        builder: (context, state) {
-          final colors = context.themeStyle.colors;
-
-          return state.when(
-            empty: () => SliverToBoxAdapter(
-              child: Text(
-                LocaleKeys.historyIsEmpty.tr(),
-                style: StyleRes.primaryBold.copyWith(
-                  color: colors.textPrimary,
-                ),
+        builder: (context, state) => state.when(
+          empty: () => SliverToBoxAdapter(
+            child: Padding(
+              padding: const EdgeInsets.symmetric(vertical: DimensSizeV2.d24),
+              child: SeparatedColumn(
+                separatorSize: DimensSizeV2.d12,
+                children: [
+                  SvgPicture.asset(
+                    Assets.images.lightning.path,
+                    colorFilter: theme.colors.content3.colorFilter,
+                    width: DimensSizeV2.d56,
+                    height: DimensSizeV2.d56,
+                  ),
+                  Text(
+                    LocaleKeys.emptyHistoryTitle.tr(),
+                    style: theme.textStyles.paragraphSmall.copyWith(
+                      color: theme.colors.content1,
+                    ),
+                  ),
+                ],
               ),
             ),
-            loading: () => SliverToBoxAdapter(
-              child: ProgressIndicatorWidget(
-                size: DimensSizeV2.d32,
-                color: theme.colors.content0,
-              ),
+          ),
+          loading: () => SliverToBoxAdapter(
+            child: ProgressIndicatorWidget(
+              size: DimensSizeV2.d32,
+              color: theme.colors.content0,
             ),
-            transactions: (transactions, isLoading, _, price) {
-              return ScrollControllerPreloadListener(
-                preleloadAction: () => context
-                    .read<AccountTransactionsTabCubit>()
-                    .tryPreloadTransactions(),
-                scrollController: scrollController,
-                child: SliverList.builder(
-                  itemCount: transactions.length + (isLoading ? 1 : 0),
-                  itemBuilder: (context, index) {
-                    if (index == transactions.length) {
-                      return const Padding(
-                        padding: EdgeInsets.all(DimensSize.d16),
-                        child: Center(child: CommonCircularProgressIndicator()),
-                      );
-                    }
-
-                    final prev = index == 0 ? null : transactions[index - 1];
-                    final trans = transactions[index];
-                    final displayDate =
-                        prev == null || !prev.date.isSameDay(trans.date);
-
-                    return _transactionItem(
-                      trans,
-                      displayDate,
-                      price,
+          ),
+          transactions: (transactions, isLoading, _, price) {
+            return ScrollControllerPreloadListener(
+              preleloadAction: () => context
+                  .read<AccountTransactionsTabCubit>()
+                  .tryPreloadTransactions(),
+              scrollController: scrollController,
+              child: SliverList.builder(
+                itemCount: transactions.length + (isLoading ? 1 : 0),
+                itemBuilder: (context, index) {
+                  if (index == transactions.length) {
+                    return const Padding(
+                      padding: EdgeInsets.all(DimensSize.d16),
+                      child: Center(child: CommonCircularProgressIndicator()),
                     );
-                  },
-                ),
-              );
-            },
-          );
-        },
+                  }
+
+                  final prev = index == 0 ? null : transactions[index - 1];
+                  final trans = transactions[index];
+                  final displayDate =
+                      prev == null || !prev.date.isSameDay(trans.date);
+
+                  return _transactionItem(
+                    trans,
+                    displayDate,
+                    price,
+                  );
+                },
+              ),
+            );
+          },
+        ),
       ),
     );
   }
