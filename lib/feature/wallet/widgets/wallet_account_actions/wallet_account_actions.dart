@@ -22,6 +22,7 @@ class WalletAccountActions extends StatelessWidget {
     required this.currentAccount,
     this.allowStake = true,
     this.sendSpecified = false,
+    this.padding = const EdgeInsets.symmetric(vertical: DimensSizeV2.d32),
     super.key,
   });
 
@@ -30,6 +31,7 @@ class WalletAccountActions extends StatelessWidget {
 
   /// If send action should be navigated to send specified token or select token
   final bool sendSpecified;
+  final EdgeInsetsGeometry padding;
 
   @override
   Widget build(BuildContext context) {
@@ -39,8 +41,11 @@ class WalletAccountActions extends StatelessWidget {
       opacity: account == null ? 0 : 1,
       duration: const Duration(milliseconds: 400),
       child: account == null
-          ? const IgnorePointer(
-              child: _ActionList(action: WalletAccountActionBehavior.send),
+          ? IgnorePointer(
+              child: _ActionList(
+                action: WalletAccountActionBehavior.send,
+                padding: padding,
+              ),
             )
           // TODO(komarov): elementary
           : BlocProvider<WalletAccountActionsCubit>(
@@ -58,6 +63,7 @@ class WalletAccountActions extends StatelessWidget {
                       action: WalletAccountActionBehavior.send,
                       hasStake: hasStake && allowStake,
                       sendSpecified: sendSpecified,
+                      padding: padding,
                     ),
                     data: (action, hasStake, hasStakeActions) => _ActionList(
                       account: account,
@@ -65,6 +71,7 @@ class WalletAccountActions extends StatelessWidget {
                       hasStake: hasStake && allowStake,
                       hasStakeActions: hasStakeActions,
                       sendSpecified: sendSpecified,
+                      padding: padding,
                     ),
                   );
                 },
@@ -77,6 +84,7 @@ class WalletAccountActions extends StatelessWidget {
 class _ActionList extends StatelessWidget {
   const _ActionList({
     required this.action,
+    required this.padding,
     this.account,
     this.hasStake = false,
     this.hasStakeActions = false,
@@ -88,13 +96,14 @@ class _ActionList extends StatelessWidget {
   final bool hasStake;
   final bool hasStakeActions;
   final bool sendSpecified;
+  final EdgeInsetsGeometry padding;
 
   @override
   Widget build(BuildContext context) {
     final theme = context.themeStyleV2;
 
     return Padding(
-      padding: const EdgeInsets.symmetric(vertical: DimensSizeV2.d32),
+      padding: padding,
       child: SizedBox(
         height: DimensSizeV2.d74,
         child: SeparatedRow(

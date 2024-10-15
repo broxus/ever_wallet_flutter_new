@@ -125,5 +125,6 @@ flutter:
     - assets/images/homescreen_bg/
     - assets/images/alert_octagon_fill/
     - assets/images/check_circle_fill/
+    - assets/images/wallet_bg/
     - assets/splash/
     - assets/js/

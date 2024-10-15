@@ -1,6 +1,7 @@
 import 'package:app/di/di.dart';
 import 'package:app/feature/wallet/wallet.dart';
 import 'package:app/feature/wallet/widgets/account_transactions_tab/account_transactions_tab.dart';
+import 'package:app/generated/generated.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:nekoton_repository/nekoton_repository.dart';
@@ -33,7 +34,6 @@ class _TonWalletDetailsPageState extends State<TonWalletDetailsPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: const DefaultAppBar(),
       body: BlocProvider<TonWalletDetailsCubit>(
         create: (_) => TonWalletDetailsCubit(
           address: widget.address,
@@ -94,36 +94,43 @@ class _Body extends StatelessWidget {
     return CustomScrollView(
       slivers: [
         SliverToBoxAdapter(
-          child: Column(
-            mainAxisSize: MainAxisSize.min,
+          child: Stack(
             children: [
-              Text(
-                symbol,
-                style: theme.textStyles.labelSmall.copyWith(
-                  color: theme.colors.content3,
-                ),
+              const _Background(),
+              Column(
+                mainAxisSize: MainAxisSize.min,
+                children: [
+                  const DefaultAppBar(),
+                  Text(
+                    symbol,
+                    style: theme.textStyles.labelSmall.copyWith(
+                      color: theme.colors.content3,
+                    ),
+                  ),
+                  const SizedBox(height: DimensSizeV2.d12),
+                  if (tokenBalance != null)
+                    AmountWidget.fromMoney(
+                      amount: tokenBalance!,
+                      includeSymbol: false,
+                      style: theme.textStyles.headingXLarge,
+                    ),
+                  const SizedBox(height: DimensSizeV2.d4),
+                  if (fiatBalance != null)
+                    AmountWidget.dollars(
+                      amount: fiatBalance!,
+                      style: theme.textStyles.labelXSmall,
+                    ),
+                  const SizedBox(height: DimensSizeV2.d16),
+                  if (error == null)
+                    WalletAccountActions(
+                      currentAccount: account,
+                      allowStake: false,
+                      sendSpecified: true,
+                      padding: EdgeInsets.zero,
+                    ),
+                  const SizedBox(height: DimensSizeV2.d48),
+                ],
               ),
-              const SizedBox(height: DimensSizeV2.d12),
-              if (tokenBalance != null)
-                AmountWidget.fromMoney(
-                  amount: tokenBalance!,
-                  includeSymbol: false,
-                  style: theme.textStyles.headingXLarge,
-                ),
-              const SizedBox(height: DimensSizeV2.d4),
-              if (fiatBalance != null)
-                AmountWidget.dollars(
-                  amount: fiatBalance!,
-                  style: theme.textStyles.labelXSmall,
-                ),
-              const SizedBox(height: DimensSizeV2.d16),
-              if (error == null)
-                WalletAccountActions(
-                  currentAccount: account,
-                  allowStake: false,
-                  sendSpecified: true,
-                ),
-              const SizedBox(height: DimensSizeV2.d48),
             ],
           ),
         ),
@@ -166,4 +173,21 @@ class _Body extends StatelessWidget {
       ],
     );
   }
+}
+
+class _Background extends StatelessWidget {
+  const _Background();
+
+  @override
+  Widget build(BuildContext context) => Positioned.fill(
+        child: SafeArea(
+          child: Padding(
+            padding: const EdgeInsets.symmetric(horizontal: DimensSizeV2.d28),
+            child: Image.asset(
+              Assets.images.walletBg.walletBg.path,
+              fit: BoxFit.cover,
+            ),
+          ),
+        ),
+      );
 }

@@ -280,7 +280,7 @@ abstract class LocaleKeys {
   static const toSendMultisigAddCustodian = 'toSendMultisigAddCustodian';
   static const addWord = 'addWord';
   static const transactionsHistory = 'transactionsHistory';
-  static const historyIsEmpty = 'historyIsEmpty';
+  static const emptyHistoryTitle = 'emptyHistoryTitle';
   static const commentWord = 'commentWord';
   static const tokenIncomingTransfer = 'tokenIncomingTransfer';
   static const ownerWallet = 'ownerWallet';

@@ -275,7 +275,7 @@
   "toSendMultisigAddCustodian": "To send funds via multisig, you need to add a custodian",
   "addWord": "Add",
   "transactionsHistory": "Transactions history",
-  "historyIsEmpty": "History is empty",
+  "emptyHistoryTitle": "You haven't made any transactions yet.",
   "commentWord": "Comment",
   "tokenIncomingTransfer": "Token incoming transfer",
   "ownerWallet": "Owner wallet",

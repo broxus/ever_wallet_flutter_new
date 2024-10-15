@@ -42,7 +42,7 @@ class TokenWalletTransactionsWidget extends StatelessWidget {
             empty: () => SliverFillRemaining(
               child: Center(
                 child: Text(
-                  LocaleKeys.historyIsEmpty.tr(),
+                  LocaleKeys.emptyHistoryTitle.tr(),
                   style: StyleRes.primaryBold.copyWith(
                     color: colors.textPrimary,
                   ),
