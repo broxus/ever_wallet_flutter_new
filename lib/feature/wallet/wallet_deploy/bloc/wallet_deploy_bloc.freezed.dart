@@ -1358,8 +1358,6 @@ abstract class _$$CompleteDeployImplCopyWith<$Res> {
       __$$CompleteDeployImplCopyWithImpl<$Res>;
   @useResult
   $Res call({Transaction transaction});
-
-  $TransactionCopyWith<$Res> get transaction;
 }
 
 /// @nodoc
@@ -1375,24 +1373,14 @@ class __$$CompleteDeployImplCopyWithImpl<$Res>
   @pragma('vm:prefer-inline')
   @override
   $Res call({
-    Object? transaction = null,
+    Object? transaction = freezed,
   }) {
     return _then(_$CompleteDeployImpl(
-      null == transaction
+      freezed == transaction
           ? _value.transaction
           : transaction // ignore: cast_nullable_to_non_nullable
               as Transaction,
     ));
-  }
-
-  /// Create a copy of WalletDeployEvent
-  /// with the given fields replaced by the non-null parameter values.
-  @override
-  @pragma('vm:prefer-inline')
-  $TransactionCopyWith<$Res> get transaction {
-    return $TransactionCopyWith<$Res>(_value.transaction, (value) {
-      return _then(_value.copyWith(transaction: value));
-    });
   }
 }
 
@@ -1414,12 +1402,13 @@ class _$CompleteDeployImpl implements _CompleteDeploy {
     return identical(this, other) ||
         (other.runtimeType == runtimeType &&
             other is _$CompleteDeployImpl &&
-            (identical(other.transaction, transaction) ||
-                other.transaction == transaction));
+            const DeepCollectionEquality()
+                .equals(other.transaction, transaction));
   }
 
   @override
-  int get hashCode => Object.hash(runtimeType, transaction);
+  int get hashCode => Object.hash(
+      runtimeType, const DeepCollectionEquality().hash(transaction));
 
   /// Create a copy of WalletDeployEvent
   /// with the given fields replaced by the non-null parameter values.
@@ -2767,8 +2756,6 @@ abstract class _$$DeployedImplCopyWith<$Res> {
       Transaction transaction,
       List<PublicKey>? custodians,
       int? requireConfirmations});
-
-  $TransactionCopyWith<$Res> get transaction;
 }
 
 /// @nodoc
@@ -2786,7 +2773,7 @@ class __$$DeployedImplCopyWithImpl<$Res>
   $Res call({
     Object? fee = null,
     Object? balance = null,
-    Object? transaction = null,
+    Object? transaction = freezed,
     Object? custodians = freezed,
     Object? requireConfirmations = freezed,
   }) {
@@ -2799,7 +2786,7 @@ class __$$DeployedImplCopyWithImpl<$Res>
           ? _value.balance
           : balance // ignore: cast_nullable_to_non_nullable
               as BigInt,
-      transaction: null == transaction
+      transaction: freezed == transaction
           ? _value.transaction
           : transaction // ignore: cast_nullable_to_non_nullable
               as Transaction,
@@ -2812,16 +2799,6 @@ class __$$DeployedImplCopyWithImpl<$Res>
           : requireConfirmations // ignore: cast_nullable_to_non_nullable
               as int?,
     ));
-  }
-
-  /// Create a copy of WalletDeployState
-  /// with the given fields replaced by the non-null parameter values.
-  @override
-  @pragma('vm:prefer-inline')
-  $TransactionCopyWith<$Res> get transaction {
-    return $TransactionCopyWith<$Res>(_value.transaction, (value) {
-      return _then(_value.copyWith(transaction: value));
-    });
   }
 }
 
@@ -2867,8 +2844,8 @@ class _$DeployedImpl implements _Deployed {
             other is _$DeployedImpl &&
             (identical(other.fee, fee) || other.fee == fee) &&
             (identical(other.balance, balance) || other.balance == balance) &&
-            (identical(other.transaction, transaction) ||
-                other.transaction == transaction) &&
+            const DeepCollectionEquality()
+                .equals(other.transaction, transaction) &&
             const DeepCollectionEquality()
                 .equals(other._custodians, _custodians) &&
             (identical(other.requireConfirmations, requireConfirmations) ||
@@ -2876,8 +2853,13 @@ class _$DeployedImpl implements _Deployed {
   }
 
   @override
-  int get hashCode => Object.hash(runtimeType, fee, balance, transaction,
-      const DeepCollectionEquality().hash(_custodians), requireConfirmations);
+  int get hashCode => Object.hash(
+      runtimeType,
+      fee,
+      balance,
+      const DeepCollectionEquality().hash(transaction),
+      const DeepCollectionEquality().hash(_custodians),
+      requireConfirmations);
 
   /// Create a copy of WalletDeployState
   /// with the given fields replaced by the non-null parameter values.

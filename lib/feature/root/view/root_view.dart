@@ -1,6 +1,8 @@
 import 'dart:async';
 
 import 'package:app/app/router/router.dart';
+import 'package:app/app/service/app_links/app_links_data.dart';
+import 'package:app/app/service/app_links/app_links_service.dart';
 import 'package:app/app/service/service.dart';
 import 'package:app/di/di.dart';
 import 'package:app/event_bus/events/navigation/bottom_navigation_events.dart';
@@ -20,26 +22,31 @@ class RootView extends StatefulWidget {
 }
 
 class _RootViewState extends State<RootView> {
+  final _appLinksService = inject<AppLinksService>();
+
   late final NavigationService _navigationService;
 
   int get _tabIndex => RootTab.getByPath(
         getRootPath(fullPath: _navigationService.state.fullPath),
       ).index;
 
-  StreamSubscription<BottomNavigationEvent>? _navSubs;
+  StreamSubscription<BrowserAppLinksData>? _appLinksNavSubs;
 
   @override
   void initState() {
     super.initState();
 
     _navigationService = inject<NavigationService>();
-    _navSubs =
-        behaviorBus.on<ChangeTabBottomNavigationEvent>().listen(_listenNav);
+
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      _appLinksNavSubs =
+          _appLinksService.browserLinksStream.listen(_listenAppLinks);
+    });
   }
 
   @override
   void dispose() {
-    _navSubs?.cancel();
+    _appLinksNavSubs?.cancel();
     super.dispose();
   }
 
@@ -124,7 +131,7 @@ class _RootViewState extends State<RootView> {
     );
   }
 
-  void _listenNav(ChangeTabBottomNavigationEvent event) {
-    _changeValue(event.tab);
+  void _listenAppLinks(BrowserAppLinksData data) {
+    _changeValue(RootTab.browser);
   }
 }

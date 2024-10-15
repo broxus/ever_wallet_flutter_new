@@ -1,9 +1,4 @@
-import 'dart:async';
-
 import 'package:app/app/router/router.dart';
-import 'package:app/event_bus/events/app_links/app_links_event.dart';
-import 'package:app/event_bus/events/navigation/bottom_navigation_events.dart';
-import 'package:app/event_bus/primary_bus.dart';
 import 'package:app/feature/browser/browser.dart';
 import 'package:app/feature/browser/tabs/tab_view.dart';
 import 'package:flutter/material.dart';
@@ -22,21 +17,6 @@ class TabsView extends StatefulWidget {
 }
 
 class _TabsViewState extends State<TabsView> {
-  StreamSubscription<BrowserAppLinkUriEvent>? _appLinksNavSubs;
-
-  @override
-  void initState() {
-    _appLinksNavSubs =
-        behaviorBus.on<BrowserAppLinkUriEvent>().listen(_listenAppLinks);
-    super.initState();
-  }
-
-  @override
-  void dispose() {
-    _appLinksNavSubs?.cancel();
-    super.dispose();
-  }
-
   @override
   Widget build(BuildContext context) {
     final tabs = [...context.watch<BrowserTabsBloc>().state.tabs]..sort(
@@ -88,11 +68,5 @@ class _TabsViewState extends State<TabsView> {
     if (wasLast) {
       context.goNamed(AppRoute.browser.name);
     }
-  }
-
-  void _listenAppLinks(BrowserAppLinkUriEvent event) {
-    context.read<BrowserTabsBloc>().add(
-          BrowserTabsEvent.add(uri: event.uri),
-        );
   }
 }

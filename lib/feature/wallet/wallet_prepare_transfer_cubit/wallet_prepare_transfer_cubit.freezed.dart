@@ -717,8 +717,6 @@ abstract class _$$DataImplCopyWith<$Res> {
       List<PublicKey> localCustodians,
       WalletPrepareTransferAsset selectedAsset,
       List<WalletPrepareTransferAsset> assets});
-
-  $PublicKeyCopyWith<$Res> get selectedCustodian;
 }
 
 /// @nodoc
@@ -735,7 +733,7 @@ class __$$DataImplCopyWithImpl<$Res>
   $Res call({
     Object? walletName = null,
     Object? account = null,
-    Object? selectedCustodian = null,
+    Object? selectedCustodian = freezed,
     Object? localCustodians = null,
     Object? selectedAsset = null,
     Object? assets = null,
@@ -749,7 +747,7 @@ class __$$DataImplCopyWithImpl<$Res>
           ? _value.account
           : account // ignore: cast_nullable_to_non_nullable
               as KeyAccount,
-      selectedCustodian: null == selectedCustodian
+      selectedCustodian: freezed == selectedCustodian
           ? _value.selectedCustodian
           : selectedCustodian // ignore: cast_nullable_to_non_nullable
               as PublicKey,
@@ -766,16 +764,6 @@ class __$$DataImplCopyWithImpl<$Res>
           : assets // ignore: cast_nullable_to_non_nullable
               as List<WalletPrepareTransferAsset>,
     ));
-  }
-
-  /// Create a copy of WalletPrepareTransferState
-  /// with the given fields replaced by the non-null parameter values.
-  @override
-  @pragma('vm:prefer-inline')
-  $PublicKeyCopyWith<$Res> get selectedCustodian {
-    return $PublicKeyCopyWith<$Res>(_value.selectedCustodian, (value) {
-      return _then(_value.copyWith(selectedCustodian: value));
-    });
   }
 }
 
@@ -829,8 +817,8 @@ class _$DataImpl implements _Data {
             (identical(other.walletName, walletName) ||
                 other.walletName == walletName) &&
             (identical(other.account, account) || other.account == account) &&
-            (identical(other.selectedCustodian, selectedCustodian) ||
-                other.selectedCustodian == selectedCustodian) &&
+            const DeepCollectionEquality()
+                .equals(other.selectedCustodian, selectedCustodian) &&
             const DeepCollectionEquality()
                 .equals(other._localCustodians, _localCustodians) &&
             (identical(other.selectedAsset, selectedAsset) ||
@@ -843,7 +831,7 @@ class _$DataImpl implements _Data {
       runtimeType,
       walletName,
       account,
-      selectedCustodian,
+      const DeepCollectionEquality().hash(selectedCustodian),
       const DeepCollectionEquality().hash(_localCustodians),
       selectedAsset,
       const DeepCollectionEquality().hash(_assets));
@@ -1030,9 +1018,6 @@ abstract class _$$GoNextImplCopyWith<$Res> {
       Address receiveAddress,
       Fixed amount,
       String? comment});
-
-  $PublicKeyCopyWith<$Res> get selectedCustodian;
-  $AddressCopyWith<$Res> get receiveAddress;
 }
 
 /// @nodoc
@@ -1050,11 +1035,11 @@ class __$$GoNextImplCopyWithImpl<$Res>
   $Res call({
     Object? walletName = null,
     Object? account = null,
-    Object? selectedCustodian = null,
+    Object? selectedCustodian = freezed,
     Object? localCustodians = null,
     Object? selectedAsset = null,
     Object? assets = null,
-    Object? receiveAddress = null,
+    Object? receiveAddress = freezed,
     Object? amount = null,
     Object? comment = freezed,
   }) {
@@ -1067,7 +1052,7 @@ class __$$GoNextImplCopyWithImpl<$Res>
           ? _value.account
           : account // ignore: cast_nullable_to_non_nullable
               as KeyAccount,
-      selectedCustodian: null == selectedCustodian
+      selectedCustodian: freezed == selectedCustodian
           ? _value.selectedCustodian
           : selectedCustodian // ignore: cast_nullable_to_non_nullable
               as PublicKey,
@@ -1083,7 +1068,7 @@ class __$$GoNextImplCopyWithImpl<$Res>
           ? _value._assets
           : assets // ignore: cast_nullable_to_non_nullable
               as List<WalletPrepareTransferAsset>,
-      receiveAddress: null == receiveAddress
+      receiveAddress: freezed == receiveAddress
           ? _value.receiveAddress
           : receiveAddress // ignore: cast_nullable_to_non_nullable
               as Address,
@@ -1096,26 +1081,6 @@ class __$$GoNextImplCopyWithImpl<$Res>
           : comment // ignore: cast_nullable_to_non_nullable
               as String?,
     ));
-  }
-
-  /// Create a copy of WalletPrepareTransferState
-  /// with the given fields replaced by the non-null parameter values.
-  @override
-  @pragma('vm:prefer-inline')
-  $PublicKeyCopyWith<$Res> get selectedCustodian {
-    return $PublicKeyCopyWith<$Res>(_value.selectedCustodian, (value) {
-      return _then(_value.copyWith(selectedCustodian: value));
-    });
-  }
-
-  /// Create a copy of WalletPrepareTransferState
-  /// with the given fields replaced by the non-null parameter values.
-  @override
-  @pragma('vm:prefer-inline')
-  $AddressCopyWith<$Res> get receiveAddress {
-    return $AddressCopyWith<$Res>(_value.receiveAddress, (value) {
-      return _then(_value.copyWith(receiveAddress: value));
-    });
   }
 }
 
@@ -1179,15 +1144,15 @@ class _$GoNextImpl implements _GoNext {
             (identical(other.walletName, walletName) ||
                 other.walletName == walletName) &&
             (identical(other.account, account) || other.account == account) &&
-            (identical(other.selectedCustodian, selectedCustodian) ||
-                other.selectedCustodian == selectedCustodian) &&
+            const DeepCollectionEquality()
+                .equals(other.selectedCustodian, selectedCustodian) &&
             const DeepCollectionEquality()
                 .equals(other._localCustodians, _localCustodians) &&
             (identical(other.selectedAsset, selectedAsset) ||
                 other.selectedAsset == selectedAsset) &&
             const DeepCollectionEquality().equals(other._assets, _assets) &&
-            (identical(other.receiveAddress, receiveAddress) ||
-                other.receiveAddress == receiveAddress) &&
+            const DeepCollectionEquality()
+                .equals(other.receiveAddress, receiveAddress) &&
             (identical(other.amount, amount) || other.amount == amount) &&
             (identical(other.comment, comment) || other.comment == comment));
   }
@@ -1197,11 +1162,11 @@ class _$GoNextImpl implements _GoNext {
       runtimeType,
       walletName,
       account,
-      selectedCustodian,
+      const DeepCollectionEquality().hash(selectedCustodian),
       const DeepCollectionEquality().hash(_localCustodians),
       selectedAsset,
       const DeepCollectionEquality().hash(_assets),
-      receiveAddress,
+      const DeepCollectionEquality().hash(receiveAddress),
       amount,
       comment);
 

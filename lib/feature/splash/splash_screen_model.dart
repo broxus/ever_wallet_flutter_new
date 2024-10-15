@@ -1,4 +1,3 @@
-import 'package:app/app/service/app_links_service.dart';
 import 'package:app/app/service/bootstrap_service.dart';
 import 'package:app/app/service/network_connection/network_connection_service.dart';
 import 'package:app/feature/splash/splash_screen.dart';
