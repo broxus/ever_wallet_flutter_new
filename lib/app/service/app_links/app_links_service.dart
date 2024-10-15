@@ -1,11 +1,9 @@
 import 'dart:async';
 
-import 'package:app/event_bus/events/app_links/app_links_event.dart';
-import 'package:app/event_bus/events/navigation/bottom_navigation_events.dart';
-import 'package:app/event_bus/primary_bus.dart';
-import 'package:app/feature/root/view/root_tab.dart';
+import 'package:app/app/service/app_links/app_links_data.dart';
 import 'package:broxus_app_links/broxus_app_links.dart';
 import 'package:injectable/injectable.dart';
+import 'package:rxdart/rxdart.dart';
 
 @singleton
 class AppLinksService {
@@ -16,6 +14,15 @@ class AppLinksService {
   static const _linkKey = 'link';
 
   final _appLinks = BroxusAppLinks();
+
+  final _linksSubj = BehaviorSubject<AppLinksData>.seeded(EmptyAppLinksData());
+
+  late final Stream<AppLinksData> linksStream = _linksSubj.stream;
+
+  Stream<BrowserAppLinksData> get browserLinksStream => linksStream
+      .where((data) => data is BrowserAppLinksData)
+      .cast<BrowserAppLinksData>();
+
   StreamSubscription<Uri>? _linkSubscription;
 
   @disposeMethod
@@ -39,11 +46,11 @@ class AppLinksService {
     }
 
     try {
-      final uri = Uri.parse(link);
-
-      behaviorBus
-        ..fire(ChangeTabBottomNavigationEvent(RootTab.browser))
-        ..fire(BrowserAppLinkUriEvent(uri));
+      _linksSubj.add(
+        BrowserAppLinksData(
+          Uri.parse(link),
+        ),
+      );
     } catch (_) {}
   }
 }

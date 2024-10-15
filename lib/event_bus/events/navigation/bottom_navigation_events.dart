@@ -15,9 +15,3 @@ class PressBottomNavigationEvent extends BottomNavigationEvent {
   late final bool isSameTab = prevTab == currentTab;
   late final bool isWalletTab = currentTab == RootTab.wallet;
 }
-
-class ChangeTabBottomNavigationEvent extends BottomNavigationEvent {
-  ChangeTabBottomNavigationEvent(this.tab);
-
-  final RootTab tab;
-}

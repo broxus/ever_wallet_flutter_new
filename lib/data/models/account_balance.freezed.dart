@@ -47,8 +47,6 @@ abstract class $AccountBalanceModelCopyWith<$Res> {
       {@NekotonAddressConverter() Address rootTokenContract,
       @moneyFromStringJsonConverter Money fiatBalance,
       @moneyFromStringJsonConverter Money tokenBalance});
-
-  $AddressCopyWith<$Res> get rootTokenContract;
 }
 
 /// @nodoc
@@ -66,12 +64,12 @@ class _$AccountBalanceModelCopyWithImpl<$Res, $Val extends AccountBalanceModel>
   @pragma('vm:prefer-inline')
   @override
   $Res call({
-    Object? rootTokenContract = null,
+    Object? rootTokenContract = freezed,
     Object? fiatBalance = null,
     Object? tokenBalance = null,
   }) {
     return _then(_value.copyWith(
-      rootTokenContract: null == rootTokenContract
+      rootTokenContract: freezed == rootTokenContract
           ? _value.rootTokenContract
           : rootTokenContract // ignore: cast_nullable_to_non_nullable
               as Address,
@@ -84,16 +82,6 @@ class _$AccountBalanceModelCopyWithImpl<$Res, $Val extends AccountBalanceModel>
           : tokenBalance // ignore: cast_nullable_to_non_nullable
               as Money,
     ) as $Val);
-  }
-
-  /// Create a copy of AccountBalanceModel
-  /// with the given fields replaced by the non-null parameter values.
-  @override
-  @pragma('vm:prefer-inline')
-  $AddressCopyWith<$Res> get rootTokenContract {
-    return $AddressCopyWith<$Res>(_value.rootTokenContract, (value) {
-      return _then(_value.copyWith(rootTokenContract: value) as $Val);
-    });
   }
 }
 
@@ -109,9 +97,6 @@ abstract class _$$AccountBalanceModelImplCopyWith<$Res>
       {@NekotonAddressConverter() Address rootTokenContract,
       @moneyFromStringJsonConverter Money fiatBalance,
       @moneyFromStringJsonConverter Money tokenBalance});
-
-  @override
-  $AddressCopyWith<$Res> get rootTokenContract;
 }
 
 /// @nodoc
@@ -127,12 +112,12 @@ class __$$AccountBalanceModelImplCopyWithImpl<$Res>
   @pragma('vm:prefer-inline')
   @override
   $Res call({
-    Object? rootTokenContract = null,
+    Object? rootTokenContract = freezed,
     Object? fiatBalance = null,
     Object? tokenBalance = null,
   }) {
     return _then(_$AccountBalanceModelImpl(
-      rootTokenContract: null == rootTokenContract
+      rootTokenContract: freezed == rootTokenContract
           ? _value.rootTokenContract
           : rootTokenContract // ignore: cast_nullable_to_non_nullable
               as Address,
@@ -179,8 +164,8 @@ class _$AccountBalanceModelImpl implements _AccountBalanceModel {
     return identical(this, other) ||
         (other.runtimeType == runtimeType &&
             other is _$AccountBalanceModelImpl &&
-            (identical(other.rootTokenContract, rootTokenContract) ||
-                other.rootTokenContract == rootTokenContract) &&
+            const DeepCollectionEquality()
+                .equals(other.rootTokenContract, rootTokenContract) &&
             (identical(other.fiatBalance, fiatBalance) ||
                 other.fiatBalance == fiatBalance) &&
             (identical(other.tokenBalance, tokenBalance) ||
@@ -189,8 +174,11 @@ class _$AccountBalanceModelImpl implements _AccountBalanceModel {
 
   @JsonKey(includeFromJson: false, includeToJson: false)
   @override
-  int get hashCode =>
-      Object.hash(runtimeType, rootTokenContract, fiatBalance, tokenBalance);
+  int get hashCode => Object.hash(
+      runtimeType,
+      const DeepCollectionEquality().hash(rootTokenContract),
+      fiatBalance,
+      tokenBalance);
 
   /// Create a copy of AccountBalanceModel
   /// with the given fields replaced by the non-null parameter values.
