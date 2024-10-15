@@ -209,6 +209,8 @@ abstract class _$$StakeImplCopyWith<$Res> {
       __$$StakeImplCopyWithImpl<$Res>;
   @useResult
   $Res call({BigInt amount, PublicKey accountKey});
+
+  $PublicKeyCopyWith<$Res> get accountKey;
 }
 
 /// @nodoc
@@ -225,18 +227,28 @@ class __$$StakeImplCopyWithImpl<$Res>
   @override
   $Res call({
     Object? amount = null,
-    Object? accountKey = freezed,
+    Object? accountKey = null,
   }) {
     return _then(_$StakeImpl(
       amount: null == amount
           ? _value.amount
           : amount // ignore: cast_nullable_to_non_nullable
               as BigInt,
-      accountKey: freezed == accountKey
+      accountKey: null == accountKey
           ? _value.accountKey
           : accountKey // ignore: cast_nullable_to_non_nullable
               as PublicKey,
     ));
+  }
+
+  /// Create a copy of ActionStakingBlocEvent
+  /// with the given fields replaced by the non-null parameter values.
+  @override
+  @pragma('vm:prefer-inline')
+  $PublicKeyCopyWith<$Res> get accountKey {
+    return $PublicKeyCopyWith<$Res>(_value.accountKey, (value) {
+      return _then(_value.copyWith(accountKey: value));
+    });
   }
 }
 
@@ -262,13 +274,12 @@ class _$StakeImpl implements _Stake {
         (other.runtimeType == runtimeType &&
             other is _$StakeImpl &&
             (identical(other.amount, amount) || other.amount == amount) &&
-            const DeepCollectionEquality()
-                .equals(other.accountKey, accountKey));
+            (identical(other.accountKey, accountKey) ||
+                other.accountKey == accountKey));
   }
 
   @override
-  int get hashCode => Object.hash(
-      runtimeType, amount, const DeepCollectionEquality().hash(accountKey));
+  int get hashCode => Object.hash(runtimeType, amount, accountKey);
 
   /// Create a copy of ActionStakingBlocEvent
   /// with the given fields replaced by the non-null parameter values.
@@ -374,6 +385,8 @@ abstract class _$$UnstakeImplCopyWith<$Res> {
       __$$UnstakeImplCopyWithImpl<$Res>;
   @useResult
   $Res call({BigInt amount, PublicKey accountKey, int withdrawHours});
+
+  $PublicKeyCopyWith<$Res> get accountKey;
 }
 
 /// @nodoc
@@ -390,7 +403,7 @@ class __$$UnstakeImplCopyWithImpl<$Res>
   @override
   $Res call({
     Object? amount = null,
-    Object? accountKey = freezed,
+    Object? accountKey = null,
     Object? withdrawHours = null,
   }) {
     return _then(_$UnstakeImpl(
@@ -398,7 +411,7 @@ class __$$UnstakeImplCopyWithImpl<$Res>
           ? _value.amount
           : amount // ignore: cast_nullable_to_non_nullable
               as BigInt,
-      accountKey: freezed == accountKey
+      accountKey: null == accountKey
           ? _value.accountKey
           : accountKey // ignore: cast_nullable_to_non_nullable
               as PublicKey,
@@ -407,6 +420,16 @@ class __$$UnstakeImplCopyWithImpl<$Res>
           : withdrawHours // ignore: cast_nullable_to_non_nullable
               as int,
     ));
+  }
+
+  /// Create a copy of ActionStakingBlocEvent
+  /// with the given fields replaced by the non-null parameter values.
+  @override
+  @pragma('vm:prefer-inline')
+  $PublicKeyCopyWith<$Res> get accountKey {
+    return $PublicKeyCopyWith<$Res>(_value.accountKey, (value) {
+      return _then(_value.copyWith(accountKey: value));
+    });
   }
 }
 
@@ -437,15 +460,15 @@ class _$UnstakeImpl implements _Unstake {
         (other.runtimeType == runtimeType &&
             other is _$UnstakeImpl &&
             (identical(other.amount, amount) || other.amount == amount) &&
-            const DeepCollectionEquality()
-                .equals(other.accountKey, accountKey) &&
+            (identical(other.accountKey, accountKey) ||
+                other.accountKey == accountKey) &&
             (identical(other.withdrawHours, withdrawHours) ||
                 other.withdrawHours == withdrawHours));
   }
 
   @override
-  int get hashCode => Object.hash(runtimeType, amount,
-      const DeepCollectionEquality().hash(accountKey), withdrawHours);
+  int get hashCode =>
+      Object.hash(runtimeType, amount, accountKey, withdrawHours);
 
   /// Create a copy of ActionStakingBlocEvent
   /// with the given fields replaced by the non-null parameter values.
@@ -1162,6 +1185,10 @@ abstract class _$$GoStakeImplCopyWith<$Res> {
       Address sender,
       PublicKey accountKey,
       BigInt attachedFee});
+
+  $AddressCopyWith<$Res> get destination;
+  $AddressCopyWith<$Res> get sender;
+  $PublicKeyCopyWith<$Res> get accountKey;
 }
 
 /// @nodoc
@@ -1179,9 +1206,9 @@ class __$$GoStakeImplCopyWithImpl<$Res>
   $Res call({
     Object? payload = null,
     Object? amount = null,
-    Object? destination = freezed,
-    Object? sender = freezed,
-    Object? accountKey = freezed,
+    Object? destination = null,
+    Object? sender = null,
+    Object? accountKey = null,
     Object? attachedFee = null,
   }) {
     return _then(_$GoStakeImpl(
@@ -1193,15 +1220,15 @@ class __$$GoStakeImplCopyWithImpl<$Res>
           ? _value.amount
           : amount // ignore: cast_nullable_to_non_nullable
               as BigInt,
-      destination: freezed == destination
+      destination: null == destination
           ? _value.destination
           : destination // ignore: cast_nullable_to_non_nullable
               as Address,
-      sender: freezed == sender
+      sender: null == sender
           ? _value.sender
           : sender // ignore: cast_nullable_to_non_nullable
               as Address,
-      accountKey: freezed == accountKey
+      accountKey: null == accountKey
           ? _value.accountKey
           : accountKey // ignore: cast_nullable_to_non_nullable
               as PublicKey,
@@ -1210,6 +1237,36 @@ class __$$GoStakeImplCopyWithImpl<$Res>
           : attachedFee // ignore: cast_nullable_to_non_nullable
               as BigInt,
     ));
+  }
+
+  /// Create a copy of ActionStakingBlocState
+  /// with the given fields replaced by the non-null parameter values.
+  @override
+  @pragma('vm:prefer-inline')
+  $AddressCopyWith<$Res> get destination {
+    return $AddressCopyWith<$Res>(_value.destination, (value) {
+      return _then(_value.copyWith(destination: value));
+    });
+  }
+
+  /// Create a copy of ActionStakingBlocState
+  /// with the given fields replaced by the non-null parameter values.
+  @override
+  @pragma('vm:prefer-inline')
+  $AddressCopyWith<$Res> get sender {
+    return $AddressCopyWith<$Res>(_value.sender, (value) {
+      return _then(_value.copyWith(sender: value));
+    });
+  }
+
+  /// Create a copy of ActionStakingBlocState
+  /// with the given fields replaced by the non-null parameter values.
+  @override
+  @pragma('vm:prefer-inline')
+  $PublicKeyCopyWith<$Res> get accountKey {
+    return $PublicKeyCopyWith<$Res>(_value.accountKey, (value) {
+      return _then(_value.copyWith(accountKey: value));
+    });
   }
 }
 
@@ -1250,24 +1307,18 @@ class _$GoStakeImpl implements _GoStake {
             other is _$GoStakeImpl &&
             (identical(other.payload, payload) || other.payload == payload) &&
             (identical(other.amount, amount) || other.amount == amount) &&
-            const DeepCollectionEquality()
-                .equals(other.destination, destination) &&
-            const DeepCollectionEquality().equals(other.sender, sender) &&
-            const DeepCollectionEquality()
-                .equals(other.accountKey, accountKey) &&
+            (identical(other.destination, destination) ||
+                other.destination == destination) &&
+            (identical(other.sender, sender) || other.sender == sender) &&
+            (identical(other.accountKey, accountKey) ||
+                other.accountKey == accountKey) &&
             (identical(other.attachedFee, attachedFee) ||
                 other.attachedFee == attachedFee));
   }
 
   @override
-  int get hashCode => Object.hash(
-      runtimeType,
-      payload,
-      amount,
-      const DeepCollectionEquality().hash(destination),
-      const DeepCollectionEquality().hash(sender),
-      const DeepCollectionEquality().hash(accountKey),
-      attachedFee);
+  int get hashCode => Object.hash(runtimeType, payload, amount, destination,
+      sender, accountKey, attachedFee);
 
   /// Create a copy of ActionStakingBlocState
   /// with the given fields replaced by the non-null parameter values.
@@ -1437,6 +1488,11 @@ abstract class _$$GoUnstakeImplCopyWith<$Res> {
       BigInt attachedFee,
       int withdrawHours,
       Address stakeContractAddress});
+
+  $AddressCopyWith<$Res> get destination;
+  $AddressCopyWith<$Res> get sender;
+  $PublicKeyCopyWith<$Res> get accountKey;
+  $AddressCopyWith<$Res> get stakeContractAddress;
 }
 
 /// @nodoc
@@ -1454,12 +1510,12 @@ class __$$GoUnstakeImplCopyWithImpl<$Res>
   $Res call({
     Object? payload = null,
     Object? amount = null,
-    Object? destination = freezed,
-    Object? sender = freezed,
-    Object? accountKey = freezed,
+    Object? destination = null,
+    Object? sender = null,
+    Object? accountKey = null,
     Object? attachedFee = null,
     Object? withdrawHours = null,
-    Object? stakeContractAddress = freezed,
+    Object? stakeContractAddress = null,
   }) {
     return _then(_$GoUnstakeImpl(
       payload: null == payload
@@ -1470,15 +1526,15 @@ class __$$GoUnstakeImplCopyWithImpl<$Res>
           ? _value.amount
           : amount // ignore: cast_nullable_to_non_nullable
               as BigInt,
-      destination: freezed == destination
+      destination: null == destination
           ? _value.destination
           : destination // ignore: cast_nullable_to_non_nullable
               as Address,
-      sender: freezed == sender
+      sender: null == sender
           ? _value.sender
           : sender // ignore: cast_nullable_to_non_nullable
               as Address,
-      accountKey: freezed == accountKey
+      accountKey: null == accountKey
           ? _value.accountKey
           : accountKey // ignore: cast_nullable_to_non_nullable
               as PublicKey,
@@ -1490,11 +1546,51 @@ class __$$GoUnstakeImplCopyWithImpl<$Res>
           ? _value.withdrawHours
           : withdrawHours // ignore: cast_nullable_to_non_nullable
               as int,
-      stakeContractAddress: freezed == stakeContractAddress
+      stakeContractAddress: null == stakeContractAddress
           ? _value.stakeContractAddress
           : stakeContractAddress // ignore: cast_nullable_to_non_nullable
               as Address,
     ));
+  }
+
+  /// Create a copy of ActionStakingBlocState
+  /// with the given fields replaced by the non-null parameter values.
+  @override
+  @pragma('vm:prefer-inline')
+  $AddressCopyWith<$Res> get destination {
+    return $AddressCopyWith<$Res>(_value.destination, (value) {
+      return _then(_value.copyWith(destination: value));
+    });
+  }
+
+  /// Create a copy of ActionStakingBlocState
+  /// with the given fields replaced by the non-null parameter values.
+  @override
+  @pragma('vm:prefer-inline')
+  $AddressCopyWith<$Res> get sender {
+    return $AddressCopyWith<$Res>(_value.sender, (value) {
+      return _then(_value.copyWith(sender: value));
+    });
+  }
+
+  /// Create a copy of ActionStakingBlocState
+  /// with the given fields replaced by the non-null parameter values.
+  @override
+  @pragma('vm:prefer-inline')
+  $PublicKeyCopyWith<$Res> get accountKey {
+    return $PublicKeyCopyWith<$Res>(_value.accountKey, (value) {
+      return _then(_value.copyWith(accountKey: value));
+    });
+  }
+
+  /// Create a copy of ActionStakingBlocState
+  /// with the given fields replaced by the non-null parameter values.
+  @override
+  @pragma('vm:prefer-inline')
+  $AddressCopyWith<$Res> get stakeContractAddress {
+    return $AddressCopyWith<$Res>(_value.stakeContractAddress, (value) {
+      return _then(_value.copyWith(stakeContractAddress: value));
+    });
   }
 }
 
@@ -1541,30 +1637,22 @@ class _$GoUnstakeImpl implements _GoUnstake {
             other is _$GoUnstakeImpl &&
             (identical(other.payload, payload) || other.payload == payload) &&
             (identical(other.amount, amount) || other.amount == amount) &&
-            const DeepCollectionEquality()
-                .equals(other.destination, destination) &&
-            const DeepCollectionEquality().equals(other.sender, sender) &&
-            const DeepCollectionEquality()
-                .equals(other.accountKey, accountKey) &&
+            (identical(other.destination, destination) ||
+                other.destination == destination) &&
+            (identical(other.sender, sender) || other.sender == sender) &&
+            (identical(other.accountKey, accountKey) ||
+                other.accountKey == accountKey) &&
             (identical(other.attachedFee, attachedFee) ||
                 other.attachedFee == attachedFee) &&
             (identical(other.withdrawHours, withdrawHours) ||
                 other.withdrawHours == withdrawHours) &&
-            const DeepCollectionEquality()
-                .equals(other.stakeContractAddress, stakeContractAddress));
+            (identical(other.stakeContractAddress, stakeContractAddress) ||
+                other.stakeContractAddress == stakeContractAddress));
   }
 
   @override
-  int get hashCode => Object.hash(
-      runtimeType,
-      payload,
-      amount,
-      const DeepCollectionEquality().hash(destination),
-      const DeepCollectionEquality().hash(sender),
-      const DeepCollectionEquality().hash(accountKey),
-      attachedFee,
-      withdrawHours,
-      const DeepCollectionEquality().hash(stakeContractAddress));
+  int get hashCode => Object.hash(runtimeType, payload, amount, destination,
+      sender, accountKey, attachedFee, withdrawHours, stakeContractAddress);
 
   /// Create a copy of ActionStakingBlocState
   /// with the given fields replaced by the non-null parameter values.

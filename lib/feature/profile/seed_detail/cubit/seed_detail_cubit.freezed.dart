@@ -213,6 +213,8 @@ abstract class _$$DataImplCopyWith<$Res> {
       __$$DataImplCopyWithImpl<$Res>;
   @useResult
   $Res call({Seed seed, bool isCurrentSeed, PublicKey? currentPublicKey});
+
+  $PublicKeyCopyWith<$Res>? get currentPublicKey;
 }
 
 /// @nodoc
@@ -246,6 +248,20 @@ class __$$DataImplCopyWithImpl<$Res>
               as PublicKey?,
     ));
   }
+
+  /// Create a copy of SeedDetailState
+  /// with the given fields replaced by the non-null parameter values.
+  @override
+  @pragma('vm:prefer-inline')
+  $PublicKeyCopyWith<$Res>? get currentPublicKey {
+    if (_value.currentPublicKey == null) {
+      return null;
+    }
+
+    return $PublicKeyCopyWith<$Res>(_value.currentPublicKey!, (value) {
+      return _then(_value.copyWith(currentPublicKey: value));
+    });
+  }
 }
 
 /// @nodoc
@@ -276,13 +292,13 @@ class _$DataImpl implements _Data {
             (identical(other.seed, seed) || other.seed == seed) &&
             (identical(other.isCurrentSeed, isCurrentSeed) ||
                 other.isCurrentSeed == isCurrentSeed) &&
-            const DeepCollectionEquality()
-                .equals(other.currentPublicKey, currentPublicKey));
+            (identical(other.currentPublicKey, currentPublicKey) ||
+                other.currentPublicKey == currentPublicKey));
   }
 
   @override
-  int get hashCode => Object.hash(runtimeType, seed, isCurrentSeed,
-      const DeepCollectionEquality().hash(currentPublicKey));
+  int get hashCode =>
+      Object.hash(runtimeType, seed, isCurrentSeed, currentPublicKey);
 
   /// Create a copy of SeedDetailState
   /// with the given fields replaced by the non-null parameter values.

@@ -1643,6 +1643,8 @@ abstract class _$$StakingStateImplCopyWith<$Res> {
       Money? receiveBalance,
       List<StEverWithdrawRequest>? requests,
       double? apy});
+
+  $PublicKeyCopyWith<$Res> get accountKey;
 }
 
 /// @nodoc
@@ -1665,7 +1667,7 @@ class __$$StakingStateImplCopyWithImpl<$Res>
     Object? inputController = null,
     Object? exchangeRate = null,
     Object? receiveCurrency = null,
-    Object? accountKey = freezed,
+    Object? accountKey = null,
     Object? enteredPrice = null,
     Object? asset = null,
     Object? receiveBalance = freezed,
@@ -1701,7 +1703,7 @@ class __$$StakingStateImplCopyWithImpl<$Res>
           ? _value.receiveCurrency
           : receiveCurrency // ignore: cast_nullable_to_non_nullable
               as Currency,
-      accountKey: freezed == accountKey
+      accountKey: null == accountKey
           ? _value.accountKey
           : accountKey // ignore: cast_nullable_to_non_nullable
               as PublicKey,
@@ -1726,6 +1728,16 @@ class __$$StakingStateImplCopyWithImpl<$Res>
           : apy // ignore: cast_nullable_to_non_nullable
               as double?,
     ));
+  }
+
+  /// Create a copy of StakingBlocState
+  /// with the given fields replaced by the non-null parameter values.
+  @override
+  @pragma('vm:prefer-inline')
+  $PublicKeyCopyWith<$Res> get accountKey {
+    return $PublicKeyCopyWith<$Res>(_value.accountKey, (value) {
+      return _then(_value.copyWith(accountKey: value));
+    });
   }
 }
 
@@ -1816,8 +1828,8 @@ class _$StakingStateImpl implements _StakingState {
                 other.exchangeRate == exchangeRate) &&
             (identical(other.receiveCurrency, receiveCurrency) ||
                 other.receiveCurrency == receiveCurrency) &&
-            const DeepCollectionEquality()
-                .equals(other.accountKey, accountKey) &&
+            (identical(other.accountKey, accountKey) ||
+                other.accountKey == accountKey) &&
             (identical(other.enteredPrice, enteredPrice) ||
                 other.enteredPrice == enteredPrice) &&
             (identical(other.asset, asset) || other.asset == asset) &&
@@ -1837,7 +1849,7 @@ class _$StakingStateImpl implements _StakingState {
       inputController,
       exchangeRate,
       receiveCurrency,
-      const DeepCollectionEquality().hash(accountKey),
+      accountKey,
       enteredPrice,
       asset,
       receiveBalance,
