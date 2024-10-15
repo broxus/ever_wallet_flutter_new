@@ -35,7 +35,6 @@ class NetworkItem extends StatelessWidget {
             ClipOval(
               child: Container(
                 color: color ?? _getBgColor(),
-                //theme.colors.background2,
                 width: DimensSizeV2.d40,
                 height: DimensSizeV2.d40,
                 padding: _getIconOffset(),
