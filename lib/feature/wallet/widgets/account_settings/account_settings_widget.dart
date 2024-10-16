@@ -81,7 +81,7 @@ class _ButtonsCard extends StatelessWidget {
         ),
         children: [
           AccountSettingsButton(
-            label: LocaleKeys.renameWord.tr(),
+            label: LocaleKeys.changeAccountName.tr(),
             icon: LucideIcons.pencilLine,
             onTap: onRename,
           ),

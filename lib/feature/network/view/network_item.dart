@@ -10,7 +10,6 @@ class NetworkItem extends StatelessWidget {
       vertical: DimensSizeV2.d12,
     ),
     this.trailing,
-    this.color,
     this.onTap,
     super.key,
   });
@@ -18,7 +17,6 @@ class NetworkItem extends StatelessWidget {
   final ConnectionData data;
   final Widget? trailing;
   final EdgeInsetsGeometry padding;
-  final Color? color;
   final VoidCallback? onTap;
 
   @override
@@ -32,20 +30,7 @@ class NetworkItem extends StatelessWidget {
         padding: padding,
         child: SeparatedRow(
           children: [
-            ClipOval(
-              child: Container(
-                color: color ?? _getBgColor(),
-                width: DimensSizeV2.d40,
-                height: DimensSizeV2.d40,
-                padding: _getIconOffset(),
-                child: Center(
-                  child: NetworkIcon(
-                    type: data.networkType,
-                    size: DimensSizeV2.d22,
-                  ),
-                ),
-              ),
-            ),
+            NetworkIcon(type: data.networkType),
             Expanded(
               child: Text(
                 data.name,
@@ -63,19 +48,4 @@ class NetworkItem extends StatelessWidget {
       ),
     );
   }
-
-  Color _getBgColor() => switch (data.networkType) {
-        NetworkType.ever => ColorsResV2.p60,
-        NetworkType.venom => const Color(0xFF4C5AF5),
-        _ => ColorsResV2.p60,
-      };
-
-  EdgeInsetsGeometry? _getIconOffset() => switch (data.networkType) {
-        NetworkType.ever => const EdgeInsets.only(
-            top: DimensSizeV2.d2,
-            right: DimensSizeV2.d2,
-          ),
-        NetworkType.venom => const EdgeInsets.only(left: DimensSizeV2.d1),
-        _ => null,
-      };
 }

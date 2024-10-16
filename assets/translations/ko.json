@@ -369,7 +369,7 @@
   "selectAccount": "Select account",
   "grantPermissions": "Grant permissions",
   "changeAccount": "Change account",
-  "changeColor": "Change color",
+  "changeAvatarColor": "Change avatar color",
   "originWord": "Origin",
   "requestedPermissions": "Requested permissions",
   "allowWord": "Allow",
@@ -602,5 +602,6 @@
   "addNetworkIdError": "Network ids do not match",
   "operationTimeout": "Operation timeout",
   "networkConfig": "Network config",
-  "connectionData": "Connection data"
+  "connectionData": "Connection data",
+  "changeAccountName": "Change account name"
 }

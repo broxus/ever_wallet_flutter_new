@@ -8,7 +8,6 @@ import 'package:flutter/material.dart';
 import 'package:lucide_icons_flutter/lucide_icons.dart';
 import 'package:nekoton_repository/nekoton_repository.dart';
 import 'package:ui_components_lib/ui_components_lib.dart';
-import 'package:ui_components_lib/v2/ui_components_lib_v2.dart';
 
 class WalletAppBarWidget extends ElementaryWidget<WalletAppBarWidgetModel>
     implements PreferredSizeWidget {
@@ -49,18 +48,16 @@ class WalletAppBarWidget extends ElementaryWidget<WalletAppBarWidgetModel>
                     const SizedBox.shrink(),
               ),
             ),
-            FloatButton(
-              buttonShape: ButtonShape.circle,
-              buttonSize: ButtonSize.small,
-              onPressed: wm.onNetwork,
-              child: StateNotifierBuilder(
-                listenableState: wm.connection,
-                builder: (_, connection) =>
-                    connection?.let(
-                      (value) => NetworkIcon(type: value.networkType),
-                    ) ??
-                    const SizedBox.shrink(),
-              ),
+            StateNotifierBuilder(
+              listenableState: wm.connection,
+              builder: (_, connection) =>
+                  connection?.let(
+                    (value) => GestureDetector(
+                      onTap: wm.onNetwork,
+                      child: NetworkIcon(type: value.networkType),
+                    ),
+                  ) ??
+                  const SizedBox.shrink(),
             ),
           ],
         ),

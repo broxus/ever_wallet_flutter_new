@@ -29,7 +29,7 @@ class AccountSettingsChangeColorButton
       listenableState: wm.colorState,
       builder: (_, IdentifyIconData? ic) {
         return AccountSettingsButton(
-          label: LocaleKeys.changeColor.tr(),
+          label: LocaleKeys.changeAvatarColor.tr(),
           iconWidget: SizedBox(
             width: DimensSizeV2.d18,
             height: DimensSizeV2.d18,
