@@ -153,7 +153,7 @@ class _BrowserTabViewState extends State<BrowserTabView> {
 
     final initialSettings = InAppWebViewSettings(
       clearCache: clearCache,
-      applicationNameForUserAgent: 'EverWalletBrowser',
+      applicationNameForUserAgent: 'SparXWalletBrowser',
       useShouldOverrideUrlLoading: true,
       isInspectable: kDebugMode,
     );

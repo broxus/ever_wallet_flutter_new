@@ -193,10 +193,10 @@
   "contactSupportBottomSheetHeaderInitiatedByCrash": "Ouch snap!",
   "contactSupportBottomSheetTextInitiatedByCrash": "It looks like the app just crashed. Would you like to send us a report with logs and comments?",
   "contactSupportBottomSheetButtonInitiatedByCrash": "Yeah, sure",
-  "contactSupportEmailToInitiatedByUser": "hello@broxus.com",
+  "contactSupportEmailToInitiatedByUser": "hello@sparxwallet.com",
   "contactSupportEmailSubjectInitiatedByUser": "I need SparX wallet support",
   "contactSupportEmailBodyInitiatedByUser": "Hi, I need help with SparX wallet. Here is my problem: {briefly describe your problem}.\n\nAlso you can find logs in the attachment.",
-  "contactSupportEmailToInitiatedByCrash": "hello@broxus.com",
+  "contactSupportEmailToInitiatedByCrash": "hello@sparxwallet.com",
   "contactSupportEmailSubjectInitiatedByCrash": "Hey, SparX wallet just crashed",
   "contactSupportEmailBodyInitiatedByCrash": "Hi, SparX wallet just crashed. Here is my problem: {briefly describe your problem}. Also you can find logs in the attachment.",
   "contactSupportCantCreateFile": "Can't create log file",
@@ -369,7 +369,7 @@
   "selectAccount": "Select account",
   "grantPermissions": "Grant permissions",
   "changeAccount": "Change account",
-  "changeColor": "Change color",
+  "changeAvatarColor": "Change avatar color",
   "originWord": "Origin",
   "requestedPermissions": "Requested permissions",
   "allowWord": "Allow",
@@ -602,5 +602,6 @@
   "addNetworkIdError": "Network ids do not match",
   "operationTimeout": "Operation timeout",
   "networkConfig": "Network config",
-  "connectionData": "Connection data"
+  "connectionData": "Connection data",
+  "changeAccountName": "Change account name"
 }
