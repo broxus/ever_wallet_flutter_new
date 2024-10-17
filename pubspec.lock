@@ -1453,10 +1453,10 @@ packages:
     dependency: "direct main"
     description:
       name: nekoton_webview
-      sha256: e6546deec079f475ba67081b6229f40eb7ea25cf0ed51e0893731eecf74ee646
+      sha256: ebcb13be63eba5e1034dd2ed712abe25eb8b3805613d32b6584e593ee387af78
       url: "https://pub.dev"
     source: hosted
-    version: "0.1.8-dev.1"
+    version: "0.1.8-dev.2"
   nested:
     dependency: transitive
     description:
