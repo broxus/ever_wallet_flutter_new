@@ -1,5 +1,7 @@
 import 'dart:async';
 
+import 'package:app/app/service/app_links/app_links_data.dart';
+import 'package:app/app/service/app_links/app_links_service.dart';
 import 'package:app/app/service/service.dart';
 import 'package:app/di/di.dart';
 import 'package:app/feature/browser/browser.dart';
@@ -18,12 +20,17 @@ class PrimaryView extends StatefulWidget {
 
 class _PrimaryViewState extends State<PrimaryView>
     with SingleTickerProviderStateMixin {
+  final _appLinksService = inject<AppLinksService>();
+
   // Main animation controller of the HUD.
   late AnimationController _animationController;
+
   // Search bar animation
   late final Animation<Offset> _searchBarAnimation;
+
   // Bottom menu animation
   late final Animation<Offset> _bottomMenuAnimation;
+
   // Content (webview) animation
   late final Animation<RelativeRect> _contentAnimation;
 
@@ -36,9 +43,16 @@ class _PrimaryViewState extends State<PrimaryView>
   // change it behind the HUD.
   bool _isHudVisible = true;
 
+  StreamSubscription<BrowserAppLinksData>? _appLinksNavSubs;
+
   @override
   void initState() {
     super.initState();
+
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      _appLinksNavSubs =
+          _appLinksService.browserLinksStream.listen(_listenAppLinks);
+    });
 
     // Init animations. It's a long list of animations, so we moved it to
     // separate method.
@@ -64,6 +78,13 @@ class _PrimaryViewState extends State<PrimaryView>
         });
       }
     });
+  }
+
+  @override
+  void dispose() {
+    _appLinksNavSubs?.cancel();
+    _animationController.dispose();
+    super.dispose();
   }
 
   void _initAminations() {
@@ -109,12 +130,6 @@ class _PrimaryViewState extends State<PrimaryView>
         curve: _curve,
       ),
     );
-  }
-
-  @override
-  void dispose() {
-    _animationController.dispose();
-    super.dispose();
   }
 
   @override
@@ -231,5 +246,11 @@ class _PrimaryViewState extends State<PrimaryView>
     }
 
     return (Uri.parse('https://$text'), false);
+  }
+
+  void _listenAppLinks(BrowserAppLinksData event) {
+    context.read<BrowserTabsBloc>().add(
+          BrowserTabsEvent.add(uri: event.url),
+        );
   }
 }

@@ -13,6 +13,10 @@ dependencies:
   barcode_widget: 2.0.4
   bloc: 8.1.4
   bloc_event_transformers: 1.0.1
+  broxus_app_links:
+    git:
+      url: https://github.com/broxus/broxus-flutter-app-link
+      ref: main
   cached_network_image: 3.3.1
   clock: 1.1.1
   collection: 1.18.0

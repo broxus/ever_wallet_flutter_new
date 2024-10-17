@@ -1,6 +1,4 @@
-import 'package:app/app/router/routs/routs.dart';
-import 'package:app/app/service/navigation/service/navigation_service.dart';
-import 'package:app/di/di.dart';
+import 'package:app/app/router/router.dart';
 import 'package:collection/collection.dart';
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
@@ -399,7 +397,9 @@ bool canSaveLocation({required String fullPath}) {
       .every((segment) => AppRoute.getByPath(segment)?.isSaveLocation ?? false);
 }
 
-extension NavigationHelper on BuildContext {
+extension NavigationContextHelper on BuildContext {
+  GoRouter? get goRouter => mounted ? GoRouter.of(this) : null;
+
   /// Navigate to a location above current.
   /// Instead of:
   /// ```
@@ -417,15 +417,9 @@ extension NavigationHelper on BuildContext {
     bool preserveQueryParams = false,
     Object? extra,
   }) {
-    if (!mounted) return;
-
-    return GoRouter.of(this).go(
-      Uri.decodeComponent(
-        _getUriLocation(
-          location,
-          preserveQueryParams: preserveQueryParams,
-        ).toString(),
-      ),
+    return goRouter?.goFurther(
+      location,
+      preserveQueryParams: preserveQueryParams,
       extra: extra,
     );
   }
@@ -435,53 +429,16 @@ extension NavigationHelper on BuildContext {
     bool preserveQueryParams = false,
     Object? extra,
   }) async {
-    if (!mounted) {
-      return null;
-    }
-
-    return GoRouter.of(this).push<T>(
-      Uri.decodeComponent(
-        _getUriLocation(
-          location,
-          preserveQueryParams: preserveQueryParams,
-        ).toString(),
-      ),
+    return goRouter?.pushFurther<T>(
+      location,
+      preserveQueryParams: preserveQueryParams,
       extra: extra,
-    );
-  }
-
-  void _removeQueryParams(
-    List<String> removeQueries,
-  ) {
-    final uri = Uri.parse(inject<NavigationService>().state.location);
-
-    final queryParameters = {...uri.queryParameters};
-
-    for (final param in removeQueries) {
-      queryParameters.remove(param);
-    }
-
-    final resultLocation = uri.replace(
-      queryParameters: queryParameters,
-    );
-
-    return GoRouter.of(this).go(
-      Uri.decodeComponent(resultLocation.toString()),
     );
   }
 
   /// Navigate to current location, but without query parameters.
   void clearQueryParams() {
-    if (!mounted) return;
-
-    final currentLocation = inject<NavigationService>().state.location;
-    final resultLocation = Uri.parse(currentLocation).replace(
-      queryParameters: {},
-    );
-
-    return GoRouter.of(this).go(
-      Uri.decodeComponent(resultLocation.toString()),
-    );
+    return goRouter?.clearQueryParams();
   }
 
   /// Pop current screen if possible.
@@ -489,50 +446,13 @@ extension NavigationHelper on BuildContext {
     bool preserveQueryParams = true,
     List<String>? removeQueries,
   }) {
-    if (!preserveQueryParams) {
-      clearQueryParams();
-    } else if (removeQueries != null) {
-      _removeQueryParams(removeQueries);
-    }
-
-    final goRouter = GoRouter.of(this);
-    if (goRouter.canPop()) {
-      goRouter.pop();
-    }
+    goRouter?.maybePop(
+      preserveQueryParams: preserveQueryParams,
+      removeQueries: removeQueries,
+    );
   }
 
   void clearQueryParamsAndPop<T extends Object?>([T? result]) {
-    clearQueryParams();
-
-    GoRouter.of(this).pop<T>(result);
-  }
-
-  Uri _getUriLocation(
-    String path, {
-    bool preserveQueryParams = false,
-  }) {
-    final location = Uri.parse(inject<NavigationService>().state.location);
-    final pathUri = Uri.parse(path);
-    late Uri resultLocation;
-    // We have query params in old path that we should preserve, so we must
-    // update it manually
-    if (location.hasQuery && preserveQueryParams) {
-      final query = <String, dynamic>{}
-        ..addAll(location.queryParameters)
-        ..addAll(pathUri.queryParameters);
-
-      resultLocation = location.replace(
-        path: '${location.path}/${pathUri.path}',
-        queryParameters: query,
-      );
-    } else {
-      // old location do not have query, new one may have it, we dont care
-      resultLocation = location.replace(
-        path: '${location.path}/${pathUri.path}',
-        queryParameters: pathUri.queryParameters,
-      );
-    }
-
-    return resultLocation;
+    goRouter?.clearQueryParamsAndPop<T>(result);
   }
 }
