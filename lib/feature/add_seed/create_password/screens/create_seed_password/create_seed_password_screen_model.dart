@@ -1,9 +1,6 @@
 // ignore_for_file: use_build_context_synchronously
 
-import 'package:app/app/service/biometry_service.dart';
-import 'package:app/app/service/messenger/message.dart';
-import 'package:app/app/service/messenger/service/messenger_service.dart';
-import 'package:app/app/service/nekoton_related/current_key_service.dart';
+import 'package:app/app/service/service.dart';
 import 'package:app/data/models/seed/seed_phrase_model.dart';
 import 'package:app/feature/add_seed/create_password/screens/create_seed_password/create_seed_password_screen.dart';
 import 'package:app/feature/constants.dart';
@@ -18,6 +15,7 @@ class CreateSeedPasswordScreenModel extends ElementaryModel {
     ErrorHandler errorHandler,
     this._biometryService,
     this._currentKeyService,
+    this._currentAccountService,
     this._messengerService,
     this._nekotonRepository,
     this._phrase,
@@ -25,6 +23,7 @@ class CreateSeedPasswordScreenModel extends ElementaryModel {
 
   final BiometryService _biometryService;
   final CurrentKeyService _currentKeyService;
+  final CurrentAccountsService _currentAccountService;
   final MessengerService _messengerService;
   final NekotonRepository _nekotonRepository;
   final SeedPhraseModel? _phrase;
@@ -52,6 +51,10 @@ class CreateSeedPasswordScreenModel extends ElementaryModel {
       await _biometryService.setKeyPassword(
         publicKey: publicKey,
         password: password,
+      );
+
+      await _currentAccountService.currentActiveAccountStream.firstWhere(
+        (account) => account != null,
       );
     } catch (e) {
       Logger('CreateSeedPasswordCubit').severe(e);

@@ -458,7 +458,6 @@ class _EditNetworkViewState extends State<EditNetworkView> {
           name: _nameController.text,
           group: 'custom',
           endpoint: _endpointsControllers[0].text,
-          networkType: NetworkType.custom,
           blockExplorerUrl: _blockExplorerUrlController.text,
           manifestUrl: _manifestUrlController.text,
           nativeTokenTicker: _currencySymbolController.text,
@@ -470,7 +469,6 @@ class _EditNetworkViewState extends State<EditNetworkView> {
           endpoints: _endpointsControllers
               .map((controller) => controller.text)
               .toList(),
-          networkType: NetworkType.custom,
           isLocal: _isLocal,
           blockExplorerUrl: _blockExplorerUrlController.text,
           manifestUrl: _manifestUrlController.text,
@@ -481,7 +479,6 @@ class _EditNetworkViewState extends State<EditNetworkView> {
           name: _nameController.text,
           group: 'custom',
           endpoint: _endpointsControllers[0].text,
-          networkType: NetworkType.custom,
           blockExplorerUrl: _blockExplorerUrlController.text,
           manifestUrl: _manifestUrlController.text,
           nativeTokenTicker: _currencySymbolController.text,
@@ -512,6 +509,8 @@ class _EditNetworkViewState extends State<EditNetworkView> {
         ___________,
         ____________,
         _____________,
+        ______________,
+        _______________,
       ) =>
           endpoints
               .map(
@@ -564,7 +563,6 @@ class _EditNetworkViewState extends State<EditNetworkView> {
         __,
         ___,
         ____,
-        _____,
         ______,
         isLocal,
         ________,
@@ -573,6 +571,9 @@ class _EditNetworkViewState extends State<EditNetworkView> {
         ___________,
         ____________,
         _____________,
+        ______________,
+        _______________,
+        ________________,
       ) =>
           isLocal,
       proto: (

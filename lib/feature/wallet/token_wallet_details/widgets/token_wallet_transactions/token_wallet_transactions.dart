@@ -25,7 +25,7 @@ class TokenWalletTransactionsWidget extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final colors = context.themeStyle.colors;
+    final theme = context.themeStyleV2;
 
     return BlocProvider<TokenWalletTransactionsCubit>(
       create: (_) => TokenWalletTransactionsCubit(
@@ -40,12 +40,24 @@ class TokenWalletTransactionsWidget extends StatelessWidget {
         builder: (context, state) {
           return state.when(
             empty: () => SliverFillRemaining(
-              child: Center(
-                child: Text(
-                  LocaleKeys.historyIsEmpty.tr(),
-                  style: StyleRes.primaryBold.copyWith(
-                    color: colors.textPrimary,
-                  ),
+              child: Padding(
+                padding: const EdgeInsets.symmetric(vertical: DimensSizeV2.d24),
+                child: SeparatedColumn(
+                  separatorSize: DimensSizeV2.d12,
+                  children: [
+                    SvgPicture.asset(
+                      Assets.images.lightning.path,
+                      colorFilter: theme.colors.content3.colorFilter,
+                      width: DimensSizeV2.d56,
+                      height: DimensSizeV2.d56,
+                    ),
+                    Text(
+                      LocaleKeys.emptyHistoryTitle.tr(),
+                      style: theme.textStyles.paragraphSmall.copyWith(
+                        color: theme.colors.content1,
+                      ),
+                    ),
+                  ],
                 ),
               ),
             ),

@@ -48,7 +48,7 @@ class ChangeColorBottomSheet
               onPressed: wm.onPressedBack,
             ),
             Text(
-              LocaleKeys.changeColor.tr(),
+              LocaleKeys.changeAvatarColor.tr(),
               style: wm.textStyle.headingMedium,
             ),
             const SizedBox(width: DimensSizeV2.d48),

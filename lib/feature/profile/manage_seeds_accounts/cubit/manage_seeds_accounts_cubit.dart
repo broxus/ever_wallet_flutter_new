@@ -61,15 +61,13 @@ class ManageSeedsAccountsCubit extends Cubit<ManageSeedsAccountsState> {
         final list = seeds.seeds;
         list.sort((a, b) => a.addedAt.compareTo(b.addedAt));
         if (list.first.addedAt != 0) {
-          if (list.last.masterKey.accountList.allAccounts.isNotEmpty) {
-            for (final account in list.last.masterKey.accountList.allAccounts) {
-              storageService.addValue(
-                account.address.address +
-                    StorageConstants.showingManualBackupBadge,
-                list.last.addType == SeedAddType.create,
-              );
-            }
-          }
+          final masterPublicKey = list.last.masterKey.publicKey;
+
+          storageService.addValue(
+            StorageKey.showingManualBackupBadge(masterPublicKey.publicKey),
+            list.last.addType == SeedAddType.create,
+          );
+
           emit(
             ManageSeedsAccountsState.data(
               currentSeed: currentSeedService.currentSeed,

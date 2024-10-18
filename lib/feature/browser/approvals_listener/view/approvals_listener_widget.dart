@@ -8,6 +8,7 @@ import 'package:app/feature/profile/profile.dart';
 import 'package:app/generated/generated.dart';
 import 'package:flutter/material.dart';
 import 'package:nekoton_repository/nekoton_repository.dart';
+import 'package:nekoton_webview/nekoton_webview.dart' show AddNetwork, Network;
 
 /// UI-based listener, that listens for events from [BrowserApprovalsService]
 /// and open dialogs/pages, specified for this actions, allowing user to
@@ -156,6 +157,32 @@ class _ApprovalsListenerWidgetState extends State<ApprovalsListenerWidget> {
           bounce: bounce,
           payload: payload,
           knownPayload: knownPayload,
+          completer: completer,
+        ),
+        changeNetwork: (
+          origin,
+          networkId,
+          connections,
+          completer,
+        ) =>
+            changeNetwork(
+          context: context,
+          origin: origin,
+          networkId: networkId,
+          connections: connections,
+          completer: completer,
+        ),
+        addNetwork: (
+          Uri origin,
+          AddNetwork network,
+          bool switchNetwork,
+          Completer<Network?> completer,
+        ) =>
+            addNetwork(
+          context: context,
+          origin: origin,
+          network: network,
+          switchNetwork: switchNetwork,
           completer: completer,
         ),
       ),
@@ -411,6 +438,48 @@ class _ApprovalsListenerWidgetState extends State<ApprovalsListenerWidget> {
       } else {
         throw ApprovalsHandleException(LocaleKeys.noPassword.tr());
       }
+    } catch (err, st) {
+      completer.completeError(err, st);
+    }
+  }
+
+  Future<void> changeNetwork({
+    required BuildContext context,
+    required Uri origin,
+    required int networkId,
+    required List<ConnectionData> connections,
+    required Completer<TransportStrategy?> completer,
+  }) async {
+    try {
+      final result = await showChangeNetworkSheet(
+        context: context,
+        origin: origin,
+        networkId: networkId,
+        connections: connections,
+      );
+
+      completer.complete(result);
+    } catch (err, st) {
+      completer.completeError(err, st);
+    }
+  }
+
+  Future<void> addNetwork({
+    required BuildContext context,
+    required Uri origin,
+    required AddNetwork network,
+    required bool switchNetwork,
+    required Completer<Network?> completer,
+  }) async {
+    try {
+      final result = await showAddNetworkSheet(
+        context: context,
+        origin: origin,
+        network: network,
+        switchNetwork: switchNetwork,
+      );
+
+      completer.complete(result);
     } catch (err, st) {
       completer.completeError(err, st);
     }

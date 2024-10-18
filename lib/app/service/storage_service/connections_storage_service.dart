@@ -14,6 +14,7 @@ import 'package:rxdart/rxdart.dart';
 const _connectionsDomain = 'connections';
 const _connectionsKey = 'connections';
 const _currentConnectionIdKey = 'current_connection_id';
+const _networksIdsKey = 'networks_ids';
 
 /// This is a wrapper-class above [EncryptedStorage] that provides methods
 /// to interact with custom connection - related data.
@@ -29,8 +30,13 @@ class ConnectionsStorageService extends AbstractStorageService {
   /// Subject of [ConnectionData] items
   final _connectionsSubject = BehaviorSubject<List<ConnectionData>>();
 
-  /// Subject of currect connection id
+  /// Subject of current connection id
   final _currentConnectionIdSubject = BehaviorSubject<String>();
+
+  /// Subject of conntection id to network id (global id) map
+  /// This map is used to cache network id, which can only be obtained
+  /// only from network
+  final _networksIdsSubject = BehaviorSubject<Map<String, int>>();
 
   /// Stream of [ConnectionData] items
   BehaviorSubject<List<ConnectionData>> get connectionsStream =>
@@ -40,11 +46,18 @@ class ConnectionsStorageService extends AbstractStorageService {
   BehaviorSubject<String> get currentConnectionIdStream =>
       _currentConnectionIdSubject;
 
+  /// Stream of conntection id to network id map
+  BehaviorSubject<Map<String, int>> get networksIdsStream =>
+      _networksIdsSubject;
+
   /// Get last cached [ConnectionData] items
   List<ConnectionData> get connections => _connectionsSubject.valueOrNull ?? [];
 
   /// Get last cached current connection id
   String get currentConnectionId => _currentConnectionIdSubject.value;
+
+  /// Get last cached conntection id to network id map
+  Map<String, int> get networksIds => _networksIdsSubject.value;
 
   /// Stream of currect connection id
   Stream<ConnectionData> get currentConnectionStream => Rx.combineLatest2(
@@ -91,6 +104,9 @@ class ConnectionsStorageService extends AbstractStorageService {
   /// Put current connection id to stream
   Future<void> _streamedCurrentConnectionId() async =>
       _currentConnectionIdSubject.add(await readCurrentConnectionId());
+
+  Future<void> _streamedNetworksIds() async =>
+      _networksIdsSubject.add(await readNetworksIds());
 
   /// Read list of [ConnectionData] items from presets and storage
   Future<List<ConnectionData>> readConnections() async {
@@ -156,6 +172,22 @@ class ConnectionsStorageService extends AbstractStorageService {
     return currentId;
   }
 
+  /// Read networks ids from storage
+  Future<Map<String, int>> readNetworksIds() async {
+    final encoded = await _storage.get(
+      _networksIdsKey,
+      domain: _connectionsDomain,
+    );
+
+    var map = <String, int>{};
+
+    if (encoded != null) {
+      map = Map.castFrom(jsonDecode(encoded) as Map<String, dynamic>);
+    }
+
+    return map;
+  }
+
   /// Save list of [ConnectionData] items to storage
   Future<void> _saveConnections(List<ConnectionData> connections) async {
     await _storage.set(
@@ -187,6 +219,22 @@ class ConnectionsStorageService extends AbstractStorageService {
     await _streamedCurrentConnectionId();
   }
 
+  /// Save current connection id to storage
+  Future<void> updateNetworksIds(Iterable<(String, int)> values) async {
+    final map = Map<String, int>.from(networksIds)
+      ..addEntries(
+        values.map((value) => MapEntry(value.$1, value.$2)),
+      );
+
+    await _storage.set(
+      _networksIdsKey,
+      jsonEncode(map),
+      domain: _connectionsDomain,
+    );
+
+    await _streamedNetworksIds();
+  }
+
   /// Clear [ConnectionData] list
   Future<void> clear() async {
     await _storage.delete(
@@ -199,8 +247,14 @@ class ConnectionsStorageService extends AbstractStorageService {
       domain: _connectionsDomain,
     );
 
+    await _storage.delete(
+      _networksIdsKey,
+      domain: _connectionsDomain,
+    );
+
     await _streamedConnections();
     await _streamedCurrentConnectionId();
+    await _streamedNetworksIds();
   }
 
   /// Add [ConnectionData] item
@@ -271,6 +325,7 @@ class ConnectionsStorageService extends AbstractStorageService {
   Future<void> init() => Future.wait([
         _streamedConnections(),
         _streamedCurrentConnectionId(),
+        _streamedNetworksIds(),
       ]);
 
   @override

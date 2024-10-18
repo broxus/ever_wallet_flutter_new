@@ -30,7 +30,6 @@ class ConfigureNetworksWidget
                 final item = connections?[index];
                 return item?.let(
                   (data) => NetworkItem(
-                    color: wm.theme.colors.backgroundAlpha,
                     padding: const EdgeInsets.symmetric(
                       vertical: DimensSizeV2.d8,
                     ),
