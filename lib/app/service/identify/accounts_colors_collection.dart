@@ -18,7 +18,7 @@ class AccountsColorsCollection {
 
     try {
       await _secureStorageService.addValue<String>(
-        key,
+        StorageKey.accountColor(key),
         identifyColor.name,
       );
     } finally {}
@@ -27,7 +27,9 @@ class AccountsColorsCollection {
   Future<IdentifyIconData> getData(String key) async {
     try {
       return _map[key] ??= IdentifyIconData.byNameOrNull(
-            await _secureStorageService.getValue<String>(key),
+            await _secureStorageService.getValue<String>(
+              StorageKey.accountColor(key),
+            ),
           ) ??
           _initialData;
     } catch (_) {

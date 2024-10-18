@@ -7,13 +7,15 @@ class SecureStorageService {
     aOptions: AndroidOptions(encryptedSharedPreferences: true),
   );
 
-  Future<void> addValue<T>(String key, T value) async {
-    await _storage.write(key: key, value: value.toString());
+  Future<void> addValue<T>(StorageKey key, T value) async {
+    await _storage.write(key: key.value, value: value.toString());
   }
 
-  Future<T?> getValue<T>(String key) async {
-    final value =
-        await _storage.read(key: key, iOptions: IOSOptions.defaultOptions);
+  Future<T?> getValue<T>(StorageKey key) async {
+    final value = await _storage.read(
+      key: key.value,
+      iOptions: IOSOptions.defaultOptions,
+    );
     if (value == null) {
       return null;
     }
@@ -28,12 +30,30 @@ class SecureStorageService {
     return value as T;
   }
 
-  Future<void> cleanStorage(String key) async {
-    await _storage.delete(key: key);
+  Future<void> cleanStorage(StorageKey key) async {
+    await _storage.delete(key: key.value);
   }
 }
 
-class StorageConstants {
-  static const showingManualBackupBadge = 'showingManualBackupBadge';
-  static const userWithNewWallet = 'userWithNewWallet';
+class StorageKey {
+  factory StorageKey.userWithNewWallet() => StorageKey._('userWithNewWallet');
+
+  factory StorageKey.showingManualBackupBadge(String masterKey) =>
+      StorageKey._('showingManualBackupBadge', masterKey);
+
+  factory StorageKey.accountColor(String key) =>
+      StorageKey._('accountColor', key);
+
+  StorageKey._(this._baseKey, [this._entityKey]);
+
+  final String _baseKey;
+  final String? _entityKey;
+
+  String get value => toString();
+
+  @override
+  String toString() {
+    if (_entityKey == null) return _baseKey;
+    return '$_baseKey:$_entityKey';
+  }
 }

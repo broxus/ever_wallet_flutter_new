@@ -48,7 +48,6 @@ mixin _$ConnectionData {
             String name,
             String group,
             List<String> endpoints,
-            Duration timeout,
             NetworkType networkType,
             bool isLocal,
             String blockExplorerUrl,
@@ -56,7 +55,10 @@ mixin _$ConnectionData {
             String nativeTokenTicker,
             bool isPreset,
             bool canBeEdited,
-            double sortingOrder)
+            double sortingOrder,
+            int? latencyDetectionInterval,
+            int? maxLatency,
+            int? endpointSelectionRetryCount)
         gql,
     required TResult Function(
             String id,
@@ -93,7 +95,6 @@ mixin _$ConnectionData {
             String name,
             String group,
             List<String> endpoints,
-            Duration timeout,
             NetworkType networkType,
             bool isLocal,
             String blockExplorerUrl,
@@ -101,7 +102,10 @@ mixin _$ConnectionData {
             String nativeTokenTicker,
             bool isPreset,
             bool canBeEdited,
-            double sortingOrder)?
+            double sortingOrder,
+            int? latencyDetectionInterval,
+            int? maxLatency,
+            int? endpointSelectionRetryCount)?
         gql,
     TResult? Function(
             String id,
@@ -138,7 +142,6 @@ mixin _$ConnectionData {
             String name,
             String group,
             List<String> endpoints,
-            Duration timeout,
             NetworkType networkType,
             bool isLocal,
             String blockExplorerUrl,
@@ -146,7 +149,10 @@ mixin _$ConnectionData {
             String nativeTokenTicker,
             bool isPreset,
             bool canBeEdited,
-            double sortingOrder)?
+            double sortingOrder,
+            int? latencyDetectionInterval,
+            int? maxLatency,
+            int? endpointSelectionRetryCount)?
         gql,
     TResult Function(
             String id,
@@ -313,7 +319,6 @@ abstract class _$$ConnectionDataGqlImplCopyWith<$Res>
       String name,
       String group,
       List<String> endpoints,
-      Duration timeout,
       NetworkType networkType,
       bool isLocal,
       String blockExplorerUrl,
@@ -321,7 +326,10 @@ abstract class _$$ConnectionDataGqlImplCopyWith<$Res>
       String nativeTokenTicker,
       bool isPreset,
       bool canBeEdited,
-      double sortingOrder});
+      double sortingOrder,
+      int? latencyDetectionInterval,
+      int? maxLatency,
+      int? endpointSelectionRetryCount});
 }
 
 /// @nodoc
@@ -341,7 +349,6 @@ class __$$ConnectionDataGqlImplCopyWithImpl<$Res>
     Object? name = null,
     Object? group = null,
     Object? endpoints = null,
-    Object? timeout = null,
     Object? networkType = null,
     Object? isLocal = null,
     Object? blockExplorerUrl = null,
@@ -350,6 +357,9 @@ class __$$ConnectionDataGqlImplCopyWithImpl<$Res>
     Object? isPreset = null,
     Object? canBeEdited = null,
     Object? sortingOrder = null,
+    Object? latencyDetectionInterval = freezed,
+    Object? maxLatency = freezed,
+    Object? endpointSelectionRetryCount = freezed,
   }) {
     return _then(_$ConnectionDataGqlImpl(
       id: null == id
@@ -368,10 +378,6 @@ class __$$ConnectionDataGqlImplCopyWithImpl<$Res>
           ? _value._endpoints
           : endpoints // ignore: cast_nullable_to_non_nullable
               as List<String>,
-      timeout: null == timeout
-          ? _value.timeout
-          : timeout // ignore: cast_nullable_to_non_nullable
-              as Duration,
       networkType: null == networkType
           ? _value.networkType
           : networkType // ignore: cast_nullable_to_non_nullable
@@ -404,6 +410,18 @@ class __$$ConnectionDataGqlImplCopyWithImpl<$Res>
           ? _value.sortingOrder
           : sortingOrder // ignore: cast_nullable_to_non_nullable
               as double,
+      latencyDetectionInterval: freezed == latencyDetectionInterval
+          ? _value.latencyDetectionInterval
+          : latencyDetectionInterval // ignore: cast_nullable_to_non_nullable
+              as int?,
+      maxLatency: freezed == maxLatency
+          ? _value.maxLatency
+          : maxLatency // ignore: cast_nullable_to_non_nullable
+              as int?,
+      endpointSelectionRetryCount: freezed == endpointSelectionRetryCount
+          ? _value.endpointSelectionRetryCount
+          : endpointSelectionRetryCount // ignore: cast_nullable_to_non_nullable
+              as int?,
     ));
   }
 }
@@ -416,7 +434,6 @@ class _$ConnectionDataGqlImpl implements _ConnectionDataGql {
       required this.name,
       required this.group,
       required final List<String> endpoints,
-      required this.timeout,
       required this.networkType,
       required this.isLocal,
       required this.blockExplorerUrl,
@@ -425,6 +442,9 @@ class _$ConnectionDataGqlImpl implements _ConnectionDataGql {
       required this.isPreset,
       required this.canBeEdited,
       required this.sortingOrder,
+      this.latencyDetectionInterval,
+      this.maxLatency,
+      this.endpointSelectionRetryCount,
       final String? $type})
       : _endpoints = endpoints,
         $type = $type ?? 'gql';
@@ -447,8 +467,6 @@ class _$ConnectionDataGqlImpl implements _ConnectionDataGql {
   }
 
   @override
-  final Duration timeout;
-  @override
   final NetworkType networkType;
   @override
   final bool isLocal;
@@ -464,13 +482,19 @@ class _$ConnectionDataGqlImpl implements _ConnectionDataGql {
   final bool canBeEdited;
   @override
   final double sortingOrder;
+  @override
+  final int? latencyDetectionInterval;
+  @override
+  final int? maxLatency;
+  @override
+  final int? endpointSelectionRetryCount;
 
   @JsonKey(name: 'runtimeType')
   final String $type;
 
   @override
   String toString() {
-    return 'ConnectionData.gql(id: $id, name: $name, group: $group, endpoints: $endpoints, timeout: $timeout, networkType: $networkType, isLocal: $isLocal, blockExplorerUrl: $blockExplorerUrl, manifestUrl: $manifestUrl, nativeTokenTicker: $nativeTokenTicker, isPreset: $isPreset, canBeEdited: $canBeEdited, sortingOrder: $sortingOrder)';
+    return 'ConnectionData.gql(id: $id, name: $name, group: $group, endpoints: $endpoints, networkType: $networkType, isLocal: $isLocal, blockExplorerUrl: $blockExplorerUrl, manifestUrl: $manifestUrl, nativeTokenTicker: $nativeTokenTicker, isPreset: $isPreset, canBeEdited: $canBeEdited, sortingOrder: $sortingOrder, latencyDetectionInterval: $latencyDetectionInterval, maxLatency: $maxLatency, endpointSelectionRetryCount: $endpointSelectionRetryCount)';
   }
 
   @override
@@ -483,7 +507,6 @@ class _$ConnectionDataGqlImpl implements _ConnectionDataGql {
             (identical(other.group, group) || other.group == group) &&
             const DeepCollectionEquality()
                 .equals(other._endpoints, _endpoints) &&
-            (identical(other.timeout, timeout) || other.timeout == timeout) &&
             (identical(other.networkType, networkType) ||
                 other.networkType == networkType) &&
             (identical(other.isLocal, isLocal) || other.isLocal == isLocal) &&
@@ -498,7 +521,16 @@ class _$ConnectionDataGqlImpl implements _ConnectionDataGql {
             (identical(other.canBeEdited, canBeEdited) ||
                 other.canBeEdited == canBeEdited) &&
             (identical(other.sortingOrder, sortingOrder) ||
-                other.sortingOrder == sortingOrder));
+                other.sortingOrder == sortingOrder) &&
+            (identical(
+                    other.latencyDetectionInterval, latencyDetectionInterval) ||
+                other.latencyDetectionInterval == latencyDetectionInterval) &&
+            (identical(other.maxLatency, maxLatency) ||
+                other.maxLatency == maxLatency) &&
+            (identical(other.endpointSelectionRetryCount,
+                    endpointSelectionRetryCount) ||
+                other.endpointSelectionRetryCount ==
+                    endpointSelectionRetryCount));
   }
 
   @JsonKey(includeFromJson: false, includeToJson: false)
@@ -509,7 +541,6 @@ class _$ConnectionDataGqlImpl implements _ConnectionDataGql {
       name,
       group,
       const DeepCollectionEquality().hash(_endpoints),
-      timeout,
       networkType,
       isLocal,
       blockExplorerUrl,
@@ -517,7 +548,10 @@ class _$ConnectionDataGqlImpl implements _ConnectionDataGql {
       nativeTokenTicker,
       isPreset,
       canBeEdited,
-      sortingOrder);
+      sortingOrder,
+      latencyDetectionInterval,
+      maxLatency,
+      endpointSelectionRetryCount);
 
   /// Create a copy of ConnectionData
   /// with the given fields replaced by the non-null parameter values.
@@ -536,7 +570,6 @@ class _$ConnectionDataGqlImpl implements _ConnectionDataGql {
             String name,
             String group,
             List<String> endpoints,
-            Duration timeout,
             NetworkType networkType,
             bool isLocal,
             String blockExplorerUrl,
@@ -544,7 +577,10 @@ class _$ConnectionDataGqlImpl implements _ConnectionDataGql {
             String nativeTokenTicker,
             bool isPreset,
             bool canBeEdited,
-            double sortingOrder)
+            double sortingOrder,
+            int? latencyDetectionInterval,
+            int? maxLatency,
+            int? endpointSelectionRetryCount)
         gql,
     required TResult Function(
             String id,
@@ -578,7 +614,6 @@ class _$ConnectionDataGqlImpl implements _ConnectionDataGql {
         name,
         group,
         endpoints,
-        timeout,
         networkType,
         isLocal,
         blockExplorerUrl,
@@ -586,7 +621,10 @@ class _$ConnectionDataGqlImpl implements _ConnectionDataGql {
         nativeTokenTicker,
         isPreset,
         canBeEdited,
-        sortingOrder);
+        sortingOrder,
+        latencyDetectionInterval,
+        maxLatency,
+        endpointSelectionRetryCount);
   }
 
   @override
@@ -597,7 +635,6 @@ class _$ConnectionDataGqlImpl implements _ConnectionDataGql {
             String name,
             String group,
             List<String> endpoints,
-            Duration timeout,
             NetworkType networkType,
             bool isLocal,
             String blockExplorerUrl,
@@ -605,7 +642,10 @@ class _$ConnectionDataGqlImpl implements _ConnectionDataGql {
             String nativeTokenTicker,
             bool isPreset,
             bool canBeEdited,
-            double sortingOrder)?
+            double sortingOrder,
+            int? latencyDetectionInterval,
+            int? maxLatency,
+            int? endpointSelectionRetryCount)?
         gql,
     TResult? Function(
             String id,
@@ -639,7 +679,6 @@ class _$ConnectionDataGqlImpl implements _ConnectionDataGql {
         name,
         group,
         endpoints,
-        timeout,
         networkType,
         isLocal,
         blockExplorerUrl,
@@ -647,7 +686,10 @@ class _$ConnectionDataGqlImpl implements _ConnectionDataGql {
         nativeTokenTicker,
         isPreset,
         canBeEdited,
-        sortingOrder);
+        sortingOrder,
+        latencyDetectionInterval,
+        maxLatency,
+        endpointSelectionRetryCount);
   }
 
   @override
@@ -658,7 +700,6 @@ class _$ConnectionDataGqlImpl implements _ConnectionDataGql {
             String name,
             String group,
             List<String> endpoints,
-            Duration timeout,
             NetworkType networkType,
             bool isLocal,
             String blockExplorerUrl,
@@ -666,7 +707,10 @@ class _$ConnectionDataGqlImpl implements _ConnectionDataGql {
             String nativeTokenTicker,
             bool isPreset,
             bool canBeEdited,
-            double sortingOrder)?
+            double sortingOrder,
+            int? latencyDetectionInterval,
+            int? maxLatency,
+            int? endpointSelectionRetryCount)?
         gql,
     TResult Function(
             String id,
@@ -702,7 +746,6 @@ class _$ConnectionDataGqlImpl implements _ConnectionDataGql {
           name,
           group,
           endpoints,
-          timeout,
           networkType,
           isLocal,
           blockExplorerUrl,
@@ -710,7 +753,10 @@ class _$ConnectionDataGqlImpl implements _ConnectionDataGql {
           nativeTokenTicker,
           isPreset,
           canBeEdited,
-          sortingOrder);
+          sortingOrder,
+          latencyDetectionInterval,
+          maxLatency,
+          endpointSelectionRetryCount);
     }
     return orElse();
   }
@@ -763,7 +809,6 @@ abstract class _ConnectionDataGql implements ConnectionData {
       required final String name,
       required final String group,
       required final List<String> endpoints,
-      required final Duration timeout,
       required final NetworkType networkType,
       required final bool isLocal,
       required final String blockExplorerUrl,
@@ -771,7 +816,10 @@ abstract class _ConnectionDataGql implements ConnectionData {
       required final String nativeTokenTicker,
       required final bool isPreset,
       required final bool canBeEdited,
-      required final double sortingOrder}) = _$ConnectionDataGqlImpl;
+      required final double sortingOrder,
+      final int? latencyDetectionInterval,
+      final int? maxLatency,
+      final int? endpointSelectionRetryCount}) = _$ConnectionDataGqlImpl;
 
   factory _ConnectionDataGql.fromJson(Map<String, dynamic> json) =
       _$ConnectionDataGqlImpl.fromJson;
@@ -783,7 +831,6 @@ abstract class _ConnectionDataGql implements ConnectionData {
   @override
   String get group;
   List<String> get endpoints;
-  Duration get timeout;
   @override
   NetworkType get networkType;
   bool get isLocal;
@@ -799,6 +846,9 @@ abstract class _ConnectionDataGql implements ConnectionData {
   bool get canBeEdited;
   @override
   double get sortingOrder;
+  int? get latencyDetectionInterval;
+  int? get maxLatency;
+  int? get endpointSelectionRetryCount;
 
   /// Create a copy of ConnectionData
   /// with the given fields replaced by the non-null parameter values.
@@ -1015,7 +1065,6 @@ class _$ConnectionDataProtoImpl implements _ConnectionDataProto {
             String name,
             String group,
             List<String> endpoints,
-            Duration timeout,
             NetworkType networkType,
             bool isLocal,
             String blockExplorerUrl,
@@ -1023,7 +1072,10 @@ class _$ConnectionDataProtoImpl implements _ConnectionDataProto {
             String nativeTokenTicker,
             bool isPreset,
             bool canBeEdited,
-            double sortingOrder)
+            double sortingOrder,
+            int? latencyDetectionInterval,
+            int? maxLatency,
+            int? endpointSelectionRetryCount)
         gql,
     required TResult Function(
             String id,
@@ -1064,7 +1116,6 @@ class _$ConnectionDataProtoImpl implements _ConnectionDataProto {
             String name,
             String group,
             List<String> endpoints,
-            Duration timeout,
             NetworkType networkType,
             bool isLocal,
             String blockExplorerUrl,
@@ -1072,7 +1123,10 @@ class _$ConnectionDataProtoImpl implements _ConnectionDataProto {
             String nativeTokenTicker,
             bool isPreset,
             bool canBeEdited,
-            double sortingOrder)?
+            double sortingOrder,
+            int? latencyDetectionInterval,
+            int? maxLatency,
+            int? endpointSelectionRetryCount)?
         gql,
     TResult? Function(
             String id,
@@ -1113,7 +1167,6 @@ class _$ConnectionDataProtoImpl implements _ConnectionDataProto {
             String name,
             String group,
             List<String> endpoints,
-            Duration timeout,
             NetworkType networkType,
             bool isLocal,
             String blockExplorerUrl,
@@ -1121,7 +1174,10 @@ class _$ConnectionDataProtoImpl implements _ConnectionDataProto {
             String nativeTokenTicker,
             bool isPreset,
             bool canBeEdited,
-            double sortingOrder)?
+            double sortingOrder,
+            int? latencyDetectionInterval,
+            int? maxLatency,
+            int? endpointSelectionRetryCount)?
         gql,
     TResult Function(
             String id,
@@ -1454,7 +1510,6 @@ class _$ConnectionDataJrpcImpl implements _ConnectionDataJrpc {
             String name,
             String group,
             List<String> endpoints,
-            Duration timeout,
             NetworkType networkType,
             bool isLocal,
             String blockExplorerUrl,
@@ -1462,7 +1517,10 @@ class _$ConnectionDataJrpcImpl implements _ConnectionDataJrpc {
             String nativeTokenTicker,
             bool isPreset,
             bool canBeEdited,
-            double sortingOrder)
+            double sortingOrder,
+            int? latencyDetectionInterval,
+            int? maxLatency,
+            int? endpointSelectionRetryCount)
         gql,
     required TResult Function(
             String id,
@@ -1503,7 +1561,6 @@ class _$ConnectionDataJrpcImpl implements _ConnectionDataJrpc {
             String name,
             String group,
             List<String> endpoints,
-            Duration timeout,
             NetworkType networkType,
             bool isLocal,
             String blockExplorerUrl,
@@ -1511,7 +1568,10 @@ class _$ConnectionDataJrpcImpl implements _ConnectionDataJrpc {
             String nativeTokenTicker,
             bool isPreset,
             bool canBeEdited,
-            double sortingOrder)?
+            double sortingOrder,
+            int? latencyDetectionInterval,
+            int? maxLatency,
+            int? endpointSelectionRetryCount)?
         gql,
     TResult? Function(
             String id,
@@ -1552,7 +1612,6 @@ class _$ConnectionDataJrpcImpl implements _ConnectionDataJrpc {
             String name,
             String group,
             List<String> endpoints,
-            Duration timeout,
             NetworkType networkType,
             bool isLocal,
             String blockExplorerUrl,
@@ -1560,7 +1619,10 @@ class _$ConnectionDataJrpcImpl implements _ConnectionDataJrpc {
             String nativeTokenTicker,
             bool isPreset,
             bool canBeEdited,
-            double sortingOrder)?
+            double sortingOrder,
+            int? latencyDetectionInterval,
+            int? maxLatency,
+            int? endpointSelectionRetryCount)?
         gql,
     TResult Function(
             String id,

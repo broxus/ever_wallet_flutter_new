@@ -2,6 +2,7 @@ import 'dart:async';
 
 import 'package:app/app/service/service.dart' as s;
 import 'package:app/data/models/models.dart';
+import 'package:app/feature/browser/utils.dart';
 import 'package:app/generated/generated.dart';
 import 'package:app/utils/constants.dart';
 import 'package:app/utils/utils.dart';
@@ -23,6 +24,8 @@ class InpageProvider extends ProviderApi {
     required this.nekotonRepository,
     required this.messengerService,
     required this.assetsService,
+    required this.connectionsStorageService,
+    required this.connectionService,
   });
 
   final _logger = Logger('InpageProvider');
@@ -34,8 +37,11 @@ class InpageProvider extends ProviderApi {
   final nr.NekotonRepository nekotonRepository;
   final s.MessengerService messengerService;
   final s.AssetsService assetsService;
+  final s.ConnectionsStorageService connectionsStorageService;
+  final s.ConnectionService connectionService;
 
   Uri? url;
+
   Uri? get origin => url == null ? null : Uri.parse(url!.origin);
 
   // TODO(komarov): method that will check accountInteraction and return
@@ -1655,12 +1661,100 @@ class InpageProvider extends ProviderApi {
   }
 
   @override
-  Future<AddNetworkOutput> addNetwork(AddNetworkInput input) {
-    throw UnimplementedError();
+  Future<AddNetworkOutput> addNetwork(AddNetworkInput input) async {
+    _checkPermissions(permissions: permissionsService.getPermissions(origin));
+
+    final networkId = input.network.networkId.toInt();
+    final connections = await _getConnections(networkId);
+
+    if (connections.isNotEmpty) {
+      throw s.ApprovalsHandleException(LocaleKeys.networkAlreadyExists.tr());
+    }
+
+    nr.Transport? transport;
+    try {
+      transport = await connectionService.createTransportByConnection(
+        input.network.getConnection(),
+      );
+
+      if (transport.networkId != input.network.networkId) {
+        throw s.ApprovalsHandleException(LocaleKeys.addNetworkIdError.tr());
+      }
+    } finally {
+      transport?.dispose();
+    }
+
+    final network = await approvalsService.addNetwork(
+      origin: origin!,
+      network: input.network,
+      switchNetwork: input.switchNetwork ?? false,
+    );
+
+    return AddNetworkOutput(network);
   }
 
   @override
-  Future<ChangeNetworkOutput> changeNetwork(ChangeNetworkInput input) {
-    throw UnimplementedError();
+  Future<ChangeNetworkOutput> changeNetwork(ChangeNetworkInput input) async {
+    _checkPermissions(permissions: permissionsService.getPermissions(origin));
+
+    final networkId = input.networkId.toInt();
+    final currentTransport = nekotonRepository.currentTransport;
+    final connections = await _getConnections(networkId);
+
+    if (connections.isEmpty) {
+      return const ChangeNetworkOutput(null);
+    }
+
+    if (currentTransport.transport.networkId == networkId) {
+      return ChangeNetworkOutput(await currentTransport.toNetwork());
+    }
+
+    final transport = await approvalsService.changeNetwork(
+      origin: origin!,
+      networkId: networkId,
+      connections: connections,
+    );
+
+    return ChangeNetworkOutput(await transport?.toNetwork());
+  }
+
+  Future<List<ConnectionData>> _getConnections(int networkId) async {
+    final connections = connectionsStorageService.connections;
+    final networksIds = connectionsStorageService.networksIds;
+    final list = <ConnectionData>[];
+    final update = <(String, int)>[];
+
+    for (final connection in connections) {
+      nr.Transport? transport;
+
+      try {
+        var id = networksIds[connection.id];
+
+        // connect to get network id
+        if (id == null) {
+          transport = await connectionService.createTransportByConnection(
+            connection,
+          );
+
+          id = transport.networkId;
+          update.add((connection.id, transport.networkId));
+        }
+
+        if (id == networkId) {
+          list.add(connection);
+        }
+      } catch (e) {
+        _logger.severe('Error getting network id for connection: '
+            '${connection.name} (${connection.id})');
+      } finally {
+        transport?.dispose();
+      }
+    }
+
+    if (update.isNotEmpty) {
+      await connectionsStorageService.updateNetworksIds(update);
+    }
+
+    return list;
   }
 }

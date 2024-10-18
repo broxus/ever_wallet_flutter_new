@@ -32,8 +32,7 @@ class WelcomeScreenWidgetModel
     super.model,
   );
 
-  final _decentralizationPolicyLink =
-      'https://l1.broxus.com/everscale/wallet/terms';
+  final _decentralizationPolicyLink = 'https://l1.broxus.com/sparx/terms/';
 
   ThemeStyleV2 get themeStyle => context.themeStyleV2;
 

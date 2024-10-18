@@ -1,0 +1,36 @@
+{
+  "name": "app_links",
+  "version": "0.0.2",
+  "summary": "iOS Universal Links and Custom URL schemes.",
+  "description": "iOS Universal Links and Custom URL schemes.",
+  "homepage": "https://github.com/llfbandit/app_links",
+  "license": {
+    "file": "../LICENSE"
+  },
+  "authors": {
+    "Your Company": "email@example.com"
+  },
+  "source": {
+    "path": "."
+  },
+  "source_files": "Classes/**/*",
+  "dependencies": {
+    "Flutter": [
+
+    ]
+  },
+  "platforms": {
+    "ios": "12.0"
+  },
+  "pod_target_xcconfig": {
+    "DEFINES_MODULE": "YES",
+    "EXCLUDED_ARCHS[sdk=iphonesimulator*]": "i386"
+  },
+  "swift_versions": "5.0",
+  "resource_bundles": {
+    "app_links_ios_privacy": [
+      "Resources/PrivacyInfo.xcprivacy"
+    ]
+  },
+  "swift_version": "5.0"
+}

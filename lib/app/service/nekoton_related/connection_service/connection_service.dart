@@ -40,92 +40,9 @@ class ConnectionService {
     });
   }
 
-  /// Create nekoton's transport by connection, create transport's strategy
-  /// by its type and put it in nekoton.
-  // ignore: long-method
-  Future<void> _updateTransportByConnection(ConnectionData connection) async {
-    _log.finest('updateTransportByConnection: ${connection.name}');
-    try {
-      final transport = await connection.when<Future<Transport>>(
-        gql: (
-          _,
-          name,
-          group,
-          endpoints,
-          timeout,
-          __,
-          isLocal,
-          ___,
-          ____,
-          _____,
-          ______,
-          _______,
-          ________,
-        ) =>
-            _nekotonRepository.createGqlTransport(
-          post: _httpService.postTransportData,
-          get: _httpService.getTransportData,
-          name: name,
-          group: group,
-          endpoints: endpoints,
-          local: isLocal,
-        ),
-        proto: (
-          _,
-          name,
-          group,
-          endpoint,
-          __,
-          ___,
-          ____,
-          _____,
-          ______,
-          _______,
-          ________,
-        ) =>
-            _nekotonRepository.createProtoTransport(
-          post: _httpService.postTransportDataBytes,
-          name: name,
-          group: group,
-          endpoint: endpoint,
-        ),
-        jrpc: (
-          _,
-          name,
-          group,
-          endpoint,
-          __,
-          ___,
-          ____,
-          _____,
-          ______,
-          _______,
-          ________,
-        ) =>
-            _nekotonRepository.createJrpcTransport(
-          post: _httpService.postTransportData,
-          name: name,
-          group: group,
-          endpoint: endpoint,
-        ),
-      );
-
-      await _nekotonRepository.updateTransport(
-        _createStrategyByConnection(transport, connection),
-      );
-      _log.finest('updateTransportByConnection completed!');
-    } catch (e, t) {
-      inject<MessengerService>().showConnectionError(null);
-      _log.severe('updateTransportByConnection', e, t);
-
-      // allow level above to track fail
-      rethrow;
-    }
-  }
-
   /// Create TransportStrategy based on [ConnectionData.networkType] of
   /// [connection] data.
-  TransportStrategy _createStrategyByConnection(
+  TransportStrategy createStrategyByConnection(
     Transport transport,
     ConnectionData connection,
   ) {
@@ -145,6 +62,102 @@ class ConnectionService {
           transport: transport,
           connection: connection,
         );
+    }
+  }
+
+  Future<Transport> createTransportByConnection(ConnectionData connection) {
+    return connection.when<Future<Transport>>(
+      gql: (
+        _,
+        name,
+        group,
+        endpoints,
+        __,
+        isLocal,
+        ___,
+        ____,
+        _____,
+        ______,
+        _______,
+        ________,
+        latencyDetectionInterval,
+        maxLatency,
+        endpointSelectionRetryCount,
+      ) =>
+          _nekotonRepository.createGqlTransport(
+        post: _httpService.postTransportData,
+        get: _httpService.getTransportData,
+        name: name,
+        group: group,
+        endpoints: endpoints,
+        local: isLocal,
+        latencyDetectionInterval: latencyDetectionInterval,
+        maxLatency: maxLatency,
+        endpointSelectionRetryCount: endpointSelectionRetryCount,
+      ),
+      proto: (
+        _,
+        name,
+        group,
+        endpoint,
+        __,
+        ___,
+        ____,
+        _____,
+        ______,
+        _______,
+        ________,
+      ) =>
+          _nekotonRepository.createProtoTransport(
+        post: _httpService.postTransportDataBytes,
+        name: name,
+        group: group,
+        endpoint: endpoint,
+      ),
+      jrpc: (
+        _,
+        name,
+        group,
+        endpoint,
+        __,
+        ___,
+        ____,
+        _____,
+        ______,
+        _______,
+        ________,
+      ) =>
+          _nekotonRepository.createJrpcTransport(
+        post: _httpService.postTransportData,
+        name: name,
+        group: group,
+        endpoint: endpoint,
+      ),
+    );
+  }
+
+  /// Create nekoton's transport by connection, create transport's strategy
+  /// by its type and put it in nekoton.
+  // ignore: long-method
+  Future<void> _updateTransportByConnection(ConnectionData connection) async {
+    _log.finest('updateTransportByConnection: ${connection.name}');
+    try {
+      final transport = await createTransportByConnection(connection);
+
+      await _nekotonRepository.updateTransport(
+        createStrategyByConnection(transport, connection),
+      );
+      await _storageService.updateNetworksIds(
+        [(connection.id, transport.networkId)],
+      );
+
+      _log.finest('updateTransportByConnection completed!');
+    } catch (e, t) {
+      inject<MessengerService>().showConnectionError(null);
+      _log.severe('updateTransportByConnection', e, t);
+
+      // allow level above to track fail
+      rethrow;
     }
   }
 }

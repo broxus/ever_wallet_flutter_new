@@ -37,7 +37,6 @@ class _TokenWalletDetailsPageState extends State<TokenWalletDetailsPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: const DefaultAppBar(),
       body: BlocProvider<TokenWalletDetailsCubit>(
         create: (_) => TokenWalletDetailsCubit(
           owner: widget.owner,
@@ -113,66 +112,62 @@ class _Body extends StatelessWidget {
     return CustomScrollView(
       slivers: [
         SliverToBoxAdapter(
-          child: Column(
-            mainAxisSize: MainAxisSize.min,
+          child: Stack(
             children: [
-              Text(
-                contractName,
-                style: theme.textStyles.labelSmall.copyWith(
-                  color: theme.colors.content3,
-                ),
-              ),
-              const SizedBox(height: DimensSizeV2.d12),
-              if (tokenBalance != null)
-                AmountWidget.fromMoney(
-                  amount: tokenBalance!,
-                  includeSymbol: false,
-                  style: theme.textStyles.headingXLarge,
-                ),
-              const SizedBox(height: DimensSizeV2.d4),
-              if (fiatBalance != null)
-                AmountWidget.dollars(
-                  amount: fiatBalance!,
-                  style: theme.textStyles.labelXSmall,
-                ),
-              const SizedBox(height: DimensSizeV2.d16),
-              SizedBox(
-                height: DimensSizeV2.d74,
-                child: SeparatedRow(
-                  separator: VerticalDivider(
-                    width: DimensStroke.small,
-                    thickness: DimensStroke.small,
-                    color: theme.colors.borderAlpha,
-                  ),
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  crossAxisAlignment: CrossAxisAlignment.stretch,
-                  children: [
-                    WalletActionButton(
-                      label: LocaleKeys.receiveWord.tr(),
-                      icon: LucideIcons.arrowDown,
-                      onPressed: () => showReceiveFundsSheet(context, owner),
+              const _Background(),
+              Column(
+                mainAxisSize: MainAxisSize.min,
+                children: [
+                  const DefaultAppBar(),
+                  Text(
+                    contractName,
+                    style: theme.textStyles.labelSmall.copyWith(
+                      color: theme.colors.content3,
                     ),
-                    if (canSend && tokenBalance != null)
-                      WalletActionButton(
-                        label: LocaleKeys.sendWord.tr(),
-                        icon: LucideIcons.arrowUp,
-                        onPressed: () => context.goFurther(
-                          AppRoute.walletPrepareTransferSpecified.pathWithData(
-                            pathParameters: {
-                              walletPrepareTransferAddressPathParam:
-                                  owner.address,
-                              walletPrepareTransferRootTokenAddressPathParam:
-                                  rootTokenContract.address,
-                              walletPrepareTransferSymbolPathParam:
-                                  tokenBalance!.currency.isoCode,
-                            },
-                          ),
-                        ),
+                  ),
+                  const SizedBox(height: DimensSizeV2.d12),
+                  if (tokenBalance != null)
+                    AmountWidget.fromMoney(
+                      amount: tokenBalance!,
+                      includeSymbol: false,
+                      style: theme.textStyles.headingXLarge,
+                    ),
+                  const SizedBox(height: DimensSizeV2.d4),
+                  if (fiatBalance != null)
+                    AmountWidget.dollars(
+                      amount: fiatBalance!,
+                      style: theme.textStyles.labelXSmall,
+                    ),
+                  const SizedBox(height: DimensSizeV2.d16),
+                  SizedBox(
+                    height: DimensSizeV2.d74,
+                    child: SeparatedRow(
+                      separator: VerticalDivider(
+                        width: DimensStroke.small,
+                        thickness: DimensStroke.small,
+                        color: theme.colors.borderAlpha,
                       ),
-                  ],
-                ),
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      crossAxisAlignment: CrossAxisAlignment.stretch,
+                      children: [
+                        WalletActionButton(
+                          label: LocaleKeys.receiveWord.tr(),
+                          icon: LucideIcons.arrowDown,
+                          onPressed: () =>
+                              showReceiveFundsSheet(context, owner),
+                        ),
+                        if (canSend && tokenBalance != null)
+                          WalletActionButton(
+                            label: LocaleKeys.sendWord.tr(),
+                            icon: LucideIcons.arrowUp,
+                            onPressed: () => _onSend(context),
+                          ),
+                      ],
+                    ),
+                  ),
+                  const SizedBox(height: DimensSizeV2.d48),
+                ],
               ),
-              const SizedBox(height: DimensSizeV2.d48),
             ],
           ),
         ),
@@ -216,4 +211,33 @@ class _Body extends StatelessWidget {
       ],
     );
   }
+
+  void _onSend(BuildContext context) => context.goFurther(
+        AppRoute.walletPrepareTransferSpecified.pathWithData(
+          pathParameters: {
+            walletPrepareTransferAddressPathParam: owner.address,
+            walletPrepareTransferRootTokenAddressPathParam:
+                rootTokenContract.address,
+            walletPrepareTransferSymbolPathParam:
+                tokenBalance!.currency.isoCode,
+          },
+        ),
+      );
+}
+
+class _Background extends StatelessWidget {
+  const _Background();
+
+  @override
+  Widget build(BuildContext context) => Positioned.fill(
+        child: SafeArea(
+          child: Padding(
+            padding: const EdgeInsets.symmetric(horizontal: DimensSizeV2.d28),
+            child: Image.asset(
+              Assets.images.walletBg.walletBg.path,
+              fit: BoxFit.cover,
+            ),
+          ),
+        ),
+      );
 }

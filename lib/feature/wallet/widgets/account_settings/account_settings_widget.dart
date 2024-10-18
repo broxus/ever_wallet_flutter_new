@@ -35,7 +35,6 @@ class AccountSettingsWidget
           builder: (_, list) => _ButtonsCard(
             address: account.address.address,
             onViewInExplorer: wm.onViewInExplorer,
-            onCopyAddress: wm.onCopyAddress,
             onRename: wm.onRename,
             onHideAccount: (list?.length ?? 0) > 1 ? wm.onHideAccount : null,
           ),
@@ -57,14 +56,12 @@ class _ButtonsCard extends StatelessWidget {
     required this.address,
     required this.onViewInExplorer,
     required this.onRename,
-    required this.onCopyAddress,
     required this.onHideAccount,
   });
 
   final String address;
   final VoidCallback onViewInExplorer;
   final VoidCallback onRename;
-  final VoidCallback onCopyAddress;
   final VoidCallback? onHideAccount;
 
   @override
@@ -84,22 +81,17 @@ class _ButtonsCard extends StatelessWidget {
         ),
         children: [
           AccountSettingsButton(
-            label: LocaleKeys.seeInExplorer.tr(),
-            icon: LucideIcons.globe,
-            onTap: onViewInExplorer,
-          ),
-          AccountSettingsButton(
-            label: LocaleKeys.copyAddress.tr(),
-            icon: LucideIcons.copy,
-            onTap: onCopyAddress,
-          ),
-          AccountSettingsButton(
-            label: LocaleKeys.renameWord.tr(),
+            label: LocaleKeys.changeAccountName.tr(),
             icon: LucideIcons.pencilLine,
             onTap: onRename,
           ),
           AccountSettingsChangeColorButton(
             address: address,
+          ),
+          AccountSettingsButton(
+            label: LocaleKeys.seeInExplorer.tr(),
+            icon: LucideIcons.globe,
+            onTap: onViewInExplorer,
           ),
           if (onHideAccount != null)
             AccountSettingsButton(

@@ -129,6 +129,9 @@ class WalletPrepareTransferView extends StatelessWidget {
                     textEditingController: _wm.commentController,
                     focusNode: _wm.commentFocus,
                     onSubmit: (_) => _wm.onPressedNext(),
+                    suffixes: [
+                      _buildCommentSuffix(),
+                    ],
                   ),
                   Text(
                     LocaleKeys.addCommentHint.tr(),
@@ -148,5 +151,24 @@ class WalletPrepareTransferView extends StatelessWidget {
                   _wm.commentFocus.requestFocus();
                 },
               ),
+      );
+
+  Widget _buildCommentSuffix() => StateNotifierBuilder(
+        listenableState: _wm.commentTextState,
+        builder: (_, value) {
+          if (value?.isNotEmpty ?? false) {
+            return Padding(
+              padding: const EdgeInsets.only(right: DimensSize.d8),
+              child: FloatButton(
+                buttonShape: ButtonShape.square,
+                buttonSize: ButtonSize.small,
+                icon: LucideIcons.x,
+                onPressed: _wm.onPressedCleanComment,
+              ),
+            );
+          } else {
+            return const SizedBox.shrink();
+          }
+        },
       );
 }
