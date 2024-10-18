@@ -1,7 +1,9 @@
 // ignore_for_file: lines_longer_than_80_chars
 
 import 'package:app/feature/wallet/wallet.dart';
+import 'package:app/feature/wallet/wallet_deploy/clipboard_paste_button.dart';
 import 'package:app/generated/generated.dart';
+import 'package:app/utils/clipboard_utils.dart';
 import 'package:collection/collection.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
@@ -98,9 +100,9 @@ class _WalletDeployMultisigBodyState extends State<WalletDeployMultisigBody> {
   }
 
   Future<void> _pasteCustodian(int index) async {
-    final data = await Clipboard.getData(Clipboard.kTextPlain);
-    if (data?.text != null) {
-      custodianControllers[index].text = data!.text!;
+    final text = await getClipBoardText();
+    if (text != null) {
+      custodianControllers[index].text = text;
     }
   }
 
@@ -283,10 +285,7 @@ class _WalletDeployMultisigBodyState extends State<WalletDeployMultisigBody> {
                   buttonSize: ButtonSize.small,
                   onPressed: controller.clear,
                 )
-              : PrimaryButton(
-                  buttonShape: ButtonShape.square,
-                  icon: LucideIcons.clipboardPaste,
-                  buttonSize: ButtonSize.small,
+              : ClipboardPasteButton(
                   onPressed: () => _pasteCustodian(index),
                 );
         },
