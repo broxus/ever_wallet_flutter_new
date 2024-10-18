@@ -8,32 +8,45 @@ class WalletPageModel extends ElementaryModel {
     ErrorHandler errorHandler,
     this._currentAccountsService,
     this._storageService,
+    this._nekotonRepository,
   ) : super(errorHandler: errorHandler);
 
   final CurrentAccountsService _currentAccountsService;
   final SecureStorageService _storageService;
+  final NekotonRepository _nekotonRepository;
 
   Stream<KeyAccount?> get currentAccount =>
       _currentAccountsService.currentActiveAccountStream;
 
   Future<bool?> isNewUser() async {
-    return _storageService.getValue(StorageConstants.userWithNewWallet);
+    return _storageService.getValue(StorageKey.userWithNewWallet());
   }
 
   Future<void> resetValueNewUser() async {
-    return _storageService.cleanStorage(
-      StorageConstants.userWithNewWallet,
+    return _storageService.cleanStorage(StorageKey.userWithNewWallet());
+  }
+
+  Future<bool?> isShowingBadge(KeyAccount account) async {
+    final masterPublicKey = _nekotonRepository.seedList
+        .findSeedByAnyPublicKey(account.publicKey)
+        ?.masterPublicKey;
+
+    if (masterPublicKey == null) return null;
+
+    return _storageService.getValue(
+      StorageKey.showingManualBackupBadge(masterPublicKey.publicKey),
     );
   }
 
-  Future<bool?> isShowingBadge(String address) async {
-    return _storageService
-        .getValue(address + StorageConstants.showingManualBackupBadge);
-  }
+  Future<void> hideShowingBadge(KeyAccount account) async {
+    final masterPublicKey = _nekotonRepository.seedList
+        .findSeedByAnyPublicKey(account.publicKey)
+        ?.masterPublicKey;
 
-  Future<void> hideShowingBadge(String address) async {
+    if (masterPublicKey == null) return;
+
     return _storageService.addValue(
-      address + StorageConstants.showingManualBackupBadge,
+      StorageKey.showingManualBackupBadge(masterPublicKey.publicKey),
       false,
     );
   }

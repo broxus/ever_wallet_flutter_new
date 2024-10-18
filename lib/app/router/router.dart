@@ -1,9 +1,10 @@
-// ignore_for_file: lines_longer_than_80_chars
+import 'dart:async';
 
 import 'package:app/app/router/page_transitions.dart';
 import 'package:app/app/router/router.dart';
 import 'package:app/app/router/routs/network/network.dart';
 import 'package:app/app/service/service.dart';
+import 'package:app/di/di.dart';
 import 'package:app/feature/error/error.dart';
 import 'package:app/feature/onboarding/screen/welcome/welcome_screen.dart';
 import 'package:app/feature/root/root.dart';
@@ -227,11 +228,7 @@ class AppRouter {
       return null;
     }
 
-    // If the user has seeds and is on onboarding, redirect to wallet
-    if (hasSeeds && currentRoute == AppRoute.onboarding) {
-      // Already onboarded, redirect to wallet
-      return AppRoute.wallet.path;
-    } else if (!hasSeeds && currentRoute != AppRoute.onboarding) {
+    if (!hasSeeds && currentRoute != AppRoute.onboarding) {
       // Not onboarded, redirect to onboarding
       return AppRoute.onboarding.path;
     }
@@ -274,5 +271,124 @@ class AppRouter {
 
     // Save last root app route
     _lastRootAppRoute = rootAppRoute;
+  }
+}
+
+extension RouterExtension on GoRouter {
+  static final _navigationService = inject<NavigationService>();
+
+  void goFurther(
+    String location, {
+    bool preserveQueryParams = false,
+    Object? extra,
+  }) {
+    return go(
+      Uri.decodeComponent(
+        _getUriLocation(
+          location,
+          preserveQueryParams: preserveQueryParams,
+        ).toString(),
+      ),
+      extra: extra,
+    );
+  }
+
+  Future<T?> pushFurther<T>(
+    String location, {
+    bool preserveQueryParams = false,
+    Object? extra,
+  }) async {
+    return push<T>(
+      Uri.decodeComponent(
+        _getUriLocation(
+          location,
+          preserveQueryParams: preserveQueryParams,
+        ).toString(),
+      ),
+      extra: extra,
+    );
+  }
+
+  /// Navigate to current location, but without query parameters.
+  void clearQueryParams() {
+    final currentLocation = inject<NavigationService>().state.location;
+    final resultLocation = Uri.parse(currentLocation).replace(
+      queryParameters: {},
+    );
+
+    return go(
+      Uri.decodeComponent(resultLocation.toString()),
+    );
+  }
+
+  /// Pop current screen if possible.
+  void maybePop({
+    bool preserveQueryParams = true,
+    List<String>? removeQueries,
+  }) {
+    if (!preserveQueryParams) {
+      clearQueryParams();
+    } else if (removeQueries != null) {
+      _removeQueryParams(removeQueries);
+    }
+
+    if (canPop()) {
+      pop();
+    }
+  }
+
+  void clearQueryParamsAndPop<T extends Object?>([T? result]) {
+    clearQueryParams();
+
+    pop<T>(result);
+  }
+
+  void _removeQueryParams(
+    List<String> removeQueries,
+  ) {
+    final uri = Uri.parse(_navigationService.state.location);
+
+    final queryParameters = {...uri.queryParameters};
+
+    for (final param in removeQueries) {
+      queryParameters.remove(param);
+    }
+
+    final resultLocation = uri.replace(
+      queryParameters: queryParameters,
+    );
+
+    return go(
+      Uri.decodeComponent(resultLocation.toString()),
+    );
+  }
+
+  Uri _getUriLocation(
+    String path, {
+    bool preserveQueryParams = false,
+  }) {
+    final location = Uri.parse(inject<NavigationService>().state.location);
+    final pathUri = Uri.parse(path);
+    late Uri resultLocation;
+    // We have query params in old path that we should preserve, so we must
+    // update it manually
+    if (location.hasQuery && preserveQueryParams) {
+      final query = <String, dynamic>{}
+        ..addAll(location.queryParameters)
+        ..addAll(pathUri.queryParameters);
+
+      resultLocation = location.replace(
+        path: '${location.path}/${pathUri.path}',
+        queryParameters: query,
+      );
+    } else {
+      // old location do not have query, new one may have it, we dont care
+      resultLocation = location.replace(
+        path: '${location.path}/${pathUri.path}',
+        queryParameters: pathUri.queryParameters,
+      );
+    }
+
+    return resultLocation;
   }
 }

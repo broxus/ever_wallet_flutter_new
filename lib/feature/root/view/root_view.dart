@@ -1,4 +1,8 @@
+import 'dart:async';
+
 import 'package:app/app/router/router.dart';
+import 'package:app/app/service/app_links/app_links_data.dart';
+import 'package:app/app/service/app_links/app_links_service.dart';
 import 'package:app/app/service/service.dart';
 import 'package:app/di/di.dart';
 import 'package:app/event_bus/events/navigation/bottom_navigation_events.dart';
@@ -18,17 +22,32 @@ class RootView extends StatefulWidget {
 }
 
 class _RootViewState extends State<RootView> {
+  final _appLinksService = inject<AppLinksService>();
+
   late final NavigationService _navigationService;
 
   int get _tabIndex => RootTab.getByPath(
         getRootPath(fullPath: _navigationService.state.fullPath),
       ).index;
 
+  StreamSubscription<BrowserAppLinksData>? _appLinksNavSubs;
+
   @override
   void initState() {
     super.initState();
 
     _navigationService = inject<NavigationService>();
+
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      _appLinksNavSubs =
+          _appLinksService.browserLinksStream.listen(_listenAppLinks);
+    });
+  }
+
+  @override
+  void dispose() {
+    _appLinksNavSubs?.cancel();
+    super.dispose();
   }
 
   @override
@@ -73,18 +92,30 @@ class _RootViewState extends State<RootView> {
               splashColor: Colors.transparent,
               highlightColor: Colors.transparent,
             ),
-            child: BottomNavigationBar(
-              landscapeLayout: BottomNavigationBarLandscapeLayout.centered,
-              showSelectedLabels: false,
-              showUnselectedLabels: false,
-              elevation: DimensSizeV2.d0,
-              type: BottomNavigationBarType.fixed,
-              backgroundColor: theme.colors.background1,
-              selectedItemColor: theme.colors.content0,
-              unselectedItemColor: theme.colors.content3,
-              items: _getItems(),
-              currentIndex: _tabIndex,
-              onTap: _onTap,
+            child: SafeArea(
+              child: SizedBox(
+                height: DimensSizeV2.d48,
+                child: ClipRect(
+                  child: OverflowBox(
+                    maxHeight: double.infinity,
+                    alignment: Alignment.topCenter,
+                    child: BottomNavigationBar(
+                      landscapeLayout:
+                          BottomNavigationBarLandscapeLayout.centered,
+                      showSelectedLabels: false,
+                      showUnselectedLabels: false,
+                      elevation: DimensSizeV2.d0,
+                      type: BottomNavigationBarType.fixed,
+                      backgroundColor: theme.colors.background1,
+                      selectedItemColor: theme.colors.content0,
+                      unselectedItemColor: theme.colors.content3,
+                      items: _getItems(),
+                      currentIndex: _tabIndex,
+                      onTap: _onTap,
+                    ),
+                  ),
+                ),
+              ),
             ),
           ),
         ),
@@ -96,8 +127,10 @@ class _RootViewState extends State<RootView> {
       RootTab.values.map((tab) => tab.item()).toList();
 
   void _onTap(int value) {
-    final tab = RootTab.values[value];
+    _changeValue(RootTab.values[value]);
+  }
 
+  void _changeValue(RootTab tab) {
     final prevTab = RootTab.values[_tabIndex];
 
     context.goNamed(tab.name);
@@ -108,5 +141,9 @@ class _RootViewState extends State<RootView> {
         currentTab: tab,
       ),
     );
+  }
+
+  void _listenAppLinks(BrowserAppLinksData data) {
+    _changeValue(RootTab.browser);
   }
 }

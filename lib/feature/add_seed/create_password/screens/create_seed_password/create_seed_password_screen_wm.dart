@@ -1,4 +1,4 @@
-import 'package:app/app/router/routs/add_seed/add_seed.dart';
+import 'package:app/app/router/router.dart';
 import 'package:app/core/error_handler_factory.dart';
 import 'package:app/core/wm/custom_wm.dart';
 import 'package:app/core/wm/navigation_wm_mixin.dart';
@@ -10,6 +10,7 @@ import 'package:app/feature/add_seed/create_password/screens/create_seed_passwor
 import 'package:elementary/elementary.dart';
 import 'package:elementary_helper/elementary_helper.dart';
 import 'package:flutter/widgets.dart';
+import 'package:go_router/go_router.dart';
 import 'package:ui_components_lib/v2/ui_components_lib_v2.dart';
 
 /// Factory method for creating [CreateSeedPasswordScreenWidgetModel]
@@ -21,6 +22,7 @@ CreateSeedPasswordScreenWidgetModel
   return CreateSeedPasswordScreenWidgetModel(
     CreateSeedPasswordScreenModel(
       createPrimaryErrorHandler(context),
+      inject(),
       inject(),
       inject(),
       inject(),
@@ -82,7 +84,7 @@ class CreateSeedPasswordScreenWidgetModel extends CustomWidgetModel<
       password: passwordController.text,
     );
 
-    _loadState.accept(true);
+    contextSafe?.goNamed(AppRoute.wallet.name);
   }
 
   void _validate() {

@@ -1,4 +1,3 @@
-import 'package:app/app/service/nekoton_related/connection_service/network_presets.dart';
 import 'package:app/data/models/network_type.dart';
 import 'package:app/utils/utils.dart';
 import 'package:freezed_annotation/freezed_annotation.dart';
@@ -14,7 +13,6 @@ sealed class ConnectionData with _$ConnectionData {
     required String name,
     required String group,
     required List<String> endpoints,
-    required Duration timeout,
     required NetworkType networkType,
     required bool isLocal,
     required String blockExplorerUrl,
@@ -23,26 +21,30 @@ sealed class ConnectionData with _$ConnectionData {
     required bool isPreset,
     required bool canBeEdited,
     required double sortingOrder,
+    int? latencyDetectionInterval,
+    int? maxLatency,
+    int? endpointSelectionRetryCount,
   }) = _ConnectionDataGql;
 
   factory ConnectionData.gqlCustom({
     required String name,
     required String group,
     required List<String> endpoints,
-    required NetworkType networkType,
     required bool isLocal,
     required String blockExplorerUrl,
     required String manifestUrl,
     required String nativeTokenTicker,
-    Duration? timeout,
     String? id,
+    NetworkType networkType = NetworkType.custom,
+    int? latencyDetectionInterval,
+    int? maxLatency,
+    int? endpointSelectionRetryCount,
   }) =>
       ConnectionData.gql(
         id: id ?? const Uuid().v4(),
         name: name,
         group: group,
         endpoints: endpoints,
-        timeout: timeout ?? defaultNetworkTimeout,
         networkType: networkType,
         isLocal: isLocal,
         blockExplorerUrl: blockExplorerUrl,
@@ -51,6 +53,9 @@ sealed class ConnectionData with _$ConnectionData {
         isPreset: false,
         canBeEdited: true,
         sortingOrder: NtpTime.now().millisecondsSinceEpoch.toDouble(),
+        latencyDetectionInterval: latencyDetectionInterval,
+        maxLatency: maxLatency,
+        endpointSelectionRetryCount: endpointSelectionRetryCount,
       );
 
   factory ConnectionData.gqlPreset({
@@ -58,19 +63,20 @@ sealed class ConnectionData with _$ConnectionData {
     required String name,
     required String group,
     required List<String> endpoints,
-    required Duration timeout,
     required NetworkType networkType,
     required String blockExplorerUrl,
     required String manifestUrl,
     required bool canBeEdited,
     required double sortingOrder,
+    int? latencyDetectionInterval,
+    int? maxLatency,
+    int? endpointSelectionRetryCount,
   }) =>
       ConnectionData.gql(
         id: id,
         name: name,
         group: group,
         endpoints: endpoints,
-        timeout: timeout,
         networkType: networkType,
         isLocal: false,
         blockExplorerUrl: blockExplorerUrl,
@@ -79,6 +85,35 @@ sealed class ConnectionData with _$ConnectionData {
         isPreset: true,
         canBeEdited: canBeEdited,
         sortingOrder: sortingOrder,
+        latencyDetectionInterval: latencyDetectionInterval,
+        maxLatency: maxLatency,
+        endpointSelectionRetryCount: endpointSelectionRetryCount,
+      );
+
+  factory ConnectionData.gqlTemporary({
+    required List<String> endpoints,
+    required bool isLocal,
+    NetworkType networkType = NetworkType.custom,
+    int? latencyDetectionInterval,
+    int? maxLatency,
+    int? endpointSelectionRetryCount,
+  }) =>
+      ConnectionData.gql(
+        id: const Uuid().v4(),
+        name: const Uuid().v4(),
+        group: const Uuid().v4(),
+        endpoints: endpoints,
+        networkType: networkType,
+        isLocal: isLocal,
+        blockExplorerUrl: '',
+        manifestUrl: '',
+        nativeTokenTicker: '',
+        isPreset: false,
+        canBeEdited: true,
+        sortingOrder: NtpTime.now().millisecondsSinceEpoch.toDouble(),
+        latencyDetectionInterval: latencyDetectionInterval,
+        maxLatency: maxLatency,
+        endpointSelectionRetryCount: endpointSelectionRetryCount,
       );
 
   const factory ConnectionData.proto({
@@ -99,11 +134,11 @@ sealed class ConnectionData with _$ConnectionData {
     required String name,
     required String group,
     required String endpoint,
-    required NetworkType networkType,
     required String blockExplorerUrl,
     required String manifestUrl,
     required String nativeTokenTicker,
     String? id,
+    NetworkType networkType = NetworkType.custom,
   }) =>
       ConnectionData.proto(
         id: id ?? const Uuid().v4(),
@@ -144,6 +179,24 @@ sealed class ConnectionData with _$ConnectionData {
         sortingOrder: sortingOrder,
       );
 
+  factory ConnectionData.protoTemporary({
+    required String endpoint,
+    NetworkType networkType = NetworkType.custom,
+  }) =>
+      ConnectionData.proto(
+        id: const Uuid().v4(),
+        name: const Uuid().v4(),
+        group: const Uuid().v4(),
+        endpoint: endpoint,
+        networkType: networkType,
+        blockExplorerUrl: '',
+        manifestUrl: '',
+        nativeTokenTicker: '',
+        isPreset: false,
+        canBeEdited: true,
+        sortingOrder: NtpTime.now().millisecondsSinceEpoch.toDouble(),
+      );
+
   const factory ConnectionData.jrpc({
     required String id,
     required String name,
@@ -162,11 +215,11 @@ sealed class ConnectionData with _$ConnectionData {
     required String name,
     required String group,
     required String endpoint,
-    required NetworkType networkType,
     required String blockExplorerUrl,
     required String manifestUrl,
     required String nativeTokenTicker,
     String? id,
+    NetworkType networkType = NetworkType.custom,
   }) =>
       ConnectionData.jrpc(
         id: id ?? const Uuid().v4(),
@@ -205,6 +258,24 @@ sealed class ConnectionData with _$ConnectionData {
         isPreset: true,
         canBeEdited: canBeEdited,
         sortingOrder: sortingOrder,
+      );
+
+  factory ConnectionData.jrpcTemporary({
+    required String endpoint,
+    NetworkType networkType = NetworkType.custom,
+  }) =>
+      ConnectionData.proto(
+        id: const Uuid().v4(),
+        name: const Uuid().v4(),
+        group: const Uuid().v4(),
+        endpoint: endpoint,
+        networkType: networkType,
+        blockExplorerUrl: '',
+        manifestUrl: '',
+        nativeTokenTicker: '',
+        isPreset: false,
+        canBeEdited: true,
+        sortingOrder: NtpTime.now().millisecondsSinceEpoch.toDouble(),
       );
 
   factory ConnectionData.fromJson(Map<String, dynamic> json) =>

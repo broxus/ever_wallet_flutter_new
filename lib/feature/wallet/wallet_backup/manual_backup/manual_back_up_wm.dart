@@ -24,6 +24,7 @@ ManualBackUpWidgetModel defaultManualBackUpWidgetModelFactory(
     ManualBackUpModel(
       createPrimaryErrorHandler(context),
       inject(),
+      inject(),
       words,
       address,
     ),

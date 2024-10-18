@@ -248,6 +248,9 @@ class $AssetsImagesGen {
 
   $AssetsImagesLangIconsGen get langIcons => const $AssetsImagesLangIconsGen();
 
+  /// File path: assets/images/lightning.svg
+  SvgGenImage get lightning => const SvgGenImage('assets/images/lightning.svg');
+
   /// File path: assets/images/lock.svg
   SvgGenImage get lock => const SvgGenImage('assets/images/lock.svg');
 
@@ -381,6 +384,8 @@ class $AssetsImagesGen {
   /// File path: assets/images/wallet.svg
   SvgGenImage get wallet => const SvgGenImage('assets/images/wallet.svg');
 
+  $AssetsImagesWalletBgGen get walletBg => const $AssetsImagesWalletBgGen();
+
   /// File path: assets/images/web.svg
   SvgGenImage get web => const SvgGenImage('assets/images/web.svg');
 
@@ -445,6 +450,7 @@ class $AssetsImagesGen {
         import,
         importFill,
         key,
+        lightning,
         lock,
         lockBackup,
         logo,
@@ -614,6 +620,17 @@ class $AssetsImagesUserAvatarGen {
 
   /// List of all assets
   List<AssetGenImage> get values => [userAvatar];
+}
+
+class $AssetsImagesWalletBgGen {
+  const $AssetsImagesWalletBgGen();
+
+  /// File path: assets/images/wallet_bg/wallet_bg.png
+  AssetGenImage get walletBg =>
+      const AssetGenImage('assets/images/wallet_bg/wallet_bg.png');
+
+  /// List of all assets
+  List<AssetGenImage> get values => [walletBg];
 }
 
 class $AssetsImagesOnboardingLayer1Gen {

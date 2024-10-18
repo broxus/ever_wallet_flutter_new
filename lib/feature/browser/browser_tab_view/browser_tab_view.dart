@@ -86,6 +86,8 @@ class _BrowserTabViewState extends State<BrowserTabView> {
     nekotonRepository: inject(),
     messengerService: inject(),
     assetsService: inject(),
+    connectionsStorageService: inject(),
+    connectionService: inject(),
   );
 
   Timer? _screenshotTimer;
@@ -151,7 +153,7 @@ class _BrowserTabViewState extends State<BrowserTabView> {
 
     final initialSettings = InAppWebViewSettings(
       clearCache: clearCache,
-      applicationNameForUserAgent: 'EverWalletBrowser',
+      applicationNameForUserAgent: 'SparXWalletBrowser',
       useShouldOverrideUrlLoading: true,
       isInspectable: kDebugMode,
     );

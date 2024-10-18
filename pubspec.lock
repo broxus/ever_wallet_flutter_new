@@ -158,6 +158,15 @@ packages:
       url: "https://pub.dev"
     source: hosted
     version: "2.1.1"
+  broxus_app_links:
+    dependency: "direct main"
+    description:
+      path: "."
+      ref: main
+      resolved-ref: dac035deb52c03c656f4fa080a43104e239dc8d0
+      url: "https://github.com/broxus/broxus-flutter-app-link"
+    source: git
+    version: "0.0.1"
   broxus_flutter_analysis:
     dependency: "direct dev"
     description:
@@ -1445,18 +1454,18 @@ packages:
     dependency: "direct main"
     description:
       name: nekoton_repository
-      sha256: "791ce8a6f197111b63c2cedd3d41aeea22bd2576be005bea093ab45226b7458e"
+      sha256: "9313af96c63f07268dfd4ec08e3fb55431d7222945b16dea0ad936c4ce2b89ac"
       url: "https://pub.dev"
     source: hosted
-    version: "0.37.0-dev.3"
+    version: "0.37.0-dev.4"
   nekoton_webview:
     dependency: "direct main"
     description:
       name: nekoton_webview
-      sha256: e6546deec079f475ba67081b6229f40eb7ea25cf0ed51e0893731eecf74ee646
+      sha256: ebcb13be63eba5e1034dd2ed712abe25eb8b3805613d32b6584e593ee387af78
       url: "https://pub.dev"
     source: hosted
-    version: "0.1.8-dev.1"
+    version: "0.1.8-dev.2"
   nested:
     dependency: transitive
     description:

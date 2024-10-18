@@ -58,7 +58,7 @@ class WalletPrepareTransferPageWidgetModel extends CustomWidgetModel<
     );
 
   late final receiverState = createNotifier<String?>();
-
+  late final commentTextState = createNotifier<String?>();
   late final commentState = createNotifier(false);
 
   final formKey = GlobalKey<FormState>();
@@ -225,6 +225,10 @@ class WalletPrepareTransferPageWidgetModel extends CustomWidgetModel<
     return null;
   }
 
+  void onPressedCleanComment() {
+    commentController.clear();
+  }
+
   Future<void> _init() async {
     final acc = model.findAccountByAddress(model.address);
     if (acc == null) {
@@ -259,6 +263,9 @@ class WalletPrepareTransferPageWidgetModel extends CustomWidgetModel<
   void _initListeners() {
     receiverController.addListener(
       () => receiverState.accept(receiverController.text),
+    );
+    commentController.addListener(
+      () => commentTextState.accept(commentController.text),
     );
 
     WalletPrepareTransferAsset? prevSelectedAsset;

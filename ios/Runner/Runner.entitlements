@@ -4,5 +4,10 @@
 <dict>
 	<key>aps-environment</key>
 	<string>development</string>
+	<key>com.apple.developer.associated-domains</key>
+	<array>
+		<string>applinks:l.sparxwallet.com</string>
+		<string>applinks:l.sparxwallet.com?mode=developer</string>
+	</array>
 </dict>
 </plist>
