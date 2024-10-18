@@ -158,6 +158,15 @@ packages:
       url: "https://pub.dev"
     source: hosted
     version: "2.1.1"
+  broxus_app_links:
+    dependency: "direct main"
+    description:
+      path: "."
+      ref: main
+      resolved-ref: dac035deb52c03c656f4fa080a43104e239dc8d0
+      url: "https://github.com/broxus/broxus-flutter-app-link"
+    source: git
+    version: "0.0.1"
   broxus_flutter_analysis:
     dependency: "direct dev"
     description:
