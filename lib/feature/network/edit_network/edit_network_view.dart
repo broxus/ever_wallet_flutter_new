@@ -3,7 +3,9 @@ import 'package:app/data/models/models.dart';
 import 'package:app/feature/browser/browser.dart';
 import 'package:app/feature/network/edit_network/connection_type.dart';
 import 'package:app/feature/network/network.dart';
+import 'package:app/feature/wallet/wallet_deploy/clipboard_paste_button.dart';
 import 'package:app/generated/generated.dart';
+import 'package:app/utils/clipboard_utils.dart';
 import 'package:collection/collection.dart';
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
@@ -124,7 +126,7 @@ class _EditNetworkViewState extends State<EditNetworkView> {
               _endpointsBuilder(),
               _currencySymbolBuilder(),
               _blockExplorerBuilder(),
-              _tockenListBuilder(),
+              _tokenListBuilder(),
             ],
           ),
         ),
@@ -236,6 +238,9 @@ class _EditNetworkViewState extends State<EditNetworkView> {
       isEnabled: widget.editable,
       validator: _nonOptionalUrlValidator.validate,
       suffixes: [
+        _PasteButton(
+          parentController: controller,
+        ),
         if (index > 0 && widget.editable)
           Padding(
             padding: const EdgeInsets.only(right: DimensSizeV2.d8),
@@ -270,11 +275,16 @@ class _EditNetworkViewState extends State<EditNetworkView> {
         hintText: LocaleKeys.networkBlockExplorerHint.tr(),
         isEnabled: widget.editable,
         validator: _optionalUrlValidator.validate,
+        suffixes: [
+          _PasteButton(
+            parentController: _blockExplorerUrlController,
+          ),
+        ],
       ),
     );
   }
 
-  Widget _tockenListBuilder() {
+  Widget _tokenListBuilder() {
     final theme = context.themeStyleV2;
 
     return _FormField(
@@ -286,6 +296,11 @@ class _EditNetworkViewState extends State<EditNetworkView> {
             hintText: LocaleKeys.networkTokenListHint.tr(),
             isEnabled: widget.editable,
             validator: _optionalUrlValidator.validate,
+            suffixes: [
+              _PasteButton(
+                parentController: _manifestUrlController,
+              ),
+            ],
           ),
           Text.rich(
             TextSpan(
@@ -642,5 +657,30 @@ class _FormField extends StatelessWidget {
         child,
       ],
     );
+  }
+}
+
+class _PasteButton extends StatelessWidget {
+  const _PasteButton({
+    required this.parentController,
+  });
+
+  final TextEditingController parentController;
+
+  @override
+  Widget build(BuildContext context) {
+    return Padding(
+      padding: const EdgeInsets.only(right: DimensSizeV2.d8),
+      child: ClipboardPasteButton(
+        onPressed: _onPressed,
+      ),
+    );
+  }
+
+  Future<void> _onPressed() async {
+    final text = await getClipBoardText();
+    if (text != null) {
+      parentController.text = text;
+    }
   }
 }
