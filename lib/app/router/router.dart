@@ -228,11 +228,7 @@ class AppRouter {
       return null;
     }
 
-    // If the user has seeds and is on onboarding, redirect to wallet
-    if (hasSeeds && currentRoute == AppRoute.onboarding) {
-      // Already onboarded, redirect to wallet
-      return AppRoute.wallet.path;
-    } else if (!hasSeeds && currentRoute != AppRoute.onboarding) {
+    if (!hasSeeds && currentRoute != AppRoute.onboarding) {
       // Not onboarded, redirect to onboarding
       return AppRoute.onboarding.path;
     }
