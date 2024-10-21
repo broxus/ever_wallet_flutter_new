@@ -16,6 +16,7 @@ import 'package:app/feature/wallet/wallet_prepare_transfer/wallet_prepare_transf
 import 'package:app/feature/wallet/wallet_prepare_transfer/wallet_prepare_transfer_page/wallet_prepare_transfer_page.dart';
 import 'package:app/feature/wallet/wallet_prepare_transfer/wallet_prepare_transfer_page/wallet_prepare_transfer_page_model.dart';
 import 'package:app/generated/generated.dart';
+import 'package:app/utils/seed_utils.dart';
 import 'package:app/widgets/amount_input/amount_input_asset.dart';
 import 'package:elementary/elementary.dart';
 import 'package:flutter/foundation.dart';
@@ -191,9 +192,8 @@ class WalletPrepareTransferPageWidgetModel extends CustomWidgetModel<
   void onPressedReceiverClear() => receiverController.clear();
 
   Future<void> onPressedPastAddress() async {
-    final data = await Clipboard.getData(Clipboard.kTextPlain);
-    final text = data?.text?.trim();
-    if (text == null) {
+    final text = await getSeedTextFromClipboard();
+    if (text.isEmpty) {
       model.showError(context, LocaleKeys.addressIsWrong.tr());
       return;
     }
