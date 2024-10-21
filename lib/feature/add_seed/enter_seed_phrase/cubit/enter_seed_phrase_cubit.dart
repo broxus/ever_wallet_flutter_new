@@ -100,19 +100,13 @@ class EnterSeedPhraseCubit extends Cubit<EnterSeedPhraseState>
         if (st is _Tab && st.displayPasteButton == hasText) {
           emit(st.copyWith(displayPasteButton: !hasText));
         }
+
         if (hasText) {
           _checkDebugPhraseGenerating();
         }
 
         _checkInputCompletion(index);
       });
-    });
-    _controllers[0].addListener(() {
-      /// Only for 1-st controller allow paste as button
-      /// It's some bug but Input's paste removes spaces so check with length
-      if (_controllers[0].text.length > _debugPhraseLength) {
-        pastePhrase();
-      }
     });
     _focuses.forEachIndexed((index, f) {
       f.addListener(() => _checkInputCompletion(index));

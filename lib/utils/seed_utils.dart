@@ -1,6 +1,6 @@
 import 'package:app/utils/clipboard_utils.dart';
 
-final _separatorRegExp = RegExp(r'[^a-zA-Z]+');
+final _separatorRegExp = RegExp('[^a-zA-Z]+');
 
 Future<List<String>> getSeedListFromClipboard() async {
   final text = await getClipBoardText();
