@@ -57,13 +57,13 @@ class AccountAssetTabCubit extends Cubit<AccountAssetTabState> {
   late List<TokenContractAsset>? _contracts;
   late int _contractCount = 0;
   late StreamSubscription<List<TokenContractAsset>> _contractsSubscription;
-  late StreamSubscription<(List<TokenContractAsset>, List<TokenContractAsset>)>
+  StreamSubscription<(List<TokenContractAsset>, List<TokenContractAsset>)>?
       _allContractsSubscription;
 
   @override
   Future<void> close() {
     _contractsSubscription.cancel();
-    _allContractsSubscription.cancel();
+    _allContractsSubscription?.cancel();
 
     return super.close();
   }
