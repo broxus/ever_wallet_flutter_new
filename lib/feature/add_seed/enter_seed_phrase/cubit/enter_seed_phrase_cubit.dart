@@ -10,7 +10,6 @@ import 'package:app/utils/seed_utils.dart';
 import 'package:bloc/bloc.dart';
 import 'package:collection/collection.dart';
 import 'package:easy_localization/easy_localization.dart';
-import 'package:flutter/services.dart';
 import 'package:flutter/widgets.dart';
 import 'package:freezed_annotation/freezed_annotation.dart';
 import 'package:logging/logging.dart';
@@ -23,7 +22,6 @@ part 'enter_seed_phrase_state.dart';
 
 /// Regexp that helps splitting seed phrase into words.
 final seedSplitRegExp = RegExp(r'[ |;,:\n.]');
-const _debugPhraseLength = 15;
 
 const _legacySeedPhraseLength = 24;
 
