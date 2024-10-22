@@ -16,6 +16,7 @@ import 'package:logging/logging.dart';
 import 'package:nekoton_repository/nekoton_repository.dart' hide Message;
 
 final seedSplitRegExp = RegExp(r'[ |;,:\n.]');
+const _actualSeedPhraseLength = 12;
 const _legacySeedPhraseLength = 24;
 
 ImportWalletScreenWidgetModel defaultImportWalletWidgetModelFactory(
@@ -109,10 +110,14 @@ class ImportWalletScreenWidgetModel
         }
       }
     }
-
-    if (seed.isEmpty || seed.wordsCount != _currentValue) {
-      model.showValidateError(context, LocaleKeys.incorrectWordsFormat.tr());
-      return;
+    switch (seed.wordsCount) {
+      case _actualSeedPhraseLength:
+        onChangeTab(1);
+      case _legacySeedPhraseLength:
+        onChangeTab(2);
+      default:
+        model.showValidateError(context, LocaleKeys.incorrectWordsFormat.tr());
+        return;
     }
 
     final halfLength = (seed.wordsCount / 2).floor();
