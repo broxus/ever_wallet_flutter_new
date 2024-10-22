@@ -26,6 +26,14 @@ class WalletPageModel extends ElementaryModel {
     return _storageService.cleanStorage(StorageKey.userWithNewWallet());
   }
 
+  Future<bool?> isFirstEntering() async {
+    return _storageService.getValue(StorageKey.firstEntering());
+  }
+
+  Future<void> updateFirstEntering() async {
+    return _storageService.addValue(StorageKey.firstEntering(), false);
+  }
+
   Future<bool?> isShowingBadge(KeyAccount account) async {
     final masterPublicKey = _nekotonRepository.seedList
         .findSeedByAnyPublicKey(account.publicKey)

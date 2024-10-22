@@ -339,6 +339,9 @@ class $AssetsImagesGen {
   SvgGenImage get searchEmpty =>
       const SvgGenImage('assets/images/search_empty.svg');
 
+  /// File path: assets/images/search_x.svg
+  SvgGenImage get searchX => const SvgGenImage('assets/images/search_x.svg');
+
   /// File path: assets/images/seed_phrase_icon.png
   AssetGenImage get seedPhraseIcon =>
       const AssetGenImage('assets/images/seed_phrase_icon.png');
@@ -475,6 +478,7 @@ class $AssetsImagesGen {
         scan,
         search,
         searchEmpty,
+        searchX,
         seedPhraseIcon,
         settings,
         share,

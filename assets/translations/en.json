@@ -603,5 +603,15 @@
   "operationTimeout": "Operation timeout",
   "networkConfig": "Network config",
   "connectionData": "Connection data",
-  "changeAccountName": "Change account name"
+  "changeAccountName": "Change account name",
+  "refreshToFind": "Refresh to find",
+  "newTokensLabel": "{} news tokens",
+  "dontSeeYourToken": "found in this account.\nDon`t see your token?",
+  "emptyTokensDescriptionModal": "Sorry, we couldn’t find anything matching your request.",
+  "selectTokensLabel": "Select tokens",
+  "importSelectedTokensLabel": "Import selected tokens?",
+  "selectedTokensBeImportedInfo": "Only the tokens you’ve selected will appear in your wallet. You can always hide tokens later by searching for them.",
+  "backWord": "Back",
+  "selectAll": "Select all",
+  "hideAll": "Hide all"
 }
