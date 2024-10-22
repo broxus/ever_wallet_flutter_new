@@ -112,9 +112,9 @@ class ImportWalletScreenWidgetModel
     }
     switch (seed.wordsCount) {
       case _actualSeedPhraseLength:
-        onChangeTab(1);
+        onChangeTab(_actualSeedPhraseLength);
       case _legacySeedPhraseLength:
-        onChangeTab(2);
+        onChangeTab(_legacySeedPhraseLength);
       default:
         model.showValidateError(context, LocaleKeys.incorrectWordsFormat.tr());
         return;
