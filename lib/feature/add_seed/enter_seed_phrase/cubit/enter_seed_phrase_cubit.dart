@@ -23,6 +23,7 @@ part 'enter_seed_phrase_state.dart';
 /// Regexp that helps splitting seed phrase into words.
 final seedSplitRegExp = RegExp(r'[ |;,:\n.]');
 
+const _actualSeedPhraseLength = 12;
 const _legacySeedPhraseLength = 24;
 
 const _autoNavigationDelay = Duration(milliseconds: 500);
@@ -234,40 +235,50 @@ class EnterSeedPhraseCubit extends Cubit<EnterSeedPhraseState>
   Future<void> pastePhrase() async {
     final words = await getSeedListFromClipboard();
 
-    if (words.isNotEmpty && words.length == _currentValue) {
-      for (final word in words) {
-        if (!await _checkIsWordValid(word)) {
-          words.clear();
-          break;
+    switch (words.length) {
+      case _actualSeedPhraseLength:
+        changeTab(_actualSeedPhraseLength);
+      case _legacySeedPhraseLength:
+        changeTab(_legacySeedPhraseLength);
+      default:
+    }
+
+    Future.delayed(const Duration(milliseconds: 100), () async {
+      if (words.isNotEmpty && words.length == _currentValue) {
+        for (final word in words) {
+          if (!await _checkIsWordValid(word)) {
+            words.clear();
+            break;
+          }
         }
+      } else {
+        words.clear();
       }
-    } else {
-      words.clear();
-    }
 
-    if (words.isEmpty) {
-      _resetFormAndError();
+      if (words.isEmpty) {
+        _resetFormAndError();
 
-      _showValidateError(LocaleKeys.incorrectWordsFormat.tr());
+        _showValidateError(LocaleKeys.incorrectWordsFormat.tr());
 
-      return;
-    }
+        return;
+      }
 
-    _canAutoNavigate = false;
+      _canAutoNavigate = false;
 
-    words.asMap().forEach((index, word) {
-      _controllers[index].value = TextEditingValue(
-        text: word,
-        selection: TextSelection.fromPosition(
-          TextPosition(offset: word.length),
-        ),
-      );
+      words.asMap().forEach((index, word) {
+        _controllers[index].value = TextEditingValue(
+          text: word,
+          selection: TextSelection.fromPosition(
+            TextPosition(offset: word.length),
+          ),
+        );
+      });
+
+      await _validateFormWithError();
+
+      _canAutoNavigate = true;
+      _checkAutoNavigate();
     });
-
-    await _validateFormWithError();
-
-    _canAutoNavigate = true;
-    _checkAutoNavigate();
   }
 
   /// Check if debug phrase is entered in any text field

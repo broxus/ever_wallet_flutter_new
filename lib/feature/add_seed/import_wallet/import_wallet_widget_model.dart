@@ -110,6 +110,7 @@ class ImportWalletScreenWidgetModel
         }
       }
     }
+
     switch (seed.wordsCount) {
       case _actualSeedPhraseLength:
         onChangeTab(_actualSeedPhraseLength);
