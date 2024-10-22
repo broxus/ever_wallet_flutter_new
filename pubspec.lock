@@ -162,11 +162,11 @@ packages:
     dependency: "direct main"
     description:
       path: "."
-      ref: main
-      resolved-ref: dac035deb52c03c656f4fa080a43104e239dc8d0
+      ref: "v1.0.0"
+      resolved-ref: d089f746e35f0dba24d9a7a6e5a98ef0aa7c0d01
       url: "https://github.com/broxus/broxus-flutter-app-link"
     source: git
-    version: "0.0.1"
+    version: "1.0.0"
   broxus_flutter_analysis:
     dependency: "direct dev"
     description:

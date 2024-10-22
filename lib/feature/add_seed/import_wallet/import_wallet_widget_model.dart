@@ -10,8 +10,8 @@ import 'package:app/feature/add_seed/import_wallet/import_wallet_screen.dart';
 import 'package:app/feature/add_seed/import_wallet/import_wallet_screen_model.dart';
 import 'package:app/feature/constants.dart';
 import 'package:app/generated/generated.dart';
+import 'package:app/utils/seed_utils.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
 import 'package:logging/logging.dart';
 import 'package:nekoton_repository/nekoton_repository.dart' hide Message;
 
@@ -99,13 +99,7 @@ class ImportWalletScreenWidgetModel
   }
 
   Future<void> pasteWords() async {
-    final clipboard = await Clipboard.getData(Clipboard.kTextPlain);
-    var seed = SeedPhraseModel.fromWords(
-      clipboard?.text
-              ?.replaceAll(RegExp(r'\\s+'), ' ')
-              .split(seedSplitRegExp) ??
-          <String>[],
-    );
+    var seed = SeedPhraseModel.fromWords(await getSeedListFromClipboard());
 
     if (seed.isNotEmpty) {
       for (final word in seed.words) {
