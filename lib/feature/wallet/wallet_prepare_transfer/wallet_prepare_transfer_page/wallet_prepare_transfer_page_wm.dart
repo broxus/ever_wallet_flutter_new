@@ -198,7 +198,6 @@ class WalletPrepareTransferPageWidgetModel extends CustomWidgetModel<
       return;
     }
 
-
     if (await validateAddress(Address(address: text!))) {
       receiverController.text = text;
       receiverFocus.unfocus();
