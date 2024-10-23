@@ -31,6 +31,13 @@ class SelectTokenModel extends ElementaryModel {
     return assetsService.allAvailableContractsForAccount(address);
   }
 
+  Future<TokenWalletState> subscribeToken(Address rootTokenContract) {
+    return nekotonRepository.subscribeToken(
+      owner: address,
+      rootTokenContract: rootTokenContract,
+    );
+  }
+
   @override
   void dispose() {
     _seedSubscription.cancel();

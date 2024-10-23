@@ -1,3 +1,5 @@
+// ignore_for_file: invalid_use_of_protected_member
+// ignore_for_file: invalid_use_of_visible_for_testing_member
 import 'package:app/feature/wallet/widgets/account_asset_tab/select_tokens/empty_tokens_body.dart';
 import 'package:app/feature/wallet/widgets/account_asset_tab/select_tokens/select_token_wm.dart';
 import 'package:app/feature/wallet/widgets/account_asset_tab/select_tokens/token_data_element.dart';
@@ -48,6 +50,11 @@ class SelectTokenWidget extends ElementaryWidget<SelectTokenWidgetModel> {
           child: Column(
             mainAxisSize: MainAxisSize.min,
             children: [
+              if (value == null)
+                const Padding(
+                  padding: EdgeInsets.only(bottom: DimensSizeV2.d16),
+                  child: ProgressIndicatorWidget(size: DimensSizeV2.d40),
+                ),
               if (value?.isEmpty ?? false) const EmptyTokensWidget(),
               if (value?.isNotEmpty ?? false)
                 TokensModalBody(

@@ -17,6 +17,7 @@ class AccountAssetTabCubit extends Cubit<AccountAssetTabState> {
   AccountAssetTabCubit(
     KeyAccount account,
     this.isFirstEntering,
+    this.nekotonRepository,
     this.assetsService,
     this.balanceStorage,
   )   : tonWallet = account.account.tonWallet,
@@ -34,14 +35,20 @@ class AccountAssetTabCubit extends Cubit<AccountAssetTabState> {
     if (isFirstEntering) {
       _allContractsSubscription = assetsService
           .allAvailableContractsForAccount(account.address)
-          .listen((value) {
-        value.$1.removeWhere((e) {
-          final tokenBalance = balanceStorage.balances[account.address]
-              ?.tokenBalance(e.address)
-              ?.tokenBalance;
-          return tokenBalance == null || tokenBalance.amount == Fixed.zero;
-        });
-        _contractCount = value.$1.length;
+          .listen((value) async {
+        final assets = <TokenContractAsset>[];
+        for (final asset in value.$1) {
+          final wallet = await nekotonRepository.subscribeToken(
+            owner: tonWallet.address,
+            rootTokenContract: asset.address,
+          );
+
+          if (wallet.wallet?.moneyBalance != null &&
+              wallet.wallet?.moneyBalance.amount != Fixed.zero) {
+            assets.add(asset);
+          }
+        }
+        _contractCount = assets.length;
         emit(
           AccountAssetTabState.accounts(tonWallet, _contracts, _contractCount),
         );
@@ -51,11 +58,12 @@ class AccountAssetTabCubit extends Cubit<AccountAssetTabState> {
 
   final AssetsService assetsService;
   final BalanceStorageService balanceStorage;
+  final NekotonRepository nekotonRepository;
   final TonWalletAsset tonWallet;
   final bool isFirstEntering;
 
   late List<TokenContractAsset>? _contracts;
-  late int _contractCount = 0;
+  int? _contractCount;
   late StreamSubscription<List<TokenContractAsset>> _contractsSubscription;
   StreamSubscription<(List<TokenContractAsset>, List<TokenContractAsset>)>?
       _allContractsSubscription;

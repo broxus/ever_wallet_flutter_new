@@ -626,6 +626,7 @@ abstract class LocaleKeys {
   static const changeAccountName = 'changeAccountName';
   static const refreshToFind = 'refreshToFind';
   static const newTokensLabel = 'newTokensLabel';
+  static const foundInThisAccountLabel = 'foundInThisAccountLabel';
   static const dontSeeYourToken = 'dontSeeYourToken';
   static const emptyTokensDescriptionModal = 'emptyTokensDescriptionModal';
   static const selectTokensLabel = 'selectTokensLabel';

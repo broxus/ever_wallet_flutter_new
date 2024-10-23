@@ -1,3 +1,4 @@
+// ignore_for_file: inference_failure_on_function_return_type
 import 'package:app/feature/wallet/widgets/account_asset_tab/select_tokens/token_data_element.dart';
 import 'package:app/feature/wallet/widgets/account_asset_tab/token_wallet_asset/token_wallet_icon.dart';
 import 'package:app/generated/generated.dart';

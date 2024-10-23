@@ -33,6 +33,7 @@ class AccountAssetsTab extends StatelessWidget {
       create: (_) => AccountAssetTabCubit(
         account,
         isFirstEntering,
+        inject<NekotonRepository>(),
         inject<AssetsService>(),
         inject<BalanceStorageService>(),
       ),
@@ -69,8 +70,8 @@ class AccountAssetsTab extends StatelessWidget {
                   isFirstEntering: isFirstEntering,
                   checkTokensCallback: checkTokensCallback,
                   numberNewTokens: state.when(
-                    empty: () => 0,
-                    accounts: (_, __, newTokens) => newTokens ?? 0,
+                    empty: () => null,
+                    accounts: (_, __, newTokens) => newTokens,
                   ),
                 );
               }
@@ -95,7 +96,7 @@ class _FooterAssetsWidget extends StatelessWidget {
   final Address address;
   final bool isFirstEntering;
   final VoidCallback checkTokensCallback;
-  final int numberNewTokens;
+  final int? numberNewTokens;
 
   @override
   Widget build(BuildContext context) {
@@ -103,6 +104,8 @@ class _FooterAssetsWidget extends StatelessWidget {
     return Column(
       children: [
         const SizedBox(height: DimensSizeV2.d6),
+        if (isFirstEntering && numberNewTokens == null)
+          const ProgressIndicatorWidget(size: DimensSizeV2.d18),
         if (isFirstEntering)
           Padding(
             padding: const EdgeInsets.only(top: DimensSizeV2.d6),
@@ -111,21 +114,26 @@ class _FooterAssetsWidget extends StatelessWidget {
               text: TextSpan(
                 style: theme.textStyles.paragraphSmall,
                 children: [
-                  TextSpan(
-                    text: LocaleKeys.newTokensLabel
-                        .tr(args: ['$numberNewTokens']),
-                    style: theme.textStyles.paragraphSmall
-                        .copyWith(color: theme.colors.content0),
-                    recognizer: TapGestureRecognizer()
-                      ..onTap = () {
-                        showSelectTokesModal(context, address);
-                        if (isFirstEntering) {
-                          checkTokensCallback();
-                        }
-                      },
-                  ),
+                  if (numberNewTokens != null)
+                    TextSpan(
+                      text: LocaleKeys.newTokensLabel
+                          .tr(args: ['$numberNewTokens']),
+                      style: theme.textStyles.paragraphSmall
+                          .copyWith(color: theme.colors.content0),
+                      recognizer: TapGestureRecognizer()
+                        ..onTap = () {
+                          showSelectTokesModal(context, address);
+                          if (isFirstEntering) {
+                            checkTokensCallback();
+                          }
+                        },
+                    ),
+                  if (numberNewTokens != null)
+                    TextSpan(
+                      text: ' ${LocaleKeys.foundInThisAccountLabel.tr()}',
+                    ),
                   const TextSpan(
-                    text: ' ',
+                    text: '\n',
                   ),
                   TextSpan(
                     text: LocaleKeys.dontSeeYourToken.tr(),

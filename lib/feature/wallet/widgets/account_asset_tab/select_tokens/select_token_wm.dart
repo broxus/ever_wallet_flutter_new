@@ -2,7 +2,6 @@ import 'dart:async';
 
 import 'package:app/core/error_handler_factory.dart';
 import 'package:app/core/wm/custom_wm.dart';
-import 'package:app/data/models/models.dart';
 import 'package:app/di/di.dart';
 import 'package:app/feature/wallet/widgets/account_asset_tab/select_tokens/import_selected_tokens_modal.dart';
 import 'package:app/feature/wallet/widgets/account_asset_tab/select_tokens/select_token_model.dart';
@@ -104,26 +103,23 @@ class SelectTokenWidgetModel
   }
 
   Future<void> _init() async {
-    _subscription = model.contractsForAccount().listen((value) {
-      value.$1.removeWhere((e) {
-        final tokenBalance = model.balanceStorage.balances[model.address]
-            ?.tokenBalance(e.address)
-            ?.tokenBalance;
-        return tokenBalance == null || tokenBalance.amount == Fixed.zero;
-      });
-      _data.accept(
-        value.$1.map((e) {
-          final tokenBalance = model.balanceStorage.balances[model.address]
-              ?.tokenBalance(e.address)
-              ?.tokenBalance;
+    _subscription = model.contractsForAccount().listen((value) async {
+      final tokenDataElements = <TokenDataElement>[];
+      for (final asset in value.$1) {
+        final wallet = await model.subscribeToken(asset.address);
 
-          return TokenDataElement(
-            asset: e,
-            isSelected: false,
-            value: tokenBalance,
+        if (wallet.wallet?.moneyBalance != null &&
+            wallet.wallet?.moneyBalance.amount != Fixed.zero) {
+          tokenDataElements.add(
+            TokenDataElement(
+              asset: asset,
+              isSelected: false,
+              value: wallet.wallet?.moneyBalance,
+            ),
           );
-        }).toList(),
-      );
+        }
+      }
+      _data.accept(tokenDataElements);
     });
     _isAllSelected.accept(false);
     _isButtonEnabled.accept(false);
