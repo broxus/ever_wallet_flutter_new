@@ -10,5 +10,6 @@ class AccountAssetTabState with _$AccountAssetTabState {
   const factory AccountAssetTabState.accounts(
     TonWalletAsset tonWallet,
     List<TokenContractAsset>? tokens,
+    int? numberNewTokens,
   ) = _Accounts;
 }

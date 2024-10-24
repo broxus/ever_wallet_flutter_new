@@ -88,7 +88,7 @@ class ContentConfirmAction extends ElementaryWidget<ConfirmActionWidgetModel> {
                   );
                 }
 
-                if (value?.contains(BiometricType.fingerprint) ?? false) {
+                if (value?.isNotEmpty ?? false) {
                   return Padding(
                     padding: const EdgeInsets.only(top: DimensSizeV2.d8),
                     child: PrimaryButton(

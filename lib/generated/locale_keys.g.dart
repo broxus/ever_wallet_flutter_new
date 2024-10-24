@@ -624,4 +624,15 @@ abstract class LocaleKeys {
   static const networkConfig = 'networkConfig';
   static const connectionData = 'connectionData';
   static const changeAccountName = 'changeAccountName';
+  static const refreshToFind = 'refreshToFind';
+  static const newTokensLabel = 'newTokensLabel';
+  static const foundInThisAccountLabel = 'foundInThisAccountLabel';
+  static const dontSeeYourToken = 'dontSeeYourToken';
+  static const emptyTokensDescriptionModal = 'emptyTokensDescriptionModal';
+  static const selectTokensLabel = 'selectTokensLabel';
+  static const importSelectedTokensLabel = 'importSelectedTokensLabel';
+  static const selectedTokensBeImportedInfo = 'selectedTokensBeImportedInfo';
+  static const backWord = 'backWord';
+  static const selectAll = 'selectAll';
+  static const hideAll = 'hideAll';
 }

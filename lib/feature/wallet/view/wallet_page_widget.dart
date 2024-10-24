@@ -4,6 +4,7 @@ import 'package:app/utils/utils.dart';
 import 'package:elementary/elementary.dart';
 import 'package:elementary_helper/elementary_helper.dart';
 import 'package:flutter/material.dart';
+import 'package:nekoton_repository/nekoton_repository.dart';
 
 class WalletPageWidget extends ElementaryWidget<WalletPageWidgetModel> {
   const WalletPageWidget({
@@ -14,9 +15,10 @@ class WalletPageWidget extends ElementaryWidget<WalletPageWidgetModel> {
   @override
   Widget build(WalletPageWidgetModel wm) {
     return Scaffold(
-      body: StateNotifierBuilder(
-        listenableState: wm.currentAccount,
-        builder: (_, currentAccount) {
+      body: DoubleSourceBuilder<KeyAccount?, bool>(
+        firstSource: wm.currentAccount,
+        secondSource: wm.isFirstEntering,
+        builder: (_, currentAccount, isFirstEntering) {
           return currentAccount?.let(
                 (value) => StateNotifierBuilder(
                   listenableState: wm.isShowingBadge,
@@ -25,7 +27,9 @@ class WalletPageWidget extends ElementaryWidget<WalletPageWidgetModel> {
                     currentAccount: value,
                     scrollController: wm.scrollController,
                     isShowingBadge: isShowingBadge ?? false,
+                    isFirstEntering: isFirstEntering ?? false,
                     finishedBackupCallback: wm.hideShowingBadge,
+                    checkTokensCallback: wm.hideNewTokensLabel,
                   ),
                 ),
               ) ??

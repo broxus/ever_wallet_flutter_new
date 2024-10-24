@@ -33,6 +33,7 @@ class WalletPageWidgetModel
 
   late final _currentAccount = createNotifierFromStream(model.currentAccount);
   late final _isShowingBadgeNotifier = createNotifier<bool>();
+  late final _isFirstEnteringNotifier = createNotifier<bool>();
 
   StreamSubscription<PressBottomNavigationEvent>? _pressWalletSubscribtion;
 
@@ -40,12 +41,15 @@ class WalletPageWidgetModel
 
   ListenableState<bool> get isShowingBadge => _isShowingBadgeNotifier;
 
+  ListenableState<bool> get isFirstEntering => _isFirstEnteringNotifier;
+
   @override
   void initWidgetModel() {
     super.initWidgetModel();
     _pressWalletSubscribtion = primaryBus
         .on<PressBottomNavigationEvent>()
         .listen(_onPressWalletBottomNavigation);
+    _checkFirstEntering();
   }
 
   @override
@@ -60,6 +64,10 @@ class WalletPageWidgetModel
     if (account != null) {
       model.hideShowingBadge(account);
     }
+  }
+
+  void hideNewTokensLabel() {
+    _isFirstEnteringNotifier.accept(false);
   }
 
   void _onPressWalletBottomNavigation(PressBottomNavigationEvent event) {
@@ -98,6 +106,14 @@ class WalletPageWidgetModel
       );
     } else {
       _isShowingBadgeNotifier.accept(true);
+    }
+  }
+
+  Future<void> _checkFirstEntering() async {
+    final isFirstEntering = await model.isFirstEntering() ?? false;
+    _isFirstEnteringNotifier.accept(isFirstEntering);
+    if (isFirstEntering) {
+      await model.updateFirstEntering();
     }
   }
 }

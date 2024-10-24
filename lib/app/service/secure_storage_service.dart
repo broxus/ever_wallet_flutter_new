@@ -38,6 +38,8 @@ class SecureStorageService {
 class StorageKey {
   factory StorageKey.userWithNewWallet() => StorageKey._('userWithNewWallet');
 
+  factory StorageKey.firstEntering() => StorageKey._('firstEntering');
+
   factory StorageKey.showingManualBackupBadge(String masterKey) =>
       StorageKey._('showingManualBackupBadge', masterKey);
 
