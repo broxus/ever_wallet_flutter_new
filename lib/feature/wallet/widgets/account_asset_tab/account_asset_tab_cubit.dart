@@ -16,6 +16,7 @@ part 'account_asset_tab_state.dart';
 class AccountAssetTabCubit extends Cubit<AccountAssetTabState> {
   AccountAssetTabCubit(
     KeyAccount account,
+    // ignore: avoid_positional_boolean_parameters
     this.isFirstEntering,
     this.nekotonRepository,
     this.assetsService,

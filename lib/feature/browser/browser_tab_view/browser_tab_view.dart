@@ -454,7 +454,7 @@ class _BrowserTabViewState extends State<BrowserTabView> with ContextMixin {
     if (url != null) {
       contextSafe
           ?.read<BrowserTabsBloc>()
-          .add(BrowserTabsEvent.setUrl(id: widget.tab.id, uri: url!));
+          .add(BrowserTabsEvent.setUrl(id: widget.tab.id, uri: url));
     }
   }
 
