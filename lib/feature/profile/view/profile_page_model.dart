@@ -1,4 +1,3 @@
-import 'package:app/app/service/secure_storage_service.dart';
 import 'package:app/app/service/service.dart';
 import 'package:app/generated/generated.dart';
 import 'package:elementary/elementary.dart';
@@ -12,7 +11,6 @@ class ProfilePageModel extends ElementaryModel {
     this._biometryService,
     this._versionService,
     this._storageManagerService,
-    this._storageService,
   ) : super(errorHandler: errorHandler);
 
   final NekotonRepository _nekotonRepository;
@@ -20,7 +18,6 @@ class ProfilePageModel extends ElementaryModel {
   final BiometryService _biometryService;
   final AppVersionService _versionService;
   final StorageManagerService _storageManagerService;
-  final SecureStorageService _storageService;
 
   String get appVersion =>
       '${_versionService.appVersion}.${_versionService.buildNumber}';
@@ -33,7 +30,8 @@ class ProfilePageModel extends ElementaryModel {
   Stream<bool> get biometryEnabledStream => _biometryService.enabledStream;
 
   Future<void> logout() async {
-    await _storageService.cleanStorage(StorageKey.firstEntering());
+    await _nekotonRepository.updateSubscriptions([]);
+    await _nekotonRepository.updateTokenSubscriptions([]);
     await _storageManagerService.clearSensitiveData();
     await _nekotonRepository.keyStore.reloadKeystore();
   }
