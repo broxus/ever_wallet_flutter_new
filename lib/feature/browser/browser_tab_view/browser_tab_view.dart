@@ -2,6 +2,7 @@ import 'dart:async';
 import 'dart:collection';
 import 'dart:io';
 
+import 'package:app/core/wm/context_wm_mixin.dart';
 import 'package:app/data/models/models.dart';
 import 'package:app/di/di.dart';
 import 'package:app/feature/browser/browser.dart';
@@ -51,7 +52,7 @@ class BrowserTabView extends StatefulWidget {
   State<BrowserTabView> createState() => _BrowserTabViewState();
 }
 
-class _BrowserTabViewState extends State<BrowserTabView> {
+class _BrowserTabViewState extends State<BrowserTabView> with ContextMixin {
   static const _allowSchemes = [
     'http',
     'https',
@@ -450,9 +451,11 @@ class _BrowserTabViewState extends State<BrowserTabView> {
 
     _inpageProvider.url = url;
 
-    context
-        .read<BrowserTabsBloc>()
-        .add(BrowserTabsEvent.setUrl(id: widget.tab.id, uri: url!));
+    if (url != null) {
+      contextSafe
+          ?.read<BrowserTabsBloc>()
+          .add(BrowserTabsEvent.setUrl(id: widget.tab.id, uri: url!));
+    }
   }
 
   Future<void> _setState({
@@ -483,11 +486,7 @@ class _BrowserTabViewState extends State<BrowserTabView> {
     String? errorMessage,
     String? title,
   }) {
-    if (!context.mounted) {
-      return;
-    }
-
-    context.read<BrowserTabsBloc>().add(
+    contextSafe?.read<BrowserTabsBloc>().add(
           BrowserTabsEvent.setState(
             id: widget.tab.id,
             state: state,
@@ -504,11 +503,7 @@ class _BrowserTabViewState extends State<BrowserTabView> {
   void _addSetScreenshotEvent({
     required String imageId,
   }) {
-    if (!context.mounted) {
-      return;
-    }
-
-    context.read<BrowserTabsBloc>().add(
+    contextSafe?.read<BrowserTabsBloc>().add(
           BrowserTabsEvent.setScreenshot(
             id: widget.tab.id,
             imageId: imageId,
@@ -517,7 +512,7 @@ class _BrowserTabViewState extends State<BrowserTabView> {
   }
 
   void _setBrowserTabCallbacks() {
-    context.read<BrowserTabsBloc>().add(
+    contextSafe?.read<BrowserTabsBloc>().add(
           BrowserTabsEvent.setState(
             id: widget.tab.id,
             goBack: _onGoBack,

@@ -1,3 +1,4 @@
+import 'package:collection/collection.dart';
 import 'package:flutter/material.dart';
 import 'package:ui_components_lib/ui_components_lib.dart';
 
@@ -110,7 +111,8 @@ class CommonSelectDropdown<T> extends StatelessWidget {
                     child: currentValue == null
                         ? const SizedBox.shrink()
                         : _itemBuilder(
-                            values.firstWhere((e) => e.value == currentValue),
+                            value: values.firstWhereOrNull(
+                                (e) => e.value == currentValue),
                           ),
                   ),
                   Icon(
@@ -126,8 +128,8 @@ class CommonSelectDropdown<T> extends StatelessWidget {
     );
   }
 
-  Widget _itemBuilder(
-    CommonSheetDropdownItem<T> value, {
+  Widget _itemBuilder({
+    CommonSheetDropdownItem<T>? value,
     bool isSelected = false,
     VoidCallback? onPressed,
   }) {
@@ -137,10 +139,10 @@ class CommonSelectDropdown<T> extends StatelessWidget {
 
         return CommonListTile(
           height: DimensSize.d32,
-          leading: value.icon,
+          leading: value?.icon,
           padding: EdgeInsets.zero,
           onPressed: onPressed,
-          titleText: value.title,
+          titleText: value?.title,
           trailing: isSelected
               ? Icon(Icons.check_rounded, color: colors.textPrimary)
               : null,
@@ -165,7 +167,7 @@ class CommonSelectDropdown<T> extends StatelessWidget {
             children: values
                 .map(
                   (e) => _itemBuilder(
-                    e,
+                    value: e,
                     isSelected: e == currentValue,
                     onPressed: () {
                       Navigator.of(context).pop();

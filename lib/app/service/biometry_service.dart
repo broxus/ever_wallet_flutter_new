@@ -107,9 +107,11 @@ class BiometryService {
   }) async {
     // if user want disable biometry - do it.
     // if user want enable biometry - ask auth.
-    if (!isEnabled || isEnabled && await _authenticate(localizedReason)) {
-      await storage.setIsBiometryEnabled(isEnabled: isEnabled);
-    }
+    try {
+      if (!isEnabled || isEnabled && await _authenticate(localizedReason)) {
+        await storage.setIsBiometryEnabled(isEnabled: isEnabled);
+      }
+    } catch (_) {}
   }
 
   /// Save password of [publicKey] to storage if biometry is available on device
@@ -150,8 +152,12 @@ class BiometryService {
 
   /// Check if password of [publicKey] was stored before.
   Future<bool> hasKeyPassword(PublicKey publicKey) async {
-    final password = await storage.getKeyPassword(publicKey);
-    return password != null;
+    try {
+      final password = await storage.getKeyPassword(publicKey);
+      return password != null;
+    } catch (_) {
+      return false;
+    }
   }
 
   /// This method typically called after password of seed was changed.
