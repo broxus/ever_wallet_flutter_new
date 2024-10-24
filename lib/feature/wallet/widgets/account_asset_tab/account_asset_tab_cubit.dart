@@ -38,14 +38,21 @@ class AccountAssetTabCubit extends Cubit<AccountAssetTabState> {
           .listen((value) async {
         final assets = <TokenContractAsset>[];
         for (final asset in value.$1) {
-          final wallet = await nekotonRepository.subscribeToken(
-            owner: tonWallet.address,
-            rootTokenContract: asset.address,
-          );
+          try {
+            final wallet = await nekotonRepository.subscribeToken(
+              owner: tonWallet.address,
+              rootTokenContract: asset.address,
+            );
 
-          if (wallet.wallet?.moneyBalance != null &&
-              wallet.wallet?.moneyBalance.amount != Fixed.zero) {
-            assets.add(asset);
+            if (wallet.wallet?.moneyBalance != null &&
+                wallet.wallet?.moneyBalance.amount != Fixed.zero) {
+              assets.add(asset);
+            }
+          } finally {
+            nekotonRepository.unsubscribeToken(
+              tonWallet.address,
+              asset.address,
+            );
           }
         }
         _contractCount = assets.length;

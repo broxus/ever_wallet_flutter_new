@@ -106,17 +106,21 @@ class SelectTokenWidgetModel
     _subscription = model.contractsForAccount().listen((value) async {
       final tokenDataElements = <TokenDataElement>[];
       for (final asset in value.$1) {
-        final wallet = await model.subscribeToken(asset.address);
+        try {
+          final wallet = await model.subscribeToken(asset.address);
 
-        if (wallet.wallet?.moneyBalance != null &&
-            wallet.wallet?.moneyBalance.amount != Fixed.zero) {
-          tokenDataElements.add(
-            TokenDataElement(
-              asset: asset,
-              isSelected: false,
-              value: wallet.wallet?.moneyBalance,
-            ),
-          );
+          if (wallet.wallet?.moneyBalance != null &&
+              wallet.wallet?.moneyBalance.amount != Fixed.zero) {
+            tokenDataElements.add(
+              TokenDataElement(
+                asset: asset,
+                isSelected: false,
+                value: wallet.wallet?.moneyBalance,
+              ),
+            );
+          }
+        } finally {
+          model.unsubscribeToken(asset.address);
         }
       }
       _data.accept(tokenDataElements);

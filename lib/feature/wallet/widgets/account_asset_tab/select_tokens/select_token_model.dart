@@ -38,6 +38,13 @@ class SelectTokenModel extends ElementaryModel {
     );
   }
 
+  void unsubscribeToken(Address rootTokenContract) {
+    nekotonRepository.unsubscribeToken(
+      address,
+      rootTokenContract,
+    );
+  }
+
   @override
   void dispose() {
     _seedSubscription.cancel();
