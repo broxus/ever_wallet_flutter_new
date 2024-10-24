@@ -112,7 +112,8 @@ class CommonSelectDropdown<T> extends StatelessWidget {
                         ? const SizedBox.shrink()
                         : _itemBuilder(
                             value: values.firstWhereOrNull(
-                                (e) => e.value == currentValue),
+                              (e) => e.value == currentValue,
+                            ),
                           ),
                   ),
                   Icon(
