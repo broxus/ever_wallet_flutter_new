@@ -1,5 +1,5 @@
 import 'package:app/app/service/identify/identy_icon_data.dart';
-import 'package:app/app/service/secure_storage_service.dart';
+import 'package:app/app/service/service.dart';
 
 class AccountsColorsCollection {
   AccountsColorsCollection(
