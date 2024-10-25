@@ -8,7 +8,6 @@ environment:
   flutter: ">=3.10.3"
 
 dependencies:
-  android_intent_plus: ^5.2.0
   app_settings: 5.1.1
   auto_size_text_field: 2.2.3
   barcode_widget: 2.0.4

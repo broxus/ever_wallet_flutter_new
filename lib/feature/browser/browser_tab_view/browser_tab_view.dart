@@ -631,13 +631,18 @@ class _BrowserTabViewState extends State<BrowserTabView> with ContextMixin {
 
     final scheme = navigationAction.request.url?.scheme;
 
-    if (!_allowSchemes.contains(scheme) && await canLaunchUrl(url)) {
+    if ((!_allowSchemes.contains(scheme) || _checkIsCustomAppLink(url)) &&
+        await canLaunchUrl(url)) {
       await launchUrl(url);
 
       return NavigationActionPolicy.CANCEL;
     }
 
     return NavigationActionPolicy.ALLOW;
+  }
+
+  bool _checkIsCustomAppLink(Uri url) {
+    return url.origin.startsWith('http') && !url.origin.contains('www');
   }
 }
 
