@@ -120,7 +120,7 @@ class TokenWalletDetailsCubit extends Cubit<TokenWalletDetailsState> {
   }
 
   void _updateState() {
-    if(isClosed) {
+    if (isClosed) {
       return;
     }
     emit(
