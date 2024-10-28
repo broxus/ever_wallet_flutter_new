@@ -89,7 +89,7 @@ class _ErrorMessageState extends State<_ErrorMessage> {
               ),
               address,
               TextSpan(
-                text: LocaleKeys.txTreeSimulationErrorComputePhase_0.tr(
+                text: LocaleKeys.txTreeSimulationErrorComputePhase_1.tr(
                   args: [widget.item.error.code?.toString() ?? ''],
                 ),
               ),
