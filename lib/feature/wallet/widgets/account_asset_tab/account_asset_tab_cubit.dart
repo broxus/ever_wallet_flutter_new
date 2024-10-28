@@ -16,11 +16,11 @@ part 'account_asset_tab_state.dart';
 class AccountAssetTabCubit extends Cubit<AccountAssetTabState> {
   AccountAssetTabCubit(
     KeyAccount account,
-    this.isFirstEntering,
     this.nekotonRepository,
     this.assetsService,
-    this.balanceStorage,
-  )   : tonWallet = account.account.tonWallet,
+    this.balanceStorage, {
+    required this.isFirstEntering,
+  })  : tonWallet = account.account.tonWallet,
         super(
           AccountAssetTabState.accounts(account.account.tonWallet, null, 0),
         ) {
