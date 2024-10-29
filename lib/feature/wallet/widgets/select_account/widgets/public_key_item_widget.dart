@@ -1,4 +1,4 @@
-import 'package:app/app/router/page_transitions.dart';
+// ignore_for_file: inference_failure_on_function_return_type
 import 'package:app/utils/utils.dart';
 import 'package:app/widgets/widgets.dart';
 import 'package:elementary_helper/elementary_helper.dart';

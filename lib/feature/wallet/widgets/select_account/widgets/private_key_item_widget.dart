@@ -1,3 +1,4 @@
+// ignore_for_file: inference_failure_on_function_return_type
 import 'package:app/feature/wallet/widgets/select_account/select_account_data.dart';
 import 'package:app/feature/wallet/widgets/select_account/widgets/public_key_item_widget.dart';
 import 'package:elementary_helper/elementary_helper.dart';
@@ -7,7 +8,7 @@ import 'package:nekoton_repository/nekoton_repository.dart';
 import 'package:ui_components_lib/ui_components_lib.dart';
 
 class PrivateKeyItemWidget extends StatelessWidget {
-  PrivateKeyItemWidget({
+  const PrivateKeyItemWidget({
     required this.seedWithInfo,
     required this.currentAccount,
     required this.onTap,
