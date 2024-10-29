@@ -30,22 +30,21 @@ import '../app/service/currencies_service.dart' as _i52;
 import '../app/service/currency_convert_service.dart' as _i18;
 import '../app/service/current_accounts_service.dart' as _i51;
 import '../app/service/current_seed_service.dart' as _i47;
-import '../app/service/identify/i_identify_icons_service.dart' as _i43;
-import '../app/service/identify/identify_icons_service.dart' as _i44;
+import '../app/service/identify/i_identify_icons_service.dart' as _i40;
+import '../app/service/identify/identify_icons_service.dart' as _i41;
 import '../app/service/js_servcie.dart' as _i10;
 import '../app/service/localization/service/localization_service.dart' as _i16;
 import '../app/service/messenger/service/messenger_service.dart' as _i13;
 import '../app/service/navigation/service/navigation_service.dart' as _i12;
 import '../app/service/nekoton_related/connection_service/connection_service.dart'
     as _i33;
-import '../app/service/nekoton_related/current_key_service.dart' as _i42;
+import '../app/service/nekoton_related/current_key_service.dart' as _i44;
 import '../app/service/network_connection/network_connection_service.dart'
     as _i17;
-import '../app/service/ntp_service.dart' as _i40;
+import '../app/service/ntp_service.dart' as _i42;
 import '../app/service/permissions_service.dart' as _i37;
 import '../app/service/remote/dns_resolve_service.dart' as _i20;
 import '../app/service/remote/http_service.dart' as _i19;
-import '../app/service/secure_storage_service.dart' as _i22;
 import '../app/service/service.dart' as _i34;
 import '../app/service/staking_service.dart' as _i38;
 import '../app/service/storage_service/account_seed_storage_service.dart'
@@ -64,7 +63,8 @@ import '../app/service/storage_service/browser_tabs_storage_service.dart'
 import '../app/service/storage_service/connections_storage_service.dart'
     as _i29;
 import '../app/service/storage_service/general_storage_service.dart' as _i32;
-import '../app/service/storage_service/nekoton_repository_service.dart' as _i41;
+import '../app/service/storage_service/nekoton_repository_service.dart' as _i43;
+import '../app/service/storage_service/secure_storage_service.dart' as _i22;
 import '../app/service/storage_service/storage_manager_service.dart' as _i50;
 import '../app/service/storage_service/token_wallet_storage_service/token_wallet_storage_service.dart'
     as _i6;
@@ -156,18 +156,18 @@ extension GetItInjectableX on _i1.GetIt {
           gh<_i35.NekotonRepository>(),
           gh<_i23.Dio>(),
         ));
-    gh.singleton<_i40.NtpService>(
-      () => _i40.NtpService(gh<_i34.AppLifecycleService>()),
+    gh.lazySingleton<_i40.IIdentifyIconsService>(
+        () => _i41.IdentifyIconsService(gh<_i34.SecureStorageService>()));
+    gh.singleton<_i42.NtpService>(
+      () => _i42.NtpService(gh<_i34.AppLifecycleService>()),
       dispose: (i) => i.dispose(),
     );
-    gh.singleton<_i41.NekotonRepositoryStorageService>(() =>
-        _i41.NekotonRepositoryStorageService(gh<_i35.NekotonRepository>()));
-    gh.singleton<_i42.CurrentKeyService>(() => _i42.CurrentKeyService(
+    gh.singleton<_i43.NekotonRepositoryStorageService>(() =>
+        _i43.NekotonRepositoryStorageService(gh<_i35.NekotonRepository>()));
+    gh.singleton<_i44.CurrentKeyService>(() => _i44.CurrentKeyService(
           gh<_i34.GeneralStorageService>(),
           gh<_i35.NekotonRepository>(),
         ));
-    gh.lazySingleton<_i43.IIdentifyIconsService>(
-        () => _i44.IdentifyIconsService(gh<_i22.SecureStorageService>()));
     gh.singleton<_i45.NekotonStorageService>(
         () => _i45.NekotonStorageService(gh<_i25.EncryptedStorage>()));
     gh.singleton<_i46.BiometryService>(() => _i46.BiometryService(
@@ -197,6 +197,7 @@ extension GetItInjectableX on _i1.GetIt {
           gh<_i34.TokenWalletStorageService>(),
           gh<_i34.ConnectionsStorageService>(),
           gh<_i34.BalanceStorageService>(),
+          gh<_i34.SecureStorageService>(),
         ));
     gh.singleton<_i51.CurrentAccountsService>(() => _i51.CurrentAccountsService(
           gh<_i35.NekotonRepository>(),

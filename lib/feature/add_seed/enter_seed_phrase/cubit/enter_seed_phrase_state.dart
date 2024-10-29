@@ -13,7 +13,7 @@ class EnterSeedPhraseState with _$EnterSeedPhraseState {
   const factory EnterSeedPhraseState.tab({
     required List<int> allowedValues,
     required int currentValue,
-    required List<EnterSeedPhraseInputModel> inputs,
+    required List<EnterSeedPhraseInputState> inputs,
     required bool displayPasteButton,
   }) = _Tab;
 }

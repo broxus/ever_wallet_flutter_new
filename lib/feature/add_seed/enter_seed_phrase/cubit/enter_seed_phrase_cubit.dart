@@ -2,7 +2,7 @@ import 'package:app/app/service/messenger/message.dart';
 import 'package:app/app/service/messenger/service/messenger_service.dart';
 import 'package:app/app/service/network_connection/network_connection_service.dart';
 import 'package:app/di/di.dart';
-import 'package:app/feature/add_seed/enter_seed_phrase/cubit/enter_seed_phrase_input_model.dart';
+import 'package:app/feature/add_seed/enter_seed_phrase/cubit/enter_seed_phrase_input_state.dart';
 import 'package:app/feature/constants.dart';
 import 'package:app/generated/locale_keys.g.dart';
 import 'package:app/utils/mixins/connection_mixin.dart';
@@ -50,7 +50,7 @@ class EnterSeedPhraseCubit extends Cubit<EnterSeedPhraseState>
   late int _currentValue;
 
   /// Models of input
-  late List<EnterSeedPhraseInputModel> _inputModels;
+  late List<EnterSeedPhraseInputState> _inputModels;
 
   @override
   @protected
@@ -82,7 +82,7 @@ class EnterSeedPhraseCubit extends Cubit<EnterSeedPhraseState>
 
     _inputModels = List.generate(
       max,
-      (index) => EnterSeedPhraseInputModel.input(
+      (index) => EnterSeedPhraseInputState.input(
         controller: _controllers[index],
         focus: _focuses[index],
         index: index,
@@ -394,7 +394,7 @@ class EnterSeedPhraseCubit extends Cubit<EnterSeedPhraseState>
         inputModel is EnterSeedPhraseInput) {
       // if input entered, not focused and not completed yet
       _inputModels[index] =
-          _inputModels[index] = EnterSeedPhraseInputModel.input(
+          _inputModels[index] = EnterSeedPhraseInputState.input(
         controller: controller,
         focus: focus,
         index: index,
@@ -404,7 +404,7 @@ class EnterSeedPhraseCubit extends Cubit<EnterSeedPhraseState>
     } else if (controller.text.isEmpty &&
         inputModel is EnterSeedPhraseEntered) {
       // if input is empty but still completed
-      _inputModels[index] = EnterSeedPhraseInputModel.input(
+      _inputModels[index] = EnterSeedPhraseInputState.input(
         controller: controller,
         focus: focus,
         index: index,
