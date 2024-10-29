@@ -9,3 +9,25 @@ targets:
       json_serializable:
         options:
           explicit_to_json: true
+        generate_for:
+          - lib/app/service/*.dart
+          - lib/app/service/**/*.dart
+          - lib/data/**/*.dart
+          - lib/http/dto/*.dart
+      retrofit_generator:
+        generate_for:
+          - lib/http/api/*.dart
+      injectable_generator:injectable_builder:
+        generate_for:
+          - lib/di/*.dart
+          - lib/app/service/*.dart
+          - lib/app/service/**/*.dart
+          - lib/http/dio_module.dart
+          - lib/http/repository/*.dart
+      freezed:
+        generate_for:
+          - lib/app/service/dto/*.dart
+          - lib/data/**/*.dart
+          - lib/**/*_cubit.dart
+          - lib/**/*_bloc.dart
+          - lib/**/*_state.dart
