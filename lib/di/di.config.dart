@@ -8,12 +8,13 @@
 // coverage:ignore-file
 
 // ignore_for_file: no_leading_underscores_for_library_prefixes
-import 'package:encrypted_storage/encrypted_storage.dart' as _i24;
+import 'package:dio/dio.dart' as _i23;
+import 'package:encrypted_storage/encrypted_storage.dart' as _i25;
 import 'package:encrypted_storage/encrypted_storage.module.dart' as _i4;
 import 'package:fancy_logger/fancy_logger.module.dart' as _i3;
 import 'package:get_it/get_it.dart' as _i1;
 import 'package:injectable/injectable.dart' as _i2;
-import 'package:nekoton_repository/nekoton_repository.dart' as _i34;
+import 'package:nekoton_repository/nekoton_repository.dart' as _i35;
 import 'package:nekoton_repository/nekoton_repository.module.dart' as _i5;
 
 import '../app/service/app_lifecycle_service.dart' as _i14;
@@ -21,54 +22,58 @@ import '../app/service/app_links/app_links_service.dart' as _i11;
 import '../app/service/app_permissions_service.dart' as _i15;
 import '../app/service/app_version_service.dart' as _i8;
 import '../app/service/approvals_service.dart' as _i21;
-import '../app/service/assets_service.dart' as _i35;
-import '../app/service/balance_service.dart' as _i49;
-import '../app/service/biometry_service.dart' as _i44;
+import '../app/service/assets_service.dart' as _i36;
+import '../app/service/balance_service.dart' as _i53;
+import '../app/service/biometry_service.dart' as _i46;
 import '../app/service/bootstrap_service.dart' as _i9;
-import '../app/service/currencies_service.dart' as _i48;
+import '../app/service/currencies_service.dart' as _i52;
 import '../app/service/currency_convert_service.dart' as _i18;
-import '../app/service/current_accounts_service.dart' as _i47;
-import '../app/service/current_seed_service.dart' as _i45;
-import '../app/service/identify/i_identify_icons_service.dart' as _i38;
-import '../app/service/identify/identify_icons_service.dart' as _i39;
+import '../app/service/current_accounts_service.dart' as _i51;
+import '../app/service/current_seed_service.dart' as _i47;
+import '../app/service/identify/i_identify_icons_service.dart' as _i43;
+import '../app/service/identify/identify_icons_service.dart' as _i44;
 import '../app/service/js_servcie.dart' as _i10;
 import '../app/service/localization/service/localization_service.dart' as _i16;
 import '../app/service/messenger/service/messenger_service.dart' as _i13;
 import '../app/service/navigation/service/navigation_service.dart' as _i12;
 import '../app/service/nekoton_related/connection_service/connection_service.dart'
-    as _i32;
+    as _i33;
 import '../app/service/nekoton_related/current_key_service.dart' as _i42;
 import '../app/service/network_connection/network_connection_service.dart'
     as _i17;
 import '../app/service/ntp_service.dart' as _i40;
-import '../app/service/permissions_service.dart' as _i36;
+import '../app/service/permissions_service.dart' as _i37;
 import '../app/service/remote/dns_resolve_service.dart' as _i20;
 import '../app/service/remote/http_service.dart' as _i19;
-import '../app/service/service.dart' as _i33;
-import '../app/service/staking_service.dart' as _i37;
+import '../app/service/secure_storage_service.dart' as _i22;
+import '../app/service/service.dart' as _i34;
+import '../app/service/staking_service.dart' as _i38;
 import '../app/service/storage_service/account_seed_storage_service.dart'
-    as _i43;
-import '../app/service/storage_service/balance_storage_service.dart' as _i25;
+    as _i45;
+import '../app/service/storage_service/balance_storage_service.dart' as _i26;
 import '../app/service/storage_service/browser_bookmarks_storage_service.dart'
-    as _i30;
+    as _i31;
 import '../app/service/storage_service/browser_favicon_url_storage_service.dart'
-    as _i26;
-import '../app/service/storage_service/browser_history_storage_service.dart'
-    as _i29;
-import '../app/service/storage_service/browser_permissions_storage_service.dart'
-    as _i23;
-import '../app/service/storage_service/browser_tabs_storage_service.dart'
     as _i27;
-import '../app/service/storage_service/connections_storage_service.dart'
+import '../app/service/storage_service/browser_history_storage_service.dart'
+    as _i30;
+import '../app/service/storage_service/browser_permissions_storage_service.dart'
+    as _i24;
+import '../app/service/storage_service/browser_tabs_storage_service.dart'
     as _i28;
-import '../app/service/storage_service/general_storage_service.dart' as _i31;
+import '../app/service/storage_service/connections_storage_service.dart'
+    as _i29;
+import '../app/service/storage_service/general_storage_service.dart' as _i32;
 import '../app/service/storage_service/nekoton_repository_service.dart' as _i41;
-import '../app/service/storage_service/secure_storage_service.dart' as _i22;
-import '../app/service/storage_service/storage_manager_service.dart' as _i46;
+import '../app/service/storage_service/storage_manager_service.dart' as _i50;
 import '../app/service/storage_service/token_wallet_storage_service/token_wallet_storage_service.dart'
     as _i6;
 import '../app/service/storage_service/ton_wallet_storage_service/ton_wallet_storage_service.dart'
     as _i7;
+import '../app/service/token_wallets_service.dart' as _i48;
+import '../http/dio_module.dart' as _i54;
+import '../http/http.dart' as _i49;
+import '../http/repository/token_repository.dart' as _i39;
 
 extension GetItInjectableX on _i1.GetIt {
 // initializes the registration of main-scope dependencies inside of GetIt
@@ -84,6 +89,7 @@ extension GetItInjectableX on _i1.GetIt {
     await _i3.FancyLoggerPackageModule().init(gh);
     await _i4.EncryptedStoragePackageModule().init(gh);
     await _i5.NekotonRepositoryPackageModule().init(gh);
+    final dioModule = _$DioModule();
     gh.singleton<_i6.TokenWalletStorageService>(
         () => _i6.TokenWalletStorageService());
     gh.singleton<_i7.TonWalletStorageService>(
@@ -111,93 +117,105 @@ extension GetItInjectableX on _i1.GetIt {
         () => _i21.BrowserApprovalsService());
     gh.lazySingleton<_i22.SecureStorageService>(
         () => _i22.SecureStorageService());
-    gh.singleton<_i23.BrowserPermissionsStorageService>(() =>
-        _i23.BrowserPermissionsStorageService(gh<_i24.EncryptedStorage>()));
-    gh.singleton<_i25.BalanceStorageService>(
-        () => _i25.BalanceStorageService(gh<_i24.EncryptedStorage>()));
-    gh.singleton<_i26.BrowserFaviconURLStorageService>(() =>
-        _i26.BrowserFaviconURLStorageService(gh<_i24.EncryptedStorage>()));
-    gh.singleton<_i27.BrowserTabsStorageService>(
-        () => _i27.BrowserTabsStorageService(gh<_i24.EncryptedStorage>()));
-    gh.singleton<_i28.ConnectionsStorageService>(
-        () => _i28.ConnectionsStorageService(gh<_i24.EncryptedStorage>()));
-    gh.singleton<_i29.BrowserHistoryStorageService>(
-        () => _i29.BrowserHistoryStorageService(gh<_i24.EncryptedStorage>()));
-    gh.singleton<_i30.BrowserBookmarksStorageService>(
-        () => _i30.BrowserBookmarksStorageService(gh<_i24.EncryptedStorage>()));
-    gh.singleton<_i31.GeneralStorageService>(
-        () => _i31.GeneralStorageService(gh<_i24.EncryptedStorage>()));
-    gh.singleton<_i32.ConnectionService>(() => _i32.ConnectionService(
-          gh<_i33.ConnectionsStorageService>(),
-          gh<_i34.NekotonRepository>(),
-          gh<_i33.HttpService>(),
+    gh.lazySingleton<_i23.Dio>(() => dioModule.getDio());
+    gh.singleton<_i24.BrowserPermissionsStorageService>(() =>
+        _i24.BrowserPermissionsStorageService(gh<_i25.EncryptedStorage>()));
+    gh.singleton<_i26.BalanceStorageService>(
+        () => _i26.BalanceStorageService(gh<_i25.EncryptedStorage>()));
+    gh.singleton<_i27.BrowserFaviconURLStorageService>(() =>
+        _i27.BrowserFaviconURLStorageService(gh<_i25.EncryptedStorage>()));
+    gh.singleton<_i28.BrowserTabsStorageService>(
+        () => _i28.BrowserTabsStorageService(gh<_i25.EncryptedStorage>()));
+    gh.singleton<_i29.ConnectionsStorageService>(
+        () => _i29.ConnectionsStorageService(gh<_i25.EncryptedStorage>()));
+    gh.singleton<_i30.BrowserHistoryStorageService>(
+        () => _i30.BrowserHistoryStorageService(gh<_i25.EncryptedStorage>()));
+    gh.singleton<_i31.BrowserBookmarksStorageService>(
+        () => _i31.BrowserBookmarksStorageService(gh<_i25.EncryptedStorage>()));
+    gh.singleton<_i32.GeneralStorageService>(
+        () => _i32.GeneralStorageService(gh<_i25.EncryptedStorage>()));
+    gh.singleton<_i33.ConnectionService>(() => _i33.ConnectionService(
+          gh<_i34.ConnectionsStorageService>(),
+          gh<_i35.NekotonRepository>(),
+          gh<_i34.HttpService>(),
         ));
-    gh.singleton<_i35.AssetsService>(() => _i35.AssetsService(
-          gh<_i34.NekotonRepository>(),
-          gh<_i33.HttpService>(),
-          gh<_i33.GeneralStorageService>(),
+    gh.singleton<_i36.AssetsService>(() => _i36.AssetsService(
+          gh<_i35.NekotonRepository>(),
+          gh<_i34.HttpService>(),
+          gh<_i34.GeneralStorageService>(),
         ));
-    gh.singleton<_i36.PermissionsService>(() => _i36.PermissionsService(
-          gh<_i33.BrowserPermissionsStorageService>(),
-          gh<_i34.NekotonRepository>(),
+    gh.singleton<_i37.PermissionsService>(() => _i37.PermissionsService(
+          gh<_i34.BrowserPermissionsStorageService>(),
+          gh<_i35.NekotonRepository>(),
         ));
-    gh.singleton<_i37.StakingService>(() => _i37.StakingService(
-          gh<_i34.NekotonRepository>(),
-          gh<_i33.HttpService>(),
+    gh.singleton<_i38.StakingService>(() => _i38.StakingService(
+          gh<_i35.NekotonRepository>(),
+          gh<_i34.HttpService>(),
         ));
-    gh.lazySingleton<_i38.IIdentifyIconsService>(
-        () => _i39.IdentifyIconsService(gh<_i33.SecureStorageService>()));
+    gh.singleton<_i39.TokenRepository>(() => _i39.TokenRepository(
+          gh<_i35.NekotonRepository>(),
+          gh<_i23.Dio>(),
+        ));
     gh.singleton<_i40.NtpService>(
-      () => _i40.NtpService(gh<_i33.AppLifecycleService>()),
+      () => _i40.NtpService(gh<_i34.AppLifecycleService>()),
       dispose: (i) => i.dispose(),
     );
     gh.singleton<_i41.NekotonRepositoryStorageService>(() =>
-        _i41.NekotonRepositoryStorageService(gh<_i34.NekotonRepository>()));
+        _i41.NekotonRepositoryStorageService(gh<_i35.NekotonRepository>()));
     gh.singleton<_i42.CurrentKeyService>(() => _i42.CurrentKeyService(
-          gh<_i33.GeneralStorageService>(),
-          gh<_i34.NekotonRepository>(),
+          gh<_i34.GeneralStorageService>(),
+          gh<_i35.NekotonRepository>(),
         ));
-    gh.singleton<_i43.NekotonStorageService>(
-        () => _i43.NekotonStorageService(gh<_i24.EncryptedStorage>()));
-    gh.singleton<_i44.BiometryService>(() => _i44.BiometryService(
-          gh<_i33.GeneralStorageService>(),
-          gh<_i33.AppLifecycleService>(),
+    gh.lazySingleton<_i43.IIdentifyIconsService>(
+        () => _i44.IdentifyIconsService(gh<_i22.SecureStorageService>()));
+    gh.singleton<_i45.NekotonStorageService>(
+        () => _i45.NekotonStorageService(gh<_i25.EncryptedStorage>()));
+    gh.singleton<_i46.BiometryService>(() => _i46.BiometryService(
+          gh<_i34.GeneralStorageService>(),
+          gh<_i34.AppLifecycleService>(),
         ));
-    gh.singleton<_i45.CurrentSeedService>(() => _i45.CurrentSeedService(
-          gh<_i34.NekotonRepository>(),
-          gh<_i33.CurrentKeyService>(),
+    gh.singleton<_i47.CurrentSeedService>(() => _i47.CurrentSeedService(
+          gh<_i35.NekotonRepository>(),
+          gh<_i34.CurrentKeyService>(),
         ));
-    gh.singleton<_i46.StorageManagerService>(() => _i46.StorageManagerService(
-          gh<_i33.GeneralStorageService>(),
-          gh<_i33.BrowserTabsStorageService>(),
-          gh<_i33.BrowserHistoryStorageService>(),
-          gh<_i33.BrowserBookmarksStorageService>(),
-          gh<_i33.BrowserPermissionsStorageService>(),
-          gh<_i33.BrowserFaviconURLStorageService>(),
-          gh<_i33.NekotonStorageService>(),
-          gh<_i33.NekotonRepositoryStorageService>(),
-          gh<_i33.TonWalletStorageService>(),
-          gh<_i33.TokenWalletStorageService>(),
-          gh<_i33.ConnectionsStorageService>(),
-          gh<_i33.BalanceStorageService>(),
-          gh<_i33.SecureStorageService>(),
+    gh.singleton<_i48.TokenWalletsService>(() => _i48.TokenWalletsService(
+          gh<_i35.NekotonRepository>(),
+          gh<_i34.HttpService>(),
+          gh<_i34.AssetsService>(),
+          gh<_i49.TokenRepository>(),
         ));
-    gh.singleton<_i47.CurrentAccountsService>(() => _i47.CurrentAccountsService(
-          gh<_i34.NekotonRepository>(),
-          gh<_i33.CurrentKeyService>(),
-          gh<_i24.EncryptedStorage>(),
+    gh.singleton<_i50.StorageManagerService>(() => _i50.StorageManagerService(
+          gh<_i34.GeneralStorageService>(),
+          gh<_i34.BrowserTabsStorageService>(),
+          gh<_i34.BrowserHistoryStorageService>(),
+          gh<_i34.BrowserBookmarksStorageService>(),
+          gh<_i34.BrowserPermissionsStorageService>(),
+          gh<_i34.BrowserFaviconURLStorageService>(),
+          gh<_i34.NekotonStorageService>(),
+          gh<_i34.NekotonRepositoryStorageService>(),
+          gh<_i34.TonWalletStorageService>(),
+          gh<_i34.TokenWalletStorageService>(),
+          gh<_i34.ConnectionsStorageService>(),
+          gh<_i34.BalanceStorageService>(),
         ));
-    gh.singleton<_i48.CurrenciesService>(() => _i48.CurrenciesService(
-          httpService: gh<_i33.HttpService>(),
-          nekotonRepository: gh<_i34.NekotonRepository>(),
-          currentAccounts: gh<_i33.CurrentAccountsService>(),
-          storageService: gh<_i33.GeneralStorageService>(),
-          appLifecycle: gh<_i33.AppLifecycleService>(),
+    gh.singleton<_i51.CurrentAccountsService>(() => _i51.CurrentAccountsService(
+          gh<_i35.NekotonRepository>(),
+          gh<_i34.CurrentKeyService>(),
+          gh<_i25.EncryptedStorage>(),
         ));
-    gh.singleton<_i49.BalanceService>(() => _i49.BalanceService(
-          gh<_i34.NekotonRepository>(),
-          gh<_i33.CurrenciesService>(),
+    gh.singleton<_i52.CurrenciesService>(() => _i52.CurrenciesService(
+          httpService: gh<_i34.HttpService>(),
+          nekotonRepository: gh<_i35.NekotonRepository>(),
+          currentAccounts: gh<_i34.CurrentAccountsService>(),
+          storageService: gh<_i34.GeneralStorageService>(),
+          appLifecycle: gh<_i34.AppLifecycleService>(),
+        ));
+    gh.singleton<_i53.BalanceService>(() => _i53.BalanceService(
+          gh<_i35.NekotonRepository>(),
+          gh<_i34.CurrenciesService>(),
         ));
     return this;
   }
 }
+
+class _$DioModule extends _i54.DioModule {}
