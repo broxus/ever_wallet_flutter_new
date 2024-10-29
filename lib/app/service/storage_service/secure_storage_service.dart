@@ -1,11 +1,26 @@
+import 'package:app/app/service/service.dart';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:injectable/injectable.dart';
 
 @lazySingleton
-class SecureStorageService {
+class SecureStorageService extends AbstractStorageService {
   final FlutterSecureStorage _storage = const FlutterSecureStorage(
     aOptions: AndroidOptions(encryptedSharedPreferences: true),
   );
+
+  @override
+  Future<void> init() => Future.value();
+
+  @override
+  Future<void> clearSensitiveData() async {
+    final entries = await _storage.readAll();
+
+    for (final key in entries.keys) {
+      if (key.startsWith('sparx:')) {
+        await _storage.delete(key: key);
+      }
+    }
+  }
 
   Future<void> addValue<T>(StorageKey key, T value) async {
     await _storage.write(key: key.value, value: value.toString());
@@ -36,15 +51,16 @@ class SecureStorageService {
 }
 
 class StorageKey {
-  factory StorageKey.userWithNewWallet() => StorageKey._('userWithNewWallet');
+  factory StorageKey.userWithNewWallet() =>
+      StorageKey._('sparx:userWithNewWallet');
 
-  factory StorageKey.firstEntering() => StorageKey._('firstEntering');
+  factory StorageKey.firstEntering() => StorageKey._('sparx:firstEntering');
 
   factory StorageKey.showingManualBackupBadge(String masterKey) =>
-      StorageKey._('showingManualBackupBadge', masterKey);
+      StorageKey._('sparx:showingManualBackupBadge', masterKey);
 
   factory StorageKey.accountColor(String key) =>
-      StorageKey._('accountColor', key);
+      StorageKey._('sparx:accountColor', key);
 
   StorageKey._(this._baseKey, [this._entityKey]);
 

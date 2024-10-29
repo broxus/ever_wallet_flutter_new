@@ -44,6 +44,14 @@ class TokenTransferInfoWidget
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           _InfoRow(
+            label: LocaleKeys.token.tr(),
+            child: Text(
+              amount.currency.symbol,
+              style: theme.textStyles.labelSmall,
+            ),
+          ),
+          const SizedBox(height: DimensSizeV2.d16),
+          _InfoRow(
             label: LocaleKeys.amountWord.tr(),
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.end,
@@ -67,7 +75,11 @@ class TokenTransferInfoWidget
                       );
                     }
 
-                    return AmountWidget.fromMoney(amount: amount, icon: icon);
+                    return AmountWidget.fromMoney(
+                      amount: amount,
+                      icon: icon,
+                      includeSymbol: false,
+                    );
                   },
                 ),
                 StateNotifierBuilder(
@@ -108,6 +120,7 @@ class TokenTransferInfoWidget
                         path: wm.nativeTokenIcon,
                         size: DimensSizeV2.d20,
                       ),
+                      includeSymbol: false,
                     ),
                     if (attachedAmountPrice != null)
                       AmountWidget.dollars(
@@ -141,8 +154,13 @@ class TokenTransferInfoWidget
                       fee ?? BigInt.zero,
                       wm.nativeCurrency,
                     ),
+                    icon: TonWalletIconWidget(
+                      path: wm.nativeTokenIcon,
+                      size: DimensSizeV2.d20,
+                    ),
                     sign: '~ ',
                     useDefaultFormat: false,
+                    includeSymbol: false,
                   ),
                   if (feeError != null)
                     Text(
