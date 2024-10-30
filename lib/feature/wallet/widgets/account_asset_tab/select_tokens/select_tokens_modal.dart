@@ -41,29 +41,47 @@ class SelectTokenWidget extends ElementaryWidget<SelectTokenWidgetModel> {
       thirdSource: wm.loading,
       builder: (_, value, allSelected, loading) {
         final isEmpty = (value?.isEmpty ?? false) && loading == false;
+        final isButtonEnabled =
+            !(loading ?? false) && (value?.any((e) => e.isSelected) ?? false);
 
-        return SingleChildScrollView(
-          child: Column(
-            mainAxisSize: MainAxisSize.min,
-            children: [
-              if (isEmpty) const EmptyTokensWidget(),
-              if (!isEmpty)
-                TokensModalBody(
-                  assets: value!,
-                  onChecked: wm.checkTokenSelection,
-                  onClickAll: wm.clickAll,
-                  isAllSelected: allSelected ?? false,
-                  isLoading: loading ?? false,
-                  onClickImport: wm.clickImport,
+        return Column(
+          mainAxisSize: MainAxisSize.min,
+          children: [
+            Flexible(
+              child: SingleChildScrollView(
+                child: Column(
+                  mainAxisSize: MainAxisSize.min,
+                  children: [
+                    if (isEmpty)
+                      const EmptyTokensWidget()
+                    else
+                      TokensModalBody(
+                        assets: value!,
+                        onChecked: wm.checkTokenSelection,
+                        onClickAll: wm.clickAll,
+                        isAllSelected: allSelected ?? false,
+                        isLoading: loading ?? false,
+                        onClickImport: wm.clickImport,
+                      ),
+                  ],
                 ),
-              PrimaryButton(
-                buttonShape: ButtonShape.pill,
-                title: LocaleKeys.backWord.tr(),
-                onPressed: () => Navigator.of(wm.context).pop(),
               ),
-              const SizedBox(height: DimensSizeV2.d12),
-            ],
-          ),
+            ),
+            const SizedBox(height: DimensSizeV2.d12),
+            if (value != null)
+              AccentButton(
+                buttonShape: ButtonShape.pill,
+                title: LocaleKeys.importWalletButtonText.tr(),
+                onPressed: isButtonEnabled ? wm.clickImport : null,
+              ),
+            const SizedBox(height: DimensSizeV2.d8),
+            PrimaryButton(
+              buttonShape: ButtonShape.pill,
+              title: LocaleKeys.backWord.tr(),
+              onPressed: () => Navigator.of(wm.context).pop(),
+            ),
+            const SizedBox(height: DimensSizeV2.d12),
+          ],
         );
       },
     );

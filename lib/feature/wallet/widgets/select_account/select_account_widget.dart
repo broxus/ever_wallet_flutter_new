@@ -4,7 +4,6 @@ import 'package:app/feature/wallet/widgets/select_account/select_account_wm.dart
 import 'package:app/feature/wallet/widgets/select_account/widgets/private_key_item_widget.dart';
 import 'package:app/feature/wallet/widgets/select_account/widgets/seed_phrase_item_widget.dart';
 import 'package:app/generated/generated.dart';
-import 'package:app/utils/utils.dart';
 import 'package:elementary/elementary.dart';
 import 'package:elementary_helper/elementary_helper.dart';
 import 'package:flutter/material.dart';

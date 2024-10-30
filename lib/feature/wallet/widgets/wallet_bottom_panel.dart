@@ -50,7 +50,7 @@ class _WalletBottomPanelState extends State<WalletBottomPanel> {
           top: DimensSizeV2.d24,
           left: DimensSizeV2.d16,
           right: DimensSizeV2.d16,
-          bottom: DimensSizeV2.d48,
+          bottom: DimensSizeV2.d8,
         ),
         sliver: ValueListenableBuilder<WalletBottomPanelTab>(
           valueListenable: currentTabNotifier,

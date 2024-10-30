@@ -99,8 +99,8 @@ class SelectTokenWidgetModel
     final account = model.getAccount(widget.address);
 
     if (_data.value != null && account != null) {
-      Navigator.of(context).pop();
       await showImportSelectedTokensModal(context, () async {
+        Navigator.of(context).pop();
         await account.addTokenWallets(
           _data.value!
               .where((entry) => entry.isSelected)

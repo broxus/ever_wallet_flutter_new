@@ -27,8 +27,6 @@ class TokensModalBody extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final theme = context.themeStyleV2;
-    final isButtonEnabled =
-        (isAllSelected || assets.any((e) => e.isSelected)) && !isLoading;
 
     return Column(
       mainAxisSize: MainAxisSize.min,
@@ -65,12 +63,6 @@ class TokensModalBody extends StatelessWidget {
             child: ProgressIndicatorWidget(size: DimensSizeV2.d40),
           ),
         const SizedBox(height: DimensSizeV2.d24),
-        AccentButton(
-          buttonShape: ButtonShape.pill,
-          title: LocaleKeys.importWalletButtonText.tr(),
-          onPressed: isButtonEnabled ? onClickImport : null,
-        ),
-        const SizedBox(height: DimensSizeV2.d8),
       ],
     );
   }
@@ -123,11 +115,20 @@ class _TokenItem extends StatelessWidget {
             ],
           ),
         ),
-        CommonCheckboxInput(
-          checked: tokenDataElement.isSelected,
-          onChanged: (v) {
-            onChecked(tokenDataElement.copyWith(isSelected: v));
-          },
+        InkWell(
+          splashColor: Colors.transparent,
+          onTap: () => onChecked(
+            tokenDataElement.copyWith(isSelected: !tokenDataElement.isSelected),
+          ),
+          child: Padding(
+            padding: const EdgeInsets.all(DimensSizeV2.d10),
+            child: CommonCheckboxInput(
+              checked: tokenDataElement.isSelected,
+              onChanged: (v) {
+                onChecked(tokenDataElement.copyWith(isSelected: v));
+              },
+            ),
+          ),
         ),
       ],
     );
