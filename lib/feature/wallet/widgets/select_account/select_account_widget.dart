@@ -41,28 +41,24 @@ class SelectAccountWidget extends ElementaryWidget<SelectAccountWidgetModel> {
               return SingleChildScrollView(
                 child: Column(
                   mainAxisSize: MainAxisSize.min,
-                  children: [
-                    for (int index = 0;
-                        index < (list?.length ?? 0);
-                        index++) ...[
-                      Padding(
+                  children: List.generate(
+                    list?.length ?? 0,
+                    (index) {
+                      final data = list![index];
+                      final isExpanded = data.hasCurrentAccount(currentAccount);
+                      return Padding(
                         padding: const EdgeInsets.only(bottom: DimensSizeV2.d8),
-                        child: list!.let((list) {
-                          final data = list[index];
-                          final isExpanded =
-                              data.hasCurrentAccount(currentAccount);
-                          return _SeedItem(
-                            data: data,
-                            isExpanded: isExpanded,
-                            key: ValueKey(data.name),
-                            currentAccount: currentAccount,
-                            onTapAccount: (item) => wm.onSelect(item),
-                            getBalanceEntity: wm.getBalanceEntity,
-                          );
-                        }),
-                      ),
-                    ],
-                  ],
+                        child: _SeedItem(
+                          data: data,
+                          isExpanded: isExpanded,
+                          key: ValueKey(data.name),
+                          currentAccount: currentAccount,
+                          onTapAccount: (item) => wm.onSelect(item),
+                          getBalanceEntity: wm.getBalanceEntity,
+                        ),
+                      );
+                    },
+                  ),
                 ),
               );
             },
@@ -110,13 +106,7 @@ class _SeedItem extends StatefulWidget {
 }
 
 class _SeedItemState extends State<_SeedItem> {
-  bool _isExpanded = false;
-
-  @override
-  void initState() {
-    super.initState();
-    _isExpanded = widget.isExpanded;
-  }
+  late bool _isExpanded = widget.isExpanded;
 
   @override
   Widget build(BuildContext context) {
