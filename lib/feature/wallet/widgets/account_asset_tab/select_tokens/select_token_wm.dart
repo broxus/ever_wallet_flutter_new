@@ -81,8 +81,10 @@ class SelectTokenWidgetModel
 
   Future<void> clickImport() async {
     if (_data.value != null) {
-      Navigator.of(context).pop();
       await showImportSelectedTokensModal(context, () async {
+        if (context.mounted) {
+          Navigator.of(context).pop();
+        }
         await model.cachedAccount?.addTokenWallets(
           _data.value!
               .where((entry) => entry.isSelected)

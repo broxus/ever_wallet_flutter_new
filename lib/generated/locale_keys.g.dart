@@ -255,6 +255,7 @@ abstract class LocaleKeys {
   static const browserWord = 'browserWord';
   static const profileWord = 'profileWord';
   static const manageAssets = 'manageAssets';
+  static const orWord = 'orWord';
   static const searchWord = 'searchWord';
   static const customToken = 'customToken';
   static const enterAssetName = 'enterAssetName';

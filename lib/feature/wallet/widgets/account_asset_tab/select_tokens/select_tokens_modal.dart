@@ -46,33 +46,48 @@ class SelectTokenWidget extends ElementaryWidget<SelectTokenWidgetModel> {
       secondSource: wm.isAllSelected,
       thirdSource: wm.isButtonEnabled,
       builder: (_, value, allSelected, enabledButton) {
-        return SingleChildScrollView(
-          child: Column(
-            mainAxisSize: MainAxisSize.min,
-            children: [
-              if (value == null)
-                const Padding(
-                  padding: EdgeInsets.only(bottom: DimensSizeV2.d16),
-                  child: ProgressIndicatorWidget(size: DimensSizeV2.d40),
+        return Column(
+          mainAxisSize: MainAxisSize.min,
+          children: [
+            Flexible(
+              child: SingleChildScrollView(
+                child: Column(
+                  mainAxisSize: MainAxisSize.min,
+                  children: [
+                    if (value == null)
+                      const Padding(
+                        padding: EdgeInsets.only(bottom: DimensSizeV2.d16),
+                        child: ProgressIndicatorWidget(size: DimensSizeV2.d40),
+                      ),
+                    if (value?.isEmpty ?? false) const EmptyTokensWidget(),
+                    if (value?.isNotEmpty ?? false)
+                      TokensModalBody(
+                        assets: value!,
+                        onChecked: wm.checkTokenSelection,
+                        onClickAll: wm.clickAll,
+                        isAllSelected: allSelected ?? false,
+                        isButtonEnabled: enabledButton ?? false,
+                        onClickImport: wm.clickImport,
+                      ),
+                  ],
                 ),
-              if (value?.isEmpty ?? false) const EmptyTokensWidget(),
-              if (value?.isNotEmpty ?? false)
-                TokensModalBody(
-                  assets: value!,
-                  onChecked: wm.checkTokenSelection,
-                  onClickAll: wm.clickAll,
-                  isAllSelected: allSelected ?? false,
-                  isButtonEnabled: enabledButton ?? false,
-                  onClickImport: wm.clickImport,
-                ),
-              PrimaryButton(
-                buttonShape: ButtonShape.pill,
-                title: LocaleKeys.backWord.tr(),
-                onPressed: () => Navigator.of(wm.context).pop(),
               ),
-              const SizedBox(height: DimensSizeV2.d12),
-            ],
-          ),
+            ),
+            const SizedBox(height: DimensSizeV2.d12),
+            if (value != null)
+              AccentButton(
+                buttonShape: ButtonShape.pill,
+                title: LocaleKeys.importWalletButtonText.tr(),
+                onPressed: enabledButton ?? false ? wm.clickImport : null,
+              ),
+            const SizedBox(height: DimensSizeV2.d8),
+            PrimaryButton(
+              buttonShape: ButtonShape.pill,
+              title: LocaleKeys.backWord.tr(),
+              onPressed: () => Navigator.of(wm.context).pop(),
+            ),
+            const SizedBox(height: DimensSizeV2.d12),
+          ],
         );
       },
     );

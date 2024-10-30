@@ -56,13 +56,7 @@ class TokensModalBody extends StatelessWidget {
               )
               .toList(),
         ),
-        const SizedBox(height: DimensSizeV2.d24),
-        AccentButton(
-          buttonShape: ButtonShape.pill,
-          title: LocaleKeys.importWalletButtonText.tr(),
-          onPressed: isButtonEnabled ? onClickImport : null,
-        ),
-        const SizedBox(height: DimensSizeV2.d8),
+        const SizedBox(height: DimensSizeV2.d12),
       ],
     );
   }
@@ -115,11 +109,20 @@ class _TokenItem extends StatelessWidget {
             ],
           ),
         ),
-        CommonCheckboxInput(
-          checked: tokenDataElement.isSelected,
-          onChanged: (v) {
-            onChecked(tokenDataElement.copyWith(isSelected: v));
-          },
+        InkWell(
+          splashColor: Colors.transparent,
+          onTap: () => onChecked(
+            tokenDataElement.copyWith(isSelected: !tokenDataElement.isSelected),
+          ),
+          child: Padding(
+            padding: const EdgeInsets.all(DimensSizeV2.d10),
+            child: CommonCheckboxInput(
+              checked: tokenDataElement.isSelected,
+              onChanged: (v) {
+                onChecked(tokenDataElement.copyWith(isSelected: v));
+              },
+            ),
+          ),
         ),
       ],
     );
