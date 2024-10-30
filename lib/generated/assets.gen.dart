@@ -20,8 +20,15 @@ class $AssetsAbiGen {
   /// File path: assets/abi/StEverVault.abi.min.json
   String get stEverVaultAbiMin => 'assets/abi/StEverVault.abi.min.json';
 
+  /// File path: assets/abi/TokenRoot.abi.json
+  String get tokenRootAbi => 'assets/abi/TokenRoot.abi.json';
+
+  /// File path: assets/abi/TokenWallet.abi.json
+  String get tokenWalletAbi => 'assets/abi/TokenWallet.abi.json';
+
   /// List of all assets
-  List<String> get values => [stEverAccountAbiMin, stEverVaultAbiMin];
+  List<String> get values =>
+      [stEverAccountAbiMin, stEverVaultAbiMin, tokenRootAbi, tokenWalletAbi];
 }
 
 class $AssetsImagesGen {

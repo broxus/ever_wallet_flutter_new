@@ -108,4 +108,7 @@ class EverTransportStrategy extends TransportStrategy {
     // 2 EVER
     stakeWithdrawAttachedFee: BigInt.parse('3000000000'), // 3 EVER
   );
+
+  @override
+  String? get tokenApiBaseUrl => 'https://tokens.everscan.io/v1';
 }

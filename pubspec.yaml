@@ -21,6 +21,7 @@ dependencies:
   clock: 1.1.1
   collection: 1.18.0
   crypto: 3.0.5
+  dio: ^5.7.0
   dotted_border: 2.1.0
   easy_localization: 3.0.6
   easy_logger: 0.0.2
@@ -57,7 +58,7 @@ dependencies:
   mobile_scanner: 3.4.1
   money2: 5.2.1
   money2_fixer: 2.0.0
-  nekoton_repository: 0.37.0-dev.6
+  nekoton_repository: 0.37.0-dev.7
   nekoton_webview: 0.1.8-dev.2
   ntp: 2.0.0
   package_info_plus: ^8.0.0
@@ -69,6 +70,7 @@ dependencies:
     git:
       url: https://github.com/knightsforce/flutter-render-metrics
       ref: optional-render-manager
+  retrofit: ^4.4.1
   rxdart: 0.27.7
   sentry_flutter: ^7.0.0
   share_plus: 10.0.2
@@ -104,6 +106,7 @@ dev_dependencies:
   json_serializable: 6.8.0
   melos: 6.0.0
   mocktail: 1.0.3
+  retrofit_generator: 9.1.4
   test: ^1.21.0
 
 flutter_gen:

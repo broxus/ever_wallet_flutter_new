@@ -12,7 +12,7 @@ class TokensModalBody extends StatelessWidget {
     required this.onChecked,
     required this.isAllSelected,
     required this.onClickAll,
-    required this.isButtonEnabled,
+    required this.isLoading,
     required this.onClickImport,
     super.key,
   });
@@ -21,12 +21,13 @@ class TokensModalBody extends StatelessWidget {
   final Function(TokenDataElement) onChecked;
   final VoidCallback onClickAll;
   final bool isAllSelected;
-  final bool isButtonEnabled;
+  final bool isLoading;
   final VoidCallback onClickImport;
 
   @override
   Widget build(BuildContext context) {
     final theme = context.themeStyleV2;
+
     return Column(
       mainAxisSize: MainAxisSize.min,
       children: [
@@ -56,7 +57,12 @@ class TokensModalBody extends StatelessWidget {
               )
               .toList(),
         ),
-        const SizedBox(height: DimensSizeV2.d12),
+        if (isLoading)
+          const Padding(
+            padding: EdgeInsets.only(top: DimensSizeV2.d16),
+            child: ProgressIndicatorWidget(size: DimensSizeV2.d40),
+          ),
+        const SizedBox(height: DimensSizeV2.d24),
       ],
     );
   }
