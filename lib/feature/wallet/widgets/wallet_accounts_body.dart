@@ -1,8 +1,6 @@
 import 'package:app/feature/wallet/wallet.dart';
 import 'package:app/feature/wallet/wallet_backup/back_up_badge.dart';
-import 'package:app/generated/generated.dart';
 import 'package:flutter/material.dart';
-import 'package:lucide_icons_flutter/lucide_icons.dart';
 import 'package:nekoton_repository/nekoton_repository.dart';
 import 'package:ui_components_lib/v2/ui_components_lib_v2.dart';
 
@@ -33,14 +31,6 @@ class WalletAccountsBody extends StatelessWidget {
             else
               const ProgressIndicatorWidget(size: DimensSizeV2.d80),
             const SizedBox(height: DimensSizeV2.d16),
-            PrimaryButton(
-              buttonShape: ButtonShape.pill,
-              buttonSize: ButtonSize.small,
-              icon: LucideIcons.dock,
-              title: LocaleKeys.accounts.tr(),
-              isFullWidth: false,
-              onPressed: () => _showSelectAccountSheet(context),
-            ),
             WalletAccountActions(
               currentAccount: account,
             ),
@@ -51,11 +41,5 @@ class WalletAccountsBody extends StatelessWidget {
         ),
       ),
     );
-  }
-
-  Future<void> _showSelectAccountSheet(BuildContext context) async {
-    if (!context.mounted) return;
-
-    await showSelectAccountSheet(context);
   }
 }
