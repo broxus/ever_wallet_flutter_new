@@ -27,7 +27,7 @@ class PublicKeyItemWidget extends StatelessWidget {
     final theme = context.themeStyleV2;
     return Column(
       children: [
-        for (var i = 0; i < accounts.length; i++) ...[
+        for (var i = 0; i < accounts.length; i++)
           GestureDetector(
             onTap: () => onTap(accounts[i]),
             child: Container(
@@ -106,27 +106,7 @@ class PublicKeyItemWidget extends StatelessWidget {
               ),
             ),
           ),
-        ],
       ],
     );
   }
 }
-
-/*StateNotifierBuilder(
-                        listenableState: balance,
-                        builder: (_, balance) =>
-                        balance?.let(
-                              (value) => Expanded(
-                            child: AmountWidget.fromMoney(
-                              amount: balance,
-                              style: theme.textStyles.labelXSmall.copyWith(
-                                color: theme.colors.content3,
-                              ),
-                            ),
-                          ),
-                        ) ??
-                            ProgressIndicatorWidget(
-                              size: DimensSizeV2.d16,
-                              color: theme.colors.content3,
-                            ),
-                      ),*/

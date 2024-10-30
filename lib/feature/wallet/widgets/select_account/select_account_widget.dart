@@ -37,24 +37,35 @@ class SelectAccountWidget extends ElementaryWidget<SelectAccountWidgetModel> {
           child: DoubleSourceBuilder(
             firstSource: wm.list,
             secondSource: wm.currentAccount,
-            builder: (_, list, currentAccount) => ListView.separated(
-              itemCount: list?.length ?? 0,
-              separatorBuilder: (_, __) =>
-                  const SizedBox(height: DimensSizeV2.d8),
-              itemBuilder: (_, index) => list?.let(
-                (list) {
-                  final data = list[index];
-                  return _SeedItem(
-                    data: data,
-                    isExpanded: data.hasCurrentAccount(currentAccount),
-                    key: ValueKey(data),
-                    currentAccount: currentAccount,
-                    onTapAccount: (item) => wm.onSelect(item),
-                    getBalanceEntity: wm.getBalanceEntity,
-                  );
-                },
-              ),
-            ),
+            builder: (_, list, currentAccount) {
+              return SingleChildScrollView(
+                child: Column(
+                  mainAxisSize: MainAxisSize.min,
+                  children: [
+                    for (int index = 0;
+                        index < (list?.length ?? 0);
+                        index++) ...[
+                      Padding(
+                        padding: const EdgeInsets.only(bottom: DimensSizeV2.d8),
+                        child: list!.let((list) {
+                          final data = list[index];
+                          final isExpanded =
+                              data.hasCurrentAccount(currentAccount);
+                          return _SeedItem(
+                            data: data,
+                            isExpanded: isExpanded,
+                            key: ValueKey(data.name),
+                            currentAccount: currentAccount,
+                            onTapAccount: (item) => wm.onSelect(item),
+                            getBalanceEntity: wm.getBalanceEntity,
+                          );
+                        }),
+                      ),
+                    ],
+                  ],
+                ),
+              );
+            },
           ),
         ),
         const SizedBox(height: DimensSizeV2.d16),
@@ -107,12 +118,6 @@ class _SeedItemState extends State<_SeedItem> {
     _isExpanded = widget.isExpanded;
   }
 
-  void _toggleExpand() {
-    setState(() {
-      _isExpanded = !_isExpanded;
-    });
-  }
-
   @override
   Widget build(BuildContext context) {
     final theme = context.themeStyleV2;
@@ -152,63 +157,11 @@ class _SeedItemState extends State<_SeedItem> {
         ),
       ),
     );
-    /*
-    final address = account.address.toEllipseString();
-    final pk = account.publicKey.toEllipseString();
-    final textStyle = theme.textStyles.labelXSmall.copyWith(
-      color: theme.colors.content3,
-    );
+  }
 
-    return GestureDetector(
-      behavior: HitTestBehavior.translucent,
-      onTap: onTap,
-      child: Padding(
-        padding: const EdgeInsets.symmetric(vertical: DimensSizeV2.d12),
-        child: SeparatedRow(
-          children: [
-            UserAvatar(
-              address: account.address.address,
-            ),
-            Expanded(
-              child: SeparatedColumn(
-                separatorSize: DimensSizeV2.d4,
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  Text(
-                    account.name,
-                    style: theme.textStyles.labelMedium,
-                    overflow: TextOverflow.ellipsis,
-                    softWrap: false,
-                    maxLines: 1,
-                  ),
-                  Row(
-                    children: [
-                      Text('$address • $pk • ', style: textStyle),
-                      StateNotifierBuilder(
-                        listenableState: balance,
-                        builder: (_, balance) =>
-                            balance?.let(
-                              (value) => Expanded(
-                                child: AmountWidget.fromMoney(
-                                  amount: balance,
-                                  style: textStyle,
-                                ),
-                              ),
-                            ) ??
-                            ProgressIndicatorWidget(
-                              size: DimensSizeV2.d16,
-                              color: theme.colors.content3,
-                            ),
-                      ),
-                    ],
-                  ),
-                ],
-              ),
-            ),
-            if (active) const Icon(LucideIcons.check, size: DimensSizeV2.d20),
-          ],
-        ),
-      ),
-    );*/
+  void _toggleExpand() {
+    setState(() {
+      _isExpanded = !_isExpanded;
+    });
   }
 }

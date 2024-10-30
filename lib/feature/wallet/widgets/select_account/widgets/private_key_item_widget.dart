@@ -25,63 +25,60 @@ class PrivateKeyItemWidget extends StatelessWidget {
   Widget build(BuildContext context) {
     final theme = context.themeStyleV2;
     return Column(
-      children: seedWithInfo
-          .map(
-            (privateKey) => Padding(
-              padding: const EdgeInsets.symmetric(
-                vertical: DimensSize.d12,
-              ),
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  Row(
-                    children: [
-                      const SizedBox(width: DimensSizeV2.d16),
-                      Icon(
-                        LucideIcons.keyRound,
-                        color: theme.colors.content0,
-                        size: DimensSizeV2.d20,
-                      ),
-                      const SizedBox(width: DimensSizeV2.d12),
-                      Expanded(
-                        child: Column(
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          children: [
-                            Row(
-                              children: [
-                                Expanded(
-                                  child: Text(
-                                    privateKey.keyName,
-                                    style: theme.textStyles.labelMedium,
-                                    overflow: TextOverflow.ellipsis,
-                                  ),
+      children: [
+        for (final privateKey in seedWithInfo)
+          Padding(
+            padding: const EdgeInsets.symmetric(vertical: DimensSize.d12),
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Row(
+                  children: [
+                    const SizedBox(width: DimensSizeV2.d16),
+                    Icon(
+                      LucideIcons.keyRound,
+                      color: theme.colors.content0,
+                      size: DimensSizeV2.d20,
+                    ),
+                    const SizedBox(width: DimensSizeV2.d12),
+                    Expanded(
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          Row(
+                            children: [
+                              Expanded(
+                                child: Text(
+                                  privateKey.keyName,
+                                  style: theme.textStyles.labelMedium,
+                                  overflow: TextOverflow.ellipsis,
                                 ),
-                              ],
-                            ),
-                            const SizedBox(height: DimensSizeV2.d4),
-                            Text(
-                              privateKey.key,
-                              style: theme.textStyles.labelXSmall.copyWith(
-                                color: theme.colors.content3,
                               ),
+                            ],
+                          ),
+                          const SizedBox(height: DimensSizeV2.d4),
+                          Text(
+                            privateKey.key,
+                            style: theme.textStyles.labelXSmall.copyWith(
+                              color: theme.colors.content3,
                             ),
-                          ],
-                        ),
+                          ),
+                        ],
                       ),
-                    ],
-                  ),
-                  const SizedBox(height: DimensSizeV2.d12),
-                  PublicKeyItemWidget(
-                    accounts: privateKey.accounts,
-                    currentAccount: currentAccount,
-                    onTap: onTap,
-                    getBalanceEntity: getBalanceEntity,
-                  ),
-                ],
-              ),
+                    ),
+                  ],
+                ),
+                const SizedBox(height: DimensSizeV2.d12),
+                PublicKeyItemWidget(
+                  accounts: privateKey.accounts,
+                  currentAccount: currentAccount,
+                  onTap: onTap,
+                  getBalanceEntity: getBalanceEntity,
+                ),
+              ],
             ),
-          )
-          .toList(),
+          ),
+      ],
     );
   }
 }
