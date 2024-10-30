@@ -52,8 +52,9 @@ class SelectTokenWidget extends ElementaryWidget<SelectTokenWidgetModel> {
                 child: Column(
                   mainAxisSize: MainAxisSize.min,
                   children: [
-                    if (isEmpty) const EmptyTokensWidget(),
-                    if (!isEmpty)
+                    if (isEmpty)
+                      const EmptyTokensWidget()
+                    else
                       TokensModalBody(
                         assets: value!,
                         onChecked: wm.checkTokenSelection,
