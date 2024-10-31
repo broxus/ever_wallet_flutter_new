@@ -33,9 +33,8 @@ class AccountAssetsTab extends StatelessWidget {
       create: (_) => AccountAssetTabCubit(
         account,
         isFirstEntering,
-        inject<NekotonRepository>(),
+        inject<TokenWalletsService>(),
         inject<AssetsService>(),
-        inject<BalanceStorageService>(),
       ),
       child: BlocBuilder<AccountAssetTabCubit, AccountAssetTabState>(
         builder: (context, state) {
