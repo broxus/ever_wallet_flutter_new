@@ -2,7 +2,6 @@
 // ignore_for_file: invalid_use_of_visible_for_testing_member
 import 'package:app/feature/wallet/widgets/account_asset_tab/select_tokens/empty_tokens_body.dart';
 import 'package:app/feature/wallet/widgets/account_asset_tab/select_tokens/select_token_wm.dart';
-import 'package:app/feature/wallet/widgets/account_asset_tab/select_tokens/token_data_element.dart';
 import 'package:app/feature/wallet/widgets/account_asset_tab/select_tokens/tokens_modal_body.dart';
 import 'package:app/generated/locale_keys.g.dart';
 import 'package:easy_localization/easy_localization.dart';
@@ -26,53 +25,63 @@ Future<void> showSelectTokesModal(BuildContext context, Address address) {
 }
 
 class SelectTokenWidget extends ElementaryWidget<SelectTokenWidgetModel> {
-  SelectTokenWidget({
-    required Address address,
+  const SelectTokenWidget({
+    required this.address,
     Key? key,
-    WidgetModelFactory<SelectTokenWidgetModel>? wmFactory,
-  }) : super(
-          wmFactory ??
-              (context) => defaultSelectTokenWidgetModelFactory(
-                    context,
-                    address,
-                  ),
-          key: key,
-        );
+    WidgetModelFactory wmFactory = defaultSelectTokenWidgetModelFactory,
+  }) : super(wmFactory, key: key);
+
+  final Address address;
 
   @override
   Widget build(SelectTokenWidgetModel wm) {
-    return TripleSourceBuilder<List<TokenDataElement>, bool, bool>(
+    return TripleSourceBuilder(
       firstSource: wm.tokenContract,
       secondSource: wm.isAllSelected,
-      thirdSource: wm.isButtonEnabled,
-      builder: (_, value, allSelected, enabledButton) {
-        return SingleChildScrollView(
-          child: Column(
-            mainAxisSize: MainAxisSize.min,
-            children: [
-              if (value == null)
-                const Padding(
-                  padding: EdgeInsets.only(bottom: DimensSizeV2.d16),
-                  child: ProgressIndicatorWidget(size: DimensSizeV2.d40),
+      thirdSource: wm.loading,
+      builder: (_, value, allSelected, loading) {
+        final isEmpty = (value?.isEmpty ?? false) && loading == false;
+        final isButtonEnabled =
+            !(loading ?? false) && (value?.any((e) => e.isSelected) ?? false);
+
+        return Column(
+          mainAxisSize: MainAxisSize.min,
+          children: [
+            Flexible(
+              child: SingleChildScrollView(
+                child: Column(
+                  mainAxisSize: MainAxisSize.min,
+                  children: [
+                    if (isEmpty)
+                      const EmptyTokensWidget()
+                    else
+                      TokensModalBody(
+                        assets: value!,
+                        onChecked: wm.checkTokenSelection,
+                        onClickAll: wm.clickAll,
+                        isAllSelected: allSelected ?? false,
+                        isLoading: loading ?? false,
+                        onClickImport: wm.clickImport,
+                      ),
+                  ],
                 ),
-              if (value?.isEmpty ?? false) const EmptyTokensWidget(),
-              if (value?.isNotEmpty ?? false)
-                TokensModalBody(
-                  assets: value!,
-                  onChecked: wm.checkTokenSelection,
-                  onClickAll: wm.clickAll,
-                  isAllSelected: allSelected ?? false,
-                  isButtonEnabled: enabledButton ?? false,
-                  onClickImport: wm.clickImport,
-                ),
-              PrimaryButton(
-                buttonShape: ButtonShape.pill,
-                title: LocaleKeys.backWord.tr(),
-                onPressed: () => Navigator.of(wm.context).pop(),
               ),
-              const SizedBox(height: DimensSizeV2.d12),
-            ],
-          ),
+            ),
+            const SizedBox(height: DimensSizeV2.d12),
+            if (value != null)
+              AccentButton(
+                buttonShape: ButtonShape.pill,
+                title: LocaleKeys.importWalletButtonText.tr(),
+                onPressed: isButtonEnabled ? wm.clickImport : null,
+              ),
+            const SizedBox(height: DimensSizeV2.d8),
+            PrimaryButton(
+              buttonShape: ButtonShape.pill,
+              title: LocaleKeys.backWord.tr(),
+              onPressed: () => Navigator.of(wm.context).pop(),
+            ),
+            const SizedBox(height: DimensSizeV2.d12),
+          ],
         );
       },
     );

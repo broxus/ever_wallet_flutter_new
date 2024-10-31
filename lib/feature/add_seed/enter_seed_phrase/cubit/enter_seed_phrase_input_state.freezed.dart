@@ -3,7 +3,7 @@
 // ignore_for_file: type=lint
 // ignore_for_file: unused_element, deprecated_member_use, deprecated_member_use_from_same_package, use_function_type_syntax_for_parameters, unnecessary_const, avoid_init_to_null, invalid_override_different_default_values_named, prefer_expression_function_bodies, annotate_overrides, invalid_annotation_target, unnecessary_question_mark
 
-part of 'enter_seed_phrase_input_model.dart';
+part of 'enter_seed_phrase_input_state.dart';
 
 // **************************************************************************
 // FreezedGenerator
@@ -15,7 +15,7 @@ final _privateConstructorUsedError = UnsupportedError(
     'It seems like you constructed your class using `MyClass._()`. This constructor is only meant to be used by freezed and you are not supposed to need it nor use it.\nPlease check the documentation here for more information: https://github.com/rrousselGit/freezed#adding-getters-and-methods-to-our-models');
 
 /// @nodoc
-mixin _$EnterSeedPhraseInputModel {
+mixin _$EnterSeedPhraseInputState {
   int get index => throw _privateConstructorUsedError;
   bool get hasError => throw _privateConstructorUsedError;
   @optionalTypeArgs
@@ -63,34 +63,34 @@ mixin _$EnterSeedPhraseInputModel {
   }) =>
       throw _privateConstructorUsedError;
 
-  /// Create a copy of EnterSeedPhraseInputModel
+  /// Create a copy of EnterSeedPhraseInputState
   /// with the given fields replaced by the non-null parameter values.
   @JsonKey(includeFromJson: false, includeToJson: false)
-  $EnterSeedPhraseInputModelCopyWith<EnterSeedPhraseInputModel> get copyWith =>
+  $EnterSeedPhraseInputStateCopyWith<EnterSeedPhraseInputState> get copyWith =>
       throw _privateConstructorUsedError;
 }
 
 /// @nodoc
-abstract class $EnterSeedPhraseInputModelCopyWith<$Res> {
-  factory $EnterSeedPhraseInputModelCopyWith(EnterSeedPhraseInputModel value,
-          $Res Function(EnterSeedPhraseInputModel) then) =
-      _$EnterSeedPhraseInputModelCopyWithImpl<$Res, EnterSeedPhraseInputModel>;
+abstract class $EnterSeedPhraseInputStateCopyWith<$Res> {
+  factory $EnterSeedPhraseInputStateCopyWith(EnterSeedPhraseInputState value,
+          $Res Function(EnterSeedPhraseInputState) then) =
+      _$EnterSeedPhraseInputStateCopyWithImpl<$Res, EnterSeedPhraseInputState>;
   @useResult
   $Res call({int index, bool hasError});
 }
 
 /// @nodoc
-class _$EnterSeedPhraseInputModelCopyWithImpl<$Res,
-        $Val extends EnterSeedPhraseInputModel>
-    implements $EnterSeedPhraseInputModelCopyWith<$Res> {
-  _$EnterSeedPhraseInputModelCopyWithImpl(this._value, this._then);
+class _$EnterSeedPhraseInputStateCopyWithImpl<$Res,
+        $Val extends EnterSeedPhraseInputState>
+    implements $EnterSeedPhraseInputStateCopyWith<$Res> {
+  _$EnterSeedPhraseInputStateCopyWithImpl(this._value, this._then);
 
   // ignore: unused_field
   final $Val _value;
   // ignore: unused_field
   final $Res Function($Val) _then;
 
-  /// Create a copy of EnterSeedPhraseInputModel
+  /// Create a copy of EnterSeedPhraseInputState
   /// with the given fields replaced by the non-null parameter values.
   @pragma('vm:prefer-inline')
   @override
@@ -113,7 +113,7 @@ class _$EnterSeedPhraseInputModelCopyWithImpl<$Res,
 
 /// @nodoc
 abstract class _$$EnterSeedPhraseInputImplCopyWith<$Res>
-    implements $EnterSeedPhraseInputModelCopyWith<$Res> {
+    implements $EnterSeedPhraseInputStateCopyWith<$Res> {
   factory _$$EnterSeedPhraseInputImplCopyWith(_$EnterSeedPhraseInputImpl value,
           $Res Function(_$EnterSeedPhraseInputImpl) then) =
       __$$EnterSeedPhraseInputImplCopyWithImpl<$Res>;
@@ -128,14 +128,14 @@ abstract class _$$EnterSeedPhraseInputImplCopyWith<$Res>
 
 /// @nodoc
 class __$$EnterSeedPhraseInputImplCopyWithImpl<$Res>
-    extends _$EnterSeedPhraseInputModelCopyWithImpl<$Res,
+    extends _$EnterSeedPhraseInputStateCopyWithImpl<$Res,
         _$EnterSeedPhraseInputImpl>
     implements _$$EnterSeedPhraseInputImplCopyWith<$Res> {
   __$$EnterSeedPhraseInputImplCopyWithImpl(_$EnterSeedPhraseInputImpl _value,
       $Res Function(_$EnterSeedPhraseInputImpl) _then)
       : super(_value, _then);
 
-  /// Create a copy of EnterSeedPhraseInputModel
+  /// Create a copy of EnterSeedPhraseInputState
   /// with the given fields replaced by the non-null parameter values.
   @pragma('vm:prefer-inline')
   @override
@@ -186,7 +186,7 @@ class _$EnterSeedPhraseInputImpl implements EnterSeedPhraseInput {
 
   @override
   String toString() {
-    return 'EnterSeedPhraseInputModel.input(controller: $controller, focus: $focus, index: $index, hasError: $hasError)';
+    return 'EnterSeedPhraseInputState.input(controller: $controller, focus: $focus, index: $index, hasError: $hasError)';
   }
 
   @override
@@ -206,7 +206,7 @@ class _$EnterSeedPhraseInputImpl implements EnterSeedPhraseInput {
   int get hashCode =>
       Object.hash(runtimeType, controller, focus, index, hasError);
 
-  /// Create a copy of EnterSeedPhraseInputModel
+  /// Create a copy of EnterSeedPhraseInputState
   /// with the given fields replaced by the non-null parameter values.
   @JsonKey(includeFromJson: false, includeToJson: false)
   @override
@@ -285,7 +285,7 @@ class _$EnterSeedPhraseInputImpl implements EnterSeedPhraseInput {
   }
 }
 
-abstract class EnterSeedPhraseInput implements EnterSeedPhraseInputModel {
+abstract class EnterSeedPhraseInput implements EnterSeedPhraseInputState {
   const factory EnterSeedPhraseInput(
       {required final TextEditingController controller,
       required final FocusNode focus,
@@ -299,7 +299,7 @@ abstract class EnterSeedPhraseInput implements EnterSeedPhraseInputModel {
   @override
   bool get hasError;
 
-  /// Create a copy of EnterSeedPhraseInputModel
+  /// Create a copy of EnterSeedPhraseInputState
   /// with the given fields replaced by the non-null parameter values.
   @override
   @JsonKey(includeFromJson: false, includeToJson: false)
@@ -309,7 +309,7 @@ abstract class EnterSeedPhraseInput implements EnterSeedPhraseInputModel {
 
 /// @nodoc
 abstract class _$$EnterSeedPhraseEnteredImplCopyWith<$Res>
-    implements $EnterSeedPhraseInputModelCopyWith<$Res> {
+    implements $EnterSeedPhraseInputStateCopyWith<$Res> {
   factory _$$EnterSeedPhraseEnteredImplCopyWith(
           _$EnterSeedPhraseEnteredImpl value,
           $Res Function(_$EnterSeedPhraseEnteredImpl) then) =
@@ -321,7 +321,7 @@ abstract class _$$EnterSeedPhraseEnteredImplCopyWith<$Res>
 
 /// @nodoc
 class __$$EnterSeedPhraseEnteredImplCopyWithImpl<$Res>
-    extends _$EnterSeedPhraseInputModelCopyWithImpl<$Res,
+    extends _$EnterSeedPhraseInputStateCopyWithImpl<$Res,
         _$EnterSeedPhraseEnteredImpl>
     implements _$$EnterSeedPhraseEnteredImplCopyWith<$Res> {
   __$$EnterSeedPhraseEnteredImplCopyWithImpl(
@@ -329,7 +329,7 @@ class __$$EnterSeedPhraseEnteredImplCopyWithImpl<$Res>
       $Res Function(_$EnterSeedPhraseEnteredImpl) _then)
       : super(_value, _then);
 
-  /// Create a copy of EnterSeedPhraseInputModel
+  /// Create a copy of EnterSeedPhraseInputState
   /// with the given fields replaced by the non-null parameter values.
   @pragma('vm:prefer-inline')
   @override
@@ -370,7 +370,7 @@ class _$EnterSeedPhraseEnteredImpl implements EnterSeedPhraseEntered {
 
   @override
   String toString() {
-    return 'EnterSeedPhraseInputModel.entered(text: $text, index: $index, hasError: $hasError)';
+    return 'EnterSeedPhraseInputState.entered(text: $text, index: $index, hasError: $hasError)';
   }
 
   @override
@@ -387,7 +387,7 @@ class _$EnterSeedPhraseEnteredImpl implements EnterSeedPhraseEntered {
   @override
   int get hashCode => Object.hash(runtimeType, text, index, hasError);
 
-  /// Create a copy of EnterSeedPhraseInputModel
+  /// Create a copy of EnterSeedPhraseInputState
   /// with the given fields replaced by the non-null parameter values.
   @JsonKey(includeFromJson: false, includeToJson: false)
   @override
@@ -465,7 +465,7 @@ class _$EnterSeedPhraseEnteredImpl implements EnterSeedPhraseEntered {
   }
 }
 
-abstract class EnterSeedPhraseEntered implements EnterSeedPhraseInputModel {
+abstract class EnterSeedPhraseEntered implements EnterSeedPhraseInputState {
   const factory EnterSeedPhraseEntered(
       {required final String text,
       required final int index,
@@ -477,7 +477,7 @@ abstract class EnterSeedPhraseEntered implements EnterSeedPhraseInputModel {
   @override
   bool get hasError;
 
-  /// Create a copy of EnterSeedPhraseInputModel
+  /// Create a copy of EnterSeedPhraseInputState
   /// with the given fields replaced by the non-null parameter values.
   @override
   @JsonKey(includeFromJson: false, includeToJson: false)

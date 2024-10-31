@@ -32,9 +32,8 @@ class AccountAssetsTab extends StatelessWidget {
     return BlocProvider<AccountAssetTabCubit>(
       create: (_) => AccountAssetTabCubit(
         account,
-        inject<NekotonRepository>(),
+        inject<TokenWalletsService>(),
         inject<AssetsService>(),
-        inject<BalanceStorageService>(),
         isFirstEntering: isFirstEntering,
       ),
       child: BlocBuilder<AccountAssetTabCubit, AccountAssetTabState>(
@@ -135,41 +134,45 @@ class _FooterAssetsWidget extends StatelessWidget {
                   const TextSpan(
                     text: '\n',
                   ),
-                  TextSpan(
-                    text: LocaleKeys.dontSeeYourToken.tr(),
-                  ),
                 ],
               ),
             ),
           ),
-        const SizedBox(height: DimensSizeV2.d6),
-        Row(
+        Text(
+          LocaleKeys.dontSeeYourToken.tr(),
+          style: theme.textStyles.paragraphSmall,
+        ),
+        const SizedBox(height: DimensSizeV2.d2),
+        SeparatedRow(
+          mainAxisAlignment: MainAxisAlignment.center,
           children: [
-            Expanded(
-              child: GhostButton(
-                buttonSize: ButtonSize.small,
-                buttonShape: ButtonShape.pill,
-                title: LocaleKeys.refreshToFind.tr(),
-                onPressed: () {
-                  showSelectTokesModal(context, address);
-                  if (isFirstEntering) {
-                    checkTokensCallback();
-                  }
-                },
+            GestureDetector(
+              onTap: () {
+                showSelectTokesModal(context, address);
+                if (isFirstEntering) {
+                  checkTokensCallback();
+                }
+              },
+              child: Text(
+                LocaleKeys.refreshToFind.tr(),
+                style: theme.textStyles.labelSmall,
               ),
             ),
-            Expanded(
-              child: GhostButton(
-                buttonSize: ButtonSize.small,
-                buttonShape: ButtonShape.pill,
-                title: LocaleKeys.manageAssets.tr(),
-                onPressed: () => context.goFurther(
-                  AppRoute.selectNewAsset.pathWithData(
-                    pathParameters: {
-                      selectNewAssetAddressPathParam: address.address,
-                    },
-                  ),
+            Text(
+              LocaleKeys.orWord.tr(),
+              style: theme.textStyles.paragraphSmall,
+            ),
+            GestureDetector(
+              onTap: () => context.goFurther(
+                AppRoute.selectNewAsset.pathWithData(
+                  pathParameters: {
+                    selectNewAssetAddressPathParam: address.address,
+                  },
                 ),
+              ),
+              child: Text(
+                LocaleKeys.manageAssets.tr(),
+                style: theme.textStyles.labelSmall,
               ),
             ),
           ],

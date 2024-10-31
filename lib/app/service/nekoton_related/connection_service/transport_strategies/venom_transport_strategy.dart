@@ -83,4 +83,7 @@ class VenomTransportStrategy extends TransportStrategy {
 
   @override
   StakingInformation? get stakeInformation => null;
+
+  @override
+  String? get tokenApiBaseUrl => 'https://tokens.venomscan.com/v1';
 }

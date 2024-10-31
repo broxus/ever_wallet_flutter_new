@@ -9,19 +9,15 @@ import 'package:app/feature/wallet/widgets/account_asset_tab/select_tokens/selec
 import 'package:app/feature/wallet/widgets/account_asset_tab/select_tokens/token_data_element.dart';
 import 'package:elementary_helper/elementary_helper.dart';
 import 'package:flutter/widgets.dart';
-import 'package:nekoton_repository/nekoton_repository.dart';
 import 'package:ui_components_lib/v2/ui_components_lib_v2.dart';
 
 SelectTokenWidgetModel defaultSelectTokenWidgetModelFactory(
   BuildContext context,
-  Address address,
 ) {
   return SelectTokenWidgetModel(
     SelectTokenModel(
       createPrimaryErrorHandler(context),
       inject(),
-      inject(),
-      address,
       inject(),
     ),
   );
@@ -32,21 +28,43 @@ class SelectTokenWidgetModel
     extends CustomWidgetModel<SelectTokenWidget, SelectTokenModel> {
   SelectTokenWidgetModel(
     super.model,
-  ) {
-    _init();
-  }
+  );
 
-  ThemeStyleV2 get themeStyle => context.themeStyleV2;
-  late StreamSubscription<dynamic> _subscription;
-  late final _data = createNotifier<List<TokenDataElement>>();
-  late final _isAllSelected = createNotifier<bool>();
-  late final _isButtonEnabled = createNotifier<bool>();
+  late final _data = createNotifier<List<TokenDataElement>>([]);
+  late final _loading = createNotifier(true);
+  late final _isAllSelected = createNotifier(false);
 
   ListenableState<List<TokenDataElement>> get tokenContract => _data;
 
   ListenableState<bool> get isAllSelected => _isAllSelected;
 
-  ListenableState<bool> get isButtonEnabled => _isButtonEnabled;
+  ListenableState<bool> get loading => _loading;
+
+  ThemeStyleV2 get themeStyle => context.themeStyleV2;
+
+  @override
+  void initWidgetModel() {
+    model.getAssets(widget.address).listen(
+      (value) {
+        final data = [
+          ...?_data.value,
+          ...value.map(
+            (item) => TokenDataElement(
+              asset: item.$1,
+              isSelected: false,
+              value: item.$2,
+            ),
+          ),
+        ];
+
+        _data.accept(data);
+      },
+      onDone: () => _loading.accept(false),
+      onError: (_) => _loading.accept(false),
+    );
+
+    super.initWidgetModel();
+  }
 
   void checkTokenSelection(TokenDataElement token) {
     final updatedTokens = _data.value?.map((entry) {
@@ -61,7 +79,6 @@ class SelectTokenWidgetModel
     }).toList();
     _data.accept(updatedTokens);
     _checkIfAllSelected();
-    _checkIfAnySelected();
   }
 
   void clickAll() {
@@ -75,15 +92,16 @@ class SelectTokenWidgetModel
     }).toList();
 
     _isAllSelected.accept(!allSelected);
-    _isButtonEnabled.accept(!allSelected);
     _data.accept(updatedTokens);
   }
 
   Future<void> clickImport() async {
-    if (_data.value != null) {
-      Navigator.of(context).pop();
+    final account = model.getAccount(widget.address);
+
+    if (_data.value != null && account != null) {
       await showImportSelectedTokensModal(context, () async {
-        await model.cachedAccount?.addTokenWallets(
+        Navigator.of(context).pop();
+        await account.addTokenWallets(
           _data.value!
               .where((entry) => entry.isSelected)
               .map((entry) => entry.asset.address)
@@ -95,49 +113,10 @@ class SelectTokenWidgetModel
     }
   }
 
-  @override
-  void dispose() {
-    _subscription.cancel();
-    model.dispose();
-    super.dispose();
-  }
-
-  Future<void> _init() async {
-    _subscription = model.contractsForAccount().listen((value) async {
-      final tokenDataElements = <TokenDataElement>[];
-      for (final asset in value.$1) {
-        try {
-          final wallet = await model.subscribeToken(asset.address);
-
-          if (wallet.wallet?.moneyBalance != null &&
-              wallet.wallet?.moneyBalance.amount != Fixed.zero) {
-            tokenDataElements.add(
-              TokenDataElement(
-                asset: asset,
-                isSelected: false,
-                value: wallet.wallet?.moneyBalance,
-              ),
-            );
-          }
-        } finally {
-          model.unsubscribeToken(asset.address);
-        }
-      }
-      _data.accept(tokenDataElements);
-    });
-    _isAllSelected.accept(false);
-    _isButtonEnabled.accept(false);
-  }
-
   void _checkIfAllSelected() {
     final allChecked = _data.value?.every((entry) => entry.isSelected) ?? false;
     if (allChecked != _isAllSelected.value) {
       _isAllSelected.accept(allChecked);
     }
-  }
-
-  void _checkIfAnySelected() {
-    final anySelected = _data.value?.any((entry) => entry.isSelected) ?? false;
-    _isButtonEnabled.accept(anySelected);
   }
 }

@@ -1,7 +1,6 @@
 // ignore_for_file: cascade_invocations
 import 'dart:async';
 
-import 'package:app/app/service/secure_storage_service.dart';
 import 'package:app/app/service/service.dart';
 import 'package:bloc/bloc.dart';
 import 'package:freezed_annotation/freezed_annotation.dart';

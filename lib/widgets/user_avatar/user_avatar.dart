@@ -9,6 +9,8 @@ class UserAvatar extends ElementaryWidget<UserAvatarWidgetModel> {
     Key? key,
     WidgetModelFactory<UserAvatarWidgetModel>? wmFactory,
     this.address,
+    this.size,
+    this.borderRadius,
   }) : super(
           wmFactory ??
               (ctx) => defaultUserAvatarWidgetModelFactory(
@@ -19,12 +21,14 @@ class UserAvatar extends ElementaryWidget<UserAvatarWidgetModel> {
         );
 
   final String? address;
+  final double? size;
+  final double? borderRadius;
 
   @override
   Widget build(UserAvatarWidgetModel wm) {
     return SizedBox(
-      width: DimensSizeV2.d40,
-      height: DimensSizeV2.d40,
+      width: size ?? DimensSizeV2.d40,
+      height: size ?? DimensSizeV2.d40,
       child: StateNotifierBuilder<AvatarData?>(
         listenableState: wm.avatarState,
         builder: (_, data) {
@@ -41,7 +45,9 @@ class UserAvatar extends ElementaryWidget<UserAvatarWidgetModel> {
                 colorBlendMode: BlendMode.modulate,
               ),
             AvatarType.raw => ClipRRect(
-                borderRadius: BorderRadius.circular(DimensRadiusV2.radius12),
+                borderRadius: BorderRadius.circular(
+                  borderRadius ?? DimensRadiusV2.radius12,
+                ),
                 child: SvgPicture.string(
                   data.path,
                   width: double.infinity,

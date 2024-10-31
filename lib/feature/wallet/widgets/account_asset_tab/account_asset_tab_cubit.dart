@@ -16,9 +16,8 @@ part 'account_asset_tab_state.dart';
 class AccountAssetTabCubit extends Cubit<AccountAssetTabState> {
   AccountAssetTabCubit(
     KeyAccount account,
-    this.nekotonRepository,
-    this.assetsService,
-    this.balanceStorage, {
+    this.tokenWalletsService,
+    this.assetsService, {
     required this.isFirstEntering,
   })  : tonWallet = account.account.tonWallet,
         super(
@@ -32,53 +31,41 @@ class AccountAssetTabCubit extends Cubit<AccountAssetTabState> {
         AccountAssetTabState.accounts(tonWallet, _contracts, _contractCount),
       );
     });
-    if (isFirstEntering) {
-      _allContractsSubscription = assetsService
-          .allAvailableContractsForAccount(account.address)
-          .listen((value) async {
-        final assets = <TokenContractAsset>[];
-        for (final asset in value.$1) {
-          try {
-            final wallet = await nekotonRepository.subscribeToken(
-              owner: tonWallet.address,
-              rootTokenContract: asset.address,
-            );
 
-            if (wallet.wallet?.moneyBalance != null &&
-                wallet.wallet?.moneyBalance.amount != Fixed.zero) {
-              assets.add(asset);
-            }
-          } finally {
-            nekotonRepository.unsubscribeToken(
-              tonWallet.address,
-              asset.address,
-            );
-          }
-        }
-        _contractCount = assets.length;
-        emit(
-          AccountAssetTabState.accounts(tonWallet, _contracts, _contractCount),
-        );
-      });
+    if (isFirstEntering || true) {
+      _searchSubscription = tokenWalletsService
+          .searchTokenWalletsForAddress(tonWallet.address)
+          .reduce((previous, element) => [...previous, ...element])
+          .asStream()
+          .listen(
+        (value) {
+          _contractCount = value.length;
+          emit(
+            AccountAssetTabState.accounts(
+              tonWallet,
+              _contracts,
+              _contractCount,
+            ),
+          );
+        },
+      );
     }
   }
 
   final AssetsService assetsService;
-  final BalanceStorageService balanceStorage;
-  final NekotonRepository nekotonRepository;
+  final TokenWalletsService tokenWalletsService;
   final TonWalletAsset tonWallet;
   final bool isFirstEntering;
 
   late List<TokenContractAsset>? _contracts;
   int? _contractCount;
   late StreamSubscription<List<TokenContractAsset>> _contractsSubscription;
-  StreamSubscription<(List<TokenContractAsset>, List<TokenContractAsset>)>?
-      _allContractsSubscription;
+  StreamSubscription<dynamic>? _searchSubscription;
 
   @override
-  Future<void> close() {
-    _contractsSubscription.cancel();
-    _allContractsSubscription?.cancel();
+  Future<void> close() async {
+    await _contractsSubscription.cancel();
+    await _searchSubscription?.cancel();
 
     return super.close();
   }
