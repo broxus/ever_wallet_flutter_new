@@ -32,9 +32,9 @@ class AccountAssetsTab extends StatelessWidget {
     return BlocProvider<AccountAssetTabCubit>(
       create: (_) => AccountAssetTabCubit(
         account,
-        isFirstEntering,
         inject<TokenWalletsService>(),
         inject<AssetsService>(),
+        isFirstEntering: isFirstEntering,
       ),
       child: BlocBuilder<AccountAssetTabCubit, AccountAssetTabState>(
         builder: (context, state) {

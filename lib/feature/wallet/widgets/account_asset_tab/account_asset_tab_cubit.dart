@@ -16,11 +16,10 @@ part 'account_asset_tab_state.dart';
 class AccountAssetTabCubit extends Cubit<AccountAssetTabState> {
   AccountAssetTabCubit(
     KeyAccount account,
-    // ignore: avoid_positional_boolean_parameters
-    this.isFirstEntering,
     this.tokenWalletsService,
-    this.assetsService,
-  )   : tonWallet = account.account.tonWallet,
+    this.assetsService, {
+    required this.isFirstEntering,
+  })  : tonWallet = account.account.tonWallet,
         super(
           AccountAssetTabState.accounts(account.account.tonWallet, null, 0),
         ) {
