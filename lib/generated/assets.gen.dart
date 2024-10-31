@@ -85,6 +85,9 @@ class $AssetsImagesGen {
   AssetGenImage get bgInternet =>
       const AssetGenImage('assets/images/bg_internet.png');
 
+  /// File path: assets/images/bg_main.svg
+  SvgGenImage get bgMain => const SvgGenImage('assets/images/bg_main.svg');
+
   /// File path: assets/images/blur_background.png
   AssetGenImage get blurBackground =>
       const AssetGenImage('assets/images/blur_background.png');
@@ -414,6 +417,7 @@ class $AssetsImagesGen {
         arrowUpFlat,
         arrowsLeftRight,
         bgInternet,
+        bgMain,
         blurBackground,
         browserCard01,
         browserCard02,
