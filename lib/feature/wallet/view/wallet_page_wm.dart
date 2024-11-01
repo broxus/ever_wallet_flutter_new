@@ -33,7 +33,7 @@ class WalletPageWidgetModel
 
   late final _currentAccount = createNotifierFromStream(model.currentAccount);
   late final _isShowingBadgeNotifier = createNotifier<bool>();
-  late final _isFirstEnteringNotifier = createNotifier<bool>();
+  late final _isShowingNewTokensNotifier = createNotifier<bool>();
 
   StreamSubscription<PressBottomNavigationEvent>? _pressWalletSubscribtion;
 
@@ -41,7 +41,7 @@ class WalletPageWidgetModel
 
   ListenableState<bool> get isShowingBadge => _isShowingBadgeNotifier;
 
-  ListenableState<bool> get isFirstEntering => _isFirstEnteringNotifier;
+  ListenableState<bool> get isShowingNewTokens => _isShowingNewTokensNotifier;
 
   @override
   void initWidgetModel() {
@@ -49,7 +49,6 @@ class WalletPageWidgetModel
     _pressWalletSubscribtion = primaryBus
         .on<PressBottomNavigationEvent>()
         .listen(_onPressWalletBottomNavigation);
-    _checkFirstEntering();
   }
 
   @override
@@ -67,7 +66,11 @@ class WalletPageWidgetModel
   }
 
   void hideNewTokensLabel() {
-    _isFirstEnteringNotifier.accept(false);
+    final account = currentAccount.value;
+    _isShowingNewTokensNotifier.accept(false);
+    if (account != null) {
+      model.hideNewTokenLabels(account);
+    }
   }
 
   void _onPressWalletBottomNavigation(PressBottomNavigationEvent event) {
@@ -92,6 +95,7 @@ class WalletPageWidgetModel
     final isNewUser = await model.isNewUser();
     if (isNewUser != null && account != null) {
       if (isNewUser) {
+        _isShowingNewTokensNotifier.accept(true);
         _isShowingBadgeNotifier.accept(true);
       } else {
         _isShowingBadgeNotifier.accept(false);
@@ -104,16 +108,11 @@ class WalletPageWidgetModel
       _isShowingBadgeNotifier.accept(
         await model.isShowingBadge(account) ?? true,
       );
+      _isShowingNewTokensNotifier
+          .accept(await model.isShowingNewTokens(account) ?? true);
     } else {
       _isShowingBadgeNotifier.accept(true);
-    }
-  }
-
-  Future<void> _checkFirstEntering() async {
-    final isFirstEntering = await model.isFirstEntering() ?? false;
-    _isFirstEnteringNotifier.accept(isFirstEntering);
-    if (isFirstEntering) {
-      await model.updateFirstEntering();
+      _isShowingNewTokensNotifier.accept(true);
     }
   }
 }

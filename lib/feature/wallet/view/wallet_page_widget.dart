@@ -17,8 +17,8 @@ class WalletPageWidget extends ElementaryWidget<WalletPageWidgetModel> {
     return Scaffold(
       body: DoubleSourceBuilder<KeyAccount?, bool>(
         firstSource: wm.currentAccount,
-        secondSource: wm.isFirstEntering,
-        builder: (_, currentAccount, isFirstEntering) {
+        secondSource: wm.isShowingNewTokens,
+        builder: (_, currentAccount, isShowingNewTokens) {
           return currentAccount?.let(
                 (value) => StateNotifierBuilder(
                   listenableState: wm.isShowingBadge,
@@ -27,9 +27,9 @@ class WalletPageWidget extends ElementaryWidget<WalletPageWidgetModel> {
                     currentAccount: value,
                     scrollController: wm.scrollController,
                     isShowingBadge: isShowingBadge ?? false,
-                    isFirstEntering: isFirstEntering ?? false,
+                    isShowingNewTokens: isShowingNewTokens ?? false,
                     finishedBackupCallback: wm.hideShowingBadge,
-                    checkTokensCallback: wm.hideNewTokensLabel,
+                    confirmImportCallback: wm.hideNewTokensLabel,
                   ),
                 ),
               ) ??

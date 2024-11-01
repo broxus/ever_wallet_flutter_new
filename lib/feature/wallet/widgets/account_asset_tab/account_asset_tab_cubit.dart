@@ -18,7 +18,7 @@ class AccountAssetTabCubit extends Cubit<AccountAssetTabState> {
     KeyAccount account,
     this.tokenWalletsService,
     this.assetsService, {
-    required this.isFirstEntering,
+    required this.isShowingNewTokens,
   })  : tonWallet = account.account.tonWallet,
         super(
           AccountAssetTabState.accounts(account.account.tonWallet, null, 0),
@@ -32,7 +32,7 @@ class AccountAssetTabCubit extends Cubit<AccountAssetTabState> {
       );
     });
 
-    if (isFirstEntering || true) {
+    if (isShowingNewTokens || true) {
       _searchSubscription = tokenWalletsService
           .searchTokenWalletsForAddress(tonWallet.address)
           .reduce((previous, element) => [...previous, ...element])
@@ -55,7 +55,7 @@ class AccountAssetTabCubit extends Cubit<AccountAssetTabState> {
   final AssetsService assetsService;
   final TokenWalletsService tokenWalletsService;
   final TonWalletAsset tonWallet;
-  final bool isFirstEntering;
+  final bool isShowingNewTokens;
 
   late List<TokenContractAsset>? _contracts;
   int? _contractCount;

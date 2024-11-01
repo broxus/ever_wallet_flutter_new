@@ -42,8 +42,8 @@ class NetworkIcon extends StatelessWidget {
           child: Center(
             child: SvgPicture.asset(
               _path,
-              width: DimensSizeV2.d22,
-              height: DimensSizeV2.d22,
+              width: DimensSizeV2.d16,
+              height: DimensSizeV2.d16,
             ),
           ),
         ),

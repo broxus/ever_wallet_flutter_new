@@ -18,14 +18,14 @@ import 'package:ui_components_lib/v2/ui_components_lib_v2.dart';
 class AccountAssetsTab extends StatelessWidget {
   const AccountAssetsTab({
     required this.account,
-    required this.isFirstEntering,
-    required this.checkTokensCallback,
+    required this.isShowingNewTokens,
+    required this.confirmImportCallback,
     super.key,
   });
 
   final KeyAccount account;
-  final bool isFirstEntering;
-  final VoidCallback checkTokensCallback;
+  final bool isShowingNewTokens;
+  final VoidCallback confirmImportCallback;
 
   @override
   Widget build(BuildContext context) {
@@ -34,7 +34,7 @@ class AccountAssetsTab extends StatelessWidget {
         account,
         inject<TokenWalletsService>(),
         inject<AssetsService>(),
-        isFirstEntering: isFirstEntering,
+        isShowingNewTokens: isShowingNewTokens,
       ),
       child: BlocBuilder<AccountAssetTabCubit, AccountAssetTabState>(
         builder: (context, state) {
@@ -66,8 +66,8 @@ class AccountAssetsTab extends StatelessWidget {
               if (index == assets.length) {
                 return _FooterAssetsWidget(
                   address: account.address,
-                  isFirstEntering: isFirstEntering,
-                  checkTokensCallback: checkTokensCallback,
+                  isShowingNewTokens: isShowingNewTokens,
+                  confirmImportCallback: confirmImportCallback,
                   numberNewTokens: state.when(
                     empty: () => null,
                     accounts: (_, __, newTokens) => newTokens,
@@ -87,14 +87,14 @@ class AccountAssetsTab extends StatelessWidget {
 class _FooterAssetsWidget extends StatelessWidget {
   const _FooterAssetsWidget({
     required this.address,
-    required this.isFirstEntering,
-    required this.checkTokensCallback,
+    required this.isShowingNewTokens,
+    required this.confirmImportCallback,
     required this.numberNewTokens,
   });
 
   final Address address;
-  final bool isFirstEntering;
-  final VoidCallback checkTokensCallback;
+  final bool isShowingNewTokens;
+  final VoidCallback confirmImportCallback;
   final int? numberNewTokens;
 
   @override
@@ -103,9 +103,9 @@ class _FooterAssetsWidget extends StatelessWidget {
     return Column(
       children: [
         const SizedBox(height: DimensSizeV2.d6),
-        if (isFirstEntering && numberNewTokens == null)
+        if (isShowingNewTokens && numberNewTokens == null)
           const ProgressIndicatorWidget(size: DimensSizeV2.d18),
-        if (isFirstEntering)
+        if (isShowingNewTokens && (numberNewTokens ?? 0) > 0)
           Padding(
             padding: const EdgeInsets.only(top: DimensSizeV2.d6),
             child: RichText(
@@ -113,24 +113,23 @@ class _FooterAssetsWidget extends StatelessWidget {
               text: TextSpan(
                 style: theme.textStyles.paragraphSmall,
                 children: [
-                  if (numberNewTokens != null)
-                    TextSpan(
-                      text: LocaleKeys.newTokensLabel
-                          .tr(args: ['$numberNewTokens']),
-                      style: theme.textStyles.paragraphSmall
-                          .copyWith(color: theme.colors.content0),
-                      recognizer: TapGestureRecognizer()
-                        ..onTap = () {
-                          showSelectTokesModal(context, address);
-                          if (isFirstEntering) {
-                            checkTokensCallback();
-                          }
-                        },
-                    ),
-                  if (numberNewTokens != null)
-                    TextSpan(
-                      text: ' ${LocaleKeys.foundInThisAccountLabel.tr()}',
-                    ),
+                  TextSpan(
+                    text: LocaleKeys.newTokensLabel
+                        .tr(args: ['$numberNewTokens']),
+                    style: theme.textStyles.paragraphSmall
+                        .copyWith(color: theme.colors.content0),
+                    recognizer: TapGestureRecognizer()
+                      ..onTap = () {
+                        showSelectTokesModal(
+                          context,
+                          address,
+                          confirmImportCallback,
+                        );
+                      },
+                  ),
+                  TextSpan(
+                    text: ' ${LocaleKeys.foundInThisAccountLabel.tr()}',
+                  ),
                   const TextSpan(
                     text: '\n',
                   ),
@@ -148,10 +147,11 @@ class _FooterAssetsWidget extends StatelessWidget {
           children: [
             GestureDetector(
               onTap: () {
-                showSelectTokesModal(context, address);
-                if (isFirstEntering) {
-                  checkTokensCallback();
-                }
+                showSelectTokesModal(
+                  context,
+                  address,
+                  confirmImportCallback,
+                );
               },
               child: Text(
                 LocaleKeys.refreshToFind.tr(),

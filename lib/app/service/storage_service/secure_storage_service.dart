@@ -52,15 +52,16 @@ class SecureStorageService extends AbstractStorageService {
 
 class StorageKey {
   factory StorageKey.userWithNewWallet() =>
-      StorageKey._('sparx:userWithNewWallet');
+      StorageKey._('userWithNewWallet');
 
-  factory StorageKey.firstEntering() => StorageKey._('sparx:firstEntering');
+  factory StorageKey.showingNewTokensLabel(String masterKey) =>
+      StorageKey._('showingNewTokensLabel', masterKey);
 
   factory StorageKey.showingManualBackupBadge(String masterKey) =>
-      StorageKey._('sparx:showingManualBackupBadge', masterKey);
+      StorageKey._('showingManualBackupBadge', masterKey);
 
   factory StorageKey.accountColor(String key) =>
-      StorageKey._('sparx:accountColor', key);
+      StorageKey._('accountColor', key);
 
   StorageKey._(this._baseKey, [this._entityKey]);
 
@@ -72,6 +73,6 @@ class StorageKey {
   @override
   String toString() {
     if (_entityKey == null) return _baseKey;
-    return '$_baseKey:$_entityKey';
+    return 'sparx:$_baseKey:$_entityKey';
   }
 }

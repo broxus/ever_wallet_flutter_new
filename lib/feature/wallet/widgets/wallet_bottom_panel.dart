@@ -15,15 +15,15 @@ class WalletBottomPanel extends StatefulWidget {
   const WalletBottomPanel({
     required this.currentAccount,
     required this.scrollController,
-    required this.isFirstEntering,
-    required this.checkTokensCallback,
+    required this.isShowingNewTokens,
+    required this.confirmImportCallback,
     super.key,
   });
 
   final KeyAccount currentAccount;
   final ScrollController scrollController;
-  final bool isFirstEntering;
-  final VoidCallback checkTokensCallback;
+  final bool isShowingNewTokens;
+  final VoidCallback confirmImportCallback;
 
   @override
   State<WalletBottomPanel> createState() => _WalletBottomPanelState();
@@ -83,8 +83,8 @@ class _WalletBottomPanelState extends State<WalletBottomPanel> {
                 switch (value) {
                   WalletBottomPanelTab.asset => AccountAssetsTab(
                       account: widget.currentAccount,
-                      isFirstEntering: widget.isFirstEntering,
-                      checkTokensCallback: widget.checkTokensCallback,
+                      isShowingNewTokens: widget.isShowingNewTokens,
+                      confirmImportCallback: widget.confirmImportCallback,
                     ),
                   WalletBottomPanelTab.transactions => AccountTransactionsTab(
                       account: widget.currentAccount,

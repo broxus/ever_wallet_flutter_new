@@ -31,19 +31,20 @@ class TokensModalBody extends StatelessWidget {
     return Column(
       mainAxisSize: MainAxisSize.min,
       children: [
-        GestureDetector(
-          onTap: onClickAll,
-          child: Align(
-            alignment: Alignment.centerRight,
-            child: Text(
-              isAllSelected
-                  ? LocaleKeys.hideAll.tr()
-                  : LocaleKeys.selectAll.tr(),
-              style: theme.textStyles.labelSmall,
-              textAlign: TextAlign.right,
+        if (!isLoading)
+          GestureDetector(
+            onTap: onClickAll,
+            child: Align(
+              alignment: Alignment.centerRight,
+              child: Text(
+                isAllSelected
+                    ? LocaleKeys.hideAll.tr()
+                    : LocaleKeys.selectAll.tr(),
+                style: theme.textStyles.labelSmall,
+                textAlign: TextAlign.right,
+              ),
             ),
           ),
-        ),
         const SizedBox(height: DimensSizeV2.d8),
         SeparatedColumn(
           mainAxisSize: MainAxisSize.min,

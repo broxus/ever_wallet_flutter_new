@@ -12,7 +12,11 @@ import 'package:nekoton_repository/nekoton_repository.dart';
 import 'package:ui_components_lib/ui_components_lib.dart';
 import 'package:ui_components_lib/v2/widgets/widgets.dart';
 
-Future<void> showSelectTokesModal(BuildContext context, Address address) {
+Future<void> showSelectTokesModal(
+  BuildContext context,
+  Address address,
+  VoidCallback confirmImportCallback,
+) {
   return showCommonBottomSheet(
     context: context,
     title: LocaleKeys.selectTokensLabel.tr(),
@@ -20,6 +24,7 @@ Future<void> showSelectTokesModal(BuildContext context, Address address) {
     titleTextStyle: context.themeStyleV2.textStyles.headingLarge,
     body: (_, scrollController) => SelectTokenWidget(
       address: address,
+      confirmImportCallback: confirmImportCallback,
     ),
   );
 }
@@ -27,11 +32,13 @@ Future<void> showSelectTokesModal(BuildContext context, Address address) {
 class SelectTokenWidget extends ElementaryWidget<SelectTokenWidgetModel> {
   const SelectTokenWidget({
     required this.address,
+    required this.confirmImportCallback,
     Key? key,
     WidgetModelFactory wmFactory = defaultSelectTokenWidgetModelFactory,
   }) : super(wmFactory, key: key);
 
   final Address address;
+  final VoidCallback confirmImportCallback;
 
   @override
   Widget build(SelectTokenWidgetModel wm) {
@@ -72,7 +79,12 @@ class SelectTokenWidget extends ElementaryWidget<SelectTokenWidgetModel> {
               AccentButton(
                 buttonShape: ButtonShape.pill,
                 title: LocaleKeys.importWalletButtonText.tr(),
-                onPressed: isButtonEnabled ? wm.clickImport : null,
+                onPressed: isButtonEnabled
+                    ? () {
+                        confirmImportCallback();
+                        wm.clickImport();
+                      }
+                    : null,
               ),
             const SizedBox(height: DimensSizeV2.d8),
             PrimaryButton(
