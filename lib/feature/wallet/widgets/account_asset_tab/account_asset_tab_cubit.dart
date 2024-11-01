@@ -17,7 +17,7 @@ class AccountAssetTabCubit extends Cubit<AccountAssetTabState> {
   AccountAssetTabCubit(
     KeyAccount account,
     // ignore: avoid_positional_boolean_parameters
-    this.isFirstEntering,
+    this.isShowingNewTokens,
     this.nekotonRepository,
     this.assetsService,
     this.balanceStorage,
@@ -33,7 +33,7 @@ class AccountAssetTabCubit extends Cubit<AccountAssetTabState> {
         AccountAssetTabState.accounts(tonWallet, _contracts, _contractCount),
       );
     });
-    if (isFirstEntering) {
+    if (isShowingNewTokens) {
       _allContractsSubscription = assetsService
           .allAvailableContractsForAccount(account.address)
           .listen((value) async {
@@ -68,7 +68,7 @@ class AccountAssetTabCubit extends Cubit<AccountAssetTabState> {
   final BalanceStorageService balanceStorage;
   final NekotonRepository nekotonRepository;
   final TonWalletAsset tonWallet;
-  final bool isFirstEntering;
+  final bool isShowingNewTokens;
 
   late List<TokenContractAsset>? _contracts;
   int? _contractCount;

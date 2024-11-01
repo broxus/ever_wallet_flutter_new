@@ -54,7 +54,8 @@ class StorageKey {
   factory StorageKey.userWithNewWallet() =>
       StorageKey._('sparx:userWithNewWallet');
 
-  factory StorageKey.firstEntering() => StorageKey._('sparx:firstEntering');
+  factory StorageKey.showingNewTokensLabel(String masterKey) =>
+      StorageKey._('sparx:showingNewTokensLabel', masterKey);
 
   factory StorageKey.showingManualBackupBadge(String masterKey) =>
       StorageKey._('sparx:showingManualBackupBadge', masterKey);

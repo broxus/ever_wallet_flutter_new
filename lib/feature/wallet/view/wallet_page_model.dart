@@ -25,14 +25,6 @@ class WalletPageModel extends ElementaryModel {
     return _storageService.cleanStorage(StorageKey.userWithNewWallet());
   }
 
-  Future<bool?> isFirstEntering() async {
-    return _storageService.getValue(StorageKey.firstEntering());
-  }
-
-  Future<void> updateFirstEntering() async {
-    return _storageService.addValue(StorageKey.firstEntering(), false);
-  }
-
   Future<bool?> isShowingBadge(KeyAccount account) async {
     final masterPublicKey = _nekotonRepository.seedList
         .findSeedByAnyPublicKey(account.publicKey)
@@ -45,6 +37,14 @@ class WalletPageModel extends ElementaryModel {
     );
   }
 
+  Future<bool?> isShowingNewTokens(KeyAccount account) async {
+    final address = account.address;
+
+    return _storageService.getValue(
+      StorageKey.showingNewTokensLabel(address.address),
+    );
+  }
+
   Future<void> hideShowingBadge(KeyAccount account) async {
     final masterPublicKey = _nekotonRepository.seedList
         .findSeedByAnyPublicKey(account.publicKey)
@@ -54,6 +54,15 @@ class WalletPageModel extends ElementaryModel {
 
     return _storageService.addValue(
       StorageKey.showingManualBackupBadge(masterPublicKey.publicKey),
+      false,
+    );
+  }
+
+  Future<void> hideNewTokenLabels(KeyAccount account) async {
+    final address = account.address;
+
+    return _storageService.addValue(
+      StorageKey.showingNewTokensLabel(address.address),
       false,
     );
   }

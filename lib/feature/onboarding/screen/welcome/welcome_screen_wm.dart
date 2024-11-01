@@ -38,13 +38,11 @@ class WelcomeScreenWidgetModel
 
   Future<void> onPressedCreateWallet() async {
     unawaited(model.saveUserNew(userWithNewWallet: true));
-    unawaited(model.setFirstEntering());
     _goNext(AppRoute.createSeedPassword.path);
   }
 
   void onPressedWalletLogin() {
     unawaited(model.saveUserNew(userWithNewWallet: false));
-    unawaited(model.setFirstEntering());
     _goNext(AppRoute.addExistingWallet.path);
   }
 

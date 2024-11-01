@@ -11,18 +11,18 @@ class WalletView extends StatelessWidget {
     required this.currentAccount,
     required this.scrollController,
     required this.isShowingBadge,
-    required this.isFirstEntering,
+    required this.isShowingNewTokens,
     required this.finishedBackupCallback,
-    required this.checkTokensCallback,
+    required this.confirmImportCallback,
     super.key,
   });
 
   final KeyAccount? currentAccount;
   final ScrollController scrollController;
   final bool isShowingBadge;
-  final bool isFirstEntering;
+  final bool isShowingNewTokens;
   final VoidCallback finishedBackupCallback;
-  final VoidCallback checkTokensCallback;
+  final VoidCallback confirmImportCallback;
 
   @override
   Widget build(BuildContext context) {
@@ -47,8 +47,8 @@ class WalletView extends StatelessWidget {
               WalletBottomPanel(
                 currentAccount: currentAccount!,
                 scrollController: scrollController,
-                isFirstEntering: isFirstEntering,
-                checkTokensCallback: checkTokensCallback,
+                isShowingNewTokens: isShowingNewTokens,
+                confirmImportCallback: confirmImportCallback,
               ),
               SliverFillRemaining(
                 hasScrollBody: false,
