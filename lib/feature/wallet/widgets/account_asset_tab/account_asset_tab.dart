@@ -113,7 +113,7 @@ class _FooterAssetsWidget extends StatelessWidget {
               text: TextSpan(
                 style: theme.textStyles.paragraphSmall,
                 children: [
-                  if (numberNewTokens != null)
+                  if ((numberNewTokens ?? 0) > 0)
                     TextSpan(
                       text: LocaleKeys.newTokensLabel
                           .tr(args: ['$numberNewTokens']),
