@@ -118,17 +118,25 @@ class _AccountInfo extends StatelessWidget {
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                Text(
-                  account.name,
-                  style: theme.textStyles.headingXSmall,
-                  overflow: TextOverflow.ellipsis,
-                  softWrap: false,
-                  maxLines: 1,
+                SeparatedRow(
+                  separatorSize: DimensSizeV2.d2,
+                  children: [
+                    Text(
+                      account.name,
+                      style: theme.textStyles.headingXSmall,
+                      overflow: TextOverflow.ellipsis,
+                      softWrap: false,
+                      maxLines: 1,
+                    ),
+                    const Icon(LucideIcons.chevronDown)
+                  ],
                 ),
                 Row(
                   children: [
                     Icon(
-                      LucideIcons.alignCenter,
+                      custodians > 1
+                          ? LucideIcons.usersRound
+                          : LucideIcons.userRound,
                       size: DimensSizeV2.d16,
                       color: theme.colors.content3,
                     ),
