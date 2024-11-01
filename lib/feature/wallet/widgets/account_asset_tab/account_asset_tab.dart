@@ -105,7 +105,7 @@ class _FooterAssetsWidget extends StatelessWidget {
         const SizedBox(height: DimensSizeV2.d6),
         if (isShowingNewTokens && numberNewTokens == null)
           const ProgressIndicatorWidget(size: DimensSizeV2.d18),
-        if (isShowingNewTokens)
+        if (isShowingNewTokens && (numberNewTokens ?? 0) > 0)
           Padding(
             padding: const EdgeInsets.only(top: DimensSizeV2.d6),
             child: RichText(
@@ -113,25 +113,23 @@ class _FooterAssetsWidget extends StatelessWidget {
               text: TextSpan(
                 style: theme.textStyles.paragraphSmall,
                 children: [
-                  if ((numberNewTokens ?? 0) > 0)
-                    TextSpan(
-                      text: LocaleKeys.newTokensLabel
-                          .tr(args: ['$numberNewTokens']),
-                      style: theme.textStyles.paragraphSmall
-                          .copyWith(color: theme.colors.content0),
-                      recognizer: TapGestureRecognizer()
-                        ..onTap = () {
-                          showSelectTokesModal(
-                            context,
-                            address,
-                            confirmImportCallback,
-                          );
-                        },
-                    ),
-                  if (numberNewTokens != null)
-                    TextSpan(
-                      text: ' ${LocaleKeys.foundInThisAccountLabel.tr()}',
-                    ),
+                  TextSpan(
+                    text: LocaleKeys.newTokensLabel
+                        .tr(args: ['$numberNewTokens']),
+                    style: theme.textStyles.paragraphSmall
+                        .copyWith(color: theme.colors.content0),
+                    recognizer: TapGestureRecognizer()
+                      ..onTap = () {
+                        showSelectTokesModal(
+                          context,
+                          address,
+                          confirmImportCallback,
+                        );
+                      },
+                  ),
+                  TextSpan(
+                    text: ' ${LocaleKeys.foundInThisAccountLabel.tr()}',
+                  ),
                   const TextSpan(
                     text: '\n',
                   ),
