@@ -65,7 +65,7 @@ class _BrowserTabViewState extends State<BrowserTabView> with ContextMixin {
   ];
 
   static const _customAppLinks = [
-    'https://metamask.app.link',
+    'metamask.app.link',
   ];
 
   static const Duration _scrollTimerDelay = Duration(milliseconds: 100);
