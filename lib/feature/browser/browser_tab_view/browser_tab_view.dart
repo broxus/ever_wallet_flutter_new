@@ -64,6 +64,10 @@ class _BrowserTabViewState extends State<BrowserTabView> with ContextMixin {
     'about',
   ];
 
+  static const _customAppLinks = [
+    'https://metamask.app.link',
+  ];
+
   static const Duration _scrollTimerDelay = Duration(milliseconds: 100);
 
   static final _log = Logger('BrowserTabView');
@@ -642,7 +646,15 @@ class _BrowserTabViewState extends State<BrowserTabView> with ContextMixin {
   }
 
   bool _checkIsCustomAppLink(Uri url) {
-    return url.origin.startsWith('http') && !url.origin.contains('www');
+    final path = url.toString();
+
+    for (final link in _customAppLinks) {
+      if (path.contains(link)) {
+        return true;
+      }
+    }
+
+    return false;
   }
 }
 
