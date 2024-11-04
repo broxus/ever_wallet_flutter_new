@@ -21,6 +21,10 @@ dependencies:
   clock: 1.1.1
   collection: 1.18.0
   crypto: 3.0.5
+  darttonconnect:
+    git:
+      url: https://github.com/knightsforce/dartTonconnect.git
+      ref: http-any-version
   device_info_plus: ^11.1.0
   dio: ^5.7.0
   dotted_border: 2.1.0
