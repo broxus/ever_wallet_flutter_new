@@ -19,9 +19,7 @@ class SelectSeedModel extends ElementaryModel {
         (seedList) => seedList.seeds,
       );
 
-
-  Stream<Seed?> get currentAccount =>
-      _currentSeedService.currentSeedStream;
+  Stream<Seed?> get currentAccount => _currentSeedService.currentSeedStream;
 
   PublicKey? getCurrentKey() {
     return _currentKeyService.currentKey;

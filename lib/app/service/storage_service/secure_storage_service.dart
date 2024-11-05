@@ -51,8 +51,7 @@ class SecureStorageService extends AbstractStorageService {
 }
 
 class StorageKey {
-  factory StorageKey.userWithNewWallet() =>
-      StorageKey._('userWithNewWallet');
+  factory StorageKey.userWithNewWallet() => StorageKey._('userWithNewWallet');
 
   factory StorageKey.showingNewTokensLabel(String masterKey) =>
       StorageKey._('showingNewTokensLabel', masterKey);
