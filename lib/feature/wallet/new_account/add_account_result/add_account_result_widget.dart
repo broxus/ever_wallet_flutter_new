@@ -1,4 +1,4 @@
-import 'package:app/feature/wallet/add_account/add_account_result/add_account_result_wm.dart';
+import 'package:app/feature/wallet/new_account/add_account_result/add_account_result_wm.dart';
 import 'package:app/generated/generated.dart';
 import 'package:elementary/elementary.dart';
 import 'package:flutter/material.dart';

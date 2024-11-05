@@ -1,4 +1,5 @@
-import 'package:app/feature/wallet/add_account/add_account_type/add_account_type_wm.dart';
+import 'package:app/feature/wallet/new_account/new_account_type'
+    '/new_account_type_wm.dart';
 import 'package:app/generated/generated.dart';
 import 'package:app/utils/constants.dart';
 import 'package:elementary/elementary.dart';
@@ -9,19 +10,19 @@ import 'package:nekoton_repository/nekoton_repository.dart';
 import 'package:ui_components_lib/ui_components_lib.dart';
 import 'package:ui_components_lib/v2/ui_components_lib_v2.dart';
 
-class AddAccountTypeWidget extends ElementaryWidget<AddAccountTypeWidgetModel> {
-  const AddAccountTypeWidget({
+class NewAccountTypeWidget extends ElementaryWidget<NewAccountTypeWidgetModel> {
+  const NewAccountTypeWidget({
     required this.publicKey,
     required this.password,
     Key? key,
-    WidgetModelFactory wmFactory = defaultAddAccountTypeWidgetModelFactory,
+    WidgetModelFactory wmFactory = defaultNewAccountTypeWidgetModelFactory,
   }) : super(wmFactory, key: key);
 
   final PublicKey publicKey;
   final String password;
 
   @override
-  Widget build(AddAccountTypeWidgetModel wm) {
+  Widget build(NewAccountTypeWidgetModel wm) {
     final theme = wm.theme;
 
     return Column(

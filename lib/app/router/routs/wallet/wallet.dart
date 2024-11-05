@@ -9,13 +9,16 @@ import 'package:app/feature/add_seed/add_seed_enable_biometry/view/add_seed_enab
 import 'package:app/feature/network/network.dart';
 import 'package:app/feature/no_internet/no_internet_screen.dart';
 import 'package:app/feature/splash/splash_screen.dart';
-import 'package:app/feature/wallet/add_account/add_account.dart';
+import 'package:app/feature/wallet/new_account/add_account.dart';
+import 'package:app/feature/wallet/new_account/add_account_page.dart';
+import 'package:app/feature/wallet/new_account/select_seed/select_seed_page.dart';
 import 'package:app/feature/wallet/wallet.dart';
 import 'package:app/feature/wallet/widgets/account_asset_tab/select_new_asset/select_new_asset.dart';
 import 'package:go_router/go_router.dart';
 import 'package:nekoton_repository/nekoton_repository.dart';
 
 const selectNewAssetAddressPathParam = 'selectNewAssetAddress';
+const walletSelectSeedPathParam = 'walletSelectSeedSeeds';
 const tonWalletDetailsAddressPathParam = 'tonWalletDetailsAddress';
 const tokenWalletDetailsOwnerAddressPathParam = 'tonWalletDetailsOwnerAddress';
 const tokenWalletDetailsContractAddressPathParam =
@@ -104,12 +107,24 @@ StatefulShellBranch get walletBranch {
           ),
           GoRoute(
             path: AppRoute.walletAddAccount.path,
-            builder: (_, state) => AddAccountPage(
-              publicKey:
-                  state.uri.queryParameters[walletCreatePublicKeyQueryParam]!,
-              password:
-                  state.uri.queryParameters[walletCreatePasswordQueryParam]!,
-            ),
+            builder: (_, state) => const AddAccountPage(),
+            routes: [
+              GoRoute(
+                path: AppRoute.walletSelectSeed.path,
+                builder: (_, state) => const SelectSeedPage(),
+                routes: [
+                  GoRoute(
+                    path: AppRoute.walletNewAccount.path,
+                    builder: (_, state) => NewAccountPage(
+                      publicKey: state.uri
+                          .queryParameters[walletCreatePublicKeyQueryParam]!,
+                      password: state
+                          .uri.queryParameters[walletCreatePasswordQueryParam]!,
+                    ),
+                  ),
+                ],
+              ),
+            ],
           ),
           addSeedNamedRoute,
           tonWalletDetailsRoute,

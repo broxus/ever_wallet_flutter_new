@@ -615,5 +615,6 @@
   "selectedTokensBeImportedInfo": "Only the tokens you’ve selected will appear in your wallet. You can always hide tokens later by searching for them.",
   "backWord": "Back",
   "selectAll": "Select all",
-  "hideAll": "Hide all"
+  "hideAll": "Hide all",
+  "selectSeed": "Select seed"
 }

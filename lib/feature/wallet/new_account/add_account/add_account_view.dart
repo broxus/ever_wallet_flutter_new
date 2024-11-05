@@ -1,38 +1,16 @@
-import 'package:app/feature/wallet/add_account/add_account_confirm/add_new_account_confirm_sheet.dart';
+import 'package:app/app/router/app_route.dart';
 import 'package:app/generated/generated.dart';
 import 'package:flutter/material.dart';
 import 'package:lucide_icons_flutter/lucide_icons.dart';
-import 'package:nekoton_repository/nekoton_repository.dart';
 import 'package:ui_components_lib/ui_components_lib.dart';
 import 'package:ui_components_lib/v2/ui_components_lib_v2.dart';
 
-/// This is a helper method to display AddNewAccountSheet.
-Future<void> showAddNewAccountSheet({
-  required BuildContext context,
-  required PublicKey publicKey,
-}) {
-  return showCommonBottomSheet(
-    context: context,
-    title: LocaleKeys.addNewAccount.tr(),
-    centerTitle: true,
-    body: (_, __) => AddNewAccountSheet(
-      publicKey: publicKey,
-    ),
-  );
-}
-
-class AddNewAccountSheet extends StatelessWidget {
-  const AddNewAccountSheet({
-    required this.publicKey,
-    super.key,
-  });
-
-  final PublicKey publicKey;
+class AddAccountView extends StatelessWidget {
+  const AddAccountView({super.key});
 
   @override
   Widget build(BuildContext context) {
     final theme = context.themeStyleV2;
-
     return PrimaryCard(
       color: theme.colors.background2,
       borderRadius: BorderRadius.circular(DimensRadiusV2.radius16),
@@ -43,7 +21,11 @@ class AddNewAccountSheet extends StatelessWidget {
         separator: const CommonDivider(),
         children: [
           GestureDetector(
-            onTap: () => _addLocal(context),
+            onTap: () {
+              context.goFurther(
+                AppRoute.walletSelectSeed.path,
+              );
+            },
             behavior: HitTestBehavior.translucent,
             child: SizedBox(
               height: DimensSizeV2.d64,
@@ -106,14 +88,6 @@ class AddNewAccountSheet extends StatelessWidget {
           ),
         ],
       ),
-    );
-  }
-
-  void _addLocal(BuildContext context) {
-    Navigator.of(context).pop();
-    showAddAccountConfirmSheet(
-      context: context,
-      publicKey: publicKey,
     );
   }
 }

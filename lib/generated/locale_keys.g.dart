@@ -636,4 +636,5 @@ abstract class LocaleKeys {
   static const backWord = 'backWord';
   static const selectAll = 'selectAll';
   static const hideAll = 'hideAll';
+  static const selectSeed = 'selectSeed';
 }
