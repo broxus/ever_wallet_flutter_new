@@ -1,71 +1,69 @@
-import 'package:darttonconnect/exceptions.dart';
-import 'package:darttonconnect/ton_connect.dart';
-import 'package:flutter/widgets.dart';
+import 'package:app/app/service/ton/custom_ton_connector.dart';
+import 'package:app/http/api/ton/ton_api.dart';
 import 'package:injectable/injectable.dart';
 
-@singleton
+@lazySingleton
 class TonService {
-  static const _manifestUrl =
-      'https://l.sparxwallet.com/tonconnect-manifest.json';
+  TonService(this._tonApi);
 
-  final _connector = TonConnect(_manifestUrl);
+  final TonApi _tonApi;
 
-  void init() {
-    restoreConnection();
+  late final _connectors = <int, CustomTonConnector>{};
+
+  CustomTonConnector? getConnectorById(int id) {
+    return _connectors[id];
   }
 
-  void connect() {
-    // WidgetsBiКnding.instance.addPostFrameCallback((_) {
-    //   if (!_connector.connected) {
-    //     restoreConnection();
-    //   }
-    // });
+  Future<String?> connect(
+    String manifestUrl, {
+    int? id,
+  }) async {
+    final connector = _connectors[id] ?? CustomTonConnector();
+    _connectors[connector.id] ??= connector;
+
+    final data = await _tonApi.fetchManifest(manifestUrl);
+
+    return connector.connect(
+      TonConnectData(
+        name: data.name,
+        iconUrl: data.iconUrl,
+        url: data.url,
+        manifestUrl: manifestUrl,
+      ),
+    );
   }
 
-  void disconnect() {
-    if (_connector.connected) {
-      _connector.disconnect();
-    }
+  void disconnectAll() {
+    _connectors.forEach((id, _) {
+      disconnect(id);
+    });
   }
 
-  void restoreConnection() => _connector.restoreConnection();
+  void disconnect(int id) {
+    final connector = _connectors[id];
 
-  Future<void> sendTransaction() async {
-    if (!_connector.connected) {
+    if (connector == null) {
       return;
     }
 
-    const transaction = <String, dynamic>{
-      // "validUntil": 1918097354,
-      // "messages": [
-      //   {
-      //     "address":
-      //         "0:575af9fc97311a11f423a1926e7fa17a93565babfd65fe39d2e58b8ccb38c911",
-      //     "amount": "20000000",
-      //   }
-      // ]
-    };
+    connector.disconnect();
+  }
 
-    try {
-      await _connector.sendTransaction(transaction);
-    } on UserRejectsError catch (e) {
-      /// TODO
-    } catch (e) {
-      /// TODO
-    }
+  void restoreConnections() {
+    _connectors.forEach((_, connector) {
+      connector.restoreConnection();
+    });
+  }
+
+  Future<dynamic> sendTransaction(
+    int id,
+    Map<String, dynamic> transactionData,
+  ) async {
+    return _connectors[id]?.sendTransaction(transactionData);
   }
 
   @disposeMethod
   void dispose() {
-    disconnect();
+    disconnectAll();
   }
-
-  // _() async {
-  //   final wallets = await _connector.getWallets();
-  //   final universalLink = await _connector.connect(walletConnectionSource);
-  //   updateQRCode(universalLink);
-  //   _connector.onStatusChange(onStatusChange);
-  // }
-
-  void onStatusChange(dynamic value) {}
 }

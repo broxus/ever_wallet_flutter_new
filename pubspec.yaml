@@ -8,15 +8,16 @@ environment:
   flutter: ">=3.10.3"
 
 dependencies:
+  app_links: 6.3.2
   app_settings: 5.1.1
   auto_size_text_field: 2.2.3
   barcode_widget: 2.0.4
   bloc: 8.1.4
   bloc_event_transformers: 1.0.1
-  broxus_app_links:
-    git:
-      url: https://github.com/broxus/broxus-flutter-app-link
-      ref: v1.0.0
+#  broxus_app_links:
+#    git:
+#      url: https://github.com/broxus/broxus-flutter-app-link
+#      ref: v1.0.0
   cached_network_image: 3.3.1
   clock: 1.1.1
   collection: 1.18.0

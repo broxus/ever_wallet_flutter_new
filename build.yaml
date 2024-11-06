@@ -14,10 +14,11 @@ targets:
           - lib/app/service/**/*.dart
           - lib/data/**/*.dart
           - lib/http/dto/*.dart
+          - lib/http/dto/**/*.dart
       retrofit_generator:
         generate_for:
-          - lib/http/api/*.dart
-      injectable_generator:injectable_builder:
+          - lib/http/api/**/*.dart
+      injectable_generator:
         generate_for:
           - lib/di/*.dart
           - lib/app/service/*.dart
@@ -27,6 +28,7 @@ targets:
       freezed:
         generate_for:
           - lib/app/service/dto/*.dart
+          - lib/app/service/dto/**/*.dart
           - lib/data/**/*.dart
           - lib/**/*_cubit.dart
           - lib/**/*_bloc.dart

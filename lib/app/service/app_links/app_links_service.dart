@@ -1,19 +1,25 @@
 import 'dart:async';
+import 'dart:convert';
 
 import 'package:app/app/service/app_links/app_links_data.dart';
-import 'package:broxus_app_links/broxus_app_links.dart';
+import 'package:app/app/service/ton/ton_service.dart';
+import 'package:app_links/app_links.dart';
 import 'package:injectable/injectable.dart';
 import 'package:rxdart/rxdart.dart';
 
 @singleton
 class AppLinksService {
-  AppLinksService() {
-    _linkSubscription = _appLinks.uriStream.listen(_handleAppLink);
+  AppLinksService(
+    this._tonService,
+  ) {
+    _linkSubscription = _appLinks.uriLinkStream.listen(_handleAppLink);
   }
 
   static const _linkKey = 'link';
 
-  final _appLinks = BroxusAppLinks();
+  final TonService _tonService;
+
+  final _appLinks = AppLinks();
 
   final _linksSubj = BehaviorSubject<AppLinksData>.seeded(EmptyAppLinksData());
 
@@ -35,8 +41,17 @@ class AppLinksService {
 
     final link = queryParameters[_linkKey];
 
-    if (link != null) {
-      _handleQueryLink(link);
+    final scheme = uri.scheme;
+
+    switch (scheme) {
+      case 'http':
+      case 'https':
+        if (link != null) {
+          _handleQueryLink(link);
+          break;
+        }
+      case 'tc':
+        _handleTonConnect(uri);
     }
   }
 
@@ -52,5 +67,23 @@ class AppLinksService {
         ),
       );
     } catch (_) {}
+  }
+
+  void _handleTonConnect(Uri uri) {
+    final rawManifest = uri.queryParameters['r'];
+    if (rawManifest == null) {
+      return;
+    }
+
+    final decodedManifest = Uri.decodeComponent(rawManifest);
+    final manifestData = jsonDecode(decodedManifest) as Map<String, dynamic>;
+
+    final manifestUrl = manifestData['manifestUrl'] as String?;
+
+    if (manifestUrl == null) {
+      return;
+    }
+
+    _tonService.connect(manifestUrl);
   }
 }
