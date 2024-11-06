@@ -580,22 +580,25 @@
   "newSeedPhraseSwitchSubtitle": "Make sure you save your seed phrase. You can start using it right now.",
   "newSeedPhraseSwitchButton": "Switch to this seed phrase",
   "txTreeSimulationErrorComputePhase": {
-    "0": "Execution failed on ",
+    "0": "Transaction tree execution may fail, because execution failed on ",
     "1": " with exit code {}."
   },
   "txTreeSimulationErrorActionPhase": {
-    "0": "Action phase failed on ",
+    "0": "Transaction tree execution may fail, because action phase failed on ",
     "1": " with exit code {}."
   },
   "txTreeSimulationErrorFrozen": {
-    "0": "Account ",
+    "0": "Transaction tree execution may fail, because account ",
     "1": " will be frozen due to storage fee debt."
   },
   "txTreeSimulationErrorDeleted": {
-    "0": "Account ",
+    "0": "Transaction tree execution may fail, because account ",
     "1": " will be deleted due to storage fee debt."
   },
-  "txTreeSimulationErrorHint": "Please contact technical support.",
+  "txTreeSimulationErrorHint": "Contact technical support.",
+  "txTreeSimulationErrorHintCanFix": "Send 0.2 {} to this address or contact technical support.",
+  "txTreeSimulationErrorSwitchLabel": "Send transaction anyway",
+  "txTreeSimulationErrorTitle": "Tokens may be lost!",
   "token": "Token",
   "changeNetwork": "Change network",
   "addNetwork": "Add network",

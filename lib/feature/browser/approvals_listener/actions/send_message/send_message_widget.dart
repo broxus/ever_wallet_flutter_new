@@ -134,19 +134,31 @@ class SendMessageWidget extends ElementaryWidget<SendMessageWidgetModel> {
           ),
         ),
         if (wm.account != null)
-          DoubleSourceBuilder(
+          TripleSourceBuilder(
             firstSource: wm.isLoading,
             secondSource: wm.txErrors,
-            builder: (_, isLoading, txErrors) {
-              if (txErrors?.isNotEmpty ?? false) {
-                return TxTreeSimulationErrorWidget(txErrors: txErrors!);
-              }
+            thirdSource: wm.isConfirmed,
+            builder: (_, isLoading, txErrors, isConfirmed) {
+              final hasTxError = txErrors?.isNotEmpty ?? false;
 
-              return EnterPasswordWidgetV2(
-                isLoading: isLoading,
-                publicKey: wm.account!.publicKey,
-                title: LocaleKeys.sendWord.tr(),
-                onPasswordEntered: wm.onSubmit,
+              return SeparatedColumn(
+                mainAxisSize: MainAxisSize.min,
+                children: [
+                  if (hasTxError)
+                    TxTreeSimulationErrorWidget(
+                      txErrors: txErrors!,
+                      symbol: wm.nativeCurrency.symbol,
+                      isConfirmed: isConfirmed ?? false,
+                      onConfirm: wm.onConfirmed,
+                    ),
+                  EnterPasswordWidgetV2(
+                    isLoading: isLoading,
+                    publicKey: wm.account!.publicKey,
+                    title: LocaleKeys.sendWord.tr(),
+                    disabled: hasTxError && isConfirmed != true,
+                    onPasswordEntered: wm.onSubmit,
+                  ),
+                ],
               );
             },
           ),

@@ -12,41 +12,87 @@ import 'package:ui_components_lib/v2/ui_components_lib_v2.dart';
 class TxTreeSimulationErrorWidget extends StatelessWidget {
   const TxTreeSimulationErrorWidget({
     required this.txErrors,
+    required this.symbol,
+    required this.isConfirmed,
+    required this.onConfirm,
     super.key,
   });
 
   final List<TxTreeSimulationErrorItem> txErrors;
+  final String symbol;
+  final bool isConfirmed;
+  final ValueChanged<bool> onConfirm;
 
   @override
   Widget build(BuildContext context) {
     final theme = context.themeStyleV2;
+    final canFixTxError = txErrors.any(
+      (item) => item.error.code == -14 || item.error.code == -37,
+    );
 
     return PrimaryCard(
       color: theme.colors.backgroundNegative,
       borderRadius: BorderRadius.circular(DimensRadiusV2.radius12),
       padding: const EdgeInsets.all(DimensSizeV2.d16),
-      child: SeparatedRow(
-        crossAxisAlignment: CrossAxisAlignment.start,
+      child: SeparatedColumn(
+        separatorSize: DimensSizeV2.d16,
+        mainAxisSize: MainAxisSize.min,
         children: [
-          Icon(
-            LucideIcons.triangleAlert,
-            size: DimensSizeV2.d20,
-            color: theme.colors.contentNegative,
+          SeparatedRow(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              Icon(
+                LucideIcons.triangleAlert,
+                size: DimensSizeV2.d20,
+                color: theme.colors.contentNegative,
+              ),
+              Expanded(
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  mainAxisSize: MainAxisSize.min,
+                  children: [
+                    Text(
+                      LocaleKeys.txTreeSimulationErrorTitle.tr(),
+                      style: theme.textStyles.labelSmall.copyWith(
+                        color: theme.colors.contentNegative,
+                      ),
+                    ),
+                    const SizedBox(height: DimensSizeV2.d8),
+                    for (final item in txErrors) _ErrorMessage(item: item),
+                    const SizedBox(height: DimensSizeV2.d8),
+                    if (canFixTxError)
+                      Text(
+                        LocaleKeys.txTreeSimulationErrorHintCanFix.tr(
+                          args: [symbol],
+                        ),
+                        style: theme.textStyles.paragraphSmall.copyWith(
+                          color: theme.colors.contentNegative,
+                        ),
+                      )
+                    else
+                      Text(
+                        LocaleKeys.txTreeSimulationErrorHint.tr(),
+                        style: theme.textStyles.paragraphSmall.copyWith(
+                          color: theme.colors.contentNegative,
+                        ),
+                      ),
+                  ],
+                ),
+              ),
+            ],
           ),
-          Expanded(
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              mainAxisSize: MainAxisSize.min,
-              children: [
-                for (final item in txErrors) _ErrorMessage(item: item),
-                Text(
-                  LocaleKeys.txTreeSimulationErrorHint.tr(),
-                  style: theme.textStyles.paragraphSmall.copyWith(
+          Row(
+            children: [
+              Expanded(
+                child: Text(
+                  LocaleKeys.txTreeSimulationErrorSwitchLabel.tr(),
+                  style: theme.textStyles.labelSmall.copyWith(
                     color: theme.colors.contentNegative,
                   ),
                 ),
-              ],
-            ),
+              ),
+              Switch(value: isConfirmed, onChanged: onConfirm),
+            ],
           ),
         ],
       ),

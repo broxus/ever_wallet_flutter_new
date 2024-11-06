@@ -128,7 +128,7 @@ class _AccountInfo extends StatelessWidget {
                       softWrap: false,
                       maxLines: 1,
                     ),
-                    const Icon(LucideIcons.chevronDown)
+                    const Icon(LucideIcons.chevronDown),
                   ],
                 ),
                 Row(
