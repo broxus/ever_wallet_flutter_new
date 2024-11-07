@@ -34,11 +34,6 @@ class SelectSeedWidgetModel
 
   ThemeStyleV2 get theme => context.themeStyleV2;
 
-  @override
-  void initWidgetModel() {
-    super.initWidgetModel();
-  }
-
   bool hasCurrentAccount(Seed seed) {
     return model.getCurrentKey() == seed.publicKey;
   }
