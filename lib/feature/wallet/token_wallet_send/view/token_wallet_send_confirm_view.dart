@@ -83,7 +83,7 @@ class _TokenWalletSendConfirmViewState
           publicKey: widget.publicKey,
           title: LocaleKeys.confirm.tr(),
           isLoading: isLoading,
-          disabled: hasTxError && !isConfirmed,
+          isDisabled: hasTxError && !isConfirmed,
           onPasswordEntered: (pwd) => bloc.add(TokenWalletSendEvent.send(pwd)),
         ),
         const SizedBox(height: DimensSize.d16),

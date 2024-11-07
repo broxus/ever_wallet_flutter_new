@@ -26,7 +26,7 @@ class EnterPasswordWidgetV2 extends StatefulWidget {
     required this.publicKey,
     this.title,
     this.isLoading,
-    this.disabled = false,
+    this.isDisabled = false,
     super.key,
   });
 
@@ -41,7 +41,7 @@ class EnterPasswordWidgetV2 extends StatefulWidget {
 
   final bool? isLoading;
 
-  final bool disabled;
+  final bool isDisabled;
 
   @override
   State<EnterPasswordWidgetV2> createState() => _EnterPasswordWidgetV2State();
@@ -94,7 +94,7 @@ class _EnterPasswordWidgetV2State extends State<EnterPasswordWidgetV2> {
           title: widget.title ?? LocaleKeys.submitWord.tr(),
           isLoading: widget.isLoading ?? false,
           icon: isFace ? LucideIcons.scanFace : LucideIcons.fingerprint,
-          onPressed: widget.disabled
+          onPressed: widget.isDisabled
               ? null
               : () => context.read<EnterPasswordCubit>().requestBiometry(
                     isFace: isFace,
@@ -109,7 +109,7 @@ class _EnterPasswordWidgetV2State extends State<EnterPasswordWidgetV2> {
             SecureTextField(
               hintText: LocaleKeys.password.tr(),
               textEditingController: _passwordController,
-              onSubmit: widget.disabled
+              onSubmit: widget.isDisabled
                   ? null
                   : (_) => context
                       .read<EnterPasswordCubit>()
@@ -119,7 +119,7 @@ class _EnterPasswordWidgetV2State extends State<EnterPasswordWidgetV2> {
               buttonShape: ButtonShape.pill,
               title: widget.title ?? LocaleKeys.submitWord.tr(),
               isLoading: widget.isLoading ?? false,
-              onPressed: widget.disabled
+              onPressed: widget.isDisabled
                   ? null
                   : () => context
                       .read<EnterPasswordCubit>()

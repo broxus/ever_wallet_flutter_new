@@ -155,7 +155,7 @@ class SendMessageWidget extends ElementaryWidget<SendMessageWidgetModel> {
                     isLoading: isLoading,
                     publicKey: wm.account!.publicKey,
                     title: LocaleKeys.sendWord.tr(),
-                    disabled: hasTxError && isConfirmed != true,
+                    isDisabled: hasTxError && isConfirmed != true,
                     onPasswordEntered: wm.onSubmit,
                   ),
                 ],
