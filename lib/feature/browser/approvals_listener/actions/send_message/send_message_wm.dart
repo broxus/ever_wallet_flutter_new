@@ -49,6 +49,7 @@ class SendMessageWidgetModel
   late final _custodians = createNotifier<List<PublicKey>>();
   late final _balance = createNotifier<Money>();
   late final _isLoading = createNotifier(false);
+  late final _isConfirmed = createNotifier(false);
   late final StreamSubscription<Money> _subscription;
 
   ListenableState<TransferData> get data => _data;
@@ -66,6 +67,8 @@ class SendMessageWidgetModel
   ListenableState<Money?> get balance => _balance;
 
   ListenableState<bool> get isLoading => _isLoading;
+
+  ListenableState<bool> get isConfirmed => _isConfirmed;
 
   Currency get nativeCurrency =>
       Currencies()[model.transport.nativeTokenTicker]!;
@@ -110,6 +113,9 @@ class SendMessageWidgetModel
 
   void onSubmit(String password) =>
       Navigator.of(context).pop((publicKey.value, password));
+
+  // ignore: avoid_positional_boolean_parameters
+  void onConfirmed(bool value) => _isConfirmed.accept(value);
 
   Future<void> _getTokenTransferData(BigInt tokens) async {
     final (rootTokenContract, details) =

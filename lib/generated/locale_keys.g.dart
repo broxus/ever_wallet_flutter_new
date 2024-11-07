@@ -616,6 +616,11 @@ abstract class LocaleKeys {
       'txTreeSimulationErrorDeleted.1';
   static const txTreeSimulationErrorDeleted = 'txTreeSimulationErrorDeleted';
   static const txTreeSimulationErrorHint = 'txTreeSimulationErrorHint';
+  static const txTreeSimulationErrorHintCanFix =
+      'txTreeSimulationErrorHintCanFix';
+  static const txTreeSimulationErrorSwitchLabel =
+      'txTreeSimulationErrorSwitchLabel';
+  static const txTreeSimulationErrorTitle = 'txTreeSimulationErrorTitle';
   static const token = 'token';
   static const changeNetwork = 'changeNetwork';
   static const addNetwork = 'addNetwork';

@@ -232,9 +232,6 @@ class $AssetsImagesGen {
   SvgGenImage get historyFill =>
       const SvgGenImage('assets/images/history_fill.svg');
 
-  $AssetsImagesHomescreenBgGen get homescreenBg =>
-      const $AssetsImagesHomescreenBgGen();
-
   /// File path: assets/images/ic_match.svg
   SvgGenImage get icMatch => const SvgGenImage('assets/images/ic_match.svg');
 
@@ -572,17 +569,6 @@ class $AssetsImagesCheckCircleFillGen {
 
   /// List of all assets
   List<AssetGenImage> get values => [checkCircleFill];
-}
-
-class $AssetsImagesHomescreenBgGen {
-  const $AssetsImagesHomescreenBgGen();
-
-  /// File path: assets/images/homescreen_bg/homescreen_bg.png
-  AssetGenImage get homescreenBg =>
-      const AssetGenImage('assets/images/homescreen_bg/homescreen_bg.png');
-
-  /// List of all assets
-  List<AssetGenImage> get values => [homescreenBg];
 }
 
 class $AssetsImagesLangIconsGen {
