@@ -84,6 +84,6 @@ class AppLinksService {
       return;
     }
 
-    _tonService.connect(manifestUrl);
+    _tonService.createAndConnect(manifestUrl);
   }
 }

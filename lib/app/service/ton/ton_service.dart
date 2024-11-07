@@ -15,38 +15,73 @@ class TonService {
   }
 
   Future<String?> connect(
-    String manifestUrl, {
-    int? id,
+    CustomTonConnector connector,
+    String targetManifestUrl, {
+    bool? isReplaceConnection,
   }) async {
-    final connector = _connectors[id] ?? CustomTonConnector();
-    _connectors[connector.id] ??= connector;
-
-    final data = await _tonApi.fetchManifest(manifestUrl);
+    final data = await _tonApi.fetchManifest(targetManifestUrl);
 
     return connector.connect(
       TonConnectData(
         name: data.name,
         iconUrl: data.iconUrl,
-        url: data.url,
-        manifestUrl: manifestUrl,
+        aboutUrl: data.url,
+        targetManifestUrl: targetManifestUrl,
       ),
+      isReplaceConnection: isReplaceConnection,
     );
   }
 
-  void disconnectAll() {
-    _connectors.forEach((id, _) {
-      disconnect(id);
-    });
+  Future<String?> connectById(
+    int connectorId,
+    String targetManifestUrl, {
+    bool? isReplaceConnection,
+  }) async {
+    final connector = _connectors[connectorId];
+
+    if (connector == null) {
+      return null;
+    }
+
+    return connect(
+      connector,
+      targetManifestUrl,
+      isReplaceConnection: isReplaceConnection,
+    );
   }
 
-  void disconnect(int id) {
+  Future<(CustomTonConnector, String?)?> createAndConnect(
+    String targetManifestUrl, {
+    bool? isReplaceConnection,
+  }) async {
+    final connector = CustomTonConnector();
+    _connectors[connector.id] = connector;
+
+    final link = await connect(
+      connector,
+      targetManifestUrl,
+      isReplaceConnection: isReplaceConnection,
+    );
+
+    return (connector, link);
+  }
+
+  Future<void> disconnectById(int id) async {
     final connector = _connectors[id];
 
     if (connector == null) {
       return;
     }
 
-    connector.disconnect();
+    return connector.disconnect();
+  }
+
+  Future<void> disconnectAll() async {
+    final connectors = _connectors.values;
+
+    for (final connector in connectors) {
+      await connector.disconnect();
+    }
   }
 
   void restoreConnections() {
@@ -62,8 +97,23 @@ class TonService {
     return _connectors[id]?.sendTransaction(transactionData);
   }
 
+  Future<dynamic> sendTransactionSafe(
+    int id,
+    Map<String, dynamic> transactionData,
+  ) async {
+    try {
+      return await sendTransaction(id, transactionData);
+    } catch (e) {
+      return;
+    }
+  }
+
   @disposeMethod
   void dispose() {
-    disconnectAll();
+    final connectors = _connectors.values;
+
+    for (final connector in connectors) {
+      connector.dispose();
+    }
   }
 }

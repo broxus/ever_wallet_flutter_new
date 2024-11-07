@@ -1,7 +1,6 @@
 import 'dart:async';
 import 'dart:math';
 
-import 'package:darttonconnect/exceptions.dart';
 import 'package:darttonconnect/models/wallet_app.dart';
 import 'package:darttonconnect/ton_connect.dart';
 
@@ -28,16 +27,21 @@ class CustomTonConnector {
 
   bool get isConnected => _connector.connected;
 
-  Future<String?> connect(TonConnectData data) async {
-    await disconnect();
+  Future<String?> connect(
+    TonConnectData data, {
+    bool? isReplaceConnection,
+  }) async {
+    if (isReplaceConnection ?? true) {
+      await disconnect();
+    }
 
     final link = await _connector.connect(
       WalletApp(
         name: data.name,
         bridgeUrl: 'https://bridge.tonapi.io/bridge',
         image: data.iconUrl,
-        aboutUrl: data.url,
-        universalUrl: data.manifestUrl,
+        aboutUrl: data.aboutUrl,
+        universalUrl: data.targetManifestUrl,
       ),
     );
 
@@ -56,7 +60,6 @@ class CustomTonConnector {
   Future<bool> restoreConnection() => _connector.restoreConnection();
 
   void dispose() {
-    disconnect();
     _unSubscribe();
   }
 
@@ -67,13 +70,7 @@ class CustomTonConnector {
       return;
     }
 
-    try {
-      await _connector.sendTransaction(transactionData);
-    } on UserRejectsError catch (e) {
-      // TODO
-    } catch (e) {
-      // TODO
-    }
+    return _connector.sendTransaction(transactionData);
   }
 
   void _unSubscribe() {
@@ -92,15 +89,15 @@ class CustomTonConnector {
 
 class TonConnectData {
   const TonConnectData({
-    required this.manifestUrl,
+    required this.targetManifestUrl,
     required this.name,
-    required this.url,
+    required this.aboutUrl,
     required this.iconUrl,
   });
 
-  final String manifestUrl;
+  final String targetManifestUrl;
   final String name;
-  final String url;
+  final String aboutUrl;
   final String iconUrl;
 }
 
