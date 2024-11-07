@@ -110,11 +110,12 @@ class EnterSeedPhraseCubit extends Cubit<EnterSeedPhraseState>
     _focuses.forEachIndexed((index, f) {
       f.addListener(() => _checkInputCompletion(index));
     });
+    final inputs = _inputModels.take(_currentValue).toList();
     emit(
       EnterSeedPhraseState.tab(
         allowedValues: _allowedValues,
-        currentValue: _currentValue,
-        inputs: _inputModels.take(_currentValue).toList(),
+        currentValue: _currentValue.clamp(0, inputs.length),
+        inputs: inputs,
         displayPasteButton: true,
       ),
     );
@@ -144,11 +145,12 @@ class EnterSeedPhraseCubit extends Cubit<EnterSeedPhraseState>
 
     final st = state;
     if (st is _Tab) {
+      final inputs = _inputModels.take(value).toList();
       emit(
         st.copyWith(
-          currentValue: value,
+          currentValue: value.clamp(0, inputs.length),
           allowedValues: _allowedValues,
-          inputs: _inputModels.take(value).toList(),
+          inputs: inputs,
           displayPasteButton: true,
         ),
       );
