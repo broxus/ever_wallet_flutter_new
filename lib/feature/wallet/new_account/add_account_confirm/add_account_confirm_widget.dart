@@ -1,5 +1,4 @@
-import 'package:app/feature/wallet/add_account/add_account_confirm/add_account_confirm_wm.dart';
-import 'package:app/feature/wallet/wallet.dart';
+import 'package:app/feature/wallet/new_account/add_account_confirm/add_account_confirm_wm.dart';
 import 'package:app/generated/generated.dart';
 import 'package:elementary/elementary.dart';
 import 'package:elementary_helper/elementary_helper.dart';
@@ -13,22 +12,44 @@ class AddAccountConfirmWidget
     extends ElementaryWidget<AddAccountConfirmWidgetModel> {
   const AddAccountConfirmWidget({
     required this.publicKey,
+    required this.seedName,
     Key? key,
     WidgetModelFactory wmFactory = defaultAddAccountConfirmWidgetModelFactory,
   }) : super(wmFactory, key: key);
 
   final PublicKey publicKey;
+  final String seedName;
 
   @override
   Widget build(AddAccountConfirmWidgetModel wm) {
     return Column(
       mainAxisSize: MainAxisSize.min,
       children: [
-        if (wm.account != null)
-          AccountInfo(
-            account: wm.account!,
-            color: wm.theme.colors.background2,
+        Container(
+          padding: const EdgeInsets.symmetric(vertical: DimensSizeV2.d24),
+          decoration: BoxDecoration(
+            color: wm.theme.colors.background3,
+            borderRadius: BorderRadius.circular(DimensRadiusV2.radius16),
           ),
+          child: Row(
+            children: [
+              const SizedBox(width: DimensSizeV2.d16),
+              Icon(
+                LucideIcons.lockKeyhole,
+                color: wm.theme.colors.content0,
+                size: DimensSizeV2.d20,
+              ),
+              const SizedBox(width: DimensSizeV2.d12),
+              Flexible(
+                child: Text(
+                  seedName,
+                  style: wm.theme.textStyles.labelMedium,
+                  overflow: TextOverflow.ellipsis,
+                ),
+              ),
+            ],
+          ),
+        ),
         const SizedBox(height: DimensSizeV2.d16),
         SecureTextField(
           textEditingController: wm.controller,

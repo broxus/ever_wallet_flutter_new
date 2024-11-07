@@ -5,8 +5,8 @@ import 'package:flutter/material.dart';
 import 'package:nekoton_repository/nekoton_repository.dart' hide Message;
 import 'package:rxdart/rxdart.dart';
 
-class AddAccountTypeModel extends ElementaryModel {
-  AddAccountTypeModel(
+class NewAccountTypeModel extends ElementaryModel {
+  NewAccountTypeModel(
     ErrorHandler errorHandler,
     this._messengerService,
     this._nekotonRepository,

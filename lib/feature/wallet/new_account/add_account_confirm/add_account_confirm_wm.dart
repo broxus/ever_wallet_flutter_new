@@ -4,8 +4,8 @@ import 'package:app/app/router/router.dart';
 import 'package:app/core/error_handler_factory.dart';
 import 'package:app/core/wm/custom_wm.dart';
 import 'package:app/di/di.dart';
-import 'package:app/feature/wallet/add_account/add_account_confirm/add_account_confirm_model.dart';
-import 'package:app/feature/wallet/add_account/add_account_confirm/add_account_confirm_widget.dart';
+import 'package:app/feature/wallet/new_account/add_account_confirm/add_account_confirm_model.dart';
+import 'package:app/feature/wallet/new_account/add_account_confirm/add_account_confirm_widget.dart';
 import 'package:elementary_helper/elementary_helper.dart';
 import 'package:flutter/material.dart';
 import 'package:local_auth/local_auth.dart';
@@ -74,7 +74,7 @@ class AddAccountConfirmWidgetModel
     } else if (contextSafe != null) {
       Navigator.of(contextSafe!).pop();
       contextSafe!.goFurther(
-        AppRoute.walletAddAccount.pathWithData(
+        AppRoute.walletNewAccount.pathWithData(
           queryParameters: {
             walletCreatePublicKeyQueryParam: widget.publicKey.publicKey,
             walletCreatePasswordQueryParam: password,
