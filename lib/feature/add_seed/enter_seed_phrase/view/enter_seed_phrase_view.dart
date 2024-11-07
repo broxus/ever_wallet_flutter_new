@@ -273,7 +273,7 @@ class EnterSeedPhraseView extends StatelessWidget {
             children: [
               for (final input in inputs.getRange(
                 currentValue ~/ _gridColumnCount,
-                currentValue.clamp(0, inputs.length),
+                currentValue,
               ))
                 _inputBuild(themeStyleV2, input, currentValue),
             ],
