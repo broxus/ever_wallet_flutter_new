@@ -549,7 +549,7 @@
   "useFingerprint": "Use Fingerprint",
   "accountName": "Account name",
   "defaultWord": "Default",
-  "multisignatureWord": "Multisignature",
+  "multisignatureWord": "Multi Signature",
   "forExperiencedUsers": "For experienced users",
   "walletDescriptionSurfWallet": "Wallet contract used in Surf. Requires deployment.",
   "walletDescriptionWalletV3": "Small legacy contract with one custodian. Deploys automatically.",
