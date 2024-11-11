@@ -51,8 +51,7 @@ class SecureStorageService extends AbstractStorageService {
 }
 
 class StorageKey {
-  factory StorageKey.userWithNewWallet() =>
-      StorageKey._('userWithNewWallet');
+  factory StorageKey.userWithNewWallet() => StorageKey._('userWithNewWallet');
 
   factory StorageKey.showingNewTokensLabel(String masterKey) =>
       StorageKey._('showingNewTokensLabel', masterKey);
@@ -62,6 +61,9 @@ class StorageKey {
 
   factory StorageKey.accountColor(String key) =>
       StorageKey._('accountColor', key);
+
+  factory StorageKey.tonConnectors(String key) =>
+      StorageKey._('tonConnectors', key);
 
   StorageKey._(this._baseKey, [this._entityKey]);
 
