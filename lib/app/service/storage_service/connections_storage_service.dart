@@ -53,6 +53,20 @@ class ConnectionsStorageService extends AbstractStorageService {
   /// Get last cached [ConnectionData] items
   List<ConnectionData> get connections => _connectionsSubject.valueOrNull ?? [];
 
+  ConnectionData? get baseConnection {
+    final list = [...connections];
+    final first = list.firstOrNull;
+
+    if (first == null) {
+      return null;
+    }
+
+    return list.firstWhereOrNull(
+          (el) => el.networkType == NetworkType.ever,
+        ) ??
+        first;
+  }
+
   /// Get last cached current connection id
   String get currentConnectionId => _currentConnectionIdSubject.value;
 

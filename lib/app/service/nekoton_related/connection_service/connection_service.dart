@@ -155,6 +155,17 @@ class ConnectionService {
     } catch (e, t) {
       inject<MessengerService>().showConnectionError(null);
       _log.severe('updateTransportByConnection', e, t);
+
+      final base = _storageService.baseConnection;
+
+      if (base != null && base.id != connection.id) {
+        await _storageService.saveCurrentConnectionId(base.id);
+        return;
+      }
+
+      /// Тут. Вернуть на 1 сеть
+      // allow level above to track fail
+      rethrow;
     }
   }
 }
