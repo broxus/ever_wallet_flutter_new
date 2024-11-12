@@ -155,9 +155,6 @@ class ConnectionService {
     } catch (e, t) {
       inject<MessengerService>().showConnectionError(null);
       _log.severe('updateTransportByConnection', e, t);
-
-      // allow level above to track fail
-      rethrow;
     }
   }
 }
