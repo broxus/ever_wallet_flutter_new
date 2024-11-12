@@ -73,7 +73,7 @@ dependencies:
       ref: optional-render-manager
   retrofit: ^4.4.1
   rxdart: 0.27.7
-  sentry_flutter: ^7.0.0
+  sentry_flutter: ^8.9.0
   share_plus: 10.0.2
   shared_preferences: 2.2.3
   string_extensions: 0.7.1
