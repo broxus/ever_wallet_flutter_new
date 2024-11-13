@@ -26,5 +26,6 @@ Map<String, dynamic> _$$CustomCurrencyImplToJson(
 const _$NetworkTypeEnumMap = {
   NetworkType.ever: 'ever',
   NetworkType.venom: 'venom',
+  NetworkType.tycho: 'tycho',
   NetworkType.custom: 'custom',
 };

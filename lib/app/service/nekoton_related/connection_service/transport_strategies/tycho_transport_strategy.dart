@@ -2,9 +2,9 @@ import 'package:app/data/models/models.dart';
 import 'package:app/generated/generated.dart';
 import 'package:nekoton_repository/nekoton_repository.dart';
 
-/// Transport strategy for venom network
-class VenomTransportStrategy extends TransportStrategy {
-  VenomTransportStrategy({
+/// Transport strategy for tycho network
+class TychoTransportStrategy extends TransportStrategy {
+  TychoTransportStrategy({
     required this.transport,
     required this.connection,
   });
@@ -28,11 +28,12 @@ class VenomTransportStrategy extends TransportStrategy {
 
   @override
   String currencyUrl(String currencyAddress) =>
-      'https://api.web3.world/v1/currencies/$currencyAddress';
+      'https://api-test-tycho.flatqube.io/';
 
+  @override
   String defaultAccountName(WalletType walletType) => walletType.when(
         multisig: (type) => switch (type) {
-          MultisigType.safeMultisigWallet => 'SafeMultisig24h',
+          MultisigType.safeMultisigWallet => 'SafeMultisig',
           MultisigType.safeMultisigWallet24h => 'SafeMultisig24h',
           MultisigType.setcodeMultisigWallet => 'SetcodeMultisig',
           MultisigType.setcodeMultisigWallet24h => 'SetcodeMultisig24h',
@@ -41,7 +42,7 @@ class VenomTransportStrategy extends TransportStrategy {
           MultisigType.multisig2 => 'Legacy Multi-sig',
           MultisigType.multisig2_1 => 'Multi-sig',
         },
-        walletV3: () => 'Legacy',
+        walletV3: () => 'WalletV3',
         highloadWalletV2: () => 'HighloadWallet',
         everWallet: () => 'Default',
       );
@@ -53,19 +54,19 @@ class VenomTransportStrategy extends TransportStrategy {
   String get manifestUrl => connection.manifestUrl;
 
   @override
-  String get nativeTokenIcon => Assets.images.venom.path;
+  String get nativeTokenIcon => Assets.images.tychoCoin.path;
 
   @override
-  final nativeTokenTicker = 'VENOM';
+  final nativeTokenTicker = 'TYCHO';
 
   @override
   final nativeTokenAddress = const Address(
     address:
-        '0:77d36848bb159fa485628bc38dc37eadb74befa514395e09910f601b841f749e',
+        '0:6b3355b19c6aedc65be291c00abbf6e5061c07e1926a3fd543863c7a8d06cc79',
   );
 
   @override
-  final networkName = 'Venom';
+  final networkName = 'Tycho';
 
   @override
   final seedPhraseWordsCount = [12];
@@ -84,5 +85,5 @@ class VenomTransportStrategy extends TransportStrategy {
   StakingInformation? get stakeInformation => null;
 
   @override
-  String? get tokenApiBaseUrl => 'https://tokens.venomscan.com/v1';
+  String? get tokenApiBaseUrl => null;
 }
