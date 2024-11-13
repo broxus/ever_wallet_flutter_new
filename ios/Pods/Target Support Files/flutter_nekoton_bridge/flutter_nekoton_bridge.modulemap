@@ -1,6 +1,0 @@
-framework module flutter_nekoton_bridge {
-  umbrella header "flutter_nekoton_bridge-umbrella.h"
-
-  export *
-  module * { export * }
-}
