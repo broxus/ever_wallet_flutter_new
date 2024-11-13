@@ -23,7 +23,15 @@ class TychoTransportStrategy extends TransportStrategy {
   @override
   final availableWalletTypes = const [
     WalletType.everWallet(),
+    WalletType.multisig(MultisigType.multisig2),
     WalletType.multisig(MultisigType.multisig2_1),
+    WalletType.walletV3(),
+    WalletType.multisig(MultisigType.safeMultisigWallet),
+    WalletType.multisig(MultisigType.safeMultisigWallet24h),
+    WalletType.multisig(MultisigType.setcodeMultisigWallet),
+    WalletType.multisig(MultisigType.setcodeMultisigWallet24h),
+    WalletType.multisig(MultisigType.bridgeMultisigWallet),
+    WalletType.multisig(MultisigType.surfWallet),
   ];
 
   @override
@@ -66,7 +74,7 @@ class TychoTransportStrategy extends TransportStrategy {
   );
 
   @override
-  final networkName = 'Tycho';
+  final networkName = 'Tycho Testnet';
 
   @override
   final seedPhraseWordsCount = [12];
