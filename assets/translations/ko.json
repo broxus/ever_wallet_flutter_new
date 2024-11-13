@@ -384,6 +384,7 @@
   "addAssetTitle": "Add TIP3 token",
   "versionWord": "Version",
   "venom": "Venom",
+  "tychoTestnet": "Tycho Testnet",
   "symbolWord": "Symbol",
   "decimalsWord": "Decimals",
   "ownerAddress": "Owner address",

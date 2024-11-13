@@ -14,6 +14,7 @@ class NetworkIcon extends StatelessWidget {
   String get _path => switch (type) {
         NetworkType.ever => Assets.images.networkEver.path,
         NetworkType.venom => Assets.images.networkVenom.path,
+        NetworkType.tycho => Assets.images.networkTycho.path,
         NetworkType.custom => Assets.images.networkDefault.path,
       };
 
