@@ -146,6 +146,7 @@ class SendMessageWidgetModel
     UnsignedMessage? message;
 
     try {
+      _isLoading.accept(true);
       message = await model.prepareTransfer(
         address: widget.sender,
         destination: widget.recipient,
@@ -159,6 +160,7 @@ class SendMessageWidgetModel
       await _simulateTransactionTree(message);
     } finally {
       message?.dispose();
+      _isLoading.accept(false);
     }
   }
 

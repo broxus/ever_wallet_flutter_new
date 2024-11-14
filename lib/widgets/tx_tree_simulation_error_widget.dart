@@ -8,6 +8,9 @@ import 'package:lucide_icons_flutter/lucide_icons.dart';
 import 'package:nekoton_repository/nekoton_repository.dart' hide Message;
 import 'package:ui_components_lib/ui_components_lib.dart';
 import 'package:ui_components_lib/v2/ui_components_lib_v2.dart';
+import 'package:url_launcher/url_launcher.dart';
+
+final _supportLink = Uri.parse('https://t.me/broxus_chat');
 
 class TxTreeSimulationErrorWidget extends StatelessWidget {
   const TxTreeSimulationErrorWidget({
@@ -60,22 +63,42 @@ class TxTreeSimulationErrorWidget extends StatelessWidget {
                     const SizedBox(height: DimensSizeV2.d8),
                     for (final item in txErrors) _ErrorMessage(item: item),
                     const SizedBox(height: DimensSizeV2.d8),
-                    if (canFixTxError)
-                      Text(
-                        LocaleKeys.txTreeSimulationErrorHintCanFix.tr(
-                          args: [symbol],
-                        ),
+                    RichText(
+                      text: TextSpan(
                         style: theme.textStyles.paragraphSmall.copyWith(
                           color: theme.colors.contentNegative,
                         ),
-                      )
-                    else
-                      Text(
-                        LocaleKeys.txTreeSimulationErrorHint.tr(),
-                        style: theme.textStyles.paragraphSmall.copyWith(
-                          color: theme.colors.contentNegative,
-                        ),
+                        children: [
+                          if (canFixTxError)
+                            TextSpan(
+                              text:
+                                  LocaleKeys.txTreeSimulationErrorHintCanFix.tr(
+                                args: [symbol],
+                              ),
+                            )
+                          else
+                            TextSpan(
+                              text: LocaleKeys.txTreeSimulationErrorHint.tr(),
+                            ),
+                          TextSpan(
+                            text: LocaleKeys.txTreeSimulationErrorSupportLink
+                                .tr(),
+                            style: theme.textStyles.paragraphSmall.copyWith(
+                              color: theme.colors.contentNegative1,
+                              fontWeight: FontWeight.w600,
+                            ),
+                            recognizer: TapGestureRecognizer()
+                              ..onTap = () async {
+                                await launchUrl(
+                                  _supportLink,
+                                  mode: LaunchMode.externalApplication,
+                                );
+                              },
+                          ),
+                          const TextSpan(text: '.'),
+                        ],
                       ),
+                    ),
                   ],
                 ),
               ),
@@ -121,6 +144,18 @@ class _ErrorMessageState extends State<_ErrorMessage> {
         color: theme.colors.contentNegative1,
       ),
       recognizer: TapGestureRecognizer()..onTap = _onTap,
+      children: [
+        WidgetSpan(
+          child: Padding(
+            padding: const EdgeInsets.symmetric(horizontal: DimensSizeV2.d4),
+            child: Icon(
+              LucideIcons.copy,
+              size: DimensSizeV2.d16,
+              color: theme.colors.contentNegative1,
+            ),
+          ),
+        ),
+      ],
     );
 
     return RichText(
