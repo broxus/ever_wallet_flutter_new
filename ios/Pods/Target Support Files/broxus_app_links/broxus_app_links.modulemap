@@ -1,6 +1,0 @@
-framework module broxus_app_links {
-  umbrella header "broxus_app_links-umbrella.h"
-
-  export *
-  module * { export * }
-}
