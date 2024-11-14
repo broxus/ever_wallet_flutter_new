@@ -351,11 +351,11 @@
   "standardWallet": "Standard wallet",
   "multisigWallet": "Multisignature wallet",
   "evaluationConfirmation": "Evaluation confirmation",
-  "outOfNumber": "out of {} custodians",
+  "outOfNumber": "out of {} custodians (max: 32)",
   "custodiansWord": "Custodians",
-  "publicKeyOfCustodianNumber": "Public key of custodian {}",
+  "publicKeyOfCustodianNumber": "Public key of Custodian {}",
   "custodianRenamed": "Custodian renamed successfully",
-  "addOneMorePublicKey": "Add one more public key",
+  "addOneMorePublicKey": "Add one more Custodian",
   "deployWallet": "Deploy wallet",
   "requiredConfirms": "Required confirms",
   "requireConfirmsCount": "{} of {}",
@@ -619,5 +619,7 @@
   "backWord": "Back",
   "selectAll": "Select all",
   "hideAll": "Hide all",
-  "selectSeed": "Select seed"
+  "selectSeed": "Select seed",
+  "deployWalletModalTitle": "Deploy your wallet",
+  "deployWalletModalSubtitle": "You need to have at least {} EVER on your account balance to deploy"
 }

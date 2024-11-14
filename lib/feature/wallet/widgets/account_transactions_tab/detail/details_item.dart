@@ -115,25 +115,34 @@ class WalletTransactionDetailsItem extends StatelessWidget {
           crossAxisAlignment: CrossAxisAlignment.start,
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
           children: [
-            Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              mainAxisSize: MainAxisSize.min,
-              children: [
-                Text(
-                  title,
-                  style: theme.textStyles.labelSmall
-                      .copyWith(color: theme.colors.content3),
-                ),
-                const SizedBox(height: DimensSizeV2.d2),
-                if (subtitle != null)
+            Flexible(
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                mainAxisSize: MainAxisSize.min,
+                children: [
                   Text(
-                    subtitle!,
-                    style: isSubtitleError
-                        ? theme.textStyles.labelXSmall
-                            .copyWith(color: theme.colors.contentNegative)
-                        : theme.textStyles.labelSmall,
+                    title,
+                    style: theme.textStyles.labelSmall
+                        .copyWith(color: theme.colors.content3),
                   ),
-              ],
+                  const SizedBox(height: DimensSizeV2.d2),
+                  if (subtitle != null)
+                    Row(
+                      children: [
+                        Flexible(
+                          child: Text(
+                            subtitle!,
+                            style: isSubtitleError
+                                ? theme.textStyles.labelXSmall.copyWith(
+                                    color: theme.colors.contentNegative,
+                                  )
+                                : theme.textStyles.labelSmall,
+                          ),
+                        ),
+                      ],
+                    ),
+                ],
+              ),
             ),
             const SizedBox(width: DimensSizeV2.d8),
             if (icon != null)

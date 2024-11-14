@@ -26,12 +26,19 @@ class WalletDeployPage extends StatelessWidget {
         context: context,
         address: address,
         publicKey: publicKey,
-        nekotonRepository: inject(),
+        nekotonRepository: inject(), currenciesService: inject(),
       ),
       child: BlocConsumer<WalletDeployBloc, WalletDeployState>(
         listener: (context, state) {
           state.whenOrNull(
-            deployed: (_, __, ___, ____, _____) =>
+            deployed: (
+              _,
+              __,
+              ___,
+              ____,
+              _____,
+              ______,
+            ) =>
                 context.goNamed(AppRoute.wallet.name),
           );
         },
@@ -47,9 +54,15 @@ class WalletDeployPage extends StatelessWidget {
                 requireConfirmations: requireConfirmations,
               ),
             ),
-            calculatingError:
-                (error, fee, balance, custodians, requireConfirmations) =>
-                    _scaffold(
+            calculatingError: (
+              error,
+              fee,
+              balance,
+              custodians,
+              requireConfirmations,
+              tonIconPath,
+            ) =>
+                _scaffold(
               WalletDeployConfirmView(
                 publicKey: publicKey,
                 balance: balance,
@@ -57,10 +70,41 @@ class WalletDeployPage extends StatelessWidget {
                 fee: fee,
                 custodians: custodians,
                 requireConfirmations: requireConfirmations,
+                tonIconPath: tonIconPath,
               ),
               canPrev: true,
             ),
-            readyToDeploy: (fee, balance, custodians, requireConfirmations) =>
+            readyToDeploy: (
+              fee,
+              balance,
+              custodians,
+              requireConfirmations,
+              tonIconPath,
+              ticker,
+              currency,
+            ) {
+              return _scaffold(
+              WalletDeployConfirmView(
+                publicKey: publicKey,
+                balance: balance,
+                fee: fee,
+                custodians: custodians,
+                requireConfirmations: requireConfirmations,
+                tonIconPath: tonIconPath,
+                ticker: ticker,
+                currency: currency,
+              ),
+              canPrev: true,
+            );
+            },
+            deployed: (
+              fee,
+              balance,
+              transaction,
+              custodians,
+              requireConfirmations,
+              tonIconPath,
+            ) =>
                 _scaffold(
               WalletDeployConfirmView(
                 publicKey: publicKey,
@@ -68,18 +112,7 @@ class WalletDeployPage extends StatelessWidget {
                 fee: fee,
                 custodians: custodians,
                 requireConfirmations: requireConfirmations,
-              ),
-              canPrev: true,
-            ),
-            deployed:
-                (fee, balance, transaction, custodians, requireConfirmations) =>
-                    _scaffold(
-              WalletDeployConfirmView(
-                publicKey: publicKey,
-                balance: balance,
-                fee: fee,
-                custodians: custodians,
-                requireConfirmations: requireConfirmations,
+                tonIconPath: tonIconPath,
               ),
             ),
             deploying: (canClose) => Scaffold(

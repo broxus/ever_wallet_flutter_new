@@ -1,8 +1,9 @@
-import 'package:app/di/di.dart';
-import 'package:app/feature/profile/profile.dart';
+import 'package:app/data/models/custom_currency.dart';
 import 'package:app/feature/wallet/wallet.dart';
+import 'package:app/feature/wallet/wallet_deploy/view/deploy_wallet_confirm_modal.dart';
 import 'package:app/feature/wallet/widgets/account_transactions_tab/detail/details_item.dart';
 import 'package:app/generated/generated.dart';
+import 'package:app/utils/utils.dart';
 import 'package:collection/collection.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -20,6 +21,9 @@ class WalletDeployConfirmView extends StatelessWidget {
     this.feeError,
     this.custodians,
     this.requireConfirmations,
+    this.tonIconPath,
+    this.ticker,
+    this.currency,
     super.key,
   });
 
@@ -29,6 +33,9 @@ class WalletDeployConfirmView extends StatelessWidget {
   final PublicKey publicKey;
   final List<PublicKey>? custodians;
   final int? requireConfirmations;
+  final String? tonIconPath;
+  final String? ticker;
+  final CustomCurrency? currency;
 
   @override
   Widget build(BuildContext context) {
@@ -41,47 +48,65 @@ class WalletDeployConfirmView extends StatelessWidget {
         Expanded(
           child: SingleChildScrollView(
             child: ShapedContainerColumn(
-              padding: const EdgeInsets.symmetric(
-                vertical: DimensSizeV2.d16,
-                horizontal: DimensSizeV2.d16,
+              separator: const SizedBox.shrink(),
+              padding: const EdgeInsets.only(
+                top: DimensSizeV2.d24,
+                left: DimensSizeV2.d16,
+                right: DimensSizeV2.d16,
+                bottom: DimensSizeV2.d4,
               ),
               color: theme.colors.background1,
               mainAxisSize: MainAxisSize.min,
-              separator: const Padding(
-                padding: EdgeInsets.symmetric(vertical: DimensSizeV2.d8),
-                child: CommonDivider(),
-              ),
               children: [
                 Text(
                   LocaleKeys.fundsDebitedToDeploy.tr(),
                   style: theme.textStyles.labelMedium,
                 ),
-                WalletTransactionDetailsItem(
-                  title: LocaleKeys.accountBalance.tr(),
-                  valueWidget: AmountWidget.fromMoney(
-                    amount: Money.fromBigIntWithCurrency(
-                      balance ?? BigInt.zero,
-                      Currencies()[inject<NekotonRepository>()
-                          .currentTransport
-                          .nativeTokenTicker]!,
+                const SizedBox(height: DimensSizeV2.d16),
+                CommonDivider(color: theme.colors.border0),
+                const SizedBox(height: DimensSizeV2.d16),
+                if (Currencies()[ticker ?? ''] != null)
+                  WalletTransactionDetailsItem(
+                    title: LocaleKeys.accountBalance.tr(),
+                    valueWidget: AmountWidget.fromMoney(
+                      amount: Money.fromBigIntWithCurrency(
+                        balance ?? BigInt.zero,
+                        Currencies()[ticker ?? '']!,
+                      ),
+                      includeSymbol: false,
+                    ),
+                    iconPath: tonIconPath,
+                    convertedValueWidget: AmountWidget.dollars(
+                      amount: Money.fromBigIntWithCurrency(
+                        balance ?? BigInt.zero,
+                        Currencies()[ticker ?? '']!,
+                      ).exchangeToUSD(
+                        Fixed.parse(currency?.price ?? '0'),
+                      ),
+                      style: theme.textStyles.labelXSmall.copyWith(
+                        color: theme.colors.content3,
+                      ),
                     ),
                   ),
-                ),
-                WalletTransactionDetailsItem(
-                  title: LocaleKeys.networkFee.tr(),
-                  valueWidget: AmountWidget.fromMoney(
-                    amount: Money.fromBigIntWithCurrency(
-                      fee ?? BigInt.zero,
-                      Currencies()[inject<NekotonRepository>()
-                          .currentTransport
-                          .nativeTokenTicker]!,
+                const SizedBox(height: DimensSizeV2.d16),
+                if (Currencies()[ticker ?? ''] != null)
+                  WalletTransactionDetailsItem(
+                    title: LocaleKeys.networkFee.tr(),
+                    valueWidget: AmountWidget.fromMoney(
+                      amount: Money.fromBigIntWithCurrency(
+                        fee ?? BigInt.zero,
+                        Currencies()[ticker ?? '']!,
+                      ),
+                      useDefaultFormat: false,
+                      includeSymbol: false,
                     ),
-                    sign: '${LocaleKeys.approximatelySign.tr()} ',
-                    useDefaultFormat: false,
+                    iconPath: tonIconPath,
                   ),
-                  subtitle: feeError,
-                  isSubtitleError: true,
-                ),
+                if (custodians?.isNotEmpty ?? false)
+                  Padding(
+                    padding: const EdgeInsets.only(bottom: DimensSizeV2.d16),
+                    child: CommonDivider(color: theme.colors.border0),
+                  ),
                 ...?custodians?.mapIndexed(
                   (index, e) => _info(
                     title: LocaleKeys.custodianNumber.tr(
@@ -90,6 +115,11 @@ class WalletDeployConfirmView extends StatelessWidget {
                     value: e.publicKey,
                   ),
                 ),
+                if (requireConfirmations != null)
+                  Padding(
+                    padding: const EdgeInsets.only(bottom: DimensSizeV2.d16),
+                    child: CommonDivider(color: theme.colors.border0),
+                  ),
                 if (requireConfirmations != null)
                   _info(
                     title: LocaleKeys.requiredConfirms.tr(),
@@ -108,30 +138,17 @@ class WalletDeployConfirmView extends StatelessWidget {
           padding: const EdgeInsets.all(DimensSize.d16),
           child: PrimaryButton(
             isLoading: isLoading,
-            title: LocaleKeys.sendWord.tr(),
+            title: LocaleKeys.deployWord.tr(),
             onPressed: feeError != null || fee == null
                 ? null
                 : () {
-                    showCommonBottomSheet<void>(
-                      context: context,
-                      title: LocaleKeys.enterPasswordTo.tr(
-                        args: [LocaleKeys.deployWallet.tr().toLowerCase()],
-                      ),
-                      useAppBackgroundColor: true,
-                      body: (_, __) => Builder(
-                        builder: (c) {
-                          return EnterPasswordWidget(
-                            // ignore: prefer-extracting-callbacks
-                            onPasswordEntered: (value) {
-                              Navigator.of(c).pop();
-                              context
-                                  .read<WalletDeployBloc>()
-                                  .add(WalletDeployEvent.confirmDeploy(value));
-                            },
-                            publicKey: publicKey,
-                          );
-                        },
-                      ),
+                    showDeployConfirmModal(
+                      context,
+                      (password) {
+                        context
+                            .read<WalletDeployBloc>()
+                            .add(WalletDeployEvent.confirmDeploy(password));
+                      },
                     );
                   },
             buttonShape: ButtonShape.pill,
@@ -149,29 +166,35 @@ class WalletDeployConfirmView extends StatelessWidget {
   }) {
     return Builder(
       builder: (context) {
-        final colors = context.themeStyle.colors;
+        final theme = context.themeStyleV2;
 
         return SeparatedColumn(
           mainAxisSize: MainAxisSize.min,
           crossAxisAlignment: CrossAxisAlignment.start,
+          separatorSize: DimensSizeV2.d12,
           children: [
             Text(
               title,
-              style: StyleRes.addRegular.copyWith(color: colors.textSecondary),
+              style: theme.textStyles.labelSmall.copyWith(
+                color: theme.colors.content2,
+              ),
             ),
             if (value != null)
               Text(
                 value,
-                style: StyleRes.primaryBold.copyWith(
-                  color: colors.textPrimary,
+                style: theme.textStyles.paragraphSmall.copyWith(
+                  color: theme.colors.content0,
                 ),
               ),
             if (valueChild != null) valueChild,
             if (subtitleError != null)
               Text(
                 subtitleError,
-                style: StyleRes.addRegular.copyWith(color: colors.alert),
+                style: StyleRes.addRegular.copyWith(
+                  color: theme.colors.contentNegative,
+                ),
               ),
+            const SizedBox(height: DimensSizeV2.d12),
           ],
         );
       },

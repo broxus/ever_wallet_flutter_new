@@ -642,4 +642,6 @@ abstract class LocaleKeys {
   static const selectAll = 'selectAll';
   static const hideAll = 'hideAll';
   static const selectSeed = 'selectSeed';
+  static const deployWalletModalTitle = 'deployWalletModalTitle';
+  static const deployWalletModalSubtitle = 'deployWalletModalSubtitle';
 }

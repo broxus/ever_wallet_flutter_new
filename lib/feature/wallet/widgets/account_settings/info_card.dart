@@ -12,10 +12,12 @@ import 'package:ui_components_lib/v2/widgets/widgets.dart';
 class AccountSettingsInfoCard extends StatelessWidget {
   const AccountSettingsInfoCard({
     required this.account,
+    this.isShowingKey = true,
     super.key,
   });
 
   final KeyAccount account;
+  final bool isShowingKey;
 
   @override
   Widget build(BuildContext context) {
@@ -46,7 +48,12 @@ class AccountSettingsInfoCard extends StatelessWidget {
               ),
             ),
           ),
-          Flexible(child: _Detail(account: account)),
+          Flexible(
+            child: _Detail(
+              account: account,
+              isShowingKey: isShowingKey,
+            ),
+          ),
         ],
       ),
     );
@@ -56,9 +63,11 @@ class AccountSettingsInfoCard extends StatelessWidget {
 class _Detail extends StatelessWidget {
   const _Detail({
     required this.account,
+    required this.isShowingKey,
   });
 
   final KeyAccount account;
+  final bool isShowingKey;
 
   @override
   Widget build(BuildContext context) {
@@ -86,22 +95,24 @@ class _Detail extends StatelessWidget {
               ),
             ),
           ),
-          Divider(
-            height: DimensStroke.small,
-            thickness: DimensStroke.small,
-            color: theme.colors.borderAlpha,
-          ),
-          Flexible(
-            child: _Item(
-              titleText: LocaleKeys.publicKey.tr(),
-              descriptionText: account.publicKey.publicKey,
-              onPressed: () => _copyText(
-                context: context,
-                value: account.publicKey.publicKey,
-                label: account.publicKey.toEllipseString(),
+          if (isShowingKey)
+            Divider(
+              height: DimensStroke.small,
+              thickness: DimensStroke.small,
+              color: theme.colors.borderAlpha,
+            ),
+          if (isShowingKey)
+            Flexible(
+              child: _Item(
+                titleText: LocaleKeys.publicKey.tr(),
+                descriptionText: account.publicKey.publicKey,
+                onPressed: () => _copyText(
+                  context: context,
+                  value: account.publicKey.publicKey,
+                  label: account.publicKey.toEllipseString(),
+                ),
               ),
             ),
-          ),
         ],
       ),
     );
