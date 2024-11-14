@@ -595,9 +595,10 @@
     "0": "Transaction tree execution may fail, because account ",
     "1": " will be deleted due to storage fee debt."
   },
-  "txTreeSimulationErrorHint": "Contact technical support.",
-  "txTreeSimulationErrorHintCanFix": "Send 0.2 {} to this address or contact technical support.",
-  "txTreeSimulationErrorSwitchLabel": "Send transaction anyway",
+  "txTreeSimulationErrorHint": "Contact ",
+  "txTreeSimulationErrorHintCanFix": "Send 0.2 {} to this address or contact ",
+  "txTreeSimulationErrorSupportLink": "technical support",
+  "txTreeSimulationErrorSwitchLabel": "Send it anyway. I accept the risks.",
   "txTreeSimulationErrorTitle": "Tokens may be lost!",
   "token": "Token",
   "changeNetwork": "Change network",

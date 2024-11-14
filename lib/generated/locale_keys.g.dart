@@ -618,6 +618,8 @@ abstract class LocaleKeys {
   static const txTreeSimulationErrorHint = 'txTreeSimulationErrorHint';
   static const txTreeSimulationErrorHintCanFix =
       'txTreeSimulationErrorHintCanFix';
+  static const txTreeSimulationErrorSupportLink =
+      'txTreeSimulationErrorSupportLink';
   static const txTreeSimulationErrorSwitchLabel =
       'txTreeSimulationErrorSwitchLabel';
   static const txTreeSimulationErrorTitle = 'txTreeSimulationErrorTitle';
