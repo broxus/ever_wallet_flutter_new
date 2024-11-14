@@ -40,13 +40,16 @@ class NetworkIcon extends StatelessWidget {
           width: DimensSizeV2.d40,
           height: DimensSizeV2.d40,
           padding: _iconOffset,
-          child: Center(
-            child: SvgPicture.asset(
-              _path,
-              width: DimensSizeV2.d16,
-              height: DimensSizeV2.d16,
-            ),
-          ),
+          child: switch (type) {
+            NetworkType.tycho => SvgPicture.asset(_path),
+            _ => Center(
+                child: SvgPicture.asset(
+                  _path,
+                  width: DimensSizeV2.d16,
+                  height: DimensSizeV2.d16,
+                ),
+              ),
+          },
         ),
       );
 }
