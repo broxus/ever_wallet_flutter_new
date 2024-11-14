@@ -36,7 +36,7 @@ class TychoTransportStrategy extends TransportStrategy {
 
   @override
   String currencyUrl(String currencyAddress) =>
-      'https://api-test-tycho.flatqube.io/';
+      'https://api-test-tycho.flatqube.io/v1/currencies/$currencyAddress';
 
   @override
   String defaultAccountName(WalletType walletType) => walletType.when(
