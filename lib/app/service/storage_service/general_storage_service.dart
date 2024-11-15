@@ -447,6 +447,25 @@ class GeneralStorageService extends AbstractStorageService {
     await _streamedCurrencies();
   }
 
+  /// Save currencies to storage for specified network type.
+  /// This ignores duplicates and saves only one currency with same address.
+  Future<void> saveOrUpdateCurrencies({
+    required List<CustomCurrency> currencies,
+    required NetworkType networkType,
+  }) async {
+    final list = await readCurrencies(networkType);
+    final keys = currencies.map((e) => e.address).toSet();
+    final newList = list.where((e) => !keys.contains(e.address)).toList()
+      ..addAll(currencies);
+
+    await _storage.set(
+      networkType.index.toString(),
+      jsonEncode(newList),
+      domain: _currenciesKey,
+    );
+    await _streamedCurrencies();
+  }
+
   /// Clear information about all currencies.
   Future<void> clearCurrencies() async {
     await _storage.clearDomain(_currenciesKey);

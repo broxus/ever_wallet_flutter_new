@@ -148,31 +148,25 @@ class AssetsService {
   /// This stream listens for contracts from storage and load contracts if
   /// needed or return it from storage.
   Stream<List<TokenContractAsset>> contractsForAccount(Address address) {
-    return nekotonRepository.currentTransportStream.flatMap((transport) {
-      return Rx.combineLatest2<List<TokenContractAsset>, KeyAccount?,
-          KeyAccount?>(
+    return nekotonRepository.currentTransportStream.switchMap((transport) {
+      return Rx.combineLatest2(
         contractsStream,
-        nekotonRepository.seedListStream
-            .map((list) => list.findAccountByAddress(address)),
+        nekotonRepository.seedListStream.map(
+          (list) => list.findAccountByAddress(address),
+        ),
         // we ignore result of contracts, this needed just to trigger updating
         (a, c) => c,
       ).asyncExpand((account) {
-        final wallets =
-            account?.additionalAssets[transport.transport.group]?.tokenWallets;
+        final group = transport.transport.group;
+        final wallets = account?.additionalAssets[group]?.tokenWallets;
         if (wallets == null) return Stream.value([]);
 
         return Stream.fromFuture(
-          Future.value(
-            () async {
-              return (await Future.wait(
-                wallets.map(
-                  (e) => getTokenContractAsset(e.rootTokenContract, transport),
-                ),
-              ))
-                  .whereNotNull()
-                  .toList();
-            }(),
-          ),
+          Future.wait(
+            wallets.map(
+              (e) => getTokenContractAsset(e.rootTokenContract, transport),
+            ),
+          ).then((e) => e.whereNotNull().toList()),
         );
       });
     });

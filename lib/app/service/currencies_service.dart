@@ -117,7 +117,7 @@ class CurrenciesService {
       if (endpoint.isNotEmpty) {
         final currency = await _fetchCurrency(
           endpoint: endpoint,
-          transport: transport,
+          networkType: transport.networkType,
         );
 
         await storageService.saveOrUpdateCurrency(currency: currency);
@@ -148,45 +148,90 @@ class CurrenciesService {
 
     final rootTokenContracts = [
       ...{
-        transport.nativeTokenAddress,
+        transport.nativeTokenAddress.address,
         ...assets
             .map(
-              (e) => e.additionalAssets.values
-                  .map((e) => e.tokenWallets)
-                  .expand((e) => e),
+              (e) =>
+                  e.additionalAssets[transport.transport.group]?.tokenWallets ??
+                  [],
             )
             .expand((e) => e)
-            .map((e) => e.rootTokenContract),
+            .map((e) => e.rootTokenContract.address),
       },
     ];
 
-    for (final rootTokenContract in rootTokenContracts) {
-      try {
-        final endpoint = transport.currencyUrl(rootTokenContract.address);
+    if (transport.currencyApiBaseUrl != null) {
+      // currencies batch request
+      final endpoint = transport.currencyApiBaseUrl!;
+      final currencies = await _fetchCurrencies(
+        endpoint: endpoint,
+        currencyAddresses: rootTokenContracts,
+        networkType: transport.networkType,
+      );
 
-        if (endpoint.isNotEmpty) {
-          final currency = await _fetchCurrency(
-            endpoint: endpoint,
-            transport: transport,
-          );
+      await storageService.saveOrUpdateCurrencies(
+        currencies: currencies,
+        networkType: transport.networkType,
+      );
+    } else {
+      for (final rootTokenContract in rootTokenContracts) {
+        try {
+          final endpoint = transport.currencyUrl(rootTokenContract);
 
-          await storageService.saveOrUpdateCurrency(currency: currency);
+          if (endpoint.isNotEmpty) {
+            final currency = await _fetchCurrency(
+              endpoint: endpoint,
+              networkType: transport.networkType,
+            );
+
+            await storageService.saveOrUpdateCurrency(currency: currency);
+          }
+        } catch (e, st) {
+          _logger.severe('_currencyChangedMapper', e, st);
         }
-      } catch (e, st) {
-        _logger.severe('_currencyChangedMapper', e, st);
       }
     }
   }
 
+  Future<List<CustomCurrency>> _fetchCurrencies({
+    required String endpoint,
+    required List<String> currencyAddresses,
+    required NetworkType networkType,
+  }) async {
+    final data = jsonEncode({
+      'currencyAddresses': currencyAddresses,
+      'limit': currencyAddresses.length,
+      'offset': 0,
+    });
+    final encoded = await httpService.postRequest(
+      endpoint: endpoint,
+      data: data,
+      headers: {
+        'Content-Type': 'application/json',
+      },
+    );
+    final decoded = jsonDecode(encoded) as Map<String, dynamic>;
+    final currencies = decoded['currencies'] as List<dynamic>;
+
+    return currencies
+        .map(
+          (element) => CustomCurrency.fromJson(
+            (element as Map<String, dynamic>)
+              ..putIfAbsent('networkType', () => networkType.name),
+          ),
+        )
+        .toList();
+  }
+
   Future<CustomCurrency> _fetchCurrency({
     required String endpoint,
-    required TransportStrategy transport,
+    required NetworkType networkType,
   }) async {
     final encoded = await httpService.postRequest(endpoint: endpoint);
     final decoded = jsonDecode(encoded) as Map<String, dynamic>;
 
-    decoded['networkType'] = transport.networkType.name;
-
-    return CustomCurrency.fromJson(decoded);
+    return CustomCurrency.fromJson(
+      decoded..putIfAbsent('networkType', () => networkType.name),
+    );
   }
 }
