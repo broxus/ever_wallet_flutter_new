@@ -38,17 +38,9 @@ class AccountAssetTabCubit extends Cubit<AccountAssetTabState> {
           .reduce((previous, element) => [...previous, ...element])
           .asStream()
           .listen(
-        (value) {
-          _contractCount = value.length;
-          emit(
-            AccountAssetTabState.accounts(
-              tonWallet,
-              _contracts,
-              _contractCount,
-            ),
+            (value) => _updateAccounts(value.length),
+            onError: (_) => _updateAccounts(0),
           );
-        },
-      );
     }
   }
 
@@ -68,5 +60,17 @@ class AccountAssetTabCubit extends Cubit<AccountAssetTabState> {
     await _searchSubscription?.cancel();
 
     return super.close();
+  }
+
+  void _updateAccounts(int contractCount) {
+    _contractCount = contractCount;
+
+    emit(
+      AccountAssetTabState.accounts(
+        tonWallet,
+        _contracts,
+        _contractCount,
+      ),
+    );
   }
 }

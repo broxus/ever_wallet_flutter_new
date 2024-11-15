@@ -298,6 +298,10 @@ class $AssetsImagesGen {
   SvgGenImage get networkEver =>
       const SvgGenImage('assets/images/network_ever.svg');
 
+  /// File path: assets/images/network_tycho.svg
+  SvgGenImage get networkTycho =>
+      const SvgGenImage('assets/images/network_tycho.svg');
+
   /// File path: assets/images/network_venom.svg
   SvgGenImage get networkVenom =>
       const SvgGenImage('assets/images/network_venom.svg');
@@ -380,6 +384,14 @@ class $AssetsImagesGen {
 
   /// File path: assets/images/trash.svg
   SvgGenImage get trash => const SvgGenImage('assets/images/trash.svg');
+
+  /// File path: assets/images/tycho_coin.svg
+  SvgGenImage get tychoCoin =>
+      const SvgGenImage('assets/images/tycho_coin.svg');
+
+  /// File path: assets/images/tycho_vector.svg
+  SvgGenImage get tychoVector =>
+      const SvgGenImage('assets/images/tycho_vector.svg');
 
   $AssetsImagesUserAvatarGen get userAvatar =>
       const $AssetsImagesUserAvatarGen();
@@ -473,6 +485,7 @@ class $AssetsImagesGen {
         networkDefault,
         networkEarth,
         networkEver,
+        networkTycho,
         networkVenom,
         openedEye,
         paste,
@@ -496,6 +509,8 @@ class $AssetsImagesGen {
         support,
         tokenDefaultIcon,
         trash,
+        tychoCoin,
+        tychoVector,
         venom,
         venomVector,
         wallet,

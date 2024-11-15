@@ -54,6 +54,7 @@ Map<String, dynamic> _$$ConnectionDataGqlImplToJson(
 const _$NetworkTypeEnumMap = {
   NetworkType.ever: 'ever',
   NetworkType.venom: 'venom',
+  NetworkType.tycho: 'tycho',
   NetworkType.custom: 'custom',
 };
 
