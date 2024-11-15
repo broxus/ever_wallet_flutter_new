@@ -30,6 +30,7 @@ class VenomTransportStrategy extends TransportStrategy {
   String currencyUrl(String currencyAddress) =>
       'https://api.web3.world/v1/currencies/$currencyAddress';
 
+  @override
   String defaultAccountName(WalletType walletType) => walletType.when(
         multisig: (type) => switch (type) {
           MultisigType.safeMultisigWallet => 'SafeMultisig24h',
