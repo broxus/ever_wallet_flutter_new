@@ -32,12 +32,17 @@ class WalletPageWidgetModel
   late final scrollController = createScrollController();
 
   late final _currentAccount = createNotifierFromStream(model.currentAccount);
+  late final _transportStrategy =
+      createNotifierFromStream(model.transportStrategy);
   late final _isShowingBadgeNotifier = createNotifier<bool>();
   late final _isShowingNewTokensNotifier = createNotifier<bool>();
 
   StreamSubscription<PressBottomNavigationEvent>? _pressWalletSubscribtion;
 
   ListenableState<KeyAccount?> get currentAccount => _currentAccount;
+
+  ListenableState<TransportStrategy> get transportStrategy =>
+      _transportStrategy;
 
   ListenableState<bool> get isShowingBadge => _isShowingBadgeNotifier;
 

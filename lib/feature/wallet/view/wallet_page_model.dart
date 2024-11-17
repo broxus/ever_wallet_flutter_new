@@ -17,6 +17,9 @@ class WalletPageModel extends ElementaryModel {
   Stream<KeyAccount?> get currentAccount =>
       _currentAccountsService.currentActiveAccountStream;
 
+  Stream<TransportStrategy> get transportStrategy =>
+      _nekotonRepository.currentTransportStream;
+
   Future<bool?> isNewUser() async {
     return _storageService.getValue(StorageKey.userWithNewWallet());
   }

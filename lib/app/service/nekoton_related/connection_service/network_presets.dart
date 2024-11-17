@@ -66,7 +66,7 @@ final _venomPresets = [
 final _tychoPresets = [
   ConnectionData.protoPreset(
     id: tychoTestnetProtoID,
-    name: 'Tycho',
+    name: 'Tycho Testnet',
     group: 'tycho_testnet',
     endpoint: 'https://rpc-testnet.tychoprotocol.com/',
     networkType: NetworkType.tycho,

@@ -17,6 +17,7 @@ class WalletBottomPanel extends StatefulWidget {
     required this.scrollController,
     required this.isShowingNewTokens,
     required this.confirmImportCallback,
+    required this.manifestUrl,
     super.key,
   });
 
@@ -24,6 +25,7 @@ class WalletBottomPanel extends StatefulWidget {
   final ScrollController scrollController;
   final bool isShowingNewTokens;
   final VoidCallback confirmImportCallback;
+  final String manifestUrl;
 
   @override
   State<WalletBottomPanel> createState() => _WalletBottomPanelState();
@@ -85,6 +87,7 @@ class _WalletBottomPanelState extends State<WalletBottomPanel> {
                       account: widget.currentAccount,
                       isShowingNewTokens: widget.isShowingNewTokens,
                       confirmImportCallback: widget.confirmImportCallback,
+                      manifestUrl: widget.manifestUrl,
                     ),
                   WalletBottomPanelTab.transactions => AccountTransactionsTab(
                       account: widget.currentAccount,
