@@ -38,6 +38,7 @@ class SelectAccountWidget extends ElementaryWidget<SelectAccountWidgetModel> {
             secondSource: wm.currentAccount,
             builder: (_, list, currentAccount) {
               return SingleChildScrollView(
+                controller: scrollController,
                 child: Column(
                   mainAxisSize: MainAxisSize.min,
                   children: List.generate(
@@ -54,6 +55,7 @@ class SelectAccountWidget extends ElementaryWidget<SelectAccountWidgetModel> {
                           currentAccount: currentAccount,
                           onTapAccount: (item) => wm.onSelect(item),
                           getBalanceEntity: wm.getBalanceEntity,
+                          scrollController: scrollController,
                         ),
                       );
                     },
@@ -82,6 +84,29 @@ class SelectAccountWidget extends ElementaryWidget<SelectAccountWidgetModel> {
       ],
     );
   }
+
+  void _scrollToCurrentAccount({
+    required KeyAccount? currentAccount,
+    required Map<KeyAccount, GlobalKey> itemKeys,
+    required ScrollController scrollController,
+  }) {
+    if (currentAccount != null && itemKeys.containsKey(currentAccount)) {
+      final currentKey = itemKeys[currentAccount];
+      final context = currentKey?.currentContext;
+      if (context != null) {
+        final renderObject = context.findRenderObject() as RenderBox?;
+        if (renderObject != null) {
+          final offset = renderObject.localToGlobal(Offset.zero);
+          final scrollOffset = scrollController.offset + offset.dy;
+          scrollController.animateTo(
+            scrollOffset,
+            duration: const Duration(milliseconds: 300),
+            curve: Curves.easeInOut,
+          );
+        }
+      }
+    }
+  }
 }
 
 class _SeedItem extends StatefulWidget {
@@ -91,6 +116,7 @@ class _SeedItem extends StatefulWidget {
     required this.currentAccount,
     required this.onTapAccount,
     required this.getBalanceEntity,
+    required this.scrollController,
     super.key,
   });
 
@@ -99,6 +125,7 @@ class _SeedItem extends StatefulWidget {
   final KeyAccount? currentAccount;
   final Function(KeyAccount) onTapAccount;
   final ListenableState<Money> Function(KeyAccount) getBalanceEntity;
+  final ScrollController scrollController;
 
   @override
   State<_SeedItem> createState() => _SeedItemState();
@@ -139,6 +166,7 @@ class _SeedItemState extends State<_SeedItem> {
                       currentAccount: widget.currentAccount,
                       onTap: widget.onTapAccount,
                       getBalanceEntity: widget.getBalanceEntity,
+                      scrollController: widget.scrollController,
                     )
                   : const SizedBox.shrink(),
             ),

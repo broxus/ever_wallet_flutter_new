@@ -14,6 +14,7 @@ class PublicKeyItemWidget extends StatelessWidget {
     required this.currentAccount,
     required this.onTap,
     required this.getBalanceEntity,
+    required this.scrollController,
     super.key,
   });
 
@@ -21,14 +22,25 @@ class PublicKeyItemWidget extends StatelessWidget {
   final KeyAccount? currentAccount;
   final Function(KeyAccount) onTap;
   final ListenableState<Money> Function(KeyAccount) getBalanceEntity;
+  final ScrollController scrollController;
 
   @override
   Widget build(BuildContext context) {
     final theme = context.themeStyleV2;
+
+    final Map<KeyAccount, GlobalKey> itemKeys = {
+      for (var account in accounts) account: GlobalKey(),
+    };
+
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      _scrollToCurrentAccount(itemKeys);
+    });
+
     return Column(
       children: [
         for (var i = 0; i < accounts.length; i++)
           GestureDetector(
+            key: itemKeys[accounts[i]],
             onTap: () => onTap(accounts[i]),
             child: Container(
               decoration: BoxDecoration(
@@ -108,5 +120,26 @@ class PublicKeyItemWidget extends StatelessWidget {
           ),
       ],
     );
+  }
+
+  void _scrollToCurrentAccount(Map<KeyAccount, GlobalKey> itemKeys) {
+    if (currentAccount == null || !itemKeys.containsKey(currentAccount)) {
+      return;
+    }
+
+    final currentKey = itemKeys[currentAccount]!;
+    final context = currentKey.currentContext;
+
+    if (context != null) {
+      final renderBox = context.findRenderObject() as RenderBox;
+      final offset = renderBox.localToGlobal(Offset.zero);
+      final scrollOffset = scrollController.offset + offset.dy;
+
+      scrollController.animateTo(
+        scrollOffset,
+        duration: const Duration(milliseconds: 300),
+        curve: Curves.easeInOut,
+      );
+    }
   }
 }
