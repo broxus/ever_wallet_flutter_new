@@ -28,8 +28,8 @@ class PublicKeyItemWidget extends StatelessWidget {
   Widget build(BuildContext context) {
     final theme = context.themeStyleV2;
 
-    final Map<KeyAccount, GlobalKey> itemKeys = {
-      for (var account in accounts) account: GlobalKey(),
+    final itemKeys = <KeyAccount, GlobalKey>{
+      for (final account in accounts) account: GlobalKey(),
     };
 
     WidgetsBinding.instance.addPostFrameCallback((_) {
@@ -131,7 +131,7 @@ class PublicKeyItemWidget extends StatelessWidget {
     final context = currentKey.currentContext;
 
     if (context != null) {
-      final renderBox = context.findRenderObject() as RenderBox;
+      final renderBox = context.findRenderObject()! as RenderBox;
       final offset = renderBox.localToGlobal(Offset.zero);
       final scrollOffset = scrollController.offset + offset.dy;
 

@@ -85,24 +85,24 @@ class _SelectAccountWidget extends StatelessWidget {
                         _scrollToActiveAccount(accounts, selected);
                       });
                       return ListView.separated(
-                      controller: scrollController,
-                      itemCount: accounts?.length ?? 0,
-                      itemBuilder: (_, index) {
-                        final account = accounts?[index];
-                        return account == null
-                            ? const SizedBox.shrink()
-                            : AccountListItem(
-                                key: ValueKey(account.address),
-                                account: account,
-                                balance: wm.getBalanceEntity(account),
-                                active: account.address == selected?.address,
-                                onTap: () => wm.onSelectedChanged(account),
-                              );
-                      },
-                      separatorBuilder: (_, __) => CommonDivider(
-                        color: theme.colors.border0,
-                      ),
-                    );
+                        controller: scrollController,
+                        itemCount: accounts?.length ?? 0,
+                        itemBuilder: (_, index) {
+                          final account = accounts?[index];
+                          return account == null
+                              ? const SizedBox.shrink()
+                              : AccountListItem(
+                                  key: ValueKey(account.address),
+                                  account: account,
+                                  balance: wm.getBalanceEntity(account),
+                                  active: account.address == selected?.address,
+                                  onTap: () => wm.onSelectedChanged(account),
+                                );
+                        },
+                        separatorBuilder: (_, __) => CommonDivider(
+                          color: theme.colors.border0,
+                        ),
+                      );
                     },
                   ),
                 ),
@@ -122,10 +122,13 @@ class _SelectAccountWidget extends StatelessWidget {
     );
   }
 
-  void _scrollToActiveAccount(List<KeyAccount>? accounts, KeyAccount? selected) {
+  void _scrollToActiveAccount(
+    List<KeyAccount>? accounts,
+    KeyAccount? selected,
+  ) {
     if (accounts != null && selected != null) {
-      final index = accounts!.indexWhere(
-              (account) => account.address == selected.address);
+      final index =
+          accounts.indexWhere((account) => account.address == selected.address);
 
       if (index != -1) {
         scrollController.animateTo(

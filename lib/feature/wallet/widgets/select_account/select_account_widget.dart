@@ -85,6 +85,7 @@ class SelectAccountWidget extends ElementaryWidget<SelectAccountWidgetModel> {
     );
   }
 
+  // ignore: unused_element
   void _scrollToCurrentAccount({
     required KeyAccount? currentAccount,
     required Map<KeyAccount, GlobalKey> itemKeys,
