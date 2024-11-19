@@ -32,7 +32,7 @@ class AccountAssetTabCubit extends Cubit<AccountAssetTabState> {
       );
     });
 
-    if (isShowingNewTokens || true) {
+    if (isShowingNewTokens) {
       _searchSubscription = tokenWalletsService
           .searchTokenWalletsForAddress(tonWallet.address)
           .reduce((previous, element) => [...previous, ...element])

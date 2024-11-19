@@ -14,6 +14,7 @@ class WalletView extends StatelessWidget {
     required this.isShowingNewTokens,
     required this.finishedBackupCallback,
     required this.confirmImportCallback,
+    required this.manifestUrl,
     super.key,
   });
 
@@ -23,6 +24,7 @@ class WalletView extends StatelessWidget {
   final bool isShowingNewTokens;
   final VoidCallback finishedBackupCallback;
   final VoidCallback confirmImportCallback;
+  final String manifestUrl;
 
   @override
   Widget build(BuildContext context) {
@@ -49,6 +51,7 @@ class WalletView extends StatelessWidget {
                 scrollController: scrollController,
                 isShowingNewTokens: isShowingNewTokens,
                 confirmImportCallback: confirmImportCallback,
+                manifestUrl: manifestUrl,
               ),
               SliverFillRemaining(
                 hasScrollBody: false,

@@ -15,10 +15,11 @@ class WalletPageWidget extends ElementaryWidget<WalletPageWidgetModel> {
   @override
   Widget build(WalletPageWidgetModel wm) {
     return Scaffold(
-      body: DoubleSourceBuilder<KeyAccount?, bool>(
+      body: TripleSourceBuilder<KeyAccount?, bool, TransportStrategy>(
         firstSource: wm.currentAccount,
         secondSource: wm.isShowingNewTokens,
-        builder: (_, currentAccount, isShowingNewTokens) {
+        thirdSource: wm.transportStrategy,
+        builder: (_, currentAccount, isShowingNewTokens, transport) {
           return currentAccount?.let(
                 (value) => StateNotifierBuilder(
                   listenableState: wm.isShowingBadge,
@@ -30,6 +31,7 @@ class WalletPageWidget extends ElementaryWidget<WalletPageWidgetModel> {
                     isShowingNewTokens: isShowingNewTokens ?? false,
                     finishedBackupCallback: wm.hideShowingBadge,
                     confirmImportCallback: wm.hideNewTokensLabel,
+                    manifestUrl: transport?.manifestUrl ?? '',
                   ),
                 ),
               ) ??

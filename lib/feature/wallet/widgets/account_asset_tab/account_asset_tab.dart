@@ -20,16 +20,19 @@ class AccountAssetsTab extends StatelessWidget {
     required this.account,
     required this.isShowingNewTokens,
     required this.confirmImportCallback,
+    required this.manifestUrl,
     super.key,
   });
 
   final KeyAccount account;
   final bool isShowingNewTokens;
   final VoidCallback confirmImportCallback;
+  final String manifestUrl;
 
   @override
   Widget build(BuildContext context) {
     return BlocProvider<AccountAssetTabCubit>(
+      key: ValueKey(manifestUrl),
       create: (_) => AccountAssetTabCubit(
         account,
         inject<TokenWalletsService>(),
