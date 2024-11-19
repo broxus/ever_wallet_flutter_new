@@ -117,6 +117,7 @@ class TokenWalletAssetCubit extends Cubit<TokenWalletAssetState> {
           rootTokenContract: asset.address,
           fiatBalance: _cachedFiatBalance!,
           tokenBalance: _cachedTokenBalance!,
+          isNative: false,
         ),
       );
     }

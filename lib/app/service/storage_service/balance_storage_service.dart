@@ -144,7 +144,11 @@ class BalanceStorageService extends AbstractStorageService {
         existedForAccount = [balance];
       } else {
         existedForAccount
-          ..removeWhere((b) => b.rootTokenContract == balance.rootTokenContract)
+          ..removeWhere(
+            (b) =>
+                b.rootTokenContract == balance.rootTokenContract &&
+                b.isNative == balance.isNative,
+          )
           ..add(balance);
       }
 
