@@ -194,8 +194,10 @@ Future<void> _fillHive(HiveSourceMigration migration) async {
 }
 
 Future<GetStorage> _getStorage(String container) async {
-  await GetStorage.init(container);
-  return GetStorage(container);
+  final storage = GetStorage(container);
+  await storage.initStorage;
+  await storage.erase();
+  return storage;
 }
 
 void main() {
