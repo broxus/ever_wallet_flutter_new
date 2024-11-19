@@ -1,8 +1,6 @@
-import 'dart:convert';
-
 import 'package:app/app/service/service.dart';
 import 'package:app/data/models/models.dart';
-import 'package:encrypted_storage/encrypted_storage.dart';
+import 'package:get_storage/get_storage.dart';
 import 'package:injectable/injectable.dart';
 import 'package:rxdart/rxdart.dart';
 
@@ -12,14 +10,17 @@ const _browserHistoryKey = 'browser_history_key';
 /// Limit of browser history items
 const _historyItemCountLimit = 50;
 
-/// This is a wrapper-class above [EncryptedStorage] that provides methods
+/// This is a wrapper-class above [GetStorage] that provides methods
 /// to interact with all browser history - related data.
 @singleton
 class BrowserHistoryStorageService extends AbstractStorageService {
-  BrowserHistoryStorageService(this._storage);
+  BrowserHistoryStorageService(
+    @Named(container) this._storage,
+  );
 
-  /// Storage that is used to store data
-  final EncryptedStorage _storage;
+  static const container = _browserHistoryDomain;
+
+  final GetStorage _storage;
 
   /// Subject of browser history items
   final _browserHistorySubject = BehaviorSubject<List<BrowserHistoryItem>>();
@@ -33,19 +34,15 @@ class BrowserHistoryStorageService extends AbstractStorageService {
       _browserHistorySubject.valueOrNull ?? [];
 
   /// Put browser history items to stream
-  Future<void> _streamedBrowserHistory() async =>
-      _browserHistorySubject.add(await readBrowserHistory());
+  void _streamedBrowserHistory() =>
+      _browserHistorySubject.add(readBrowserHistory());
 
   /// Read list of browser history items from storage
-  Future<List<BrowserHistoryItem>> readBrowserHistory() async {
-    final encoded = await _storage.get(
-      _browserHistoryKey,
-      domain: _browserHistoryDomain,
-    );
-    if (encoded == null) {
+  List<BrowserHistoryItem> readBrowserHistory() {
+    final list = _storage.read<List<dynamic>>(_browserHistoryKey);
+    if (list == null) {
       return [];
     }
-    final list = jsonDecode(encoded) as List<dynamic>;
 
     return list
         .map(
@@ -55,47 +52,42 @@ class BrowserHistoryStorageService extends AbstractStorageService {
   }
 
   /// Save list of browser history items to storage
-  Future<void> saveBrowserHistory(List<BrowserHistoryItem> history) async {
+  void saveBrowserHistory(List<BrowserHistoryItem> history) {
     final sortedHistory = [...history]
       ..sort((a, b) => b.visitTime.compareTo(a.visitTime));
     final sortedLimitedHistory =
         sortedHistory.take(_historyItemCountLimit).toList();
 
-    await _storage.set(
+    _storage.write(
       _browserHistoryKey,
-      jsonEncode(sortedLimitedHistory),
-      domain: _browserHistoryDomain,
+      sortedLimitedHistory.map((e) => e.toJson()).toList(),
     );
 
-    await _streamedBrowserHistory();
+    _streamedBrowserHistory();
   }
 
   /// Clear browser history
   Future<void> clearBrowserHistory() async {
-    await _storage.delete(
-      _browserHistoryKey,
-      domain: _browserHistoryDomain,
-    );
-
-    await _streamedBrowserHistory();
+    await _storage.remove(_browserHistoryKey);
+    _streamedBrowserHistory();
   }
 
   /// Add browser history item
-  Future<void> addBrowserHistoryItem(BrowserHistoryItem item) async {
-    await saveBrowserHistory([...browserHistory, item]);
+  void addBrowserHistoryItem(BrowserHistoryItem item) {
+    saveBrowserHistory([...browserHistory, item]);
   }
 
   /// Remove browser history item by id
-  Future<void> removeBrowserHistoryItem(String id) async {
+  void removeBrowserHistoryItem(String id) {
     final history = [...browserHistory]..removeWhere((item) => item.id == id);
-
-    await saveBrowserHistory(history);
+    saveBrowserHistory(history);
   }
 
   @override
-  Future<void> init() => Future.wait([
-        _streamedBrowserHistory(),
-      ]);
+  Future<void> init() async {
+    await GetStorage.init(container);
+    _streamedBrowserHistory();
+  }
 
   @override
   Future<void> clearSensitiveData() => Future.wait([

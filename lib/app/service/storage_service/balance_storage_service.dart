@@ -1,8 +1,7 @@
-import 'dart:convert';
-
 import 'package:app/app/service/service.dart';
 import 'package:app/data/models/models.dart';
-import 'package:encrypted_storage/encrypted_storage.dart';
+import 'package:app/utils/utils.dart';
+import 'package:get_storage/get_storage.dart';
 import 'package:injectable/injectable.dart';
 import 'package:logging/logging.dart';
 import 'package:nekoton_repository/nekoton_repository.dart';
@@ -13,22 +12,34 @@ const _balancesDomain = 'balancesDomain';
 
 @singleton
 class BalanceStorageService extends AbstractStorageService {
-  BalanceStorageService(this._storage);
+  BalanceStorageService(
+    @Named(overallBalancesContainer) this._overallBalancesStorage,
+    @Named(balancesContainer) this._balancesStorage,
+  );
 
   static final _logger = Logger('BalanceStorageService');
+  static const overallBalancesContainer = _overallBalancesDomain;
+  static const balancesContainer = _balancesDomain;
+  static const containers = [
+    overallBalancesContainer,
+    balancesContainer,
+  ];
 
   /// Storage that is used to store data
-  final EncryptedStorage _storage;
+  final GetStorage _overallBalancesStorage;
+  final GetStorage _balancesStorage;
 
   @override
-  Future<void> init() => Future.wait([
-        _streamedOverallBalance(),
-        _streamedBalance(),
-      ]);
+  Future<void> init() async {
+    await Future.wait(containers.map(GetStorage.init));
+    _streamedOverallBalance();
+    _streamedBalance();
+  }
 
   @override
   Future<void> clearSensitiveData() => Future.wait([
         deleteOverallBalances(),
+        deleteBalances(),
       ]);
 
   /// Subject for overall balances for accounts
@@ -45,34 +56,33 @@ class BalanceStorageService extends AbstractStorageService {
       _overallBalancesSubject;
 
   /// Put overall balances into stream
-  Future<void> _streamedOverallBalance() async =>
-      _overallBalancesSubject.add(await readOverallBalances());
+  void _streamedOverallBalance() =>
+      _overallBalancesSubject.add(readOverallBalances());
 
   /// Get all overall balances for accounts
   /// key - address, value - overall balance
-  Future<Map<Address, Fixed>> readOverallBalances() async {
-    final encoded = await _storage.getDomain(domain: _overallBalancesDomain);
+  Map<Address, Fixed> readOverallBalances() {
+    final encoded = _overallBalancesStorage.getEntries();
 
     return encoded.map(
       (key, value) => MapEntry(
         Address(address: key),
-        FixedFixer.fromJson(jsonDecode(value) as Map<String, dynamic>),
+        FixedFixer.fromJson(value as Map<String, dynamic>),
       ),
     );
   }
 
   /// Set overall balance for specified account
-  Future<void> setOverallBalance({
+  void setOverallBalance({
     required Address accountAddress,
     required Fixed balance,
-  }) async {
+  }) {
     try {
-      await _storage.set(
+      _overallBalancesStorage.write(
         accountAddress.address,
-        jsonEncode(balance.toJson()),
-        domain: _overallBalancesDomain,
+        balance.toJson(),
       );
-      await _streamedOverallBalance();
+      _streamedOverallBalance();
     } catch (e, t) {
       _logger.severe('setOverallBalance', e, t);
     }
@@ -80,7 +90,7 @@ class BalanceStorageService extends AbstractStorageService {
 
   /// Delete overall balances
   Future<void> deleteOverallBalances() async {
-    await _storage.clearDomain(_overallBalancesDomain);
+    await _overallBalancesStorage.erase();
   }
 
   /// Subject for token balances for accounts
@@ -100,22 +110,19 @@ class BalanceStorageService extends AbstractStorageService {
       _balancesSubject;
 
   /// Put token balances for accounts into stream
-  Future<void> _streamedBalance() async =>
-      _balancesSubject.add(await readBalances());
+  void _streamedBalance() => _balancesSubject.add(readBalances());
 
   /// Get all token balances for accounts
   /// key - address of account, value - list of balances for tokens in scope of
   /// this account.
-  Future<Map<Address, List<AccountBalanceModel>>> readBalances() async {
-    final encoded = await _storage.getDomain(domain: _balancesDomain);
+  Map<Address, List<AccountBalanceModel>> readBalances() {
+    final encoded = _balancesStorage.getEntries();
 
     return encoded.map(
       (key, value) {
-        final decoded = jsonDecode(value) as List<dynamic>;
-
         return MapEntry(
           Address(address: key),
-          decoded
+          (value as List<dynamic>)
               .map(
                 (e) => AccountBalanceModel.fromJson(e as Map<String, dynamic>),
               )
@@ -126,10 +133,10 @@ class BalanceStorageService extends AbstractStorageService {
   }
 
   /// Set token balances for accounts with [accountAddress]
-  Future<void> setBalances({
+  void setBalances({
     required Address accountAddress,
     required AccountBalanceModel balance,
-  }) async {
+  }) {
     try {
       var existedForAccount = balances[accountAddress];
 
@@ -141,12 +148,11 @@ class BalanceStorageService extends AbstractStorageService {
           ..add(balance);
       }
 
-      await _storage.set(
+      _balancesStorage.write(
         accountAddress.address,
-        jsonEncode(existedForAccount.map((b) => b.toJson()).toList()),
-        domain: _balancesDomain,
+        existedForAccount.map((b) => b.toJson()).toList(),
       );
-      await _streamedOverallBalance();
+      _streamedOverallBalance();
     } catch (e, t) {
       _logger.severe('setBalances', e, t);
     }
@@ -154,6 +160,6 @@ class BalanceStorageService extends AbstractStorageService {
 
   /// Delete token balances
   Future<void> deleteBalances() async {
-    await _storage.clearDomain(_balancesDomain);
+    await _balancesStorage.erase();
   }
 }

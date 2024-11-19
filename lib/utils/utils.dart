@@ -4,6 +4,7 @@ import 'package:app/app/service/service.dart';
 import 'package:app/di/di.dart';
 import 'package:app/generated/generated.dart';
 import 'package:clock/clock.dart';
+import 'package:get_storage/get_storage.dart';
 import 'package:json_annotation/json_annotation.dart';
 import 'package:money2_fixer/money2_fixer.dart';
 import 'package:nekoton_repository/nekoton_repository.dart' hide MoneyFixer;
@@ -92,5 +93,14 @@ extension MoneyExt on Money {
           toIsoCode: 'USD',
           toDecimalDigits: 2,
         ),
+      );
+}
+
+extension GetStorageExt on GetStorage {
+  Iterable<String> getStringKeys() => getKeys();
+
+  Map<String, dynamic> getEntries() => Map.fromIterables(
+        getStringKeys(),
+        getValues<Iterable<dynamic>>(),
       );
 }

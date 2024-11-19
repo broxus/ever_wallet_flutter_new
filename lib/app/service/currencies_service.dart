@@ -120,7 +120,7 @@ class CurrenciesService {
           networkType: transport.networkType,
         );
 
-        await storageService.saveOrUpdateCurrency(currency: currency);
+        storageService.saveOrUpdateCurrency(currency: currency);
 
         return currency;
       }
@@ -169,7 +169,7 @@ class CurrenciesService {
         networkType: transport.networkType,
       );
 
-      await storageService.saveOrUpdateCurrencies(
+      storageService.saveOrUpdateCurrencies(
         currencies: currencies,
         networkType: transport.networkType,
       );
@@ -184,7 +184,7 @@ class CurrenciesService {
               networkType: transport.networkType,
             );
 
-            await storageService.saveOrUpdateCurrency(currency: currency);
+            storageService.saveOrUpdateCurrency(currency: currency);
           }
         } catch (e, st) {
           _logger.severe('_currencyChangedMapper', e, st);

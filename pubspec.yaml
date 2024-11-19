@@ -44,6 +44,7 @@ dependencies:
   freezed_annotation: 2.4.4
   frontend_server_client: 4.0.0
   get_it: 7.7.0
+  get_storage: 2.1.1
   go_router: 14.2.7
   hive_flutter: 1.1.0
   http: 1.2.2
@@ -51,7 +52,7 @@ dependencies:
   in_app_notification: 1.1.2
   injectable: 2.4.4
   internet_connection_checker_plus: 2.5.1
-  jdenticon_dart: ^2.0.0
+  jdenticon_dart: 2.0.0
   json_annotation: 4.9.0
   local_auth: 2.2.0
   logging: 1.2.0
@@ -62,7 +63,7 @@ dependencies:
   nekoton_repository: 0.37.0-dev.10
   nekoton_webview: 0.1.8-dev.2
   ntp: 2.0.0
-  package_info_plus: ^8.0.0
+  package_info_plus: 8.0.2
   path_provider: 2.1.3
   permission_handler: 11.3.1
   render_metrics:
@@ -71,7 +72,7 @@ dependencies:
     git:
       url: https://github.com/knightsforce/flutter-render-metrics
       ref: optional-render-manager
-  retrofit: ^4.4.1
+  retrofit: 4.4.1
   rxdart: 0.27.7
   sentry_flutter: ^8.9.0
   share_plus: 10.0.2

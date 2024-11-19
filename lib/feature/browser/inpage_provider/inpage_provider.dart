@@ -324,7 +324,7 @@ class InpageProvider extends ProviderApi {
 
   @override
   Future<void> disconnect() async {
-    await permissionsService.deletePermissionsForOrigin(origin!);
+    permissionsService.deletePermissionsForOrigin(origin!);
     nekotonRepository.unsubscribeContractsTab(tabId);
 
     await controller?.permissionsChanged(
@@ -1752,7 +1752,7 @@ class InpageProvider extends ProviderApi {
     }
 
     if (update.isNotEmpty) {
-      await connectionsStorageService.updateNetworksIds(update);
+      connectionsStorageService.updateNetworksIds(update);
     }
 
     return list;

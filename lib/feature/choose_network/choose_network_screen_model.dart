@@ -50,7 +50,7 @@ class ChooseNetworkScreenModel extends ElementaryModel with ConnectionMixin {
 
   Future<bool> selectType(BuildContext context, String id) async {
     try {
-      await _connectionsStorageService.saveCurrentConnectionId(id);
+      _connectionsStorageService.saveCurrentConnectionId(id);
     } on Object catch (e) {
       messengerService.show(
         Message.error(

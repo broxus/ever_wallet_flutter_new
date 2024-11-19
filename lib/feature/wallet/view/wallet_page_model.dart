@@ -11,7 +11,7 @@ class WalletPageModel extends ElementaryModel {
   ) : super(errorHandler: errorHandler);
 
   final CurrentAccountsService _currentAccountsService;
-  final SecureStorageService _storageService;
+  final AppStorageService _storageService;
   final NekotonRepository _nekotonRepository;
 
   Stream<KeyAccount?> get currentAccount =>
@@ -25,7 +25,7 @@ class WalletPageModel extends ElementaryModel {
   }
 
   Future<void> resetValueNewUser() async {
-    return _storageService.cleanStorage(StorageKey.userWithNewWallet());
+    return _storageService.delete(StorageKey.userWithNewWallet());
   }
 
   Future<bool?> isShowingBadge(KeyAccount account) async {

@@ -19,7 +19,7 @@ class ChangeNetworkModel extends ElementaryModel {
   final NekotonRepository _nekotonRepository;
 
   Future<TransportStrategy> changeNetwork(String id) async {
-    await _connectionsStorageService.saveCurrentConnectionId(id);
+    _connectionsStorageService.saveCurrentConnectionId(id);
     return _nekotonRepository.currentTransportStream
         .firstWhere(
           (strategy) => strategy.connection?.id == id,

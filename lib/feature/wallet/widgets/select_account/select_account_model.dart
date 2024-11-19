@@ -44,9 +44,9 @@ class SelectAccountModel extends ElementaryModel {
 
   TransportStrategy get currentTransport => _nekotonRepository.currentTransport;
 
-  Future<void> changeCurrentAccount(KeyAccount account) async {
-    await _currentAccountsService.updateCurrentActiveAccount(account.address);
-    await _currentKeyService.changeCurrentKey(account.publicKey);
+  void changeCurrentAccount(KeyAccount account) {
+    _currentAccountsService.updateCurrentActiveAccount(account.address);
+    _currentKeyService.changeCurrentKey(account.publicKey);
   }
 
   Future<Money?> getBalance(KeyAccount account) async {

@@ -16,6 +16,7 @@ import 'package:encrypted_storage/encrypted_storage.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:flutter_test/flutter_test.dart';
+import 'package:get_storage/get_storage.dart';
 import 'package:hive_flutter/hive_flutter.dart';
 import 'package:integration_test/integration_test.dart';
 import 'package:logging/logging.dart';
@@ -192,6 +193,11 @@ Future<void> _fillHive(HiveSourceMigration migration) async {
   await migration.saveBrowserTabs([_browserTab]);
 }
 
+Future<GetStorage> _getStorage(String container) async {
+  await GetStorage.init(container);
+  return GetStorage(container);
+}
+
 void main() {
   IntegrationTestWidgetsFlutterBinding.ensureInitialized();
 
@@ -199,6 +205,7 @@ void main() {
   late HiveSourceMigration hive;
   late EncryptedStorage encryptedStorage;
   late GeneralStorageService storage;
+  late SecureStorageService secureStorage;
   late BrowserTabsStorageService browserTabsStorage;
   late BrowserHistoryStorageService browserHistoryStorage;
   late BrowserBookmarksStorageService browserBookmarksStorage;
@@ -230,11 +237,11 @@ void main() {
     );
 
     /// Passwords
-    expect(await storage.getKeyPassword(_publicKey), _password);
+    expect(await secureStorage.getKeyPassword(_publicKey), _password);
 
     /// System contracts
     expect(
-      await storage.readSystemTokenContractAssets(NetworkType.ever),
+      storage.readSystemTokenContractAssets(NetworkType.ever),
       [_everContractAssetSystem],
     );
     expect(
@@ -243,7 +250,7 @@ void main() {
     );
 
     expect(
-      await storage.readSystemTokenContractAssets(NetworkType.venom),
+      storage.readSystemTokenContractAssets(NetworkType.venom),
       [_venomContractAssetSystem],
     );
     expect(
@@ -253,7 +260,7 @@ void main() {
 
     /// Custom contracts
     expect(
-      await storage.readCustomTokenContractAssets(NetworkType.ever),
+      storage.readCustomTokenContractAssets(NetworkType.ever),
       [_everContractAssetCustom],
     );
     expect(
@@ -262,7 +269,7 @@ void main() {
     );
 
     expect(
-      await storage.readCustomTokenContractAssets(NetworkType.venom),
+      storage.readCustomTokenContractAssets(NetworkType.venom),
       [_venomContractAssetCustom],
     );
     expect(
@@ -271,27 +278,27 @@ void main() {
     );
 
     /// Currencies
-    expect(await storage.readCurrencies(NetworkType.ever), [_everCurrency]);
+    expect(storage.readCurrencies(NetworkType.ever), [_everCurrency]);
     expect(storage.getCurrencies(NetworkType.ever), [_everCurrency]);
 
-    expect(await storage.readCurrencies(NetworkType.venom), [_venomCurrency]);
+    expect(storage.readCurrencies(NetworkType.venom), [_venomCurrency]);
     expect(storage.getCurrencies(NetworkType.venom), [_venomCurrency]);
 
     /// Permissions
     expect(
-      await browserPermissionsStorage.readPermissions(),
+      browserPermissionsStorage.readPermissions(),
       {'origin': _permissions},
     );
 
     /// Bookmarks
-    expect(await browserBookmarksStorage.readBrowserBookmarks(), [_bookmark]);
+    expect(browserBookmarksStorage.readBrowserBookmarks(), [_bookmark]);
     expect(browserBookmarksStorage.browserBookmarks, [_bookmark]);
 
     /// Browser history, we need to change id because it's generated on fly
     expect(
-      (await browserHistoryStorage.readBrowserHistory()).map(
-        (item) => item.copyWith(id: '0'),
-      ),
+      browserHistoryStorage.readBrowserHistory().map(
+            (item) => item.copyWith(id: '0'),
+          ),
       [_historyItem],
     );
     expect(
@@ -302,9 +309,9 @@ void main() {
     );
 
     /// Preferences
-    expect(await storage.readIsBiometryEnabled(), true);
-    expect(await storage.getWasStEverOpened, true);
-    expect(await storage.readLastViewedSeeds(), [_publicKey]);
+    expect(storage.readIsBiometryEnabled(), true);
+    expect(storage.getWasStEverOpened, true);
+    expect(storage.readLastViewedSeeds(), [_publicKey]);
     expect(storage.lastViewedSeeds, [_publicKey]);
     expect(await accountSeedStorage.readHiddenAccounts(), [_address]);
     expect(accountSeedStorage.hiddenAccounts, [_address]);
@@ -320,13 +327,13 @@ void main() {
         _publicKey: [_address],
       },
     );
-    expect(await storage.readCurrentKey(), _publicKey);
+    expect(storage.readCurrentKey(), _publicKey);
     expect(storage.currentKey, _publicKey);
 
     /// Browser
-    expect(await browserTabsStorage.readBrowserTabs(), [_browserTab]);
+    expect(browserTabsStorage.readBrowserTabs(), [_browserTab]);
     expect(browserTabsStorage.browserTabs, [_browserTab]);
-    expect(await browserTabsStorage.readBrowserActiveTabId(), null);
+    expect(browserTabsStorage.readBrowserActiveTabId(), null);
   }
 
   setUp(() async {
@@ -334,14 +341,29 @@ void main() {
     FlutterSecureStorage.setMockInitialValues({});
     await encryptedStorage.init();
     await encryptedStorage.clearAll();
-    storage = GeneralStorageService(encryptedStorage);
-    browserTabsStorage = BrowserTabsStorageService(encryptedStorage);
-    browserHistoryStorage = BrowserHistoryStorageService(encryptedStorage);
-    browserBookmarksStorage = BrowserBookmarksStorageService(encryptedStorage);
-    browserPermissionsStorage =
-        BrowserPermissionsStorageService(encryptedStorage);
+    storage = GeneralStorageService(
+      await _getStorage(GeneralStorageService.prefContainer),
+      await _getStorage(GeneralStorageService.currenciesContainer),
+      await _getStorage(GeneralStorageService.systemContractAssetsContainer),
+      await _getStorage(GeneralStorageService.customContractAssetsContainer),
+    );
+    secureStorage = SecureStorageService(encryptedStorage);
+    browserTabsStorage = BrowserTabsStorageService(
+      await _getStorage(BrowserTabsStorageService.container),
+    );
+    browserHistoryStorage = BrowserHistoryStorageService(
+      await _getStorage(BrowserHistoryStorageService.container),
+    );
+    browserBookmarksStorage = BrowserBookmarksStorageService(
+      await _getStorage(BrowserBookmarksStorageService.container),
+    );
+    browserPermissionsStorage = BrowserPermissionsStorageService(
+      await _getStorage(BrowserPermissionsStorageService.container),
+    );
     accountSeedStorage = NekotonStorageService(encryptedStorage);
-    connectionsStorage = ConnectionsStorageService(encryptedStorage);
+    connectionsStorage = ConnectionsStorageService(
+      await _getStorage(ConnectionsStorageService.container),
+    );
     repository = NekotonRepository();
     await Hive.deleteFromDisk();
     hive = await HiveSourceMigration.create();
@@ -378,6 +400,7 @@ void main() {
       await _fillHive(hive);
       final migration = MigrationService(
         storage,
+        secureStorage,
         browserTabsStorage,
         browserHistoryStorage,
         browserBookmarksStorage,
@@ -386,7 +409,7 @@ void main() {
         connectionsStorage,
         hive,
       );
-      expect(await storage.isStorageMigrated, isFalse);
+      expect(storage.isStorageMigrated, isFalse);
       expect(await migration.needMigration(), isTrue);
     });
 
@@ -395,6 +418,7 @@ void main() {
 
       final migration = MigrationService(
         storage,
+        secureStorage,
         browserTabsStorage,
         browserHistoryStorage,
         browserBookmarksStorage,
@@ -403,7 +427,7 @@ void main() {
         connectionsStorage,
         hive,
       );
-      expect(await storage.isStorageMigrated, isFalse);
+      expect(storage.isStorageMigrated, isFalse);
       expect(await migration.needMigration(), isFalse);
     });
 
@@ -412,6 +436,7 @@ void main() {
 
       final migration = MigrationService(
         storage,
+        secureStorage,
         browserTabsStorage,
         browserHistoryStorage,
         browserBookmarksStorage,
@@ -420,8 +445,8 @@ void main() {
         connectionsStorage,
         hive,
       );
-      await storage.completeStorageMigration();
-      expect(await storage.isStorageMigrated, isTrue);
+      storage.completeStorageMigration();
+      expect(storage.isStorageMigrated, isTrue);
       expect(await migration.needMigration(), isFalse);
     });
 
@@ -430,6 +455,7 @@ void main() {
 
       final migration = MigrationService(
         storage,
+        secureStorage,
         browserTabsStorage,
         browserHistoryStorage,
         browserBookmarksStorage,
@@ -451,6 +477,7 @@ void main() {
       await _fillHive(hive);
       final migration = MigrationService(
         storage,
+        secureStorage,
         browserTabsStorage,
         browserHistoryStorage,
         browserBookmarksStorage,
@@ -485,13 +512,13 @@ void main() {
 
       /// Passwords
       expect(
-        await storage.getKeyPassword(_publicKey),
+        await secureStorage.getKeyPassword(_publicKey),
         hive.getKeyPassword(_publicKey),
       );
 
       /// System contracts
       expect(
-        await storage.readSystemTokenContractAssets(NetworkType.ever),
+        storage.readSystemTokenContractAssets(NetworkType.ever),
         hive.everSystemTokenContractAssets,
       );
       expect(
@@ -500,7 +527,7 @@ void main() {
       );
 
       expect(
-        await storage.readSystemTokenContractAssets(NetworkType.venom),
+        storage.readSystemTokenContractAssets(NetworkType.venom),
         hive.venomSystemTokenContractAssets,
       );
       expect(
@@ -510,7 +537,7 @@ void main() {
 
       /// Custom contracts
       expect(
-        await storage.readCustomTokenContractAssets(NetworkType.ever),
+        storage.readCustomTokenContractAssets(NetworkType.ever),
         hive.everCustomTokenContractAssets,
       );
       expect(
@@ -519,7 +546,7 @@ void main() {
       );
 
       expect(
-        await storage.readCustomTokenContractAssets(NetworkType.venom),
+        storage.readCustomTokenContractAssets(NetworkType.venom),
         hive.venomCustomTokenContractAssets,
       );
       expect(
@@ -529,7 +556,7 @@ void main() {
 
       /// Currencies
       expect(
-        await storage.readCurrencies(NetworkType.ever),
+        storage.readCurrencies(NetworkType.ever),
         hive.everCurrencies,
       );
       expect(
@@ -538,7 +565,7 @@ void main() {
       );
 
       expect(
-        await storage.readCurrencies(NetworkType.venom),
+        storage.readCurrencies(NetworkType.venom),
         hive.venomCurrencies,
       );
       expect(
@@ -548,20 +575,20 @@ void main() {
 
       /// Permissions
       expect(
-        await browserPermissionsStorage.readPermissions(),
+        browserPermissionsStorage.readPermissions(),
         hive.permissions,
       );
 
       /// Bookmarks
       expect(
-        await browserBookmarksStorage.readBrowserBookmarks(),
+        browserBookmarksStorage.readBrowserBookmarks(),
         hive.bookmarks,
       );
       expect(browserBookmarksStorage.browserBookmarks, hive.bookmarks);
 
       /// Search history
       expect(
-        await browserHistoryStorage.readBrowserHistory(),
+        browserHistoryStorage.readBrowserHistory(),
         hive.searchHistory,
       );
       expect(
@@ -570,10 +597,10 @@ void main() {
       );
 
       /// Preferences
-      expect(await storage.readIsBiometryEnabled(), hive.isBiometryEnabled);
-      expect(await storage.getWasStEverOpened, hive.wasStEverOpened);
+      expect(storage.readIsBiometryEnabled(), hive.isBiometryEnabled);
+      expect(storage.getWasStEverOpened, hive.wasStEverOpened);
       expect(
-        (await storage.readLastViewedSeeds()).map((key) => key.publicKey),
+        storage.readLastViewedSeeds().map((key) => key.publicKey),
         hive.lastViewedSeeds(),
       );
       expect(
@@ -605,21 +632,20 @@ void main() {
         ),
         hive.externalAccounts,
       );
-      final connections = await connectionsStorage.readConnections();
-      final currentConnectionId =
-          await connectionsStorage.readCurrentConnectionId();
+      final connections = connectionsStorage.readConnections();
+      final currentConnectionId = connectionsStorage.readCurrentConnectionId();
       final currentConnection = connections.firstWhereOrNull(
         (connection) => connection.id == currentConnectionId,
       );
       expect(currentConnection!.name, hive.currentConnection);
-      expect((await storage.readCurrentKey())?.publicKey, hive.currentKey);
+      expect(storage.readCurrentKey()?.publicKey, hive.currentKey);
       expect(storage.currentKey?.publicKey, hive.currentKey);
 
       /// Browser
-      expect(await browserTabsStorage.readBrowserTabs(), hive.browserTabs);
+      expect(browserTabsStorage.readBrowserTabs(), hive.browserTabs);
       expect(browserTabsStorage.browserTabs, hive.browserTabs);
       expect(
-        await browserTabsStorage.readBrowserActiveTabId(),
+        browserTabsStorage.readBrowserActiveTabId(),
         null,
       );
       expect(hive.checkIfSensitiveBoxesOpened(), isTrue);
@@ -630,10 +656,11 @@ void main() {
 
       await _fillHive(hive);
 
-      expect(await storage.isStorageMigrated, isFalse);
+      expect(storage.isStorageMigrated, isFalse);
 
       final migration = MigrationService(
         storage,
+        secureStorage,
         browserTabsStorage,
         browserHistoryStorage,
         browserBookmarksStorage,
@@ -647,7 +674,7 @@ void main() {
       final migrationFile = await hive.migrationFile;
       expect(migrationFile.existsSync(), isFalse);
       expect(hive.checkIfSensitiveBoxesOpened(), isFalse);
-      expect(await storage.isStorageMigrated, isTrue);
+      expect(storage.isStorageMigrated, isTrue);
 
       await checkMigration();
     });
@@ -658,10 +685,11 @@ void main() {
       await _fillHive(hive);
       await hive.dispose();
 
-      expect(await storage.isStorageMigrated, isFalse);
+      expect(storage.isStorageMigrated, isFalse);
 
       await MigrationService.migrateWithHiveInit(
         storage,
+        secureStorage,
         browserTabsStorage,
         browserHistoryStorage,
         browserBookmarksStorage,
@@ -673,7 +701,7 @@ void main() {
       final migrationFile = await hive.migrationFile;
       expect(migrationFile.existsSync(), isFalse);
       expect(hive.checkIfSensitiveBoxesOpened(), isFalse);
-      expect(await storage.isStorageMigrated, isTrue);
+      expect(storage.isStorageMigrated, isTrue);
 
       await checkMigration();
     });

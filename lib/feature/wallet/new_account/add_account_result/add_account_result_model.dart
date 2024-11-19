@@ -14,12 +14,12 @@ class AddAccountResultModel extends ElementaryModel {
   final CurrentKeyService _currentKeyService;
   final CurrentAccountsService _currentAccountsService;
 
-  Future<void> changeCurrentAccount(Address address) async {
+  void changeCurrentAccount(Address address) {
     final account = _nekotonRepository.seedList.findAccountByAddress(address);
 
     if (account != null) {
-      await _currentAccountsService.updateCurrentActiveAccount(account.address);
-      await _currentKeyService.changeCurrentKey(account.publicKey);
+      _currentAccountsService.updateCurrentActiveAccount(account.address);
+      _currentKeyService.changeCurrentKey(account.publicKey);
     }
   }
 }

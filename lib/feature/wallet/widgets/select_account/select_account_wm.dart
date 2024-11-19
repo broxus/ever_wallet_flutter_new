@@ -6,7 +6,6 @@ import 'package:app/di/di.dart';
 import 'package:app/feature/wallet/widgets/select_account/select_account_data.dart';
 import 'package:app/feature/wallet/widgets/select_account/select_account_model.dart';
 import 'package:app/feature/wallet/widgets/select_account/select_account_widget.dart';
-import 'package:app/utils/utils.dart';
 import 'package:elementary_helper/elementary_helper.dart';
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
@@ -93,9 +92,9 @@ class SelectAccountWidgetModel
     }
   }
 
-  Future<void> onSelect(KeyAccount account) async {
-    await model.changeCurrentAccount(account);
-    contextSafe?.let((context) => Navigator.of(context).pop(account));
+  void onSelect(KeyAccount account) {
+    model.changeCurrentAccount(account);
+    Navigator.of(context).pop(account);
   }
 
   void onAddAccount() {

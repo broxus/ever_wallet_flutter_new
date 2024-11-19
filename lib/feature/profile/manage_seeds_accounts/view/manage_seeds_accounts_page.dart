@@ -16,7 +16,7 @@ class ManageSeedsAccountsPage extends StatelessWidget {
       create: (_) => ManageSeedsAccountsCubit(
         inject<NekotonRepository>(),
         inject<CurrentSeedService>(),
-        inject<SecureStorageService>(),
+        inject<AppStorageService>(),
         inject<CurrentAccountsService>(),
       )..init(),
       child: const Scaffold(
