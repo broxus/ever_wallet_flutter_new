@@ -3,6 +3,7 @@
 #if SENTRY_HAS_UIKIT
 
 #    import "SentryScope+Private.h"
+#    import <SentryANRTrackerV1.h>
 #    import <SentryAppState.h>
 #    import <SentryAppStateManager.h>
 #    import <SentryClient+Private.h>
@@ -12,17 +13,17 @@
 #    import <SentryHub.h>
 #    import <SentryOptions+Private.h>
 #    import <SentrySDK+Private.h>
+#    import <SentrySwift.h>
 #    import <SentryWatchdogTerminationLogic.h>
 #    import <SentryWatchdogTerminationScopeObserver.h>
 #    import <SentryWatchdogTerminationTracker.h>
 
 NS_ASSUME_NONNULL_BEGIN
 
-@interface
-SentryWatchdogTerminationTrackingIntegration ()
+@interface SentryWatchdogTerminationTrackingIntegration ()
 
 @property (nonatomic, strong) SentryWatchdogTerminationTracker *tracker;
-@property (nonatomic, strong) SentryANRTracker *anrTracker;
+@property (nonatomic, strong) id<SentryANRTracker> anrTracker;
 @property (nullable, nonatomic, copy) NSString *testConfigurationFilePath;
 @property (nonatomic, strong) SentryAppStateManager *appStateManager;
 
@@ -52,7 +53,7 @@ SentryWatchdogTerminationTrackingIntegration ()
     dispatch_queue_attr_t attributes = dispatch_queue_attr_make_with_qos_class(
         DISPATCH_QUEUE_SERIAL, DISPATCH_QUEUE_PRIORITY_HIGH, 0);
     SentryDispatchQueueWrapper *dispatchQueueWrapper =
-        [[SentryDispatchQueueWrapper alloc] initWithName:"sentry-out-of-memory-tracker"
+        [[SentryDispatchQueueWrapper alloc] initWithName:"io.sentry.watchdog-termination-tracker"
                                               attributes:attributes];
 
     SentryFileManager *fileManager = [[[SentrySDK currentHub] getClient] fileManager];
@@ -73,7 +74,8 @@ SentryWatchdogTerminationTrackingIntegration ()
     [self.tracker start];
 
     self.anrTracker =
-        [SentryDependencyContainer.sharedInstance getANRTracker:options.appHangTimeoutInterval];
+        [SentryDependencyContainer.sharedInstance getANRTracker:options.appHangTimeoutInterval
+                                                    isV2Enabled:options.enableAppHangTrackingV2];
     [self.anrTracker addListener:self];
 
     self.appStateManager = appStateManager;
@@ -103,7 +105,7 @@ SentryWatchdogTerminationTrackingIntegration ()
     [self.anrTracker removeListener:self];
 }
 
-- (void)anrDetected
+- (void)anrDetectedWithType:(enum SentryANRType)type
 {
     [self.appStateManager
         updateAppState:^(SentryAppState *appState) { appState.isANROngoing = YES; }];

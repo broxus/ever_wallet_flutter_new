@@ -12,7 +12,7 @@ NS_ASSUME_NONNULL_BEGIN
     // iOS 9 we need to manually add the autoreleasepool.
     dispatch_queue_attr_t attributes = dispatch_queue_attr_make_with_qos_class(
         DISPATCH_QUEUE_SERIAL, DISPATCH_QUEUE_PRIORITY_DEFAULT, 0);
-    self = [self initWithName:"sentry-default" attributes:attributes];
+    self = [self initWithName:"io.sentry.default" attributes:attributes];
     return self;
 }
 
@@ -36,16 +36,15 @@ NS_ASSUME_NONNULL_BEGIN
 
 - (void)dispatchAsyncOnMainQueue:(void (^)(void))block
 {
-    dispatch_async(dispatch_get_main_queue(), ^{
-        @autoreleasepool {
-            block();
-        }
-    });
-}
-
-- (void)dispatchOnMainQueue:(void (^)(void))block
-{
-    [SentryThreadWrapper onMainThread:block];
+    if ([NSThread isMainThread]) {
+        block();
+    } else {
+        dispatch_async(dispatch_get_main_queue(), ^{
+            @autoreleasepool {
+                block();
+            }
+        });
+    }
 }
 
 - (void)dispatchSync:(void (^)(void))block

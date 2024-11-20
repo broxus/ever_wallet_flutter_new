@@ -38,12 +38,12 @@ class VenomTransportStrategy extends TransportStrategy {
           MultisigType.setcodeMultisigWallet => 'SetcodeMultisig',
           MultisigType.setcodeMultisigWallet24h => 'SetcodeMultisig24h',
           MultisigType.bridgeMultisigWallet => 'BridgeMultisig',
-          MultisigType.surfWallet => 'Surf wallet',
-          MultisigType.multisig2 => 'Legacy Multisig',
-          MultisigType.multisig2_1 => 'Multisig',
+          MultisigType.surfWallet => 'Surf Wallet',
+          MultisigType.multisig2 => 'Legacy Multi-sig',
+          MultisigType.multisig2_1 => 'Multi-sig',
         },
         walletV3: () => 'Legacy',
-        highloadWalletV2: () => 'HighloadWalletV2',
+        highloadWalletV2: () => 'HighloadWallet',
         everWallet: () => 'Default',
       );
 
@@ -83,4 +83,7 @@ class VenomTransportStrategy extends TransportStrategy {
 
   @override
   StakingInformation? get stakeInformation => null;
+
+  @override
+  String? get tokenApiBaseUrl => 'https://tokens.venomscan.com/v1';
 }

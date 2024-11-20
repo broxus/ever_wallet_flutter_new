@@ -1,4 +1,5 @@
 import 'package:app/app/service/nekoton_related/connection_service/transport_strategies/transport_strategies.dart';
+import 'package:app/app/service/nekoton_related/connection_service/transport_strategies/tycho_transport_strategy.dart';
 import 'package:app/app/service/service.dart';
 import 'package:app/data/models/connection_data.dart';
 import 'package:app/data/models/network_type.dart';
@@ -54,6 +55,11 @@ class ConnectionService {
         );
       case NetworkType.venom:
         return VenomTransportStrategy(
+          transport: transport,
+          connection: connection,
+        );
+      case NetworkType.tycho:
+        return TychoTransportStrategy(
           transport: transport,
           connection: connection,
         );
@@ -156,6 +162,14 @@ class ConnectionService {
       inject<MessengerService>().showConnectionError(null);
       _log.severe('updateTransportByConnection', e, t);
 
+      final base = _storageService.baseConnection;
+
+      if (base != null && base.id != connection.id) {
+        await _storageService.saveCurrentConnectionId(base.id);
+        return;
+      }
+
+      /// Тут. Вернуть на 1 сеть
       // allow level above to track fail
       rethrow;
     }

@@ -326,15 +326,17 @@ extension RouterExtension on GoRouter {
     bool preserveQueryParams = true,
     List<String>? removeQueries,
   }) {
-    if (!preserveQueryParams) {
-      clearQueryParams();
-    } else if (removeQueries != null) {
-      _removeQueryParams(removeQueries);
-    }
+    try {
+      if (!preserveQueryParams) {
+        clearQueryParams();
+      } else if (removeQueries != null) {
+        _removeQueryParams(removeQueries);
+      }
 
-    if (canPop()) {
-      pop();
-    }
+      if (canPop()) {
+        pop();
+      }
+    } catch (_) {}
   }
 
   void clearQueryParamsAndPop<T extends Object?>([T? result]) {

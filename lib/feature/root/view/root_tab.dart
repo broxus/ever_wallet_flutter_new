@@ -17,7 +17,7 @@ enum RootTab {
   IconData get icon => switch (this) {
         RootTab.wallet => LucideIcons.wallet,
         RootTab.browser => LucideIcons.compass,
-        RootTab.profile => LucideIcons.box,
+        RootTab.profile => LucideIcons.circleUser,
       };
 
   String get title => switch (this) {

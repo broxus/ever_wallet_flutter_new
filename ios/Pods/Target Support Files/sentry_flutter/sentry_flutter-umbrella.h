@@ -11,6 +11,8 @@
 #endif
 
 #import "SentryFlutterPlugin.h"
+#import "SentryFlutterReplayBreadcrumbConverter.h"
+#import "SentryFlutterReplayScreenshotProvider.h"
 
 FOUNDATION_EXPORT double sentry_flutterVersionNumber;
 FOUNDATION_EXPORT const unsigned char sentry_flutterVersionString[];
