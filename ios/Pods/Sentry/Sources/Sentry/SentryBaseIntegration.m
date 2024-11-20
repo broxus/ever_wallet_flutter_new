@@ -78,10 +78,17 @@ NS_ASSUME_NONNULL_BEGIN
 #endif
 
     if (integrationOptions & kIntegrationOptionEnableAppHangTracking) {
+#if SENTRY_HAS_UIKIT
+        if (!options.enableAppHangTracking && !options.enableAppHangTrackingV2) {
+            [self logWithOptionName:@"enableAppHangTracking && enableAppHangTrackingV2"];
+            return NO;
+        }
+#else
         if (!options.enableAppHangTracking) {
             [self logWithOptionName:@"enableAppHangTracking"];
             return NO;
         }
+#endif // SENTRY_HAS_UIKIT
 
         if (options.appHangTimeoutInterval == 0) {
             [self logWithReason:@"because appHangTimeoutInterval is 0"];
@@ -144,7 +151,7 @@ NS_ASSUME_NONNULL_BEGIN
 
     if (integrationOptions & kIntegrationOptionEnableReplay) {
         if (@available(iOS 16.0, tvOS 16.0, *)) {
-            if (options.experimental.sessionReplay.errorSampleRate == 0
+            if (options.experimental.sessionReplay.onErrorSampleRate == 0
                 && options.experimental.sessionReplay.sessionSampleRate == 0) {
                 [self logWithOptionName:@"sessionReplaySettings"];
                 return NO;

@@ -32,13 +32,21 @@ class WalletPageWidgetModel
   late final scrollController = createScrollController();
 
   late final _currentAccount = createNotifierFromStream(model.currentAccount);
+  late final _transportStrategy =
+      createNotifierFromStream(model.transportStrategy);
   late final _isShowingBadgeNotifier = createNotifier<bool>();
+  late final _isShowingNewTokensNotifier = createNotifier<bool>();
 
   StreamSubscription<PressBottomNavigationEvent>? _pressWalletSubscribtion;
 
   ListenableState<KeyAccount?> get currentAccount => _currentAccount;
 
+  ListenableState<TransportStrategy> get transportStrategy =>
+      _transportStrategy;
+
   ListenableState<bool> get isShowingBadge => _isShowingBadgeNotifier;
+
+  ListenableState<bool> get isShowingNewTokens => _isShowingNewTokensNotifier;
 
   @override
   void initWidgetModel() {
@@ -59,6 +67,14 @@ class WalletPageWidgetModel
     _isShowingBadgeNotifier.accept(false);
     if (account != null) {
       model.hideShowingBadge(account);
+    }
+  }
+
+  void hideNewTokensLabel() {
+    final account = currentAccount.value;
+    _isShowingNewTokensNotifier.accept(false);
+    if (account != null) {
+      model.hideNewTokenLabels(account);
     }
   }
 
@@ -84,6 +100,7 @@ class WalletPageWidgetModel
     final isNewUser = await model.isNewUser();
     if (isNewUser != null && account != null) {
       if (isNewUser) {
+        _isShowingNewTokensNotifier.accept(true);
         _isShowingBadgeNotifier.accept(true);
       } else {
         _isShowingBadgeNotifier.accept(false);
@@ -96,8 +113,11 @@ class WalletPageWidgetModel
       _isShowingBadgeNotifier.accept(
         await model.isShowingBadge(account) ?? true,
       );
+      _isShowingNewTokensNotifier
+          .accept(await model.isShowingNewTokens(account) ?? true);
     } else {
       _isShowingBadgeNotifier.accept(true);
+      _isShowingNewTokensNotifier.accept(true);
     }
   }
 }

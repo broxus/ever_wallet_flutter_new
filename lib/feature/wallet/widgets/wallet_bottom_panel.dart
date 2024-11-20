@@ -15,11 +15,17 @@ class WalletBottomPanel extends StatefulWidget {
   const WalletBottomPanel({
     required this.currentAccount,
     required this.scrollController,
+    required this.isShowingNewTokens,
+    required this.confirmImportCallback,
+    required this.manifestUrl,
     super.key,
   });
 
   final KeyAccount currentAccount;
   final ScrollController scrollController;
+  final bool isShowingNewTokens;
+  final VoidCallback confirmImportCallback;
+  final String manifestUrl;
 
   @override
   State<WalletBottomPanel> createState() => _WalletBottomPanelState();
@@ -46,7 +52,7 @@ class _WalletBottomPanelState extends State<WalletBottomPanel> {
           top: DimensSizeV2.d24,
           left: DimensSizeV2.d16,
           right: DimensSizeV2.d16,
-          bottom: DimensSizeV2.d48,
+          bottom: DimensSizeV2.d8,
         ),
         sliver: ValueListenableBuilder<WalletBottomPanelTab>(
           valueListenable: currentTabNotifier,
@@ -79,6 +85,9 @@ class _WalletBottomPanelState extends State<WalletBottomPanel> {
                 switch (value) {
                   WalletBottomPanelTab.asset => AccountAssetsTab(
                       account: widget.currentAccount,
+                      isShowingNewTokens: widget.isShowingNewTokens,
+                      confirmImportCallback: widget.confirmImportCallback,
+                      manifestUrl: widget.manifestUrl,
                     ),
                   WalletBottomPanelTab.transactions => AccountTransactionsTab(
                       account: widget.currentAccount,

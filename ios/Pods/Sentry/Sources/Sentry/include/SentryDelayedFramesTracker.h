@@ -2,8 +2,8 @@
 
 #if SENTRY_HAS_UIKIT
 
-@class SentryDisplayLinkWrapper;
-@class SentryCurrentDateProvider;
+@protocol SentryCurrentDateProvider;
+@class SentryFramesDelayResult;
 
 NS_ASSUME_NONNULL_BEGIN
 
@@ -19,13 +19,16 @@ SENTRY_NO_INIT
  * @param dateProvider The instance of a date provider.
  */
 - (instancetype)initWithKeepDelayedFramesDuration:(CFTimeInterval)keepDelayedFramesDuration
-                                     dateProvider:(SentryCurrentDateProvider *)dateProvider;
+                                     dateProvider:(id<SentryCurrentDateProvider>)dateProvider;
 
 - (void)resetDelayedFramesTimeStamps;
 
 - (void)recordDelayedFrame:(uint64_t)startSystemTimestamp
-          expectedDuration:(CFTimeInterval)expectedDuration
-            actualDuration:(CFTimeInterval)actualDuration;
+    thisFrameSystemTimestamp:(uint64_t)thisFrameSystemTimestamp
+            expectedDuration:(CFTimeInterval)expectedDuration
+              actualDuration:(CFTimeInterval)actualDuration;
+
+- (void)setPreviousFrameSystemTimestamp:(uint64_t)previousFrameSystemTimestamp;
 
 /**
  * This method returns the duration of all delayed frames between startSystemTimestamp and
@@ -45,16 +48,12 @@ SENTRY_NO_INIT
  * delay.
  * @param endSystemTimestamp The end system time stamp for the time interval to query frames delay.
  * @param isRunning Wether the frames tracker is running or not.
- * @param previousFrameSystemTimestamp The system timestamp of the previous frame.
  * @param slowFrameThreshold The threshold for a slow frame. For 60 fps this is roughly 16.67 ms.
- *
- * @return the frames delay duration or -1 if it can't calculate the frames delay.
  */
-- (CFTimeInterval)getFramesDelay:(uint64_t)startSystemTimestamp
-              endSystemTimestamp:(uint64_t)endSystemTimestamp
-                       isRunning:(BOOL)isRunning
-    previousFrameSystemTimestamp:(uint64_t)previousFrameSystemTimestamp
-              slowFrameThreshold:(CFTimeInterval)slowFrameThreshold;
+- (SentryFramesDelayResult *)getFramesDelay:(uint64_t)startSystemTimestamp
+                         endSystemTimestamp:(uint64_t)endSystemTimestamp
+                                  isRunning:(BOOL)isRunning
+                         slowFrameThreshold:(CFTimeInterval)slowFrameThreshold;
 
 @end
 

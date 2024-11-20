@@ -81,7 +81,11 @@ class TonWalletSendBloc extends Bloc<TonWalletSendEvent, TonWalletSendState> {
     on<_Prepare>((event, emit) => _handlePrepare(emit));
     on<_Send>((event, emit) => _handleSend(emit, event.password));
     on<_CompleteSend>(
-      (event, emit) => emit(TonWalletSendState.sent(fees!, event.transaction)),
+      (event, emit) {
+        if (fees != null) {
+          emit(TonWalletSendState.sent(fees!, event.transaction));
+        }
+      },
     );
     on<_AllowCloseSend>(
       (event, emit) => emit(const TonWalletSendState.sending(canClose: true)),
@@ -127,7 +131,9 @@ class TonWalletSendBloc extends Bloc<TonWalletSendEvent, TonWalletSendState> {
 
       final wallet = walletState.wallet!;
       final balance = wallet.contractState.balance;
-      final isPossibleToSendMessage = balance > (fees! + amount);
+
+      final isPossibleToSendMessage =
+          fees != null && balance > (fees! + amount);
 
       if (!isPossibleToSendMessage) {
         emit(
@@ -140,7 +146,9 @@ class TonWalletSendBloc extends Bloc<TonWalletSendEvent, TonWalletSendState> {
         return;
       }
 
-      emit(TonWalletSendState.readyToSend(fees!, txErrors));
+      if (fees != null) {
+        emit(TonWalletSendState.readyToSend(fees!, txErrors));
+      }
     } on FfiException catch (e, t) {
       _logger.severe('_handleSend', e, t);
       emit(TonWalletSendState.calculatingError(e.message));
@@ -188,12 +196,17 @@ class TonWalletSendBloc extends Bloc<TonWalletSendEvent, TonWalletSendState> {
       _logger.severe('_handleSend', e, t);
       messengerService
           .show(Message.error(context: context, message: e.message));
-      emit(TonWalletSendState.readyToSend(fees!, txErrors));
+      if (fees != null) {
+        emit(TonWalletSendState.readyToSend(fees!, txErrors));
+      }
     } on Exception catch (e, t) {
       _logger.severe('_handleSend', e, t);
       messengerService
           .show(Message.error(context: context, message: e.toString()));
-      emit(TonWalletSendState.readyToSend(fees!, txErrors));
+
+      if (fees != null) {
+        emit(TonWalletSendState.readyToSend(fees!, txErrors));
+      }
     }
   }
 

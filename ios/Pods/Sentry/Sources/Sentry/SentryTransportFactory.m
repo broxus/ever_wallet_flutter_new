@@ -17,8 +17,7 @@
 
 NS_ASSUME_NONNULL_BEGIN
 
-@interface
-SentryTransportFactory ()
+@interface SentryTransportFactory ()
 
 @end
 
@@ -26,26 +25,22 @@ SentryTransportFactory ()
 
 + (NSArray<id<SentryTransport>> *)initTransports:(SentryOptions *)options
                                sentryFileManager:(SentryFileManager *)sentryFileManager
-                             currentDateProvider:(SentryCurrentDateProvider *)currentDateProvider
+                                      rateLimits:(id<SentryRateLimits>)rateLimits
 {
-    NSURLSessionConfiguration *configuration =
-        [NSURLSessionConfiguration ephemeralSessionConfiguration];
-    NSURLSession *session = [NSURLSession sessionWithConfiguration:configuration
-                                                          delegate:options.urlSessionDelegate
-                                                     delegateQueue:nil];
+    NSURLSession *session;
+
+    if (options.urlSession) {
+        session = options.urlSession;
+    } else {
+        NSURLSessionConfiguration *configuration =
+            [NSURLSessionConfiguration ephemeralSessionConfiguration];
+        session = [NSURLSession sessionWithConfiguration:configuration
+                                                delegate:options.urlSessionDelegate
+                                           delegateQueue:nil];
+    }
+
     id<SentryRequestManager> requestManager =
         [[SentryQueueableRequestManager alloc] initWithSession:session];
-
-    SentryHttpDateParser *httpDateParser = [[SentryHttpDateParser alloc] init];
-    SentryRetryAfterHeaderParser *retryAfterHeaderParser =
-        [[SentryRetryAfterHeaderParser alloc] initWithHttpDateParser:httpDateParser
-                                                 currentDateProvider:currentDateProvider];
-    SentryRateLimitParser *rateLimitParser =
-        [[SentryRateLimitParser alloc] initWithCurrentDateProvider:currentDateProvider];
-    id<SentryRateLimits> rateLimits =
-        [[SentryDefaultRateLimits alloc] initWithRetryAfterHeaderParser:retryAfterHeaderParser
-                                                     andRateLimitParser:rateLimitParser
-                                                    currentDateProvider:currentDateProvider];
 
     SentryEnvelopeRateLimit *envelopeRateLimit =
         [[SentryEnvelopeRateLimit alloc] initWithRateLimits:rateLimits];
@@ -53,13 +48,14 @@ SentryTransportFactory ()
     dispatch_queue_attr_t attributes = dispatch_queue_attr_make_with_qos_class(
         DISPATCH_QUEUE_SERIAL, DISPATCH_QUEUE_PRIORITY_LOW, 0);
     SentryDispatchQueueWrapper *dispatchQueueWrapper =
-        [[SentryDispatchQueueWrapper alloc] initWithName:"sentry-http-transport"
+        [[SentryDispatchQueueWrapper alloc] initWithName:"io.sentry.http-transport"
                                               attributes:attributes];
 
     SentryNSURLRequestBuilder *requestBuilder = [[SentryNSURLRequestBuilder alloc] init];
 
     SentryHttpTransport *httpTransport =
         [[SentryHttpTransport alloc] initWithOptions:options
+                             cachedEnvelopeSendDelay:0.1
                                          fileManager:sentryFileManager
                                       requestManager:requestManager
                                       requestBuilder:requestBuilder

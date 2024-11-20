@@ -1,4 +1,3 @@
-import 'package:app/app/service/secure_storage_service.dart';
 import 'package:app/app/service/service.dart';
 import 'package:elementary/elementary.dart';
 import 'package:nekoton_repository/nekoton_repository.dart';
@@ -17,6 +16,9 @@ class WalletPageModel extends ElementaryModel {
 
   Stream<KeyAccount?> get currentAccount =>
       _currentAccountsService.currentActiveAccountStream;
+
+  Stream<TransportStrategy> get transportStrategy =>
+      _nekotonRepository.currentTransportStream;
 
   Future<bool?> isNewUser() async {
     return _storageService.getValue(StorageKey.userWithNewWallet());
@@ -38,6 +40,14 @@ class WalletPageModel extends ElementaryModel {
     );
   }
 
+  Future<bool?> isShowingNewTokens(KeyAccount account) async {
+    final address = account.address;
+
+    return _storageService.getValue(
+      StorageKey.showingNewTokensLabel(address.address),
+    );
+  }
+
   Future<void> hideShowingBadge(KeyAccount account) async {
     final masterPublicKey = _nekotonRepository.seedList
         .findSeedByAnyPublicKey(account.publicKey)
@@ -47,6 +57,15 @@ class WalletPageModel extends ElementaryModel {
 
     return _storageService.addValue(
       StorageKey.showingManualBackupBadge(masterPublicKey.publicKey),
+      false,
+    );
+  }
+
+  Future<void> hideNewTokenLabels(KeyAccount account) async {
+    final address = account.address;
+
+    return _storageService.addValue(
+      StorageKey.showingNewTokensLabel(address.address),
       false,
     );
   }

@@ -1,4 +1,5 @@
 import 'package:app/app/service/service.dart';
+import 'package:app/feature/wallet/widgets/select_account/select_account_data.dart';
 import 'package:elementary/elementary.dart';
 import 'package:nekoton_repository/nekoton_repository.dart';
 
@@ -14,16 +15,26 @@ class SelectAccountModel extends ElementaryModel {
   final CurrentKeyService _currentKeyService;
   final CurrentAccountsService _currentAccountsService;
 
-  Stream<List<KeyAccount>> get accounts =>
+  Stream<List<SelectAccountData>> get seedWithAccounts =>
       _nekotonRepository.seedListStream.map(
-        (seedList) => seedList.seeds
-            .expand(
-              (seed) => seed.allKeys.expand(
-                (key) => key.accountList.allAccounts,
-              ),
-            )
-            .where((account) => !account.isHidden)
-            .toList(),
+        (seedList) {
+          return seedList.seeds.map((seed) {
+            final privateKeys = seed.allKeys.map((key) {
+              final accounts = key.accountList.allAccounts
+                  .where((account) => !account.isHidden)
+                  .toList();
+              return SeedWithInfo(
+                keyName: key.name,
+                key: key.publicKey.toEllipseString(),
+                accounts: accounts,
+              );
+            }).toList();
+            return SelectAccountData(
+              name: seed.name,
+              privateKeys: privateKeys,
+            );
+          }).toList();
+        },
       );
 
   Stream<KeyAccount?> get currentAccount =>

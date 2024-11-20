@@ -41,7 +41,7 @@ GoRoute get manageSeedAccountsRoute {
 GoRoute get seedDetailRoute {
   return GoRoute(
     path: AppRoute.seedDetail.path,
-    builder: (_, state) => SeedDetailPage(
+    builder: (_, state) => SeedDetailPageWidget(
       publicKey: PublicKey(
         publicKey: state.pathParameters[seedDetailPublicKeyPathParam]!,
       ),

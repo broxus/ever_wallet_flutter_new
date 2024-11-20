@@ -2,11 +2,13 @@ import 'dart:async';
 import 'dart:collection';
 import 'dart:io';
 
+import 'package:app/core/wm/context_wm_mixin.dart';
 import 'package:app/data/models/models.dart';
 import 'package:app/di/di.dart';
 import 'package:app/feature/browser/browser.dart';
 import 'package:app/feature/browser/browser_tab_view/browser_error_view.dart';
 import 'package:app/feature/browser/browser_tab_view/browser_view_events_listener/browser_view_events_listener_cubit.dart';
+import 'package:app/feature/browser/browser_user_agent_utils.dart';
 import 'package:elementary_helper/elementary_helper.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
@@ -51,7 +53,7 @@ class BrowserTabView extends StatefulWidget {
   State<BrowserTabView> createState() => _BrowserTabViewState();
 }
 
-class _BrowserTabViewState extends State<BrowserTabView> {
+class _BrowserTabViewState extends State<BrowserTabView> with ContextMixin {
   static const _allowSchemes = [
     'http',
     'https',
@@ -61,6 +63,14 @@ class _BrowserTabViewState extends State<BrowserTabView> {
     'javascript',
     'about',
   ];
+
+  static const _customAppLinks = [
+    'metamask.app.link',
+  ];
+
+  static const Duration _scrollTimerDelay = Duration(milliseconds: 100);
+
+  static final _log = Logger('BrowserTabView');
 
   // Last SANE Y position (i.e. not overscrolled)
   int? _lastScrollY;
@@ -75,10 +85,10 @@ class _BrowserTabViewState extends State<BrowserTabView> {
   final List<DelayedScrollEvent> _delayedScrollEvents = [];
 
   // How long to wait before considering scroll event as not overscroll
-  static const Duration _scrollTimerDelay = Duration(milliseconds: 100);
 
   InAppWebViewController? _webViewController;
   PullToRefreshController? _pullToRefreshController;
+
   late final _inpageProvider = InpageProvider(
     tabId: widget.tab.id,
     approvalsService: inject(),
@@ -92,13 +102,14 @@ class _BrowserTabViewState extends State<BrowserTabView> {
 
   Timer? _screenshotTimer;
 
-  static final _log = Logger('BrowserTabView');
+  final _userAgentState = StateNotifier<String?>();
 
   @override
   void initState() {
     super.initState();
 
     _setBrowserTabCallbacks();
+    _setUserAgent();
   }
 
   @override
@@ -176,29 +187,37 @@ class _BrowserTabViewState extends State<BrowserTabView> {
                 loadingBuilder: (_, __) => const SizedBox.shrink(),
                 errorBuilder: (_, __, ___) => const SizedBox.shrink(),
                 builder: (_, String? jsStr) {
-                  return InAppWebView(
-                    key: ValueKey(widget.tab.id),
-                    pullToRefreshController: _pullToRefreshController,
-                    initialSettings: initialSettings,
-                    initialUserScripts: UnmodifiableListView<UserScript>([
-                      if (jsStr != null)
-                        UserScript(
-                          source: jsStr,
-                          injectionTime:
-                              UserScriptInjectionTime.AT_DOCUMENT_START,
-                        ),
-                    ]),
-                    onOverScrolled: _onOverScrolled,
-                    onScrollChanged: _onScrollChanged,
-                    onWebViewCreated: (c) => _onWebViewCreated(c, context),
-                    onLoadStart: _onLoadStart,
-                    onLoadStop: _onLoadStop,
-                    onLoadResource: _onLoadResource,
-                    onReceivedError: _onReceivedError,
-                    onReceivedHttpError: _onReceivedHttpError,
-                    onTitleChanged: _onTitleChanged,
-                    onReceivedHttpAuthRequest: _onReceivedHttpAuthRequest,
-                    shouldOverrideUrlLoading: _shouldOverrideUrlLoading,
+                  return StateNotifierBuilder<String?>(
+                    listenableState: _userAgentState,
+                    builder: (_, String? userAgent) {
+                      if (userAgent == null) {
+                        return const SizedBox.shrink();
+                      }
+                      return InAppWebView(
+                        key: ValueKey(widget.tab.id),
+                        pullToRefreshController: _pullToRefreshController,
+                        initialSettings: initialSettings..userAgent = userAgent,
+                        initialUserScripts: UnmodifiableListView<UserScript>([
+                          if (jsStr != null)
+                            UserScript(
+                              source: jsStr,
+                              injectionTime:
+                                  UserScriptInjectionTime.AT_DOCUMENT_START,
+                            ),
+                        ]),
+                        onOverScrolled: _onOverScrolled,
+                        onScrollChanged: _onScrollChanged,
+                        onWebViewCreated: (c) => _onWebViewCreated(c, context),
+                        onLoadStart: _onLoadStart,
+                        onLoadStop: _onLoadStop,
+                        onLoadResource: _onLoadResource,
+                        onReceivedError: _onReceivedError,
+                        onReceivedHttpError: _onReceivedHttpError,
+                        onTitleChanged: _onTitleChanged,
+                        onReceivedHttpAuthRequest: _onReceivedHttpAuthRequest,
+                        shouldOverrideUrlLoading: _shouldOverrideUrlLoading,
+                      );
+                    },
                   );
                 },
               );
@@ -222,6 +241,7 @@ class _BrowserTabViewState extends State<BrowserTabView> {
 
     _screenshotTimer?.cancel();
 
+    _userAgentState.dispose();
     super.dispose();
   }
 
@@ -450,9 +470,11 @@ class _BrowserTabViewState extends State<BrowserTabView> {
 
     _inpageProvider.url = url;
 
-    context
-        .read<BrowserTabsBloc>()
-        .add(BrowserTabsEvent.setUrl(id: widget.tab.id, uri: url!));
+    if (url != null) {
+      contextSafe
+          ?.read<BrowserTabsBloc>()
+          .add(BrowserTabsEvent.setUrl(id: widget.tab.id, uri: url));
+    }
   }
 
   Future<void> _setState({
@@ -483,11 +505,7 @@ class _BrowserTabViewState extends State<BrowserTabView> {
     String? errorMessage,
     String? title,
   }) {
-    if (!context.mounted) {
-      return;
-    }
-
-    context.read<BrowserTabsBloc>().add(
+    contextSafe?.read<BrowserTabsBloc>().add(
           BrowserTabsEvent.setState(
             id: widget.tab.id,
             state: state,
@@ -504,11 +522,7 @@ class _BrowserTabViewState extends State<BrowserTabView> {
   void _addSetScreenshotEvent({
     required String imageId,
   }) {
-    if (!context.mounted) {
-      return;
-    }
-
-    context.read<BrowserTabsBloc>().add(
+    contextSafe?.read<BrowserTabsBloc>().add(
           BrowserTabsEvent.setScreenshot(
             id: widget.tab.id,
             imageId: imageId,
@@ -517,7 +531,7 @@ class _BrowserTabViewState extends State<BrowserTabView> {
   }
 
   void _setBrowserTabCallbacks() {
-    context.read<BrowserTabsBloc>().add(
+    contextSafe?.read<BrowserTabsBloc>().add(
           BrowserTabsEvent.setState(
             id: widget.tab.id,
             goBack: _onGoBack,
@@ -525,6 +539,10 @@ class _BrowserTabViewState extends State<BrowserTabView> {
             refresh: _onRefresh,
           ),
         );
+  }
+
+  Future<void> _setUserAgent() async {
+    _userAgentState.accept(await platformUserAgent);
   }
 
   Future<void> _saveScreenshot({bool force = false}) async {
@@ -617,13 +635,26 @@ class _BrowserTabViewState extends State<BrowserTabView> {
 
     final scheme = navigationAction.request.url?.scheme;
 
-    if (!_allowSchemes.contains(scheme) && await canLaunchUrl(url)) {
+    if ((!_allowSchemes.contains(scheme) || _checkIsCustomAppLink(url)) &&
+        await canLaunchUrl(url)) {
       await launchUrl(url);
 
       return NavigationActionPolicy.CANCEL;
     }
 
     return NavigationActionPolicy.ALLOW;
+  }
+
+  bool _checkIsCustomAppLink(Uri url) {
+    final path = url.toString();
+
+    for (final link in _customAppLinks) {
+      if (path.contains(link)) {
+        return true;
+      }
+    }
+
+    return false;
   }
 }
 

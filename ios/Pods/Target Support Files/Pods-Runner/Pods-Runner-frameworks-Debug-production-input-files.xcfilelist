@@ -9,6 +9,7 @@ ${BUILT_PRODUCTS_DIR}/Sentry/Sentry.framework
 ${BUILT_PRODUCTS_DIR}/app_settings/app_settings.framework
 ${BUILT_PRODUCTS_DIR}/broxus_app_links/broxus_app_links.framework
 ${BUILT_PRODUCTS_DIR}/connectivity_plus/connectivity_plus.framework
+${BUILT_PRODUCTS_DIR}/device_info_plus/device_info_plus.framework
 ${BUILT_PRODUCTS_DIR}/flutter_email_sender/flutter_email_sender.framework
 ${BUILT_PRODUCTS_DIR}/flutter_inappwebview_ios/flutter_inappwebview_ios.framework
 ${BUILT_PRODUCTS_DIR}/flutter_keyboard_visibility/flutter_keyboard_visibility.framework

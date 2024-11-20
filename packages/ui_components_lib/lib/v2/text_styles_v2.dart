@@ -55,6 +55,7 @@ TextStylesV2 _defaultTextStyles(ColorsPaletteV2 colors) => TextStylesV2(
         fontFamily: _interFamily,
         fontWeight: FontWeight.w700,
         height: 64 / 52,
+        letterSpacing: -1.7,
       ),
       displayMedium: TextStyle(
         color: colors.content0,
@@ -62,6 +63,7 @@ TextStylesV2 _defaultTextStyles(ColorsPaletteV2 colors) => TextStylesV2(
         fontFamily: _interFamily,
         fontWeight: FontWeight.w700,
         height: 52 / 44,
+        letterSpacing: -1.7,
       ),
       displaySmall: TextStyle(
         color: colors.content0,
@@ -69,6 +71,7 @@ TextStylesV2 _defaultTextStyles(ColorsPaletteV2 colors) => TextStylesV2(
         fontFamily: _interFamily,
         fontWeight: FontWeight.w700,
         height: 44 / 36,
+        letterSpacing: -1.7,
       ),
       headingXXLarge: TextStyle(
         color: colors.content0,
@@ -76,6 +79,7 @@ TextStylesV2 _defaultTextStyles(ColorsPaletteV2 colors) => TextStylesV2(
         fontFamily: _interFamily,
         fontWeight: FontWeight.w700,
         height: 44 / 36,
+        letterSpacing: -1.6,
       ),
       headingXLarge: TextStyle(
         color: colors.content0,
@@ -83,6 +87,7 @@ TextStylesV2 _defaultTextStyles(ColorsPaletteV2 colors) => TextStylesV2(
         fontFamily: _interFamily,
         fontWeight: FontWeight.w700,
         height: 40 / 32,
+        letterSpacing: -1.6,
       ),
       headingLarge: TextStyle(
         color: colors.content0,
@@ -90,6 +95,7 @@ TextStylesV2 _defaultTextStyles(ColorsPaletteV2 colors) => TextStylesV2(
         fontFamily: _interFamily,
         fontWeight: FontWeight.w700,
         height: 32 / 24,
+        letterSpacing: -1.4,
       ),
       headingMedium: TextStyle(
         color: colors.content0,
@@ -97,6 +103,7 @@ TextStylesV2 _defaultTextStyles(ColorsPaletteV2 colors) => TextStylesV2(
         fontFamily: _interFamily,
         fontWeight: FontWeight.w700,
         height: 24 / 18,
+        letterSpacing: -1.2,
       ),
       headingSmall: TextStyle(
         color: colors.content0,
@@ -104,6 +111,7 @@ TextStylesV2 _defaultTextStyles(ColorsPaletteV2 colors) => TextStylesV2(
         fontFamily: _interFamily,
         fontWeight: FontWeight.w700,
         height: 24 / 16,
+        letterSpacing: -0.6,
       ),
       headingXSmall: TextStyle(
         color: colors.content0,
@@ -111,6 +119,7 @@ TextStylesV2 _defaultTextStyles(ColorsPaletteV2 colors) => TextStylesV2(
         fontFamily: _interFamily,
         fontWeight: FontWeight.w700,
         height: 24 / 14,
+        letterSpacing: -0.1,
       ),
       labelLarge: TextStyle(
         color: colors.content0,
@@ -118,6 +127,7 @@ TextStylesV2 _defaultTextStyles(ColorsPaletteV2 colors) => TextStylesV2(
         fontFamily: _interFamily,
         fontWeight: FontWeight.w500,
         height: 24 / 18,
+        letterSpacing: -0.9,
       ),
       labelMedium: TextStyle(
         color: colors.content0,
@@ -125,6 +135,7 @@ TextStylesV2 _defaultTextStyles(ColorsPaletteV2 colors) => TextStylesV2(
         fontFamily: _interFamily,
         fontWeight: FontWeight.w500,
         height: 20 / 16,
+        letterSpacing: -0.6,
       ),
       labelSmall: TextStyle(
         color: colors.content0,
@@ -132,6 +143,7 @@ TextStylesV2 _defaultTextStyles(ColorsPaletteV2 colors) => TextStylesV2(
         fontFamily: _interFamily,
         fontWeight: FontWeight.w500,
         height: 16 / 14,
+        letterSpacing: -0.1,
       ),
       labelXSmall: TextStyle(
         color: colors.content0,
@@ -139,6 +151,7 @@ TextStylesV2 _defaultTextStyles(ColorsPaletteV2 colors) => TextStylesV2(
         fontFamily: _interFamily,
         fontWeight: FontWeight.w500,
         height: 16 / 12,
+        letterSpacing: 0,
       ),
       paragraphLarge: TextStyle(
         color: colors.content1,
@@ -146,6 +159,7 @@ TextStylesV2 _defaultTextStyles(ColorsPaletteV2 colors) => TextStylesV2(
         fontFamily: _interFamily,
         fontWeight: FontWeight.w400,
         height: 24 / 18,
+        letterSpacing: -0.9,
       ),
       paragraphMedium: TextStyle(
         color: colors.content1,
@@ -153,6 +167,7 @@ TextStylesV2 _defaultTextStyles(ColorsPaletteV2 colors) => TextStylesV2(
         fontFamily: _interFamily,
         fontWeight: FontWeight.w400,
         height: 24 / 16,
+        letterSpacing: -0.6,
       ),
       paragraphSmall: TextStyle(
         color: colors.content1,
@@ -160,6 +175,7 @@ TextStylesV2 _defaultTextStyles(ColorsPaletteV2 colors) => TextStylesV2(
         fontFamily: _interFamily,
         fontWeight: FontWeight.w400,
         height: 20 / 14,
+        letterSpacing: -0.1,
       ),
       paragraphXSmall: TextStyle(
         color: colors.content1,
@@ -167,5 +183,6 @@ TextStylesV2 _defaultTextStyles(ColorsPaletteV2 colors) => TextStylesV2(
         fontFamily: _interFamily,
         fontWeight: FontWeight.w400,
         height: 20 / 12,
+        letterSpacing: 0,
       ),
     );

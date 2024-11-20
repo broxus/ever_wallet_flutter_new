@@ -14,6 +14,7 @@ class NetworkIcon extends StatelessWidget {
   String get _path => switch (type) {
         NetworkType.ever => Assets.images.networkEver.path,
         NetworkType.venom => Assets.images.networkVenom.path,
+        NetworkType.tycho => Assets.images.networkTycho.path,
         NetworkType.custom => Assets.images.networkDefault.path,
       };
 
@@ -39,13 +40,16 @@ class NetworkIcon extends StatelessWidget {
           width: DimensSizeV2.d40,
           height: DimensSizeV2.d40,
           padding: _iconOffset,
-          child: Center(
-            child: SvgPicture.asset(
-              _path,
-              width: DimensSizeV2.d22,
-              height: DimensSizeV2.d22,
-            ),
-          ),
+          child: switch (type) {
+            NetworkType.tycho => SvgPicture.asset(_path),
+            _ => Center(
+                child: SvgPicture.asset(
+                  _path,
+                  width: DimensSizeV2.d16,
+                  height: DimensSizeV2.d16,
+                ),
+              ),
+          },
         ),
       );
 }

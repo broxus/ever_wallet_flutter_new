@@ -8,7 +8,7 @@ import 'package:nekoton_repository/nekoton_repository.dart';
 import 'package:ui_components_lib/ui_components_lib.dart';
 
 /// View that allows confirm send token transaction by entering password
-class TokenWalletSendConfirmView extends StatelessWidget {
+class TokenWalletSendConfirmView extends StatefulWidget {
   const TokenWalletSendConfirmView({
     required this.recipient,
     required this.amount,
@@ -31,14 +31,23 @@ class TokenWalletSendConfirmView extends StatelessWidget {
   final List<TxTreeSimulationErrorItem>? txErrors;
 
   @override
+  State<TokenWalletSendConfirmView> createState() =>
+      _TokenWalletSendConfirmViewState();
+}
+
+class _TokenWalletSendConfirmViewState
+    extends State<TokenWalletSendConfirmView> {
+  bool isConfirmed = false;
+
+  @override
   Widget build(BuildContext context) {
     final bloc = context.read<TokenWalletSendBloc>();
-    final isLoading = fee == null && feeError == null;
+    final isLoading = widget.fee == null && widget.feeError == null;
     final amountMoney = Money.fromBigIntWithCurrency(
-      amount,
+      widget.amount,
       bloc.tokenCurrency,
     );
-    final hasTxError = txErrors?.isNotEmpty ?? false;
+    final hasTxError = widget.txErrors?.isNotEmpty ?? false;
 
     return SeparatedColumn(
       crossAxisAlignment: CrossAxisAlignment.start,
@@ -52,26 +61,31 @@ class TokenWalletSendConfirmView extends StatelessWidget {
                 if (bloc.account != null) AccountInfo(account: bloc.account!),
                 TokenTransferInfoWidget(
                   amount: amountMoney,
-                  recipient: recipient,
-                  fee: fee,
-                  feeError: feeError,
-                  attachedAmount: attachedAmount,
-                  comment: comment,
+                  recipient: widget.recipient,
+                  fee: widget.fee,
+                  feeError: widget.feeError,
+                  attachedAmount: widget.attachedAmount,
+                  comment: widget.comment,
                   rootTokenContract: bloc.rootTokenContract,
                 ),
               ],
             ),
           ),
         ),
-        if (hasTxError) TxTreeSimulationErrorWidget(txErrors: txErrors!),
-        if (!hasTxError)
-          EnterPasswordWidgetV2(
-            publicKey: publicKey,
-            title: LocaleKeys.confirm.tr(),
-            isLoading: isLoading,
-            onPasswordEntered: (pwd) =>
-                bloc.add(TokenWalletSendEvent.send(pwd)),
+        if (hasTxError)
+          TxTreeSimulationErrorWidget(
+            txErrors: widget.txErrors!,
+            symbol: bloc.currency.symbol,
+            isConfirmed: isConfirmed,
+            onConfirm: (value) => setState(() => isConfirmed = value),
           ),
+        EnterPasswordWidgetV2(
+          publicKey: widget.publicKey,
+          title: LocaleKeys.confirm.tr(),
+          isLoading: isLoading,
+          isDisabled: hasTxError && !isConfirmed,
+          onPasswordEntered: (pwd) => bloc.add(TokenWalletSendEvent.send(pwd)),
+        ),
         const SizedBox(height: DimensSize.d16),
       ],
     );

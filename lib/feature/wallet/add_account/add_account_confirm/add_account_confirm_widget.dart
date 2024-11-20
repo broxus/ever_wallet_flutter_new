@@ -1,4 +1,5 @@
-import 'package:app/feature/wallet/add_account/add_account_confirm/add_account_confirm_wm.dart';
+
+import 'package:app/feature/wallet/new_account/add_account_confirm/add_account_confirm_wm.dart';
 import 'package:app/feature/wallet/wallet.dart';
 import 'package:app/generated/generated.dart';
 import 'package:elementary/elementary.dart';

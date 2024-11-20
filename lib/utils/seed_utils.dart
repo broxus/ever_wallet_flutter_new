@@ -10,7 +10,3 @@ Future<List<String>> getSeedListFromClipboard() async {
 
   return text.split(_separatorRegExp).where((word) => word.isNotEmpty).toList();
 }
-
-Future<String> getSeedTextFromClipboard() async {
-  return (await getSeedListFromClipboard()).join(' ');
-}

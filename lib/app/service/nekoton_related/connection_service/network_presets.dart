@@ -3,7 +3,12 @@ import 'package:app/data/models/network_type.dart';
 
 const defaultConnectionkId = everMainnetProtoID;
 
-final networkPresets = [..._everPresets, ..._venomPresets, ..._customPresets];
+final networkPresets = [
+  ..._everPresets,
+  ..._venomPresets,
+  ..._tychoPresets,
+  ..._customPresets,
+];
 
 final defaultNetwork = networkPresets.firstWhere(
   (element) => element.id == defaultConnectionkId,
@@ -11,6 +16,7 @@ final defaultNetwork = networkPresets.firstWhere(
 
 const everMainnetProtoID = 'preset_ever_mainnet_proto';
 const venomMainnetProtoID = 'preset_venom_mainnet_proto';
+const tychoTestnetProtoID = 'preset_tycho_testnet_proto';
 
 /// Presets for ever network
 final _everPresets = <ConnectionData>[
@@ -54,6 +60,21 @@ final _venomPresets = [
     blockExplorerUrl: 'https://venomscan.com',
     manifestUrl: 'https://cdn.venom.foundation/assets/mainnet/manifest.json',
     sortingOrder: 3,
+  ),
+];
+
+final _tychoPresets = [
+  ConnectionData.protoPreset(
+    id: tychoTestnetProtoID,
+    name: 'Tycho Testnet',
+    group: 'tycho_testnet',
+    endpoint: 'https://rpc-testnet.tychoprotocol.com/',
+    networkType: NetworkType.tycho,
+    canBeEdited: false,
+    blockExplorerUrl: 'https://testnet.tychoprotocol.com/',
+    manifestUrl:
+        'https://raw.githubusercontent.com/broxus/ton-assets/refs/heads/tychotestnet/manifest.json',
+    sortingOrder: 4,
   ),
 ];
 

@@ -8,10 +8,12 @@ class ChooseNetworkItem extends StatelessWidget {
   const ChooseNetworkItem(
     this.data, {
     required this.onPressed,
+    required this.isLoading,
     super.key,
   });
 
   final ChooseNetworkItemData data;
+  final bool isLoading;
   final ValueChanged<String> onPressed;
 
   @override
@@ -44,11 +46,16 @@ class ChooseNetworkItem extends StatelessWidget {
             ),
             Padding(
               padding: const EdgeInsets.only(left: DimensSizeV2.d24),
-              child: Icon(
-                LucideIcons.chevronRight,
-                size: DimensSizeV2.d20,
-                color: context.themeStyleV2.colors.primaryA,
-              ),
+              child: isLoading
+                  ? ProgressIndicatorWidget(
+                      size: DimensSizeV2.d20,
+                      color: context.themeStyleV2.colors.primaryA,
+                    )
+                  : Icon(
+                      LucideIcons.chevronRight,
+                      size: DimensSizeV2.d20,
+                      color: context.themeStyleV2.colors.primaryA,
+                    ),
             ),
           ],
         ),

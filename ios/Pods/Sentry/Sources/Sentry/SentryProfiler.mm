@@ -5,27 +5,23 @@
 #    import "SentryContinuousProfiler.h"
 #    import "SentryDependencyContainer.h"
 #    import "SentryDispatchQueueWrapper.h"
+#    import "SentryFramesTracker.h"
 #    import "SentryHub+Private.h"
 #    import "SentryLaunchProfiling.h"
 #    import "SentryLog.h"
 #    import "SentryMetricProfiler.h"
-#    import "SentryNSNotificationCenterWrapper.h"
-#    import "SentryNSTimerFactory.h"
-#    import "SentryOptions.h"
-#    import "SentryProfileTimeseries.h"
-#    import "SentryProfiledTracerConcurrency.h"
+#    import "SentryOptions+Private.h"
 #    import "SentryProfilerState+ObjCpp.h"
 #    import "SentryProfilerTestHelpers.h"
 #    import "SentrySDK+Private.h"
 #    import "SentrySamplingProfiler.hpp"
+#    import "SentryScreenFrames.h"
 #    import "SentrySwift.h"
-#    import "SentryThreadWrapper.h"
-
-#    import <cstdint>
-#    import <memory>
+#    import "SentryTime.h"
 
 #    if SENTRY_HAS_UIKIT
 #        import "SentryFramesTracker.h"
+#        import "SentryNSNotificationCenterWrapper.h"
 #        import "SentryUIViewControllerPerformanceTracker.h"
 #        import <UIKit/UIKit.h>
 #    endif // SENTRY_HAS_UIKIT
@@ -34,27 +30,22 @@ using namespace sentry::profiling;
 
 namespace {
 
-const int kSentryProfilerFrequencyHz = 101;
-NSTimeInterval kSentryProfilerTimeoutInterval = 30;
-
-std::mutex _gProfilerLock;
-SentryProfiler *_Nullable _gCurrentProfiler;
+static const int kSentryProfilerFrequencyHz = 101;
 
 } // namespace
 
 #    pragma mark - Public
 
 void
-sentry_manageProfilerOnStartSDK(SentryOptions *options, SentryHub *hub)
+sentry_manageTraceProfilerOnStartSDK(SentryOptions *options, SentryHub *hub)
 {
-    BOOL shouldStopAndTransmitLaunchProfile = YES;
-#    if SENTRY_HAS_UIKIT
-    if (SentryUIViewControllerPerformanceTracker.shared.enableWaitForFullDisplay) {
-        shouldStopAndTransmitLaunchProfile = NO;
-    }
-#    endif // SENTRY_HAS_UIKIT
-
     [SentryDependencyContainer.sharedInstance.dispatchQueueWrapper dispatchAsyncWithBlock:^{
+        BOOL shouldStopAndTransmitLaunchProfile = options.profilesSampleRate != nil;
+#    if SENTRY_HAS_UIKIT
+        if (SentryUIViewControllerPerformanceTracker.shared.enableWaitForFullDisplay) {
+            shouldStopAndTransmitLaunchProfile = NO;
+        }
+#    endif // SENTRY_HAS_UIKIT
         if (shouldStopAndTransmitLaunchProfile) {
             SENTRY_LOG_DEBUG(@"Stopping launch profile in SentrySDK.start because there will "
                              @"be no automatic trace to attach it to.");
@@ -65,19 +56,25 @@ sentry_manageProfilerOnStartSDK(SentryOptions *options, SentryHub *hub)
 }
 
 @implementation SentryProfiler {
-    std::shared_ptr<SamplingProfiler> _profiler;
-    NSTimer *_timeoutTimer;
+    std::unique_ptr<SamplingProfiler> _samplingProfiler;
 }
 
-#    pragma mark - Private
++ (void)load
+{
+#    if defined(TEST) || defined(TESTCI)
+    // we want to allow starting a launch profile from here for UI tests, but not unit tests
+    if (NSProcessInfo.processInfo.environment[@"--io.sentry.ui-test.test-name"] == nil) {
+        return;
+    }
+#    endif // defined(TEST) || defined(TESTCI)
+    sentry_startLaunchProfile();
+}
 
-- (instancetype)init
+- (instancetype)initWithMode:(SentryProfilerMode)mode
 {
     if (!(self = [super init])) {
         return nil;
     }
-
-    _profilerId = [[SentryId alloc] init];
 
     SENTRY_LOG_DEBUG(@"Initialized new SentryProfiler %@", self);
 
@@ -87,89 +84,23 @@ sentry_manageProfilerOnStartSDK(SentryOptions *options, SentryHub *hub)
 #    endif // SENTRY_HAS_UIKIT
 
     [self start];
-    [self scheduleTimeoutTimer];
+
+    self.metricProfiler = [[SentryMetricProfiler alloc] initWithMode:mode];
+    [self.metricProfiler start];
 
 #    if SENTRY_HAS_UIKIT
-    [SentryDependencyContainer.sharedInstance.notificationCenterWrapper
-        addObserver:self
-           selector:@selector(backgroundAbort)
-               name:UIApplicationWillResignActiveNotification
-             object:nil];
+    if (mode == SentryProfilerModeTrace) {
+        [SentryDependencyContainer.sharedInstance.notificationCenterWrapper
+            addObserver:self
+               selector:@selector(backgroundAbort)
+                   name:UIApplicationWillResignActiveNotification];
+    }
 #    endif // SENTRY_HAS_UIKIT
 
     return self;
 }
 
-/**
- * Schedule a timeout timer on the main thread.
- * @warning from NSTimer.h: Timers scheduled in an async context may never fire.
- */
-- (void)scheduleTimeoutTimer
-{
-    __weak SentryProfiler *weakSelf = self;
-
-    [SentryThreadWrapper onMainThread:^{
-        if (![weakSelf isRunning]) {
-            return;
-        }
-
-        SentryProfiler *strongSelf = weakSelf;
-        strongSelf->_timeoutTimer = [SentryDependencyContainer.sharedInstance.timerFactory
-            scheduledTimerWithTimeInterval:kSentryProfilerTimeoutInterval
-                                    target:self
-                                  selector:@selector(timeoutAbort)
-                                  userInfo:nil
-                                   repeats:NO];
-    }];
-}
-
-+ (BOOL)startWithTracer:(SentryId *)traceId
-{
-    std::lock_guard<std::mutex> l(_gProfilerLock);
-
-    if (_gCurrentProfiler && [_gCurrentProfiler isRunning]) {
-        SENTRY_LOG_DEBUG(@"A profiler is already running.");
-        sentry_trackProfilerForTracer(_gCurrentProfiler, traceId);
-        // record a new metric sample for every concurrent span start
-        [_gCurrentProfiler.metricProfiler recordMetrics];
-        return YES;
-    }
-
-    _gCurrentProfiler = [[SentryProfiler alloc] init];
-    if (_gCurrentProfiler == nil) {
-        SENTRY_LOG_WARN(@"Profiler was not initialized, will not proceed.");
-        return NO;
-    }
-
-    sentry_trackProfilerForTracer(_gCurrentProfiler, traceId);
-    return YES;
-}
-
-+ (BOOL)isCurrentlyProfiling
-{
-    std::lock_guard<std::mutex> l(_gProfilerLock);
-    return [_gCurrentProfiler isRunning];
-}
-
-+ (void)recordMetrics
-{
-    std::lock_guard<std::mutex> l(_gProfilerLock);
-    if (_gCurrentProfiler == nil) {
-        return;
-    }
-    [_gCurrentProfiler.metricProfiler recordMetrics];
-}
-
-- (void)timeoutAbort
-{
-    if (![self isRunning]) {
-        SENTRY_LOG_WARN(@"Current profiler is not running.");
-        return;
-    }
-
-    SENTRY_LOG_DEBUG(@"Stopping profiler %@ due to timeout.", self);
-    [self stopForReason:SentryProfilerTruncationReasonTimeout];
-}
+#    pragma mark - Private
 
 - (void)backgroundAbort
 {
@@ -184,7 +115,7 @@ sentry_manageProfilerOnStartSDK(SentryOptions *options, SentryHub *hub)
 
 - (void)stopForReason:(SentryProfilerTruncationReason)reason
 {
-    [_timeoutTimer invalidate];
+    sentry_isTracingAppLaunch = NO;
     [self.metricProfiler stop];
     self.truncationReason = reason;
 
@@ -201,14 +132,8 @@ sentry_manageProfilerOnStartSDK(SentryOptions *options, SentryHub *hub)
     }
 #    endif // SENTRY_HAS_UIKIT
 
-    _profiler->stopSampling();
+    _samplingProfiler->stopSampling();
     SENTRY_LOG_DEBUG(@"Stopped profiler %@.", self);
-}
-
-- (void)startMetricProfiler
-{
-    self.metricProfiler = [[SentryMetricProfiler alloc] init];
-    [self.metricProfiler start];
 }
 
 - (void)start
@@ -218,7 +143,7 @@ sentry_manageProfilerOnStartSDK(SentryOptions *options, SentryHub *hub)
         return;
     }
 
-    if (_profiler != nullptr) {
+    if (_samplingProfiler != nullptr) {
         // This theoretically shouldn't be possible as long as we're checking for nil and running
         // profilers in +[start], but technically we should still cover nilness here as well. So,
         // we'll just bail and let the current one continue to do whatever it's already doing:
@@ -240,54 +165,25 @@ sentry_manageProfilerOnStartSDK(SentryOptions *options, SentryHub *hub)
 
     SentryProfilerState *const state = [[SentryProfilerState alloc] init];
     self.state = state;
-    _profiler = std::make_shared<SamplingProfiler>(
+    _samplingProfiler = std::make_unique<SamplingProfiler>(
         [state](auto &backtrace) {
-    // in test, we'll overwrite the sample's timestamp to one mocked by SentryCurrentDate
-    // etal. Doing this in a unified way between tests and production required extensive
-    // changes to the C++ layer, so we opted for this solution to avoid any potential
-    // breakages or performance hits there.
-#    if defined(TEST) || defined(TESTCI)
             Backtrace backtraceCopy = backtrace;
             backtraceCopy.absoluteTimestamp
                 = SentryDependencyContainer.sharedInstance.dateProvider.systemTime;
             [state appendBacktrace:backtraceCopy];
-#    else
-            [state appendBacktrace:backtrace];
-#    endif // defined(TEST) || defined(TESTCI)
         },
         kSentryProfilerFrequencyHz);
-    _profiler->startSampling();
-
-    [self startMetricProfiler];
+    _samplingProfiler->startSampling();
 }
 
 - (BOOL)isRunning
 {
-    if (_profiler == nullptr) {
+    if (_samplingProfiler == nullptr) {
         return NO;
     }
-    return _profiler->isSampling();
+    return _samplingProfiler->isSampling();
 }
-
-#    pragma mark - Testing helpers
-
-#    if defined(TEST) || defined(TESTCI)
-+ (SentryProfiler *)getCurrentProfiler
-{
-    return _gCurrentProfiler;
-}
-
-+ (void)resetConcurrencyTracking
-{
-    sentry_resetConcurrencyTracking();
-}
-
-+ (NSUInteger)currentProfiledTracers
-{
-    return sentry_currentProfiledTracers();
-}
-#    endif // defined(TEST) || defined(TESTCI)
 
 @end
 
-#endif
+#endif // SENTRY_TARGET_PROFILING_SUPPORTED

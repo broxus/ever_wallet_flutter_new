@@ -1,4 +1,4 @@
-import 'package:app/app/service/secure_storage_service.dart';
+import 'package:app/app/service/service.dart';
 import 'package:app/utils/utils.dart';
 import 'package:collection/collection.dart';
 import 'package:elementary/elementary.dart';
