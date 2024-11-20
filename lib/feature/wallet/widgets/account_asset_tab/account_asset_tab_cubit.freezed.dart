@@ -19,24 +19,24 @@ mixin _$AccountAssetTabState {
   @optionalTypeArgs
   TResult when<TResult extends Object?>({
     required TResult Function() empty,
-    required TResult Function(
-            TonWalletAsset tonWallet, List<TokenContractAsset>? tokens)
+    required TResult Function(TonWalletAsset tonWallet,
+            List<TokenContractAsset>? tokens, int? numberNewTokens)
         accounts,
   }) =>
       throw _privateConstructorUsedError;
   @optionalTypeArgs
   TResult? whenOrNull<TResult extends Object?>({
     TResult? Function()? empty,
-    TResult? Function(
-            TonWalletAsset tonWallet, List<TokenContractAsset>? tokens)?
+    TResult? Function(TonWalletAsset tonWallet,
+            List<TokenContractAsset>? tokens, int? numberNewTokens)?
         accounts,
   }) =>
       throw _privateConstructorUsedError;
   @optionalTypeArgs
   TResult maybeWhen<TResult extends Object?>({
     TResult Function()? empty,
-    TResult Function(
-            TonWalletAsset tonWallet, List<TokenContractAsset>? tokens)?
+    TResult Function(TonWalletAsset tonWallet, List<TokenContractAsset>? tokens,
+            int? numberNewTokens)?
         accounts,
     required TResult orElse(),
   }) =>
@@ -126,8 +126,8 @@ class _$EmptyImpl implements _Empty {
   @optionalTypeArgs
   TResult when<TResult extends Object?>({
     required TResult Function() empty,
-    required TResult Function(
-            TonWalletAsset tonWallet, List<TokenContractAsset>? tokens)
+    required TResult Function(TonWalletAsset tonWallet,
+            List<TokenContractAsset>? tokens, int? numberNewTokens)
         accounts,
   }) {
     return empty();
@@ -137,8 +137,8 @@ class _$EmptyImpl implements _Empty {
   @optionalTypeArgs
   TResult? whenOrNull<TResult extends Object?>({
     TResult? Function()? empty,
-    TResult? Function(
-            TonWalletAsset tonWallet, List<TokenContractAsset>? tokens)?
+    TResult? Function(TonWalletAsset tonWallet,
+            List<TokenContractAsset>? tokens, int? numberNewTokens)?
         accounts,
   }) {
     return empty?.call();
@@ -148,8 +148,8 @@ class _$EmptyImpl implements _Empty {
   @optionalTypeArgs
   TResult maybeWhen<TResult extends Object?>({
     TResult Function()? empty,
-    TResult Function(
-            TonWalletAsset tonWallet, List<TokenContractAsset>? tokens)?
+    TResult Function(TonWalletAsset tonWallet, List<TokenContractAsset>? tokens,
+            int? numberNewTokens)?
         accounts,
     required TResult orElse(),
   }) {
@@ -201,7 +201,10 @@ abstract class _$$AccountsImplCopyWith<$Res> {
           _$AccountsImpl value, $Res Function(_$AccountsImpl) then) =
       __$$AccountsImplCopyWithImpl<$Res>;
   @useResult
-  $Res call({TonWalletAsset tonWallet, List<TokenContractAsset>? tokens});
+  $Res call(
+      {TonWalletAsset tonWallet,
+      List<TokenContractAsset>? tokens,
+      int? numberNewTokens});
 
   $TonWalletAssetCopyWith<$Res> get tonWallet;
 }
@@ -221,6 +224,7 @@ class __$$AccountsImplCopyWithImpl<$Res>
   $Res call({
     Object? tonWallet = null,
     Object? tokens = freezed,
+    Object? numberNewTokens = freezed,
   }) {
     return _then(_$AccountsImpl(
       null == tonWallet
@@ -231,6 +235,10 @@ class __$$AccountsImplCopyWithImpl<$Res>
           ? _value._tokens
           : tokens // ignore: cast_nullable_to_non_nullable
               as List<TokenContractAsset>?,
+      freezed == numberNewTokens
+          ? _value.numberNewTokens
+          : numberNewTokens // ignore: cast_nullable_to_non_nullable
+              as int?,
     ));
   }
 
@@ -248,7 +256,8 @@ class __$$AccountsImplCopyWithImpl<$Res>
 /// @nodoc
 
 class _$AccountsImpl implements _Accounts {
-  const _$AccountsImpl(this.tonWallet, final List<TokenContractAsset>? tokens)
+  const _$AccountsImpl(this.tonWallet, final List<TokenContractAsset>? tokens,
+      this.numberNewTokens)
       : _tokens = tokens;
 
   @override
@@ -264,8 +273,11 @@ class _$AccountsImpl implements _Accounts {
   }
 
   @override
+  final int? numberNewTokens;
+
+  @override
   String toString() {
-    return 'AccountAssetTabState.accounts(tonWallet: $tonWallet, tokens: $tokens)';
+    return 'AccountAssetTabState.accounts(tonWallet: $tonWallet, tokens: $tokens, numberNewTokens: $numberNewTokens)';
   }
 
   @override
@@ -275,12 +287,14 @@ class _$AccountsImpl implements _Accounts {
             other is _$AccountsImpl &&
             (identical(other.tonWallet, tonWallet) ||
                 other.tonWallet == tonWallet) &&
-            const DeepCollectionEquality().equals(other._tokens, _tokens));
+            const DeepCollectionEquality().equals(other._tokens, _tokens) &&
+            (identical(other.numberNewTokens, numberNewTokens) ||
+                other.numberNewTokens == numberNewTokens));
   }
 
   @override
-  int get hashCode => Object.hash(
-      runtimeType, tonWallet, const DeepCollectionEquality().hash(_tokens));
+  int get hashCode => Object.hash(runtimeType, tonWallet,
+      const DeepCollectionEquality().hash(_tokens), numberNewTokens);
 
   /// Create a copy of AccountAssetTabState
   /// with the given fields replaced by the non-null parameter values.
@@ -294,35 +308,35 @@ class _$AccountsImpl implements _Accounts {
   @optionalTypeArgs
   TResult when<TResult extends Object?>({
     required TResult Function() empty,
-    required TResult Function(
-            TonWalletAsset tonWallet, List<TokenContractAsset>? tokens)
+    required TResult Function(TonWalletAsset tonWallet,
+            List<TokenContractAsset>? tokens, int? numberNewTokens)
         accounts,
   }) {
-    return accounts(tonWallet, tokens);
+    return accounts(tonWallet, tokens, numberNewTokens);
   }
 
   @override
   @optionalTypeArgs
   TResult? whenOrNull<TResult extends Object?>({
     TResult? Function()? empty,
-    TResult? Function(
-            TonWalletAsset tonWallet, List<TokenContractAsset>? tokens)?
+    TResult? Function(TonWalletAsset tonWallet,
+            List<TokenContractAsset>? tokens, int? numberNewTokens)?
         accounts,
   }) {
-    return accounts?.call(tonWallet, tokens);
+    return accounts?.call(tonWallet, tokens, numberNewTokens);
   }
 
   @override
   @optionalTypeArgs
   TResult maybeWhen<TResult extends Object?>({
     TResult Function()? empty,
-    TResult Function(
-            TonWalletAsset tonWallet, List<TokenContractAsset>? tokens)?
+    TResult Function(TonWalletAsset tonWallet, List<TokenContractAsset>? tokens,
+            int? numberNewTokens)?
         accounts,
     required TResult orElse(),
   }) {
     if (accounts != null) {
-      return accounts(tonWallet, tokens);
+      return accounts(tonWallet, tokens, numberNewTokens);
     }
     return orElse();
   }
@@ -360,11 +374,14 @@ class _$AccountsImpl implements _Accounts {
 }
 
 abstract class _Accounts implements AccountAssetTabState {
-  const factory _Accounts(final TonWalletAsset tonWallet,
-      final List<TokenContractAsset>? tokens) = _$AccountsImpl;
+  const factory _Accounts(
+      final TonWalletAsset tonWallet,
+      final List<TokenContractAsset>? tokens,
+      final int? numberNewTokens) = _$AccountsImpl;
 
   TonWalletAsset get tonWallet;
   List<TokenContractAsset>? get tokens;
+  int? get numberNewTokens;
 
   /// Create a copy of AccountAssetTabState
   /// with the given fields replaced by the non-null parameter values.

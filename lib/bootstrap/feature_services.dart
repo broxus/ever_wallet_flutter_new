@@ -1,5 +1,6 @@
 import 'package:app/app/service/service.dart';
 import 'package:app/di/di.dart';
+import 'package:app/http/http.dart';
 import 'package:logging/logging.dart';
 
 /// This is a method that allows configure some feature-related services
@@ -33,5 +34,12 @@ Future<void> configureFeatureServices() async {
     ..finest('StakingService initializing...');
 
   await inject<StakingService>().init();
-  log.finest('StakingService initialized');
+  log
+    ..finest('StakingService initialized')
+    ..finest('TokenWalletsService initializing...');
+
+  await inject<TokenWalletsService>().init();
+  log.finest('TokenWalletsService initialized');
+
+  inject<TokenRepository>().init();
 }

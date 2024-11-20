@@ -1,4 +1,4 @@
-// This file is also compiled into iOS-SwiftUITests and doesn't have access to private Sentry API
+// This file is also compiled into iOS-Swift-UITests and doesn't have access to private Sentry API
 // there, so we add a few polyfills:
 #if __has_include("SentryDefines.h")
 #    import "SentryDefines.h"
@@ -189,7 +189,7 @@ sentry_getOSVersion(void)
 #else
     const auto version = [[NSProcessInfo processInfo] operatingSystemVersion];
     return [NSString stringWithFormat:@"%ld.%ld.%ld", (long)version.majorVersion,
-                     (long)version.minorVersion, (long)version.patchVersion];
+        (long)version.minorVersion, (long)version.patchVersion];
 #endif // SENTRY_HAS_UIKIT
 }
 

@@ -10,13 +10,10 @@ NS_ASSUME_NONNULL_BEGIN
 @class SentryDispatchQueueWrapper;
 @class SentryEvent;
 @class SentryEnvelope;
+@class SentryEnvelopeItem;
 @class SentryFileContents;
 @class SentryOptions;
 @class SentrySession;
-
-#if SENTRY_TARGET_PROFILING_SUPPORTED
-SENTRY_EXTERN NSString *sentryApplicationSupportPath(void);
-#endif // SENTRY_TARGET_PROFILING_SUPPORTED
 
 NS_SWIFT_NAME(SentryFileManager)
 @interface SentryFileManager : NSObject
@@ -37,7 +34,7 @@ SENTRY_NO_INIT
 
 - (void)setDelegate:(id<SentryFileManagerDelegate>)delegate;
 
-- (NSString *)storeEnvelope:(SentryEnvelope *)envelope;
+- (nullable NSString *)storeEnvelope:(SentryEnvelope *)envelope;
 
 - (void)storeCurrentSession:(SentrySession *)session;
 - (void)storeCrashedSession:(SentrySession *)session;
@@ -92,6 +89,19 @@ SENTRY_NO_INIT
 - (NSNumber *_Nullable)readTimezoneOffset;
 - (void)storeTimezoneOffset:(NSInteger)offset;
 - (void)deleteTimezoneOffset;
+- (NSArray<NSString *> *)allFilesInFolder:(NSString *)path;
+- (BOOL)isDirectory:(NSString *)path;
+BOOL createDirectoryIfNotExists(NSString *path, NSError **error);
+
+/**
+ * Path for a default directory Sentry can use in the app sandbox' caches directory.
+ * @note This method must be statically accessible because it will be called during app launch,
+ * before any instance of @c SentryFileManager exists, and so wouldn't be able to access this path
+ * from an objc property on it like the other paths. It also cannot use
+ * @c SentryOptions.cacheDirectoryPath since this can be called before
+ * @c SentrySDK.startWithOptions .
+ */
+SENTRY_EXTERN NSString *_Nullable sentryStaticCachesPath(void);
 
 #if SENTRY_TARGET_PROFILING_SUPPORTED
 /**
@@ -130,7 +140,8 @@ SENTRY_EXTERN void removeAppLaunchProfilingConfigFile(void);
 
 @protocol SentryFileManagerDelegate <NSObject>
 
-- (void)envelopeItemDeleted:(SentryDataCategory)dataCategory;
+- (void)envelopeItemDeleted:(SentryEnvelopeItem *)envelopeItem
+               withCategory:(SentryDataCategory)dataCategory;
 
 @end
 

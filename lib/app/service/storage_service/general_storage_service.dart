@@ -51,6 +51,7 @@ class GeneralStorageService extends AbstractStorageService {
         clearKeyPasswords(),
         clearCurrencies(),
         clearPreferences(),
+        clearIsBiometryEnabled(),
       ]);
 
   /// Clear all preferences data

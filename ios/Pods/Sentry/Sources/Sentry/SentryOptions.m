@@ -1,4 +1,3 @@
-#import "SentryANRTracker.h"
 #import "SentryANRTrackingIntegration.h"
 #import "SentryAutoBreadcrumbTrackingIntegration.h"
 #import "SentryAutoSessionTrackingIntegration.h"
@@ -18,6 +17,7 @@
 #import "SentrySessionReplayIntegration.h"
 #import "SentrySwift.h"
 #import "SentrySwiftAsyncIntegration.h"
+#import "SentryTracer.h"
 #import <objc/runtime.h>
 
 #if SENTRY_HAS_UIKIT
@@ -39,38 +39,33 @@ NSString *const kSentryDefaultEnvironment = @"production";
     BOOL _enableTracingManual;
 }
 
-- (void)setMeasurement:(SentryMeasurementValue *)measurement
-{
-}
-
-+ (NSArray<NSString *> *)defaultIntegrations
+NSMutableArray<NSString *> *
+sentry_defaultIntegrations(void)
 {
     // The order of integrations here is important.
     // SentryCrashIntegration needs to be initialized before SentryAutoSessionTrackingIntegration.
-    NSMutableArray<NSString *> *defaultIntegrations =
-        @[
-            NSStringFromClass([SentryCrashIntegration class]),
-#if SENTRY_HAS_UIKIT
-            NSStringFromClass([SentryAppStartTrackingIntegration class]),
-            NSStringFromClass([SentryFramesTrackingIntegration class]),
-            NSStringFromClass([SentryPerformanceTrackingIntegration class]),
-            NSStringFromClass([SentryScreenshotIntegration class]),
-            NSStringFromClass([SentryUIEventTrackingIntegration class]),
-            NSStringFromClass([SentryViewHierarchyIntegration class]),
-            NSStringFromClass([SentryWatchdogTerminationTrackingIntegration class]),
-#    if !TARGET_OS_VISION
+    // And SentrySessionReplayIntegration before SentryCrashIntegration.
+    NSMutableArray<NSString *> *defaultIntegrations = [NSMutableArray<NSString *> arrayWithObjects:
+#if SENTRY_HAS_UIKIT && !TARGET_OS_VISION
             NSStringFromClass([SentrySessionReplayIntegration class]),
-#    endif
+#endif
+        NSStringFromClass([SentryCrashIntegration class]),
+#if SENTRY_HAS_UIKIT
+        NSStringFromClass([SentryAppStartTrackingIntegration class]),
+        NSStringFromClass([SentryFramesTrackingIntegration class]),
+        NSStringFromClass([SentryPerformanceTrackingIntegration class]),
+        NSStringFromClass([SentryScreenshotIntegration class]),
+        NSStringFromClass([SentryUIEventTrackingIntegration class]),
+        NSStringFromClass([SentryViewHierarchyIntegration class]),
+        NSStringFromClass([SentryWatchdogTerminationTrackingIntegration class]),
 #endif // SENTRY_HAS_UIKIT
-            NSStringFromClass([SentryANRTrackingIntegration class]),
-            NSStringFromClass([SentryAutoBreadcrumbTrackingIntegration class]),
-            NSStringFromClass([SentryAutoSessionTrackingIntegration class]),
-            NSStringFromClass([SentryCoreDataTrackingIntegration class]),
-            NSStringFromClass([SentryFileIOTrackingIntegration class]),
-            NSStringFromClass([SentryNetworkTrackingIntegration class]),
-            NSStringFromClass([SentrySwiftAsyncIntegration class])
-        ]
-            .mutableCopy;
+        NSStringFromClass([SentryANRTrackingIntegration class]),
+        NSStringFromClass([SentryAutoBreadcrumbTrackingIntegration class]),
+        NSStringFromClass([SentryAutoSessionTrackingIntegration class]),
+        NSStringFromClass([SentryCoreDataTrackingIntegration class]),
+        NSStringFromClass([SentryFileIOTrackingIntegration class]),
+        NSStringFromClass([SentryNetworkTrackingIntegration class]),
+        NSStringFromClass([SentrySwiftAsyncIntegration class]), nil];
 
 #if SENTRY_HAS_METRIC_KIT
     if (@available(iOS 15.0, macOS 12.0, macCatalyst 15.0, *)) {
@@ -81,19 +76,31 @@ NSString *const kSentryDefaultEnvironment = @"production";
     return defaultIntegrations;
 }
 
++ (NSArray<NSString *> *)defaultIntegrations
+{
+    return sentry_defaultIntegrations();
+}
+
 - (instancetype)init
 {
     if (self = [super init]) {
         self.enabled = YES;
         self.shutdownTimeInterval = 2.0;
         self.enableCrashHandler = YES;
+#if TARGET_OS_OSX
+        self.enableUncaughtNSExceptionReporting = NO;
+#endif // TARGET_OS_OSX
+#if !TARGET_OS_WATCH
+        self.enableSigtermReporting = NO;
+#endif // !TARGET_OS_WATCH
         self.diagnosticLevel = kSentryLevelDebug;
         self.debug = NO;
         self.maxBreadcrumbs = defaultMaxBreadcrumbs;
         self.maxCacheItems = 30;
-        _integrations = SentryOptions.defaultIntegrations;
+        _integrations = sentry_defaultIntegrations();
         self.sampleRate = SENTRY_DEFAULT_SAMPLE_RATE;
         self.enableAutoSessionTracking = YES;
+        self.enableGraphQLOperationTracking = NO;
         self.enableWatchdogTerminationTracking = YES;
         self.sessionTrackingIntervalMillis = [@30000 unsignedIntValue];
         self.attachStacktrace = YES;
@@ -113,9 +120,12 @@ NSString *const kSentryDefaultEnvironment = @"production";
         self.enableUIViewControllerTracing = YES;
         self.attachScreenshot = NO;
         self.attachViewHierarchy = NO;
+        self.reportAccessibilityIdentifier = YES;
         self.enableUserInteractionTracing = YES;
-        self.idleTimeout = 3.0;
+        self.idleTimeout = SentryTracerDefaultTimeout;
         self.enablePreWarmedAppStartTracing = NO;
+        self.enableAppHangTrackingV2 = NO;
+        self.enableReportNonFullyBlockingAppHangs = YES;
 #endif // SENTRY_HAS_UIKIT
         self.enableAppHangTracking = YES;
         self.appHangTimeoutInterval = 2.0;
@@ -126,8 +136,7 @@ NSString *const kSentryDefaultEnvironment = @"production";
         self.tracesSampleRate = nil;
 #if SENTRY_TARGET_PROFILING_SUPPORTED
         _enableProfiling = NO;
-        self.profilesSampleRate = nil;
-        _enableContinuousProfiling = NO;
+        self.profilesSampleRate = SENTRY_INITIAL_PROFILES_SAMPLE_RATE;
 #endif // SENTRY_TARGET_PROFILING_SUPPORTED
         self.enableCoreDataTracing = YES;
         _enableSwizzling = YES;
@@ -136,9 +145,6 @@ NSString *const kSentryDefaultEnvironment = @"production";
         self.swiftAsyncStacktraces = NO;
         self.enableSpotlight = NO;
         self.spotlightUrl = @"http://localhost:8969/stream";
-        self.enableMetrics = NO;
-        self.enableDefaultTagsForMetrics = YES;
-        self.enableSpanLocalMetricAggregation = YES;
 
 #if TARGET_OS_OSX
         NSString *dsn = [[[NSProcessInfo processInfo] environment] objectForKey:@"SENTRY_DSN"];
@@ -172,7 +178,7 @@ NSString *const kSentryDefaultEnvironment = @"production";
         if (infoDict != nil) {
             self.releaseName =
                 [NSString stringWithFormat:@"%@@%@+%@", infoDict[@"CFBundleIdentifier"],
-                          infoDict[@"CFBundleShortVersionString"], infoDict[@"CFBundleVersion"]];
+                    infoDict[@"CFBundleShortVersionString"], infoDict[@"CFBundleVersion"]];
         }
 
         NSRegularExpression *everythingAllowedRegex =
@@ -193,6 +199,7 @@ NSString *const kSentryDefaultEnvironment = @"production";
 #if SENTRY_HAS_METRIC_KIT
         if (@available(iOS 15.0, macOS 12.0, macCatalyst 15.0, *)) {
             self.enableMetricKit = NO;
+            self.enableMetricKitRawPayload = NO;
         }
 #endif // SENTRY_HAS_METRIC_KIT
     }
@@ -247,7 +254,7 @@ NSString *const kSentryDefaultEnvironment = @"production";
     SENTRY_LOG_WARN(
         @"Setting `SentryOptions.integrations` is deprecated. Integrations should be enabled or "
         @"disabled using their respective `SentryOptions.enable*` property.");
-    _integrations = integrations;
+    _integrations = integrations.mutableCopy;
 }
 
 - (void)setDsn:(NSString *)dsn
@@ -315,6 +322,16 @@ NSString *const kSentryDefaultEnvironment = @"production";
     [self setBool:options[@"enableCrashHandler"]
             block:^(BOOL value) { self->_enableCrashHandler = value; }];
 
+#if TARGET_OS_OSX
+    [self setBool:options[@"enableUncaughtNSExceptionReporting"]
+            block:^(BOOL value) { self->_enableUncaughtNSExceptionReporting = value; }];
+#endif // TARGET_OS_OSX
+
+#if !TARGET_OS_WATCH
+    [self setBool:options[@"enableSigtermReporting"]
+            block:^(BOOL value) { self->_enableSigtermReporting = value; }];
+#endif // !TARGET_OS_WATCH
+
     if ([options[@"maxBreadcrumbs"] isKindOfClass:[NSNumber class]]) {
         self.maxBreadcrumbs = [options[@"maxBreadcrumbs"] unsignedIntValue];
     }
@@ -334,8 +351,20 @@ NSString *const kSentryDefaultEnvironment = @"production";
         self.beforeSend = options[@"beforeSend"];
     }
 
+    if ([self isBlock:options[@"beforeSendSpan"]]) {
+        self.beforeSendSpan = options[@"beforeSendSpan"];
+    }
+
     if ([self isBlock:options[@"beforeBreadcrumb"]]) {
         self.beforeBreadcrumb = options[@"beforeBreadcrumb"];
+    }
+
+    if ([self isBlock:options[@"beforeCaptureScreenshot"]]) {
+        self.beforeCaptureScreenshot = options[@"beforeCaptureScreenshot"];
+    }
+
+    if ([self isBlock:options[@"beforeCaptureViewHierarchy"]]) {
+        self.beforeCaptureViewHierarchy = options[@"beforeCaptureViewHierarchy"];
     }
 
     if ([self isBlock:options[@"onCrashedLastRun"]]) {
@@ -343,7 +372,8 @@ NSString *const kSentryDefaultEnvironment = @"production";
     }
 
     if ([options[@"integrations"] isKindOfClass:[NSArray class]]) {
-        self.integrations = [options[@"integrations"] filteredArrayUsingPredicate:isNSString];
+        self.integrations =
+            [[options[@"integrations"] filteredArrayUsingPredicate:isNSString] mutableCopy];
     }
 
     if ([options[@"sampleRate"] isKindOfClass:[NSNumber class]]) {
@@ -352,6 +382,9 @@ NSString *const kSentryDefaultEnvironment = @"production";
 
     [self setBool:options[@"enableAutoSessionTracking"]
             block:^(BOOL value) { self->_enableAutoSessionTracking = value; }];
+
+    [self setBool:options[@"enableGraphQLOperationTracking"]
+            block:^(BOOL value) { self->_enableGraphQLOperationTracking = value; }];
 
     [self setBool:options[@"enableWatchdogTerminationTracking"]
             block:^(BOOL value) { self->_enableWatchdogTerminationTracking = value; }];
@@ -399,6 +432,9 @@ NSString *const kSentryDefaultEnvironment = @"production";
     [self setBool:options[@"attachViewHierarchy"]
             block:^(BOOL value) { self->_attachViewHierarchy = value; }];
 
+    [self setBool:options[@"reportAccessibilityIdentifier"]
+            block:^(BOOL value) { self->_reportAccessibilityIdentifier = value; }];
+
     [self setBool:options[@"enableUserInteractionTracing"]
             block:^(BOOL value) { self->_enableUserInteractionTracing = value; }];
 
@@ -408,6 +444,12 @@ NSString *const kSentryDefaultEnvironment = @"production";
 
     [self setBool:options[@"enablePreWarmedAppStartTracing"]
             block:^(BOOL value) { self->_enablePreWarmedAppStartTracing = value; }];
+
+    [self setBool:options[@"enableAppHangTrackingV2"]
+            block:^(BOOL value) { self->_enableAppHangTrackingV2 = value; }];
+
+    [self setBool:options[@"enableReportNonFullyBlockingAppHangs"]
+            block:^(BOOL value) { self->_enableReportNonFullyBlockingAppHangs = value; }];
 
 #endif // SENTRY_HAS_UIKIT
 
@@ -431,10 +473,12 @@ NSString *const kSentryDefaultEnvironment = @"production";
     if ([self isBlock:options[@"tracesSampler"]]) {
         self.tracesSampler = options[@"tracesSampler"];
     }
-
+#pragma clang diagnostic push
+#pragma clang diagnostic ignored "-Wdeprecated-declarations"
     if ([options[@"enableTracing"] isKindOfClass:NSNumber.self]) {
         self.enableTracing = [options[@"enableTracing"] boolValue];
     }
+#pragma clang diagnostic pop
 
     if ([options[@"inAppIncludes"] isKindOfClass:[NSArray class]]) {
         NSArray<NSString *> *inAppIncludes =
@@ -444,6 +488,10 @@ NSString *const kSentryDefaultEnvironment = @"production";
 
     if ([options[@"inAppExcludes"] isKindOfClass:[NSArray class]]) {
         _inAppExcludes = [options[@"inAppExcludes"] filteredArrayUsingPredicate:isNSString];
+    }
+
+    if ([options[@"urlSession"] isKindOfClass:[NSURLSession class]]) {
+        self.urlSession = options[@"urlSession"];
     }
 
     if ([options[@"urlSessionDelegate"] conformsToProtocol:@protocol(NSURLSessionDelegate)]) {
@@ -475,9 +523,6 @@ NSString *const kSentryDefaultEnvironment = @"production";
 
     [self setBool:options[NSStringFromSelector(@selector(enableAppLaunchProfiling))]
             block:^(BOOL value) { self->_enableAppLaunchProfiling = value; }];
-
-    [self setBool:options[@"enableContinuousProfiling"]
-            block:^(BOOL value) { self->_enableContinuousProfiling = value; }];
 #endif // SENTRY_TARGET_PROFILING_SUPPORTED
 
     [self setBool:options[@"sendClientReports"]
@@ -502,6 +547,8 @@ NSString *const kSentryDefaultEnvironment = @"production";
     if (@available(iOS 14.0, macOS 12.0, macCatalyst 14.0, *)) {
         [self setBool:options[@"enableMetricKit"]
                 block:^(BOOL value) { self->_enableMetricKit = value; }];
+        [self setBool:options[@"enableMetricKitRawPayload"]
+                block:^(BOOL value) { self->_enableMetricKitRawPayload = value; }];
     }
 #endif // SENTRY_HAS_METRIC_KIT
 
@@ -510,18 +557,6 @@ NSString *const kSentryDefaultEnvironment = @"production";
 
     if ([options[@"spotlightUrl"] isKindOfClass:[NSString class]]) {
         self.spotlightUrl = options[@"spotlightUrl"];
-    }
-
-    [self setBool:options[@"enableMetrics"] block:^(BOOL value) { self->_enableMetrics = value; }];
-
-    [self setBool:options[@"enableDefaultTagsForMetrics"]
-            block:^(BOOL value) { self->_enableDefaultTagsForMetrics = value; }];
-
-    [self setBool:options[@"enableSpanLocalMetricAggregation"]
-            block:^(BOOL value) { self->_enableSpanLocalMetricAggregation = value; }];
-
-    if ([self isBlock:options[@"beforeEmitMetric"]]) {
-        self.beforeEmitMetric = options[@"beforeEmitMetric"];
     }
 
     if ([options[@"experimental"] isKindOfClass:NSDictionary.class]) {
@@ -553,7 +588,7 @@ NSString *const kSentryDefaultEnvironment = @"production";
 {
     if (sampleRate == nil) {
         _sampleRate = nil;
-    } else if (isValidSampleRate(sampleRate)) {
+    } else if (sentry_isValidSampleRate(sampleRate)) {
         _sampleRate = sampleRate;
     } else {
         _sampleRate = SENTRY_DEFAULT_SAMPLE_RATE;
@@ -561,7 +596,7 @@ NSString *const kSentryDefaultEnvironment = @"production";
 }
 
 BOOL
-isValidSampleRate(NSNumber *sampleRate)
+sentry_isValidSampleRate(NSNumber *sampleRate)
 {
     double rate = [sampleRate doubleValue];
     return rate >= 0 && rate <= 1.0;
@@ -584,7 +619,7 @@ isValidSampleRate(NSNumber *sampleRate)
 {
     if (tracesSampleRate == nil) {
         _tracesSampleRate = nil;
-    } else if (isValidSampleRate(tracesSampleRate)) {
+    } else if (sentry_isValidSampleRate(tracesSampleRate)) {
         _tracesSampleRate = tracesSampleRate;
         if (!_enableTracingManual) {
             _enableTracing = YES;
@@ -614,7 +649,7 @@ isValidSampleRate(NSNumber *sampleRate)
 {
     if (profilesSampleRate == nil) {
         _profilesSampleRate = nil;
-    } else if (isValidSampleRate(profilesSampleRate)) {
+    } else if (sentry_isValidSampleRate(profilesSampleRate)) {
         _profilesSampleRate = profilesSampleRate;
     } else {
         _profilesSampleRate = SENTRY_DEFAULT_PROFILES_SAMPLE_RATE;
@@ -627,18 +662,32 @@ isValidSampleRate(NSNumber *sampleRate)
         || _profilesSampler != nil || _enableProfiling;
 }
 
+- (BOOL)isContinuousProfilingEnabled
+{
 #    pragma clang diagnostic push
 #    pragma clang diagnostic ignored "-Wdeprecated-declarations"
+    // this looks a little weird with the `!self.enableProfiling` but that actually is the
+    // deprecated way to say "enable trace-based profiling", which necessarily disables continuous
+    // profiling as they are mutually exclusive modes
+    return _profilesSampleRate == nil && _profilesSampler == nil && !self.enableProfiling;
+#    pragma clang diagnostic pop
+}
+
 - (void)setEnableProfiling_DEPRECATED_TEST_ONLY:(BOOL)enableProfiling_DEPRECATED_TEST_ONLY
 {
+#    pragma clang diagnostic push
+#    pragma clang diagnostic ignored "-Wdeprecated-declarations"
     self.enableProfiling = enableProfiling_DEPRECATED_TEST_ONLY;
+#    pragma clang diagnostic pop
 }
 
 - (BOOL)enableProfiling_DEPRECATED_TEST_ONLY
 {
+#    pragma clang diagnostic push
+#    pragma clang diagnostic ignored "-Wdeprecated-declarations"
     return self.enableProfiling;
-}
 #    pragma clang diagnostic pop
+}
 #endif // SENTRY_TARGET_PROFILING_SUPPORTED
 
 /**
@@ -654,7 +703,7 @@ isValidSampleRate(NSNumber *sampleRate)
     static Class blockClass;
     static dispatch_once_t onceToken;
     dispatch_once(&onceToken, ^{
-        blockClass = [^{} class];
+        blockClass = [^{ } class];
         while ([blockClass superclass] != NSObject.class) {
             blockClass = [blockClass superclass];
         }
@@ -744,6 +793,14 @@ isValidSampleRate(NSNumber *sampleRate)
 #endif // defined(RELEASE)
 }
 
+#if TARGET_OS_IOS && SENTRY_HAS_UIKIT
+- (void)setConfigureUserFeedback:(SentryUserFeedbackConfigurationBlock)configureUserFeedback
+{
+    self.userFeedbackConfiguration = [[SentryUserFeedbackConfiguration alloc] init];
+    configureUserFeedback(self.userFeedbackConfiguration);
+}
+#endif // TARGET_OS_IOS && SENTRY_HAS_UIKIT
+
 #if defined(DEBUG) || defined(TEST) || defined(TESTCI)
 - (NSString *)debugDescription
 {
@@ -767,5 +824,4 @@ isValidSampleRate(NSNumber *sampleRate)
     return [NSString stringWithFormat:@"<%@: {\n%@\n}>", self, propertiesDescription];
 }
 #endif // defined(DEBUG) || defined(TEST) || defined(TESTCI)
-
 @end

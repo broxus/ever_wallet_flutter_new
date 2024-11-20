@@ -2,7 +2,7 @@ import 'package:app/app/service/messenger/message.dart';
 import 'package:app/app/service/messenger/service/messenger_service.dart';
 import 'package:app/app/service/network_connection/network_connection_service.dart';
 import 'package:app/di/di.dart';
-import 'package:app/feature/add_seed/enter_seed_phrase/cubit/enter_seed_phrase_input_model.dart';
+import 'package:app/feature/add_seed/enter_seed_phrase/cubit/enter_seed_phrase_input_state.dart';
 import 'package:app/feature/constants.dart';
 import 'package:app/generated/locale_keys.g.dart';
 import 'package:app/utils/mixins/connection_mixin.dart';
@@ -10,7 +10,6 @@ import 'package:app/utils/seed_utils.dart';
 import 'package:bloc/bloc.dart';
 import 'package:collection/collection.dart';
 import 'package:easy_localization/easy_localization.dart';
-import 'package:flutter/services.dart';
 import 'package:flutter/widgets.dart';
 import 'package:freezed_annotation/freezed_annotation.dart';
 import 'package:logging/logging.dart';
@@ -23,8 +22,8 @@ part 'enter_seed_phrase_state.dart';
 
 /// Regexp that helps splitting seed phrase into words.
 final seedSplitRegExp = RegExp(r'[ |;,:\n.]');
-const _debugPhraseLength = 15;
 
+const _actualSeedPhraseLength = 12;
 const _legacySeedPhraseLength = 24;
 
 const _autoNavigationDelay = Duration(milliseconds: 500);
@@ -51,7 +50,7 @@ class EnterSeedPhraseCubit extends Cubit<EnterSeedPhraseState>
   late int _currentValue;
 
   /// Models of input
-  late List<EnterSeedPhraseInputModel> _inputModels;
+  late List<EnterSeedPhraseInputState> _inputModels;
 
   @override
   @protected
@@ -83,7 +82,7 @@ class EnterSeedPhraseCubit extends Cubit<EnterSeedPhraseState>
 
     _inputModels = List.generate(
       max,
-      (index) => EnterSeedPhraseInputModel.input(
+      (index) => EnterSeedPhraseInputState.input(
         controller: _controllers[index],
         focus: _focuses[index],
         index: index,
@@ -111,11 +110,12 @@ class EnterSeedPhraseCubit extends Cubit<EnterSeedPhraseState>
     _focuses.forEachIndexed((index, f) {
       f.addListener(() => _checkInputCompletion(index));
     });
+    final inputs = _inputModels.take(_currentValue).toList();
     emit(
       EnterSeedPhraseState.tab(
         allowedValues: _allowedValues,
-        currentValue: _currentValue,
-        inputs: _inputModels.take(_currentValue).toList(),
+        currentValue: _currentValue.clamp(0, inputs.length),
+        inputs: inputs,
         displayPasteButton: true,
       ),
     );
@@ -145,11 +145,12 @@ class EnterSeedPhraseCubit extends Cubit<EnterSeedPhraseState>
 
     final st = state;
     if (st is _Tab) {
+      final inputs = _inputModels.take(value).toList();
       emit(
         st.copyWith(
-          currentValue: value,
+          currentValue: value.clamp(0, inputs.length),
           allowedValues: _allowedValues,
-          inputs: _inputModels.take(value).toList(),
+          inputs: inputs,
           displayPasteButton: true,
         ),
       );
@@ -236,40 +237,50 @@ class EnterSeedPhraseCubit extends Cubit<EnterSeedPhraseState>
   Future<void> pastePhrase() async {
     final words = await getSeedListFromClipboard();
 
-    if (words.isNotEmpty && words.length == _currentValue) {
-      for (final word in words) {
-        if (!await _checkIsWordValid(word)) {
-          words.clear();
-          break;
+    switch (words.length) {
+      case _actualSeedPhraseLength:
+        changeTab(_actualSeedPhraseLength);
+      case _legacySeedPhraseLength:
+        changeTab(_legacySeedPhraseLength);
+      default:
+    }
+
+    Future.delayed(const Duration(milliseconds: 100), () async {
+      if (words.isNotEmpty && words.length == _currentValue) {
+        for (final word in words) {
+          if (!await _checkIsWordValid(word)) {
+            words.clear();
+            break;
+          }
         }
+      } else {
+        words.clear();
       }
-    } else {
-      words.clear();
-    }
 
-    if (words.isEmpty) {
-      _resetFormAndError();
+      if (words.isEmpty) {
+        _resetFormAndError();
 
-      _showValidateError(LocaleKeys.incorrectWordsFormat.tr());
+        _showValidateError(LocaleKeys.incorrectWordsFormat.tr());
 
-      return;
-    }
+        return;
+      }
 
-    _canAutoNavigate = false;
+      _canAutoNavigate = false;
 
-    words.asMap().forEach((index, word) {
-      _controllers[index].value = TextEditingValue(
-        text: word,
-        selection: TextSelection.fromPosition(
-          TextPosition(offset: word.length),
-        ),
-      );
+      words.asMap().forEach((index, word) {
+        _controllers[index].value = TextEditingValue(
+          text: word,
+          selection: TextSelection.fromPosition(
+            TextPosition(offset: word.length),
+          ),
+        );
+      });
+
+      await _validateFormWithError();
+
+      _canAutoNavigate = true;
+      _checkAutoNavigate();
     });
-
-    await _validateFormWithError();
-
-    _canAutoNavigate = true;
-    _checkAutoNavigate();
   }
 
   /// Check if debug phrase is entered in any text field
@@ -385,7 +396,7 @@ class EnterSeedPhraseCubit extends Cubit<EnterSeedPhraseState>
         inputModel is EnterSeedPhraseInput) {
       // if input entered, not focused and not completed yet
       _inputModels[index] =
-          _inputModels[index] = EnterSeedPhraseInputModel.input(
+          _inputModels[index] = EnterSeedPhraseInputState.input(
         controller: controller,
         focus: focus,
         index: index,
@@ -395,7 +406,7 @@ class EnterSeedPhraseCubit extends Cubit<EnterSeedPhraseState>
     } else if (controller.text.isEmpty &&
         inputModel is EnterSeedPhraseEntered) {
       // if input is empty but still completed
-      _inputModels[index] = EnterSeedPhraseInputModel.input(
+      _inputModels[index] = EnterSeedPhraseInputState.input(
         controller: controller,
         focus: focus,
         index: index,

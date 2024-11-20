@@ -12,8 +12,7 @@
 
 NS_ASSUME_NONNULL_BEGIN
 
-@interface
-SentryStacktraceBuilder ()
+@interface SentryStacktraceBuilder ()
 
 @property (nonatomic, strong) SentryCrashStackEntryMapper *crashStackEntryMapper;
 
@@ -42,7 +41,7 @@ SentryStacktraceBuilder ()
             // skip the marker frame
             continue;
         }
-        if (self.symbolicate == false || stackCursor.symbolicate(&stackCursor)) {
+        if (self.symbolicate == NO || stackCursor.symbolicate(&stackCursor)) {
             frame = [self.crashStackEntryMapper mapStackEntryWithCursor:stackCursor];
             [frames addObject:frame];
         }

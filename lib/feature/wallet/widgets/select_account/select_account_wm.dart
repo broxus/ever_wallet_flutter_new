@@ -3,7 +3,7 @@ import 'package:app/app/service/service.dart';
 import 'package:app/core/error_handler_factory.dart';
 import 'package:app/core/wm/custom_wm.dart';
 import 'package:app/di/di.dart';
-import 'package:app/feature/wallet/add_account/add_account.dart';
+import 'package:app/feature/wallet/widgets/select_account/select_account_data.dart';
 import 'package:app/feature/wallet/widgets/select_account/select_account_model.dart';
 import 'package:app/feature/wallet/widgets/select_account/select_account_widget.dart';
 import 'package:app/utils/utils.dart';
@@ -29,7 +29,7 @@ class SelectAccountWidgetModel
   SelectAccountWidgetModel(super.model);
 
   late final searchController = createTextEditingController();
-  late final _accounts = createNotifierFromStream(model.accounts);
+  late final _accounts = createNotifierFromStream(model.seedWithAccounts);
   late final _currentAccount = createNotifierFromStream(model.currentAccount);
   late final _list = createNotifier(_accounts.value);
   late final _zeroBalance = Money.fromBigIntWithCurrency(
@@ -39,7 +39,7 @@ class SelectAccountWidgetModel
   );
   final _balances = <Address, ListenableState<Money>>{};
 
-  ListenableState<List<KeyAccount>> get list => _list;
+  ListenableState<List<SelectAccountData>> get list => _list;
 
   ListenableState<KeyAccount?> get currentAccount => _currentAccount;
 
@@ -58,10 +58,35 @@ class SelectAccountWidgetModel
     } else {
       _list.accept(
         _accounts.value
-            ?.where(
-              (account) =>
-                  account.name.toLowerCase().contains(value) ||
-                  account.address.address.toLowerCase().contains(value),
+            ?.map((selectAccountData) {
+              final filteredPrivateKeys = selectAccountData.privateKeys
+                  .map((keyInfo) {
+                    final filteredAccounts = keyInfo.accounts.where(
+                      (account) {
+                        return account.name.toLowerCase().contains(value) ||
+                            account.address.address
+                                .toLowerCase()
+                                .contains(value);
+                      },
+                    ).toList();
+
+                    return SeedWithInfo(
+                      keyName: keyInfo.keyName,
+                      key: keyInfo.key,
+                      accounts: filteredAccounts,
+                    );
+                  })
+                  .where(
+                    (keyInfo) => keyInfo.accounts.isNotEmpty,
+                  )
+                  .toList();
+              return SelectAccountData(
+                name: selectAccountData.name,
+                privateKeys: filteredPrivateKeys,
+              );
+            })
+            .where(
+              (selectAccountData) => selectAccountData.privateKeys.isNotEmpty,
             )
             .toList(),
       );
@@ -74,15 +99,10 @@ class SelectAccountWidgetModel
   }
 
   void onAddAccount() {
-    final publicKey = _currentAccount.value?.publicKey;
-
-    if (publicKey != null) {
-      Navigator.of(context).pop();
-      showAddNewAccountSheet(
-        context: context,
-        publicKey: publicKey,
-      );
-    }
+    Navigator.of(context).pop();
+    contextSafe!.goFurther(
+      AppRoute.walletAddAccount.path,
+    );
   }
 
   void onManageSeedsAndAccounts() {

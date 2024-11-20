@@ -2,12 +2,12 @@
 
 #if SENTRY_HAS_UIKIT
 
+#    import "SentryDependencyContainer.h"
 #    import "SentryHub.h"
 #    import "SentryLog.h"
 #    import "SentryOptions.h"
 #    import "SentryPerformanceTracker.h"
 #    import "SentrySDK+Private.h"
-#    import "SentryScope.h"
 #    import "SentrySpanId.h"
 #    import "SentrySwift.h"
 #    import "SentryTimeToDisplayTracker.h"
@@ -18,11 +18,11 @@
 #    import <UIKit/UIKit.h>
 #    import <objc/runtime.h>
 
-@interface
-SentryUIViewControllerPerformanceTracker ()
+@interface SentryUIViewControllerPerformanceTracker ()
 
 @property (nonatomic, strong) SentryPerformanceTracker *tracker;
 @property (nullable, nonatomic, weak) SentryTimeToDisplayTracker *currentTTDTracker;
+@property (nonatomic, strong, readonly) SentryDispatchQueueWrapper *dispatchQueueWrapper;
 
 @end
 
@@ -46,6 +46,7 @@ SentryUIViewControllerPerformanceTracker ()
                                                             inAppExcludes:options.inAppExcludes];
 
         _enableWaitForFullDisplay = NO;
+        _dispatchQueueWrapper = SentryDependencyContainer.sharedInstance.dispatchQueueWrapper;
     }
     return self;
 }
@@ -63,6 +64,18 @@ SentryUIViewControllerPerformanceTracker ()
     if (![self.inAppLogic isClassInApp:[controller class]]) {
         SENTRY_LOG_DEBUG(
             @"Won't track view controller that is not part of the app bundle: %@.", controller);
+        callbackToOrigin();
+        return;
+    }
+
+    SentryOptions *options = [SentrySDK options];
+
+    if ([SentrySwizzleClassNameExclude
+            shouldExcludeClassWithClassName:NSStringFromClass([controller class])
+                   swizzleClassNameExcludes:options.swizzleClassNameExcludes]) {
+        SENTRY_LOG_DEBUG(@"Won't track view controller because it's excluded with the option "
+                         @"swizzleClassNameExcludes: %@",
+            controller);
         callbackToOrigin();
         return;
     }
@@ -89,6 +102,7 @@ SentryUIViewControllerPerformanceTracker ()
                    block:^{
                        SENTRY_LOG_DEBUG(@"Tracking viewDidLoad");
                        [self createTransaction:controller];
+                       [self createTimeToDisplay:controller];
                        [self measurePerformance:@"viewDidLoad"
                                          target:controller
                                callbackToOrigin:callbackToOrigin];
@@ -142,13 +156,17 @@ SentryUIViewControllerPerformanceTracker ()
 
     SentryTimeToDisplayTracker *ttdTracker =
         [[SentryTimeToDisplayTracker alloc] initForController:controller
-                                           waitForFullDisplay:self.enableWaitForFullDisplay];
+                                           waitForFullDisplay:self.enableWaitForFullDisplay
+                                         dispatchQueueWrapper:_dispatchQueueWrapper];
 
-    objc_setAssociatedObject(controller, &SENTRY_UI_PERFORMANCE_TRACKER_TTD_TRACKER, ttdTracker,
-        OBJC_ASSOCIATION_ASSIGN);
-    [ttdTracker startForTracer:(SentryTracer *)vcSpan];
+    if ([ttdTracker startForTracer:(SentryTracer *)vcSpan]) {
+        objc_setAssociatedObject(controller, &SENTRY_UI_PERFORMANCE_TRACKER_TTD_TRACKER, ttdTracker,
+            OBJC_ASSOCIATION_ASSIGN);
 
-    self.currentTTDTracker = ttdTracker;
+        self.currentTTDTracker = ttdTracker;
+    } else {
+        self.currentTTDTracker = nil;
+    }
 }
 
 - (void)reportFullyDisplayed
@@ -180,10 +198,7 @@ SentryUIViewControllerPerformanceTracker ()
         };
 
         [self.tracker activateSpan:spanId duringBlock:duringBlock];
-
-        SentryTimeToDisplayTracker *ttdTracker
-            = objc_getAssociatedObject(controller, &SENTRY_UI_PERFORMANCE_TRACKER_TTD_TRACKER);
-        [ttdTracker reportInitialDisplay];
+        [self reportInitialDisplay:controller];
     };
 
     [self limitOverride:@"viewWillAppear"
@@ -302,6 +317,15 @@ SentryUIViewControllerPerformanceTracker ()
                 OBJC_ASSOCIATION_RETAIN_NONATOMIC);
         };
         [self.tracker activateSpan:spanId duringBlock:duringBlock];
+
+        // According to the Apple docs
+        // (https://developer.apple.com/documentation/uikit/uiviewcontroller/1621510-viewwillappear),
+        // viewWillAppear should be called for before the UIViewController is added to the view
+        // hierarchy. There are some edge cases, though, when this doesn't happen, and we saw
+        // customers' transactions also proofing this. Therefore, we must also report the initial
+        // display here, as the customers' transactions had spans for `viewWillLayoutSubviews`.
+
+        [self reportInitialDisplay:controller];
     };
 
     [self limitOverride:@"viewWillLayoutSubviews"
@@ -401,6 +425,13 @@ SentryUIViewControllerPerformanceTracker ()
                                     parentSpanId:spanId
                                          inBlock:callbackToOrigin];
     }
+}
+
+- (void)reportInitialDisplay:(UIViewController *)controller
+{
+    SentryTimeToDisplayTracker *ttdTracker
+        = objc_getAssociatedObject(controller, &SENTRY_UI_PERFORMANCE_TRACKER_TTD_TRACKER);
+    [ttdTracker reportInitialDisplay];
 }
 
 @end

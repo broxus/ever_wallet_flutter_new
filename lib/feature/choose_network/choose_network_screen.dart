@@ -1,5 +1,4 @@
 import 'package:app/feature/choose_network/choose_network_screen_wm.dart';
-import 'package:app/feature/choose_network/data/choose_network_item_data.dart';
 import 'package:app/feature/choose_network/widgets/choose_network_item.dart';
 import 'package:app/generated/generated.dart';
 import 'package:elementary/elementary.dart';
@@ -56,9 +55,10 @@ class ChooseNetworkScreen
                     LocaleKeys.selectNetworkNewWalletDescription.tr(),
                   ),
                   SizedBox(height: DimensAdaptiveSize.d64.hp),
-                  StateNotifierBuilder<List<ChooseNetworkItemData>>(
-                    listenableState: wm.connectionsState,
-                    builder: (_, List<ChooseNetworkItemData>? items) {
+                  DoubleSourceBuilder(
+                    firstSource: wm.connectionsState,
+                    secondSource: wm.loadingItemId,
+                    builder: (_, items, loadingItemId) {
                       if (items == null) {
                         return const SizedBox.shrink();
                       }
@@ -68,6 +68,7 @@ class ChooseNetworkScreen
                           for (final item in items)
                             ChooseNetworkItem(
                               item,
+                              isLoading: item.id == loadingItemId,
                               onPressed: wm.onPressedType,
                             ),
                         ],

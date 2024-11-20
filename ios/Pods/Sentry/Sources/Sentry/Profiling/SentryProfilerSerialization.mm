@@ -4,8 +4,6 @@
 
 #    import "SentryClient+Private.h"
 #    import "SentryDateUtils.h"
-#    import "SentryDebugImageProvider.h"
-#    import "SentryDebugMeta.h"
 #    import "SentryDependencyContainer.h"
 #    import "SentryDevice.h"
 #    import "SentryEnvelope.h"
@@ -13,10 +11,10 @@
 #    import "SentryEnvelopeItemType.h"
 #    import "SentryEvent+Private.h"
 #    import "SentryFormatter.h"
-#    import "SentryHub.h"
+#    import "SentryInternalDefines.h"
 #    import "SentryLog.h"
+#    import "SentryMeta.h"
 #    import "SentryMetricProfiler.h"
-#    import "SentryOptions.h"
 #    import "SentryProfileTimeseries.h"
 #    import "SentryProfiledTracerConcurrency.h"
 #    import "SentryProfiler+Private.h"
@@ -24,11 +22,11 @@
 #    import "SentryProfilerSerialization.h"
 #    import "SentryProfilerState.h"
 #    import "SentryProfilerTestHelpers.h"
+#    import "SentrySDK+Private.h"
 #    import "SentrySample.h"
 #    import "SentryScope+Private.h"
 #    import "SentrySerialization.h"
 #    import "SentrySwift.h"
-#    import "SentryThread.h"
 #    import "SentryTime.h"
 #    import "SentryTracer+Private.h"
 #    import "SentryTransaction.h"
@@ -47,7 +45,7 @@ namespace {
  * their data, with timestamps normalized relative to the provided transaction's start time.
  * */
 NSArray<NSDictionary *> *
-_sentry_serializedSamplesWithRelativeTimestamps(
+_sentry_serializedTraceProfileSamplesWithRelativeTimestamps(
     NSArray<SentrySample *> *samples, uint64_t startSystemTime)
 {
     const auto result = [NSMutableArray<NSDictionary *> array];
@@ -56,19 +54,42 @@ _sentry_serializedSamplesWithRelativeTimestamps(
         // This shouldn't happen as we would've filtered out any such samples, but we should still
         // guard against it before calling getDurationNs as a defensive measure
         if (!orderedChronologically(startSystemTime, sample.absoluteTimestamp)) {
-            SENTRY_LOG_WARN(@"Filtered sample not chronological with transaction.");
+            SENTRY_LOG_WARN(@"Filtering sample as it came before start time to begin slicing.");
             return;
         }
-        const auto dict = [NSMutableDictionary dictionaryWithDictionary:@ {
-            @"elapsed_since_start_ns" :
-                sentry_stringForUInt64(getDurationNs(startSystemTime, sample.absoluteTimestamp)),
-            @"thread_id" : sentry_stringForUInt64(sample.threadID),
-            @"stack_id" : sample.stackIndex,
-        }];
+        const auto dict = [NSMutableDictionary dictionary];
+        const auto durationNs = getDurationNs(startSystemTime, sample.absoluteTimestamp);
+        dict[@"elapsed_since_start_ns"] = sentry_stringForUInt64(durationNs);
+
+        dict[@"thread_id"] = sentry_stringForUInt64(sample.threadID);
+        dict[@"stack_id"] = sample.stackIndex;
+
         if (sample.queueAddress) {
             dict[@"queue_address"] = sample.queueAddress;
         }
 
+        [result addObject:dict];
+    }];
+    return result;
+}
+
+/**
+ * Given an array of continuous profile samples with absolute NSDate timestamps, return the
+ * serialized JSON mapping with their data.
+ * */
+NSArray<NSDictionary *> *
+_sentry_serializedContinuousProfileSamples(NSArray<SentrySample *> *samples)
+{
+    const auto result = [NSMutableArray<NSDictionary *> array];
+    [samples enumerateObjectsUsingBlock:^(
+        SentrySample *_Nonnull sample, NSUInteger idx, BOOL *_Nonnull stop) {
+        const auto dict = [NSMutableDictionary dictionary];
+        dict[@"timestamp"] = @(sample.absoluteNSDateInterval);
+        dict[@"thread_id"] = sentry_stringForUInt64(sample.threadID);
+        dict[@"stack_id"] = sample.stackIndex;
+        if (sample.queueAddress) {
+            dict[@"queue_address"] = sample.queueAddress;
+        }
         [result addObject:dict];
     }];
     return result;
@@ -92,7 +113,7 @@ sentry_profilerTruncationReasonName(SentryProfilerTruncationReason reason)
 }
 
 NSMutableDictionary<NSString *, id> *
-sentry_serializedProfileData(
+sentry_serializedTraceProfileData(
     NSDictionary<NSString *, id> *profileData, uint64_t startSystemTime, uint64_t endSystemTime,
     NSString *truncationReason, NSDictionary<NSString *, id> *serializedMetrics,
     NSArray<SentryDebugMeta *> *debugMeta, SentryHub *hub
@@ -123,8 +144,8 @@ sentry_serializedProfileData(
     }
     const auto payload = [NSMutableDictionary<NSString *, id> dictionary];
     NSMutableDictionary<NSString *, id> *const profile = [profileData[@"profile"] mutableCopy];
-    profile[@"samples"]
-        = _sentry_serializedSamplesWithRelativeTimestamps(slicedSamples, startSystemTime);
+    profile[@"samples"] = _sentry_serializedTraceProfileSamplesWithRelativeTimestamps(
+        slicedSamples, startSystemTime);
     payload[@"profile"] = profile;
 
     payload[@"version"] = @"1";
@@ -162,25 +183,25 @@ sentry_serializedProfileData(
 #    if SENTRY_HAS_UIKIT
     const auto mutableMetrics =
         [NSMutableDictionary<NSString *, id> dictionaryWithDictionary:metrics];
-    const auto slowFrames = sentry_sliceGPUData(gpuData.slowFrameTimestamps, startSystemTime,
-        endSystemTime, /*useMostRecentRecording */ NO);
+    const auto slowFrames = sentry_sliceTraceProfileGPUData(gpuData.slowFrameTimestamps,
+        startSystemTime, endSystemTime, /*useMostRecentFrameRate */ NO);
     if (slowFrames.count > 0) {
         mutableMetrics[kSentryProfilerSerializationKeySlowFrameRenders] =
             @ { @"unit" : @"nanosecond", @"values" : slowFrames };
     }
 
-    const auto frozenFrames
-        = sentry_sliceGPUData(gpuData.frozenFrameTimestamps, startSystemTime, endSystemTime,
-            /*useMostRecentRecording */ NO);
+    const auto frozenFrames = sentry_sliceTraceProfileGPUData(gpuData.frozenFrameTimestamps,
+        startSystemTime, endSystemTime,
+        /*useMostRecentFrameRate */ NO);
     if (frozenFrames.count > 0) {
         mutableMetrics[kSentryProfilerSerializationKeyFrozenFrameRenders] =
             @ { @"unit" : @"nanosecond", @"values" : frozenFrames };
     }
 
     if (slowFrames.count > 0 || frozenFrames.count > 0) {
-        const auto frameRates
-            = sentry_sliceGPUData(gpuData.frameRateTimestamps, startSystemTime, endSystemTime,
-                /*useMostRecentRecording */ YES);
+        const auto frameRates = sentry_sliceTraceProfileGPUData(gpuData.frameRateTimestamps,
+            startSystemTime, endSystemTime,
+            /*useMostRecentFrameRate */ YES);
         if (frameRates.count > 0) {
             mutableMetrics[kSentryProfilerSerializationKeyFrameRates] =
                 @ { @"unit" : @"hz", @"values" : frameRates };
@@ -196,40 +217,157 @@ sentry_serializedProfileData(
     return payload;
 }
 
-#    pragma mark - Public
-
-SentryEnvelopeItem *_Nullable sentry_profileEnvelopeItem(
-    SentryTransaction *transaction, NSDate *startTimestamp)
+NSMutableDictionary<NSString *, id> *
+sentry_serializedContinuousProfileChunk(SentryId *profileID, SentryId *chunkID,
+    NSDictionary<NSString *, id> *profileData, NSDictionary<NSString *, id> *serializedMetrics,
+    NSArray<SentryDebugMeta *> *debugMeta, SentryHub *hub
+#    if SENTRY_HAS_UIKIT
+    ,
+    SentryScreenFrames *gpuData
+#    endif // SENTRY_HAS_UIKIT
+)
 {
-    SENTRY_LOG_DEBUG(@"Creating profiling envelope item");
-    const auto profiler = sentry_profilerForFinishedTracer(transaction.trace.internalID);
-    if (!profiler) {
-        return nil;
+    NSMutableArray<SentrySample *> *const samples = profileData[@"profile"][@"samples"];
+    // !!!: assumption: in trace profiling, we would avoid sending a payload with less than 2
+    // samples. now, we may have previously sent a chunk with many samples, and then this chunk may
+    // be the last of the continuous profiling session and it only has 1 sample. assuming we'll want
+    // to keep that sample. let the backend decide, or, keep track of some statistics of the
+    // profiling session, to count the number of total samples sent so far, to decide whether or not
+    // a 1-sample chunk is acceptable.
+
+    const auto payload = [NSMutableDictionary<NSString *, id> dictionary];
+    NSMutableDictionary<NSString *, id> *const profile = [profileData[@"profile"] mutableCopy];
+    profile[@"samples"] = _sentry_serializedContinuousProfileSamples(samples);
+
+    payload[@"profile"] = profile;
+
+    payload[@"version"] = @"2";
+    const auto debugImages = [NSMutableArray<NSDictionary<NSString *, id> *> new];
+    for (SentryDebugMeta *debugImage in debugMeta) {
+        [debugImages addObject:[debugImage serialize]];
+    }
+    if (debugImages.count > 0) {
+        payload[@"debug_meta"] = @ { @"images" : debugImages };
     }
 
-    const auto payload = sentry_serializedProfileData(
-        [profiler.state copyProfilingData], transaction.startSystemTime, transaction.endSystemTime,
-        sentry_profilerTruncationReasonName(profiler.truncationReason),
-        [profiler.metricProfiler serializeBetween:transaction.startSystemTime
-                                              and:transaction.endSystemTime],
+    payload[@"chunk_id"] = [chunkID sentryIdString];
+    payload[@"profiler_id"] = profileID.sentryIdString;
+    payload[@"environment"] = hub.scope.environmentString ?: hub.getClient.options.environment;
+    payload[@"release"] = hub.getClient.options.releaseName;
+    payload[@"platform"] = SentryPlatformName;
+
+    const auto clientInfo = [NSMutableDictionary dictionary];
+    clientInfo[@"name"] = SentryMeta.sdkName;
+    clientInfo[@"version"] = SentryMeta.versionString;
+    payload[@"client_sdk"] = clientInfo;
+
+    // add the gathered metrics
+    auto metrics = serializedMetrics;
+
+#    if SENTRY_HAS_UIKIT
+    const auto mutableMetrics =
+        [NSMutableDictionary<NSString *, id> dictionaryWithDictionary:metrics];
+    if (gpuData.slowFrameTimestamps.count > 0) {
+        const auto values = [NSMutableDictionary dictionary];
+        values[@"unit"] = @"nanosecond";
+        values[@"values"] = gpuData.slowFrameTimestamps;
+        mutableMetrics[kSentryProfilerSerializationKeySlowFrameRenders] = values;
+    }
+
+    if (gpuData.frozenFrameTimestamps.count > 0) {
+        const auto values = [NSMutableDictionary dictionary];
+        values[@"unit"] = @"nanosecond";
+        values[@"values"] = gpuData.frozenFrameTimestamps;
+        mutableMetrics[kSentryProfilerSerializationKeyFrozenFrameRenders] = values;
+    }
+
+    if (gpuData.slowFrameTimestamps.count > 0 || gpuData.frozenFrameTimestamps.count > 0) {
+        if (gpuData.frameRateTimestamps.count > 0) {
+            const auto values = [NSMutableDictionary dictionary];
+            values[@"unit"] = @"hz";
+            values[@"values"] = gpuData.frameRateTimestamps;
+            mutableMetrics[kSentryProfilerSerializationKeyFrameRates] = values;
+        }
+    }
+    metrics = mutableMetrics;
+#    endif // SENTRY_HAS_UIKIT
+
+    if (metrics.count > 0) {
+        payload[@"measurements"] = metrics;
+    }
+
+    return payload;
+}
+
+#    pragma mark - Public
+
+SentryEnvelope *_Nullable sentry_continuousProfileChunkEnvelope(
+    SentryId *profileID, NSDictionary *profileState, NSDictionary *metricProfilerState
+#    if SENTRY_HAS_UIKIT
+    ,
+    SentryScreenFrames *gpuData
+#    endif // SENTRY_HAS_UIKIT
+)
+{
+    const auto chunkID = [[SentryId alloc] init];
+    const auto payload = sentry_serializedContinuousProfileChunk(
+        profileID, chunkID, profileState, metricProfilerState,
         [SentryDependencyContainer.sharedInstance.debugImageProvider getDebugImagesCrashed:NO],
-        transaction.trace.hub
+        SentrySDK.currentHub
 #    if SENTRY_HAS_UIKIT
         ,
-        profiler.screenFrameData
+        gpuData
 #    endif // SENTRY_HAS_UIKIT
     );
-
-#    if defined(TEST) || defined(TESTCI) || defined(DEBUG)
-    sentry_writeProfileFile(payload);
-#    endif // defined(TEST) || defined(TESTCI) || defined(DEBUG)
 
     if (payload == nil) {
         SENTRY_LOG_DEBUG(@"Payload was empty, will not create a profiling envelope item.");
         return nil;
     }
 
-    payload[@"platform"] = transaction.platform;
+    const auto JSONData = [SentrySerialization dataWithJSONObject:payload];
+    if (JSONData == nil) {
+        SENTRY_LOG_DEBUG(@"Failed to encode profile to JSON.");
+        return nil;
+    }
+
+#    if defined(TEST) || defined(TESTCI)
+    // only write profile payloads to disk for UI tests
+    if (NSProcessInfo.processInfo.environment[@"--io.sentry.ui-test.test-name"] != nil) {
+        sentry_writeProfileFile(JSONData);
+    }
+#    endif // defined(TEST) || defined(TESTCI)
+
+    const auto header =
+        [[SentryEnvelopeItemHeader alloc] initWithType:SentryEnvelopeItemTypeProfileChunk
+                                                length:JSONData.length];
+    const auto envelopeItem = [[SentryEnvelopeItem alloc] initWithHeader:header data:JSONData];
+
+    return [[SentryEnvelope alloc] initWithId:chunkID singleItem:envelopeItem];
+}
+
+SentryEnvelopeItem *_Nullable sentry_traceProfileEnvelopeItem(SentryHub *hub,
+    SentryProfiler *profiler, NSDictionary<NSString *, id> *profilingData,
+    SentryTransaction *transaction, NSDate *startTimestamp)
+{
+    const auto payload = sentry_serializedTraceProfileData(
+        profilingData, transaction.startSystemTime, transaction.endSystemTime,
+        sentry_profilerTruncationReasonName(profiler.truncationReason),
+        [profiler.metricProfiler serializeTraceProfileMetricsBetween:transaction.startSystemTime
+                                                                 and:transaction.endSystemTime],
+        [SentryDependencyContainer.sharedInstance.debugImageProvider getDebugImagesCrashed:NO], hub
+#    if SENTRY_HAS_UIKIT
+        ,
+        profiler.screenFrameData
+#    endif // SENTRY_HAS_UIKIT
+    );
+
+    if (payload == nil) {
+        SENTRY_LOG_DEBUG(@"Payload was empty, will not create a profiling envelope item.");
+        return nil;
+    }
+
+    payload[@"platform"] = SentryPlatformName;
     payload[@"transaction"] = @ {
         @"id" : transaction.eventId.sentryIdString,
         @"trace_id" : transaction.trace.traceId.sentryIdString,
@@ -244,12 +382,16 @@ SentryEnvelopeItem *_Nullable sentry_profileEnvelopeItem(
         return nil;
     }
 
+#    if defined(TEST) || defined(TESTCI)
+    sentry_writeProfileFile(JSONData);
+#    endif // defined(TEST) || defined(TESTCI)
+
     const auto header = [[SentryEnvelopeItemHeader alloc] initWithType:SentryEnvelopeItemTypeProfile
                                                                 length:JSONData.length];
     return [[SentryEnvelopeItem alloc] initWithHeader:header data:JSONData];
 }
 
-NSMutableDictionary<NSString *, id> *_Nullable sentry_collectProfileData(
+NSMutableDictionary<NSString *, id> *_Nullable sentry_collectProfileDataHybridSDK(
     uint64_t startSystemTime, uint64_t endSystemTime, SentryId *traceId, SentryHub *hub)
 {
     const auto profiler = sentry_profilerForFinishedTracer(traceId);
@@ -257,9 +399,10 @@ NSMutableDictionary<NSString *, id> *_Nullable sentry_collectProfileData(
         return nil;
     }
 
-    return sentry_serializedProfileData([profiler.state copyProfilingData], startSystemTime,
+    return sentry_serializedTraceProfileData([profiler.state copyProfilingData], startSystemTime,
         endSystemTime, sentry_profilerTruncationReasonName(profiler.truncationReason),
-        [profiler.metricProfiler serializeBetween:startSystemTime and:endSystemTime],
+        [profiler.metricProfiler serializeTraceProfileMetricsBetween:startSystemTime
+                                                                 and:endSystemTime],
         [SentryDependencyContainer.sharedInstance.debugImageProvider getDebugImagesCrashed:NO], hub
 #    if SENTRY_HAS_UIKIT
         ,

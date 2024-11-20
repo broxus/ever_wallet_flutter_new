@@ -4,14 +4,11 @@
 
 #    import "PrivateSentrySDKOnly.h"
 #    import "SentryDependencyContainer.h"
-#    import "SentryLog.h"
-
 #    import "SentryFramesTracker.h"
 
 NS_ASSUME_NONNULL_BEGIN
 
-@interface
-SentryFramesTrackingIntegration ()
+@interface SentryFramesTrackingIntegration ()
 
 @property (nonatomic, strong) SentryFramesTracker *tracker;
 
@@ -38,11 +35,6 @@ SentryFramesTrackingIntegration ()
 }
 
 - (void)uninstall
-{
-    [self stop];
-}
-
-- (void)stop
 {
     if (nil != self.tracker) {
         [self.tracker stop];

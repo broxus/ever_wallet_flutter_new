@@ -1,4 +1,4 @@
-import 'package:app/app/service/secure_storage_service.dart';
+import 'package:app/app/service/service.dart';
 import 'package:app/feature/onboarding/screen/welcome/welcome_screen.dart';
 import 'package:elementary/elementary.dart';
 
