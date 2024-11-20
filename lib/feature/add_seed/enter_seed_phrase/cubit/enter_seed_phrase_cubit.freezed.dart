@@ -20,7 +20,7 @@ mixin _$EnterSeedPhraseState {
   TResult when<TResult extends Object?>({
     required TResult Function() initial,
     required TResult Function(List<int> allowedValues, int currentValue,
-            List<EnterSeedPhraseInputModel> inputs, bool displayPasteButton)
+            List<EnterSeedPhraseInputState> inputs, bool displayPasteButton)
         tab,
   }) =>
       throw _privateConstructorUsedError;
@@ -28,7 +28,7 @@ mixin _$EnterSeedPhraseState {
   TResult? whenOrNull<TResult extends Object?>({
     TResult? Function()? initial,
     TResult? Function(List<int> allowedValues, int currentValue,
-            List<EnterSeedPhraseInputModel> inputs, bool displayPasteButton)?
+            List<EnterSeedPhraseInputState> inputs, bool displayPasteButton)?
         tab,
   }) =>
       throw _privateConstructorUsedError;
@@ -36,7 +36,7 @@ mixin _$EnterSeedPhraseState {
   TResult maybeWhen<TResult extends Object?>({
     TResult Function()? initial,
     TResult Function(List<int> allowedValues, int currentValue,
-            List<EnterSeedPhraseInputModel> inputs, bool displayPasteButton)?
+            List<EnterSeedPhraseInputState> inputs, bool displayPasteButton)?
         tab,
     required TResult orElse(),
   }) =>
@@ -127,7 +127,7 @@ class _$InitialImpl implements _Initial {
   TResult when<TResult extends Object?>({
     required TResult Function() initial,
     required TResult Function(List<int> allowedValues, int currentValue,
-            List<EnterSeedPhraseInputModel> inputs, bool displayPasteButton)
+            List<EnterSeedPhraseInputState> inputs, bool displayPasteButton)
         tab,
   }) {
     return initial();
@@ -138,7 +138,7 @@ class _$InitialImpl implements _Initial {
   TResult? whenOrNull<TResult extends Object?>({
     TResult? Function()? initial,
     TResult? Function(List<int> allowedValues, int currentValue,
-            List<EnterSeedPhraseInputModel> inputs, bool displayPasteButton)?
+            List<EnterSeedPhraseInputState> inputs, bool displayPasteButton)?
         tab,
   }) {
     return initial?.call();
@@ -149,7 +149,7 @@ class _$InitialImpl implements _Initial {
   TResult maybeWhen<TResult extends Object?>({
     TResult Function()? initial,
     TResult Function(List<int> allowedValues, int currentValue,
-            List<EnterSeedPhraseInputModel> inputs, bool displayPasteButton)?
+            List<EnterSeedPhraseInputState> inputs, bool displayPasteButton)?
         tab,
     required TResult orElse(),
   }) {
@@ -203,7 +203,7 @@ abstract class _$$TabImplCopyWith<$Res> {
   $Res call(
       {List<int> allowedValues,
       int currentValue,
-      List<EnterSeedPhraseInputModel> inputs,
+      List<EnterSeedPhraseInputState> inputs,
       bool displayPasteButton});
 }
 
@@ -236,7 +236,7 @@ class __$$TabImplCopyWithImpl<$Res>
       inputs: null == inputs
           ? _value._inputs
           : inputs // ignore: cast_nullable_to_non_nullable
-              as List<EnterSeedPhraseInputModel>,
+              as List<EnterSeedPhraseInputState>,
       displayPasteButton: null == displayPasteButton
           ? _value.displayPasteButton
           : displayPasteButton // ignore: cast_nullable_to_non_nullable
@@ -251,7 +251,7 @@ class _$TabImpl implements _Tab {
   const _$TabImpl(
       {required final List<int> allowedValues,
       required this.currentValue,
-      required final List<EnterSeedPhraseInputModel> inputs,
+      required final List<EnterSeedPhraseInputState> inputs,
       required this.displayPasteButton})
       : _allowedValues = allowedValues,
         _inputs = inputs;
@@ -266,9 +266,9 @@ class _$TabImpl implements _Tab {
 
   @override
   final int currentValue;
-  final List<EnterSeedPhraseInputModel> _inputs;
+  final List<EnterSeedPhraseInputState> _inputs;
   @override
-  List<EnterSeedPhraseInputModel> get inputs {
+  List<EnterSeedPhraseInputState> get inputs {
     if (_inputs is EqualUnmodifiableListView) return _inputs;
     // ignore: implicit_dynamic_type
     return EqualUnmodifiableListView(_inputs);
@@ -317,7 +317,7 @@ class _$TabImpl implements _Tab {
   TResult when<TResult extends Object?>({
     required TResult Function() initial,
     required TResult Function(List<int> allowedValues, int currentValue,
-            List<EnterSeedPhraseInputModel> inputs, bool displayPasteButton)
+            List<EnterSeedPhraseInputState> inputs, bool displayPasteButton)
         tab,
   }) {
     return tab(allowedValues, currentValue, inputs, displayPasteButton);
@@ -328,7 +328,7 @@ class _$TabImpl implements _Tab {
   TResult? whenOrNull<TResult extends Object?>({
     TResult? Function()? initial,
     TResult? Function(List<int> allowedValues, int currentValue,
-            List<EnterSeedPhraseInputModel> inputs, bool displayPasteButton)?
+            List<EnterSeedPhraseInputState> inputs, bool displayPasteButton)?
         tab,
   }) {
     return tab?.call(allowedValues, currentValue, inputs, displayPasteButton);
@@ -339,7 +339,7 @@ class _$TabImpl implements _Tab {
   TResult maybeWhen<TResult extends Object?>({
     TResult Function()? initial,
     TResult Function(List<int> allowedValues, int currentValue,
-            List<EnterSeedPhraseInputModel> inputs, bool displayPasteButton)?
+            List<EnterSeedPhraseInputState> inputs, bool displayPasteButton)?
         tab,
     required TResult orElse(),
   }) {
@@ -385,12 +385,12 @@ abstract class _Tab implements EnterSeedPhraseState {
   const factory _Tab(
       {required final List<int> allowedValues,
       required final int currentValue,
-      required final List<EnterSeedPhraseInputModel> inputs,
+      required final List<EnterSeedPhraseInputState> inputs,
       required final bool displayPasteButton}) = _$TabImpl;
 
   List<int> get allowedValues;
   int get currentValue;
-  List<EnterSeedPhraseInputModel> get inputs;
+  List<EnterSeedPhraseInputState> get inputs;
   bool get displayPasteButton;
 
   /// Create a copy of EnterSeedPhraseState

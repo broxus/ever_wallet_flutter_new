@@ -89,6 +89,15 @@ class ChooseNetworkScreenModel extends ElementaryModel with ConnectionMixin {
             ),
           );
           continue;
+        case tychoTestnetProtoID:
+          list.add(
+            ChooseNetworkItemData(
+              id: tychoTestnetProtoID,
+              icon: Assets.images.tychoVector,
+              title: LocaleKeys.tychoTestnet.tr(),
+            ),
+          );
+          continue;
       }
     }
 

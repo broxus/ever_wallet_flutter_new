@@ -112,8 +112,10 @@ class _SelectNewAssetPageState extends State<SelectNewAssetPage> {
                         ),
                         AnimatedSize(
                           duration: defaultAnimationDuration,
-                          child: SizedBox(
-                            height: showButton ? DimensSizeV2.d74 : 0.0,
+                          child: Container(
+                            padding:
+                                const EdgeInsets.only(bottom: DimensSize.d16),
+                            height: showButton ? DimensSizeV2.d90 : 0.0,
                             child: Center(
                               child: PrimaryButton(
                                 buttonShape: ButtonShape.pill,

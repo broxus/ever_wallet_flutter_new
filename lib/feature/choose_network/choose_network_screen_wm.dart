@@ -35,8 +35,12 @@ class ChooseNetworkScreenWidgetModel
     super.model,
   );
 
+  late final _loadingItemId = createNotifier<String?>();
+
   StateNotifier<List<ChooseNetworkItemData>> get connectionsState =>
       model.connectionsState;
+
+  StateNotifier<String?> get loadingItemId => _loadingItemId;
 
   Color get backgroundColor => _themeStyle.colors.background0;
 
@@ -45,23 +49,31 @@ class ChooseNetworkScreenWidgetModel
   ThemeStyleV2 get _themeStyle => context.themeStyleV2;
 
   Future<void> onPressedType(String id) async {
-    if (!await model.checkConnection(context)) {
-      return;
-    }
+    if (_loadingItemId.value != null) return;
 
-    final isSuccess = await model.selectType(context, id);
+    try {
+      _loadingItemId.accept(id);
 
-    final isCanPop = contextSafe?.canPop() ?? false;
+      if (!await model.checkConnection(context)) {
+        return;
+      }
 
-    final nextPath = widget.nextStep;
+      final isSuccess = await model.selectType(context, id);
 
-    if (nextPath != null) {
-      contextSafe?.goFurther(
-        nextPath,
-        preserveQueryParams: true,
-      );
-    } else if (isCanPop) {
-      contextSafe?.pop(isSuccess);
+      final isCanPop = contextSafe?.canPop() ?? false;
+
+      final nextPath = widget.nextStep;
+
+      if (nextPath != null) {
+        contextSafe?.goFurther(
+          nextPath,
+          preserveQueryParams: true,
+        );
+      } else if (isCanPop) {
+        contextSafe?.pop(isSuccess);
+      }
+    } finally {
+      _loadingItemId.accept(null);
     }
   }
 }

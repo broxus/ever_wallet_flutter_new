@@ -1,7 +1,12 @@
 #import <Foundation/Foundation.h>
 
-#import "SentryDefines.h"
-#import "SentrySerializable.h"
+#if __has_include(<Sentry/Sentry.h>)
+#    import <Sentry/SentryDefines.h>
+#    import <Sentry/SentrySerializable.h>
+#else
+#    import <SentryWithoutUIKit/SentryDefines.h>
+#    import <SentryWithoutUIKit/SentrySerializable.h>
+#endif
 
 NS_ASSUME_NONNULL_BEGIN
 
@@ -103,7 +108,8 @@ NS_SWIFT_NAME(Event)
  *  name: "sentry.cocoa",
  *  integrations: [
  *      "react-native"
- *  ]
+ *  ],
+ *  features: ["performanceV2"]
  * }
  * @endcode
  * @warning This is automatically maintained and should not normally need to be modified.

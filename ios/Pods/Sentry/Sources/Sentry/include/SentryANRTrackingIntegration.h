@@ -1,4 +1,4 @@
-#import "SentryANRTracker.h"
+#import "SentryANRTrackerV1.h"
 #import "SentryBaseIntegration.h"
 #import "SentrySwift.h"
 #import <Foundation/Foundation.h>
@@ -9,6 +9,9 @@ static NSString *const SentryANRExceptionType = @"App Hanging";
 
 @interface SentryANRTrackingIntegration
     : SentryBaseIntegration <SentryIntegrationProtocol, SentryANRTrackerDelegate>
+
+- (void)pauseAppHangTracking;
+- (void)resumeAppHangTracking;
 
 @end
 

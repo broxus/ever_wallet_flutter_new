@@ -125,6 +125,9 @@ SentryProfiler *_Nullable sentry_profilerForFinishedTracer(SentryId *internalTra
 #    if SENTRY_HAS_UIKIT
     profiler.screenFrameData =
         [SentryDependencyContainer.sharedInstance.framesTracker.currentFrames copy];
+    SENTRY_LOG_DEBUG(
+        @"Grabbing copy of frames tracker screen frames data to attach to profiler: %@.",
+        profiler.screenFrameData);
     if (_gProfilersToTracers.count == 0) {
         [SentryDependencyContainer.sharedInstance.framesTracker resetProfilingTimestamps];
     }
@@ -133,7 +136,7 @@ SentryProfiler *_Nullable sentry_profilerForFinishedTracer(SentryId *internalTra
     return profiler;
 }
 
-#    if defined(TEST) || defined(TESTCI)
+#    if defined(TEST) || defined(TESTCI) || defined(DEBUG)
 void
 sentry_resetConcurrencyTracking()
 {
@@ -148,6 +151,6 @@ sentry_currentProfiledTracers()
     std::lock_guard<std::mutex> l(_gStateLock);
     return [_gTracersToProfilers count];
 }
-#    endif // defined(TEST) || defined(TESTCI)
+#    endif // defined(TEST) || defined(TESTCI) || defined(DEBUG)
 
 #endif // SENTRY_TARGET_PROFILING_SUPPORTED

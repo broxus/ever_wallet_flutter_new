@@ -255,6 +255,7 @@ abstract class LocaleKeys {
   static const browserWord = 'browserWord';
   static const profileWord = 'profileWord';
   static const manageAssets = 'manageAssets';
+  static const orWord = 'orWord';
   static const searchWord = 'searchWord';
   static const customToken = 'customToken';
   static const enterAssetName = 'enterAssetName';
@@ -390,6 +391,7 @@ abstract class LocaleKeys {
   static const addAssetTitle = 'addAssetTitle';
   static const versionWord = 'versionWord';
   static const venom = 'venom';
+  static const tychoTestnet = 'tychoTestnet';
   static const symbolWord = 'symbolWord';
   static const decimalsWord = 'decimalsWord';
   static const ownerAddress = 'ownerAddress';
@@ -615,6 +617,13 @@ abstract class LocaleKeys {
       'txTreeSimulationErrorDeleted.1';
   static const txTreeSimulationErrorDeleted = 'txTreeSimulationErrorDeleted';
   static const txTreeSimulationErrorHint = 'txTreeSimulationErrorHint';
+  static const txTreeSimulationErrorHintCanFix =
+      'txTreeSimulationErrorHintCanFix';
+  static const txTreeSimulationErrorSupportLink =
+      'txTreeSimulationErrorSupportLink';
+  static const txTreeSimulationErrorSwitchLabel =
+      'txTreeSimulationErrorSwitchLabel';
+  static const txTreeSimulationErrorTitle = 'txTreeSimulationErrorTitle';
   static const token = 'token';
   static const changeNetwork = 'changeNetwork';
   static const addNetwork = 'addNetwork';
@@ -624,4 +633,16 @@ abstract class LocaleKeys {
   static const networkConfig = 'networkConfig';
   static const connectionData = 'connectionData';
   static const changeAccountName = 'changeAccountName';
+  static const refreshToFind = 'refreshToFind';
+  static const newTokensLabel = 'newTokensLabel';
+  static const foundInThisAccountLabel = 'foundInThisAccountLabel';
+  static const dontSeeYourToken = 'dontSeeYourToken';
+  static const emptyTokensDescriptionModal = 'emptyTokensDescriptionModal';
+  static const selectTokensLabel = 'selectTokensLabel';
+  static const importSelectedTokensLabel = 'importSelectedTokensLabel';
+  static const selectedTokensBeImportedInfo = 'selectedTokensBeImportedInfo';
+  static const backWord = 'backWord';
+  static const selectAll = 'selectAll';
+  static const hideAll = 'hideAll';
+  static const selectSeed = 'selectSeed';
 }

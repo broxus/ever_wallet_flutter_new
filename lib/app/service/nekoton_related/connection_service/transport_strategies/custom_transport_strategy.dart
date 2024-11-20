@@ -79,4 +79,7 @@ class CustomTransportStrategy extends TransportStrategy {
 
   @override
   StakingInformation? get stakeInformation => null;
+
+  @override
+  String? get tokenApiBaseUrl => null;
 }

@@ -30,6 +30,8 @@ class ProfilePageModel extends ElementaryModel {
   Stream<bool> get biometryEnabledStream => _biometryService.enabledStream;
 
   Future<void> logout() async {
+    await _nekotonRepository.updateSubscriptions([]);
+    await _nekotonRepository.updateTokenSubscriptions([]);
     await _storageManagerService.clearSensitiveData();
     await _nekotonRepository.keyStore.reloadKeystore();
   }

@@ -9,8 +9,7 @@
 #    import <SentryOptions.h>
 #    import <SentrySDK+Private.h>
 
-@interface
-SentryWatchdogTerminationLogic ()
+@interface SentryWatchdogTerminationLogic ()
 
 @property (nonatomic, strong) SentryOptions *options;
 @property (nonatomic, strong) SentryCrashWrapper *crashAdapter;
@@ -51,7 +50,8 @@ SentryWatchdogTerminationLogic ()
     }
 
     // If the release name is different we assume it's an upgrade
-    if (![currentAppState.releaseName isEqualToString:previousAppState.releaseName]) {
+    if (currentAppState.releaseName != nil && previousAppState.releaseName != nil
+        && ![currentAppState.releaseName isEqualToString:previousAppState.releaseName]) {
         return NO;
     }
 

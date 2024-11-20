@@ -1,12 +1,12 @@
-<p align="center">
-  <a href="https://sentry.io/?utm_source=github&utm_medium=logo" target="_blank">
-    <img src="https://sentry-brand.storage.googleapis.com/sentry-wordmark-dark-280x84.png" alt="Sentry" width="280" height="84">
-  </a>
-<br/>
-    <h1>Official Sentry SDK for iOS / tvOS / macOS / watchOS <sup>(1)</sup>.</h1>
-</p>
+<div align="center">
+    <a href="https://sentry.io/?utm_source=github&utm_medium=logo" target="_blank">
+        <img src="https://sentry-brand.storage.googleapis.com/github-banners/github-sdk-cocoa.jpg" alt="Sentry for Apple">
+    </a>
+</div>
 
 _Bad software is everywhere, and we're tired of it. Sentry is on a mission to help developers write better software faster, so we can get back to enjoying technology. If you want to join us [<kbd>**Check out our open positions**</kbd>](https://sentry.io/careers/)_
+
+# Official Sentry SDK for iOS / tvOS / macOS / watchOS <sup>(1)</sup>
 
 [![Build](https://img.shields.io/github/actions/workflow/status/getsentry/sentry-cocoa/build.yml?branch=main)](https://github.com/getsentry/sentry-cocoa/actions/workflows/build.yml?query=branch%3Amain)
 [![codebeat badge](https://codebeat.co/badges/07f0bc91-9102-4fd8-99a6-30b25dc98037)](https://codebeat.co/projects/github-com-getsentry-sentry-cocoa-master)
@@ -19,6 +19,14 @@ _Bad software is everywhere, and we're tired of it. Sentry is on a mission to he
 [![Discord Chat](https://img.shields.io/discord/621778831602221064?logo=discord&logoColor=ffffff&color=7389D8)](https://discord.gg/PXa5Apfe7K)  
 
 This SDK is written in Objective-C but also provides a nice Swift interface.
+
+# Releases
+
+This repo uses the following ways to release SDK updates:
+
+- `Pre-release`: We create pre-releases (alpha, beta, RC,…) for larger and potentially more impactful changes, such as new features or major versions.
+- `Latest`: We continuously release major/minor/hotfix versions from the `main` branch. These releases go through all our internal quality gates and are very safe to use and intended to be the default for most teams.
+- `Stable`: We promote releases from `Latest` when they have been used in the field for some time and in scale, considering time since release, adoption, and other quality and stability metrics. These releases will be indicated on the [releases page](https://github.com/getsentry/sentry-cocoa/releases/) with the `Stable` suffix.
 
 **Where is the master branch?**
 

@@ -2,10 +2,17 @@
 #import "SentrySessionReplayIntegration.h"
 #import "SentrySwift.h"
 
-#if SENTRY_HAS_UIKIT && !TARGET_OS_VISION
+#if SENTRY_TARGET_REPLAY_SUPPORTED
 
-@interface
-SentrySessionReplayIntegration () <SentryIntegrationProtocol>
+@class SentrySessionReplay;
+@class SentryViewPhotographer;
+
+@interface SentrySessionReplayIntegration () <SentryIntegrationProtocol, SentrySessionListener,
+    SentrySessionReplayDelegate>
+
+@property (nonatomic, strong) SentrySessionReplay *sessionReplay;
+
+@property (nonatomic, strong) SentryViewPhotographer *viewPhotographer;
 
 @end
 

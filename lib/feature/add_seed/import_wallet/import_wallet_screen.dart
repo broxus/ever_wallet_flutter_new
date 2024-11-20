@@ -74,9 +74,7 @@ class ImportWalletScreen
                                     size: SegmentControlSize.medium,
                                   ),
                               ],
-                              onTabChanged: (v) {
-                                wm.onChangeTab(v);
-                              },
+                              onTabChanged: wm.onChangeTab,
                             ),
                           ),
                         Stack(

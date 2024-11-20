@@ -5,7 +5,7 @@ import 'package:app/data/models/models.dart';
 import 'package:app/di/di.dart';
 import 'package:app/feature/wallet/widgets/account_asset_tab/select_new_asset/select_new_asset.dart';
 import 'package:app/generated/generated.dart';
-import 'package:app/utils/seed_utils.dart';
+import 'package:app/utils/clipboard_utils.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -131,10 +131,10 @@ class _SelectNewAssetCustomEnterState extends State<SelectNewAssetCustomEnter> {
   }
 
   Future<void> _paste(BuildContext context) async {
-    final text = await getSeedTextFromClipboard();
-    if (text.isEmpty) return;
+    final text = await getClipBoardText();
+    if (text?.isEmpty ?? true) return;
 
-    final isValid = await validateAddress(Address(address: text));
+    final isValid = await validateAddress(Address(address: text!));
     if (isValid) {
       addressController.text = text;
     } else {

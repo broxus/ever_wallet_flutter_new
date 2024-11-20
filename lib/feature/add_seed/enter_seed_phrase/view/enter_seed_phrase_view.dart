@@ -1,5 +1,4 @@
-import 'package:app/feature/add_seed/enter_seed_phrase/cubit/enter_seed_phrase_cubit.dart';
-import 'package:app/feature/add_seed/enter_seed_phrase/cubit/enter_seed_phrase_input_model.dart';
+import 'package:app/feature/add_seed/enter_seed_phrase/cubit/cubit.dart';
 import 'package:app/generated/generated.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -121,7 +120,7 @@ class EnterSeedPhraseView extends StatelessWidget {
   // ignore: long-method
   Widget _inputBuild(
     ThemeStyleV2 themeStyleV2,
-    EnterSeedPhraseInputModel input,
+    EnterSeedPhraseInputState input,
     int currentValue,
   ) {
     final displayIndex = input.index + 1;
@@ -252,7 +251,7 @@ class EnterSeedPhraseView extends StatelessWidget {
 
   Widget _inputs(
     ThemeStyleV2 themeStyleV2,
-    List<EnterSeedPhraseInputModel> inputs,
+    List<EnterSeedPhraseInputState> inputs,
     int currentValue,
   ) {
     return ContainerRow(

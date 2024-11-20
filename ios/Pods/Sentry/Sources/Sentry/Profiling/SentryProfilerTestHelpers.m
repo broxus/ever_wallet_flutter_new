@@ -24,49 +24,48 @@ sentry_threadSanitizerIsPresent(void)
 #    if defined(TEST) || defined(TESTCI) || defined(DEBUG)
 
 void
-sentry_writeProfileFile(NSDictionary<NSString *, id> *payload)
+sentry_writeProfileFile(NSData *JSONData)
 {
-    NSData *data = [SentrySerialization dataWithJSONObject:payload];
     NSFileManager *fm = [NSFileManager defaultManager];
-    NSString *appSupportDirPath = sentryApplicationSupportPath();
+    NSString *testProfileDirPath =
+        [sentryStaticCachesPath() stringByAppendingPathComponent:@"profiles"];
 
-    if (![fm fileExistsAtPath:appSupportDirPath]) {
-        SENTRY_LOG_DEBUG(@"Creating app support directory.");
+    if (![fm fileExistsAtPath:testProfileDirPath]) {
+        SENTRY_LOG_DEBUG(@"Creating Sentry static cache directory.");
         NSError *error;
-        if (!SENTRY_CASSERT_RETURN([fm createDirectoryAtPath:appSupportDirPath
-                                       withIntermediateDirectories:NO
+        if (!SENTRY_CASSERT_RETURN([fm createDirectoryAtPath:testProfileDirPath
+                                       withIntermediateDirectories:YES
                                                         attributes:nil
                                                              error:&error],
-                @"Failed to create sentry app support directory")) {
+                @"Failed to create Sentry static cache directory")) {
             return;
         }
     } else {
-        SENTRY_LOG_DEBUG(@"App support directory already exists.");
+        SENTRY_LOG_DEBUG(@"Sentry static cache directory already exists.");
     }
 
-    NSString *pathToWrite;
-    if (sentry_isTracingAppLaunch) {
-        SENTRY_LOG_DEBUG(@"Writing app launch profile.");
-        pathToWrite = [appSupportDirPath stringByAppendingPathComponent:@"launchProfile"];
-    } else {
-        SENTRY_LOG_DEBUG(@"Overwriting last non-launch profile.");
-        pathToWrite = [appSupportDirPath stringByAppendingPathComponent:@"profile"];
-    }
-
-    if ([fm fileExistsAtPath:pathToWrite]) {
-        SENTRY_LOG_DEBUG(@"Already a %@ profile file present; make sure to remove them right after "
-                         @"using them, and that tests clean state in between so there isn't "
-                         @"leftover config producing one when it isn't expected.",
-            sentry_isTracingAppLaunch ? @" launch" : @"");
+    NSError *error;
+    NSArray<NSString *> *contents = [fm contentsOfDirectoryAtPath:testProfileDirPath error:&error];
+    if (!SENTRY_CASSERT_RETURN(contents != nil && error == nil,
+            @"Failed to read contents of debug profile directory: %@.", error)) {
         return;
     }
 
-    SENTRY_LOG_DEBUG(@"Writing%@ profile to file.", sentry_isTracingAppLaunch ? @" launch" : @"");
+    NSUInteger numberOfProfiles = [contents count];
+    NSString *pathToWrite = [testProfileDirPath
+        stringByAppendingPathComponent:[NSString stringWithFormat:@"profile%lld",
+                                           (long long)numberOfProfiles]];
 
-    NSError *error;
-    if (![data writeToFile:pathToWrite options:NSDataWritingAtomic error:&error]) {
-        SENTRY_LOG_ERROR(@"Failed to write data to path %@: %@", pathToWrite, error);
+    if ([fm fileExistsAtPath:pathToWrite]) {
+        SENTRY_LOG_DEBUG(@"Already a profile file present; make sure to remove them right after "
+                         @"using them, and that tests clean state in between so there isn't "
+                         @"leftover config producing one when it isn't expected.");
     }
+
+    SENTRY_LOG_DEBUG(@"Writing profile to file: %@.", pathToWrite);
+
+    SENTRY_CASSERT([JSONData writeToFile:pathToWrite options:NSDataWritingAtomic error:&error],
+        @"Failed to write data to path %@: %@", pathToWrite, error);
 }
 
 #    endif // defined(TEST) || defined(TESTCI) || defined(DEBUG)

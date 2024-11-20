@@ -84,8 +84,16 @@ enum AppRoute {
     'walletCancelUnstaking', // all data in query
   ),
   walletAddAccount(
+    'walletAddAccount',
+    'walletAddAccount',
+  ),
+  walletSelectSeed(
     '',
-    'walletAddAccount', // all data in query
+    'walletSelectSeed',
+  ),
+  walletNewAccount(
+    '',
+    'walletNewAccount', // all data in query
   ),
 
   /// Browser section

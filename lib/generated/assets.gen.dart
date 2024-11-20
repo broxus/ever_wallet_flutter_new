@@ -20,8 +20,15 @@ class $AssetsAbiGen {
   /// File path: assets/abi/StEverVault.abi.min.json
   String get stEverVaultAbiMin => 'assets/abi/StEverVault.abi.min.json';
 
+  /// File path: assets/abi/TokenRoot.abi.json
+  String get tokenRootAbi => 'assets/abi/TokenRoot.abi.json';
+
+  /// File path: assets/abi/TokenWallet.abi.json
+  String get tokenWalletAbi => 'assets/abi/TokenWallet.abi.json';
+
   /// List of all assets
-  List<String> get values => [stEverAccountAbiMin, stEverVaultAbiMin];
+  List<String> get values =>
+      [stEverAccountAbiMin, stEverVaultAbiMin, tokenRootAbi, tokenWalletAbi];
 }
 
 class $AssetsImagesGen {
@@ -77,6 +84,9 @@ class $AssetsImagesGen {
   /// File path: assets/images/bg_internet.png
   AssetGenImage get bgInternet =>
       const AssetGenImage('assets/images/bg_internet.png');
+
+  /// File path: assets/images/bg_main.svg
+  SvgGenImage get bgMain => const SvgGenImage('assets/images/bg_main.svg');
 
   /// File path: assets/images/blur_background.png
   AssetGenImage get blurBackground =>
@@ -222,9 +232,6 @@ class $AssetsImagesGen {
   SvgGenImage get historyFill =>
       const SvgGenImage('assets/images/history_fill.svg');
 
-  $AssetsImagesHomescreenBgGen get homescreenBg =>
-      const $AssetsImagesHomescreenBgGen();
-
   /// File path: assets/images/ic_match.svg
   SvgGenImage get icMatch => const SvgGenImage('assets/images/ic_match.svg');
 
@@ -291,6 +298,10 @@ class $AssetsImagesGen {
   SvgGenImage get networkEver =>
       const SvgGenImage('assets/images/network_ever.svg');
 
+  /// File path: assets/images/network_tycho.svg
+  SvgGenImage get networkTycho =>
+      const SvgGenImage('assets/images/network_tycho.svg');
+
   /// File path: assets/images/network_venom.svg
   SvgGenImage get networkVenom =>
       const SvgGenImage('assets/images/network_venom.svg');
@@ -339,6 +350,9 @@ class $AssetsImagesGen {
   SvgGenImage get searchEmpty =>
       const SvgGenImage('assets/images/search_empty.svg');
 
+  /// File path: assets/images/search_x.svg
+  SvgGenImage get searchX => const SvgGenImage('assets/images/search_x.svg');
+
   /// File path: assets/images/seed_phrase_icon.png
   AssetGenImage get seedPhraseIcon =>
       const AssetGenImage('assets/images/seed_phrase_icon.png');
@@ -370,6 +384,14 @@ class $AssetsImagesGen {
 
   /// File path: assets/images/trash.svg
   SvgGenImage get trash => const SvgGenImage('assets/images/trash.svg');
+
+  /// File path: assets/images/tycho_coin.svg
+  SvgGenImage get tychoCoin =>
+      const SvgGenImage('assets/images/tycho_coin.svg');
+
+  /// File path: assets/images/tycho_vector.svg
+  SvgGenImage get tychoVector =>
+      const SvgGenImage('assets/images/tycho_vector.svg');
 
   $AssetsImagesUserAvatarGen get userAvatar =>
       const $AssetsImagesUserAvatarGen();
@@ -404,6 +426,7 @@ class $AssetsImagesGen {
         arrowUpFlat,
         arrowsLeftRight,
         bgInternet,
+        bgMain,
         blurBackground,
         browserCard01,
         browserCard02,
@@ -462,6 +485,7 @@ class $AssetsImagesGen {
         networkDefault,
         networkEarth,
         networkEver,
+        networkTycho,
         networkVenom,
         openedEye,
         paste,
@@ -475,6 +499,7 @@ class $AssetsImagesGen {
         scan,
         search,
         searchEmpty,
+        searchX,
         seedPhraseIcon,
         settings,
         share,
@@ -484,6 +509,8 @@ class $AssetsImagesGen {
         support,
         tokenDefaultIcon,
         trash,
+        tychoCoin,
+        tychoVector,
         venom,
         venomVector,
         wallet,
@@ -557,17 +584,6 @@ class $AssetsImagesCheckCircleFillGen {
 
   /// List of all assets
   List<AssetGenImage> get values => [checkCircleFill];
-}
-
-class $AssetsImagesHomescreenBgGen {
-  const $AssetsImagesHomescreenBgGen();
-
-  /// File path: assets/images/homescreen_bg/homescreen_bg.png
-  AssetGenImage get homescreenBg =>
-      const AssetGenImage('assets/images/homescreen_bg/homescreen_bg.png');
-
-  /// List of all assets
-  List<AssetGenImage> get values => [homescreenBg];
 }
 
 class $AssetsImagesLangIconsGen {

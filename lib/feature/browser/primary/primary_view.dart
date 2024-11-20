@@ -210,6 +210,11 @@ class _PrimaryViewState extends State<PrimaryView>
     final browserTabsBloc = context.read<BrowserTabsBloc>();
 
     var (uri, isSchemeFound) = _getUri(text);
+
+    if (uri == null) {
+      return;
+    }
+
     if (!isSchemeFound) {
       final isResolvable = await inject<DnsResolveService>().isResolvable(uri);
       if (!isResolvable) {
@@ -218,6 +223,7 @@ class _PrimaryViewState extends State<PrimaryView>
     }
 
     final activeTab = browserTabsBloc.activeTab;
+
     browserTabsBloc.add(
       activeTab != null
           ? BrowserTabsEvent.setUrl(id: activeTab.id, uri: uri)
@@ -231,6 +237,11 @@ class _PrimaryViewState extends State<PrimaryView>
     }
 
     final uri = _getUri(text).$1;
+
+    if (uri == null) {
+      return;
+    }
+
     // Just try to resolve host and cache the result
     unawaited(inject<DnsResolveService>().isResolvable(uri));
 
@@ -239,13 +250,17 @@ class _PrimaryViewState extends State<PrimaryView>
         .add(BrowserTabsEvent.setSearchText(text: text));
   }
 
-  (Uri, bool) _getUri(String text) {
-    final uri = Uri.parse(text);
-    if (uri.hasScheme) {
-      return (uri, true);
-    }
+  (Uri?, bool) _getUri(String text) {
+    try {
+      final uri = Uri.parse(text);
+      if (uri.hasScheme) {
+        return (uri, true);
+      }
 
-    return (Uri.parse('https://$text'), false);
+      return (Uri.parse('https://$text'), false);
+    } catch (_) {
+      return (null, false);
+    }
   }
 
   void _listenAppLinks(BrowserAppLinksData event) {
