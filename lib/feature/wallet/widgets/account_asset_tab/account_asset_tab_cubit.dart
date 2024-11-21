@@ -32,16 +32,14 @@ class AccountAssetTabCubit extends Cubit<AccountAssetTabState> {
       );
     });
 
-    if (isShowingNewTokens) {
-      _searchSubscription = tokenWalletsService
-          .searchTokenWalletsForAddress(tonWallet.address)
-          .reduce((previous, element) => [...previous, ...element])
-          .asStream()
-          .listen(
-            (value) => _updateAccounts(value.length),
-            onError: (_) => _updateAccounts(0),
-          );
-    }
+    _searchSubscription = tokenWalletsService
+        .searchTokenWalletsForAddress(tonWallet.address)
+        .reduce((previous, element) => [...previous, ...element])
+        .asStream()
+        .listen(
+          (value) => _updateAccounts(value.length),
+          onError: (_) => _updateAccounts(0),
+        );
   }
 
   final AssetsService assetsService;

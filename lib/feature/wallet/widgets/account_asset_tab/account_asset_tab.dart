@@ -72,7 +72,7 @@ class AccountAssetsTab extends StatelessWidget {
                   isShowingNewTokens: isShowingNewTokens,
                   confirmImportCallback: confirmImportCallback,
                   numberNewTokens: state.when(
-                    empty: () => 0,
+                    empty: () => null,
                     accounts: (_, __, newTokens) => newTokens,
                   ),
                 );
