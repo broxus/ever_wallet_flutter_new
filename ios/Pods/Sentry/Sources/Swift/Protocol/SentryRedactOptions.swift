@@ -2,6 +2,8 @@ import Foundation
 
 @objc
 protocol SentryRedactOptions {
-    var redactAllText: Bool { get }
-    var redactAllImages: Bool { get }
+    var maskAllText: Bool { get }
+    var maskAllImages: Bool { get }
+    var maskedViewClasses: [AnyClass] { get }
+    var unmaskedViewClasses: [AnyClass] { get }
 }

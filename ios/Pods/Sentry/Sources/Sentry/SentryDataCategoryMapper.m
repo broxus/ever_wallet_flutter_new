@@ -11,8 +11,10 @@ NSString *const kSentryDataCategoryNameTransaction = @"transaction";
 NSString *const kSentryDataCategoryNameAttachment = @"attachment";
 NSString *const kSentryDataCategoryNameUserFeedback = @"user_report";
 NSString *const kSentryDataCategoryNameProfile = @"profile";
+NSString *const kSentryDataCategoryNameProfileChunk = @"profile_chunk";
 NSString *const kSentryDataCategoryNameReplay = @"replay";
 NSString *const kSentryDataCategoryNameMetricBucket = @"metric_bucket";
+NSString *const kSentryDataCategoryNameSpan = @"span";
 NSString *const kSentryDataCategoryNameUnknown = @"unknown";
 
 NS_ASSUME_NONNULL_BEGIN
@@ -35,6 +37,9 @@ sentryDataCategoryForEnvelopItemType(NSString *itemType)
     if ([itemType isEqualToString:SentryEnvelopeItemTypeProfile]) {
         return kSentryDataCategoryProfile;
     }
+    if ([itemType isEqualToString:SentryEnvelopeItemTypeProfileChunk]) {
+        return kSentryDataCategoryProfileChunk;
+    }
     if ([itemType isEqualToString:SentryEnvelopeItemTypeReplayVideo]) {
         return kSentryDataCategoryReplay;
     }
@@ -43,6 +48,7 @@ sentryDataCategoryForEnvelopItemType(NSString *itemType)
     if ([itemType isEqualToString:SentryEnvelopeItemTypeStatsd]) {
         return kSentryDataCategoryMetricBucket;
     }
+
     return kSentryDataCategoryDefault;
 }
 
@@ -83,11 +89,17 @@ sentryDataCategoryForString(NSString *value)
     if ([value isEqualToString:kSentryDataCategoryNameProfile]) {
         return kSentryDataCategoryProfile;
     }
+    if ([value isEqualToString:kSentryDataCategoryNameProfileChunk]) {
+        return kSentryDataCategoryProfileChunk;
+    }
     if ([value isEqualToString:kSentryDataCategoryNameReplay]) {
         return kSentryDataCategoryReplay;
     }
     if ([value isEqualToString:kSentryDataCategoryNameMetricBucket]) {
         return kSentryDataCategoryMetricBucket;
+    }
+    if ([value isEqualToString:kSentryDataCategoryNameSpan]) {
+        return kSentryDataCategorySpan;
     }
 
     return kSentryDataCategoryUnknown;
@@ -117,12 +129,16 @@ nameForSentryDataCategory(SentryDataCategory category)
         return kSentryDataCategoryNameUserFeedback;
     case kSentryDataCategoryProfile:
         return kSentryDataCategoryNameProfile;
+    case kSentryDataCategoryProfileChunk:
+        return kSentryDataCategoryNameProfileChunk;
     case kSentryDataCategoryMetricBucket:
         return kSentryDataCategoryNameMetricBucket;
     case kSentryDataCategoryUnknown:
         return kSentryDataCategoryNameUnknown;
     case kSentryDataCategoryReplay:
         return kSentryDataCategoryNameReplay;
+    case kSentryDataCategorySpan:
+        return kSentryDataCategoryNameSpan;
     }
 }
 

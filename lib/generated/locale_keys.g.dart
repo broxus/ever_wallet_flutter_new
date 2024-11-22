@@ -391,6 +391,7 @@ abstract class LocaleKeys {
   static const addAssetTitle = 'addAssetTitle';
   static const versionWord = 'versionWord';
   static const venom = 'venom';
+  static const tychoTestnet = 'tychoTestnet';
   static const symbolWord = 'symbolWord';
   static const decimalsWord = 'decimalsWord';
   static const ownerAddress = 'ownerAddress';
@@ -618,6 +619,8 @@ abstract class LocaleKeys {
   static const txTreeSimulationErrorHint = 'txTreeSimulationErrorHint';
   static const txTreeSimulationErrorHintCanFix =
       'txTreeSimulationErrorHintCanFix';
+  static const txTreeSimulationErrorSupportLink =
+      'txTreeSimulationErrorSupportLink';
   static const txTreeSimulationErrorSwitchLabel =
       'txTreeSimulationErrorSwitchLabel';
   static const txTreeSimulationErrorTitle = 'txTreeSimulationErrorTitle';

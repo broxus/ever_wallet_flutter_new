@@ -1,10 +1,11 @@
 #import "PrivateSentrySDKOnly.h"
 #import "SentryClient.h"
-#import "SentryDebugImageProvider.h"
+#import "SentryDebugImageProvider+HybridSDKs.h"
 #import "SentryDependencyContainer.h"
 #import "SentryEvent+Private.h"
 #import "SentryFileManager.h"
 #import "SentryHub+Private.h"
+#import "SentryInternalCDefines.h"
 #import "SentryInternalDefines.h"
 #import "SentryLog.h"
 #import "SentryNSDictionarySanitize.h"
@@ -15,7 +16,7 @@
 #import "SentryRandom.h"
 #import "SentrySDK+Private.h"
 #import "SentrySamplerDecision.h"
-#import "SentryScope.h"
+#import "SentryScope+Private.h"
 #import "SentrySpan.h"
 #import "SentrySpanContext+Private.h"
 #import "SentrySpanContext.h"
@@ -35,10 +36,11 @@
 #import <SentrySpanOperations.h>
 
 #if SENTRY_TARGET_PROFILING_SUPPORTED
+#    import "SentryCaptureTransactionWithProfile.h"
 #    import "SentryLaunchProfiling.h"
 #    import "SentryProfiledTracerConcurrency.h"
-#    import "SentryProfiler+Private.h"
 #    import "SentryProfilerSerialization.h"
+#    import "SentryTraceProfiler.h"
 #endif // SENTRY_TARGET_PROFILING_SUPPORTED
 
 #if SENTRY_HAS_UIKIT
@@ -48,11 +50,6 @@
 #    import "SentryUIViewControllerPerformanceTracker.h"
 #    import <SentryScreenFrames.h>
 #endif // SENTRY_HAS_UIKIT
-
-#if defined(TEST) || defined(TESTCI)
-#    import "SentryFileManager+Test.h"
-#    import "SentryInternalDefines.h"
-#endif // defined(TEST) || defined(TESTCI)
 
 NS_ASSUME_NONNULL_BEGIN
 
@@ -68,8 +65,7 @@ static const NSTimeInterval SENTRY_APP_START_MEASUREMENT_DIFFERENCE = 5.0;
 
 static const NSTimeInterval SENTRY_AUTO_TRANSACTION_DEADLINE = 30.0;
 
-@interface
-SentryTracer ()
+@interface SentryTracer ()
 
 @property (nonatomic) uint64_t startSystemTime;
 @property (nonatomic) SentrySpanStatus finishStatus;
@@ -112,13 +108,6 @@ SentryTracer ()
 
 static NSObject *appStartMeasurementLock;
 static BOOL appStartMeasurementRead;
-
-#if SENTRY_TARGET_PROFILING_SUPPORTED
-+ (void)load
-{
-    sentry_startLaunchProfile();
-}
-#endif // SENTRY_TARGET_PROFILING_SUPPORTED
 
 + (void)initialize
 {
@@ -165,7 +154,17 @@ static BOOL appStartMeasurementRead;
     }
 
 #if SENTRY_HAS_UIKIT
-    viewNames = [SentryDependencyContainer.sharedInstance.application relevantViewControllersNames];
+    [hub configureScope:^(SentryScope *scope) {
+        if (scope.currentScreen != nil) {
+            self->viewNames = @[ scope.currentScreen ];
+        }
+    }];
+
+    if (viewNames == nil) {
+        viewNames =
+            [SentryDependencyContainer.sharedInstance.application relevantViewControllersNames];
+    }
+
 #endif // SENTRY_HAS_UIKIT
 
     _idleTimeoutLock = [[NSObject alloc] init];
@@ -190,10 +189,13 @@ static BOOL appStartMeasurementRead;
 #endif // SENTRY_HAS_UIKIT
 
 #if SENTRY_TARGET_PROFILING_SUPPORTED
-    if (_configuration.profilesSamplerDecision.decision == kSentrySampleDecisionYes
-        || sentry_isTracingAppLaunch) {
+    BOOL profileShouldBeSampled
+        = _configuration.profilesSamplerDecision.decision == kSentrySampleDecisionYes;
+    BOOL isContinuousProfiling = [hub.client.options isContinuousProfilingEnabled];
+    BOOL shouldStartNormalTraceProfile = !isContinuousProfiling && profileShouldBeSampled;
+    if (sentry_isTracingAppLaunch || shouldStartNormalTraceProfile) {
         _internalID = [[SentryId alloc] init];
-        if ((_isProfiling = [SentryProfiler startWithTracer:_internalID])) {
+        if ((_isProfiling = [SentryTraceProfiler startWithTracer:_internalID])) {
             SENTRY_LOG_DEBUG(@"Started profiler for trace %@ with internal id %@",
                 transactionContext.traceId.sentryIdString, _internalID.sentryIdString);
         }
@@ -269,7 +271,7 @@ static BOOL appStartMeasurementRead;
 - (void)startDeadlineTimer
 {
     __weak SentryTracer *weakSelf = self;
-    [_dispatchQueue dispatchOnMainQueue:^{
+    [_dispatchQueue dispatchAsyncOnMainQueue:^{
         weakSelf.deadlineTimer = [weakSelf.configuration.timerFactory
             scheduledTimerWithTimeInterval:SENTRY_AUTO_TRANSACTION_DEADLINE
                                    repeats:NO
@@ -301,17 +303,22 @@ static BOOL appStartMeasurementRead;
         }
     }
 
-    [self finishWithStatus:kSentrySpanStatusDeadlineExceeded];
+    _finishStatus = kSentrySpanStatusDeadlineExceeded;
+    [self finishInternal];
 }
 
 - (void)cancelDeadlineTimer
 {
+    if (self.deadlineTimer == nil) {
+        return;
+    }
+
     // If the main thread is busy the tracer could be deallocated in between.
     __weak SentryTracer *weakSelf = self;
 
     // The timer must be invalidated from the thread on which the timer was installed, see
     // https://developer.apple.com/documentation/foundation/nstimer/1415405-invalidate#1770468
-    [_dispatchQueue dispatchOnMainQueue:^{
+    [_dispatchQueue dispatchAsyncOnMainQueue:^{
         if (weakSelf == nil) {
             SENTRY_LOG_DEBUG(@"WeakSelf is nil. Not invalidating deadlineTimer.");
             return;
@@ -327,7 +334,7 @@ static BOOL appStartMeasurementRead;
 
     if (self.delegate) {
         @synchronized(_children) {
-            span = [self.delegate activeSpanForTracer:self];
+            span = [self.delegate getActiveSpan];
             if (span == nil || ![_children containsObject:span]) {
                 span = self;
             }
@@ -410,14 +417,16 @@ static BOOL appStartMeasurementRead;
     [self canBeFinished];
 }
 
-- (SentryTraceContext *)traceContext
+- (nullable SentryTraceContext *)traceContext
 {
     if (_traceContext == nil) {
         @synchronized(self) {
             if (_traceContext == nil) {
                 _traceContext = [[SentryTraceContext alloc] initWithTracer:self
                                                                      scope:_hub.scope
-                                                                   options:SentrySDK.options];
+                                                                   options:_hub.client.options
+                        ?: SentrySDK.options]; // We should remove static classes and always
+                                               // inject dependencies.
             }
         }
     }
@@ -573,6 +582,12 @@ static BOOL appStartMeasurementRead;
         }
     }];
 
+    if (self.configuration.finishMustBeCalled && !self.wasFinishCalled) {
+        SENTRY_LOG_DEBUG(
+            @"Not capturing transaction because finish was not called before timing out.");
+        return;
+    }
+
     @synchronized(_children) {
         if (_configuration.idleTimeout > 0.0 && _children.count == 0) {
             SENTRY_LOG_DEBUG(@"Was waiting for timeout for UI event trace but it had no children, "
@@ -616,33 +631,14 @@ static BOOL appStartMeasurementRead;
             startTimestamp = [SentryDependencyContainer.sharedInstance.dateProvider date];
         }
 
-        [self captureTransactionWithProfile:transaction startTimestamp:startTimestamp];
+        sentry_captureTransactionWithProfile(
+            self.hub, self.dispatchQueue, transaction, startTimestamp);
         return;
     }
 #endif // SENTRY_TARGET_PROFILING_SUPPORTED
 
     [_hub captureTransaction:transaction withScope:_hub.scope];
 }
-
-#if SENTRY_TARGET_PROFILING_SUPPORTED
-- (void)captureTransactionWithProfile:(SentryTransaction *)transaction
-                       startTimestamp:(NSDate *)startTimestamp
-{
-    SentryEnvelopeItem *profileEnvelopeItem
-        = sentry_profileEnvelopeItem(transaction, startTimestamp);
-
-    if (!profileEnvelopeItem) {
-        [_hub captureTransaction:transaction withScope:_hub.scope];
-        return;
-    }
-
-    SENTRY_LOG_DEBUG(@"Capturing transaction id %@ with profiling data attached for tracer id %@.",
-        transaction.eventId.sentryIdString, self.internalID.sentryIdString);
-    [_hub captureTransaction:transaction
-                      withScope:_hub.scope
-        additionalEnvelopeItems:@[ profileEnvelopeItem ]];
-}
-#endif // SENTRY_TARGET_PROFILING_SUPPORTED
 
 - (void)trimEndTimestamp
 {
@@ -708,7 +704,7 @@ static BOOL appStartMeasurementRead;
         }
 #    endif // SENTRY_HAS_UIKIT
 
-        [SentryProfiler recordMetrics];
+        [SentryTraceProfiler recordMetrics];
         transaction.endSystemTime
             = SentryDependencyContainer.sharedInstance.dateProvider.systemTime;
     }
@@ -728,8 +724,8 @@ static BOOL appStartMeasurementRead;
     if (framesOfAllSpans.count > 0) {
         SentryDebugImageProvider *debugImageProvider
             = SentryDependencyContainer.sharedInstance.debugImageProvider;
-        transaction.debugMeta = [debugImageProvider getDebugImagesForFrames:framesOfAllSpans
-                                                                    isCrash:NO];
+        transaction.debugMeta =
+            [debugImageProvider getDebugImagesFromCacheForFrames:framesOfAllSpans];
     }
 
 #if SENTRY_HAS_UIKIT
@@ -745,7 +741,8 @@ static BOOL appStartMeasurementRead;
 
 #if SENTRY_HAS_UIKIT
 
-- (nullable SentryAppStartMeasurement *)getAppStartMeasurement
+- (nullable SentryAppStartMeasurement *)getAppStartMeasurement SENTRY_DISABLE_THREAD_SANITIZER(
+    "double-checked lock produce false alarms")
 {
     // Only send app start measurement for transactions generated by auto performance
     // instrumentation.
@@ -842,7 +839,8 @@ static BOOL appStartMeasurementRead;
     if (framesTracker.isRunning) {
         CFTimeInterval framesDelay = [framesTracker
                 getFramesDelay:self.startSystemTime
-            endSystemTimestamp:SentryDependencyContainer.sharedInstance.dateProvider.systemTime];
+            endSystemTimestamp:SentryDependencyContainer.sharedInstance.dateProvider.systemTime]
+                                         .delayDuration;
 
         if (framesDelay >= 0) {
             [self setDataValue:@(framesDelay) forKey:@"frames.delay"];

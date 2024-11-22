@@ -1,5 +1,7 @@
 #import "SentryCrashIntegration.h"
 #import "SentryCrashInstallationReporter.h"
+
+#include "SentryCrashMonitor_Signal.h"
 #import "SentryCrashWrapper.h"
 #import "SentryDispatchQueueWrapper.h"
 #import "SentryEvent.h"
@@ -22,14 +24,17 @@
 #    import <UIKit/UIKit.h>
 #endif
 
+#if TARGET_OS_OSX
+#    import "SentryUncaughtNSExceptions.h"
+#endif // TARGET_OS_OSX
+
 static dispatch_once_t installationToken = 0;
 static SentryCrashInstallationReporter *installation = nil;
 
 static NSString *const DEVICE_KEY = @"device";
 static NSString *const LOCALE_KEY = @"locale";
 
-@interface
-SentryCrashIntegration ()
+@interface SentryCrashIntegration ()
 
 @property (nonatomic, weak) SentryOptions *options;
 @property (nonatomic, strong) SentryDispatchQueueWrapper *dispatchQueueWrapper;
@@ -87,7 +92,21 @@ SentryCrashIntegration ()
     self.scopeObserver =
         [[SentryCrashScopeObserver alloc] initWithMaxBreadcrumbs:options.maxBreadcrumbs];
 
-    [self startCrashHandler:options.cacheDirectoryPath];
+    BOOL enableSigtermReporting = NO;
+#if !TARGET_OS_WATCH
+    enableSigtermReporting = options.enableSigtermReporting;
+#endif // !TARGET_OS_WATCH
+
+    BOOL enableUncaughtNSExceptionReporting = NO;
+#if TARGET_OS_OSX
+    if (options.enableSwizzling) {
+        enableUncaughtNSExceptionReporting = options.enableUncaughtNSExceptionReporting;
+    }
+#endif // TARGET_OS_OSX
+
+    [self startCrashHandler:options.cacheDirectoryPath
+                   enableSigtermReporting:enableSigtermReporting
+        enableReportingUncaughtExceptions:enableUncaughtNSExceptionReporting];
 
     [self configureScope];
 
@@ -100,6 +119,8 @@ SentryCrashIntegration ()
 }
 
 - (void)startCrashHandler:(NSString *)cacheDirectory
+               enableSigtermReporting:(BOOL)enableSigtermReporting
+    enableReportingUncaughtExceptions:(BOOL)enableReportingUncaughtExceptions
 {
     void (^block)(void) = ^{
         BOOL canSendReports = NO;
@@ -116,7 +137,16 @@ SentryCrashIntegration ()
             canSendReports = YES;
         }
 
+        sentrycrashcm_setEnableSigtermReporting(enableSigtermReporting);
+
         [installation install:cacheDirectory];
+
+#if TARGET_OS_OSX
+        if (enableReportingUncaughtExceptions) {
+            [SentryUncaughtNSExceptions configureCrashOnExceptions];
+            [SentryUncaughtNSExceptions swizzleNSApplicationReportException];
+        }
+#endif // TARGET_OS_OSX
 
         // We need to send the crashed event together with the crashed session in the same envelope
         // to have proper statistics in release health. To achieve this we need both synchronously

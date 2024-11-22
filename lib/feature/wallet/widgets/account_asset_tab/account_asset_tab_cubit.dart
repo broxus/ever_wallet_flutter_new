@@ -32,24 +32,14 @@ class AccountAssetTabCubit extends Cubit<AccountAssetTabState> {
       );
     });
 
-    if (isShowingNewTokens || true) {
-      _searchSubscription = tokenWalletsService
-          .searchTokenWalletsForAddress(tonWallet.address)
-          .reduce((previous, element) => [...previous, ...element])
-          .asStream()
-          .listen(
-        (value) {
-          _contractCount = value.length;
-          emit(
-            AccountAssetTabState.accounts(
-              tonWallet,
-              _contracts,
-              _contractCount,
-            ),
-          );
-        },
-      );
-    }
+    _searchSubscription = tokenWalletsService
+        .searchTokenWalletsForAddress(tonWallet.address)
+        .reduce((previous, element) => [...previous, ...element])
+        .asStream()
+        .listen(
+          (value) => _updateAccounts(value.length),
+          onError: (_) => _updateAccounts(0),
+        );
   }
 
   final AssetsService assetsService;
@@ -68,5 +58,17 @@ class AccountAssetTabCubit extends Cubit<AccountAssetTabState> {
     await _searchSubscription?.cancel();
 
     return super.close();
+  }
+
+  void _updateAccounts(int contractCount) {
+    _contractCount = contractCount;
+
+    emit(
+      AccountAssetTabState.accounts(
+        tonWallet,
+        _contracts,
+        _contractCount,
+      ),
+    );
   }
 }

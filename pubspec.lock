@@ -882,10 +882,10 @@ packages:
     dependency: transitive
     description:
       name: flutter_nekoton_bridge
-      sha256: b69d6b861136919c2e4be5a52fac10505d03e5d893a1a10b9a3b9a67d6f0b95c
+      sha256: da5050ed6fb2886df507f2a598e22a53b73fcfabb6fbcaee012d99a63c9fe94c
       url: "https://pub.dev"
     source: hosted
-    version: "2.0.1-dev.1"
+    version: "2.0.1-dev.2"
   flutter_plugin_android_lifecycle:
     dependency: transitive
     description:
@@ -1478,18 +1478,18 @@ packages:
     dependency: transitive
     description:
       name: nekoton_bridge
-      sha256: "071922990dd860cb3977f1ed3657d342a782a63cf79e7144b407e1513c527a5c"
+      sha256: feba08cf869483bd489df0ee9ebc06f4c3aa5c742464be4858ea2a0ded99f035
       url: "https://pub.dev"
     source: hosted
-    version: "2.0.1-dev.0"
+    version: "2.0.1-dev.2"
   nekoton_repository:
     dependency: "direct main"
     description:
       name: nekoton_repository
-      sha256: "4a2733579bcc9945724941de42272ccaa49153ba8256c59c67223031107e0b9d"
+      sha256: c9eeeb47f6be9c496d5a01b09315ac4ad0498b05ce01cfe1b1396b95c5bb06b2
       url: "https://pub.dev"
     source: hosted
-    version: "0.37.0-dev.8"
+    version: "0.37.0-dev.9"
   nekoton_webview:
     dependency: "direct main"
     description:
@@ -1879,18 +1879,18 @@ packages:
     dependency: transitive
     description:
       name: sentry
-      sha256: "57514bc72d441ffdc463f498d6886aa586a2494fa467a1eb9d649c28010d7ee3"
+      sha256: "2440763ae96fa8fd1bcdfc224f5232e1b7a09af76a72f4e626ee313a261faf6f"
       url: "https://pub.dev"
     source: hosted
-    version: "7.20.2"
+    version: "8.10.1"
   sentry_flutter:
     dependency: "direct main"
     description:
       name: sentry_flutter
-      sha256: "9723d58470ca43a360681ddd26abb71ca7b815f706bc8d3747afd054cf639ded"
+      sha256: "3b30038b3b9303540a8b2c8b1c8f0bb93a207f8e4b25691c59d969ddeb4734fd"
       url: "https://pub.dev"
     source: hosted
-    version: "7.20.2"
+    version: "8.10.1"
   share_plus:
     dependency: "direct main"
     description:
@@ -2331,10 +2331,10 @@ packages:
     dependency: transitive
     description:
       name: vm_service
-      sha256: "5c5f338a667b4c644744b661f309fb8080bb94b18a7e91ef1dbd343bed00ed6d"
+      sha256: f652077d0bdf60abe4c1f6377448e8655008eef28f128bc023f7b5e8dfeb48fc
       url: "https://pub.dev"
     source: hosted
-    version: "14.2.5"
+    version: "14.2.4"
   watcher:
     dependency: transitive
     description:
