@@ -73,7 +73,6 @@ class ConfirmActionWidgetModel
   }
 
   Future<void> onUseBiometry() async {
-    //final publicKey = _currentAccount.value?.publicKey;
     final publicKey = model.currentSeed?.publicKey;
     if (publicKey != null) {
       final password = await model.requestBiometry(publicKey);

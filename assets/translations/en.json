@@ -623,5 +623,6 @@
   "hideAll": "Hide all",
   "selectSeed": "Select seed",
   "deployWalletModalTitle": "Deploy your wallet",
-  "deployWalletModalSubtitle": "You need to have at least {} EVER on your account balance to deploy"
+  "deployWalletModalSubtitle": "You need to have at least {} EVER on your account balance to deploy",
+  "deployWalletWaitingTime": "Waiting time for transaction confirmation"
 }

@@ -40,6 +40,9 @@ class WalletDeployMultisigBody extends StatefulWidget {
 
 class _WalletDeployMultisigBodyState extends State<WalletDeployMultisigBody> {
   final _formKey = GlobalKey<FormState>();
+  final addressFilterFormatter = FilteringTextInputFormatter.deny(
+    RegExp(r'\s'),
+  );
 
   late List<TextEditingController> custodianControllers = List.generate(
     widget.custodians.isEmpty ? 3 : widget.custodians.length,
@@ -167,9 +170,7 @@ class _WalletDeployMultisigBodyState extends State<WalletDeployMultisigBody> {
                                       onSubmit: (_) =>
                                           custodianFocuses.first.requestFocus(),
                                       inputFormatters: [
-                                        FilteringTextInputFormatter.deny(
-                                          RegExp(r'\s'),
-                                        ),
+                                        addressFilterFormatter,
                                         FilteringTextInputFormatter.allow(
                                           RegExp('[0-9]'),
                                         ),
@@ -201,7 +202,7 @@ class _WalletDeployMultisigBodyState extends State<WalletDeployMultisigBody> {
                   ),
                   const SizedBox(height: DimensSizeV2.d8),
                   Text(
-                    'Waiting time for transaction confirmation',
+                    LocaleKeys.deployWalletWaitingTime.tr(),
                     style: textStyles.labelSmall,
                   ),
                   PrimaryTextField(
