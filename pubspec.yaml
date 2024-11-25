@@ -76,7 +76,7 @@ dependencies:
   sentry_flutter: ^8.9.0
   share_plus: 10.0.2
   shared_preferences: 2.2.3
-  string_extensions: 0.7.1
+  string_extensions: 0.7.3
   ui_components_lib:
     path: packages/ui_components_lib
   url_launcher: 6.2.6
