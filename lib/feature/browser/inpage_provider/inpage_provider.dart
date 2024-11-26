@@ -1681,7 +1681,7 @@ class InpageProvider extends ProviderApi {
         throw s.ApprovalsHandleException(LocaleKeys.addNetworkIdError.tr());
       }
     } finally {
-      transport?.dispose();
+      await transport?.dispose();
     }
 
     final network = await approvalsService.addNetwork(
@@ -1747,7 +1747,7 @@ class InpageProvider extends ProviderApi {
         _logger.severe('Error getting network id for connection: '
             '${connection.name} (${connection.id})');
       } finally {
-        transport?.dispose();
+        await transport?.dispose();
       }
     }
 

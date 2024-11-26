@@ -36,7 +36,7 @@ class AddNetworkModel extends ElementaryModel {
           .createStrategyByConnection(transport, connection)
           .toNetwork();
     } finally {
-      transport?.dispose();
+      await transport?.dispose();
     }
   }
 

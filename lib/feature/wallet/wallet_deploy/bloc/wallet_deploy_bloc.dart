@@ -149,6 +149,7 @@ class WalletDeployBloc extends Bloc<WalletDeployEvent, WalletDeployState> {
         custodians: custodians,
         reqConfirms: requireConfirmations,
         expiration: defaultSendTimeout,
+        hours: null,
       );
       await _handlePrepareDeploy(emit, custodians, requireConfirmations);
     } on FfiException catch (e, t) {
