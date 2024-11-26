@@ -112,6 +112,7 @@ class WalletDeployBloc extends Bloc<WalletDeployEvent, WalletDeployState> {
         emit,
         event.custodians,
         event.requireConfirmations,
+        event.hours,
       ),
     );
     on<_ConfirmDeploy>((event, emit) => _handleSend(emit, event.password));
@@ -157,6 +158,7 @@ class WalletDeployBloc extends Bloc<WalletDeployEvent, WalletDeployState> {
     Emitter<WalletDeployState> emit,
     List<PublicKey> custodians,
     int requireConfirmations,
+    int? hours,
   ) async {
     _cachedCustodians = custodians;
     _cachedRequireConfirmations = requireConfirmations;
@@ -167,6 +169,7 @@ class WalletDeployBloc extends Bloc<WalletDeployEvent, WalletDeployState> {
         custodians: custodians,
         reqConfirms: requireConfirmations,
         expiration: defaultSendTimeout,
+        hours: hours,
       );
       await _handlePrepareDeploy(emit, custodians, requireConfirmations);
     } on FfiException catch (e, t) {

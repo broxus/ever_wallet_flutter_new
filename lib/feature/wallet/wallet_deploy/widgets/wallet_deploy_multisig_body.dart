@@ -378,6 +378,7 @@ class _WalletDeployMultisigBodyState extends State<WalletDeployMultisigBody> {
               WalletDeployEvent.deployMultisig(
                 _collectValidKeys(),
                 _collectRequireConfirmations(),
+                waitingTimeController.text.toInt(),
               ),
             );
       }

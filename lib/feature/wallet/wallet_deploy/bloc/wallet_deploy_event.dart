@@ -25,6 +25,7 @@ class WalletDeployEvent with _$WalletDeployEvent {
   const factory WalletDeployEvent.deployMultisig(
     List<PublicKey> custodians,
     int requireConfirmations,
+    int? hours,
   ) = _DeployMultisig;
 
   /// Run deploying process by subscribing transaction

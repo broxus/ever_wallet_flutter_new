@@ -25,7 +25,7 @@ mixin _$WalletDeployEvent {
         updateMultisigData,
     required TResult Function() deployStandard,
     required TResult Function(
-            List<PublicKey> custodians, int requireConfirmations)
+            List<PublicKey> custodians, int requireConfirmations, int? hours)
         deployMultisig,
     required TResult Function(String password) confirmDeploy,
     required TResult Function() allowCloseDeploy,
@@ -39,7 +39,8 @@ mixin _$WalletDeployEvent {
     TResult? Function(List<PublicKey> custodians, int requireConfirmations)?
         updateMultisigData,
     TResult? Function()? deployStandard,
-    TResult? Function(List<PublicKey> custodians, int requireConfirmations)?
+    TResult? Function(
+            List<PublicKey> custodians, int requireConfirmations, int? hours)?
         deployMultisig,
     TResult? Function(String password)? confirmDeploy,
     TResult? Function()? allowCloseDeploy,
@@ -53,7 +54,8 @@ mixin _$WalletDeployEvent {
     TResult Function(List<PublicKey> custodians, int requireConfirmations)?
         updateMultisigData,
     TResult Function()? deployStandard,
-    TResult Function(List<PublicKey> custodians, int requireConfirmations)?
+    TResult Function(
+            List<PublicKey> custodians, int requireConfirmations, int? hours)?
         deployMultisig,
     TResult Function(String password)? confirmDeploy,
     TResult Function()? allowCloseDeploy,
@@ -169,7 +171,7 @@ class _$PrevStepImpl implements _PrevStep {
         updateMultisigData,
     required TResult Function() deployStandard,
     required TResult Function(
-            List<PublicKey> custodians, int requireConfirmations)
+            List<PublicKey> custodians, int requireConfirmations, int? hours)
         deployMultisig,
     required TResult Function(String password) confirmDeploy,
     required TResult Function() allowCloseDeploy,
@@ -186,7 +188,8 @@ class _$PrevStepImpl implements _PrevStep {
     TResult? Function(List<PublicKey> custodians, int requireConfirmations)?
         updateMultisigData,
     TResult? Function()? deployStandard,
-    TResult? Function(List<PublicKey> custodians, int requireConfirmations)?
+    TResult? Function(
+            List<PublicKey> custodians, int requireConfirmations, int? hours)?
         deployMultisig,
     TResult? Function(String password)? confirmDeploy,
     TResult? Function()? allowCloseDeploy,
@@ -203,7 +206,8 @@ class _$PrevStepImpl implements _PrevStep {
     TResult Function(List<PublicKey> custodians, int requireConfirmations)?
         updateMultisigData,
     TResult Function()? deployStandard,
-    TResult Function(List<PublicKey> custodians, int requireConfirmations)?
+    TResult Function(
+            List<PublicKey> custodians, int requireConfirmations, int? hours)?
         deployMultisig,
     TResult Function(String password)? confirmDeploy,
     TResult Function()? allowCloseDeploy,
@@ -345,7 +349,7 @@ class _$ChangeTypeImpl implements _ChangeType {
         updateMultisigData,
     required TResult Function() deployStandard,
     required TResult Function(
-            List<PublicKey> custodians, int requireConfirmations)
+            List<PublicKey> custodians, int requireConfirmations, int? hours)
         deployMultisig,
     required TResult Function(String password) confirmDeploy,
     required TResult Function() allowCloseDeploy,
@@ -362,7 +366,8 @@ class _$ChangeTypeImpl implements _ChangeType {
     TResult? Function(List<PublicKey> custodians, int requireConfirmations)?
         updateMultisigData,
     TResult? Function()? deployStandard,
-    TResult? Function(List<PublicKey> custodians, int requireConfirmations)?
+    TResult? Function(
+            List<PublicKey> custodians, int requireConfirmations, int? hours)?
         deployMultisig,
     TResult? Function(String password)? confirmDeploy,
     TResult? Function()? allowCloseDeploy,
@@ -379,7 +384,8 @@ class _$ChangeTypeImpl implements _ChangeType {
     TResult Function(List<PublicKey> custodians, int requireConfirmations)?
         updateMultisigData,
     TResult Function()? deployStandard,
-    TResult Function(List<PublicKey> custodians, int requireConfirmations)?
+    TResult Function(
+            List<PublicKey> custodians, int requireConfirmations, int? hours)?
         deployMultisig,
     TResult Function(String password)? confirmDeploy,
     TResult Function()? allowCloseDeploy,
@@ -549,7 +555,7 @@ class _$UpdateMultisigDataImpl implements _UpdateMultisigData {
         updateMultisigData,
     required TResult Function() deployStandard,
     required TResult Function(
-            List<PublicKey> custodians, int requireConfirmations)
+            List<PublicKey> custodians, int requireConfirmations, int? hours)
         deployMultisig,
     required TResult Function(String password) confirmDeploy,
     required TResult Function() allowCloseDeploy,
@@ -566,7 +572,8 @@ class _$UpdateMultisigDataImpl implements _UpdateMultisigData {
     TResult? Function(List<PublicKey> custodians, int requireConfirmations)?
         updateMultisigData,
     TResult? Function()? deployStandard,
-    TResult? Function(List<PublicKey> custodians, int requireConfirmations)?
+    TResult? Function(
+            List<PublicKey> custodians, int requireConfirmations, int? hours)?
         deployMultisig,
     TResult? Function(String password)? confirmDeploy,
     TResult? Function()? allowCloseDeploy,
@@ -583,7 +590,8 @@ class _$UpdateMultisigDataImpl implements _UpdateMultisigData {
     TResult Function(List<PublicKey> custodians, int requireConfirmations)?
         updateMultisigData,
     TResult Function()? deployStandard,
-    TResult Function(List<PublicKey> custodians, int requireConfirmations)?
+    TResult Function(
+            List<PublicKey> custodians, int requireConfirmations, int? hours)?
         deployMultisig,
     TResult Function(String password)? confirmDeploy,
     TResult Function()? allowCloseDeploy,
@@ -709,7 +717,7 @@ class _$DeployStandardImpl implements _DeployStandard {
         updateMultisigData,
     required TResult Function() deployStandard,
     required TResult Function(
-            List<PublicKey> custodians, int requireConfirmations)
+            List<PublicKey> custodians, int requireConfirmations, int? hours)
         deployMultisig,
     required TResult Function(String password) confirmDeploy,
     required TResult Function() allowCloseDeploy,
@@ -726,7 +734,8 @@ class _$DeployStandardImpl implements _DeployStandard {
     TResult? Function(List<PublicKey> custodians, int requireConfirmations)?
         updateMultisigData,
     TResult? Function()? deployStandard,
-    TResult? Function(List<PublicKey> custodians, int requireConfirmations)?
+    TResult? Function(
+            List<PublicKey> custodians, int requireConfirmations, int? hours)?
         deployMultisig,
     TResult? Function(String password)? confirmDeploy,
     TResult? Function()? allowCloseDeploy,
@@ -743,7 +752,8 @@ class _$DeployStandardImpl implements _DeployStandard {
     TResult Function(List<PublicKey> custodians, int requireConfirmations)?
         updateMultisigData,
     TResult Function()? deployStandard,
-    TResult Function(List<PublicKey> custodians, int requireConfirmations)?
+    TResult Function(
+            List<PublicKey> custodians, int requireConfirmations, int? hours)?
         deployMultisig,
     TResult Function(String password)? confirmDeploy,
     TResult Function()? allowCloseDeploy,
@@ -816,7 +826,7 @@ abstract class _$$DeployMultisigImplCopyWith<$Res> {
           $Res Function(_$DeployMultisigImpl) then) =
       __$$DeployMultisigImplCopyWithImpl<$Res>;
   @useResult
-  $Res call({List<PublicKey> custodians, int requireConfirmations});
+  $Res call({List<PublicKey> custodians, int requireConfirmations, int? hours});
 }
 
 /// @nodoc
@@ -834,6 +844,7 @@ class __$$DeployMultisigImplCopyWithImpl<$Res>
   $Res call({
     Object? custodians = null,
     Object? requireConfirmations = null,
+    Object? hours = freezed,
   }) {
     return _then(_$DeployMultisigImpl(
       null == custodians
@@ -844,6 +855,10 @@ class __$$DeployMultisigImplCopyWithImpl<$Res>
           ? _value.requireConfirmations
           : requireConfirmations // ignore: cast_nullable_to_non_nullable
               as int,
+      freezed == hours
+          ? _value.hours
+          : hours // ignore: cast_nullable_to_non_nullable
+              as int?,
     ));
   }
 }
@@ -852,7 +867,7 @@ class __$$DeployMultisigImplCopyWithImpl<$Res>
 
 class _$DeployMultisigImpl implements _DeployMultisig {
   const _$DeployMultisigImpl(
-      final List<PublicKey> custodians, this.requireConfirmations)
+      final List<PublicKey> custodians, this.requireConfirmations, this.hours)
       : _custodians = custodians;
 
   final List<PublicKey> _custodians;
@@ -865,10 +880,12 @@ class _$DeployMultisigImpl implements _DeployMultisig {
 
   @override
   final int requireConfirmations;
+  @override
+  final int? hours;
 
   @override
   String toString() {
-    return 'WalletDeployEvent.deployMultisig(custodians: $custodians, requireConfirmations: $requireConfirmations)';
+    return 'WalletDeployEvent.deployMultisig(custodians: $custodians, requireConfirmations: $requireConfirmations, hours: $hours)';
   }
 
   @override
@@ -879,12 +896,16 @@ class _$DeployMultisigImpl implements _DeployMultisig {
             const DeepCollectionEquality()
                 .equals(other._custodians, _custodians) &&
             (identical(other.requireConfirmations, requireConfirmations) ||
-                other.requireConfirmations == requireConfirmations));
+                other.requireConfirmations == requireConfirmations) &&
+            (identical(other.hours, hours) || other.hours == hours));
   }
 
   @override
-  int get hashCode => Object.hash(runtimeType,
-      const DeepCollectionEquality().hash(_custodians), requireConfirmations);
+  int get hashCode => Object.hash(
+      runtimeType,
+      const DeepCollectionEquality().hash(_custodians),
+      requireConfirmations,
+      hours);
 
   /// Create a copy of WalletDeployEvent
   /// with the given fields replaced by the non-null parameter values.
@@ -905,13 +926,13 @@ class _$DeployMultisigImpl implements _DeployMultisig {
         updateMultisigData,
     required TResult Function() deployStandard,
     required TResult Function(
-            List<PublicKey> custodians, int requireConfirmations)
+            List<PublicKey> custodians, int requireConfirmations, int? hours)
         deployMultisig,
     required TResult Function(String password) confirmDeploy,
     required TResult Function() allowCloseDeploy,
     required TResult Function(Transaction transaction) completeDeploy,
   }) {
-    return deployMultisig(custodians, requireConfirmations);
+    return deployMultisig(custodians, requireConfirmations, hours);
   }
 
   @override
@@ -922,13 +943,14 @@ class _$DeployMultisigImpl implements _DeployMultisig {
     TResult? Function(List<PublicKey> custodians, int requireConfirmations)?
         updateMultisigData,
     TResult? Function()? deployStandard,
-    TResult? Function(List<PublicKey> custodians, int requireConfirmations)?
+    TResult? Function(
+            List<PublicKey> custodians, int requireConfirmations, int? hours)?
         deployMultisig,
     TResult? Function(String password)? confirmDeploy,
     TResult? Function()? allowCloseDeploy,
     TResult? Function(Transaction transaction)? completeDeploy,
   }) {
-    return deployMultisig?.call(custodians, requireConfirmations);
+    return deployMultisig?.call(custodians, requireConfirmations, hours);
   }
 
   @override
@@ -939,7 +961,8 @@ class _$DeployMultisigImpl implements _DeployMultisig {
     TResult Function(List<PublicKey> custodians, int requireConfirmations)?
         updateMultisigData,
     TResult Function()? deployStandard,
-    TResult Function(List<PublicKey> custodians, int requireConfirmations)?
+    TResult Function(
+            List<PublicKey> custodians, int requireConfirmations, int? hours)?
         deployMultisig,
     TResult Function(String password)? confirmDeploy,
     TResult Function()? allowCloseDeploy,
@@ -947,7 +970,7 @@ class _$DeployMultisigImpl implements _DeployMultisig {
     required TResult orElse(),
   }) {
     if (deployMultisig != null) {
-      return deployMultisig(custodians, requireConfirmations);
+      return deployMultisig(custodians, requireConfirmations, hours);
     }
     return orElse();
   }
@@ -1003,12 +1026,12 @@ class _$DeployMultisigImpl implements _DeployMultisig {
 }
 
 abstract class _DeployMultisig implements WalletDeployEvent {
-  const factory _DeployMultisig(
-          final List<PublicKey> custodians, final int requireConfirmations) =
-      _$DeployMultisigImpl;
+  const factory _DeployMultisig(final List<PublicKey> custodians,
+      final int requireConfirmations, final int? hours) = _$DeployMultisigImpl;
 
   List<PublicKey> get custodians;
   int get requireConfirmations;
+  int? get hours;
 
   /// Create a copy of WalletDeployEvent
   /// with the given fields replaced by the non-null parameter values.
@@ -1093,7 +1116,7 @@ class _$ConfirmDeployImpl implements _ConfirmDeploy {
         updateMultisigData,
     required TResult Function() deployStandard,
     required TResult Function(
-            List<PublicKey> custodians, int requireConfirmations)
+            List<PublicKey> custodians, int requireConfirmations, int? hours)
         deployMultisig,
     required TResult Function(String password) confirmDeploy,
     required TResult Function() allowCloseDeploy,
@@ -1110,7 +1133,8 @@ class _$ConfirmDeployImpl implements _ConfirmDeploy {
     TResult? Function(List<PublicKey> custodians, int requireConfirmations)?
         updateMultisigData,
     TResult? Function()? deployStandard,
-    TResult? Function(List<PublicKey> custodians, int requireConfirmations)?
+    TResult? Function(
+            List<PublicKey> custodians, int requireConfirmations, int? hours)?
         deployMultisig,
     TResult? Function(String password)? confirmDeploy,
     TResult? Function()? allowCloseDeploy,
@@ -1127,7 +1151,8 @@ class _$ConfirmDeployImpl implements _ConfirmDeploy {
     TResult Function(List<PublicKey> custodians, int requireConfirmations)?
         updateMultisigData,
     TResult Function()? deployStandard,
-    TResult Function(List<PublicKey> custodians, int requireConfirmations)?
+    TResult Function(
+            List<PublicKey> custodians, int requireConfirmations, int? hours)?
         deployMultisig,
     TResult Function(String password)? confirmDeploy,
     TResult Function()? allowCloseDeploy,
@@ -1250,7 +1275,7 @@ class _$AllowCloseDeployImpl implements _AllowCloseDeploy {
         updateMultisigData,
     required TResult Function() deployStandard,
     required TResult Function(
-            List<PublicKey> custodians, int requireConfirmations)
+            List<PublicKey> custodians, int requireConfirmations, int? hours)
         deployMultisig,
     required TResult Function(String password) confirmDeploy,
     required TResult Function() allowCloseDeploy,
@@ -1267,7 +1292,8 @@ class _$AllowCloseDeployImpl implements _AllowCloseDeploy {
     TResult? Function(List<PublicKey> custodians, int requireConfirmations)?
         updateMultisigData,
     TResult? Function()? deployStandard,
-    TResult? Function(List<PublicKey> custodians, int requireConfirmations)?
+    TResult? Function(
+            List<PublicKey> custodians, int requireConfirmations, int? hours)?
         deployMultisig,
     TResult? Function(String password)? confirmDeploy,
     TResult? Function()? allowCloseDeploy,
@@ -1284,7 +1310,8 @@ class _$AllowCloseDeployImpl implements _AllowCloseDeploy {
     TResult Function(List<PublicKey> custodians, int requireConfirmations)?
         updateMultisigData,
     TResult Function()? deployStandard,
-    TResult Function(List<PublicKey> custodians, int requireConfirmations)?
+    TResult Function(
+            List<PublicKey> custodians, int requireConfirmations, int? hours)?
         deployMultisig,
     TResult Function(String password)? confirmDeploy,
     TResult Function()? allowCloseDeploy,
@@ -1440,7 +1467,7 @@ class _$CompleteDeployImpl implements _CompleteDeploy {
         updateMultisigData,
     required TResult Function() deployStandard,
     required TResult Function(
-            List<PublicKey> custodians, int requireConfirmations)
+            List<PublicKey> custodians, int requireConfirmations, int? hours)
         deployMultisig,
     required TResult Function(String password) confirmDeploy,
     required TResult Function() allowCloseDeploy,
@@ -1457,7 +1484,8 @@ class _$CompleteDeployImpl implements _CompleteDeploy {
     TResult? Function(List<PublicKey> custodians, int requireConfirmations)?
         updateMultisigData,
     TResult? Function()? deployStandard,
-    TResult? Function(List<PublicKey> custodians, int requireConfirmations)?
+    TResult? Function(
+            List<PublicKey> custodians, int requireConfirmations, int? hours)?
         deployMultisig,
     TResult? Function(String password)? confirmDeploy,
     TResult? Function()? allowCloseDeploy,
@@ -1474,7 +1502,8 @@ class _$CompleteDeployImpl implements _CompleteDeploy {
     TResult Function(List<PublicKey> custodians, int requireConfirmations)?
         updateMultisigData,
     TResult Function()? deployStandard,
-    TResult Function(List<PublicKey> custodians, int requireConfirmations)?
+    TResult Function(
+            List<PublicKey> custodians, int requireConfirmations, int? hours)?
         deployMultisig,
     TResult Function(String password)? confirmDeploy,
     TResult Function()? allowCloseDeploy,
