@@ -2108,10 +2108,10 @@ packages:
     dependency: "direct main"
     description:
       name: string_extensions
-      sha256: d441a02a3dadfe32b6db09d0fa03a78b041e4ac333e04c2779d7aa70da026e91
+      sha256: "11ee33b59fe2d8ce2594e3f98dab87cb64701ee1d6c129d4058e613e1550784b"
       url: "https://pub.dev"
     source: hosted
-    version: "0.7.1"
+    version: "0.7.3"
   string_scanner:
     dependency: transitive
     description:
