@@ -28,8 +28,8 @@ class PublicKeyItemWidget extends StatelessWidget {
   Widget build(BuildContext context) {
     final theme = context.themeStyleV2;
 
-    final Map<KeyAccount, GlobalKey> itemKeys = {
-      for (var account in accounts) account: GlobalKey(),
+    final itemKeys = <KeyAccount, GlobalKey>{
+      for (final account in accounts) account: GlobalKey(),
     };
 
     WidgetsBinding.instance.addPostFrameCallback((_) {
