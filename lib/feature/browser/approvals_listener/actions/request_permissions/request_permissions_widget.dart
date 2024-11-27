@@ -127,8 +127,9 @@ class _SelectAccountWidget extends StatelessWidget {
     KeyAccount? selected,
   ) {
     if (accounts != null && selected != null) {
-      final index =
-          accounts.indexWhere((account) => account.address == selected.address);
+      final index = accounts.indexWhere(
+        (account) => account.address == selected.address,
+      );
 
       if (index != -1) {
         scrollController.animateTo(

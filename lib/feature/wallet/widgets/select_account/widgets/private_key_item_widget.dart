@@ -14,6 +14,7 @@ class PrivateKeyItemWidget extends StatelessWidget {
     required this.onTap,
     required this.getBalanceEntity,
     required this.scrollController,
+    required this.isScrollToAccount,
     super.key,
   });
 
@@ -22,6 +23,7 @@ class PrivateKeyItemWidget extends StatelessWidget {
   final Function(KeyAccount) onTap;
   final ListenableState<Money> Function(KeyAccount) getBalanceEntity;
   final ScrollController scrollController;
+  final bool isScrollToAccount;
 
   @override
   Widget build(BuildContext context) {
@@ -77,6 +79,7 @@ class PrivateKeyItemWidget extends StatelessWidget {
                   onTap: onTap,
                   getBalanceEntity: getBalanceEntity,
                   scrollController: scrollController,
+                  isScrollToAccount: isScrollToAccount,
                 ),
               ],
             ),
