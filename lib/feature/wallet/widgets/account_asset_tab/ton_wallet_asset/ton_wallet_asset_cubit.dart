@@ -67,7 +67,7 @@ class TonWalletAssetCubit extends Cubit<TonWalletAssetState> {
     });
 
     final balances = balanceStorage.balances[tonWallet.address]
-        ?.tokenBalance(_nativeTokenContract);
+        ?.tokenBalance(_nativeTokenContract, isNative: true);
     if (balances != null) {
       _cachedFiatBalance = balances.fiatBalance;
       _cachedTokenBalance = balances.tokenBalance;
@@ -123,6 +123,7 @@ class TonWalletAssetCubit extends Cubit<TonWalletAssetState> {
           rootTokenContract: _nativeTokenContract,
           fiatBalance: _cachedFiatBalance!,
           tokenBalance: _cachedTokenBalance!,
+          isNative: true,
         ),
       );
     }

@@ -324,7 +324,7 @@ class InpageProvider extends ProviderApi {
 
   @override
   Future<void> disconnect() async {
-    await permissionsService.deletePermissionsForOrigin(origin!);
+    permissionsService.deletePermissionsForOrigin(origin!);
     nekotonRepository.unsubscribeContractsTab(tabId);
 
     await controller?.permissionsChanged(
@@ -1681,7 +1681,7 @@ class InpageProvider extends ProviderApi {
         throw s.ApprovalsHandleException(LocaleKeys.addNetworkIdError.tr());
       }
     } finally {
-      transport?.dispose();
+      await transport?.dispose();
     }
 
     final network = await approvalsService.addNetwork(
@@ -1747,12 +1747,12 @@ class InpageProvider extends ProviderApi {
         _logger.severe('Error getting network id for connection: '
             '${connection.name} (${connection.id})');
       } finally {
-        transport?.dispose();
+        await transport?.dispose();
       }
     }
 
     if (update.isNotEmpty) {
-      await connectionsStorageService.updateNetworksIds(update);
+      connectionsStorageService.updateNetworksIds(update);
     }
 
     return list;

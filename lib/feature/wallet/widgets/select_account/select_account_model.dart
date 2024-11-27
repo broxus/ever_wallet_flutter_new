@@ -44,14 +44,16 @@ class SelectAccountModel extends ElementaryModel {
 
   TransportStrategy get currentTransport => _nekotonRepository.currentTransport;
 
-  Future<void> changeCurrentAccount(KeyAccount account) async {
-    await _currentAccountsService.updateCurrentActiveAccount(account.address);
-    await _currentKeyService.changeCurrentKey(account.publicKey);
+  void changeCurrentAccount(KeyAccount account) {
+    _currentAccountsService.updateCurrentActiveAccount(account.address);
+    _currentKeyService.changeCurrentKey(account.publicKey);
   }
 
   Future<Money?> getBalance(KeyAccount account) async {
     final wallet = _nekotonRepository.walletsMap[account.address]?.wallet ??
         await _getWallet(account);
+
+    if (wallet == null) return null;
 
     return Money.fromBigIntWithCurrency(
       wallet.contractState.balance,
@@ -59,7 +61,9 @@ class SelectAccountModel extends ElementaryModel {
     );
   }
 
-  Future<TonWallet> _getWallet(KeyAccount account) async {
+  Future<TonWallet?> _getWallet(KeyAccount account) async {
+    if (currentTransport.transport.disposed) return null;
+
     TonWallet? wallet;
     try {
       wallet = await TonWallet.subscribe(
@@ -68,6 +72,7 @@ class SelectAccountModel extends ElementaryModel {
         publicKey: account.publicKey,
         walletType: account.account.tonWallet.contract,
       );
+    } catch (_) {
     } finally {
       wallet?.dispose();
     }

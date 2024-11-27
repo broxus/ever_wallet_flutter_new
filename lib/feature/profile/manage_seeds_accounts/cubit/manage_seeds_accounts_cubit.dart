@@ -28,7 +28,7 @@ class ManageSeedsAccountsCubit extends Cubit<ManageSeedsAccountsState> {
 
   final NekotonRepository nekotonRepository;
   final CurrentSeedService currentSeedService;
-  final SecureStorageService storageService;
+  final AppStorageService storageService;
   final CurrentAccountsService currentAccountsService;
 
   late StreamSubscription<SeedList> _seedListSubscription;

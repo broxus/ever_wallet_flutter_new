@@ -1,10 +1,9 @@
-import 'dart:convert';
 import 'dart:io';
 
 import 'package:app/app/service/service.dart';
 import 'package:app/data/models/models.dart';
 import 'package:collection/collection.dart';
-import 'package:encrypted_storage/encrypted_storage.dart';
+import 'package:get_storage/get_storage.dart';
 import 'package:injectable/injectable.dart';
 import 'package:rxdart/rxdart.dart';
 
@@ -12,14 +11,17 @@ const _browserTabsDomain = 'browser_tabs';
 const _browserTabsKey = 'browser_tabs_key';
 const _browserTabsActiveTabIdKey = 'browser_tabs_active_tab_id_key';
 
-/// This is a wrapper-class above [EncryptedStorage] that provides methods
+/// This is a wrapper-class above [GetStorage] that provides methods
 /// to interact with all browser tabs - related data.
 @singleton
 class BrowserTabsStorageService extends AbstractStorageService {
-  BrowserTabsStorageService(this._storage);
+  BrowserTabsStorageService(
+    @Named(container) this._storage,
+  );
 
-  /// Storage that is used to store data
-  final EncryptedStorage _storage;
+  static const container = _browserTabsDomain;
+
+  final GetStorage _storage;
 
   // ===== Active tab related =====
 
@@ -33,32 +35,23 @@ class BrowserTabsStorageService extends AbstractStorageService {
   String? get browserActiveTabId => _browserActiveTabIdSubject.valueOrNull;
 
   /// Put browser active tab stream
-  Future<void> _streamedBrowserActiveTabId() async =>
-      _browserActiveTabIdSubject.add(await readBrowserActiveTabId());
+  void _streamedBrowserActiveTabId() =>
+      _browserActiveTabIdSubject.add(readBrowserActiveTabId());
 
   /// Read active tab from storage
-  Future<String?> readBrowserActiveTabId() async {
-    return _storage.get(
-      _browserTabsActiveTabIdKey,
-      domain: _browserTabsDomain,
-    );
-  }
+  String? readBrowserActiveTabId() => _storage.read(_browserTabsActiveTabIdKey);
 
   /// Save active tab id to storage
-  Future<void> saveBrowserActiveTabId(String? id) async {
+  void saveBrowserActiveTabId(String? id) {
     final verifiedId =
-        _browserTabById(id) != null ? id : browserTabs.firstOrNull?.id ?? -1;
+        _browserTabById(id) != null ? id : browserTabs.firstOrNull?.id ?? '-1';
 
     if (id == browserActiveTabId) {
       return;
     }
 
-    await _storage.set(
-      _browserTabsActiveTabIdKey,
-      verifiedId.toString(),
-      domain: _browserTabsDomain,
-    );
-    await _streamedBrowserActiveTabId();
+    _storage.write(_browserTabsActiveTabIdKey, verifiedId);
+    _streamedBrowserActiveTabId();
   }
 
   // ===== Tab list related =====
@@ -73,19 +66,14 @@ class BrowserTabsStorageService extends AbstractStorageService {
   List<BrowserTab> get browserTabs => _browserTabsSubject.valueOrNull ?? [];
 
   /// Put browser tabs to stream
-  Future<void> _streamedBrowserTabs() async =>
-      _browserTabsSubject.add(await readBrowserTabs());
+  void _streamedBrowserTabs() => _browserTabsSubject.add(readBrowserTabs());
 
   /// Read list of browser tabs from storage
-  Future<List<BrowserTab>> readBrowserTabs() async {
-    final encoded = await _storage.get(
-      _browserTabsKey,
-      domain: _browserTabsDomain,
-    );
-    if (encoded == null) {
+  List<BrowserTab> readBrowserTabs() {
+    final list = _storage.read<List<dynamic>>(_browserTabsKey);
+    if (list == null) {
       return [];
     }
-    final list = jsonDecode(encoded) as List<dynamic>;
 
     return list
         .map((entry) => BrowserTab.fromJson(entry as Map<String, dynamic>))
@@ -93,27 +81,23 @@ class BrowserTabsStorageService extends AbstractStorageService {
   }
 
   /// Save list of browser tabs to storage
-  Future<void> saveBrowserTabs(List<BrowserTab> tabs) async {
-    await _storage.set(
+  void saveBrowserTabs(List<BrowserTab> tabs) {
+    _storage.write(
       _browserTabsKey,
-      jsonEncode(tabs),
-      domain: _browserTabsDomain,
+      tabs.map((e) => e.toJson()).toList(),
     );
-    await _streamedBrowserTabs();
+    _streamedBrowserTabs();
     // assure that we don't have active tab id that doesn't exist
-    await saveBrowserActiveTabId(browserActiveTabId);
+    saveBrowserActiveTabId(browserActiveTabId);
   }
 
   /// Clear all browser tabs
   Future<void> clearBrowserTabs() async {
-    await _storage.delete(
-      _browserTabsKey,
-      domain: _browserTabsDomain,
-    );
+    await _storage.remove(_browserTabsKey);
     _browserTabsSubject.add([]);
 
-    await _streamedBrowserTabs();
-    await saveBrowserActiveTabId(null);
+    _streamedBrowserTabs();
+    saveBrowserActiveTabId(null);
 
     try {
       await Directory(BrowserTab.tabsDirectoryPath).delete(recursive: true);
@@ -124,15 +108,15 @@ class BrowserTabsStorageService extends AbstractStorageService {
   }
 
   /// Add browser tab
-  Future<void> addBrowserTab(BrowserTab tab) async {
+  void addBrowserTab(BrowserTab tab) {
     /// Provide unique id for tab
     final newId = tab.id;
-    await saveBrowserTabs([...browserTabs, tab]);
-    await saveBrowserActiveTabId(newId);
+    saveBrowserTabs([...browserTabs, tab]);
+    saveBrowserActiveTabId(newId);
   }
 
   /// Set browser tab
-  Future<void> setBrowserTab(BrowserTab tab) async {
+  void setBrowserTab(BrowserTab tab) {
     final id = tab.id;
     final index = browserTabs.indexWhere((tab) => tab.id == id);
     final tabs = [...browserTabs];
@@ -143,14 +127,14 @@ class BrowserTabsStorageService extends AbstractStorageService {
       tabs[index] = tab;
     }
 
-    await saveBrowserTabs(tabs);
+    saveBrowserTabs(tabs);
   }
 
   /// Remove browser tab by id
   Future<void> removeBrowserTab(String id) async {
     final tabs = [...browserTabs]..removeWhere((tab) => tab.id == id);
 
-    await saveBrowserTabs(tabs);
+    saveBrowserTabs(tabs);
 
     try {
       await Directory(BrowserTab.getTabDirectoryPath(id))
@@ -163,10 +147,11 @@ class BrowserTabsStorageService extends AbstractStorageService {
       id != null ? browserTabs.firstWhereOrNull((tab) => tab.id == id) : null;
 
   @override
-  Future<void> init() => Future.wait([
-        _streamedBrowserTabs(),
-        _streamedBrowserActiveTabId(),
-      ]);
+  Future<void> init() async {
+    await GetStorage.init(container);
+    _streamedBrowserTabs();
+    _streamedBrowserActiveTabId();
+  }
 
   @override
   Future<void> clearSensitiveData() => Future.wait([

@@ -95,11 +95,11 @@ class ActionStakingBloc
       unawaited(account?.addTokenWallet(staking.stakingRootContractAddress));
     }
 
-    final opened = await storage.getWasStEverOpened;
+    final opened = storage.getWasStEverOpened;
 
     if (!opened) {
       emit(const ActionStakingBlocState.showHowItWorksSheet());
-      await storage.saveWasStEverOpened();
+      storage.saveWasStEverOpened();
       emit(const ActionStakingBlocState.nothing());
     }
   }

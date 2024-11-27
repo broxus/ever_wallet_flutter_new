@@ -50,12 +50,12 @@ class BrowserHistoryBloc
       }
       browserHistoryStorageService.addBrowserHistoryItem(event.item);
     });
-    on<_AddMultiple>((event, emit) async {
+    on<_AddMultiple>((event, emit) {
       for (final item in event.items) {
         if (item.url.host.isEmpty) {
           continue;
         }
-        await browserHistoryStorageService.addBrowserHistoryItem(item);
+        browserHistoryStorageService.addBrowserHistoryItem(item);
       }
     });
     on<_Remove>((event, emit) {

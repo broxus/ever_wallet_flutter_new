@@ -1,8 +1,8 @@
 import 'dart:async';
 
 import 'package:app/app/service/service.dart';
-import 'package:encrypted_storage/encrypted_storage.dart';
 import 'package:favicon/favicon.dart';
+import 'package:get_storage/get_storage.dart';
 import 'package:injectable/injectable.dart';
 import 'package:logging/logging.dart';
 
@@ -12,19 +12,19 @@ final _suffixes = ['png', 'ico'];
 
 @singleton
 class BrowserFaviconURLStorageService extends AbstractStorageService {
-  BrowserFaviconURLStorageService(this._storage);
+  BrowserFaviconURLStorageService(
+    @Named(container) this._storage,
+  );
 
   static final _log = Logger('BrowserFaviconURLStorageService');
 
-  /// Storage that is used to store data
-  final EncryptedStorage _storage;
+  static const container = _browserFaviconURLDomain;
+
+  final GetStorage _storage;
 
   Future<String?> getFaviconURL(Uri uri) async {
     final url = uri.toString();
-    final cached = await _storage.get(
-      url,
-      domain: _browserFaviconURLDomain,
-    );
+    final cached = _storage.read<String>(url);
     if (cached != null) {
       return cached;
     }
@@ -37,21 +37,13 @@ class BrowserFaviconURLStorageService extends AbstractStorageService {
       return null;
     }
 
-    unawaited(
-      _storage.set(
-        url,
-        iconUrl,
-        domain: _browserFaviconURLDomain,
-      ),
-    );
+    unawaited(_storage.write(url, iconUrl));
 
     return iconUrl;
   }
 
   @override
-  Future<void> clearSensitiveData() async {
-    await _storage.clearDomain(_browserFaviconURLDomain);
-  }
+  Future<void> clearSensitiveData() => _storage.erase();
 
   @override
   // ignore: no-empty-block

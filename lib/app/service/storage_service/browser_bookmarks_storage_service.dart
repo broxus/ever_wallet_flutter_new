@@ -1,11 +1,9 @@
-import 'dart:convert';
-
 import 'package:app/app/service/service.dart';
 import 'package:app/data/models/models.dart';
 import 'package:app/di/di.dart';
 import 'package:app/generated/generated.dart';
 import 'package:collection/collection.dart';
-import 'package:encrypted_storage/encrypted_storage.dart';
+import 'package:get_storage/get_storage.dart';
 import 'package:injectable/injectable.dart';
 import 'package:logging/logging.dart';
 import 'package:rxdart/rxdart.dart';
@@ -14,16 +12,19 @@ import 'package:ui_components_lib/ui_components_lib.dart';
 const _browserBookmarksDomain = 'browser_bookmarks';
 const _browserBookmarksKey = 'browser_bookmarks_key';
 
-/// This is a wrapper-class above [EncryptedStorage] that provides methods
+/// This is a wrapper-class above [GetStorage] that provides methods
 /// to interact with all browser bookmark - related data.
 @singleton
 class BrowserBookmarksStorageService extends AbstractStorageService {
-  BrowserBookmarksStorageService(this._storage);
+  BrowserBookmarksStorageService(
+    @Named(container) this._storage,
+  );
 
   static final _log = Logger('BrowserBookmarksStorageService');
 
-  /// Storage that is used to store data
-  final EncryptedStorage _storage;
+  static const container = _browserBookmarksDomain;
+
+  final GetStorage _storage;
 
   /// Subject of browser bookmarks items
   final _browserBookmarksSubject = BehaviorSubject<List<BrowserBookmarkItem>>();
@@ -37,19 +38,15 @@ class BrowserBookmarksStorageService extends AbstractStorageService {
       _browserBookmarksSubject.valueOrNull ?? [];
 
   /// Put browser bookmarks items to stream
-  Future<void> _streamedBrowserBookmarks() async =>
-      _browserBookmarksSubject.add(await readBrowserBookmarks());
+  void _streamedBrowserBookmarks() =>
+      _browserBookmarksSubject.add(readBrowserBookmarks());
 
   /// Read list of browser bookmarks items from storage
-  Future<List<BrowserBookmarkItem>> readBrowserBookmarks() async {
-    final encoded = await _storage.get(
-      _browserBookmarksKey,
-      domain: _browserBookmarksDomain,
-    );
-    if (encoded == null) {
+  List<BrowserBookmarkItem> readBrowserBookmarks() {
+    final list = _storage.read<List<dynamic>>(_browserBookmarksKey);
+    if (list == null) {
       return [];
     }
-    final list = jsonDecode(encoded) as List<dynamic>;
 
     return list
         .map(
@@ -60,14 +57,12 @@ class BrowserBookmarksStorageService extends AbstractStorageService {
   }
 
   /// Save list of browser bookmarks items to storage
-  Future<void> saveBrowserBookmarks(List<BrowserBookmarkItem> bookmarks) async {
-    await _storage.set(
+  void saveBrowserBookmarks(List<BrowserBookmarkItem> bookmarks) {
+    _storage.write(
       _browserBookmarksKey,
-      jsonEncode(bookmarks),
-      domain: _browserBookmarksDomain,
+      bookmarks.map((e) => e.toJson()).toList(),
     );
-
-    await _streamedBrowserBookmarks();
+    _streamedBrowserBookmarks();
   }
 
   /// Clear browser bookmarks
@@ -76,10 +71,7 @@ class BrowserBookmarksStorageService extends AbstractStorageService {
   }) async {
     final savedbrowserBookmarks = browserBookmarks;
 
-    await _storage.delete(
-      _browserBookmarksKey,
-      domain: _browserBookmarksDomain,
-    );
+    await _storage.remove(_browserBookmarksKey);
 
     if (needUndo) {
       inject<MessengerService>().show(
@@ -92,18 +84,18 @@ class BrowserBookmarksStorageService extends AbstractStorageService {
       );
     }
 
-    await _streamedBrowserBookmarks();
+    _streamedBrowserBookmarks();
   }
 
   /// Add or replace browser bookmarks item
-  Future<void> setBrowserBookmarkItem(
+  void setBrowserBookmarkItem(
     BrowserBookmarkItem item, {
     bool needUndo = true,
-  }) async {
+  }) {
     final isAdding =
         browserBookmarks.firstWhereOrNull((i) => i.id == item.id) == null;
 
-    await saveBrowserBookmarks([
+    saveBrowserBookmarks([
       ...[...browserBookmarks]..removeWhere((i) => i.id == item.id),
       item,
     ]);
@@ -121,10 +113,10 @@ class BrowserBookmarksStorageService extends AbstractStorageService {
   }
 
   /// Remove browser bookmarks item by id
-  Future<void> removeBrowserBookmarkItem(
+  void removeBrowserBookmarkItem(
     String id, {
     bool needUndo = true,
-  }) async {
+  }) {
     final item = browserBookmarks.firstWhereOrNull((item) => item.id == id);
 
     if (item == null) {
@@ -146,13 +138,14 @@ class BrowserBookmarksStorageService extends AbstractStorageService {
       );
     }
 
-    await saveBrowserBookmarks(bookmarks);
+    saveBrowserBookmarks(bookmarks);
   }
 
   @override
-  Future<void> init() => Future.wait([
-        _streamedBrowserBookmarks(),
-      ]);
+  Future<void> init() async {
+    await GetStorage.init(container);
+    _streamedBrowserBookmarks();
+  }
 
   @override
   Future<void> clearSensitiveData() => Future.wait([

@@ -153,7 +153,7 @@ class ConnectionService {
       await _nekotonRepository.updateTransport(
         createStrategyByConnection(transport, connection),
       );
-      await _storageService.updateNetworksIds(
+      _storageService.updateNetworksIds(
         [(connection.id, transport.networkId)],
       );
 
@@ -165,7 +165,7 @@ class ConnectionService {
       final base = _storageService.baseConnection;
 
       if (base != null && base.id != connection.id) {
-        await _storageService.saveCurrentConnectionId(base.id);
+        _storageService.saveCurrentConnectionId(base.id);
         return;
       }
 

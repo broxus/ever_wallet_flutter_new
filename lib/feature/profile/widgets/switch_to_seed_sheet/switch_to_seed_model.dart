@@ -11,6 +11,6 @@ class SwitchToSeedModel extends ElementaryModel {
   final CurrentKeyService _currentKeyService;
 
   Future<void> changeCurrentAccount(PublicKey publicKey) async {
-    await _currentKeyService.changeCurrentKey(publicKey);
+    _currentKeyService.changeCurrentKey(publicKey);
   }
 }
