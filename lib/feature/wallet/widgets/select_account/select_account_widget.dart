@@ -84,29 +84,6 @@ class SelectAccountWidget extends ElementaryWidget<SelectAccountWidgetModel> {
       ],
     );
   }
-
-  void _scrollToCurrentAccount({
-    required KeyAccount? currentAccount,
-    required Map<KeyAccount, GlobalKey> itemKeys,
-    required ScrollController scrollController,
-  }) {
-    if (currentAccount != null && itemKeys.containsKey(currentAccount)) {
-      final currentKey = itemKeys[currentAccount];
-      final context = currentKey?.currentContext;
-      if (context != null) {
-        final renderObject = context.findRenderObject() as RenderBox?;
-        if (renderObject != null) {
-          final offset = renderObject.localToGlobal(Offset.zero);
-          final scrollOffset = scrollController.offset + offset.dy;
-          scrollController.animateTo(
-            scrollOffset,
-            duration: const Duration(milliseconds: 300),
-            curve: Curves.easeInOut,
-          );
-        }
-      }
-    }
-  }
 }
 
 class _SeedItem extends StatefulWidget {
@@ -133,6 +110,7 @@ class _SeedItem extends StatefulWidget {
 
 class _SeedItemState extends State<_SeedItem> {
   late bool _isExpanded = widget.isExpanded;
+  late bool _isScrollToAccount = true;
 
   @override
   Widget build(BuildContext context) {
@@ -167,6 +145,7 @@ class _SeedItemState extends State<_SeedItem> {
                       onTap: widget.onTapAccount,
                       getBalanceEntity: widget.getBalanceEntity,
                       scrollController: widget.scrollController,
+                      isScrollToAccount: _isScrollToAccount,
                     )
                   : const SizedBox.shrink(),
             ),
@@ -177,6 +156,9 @@ class _SeedItemState extends State<_SeedItem> {
   }
 
   void _toggleExpand() {
+    if(!_isExpanded && _isScrollToAccount) {
+      _isScrollToAccount = false;
+    }
     setState(() {
       _isExpanded = !_isExpanded;
     });
