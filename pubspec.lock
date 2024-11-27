@@ -483,10 +483,10 @@ packages:
     dependency: transitive
     description:
       name: decimal
-      sha256: "24a261d5d5c87e86c7651c417a5dbdf8bcd7080dd592533910e8d0505a279f21"
+      sha256: "4140a688f9e443e2f4de3a1162387bf25e1ac6d51e24c9da263f245210f41440"
       url: "https://pub.dev"
     source: hosted
-    version: "2.3.3"
+    version: "3.0.2"
   device_info_plus:
     dependency: "direct main"
     description:
@@ -675,10 +675,10 @@ packages:
     dependency: transitive
     description:
       name: fixed
-      sha256: "6aafee68f5f0704a07f148668cdad3be4e756fc05bc46f84e653313e42abb723"
+      sha256: "00fa3f0c6b3f38340edc843132050a2676e30bc70bff1168908a15dc7751be55"
       url: "https://pub.dev"
     source: hosted
-    version: "5.0.1"
+    version: "5.1.0"
   fixnum:
     dependency: transitive
     description:
@@ -1486,10 +1486,10 @@ packages:
     dependency: "direct main"
     description:
       name: money2
-      sha256: a13032c13d74d50bf919ec4016282d6e5a39be44936b2dce11b4b4b9abacfe43
+      sha256: cea51e7cb93548cfaab4b4b4c61cb0faf21d3eb719110bbb76877f63f1da8011
       url: "https://pub.dev"
     source: hosted
-    version: "5.2.1"
+    version: "5.4.0"
   money2_fixer:
     dependency: "direct main"
     description:
