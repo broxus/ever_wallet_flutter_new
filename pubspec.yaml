@@ -93,7 +93,7 @@ dev_dependencies:
   custom_lint: 0.5.5
   datetime_avoid_lint:
     path: packages/datetime_avoid_lint
-  flutter_gen_runner: 5.4.0
+  flutter_gen_runner: 5.8.0
   flutter_native_splash: 2.4.0
   flutter_test:
     sdk: flutter
