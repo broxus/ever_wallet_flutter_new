@@ -156,7 +156,7 @@ class _SeedItemState extends State<_SeedItem> {
   }
 
   void _toggleExpand() {
-    if(!_isExpanded && _isScrollToAccount) {
+    if (!_isExpanded && _isScrollToAccount) {
       _isScrollToAccount = false;
     }
     setState(() {
