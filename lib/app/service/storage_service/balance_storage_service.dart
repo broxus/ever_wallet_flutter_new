@@ -1,6 +1,7 @@
 import 'package:app/app/service/service.dart';
 import 'package:app/data/models/models.dart';
 import 'package:app/utils/utils.dart';
+import 'package:collection/collection.dart';
 import 'package:get_storage/get_storage.dart';
 import 'package:injectable/injectable.dart';
 import 'package:logging/logging.dart';
@@ -123,9 +124,19 @@ class BalanceStorageService extends AbstractStorageService {
         return MapEntry(
           Address(address: key),
           (value as List<dynamic>)
-              .map(
-                (e) => AccountBalanceModel.fromJson(e as Map<String, dynamic>),
-              )
+              .map((e) {
+                try {
+                  // https://pub.dev/packages/money2/changelog#540
+                  // money2 v5.4.0 added json serialisation
+                  // serialization conflict workaround
+                  return AccountBalanceModel.fromJson(
+                    e as Map<String, dynamic>,
+                  );
+                } catch (_) {
+                  return null;
+                }
+              })
+              .whereNotNull()
               .toList(),
         );
       },
@@ -156,7 +167,7 @@ class BalanceStorageService extends AbstractStorageService {
         accountAddress.address,
         existedForAccount.map((b) => b.toJson()).toList(),
       );
-      _streamedOverallBalance();
+      _streamedBalance();
     } catch (e, t) {
       _logger.severe('setBalances', e, t);
     }

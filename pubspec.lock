@@ -483,10 +483,10 @@ packages:
     dependency: transitive
     description:
       name: decimal
-      sha256: "4140a688f9e443e2f4de3a1162387bf25e1ac6d51e24c9da263f245210f41440"
+      sha256: "24a261d5d5c87e86c7651c417a5dbdf8bcd7080dd592533910e8d0505a279f21"
       url: "https://pub.dev"
     source: hosted
-    version: "3.0.2"
+    version: "2.3.3"
   device_info_plus:
     dependency: "direct main"
     description:
@@ -675,10 +675,10 @@ packages:
     dependency: transitive
     description:
       name: fixed
-      sha256: "00fa3f0c6b3f38340edc843132050a2676e30bc70bff1168908a15dc7751be55"
+      sha256: "6aafee68f5f0704a07f148668cdad3be4e756fc05bc46f84e653313e42abb723"
       url: "https://pub.dev"
     source: hosted
-    version: "5.1.0"
+    version: "5.0.1"
   fixnum:
     dependency: transitive
     description:
@@ -882,10 +882,10 @@ packages:
     dependency: transitive
     description:
       name: flutter_nekoton_bridge
-      sha256: "1d1498f12a4d5aae0de485ecc5b3b690e8c0f2ea72372dd8d62dab15f79cfa0a"
+      sha256: "38a39e8d9a88155cf52bbca89ff2eec7f223b30ab3bad49deec275656ffc0e30"
       url: "https://pub.dev"
     source: hosted
-    version: "2.0.1-dev.5"
+    version: "2.0.1-dev.6"
   flutter_plugin_android_lifecycle:
     dependency: transitive
     description:
@@ -1486,10 +1486,10 @@ packages:
     dependency: "direct main"
     description:
       name: money2
-      sha256: cea51e7cb93548cfaab4b4b4c61cb0faf21d3eb719110bbb76877f63f1da8011
+      sha256: a13032c13d74d50bf919ec4016282d6e5a39be44936b2dce11b4b4b9abacfe43
       url: "https://pub.dev"
     source: hosted
-    version: "5.4.0"
+    version: "5.2.1"
   money2_fixer:
     dependency: "direct main"
     description:
@@ -1518,18 +1518,18 @@ packages:
     dependency: transitive
     description:
       name: nekoton_bridge
-      sha256: dec021e074cd2136d0fc84e92f4a853b7e5bf32aa7e93e99197abea57d8c8d45
+      sha256: "0470e7e8faab11bfd2f9ba6d5eaaab25565a7dc635332d5f373d18363c7e8622"
       url: "https://pub.dev"
     source: hosted
-    version: "2.0.1-dev.4"
+    version: "2.0.1-dev.5"
   nekoton_repository:
     dependency: "direct main"
     description:
       name: nekoton_repository
-      sha256: "58d6c529ad21177f290ac4e445c46413de18468606737caefb735083419d55aa"
+      sha256: ec2cb953d4563b64ad245a063cdfaa7bf420bbf3fe5360b59738686ec6211dc5
       url: "https://pub.dev"
     source: hosted
-    version: "0.37.0-dev.13"
+    version: "0.37.0-dev.14"
   nekoton_webview:
     dependency: "direct main"
     description:

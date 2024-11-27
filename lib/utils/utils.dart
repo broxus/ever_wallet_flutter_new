@@ -40,7 +40,7 @@ class _MoneyFromStringJsonConverter
   Money fromJson(Map<String, dynamic> json) => MoneyFixer.fromJson(json);
 
   @override
-  Map<String, dynamic> toJson(Money object) => object.toJson();
+  Map<String, dynamic> toJson(Money object) => MoneyFixer(object).toJson();
 }
 
 class NtpTime {
