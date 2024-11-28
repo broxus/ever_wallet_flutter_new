@@ -11,7 +11,6 @@ import 'package:flutter_inappwebview/flutter_inappwebview.dart';
 import 'package:logging/logging.dart';
 import 'package:nekoton_repository/nekoton_repository.dart' as nr;
 import 'package:nekoton_webview/nekoton_webview.dart';
-import 'package:string_extensions/string_extensions.dart';
 
 const providerVersion = '0.3.36';
 const providerNumericVersion = 3036;
@@ -185,7 +184,7 @@ class InpageProvider extends ProviderApi {
           : PermissionsAccountInteraction(
               accountInteraction.address.address,
               accountInteraction.publicKey.publicKey,
-              accountInteraction.contractType.name,
+              accountInteraction.contractType.jsonName,
             ),
     );
 
@@ -742,7 +741,7 @@ class InpageProvider extends ProviderApi {
             : PermissionsAccountInteraction(
                 permissions.accountInteraction!.address.address,
                 permissions.accountInteraction!.publicKey.publicKey,
-                permissions.accountInteraction!.contractType.name.capitalize,
+                permissions.accountInteraction!.contractType.jsonName,
               ),
       ),
       subscriptions?.map(
@@ -857,7 +856,7 @@ class InpageProvider extends ProviderApi {
           : PermissionsAccountInteraction(
               accountInteraction.address.address,
               accountInteraction.publicKey.publicKey,
-              accountInteraction.contractType.name,
+              accountInteraction.contractType.jsonName,
             ),
     );
     await controller?.permissionsChanged(PermissionsChangedEvent(partial));
