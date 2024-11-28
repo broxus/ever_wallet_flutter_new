@@ -107,9 +107,9 @@ extension GetStorageExt on GetStorage {
 
 extension FutureExt<T> on Future<T> {
   static Future<(T1, T2)> wait2<T1, T2>(
-      Future<T1> future1,
-      Future<T2> future2,
-      ) async {
+    Future<T1> future1,
+    Future<T2> future2,
+  ) async {
     late T1 result1;
     late T2 result2;
 
@@ -122,10 +122,10 @@ extension FutureExt<T> on Future<T> {
   }
 
   static Future<(T1, T2, T3)> wait3<T1, T2, T3>(
-      Future<T1> future1,
-      Future<T2> future2,
-      Future<T3> future3,
-      ) async {
+    Future<T1> future1,
+    Future<T2> future2,
+    Future<T3> future3,
+  ) async {
     late T1 result1;
     late T2 result2;
     late T3 result3;
@@ -140,11 +140,11 @@ extension FutureExt<T> on Future<T> {
   }
 
   static Future<(T1, T2, T3, T4)> wait4<T1, T2, T3, T4>(
-      Future<T1> future1,
-      Future<T2> future2,
-      Future<T3> future3,
-      Future<T4> future4,
-      ) async {
+    Future<T1> future1,
+    Future<T2> future2,
+    Future<T3> future3,
+    Future<T4> future4,
+  ) async {
     late T1 result1;
     late T2 result2;
     late T3 result3;
