@@ -10,6 +10,7 @@ import 'package:nekoton_repository/nekoton_repository.dart';
 import 'package:rxdart/rxdart.dart';
 
 part 'token_wallet_transactions_cubit.freezed.dart';
+
 part 'token_wallet_transactions_state.dart';
 
 /// Cubit that allows mapping transactions for [TokenWallet] from storage to UI
@@ -113,13 +114,10 @@ class TokenWalletTransactionsCubit extends Cubit<TokenWalletTransactionsState> {
   }
 
   Future<void> _init() async {
-    _tokenCustomCurrency = currenciesService
-            .currencies(_transport.networkType)
-            .firstWhereOrNull((c) => c.address == rootTokenContract) ??
-        await currenciesService.getCurrencyForContract(
-          _transport,
-          rootTokenContract,
-        );
+    _tokenCustomCurrency = await currenciesService.getOrFetchCurrency(
+      _transport,
+      rootTokenContract,
+    );
   }
 
   void _createSubs(TokenWallet wallet, Transport transport) {

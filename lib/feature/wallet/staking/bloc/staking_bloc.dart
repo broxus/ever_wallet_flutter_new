@@ -6,6 +6,7 @@ import 'package:app/data/models/models.dart';
 import 'package:app/di/di.dart';
 import 'package:app/feature/wallet/staking/staking.dart';
 import 'package:app/generated/generated.dart';
+import 'package:app/utils/utils.dart';
 import 'package:app/widgets/amount_input/amount_input_asset.dart';
 import 'package:bloc/bloc.dart';
 import 'package:collection/collection.dart';
@@ -147,39 +148,38 @@ class StakingBloc extends Bloc<StakingBlocEvent, StakingBlocState> {
       final pair = (accountAddress, staking.stakingRootContractAddress);
       final transport = nekotonRepository.currentTransport;
 
-      final ever = await nekotonRepository.getWallet(accountAddress);
+      final (ever, stever) = await FutureExt.wait2(
+        nekotonRepository.getWallet(accountAddress),
+        nekotonRepository.getTokenWallet(pair.$1, pair.$2),
+      );
       if (ever.hasError) {
         emit(StakingBlocState.subscribeError(ever.error!));
-
+        return;
+      }
+      if (stever.hasError) {
+        emit(StakingBlocState.subscribeError(stever.error!));
         return;
       }
       _everWallet = ever.wallet!;
-
-      if (nekotonRepository.tokenWalletsMap[pair] == null) {
-        await nekotonRepository.subscribeToken(
-          owner: pair.$1,
-          rootTokenContract: pair.$2,
-        );
-      }
-
-      final stever = await nekotonRepository.getTokenWallet(pair.$1, pair.$2);
-      if (stever.hasError) {
-        emit(StakingBlocState.subscribeError(stever.error!));
-
-        return;
-      }
       _stEverWallet = stever.wallet!;
 
-      _stEverWalletCurrency = (await currenciesService.getCurrencyForContract(
-        transport,
-        pair.$2,
-      ))!;
-      _everWalletCurrency = (await currenciesService.getCurrencyForContract(
-        transport,
-        transport.nativeTokenAddress,
-      ))!;
-      apy = await stakingService.getAverageAPYPercent();
-      _details = await stakingService.getStEverDetails();
+      final (
+        steverCurrency,
+        everCurrency,
+        apyValue,
+        details,
+      ) = await FutureExt.wait4(
+        currenciesService.getOrFetchCurrency(transport, pair.$2),
+        currenciesService.getOrFetchNativeCurrency(transport),
+        stakingService.getAverageAPYPercent(),
+        stakingService.getStEverDetails(),
+      );
+
+      _stEverWalletCurrency = steverCurrency!;
+      _everWalletCurrency = everCurrency!;
+      apy = apyValue;
+      _details = details;
+
       final time =
           Duration(seconds: int.tryParse(_details.withdrawHoldTime) ?? 0)
               .inHours;

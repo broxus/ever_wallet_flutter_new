@@ -2,6 +2,7 @@ import 'dart:convert';
 
 import 'package:app/app/service/service.dart';
 import 'package:app/data/models/models.dart';
+import 'package:collection/collection.dart';
 import 'package:flutter/material.dart';
 import 'package:injectable/injectable.dart';
 import 'package:logging/logging.dart';
@@ -107,7 +108,7 @@ class CurrenciesService {
 
   /// Get single currency for [rootTokenContract] in scope of [transport], save
   /// this currency to storage and return.
-  Future<CustomCurrency?> getCurrencyForContract(
+  Future<CustomCurrency?> fetchCurrencyForContract(
     TransportStrategy transport,
     Address rootTokenContract,
   ) async {
@@ -133,10 +134,25 @@ class CurrenciesService {
 
   /// Get single currency for native token in scope of [transport], save
   /// this currency to storage and return.
-  Future<CustomCurrency?> getCurrencyForNativeToken(
+  Future<CustomCurrency?> fetchCurrencyForNativeToken(
     TransportStrategy transport,
   ) =>
-      getCurrencyForContract(transport, transport.nativeTokenAddress);
+      fetchCurrencyForContract(transport, transport.nativeTokenAddress);
+
+  Future<CustomCurrency?> getOrFetchCurrency(
+    TransportStrategy transport,
+    Address rootTokenContract,
+  ) async =>
+      currencies(transport.networkType)
+          .firstWhereOrNull((e) => e.address == rootTokenContract) ??
+      await fetchCurrencyForContract(transport, rootTokenContract);
+
+  Future<CustomCurrency?> getOrFetchNativeCurrency(
+    TransportStrategy transport,
+  ) async =>
+      currencies(transport.networkType)
+          .firstWhereOrNull((e) => e.address == transport.nativeTokenAddress) ??
+      await fetchCurrencyForNativeToken(transport);
 
   /// Update all currencies for [assets] and its token contracts in scope of
   /// [transport]. All currencies will be saved to storage.

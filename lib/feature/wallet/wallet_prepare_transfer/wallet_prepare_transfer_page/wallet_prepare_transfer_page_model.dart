@@ -147,17 +147,10 @@ class WalletPrepareTransferPageModel extends ElementaryModel {
     Address rootTokenContract,
   ) async {
     try {
-      final currency = _currenciesService
-          .currencies(currentTransport.networkType)
-          .firstWhereOrNull(
-            (currency) => currency.address == rootTokenContract,
-          );
-
-      return currency ??
-          await _currenciesService.getCurrencyForContract(
-            currentTransport,
-            rootTokenContract,
-          );
+      return await _currenciesService.getOrFetchCurrency(
+        currentTransport,
+        rootTokenContract,
+      );
     } catch (e, t) {
       _logger.info('getCurrencyForContract($rootTokenContract)', e, t);
       return null;
