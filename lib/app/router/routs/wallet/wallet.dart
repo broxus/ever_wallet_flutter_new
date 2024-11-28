@@ -9,6 +9,7 @@ import 'package:app/feature/add_seed/add_seed_enable_biometry/view/add_seed_enab
 import 'package:app/feature/network/network.dart';
 import 'package:app/feature/no_internet/no_internet_screen.dart';
 import 'package:app/feature/splash/splash_screen.dart';
+import 'package:app/feature/wallet/custodians_settings/custodians_settings_page.dart';
 import 'package:app/feature/wallet/new_account/add_account.dart';
 import 'package:app/feature/wallet/new_account/add_account_page.dart';
 import 'package:app/feature/wallet/new_account/add_external_account/add_external_account_page.dart';
@@ -20,6 +21,7 @@ import 'package:nekoton_repository/nekoton_repository.dart';
 
 const selectNewAssetAddressPathParam = 'selectNewAssetAddress';
 const walletSelectSeedPathParam = 'walletSelectSeedSeeds';
+const custodianSettingsCustodiansParam = 'custodianSettingsCustodiansParam';
 const tonWalletDetailsAddressPathParam = 'tonWalletDetailsAddress';
 const tokenWalletDetailsOwnerAddressPathParam = 'tonWalletDetailsOwnerAddress';
 const tokenWalletDetailsContractAddressPathParam =
@@ -105,6 +107,17 @@ StatefulShellBranch get walletBranch {
                 address: state.pathParameters[selectNewAssetAddressPathParam]!,
               ),
             ),
+          ),
+          GoRoute(
+            path: AppRoute.custodiansSettings.path,
+            builder: (_, state) {
+              final decoded = (jsonDecode(
+                state.uri.queryParameters[
+                custodianSettingsCustodiansParam]!,
+              ) as List<dynamic>)
+                  .cast<String>();
+              return CustodiansSettingsPage(custodians: decoded);
+            },
           ),
           GoRoute(
             path: AppRoute.walletAddAccount.path,

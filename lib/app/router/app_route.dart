@@ -194,6 +194,10 @@ enum AppRoute {
     '',
     'enableBiometryAfterOnboarding',
   ),
+  custodiansSettings(
+    '',
+    'custodiansSettings',
+  ),
 
   /// Browser section
 

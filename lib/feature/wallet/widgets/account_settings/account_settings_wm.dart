@@ -1,3 +1,7 @@
+import 'dart:convert';
+
+import 'package:app/app/router/app_route.dart';
+import 'package:app/app/router/routs/wallet/wallet.dart';
 import 'package:app/core/error_handler_factory.dart';
 import 'package:app/core/wm/custom_wm.dart';
 import 'package:app/di/di.dart';
@@ -31,6 +35,19 @@ class AccountSettingsWidgetModel
 
   void onAdvancedSettings() {
     // TODO(komarov): show advanced settings
+  }
+
+  void onCustodiansSettings(List<PublicKey> custodians) {
+    Navigator.of(context).pop();
+    context.goFurther(
+      AppRoute.custodiansSettings.pathWithData(
+        queryParameters: {
+          custodianSettingsCustodiansParam: jsonEncode(
+            custodians.map((e) => e.publicKey).toList(),
+          ),
+        },
+      ),
+    );
   }
 
   void onViewInExplorer() {

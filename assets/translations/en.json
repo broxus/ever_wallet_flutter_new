@@ -624,5 +624,6 @@
   "selectSeed": "Select seed",
   "deployWalletModalTitle": "Deploy your wallet",
   "deployWalletModalSubtitle": "You need to have at least {} EVER on your account balance to deploy",
-  "deployWalletWaitingTime": "Waiting time for transaction confirmation"
+  "deployWalletWaitingTime": "Waiting time for transaction confirmation",
+  "custodiansSettingsLabel": "Any transaction requires the confirmation of 2 out of 3 custodians"
 }

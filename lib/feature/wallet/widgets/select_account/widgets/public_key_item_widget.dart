@@ -130,8 +130,8 @@ class PublicKeyItemWidget extends StatelessWidget {
     final currentKey = itemKeys[currentAccount]!;
     final context = currentKey.currentContext;
 
-    if (context != null) {
-      final renderBox = context.findRenderObject() as RenderBox;
+    if (context?.findRenderObject() is RenderBox) {
+      final renderBox = context!.findRenderObject()! as RenderBox;
       final offset = renderBox.localToGlobal(Offset.zero);
       final scrollOffset = scrollController.offset + offset.dy;
 

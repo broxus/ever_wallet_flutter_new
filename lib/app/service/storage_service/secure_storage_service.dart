@@ -59,6 +59,9 @@ class StorageKey {
   factory StorageKey.showingManualBackupBadge(String masterKey) =>
       StorageKey._('showingManualBackupBadge', masterKey);
 
+  factory StorageKey.nameCustodian(String publicKey) =>
+      StorageKey._('nameCustodian', publicKey);
+
   factory StorageKey.accountColor(String key) =>
       StorageKey._('accountColor', key);
 
