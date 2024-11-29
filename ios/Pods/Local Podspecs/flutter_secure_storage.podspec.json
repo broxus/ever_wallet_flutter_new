@@ -28,5 +28,10 @@
     "EXCLUDED_ARCHS[sdk=iphonesimulator*]": "i386"
   },
   "swift_versions": "5.0",
+  "resource_bundles": {
+    "flutter_secure_storage": [
+      "Resources/PrivacyInfo.xcprivacy"
+    ]
+  },
   "swift_version": "5.0"
 }

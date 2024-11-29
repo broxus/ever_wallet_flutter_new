@@ -10,7 +10,9 @@
 #endif
 #endif
 
+#import "SqfliteImportPublic.h"
+#import "SqflitePluginPublic.h"
 
-FOUNDATION_EXPORT double connectivity_plusVersionNumber;
-FOUNDATION_EXPORT const unsigned char connectivity_plusVersionString[];
+FOUNDATION_EXPORT double sqflite_darwinVersionNumber;
+FOUNDATION_EXPORT const unsigned char sqflite_darwinVersionString[];
 

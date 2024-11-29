@@ -1,20 +1,20 @@
 {
   "name": "flutter_native_splash",
-  "version": "0.0.1",
-  "summary": "A new Flutter project.",
-  "description": "A new Flutter project.",
-  "homepage": "http://example.com",
+  "version": "2.4.3",
+  "summary": "Flutter Native Splash",
+  "description": "Customize Flutter's default white native splash screen with background color and splash image. Supports dark mode, full screen, and more.dar",
+  "homepage": "https://github.com/jonbhanson/flutter_native_splash",
   "license": {
     "file": "../LICENSE"
   },
   "authors": {
-    "Your Company": "email@example.com"
+    "Jon Hanson": "jon@jonhanson.net"
   },
   "source": {
     "path": "."
   },
-  "source_files": "Classes/**/*",
-  "public_header_files": "Classes/**/*.h",
+  "source_files": "flutter_native_splash/Sources/flutter_native_splash/**/*",
+  "public_header_files": "flutter_native_splash/Sources/flutter_native_splash/**/*.h",
   "dependencies": {
     "Flutter": [
 
@@ -25,7 +25,7 @@
   },
   "resource_bundles": {
     "flutter_native_splash_privacy": [
-      "Resources/PrivacyInfo.xcprivacy"
+      "flutter_native_splash/Sources/flutter_native_splash/PrivacyInfo.xcprivacy"
     ]
   },
   "pod_target_xcconfig": {
