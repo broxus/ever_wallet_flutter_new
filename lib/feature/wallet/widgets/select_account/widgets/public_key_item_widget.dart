@@ -154,7 +154,7 @@ class _PublicKeyItemWidgetState extends State<PublicKeyItemWidget> {
 
       widget.scrollController.animateTo(
         scrollOffset,
-        duration: const Duration(milliseconds: 300),
+        duration: const Duration(milliseconds: 100),
         curve: Curves.easeInOut,
       );
     }
