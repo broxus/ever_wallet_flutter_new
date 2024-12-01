@@ -62,10 +62,16 @@ class ManageSeedsAccountsCubit extends Cubit<ManageSeedsAccountsState> {
         if (list.first.addedAt != 0) {
           final masterPublicKey = list.last.masterKey.publicKey;
 
-          storageService.addValue(
+          final isShowBackup = storageService.getValue<bool>(
             StorageKey.showingManualBackupBadge(masterPublicKey.publicKey),
-            list.last.addType == SeedAddType.create,
           );
+
+          if (isShowBackup ?? false) {
+            storageService.addValue(
+              StorageKey.showingManualBackupBadge(masterPublicKey.publicKey),
+              list.last.addType == SeedAddType.create,
+            );
+          }
 
           emit(
             ManageSeedsAccountsState.data(
