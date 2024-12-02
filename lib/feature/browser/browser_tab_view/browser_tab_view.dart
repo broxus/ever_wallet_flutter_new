@@ -444,8 +444,10 @@ class _BrowserTabViewState extends State<BrowserTabView> with ContextMixin {
     _webViewController?.reload();
   }
 
-  void _onGoBack() {
-    _webViewController?.goBack();
+  Future<void> _onGoBack() async {
+    try {
+      await _webViewController?.goBack();
+    } catch (_) {}
   }
 
   void _onGoForward() {
