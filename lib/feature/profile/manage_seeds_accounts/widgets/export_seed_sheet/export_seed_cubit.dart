@@ -9,7 +9,7 @@ part 'export_seed_cubit.freezed.dart';
 part 'export_seed_state.dart';
 
 /// Cubit that enters user password and exports seed phrase.
-class ExportSeedCubit extends Cubit<ExportSeedState> with BlocMixin {
+class ExportSeedCubit extends Cubit<ExportSeedState> with BlocBaseMixin {
   ExportSeedCubit(
     this.nekotonRepository,
     this.publicKey,

@@ -18,7 +18,7 @@ part 'account_transactions_tab_state.dart';
 /// Cubit for <AccountTransactionsTab> that allows displaying list of
 /// transactions for TonWallet for [account].
 class AccountTransactionsTabCubit extends Cubit<AccountTransactionsTabState>
-    with BlocMixin {
+    with BlocBaseMixin {
   AccountTransactionsTabCubit({
     required this.walletStorage,
     required this.nekotonRepository,
