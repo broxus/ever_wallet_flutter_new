@@ -1534,10 +1534,10 @@ packages:
     dependency: "direct main"
     description:
       name: nekoton_webview
-      sha256: b29004936530bfb3c984f6974fe1f59dd8a69079ce387053f8864f2632b314f7
+      sha256: "179cb96eb412783b9e2e0762be3add191264241d375a312747ee4d748123329e"
       url: "https://pub.dev"
     source: hosted
-    version: "0.1.8-dev.3"
+    version: "0.1.8-dev.4"
   nested:
     dependency: transitive
     description:
