@@ -364,15 +364,19 @@ class EnterSeedPhraseCubit extends Cubit<EnterSeedPhraseState>
   void _resetFormAndError() {
     formKey.currentState?.reset();
     var changedModels = false;
-    for (var index = 0; index < _currentValue; index++) {
-      if (_inputModels[index].hasError) {
-        changedModels = true;
-        _inputModels[index] = _inputModels[index].copyWith(hasError: false);
+
+    try {
+      for (var index = 0; index < _currentValue; index++) {
+        if (_inputModels[index].hasError) {
+          changedModels = true;
+          _inputModels[index] = _inputModels[index].copyWith(hasError: false);
+        }
       }
-    }
-    final st = state;
-    if (changedModels && st is _Tab) {
-      emit(st.copyWith(inputs: _inputModels.take(_currentValue).toList()));
+    } finally {
+      final st = state;
+      if (changedModels && st is _Tab) {
+        emit(st.copyWith(inputs: _inputModels.take(_currentValue).toList()));
+      }
     }
   }
 
