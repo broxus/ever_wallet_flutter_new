@@ -182,6 +182,8 @@ extension TransportTypeExtension on TransportStrategy {
       return NetworkType.ever;
     } else if (this is VenomTransportStrategy) {
       return NetworkType.venom;
+    } else if (this is TychoTransportStrategy) {
+      return NetworkType.tycho;
     } else {
       return NetworkType.custom;
     }

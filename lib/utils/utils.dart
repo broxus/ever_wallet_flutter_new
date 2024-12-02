@@ -160,3 +160,9 @@ extension FutureExt<T> on Future<T> {
     return (result1, result2, result3, result4);
   }
 }
+
+extension MapExt<K, V> on Map<K, V> {
+  void set(K key, V value) {
+    this[key] = value;
+  }
+}

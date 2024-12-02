@@ -4,32 +4,24 @@ import 'package:app/app/service/service.dart';
 import 'package:encrypted_storage/encrypted_storage.dart';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:get_storage/get_storage.dart';
-import 'package:logging/logging.dart';
 
-final _logger = Logger('StorageMigrationService');
-const _version = 1;
-const _versionKey = 'version';
+abstract interface class StorageMigration {
+  Future<void> apply();
 
-class StorageMigrationService {
-  StorageMigrationService(
-    this._encryptedStorage,
-  )   : _storage = GetStorage(),
-        _fss = const FlutterSecureStorage(
+  Future<void> complete();
+}
+
+class StorageMigrationV1 implements StorageMigration {
+  StorageMigrationV1({
+    required this.encryptedStorage,
+  }) : fss = const FlutterSecureStorage(
           aOptions: AndroidOptions(encryptedSharedPreferences: true),
         );
 
-  static Future<void> migrateToContainers(
-    EncryptedStorage encryptedStorage,
-  ) async =>
-      StorageMigrationService(
-        encryptedStorage,
-      ).migrate();
+  static const int version = 1;
 
-  final GetStorage _storage;
-  final FlutterSecureStorage _fss;
-  final EncryptedStorage _encryptedStorage;
-
-  bool get needMigration => _storage.read<int>(_versionKey) == null;
+  final FlutterSecureStorage fss;
+  final EncryptedStorage encryptedStorage;
 
   List<String> get _domains => [
         ...GeneralStorageService.containers,
@@ -42,23 +34,8 @@ class StorageMigrationService {
         BrowserTabsStorageService.container,
       ];
 
-  Future<void> migrate() async {
-    await GetStorage.init();
-
-    if (needMigration) {
-      try {
-        await _applyMigration();
-        await _completeMigration();
-      } catch (e, t) {
-        _logger.severe('migrate()', e, t);
-        rethrow;
-      }
-    } else {
-      await _completeMigration();
-    }
-  }
-
-  Future<void> _applyMigration() async {
+  @override
+  Future<void> apply() async {
     await _migrateAppStorageService();
 
     for (final domain in _domains) {
@@ -66,25 +43,24 @@ class StorageMigrationService {
     }
   }
 
-  Future<void> _completeMigration() async {
-    for (final entry in (await _fss.readAll()).entries) {
+  @override
+  Future<void> complete() async {
+    for (final entry in (await fss.readAll()).entries) {
       if (entry.key.startsWith('sparx:')) {
-        await _fss.delete(key: entry.key);
+        await fss.delete(key: entry.key);
       }
     }
 
     for (final domain in _domains) {
-      await _encryptedStorage.clearDomain(domain);
+      await encryptedStorage.clearDomain(domain);
     }
-
-    await _storage.write(_versionKey, _version);
   }
 
   Future<void> _migrateAppStorageService() async {
     await GetStorage.init(AppStorageService.container);
     final storage = GetStorage(AppStorageService.container);
 
-    for (final entry in (await _fss.readAll()).entries) {
+    for (final entry in (await fss.readAll()).entries) {
       if (entry.key.startsWith('sparx:')) {
         final value = bool.tryParse(entry.value) ?? entry.value;
 
@@ -97,7 +73,7 @@ class StorageMigrationService {
     await GetStorage.init(domain);
     final storage = GetStorage(domain);
 
-    final encoded = await _encryptedStorage.getDomain(domain: domain);
+    final encoded = await encryptedStorage.getDomain(domain: domain);
 
     for (final entry in encoded.entries) {
       storage.writeInMemory(entry.key, _tryDecode(entry.value));
@@ -113,4 +89,19 @@ class StorageMigrationService {
     } catch (_) {}
     return value;
   }
+}
+
+class StorageMigrationV2 implements StorageMigration {
+  static const int version = 2;
+
+  @override
+  Future<void> apply() async {
+    for (final container in BalanceStorageService.containers) {
+      await GetStorage.init(container);
+      await GetStorage(container).erase();
+    }
+  }
+
+  @override
+  Future<void> complete() async {}
 }

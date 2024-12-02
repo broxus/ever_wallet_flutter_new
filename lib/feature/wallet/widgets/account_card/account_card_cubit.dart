@@ -1,6 +1,7 @@
 import 'dart:async';
 
 import 'package:app/app/service/service.dart';
+import 'package:app/data/models/models.dart';
 import 'package:app/di/di.dart';
 import 'package:bloc/bloc.dart';
 import 'package:collection/collection.dart';
@@ -29,22 +30,26 @@ class AccountCardCubit extends Cubit<AccountCardState> {
             walletName: _walletName(nekotonRepository, account),
           ),
         ) {
-    _walletsSubscription = nekotonRepository.walletsStream.listen((wallets) {
+    _walletsSubscription = nekotonRepository.currentTransportStream.switchMap(
+      (transport) {
+        _closeSubs();
+        _cachedFiatBalance = balanceStorage.getOverallBalance(
+              transport.networkType,
+            )[account.address] ??
+            Fixed.zero;
+        emit(
+          AccountCardState.data(
+            account: account,
+            walletName: _walletName(nekotonRepository, account),
+            balance: currencyConvertService.convert(_cachedFiatBalance),
+          ),
+        );
+        return nekotonRepository.walletsStream;
+      },
+    ).listen((wallets) {
       final wl = wallets.firstWhereOrNull((w) => w.address == account.address);
       if (wl != null) _initWallet(wl);
     });
-
-    final balance = balanceStorage.overallBalance[account.address];
-    if (balance != null) {
-      _cachedFiatBalance = balance;
-      emit(
-        AccountCardState.data(
-          account: account,
-          walletName: _walletName(nekotonRepository, account),
-          balance: currencyConvertService.convert(balance),
-        ),
-      );
-    }
   }
 
   final CurrencyConvertService currencyConvertService;
@@ -62,6 +67,9 @@ class AccountCardCubit extends Cubit<AccountCardState> {
 
   TonWalletState? walletState;
 
+  NetworkType get _networkType =>
+      nekotonRepository.currentTransport.networkType;
+
   Future<void> retry() async {
     final st = state;
     if (st is _SubscribeError) {
@@ -72,17 +80,6 @@ class AccountCardCubit extends Cubit<AccountCardState> {
   }
 
   void _initWallet(TonWalletState wState) {
-    final oldWallet = walletState?.wallet;
-
-    // we have old wallet and if old and new has same transport and new is
-    // initialized, then ignore
-    if (oldWallet != null &&
-        oldWallet.transport.connectionParamsHash ==
-            wState.wallet?.transport.connectionParamsHash &&
-        wState.wallet?.transport.connectionParamsHash != null) {
-      return;
-    }
-
     _closeSubs();
 
     walletState = wState;
@@ -118,6 +115,7 @@ class AccountCardCubit extends Cubit<AccountCardState> {
         _updateWalletData(wallet);
 
         balanceStorage.setOverallBalance(
+          network: _networkType,
           accountAddress: account.address,
           balance: fiat,
         );
