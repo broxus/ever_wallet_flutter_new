@@ -2216,6 +2216,14 @@ packages:
       url: "https://pub.dev"
     source: hosted
     version: "0.6.4"
+  the_logger:
+    dependency: "direct main"
+    description:
+      name: the_logger
+      sha256: "3b59782b7515b8040846040a95d8cfd21137c29ab38ec90f050689c4c95d57c0"
+      url: "https://pub.dev"
+    source: hosted
+    version: "0.0.17"
   time:
     dependency: transitive
     description:
