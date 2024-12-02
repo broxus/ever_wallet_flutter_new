@@ -235,6 +235,7 @@ extension GetItInjectableX on _i174.GetIt {
     gh.singleton<_i637.BalanceService>(() => _i637.BalanceService(
           gh<_i771.NekotonRepository>(),
           gh<_i128.CurrenciesService>(),
+          gh<_i128.BalanceStorageService>(),
         ));
     return this;
   }

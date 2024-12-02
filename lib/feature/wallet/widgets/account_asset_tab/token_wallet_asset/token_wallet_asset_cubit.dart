@@ -8,6 +8,7 @@ import 'package:freezed_annotation/freezed_annotation.dart';
 import 'package:nekoton_repository/nekoton_repository.dart';
 
 part 'token_wallet_asset_cubit.freezed.dart';
+
 part 'token_wallet_asset_state.dart';
 
 class TokenWalletAssetCubit extends Cubit<TokenWalletAssetState> {
@@ -62,8 +63,9 @@ class TokenWalletAssetCubit extends Cubit<TokenWalletAssetState> {
       }
     });
 
-    final balances =
-        balanceStorage.balances[owner]?.tokenBalance(asset.address);
+    final balances = balanceStorage
+        .getBalances(_networkType)[owner]
+        ?.tokenBalance(asset.address);
     if (balances != null) {
       _cachedFiatBalance = balances.fiatBalance;
       _cachedTokenBalance = balances.tokenBalance;
@@ -86,6 +88,9 @@ class TokenWalletAssetCubit extends Cubit<TokenWalletAssetState> {
   Money? _cachedTokenBalance;
 
   TokenWalletState? _wallet;
+
+  NetworkType get _networkType =>
+      nekotonRepository.currentTransport.networkType;
 
   @override
   Future<void> close() {
@@ -112,6 +117,7 @@ class TokenWalletAssetCubit extends Cubit<TokenWalletAssetState> {
   void _tryUpdateBalances() {
     if (_cachedFiatBalance != null && _cachedTokenBalance != null) {
       balanceStorage.setBalances(
+        network: _networkType,
         accountAddress: owner,
         balance: AccountBalanceModel(
           rootTokenContract: asset.address,

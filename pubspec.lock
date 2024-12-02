@@ -1534,10 +1534,10 @@ packages:
     dependency: "direct main"
     description:
       name: nekoton_webview
-      sha256: b29004936530bfb3c984f6974fe1f59dd8a69079ce387053f8864f2632b314f7
+      sha256: "179cb96eb412783b9e2e0762be3add191264241d375a312747ee4d748123329e"
       url: "https://pub.dev"
     source: hosted
-    version: "0.1.8-dev.3"
+    version: "0.1.8-dev.4"
   nested:
     dependency: transitive
     description:
@@ -2395,10 +2395,10 @@ packages:
     dependency: transitive
     description:
       name: vm_service
-      sha256: "5c5f338a667b4c644744b661f309fb8080bb94b18a7e91ef1dbd343bed00ed6d"
+      sha256: f652077d0bdf60abe4c1f6377448e8655008eef28f128bc023f7b5e8dfeb48fc
       url: "https://pub.dev"
     source: hosted
-    version: "14.2.5"
+    version: "14.2.4"
   watcher:
     dependency: transitive
     description:
