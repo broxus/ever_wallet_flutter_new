@@ -142,24 +142,31 @@ class AccountTransactionsTabCubit extends Cubit<AccountTransactionsTabState>
       (transactions) async {
         final multisigTransactions = wallet.unconfirmedTransactions;
 
-        _multisigExpired =
-            await nekotonRepository.mapMultisigExpiredTransactions(
-          walletAddress: wallet.address,
-          transactions: transactions,
-          multisigPendingTransactions: multisigTransactions,
-        );
-        _multisigOrdinary =
-            await nekotonRepository.mapMultisigOrdinaryTransactions(
-          walletAddress: wallet.address,
-          transactions: transactions,
-          multisigPendingTransactions: multisigTransactions,
-        );
-        _multisigPending =
-            await nekotonRepository.mapMultisigPendingTransactions(
-          walletAddress: wallet.address,
-          transactions: transactions,
-          multisigPendingTransactions: multisigTransactions,
-        );
+        try {
+          _multisigExpired =
+              await nekotonRepository.mapMultisigExpiredTransactions(
+            walletAddress: wallet.address,
+            transactions: transactions,
+            multisigPendingTransactions: multisigTransactions,
+          );
+        } catch (_) {}
+        try {
+          _multisigOrdinary =
+              await nekotonRepository.mapMultisigOrdinaryTransactions(
+            walletAddress: wallet.address,
+            transactions: transactions,
+            multisigPendingTransactions: multisigTransactions,
+          );
+        } catch (_) {}
+
+        try {
+          _multisigPending =
+              await nekotonRepository.mapMultisigPendingTransactions(
+            walletAddress: wallet.address,
+            transactions: transactions,
+            multisigPendingTransactions: multisigTransactions,
+          );
+        } catch (_) {}
 
         _multisigLoaded = true;
 
