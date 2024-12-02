@@ -1,6 +1,7 @@
 import 'dart:async';
 
 import 'package:app/app/service/service.dart';
+import 'package:app/core/bloc/bloc_mixin.dart';
 import 'package:app/data/models/custom_currency.dart';
 import 'package:app/feature/wallet/widgets/account_transactions_tab/models/account_transaction_item.dart';
 import 'package:bloc/bloc.dart';
@@ -16,7 +17,8 @@ part 'account_transactions_tab_state.dart';
 
 /// Cubit for <AccountTransactionsTab> that allows displaying list of
 /// transactions for TonWallet for [account].
-class AccountTransactionsTabCubit extends Cubit<AccountTransactionsTabState> {
+class AccountTransactionsTabCubit extends Cubit<AccountTransactionsTabState>
+    with BlocMixin {
   AccountTransactionsTabCubit({
     required this.walletStorage,
     required this.nekotonRepository,
@@ -227,7 +229,7 @@ class AccountTransactionsTabCubit extends Cubit<AccountTransactionsTabState> {
         _ordinaryLoaded) {
       _transactionsState(fromStream: true);
     } else {
-      emit(const AccountTransactionsTabState.loading());
+      emitSafe(const AccountTransactionsTabState.loading());
     }
   }
 
@@ -242,7 +244,7 @@ class AccountTransactionsTabCubit extends Cubit<AccountTransactionsTabState> {
         _expired.isEmpty &&
         _pending.isEmpty &&
         _ordinary.isEmpty) {
-      emit(const AccountTransactionsTabState.empty());
+      emitSafe(const AccountTransactionsTabState.empty());
     } else {
       final transactions = [
         ..._multisigOrdinary.map(
@@ -308,7 +310,7 @@ class AccountTransactionsTabCubit extends Cubit<AccountTransactionsTabState> {
         canLoadMore = lastLt != _lastLtWhenPreloaded;
       }
 
-      emit(
+      emitSafe(
         AccountTransactionsTabState.transactions(
           transactions: transactions,
           isLoading: isLoading,
