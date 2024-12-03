@@ -13,18 +13,21 @@ class TonWalletMultisigPendingTransactionWidget extends StatelessWidget {
     required this.transaction,
     required this.displayDate,
     required this.price,
+    required this.account,
     super.key,
   });
 
   final TonWalletMultisigPendingTransaction transaction;
   final bool displayDate;
   final Fixed price;
+  final KeyAccount account;
 
   @override
   Widget build(BuildContext context) {
     final ticker =
         inject<NekotonRepository>().currentTransport.nativeTokenTicker;
     final expireAtFormat = DateFormat('HH:mm:ss', context.locale.languageCode);
+    final theme = context.themeStyleV2;
 
     return TonWalletTransactionWidget(
       displayDate: displayDate,
@@ -33,6 +36,7 @@ class TonWalletMultisigPendingTransactionWidget extends StatelessWidget {
           builder: (_) => TonWalletMultisigPendingTransactionDetailsPage(
             transaction: transaction,
             price: price,
+            account: account,
           ),
         ),
       ),
@@ -51,18 +55,28 @@ class TonWalletMultisigPendingTransactionWidget extends StatelessWidget {
         Currencies()[ticker]!,
       ),
       additionalInformation: Padding(
-        padding: const EdgeInsets.all(DimensSize.d16),
-        child: Text(
-          LocaleKeys.leftForConfirmation.tr(
-            args: [
-              expireAtFormat.format(transaction.expireAt),
-              transaction.signsReceived.toString(),
-              transaction.signsRequired.toString(),
-            ],
-          ),
-          style: StyleRes.addRegular.copyWith(
-            color: context.themeStyle.colors.textSecondary,
-          ),
+        padding: const EdgeInsets.only(bottom: DimensSizeV2.d3),
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.end,
+          mainAxisAlignment: MainAxisAlignment.end,
+          children: [
+            Text(
+              LocaleKeys.confirmedCustodians.tr(
+                args: [
+                  transaction.signsReceived.toString(),
+                  transaction.signsRequired.toString(),
+                ],
+              ),
+              style: theme.textStyles.labelXSmall
+                  .copyWith(color: theme.colors.warning),
+            ),
+            Text(
+              LocaleKeys.expiresInCustodians
+                  .tr(args: [expireAtFormat.format(transaction.expireAt)]),
+              style: theme.textStyles.labelXSmall
+                  .copyWith(color: theme.colors.content3),
+            ),
+          ],
         ),
       ),
     );

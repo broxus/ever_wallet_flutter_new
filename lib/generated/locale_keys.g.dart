@@ -649,4 +649,8 @@ abstract class LocaleKeys {
   static const deployWalletModalSubtitle = 'deployWalletModalSubtitle';
   static const deployWalletWaitingTime = 'deployWalletWaitingTime';
   static const custodiansSettingsLabel = 'custodiansSettingsLabel';
+  static const fromWord = 'fromWord';
+  static const toWord = 'toWord';
+  static const confirmedCustodians = 'confirmedCustodians';
+  static const expiresInCustodians = 'expiresInCustodians';
 }

@@ -137,7 +137,7 @@ class PublicKeyItemWidget extends StatelessWidget {
 
       scrollController.animateTo(
         scrollOffset,
-        duration: const Duration(milliseconds: 300),
+        duration: const Duration(milliseconds: 100),
         curve: Curves.easeInOut,
       );
     }

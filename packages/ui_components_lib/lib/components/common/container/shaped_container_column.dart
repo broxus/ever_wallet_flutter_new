@@ -81,6 +81,7 @@ class ShapedContainerColumn extends StatelessWidget {
       crossAxisAlignment: crossAxisAlignment,
       children: children,
     );
+    final theme = context.themeStyleV2;
 
     return SizedBox(
       width: width,
@@ -108,20 +109,15 @@ class ShapedContainerColumn extends StatelessWidget {
                               Expanded(
                                 child: Text(
                                   titleText!,
-                                  style: StyleRes.h2.copyWith(
-                                    color:
-                                        context.themeStyle.colors.textPrimary,
-                                  ),
+                                  style: theme.textStyles.headingMedium,
                                 ),
                               ),
                             if (subtitleText != null)
                               Flexible(
                                 child: Text(
                                   subtitleText!,
-                                  style: StyleRes.addRegular.copyWith(
-                                    color:
-                                        context.themeStyle.colors.textSecondary,
-                                  ),
+                                  style: theme.textStyles.labelXSmall
+                                      .copyWith(color: theme.colors.content3),
                                   textAlign: TextAlign.right,
                                 ),
                               ),

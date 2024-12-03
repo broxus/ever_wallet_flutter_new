@@ -134,18 +134,21 @@ class AccountTransactionsTab extends StatelessWidget {
               trans.transaction as TonWalletMultisigOrdinaryTransaction,
           displayDate: displayDate,
           price: price,
+          account: account,
         ),
       AccountTransactionType.multisigPending =>
         TonWalletMultisigPendingTransactionWidget(
           transaction: trans.transaction as TonWalletMultisigPendingTransaction,
           displayDate: displayDate,
           price: price,
+          account: account,
         ),
       AccountTransactionType.multisigExpired =>
         TonWalletMultisigExpiredTransactionWidget(
           transaction: trans.transaction as TonWalletMultisigExpiredTransaction,
           displayDate: displayDate,
           price: price,
+          account: account,
         ),
     };
   }

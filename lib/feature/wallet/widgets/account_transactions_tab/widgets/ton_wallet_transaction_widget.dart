@@ -63,14 +63,12 @@ class TonWalletTransactionWidget extends StatelessWidget {
       onPressed: onPressed,
       child: Material(
         shape: const SquircleShapeBorder(cornerRadius: DimensRadius.medium),
-        color: theme.colors.background2,
+        color: theme.colors.background1,
         child: SeparatedColumn(
           crossAxisAlignment: CrossAxisAlignment.start,
           mainAxisSize: MainAxisSize.min,
-          separator: const CommonDivider(),
           children: [
             _baseTransactionBody(theme),
-            if (additionalInformation != null) additionalInformation!,
           ],
         ),
       ),
@@ -128,26 +126,36 @@ class TonWalletTransactionWidget extends StatelessWidget {
                     Row(
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
-                        Icon(
-                          isIncoming
-                              ? LucideIcons.arrowDown
-                              : LucideIcons.arrowUp,
-                          color: isIncoming
-                              ? theme.colors.contentPositive
-                              : theme.colors.content0,
-                          size: DimensSizeV2.d16,
+                        TransactionIcon(
+                          isIncoming: isIncoming,
+                          isPending:
+                              status == TonWalletTransactionStatus.expired,
                         ),
-                        const SizedBox(width: DimensSizeV2.d8),
+                        const SizedBox(width: DimensSizeV2.d12),
                         Column(
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children: [
-                            Text(
-                              isIncoming ? 'Received' : 'Sent',
-                              style: theme.textStyles.labelSmall,
+                            AmountWidget.fromMoney(
+                              amount: transactionValue,
+                              includeSymbol: false,
+                              sign: isIncoming
+                                  ? LocaleKeys.plusSign.tr()
+                                  : LocaleKeys.minusSign.tr(),
+                              style: theme.textStyles.labelXSmall.copyWith(
+                                color: _getColor(
+                                  theme,
+                                  status == TonWalletTransactionStatus.expired,
+                                  isIncoming,
+                                ),
+                              ),
                             ),
                             const SizedBox(height: DimensSizeV2.d4),
                             Text(
-                              address.toEllipseString(),
+                              isIncoming
+                                  ? LocaleKeys.fromWord
+                                      .tr(args: [address.toEllipseString()])
+                                  : LocaleKeys.toWord
+                                      .tr(args: [address.toEllipseString()]),
                               style: theme.textStyles.labelXSmall.copyWith(
                                 color: theme.colors.content3,
                               ),
@@ -160,46 +168,81 @@ class TonWalletTransactionWidget extends StatelessWidget {
                   ],
                 ),
               ),
-              Column(
-                crossAxisAlignment: CrossAxisAlignment.end,
-                children: [
-                  AmountWidget.fromMoney(
-                    amount: transactionValue,
-                    includeSymbol: false,
-                    sign: isIncoming
-                        ? LocaleKeys.plusSign.tr()
-                        : LocaleKeys.minusSign.tr(),
-                    style: theme.textStyles.labelXSmall.copyWith(
-                      color: isIncoming
-                          ? theme.colors.contentPositive
-                          : theme.colors.content0,
-                    ),
-                  ),
-                  const SizedBox(height: DimensSizeV2.d4),
-                  Row(
-                    children: [
-                      if (status == TonWalletTransactionStatus.pending ||
-                          status ==
-                              TonWalletTransactionStatus.unstakingInProgress)
-                        Text(
-                          '${status.title} • ',
-                          style: theme.textStyles.labelXSmall
-                              .copyWith(color: theme.colors.content3),
-                        ),
+              if (additionalInformation != null)
+                additionalInformation!
+              else
+                Column(
+                  crossAxisAlignment: CrossAxisAlignment.end,
+                  children: [
+                    if (status == TonWalletTransactionStatus.pending ||
+                        status ==
+                            TonWalletTransactionStatus.unstakingInProgress)
                       Text(
-                        transactionTimeFormatter.format(transactionDateTime),
-                        style: theme.textStyles.labelXSmall.copyWith(
-                          color: theme.colors.content3,
-                        ),
+                        '${status.title}',
+                        style: theme.textStyles.labelXSmall
+                            .copyWith(color: theme.colors.content3),
+                      )
+                    else
+                      Text('', style: theme.textStyles.labelXSmall),
+                    const SizedBox(height: DimensSizeV2.d6),
+                    Text(
+                      transactionTimeFormatter.format(transactionDateTime),
+                      style: theme.textStyles.labelXSmall.copyWith(
+                        color: theme.colors.content3,
                       ),
-                    ],
-                  ),
-                ],
-              ),
+                    ),
+                  ],
+                ),
             ],
           ),
         );
       },
     );
+  }
+}
+
+class TransactionIcon extends StatelessWidget {
+  const TransactionIcon({
+    required this.isPending,
+    required this.isIncoming,
+    super.key,
+  });
+
+  final bool isPending;
+  final bool isIncoming;
+
+  @override
+  Widget build(BuildContext context) {
+    final theme = context.themeStyleV2;
+    final icon = isPending
+        ? LucideIcons.timer
+        : isIncoming
+            ? LucideIcons.arrowDownLeft
+            : LucideIcons.arrowUpRight;
+    return Container(
+      height: DimensSizeV2.d40,
+      width: DimensSizeV2.d40,
+      decoration: BoxDecoration(
+        color: theme.colors.backgroundAlpha,
+        shape: BoxShape.circle,
+      ),
+      child: Center(
+        child: Icon(
+          icon,
+          size: DimensSizeV2.d20,
+          color: _getColor(theme, isPending, isIncoming),
+        ),
+      ),
+    );
+  }
+}
+
+Color _getColor(ThemeStyleV2 theme, bool isPending, bool isIncoming) {
+  if (isPending) {
+    return theme.colors.contentWarning;
+  } else if (isIncoming) {
+    return theme.colors.contentPositive;
+  } else {
+    return theme.colors.content0;
   }
 }

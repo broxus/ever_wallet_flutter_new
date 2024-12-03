@@ -39,6 +39,7 @@ class SelectAccountWidget extends ElementaryWidget<SelectAccountWidgetModel> {
             builder: (_, list, currentAccount) {
               return SingleChildScrollView(
                 controller: scrollController,
+                physics: const ClampingScrollPhysics(),
                 child: Column(
                   mainAxisSize: MainAxisSize.min,
                   children: List.generate(

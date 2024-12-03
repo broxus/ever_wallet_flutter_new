@@ -74,7 +74,7 @@ class WalletTransactionDetailsDefaultBody extends StatelessWidget {
       children: [
         const SizedBox.shrink(),
         _statusDateRow(context, theme),
-        const Divider(),
+        const CommonDivider(),
         WalletTransactionDetailsItem(
           title: LocaleKeys.typeWord.tr(),
           value: type,
@@ -149,7 +149,6 @@ class WalletTransactionDetailsDefaultBody extends StatelessWidget {
   }
 
   Widget _statusDateRow(BuildContext context, ThemeStyleV2 theme) {
-    final colors = context.themeStyle.colors;
     final formatter = date.year == NtpTime.now().year
         ? DateFormat('MM.dd, HH:mm:ss', context.locale.languageCode)
         : DateFormat('MM.dd.y, HH:mm:ss', context.locale.languageCode);
@@ -167,8 +166,8 @@ class WalletTransactionDetailsDefaultBody extends StatelessWidget {
             const SizedBox(height: DimensSizeV2.d4),
             Text(
               formatter.format(date),
-              style: StyleRes.addRegular.copyWith(
-                color: colors.textSecondary,
+              style: theme.textStyles.labelXSmall.copyWith(
+                color: theme.colors.content3,
               ),
               textAlign: TextAlign.right,
             ),

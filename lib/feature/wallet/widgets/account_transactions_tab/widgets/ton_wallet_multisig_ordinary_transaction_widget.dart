@@ -11,12 +11,14 @@ class TonWalletMultisigOrdinaryTransactionWidget extends StatelessWidget {
     required this.transaction,
     required this.displayDate,
     required this.price,
+    required this.account,
     super.key,
   });
 
   final TonWalletMultisigOrdinaryTransaction transaction;
   final Fixed price;
   final bool displayDate;
+  final KeyAccount account;
 
   @override
   Widget build(BuildContext context) {
@@ -30,6 +32,7 @@ class TonWalletMultisigOrdinaryTransactionWidget extends StatelessWidget {
           builder: (_) => TonWalletMultisigOrdinaryTransactionDetailsPage(
             transaction: transaction,
             price: price,
+            account: account,
           ),
         ),
       ),
