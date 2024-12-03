@@ -41,8 +41,11 @@ class StakingBloc extends Bloc<StakingBlocEvent, StakingBlocState>
   }) : super(const StakingBlocState.preparing()) {
     stakingService.resetCache();
     _registerHandlers();
-    _inputController
-        .addListener(() => addSafe(StakingBlocEvent.updateReceive(_currentValue)));
+    _inputController.addListener(
+      () => addSafe(
+        StakingBlocEvent.updateReceive(_currentValue),
+      ),
+    );
   }
 
   final _logger = Logger('StakingBloc');
