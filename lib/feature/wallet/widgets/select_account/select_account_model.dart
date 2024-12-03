@@ -50,15 +50,19 @@ class SelectAccountModel extends ElementaryModel {
   }
 
   Future<Money?> getBalance(KeyAccount account) async {
-    final wallet = _nekotonRepository.walletsMap[account.address]?.wallet ??
-        await _getWallet(account);
+    try {
+      final wallet = _nekotonRepository.walletsMap[account.address]?.wallet ??
+          await _getWallet(account);
 
-    if (wallet == null) return null;
+      if (wallet == null) return null;
 
-    return Money.fromBigIntWithCurrency(
-      wallet.contractState.balance,
-      Currencies()[currentTransport.nativeTokenTicker]!,
-    );
+      return Money.fromBigIntWithCurrency(
+        wallet.contractState.balance,
+        Currencies()[currentTransport.nativeTokenTicker]!,
+      );
+    } catch (_) {
+      return null;
+    }
   }
 
   Future<TonWallet?> _getWallet(KeyAccount account) async {
