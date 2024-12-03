@@ -19,7 +19,7 @@ Future<void> migrateStorage() async {
   log
     ..finest('MigrationService finished')
     ..finest('StorageMigrationService starting...');
-  await StorageMigrationService.migrateToContainers(
+  await StorageMigrationService.applyMigrations(
     inject<EncryptedStorage>(),
   );
   log.finest('StorageMigrationService finished');
