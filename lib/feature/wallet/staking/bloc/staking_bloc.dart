@@ -42,7 +42,7 @@ class StakingBloc extends Bloc<StakingBlocEvent, StakingBlocState>
     stakingService.resetCache();
     _registerHandlers();
     _inputController
-        .addListener(() => add(StakingBlocEvent.updateReceive(_currentValue)));
+        .addListener(() => addSafe(StakingBlocEvent.updateReceive(_currentValue)));
   }
 
   final _logger = Logger('StakingBloc');
