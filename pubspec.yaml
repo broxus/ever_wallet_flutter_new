@@ -78,6 +78,7 @@ dependencies:
   share_plus: 10.1.2
   shared_preferences: 2.3.3
   string_extensions: 0.7.3
+  the_logger: ^0.0.17
   ui_components_lib:
     path: packages/ui_components_lib
   url_launcher: 6.3.1
