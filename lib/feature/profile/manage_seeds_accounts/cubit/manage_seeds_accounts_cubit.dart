@@ -59,7 +59,7 @@ class ManageSeedsAccountsCubit extends Cubit<ManageSeedsAccountsState> {
       (seeds) {
         final list = seeds.seeds;
         list.sort((a, b) => a.addedAt.compareTo(b.addedAt));
-        if (list.first.addedAt != 0) {
+        if (list.isNotEmpty && list.first.addedAt != 0) {
           final masterPublicKey = list.last.masterKey.publicKey;
 
           final isShowBackup = storageService.getValue<bool>(

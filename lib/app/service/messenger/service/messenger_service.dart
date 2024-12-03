@@ -20,6 +20,15 @@ class MessengerService {
     _messageStreamController.add(message);
   }
 
+  void showError(BuildContext context, String message) {
+    return show(
+      Message.error(
+        context: context,
+        message: message,
+      ),
+    );
+  }
+
   void showConnectionError(BuildContext? context) {
     show(
       Message.error(

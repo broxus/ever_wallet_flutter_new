@@ -444,8 +444,10 @@ class _BrowserTabViewState extends State<BrowserTabView> with ContextMixin {
     _webViewController?.reload();
   }
 
-  void _onGoBack() {
-    _webViewController?.goBack();
+  Future<void> _onGoBack() async {
+    try {
+      await _webViewController?.goBack();
+    } catch (_) {}
   }
 
   void _onGoForward() {
@@ -483,8 +485,21 @@ class _BrowserTabViewState extends State<BrowserTabView> with ContextMixin {
     String? errorMessage,
     String? title,
   }) async {
-    final canGoBack = await _webViewController?.canGoBack() ?? false;
-    final canGoForward = await _webViewController?.canGoForward() ?? false;
+    late bool canGoBack;
+
+    try {
+      canGoBack = await _webViewController?.canGoBack() ?? false;
+    } catch (_) {
+      canGoBack = false;
+    }
+
+    late bool canGoForward;
+
+    try {
+      canGoForward = await _webViewController?.canGoForward() ?? false;
+    } catch (_) {
+      canGoForward = false;
+    }
 
     _addSetStateEvent(
       state: state,

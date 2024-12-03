@@ -48,5 +48,7 @@ Future<void> configureLogger(
 }
 
 Future<void> startLogSession() async {
-  await inject<FancyLogger>().startSession();
+  try {
+    await inject<FancyLogger>().startSession();
+  } catch (_) {}
 }

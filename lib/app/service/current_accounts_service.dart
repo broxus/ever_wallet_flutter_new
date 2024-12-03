@@ -126,25 +126,27 @@ class CurrentAccountsService {
   /// Start listening for wallet subscriptions and when subscription will be
   /// created, start polling.
   void _tryStartPolling(final KeyAccount? account) {
-    _nekotonRepository
-      ..stopPolling()
-      ..stopPollingToken();
+    try {
+      _nekotonRepository
+        ..stopPolling()
+        ..stopPollingToken();
 
-    if (account == null) return;
+      if (account == null) return;
 
-    _nekotonRepository.startPolling(account.address);
+      _nekotonRepository.startPolling(account.address);
 
-    final networkGroup = _nekotonRepository.currentTransport.transport.group;
-    final tokenWallets =
-        account.account.additionalAssets[networkGroup]?.tokenWallets ?? [];
+      final networkGroup = _nekotonRepository.currentTransport.transport.group;
+      final tokenWallets =
+          account.account.additionalAssets[networkGroup]?.tokenWallets ?? [];
 
-    for (final wallet in tokenWallets) {
-      _nekotonRepository.startPollingToken(
-        account.address,
-        wallet.rootTokenContract,
-        stopPrevious: false,
-      );
-    }
+      for (final wallet in tokenWallets) {
+        _nekotonRepository.startPollingToken(
+          account.address,
+          wallet.rootTokenContract,
+          stopPrevious: false,
+        );
+      }
+    } catch (_) {}
   }
 
   void _tryUpdatingCurrentActiveAccount(AccountList? list) {
