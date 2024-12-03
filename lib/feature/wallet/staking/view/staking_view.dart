@@ -153,9 +153,9 @@ class StakingView extends StatelessWidget {
         AmountInput(
           controller: inputController,
           selectedAsset: asset,
-          onMaxAmount: () => context
+          onMaxAmount: (fieldState) => context
               .read<StakingBloc>()
-              .add(const StakingBlocEvent.selectMax()),
+              .add(StakingBlocEvent.selectMax(fieldState)),
           onSubmitted: (value) => inputController.text = value,
         ),
         const SizedBox(height: DimensSizeV2.d12),

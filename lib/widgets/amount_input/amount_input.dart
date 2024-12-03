@@ -26,7 +26,7 @@ class AmountInput extends StatefulWidget {
   final ValueListenable<List<AmountInputAsset>>? assets;
   final AmountInputAsset? selectedAsset;
   final ValueChanged<AmountInputAsset>? onSelectedAssetChanged;
-  final VoidCallback onMaxAmount;
+  final ValueChanged<FormFieldState<String>?> onMaxAmount;
   final ValueChanged<String> onSubmitted;
 
   @override
@@ -100,11 +100,8 @@ class _AmountInputState extends State<AmountInput> {
                   title: LocaleKeys.maxWord.tr(),
                   buttonShape: ButtonShape.rectangle,
                   buttonSize: ButtonSize.small,
-                  onPressed: () {
-                    widget.onMaxAmount();
-                    _formFieldKey.currentState
-                        ?.didChange(widget.controller.text);
-                  },
+                  onPressed: () =>
+                      widget.onMaxAmount(_formFieldKey.currentState),
                 ),
               ],
             ),

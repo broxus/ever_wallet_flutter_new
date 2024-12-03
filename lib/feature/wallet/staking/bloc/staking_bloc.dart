@@ -91,7 +91,7 @@ class StakingBloc extends Bloc<StakingBlocEvent, StakingBlocState> {
 
   void _registerHandlers() {
     on<_Init>((_, emit) => _init(emit));
-    on<_SelectMax>((_, emit) => _selectMax());
+    on<_SelectMax>((event, emit) => _selectMax(event.fieldState));
     on<_UpdateReceive>((event, emit) => _updateReceive(event.value, emit));
     on<_UpdateRequests>((event, emit) {
       _requests = event.requests;
@@ -347,7 +347,7 @@ class StakingBloc extends Bloc<StakingBlocEvent, StakingBlocState> {
     );
   }
 
-  void _selectMax() {
+  void _selectMax(FormFieldState<String>? fieldState) {
     var max = _dataState.asset.balance;
 
     if (_type == StakingPageType.stake) {
@@ -370,7 +370,8 @@ class StakingBloc extends Bloc<StakingBlocEvent, StakingBlocState> {
       }
     }
 
-    _inputController.text = max.amount.toString();
+    _inputController.text = max.formatImproved();
+    fieldState?.didChange(_inputController.text);
   }
 
   Currency get _nativeCurrency =>
