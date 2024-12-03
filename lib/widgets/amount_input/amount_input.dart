@@ -26,7 +26,7 @@ class AmountInput extends StatefulWidget {
   final ValueListenable<List<AmountInputAsset>>? assets;
   final AmountInputAsset? selectedAsset;
   final ValueChanged<AmountInputAsset>? onSelectedAssetChanged;
-  final VoidCallback onMaxAmount;
+  final ValueChanged<FormFieldState<String>?> onMaxAmount;
   final ValueChanged<String> onSubmitted;
 
   @override
@@ -35,8 +35,12 @@ class AmountInput extends StatefulWidget {
 
 class _AmountInputState extends State<AmountInput> {
   final _formFieldKey = GlobalKey<FormFieldState<String>>();
-  CurrencyTextInputFormatter? formatter;
-  CurrencyTextInputValidator? validator;
+
+  CurrencyTextInputFormatter? _formatter;
+  CurrencyTextInputValidator? _validator;
+  FocusNode? _focusNode;
+
+  FocusNode? get focusNode => widget.focusNode ?? (_focusNode ??= FocusNode());
 
   @override
   void initState() {
@@ -50,6 +54,12 @@ class _AmountInputState extends State<AmountInput> {
       _updateFormatterValidator();
     }
     super.didUpdateWidget(oldWidget);
+  }
+
+  @override
+  void dispose() {
+    _focusNode?.dispose();
+    super.dispose();
   }
 
   @override
@@ -100,11 +110,8 @@ class _AmountInputState extends State<AmountInput> {
                   title: LocaleKeys.maxWord.tr(),
                   buttonShape: ButtonShape.rectangle,
                   buttonSize: ButtonSize.small,
-                  onPressed: () {
-                    widget.onMaxAmount();
-                    _formFieldKey.currentState
-                        ?.didChange(widget.controller.text);
-                  },
+                  onPressed: () =>
+                      widget.onMaxAmount(_formFieldKey.currentState),
                 ),
               ],
             ),
@@ -117,12 +124,12 @@ class _AmountInputState extends State<AmountInput> {
             ),
             child: GestureDetector(
               behavior: HitTestBehavior.translucent,
-              onTap: widget.focusNode?.requestFocus,
+              onTap: focusNode?.requestFocus,
               child: FormField<String>(
                 key: _formFieldKey,
                 initialValue: widget.controller.text,
                 autovalidateMode: AutovalidateMode.onUserInteraction,
-                validator: validator?.validate,
+                validator: _validator?.validate,
                 builder: _fieldBuilder,
               ),
             ),
@@ -151,7 +158,7 @@ class _AmountInputState extends State<AmountInput> {
           alignment: Alignment.centerLeft,
           child: AutoSizeTextField(
             controller: widget.controller,
-            focusNode: widget.focusNode,
+            focusNode: focusNode,
             style: inputStyle,
             decoration: InputDecoration(
               border: InputBorder.none,
@@ -163,7 +170,7 @@ class _AmountInputState extends State<AmountInput> {
             keyboardType: const TextInputType.numberWithOptions(
               decimal: true,
             ),
-            inputFormatters: formatter?.let((formatter) => [formatter]),
+            inputFormatters: _formatter?.let((formatter) => [formatter]),
             fullwidth: false,
             onChanged: state.didChange,
             onSubmitted: widget.onSubmitted,
@@ -189,8 +196,8 @@ class _AmountInputState extends State<AmountInput> {
 
   void _updateFormatterValidator() {
     if (widget.selectedAsset == null) {
-      formatter = null;
-      validator = null;
+      _formatter = null;
+      _validator = null;
     } else {
       final (f, v) = createCurrencyTextInputFormatterValidator(
         widget.selectedAsset!.balance.currency,
@@ -200,8 +207,8 @@ class _AmountInputState extends State<AmountInput> {
         maxError: LocaleKeys.insufficientFunds.tr(),
         decimalSeparators: ['.', ','],
       );
-      formatter = f;
-      validator = v;
+      _formatter = f;
+      _validator = v;
     }
   }
 }
