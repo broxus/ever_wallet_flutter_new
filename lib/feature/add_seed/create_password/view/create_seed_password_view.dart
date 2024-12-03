@@ -1,6 +1,7 @@
 import 'package:app/feature/add_seed/create_password/model/password_status.dart';
 import 'package:app/feature/add_seed/create_password/widgets/password_info_section.dart';
 import 'package:app/generated/generated.dart';
+import 'package:app/utils/focus_utils.dart';
 import 'package:flutter/material.dart';
 import 'package:ui_components_lib/ui_components_lib.dart';
 import 'package:ui_components_lib/v2/ui_components_lib_v2.dart';
@@ -135,8 +136,7 @@ class _CreateSeedPasswordViewState extends State<CreateSeedPasswordView> {
     });
   }
 
-  void _onPwd1Submit(String? _) =>
-      FocusScope.of(context).requestFocus(_pwd2focusNode);
+  void _onPwd1Submit(String? _) => requestFocus(context, _pwd2focusNode);
 
   void _onPwd2Submit(String? _) {
     if (widget.passwordStatus == PasswordStatus.match) {
