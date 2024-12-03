@@ -1,10 +1,8 @@
 import 'package:app/feature/wallet/view/wallet_page_wm.dart';
 import 'package:app/feature/wallet/wallet.dart';
-import 'package:app/utils/utils.dart';
 import 'package:elementary/elementary.dart';
 import 'package:elementary_helper/elementary_helper.dart';
 import 'package:flutter/material.dart';
-import 'package:nekoton_repository/nekoton_repository.dart';
 
 class WalletPageWidget extends ElementaryWidget<WalletPageWidgetModel> {
   const WalletPageWidget({
@@ -18,7 +16,7 @@ class WalletPageWidget extends ElementaryWidget<WalletPageWidgetModel> {
       body: StateNotifierBuilder(
         listenableState: wm.currentAccount,
         builder: (_, account) {
-          if (account == null) return  const SizedBox.shrink();
+          if (account == null) return const SizedBox.shrink();
           return TripleSourceBuilder(
             firstSource: wm.isShowingBadge,
             secondSource: wm.isShowingNewTokens,
