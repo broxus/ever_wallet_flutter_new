@@ -15,27 +15,27 @@ class WalletPageWidget extends ElementaryWidget<WalletPageWidgetModel> {
   @override
   Widget build(WalletPageWidgetModel wm) {
     return Scaffold(
-      body: TripleSourceBuilder<KeyAccount?, bool, TransportStrategy>(
-        firstSource: wm.currentAccount,
-        secondSource: wm.isShowingNewTokens,
-        thirdSource: wm.transportStrategy,
-        builder: (_, currentAccount, isShowingNewTokens, transport) {
-          return currentAccount?.let(
-                (value) => StateNotifierBuilder(
-                  listenableState: wm.isShowingBadge,
-                  builder: (_, isShowingBadge) => WalletView(
-                    key: ValueKey(value),
-                    currentAccount: value,
-                    scrollController: wm.scrollController,
-                    isShowingBadge: isShowingBadge ?? false,
-                    isShowingNewTokens: isShowingNewTokens ?? false,
-                    finishedBackupCallback: wm.hideShowingBadge,
-                    confirmImportCallback: wm.hideNewTokensLabel,
-                    manifestUrl: transport?.manifestUrl ?? '',
-                  ),
-                ),
-              ) ??
-              const SizedBox.shrink();
+      body: StateNotifierBuilder(
+        listenableState: wm.currentAccount,
+        builder: (_, account) {
+          if (account == null) return  const SizedBox.shrink();
+          return TripleSourceBuilder(
+            firstSource: wm.isShowingBadge,
+            secondSource: wm.isShowingNewTokens,
+            thirdSource: wm.transportStrategy,
+            builder: (_, isShowingBadge, isShowingNewTokens, transport) {
+              return WalletView(
+                key: ValueKey(account),
+                currentAccount: account,
+                scrollController: wm.scrollController,
+                isShowingBadge: isShowingBadge ?? false,
+                isShowingNewTokens: isShowingNewTokens ?? false,
+                finishedBackupCallback: wm.hideShowingBadge,
+                confirmImportCallback: wm.hideNewTokensLabel,
+                manifestUrl: transport?.manifestUrl ?? '',
+              );
+            },
+          );
         },
       ),
     );

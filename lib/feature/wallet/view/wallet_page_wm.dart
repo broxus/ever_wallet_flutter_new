@@ -94,30 +94,29 @@ class WalletPageWidgetModel
     _checkBadge();
   }
 
-  Future<void> _checkBadge() async {
+  void _checkBadge() {
     //check user create new wallet or login
     final account = _currentAccount.value;
-    final isNewUser = await model.isNewUser();
-    if (isNewUser != null && account != null) {
+    final isNewUser = model.isNewUser();
+
+    if (account == null) return;
+
+    if (isNewUser != null) {
       if (isNewUser) {
         _isShowingNewTokensNotifier.accept(true);
         _isShowingBadgeNotifier.accept(true);
       } else {
         _isShowingBadgeNotifier.accept(false);
-        unawaited(model.hideShowingBadge(account));
+        model.hideShowingBadge(account);
       }
-      unawaited(model.resetValueNewUser());
+
+      model.resetValueNewUser();
       return;
     }
-    if (account != null) {
-      _isShowingBadgeNotifier.accept(
-        await model.isShowingBadge(account) ?? true,
-      );
-      _isShowingNewTokensNotifier
-          .accept(await model.isShowingNewTokens(account) ?? true);
-    } else {
-      _isShowingBadgeNotifier.accept(true);
-      _isShowingNewTokensNotifier.accept(true);
-    }
+
+    _isShowingBadgeNotifier.accept(model.isShowingBadge(account) ?? true);
+    _isShowingNewTokensNotifier.accept(
+      model.isShowingNewTokens(account) ?? true,
+    );
   }
 }
