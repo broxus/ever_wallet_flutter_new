@@ -267,14 +267,17 @@ class EnterSeedPhraseCubit extends Cubit<EnterSeedPhraseState>
 
       _canAutoNavigate = false;
 
-      words.asMap().forEach((index, word) {
-        _controllers[index].value = TextEditingValue(
-          text: word,
-          selection: TextSelection.fromPosition(
-            TextPosition(offset: word.length),
-          ),
-        );
-      });
+      try {
+        // TODO(knightforce): check why error "Not in inclusive range 0..11: 12"
+        words.asMap().forEach((index, word) {
+          _controllers[index].value = TextEditingValue(
+            text: word,
+            selection: TextSelection.fromPosition(
+              TextPosition(offset: word.length),
+            ),
+          );
+        });
+      } catch (_) {}
 
       await _validateFormWithError();
 
