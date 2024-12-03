@@ -45,7 +45,7 @@ dependencies:
   frontend_server_client: 4.0.0
   get_it: 7.7.0
   get_storage: 2.1.1
-  go_router: 14.6.1
+  go_router: 14.6.2
   hive_flutter: 1.1.0
   http: 1.2.2
   image_picker: 1.1.2
