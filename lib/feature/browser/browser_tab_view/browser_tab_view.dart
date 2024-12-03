@@ -63,6 +63,10 @@ class _BrowserTabViewState extends State<BrowserTabView> with ContextMixin {
     'about',
   ];
 
+  static const _forceLaunchSchemes = [
+    'tg',
+  ];
+
   static const _customAppLinks = [
     'metamask.app.link',
   ];
@@ -633,8 +637,11 @@ class _BrowserTabViewState extends State<BrowserTabView> with ContextMixin {
 
     final scheme = navigationAction.request.url?.scheme;
 
-    if ((!_allowSchemes.contains(scheme) || _checkIsCustomAppLink(url)) &&
-        await canLaunchUrl(url)) {
+    final isCustomSource =
+        !_allowSchemes.contains(scheme) || _checkIsCustomAppLink(url);
+
+    if (_forceLaunchSchemes.contains(scheme) ||
+        isCustomSource && await canLaunchUrl(url)) {
       await launchUrl(url);
 
       return NavigationActionPolicy.CANCEL;
