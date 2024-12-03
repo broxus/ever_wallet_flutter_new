@@ -8,7 +8,6 @@ import 'package:app/di/di.dart';
 import 'package:app/feature/browser/browser.dart';
 import 'package:app/feature/browser/browser_tab_view/browser_error_view.dart';
 import 'package:app/feature/browser/browser_tab_view/browser_view_events_listener/browser_view_events_listener_cubit.dart';
-import 'package:app/feature/browser/browser_user_agent_utils.dart';
 import 'package:elementary_helper/elementary_helper.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
@@ -102,14 +101,11 @@ class _BrowserTabViewState extends State<BrowserTabView> with ContextMixin {
 
   Timer? _screenshotTimer;
 
-  final _userAgentState = StateNotifier<String?>();
-
   @override
   void initState() {
     super.initState();
 
     _setBrowserTabCallbacks();
-    _setUserAgent();
   }
 
   @override
@@ -187,37 +183,29 @@ class _BrowserTabViewState extends State<BrowserTabView> with ContextMixin {
                 loadingBuilder: (_, __) => const SizedBox.shrink(),
                 errorBuilder: (_, __, ___) => const SizedBox.shrink(),
                 builder: (_, String? jsStr) {
-                  return StateNotifierBuilder<String?>(
-                    listenableState: _userAgentState,
-                    builder: (_, String? userAgent) {
-                      if (userAgent == null) {
-                        return const SizedBox.shrink();
-                      }
-                      return InAppWebView(
-                        key: ValueKey(widget.tab.id),
-                        pullToRefreshController: _pullToRefreshController,
-                        initialSettings: initialSettings..userAgent = userAgent,
-                        initialUserScripts: UnmodifiableListView<UserScript>([
-                          if (jsStr != null)
-                            UserScript(
-                              source: jsStr,
-                              injectionTime:
-                                  UserScriptInjectionTime.AT_DOCUMENT_START,
-                            ),
-                        ]),
-                        onOverScrolled: _onOverScrolled,
-                        onScrollChanged: _onScrollChanged,
-                        onWebViewCreated: (c) => _onWebViewCreated(c, context),
-                        onLoadStart: _onLoadStart,
-                        onLoadStop: _onLoadStop,
-                        onLoadResource: _onLoadResource,
-                        onReceivedError: _onReceivedError,
-                        onReceivedHttpError: _onReceivedHttpError,
-                        onTitleChanged: _onTitleChanged,
-                        onReceivedHttpAuthRequest: _onReceivedHttpAuthRequest,
-                        shouldOverrideUrlLoading: _shouldOverrideUrlLoading,
-                      );
-                    },
+                  return InAppWebView(
+                    key: ValueKey(widget.tab.id),
+                    pullToRefreshController: _pullToRefreshController,
+                    initialSettings: initialSettings,
+                    initialUserScripts: UnmodifiableListView<UserScript>([
+                      if (jsStr != null)
+                        UserScript(
+                          source: jsStr,
+                          injectionTime:
+                              UserScriptInjectionTime.AT_DOCUMENT_START,
+                        ),
+                    ]),
+                    onOverScrolled: _onOverScrolled,
+                    onScrollChanged: _onScrollChanged,
+                    onWebViewCreated: (c) => _onWebViewCreated(c, context),
+                    onLoadStart: _onLoadStart,
+                    onLoadStop: _onLoadStop,
+                    onLoadResource: _onLoadResource,
+                    onReceivedError: _onReceivedError,
+                    onReceivedHttpError: _onReceivedHttpError,
+                    onTitleChanged: _onTitleChanged,
+                    onReceivedHttpAuthRequest: _onReceivedHttpAuthRequest,
+                    shouldOverrideUrlLoading: _shouldOverrideUrlLoading,
                   );
                 },
               );
@@ -241,7 +229,6 @@ class _BrowserTabViewState extends State<BrowserTabView> with ContextMixin {
 
     _screenshotTimer?.cancel();
 
-    _userAgentState.dispose();
     super.dispose();
   }
 
@@ -539,10 +526,6 @@ class _BrowserTabViewState extends State<BrowserTabView> with ContextMixin {
             refresh: _onRefresh,
           ),
         );
-  }
-
-  Future<void> _setUserAgent() async {
-    _userAgentState.accept(await platformUserAgent);
   }
 
   Future<void> _saveScreenshot({bool force = false}) async {
