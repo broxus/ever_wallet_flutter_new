@@ -199,7 +199,7 @@ class StakingPage extends StatelessWidget {
                   tokenWalletSendAttachedAmountQueryParam:
                       attachedFee.toString(),
                   tokenWalletSendResultMessageQueryParam: LocaleKeys
-                      .withdrawHousProgress
+                      .withdrawHoursProgress
                       .tr(args: [withdrawHours.toString()]),
                 },
               ),
