@@ -69,7 +69,7 @@ class _BrowserTabViewState extends State<BrowserTabView> with ContextMixin {
 
   static const _customAppLinks = [
     'metamask.app.link',
-    'app.tonkeeper',
+    'app.tonkeeper.com',
   ];
 
   static const Duration _scrollTimerDelay = Duration(milliseconds: 100);
