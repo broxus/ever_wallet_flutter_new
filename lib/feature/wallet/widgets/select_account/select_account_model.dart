@@ -1,4 +1,5 @@
 import 'package:app/app/service/service.dart';
+import 'package:app/data/models/models.dart';
 import 'package:app/feature/wallet/widgets/select_account/select_account_data.dart';
 import 'package:elementary/elementary.dart';
 import 'package:nekoton_repository/nekoton_repository.dart';
@@ -9,11 +10,13 @@ class SelectAccountModel extends ElementaryModel {
     this._nekotonRepository,
     this._currentKeyService,
     this._currentAccountsService,
+    this._balanceStorageService,
   ) : super(errorHandler: errorHandler);
 
   final NekotonRepository _nekotonRepository;
   final CurrentKeyService _currentKeyService;
   final CurrentAccountsService _currentAccountsService;
+  final BalanceStorageService _balanceStorageService;
 
   Stream<List<SelectAccountData>> get seedWithAccounts =>
       _nekotonRepository.seedListStream.map(
@@ -49,19 +52,28 @@ class SelectAccountModel extends ElementaryModel {
     _currentKeyService.changeCurrentKey(account.publicKey);
   }
 
-  Future<Money?> getBalance(KeyAccount account) async {
+  Stream<Money?> getBalance(KeyAccount account) async* {
     try {
+      final balances = _balanceStorageService.getBalances(
+        currentTransport.networkType,
+      )[account.address];
+      final cached = balances
+          ?.tokenBalance(currentTransport.nativeTokenAddress, isNative: true)
+          ?.tokenBalance;
+
+      yield cached;
+
       final wallet = _nekotonRepository.walletsMap[account.address]?.wallet ??
           await _getWallet(account);
 
-      if (wallet == null) return null;
+      if (wallet == null) return;
 
-      return Money.fromBigIntWithCurrency(
+      yield Money.fromBigIntWithCurrency(
         wallet.contractState.balance,
-        Currencies()[currentTransport.nativeTokenTicker]!,
+        Currencies()[symbol]!,
       );
     } catch (_) {
-      return null;
+      yield Money.fromIntWithCurrency(0, Currencies()[symbol]!);
     }
   }
 

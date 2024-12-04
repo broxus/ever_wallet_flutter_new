@@ -23,7 +23,7 @@ class PublicKeyItemWidget extends StatefulWidget {
   final List<KeyAccount> accounts;
   final KeyAccount? currentAccount;
   final Function(KeyAccount) onTap;
-  final ListenableState<Money> Function(KeyAccount) getBalanceEntity;
+  final ListenableState<Money?> Function(KeyAccount) getBalanceEntity;
   final ScrollController scrollController;
   final bool isScrollToAccount;
 
