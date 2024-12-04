@@ -71,7 +71,7 @@ class WalletDeployBloc extends Bloc<WalletDeployEvent, WalletDeployState> {
     ticker = nekotonRepository.currentTransport.nativeTokenTicker;
     tokenCustomCurrency = currenciesService
         .currencies(nekotonRepository.currentTransport.networkType)
-        .first;
+        .firstOrNull;
   }
 
   // ignore: long-method

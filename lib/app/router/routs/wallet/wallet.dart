@@ -111,12 +111,15 @@ StatefulShellBranch get walletBranch {
           GoRoute(
             path: AppRoute.custodiansSettings.path,
             builder: (_, state) {
-              final decoded = (jsonDecode(
-                state.uri.queryParameters[
-                custodianSettingsCustodiansParam]!,
-              ) as List<dynamic>)
-                  .cast<String>();
-              return CustodiansSettingsPage(custodians: decoded);
+              try {
+                final decoded = (jsonDecode(
+                  state.uri.queryParameters[custodianSettingsCustodiansParam]!,
+                ) as List<dynamic>)
+                    .cast<String>();
+                return CustodiansSettingsPage(custodians: decoded);
+              } catch (_) {
+                return const CustodiansSettingsPage(custodians: []);
+              }
             },
           ),
           GoRoute(

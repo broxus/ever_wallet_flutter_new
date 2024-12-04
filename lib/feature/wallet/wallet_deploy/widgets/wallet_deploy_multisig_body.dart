@@ -40,8 +40,11 @@ class WalletDeployMultisigBody extends StatefulWidget {
 
 class _WalletDeployMultisigBodyState extends State<WalletDeployMultisigBody> {
   final _formKey = GlobalKey<FormState>();
-  final addressFilterFormatter = FilteringTextInputFormatter.deny(
+  final _addressFilterFormatter = FilteringTextInputFormatter.deny(
     RegExp(r'\s'),
+  );
+  final _numberFilterFormatter = FilteringTextInputFormatter.allow(
+    RegExp('[0-9]'),
   );
 
   late List<TextEditingController> custodianControllers = List.generate(
@@ -170,10 +173,8 @@ class _WalletDeployMultisigBodyState extends State<WalletDeployMultisigBody> {
                                       onSubmit: (_) =>
                                           custodianFocuses.first.requestFocus(),
                                       inputFormatters: [
-                                        addressFilterFormatter,
-                                        FilteringTextInputFormatter.allow(
-                                          RegExp('[0-9]'),
-                                        ),
+                                        _addressFilterFormatter,
+                                        _numberFilterFormatter,
                                       ],
                                       validator: _validateRequireConfirmations,
                                     ),

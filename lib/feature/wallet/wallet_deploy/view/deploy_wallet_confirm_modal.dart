@@ -66,7 +66,8 @@ class DeployWalletConfirmModal
         StateNotifierBuilder(
           listenableState: wm.availableBiometry,
           builder: (_, value) {
-            if (value?.contains(BiometricType.face) ?? false) {
+            if (value == null) return const SizedBox.shrink();
+            if (value.contains(BiometricType.face)) {
               return Padding(
                 padding: const EdgeInsets.only(top: DimensSizeV2.d8),
                 child: PrimaryButton(
@@ -78,7 +79,7 @@ class DeployWalletConfirmModal
               );
             }
 
-            if (value?.isNotEmpty ?? false) {
+            if (value.isNotEmpty) {
               return Padding(
                 padding: const EdgeInsets.only(top: DimensSizeV2.d8),
                 child: PrimaryButton(
@@ -89,7 +90,6 @@ class DeployWalletConfirmModal
                 ),
               );
             }
-
             return const SizedBox.shrink();
           },
         ),

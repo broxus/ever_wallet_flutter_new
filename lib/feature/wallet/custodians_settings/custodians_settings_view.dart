@@ -43,6 +43,7 @@ class CustodiansSettingsView
               }
 
               final items = <Widget>[];
+              final numberCustodians = custodians.length;
               for (var i = 0; i < custodians.length; i++) {
                 items.add(
                   _CustodianItem(custodians[i], () {
@@ -53,7 +54,7 @@ class CustodiansSettingsView
                     }
                   }),
                 );
-                if (i < custodians.length - 1) {
+                if (i < numberCustodians - 1) {
                   items.add(const CommonDivider());
                 }
               }
