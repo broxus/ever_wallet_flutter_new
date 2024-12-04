@@ -24,6 +24,8 @@ class NewAccountPage extends StatefulWidget {
 class _NewAccountPageState extends State<NewAccountPage> {
   late final _messageService = inject<MessengerService>();
 
+  bool get _isError => widget.publicKey == null || widget.password == null;
+
   @override
   void initState() {
     super.initState();
@@ -36,7 +38,7 @@ class _NewAccountPageState extends State<NewAccountPage> {
       appBar: DefaultAppBar(
         titleText: LocaleKeys.newAccount.tr(),
       ),
-      body: widget.publicKey == null || widget.password == null
+      body: _isError
           ? const SizedBox.shrink()
           : Padding(
               padding: const EdgeInsets.all(DimensSizeV2.d16),
@@ -49,8 +51,11 @@ class _NewAccountPageState extends State<NewAccountPage> {
   }
 
   void _init() {
-    // TODO(knightforce): Use localization
+    if (!_isError) {
+      return;
+    }
 
+    // TODO(knightforce): Use localization
     _messageService.showError(
       context,
       ''
