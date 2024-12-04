@@ -4,9 +4,9 @@ import 'package:app/feature/wallet/wallet.dart';
 import 'package:app/feature/wallet/wallet_deploy/clipboard_paste_button.dart';
 import 'package:app/generated/generated.dart';
 import 'package:app/utils/clipboard_utils.dart';
+import 'package:app/utils/input_formatters.dart';
 import 'package:collection/collection.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:lucide_icons_flutter/lucide_icons.dart';
 import 'package:nekoton_repository/nekoton_repository.dart';
@@ -40,12 +40,6 @@ class WalletDeployMultisigBody extends StatefulWidget {
 
 class _WalletDeployMultisigBodyState extends State<WalletDeployMultisigBody> {
   final _formKey = GlobalKey<FormState>();
-  final _addressFilterFormatter = FilteringTextInputFormatter.deny(
-    RegExp(r'\s'),
-  );
-  final _numberFilterFormatter = FilteringTextInputFormatter.allow(
-    RegExp('[0-9]'),
-  );
 
   late List<TextEditingController> custodianControllers = List.generate(
     widget.custodians.isEmpty ? 3 : widget.custodians.length,
@@ -173,8 +167,8 @@ class _WalletDeployMultisigBodyState extends State<WalletDeployMultisigBody> {
                                       onSubmit: (_) =>
                                           custodianFocuses.first.requestFocus(),
                                       inputFormatters: [
-                                        _addressFilterFormatter,
-                                        _numberFilterFormatter,
+                                        InputFormatters.noSpacesFormatter,
+                                        InputFormatters.onlyDigitsFormatter,
                                       ],
                                       validator: _validateRequireConfirmations,
                                     ),
@@ -213,9 +207,7 @@ class _WalletDeployMultisigBodyState extends State<WalletDeployMultisigBody> {
                     textInputAction: TextInputAction.next,
                     onSubmit: (_) => custodianFocuses.first.requestFocus(),
                     inputFormatters: [
-                      FilteringTextInputFormatter.allow(
-                        RegExp('[0-9]'),
-                      ),
+                      InputFormatters.onlyDigitsFormatter,
                     ],
                     suffixes: [
                       MiniButton(
@@ -320,8 +312,8 @@ class _WalletDeployMultisigBodyState extends State<WalletDeployMultisigBody> {
                   maxLength: publicKeyLength,
                   suffixes: [_custodianSuffixIcon(controller, index)],
                   inputFormatters: [
-                    FilteringTextInputFormatter.deny(RegExp(r'\s')),
-                    FilteringTextInputFormatter.allow(RegExp('[a-fA-F0-9]')),
+                    InputFormatters.noSpacesFormatter,
+                    InputFormatters.publicKeyInputFormatter,
                   ],
                   validator: _validatePublicKey,
                 ),

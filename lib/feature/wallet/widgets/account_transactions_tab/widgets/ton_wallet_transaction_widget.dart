@@ -178,7 +178,7 @@ class TonWalletTransactionWidget extends StatelessWidget {
                         status ==
                             TonWalletTransactionStatus.unstakingInProgress)
                       Text(
-                        '${status.title}',
+                        status.title,
                         style: theme.textStyles.labelXSmall
                             .copyWith(color: theme.colors.content3),
                       )
