@@ -57,41 +57,45 @@ class SelectAccountModel extends ElementaryModel {
       final balances = _balanceStorageService.getBalances(
         currentTransport.networkType,
       )[account.address];
-      final cached = balances
+      yield balances
           ?.tokenBalance(currentTransport.nativeTokenAddress, isNative: true)
           ?.tokenBalance;
 
-      yield cached;
+      final wallet = _nekotonRepository.walletsMap[account.address]?.wallet;
+      if (wallet != null) {
+        yield Money.fromBigIntWithCurrency(
+          wallet.contractState.balance,
+          Currencies()[symbol]!,
+        );
+        return;
+      }
 
-      final wallet = _nekotonRepository.walletsMap[account.address]?.wallet ??
-          await _getWallet(account);
-
-      if (wallet == null) return;
-
-      yield Money.fromBigIntWithCurrency(
-        wallet.contractState.balance,
-        Currencies()[symbol]!,
-      );
+      final balance = await _getBalance(account);
+      if (balance != null) {
+        yield Money.fromBigIntWithCurrency(balance, Currencies()[symbol]!);
+      }
     } catch (_) {
       yield Money.fromIntWithCurrency(0, Currencies()[symbol]!);
     }
   }
 
-  Future<TonWallet?> _getWallet(KeyAccount account) async {
+  Future<BigInt?> _getBalance(KeyAccount account) async {
     if (currentTransport.transport.disposed) return null;
 
-    TonWallet? wallet;
+    GenericContract? contract;
     try {
-      wallet = await TonWallet.subscribe(
+      contract = await GenericContract.subscribe(
         transport: currentTransport.transport,
-        workchainId: account.workchain,
-        publicKey: account.publicKey,
-        walletType: account.account.tonWallet.contract,
+        address: account.address,
+        preloadTransactions: false,
       );
+
+      return contract.contractState.balance;
     } catch (_) {
     } finally {
-      wallet?.dispose();
+      contract?.dispose();
     }
-    return wallet;
+
+    return null;
   }
 }
