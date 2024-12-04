@@ -102,7 +102,7 @@ class _SeedItem extends StatefulWidget {
   final bool isExpanded;
   final KeyAccount? currentAccount;
   final Function(KeyAccount) onTapAccount;
-  final ListenableState<Money> Function(KeyAccount) getBalanceEntity;
+  final ListenableState<Money?> Function(KeyAccount) getBalanceEntity;
   final ScrollController scrollController;
 
   @override

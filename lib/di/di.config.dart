@@ -133,11 +133,6 @@ extension GetItInjectableX on _i174.GetIt {
     gh.singleton<_i65.ConnectionsStorageService>(() =>
         _i65.ConnectionsStorageService(
             gh<_i792.GetStorage>(instanceName: 'connections')));
-    gh.singleton<_i764.ConnectionService>(() => _i764.ConnectionService(
-          gh<_i128.ConnectionsStorageService>(),
-          gh<_i771.NekotonRepository>(),
-          gh<_i128.HttpService>(),
-        ));
     gh.lazySingleton<_i184.AppStorageService>(() => _i184.AppStorageService(
         gh<_i792.GetStorage>(instanceName: 'app_storage_service')));
     gh.singleton<_i964.AssetsService>(() => _i964.AssetsService(
@@ -173,6 +168,10 @@ extension GetItInjectableX on _i174.GetIt {
     gh.singleton<_i122.BrowserBookmarksStorageService>(() =>
         _i122.BrowserBookmarksStorageService(
             gh<_i792.GetStorage>(instanceName: 'browser_bookmarks')));
+    gh.singleton<_i764.ConnectionService>(() => _i764.ConnectionService(
+          gh<_i128.ConnectionsStorageService>(),
+          gh<_i771.NekotonRepository>(),
+        ));
     gh.singleton<_i68.NtpService>(
       () => _i68.NtpService(gh<_i128.AppLifecycleService>()),
       dispose: (i) => i.dispose(),
