@@ -7,7 +7,7 @@ import 'package:nekoton_repository/nekoton_repository.dart';
 
 abstract class BaseHttpClient {
   final _client = Client();
-  final _log = Logger('HttpService');
+  late final _log = Logger(runtimeType.toString());
 
   void _logResponse(String endpoint, Response response, String method) {
     final message =
