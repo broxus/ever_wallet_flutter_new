@@ -65,6 +65,7 @@ class _BrowserTabViewState extends State<BrowserTabView> with ContextMixin {
 
   static const _customAppLinks = [
     'metamask.app.link',
+    'app.tonkeeper.com',
   ];
 
   static const Duration _scrollTimerDelay = Duration(milliseconds: 100);
@@ -647,8 +648,8 @@ class _BrowserTabViewState extends State<BrowserTabView> with ContextMixin {
   bool _checkIsCustomAppLink(Uri url) {
     final path = url.toString();
 
-    for (final link in _customAppLinks) {
-      if (path.contains(link)) {
+    for (final segment in _customAppLinks) {
+      if (path.contains(segment)) {
         return true;
       }
     }
