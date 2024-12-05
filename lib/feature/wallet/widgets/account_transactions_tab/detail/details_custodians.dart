@@ -1,4 +1,3 @@
-import 'package:app/di/di.dart';
 import 'package:app/feature/wallet/widgets/account_transactions_tab/detail/details_item.dart';
 import 'package:app/generated/generated.dart';
 import 'package:collection/collection.dart';
@@ -42,11 +41,11 @@ class TonWalletTransactionCustodiansDetails extends StatelessWidget {
       subtitleText: requiredConfirmations == null
           ? null
           : LocaleKeys.signaturesCollected.tr(
-              args: [
-                confirmations.length.toString(),
-                requiredConfirmations!.toString(),
-              ],
-            ),
+        args: [
+          confirmations.length.toString(),
+          requiredConfirmations!.toString(),
+        ],
+      ),
       mainAxisSize: MainAxisSize.min,
       separator: const Padding(
         padding: EdgeInsets.symmetric(vertical: DimensSize.d8),
@@ -57,8 +56,6 @@ class TonWalletTransactionCustodiansDetails extends StatelessWidget {
   }
 
   Widget _custodianItem(int index, PublicKey custodian) {
-    final key = inject<NekotonRepository>().seedList.findSeedKey(custodian);
-
     return TonWalletTransactionDetailsItem(
       title: LocaleKeys.custodianNumber.tr(args: [(index + 1).toString()]),
       content: custodian.publicKey,

@@ -102,7 +102,7 @@ class _SeedItem extends StatefulWidget {
   final bool isExpanded;
   final KeyAccount? currentAccount;
   final Function(KeyAccount) onTapAccount;
-  final ListenableState<Money> Function(KeyAccount) getBalanceEntity;
+  final ListenableState<Money?> Function(KeyAccount) getBalanceEntity;
   final ScrollController scrollController;
 
   @override
@@ -111,6 +111,7 @@ class _SeedItem extends StatefulWidget {
 
 class _SeedItemState extends State<_SeedItem> {
   late bool _isExpanded = widget.isExpanded;
+  late bool _isScrollToAccount = true;
 
   @override
   Widget build(BuildContext context) {
@@ -145,6 +146,7 @@ class _SeedItemState extends State<_SeedItem> {
                       onTap: widget.onTapAccount,
                       getBalanceEntity: widget.getBalanceEntity,
                       scrollController: widget.scrollController,
+                      isScrollToAccount: _isScrollToAccount,
                     )
                   : const SizedBox.shrink(),
             ),
@@ -155,6 +157,9 @@ class _SeedItemState extends State<_SeedItem> {
   }
 
   void _toggleExpand() {
+    if (!_isExpanded && _isScrollToAccount) {
+      _isScrollToAccount = false;
+    }
     setState(() {
       _isExpanded = !_isExpanded;
     });

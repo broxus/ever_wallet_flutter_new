@@ -78,17 +78,17 @@ android {
         production {
             dimension "default"
             applicationIdSuffix ""
-            manifestPlaceholders = [appName: "SparX Wallet"]
+            manifestPlaceholders = [appName: "SparX"]
         }
         staging {
             dimension "default"
             applicationIdSuffix ".stg"
-            manifestPlaceholders = [appName: "[STG] SparX Wallet"]
+            manifestPlaceholders = [appName: "[STG] SparX"]
         }
         development {
             dimension "default"
             applicationIdSuffix ".dev"
-            manifestPlaceholders = [appName: "[DEV] SparX Wallet"]
+            manifestPlaceholders = [appName: "[DEV] SparX"]
         }
     }
 

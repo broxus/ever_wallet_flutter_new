@@ -17,6 +17,7 @@ class AccountBalanceModel with _$AccountBalanceModel {
     @NekotonAddressConverter() required Address rootTokenContract,
     @moneyFromStringJsonConverter required Money fiatBalance,
     @moneyFromStringJsonConverter required Money tokenBalance,
+    @JsonKey(defaultValue: false) required bool isNative,
   }) = _AccountBalanceModel;
 
   factory AccountBalanceModel.fromJson(Map<String, dynamic> json) =>
@@ -24,6 +25,12 @@ class AccountBalanceModel with _$AccountBalanceModel {
 }
 
 extension AccountBalancesExt on List<AccountBalanceModel> {
-  AccountBalanceModel? tokenBalance(Address rootTokenContract) =>
-      firstWhereOrNull((b) => b.rootTokenContract == rootTokenContract);
+  AccountBalanceModel? tokenBalance(
+    Address rootTokenContract, {
+    bool isNative = false,
+  }) =>
+      firstWhereOrNull(
+        (b) =>
+            b.rootTokenContract == rootTokenContract && b.isNative == isNative,
+      );
 }

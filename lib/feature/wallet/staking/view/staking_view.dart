@@ -146,6 +146,8 @@ class StakingView extends StatelessWidget {
   }
 
   Widget _stakeUnstakeBody(BuildContext context) {
+    final theme = context.themeStyleV2;
+
     return SeparatedColumn(
       crossAxisAlignment: CrossAxisAlignment.start,
       separatorSize: DimensSizeV2.d4,
@@ -153,9 +155,9 @@ class StakingView extends StatelessWidget {
         AmountInput(
           controller: inputController,
           selectedAsset: asset,
-          onMaxAmount: () => context
+          onMaxAmount: (fieldState) => context
               .read<StakingBloc>()
-              .add(const StakingBlocEvent.selectMax()),
+              .add(StakingBlocEvent.selectMax(fieldState)),
           onSubmitted: (value) => inputController.text = value,
         ),
         const SizedBox(height: DimensSizeV2.d12),
@@ -172,6 +174,23 @@ class StakingView extends StatelessWidget {
           receiveBalance: receiveBalance,
           apy: apy,
         ),
+        if (type == StakingPageType.unstake)
+          Padding(
+            padding: const EdgeInsets.only(top: DimensSizeV2.d8),
+            child: PrimaryCard(
+              padding: const EdgeInsets.all(DimensSizeV2.d16),
+              borderRadius: BorderRadius.circular(DimensRadiusV2.radius16),
+              color: theme.colors.backgroundWarning,
+              child: Text(
+                LocaleKeys.withdrawHoursHint.tr(
+                  args: [withdrawTime.toString()],
+                ),
+                style: theme.textStyles.labelSmall.copyWith(
+                  color: theme.colors.contentWarning,
+                ),
+              ),
+            ),
+          ),
       ],
     );
   }

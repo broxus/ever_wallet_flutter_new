@@ -1,6 +1,7 @@
 import 'dart:async';
 
 import 'package:app/app/service/service.dart';
+import 'package:app/core/bloc/bloc_mixin.dart';
 import 'package:app/data/models/custom_currency.dart';
 import 'package:app/feature/wallet/widgets/account_transactions_tab/models/account_transaction_item.dart';
 import 'package:bloc/bloc.dart';
@@ -11,11 +12,13 @@ import 'package:nekoton_repository/nekoton_repository.dart';
 import 'package:rxdart/rxdart.dart';
 
 part 'account_transactions_tab_cubit.freezed.dart';
+
 part 'account_transactions_tab_state.dart';
 
 /// Cubit for <AccountTransactionsTab> that allows displaying list of
 /// transactions for TonWallet for [account].
-class AccountTransactionsTabCubit extends Cubit<AccountTransactionsTabState> {
+class AccountTransactionsTabCubit extends Cubit<AccountTransactionsTabState>
+    with BlocBaseMixin {
   AccountTransactionsTabCubit({
     required this.walletStorage,
     required this.nekotonRepository,
@@ -117,10 +120,7 @@ class AccountTransactionsTabCubit extends Cubit<AccountTransactionsTabState> {
 
   Future<void> _initNativeCurrency() async {
     _nativeCurrency =
-        currenciesService.currencies(_transport.networkType).firstWhereOrNull(
-                  (c) => c.address == _transport.nativeTokenAddress,
-                ) ??
-            await currenciesService.getCurrencyForNativeToken(_transport);
+        await currenciesService.getOrFetchNativeCurrency(_transport);
   }
 
   // ignore: long-method
@@ -142,24 +142,31 @@ class AccountTransactionsTabCubit extends Cubit<AccountTransactionsTabState> {
       (transactions) async {
         final multisigTransactions = wallet.unconfirmedTransactions;
 
-        _multisigExpired =
-            await nekotonRepository.mapMultisigExpiredTransactions(
-          walletAddress: wallet.address,
-          transactions: transactions,
-          multisigPendingTransactions: multisigTransactions,
-        );
-        _multisigOrdinary =
-            await nekotonRepository.mapMultisigOrdinaryTransactions(
-          walletAddress: wallet.address,
-          transactions: transactions,
-          multisigPendingTransactions: multisigTransactions,
-        );
-        _multisigPending =
-            await nekotonRepository.mapMultisigPendingTransactions(
-          walletAddress: wallet.address,
-          transactions: transactions,
-          multisigPendingTransactions: multisigTransactions,
-        );
+        try {
+          _multisigExpired =
+              await nekotonRepository.mapMultisigExpiredTransactions(
+            walletAddress: wallet.address,
+            transactions: transactions,
+            multisigPendingTransactions: multisigTransactions,
+          );
+        } catch (_) {}
+        try {
+          _multisigOrdinary =
+              await nekotonRepository.mapMultisigOrdinaryTransactions(
+            walletAddress: wallet.address,
+            transactions: transactions,
+            multisigPendingTransactions: multisigTransactions,
+          );
+        } catch (_) {}
+
+        try {
+          _multisigPending =
+              await nekotonRepository.mapMultisigPendingTransactions(
+            walletAddress: wallet.address,
+            transactions: transactions,
+            multisigPendingTransactions: multisigTransactions,
+          );
+        } catch (_) {}
 
         _multisigLoaded = true;
 
@@ -229,7 +236,7 @@ class AccountTransactionsTabCubit extends Cubit<AccountTransactionsTabState> {
         _ordinaryLoaded) {
       _transactionsState(fromStream: true);
     } else {
-      emit(const AccountTransactionsTabState.loading());
+      emitSafe(const AccountTransactionsTabState.loading());
     }
   }
 
@@ -244,7 +251,7 @@ class AccountTransactionsTabCubit extends Cubit<AccountTransactionsTabState> {
         _expired.isEmpty &&
         _pending.isEmpty &&
         _ordinary.isEmpty) {
-      emit(const AccountTransactionsTabState.empty());
+      emitSafe(const AccountTransactionsTabState.empty());
     } else {
       final transactions = [
         ..._multisigOrdinary.map(
@@ -310,7 +317,7 @@ class AccountTransactionsTabCubit extends Cubit<AccountTransactionsTabState> {
         canLoadMore = lastLt != _lastLtWhenPreloaded;
       }
 
-      emit(
+      emitSafe(
         AccountTransactionsTabState.transactions(
           transactions: transactions,
           isLoading: isLoading,

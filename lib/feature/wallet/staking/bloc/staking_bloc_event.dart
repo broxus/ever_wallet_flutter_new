@@ -4,7 +4,9 @@ part of 'staking_bloc.dart';
 class StakingBlocEvent with _$StakingBlocEvent {
   const factory StakingBlocEvent.init() = _Init;
 
-  const factory StakingBlocEvent.selectMax() = _SelectMax;
+  const factory StakingBlocEvent.selectMax(
+    FormFieldState<String>? fieldState,
+  ) = _SelectMax;
 
   const factory StakingBlocEvent.doAction() = _DoAction;
 

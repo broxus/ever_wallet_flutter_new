@@ -34,6 +34,11 @@ class ImportWalletScreenModel extends ElementaryModel with ConnectionMixin {
     );
   }
 
-  List<int> get allowedValues =>
-      nekotonRepository.currentTransport.seedPhraseWordsCount;
+  List<int> get allowedValues {
+    try {
+      return nekotonRepository.currentTransport.seedPhraseWordsCount;
+    } catch (_) {
+      return [];
+    }
+  }
 }

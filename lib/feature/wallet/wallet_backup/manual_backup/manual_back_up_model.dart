@@ -14,7 +14,7 @@ class ManualBackUpModel extends ElementaryModel {
   ) : super(errorHandler: errorHandler);
 
   final NekotonRepository nekotonRepository;
-  final SecureStorageService storage;
+  final AppStorageService storage;
   final List<String> phrases;
   final String address;
 

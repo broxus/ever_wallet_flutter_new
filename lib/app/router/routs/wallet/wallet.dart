@@ -16,6 +16,7 @@ import 'package:app/feature/wallet/new_account/add_external_account/add_external
 import 'package:app/feature/wallet/new_account/select_seed/select_seed_page.dart';
 import 'package:app/feature/wallet/wallet.dart';
 import 'package:app/feature/wallet/widgets/account_asset_tab/select_new_asset/select_new_asset.dart';
+import 'package:app/utils/url_utils.dart';
 import 'package:go_router/go_router.dart';
 import 'package:nekoton_repository/nekoton_repository.dart';
 
@@ -133,10 +134,14 @@ StatefulShellBranch get walletBranch {
                   GoRoute(
                     path: AppRoute.walletNewAccount.path,
                     builder: (_, state) => NewAccountPage(
-                      publicKey: state.uri
-                          .queryParameters[walletCreatePublicKeyQueryParam]!,
-                      password: state
-                          .uri.queryParameters[walletCreatePasswordQueryParam]!,
+                      publicKey: getQueryParams(
+                        state,
+                        walletCreatePublicKeyQueryParam,
+                      ),
+                      password: getQueryParams(
+                        state,
+                        walletCreatePasswordQueryParam,
+                      ),
                     ),
                   ),
                 ],

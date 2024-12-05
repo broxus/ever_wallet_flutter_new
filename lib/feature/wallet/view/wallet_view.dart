@@ -55,7 +55,7 @@ class WalletView extends StatelessWidget {
               ),
               SliverFillRemaining(
                 hasScrollBody: false,
-                child: Container(color: theme.colors.background1),
+                child: Container(color: theme.colors.background0),
               ),
             ],
           ),

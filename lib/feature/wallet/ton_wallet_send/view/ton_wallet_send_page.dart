@@ -116,6 +116,7 @@ class TonWalletSendPage extends StatelessWidget {
           child: TonWalletSendConfirmView(
             recipient: destination,
             amount: amount,
+            attachedAmount: attachedAmount,
             comment: comment,
             publicKey: publicKey,
             fee: fee,

@@ -12,7 +12,7 @@ class CustodiansSettingsModel extends ElementaryModel {
     this._keys,
   ) : super(errorHandler: errorHandler);
 
-  final SecureStorageService _storageService;
+  final AppStorageService _storageService;
   final MessengerService _messengerService;
   final List<String> _keys;
 
@@ -47,7 +47,7 @@ class CustodiansSettingsModel extends ElementaryModel {
   }
 
   Future<void> rename(PublicKey key, String newName) async {
-    await _storageService.addValue(
+    _storageService.addValue(
       StorageKey.nameCustodian(key.publicKey),
       newName,
     );

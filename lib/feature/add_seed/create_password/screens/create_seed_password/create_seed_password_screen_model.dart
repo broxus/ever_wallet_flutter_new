@@ -46,7 +46,7 @@ class CreateSeedPasswordScreenModel extends ElementaryModel {
         password: password,
       );
 
-      await _currentKeyService.changeCurrentKey(publicKey);
+      _currentKeyService.changeCurrentKey(publicKey);
 
       await _biometryService.setKeyPassword(
         publicKey: publicKey,
