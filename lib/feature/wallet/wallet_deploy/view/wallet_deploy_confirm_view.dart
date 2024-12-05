@@ -22,8 +22,8 @@ class WalletDeployConfirmView extends StatelessWidget {
     this.custodians,
     this.requireConfirmations,
     this.tonIconPath,
-    this.ticker,
     this.currency,
+    this.customCurrency,
     super.key,
   });
 
@@ -34,8 +34,8 @@ class WalletDeployConfirmView extends StatelessWidget {
   final List<PublicKey>? custodians;
   final int? requireConfirmations;
   final String? tonIconPath;
-  final String? ticker;
-  final CustomCurrency? currency;
+  final Currency? currency;
+  final CustomCurrency? customCurrency;
 
   @override
   Widget build(BuildContext context) {
@@ -65,13 +65,13 @@ class WalletDeployConfirmView extends StatelessWidget {
                 const SizedBox(height: DimensSizeV2.d16),
                 CommonDivider(color: theme.colors.border0),
                 const SizedBox(height: DimensSizeV2.d16),
-                if (Currencies()[ticker ?? ''] != null)
+                if (currency != null)
                   WalletTransactionDetailsItem(
                     title: LocaleKeys.accountBalance.tr(),
                     valueWidget: AmountWidget.fromMoney(
                       amount: Money.fromBigIntWithCurrency(
                         balance ?? BigInt.zero,
-                        Currencies()[ticker ?? '']!,
+                        currency!,
                       ),
                       includeSymbol: false,
                     ),
@@ -79,9 +79,9 @@ class WalletDeployConfirmView extends StatelessWidget {
                     convertedValueWidget: AmountWidget.dollars(
                       amount: Money.fromBigIntWithCurrency(
                         balance ?? BigInt.zero,
-                        Currencies()[ticker ?? '']!,
+                        currency!,
                       ).exchangeToUSD(
-                        Fixed.parse(currency?.price ?? '0'),
+                        Fixed.parse(customCurrency?.price ?? '0'),
                       ),
                       style: theme.textStyles.labelXSmall.copyWith(
                         color: theme.colors.content3,
@@ -89,13 +89,13 @@ class WalletDeployConfirmView extends StatelessWidget {
                     ),
                   ),
                 const SizedBox(height: DimensSizeV2.d16),
-                if (Currencies()[ticker ?? ''] != null)
+                if (currency != null)
                   WalletTransactionDetailsItem(
                     title: LocaleKeys.networkFee.tr(),
                     valueWidget: AmountWidget.fromMoney(
                       amount: Money.fromBigIntWithCurrency(
                         fee ?? BigInt.zero,
-                        Currencies()[ticker ?? '']!,
+                        currency!,
                       ),
                       useDefaultFormat: false,
                       includeSymbol: false,

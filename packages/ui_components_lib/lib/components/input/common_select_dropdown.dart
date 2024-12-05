@@ -86,14 +86,7 @@ class CommonSelectDropdown<T> extends StatelessWidget {
                 ),
               Expanded(
                 child: Text(
-                  currentValue == null
-                      ? ''
-                      : values
-                              .firstWhereOrNull(
-                                (e) => e.value == currentValue,
-                              )
-                              ?.title ??
-                          '',
+                  text,
                   style: theme.textStyles.paragraphSmall.copyWith(
                     color: theme.colors.content0,
                   ),
@@ -111,6 +104,17 @@ class CommonSelectDropdown<T> extends StatelessWidget {
         ),
       ),
     );
+  }
+
+  String get text {
+    return currentValue == null
+        ? ''
+        : values
+                .firstWhereOrNull(
+                  (e) => e.value == currentValue,
+                )
+                ?.title ??
+            '';
   }
 
   void _openSelectSheet(BuildContext context) {
@@ -136,34 +140,33 @@ class CommonSelectDropdown<T> extends StatelessWidget {
                 padding: EdgeInsets.symmetric(vertical: DimensSize.d18),
                 child: CommonDivider(),
               ),
-              children: values
-                  .map(
-                    (e) => GestureDetector(
-                      onTap: () {
-                        Navigator.of(context).pop();
-                        onChanged(e.value);
-                      },
-                      child: Row(
-                        children: [
-                          const SizedBox(width: DimensSizeV2.d24),
-                          Expanded(
-                            child: Text(
-                              e.title,
-                              style: theme.textStyles.labelMedium,
-                              textAlign: TextAlign.left,
-                            ),
+              children: [
+                for (final e in values)
+                  GestureDetector(
+                    onTap: () {
+                      Navigator.of(context).pop();
+                      onChanged(e.value);
+                    },
+                    child: Row(
+                      children: [
+                        const SizedBox(width: DimensSizeV2.d24),
+                        Expanded(
+                          child: Text(
+                            e.title,
+                            style: theme.textStyles.labelMedium,
+                            textAlign: TextAlign.left,
                           ),
-                          if (currentValue == e.value)
-                            const Icon(
-                              LucideIcons.check,
-                              size: DimensSizeV2.d20,
-                            ),
-                          const SizedBox(width: DimensSize.d24),
-                        ],
-                      ),
+                        ),
+                        if (currentValue == e.value)
+                          const Icon(
+                            LucideIcons.check,
+                            size: DimensSizeV2.d20,
+                          ),
+                        const SizedBox(width: DimensSize.d24),
+                      ],
                     ),
-                  )
-                  .toList(),
+                  ),
+              ],
             ),
           ),
         );

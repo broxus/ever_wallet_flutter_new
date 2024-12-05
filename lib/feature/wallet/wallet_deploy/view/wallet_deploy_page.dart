@@ -81,7 +81,7 @@ class WalletDeployPage extends StatelessWidget {
               requireConfirmations,
               tonIconPath,
               ticker,
-              currency,
+                customCurrency,
             ) {
               return _scaffold(
               WalletDeployConfirmView(
@@ -91,8 +91,8 @@ class WalletDeployPage extends StatelessWidget {
                 custodians: custodians,
                 requireConfirmations: requireConfirmations,
                 tonIconPath: tonIconPath,
-                ticker: ticker,
-                currency: currency,
+                currency: Currencies()[ticker ?? ''],
+                customCurrency: customCurrency,
               ),
               canPrev: true,
             );

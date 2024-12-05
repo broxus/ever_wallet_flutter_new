@@ -39,12 +39,15 @@ class AccountSettingsWidgetModel
 
   void onCustodiansSettings(List<PublicKey> custodians) {
     Navigator.of(context).pop();
+    final publicKeys = <String>[];
+    for (final custodian in custodians) {
+      publicKeys.add(custodian.publicKey);
+    }
+
     context.goFurther(
       AppRoute.custodiansSettings.pathWithData(
         queryParameters: {
-          custodianSettingsCustodiansParam: jsonEncode(
-            custodians.map((e) => e.publicKey).toList(),
-          ),
+          custodianSettingsCustodiansParam: jsonEncode(publicKeys),
         },
       ),
     );
