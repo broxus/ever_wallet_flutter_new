@@ -1,3 +1,4 @@
+import 'package:app/core/bloc/bloc_mixin.dart';
 import 'package:app/data/models/seed/seed_phrase_model.dart';
 import 'package:app/v1/feature/add_seed/constants.dart';
 import 'package:bloc/bloc.dart';
@@ -10,12 +11,12 @@ part 'create_seed_cubit.freezed.dart';
 part 'create_seed_state.dart';
 
 /// Cubit that helps generating seed phrase.
-class CreateSeedCubit extends Cubit<CreateSeedCubitState> {
+class CreateSeedCubit extends Cubit<CreateSeedCubitState> with BlocBaseMixin {
   CreateSeedCubit() : super(const CreateSeedCubitState.initial());
 
   Future<void> init() async {
     final seed = await generateKey(accountType: defaultMnemonicType);
-    emit(
+    emitSafe(
       CreateSeedCubitState.generated(
         seed: SeedPhraseModel.fromWords(seed.words),
         isCopied: false,
@@ -26,12 +27,12 @@ class CreateSeedCubit extends Cubit<CreateSeedCubitState> {
   Future<void> copySeed() async {
     final st = state;
     if (st is _$GeneratedImpl) {
-      emit(st.copyWith(isCopied: true));
+      emitSafe(st.copyWith(isCopied: true));
       await Clipboard.setData(
         ClipboardData(text: st.seed.phrase),
       );
       Future.delayed(const Duration(seconds: 2), () {
-        emit(st.copyWith(isCopied: false));
+        emitSafe(st.copyWith(isCopied: false));
       });
     }
   }
