@@ -127,7 +127,7 @@ class _ActionList extends StatelessWidget {
               icon: _actionIcon(action),
               onPressed: account?.let((_) => _actionOnPressed(context)),
             ),
-            /*if (hasStake)
+            if (hasStake)
               WalletActionButton(
                 label: LocaleKeys.stakeWord.tr(),
                 icon: LucideIcons.layers2,
@@ -143,7 +143,7 @@ class _ActionList extends StatelessWidget {
                     );
                   },
                 ),
-              ),*/
+              ),
           ],
         ),
       ),

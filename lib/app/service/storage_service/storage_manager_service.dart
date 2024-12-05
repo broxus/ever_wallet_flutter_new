@@ -5,6 +5,7 @@ import 'package:injectable/injectable.dart';
 @singleton
 class StorageManagerService {
   StorageManagerService(
+    SecureStorageService secure,
     GeneralStorageService general,
     BrowserTabsStorageService browserTabs,
     BrowserHistoryStorageService browserHistory,
@@ -17,8 +18,9 @@ class StorageManagerService {
     TokenWalletStorageService tokenWalletStorageService,
     ConnectionsStorageService connectionStorageService,
     BalanceStorageService balanceStorageService,
-    SecureStorageService secureStorageService,
+    AppStorageService appStorageService,
   ) : _storages = [
+          secure,
           general,
           browserTabs,
           browserHistory,
@@ -31,7 +33,7 @@ class StorageManagerService {
           tokenWalletStorageService,
           connectionStorageService,
           balanceStorageService,
-          secureStorageService,
+          appStorageService,
         ];
 
   final List<AbstractStorageService> _storages;

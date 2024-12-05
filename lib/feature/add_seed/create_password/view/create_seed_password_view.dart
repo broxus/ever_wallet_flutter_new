@@ -1,6 +1,7 @@
 import 'package:app/feature/add_seed/create_password/model/password_status.dart';
 import 'package:app/feature/add_seed/create_password/widgets/password_info_section.dart';
 import 'package:app/generated/generated.dart';
+import 'package:app/utils/focus_utils.dart';
 import 'package:flutter/material.dart';
 import 'package:ui_components_lib/ui_components_lib.dart';
 import 'package:ui_components_lib/v2/ui_components_lib_v2.dart';
@@ -30,14 +31,15 @@ class CreateSeedPasswordView extends StatefulWidget {
 
 class _CreateSeedPasswordViewState extends State<CreateSeedPasswordView> {
   final ScrollController _scrollController = ScrollController();
-  final FocusNode _focusNode = FocusNode();
+  final FocusNode _pwd1focusNode = FocusNode();
+  final FocusNode _pwd2focusNode = FocusNode();
 
   @override
   void initState() {
     super.initState();
 
-    _focusNode.addListener(() {
-      if (_focusNode.hasFocus) {
+    _pwd1focusNode.addListener(() {
+      if (_pwd1focusNode.hasFocus) {
         _scrollToBottom();
       }
     });
@@ -71,15 +73,20 @@ class _CreateSeedPasswordViewState extends State<CreateSeedPasswordView> {
                     ),
                     const SizedBox(height: DimensSize.d24),
                     SecureTextField(
-                      focusNode: _focusNode,
+                      focusNode: _pwd1focusNode,
                       hintText: LocaleKeys.confirmSetPasswordHint.tr(),
                       textEditingController: widget.passwordController,
+                      textInputAction: TextInputAction.next,
+                      isAutofocus: true,
+                      onSubmit: _onPwd1Submit,
                     ),
                     const SizedBox(height: DimensSize.d8),
                     SecureTextField(
+                      focusNode: _pwd2focusNode,
                       hintText: LocaleKeys.confirmRepeatPasswordHint.tr(),
                       textEditingController: widget.confirmController,
                       textInputAction: TextInputAction.done,
+                      onSubmit: _onPwd2Submit,
                     ),
                     const SizedBox(height: DimensSize.d24),
                     PasswordInfoSection(
@@ -107,7 +114,8 @@ class _CreateSeedPasswordViewState extends State<CreateSeedPasswordView> {
 
   @override
   void dispose() {
-    _focusNode.dispose();
+    _pwd1focusNode.dispose();
+    _pwd2focusNode.dispose();
     _scrollController.dispose();
     super.dispose();
   }
@@ -126,5 +134,13 @@ class _CreateSeedPasswordViewState extends State<CreateSeedPasswordView> {
         });
       }
     });
+  }
+
+  void _onPwd1Submit(String? _) => requestFocus(context, _pwd2focusNode);
+
+  void _onPwd2Submit(String? _) {
+    if (widget.passwordStatus == PasswordStatus.match) {
+      widget.onPressedNext();
+    }
   }
 }

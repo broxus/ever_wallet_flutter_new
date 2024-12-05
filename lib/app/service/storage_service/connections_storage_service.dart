@@ -1,12 +1,10 @@
-import 'dart:convert';
-
 import 'package:app/app/service/nekoton_related/connection_service/network_presets.dart';
 import 'package:app/app/service/service.dart';
 import 'package:app/data/models/models.dart';
 import 'package:app/di/di.dart';
 import 'package:app/generated/generated.dart';
 import 'package:collection/collection.dart';
-import 'package:encrypted_storage/encrypted_storage.dart';
+import 'package:get_storage/get_storage.dart';
 import 'package:injectable/injectable.dart';
 import 'package:logging/logging.dart';
 import 'package:rxdart/rxdart.dart';
@@ -16,16 +14,19 @@ const _connectionsKey = 'connections';
 const _currentConnectionIdKey = 'current_connection_id';
 const _networksIdsKey = 'networks_ids';
 
-/// This is a wrapper-class above [EncryptedStorage] that provides methods
+/// This is a wrapper-class above [GetStorage] that provides methods
 /// to interact with custom connection - related data.
 @singleton
 class ConnectionsStorageService extends AbstractStorageService {
-  ConnectionsStorageService(this._storage);
+  ConnectionsStorageService(
+    @Named(container) this._storage,
+  );
 
   final _log = Logger('ConnectionsStorageService');
+  static const container = _connectionsDomain;
 
   /// Storage that is used to store data
-  final EncryptedStorage _storage;
+  final GetStorage _storage;
 
   /// Subject of [ConnectionData] items
   final _connectionsSubject = BehaviorSubject<List<ConnectionData>>();
@@ -109,30 +110,24 @@ class ConnectionsStorageService extends AbstractStorageService {
   }
 
   /// Put [ConnectionData] items to stream
-  Future<void> _streamedConnections() async => _connectionsSubject.add(
-        [...(await readConnections())]..sort(
+  void _streamedConnections() => _connectionsSubject.add(
+        [...readConnections()]..sort(
             (a, b) => (a.sortingOrder - b.sortingOrder).sign.toInt(),
           ),
       );
 
   /// Put current connection id to stream
-  Future<void> _streamedCurrentConnectionId() async =>
-      _currentConnectionIdSubject.add(await readCurrentConnectionId());
+  void _streamedCurrentConnectionId() =>
+      _currentConnectionIdSubject.add(readCurrentConnectionId());
 
-  Future<void> _streamedNetworksIds() async =>
-      _networksIdsSubject.add(await readNetworksIds());
+  void _streamedNetworksIds() => _networksIdsSubject.add(readNetworksIds());
 
   /// Read list of [ConnectionData] items from presets and storage
-  Future<List<ConnectionData>> readConnections() async {
-    final encoded = await _storage.get(
-      _connectionsKey,
-      domain: _connectionsDomain,
-    );
-
+  List<ConnectionData> readConnections() {
+    final list = _storage.read<List<dynamic>>(_connectionsKey);
     var connections = <ConnectionData>[];
 
-    if (encoded != null) {
-      final list = jsonDecode(encoded) as List<dynamic>;
+    if (list != null) {
       final customConnections = list
           .map(
             (entry) => ConnectionData.fromJson(entry as Map<String, dynamic>),
@@ -173,12 +168,8 @@ class ConnectionsStorageService extends AbstractStorageService {
   }
 
   /// Read current connection id from storage
-  Future<String> readCurrentConnectionId() async {
-    final id = await _storage.get(
-      _currentConnectionIdKey,
-      domain: _connectionsDomain,
-    );
-
+  String readCurrentConnectionId() {
+    final id = _storage.read<String>(_currentConnectionIdKey);
     final currentId = id ?? defaultConnectionkId;
 
     _log.info('Current connection id:\n$currentId');
@@ -187,34 +178,28 @@ class ConnectionsStorageService extends AbstractStorageService {
   }
 
   /// Read networks ids from storage
-  Future<Map<String, int>> readNetworksIds() async {
-    final encoded = await _storage.get(
-      _networksIdsKey,
-      domain: _connectionsDomain,
-    );
-
+  Map<String, int> readNetworksIds() {
+    final encoded = _storage.read<Map<String, dynamic>>(_networksIdsKey);
     var map = <String, int>{};
 
     if (encoded != null) {
-      map = Map.castFrom(jsonDecode(encoded) as Map<String, dynamic>);
+      map = Map.castFrom(encoded);
     }
 
     return map;
   }
 
   /// Save list of [ConnectionData] items to storage
-  Future<void> _saveConnections(List<ConnectionData> connections) async {
-    await _storage.set(
+  void _saveConnections(List<ConnectionData> connections) {
+    _storage.write(
       _connectionsKey,
-      jsonEncode(connections),
-      domain: _connectionsDomain,
+      connections.map((e) => e.toJson()).toList(),
     );
-
-    await _streamedConnections();
+    _streamedConnections();
   }
 
   /// Save current connection id to storage
-  Future<void> saveCurrentConnectionId(String id) async {
+  void saveCurrentConnectionId(String id) {
     var newId = id;
     if (connections.firstWhereOrNull((element) => element.id == id) == null) {
       _log.warning(
@@ -224,72 +209,49 @@ class ConnectionsStorageService extends AbstractStorageService {
       newId = defaultConnectionkId;
     }
 
-    await _storage.set(
-      _currentConnectionIdKey,
-      newId,
-      domain: _connectionsDomain,
-    );
-
-    await _streamedCurrentConnectionId();
+    _storage.write(_currentConnectionIdKey, newId);
+    _streamedCurrentConnectionId();
   }
 
   /// Save current connection id to storage
-  Future<void> updateNetworksIds(Iterable<(String, int)> values) async {
+  void updateNetworksIds(Iterable<(String, int)> values) {
     final map = Map<String, int>.from(networksIds)
       ..addEntries(
         values.map((value) => MapEntry(value.$1, value.$2)),
       );
 
-    await _storage.set(
-      _networksIdsKey,
-      jsonEncode(map),
-      domain: _connectionsDomain,
-    );
-
-    await _streamedNetworksIds();
+    _storage.write(_networksIdsKey, map);
+    _streamedNetworksIds();
   }
 
   /// Clear [ConnectionData] list
   Future<void> clear() async {
-    await _storage.delete(
-      _connectionsKey,
-      domain: _connectionsDomain,
-    );
+    await _storage.erase();
 
-    await _storage.delete(
-      _currentConnectionIdKey,
-      domain: _connectionsDomain,
-    );
-
-    await _storage.delete(
-      _networksIdsKey,
-      domain: _connectionsDomain,
-    );
-
-    await _streamedConnections();
-    await _streamedCurrentConnectionId();
-    await _streamedNetworksIds();
+    _streamedConnections();
+    _streamedCurrentConnectionId();
+    _streamedNetworksIds();
   }
 
   /// Add [ConnectionData] item
-  Future<void> addConnection(ConnectionData item) async {
-    await _saveConnections([...connections, item]);
+  void addConnection(ConnectionData item) {
+    _saveConnections([...connections, item]);
   }
 
   /// Remove [ConnectionData] item by id
-  Future<void> removeConnection(String id) async {
+  void removeConnection(String id) {
     if (id == currentConnectionId) {
       _log.info(
         'Trying to remove current connection. '
         'Setting default connection as current',
       );
-      await saveCurrentConnectionId(defaultConnectionkId);
+      saveCurrentConnectionId(defaultConnectionkId);
     }
 
     final savedConnections = connections;
     final items = [...savedConnections]..removeWhere((item) => item.id == id);
 
-    await _saveConnections(items);
+    _saveConnections(items);
 
     inject<MessengerService>().show(
       Message.info(
@@ -301,7 +263,7 @@ class ConnectionsStorageService extends AbstractStorageService {
   }
 
   /// Update [ConnectionData] item
-  Future<void> updateConnection(ConnectionData item) async {
+  void updateConnection(ConnectionData item) {
     final index = connections.indexWhere((element) => element.id == item.id);
     if (index < 0) {
       _log.warning('Unable to update connection with id ${item.id}. '
@@ -312,7 +274,7 @@ class ConnectionsStorageService extends AbstractStorageService {
     final newConnections = [...connections];
     newConnections[index] = item;
 
-    await _saveConnections(newConnections);
+    _saveConnections(newConnections);
 
     inject<MessengerService>().show(
       Message.info(
@@ -322,7 +284,7 @@ class ConnectionsStorageService extends AbstractStorageService {
   }
 
   /// Revert item to defaults from preset
-  Future<void> revertConnection(String id) async {
+  void revertConnection(String id) {
     final preset =
         networkPresets.firstWhereOrNull((element) => element.id == id);
     if (preset == null) {
@@ -336,11 +298,12 @@ class ConnectionsStorageService extends AbstractStorageService {
   }
 
   @override
-  Future<void> init() => Future.wait([
-        _streamedConnections(),
-        _streamedCurrentConnectionId(),
-        _streamedNetworksIds(),
-      ]);
+  Future<void> init() async {
+    await GetStorage.init(container);
+    _streamedConnections();
+    _streamedCurrentConnectionId();
+    _streamedNetworksIds();
+  }
 
   @override
   Future<void> clearSensitiveData() => Future.wait([

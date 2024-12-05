@@ -38,7 +38,9 @@ class CreateSeedPasswordProfilePage extends StatelessWidget {
         completeCallback: (publicKey) {
           showSwitchToSeedSheet(context: context, publicKey: publicKey)
               .whenComplete(() {
-            context.goNamed(AppRoute.manageSeedsAccounts.name);
+            try {
+              context.goNamed(AppRoute.manageSeedsAccounts.name);
+            } catch (_) {}
           });
         },
         type: type,

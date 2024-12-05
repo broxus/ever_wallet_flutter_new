@@ -37,7 +37,7 @@ class PermissionsService {
       url == null ? null : permissions[Uri.parse(url.origin)];
 
   /// Set permissions for browser tab with [url]
-  Future<void> setPermissions({
+  void setPermissions({
     required Uri url,
     required Permissions permissions,
   }) =>
@@ -47,18 +47,18 @@ class PermissionsService {
       );
 
   /// Delete permissions for browser tab with [url]
-  Future<void> deletePermissionsForOrigin(Uri url) =>
+  void deletePermissionsForOrigin(Uri url) =>
       storage.deletePermissionsForOrigin(url.origin);
 
   /// Delete permissions for specified account
-  Future<void> deletePermissionsForAccount(Address address) =>
+  void deletePermissionsForAccount(Address address) =>
       storage.deletePermissionsForAccount(address);
 
   // we do not save stream sub, because it must stay all app life-time
   void _listenAccountsDeletion() {
-    nekotonRepository.seedChangesStream.listen((changes) async {
+    nekotonRepository.seedChangesStream.listen((changes) {
       for (final account in changes.deletedAccounts) {
-        await deletePermissionsForAccount(account.address);
+        deletePermissionsForAccount(account.address);
       }
     });
   }

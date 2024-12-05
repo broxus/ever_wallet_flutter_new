@@ -4,11 +4,15 @@ import 'package:flutter/material.dart';
 mixin ContextWmMixin<W extends ElementaryWidget, M extends ElementaryModel>
     on WidgetModel<W, M> {
   BuildContext? get contextSafe {
-    if (!isMounted) {
+    try {
+      if (!isMounted) {
+        return null;
+      }
+
+      return context;
+    } catch (_) {
       return null;
     }
-
-    return context;
   }
 }
 
@@ -16,10 +20,14 @@ mixin ContextMixin {
   BuildContext get context;
 
   BuildContext? get contextSafe {
-    if (!context.mounted) {
+    try {
+      if (!context.mounted) {
+        return null;
+      }
+
+      return context;
+    } catch (_) {
       return null;
     }
-
-    return context;
   }
 }

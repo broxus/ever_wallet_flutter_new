@@ -15,12 +15,7 @@
     "http": "https://github.com/fluttercommunity/plus_plugins/tree/main/packages/connectivity_plus"
   },
   "documentation_url": "https://pub.dev/packages/connectivity_plus",
-  "source_files": [
-    "Classes/**/*"
-  ],
-  "public_header_files": [
-    "Classes/**/*.h"
-  ],
+  "source_files": "connectivity_plus/Sources/connectivity_plus/**/*.swift",
   "ios": {
     "dependencies": {
       "Flutter": [
@@ -29,7 +24,7 @@
     },
     "resource_bundles": {
       "connectivity_plus_privacy": [
-        "PrivacyInfo.xcprivacy"
+        "connectivity_plus/Sources/connectivity_plus/PrivacyInfo.xcprivacy"
       ]
     }
   },

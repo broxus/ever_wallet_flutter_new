@@ -18,9 +18,10 @@ class BiometryPasswordNotStoredException implements Exception {}
 /// Service that helps reading/updating biometry settings.
 @singleton
 class BiometryService {
-  BiometryService(this.storage, this.appLifecycleService);
+  BiometryService(this.storage, this.secureStorage, this.appLifecycleService);
 
   final GeneralStorageService storage;
+  final SecureStorageService secureStorage;
   final AppLifecycleService appLifecycleService;
 
   final _localAuth = LocalAuthentication();
@@ -66,7 +67,9 @@ class BiometryService {
         .listen((e) => storage.setIsBiometryEnabled(isEnabled: e));
 
     // clear all passwords if biometry was disabled
-    enabledStream.where((e) => !e).listen((e) => storage.clearKeyPasswords());
+    enabledStream
+        .where((e) => !e)
+        .listen((e) => secureStorage.clearKeyPasswords());
   }
 
   /// On iOS checks face id permission and opens system setting if permission
@@ -109,7 +112,7 @@ class BiometryService {
     // if user want enable biometry - ask auth.
     try {
       if (!isEnabled || isEnabled && await _authenticate(localizedReason)) {
-        await storage.setIsBiometryEnabled(isEnabled: isEnabled);
+        storage.setIsBiometryEnabled(isEnabled: isEnabled);
       }
     } catch (_) {}
   }
@@ -123,7 +126,7 @@ class BiometryService {
     required String password,
   }) async {
     if (available) {
-      return storage.setKeyPassword(
+      return secureStorage.setKeyPassword(
         publicKey: publicKey,
         password: password,
       );
@@ -137,7 +140,7 @@ class BiometryService {
     required String localizedReason,
     required PublicKey publicKey,
   }) async {
-    final password = await storage.getKeyPassword(publicKey);
+    final password = await secureStorage.getKeyPassword(publicKey);
 
     if (password != null) {
       if (await _authenticate(localizedReason)) {
@@ -153,7 +156,7 @@ class BiometryService {
   /// Check if password of [publicKey] was stored before.
   Future<bool> hasKeyPassword(PublicKey publicKey) async {
     try {
-      final password = await storage.getKeyPassword(publicKey);
+      final password = await secureStorage.getKeyPassword(publicKey);
       return password != null;
     } catch (_) {
       return false;

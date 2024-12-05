@@ -9,8 +9,8 @@ class WelcomeScreenModel extends ElementaryModel {
     this._storageService,
   ) : super(errorHandler: errorHandler);
 
-  final SecureStorageService _storageService;
+  final AppStorageService _storageService;
 
-  Future<void> saveUserNew({required bool userWithNewWallet}) => _storageService
+  void saveUserNew({required bool userWithNewWallet}) => _storageService
       .addValue(StorageKey.userWithNewWallet(), userWithNewWallet);
 }

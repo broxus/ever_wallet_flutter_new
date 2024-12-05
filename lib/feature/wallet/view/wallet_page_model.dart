@@ -11,7 +11,7 @@ class WalletPageModel extends ElementaryModel {
   ) : super(errorHandler: errorHandler);
 
   final CurrentAccountsService _currentAccountsService;
-  final SecureStorageService _storageService;
+  final AppStorageService _storageService;
   final NekotonRepository _nekotonRepository;
 
   Stream<KeyAccount?> get currentAccount =>
@@ -20,15 +20,15 @@ class WalletPageModel extends ElementaryModel {
   Stream<TransportStrategy> get transportStrategy =>
       _nekotonRepository.currentTransportStream;
 
-  Future<bool?> isNewUser() async {
+  bool? isNewUser() {
     return _storageService.getValue(StorageKey.userWithNewWallet());
   }
 
-  Future<void> resetValueNewUser() async {
-    return _storageService.cleanStorage(StorageKey.userWithNewWallet());
+  void resetValueNewUser() {
+    _storageService.delete(StorageKey.userWithNewWallet());
   }
 
-  Future<bool?> isShowingBadge(KeyAccount account) async {
+  bool? isShowingBadge(KeyAccount account) {
     final masterPublicKey = _nekotonRepository.seedList
         .findSeedByAnyPublicKey(account.publicKey)
         ?.masterPublicKey;
@@ -40,7 +40,7 @@ class WalletPageModel extends ElementaryModel {
     );
   }
 
-  Future<bool?> isShowingNewTokens(KeyAccount account) async {
+  bool? isShowingNewTokens(KeyAccount account) {
     final address = account.address;
 
     return _storageService.getValue(
@@ -48,7 +48,7 @@ class WalletPageModel extends ElementaryModel {
     );
   }
 
-  Future<void> hideShowingBadge(KeyAccount account) async {
+  void hideShowingBadge(KeyAccount account) {
     final masterPublicKey = _nekotonRepository.seedList
         .findSeedByAnyPublicKey(account.publicKey)
         ?.masterPublicKey;
@@ -61,7 +61,7 @@ class WalletPageModel extends ElementaryModel {
     );
   }
 
-  Future<void> hideNewTokenLabels(KeyAccount account) async {
+  void hideNewTokenLabels(KeyAccount account) {
     final address = account.address;
 
     return _storageService.addValue(

@@ -3,6 +3,7 @@
 import 'package:app/app/service/service.dart';
 import 'package:app/generated/generated.dart';
 import 'package:app/utils/constants.dart';
+import 'package:app/utils/utils.dart';
 import 'package:bloc/bloc.dart';
 import 'package:flutter/material.dart';
 import 'package:freezed_annotation/freezed_annotation.dart';
@@ -110,14 +111,19 @@ class TonWalletSendBloc extends Bloc<TonWalletSendEvent, TonWalletSendState> {
         expiration: defaultSendTimeout,
       );
       _unsignedMessage = unsignedMessage;
-      fees = await nekotonRepository.estimateFees(
-        address: address,
-        message: unsignedMessage,
+
+      final result = await FutureExt.wait2(
+        nekotonRepository.estimateFees(
+          address: address,
+          message: unsignedMessage,
+        ),
+        nekotonRepository.simulateTransactionTree(
+          address: address,
+          message: unsignedMessage,
+        ),
       );
-      txErrors = await nekotonRepository.simulateTransactionTree(
-        address: address,
-        message: unsignedMessage,
-      );
+      fees = result.$1;
+      txErrors = result.$2;
 
       final walletState = await nekotonRepository.walletsStream
           .expand((e) => e)
@@ -125,7 +131,6 @@ class TonWalletSendBloc extends Bloc<TonWalletSendEvent, TonWalletSendState> {
 
       if (walletState.hasError) {
         emit(TonWalletSendState.subscribeError(walletState.error!));
-
         return;
       }
 

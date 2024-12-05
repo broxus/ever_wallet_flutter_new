@@ -25,7 +25,7 @@ platform :ios do
       key_filepath: "fastlane/AuthKey_L4N29B6Z42.p8",
     )
     upload_to_testflight(
-      ipa: "../build/ios/ipa/SparX: TVM Wallet.ipa",
+      ipa: "../build/ios/ipa/SparX.ipa",
       skip_waiting_for_build_processing: true,
       api_key: api_key,
       changelog: "#{options[:changelog_string]}"
@@ -38,7 +38,7 @@ platform :ios do
     firebase_app_distribution(
       app: "1:1017783238389:ios:a8de9ade8f221b782e4fbc",
       groups: "qa",
-      ipa_path: "../build/ios/ipa/SparX: TVM Wallet.ipa",
+      ipa_path: "../build/ios/ipa/SparX.ipa",
       service_credentials_file: "../fastlane/FirebaseADKey.json",
       release_notes_file:  "../fastlane/changelog.txt",
     )
