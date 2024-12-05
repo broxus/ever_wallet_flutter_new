@@ -1,14 +1,13 @@
 // ignore_for_file: use_build_context_synchronously
+// ignore_for_file: inference_failure_on_function_return_type
 import 'dart:async';
 
 import 'package:app/app/router/app_route.dart';
 import 'package:app/core/error_handler_factory.dart';
 import 'package:app/core/wm/custom_wm.dart';
 import 'package:app/di/di.dart';
-import 'package:app/feature/wallet/wallet_backup/confirm_action/confirm_action_data.dart';
-import 'package:app/feature/wallet/wallet_backup/confirm_action/confirm_action_dialog.dart';
-import 'package:app/feature/wallet/wallet_backup/confirm_action/confirm_action_model.dart';
-import 'package:app/feature/wallet/wallet_backup/manual_backup/manual_back_up_dialog.dart';
+import 'package:app/feature/wallet/wallet_deploy/view/deploy_wallet_confirm_modal.dart';
+import 'package:app/feature/wallet/wallet_deploy/view/deploy_wallet_confirm_model.dart';
 import 'package:app/generated/generated.dart';
 import 'package:elementary_helper/elementary_helper.dart';
 import 'package:flutter/widgets.dart';
@@ -16,16 +15,14 @@ import 'package:local_auth/local_auth.dart';
 import 'package:nekoton_repository/nekoton_repository.dart';
 import 'package:ui_components_lib/v2/ui_components_lib_v2.dart';
 
-ConfirmActionWidgetModel defaultConfirmActionWidgetModelFactory(
+DeployWalletConfirmWidgetModel defaultDeployWalletConfirmWidgetModelFactory(
   BuildContext context,
-  KeyAccount? account,
-  VoidCallback finishedBackupCallback,
+  Function(String) passwordCallback,
 ) {
-  return ConfirmActionWidgetModel(
-    finishedBackupCallback,
-    ConfirmActionModel(
+  return DeployWalletConfirmWidgetModel(
+    passwordCallback,
+    DeployWalletConfirmModel(
       createPrimaryErrorHandler(context),
-      account,
       inject(),
       inject(),
       inject(),
@@ -34,38 +31,33 @@ ConfirmActionWidgetModel defaultConfirmActionWidgetModelFactory(
   );
 }
 
-class ConfirmActionWidgetModel
-    extends CustomWidgetModel<ContentConfirmAction, ConfirmActionModel> {
-  ConfirmActionWidgetModel(
-    this.finishedBackupCallback,
+class DeployWalletConfirmWidgetModel extends CustomWidgetModel<
+    DeployWalletConfirmModal, DeployWalletConfirmModel> {
+  DeployWalletConfirmWidgetModel(
+    this.passwordCallback,
     super.model,
   );
 
-  final VoidCallback finishedBackupCallback;
+  final Function(String) passwordCallback;
 
   ThemeStyleV2 get themeStyle => context.themeStyleV2;
-
-  KeyAccount? get account => model.account;
 
   ListenableState<List<BiometricType>> get availableBiometry =>
       _availableBiometry;
 
   late final _availableBiometry = createNotifier<List<BiometricType>>();
 
-  late final screenState = createEntityNotifier<ConfirmActionData>()
-    ..loading(ConfirmActionData());
+  late final passwordState = createEntityNotifier<String>();
 
   late final passwordController = createTextEditingController();
 
   @override
   void initWidgetModel() {
-    passwordController.addListener(_resetError);
     _getAvailableBiometry();
     super.initWidgetModel();
   }
 
   void onClickConfirm() {
-    screenState.content(ConfirmActionData(isLoading: true));
     final publicKey = model.currentSeed?.publicKey;
     if (publicKey != null) {
       _export(publicKey, passwordController.text);
@@ -91,26 +83,15 @@ class ConfirmActionWidgetModel
     }
   }
 
-  void _resetError() {
-    screenState.content(ConfirmActionData());
-  }
-
   Future<void> _export(PublicKey publicKey, String password) async {
     final seed = model.findSeed(publicKey);
     if (seed != null) {
       try {
-        final phrase = await seed.export(password);
-
+        await seed.export(password);
         context.maybePop();
-        showManualBackupDialog(
-          context,
-          phrase,
-          account?.address.address ?? '',
-          finishedBackupCallback,
-        );
+        passwordCallback(password);
       } catch (_) {
-        screenState
-            .content(ConfirmActionData(error: LocaleKeys.passwordIsWrong.tr()));
+        model.showValidateError(LocaleKeys.passwordIsWrong.tr());
       }
     } else {
       model.showValidateError(LocaleKeys.seedIsMissing.tr());

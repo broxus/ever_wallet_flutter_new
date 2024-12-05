@@ -51,6 +51,7 @@ class WalletAppBarWidgetModel
     showAccountSettingsSheet(
       context: context,
       account: currentAccount.value!,
+      custodians: walletState.value?.wallet?.custodians,
     );
   }
 }

@@ -225,6 +225,7 @@ class KeyDetailView extends StatelessWidget {
           ),
           leading: UserAvatar(
             address: account.account.address.address,
+            key: UniqueKey(),
           ),
           titleText: account.name,
           subtitleText: account.address.toEllipseString(),

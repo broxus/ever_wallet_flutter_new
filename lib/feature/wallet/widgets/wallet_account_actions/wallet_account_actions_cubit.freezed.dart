@@ -21,7 +21,7 @@ mixin _$WalletAccountActionsState {
   TResult when<TResult extends Object?>({
     required TResult Function(bool hasStake) loading,
     required TResult Function(WalletAccountActionBehavior action, bool hasStake,
-            bool hasStakeActions)
+            bool hasStakeActions, BigInt? balance)
         data,
   }) =>
       throw _privateConstructorUsedError;
@@ -29,7 +29,7 @@ mixin _$WalletAccountActionsState {
   TResult? whenOrNull<TResult extends Object?>({
     TResult? Function(bool hasStake)? loading,
     TResult? Function(WalletAccountActionBehavior action, bool hasStake,
-            bool hasStakeActions)?
+            bool hasStakeActions, BigInt? balance)?
         data,
   }) =>
       throw _privateConstructorUsedError;
@@ -37,7 +37,7 @@ mixin _$WalletAccountActionsState {
   TResult maybeWhen<TResult extends Object?>({
     TResult Function(bool hasStake)? loading,
     TResult Function(WalletAccountActionBehavior action, bool hasStake,
-            bool hasStakeActions)?
+            bool hasStakeActions, BigInt? balance)?
         data,
     required TResult orElse(),
   }) =>
@@ -178,7 +178,7 @@ class _$LoadingImpl implements _Loading {
   TResult when<TResult extends Object?>({
     required TResult Function(bool hasStake) loading,
     required TResult Function(WalletAccountActionBehavior action, bool hasStake,
-            bool hasStakeActions)
+            bool hasStakeActions, BigInt? balance)
         data,
   }) {
     return loading(hasStake);
@@ -189,7 +189,7 @@ class _$LoadingImpl implements _Loading {
   TResult? whenOrNull<TResult extends Object?>({
     TResult? Function(bool hasStake)? loading,
     TResult? Function(WalletAccountActionBehavior action, bool hasStake,
-            bool hasStakeActions)?
+            bool hasStakeActions, BigInt? balance)?
         data,
   }) {
     return loading?.call(hasStake);
@@ -200,7 +200,7 @@ class _$LoadingImpl implements _Loading {
   TResult maybeWhen<TResult extends Object?>({
     TResult Function(bool hasStake)? loading,
     TResult Function(WalletAccountActionBehavior action, bool hasStake,
-            bool hasStakeActions)?
+            bool hasStakeActions, BigInt? balance)?
         data,
     required TResult orElse(),
   }) {
@@ -267,7 +267,8 @@ abstract class _$$DataImplCopyWith<$Res>
   $Res call(
       {WalletAccountActionBehavior action,
       bool hasStake,
-      bool hasStakeActions});
+      bool hasStakeActions,
+      BigInt? balance});
 }
 
 /// @nodoc
@@ -285,6 +286,7 @@ class __$$DataImplCopyWithImpl<$Res>
     Object? action = null,
     Object? hasStake = null,
     Object? hasStakeActions = null,
+    Object? balance = freezed,
   }) {
     return _then(_$DataImpl(
       action: null == action
@@ -299,6 +301,10 @@ class __$$DataImplCopyWithImpl<$Res>
           ? _value.hasStakeActions
           : hasStakeActions // ignore: cast_nullable_to_non_nullable
               as bool,
+      balance: freezed == balance
+          ? _value.balance
+          : balance // ignore: cast_nullable_to_non_nullable
+              as BigInt?,
     ));
   }
 }
@@ -309,7 +315,8 @@ class _$DataImpl implements _Data {
   const _$DataImpl(
       {required this.action,
       required this.hasStake,
-      required this.hasStakeActions});
+      required this.hasStakeActions,
+      required this.balance});
 
   @override
   final WalletAccountActionBehavior action;
@@ -317,10 +324,12 @@ class _$DataImpl implements _Data {
   final bool hasStake;
   @override
   final bool hasStakeActions;
+  @override
+  final BigInt? balance;
 
   @override
   String toString() {
-    return 'WalletAccountActionsState.data(action: $action, hasStake: $hasStake, hasStakeActions: $hasStakeActions)';
+    return 'WalletAccountActionsState.data(action: $action, hasStake: $hasStake, hasStakeActions: $hasStakeActions, balance: $balance)';
   }
 
   @override
@@ -332,12 +341,13 @@ class _$DataImpl implements _Data {
             (identical(other.hasStake, hasStake) ||
                 other.hasStake == hasStake) &&
             (identical(other.hasStakeActions, hasStakeActions) ||
-                other.hasStakeActions == hasStakeActions));
+                other.hasStakeActions == hasStakeActions) &&
+            (identical(other.balance, balance) || other.balance == balance));
   }
 
   @override
   int get hashCode =>
-      Object.hash(runtimeType, action, hasStake, hasStakeActions);
+      Object.hash(runtimeType, action, hasStake, hasStakeActions, balance);
 
   /// Create a copy of WalletAccountActionsState
   /// with the given fields replaced by the non-null parameter values.
@@ -352,10 +362,10 @@ class _$DataImpl implements _Data {
   TResult when<TResult extends Object?>({
     required TResult Function(bool hasStake) loading,
     required TResult Function(WalletAccountActionBehavior action, bool hasStake,
-            bool hasStakeActions)
+            bool hasStakeActions, BigInt? balance)
         data,
   }) {
-    return data(action, hasStake, hasStakeActions);
+    return data(action, hasStake, hasStakeActions, balance);
   }
 
   @override
@@ -363,10 +373,10 @@ class _$DataImpl implements _Data {
   TResult? whenOrNull<TResult extends Object?>({
     TResult? Function(bool hasStake)? loading,
     TResult? Function(WalletAccountActionBehavior action, bool hasStake,
-            bool hasStakeActions)?
+            bool hasStakeActions, BigInt? balance)?
         data,
   }) {
-    return data?.call(action, hasStake, hasStakeActions);
+    return data?.call(action, hasStake, hasStakeActions, balance);
   }
 
   @override
@@ -374,12 +384,12 @@ class _$DataImpl implements _Data {
   TResult maybeWhen<TResult extends Object?>({
     TResult Function(bool hasStake)? loading,
     TResult Function(WalletAccountActionBehavior action, bool hasStake,
-            bool hasStakeActions)?
+            bool hasStakeActions, BigInt? balance)?
         data,
     required TResult orElse(),
   }) {
     if (data != null) {
-      return data(action, hasStake, hasStakeActions);
+      return data(action, hasStake, hasStakeActions, balance);
     }
     return orElse();
   }
@@ -420,12 +430,14 @@ abstract class _Data implements WalletAccountActionsState {
   const factory _Data(
       {required final WalletAccountActionBehavior action,
       required final bool hasStake,
-      required final bool hasStakeActions}) = _$DataImpl;
+      required final bool hasStakeActions,
+      required final BigInt? balance}) = _$DataImpl;
 
   WalletAccountActionBehavior get action;
   @override
   bool get hasStake;
   bool get hasStakeActions;
+  BigInt? get balance;
 
   /// Create a copy of WalletAccountActionsState
   /// with the given fields replaced by the non-null parameter values.

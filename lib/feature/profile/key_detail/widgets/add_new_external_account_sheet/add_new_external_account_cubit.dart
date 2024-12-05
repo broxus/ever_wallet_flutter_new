@@ -9,6 +9,7 @@ import 'package:freezed_annotation/freezed_annotation.dart';
 import 'package:nekoton_repository/nekoton_repository.dart' hide Message;
 
 part 'add_new_external_account_cubit.freezed.dart';
+
 part 'add_new_external_account_state.dart';
 
 /// Cubit that allows to add new external account to [publicKey]
@@ -16,17 +17,25 @@ class AddNewExternalAccountCubit extends Cubit<AddNewExternalAccountState> {
   AddNewExternalAccountCubit(
     this.publicKey,
     this.nekotonRepository,
+    this.currentAccountsService,
   ) : super(const AddNewExternalAccountState.initial());
 
   /// Public key for which new account will be added
-  final PublicKey publicKey;
+  final PublicKey? publicKey;
   final NekotonRepository nekotonRepository;
+  final CurrentAccountsService currentAccountsService;
+
+  PublicKey? getPublicKey() {
+    return currentAccountsService.currentActiveAccount?.publicKey;
+  }
 
   Future<void> createAccount(
     BuildContext context,
     String addressString,
     String name,
   ) async {
+    final publicKey = this.publicKey ?? getPublicKey();
+    if (publicKey == null) return;
     final seedKey = nekotonRepository.seedList.findSeedKey(publicKey);
     if (seedKey == null) return;
 
