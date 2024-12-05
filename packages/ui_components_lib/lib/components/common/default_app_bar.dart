@@ -63,16 +63,24 @@ class DefaultAppBar extends StatelessWidget implements PreferredSizeWidget {
   ///
   /// To change behavior, just set another callback in main.dart
   // ignore: avoid-global-state
-  static DefaultAppBarCloseAction defaultPopAction =
-      (context) => Navigator.of(context).pop();
+  static DefaultAppBarCloseAction defaultPopAction = (context) {
+    try {
+      Navigator.of(context).pop();
+    } catch (_) {}
+  };
 
   /// This is a default action of [DefaultAppBar] to check if leading
   /// close button should be displayed.
   ///
   /// To change behavior, just set another callback in main.dart
   // ignore: avoid-global-state
-  static DefaultAppBarCanPopAction defaultCanPopAction =
-      (context) => Navigator.of(context).canPop();
+  static DefaultAppBarCanPopAction defaultCanPopAction = (context) {
+    try {
+      return Navigator.of(context).canPop();
+    } catch (_) {
+      return true;
+    }
+  };
 
   @override
   Size get preferredSize => const Size.fromHeight(defaultAppBarHeight);

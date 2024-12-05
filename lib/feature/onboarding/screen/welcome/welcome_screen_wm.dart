@@ -1,5 +1,3 @@
-import 'dart:async';
-
 import 'package:app/app/router/app_route.dart';
 import 'package:app/core/error_handler_factory.dart';
 import 'package:app/core/wm/custom_wm.dart';
@@ -36,8 +34,8 @@ class WelcomeScreenWidgetModel
 
   ThemeStyleV2 get themeStyle => context.themeStyleV2;
 
-  Future<void> onPressedCreateWallet() async {
-    unawaited(model.saveUserNew(userWithNewWallet: true));
+  void onPressedCreateWallet() {
+    model.saveUserNew(userWithNewWallet: true);
     _goNext(AppRoute.createSeedPassword.path);
   }
 

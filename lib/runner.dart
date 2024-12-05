@@ -6,6 +6,7 @@ import 'package:app/bootstrap/localization.dart';
 import 'package:app/bootstrap/sentry.dart';
 import 'package:app/core/app_build_type.dart';
 import 'package:app/core/bloc/app_bloc_observer.dart';
+import 'package:app/core/logger/logger.dart';
 import 'package:app/di/di.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
@@ -27,8 +28,10 @@ Future<void> run(
   await runZonedGuarded(
     () async {
       WidgetsFlutterBinding.ensureInitialized();
+      await initLogger();
 
       await configureDi();
+
       await configureLocalization();
 
       await SentryWorker.instance.init(appBuildType);

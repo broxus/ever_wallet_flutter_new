@@ -1,18 +1,22 @@
 import 'dart:async';
 
 import 'package:app/app/service/service.dart';
+import 'package:app/core/bloc/bloc_mixin.dart';
 import 'package:collection/collection.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:freezed_annotation/freezed_annotation.dart';
 import 'package:nekoton_repository/nekoton_repository.dart';
 
 part 'action_staking_bloc.freezed.dart';
+
 part 'action_staking_bloc_event.dart';
+
 part 'action_staking_bloc_state.dart';
 
 /// Helper bloc that can prepare transaction for sending before open send screen
 class ActionStakingBloc
-    extends Bloc<ActionStakingBlocEvent, ActionStakingBlocState> {
+    extends Bloc<ActionStakingBlocEvent, ActionStakingBlocState>
+    with BlocMixin, BlocBaseMixin {
   ActionStakingBloc({
     required this.nekotonRepository,
     required this.accountAddress,
@@ -40,11 +44,11 @@ class ActionStakingBloc
     _Stake event,
     Emitter<ActionStakingBlocState> emit,
   ) async {
-    emit(const ActionStakingBlocState.inProgress());
+    emitSafe(const ActionStakingBlocState.inProgress());
 
     final payload = await stakingService.depositEverBodyPayload(event.amount);
 
-    emit(
+    emitSafe(
       ActionStakingBlocState.goStake(
         payload: payload,
         amount: event.amount,
@@ -54,18 +58,18 @@ class ActionStakingBloc
         attachedFee: staking.stakeDepositAttachedFee,
       ),
     );
-    emit(const ActionStakingBlocState.nothing());
+    emitSafe(const ActionStakingBlocState.nothing());
   }
 
   Future<void> _prepareUntaking(
     _Unstake event,
     Emitter<ActionStakingBlocState> emit,
   ) async {
-    emit(const ActionStakingBlocState.inProgress());
+    emitSafe(const ActionStakingBlocState.inProgress());
 
     final payload = await stakingService.withdrawStEverPayload();
 
-    emit(
+    emitSafe(
       ActionStakingBlocState.goUnstake(
         payload: payload,
         amount: event.amount,
@@ -77,7 +81,7 @@ class ActionStakingBloc
         stakeContractAddress: staking.stakingRootContractAddress,
       ),
     );
-    emit(const ActionStakingBlocState.nothing());
+    emitSafe(const ActionStakingBlocState.nothing());
   }
 
   Future<void> _prepareInit(
@@ -95,12 +99,12 @@ class ActionStakingBloc
       unawaited(account?.addTokenWallet(staking.stakingRootContractAddress));
     }
 
-    final opened = await storage.getWasStEverOpened;
+    final opened = storage.getWasStEverOpened;
 
     if (!opened) {
-      emit(const ActionStakingBlocState.showHowItWorksSheet());
-      await storage.saveWasStEverOpened();
-      emit(const ActionStakingBlocState.nothing());
+      emitSafe(const ActionStakingBlocState.showHowItWorksSheet());
+      storage.saveWasStEverOpened();
+      emitSafe(const ActionStakingBlocState.nothing());
     }
   }
 }

@@ -47,11 +47,17 @@ class AmountInputAssetSelect extends StatelessWidget {
               ),
             ),
           ],
-          Icon(
-            LucideIcons.chevronDown,
-            color: theme.colors.content0,
-            size: DimensSizeV2.d16,
-          ),
+          if (values != null)
+            ValueListenableBuilder(
+              valueListenable: values!,
+              builder: (_, values, __) => values.length > 1
+                  ? Icon(
+                      LucideIcons.chevronDown,
+                      color: theme.colors.content0,
+                      size: DimensSizeV2.d16,
+                    )
+                  : const SizedBox.shrink(),
+            ),
         ],
       ),
     );

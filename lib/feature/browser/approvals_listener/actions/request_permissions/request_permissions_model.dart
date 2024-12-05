@@ -31,7 +31,7 @@ class RequestPermissionsModel extends ElementaryModel {
 
   TransportStrategy get currentTransport => _nekotonRepository.currentTransport;
 
-  Future<void> setPermissions(Uri origin, Permissions permissions) =>
+  void setPermissions(Uri origin, Permissions permissions) =>
       _permissionsService.setPermissions(url: origin, permissions: permissions);
 
   Future<Money?> getBalance(KeyAccount account) async {

@@ -17,7 +17,7 @@ class CheckPhraseModel extends ElementaryModel {
 
   final NekotonRepository nekotonRepository;
   final MessengerService messengerService;
-  final SecureStorageService storage;
+  final AppStorageService storage;
   final List<String> phrases;
   final String address;
 

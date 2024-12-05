@@ -438,7 +438,8 @@ abstract class LocaleKeys {
   static const stEverAppearInMinutes = 'stEverAppearInMinutes';
   static const stEverReturnInMinutes = 'stEverReturnInMinutes';
   static const withdrawHoursNote = 'withdrawHoursNote';
-  static const withdrawHousProgress = 'withdrawHousProgress';
+  static const withdrawHoursProgress = 'withdrawHoursProgress';
+  static const withdrawHoursHint = 'withdrawHoursHint';
   static const cancelUnstaking = 'cancelUnstaking';
   static const cancelUnstakingNote = 'cancelUnstakingNote';
   static const unstakingCancelled = 'unstakingCancelled';

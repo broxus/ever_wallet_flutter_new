@@ -2,10 +2,12 @@
 import 'dart:async';
 
 import 'package:app/app/service/service.dart';
+import 'package:app/core/bloc/bloc_mixin.dart';
 import 'package:app/data/models/models.dart';
 import 'package:app/di/di.dart';
 import 'package:app/feature/wallet/staking/staking.dart';
 import 'package:app/generated/generated.dart';
+import 'package:app/utils/utils.dart';
 import 'package:app/widgets/amount_input/amount_input_asset.dart';
 import 'package:bloc/bloc.dart';
 import 'package:collection/collection.dart';
@@ -26,7 +28,8 @@ final _maxPossibleStakeComission = BigInt.parse('100000000'); // 0.1 EVER
 enum StakingPageType { stake, unstake, inProgress }
 
 // TODO(komarov): refactor
-class StakingBloc extends Bloc<StakingBlocEvent, StakingBlocState> {
+class StakingBloc extends Bloc<StakingBlocEvent, StakingBlocState>
+    with BlocMixin, BlocBaseMixin {
   StakingBloc({
     required this.context,
     required this.accountAddress,
@@ -38,8 +41,11 @@ class StakingBloc extends Bloc<StakingBlocEvent, StakingBlocState> {
   }) : super(const StakingBlocState.preparing()) {
     stakingService.resetCache();
     _registerHandlers();
-    _inputController
-        .addListener(() => add(StakingBlocEvent.updateReceive(_currentValue)));
+    _inputController.addListener(
+      () => addSafe(
+        StakingBlocEvent.updateReceive(_currentValue),
+      ),
+    );
   }
 
   final _logger = Logger('StakingBloc');
@@ -90,7 +96,7 @@ class StakingBloc extends Bloc<StakingBlocEvent, StakingBlocState> {
 
   void _registerHandlers() {
     on<_Init>((_, emit) => _init(emit));
-    on<_SelectMax>((_, emit) => _selectMax());
+    on<_SelectMax>((event, emit) => _selectMax(event.fieldState));
     on<_UpdateReceive>((event, emit) => _updateReceive(event.value, emit));
     on<_UpdateRequests>((event, emit) {
       _requests = event.requests;
@@ -101,7 +107,7 @@ class StakingBloc extends Bloc<StakingBlocEvent, StakingBlocState> {
         _inputController.text = '0';
         _emitDataState(emit);
       } else {
-        emit(_dataState.copyWith(requests: _requests));
+        emitSafe(_dataState.copyWith(requests: _requests));
       }
     });
 
@@ -112,21 +118,21 @@ class StakingBloc extends Bloc<StakingBlocEvent, StakingBlocState> {
         _receive = null;
         _inputController.clear();
         _emitDataState(emit);
-        add(StakingBlocEvent.updateReceive(Fixed.zero));
+        addSafe(StakingBlocEvent.updateReceive(Fixed.zero));
       },
     );
     on<_DoAction>(
       (event, emit) {
         switch (_type) {
           case StakingPageType.stake:
-            actionBloc.add(
+            actionBloc.addSafe(
               ActionStakingBlocEvent.stake(
                 amount: _currentValue.minorUnits,
                 accountKey: accountPublicKey,
               ),
             );
           case StakingPageType.unstake:
-            actionBloc.add(
+            actionBloc.addSafe(
               ActionStakingBlocEvent.unstake(
                 amount: _currentValue.minorUnits,
                 accountKey: accountPublicKey,
@@ -147,39 +153,38 @@ class StakingBloc extends Bloc<StakingBlocEvent, StakingBlocState> {
       final pair = (accountAddress, staking.stakingRootContractAddress);
       final transport = nekotonRepository.currentTransport;
 
-      final ever = await nekotonRepository.getWallet(accountAddress);
+      final (ever, stever) = await FutureExt.wait2(
+        nekotonRepository.getWallet(accountAddress),
+        nekotonRepository.getTokenWallet(pair.$1, pair.$2),
+      );
       if (ever.hasError) {
-        emit(StakingBlocState.subscribeError(ever.error!));
-
+        emitSafe(StakingBlocState.subscribeError(ever.error!));
+        return;
+      }
+      if (stever.hasError) {
+        emitSafe(StakingBlocState.subscribeError(stever.error!));
         return;
       }
       _everWallet = ever.wallet!;
-
-      if (nekotonRepository.tokenWalletsMap[pair] == null) {
-        await nekotonRepository.subscribeToken(
-          owner: pair.$1,
-          rootTokenContract: pair.$2,
-        );
-      }
-
-      final stever = await nekotonRepository.getTokenWallet(pair.$1, pair.$2);
-      if (stever.hasError) {
-        emit(StakingBlocState.subscribeError(stever.error!));
-
-        return;
-      }
       _stEverWallet = stever.wallet!;
 
-      _stEverWalletCurrency = (await currenciesService.getCurrencyForContract(
-        transport,
-        pair.$2,
-      ))!;
-      _everWalletCurrency = (await currenciesService.getCurrencyForContract(
-        transport,
-        transport.nativeTokenAddress,
-      ))!;
-      apy = await stakingService.getAverageAPYPercent();
-      _details = await stakingService.getStEverDetails();
+      final (
+        steverCurrency,
+        everCurrency,
+        apyValue,
+        details,
+      ) = await FutureExt.wait4(
+        currenciesService.getOrFetchCurrency(transport, pair.$2),
+        currenciesService.getOrFetchNativeCurrency(transport),
+        stakingService.getAverageAPYPercent(),
+        stakingService.getStEverDetails(),
+      );
+
+      _stEverWalletCurrency = steverCurrency!;
+      _everWalletCurrency = everCurrency!;
+      apy = apyValue;
+      _details = details;
+
       final time =
           Duration(seconds: int.tryParse(_details.withdrawHoldTime) ?? 0)
               .inHours;
@@ -196,22 +201,22 @@ class StakingBloc extends Bloc<StakingBlocEvent, StakingBlocState> {
       _requestsSub = stakingService
           .withdrawRequestsStream(accountAddress)
           .listen((requests) {
-        add(StakingBlocEvent.updateResuests(requests));
+        addSafe(StakingBlocEvent.updateResuests(requests));
       });
 
       // trigger updating of balances
       _emitDataState(emit);
-      add(StakingBlocEvent.updateReceive(Fixed.zero));
+      addSafe(StakingBlocEvent.updateReceive(Fixed.zero));
     } catch (e, t) {
       _logger.severe('init', e, t);
-      emit(const StakingBlocState.initError());
+      emitSafe(const StakingBlocState.initError());
     }
   }
 
   _StakingState get _dataState => state as _StakingState;
 
   void _emitDataState(Emitter<StakingBlocState> emit) {
-    emit(_stateWithData(_currentValue));
+    emitSafe(_stateWithData(_currentValue));
   }
 
   /// Get input value as Fixed based on [_currentCurrency]
@@ -256,7 +261,7 @@ class StakingBloc extends Bloc<StakingBlocEvent, StakingBlocState> {
       _logger.severe('Loading data after updating value', e, t);
     }
 
-    emit(_stateWithData(value));
+    emitSafe(_stateWithData(value));
   }
 
   // ignore: long-method
@@ -347,7 +352,7 @@ class StakingBloc extends Bloc<StakingBlocEvent, StakingBlocState> {
     );
   }
 
-  void _selectMax() {
+  void _selectMax(FormFieldState<String>? fieldState) {
     var max = _dataState.asset.balance;
 
     if (_type == StakingPageType.stake) {
@@ -370,7 +375,8 @@ class StakingBloc extends Bloc<StakingBlocEvent, StakingBlocState> {
       }
     }
 
-    _inputController.text = max.amount.toString();
+    _inputController.text = max.formatImproved();
+    fieldState?.didChange(_inputController.text);
   }
 
   Currency get _nativeCurrency =>

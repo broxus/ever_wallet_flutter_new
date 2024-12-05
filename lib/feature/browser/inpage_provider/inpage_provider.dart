@@ -11,7 +11,6 @@ import 'package:flutter_inappwebview/flutter_inappwebview.dart';
 import 'package:logging/logging.dart';
 import 'package:nekoton_repository/nekoton_repository.dart' as nr;
 import 'package:nekoton_webview/nekoton_webview.dart';
-import 'package:string_extensions/string_extensions.dart';
 
 const providerVersion = '0.3.36';
 const providerNumericVersion = 3036;
@@ -185,7 +184,7 @@ class InpageProvider extends ProviderApi {
           : PermissionsAccountInteraction(
               accountInteraction.address.address,
               accountInteraction.publicKey.publicKey,
-              accountInteraction.contractType.name,
+              accountInteraction.contractType.jsonName,
             ),
     );
 
@@ -324,7 +323,7 @@ class InpageProvider extends ProviderApi {
 
   @override
   Future<void> disconnect() async {
-    await permissionsService.deletePermissionsForOrigin(origin!);
+    permissionsService.deletePermissionsForOrigin(origin!);
     nekotonRepository.unsubscribeContractsTab(tabId);
 
     await controller?.permissionsChanged(
@@ -742,7 +741,7 @@ class InpageProvider extends ProviderApi {
             : PermissionsAccountInteraction(
                 permissions.accountInteraction!.address.address,
                 permissions.accountInteraction!.publicKey.publicKey,
-                permissions.accountInteraction!.contractType.name.capitalize,
+                permissions.accountInteraction!.contractType.jsonName,
               ),
       ),
       subscriptions?.map(
@@ -857,7 +856,7 @@ class InpageProvider extends ProviderApi {
           : PermissionsAccountInteraction(
               accountInteraction.address.address,
               accountInteraction.publicKey.publicKey,
-              accountInteraction.contractType.name,
+              accountInteraction.contractType.jsonName,
             ),
     );
     await controller?.permissionsChanged(PermissionsChangedEvent(partial));
@@ -1681,7 +1680,7 @@ class InpageProvider extends ProviderApi {
         throw s.ApprovalsHandleException(LocaleKeys.addNetworkIdError.tr());
       }
     } finally {
-      transport?.dispose();
+      await transport?.dispose();
     }
 
     final network = await approvalsService.addNetwork(
@@ -1747,12 +1746,12 @@ class InpageProvider extends ProviderApi {
         _logger.severe('Error getting network id for connection: '
             '${connection.name} (${connection.id})');
       } finally {
-        transport?.dispose();
+        await transport?.dispose();
       }
     }
 
     if (update.isNotEmpty) {
-      await connectionsStorageService.updateNetworksIds(update);
+      connectionsStorageService.updateNetworksIds(update);
     }
 
     return list;

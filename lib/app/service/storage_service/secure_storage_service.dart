@@ -1,77 +1,51 @@
-import 'package:app/app/service/service.dart';
-import 'package:flutter_secure_storage/flutter_secure_storage.dart';
-import 'package:injectable/injectable.dart';
+import 'dart:async';
 
-@lazySingleton
+import 'package:app/app/service/service.dart';
+import 'package:encrypted_storage/encrypted_storage.dart';
+import 'package:injectable/injectable.dart';
+import 'package:nekoton_repository/nekoton_repository.dart' hide Currency;
+
+const _passwordsKey = 'passwords_key';
+
+/// This is a wrapper-class above [EncryptedStorage] that provides methods
+/// to interact with general information that is not related to some specified
+/// module.
+@singleton
 class SecureStorageService extends AbstractStorageService {
-  final FlutterSecureStorage _storage = const FlutterSecureStorage(
-    aOptions: AndroidOptions(encryptedSharedPreferences: true),
-  );
+  SecureStorageService(this._storage);
+
+  /// Storage that is used to store data
+  final EncryptedStorage _storage;
 
   @override
   Future<void> init() => Future.value();
 
   @override
-  Future<void> clearSensitiveData() async {
-    final entries = await _storage.readAll();
+  Future<void> clearSensitiveData() => Future.wait([
+        clearKeyPasswords(),
+      ]);
 
-    for (final key in entries.keys) {
-      if (key.startsWith('sparx:')) {
-        await _storage.delete(key: key);
-      }
-    }
-  }
+  /// Get password of public key if it was cached with biometry
+  Future<String?> getKeyPassword(PublicKey publicKey) => _storage.get(
+        publicKey.publicKey,
+        domain: _passwordsKey,
+      );
 
-  Future<void> addValue<T>(StorageKey key, T value) async {
-    await _storage.write(key: key.value, value: value.toString());
-  }
+  /// Set password of public key to cache it with biometry
+  Future<void> setKeyPassword({
+    required PublicKey publicKey,
+    required String password,
+  }) =>
+      _storage.set(
+        publicKey.publicKey,
+        password,
+        domain: _passwordsKey,
+      );
 
-  Future<T?> getValue<T>(StorageKey key) async {
-    final value = await _storage.read(
-      key: key.value,
-      iOptions: IOSOptions.defaultOptions,
-    );
-    if (value == null) {
-      return null;
-    }
+  /// Remove password of public key from cache
+  Future<void> removeKeyPassword(PublicKey publicKey) =>
+      _storage.delete(publicKey.publicKey, domain: _passwordsKey);
 
-    if (T == bool) {
-      return (value.toLowerCase() == 'true') as T;
-    } else if (T == int) {
-      return int.tryParse(value) as T?;
-    } else if (T == double) {
-      return double.tryParse(value) as T?;
-    }
-    return value as T;
-  }
-
-  Future<void> cleanStorage(StorageKey key) async {
-    await _storage.delete(key: key.value);
-  }
-}
-
-class StorageKey {
-  factory StorageKey.userWithNewWallet() => StorageKey._('userWithNewWallet');
-
-  factory StorageKey.showingNewTokensLabel(String masterKey) =>
-      StorageKey._('showingNewTokensLabel', masterKey);
-
-  factory StorageKey.showingManualBackupBadge(String masterKey) =>
-      StorageKey._('showingManualBackupBadge', masterKey);
-
-  factory StorageKey.accountColor(String key) =>
-      StorageKey._('accountColor', key);
-
-  StorageKey._(this._baseKey, [this._entityKey]);
-
-  final String _baseKey;
-  final String? _entityKey;
-
-  String get value => toString();
-
-  @override
-  String toString() {
-    if (_entityKey == null) return _baseKey;
-    return 'sparx:$_baseKey:$_entityKey';
-  }
+  /// Clear all passwords of public keys from cache
+  Future<void> clearKeyPasswords() => _storage.clearDomain(_passwordsKey);
 }

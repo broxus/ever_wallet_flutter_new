@@ -8,6 +8,7 @@ import 'package:freezed_annotation/freezed_annotation.dart';
 import 'package:nekoton_repository/nekoton_repository.dart';
 
 part 'wallet_account_actions_cubit.freezed.dart';
+
 part 'wallet_account_actions_state.dart';
 
 /// Action that describes behavior for account.
@@ -68,31 +69,34 @@ class WalletAccountActionsCubit extends Cubit<WalletAccountActionsState> {
   }
 
   Future<void> _updateWalletData(TonWallet w) async {
-    final localCustodians = await nekotonRepository.getLocalCustodians(address);
-    final details = w.details;
-    final contract = w.contractState;
+    try {
+      final localCustodians =
+          await nekotonRepository.getLocalCustodians(address);
+      final details = w.details;
+      final contract = w.contractState;
 
-    WalletAccountActionBehavior action;
+      WalletAccountActionBehavior action;
 
-    if (!details.requiresSeparateDeploy) {
-      action = WalletAccountActionBehavior.send;
-    } else if (contract.isDeployed) {
-      action = localCustodians != null && localCustodians.isNotEmpty
-          ? WalletAccountActionBehavior.send
-          : WalletAccountActionBehavior.sendLocalCustodiansNeeded;
-    } else {
-      action = WalletAccountActionBehavior.deploy;
-    }
+      if (!details.requiresSeparateDeploy) {
+        action = WalletAccountActionBehavior.send;
+      } else if (contract.isDeployed) {
+        action = localCustodians != null && localCustodians.isNotEmpty
+            ? WalletAccountActionBehavior.send
+            : WalletAccountActionBehavior.sendLocalCustodiansNeeded;
+      } else {
+        action = WalletAccountActionBehavior.deploy;
+      }
 
-    final hasStake = action != WalletAccountActionBehavior.deploy &&
-        nekotonRepository.currentTransport.stakeInformation != null;
-    emit(
-      WalletAccountActionsState.data(
-        action: action,
-        hasStake: hasStake,
-        hasStakeActions: hasStake && _cachedWithdraws.isNotEmpty,
-      ),
-    );
+      final hasStake = action != WalletAccountActionBehavior.deploy &&
+          nekotonRepository.currentTransport.stakeInformation != null;
+      emit(
+        WalletAccountActionsState.data(
+          action: action,
+          hasStake: hasStake,
+          hasStakeActions: hasStake && _cachedWithdraws.isNotEmpty,
+        ),
+      );
+    } catch (_) {}
   }
 
   void _closeSubs() {

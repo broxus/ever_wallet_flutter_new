@@ -26,6 +26,8 @@ mixin _$AccountBalanceModel {
   Money get fiatBalance => throw _privateConstructorUsedError;
   @moneyFromStringJsonConverter
   Money get tokenBalance => throw _privateConstructorUsedError;
+  @JsonKey(defaultValue: false)
+  bool get isNative => throw _privateConstructorUsedError;
 
   /// Serializes this AccountBalanceModel to a JSON map.
   Map<String, dynamic> toJson() => throw _privateConstructorUsedError;
@@ -46,7 +48,8 @@ abstract class $AccountBalanceModelCopyWith<$Res> {
   $Res call(
       {@NekotonAddressConverter() Address rootTokenContract,
       @moneyFromStringJsonConverter Money fiatBalance,
-      @moneyFromStringJsonConverter Money tokenBalance});
+      @moneyFromStringJsonConverter Money tokenBalance,
+      @JsonKey(defaultValue: false) bool isNative});
 
   $AddressCopyWith<$Res> get rootTokenContract;
 }
@@ -69,6 +72,7 @@ class _$AccountBalanceModelCopyWithImpl<$Res, $Val extends AccountBalanceModel>
     Object? rootTokenContract = null,
     Object? fiatBalance = null,
     Object? tokenBalance = null,
+    Object? isNative = null,
   }) {
     return _then(_value.copyWith(
       rootTokenContract: null == rootTokenContract
@@ -83,6 +87,10 @@ class _$AccountBalanceModelCopyWithImpl<$Res, $Val extends AccountBalanceModel>
           ? _value.tokenBalance
           : tokenBalance // ignore: cast_nullable_to_non_nullable
               as Money,
+      isNative: null == isNative
+          ? _value.isNative
+          : isNative // ignore: cast_nullable_to_non_nullable
+              as bool,
     ) as $Val);
   }
 
@@ -108,7 +116,8 @@ abstract class _$$AccountBalanceModelImplCopyWith<$Res>
   $Res call(
       {@NekotonAddressConverter() Address rootTokenContract,
       @moneyFromStringJsonConverter Money fiatBalance,
-      @moneyFromStringJsonConverter Money tokenBalance});
+      @moneyFromStringJsonConverter Money tokenBalance,
+      @JsonKey(defaultValue: false) bool isNative});
 
   @override
   $AddressCopyWith<$Res> get rootTokenContract;
@@ -130,6 +139,7 @@ class __$$AccountBalanceModelImplCopyWithImpl<$Res>
     Object? rootTokenContract = null,
     Object? fiatBalance = null,
     Object? tokenBalance = null,
+    Object? isNative = null,
   }) {
     return _then(_$AccountBalanceModelImpl(
       rootTokenContract: null == rootTokenContract
@@ -144,6 +154,10 @@ class __$$AccountBalanceModelImplCopyWithImpl<$Res>
           ? _value.tokenBalance
           : tokenBalance // ignore: cast_nullable_to_non_nullable
               as Money,
+      isNative: null == isNative
+          ? _value.isNative
+          : isNative // ignore: cast_nullable_to_non_nullable
+              as bool,
     ));
   }
 }
@@ -154,7 +168,8 @@ class _$AccountBalanceModelImpl implements _AccountBalanceModel {
   const _$AccountBalanceModelImpl(
       {@NekotonAddressConverter() required this.rootTokenContract,
       @moneyFromStringJsonConverter required this.fiatBalance,
-      @moneyFromStringJsonConverter required this.tokenBalance});
+      @moneyFromStringJsonConverter required this.tokenBalance,
+      @JsonKey(defaultValue: false) required this.isNative});
 
   factory _$AccountBalanceModelImpl.fromJson(Map<String, dynamic> json) =>
       _$$AccountBalanceModelImplFromJson(json);
@@ -168,10 +183,13 @@ class _$AccountBalanceModelImpl implements _AccountBalanceModel {
   @override
   @moneyFromStringJsonConverter
   final Money tokenBalance;
+  @override
+  @JsonKey(defaultValue: false)
+  final bool isNative;
 
   @override
   String toString() {
-    return 'AccountBalanceModel(rootTokenContract: $rootTokenContract, fiatBalance: $fiatBalance, tokenBalance: $tokenBalance)';
+    return 'AccountBalanceModel(rootTokenContract: $rootTokenContract, fiatBalance: $fiatBalance, tokenBalance: $tokenBalance, isNative: $isNative)';
   }
 
   @override
@@ -184,13 +202,15 @@ class _$AccountBalanceModelImpl implements _AccountBalanceModel {
             (identical(other.fiatBalance, fiatBalance) ||
                 other.fiatBalance == fiatBalance) &&
             (identical(other.tokenBalance, tokenBalance) ||
-                other.tokenBalance == tokenBalance));
+                other.tokenBalance == tokenBalance) &&
+            (identical(other.isNative, isNative) ||
+                other.isNative == isNative));
   }
 
   @JsonKey(includeFromJson: false, includeToJson: false)
   @override
-  int get hashCode =>
-      Object.hash(runtimeType, rootTokenContract, fiatBalance, tokenBalance);
+  int get hashCode => Object.hash(
+      runtimeType, rootTokenContract, fiatBalance, tokenBalance, isNative);
 
   /// Create a copy of AccountBalanceModel
   /// with the given fields replaced by the non-null parameter values.
@@ -213,7 +233,8 @@ abstract class _AccountBalanceModel implements AccountBalanceModel {
   const factory _AccountBalanceModel(
           {@NekotonAddressConverter() required final Address rootTokenContract,
           @moneyFromStringJsonConverter required final Money fiatBalance,
-          @moneyFromStringJsonConverter required final Money tokenBalance}) =
+          @moneyFromStringJsonConverter required final Money tokenBalance,
+          @JsonKey(defaultValue: false) required final bool isNative}) =
       _$AccountBalanceModelImpl;
 
   factory _AccountBalanceModel.fromJson(Map<String, dynamic> json) =
@@ -228,6 +249,9 @@ abstract class _AccountBalanceModel implements AccountBalanceModel {
   @override
   @moneyFromStringJsonConverter
   Money get tokenBalance;
+  @override
+  @JsonKey(defaultValue: false)
+  bool get isNative;
 
   /// Create a copy of AccountBalanceModel
   /// with the given fields replaced by the non-null parameter values.

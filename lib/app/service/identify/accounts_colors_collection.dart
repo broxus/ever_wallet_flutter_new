@@ -9,7 +9,7 @@ class AccountsColorsCollection {
 
   final _map = <String, IdentifyIconData>{};
 
-  final SecureStorageService _secureStorageService;
+  final AppStorageService _secureStorageService;
 
   final IdentifyIconData _initialData;
 
@@ -17,7 +17,7 @@ class AccountsColorsCollection {
     _map[key] = identifyColor;
 
     try {
-      await _secureStorageService.addValue<String>(
+      _secureStorageService.addValue<String>(
         StorageKey.accountColor(key),
         identifyColor.name,
       );
@@ -27,7 +27,7 @@ class AccountsColorsCollection {
   Future<IdentifyIconData> getData(String key) async {
     try {
       return _map[key] ??= IdentifyIconData.byNameOrNull(
-            await _secureStorageService.getValue<String>(
+            _secureStorageService.getValue<String>(
               StorageKey.accountColor(key),
             ),
           ) ??

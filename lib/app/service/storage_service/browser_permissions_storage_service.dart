@@ -1,22 +1,24 @@
-import 'dart:convert';
-
 import 'package:app/app/service/service.dart';
 import 'package:app/data/models/models.dart';
-import 'package:encrypted_storage/encrypted_storage.dart';
+import 'package:app/utils/utils.dart';
+import 'package:get_storage/get_storage.dart';
 import 'package:injectable/injectable.dart';
 import 'package:nekoton_repository/nekoton_repository.dart';
 import 'package:rxdart/rxdart.dart';
 
 const _browserPermissionsDomain = 'browser_permissions';
 
-/// This is a wrapper-class above [EncryptedStorage] that provides methods
+/// This is a wrapper-class above [GetStorage] that provides methods
 /// to interact with all browser permissions - related data.
 @singleton
 class BrowserPermissionsStorageService extends AbstractStorageService {
-  BrowserPermissionsStorageService(this._storage);
+  BrowserPermissionsStorageService(
+    @Named(container) this._storage,
+  );
 
-  /// Storage that is used to store data
-  final EncryptedStorage _storage;
+  static const container = _browserPermissionsDomain;
+
+  final GetStorage _storage;
 
   /// Subject for permissions of browser tabs
   final _permissionsSubject =
@@ -30,43 +32,38 @@ class BrowserPermissionsStorageService extends AbstractStorageService {
   Stream<Map<String, Permissions>> get permissionsStream => _permissionsSubject;
 
   /// Put browser bookmarks items to stream
-  Future<void> _streamedPermissions() async =>
-      _permissionsSubject.add(await readPermissions());
+  void _streamedPermissions() => _permissionsSubject.add(readPermissions());
 
   /// Get all permissions that user had granted to dapps.
   /// key - url address, value - permissions
-  Future<Map<String, Permissions>> readPermissions() async {
-    final encoded = await _storage.getDomain(domain: _browserPermissionsDomain);
+  Map<String, Permissions> readPermissions() {
+    final encoded = _storage.getEntries();
 
     return encoded.map(
       (key, value) => MapEntry(
         key,
-        Permissions.fromJson(jsonDecode(value) as Map<String, dynamic>),
+        Permissions.fromJson(value as Map<String, dynamic>),
       ),
     );
   }
 
   /// Set permission for specified url
-  Future<void> setPermissions({
+  void setPermissions({
     required String origin,
     required Permissions permissions,
-  }) async {
-    await _storage.set(
-      origin,
-      jsonEncode(permissions.toJson()),
-      domain: _browserPermissionsDomain,
-    );
-    await _streamedPermissions();
+  }) {
+    _storage.write(origin, permissions.toJson());
+    _streamedPermissions();
   }
 
   /// Delete permissions for specified url
-  Future<void> deletePermissionsForOrigin(String origin) async {
-    await _storage.delete(origin, domain: _browserPermissionsDomain);
-    await _streamedPermissions();
+  void deletePermissionsForOrigin(String origin) {
+    _storage.remove(origin);
+    _streamedPermissions();
   }
 
   /// Delete permissions for specified account
-  Future<void> deletePermissionsForAccount(Address address) async {
+  void deletePermissionsForAccount(Address address) {
     final perms = permissions;
     final origins = perms.entries
         .where((e) => e.value.accountInteraction?.address == address)
@@ -75,15 +72,16 @@ class BrowserPermissionsStorageService extends AbstractStorageService {
     for (final origin in origins) {
       final permissions = perms[origin]!.copyWith(accountInteraction: null);
 
-      await setPermissions(origin: origin, permissions: permissions);
+      setPermissions(origin: origin, permissions: permissions);
     }
-    await _streamedPermissions();
+
+    _streamedPermissions();
   }
 
   /// Clear information about permissions
   Future<void> clearPermissions() async {
-    await _storage.clearDomain(_browserPermissionsDomain);
-    await _streamedPermissions();
+    await _storage.erase();
+    _streamedPermissions();
   }
 
   @override
@@ -92,7 +90,8 @@ class BrowserPermissionsStorageService extends AbstractStorageService {
       ]);
 
   @override
-  Future<void> init() => Future.wait([
-        _streamedPermissions(),
-      ]);
+  Future<void> init() async {
+    await GetStorage.init(container);
+    _streamedPermissions();
+  }
 }
