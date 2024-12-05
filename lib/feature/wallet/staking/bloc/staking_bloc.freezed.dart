@@ -19,7 +19,7 @@ mixin _$StakingBlocEvent {
   @optionalTypeArgs
   TResult when<TResult extends Object?>({
     required TResult Function() init,
-    required TResult Function() selectMax,
+    required TResult Function(FormFieldState<String>? fieldState) selectMax,
     required TResult Function() doAction,
     required TResult Function(List<StEverWithdrawRequest> requests)
         updateResuests,
@@ -30,7 +30,7 @@ mixin _$StakingBlocEvent {
   @optionalTypeArgs
   TResult? whenOrNull<TResult extends Object?>({
     TResult? Function()? init,
-    TResult? Function()? selectMax,
+    TResult? Function(FormFieldState<String>? fieldState)? selectMax,
     TResult? Function()? doAction,
     TResult? Function(List<StEverWithdrawRequest> requests)? updateResuests,
     TResult? Function(StakingPageType type)? changeTab,
@@ -40,7 +40,7 @@ mixin _$StakingBlocEvent {
   @optionalTypeArgs
   TResult maybeWhen<TResult extends Object?>({
     TResult Function()? init,
-    TResult Function()? selectMax,
+    TResult Function(FormFieldState<String>? fieldState)? selectMax,
     TResult Function()? doAction,
     TResult Function(List<StEverWithdrawRequest> requests)? updateResuests,
     TResult Function(StakingPageType type)? changeTab,
@@ -143,7 +143,7 @@ class _$InitImpl implements _Init {
   @optionalTypeArgs
   TResult when<TResult extends Object?>({
     required TResult Function() init,
-    required TResult Function() selectMax,
+    required TResult Function(FormFieldState<String>? fieldState) selectMax,
     required TResult Function() doAction,
     required TResult Function(List<StEverWithdrawRequest> requests)
         updateResuests,
@@ -157,7 +157,7 @@ class _$InitImpl implements _Init {
   @optionalTypeArgs
   TResult? whenOrNull<TResult extends Object?>({
     TResult? Function()? init,
-    TResult? Function()? selectMax,
+    TResult? Function(FormFieldState<String>? fieldState)? selectMax,
     TResult? Function()? doAction,
     TResult? Function(List<StEverWithdrawRequest> requests)? updateResuests,
     TResult? Function(StakingPageType type)? changeTab,
@@ -170,7 +170,7 @@ class _$InitImpl implements _Init {
   @optionalTypeArgs
   TResult maybeWhen<TResult extends Object?>({
     TResult Function()? init,
-    TResult Function()? selectMax,
+    TResult Function(FormFieldState<String>? fieldState)? selectMax,
     TResult Function()? doAction,
     TResult Function(List<StEverWithdrawRequest> requests)? updateResuests,
     TResult Function(StakingPageType type)? changeTab,
@@ -236,6 +236,8 @@ abstract class _$$SelectMaxImplCopyWith<$Res> {
   factory _$$SelectMaxImplCopyWith(
           _$SelectMaxImpl value, $Res Function(_$SelectMaxImpl) then) =
       __$$SelectMaxImplCopyWithImpl<$Res>;
+  @useResult
+  $Res call({FormFieldState<String>? fieldState});
 }
 
 /// @nodoc
@@ -248,59 +250,85 @@ class __$$SelectMaxImplCopyWithImpl<$Res>
 
   /// Create a copy of StakingBlocEvent
   /// with the given fields replaced by the non-null parameter values.
+  @pragma('vm:prefer-inline')
+  @override
+  $Res call({
+    Object? fieldState = freezed,
+  }) {
+    return _then(_$SelectMaxImpl(
+      freezed == fieldState
+          ? _value.fieldState
+          : fieldState // ignore: cast_nullable_to_non_nullable
+              as FormFieldState<String>?,
+    ));
+  }
 }
 
 /// @nodoc
 
 class _$SelectMaxImpl implements _SelectMax {
-  const _$SelectMaxImpl();
+  const _$SelectMaxImpl(this.fieldState);
+
+  @override
+  final FormFieldState<String>? fieldState;
 
   @override
   String toString() {
-    return 'StakingBlocEvent.selectMax()';
+    return 'StakingBlocEvent.selectMax(fieldState: $fieldState)';
   }
 
   @override
   bool operator ==(Object other) {
     return identical(this, other) ||
-        (other.runtimeType == runtimeType && other is _$SelectMaxImpl);
+        (other.runtimeType == runtimeType &&
+            other is _$SelectMaxImpl &&
+            (identical(other.fieldState, fieldState) ||
+                other.fieldState == fieldState));
   }
 
   @override
-  int get hashCode => runtimeType.hashCode;
+  int get hashCode => Object.hash(runtimeType, fieldState);
+
+  /// Create a copy of StakingBlocEvent
+  /// with the given fields replaced by the non-null parameter values.
+  @JsonKey(includeFromJson: false, includeToJson: false)
+  @override
+  @pragma('vm:prefer-inline')
+  _$$SelectMaxImplCopyWith<_$SelectMaxImpl> get copyWith =>
+      __$$SelectMaxImplCopyWithImpl<_$SelectMaxImpl>(this, _$identity);
 
   @override
   @optionalTypeArgs
   TResult when<TResult extends Object?>({
     required TResult Function() init,
-    required TResult Function() selectMax,
+    required TResult Function(FormFieldState<String>? fieldState) selectMax,
     required TResult Function() doAction,
     required TResult Function(List<StEverWithdrawRequest> requests)
         updateResuests,
     required TResult Function(StakingPageType type) changeTab,
     required TResult Function(Fixed value) updateReceive,
   }) {
-    return selectMax();
+    return selectMax(fieldState);
   }
 
   @override
   @optionalTypeArgs
   TResult? whenOrNull<TResult extends Object?>({
     TResult? Function()? init,
-    TResult? Function()? selectMax,
+    TResult? Function(FormFieldState<String>? fieldState)? selectMax,
     TResult? Function()? doAction,
     TResult? Function(List<StEverWithdrawRequest> requests)? updateResuests,
     TResult? Function(StakingPageType type)? changeTab,
     TResult? Function(Fixed value)? updateReceive,
   }) {
-    return selectMax?.call();
+    return selectMax?.call(fieldState);
   }
 
   @override
   @optionalTypeArgs
   TResult maybeWhen<TResult extends Object?>({
     TResult Function()? init,
-    TResult Function()? selectMax,
+    TResult Function(FormFieldState<String>? fieldState)? selectMax,
     TResult Function()? doAction,
     TResult Function(List<StEverWithdrawRequest> requests)? updateResuests,
     TResult Function(StakingPageType type)? changeTab,
@@ -308,7 +336,7 @@ class _$SelectMaxImpl implements _SelectMax {
     required TResult orElse(),
   }) {
     if (selectMax != null) {
-      return selectMax();
+      return selectMax(fieldState);
     }
     return orElse();
   }
@@ -358,7 +386,16 @@ class _$SelectMaxImpl implements _SelectMax {
 }
 
 abstract class _SelectMax implements StakingBlocEvent {
-  const factory _SelectMax() = _$SelectMaxImpl;
+  const factory _SelectMax(final FormFieldState<String>? fieldState) =
+      _$SelectMaxImpl;
+
+  FormFieldState<String>? get fieldState;
+
+  /// Create a copy of StakingBlocEvent
+  /// with the given fields replaced by the non-null parameter values.
+  @JsonKey(includeFromJson: false, includeToJson: false)
+  _$$SelectMaxImplCopyWith<_$SelectMaxImpl> get copyWith =>
+      throw _privateConstructorUsedError;
 }
 
 /// @nodoc
@@ -403,7 +440,7 @@ class _$DoActionImpl implements _DoAction {
   @optionalTypeArgs
   TResult when<TResult extends Object?>({
     required TResult Function() init,
-    required TResult Function() selectMax,
+    required TResult Function(FormFieldState<String>? fieldState) selectMax,
     required TResult Function() doAction,
     required TResult Function(List<StEverWithdrawRequest> requests)
         updateResuests,
@@ -417,7 +454,7 @@ class _$DoActionImpl implements _DoAction {
   @optionalTypeArgs
   TResult? whenOrNull<TResult extends Object?>({
     TResult? Function()? init,
-    TResult? Function()? selectMax,
+    TResult? Function(FormFieldState<String>? fieldState)? selectMax,
     TResult? Function()? doAction,
     TResult? Function(List<StEverWithdrawRequest> requests)? updateResuests,
     TResult? Function(StakingPageType type)? changeTab,
@@ -430,7 +467,7 @@ class _$DoActionImpl implements _DoAction {
   @optionalTypeArgs
   TResult maybeWhen<TResult extends Object?>({
     TResult Function()? init,
-    TResult Function()? selectMax,
+    TResult Function(FormFieldState<String>? fieldState)? selectMax,
     TResult Function()? doAction,
     TResult Function(List<StEverWithdrawRequest> requests)? updateResuests,
     TResult Function(StakingPageType type)? changeTab,
@@ -568,7 +605,7 @@ class _$UpdateRequestsImpl implements _UpdateRequests {
   @optionalTypeArgs
   TResult when<TResult extends Object?>({
     required TResult Function() init,
-    required TResult Function() selectMax,
+    required TResult Function(FormFieldState<String>? fieldState) selectMax,
     required TResult Function() doAction,
     required TResult Function(List<StEverWithdrawRequest> requests)
         updateResuests,
@@ -582,7 +619,7 @@ class _$UpdateRequestsImpl implements _UpdateRequests {
   @optionalTypeArgs
   TResult? whenOrNull<TResult extends Object?>({
     TResult? Function()? init,
-    TResult? Function()? selectMax,
+    TResult? Function(FormFieldState<String>? fieldState)? selectMax,
     TResult? Function()? doAction,
     TResult? Function(List<StEverWithdrawRequest> requests)? updateResuests,
     TResult? Function(StakingPageType type)? changeTab,
@@ -595,7 +632,7 @@ class _$UpdateRequestsImpl implements _UpdateRequests {
   @optionalTypeArgs
   TResult maybeWhen<TResult extends Object?>({
     TResult Function()? init,
-    TResult Function()? selectMax,
+    TResult Function(FormFieldState<String>? fieldState)? selectMax,
     TResult Function()? doAction,
     TResult Function(List<StEverWithdrawRequest> requests)? updateResuests,
     TResult Function(StakingPageType type)? changeTab,
@@ -734,7 +771,7 @@ class _$ChangeTabImpl implements _ChangeTab {
   @optionalTypeArgs
   TResult when<TResult extends Object?>({
     required TResult Function() init,
-    required TResult Function() selectMax,
+    required TResult Function(FormFieldState<String>? fieldState) selectMax,
     required TResult Function() doAction,
     required TResult Function(List<StEverWithdrawRequest> requests)
         updateResuests,
@@ -748,7 +785,7 @@ class _$ChangeTabImpl implements _ChangeTab {
   @optionalTypeArgs
   TResult? whenOrNull<TResult extends Object?>({
     TResult? Function()? init,
-    TResult? Function()? selectMax,
+    TResult? Function(FormFieldState<String>? fieldState)? selectMax,
     TResult? Function()? doAction,
     TResult? Function(List<StEverWithdrawRequest> requests)? updateResuests,
     TResult? Function(StakingPageType type)? changeTab,
@@ -761,7 +798,7 @@ class _$ChangeTabImpl implements _ChangeTab {
   @optionalTypeArgs
   TResult maybeWhen<TResult extends Object?>({
     TResult Function()? init,
-    TResult Function()? selectMax,
+    TResult Function(FormFieldState<String>? fieldState)? selectMax,
     TResult Function()? doAction,
     TResult Function(List<StEverWithdrawRequest> requests)? updateResuests,
     TResult Function(StakingPageType type)? changeTab,
@@ -899,7 +936,7 @@ class _$UpdateReceiveImpl implements _UpdateReceive {
   @optionalTypeArgs
   TResult when<TResult extends Object?>({
     required TResult Function() init,
-    required TResult Function() selectMax,
+    required TResult Function(FormFieldState<String>? fieldState) selectMax,
     required TResult Function() doAction,
     required TResult Function(List<StEverWithdrawRequest> requests)
         updateResuests,
@@ -913,7 +950,7 @@ class _$UpdateReceiveImpl implements _UpdateReceive {
   @optionalTypeArgs
   TResult? whenOrNull<TResult extends Object?>({
     TResult? Function()? init,
-    TResult? Function()? selectMax,
+    TResult? Function(FormFieldState<String>? fieldState)? selectMax,
     TResult? Function()? doAction,
     TResult? Function(List<StEverWithdrawRequest> requests)? updateResuests,
     TResult? Function(StakingPageType type)? changeTab,
@@ -926,7 +963,7 @@ class _$UpdateReceiveImpl implements _UpdateReceive {
   @optionalTypeArgs
   TResult maybeWhen<TResult extends Object?>({
     TResult Function()? init,
-    TResult Function()? selectMax,
+    TResult Function(FormFieldState<String>? fieldState)? selectMax,
     TResult Function()? doAction,
     TResult Function(List<StEverWithdrawRequest> requests)? updateResuests,
     TResult Function(StakingPageType type)? changeTab,

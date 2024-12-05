@@ -12,7 +12,7 @@ class IdentifyIconsService implements IIdentifyIconsService {
   @override
   final availableColors = IdentifyIconData.values;
 
-  final SecureStorageService _secureStorageService;
+  final AppStorageService _secureStorageService;
 
   final _initialIndex = 1;
 

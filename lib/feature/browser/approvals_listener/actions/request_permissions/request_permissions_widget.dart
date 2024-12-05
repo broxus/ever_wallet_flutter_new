@@ -86,6 +86,7 @@ class _SelectAccountWidget extends StatelessWidget {
                       });
                       return ListView.separated(
                         controller: scrollController,
+                        physics: const ClampingScrollPhysics(),
                         itemCount: accounts?.length ?? 0,
                         itemBuilder: (_, index) {
                           final account = accounts?[index];

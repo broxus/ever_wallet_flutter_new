@@ -1,3 +1,4 @@
+import 'package:app/app/service/nekoton_related/connection_service/http_clients.dart';
 import 'package:app/app/service/nekoton_related/connection_service/transport_strategies/transport_strategies.dart';
 import 'package:app/app/service/nekoton_related/connection_service/transport_strategies/tycho_transport_strategy.dart';
 import 'package:app/app/service/service.dart';
@@ -19,12 +20,10 @@ class ConnectionService {
   ConnectionService(
     this._storageService,
     this._nekotonRepository,
-    this._httpService,
   );
 
   static final _log = Logger('ConnectionService');
 
-  final HttpService _httpService;
   final ConnectionsStorageService _storageService;
   final NekotonRepository _nekotonRepository;
 
@@ -91,8 +90,7 @@ class ConnectionService {
         endpointSelectionRetryCount,
       ) =>
           _nekotonRepository.createGqlTransport(
-        post: _httpService.postTransportData,
-        get: _httpService.getTransportData,
+        client: GqlHttpClient(),
         name: name,
         group: group,
         endpoints: endpoints,
@@ -115,7 +113,7 @@ class ConnectionService {
         ________,
       ) =>
           _nekotonRepository.createProtoTransport(
-        post: _httpService.postTransportDataBytes,
+        client: ProtoHttpClient(),
         name: name,
         group: group,
         endpoint: endpoint,
@@ -134,7 +132,7 @@ class ConnectionService {
         ________,
       ) =>
           _nekotonRepository.createJrpcTransport(
-        post: _httpService.postTransportData,
+        client: JrpcHttpClient(),
         name: name,
         group: group,
         endpoint: endpoint,
@@ -153,7 +151,7 @@ class ConnectionService {
       await _nekotonRepository.updateTransport(
         createStrategyByConnection(transport, connection),
       );
-      await _storageService.updateNetworksIds(
+      _storageService.updateNetworksIds(
         [(connection.id, transport.networkId)],
       );
 
@@ -165,7 +163,7 @@ class ConnectionService {
       final base = _storageService.baseConnection;
 
       if (base != null && base.id != connection.id) {
-        await _storageService.saveCurrentConnectionId(base.id);
+        _storageService.saveCurrentConnectionId(base.id);
         return;
       }
 
@@ -182,6 +180,8 @@ extension TransportTypeExtension on TransportStrategy {
       return NetworkType.ever;
     } else if (this is VenomTransportStrategy) {
       return NetworkType.venom;
+    } else if (this is TychoTransportStrategy) {
+      return NetworkType.tycho;
     } else {
       return NetworkType.custom;
     }

@@ -3,6 +3,7 @@
 import 'package:app/app/service/service.dart';
 import 'package:app/generated/generated.dart';
 import 'package:app/utils/constants.dart';
+import 'package:app/utils/utils.dart';
 import 'package:bloc/bloc.dart';
 import 'package:flutter/material.dart';
 import 'package:freezed_annotation/freezed_annotation.dart';
@@ -10,7 +11,9 @@ import 'package:logging/logging.dart';
 import 'package:nekoton_repository/nekoton_repository.dart' hide Message;
 
 part 'token_wallet_send_bloc.freezed.dart';
+
 part 'token_wallet_send_event.dart';
+
 part 'token_wallet_send_state.dart';
 
 /// Bloc that allows to prepare not native token from [TokenWallet] for
@@ -73,7 +76,7 @@ class TokenWalletSendBloc
 
   KeyAccount? account;
 
-  late UnsignedMessage unsignedMessage;
+  UnsignedMessage? unsignedMessage;
   UnsignedMessage? _unsignedMessage;
 
   List<TxTreeSimulationErrorItem>? txErrors;
@@ -100,21 +103,28 @@ class TokenWalletSendBloc
     try {
       account = nekotonRepository.seedList.findAccountByAddress(owner);
 
-      final tokenWalletState = await nekotonRepository.tokenWalletsStream
-          .expand((e) => e)
-          .firstWhere(
-            (wallet) =>
-                wallet.owner == owner &&
-                wallet.rootTokenContract == rootTokenContract,
-          );
+      final (tokenWalletState, walletState) = await FutureExt.wait2(
+        nekotonRepository.tokenWalletsStream.expand((e) => e).firstWhere(
+              (wallet) =>
+                  wallet.owner == owner &&
+                  wallet.rootTokenContract == rootTokenContract,
+            ),
+        nekotonRepository.walletsStream
+            .expand((e) => e)
+            .firstWhere((wallets) => wallets.address == owner),
+      );
 
       if (tokenWalletState.hasError) {
         emit(TokenWalletSendState.subscribeError(tokenWalletState.error!));
-
+        return;
+      }
+      if (walletState.hasError) {
+        emit(TokenWalletSendState.subscribeError(walletState.error!));
         return;
       }
 
       final tokenWallet = tokenWalletState.wallet!;
+      final wallet = walletState.wallet!;
 
       tokenCurrency = tokenWallet.currency;
       emit(const TokenWalletSendState.loading());
@@ -131,36 +141,40 @@ class TokenWalletSendBloc
 
       repackedDestination = internalMessage.destination;
       sendAmount = internalMessage.amount;
-      unsignedMessage = await nekotonRepository.prepareTransfer(
-        address: owner,
-        publicKey: publicKey,
-        destination: repackedDestination,
-        amount: sendAmount,
-        body: internalMessage.body,
-        bounce: defaultMessageBounce,
-        expiration: defaultSendTimeout,
-      );
-      _unsignedMessage = unsignedMessage;
-      fees = await nekotonRepository.estimateFees(
-        address: owner,
-        message: unsignedMessage,
-      );
-      txErrors = await nekotonRepository.simulateTransactionTree(
-        address: owner,
-        message: unsignedMessage,
-      );
 
-      final walletState = await nekotonRepository.walletsStream
-          .expand((e) => e)
-          .firstWhere((wallets) => wallets.address == owner);
+      try {
+        unsignedMessage = await nekotonRepository.prepareTransfer(
+          address: owner,
+          publicKey: publicKey,
+          destination: repackedDestination,
+          amount: sendAmount,
+          body: internalMessage.body,
+          bounce: defaultMessageBounce,
+          expiration: defaultSendTimeout,
+        );
+      } finally {
+        _unsignedMessage = unsignedMessage;
+      }
 
-      if (walletState.hasError) {
-        emit(TokenWalletSendState.subscribeError(tokenWalletState.error!));
+      final msg = unsignedMessage;
 
+      if (msg == null) {
         return;
       }
 
-      final wallet = walletState.wallet!;
+      final result = await FutureExt.wait2(
+        nekotonRepository.estimateFees(
+          address: owner,
+          message: msg,
+        ),
+        nekotonRepository.simulateTransactionTree(
+          address: owner,
+          message: msg,
+        ),
+      );
+      fees = result.$1;
+      txErrors = result.$2;
+
       final balance = wallet.contractState.balance;
       final isPossibleToSendMessage =
           balance > (fees! + internalMessage.amount);
@@ -172,7 +186,6 @@ class TokenWalletSendBloc
             fees,
           ),
         );
-
         return;
       }
 
@@ -191,10 +204,16 @@ class TokenWalletSendBloc
     String password,
   ) async {
     try {
-      emit(const TokenWalletSendState.sending(canClose: false));
-      await unsignedMessage.refreshTimeout();
+      final msg = unsignedMessage;
 
-      final hash = unsignedMessage.hash;
+      if (msg == null) {
+        return;
+      }
+
+      emit(const TokenWalletSendState.sending(canClose: false));
+      await msg.refreshTimeout();
+
+      final hash = msg.hash;
       final transport = nekotonRepository.currentTransport.transport;
 
       final signature = await nekotonRepository.seedList.sign(
@@ -204,7 +223,7 @@ class TokenWalletSendBloc
         signatureId: await transport.getSignatureId(),
       );
 
-      final signedMessage = await unsignedMessage.sign(signature: signature);
+      final signedMessage = await msg.sign(signature: signature);
 
       emit(const TokenWalletSendState.sending(canClose: true));
 
@@ -243,6 +262,7 @@ class TokenWalletSendBloc
 
   @override
   Future<void> close() {
+    unsignedMessage?.dispose();
     _unsignedMessage?.dispose();
 
     return super.close();

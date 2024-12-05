@@ -1,5 +1,6 @@
 import 'package:app/app/router/router.dart';
 import 'package:app/app/service/nekoton_related/connection_service/transport_strategies/transport_strategies.dart';
+import 'package:app/app/service/nekoton_related/connection_service/transport_strategies/tycho_transport_strategy.dart';
 import 'package:app/data/models/models.dart';
 import 'package:flutter/widgets.dart';
 import 'package:go_router/go_router.dart';
@@ -29,6 +30,7 @@ extension TransportExtension on TransportStrategy {
         EverTransportStrategy(:final connection) => connection,
         VenomTransportStrategy(:final connection) => connection,
         CustomTransportStrategy(:final connection) => connection,
+        TychoTransportStrategy(:final connection) => connection,
         _ => null,
       };
 

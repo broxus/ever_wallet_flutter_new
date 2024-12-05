@@ -111,4 +111,7 @@ class EverTransportStrategy extends TransportStrategy {
 
   @override
   String? get tokenApiBaseUrl => 'https://tokens.everscan.io/v1';
+
+  @override
+  String? get currencyApiBaseUrl => 'https://api.flatqube.io/v1/currencies';
 }

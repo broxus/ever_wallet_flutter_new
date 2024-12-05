@@ -15,16 +15,9 @@ _$PermissionsImpl _$$PermissionsImplFromJson(Map<String, dynamic> json) =>
               json['accountInteraction'] as Map<String, dynamic>),
     );
 
-Map<String, dynamic> _$$PermissionsImplToJson(_$PermissionsImpl instance) {
-  final val = <String, dynamic>{};
-
-  void writeNotNull(String key, dynamic value) {
-    if (value != null) {
-      val[key] = value;
-    }
-  }
-
-  writeNotNull('basic', instance.basic);
-  writeNotNull('accountInteraction', instance.accountInteraction?.toJson());
-  return val;
-}
+Map<String, dynamic> _$$PermissionsImplToJson(_$PermissionsImpl instance) =>
+    <String, dynamic>{
+      if (instance.basic case final value?) 'basic': value,
+      if (instance.accountInteraction?.toJson() case final value?)
+        'accountInteraction': value,
+    };

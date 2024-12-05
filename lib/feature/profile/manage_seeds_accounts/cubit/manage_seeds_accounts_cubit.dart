@@ -28,7 +28,7 @@ class ManageSeedsAccountsCubit extends Cubit<ManageSeedsAccountsState> {
 
   final NekotonRepository nekotonRepository;
   final CurrentSeedService currentSeedService;
-  final SecureStorageService storageService;
+  final AppStorageService storageService;
   final CurrentAccountsService currentAccountsService;
 
   late StreamSubscription<SeedList> _seedListSubscription;
@@ -59,13 +59,16 @@ class ManageSeedsAccountsCubit extends Cubit<ManageSeedsAccountsState> {
       (seeds) {
         final list = seeds.seeds;
         list.sort((a, b) => a.addedAt.compareTo(b.addedAt));
-        if (list.first.addedAt != 0) {
-          final masterPublicKey = list.last.masterKey.publicKey;
-
-          storageService.addValue(
-            StorageKey.showingManualBackupBadge(masterPublicKey.publicKey),
-            list.last.addType == SeedAddType.create,
+        if (list.isNotEmpty && list.first.addedAt != 0) {
+          final seed = list.last;
+          final key = StorageKey.showingManualBackupBadge(
+            seed.masterKey.publicKey.publicKey,
           );
+          final isShowBackup = storageService.getValue<bool>(key);
+
+          if (isShowBackup == null) {
+            storageService.addValue(key, seed.addType == SeedAddType.create);
+          }
 
           emit(
             ManageSeedsAccountsState.data(

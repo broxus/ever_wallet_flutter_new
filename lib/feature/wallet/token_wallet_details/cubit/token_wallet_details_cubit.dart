@@ -7,6 +7,7 @@ import 'package:freezed_annotation/freezed_annotation.dart';
 import 'package:nekoton_repository/nekoton_repository.dart';
 
 part 'token_wallet_details_cubit.freezed.dart';
+
 part 'token_wallet_details_state.dart';
 
 /// Cubit that allows loading balance for the [TokenWallet] (history loads
@@ -134,8 +135,11 @@ class TokenWalletDetailsCubit extends Cubit<TokenWalletDetailsState> {
   }
 
   Future<void> _checkLocalCustodians() async {
-    final local = await nekotonRepository.getLocalCustodians(owner);
-    _canSend = local != null && local.isNotEmpty;
-    _updateState();
+    try {
+      final local = await nekotonRepository.getLocalCustodians(owner);
+      _canSend = local != null && local.isNotEmpty;
+    } finally {
+      _updateState();
+    }
   }
 }

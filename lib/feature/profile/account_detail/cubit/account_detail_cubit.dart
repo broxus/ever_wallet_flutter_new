@@ -111,13 +111,16 @@ class AccountDetailCubit extends Cubit<AccountDetailState> {
   }
 
   Future<void> _subscribeNative() async {
-    final wallet = (await nekotonRepository.subscribeByAddress(address)).wallet;
-    // for cases, when screen was closed before sub completed
-    if (isClosed) {
-      nekotonRepository.unsubscribe(address);
-    } else {
-      _tonWallet = wallet;
-    }
+    try {
+      final wallet =
+          (await nekotonRepository.subscribeByAddress(address)).wallet;
+      // for cases, when screen was closed before sub completed
+      if (isClosed) {
+        nekotonRepository.unsubscribe(address);
+      } else {
+        _tonWallet = wallet;
+      }
+    } catch (_) {}
   }
 
   Future<void> _subscribeToken(Address rootTokenContract) async {

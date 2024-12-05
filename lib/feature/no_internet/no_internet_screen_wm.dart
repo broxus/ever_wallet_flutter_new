@@ -40,7 +40,7 @@ class NoInternetScreenWidgetModel
   Future<void> onPressedTryAgain() async {
     final isExistInternet = await model.isExistInternet;
     if (isExistInternet) {
-      context.go(AppRoute.splash.path);
+      contextSafe?.go(AppRoute.splash.path);
     }
   }
 }

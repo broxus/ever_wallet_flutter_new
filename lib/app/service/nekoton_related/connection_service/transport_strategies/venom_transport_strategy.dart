@@ -86,4 +86,7 @@ class VenomTransportStrategy extends TransportStrategy {
 
   @override
   String? get tokenApiBaseUrl => 'https://tokens.venomscan.com/v1';
+
+  @override
+  String? get currencyApiBaseUrl => 'https://api.web3.world/v1/currencies';
 }

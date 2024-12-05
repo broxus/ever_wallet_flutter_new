@@ -1,4 +1,5 @@
 import 'package:app/app/service/service.dart';
+import 'package:app/data/models/models.dart';
 import 'package:app/feature/wallet/widgets/select_account/select_account_data.dart';
 import 'package:elementary/elementary.dart';
 import 'package:nekoton_repository/nekoton_repository.dart';
@@ -9,11 +10,13 @@ class SelectAccountModel extends ElementaryModel {
     this._nekotonRepository,
     this._currentKeyService,
     this._currentAccountsService,
+    this._balanceStorageService,
   ) : super(errorHandler: errorHandler);
 
   final NekotonRepository _nekotonRepository;
   final CurrentKeyService _currentKeyService;
   final CurrentAccountsService _currentAccountsService;
+  final BalanceStorageService _balanceStorageService;
 
   Stream<List<SelectAccountData>> get seedWithAccounts =>
       _nekotonRepository.seedListStream.map(
@@ -44,33 +47,55 @@ class SelectAccountModel extends ElementaryModel {
 
   TransportStrategy get currentTransport => _nekotonRepository.currentTransport;
 
-  Future<void> changeCurrentAccount(KeyAccount account) async {
-    await _currentAccountsService.updateCurrentActiveAccount(account.address);
-    await _currentKeyService.changeCurrentKey(account.publicKey);
+  void changeCurrentAccount(KeyAccount account) {
+    _currentAccountsService.updateCurrentActiveAccount(account.address);
+    _currentKeyService.changeCurrentKey(account.publicKey);
   }
 
-  Future<Money?> getBalance(KeyAccount account) async {
-    final wallet = _nekotonRepository.walletsMap[account.address]?.wallet ??
-        await _getWallet(account);
-
-    return Money.fromBigIntWithCurrency(
-      wallet.contractState.balance,
-      Currencies()[currentTransport.nativeTokenTicker]!,
-    );
-  }
-
-  Future<TonWallet> _getWallet(KeyAccount account) async {
-    TonWallet? wallet;
+  Stream<Money?> getBalance(KeyAccount account) async* {
     try {
-      wallet = await TonWallet.subscribe(
-        transport: currentTransport.transport,
-        workchainId: account.workchain,
-        publicKey: account.publicKey,
-        walletType: account.account.tonWallet.contract,
-      );
-    } finally {
-      wallet?.dispose();
+      final balances = _balanceStorageService.getBalances(
+        currentTransport.networkType,
+      )[account.address];
+      yield balances
+          ?.tokenBalance(currentTransport.nativeTokenAddress, isNative: true)
+          ?.tokenBalance;
+
+      final wallet = _nekotonRepository.walletsMap[account.address]?.wallet;
+      if (wallet != null) {
+        yield Money.fromBigIntWithCurrency(
+          wallet.contractState.balance,
+          Currencies()[symbol]!,
+        );
+        return;
+      }
+
+      final balance = await _getBalance(account);
+      if (balance != null) {
+        yield Money.fromBigIntWithCurrency(balance, Currencies()[symbol]!);
+      }
+    } catch (_) {
+      yield Money.fromIntWithCurrency(0, Currencies()[symbol]!);
     }
-    return wallet;
+  }
+
+  Future<BigInt?> _getBalance(KeyAccount account) async {
+    if (currentTransport.transport.disposed) return null;
+
+    GenericContract? contract;
+    try {
+      contract = await GenericContract.subscribe(
+        transport: currentTransport.transport,
+        address: account.address,
+        preloadTransactions: false,
+      );
+
+      return contract.contractState.balance;
+    } catch (_) {
+    } finally {
+      contract?.dispose();
+    }
+
+    return null;
   }
 }
