@@ -31,15 +31,3 @@ mixin ContextMixin {
     }
   }
 }
-
-mixin ContextMixin {
-  BuildContext get context;
-
-  BuildContext? get contextSafe {
-    if (!context.mounted) {
-      return null;
-    }
-
-    return context;
-  }
-}
