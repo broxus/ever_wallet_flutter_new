@@ -10,12 +10,12 @@ import 'package:ui_components_lib/ui_components_lib.dart';
 
 class DeployWalletConfirmModel extends ElementaryModel {
   DeployWalletConfirmModel(
-      ErrorHandler errorHandler,
-      this.biometryService,
-      this.nekotonRepository,
-      this.currentSeedService,
-      this.messengerService,
-      ) : super(errorHandler: errorHandler);
+    ErrorHandler errorHandler,
+    this.biometryService,
+    this.nekotonRepository,
+    this.currentSeedService,
+    this.messengerService,
+  ) : super(errorHandler: errorHandler);
 
   final NekotonRepository nekotonRepository;
   final BiometryService biometryService;

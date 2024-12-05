@@ -41,11 +41,11 @@ class TonWalletTransactionCustodiansDetails extends StatelessWidget {
       subtitleText: requiredConfirmations == null
           ? null
           : LocaleKeys.signaturesCollected.tr(
-        args: [
-          confirmations.length.toString(),
-          requiredConfirmations!.toString(),
-        ],
-      ),
+              args: [
+                confirmations.length.toString(),
+                requiredConfirmations!.toString(),
+              ],
+            ),
       mainAxisSize: MainAxisSize.min,
       separator: const Padding(
         padding: EdgeInsets.symmetric(vertical: DimensSize.d8),

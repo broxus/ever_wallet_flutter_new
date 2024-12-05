@@ -26,7 +26,8 @@ class WalletDeployPage extends StatelessWidget {
         context: context,
         address: address,
         publicKey: publicKey,
-        nekotonRepository: inject(), currenciesService: inject(),
+        nekotonRepository: inject(),
+        currenciesService: inject(),
       ),
       child: BlocConsumer<WalletDeployBloc, WalletDeployState>(
         listener: (context, state) {
@@ -81,21 +82,21 @@ class WalletDeployPage extends StatelessWidget {
               requireConfirmations,
               tonIconPath,
               ticker,
-                customCurrency,
+              customCurrency,
             ) {
               return _scaffold(
-              WalletDeployConfirmView(
-                publicKey: publicKey,
-                balance: balance,
-                fee: fee,
-                custodians: custodians,
-                requireConfirmations: requireConfirmations,
-                tonIconPath: tonIconPath,
-                currency: Currencies()[ticker ?? ''],
-                customCurrency: customCurrency,
-              ),
-              canPrev: true,
-            );
+                WalletDeployConfirmView(
+                  publicKey: publicKey,
+                  balance: balance,
+                  fee: fee,
+                  custodians: custodians,
+                  requireConfirmations: requireConfirmations,
+                  tonIconPath: tonIconPath,
+                  currency: Currencies()[ticker ?? ''],
+                  customCurrency: customCurrency,
+                ),
+                canPrev: true,
+              );
             },
             deployed: (
               fee,
