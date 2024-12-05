@@ -94,4 +94,7 @@ class TychoTransportStrategy extends TransportStrategy {
 
   @override
   String? get tokenApiBaseUrl => null;
+
+  @override
+  String? get currencyApiBaseUrl => null;
 }

@@ -202,7 +202,7 @@ if [[ "$CONFIGURATION" == "Debug" ]]; then
   install_framework "${BUILT_PRODUCTS_DIR}/sentry_flutter/sentry_flutter.framework"
   install_framework "${BUILT_PRODUCTS_DIR}/share_plus/share_plus.framework"
   install_framework "${BUILT_PRODUCTS_DIR}/shared_preferences_foundation/shared_preferences_foundation.framework"
-  install_framework "${BUILT_PRODUCTS_DIR}/sqflite/sqflite.framework"
+  install_framework "${BUILT_PRODUCTS_DIR}/sqflite_darwin/sqflite_darwin.framework"
   install_framework "${BUILT_PRODUCTS_DIR}/url_launcher_ios/url_launcher_ios.framework"
 fi
 if [[ "$CONFIGURATION" == "Debug-development" ]]; then
@@ -232,7 +232,7 @@ if [[ "$CONFIGURATION" == "Debug-development" ]]; then
   install_framework "${BUILT_PRODUCTS_DIR}/sentry_flutter/sentry_flutter.framework"
   install_framework "${BUILT_PRODUCTS_DIR}/share_plus/share_plus.framework"
   install_framework "${BUILT_PRODUCTS_DIR}/shared_preferences_foundation/shared_preferences_foundation.framework"
-  install_framework "${BUILT_PRODUCTS_DIR}/sqflite/sqflite.framework"
+  install_framework "${BUILT_PRODUCTS_DIR}/sqflite_darwin/sqflite_darwin.framework"
   install_framework "${BUILT_PRODUCTS_DIR}/url_launcher_ios/url_launcher_ios.framework"
 fi
 if [[ "$CONFIGURATION" == "Debug-production" ]]; then
@@ -262,7 +262,7 @@ if [[ "$CONFIGURATION" == "Debug-production" ]]; then
   install_framework "${BUILT_PRODUCTS_DIR}/sentry_flutter/sentry_flutter.framework"
   install_framework "${BUILT_PRODUCTS_DIR}/share_plus/share_plus.framework"
   install_framework "${BUILT_PRODUCTS_DIR}/shared_preferences_foundation/shared_preferences_foundation.framework"
-  install_framework "${BUILT_PRODUCTS_DIR}/sqflite/sqflite.framework"
+  install_framework "${BUILT_PRODUCTS_DIR}/sqflite_darwin/sqflite_darwin.framework"
   install_framework "${BUILT_PRODUCTS_DIR}/url_launcher_ios/url_launcher_ios.framework"
 fi
 if [[ "$CONFIGURATION" == "Debug-staging" ]]; then
@@ -292,7 +292,7 @@ if [[ "$CONFIGURATION" == "Debug-staging" ]]; then
   install_framework "${BUILT_PRODUCTS_DIR}/sentry_flutter/sentry_flutter.framework"
   install_framework "${BUILT_PRODUCTS_DIR}/share_plus/share_plus.framework"
   install_framework "${BUILT_PRODUCTS_DIR}/shared_preferences_foundation/shared_preferences_foundation.framework"
-  install_framework "${BUILT_PRODUCTS_DIR}/sqflite/sqflite.framework"
+  install_framework "${BUILT_PRODUCTS_DIR}/sqflite_darwin/sqflite_darwin.framework"
   install_framework "${BUILT_PRODUCTS_DIR}/url_launcher_ios/url_launcher_ios.framework"
 fi
 if [[ "$CONFIGURATION" == "Profile" ]]; then
@@ -322,7 +322,7 @@ if [[ "$CONFIGURATION" == "Profile" ]]; then
   install_framework "${BUILT_PRODUCTS_DIR}/sentry_flutter/sentry_flutter.framework"
   install_framework "${BUILT_PRODUCTS_DIR}/share_plus/share_plus.framework"
   install_framework "${BUILT_PRODUCTS_DIR}/shared_preferences_foundation/shared_preferences_foundation.framework"
-  install_framework "${BUILT_PRODUCTS_DIR}/sqflite/sqflite.framework"
+  install_framework "${BUILT_PRODUCTS_DIR}/sqflite_darwin/sqflite_darwin.framework"
   install_framework "${BUILT_PRODUCTS_DIR}/url_launcher_ios/url_launcher_ios.framework"
 fi
 if [[ "$CONFIGURATION" == "Profile-development" ]]; then
@@ -352,7 +352,7 @@ if [[ "$CONFIGURATION" == "Profile-development" ]]; then
   install_framework "${BUILT_PRODUCTS_DIR}/sentry_flutter/sentry_flutter.framework"
   install_framework "${BUILT_PRODUCTS_DIR}/share_plus/share_plus.framework"
   install_framework "${BUILT_PRODUCTS_DIR}/shared_preferences_foundation/shared_preferences_foundation.framework"
-  install_framework "${BUILT_PRODUCTS_DIR}/sqflite/sqflite.framework"
+  install_framework "${BUILT_PRODUCTS_DIR}/sqflite_darwin/sqflite_darwin.framework"
   install_framework "${BUILT_PRODUCTS_DIR}/url_launcher_ios/url_launcher_ios.framework"
 fi
 if [[ "$CONFIGURATION" == "Profile-production" ]]; then
@@ -382,7 +382,7 @@ if [[ "$CONFIGURATION" == "Profile-production" ]]; then
   install_framework "${BUILT_PRODUCTS_DIR}/sentry_flutter/sentry_flutter.framework"
   install_framework "${BUILT_PRODUCTS_DIR}/share_plus/share_plus.framework"
   install_framework "${BUILT_PRODUCTS_DIR}/shared_preferences_foundation/shared_preferences_foundation.framework"
-  install_framework "${BUILT_PRODUCTS_DIR}/sqflite/sqflite.framework"
+  install_framework "${BUILT_PRODUCTS_DIR}/sqflite_darwin/sqflite_darwin.framework"
   install_framework "${BUILT_PRODUCTS_DIR}/url_launcher_ios/url_launcher_ios.framework"
 fi
 if [[ "$CONFIGURATION" == "Profile-staging" ]]; then
@@ -412,7 +412,7 @@ if [[ "$CONFIGURATION" == "Profile-staging" ]]; then
   install_framework "${BUILT_PRODUCTS_DIR}/sentry_flutter/sentry_flutter.framework"
   install_framework "${BUILT_PRODUCTS_DIR}/share_plus/share_plus.framework"
   install_framework "${BUILT_PRODUCTS_DIR}/shared_preferences_foundation/shared_preferences_foundation.framework"
-  install_framework "${BUILT_PRODUCTS_DIR}/sqflite/sqflite.framework"
+  install_framework "${BUILT_PRODUCTS_DIR}/sqflite_darwin/sqflite_darwin.framework"
   install_framework "${BUILT_PRODUCTS_DIR}/url_launcher_ios/url_launcher_ios.framework"
 fi
 if [[ "$CONFIGURATION" == "Release" ]]; then
@@ -442,7 +442,7 @@ if [[ "$CONFIGURATION" == "Release" ]]; then
   install_framework "${BUILT_PRODUCTS_DIR}/sentry_flutter/sentry_flutter.framework"
   install_framework "${BUILT_PRODUCTS_DIR}/share_plus/share_plus.framework"
   install_framework "${BUILT_PRODUCTS_DIR}/shared_preferences_foundation/shared_preferences_foundation.framework"
-  install_framework "${BUILT_PRODUCTS_DIR}/sqflite/sqflite.framework"
+  install_framework "${BUILT_PRODUCTS_DIR}/sqflite_darwin/sqflite_darwin.framework"
   install_framework "${BUILT_PRODUCTS_DIR}/url_launcher_ios/url_launcher_ios.framework"
 fi
 if [[ "$CONFIGURATION" == "Release-development" ]]; then
@@ -472,7 +472,7 @@ if [[ "$CONFIGURATION" == "Release-development" ]]; then
   install_framework "${BUILT_PRODUCTS_DIR}/sentry_flutter/sentry_flutter.framework"
   install_framework "${BUILT_PRODUCTS_DIR}/share_plus/share_plus.framework"
   install_framework "${BUILT_PRODUCTS_DIR}/shared_preferences_foundation/shared_preferences_foundation.framework"
-  install_framework "${BUILT_PRODUCTS_DIR}/sqflite/sqflite.framework"
+  install_framework "${BUILT_PRODUCTS_DIR}/sqflite_darwin/sqflite_darwin.framework"
   install_framework "${BUILT_PRODUCTS_DIR}/url_launcher_ios/url_launcher_ios.framework"
 fi
 if [[ "$CONFIGURATION" == "Release-production" ]]; then
@@ -502,7 +502,7 @@ if [[ "$CONFIGURATION" == "Release-production" ]]; then
   install_framework "${BUILT_PRODUCTS_DIR}/sentry_flutter/sentry_flutter.framework"
   install_framework "${BUILT_PRODUCTS_DIR}/share_plus/share_plus.framework"
   install_framework "${BUILT_PRODUCTS_DIR}/shared_preferences_foundation/shared_preferences_foundation.framework"
-  install_framework "${BUILT_PRODUCTS_DIR}/sqflite/sqflite.framework"
+  install_framework "${BUILT_PRODUCTS_DIR}/sqflite_darwin/sqflite_darwin.framework"
   install_framework "${BUILT_PRODUCTS_DIR}/url_launcher_ios/url_launcher_ios.framework"
 fi
 if [[ "$CONFIGURATION" == "Release-staging" ]]; then
@@ -532,7 +532,7 @@ if [[ "$CONFIGURATION" == "Release-staging" ]]; then
   install_framework "${BUILT_PRODUCTS_DIR}/sentry_flutter/sentry_flutter.framework"
   install_framework "${BUILT_PRODUCTS_DIR}/share_plus/share_plus.framework"
   install_framework "${BUILT_PRODUCTS_DIR}/shared_preferences_foundation/shared_preferences_foundation.framework"
-  install_framework "${BUILT_PRODUCTS_DIR}/sqflite/sqflite.framework"
+  install_framework "${BUILT_PRODUCTS_DIR}/sqflite_darwin/sqflite_darwin.framework"
   install_framework "${BUILT_PRODUCTS_DIR}/url_launcher_ios/url_launcher_ios.framework"
 fi
 if [[ "$CONFIGURATION" == "Stage-production" ]]; then
@@ -562,7 +562,7 @@ if [[ "$CONFIGURATION" == "Stage-production" ]]; then
   install_framework "${BUILT_PRODUCTS_DIR}/sentry_flutter/sentry_flutter.framework"
   install_framework "${BUILT_PRODUCTS_DIR}/share_plus/share_plus.framework"
   install_framework "${BUILT_PRODUCTS_DIR}/shared_preferences_foundation/shared_preferences_foundation.framework"
-  install_framework "${BUILT_PRODUCTS_DIR}/sqflite/sqflite.framework"
+  install_framework "${BUILT_PRODUCTS_DIR}/sqflite_darwin/sqflite_darwin.framework"
   install_framework "${BUILT_PRODUCTS_DIR}/url_launcher_ios/url_launcher_ios.framework"
 fi
 if [ "${COCOAPODS_PARALLEL_CODE_SIGN}" == "true" ]; then

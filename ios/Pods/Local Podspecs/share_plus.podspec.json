@@ -15,8 +15,8 @@
     "http": "https://github.com/fluttercommunity/plus_plugins/tree/main/packages/share_plus/share_plus"
   },
   "documentation_url": "https://pub.dev/packages/share_plus",
-  "source_files": "Classes/**/*",
-  "public_header_files": "Classes/**/*.h",
+  "source_files": "share_plus/Sources/share_plus/**/*.{h,m}",
+  "public_header_files": "share_plus/Sources/share_plus/include/**/*.h",
   "dependencies": {
     "Flutter": [
 
@@ -33,7 +33,7 @@
   },
   "resource_bundles": {
     "share_plus_privacy": [
-      "PrivacyInfo.xcprivacy"
+      "share_plus/Sources/share_plus/PrivacyInfo.xcprivacy"
     ]
   }
 }

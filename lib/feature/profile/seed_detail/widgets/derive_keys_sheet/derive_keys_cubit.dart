@@ -1,8 +1,10 @@
+import 'package:app/core/bloc/bloc_mixin.dart';
 import 'package:bloc/bloc.dart';
 import 'package:freezed_annotation/freezed_annotation.dart';
 import 'package:nekoton_repository/nekoton_repository.dart';
 
 part 'derive_keys_cubit.freezed.dart';
+
 part 'derive_keys_state.dart';
 
 /// How many keys should be displayed on one page
@@ -13,7 +15,7 @@ const derivePageCount = 20;
 
 /// Cubit that contains logic to derive keys from seed.
 /// UI displays keys by pages, every page contains up to [_keysPerPage] keys.
-class DeriveKeysCubit extends Cubit<DeriveKeysState> {
+class DeriveKeysCubit extends Cubit<DeriveKeysState> with BlocBaseMixin {
   DeriveKeysCubit(
     this.nekotonRepository,
     this.publicKey,
@@ -118,7 +120,7 @@ class DeriveKeysCubit extends Cubit<DeriveKeysState> {
   }
 
   void _emitDataState() {
-    emit(
+    emitSafe(
       DeriveKeysState.data(
         canNextPage: _canNextPage(),
         canPrevPage: _canPrevPage(),
@@ -140,7 +142,7 @@ class DeriveKeysCubit extends Cubit<DeriveKeysState> {
     final seed = nekotonRepository.seedList.findSeed(publicKey);
     if (seed == null) return;
 
-    emit(
+    emitSafe(
       DeriveKeysState.data(
         canNextPage: false,
         canPrevPage: false,
@@ -174,7 +176,7 @@ class DeriveKeysCubit extends Cubit<DeriveKeysState> {
       );
     }
 
-    emit(
+    emitSafe(
       DeriveKeysState.data(
         canNextPage: false,
         canPrevPage: false,

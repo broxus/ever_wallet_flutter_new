@@ -6,8 +6,10 @@ import 'package:bloc/bloc.dart';
 import 'package:collection/collection.dart';
 import 'package:freezed_annotation/freezed_annotation.dart';
 import 'package:nekoton_repository/nekoton_repository.dart';
+import 'package:rxdart/rxdart.dart';
 
 part 'ton_wallet_asset_cubit.freezed.dart';
+
 part 'ton_wallet_asset_state.dart';
 
 class TonWalletAssetCubit extends Cubit<TonWalletAssetState> {
@@ -23,7 +25,20 @@ class TonWalletAssetCubit extends Cubit<TonWalletAssetState> {
             iconPath: nekotonRepository.currentTransport.nativeTokenIcon,
           ),
         ) {
-    _walletsSubscription = nekotonRepository.walletsStream.listen((wallets) {
+    _walletsSubscription = nekotonRepository.currentTransportStream.switchMap(
+      (transport) {
+        _closeSubs();
+        final balances = balanceStorage
+            .getBalances(_networkType)[tonWallet.address]
+            ?.tokenBalance(_nativeTokenContract, isNative: true);
+
+        _cachedFiatBalance = balances?.fiatBalance;
+        _cachedTokenBalance = balances?.tokenBalance;
+        _updateState();
+
+        return nekotonRepository.walletsStream;
+      },
+    ).listen((wallets) {
       final walletState =
           wallets.firstWhereOrNull((w) => w.address == tonWallet.address);
 
@@ -65,14 +80,6 @@ class TonWalletAssetCubit extends Cubit<TonWalletAssetState> {
         );
       }
     });
-
-    final balances = balanceStorage.balances[tonWallet.address]
-        ?.tokenBalance(_nativeTokenContract);
-    if (balances != null) {
-      _cachedFiatBalance = balances.fiatBalance;
-      _cachedTokenBalance = balances.tokenBalance;
-      _updateState();
-    }
   }
 
   final BalanceStorageService balanceStorage;
@@ -89,6 +96,9 @@ class TonWalletAssetCubit extends Cubit<TonWalletAssetState> {
 
   Money? _cachedFiatBalance;
   Money? _cachedTokenBalance;
+
+  NetworkType get _networkType =>
+      nekotonRepository.currentTransport.networkType;
 
   @override
   Future<void> close() {
@@ -118,11 +128,13 @@ class TonWalletAssetCubit extends Cubit<TonWalletAssetState> {
   void _tryUpdateBalances() {
     if (_cachedFiatBalance != null && _cachedTokenBalance != null) {
       balanceStorage.setBalances(
+        network: _networkType,
         accountAddress: tonWallet.address,
         balance: AccountBalanceModel(
           rootTokenContract: _nativeTokenContract,
           fiatBalance: _cachedFiatBalance!,
           tokenBalance: _cachedTokenBalance!,
+          isNative: true,
         ),
       );
     }

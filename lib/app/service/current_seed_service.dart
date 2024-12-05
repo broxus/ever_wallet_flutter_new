@@ -81,7 +81,7 @@ class CurrentSeedService {
       return seed;
     } else if (seed != null) {
       // returned seed is not same as [currentKey], update it
-      await currentKeyService.changeCurrentKey(seed.publicKey);
+      currentKeyService.changeCurrentKey(seed.publicKey);
 
       return seed;
     }

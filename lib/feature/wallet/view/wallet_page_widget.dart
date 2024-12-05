@@ -1,10 +1,8 @@
 import 'package:app/feature/wallet/view/wallet_page_wm.dart';
 import 'package:app/feature/wallet/wallet.dart';
-import 'package:app/utils/utils.dart';
 import 'package:elementary/elementary.dart';
 import 'package:elementary_helper/elementary_helper.dart';
 import 'package:flutter/material.dart';
-import 'package:nekoton_repository/nekoton_repository.dart';
 
 class WalletPageWidget extends ElementaryWidget<WalletPageWidgetModel> {
   const WalletPageWidget({
@@ -15,27 +13,27 @@ class WalletPageWidget extends ElementaryWidget<WalletPageWidgetModel> {
   @override
   Widget build(WalletPageWidgetModel wm) {
     return Scaffold(
-      body: TripleSourceBuilder<KeyAccount?, bool, TransportStrategy>(
-        firstSource: wm.currentAccount,
-        secondSource: wm.isShowingNewTokens,
-        thirdSource: wm.transportStrategy,
-        builder: (_, currentAccount, isShowingNewTokens, transport) {
-          return currentAccount?.let(
-                (value) => StateNotifierBuilder(
-                  listenableState: wm.isShowingBadge,
-                  builder: (_, isShowingBadge) => WalletView(
-                    key: ValueKey(value),
-                    currentAccount: value,
-                    scrollController: wm.scrollController,
-                    isShowingBadge: isShowingBadge ?? false,
-                    isShowingNewTokens: isShowingNewTokens ?? false,
-                    finishedBackupCallback: wm.hideShowingBadge,
-                    confirmImportCallback: wm.hideNewTokensLabel,
-                    manifestUrl: transport?.manifestUrl ?? '',
-                  ),
-                ),
-              ) ??
-              const SizedBox.shrink();
+      body: StateNotifierBuilder(
+        listenableState: wm.currentAccount,
+        builder: (_, account) {
+          if (account == null) return const SizedBox.shrink();
+          return TripleSourceBuilder(
+            firstSource: wm.isShowingBadge,
+            secondSource: wm.isShowingNewTokens,
+            thirdSource: wm.transportStrategy,
+            builder: (_, isShowingBadge, isShowingNewTokens, transport) {
+              return WalletView(
+                key: ValueKey(account),
+                currentAccount: account,
+                scrollController: wm.scrollController,
+                isShowingBadge: isShowingBadge ?? false,
+                isShowingNewTokens: isShowingNewTokens ?? false,
+                finishedBackupCallback: wm.hideShowingBadge,
+                confirmImportCallback: wm.hideNewTokensLabel,
+                manifestUrl: transport?.manifestUrl ?? '',
+              );
+            },
+          );
         },
       ),
     );

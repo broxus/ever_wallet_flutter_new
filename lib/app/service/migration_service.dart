@@ -707,6 +707,7 @@ class HiveSourceMigration {
 class MigrationService {
   MigrationService(
     this._storage,
+    this._secureStorage,
     this._browserTabsStorageService,
     this._browserHistoryStorageService,
     this._browserBookmarksStorageService,
@@ -717,6 +718,7 @@ class MigrationService {
   );
 
   final GeneralStorageService _storage;
+  final SecureStorageService _secureStorage;
   final BrowserTabsStorageService _browserTabsStorageService;
   final BrowserHistoryStorageService _browserHistoryStorageService;
   final BrowserBookmarksStorageService _browserBookmarksStorageService;
@@ -728,6 +730,7 @@ class MigrationService {
   /// Migration method for app that includes hive initialization.
   static Future<void> migrateWithHiveInit(
     GeneralStorageService storage,
+    SecureStorageService secureStorage,
     BrowserTabsStorageService browserTabsStorageService,
     BrowserHistoryStorageService browserHistoryStorageService,
     BrowserBookmarksStorageService browserBookmarksStorageService,
@@ -737,6 +740,7 @@ class MigrationService {
   ) async {
     return MigrationService(
       storage,
+      secureStorage,
       browserTabsStorageService,
       browserHistoryStorageService,
       browserBookmarksStorageService,
@@ -768,7 +772,7 @@ class MigrationService {
   /// and exists data in old storage).
   @visibleForTesting
   Future<bool> needMigration() async =>
-      !(await _storage.isStorageMigrated) && _hive._hasAnySensitiveData;
+      !_storage.isStorageMigrated && _hive._hasAnySensitiveData;
 
   /// If migration file not exists and we decided to migrate, then we need
   /// to create this file.
@@ -802,37 +806,36 @@ class MigrationService {
 
     /// Passwords
     for (final entry in _hive._passwords.entries) {
-      await _storage.setKeyPassword(
+      await _secureStorage.setKeyPassword(
         publicKey: PublicKey(publicKey: entry.key),
         password: entry.value,
       );
     }
 
     /// System contracts
-    await _storage
-        .updateSystemTokenContractAssets(_hive.everSystemTokenContractAssets);
-    await _storage
-        .updateSystemTokenContractAssets(_hive.venomSystemTokenContractAssets);
+    _storage
+      ..updateSystemTokenContractAssets(_hive.everSystemTokenContractAssets)
+      ..updateSystemTokenContractAssets(_hive.venomSystemTokenContractAssets);
 
     /// Custom contracts
     for (final asset in _hive.everCustomTokenContractAssets) {
-      await _storage.addCustomTokenContractAsset(asset);
+      _storage.addCustomTokenContractAsset(asset);
     }
     for (final asset in _hive.venomCustomTokenContractAssets) {
-      await _storage.addCustomTokenContractAsset(asset);
+      _storage.addCustomTokenContractAsset(asset);
     }
 
     /// Currencies
     for (final cur in _hive.everCurrencies) {
-      await _storage.saveOrUpdateCurrency(currency: cur);
+      _storage.saveOrUpdateCurrency(currency: cur);
     }
     for (final cur in _hive.venomCurrencies) {
-      await _storage.saveOrUpdateCurrency(currency: cur);
+      _storage.saveOrUpdateCurrency(currency: cur);
     }
 
     /// Permissions
     for (final entry in _hive.permissions.entries) {
-      await _browserPermissionsStorageService.setPermissions(
+      _browserPermissionsStorageService.setPermissions(
         origin: entry.key,
         permissions: entry.value,
       );
@@ -840,7 +843,7 @@ class MigrationService {
 
     /// Bookmarks
     for (final bookmark in _hive.bookmarks) {
-      await _browserBookmarksStorageService.setBrowserBookmarkItem(
+      _browserBookmarksStorageService.setBrowserBookmarkItem(
         bookmark,
         needUndo: false,
       );
@@ -848,13 +851,13 @@ class MigrationService {
 
     /// Browser history
     for (final entry in _hive.searchHistory) {
-      await _browserHistoryStorageService.addBrowserHistoryItem(entry);
+      _browserHistoryStorageService.addBrowserHistoryItem(entry);
     }
 
     /// Preferences
-    await _storage.setIsBiometryEnabled(isEnabled: _hive.isBiometryEnabled);
-    if (_hive.wasStEverOpened) await _storage.saveWasStEverOpened();
-    await _storage.updateLastViewedSeeds(
+    _storage.setIsBiometryEnabled(isEnabled: _hive.isBiometryEnabled);
+    if (_hive.wasStEverOpened) _storage.saveWasStEverOpened();
+    _storage.updateLastViewedSeeds(
       _hive
           .lastViewedSeeds()
           .map((publicKeyString) => PublicKey(publicKey: publicKeyString))
@@ -877,22 +880,22 @@ class MigrationService {
         (element) => element.name == _hive.currentConnection,
       );
       if (connection != null) {
-        await _connectionsStorage.saveCurrentConnectionId(connection.id);
+        _connectionsStorage.saveCurrentConnectionId(connection.id);
       }
     }
     if (_hive.currentKey != null) {
-      await _storage.setCurrentKey(PublicKey(publicKey: _hive.currentKey!));
+      _storage.setCurrentKey(PublicKey(publicKey: _hive.currentKey!));
     }
 
     /// Browser
     /// After migration browser tab id will be equal to index in tabs list.
-    await _browserTabsStorageService.saveBrowserTabs(_hive.browserTabs);
+    _browserTabsStorageService.saveBrowserTabs(_hive.browserTabs);
     final tab = _hive.browserTabsLastIndex >= 0
         ? _browserTabsStorageService.browserTabs
             .elementAtOrNull(_hive.browserTabsLastIndex)
         : null;
 
-    await _browserTabsStorageService.saveBrowserActiveTabId(tab?.id);
+    _browserTabsStorageService.saveBrowserActiveTabId(tab?.id);
   }
 
   /// Complete migration by deleting temp file and closing boxes.
@@ -902,7 +905,7 @@ class MigrationService {
     if (file.existsSync()) await file.delete();
 
     await _hive.dispose();
-    await _storage.completeStorageMigration();
+    _storage.completeStorageMigration();
     // TODO(alex-a4): delete boxes after some time to prevent data loss
     // _hiveSourceMigration.eraseHive();
   }

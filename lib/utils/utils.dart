@@ -4,6 +4,7 @@ import 'package:app/app/service/service.dart';
 import 'package:app/di/di.dart';
 import 'package:app/generated/generated.dart';
 import 'package:clock/clock.dart';
+import 'package:get_storage/get_storage.dart';
 import 'package:json_annotation/json_annotation.dart';
 import 'package:money2_fixer/money2_fixer.dart';
 import 'package:nekoton_repository/nekoton_repository.dart' hide MoneyFixer;
@@ -39,7 +40,7 @@ class _MoneyFromStringJsonConverter
   Money fromJson(Map<String, dynamic> json) => MoneyFixer.fromJson(json);
 
   @override
-  Map<String, dynamic> toJson(Money object) => object.toJson();
+  Map<String, dynamic> toJson(Money object) => MoneyFixer(object).toJson();
 }
 
 class NtpTime {
@@ -93,4 +94,75 @@ extension MoneyExt on Money {
           toDecimalDigits: 2,
         ),
       );
+}
+
+extension GetStorageExt on GetStorage {
+  Iterable<String> getStringKeys() => getKeys();
+
+  Map<String, dynamic> getEntries() => Map.fromIterables(
+        getStringKeys(),
+        getValues<Iterable<dynamic>>(),
+      );
+}
+
+extension FutureExt<T> on Future<T> {
+  static Future<(T1, T2)> wait2<T1, T2>(
+    Future<T1> future1,
+    Future<T2> future2,
+  ) async {
+    late T1 result1;
+    late T2 result2;
+
+    await Future.wait([
+      future1.then((value) => result1 = value),
+      future2.then((value) => result2 = value),
+    ]);
+
+    return (result1, result2);
+  }
+
+  static Future<(T1, T2, T3)> wait3<T1, T2, T3>(
+    Future<T1> future1,
+    Future<T2> future2,
+    Future<T3> future3,
+  ) async {
+    late T1 result1;
+    late T2 result2;
+    late T3 result3;
+
+    await Future.wait([
+      future1.then((value) => result1 = value),
+      future2.then((value) => result2 = value),
+      future3.then((value) => result3 = value),
+    ]);
+
+    return (result1, result2, result3);
+  }
+
+  static Future<(T1, T2, T3, T4)> wait4<T1, T2, T3, T4>(
+    Future<T1> future1,
+    Future<T2> future2,
+    Future<T3> future3,
+    Future<T4> future4,
+  ) async {
+    late T1 result1;
+    late T2 result2;
+    late T3 result3;
+    late T4 result4;
+
+    await Future.wait([
+      future1.then((value) => result1 = value),
+      future2.then((value) => result2 = value),
+      future3.then((value) => result3 = value),
+      future4.then((value) => result4 = value),
+    ]);
+
+    return (result1, result2, result3, result4);
+  }
+}
+
+extension MapExt<K, V> on Map<K, V> {
+  void set(K key, V value) {
+    this[key] = value;
+  }
 }

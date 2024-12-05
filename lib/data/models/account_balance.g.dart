@@ -15,6 +15,7 @@ _$AccountBalanceModelImpl _$$AccountBalanceModelImplFromJson(
           .fromJson(json['fiatBalance'] as Map<String, dynamic>),
       tokenBalance: moneyFromStringJsonConverter
           .fromJson(json['tokenBalance'] as Map<String, dynamic>),
+      isNative: json['isNative'] as bool? ?? false,
     );
 
 Map<String, dynamic> _$$AccountBalanceModelImplToJson(
@@ -25,4 +26,5 @@ Map<String, dynamic> _$$AccountBalanceModelImplToJson(
       'fiatBalance': moneyFromStringJsonConverter.toJson(instance.fiatBalance),
       'tokenBalance':
           moneyFromStringJsonConverter.toJson(instance.tokenBalance),
+      'isNative': instance.isNative,
     };

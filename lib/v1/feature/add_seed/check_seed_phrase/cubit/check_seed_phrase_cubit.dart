@@ -1,5 +1,6 @@
 import 'dart:math';
 
+import 'package:app/core/bloc/bloc_mixin.dart';
 import 'package:app/data/models/seed/seed_phrase_model.dart';
 import 'package:app/v1/feature/add_seed/check_seed_phrase/cubit/cubit.dart';
 import 'package:bloc/bloc.dart';
@@ -20,7 +21,8 @@ const delayBeforeCompleteChecking = Duration(seconds: 1);
 /// It generates random order of words that user can select from.
 /// Cubit must be initialized by calling [initAnswers] to generate
 /// [availableAnswers] list.
-class CheckSeedPhraseCubit extends Cubit<CheckSeedPhraseCubitState> {
+class CheckSeedPhraseCubit extends Cubit<CheckSeedPhraseCubitState>
+    with BlocBaseMixin {
   factory CheckSeedPhraseCubit(
     SeedPhraseModel seed,
     ValueChanged<SeedPhraseModel> completeChecking,
@@ -57,7 +59,9 @@ class CheckSeedPhraseCubit extends Cubit<CheckSeedPhraseCubitState> {
 
   Future<void> initAnswers() async {
     availableAnswers = await _generateAnswerWords(_correctAnswers);
-    emit(CheckSeedPhraseCubitState.answer(availableAnswers, userAnswers, 0));
+    emitSafe(
+      CheckSeedPhraseCubitState.answer(availableAnswers, userAnswers, 0),
+    );
   }
 
   void answerQuestion(String answer) {
@@ -91,14 +95,14 @@ class CheckSeedPhraseCubit extends Cubit<CheckSeedPhraseCubitState> {
           hasError = answer.word != userAnswers[index].word || hasError,
     );
     if (hasError) {
-      emit(CheckSeedPhraseCubitState.error(availableAnswers, userAnswers));
+      emitSafe(CheckSeedPhraseCubitState.error(availableAnswers, userAnswers));
       Future<void>.delayed(delayBeforeCompleteChecking, () {
         userAnswers.forEachIndexed(
           (index, answer) =>
               userAnswers[index] = userAnswers[index].copyWith(word: ''),
         );
         currentCheckIndex = 0;
-        emit(
+        emitSafe(
           CheckSeedPhraseCubitState.answer(
             availableAnswers,
             userAnswers,
@@ -107,7 +111,7 @@ class CheckSeedPhraseCubit extends Cubit<CheckSeedPhraseCubitState> {
         );
       });
     } else {
-      emit(
+      emitSafe(
         CheckSeedPhraseCubitState.correct(
           availableAnswers,
           List.of(userAnswers),
@@ -121,7 +125,7 @@ class CheckSeedPhraseCubit extends Cubit<CheckSeedPhraseCubitState> {
 
   void _goNext(int nextIndex) {
     currentCheckIndex = nextIndex;
-    emit(
+    emitSafe(
       CheckSeedPhraseCubitState.answer(
         availableAnswers,
         List.of(userAnswers),

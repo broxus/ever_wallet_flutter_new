@@ -1,5 +1,5 @@
 import 'package:app/app/service/service.dart';
-import 'package:app/data/models/custom_currency.dart';
+import 'package:app/data/models/models.dart';
 import 'package:collection/collection.dart';
 import 'package:injectable/injectable.dart';
 import 'package:logging/logging.dart';
@@ -12,12 +12,14 @@ class BalanceService {
   BalanceService(
     this.nekotonRepository,
     this.currenciesService,
+    this.balanceStorageService,
   );
 
   static final _logger = Logger('BalanceService');
 
   final NekotonRepository nekotonRepository;
   final CurrenciesService currenciesService;
+  final BalanceStorageService balanceStorageService;
 
   /// Calculate balance in fiat currency for TonWallet, specified by [address],
   /// and all existed TokenWallets for this [address]. This is quite complicated
@@ -36,32 +38,40 @@ class BalanceService {
       nekotonRepository.seedListStream
           .map((list) => list.findAccountByAddress(address)),
       (a, b, c) => (a, b, c),
-    ).flatMap<Fixed?>((value) {
+    ).switchMap<Fixed?>((value) {
       final wallet = value.$1?.wallet;
       final transport = value.$2;
       final account = value.$3;
+      final scale = transport.defaultNativeCurrencyDecimal;
+      final overall = balanceStorageService.getOverallBalance(
+        transport.networkType,
+      )[address];
+      final balances = balanceStorageService.getBalances(
+        transport.networkType,
+      )[address];
 
       if (wallet == null || account == null) {
-        return Stream.value(null);
+        return Stream.value(overall);
       }
 
       /// Balance for native wallet, concatenate changing of balance
       /// of wallet and currency updating.
-      final tonWalletBalanceStream =
-          Rx.combineLatest2<BigInt, CustomCurrency?, Fixed>(
+      final tonWalletBalanceStream = Rx.combineLatest2(
         wallet.fieldUpdatesStream.map((_) => wallet.contractState.balance),
         currenciesService.currenciesStream(transport.networkType).map(
               (curs) => curs.firstWhereOrNull(
                 (cur) => cur.address == transport.nativeTokenAddress,
               ),
             ),
-        (a, b) => b != null
-            ? Fixed.fromBigInt(
-                  a,
-                  scale: transport.defaultNativeCurrencyDecimal,
-                ) *
-                Fixed.parse(b.price)
-            : Fixed.zero,
+        (a, b) {
+          final cached = balances?.tokenBalance(
+            transport.nativeTokenAddress,
+            isNative: true,
+          );
+          return b != null
+              ? Fixed.fromBigInt(a, scale: scale) * Fixed.parse(b.price)
+              : cached?.fiatBalance.amount ?? Fixed.zero;
+        },
       );
 
       final tokenWallets = account
@@ -77,17 +87,23 @@ class BalanceService {
             // subscribe for wallet appearing, because it can happens later
             nekotonRepository.tokenWalletsStream
                 .map(
-          (list) => list.firstWhereOrNull(
-            (w) => w.rootTokenContract == contract && w.owner == address,
+          (list) => (
+            contract,
+            list.firstWhereOrNull(
+              (w) => w.rootTokenContract == contract && w.owner == address,
+            ),
           ),
         )
                 .flatMap(
-          (wallet) {
-            final wl = wallet?.wallet;
-            if (wl == null) return Stream.value(Fixed.zero);
+          (value) {
+            final contract = value.$1;
+            final wallet = value.$2?.wallet;
+            final cached = balances?.tokenBalance(contract)?.fiatBalance.amount;
+
+            if (wallet == null) return Stream.value(cached ?? Fixed.zero);
 
             return Rx.combineLatest2<Money?, CustomCurrency?, Fixed>(
-              wl.onMoneyBalanceChangedStream,
+              wallet.onMoneyBalanceChangedStream,
               currenciesService.currenciesStream(transport.networkType).map(
                     (curs) => curs.firstWhereOrNull(
                       (cur) => cur.address == contract,
@@ -95,7 +111,7 @@ class BalanceService {
                   ),
               (a, b) => b != null && a != null
                   ? a.amount * Fixed.parse(b.price)
-                  : Fixed.zero,
+                  : cached ?? Fixed.zero,
             );
           },
         ),
@@ -128,37 +144,44 @@ class BalanceService {
   /// To listen TokenWallet, use [tokenWalletBalanceStream].
   Stream<Fixed> tonWalletBalanceStream(Address address) {
     return Rx.combineLatest2<TonWalletState?, TransportStrategy,
-        (TonWalletState?, TransportStrategy)>(
+            (TonWalletState?, TransportStrategy)>(
       // subscribe for wallet appearing, because it can happens later
       nekotonRepository.walletsStream
           .map((list) => list.firstWhereOrNull((w) => w.address == address)),
       nekotonRepository.currentTransportStream, (a, b) => (a, b),
-    ).flatMap((value) {
-      final wallet = value.$1?.wallet;
-      final transport = value.$2;
+    )
+        .switchMap((value) {
+          final wallet = value.$1?.wallet;
+          final transport = value.$2;
+          final scale = transport.defaultNativeCurrencyDecimal;
+          final balances = balanceStorageService.getBalances(
+            transport.networkType,
+          )[address];
+          final cached = balances
+              ?.tokenBalance(transport.nativeTokenAddress, isNative: true)
+              ?.fiatBalance
+              .amount;
 
-      if (wallet == null) return Stream.value(Fixed.zero);
+          if (wallet == null) return Stream.value(cached ?? Fixed.zero);
 
-      return Rx.combineLatest2<BigInt, CustomCurrency?, Fixed>(
-        wallet.fieldUpdatesStream.map((_) => wallet.contractState.balance),
-        currenciesService.currenciesStream(transport.networkType).map(
-              (curs) => curs.firstWhereOrNull(
-                (cur) => cur.address == transport.nativeTokenAddress,
-              ),
-            ),
-        (a, b) => b != null
-            ? Fixed.fromBigInt(
-                  a,
-                  scale: transport.defaultNativeCurrencyDecimal,
-                ) *
-                Fixed.parse(b.price)
-            : Fixed.zero,
-      );
-    }).onErrorReturnWith((e, st) {
-      _logger.severe('tonWalletBalanceStream', e, st);
+          return Rx.combineLatest2<BigInt, CustomCurrency?, Fixed>(
+            wallet.fieldUpdatesStream.map((_) => wallet.contractState.balance),
+            currenciesService.currenciesStream(transport.networkType).map(
+                  (curs) => curs.firstWhereOrNull(
+                    (cur) => cur.address == transport.nativeTokenAddress,
+                  ),
+                ),
+            (a, b) => b != null
+                ? Fixed.fromBigInt(a, scale: scale) * Fixed.parse(b.price)
+                : cached ?? Fixed.zero,
+          );
+        })
+        .whereNotNull()
+        .onErrorReturnWith((e, st) {
+          _logger.severe('tonWalletBalanceStream', e, st);
 
-      return Fixed.zero;
-    });
+          return Fixed.zero;
+        });
   }
 
   /// Returns stream which emits balance of TokenWallet with [owner] and
@@ -171,7 +194,7 @@ class BalanceService {
     required Address rootTokenContract,
   }) {
     return Rx.combineLatest2<TokenWalletState?, TransportStrategy,
-        (TokenWalletState?, TransportStrategy)>(
+            (TokenWalletState?, TransportStrategy)>(
       // subscribe for wallet appearing, because it can happens later
       nekotonRepository.tokenWalletsStream.map(
         (list) => list.firstWhereOrNull(
@@ -180,28 +203,38 @@ class BalanceService {
       ),
       nekotonRepository.currentTransportStream,
       (a, b) => (a, b),
-    ).flatMap((value) {
-      final wallet = value.$1?.wallet;
-      final transport = value.$2;
+    )
+        .switchMap((value) {
+          final wallet = value.$1?.wallet;
+          final transport = value.$2;
+          final balances = balanceStorageService.getBalances(
+            transport.networkType,
+          )[owner];
+          final cached =
+              balances?.tokenBalance(rootTokenContract)?.fiatBalance.amount;
 
-      if (wallet == null) return Stream.value(Fixed.zero);
+          if (wallet == null) {
+            return Stream.value(cached);
+          }
 
-      return Rx.combineLatest2<Money?, CustomCurrency?, Fixed>(
-        wallet.onMoneyBalanceChangedStream,
-        currenciesService.currenciesStream(transport.networkType).map(
-              (curs) => curs.firstWhereOrNull(
-                (cur) => cur.address == rootTokenContract,
-              ),
-            ),
-        (a, b) => b != null && a != null
-            ? a.amount * Fixed.parse(b.price)
-            : Fixed.zero,
-      );
-    }).onErrorReturnWith((e, st) {
-      _logger.severe('tokenWalletBalanceStream', e, st);
+          return Rx.combineLatest2<Money?, CustomCurrency?, Fixed>(
+            wallet.onMoneyBalanceChangedStream,
+            currenciesService.currenciesStream(transport.networkType).map(
+                  (curs) => curs.firstWhereOrNull(
+                    (cur) => cur.address == rootTokenContract,
+                  ),
+                ),
+            (a, b) => b != null && a != null
+                ? a.amount * Fixed.parse(b.price)
+                : cached ?? Fixed.zero,
+          );
+        })
+        .whereNotNull()
+        .onErrorReturnWith((e, st) {
+          _logger.severe('tokenWalletBalanceStream', e, st);
 
-      return Fixed.zero;
-    });
+          return Fixed.zero;
+        });
   }
 
   /// Get balance of public key and all related Ton/Token wallets of it without

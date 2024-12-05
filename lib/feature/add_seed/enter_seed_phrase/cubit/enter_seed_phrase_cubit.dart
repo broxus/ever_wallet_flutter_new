@@ -267,14 +267,17 @@ class EnterSeedPhraseCubit extends Cubit<EnterSeedPhraseState>
 
       _canAutoNavigate = false;
 
-      words.asMap().forEach((index, word) {
-        _controllers[index].value = TextEditingValue(
-          text: word,
-          selection: TextSelection.fromPosition(
-            TextPosition(offset: word.length),
-          ),
-        );
-      });
+      try {
+        // TODO(knightforce): check why error "Not in inclusive range 0..11: 12"
+        words.asMap().forEach((index, word) {
+          _controllers[index].value = TextEditingValue(
+            text: word,
+            selection: TextSelection.fromPosition(
+              TextPosition(offset: word.length),
+            ),
+          );
+        });
+      } catch (_) {}
 
       await _validateFormWithError();
 
@@ -364,15 +367,19 @@ class EnterSeedPhraseCubit extends Cubit<EnterSeedPhraseState>
   void _resetFormAndError() {
     formKey.currentState?.reset();
     var changedModels = false;
-    for (var index = 0; index < _currentValue; index++) {
-      if (_inputModels[index].hasError) {
-        changedModels = true;
-        _inputModels[index] = _inputModels[index].copyWith(hasError: false);
+
+    try {
+      for (var index = 0; index < _currentValue; index++) {
+        if (_inputModels[index].hasError) {
+          changedModels = true;
+          _inputModels[index] = _inputModels[index].copyWith(hasError: false);
+        }
       }
-    }
-    final st = state;
-    if (changedModels && st is _Tab) {
-      emit(st.copyWith(inputs: _inputModels.take(_currentValue).toList()));
+    } finally {
+      final st = state;
+      if (changedModels && st is _Tab) {
+        emit(st.copyWith(inputs: _inputModels.take(_currentValue).toList()));
+      }
     }
   }
 

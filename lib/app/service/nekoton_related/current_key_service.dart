@@ -28,7 +28,7 @@ class CurrentKeyService {
       _storageService.lastViewedSeedsStream;
 
   /// Change current selected key and update [lastViewedSeeds].
-  Future<void> changeCurrentKey(PublicKey publicKey) {
+  void changeCurrentKey(PublicKey publicKey) {
     final masterKey =
         _nekotonRepository.seedList.findSeedKey(publicKey)?.key.masterKey;
     final lastViewed = List<PublicKey>.from(lastViewedSeeds);
@@ -36,11 +36,10 @@ class CurrentKeyService {
       lastViewed.insert(0, masterKey);
     }
 
-    return Future.wait([
-      _storageService.setCurrentKey(publicKey),
-      _storageService.updateLastViewedSeeds(
+    _storageService
+      ..setCurrentKey(publicKey)
+      ..updateLastViewedSeeds(
         lastViewed.take(maxLastSelectedSeeds).toList(),
-      ),
-    ]);
+      );
   }
 }
