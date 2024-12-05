@@ -40,7 +40,7 @@ class WelcomeScreenWidgetModel
   }
 
   void onPressedWalletLogin() {
-    unawaited(model.saveUserNew(userWithNewWallet: false));
+    model.saveUserNew(userWithNewWallet: false);
     _goNext(AppRoute.addExistingWallet.path);
   }
 
