@@ -186,9 +186,9 @@ enum AppRoute {
     'createSeedPassword',
     isSaveLocation: true,
   ),
-  enableBiometryAfterOnboarding(
-    '',
-    'enableBiometryAfterOnboarding',
+  enableBiometry(
+    '/enableBiometry',
+    'enableBiometry',
   ),
 
   /// Browser section

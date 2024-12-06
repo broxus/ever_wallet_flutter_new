@@ -31,6 +31,7 @@ class ChangeSeedPasswordCubit extends Cubit<ChangeSeedPasswordState> {
         oldPassword: oldPassword,
         newPassword: newPassword,
       );
+
       await biometryService.updatePasswordIfPossible(
         publicKey: publicKey,
         newPassword: newPassword,

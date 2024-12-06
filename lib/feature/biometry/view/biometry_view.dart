@@ -1,4 +1,4 @@
-import 'package:app/feature/add_seed/add_seed_enable_biometry/cubit/add_seed_enable_biometry_cubit.dart';
+import 'package:app/feature/biometry/cubit/biometry_cubit.dart';
 import 'package:app/generated/generated.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -6,11 +6,14 @@ import 'package:go_router/go_router.dart';
 import 'package:ui_components_lib/ui_components_lib.dart';
 import 'package:ui_components_lib/v2/widgets/buttons/button.dart';
 
-class AddSeedEnableBiometryView extends StatelessWidget {
-  const AddSeedEnableBiometryView({
+class BiometryView extends StatelessWidget {
+  const BiometryView({
     required this.isFace,
+    this.onClose,
     super.key,
   });
+
+  final VoidCallback? onClose;
 
   final bool isFace;
 
@@ -62,15 +65,14 @@ class AddSeedEnableBiometryView extends StatelessWidget {
                 if (isFace) LocaleKeys.faceId.tr() else LocaleKeys.touchId.tr(),
               ],
             ),
-            onPressed: () =>
-                context.read<AddSeedEnableBiometryCubit>().requestBiometry(),
+            onPressed: () => context.read<BiometryCubit>().requestBiometry(),
             buttonShape: ButtonShape.pill,
           ),
           const SizedBox(height: DimensSize.d8),
           PrimaryButton(
             title: LocaleKeys.noThanks.tr(),
             buttonShape: ButtonShape.pill,
-            onPressed: () => context.pop(),
+            onPressed: onClose ?? () => context.pop(),
           ),
         ],
       ),
