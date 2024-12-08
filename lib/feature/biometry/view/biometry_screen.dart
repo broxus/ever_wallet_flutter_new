@@ -29,30 +29,34 @@ class BiometryScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final themeStyle = context.themeStyleV2;
-    return Scaffold(
-      backgroundColor: themeStyle.colors.background0,
-      body: BlocProvider<BiometryCubit>(
-        create: (_) => BiometryCubit(
-          inject<BiometryService>(),
-          inject<NekotonRepository>(),
-        )..init(),
-        child: BlocConsumer<BiometryCubit, BiometryState>(
-          listener: (context, state) => state.whenOrNull(
-            completed: onCompleted ?? () => context.pop(),
-          ),
-          builder: (context, state) {
-            return state.when(
-              completed: () => const SizedBox.shrink(),
-              init: () => const SizedBox.shrink(),
-              ask: (isFace) => Padding(
-                padding: const EdgeInsets.symmetric(horizontal: DimensSize.d16),
-                child: BiometryView(
-                  isFace: isFace,
-                  onClose: onClose,
+    return PopCapture(
+      onPop: onClose ?? context.pop,
+      child: Scaffold(
+        backgroundColor: themeStyle.colors.background0,
+        body: BlocProvider<BiometryCubit>(
+          create: (_) => BiometryCubit(
+            inject<BiometryService>(),
+            inject<NekotonRepository>(),
+          )..init(),
+          child: BlocConsumer<BiometryCubit, BiometryState>(
+            listener: (context, state) => state.whenOrNull(
+              completed: onCompleted ?? () => context.pop(),
+            ),
+            builder: (context, state) {
+              return state.when(
+                completed: () => const SizedBox.shrink(),
+                init: () => const SizedBox.shrink(),
+                ask: (isFace) => Padding(
+                  padding:
+                      const EdgeInsets.symmetric(horizontal: DimensSize.d16),
+                  child: BiometryView(
+                    isFace: isFace,
+                    onClose: onClose,
+                  ),
                 ),
-              ),
-            );
-          },
+              );
+            },
+          ),
         ),
       ),
     );
