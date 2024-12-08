@@ -3,7 +3,7 @@
 // ignore_for_file: type=lint
 // ignore_for_file: unused_element, deprecated_member_use, deprecated_member_use_from_same_package, use_function_type_syntax_for_parameters, unnecessary_const, avoid_init_to_null, invalid_override_different_default_values_named, prefer_expression_function_bodies, annotate_overrides, invalid_annotation_target, unnecessary_question_mark
 
-part of 'add_seed_enable_biometry_cubit.dart';
+part of 'biometry_cubit.dart';
 
 // **************************************************************************
 // FreezedGenerator
@@ -15,7 +15,7 @@ final _privateConstructorUsedError = UnsupportedError(
     'It seems like you constructed your class using `MyClass._()`. This constructor is only meant to be used by freezed and you are not supposed to need it nor use it.\nPlease check the documentation here for more information: https://github.com/rrousselGit/freezed#adding-getters-and-methods-to-our-models');
 
 /// @nodoc
-mixin _$AddSeedEnableBiometryState {
+mixin _$BiometryState {
   @optionalTypeArgs
   TResult when<TResult extends Object?>({
     required TResult Function() init,
@@ -63,25 +63,23 @@ mixin _$AddSeedEnableBiometryState {
 }
 
 /// @nodoc
-abstract class $AddSeedEnableBiometryStateCopyWith<$Res> {
-  factory $AddSeedEnableBiometryStateCopyWith(AddSeedEnableBiometryState value,
-          $Res Function(AddSeedEnableBiometryState) then) =
-      _$AddSeedEnableBiometryStateCopyWithImpl<$Res,
-          AddSeedEnableBiometryState>;
+abstract class $BiometryStateCopyWith<$Res> {
+  factory $BiometryStateCopyWith(
+          BiometryState value, $Res Function(BiometryState) then) =
+      _$BiometryStateCopyWithImpl<$Res, BiometryState>;
 }
 
 /// @nodoc
-class _$AddSeedEnableBiometryStateCopyWithImpl<$Res,
-        $Val extends AddSeedEnableBiometryState>
-    implements $AddSeedEnableBiometryStateCopyWith<$Res> {
-  _$AddSeedEnableBiometryStateCopyWithImpl(this._value, this._then);
+class _$BiometryStateCopyWithImpl<$Res, $Val extends BiometryState>
+    implements $BiometryStateCopyWith<$Res> {
+  _$BiometryStateCopyWithImpl(this._value, this._then);
 
   // ignore: unused_field
   final $Val _value;
   // ignore: unused_field
   final $Res Function($Val) _then;
 
-  /// Create a copy of AddSeedEnableBiometryState
+  /// Create a copy of BiometryState
   /// with the given fields replaced by the non-null parameter values.
 }
 
@@ -94,12 +92,12 @@ abstract class _$$InitImplCopyWith<$Res> {
 
 /// @nodoc
 class __$$InitImplCopyWithImpl<$Res>
-    extends _$AddSeedEnableBiometryStateCopyWithImpl<$Res, _$InitImpl>
+    extends _$BiometryStateCopyWithImpl<$Res, _$InitImpl>
     implements _$$InitImplCopyWith<$Res> {
   __$$InitImplCopyWithImpl(_$InitImpl _value, $Res Function(_$InitImpl) _then)
       : super(_value, _then);
 
-  /// Create a copy of AddSeedEnableBiometryState
+  /// Create a copy of BiometryState
   /// with the given fields replaced by the non-null parameter values.
 }
 
@@ -110,7 +108,7 @@ class _$InitImpl implements _Init {
 
   @override
   String toString() {
-    return 'AddSeedEnableBiometryState.init()';
+    return 'BiometryState.init()';
   }
 
   @override
@@ -191,7 +189,7 @@ class _$InitImpl implements _Init {
   }
 }
 
-abstract class _Init implements AddSeedEnableBiometryState {
+abstract class _Init implements BiometryState {
   const factory _Init() = _$InitImpl;
 }
 
@@ -205,12 +203,12 @@ abstract class _$$AskImplCopyWith<$Res> {
 
 /// @nodoc
 class __$$AskImplCopyWithImpl<$Res>
-    extends _$AddSeedEnableBiometryStateCopyWithImpl<$Res, _$AskImpl>
+    extends _$BiometryStateCopyWithImpl<$Res, _$AskImpl>
     implements _$$AskImplCopyWith<$Res> {
   __$$AskImplCopyWithImpl(_$AskImpl _value, $Res Function(_$AskImpl) _then)
       : super(_value, _then);
 
-  /// Create a copy of AddSeedEnableBiometryState
+  /// Create a copy of BiometryState
   /// with the given fields replaced by the non-null parameter values.
   @pragma('vm:prefer-inline')
   @override
@@ -236,7 +234,7 @@ class _$AskImpl implements _Ask {
 
   @override
   String toString() {
-    return 'AddSeedEnableBiometryState.ask(isFaceBiometry: $isFaceBiometry)';
+    return 'BiometryState.ask(isFaceBiometry: $isFaceBiometry)';
   }
 
   @override
@@ -251,7 +249,7 @@ class _$AskImpl implements _Ask {
   @override
   int get hashCode => Object.hash(runtimeType, isFaceBiometry);
 
-  /// Create a copy of AddSeedEnableBiometryState
+  /// Create a copy of BiometryState
   /// with the given fields replaced by the non-null parameter values.
   @JsonKey(includeFromJson: false, includeToJson: false)
   @override
@@ -328,12 +326,12 @@ class _$AskImpl implements _Ask {
   }
 }
 
-abstract class _Ask implements AddSeedEnableBiometryState {
+abstract class _Ask implements BiometryState {
   const factory _Ask({required final bool isFaceBiometry}) = _$AskImpl;
 
   bool get isFaceBiometry;
 
-  /// Create a copy of AddSeedEnableBiometryState
+  /// Create a copy of BiometryState
   /// with the given fields replaced by the non-null parameter values.
   @JsonKey(includeFromJson: false, includeToJson: false)
   _$$AskImplCopyWith<_$AskImpl> get copyWith =>
@@ -349,13 +347,13 @@ abstract class _$$CompletedImplCopyWith<$Res> {
 
 /// @nodoc
 class __$$CompletedImplCopyWithImpl<$Res>
-    extends _$AddSeedEnableBiometryStateCopyWithImpl<$Res, _$CompletedImpl>
+    extends _$BiometryStateCopyWithImpl<$Res, _$CompletedImpl>
     implements _$$CompletedImplCopyWith<$Res> {
   __$$CompletedImplCopyWithImpl(
       _$CompletedImpl _value, $Res Function(_$CompletedImpl) _then)
       : super(_value, _then);
 
-  /// Create a copy of AddSeedEnableBiometryState
+  /// Create a copy of BiometryState
   /// with the given fields replaced by the non-null parameter values.
 }
 
@@ -366,7 +364,7 @@ class _$CompletedImpl implements _Completed {
 
   @override
   String toString() {
-    return 'AddSeedEnableBiometryState.completed()';
+    return 'BiometryState.completed()';
   }
 
   @override
@@ -447,6 +445,6 @@ class _$CompletedImpl implements _Completed {
   }
 }
 
-abstract class _Completed implements AddSeedEnableBiometryState {
+abstract class _Completed implements BiometryState {
   const factory _Completed() = _$CompletedImpl;
 }

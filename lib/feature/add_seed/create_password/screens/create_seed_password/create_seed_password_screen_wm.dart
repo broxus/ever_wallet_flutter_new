@@ -84,7 +84,11 @@ class CreateSeedPasswordScreenWidgetModel extends CustomWidgetModel<
       password: passwordController.text,
     );
 
-    contextSafe?.goNamed(AppRoute.wallet.name);
+    if (model.isNeedBiometry) {
+      contextSafe?.goFurther(AppRoute.enableBiometry.path);
+    } else {
+      contextSafe?.goNamed(AppRoute.wallet.name);
+    }
   }
 
   void _validate() {

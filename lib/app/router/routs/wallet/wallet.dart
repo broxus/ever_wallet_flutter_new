@@ -4,8 +4,7 @@ import 'dart:convert';
 
 import 'package:app/app/router/router.dart';
 import 'package:app/data/models/models.dart';
-import 'package:app/feature/add_seed/add_seed_enable_biometry/add_seed_enable_biometry.dart';
-import 'package:app/feature/add_seed/add_seed_enable_biometry/view/add_seed_enable_biometry_page.dart';
+import 'package:app/feature/biometry/view/biometry_screen.dart';
 import 'package:app/feature/network/network.dart';
 import 'package:app/feature/no_internet/no_internet_screen.dart';
 import 'package:app/feature/splash/splash_screen.dart';
@@ -95,8 +94,8 @@ StatefulShellBranch get walletBranch {
         builder: (context, state) => const WalletPageWidget(),
         routes: [
           GoRoute(
-            path: AppRoute.enableBiometryAfterOnboarding.path,
-            builder: (_, __) => const AddSeedEnableBiometryPage(),
+            path: AppRoute.enableBiometry.path,
+            builder: (_, __) => const BiometryScreen(),
           ),
           GoRoute(
             path: AppRoute.selectNewAsset.path,

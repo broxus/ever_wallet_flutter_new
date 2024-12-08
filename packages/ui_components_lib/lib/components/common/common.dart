@@ -12,5 +12,6 @@ export 'common_padding.dart';
 export 'container/container.dart';
 export 'default_app_bar.dart';
 export 'money_widget.dart';
+export 'pop_capture.dart';
 export 'squircle/squircle.dart';
 export 'switcher/common_tab_swither.dart';

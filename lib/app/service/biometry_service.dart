@@ -18,7 +18,11 @@ class BiometryPasswordNotStoredException implements Exception {}
 /// Service that helps reading/updating biometry settings.
 @singleton
 class BiometryService {
-  BiometryService(this.storage, this.secureStorage, this.appLifecycleService);
+  BiometryService(
+    this.storage,
+    this.secureStorage,
+    this.appLifecycleService,
+  );
 
   final GeneralStorageService storage;
   final SecureStorageService secureStorage;
@@ -31,13 +35,13 @@ class BiometryService {
   Stream<bool> get availabilityStream => _availabilitySubject;
 
   /// If biometry available in app
-  bool get available => _availabilitySubject.value;
+  bool get isAvailable => _availabilitySubject.value;
 
   /// Stream of biometry enabled status
   Stream<bool> get enabledStream => storage.isBiometryEnabledStream;
 
   /// If biometry enabled and available (if not available, then not enabled)
-  bool get enabled => storage.isBiometryEnabled;
+  bool get isEnabled => storage.isBiometryEnabled;
 
   /// Check if biometry available on device
   Future<bool> get _isAvailable async {
@@ -95,7 +99,9 @@ class BiometryService {
     try {
       final settingsOpened = prefs.getBool(_biometrySettingsOpened) ?? false;
 
-      return settingsOpened && !enabled && await _localAuth.canCheckBiometrics;
+      return settingsOpened &&
+          !isEnabled &&
+          await _localAuth.canCheckBiometrics;
     } finally {
       await prefs.remove(_biometrySettingsOpened);
     }
@@ -125,7 +131,7 @@ class BiometryService {
     required PublicKey publicKey,
     required String password,
   }) async {
-    if (available) {
+    if (isAvailable) {
       return secureStorage.setKeyPassword(
         publicKey: publicKey,
         password: password,
@@ -171,7 +177,7 @@ class BiometryService {
     required PublicKey publicKey,
     required String newPassword,
   }) async {
-    if (enabled) {
+    if (isEnabled) {
       return setKeyPassword(
         publicKey: publicKey,
         password: newPassword,

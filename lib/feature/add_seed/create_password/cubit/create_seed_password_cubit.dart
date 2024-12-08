@@ -97,8 +97,12 @@ class CreateSeedPasswordCubit extends Cubit<CreateSeedPasswordState>
     } catch (e) {
       Logger('CreateSeedPasswordCubit').severe(e);
       emit(state.copyWith(isLoading: false));
-      messengerService
-          .show(Message.error(context: context, message: e.toString()));
+      messengerService.show(
+        Message.error(
+          context: context,
+          message: e.toString(),
+        ),
+      );
     }
   }
 

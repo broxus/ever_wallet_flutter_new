@@ -5,16 +5,16 @@ import 'package:freezed_annotation/freezed_annotation.dart';
 import 'package:local_auth/local_auth.dart';
 import 'package:nekoton_repository/nekoton_repository.dart';
 
-part 'add_seed_enable_biometry_cubit.freezed.dart';
+part 'biometry_cubit.freezed.dart';
 
-part 'add_seed_enable_biometry_state.dart';
+part 'biometry_state.dart';
 
-/// Cubit to enable biometry for newly added seed phrase from onboarding.
-class AddSeedEnableBiometryCubit extends Cubit<AddSeedEnableBiometryState> {
-  AddSeedEnableBiometryCubit(
+/// Cubit to enable biometry.
+class BiometryCubit extends Cubit<BiometryState> {
+  BiometryCubit(
     this.biometryService,
     this.nekotonRepository,
-  ) : super(const AddSeedEnableBiometryState.init());
+  ) : super(const BiometryState.init());
 
   final BiometryService biometryService;
   final NekotonRepository nekotonRepository;
@@ -23,7 +23,7 @@ class AddSeedEnableBiometryCubit extends Cubit<AddSeedEnableBiometryState> {
     final types = await biometryService.getAvailableBiometry();
     if (!isClosed) {
       emit(
-        AddSeedEnableBiometryState.ask(
+        BiometryState.ask(
           isFaceBiometry: types.contains(BiometricType.face),
         ),
       );
@@ -42,7 +42,7 @@ class AddSeedEnableBiometryCubit extends Cubit<AddSeedEnableBiometryState> {
       );
     } finally {
       if (!isClosed) {
-        emit(const AddSeedEnableBiometryState.completed());
+        emit(const BiometryState.completed());
       }
     }
   }
