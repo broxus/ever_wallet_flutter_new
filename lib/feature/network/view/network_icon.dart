@@ -6,10 +6,14 @@ import 'package:ui_components_lib/v2/ui_components_lib_v2.dart';
 class NetworkIcon extends StatelessWidget {
   const NetworkIcon({
     required this.type,
+    this.itemSize,
+    this.iconSize,
     super.key,
   });
 
   final NetworkType type;
+  final double? itemSize;
+  final double? iconSize;
 
   String get _path => switch (type) {
         NetworkType.ever => Assets.images.networkEver.path,
@@ -37,16 +41,16 @@ class NetworkIcon extends StatelessWidget {
   Widget build(BuildContext context) => ClipOval(
         child: Container(
           color: _bgColor,
-          width: DimensSizeV2.d40,
-          height: DimensSizeV2.d40,
+          width: itemSize ?? DimensSizeV2.d40,
+          height: itemSize ?? DimensSizeV2.d40,
           padding: _iconOffset,
           child: switch (type) {
             NetworkType.tycho => SvgPicture.asset(_path),
             _ => Center(
                 child: SvgPicture.asset(
                   _path,
-                  width: DimensSizeV2.d16,
-                  height: DimensSizeV2.d16,
+                  width: iconSize ?? DimensSizeV2.d16,
+                  height: iconSize ?? DimensSizeV2.d16,
                 ),
               ),
           },

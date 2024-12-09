@@ -95,6 +95,7 @@ class WalletAccountActionsCubit extends Cubit<WalletAccountActionsState> {
           hasStake: hasStake,
           hasStakeActions: hasStake && _cachedWithdraws.isNotEmpty,
           balance: contract.balance,
+          custodians: wallet?.custodians,
         ),
       );
     } catch (_) {}

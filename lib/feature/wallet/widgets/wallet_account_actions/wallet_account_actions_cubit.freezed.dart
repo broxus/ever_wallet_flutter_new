@@ -21,7 +21,7 @@ mixin _$WalletAccountActionsState {
   TResult when<TResult extends Object?>({
     required TResult Function(bool hasStake) loading,
     required TResult Function(WalletAccountActionBehavior action, bool hasStake,
-            bool hasStakeActions, BigInt? balance)
+            bool hasStakeActions, BigInt? balance, List<PublicKey>? custodians)
         data,
   }) =>
       throw _privateConstructorUsedError;
@@ -29,7 +29,7 @@ mixin _$WalletAccountActionsState {
   TResult? whenOrNull<TResult extends Object?>({
     TResult? Function(bool hasStake)? loading,
     TResult? Function(WalletAccountActionBehavior action, bool hasStake,
-            bool hasStakeActions, BigInt? balance)?
+            bool hasStakeActions, BigInt? balance, List<PublicKey>? custodians)?
         data,
   }) =>
       throw _privateConstructorUsedError;
@@ -37,7 +37,7 @@ mixin _$WalletAccountActionsState {
   TResult maybeWhen<TResult extends Object?>({
     TResult Function(bool hasStake)? loading,
     TResult Function(WalletAccountActionBehavior action, bool hasStake,
-            bool hasStakeActions, BigInt? balance)?
+            bool hasStakeActions, BigInt? balance, List<PublicKey>? custodians)?
         data,
     required TResult orElse(),
   }) =>
@@ -178,7 +178,7 @@ class _$LoadingImpl implements _Loading {
   TResult when<TResult extends Object?>({
     required TResult Function(bool hasStake) loading,
     required TResult Function(WalletAccountActionBehavior action, bool hasStake,
-            bool hasStakeActions, BigInt? balance)
+            bool hasStakeActions, BigInt? balance, List<PublicKey>? custodians)
         data,
   }) {
     return loading(hasStake);
@@ -189,7 +189,7 @@ class _$LoadingImpl implements _Loading {
   TResult? whenOrNull<TResult extends Object?>({
     TResult? Function(bool hasStake)? loading,
     TResult? Function(WalletAccountActionBehavior action, bool hasStake,
-            bool hasStakeActions, BigInt? balance)?
+            bool hasStakeActions, BigInt? balance, List<PublicKey>? custodians)?
         data,
   }) {
     return loading?.call(hasStake);
@@ -200,7 +200,7 @@ class _$LoadingImpl implements _Loading {
   TResult maybeWhen<TResult extends Object?>({
     TResult Function(bool hasStake)? loading,
     TResult Function(WalletAccountActionBehavior action, bool hasStake,
-            bool hasStakeActions, BigInt? balance)?
+            bool hasStakeActions, BigInt? balance, List<PublicKey>? custodians)?
         data,
     required TResult orElse(),
   }) {
@@ -268,7 +268,8 @@ abstract class _$$DataImplCopyWith<$Res>
       {WalletAccountActionBehavior action,
       bool hasStake,
       bool hasStakeActions,
-      BigInt? balance});
+      BigInt? balance,
+      List<PublicKey>? custodians});
 }
 
 /// @nodoc
@@ -287,6 +288,7 @@ class __$$DataImplCopyWithImpl<$Res>
     Object? hasStake = null,
     Object? hasStakeActions = null,
     Object? balance = freezed,
+    Object? custodians = freezed,
   }) {
     return _then(_$DataImpl(
       action: null == action
@@ -305,6 +307,10 @@ class __$$DataImplCopyWithImpl<$Res>
           ? _value.balance
           : balance // ignore: cast_nullable_to_non_nullable
               as BigInt?,
+      custodians: freezed == custodians
+          ? _value._custodians
+          : custodians // ignore: cast_nullable_to_non_nullable
+              as List<PublicKey>?,
     ));
   }
 }
@@ -316,7 +322,9 @@ class _$DataImpl implements _Data {
       {required this.action,
       required this.hasStake,
       required this.hasStakeActions,
-      required this.balance});
+      required this.balance,
+      required final List<PublicKey>? custodians})
+      : _custodians = custodians;
 
   @override
   final WalletAccountActionBehavior action;
@@ -326,10 +334,19 @@ class _$DataImpl implements _Data {
   final bool hasStakeActions;
   @override
   final BigInt? balance;
+  final List<PublicKey>? _custodians;
+  @override
+  List<PublicKey>? get custodians {
+    final value = _custodians;
+    if (value == null) return null;
+    if (_custodians is EqualUnmodifiableListView) return _custodians;
+    // ignore: implicit_dynamic_type
+    return EqualUnmodifiableListView(value);
+  }
 
   @override
   String toString() {
-    return 'WalletAccountActionsState.data(action: $action, hasStake: $hasStake, hasStakeActions: $hasStakeActions, balance: $balance)';
+    return 'WalletAccountActionsState.data(action: $action, hasStake: $hasStake, hasStakeActions: $hasStakeActions, balance: $balance, custodians: $custodians)';
   }
 
   @override
@@ -342,12 +359,19 @@ class _$DataImpl implements _Data {
                 other.hasStake == hasStake) &&
             (identical(other.hasStakeActions, hasStakeActions) ||
                 other.hasStakeActions == hasStakeActions) &&
-            (identical(other.balance, balance) || other.balance == balance));
+            (identical(other.balance, balance) || other.balance == balance) &&
+            const DeepCollectionEquality()
+                .equals(other._custodians, _custodians));
   }
 
   @override
-  int get hashCode =>
-      Object.hash(runtimeType, action, hasStake, hasStakeActions, balance);
+  int get hashCode => Object.hash(
+      runtimeType,
+      action,
+      hasStake,
+      hasStakeActions,
+      balance,
+      const DeepCollectionEquality().hash(_custodians));
 
   /// Create a copy of WalletAccountActionsState
   /// with the given fields replaced by the non-null parameter values.
@@ -362,10 +386,10 @@ class _$DataImpl implements _Data {
   TResult when<TResult extends Object?>({
     required TResult Function(bool hasStake) loading,
     required TResult Function(WalletAccountActionBehavior action, bool hasStake,
-            bool hasStakeActions, BigInt? balance)
+            bool hasStakeActions, BigInt? balance, List<PublicKey>? custodians)
         data,
   }) {
-    return data(action, hasStake, hasStakeActions, balance);
+    return data(action, hasStake, hasStakeActions, balance, custodians);
   }
 
   @override
@@ -373,10 +397,10 @@ class _$DataImpl implements _Data {
   TResult? whenOrNull<TResult extends Object?>({
     TResult? Function(bool hasStake)? loading,
     TResult? Function(WalletAccountActionBehavior action, bool hasStake,
-            bool hasStakeActions, BigInt? balance)?
+            bool hasStakeActions, BigInt? balance, List<PublicKey>? custodians)?
         data,
   }) {
-    return data?.call(action, hasStake, hasStakeActions, balance);
+    return data?.call(action, hasStake, hasStakeActions, balance, custodians);
   }
 
   @override
@@ -384,12 +408,12 @@ class _$DataImpl implements _Data {
   TResult maybeWhen<TResult extends Object?>({
     TResult Function(bool hasStake)? loading,
     TResult Function(WalletAccountActionBehavior action, bool hasStake,
-            bool hasStakeActions, BigInt? balance)?
+            bool hasStakeActions, BigInt? balance, List<PublicKey>? custodians)?
         data,
     required TResult orElse(),
   }) {
     if (data != null) {
-      return data(action, hasStake, hasStakeActions, balance);
+      return data(action, hasStake, hasStakeActions, balance, custodians);
     }
     return orElse();
   }
@@ -431,13 +455,15 @@ abstract class _Data implements WalletAccountActionsState {
       {required final WalletAccountActionBehavior action,
       required final bool hasStake,
       required final bool hasStakeActions,
-      required final BigInt? balance}) = _$DataImpl;
+      required final BigInt? balance,
+      required final List<PublicKey>? custodians}) = _$DataImpl;
 
   WalletAccountActionBehavior get action;
   @override
   bool get hasStake;
   bool get hasStakeActions;
   BigInt? get balance;
+  List<PublicKey>? get custodians;
 
   /// Create a copy of WalletAccountActionsState
   /// with the given fields replaced by the non-null parameter values.

@@ -48,7 +48,7 @@ class WalletAppBarWidgetModel
 
   void onSettings() {
     if (currentAccount.value == null) return;
-    showAccountSettingsSheet(
+    showAccountSettingsModal(
       context: context,
       account: currentAccount.value!,
       custodians: walletState.value?.wallet?.custodians,

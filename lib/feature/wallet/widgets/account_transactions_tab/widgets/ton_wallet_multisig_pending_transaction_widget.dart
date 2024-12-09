@@ -11,14 +11,16 @@ import 'package:ui_components_lib/ui_components_lib.dart';
 class TonWalletMultisigPendingTransactionWidget extends StatelessWidget {
   const TonWalletMultisigPendingTransactionWidget({
     required this.transaction,
-    required this.displayDate,
+    required this.isFirst,
+    required this.isLast,
     required this.price,
     required this.account,
     super.key,
   });
 
   final TonWalletMultisigPendingTransaction transaction;
-  final bool displayDate;
+  final bool isFirst;
+  final bool isLast;
   final Fixed price;
   final KeyAccount account;
 
@@ -30,7 +32,8 @@ class TonWalletMultisigPendingTransactionWidget extends StatelessWidget {
     final theme = context.themeStyleV2;
 
     return TonWalletTransactionWidget(
-      displayDate: displayDate,
+      isFirst: isFirst,
+      isLast: isLast,
       onPressed: () => Navigator.of(context, rootNavigator: true).push(
         MaterialPageRoute<void>(
           builder: (_) => TonWalletMultisigPendingTransactionDetailsPage(

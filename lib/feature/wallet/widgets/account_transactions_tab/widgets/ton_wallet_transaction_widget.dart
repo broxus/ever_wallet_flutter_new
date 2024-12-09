@@ -15,7 +15,8 @@ class TonWalletTransactionWidget extends StatelessWidget {
     required this.transactionValue,
     required this.transactionFee,
     required this.status,
-    required this.displayDate,
+    required this.isFirst,
+    required this.isLast,
     required this.onPressed,
     required this.address,
     super.key,
@@ -49,7 +50,10 @@ class TonWalletTransactionWidget extends StatelessWidget {
   /// If date of this transaction must be displayed.
   /// This is external decision that could use comparing this transaction and
   /// prev one.
-  final bool displayDate;
+  final bool isFirst;
+
+  /// if isLast true, it means that this transaction is last for this date
+  final bool isLast;
 
   /// Press callback to open detailed transaction page
   final VoidCallback onPressed;
@@ -57,13 +61,18 @@ class TonWalletTransactionWidget extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final theme = context.themeStyleV2;
-    final date = displayDate ? _headerDate(theme) : null;
+    final date = isFirst ? _headerDate(theme) : null;
 
     final body = PressScaleWidget(
       onPressed: onPressed,
-      child: Material(
-        shape: const SquircleShapeBorder(cornerRadius: DimensRadius.medium),
-        color: theme.colors.background1,
+      child: Container(
+        decoration: BoxDecoration(
+          color: theme.colors.background1,
+          borderRadius: BorderRadius.vertical(
+            top: Radius.circular(isFirst ? DimensRadiusV2.radius16 : 0),
+            bottom: Radius.circular(isLast ? DimensRadiusV2.radius16 : 0),
+          ),
+        ),
         child: SeparatedColumn(
           crossAxisAlignment: CrossAxisAlignment.start,
           mainAxisSize: MainAxisSize.min,
@@ -75,10 +84,7 @@ class TonWalletTransactionWidget extends StatelessWidget {
     );
 
     return date == null
-        ? Padding(
-            padding: const EdgeInsets.only(top: DimensSize.d8),
-            child: body,
-          )
+        ? body
         : SeparatedColumn(
             crossAxisAlignment: CrossAxisAlignment.start,
             mainAxisSize: MainAxisSize.min,
@@ -184,7 +190,6 @@ class TonWalletTransactionWidget extends StatelessWidget {
                       )
                     else
                       Text('', style: theme.textStyles.labelXSmall),
-                    const SizedBox(height: DimensSizeV2.d6),
                     Text(
                       transactionTimeFormatter.format(transactionDateTime),
                       style: theme.textStyles.labelXSmall.copyWith(

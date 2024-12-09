@@ -6,6 +6,7 @@ import 'package:app/di/di.dart';
 import 'package:app/feature/profile/profile.dart';
 import 'package:app/feature/wallet/wallet.dart';
 import 'package:app/feature/wallet/wallet_deploy/widgets/deploy_wallet_min_ever_modal.dart';
+import 'package:app/feature/wallet/widgets/account_settings/account_settings.dart';
 import 'package:app/feature/wallet/widgets/wallet_account_actions/wallet_account_actions_cubit.dart';
 import 'package:app/generated/generated.dart';
 import 'package:app/utils/utils.dart';
@@ -71,6 +72,7 @@ class WalletAccountActions extends StatelessWidget {
                       hasStake,
                       hasStakeActions,
                       balance,
+                      custodians,
                     ) =>
                         _ActionList(
                       account: account,
@@ -80,6 +82,7 @@ class WalletAccountActions extends StatelessWidget {
                       sendSpecified: sendSpecified,
                       padding: padding,
                       balance: balance,
+                      custodians: custodians,
                     ),
                   );
                 },
@@ -98,6 +101,7 @@ class _ActionList extends StatelessWidget {
     this.hasStakeActions = false,
     this.sendSpecified = false,
     this.balance,
+    this.custodians,
   });
 
   final WalletAccountActionBehavior action;
@@ -107,6 +111,7 @@ class _ActionList extends StatelessWidget {
   final bool sendSpecified;
   final EdgeInsetsGeometry padding;
   final BigInt? balance;
+  final List<PublicKey>? custodians;
 
   @override
   Widget build(BuildContext context) {
@@ -155,6 +160,19 @@ class _ActionList extends StatelessWidget {
                   },
                 ),
               ),
+            WalletActionButton(
+              label: LocaleKeys.info.tr(),
+              icon: LucideIcons.ellipsis,
+              onPressed: () {
+                if (account != null) {
+                  showAccountSettingsModal(
+                    context: context,
+                    account: account!,
+                    custodians: custodians,
+                  );
+                }
+              },
+            ),
           ],
         ),
       ),

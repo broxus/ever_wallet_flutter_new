@@ -41,13 +41,18 @@ class StakingInProgress extends StatelessWidget {
       children: requests.mapIndexed(
         (index, e) {
           final prev = index == 0 ? null : requests[index - 1];
-          final displayDate =
+          final next =
+              index == requests.length - 1 ? null : requests[index + 1];
+          final isFirst =
               prev == null || !prev.data.timestamp.isSameDay(e.data.timestamp);
+          final isLast =
+              next == null || !next.data.timestamp.isSameDay(e.data.timestamp);
 
           return TonWalletTransactionWidget(
             address: e.accountAddress,
             isIncoming: true,
-            displayDate: displayDate,
+            isFirst: isFirst,
+            isLast: isLast,
             onPressed: () => context.goFurther(
               AppRoute.walletCancelUnstaking.pathWithData(
                 queryParameters: {

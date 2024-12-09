@@ -4,7 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:nekoton_repository/nekoton_repository.dart';
 import 'package:ui_components_lib/ui_components_lib.dart';
 
-Future<void> showAccountSettingsSheet({
+Future<void> showAccountSettingsModal({
   required BuildContext context,
   required KeyAccount account,
   required List<PublicKey>? custodians,

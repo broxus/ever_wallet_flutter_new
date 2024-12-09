@@ -10,5 +10,6 @@ class WalletAccountActionsState with _$WalletAccountActionsState {
     required bool hasStake,
     required bool hasStakeActions,
     required BigInt? balance,
+    required List<PublicKey>? custodians,
   }) = _Data;
 }

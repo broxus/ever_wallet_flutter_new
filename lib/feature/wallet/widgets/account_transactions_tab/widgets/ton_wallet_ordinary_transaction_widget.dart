@@ -9,13 +9,15 @@ import 'package:nekoton_repository/nekoton_repository.dart';
 class TonWalletOrdinaryTransactionWidget extends StatelessWidget {
   const TonWalletOrdinaryTransactionWidget({
     required this.transaction,
-    required this.displayDate,
+    required this.isFirst,
+    required this.isLast,
     required this.price,
     super.key,
   });
 
   final TonWalletOrdinaryTransaction transaction;
-  final bool displayDate;
+  final bool isFirst;
+  final bool isLast;
   final Fixed price;
 
   @override
@@ -25,7 +27,8 @@ class TonWalletOrdinaryTransactionWidget extends StatelessWidget {
         inject<NekotonRepository>().currentTransport.nativeTokenTicker;
 
     return TonWalletTransactionWidget(
-      displayDate: displayDate,
+      isFirst: isFirst,
+      isLast: isLast,
       onPressed: () => Navigator.of(context, rootNavigator: true).push(
         MaterialPageRoute<void>(
           builder: (_) => TonWalletOrdinaryTransactionDetailsPage(
