@@ -28,6 +28,9 @@ class CreateSeedPasswordScreenModel extends ElementaryModel {
   final NekotonRepository _nekotonRepository;
   final SeedPhraseModel? _phrase;
 
+  bool get isNeedBiometry =>
+      _biometryService.isAvailable && !_biometryService.isEnabled;
+
   Future<void> next({
     required BuildContext context,
     required String password,
