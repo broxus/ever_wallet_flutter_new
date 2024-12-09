@@ -28,7 +28,7 @@ class DeployWalletConfirmModel extends ElementaryModel {
       nekotonRepository.seedList.findSeed(publicKey);
 
   Future<List<BiometricType>> getAvailableBiometry(PublicKey publicKey) async {
-    final isBiometryEnabled = biometryService.enabled;
+    final isBiometryEnabled = biometryService.isEnabled;
     final hasKeyPassword = await biometryService.hasKeyPassword(publicKey);
 
     if (isBiometryEnabled && hasKeyPassword) {
