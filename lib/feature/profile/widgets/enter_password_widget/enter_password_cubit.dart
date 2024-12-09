@@ -30,7 +30,7 @@ class EnterPasswordCubit extends Cubit<EnterPasswordState> {
   final NekotonRepository nekotonRepository;
 
   Future<void> init() async {
-    final isBiometryEnabled = biometryService.enabled;
+    final isBiometryEnabled = biometryService.isEnabled;
 
     if (isBiometryEnabled) {
       final isFace = await _isFaceBiometry();
@@ -66,7 +66,7 @@ class EnterPasswordCubit extends Cubit<EnterPasswordState> {
       return;
     }
 
-    if (biometryService.enabled) {
+    if (biometryService.isEnabled) {
       await biometryService.setKeyPassword(
         publicKey: publicKey,
         password: password,
