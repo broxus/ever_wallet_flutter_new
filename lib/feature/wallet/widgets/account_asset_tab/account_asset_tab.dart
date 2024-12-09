@@ -31,6 +31,7 @@ class AccountAssetsTab extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final theme = context.themeStyleV2;
     return BlocProvider<AccountAssetTabCubit>(
       key: ValueKey(manifestUrl),
       create: (_) => AccountAssetTabCubit(
@@ -61,9 +62,12 @@ class AccountAssetsTab extends StatelessWidget {
             itemCount: assets.length + 1,
             separatorBuilder: (_, index) {
               if (index == assets.length - 1) {
-                return const SizedBox.shrink();
+                return const SizedBox(height: DimensSizeV2.d12);
               }
-              return const SizedBox(height: DimensSize.d24);
+              return Container(
+                height: DimensSize.d24,
+                color: theme.colors.background1,
+              );
             },
             itemBuilder: (context, index) {
               if (index == assets.length) {
@@ -77,8 +81,26 @@ class AccountAssetsTab extends StatelessWidget {
                   ),
                 );
               }
-
-              return assets[index];
+              return DecoratedBox(
+                decoration: BoxDecoration(
+                  color: theme.colors.background1,
+                  borderRadius: BorderRadius.vertical(
+                    top: index == 0
+                        ? const Radius.circular(DimensRadiusV2.radius16)
+                        : Radius.zero,
+                    bottom: index == assets.length - 1
+                        ? const Radius.circular(DimensRadiusV2.radius16)
+                        : Radius.zero,
+                  ),
+                ),
+                child: Padding(
+                  padding: EdgeInsets.only(
+                    top: index == 0 ? DimensSizeV2.d16 : 0,
+                    bottom: index == assets.length - 1 ? DimensSizeV2.d16 : 0,
+                  ),
+                  child: assets[index],
+                ),
+              );
             },
           );
         },

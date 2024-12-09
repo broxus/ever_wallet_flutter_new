@@ -6,6 +6,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:nekoton_repository/nekoton_repository.dart';
 import 'package:ui_components_lib/ui_components_lib.dart';
+import 'package:ui_components_lib/v2/ui_components_lib_v2.dart';
 
 /// View that allows confirm confirming transaction transaction by entering
 /// password
@@ -32,6 +33,7 @@ class TonWalletConfirmTransactionConfirmView extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final isLoading = fee == null && feeError == null;
+    final theme = context.themeStyleV2;
 
     return SeparatedColumn(
       crossAxisAlignment: CrossAxisAlignment.start,
@@ -39,6 +41,7 @@ class TonWalletConfirmTransactionConfirmView extends StatelessWidget {
         Expanded(
           child: SingleChildScrollView(
             child: ShapedContainerColumn(
+              color: theme.colors.background1,
               mainAxisSize: MainAxisSize.min,
               separator: const Padding(
                 padding: EdgeInsets.symmetric(vertical: DimensSize.d8),
@@ -86,10 +89,10 @@ class TonWalletConfirmTransactionConfirmView extends StatelessWidget {
         ),
         Padding(
           padding: const EdgeInsets.all(DimensSize.d16),
-          child: CommonButton.primary(
-            fillWidth: true,
+          child: AccentButton(
+            buttonShape: ButtonShape.pill,
             isLoading: isLoading,
-            text: LocaleKeys.confirm.tr(),
+            title: LocaleKeys.confirm.tr(),
             onPressed: feeError != null || fee == null
                 ? null
                 : () {
@@ -131,7 +134,7 @@ class TonWalletConfirmTransactionConfirmView extends StatelessWidget {
   }) {
     return Builder(
       builder: (context) {
-        final colors = context.themeStyle.colors;
+        final theme = context.themeStyleV2;
 
         return SeparatedColumn(
           mainAxisSize: MainAxisSize.min,
@@ -139,20 +142,21 @@ class TonWalletConfirmTransactionConfirmView extends StatelessWidget {
           children: [
             Text(
               title,
-              style: StyleRes.addRegular.copyWith(color: colors.textSecondary),
+              style: theme.textStyles.labelXSmall
+                  .copyWith(color: theme.colors.content2),
             ),
             if (value != null)
               Text(
                 value,
-                style: StyleRes.primaryBold.copyWith(
-                  color: colors.textPrimary,
-                ),
+                style: theme.textStyles.paragraphSmall
+                    .copyWith(color: theme.colors.content0),
               ),
             if (valueChild != null) valueChild,
             if (subtitleError != null)
               Text(
                 subtitleError,
-                style: StyleRes.addRegular.copyWith(color: colors.alert),
+                style: theme.textStyles.paragraphXSmall
+                    .copyWith(color: theme.colors.contentNegative),
               ),
           ],
         );

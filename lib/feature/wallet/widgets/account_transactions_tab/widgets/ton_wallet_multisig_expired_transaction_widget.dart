@@ -9,14 +9,18 @@ import 'package:nekoton_repository/nekoton_repository.dart';
 class TonWalletMultisigExpiredTransactionWidget extends StatelessWidget {
   const TonWalletMultisigExpiredTransactionWidget({
     required this.transaction,
-    required this.displayDate,
+    required this.isFirst,
+    required this.isLast,
     required this.price,
+    required this.account,
     super.key,
   });
 
   final TonWalletMultisigExpiredTransaction transaction;
   final Fixed price;
-  final bool displayDate;
+  final bool isFirst;
+  final bool isLast;
+  final KeyAccount account;
 
   @override
   Widget build(BuildContext context) {
@@ -24,12 +28,14 @@ class TonWalletMultisigExpiredTransactionWidget extends StatelessWidget {
         inject<NekotonRepository>().currentTransport.nativeTokenTicker;
 
     return TonWalletTransactionWidget(
-      displayDate: displayDate,
+      isFirst: isFirst,
+      isLast: isLast,
       onPressed: () => Navigator.of(context, rootNavigator: true).push(
         MaterialPageRoute<void>(
           builder: (_) => TonWalletMultisigExpiredTransactionDetailsPage(
             transaction: transaction,
             price: price,
+            account: account,
           ),
         ),
       ),

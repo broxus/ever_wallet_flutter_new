@@ -42,7 +42,7 @@ class _WalletBottomPanelState extends State<WalletBottomPanel> {
 
     return DecoratedSliver(
       decoration: BoxDecoration(
-        color: theme.colors.background1,
+        color: theme.colors.background0,
         borderRadius: const BorderRadius.vertical(
           top: Radius.circular(DimensRadiusV2.radius24),
         ),

@@ -1,4 +1,5 @@
 import 'package:app/di/di.dart';
+import 'package:app/feature/wallet/wallet.dart';
 import 'package:app/feature/wallet/widgets/account_transactions_tab/detail/details.dart';
 import 'package:app/feature/wallet/widgets/account_transactions_tab/widgets/ton_wallet_transaction_status_body.dart';
 import 'package:app/generated/generated.dart';
@@ -14,11 +15,13 @@ class TonWalletMultisigExpiredTransactionDetailsPage extends StatelessWidget {
   const TonWalletMultisigExpiredTransactionDetailsPage({
     required this.transaction,
     required this.price,
+    required this.account,
     super.key,
   });
 
   final TonWalletMultisigExpiredTransaction transaction;
   final Fixed price;
+  final KeyAccount account;
 
   @override
   Widget build(BuildContext context) {
@@ -46,6 +49,10 @@ class TonWalletMultisigExpiredTransactionDetailsPage extends StatelessWidget {
         body: SeparatedColumn(
           separatorSize: DimensSize.d16,
           children: [
+            Padding(
+              padding: const EdgeInsets.symmetric(horizontal: DimensSizeV2.d16),
+              child: AccountInfo(account: account),
+            ),
             WalletTransactionDetailsDefaultBody(
               date: transaction.date,
               isIncoming: !transaction.isOutgoing,

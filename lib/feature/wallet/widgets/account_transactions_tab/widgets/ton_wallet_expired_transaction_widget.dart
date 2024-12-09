@@ -8,12 +8,14 @@ import 'package:nekoton_repository/nekoton_repository.dart';
 class TonWalletExpiredTransactionWidget extends StatelessWidget {
   const TonWalletExpiredTransactionWidget({
     required this.transaction,
-    required this.displayDate,
+    required this.isFirst,
+    required this.isLast,
     super.key,
   });
 
   final TonWalletExpiredTransaction transaction;
-  final bool displayDate;
+  final bool isFirst;
+  final bool isLast;
 
   @override
   Widget build(BuildContext context) {
@@ -21,7 +23,8 @@ class TonWalletExpiredTransactionWidget extends StatelessWidget {
         inject<NekotonRepository>().currentTransport.nativeTokenTicker;
 
     return TonWalletTransactionWidget(
-      displayDate: displayDate,
+      isFirst: isFirst,
+      isLast: isLast,
       // ignore: no-empty-block
       onPressed: () {},
       address: transaction.address,
