@@ -56,7 +56,7 @@ dependencies:
   json_annotation: 4.9.0
   local_auth: 2.3.0
   logging: 1.3.0
-  lucide_icons_flutter: 1.2.4
+  lucide_icons_flutter: 1.2.5
   mobile_scanner: 3.4.1
   money2: 5.2.1
   money2_fixer: 2.0.0
