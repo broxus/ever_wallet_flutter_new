@@ -356,7 +356,7 @@
   "publicKeyOfCustodianNumber": "Public key of Custodian {}",
   "custodianRenamed": "Custodian renamed successfully",
   "addOneMorePublicKey": "Add one more Custodian",
-  "deployWallet": "Deploy wallet",
+  "deployWallet": "Deploy your wallet",
   "requiredConfirms": "Required confirms",
   "requireConfirmsCount": "{} of {}",
   "fundsDebitedToDeploy": "Funds will be debited from your balance to deploy",

@@ -69,9 +69,8 @@ class WalletDeployBloc extends Bloc<WalletDeployEvent, WalletDeployState> {
   Future<void> _init() async {
     tonIconPath = nekotonRepository.currentTransport.nativeTokenIcon;
     ticker = nekotonRepository.currentTransport.nativeTokenTicker;
-    tokenCustomCurrency = currenciesService
-        .currencies(nekotonRepository.currentTransport.networkType)
-        .firstOrNull;
+    tokenCustomCurrency = await currenciesService
+        .getOrFetchNativeCurrency(nekotonRepository.currentTransport);
   }
 
   // ignore: long-method
@@ -169,7 +168,7 @@ class WalletDeployBloc extends Bloc<WalletDeployEvent, WalletDeployState> {
         custodians: custodians,
         reqConfirms: requireConfirmations,
         expiration: defaultSendTimeout,
-        hours: hours,
+        hours: hours != null ? hours * 3600 : hours,
       );
       await _handlePrepareDeploy(emit, custodians, requireConfirmations);
     } on FfiException catch (e, t) {
@@ -186,6 +185,7 @@ class WalletDeployBloc extends Bloc<WalletDeployEvent, WalletDeployState> {
     int? requireConfirmations,
   ]) async {
     try {
+      final account = nekotonRepository.seedList.findAccountByAddress(address);
       final wallet = await nekotonRepository.walletsStream
           .expand((e) => e)
           .firstWhere((wallets) => wallets.address == address);
@@ -227,6 +227,7 @@ class WalletDeployBloc extends Bloc<WalletDeployEvent, WalletDeployState> {
           tonIconPath: tonIconPath,
           ticker: ticker,
           currency: tokenCustomCurrency,
+          account: account,
         ),
       );
     } on FfiException catch (e, t) {

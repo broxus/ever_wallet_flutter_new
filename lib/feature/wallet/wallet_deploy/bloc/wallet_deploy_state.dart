@@ -32,6 +32,7 @@ class WalletDeployState with _$WalletDeployState {
     String? tonIconPath,
     String? ticker,
     CustomCurrency? currency,
+    KeyAccount? account,
   }) = _ReadyToDeploy;
 
   const factory WalletDeployState.deploying({

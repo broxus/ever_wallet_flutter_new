@@ -1602,7 +1602,8 @@ mixin _$WalletDeployState {
             int? requireConfirmations,
             String? tonIconPath,
             String? ticker,
-            CustomCurrency? currency)
+            CustomCurrency? currency,
+            KeyAccount? account)
         readyToDeploy,
     required TResult Function(bool canClose) deploying,
     required TResult Function(
@@ -1636,7 +1637,8 @@ mixin _$WalletDeployState {
             int? requireConfirmations,
             String? tonIconPath,
             String? ticker,
-            CustomCurrency? currency)?
+            CustomCurrency? currency,
+            KeyAccount? account)?
         readyToDeploy,
     TResult? Function(bool canClose)? deploying,
     TResult? Function(
@@ -1670,7 +1672,8 @@ mixin _$WalletDeployState {
             int? requireConfirmations,
             String? tonIconPath,
             String? ticker,
-            CustomCurrency? currency)?
+            CustomCurrency? currency,
+            KeyAccount? account)?
         readyToDeploy,
     TResult Function(bool canClose)? deploying,
     TResult Function(
@@ -1802,7 +1805,8 @@ class _$StandardImpl implements _Standard {
             int? requireConfirmations,
             String? tonIconPath,
             String? ticker,
-            CustomCurrency? currency)
+            CustomCurrency? currency,
+            KeyAccount? account)
         readyToDeploy,
     required TResult Function(bool canClose) deploying,
     required TResult Function(
@@ -1839,7 +1843,8 @@ class _$StandardImpl implements _Standard {
             int? requireConfirmations,
             String? tonIconPath,
             String? ticker,
-            CustomCurrency? currency)?
+            CustomCurrency? currency,
+            KeyAccount? account)?
         readyToDeploy,
     TResult? Function(bool canClose)? deploying,
     TResult? Function(
@@ -1876,7 +1881,8 @@ class _$StandardImpl implements _Standard {
             int? requireConfirmations,
             String? tonIconPath,
             String? ticker,
-            CustomCurrency? currency)?
+            CustomCurrency? currency,
+            KeyAccount? account)?
         readyToDeploy,
     TResult Function(bool canClose)? deploying,
     TResult Function(
@@ -2053,7 +2059,8 @@ class _$MultisigImpl implements _Multisig {
             int? requireConfirmations,
             String? tonIconPath,
             String? ticker,
-            CustomCurrency? currency)
+            CustomCurrency? currency,
+            KeyAccount? account)
         readyToDeploy,
     required TResult Function(bool canClose) deploying,
     required TResult Function(
@@ -2090,7 +2097,8 @@ class _$MultisigImpl implements _Multisig {
             int? requireConfirmations,
             String? tonIconPath,
             String? ticker,
-            CustomCurrency? currency)?
+            CustomCurrency? currency,
+            KeyAccount? account)?
         readyToDeploy,
     TResult? Function(bool canClose)? deploying,
     TResult? Function(
@@ -2127,7 +2135,8 @@ class _$MultisigImpl implements _Multisig {
             int? requireConfirmations,
             String? tonIconPath,
             String? ticker,
-            CustomCurrency? currency)?
+            CustomCurrency? currency,
+            KeyAccount? account)?
         readyToDeploy,
     TResult Function(bool canClose)? deploying,
     TResult Function(
@@ -2368,7 +2377,8 @@ class _$CalculatingErrorImpl implements _CalculatingError {
             int? requireConfirmations,
             String? tonIconPath,
             String? ticker,
-            CustomCurrency? currency)
+            CustomCurrency? currency,
+            KeyAccount? account)
         readyToDeploy,
     required TResult Function(bool canClose) deploying,
     required TResult Function(
@@ -2406,7 +2416,8 @@ class _$CalculatingErrorImpl implements _CalculatingError {
             int? requireConfirmations,
             String? tonIconPath,
             String? ticker,
-            CustomCurrency? currency)?
+            CustomCurrency? currency,
+            KeyAccount? account)?
         readyToDeploy,
     TResult? Function(bool canClose)? deploying,
     TResult? Function(
@@ -2444,7 +2455,8 @@ class _$CalculatingErrorImpl implements _CalculatingError {
             int? requireConfirmations,
             String? tonIconPath,
             String? ticker,
-            CustomCurrency? currency)?
+            CustomCurrency? currency,
+            KeyAccount? account)?
         readyToDeploy,
     TResult Function(bool canClose)? deploying,
     TResult Function(
@@ -2548,7 +2560,8 @@ abstract class _$$ReadyToDeployImplCopyWith<$Res> {
       int? requireConfirmations,
       String? tonIconPath,
       String? ticker,
-      CustomCurrency? currency});
+      CustomCurrency? currency,
+      KeyAccount? account});
 
   $CustomCurrencyCopyWith<$Res>? get currency;
 }
@@ -2573,6 +2586,7 @@ class __$$ReadyToDeployImplCopyWithImpl<$Res>
     Object? tonIconPath = freezed,
     Object? ticker = freezed,
     Object? currency = freezed,
+    Object? account = freezed,
   }) {
     return _then(_$ReadyToDeployImpl(
       fee: null == fee
@@ -2603,6 +2617,10 @@ class __$$ReadyToDeployImplCopyWithImpl<$Res>
           ? _value.currency
           : currency // ignore: cast_nullable_to_non_nullable
               as CustomCurrency?,
+      account: freezed == account
+          ? _value.account
+          : account // ignore: cast_nullable_to_non_nullable
+              as KeyAccount?,
     ));
   }
 
@@ -2631,7 +2649,8 @@ class _$ReadyToDeployImpl implements _ReadyToDeploy {
       this.requireConfirmations,
       this.tonIconPath,
       this.ticker,
-      this.currency})
+      this.currency,
+      this.account})
       : _custodians = custodians;
 
   @override
@@ -2656,10 +2675,12 @@ class _$ReadyToDeployImpl implements _ReadyToDeploy {
   final String? ticker;
   @override
   final CustomCurrency? currency;
+  @override
+  final KeyAccount? account;
 
   @override
   String toString() {
-    return 'WalletDeployState.readyToDeploy(fee: $fee, balance: $balance, custodians: $custodians, requireConfirmations: $requireConfirmations, tonIconPath: $tonIconPath, ticker: $ticker, currency: $currency)';
+    return 'WalletDeployState.readyToDeploy(fee: $fee, balance: $balance, custodians: $custodians, requireConfirmations: $requireConfirmations, tonIconPath: $tonIconPath, ticker: $ticker, currency: $currency, account: $account)';
   }
 
   @override
@@ -2677,7 +2698,8 @@ class _$ReadyToDeployImpl implements _ReadyToDeploy {
                 other.tonIconPath == tonIconPath) &&
             (identical(other.ticker, ticker) || other.ticker == ticker) &&
             (identical(other.currency, currency) ||
-                other.currency == currency));
+                other.currency == currency) &&
+            (identical(other.account, account) || other.account == account));
   }
 
   @override
@@ -2689,7 +2711,8 @@ class _$ReadyToDeployImpl implements _ReadyToDeploy {
       requireConfirmations,
       tonIconPath,
       ticker,
-      currency);
+      currency,
+      account);
 
   /// Create a copy of WalletDeployState
   /// with the given fields replaced by the non-null parameter values.
@@ -2721,7 +2744,8 @@ class _$ReadyToDeployImpl implements _ReadyToDeploy {
             int? requireConfirmations,
             String? tonIconPath,
             String? ticker,
-            CustomCurrency? currency)
+            CustomCurrency? currency,
+            KeyAccount? account)
         readyToDeploy,
     required TResult Function(bool canClose) deploying,
     required TResult Function(
@@ -2735,7 +2759,7 @@ class _$ReadyToDeployImpl implements _ReadyToDeploy {
     required TResult Function(Object error) subscribeError,
   }) {
     return readyToDeploy(fee, balance, custodians, requireConfirmations,
-        tonIconPath, ticker, currency);
+        tonIconPath, ticker, currency, account);
   }
 
   @override
@@ -2759,7 +2783,8 @@ class _$ReadyToDeployImpl implements _ReadyToDeploy {
             int? requireConfirmations,
             String? tonIconPath,
             String? ticker,
-            CustomCurrency? currency)?
+            CustomCurrency? currency,
+            KeyAccount? account)?
         readyToDeploy,
     TResult? Function(bool canClose)? deploying,
     TResult? Function(
@@ -2773,7 +2798,7 @@ class _$ReadyToDeployImpl implements _ReadyToDeploy {
     TResult? Function(Object error)? subscribeError,
   }) {
     return readyToDeploy?.call(fee, balance, custodians, requireConfirmations,
-        tonIconPath, ticker, currency);
+        tonIconPath, ticker, currency, account);
   }
 
   @override
@@ -2797,7 +2822,8 @@ class _$ReadyToDeployImpl implements _ReadyToDeploy {
             int? requireConfirmations,
             String? tonIconPath,
             String? ticker,
-            CustomCurrency? currency)?
+            CustomCurrency? currency,
+            KeyAccount? account)?
         readyToDeploy,
     TResult Function(bool canClose)? deploying,
     TResult Function(
@@ -2813,7 +2839,7 @@ class _$ReadyToDeployImpl implements _ReadyToDeploy {
   }) {
     if (readyToDeploy != null) {
       return readyToDeploy(fee, balance, custodians, requireConfirmations,
-          tonIconPath, ticker, currency);
+          tonIconPath, ticker, currency, account);
     }
     return orElse();
   }
@@ -2873,7 +2899,8 @@ abstract class _ReadyToDeploy implements WalletDeployState {
       final int? requireConfirmations,
       final String? tonIconPath,
       final String? ticker,
-      final CustomCurrency? currency}) = _$ReadyToDeployImpl;
+      final CustomCurrency? currency,
+      final KeyAccount? account}) = _$ReadyToDeployImpl;
 
   BigInt get fee;
   BigInt get balance;
@@ -2882,6 +2909,7 @@ abstract class _ReadyToDeploy implements WalletDeployState {
   String? get tonIconPath;
   String? get ticker;
   CustomCurrency? get currency;
+  KeyAccount? get account;
 
   /// Create a copy of WalletDeployState
   /// with the given fields replaced by the non-null parameter values.
@@ -2978,7 +3006,8 @@ class _$DeployingImpl implements _Deploying {
             int? requireConfirmations,
             String? tonIconPath,
             String? ticker,
-            CustomCurrency? currency)
+            CustomCurrency? currency,
+            KeyAccount? account)
         readyToDeploy,
     required TResult Function(bool canClose) deploying,
     required TResult Function(
@@ -3015,7 +3044,8 @@ class _$DeployingImpl implements _Deploying {
             int? requireConfirmations,
             String? tonIconPath,
             String? ticker,
-            CustomCurrency? currency)?
+            CustomCurrency? currency,
+            KeyAccount? account)?
         readyToDeploy,
     TResult? Function(bool canClose)? deploying,
     TResult? Function(
@@ -3052,7 +3082,8 @@ class _$DeployingImpl implements _Deploying {
             int? requireConfirmations,
             String? tonIconPath,
             String? ticker,
-            CustomCurrency? currency)?
+            CustomCurrency? currency,
+            KeyAccount? account)?
         readyToDeploy,
     TResult Function(bool canClose)? deploying,
     TResult Function(
@@ -3302,7 +3333,8 @@ class _$DeployedImpl implements _Deployed {
             int? requireConfirmations,
             String? tonIconPath,
             String? ticker,
-            CustomCurrency? currency)
+            CustomCurrency? currency,
+            KeyAccount? account)
         readyToDeploy,
     required TResult Function(bool canClose) deploying,
     required TResult Function(
@@ -3340,7 +3372,8 @@ class _$DeployedImpl implements _Deployed {
             int? requireConfirmations,
             String? tonIconPath,
             String? ticker,
-            CustomCurrency? currency)?
+            CustomCurrency? currency,
+            KeyAccount? account)?
         readyToDeploy,
     TResult? Function(bool canClose)? deploying,
     TResult? Function(
@@ -3378,7 +3411,8 @@ class _$DeployedImpl implements _Deployed {
             int? requireConfirmations,
             String? tonIconPath,
             String? ticker,
-            CustomCurrency? currency)?
+            CustomCurrency? currency,
+            KeyAccount? account)?
         readyToDeploy,
     TResult Function(bool canClose)? deploying,
     TResult Function(
@@ -3555,7 +3589,8 @@ class _$SubscribeErrorImpl implements _SubscribeError {
             int? requireConfirmations,
             String? tonIconPath,
             String? ticker,
-            CustomCurrency? currency)
+            CustomCurrency? currency,
+            KeyAccount? account)
         readyToDeploy,
     required TResult Function(bool canClose) deploying,
     required TResult Function(
@@ -3592,7 +3627,8 @@ class _$SubscribeErrorImpl implements _SubscribeError {
             int? requireConfirmations,
             String? tonIconPath,
             String? ticker,
-            CustomCurrency? currency)?
+            CustomCurrency? currency,
+            KeyAccount? account)?
         readyToDeploy,
     TResult? Function(bool canClose)? deploying,
     TResult? Function(
@@ -3629,7 +3665,8 @@ class _$SubscribeErrorImpl implements _SubscribeError {
             int? requireConfirmations,
             String? tonIconPath,
             String? ticker,
-            CustomCurrency? currency)?
+            CustomCurrency? currency,
+            KeyAccount? account)?
         readyToDeploy,
     TResult Function(bool canClose)? deploying,
     TResult Function(

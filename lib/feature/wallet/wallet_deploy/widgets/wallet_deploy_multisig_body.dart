@@ -93,10 +93,12 @@ class _WalletDeployMultisigBodyState extends State<WalletDeployMultisigBody> {
       focusNotifier.value = custodianFocuses.any((f) => f.hasFocus);
 
   void _addOneCustodian() {
-    setState(() {
-      custodianFocuses.add(FocusNode()..addListener(_focusListener));
-      custodianControllers.add(TextEditingController());
-    });
+    if (custodianControllers.length <= 32) {
+      setState(() {
+        custodianFocuses.add(FocusNode()..addListener(_focusListener));
+        custodianControllers.add(TextEditingController());
+      });
+    }
   }
 
   void _removeCustodian(int index) {

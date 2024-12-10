@@ -24,6 +24,7 @@ class WalletDeployConfirmView extends StatelessWidget {
     this.tonIconPath,
     this.currency,
     this.customCurrency,
+    this.account,
     super.key,
   });
 
@@ -36,6 +37,7 @@ class WalletDeployConfirmView extends StatelessWidget {
   final String? tonIconPath;
   final Currency? currency;
   final CustomCurrency? customCurrency;
+  final KeyAccount? account;
 
   @override
   Widget build(BuildContext context) {
@@ -43,8 +45,14 @@ class WalletDeployConfirmView extends StatelessWidget {
     final theme = context.themeStyleV2;
 
     return SeparatedColumn(
+      separatorSize: DimensSizeV2.d16,
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
+        if (account != null)
+          Padding(
+            padding: const EdgeInsets.symmetric(horizontal: DimensSizeV2.d16),
+            child: AccountInfo(account: account!),
+          ),
         Expanded(
           child: SingleChildScrollView(
             child: ShapedContainerColumn(
@@ -104,7 +112,10 @@ class WalletDeployConfirmView extends StatelessWidget {
                   ),
                 if (custodians?.isNotEmpty ?? false)
                   Padding(
-                    padding: const EdgeInsets.only(bottom: DimensSizeV2.d16),
+                    padding: const EdgeInsets.only(
+                      bottom: DimensSizeV2.d16,
+                      top: DimensSizeV2.d12,
+                    ),
                     child: CommonDivider(color: theme.colors.border0),
                   ),
                 ...?custodians?.mapIndexed(

@@ -11,24 +11,28 @@ class NetworkDropItem extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final theme = context.themeStyleV2;
     return Container(
-      padding: const EdgeInsets.all(DimensSizeV2.d4),
+      padding: const EdgeInsets.only(
+        left: DimensSizeV2.d4,
+        top: DimensSizeV2.d4,
+        bottom: DimensSizeV2.d4,
+        right: DimensSizeV2.d8,
+      ),
       decoration: BoxDecoration(
-        color: theme.colors.background1,
+        color: Color(0x10FFFFFF),//TODO(new style material)
         borderRadius: BorderRadius.circular(DimensRadiusV2.theBiggest),
       ),
       child: Row(
         children: [
           NetworkIcon(
             type: networkType,
-            itemSize: DimensSizeV2.d24,
-            iconSize: DimensSizeV2.d12,
+            itemSize: 32,
+            iconSize: DimensSizeV2.d14,
           ),
           const SizedBox(width: DimensSizeV2.d4),
           const Icon(
             LucideIcons.chevronDown,
-            size: DimensSizeV2.d16,
+            size: DimensSizeV2.d20,
           ),
         ],
       ),
