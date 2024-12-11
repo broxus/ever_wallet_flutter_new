@@ -160,19 +160,20 @@ class _ActionList extends StatelessWidget {
                   },
                 ),
               ),
-            WalletActionButton(
-              label: LocaleKeys.info.tr(),
-              icon: LucideIcons.ellipsis,
-              onPressed: () {
-                if (account != null) {
-                  showAccountSettingsModal(
-                    context: context,
-                    account: account!,
-                    custodians: custodians,
-                  );
-                }
-              },
-            ),
+            if (!sendSpecified)
+              WalletActionButton(
+                label: LocaleKeys.info.tr(),
+                icon: LucideIcons.ellipsis,
+                onPressed: () {
+                  if (account != null) {
+                    showAccountSettingsModal(
+                      context: context,
+                      account: account!,
+                      custodians: custodians,
+                    );
+                  }
+                },
+              ),
           ],
         ),
       ),

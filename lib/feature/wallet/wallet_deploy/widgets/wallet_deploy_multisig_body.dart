@@ -26,12 +26,14 @@ class WalletDeployMultisigBody extends StatefulWidget {
   const WalletDeployMultisigBody({
     required this.custodians,
     required this.requireConfirmations,
+    required this.hours,
     super.key,
   });
 
   /// This data is just initial data and not used during lifecycle.
   final List<PublicKey> custodians;
   final int requireConfirmations;
+  final int hours;
 
   @override
   State<WalletDeployMultisigBody> createState() =>
@@ -57,7 +59,7 @@ class _WalletDeployMultisigBodyState extends State<WalletDeployMultisigBody> {
       TextEditingController(text: widget.requireConfirmations.toString());
 
   late TextEditingController waitingTimeController =
-      TextEditingController(text: '24');
+      TextEditingController(text: widget.hours.toString());
 
   /// If true, then some of custodian focuses has focus
   final focusNotifier = ValueNotifier<bool>(false);
@@ -150,6 +152,7 @@ class _WalletDeployMultisigBodyState extends State<WalletDeployMultisigBody> {
                                       WalletDeployEvent.updateMultisigData(
                                         _collectValidKeys(),
                                         _collectRequireConfirmations(),
+                                          waitingTimeController.text.toInt(),
                                       ),
                                     ),
                           ),
@@ -208,6 +211,15 @@ class _WalletDeployMultisigBodyState extends State<WalletDeployMultisigBody> {
                     keyboardType: TextInputType.number,
                     textInputAction: TextInputAction.next,
                     onSubmit: (_) => custodianFocuses.first.requestFocus(),
+                    validator: (value) {
+                      if (value == null) {
+                        return LocaleKeys.invalidValue.tr();
+                      }
+                      final number = int.tryParse(value);
+                      if (number == null || number > 24) {
+                        return LocaleKeys.invalidValue.tr();
+                      }
+                    },
                     inputFormatters: [
                       InputFormatters.onlyDigitsFormatter,
                     ],
@@ -276,10 +288,13 @@ class _WalletDeployMultisigBodyState extends State<WalletDeployMultisigBody> {
           bottom: DimensSize.d16,
           left: DimensSize.d16,
           right: DimensSize.d16,
-          child: PrimaryButton(
-            buttonShape: ButtonShape.pill,
-            title: LocaleKeys.nextWord.tr(),
-            onPressed: () => _next(context),
+          child: Padding(
+            padding: const EdgeInsets.only(bottom: DimensSizeV2.d8),
+            child: PrimaryButton(
+              buttonShape: ButtonShape.pill,
+              title: LocaleKeys.nextWord.tr(),
+              onPressed: () => _next(context),
+            ),
           ),
         ),
       ],

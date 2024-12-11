@@ -146,7 +146,12 @@ class WalletDeployConfirmView extends StatelessWidget {
           ),
         ),
         Padding(
-          padding: const EdgeInsets.all(DimensSize.d16),
+          padding: const EdgeInsets.only(
+            bottom: DimensSize.d24,
+            left: DimensSize.d16,
+            right: DimensSize.d16,
+            top: DimensSize.d16,
+          ),
           child: PrimaryButton(
             isLoading: isLoading,
             title: LocaleKeys.deployWord.tr(),

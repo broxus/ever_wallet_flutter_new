@@ -11,6 +11,7 @@ class WalletDeployState with _$WalletDeployState {
   const factory WalletDeployState.multisig(
     List<PublicKey> custodians,
     int requireConfirmations,
+    int hours,
   ) = _Multisig;
 
   /// Error during calculating fee process
@@ -33,6 +34,7 @@ class WalletDeployState with _$WalletDeployState {
     String? ticker,
     CustomCurrency? currency,
     KeyAccount? account,
+    int? hours,
   }) = _ReadyToDeploy;
 
   const factory WalletDeployState.deploying({

@@ -16,6 +16,7 @@ class WalletDeployEvent with _$WalletDeployEvent {
   const factory WalletDeployEvent.updateMultisigData(
     List<PublicKey> custodians,
     int requireConfirmations,
+    int? hours,
   ) = _UpdateMultisigData;
 
   /// Deploy standard wallet

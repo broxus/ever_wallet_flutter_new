@@ -8,6 +8,8 @@ import 'package:flutter/material.dart';
 import 'package:freezed_annotation/freezed_annotation.dart';
 import 'package:nekoton_repository/nekoton_repository.dart' hide Message;
 
+import '../../../../wallet/new_account/add_account_result/add_account_result_sheet.dart';
+
 part 'add_new_external_account_cubit.freezed.dart';
 
 part 'add_new_external_account_state.dart';
@@ -51,12 +53,12 @@ class AddNewExternalAccountCubit extends Cubit<AddNewExternalAccountState> {
 
         return;
       }
-
       await seedKey.accountList.addExternalAccount(
         address: address,
         name: newName.isEmpty ? null : newName,
       );
-      emit(const AddNewExternalAccountState.completed());
+      Navigator.of(context).pop();
+      await showNewAccountResultSheet(context: context, address: address);
     } catch (e) {
       _showError(context, LocaleKeys.keyIsNotCustodian.tr());
       emit(const AddNewExternalAccountState.initial());
