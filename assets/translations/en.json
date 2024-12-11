@@ -630,5 +630,6 @@
   "fromWord": "From {}",
   "toWord": "To {}",
   "confirmedCustodians": "Confirmed {} / {}",
-  "expiresInCustodians": "Expires in {}"
+  "expiresInCustodians": "Expires in {}",
+  "deploymentInProgress": "Deployment in progress"
 }

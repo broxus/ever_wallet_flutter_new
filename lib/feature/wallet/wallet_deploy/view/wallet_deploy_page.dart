@@ -85,7 +85,7 @@ class WalletDeployPage extends StatelessWidget {
               ticker,
               customCurrency,
               account,
-                hours,
+              hours,
             ) {
               return _scaffold(
                 WalletDeployConfirmView(
@@ -123,7 +123,10 @@ class WalletDeployPage extends StatelessWidget {
             deploying: (canClose) => Scaffold(
               body: Padding(
                 padding: const EdgeInsets.all(DimensSize.d16),
-                child: TransactionSendingWidget(canClose: canClose),
+                child: TransactionSendingWidget(
+                  canClose: canClose,
+                  isDeploying: true,
+                ),
               ),
             ),
             orElse: () => _scaffold(const SizedBox(), canPrev: true),

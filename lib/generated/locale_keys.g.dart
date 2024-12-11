@@ -654,4 +654,5 @@ abstract class LocaleKeys {
   static const toWord = 'toWord';
   static const confirmedCustodians = 'confirmedCustodians';
   static const expiresInCustodians = 'expiresInCustodians';
+  static const deploymentInProgress = 'deploymentInProgress';
 }

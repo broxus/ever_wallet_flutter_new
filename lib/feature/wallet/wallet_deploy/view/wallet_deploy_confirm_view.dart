@@ -110,6 +110,7 @@ class WalletDeployConfirmView extends StatelessWidget {
                     ),
                     iconPath: tonIconPath,
                   ),
+                const SizedBox(height: DimensSizeV2.d4),
                 if (custodians?.isNotEmpty ?? false)
                   Padding(
                     padding: const EdgeInsets.only(
@@ -152,7 +153,7 @@ class WalletDeployConfirmView extends StatelessWidget {
             right: DimensSize.d16,
             top: DimensSize.d16,
           ),
-          child: PrimaryButton(
+          child: AccentButton(
             isLoading: isLoading,
             title: LocaleKeys.deployWord.tr(),
             onPressed: feeError != null || fee == null

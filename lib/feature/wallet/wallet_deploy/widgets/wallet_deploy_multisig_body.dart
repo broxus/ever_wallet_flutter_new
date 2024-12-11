@@ -95,12 +95,10 @@ class _WalletDeployMultisigBodyState extends State<WalletDeployMultisigBody> {
       focusNotifier.value = custodianFocuses.any((f) => f.hasFocus);
 
   void _addOneCustodian() {
-    if (custodianControllers.length <= 32) {
-      setState(() {
-        custodianFocuses.add(FocusNode()..addListener(_focusListener));
-        custodianControllers.add(TextEditingController());
-      });
-    }
+    setState(() {
+      custodianFocuses.add(FocusNode()..addListener(_focusListener));
+      custodianControllers.add(TextEditingController());
+    });
   }
 
   void _removeCustodian(int index) {
@@ -152,7 +150,7 @@ class _WalletDeployMultisigBodyState extends State<WalletDeployMultisigBody> {
                                       WalletDeployEvent.updateMultisigData(
                                         _collectValidKeys(),
                                         _collectRequireConfirmations(),
-                                          waitingTimeController.text.toInt(),
+                                        waitingTimeController.text.toInt(),
                                       ),
                                     ),
                           ),
@@ -273,12 +271,13 @@ class _WalletDeployMultisigBodyState extends State<WalletDeployMultisigBody> {
                   ),
                   ...custodianControllers.mapIndexed(_custodianItem),
                   const SizedBox(height: DimensSizeV2.d8),
-                  GhostButton(
-                    icon: LucideIcons.plus,
-                    title: LocaleKeys.addOneMorePublicKey.tr(),
-                    onPressed: _addOneCustodian,
-                    buttonShape: ButtonShape.pill,
-                  ),
+                  if (custodianControllers.length < 32)
+                    GhostButton(
+                      icon: LucideIcons.plus,
+                      title: LocaleKeys.addOneMorePublicKey.tr(),
+                      onPressed: _addOneCustodian,
+                      buttonShape: ButtonShape.pill,
+                    ),
                 ],
               ),
             ),
@@ -290,7 +289,7 @@ class _WalletDeployMultisigBodyState extends State<WalletDeployMultisigBody> {
           right: DimensSize.d16,
           child: Padding(
             padding: const EdgeInsets.only(bottom: DimensSizeV2.d8),
-            child: PrimaryButton(
+            child: AccentButton(
               buttonShape: ButtonShape.pill,
               title: LocaleKeys.nextWord.tr(),
               onPressed: () => _next(context),
