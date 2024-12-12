@@ -1,5 +1,6 @@
-import 'package:app/app/service/service.dart';
+import 'package:app/app/service/bootstrap/bootstrap_steps.dart';
 import 'package:app/feature/bootstrap_failed/bootstrap_failed.dart';
+import 'package:app/feature/connection_fail/connection_fail_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:ui_components_lib/ui_components_lib.dart';
 
@@ -22,11 +23,10 @@ class BootstrapFailedPage extends StatelessWidget {
     return Scaffold(
       appBar: const DefaultAppBar(),
       body: switch (step) {
-        BootstrapSteps.error => const BootstrapFailedRerunView(),
-        BootstrapSteps.connection => const BootstrapRetryConnectionView(),
+        BootstrapSteps.connection => const ConnectionFailScreen(),
 
         // should not be there
-        _ => const SizedBox.shrink(),
+        _ => const BootstrapFailedRerunView(),
       },
     );
   }

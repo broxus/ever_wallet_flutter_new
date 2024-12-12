@@ -1,8 +1,8 @@
 // ignore_for_file: use_build_context_synchronously
 
+import 'package:app/app/service/connection/presets_connection/presets_connection_service.dart';
 import 'package:app/app/service/messenger/message.dart';
 import 'package:app/app/service/messenger/service/messenger_service.dart';
-import 'package:app/app/service/nekoton_related/connection_service/network_presets.dart';
 import 'package:app/app/service/network_connection/network_connection_service.dart';
 import 'package:app/app/service/storage_service/connections_storage_service.dart';
 import 'package:app/feature/choose_network/choose_network_screen.dart';
@@ -19,6 +19,7 @@ class ChooseNetworkScreenModel extends ElementaryModel with ConnectionMixin {
     ErrorHandler errorHandler,
     this.messengerService,
     this.networkConnectionService,
+    this._presetsConnectionService,
     this._connectionsStorageService,
   ) : super(errorHandler: errorHandler);
 
@@ -30,11 +31,12 @@ class ChooseNetworkScreenModel extends ElementaryModel with ConnectionMixin {
   @protected
   final NetworkConnectionService networkConnectionService;
 
+  final PresetsConnectionService _presetsConnectionService;
+  final ConnectionsStorageService _connectionsStorageService;
+
   final connectionsState = StateNotifier<List<ChooseNetworkItemData>>(
     initValue: [],
   );
-
-  final ConnectionsStorageService _connectionsStorageService;
 
   @override
   void init() {
@@ -65,44 +67,17 @@ class ChooseNetworkScreenModel extends ElementaryModel with ConnectionMixin {
   }
 
   void _initNetworksData() {
-    final connections = _connectionsStorageService.connections;
-
-    final list = <ChooseNetworkItemData>[];
-
-    for (final connection in connections) {
-      switch (connection.id) {
-        case everMainnetProtoID:
-          list.add(
-            ChooseNetworkItemData(
-              id: everMainnetProtoID,
-              icon: Assets.images.everVector,
-              title: LocaleKeys.everscale.tr(),
-            ),
-          );
-          continue;
-        case venomMainnetProtoID:
-          list.add(
-            ChooseNetworkItemData(
-              id: venomMainnetProtoID,
-              icon: Assets.images.venomVector,
-              title: LocaleKeys.venom.tr(),
-            ),
-          );
-          continue;
-        case tychoTestnetProtoID:
-          list.add(
-            ChooseNetworkItemData(
-              id: tychoTestnetProtoID,
-              icon: Assets.images.tychoVector,
-              title: LocaleKeys.tychoTestnet.tr(),
-            ),
-          );
-          continue;
-      }
-    }
+    final networks = _presetsConnectionService.networks;
 
     connectionsState.accept(
-      list,
+      [
+        for (final connection in networks)
+          ChooseNetworkItemData(
+            id: connection.id,
+            icon: Assets.images.everVector,
+            title: connection.name,
+          ),
+      ],
     );
   }
 }

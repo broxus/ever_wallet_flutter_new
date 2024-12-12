@@ -1,5 +1,6 @@
 import 'dart:convert';
 
+import 'package:app/app/service/connection/presets_connection/presets_connection_service.dart';
 import 'package:app/app/service/service.dart';
 import 'package:app/data/models/account_interaction.dart';
 import 'package:app/data/models/browser_bookmark_item.dart';
@@ -365,6 +366,7 @@ void main() {
     accountSeedStorage = NekotonStorageService(encryptedStorage);
     connectionsStorage = ConnectionsStorageService(
       await _getStorage(ConnectionsStorageService.container),
+      await _getStorage(PresetsConnectionService.container),
     );
     repository = NekotonRepository();
     await Hive.deleteFromDisk();

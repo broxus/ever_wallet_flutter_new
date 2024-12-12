@@ -1,3 +1,4 @@
+import 'package:app/app/service/connection/presets_connection/presets_connection_service.dart';
 import 'package:app/app/service/service.dart';
 import 'package:app/di/di.dart';
 import 'package:app/feature/network/network.dart';
@@ -39,6 +40,7 @@ class _SwitchToThisNetworkSheetState extends State<SwitchToThisNetworkSheet> {
     return BlocProvider<ManageNetworksBloc>(
       create: (context) => ManageNetworksBloc(
         inject<ConnectionsStorageService>(),
+        inject<PresetsConnectionService>(),
       ),
       child: Builder(
         builder: (context) {

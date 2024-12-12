@@ -1,6 +1,8 @@
 import 'package:app/app/router/router.dart';
-import 'package:app/app/service/nekoton_related/connection_service/transport_strategies/transport_strategies.dart';
-import 'package:app/app/service/nekoton_related/connection_service/transport_strategies/tycho_transport_strategy.dart';
+import 'package:app/app/service/connection/connection_service/transport_strategies/custom_transport_strategy.dart';
+import 'package:app/app/service/connection/connection_service/transport_strategies/ever_transport_strategy.dart';
+import 'package:app/app/service/connection/connection_service/transport_strategies/tycho_transport_strategy.dart';
+import 'package:app/app/service/connection/connection_service/transport_strategies/venom_transport_strategy.dart';
 import 'package:app/data/models/models.dart';
 import 'package:flutter/widgets.dart';
 import 'package:go_router/go_router.dart';

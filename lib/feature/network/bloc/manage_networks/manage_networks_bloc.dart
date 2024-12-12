@@ -1,6 +1,6 @@
 import 'dart:async';
 
-import 'package:app/app/service/nekoton_related/connection_service/network_presets.dart';
+import 'package:app/app/service/connection/presets_connection/presets_connection_service.dart';
 import 'package:app/app/service/service.dart';
 import 'package:app/data/models/models.dart';
 import 'package:bloc/bloc.dart';
@@ -9,13 +9,16 @@ import 'package:freezed_annotation/freezed_annotation.dart';
 import 'package:logging/logging.dart';
 
 part 'manage_networks_bloc.freezed.dart';
+
 part 'manage_networks_event.dart';
+
 part 'manage_networks_state.dart';
 
 class ManageNetworksBloc
     extends Bloc<ManageNetworksEvent, ManageNetworksState> {
   ManageNetworksBloc(
     this.storageService,
+    this._presetsConnectionService,
   ) : super(
           ManageNetworksState(
             currentConnectionId: storageService.currentConnectionId,
@@ -48,10 +51,14 @@ class ManageNetworksBloc
 
   final _log = Logger('ManageNetworksBloc');
 
+  ConnectionsStorageService storageService;
+  final PresetsConnectionService _presetsConnectionService;
+
   StreamSubscription<String>? _currentConnectionIdSubscription;
   StreamSubscription<List<ConnectionData>>? _connectionsSubscription;
 
-  ConnectionsStorageService storageService;
+  ConnectionData? get _defaultNetwork =>
+      _presetsConnectionService.defaultNetwork;
 
   @override
   Future<void> close() {
@@ -103,8 +110,12 @@ class ManageNetworksBloc
     });
   }
 
-  ConnectionData get currentConnection {
+  ConnectionData? get currentConnection {
     final currentConnectionId = state.currentConnectionId;
+
+    if (currentConnectionId == null) {
+      return null;
+    }
 
     final connection = getConnection(currentConnectionId);
     if (connection != null) {
@@ -116,7 +127,7 @@ class ManageNetworksBloc
       'Returning default connection',
     );
 
-    return defaultNetwork;
+    return _defaultNetwork;
   }
 
   ConnectionData? getConnection(String connectionId) {

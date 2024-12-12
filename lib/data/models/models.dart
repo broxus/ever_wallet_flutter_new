@@ -7,7 +7,7 @@ export 'asset_type_params.dart';
 export 'browser_bookmark_item.dart';
 export 'browser_history_item.dart';
 export 'browser_tab.dart';
-export 'connection_data.dart';
+export 'connection/connection_data.dart';
 export 'custom_currency.dart';
 export 'key_added_event.dart';
 export 'key_removed_event.dart';

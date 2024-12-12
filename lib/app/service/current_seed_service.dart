@@ -1,6 +1,6 @@
 import 'dart:async';
 
-import 'package:app/app/service/service.dart';
+import 'package:app/app/service/connection/nekoton_related.dart';
 import 'package:injectable/injectable.dart';
 import 'package:nekoton_repository/nekoton_repository.dart';
 import 'package:rxdart/rxdart.dart';

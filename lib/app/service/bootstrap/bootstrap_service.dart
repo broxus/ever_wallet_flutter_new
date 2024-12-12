@@ -1,25 +1,13 @@
+import 'package:app/app/service/bootstrap/bootstrap_steps.dart';
 import 'package:app/bootstrap/bootstrap.dart';
 import 'package:app/core/app_build_type.dart';
+import 'package:app/event_bus/events/bootstrap/bootstrap_event.dart';
+import 'package:app/event_bus/primary_bus.dart';
 import 'package:injectable/injectable.dart';
 import 'package:logging/logging.dart';
 import 'package:rxdart/rxdart.dart';
 
 typedef AsyncFunc = Future<void> Function();
-
-/// Steps that will be handled during bootstrap process.
-/// If app fails during some step, then it will be easy to rerun this process.
-/// [storage] - failed at storage step initialization
-/// [connection] - failed during creating connection
-/// [features] - failed during creating features
-/// [completed] - everything is ok, app works normally
-enum BootstrapSteps {
-  empty,
-  storage,
-  connection,
-  features,
-  completed,
-  error,
-}
 
 /// Service that allows initialize app step by step and re-run some operations
 /// if they failed.
@@ -36,6 +24,7 @@ class BootstrapService {
 
   bool get isConfigured => bootstrapStep == BootstrapSteps.completed;
 
+  // TODO(knightforce): refactoring
   Future<void> init(AppBuildType appBuildType) async {
     try {
       await _coreStep(appBuildType);
@@ -50,9 +39,10 @@ class BootstrapService {
       await _featureStep();
 
       _bootstrapStepSubject.add(BootstrapSteps.completed);
+      primaryBus.fire(BootstrapCompleteEvent());
     } catch (e, t) {
       _log.severe('init', e, t);
-      _bootstrapStepSubject.add(BootstrapSteps.error);
+      primaryBus.fire(BootstrapErrorEvent());
     }
   }
 
