@@ -106,7 +106,7 @@ class TonWalletConfirmTransactionConfirmView extends StatelessWidget {
                       useAppBackgroundColor: true,
                       body: (_, __) => Builder(
                         builder: (c) {
-                          return EnterPasswordWidget(
+                          return EnterPasswordWidgetV2(
                             // ignore: prefer-extracting-callbacks
                             onPasswordEntered: (value) {
                               Navigator.of(c).pop();
