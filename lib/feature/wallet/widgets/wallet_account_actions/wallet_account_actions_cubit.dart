@@ -25,10 +25,12 @@ class WalletAccountActionsCubit extends Cubit<WalletAccountActionsState> {
     this.nekotonRepository,
     this.address,
     this.stakingService,
+    this.storageService,
   ) : super(
           WalletAccountActionsState.loading(
             hasStake:
                 nekotonRepository.currentTransport.stakeInformation != null,
+            connectionData: storageService.currentConnection,
           ),
         ) {
     _walletsSubscription = nekotonRepository.walletsStream.listen((wallets) {
@@ -40,6 +42,7 @@ class WalletAccountActionsCubit extends Cubit<WalletAccountActionsState> {
   final NekotonRepository nekotonRepository;
   final Address address;
   final StakingService stakingService;
+  final ConnectionsStorageService storageService;
 
   TonWallet? wallet;
 
@@ -96,6 +99,7 @@ class WalletAccountActionsCubit extends Cubit<WalletAccountActionsState> {
           hasStakeActions: hasStake && _cachedWithdraws.isNotEmpty,
           balance: contract.balance,
           custodians: wallet?.custodians,
+          connectionData: storageService.currentConnection,
         ),
       );
     } catch (_) {}

@@ -2,6 +2,7 @@
 
 import 'package:app/app/router/router.dart';
 import 'package:app/app/service/service.dart';
+import 'package:app/data/models/connection_data.dart';
 import 'package:app/di/di.dart';
 import 'package:app/feature/profile/profile.dart';
 import 'package:app/feature/wallet/wallet.dart';
@@ -56,16 +57,18 @@ class WalletAccountActions extends StatelessWidget {
                 inject<NekotonRepository>(),
                 account.address,
                 inject(),
+                inject(),
               ),
               child: BlocBuilder<WalletAccountActionsCubit,
                   WalletAccountActionsState>(
                 builder: (context, state) {
                   return state.when(
-                    loading: (hasStake) => _ActionList(
+                    loading: (hasStake, connectionData) => _ActionList(
                       action: WalletAccountActionBehavior.send,
                       hasStake: hasStake && allowStake,
                       sendSpecified: sendSpecified,
                       padding: padding,
+                      connectionData: connectionData,
                     ),
                     data: (
                       action,
@@ -73,6 +76,7 @@ class WalletAccountActions extends StatelessWidget {
                       hasStakeActions,
                       balance,
                       custodians,
+                      connectionData,
                     ) =>
                         _ActionList(
                       account: account,
@@ -83,6 +87,7 @@ class WalletAccountActions extends StatelessWidget {
                       padding: padding,
                       balance: balance,
                       custodians: custodians,
+                      connectionData: connectionData,
                     ),
                   );
                 },
@@ -96,6 +101,7 @@ class _ActionList extends StatelessWidget {
   const _ActionList({
     required this.action,
     required this.padding,
+    this.connectionData,
     this.account,
     this.hasStake = false,
     this.hasStakeActions = false,
@@ -112,6 +118,7 @@ class _ActionList extends StatelessWidget {
   final EdgeInsetsGeometry padding;
   final BigInt? balance;
   final List<PublicKey>? custodians;
+  final ConnectionData? connectionData;
 
   @override
   Widget build(BuildContext context) {
@@ -231,7 +238,9 @@ class _ActionList extends StatelessWidget {
                 ),
               );
             } else {
-              showDeployMinEverModal(context, account!);
+              if (connectionData?.name != null) {
+                showDeployMinEverModal(context, account!, connectionData!.name);
+              }
             }
           },
         WalletAccountActionBehavior.sendLocalCustodiansNeeded => () =>

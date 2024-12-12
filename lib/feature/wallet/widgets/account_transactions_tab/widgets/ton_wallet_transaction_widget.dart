@@ -2,7 +2,6 @@ import 'package:app/feature/wallet/widgets/account_transactions_tab/widgets/ton_
 import 'package:app/generated/generated.dart';
 import 'package:app/utils/utils.dart';
 import 'package:flutter/material.dart';
-import 'package:lucide_icons_flutter/lucide_icons.dart';
 import 'package:nekoton_repository/nekoton_repository.dart';
 import 'package:ui_components_lib/ui_components_lib.dart';
 import 'package:ui_components_lib/v2/ui_components_lib_v2.dart';
@@ -19,6 +18,7 @@ class TonWalletTransactionWidget extends StatelessWidget {
     required this.isLast,
     required this.onPressed,
     required this.address,
+    required this.icon,
     super.key,
     this.additionalInformation,
   });
@@ -57,6 +57,7 @@ class TonWalletTransactionWidget extends StatelessWidget {
 
   /// Press callback to open detailed transaction page
   final VoidCallback onPressed;
+  final IconData icon;
 
   @override
   Widget build(BuildContext context) {
@@ -133,9 +134,9 @@ class TonWalletTransactionWidget extends StatelessWidget {
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
                         TransactionIcon(
+                          icon: icon,
                           isIncoming: isIncoming,
-                          isPending:
-                              status == TonWalletTransactionStatus.expired,
+                          status: status,
                         ),
                         const SizedBox(width: DimensSizeV2.d12),
                         Column(
@@ -148,9 +149,9 @@ class TonWalletTransactionWidget extends StatelessWidget {
                                   ? LocaleKeys.plusSign.tr()
                                   : LocaleKeys.minusSign.tr(),
                               style: theme.textStyles.labelXSmall.copyWith(
-                                color: _getColor(
+                                color: _getColorValue(
                                   theme,
-                                  status == TonWalletTransactionStatus.expired,
+                                  status,
                                   isIncoming,
                                 ),
                               ),
@@ -204,26 +205,39 @@ class TonWalletTransactionWidget extends StatelessWidget {
       },
     );
   }
+
+  Color _getColorValue(
+      ThemeStyleV2 theme,
+      TonWalletTransactionStatus status,
+      bool isIncoming,
+      ) {
+    if (status == TonWalletTransactionStatus.pending) {
+      return theme.colors.contentWarning;
+    } else if (status == TonWalletTransactionStatus.expired) {
+      return theme.colors.content3;
+    } else if (isIncoming) {
+      return theme.colors.contentPositive;
+    } else {
+      return theme.colors.content0;
+    }
+  }
 }
 
 class TransactionIcon extends StatelessWidget {
   const TransactionIcon({
-    required this.isPending,
+    required this.status,
     required this.isIncoming,
+    required this.icon,
     super.key,
   });
 
-  final bool isPending;
+  final TonWalletTransactionStatus status;
   final bool isIncoming;
+  final IconData icon;
 
   @override
   Widget build(BuildContext context) {
     final theme = context.themeStyleV2;
-    final icon = isPending
-        ? LucideIcons.timer
-        : isIncoming
-            ? LucideIcons.arrowDownLeft
-            : LucideIcons.arrowUpRight;
     return Container(
       height: DimensSizeV2.d40,
       width: DimensSizeV2.d40,
@@ -235,19 +249,23 @@ class TransactionIcon extends StatelessWidget {
         child: Icon(
           icon,
           size: DimensSizeV2.d20,
-          color: _getColor(theme, isPending, isIncoming),
+          color: _getColor(theme, status, isIncoming),
         ),
       ),
     );
   }
-}
 
-Color _getColor(ThemeStyleV2 theme, bool isPending, bool isIncoming) {
-  if (isPending) {
-    return theme.colors.contentWarning;
-  } else if (isIncoming) {
-    return theme.colors.contentPositive;
-  } else {
-    return theme.colors.content0;
+  Color _getColor(
+      ThemeStyleV2 theme,
+      TonWalletTransactionStatus status,
+      bool isIncoming,
+      ) {
+    if (status == TonWalletTransactionStatus.pending) {
+      return theme.colors.contentWarning;
+    } else if (isIncoming) {
+      return theme.colors.contentPositive;
+    } else {
+      return theme.colors.content0;
+    }
   }
 }

@@ -2,15 +2,13 @@
 
 import 'package:app/app/service/service.dart';
 import 'package:app/di/di.dart';
+import 'package:app/feature/wallet/new_account/add_account_result/add_account_result_sheet.dart';
 import 'package:bloc/bloc.dart';
 import 'package:flutter/material.dart';
 import 'package:freezed_annotation/freezed_annotation.dart';
 import 'package:nekoton_repository/nekoton_repository.dart' hide Message;
 
-import '../../../../wallet/new_account/add_account_result/add_account_result_sheet.dart';
-
 part 'add_new_local_account_type_cubit.freezed.dart';
-
 part 'add_new_local_account_type_state.dart';
 
 /// Cubit for selecting new type of account for creating for [publicKey].

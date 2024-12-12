@@ -214,9 +214,10 @@ class _WalletDeployMultisigBodyState extends State<WalletDeployMultisigBody> {
                         return LocaleKeys.invalidValue.tr();
                       }
                       final number = int.tryParse(value);
-                      if (number == null || number > 24) {
+                      if (number == null || number > 24 || number == 0) {
                         return LocaleKeys.invalidValue.tr();
                       }
+                      return null;
                     },
                     inputFormatters: [
                       InputFormatters.onlyDigitsFormatter,

@@ -174,6 +174,7 @@ GoRoute get tonWalletDetailsRoute {
       ),
     ),
     routes: [
+      walletDeployRoute,
       walletPrepareTransferLockedRoute,
       tonConfirmTranscationRoute,
     ],

@@ -8,6 +8,7 @@ import 'package:app/feature/wallet/widgets/account_transactions_tab/widgets/ton_
 import 'package:app/utils/utils.dart';
 import 'package:collection/collection.dart';
 import 'package:flutter/material.dart';
+import 'package:lucide_icons_flutter/lucide_icons.dart';
 import 'package:nekoton_repository/nekoton_repository.dart';
 import 'package:ui_components_lib/ui_components_lib.dart';
 
@@ -49,6 +50,7 @@ class StakingInProgress extends StatelessWidget {
               next == null || !next.data.timestamp.isSameDay(e.data.timestamp);
 
           return TonWalletTransactionWidget(
+            icon: LucideIcons.loader,
             address: e.accountAddress,
             isIncoming: true,
             isFirst: isFirst,
