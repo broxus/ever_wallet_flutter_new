@@ -33,8 +33,6 @@ class ConnectionService {
 
   /// Set up selected connection.
   Future<bool> setUp() async {
-    await _presetsConnectionService.fetchConnectionsList();
-
     final connection = _storageService.currentConnection;
 
     if (connection == null) {

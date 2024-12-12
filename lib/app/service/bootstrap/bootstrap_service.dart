@@ -1,4 +1,5 @@
 import 'package:app/app/service/bootstrap/bootstrap_steps.dart';
+import 'package:app/app/service/connection/presets_connection/presets_connection_service.dart';
 import 'package:app/bootstrap/bootstrap.dart';
 import 'package:app/core/app_build_type.dart';
 import 'package:app/event_bus/events/bootstrap/bootstrap_event.dart';
@@ -13,6 +14,12 @@ typedef AsyncFunc = Future<void> Function();
 /// if they failed.
 @singleton
 class BootstrapService {
+  BootstrapService(
+    this._presetsConnectionService,
+  );
+
+  final PresetsConnectionService _presetsConnectionService;
+
   final _log = Logger('bootstrap');
 
   final _bootstrapStepSubject =
@@ -28,6 +35,9 @@ class BootstrapService {
   Future<void> init(AppBuildType appBuildType) async {
     try {
       await _coreStep(appBuildType);
+
+      _bootstrapStepSubject.add(BootstrapSteps.remoteNetworks);
+      await _remoteNetworksStep();
 
       _bootstrapStepSubject.add(BootstrapSteps.storage);
       await _storageStep();
@@ -54,6 +64,7 @@ class BootstrapService {
 
     // ignore: avoid-missing-enum-constant-in-map
     final steps = <BootstrapSteps, AsyncFunc>{
+      BootstrapSteps.remoteNetworks: _remoteNetworksStep,
       BootstrapSteps.storage: _storageStep,
       BootstrapSteps.connection: _connectionStep,
       BootstrapSteps.features: _featureStep,
@@ -86,6 +97,10 @@ class BootstrapService {
   Future<void> _coreStep(AppBuildType appBuildType) async {
     await configureAppVersion();
     await configureLogger(appBuildType);
+  }
+
+  Future<void> _remoteNetworksStep() async {
+    await _presetsConnectionService.fetchConnectionsList();
   }
 
   Future<void> _storageStep() async {

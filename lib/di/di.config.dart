@@ -122,7 +122,6 @@ extension GetItInjectableX on _i174.GetIt {
         () => _i654.BrowserApprovalsService());
     gh.singleton<_i146.PresetsConnectionService>(
         () => _i146.PresetsConnectionService());
-    gh.singleton<_i468.BootstrapService>(() => _i468.BootstrapService());
     gh.lazySingleton<_i361.Dio>(() => dioModule.getDio());
     gh.singleton<_i29.BrowserPermissionsStorageService>(() =>
         _i29.BrowserPermissionsStorageService(
@@ -160,6 +159,8 @@ extension GetItInjectableX on _i174.GetIt {
     gh.singleton<_i933.BrowserTabsStorageService>(() =>
         _i933.BrowserTabsStorageService(
             gh<_i792.GetStorage>(instanceName: 'browser_tabs')));
+    gh.singleton<_i468.BootstrapService>(
+        () => _i468.BootstrapService(gh<_i146.PresetsConnectionService>()));
     gh.singleton<_i756.BrowserHistoryStorageService>(() =>
         _i756.BrowserHistoryStorageService(
             gh<_i792.GetStorage>(instanceName: 'browser_history')));
@@ -204,7 +205,7 @@ extension GetItInjectableX on _i174.GetIt {
     gh.singleton<_i402.CurrentAccountsService>(
         () => _i402.CurrentAccountsService(
               gh<_i771.NekotonRepository>(),
-              gh<_i65.CurrentKeyService>(),
+              gh<_i128.CurrentKeyService>(),
               gh<_i128.GeneralStorageService>(),
             ));
     gh.singleton<_i575.BiometryService>(() => _i575.BiometryService(

@@ -6,6 +6,7 @@
 /// [completed] - everything is ok, app works normally
 enum BootstrapSteps {
   empty,
+  remoteNetworks,
   storage,
   connection,
   features,
