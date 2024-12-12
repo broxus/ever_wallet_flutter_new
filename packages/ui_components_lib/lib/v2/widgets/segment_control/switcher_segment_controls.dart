@@ -21,7 +21,7 @@ class SwitcherSegmentControls<T> extends StatelessWidget {
     final theme = context.themeStyleV2;
     return Container(
       decoration: BoxDecoration(
-        color: theme.colors.background0,
+        color: theme.colors.background1,
         borderRadius: BorderRadius.circular(DimensRadiusV2.radius12),
       ),
       padding: const EdgeInsets.all(DimensSizeV2.d4),

@@ -49,6 +49,7 @@ class WalletAssetWidget extends StatelessWidget {
       child: SeparatedRow(
         separatorSize: DimensSizeV2.d12,
         children: [
+          const SizedBox(width: DimensSizeV2.d4),
           icon,
           Expanded(
             flex: 2,
@@ -101,6 +102,7 @@ class WalletAssetWidget extends StatelessWidget {
               isLoading: isRetryLoading,
               onPressed: () => onRetryPressed!(context),
             ),
+          const SizedBox(width: DimensSizeV2.d4),
         ],
       ),
     );

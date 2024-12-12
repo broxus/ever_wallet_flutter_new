@@ -2,9 +2,12 @@
 
 import 'package:app/app/router/router.dart';
 import 'package:app/app/service/service.dart';
+import 'package:app/data/models/connection_data.dart';
 import 'package:app/di/di.dart';
 import 'package:app/feature/profile/profile.dart';
 import 'package:app/feature/wallet/wallet.dart';
+import 'package:app/feature/wallet/wallet_deploy/widgets/deploy_wallet_min_ever_modal.dart';
+import 'package:app/feature/wallet/widgets/account_settings/account_settings.dart';
 import 'package:app/feature/wallet/widgets/wallet_account_actions/wallet_account_actions_cubit.dart';
 import 'package:app/generated/generated.dart';
 import 'package:app/utils/utils.dart';
@@ -54,24 +57,37 @@ class WalletAccountActions extends StatelessWidget {
                 inject<NekotonRepository>(),
                 account.address,
                 inject(),
+                inject(),
               ),
               child: BlocBuilder<WalletAccountActionsCubit,
                   WalletAccountActionsState>(
                 builder: (context, state) {
                   return state.when(
-                    loading: (hasStake) => _ActionList(
+                    loading: (hasStake, connectionData) => _ActionList(
                       action: WalletAccountActionBehavior.send,
                       hasStake: hasStake && allowStake,
                       sendSpecified: sendSpecified,
                       padding: padding,
+                      connectionData: connectionData,
                     ),
-                    data: (action, hasStake, hasStakeActions) => _ActionList(
+                    data: (
+                      action,
+                      hasStake,
+                      hasStakeActions,
+                      balance,
+                      custodians,
+                      connectionData,
+                    ) =>
+                        _ActionList(
                       account: account,
                       action: action,
                       hasStake: hasStake && allowStake,
                       hasStakeActions: hasStakeActions,
                       sendSpecified: sendSpecified,
                       padding: padding,
+                      balance: balance,
+                      custodians: custodians,
+                      connectionData: connectionData,
                     ),
                   );
                 },
@@ -85,10 +101,13 @@ class _ActionList extends StatelessWidget {
   const _ActionList({
     required this.action,
     required this.padding,
+    this.connectionData,
     this.account,
     this.hasStake = false,
     this.hasStakeActions = false,
     this.sendSpecified = false,
+    this.balance,
+    this.custodians,
   });
 
   final WalletAccountActionBehavior action;
@@ -97,6 +116,9 @@ class _ActionList extends StatelessWidget {
   final bool hasStakeActions;
   final bool sendSpecified;
   final EdgeInsetsGeometry padding;
+  final BigInt? balance;
+  final List<PublicKey>? custodians;
+  final ConnectionData? connectionData;
 
   @override
   Widget build(BuildContext context) {
@@ -125,7 +147,8 @@ class _ActionList extends StatelessWidget {
             WalletActionButton(
               label: _actionTitle(action),
               icon: _actionIcon(action),
-              onPressed: account?.let((_) => _actionOnPressed(context)),
+              onPressed:
+                  account?.let((_) => _actionOnPressed(context, balance)),
             ),
             if (hasStake)
               WalletActionButton(
@@ -144,6 +167,20 @@ class _ActionList extends StatelessWidget {
                   },
                 ),
               ),
+            if (!sendSpecified)
+              WalletActionButton(
+                label: LocaleKeys.info.tr(),
+                icon: LucideIcons.ellipsis,
+                onPressed: () {
+                  if (account != null) {
+                    showAccountSettingsModal(
+                      context: context,
+                      account: account!,
+                      custodians: custodians,
+                    );
+                  }
+                },
+              ),
           ],
         ),
       ),
@@ -160,7 +197,8 @@ class _ActionList extends StatelessWidget {
         _ => LocaleKeys.sendWord.tr(),
       };
 
-  VoidCallback _actionOnPressed(BuildContext context) => switch (action) {
+  VoidCallback _actionOnPressed(BuildContext context, BigInt? balance) =>
+      switch (action) {
         WalletAccountActionBehavior.send => () {
             if (sendSpecified) {
               final transport = inject<NekotonRepository>().currentTransport;
@@ -188,14 +226,23 @@ class _ActionList extends StatelessWidget {
             }
           },
         // ignore: no-empty-block
-        WalletAccountActionBehavior.deploy => () => context.goFurther(
-              AppRoute.walletDeploy.pathWithData(
-                pathParameters: {
-                  walletDeployAddressPathParam: account!.address.address,
-                  walletDeployPublicKeyPathParam: account!.publicKey.publicKey,
-                },
-              ),
-            ),
+        WalletAccountActionBehavior.deploy => () {
+            if ((balance?.toInt() ?? 0) / 1000000000 > 0.1) {
+              context.goFurther(
+                AppRoute.walletDeploy.pathWithData(
+                  pathParameters: {
+                    walletDeployAddressPathParam: account!.address.address,
+                    walletDeployPublicKeyPathParam:
+                        account!.publicKey.publicKey,
+                  },
+                ),
+              );
+            } else {
+              if (connectionData?.name != null) {
+                showDeployMinEverModal(context, account!, connectionData!.name);
+              }
+            }
+          },
         WalletAccountActionBehavior.sendLocalCustodiansNeeded => () =>
             inject<MessengerService>().show(
               Message.error(

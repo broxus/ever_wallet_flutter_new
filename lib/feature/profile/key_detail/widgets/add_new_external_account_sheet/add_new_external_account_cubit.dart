@@ -2,6 +2,7 @@
 
 import 'package:app/app/service/service.dart';
 import 'package:app/di/di.dart';
+import 'package:app/feature/wallet/new_account/add_account_result/add_account_result_sheet.dart';
 import 'package:app/generated/generated.dart';
 import 'package:bloc/bloc.dart';
 import 'package:flutter/material.dart';
@@ -16,17 +17,25 @@ class AddNewExternalAccountCubit extends Cubit<AddNewExternalAccountState> {
   AddNewExternalAccountCubit(
     this.publicKey,
     this.nekotonRepository,
+    this.currentAccountsService,
   ) : super(const AddNewExternalAccountState.initial());
 
   /// Public key for which new account will be added
-  final PublicKey publicKey;
+  final PublicKey? publicKey;
   final NekotonRepository nekotonRepository;
+  final CurrentAccountsService currentAccountsService;
+
+  PublicKey? getPublicKey() {
+    return currentAccountsService.currentActiveAccount?.publicKey;
+  }
 
   Future<void> createAccount(
     BuildContext context,
     String addressString,
     String name,
   ) async {
+    final publicKey = this.publicKey ?? getPublicKey();
+    if (publicKey == null) return;
     final seedKey = nekotonRepository.seedList.findSeedKey(publicKey);
     if (seedKey == null) return;
 
@@ -42,12 +51,12 @@ class AddNewExternalAccountCubit extends Cubit<AddNewExternalAccountState> {
 
         return;
       }
-
       await seedKey.accountList.addExternalAccount(
         address: address,
         name: newName.isEmpty ? null : newName,
       );
-      emit(const AddNewExternalAccountState.completed());
+      Navigator.of(context).pop();
+      await showNewAccountResultSheet(context: context, address: address);
     } catch (e) {
       _showError(context, LocaleKeys.keyIsNotCustodian.tr());
       emit(const AddNewExternalAccountState.initial());

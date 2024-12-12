@@ -23,7 +23,7 @@ class WalletActionButton extends StatelessWidget {
       behavior: HitTestBehavior.translucent,
       onTap: onPressed,
       child: SizedBox(
-        width: 104,
+        width: 88,
         child: Column(
           mainAxisSize: MainAxisSize.min,
           children: [
