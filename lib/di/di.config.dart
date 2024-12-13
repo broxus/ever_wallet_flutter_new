@@ -77,6 +77,7 @@ import '../app/service/token_wallets_service.dart' as _i877;
 import '../http/dio_module.dart' as _i720;
 import '../http/http.dart' as _i188;
 import '../http/repository/token_repository.dart' as _i700;
+import '../http/repository/ton_repository.dart' as _i495;
 
 extension GetItInjectableX on _i174.GetIt {
 // initializes the registration of main-scope dependencies inside of GetIt
@@ -133,6 +134,8 @@ extension GetItInjectableX on _i174.GetIt {
     gh.singleton<_i65.ConnectionsStorageService>(() =>
         _i65.ConnectionsStorageService(
             gh<_i792.GetStorage>(instanceName: 'connections')));
+    gh.singleton<_i495.TonRepository>(
+        () => _i495.TonRepository(gh<_i361.Dio>()));
     gh.lazySingleton<_i184.AppStorageService>(() => _i184.AppStorageService(
         gh<_i792.GetStorage>(instanceName: 'app_storage_service')));
     gh.singleton<_i964.AssetsService>(() => _i964.AssetsService(
@@ -168,10 +171,6 @@ extension GetItInjectableX on _i174.GetIt {
     gh.singleton<_i122.BrowserBookmarksStorageService>(() =>
         _i122.BrowserBookmarksStorageService(
             gh<_i792.GetStorage>(instanceName: 'browser_bookmarks')));
-    gh.singleton<_i764.ConnectionService>(() => _i764.ConnectionService(
-          gh<_i128.ConnectionsStorageService>(),
-          gh<_i771.NekotonRepository>(),
-        ));
     gh.singleton<_i68.NtpService>(
       () => _i68.NtpService(gh<_i128.AppLifecycleService>()),
       dispose: (i) => i.dispose(),
@@ -193,6 +192,11 @@ extension GetItInjectableX on _i174.GetIt {
     gh.singleton<_i721.BrowserFaviconURLStorageService>(() =>
         _i721.BrowserFaviconURLStorageService(
             gh<_i792.GetStorage>(instanceName: 'browser_favicon_urls')));
+    gh.singleton<_i764.ConnectionService>(() => _i764.ConnectionService(
+          gh<_i128.ConnectionsStorageService>(),
+          gh<_i771.NekotonRepository>(),
+          gh<_i188.TonRepository>(),
+        ));
     gh.singleton<_i244.CurrentSeedService>(() => _i244.CurrentSeedService(
           gh<_i771.NekotonRepository>(),
           gh<_i128.CurrentKeyService>(),

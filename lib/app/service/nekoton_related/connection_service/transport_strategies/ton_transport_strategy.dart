@@ -1,32 +1,38 @@
 part of 'transport_strategies.dart';
 
-/// Transport strategy for venom network
-class VenomTransportStrategy extends AppTransportStrategy {
-  VenomTransportStrategy({
+/// Transport strategy for ton network
+class TonTransportStrategy extends AppTransportStrategy {
+  TonTransportStrategy({
     required this.transport,
     required this.connection,
+    required this.tonRepository,
   });
 
   @override
   final Transport transport;
 
   final ConnectionData connection;
+  final TonRepository tonRepository;
+
+  final Map<Address, Symbol> _symbolCache = {};
 
   @override
-  String accountExplorerLink(Address accountAddress) =>
-      connection.blockExplorerUrl.isNotEmpty
-          ? '${connection.blockExplorerUrl}/accounts/${accountAddress.address}'
-          : '';
+  String accountExplorerLink(Address accountAddress) => connection
+          .blockExplorerUrl.isNotEmpty
+      ? '${connection.blockExplorerUrl}/${packAddress(address: accountAddress)}'
+      : '';
 
   @override
   final availableWalletTypes = const [
     WalletType.everWallet(),
     WalletType.multisig(MultisigType.multisig2_1),
+    WalletType.walletV4R1(),
+    WalletType.walletV4R2(),
+    WalletType.walletV5R1(),
   ];
 
   @override
-  String currencyUrl(String currencyAddress) =>
-      'https://api.web3.world/v1/currencies/$currencyAddress';
+  String currencyUrl(String currencyAddress) => '';
 
   @override
   String defaultAccountName(WalletType walletType) => walletType.when(
@@ -42,40 +48,40 @@ class VenomTransportStrategy extends AppTransportStrategy {
         },
         walletV3: () => 'Legacy',
         highloadWalletV2: () => 'HighloadWallet',
-        everWallet: () => 'Default',
+        everWallet: () => 'EverWallet',
         walletV4R1: () => 'WalletV4R1',
         walletV4R2: () => 'WalletV4R2',
         walletV5R1: () => 'WalletV5R1',
       );
 
   @override
-  final defaultWalletType = const WalletType.everWallet();
+  final defaultWalletType = const WalletType.walletV5R1();
 
   @override
   String get manifestUrl => connection.manifestUrl;
 
   @override
-  String get nativeTokenIcon => Assets.images.venom.path;
+  String get nativeTokenIcon => Assets.images.networkTon.path;
 
   @override
-  final nativeTokenTicker = 'VENOM';
+  final nativeTokenTicker = 'TON';
 
   @override
   final nativeTokenAddress = const Address(
     address:
-        '0:77d36848bb159fa485628bc38dc37eadb74befa514395e09910f601b841f749e',
+        '0:9a8da514d575d20234c3fb1395ee9138f5f1ad838abc905dc42c2389b46bd015',
   );
 
   @override
-  final networkName = 'Venom';
+  final networkName = 'TON';
 
   @override
-  final seedPhraseWordsCount = [12];
+  final seedPhraseWordsCount = [12, 24];
 
   @override
   String transactionExplorerLink(String transactionHash) =>
       connection.blockExplorerUrl.isNotEmpty
-          ? '${connection.blockExplorerUrl}/transactions/$transactionHash'
+          ? '${connection.blockExplorerUrl}/transaction/$transactionHash'
           : '';
 
   @override
@@ -86,19 +92,40 @@ class VenomTransportStrategy extends AppTransportStrategy {
   StakingInformation? get stakeInformation => null;
 
   @override
-  String? get tokenApiBaseUrl => 'https://tokens.venomscan.com/v1';
+  String? get tokenApiBaseUrl => null;
 
   @override
-  String? get currencyApiBaseUrl => 'https://api.web3.world/v1/currencies';
+  String? get currencyApiBaseUrl => null;
 
   @override
   Future<GenericTokenWallet> subscribeToken({
     required Address owner,
     required Address rootTokenContract,
-  }) =>
-      Tip3TokenWallet.subscribe(
+  }) async =>
+      JettonTokenWallet.subscribe(
         transport: transport,
         owner: owner,
         rootTokenContract: rootTokenContract,
+        symbol: await _getSymbol(rootTokenContract),
       );
+
+  Future<Symbol> _getSymbol(Address rootTokenContract) async {
+    var symbol = _symbolCache[rootTokenContract];
+
+    if (symbol == null) {
+      final info = await tonRepository.getTokenInfo(
+        address: rootTokenContract,
+      );
+
+      symbol = Symbol(
+        name: info.symbol ?? 'UNKNOWN',
+        fullName: info.name ?? 'Unknown token',
+        decimals: info.decimals ?? 0,
+        rootTokenContract: info.address,
+      );
+      _symbolCache[rootTokenContract] = symbol;
+    }
+
+    return symbol;
+  }
 }

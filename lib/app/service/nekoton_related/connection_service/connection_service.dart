@@ -1,10 +1,10 @@
 import 'package:app/app/service/nekoton_related/connection_service/http_clients.dart';
 import 'package:app/app/service/nekoton_related/connection_service/transport_strategies/transport_strategies.dart';
-import 'package:app/app/service/nekoton_related/connection_service/transport_strategies/tycho_transport_strategy.dart';
 import 'package:app/app/service/service.dart';
 import 'package:app/data/models/connection_data.dart';
 import 'package:app/data/models/network_type.dart';
 import 'package:app/di/di.dart';
+import 'package:app/http/http.dart';
 import 'package:injectable/injectable.dart';
 import 'package:logging/logging.dart';
 import 'package:nekoton_repository/nekoton_repository.dart' hide Message;
@@ -20,12 +20,14 @@ class ConnectionService {
   ConnectionService(
     this._storageService,
     this._nekotonRepository,
+    this._tonRepository,
   );
 
   static final _log = Logger('ConnectionService');
 
   final ConnectionsStorageService _storageService;
   final NekotonRepository _nekotonRepository;
+  final TonRepository _tonRepository;
 
   /// Set up selected connection.
   Future<void> setUp() async {
@@ -66,6 +68,12 @@ class ConnectionService {
         return CustomTransportStrategy(
           transport: transport,
           connection: connection,
+        );
+      case NetworkType.ton:
+        return TonTransportStrategy(
+          transport: transport,
+          connection: connection,
+          tonRepository: _tonRepository,
         );
     }
   }
@@ -175,15 +183,11 @@ class ConnectionService {
 }
 
 extension TransportTypeExtension on TransportStrategy {
-  NetworkType get networkType {
-    if (this is EverTransportStrategy) {
-      return NetworkType.ever;
-    } else if (this is VenomTransportStrategy) {
-      return NetworkType.venom;
-    } else if (this is TychoTransportStrategy) {
-      return NetworkType.tycho;
-    } else {
-      return NetworkType.custom;
-    }
-  }
+  NetworkType get networkType => switch (this as AppTransportStrategy) {
+        EverTransportStrategy() => NetworkType.ever,
+        VenomTransportStrategy() => NetworkType.venom,
+        CustomTransportStrategy() => NetworkType.custom,
+        TychoTransportStrategy() => NetworkType.tycho,
+        TonTransportStrategy() => NetworkType.ton,
+      };
 }

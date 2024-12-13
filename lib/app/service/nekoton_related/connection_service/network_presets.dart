@@ -7,6 +7,7 @@ final networkPresets = [
   ..._everPresets,
   ..._venomPresets,
   ..._tychoPresets,
+  ..._tonPresets,
   ..._customPresets,
 ];
 
@@ -17,6 +18,7 @@ final defaultNetwork = networkPresets.firstWhere(
 const everMainnetProtoID = 'preset_ever_mainnet_proto';
 const venomMainnetProtoID = 'preset_venom_mainnet_proto';
 const tychoTestnetProtoID = 'preset_tycho_testnet_proto';
+const tonMainnetProtoID = 'preset_ton_mainnet_proto';
 
 /// Presets for ever network
 final _everPresets = <ConnectionData>[
@@ -75,6 +77,21 @@ final _tychoPresets = [
     manifestUrl:
         'https://raw.githubusercontent.com/broxus/ton-assets/refs/heads/tychotestnet/manifest.json',
     sortingOrder: 4,
+  ),
+];
+
+final _tonPresets = [
+  ConnectionData.protoPreset(
+    id: tonMainnetProtoID,
+    name: 'TON',
+    group: 'ton',
+    endpoint: 'https://jrpc-ton.broxus.com',
+    networkType: NetworkType.ton,
+    canBeEdited: false,
+    blockExplorerUrl: 'https://tonviewer.com',
+    manifestUrl:
+        'https://raw.githubusercontent.com/broxus/ton-assets/refs/heads/ton/manifest.json',
+    sortingOrder: 5,
   ),
 ];
 
