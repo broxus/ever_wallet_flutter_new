@@ -19,7 +19,7 @@ class NetworkDropItem extends StatelessWidget {
         right: DimensSizeV2.d8,
       ),
       decoration: BoxDecoration(
-        color: Color(0x10FFFFFF),//TODO(new style material)
+        color: const Color(0x10FFFFFF),//move to constants
         borderRadius: BorderRadius.circular(DimensRadiusV2.theBiggest),
       ),
       child: Row(
