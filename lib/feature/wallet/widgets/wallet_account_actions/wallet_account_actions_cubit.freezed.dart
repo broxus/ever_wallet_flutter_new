@@ -17,44 +17,43 @@ final _privateConstructorUsedError = UnsupportedError(
 /// @nodoc
 mixin _$WalletAccountActionsState {
   bool get hasStake => throw _privateConstructorUsedError;
-  ConnectionData? get connectionData => throw _privateConstructorUsedError;
+  String? get nativeTokenTicker => throw _privateConstructorUsedError;
   @optionalTypeArgs
   TResult when<TResult extends Object?>({
-    required TResult Function(bool hasStake, ConnectionData? connectionData)
-        loading,
+    required TResult Function(bool hasStake, String? nativeTokenTicker) loading,
     required TResult Function(
             WalletAccountActionBehavior action,
             bool hasStake,
             bool hasStakeActions,
             BigInt? balance,
             List<PublicKey>? custodians,
-            ConnectionData? connectionData)
+            String? nativeTokenTicker)
         data,
   }) =>
       throw _privateConstructorUsedError;
   @optionalTypeArgs
   TResult? whenOrNull<TResult extends Object?>({
-    TResult? Function(bool hasStake, ConnectionData? connectionData)? loading,
+    TResult? Function(bool hasStake, String? nativeTokenTicker)? loading,
     TResult? Function(
             WalletAccountActionBehavior action,
             bool hasStake,
             bool hasStakeActions,
             BigInt? balance,
             List<PublicKey>? custodians,
-            ConnectionData? connectionData)?
+            String? nativeTokenTicker)?
         data,
   }) =>
       throw _privateConstructorUsedError;
   @optionalTypeArgs
   TResult maybeWhen<TResult extends Object?>({
-    TResult Function(bool hasStake, ConnectionData? connectionData)? loading,
+    TResult Function(bool hasStake, String? nativeTokenTicker)? loading,
     TResult Function(
             WalletAccountActionBehavior action,
             bool hasStake,
             bool hasStakeActions,
             BigInt? balance,
             List<PublicKey>? custodians,
-            ConnectionData? connectionData)?
+            String? nativeTokenTicker)?
         data,
     required TResult orElse(),
   }) =>
@@ -92,9 +91,7 @@ abstract class $WalletAccountActionsStateCopyWith<$Res> {
           $Res Function(WalletAccountActionsState) then) =
       _$WalletAccountActionsStateCopyWithImpl<$Res, WalletAccountActionsState>;
   @useResult
-  $Res call({bool hasStake, ConnectionData? connectionData});
-
-  $ConnectionDataCopyWith<$Res>? get connectionData;
+  $Res call({bool hasStake, String? nativeTokenTicker});
 }
 
 /// @nodoc
@@ -114,32 +111,18 @@ class _$WalletAccountActionsStateCopyWithImpl<$Res,
   @override
   $Res call({
     Object? hasStake = null,
-    Object? connectionData = freezed,
+    Object? nativeTokenTicker = freezed,
   }) {
     return _then(_value.copyWith(
       hasStake: null == hasStake
           ? _value.hasStake
           : hasStake // ignore: cast_nullable_to_non_nullable
               as bool,
-      connectionData: freezed == connectionData
-          ? _value.connectionData
-          : connectionData // ignore: cast_nullable_to_non_nullable
-              as ConnectionData?,
+      nativeTokenTicker: freezed == nativeTokenTicker
+          ? _value.nativeTokenTicker
+          : nativeTokenTicker // ignore: cast_nullable_to_non_nullable
+              as String?,
     ) as $Val);
-  }
-
-  /// Create a copy of WalletAccountActionsState
-  /// with the given fields replaced by the non-null parameter values.
-  @override
-  @pragma('vm:prefer-inline')
-  $ConnectionDataCopyWith<$Res>? get connectionData {
-    if (_value.connectionData == null) {
-      return null;
-    }
-
-    return $ConnectionDataCopyWith<$Res>(_value.connectionData!, (value) {
-      return _then(_value.copyWith(connectionData: value) as $Val);
-    });
   }
 }
 
@@ -151,10 +134,7 @@ abstract class _$$LoadingImplCopyWith<$Res>
       __$$LoadingImplCopyWithImpl<$Res>;
   @override
   @useResult
-  $Res call({bool hasStake, ConnectionData? connectionData});
-
-  @override
-  $ConnectionDataCopyWith<$Res>? get connectionData;
+  $Res call({bool hasStake, String? nativeTokenTicker});
 }
 
 /// @nodoc
@@ -171,17 +151,17 @@ class __$$LoadingImplCopyWithImpl<$Res>
   @override
   $Res call({
     Object? hasStake = null,
-    Object? connectionData = freezed,
+    Object? nativeTokenTicker = freezed,
   }) {
     return _then(_$LoadingImpl(
       hasStake: null == hasStake
           ? _value.hasStake
           : hasStake // ignore: cast_nullable_to_non_nullable
               as bool,
-      connectionData: freezed == connectionData
-          ? _value.connectionData
-          : connectionData // ignore: cast_nullable_to_non_nullable
-              as ConnectionData?,
+      nativeTokenTicker: freezed == nativeTokenTicker
+          ? _value.nativeTokenTicker
+          : nativeTokenTicker // ignore: cast_nullable_to_non_nullable
+              as String?,
     ));
   }
 }
@@ -189,16 +169,17 @@ class __$$LoadingImplCopyWithImpl<$Res>
 /// @nodoc
 
 class _$LoadingImpl implements _Loading {
-  const _$LoadingImpl({required this.hasStake, required this.connectionData});
+  const _$LoadingImpl(
+      {required this.hasStake, required this.nativeTokenTicker});
 
   @override
   final bool hasStake;
   @override
-  final ConnectionData? connectionData;
+  final String? nativeTokenTicker;
 
   @override
   String toString() {
-    return 'WalletAccountActionsState.loading(hasStake: $hasStake, connectionData: $connectionData)';
+    return 'WalletAccountActionsState.loading(hasStake: $hasStake, nativeTokenTicker: $nativeTokenTicker)';
   }
 
   @override
@@ -208,12 +189,12 @@ class _$LoadingImpl implements _Loading {
             other is _$LoadingImpl &&
             (identical(other.hasStake, hasStake) ||
                 other.hasStake == hasStake) &&
-            (identical(other.connectionData, connectionData) ||
-                other.connectionData == connectionData));
+            (identical(other.nativeTokenTicker, nativeTokenTicker) ||
+                other.nativeTokenTicker == nativeTokenTicker));
   }
 
   @override
-  int get hashCode => Object.hash(runtimeType, hasStake, connectionData);
+  int get hashCode => Object.hash(runtimeType, hasStake, nativeTokenTicker);
 
   /// Create a copy of WalletAccountActionsState
   /// with the given fields replaced by the non-null parameter values.
@@ -226,52 +207,51 @@ class _$LoadingImpl implements _Loading {
   @override
   @optionalTypeArgs
   TResult when<TResult extends Object?>({
-    required TResult Function(bool hasStake, ConnectionData? connectionData)
-        loading,
+    required TResult Function(bool hasStake, String? nativeTokenTicker) loading,
     required TResult Function(
             WalletAccountActionBehavior action,
             bool hasStake,
             bool hasStakeActions,
             BigInt? balance,
             List<PublicKey>? custodians,
-            ConnectionData? connectionData)
+            String? nativeTokenTicker)
         data,
   }) {
-    return loading(hasStake, connectionData);
+    return loading(hasStake, nativeTokenTicker);
   }
 
   @override
   @optionalTypeArgs
   TResult? whenOrNull<TResult extends Object?>({
-    TResult? Function(bool hasStake, ConnectionData? connectionData)? loading,
+    TResult? Function(bool hasStake, String? nativeTokenTicker)? loading,
     TResult? Function(
             WalletAccountActionBehavior action,
             bool hasStake,
             bool hasStakeActions,
             BigInt? balance,
             List<PublicKey>? custodians,
-            ConnectionData? connectionData)?
+            String? nativeTokenTicker)?
         data,
   }) {
-    return loading?.call(hasStake, connectionData);
+    return loading?.call(hasStake, nativeTokenTicker);
   }
 
   @override
   @optionalTypeArgs
   TResult maybeWhen<TResult extends Object?>({
-    TResult Function(bool hasStake, ConnectionData? connectionData)? loading,
+    TResult Function(bool hasStake, String? nativeTokenTicker)? loading,
     TResult Function(
             WalletAccountActionBehavior action,
             bool hasStake,
             bool hasStakeActions,
             BigInt? balance,
             List<PublicKey>? custodians,
-            ConnectionData? connectionData)?
+            String? nativeTokenTicker)?
         data,
     required TResult orElse(),
   }) {
     if (loading != null) {
-      return loading(hasStake, connectionData);
+      return loading(hasStake, nativeTokenTicker);
     }
     return orElse();
   }
@@ -311,12 +291,12 @@ class _$LoadingImpl implements _Loading {
 abstract class _Loading implements WalletAccountActionsState {
   const factory _Loading(
       {required final bool hasStake,
-      required final ConnectionData? connectionData}) = _$LoadingImpl;
+      required final String? nativeTokenTicker}) = _$LoadingImpl;
 
   @override
   bool get hasStake;
   @override
-  ConnectionData? get connectionData;
+  String? get nativeTokenTicker;
 
   /// Create a copy of WalletAccountActionsState
   /// with the given fields replaced by the non-null parameter values.
@@ -340,10 +320,7 @@ abstract class _$$DataImplCopyWith<$Res>
       bool hasStakeActions,
       BigInt? balance,
       List<PublicKey>? custodians,
-      ConnectionData? connectionData});
-
-  @override
-  $ConnectionDataCopyWith<$Res>? get connectionData;
+      String? nativeTokenTicker});
 }
 
 /// @nodoc
@@ -363,7 +340,7 @@ class __$$DataImplCopyWithImpl<$Res>
     Object? hasStakeActions = null,
     Object? balance = freezed,
     Object? custodians = freezed,
-    Object? connectionData = freezed,
+    Object? nativeTokenTicker = freezed,
   }) {
     return _then(_$DataImpl(
       action: null == action
@@ -386,10 +363,10 @@ class __$$DataImplCopyWithImpl<$Res>
           ? _value._custodians
           : custodians // ignore: cast_nullable_to_non_nullable
               as List<PublicKey>?,
-      connectionData: freezed == connectionData
-          ? _value.connectionData
-          : connectionData // ignore: cast_nullable_to_non_nullable
-              as ConnectionData?,
+      nativeTokenTicker: freezed == nativeTokenTicker
+          ? _value.nativeTokenTicker
+          : nativeTokenTicker // ignore: cast_nullable_to_non_nullable
+              as String?,
     ));
   }
 }
@@ -403,7 +380,7 @@ class _$DataImpl implements _Data {
       required this.hasStakeActions,
       required this.balance,
       required final List<PublicKey>? custodians,
-      required this.connectionData})
+      required this.nativeTokenTicker})
       : _custodians = custodians;
 
   @override
@@ -425,11 +402,11 @@ class _$DataImpl implements _Data {
   }
 
   @override
-  final ConnectionData? connectionData;
+  final String? nativeTokenTicker;
 
   @override
   String toString() {
-    return 'WalletAccountActionsState.data(action: $action, hasStake: $hasStake, hasStakeActions: $hasStakeActions, balance: $balance, custodians: $custodians, connectionData: $connectionData)';
+    return 'WalletAccountActionsState.data(action: $action, hasStake: $hasStake, hasStakeActions: $hasStakeActions, balance: $balance, custodians: $custodians, nativeTokenTicker: $nativeTokenTicker)';
   }
 
   @override
@@ -445,8 +422,8 @@ class _$DataImpl implements _Data {
             (identical(other.balance, balance) || other.balance == balance) &&
             const DeepCollectionEquality()
                 .equals(other._custodians, _custodians) &&
-            (identical(other.connectionData, connectionData) ||
-                other.connectionData == connectionData));
+            (identical(other.nativeTokenTicker, nativeTokenTicker) ||
+                other.nativeTokenTicker == nativeTokenTicker));
   }
 
   @override
@@ -457,7 +434,7 @@ class _$DataImpl implements _Data {
       hasStakeActions,
       balance,
       const DeepCollectionEquality().hash(_custodians),
-      connectionData);
+      nativeTokenTicker);
 
   /// Create a copy of WalletAccountActionsState
   /// with the given fields replaced by the non-null parameter values.
@@ -470,55 +447,54 @@ class _$DataImpl implements _Data {
   @override
   @optionalTypeArgs
   TResult when<TResult extends Object?>({
-    required TResult Function(bool hasStake, ConnectionData? connectionData)
-        loading,
+    required TResult Function(bool hasStake, String? nativeTokenTicker) loading,
     required TResult Function(
             WalletAccountActionBehavior action,
             bool hasStake,
             bool hasStakeActions,
             BigInt? balance,
             List<PublicKey>? custodians,
-            ConnectionData? connectionData)
+            String? nativeTokenTicker)
         data,
   }) {
-    return data(
-        action, hasStake, hasStakeActions, balance, custodians, connectionData);
+    return data(action, hasStake, hasStakeActions, balance, custodians,
+        nativeTokenTicker);
   }
 
   @override
   @optionalTypeArgs
   TResult? whenOrNull<TResult extends Object?>({
-    TResult? Function(bool hasStake, ConnectionData? connectionData)? loading,
+    TResult? Function(bool hasStake, String? nativeTokenTicker)? loading,
     TResult? Function(
             WalletAccountActionBehavior action,
             bool hasStake,
             bool hasStakeActions,
             BigInt? balance,
             List<PublicKey>? custodians,
-            ConnectionData? connectionData)?
+            String? nativeTokenTicker)?
         data,
   }) {
-    return data?.call(
-        action, hasStake, hasStakeActions, balance, custodians, connectionData);
+    return data?.call(action, hasStake, hasStakeActions, balance, custodians,
+        nativeTokenTicker);
   }
 
   @override
   @optionalTypeArgs
   TResult maybeWhen<TResult extends Object?>({
-    TResult Function(bool hasStake, ConnectionData? connectionData)? loading,
+    TResult Function(bool hasStake, String? nativeTokenTicker)? loading,
     TResult Function(
             WalletAccountActionBehavior action,
             bool hasStake,
             bool hasStakeActions,
             BigInt? balance,
             List<PublicKey>? custodians,
-            ConnectionData? connectionData)?
+            String? nativeTokenTicker)?
         data,
     required TResult orElse(),
   }) {
     if (data != null) {
       return data(action, hasStake, hasStakeActions, balance, custodians,
-          connectionData);
+          nativeTokenTicker);
     }
     return orElse();
   }
@@ -562,7 +538,7 @@ abstract class _Data implements WalletAccountActionsState {
       required final bool hasStakeActions,
       required final BigInt? balance,
       required final List<PublicKey>? custodians,
-      required final ConnectionData? connectionData}) = _$DataImpl;
+      required final String? nativeTokenTicker}) = _$DataImpl;
 
   WalletAccountActionBehavior get action;
   @override
@@ -571,7 +547,7 @@ abstract class _Data implements WalletAccountActionsState {
   BigInt? get balance;
   List<PublicKey>? get custodians;
   @override
-  ConnectionData? get connectionData;
+  String? get nativeTokenTicker;
 
   /// Create a copy of WalletAccountActionsState
   /// with the given fields replaced by the non-null parameter values.

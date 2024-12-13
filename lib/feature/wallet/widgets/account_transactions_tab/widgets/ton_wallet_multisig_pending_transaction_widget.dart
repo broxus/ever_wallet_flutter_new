@@ -83,7 +83,7 @@ class TonWalletMultisigPendingTransactionWidget extends StatelessWidget {
           ],
         ),
       ),
-      icon: LucideIcons.loader,
+      icon: LucideIcons.timer,
     );
   }
 }

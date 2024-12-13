@@ -4,7 +4,7 @@ part of 'wallet_account_actions_cubit.dart';
 class WalletAccountActionsState with _$WalletAccountActionsState {
   const factory WalletAccountActionsState.loading({
     required bool hasStake,
-    required ConnectionData? connectionData,
+    required String? nativeTokenTicker,
   }) = _Loading;
 
   const factory WalletAccountActionsState.data({
@@ -13,6 +13,6 @@ class WalletAccountActionsState with _$WalletAccountActionsState {
     required bool hasStakeActions,
     required BigInt? balance,
     required List<PublicKey>? custodians,
-    required ConnectionData? connectionData,
+    required String? nativeTokenTicker,
   }) = _Data;
 }

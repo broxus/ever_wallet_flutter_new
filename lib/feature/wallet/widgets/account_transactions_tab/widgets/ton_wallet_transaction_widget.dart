@@ -207,11 +207,12 @@ class TonWalletTransactionWidget extends StatelessWidget {
   }
 
   Color _getColorValue(
-      ThemeStyleV2 theme,
-      TonWalletTransactionStatus status,
-      bool isIncoming,
-      ) {
-    if (status == TonWalletTransactionStatus.pending) {
+    ThemeStyleV2 theme,
+    TonWalletTransactionStatus status,
+    bool isIncoming,
+  ) {
+    if (status == TonWalletTransactionStatus.waitingConfirmation ||
+        status == TonWalletTransactionStatus.pending) {
       return theme.colors.contentWarning;
     } else if (status == TonWalletTransactionStatus.expired) {
       return theme.colors.content3;
@@ -256,11 +257,12 @@ class TransactionIcon extends StatelessWidget {
   }
 
   Color _getColor(
-      ThemeStyleV2 theme,
-      TonWalletTransactionStatus status,
-      bool isIncoming,
-      ) {
-    if (status == TonWalletTransactionStatus.pending) {
+    ThemeStyleV2 theme,
+    TonWalletTransactionStatus status,
+    bool isIncoming,
+  ) {
+    if (status == TonWalletTransactionStatus.waitingConfirmation ||
+        status == TonWalletTransactionStatus.pending) {
       return theme.colors.contentWarning;
     } else if (isIncoming) {
       return theme.colors.contentPositive;
