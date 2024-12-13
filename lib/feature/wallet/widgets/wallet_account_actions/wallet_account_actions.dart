@@ -225,7 +225,7 @@ class _ActionList extends StatelessWidget {
           },
         // ignore: no-empty-block
         WalletAccountActionBehavior.deploy => () {
-            if ((balance?.toInt() ?? 0) / 1000000000 > 0.1) {
+            if ((balance?.toInt() ?? 0) / 1000000000 >= 0.1) {
               context.goFurther(
                 AppRoute.walletDeploy.pathWithData(
                   pathParameters: {
