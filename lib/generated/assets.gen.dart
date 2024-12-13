@@ -182,9 +182,6 @@ class $AssetsImagesGen {
   /// File path: assets/images/currency.svg
   SvgGenImage get currency => const SvgGenImage('assets/images/currency.svg');
 
-  /// File path: assets/images/deploy.svg
-  SvgGenImage get deploy => const SvgGenImage('assets/images/deploy.svg');
-
   /// File path: assets/images/dots.svg
   SvgGenImage get dots => const SvgGenImage('assets/images/dots.svg');
 
@@ -301,6 +298,10 @@ class $AssetsImagesGen {
   /// File path: assets/images/network_ever.svg
   SvgGenImage get networkEver =>
       const SvgGenImage('assets/images/network_ever.svg');
+
+  /// File path: assets/images/network_ton.svg
+  SvgGenImage get networkTon =>
+      const SvgGenImage('assets/images/network_ton.svg');
 
   /// File path: assets/images/network_tycho.svg
   SvgGenImage get networkTycho =>
@@ -459,7 +460,6 @@ class $AssetsImagesGen {
         copy,
         copyOutlined,
         currency,
-        deploy,
         dots,
         edit,
         ever,
@@ -493,6 +493,7 @@ class $AssetsImagesGen {
         networkDefault,
         networkEarth,
         networkEver,
+        networkTon,
         networkTycho,
         networkVenom,
         openedEye,

@@ -27,5 +27,6 @@ const _$NetworkTypeEnumMap = {
   NetworkType.ever: 'ever',
   NetworkType.venom: 'venom',
   NetworkType.tycho: 'tycho',
+  NetworkType.ton: 'ton',
   NetworkType.custom: 'custom',
 };

@@ -1,9 +1,7 @@
-import 'package:app/data/models/models.dart';
-import 'package:app/generated/generated.dart';
-import 'package:nekoton_repository/nekoton_repository.dart';
+part of 'transport_strategies.dart';
 
 /// Transport strategy for everscale network
-class EverTransportStrategy extends TransportStrategy {
+class EverTransportStrategy extends AppTransportStrategy {
   EverTransportStrategy({
     required this.transport,
     required this.connection,
@@ -53,6 +51,9 @@ class EverTransportStrategy extends TransportStrategy {
         walletV3: () => 'WalletV3',
         highloadWalletV2: () => 'HighloadWallet',
         everWallet: () => 'EVER Wallet',
+        walletV4R1: () => 'WalletV4R1',
+        walletV4R2: () => 'WalletV4R2',
+        walletV5R1: () => 'WalletV5R1',
       );
 
   @override
@@ -114,4 +115,15 @@ class EverTransportStrategy extends TransportStrategy {
 
   @override
   String? get currencyApiBaseUrl => 'https://api.flatqube.io/v1/currencies';
+
+  @override
+  Future<GenericTokenWallet> subscribeToken({
+    required Address owner,
+    required Address rootTokenContract,
+  }) =>
+      Tip3TokenWallet.subscribe(
+        transport: transport,
+        owner: owner,
+        rootTokenContract: rootTokenContract,
+      );
 }

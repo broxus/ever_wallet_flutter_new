@@ -16,6 +16,7 @@ class NetworkIcon extends StatelessWidget {
         NetworkType.venom => Assets.images.networkVenom.path,
         NetworkType.tycho => Assets.images.networkTycho.path,
         NetworkType.custom => Assets.images.networkDefault.path,
+        NetworkType.ton => Assets.images.networkTon.path,
       };
 
   Color get _bgColor => switch (type) {
@@ -41,7 +42,7 @@ class NetworkIcon extends StatelessWidget {
           height: DimensSizeV2.d40,
           padding: _iconOffset,
           child: switch (type) {
-            NetworkType.tycho => SvgPicture.asset(_path),
+            NetworkType.tycho || NetworkType.ton => SvgPicture.asset(_path),
             _ => Center(
                 child: SvgPicture.asset(
                   _path,
