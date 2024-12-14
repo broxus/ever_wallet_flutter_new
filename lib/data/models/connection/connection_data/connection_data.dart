@@ -1,6 +1,5 @@
 import 'package:app/data/models/network_type.dart';
 import 'package:app/utils/utils.dart';
-import 'package:collection/collection.dart';
 import 'package:freezed_annotation/freezed_annotation.dart';
 import 'package:uuid/uuid.dart';
 
@@ -8,20 +7,6 @@ part 'connection_data.freezed.dart';
 
 part 'connection_data.g.dart';
 
-class ConnectionNetwork {
-  ConnectionNetwork({
-    required this.defaultConnectionId,
-    List<ConnectionData>? networks,
-  }) : networks = networks ?? [];
-
-  final String defaultConnectionId;
-  final List<ConnectionData> networks;
-
-  late final ConnectionData? defaultNetwork = networks.firstWhereOrNull(
-        (n) => n.id == defaultConnectionId,
-      ) ??
-      networks.firstOrNull;
-}
 
 @freezed
 sealed class ConnectionData with _$ConnectionData {
