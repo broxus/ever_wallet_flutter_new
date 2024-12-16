@@ -205,8 +205,6 @@ abstract class _$$AccountsImplCopyWith<$Res> {
       {TonWalletAsset tonWallet,
       List<TokenContractAsset>? tokens,
       int? numberNewTokens});
-
-  $TonWalletAssetCopyWith<$Res> get tonWallet;
 }
 
 /// @nodoc
@@ -222,12 +220,12 @@ class __$$AccountsImplCopyWithImpl<$Res>
   @pragma('vm:prefer-inline')
   @override
   $Res call({
-    Object? tonWallet = null,
+    Object? tonWallet = freezed,
     Object? tokens = freezed,
     Object? numberNewTokens = freezed,
   }) {
     return _then(_$AccountsImpl(
-      null == tonWallet
+      freezed == tonWallet
           ? _value.tonWallet
           : tonWallet // ignore: cast_nullable_to_non_nullable
               as TonWalletAsset,
@@ -240,16 +238,6 @@ class __$$AccountsImplCopyWithImpl<$Res>
           : numberNewTokens // ignore: cast_nullable_to_non_nullable
               as int?,
     ));
-  }
-
-  /// Create a copy of AccountAssetTabState
-  /// with the given fields replaced by the non-null parameter values.
-  @override
-  @pragma('vm:prefer-inline')
-  $TonWalletAssetCopyWith<$Res> get tonWallet {
-    return $TonWalletAssetCopyWith<$Res>(_value.tonWallet, (value) {
-      return _then(_value.copyWith(tonWallet: value));
-    });
   }
 }
 
@@ -285,16 +273,18 @@ class _$AccountsImpl implements _Accounts {
     return identical(this, other) ||
         (other.runtimeType == runtimeType &&
             other is _$AccountsImpl &&
-            (identical(other.tonWallet, tonWallet) ||
-                other.tonWallet == tonWallet) &&
+            const DeepCollectionEquality().equals(other.tonWallet, tonWallet) &&
             const DeepCollectionEquality().equals(other._tokens, _tokens) &&
             (identical(other.numberNewTokens, numberNewTokens) ||
                 other.numberNewTokens == numberNewTokens));
   }
 
   @override
-  int get hashCode => Object.hash(runtimeType, tonWallet,
-      const DeepCollectionEquality().hash(_tokens), numberNewTokens);
+  int get hashCode => Object.hash(
+      runtimeType,
+      const DeepCollectionEquality().hash(tonWallet),
+      const DeepCollectionEquality().hash(_tokens),
+      numberNewTokens);
 
   /// Create a copy of AccountAssetTabState
   /// with the given fields replaced by the non-null parameter values.

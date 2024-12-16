@@ -12,7 +12,7 @@ const _baseUrl = 'https://ton-tokens-api.bf.works';
 // ignore: one_member_abstracts
 abstract class TonApi {
   @factoryMethod
-  factory TonApi(Dio dio, {String? baseUrl}) = _TonApi;
+  factory TonApi(Dio dio) = _TonApi;
 
   @GET('/token/{address}')
   Future<TonTokenInfoDto> getTokenInfo(

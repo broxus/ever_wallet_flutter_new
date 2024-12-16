@@ -1032,7 +1032,6 @@ abstract class _$$GoNextImplCopyWith<$Res> {
       String? comment});
 
   $PublicKeyCopyWith<$Res> get selectedCustodian;
-  $AddressCopyWith<$Res> get receiveAddress;
 }
 
 /// @nodoc
@@ -1054,7 +1053,7 @@ class __$$GoNextImplCopyWithImpl<$Res>
     Object? localCustodians = null,
     Object? selectedAsset = null,
     Object? assets = null,
-    Object? receiveAddress = null,
+    Object? receiveAddress = freezed,
     Object? amount = null,
     Object? comment = freezed,
   }) {
@@ -1083,7 +1082,7 @@ class __$$GoNextImplCopyWithImpl<$Res>
           ? _value._assets
           : assets // ignore: cast_nullable_to_non_nullable
               as List<WalletPrepareTransferAsset>,
-      receiveAddress: null == receiveAddress
+      receiveAddress: freezed == receiveAddress
           ? _value.receiveAddress
           : receiveAddress // ignore: cast_nullable_to_non_nullable
               as Address,
@@ -1105,16 +1104,6 @@ class __$$GoNextImplCopyWithImpl<$Res>
   $PublicKeyCopyWith<$Res> get selectedCustodian {
     return $PublicKeyCopyWith<$Res>(_value.selectedCustodian, (value) {
       return _then(_value.copyWith(selectedCustodian: value));
-    });
-  }
-
-  /// Create a copy of WalletPrepareTransferState
-  /// with the given fields replaced by the non-null parameter values.
-  @override
-  @pragma('vm:prefer-inline')
-  $AddressCopyWith<$Res> get receiveAddress {
-    return $AddressCopyWith<$Res>(_value.receiveAddress, (value) {
-      return _then(_value.copyWith(receiveAddress: value));
     });
   }
 }
@@ -1186,8 +1175,8 @@ class _$GoNextImpl implements _GoNext {
             (identical(other.selectedAsset, selectedAsset) ||
                 other.selectedAsset == selectedAsset) &&
             const DeepCollectionEquality().equals(other._assets, _assets) &&
-            (identical(other.receiveAddress, receiveAddress) ||
-                other.receiveAddress == receiveAddress) &&
+            const DeepCollectionEquality()
+                .equals(other.receiveAddress, receiveAddress) &&
             (identical(other.amount, amount) || other.amount == amount) &&
             (identical(other.comment, comment) || other.comment == comment));
   }
@@ -1201,7 +1190,7 @@ class _$GoNextImpl implements _GoNext {
       const DeepCollectionEquality().hash(_localCustodians),
       selectedAsset,
       const DeepCollectionEquality().hash(_assets),
-      receiveAddress,
+      const DeepCollectionEquality().hash(receiveAddress),
       amount,
       comment);
 
