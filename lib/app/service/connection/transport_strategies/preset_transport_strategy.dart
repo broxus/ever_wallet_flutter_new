@@ -55,6 +55,10 @@ class PresetTransportStrategy extends AppTransportStrategy {
       genericTokenType: transportData.genericTokenType,
       accountExplorerLinkType: transportData.accountExplorerLinkType,
       transactionExplorerLinkType: transportData.transactionExplorerLinkType,
+      stakeInformation: transportData.stakeInformation,
+      tokenApiBaseUrl: transportData.tokenApiBaseUrl,
+      currencyApiBaseUrl: transportData.currencyApiBaseUrl,
+      baseCurrencyUrl: transportData.baseCurrencyUrl,
     );
   }
 
