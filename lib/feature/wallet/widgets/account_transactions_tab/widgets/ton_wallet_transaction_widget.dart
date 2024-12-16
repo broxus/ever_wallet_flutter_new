@@ -211,10 +211,10 @@ class TonWalletTransactionWidget extends StatelessWidget {
     TonWalletTransactionStatus status,
     bool isIncoming,
   ) {
-    if (status == TonWalletTransactionStatus.waitingConfirmation ||
-        status == TonWalletTransactionStatus.pending) {
+    if (status == TonWalletTransactionStatus.waitingConfirmation) {
       return theme.colors.contentWarning;
-    } else if (status == TonWalletTransactionStatus.expired) {
+    } else if (status == TonWalletTransactionStatus.expired ||
+        status == TonWalletTransactionStatus.pending) {
       return theme.colors.content3;
     } else if (isIncoming) {
       return theme.colors.contentPositive;
@@ -261,9 +261,10 @@ class TransactionIcon extends StatelessWidget {
     TonWalletTransactionStatus status,
     bool isIncoming,
   ) {
-    if (status == TonWalletTransactionStatus.waitingConfirmation ||
-        status == TonWalletTransactionStatus.pending) {
+    if (status == TonWalletTransactionStatus.waitingConfirmation) {
       return theme.colors.contentWarning;
+    } else if (status == TonWalletTransactionStatus.pending) {
+      return theme.colors.content0;
     } else if (isIncoming) {
       return theme.colors.contentPositive;
     } else {

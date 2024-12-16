@@ -655,4 +655,5 @@ abstract class LocaleKeys {
   static const confirmedCustodians = 'confirmedCustodians';
   static const expiresInCustodians = 'expiresInCustodians';
   static const deploymentInProgress = 'deploymentInProgress';
+  static const expirationTimeDetails = 'expirationTimeDetails';
 }

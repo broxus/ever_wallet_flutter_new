@@ -38,54 +38,60 @@ class TonWalletOrdinaryTransactionDetailsPage extends StatelessWidget {
         ),
       ),
       backgroundColor: theme.colors.background0,
-      body: SingleChildScrollView(
-        child: SeparatedColumn(
-          separatorSize: DimensSize.d16,
-          children: [
-            WalletTransactionDetailsDefaultBody(
-              date: transaction.date,
-              isIncoming: !transaction.isOutgoing,
-              status: TonWalletTransactionStatus.completed,
-              fee: Money.fromBigIntWithCurrency(
-                transaction.fees,
-                Currencies()[ticker]!,
-              ),
-              value: Money.fromBigIntWithCurrency(
-                transaction.value,
-                Currencies()[ticker]!,
-              ),
-              hash: transaction.hash,
-              recipientOrSender: transaction.address,
-              comment: transaction.comment,
-              info: methodData?.$1,
-              type: LocaleKeys.ordinaryWord.tr(),
-              tonIconPath: tonIconPath,
-              tokenIconPath: tonIconPath,
-              price: price,
-            ),
-            Padding(
-              padding: const EdgeInsets.symmetric(
-                horizontal: DimensSizeV2.d16,
-              ),
-              child: PrimaryButton(
-                title: LocaleKeys.seeInExplorer.tr(),
-                icon: LucideIcons.globe,
-                onPressed: () {
-                  Navigator.of(context).pop();
-                  // TODO(oldVersion): extract inject from widget
-                  browserNewTab(
-                    context,
-                    inject<NekotonRepository>()
-                        .currentTransport
-                        .transactionExplorerLink(transaction.hash),
-                  );
-                },
-                buttonShape: ButtonShape.pill,
+      body: Column(
+        children: [
+          Expanded(
+            child: SingleChildScrollView(
+              child: SeparatedColumn(
+                separatorSize: DimensSize.d16,
+                children: [
+                  WalletTransactionDetailsDefaultBody(
+                    date: transaction.date,
+                    isIncoming: !transaction.isOutgoing,
+                    status: TonWalletTransactionStatus.completed,
+                    fee: Money.fromBigIntWithCurrency(
+                      transaction.fees,
+                      Currencies()[ticker]!,
+                    ),
+                    value: Money.fromBigIntWithCurrency(
+                      transaction.value,
+                      Currencies()[ticker]!,
+                    ),
+                    hash: transaction.hash,
+                    recipientOrSender: transaction.address,
+                    comment: transaction.comment,
+                    info: methodData?.$1,
+                    type: LocaleKeys.ordinaryWord.tr(),
+                    tonIconPath: tonIconPath,
+                    tokenIconPath: tonIconPath,
+                    price: price,
+                  ),
+                ],
               ),
             ),
-            const SizedBox(height: DimensSizeV2.d24),
-          ],
-        ),
+          ),
+          Padding(
+            padding: const EdgeInsets.symmetric(
+              horizontal: DimensSizeV2.d16,
+            ),
+            child: PrimaryButton(
+              title: LocaleKeys.seeInExplorer.tr(),
+              icon: LucideIcons.globe,
+              onPressed: () {
+                Navigator.of(context).pop();
+                // TODO(oldVersion): extract inject from widget
+                browserNewTab(
+                  context,
+                  inject<NekotonRepository>()
+                      .currentTransport
+                      .transactionExplorerLink(transaction.hash),
+                );
+              },
+              buttonShape: ButtonShape.pill,
+            ),
+          ),
+          const SizedBox(height: DimensSizeV2.d24),
+        ],
       ),
     );
   }

@@ -631,5 +631,6 @@
   "toWord": "To {}",
   "confirmedCustodians": "Confirmed {} / {}",
   "expiresInCustodians": "Expires in {}",
-  "deploymentInProgress": "Deployment in progress"
+  "deploymentInProgress": "Deployment in progress",
+  "expirationTimeDetails": "Expires in {} hours {} minutes ({} at {})"
 }

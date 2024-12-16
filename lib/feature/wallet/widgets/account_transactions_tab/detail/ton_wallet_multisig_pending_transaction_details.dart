@@ -79,6 +79,7 @@ class TonWalletMultisigPendingTransactionDetailsPage extends StatelessWidget {
               tonIconPath: tonIconPath,
               tokenIconPath: tonIconPath,
               price: price,
+              expiresAt: transaction.expireAt,
             ),
             TonWalletTransactionCustodiansDetails(
               confirmations: transaction.confirmations,
