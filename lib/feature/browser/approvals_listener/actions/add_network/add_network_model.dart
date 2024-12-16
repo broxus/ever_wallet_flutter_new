@@ -1,5 +1,6 @@
+import 'package:app/app/service/connection/connection_service.dart';
+import 'package:app/app/service/connection/data/connection_data/connection_data.dart';
 import 'package:app/app/service/service.dart';
-import 'package:app/data/models/models.dart';
 import 'package:app/feature/browser/utils.dart';
 import 'package:elementary/elementary.dart';
 import 'package:flutter/material.dart';
@@ -22,7 +23,7 @@ class AddNetworkModel extends ElementaryModel {
   final ConnectionService _connectionService;
   final NekotonRepository _nekotonRepository;
 
-  Future<Network> addConnection(ConnectionData connection) async {
+  Future<Network?> addConnection(ConnectionData connection) async {
     Transport? transport;
 
     try {
@@ -34,7 +35,7 @@ class AddNetworkModel extends ElementaryModel {
 
       return await _connectionService
           .createStrategyByConnection(transport, connection)
-          .toNetwork();
+          ?.toNetwork();
     } finally {
       await transport?.dispose();
     }

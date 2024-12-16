@@ -54,11 +54,11 @@ class CurrenciesService {
   final AppLifecycleService appLifecycle;
 
   /// Get stream of currencies from storage for [type] of network.
-  Stream<List<CustomCurrency>> currenciesStream(NetworkType type) =>
+  Stream<List<CustomCurrency>> currenciesStream(String type) =>
       storageService.currenciesStream(type);
 
   /// Get list of currencies from storage for [type] of network.
-  List<CustomCurrency> currencies(NetworkType type) =>
+  List<CustomCurrency> currencies(String type) =>
       storageService.getCurrencies(type);
 
   RefreshPollingQueue? _poller;
@@ -212,7 +212,7 @@ class CurrenciesService {
   Future<List<CustomCurrency>> _fetchCurrencies({
     required String endpoint,
     required List<String> currencyAddresses,
-    required NetworkType networkType,
+    required String networkType,
   }) async {
     final data = jsonEncode({
       'currencyAddresses': currencyAddresses,
@@ -241,13 +241,13 @@ class CurrenciesService {
 
   Future<CustomCurrency> _fetchCurrency({
     required String endpoint,
-    required NetworkType networkType,
+    required String networkType,
   }) async {
     final encoded = await httpService.postRequest(endpoint: endpoint);
     final decoded = jsonDecode(encoded) as Map<String, dynamic>;
 
     return CustomCurrency.fromJson(
-      decoded..putIfAbsent('networkType', () => networkType.name),
+      decoded..putIfAbsent('networkType', () => networkType),
     );
   }
 }

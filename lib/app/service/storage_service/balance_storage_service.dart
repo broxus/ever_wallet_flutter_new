@@ -12,7 +12,7 @@ import 'package:rxdart/rxdart.dart';
 const _overallBalancesDomain = 'overallBalancesDomain';
 const _balancesDomain = 'balancesDomain';
 
-typedef ByNetwork<T> = Map<NetworkType, T>;
+typedef ByNetwork<T> = Map<String, T>;
 
 @singleton
 class BalanceStorageService extends AbstractStorageService {
@@ -53,11 +53,11 @@ class BalanceStorageService extends AbstractStorageService {
 
   /// Get cached overall balance for accounts
   /// key - address of account, value - overall balance in fiat
-  Map<Address, Fixed> getOverallBalance(NetworkType network) =>
+  Map<Address, Fixed> getOverallBalance(String network) =>
       _overallBalancesSubject.value[network] ?? {};
 
   /// Stream that allows tracking overall balance changing
-  Stream<Map<Address, Fixed>> getOverallBalancesStream(NetworkType network) =>
+  Stream<Map<Address, Fixed>> getOverallBalancesStream(String network) =>
       _overallBalancesSubject.map((event) => event[network] ?? {});
 
   /// Put overall balances into stream
@@ -76,7 +76,7 @@ class BalanceStorageService extends AbstractStorageService {
             FixedFixer.fromJson(entry.value as Map<String, dynamic>),
           ),
         )
-        .groupFoldBy<NetworkType, Map<Address, Fixed>>(
+        .groupFoldBy<String, Map<Address, Fixed>>(
           (item) => item.$1.network,
           (prev, item) => (prev ?? {})..set(item.$1.address, item.$2),
         );
@@ -84,7 +84,7 @@ class BalanceStorageService extends AbstractStorageService {
 
   /// Set overall balance for specified account
   void setOverallBalance({
-    required NetworkType network,
+    required String network,
     required Address accountAddress,
     required Fixed balance,
   }) {
@@ -113,12 +113,12 @@ class BalanceStorageService extends AbstractStorageService {
   /// Get cached token balances for accounts
   /// key - address of account, value - list of balances for tokens in scope of
   /// this account.
-  Map<Address, List<AccountBalanceModel>> getBalances(NetworkType network) =>
+  Map<Address, List<AccountBalanceModel>> getBalances(String network) =>
       _balancesSubject.value[network] ?? {};
 
   /// Stream that allows tracking token balances for accounts
   Stream<Map<Address, List<AccountBalanceModel>>> getBalancesStream(
-    NetworkType network,
+      String network,
   ) =>
       _balancesSubject.map((event) => event[network] ?? {});
 
@@ -144,7 +144,7 @@ class BalanceStorageService extends AbstractStorageService {
                 .toList(),
           ),
         )
-        .groupFoldBy<NetworkType, Map<Address, List<AccountBalanceModel>>>(
+        .groupFoldBy<String, Map<Address, List<AccountBalanceModel>>>(
           (item) => item.$1.network,
           (prev, item) => (prev ?? {})..set(item.$1.address, item.$2),
         );
@@ -152,7 +152,7 @@ class BalanceStorageService extends AbstractStorageService {
 
   /// Set token balances for accounts with [accountAddress]
   void setBalances({
-    required NetworkType network,
+    required String network,
     required Address accountAddress,
     required AccountBalanceModel balance,
   }) {
@@ -200,16 +200,16 @@ class _Key {
     assert(parts.length == 2, 'Invalid key format: $value');
 
     return _Key(
-      network: NetworkType.values.byName(parts[0]),
+      network: parts[0],
       address: Address(address: parts[1]),
     );
   }
 
-  final NetworkType network;
+  final String network;
   final Address address;
 
   @override
-  String toString() => '${network.name}::${address.address}';
+  String toString() => '$network::${address.address}';
 
   @override
   int get hashCode => Object.hash(runtimeType, network, address);

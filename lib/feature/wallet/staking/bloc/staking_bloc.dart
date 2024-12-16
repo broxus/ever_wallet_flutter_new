@@ -69,7 +69,7 @@ class StakingBloc extends Bloc<StakingBlocEvent, StakingBlocState>
   late TonWallet _everWallet;
   late CustomCurrency _everWalletCurrency;
 
-  late TokenWallet _stEverWallet;
+  late GenericTokenWallet _stEverWallet;
   late CustomCurrency _stEverWalletCurrency;
 
   late StEverDetails _details;

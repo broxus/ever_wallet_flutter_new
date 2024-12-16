@@ -1,4 +1,5 @@
-import 'package:app/data/models/models.dart';
+
+import 'package:app/app/service/connection/data/connection_data/connection_data.dart';
 
 enum ConnectionType {
   jrpc,

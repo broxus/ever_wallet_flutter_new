@@ -89,7 +89,7 @@ class TokenWalletAssetCubit extends Cubit<TokenWalletAssetState> {
 
   TokenWalletState? _wallet;
 
-  NetworkType get _networkType =>
+  String get _networkType =>
       nekotonRepository.currentTransport.networkType;
 
   @override

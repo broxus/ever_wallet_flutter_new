@@ -16,10 +16,9 @@ import 'package:app/data/models/browser_bookmark_item.dart';
 import 'package:app/data/models/browser_history_item.dart';
 import 'package:app/data/models/browser_tab.dart';
 import 'package:app/data/models/custom_currency.dart';
-import 'package:app/data/models/network_type.dart';
 import 'package:app/data/models/permissions.dart';
 import 'package:app/data/models/site_meta_data.dart';
-import 'package:app/data/models/token_contract_asset.dart';
+import 'package:app/data/models/token_contract/token_contract_asset.dart';
 import 'package:collection/collection.dart';
 import 'package:flutter/foundation.dart';
 import 'package:hive_flutter/hive_flutter.dart';
@@ -263,12 +262,12 @@ class HiveSourceMigration {
 
   List<TokenContractAsset> get everSystemTokenContractAssets =>
       _everSystemTokenContractAssetsBox.values
-          .map((e) => e.toModel(type: NetworkType.ever, isCustom: false))
+          .map((e) => e.toModel(type: 'ever', isCustom: false))
           .toList();
 
   List<TokenContractAsset> get venomSystemTokenContractAssets =>
       _venomSystemTokenContractAssetsBox.values
-          .map((e) => e.toModel(type: NetworkType.venom, isCustom: false))
+          .map((e) => e.toModel(type: 'venom', isCustom: false))
           .toList();
 
   Future<void> updateEverSystemTokenContractAssets(
@@ -289,12 +288,12 @@ class HiveSourceMigration {
 
   List<TokenContractAsset> get everCustomTokenContractAssets =>
       _everCustomTokenContractAssetsBox.values
-          .map((e) => e.toModel(type: NetworkType.ever, isCustom: true))
+          .map((e) => e.toModel(type: 'ever', isCustom: true))
           .toList();
 
   List<TokenContractAsset> get venomCustomTokenContractAssets =>
       _venomCustomTokenContractAssetsBox.values
-          .map((e) => e.toModel(type: NetworkType.venom, isCustom: true))
+          .map((e) => e.toModel(type: 'venom', isCustom: true))
           .toList();
 
   Future<void> addEverCustomTokenContractAsset(
@@ -422,11 +421,11 @@ class HiveSourceMigration {
   Future<void> clearSitesMetaData() => _siteMetaDataBox.clear();
 
   List<CustomCurrency> get everCurrencies => _everCurrenciesBox.values
-      .map((e) => e.toModel(NetworkType.ever))
+      .map((e) => e.toModel('ever'))
       .toList();
 
   List<CustomCurrency> get venomCurrencies => _venomCurrenciesBox.values
-      .map((e) => e.toModel(NetworkType.venom))
+      .map((e) => e.toModel('venom'))
       .toList();
 
   Future<void> saveEverCurrency({

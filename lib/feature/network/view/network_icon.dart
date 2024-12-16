@@ -1,4 +1,3 @@
-import 'package:app/data/models/models.dart';
 import 'package:app/generated/generated.dart';
 import 'package:flutter/material.dart';
 import 'package:ui_components_lib/v2/ui_components_lib_v2.dart';
@@ -9,27 +8,36 @@ class NetworkIcon extends StatelessWidget {
     super.key,
   });
 
-  final NetworkType type;
+  final String type;
 
-  String get _path => switch (type) {
-        NetworkType.ever => Assets.images.networkEver.path,
-        NetworkType.venom => Assets.images.networkVenom.path,
-        NetworkType.tycho => Assets.images.networkTycho.path,
-        NetworkType.custom => Assets.images.networkDefault.path,
-      };
+  /// TODO replace
+  String get _path {
+    switch (type) {
+      case 'ever':
+        return Assets.images.networkEver.path;
+      case 'venom':
+        return Assets.images.networkVenom.path;
+      case 'tycho':
+        return Assets.images.networkTycho.path;
+      case 'custom':
+        return Assets.images.networkDefault.path;
+    }
+
+    return '';
+  }
 
   Color get _bgColor => switch (type) {
-        NetworkType.ever => ColorsResV2.p60,
-        NetworkType.venom => const Color(0xFF4C5AF5),
+        'ever' => ColorsResV2.p60,
+        'venom' => const Color(0xFF4C5AF5),
         _ => ColorsResV2.p60,
       };
 
   EdgeInsetsGeometry? get _iconOffset => switch (type) {
-        NetworkType.ever => const EdgeInsets.only(
+        'ever' => const EdgeInsets.only(
             top: DimensSizeV2.d2,
             right: DimensSizeV2.d2,
           ),
-        NetworkType.venom => const EdgeInsets.only(left: DimensSizeV2.d1),
+        'venom' => const EdgeInsets.only(left: DimensSizeV2.d1),
         _ => null,
       };
 
@@ -41,7 +49,7 @@ class NetworkIcon extends StatelessWidget {
           height: DimensSizeV2.d40,
           padding: _iconOffset,
           child: switch (type) {
-            NetworkType.tycho => SvgPicture.asset(_path),
+            'tycho' => SvgPicture.asset(_path),
             _ => Center(
                 child: SvgPicture.asset(
                   _path,

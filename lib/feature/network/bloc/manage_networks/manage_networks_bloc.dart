@@ -1,8 +1,8 @@
 import 'dart:async';
 
-import 'package:app/app/service/connection/presets_connection/presets_connection_service.dart';
+import 'package:app/app/service/connection/data/connection_data/connection_data.dart';
+import 'package:app/app/service/connection/presets_connection_service.dart';
 import 'package:app/app/service/service.dart';
-import 'package:app/data/models/models.dart';
 import 'package:bloc/bloc.dart';
 import 'package:collection/collection.dart';
 import 'package:freezed_annotation/freezed_annotation.dart';

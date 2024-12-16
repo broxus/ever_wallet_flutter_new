@@ -1,6 +1,6 @@
 import 'dart:convert';
 
-import 'package:app/app/service/connection/presets_connection/presets_connection_service.dart';
+import 'package:app/app/service/connection/presets_connection_service.dart';
 import 'package:app/app/service/service.dart';
 import 'package:app/data/models/account_interaction.dart';
 import 'package:app/data/models/browser_bookmark_item.dart';
@@ -10,7 +10,7 @@ import 'package:app/data/models/custom_currency.dart';
 import 'package:app/data/models/network_type.dart';
 import 'package:app/data/models/permissions.dart';
 import 'package:app/data/models/site_meta_data.dart';
-import 'package:app/data/models/token_contract_asset.dart';
+import 'package:app/data/models/token_contract/token_contract_asset.dart';
 import 'package:app/data/models/wallet_contract_type.dart';
 import 'package:collection/collection.dart';
 import 'package:encrypted_storage/encrypted_storage.dart';

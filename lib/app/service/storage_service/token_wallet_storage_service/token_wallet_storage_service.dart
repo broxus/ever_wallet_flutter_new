@@ -74,9 +74,9 @@ class TokenWalletStorageService extends TokenWalletTransactionsStorage
     required Address owner,
     required Address rootTokenContract,
     required Symbol symbol,
-    required TokenWalletVersion version,
     required BigInt balance,
     required ContractState contractState,
+    TokenWalletVersion? version,
     // ignore: no-empty-block
   }) async {}
 }

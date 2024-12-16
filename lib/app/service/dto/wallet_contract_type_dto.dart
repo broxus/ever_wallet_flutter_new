@@ -56,6 +56,9 @@ extension WalletContractTypeX on WalletContractType {
         return WalletContractTypeDto.everWallet;
       case WalletContractType.multisig2_1:
         return WalletContractTypeDto.multisig2_1;
+      // ignore: no_default_cases
+      default:
+        throw Exception('Unknown WalletContractType: $this');
     }
   }
 }

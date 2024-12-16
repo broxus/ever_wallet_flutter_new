@@ -1,6 +1,6 @@
-import 'package:app/app/service/connection/presets_connection/presets_connection_service.dart';
+import 'package:app/app/service/connection/data/connection_data/connection_data.dart';
+import 'package:app/app/service/connection/presets_connection_service.dart';
 import 'package:app/app/service/service.dart';
-import 'package:app/data/models/models.dart';
 import 'package:app/di/di.dart';
 import 'package:app/generated/generated.dart';
 import 'package:collection/collection.dart';
@@ -64,8 +64,10 @@ class ConnectionsStorageService extends AbstractStorageService {
       return null;
     }
 
+    final defaultNetworkType = _defaultNetwork?.networkType;
+
     return list.firstWhereOrNull(
-          (el) => el.networkType == NetworkType.ever,
+          (el) => el.networkType == defaultNetworkType,
         ) ??
         first;
   }

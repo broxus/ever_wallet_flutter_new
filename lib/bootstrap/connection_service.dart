@@ -1,4 +1,4 @@
-import 'package:app/app/service/connection/connection_service/connection_service.dart';
+import 'package:app/app/service/connection/connection_service.dart';
 import 'package:app/di/di.dart';
 import 'package:flutter/widgets.dart';
 import 'package:logging/logging.dart';

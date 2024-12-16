@@ -1,4 +1,4 @@
-import 'package:app/data/models/models.dart';
+import 'package:app/app/service/connection/data/connection_data/connection_data.dart';
 import 'package:app/feature/network/network.dart';
 import 'package:flutter/material.dart';
 import 'package:ui_components_lib/ui_components_lib.dart';

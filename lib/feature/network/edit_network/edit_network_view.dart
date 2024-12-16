@@ -1,5 +1,5 @@
 import 'package:app/app/router/router.dart';
-import 'package:app/data/models/models.dart';
+import 'package:app/app/service/connection/data/connection_data/connection_data.dart';
 import 'package:app/feature/browser/browser.dart';
 import 'package:app/feature/network/edit_network/connection_type.dart';
 import 'package:app/feature/network/network.dart';
