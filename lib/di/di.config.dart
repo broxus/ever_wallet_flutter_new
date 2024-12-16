@@ -58,6 +58,8 @@ import '../app/service/storage_service/token_wallet_storage_service/token_wallet
     as _i738;
 import '../app/service/storage_service/ton_wallet_storage_service/ton_wallet_storage_service.dart'
     as _i139;
+import '../http/api/token/token_api.dart' as _i639;
+import '../http/api/ton/ton_api.dart' as _i162;
 import '../http/repository/token_repository.dart' as _i700;
 import '../http/repository/ton_repository.dart' as _i495;
 
@@ -110,8 +112,6 @@ extension GetItInjectableX on _i174.GetIt {
               gh<_i792.GetStorage>(instanceName: 'connections'),
               gh<_i710.PresetsConnectionService>(),
             ));
-    gh.singleton<_i495.TonRepository>(
-        () => _i495.TonRepository(gh<_i361.Dio>()));
     gh.lazySingleton<_i184.AppStorageService>(() => _i184.AppStorageService(
         gh<_i792.GetStorage>(instanceName: 'app_storage_service')));
     gh.lazySingleton<_i958.IIdentifyIconsService>(
@@ -131,9 +131,19 @@ extension GetItInjectableX on _i174.GetIt {
           gh<_i771.NekotonRepository>(),
           gh<_i361.Dio>(),
         ));
+    gh.factory<_i639.TokenApi>(() => _i639.TokenApi(
+          gh<_i361.Dio>(),
+          baseUrl: gh<String>(),
+        ));
+    gh.factory<_i162.TonApi>(() => _i162.TonApi(
+          gh<_i361.Dio>(),
+          baseUrl: gh<String>(),
+        ));
     gh.singleton<_i122.BrowserBookmarksStorageService>(() =>
         _i122.BrowserBookmarksStorageService(
             gh<_i792.GetStorage>(instanceName: 'browser_bookmarks')));
+    gh.singleton<_i495.TonRepository>(
+        () => _i495.TonRepository(gh<_i162.TonApi>()));
     gh.singleton<_i386.NekotonRepositoryStorageService>(() =>
         _i386.NekotonRepositoryStorageService(gh<_i771.NekotonRepository>()));
     gh.singleton<_i272.CurrentKeyService>(() => _i272.CurrentKeyService(
