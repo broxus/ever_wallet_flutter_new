@@ -22,7 +22,6 @@ class ConnectionService {
     this._storageService,
     this._nekotonRepository,
     this._presetsConnectionService,
-    this._tonRepository,
   );
 
   static final _log = Logger('ConnectionService');
@@ -30,7 +29,6 @@ class ConnectionService {
   final ConnectionsStorageService _storageService;
   final NekotonRepository _nekotonRepository;
   final PresetsConnectionService _presetsConnectionService;
-  final TonRepository _tonRepository;
 
   /// Set up selected connection.
   Future<bool> setUp() async {
@@ -181,16 +179,12 @@ class ConnectionService {
   }
 }
 
-// extension TransportTypeExtension on TransportStrategy {
-//   NetworkType get networkType {
-//     if (this is EverTransportStrategy) {
-//       return NetworkType.ever;
-//     } else if (this is VenomTransportStrategy) {
-//       return NetworkType.venom;
-//     } else if (this is TychoTransportStrategy) {
-//       return NetworkType.tycho;
-//     } else {
-//       return NetworkType.custom;
-//     }
-//   }
-// }
+extension TransportTypeExtension on TransportStrategy {
+  String get networkType {
+    if (this is PresetTransportStrategy) {
+      return (this as PresetTransportStrategy).networkType;
+    }
+
+    return '';
+  }
+}

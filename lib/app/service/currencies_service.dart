@@ -233,7 +233,7 @@ class CurrenciesService {
         .map(
           (element) => CustomCurrency.fromJson(
             (element as Map<String, dynamic>)
-              ..putIfAbsent('networkType', () => networkType.name),
+              ..putIfAbsent('networkType', () => networkType),
           ),
         )
         .toList();

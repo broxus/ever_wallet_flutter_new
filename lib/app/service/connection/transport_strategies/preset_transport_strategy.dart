@@ -21,6 +21,7 @@ class PresetTransportStrategy extends AppTransportStrategy {
     required this.manifestOption,
     required this.nativeTokenAddress,
     required this.networkName,
+    required this.networkType,
     required this.seedPhraseWordsCount,
     required this.defaultNativeCurrencyDecimal,
     required this.genericTokenType,
@@ -48,6 +49,7 @@ class PresetTransportStrategy extends AppTransportStrategy {
       manifestOption: transportData.manifestOption,
       nativeTokenAddress: transportData.nativeTokenAddress,
       networkName: transportData.networkName,
+      networkType: transportData.networkType,
       seedPhraseWordsCount: transportData.seedPhraseWordsCount,
       defaultNativeCurrencyDecimal: transportData.defaultNativeCurrencyDecimal,
       genericTokenType: transportData.genericTokenType,
@@ -86,6 +88,8 @@ class PresetTransportStrategy extends AppTransportStrategy {
 
   @override
   final String networkName;
+
+  final String networkType;
 
   @override
   final List<int> seedPhraseWordsCount;

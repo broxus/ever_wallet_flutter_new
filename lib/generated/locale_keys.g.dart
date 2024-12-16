@@ -291,6 +291,7 @@ abstract class LocaleKeys {
   static const callbackAddress = 'callbackAddress';
   static const callbackPayload = 'callbackPayload';
   static const walletV3Transfer = 'walletV3Transfer';
+  static const tonWalletTransfer = 'tonWalletTransfer';
   static const multisigSendTransaction = 'multisigSendTransaction';
   static const destinationWord = 'destinationWord';
   static const valueWord = 'valueWord';
@@ -580,6 +581,9 @@ abstract class LocaleKeys {
   static const walletDescriptionMultisig2 = 'walletDescriptionMultisig2';
   static const walletDescriptionMultisig2_1 = 'walletDescriptionMultisig2_1';
   static const walletDescriptionEverWallet = 'walletDescriptionEverWallet';
+  static const walletDescriptionWalletV4R1 = 'walletDescriptionWalletV4R1';
+  static const walletDescriptionWalletV4R2 = 'walletDescriptionWalletV4R2';
+  static const walletDescriptionWalletV5R1 = 'walletDescriptionWalletV5R1';
   static const deprecatedTypes = 'deprecatedTypes';
   static const deprecatedTypesHint = 'deprecatedTypesHint';
   static const newAccount = 'newAccount';

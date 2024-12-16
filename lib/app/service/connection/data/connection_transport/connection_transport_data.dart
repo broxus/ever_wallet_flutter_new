@@ -15,6 +15,7 @@ class ConnectionTransportData {
     required this.manifestOption,
     required this.nativeTokenAddress,
     required this.networkName,
+    required this.networkType,
     required this.seedPhraseWordsCount,
     required this.defaultNativeCurrencyDecimal,
     required this.genericTokenType,
@@ -35,6 +36,7 @@ class ConnectionTransportData {
   final TransportManifestOption manifestOption;
   final Address nativeTokenAddress;
   final String networkName;
+  final String networkType;
   final List<int> seedPhraseWordsCount;
   final int defaultNativeCurrencyDecimal;
   final GenericTokenType genericTokenType;

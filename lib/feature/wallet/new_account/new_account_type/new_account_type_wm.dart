@@ -3,6 +3,7 @@
 import 'dart:async';
 
 import 'package:app/app/router/router.dart';
+import 'package:app/app/service/connection/connection_service.dart';
 import 'package:app/core/error_handler_factory.dart';
 import 'package:app/core/wm/custom_wm.dart';
 import 'package:app/di/di.dart';
@@ -56,6 +57,7 @@ class NewAccountTypeWidgetModel
 
   ThemeStyleV2 get theme => context.themeStyleV2;
 
+  /// TODO(@knightforce) how to get rid of explicit check?
   bool get isEverscale => model.transport.networkType == 'ever';
 
   @override

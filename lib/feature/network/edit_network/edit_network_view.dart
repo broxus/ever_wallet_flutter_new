@@ -472,6 +472,7 @@ class _EditNetworkViewState extends State<EditNetworkView> {
           id: id,
           name: _nameController.text,
           group: 'custom',
+          networkType: 'custom',
           endpoint: _endpointsControllers[0].text,
           blockExplorerUrl: _blockExplorerUrlController.text,
           manifestUrl: _manifestUrlController.text,
@@ -481,6 +482,7 @@ class _EditNetworkViewState extends State<EditNetworkView> {
           id: id,
           name: _nameController.text,
           group: 'custom',
+          networkType: 'custom',
           endpoints: _endpointsControllers
               .map((controller) => controller.text)
               .toList(),
@@ -493,6 +495,7 @@ class _EditNetworkViewState extends State<EditNetworkView> {
           id: id,
           name: _nameController.text,
           group: 'custom',
+          networkType: 'custom',
           endpoint: _endpointsControllers[0].text,
           blockExplorerUrl: _blockExplorerUrlController.text,
           manifestUrl: _manifestUrlController.text,
