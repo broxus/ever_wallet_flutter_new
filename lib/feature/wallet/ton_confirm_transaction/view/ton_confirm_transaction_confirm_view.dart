@@ -88,40 +88,21 @@ class TonWalletConfirmTransactionConfirmView extends StatelessWidget {
           ),
         ),
         Padding(
-          padding: const EdgeInsets.all(DimensSize.d16),
-          child: AccentButton(
-            buttonShape: ButtonShape.pill,
-            isLoading: isLoading,
+          padding: const EdgeInsets.symmetric(horizontal: DimensSizeV2.d16),
+          child: EnterPasswordWidgetV2(
+            publicKey: publicKey,
             title: LocaleKeys.confirm.tr(),
-            onPressed: feeError != null || fee == null
-                ? null
-                : () {
-                    showCommonBottomSheet<void>(
-                      context: context,
-                      title: LocaleKeys.enterPasswordTo.tr(
-                        args: [
-                          LocaleKeys.confirmTransaction.tr().toLowerCase(),
-                        ],
-                      ),
-                      useAppBackgroundColor: true,
-                      body: (_, __) => Builder(
-                        builder: (c) {
-                          return EnterPasswordWidgetV2(
-                            // ignore: prefer-extracting-callbacks
-                            onPasswordEntered: (value) {
-                              Navigator.of(c).pop();
-                              context
-                                  .read<TonConfirmTransactionBloc>()
-                                  .add(TonConfirmTransactionEvent.send(value));
-                            },
-                            publicKey: publicKey,
-                          );
-                        },
-                      ),
-                    );
-                  },
+            isLoading: isLoading,
+            isDisabled: feeError != null || fee == null,
+              onPasswordEntered: (value) {
+                Navigator.of(context).pop();
+                context
+                    .read<TonConfirmTransactionBloc>()
+                    .add(TonConfirmTransactionEvent.send(value));
+              },
           ),
         ),
+        const SizedBox(height: DimensSize.d16),
       ],
     );
   }

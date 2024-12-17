@@ -31,6 +31,7 @@ class WalletTransactionDetailsDefaultBody extends StatelessWidget {
     this.tokenIconPath,
     this.price,
     this.expiresAt,
+    this.transactionId,
     super.key,
   });
 
@@ -66,6 +67,7 @@ class WalletTransactionDetailsDefaultBody extends StatelessWidget {
   final String? tokenIconPath;
   final Fixed? price;
   final DateTime? expiresAt;
+  final String? transactionId;
 
   @override
   Widget build(BuildContext context) {
@@ -135,6 +137,7 @@ class WalletTransactionDetailsDefaultBody extends StatelessWidget {
             );
           },
         ),
+        if(transactionId == null)
         WalletTransactionDetailsItem(
           title: LocaleKeys.hashId.tr(),
           subtitle: toEllipseString(hash),
@@ -146,7 +149,19 @@ class WalletTransactionDetailsDefaultBody extends StatelessWidget {
               LocaleKeys.valueCopiedExclamation.tr(args: [hash]),
             );
           },
-        ),
+        ) else
+          WalletTransactionDetailsItem(
+            title: LocaleKeys.transactionId.tr(),
+            subtitle: transactionId,
+            icon: LucideIcons.copy,
+            onPressed: () {
+              _copy(
+                context,
+                transactionId!,
+                LocaleKeys.valueCopiedExclamation.tr(args: [transactionId!]),
+              );
+            },
+          )
       ],
     );
   }

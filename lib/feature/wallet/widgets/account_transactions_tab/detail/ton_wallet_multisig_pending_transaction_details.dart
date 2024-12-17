@@ -1,6 +1,7 @@
 import 'dart:convert';
 
 import 'package:app/app/router/router.dart';
+import 'package:app/app/service/token_wallets_service.dart';
 import 'package:app/di/di.dart';
 import 'package:app/feature/browser/utils.dart';
 import 'package:app/feature/wallet/widgets/account_info.dart';
@@ -10,6 +11,7 @@ import 'package:app/generated/generated.dart';
 import 'package:flutter/material.dart';
 import 'package:lucide_icons_flutter/lucide_icons.dart';
 import 'package:nekoton_repository/nekoton_repository.dart';
+import 'package:string_extensions/string_extensions.dart';
 import 'package:ui_components_lib/ui_components_lib.dart';
 import 'package:ui_components_lib/v2/widgets/buttons/accent_button.dart';
 import 'package:ui_components_lib/v2/widgets/buttons/button_shape.dart';
@@ -39,6 +41,8 @@ class TonWalletMultisigPendingTransactionDetailsPage extends StatelessWidget {
         transaction.walletInteractionInfo?.method.toRepresentableData();
     final tonIconPath =
         inject<NekotonRepository>().currentTransport.nativeTokenIcon;
+    final safeHexString =
+        int.tryParse(transaction.transactionId)?.toRadixString(16);
 
     final theme = context.themeStyleV2;
     return Scaffold(
@@ -80,6 +84,7 @@ class TonWalletMultisigPendingTransactionDetailsPage extends StatelessWidget {
               tokenIconPath: tonIconPath,
               price: price,
               expiresAt: transaction.expireAt,
+              transactionId: safeHexString,
             ),
             TonWalletTransactionCustodiansDetails(
               confirmations: transaction.confirmations,
@@ -125,26 +130,6 @@ class TonWalletMultisigPendingTransactionDetailsPage extends StatelessWidget {
                   icon: LucideIcons.check,
                 ),
               ),
-            Padding(
-              padding: const EdgeInsets.symmetric(
-                horizontal: DimensSizeV2.d16,
-              ),
-              child: PrimaryButton(
-                title: LocaleKeys.seeInExplorer.tr(),
-                icon: LucideIcons.globe,
-                onPressed: () {
-                  Navigator.of(context).pop();
-                  // TODO(oldVersion): extract inject from widget
-                  browserNewTab(
-                    context,
-                    inject<NekotonRepository>()
-                        .currentTransport
-                        .transactionExplorerLink(transaction.hash),
-                  );
-                },
-                buttonShape: ButtonShape.pill,
-              ),
-            ),
             const SizedBox(height: DimensSizeV2.d24),
           ],
         ),
