@@ -91,7 +91,7 @@ class SendMessageModel extends ElementaryModel {
       transport: transport.transport,
     );
 
-    return (details.item1, details.item2);
+    return (details.$1, details.$2);
   }
 
   void showError(BuildContext context, String message) {
