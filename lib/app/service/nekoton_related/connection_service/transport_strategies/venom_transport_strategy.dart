@@ -45,6 +45,9 @@ class VenomTransportStrategy extends TransportStrategy {
         walletV3: () => 'Legacy',
         highloadWalletV2: () => 'HighloadWallet',
         everWallet: () => 'Default',
+        walletV4R1: () => 'WalletV4R1',
+        walletV4R2: () => 'WalletV4R2',
+        walletV5R1: () => 'WalletV5R1',
       );
 
   @override
