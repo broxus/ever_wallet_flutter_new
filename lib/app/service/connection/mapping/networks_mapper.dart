@@ -1,10 +1,10 @@
-
 import 'package:app/app/service/connection/data/connection_data/connection_data.dart';
+import 'package:app/utils/json/json_utils.dart';
 import 'package:app/utils/parse_utils.dart';
 
 List<ConnectionData> mapToConnectionDataList(
-    List<Map<String, dynamic>> list,
-    ) {
+  List<Map<String, dynamic>> list,
+) {
   final result = <ConnectionData>[];
 
   for (final network in list) {
@@ -15,7 +15,7 @@ List<ConnectionData> mapToConnectionDataList(
     final id = network['id'] as String;
     final name = network['name'] as String;
     final group = network['group'] as String;
-    final endpoints = network['endpoints'] as List<String>;
+    final endpoints = castJsonList<String>(network['endpoints']);
     final networkType = network['networkType'] as String;
     final blockExplorerUrl = network['blockExplorerUrl'] as String;
     final manifestUrl = network['manifestUrl'] as String;
@@ -46,10 +46,10 @@ List<ConnectionData> mapToConnectionDataList(
           canBeEdited: false,
           sortingOrder: sortingOrder,
           latencyDetectionInterval:
-          parseToInt(network['latencyDetectionInterval']),
+              parseToInt(network['latencyDetectionInterval']),
           maxLatency: parseToInt(network['maxLatency']),
           endpointSelectionRetryCount:
-          parseToInt(network['endpointSelectionRetryCount']),
+              parseToInt(network['endpointSelectionRetryCount']),
         );
       case 'jrpc':
         data = ConnectionData.jrpcPreset(

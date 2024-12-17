@@ -4,6 +4,7 @@ import 'package:app/app/service/connection/data/transaction_explorer/transaction
 import 'package:app/app/service/connection/data/transport_manifest_option/transport_manifest_option.dart';
 import 'package:app/app/service/connection/data/transport_native_token_option/transport_native_token_option.dart';
 import 'package:app/app/service/connection/generic_token_subscriber.dart';
+import 'package:app/utils/json/json_utils.dart';
 import 'package:app/utils/parse_utils.dart';
 import 'package:nekoton_repository/nekoton_repository.dart';
 
@@ -17,7 +18,7 @@ Map<String, ConnectionTransportData>? mapToTransports(
 
     result[networkType] = ConnectionTransportData(
       availableWalletTypes: _mapToAvailableWalletTypes(
-        transport['availableWalletTypes'] as List<Map<String, dynamic>>,
+        castJsonList<Map<String, dynamic>>(transport['availableWalletTypes']),
       ),
       walletDefaultAccountNames: _mapRoWalletDefaultAccountNames(
         transport['walletDefaultAccountNames'] as Map<String, dynamic>,

@@ -345,7 +345,7 @@ class PresetsConnectionService {
       try {
         final cache = await _secureStorage.getConnectionJson();
         if (cache != null) {
-          mapToConnectionNetworkFromJson(
+          data = mapToConnectionNetworkFromJson(
             await jsonDecode(cache) as Map<String, dynamic>,
           );
         }

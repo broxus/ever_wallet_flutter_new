@@ -97,6 +97,7 @@ class BootstrapService {
   Future<void> _coreStep(AppBuildType appBuildType) async {
     await configureAppVersion();
     await configureLogger(appBuildType);
+    await configureEncryptedStorage();
   }
 
   Future<void> _remoteNetworksStep() async {
@@ -104,7 +105,6 @@ class BootstrapService {
   }
 
   Future<void> _storageStep() async {
-    await configureEncryptedStorage();
     await configureNavigationService();
     await migrateStorage();
     await configureStorageServices();
