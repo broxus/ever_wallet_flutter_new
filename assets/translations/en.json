@@ -636,5 +636,6 @@
   "confirmedCustodians": "Confirmed {} / {}",
   "expiresInCustodians": "Expires in {}",
   "deploymentInProgress": "Deployment in progress",
-  "expirationTimeDetails": "Expires in {} hours {} minutes ({} at {})"
+  "expirationTimeDetails": "Expires in {} hours {} minutes ({} at {})",
+  "errorMessageMaxUnconfirmedTransactions": "Unconfirmed transactions is limited by 5"
 }

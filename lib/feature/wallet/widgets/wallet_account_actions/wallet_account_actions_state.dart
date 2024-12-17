@@ -14,5 +14,6 @@ class WalletAccountActionsState with _$WalletAccountActionsState {
     required BigInt? balance,
     required List<PublicKey>? custodians,
     required String? nativeTokenTicker,
+    required int? numberUnconfirmedTransactions,
   }) = _Data;
 }

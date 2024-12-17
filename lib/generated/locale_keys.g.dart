@@ -660,4 +660,6 @@ abstract class LocaleKeys {
   static const expiresInCustodians = 'expiresInCustodians';
   static const deploymentInProgress = 'deploymentInProgress';
   static const expirationTimeDetails = 'expirationTimeDetails';
+  static const errorMessageMaxUnconfirmedTransactions =
+      'errorMessageMaxUnconfirmedTransactions';
 }

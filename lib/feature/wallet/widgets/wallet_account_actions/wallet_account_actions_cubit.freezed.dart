@@ -27,7 +27,8 @@ mixin _$WalletAccountActionsState {
             bool hasStakeActions,
             BigInt? balance,
             List<PublicKey>? custodians,
-            String? nativeTokenTicker)
+            String? nativeTokenTicker,
+            int? numberUnconfirmedTransactions)
         data,
   }) =>
       throw _privateConstructorUsedError;
@@ -40,7 +41,8 @@ mixin _$WalletAccountActionsState {
             bool hasStakeActions,
             BigInt? balance,
             List<PublicKey>? custodians,
-            String? nativeTokenTicker)?
+            String? nativeTokenTicker,
+            int? numberUnconfirmedTransactions)?
         data,
   }) =>
       throw _privateConstructorUsedError;
@@ -53,7 +55,8 @@ mixin _$WalletAccountActionsState {
             bool hasStakeActions,
             BigInt? balance,
             List<PublicKey>? custodians,
-            String? nativeTokenTicker)?
+            String? nativeTokenTicker,
+            int? numberUnconfirmedTransactions)?
         data,
     required TResult orElse(),
   }) =>
@@ -214,7 +217,8 @@ class _$LoadingImpl implements _Loading {
             bool hasStakeActions,
             BigInt? balance,
             List<PublicKey>? custodians,
-            String? nativeTokenTicker)
+            String? nativeTokenTicker,
+            int? numberUnconfirmedTransactions)
         data,
   }) {
     return loading(hasStake, nativeTokenTicker);
@@ -230,7 +234,8 @@ class _$LoadingImpl implements _Loading {
             bool hasStakeActions,
             BigInt? balance,
             List<PublicKey>? custodians,
-            String? nativeTokenTicker)?
+            String? nativeTokenTicker,
+            int? numberUnconfirmedTransactions)?
         data,
   }) {
     return loading?.call(hasStake, nativeTokenTicker);
@@ -246,7 +251,8 @@ class _$LoadingImpl implements _Loading {
             bool hasStakeActions,
             BigInt? balance,
             List<PublicKey>? custodians,
-            String? nativeTokenTicker)?
+            String? nativeTokenTicker,
+            int? numberUnconfirmedTransactions)?
         data,
     required TResult orElse(),
   }) {
@@ -320,7 +326,8 @@ abstract class _$$DataImplCopyWith<$Res>
       bool hasStakeActions,
       BigInt? balance,
       List<PublicKey>? custodians,
-      String? nativeTokenTicker});
+      String? nativeTokenTicker,
+      int? numberUnconfirmedTransactions});
 }
 
 /// @nodoc
@@ -341,6 +348,7 @@ class __$$DataImplCopyWithImpl<$Res>
     Object? balance = freezed,
     Object? custodians = freezed,
     Object? nativeTokenTicker = freezed,
+    Object? numberUnconfirmedTransactions = freezed,
   }) {
     return _then(_$DataImpl(
       action: null == action
@@ -367,6 +375,10 @@ class __$$DataImplCopyWithImpl<$Res>
           ? _value.nativeTokenTicker
           : nativeTokenTicker // ignore: cast_nullable_to_non_nullable
               as String?,
+      numberUnconfirmedTransactions: freezed == numberUnconfirmedTransactions
+          ? _value.numberUnconfirmedTransactions
+          : numberUnconfirmedTransactions // ignore: cast_nullable_to_non_nullable
+              as int?,
     ));
   }
 }
@@ -380,7 +392,8 @@ class _$DataImpl implements _Data {
       required this.hasStakeActions,
       required this.balance,
       required final List<PublicKey>? custodians,
-      required this.nativeTokenTicker})
+      required this.nativeTokenTicker,
+      required this.numberUnconfirmedTransactions})
       : _custodians = custodians;
 
   @override
@@ -403,10 +416,12 @@ class _$DataImpl implements _Data {
 
   @override
   final String? nativeTokenTicker;
+  @override
+  final int? numberUnconfirmedTransactions;
 
   @override
   String toString() {
-    return 'WalletAccountActionsState.data(action: $action, hasStake: $hasStake, hasStakeActions: $hasStakeActions, balance: $balance, custodians: $custodians, nativeTokenTicker: $nativeTokenTicker)';
+    return 'WalletAccountActionsState.data(action: $action, hasStake: $hasStake, hasStakeActions: $hasStakeActions, balance: $balance, custodians: $custodians, nativeTokenTicker: $nativeTokenTicker, numberUnconfirmedTransactions: $numberUnconfirmedTransactions)';
   }
 
   @override
@@ -423,7 +438,11 @@ class _$DataImpl implements _Data {
             const DeepCollectionEquality()
                 .equals(other._custodians, _custodians) &&
             (identical(other.nativeTokenTicker, nativeTokenTicker) ||
-                other.nativeTokenTicker == nativeTokenTicker));
+                other.nativeTokenTicker == nativeTokenTicker) &&
+            (identical(other.numberUnconfirmedTransactions,
+                    numberUnconfirmedTransactions) ||
+                other.numberUnconfirmedTransactions ==
+                    numberUnconfirmedTransactions));
   }
 
   @override
@@ -434,7 +453,8 @@ class _$DataImpl implements _Data {
       hasStakeActions,
       balance,
       const DeepCollectionEquality().hash(_custodians),
-      nativeTokenTicker);
+      nativeTokenTicker,
+      numberUnconfirmedTransactions);
 
   /// Create a copy of WalletAccountActionsState
   /// with the given fields replaced by the non-null parameter values.
@@ -454,11 +474,12 @@ class _$DataImpl implements _Data {
             bool hasStakeActions,
             BigInt? balance,
             List<PublicKey>? custodians,
-            String? nativeTokenTicker)
+            String? nativeTokenTicker,
+            int? numberUnconfirmedTransactions)
         data,
   }) {
     return data(action, hasStake, hasStakeActions, balance, custodians,
-        nativeTokenTicker);
+        nativeTokenTicker, numberUnconfirmedTransactions);
   }
 
   @override
@@ -471,11 +492,12 @@ class _$DataImpl implements _Data {
             bool hasStakeActions,
             BigInt? balance,
             List<PublicKey>? custodians,
-            String? nativeTokenTicker)?
+            String? nativeTokenTicker,
+            int? numberUnconfirmedTransactions)?
         data,
   }) {
     return data?.call(action, hasStake, hasStakeActions, balance, custodians,
-        nativeTokenTicker);
+        nativeTokenTicker, numberUnconfirmedTransactions);
   }
 
   @override
@@ -488,13 +510,14 @@ class _$DataImpl implements _Data {
             bool hasStakeActions,
             BigInt? balance,
             List<PublicKey>? custodians,
-            String? nativeTokenTicker)?
+            String? nativeTokenTicker,
+            int? numberUnconfirmedTransactions)?
         data,
     required TResult orElse(),
   }) {
     if (data != null) {
       return data(action, hasStake, hasStakeActions, balance, custodians,
-          nativeTokenTicker);
+          nativeTokenTicker, numberUnconfirmedTransactions);
     }
     return orElse();
   }
@@ -538,7 +561,8 @@ abstract class _Data implements WalletAccountActionsState {
       required final bool hasStakeActions,
       required final BigInt? balance,
       required final List<PublicKey>? custodians,
-      required final String? nativeTokenTicker}) = _$DataImpl;
+      required final String? nativeTokenTicker,
+      required final int? numberUnconfirmedTransactions}) = _$DataImpl;
 
   WalletAccountActionBehavior get action;
   @override
@@ -548,6 +572,7 @@ abstract class _Data implements WalletAccountActionsState {
   List<PublicKey>? get custodians;
   @override
   String? get nativeTokenTicker;
+  int? get numberUnconfirmedTransactions;
 
   /// Create a copy of WalletAccountActionsState
   /// with the given fields replaced by the non-null parameter values.

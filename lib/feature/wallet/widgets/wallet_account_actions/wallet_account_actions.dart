@@ -75,6 +75,7 @@ class WalletAccountActions extends StatelessWidget {
                       balance,
                       custodians,
                       nativeTokenTicker,
+                      numberUnconfirmedTransactions,
                     ) =>
                         _ActionList(
                       account: account,
@@ -86,6 +87,8 @@ class WalletAccountActions extends StatelessWidget {
                       balance: balance,
                       custodians: custodians,
                       nativeTokenTicker: nativeTokenTicker,
+                      numberUnconfirmedTransactions:
+                          numberUnconfirmedTransactions,
                     ),
                   );
                 },
@@ -106,6 +109,7 @@ class _ActionList extends StatelessWidget {
     this.sendSpecified = false,
     this.balance,
     this.custodians,
+    this.numberUnconfirmedTransactions,
   });
 
   final WalletAccountActionBehavior action;
@@ -117,6 +121,7 @@ class _ActionList extends StatelessWidget {
   final BigInt? balance;
   final List<PublicKey>? custodians;
   final String? nativeTokenTicker;
+  final int? numberUnconfirmedTransactions;
 
   @override
   Widget build(BuildContext context) {
@@ -145,8 +150,11 @@ class _ActionList extends StatelessWidget {
             WalletActionButton(
               label: _actionTitle(action),
               icon: _actionIcon(action),
-              onPressed:
-                  account?.let((_) => _actionOnPressed(context, balance)),
+              onPressed: account?.let((_) => _actionOnPressed(
+                    context,
+                    balance,
+                    numberUnconfirmedTransactions,
+                  )),
             ),
             if (hasStake)
               WalletActionButton(
@@ -195,10 +203,21 @@ class _ActionList extends StatelessWidget {
         _ => LocaleKeys.sendWord.tr(),
       };
 
-  VoidCallback _actionOnPressed(BuildContext context, BigInt? balance) =>
+  VoidCallback _actionOnPressed(
+    BuildContext context,
+    BigInt? balance,
+    int? numberUnconfirmedTransactions,
+  ) =>
       switch (action) {
         WalletAccountActionBehavior.send => () {
-            if (sendSpecified) {
+            if((numberUnconfirmedTransactions ?? 0) >= 5) {
+              inject<MessengerService>().show(
+                Message.error(
+                  context: context,
+                  message: LocaleKeys.errorMessageMaxUnconfirmedTransactions.tr(),
+                ),
+              );
+            } else if (sendSpecified) {
               final transport = inject<NekotonRepository>().currentTransport;
               context.goFurther(
                 AppRoute.walletPrepareTransferSpecified.pathWithData(

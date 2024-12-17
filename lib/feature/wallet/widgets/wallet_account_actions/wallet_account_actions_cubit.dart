@@ -100,6 +100,7 @@ class WalletAccountActionsCubit extends Cubit<WalletAccountActionsState> {
           custodians: wallet?.custodians,
           nativeTokenTicker:
               nekotonRepository.currentTransport.nativeTokenTicker,
+          numberUnconfirmedTransactions: wallet?.unconfirmedTransactions.length,
         ),
       );
     } catch (_) {}
