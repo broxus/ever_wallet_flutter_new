@@ -1,11 +1,10 @@
 import 'package:app/app/service/connection/data/connection_data/connection_data.dart';
 import 'package:app/app/service/connection/presets_connection_service.dart';
 import 'package:app/app/service/connection/transport_strategies/app_transport_strategy.dart';
-import 'package:app/app/service/connection/transport_strategies/preset_transport_strategy.dart';
+import 'package:app/app/service/connection/transport_strategies/common_transport_strategy.dart';
 import 'package:app/app/service/http_clients.dart';
 import 'package:app/app/service/service.dart';
 import 'package:app/di/di.dart';
-import 'package:app/http/repository/ton_repository.dart';
 import 'package:injectable/injectable.dart';
 import 'package:logging/logging.dart';
 import 'package:nekoton_repository/nekoton_repository.dart' hide Message;
@@ -64,7 +63,7 @@ class ConnectionService {
       return null;
     }
 
-    return PresetTransportStrategy.fromData(
+    return CommonTransportStrategy.fromData(
       transport,
       connection,
       data,
@@ -181,8 +180,8 @@ class ConnectionService {
 
 extension TransportTypeExtension on TransportStrategy {
   String get networkType {
-    if (this is PresetTransportStrategy) {
-      return (this as PresetTransportStrategy).networkType;
+    if (this is CommonTransportStrategy) {
+      return (this as CommonTransportStrategy).networkType;
     }
 
     return '';

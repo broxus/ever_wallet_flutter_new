@@ -197,10 +197,6 @@ class $AssetsImagesGen {
   /// File path: assets/images/ever_coin.svg
   SvgGenImage get everCoin => const SvgGenImage('assets/images/ever_coin.svg');
 
-  /// File path: assets/images/ever_vector.svg
-  SvgGenImage get everVector =>
-      const SvgGenImage('assets/images/ever_vector.svg');
-
   /// File path: assets/images/exclamation_mark.png
   AssetGenImage get exclamationMark =>
       const AssetGenImage('assets/images/exclamation_mark.png');
@@ -464,7 +460,6 @@ class $AssetsImagesGen {
         edit,
         ever,
         everCoin,
-        everVector,
         exclamationMark,
         exit,
         export,

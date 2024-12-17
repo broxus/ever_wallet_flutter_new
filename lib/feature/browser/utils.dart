@@ -1,6 +1,6 @@
 import 'package:app/app/router/router.dart';
 import 'package:app/app/service/connection/data/connection_data/connection_data.dart';
-import 'package:app/app/service/connection/transport_strategies/preset_transport_strategy.dart';
+import 'package:app/app/service/connection/transport_strategies/common_transport_strategy.dart';
 import 'package:flutter/widgets.dart';
 import 'package:go_router/go_router.dart';
 import 'package:nekoton_repository/nekoton_repository.dart'
@@ -26,7 +26,7 @@ void browserNewTab(BuildContext context, String url) {
 
 extension TransportExtension on TransportStrategy {
   ConnectionData? get connection => switch (this) {
-        PresetTransportStrategy(:final connection) => connection,
+        CommonTransportStrategy(:final connection) => connection,
         _ => null,
       };
 

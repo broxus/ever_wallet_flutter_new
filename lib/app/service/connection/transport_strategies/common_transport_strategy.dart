@@ -9,8 +9,8 @@ import 'package:app/app/service/connection/transport_strategies/app_transport_st
 import 'package:app/di/di.dart';
 import 'package:nekoton_repository/nekoton_repository.dart';
 
-class PresetTransportStrategy extends AppTransportStrategy {
-  PresetTransportStrategy({
+class CommonTransportStrategy extends AppTransportStrategy {
+  CommonTransportStrategy({
     required this.transport,
     required this.connection,
     required this.availableWalletTypes,
@@ -33,12 +33,12 @@ class PresetTransportStrategy extends AppTransportStrategy {
     String? baseCurrencyUrl,
   }) : baseCurrencyUrl = baseCurrencyUrl ?? '';
 
-  factory PresetTransportStrategy.fromData(
+  factory CommonTransportStrategy.fromData(
     Transport transport,
     ConnectionData connection,
     ConnectionTransportData transportData,
   ) {
-    return PresetTransportStrategy(
+    return CommonTransportStrategy(
       transport: transport,
       connection: connection,
       availableWalletTypes: transportData.availableWalletTypes,
