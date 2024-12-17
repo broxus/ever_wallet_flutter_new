@@ -102,8 +102,6 @@ extension GetItInjectableX on _i174.GetIt {
     gh.singleton<_i139.TonWalletStorageService>(
         () => _i139.TonWalletStorageService());
     gh.singleton<_i143.AppVersionService>(() => _i143.AppVersionService());
-    gh.singleton<_i710.PresetsConnectionService>(
-        () => _i710.PresetsConnectionService());
     gh.singleton<_i157.JsService>(() => _i157.JsService());
     gh.singleton<_i746.AppLinksService>(
       () => _i746.AppLinksService(),
@@ -127,8 +125,6 @@ extension GetItInjectableX on _i174.GetIt {
     gh.singleton<_i29.BrowserPermissionsStorageService>(() =>
         _i29.BrowserPermissionsStorageService(
             gh<_i792.GetStorage>(instanceName: 'browser_permissions')));
-    gh.singleton<_i468.BootstrapService>(
-        () => _i468.BootstrapService(gh<_i710.PresetsConnectionService>()));
     gh.singleton<_i679.SecureStorageService>(
         () => _i679.SecureStorageService(gh<_i426.EncryptedStorage>()));
     gh.singleton<_i747.GeneralStorageService>(() => _i747.GeneralStorageService(
@@ -137,11 +133,6 @@ extension GetItInjectableX on _i174.GetIt {
           gh<_i792.GetStorage>(instanceName: 'system_contract_assets_key'),
           gh<_i792.GetStorage>(instanceName: 'custom_contract_assets_key'),
         ));
-    gh.singleton<_i65.ConnectionsStorageService>(
-        () => _i65.ConnectionsStorageService(
-              gh<_i792.GetStorage>(instanceName: 'connections'),
-              gh<_i710.PresetsConnectionService>(),
-            ));
     gh.factory<_i162.TonApi>(() => _i162.TonApi(gh<_i361.Dio>()));
     gh.lazySingleton<_i184.AppStorageService>(() => _i184.AppStorageService(
         gh<_i792.GetStorage>(instanceName: 'app_storage_service')));
@@ -154,6 +145,8 @@ extension GetItInjectableX on _i174.GetIt {
           gh<_i128.BrowserPermissionsStorageService>(),
           gh<_i771.NekotonRepository>(),
         ));
+    gh.singleton<_i710.PresetsConnectionService>(
+        () => _i710.PresetsConnectionService(gh<_i679.SecureStorageService>()));
     gh.lazySingleton<_i958.IIdentifyIconsService>(
         () => _i316.IdentifyIconsService(gh<_i128.AppStorageService>()));
     gh.singleton<_i1020.BalanceStorageService>(
@@ -194,11 +187,6 @@ extension GetItInjectableX on _i174.GetIt {
           gh<_i128.GeneralStorageService>(),
           gh<_i771.NekotonRepository>(),
         ));
-    gh.singleton<_i754.ConnectionService>(() => _i754.ConnectionService(
-          gh<_i128.ConnectionsStorageService>(),
-          gh<_i771.NekotonRepository>(),
-          gh<_i710.PresetsConnectionService>(),
-        ));
     gh.singleton<_i402.CurrentAccountsService>(
         () => _i402.CurrentAccountsService(
               gh<_i771.NekotonRepository>(),
@@ -210,6 +198,8 @@ extension GetItInjectableX on _i174.GetIt {
     gh.singleton<_i721.BrowserFaviconURLStorageService>(() =>
         _i721.BrowserFaviconURLStorageService(
             gh<_i792.GetStorage>(instanceName: 'browser_favicon_urls')));
+    gh.singleton<_i468.BootstrapService>(
+        () => _i468.BootstrapService(gh<_i710.PresetsConnectionService>()));
     gh.singleton<_i244.CurrentSeedService>(() => _i244.CurrentSeedService(
           gh<_i771.NekotonRepository>(),
           gh<_i403.CurrentKeyService>(),
@@ -225,6 +215,11 @@ extension GetItInjectableX on _i174.GetIt {
           gh<_i128.SecureStorageService>(),
           gh<_i128.AppLifecycleService>(),
         ));
+    gh.singleton<_i65.ConnectionsStorageService>(
+        () => _i65.ConnectionsStorageService(
+              gh<_i792.GetStorage>(instanceName: 'connections'),
+              gh<_i710.PresetsConnectionService>(),
+            ));
     gh.singleton<_i308.CurrenciesService>(() => _i308.CurrenciesService(
           httpService: gh<_i128.HttpService>(),
           nekotonRepository: gh<_i771.NekotonRepository>(),
@@ -247,6 +242,11 @@ extension GetItInjectableX on _i174.GetIt {
           gh<_i128.ConnectionsStorageService>(),
           gh<_i128.BalanceStorageService>(),
           gh<_i128.AppStorageService>(),
+        ));
+    gh.singleton<_i754.ConnectionService>(() => _i754.ConnectionService(
+          gh<_i128.ConnectionsStorageService>(),
+          gh<_i771.NekotonRepository>(),
+          gh<_i710.PresetsConnectionService>(),
         ));
     gh.singleton<_i637.BalanceService>(() => _i637.BalanceService(
           gh<_i771.NekotonRepository>(),
