@@ -271,6 +271,10 @@ class $AssetsImagesGen {
   /// File path: assets/images/moon.svg
   SvgGenImage get moon => const SvgGenImage('assets/images/moon.svg');
 
+  /// File path: assets/images/native_token_default.svg
+  SvgGenImage get nativeTokenDefault =>
+      const SvgGenImage('assets/images/native_token_default.svg');
+
   /// File path: assets/images/navigate_back.svg
   SvgGenImage get navigateBack =>
       const SvgGenImage('assets/images/navigate_back.svg');
@@ -290,6 +294,10 @@ class $AssetsImagesGen {
   /// File path: assets/images/network_earth.png
   AssetGenImage get networkEarth =>
       const AssetGenImage('assets/images/network_earth.png');
+
+  /// File path: assets/images/network_vector_default.svg
+  SvgGenImage get networkVectorDefault =>
+      const SvgGenImage('assets/images/network_vector_default.svg');
 
   /// Directory path: assets/images/onboarding
   $AssetsImagesOnboardingGen get onboarding =>
@@ -451,11 +459,13 @@ class $AssetsImagesGen {
         logo,
         minus,
         moon,
+        nativeTokenDefault,
         navigateBack,
         navigateForward,
         navigation,
         networkDefault,
         networkEarth,
+        networkVectorDefault,
         openedEye,
         paste,
         person,

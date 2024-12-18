@@ -86,7 +86,7 @@ class CommonTransportStrategy extends AppTransportStrategy {
 
   @override
   String get nativeTokenIcon =>
-      icons.nativeToken ?? Assets.images.tokenDefaultIcon.path;
+      icons.nativeToken ?? Assets.images.nativeTokenDefault.path;
 
   final TransportNativeTokenTickerOption nativeTokenTickerOption;
 
