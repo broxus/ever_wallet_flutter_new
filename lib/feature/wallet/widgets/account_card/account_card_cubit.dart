@@ -66,8 +66,7 @@ class AccountCardCubit extends Cubit<AccountCardState> {
 
   TonWalletState? walletState;
 
-  String get _networkType =>
-      nekotonRepository.currentTransport.networkType;
+  String get _networkType => nekotonRepository.currentTransport.networkType;
 
   Future<void> retry() async {
     final st = state;

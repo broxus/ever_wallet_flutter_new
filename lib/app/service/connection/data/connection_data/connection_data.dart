@@ -218,8 +218,8 @@ sealed class ConnectionData with _$ConnectionData {
     required String blockExplorerUrl,
     required String manifestUrl,
     required String nativeTokenTicker,
-    String? id,
     required String networkType,
+    String? id,
   }) =>
       ConnectionData.jrpc(
         id: id ?? const Uuid().v4(),

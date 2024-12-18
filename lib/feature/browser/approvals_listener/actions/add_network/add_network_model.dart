@@ -1,4 +1,3 @@
-import 'package:app/app/service/connection/connection_service.dart';
 import 'package:app/app/service/connection/data/connection_data/connection_data.dart';
 import 'package:app/app/service/service.dart';
 import 'package:app/feature/browser/utils.dart';

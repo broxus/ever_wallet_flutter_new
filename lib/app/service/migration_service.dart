@@ -420,13 +420,11 @@ class HiveSourceMigration {
 
   Future<void> clearSitesMetaData() => _siteMetaDataBox.clear();
 
-  List<CustomCurrency> get everCurrencies => _everCurrenciesBox.values
-      .map((e) => e.toModel('ever'))
-      .toList();
+  List<CustomCurrency> get everCurrencies =>
+      _everCurrenciesBox.values.map((e) => e.toModel('ever')).toList();
 
-  List<CustomCurrency> get venomCurrencies => _venomCurrenciesBox.values
-      .map((e) => e.toModel('venom'))
-      .toList();
+  List<CustomCurrency> get venomCurrencies =>
+      _venomCurrenciesBox.values.map((e) => e.toModel('venom')).toList();
 
   Future<void> saveEverCurrency({
     required Address address,
