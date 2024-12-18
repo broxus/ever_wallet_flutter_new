@@ -18,6 +18,7 @@ dependencies:
       url: https://github.com/broxus/broxus-flutter-app-link
       ref: v1.0.0
   cached_network_image: 3.3.1
+  cached_network_svg_image: ^1.2.0
   clock: 1.1.1
   collection: 1.18.0
   crypto: 3.0.6

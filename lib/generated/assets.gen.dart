@@ -194,9 +194,6 @@ class $AssetsImagesGen {
   /// File path: assets/images/ever.svg
   SvgGenImage get ever => const SvgGenImage('assets/images/ever.svg');
 
-  /// File path: assets/images/ever_coin.svg
-  SvgGenImage get everCoin => const SvgGenImage('assets/images/ever_coin.svg');
-
   /// File path: assets/images/exclamation_mark.png
   AssetGenImage get exclamationMark =>
       const AssetGenImage('assets/images/exclamation_mark.png');
@@ -294,18 +291,6 @@ class $AssetsImagesGen {
   AssetGenImage get networkEarth =>
       const AssetGenImage('assets/images/network_earth.png');
 
-  /// File path: assets/images/network_ever.svg
-  SvgGenImage get networkEver =>
-      const SvgGenImage('assets/images/network_ever.svg');
-
-  /// File path: assets/images/network_tycho.svg
-  SvgGenImage get networkTycho =>
-      const SvgGenImage('assets/images/network_tycho.svg');
-
-  /// File path: assets/images/network_venom.svg
-  SvgGenImage get networkVenom =>
-      const SvgGenImage('assets/images/network_venom.svg');
-
   /// Directory path: assets/images/onboarding
   $AssetsImagesOnboardingGen get onboarding =>
       const $AssetsImagesOnboardingGen();
@@ -387,24 +372,9 @@ class $AssetsImagesGen {
   /// File path: assets/images/trash.svg
   SvgGenImage get trash => const SvgGenImage('assets/images/trash.svg');
 
-  /// File path: assets/images/tycho_coin.svg
-  SvgGenImage get tychoCoin =>
-      const SvgGenImage('assets/images/tycho_coin.svg');
-
-  /// File path: assets/images/tycho_vector.svg
-  SvgGenImage get tychoVector =>
-      const SvgGenImage('assets/images/tycho_vector.svg');
-
   /// Directory path: assets/images/user_avatar
   $AssetsImagesUserAvatarGen get userAvatar =>
       const $AssetsImagesUserAvatarGen();
-
-  /// File path: assets/images/venom.svg
-  SvgGenImage get venom => const SvgGenImage('assets/images/venom.svg');
-
-  /// File path: assets/images/venom_vector.svg
-  SvgGenImage get venomVector =>
-      const SvgGenImage('assets/images/venom_vector.svg');
 
   /// File path: assets/images/wallet.svg
   SvgGenImage get wallet => const SvgGenImage('assets/images/wallet.svg');
@@ -459,7 +429,6 @@ class $AssetsImagesGen {
         dots,
         edit,
         ever,
-        everCoin,
         exclamationMark,
         exit,
         export,
@@ -487,9 +456,6 @@ class $AssetsImagesGen {
         navigation,
         networkDefault,
         networkEarth,
-        networkEver,
-        networkTycho,
-        networkVenom,
         openedEye,
         paste,
         person,
@@ -512,10 +478,6 @@ class $AssetsImagesGen {
         support,
         tokenDefaultIcon,
         trash,
-        tychoCoin,
-        tychoVector,
-        venom,
-        venomVector,
         wallet,
         web
       ];

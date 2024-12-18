@@ -1,6 +1,7 @@
 import 'package:app/app/service/connection/data/account_explorer/account_explorer_link_type.dart';
 import 'package:app/app/service/connection/data/connection_transport/connection_transport_data.dart';
 import 'package:app/app/service/connection/data/transaction_explorer/transaction_explorer_link_type.dart';
+import 'package:app/app/service/connection/data/transport_icons.dart';
 import 'package:app/app/service/connection/data/transport_manifest_option/transport_manifest_option.dart';
 import 'package:app/app/service/connection/data/transport_native_token_option/transport_native_token_option.dart';
 import 'package:app/app/service/connection/generic_token_subscriber.dart';
@@ -17,6 +18,9 @@ Map<String, ConnectionTransportData>? mapToTransports(
     final networkType = transport['networkType'] as String;
 
     result[networkType] = ConnectionTransportData(
+      icons: _mapToTransportIcons(
+        transport['icons'] as Map<String, dynamic>,
+      ),
       availableWalletTypes: _mapToAvailableWalletTypes(
         castJsonList<Map<String, dynamic>>(transport['availableWalletTypes']),
       ),
@@ -26,7 +30,6 @@ Map<String, ConnectionTransportData>? mapToTransports(
       defaultWalletType: _mapToWalletType(
         transport['defaultWalletType'] as Map<String, dynamic>,
       ),
-      nativeTokenIcon: transport['nativeTokenIcon'] as String,
       nativeTokenTickerOption: _mapToNativeTokenTickerOption(
         transport['nativeTokenTickerOption'] as Map<String, dynamic>,
       ),
@@ -62,6 +65,14 @@ Map<String, ConnectionTransportData>? mapToTransports(
   }
 
   return result;
+}
+
+TransportIcons _mapToTransportIcons(Map<String, dynamic> json) {
+  return TransportIcons(
+    nativeToken: json['nativeToken'] as String?,
+    network: json['network'] as String?,
+    vector: json['vector'] as String?,
+  );
 }
 
 List<WalletType> _mapToAvailableWalletTypes(List<Map<String, dynamic>> list) {

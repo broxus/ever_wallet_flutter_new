@@ -1,8 +1,11 @@
+import 'package:app/app/service/connection/presets_connection_service.dart';
+import 'package:app/di/di.dart';
 import 'package:app/generated/generated.dart';
+import 'package:app/widgets/cached_svg.dart';
 import 'package:flutter/material.dart';
 import 'package:ui_components_lib/v2/ui_components_lib_v2.dart';
 
-class NetworkIcon extends StatelessWidget {
+class NetworkIcon extends StatefulWidget {
   const NetworkIcon({
     required this.type,
     super.key,
@@ -10,29 +13,25 @@ class NetworkIcon extends StatelessWidget {
 
   final String type;
 
-  /// TODO replace
-  String get _path {
-    switch (type) {
-      case 'ever':
-        return Assets.images.networkEver.path;
-      case 'venom':
-        return Assets.images.networkVenom.path;
-      case 'tycho':
-        return Assets.images.networkTycho.path;
-      case 'custom':
-        return Assets.images.networkDefault.path;
-    }
+  @override
+  State<NetworkIcon> createState() => _NetworkIconState();
+}
 
-    return '';
+class _NetworkIconState extends State<NetworkIcon> {
+  final _presetsConnectionService = inject<PresetsConnectionService>();
+
+  String get _type => widget.type;
+
+  String? get _path {
+    return _presetsConnectionService.getTransportIconsByNetwork(_type).network;
   }
 
-  Color get _bgColor => switch (type) {
-        'ever' => ColorsResV2.p60,
+  Color get _bgColor => switch (_type) {
         'venom' => const Color(0xFF4C5AF5),
-        _ => ColorsResV2.p60,
+        _ => Colors.transparent,
       };
 
-  EdgeInsetsGeometry? get _iconOffset => switch (type) {
+  EdgeInsetsGeometry? get _iconOffset => switch (_type) {
         'ever' => const EdgeInsets.only(
             top: DimensSizeV2.d2,
             right: DimensSizeV2.d2,
@@ -48,16 +47,13 @@ class NetworkIcon extends StatelessWidget {
           width: DimensSizeV2.d40,
           height: DimensSizeV2.d40,
           padding: _iconOffset,
-          child: switch (type) {
-            'tycho' => SvgPicture.asset(_path),
-            _ => Center(
-                child: SvgPicture.asset(
-                  _path,
+          child: _path == null
+              ? Assets.images.networkDefault.svg()
+              : CachedSvg(
+                  _path!,
                   width: DimensSizeV2.d16,
                   height: DimensSizeV2.d16,
                 ),
-              ),
-          },
         ),
       );
 }

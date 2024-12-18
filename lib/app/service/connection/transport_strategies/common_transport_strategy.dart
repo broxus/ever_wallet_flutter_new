@@ -2,21 +2,23 @@ import 'package:app/app/service/connection/data/account_explorer/account_explore
 import 'package:app/app/service/connection/data/connection_data/connection_data.dart';
 import 'package:app/app/service/connection/data/connection_transport/connection_transport_data.dart';
 import 'package:app/app/service/connection/data/transaction_explorer/transaction_explorer_link_type.dart';
+import 'package:app/app/service/connection/data/transport_icons.dart';
 import 'package:app/app/service/connection/data/transport_manifest_option/transport_manifest_option.dart';
 import 'package:app/app/service/connection/data/transport_native_token_option/transport_native_token_option.dart';
 import 'package:app/app/service/connection/generic_token_subscriber.dart';
 import 'package:app/app/service/connection/transport_strategies/app_transport_strategy.dart';
 import 'package:app/di/di.dart';
+import 'package:app/generated/generated.dart';
 import 'package:nekoton_repository/nekoton_repository.dart';
 
 class CommonTransportStrategy extends AppTransportStrategy {
   CommonTransportStrategy({
     required this.transport,
     required this.connection,
+    required this.icons,
     required this.availableWalletTypes,
     required this.walletDefaultAccountNames,
     required this.defaultWalletType,
-    required this.nativeTokenIcon,
     required this.nativeTokenTickerOption,
     required this.manifestOption,
     required this.nativeTokenAddress,
@@ -41,10 +43,10 @@ class CommonTransportStrategy extends AppTransportStrategy {
     return CommonTransportStrategy(
       transport: transport,
       connection: connection,
+      icons: transportData.icons,
       availableWalletTypes: transportData.availableWalletTypes,
       walletDefaultAccountNames: transportData.walletDefaultAccountNames,
       defaultWalletType: transportData.defaultWalletType,
-      nativeTokenIcon: transportData.nativeTokenIcon,
       nativeTokenTickerOption: transportData.nativeTokenTickerOption,
       manifestOption: transportData.manifestOption,
       nativeTokenAddress: transportData.nativeTokenAddress,
@@ -67,6 +69,8 @@ class CommonTransportStrategy extends AppTransportStrategy {
 
   final ConnectionData connection;
 
+  final TransportIcons icons;
+
   @override
   final List<WalletType> availableWalletTypes;
 
@@ -81,7 +85,8 @@ class CommonTransportStrategy extends AppTransportStrategy {
       );
 
   @override
-  final String nativeTokenIcon;
+  String get nativeTokenIcon =>
+      icons.nativeToken ?? Assets.images.tokenDefaultIcon.path;
 
   final TransportNativeTokenTickerOption nativeTokenTickerOption;
 

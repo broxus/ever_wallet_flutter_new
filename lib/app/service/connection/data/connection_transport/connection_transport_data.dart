@@ -1,5 +1,6 @@
 import 'package:app/app/service/connection/data/account_explorer/account_explorer_link_type.dart';
 import 'package:app/app/service/connection/data/transaction_explorer/transaction_explorer_link_type.dart';
+import 'package:app/app/service/connection/data/transport_icons.dart';
 import 'package:app/app/service/connection/data/transport_manifest_option/transport_manifest_option.dart';
 import 'package:app/app/service/connection/data/transport_native_token_option/transport_native_token_option.dart';
 import 'package:app/app/service/connection/generic_token_subscriber.dart';
@@ -7,10 +8,10 @@ import 'package:nekoton_repository/nekoton_repository.dart';
 
 class ConnectionTransportData {
   ConnectionTransportData({
+    required this.icons,
     required this.availableWalletTypes,
     required this.walletDefaultAccountNames,
     required this.defaultWalletType,
-    required this.nativeTokenIcon,
     required this.nativeTokenTickerOption,
     required this.manifestOption,
     required this.nativeTokenAddress,
@@ -27,11 +28,11 @@ class ConnectionTransportData {
     this.currencyApiBaseUrl,
   });
 
+  final TransportIcons icons;
   final List<WalletType> availableWalletTypes;
   final WalletDefaultAccountNames walletDefaultAccountNames;
   final WalletType defaultWalletType;
   final String? baseCurrencyUrl;
-  final String nativeTokenIcon;
   final TransportNativeTokenTickerOption nativeTokenTickerOption;
   final TransportManifestOption manifestOption;
   final Address nativeTokenAddress;
