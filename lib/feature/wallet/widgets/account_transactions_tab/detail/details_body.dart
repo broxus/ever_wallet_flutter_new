@@ -137,19 +137,20 @@ class WalletTransactionDetailsDefaultBody extends StatelessWidget {
             );
           },
         ),
-        if(transactionId == null)
-        WalletTransactionDetailsItem(
-          title: LocaleKeys.hashId.tr(),
-          subtitle: toEllipseString(hash),
-          icon: LucideIcons.copy,
-          onPressed: () {
-            _copy(
-              context,
-              hash,
-              LocaleKeys.valueCopiedExclamation.tr(args: [hash]),
-            );
-          },
-        ) else
+        if (transactionId == null)
+          WalletTransactionDetailsItem(
+            title: LocaleKeys.hashId.tr(),
+            subtitle: toEllipseString(hash),
+            icon: LucideIcons.copy,
+            onPressed: () {
+              _copy(
+                context,
+                hash,
+                LocaleKeys.valueCopiedExclamation.tr(args: [hash]),
+              );
+            },
+          )
+        else
           WalletTransactionDetailsItem(
             title: LocaleKeys.transactionId.tr(),
             subtitle: transactionId,
@@ -161,7 +162,7 @@ class WalletTransactionDetailsDefaultBody extends StatelessWidget {
                 LocaleKeys.valueCopiedExclamation.tr(args: [transactionId!]),
               );
             },
-          )
+          ),
       ],
     );
   }

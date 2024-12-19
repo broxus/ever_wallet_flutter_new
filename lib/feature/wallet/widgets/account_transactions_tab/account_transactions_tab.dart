@@ -76,7 +76,7 @@ class AccountTransactionsTab extends StatelessWidget {
           ),
           transactions: (transactions, isLoading, _, price) {
             return ScrollControllerPreloadListener(
-              preleloadAction: () => context
+              preloadAction: () => context
                   .read<AccountTransactionsTabCubit>()
                   .tryPreloadTransactions(),
               scrollController: scrollController,

@@ -150,11 +150,13 @@ class _ActionList extends StatelessWidget {
             WalletActionButton(
               label: _actionTitle(action),
               icon: _actionIcon(action),
-              onPressed: account?.let((_) => _actionOnPressed(
-                    context,
-                    balance,
-                    numberUnconfirmedTransactions,
-                  )),
+              onPressed: account?.let(
+                (_) => _actionOnPressed(
+                  context,
+                  balance,
+                  numberUnconfirmedTransactions,
+                ),
+              ),
             ),
             if (hasStake)
               WalletActionButton(
@@ -210,11 +212,12 @@ class _ActionList extends StatelessWidget {
   ) =>
       switch (action) {
         WalletAccountActionBehavior.send => () {
-            if((numberUnconfirmedTransactions ?? 0) >= 5) {
+            if ((numberUnconfirmedTransactions ?? 0) >= 5) {
               inject<MessengerService>().show(
                 Message.error(
                   context: context,
-                  message: LocaleKeys.errorMessageMaxUnconfirmedTransactions.tr(),
+                  message:
+                      LocaleKeys.errorMessageMaxUnconfirmedTransactions.tr(),
                 ),
               );
             } else if (sendSpecified) {

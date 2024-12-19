@@ -61,7 +61,14 @@ class TokenWalletTransactionsWidget extends StatelessWidget {
                 ),
               ),
             ),
-            loading: () => const SliverToBoxAdapter(child: SizedBox.shrink()),
+            loading: () => const SliverToBoxAdapter(
+              child: Padding(
+                padding: EdgeInsets.symmetric(
+                  vertical: DimensSizeV2.d16,
+                ),
+                child: Center(child: CommonCircularProgressIndicator()),
+              ),
+            ),
             transactions: (
               transactions,
               currency,
@@ -70,7 +77,7 @@ class TokenWalletTransactionsWidget extends StatelessWidget {
               customCurrency,
             ) {
               return ScrollControllerPreloadListener(
-                preleloadAction: () => context
+                preloadAction: () => context
                     .read<TokenWalletTransactionsCubit>()
                     .tryPreloadTransactions(),
                 scrollController: scrollController,

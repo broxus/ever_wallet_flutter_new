@@ -6,7 +6,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:nekoton_repository/nekoton_repository.dart';
 import 'package:ui_components_lib/ui_components_lib.dart';
-import 'package:ui_components_lib/v2/ui_components_lib_v2.dart';
 
 /// View that allows confirm confirming transaction transaction by entering
 /// password
@@ -94,12 +93,12 @@ class TonWalletConfirmTransactionConfirmView extends StatelessWidget {
             title: LocaleKeys.confirm.tr(),
             isLoading: isLoading,
             isDisabled: feeError != null || fee == null,
-              onPasswordEntered: (value) {
-                Navigator.of(context).pop();
-                context
-                    .read<TonConfirmTransactionBloc>()
-                    .add(TonConfirmTransactionEvent.send(value));
-              },
+            onPasswordEntered: (value) {
+              Navigator.of(context).pop();
+              context
+                  .read<TonConfirmTransactionBloc>()
+                  .add(TonConfirmTransactionEvent.send(value));
+            },
           ),
         ),
         const SizedBox(height: DimensSize.d16),
