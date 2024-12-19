@@ -7,7 +7,7 @@ class ClipboardPasteButton extends PrimaryButton {
     super.onPressed,
   }) : super(
           buttonShape: ButtonShape.square,
-          icon: LucideIcons.clipboardPaste,
+          icon: LucideIcons.arrowDownToDot,
           buttonSize: ButtonSize.small,
         );
 }

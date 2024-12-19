@@ -29,6 +29,8 @@ class WalletAccountActionsCubit extends Cubit<WalletAccountActionsState> {
           WalletAccountActionsState.loading(
             hasStake:
                 nekotonRepository.currentTransport.stakeInformation != null,
+            nativeTokenTicker:
+                nekotonRepository.currentTransport.nativeTokenTicker,
           ),
         ) {
     _walletsSubscription = nekotonRepository.walletsStream.listen((wallets) {
@@ -94,9 +96,25 @@ class WalletAccountActionsCubit extends Cubit<WalletAccountActionsState> {
           action: action,
           hasStake: hasStake,
           hasStakeActions: hasStake && _cachedWithdraws.isNotEmpty,
+          balance: contract.balance,
+          custodians: wallet?.custodians,
+          nativeTokenTicker:
+              nekotonRepository.currentTransport.nativeTokenTicker,
+          numberUnconfirmedTransactions: wallet?.unconfirmedTransactions.length,
         ),
       );
     } catch (_) {}
+  }
+
+  Future<BigInt?> getBalance(Address address) async {
+    try {
+      final wallet = await nekotonRepository.walletsStream
+          .expand((e) => e)
+          .firstWhere((wallets) => wallets.address == address);
+      return wallet.wallet!.contractState.balance;
+    } catch (_) {
+      return null;
+    }
   }
 
   void _closeSubs() {

@@ -1,10 +1,11 @@
-import 'package:app/di/di.dart';
 import 'package:app/feature/wallet/widgets/account_transactions_tab/detail/details_item.dart';
 import 'package:app/generated/generated.dart';
 import 'package:collection/collection.dart';
 import 'package:flutter/material.dart';
+import 'package:lucide_icons_flutter/lucide_icons.dart';
 import 'package:nekoton_repository/nekoton_repository.dart';
 import 'package:ui_components_lib/ui_components_lib.dart';
+import 'package:ui_components_lib/v2/widgets/chips/chips.dart';
 
 /// Widget that displays information about custodians for multisig transactions
 /// for TonWallet.
@@ -55,27 +56,23 @@ class TonWalletTransactionCustodiansDetails extends StatelessWidget {
   }
 
   Widget _custodianItem(int index, PublicKey custodian) {
-    final key = inject<NekotonRepository>().seedList.findSeedKey(custodian);
-
     return TonWalletTransactionDetailsItem(
-      title: key?.name ??
-          LocaleKeys.custodianNumber.tr(args: [(index + 1).toString()]),
+      title: LocaleKeys.custodianNumber.tr(args: [(index + 1).toString()]),
       content: custodian.publicKey,
       titleTrailingChild: _custodianInfo(custodian),
+      copyValue: custodian.publicKey,
+      copyMessage: LocaleKeys.valueCopiedExclamation.tr(
+        args: [custodian.toEllipseString()],
+      ),
     );
   }
 
   Widget _custodianInfo(PublicKey custodian) {
     final isSign = confirmations.contains(custodian);
-    final signInfo = CommonChips(
-      title:
-          isSign ? LocaleKeys.signedWord.tr() : LocaleKeys.notSignedWord.tr(),
-      leading: CommonIconWidget.svg(
-        size: DimensSize.d16,
-        svg:
-            isSign ? Assets.images.checkRounded.path : Assets.images.close.path,
-      ),
-      type: isSign ? CommonChipsType.success : CommonChipsType.secondary,
+    final signInfo = PrimaryChip(
+      text: isSign ? LocaleKeys.signedWord.tr() : LocaleKeys.notSignedWord.tr(),
+      iconData: isSign ? LucideIcons.circleCheck : LucideIcons.circleX,
+      type: isSign ? ChipsType.success : ChipsType.normal,
     );
 
     return Wrap(
@@ -84,13 +81,10 @@ class TonWalletTransactionCustodiansDetails extends StatelessWidget {
       runSpacing: DimensSize.d4,
       children: [
         if (custodian == initiator)
-          CommonChips(
-            title: LocaleKeys.initiatorWord.tr(),
-            leading: CommonIconWidget.svg(
-              size: DimensSize.d16,
-              svg: Assets.images.persons.path,
-            ),
-            type: CommonChipsType.warning,
+          PrimaryChip(
+            text: LocaleKeys.initiatorWord.tr(),
+            iconData: LucideIcons.user,
+            type: ChipsType.warning,
           ),
         signInfo,
       ],
