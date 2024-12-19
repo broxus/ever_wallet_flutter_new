@@ -24,6 +24,7 @@ ChooseNetworkScreenWidgetModel defaultChooseNetworkScreenWidgetModelFactory(
       inject(),
       inject(),
       inject(),
+      inject(),
     ),
   );
 }

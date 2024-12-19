@@ -1,7 +1,6 @@
 import 'package:app/app/router/router.dart';
-import 'package:app/app/service/nekoton_related/connection_service/transport_strategies/transport_strategies.dart';
-import 'package:app/app/service/nekoton_related/connection_service/transport_strategies/tycho_transport_strategy.dart';
-import 'package:app/data/models/models.dart';
+import 'package:app/app/service/connection/data/connection_data/connection_data.dart';
+import 'package:app/app/service/connection/transport_strategies/common_transport_strategy.dart';
 import 'package:flutter/widgets.dart';
 import 'package:go_router/go_router.dart';
 import 'package:nekoton_repository/nekoton_repository.dart'
@@ -27,10 +26,7 @@ void browserNewTab(BuildContext context, String url) {
 
 extension TransportExtension on TransportStrategy {
   ConnectionData? get connection => switch (this) {
-        EverTransportStrategy(:final connection) => connection,
-        VenomTransportStrategy(:final connection) => connection,
-        CustomTransportStrategy(:final connection) => connection,
-        TychoTransportStrategy(:final connection) => connection,
+        CommonTransportStrategy(:final connection) => connection,
         _ => null,
       };
 
@@ -130,6 +126,7 @@ extension AddNetworkExtension on AddNetwork {
         return ConnectionData.gqlCustom(
           name: name,
           group: 'custom-$name',
+          networkType: 'custom',
           manifestUrl: config?.tokensManifestUrl ?? '',
           blockExplorerUrl: config?.explorerBaseUrl ?? '',
           nativeTokenTicker: config?.symbol ?? '',
@@ -146,6 +143,7 @@ extension AddNetworkExtension on AddNetwork {
         return ConnectionData.protoCustom(
           name: name,
           group: 'custom-$name',
+          networkType: 'custom',
           manifestUrl: config?.tokensManifestUrl ?? '',
           blockExplorerUrl: config?.explorerBaseUrl ?? '',
           nativeTokenTicker: config?.symbol ?? '',
@@ -159,6 +157,7 @@ extension AddNetworkExtension on AddNetwork {
         return ConnectionData.jrpcCustom(
           name: name,
           group: 'custom-$name',
+          networkType: 'custom',
           manifestUrl: config?.tokensManifestUrl ?? '',
           blockExplorerUrl: config?.explorerBaseUrl ?? '',
           nativeTokenTicker: config?.symbol ?? '',

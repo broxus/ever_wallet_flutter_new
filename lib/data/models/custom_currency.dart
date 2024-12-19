@@ -1,4 +1,3 @@
-import 'package:app/data/models/network_type.dart';
 import 'package:freezed_annotation/freezed_annotation.dart';
 import 'package:nekoton_repository/nekoton_repository.dart';
 
@@ -14,7 +13,7 @@ class CustomCurrency with _$CustomCurrency {
 
     /// Price in USD
     required String price,
-    required NetworkType networkType,
+    required String networkType,
   }) = _CustomCurrency;
 
   factory CustomCurrency.fromJson(Map<String, dynamic> json) =>

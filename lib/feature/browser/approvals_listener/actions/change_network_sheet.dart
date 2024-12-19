@@ -1,4 +1,4 @@
-import 'package:app/data/models/models.dart';
+import 'package:app/app/service/connection/data/connection_data/connection_data.dart';
 import 'package:app/feature/browser/approvals_listener/actions/change_network/change_network.dart';
 import 'package:app/generated/generated.dart';
 import 'package:flutter/material.dart';

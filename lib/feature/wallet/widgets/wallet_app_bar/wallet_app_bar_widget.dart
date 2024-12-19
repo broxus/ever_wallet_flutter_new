@@ -1,9 +1,9 @@
 // ignore_for_file: invalid_use_of_visible_for_testing_member
 // ignore_for_file: invalid_use_of_protected_member
-import 'package:app/feature/network/network.dart';
 import 'package:app/feature/wallet/widgets/select_account/select_account_sheet.dart';
 import 'package:app/feature/wallet/widgets/wallet_app_bar/wallet_app_bar_wm.dart';
 import 'package:app/utils/utils.dart';
+import 'package:app/widgets/network_icon.dart';
 import 'package:app/widgets/user_avatar/user_avatar.dart';
 import 'package:elementary/elementary.dart';
 import 'package:elementary_helper/elementary_helper.dart';
