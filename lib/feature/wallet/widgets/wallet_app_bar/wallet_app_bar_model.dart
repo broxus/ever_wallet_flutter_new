@@ -1,5 +1,5 @@
+import 'package:app/app/service/connection/data/connection_data/connection_data.dart';
 import 'package:app/app/service/service.dart';
-import 'package:app/data/models/models.dart';
 import 'package:collection/collection.dart';
 import 'package:elementary/elementary.dart';
 import 'package:nekoton_repository/nekoton_repository.dart';
@@ -28,7 +28,7 @@ class WalletAppBarModel extends ElementaryModel {
         ),
       );
 
-  Stream<ConnectionData> get connectionStream =>
+  Stream<ConnectionData?> get connectionStream =>
       _storageService.currentConnectionStream;
 
   TransportStrategy get transport => _nekotonRepository.currentTransport;

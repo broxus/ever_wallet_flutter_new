@@ -1,6 +1,6 @@
+import 'package:app/app/service/connection/data/connection_data/connection_data.dart';
 import 'package:app/core/error_handler_factory.dart';
 import 'package:app/core/wm/custom_wm.dart';
-import 'package:app/data/models/models.dart';
 import 'package:app/di/di.dart';
 import 'package:app/feature/network/bottom_sheets/bottom_sheets.dart';
 import 'package:app/feature/wallet/widgets/account_settings/account_settings.dart';
@@ -35,7 +35,7 @@ class WalletAppBarWidgetModel
 
   ListenableState<TonWalletState?> get walletState => _walletState;
 
-  ListenableState<ConnectionData> get connection => _connection;
+  ListenableState<ConnectionData?> get connection => _connection;
 
   ThemeStyleV2 get theme => context.themeStyleV2;
 

@@ -8,7 +8,9 @@ import 'package:ui_components_lib/ui_components_lib.dart';
 
 /// Widget that allows user to change network during bootstrap process if
 /// original network failed to connect.
+@Deprecated('Use ConnectionFailScreen')
 class BootstrapRetryConnectionView extends StatelessWidget {
+  @Deprecated('Use ConnectionFailScreen')
   const BootstrapRetryConnectionView({super.key});
 
   @override

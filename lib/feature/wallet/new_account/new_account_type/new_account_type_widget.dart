@@ -187,6 +187,9 @@ class NewAccountTypeWidget extends ElementaryWidget<NewAccountTypeWidgetModel> {
         walletV3: () => LocaleKeys.walletDescriptionWalletV3.tr(),
         highloadWalletV2: () =>
             LocaleKeys.walletDescriptionHighloadWalletV2.tr(),
+        walletV4R1: () => LocaleKeys.walletDescriptionWalletV4R1.tr(),
+        walletV4R2: () => LocaleKeys.walletDescriptionWalletV4R2.tr(),
+        walletV5R1: () => LocaleKeys.walletDescriptionWalletV5R1.tr(),
       );
 }
 

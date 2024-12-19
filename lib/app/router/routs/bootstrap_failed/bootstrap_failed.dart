@@ -1,5 +1,5 @@
 import 'package:app/app/router/router.dart';
-import 'package:app/app/service/service.dart';
+import 'package:app/app/service/bootstrap/bootstrap_steps.dart';
 import 'package:app/feature/bootstrap_failed/bootstrap_failed.dart';
 import 'package:go_router/go_router.dart';
 
