@@ -53,6 +53,9 @@ class EverTransportStrategy extends TransportStrategy {
         walletV3: () => 'WalletV3',
         highloadWalletV2: () => 'HighloadWallet',
         everWallet: () => 'EVER Wallet',
+        walletV4R1: () => 'WalletV4R1',
+        walletV4R2: () => 'WalletV4R2',
+        walletV5R1: () => 'WalletV5R1',
       );
 
   @override

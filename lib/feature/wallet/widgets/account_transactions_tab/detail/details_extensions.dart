@@ -113,6 +113,27 @@ extension KnownPayloadX on KnownPayload {
             ),
           ],
         ),
+        jettonOutgoingTransfer: (data) => (
+          LocaleKeys.tokenIncomingTransfer.tr(),
+          [
+            TonWalletTransactionDetailsItem(
+              title: LocaleKeys.tokenWallet.tr(),
+              content: data.to.address,
+              copyValue: data.to.address,
+              copyMessage: LocaleKeys.valueCopiedExclamation.tr(
+                args: [data.to.toEllipseString()],
+              ),
+            ),
+            TonWalletTransactionDetailsItem(
+              title: LocaleKeys.tokensWord.tr(),
+              contentChild: MoneyWidget(
+                money: _getTokenMoney(data.tokens, data.to),
+                style: MoneyWidgetStyle.primary,
+                showSymbol: false,
+              ),
+            ),
+          ],
+        ),
       );
 }
 
@@ -235,6 +256,10 @@ extension WalletInteractionMethodX on WalletInteractionMethod {
               ),
             ],
           ),
+        ),
+        tonWalletTransfer: () => (
+          LocaleKeys.tonWalletTransfer.tr(),
+          [],
         ),
       );
 }

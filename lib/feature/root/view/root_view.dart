@@ -86,7 +86,12 @@ class _RootViewState extends State<RootView> {
           padding: const EdgeInsets.symmetric(
             horizontal: DimensSizeV2.d48,
           ),
-          color: theme.colors.background1,
+          decoration: BoxDecoration(
+            color: theme.colors.background1,
+            borderRadius: const BorderRadius.vertical(
+              top: Radius.circular(DimensSizeV2.d16),
+            ),
+          ),
           child: Theme(
             data: Theme.of(context).copyWith(
               splashColor: Colors.transparent,

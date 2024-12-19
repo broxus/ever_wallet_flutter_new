@@ -34,14 +34,17 @@ class TokenWalletTransactionsCubit extends Cubit<TokenWalletTransactionsState> {
       nekotonRepository.currentTransportStream,
       (a, b) => (a, b),
     ).listen(
-      (value) {
+      (value) async {
         final wallet = value.$1?.wallet;
         final transport = value.$2.transport;
 
         if (wallet == null) {
           _closeSubs();
-
           return;
+        }
+
+        if (!wallet.isTransactionsPreloaded) {
+          await wallet.preloadTransactions();
         }
 
         _createSubs(wallet, transport);

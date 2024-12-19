@@ -128,8 +128,8 @@ class TonWalletSendPage extends StatelessWidget {
 
   Widget _sendingPage(bool canClose) => Scaffold(
         body: Padding(
-          padding: const EdgeInsets.symmetric(
-            horizontal: DimensSizeV2.d16,
+          padding: const EdgeInsets.all(
+            DimensSizeV2.d16,
           ),
           child: TransactionSendingWidget(
             canClose: canClose,

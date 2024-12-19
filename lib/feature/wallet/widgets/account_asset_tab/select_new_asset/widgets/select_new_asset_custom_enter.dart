@@ -6,8 +6,8 @@ import 'package:app/di/di.dart';
 import 'package:app/feature/wallet/widgets/account_asset_tab/select_new_asset/select_new_asset.dart';
 import 'package:app/generated/generated.dart';
 import 'package:app/utils/clipboard_utils.dart';
+import 'package:app/utils/input_formatters.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:lucide_icons_flutter/lucide_icons.dart';
 import 'package:nekoton_repository/nekoton_repository.dart' hide Message;
@@ -54,7 +54,7 @@ class _SelectNewAssetCustomEnterState extends State<SelectNewAssetCustomEnter> {
                   textEditingController: addressController,
                   onSubmit: (_) => _enable(context),
                   inputFormatters: [
-                    FilteringTextInputFormatter.deny(RegExp(r'\s')),
+                    InputFormatters.noSpacesFormatter,
                   ],
                   suffixes: [
                     ValueListenableBuilder<TextEditingValue>(
