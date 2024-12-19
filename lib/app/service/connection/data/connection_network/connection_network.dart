@@ -5,19 +5,20 @@ import 'package:collection/collection.dart';
 
 class ConnectionNetwork {
   ConnectionNetwork({
-    required this.defaultConnectionId,
+    required String defaultConnectionId,
     List<ConnectionData>? networks,
     Map<String, ConnectionTransportData>? transports,
   })  : networks = networks ?? [],
-        transports = transports ?? {};
+        transports = transports ?? {},
+        defaultNetwork = networks?.firstWhereOrNull(
+              (n) => n.id == defaultConnectionId,
+            ) ??
+            networks?.firstOrNull ??
+            defaultPresetNetwork;
 
-  final String defaultConnectionId;
   final List<ConnectionData> networks;
   final Map<String, ConnectionTransportData> transports;
 
-  late final ConnectionData defaultNetwork = networks.firstWhereOrNull(
-        (n) => n.id == defaultConnectionId,
-      ) ??
-      networks.firstOrNull ??
-      defaultPresetNetwork;
+  late final ConnectionData defaultNetwork;
+  late final String defaultConnectionId = defaultNetwork.id;
 }
