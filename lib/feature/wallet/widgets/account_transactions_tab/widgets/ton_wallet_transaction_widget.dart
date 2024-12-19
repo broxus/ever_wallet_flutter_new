@@ -1,6 +1,7 @@
 import 'package:app/feature/wallet/widgets/account_transactions_tab/widgets/ton_wallet_transaction_status_body.dart';
 import 'package:app/generated/generated.dart';
 import 'package:app/utils/utils.dart';
+import 'package:app/widgets/transaction_icon.dart';
 import 'package:flutter/material.dart';
 import 'package:nekoton_repository/nekoton_repository.dart';
 import 'package:ui_components_lib/ui_components_lib.dart';
@@ -216,56 +217,6 @@ class TonWalletTransactionWidget extends StatelessWidget {
     } else if (status == TonWalletTransactionStatus.expired ||
         status == TonWalletTransactionStatus.pending) {
       return theme.colors.content3;
-    } else if (isIncoming) {
-      return theme.colors.contentPositive;
-    } else {
-      return theme.colors.content0;
-    }
-  }
-}
-
-class TransactionIcon extends StatelessWidget {
-  const TransactionIcon({
-    required this.status,
-    required this.isIncoming,
-    required this.icon,
-    super.key,
-  });
-
-  final TonWalletTransactionStatus status;
-  final bool isIncoming;
-  final IconData icon;
-
-  @override
-  Widget build(BuildContext context) {
-    final theme = context.themeStyleV2;
-    return Container(
-      height: DimensSizeV2.d40,
-      width: DimensSizeV2.d40,
-      decoration: BoxDecoration(
-        color: theme.colors.backgroundAlpha,
-        shape: BoxShape.circle,
-      ),
-      child: Center(
-        child: Icon(
-          icon,
-          size: DimensSizeV2.d20,
-          color: _getColor(theme, status, isIncoming),
-        ),
-      ),
-    );
-  }
-
-  Color _getColor(
-    ThemeStyleV2 theme,
-    TonWalletTransactionStatus status,
-    bool isIncoming,
-  ) {
-    if (status == TonWalletTransactionStatus.waitingConfirmation) {
-      return theme.colors.contentWarning;
-    } else if (status == TonWalletTransactionStatus.pending ||
-        status == TonWalletTransactionStatus.expired) {
-      return theme.colors.content0;
     } else if (isIncoming) {
       return theme.colors.contentPositive;
     } else {
