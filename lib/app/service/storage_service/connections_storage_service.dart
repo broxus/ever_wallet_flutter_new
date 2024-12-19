@@ -64,7 +64,7 @@ class ConnectionsStorageService extends AbstractStorageService {
       return null;
     }
 
-    final defaultNetworkType = _defaultNetwork?.networkType;
+    final defaultNetworkType = _defaultNetwork.networkType;
 
     return list.firstWhereOrNull(
           (el) => el.networkType == defaultNetworkType,
@@ -79,7 +79,7 @@ class ConnectionsStorageService extends AbstractStorageService {
   Map<String, int> get networksIds => _networksIdsSubject.value;
 
   /// Stream of currect connection id
-  Stream<ConnectionData?> get currentConnectionStream => Rx.combineLatest2(
+  Stream<ConnectionData> get currentConnectionStream => Rx.combineLatest2(
         connectionsStream,
         currentConnectionIdStream,
         (connections, currentConnectionId) =>
@@ -90,7 +90,7 @@ class ConnectionsStorageService extends AbstractStorageService {
       );
 
   // Get last cached currect connection
-  ConnectionData? get currentConnection {
+  ConnectionData get currentConnection {
     final connections = this.connections;
     final currentConnectionId = this.currentConnectionId;
 
@@ -110,7 +110,7 @@ class ConnectionsStorageService extends AbstractStorageService {
     return connection;
   }
 
-  ConnectionData? get _defaultNetwork =>
+  ConnectionData get _defaultNetwork =>
       _presetsConnectionService.defaultNetwork;
 
   List<ConnectionData> get _networkPresets =>

@@ -57,7 +57,7 @@ class ManageNetworksBloc
   StreamSubscription<String>? _currentConnectionIdSubscription;
   StreamSubscription<List<ConnectionData>>? _connectionsSubscription;
 
-  ConnectionData? get _defaultNetwork =>
+  ConnectionData get _defaultNetwork =>
       _presetsConnectionService.defaultNetwork;
 
   @override
@@ -110,11 +110,11 @@ class ManageNetworksBloc
     });
   }
 
-  ConnectionData? get currentConnection {
+  ConnectionData get currentConnection {
     final currentConnectionId = state.currentConnectionId;
 
     if (currentConnectionId == null) {
-      return null;
+      return _defaultNetwork;
     }
 
     final connection = getConnection(currentConnectionId);

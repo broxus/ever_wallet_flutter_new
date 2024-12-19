@@ -1,5 +1,6 @@
 import 'package:app/app/service/connection/data/connection_data/connection_data.dart';
 import 'package:app/app/service/connection/data/connection_transport/connection_transport_data.dart';
+import 'package:app/app/service/connection/default_network.dart';
 import 'package:collection/collection.dart';
 
 class ConnectionNetwork {
@@ -14,8 +15,9 @@ class ConnectionNetwork {
   final List<ConnectionData> networks;
   final Map<String, ConnectionTransportData> transports;
 
-  late final ConnectionData? defaultNetwork = networks.firstWhereOrNull(
+  late final ConnectionData defaultNetwork = networks.firstWhereOrNull(
         (n) => n.id == defaultConnectionId,
       ) ??
-      networks.firstOrNull;
+      networks.firstOrNull ??
+      defaultPresetNetwork;
 }

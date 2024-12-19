@@ -5,6 +5,7 @@ import 'package:app/app/service/connection/data/connection_data/connection_data.
 import 'package:app/app/service/connection/data/connection_network/connection_network.dart';
 import 'package:app/app/service/connection/data/connection_transport/connection_transport_data.dart';
 import 'package:app/app/service/connection/data/transport_icons.dart';
+import 'package:app/app/service/connection/default_network.dart';
 import 'package:app/app/service/connection/mapping/connection_network_mapper.dart';
 import 'package:app/app/service/storage_service/secure_storage_service.dart';
 import 'package:app/core/app_build_type.dart';
@@ -42,7 +43,8 @@ class PresetsConnectionService {
 
   String? get defaultConnectionId => _data?.defaultConnectionId;
 
-  ConnectionData? get defaultNetwork => _data?.defaultNetwork;
+  ConnectionData get defaultNetwork =>
+      _data?.defaultNetwork ?? defaultPresetNetwork;
 
   String? currentPresetId;
 
