@@ -1,3 +1,4 @@
+import 'package:app/app/service/connection/network_type.dart';
 import 'package:app/utils/utils.dart';
 import 'package:freezed_annotation/freezed_annotation.dart';
 import 'package:uuid/uuid.dart';
@@ -13,7 +14,7 @@ sealed class ConnectionData with _$ConnectionData {
     required String name,
     required String group,
     required List<String> endpoints,
-    required String networkType,
+    required NetworkType networkType,
     required bool isLocal,
     required String blockExplorerUrl,
     required String manifestUrl,
@@ -34,7 +35,7 @@ sealed class ConnectionData with _$ConnectionData {
     required String blockExplorerUrl,
     required String manifestUrl,
     required String nativeTokenTicker,
-    required String networkType,
+    required NetworkType networkType,
     String? id,
     int? latencyDetectionInterval,
     int? maxLatency,
@@ -63,7 +64,7 @@ sealed class ConnectionData with _$ConnectionData {
     required String name,
     required String group,
     required List<String> endpoints,
-    required String networkType,
+    required NetworkType networkType,
     required String blockExplorerUrl,
     required String manifestUrl,
     required bool canBeEdited,
@@ -93,7 +94,7 @@ sealed class ConnectionData with _$ConnectionData {
   factory ConnectionData.gqlTemporary({
     required List<String> endpoints,
     required bool isLocal,
-    required String networkType,
+    required NetworkType networkType,
     int? latencyDetectionInterval,
     int? maxLatency,
     int? endpointSelectionRetryCount,
@@ -121,7 +122,7 @@ sealed class ConnectionData with _$ConnectionData {
     required String name,
     required String group,
     required String endpoint,
-    required String networkType,
+    required NetworkType networkType,
     required String blockExplorerUrl,
     required String manifestUrl,
     required String nativeTokenTicker,
@@ -137,7 +138,7 @@ sealed class ConnectionData with _$ConnectionData {
     required String blockExplorerUrl,
     required String manifestUrl,
     required String nativeTokenTicker,
-    required String networkType,
+    required NetworkType networkType,
     String? id,
   }) =>
       ConnectionData.proto(
@@ -159,7 +160,7 @@ sealed class ConnectionData with _$ConnectionData {
     required String name,
     required String group,
     required String endpoint,
-    required String networkType,
+    required NetworkType networkType,
     required String blockExplorerUrl,
     required String manifestUrl,
     required bool canBeEdited,
@@ -181,7 +182,7 @@ sealed class ConnectionData with _$ConnectionData {
 
   factory ConnectionData.protoTemporary({
     required String endpoint,
-    required String networkType,
+    required NetworkType networkType,
   }) =>
       ConnectionData.proto(
         id: const Uuid().v4(),
@@ -202,7 +203,7 @@ sealed class ConnectionData with _$ConnectionData {
     required String name,
     required String group,
     required String endpoint,
-    required String networkType,
+    required NetworkType networkType,
     required String blockExplorerUrl,
     required String manifestUrl,
     required String nativeTokenTicker,
@@ -218,7 +219,7 @@ sealed class ConnectionData with _$ConnectionData {
     required String blockExplorerUrl,
     required String manifestUrl,
     required String nativeTokenTicker,
-    required String networkType,
+    required NetworkType networkType,
     String? id,
   }) =>
       ConnectionData.jrpc(
@@ -240,7 +241,7 @@ sealed class ConnectionData with _$ConnectionData {
     required String name,
     required String group,
     required String endpoint,
-    required String networkType,
+    required NetworkType networkType,
     required String blockExplorerUrl,
     required String manifestUrl,
     required bool canBeEdited,
@@ -262,7 +263,7 @@ sealed class ConnectionData with _$ConnectionData {
 
   factory ConnectionData.jrpcTemporary({
     required String endpoint,
-    required String networkType,
+    required NetworkType networkType,
   }) =>
       ConnectionData.proto(
         id: const Uuid().v4(),

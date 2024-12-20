@@ -1,3 +1,4 @@
+import 'package:app/app/service/connection/network_type.dart';
 import 'package:freezed_annotation/freezed_annotation.dart';
 import 'package:nekoton_repository/nekoton_repository.dart';
 
@@ -13,7 +14,7 @@ class TokenContractAsset with _$TokenContractAsset {
     required int decimals,
     // address of rootTokenContract
     required Address address,
-    required String networkType,
+    required NetworkType networkType,
     required TokenWalletVersion version,
     // true if custom, false if system
     required bool isCustom,

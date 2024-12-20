@@ -1,5 +1,6 @@
 // ignore_for_file: no-magic-number
 
+import 'package:app/app/service/connection/network_type.dart';
 import 'package:app/data/models/custom_currency.dart';
 import 'package:freezed_annotation/freezed_annotation.dart';
 import 'package:hive_flutter/hive_flutter.dart';
@@ -28,7 +29,7 @@ extension CurrencyX on CustomCurrency {
 }
 
 extension CurrencyDtoX on CurrencyDto {
-  CustomCurrency toModel(String networkType) => CustomCurrency(
+  CustomCurrency toModel(NetworkType networkType) => CustomCurrency(
         currency: currency,
         address: Address(address: address),
         price: price,

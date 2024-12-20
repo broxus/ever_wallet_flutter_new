@@ -1,5 +1,6 @@
 import 'dart:async';
 
+import 'package:app/app/service/connection/network_type.dart';
 import 'package:app/app/service/service.dart';
 import 'package:app/data/models/custom_currency.dart';
 import 'package:app/data/models/token_contract/token_contract_asset.dart';
@@ -63,17 +64,17 @@ class GeneralStorageService extends AbstractStorageService {
 
   /// Subject of system token contract assets
   final _systemTokenContractAssetsSubject =
-      BehaviorSubject<Map<String, List<TokenContractAsset>>>();
+      BehaviorSubject<Map<NetworkType, List<TokenContractAsset>>>();
 
   /// Subject of custom token contract assets
   final _customTokenContractAssetsSubject =
-      BehaviorSubject<Map<String, List<TokenContractAsset>>>();
+      BehaviorSubject<Map<NetworkType, List<TokenContractAsset>>>();
 
   /// Subject of biometry enabled status
   final _biometryEnabledSubject = BehaviorSubject<bool>();
 
   /// Subject of currencies by network type
-  final _currencySubject = BehaviorSubject<Map<String, List<CustomCurrency>>>();
+  final _currencySubject = BehaviorSubject<Map<NetworkType, List<CustomCurrency>>>();
 
   /// Application documents directory, used for syncrhronous path operations
   late final String applicationDocumentsDirectory;
@@ -166,7 +167,7 @@ class GeneralStorageService extends AbstractStorageService {
   void completeStorageMigration() => _prefStorage.write(_migrationKey, true);
 
   /// Stream of currencies by specified network type
-  Stream<List<CustomCurrency>> currenciesStream(String network) =>
+  Stream<List<CustomCurrency>> currenciesStream(NetworkType network) =>
       _currencySubject.map((event) => event[network] ?? []);
 
   /// Stream of custom token contract assets by specified network type
@@ -176,21 +177,21 @@ class GeneralStorageService extends AbstractStorageService {
       _customTokenContractAssetsSubject.map((event) => event[network] ?? []);
 
   /// Delete all custom token contract assets with same type.
-  void deleteCustomTokens(String type) {
+  void deleteCustomTokens(NetworkType type) {
     _customContractAssetsStorage.remove(type);
     _streamedCustomContractAssets();
   }
 
   /// Get last cached currencies by network type
-  List<CustomCurrency> getCurrencies(String type) =>
+  List<CustomCurrency> getCurrencies(NetworkType type) =>
       _currencySubject.value[type] ?? [];
 
   /// Get last cached custom token contract assets by network type
-  List<TokenContractAsset> getCustomTokenContractAssets(String type) =>
+  List<TokenContractAsset> getCustomTokenContractAssets(NetworkType type) =>
       _customTokenContractAssetsSubject.value[type] ?? [];
 
   /// Get last cached system token contract assets by network type
-  List<TokenContractAsset> getSystemTokenContractAssets(String network) =>
+  List<TokenContractAsset> getSystemTokenContractAssets(NetworkType network) =>
       _systemTokenContractAssetsSubject.value[network] ?? [];
 
   @override
@@ -207,7 +208,7 @@ class GeneralStorageService extends AbstractStorageService {
   }
 
   /// Read from storage list of all currencies specified for network type
-  List<CustomCurrency> readCurrencies(String type) {
+  List<CustomCurrency> readCurrencies(NetworkType type) {
     final encoded = _currenciesStorage.read<List<dynamic>>(type);
     if (encoded == null) {
       return [];
@@ -231,7 +232,7 @@ class GeneralStorageService extends AbstractStorageService {
 
   /// Read from storage list of custom assets by network type
   List<TokenContractAsset> readCustomTokenContractAssets(
-    String type,
+      NetworkType type,
   ) {
     final assets = _customContractAssetsStorage.read<List<dynamic>>(type);
     if (assets == null) {
@@ -273,7 +274,7 @@ class GeneralStorageService extends AbstractStorageService {
 
   /// Get list of system assets by network type
   List<TokenContractAsset> readSystemTokenContractAssets(
-    String type,
+      NetworkType type,
   ) {
     final assets = _systemContractAssetsStorage.read<List<dynamic>>(type);
     if (assets == null) {
@@ -309,7 +310,7 @@ class GeneralStorageService extends AbstractStorageService {
   /// This ignores duplicates and saves only one currency with same address.
   void saveOrUpdateCurrencies({
     required List<CustomCurrency> currencies,
-    required String networkType,
+    required NetworkType networkType,
   }) {
     final list = readCurrencies(networkType);
     final keys = currencies.map((e) => e.address).toSet();
@@ -360,7 +361,7 @@ class GeneralStorageService extends AbstractStorageService {
 
   /// Stream of system token contract assets by specified network type
   Stream<List<TokenContractAsset>> systemTokenContractAssetsStream(
-    String network,
+      NetworkType network,
   ) =>
       _systemTokenContractAssetsSubject.map((event) => event[network] ?? []);
 

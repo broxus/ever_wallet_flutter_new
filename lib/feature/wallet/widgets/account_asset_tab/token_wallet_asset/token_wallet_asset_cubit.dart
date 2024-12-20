@@ -1,5 +1,6 @@
 import 'dart:async';
 
+import 'package:app/app/service/connection/network_type.dart';
 import 'package:app/app/service/service.dart';
 import 'package:app/data/models/models.dart';
 import 'package:bloc/bloc.dart';
@@ -89,7 +90,7 @@ class TokenWalletAssetCubit extends Cubit<TokenWalletAssetState> {
 
   TokenWalletState? _wallet;
 
-  String get _networkType => nekotonRepository.currentTransport.networkType;
+  NetworkType get _networkType => nekotonRepository.currentTransport.networkType;
 
   @override
   Future<void> close() {

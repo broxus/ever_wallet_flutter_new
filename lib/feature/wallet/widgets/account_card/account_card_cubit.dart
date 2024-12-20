@@ -1,5 +1,6 @@
 import 'dart:async';
 
+import 'package:app/app/service/connection/network_type.dart';
 import 'package:app/app/service/service.dart';
 import 'package:app/di/di.dart';
 import 'package:bloc/bloc.dart';
@@ -66,7 +67,7 @@ class AccountCardCubit extends Cubit<AccountCardState> {
 
   TonWalletState? walletState;
 
-  String get _networkType => nekotonRepository.currentTransport.networkType;
+  NetworkType get _networkType => nekotonRepository.currentTransport.networkType;
 
   Future<void> retry() async {
     final st = state;

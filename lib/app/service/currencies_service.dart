@@ -1,5 +1,6 @@
 import 'dart:convert';
 
+import 'package:app/app/service/connection/network_type.dart';
 import 'package:app/app/service/service.dart';
 import 'package:app/data/models/models.dart';
 import 'package:collection/collection.dart';
@@ -212,7 +213,7 @@ class CurrenciesService {
   Future<List<CustomCurrency>> _fetchCurrencies({
     required String endpoint,
     required List<String> currencyAddresses,
-    required String networkType,
+    required NetworkType networkType,
   }) async {
     final data = jsonEncode({
       'currencyAddresses': currencyAddresses,
@@ -241,7 +242,7 @@ class CurrenciesService {
 
   Future<CustomCurrency> _fetchCurrency({
     required String endpoint,
-    required String networkType,
+    required NetworkType networkType,
   }) async {
     final encoded = await httpService.postRequest(endpoint: endpoint);
     final decoded = jsonDecode(encoded) as Map<String, dynamic>;

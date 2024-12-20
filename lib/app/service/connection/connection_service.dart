@@ -1,4 +1,5 @@
 import 'package:app/app/service/connection/data/connection_data/connection_data.dart';
+import 'package:app/app/service/connection/network_type.dart';
 import 'package:app/app/service/connection/presets_connection_service.dart';
 import 'package:app/app/service/connection/transport_strategies/app_transport_strategy.dart';
 import 'package:app/app/service/connection/transport_strategies/common_transport_strategy.dart';
@@ -33,19 +34,14 @@ class ConnectionService {
   Future<bool> setUp() async {
     final connection = _storageService.currentConnection;
 
-    if (connection == null) {
-      return false;
-    }
-
     _log.info('setUp: starting with ${connection.name}');
     await _updateTransportByConnection(connection);
 
     // skip 1 due to duplicate events
     _storageService.currentConnectionStream.skip(1).listen((connection) async {
-      _log.info('setUp: switching to ${connection?.name}');
-      if (connection != null) {
-        await _updateTransportByConnection(connection);
-      }
+      _log.info('setUp: switching to ${connection.name}');
+
+      await _updateTransportByConnection(connection);
     });
 
     return true;
@@ -179,7 +175,7 @@ class ConnectionService {
 }
 
 extension TransportTypeExtension on TransportStrategy {
-  String get networkType {
+  NetworkType get networkType {
     if (this is CommonTransportStrategy) {
       return (this as CommonTransportStrategy).networkType;
     }
