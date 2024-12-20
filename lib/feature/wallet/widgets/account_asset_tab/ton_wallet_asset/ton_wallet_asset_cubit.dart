@@ -98,7 +98,8 @@ class TonWalletAssetCubit extends Cubit<TonWalletAssetState> {
   Money? _cachedFiatBalance;
   Money? _cachedTokenBalance;
 
-  NetworkType get _networkType => nekotonRepository.currentTransport.networkType;
+  NetworkType get _networkType =>
+      nekotonRepository.currentTransport.networkType;
 
   @override
   Future<void> close() {

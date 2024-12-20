@@ -119,7 +119,7 @@ class BalanceStorageService extends AbstractStorageService {
 
   /// Stream that allows tracking token balances for accounts
   Stream<Map<Address, List<AccountBalanceModel>>> getBalancesStream(
-      NetworkType network,
+    NetworkType network,
   ) =>
       _balancesSubject.map((event) => event[network] ?? {});
 

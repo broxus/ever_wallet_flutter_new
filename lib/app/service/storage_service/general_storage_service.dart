@@ -74,7 +74,8 @@ class GeneralStorageService extends AbstractStorageService {
   final _biometryEnabledSubject = BehaviorSubject<bool>();
 
   /// Subject of currencies by network type
-  final _currencySubject = BehaviorSubject<Map<NetworkType, List<CustomCurrency>>>();
+  final _currencySubject =
+      BehaviorSubject<Map<NetworkType, List<CustomCurrency>>>();
 
   /// Application documents directory, used for syncrhronous path operations
   late final String applicationDocumentsDirectory;
@@ -232,7 +233,7 @@ class GeneralStorageService extends AbstractStorageService {
 
   /// Read from storage list of custom assets by network type
   List<TokenContractAsset> readCustomTokenContractAssets(
-      NetworkType type,
+    NetworkType type,
   ) {
     final assets = _customContractAssetsStorage.read<List<dynamic>>(type);
     if (assets == null) {
@@ -274,7 +275,7 @@ class GeneralStorageService extends AbstractStorageService {
 
   /// Get list of system assets by network type
   List<TokenContractAsset> readSystemTokenContractAssets(
-      NetworkType type,
+    NetworkType type,
   ) {
     final assets = _systemContractAssetsStorage.read<List<dynamic>>(type);
     if (assets == null) {
@@ -361,7 +362,7 @@ class GeneralStorageService extends AbstractStorageService {
 
   /// Stream of system token contract assets by specified network type
   Stream<List<TokenContractAsset>> systemTokenContractAssetsStream(
-      NetworkType network,
+    NetworkType network,
   ) =>
       _systemTokenContractAssetsSubject.map((event) => event[network] ?? []);
 
