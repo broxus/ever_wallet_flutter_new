@@ -60,36 +60,31 @@ class ShapedContainerRow extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Padding(
-      padding: margin,
-      child: Material(
-        color: color ?? context.themeStyle.colors.backgroundSecondary,
-        shape: SquircleShapeBorder(cornerRadius: squircleRadius),
-        // padding here, because ContainerColumn changes alignment in a bad way
-        child: Padding(
-          padding: padding,
-          child: SeparatedColumn(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            separatorSize: DimensSizeV2.d16,
-            children: [
-              if (titleText != null)
-                Text(
-                  titleText!,
-                  style: StyleRes.h2.copyWith(
-                    color: context.themeStyle.colors.textPrimary,
-                  ),
-                ),
-              SeparatedRow(
-                separator: separator,
-                separatorSize: separatorSize,
-                mainAxisSize: mainAxisSize,
-                mainAxisAlignment: mainAxisAlignment,
-                crossAxisAlignment: crossAxisAlignment,
-                children: children,
+    return ShapedContainer(
+      margin: margin,
+      padding: padding,
+      color: color,
+      squircleRadius: squircleRadius,
+      child: SeparatedColumn(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        separatorSize: DimensSizeV2.d16,
+        children: [
+          if (titleText != null)
+            Text(
+              titleText!,
+              style: StyleRes.h2.copyWith(
+                color: context.themeStyle.colors.textPrimary,
               ),
-            ],
+            ),
+          SeparatedRow(
+            separator: separator,
+            separatorSize: separatorSize,
+            mainAxisSize: mainAxisSize,
+            mainAxisAlignment: mainAxisAlignment,
+            crossAxisAlignment: crossAxisAlignment,
+            children: children,
           ),
-        ),
+        ],
       ),
     );
   }
