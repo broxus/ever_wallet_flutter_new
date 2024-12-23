@@ -83,53 +83,46 @@ class ShapedContainerColumn extends StatelessWidget {
     );
     final theme = context.themeStyleV2;
 
-    return SizedBox(
+    return ShapedContainer(
       width: width,
       height: height,
-      child: Padding(
-        padding: margin,
-        child: Material(
-          color: color ?? context.themeStyle.colors.backgroundSecondary,
-          shape: SquircleShapeBorder(cornerRadius: squircleRadius),
-          // padding here, because ContainerColumn changes alignment in bad way
-          child: Padding(
-            padding: padding,
-            child: titleText == null && subtitleText == null
-                ? body
-                : SeparatedColumn(
-                    mainAxisSize: mainAxisSize,
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    separatorSize: DimensSize.d16,
+      margin: margin,
+      padding: padding,
+      color: color,
+      squircleRadius: squircleRadius,
+      child: titleText == null && subtitleText == null
+          ? body
+          : SeparatedColumn(
+              mainAxisSize: mainAxisSize,
+              crossAxisAlignment: CrossAxisAlignment.start,
+              separatorSize: DimensSize.d16,
+              children: [
+                Padding(
+                  padding: const EdgeInsets.only(top: DimensSize.d8),
+                  child: SeparatedRow(
                     children: [
-                      Padding(
-                        padding: const EdgeInsets.only(top: DimensSize.d8),
-                        child: SeparatedRow(
-                          children: [
-                            if (titleText != null)
-                              Expanded(
-                                child: Text(
-                                  titleText!,
-                                  style: theme.textStyles.headingMedium,
-                                ),
-                              ),
-                            if (subtitleText != null)
-                              Flexible(
-                                child: Text(
-                                  subtitleText!,
-                                  style: theme.textStyles.labelXSmall
-                                      .copyWith(color: theme.colors.content3),
-                                  textAlign: TextAlign.right,
-                                ),
-                              ),
-                          ],
+                      if (titleText != null)
+                        Expanded(
+                          child: Text(
+                            titleText!,
+                            style: theme.textStyles.headingMedium,
+                          ),
                         ),
-                      ),
-                      body,
+                      if (subtitleText != null)
+                        Flexible(
+                          child: Text(
+                            subtitleText!,
+                            style: theme.textStyles.labelXSmall
+                                .copyWith(color: theme.colors.content3),
+                            textAlign: TextAlign.right,
+                          ),
+                        ),
                     ],
                   ),
-          ),
-        ),
-      ),
+                ),
+                body,
+              ],
+            ),
     );
   }
 }

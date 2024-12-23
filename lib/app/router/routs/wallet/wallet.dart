@@ -57,6 +57,8 @@ const tonWalletConfirmTransactionLocalCustodiansQueryParam =
     'tonWalletConfirmTransactionLocalCustodians';
 const tonWalletConfirmTransactionTransactionIdQueryParam =
     'tonWalletConfirmTransactionTransactionId';
+const tonWalletConfirmTransactionIdHashQueryParam =
+    'tonWalletConfirmTransactionIdHash';
 const tonWalletConfirmTransactionDestinationQueryParam =
     'tonWalletConfirmTransactionDestination';
 const tonWalletConfirmTransactionAmountQueryParam =
@@ -322,6 +324,7 @@ GoRoute get walletDeployRoute {
 }
 
 /// Confirm multisig transaction for TonWallet
+// TODO(knightforce): rename to Multisig or Custodian
 GoRoute get tonConfirmTranscationRoute {
   return GoRoute(
     path: AppRoute.tonConfirmTransaction.path,
@@ -340,6 +343,8 @@ GoRoute get tonConfirmTranscationRoute {
         localCustodians: decoded.map((e) => PublicKey(publicKey: e)).toList(),
         transactionId: state.uri.queryParameters[
             tonWalletConfirmTransactionTransactionIdQueryParam]!,
+        transactionIdHash: state
+            .uri.queryParameters[tonWalletConfirmTransactionIdHashQueryParam],
         destination: Address(
           address: state.uri.queryParameters[
               tonWalletConfirmTransactionDestinationQueryParam]!,
