@@ -165,13 +165,25 @@ class _ActionList extends StatelessWidget {
                 badge: hasStakeActions,
                 onPressed: account?.let(
                   (account) => () {
-                    context.goFurther(
-                      AppRoute.walletStake.pathWithData(
-                        pathParameters: {
-                          walletStakeAddressPathParam: account.address.address,
-                        },
-                      ),
-                    );
+                    if ((numberUnconfirmedTransactions ?? 0) >= 5) {
+                      inject<MessengerService>().show(
+                        Message.error(
+                          context: context,
+                          message: LocaleKeys
+                              .errorMessageMaxUnconfirmedTransactions
+                              .tr(),
+                        ),
+                      );
+                    } else {
+                      context.goFurther(
+                        AppRoute.walletStake.pathWithData(
+                          pathParameters: {
+                            walletStakeAddressPathParam:
+                                account.address.address,
+                          },
+                        ),
+                      );
+                    }
                   },
                 ),
               ),

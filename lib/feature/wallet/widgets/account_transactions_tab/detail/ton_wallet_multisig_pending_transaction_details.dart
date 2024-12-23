@@ -60,9 +60,7 @@ class TonWalletMultisigPendingTransactionDetailsPage extends StatelessWidget {
             WalletTransactionDetailsDefaultBody(
               date: transaction.date,
               isIncoming: !transaction.isOutgoing,
-              status: transaction.canConfirm
-                  ? TonWalletTransactionStatus.waitingConfirmation
-                  : TonWalletTransactionStatus.pending,
+              status: TonWalletTransactionStatus.waitingConfirmation,
               fee: Money.fromBigIntWithCurrency(
                 transaction.fees,
                 Currencies()[ticker]!,

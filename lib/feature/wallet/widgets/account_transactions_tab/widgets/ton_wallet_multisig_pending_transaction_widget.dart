@@ -46,9 +46,7 @@ class TonWalletMultisigPendingTransactionWidget extends StatelessWidget {
       ),
       address: transaction.address,
       isIncoming: !transaction.isOutgoing,
-      status: transaction.canConfirm
-          ? TonWalletTransactionStatus.waitingConfirmation
-          : TonWalletTransactionStatus.pending,
+      status: TonWalletTransactionStatus.waitingConfirmation,
       transactionFee: Money.fromBigIntWithCurrency(
         transaction.fees,
         Currencies()[ticker]!,
@@ -83,7 +81,7 @@ class TonWalletMultisigPendingTransactionWidget extends StatelessWidget {
           ],
         ),
       ),
-      icon: transaction.canConfirm ? LucideIcons.timer : LucideIcons.loader,
+      icon: LucideIcons.timer,
     );
   }
 }
