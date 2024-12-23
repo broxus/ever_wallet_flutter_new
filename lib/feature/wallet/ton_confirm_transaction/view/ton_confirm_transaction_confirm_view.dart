@@ -1,11 +1,13 @@
-import 'package:app/di/di.dart';
 import 'package:app/feature/profile/profile.dart';
 import 'package:app/feature/wallet/ton_confirm_transaction/bloc/bloc.dart';
+import 'package:app/feature/wallet/widgets/account_info.dart';
+import 'package:app/feature/wallet/widgets/token_transfer_info/token_transfer_info_widget.dart';
 import 'package:app/generated/generated.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:nekoton_repository/nekoton_repository.dart';
 import 'package:ui_components_lib/ui_components_lib.dart';
+import 'package:ui_components_lib/v2/widgets/adaptive_footer_single_child_scroll_view.dart';
 
 /// View that allows confirm confirming transaction transaction by entering
 /// password
@@ -15,16 +17,22 @@ class TonWalletConfirmTransactionConfirmView extends StatelessWidget {
     required this.amount,
     required this.comment,
     required this.publicKey,
+    this.transactionIdHash,
+    this.account,
+    this.money,
     this.fee,
     this.feeError,
     super.key,
   });
 
+  final KeyAccount? account;
+  final Money? money;
   final Address recipient;
   final BigInt amount;
   final BigInt? fee;
   final String? comment;
 
+  final String? transactionIdHash;
   final String? feeError;
 
   final PublicKey publicKey;
@@ -32,115 +40,65 @@ class TonWalletConfirmTransactionConfirmView extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final isLoading = fee == null && feeError == null;
-    final theme = context.themeStyleV2;
 
-    return SeparatedColumn(
-      crossAxisAlignment: CrossAxisAlignment.start,
-      children: [
-        Expanded(
-          child: SingleChildScrollView(
-            child: ShapedContainerColumn(
-              color: theme.colors.background1,
-              mainAxisSize: MainAxisSize.min,
-              separator: const Padding(
-                padding: EdgeInsets.symmetric(vertical: DimensSize.d8),
-                child: CommonDivider(),
-              ),
-              children: [
-                _info(
-                  title: LocaleKeys.recipientWord.tr(),
-                  value: recipient.address,
-                ),
-                _info(
-                  title: LocaleKeys.amountWord.tr(),
-                  valueChild: MoneyWidget(
-                    money: Money.fromBigIntWithCurrency(
-                      amount,
-                      Currencies()[inject<NekotonRepository>()
-                          .currentTransport
-                          .nativeTokenTicker]!,
-                    ),
-                    style: MoneyWidgetStyle.primary,
-                  ),
-                ),
-                _info(
-                  title: LocaleKeys.blockchainFee.tr(),
-                  valueChild: MoneyWidget(
-                    money: Money.fromBigIntWithCurrency(
-                      fee ?? BigInt.zero,
-                      Currencies()[inject<NekotonRepository>()
-                          .currentTransport
-                          .nativeTokenTicker]!,
-                    ),
-                    signValue: '~',
-                    style: MoneyWidgetStyle.primary,
-                  ),
-                  subtitleError: feeError,
-                ),
-                if (comment != null)
-                  _info(
-                    title: LocaleKeys.commentWord.tr(),
-                    value: comment,
-                  ),
-              ],
+    return AdaptiveFooterSingleChildScrollView(
+      footer: Column(
+        mainAxisSize: MainAxisSize.min,
+        children: [
+          Padding(
+            padding: const EdgeInsets.only(
+              top: DimensSizeV2.d8,
+              left: DimensSizeV2.d16,
+              right: DimensSizeV2.d16,
+            ),
+            child: EnterPasswordWidgetV2(
+              publicKey: publicKey,
+              title: LocaleKeys.confirm.tr(),
+              isLoading: isLoading,
+              isDisabled: feeError != null || fee == null,
+              onPasswordEntered: (value) {
+                Navigator.of(context).pop();
+                context
+                    .read<TonConfirmTransactionBloc>()
+                    .add(TonConfirmTransactionEvent.send(value));
+              },
             ),
           ),
+          const SizedBox(height: DimensSize.d16),
+        ],
+      ),
+      child: Padding(
+        padding: const EdgeInsets.only(
+          top: DimensSizeV2.d12,
         ),
-        Padding(
-          padding: const EdgeInsets.symmetric(horizontal: DimensSizeV2.d16),
-          child: EnterPasswordWidgetV2(
-            publicKey: publicKey,
-            title: LocaleKeys.confirm.tr(),
-            isLoading: isLoading,
-            isDisabled: feeError != null || fee == null,
-            onPasswordEntered: (value) {
-              Navigator.of(context).pop();
-              context
-                  .read<TonConfirmTransactionBloc>()
-                  .add(TonConfirmTransactionEvent.send(value));
-            },
-          ),
-        ),
-        const SizedBox(height: DimensSize.d16),
-      ],
-    );
-  }
-
-  Widget _info({
-    required String title,
-    String? value,
-    Widget? valueChild,
-    String? subtitleError,
-  }) {
-    return Builder(
-      builder: (context) {
-        final theme = context.themeStyleV2;
-
-        return SeparatedColumn(
+        child: Column(
           mainAxisSize: MainAxisSize.min,
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            Text(
-              title,
-              style: theme.textStyles.labelXSmall
-                  .copyWith(color: theme.colors.content2),
+            if (account != null)
+              Padding(
+                padding: const EdgeInsets.only(
+                  left: DimensSizeV2.d16,
+                  right: DimensSizeV2.d16,
+                  bottom: DimensSizeV2.d16,
+                ),
+                child: AccountInfo(account: account!),
+              ),
+            TokenTransferInfoWidget(
+              margin: const EdgeInsets.only(
+                left: DimensSizeV2.d16,
+                right: DimensSizeV2.d16,
+              ),
+              amount: money,
+              recipient: recipient,
+              fee: fee,
+              feeError: feeError,
+              comment: comment,
+              transactionIdHash: transactionIdHash,
             ),
-            if (value != null)
-              Text(
-                value,
-                style: theme.textStyles.paragraphSmall
-                    .copyWith(color: theme.colors.content0),
-              ),
-            if (valueChild != null) valueChild,
-            if (subtitleError != null)
-              Text(
-                subtitleError,
-                style: theme.textStyles.paragraphXSmall
-                    .copyWith(color: theme.colors.contentNegative),
-              ),
           ],
-        );
-      },
+        ),
+      ),
     );
   }
 }

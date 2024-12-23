@@ -111,6 +111,9 @@ class TonWalletMultisigPendingTransactionDetailsPage extends StatelessWidget {
                           ),
                           tonWalletConfirmTransactionTransactionIdQueryParam:
                               transaction.transactionId,
+                          if (safeHexString != null)
+                            tonWalletConfirmTransactionIdHashQueryParam:
+                                safeHexString,
                           tonWalletConfirmTransactionDestinationQueryParam:
                               transaction.address.address,
                           tonWalletConfirmTransactionAmountQueryParam:

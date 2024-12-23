@@ -87,8 +87,8 @@ class TokenTransferInfoWidgetModel
       );
       _attachedAmountPrice.accept(value.exchangeToUSD(price));
 
-      if (isNative) {
-        _amountPrice.accept(widget.amount.exchangeToUSD(price));
+      if (isNative && widget.amount != null) {
+        _amountPrice.accept(widget.amount!.exchangeToUSD(price));
       }
     }
   }
@@ -100,9 +100,9 @@ class TokenTransferInfoWidgetModel
       widget.rootTokenContract!,
     );
 
-    if (currency != null) {
+    if (currency != null && widget.amount != null) {
       final price = Fixed.parse(currency.price);
-      _amountPrice.accept(widget.amount.exchangeToUSD(price));
+      _amountPrice.accept(widget.amount!.exchangeToUSD(price));
     }
   }
 
