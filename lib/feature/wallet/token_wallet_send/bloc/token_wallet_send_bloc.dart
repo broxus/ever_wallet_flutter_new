@@ -11,9 +11,7 @@ import 'package:logging/logging.dart';
 import 'package:nekoton_repository/nekoton_repository.dart' hide Message;
 
 part 'token_wallet_send_bloc.freezed.dart';
-
 part 'token_wallet_send_event.dart';
-
 part 'token_wallet_send_state.dart';
 
 /// Bloc that allows to prepare not native token from [TokenWallet] for
@@ -53,7 +51,6 @@ class TokenWalletSendBloc
 
   /// Address where tokens must be sent
   final Address destination;
-  late Address repackedDestination;
 
   /// How many tokens must be sent, to convert Fixed to BigInt, use
   /// [Fixed.minorUnits].
@@ -130,6 +127,7 @@ class TokenWalletSendBloc
 
       final (internalMessage, unsignedMessage) = await _prepareTransfer();
       this.unsignedMessage = unsignedMessage;
+      sendAmount = internalMessage.amount;
 
       final result = await FutureExt.wait2(
         nekotonRepository.estimateFees(
@@ -176,8 +174,9 @@ class TokenWalletSendBloc
       emit(const TokenWalletSendState.sending(canClose: false));
       // await msg.refreshTimeout();
       // TODO(komarov): fix refresh_timeout in nekoton
-      final (_, unsignedMessage) = await _prepareTransfer();
+      final (internalMessage, unsignedMessage) = await _prepareTransfer();
       this.unsignedMessage = unsignedMessage;
+      sendAmount = internalMessage.amount;
 
       final hash = unsignedMessage.hash;
       final transport = nekotonRepository.currentTransport.transport;
@@ -197,7 +196,7 @@ class TokenWalletSendBloc
         address: owner,
         signedMessage: signedMessage,
         amount: sendAmount,
-        destination: repackedDestination,
+        destination: internalMessage.destination,
       );
 
       messengerService.show(
@@ -237,14 +236,11 @@ class TokenWalletSendBloc
       notifyReceiver: true,
     );
 
-    // repackedDestination = internalMessage.destination;
-    // sendAmount = internalMessage.amount;
-
     final unsignedMessage = await nekotonRepository.prepareTransfer(
       address: owner,
       publicKey: publicKey,
-      destination: repackedDestination,
-      amount: sendAmount,
+      destination: internalMessage.destination,
+      amount: internalMessage.amount,
       body: internalMessage.body,
       bounce: defaultMessageBounce,
       expiration: defaultSendTimeout,

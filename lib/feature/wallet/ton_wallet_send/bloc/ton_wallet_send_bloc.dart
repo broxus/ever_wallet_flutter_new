@@ -11,9 +11,7 @@ import 'package:logging/logging.dart';
 import 'package:nekoton_repository/nekoton_repository.dart' hide Message;
 
 part 'ton_wallet_send_bloc.freezed.dart';
-
 part 'ton_wallet_send_event.dart';
-
 part 'ton_wallet_send_state.dart';
 
 /// Bloc that allows prepare transaction to send native funds from [TonWallet]
@@ -29,7 +27,6 @@ class TonWalletSendBloc extends Bloc<TonWalletSendEvent, TonWalletSendState> {
     required this.amount,
     required this.comment,
     required this.resultMessage,
-    this.needRepack = true,
   }) : super(const TonWalletSendState.loading()) {
     _registerHandlers();
   }
@@ -48,12 +45,6 @@ class TonWalletSendBloc extends Bloc<TonWalletSendEvent, TonWalletSendState> {
 
   /// Address where funds should be sent
   final Address destination;
-  late Address repackedDestination;
-
-  /// if true, then [repackedDestination] will be calculated during
-  /// [_handlePrepare], if false, then it must be set manually during creation
-  /// of bloc.
-  final bool needRepack;
 
   /// Amount of tokens that should be sent
   final BigInt amount;
@@ -95,11 +86,6 @@ class TonWalletSendBloc extends Bloc<TonWalletSendEvent, TonWalletSendState> {
   Future<void> _handlePrepare(Emitter<TonWalletSendState> emit) async {
     try {
       account = nekotonRepository.seedList.findAccountByAddress(address);
-
-      if (needRepack) {
-        repackedDestination = await repackAddress(destination);
-      }
-
       unsignedMessage = await _prepareTransfer();
 
       final result = await FutureExt.wait2(
@@ -182,7 +168,7 @@ class TonWalletSendBloc extends Bloc<TonWalletSendEvent, TonWalletSendState> {
         address: address,
         signedMessage: signedMessage,
         amount: amount,
-        destination: repackedDestination,
+        destination: await repackAddress(destination),
       );
 
       messengerService
@@ -208,21 +194,17 @@ class TonWalletSendBloc extends Bloc<TonWalletSendEvent, TonWalletSendState> {
     }
   }
 
-  Future<UnsignedMessage> _prepareTransfer() async {
-    if (needRepack) {
-      repackedDestination = await repackAddress(destination);
-    }
-
-    return nekotonRepository.prepareTransfer(
-      address: address,
-      publicKey: publicKey,
-      destination: repackedDestination,
-      amount: amount,
-      body: comment,
-      bounce: defaultMessageBounce,
-      expiration: defaultSendTimeout,
-    );
-  }
+  Future<UnsignedMessage> _prepareTransfer() async =>
+      nekotonRepository.prepareTransfer(
+        address: address,
+        publicKey: publicKey,
+        // TODO(komarov): make repackAddress sync
+        destination: await repackAddress(destination),
+        amount: amount,
+        body: comment,
+        bounce: defaultMessageBounce,
+        expiration: defaultSendTimeout,
+      );
 
   @override
   Future<void> close() {
