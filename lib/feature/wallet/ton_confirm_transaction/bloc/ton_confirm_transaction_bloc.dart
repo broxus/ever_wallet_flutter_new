@@ -66,8 +66,7 @@ class TonConfirmTransactionBloc
   BigInt? fees;
 
   late PublicKey selectedCustodian;
-  late UnsignedMessage unsignedMessage;
-  UnsignedMessage? _unsignedMessage;
+  UnsignedMessage? unsignedMessage;
 
   void _registerHandlers() {
     on<_Prepare>((event, emit) => _handlePrepare(emit, event.custodian));
@@ -95,17 +94,11 @@ class TonConfirmTransactionBloc
     try {
       selectedCustodian = custodian;
 
-      unsignedMessage = await nekotonRepository.prepareConfirmTransaction(
-        address: walletAddress,
-        publicKey: selectedCustodian,
-        transactionId: transactionId,
-        expiration: defaultSendTimeout,
-      );
-      _unsignedMessage = unsignedMessage;
+      unsignedMessage = await _prepareConfirmTransaction();
 
       fees = await nekotonRepository.estimateFees(
         address: walletAddress,
-        message: unsignedMessage,
+        message: unsignedMessage!,
       );
 
       final walletState = await nekotonRepository.walletsStream
@@ -162,7 +155,10 @@ class TonConfirmTransactionBloc
   ) async {
     try {
       emit(const TonConfirmTransactionState.sending(canClose: false));
-      await unsignedMessage.refreshTimeout();
+      // await unsignedMessage.refreshTimeout();
+      // TODO(komarov): fix refresh_timeout in nekoton
+      final unsignedMessage =
+          this.unsignedMessage = await _prepareConfirmTransaction();
 
       final hash = unsignedMessage.hash;
       final transport = nekotonRepository.currentTransport.transport;
@@ -208,10 +204,17 @@ class TonConfirmTransactionBloc
     }
   }
 
+  Future<UnsignedMessage> _prepareConfirmTransaction() =>
+      nekotonRepository.prepareConfirmTransaction(
+        address: walletAddress,
+        publicKey: selectedCustodian,
+        transactionId: transactionId,
+        expiration: defaultSendTimeout,
+      );
+
   @override
   Future<void> close() {
-    _unsignedMessage?.dispose();
-
+    unsignedMessage?.dispose();
     return super.close();
   }
 }
