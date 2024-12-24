@@ -47,6 +47,7 @@ class CustodiansSettingsView
               for (var i = 0; i < custodians.length; i++) {
                 items.add(
                   _CustodianItem(custodians[i], () {
+                    // TODO(knightforce): bad practice
                     if (wm.contextSafe != null) {
                       showRenameCustodianModal(wm.contextSafe!, (value) {
                         wm.renameCustodian(custodians[i].key, value);

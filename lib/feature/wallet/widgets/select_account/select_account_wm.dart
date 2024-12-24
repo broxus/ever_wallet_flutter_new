@@ -93,6 +93,10 @@ class SelectAccountWidgetModel
   }
 
   void onAddAccount() {
+    if (contextSafe == null) {
+      return;
+    }
+
     Navigator.of(context).pop();
     contextSafe!.goFurther(
       AppRoute.walletAddAccount.path,
