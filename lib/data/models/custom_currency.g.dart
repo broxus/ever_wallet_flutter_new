@@ -11,7 +11,7 @@ _$CustomCurrencyImpl _$$CustomCurrencyImplFromJson(Map<String, dynamic> json) =>
       currency: json['currency'] as String,
       address: Address.fromJson(json['address'] as String),
       price: json['price'] as String,
-      networkType: $enumDecode(_$NetworkTypeEnumMap, json['networkType']),
+      networkType: json['networkType'] as String,
     );
 
 Map<String, dynamic> _$$CustomCurrencyImplToJson(
@@ -20,12 +20,5 @@ Map<String, dynamic> _$$CustomCurrencyImplToJson(
       'currency': instance.currency,
       'address': instance.address.toJson(),
       'price': instance.price,
-      'networkType': _$NetworkTypeEnumMap[instance.networkType]!,
+      'networkType': instance.networkType,
     };
-
-const _$NetworkTypeEnumMap = {
-  NetworkType.ever: 'ever',
-  NetworkType.venom: 'venom',
-  NetworkType.tycho: 'tycho',
-  NetworkType.custom: 'custom',
-};

@@ -14,7 +14,10 @@ enum WalletContractType {
   highloadWalletV2,
   everWallet,
   multisig2,
-  multisig2_1;
+  multisig2_1,
+  walletV4R1,
+  walletV4R2,
+  walletV5R1;
 
   String get jsonName => _$WalletContractTypeEnumMap[this]!;
 }

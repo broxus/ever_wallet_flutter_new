@@ -1,17 +1,19 @@
 import 'dart:convert';
 
+import 'package:app/app/service/connection/presets_connection_service.dart';
 import 'package:app/app/service/service.dart';
 import 'package:app/data/models/account_interaction.dart';
 import 'package:app/data/models/browser_bookmark_item.dart';
 import 'package:app/data/models/browser_history_item.dart';
 import 'package:app/data/models/browser_tab.dart';
 import 'package:app/data/models/custom_currency.dart';
-import 'package:app/data/models/network_type.dart';
 import 'package:app/data/models/permissions.dart';
 import 'package:app/data/models/site_meta_data.dart';
-import 'package:app/data/models/token_contract_asset.dart';
+import 'package:app/data/models/token_contract/token_contract_asset.dart';
 import 'package:app/data/models/wallet_contract_type.dart';
+import 'package:app/http/api/presets/presets_api.dart';
 import 'package:collection/collection.dart';
+import 'package:dio/dio.dart';
 import 'package:encrypted_storage/encrypted_storage.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
@@ -58,7 +60,7 @@ const _everContractAssetCustom = TokenContractAsset(
   logoURI:
       'https://raw.githubusercontent.com/broxus/ton-assets/master/icons/stEVER/logo.svg',
   version: TokenWalletVersion.tip3,
-  networkType: NetworkType.ever,
+  networkType: 'ever',
 );
 const _everContractAssetSystem = TokenContractAsset(
   name: 'Staked Ever',
@@ -73,7 +75,7 @@ const _everContractAssetSystem = TokenContractAsset(
   logoURI:
       'https://raw.githubusercontent.com/broxus/ton-assets/master/icons/stEVER/logo.svg',
   version: TokenWalletVersion.tip3,
-  networkType: NetworkType.ever,
+  networkType: 'ever',
 );
 const _venomContractAssetCustom = TokenContractAsset(
   name: 'Tether USD',
@@ -88,7 +90,7 @@ const _venomContractAssetCustom = TokenContractAsset(
   logoURI:
       'https://raw.githubusercontent.com/BVFDT/venom-assets/master/icons/USDT/logo.svg',
   version: TokenWalletVersion.tip3,
-  networkType: NetworkType.venom,
+  networkType: 'venom',
 );
 const _venomContractAssetSystem = TokenContractAsset(
   name: 'Tether USD',
@@ -103,19 +105,19 @@ const _venomContractAssetSystem = TokenContractAsset(
   logoURI:
       'https://raw.githubusercontent.com/BVFDT/venom-assets/master/icons/USDT/logo.svg',
   version: TokenWalletVersion.tip3,
-  networkType: NetworkType.venom,
+  networkType: 'venom',
 );
 const _everCurrency = CustomCurrency(
   address: Address(address: '42:everAddress'),
   currency: 'EVER',
   price: '',
-  networkType: NetworkType.ever,
+  networkType: 'ever',
 );
 const _venomCurrency = CustomCurrency(
   address: Address(address: '69:venomAddress'),
   currency: 'VENOM',
   price: '',
-  networkType: NetworkType.venom,
+  networkType: 'venom',
 );
 const _permissions = Permissions(
   accountInteraction: AccountInteraction(
@@ -243,48 +245,48 @@ void main() {
 
     /// System contracts
     expect(
-      storage.readSystemTokenContractAssets(NetworkType.ever),
+      storage.readSystemTokenContractAssets('ever'),
       [_everContractAssetSystem],
     );
     expect(
-      storage.getSystemTokenContractAssets(NetworkType.ever),
+      storage.getSystemTokenContractAssets('ever'),
       [_everContractAssetSystem],
     );
 
     expect(
-      storage.readSystemTokenContractAssets(NetworkType.venom),
+      storage.readSystemTokenContractAssets('venom'),
       [_venomContractAssetSystem],
     );
     expect(
-      storage.getSystemTokenContractAssets(NetworkType.venom),
+      storage.getSystemTokenContractAssets('venom'),
       [_venomContractAssetSystem],
     );
 
     /// Custom contracts
     expect(
-      storage.readCustomTokenContractAssets(NetworkType.ever),
+      storage.readCustomTokenContractAssets('ever'),
       [_everContractAssetCustom],
     );
     expect(
-      storage.getCustomTokenContractAssets(NetworkType.ever),
+      storage.getCustomTokenContractAssets('ever'),
       [_everContractAssetCustom],
     );
 
     expect(
-      storage.readCustomTokenContractAssets(NetworkType.venom),
+      storage.readCustomTokenContractAssets('venom'),
       [_venomContractAssetCustom],
     );
     expect(
-      storage.getCustomTokenContractAssets(NetworkType.venom),
+      storage.getCustomTokenContractAssets('venom'),
       [_venomContractAssetCustom],
     );
 
     /// Currencies
-    expect(storage.readCurrencies(NetworkType.ever), [_everCurrency]);
-    expect(storage.getCurrencies(NetworkType.ever), [_everCurrency]);
+    expect(storage.readCurrencies('ever'), [_everCurrency]);
+    expect(storage.getCurrencies('ever'), [_everCurrency]);
 
-    expect(storage.readCurrencies(NetworkType.venom), [_venomCurrency]);
-    expect(storage.getCurrencies(NetworkType.venom), [_venomCurrency]);
+    expect(storage.readCurrencies('venom'), [_venomCurrency]);
+    expect(storage.getCurrencies('venom'), [_venomCurrency]);
 
     /// Permissions
     expect(
@@ -365,6 +367,10 @@ void main() {
     accountSeedStorage = NekotonStorageService(encryptedStorage);
     connectionsStorage = ConnectionsStorageService(
       await _getStorage(ConnectionsStorageService.container),
+      PresetsConnectionService(
+        PresetsApi(Dio()),
+        SecureStorageService(EncryptedStorage()),
+      ),
     );
     repository = NekotonRepository();
     await Hive.deleteFromDisk();
@@ -520,58 +526,58 @@ void main() {
 
       /// System contracts
       expect(
-        storage.readSystemTokenContractAssets(NetworkType.ever),
+        storage.readSystemTokenContractAssets('ever'),
         hive.everSystemTokenContractAssets,
       );
       expect(
-        storage.getSystemTokenContractAssets(NetworkType.ever),
+        storage.getSystemTokenContractAssets('ever'),
         hive.everSystemTokenContractAssets,
       );
 
       expect(
-        storage.readSystemTokenContractAssets(NetworkType.venom),
+        storage.readSystemTokenContractAssets('venom'),
         hive.venomSystemTokenContractAssets,
       );
       expect(
-        storage.getSystemTokenContractAssets(NetworkType.venom),
+        storage.getSystemTokenContractAssets('venom'),
         hive.venomSystemTokenContractAssets,
       );
 
       /// Custom contracts
       expect(
-        storage.readCustomTokenContractAssets(NetworkType.ever),
+        storage.readCustomTokenContractAssets('ever'),
         hive.everCustomTokenContractAssets,
       );
       expect(
-        storage.getCustomTokenContractAssets(NetworkType.ever),
+        storage.getCustomTokenContractAssets('ever'),
         hive.everCustomTokenContractAssets,
       );
 
       expect(
-        storage.readCustomTokenContractAssets(NetworkType.venom),
+        storage.readCustomTokenContractAssets('venom'),
         hive.venomCustomTokenContractAssets,
       );
       expect(
-        storage.getCustomTokenContractAssets(NetworkType.venom),
+        storage.getCustomTokenContractAssets('venom'),
         hive.venomCustomTokenContractAssets,
       );
 
       /// Currencies
       expect(
-        storage.readCurrencies(NetworkType.ever),
+        storage.readCurrencies('ever'),
         hive.everCurrencies,
       );
       expect(
-        storage.getCurrencies(NetworkType.ever),
+        storage.getCurrencies('ever'),
         hive.everCurrencies,
       );
 
       expect(
-        storage.readCurrencies(NetworkType.venom),
+        storage.readCurrencies('venom'),
         hive.venomCurrencies,
       );
       expect(
-        storage.getCurrencies(NetworkType.venom),
+        storage.getCurrencies('venom'),
         hive.venomCurrencies,
       );
 

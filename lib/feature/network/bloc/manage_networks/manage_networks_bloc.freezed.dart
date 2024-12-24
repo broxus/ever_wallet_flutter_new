@@ -1384,7 +1384,7 @@ abstract class _revertConnection implements ManageNetworksEvent {
 
 /// @nodoc
 mixin _$ManageNetworksState {
-  String get currentConnectionId => throw _privateConstructorUsedError;
+  String? get currentConnectionId => throw _privateConstructorUsedError;
   List<ConnectionData> get connections => throw _privateConstructorUsedError;
 
   /// Create a copy of ManageNetworksState
@@ -1400,7 +1400,7 @@ abstract class $ManageNetworksStateCopyWith<$Res> {
           ManageNetworksState value, $Res Function(ManageNetworksState) then) =
       _$ManageNetworksStateCopyWithImpl<$Res, ManageNetworksState>;
   @useResult
-  $Res call({String currentConnectionId, List<ConnectionData> connections});
+  $Res call({String? currentConnectionId, List<ConnectionData> connections});
 }
 
 /// @nodoc
@@ -1418,14 +1418,14 @@ class _$ManageNetworksStateCopyWithImpl<$Res, $Val extends ManageNetworksState>
   @pragma('vm:prefer-inline')
   @override
   $Res call({
-    Object? currentConnectionId = null,
+    Object? currentConnectionId = freezed,
     Object? connections = null,
   }) {
     return _then(_value.copyWith(
-      currentConnectionId: null == currentConnectionId
+      currentConnectionId: freezed == currentConnectionId
           ? _value.currentConnectionId
           : currentConnectionId // ignore: cast_nullable_to_non_nullable
-              as String,
+              as String?,
       connections: null == connections
           ? _value.connections
           : connections // ignore: cast_nullable_to_non_nullable
@@ -1442,7 +1442,7 @@ abstract class _$$ManageNetworksStateImplCopyWith<$Res>
       __$$ManageNetworksStateImplCopyWithImpl<$Res>;
   @override
   @useResult
-  $Res call({String currentConnectionId, List<ConnectionData> connections});
+  $Res call({String? currentConnectionId, List<ConnectionData> connections});
 }
 
 /// @nodoc
@@ -1458,14 +1458,14 @@ class __$$ManageNetworksStateImplCopyWithImpl<$Res>
   @pragma('vm:prefer-inline')
   @override
   $Res call({
-    Object? currentConnectionId = null,
+    Object? currentConnectionId = freezed,
     Object? connections = null,
   }) {
     return _then(_$ManageNetworksStateImpl(
-      currentConnectionId: null == currentConnectionId
+      currentConnectionId: freezed == currentConnectionId
           ? _value.currentConnectionId
           : currentConnectionId // ignore: cast_nullable_to_non_nullable
-              as String,
+              as String?,
       connections: null == connections
           ? _value._connections
           : connections // ignore: cast_nullable_to_non_nullable
@@ -1483,7 +1483,7 @@ class _$ManageNetworksStateImpl implements _ManageNetworksState {
       : _connections = connections;
 
   @override
-  final String currentConnectionId;
+  final String? currentConnectionId;
   final List<ConnectionData> _connections;
   @override
   List<ConnectionData> get connections {
@@ -1524,12 +1524,12 @@ class _$ManageNetworksStateImpl implements _ManageNetworksState {
 
 abstract class _ManageNetworksState implements ManageNetworksState {
   const factory _ManageNetworksState(
-          {required final String currentConnectionId,
+          {required final String? currentConnectionId,
           required final List<ConnectionData> connections}) =
       _$ManageNetworksStateImpl;
 
   @override
-  String get currentConnectionId;
+  String? get currentConnectionId;
   @override
   List<ConnectionData> get connections;
 

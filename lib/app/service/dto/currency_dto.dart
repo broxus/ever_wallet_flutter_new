@@ -1,12 +1,13 @@
 // ignore_for_file: no-magic-number
 
+import 'package:app/app/service/connection/network_type.dart';
 import 'package:app/data/models/custom_currency.dart';
-import 'package:app/data/models/network_type.dart';
 import 'package:freezed_annotation/freezed_annotation.dart';
 import 'package:hive_flutter/hive_flutter.dart';
 import 'package:nekoton_repository/nekoton_repository.dart';
 
 part 'currency_dto.freezed.dart';
+
 part 'currency_dto.g.dart';
 
 @freezed

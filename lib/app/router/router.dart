@@ -5,6 +5,8 @@ import 'package:app/app/router/router.dart';
 import 'package:app/app/router/routs/network/network.dart';
 import 'package:app/app/service/service.dart';
 import 'package:app/di/di.dart';
+import 'package:app/event_bus/events/bootstrap/bootstrap_event.dart';
+import 'package:app/event_bus/primary_bus.dart';
 import 'package:app/feature/error/error.dart';
 import 'package:app/feature/onboarding/screen/welcome/welcome_screen.dart';
 import 'package:app/feature/root/root.dart';
@@ -31,7 +33,9 @@ class AppRouter {
     // on the current location and if the user has any seeds.
     // This happends when user was sent to bootstrap failed screen to make some
     // action and then bootstrap process was completed.
-    _bootstrapService.bootstrapStepStream.listen(_listenBootstrapStep);
+
+    _bootstrapErrorEventSubscription =
+        primaryBus.on<BootstrapEvent>().listen(_listenBootstrapErrorStep);
   }
 
   // Create a new router
@@ -40,6 +44,8 @@ class AppRouter {
   final BootstrapService _bootstrapService;
   final NavigationService _navigationService;
   final NekotonRepository _nekotonRepository;
+
+  StreamSubscription<BootstrapEvent>? _bootstrapErrorEventSubscription;
 
   final _log = Logger('RouterHelper');
 
@@ -61,6 +67,10 @@ class AppRouter {
   String get _savedLocation => _navigationService.state.location;
 
   bool get _isExistSavedLocation => _savedLocation.isNotEmpty;
+
+  void dispose() {
+    _bootstrapErrorEventSubscription?.cancel();
+  }
 
   GoRouter _createRouter() {
     return GoRouter(
@@ -93,7 +103,6 @@ class AppRouter {
         final guardRedirect = _shouldRedirect(
           fullPath: fullPath,
           hasSeeds: _nekotonRepository.hasSeeds.valueOrNull,
-          step: _bootstrapService.bootstrapStep,
         );
 
         if (guardRedirect != null) {
@@ -182,7 +191,6 @@ class AppRouter {
     final redirectLocation = _shouldRedirect(
       fullPath: _navigationService.state.fullPath,
       hasSeeds: hasSeeds,
-      step: _bootstrapService.bootstrapStep,
     );
 
     // Redirect if needed
@@ -191,19 +199,33 @@ class AppRouter {
     }
   }
 
-  void _listenBootstrapStep(BootstrapSteps step) {
-    // Again, check if the user should be redirected depending on the current
-    // location and if the user has any seeds and bootstrap completed.
-    final redirectLocation = _shouldRedirect(
-      fullPath: _navigationService.state.fullPath,
-      hasSeeds: _nekotonRepository.hasSeeds.valueOrNull,
-      step: _bootstrapService.bootstrapStep,
-    );
+  void _listenBootstrapErrorStep(BootstrapEvent event) {
+    String? path;
 
-    // Redirect if needed
-    if (redirectLocation != null) {
-      router.go(redirectLocation);
+    if (event is BootstrapCompleteEvent) {
+      path = _shouldRedirect(
+        fullPath: _navigationService.state.fullPath,
+        hasSeeds: _nekotonRepository.hasSeeds.valueOrNull,
+      );
+    } else if (event is BootstrapErrorEvent) {
+      final fullPath = getRootAppRoute(
+        fullPath: _navigationService.state.fullPath,
+      );
+
+      path = fullPath != AppRoute.bootstrapFailedInit
+          ? AppRoute.bootstrapFailedInit.pathWithData(
+              pathParameters: {
+                bootstrapFailedIndexPathParam:
+                    _bootstrapService.bootstrapStep.index.toString(),
+              },
+            )
+          : null;
     }
+
+    if (path == null) {
+      return;
+    }
+    router.go(path);
   }
 
   // Redirect to onboarding or wallet depending on the current location and if
@@ -211,18 +233,8 @@ class AppRouter {
   String? _shouldRedirect({
     required String fullPath,
     required bool? hasSeeds,
-    required BootstrapSteps step,
   }) {
     final currentRoute = getRootAppRoute(fullPath: fullPath);
-
-    if (step == BootstrapSteps.error &&
-        currentRoute != AppRoute.bootstrapFailedInit) {
-      return AppRoute.bootstrapFailedInit.pathWithData(
-        pathParameters: {
-          bootstrapFailedIndexPathParam: step.index.toString(),
-        },
-      );
-    }
 
     if (!_isConfigured || hasSeeds == null) {
       return null;
