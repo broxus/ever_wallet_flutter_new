@@ -30,6 +30,13 @@ class SendMessageModel extends ElementaryModel {
         ),
       );
 
+  Future<TonWalletState> getTonWalletState(Address address) async {
+    final wallet = await _nekotonRepository.walletsStream
+        .expand((e) => e)
+        .firstWhere((wallets) => wallets.address == address);
+    return wallet;
+  }
+
   KeyAccount? getAccount(Address address) =>
       _nekotonRepository.seedList.findAccountByAddress(address);
 
