@@ -20,7 +20,8 @@ Future<void> showAddNewExternalAccountSheet({
     body: (_, scrollController) => BlocProvider<AddNewExternalAccountCubit>(
       create: (_) => AddNewExternalAccountCubit(
         publicKey,
-        inject<NekotonRepository>(),
+        inject(),
+        inject(),
       ),
       child: AddNewExternalAccountSheet(
         controller: scrollController,

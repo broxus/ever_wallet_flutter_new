@@ -11,12 +11,15 @@ import 'package:logging/logging.dart';
 import 'package:nekoton_repository/nekoton_repository.dart' hide Message;
 
 part 'ton_confirm_transaction_bloc.freezed.dart';
+
 part 'ton_confirm_transaction_event.dart';
+
 part 'ton_confirm_transaction_state.dart';
 
 /// Bloc that allows prepare transaction confirmation for multisig wallet.
 /// If [localCustodians] more than 1, then user will prepare transaction by
 /// selecting custodian for confirmation, else it will calculate transaction.
+// TODO(knightforce): use Elementary instead Bloc
 class TonConfirmTransactionBloc
     extends Bloc<TonConfirmTransactionEvent, TonConfirmTransactionState> {
   TonConfirmTransactionBloc({
@@ -33,6 +36,19 @@ class TonConfirmTransactionBloc
               ? const TonConfirmTransactionState.prepare()
               : TonConfirmTransactionState.loading(localCustodians.first),
         ) {
+    account ??= nekotonRepository.seedList.findAccountByAddress(walletAddress);
+
+    final currentTransport = nekotonRepository.currentTransport;
+
+    final currency = Currencies()[currentTransport.nativeTokenTicker];
+
+    if (currency != null) {
+      money = Money.fromBigIntWithCurrency(
+        amount,
+        currency,
+      );
+    }
+
     _registerHandlers();
     if (localCustodians.length == 1) {
       add(TonConfirmTransactionEvent.prepare(localCustodians.first));
@@ -61,6 +77,10 @@ class TonConfirmTransactionBloc
 
   /// Comment of transaction
   final String? comment;
+
+  KeyAccount? account;
+
+  Money? money;
 
   /// Fee for transaction after calculating it in [_handlePrepare]
   BigInt? fees;

@@ -4,6 +4,7 @@ import 'package:app/di/di.dart';
 import 'package:app/feature/wallet/widgets/account_transactions_tab/detail/details.dart';
 import 'package:app/feature/wallet/widgets/account_transactions_tab/widgets/ton_wallet_transaction_status_body.dart';
 import 'package:app/generated/generated.dart';
+import 'package:app/utils/date_utils.dart';
 import 'package:app/utils/utils.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
@@ -29,6 +30,8 @@ class WalletTransactionDetailsDefaultBody extends StatelessWidget {
     this.tonIconPath,
     this.tokenIconPath,
     this.price,
+    this.expiresAt,
+    this.transactionId,
     super.key,
   });
 
@@ -63,6 +66,8 @@ class WalletTransactionDetailsDefaultBody extends StatelessWidget {
   final String? tonIconPath;
   final String? tokenIconPath;
   final Fixed? price;
+  final DateTime? expiresAt;
+  final String? transactionId;
 
   @override
   Widget build(BuildContext context) {
@@ -74,7 +79,7 @@ class WalletTransactionDetailsDefaultBody extends StatelessWidget {
       children: [
         const SizedBox.shrink(),
         _statusDateRow(context, theme),
-        const Divider(),
+        const CommonDivider(),
         WalletTransactionDetailsItem(
           title: LocaleKeys.typeWord.tr(),
           value: type,
@@ -132,24 +137,37 @@ class WalletTransactionDetailsDefaultBody extends StatelessWidget {
             );
           },
         ),
-        WalletTransactionDetailsItem(
-          title: LocaleKeys.hashId.tr(),
-          subtitle: toEllipseString(hash),
-          icon: LucideIcons.copy,
-          onPressed: () {
-            _copy(
-              context,
-              hash,
-              LocaleKeys.valueCopiedExclamation.tr(args: [hash]),
-            );
-          },
-        ),
+        if (transactionId == null)
+          WalletTransactionDetailsItem(
+            title: LocaleKeys.hashId.tr(),
+            subtitle: toEllipseString(hash),
+            icon: LucideIcons.copy,
+            onPressed: () {
+              _copy(
+                context,
+                hash,
+                LocaleKeys.valueCopiedExclamation.tr(args: [hash]),
+              );
+            },
+          )
+        else
+          WalletTransactionDetailsItem(
+            title: LocaleKeys.transactionId.tr(),
+            subtitle: transactionId,
+            icon: LucideIcons.copy,
+            onPressed: () {
+              _copy(
+                context,
+                transactionId!,
+                LocaleKeys.valueCopiedExclamation.tr(args: [transactionId!]),
+              );
+            },
+          ),
       ],
     );
   }
 
   Widget _statusDateRow(BuildContext context, ThemeStyleV2 theme) {
-    final colors = context.themeStyle.colors;
     final formatter = date.year == NtpTime.now().year
         ? DateFormat('MM.dd, HH:mm:ss', context.locale.languageCode)
         : DateFormat('MM.dd.y, HH:mm:ss', context.locale.languageCode);
@@ -157,25 +175,41 @@ class WalletTransactionDetailsDefaultBody extends StatelessWidget {
     return Row(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            Text(
-              isIncoming ? LocaleKeys.received.tr() : LocaleKeys.sent.tr(),
-              style: theme.textStyles.headingMedium,
-            ),
-            const SizedBox(height: DimensSizeV2.d4),
-            Text(
-              formatter.format(date),
-              style: StyleRes.addRegular.copyWith(
-                color: colors.textSecondary,
+        Expanded(
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              Row(
+                children: [
+                  Text(
+                    isIncoming
+                        ? LocaleKeys.received.tr()
+                        : LocaleKeys.sent.tr(),
+                    style: theme.textStyles.headingMedium,
+                  ),
+                  const Spacer(),
+                  status.chipByStatus,
+                ],
               ),
-              textAlign: TextAlign.right,
-            ),
-          ],
+              const SizedBox(height: DimensSizeV2.d4),
+              Text(
+                formatter.format(date),
+                style: theme.textStyles.labelXSmall.copyWith(
+                  color: theme.colors.content3,
+                ),
+                textAlign: TextAlign.right,
+              ),
+              if (expiresAt != null) const SizedBox(height: DimensSizeV2.d4),
+              if (expiresAt != null)
+                Text(
+                  DateTimeUtils.formatExpirationDate(expiresAt!),
+                  style: theme.textStyles.labelXSmall.copyWith(
+                    color: theme.colors.content1,
+                  ),
+                ),
+            ],
+          ),
         ),
-        const Spacer(),
-        status.chipByStatus,
       ],
     );
   }

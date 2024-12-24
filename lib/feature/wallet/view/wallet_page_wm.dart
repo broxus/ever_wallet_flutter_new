@@ -36,10 +36,16 @@ class WalletPageWidgetModel
       createNotifierFromStream(model.transportStrategy);
   late final _isShowingBadgeNotifier = createNotifier<bool>();
   late final _isShowingNewTokensNotifier = createNotifier<bool>();
+  late final _hasUnconfirmedTransactionsNotifier = createNotifier<bool>();
 
   StreamSubscription<PressBottomNavigationEvent>? _pressWalletSubscribtion;
 
+  StreamSubscription<void>? _changeTransactions;
+
   ListenableState<KeyAccount?> get currentAccount => _currentAccount;
+
+  ListenableState<bool?> get hasUnconfirmedTransactions =>
+      _hasUnconfirmedTransactionsNotifier;
 
   ListenableState<TransportStrategy> get transportStrategy =>
       _transportStrategy;
@@ -47,6 +53,7 @@ class WalletPageWidgetModel
   ListenableState<bool> get isShowingBadge => _isShowingBadgeNotifier;
 
   ListenableState<bool> get isShowingNewTokens => _isShowingNewTokensNotifier;
+  int? _numberUnconfirmedTransactions;
 
   @override
   void initWidgetModel() {
@@ -59,6 +66,7 @@ class WalletPageWidgetModel
   @override
   void dispose() {
     _pressWalletSubscribtion?.cancel();
+    _changeTransactions?.cancel();
     super.dispose();
   }
 
@@ -92,6 +100,7 @@ class WalletPageWidgetModel
 
   void _onAccountChanged() {
     _checkBadge();
+    _checkUnconfirmedTransactions();
   }
 
   void _checkBadge() {
@@ -118,5 +127,25 @@ class WalletPageWidgetModel
     _isShowingNewTokensNotifier.accept(
       model.isShowingNewTokens(account) ?? true,
     );
+  }
+
+  Future<void> _checkUnconfirmedTransactions() async {
+    final walletTonState =
+        await model.getTonWalletState(_currentAccount.value?.address);
+    _numberUnconfirmedTransactions =
+        walletTonState.wallet?.unconfirmedTransactions.length ?? 0;
+    _hasUnconfirmedTransactionsNotifier.accept(
+      (_numberUnconfirmedTransactions ?? 0) > 0,
+    );
+    _changeTransactions = walletTonState.wallet?.fieldUpdatesStream.listen((_) {
+      final newNumber = walletTonState.wallet?.unconfirmedTransactions.length;
+      if (_numberUnconfirmedTransactions != newNumber) {
+        print("!!! update");
+        _numberUnconfirmedTransactions = newNumber;
+        _hasUnconfirmedTransactionsNotifier.accept(
+          (_numberUnconfirmedTransactions ?? 0) > 0,
+        );
+      }
+    });
   }
 }

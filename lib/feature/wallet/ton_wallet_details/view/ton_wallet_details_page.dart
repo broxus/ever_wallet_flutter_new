@@ -136,7 +136,7 @@ class _Body extends StatelessWidget {
         ),
         DecoratedSliver(
           decoration: BoxDecoration(
-            color: theme.colors.background1,
+            color: theme.colors.background0,
             borderRadius: const BorderRadius.vertical(
               top: Radius.circular(DimensRadiusV2.radius24),
             ),
@@ -154,7 +154,7 @@ class _Body extends StatelessWidget {
         SliverFillRemaining(
           hasScrollBody: false,
           child: Container(
-            color: theme.colors.background1,
+            color: theme.colors.background0,
             padding: const EdgeInsets.symmetric(
               horizontal: DimensSizeV2.d16,
             ),

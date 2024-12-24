@@ -76,7 +76,7 @@ class AccountTransactionsTab extends StatelessWidget {
           ),
           transactions: (transactions, isLoading, _, price) {
             return ScrollControllerPreloadListener(
-              preleloadAction: () => context
+              preloadAction: () => context
                   .read<AccountTransactionsTabCubit>()
                   .tryPreloadTransactions(),
               scrollController: scrollController,
@@ -92,12 +92,18 @@ class AccountTransactionsTab extends StatelessWidget {
 
                   final prev = index == 0 ? null : transactions[index - 1];
                   final trans = transactions[index];
-                  final displayDate =
+                  final next = index == transactions.length - 1
+                      ? null
+                      : transactions[index + 1];
+                  final isFirst =
                       prev == null || !prev.date.isSameDay(trans.date);
+                  final isLast =
+                      next == null || !next.date.isSameDay(trans.date);
 
                   return _transactionItem(
                     trans,
-                    displayDate,
+                    isFirst,
+                    isLast,
                     price,
                   );
                 },
@@ -111,41 +117,51 @@ class AccountTransactionsTab extends StatelessWidget {
 
   Widget _transactionItem(
     AccountTransactionItem<dynamic> trans,
-    bool displayDate,
+    bool isFirst,
+    bool isLast,
     Fixed price,
   ) {
     return switch (trans.type) {
       AccountTransactionType.ordinary => TonWalletOrdinaryTransactionWidget(
           transaction: trans.transaction as TonWalletOrdinaryTransaction,
-          displayDate: displayDate,
+          isFirst: isFirst,
+          isLast: isLast,
           price: price,
         ),
       AccountTransactionType.pending => TonWalletPendingTransactionWidget(
           transaction: trans.transaction as TonWalletPendingTransaction,
-          displayDate: displayDate,
+          isFirst: isFirst,
+          isLast: isLast,
         ),
       AccountTransactionType.expired => TonWalletExpiredTransactionWidget(
           transaction: trans.transaction as TonWalletExpiredTransaction,
-          displayDate: displayDate,
+          isFirst: isFirst,
+          isLast: isLast,
         ),
       AccountTransactionType.multisigOrdinary =>
         TonWalletMultisigOrdinaryTransactionWidget(
           transaction:
               trans.transaction as TonWalletMultisigOrdinaryTransaction,
-          displayDate: displayDate,
+          isFirst: isFirst,
+          isLast: isLast,
           price: price,
+          account: account,
         ),
       AccountTransactionType.multisigPending =>
         TonWalletMultisigPendingTransactionWidget(
           transaction: trans.transaction as TonWalletMultisigPendingTransaction,
-          displayDate: displayDate,
+          isFirst: isFirst,
+          isLast: isLast,
           price: price,
+          account: account,
         ),
       AccountTransactionType.multisigExpired =>
         TonWalletMultisigExpiredTransactionWidget(
           transaction: trans.transaction as TonWalletMultisigExpiredTransaction,
-          displayDate: displayDate,
+          isFirst: isFirst,
+          isLast: isLast,
           price: price,
+          account: account,
         ),
     };
   }
