@@ -1,4 +1,4 @@
-import 'package:app/data/models/token_contract_asset.dart';
+import 'package:app/data/models/token_contract/token_contract_asset.dart';
 import 'package:app/data/models/ton_assets_manifest_version.dart';
 import 'package:freezed_annotation/freezed_annotation.dart';
 

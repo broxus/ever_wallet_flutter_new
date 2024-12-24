@@ -1,9 +1,9 @@
 import 'dart:async';
 
-import 'package:app/app/service/nekoton_related/connection_service/network_presets.dart';
+import 'package:app/app/service/connection/data/connection_data/connection_data.dart';
+import 'package:app/app/service/connection/presets_connection_service.dart';
 import 'package:app/app/service/service.dart';
 import 'package:app/core/bloc/bloc_mixin.dart';
-import 'package:app/data/models/models.dart';
 import 'package:bloc/bloc.dart';
 import 'package:collection/collection.dart';
 import 'package:freezed_annotation/freezed_annotation.dart';
@@ -19,6 +19,7 @@ class ManageNetworksBloc extends Bloc<ManageNetworksEvent, ManageNetworksState>
     with BlocBaseMixin {
   ManageNetworksBloc(
     this.storageService,
+    this._presetsConnectionService,
   ) : super(
           ManageNetworksState(
             currentConnectionId: storageService.currentConnectionId,
@@ -51,10 +52,14 @@ class ManageNetworksBloc extends Bloc<ManageNetworksEvent, ManageNetworksState>
 
   final _log = Logger('ManageNetworksBloc');
 
+  ConnectionsStorageService storageService;
+  final PresetsConnectionService _presetsConnectionService;
+
   StreamSubscription<String>? _currentConnectionIdSubscription;
   StreamSubscription<List<ConnectionData>>? _connectionsSubscription;
 
-  ConnectionsStorageService storageService;
+  ConnectionData get _defaultNetwork =>
+      _presetsConnectionService.defaultNetwork;
 
   @override
   Future<void> close() {
@@ -109,6 +114,10 @@ class ManageNetworksBloc extends Bloc<ManageNetworksEvent, ManageNetworksState>
   ConnectionData get currentConnection {
     final currentConnectionId = state.currentConnectionId;
 
+    if (currentConnectionId == null) {
+      return _defaultNetwork;
+    }
+
     final connection = getConnection(currentConnectionId);
     if (connection != null) {
       return connection;
@@ -119,7 +128,7 @@ class ManageNetworksBloc extends Bloc<ManageNetworksEvent, ManageNetworksState>
       'Returning default connection',
     );
 
-    return defaultNetwork;
+    return _defaultNetwork;
   }
 
   ConnectionData? getConnection(String connectionId) {

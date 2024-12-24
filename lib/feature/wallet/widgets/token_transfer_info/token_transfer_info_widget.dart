@@ -21,6 +21,7 @@ class TokenTransferInfoWidget
     this.comment,
     this.feeError,
     this.color,
+    this.numberUnconfirmedTransactions,
     Key? key,
     WidgetModelFactory wmFactory = defaultTokenTransferInfoWidgetModelFactory,
   }) : super(wmFactory, key: key);
@@ -35,6 +36,7 @@ class TokenTransferInfoWidget
   final String? comment;
   final String? feeError;
   final Color? color;
+  final int? numberUnconfirmedTransactions;
 
   @override
   Widget build(TokenTransferInfoWidgetModel wm) {
@@ -173,7 +175,14 @@ class TokenTransferInfoWidget
                     useDefaultFormat: false,
                     includeSymbol: false,
                   ),
-                  if (feeError != null)
+                  if ((numberUnconfirmedTransactions ?? 0) >= 5)
+                    Text(
+                      LocaleKeys.errorMessageMaxUnconfirmedTransactions.tr(),
+                      style: theme.textStyles.labelSmall.copyWith(
+                        color: theme.colors.negative,
+                      ),
+                    )
+                  else if (feeError != null)
                     Text(
                       feeError,
                       style: theme.textStyles.labelSmall.copyWith(

@@ -1,9 +1,9 @@
 import 'dart:async';
 
+import 'package:app/app/service/connection/network_type.dart';
 import 'package:app/app/service/service.dart';
 import 'package:app/data/models/custom_currency.dart';
-import 'package:app/data/models/network_type.dart';
-import 'package:app/data/models/token_contract_asset.dart';
+import 'package:app/data/models/token_contract/token_contract_asset.dart';
 import 'package:app/utils/utils.dart';
 import 'package:get_storage/get_storage.dart';
 import 'package:injectable/injectable.dart';
@@ -129,7 +129,7 @@ class GeneralStorageService extends AbstractStorageService {
         .toList()
       ..add(tokenContractAsset);
     _customContractAssetsStorage.write(
-      tokenContractAsset.networkType.index.toString(),
+      tokenContractAsset.networkType,
       newAssets.map((e) => e.toJson()).toList(),
     );
     _streamedCustomContractAssets();
@@ -173,15 +173,13 @@ class GeneralStorageService extends AbstractStorageService {
 
   /// Stream of custom token contract assets by specified network type
   Stream<List<TokenContractAsset>> customTokenContractAssetsStream(
-    NetworkType network,
+    String network,
   ) =>
       _customTokenContractAssetsSubject.map((event) => event[network] ?? []);
 
   /// Delete all custom token contract assets with same type.
   void deleteCustomTokens(NetworkType type) {
-    _customContractAssetsStorage.remove(
-      type.index.toString(),
-    );
+    _customContractAssetsStorage.remove(type);
     _streamedCustomContractAssets();
   }
 
@@ -212,9 +210,7 @@ class GeneralStorageService extends AbstractStorageService {
 
   /// Read from storage list of all currencies specified for network type
   List<CustomCurrency> readCurrencies(NetworkType type) {
-    final encoded = _currenciesStorage.read<List<dynamic>>(
-      type.index.toString(),
-    );
+    final encoded = _currenciesStorage.read<List<dynamic>>(type);
     if (encoded == null) {
       return [];
     }
@@ -239,9 +235,7 @@ class GeneralStorageService extends AbstractStorageService {
   List<TokenContractAsset> readCustomTokenContractAssets(
     NetworkType type,
   ) {
-    final assets = _customContractAssetsStorage.read<List<dynamic>>(
-      type.index.toString(),
-    );
+    final assets = _customContractAssetsStorage.read<List<dynamic>>(type);
     if (assets == null) {
       return [];
     }
@@ -283,9 +277,7 @@ class GeneralStorageService extends AbstractStorageService {
   List<TokenContractAsset> readSystemTokenContractAssets(
     NetworkType type,
   ) {
-    final assets = _systemContractAssetsStorage.read<List<dynamic>>(
-      type.index.toString(),
-    );
+    final assets = _systemContractAssetsStorage.read<List<dynamic>>(type);
     if (assets == null) {
       return [];
     }
@@ -309,7 +301,7 @@ class GeneralStorageService extends AbstractStorageService {
     final assets = readCustomTokenContractAssets(asset.networkType);
     final newAssets = assets.where((a) => a.address != asset.address).toList();
     _customContractAssetsStorage.write(
-      asset.networkType.index.toString(),
+      asset.networkType,
       newAssets.map((e) => e.toJson()).toList(),
     );
     _streamedCustomContractAssets();
@@ -327,7 +319,7 @@ class GeneralStorageService extends AbstractStorageService {
       ..addAll(currencies);
 
     _currenciesStorage.write(
-      networkType.index.toString(),
+      networkType,
       newList.map((e) => e.toJson()).toList(),
     );
     _streamedCurrencies();
@@ -342,7 +334,7 @@ class GeneralStorageService extends AbstractStorageService {
       ..add(currency);
 
     _currenciesStorage.write(
-      type.index.toString(),
+      type,
       newList.map((e) => e.toJson()).toList(),
     );
     _streamedCurrencies();
@@ -397,10 +389,10 @@ class GeneralStorageService extends AbstractStorageService {
       );
       _systemContractAssetsStorage
         ..remove(
-          assets.first.networkType.index.toString(),
+          assets.first.networkType,
         )
         ..write(
-          assets.first.networkType.index.toString(),
+          assets.first.networkType,
           assets.map((e) => e.toJson()).toList(),
         );
       _streamedSystemContractAssets();
@@ -421,7 +413,7 @@ class GeneralStorageService extends AbstractStorageService {
     final encoded = _currenciesStorage.getEntries();
     final decoded = encoded.map(
       (key, value) => MapEntry(
-        NetworkType.values[int.parse(key)],
+        key,
         (value as List<dynamic>)
             .map(
               (json) => CustomCurrency.fromJson(json as Map<String, dynamic>),
@@ -445,7 +437,7 @@ class GeneralStorageService extends AbstractStorageService {
     final encoded = _customContractAssetsStorage.getEntries();
     final decoded = encoded.map(
       (key, value) => MapEntry(
-        NetworkType.values[int.parse(key)],
+        key,
         (value as List<dynamic>).map(
           (json) {
             json = json as Map<String, dynamic>;
@@ -470,7 +462,7 @@ class GeneralStorageService extends AbstractStorageService {
     final encoded = _systemContractAssetsStorage.getEntries();
     final decoded = encoded.map(
       (key, value) => MapEntry(
-        NetworkType.values[int.parse(key)],
+        key,
         (value as List<dynamic>).map(
           (json) {
             json = json as Map<String, dynamic>;

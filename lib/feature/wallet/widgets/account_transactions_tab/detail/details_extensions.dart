@@ -146,6 +146,10 @@ extension WalletInteractionMethodX on WalletInteractionMethod {
           LocaleKeys.walletV3Transfer.tr(),
           [],
         ),
+        tonWalletTransfer: () => (
+          LocaleKeys.tonWalletTransfer.tr(),
+          [],
+        ),
         multisig: (data) => data.when(
           send: (data) => (
             LocaleKeys.multisigSendTransaction.tr(),
@@ -256,10 +260,6 @@ extension WalletInteractionMethodX on WalletInteractionMethod {
               ),
             ],
           ),
-        ),
-        tonWalletTransfer: () => (
-          LocaleKeys.tonWalletTransfer.tr(),
-          [],
         ),
       );
 }

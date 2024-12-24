@@ -1,5 +1,5 @@
 import 'package:app/app/router/router.dart';
-import 'package:app/data/models/models.dart';
+import 'package:app/app/service/connection/data/connection_data/connection_data.dart';
 import 'package:app/feature/browser/browser.dart';
 import 'package:app/feature/network/edit_network/connection_type.dart';
 import 'package:app/feature/network/network.dart';
@@ -472,6 +472,7 @@ class _EditNetworkViewState extends State<EditNetworkView> {
           id: id,
           name: _nameController.text,
           group: 'custom',
+          networkType: 'custom',
           endpoint: _endpointsControllers[0].text,
           blockExplorerUrl: _blockExplorerUrlController.text,
           manifestUrl: _manifestUrlController.text,
@@ -481,6 +482,7 @@ class _EditNetworkViewState extends State<EditNetworkView> {
           id: id,
           name: _nameController.text,
           group: 'custom',
+          networkType: 'custom',
           endpoints: _endpointsControllers
               .map((controller) => controller.text)
               .toList(),
@@ -493,6 +495,7 @@ class _EditNetworkViewState extends State<EditNetworkView> {
           id: id,
           name: _nameController.text,
           group: 'custom',
+          networkType: 'custom',
           endpoint: _endpointsControllers[0].text,
           blockExplorerUrl: _blockExplorerUrlController.text,
           manifestUrl: _manifestUrlController.text,

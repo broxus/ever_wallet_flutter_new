@@ -3,10 +3,9 @@
 import 'dart:async';
 
 import 'package:app/app/router/router.dart';
-import 'package:app/app/service/service.dart';
+import 'package:app/app/service/connection/connection_service.dart';
 import 'package:app/core/error_handler_factory.dart';
 import 'package:app/core/wm/custom_wm.dart';
-import 'package:app/data/models/models.dart';
 import 'package:app/di/di.dart';
 import 'package:app/feature/wallet/new_account/add_account.dart';
 import 'package:app/feature/wallet/new_account/new_account_type'
@@ -58,7 +57,8 @@ class NewAccountTypeWidgetModel
 
   ThemeStyleV2 get theme => context.themeStyleV2;
 
-  bool get isEverscale => model.transport.networkType == NetworkType.ever;
+  // TODO(knightforce): how to get rid of explicit check?
+  bool get isEverscale => model.transport.networkType == 'ever';
 
   @override
   void initWidgetModel() {

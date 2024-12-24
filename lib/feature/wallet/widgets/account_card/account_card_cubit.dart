@@ -1,8 +1,8 @@
 import 'dart:async';
 
+import 'package:app/app/service/connection/network_type.dart';
 import 'package:app/app/service/service.dart';
 import 'package:app/core/bloc/bloc_mixin.dart';
-import 'package:app/data/models/models.dart';
 import 'package:app/di/di.dart';
 import 'package:bloc/bloc.dart';
 import 'package:collection/collection.dart';

@@ -1,4 +1,4 @@
-import 'package:app/data/models/models.dart';
+import 'package:app/app/service/connection/data/connection_data/connection_data.dart';
 import 'package:app/feature/browser/approvals_listener/actions/change_network/change_network_wm.dart';
 import 'package:app/feature/browser/approvals_listener/actions/widgets/widgets.dart';
 import 'package:app/generated/generated.dart';
@@ -77,7 +77,7 @@ class ChangeNetworkWidget extends ElementaryWidget<ChangeNetworkWidgetModel> {
                         ),
                         _Param(
                           label: LocaleKeys.networkType.tr(),
-                          value: connection.networkType.name,
+                          value: connection.networkType,
                         ),
                       ],
                     ),
