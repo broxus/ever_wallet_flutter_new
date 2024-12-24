@@ -125,7 +125,7 @@ class CommonTransportStrategy extends AppTransportStrategy {
 
   late final _subscriber = switch (genericTokenType) {
     GenericTokenType.tip3 => Tip3TokenWalletSubscriber(),
-    GenericTokenType.jetton => JettonTokenWalletSubscriber(inject()),
+    GenericTokenType.jetton => JettonTokenWalletSubscriber(inject(), inject()),
   };
 
   @override

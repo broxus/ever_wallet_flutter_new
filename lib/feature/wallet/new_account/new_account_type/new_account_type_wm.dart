@@ -57,7 +57,7 @@ class NewAccountTypeWidgetModel
 
   ThemeStyleV2 get theme => context.themeStyleV2;
 
-  /// TODO(@knightforce) how to get rid of explicit check?
+  // TODO(knightforce): how to get rid of explicit check?
   bool get isEverscale => model.transport.networkType == 'ever';
 
   @override
