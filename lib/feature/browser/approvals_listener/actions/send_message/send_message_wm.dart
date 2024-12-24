@@ -70,8 +70,10 @@ class SendMessageWidgetModel
 
   ListenableState<bool> get isConfirmed => _isConfirmed;
 
-  Currency get nativeCurrency =>
-      Currencies()[model.transport.nativeTokenTicker]!;
+  Currency? get nativeCurrency =>
+      Currencies()[model.transport.nativeTokenTicker];
+
+  String? get symbol => nativeCurrency?.symbol;
 
   ThemeStyleV2 get theme => context.themeStyleV2;
 
@@ -79,19 +81,24 @@ class SendMessageWidgetModel
   void initWidgetModel() {
     super.initWidgetModel();
 
-    final tokens = widget.knownPayload?.whenOrNull(
-      tokenOutgoingTransfer: (data) => data.tokens,
-      tokenSwapBack: (data) => data.tokens,
-    );
-
-    if (tokens == null) {
-      _data.accept(
-        TransferData(
-          amount: Money.fromBigIntWithCurrency(widget.amount, nativeCurrency),
-        ),
+    if (nativeCurrency != null) {
+      final tokens = widget.knownPayload?.whenOrNull(
+        tokenOutgoingTransfer: (data) => data.tokens,
+        tokenSwapBack: (data) => data.tokens,
       );
-    } else {
-      _getTokenTransferData(tokens);
+
+      if (tokens == null) {
+        _data.accept(
+          TransferData(
+            amount: Money.fromBigIntWithCurrency(
+              widget.amount,
+              nativeCurrency!,
+            ),
+          ),
+        );
+      } else {
+        _getTokenTransferData(tokens);
+      }
     }
 
     _subscription =
