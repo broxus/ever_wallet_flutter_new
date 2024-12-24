@@ -123,7 +123,7 @@ class TokenWalletTransactionsCubit extends Cubit<TokenWalletTransactionsState> {
     );
   }
 
-  void _createSubs(TokenWallet wallet, Transport transport) {
+  void _createSubs(GenericTokenWallet wallet, Transport transport) {
     _closeSubs();
 
     _ordinaryTransactionsSub = Rx.combineLatest2<

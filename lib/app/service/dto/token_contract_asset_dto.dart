@@ -1,7 +1,7 @@
 // ignore_for_file: no-magic-number
 
-import 'package:app/data/models/network_type.dart';
-import 'package:app/data/models/token_contract_asset.dart';
+import 'package:app/app/service/connection/network_type.dart';
+import 'package:app/data/models/token_contract/token_contract_asset.dart';
 import 'package:freezed_annotation/freezed_annotation.dart';
 import 'package:hive_flutter/hive_flutter.dart';
 import 'package:nekoton_repository/nekoton_repository.dart';

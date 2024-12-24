@@ -25,7 +25,7 @@ mixin _$CustomCurrency {
 
   /// Price in USD
   String get price => throw _privateConstructorUsedError;
-  NetworkType get networkType => throw _privateConstructorUsedError;
+  String get networkType => throw _privateConstructorUsedError;
 
   /// Serializes this CustomCurrency to a JSON map.
   Map<String, dynamic> toJson() => throw _privateConstructorUsedError;
@@ -44,10 +44,7 @@ abstract class $CustomCurrencyCopyWith<$Res> {
       _$CustomCurrencyCopyWithImpl<$Res, CustomCurrency>;
   @useResult
   $Res call(
-      {String currency,
-      Address address,
-      String price,
-      NetworkType networkType});
+      {String currency, Address address, String price, String networkType});
 
   $AddressCopyWith<$Res> get address;
 }
@@ -88,7 +85,7 @@ class _$CustomCurrencyCopyWithImpl<$Res, $Val extends CustomCurrency>
       networkType: null == networkType
           ? _value.networkType
           : networkType // ignore: cast_nullable_to_non_nullable
-              as NetworkType,
+              as String,
     ) as $Val);
   }
 
@@ -112,10 +109,7 @@ abstract class _$$CustomCurrencyImplCopyWith<$Res>
   @override
   @useResult
   $Res call(
-      {String currency,
-      Address address,
-      String price,
-      NetworkType networkType});
+      {String currency, Address address, String price, String networkType});
 
   @override
   $AddressCopyWith<$Res> get address;
@@ -155,7 +149,7 @@ class __$$CustomCurrencyImplCopyWithImpl<$Res>
       networkType: null == networkType
           ? _value.networkType
           : networkType // ignore: cast_nullable_to_non_nullable
-              as NetworkType,
+              as String,
     ));
   }
 }
@@ -181,7 +175,7 @@ class _$CustomCurrencyImpl implements _CustomCurrency {
   @override
   final String price;
   @override
-  final NetworkType networkType;
+  final String networkType;
 
   @override
   String toString() {
@@ -228,7 +222,7 @@ abstract class _CustomCurrency implements CustomCurrency {
       {required final String currency,
       required final Address address,
       required final String price,
-      required final NetworkType networkType}) = _$CustomCurrencyImpl;
+      required final String networkType}) = _$CustomCurrencyImpl;
 
   factory _CustomCurrency.fromJson(Map<String, dynamic> json) =
       _$CustomCurrencyImpl.fromJson;
@@ -242,7 +236,7 @@ abstract class _CustomCurrency implements CustomCurrency {
   @override
   String get price;
   @override
-  NetworkType get networkType;
+  String get networkType;
 
   /// Create a copy of CustomCurrency
   /// with the given fields replaced by the non-null parameter values.

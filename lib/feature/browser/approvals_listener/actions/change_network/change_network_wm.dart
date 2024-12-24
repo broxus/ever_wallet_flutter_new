@@ -1,8 +1,8 @@
 import 'dart:async';
 
+import 'package:app/app/service/connection/data/connection_data/connection_data.dart';
 import 'package:app/core/error_handler_factory.dart';
 import 'package:app/core/wm/custom_wm.dart';
-import 'package:app/data/models/models.dart';
 import 'package:app/di/di.dart';
 import 'package:app/feature/browser/approvals_listener/actions/change_network/change_network_model.dart';
 import 'package:app/feature/browser/approvals_listener/actions/change_network/change_network_widget.dart';

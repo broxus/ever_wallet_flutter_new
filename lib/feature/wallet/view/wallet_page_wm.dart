@@ -140,7 +140,6 @@ class WalletPageWidgetModel
     _changeTransactions = walletTonState.wallet?.fieldUpdatesStream.listen((_) {
       final newNumber = walletTonState.wallet?.unconfirmedTransactions.length;
       if (_numberUnconfirmedTransactions != newNumber) {
-        print("!!! update");
         _numberUnconfirmedTransactions = newNumber;
         _hasUnconfirmedTransactionsNotifier.accept(
           (_numberUnconfirmedTransactions ?? 0) > 0,

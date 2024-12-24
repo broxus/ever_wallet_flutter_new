@@ -1,13 +1,13 @@
-import 'package:app/data/models/network_type.dart';
-import 'package:app/feature/network/view/network_icon.dart';
+import 'package:app/app/service/connection/data/connection_data/connection_data.dart';
+import 'package:app/widgets/network_icon.dart';
 import 'package:flutter/material.dart';
 import 'package:lucide_icons_flutter/lucide_icons.dart';
 import 'package:ui_components_lib/ui_components_lib.dart';
 
 class NetworkDropItem extends StatelessWidget {
-  const NetworkDropItem({required this.networkType, super.key});
+  const NetworkDropItem({required this.data, super.key});
 
-  final NetworkType networkType;
+  final ConnectionData data;
 
   @override
   Widget build(BuildContext context) {
@@ -25,9 +25,8 @@ class NetworkDropItem extends StatelessWidget {
       child: Row(
         children: [
           NetworkIcon(
-            type: networkType,
-            itemSize: 32,
-            iconSize: DimensSizeV2.d14,
+            type: data.networkType,
+            itemSize: DimensSizeV2.d32,
           ),
           const SizedBox(width: DimensSizeV2.d4),
           const Icon(

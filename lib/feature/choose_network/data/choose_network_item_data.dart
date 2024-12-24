@@ -1,5 +1,3 @@
-import 'package:app/generated/generated.dart';
-
 class ChooseNetworkItemData {
   ChooseNetworkItemData({
     required this.id,
@@ -8,6 +6,6 @@ class ChooseNetworkItemData {
   });
 
   final String id;
-  final SvgGenImage icon;
+  final String? icon;
   final String title;
 }

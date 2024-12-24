@@ -1,3 +1,4 @@
+import 'package:app/app/service/connection/presets_connection_service.dart';
 import 'package:app/app/service/service.dart';
 import 'package:app/di/di.dart';
 import 'package:app/feature/network/edit_network/edit_network_view.dart';
@@ -22,6 +23,7 @@ class _EditNetworkPageState extends State<EditNetworkPage> {
     return BlocProvider(
       create: (context) => ManageNetworksBloc(
         inject<ConnectionsStorageService>(),
+        inject<PresetsConnectionService>(),
       ),
       child: BlocBuilder<ManageNetworksBloc, ManageNetworksState>(
         builder: (context, state) {
