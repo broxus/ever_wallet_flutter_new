@@ -11,11 +11,13 @@ import 'package:ui_components_lib/v2/ui_components_lib_v2.dart';
 class TokenTransferInfoWidget
     extends ElementaryWidget<TokenTransferInfoWidgetModel> {
   const TokenTransferInfoWidget({
-    required this.amount,
     required this.recipient,
     required this.fee,
+    this.margin = EdgeInsets.zero,
+    this.amount,
     this.attachedAmount,
     this.rootTokenContract,
+    this.transactionIdHash,
     this.comment,
     this.feeError,
     this.color,
@@ -24,11 +26,13 @@ class TokenTransferInfoWidget
     WidgetModelFactory wmFactory = defaultTokenTransferInfoWidgetModelFactory,
   }) : super(wmFactory, key: key);
 
-  final Money amount;
+  final EdgeInsets margin;
+  final Money? amount;
   final Address recipient;
   final BigInt? fee;
   final BigInt? attachedAmount;
   final Address? rootTokenContract;
+  final String? transactionIdHash;
   final String? comment;
   final String? feeError;
   final Color? color;
@@ -37,70 +41,77 @@ class TokenTransferInfoWidget
   @override
   Widget build(TokenTransferInfoWidgetModel wm) {
     final theme = wm.theme;
+    final labelSmallContent3 = theme.textStyles.labelSmall.copyWith(
+      color: theme.colors.content3,
+    );
 
     return PrimaryCard(
       padding: const EdgeInsets.all(DimensSizeV2.d16),
+      margin: margin,
       borderRadius: BorderRadius.circular(DimensRadiusV2.radius16),
       color: color,
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          _InfoRow(
-            label: LocaleKeys.token.tr(),
-            child: Text(
-              amount.currency.symbol,
-              style: theme.textStyles.labelSmall,
+          if (amount != null)
+            _InfoRow(
+              label: LocaleKeys.token.tr(),
+              child: Text(
+                amount!.currency.symbol,
+                style: theme.textStyles.labelSmall,
+              ),
             ),
-          ),
           const SizedBox(height: DimensSizeV2.d16),
-          _InfoRow(
-            label: LocaleKeys.amountWord.tr(),
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.end,
-              children: [
-                StateNotifierBuilder(
-                  listenableState: wm.tokenAsset,
-                  builder: (_, asset) {
-                    Widget? icon;
+          if (amount != null)
+            _InfoRow(
+              label: LocaleKeys.amountWord.tr(),
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.end,
+                children: [
+                  StateNotifierBuilder(
+                    listenableState: wm.tokenAsset,
+                    builder: (_, asset) {
+                      Widget? icon;
 
-                    if (asset != null) {
-                      icon = TokenWalletIconWidget(
-                        address: asset.address,
-                        logoURI: asset.logoURI,
-                        version: asset.version,
-                        size: DimensSizeV2.d20,
-                      );
-                    } else if (wm.isNative) {
-                      icon = TonWalletIconWidget(
-                        path: wm.nativeTokenIcon,
-                        size: DimensSizeV2.d20,
-                      );
-                    }
+                      if (asset != null) {
+                        icon = TokenWalletIconWidget(
+                          address: asset.address,
+                          logoURI: asset.logoURI,
+                          version: asset.version,
+                          size: DimensSizeV2.d20,
+                        );
+                      } else if (wm.isNative) {
+                        icon = TonWalletIconWidget(
+                          path: wm.nativeTokenIcon,
+                          size: DimensSizeV2.d20,
+                        );
+                      }
 
-                    return AmountWidget.fromMoney(
-                      amount: amount,
-                      icon: icon,
-                      includeSymbol: false,
-                    );
-                  },
-                ),
-                StateNotifierBuilder(
-                  listenableState: wm.amountPrice,
-                  builder: (_, value) => value != null
-                      ? Padding(
-                          padding: const EdgeInsets.only(top: DimensSizeV2.d4),
-                          child: AmountWidget.dollars(
-                            amount: value,
-                            style: theme.textStyles.labelXSmall.copyWith(
-                              color: theme.colors.content3,
+                      return AmountWidget.fromMoney(
+                        amount: amount!,
+                        icon: icon,
+                        includeSymbol: false,
+                      );
+                    },
+                  ),
+                  StateNotifierBuilder(
+                    listenableState: wm.amountPrice,
+                    builder: (_, value) => value != null
+                        ? Padding(
+                            padding:
+                                const EdgeInsets.only(top: DimensSizeV2.d4),
+                            child: AmountWidget.dollars(
+                              amount: value,
+                              style: theme.textStyles.labelXSmall.copyWith(
+                                color: theme.colors.content3,
+                              ),
                             ),
-                          ),
-                        )
-                      : const SizedBox.shrink(),
-                ),
-              ],
+                          )
+                        : const SizedBox.shrink(),
+                  ),
+                ],
+              ),
             ),
-          ),
           DoubleSourceBuilder(
             firstSource: wm.attachedAmount,
             secondSource: wm.attachedAmountPrice,
@@ -189,9 +200,7 @@ class TokenTransferInfoWidget
             children: [
               Text(
                 LocaleKeys.recipientWord.tr(),
-                style: theme.textStyles.labelSmall.copyWith(
-                  color: theme.colors.content3,
-                ),
+                style: labelSmallContent3,
               ),
               Text(
                 recipient.address,
@@ -199,6 +208,24 @@ class TokenTransferInfoWidget
               ),
             ],
           ),
+          if (transactionIdHash != null)
+            Padding(
+              padding: const EdgeInsets.only(top: DimensSizeV2.d16),
+              child: SeparatedColumn(
+                separatorSize: DimensSizeV2.d2,
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Text(
+                    LocaleKeys.transactionId.tr(),
+                    style: labelSmallContent3,
+                  ),
+                  Text(
+                    transactionIdHash!,
+                    style: theme.textStyles.labelSmall,
+                  ),
+                ],
+              ),
+            ),
           if (comment != null)
             Padding(
               padding: const EdgeInsets.only(top: DimensSizeV2.d16),
@@ -208,9 +235,7 @@ class TokenTransferInfoWidget
                 children: [
                   Text(
                     LocaleKeys.commentWord.tr(),
-                    style: theme.textStyles.labelSmall.copyWith(
-                      color: theme.colors.content3,
-                    ),
+                    style: labelSmallContent3,
                   ),
                   Text(
                     comment!,
