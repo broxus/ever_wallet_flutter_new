@@ -2,6 +2,7 @@ import 'dart:async';
 
 import 'package:app/app/service/messenger/message.dart';
 import 'package:app/app/service/messenger/service/service.dart';
+import 'package:app/core/bloc/bloc_mixin.dart';
 import 'package:app/di/di.dart';
 import 'package:app/utils/utils.dart';
 import 'package:bloc/bloc.dart';
@@ -13,7 +14,7 @@ part 'messenger_state.dart';
 /// Cubit that process messages and shows them to the user. It is not a bloc
 /// because nextMessage() should immediately return next message to show and
 /// remove it from the FIFO and blocs are not designed to do that.
-class MessengerCubit extends Cubit<MessengerState> {
+class MessengerCubit extends Cubit<MessengerState> with BlocBaseMixin {
   MessengerCubit()
       : super(
           const MessengerState(
@@ -57,7 +58,7 @@ class MessengerCubit extends Cubit<MessengerState> {
     }
 
     // Put message to the start of the queue
-    emit(
+    emitSafe(
       state.copyWith(
         messagesToShow: [
           message,
@@ -78,14 +79,14 @@ class MessengerCubit extends Cubit<MessengerState> {
     }
 
     final [...remain, last] = state.messagesToShow;
-    emit(state.copyWith(messagesToShow: remain));
+    emitSafe(state.copyWith(messagesToShow: remain));
 
     return last;
   }
 
   /// Clear messages queue
   void clearQueue() {
-    emit(
+    emitSafe(
       state.copyWith(
         messagesToShow: [],
       ),

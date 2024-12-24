@@ -1,6 +1,7 @@
 // ignore_for_file: use_build_context_synchronously
 
 import 'package:app/app/service/service.dart';
+import 'package:app/core/bloc/bloc_mixin.dart';
 import 'package:app/di/di.dart';
 import 'package:app/generated/generated.dart';
 import 'package:app/utils/constants.dart';
@@ -21,7 +22,8 @@ part 'ton_confirm_transaction_state.dart';
 /// selecting custodian for confirmation, else it will calculate transaction.
 // TODO(knightforce): use Elementary instead Bloc
 class TonConfirmTransactionBloc
-    extends Bloc<TonConfirmTransactionEvent, TonConfirmTransactionState> {
+    extends Bloc<TonConfirmTransactionEvent, TonConfirmTransactionState>
+    with BlocBaseMixin {
   TonConfirmTransactionBloc({
     required this.context,
     required this.nekotonRepository,
@@ -92,7 +94,7 @@ class TonConfirmTransactionBloc
     on<_Prepare>((event, emit) => _handlePrepare(emit, event.custodian));
     on<_Send>((event, emit) => _handleSend(emit, event.password));
     on<_CompleteSend>(
-      (event, emit) => emit(
+      (event, emit) => emitSafe(
         TonConfirmTransactionState.sent(
           fees!,
           event.transaction,
@@ -102,7 +104,7 @@ class TonConfirmTransactionBloc
     );
     on<_AllowCloseSend>(
       (event, emit) =>
-          emit(const TonConfirmTransactionState.sending(canClose: true)),
+          emitSafe(const TonConfirmTransactionState.sending(canClose: true)),
     );
   }
 
@@ -126,7 +128,7 @@ class TonConfirmTransactionBloc
           .firstWhere((wallets) => wallets.address == walletAddress);
 
       if (walletState.hasError) {
-        emit(TonConfirmTransactionState.subscribeError(walletState.error!));
+        emitSafe(TonConfirmTransactionState.subscribeError(walletState.error!));
 
         return;
       }
@@ -138,7 +140,7 @@ class TonConfirmTransactionBloc
       final isPossibleToSendMessage = balance > (fees! + amount);
 
       if (!isPossibleToSendMessage) {
-        emit(
+        emitSafe(
           TonConfirmTransactionState.calculatingError(
             LocaleKeys.insufficientFunds.tr(),
             selectedCustodian,
@@ -149,10 +151,15 @@ class TonConfirmTransactionBloc
         return;
       }
 
-      emit(TonConfirmTransactionState.readyToSend(fees!, selectedCustodian));
+      emitSafe(
+        TonConfirmTransactionState.readyToSend(
+          fees!,
+          selectedCustodian,
+        ),
+      );
     } on FfiException catch (e, t) {
       _logger.severe('_handleSend', e, t);
-      emit(
+      emitSafe(
         TonConfirmTransactionState.calculatingError(
           e.message,
           selectedCustodian,
@@ -160,7 +167,7 @@ class TonConfirmTransactionBloc
       );
     } on Exception catch (e, t) {
       _logger.severe('_handleSend', e, t);
-      emit(
+      emitSafe(
         TonConfirmTransactionState.calculatingError(
           e.toString(),
           selectedCustodian,
@@ -174,7 +181,7 @@ class TonConfirmTransactionBloc
     String password,
   ) async {
     try {
-      emit(const TonConfirmTransactionState.sending(canClose: false));
+      emitSafe(const TonConfirmTransactionState.sending(canClose: false));
       // await unsignedMessage.refreshTimeout();
       // TODO(komarov): fix refresh_timeout in nekoton
       final unsignedMessage =
@@ -192,7 +199,7 @@ class TonConfirmTransactionBloc
 
       final signedMessage = await unsignedMessage.sign(signature: signature);
 
-      emit(const TonConfirmTransactionState.sending(canClose: true));
+      emitSafe(const TonConfirmTransactionState.sending(canClose: true));
 
       final transaction = await nekotonRepository.send(
         address: walletAddress,
@@ -213,14 +220,27 @@ class TonConfirmTransactionBloc
     } on FfiException catch (e, t) {
       _logger.severe('_handleSend', e, t);
       inject<MessengerService>().show(
-        Message.error(context: context, message: e.message),
+        Message.error(
+          context: context,
+          message: e.message,
+        ),
       );
-      emit(TonConfirmTransactionState.readyToSend(fees!, selectedCustodian));
+      emitSafe(
+        TonConfirmTransactionState.readyToSend(
+          fees!,
+          selectedCustodian,
+        ),
+      );
     } on Exception catch (e, t) {
       _logger.severe('_handleSend', e, t);
       inject<MessengerService>()
           .show(Message.error(context: context, message: e.toString()));
-      emit(TonConfirmTransactionState.readyToSend(fees!, selectedCustodian));
+      emitSafe(
+        TonConfirmTransactionState.readyToSend(
+          fees!,
+          selectedCustodian,
+        ),
+      );
     }
   }
 

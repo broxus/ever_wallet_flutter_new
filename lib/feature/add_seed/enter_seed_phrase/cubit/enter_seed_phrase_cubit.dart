@@ -1,6 +1,7 @@
 import 'package:app/app/service/messenger/message.dart';
 import 'package:app/app/service/messenger/service/messenger_service.dart';
 import 'package:app/app/service/network_connection/network_connection_service.dart';
+import 'package:app/core/bloc/bloc_mixin.dart';
 import 'package:app/di/di.dart';
 import 'package:app/feature/add_seed/enter_seed_phrase/cubit/enter_seed_phrase_input_state.dart';
 import 'package:app/feature/constants.dart';
@@ -33,7 +34,7 @@ typedef EnterSeedPhraseConfirmCallback = void Function(String phrase);
 
 /// Cubit that manages the state of the seed phrase entering page.
 class EnterSeedPhraseCubit extends Cubit<EnterSeedPhraseState>
-    with ConnectionMixin {
+    with ConnectionMixin, BlocBaseMixin {
   EnterSeedPhraseCubit(this.context, this.confirmCallback)
       : super(const EnterSeedPhraseState.initial());
 
@@ -97,7 +98,7 @@ class EnterSeedPhraseCubit extends Cubit<EnterSeedPhraseState>
         final st = state;
         // hasText means paste button must not be shown
         if (st is _Tab && st.displayPasteButton == hasText) {
-          emit(st.copyWith(displayPasteButton: !hasText));
+          emitSafe(st.copyWith(displayPasteButton: !hasText));
         }
 
         if (hasText) {
@@ -111,7 +112,7 @@ class EnterSeedPhraseCubit extends Cubit<EnterSeedPhraseState>
       f.addListener(() => _checkInputCompletion(index));
     });
     final inputs = _inputModels.take(_currentValue).toList();
-    emit(
+    emitSafe(
       EnterSeedPhraseState.tab(
         allowedValues: _allowedValues,
         currentValue: _currentValue.clamp(0, inputs.length),
@@ -146,7 +147,7 @@ class EnterSeedPhraseCubit extends Cubit<EnterSeedPhraseState>
     final st = state;
     if (st is _Tab) {
       final inputs = _inputModels.take(value).toList();
-      emit(
+      emitSafe(
         st.copyWith(
           currentValue: value.clamp(0, inputs.length),
           allowedValues: _allowedValues,
@@ -341,7 +342,7 @@ class EnterSeedPhraseCubit extends Cubit<EnterSeedPhraseState>
 
     final st = state;
     if (hasWrongWords && st is _Tab) {
-      emit(st.copyWith(inputs: _inputModels.take(_currentValue).toList()));
+      emitSafe(st.copyWith(inputs: _inputModels.take(_currentValue).toList()));
     }
 
     if (hasEmptyFields) {
@@ -378,7 +379,9 @@ class EnterSeedPhraseCubit extends Cubit<EnterSeedPhraseState>
     } finally {
       final st = state;
       if (changedModels && st is _Tab) {
-        emit(st.copyWith(inputs: _inputModels.take(_currentValue).toList()));
+        emitSafe(
+          st.copyWith(inputs: _inputModels.take(_currentValue).toList()),
+        );
       }
     }
   }
@@ -392,7 +395,7 @@ class EnterSeedPhraseCubit extends Cubit<EnterSeedPhraseState>
     void update() {
       final st = state;
       if (st is _Tab) {
-        emit(
+        emitSafe(
           st.copyWith(inputs: _inputModels.take(_currentValue).toList()),
         );
       }

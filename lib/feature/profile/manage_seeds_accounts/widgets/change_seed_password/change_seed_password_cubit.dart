@@ -1,4 +1,5 @@
 import 'package:app/app/service/service.dart';
+import 'package:app/core/bloc/bloc_mixin.dart';
 import 'package:app/generated/generated.dart';
 import 'package:bloc/bloc.dart';
 import 'package:freezed_annotation/freezed_annotation.dart';
@@ -8,7 +9,8 @@ part 'change_seed_password_cubit.freezed.dart';
 part 'change_seed_password_state.dart';
 
 /// Cubit that allows change password of seed
-class ChangeSeedPasswordCubit extends Cubit<ChangeSeedPasswordState> {
+class ChangeSeedPasswordCubit extends Cubit<ChangeSeedPasswordState>
+    with BlocBaseMixin {
   ChangeSeedPasswordCubit(
     this.nekotonRepository,
     this.publicKey,
@@ -36,9 +38,9 @@ class ChangeSeedPasswordCubit extends Cubit<ChangeSeedPasswordState> {
         publicKey: publicKey,
         newPassword: newPassword,
       );
-      emit(const ChangeSeedPasswordState.completed());
+      emitSafe(const ChangeSeedPasswordState.completed());
     } catch (_) {
-      emit(const ChangeSeedPasswordState.error(LocaleKeys.passwordIsWrong));
+      emitSafe(const ChangeSeedPasswordState.error(LocaleKeys.passwordIsWrong));
     }
   }
 }

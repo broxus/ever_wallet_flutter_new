@@ -4,6 +4,7 @@ import 'dart:async';
 import 'dart:io';
 
 import 'package:app/app/service/service.dart';
+import 'package:app/core/bloc/bloc_mixin.dart';
 import 'package:app/di/di.dart';
 import 'package:app/generated/generated.dart';
 import 'package:bloc/bloc.dart';
@@ -31,7 +32,7 @@ enum QrScanType {
 }
 
 /// Cubit that helps with scanning QR codes via camera or taking image.
-class QrCubit extends Cubit<QrCubitState> {
+class QrCubit extends Cubit<QrCubitState> with BlocBaseMixin {
   QrCubit({
     required this.context,
     required this.permissionsService,
@@ -71,9 +72,9 @@ class QrCubit extends Cubit<QrCubitState> {
   Future<void> requestCamera() async {
     final isGranted = await permissionsService.requestCamera();
     if (!isGranted) {
-      emit(const QrCubitState.givePermissionsError());
+      emitSafe(const QrCubitState.givePermissionsError());
     } else {
-      emit(QrCubitState.scanning(controller: controller));
+      emitSafe(QrCubitState.scanning(controller: controller));
     }
   }
 
@@ -137,7 +138,7 @@ class QrCubit extends Cubit<QrCubitState> {
     if (data == null) return;
 
     if (await _validate(data)) {
-      emit(QrCubitState.scanning(controller: controller, data: data));
+      emitSafe(QrCubitState.scanning(controller: controller, data: data));
     } else {
       inject<MessengerService>().show(
         Message.error(

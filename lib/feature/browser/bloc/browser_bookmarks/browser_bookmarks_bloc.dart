@@ -1,16 +1,20 @@
 import 'dart:async';
 
 import 'package:app/app/service/service.dart';
+import 'package:app/core/bloc/bloc_mixin.dart';
 import 'package:app/data/models/models.dart';
 import 'package:bloc/bloc.dart';
 import 'package:freezed_annotation/freezed_annotation.dart';
 
 part 'browser_bookmarks_bloc.freezed.dart';
+
 part 'browser_bookmarks_event.dart';
+
 part 'browser_bookmarks_state.dart';
 
 class BrowserBookmarksBloc
-    extends Bloc<BrowserBookmarksEvent, BrowserBookmarksState> {
+    extends Bloc<BrowserBookmarksEvent, BrowserBookmarksState>
+    with BlocBaseMixin {
   BrowserBookmarksBloc(
     this.browserBookmarksStorageService,
   ) : super(
@@ -61,7 +65,7 @@ class BrowserBookmarksBloc
       }
 
       // We should update it locally to prevent flicker when reordering
-      emit(
+      emitSafe(
         state.copyWith(
           items: [
             ...[...state.items]..removeWhere((i) => i.id == event.item.id),
@@ -79,14 +83,14 @@ class BrowserBookmarksBloc
       browserBookmarksStorageService.clearBrowserBookmarks();
     });
     on<_Set>((event, emit) {
-      emit(
+      emitSafe(
         state.copyWith(
           items: event.items,
         ),
       );
     });
     on<_SetIsEditing>((event, emit) {
-      emit(
+      emitSafe(
         state.copyWith(
           isEditing: event.value,
         ),

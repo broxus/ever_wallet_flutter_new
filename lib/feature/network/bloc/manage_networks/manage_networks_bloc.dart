@@ -2,6 +2,7 @@ import 'dart:async';
 
 import 'package:app/app/service/nekoton_related/connection_service/network_presets.dart';
 import 'package:app/app/service/service.dart';
+import 'package:app/core/bloc/bloc_mixin.dart';
 import 'package:app/data/models/models.dart';
 import 'package:bloc/bloc.dart';
 import 'package:collection/collection.dart';
@@ -9,11 +10,13 @@ import 'package:freezed_annotation/freezed_annotation.dart';
 import 'package:logging/logging.dart';
 
 part 'manage_networks_bloc.freezed.dart';
+
 part 'manage_networks_event.dart';
+
 part 'manage_networks_state.dart';
 
-class ManageNetworksBloc
-    extends Bloc<ManageNetworksEvent, ManageNetworksState> {
+class ManageNetworksBloc extends Bloc<ManageNetworksEvent, ManageNetworksState>
+    with BlocBaseMixin {
   ManageNetworksBloc(
     this.storageService,
   ) : super(
@@ -67,7 +70,7 @@ class ManageNetworksBloc
         return;
       }
 
-      emit(
+      emitSafe(
         state.copyWith(
           currentConnectionId: event.id,
         ),
@@ -79,7 +82,7 @@ class ManageNetworksBloc
     });
 
     on<_setConnections>((event, emit) {
-      emit(
+      emitSafe(
         state.copyWith(
           connections: event.connections,
         ),

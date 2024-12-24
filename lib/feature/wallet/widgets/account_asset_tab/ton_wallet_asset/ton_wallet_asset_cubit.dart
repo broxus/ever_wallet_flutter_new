@@ -1,6 +1,7 @@
 import 'dart:async';
 
 import 'package:app/app/service/service.dart';
+import 'package:app/core/bloc/bloc_mixin.dart';
 import 'package:app/data/models/models.dart';
 import 'package:bloc/bloc.dart';
 import 'package:collection/collection.dart';
@@ -12,7 +13,8 @@ part 'ton_wallet_asset_cubit.freezed.dart';
 
 part 'ton_wallet_asset_state.dart';
 
-class TonWalletAssetCubit extends Cubit<TonWalletAssetState> {
+class TonWalletAssetCubit extends Cubit<TonWalletAssetState>
+    with BlocBaseMixin {
   TonWalletAssetCubit({
     required this.balanceService,
     required this.tonWallet,
@@ -70,7 +72,7 @@ class TonWalletAssetCubit extends Cubit<TonWalletAssetState> {
           _updateState();
         });
       } else if (walletState?.hasError ?? false) {
-        emit(
+        emitSafe(
           TonWalletAssetState.subscribeError(
             tokenName: nekotonRepository.currentTransport.nativeTokenTicker,
             iconPath: nekotonRepository.currentTransport.nativeTokenIcon,
@@ -111,9 +113,9 @@ class TonWalletAssetCubit extends Cubit<TonWalletAssetState> {
   Future<void> retry() async {
     final st = state;
     if (st is _SubscribeError) {
-      emit(st.copyWith(isLoading: true));
+      emitSafe(st.copyWith(isLoading: true));
       await nekotonRepository.retrySubscriptions(tonWallet.address);
-      emit(st.copyWith(isLoading: false));
+      emitSafe(st.copyWith(isLoading: false));
     }
   }
 
@@ -141,7 +143,7 @@ class TonWalletAssetCubit extends Cubit<TonWalletAssetState> {
   }
 
   void _updateState() {
-    emit(
+    emitSafe(
       TonWalletAssetState.data(
         tokenName: nekotonRepository.currentTransport.nativeTokenTicker,
         iconPath: nekotonRepository.currentTransport.nativeTokenIcon,
