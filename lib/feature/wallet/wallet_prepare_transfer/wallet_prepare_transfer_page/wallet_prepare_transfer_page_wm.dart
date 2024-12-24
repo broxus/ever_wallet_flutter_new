@@ -322,7 +322,7 @@ class WalletPrepareTransferPageWidgetModel extends CustomWidgetModel<
       );
     }
 
-    context.goFurther(path);
+    contextSafe?.goFurther(path);
   }
 
   Future<void> _updateAsset(WalletPrepareTransferAsset asset) async {
