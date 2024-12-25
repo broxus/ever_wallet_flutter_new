@@ -4,6 +4,7 @@ import 'package:app/app/service/connection/data/transport_icons.dart';
 import 'package:app/app/service/connection/data/transport_manifest_option/transport_manifest_option.dart';
 import 'package:app/app/service/connection/data/transport_native_token_option/transport_native_token_option.dart';
 import 'package:app/app/service/connection/generic_token_subscriber.dart';
+import 'package:app/generated/generated.dart';
 import 'package:nekoton_repository/nekoton_repository.dart';
 
 class ConnectionTransportData {
@@ -27,6 +28,52 @@ class ConnectionTransportData {
     this.tokenApiBaseUrl,
     this.currencyApiBaseUrl,
   });
+
+  factory ConnectionTransportData.custom({
+    required String networkType,
+    required String networkName,
+  }) =>
+      ConnectionTransportData(
+        networkType: networkType,
+        networkName: networkName,
+        icons: TransportIcons(
+          nativeToken: Assets.images.tokenDefaultIcon.path,
+          network: Assets.images.networkDefault.path,
+          vector: Assets.images.networkVectorDefault.path,
+        ),
+        availableWalletTypes: const [
+          WalletType.everWallet(),
+          WalletType.multisig(MultisigType.multisig2_1),
+        ],
+        walletDefaultAccountNames: WalletDefaultAccountNames(
+          multisig: {
+            MultisigType.safeMultisigWallet: 'SafeMultisig24h',
+            MultisigType.safeMultisigWallet24h: 'SafeMultisig24h',
+            MultisigType.setcodeMultisigWallet: 'SetcodeMultisig',
+            MultisigType.setcodeMultisigWallet24h: 'SetcodeMultisig24h',
+            MultisigType.bridgeMultisigWallet: 'BridgeMultisig',
+            MultisigType.surfWallet: 'Surf wallet',
+            MultisigType.multisig2: 'Legacy Multisig',
+            MultisigType.multisig2_1: 'Multisig',
+          },
+          walletV3: 'Wallet V3',
+          highloadWalletV2: 'Highload Wallet V2',
+          everWallet: 'Ever Wallet',
+          walletV4R1: 'Wallet V4R1',
+          walletV4R2: 'Wallet V4R2',
+          walletV5R1: 'Wallet V5R1',
+        ),
+        defaultWalletType: const WalletType.everWallet(),
+        nativeTokenTickerOption:
+            const TransportNativeTokenTickerOption.fromConnection(),
+        manifestOption: const TransportManifestOption.fromConnection(),
+        nativeTokenAddress: const Address(address: ''),
+        seedPhraseWordsCount: [12, 24],
+        defaultNativeCurrencyDecimal: 9,
+        genericTokenType: GenericTokenType.tip3,
+        accountExplorerLinkType: AccountExplorerLinkType.accounts,
+        transactionExplorerLinkType: TransactionExplorerLinkType.transactions,
+      );
 
   final TransportIcons icons;
   final List<WalletType> availableWalletTypes;

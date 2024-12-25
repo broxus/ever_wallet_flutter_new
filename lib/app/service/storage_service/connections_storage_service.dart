@@ -171,9 +171,9 @@ class ConnectionsStorageService extends AbstractStorageService {
 
     final connectionsText = connections
         .map(
-          (connection) => 'name: ${connection.name} '
-              'networkType: ${connection.networkType} '
-              'isPreset: ${connection.isPreset} '
+          (connection) => 'name: ${connection.name}; '
+              'networkType: ${connection.networkType}; '
+              'isPreset: ${connection.isPreset}; '
               'id: ${connection.id}',
         )
         .join(',\n');

@@ -1,4 +1,5 @@
 import 'package:app/app/service/connection/data/connection_data/connection_data.dart';
+import 'package:app/app/service/connection/data/connection_transport/connection_transport_data.dart';
 import 'package:app/app/service/connection/network_type.dart';
 import 'package:app/app/service/connection/presets_connection_service.dart';
 import 'package:app/app/service/connection/transport_strategies/app_transport_strategy.dart';
@@ -31,7 +32,7 @@ class ConnectionService {
   final PresetsConnectionService _presetsConnectionService;
 
   /// Set up selected connection.
-  Future<bool> setUp() async {
+  Future<void> setUp() async {
     final connection = _storageService.currentConnection;
 
     _log.info('setUp: starting with ${connection.name}');
@@ -43,21 +44,19 @@ class ConnectionService {
 
       await _updateTransportByConnection(connection);
     });
-
-    return true;
   }
 
   /// Create TransportStrategy based on [ConnectionData.networkType] of
   /// [connection] data.
-  AppTransportStrategy? createStrategyByConnection(
+  AppTransportStrategy createStrategyByConnection(
     Transport transport,
     ConnectionData connection,
   ) {
-    final data = _presetsConnectionService.transports[connection.networkType];
-
-    if (data == null) {
-      return null;
-    }
+    final data = _presetsConnectionService.transports[connection.networkType] ??
+        ConnectionTransportData.custom(
+          networkType: connection.networkType,
+          networkName: connection.name,
+        );
 
     return CommonTransportStrategy.fromData(
       transport,
@@ -143,12 +142,7 @@ class ConnectionService {
     _log.finest('updateTransportByConnection: ${connection.name}');
     try {
       final transport = await createTransportByConnection(connection);
-
       final strategy = createStrategyByConnection(transport, connection);
-
-      if (strategy == null) {
-        return;
-      }
 
       await _nekotonRepository.updateTransport(strategy);
       _storageService.updateNetworksIds(
