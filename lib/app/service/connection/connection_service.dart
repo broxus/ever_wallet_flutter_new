@@ -80,6 +80,7 @@ class ConnectionService {
         ______,
         _______,
         ________,
+        _________,
         latencyDetectionInterval,
         maxLatency,
         endpointSelectionRetryCount,
@@ -106,6 +107,7 @@ class ConnectionService {
         ______,
         _______,
         ________,
+        _________,
       ) =>
           _nekotonRepository.createProtoTransport(
         client: ProtoHttpClient(),
@@ -125,6 +127,7 @@ class ConnectionService {
         ______,
         _______,
         ________,
+        _________,
       ) =>
           _nekotonRepository.createJrpcTransport(
         client: JrpcHttpClient(),

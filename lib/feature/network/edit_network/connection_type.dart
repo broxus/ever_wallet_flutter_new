@@ -45,6 +45,7 @@ enum ConnectionType {
         _____________,
         ______________,
         _______________,
+        ________________,
       ) =>
           ConnectionType.gql,
       proto: (
@@ -59,6 +60,7 @@ enum ConnectionType {
         _________,
         __________,
         ___________,
+        ____________,
       ) =>
           ConnectionType.proto,
       jrpc: (
@@ -73,6 +75,7 @@ enum ConnectionType {
         _________,
         __________,
         ___________,
+        ____________,
       ) =>
           ConnectionType.jrpc,
     );
