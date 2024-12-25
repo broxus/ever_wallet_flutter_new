@@ -15,16 +15,16 @@ final _supportLink = Uri.parse('https://t.me/broxus_chat');
 class TxTreeSimulationErrorWidget extends StatelessWidget {
   const TxTreeSimulationErrorWidget({
     required this.txErrors,
-    required this.symbol,
     required this.isConfirmed,
     required this.onConfirm,
+    this.symbol,
     super.key,
   });
 
   final List<TxTreeSimulationErrorItem> txErrors;
-  final String symbol;
   final bool isConfirmed;
   final ValueChanged<bool> onConfirm;
+  final String? symbol;
 
   @override
   Widget build(BuildContext context) {
@@ -73,7 +73,7 @@ class TxTreeSimulationErrorWidget extends StatelessWidget {
                             TextSpan(
                               text:
                                   LocaleKeys.txTreeSimulationErrorHintCanFix.tr(
-                                args: [symbol],
+                                args: [if (symbol != null) symbol!],
                               ),
                             )
                           else

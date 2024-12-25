@@ -148,10 +148,10 @@ class SendMessageWidget extends ElementaryWidget<SendMessageWidgetModel> {
               return SeparatedColumn(
                 mainAxisSize: MainAxisSize.min,
                 children: [
-                  if (hasTxError && wm.symbol != null)
+                  if (hasTxError)
                     TxTreeSimulationErrorWidget(
                       txErrors: txErrors!,
-                      symbol: wm.symbol!,
+                      symbol: wm.symbol,
                       isConfirmed: isConfirmed ?? false,
                       onConfirm: wm.onConfirmed,
                     ),
