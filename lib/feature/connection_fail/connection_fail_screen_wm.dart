@@ -6,6 +6,8 @@ import 'package:app/di/di.dart';
 import 'package:app/feature/bootstrap_failed/cubit/rerun_cubit/rerun_cubit.dart';
 import 'package:app/feature/connection_fail/connection_fail_screen.dart';
 import 'package:app/feature/connection_fail/connection_fail_screen_model.dart';
+import 'package:app/feature/contact_support/widgets/contact_support/contact_support_mode.dart';
+import 'package:app/feature/contact_support/widgets/contact_support/contact_support_sheet.dart';
 import 'package:elementary/elementary.dart';
 import 'package:flutter/widgets.dart';
 import 'package:ui_components_lib/ui_components_lib.dart';
@@ -38,5 +40,12 @@ class ConnectionFailWidgetModel
 
   Future<void> onPressedTryAgain() async {
     model.tryAgain(context);
+  }
+
+  void onPressedContactUs() {
+    showContactSupportSheet(
+      context: context,
+      mode: ContactSupportMode.initiatedByCrash,
+    );
   }
 }

@@ -662,4 +662,7 @@ abstract class LocaleKeys {
   static const expirationTimeDetails = 'expirationTimeDetails';
   static const errorMessageMaxUnconfirmedTransactions =
       'errorMessageMaxUnconfirmedTransactions';
+  static const noRpcConnection = 'noRpcConnection';
+  static const tryAgainOrContact = 'tryAgainOrContact';
+  static const contactUs = 'contactUs';
 }
