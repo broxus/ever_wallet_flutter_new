@@ -25,20 +25,11 @@ class AddNewExternalAccountCubit extends Cubit<AddNewExternalAccountState> {
   final NekotonRepository nekotonRepository;
   final CurrentAccountsService currentAccountsService;
 
-  PublicKey? getPublicKey() {
-    return currentAccountsService.currentActiveAccount?.publicKey;
-  }
-
   Future<void> createAccount(
     BuildContext context,
     String addressString,
     String name,
   ) async {
-    final publicKey = this.publicKey ?? getPublicKey();
-    if (publicKey == null) return;
-    final seedKey = nekotonRepository.seedList.findSeedKey(publicKey);
-    if (seedKey == null) return;
-
     emit(const AddNewExternalAccountState.loading());
     final newName = name.trim();
     final address = Address(address: addressString.trim());
@@ -51,7 +42,7 @@ class AddNewExternalAccountCubit extends Cubit<AddNewExternalAccountState> {
 
         return;
       }
-      await seedKey.accountList.addExternalAccount(
+      await nekotonRepository.addExternalAccount(
         address: address,
         name: newName.isEmpty ? null : newName,
       );
