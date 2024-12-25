@@ -64,6 +64,7 @@ extension TransportExtension on TransportStrategy {
           ___________,
           ____________,
           _____________,
+          ______________,
         ) {
           final settings = (transport as GqlTransport).gqlConnection.settings;
           return GqlConnection(
@@ -88,6 +89,7 @@ extension TransportExtension on TransportStrategy {
           isPreset,
           canBeEdited,
           sortingOrder,
+          isUsedOnStart,
         ) =>
             ProtoConnection('proto', JrpcSocketParams(endpoint)),
         jrpc: (
@@ -102,6 +104,7 @@ extension TransportExtension on TransportStrategy {
           isPreset,
           canBeEdited,
           sortingOrder,
+          isUsedOnStart,
         ) =>
             JrpcConnection('jrpc', JrpcSocketParams(endpoint)),
       ),

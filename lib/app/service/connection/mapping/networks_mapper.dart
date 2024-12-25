@@ -15,6 +15,7 @@ List<ConnectionData> mapToConnectionDataList(
     final id = network['id'] as String;
     final name = network['name'] as String;
     final group = network['group'] as String;
+    final isUsedOnStart = (network['isUsedOnStart'] as bool?) ?? true;
     final endpoints = castJsonList<String>(network['endpoints']);
     final networkType = network['networkType'] as String;
     final blockExplorerUrl = network['blockExplorerUrl'] as String;
@@ -33,6 +34,7 @@ List<ConnectionData> mapToConnectionDataList(
           manifestUrl: manifestUrl,
           canBeEdited: false,
           sortingOrder: sortingOrder,
+          isUsedOnStart: isUsedOnStart,
         );
       case 'gql':
         data = ConnectionData.gqlPreset(
@@ -45,6 +47,7 @@ List<ConnectionData> mapToConnectionDataList(
           manifestUrl: manifestUrl,
           canBeEdited: false,
           sortingOrder: sortingOrder,
+          isUsedOnStart: isUsedOnStart,
           latencyDetectionInterval:
               parseToInt(network['latencyDetectionInterval']),
           maxLatency: parseToInt(network['maxLatency']),
@@ -62,6 +65,7 @@ List<ConnectionData> mapToConnectionDataList(
           manifestUrl: manifestUrl,
           canBeEdited: false,
           sortingOrder: sortingOrder,
+          isUsedOnStart: isUsedOnStart,
         );
       default:
         continue;

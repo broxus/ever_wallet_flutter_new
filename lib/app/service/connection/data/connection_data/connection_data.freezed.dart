@@ -41,6 +41,7 @@ mixin _$ConnectionData {
   bool get isPreset => throw _privateConstructorUsedError;
   bool get canBeEdited => throw _privateConstructorUsedError;
   double get sortingOrder => throw _privateConstructorUsedError;
+  bool get isUsedOnStart => throw _privateConstructorUsedError;
   @optionalTypeArgs
   TResult when<TResult extends Object?>({
     required TResult Function(
@@ -56,6 +57,7 @@ mixin _$ConnectionData {
             bool isPreset,
             bool canBeEdited,
             double sortingOrder,
+            bool isUsedOnStart,
             int? latencyDetectionInterval,
             int? maxLatency,
             int? endpointSelectionRetryCount)
@@ -71,7 +73,8 @@ mixin _$ConnectionData {
             String nativeTokenTicker,
             bool isPreset,
             bool canBeEdited,
-            double sortingOrder)
+            double sortingOrder,
+            bool isUsedOnStart)
         proto,
     required TResult Function(
             String id,
@@ -84,7 +87,8 @@ mixin _$ConnectionData {
             String nativeTokenTicker,
             bool isPreset,
             bool canBeEdited,
-            double sortingOrder)
+            double sortingOrder,
+            bool isUsedOnStart)
         jrpc,
   }) =>
       throw _privateConstructorUsedError;
@@ -103,6 +107,7 @@ mixin _$ConnectionData {
             bool isPreset,
             bool canBeEdited,
             double sortingOrder,
+            bool isUsedOnStart,
             int? latencyDetectionInterval,
             int? maxLatency,
             int? endpointSelectionRetryCount)?
@@ -118,7 +123,8 @@ mixin _$ConnectionData {
             String nativeTokenTicker,
             bool isPreset,
             bool canBeEdited,
-            double sortingOrder)?
+            double sortingOrder,
+            bool isUsedOnStart)?
         proto,
     TResult? Function(
             String id,
@@ -131,7 +137,8 @@ mixin _$ConnectionData {
             String nativeTokenTicker,
             bool isPreset,
             bool canBeEdited,
-            double sortingOrder)?
+            double sortingOrder,
+            bool isUsedOnStart)?
         jrpc,
   }) =>
       throw _privateConstructorUsedError;
@@ -150,6 +157,7 @@ mixin _$ConnectionData {
             bool isPreset,
             bool canBeEdited,
             double sortingOrder,
+            bool isUsedOnStart,
             int? latencyDetectionInterval,
             int? maxLatency,
             int? endpointSelectionRetryCount)?
@@ -165,7 +173,8 @@ mixin _$ConnectionData {
             String nativeTokenTicker,
             bool isPreset,
             bool canBeEdited,
-            double sortingOrder)?
+            double sortingOrder,
+            bool isUsedOnStart)?
         proto,
     TResult Function(
             String id,
@@ -178,7 +187,8 @@ mixin _$ConnectionData {
             String nativeTokenTicker,
             bool isPreset,
             bool canBeEdited,
-            double sortingOrder)?
+            double sortingOrder,
+            bool isUsedOnStart)?
         jrpc,
     required TResult orElse(),
   }) =>
@@ -232,7 +242,8 @@ abstract class $ConnectionDataCopyWith<$Res> {
       String nativeTokenTicker,
       bool isPreset,
       bool canBeEdited,
-      double sortingOrder});
+      double sortingOrder,
+      bool isUsedOnStart});
 }
 
 /// @nodoc
@@ -260,6 +271,7 @@ class _$ConnectionDataCopyWithImpl<$Res, $Val extends ConnectionData>
     Object? isPreset = null,
     Object? canBeEdited = null,
     Object? sortingOrder = null,
+    Object? isUsedOnStart = null,
   }) {
     return _then(_value.copyWith(
       id: null == id
@@ -302,6 +314,10 @@ class _$ConnectionDataCopyWithImpl<$Res, $Val extends ConnectionData>
           ? _value.sortingOrder
           : sortingOrder // ignore: cast_nullable_to_non_nullable
               as double,
+      isUsedOnStart: null == isUsedOnStart
+          ? _value.isUsedOnStart
+          : isUsedOnStart // ignore: cast_nullable_to_non_nullable
+              as bool,
     ) as $Val);
   }
 }
@@ -327,6 +343,7 @@ abstract class _$$ConnectionDataGqlImplCopyWith<$Res>
       bool isPreset,
       bool canBeEdited,
       double sortingOrder,
+      bool isUsedOnStart,
       int? latencyDetectionInterval,
       int? maxLatency,
       int? endpointSelectionRetryCount});
@@ -357,6 +374,7 @@ class __$$ConnectionDataGqlImplCopyWithImpl<$Res>
     Object? isPreset = null,
     Object? canBeEdited = null,
     Object? sortingOrder = null,
+    Object? isUsedOnStart = null,
     Object? latencyDetectionInterval = freezed,
     Object? maxLatency = freezed,
     Object? endpointSelectionRetryCount = freezed,
@@ -410,6 +428,10 @@ class __$$ConnectionDataGqlImplCopyWithImpl<$Res>
           ? _value.sortingOrder
           : sortingOrder // ignore: cast_nullable_to_non_nullable
               as double,
+      isUsedOnStart: null == isUsedOnStart
+          ? _value.isUsedOnStart
+          : isUsedOnStart // ignore: cast_nullable_to_non_nullable
+              as bool,
       latencyDetectionInterval: freezed == latencyDetectionInterval
           ? _value.latencyDetectionInterval
           : latencyDetectionInterval // ignore: cast_nullable_to_non_nullable
@@ -442,6 +464,7 @@ class _$ConnectionDataGqlImpl implements _ConnectionDataGql {
       required this.isPreset,
       required this.canBeEdited,
       required this.sortingOrder,
+      this.isUsedOnStart = true,
       this.latencyDetectionInterval,
       this.maxLatency,
       this.endpointSelectionRetryCount,
@@ -483,6 +506,9 @@ class _$ConnectionDataGqlImpl implements _ConnectionDataGql {
   @override
   final double sortingOrder;
   @override
+  @JsonKey()
+  final bool isUsedOnStart;
+  @override
   final int? latencyDetectionInterval;
   @override
   final int? maxLatency;
@@ -494,7 +520,7 @@ class _$ConnectionDataGqlImpl implements _ConnectionDataGql {
 
   @override
   String toString() {
-    return 'ConnectionData.gql(id: $id, name: $name, group: $group, endpoints: $endpoints, networkType: $networkType, isLocal: $isLocal, blockExplorerUrl: $blockExplorerUrl, manifestUrl: $manifestUrl, nativeTokenTicker: $nativeTokenTicker, isPreset: $isPreset, canBeEdited: $canBeEdited, sortingOrder: $sortingOrder, latencyDetectionInterval: $latencyDetectionInterval, maxLatency: $maxLatency, endpointSelectionRetryCount: $endpointSelectionRetryCount)';
+    return 'ConnectionData.gql(id: $id, name: $name, group: $group, endpoints: $endpoints, networkType: $networkType, isLocal: $isLocal, blockExplorerUrl: $blockExplorerUrl, manifestUrl: $manifestUrl, nativeTokenTicker: $nativeTokenTicker, isPreset: $isPreset, canBeEdited: $canBeEdited, sortingOrder: $sortingOrder, isUsedOnStart: $isUsedOnStart, latencyDetectionInterval: $latencyDetectionInterval, maxLatency: $maxLatency, endpointSelectionRetryCount: $endpointSelectionRetryCount)';
   }
 
   @override
@@ -522,6 +548,8 @@ class _$ConnectionDataGqlImpl implements _ConnectionDataGql {
                 other.canBeEdited == canBeEdited) &&
             (identical(other.sortingOrder, sortingOrder) ||
                 other.sortingOrder == sortingOrder) &&
+            (identical(other.isUsedOnStart, isUsedOnStart) ||
+                other.isUsedOnStart == isUsedOnStart) &&
             (identical(
                     other.latencyDetectionInterval, latencyDetectionInterval) ||
                 other.latencyDetectionInterval == latencyDetectionInterval) &&
@@ -549,6 +577,7 @@ class _$ConnectionDataGqlImpl implements _ConnectionDataGql {
       isPreset,
       canBeEdited,
       sortingOrder,
+      isUsedOnStart,
       latencyDetectionInterval,
       maxLatency,
       endpointSelectionRetryCount);
@@ -578,6 +607,7 @@ class _$ConnectionDataGqlImpl implements _ConnectionDataGql {
             bool isPreset,
             bool canBeEdited,
             double sortingOrder,
+            bool isUsedOnStart,
             int? latencyDetectionInterval,
             int? maxLatency,
             int? endpointSelectionRetryCount)
@@ -593,7 +623,8 @@ class _$ConnectionDataGqlImpl implements _ConnectionDataGql {
             String nativeTokenTicker,
             bool isPreset,
             bool canBeEdited,
-            double sortingOrder)
+            double sortingOrder,
+            bool isUsedOnStart)
         proto,
     required TResult Function(
             String id,
@@ -606,7 +637,8 @@ class _$ConnectionDataGqlImpl implements _ConnectionDataGql {
             String nativeTokenTicker,
             bool isPreset,
             bool canBeEdited,
-            double sortingOrder)
+            double sortingOrder,
+            bool isUsedOnStart)
         jrpc,
   }) {
     return gql(
@@ -622,6 +654,7 @@ class _$ConnectionDataGqlImpl implements _ConnectionDataGql {
         isPreset,
         canBeEdited,
         sortingOrder,
+        isUsedOnStart,
         latencyDetectionInterval,
         maxLatency,
         endpointSelectionRetryCount);
@@ -643,6 +676,7 @@ class _$ConnectionDataGqlImpl implements _ConnectionDataGql {
             bool isPreset,
             bool canBeEdited,
             double sortingOrder,
+            bool isUsedOnStart,
             int? latencyDetectionInterval,
             int? maxLatency,
             int? endpointSelectionRetryCount)?
@@ -658,7 +692,8 @@ class _$ConnectionDataGqlImpl implements _ConnectionDataGql {
             String nativeTokenTicker,
             bool isPreset,
             bool canBeEdited,
-            double sortingOrder)?
+            double sortingOrder,
+            bool isUsedOnStart)?
         proto,
     TResult? Function(
             String id,
@@ -671,7 +706,8 @@ class _$ConnectionDataGqlImpl implements _ConnectionDataGql {
             String nativeTokenTicker,
             bool isPreset,
             bool canBeEdited,
-            double sortingOrder)?
+            double sortingOrder,
+            bool isUsedOnStart)?
         jrpc,
   }) {
     return gql?.call(
@@ -687,6 +723,7 @@ class _$ConnectionDataGqlImpl implements _ConnectionDataGql {
         isPreset,
         canBeEdited,
         sortingOrder,
+        isUsedOnStart,
         latencyDetectionInterval,
         maxLatency,
         endpointSelectionRetryCount);
@@ -708,6 +745,7 @@ class _$ConnectionDataGqlImpl implements _ConnectionDataGql {
             bool isPreset,
             bool canBeEdited,
             double sortingOrder,
+            bool isUsedOnStart,
             int? latencyDetectionInterval,
             int? maxLatency,
             int? endpointSelectionRetryCount)?
@@ -723,7 +761,8 @@ class _$ConnectionDataGqlImpl implements _ConnectionDataGql {
             String nativeTokenTicker,
             bool isPreset,
             bool canBeEdited,
-            double sortingOrder)?
+            double sortingOrder,
+            bool isUsedOnStart)?
         proto,
     TResult Function(
             String id,
@@ -736,7 +775,8 @@ class _$ConnectionDataGqlImpl implements _ConnectionDataGql {
             String nativeTokenTicker,
             bool isPreset,
             bool canBeEdited,
-            double sortingOrder)?
+            double sortingOrder,
+            bool isUsedOnStart)?
         jrpc,
     required TResult orElse(),
   }) {
@@ -754,6 +794,7 @@ class _$ConnectionDataGqlImpl implements _ConnectionDataGql {
           isPreset,
           canBeEdited,
           sortingOrder,
+          isUsedOnStart,
           latencyDetectionInterval,
           maxLatency,
           endpointSelectionRetryCount);
@@ -817,6 +858,7 @@ abstract class _ConnectionDataGql implements ConnectionData {
       required final bool isPreset,
       required final bool canBeEdited,
       required final double sortingOrder,
+      final bool isUsedOnStart,
       final int? latencyDetectionInterval,
       final int? maxLatency,
       final int? endpointSelectionRetryCount}) = _$ConnectionDataGqlImpl;
@@ -846,6 +888,8 @@ abstract class _ConnectionDataGql implements ConnectionData {
   bool get canBeEdited;
   @override
   double get sortingOrder;
+  @override
+  bool get isUsedOnStart;
   int? get latencyDetectionInterval;
   int? get maxLatency;
   int? get endpointSelectionRetryCount;
@@ -877,7 +921,8 @@ abstract class _$$ConnectionDataProtoImplCopyWith<$Res>
       String nativeTokenTicker,
       bool isPreset,
       bool canBeEdited,
-      double sortingOrder});
+      double sortingOrder,
+      bool isUsedOnStart});
 }
 
 /// @nodoc
@@ -904,6 +949,7 @@ class __$$ConnectionDataProtoImplCopyWithImpl<$Res>
     Object? isPreset = null,
     Object? canBeEdited = null,
     Object? sortingOrder = null,
+    Object? isUsedOnStart = null,
   }) {
     return _then(_$ConnectionDataProtoImpl(
       id: null == id
@@ -950,6 +996,10 @@ class __$$ConnectionDataProtoImplCopyWithImpl<$Res>
           ? _value.sortingOrder
           : sortingOrder // ignore: cast_nullable_to_non_nullable
               as double,
+      isUsedOnStart: null == isUsedOnStart
+          ? _value.isUsedOnStart
+          : isUsedOnStart // ignore: cast_nullable_to_non_nullable
+              as bool,
     ));
   }
 }
@@ -969,6 +1019,7 @@ class _$ConnectionDataProtoImpl implements _ConnectionDataProto {
       required this.isPreset,
       required this.canBeEdited,
       required this.sortingOrder,
+      this.isUsedOnStart = true,
       final String? $type})
       : $type = $type ?? 'proto';
 
@@ -997,13 +1048,16 @@ class _$ConnectionDataProtoImpl implements _ConnectionDataProto {
   final bool canBeEdited;
   @override
   final double sortingOrder;
+  @override
+  @JsonKey()
+  final bool isUsedOnStart;
 
   @JsonKey(name: 'runtimeType')
   final String $type;
 
   @override
   String toString() {
-    return 'ConnectionData.proto(id: $id, name: $name, group: $group, endpoint: $endpoint, networkType: $networkType, blockExplorerUrl: $blockExplorerUrl, manifestUrl: $manifestUrl, nativeTokenTicker: $nativeTokenTicker, isPreset: $isPreset, canBeEdited: $canBeEdited, sortingOrder: $sortingOrder)';
+    return 'ConnectionData.proto(id: $id, name: $name, group: $group, endpoint: $endpoint, networkType: $networkType, blockExplorerUrl: $blockExplorerUrl, manifestUrl: $manifestUrl, nativeTokenTicker: $nativeTokenTicker, isPreset: $isPreset, canBeEdited: $canBeEdited, sortingOrder: $sortingOrder, isUsedOnStart: $isUsedOnStart)';
   }
 
   @override
@@ -1029,7 +1083,9 @@ class _$ConnectionDataProtoImpl implements _ConnectionDataProto {
             (identical(other.canBeEdited, canBeEdited) ||
                 other.canBeEdited == canBeEdited) &&
             (identical(other.sortingOrder, sortingOrder) ||
-                other.sortingOrder == sortingOrder));
+                other.sortingOrder == sortingOrder) &&
+            (identical(other.isUsedOnStart, isUsedOnStart) ||
+                other.isUsedOnStart == isUsedOnStart));
   }
 
   @JsonKey(includeFromJson: false, includeToJson: false)
@@ -1046,7 +1102,8 @@ class _$ConnectionDataProtoImpl implements _ConnectionDataProto {
       nativeTokenTicker,
       isPreset,
       canBeEdited,
-      sortingOrder);
+      sortingOrder,
+      isUsedOnStart);
 
   /// Create a copy of ConnectionData
   /// with the given fields replaced by the non-null parameter values.
@@ -1073,6 +1130,7 @@ class _$ConnectionDataProtoImpl implements _ConnectionDataProto {
             bool isPreset,
             bool canBeEdited,
             double sortingOrder,
+            bool isUsedOnStart,
             int? latencyDetectionInterval,
             int? maxLatency,
             int? endpointSelectionRetryCount)
@@ -1088,7 +1146,8 @@ class _$ConnectionDataProtoImpl implements _ConnectionDataProto {
             String nativeTokenTicker,
             bool isPreset,
             bool canBeEdited,
-            double sortingOrder)
+            double sortingOrder,
+            bool isUsedOnStart)
         proto,
     required TResult Function(
             String id,
@@ -1101,11 +1160,23 @@ class _$ConnectionDataProtoImpl implements _ConnectionDataProto {
             String nativeTokenTicker,
             bool isPreset,
             bool canBeEdited,
-            double sortingOrder)
+            double sortingOrder,
+            bool isUsedOnStart)
         jrpc,
   }) {
-    return proto(id, name, group, endpoint, networkType, blockExplorerUrl,
-        manifestUrl, nativeTokenTicker, isPreset, canBeEdited, sortingOrder);
+    return proto(
+        id,
+        name,
+        group,
+        endpoint,
+        networkType,
+        blockExplorerUrl,
+        manifestUrl,
+        nativeTokenTicker,
+        isPreset,
+        canBeEdited,
+        sortingOrder,
+        isUsedOnStart);
   }
 
   @override
@@ -1124,6 +1195,7 @@ class _$ConnectionDataProtoImpl implements _ConnectionDataProto {
             bool isPreset,
             bool canBeEdited,
             double sortingOrder,
+            bool isUsedOnStart,
             int? latencyDetectionInterval,
             int? maxLatency,
             int? endpointSelectionRetryCount)?
@@ -1139,7 +1211,8 @@ class _$ConnectionDataProtoImpl implements _ConnectionDataProto {
             String nativeTokenTicker,
             bool isPreset,
             bool canBeEdited,
-            double sortingOrder)?
+            double sortingOrder,
+            bool isUsedOnStart)?
         proto,
     TResult? Function(
             String id,
@@ -1152,11 +1225,23 @@ class _$ConnectionDataProtoImpl implements _ConnectionDataProto {
             String nativeTokenTicker,
             bool isPreset,
             bool canBeEdited,
-            double sortingOrder)?
+            double sortingOrder,
+            bool isUsedOnStart)?
         jrpc,
   }) {
-    return proto?.call(id, name, group, endpoint, networkType, blockExplorerUrl,
-        manifestUrl, nativeTokenTicker, isPreset, canBeEdited, sortingOrder);
+    return proto?.call(
+        id,
+        name,
+        group,
+        endpoint,
+        networkType,
+        blockExplorerUrl,
+        manifestUrl,
+        nativeTokenTicker,
+        isPreset,
+        canBeEdited,
+        sortingOrder,
+        isUsedOnStart);
   }
 
   @override
@@ -1175,6 +1260,7 @@ class _$ConnectionDataProtoImpl implements _ConnectionDataProto {
             bool isPreset,
             bool canBeEdited,
             double sortingOrder,
+            bool isUsedOnStart,
             int? latencyDetectionInterval,
             int? maxLatency,
             int? endpointSelectionRetryCount)?
@@ -1190,7 +1276,8 @@ class _$ConnectionDataProtoImpl implements _ConnectionDataProto {
             String nativeTokenTicker,
             bool isPreset,
             bool canBeEdited,
-            double sortingOrder)?
+            double sortingOrder,
+            bool isUsedOnStart)?
         proto,
     TResult Function(
             String id,
@@ -1203,13 +1290,25 @@ class _$ConnectionDataProtoImpl implements _ConnectionDataProto {
             String nativeTokenTicker,
             bool isPreset,
             bool canBeEdited,
-            double sortingOrder)?
+            double sortingOrder,
+            bool isUsedOnStart)?
         jrpc,
     required TResult orElse(),
   }) {
     if (proto != null) {
-      return proto(id, name, group, endpoint, networkType, blockExplorerUrl,
-          manifestUrl, nativeTokenTicker, isPreset, canBeEdited, sortingOrder);
+      return proto(
+          id,
+          name,
+          group,
+          endpoint,
+          networkType,
+          blockExplorerUrl,
+          manifestUrl,
+          nativeTokenTicker,
+          isPreset,
+          canBeEdited,
+          sortingOrder,
+          isUsedOnStart);
     }
     return orElse();
   }
@@ -1268,7 +1367,8 @@ abstract class _ConnectionDataProto implements ConnectionData {
       required final String nativeTokenTicker,
       required final bool isPreset,
       required final bool canBeEdited,
-      required final double sortingOrder}) = _$ConnectionDataProtoImpl;
+      required final double sortingOrder,
+      final bool isUsedOnStart}) = _$ConnectionDataProtoImpl;
 
   factory _ConnectionDataProto.fromJson(Map<String, dynamic> json) =
       _$ConnectionDataProtoImpl.fromJson;
@@ -1294,6 +1394,8 @@ abstract class _ConnectionDataProto implements ConnectionData {
   bool get canBeEdited;
   @override
   double get sortingOrder;
+  @override
+  bool get isUsedOnStart;
 
   /// Create a copy of ConnectionData
   /// with the given fields replaced by the non-null parameter values.
@@ -1322,7 +1424,8 @@ abstract class _$$ConnectionDataJrpcImplCopyWith<$Res>
       String nativeTokenTicker,
       bool isPreset,
       bool canBeEdited,
-      double sortingOrder});
+      double sortingOrder,
+      bool isUsedOnStart});
 }
 
 /// @nodoc
@@ -1349,6 +1452,7 @@ class __$$ConnectionDataJrpcImplCopyWithImpl<$Res>
     Object? isPreset = null,
     Object? canBeEdited = null,
     Object? sortingOrder = null,
+    Object? isUsedOnStart = null,
   }) {
     return _then(_$ConnectionDataJrpcImpl(
       id: null == id
@@ -1395,6 +1499,10 @@ class __$$ConnectionDataJrpcImplCopyWithImpl<$Res>
           ? _value.sortingOrder
           : sortingOrder // ignore: cast_nullable_to_non_nullable
               as double,
+      isUsedOnStart: null == isUsedOnStart
+          ? _value.isUsedOnStart
+          : isUsedOnStart // ignore: cast_nullable_to_non_nullable
+              as bool,
     ));
   }
 }
@@ -1414,6 +1522,7 @@ class _$ConnectionDataJrpcImpl implements _ConnectionDataJrpc {
       required this.isPreset,
       required this.canBeEdited,
       required this.sortingOrder,
+      this.isUsedOnStart = true,
       final String? $type})
       : $type = $type ?? 'jrpc';
 
@@ -1442,13 +1551,16 @@ class _$ConnectionDataJrpcImpl implements _ConnectionDataJrpc {
   final bool canBeEdited;
   @override
   final double sortingOrder;
+  @override
+  @JsonKey()
+  final bool isUsedOnStart;
 
   @JsonKey(name: 'runtimeType')
   final String $type;
 
   @override
   String toString() {
-    return 'ConnectionData.jrpc(id: $id, name: $name, group: $group, endpoint: $endpoint, networkType: $networkType, blockExplorerUrl: $blockExplorerUrl, manifestUrl: $manifestUrl, nativeTokenTicker: $nativeTokenTicker, isPreset: $isPreset, canBeEdited: $canBeEdited, sortingOrder: $sortingOrder)';
+    return 'ConnectionData.jrpc(id: $id, name: $name, group: $group, endpoint: $endpoint, networkType: $networkType, blockExplorerUrl: $blockExplorerUrl, manifestUrl: $manifestUrl, nativeTokenTicker: $nativeTokenTicker, isPreset: $isPreset, canBeEdited: $canBeEdited, sortingOrder: $sortingOrder, isUsedOnStart: $isUsedOnStart)';
   }
 
   @override
@@ -1474,7 +1586,9 @@ class _$ConnectionDataJrpcImpl implements _ConnectionDataJrpc {
             (identical(other.canBeEdited, canBeEdited) ||
                 other.canBeEdited == canBeEdited) &&
             (identical(other.sortingOrder, sortingOrder) ||
-                other.sortingOrder == sortingOrder));
+                other.sortingOrder == sortingOrder) &&
+            (identical(other.isUsedOnStart, isUsedOnStart) ||
+                other.isUsedOnStart == isUsedOnStart));
   }
 
   @JsonKey(includeFromJson: false, includeToJson: false)
@@ -1491,7 +1605,8 @@ class _$ConnectionDataJrpcImpl implements _ConnectionDataJrpc {
       nativeTokenTicker,
       isPreset,
       canBeEdited,
-      sortingOrder);
+      sortingOrder,
+      isUsedOnStart);
 
   /// Create a copy of ConnectionData
   /// with the given fields replaced by the non-null parameter values.
@@ -1518,6 +1633,7 @@ class _$ConnectionDataJrpcImpl implements _ConnectionDataJrpc {
             bool isPreset,
             bool canBeEdited,
             double sortingOrder,
+            bool isUsedOnStart,
             int? latencyDetectionInterval,
             int? maxLatency,
             int? endpointSelectionRetryCount)
@@ -1533,7 +1649,8 @@ class _$ConnectionDataJrpcImpl implements _ConnectionDataJrpc {
             String nativeTokenTicker,
             bool isPreset,
             bool canBeEdited,
-            double sortingOrder)
+            double sortingOrder,
+            bool isUsedOnStart)
         proto,
     required TResult Function(
             String id,
@@ -1546,11 +1663,23 @@ class _$ConnectionDataJrpcImpl implements _ConnectionDataJrpc {
             String nativeTokenTicker,
             bool isPreset,
             bool canBeEdited,
-            double sortingOrder)
+            double sortingOrder,
+            bool isUsedOnStart)
         jrpc,
   }) {
-    return jrpc(id, name, group, endpoint, networkType, blockExplorerUrl,
-        manifestUrl, nativeTokenTicker, isPreset, canBeEdited, sortingOrder);
+    return jrpc(
+        id,
+        name,
+        group,
+        endpoint,
+        networkType,
+        blockExplorerUrl,
+        manifestUrl,
+        nativeTokenTicker,
+        isPreset,
+        canBeEdited,
+        sortingOrder,
+        isUsedOnStart);
   }
 
   @override
@@ -1569,6 +1698,7 @@ class _$ConnectionDataJrpcImpl implements _ConnectionDataJrpc {
             bool isPreset,
             bool canBeEdited,
             double sortingOrder,
+            bool isUsedOnStart,
             int? latencyDetectionInterval,
             int? maxLatency,
             int? endpointSelectionRetryCount)?
@@ -1584,7 +1714,8 @@ class _$ConnectionDataJrpcImpl implements _ConnectionDataJrpc {
             String nativeTokenTicker,
             bool isPreset,
             bool canBeEdited,
-            double sortingOrder)?
+            double sortingOrder,
+            bool isUsedOnStart)?
         proto,
     TResult? Function(
             String id,
@@ -1597,11 +1728,23 @@ class _$ConnectionDataJrpcImpl implements _ConnectionDataJrpc {
             String nativeTokenTicker,
             bool isPreset,
             bool canBeEdited,
-            double sortingOrder)?
+            double sortingOrder,
+            bool isUsedOnStart)?
         jrpc,
   }) {
-    return jrpc?.call(id, name, group, endpoint, networkType, blockExplorerUrl,
-        manifestUrl, nativeTokenTicker, isPreset, canBeEdited, sortingOrder);
+    return jrpc?.call(
+        id,
+        name,
+        group,
+        endpoint,
+        networkType,
+        blockExplorerUrl,
+        manifestUrl,
+        nativeTokenTicker,
+        isPreset,
+        canBeEdited,
+        sortingOrder,
+        isUsedOnStart);
   }
 
   @override
@@ -1620,6 +1763,7 @@ class _$ConnectionDataJrpcImpl implements _ConnectionDataJrpc {
             bool isPreset,
             bool canBeEdited,
             double sortingOrder,
+            bool isUsedOnStart,
             int? latencyDetectionInterval,
             int? maxLatency,
             int? endpointSelectionRetryCount)?
@@ -1635,7 +1779,8 @@ class _$ConnectionDataJrpcImpl implements _ConnectionDataJrpc {
             String nativeTokenTicker,
             bool isPreset,
             bool canBeEdited,
-            double sortingOrder)?
+            double sortingOrder,
+            bool isUsedOnStart)?
         proto,
     TResult Function(
             String id,
@@ -1648,13 +1793,25 @@ class _$ConnectionDataJrpcImpl implements _ConnectionDataJrpc {
             String nativeTokenTicker,
             bool isPreset,
             bool canBeEdited,
-            double sortingOrder)?
+            double sortingOrder,
+            bool isUsedOnStart)?
         jrpc,
     required TResult orElse(),
   }) {
     if (jrpc != null) {
-      return jrpc(id, name, group, endpoint, networkType, blockExplorerUrl,
-          manifestUrl, nativeTokenTicker, isPreset, canBeEdited, sortingOrder);
+      return jrpc(
+          id,
+          name,
+          group,
+          endpoint,
+          networkType,
+          blockExplorerUrl,
+          manifestUrl,
+          nativeTokenTicker,
+          isPreset,
+          canBeEdited,
+          sortingOrder,
+          isUsedOnStart);
     }
     return orElse();
   }
@@ -1713,7 +1870,8 @@ abstract class _ConnectionDataJrpc implements ConnectionData {
       required final String nativeTokenTicker,
       required final bool isPreset,
       required final bool canBeEdited,
-      required final double sortingOrder}) = _$ConnectionDataJrpcImpl;
+      required final double sortingOrder,
+      final bool isUsedOnStart}) = _$ConnectionDataJrpcImpl;
 
   factory _ConnectionDataJrpc.fromJson(Map<String, dynamic> json) =
       _$ConnectionDataJrpcImpl.fromJson;
@@ -1739,6 +1897,8 @@ abstract class _ConnectionDataJrpc implements ConnectionData {
   bool get canBeEdited;
   @override
   double get sortingOrder;
+  @override
+  bool get isUsedOnStart;
 
   /// Create a copy of ConnectionData
   /// with the given fields replaced by the non-null parameter values.
