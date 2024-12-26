@@ -58,20 +58,55 @@ class AccountAssetsTab extends StatelessWidget {
             },
           );
 
-          return SliverList.separated(
-            itemCount: assets.length + 1,
-            separatorBuilder: (_, index) {
-              if (index == assets.length - 1) {
-                return const SizedBox(height: DimensSizeV2.d12);
-              }
-              return Container(
-                height: DimensSize.d24,
-                color: theme.colors.background1,
-              );
-            },
-            itemBuilder: (context, index) {
-              if (index == assets.length) {
-                return _FooterAssetsWidget(
+          final lastIndex = assets.length - 1;
+
+          return SliverMainAxisGroup(
+            slivers: [
+              DecoratedSliver(
+                decoration: BoxDecoration(
+                  color: theme.colors.background0,
+                  borderRadius: const BorderRadius.vertical(
+                    top: Radius.circular(DimensRadiusV2.radius16),
+                    bottom: Radius.circular(DimensRadiusV2.radius16),
+                  ),
+                ),
+                sliver: SliverList.separated(
+                  itemCount: assets.length,
+                  separatorBuilder: (_, index) {
+                    if (index == lastIndex) {
+                      return const SizedBox(height: DimensSizeV2.d12);
+                    }
+                    return Container(
+                      height: DimensSize.d24,
+                      color: theme.colors.background1,
+                    );
+                  },
+                  itemBuilder: (context, index) {
+                    return DecoratedBox(
+                      decoration: BoxDecoration(
+                        color: theme.colors.background1,
+                        borderRadius: BorderRadius.vertical(
+                          top: index == 0
+                              ? const Radius.circular(DimensRadiusV2.radius16)
+                              : Radius.zero,
+                          bottom: index == lastIndex
+                              ? const Radius.circular(DimensRadiusV2.radius16)
+                              : Radius.zero,
+                        ),
+                      ),
+                      child: Padding(
+                        padding: EdgeInsets.only(
+                          top: index == 0 ? DimensSizeV2.d16 : 0,
+                          bottom: index == lastIndex ? DimensSizeV2.d16 : 0,
+                        ),
+                        child: assets[index],
+                      ),
+                    );
+                  },
+                ),
+              ),
+              SliverToBoxAdapter(
+                child: _FooterAssetsWidget(
                   address: account.address,
                   isShowingNewTokens: isShowingNewTokens,
                   confirmImportCallback: confirmImportCallback,
@@ -79,29 +114,9 @@ class AccountAssetsTab extends StatelessWidget {
                     empty: () => null,
                     accounts: (_, __, newTokens) => newTokens,
                   ),
-                );
-              }
-              return DecoratedBox(
-                decoration: BoxDecoration(
-                  color: theme.colors.background1,
-                  borderRadius: BorderRadius.vertical(
-                    top: index == 0
-                        ? const Radius.circular(DimensRadiusV2.radius16)
-                        : Radius.zero,
-                    bottom: index == assets.length - 1
-                        ? const Radius.circular(DimensRadiusV2.radius16)
-                        : Radius.zero,
-                  ),
                 ),
-                child: Padding(
-                  padding: EdgeInsets.only(
-                    top: index == 0 ? DimensSizeV2.d16 : 0,
-                    bottom: index == assets.length - 1 ? DimensSizeV2.d16 : 0,
-                  ),
-                  child: assets[index],
-                ),
-              );
-            },
+              ),
+            ],
           );
         },
       ),
@@ -126,6 +141,7 @@ class _FooterAssetsWidget extends StatelessWidget {
   Widget build(BuildContext context) {
     final theme = context.themeStyleV2;
     return Column(
+      mainAxisSize: MainAxisSize.min,
       children: [
         const SizedBox(height: DimensSizeV2.d6),
         if (isShowingNewTokens && numberNewTokens == null)
