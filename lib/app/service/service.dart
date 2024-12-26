@@ -14,7 +14,6 @@ export 'current_accounts_service.dart';
 export 'current_seed_service.dart';
 export 'localization/localization.dart';
 export 'messenger/messenger.dart';
-export 'migration_service.dart';
 export 'navigation/navigation.dart';
 export 'nekoton_related/nekoton_related.dart';
 export 'ntp_service.dart';
