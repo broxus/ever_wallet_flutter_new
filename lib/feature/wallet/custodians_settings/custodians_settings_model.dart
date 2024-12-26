@@ -9,22 +9,20 @@ class CustodiansSettingsModel extends ElementaryModel {
     ErrorHandler errorHandler,
     this._storageService,
     this._messengerService,
-    this._keys,
   ) : super(errorHandler: errorHandler);
 
   final AppStorageService _storageService;
   final MessengerService _messengerService;
-  final List<String> _keys;
 
   Future<String?> getString(String publicKey) async {
     return _storageService
         .getValue<String>(StorageKey.nameCustodian(publicKey));
   }
 
-  Future<List<CustodianData>> initializeCustodians() async {
+  Future<List<CustodianData>> initializeCustodians(List<String> keys) async {
     final custodians = <CustodianData>[];
 
-    for (final key in _keys) {
+    for (final key in keys) {
       final name =
           await getString(key) ?? PublicKey(publicKey: key).toEllipseString();
       custodians.add(

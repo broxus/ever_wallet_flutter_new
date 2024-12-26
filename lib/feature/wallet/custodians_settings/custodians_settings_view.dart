@@ -10,18 +10,13 @@ import 'package:ui_components_lib/ui_components_lib.dart';
 
 class CustodiansSettingsView
     extends ElementaryWidget<CustodianSettingsWidgetModel> {
-  CustodiansSettingsView({
-    required List<String> custodians,
+  const CustodiansSettingsView({
+    required this.custodians,
     Key? key,
-    WidgetModelFactory<CustodianSettingsWidgetModel>? wmFactory,
-  }) : super(
-          wmFactory ??
-              (context) => defaultCustodianSettingsWidgetModelFactory(
-                    context,
-                    custodians,
-                  ),
-          key: key,
-        );
+    WidgetModelFactory wmFactory = defaultCustodianSettingsWidgetModelFactory,
+  }) : super(wmFactory, key: key);
+
+  final List<String> custodians;
 
   @override
   Widget build(CustodianSettingsWidgetModel wm) {

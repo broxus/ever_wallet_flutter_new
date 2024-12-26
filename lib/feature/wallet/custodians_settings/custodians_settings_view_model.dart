@@ -11,14 +11,12 @@ import 'package:ui_components_lib/v2/ui_components_lib_v2.dart';
 
 CustodianSettingsWidgetModel defaultCustodianSettingsWidgetModelFactory(
   BuildContext context,
-  List<String> custodians,
 ) =>
     CustodianSettingsWidgetModel(
       CustodiansSettingsModel(
         createPrimaryErrorHandler(context),
         inject(),
         inject(),
-        custodians,
       ),
     );
 
@@ -40,7 +38,7 @@ class CustodianSettingsWidgetModel
   }
 
   Future<void> _loadCustodians() async {
-    final custodians = await model.initializeCustodians();
+    final custodians = await model.initializeCustodians(widget.custodians);
     _custodiansNotifier.accept(custodians);
   }
 

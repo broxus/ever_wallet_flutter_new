@@ -223,46 +223,10 @@ class _WalletDeployMultisigBodyState extends State<WalletDeployMultisigBody> {
                       InputFormatters.onlyDigitsFormatter,
                     ],
                     suffixes: [
-                      MiniButton(
-                        currentValue: waitingTimeController.text.toInt(),
-                        value: 1,
-                        title: '1h',
-                        onTap: () {
-                          setState(() {
-                            waitingTimeController.text = '1';
-                          });
-                        },
-                      ),
-                      MiniButton(
-                        currentValue: waitingTimeController.text.toInt(),
-                        value: 2,
-                        title: '2h',
-                        onTap: () {
-                          setState(() {
-                            waitingTimeController.text = '2';
-                          });
-                        },
-                      ),
-                      MiniButton(
-                        currentValue: waitingTimeController.text.toInt(),
-                        value: 12,
-                        title: '12h',
-                        onTap: () {
-                          setState(() {
-                            waitingTimeController.text = '12';
-                          });
-                        },
-                      ),
-                      MiniButton(
-                        currentValue: waitingTimeController.text.toInt(),
-                        value: 24,
-                        title: '24h',
-                        onTap: () {
-                          setState(() {
-                            waitingTimeController.text = '24';
-                          });
-                        },
-                      ),
+                      _buildMiniButton(1),
+                      _buildMiniButton(2),
+                      _buildMiniButton(12),
+                      _buildMiniButton(24),
                     ],
                   ),
                   const SizedBox(height: DimensSizeV2.d12),
@@ -301,57 +265,66 @@ class _WalletDeployMultisigBodyState extends State<WalletDeployMultisigBody> {
     );
   }
 
-  Widget _custodianItem(int index, TextEditingController controller) {
-    return Builder(
-      builder: (context) {
-        return Padding(
-          padding: const EdgeInsets.only(bottom: DimensSizeV2.d4),
-          child: Row(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              Expanded(
-                child: PrimaryTextField(
-                  key: ValueKey(controller.hashCode),
-                  textEditingController: controller,
-                  focusNode: custodianFocuses[index],
-                  hintText: LocaleKeys.publicKeyOfCustodianNumber
-                      .tr(args: [(index + 1).toString()]),
-                  textInputAction: index == custodianControllers.length - 1
-                      ? TextInputAction.done
-                      : TextInputAction.next,
-                  onSubmit: (value) {
-                    if (index != custodianControllers.length - 1) {
-                      custodianFocuses[index + 1].requestFocus();
-                    } else {
-                      _next(context);
-                    }
-                  },
-                  maxLength: publicKeyLength,
-                  suffixes: [_custodianSuffixIcon(controller, index)],
-                  inputFormatters: [
-                    InputFormatters.noSpacesFormatter,
-                    InputFormatters.publicKeyInputFormatter,
-                  ],
-                  validator: _validatePublicKey,
-                ),
-              ),
-              if (index >= minConfirmationsCount)
-                Padding(
-                  padding: const EdgeInsets.only(
-                    left: DimensSizeV2.d8,
-                    top: DimensSizeV2.d4,
-                  ),
-                  child: DestructiveButton(
-                    buttonShape: ButtonShape.circle,
-                    icon: LucideIcons.trash,
-                    buttonSize: ButtonSize.medium,
-                    onPressed: () => _removeCustodian(index),
-                  ),
-                ),
-            ],
-          ),
-        );
+  Widget _buildMiniButton(int hours) {
+    return MiniButton(
+      currentValue: waitingTimeController.text.toInt(),
+      value: hours,
+      title: '${hours}h',
+      onTap: () {
+        setState(() {
+          waitingTimeController.text = hours.toString();
+        });
       },
+    );
+  }
+
+  Widget _custodianItem(int index, TextEditingController controller) {
+    return Padding(
+      padding: const EdgeInsets.only(bottom: DimensSizeV2.d4),
+      child: Row(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          Expanded(
+            child: PrimaryTextField(
+              key: ValueKey(controller.hashCode),
+              textEditingController: controller,
+              focusNode: custodianFocuses[index],
+              hintText: LocaleKeys.publicKeyOfCustodianNumber
+                  .tr(args: [(index + 1).toString()]),
+              textInputAction: index == custodianControllers.length - 1
+                  ? TextInputAction.done
+                  : TextInputAction.next,
+              onSubmit: (value) {
+                if (index != custodianControllers.length - 1) {
+                  custodianFocuses[index + 1].requestFocus();
+                } else {
+                  _next(context);
+                }
+              },
+              maxLength: publicKeyLength,
+              suffixes: [_custodianSuffixIcon(controller, index)],
+              inputFormatters: [
+                InputFormatters.noSpacesFormatter,
+                InputFormatters.publicKeyInputFormatter,
+              ],
+              validator: _validatePublicKey,
+            ),
+          ),
+          if (index >= minConfirmationsCount)
+            Padding(
+              padding: const EdgeInsets.only(
+                left: DimensSizeV2.d8,
+                top: DimensSizeV2.d4,
+              ),
+              child: DestructiveButton(
+                buttonShape: ButtonShape.circle,
+                icon: LucideIcons.trash,
+                buttonSize: ButtonSize.medium,
+                onPressed: () => _removeCustodian(index),
+              ),
+            ),
+        ],
+      ),
     );
   }
 

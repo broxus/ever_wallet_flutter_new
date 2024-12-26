@@ -67,7 +67,7 @@ class WalletDeployBloc extends Bloc<WalletDeployEvent, WalletDeployState>
   /// updated in [_DeployMultisig] or [_UpdateMultisigData] events.
   List<PublicKey> _cachedCustodians = [];
   int _cachedRequireConfirmations = defaultRequireConfirmations;
-  int _cachedTimeConfirmation = defaultHoursConfirmations;
+  int _cachedHoursConfirmation = defaultHoursConfirmations;
 
   Future<void> _init() async {
     tonIconPath = nekotonRepository.currentTransport.nativeTokenIcon;
@@ -86,7 +86,7 @@ class WalletDeployBloc extends Bloc<WalletDeployEvent, WalletDeployState>
           WalletDeployType.multisig => WalletDeployState.multisig(
               _cachedCustodians,
               _cachedRequireConfirmations,
-              _cachedTimeConfirmation,
+              _cachedHoursConfirmation,
             ),
         },
       );
@@ -101,7 +101,7 @@ class WalletDeployBloc extends Bloc<WalletDeployEvent, WalletDeployState>
           WalletDeployType.multisig => WalletDeployState.multisig(
               _cachedCustodians,
               _cachedRequireConfirmations,
-              _cachedTimeConfirmation,
+              _cachedHoursConfirmation,
             ),
         },
       );
@@ -109,7 +109,7 @@ class WalletDeployBloc extends Bloc<WalletDeployEvent, WalletDeployState>
     on<_UpdateMultisigData>((event, _) {
       _cachedCustodians = event.custodians;
       _cachedRequireConfirmations = event.requireConfirmations;
-      _cachedTimeConfirmation = event.hours ?? defaultHoursConfirmations;
+      _cachedHoursConfirmation = event.hours ?? defaultHoursConfirmations;
     });
     on<_DeployStandard>((event, emit) => _handlePrepareStandard(emit));
     on<_DeployMultisig>(
@@ -165,7 +165,7 @@ class WalletDeployBloc extends Bloc<WalletDeployEvent, WalletDeployState>
   ) async {
     _cachedCustodians = custodians;
     _cachedRequireConfirmations = requireConfirmations;
-    _cachedTimeConfirmation = hours ?? defaultHoursConfirmations;
+    _cachedHoursConfirmation = hours ?? defaultHoursConfirmations;
 
     try {
       await _handlePrepareDeploy(emit, custodians, requireConfirmations);
@@ -227,7 +227,7 @@ class WalletDeployBloc extends Bloc<WalletDeployEvent, WalletDeployState>
           ticker: ticker,
           currency: tokenCustomCurrency,
           account: account,
-          hours: _cachedTimeConfirmation,
+          hours: _cachedHoursConfirmation,
         ),
       );
     } on FfiException catch (e, t) {
@@ -314,7 +314,7 @@ class WalletDeployBloc extends Bloc<WalletDeployEvent, WalletDeployState>
           tonIconPath: tonIconPath,
           ticker: ticker,
           currency: tokenCustomCurrency,
-          hours: _cachedTimeConfirmation,
+          hours: _cachedHoursConfirmation,
         ),
       );
     } on Exception catch (e, t) {
@@ -333,7 +333,7 @@ class WalletDeployBloc extends Bloc<WalletDeployEvent, WalletDeployState>
           tonIconPath: tonIconPath,
           ticker: ticker,
           currency: tokenCustomCurrency,
-          hours: _cachedTimeConfirmation,
+          hours: _cachedHoursConfirmation,
         ),
       );
     }
@@ -346,7 +346,7 @@ class WalletDeployBloc extends Bloc<WalletDeployEvent, WalletDeployState>
           custodians: _cachedCustodians,
           reqConfirms: _cachedRequireConfirmations,
           expiration: defaultSendTimeout,
-          hours: _cachedTimeConfirmation,
+          expirationTime: _cachedHoursConfirmation * 3600, // hours to seconds
         );
 
   @override
