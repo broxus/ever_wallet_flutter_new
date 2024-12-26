@@ -73,7 +73,7 @@ class TxTreeSimulationErrorWidget extends StatelessWidget {
                             TextSpan(
                               text:
                                   LocaleKeys.txTreeSimulationErrorHintCanFix.tr(
-                                args: [if (symbol != null) symbol!],
+                                args: [symbol ?? ''],
                               ),
                             )
                           else
