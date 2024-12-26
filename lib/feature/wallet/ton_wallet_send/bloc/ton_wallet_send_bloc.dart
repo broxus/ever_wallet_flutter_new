@@ -96,10 +96,13 @@ class TonWalletSendBloc extends Bloc<TonWalletSendEvent, TonWalletSendState>
           address: address,
           message: unsignedMessage!,
         ),
-        nekotonRepository.simulateTransactionTree(
-          address: address,
-          message: unsignedMessage!,
-        ),
+        // TODO(komarov): remove when fixed in nekoton
+        transport.networkType == 'ton'
+            ? Future<List<TxTreeSimulationErrorItem>>.value([])
+            : nekotonRepository.simulateTransactionTree(
+                address: address,
+                message: unsignedMessage!,
+              ),
       );
       fees = result.$1;
       txErrors = result.$2;

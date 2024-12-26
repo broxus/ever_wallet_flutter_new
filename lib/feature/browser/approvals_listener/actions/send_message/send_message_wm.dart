@@ -199,12 +199,12 @@ class SendMessageWidgetModel
 
   Future<void> _simulateTransactionTree(UnsignedMessage message) async {
     try {
-      final fee = await model.simulateTransactionTree(
+      final errors = await model.simulateTransactionTree(
         address: widget.sender,
         message: message,
       );
 
-      _txErrors.accept(fee);
+      _txErrors.accept(errors);
     } catch (e) {
       contextSafe?.let(
         (context) => model.showError(context, e.toString()),

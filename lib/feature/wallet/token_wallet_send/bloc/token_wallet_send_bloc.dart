@@ -137,10 +137,13 @@ class TokenWalletSendBloc
           address: owner,
           message: unsignedMessage,
         ),
-        nekotonRepository.simulateTransactionTree(
-          address: owner,
-          message: unsignedMessage,
-        ),
+        // TODO(komarov): remove when fixed in nekoton
+        transport.networkType == 'ton'
+            ? Future<List<TxTreeSimulationErrorItem>>.value([])
+            : nekotonRepository.simulateTransactionTree(
+                address: owner,
+                message: unsignedMessage,
+              ),
       );
       fees = result.$1;
       txErrors = result.$2;
