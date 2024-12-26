@@ -8,7 +8,9 @@ import 'package:app/app/service/connection/data/transport_icons.dart';
 import 'package:app/app/service/connection/default_network.dart';
 import 'package:app/app/service/connection/mapping/connection_network_mapper.dart';
 import 'package:app/app/service/storage_service/secure_storage_service.dart';
+import 'package:app/bootstrap/sentry.dart';
 import 'package:app/core/app_build_type.dart';
+import 'package:app/core/exceptions/presets_connections_exceptions.dart';
 import 'package:app/http/api/presets/presets_api.dart';
 import 'package:app/runner.dart';
 import 'package:crypto/crypto.dart';
@@ -33,6 +35,8 @@ class PresetsConnectionService {
   final _presetsConnectionsSubj = BehaviorSubject<ConnectionNetwork?>();
 
   static final _logger = Logger('PresetsConnectionService');
+
+  final _sentry = SentryWorker.instance;
 
   ConnectionNetwork? get _data => _presetsConnectionsSubj.valueOrNull;
 
@@ -70,6 +74,10 @@ class PresetsConnectionService {
         jsonDecode(str) as Map<String, dynamic>,
       );
     } catch (e, s) {
+      _sentry.captureException(
+        FetchPresetsConnectionsExceptions(e.toString()),
+        stackTrace: s,
+      );
       _logger.severe('Error fetch connections', e, s);
       try {
         final cache = await _secureStorage.getConnectionJson();
@@ -79,6 +87,10 @@ class PresetsConnectionService {
           );
         }
       } catch (e, s) {
+        _sentry.captureException(
+          CachePresetsConnectionsExceptions(e.toString()),
+          stackTrace: s,
+        );
         _logger.severe('Error get connections from cache', e, s);
       }
     }
