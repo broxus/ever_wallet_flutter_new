@@ -1,6 +1,7 @@
 // ignore_for_file: use_build_context_synchronously
 
 import 'package:app/app/service/service.dart';
+import 'package:app/core/bloc/bloc_mixin.dart';
 import 'package:app/di/di.dart';
 import 'package:app/generated/generated.dart';
 import 'package:bloc/bloc.dart';
@@ -10,6 +11,7 @@ import 'package:local_auth/local_auth.dart';
 import 'package:nekoton_repository/nekoton_repository.dart' hide Message;
 
 part 'enter_password_cubit.freezed.dart';
+
 part 'enter_password_state.dart';
 
 /// Cubit for widget that allows enter password.
@@ -18,7 +20,7 @@ part 'enter_password_state.dart';
 /// Password must be entered to [publicKey].
 ///
 /// This cubit pushes only valid password above.
-class EnterPasswordCubit extends Cubit<EnterPasswordState> {
+class EnterPasswordCubit extends Cubit<EnterPasswordState> with BlocBaseMixin {
   EnterPasswordCubit(
     this.biometryService,
     this.nekotonRepository,
@@ -34,11 +36,11 @@ class EnterPasswordCubit extends Cubit<EnterPasswordState> {
 
     if (isBiometryEnabled) {
       final isFace = await _isFaceBiometry();
-      emit(EnterPasswordState.biometry(isFace: isFace));
+      emitSafe(EnterPasswordState.biometry(isFace: isFace));
 
       await _requestBiometry(isFace);
     } else {
-      emit(const EnterPasswordState.password());
+      emitSafe(const EnterPasswordState.password());
     }
   }
 
@@ -73,7 +75,7 @@ class EnterPasswordCubit extends Cubit<EnterPasswordState> {
       );
     }
 
-    emit(
+    emitSafe(
       EnterPasswordState.entered(
         password: password,
         fromBiometry: false,
@@ -105,7 +107,7 @@ class EnterPasswordCubit extends Cubit<EnterPasswordState> {
         publicKey: publicKey,
         localizedReason: LocaleKeys.biometryAuthReason.tr(),
       );
-      emit(
+      emitSafe(
         EnterPasswordState.entered(
           password: password,
           fromBiometry: true,
@@ -113,7 +115,7 @@ class EnterPasswordCubit extends Cubit<EnterPasswordState> {
         ),
       );
     } catch (_) {
-      emit(const EnterPasswordState.password());
+      emitSafe(const EnterPasswordState.password());
     }
   }
 }

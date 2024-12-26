@@ -2,6 +2,7 @@ import 'dart:async';
 
 import 'package:app/app/service/connection/network_type.dart';
 import 'package:app/app/service/service.dart';
+import 'package:app/core/bloc/bloc_mixin.dart';
 import 'package:app/data/models/models.dart';
 import 'package:bloc/bloc.dart';
 import 'package:collection/collection.dart';
@@ -12,7 +13,8 @@ part 'token_wallet_asset_cubit.freezed.dart';
 
 part 'token_wallet_asset_state.dart';
 
-class TokenWalletAssetCubit extends Cubit<TokenWalletAssetState> {
+class TokenWalletAssetCubit extends Cubit<TokenWalletAssetState>
+    with BlocBaseMixin {
   TokenWalletAssetCubit({
     required this.balanceService,
     required this.asset,
@@ -55,7 +57,7 @@ class TokenWalletAssetCubit extends Cubit<TokenWalletAssetState> {
           _updateState();
         });
       } else if (walletState?.hasError ?? false) {
-        emit(
+        emitSafe(
           TokenWalletAssetState.subscribeError(
             error: walletState!.error!,
             isLoading: false,
@@ -104,9 +106,9 @@ class TokenWalletAssetCubit extends Cubit<TokenWalletAssetState> {
   Future<void> retry() async {
     final st = state;
     if (st is _SubscribeError) {
-      emit(st.copyWith(isLoading: true));
+      emitSafe(st.copyWith(isLoading: true));
       await nekotonRepository.retryTokenSubscription(owner, asset.address);
-      emit(st.copyWith(isLoading: false));
+      emitSafe(st.copyWith(isLoading: false));
     }
   }
 
@@ -131,7 +133,7 @@ class TokenWalletAssetCubit extends Cubit<TokenWalletAssetState> {
   }
 
   void _updateState() {
-    emit(
+    emitSafe(
       TokenWalletAssetState.data(
         fiatBalance: _cachedFiatBalance,
         tokenBalance: _cachedTokenBalance,

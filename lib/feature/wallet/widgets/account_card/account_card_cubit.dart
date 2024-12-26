@@ -2,6 +2,7 @@ import 'dart:async';
 
 import 'package:app/app/service/connection/network_type.dart';
 import 'package:app/app/service/service.dart';
+import 'package:app/core/bloc/bloc_mixin.dart';
 import 'package:app/di/di.dart';
 import 'package:bloc/bloc.dart';
 import 'package:collection/collection.dart';
@@ -17,7 +18,7 @@ const _withdrawUpdateDebounce = Duration(seconds: 3);
 
 /// Cubit that will be listen for subscriptions from [NekotonRepository] and
 /// provides [TonWallet] to ui.
-class AccountCardCubit extends Cubit<AccountCardState> {
+class AccountCardCubit extends Cubit<AccountCardState> with BlocBaseMixin {
   AccountCardCubit({
     required this.nekotonRepository,
     required this.account,
@@ -37,7 +38,7 @@ class AccountCardCubit extends Cubit<AccountCardState> {
               transport.networkType,
             )[account.address] ??
             Fixed.zero;
-        emit(
+        emitSafe(
           AccountCardState.data(
             account: account,
             walletName: _walletName(nekotonRepository, account),
@@ -73,9 +74,9 @@ class AccountCardCubit extends Cubit<AccountCardState> {
   Future<void> retry() async {
     final st = state;
     if (st is _SubscribeError) {
-      emit(st.copyWith(isLoading: true));
+      emitSafe(st.copyWith(isLoading: true));
       await nekotonRepository.retrySubscriptions(account.address);
-      emit(st.copyWith(isLoading: false));
+      emitSafe(st.copyWith(isLoading: false));
     }
   }
 
@@ -85,7 +86,7 @@ class AccountCardCubit extends Cubit<AccountCardState> {
     walletState = wState;
 
     if (wState.hasError) {
-      emit(
+      emitSafe(
         AccountCardState.subscribeError(
           account: account,
           walletName: _walletName(nekotonRepository, account),
@@ -139,7 +140,7 @@ class AccountCardCubit extends Cubit<AccountCardState> {
 
     final money = currencyConvertService.convert(balance);
 
-    emit(
+    emitSafe(
       AccountCardState.data(
         account: account,
         walletName: _walletName(nekotonRepository, account),

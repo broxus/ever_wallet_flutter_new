@@ -151,7 +151,7 @@ class SendMessageWidget extends ElementaryWidget<SendMessageWidgetModel> {
                   if (hasTxError)
                     TxTreeSimulationErrorWidget(
                       txErrors: txErrors!,
-                      symbol: wm.nativeCurrency.symbol,
+                      symbol: wm.symbol,
                       isConfirmed: isConfirmed ?? false,
                       onConfirm: wm.onConfirmed,
                     ),

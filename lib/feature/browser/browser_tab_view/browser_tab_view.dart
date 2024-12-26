@@ -289,20 +289,21 @@ class _BrowserTabViewState extends State<BrowserTabView> with ContextMixin {
     _calcScrollGesture(y);
 
     _lastScrollY = y;
+
+    final sDY = _scrollGestureDY;
+
     // Call onScroll callback with current position and gesture dY
-    if (_scrollGestureDY != null) {
+    if (sDY != null) {
       if (y < _hudScrollMinYThreshold) {
         // If we are at the top of the page, we should show HUD
         context.read<HudBloc>().add(const HudEvent.show());
       } else {
         // Elsewise, we should show and  hide HUD according to gesture direction
         // Here we check if gesture is long enough to hide or show HUD
-        if (_scrollGestureDY! > 0 &&
-            _scrollGestureDY!.abs() > _hudScrollDYThresholdDown) {
+        if (sDY > 0 && sDY.abs() > _hudScrollDYThresholdDown) {
           // If gesture is down, we should hide HUD
           context.read<HudBloc>().add(const HudEvent.hide());
-        } else if (_scrollGestureDY! < 0 &&
-            _scrollGestureDY!.abs() > _hudScrollDYThresholdUp) {
+        } else if (sDY < 0 && sDY.abs() > _hudScrollDYThresholdUp) {
           // If gesture is up, we should show HUD
           context.read<HudBloc>().add(const HudEvent.show());
         }
@@ -314,31 +315,33 @@ class _BrowserTabViewState extends State<BrowserTabView> with ContextMixin {
 
   // Calculate scroll gesture
   void _calcScrollGesture(int y) {
-    // If we don't have start position, set it and return
-    if (_scrollGestureYStart == null) {
-      _scrollGestureYStart = y;
+    try {
+      // If we don't have start position, set it and return
+      if (_scrollGestureYStart == null) {
+        _scrollGestureYStart = y;
 
-      return;
-    }
+        return;
+      }
 
-    // If we don't have last position, return. We need it to calculate gesture
-    // direction
-    if (_lastScrollY == null) {
-      return;
-    }
+      // If we don't have last position, return. We need it to calculate gesture
+      // direction
+      if (_lastScrollY == null) {
+        return;
+      }
 
-    // Calculate gesture dY
-    _scrollGestureDY = y - _scrollGestureYStart!;
-    // Calculate scroll dY
-    final scrollDY = y - _lastScrollY!;
+      // Calculate gesture dY
+      _scrollGestureDY = y - _scrollGestureYStart!;
+      // Calculate scroll dY
+      final scrollDY = y - _lastScrollY!;
 
-    // If we moving in opposite directions that gesture started
-    if (_scrollGestureDY!.sign * scrollDY.sign < 0) {
-      // Reset gesture start position
-      _scrollGestureYStart = y;
-      // Reset gesture dY
-      _scrollGestureDY = 0;
-    }
+      // If we moving in opposite directions that gesture started
+      if (_scrollGestureDY!.sign * scrollDY.sign < 0) {
+        // Reset gesture start position
+        _scrollGestureYStart = y;
+        // Reset gesture dY
+        _scrollGestureDY = 0;
+      }
+    } catch (_) {}
   }
 
   Future<void> _onWebViewCreated(

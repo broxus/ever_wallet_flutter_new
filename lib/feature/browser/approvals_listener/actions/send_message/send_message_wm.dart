@@ -73,8 +73,10 @@ class SendMessageWidgetModel
 
   ListenableState<bool> get isConfirmed => _isConfirmed;
 
-  Currency get nativeCurrency =>
-      Currencies()[model.transport.nativeTokenTicker]!;
+  Currency? get nativeCurrency =>
+      Currencies()[model.transport.nativeTokenTicker];
+
+  String? get symbol => nativeCurrency?.symbol;
 
   ThemeStyleV2 get theme => context.themeStyleV2;
 
@@ -89,12 +91,18 @@ class SendMessageWidgetModel
 
     if (tokens == null) {
       _initWalletTon(tokens);
-      _data.accept(
-        TransferData(
-          amount: Money.fromBigIntWithCurrency(widget.amount, nativeCurrency),
-          numberUnconfirmedTransactions: numberUnconfirmedTransactions,
-        ),
-      );
+
+      if (nativeCurrency != null) {
+        _data.accept(
+          TransferData(
+            amount: Money.fromBigIntWithCurrency(
+              widget.amount,
+              nativeCurrency!,
+            ),
+            numberUnconfirmedTransactions: numberUnconfirmedTransactions,
+          ),
+        );
+      }
     } else {
       _getTokenTransferData(tokens);
     }
@@ -209,10 +217,13 @@ class SendMessageWidgetModel
     numberUnconfirmedTransactions =
         (walletTonState.wallet?.unconfirmedTransactions.length ?? 0) +
             (walletTonState.wallet?.pendingTransactions.length ?? 0);
-    if (tokens == null) {
+    if (tokens == null && nativeCurrency != null) {
       _data.accept(
         TransferData(
-          amount: Money.fromBigIntWithCurrency(widget.amount, nativeCurrency),
+          amount: Money.fromBigIntWithCurrency(
+            widget.amount,
+            nativeCurrency!,
+          ),
           numberUnconfirmedTransactions: numberUnconfirmedTransactions,
         ),
       );

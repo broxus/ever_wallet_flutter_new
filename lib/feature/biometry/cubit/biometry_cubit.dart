@@ -1,4 +1,5 @@
 import 'package:app/app/service/service.dart';
+import 'package:app/core/bloc/bloc_mixin.dart';
 import 'package:app/generated/generated.dart';
 import 'package:bloc/bloc.dart';
 import 'package:freezed_annotation/freezed_annotation.dart';
@@ -10,7 +11,7 @@ part 'biometry_cubit.freezed.dart';
 part 'biometry_state.dart';
 
 /// Cubit to enable biometry.
-class BiometryCubit extends Cubit<BiometryState> {
+class BiometryCubit extends Cubit<BiometryState> with BlocBaseMixin {
   BiometryCubit(
     this.biometryService,
     this.nekotonRepository,
@@ -22,7 +23,7 @@ class BiometryCubit extends Cubit<BiometryState> {
   Future<void> init() async {
     final types = await biometryService.getAvailableBiometry();
     if (!isClosed) {
-      emit(
+      emitSafe(
         BiometryState.ask(
           isFaceBiometry: types.contains(BiometricType.face),
         ),
@@ -42,7 +43,7 @@ class BiometryCubit extends Cubit<BiometryState> {
       );
     } finally {
       if (!isClosed) {
-        emit(const BiometryState.completed());
+        emitSafe(const BiometryState.completed());
       }
     }
   }

@@ -1,6 +1,7 @@
 import 'dart:async';
 
 import 'package:app/app/service/service.dart';
+import 'package:app/core/bloc/bloc_mixin.dart';
 import 'package:app/data/models/models.dart';
 import 'package:bloc/bloc.dart';
 import 'package:freezed_annotation/freezed_annotation.dart';
@@ -13,7 +14,8 @@ part 'account_asset_tab_state.dart';
 /// Cubit to assets tab from wallet bottom panel.
 /// This cubit allows tracking contracts for account with [tonWallet]
 /// information.
-class AccountAssetTabCubit extends Cubit<AccountAssetTabState> {
+class AccountAssetTabCubit extends Cubit<AccountAssetTabState>
+    with BlocBaseMixin {
   AccountAssetTabCubit(
     KeyAccount account,
     this.tokenWalletsService,
@@ -27,7 +29,7 @@ class AccountAssetTabCubit extends Cubit<AccountAssetTabState> {
         .contractsForAccount(tonWallet.address)
         .listen((contracts) {
       _contracts = contracts;
-      emit(
+      emitSafe(
         AccountAssetTabState.accounts(tonWallet, _contracts, _contractCount),
       );
     });
@@ -63,7 +65,7 @@ class AccountAssetTabCubit extends Cubit<AccountAssetTabState> {
   void _updateAccounts(int contractCount) {
     _contractCount = contractCount;
 
-    emit(
+    emitSafe(
       AccountAssetTabState.accounts(
         tonWallet,
         _contracts,

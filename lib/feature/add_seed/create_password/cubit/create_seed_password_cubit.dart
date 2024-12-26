@@ -2,6 +2,7 @@
 
 import 'package:app/app/service/network_connection/network_connection_service.dart';
 import 'package:app/app/service/service.dart';
+import 'package:app/core/bloc/bloc_mixin.dart';
 import 'package:app/data/models/seed/seed_phrase_model.dart';
 import 'package:app/di/di.dart';
 import 'package:app/feature/add_seed/create_password/model/password_status.dart';
@@ -20,7 +21,7 @@ const _minPasswordLength = 8;
 
 /// Cubit for creating seed password.
 class CreateSeedPasswordCubit extends Cubit<CreateSeedPasswordState>
-    with ConnectionMixin {
+    with ConnectionMixin, BlocBaseMixin {
   CreateSeedPasswordCubit({
     required this.completeCallback,
     required this.seedPhrase,
@@ -76,7 +77,7 @@ class CreateSeedPasswordCubit extends Cubit<CreateSeedPasswordState>
       return;
     }
 
-    emit(state.copyWith(isLoading: true));
+    emitSafe(state.copyWith(isLoading: true));
     final nekoton = inject<NekotonRepository>();
     final currentKeyService = inject<CurrentKeyService>();
     try {
@@ -96,7 +97,7 @@ class CreateSeedPasswordCubit extends Cubit<CreateSeedPasswordState>
       completeCallback(publicKey);
     } catch (e) {
       Logger('CreateSeedPasswordCubit').severe(e);
-      emit(state.copyWith(isLoading: false));
+      emitSafe(state.copyWith(isLoading: false));
       messengerService.show(
         Message.error(
           context: context,
@@ -108,12 +109,12 @@ class CreateSeedPasswordCubit extends Cubit<CreateSeedPasswordState>
 
   void _validate() {
     if (passwordController.text.length < _minPasswordLength) {
-      emit(state.copyWith(status: PasswordStatus.tooWeak));
+      emitSafe(state.copyWith(status: PasswordStatus.tooWeak));
     } else {
       if (passwordController.text != confirmController.text) {
-        emit(state.copyWith(status: PasswordStatus.mustMatch));
+        emitSafe(state.copyWith(status: PasswordStatus.mustMatch));
       } else {
-        emit(state.copyWith(status: PasswordStatus.match));
+        emitSafe(state.copyWith(status: PasswordStatus.match));
       }
     }
   }

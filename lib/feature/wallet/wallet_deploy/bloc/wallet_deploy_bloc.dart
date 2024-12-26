@@ -1,6 +1,7 @@
 // ignore_for_file: use_build_context_synchronously
 
 import 'package:app/app/service/service.dart';
+import 'package:app/core/bloc/bloc_mixin.dart';
 import 'package:app/data/models/custom_currency.dart';
 import 'package:app/di/di.dart';
 import 'package:app/generated/generated.dart';
@@ -28,7 +29,8 @@ const defaultHoursConfirmations = 24;
 /// This bloc has 2 big steps:
 /// 1) Preparing for deploy (selecting deploy type/entering custodians data)
 /// 2) Sending transaction to blockchain
-class WalletDeployBloc extends Bloc<WalletDeployEvent, WalletDeployState> {
+class WalletDeployBloc extends Bloc<WalletDeployEvent, WalletDeployState>
+    with BlocBaseMixin {
   WalletDeployBloc({
     required this.context,
     required this.nekotonRepository,
@@ -78,7 +80,7 @@ class WalletDeployBloc extends Bloc<WalletDeployEvent, WalletDeployState> {
   void _registerHandlers() {
     on<_PrevStep>((_, emit) {
       fees = null;
-      emit(
+      emitSafe(
         switch (_type) {
           WalletDeployType.standard => const WalletDeployState.standard(),
           WalletDeployType.multisig => WalletDeployState.multisig(
@@ -93,7 +95,7 @@ class WalletDeployBloc extends Bloc<WalletDeployEvent, WalletDeployState> {
       if (event.type == _type) return;
 
       _type = event.type;
-      emit(
+      emitSafe(
         switch (event.type) {
           WalletDeployType.standard => const WalletDeployState.standard(),
           WalletDeployType.multisig => WalletDeployState.multisig(
@@ -120,10 +122,11 @@ class WalletDeployBloc extends Bloc<WalletDeployEvent, WalletDeployState> {
     );
     on<_ConfirmDeploy>((event, emit) => _handleSend(emit, event.password));
     on<_AllowCloseDeploy>(
-      (event, emit) => emit(const WalletDeployState.deploying(canClose: true)),
+      (event, emit) =>
+          emitSafe(const WalletDeployState.deploying(canClose: true)),
     );
     on<_CompleteDeploy>(
-      (event, emit) => emit(
+      (event, emit) => emitSafe(
         WalletDeployState.deployed(
           fee: fees!,
           balance: balance!,
@@ -186,7 +189,7 @@ class WalletDeployBloc extends Bloc<WalletDeployEvent, WalletDeployState> {
           .firstWhere((wallets) => wallets.address == address);
 
       if (wallet.hasError) {
-        emit(WalletDeployState.subscribeError(wallet.error!));
+        emitSafe(WalletDeployState.subscribeError(wallet.error!));
 
         return;
       }
@@ -202,7 +205,7 @@ class WalletDeployBloc extends Bloc<WalletDeployEvent, WalletDeployState> {
       final isPossibleToSendMessage = balance! > fees!;
 
       if (!isPossibleToSendMessage) {
-        emit(
+        emitSafe(
           WalletDeployState.calculatingError(
             error: LocaleKeys.insufficientFunds.tr(),
             fee: fees,
@@ -214,7 +217,7 @@ class WalletDeployBloc extends Bloc<WalletDeployEvent, WalletDeployState> {
         return;
       }
 
-      emit(
+      emitSafe(
         WalletDeployState.readyToDeploy(
           fee: fees!,
           balance: balance!,
@@ -229,7 +232,7 @@ class WalletDeployBloc extends Bloc<WalletDeployEvent, WalletDeployState> {
       );
     } on FfiException catch (e, t) {
       _logger.severe('_handlePrepareDeploy', e, t);
-      emit(
+      emitSafe(
         WalletDeployState.calculatingError(
           error: e.message,
           balance: balance,
@@ -241,7 +244,7 @@ class WalletDeployBloc extends Bloc<WalletDeployEvent, WalletDeployState> {
       );
     } on Exception catch (e, t) {
       _logger.severe('_handlePrepareDeploy', e, t);
-      emit(
+      emitSafe(
         WalletDeployState.calculatingError(
           error: e.toString(),
           fee: fees,
@@ -260,7 +263,7 @@ class WalletDeployBloc extends Bloc<WalletDeployEvent, WalletDeployState> {
     String password,
   ) async {
     try {
-      emit(const WalletDeployState.deploying(canClose: false));
+      emitSafe(const WalletDeployState.deploying(canClose: false));
       // await unsignedMessage.refreshTimeout();
       // TODO(komarov): fix refresh_timeout in nekoton
       final unsignedMessage = this.unsignedMessage = await _prepareDeploy();
@@ -299,7 +302,7 @@ class WalletDeployBloc extends Bloc<WalletDeployEvent, WalletDeployState> {
       _logger.severe('_handleSend', e, t);
       inject<MessengerService>()
           .show(Message.error(context: context, message: e.message));
-      emit(
+      emitSafe(
         WalletDeployState.readyToDeploy(
           fee: fees!,
           balance: balance!,
@@ -318,7 +321,7 @@ class WalletDeployBloc extends Bloc<WalletDeployEvent, WalletDeployState> {
       _logger.severe('_handleSend', e, t);
       inject<MessengerService>()
           .show(Message.error(context: context, message: e.toString()));
-      emit(
+      emitSafe(
         WalletDeployState.readyToDeploy(
           fee: fees!,
           balance: balance!,
