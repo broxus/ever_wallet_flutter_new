@@ -1,6 +1,7 @@
 import 'dart:async';
 
 import 'package:app/app/service/service.dart';
+import 'package:app/core/bloc/bloc_mixin.dart';
 import 'package:app/data/models/models.dart';
 import 'package:bloc/bloc.dart';
 import 'package:collection/collection.dart';
@@ -20,7 +21,8 @@ enum WalletAccountActionBehavior {
 
 /// Cubit for actions for current selected account.
 /// This cubit allows identify which actions should be available for account.
-class WalletAccountActionsCubit extends Cubit<WalletAccountActionsState> {
+class WalletAccountActionsCubit extends Cubit<WalletAccountActionsState>
+    with BlocBaseMixin {
   WalletAccountActionsCubit(
     this.nekotonRepository,
     this.address,
@@ -91,7 +93,7 @@ class WalletAccountActionsCubit extends Cubit<WalletAccountActionsState> {
 
       final hasStake = action != WalletAccountActionBehavior.deploy &&
           nekotonRepository.currentTransport.stakeInformation != null;
-      emit(
+      emitSafe(
         WalletAccountActionsState.data(
           action: action,
           hasStake: hasStake,
