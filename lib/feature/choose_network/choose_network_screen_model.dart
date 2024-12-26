@@ -71,15 +71,16 @@ class ChooseNetworkScreenModel extends ElementaryModel with ConnectionMixin {
     connectionsState.accept(
       [
         for (final connection in networks)
-          ChooseNetworkItemData(
-            id: connection.id,
-            icon: _presetsConnectionService
-                .getTransportIconsByNetwork(
-                  connection.networkType,
-                )
-                .vector,
-            title: connection.name,
-          ),
+          if (connection.isUsedOnStart)
+            ChooseNetworkItemData(
+              id: connection.id,
+              icon: _presetsConnectionService
+                  .getTransportIconsByNetwork(
+                    connection.networkType,
+                  )
+                  .vector,
+              title: connection.name,
+            ),
       ],
     );
   }

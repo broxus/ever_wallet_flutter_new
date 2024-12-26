@@ -22,6 +22,7 @@ sealed class ConnectionData with _$ConnectionData {
     required bool isPreset,
     required bool canBeEdited,
     required double sortingOrder,
+    @Default(true) bool isUsedOnStart,
     int? latencyDetectionInterval,
     int? maxLatency,
     int? endpointSelectionRetryCount,
@@ -36,6 +37,7 @@ sealed class ConnectionData with _$ConnectionData {
     required String manifestUrl,
     required String nativeTokenTicker,
     required NetworkType networkType,
+    bool isUsedOnStart = false,
     String? id,
     int? latencyDetectionInterval,
     int? maxLatency,
@@ -57,6 +59,7 @@ sealed class ConnectionData with _$ConnectionData {
         latencyDetectionInterval: latencyDetectionInterval,
         maxLatency: maxLatency,
         endpointSelectionRetryCount: endpointSelectionRetryCount,
+        isUsedOnStart: isUsedOnStart,
       );
 
   factory ConnectionData.gqlPreset({
@@ -69,6 +72,7 @@ sealed class ConnectionData with _$ConnectionData {
     required String manifestUrl,
     required bool canBeEdited,
     required double sortingOrder,
+    bool isUsedOnStart = true,
     int? latencyDetectionInterval,
     int? maxLatency,
     int? endpointSelectionRetryCount,
@@ -89,12 +93,14 @@ sealed class ConnectionData with _$ConnectionData {
         latencyDetectionInterval: latencyDetectionInterval,
         maxLatency: maxLatency,
         endpointSelectionRetryCount: endpointSelectionRetryCount,
+        isUsedOnStart: isUsedOnStart,
       );
 
   factory ConnectionData.gqlTemporary({
     required List<String> endpoints,
     required bool isLocal,
     required NetworkType networkType,
+    bool isUsedOnStart = false,
     int? latencyDetectionInterval,
     int? maxLatency,
     int? endpointSelectionRetryCount,
@@ -115,6 +121,7 @@ sealed class ConnectionData with _$ConnectionData {
         latencyDetectionInterval: latencyDetectionInterval,
         maxLatency: maxLatency,
         endpointSelectionRetryCount: endpointSelectionRetryCount,
+        isUsedOnStart: isUsedOnStart,
       );
 
   const factory ConnectionData.proto({
@@ -129,6 +136,7 @@ sealed class ConnectionData with _$ConnectionData {
     required bool isPreset,
     required bool canBeEdited,
     required double sortingOrder,
+    @Default(true) bool isUsedOnStart,
   }) = _ConnectionDataProto;
 
   factory ConnectionData.protoCustom({
@@ -139,6 +147,7 @@ sealed class ConnectionData with _$ConnectionData {
     required String manifestUrl,
     required String nativeTokenTicker,
     required NetworkType networkType,
+    bool isUsedOnStart = false,
     String? id,
   }) =>
       ConnectionData.proto(
@@ -153,6 +162,7 @@ sealed class ConnectionData with _$ConnectionData {
         isPreset: false,
         canBeEdited: true,
         sortingOrder: NtpTime.now().millisecondsSinceEpoch.toDouble(),
+        isUsedOnStart: isUsedOnStart,
       );
 
   factory ConnectionData.protoPreset({
@@ -165,6 +175,7 @@ sealed class ConnectionData with _$ConnectionData {
     required String manifestUrl,
     required bool canBeEdited,
     required double sortingOrder,
+    bool isUsedOnStart = true,
   }) =>
       ConnectionData.proto(
         id: id,
@@ -178,11 +189,13 @@ sealed class ConnectionData with _$ConnectionData {
         isPreset: true,
         canBeEdited: canBeEdited,
         sortingOrder: sortingOrder,
+        isUsedOnStart: isUsedOnStart,
       );
 
   factory ConnectionData.protoTemporary({
     required String endpoint,
     required NetworkType networkType,
+    bool isUsedOnStart = false,
   }) =>
       ConnectionData.proto(
         id: const Uuid().v4(),
@@ -196,6 +209,7 @@ sealed class ConnectionData with _$ConnectionData {
         isPreset: false,
         canBeEdited: true,
         sortingOrder: NtpTime.now().millisecondsSinceEpoch.toDouble(),
+        isUsedOnStart: isUsedOnStart,
       );
 
   const factory ConnectionData.jrpc({
@@ -210,6 +224,7 @@ sealed class ConnectionData with _$ConnectionData {
     required bool isPreset,
     required bool canBeEdited,
     required double sortingOrder,
+    @Default(true) bool isUsedOnStart,
   }) = _ConnectionDataJrpc;
 
   factory ConnectionData.jrpcCustom({
@@ -220,6 +235,7 @@ sealed class ConnectionData with _$ConnectionData {
     required String manifestUrl,
     required String nativeTokenTicker,
     required NetworkType networkType,
+    bool isUsedOnStart = false,
     String? id,
   }) =>
       ConnectionData.jrpc(
@@ -234,6 +250,7 @@ sealed class ConnectionData with _$ConnectionData {
         isPreset: false,
         canBeEdited: true,
         sortingOrder: NtpTime.now().millisecondsSinceEpoch.toDouble(),
+        isUsedOnStart: isUsedOnStart,
       );
 
   factory ConnectionData.jrpcPreset({
@@ -246,6 +263,7 @@ sealed class ConnectionData with _$ConnectionData {
     required String manifestUrl,
     required bool canBeEdited,
     required double sortingOrder,
+    bool isUsedOnStart = true,
   }) =>
       ConnectionData.jrpc(
         id: id,
@@ -259,11 +277,13 @@ sealed class ConnectionData with _$ConnectionData {
         isPreset: true,
         canBeEdited: canBeEdited,
         sortingOrder: sortingOrder,
+        isUsedOnStart: isUsedOnStart,
       );
 
   factory ConnectionData.jrpcTemporary({
     required String endpoint,
     required NetworkType networkType,
+    bool isUsedOnStart = false,
   }) =>
       ConnectionData.proto(
         id: const Uuid().v4(),
@@ -277,6 +297,7 @@ sealed class ConnectionData with _$ConnectionData {
         isPreset: false,
         canBeEdited: true,
         sortingOrder: NtpTime.now().millisecondsSinceEpoch.toDouble(),
+        isUsedOnStart: isUsedOnStart,
       );
 
   factory ConnectionData.fromJson(Map<String, dynamic> json) =>

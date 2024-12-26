@@ -22,6 +22,7 @@ _$ConnectionDataGqlImpl _$$ConnectionDataGqlImplFromJson(
       isPreset: json['isPreset'] as bool,
       canBeEdited: json['canBeEdited'] as bool,
       sortingOrder: (json['sortingOrder'] as num).toDouble(),
+      isUsedOnStart: json['isUsedOnStart'] as bool? ?? true,
       latencyDetectionInterval:
           (json['latencyDetectionInterval'] as num?)?.toInt(),
       maxLatency: (json['maxLatency'] as num?)?.toInt(),
@@ -45,6 +46,7 @@ Map<String, dynamic> _$$ConnectionDataGqlImplToJson(
       'isPreset': instance.isPreset,
       'canBeEdited': instance.canBeEdited,
       'sortingOrder': instance.sortingOrder,
+      'isUsedOnStart': instance.isUsedOnStart,
       'latencyDetectionInterval': instance.latencyDetectionInterval,
       'maxLatency': instance.maxLatency,
       'endpointSelectionRetryCount': instance.endpointSelectionRetryCount,
@@ -65,6 +67,7 @@ _$ConnectionDataProtoImpl _$$ConnectionDataProtoImplFromJson(
       isPreset: json['isPreset'] as bool,
       canBeEdited: json['canBeEdited'] as bool,
       sortingOrder: (json['sortingOrder'] as num).toDouble(),
+      isUsedOnStart: json['isUsedOnStart'] as bool? ?? true,
       $type: json['runtimeType'] as String?,
     );
 
@@ -82,6 +85,7 @@ Map<String, dynamic> _$$ConnectionDataProtoImplToJson(
       'isPreset': instance.isPreset,
       'canBeEdited': instance.canBeEdited,
       'sortingOrder': instance.sortingOrder,
+      'isUsedOnStart': instance.isUsedOnStart,
       'runtimeType': instance.$type,
     };
 
@@ -99,6 +103,7 @@ _$ConnectionDataJrpcImpl _$$ConnectionDataJrpcImplFromJson(
       isPreset: json['isPreset'] as bool,
       canBeEdited: json['canBeEdited'] as bool,
       sortingOrder: (json['sortingOrder'] as num).toDouble(),
+      isUsedOnStart: json['isUsedOnStart'] as bool? ?? true,
       $type: json['runtimeType'] as String?,
     );
 
@@ -116,5 +121,6 @@ Map<String, dynamic> _$$ConnectionDataJrpcImplToJson(
       'isPreset': instance.isPreset,
       'canBeEdited': instance.canBeEdited,
       'sortingOrder': instance.sortingOrder,
+      'isUsedOnStart': instance.isUsedOnStart,
       'runtimeType': instance.$type,
     };

@@ -49,14 +49,14 @@ class AccountAssetTabCubit extends Cubit<AccountAssetTabState>
   final TonWalletAsset tonWallet;
   final bool isShowingNewTokens;
 
-  late List<TokenContractAsset>? _contracts;
+  List<TokenContractAsset>? _contracts;
   int? _contractCount;
-  late StreamSubscription<List<TokenContractAsset>> _contractsSubscription;
+  StreamSubscription<List<TokenContractAsset>>? _contractsSubscription;
   StreamSubscription<dynamic>? _searchSubscription;
 
   @override
   Future<void> close() async {
-    await _contractsSubscription.cancel();
+    await _contractsSubscription?.cancel();
     await _searchSubscription?.cancel();
 
     return super.close();

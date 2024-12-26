@@ -152,7 +152,7 @@ class CommonTransportStrategy extends AppTransportStrategy {
 
   @override
   String currencyUrl(String currencyAddress) =>
-      '$baseCurrencyUrl/$currencyAddress';
+      baseCurrencyUrl.isNotEmpty ? '$baseCurrencyUrl/$currencyAddress' : '';
 
   @override
   String defaultAccountName(WalletType walletType) => walletType.when(

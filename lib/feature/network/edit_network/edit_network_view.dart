@@ -529,6 +529,7 @@ class _EditNetworkViewState extends State<EditNetworkView> {
         _____________,
         ______________,
         _______________,
+        ________________,
       ) =>
           endpoints
               .map(
@@ -547,6 +548,7 @@ class _EditNetworkViewState extends State<EditNetworkView> {
         _________,
         __________,
         ___________,
+        ____________,
       ) =>
           [
         TextEditingController(text: endpoint),
@@ -563,6 +565,7 @@ class _EditNetworkViewState extends State<EditNetworkView> {
         _________,
         __________,
         ___________,
+        ____________,
       ) =>
           [
         TextEditingController(text: endpoint),
@@ -592,6 +595,7 @@ class _EditNetworkViewState extends State<EditNetworkView> {
         ______________,
         _______________,
         ________________,
+        _________________,
       ) =>
           isLocal,
       proto: (
@@ -606,6 +610,7 @@ class _EditNetworkViewState extends State<EditNetworkView> {
         _________,
         __________,
         ___________,
+        ____________,
       ) =>
           false,
       jrpc: (
@@ -620,6 +625,7 @@ class _EditNetworkViewState extends State<EditNetworkView> {
         _________,
         __________,
         ___________,
+        ____________,
       ) =>
           false,
     );

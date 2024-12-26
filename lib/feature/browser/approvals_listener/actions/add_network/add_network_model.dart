@@ -34,7 +34,7 @@ class AddNetworkModel extends ElementaryModel {
 
       return await _connectionService
           .createStrategyByConnection(transport, connection)
-          ?.toNetwork();
+          .toNetwork();
     } finally {
       await transport?.dispose();
     }

@@ -637,5 +637,8 @@
   "expiresInCustodians": "Expires in {}",
   "deploymentInProgress": "Deployment in progress",
   "expirationTimeDetails": "Expires in {} hours {} minutes ({} at {})",
-  "errorMessageMaxUnconfirmedTransactions": "Unconfirmed transactions is limited by 5"
+  "errorMessageMaxUnconfirmedTransactions": "Unconfirmed transactions is limited by 5",
+  "noRpcConnection": "No RPC connection",
+  "tryAgainOrContact": "Please try again or contact technical support",
+  "contactUs": "Contact us"
 }
