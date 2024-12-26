@@ -1,5 +1,4 @@
-import 'package:app/app/service/http_clients.dart';
-import 'package:app/app/service/service.dart';
+import 'package:app/app/service/connection/connection_factory.dart';
 import 'package:app/http/repository/ton_repository.dart';
 import 'package:nekoton_repository/nekoton_repository.dart';
 
@@ -28,13 +27,12 @@ class Tip3TokenWalletSubscriber extends GenericTokenSubscriber {
 class JettonTokenWalletSubscriber extends GenericTokenSubscriber {
   JettonTokenWalletSubscriber(
     this._tonRepository,
-    this._storage,
+    this._connectionFactory,
   );
 
   final TonRepository _tonRepository;
-  final AppStorageService _storage;
+  final ConnectionFactory _connectionFactory;
   final Map<Address, Symbol> _symbolCache = {};
-  GqlConnection? _connection;
 
   @override
   Future<GenericTokenWallet> subscribeToken({
@@ -44,7 +42,7 @@ class JettonTokenWalletSubscriber extends GenericTokenSubscriber {
   }) async =>
       JettonTokenWallet.subscribe(
         transport: transport,
-        gqlConnection: await _getConnection(),
+        gqlConnection: await _connectionFactory.getTonGqlConnection(),
         owner: owner,
         rootTokenContract: rootTokenContract,
         symbol: await _getSymbol(rootTokenContract),
@@ -69,20 +67,6 @@ class JettonTokenWalletSubscriber extends GenericTokenSubscriber {
 
     return symbol;
   }
-
-  Future<GqlConnection> _getConnection() async =>
-      _connection ??= await GqlConnection.create(
-        name: 'jetton-gql',
-        group: 'jetton-gql',
-        client: JettonGqlHttpClient(_storage),
-        settings: const GqlNetworkSettings(
-          endpoints: ['https://dton.io/graphql/graphql'],
-          latencyDetectionInterval: 60000,
-          maxLatency: 60000,
-          endpointSelectionRetryCount: 5,
-          local: false,
-        ),
-      );
 }
 
 enum GenericTokenType {

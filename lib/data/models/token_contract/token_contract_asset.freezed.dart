@@ -25,10 +25,10 @@ mixin _$TokenContractAsset {
   int get decimals =>
       throw _privateConstructorUsedError; // address of rootTokenContract
   Address get address => throw _privateConstructorUsedError;
-  String get networkType => throw _privateConstructorUsedError;
-  TokenWalletVersion get version =>
+  String get networkType =>
       throw _privateConstructorUsedError; // true if custom, false if system
   bool get isCustom => throw _privateConstructorUsedError;
+  TokenWalletVersion? get version => throw _privateConstructorUsedError;
   int? get chainId =>
       throw _privateConstructorUsedError; // address of owner that could be set when loaded in
 // <TonWallet.getTokenRootDetailsFromTokenWallet>, may be optional
@@ -60,8 +60,8 @@ abstract class $TokenContractAssetCopyWith<$Res> {
       int decimals,
       Address address,
       String networkType,
-      TokenWalletVersion version,
       bool isCustom,
+      TokenWalletVersion? version,
       int? chainId,
       @JsonKey(includeToJson: false, includeFromJson: false)
       Address? ownerAddress,
@@ -93,8 +93,8 @@ class _$TokenContractAssetCopyWithImpl<$Res, $Val extends TokenContractAsset>
     Object? decimals = null,
     Object? address = null,
     Object? networkType = null,
-    Object? version = null,
     Object? isCustom = null,
+    Object? version = freezed,
     Object? chainId = freezed,
     Object? ownerAddress = freezed,
     Object? totalSupply = freezed,
@@ -121,14 +121,14 @@ class _$TokenContractAssetCopyWithImpl<$Res, $Val extends TokenContractAsset>
           ? _value.networkType
           : networkType // ignore: cast_nullable_to_non_nullable
               as String,
-      version: null == version
-          ? _value.version
-          : version // ignore: cast_nullable_to_non_nullable
-              as TokenWalletVersion,
       isCustom: null == isCustom
           ? _value.isCustom
           : isCustom // ignore: cast_nullable_to_non_nullable
               as bool,
+      version: freezed == version
+          ? _value.version
+          : version // ignore: cast_nullable_to_non_nullable
+              as TokenWalletVersion?,
       chainId: freezed == chainId
           ? _value.chainId
           : chainId // ignore: cast_nullable_to_non_nullable
@@ -187,8 +187,8 @@ abstract class _$$TokenContractAssetImplCopyWith<$Res>
       int decimals,
       Address address,
       String networkType,
-      TokenWalletVersion version,
       bool isCustom,
+      TokenWalletVersion? version,
       int? chainId,
       @JsonKey(includeToJson: false, includeFromJson: false)
       Address? ownerAddress,
@@ -220,8 +220,8 @@ class __$$TokenContractAssetImplCopyWithImpl<$Res>
     Object? decimals = null,
     Object? address = null,
     Object? networkType = null,
-    Object? version = null,
     Object? isCustom = null,
+    Object? version = freezed,
     Object? chainId = freezed,
     Object? ownerAddress = freezed,
     Object? totalSupply = freezed,
@@ -248,14 +248,14 @@ class __$$TokenContractAssetImplCopyWithImpl<$Res>
           ? _value.networkType
           : networkType // ignore: cast_nullable_to_non_nullable
               as String,
-      version: null == version
-          ? _value.version
-          : version // ignore: cast_nullable_to_non_nullable
-              as TokenWalletVersion,
       isCustom: null == isCustom
           ? _value.isCustom
           : isCustom // ignore: cast_nullable_to_non_nullable
               as bool,
+      version: freezed == version
+          ? _value.version
+          : version // ignore: cast_nullable_to_non_nullable
+              as TokenWalletVersion?,
       chainId: freezed == chainId
           ? _value.chainId
           : chainId // ignore: cast_nullable_to_non_nullable
@@ -285,8 +285,8 @@ class _$TokenContractAssetImpl implements _TokenContractAsset {
       required this.decimals,
       required this.address,
       required this.networkType,
-      required this.version,
       required this.isCustom,
+      this.version,
       this.chainId,
       @JsonKey(includeToJson: false, includeFromJson: false) this.ownerAddress,
       @JsonKey(includeToJson: false, includeFromJson: false) this.totalSupply,
@@ -306,11 +306,11 @@ class _$TokenContractAssetImpl implements _TokenContractAsset {
   final Address address;
   @override
   final String networkType;
-  @override
-  final TokenWalletVersion version;
 // true if custom, false if system
   @override
   final bool isCustom;
+  @override
+  final TokenWalletVersion? version;
   @override
   final int? chainId;
 // address of owner that could be set when loaded in
@@ -326,7 +326,7 @@ class _$TokenContractAssetImpl implements _TokenContractAsset {
 
   @override
   String toString() {
-    return 'TokenContractAsset(name: $name, symbol: $symbol, decimals: $decimals, address: $address, networkType: $networkType, version: $version, isCustom: $isCustom, chainId: $chainId, ownerAddress: $ownerAddress, totalSupply: $totalSupply, logoURI: $logoURI)';
+    return 'TokenContractAsset(name: $name, symbol: $symbol, decimals: $decimals, address: $address, networkType: $networkType, isCustom: $isCustom, version: $version, chainId: $chainId, ownerAddress: $ownerAddress, totalSupply: $totalSupply, logoURI: $logoURI)';
   }
 
   @override
@@ -341,9 +341,9 @@ class _$TokenContractAssetImpl implements _TokenContractAsset {
             (identical(other.address, address) || other.address == address) &&
             (identical(other.networkType, networkType) ||
                 other.networkType == networkType) &&
-            (identical(other.version, version) || other.version == version) &&
             (identical(other.isCustom, isCustom) ||
                 other.isCustom == isCustom) &&
+            (identical(other.version, version) || other.version == version) &&
             (identical(other.chainId, chainId) || other.chainId == chainId) &&
             (identical(other.ownerAddress, ownerAddress) ||
                 other.ownerAddress == ownerAddress) &&
@@ -361,8 +361,8 @@ class _$TokenContractAssetImpl implements _TokenContractAsset {
       decimals,
       address,
       networkType,
-      version,
       isCustom,
+      version,
       chainId,
       ownerAddress,
       totalSupply,
@@ -392,8 +392,8 @@ abstract class _TokenContractAsset implements TokenContractAsset {
       required final int decimals,
       required final Address address,
       required final String networkType,
-      required final TokenWalletVersion version,
       required final bool isCustom,
+      final TokenWalletVersion? version,
       final int? chainId,
       @JsonKey(includeToJson: false, includeFromJson: false)
       final Address? ownerAddress,
@@ -413,11 +413,11 @@ abstract class _TokenContractAsset implements TokenContractAsset {
   @override
   Address get address;
   @override
-  String get networkType;
-  @override
-  TokenWalletVersion get version; // true if custom, false if system
+  String get networkType; // true if custom, false if system
   @override
   bool get isCustom;
+  @override
+  TokenWalletVersion? get version;
   @override
   int? get chainId; // address of owner that could be set when loaded in
 // <TonWallet.getTokenRootDetailsFromTokenWallet>, may be optional

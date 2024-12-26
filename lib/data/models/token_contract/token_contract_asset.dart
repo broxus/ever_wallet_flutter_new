@@ -15,9 +15,9 @@ class TokenContractAsset with _$TokenContractAsset {
     // address of rootTokenContract
     required Address address,
     required NetworkType networkType,
-    required TokenWalletVersion version,
     // true if custom, false if system
     required bool isCustom,
+    TokenWalletVersion? version,
     int? chainId,
     // address of owner that could be set when loaded in
     // <TonWallet.getTokenRootDetailsFromTokenWallet>, may be optional

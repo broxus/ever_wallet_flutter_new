@@ -15,7 +15,7 @@ class TokenWalletIconWidget extends StatelessWidget {
   });
 
   final Address address;
-  final TokenWalletVersion version;
+  final TokenWalletVersion? version;
   final String? logoURI;
 
   final double size;

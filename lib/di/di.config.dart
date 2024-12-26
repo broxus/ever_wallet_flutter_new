@@ -27,6 +27,7 @@ import '../app/service/assets_service.dart' as _i964;
 import '../app/service/balance_service.dart' as _i637;
 import '../app/service/biometry_service.dart' as _i575;
 import '../app/service/bootstrap/bootstrap_service.dart' as _i468;
+import '../app/service/connection/connection_factory.dart' as _i252;
 import '../app/service/connection/connection_service.dart' as _i754;
 import '../app/service/connection/presets_connection_service.dart' as _i710;
 import '../app/service/currencies_service.dart' as _i308;
@@ -138,11 +139,6 @@ extension GetItInjectableX on _i174.GetIt {
     gh.factory<_i249.PresetsApi>(() => _i249.PresetsApi(gh<_i361.Dio>()));
     gh.lazySingleton<_i184.AppStorageService>(() => _i184.AppStorageService(
         gh<_i792.GetStorage>(instanceName: 'app_storage_service')));
-    gh.singleton<_i964.AssetsService>(() => _i964.AssetsService(
-          gh<_i771.NekotonRepository>(),
-          gh<_i128.HttpService>(),
-          gh<_i128.GeneralStorageService>(),
-        ));
     gh.singleton<_i473.PermissionsService>(() => _i473.PermissionsService(
           gh<_i128.BrowserPermissionsStorageService>(),
           gh<_i771.NekotonRepository>(),
@@ -177,11 +173,22 @@ extension GetItInjectableX on _i174.GetIt {
           gh<_i361.Dio>(),
           baseUrl: gh<String>(),
         ));
+    gh.singleton<_i252.ConnectionFactory>(
+      () => _i252.ConnectionFactory(gh<_i128.AppStorageService>()),
+      dispose: (i) => i.dispose(),
+    );
     gh.singleton<_i122.BrowserBookmarksStorageService>(() =>
         _i122.BrowserBookmarksStorageService(
             gh<_i792.GetStorage>(instanceName: 'browser_bookmarks')));
     gh.singleton<_i495.TonRepository>(
         () => _i495.TonRepository(gh<_i162.TonApi>()));
+    gh.singleton<_i964.AssetsService>(() => _i964.AssetsService(
+          gh<_i771.NekotonRepository>(),
+          gh<_i128.HttpService>(),
+          gh<_i128.GeneralStorageService>(),
+          gh<_i252.ConnectionFactory>(),
+          gh<_i495.TonRepository>(),
+        ));
     gh.singleton<_i68.NtpService>(
       () => _i68.NtpService(gh<_i128.AppLifecycleService>()),
       dispose: (i) => i.dispose(),
