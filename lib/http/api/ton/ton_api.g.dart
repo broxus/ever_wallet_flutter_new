@@ -14,7 +14,7 @@ class _TonApi implements TonApi {
     this.baseUrl,
     this.errorLogger,
   }) {
-    baseUrl ??= 'https://ton-tokens-api.bf.works';
+    baseUrl ??= 'https://ton-tokens-api.broxus.com';
   }
 
   final Dio _dio;

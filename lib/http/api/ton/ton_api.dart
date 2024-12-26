@@ -5,7 +5,7 @@ import 'package:retrofit/retrofit.dart';
 
 part 'ton_api.g.dart';
 
-const _baseUrl = 'https://ton-tokens-api.bf.works';
+const _baseUrl = 'https://ton-tokens-api.broxus.com';
 
 @injectable
 @RestApi(baseUrl: _baseUrl)

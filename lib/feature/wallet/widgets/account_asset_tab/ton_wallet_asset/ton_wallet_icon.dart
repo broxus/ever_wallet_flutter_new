@@ -1,3 +1,4 @@
+import 'package:app/generated/generated.dart';
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:ui_components_lib/ui_components_lib.dart';
@@ -39,6 +40,10 @@ class TonWalletIconWidget extends StatelessWidget {
             width: size,
             height: size,
             borderRadius: DimensRadius.max,
+          ),
+          errorWidget: (_, __, ___) => SvgPicture.asset(
+            Assets.images.tokenDefaultIcon.path,
+            width: size,
           ),
         );
       }

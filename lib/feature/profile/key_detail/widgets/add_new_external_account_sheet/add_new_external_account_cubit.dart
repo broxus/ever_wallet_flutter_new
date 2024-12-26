@@ -46,7 +46,7 @@ class AddNewExternalAccountCubit extends Cubit<AddNewExternalAccountState>
         return;
       }
       await nekotonRepository.addExternalAccount(
-        address: address,
+        address: await repackAddress(address),
         name: newName.isEmpty ? null : newName,
       );
       Navigator.of(context).pop();
