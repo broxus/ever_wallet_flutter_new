@@ -6,7 +6,9 @@ import 'package:ui_components_lib/ui_components_lib.dart';
 import 'package:ui_components_lib/v2/ui_components_lib_v2.dart';
 
 class AddAccountView extends StatelessWidget {
-  const AddAccountView({super.key});
+  const AddAccountView({
+    super.key,
+  });
 
   @override
   Widget build(BuildContext context) {
@@ -53,6 +55,11 @@ class AddAccountView extends StatelessWidget {
             ),
           ),
           GestureDetector(
+            onTap: () {
+              context.goFurther(
+                AppRoute.walletNewExternalAccount.path,
+              );
+            },
             child: SizedBox(
               height: DimensSizeV2.d64,
               child: Padding(
@@ -62,24 +69,19 @@ class AddAccountView extends StatelessWidget {
                 child: SeparatedRow(
                   separatorSize: DimensSizeV2.d12,
                   children: [
-                    Icon(
+                    const Icon(
                       LucideIcons.import,
                       size: DimensSizeV2.d20,
-                      color: theme.colors.content0.withOpacity(OpacV2.opac20),
                     ),
                     Expanded(
                       child: Text(
                         LocaleKeys.addExternalAccount.tr(),
-                        style: theme.textStyles.labelMedium.copyWith(
-                          color:
-                              theme.colors.content0.withOpacity(OpacV2.opac20),
-                        ),
+                        style: theme.textStyles.labelMedium,
                       ),
                     ),
-                    Icon(
+                    const Icon(
                       LucideIcons.chevronRight,
                       size: DimensSizeV2.d20,
-                      color: theme.colors.content0.withOpacity(OpacV2.opac20),
                     ),
                   ],
                 ),

@@ -8,6 +8,7 @@ import 'package:app/feature/wallet/widgets/account_transactions_tab/widgets/ton_
 import 'package:app/utils/utils.dart';
 import 'package:collection/collection.dart';
 import 'package:flutter/material.dart';
+import 'package:lucide_icons_flutter/lucide_icons.dart';
 import 'package:nekoton_repository/nekoton_repository.dart';
 import 'package:ui_components_lib/ui_components_lib.dart';
 
@@ -41,13 +42,19 @@ class StakingInProgress extends StatelessWidget {
       children: requests.mapIndexed(
         (index, e) {
           final prev = index == 0 ? null : requests[index - 1];
-          final displayDate =
+          final next =
+              index == requests.length - 1 ? null : requests[index + 1];
+          final isFirst =
               prev == null || !prev.data.timestamp.isSameDay(e.data.timestamp);
+          final isLast =
+              next == null || !next.data.timestamp.isSameDay(e.data.timestamp);
 
           return TonWalletTransactionWidget(
+            icon: LucideIcons.loader,
             address: e.accountAddress,
             isIncoming: true,
-            displayDate: displayDate,
+            isFirst: isFirst,
+            isLast: isLast,
             onPressed: () => context.goFurther(
               AppRoute.walletCancelUnstaking.pathWithData(
                 queryParameters: {

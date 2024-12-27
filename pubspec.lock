@@ -272,6 +272,14 @@ packages:
       url: "https://pub.dev"
     source: hosted
     version: "1.2.0"
+  cached_network_svg_image:
+    dependency: "direct main"
+    description:
+      name: cached_network_svg_image
+      sha256: fe9df0217c12e3903558dad14e1bb938c51296a1d96faa080415c6146bbd7a7d
+      url: "https://pub.dev"
+    source: hosted
+    version: "1.2.0"
   characters:
     dependency: transitive
     description:
@@ -882,10 +890,10 @@ packages:
     dependency: transitive
     description:
       name: flutter_nekoton_bridge
-      sha256: "5f1e09e540eafa4fe52c6e24f55c305c89c35d0d3ad93ff52aff1db6af006f17"
+      sha256: c23e416f2ac3a1a00199c85aaf86d57524a4b99f79df70c4095ecb45bec5b2d2
       url: "https://pub.dev"
     source: hosted
-    version: "2.0.1-dev.7"
+    version: "2.2.1"
   flutter_plugin_android_lifecycle:
     dependency: transitive
     description:
@@ -1101,14 +1109,6 @@ packages:
       url: "https://pub.dev"
     source: hosted
     version: "2.2.3"
-  hive_flutter:
-    dependency: "direct main"
-    description:
-      name: hive_flutter
-      sha256: dca1da446b1d808a51689fb5d0c6c9510c0a2ba01e22805d492c73b68e33eecc
-      url: "https://pub.dev"
-    source: hosted
-    version: "1.1.0"
   hive_generator:
     dependency: "direct dev"
     description:
@@ -1518,18 +1518,18 @@ packages:
     dependency: transitive
     description:
       name: nekoton_bridge
-      sha256: "0470e7e8faab11bfd2f9ba6d5eaaab25565a7dc635332d5f373d18363c7e8622"
+      sha256: f4dec58b898c22300e19691147f69d71cef83534ab6b890a529a7a086beda3e8
       url: "https://pub.dev"
     source: hosted
-    version: "2.0.1-dev.5"
+    version: "2.2.0"
   nekoton_repository:
     dependency: "direct main"
     description:
       name: nekoton_repository
-      sha256: "77c1fd94ecca6559a2f23a097c4732248d79b31edde5411252d40d7afd57ce04"
+      sha256: b69c3035966977993ff63150245255a8da95307ce17001eec90af6d3655819d0
       url: "https://pub.dev"
     source: hosted
-    version: "0.37.0-dev.16"
+    version: "0.44.0"
   nekoton_webview:
     dependency: "direct main"
     description:

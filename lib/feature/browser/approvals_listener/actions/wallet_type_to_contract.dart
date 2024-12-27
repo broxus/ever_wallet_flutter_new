@@ -28,5 +28,8 @@ extension WalletTypeToContract on WalletType {
         everWallet: () => WalletContractType.everWallet,
         walletV3: () => WalletContractType.walletV3,
         highloadWalletV2: () => WalletContractType.highloadWalletV2,
+        walletV4R1: () => WalletContractType.walletV4R1,
+        walletV4R2: () => WalletContractType.walletV4R2,
+        walletV5R1: () => WalletContractType.walletV5R1,
       );
 }

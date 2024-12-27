@@ -1,5 +1,6 @@
 import 'dart:async';
 
+import 'package:app/app/service/connection/data/connection_data/connection_data.dart';
 import 'package:app/data/models/models.dart';
 import 'package:freezed_annotation/freezed_annotation.dart';
 import 'package:nekoton_repository/nekoton_repository.dart';

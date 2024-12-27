@@ -8,7 +8,7 @@ class SegmentControlStyle {
     ColorsPaletteV2 colors,
     TextStylesV2 textStyles,
     SegmentControlSize size,
-  )   : backgroundColor = ColorsResV2.transparent,
+  )   : backgroundColor = colors.background1,
         iconColor = colors.content1,
         titleTextStyle = (size == SegmentControlSize.large
                 ? textStyles.labelMedium
@@ -23,7 +23,7 @@ class SegmentControlStyle {
     ColorsPaletteV2 colors,
     TextStylesV2 textStyles,
     SegmentControlSize size,
-  )   : backgroundColor = colors.background1,
+  )   : backgroundColor = colors.background2,
         iconColor = colors.content0,
         titleTextStyle = size == SegmentControlSize.large
             ? textStyles.labelMedium

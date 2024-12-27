@@ -1,6 +1,7 @@
 import 'dart:async';
 
 import 'package:app/app/service/service.dart';
+import 'package:app/core/bloc/bloc_mixin.dart';
 import 'package:bloc/bloc.dart';
 import 'package:collection/collection.dart';
 import 'package:freezed_annotation/freezed_annotation.dart';
@@ -12,7 +13,7 @@ part 'account_detail_cubit.freezed.dart';
 part 'account_detail_state.dart';
 
 /// Cubit for account detail page
-class AccountDetailCubit extends Cubit<AccountDetailState> {
+class AccountDetailCubit extends Cubit<AccountDetailState> with BlocBaseMixin {
   AccountDetailCubit({
     required this.address,
     required this.nekotonRepository,
@@ -51,7 +52,7 @@ class AccountDetailCubit extends Cubit<AccountDetailState> {
     if (account == null) {
       _cachedAccount = null;
       _closeBalanceSubs();
-      emit(const AccountDetailState.empty());
+      emitSafe(const AccountDetailState.empty());
     } else {
       _cachedAccount = account;
       _checkBalanceSub(account);
@@ -61,7 +62,13 @@ class AccountDetailCubit extends Cubit<AccountDetailState> {
 
   void _updateDataState() {
     if (isClosed) return;
-    emit(AccountDetailState.data(_cachedAccount!, _cachedBalance, _custodians));
+    emitSafe(
+      AccountDetailState.data(
+        _cachedAccount!,
+        _cachedBalance,
+        _custodians,
+      ),
+    );
   }
 
   Transport? _lastTransport;

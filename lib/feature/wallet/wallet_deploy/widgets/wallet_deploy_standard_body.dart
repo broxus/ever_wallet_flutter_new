@@ -19,13 +19,14 @@ class WalletDeployStandardBody extends StatelessWidget {
             type: WalletDeployType.standard,
           ),
           const Spacer(),
-          PrimaryButton(
+          AccentButton(
             buttonShape: ButtonShape.pill,
             title: LocaleKeys.nextWord.tr(),
             onPressed: () => context
                 .read<WalletDeployBloc>()
                 .add(const WalletDeployEvent.deployStandard()),
           ),
+          const SizedBox.shrink(),
         ],
       ),
     );

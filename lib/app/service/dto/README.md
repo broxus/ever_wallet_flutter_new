@@ -1,1 +1,0 @@
-This DTO section must be removed when Hive completely removed from app.

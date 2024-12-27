@@ -1,7 +1,7 @@
 import 'package:app/app/router/router.dart';
 import 'package:app/data/models/seed/seed_phrase_model.dart';
 import 'package:app/feature/add_seed/add_existing_wallet/view/add_existing_wallet_page.dart';
-import 'package:app/feature/add_seed/add_seed_enable_biometry/view/add_seed_enable_biometry_page.dart';
+import 'package:app/feature/add_seed/add_seed_enable_biometry/add_seed_enable_biometry_page.dart';
 import 'package:app/feature/add_seed/create_password/screens/create_seed_password/create_seed_password_screen.dart';
 import 'package:app/feature/add_seed/create_password/view/create_seed_password_page.dart';
 import 'package:app/feature/add_seed/enter_seed_phrase/view/enter_seed_phrase_page.dart';
@@ -107,7 +107,7 @@ GoRoute get createOnboardingSeedPasswordRoute {
 
 GoRoute get seedEnableBiometryRoute {
   return GoRoute(
-    path: AppRoute.enableBiometryAfterOnboarding.path,
+    path: AppRoute.enableBiometry.path,
     builder: (_, GoRouterState state) => const AddSeedEnableBiometryPage(),
   );
 }

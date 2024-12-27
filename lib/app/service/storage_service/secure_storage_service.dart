@@ -6,6 +6,10 @@ import 'package:injectable/injectable.dart';
 import 'package:nekoton_repository/nekoton_repository.dart' hide Currency;
 
 const _passwordsKey = 'passwords_key';
+const _connectionJsonDomain = 'connection_json_domain';
+
+const _connectionJsonKey = 'connection_json_key';
+const _connectionJsonHashKey = 'connection_json_hash_key';
 
 /// This is a wrapper-class above [EncryptedStorage] that provides methods
 /// to interact with general information that is not related to some specified
@@ -48,4 +52,30 @@ class SecureStorageService extends AbstractStorageService {
 
   /// Clear all passwords of public keys from cache
   Future<void> clearKeyPasswords() => _storage.clearDomain(_passwordsKey);
+
+  Future<String?> getConnectionJson() {
+    return _storage.get(
+      _connectionJsonKey,
+      domain: _connectionJsonDomain,
+    );
+  }
+
+  Future<void> setConnectionJson(String json) => _storage.set(
+        _connectionJsonKey,
+        json,
+        domain: _connectionJsonDomain,
+      );
+
+  Future<String?> getConnectionJsonHash() {
+    return _storage.get(
+      _connectionJsonHashKey,
+      domain: _connectionJsonDomain,
+    );
+  }
+
+  Future<void> setConnectionJsonHash(String hash) => _storage.set(
+        _connectionJsonHashKey,
+        hash,
+        domain: _connectionJsonDomain,
+      );
 }
