@@ -83,6 +83,10 @@ class $AssetsImagesGen {
   SvgGenImage get arrowsLeftRight =>
       const SvgGenImage('assets/images/arrows_left_right.svg');
 
+  /// File path: assets/images/bg_connection.png
+  AssetGenImage get bgConnection =>
+      const AssetGenImage('assets/images/bg_connection.png');
+
   /// File path: assets/images/bg_internet.png
   AssetGenImage get bgInternet =>
       const AssetGenImage('assets/images/bg_internet.png');
@@ -194,13 +198,6 @@ class $AssetsImagesGen {
   /// File path: assets/images/ever.svg
   SvgGenImage get ever => const SvgGenImage('assets/images/ever.svg');
 
-  /// File path: assets/images/ever_coin.svg
-  SvgGenImage get everCoin => const SvgGenImage('assets/images/ever_coin.svg');
-
-  /// File path: assets/images/ever_vector.svg
-  SvgGenImage get everVector =>
-      const SvgGenImage('assets/images/ever_vector.svg');
-
   /// File path: assets/images/exclamation_mark.png
   AssetGenImage get exclamationMark =>
       const AssetGenImage('assets/images/exclamation_mark.png');
@@ -234,6 +231,10 @@ class $AssetsImagesGen {
   /// File path: assets/images/history_fill.svg
   SvgGenImage get historyFill =>
       const SvgGenImage('assets/images/history_fill.svg');
+
+  /// File path: assets/images/ic_explamation_mark.png
+  AssetGenImage get icExplamationMark =>
+      const AssetGenImage('assets/images/ic_explamation_mark.png');
 
   /// File path: assets/images/ic_match.svg
   SvgGenImage get icMatch => const SvgGenImage('assets/images/ic_match.svg');
@@ -278,6 +279,10 @@ class $AssetsImagesGen {
   /// File path: assets/images/moon.svg
   SvgGenImage get moon => const SvgGenImage('assets/images/moon.svg');
 
+  /// File path: assets/images/native_token_default.svg
+  SvgGenImage get nativeTokenDefault =>
+      const SvgGenImage('assets/images/native_token_default.svg');
+
   /// File path: assets/images/navigate_back.svg
   SvgGenImage get navigateBack =>
       const SvgGenImage('assets/images/navigate_back.svg');
@@ -298,17 +303,9 @@ class $AssetsImagesGen {
   AssetGenImage get networkEarth =>
       const AssetGenImage('assets/images/network_earth.png');
 
-  /// File path: assets/images/network_ever.svg
-  SvgGenImage get networkEver =>
-      const SvgGenImage('assets/images/network_ever.svg');
-
-  /// File path: assets/images/network_tycho.svg
-  SvgGenImage get networkTycho =>
-      const SvgGenImage('assets/images/network_tycho.svg');
-
-  /// File path: assets/images/network_venom.svg
-  SvgGenImage get networkVenom =>
-      const SvgGenImage('assets/images/network_venom.svg');
+  /// File path: assets/images/network_vector_default.svg
+  SvgGenImage get networkVectorDefault =>
+      const SvgGenImage('assets/images/network_vector_default.svg');
 
   /// Directory path: assets/images/onboarding
   $AssetsImagesOnboardingGen get onboarding =>
@@ -391,24 +388,9 @@ class $AssetsImagesGen {
   /// File path: assets/images/trash.svg
   SvgGenImage get trash => const SvgGenImage('assets/images/trash.svg');
 
-  /// File path: assets/images/tycho_coin.svg
-  SvgGenImage get tychoCoin =>
-      const SvgGenImage('assets/images/tycho_coin.svg');
-
-  /// File path: assets/images/tycho_vector.svg
-  SvgGenImage get tychoVector =>
-      const SvgGenImage('assets/images/tycho_vector.svg');
-
   /// Directory path: assets/images/user_avatar
   $AssetsImagesUserAvatarGen get userAvatar =>
       const $AssetsImagesUserAvatarGen();
-
-  /// File path: assets/images/venom.svg
-  SvgGenImage get venom => const SvgGenImage('assets/images/venom.svg');
-
-  /// File path: assets/images/venom_vector.svg
-  SvgGenImage get venomVector =>
-      const SvgGenImage('assets/images/venom_vector.svg');
 
   /// File path: assets/images/wallet.svg
   SvgGenImage get wallet => const SvgGenImage('assets/images/wallet.svg');
@@ -433,6 +415,7 @@ class $AssetsImagesGen {
         arrowUp,
         arrowUpFlat,
         arrowsLeftRight,
+        bgConnection,
         bgInternet,
         bgMain,
         blurBackground,
@@ -463,8 +446,6 @@ class $AssetsImagesGen {
         dots,
         edit,
         ever,
-        everCoin,
-        everVector,
         exclamationMark,
         exit,
         export,
@@ -475,6 +456,7 @@ class $AssetsImagesGen {
         fingerSmall,
         history,
         historyFill,
+        icExplamationMark,
         icMatch,
         icNotMatch,
         icTooWeak,
@@ -487,14 +469,13 @@ class $AssetsImagesGen {
         logo,
         minus,
         moon,
+        nativeTokenDefault,
         navigateBack,
         navigateForward,
         navigation,
         networkDefault,
         networkEarth,
-        networkEver,
-        networkTycho,
-        networkVenom,
+        networkVectorDefault,
         openedEye,
         paste,
         person,
@@ -517,10 +498,6 @@ class $AssetsImagesGen {
         support,
         tokenDefaultIcon,
         trash,
-        tychoCoin,
-        tychoVector,
-        venom,
-        venomVector,
         wallet,
         web
       ];

@@ -10,6 +10,7 @@ Future<void> configureLocalization() async {
   final easyLocalizationLog = Logger('easyLocalization');
 
   WidgetsFlutterBinding.ensureInitialized();
+  Intl.defaultLocale = 'en_US';
   // easy_localization claims that this is needed
   void customLogPrinter(
     Object object, {

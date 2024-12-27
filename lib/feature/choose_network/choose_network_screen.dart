@@ -42,7 +42,6 @@ class ChooseNetworkScreen
                 systemOverlayStyle: SystemUiOverlayStyle.light,
               ),
               body: Column(
-                // mainAxisSize: MainAxisSize.min,
                 mainAxisAlignment: MainAxisAlignment.end,
                 crossAxisAlignment: CrossAxisAlignment.stretch,
                 children: [

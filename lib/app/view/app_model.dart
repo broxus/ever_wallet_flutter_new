@@ -1,5 +1,5 @@
 import 'package:app/app/router/router.dart';
-import 'package:app/app/service/bootstrap_service.dart';
+import 'package:app/app/service/bootstrap/bootstrap_service.dart';
 import 'package:app/app/service/navigation/service/navigation_service.dart';
 import 'package:app/app/view/app.dart';
 import 'package:elementary/elementary.dart';
@@ -23,4 +23,10 @@ class AppModel extends ElementaryModel {
     _navigationService,
     _nekotonRepository,
   );
+
+  @override
+  void dispose() {
+    appRouter.dispose();
+    super.dispose();
+  }
 }

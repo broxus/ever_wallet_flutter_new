@@ -1,7 +1,9 @@
 import 'dart:convert';
 
+import 'package:app/app/service/connection/connection_factory.dart';
 import 'package:app/app/service/service.dart';
 import 'package:app/data/models/models.dart';
+import 'package:app/http/repository/ton_repository.dart';
 import 'package:collection/collection.dart';
 import 'package:injectable/injectable.dart';
 import 'package:logging/logging.dart';
@@ -17,6 +19,8 @@ class AssetsService {
     this.nekotonRepository,
     this.httpService,
     this.storage,
+    this.connectionFactory,
+    this.tonRepository,
   );
 
   static final _logger = Logger('AssetsService');
@@ -24,6 +28,8 @@ class AssetsService {
   final NekotonRepository nekotonRepository;
   final HttpService httpService;
   final GeneralStorageService storage;
+  final ConnectionFactory connectionFactory;
+  final TonRepository tonRepository;
 
   /// Start listening for transport changes and update contracts from manifest
   void init() {
@@ -190,22 +196,44 @@ class AssetsService {
     try {
       if (transport.transport.disposed) return null;
 
-      final tokenRootDetails = await TokenWallet.getTokenRootDetails(
-        transport: transport.transport,
-        tokenRoot: rootTokenContract,
-      );
+      if (transport.networkType == 'ton') {
+        final details = await JettonWallet.getJettonRootDetails(
+          transport: transport.transport,
+          gqlConnection: await connectionFactory.getTonGqlConnection(),
+          tokenRoot: rootTokenContract,
+        );
+        final info = await tonRepository.getTokenInfo(
+          address: rootTokenContract,
+        );
 
-      asset = TokenContractAsset(
-        name: tokenRootDetails.name,
-        symbol: tokenRootDetails.symbol,
-        decimals: tokenRootDetails.decimals,
-        address: rootTokenContract,
-        ownerAddress: tokenRootDetails.ownerAddress,
-        totalSupply: tokenRootDetails.totalSupply,
-        version: tokenRootDetails.version,
-        networkType: transport.networkType,
-        isCustom: true,
-      );
+        asset = TokenContractAsset(
+          name: details.content.name ?? info.name ?? 'Unknown token',
+          symbol: details.content.symbol ?? info.symbol ?? 'UNKNOWN',
+          decimals: details.content.decimals ?? info.decimals ?? 0,
+          address: rootTokenContract,
+          ownerAddress: details.adminAddress,
+          networkType: transport.networkType,
+          logoURI: details.content.uri ?? info.imageUrl,
+          isCustom: true,
+        );
+      } else {
+        final tokenRootDetails = await TokenWallet.getTokenRootDetails(
+          transport: transport.transport,
+          tokenRoot: rootTokenContract,
+        );
+
+        asset = TokenContractAsset(
+          name: tokenRootDetails.name,
+          symbol: tokenRootDetails.symbol,
+          decimals: tokenRootDetails.decimals,
+          address: rootTokenContract,
+          ownerAddress: tokenRootDetails.ownerAddress,
+          totalSupply: tokenRootDetails.totalSupply,
+          version: tokenRootDetails.version,
+          networkType: transport.networkType,
+          isCustom: true,
+        );
+      }
 
       storage.addCustomTokenContractAsset(asset);
 
@@ -249,7 +277,7 @@ class AssetsService {
 
       for (final token in (decoded['tokens'] as List<dynamic>)
           .cast<Map<String, dynamic>>()) {
-        token['networkType'] = transport.networkType.name;
+        token['networkType'] = transport.networkType;
         token['version'] =
             intToWalletContractConvert(token['version'] as int).toString();
         token['isCustom'] = false;

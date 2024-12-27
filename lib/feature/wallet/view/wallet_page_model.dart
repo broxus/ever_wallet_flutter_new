@@ -69,4 +69,11 @@ class WalletPageModel extends ElementaryModel {
       false,
     );
   }
+
+  Future<TonWalletState> getTonWalletState(Address? address) async {
+    final wallet = await _nekotonRepository.walletsStream
+        .expand((e) => e)
+        .firstWhere((wallets) => wallets.address == address);
+    return wallet;
+  }
 }

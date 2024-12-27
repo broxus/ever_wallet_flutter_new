@@ -1,6 +1,7 @@
 // ignore_for_file: use_build_context_synchronously
 
 import 'package:app/app/service/service.dart';
+import 'package:app/core/bloc/bloc_mixin.dart';
 import 'package:app/generated/generated.dart';
 import 'package:app/utils/constants.dart';
 import 'package:app/utils/utils.dart';
@@ -11,15 +12,14 @@ import 'package:logging/logging.dart';
 import 'package:nekoton_repository/nekoton_repository.dart' hide Message;
 
 part 'token_wallet_send_bloc.freezed.dart';
-
 part 'token_wallet_send_event.dart';
-
 part 'token_wallet_send_state.dart';
 
 /// Bloc that allows to prepare not native token from [TokenWallet] for
 /// confirmation and sending transaction.
 class TokenWalletSendBloc
-    extends Bloc<TokenWalletSendEvent, TokenWalletSendState> {
+    extends Bloc<TokenWalletSendEvent, TokenWalletSendState>
+    with BlocBaseMixin {
   TokenWalletSendBloc({
     required this.context,
     required this.nekotonRepository,
@@ -53,7 +53,6 @@ class TokenWalletSendBloc
 
   /// Address where tokens must be sent
   final Address destination;
-  late Address repackedDestination;
 
   /// How many tokens must be sent, to convert Fixed to BigInt, use
   /// [Fixed.minorUnits].
@@ -77,7 +76,6 @@ class TokenWalletSendBloc
   KeyAccount? account;
 
   UnsignedMessage? unsignedMessage;
-  UnsignedMessage? _unsignedMessage;
 
   List<TxTreeSimulationErrorItem>? txErrors;
 
@@ -89,12 +87,13 @@ class TokenWalletSendBloc
     on<_Prepare>((event, emit) => _handlePrepare(emit));
     on<_Send>((event, emit) => _handleSend(emit, event.password));
     on<_CompleteSend>(
-      (event, emit) => emit(
+      (event, emit) => emitSafe(
         TokenWalletSendState.sent(fees!, event.transaction),
       ),
     );
     on<_AllowCloseSend>(
-      (event, emit) => emit(const TokenWalletSendState.sending(canClose: true)),
+      (event, emit) =>
+          emitSafe(const TokenWalletSendState.sending(canClose: true)),
     );
   }
 
@@ -115,11 +114,11 @@ class TokenWalletSendBloc
       );
 
       if (tokenWalletState.hasError) {
-        emit(TokenWalletSendState.subscribeError(tokenWalletState.error!));
+        emitSafe(TokenWalletSendState.subscribeError(tokenWalletState.error!));
         return;
       }
       if (walletState.hasError) {
-        emit(TokenWalletSendState.subscribeError(walletState.error!));
+        emitSafe(TokenWalletSendState.subscribeError(walletState.error!));
         return;
       }
 
@@ -127,50 +126,24 @@ class TokenWalletSendBloc
       final wallet = walletState.wallet!;
 
       tokenCurrency = tokenWallet.currency;
-      emit(const TokenWalletSendState.loading());
+      emitSafe(const TokenWalletSendState.loading());
 
-      final internalMessage = await nekotonRepository.prepareTokenTransfer(
-        owner: owner,
-        rootTokenContract: rootTokenContract,
-        destination: await repackAddress(destination),
-        amount: tokenAmount,
-        payload: comment,
-        attachedAmount: attachedAmount,
-        notifyReceiver: true,
-      );
-
-      repackedDestination = internalMessage.destination;
+      final (internalMessage, unsignedMessage) = await _prepareTransfer();
+      this.unsignedMessage = unsignedMessage;
       sendAmount = internalMessage.amount;
-
-      try {
-        unsignedMessage = await nekotonRepository.prepareTransfer(
-          address: owner,
-          publicKey: publicKey,
-          destination: repackedDestination,
-          amount: sendAmount,
-          body: internalMessage.body,
-          bounce: defaultMessageBounce,
-          expiration: defaultSendTimeout,
-        );
-      } finally {
-        _unsignedMessage = unsignedMessage;
-      }
-
-      final msg = unsignedMessage;
-
-      if (msg == null) {
-        return;
-      }
 
       final result = await FutureExt.wait2(
         nekotonRepository.estimateFees(
           address: owner,
-          message: msg,
+          message: unsignedMessage,
         ),
-        nekotonRepository.simulateTransactionTree(
-          address: owner,
-          message: msg,
-        ),
+        // TODO(komarov): remove when fixed in nekoton
+        transport.networkType == 'ton'
+            ? Future<List<TxTreeSimulationErrorItem>>.value([])
+            : nekotonRepository.simulateTransactionTree(
+                address: owner,
+                message: unsignedMessage,
+              ),
       );
       fees = result.$1;
       txErrors = result.$2;
@@ -180,7 +153,7 @@ class TokenWalletSendBloc
           balance > (fees! + internalMessage.amount);
 
       if (!isPossibleToSendMessage) {
-        emit(
+        emitSafe(
           TokenWalletSendState.calculatingError(
             LocaleKeys.insufficientFunds.tr(),
             fees,
@@ -189,13 +162,13 @@ class TokenWalletSendBloc
         return;
       }
 
-      emit(TokenWalletSendState.readyToSend(fees!, sendAmount, txErrors));
+      emitSafe(TokenWalletSendState.readyToSend(fees!, sendAmount, txErrors));
     } on FfiException catch (e, t) {
       _logger.severe('_handleSend', e, t);
-      emit(TokenWalletSendState.calculatingError(e.message));
+      emitSafe(TokenWalletSendState.calculatingError(e.message));
     } on Exception catch (e, t) {
       _logger.severe('_handleSend', e, t);
-      emit(TokenWalletSendState.calculatingError(e.toString()));
+      emitSafe(TokenWalletSendState.calculatingError(e.toString()));
     }
   }
 
@@ -204,16 +177,14 @@ class TokenWalletSendBloc
     String password,
   ) async {
     try {
-      final msg = unsignedMessage;
+      emitSafe(const TokenWalletSendState.sending(canClose: false));
+      // await msg.refreshTimeout();
+      // TODO(komarov): fix refresh_timeout in nekoton
+      final (internalMessage, unsignedMessage) = await _prepareTransfer();
+      this.unsignedMessage = unsignedMessage;
+      sendAmount = internalMessage.amount;
 
-      if (msg == null) {
-        return;
-      }
-
-      emit(const TokenWalletSendState.sending(canClose: false));
-      await msg.refreshTimeout();
-
-      final hash = msg.hash;
+      final hash = unsignedMessage.hash;
       final transport = nekotonRepository.currentTransport.transport;
 
       final signature = await nekotonRepository.seedList.sign(
@@ -223,15 +194,15 @@ class TokenWalletSendBloc
         signatureId: await transport.getSignatureId(),
       );
 
-      final signedMessage = await msg.sign(signature: signature);
+      final signedMessage = await unsignedMessage.sign(signature: signature);
 
-      emit(const TokenWalletSendState.sending(canClose: true));
+      emitSafe(const TokenWalletSendState.sending(canClose: true));
 
       final transaction = await nekotonRepository.send(
         address: owner,
         signedMessage: signedMessage,
         amount: sendAmount,
-        destination: repackedDestination,
+        destination: internalMessage.destination,
       );
 
       messengerService.show(
@@ -243,6 +214,7 @@ class TokenWalletSendBloc
       if (!isClosed) {
         add(TokenWalletSendEvent.completeSend(transaction));
       }
+    } on OperationCanceledException catch (_) {
     } on FfiException catch (e, t) {
       _logger.severe('_handleSend', e, t);
       messengerService.show(
@@ -251,20 +223,42 @@ class TokenWalletSendBloc
           message: e.message,
         ),
       );
-      emit(TokenWalletSendState.readyToSend(fees!, sendAmount, txErrors));
+      emitSafe(TokenWalletSendState.readyToSend(fees!, sendAmount, txErrors));
     } on Exception catch (e, t) {
       _logger.severe('_handleSend', e, t);
       messengerService
           .show(Message.error(context: context, message: e.toString()));
-      emit(TokenWalletSendState.readyToSend(fees!, sendAmount, txErrors));
+      emitSafe(TokenWalletSendState.readyToSend(fees!, sendAmount, txErrors));
     }
+  }
+
+  Future<(InternalMessage, UnsignedMessage)> _prepareTransfer() async {
+    final internalMessage = await nekotonRepository.prepareTokenTransfer(
+      owner: owner,
+      rootTokenContract: rootTokenContract,
+      destination: await repackAddress(destination),
+      amount: tokenAmount,
+      payload: comment,
+      attachedAmount: attachedAmount,
+      notifyReceiver: true,
+    );
+
+    final unsignedMessage = await nekotonRepository.prepareTransfer(
+      address: owner,
+      publicKey: publicKey,
+      destination: internalMessage.destination,
+      amount: internalMessage.amount,
+      body: internalMessage.body,
+      bounce: defaultMessageBounce,
+      expiration: defaultSendTimeout,
+    );
+
+    return (internalMessage, unsignedMessage);
   }
 
   @override
   Future<void> close() {
     unsignedMessage?.dispose();
-    _unsignedMessage?.dispose();
-
     return super.close();
   }
 }

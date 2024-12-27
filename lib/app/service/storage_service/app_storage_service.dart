@@ -39,6 +39,9 @@ class StorageKey {
   factory StorageKey.accountColor(String key) =>
       StorageKey._('accountColor', key);
 
+  factory StorageKey.nameCustodian(String publicKey) =>
+      StorageKey._('nameCustodian', publicKey);
+
   StorageKey._(this._baseKey, [this._entityKey]);
 
   final String _baseKey;

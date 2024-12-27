@@ -1,6 +1,7 @@
 import 'dart:async';
 
 import 'package:app/app/service/service.dart';
+import 'package:app/core/bloc/bloc_mixin.dart';
 import 'package:app/data/models/models.dart';
 import 'package:app/feature/browser/browser.dart';
 import 'package:bloc/bloc.dart';
@@ -10,12 +11,15 @@ import 'package:freezed_annotation/freezed_annotation.dart';
 import 'package:logging/logging.dart';
 
 part 'browser_tabs_bloc.freezed.dart';
+
 part 'browser_tabs_event.dart';
+
 part 'browser_tabs_state.dart';
 
 final _emptyUri = Uri.parse('');
 
-class BrowserTabsBloc extends Bloc<BrowserTabsEvent, BrowserTabsState> {
+class BrowserTabsBloc extends Bloc<BrowserTabsEvent, BrowserTabsState>
+    with BlocBaseMixin {
   BrowserTabsBloc(
     this.browserTabsStorageService,
     this.onBrowserHistoryItemAdd,
@@ -137,7 +141,11 @@ class BrowserTabsBloc extends Bloc<BrowserTabsEvent, BrowserTabsState> {
         basicAuthCreds: event.basicAuthCreds ?? oldTabState.basicAuthCreds,
       );
 
-      emit(state.copyWith(tabsState: _replaceTabState(event.id, newTabState)));
+      emitSafe(
+        state.copyWith(
+          tabsState: _replaceTabState(event.id, newTabState),
+        ),
+      );
     });
     on<_Remove>((event, emit) {
       final tab = browserTabById(event.id);
@@ -162,7 +170,7 @@ class BrowserTabsBloc extends Bloc<BrowserTabsEvent, BrowserTabsState> {
       browserTabsStorageService.clearBrowserTabs();
     });
     on<_SetTabs>((event, emit) {
-      emit(
+      emitSafe(
         state.copyWith(
           tabs: event.tabs,
           tabsState: _clearTabStates(),
@@ -171,16 +179,16 @@ class BrowserTabsBloc extends Bloc<BrowserTabsEvent, BrowserTabsState> {
     });
     on<_SetActiveTabId>((event, emit) {
       browserTabsStorageService.saveBrowserActiveTabId(event.id);
-      emit(state.copyWith(currentTabId: event.id));
+      emitSafe(state.copyWith(currentTabId: event.id));
     });
     on<_ClearCache>((event, emit) {
-      emit(state.copyWith(clearCacheOnNextTab: true));
+      emitSafe(state.copyWith(clearCacheOnNextTab: true));
     });
     on<_CacheCleared>((event, emit) {
-      emit(state.copyWith(clearCacheOnNextTab: true));
+      emitSafe(state.copyWith(clearCacheOnNextTab: true));
     });
     on<_SetSearchText>((event, emit) {
-      emit(state.copyWith(searchText: event.text));
+      emitSafe(state.copyWith(searchText: event.text));
     });
   }
 

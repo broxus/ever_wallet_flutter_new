@@ -7,7 +7,7 @@ import 'package:app/app/router/routs/wallet/wallet.dart';
 import 'package:app/app/service/currency_convert_service.dart';
 import 'package:app/core/error_handler_factory.dart';
 import 'package:app/core/wm/custom_wm.dart';
-import 'package:app/data/models/token_contract_asset.dart';
+import 'package:app/data/models/token_contract/token_contract_asset.dart';
 import 'package:app/di/di.dart';
 import 'package:app/feature/qr_scanner/qr_scanner.dart';
 import 'package:app/feature/wallet/wallet_prepare_transfer/wallet_prepare_transfer_page/data/wallet_prepare_balance_data.dart';
@@ -322,7 +322,7 @@ class WalletPrepareTransferPageWidgetModel extends CustomWidgetModel<
       );
     }
 
-    context.goFurther(path);
+    contextSafe?.goFurther(path);
   }
 
   Future<void> _updateAsset(WalletPrepareTransferAsset asset) async {

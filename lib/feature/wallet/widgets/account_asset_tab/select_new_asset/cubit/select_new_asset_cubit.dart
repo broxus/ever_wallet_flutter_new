@@ -3,6 +3,7 @@
 import 'dart:async';
 
 import 'package:app/app/service/service.dart';
+import 'package:app/core/bloc/bloc_mixin.dart';
 import 'package:app/data/models/models.dart';
 import 'package:app/di/di.dart';
 import 'package:app/generated/generated.dart';
@@ -19,7 +20,8 @@ enum SelectNewAssetTabs { select, custom }
 
 /// Cubit that allows user select new assets(contracts) for account with
 /// [address].
-class SelectNewAssetCubit extends Cubit<SelectNewAssetState> {
+class SelectNewAssetCubit extends Cubit<SelectNewAssetState>
+    with BlocBaseMixin {
   SelectNewAssetCubit({
     required this.address,
     required this.assetsService,
@@ -91,7 +93,7 @@ class SelectNewAssetCubit extends Cubit<SelectNewAssetState> {
     if (st is _Data) {
       if (tab == st.tab) return;
 
-      emit(st.copyWith(tab: tab));
+      emitSafe(st.copyWith(tab: tab));
     }
   }
 
@@ -109,7 +111,9 @@ class SelectNewAssetCubit extends Cubit<SelectNewAssetState> {
   Future<void> addCustom(BuildContext context, Address address) async {
     final isValid = await validateAddress(address);
     if (isValid) {
-      await _cachedAccount?.addTokenWallet(address);
+      await _cachedAccount?.addTokenWallet(
+        await repackAddress(address),
+      );
     } else {
       inject<MessengerService>().show(
         Message.error(
@@ -153,13 +157,13 @@ class SelectNewAssetCubit extends Cubit<SelectNewAssetState> {
       await _cachedAccount?.removeTokenWallets(_contractsToDisable);
     }
 
-    emit(const SelectNewAssetState.completed());
+    emitSafe(const SelectNewAssetState.completed());
   }
 
   void _updateState([bool isLoading = false]) {
     final st = state;
     if (st is _Data) {
-      emit(
+      emitSafe(
         st.copyWith(
           isLoading: isLoading,
           account: _cachedAccount,

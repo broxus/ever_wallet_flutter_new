@@ -1,6 +1,7 @@
 import 'dart:async';
 
 import 'package:app/app/service/service.dart';
+import 'package:app/core/bloc/bloc_mixin.dart';
 import 'package:bloc/bloc.dart';
 import 'package:collection/collection.dart';
 import 'package:freezed_annotation/freezed_annotation.dart';
@@ -11,7 +12,8 @@ part 'ton_wallet_details_state.dart';
 
 /// Cubit that allows loading balance for the [TonWallet] (history loads
 /// separately) in widget.
-class TonWalletDetailsCubit extends Cubit<TonWalletDetailsState> {
+class TonWalletDetailsCubit extends Cubit<TonWalletDetailsState>
+    with BlocBaseMixin {
   TonWalletDetailsCubit({
     required this.nekotonRepository,
     required this.address,
@@ -20,7 +22,7 @@ class TonWalletDetailsCubit extends Cubit<TonWalletDetailsState> {
   }) : super(const TonWalletDetailsState.initial()) {
     final acc = nekotonRepository.seedList.findAccountByAddress(address);
     if (acc == null) {
-      emit(const TonWalletDetailsState.empty());
+      emitSafe(const TonWalletDetailsState.empty());
 
       return;
     }
@@ -41,7 +43,7 @@ class TonWalletDetailsCubit extends Cubit<TonWalletDetailsState> {
         _walletsSubscription?.cancel();
 
         if (walletState.hasError) {
-          emit(
+          emitSafe(
             TonWalletDetailsState.subscribeError(
               symbol: nekotonRepository.currentTransport.nativeTokenTicker,
               account: account,
@@ -97,14 +99,14 @@ class TonWalletDetailsCubit extends Cubit<TonWalletDetailsState> {
   Future<void> retry() async {
     final st = state;
     if (st is _SubscribeError) {
-      emit(st.copyWith(isLoading: true));
+      emitSafe(st.copyWith(isLoading: true));
       await nekotonRepository.retrySubscriptions(address);
-      emit(st.copyWith(isLoading: false));
+      emitSafe(st.copyWith(isLoading: false));
     }
   }
 
   void _updateState() {
-    emit(
+    emitSafe(
       TonWalletDetailsState.data(
         symbol: nekotonRepository.currentTransport.nativeTokenTicker,
         account: account,

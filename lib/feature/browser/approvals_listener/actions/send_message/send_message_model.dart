@@ -30,6 +30,13 @@ class SendMessageModel extends ElementaryModel {
         ),
       );
 
+  Future<TonWalletState> getTonWalletState(Address address) async {
+    final wallet = await _nekotonRepository.walletsStream
+        .expand((e) => e)
+        .firstWhere((wallets) => wallets.address == address);
+    return wallet;
+  }
+
   KeyAccount? getAccount(Address address) =>
       _nekotonRepository.seedList.findAccountByAddress(address);
 
@@ -76,10 +83,13 @@ class SendMessageModel extends ElementaryModel {
     required Address address,
     required UnsignedMessage message,
   }) =>
-      _nekotonRepository.simulateTransactionTree(
-        address: address,
-        message: message,
-      );
+      // TODO(komarov): remove when fixed in nekoton
+      transport.networkType == 'ton'
+          ? Future.value([])
+          : _nekotonRepository.simulateTransactionTree(
+              address: address,
+              message: message,
+            );
 
   String? getSeedName(PublicKey custodian) =>
       _nekotonRepository.seedList.findSeedKey(custodian)?.name;
@@ -91,7 +101,7 @@ class SendMessageModel extends ElementaryModel {
       transport: transport.transport,
     );
 
-    return (details.item1, details.item2);
+    return details;
   }
 
   void showError(BuildContext context, String message) {

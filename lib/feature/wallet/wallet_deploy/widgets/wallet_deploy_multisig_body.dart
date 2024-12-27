@@ -4,12 +4,13 @@ import 'package:app/feature/wallet/wallet.dart';
 import 'package:app/feature/wallet/wallet_deploy/clipboard_paste_button.dart';
 import 'package:app/generated/generated.dart';
 import 'package:app/utils/clipboard_utils.dart';
+import 'package:app/utils/input_formatters.dart';
 import 'package:collection/collection.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:lucide_icons_flutter/lucide_icons.dart';
 import 'package:nekoton_repository/nekoton_repository.dart';
+import 'package:string_extensions/string_extensions.dart';
 import 'package:ui_components_lib/ui_components_lib.dart';
 import 'package:ui_components_lib/v2/ui_components_lib_v2.dart';
 
@@ -25,12 +26,14 @@ class WalletDeployMultisigBody extends StatefulWidget {
   const WalletDeployMultisigBody({
     required this.custodians,
     required this.requireConfirmations,
+    required this.hours,
     super.key,
   });
 
   /// This data is just initial data and not used during lifecycle.
   final List<PublicKey> custodians;
   final int requireConfirmations;
+  final int hours;
 
   @override
   State<WalletDeployMultisigBody> createState() =>
@@ -50,8 +53,13 @@ class _WalletDeployMultisigBodyState extends State<WalletDeployMultisigBody> {
     widget.custodians.isEmpty ? 3 : widget.custodians.length,
     (_) => FocusNode(),
   );
+
+  late FocusNode waitingTimeNode = FocusNode();
   late TextEditingController requireConfirmationController =
       TextEditingController(text: widget.requireConfirmations.toString());
+
+  late TextEditingController waitingTimeController =
+      TextEditingController(text: widget.hours.toString());
 
   /// If true, then some of custodian focuses has focus
   final focusNotifier = ValueNotifier<bool>(false);
@@ -63,6 +71,7 @@ class _WalletDeployMultisigBodyState extends State<WalletDeployMultisigBody> {
       // ignore: always-remove-listener
       f.addListener(_focusListener);
     }
+    waitingTimeController.addListener(() => setState(() {}));
   }
 
   @override
@@ -77,6 +86,8 @@ class _WalletDeployMultisigBodyState extends State<WalletDeployMultisigBody> {
     }
     requireConfirmationController.dispose();
     focusNotifier.dispose();
+    waitingTimeController.dispose();
+    waitingTimeNode.dispose();
     super.dispose();
   }
 
@@ -120,7 +131,6 @@ class _WalletDeployMultisigBodyState extends State<WalletDeployMultisigBody> {
               key: _formKey,
               child: SeparatedColumn(
                 crossAxisAlignment: CrossAxisAlignment.start,
-                separatorSize: DimensSize.d16,
                 children: [
                   ValueListenableBuilder<bool>(
                     valueListenable: focusNotifier,
@@ -131,7 +141,7 @@ class _WalletDeployMultisigBodyState extends State<WalletDeployMultisigBody> {
 
                       return SeparatedColumn(
                         crossAxisAlignment: CrossAxisAlignment.start,
-                        separatorSize: DimensSize.d16,
+                        separatorSize: DimensSize.d12,
                         children: [
                           WalletSelectDeployTypeWidget(
                             type: WalletDeployType.multisig,
@@ -140,47 +150,47 @@ class _WalletDeployMultisigBodyState extends State<WalletDeployMultisigBody> {
                                       WalletDeployEvent.updateMultisigData(
                                         _collectValidKeys(),
                                         _collectRequireConfirmations(),
+                                        waitingTimeController.text.toInt(),
                                       ),
                                     ),
                           ),
                           Column(
                             crossAxisAlignment: CrossAxisAlignment.start,
                             children: [
-                              RichText(
-                                text: TextSpan(
-                                  text:
-                                      '${LocaleKeys.evaluationConfirmation.tr()} ',
-                                  style: textStyles.labelSmall,
-                                  children: [
-                                    TextSpan(
-                                      text: LocaleKeys.outOfNumber.tr(
+                              const SizedBox(height: DimensSizeV2.d8),
+                              SeparatedRow(
+                                crossAxisAlignment: CrossAxisAlignment.start,
+                                children: [
+                                  Flexible(
+                                    child: PrimaryTextField(
+                                      textEditingController:
+                                          requireConfirmationController,
+                                      keyboardType: TextInputType.number,
+                                      textInputAction: TextInputAction.next,
+                                      onSubmit: (_) =>
+                                          custodianFocuses.first.requestFocus(),
+                                      inputFormatters: [
+                                        InputFormatters.noSpacesFormatter,
+                                        InputFormatters.onlyDigitsFormatter,
+                                      ],
+                                      validator: _validateRequireConfirmations,
+                                    ),
+                                  ),
+                                  Padding(
+                                    padding: const EdgeInsets.only(
+                                      top: DimensSizeV2.d18,
+                                    ),
+                                    child: Text(
+                                      LocaleKeys.outOfNumber.tr(
                                         args: [
                                           custodianControllers.length
                                               .toString(),
                                         ],
                                       ),
-                                      style: textStyles.paragraphXSmall,
+                                      style: textStyles.labelSmall,
                                     ),
-                                  ],
-                                ),
-                              ),
-                              const SizedBox(height: DimensSizeV2.d8),
-                              PrimaryTextField(
-                                textEditingController:
-                                    requireConfirmationController,
-                                keyboardType: TextInputType.number,
-                                textInputAction: TextInputAction.next,
-                                onSubmit: (_) =>
-                                    custodianFocuses.first.requestFocus(),
-                                inputFormatters: [
-                                  FilteringTextInputFormatter.deny(
-                                    RegExp(r'\s'),
-                                  ),
-                                  FilteringTextInputFormatter.allow(
-                                    RegExp('[0-9]'),
                                   ),
                                 ],
-                                validator: _validateRequireConfirmations,
                               ),
                             ],
                           ),
@@ -188,17 +198,51 @@ class _WalletDeployMultisigBodyState extends State<WalletDeployMultisigBody> {
                       );
                     },
                   ),
+                  const SizedBox(height: DimensSizeV2.d8),
+                  Text(
+                    LocaleKeys.deployWalletWaitingTime.tr(),
+                    style: textStyles.labelSmall,
+                  ),
+                  PrimaryTextField(
+                    focusNode: waitingTimeNode,
+                    textEditingController: waitingTimeController,
+                    keyboardType: TextInputType.number,
+                    textInputAction: TextInputAction.next,
+                    onSubmit: (_) => custodianFocuses.first.requestFocus(),
+                    validator: (value) {
+                      if (value == null) {
+                        return LocaleKeys.invalidValue.tr();
+                      }
+                      final number = int.tryParse(value);
+                      if (number == null || number > 24 || number == 0) {
+                        return LocaleKeys.invalidValue.tr();
+                      }
+                      return null;
+                    },
+                    inputFormatters: [
+                      InputFormatters.onlyDigitsFormatter,
+                    ],
+                    suffixes: [
+                      _buildMiniButton(1),
+                      _buildMiniButton(2),
+                      _buildMiniButton(12),
+                      _buildMiniButton(24),
+                    ],
+                  ),
+                  const SizedBox(height: DimensSizeV2.d12),
                   Text(
                     LocaleKeys.custodiansWord.tr(),
-                    style: textStyles.headingLarge,
+                    style: textStyles.labelSmall,
                   ),
                   ...custodianControllers.mapIndexed(_custodianItem),
-                  GhostButton(
-                    icon: LucideIcons.plus,
-                    title: LocaleKeys.addOneMorePublicKey.tr(),
-                    onPressed: _addOneCustodian,
-                    buttonShape: ButtonShape.pill,
-                  ),
+                  const SizedBox(height: DimensSizeV2.d8),
+                  if (custodianControllers.length < 32)
+                    GhostButton(
+                      icon: LucideIcons.plus,
+                      title: LocaleKeys.addOneMorePublicKey.tr(),
+                      onPressed: _addOneCustodian,
+                      buttonShape: ButtonShape.pill,
+                    ),
                 ],
               ),
             ),
@@ -208,64 +252,79 @@ class _WalletDeployMultisigBodyState extends State<WalletDeployMultisigBody> {
           bottom: DimensSize.d16,
           left: DimensSize.d16,
           right: DimensSize.d16,
-          child: PrimaryButton(
-            buttonShape: ButtonShape.pill,
-            title: LocaleKeys.nextWord.tr(),
-            onPressed: () => _next(context),
+          child: Padding(
+            padding: const EdgeInsets.only(bottom: DimensSizeV2.d8),
+            child: AccentButton(
+              buttonShape: ButtonShape.pill,
+              title: LocaleKeys.nextWord.tr(),
+              onPressed: () => _next(context),
+            ),
           ),
         ),
       ],
     );
   }
 
+  Widget _buildMiniButton(int hours) {
+    return MiniButton(
+      currentValue: waitingTimeController.text.toInt(),
+      value: hours,
+      title: '${hours}h',
+      onTap: () {
+        setState(() {
+          waitingTimeController.text = hours.toString();
+        });
+      },
+    );
+  }
+
   Widget _custodianItem(int index, TextEditingController controller) {
-    return Builder(
-      builder: (context) {
-        return Row(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            Expanded(
-              child: PrimaryTextField(
-                key: ValueKey(controller.hashCode),
-                textEditingController: controller,
-                focusNode: custodianFocuses[index],
-                hintText: LocaleKeys.publicKeyOfCustodianNumber
-                    .tr(args: [(index + 1).toString()]),
-                textInputAction: index == custodianControllers.length - 1
-                    ? TextInputAction.done
-                    : TextInputAction.next,
-                onSubmit: (value) {
-                  if (index != custodianControllers.length - 1) {
-                    custodianFocuses[index + 1].requestFocus();
-                  } else {
-                    _next(context);
-                  }
-                },
-                maxLength: publicKeyLength,
-                suffixes: [_custodianSuffixIcon(controller, index)],
-                inputFormatters: [
-                  FilteringTextInputFormatter.deny(RegExp(r'\s')),
-                  FilteringTextInputFormatter.allow(RegExp('[a-fA-F0-9]')),
-                ],
-                validator: _validatePublicKey,
+    return Padding(
+      padding: const EdgeInsets.only(bottom: DimensSizeV2.d4),
+      child: Row(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          Expanded(
+            child: PrimaryTextField(
+              key: ValueKey(controller.hashCode),
+              textEditingController: controller,
+              focusNode: custodianFocuses[index],
+              hintText: LocaleKeys.publicKeyOfCustodianNumber
+                  .tr(args: [(index + 1).toString()]),
+              textInputAction: index == custodianControllers.length - 1
+                  ? TextInputAction.done
+                  : TextInputAction.next,
+              onSubmit: (value) {
+                if (index != custodianControllers.length - 1) {
+                  custodianFocuses[index + 1].requestFocus();
+                } else {
+                  _next(context);
+                }
+              },
+              maxLength: publicKeyLength,
+              suffixes: [_custodianSuffixIcon(controller, index)],
+              inputFormatters: [
+                InputFormatters.noSpacesFormatter,
+                InputFormatters.publicKeyInputFormatter,
+              ],
+              validator: _validatePublicKey,
+            ),
+          ),
+          if (index >= minConfirmationsCount)
+            Padding(
+              padding: const EdgeInsets.only(
+                left: DimensSizeV2.d8,
+                top: DimensSizeV2.d4,
+              ),
+              child: DestructiveButton(
+                buttonShape: ButtonShape.circle,
+                icon: LucideIcons.trash,
+                buttonSize: ButtonSize.medium,
+                onPressed: () => _removeCustodian(index),
               ),
             ),
-            if (index >= minConfirmationsCount)
-              Padding(
-                padding: const EdgeInsets.only(
-                  left: DimensSizeV2.d8,
-                  top: DimensSizeV2.d4,
-                ),
-                child: DestructiveButton(
-                  buttonShape: ButtonShape.circle,
-                  icon: LucideIcons.trash,
-                  buttonSize: ButtonSize.medium,
-                  onPressed: () => _removeCustodian(index),
-                ),
-              ),
-          ],
-        );
-      },
+        ],
+      ),
     );
   }
 
@@ -302,6 +361,7 @@ class _WalletDeployMultisigBodyState extends State<WalletDeployMultisigBody> {
               WalletDeployEvent.deployMultisig(
                 _collectValidKeys(),
                 _collectRequireConfirmations(),
+                waitingTimeController.text.toInt(),
               ),
             );
       }

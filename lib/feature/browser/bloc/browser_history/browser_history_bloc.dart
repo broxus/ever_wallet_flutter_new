@@ -1,16 +1,19 @@
 import 'dart:async';
 
 import 'package:app/app/service/service.dart';
+import 'package:app/core/bloc/bloc_mixin.dart';
 import 'package:app/data/models/models.dart';
 import 'package:bloc/bloc.dart';
 import 'package:freezed_annotation/freezed_annotation.dart';
 
 part 'browser_history_bloc.freezed.dart';
+
 part 'browser_history_event.dart';
+
 part 'browser_history_state.dart';
 
-class BrowserHistoryBloc
-    extends Bloc<BrowserHistoryEvent, BrowserHistoryState> {
+class BrowserHistoryBloc extends Bloc<BrowserHistoryEvent, BrowserHistoryState>
+    with BlocBaseMixin {
   BrowserHistoryBloc(
     this.browserHistoryStorageService,
   ) : super(
@@ -65,21 +68,21 @@ class BrowserHistoryBloc
       browserHistoryStorageService.clearBrowserHistory();
     });
     on<_Set>((event, emit) {
-      emit(
+      emitSafe(
         state.copyWith(
           items: event.items,
         ),
       );
     });
     on<_SetSearchString>((event, emit) {
-      emit(
+      emitSafe(
         state.copyWith(
           searchString: event.value,
         ),
       );
     });
     on<_SetIsEditing>((event, emit) {
-      emit(
+      emitSafe(
         state.copyWith(
           isEditing: event.value,
         ),
