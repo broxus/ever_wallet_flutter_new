@@ -388,6 +388,14 @@ class $AssetsImagesGen {
   /// File path: assets/images/trash.svg
   SvgGenImage get trash => const SvgGenImage('assets/images/trash.svg');
 
+  /// File path: assets/images/tycho_coin.svg
+  SvgGenImage get tychoCoin =>
+      const SvgGenImage('assets/images/tycho_coin.svg');
+
+  /// File path: assets/images/tycho_vector.svg
+  SvgGenImage get tychoVector =>
+      const SvgGenImage('assets/images/tycho_vector.svg');
+
   /// Directory path: assets/images/user_avatar
   $AssetsImagesUserAvatarGen get userAvatar =>
       const $AssetsImagesUserAvatarGen();
@@ -498,6 +506,8 @@ class $AssetsImagesGen {
         support,
         tokenDefaultIcon,
         trash,
+        tychoCoin,
+        tychoVector,
         wallet,
         web
       ];
