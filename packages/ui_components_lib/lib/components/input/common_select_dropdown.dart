@@ -1,6 +1,9 @@
 import 'package:collection/collection.dart';
 import 'package:flutter/material.dart';
+import 'package:lucide_icons_flutter/lucide_icons.dart';
 import 'package:ui_components_lib/ui_components_lib.dart';
+
+import 'package:ui_components_lib/v2/ui_components_lib_v2.dart';
 
 /// Item of dropdown that allows displaying elements in UI.
 class CommonSheetDropdownItem<T> {
@@ -26,8 +29,6 @@ class CommonSelectDropdown<T> extends StatelessWidget {
     this.sheetTitle,
     this.titleText,
     this.subtitleText,
-    this.titleChild,
-    this.subtitleChild,
     super.key,
   });
 
@@ -42,16 +43,8 @@ class CommonSelectDropdown<T> extends StatelessWidget {
   /// Title that will be displayed for input field.
   final String? titleText;
 
-  /// Widget that can be used to title for input.
-  /// In common cases, you will use [titleText].
-  final Widget? titleChild;
-
   /// Subtitle that will be displayed right to title.
   final String? subtitleText;
-
-  /// Widget that can be used to subtitle for input.
-  /// In common cases, you will use [subtitleText].
-  final Widget? subtitleChild;
 
   /// Callback that calls when user select new item from sheet.
   final ValueChanged<T> onChanged;
@@ -63,120 +56,118 @@ class CommonSelectDropdown<T> extends StatelessWidget {
   Widget build(BuildContext context) {
     final theme = context.themeStyleV2;
 
-    final title = titleChild ??
-        (titleText == null
-            ? null
-            : Text(
-                titleText!,
-                style: theme.textStyles.labelMedium,
-              ));
-
-    final subtitle = subtitleChild ??
-        (subtitleText == null
-            ? null
-            : Text(
-                subtitleText!,
-                style: theme.textStyles.labelSmall,
-              ));
-
     return PressScaleWidget(
       onPressed: values.length == 1 ? null : () => _openSelectSheet(context),
-      child: SeparatedColumn(
-        children: [
-          if (title != null || subtitle != null)
-            SeparatedRow(
-              separatorSize: DimensSize.d4,
-              children: [
-                if (title != null) title,
-                if (subtitle != null) subtitle,
-              ],
-            ),
-          ClipRRect(
-            borderRadius: BorderRadius.circular(DimensRadiusV2.radius16),
-            child: Container(
-              padding: const EdgeInsets.symmetric(
-                horizontal: DimensSize.d16,
-                vertical: DimensSize.d12,
-              ),
-              decoration: BoxDecoration(
-                color: theme.colors.background1,
-                border: SquircleBoxBorder(
-                  squircleRadius: DimensRadiusV2.radius16,
-                  borderSide: BorderSide(color: theme.colors.border0),
-                ),
-              ),
-              child: SeparatedRow(
-                children: [
-                  Expanded(
-                    child: currentValue == null
-                        ? const SizedBox.shrink()
-                        : _itemBuilder(
-                            value: values.firstWhereOrNull(
-                              (e) => e.value == currentValue,
-                            ),
-                          ),
-                  ),
-                  Icon(
-                    Icons.keyboard_arrow_right_rounded,
-                    color: theme.colors.content0,
-                  ),
-                ],
-              ),
+      child: ClipRRect(
+        borderRadius: BorderRadius.circular(DimensRadiusV2.radius16),
+        child: Container(
+          padding: const EdgeInsets.only(
+            left: DimensSizeV2.d16,
+            right: DimensSizeV2.d8,
+            bottom: DimensSizeV2.d8,
+            top: DimensSizeV2.d8,
+          ),
+          decoration: BoxDecoration(
+            color: theme.colors.background1,
+            border: SquircleBoxBorder(
+              squircleRadius: DimensRadiusV2.radius16,
+              borderSide: BorderSide(color: theme.colors.border0),
             ),
           ),
-        ],
+          child: SeparatedRow(
+            separatorSize: DimensSizeV2.d4,
+            children: [
+              if (titleText != null)
+                Text(
+                  titleText!,
+                  style: theme.textStyles.labelSmall.copyWith(
+                    color: theme.colors.content3,
+                  ),
+                ),
+              Expanded(
+                child: Text(
+                  text,
+                  style: theme.textStyles.paragraphSmall.copyWith(
+                    color: theme.colors.content0,
+                  ),
+                ),
+              ),
+              FloatButton(
+                buttonShape: ButtonShape.square,
+                icon: LucideIcons.chevronRight,
+                buttonSize: ButtonSize.small,
+                onPressed:
+                    values.length == 1 ? null : () => _openSelectSheet(context),
+              ),
+            ],
+          ),
+        ),
       ),
     );
   }
 
-  Widget _itemBuilder({
-    CommonSheetDropdownItem<T>? value,
-    bool isSelected = false,
-    VoidCallback? onPressed,
-  }) {
-    return Builder(
-      builder: (context) {
-        final colors = context.themeStyle.colors;
-
-        return CommonListTile(
-          height: DimensSize.d32,
-          leading: value?.icon,
-          padding: EdgeInsets.zero,
-          onPressed: onPressed,
-          titleText: value?.title,
-          trailing: isSelected
-              ? Icon(Icons.check_rounded, color: colors.textPrimary)
-              : null,
-        );
-      },
-    );
+  String get text {
+    return currentValue == null
+        ? ''
+        : values
+                .firstWhereOrNull(
+                  (e) => e.value == currentValue,
+                )
+                ?.title ??
+            '';
   }
 
   void _openSelectSheet(BuildContext context) {
+    final theme = context.themeStyleV2;
     showCommonBottomSheet<void>(
       context: context,
       title: sheetTitle,
+      centerTitle: true,
+      titleTextStyle: theme.textStyles.headingLarge,
       body: (context, scrollController) {
         return SingleChildScrollView(
           controller: scrollController,
           padding: const EdgeInsets.only(top: DimensSize.d16),
-          child: SeparatedColumn(
-            separator: const Padding(
-              padding: EdgeInsets.symmetric(vertical: DimensSize.d12),
-              child: CommonDivider(),
+          child: Container(
+            padding: const EdgeInsets.symmetric(vertical: DimensSizeV2.d18),
+            margin: const EdgeInsets.only(bottom: DimensSizeV2.d12),
+            decoration: BoxDecoration(
+              color: theme.colors.background2,
+              borderRadius: BorderRadius.circular(DimensRadiusV2.radius16),
             ),
-            children: values
-                .map(
-                  (e) => _itemBuilder(
-                    value: e,
-                    isSelected: e == currentValue,
-                    onPressed: () {
+            child: SeparatedColumn(
+              separator: const Padding(
+                padding: EdgeInsets.symmetric(vertical: DimensSize.d18),
+                child: CommonDivider(),
+              ),
+              children: [
+                for (final e in values)
+                  GestureDetector(
+                    onTap: () {
                       Navigator.of(context).pop();
                       onChanged(e.value);
                     },
+                    child: Row(
+                      children: [
+                        const SizedBox(width: DimensSizeV2.d24),
+                        Expanded(
+                          child: Text(
+                            e.title,
+                            style: theme.textStyles.labelMedium,
+                            textAlign: TextAlign.left,
+                          ),
+                        ),
+                        if (currentValue == e.value)
+                          const Icon(
+                            LucideIcons.check,
+                            size: DimensSizeV2.d20,
+                          ),
+                        const SizedBox(width: DimensSize.d24),
+                      ],
+                    ),
                   ),
-                )
-                .toList(),
+              ],
+            ),
           ),
         );
       },

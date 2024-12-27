@@ -1,6 +1,6 @@
-import 'package:app/app/service/nekoton_related/connection_service/network_presets.dart';
+import 'package:app/app/service/connection/data/connection_data/connection_data.dart';
+import 'package:app/app/service/connection/presets_connection_service.dart';
 import 'package:app/app/service/service.dart';
-import 'package:app/data/models/models.dart';
 import 'package:app/di/di.dart';
 import 'package:app/generated/generated.dart';
 import 'package:collection/collection.dart';
@@ -20,6 +20,7 @@ const _networksIdsKey = 'networks_ids';
 class ConnectionsStorageService extends AbstractStorageService {
   ConnectionsStorageService(
     @Named(container) this._storage,
+    this._presetsConnectionService,
   );
 
   final _log = Logger('ConnectionsStorageService');
@@ -27,9 +28,10 @@ class ConnectionsStorageService extends AbstractStorageService {
 
   /// Storage that is used to store data
   final GetStorage _storage;
+  final PresetsConnectionService _presetsConnectionService;
 
   /// Subject of [ConnectionData] items
-  final _connectionsSubject = BehaviorSubject<List<ConnectionData>>();
+  final _connectionsSubject = BehaviorSubject<List<ConnectionData>>.seeded([]);
 
   /// Subject of current connection id
   final _currentConnectionIdSubject = BehaviorSubject<String>();
@@ -62,14 +64,16 @@ class ConnectionsStorageService extends AbstractStorageService {
       return null;
     }
 
+    final defaultNetworkType = _defaultNetwork.networkType;
+
     return list.firstWhereOrNull(
-          (el) => el.networkType == NetworkType.ever,
+          (el) => el.networkType == defaultNetworkType,
         ) ??
         first;
   }
 
   /// Get last cached current connection id
-  String get currentConnectionId => _currentConnectionIdSubject.value;
+  String? get currentConnectionId => _currentConnectionIdSubject.valueOrNull;
 
   /// Get last cached conntection id to network id map
   Map<String, int> get networksIds => _networksIdsSubject.value;
@@ -78,17 +82,11 @@ class ConnectionsStorageService extends AbstractStorageService {
   Stream<ConnectionData> get currentConnectionStream => Rx.combineLatest2(
         connectionsStream,
         currentConnectionIdStream,
-        (connections, currentConnectionId) => connections.firstWhere(
-          (connection) => connection.id == currentConnectionId,
-          orElse: () {
-            _log.warning(
-              'Current connection with id $currentConnectionId not found. '
-              'Returning default connection',
-            );
-
-            return defaultNetwork;
-          },
-        ),
+        (connections, currentConnectionId) =>
+            connections.firstWhereOrNull(
+              (connection) => connection.id == currentConnectionId,
+            ) ??
+            _defaultNetwork,
       );
 
   // Get last cached currect connection
@@ -96,18 +94,30 @@ class ConnectionsStorageService extends AbstractStorageService {
     final connections = this.connections;
     final currentConnectionId = this.currentConnectionId;
 
-    return connections.firstWhere(
+    final connection = connections.firstWhereOrNull(
       (connection) => connection.id == currentConnectionId,
-      orElse: () {
-        _log.warning(
-          'Current connection with id $currentConnectionId not found. '
-          'Returning default connection',
-        );
-
-        return defaultNetwork;
-      },
     );
+
+    if (connection == null) {
+      _log.warning(
+        'Current connection with id $currentConnectionId not found. '
+        'Returning default connection',
+      );
+
+      return _defaultNetwork;
+    }
+
+    return connection;
   }
+
+  ConnectionData get _defaultNetwork =>
+      _presetsConnectionService.defaultNetwork;
+
+  List<ConnectionData> get _networkPresets =>
+      _presetsConnectionService.networks;
+
+  String? get _defaultConnectionId =>
+      _presetsConnectionService.defaultConnectionId;
 
   /// Put [ConnectionData] items to stream
   void _streamedConnections() => _connectionsSubject.add(
@@ -117,8 +127,13 @@ class ConnectionsStorageService extends AbstractStorageService {
       );
 
   /// Put current connection id to stream
-  void _streamedCurrentConnectionId() =>
-      _currentConnectionIdSubject.add(readCurrentConnectionId());
+  void _streamedCurrentConnectionId() {
+    final id = readCurrentConnectionId();
+
+    if (id != null) {
+      _currentConnectionIdSubject.add(id);
+    }
+  }
 
   void _streamedNetworksIds() => _networksIdsSubject.add(readNetworksIds());
 
@@ -135,7 +150,7 @@ class ConnectionsStorageService extends AbstractStorageService {
           .toList();
 
       if (customConnections.isNotEmpty) {
-        final persistentPresets = networkPresets.where(
+        final persistentPresets = _networkPresets.where(
           (preset) => !preset.canBeEdited,
         );
         // Remove persistent presets from custom connections
@@ -151,14 +166,14 @@ class ConnectionsStorageService extends AbstractStorageService {
 
     if (connections.isEmpty) {
       _log.info('Connections not found. Using presets.');
-      connections = networkPresets;
+      connections = _networkPresets;
     }
 
     final connectionsText = connections
         .map(
-          (connection) => 'name: ${connection.name} '
-              'networkType: ${connection.networkType} '
-              'isPreset: ${connection.isPreset} '
+          (connection) => 'name: ${connection.name}; '
+              'networkType: ${connection.networkType}; '
+              'isPreset: ${connection.isPreset}; '
               'id: ${connection.id}',
         )
         .join(',\n');
@@ -168,9 +183,9 @@ class ConnectionsStorageService extends AbstractStorageService {
   }
 
   /// Read current connection id from storage
-  String readCurrentConnectionId() {
+  String? readCurrentConnectionId() {
     final id = _storage.read<String>(_currentConnectionIdKey);
-    final currentId = id ?? defaultConnectionkId;
+    final currentId = id ?? _defaultConnectionId;
 
     _log.info('Current connection id:\n$currentId');
 
@@ -206,7 +221,8 @@ class ConnectionsStorageService extends AbstractStorageService {
         'Trying to set current connection with id $id that not exists. '
         'Setting default connection as current',
       );
-      newId = defaultConnectionkId;
+
+      newId = _defaultConnectionId ?? newId;
     }
 
     _storage.write(_currentConnectionIdKey, newId);
@@ -245,7 +261,10 @@ class ConnectionsStorageService extends AbstractStorageService {
         'Trying to remove current connection. '
         'Setting default connection as current',
       );
-      saveCurrentConnectionId(defaultConnectionkId);
+
+      if (_defaultConnectionId != null) {
+        saveCurrentConnectionId(_defaultConnectionId!);
+      }
     }
 
     final savedConnections = connections;
@@ -286,7 +305,7 @@ class ConnectionsStorageService extends AbstractStorageService {
   /// Revert item to defaults from preset
   void revertConnection(String id) {
     final preset =
-        networkPresets.firstWhereOrNull((element) => element.id == id);
+        _networkPresets.firstWhereOrNull((element) => element.id == id);
     if (preset == null) {
       _log.warning('Unable to revert connection from preset with id $id. '
           'Connection not found');

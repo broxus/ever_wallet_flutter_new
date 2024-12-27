@@ -1,3 +1,5 @@
+import 'package:app/generated/generated.dart';
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:ui_components_lib/ui_components_lib.dart';
 
@@ -18,16 +20,33 @@ class TonWalletIconWidget extends StatelessWidget {
     final uri = Uri.parse(path);
 
     if (uri.hasScheme) {
-      return SvgPicture.network(
-        path,
-        placeholderBuilder: (_) => CommonLoader(
+      if (uri.path.endsWith('.svg')) {
+        return SvgPicture.network(
+          path,
+          placeholderBuilder: (_) => CommonLoader(
+            width: size,
+            height: size,
+            borderRadius: DimensRadius.max,
+          ),
           width: size,
           height: size,
-          borderRadius: DimensRadius.max,
-        ),
-        width: size,
-        height: size,
-      );
+        );
+      } else {
+        return CachedNetworkImage(
+          height: size,
+          width: size,
+          imageUrl: path,
+          placeholder: (_, __) => CommonLoader(
+            width: size,
+            height: size,
+            borderRadius: DimensRadius.max,
+          ),
+          errorWidget: (_, __, ___) => SvgPicture.asset(
+            Assets.images.tokenDefaultIcon.path,
+            width: size,
+          ),
+        );
+      }
     }
 
     return SvgPicture.asset(

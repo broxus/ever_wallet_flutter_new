@@ -1,17 +1,21 @@
 // ignore_for_file: use_build_context_synchronously
 
 import 'package:app/app/service/service.dart';
+import 'package:app/core/bloc/bloc_mixin.dart';
 import 'package:app/di/di.dart';
+import 'package:app/feature/wallet/new_account/add_account_result/add_account_result_sheet.dart';
 import 'package:bloc/bloc.dart';
 import 'package:flutter/material.dart';
 import 'package:freezed_annotation/freezed_annotation.dart';
 import 'package:nekoton_repository/nekoton_repository.dart' hide Message;
 
 part 'add_new_local_account_type_cubit.freezed.dart';
+
 part 'add_new_local_account_type_state.dart';
 
 /// Cubit for selecting new type of account for creating for [publicKey].
-class AddNewLocalAccountTypeCubit extends Cubit<AddNewLocalAccountTypeState> {
+class AddNewLocalAccountTypeCubit extends Cubit<AddNewLocalAccountTypeState>
+    with BlocBaseMixin {
   AddNewLocalAccountTypeCubit(
     this.publicKey,
     this.name,
@@ -74,11 +78,12 @@ class AddNewLocalAccountTypeCubit extends Cubit<AddNewLocalAccountTypeState> {
 
     final newName = name.trim();
     try {
-      await keyCreateFor.accountList.addAccount(
+      final address = await keyCreateFor.accountList.addAccount(
         walletType: currentSelected!,
         workchain: defaultWorkchainId,
         name: newName.isEmpty ? null : newName,
       );
+      await showNewAccountResultSheet(context: context, address: address);
     } on FfiException catch (e) {
       inject<MessengerService>()
           .show(Message.error(context: context, message: e.message));
@@ -88,7 +93,7 @@ class AddNewLocalAccountTypeCubit extends Cubit<AddNewLocalAccountTypeState> {
   }
 
   void _emitDataState({bool isCompleted = false}) {
-    emit(
+    emitSafe(
       AddNewLocalAccountTypeState.data(
         availableAccounts: availableAccounts,
         defaultAccount: defaultAccount,

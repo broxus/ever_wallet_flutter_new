@@ -4,7 +4,7 @@ import 'package:get_storage/get_storage.dart';
 import 'package:logging/logging.dart';
 
 final _logger = Logger('StorageMigrationService');
-const _version = 2;
+const _version = 3;
 const _versionKey = 'version';
 
 class StorageMigrationService {
@@ -51,6 +51,9 @@ class StorageMigrationService {
     }
     if (currentVersion < StorageMigrationV2.version) {
       yield StorageMigrationV2();
+    }
+    if (currentVersion < StorageMigrationV3.version) {
+      yield StorageMigrationV3();
     }
   }
 }

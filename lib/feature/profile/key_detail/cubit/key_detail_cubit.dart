@@ -1,16 +1,18 @@
 import 'dart:async';
 
+import 'package:app/core/bloc/bloc_mixin.dart';
 import 'package:app/feature/profile/profile.dart';
 import 'package:bloc/bloc.dart';
 import 'package:freezed_annotation/freezed_annotation.dart';
 import 'package:nekoton_repository/nekoton_repository.dart';
 
 part 'key_detail_cubit.freezed.dart';
+
 part 'key_detail_state.dart';
 
 /// Cubit of detail key page, displays different pages of accounts, depends on
 /// [KeyDetailAccountsTab].
-class KeyDetailCubit extends Cubit<KeyDetailState> {
+class KeyDetailCubit extends Cubit<KeyDetailState> with BlocBaseMixin {
   KeyDetailCubit(
     this.nekotonRepository,
     this.publicKey,
@@ -37,7 +39,7 @@ class KeyDetailCubit extends Cubit<KeyDetailState> {
       _ownerSeedName = seed.name;
       _emitDataState();
     } else {
-      emit(const KeyDetailState.empty());
+      emitSafe(const KeyDetailState.empty());
     }
   }
 
@@ -49,7 +51,7 @@ class KeyDetailCubit extends Cubit<KeyDetailState> {
   }
 
   void _emitDataState() {
-    emit(KeyDetailState.data(key, _ownerSeedName, _accountsTab));
+    emitSafe(KeyDetailState.data(key, _ownerSeedName, _accountsTab));
   }
 
   @override

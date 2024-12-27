@@ -16,12 +16,14 @@ class AccountSettingsWidget
   const AccountSettingsWidget({
     required this.account,
     required this.scrollController,
+    required this.custodians,
     Key? key,
     WidgetModelFactory wmFactory = defaultAccountSettingsWidgetModelFactory,
   }) : super(wmFactory, key: key);
 
   final KeyAccount account;
   final ScrollController scrollController;
+  final List<PublicKey>? custodians;
 
   @override
   Widget build(AccountSettingsWidgetModel wm) {
@@ -34,6 +36,9 @@ class AccountSettingsWidget
           listenableState: wm.displayAccounts,
           builder: (_, list) => _ButtonsCard(
             address: account.address.address,
+            custodians: custodians,
+            onCustodiansSettings: () =>
+                wm.onCustodiansSettings(custodians ?? []),
             onViewInExplorer: wm.onViewInExplorer,
             onRename: wm.onRename,
             onHideAccount: (list?.length ?? 0) > 1 ? wm.onHideAccount : null,
@@ -54,12 +59,16 @@ class AccountSettingsWidget
 class _ButtonsCard extends StatelessWidget {
   const _ButtonsCard({
     required this.address,
+    required this.custodians,
+    required this.onCustodiansSettings,
     required this.onViewInExplorer,
     required this.onRename,
     required this.onHideAccount,
   });
 
   final String address;
+  final List<PublicKey>? custodians;
+  final VoidCallback onCustodiansSettings;
   final VoidCallback onViewInExplorer;
   final VoidCallback onRename;
   final VoidCallback? onHideAccount;
@@ -80,6 +89,12 @@ class _ButtonsCard extends StatelessWidget {
           color: theme.colors.borderAlpha,
         ),
         children: [
+          if ((custodians?.length ?? 0) > 1)
+            AccountSettingsButton(
+              label: LocaleKeys.custodiansWord.tr(),
+              icon: LucideIcons.userRound,
+              onTap: onCustodiansSettings,
+            ),
           AccountSettingsButton(
             label: LocaleKeys.changeAccountName.tr(),
             icon: LucideIcons.pencilLine,

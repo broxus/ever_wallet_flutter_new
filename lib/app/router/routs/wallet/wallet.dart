@@ -4,13 +4,14 @@ import 'dart:convert';
 
 import 'package:app/app/router/router.dart';
 import 'package:app/data/models/models.dart';
-import 'package:app/feature/add_seed/add_seed_enable_biometry/add_seed_enable_biometry.dart';
-import 'package:app/feature/add_seed/add_seed_enable_biometry/view/add_seed_enable_biometry_page.dart';
+import 'package:app/feature/biometry/view/biometry_screen.dart';
 import 'package:app/feature/network/network.dart';
 import 'package:app/feature/no_internet/no_internet_screen.dart';
 import 'package:app/feature/splash/splash_screen.dart';
+import 'package:app/feature/wallet/custodians_settings/custodians_settings_page.dart';
 import 'package:app/feature/wallet/new_account/add_account.dart';
 import 'package:app/feature/wallet/new_account/add_account_page.dart';
+import 'package:app/feature/wallet/new_account/add_external_account/add_external_account_page.dart';
 import 'package:app/feature/wallet/new_account/select_seed/select_seed_page.dart';
 import 'package:app/feature/wallet/wallet.dart';
 import 'package:app/feature/wallet/widgets/account_asset_tab/select_new_asset/select_new_asset.dart';
@@ -20,6 +21,7 @@ import 'package:nekoton_repository/nekoton_repository.dart';
 
 const selectNewAssetAddressPathParam = 'selectNewAssetAddress';
 const walletSelectSeedPathParam = 'walletSelectSeedSeeds';
+const custodianSettingsCustodiansParam = 'custodianSettingsCustodiansParam';
 const tonWalletDetailsAddressPathParam = 'tonWalletDetailsAddress';
 const tokenWalletDetailsOwnerAddressPathParam = 'tonWalletDetailsOwnerAddress';
 const tokenWalletDetailsContractAddressPathParam =
@@ -55,6 +57,8 @@ const tonWalletConfirmTransactionLocalCustodiansQueryParam =
     'tonWalletConfirmTransactionLocalCustodians';
 const tonWalletConfirmTransactionTransactionIdQueryParam =
     'tonWalletConfirmTransactionTransactionId';
+const tonWalletConfirmTransactionIdHashQueryParam =
+    'tonWalletConfirmTransactionIdHash';
 const tonWalletConfirmTransactionDestinationQueryParam =
     'tonWalletConfirmTransactionDestination';
 const tonWalletConfirmTransactionAmountQueryParam =
@@ -95,8 +99,8 @@ StatefulShellBranch get walletBranch {
         builder: (context, state) => const WalletPageWidget(),
         routes: [
           GoRoute(
-            path: AppRoute.enableBiometryAfterOnboarding.path,
-            builder: (_, __) => const AddSeedEnableBiometryPage(),
+            path: AppRoute.enableBiometry.path,
+            builder: (_, __) => const BiometryScreen(),
           ),
           GoRoute(
             path: AppRoute.selectNewAsset.path,
@@ -105,6 +109,20 @@ StatefulShellBranch get walletBranch {
                 address: state.pathParameters[selectNewAssetAddressPathParam]!,
               ),
             ),
+          ),
+          GoRoute(
+            path: AppRoute.custodiansSettings.path,
+            builder: (_, state) {
+              try {
+                final decoded = (jsonDecode(
+                  state.uri.queryParameters[custodianSettingsCustodiansParam]!,
+                ) as List<dynamic>)
+                    .cast<String>();
+                return CustodiansSettingsPage(custodians: decoded);
+              } catch (_) {
+                return const CustodiansSettingsPage(custodians: []);
+              }
+            },
           ),
           GoRoute(
             path: AppRoute.walletAddAccount.path,
@@ -128,6 +146,10 @@ StatefulShellBranch get walletBranch {
                     ),
                   ),
                 ],
+              ),
+              GoRoute(
+                path: AppRoute.walletNewExternalAccount.path,
+                builder: (_, state) => const AddExternalAccountPage(),
               ),
             ],
           ),
@@ -154,6 +176,7 @@ GoRoute get tonWalletDetailsRoute {
       ),
     ),
     routes: [
+      walletDeployRoute,
       walletPrepareTransferLockedRoute,
       tonConfirmTranscationRoute,
     ],
@@ -301,6 +324,7 @@ GoRoute get walletDeployRoute {
 }
 
 /// Confirm multisig transaction for TonWallet
+// TODO(knightforce): rename to Multisig or Custodian
 GoRoute get tonConfirmTranscationRoute {
   return GoRoute(
     path: AppRoute.tonConfirmTransaction.path,
@@ -319,6 +343,8 @@ GoRoute get tonConfirmTranscationRoute {
         localCustodians: decoded.map((e) => PublicKey(publicKey: e)).toList(),
         transactionId: state.uri.queryParameters[
             tonWalletConfirmTransactionTransactionIdQueryParam]!,
+        transactionIdHash: state
+            .uri.queryParameters[tonWalletConfirmTransactionIdHashQueryParam],
         destination: Address(
           address: state.uri.queryParameters[
               tonWalletConfirmTransactionDestinationQueryParam]!,

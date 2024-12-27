@@ -61,7 +61,14 @@ class TokenWalletTransactionsWidget extends StatelessWidget {
                 ),
               ),
             ),
-            loading: () => const SliverToBoxAdapter(child: SizedBox.shrink()),
+            loading: () => const SliverToBoxAdapter(
+              child: Padding(
+                padding: EdgeInsets.symmetric(
+                  vertical: DimensSizeV2.d16,
+                ),
+                child: Center(child: CommonCircularProgressIndicator()),
+              ),
+            ),
             transactions: (
               transactions,
               currency,
@@ -70,7 +77,7 @@ class TokenWalletTransactionsWidget extends StatelessWidget {
               customCurrency,
             ) {
               return ScrollControllerPreloadListener(
-                preleloadAction: () => context
+                preloadAction: () => context
                     .read<TokenWalletTransactionsCubit>()
                     .tryPreloadTransactions(),
                 scrollController: scrollController,
@@ -86,11 +93,15 @@ class TokenWalletTransactionsWidget extends StatelessWidget {
                       );
                     }
 
-                    final trans = transactions[index];
-
                     final prev = index == 0 ? null : transactions[index - 1];
-                    final displayDate =
+                    final trans = transactions[index];
+                    final next = index == transactions.length - 1
+                        ? null
+                        : transactions[index + 1];
+                    final isFirst =
                         prev == null || !prev.date.isSameDay(trans.date);
+                    final isLast =
+                        next == null || !next.date.isSameDay(trans.date);
 
                     final ticker = inject<NekotonRepository>()
                         .currentTransport
@@ -98,7 +109,8 @@ class TokenWalletTransactionsWidget extends StatelessWidget {
 
                     return TokenWalletTransactionWidget(
                       transaction: trans,
-                      displayDate: displayDate,
+                      isFirst: isFirst,
+                      isLast: isLast,
                       transactionFee: Money.fromBigIntWithCurrency(
                         trans.fees,
                         Currencies()[ticker]!,

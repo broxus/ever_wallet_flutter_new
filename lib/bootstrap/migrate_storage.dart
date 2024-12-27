@@ -5,19 +5,7 @@ import 'package:logging/logging.dart';
 
 /// Migrate storage from old version to new one
 Future<void> migrateStorage() async {
-  final log = Logger('bootstrap')..finest('MigrationService starting...');
-  await MigrationService.migrateWithHiveInit(
-    inject<GeneralStorageService>(),
-    inject<SecureStorageService>(),
-    inject<BrowserTabsStorageService>(),
-    inject<BrowserHistoryStorageService>(),
-    inject<BrowserBookmarksStorageService>(),
-    inject<BrowserPermissionsStorageService>(),
-    inject<NekotonStorageService>(),
-    inject<ConnectionsStorageService>(),
-  );
-  log
-    ..finest('MigrationService finished')
+  final log = Logger('bootstrap')
     ..finest('StorageMigrationService starting...');
   await StorageMigrationService.applyMigrations(
     inject<EncryptedStorage>(),

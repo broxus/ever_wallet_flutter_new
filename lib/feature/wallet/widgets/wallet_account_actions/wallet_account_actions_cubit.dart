@@ -1,6 +1,7 @@
 import 'dart:async';
 
 import 'package:app/app/service/service.dart';
+import 'package:app/core/bloc/bloc_mixin.dart';
 import 'package:app/data/models/models.dart';
 import 'package:bloc/bloc.dart';
 import 'package:collection/collection.dart';
@@ -20,7 +21,8 @@ enum WalletAccountActionBehavior {
 
 /// Cubit for actions for current selected account.
 /// This cubit allows identify which actions should be available for account.
-class WalletAccountActionsCubit extends Cubit<WalletAccountActionsState> {
+class WalletAccountActionsCubit extends Cubit<WalletAccountActionsState>
+    with BlocBaseMixin {
   WalletAccountActionsCubit(
     this.nekotonRepository,
     this.address,
@@ -29,6 +31,8 @@ class WalletAccountActionsCubit extends Cubit<WalletAccountActionsState> {
           WalletAccountActionsState.loading(
             hasStake:
                 nekotonRepository.currentTransport.stakeInformation != null,
+            nativeTokenTicker:
+                nekotonRepository.currentTransport.nativeTokenTicker,
           ),
         ) {
     _walletsSubscription = nekotonRepository.walletsStream.listen((wallets) {
@@ -89,14 +93,32 @@ class WalletAccountActionsCubit extends Cubit<WalletAccountActionsState> {
 
       final hasStake = action != WalletAccountActionBehavior.deploy &&
           nekotonRepository.currentTransport.stakeInformation != null;
-      emit(
+      emitSafe(
         WalletAccountActionsState.data(
           action: action,
           hasStake: hasStake,
           hasStakeActions: hasStake && _cachedWithdraws.isNotEmpty,
+          balance: contract.balance,
+          custodians: wallet?.custodians,
+          nativeTokenTicker:
+              nekotonRepository.currentTransport.nativeTokenTicker,
+          numberUnconfirmedTransactions:
+              (wallet?.unconfirmedTransactions.length ?? 0) +
+                  (wallet?.pendingTransactions.length ?? 0),
         ),
       );
     } catch (_) {}
+  }
+
+  Future<BigInt?> getBalance(Address address) async {
+    try {
+      final wallet = await nekotonRepository.walletsStream
+          .expand((e) => e)
+          .firstWhere((wallets) => wallets.address == address);
+      return wallet.wallet!.contractState.balance;
+    } catch (_) {
+      return null;
+    }
   }
 
   void _closeSubs() {

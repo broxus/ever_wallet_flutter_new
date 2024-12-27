@@ -12,6 +12,7 @@ import 'package:ui_components_lib/ui_components_lib.dart';
 
 /// Page that allows confirm multisig transaction for [TonWallet].
 /// This pages displays only for outgoing transaction.
+// TODO(knightforce): rename to Multisig or Custodian
 class TonConfirmTransactionPage extends StatelessWidget {
   const TonConfirmTransactionPage({
     required this.walletAddress,
@@ -20,6 +21,7 @@ class TonConfirmTransactionPage extends StatelessWidget {
     required this.amount,
     required this.destination,
     required this.comment,
+    this.transactionIdHash,
     super.key,
   });
 
@@ -31,6 +33,8 @@ class TonConfirmTransactionPage extends StatelessWidget {
 
   /// Transaction that should be confirmed
   final String transactionId;
+
+  final String? transactionIdHash;
 
   /// Amount of transaction
   final BigInt amount;
@@ -63,6 +67,8 @@ class TonConfirmTransactionPage extends StatelessWidget {
           );
         },
         builder: (context, state) {
+          final bloc = context.read<TonConfirmTransactionBloc>();
+
           return state.when(
             prepare: () => Scaffold(
               appBar: DefaultAppBar(
@@ -78,30 +84,39 @@ class TonConfirmTransactionPage extends StatelessWidget {
               ),
               body: Center(child: WalletSubscribeErrorWidget(error: error)),
             ),
-            loading: (c) => _confirmPage(custodian: c),
+            loading: (c) => _confirmPage(bloc, custodian: c),
             calculatingError: (
               error,
               custodian,
               fee,
             ) =>
-                _confirmPage(fee: fee, error: error, custodian: custodian),
+                _confirmPage(
+              bloc,
+              fee: fee,
+              error: error,
+              custodian: custodian,
+            ),
             readyToSend: (fee, custodian) =>
-                _confirmPage(fee: fee, custodian: custodian),
+                _confirmPage(bloc, fee: fee, custodian: custodian),
             sending: (canClose) => Scaffold(
               body: Padding(
                 padding: const EdgeInsets.all(DimensSize.d16),
                 child: TransactionSendingWidget(canClose: canClose),
               ),
             ),
-            sent: (fee, _, custodian) =>
-                _confirmPage(fee: fee, custodian: custodian),
+            sent: (fee, _, custodian) => _confirmPage(
+              bloc,
+              fee: fee,
+              custodian: custodian,
+            ),
           );
         },
       ),
     );
   }
 
-  Widget _confirmPage({
+  Widget _confirmPage(
+    TonConfirmTransactionBloc bloc, {
     required PublicKey custodian,
     BigInt? fee,
     String? error,
@@ -109,6 +124,9 @@ class TonConfirmTransactionPage extends StatelessWidget {
     return Scaffold(
       appBar: DefaultAppBar(titleText: LocaleKeys.confirmTransaction.tr()),
       body: TonWalletConfirmTransactionConfirmView(
+        account: bloc.account,
+        transactionIdHash: transactionIdHash,
+        money: bloc.money,
         recipient: destination,
         amount: amount,
         comment: comment,

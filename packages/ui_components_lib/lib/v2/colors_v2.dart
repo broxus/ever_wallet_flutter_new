@@ -120,8 +120,8 @@ class ColorsResV2 {
   ///neutral
   static const n10 = Color(0xFF11142B);
   static const n15 = Color(0xFF1B1E3D);
-  static const n20 = Color(0xFF272B4F);
-  static const n30 = Color(0xFF353960);
+  static const n20 = Color(0xFF1E203A);
+  static const n30 = Color(0xFF272B4F);
   static const n35 = Color(0xFF444872);
   static const n40 = Color(0xFF555984);
   static const n50 = Color(0xFF686C95);

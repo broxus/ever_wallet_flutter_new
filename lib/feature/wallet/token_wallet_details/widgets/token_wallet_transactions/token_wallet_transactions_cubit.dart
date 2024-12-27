@@ -1,6 +1,7 @@
 import 'dart:async';
 
 import 'package:app/app/service/service.dart';
+import 'package:app/core/bloc/bloc_mixin.dart';
 import 'package:app/data/models/custom_currency.dart';
 import 'package:bloc/bloc.dart';
 import 'package:collection/collection.dart';
@@ -15,7 +16,8 @@ part 'token_wallet_transactions_state.dart';
 
 /// Cubit that allows mapping transactions for [TokenWallet] from storage to UI
 /// elements.
-class TokenWalletTransactionsCubit extends Cubit<TokenWalletTransactionsState> {
+class TokenWalletTransactionsCubit extends Cubit<TokenWalletTransactionsState>
+    with BlocBaseMixin {
   TokenWalletTransactionsCubit({
     required this.owner,
     required this.rootTokenContract,
@@ -34,14 +36,17 @@ class TokenWalletTransactionsCubit extends Cubit<TokenWalletTransactionsState> {
       nekotonRepository.currentTransportStream,
       (a, b) => (a, b),
     ).listen(
-      (value) {
+      (value) async {
         final wallet = value.$1?.wallet;
         final transport = value.$2.transport;
 
         if (wallet == null) {
           _closeSubs();
-
           return;
+        }
+
+        if (!wallet.isTransactionsPreloaded) {
+          await wallet.preloadTransactions();
         }
 
         _createSubs(wallet, transport);
@@ -120,7 +125,7 @@ class TokenWalletTransactionsCubit extends Cubit<TokenWalletTransactionsState> {
     );
   }
 
-  void _createSubs(TokenWallet wallet, Transport transport) {
+  void _createSubs(GenericTokenWallet wallet, Transport transport) {
     _closeSubs();
 
     _ordinaryTransactionsSub = Rx.combineLatest2<
@@ -154,7 +159,7 @@ class TokenWalletTransactionsCubit extends Cubit<TokenWalletTransactionsState> {
       _cachedCurrency = currency;
       _transactionsState(fromStream: true);
     } else {
-      emit(const TokenWalletTransactionsState.loading());
+      emitSafe(const TokenWalletTransactionsState.loading());
     }
   }
 
@@ -163,7 +168,7 @@ class TokenWalletTransactionsCubit extends Cubit<TokenWalletTransactionsState> {
     bool isLoading = false,
   }) {
     if (_ordinary.isEmpty) {
-      emit(const TokenWalletTransactionsState.empty());
+      emitSafe(const TokenWalletTransactionsState.empty());
     } else {
       final transactions = [..._ordinary]
         ..sort((a, b) => b.date.compareTo(a.date));
@@ -181,7 +186,7 @@ class TokenWalletTransactionsCubit extends Cubit<TokenWalletTransactionsState> {
         canLoadMore = lastLt != _lastLtWhenPreloaded;
       }
 
-      emit(
+      emitSafe(
         TokenWalletTransactionsState.transactions(
           transactions: transactions,
           tokenCurrency: _cachedCurrency!,

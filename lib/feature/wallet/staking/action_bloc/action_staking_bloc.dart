@@ -31,8 +31,17 @@ class ActionStakingBloc
   final StakingService stakingService;
   final GeneralStorageService storage;
 
-  StakingInformation get staking =>
-      nekotonRepository.currentTransport.stakeInformation!;
+  StakingInformation? get staking =>
+      nekotonRepository.currentTransport.stakeInformation;
+
+  Address? get _stakingValutAddress => staking?.stakingValutAddress;
+
+  BigInt? get _stakeDepositAttachedFee => staking?.stakeDepositAttachedFee;
+
+  BigInt? get _stakeWithdrawAttachedFee => staking?.stakeWithdrawAttachedFee;
+
+  Address? get _stakingRootContractAddress =>
+      staking?.stakingRootContractAddress;
 
   void _registerHandlers() {
     on<_Init>(_prepareInit);
@@ -44,6 +53,13 @@ class ActionStakingBloc
     _Stake event,
     Emitter<ActionStakingBlocState> emit,
   ) async {
+    final valutAddress = _stakingValutAddress;
+    final depositAttachedFee = _stakeDepositAttachedFee;
+
+    if (valutAddress == null || depositAttachedFee == null) {
+      return;
+    }
+
     emitSafe(const ActionStakingBlocState.inProgress());
 
     final payload = await stakingService.depositEverBodyPayload(event.amount);
@@ -52,10 +68,10 @@ class ActionStakingBloc
       ActionStakingBlocState.goStake(
         payload: payload,
         amount: event.amount,
-        destination: staking.stakingValutAddress,
+        destination: valutAddress,
         sender: accountAddress,
         accountKey: event.accountKey,
-        attachedFee: staking.stakeDepositAttachedFee,
+        attachedFee: depositAttachedFee,
       ),
     );
     emitSafe(const ActionStakingBlocState.nothing());
@@ -65,6 +81,16 @@ class ActionStakingBloc
     _Unstake event,
     Emitter<ActionStakingBlocState> emit,
   ) async {
+    final valutAddress = _stakingValutAddress;
+    final withdrawAttachedFee = _stakeWithdrawAttachedFee;
+    final rootContractAddress = _stakingRootContractAddress;
+
+    if (valutAddress == null ||
+        withdrawAttachedFee == null ||
+        rootContractAddress == null) {
+      return;
+    }
+
     emitSafe(const ActionStakingBlocState.inProgress());
 
     final payload = await stakingService.withdrawStEverPayload();
@@ -73,12 +99,12 @@ class ActionStakingBloc
       ActionStakingBlocState.goUnstake(
         payload: payload,
         amount: event.amount,
-        destination: staking.stakingValutAddress,
+        destination: valutAddress,
         sender: accountAddress,
         accountKey: event.accountKey,
-        attachedFee: staking.stakeWithdrawAttachedFee,
+        attachedFee: withdrawAttachedFee,
         withdrawHours: event.withdrawHours,
-        stakeContractAddress: staking.stakingRootContractAddress,
+        stakeContractAddress: rootContractAddress,
       ),
     );
     emitSafe(const ActionStakingBlocState.nothing());
@@ -88,15 +114,21 @@ class ActionStakingBloc
     _Init event,
     Emitter<ActionStakingBlocState> emit,
   ) async {
+    final rootContractAddress = _stakingRootContractAddress;
+
+    if (rootContractAddress == null) {
+      return;
+    }
+
     final group = nekotonRepository.currentTransport.transport.group;
     final account =
         nekotonRepository.seedList.findAccountByAddress(accountAddress);
     // if staking coin not in account, add it
     if (account?.additionalAssets[group]?.tokenWallets.firstWhereOrNull(
-          (c) => c.rootTokenContract == staking.stakingRootContractAddress,
+          (c) => c.rootTokenContract == rootContractAddress,
         ) ==
         null) {
-      unawaited(account?.addTokenWallet(staking.stakingRootContractAddress));
+      unawaited(account?.addTokenWallet(rootContractAddress));
     }
 
     final opened = storage.getWasStEverOpened;

@@ -95,6 +95,10 @@ enum AppRoute {
     '',
     'walletNewAccount', // all data in query
   ),
+  walletNewExternalAccount(
+    '',
+    'walletNewExternalAccount', // all data in query
+  ),
 
   /// Browser section
   browser(
@@ -186,9 +190,13 @@ enum AppRoute {
     'createSeedPassword',
     isSaveLocation: true,
   ),
-  enableBiometryAfterOnboarding(
+  enableBiometry(
+    '/enableBiometry',
+    'enableBiometry',
+  ),
+  custodiansSettings(
     '',
-    'enableBiometryAfterOnboarding',
+    'custodiansSettings',
   ),
 
   /// Browser section

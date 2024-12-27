@@ -1,7 +1,12 @@
+import 'package:app/app/service/messenger/message.dart';
+import 'package:app/app/service/messenger/service/messenger_service.dart';
+import 'package:app/di/di.dart';
 import 'package:app/feature/wallet/wallet.dart';
 import 'package:app/feature/wallet/wallet_prepare_transfer/wallet_prepare_transfer_page/data/wallet_prepare_transfer_asset.dart';
 import 'package:flutter/material.dart';
-import 'package:nekoton_repository/nekoton_repository.dart';
+import 'package:flutter/services.dart';
+import 'package:lucide_icons_flutter/lucide_icons.dart';
+import 'package:nekoton_repository/nekoton_repository.dart' hide Message;
 import 'package:ui_components_lib/ui_components_lib.dart';
 import 'package:ui_components_lib/v2/ui_components_lib_v2.dart';
 
@@ -42,9 +47,8 @@ class TonWalletTransactionDetailsItem extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final colors = context.themeStyle.colors;
     final theme = context.themeStyleV2;
-    final canCopy = copyValue != null;
+    final canCopy = copyValue != null && copyMessage != null;
 
     //old implementation
     final Widget titleWidget = Text(
@@ -56,25 +60,49 @@ class TonWalletTransactionDetailsItem extends StatelessWidget {
       mainAxisSize: MainAxisSize.min,
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        titleWidget,
+        Row(
+          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+          children: [
+            titleWidget,
+            if (titleTrailingChild != null) titleTrailingChild!,
+          ],
+        ),
+        if (titleTrailingChild != null) const SizedBox(height: DimensSizeV2.d8),
         Row(
           children: [
             if (content != null)
               Expanded(
                 child: Text(
                   content!,
-                  style: StyleRes.primaryBold.copyWith(
-                    color: canCopy ? colors.blue : colors.textPrimary,
+                  style: theme.textStyles.paragraphSmall.copyWith(
+                    color: theme.colors.content0,
                   ),
                 ),
               ),
             if (contentChild != null) Expanded(child: contentChild!),
+            if (canCopy)
+              Padding(
+                padding: const EdgeInsets.only(left: DimensSizeV2.d16),
+                child: GhostButton(
+                  buttonShape: ButtonShape.square,
+                  onPressed: () => _copy(context, copyValue!, copyMessage!),
+                  icon: LucideIcons.copy,
+                  buttonSize: ButtonSize.small,
+                ),
+              ),
           ],
         ),
       ],
     );
 
     return child;
+  }
+
+  void _copy(BuildContext context, String value, String copyMessage) {
+    Clipboard.setData(ClipboardData(text: value));
+    inject<MessengerService>().show(
+      Message.successful(context: context, message: copyMessage),
+    );
   }
 }
 
@@ -109,13 +137,12 @@ class WalletTransactionDetailsItem extends StatelessWidget {
     final theme = context.themeStyleV2;
     return GestureDetector(
       onTap: onPressed,
-      child: Container(
-        constraints: const BoxConstraints(minHeight: DimensSizeV2.d40),
-        child: Row(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-          children: [
-            Column(
+      child: Row(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+        children: [
+          Flexible(
+            child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               mainAxisSize: MainAxisSize.min,
               children: [
@@ -126,74 +153,82 @@ class WalletTransactionDetailsItem extends StatelessWidget {
                 ),
                 const SizedBox(height: DimensSizeV2.d2),
                 if (subtitle != null)
-                  Text(
-                    subtitle!,
-                    style: isSubtitleError
-                        ? theme.textStyles.labelXSmall
-                            .copyWith(color: theme.colors.contentNegative)
-                        : theme.textStyles.labelSmall,
+                  Row(
+                    children: [
+                      Flexible(
+                        child: Text(
+                          subtitle!,
+                          style: isSubtitleError
+                              ? theme.textStyles.labelXSmall.copyWith(
+                                  color: theme.colors.contentNegative,
+                                )
+                              : theme.textStyles.labelSmall,
+                        ),
+                      ),
+                    ],
                   ),
               ],
             ),
-            const SizedBox(width: DimensSizeV2.d8),
-            if (icon != null)
-              FloatButton(
-                buttonShape: ButtonShape.square,
-                icon: icon,
-                onPressed: onPressed,
-              ),
-            if (icon == null)
-              Flexible(
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.end,
-                  mainAxisSize: MainAxisSize.min,
-                  children: [
-                    Row(
-                      mainAxisSize: MainAxisSize.min,
-                      children: [
-                        if (walletAsset != null)
-                          Padding(
-                            padding:
-                                const EdgeInsets.only(right: DimensSizeV2.d8),
-                            child: TokenWalletIconWidget(
-                              size: DimensSizeV2.d20,
-                              address: walletAsset!.rootTokenContract,
-                              logoURI: walletAsset!.logoURI,
-                              version: walletAsset!.version ??
-                                  TokenWalletVersion.tip3,
-                            ),
+          ),
+          const SizedBox(width: DimensSizeV2.d8),
+          if (icon != null)
+            FloatButton(
+              buttonShape: ButtonShape.square,
+              buttonSize: ButtonSize.small,
+              icon: icon,
+              onPressed: onPressed,
+            ),
+          if (icon == null)
+            Flexible(
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.end,
+                mainAxisSize: MainAxisSize.min,
+                children: [
+                  Row(
+                    mainAxisSize: MainAxisSize.min,
+                    children: [
+                      if (walletAsset != null)
+                        Padding(
+                          padding:
+                              const EdgeInsets.only(right: DimensSizeV2.d8),
+                          child: TokenWalletIconWidget(
+                            size: DimensSizeV2.d20,
+                            address: walletAsset!.rootTokenContract,
+                            logoURI: walletAsset!.logoURI,
+                            version:
+                                walletAsset!.version ?? TokenWalletVersion.tip3,
                           ),
-                        if (iconPath != null)
-                          Padding(
-                            padding:
-                                const EdgeInsets.only(right: DimensSizeV2.d8),
-                            child: TonWalletIconWidget(
-                              path: iconPath!,
-                              size: DimensSizeV2.d20,
-                            ),
+                        ),
+                      if (iconPath != null)
+                        Padding(
+                          padding:
+                              const EdgeInsets.only(right: DimensSizeV2.d8),
+                          child: TonWalletIconWidget(
+                            path: iconPath!,
+                            size: DimensSizeV2.d20,
                           ),
-                        if (value != null)
-                          Flexible(
-                            child: Text(
-                              value!,
-                              style: theme.textStyles.labelSmall,
-                              overflow: TextOverflow.ellipsis,
-                              softWrap: false,
-                              maxLines: 1,
-                            ),
+                        ),
+                      if (value != null)
+                        Flexible(
+                          child: Text(
+                            value!,
+                            style: theme.textStyles.labelSmall,
+                            overflow: TextOverflow.ellipsis,
+                            softWrap: false,
+                            maxLines: 1,
                           ),
-                        if (valueWidget != null) valueWidget!,
-                      ],
-                    ),
-                    if (convertedValueWidget != null) ...[
-                      const SizedBox(height: DimensSizeV2.d4),
-                      convertedValueWidget!,
+                        ),
+                      if (valueWidget != null) valueWidget!,
                     ],
+                  ),
+                  if (convertedValueWidget != null) ...[
+                    const SizedBox(height: DimensSizeV2.d4),
+                    convertedValueWidget!,
                   ],
-                ),
+                ],
               ),
-          ],
-        ),
+            ),
+        ],
       ),
     );
   }
