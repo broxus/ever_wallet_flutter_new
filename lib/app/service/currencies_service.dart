@@ -89,7 +89,7 @@ class CurrenciesService {
 
   /// Start polling for updating currency
   void startPolling({bool refreshImmediately = true}) {
-    _poller?.stopPolling();
+    _poller?.stop();
 
     _poller = RefreshPollingQueue(
       refresher: CurrencyRefresher(
@@ -99,12 +99,12 @@ class CurrenciesService {
       ),
       refreshInterval: currencyRefreshInterval,
       stopPollingIfError: false,
-    )..startPolling(refreshImmediately: refreshImmediately);
+    )..start(refreshImmediately: refreshImmediately);
   }
 
   /// Stop polling for currencies (when app turned into background)
   void stopPolling() {
-    _poller?.stopPolling();
+    _poller?.stop();
   }
 
   /// Get single currency for [rootTokenContract] in scope of [transport], save
