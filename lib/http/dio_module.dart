@@ -10,8 +10,8 @@ abstract class DioModule {
     final dio = Dio()
       ..options.connectTimeout = const Duration(minutes: timeoutMinutes)
       ..options.sendTimeout = const Duration(minutes: timeoutMinutes)
-      ..options.receiveTimeout = const Duration(minutes: timeoutMinutes);
-
+      ..options.receiveTimeout = const Duration(minutes: timeoutMinutes)
+      ..interceptors.addAll([LogInterceptor()]);
     return dio;
   }
 }

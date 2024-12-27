@@ -1,4 +1,4 @@
-import 'package:app/data/models/network_type.dart';
+import 'package:app/app/service/connection/network_type.dart';
 import 'package:freezed_annotation/freezed_annotation.dart';
 import 'package:nekoton_repository/nekoton_repository.dart';
 

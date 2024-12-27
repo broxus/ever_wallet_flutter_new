@@ -95,6 +95,10 @@ enum AppRoute {
     '',
     'walletNewAccount', // all data in query
   ),
+  walletNewExternalAccount(
+    '',
+    'walletNewExternalAccount', // all data in query
+  ),
 
   /// Browser section
   browser(
@@ -189,6 +193,10 @@ enum AppRoute {
   enableBiometry(
     '/enableBiometry',
     'enableBiometry',
+  ),
+  custodiansSettings(
+    '',
+    'custodiansSettings',
   ),
 
   /// Browser section

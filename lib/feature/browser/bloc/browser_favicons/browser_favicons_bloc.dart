@@ -1,13 +1,17 @@
 import 'package:app/app/service/service.dart';
+import 'package:app/core/bloc/bloc_mixin.dart';
 import 'package:bloc/bloc.dart';
 import 'package:freezed_annotation/freezed_annotation.dart';
 
 part 'browser_favicons_bloc.freezed.dart';
+
 part 'browser_favicons_event.dart';
+
 part 'browser_favicons_state.dart';
 
 class BrowserFaviconsBloc
-    extends Bloc<BrowserFaviconsEvent, BrowserFaviconsState> {
+    extends Bloc<BrowserFaviconsEvent, BrowserFaviconsState>
+    with BlocBaseMixin {
   BrowserFaviconsBloc(
     this.browserFaviconURLStorageService,
   ) : super(
@@ -32,7 +36,7 @@ class BrowserFaviconsBloc
 
   void _registerHandlers() {
     on<_SetItem>((event, emit) {
-      emit(
+      emitSafe(
         state.copyWith(
           items: {...state.items, event.uri: event.faviconURL},
         ),

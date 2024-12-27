@@ -38,7 +38,7 @@ class ProfileView extends StatelessWidget {
     final mq = MediaQuery.of(context);
 
     return Scaffold(
-      backgroundColor: theme.colors.background1,
+      backgroundColor: theme.colors.background0,
       body: SingleChildScrollView(
         child: Column(
           children: [
@@ -75,7 +75,7 @@ class ProfileView extends StatelessWidget {
             ),
             const SizedBox(height: DimensSizeV2.d32),
             ShapedContainerColumn(
-              color: theme.colors.background2,
+              color: theme.colors.background1,
               separator: const CommonDivider(),
               children: [
                 _profileTile(

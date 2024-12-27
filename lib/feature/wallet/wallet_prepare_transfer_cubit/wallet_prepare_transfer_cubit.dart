@@ -1,6 +1,7 @@
 import 'dart:async';
 
 import 'package:app/app/service/service.dart';
+import 'package:app/core/bloc/bloc_mixin.dart';
 import 'package:app/feature/wallet/wallet_prepare_transfer/wallet_prepare_transfer_page/data/wallet_prepare_transfer_asset.dart';
 import 'package:bloc/bloc.dart';
 import 'package:collection/collection.dart';
@@ -15,7 +16,8 @@ part 'wallet_prepare_transfer_state.dart';
 ///
 /// If [rootTokenContract] is specified, then only this token will be available
 /// for selection.
-class WalletPrepareTransferCubit extends Cubit<WalletPrepareTransferState> {
+class WalletPrepareTransferCubit extends Cubit<WalletPrepareTransferState>
+    with BlocBaseMixin {
   WalletPrepareTransferCubit({
     required this.address,
     required this.rootTokenContract,
@@ -26,7 +28,7 @@ class WalletPrepareTransferCubit extends Cubit<WalletPrepareTransferState> {
   }) : super(const WalletPrepareTransferState.loading()) {
     final acc = nekotonRepository.seedList.findAccountByAddress(address);
     if (acc == null) {
-      emit(const WalletPrepareTransferState.empty());
+      emitSafe(const WalletPrepareTransferState.empty());
 
       return;
     }
@@ -126,7 +128,7 @@ class WalletPrepareTransferCubit extends Cubit<WalletPrepareTransferState> {
   void _updateState() {
     if (isClosed) return;
 
-    emit(
+    emitSafe(
       WalletPrepareTransferState.data(
         walletName: _walletName(nekotonRepository, account),
         account: account,
@@ -180,7 +182,7 @@ class WalletPrepareTransferCubit extends Cubit<WalletPrepareTransferState> {
     );
 
     if (contract == null) {
-      emit(const WalletPrepareTransferState.empty());
+      emitSafe(const WalletPrepareTransferState.empty());
 
       return;
     }
@@ -239,7 +241,7 @@ class WalletPrepareTransferCubit extends Cubit<WalletPrepareTransferState> {
       if (walletState == null) return;
 
       if (walletState.hasError) {
-        emit(WalletPrepareTransferState.subscribeError(walletState.error!));
+        emitSafe(WalletPrepareTransferState.subscribeError(walletState.error!));
 
         return;
       }
@@ -284,7 +286,7 @@ class WalletPrepareTransferCubit extends Cubit<WalletPrepareTransferState> {
       if (walletState == null) return;
 
       if (walletState.hasError) {
-        emit(WalletPrepareTransferState.subscribeError(walletState.error!));
+        emitSafe(WalletPrepareTransferState.subscribeError(walletState.error!));
 
         return;
       }

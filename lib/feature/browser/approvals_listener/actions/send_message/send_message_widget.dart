@@ -95,19 +95,23 @@ class SendMessageWidget extends ElementaryWidget<SendMessageWidgetModel> {
                   firstSource: wm.data,
                   secondSource: wm.fee,
                   thirdSource: wm.feeError,
-                  builder: (_, data, fee, feeError) =>
-                      data?.let(
-                        (data) => TokenTransferInfoWidget(
-                          color: theme.colors.background2,
-                          amount: data.amount,
-                          attachedAmount: data.attachedAmount,
-                          rootTokenContract: data.rootTokenContract,
-                          recipient: recipient,
-                          fee: fee,
-                          feeError: feeError,
-                        ),
-                      ) ??
-                      const SizedBox.shrink(),
+                  builder: (_, data, fee, feeError) {
+                    return data?.let(
+                          (data) => TokenTransferInfoWidget(
+                            key: UniqueKey(),
+                            color: theme.colors.background2,
+                            amount: data.amount,
+                            attachedAmount: data.attachedAmount,
+                            rootTokenContract: data.rootTokenContract,
+                            recipient: recipient,
+                            fee: fee,
+                            feeError: feeError,
+                            numberUnconfirmedTransactions:
+                                data.numberUnconfirmedTransactions,
+                          ),
+                        ) ??
+                        const SizedBox.shrink();
+                  },
                 ),
                 if (payload != null)
                   Padding(
@@ -147,7 +151,7 @@ class SendMessageWidget extends ElementaryWidget<SendMessageWidgetModel> {
                   if (hasTxError)
                     TxTreeSimulationErrorWidget(
                       txErrors: txErrors!,
-                      symbol: wm.nativeCurrency.symbol,
+                      symbol: wm.symbol,
                       isConfirmed: isConfirmed ?? false,
                       onConfirm: wm.onConfirmed,
                     ),
@@ -155,7 +159,9 @@ class SendMessageWidget extends ElementaryWidget<SendMessageWidgetModel> {
                     isLoading: isLoading,
                     publicKey: wm.account!.publicKey,
                     title: LocaleKeys.sendWord.tr(),
-                    isDisabled: hasTxError && isConfirmed != true,
+                    isDisabled: wm.numberUnconfirmedTransactions == null ||
+                        wm.numberUnconfirmedTransactions! >= 5 ||
+                        (hasTxError && isConfirmed != true),
                     onPasswordEntered: wm.onSubmit,
                   ),
                 ],

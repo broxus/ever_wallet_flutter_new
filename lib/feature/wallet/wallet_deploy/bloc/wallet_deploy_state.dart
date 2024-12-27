@@ -11,6 +11,7 @@ class WalletDeployState with _$WalletDeployState {
   const factory WalletDeployState.multisig(
     List<PublicKey> custodians,
     int requireConfirmations,
+    int hours,
   ) = _Multisig;
 
   /// Error during calculating fee process
@@ -20,6 +21,7 @@ class WalletDeployState with _$WalletDeployState {
     BigInt? balance,
     List<PublicKey>? custodians,
     int? requireConfirmations,
+    String? tonIconPath,
   }) = _CalculatingError;
 
   /// Fee calculated, allow user subscribe transaction
@@ -28,6 +30,11 @@ class WalletDeployState with _$WalletDeployState {
     required BigInt balance,
     List<PublicKey>? custodians,
     int? requireConfirmations,
+    String? tonIconPath,
+    String? ticker,
+    CustomCurrency? currency,
+    KeyAccount? account,
+    int? hours,
   }) = _ReadyToDeploy;
 
   const factory WalletDeployState.deploying({
@@ -41,6 +48,7 @@ class WalletDeployState with _$WalletDeployState {
     required Transaction transaction,
     List<PublicKey>? custodians,
     int? requireConfirmations,
+    String? tonIconPath,
   }) = _Deployed;
 
   const factory WalletDeployState.subscribeError(Object error) =

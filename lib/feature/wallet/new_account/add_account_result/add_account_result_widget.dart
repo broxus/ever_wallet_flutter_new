@@ -7,13 +7,22 @@ import 'package:ui_components_lib/v2/ui_components_lib_v2.dart';
 
 class AddAccountResultWidget
     extends ElementaryWidget<AddAccountResultWidgetModel> {
-  const AddAccountResultWidget({
+  AddAccountResultWidget({
     required this.address,
+    required this.isExternal,
     Key? key,
-    WidgetModelFactory wmFactory = defaultAddAccountResultWidgetModelFactory,
-  }) : super(wmFactory, key: key);
+    WidgetModelFactory<AddAccountResultWidgetModel>? wmFactory,
+  }) : super(
+          wmFactory ??
+              (context) => defaultAddAccountResultWidgetModelFactory(
+                    context,
+                    isExternal,
+                  ),
+          key: key,
+        );
 
   final Address address;
+  final bool isExternal;
 
   @override
   Widget build(AddAccountResultWidgetModel wm) {

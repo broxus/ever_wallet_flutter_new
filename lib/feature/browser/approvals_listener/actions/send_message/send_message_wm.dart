@@ -15,6 +15,7 @@ import 'package:ui_components_lib/v2/ui_components_lib_v2.dart';
 class TransferData {
   TransferData({
     required this.amount,
+    required this.numberUnconfirmedTransactions,
     this.attachedAmount,
     this.rootTokenContract,
   });
@@ -22,6 +23,7 @@ class TransferData {
   final Money amount;
   final BigInt? attachedAmount;
   final Address? rootTokenContract;
+  final int? numberUnconfirmedTransactions;
 }
 
 SendMessageWidgetModel defaultSendMessageWidgetModelFactory(
@@ -51,6 +53,7 @@ class SendMessageWidgetModel
   late final _isLoading = createNotifier(false);
   late final _isConfirmed = createNotifier(false);
   late final StreamSubscription<Money> _subscription;
+  int? numberUnconfirmedTransactions;
 
   ListenableState<TransferData> get data => _data;
 
@@ -70,8 +73,10 @@ class SendMessageWidgetModel
 
   ListenableState<bool> get isConfirmed => _isConfirmed;
 
-  Currency get nativeCurrency =>
-      Currencies()[model.transport.nativeTokenTicker]!;
+  Currency? get nativeCurrency =>
+      Currencies()[model.transport.nativeTokenTicker];
+
+  String? get symbol => nativeCurrency?.symbol;
 
   ThemeStyleV2 get theme => context.themeStyleV2;
 
@@ -85,11 +90,19 @@ class SendMessageWidgetModel
     );
 
     if (tokens == null) {
-      _data.accept(
-        TransferData(
-          amount: Money.fromBigIntWithCurrency(widget.amount, nativeCurrency),
-        ),
-      );
+      _initWalletTon(tokens);
+
+      if (nativeCurrency != null) {
+        _data.accept(
+          TransferData(
+            amount: Money.fromBigIntWithCurrency(
+              widget.amount,
+              nativeCurrency!,
+            ),
+            numberUnconfirmedTransactions: numberUnconfirmedTransactions,
+          ),
+        );
+      }
     } else {
       _getTokenTransferData(tokens);
     }
@@ -120,6 +133,10 @@ class SendMessageWidgetModel
   Future<void> _getTokenTransferData(BigInt tokens) async {
     final (rootTokenContract, details) =
         await model.getTokenRootDetailsFromTokenWallet(widget.recipient);
+    final walletTonState = await model.getTonWalletState(widget.sender);
+    numberUnconfirmedTransactions =
+        (walletTonState.wallet?.unconfirmedTransactions.length ?? 0) +
+            (walletTonState.wallet?.pendingTransactions.length ?? 0);
     final pattern = details.decimals > 0 ? moneyPattern(details.decimals) : '0';
     final currency = Currency.create(
       details.symbol,
@@ -133,6 +150,7 @@ class SendMessageWidgetModel
         amount: Money.fromBigIntWithCurrency(tokens, currency),
         attachedAmount: widget.amount,
         rootTokenContract: rootTokenContract,
+        numberUnconfirmedTransactions: numberUnconfirmedTransactions,
       ),
     );
   }
@@ -181,15 +199,33 @@ class SendMessageWidgetModel
 
   Future<void> _simulateTransactionTree(UnsignedMessage message) async {
     try {
-      final fee = await model.simulateTransactionTree(
+      final errors = await model.simulateTransactionTree(
         address: widget.sender,
         message: message,
       );
 
-      _txErrors.accept(fee);
+      _txErrors.accept(errors);
     } catch (e) {
       contextSafe?.let(
         (context) => model.showError(context, e.toString()),
+      );
+    }
+  }
+
+  Future<void> _initWalletTon(BigInt? tokens) async {
+    final walletTonState = await model.getTonWalletState(widget.sender);
+    numberUnconfirmedTransactions =
+        (walletTonState.wallet?.unconfirmedTransactions.length ?? 0) +
+            (walletTonState.wallet?.pendingTransactions.length ?? 0);
+    if (tokens == null && nativeCurrency != null) {
+      _data.accept(
+        TransferData(
+          amount: Money.fromBigIntWithCurrency(
+            widget.amount,
+            nativeCurrency!,
+          ),
+          numberUnconfirmedTransactions: numberUnconfirmedTransactions,
+        ),
       );
     }
   }

@@ -1,6 +1,7 @@
 // ignore_for_file: use_build_context_synchronously
 
 import 'package:app/app/service/service.dart';
+import 'package:app/core/bloc/bloc_mixin.dart';
 import 'package:app/generated/generated.dart';
 import 'package:app/utils/constants.dart';
 import 'package:app/utils/utils.dart';
@@ -16,7 +17,8 @@ part 'ton_wallet_send_state.dart';
 
 /// Bloc that allows prepare transaction to send native funds from [TonWallet]
 /// for confirmation and send transaction.
-class TonWalletSendBloc extends Bloc<TonWalletSendEvent, TonWalletSendState> {
+class TonWalletSendBloc extends Bloc<TonWalletSendEvent, TonWalletSendState>
+    with BlocBaseMixin {
   TonWalletSendBloc({
     required this.context,
     required this.nekotonRepository,
@@ -74,12 +76,13 @@ class TonWalletSendBloc extends Bloc<TonWalletSendEvent, TonWalletSendState> {
     on<_CompleteSend>(
       (event, emit) {
         if (fees != null) {
-          emit(TonWalletSendState.sent(fees!, event.transaction));
+          emitSafe(TonWalletSendState.sent(fees!, event.transaction));
         }
       },
     );
     on<_AllowCloseSend>(
-      (event, emit) => emit(const TonWalletSendState.sending(canClose: true)),
+      (event, emit) =>
+          emitSafe(const TonWalletSendState.sending(canClose: true)),
     );
   }
 
@@ -93,10 +96,13 @@ class TonWalletSendBloc extends Bloc<TonWalletSendEvent, TonWalletSendState> {
           address: address,
           message: unsignedMessage!,
         ),
-        nekotonRepository.simulateTransactionTree(
-          address: address,
-          message: unsignedMessage!,
-        ),
+        // TODO(komarov): remove when fixed in nekoton
+        transport.networkType == 'ton'
+            ? Future<List<TxTreeSimulationErrorItem>>.value([])
+            : nekotonRepository.simulateTransactionTree(
+                address: address,
+                message: unsignedMessage!,
+              ),
       );
       fees = result.$1;
       txErrors = result.$2;
@@ -106,7 +112,7 @@ class TonWalletSendBloc extends Bloc<TonWalletSendEvent, TonWalletSendState> {
           .firstWhere((wallets) => wallets.address == address);
 
       if (walletState.hasError) {
-        emit(TonWalletSendState.subscribeError(walletState.error!));
+        emitSafe(TonWalletSendState.subscribeError(walletState.error!));
         return;
       }
 
@@ -117,7 +123,7 @@ class TonWalletSendBloc extends Bloc<TonWalletSendEvent, TonWalletSendState> {
           fees != null && balance > (fees! + amount);
 
       if (!isPossibleToSendMessage) {
-        emit(
+        emitSafe(
           TonWalletSendState.calculatingError(
             LocaleKeys.insufficientFunds.tr(),
             fees,
@@ -128,14 +134,14 @@ class TonWalletSendBloc extends Bloc<TonWalletSendEvent, TonWalletSendState> {
       }
 
       if (fees != null) {
-        emit(TonWalletSendState.readyToSend(fees!, txErrors));
+        emitSafe(TonWalletSendState.readyToSend(fees!, txErrors));
       }
     } on FfiException catch (e, t) {
       _logger.severe('_handlePrepare', e, t);
-      emit(TonWalletSendState.calculatingError(e.message));
+      emitSafe(TonWalletSendState.calculatingError(e.message));
     } on Exception catch (e, t) {
       _logger.severe('_handlePrepare', e, t);
-      emit(TonWalletSendState.calculatingError(e.toString()));
+      emitSafe(TonWalletSendState.calculatingError(e.toString()));
     }
   }
 
@@ -144,7 +150,7 @@ class TonWalletSendBloc extends Bloc<TonWalletSendEvent, TonWalletSendState> {
     String password,
   ) async {
     try {
-      emit(const TonWalletSendState.sending(canClose: false));
+      emitSafe(const TonWalletSendState.sending(canClose: false));
 
       // await unsignedMessage.refreshTimeout();
       // TODO(komarov): fix refresh_timeout in nekoton
@@ -162,7 +168,7 @@ class TonWalletSendBloc extends Bloc<TonWalletSendEvent, TonWalletSendState> {
 
       final signedMessage = await unsignedMessage.sign(signature: signature);
 
-      emit(const TonWalletSendState.sending(canClose: true));
+      emitSafe(const TonWalletSendState.sending(canClose: true));
 
       final transaction = await nekotonRepository.send(
         address: address,
@@ -181,7 +187,7 @@ class TonWalletSendBloc extends Bloc<TonWalletSendEvent, TonWalletSendState> {
       messengerService
           .show(Message.error(context: context, message: e.message));
       if (fees != null) {
-        emit(TonWalletSendState.readyToSend(fees!, txErrors));
+        emitSafe(TonWalletSendState.readyToSend(fees!, txErrors));
       }
     } on Exception catch (e, t) {
       _logger.severe('_handleSend', e, t);
@@ -189,7 +195,7 @@ class TonWalletSendBloc extends Bloc<TonWalletSendEvent, TonWalletSendState> {
           .show(Message.error(context: context, message: e.toString()));
 
       if (fees != null) {
-        emit(TonWalletSendState.readyToSend(fees!, txErrors));
+        emitSafe(TonWalletSendState.readyToSend(fees!, txErrors));
       }
     }
   }

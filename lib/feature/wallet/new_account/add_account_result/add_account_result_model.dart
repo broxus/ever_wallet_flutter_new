@@ -5,11 +5,14 @@ import 'package:nekoton_repository/nekoton_repository.dart' hide Message;
 class AddAccountResultModel extends ElementaryModel {
   AddAccountResultModel(
     ErrorHandler errorHandler,
+    // ignore: avoid_positional_boolean_parameters
+    this.isExternal,
     this._nekotonRepository,
     this._currentKeyService,
     this._currentAccountsService,
   ) : super(errorHandler: errorHandler);
 
+  bool isExternal;
   final NekotonRepository _nekotonRepository;
   final CurrentKeyService _currentKeyService;
   final CurrentAccountsService _currentAccountsService;

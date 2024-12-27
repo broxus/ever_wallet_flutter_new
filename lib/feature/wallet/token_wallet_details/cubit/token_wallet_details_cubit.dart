@@ -1,6 +1,7 @@
 import 'dart:async';
 
 import 'package:app/app/service/service.dart';
+import 'package:app/core/bloc/bloc_mixin.dart';
 import 'package:bloc/bloc.dart';
 import 'package:collection/collection.dart';
 import 'package:freezed_annotation/freezed_annotation.dart';
@@ -12,7 +13,8 @@ part 'token_wallet_details_state.dart';
 
 /// Cubit that allows loading balance for the [TokenWallet] (history loads
 /// separately) in widget.
-class TokenWalletDetailsCubit extends Cubit<TokenWalletDetailsState> {
+class TokenWalletDetailsCubit extends Cubit<TokenWalletDetailsState>
+    with BlocBaseMixin {
   // ignore: long-method
   TokenWalletDetailsCubit({
     required this.nekotonRepository,
@@ -24,7 +26,7 @@ class TokenWalletDetailsCubit extends Cubit<TokenWalletDetailsState> {
   }) : super(const TokenWalletDetailsState.initial()) {
     final acc = nekotonRepository.seedList.findAccountByAddress(owner);
     if (acc == null) {
-      emit(const TokenWalletDetailsState.empty());
+      emitSafe(const TokenWalletDetailsState.empty());
 
       return;
     }
@@ -53,7 +55,7 @@ class TokenWalletDetailsCubit extends Cubit<TokenWalletDetailsState> {
         _walletsSubscription?.cancel();
 
         if (walletState.hasError) {
-          emit(
+          emitSafe(
             TokenWalletDetailsState.subscribeError(
               contractName: contractName,
               error: walletState.error!,
@@ -114,9 +116,9 @@ class TokenWalletDetailsCubit extends Cubit<TokenWalletDetailsState> {
   Future<void> retry() async {
     final st = state;
     if (st is _SubscribeError) {
-      emit(st.copyWith(isLoading: true));
+      emitSafe(st.copyWith(isLoading: true));
       await nekotonRepository.retryTokenSubscription(owner, rootTokenContract);
-      emit(st.copyWith(isLoading: false));
+      emitSafe(st.copyWith(isLoading: false));
     }
   }
 
@@ -124,7 +126,7 @@ class TokenWalletDetailsCubit extends Cubit<TokenWalletDetailsState> {
     if (isClosed) {
       return;
     }
-    emit(
+    emitSafe(
       TokenWalletDetailsState.data(
         contractName: contractName,
         fiatBalance: _cachedFiatBalance,

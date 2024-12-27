@@ -10,9 +10,11 @@ class PrimarySegmentControl<T> extends StatelessWidget {
     required this.state,
     required this.value,
     this.icon,
+    this.postfixIcon,
     this.size = SegmentControlSize.large,
     this.title,
     this.titleSpan,
+    this.customIconColor,
     super.key,
   }) : assert(
           title == null || titleSpan == null,
@@ -22,9 +24,11 @@ class PrimarySegmentControl<T> extends StatelessWidget {
   final SegmentControlSize size;
   final SegmentControlState state;
   final IconData? icon;
+  final IconData? postfixIcon;
   final String? title;
   final InlineSpan? titleSpan;
   final T value;
+  final Color? customIconColor;
 
   double get _iconSize {
     switch (size) {
@@ -35,7 +39,7 @@ class PrimarySegmentControl<T> extends StatelessWidget {
       case SegmentControlSize.small:
         return DimensSizeV2.d16;
       case SegmentControlSize.xsmall:
-        return DimensSizeV2.d12;
+        return DimensSizeV2.d16;
     }
   }
 
@@ -80,17 +84,21 @@ class PrimarySegmentControl<T> extends StatelessWidget {
     SegmentControlSize? size,
     SegmentControlState? state,
     IconData? icon,
+    IconData? postfixIcon,
     String? title,
     InlineSpan? titleSpan,
     T? value,
+    Color? customIconColor,
   }) {
     return PrimarySegmentControl<T>(
       size: size ?? this.size,
       state: state ?? this.state,
       icon: icon ?? this.icon,
+      postfixIcon: postfixIcon ?? this.postfixIcon,
       title: title ?? this.title,
       titleSpan: titleSpan ?? this.titleSpan,
       value: value ?? this.value,
+      customIconColor: customIconColor ?? this.customIconColor,
     );
   }
 
@@ -110,12 +118,18 @@ class PrimarySegmentControl<T> extends StatelessWidget {
           if (icon != null)
             Icon(
               icon,
-              color: style.iconColor,
+              color: customIconColor ?? style.iconColor,
               size: _iconSize,
             ),
           if (title != null) Text(title!, style: style.titleTextStyle),
           if (titleSpan != null)
             Text.rich(titleSpan!, style: style.titleTextStyle),
+          if (postfixIcon != null)
+            Icon(
+              postfixIcon,
+              color: customIconColor ?? style.iconColor,
+              size: _iconSize,
+            ),
         ],
       ),
     );
