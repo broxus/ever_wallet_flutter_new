@@ -50,7 +50,11 @@ class AddNewExternalAccountCubit extends Cubit<AddNewExternalAccountState>
         name: newName.isEmpty ? null : newName,
       );
       Navigator.of(context).pop();
-      await showNewAccountResultSheet(context: context, address: address);
+      await showNewAccountResultSheet(
+        context: context,
+        address: address,
+        isExternal: true,
+      );
     } catch (e) {
       _showError(context, LocaleKeys.keyIsNotCustodian.tr());
       emitSafe(const AddNewExternalAccountState.initial());
