@@ -1,3 +1,4 @@
+import 'package:app/app/service/connection/network_type.dart';
 import 'package:app/app/service/service.dart';
 import 'package:app/data/models/models.dart';
 import 'package:app/utils/utils.dart';
@@ -200,7 +201,7 @@ class _Key {
     assert(parts.length == 2, 'Invalid key format: $value');
 
     return _Key(
-      network: NetworkType.values.byName(parts[0]),
+      network: parts[0],
       address: Address(address: parts[1]),
     );
   }
@@ -209,7 +210,7 @@ class _Key {
   final Address address;
 
   @override
-  String toString() => '${network.name}::${address.address}';
+  String toString() => '$network::${address.address}';
 
   @override
   int get hashCode => Object.hash(runtimeType, network, address);

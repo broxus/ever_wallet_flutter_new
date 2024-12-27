@@ -1,6 +1,6 @@
 name: app
 description: SparX Wallet Flutter app
-version: 1.0.5
+version: 1.0.3
 publish_to: none
 
 environment:
@@ -18,6 +18,7 @@ dependencies:
       url: https://github.com/broxus/broxus-flutter-app-link
       ref: v1.0.0
   cached_network_image: 3.3.1
+  cached_network_svg_image: ^1.2.0
   clock: 1.1.1
   collection: 1.18.0
   crypto: 3.0.6
@@ -46,7 +47,6 @@ dependencies:
   get_it: 7.7.0
   get_storage: 2.1.1
   go_router: 14.6.1
-  hive_flutter: 1.1.0
   http: 1.2.2
   image_picker: 1.1.2
   in_app_notification: 1.1.2
@@ -60,7 +60,7 @@ dependencies:
   mobile_scanner: 3.4.1
   money2: 5.2.1
   money2_fixer: 2.0.0
-  nekoton_repository: 0.37.0-dev.16
+  nekoton_repository: 0.44.0
   nekoton_webview: 0.1.8-dev.4
   ntp: 2.0.0
   package_info_plus: 8.1.1

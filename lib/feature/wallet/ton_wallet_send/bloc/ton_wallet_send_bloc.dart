@@ -1,6 +1,7 @@
 // ignore_for_file: use_build_context_synchronously
 
 import 'package:app/app/service/service.dart';
+import 'package:app/core/bloc/bloc_mixin.dart';
 import 'package:app/generated/generated.dart';
 import 'package:app/utils/constants.dart';
 import 'package:app/utils/utils.dart';
@@ -11,14 +12,13 @@ import 'package:logging/logging.dart';
 import 'package:nekoton_repository/nekoton_repository.dart' hide Message;
 
 part 'ton_wallet_send_bloc.freezed.dart';
-
 part 'ton_wallet_send_event.dart';
-
 part 'ton_wallet_send_state.dart';
 
 /// Bloc that allows prepare transaction to send native funds from [TonWallet]
 /// for confirmation and send transaction.
-class TonWalletSendBloc extends Bloc<TonWalletSendEvent, TonWalletSendState> {
+class TonWalletSendBloc extends Bloc<TonWalletSendEvent, TonWalletSendState>
+    with BlocBaseMixin {
   TonWalletSendBloc({
     required this.context,
     required this.nekotonRepository,
@@ -29,7 +29,6 @@ class TonWalletSendBloc extends Bloc<TonWalletSendEvent, TonWalletSendState> {
     required this.amount,
     required this.comment,
     required this.resultMessage,
-    this.needRepack = true,
   }) : super(const TonWalletSendState.loading()) {
     _registerHandlers();
   }
@@ -48,12 +47,6 @@ class TonWalletSendBloc extends Bloc<TonWalletSendEvent, TonWalletSendState> {
 
   /// Address where funds should be sent
   final Address destination;
-  late Address repackedDestination;
-
-  /// if true, then [repackedDestination] will be calculated during
-  /// [_handlePrepare], if false, then it must be set manually during creation
-  /// of bloc.
-  final bool needRepack;
 
   /// Amount of tokens that should be sent
   final BigInt amount;
@@ -69,8 +62,7 @@ class TonWalletSendBloc extends Bloc<TonWalletSendEvent, TonWalletSendState> {
 
   KeyAccount? account;
 
-  late UnsignedMessage unsignedMessage;
-  UnsignedMessage? _unsignedMessage;
+  UnsignedMessage? unsignedMessage;
 
   List<TxTreeSimulationErrorItem>? txErrors;
 
@@ -84,43 +76,33 @@ class TonWalletSendBloc extends Bloc<TonWalletSendEvent, TonWalletSendState> {
     on<_CompleteSend>(
       (event, emit) {
         if (fees != null) {
-          emit(TonWalletSendState.sent(fees!, event.transaction));
+          emitSafe(TonWalletSendState.sent(fees!, event.transaction));
         }
       },
     );
     on<_AllowCloseSend>(
-      (event, emit) => emit(const TonWalletSendState.sending(canClose: true)),
+      (event, emit) =>
+          emitSafe(const TonWalletSendState.sending(canClose: true)),
     );
   }
 
   Future<void> _handlePrepare(Emitter<TonWalletSendState> emit) async {
     try {
       account = nekotonRepository.seedList.findAccountByAddress(address);
-
-      if (needRepack) {
-        repackedDestination = await repackAddress(destination);
-      }
-
-      unsignedMessage = await nekotonRepository.prepareTransfer(
-        address: address,
-        publicKey: publicKey,
-        destination: repackedDestination,
-        amount: amount,
-        body: comment,
-        bounce: defaultMessageBounce,
-        expiration: defaultSendTimeout,
-      );
-      _unsignedMessage = unsignedMessage;
+      unsignedMessage = await _prepareTransfer();
 
       final result = await FutureExt.wait2(
         nekotonRepository.estimateFees(
           address: address,
-          message: unsignedMessage,
+          message: unsignedMessage!,
         ),
-        nekotonRepository.simulateTransactionTree(
-          address: address,
-          message: unsignedMessage,
-        ),
+        // TODO(komarov): remove when fixed in nekoton
+        transport.networkType == 'ton'
+            ? Future<List<TxTreeSimulationErrorItem>>.value([])
+            : nekotonRepository.simulateTransactionTree(
+                address: address,
+                message: unsignedMessage!,
+              ),
       );
       fees = result.$1;
       txErrors = result.$2;
@@ -130,7 +112,7 @@ class TonWalletSendBloc extends Bloc<TonWalletSendEvent, TonWalletSendState> {
           .firstWhere((wallets) => wallets.address == address);
 
       if (walletState.hasError) {
-        emit(TonWalletSendState.subscribeError(walletState.error!));
+        emitSafe(TonWalletSendState.subscribeError(walletState.error!));
         return;
       }
 
@@ -141,7 +123,7 @@ class TonWalletSendBloc extends Bloc<TonWalletSendEvent, TonWalletSendState> {
           fees != null && balance > (fees! + amount);
 
       if (!isPossibleToSendMessage) {
-        emit(
+        emitSafe(
           TonWalletSendState.calculatingError(
             LocaleKeys.insufficientFunds.tr(),
             fees,
@@ -152,14 +134,14 @@ class TonWalletSendBloc extends Bloc<TonWalletSendEvent, TonWalletSendState> {
       }
 
       if (fees != null) {
-        emit(TonWalletSendState.readyToSend(fees!, txErrors));
+        emitSafe(TonWalletSendState.readyToSend(fees!, txErrors));
       }
     } on FfiException catch (e, t) {
-      _logger.severe('_handleSend', e, t);
-      emit(TonWalletSendState.calculatingError(e.message));
+      _logger.severe('_handlePrepare', e, t);
+      emitSafe(TonWalletSendState.calculatingError(e.message));
     } on Exception catch (e, t) {
-      _logger.severe('_handleSend', e, t);
-      emit(TonWalletSendState.calculatingError(e.toString()));
+      _logger.severe('_handlePrepare', e, t);
+      emitSafe(TonWalletSendState.calculatingError(e.toString()));
     }
   }
 
@@ -168,8 +150,11 @@ class TonWalletSendBloc extends Bloc<TonWalletSendEvent, TonWalletSendState> {
     String password,
   ) async {
     try {
-      emit(const TonWalletSendState.sending(canClose: false));
-      await unsignedMessage.refreshTimeout();
+      emitSafe(const TonWalletSendState.sending(canClose: false));
+
+      // await unsignedMessage.refreshTimeout();
+      // TODO(komarov): fix refresh_timeout in nekoton
+      final unsignedMessage = this.unsignedMessage = await _prepareTransfer();
 
       final hash = unsignedMessage.hash;
       final transport = nekotonRepository.currentTransport.transport;
@@ -183,13 +168,13 @@ class TonWalletSendBloc extends Bloc<TonWalletSendEvent, TonWalletSendState> {
 
       final signedMessage = await unsignedMessage.sign(signature: signature);
 
-      emit(const TonWalletSendState.sending(canClose: true));
+      emitSafe(const TonWalletSendState.sending(canClose: true));
 
       final transaction = await nekotonRepository.send(
         address: address,
         signedMessage: signedMessage,
         amount: amount,
-        destination: repackedDestination,
+        destination: await repackAddress(destination),
       );
 
       messengerService
@@ -197,12 +182,13 @@ class TonWalletSendBloc extends Bloc<TonWalletSendEvent, TonWalletSendState> {
       if (!isClosed) {
         add(TonWalletSendEvent.completeSend(transaction));
       }
+    } on OperationCanceledException catch (_) {
     } on FfiException catch (e, t) {
       _logger.severe('_handleSend', e, t);
       messengerService
           .show(Message.error(context: context, message: e.message));
       if (fees != null) {
-        emit(TonWalletSendState.readyToSend(fees!, txErrors));
+        emitSafe(TonWalletSendState.readyToSend(fees!, txErrors));
       }
     } on Exception catch (e, t) {
       _logger.severe('_handleSend', e, t);
@@ -210,15 +196,26 @@ class TonWalletSendBloc extends Bloc<TonWalletSendEvent, TonWalletSendState> {
           .show(Message.error(context: context, message: e.toString()));
 
       if (fees != null) {
-        emit(TonWalletSendState.readyToSend(fees!, txErrors));
+        emitSafe(TonWalletSendState.readyToSend(fees!, txErrors));
       }
     }
   }
 
+  Future<UnsignedMessage> _prepareTransfer() async =>
+      nekotonRepository.prepareTransfer(
+        address: address,
+        publicKey: publicKey,
+        // TODO(komarov): make repackAddress sync
+        destination: await repackAddress(destination),
+        amount: amount,
+        body: comment,
+        bounce: defaultMessageBounce,
+        expiration: defaultSendTimeout,
+      );
+
   @override
   Future<void> close() {
-    _unsignedMessage?.dispose();
-
+    unsignedMessage?.dispose();
     return super.close();
   }
 }

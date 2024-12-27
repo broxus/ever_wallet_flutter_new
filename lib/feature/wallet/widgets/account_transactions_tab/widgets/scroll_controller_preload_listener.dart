@@ -8,13 +8,13 @@ const loadingZone = 100.0;
 class ScrollControllerPreloadListener extends StatefulWidget {
   const ScrollControllerPreloadListener({
     required this.scrollController,
-    required this.preleloadAction,
+    required this.preloadAction,
     required this.child,
     super.key,
   });
 
   final ScrollController scrollController;
-  final VoidCallback preleloadAction;
+  final VoidCallback preloadAction;
   final Widget child;
 
   @override
@@ -48,7 +48,7 @@ class _ScrollControllerPreloadListenerState
     final maxScrollExtent = widget.scrollController.position.maxScrollExtent;
 
     if (isDown && pixels > maxScrollExtent - loadingZone) {
-      widget.preleloadAction();
+      widget.preloadAction();
     }
   }
 }

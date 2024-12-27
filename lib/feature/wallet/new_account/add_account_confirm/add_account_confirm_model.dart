@@ -25,7 +25,7 @@ class AddAccountConfirmModel extends ElementaryModel {
     final seed = _nekotonRepository.seedList.findSeedByAnyPublicKey(publicKey);
     if (seed == null) return [];
 
-    final isBiometryEnabled = _biometryService.enabled;
+    final isBiometryEnabled = _biometryService.isEnabled;
     final hasKeyPassword =
         await _biometryService.hasKeyPassword(seed.publicKey);
 
@@ -67,7 +67,7 @@ class AddAccountConfirmModel extends ElementaryModel {
           await _nekotonRepository.currentTransport.transport.getSignatureId(),
     );
 
-    if (_biometryService.enabled && correct) {
+    if (_biometryService.isEnabled && correct) {
       await _biometryService.setKeyPassword(
         publicKey: publicKey,
         password: password,

@@ -12,22 +12,31 @@ targets:
         generate_for:
           - lib/app/service/*.dart
           - lib/app/service/**/*.dart
+          - lib/data/*.dart
           - lib/data/**/*.dart
-          - lib/http/dto/*.dart
+          - lib/http/*.dart
+          - lib/http/**/*.dart
       retrofit_generator:
         generate_for:
-          - lib/http/api/*.dart
+          - lib/http/*.dart
+          - lib/http/**/*.dart
       injectable_generator:injectable_builder:
         generate_for:
           - lib/di/*.dart
+          - lib/di/**/*.dart
           - lib/app/service/*.dart
           - lib/app/service/**/*.dart
-          - lib/http/dio_module.dart
-          - lib/http/repository/*.dart
+          - lib/http/*.dart
+          - lib/http/**/*.dart
       freezed:
         generate_for:
-          - lib/app/service/dto/*.dart
+          - lib/app/service/*.dart
+          - lib/app/service/**/*.dart
+          - lib/data/*.dart
           - lib/data/**/*.dart
+          - lib/*_cubit.dart
           - lib/**/*_cubit.dart
+          - lib/*_bloc.dart
           - lib/**/*_bloc.dart
+          - lib/*_state.dart
           - lib/**/*_state.dart

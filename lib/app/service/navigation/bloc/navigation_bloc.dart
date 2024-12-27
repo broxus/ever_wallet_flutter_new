@@ -1,15 +1,19 @@
 import 'dart:async';
 
 import 'package:app/app/service/service.dart';
+import 'package:app/core/bloc/bloc_mixin.dart';
 import 'package:app/di/di.dart';
 import 'package:bloc/bloc.dart';
 import 'package:freezed_annotation/freezed_annotation.dart';
 
 part 'navigation_bloc.freezed.dart';
+
 part 'navigation_event.dart';
+
 part 'navigation_state.dart';
 
-class NavigationBloc extends Bloc<NavigationEvent, NavigationState> {
+class NavigationBloc extends Bloc<NavigationEvent, NavigationState>
+    with BlocBaseMixin {
   NavigationBloc()
       : super(
           const NavigationState(),
@@ -19,7 +23,7 @@ class NavigationBloc extends Bloc<NavigationEvent, NavigationState> {
         return;
       }
 
-      emit(
+      emitSafe(
         state.copyWith(
           state: event.state,
           oldState: state.state,
@@ -27,6 +31,7 @@ class NavigationBloc extends Bloc<NavigationEvent, NavigationState> {
       );
     });
   }
+
   StreamSubscription<NavigationServiceState>? _serviceSubscription;
 
   void init() {

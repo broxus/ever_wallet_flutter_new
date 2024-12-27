@@ -1,4 +1,4 @@
-import 'package:app/data/models/models.dart';
+import 'package:app/app/service/connection/data/connection_data/connection_data.dart';
 
 enum ConnectionType {
   jrpc,
@@ -45,6 +45,7 @@ enum ConnectionType {
         _____________,
         ______________,
         _______________,
+        ________________,
       ) =>
           ConnectionType.gql,
       proto: (
@@ -59,6 +60,7 @@ enum ConnectionType {
         _________,
         __________,
         ___________,
+        ____________,
       ) =>
           ConnectionType.proto,
       jrpc: (
@@ -73,6 +75,7 @@ enum ConnectionType {
         _________,
         __________,
         ___________,
+        ____________,
       ) =>
           ConnectionType.jrpc,
     );

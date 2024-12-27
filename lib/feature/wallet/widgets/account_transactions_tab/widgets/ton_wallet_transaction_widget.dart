@@ -1,8 +1,8 @@
 import 'package:app/feature/wallet/widgets/account_transactions_tab/widgets/ton_wallet_transaction_status_body.dart';
 import 'package:app/generated/generated.dart';
 import 'package:app/utils/utils.dart';
+import 'package:app/widgets/transaction_icon.dart';
 import 'package:flutter/material.dart';
-import 'package:lucide_icons_flutter/lucide_icons.dart';
 import 'package:nekoton_repository/nekoton_repository.dart';
 import 'package:ui_components_lib/ui_components_lib.dart';
 import 'package:ui_components_lib/v2/ui_components_lib_v2.dart';
@@ -15,9 +15,11 @@ class TonWalletTransactionWidget extends StatelessWidget {
     required this.transactionValue,
     required this.transactionFee,
     required this.status,
-    required this.displayDate,
+    required this.isFirst,
+    required this.isLast,
     required this.onPressed,
     required this.address,
+    required this.icon,
     super.key,
     this.additionalInformation,
   });
@@ -49,38 +51,42 @@ class TonWalletTransactionWidget extends StatelessWidget {
   /// If date of this transaction must be displayed.
   /// This is external decision that could use comparing this transaction and
   /// prev one.
-  final bool displayDate;
+  final bool isFirst;
+
+  /// if isLast true, it means that this transaction is last for this date
+  final bool isLast;
 
   /// Press callback to open detailed transaction page
   final VoidCallback onPressed;
+  final IconData icon;
 
   @override
   Widget build(BuildContext context) {
     final theme = context.themeStyleV2;
-    final date = displayDate ? _headerDate(theme) : null;
+    final date = isFirst ? _headerDate(theme) : null;
 
     final body = PressScaleWidget(
       onPressed: onPressed,
-      child: Material(
-        shape: const SquircleShapeBorder(cornerRadius: DimensRadius.medium),
-        color: theme.colors.background2,
+      child: Container(
+        decoration: BoxDecoration(
+          color: theme.colors.background1,
+          borderRadius: BorderRadius.vertical(
+            top: Radius.circular(isFirst ? DimensRadiusV2.radius16 : 0),
+            bottom: Radius.circular(isLast ? DimensRadiusV2.radius16 : 0),
+          ),
+        ),
         child: SeparatedColumn(
           crossAxisAlignment: CrossAxisAlignment.start,
           mainAxisSize: MainAxisSize.min,
-          separator: const CommonDivider(),
           children: [
             _baseTransactionBody(theme),
-            if (additionalInformation != null) additionalInformation!,
           ],
         ),
       ),
     );
 
     return date == null
-        ? Padding(
-            padding: const EdgeInsets.only(top: DimensSize.d8),
-            child: body,
-          )
+        ? body
         : SeparatedColumn(
             crossAxisAlignment: CrossAxisAlignment.start,
             mainAxisSize: MainAxisSize.min,
@@ -128,26 +134,36 @@ class TonWalletTransactionWidget extends StatelessWidget {
                     Row(
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
-                        Icon(
-                          isIncoming
-                              ? LucideIcons.arrowDown
-                              : LucideIcons.arrowUp,
-                          color: isIncoming
-                              ? theme.colors.contentPositive
-                              : theme.colors.content0,
-                          size: DimensSizeV2.d16,
+                        TransactionIcon(
+                          icon: icon,
+                          isIncoming: isIncoming,
+                          status: status,
                         ),
-                        const SizedBox(width: DimensSizeV2.d8),
+                        const SizedBox(width: DimensSizeV2.d12),
                         Column(
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children: [
-                            Text(
-                              isIncoming ? 'Received' : 'Sent',
-                              style: theme.textStyles.labelSmall,
+                            AmountWidget.fromMoney(
+                              amount: transactionValue,
+                              includeSymbol: false,
+                              sign: isIncoming
+                                  ? LocaleKeys.plusSign.tr()
+                                  : LocaleKeys.minusSign.tr(),
+                              style: theme.textStyles.labelXSmall.copyWith(
+                                color: _getColorValue(
+                                  theme,
+                                  status,
+                                  isIncoming,
+                                ),
+                              ),
                             ),
                             const SizedBox(height: DimensSizeV2.d4),
                             Text(
-                              address.toEllipseString(),
+                              isIncoming
+                                  ? LocaleKeys.fromWord
+                                      .tr(args: [address.toEllipseString()])
+                                  : LocaleKeys.toWord
+                                      .tr(args: [address.toEllipseString()]),
                               style: theme.textStyles.labelXSmall.copyWith(
                                 color: theme.colors.content3,
                               ),
@@ -160,46 +176,51 @@ class TonWalletTransactionWidget extends StatelessWidget {
                   ],
                 ),
               ),
-              Column(
-                crossAxisAlignment: CrossAxisAlignment.end,
-                children: [
-                  AmountWidget.fromMoney(
-                    amount: transactionValue,
-                    includeSymbol: false,
-                    sign: isIncoming
-                        ? LocaleKeys.plusSign.tr()
-                        : LocaleKeys.minusSign.tr(),
-                    style: theme.textStyles.labelXSmall.copyWith(
-                      color: isIncoming
-                          ? theme.colors.contentPositive
-                          : theme.colors.content0,
-                    ),
-                  ),
-                  const SizedBox(height: DimensSizeV2.d4),
-                  Row(
-                    children: [
-                      if (status == TonWalletTransactionStatus.pending ||
-                          status ==
-                              TonWalletTransactionStatus.unstakingInProgress)
-                        Text(
-                          '${status.title} • ',
-                          style: theme.textStyles.labelXSmall
-                              .copyWith(color: theme.colors.content3),
-                        ),
+              if (additionalInformation != null)
+                additionalInformation!
+              else
+                Column(
+                  crossAxisAlignment: CrossAxisAlignment.end,
+                  children: [
+                    if (status == TonWalletTransactionStatus.pending ||
+                        status ==
+                            TonWalletTransactionStatus.unstakingInProgress)
                       Text(
-                        transactionTimeFormatter.format(transactionDateTime),
-                        style: theme.textStyles.labelXSmall.copyWith(
-                          color: theme.colors.content3,
-                        ),
+                        status.title,
+                        style: theme.textStyles.labelXSmall
+                            .copyWith(color: theme.colors.content3),
+                      )
+                    else
+                      Text('', style: theme.textStyles.labelXSmall),
+                    Text(
+                      transactionTimeFormatter.format(transactionDateTime),
+                      style: theme.textStyles.labelXSmall.copyWith(
+                        color: theme.colors.content3,
                       ),
-                    ],
-                  ),
-                ],
-              ),
+                    ),
+                  ],
+                ),
             ],
           ),
         );
       },
     );
+  }
+
+  Color _getColorValue(
+    ThemeStyleV2 theme,
+    TonWalletTransactionStatus status,
+    bool isIncoming,
+  ) {
+    if (status == TonWalletTransactionStatus.waitingConfirmation) {
+      return theme.colors.contentWarning;
+    } else if (status == TonWalletTransactionStatus.expired ||
+        status == TonWalletTransactionStatus.pending) {
+      return theme.colors.content3;
+    } else if (isIncoming) {
+      return theme.colors.contentPositive;
+    } else {
+      return theme.colors.content0;
+    }
   }
 }

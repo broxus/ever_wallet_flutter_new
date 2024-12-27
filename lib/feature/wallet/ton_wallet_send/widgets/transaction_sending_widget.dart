@@ -12,10 +12,12 @@ class TransactionSendingWidget extends StatelessWidget {
   const TransactionSendingWidget({
     required this.canClose,
     this.completeCloseCallback,
+    this.isDeploying = false,
     super.key,
   });
 
   final bool canClose;
+  final bool isDeploying;
 
   /// Callback that could be used to change default behavior for closing
   /// this screen when user achieved last step of sending when transaction is
@@ -38,7 +40,9 @@ class TransactionSendingWidget extends StatelessWidget {
                   size: CircularIndicatorSize.large,
                 ),
                 Text(
-                  LocaleKeys.transactionIsSending.tr(),
+                  isDeploying
+                      ? LocaleKeys.deploymentInProgress.tr()
+                      : LocaleKeys.transactionIsSending.tr(),
                   style: theme.textStyles.headingLarge,
                   textAlign: TextAlign.center,
                 ),
@@ -47,7 +51,7 @@ class TransactionSendingWidget extends StatelessWidget {
           ),
         ),
         if (canClose)
-          PrimaryButton(
+          AccentButton(
             buttonShape: ButtonShape.pill,
             title: LocaleKeys.okayWord.tr(),
             onPressed: () {
@@ -58,7 +62,7 @@ class TransactionSendingWidget extends StatelessWidget {
               }
             },
           ),
-        const SizedBox(height: DimensSizeV2.d16),
+        const SizedBox(height: DimensSizeV2.d4),
       ],
     );
   }
