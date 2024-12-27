@@ -298,6 +298,7 @@ class WalletDeployBloc extends Bloc<WalletDeployEvent, WalletDeployState>
       if (!isClosed) {
         add(WalletDeployEvent.completeDeploy(transaction));
       }
+    } on OperationCanceledException catch (_) {
     } on FfiException catch (e, t) {
       _logger.severe('_handleSend', e, t);
       inject<MessengerService>()

@@ -214,6 +214,7 @@ class TokenWalletSendBloc
       if (!isClosed) {
         add(TokenWalletSendEvent.completeSend(transaction));
       }
+    } on OperationCanceledException catch (_) {
     } on FfiException catch (e, t) {
       _logger.severe('_handleSend', e, t);
       messengerService.show(

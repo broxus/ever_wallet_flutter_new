@@ -182,6 +182,7 @@ class TonWalletSendBloc extends Bloc<TonWalletSendEvent, TonWalletSendState>
       if (!isClosed) {
         add(TonWalletSendEvent.completeSend(transaction));
       }
+    } on OperationCanceledException catch (_) {
     } on FfiException catch (e, t) {
       _logger.severe('_handleSend', e, t);
       messengerService
