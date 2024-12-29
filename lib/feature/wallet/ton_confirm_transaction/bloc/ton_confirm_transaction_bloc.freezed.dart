@@ -532,6 +532,8 @@ abstract class _$$CompleteSendImplCopyWith<$Res> {
       __$$CompleteSendImplCopyWithImpl<$Res>;
   @useResult
   $Res call({Transaction transaction});
+
+  $TransactionCopyWith<$Res> get transaction;
 }
 
 /// @nodoc
@@ -547,14 +549,24 @@ class __$$CompleteSendImplCopyWithImpl<$Res>
   @pragma('vm:prefer-inline')
   @override
   $Res call({
-    Object? transaction = freezed,
+    Object? transaction = null,
   }) {
     return _then(_$CompleteSendImpl(
-      freezed == transaction
+      null == transaction
           ? _value.transaction
           : transaction // ignore: cast_nullable_to_non_nullable
               as Transaction,
     ));
+  }
+
+  /// Create a copy of TonConfirmTransactionEvent
+  /// with the given fields replaced by the non-null parameter values.
+  @override
+  @pragma('vm:prefer-inline')
+  $TransactionCopyWith<$Res> get transaction {
+    return $TransactionCopyWith<$Res>(_value.transaction, (value) {
+      return _then(_value.copyWith(transaction: value));
+    });
   }
 }
 
@@ -576,13 +588,12 @@ class _$CompleteSendImpl implements _CompleteSend {
     return identical(this, other) ||
         (other.runtimeType == runtimeType &&
             other is _$CompleteSendImpl &&
-            const DeepCollectionEquality()
-                .equals(other.transaction, transaction));
+            (identical(other.transaction, transaction) ||
+                other.transaction == transaction));
   }
 
   @override
-  int get hashCode => Object.hash(
-      runtimeType, const DeepCollectionEquality().hash(transaction));
+  int get hashCode => Object.hash(runtimeType, transaction);
 
   /// Create a copy of TonConfirmTransactionEvent
   /// with the given fields replaced by the non-null parameter values.
@@ -1887,6 +1898,7 @@ abstract class _$$SentImplCopyWith<$Res> {
   @useResult
   $Res call({BigInt fee, Transaction transaction, PublicKey custodian});
 
+  $TransactionCopyWith<$Res> get transaction;
   $PublicKeyCopyWith<$Res> get custodian;
 }
 
@@ -1903,7 +1915,7 @@ class __$$SentImplCopyWithImpl<$Res>
   @override
   $Res call({
     Object? fee = null,
-    Object? transaction = freezed,
+    Object? transaction = null,
     Object? custodian = null,
   }) {
     return _then(_$SentImpl(
@@ -1911,7 +1923,7 @@ class __$$SentImplCopyWithImpl<$Res>
           ? _value.fee
           : fee // ignore: cast_nullable_to_non_nullable
               as BigInt,
-      freezed == transaction
+      null == transaction
           ? _value.transaction
           : transaction // ignore: cast_nullable_to_non_nullable
               as Transaction,
@@ -1920,6 +1932,16 @@ class __$$SentImplCopyWithImpl<$Res>
           : custodian // ignore: cast_nullable_to_non_nullable
               as PublicKey,
     ));
+  }
+
+  /// Create a copy of TonConfirmTransactionState
+  /// with the given fields replaced by the non-null parameter values.
+  @override
+  @pragma('vm:prefer-inline')
+  $TransactionCopyWith<$Res> get transaction {
+    return $TransactionCopyWith<$Res>(_value.transaction, (value) {
+      return _then(_value.copyWith(transaction: value));
+    });
   }
 
   /// Create a copy of TonConfirmTransactionState
@@ -1956,15 +1978,14 @@ class _$SentImpl implements _Sent {
         (other.runtimeType == runtimeType &&
             other is _$SentImpl &&
             (identical(other.fee, fee) || other.fee == fee) &&
-            const DeepCollectionEquality()
-                .equals(other.transaction, transaction) &&
+            (identical(other.transaction, transaction) ||
+                other.transaction == transaction) &&
             (identical(other.custodian, custodian) ||
                 other.custodian == custodian));
   }
 
   @override
-  int get hashCode => Object.hash(runtimeType, fee,
-      const DeepCollectionEquality().hash(transaction), custodian);
+  int get hashCode => Object.hash(runtimeType, fee, transaction, custodian);
 
   /// Create a copy of TonConfirmTransactionState
   /// with the given fields replaced by the non-null parameter values.

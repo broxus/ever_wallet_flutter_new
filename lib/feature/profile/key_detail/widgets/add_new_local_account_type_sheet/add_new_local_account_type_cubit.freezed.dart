@@ -233,6 +233,9 @@ abstract class _$$DataImplCopyWith<$Res> {
       List<WalletType> createdAccounts,
       WalletType? currentSelected,
       bool isCompleted});
+
+  $WalletTypeCopyWith<$Res> get defaultAccount;
+  $WalletTypeCopyWith<$Res>? get currentSelected;
 }
 
 /// @nodoc
@@ -248,7 +251,7 @@ class __$$DataImplCopyWithImpl<$Res>
   @override
   $Res call({
     Object? availableAccounts = null,
-    Object? defaultAccount = freezed,
+    Object? defaultAccount = null,
     Object? createdAccounts = null,
     Object? currentSelected = freezed,
     Object? isCompleted = null,
@@ -258,7 +261,7 @@ class __$$DataImplCopyWithImpl<$Res>
           ? _value._availableAccounts
           : availableAccounts // ignore: cast_nullable_to_non_nullable
               as List<WalletType>,
-      defaultAccount: freezed == defaultAccount
+      defaultAccount: null == defaultAccount
           ? _value.defaultAccount
           : defaultAccount // ignore: cast_nullable_to_non_nullable
               as WalletType,
@@ -275,6 +278,30 @@ class __$$DataImplCopyWithImpl<$Res>
           : isCompleted // ignore: cast_nullable_to_non_nullable
               as bool,
     ));
+  }
+
+  /// Create a copy of AddNewLocalAccountTypeState
+  /// with the given fields replaced by the non-null parameter values.
+  @override
+  @pragma('vm:prefer-inline')
+  $WalletTypeCopyWith<$Res> get defaultAccount {
+    return $WalletTypeCopyWith<$Res>(_value.defaultAccount, (value) {
+      return _then(_value.copyWith(defaultAccount: value));
+    });
+  }
+
+  /// Create a copy of AddNewLocalAccountTypeState
+  /// with the given fields replaced by the non-null parameter values.
+  @override
+  @pragma('vm:prefer-inline')
+  $WalletTypeCopyWith<$Res>? get currentSelected {
+    if (_value.currentSelected == null) {
+      return null;
+    }
+
+    return $WalletTypeCopyWith<$Res>(_value.currentSelected!, (value) {
+      return _then(_value.copyWith(currentSelected: value));
+    });
   }
 }
 
@@ -326,12 +353,12 @@ class _$DataImpl implements _Data {
             other is _$DataImpl &&
             const DeepCollectionEquality()
                 .equals(other._availableAccounts, _availableAccounts) &&
-            const DeepCollectionEquality()
-                .equals(other.defaultAccount, defaultAccount) &&
+            (identical(other.defaultAccount, defaultAccount) ||
+                other.defaultAccount == defaultAccount) &&
             const DeepCollectionEquality()
                 .equals(other._createdAccounts, _createdAccounts) &&
-            const DeepCollectionEquality()
-                .equals(other.currentSelected, currentSelected) &&
+            (identical(other.currentSelected, currentSelected) ||
+                other.currentSelected == currentSelected) &&
             (identical(other.isCompleted, isCompleted) ||
                 other.isCompleted == isCompleted));
   }
@@ -340,9 +367,9 @@ class _$DataImpl implements _Data {
   int get hashCode => Object.hash(
       runtimeType,
       const DeepCollectionEquality().hash(_availableAccounts),
-      const DeepCollectionEquality().hash(defaultAccount),
+      defaultAccount,
       const DeepCollectionEquality().hash(_createdAccounts),
-      const DeepCollectionEquality().hash(currentSelected),
+      currentSelected,
       isCompleted);
 
   /// Create a copy of AddNewLocalAccountTypeState
