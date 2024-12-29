@@ -48,6 +48,7 @@ abstract class $StEverWithdrawRequestCopyWith<$Res> {
       @NekotonAddressConverter() Address accountAddress});
 
   $StEverWithdrawRequestDataCopyWith<$Res> get data;
+  $AddressCopyWith<$Res> get accountAddress;
 }
 
 /// @nodoc
@@ -68,7 +69,7 @@ class _$StEverWithdrawRequestCopyWithImpl<$Res,
   $Res call({
     Object? nonce = null,
     Object? data = null,
-    Object? accountAddress = freezed,
+    Object? accountAddress = null,
   }) {
     return _then(_value.copyWith(
       nonce: null == nonce
@@ -79,7 +80,7 @@ class _$StEverWithdrawRequestCopyWithImpl<$Res,
           ? _value.data
           : data // ignore: cast_nullable_to_non_nullable
               as StEverWithdrawRequestData,
-      accountAddress: freezed == accountAddress
+      accountAddress: null == accountAddress
           ? _value.accountAddress
           : accountAddress // ignore: cast_nullable_to_non_nullable
               as Address,
@@ -93,6 +94,16 @@ class _$StEverWithdrawRequestCopyWithImpl<$Res,
   $StEverWithdrawRequestDataCopyWith<$Res> get data {
     return $StEverWithdrawRequestDataCopyWith<$Res>(_value.data, (value) {
       return _then(_value.copyWith(data: value) as $Val);
+    });
+  }
+
+  /// Create a copy of StEverWithdrawRequest
+  /// with the given fields replaced by the non-null parameter values.
+  @override
+  @pragma('vm:prefer-inline')
+  $AddressCopyWith<$Res> get accountAddress {
+    return $AddressCopyWith<$Res>(_value.accountAddress, (value) {
+      return _then(_value.copyWith(accountAddress: value) as $Val);
     });
   }
 }
@@ -113,6 +124,8 @@ abstract class _$$StEverWithdrawRequestImplCopyWith<$Res>
 
   @override
   $StEverWithdrawRequestDataCopyWith<$Res> get data;
+  @override
+  $AddressCopyWith<$Res> get accountAddress;
 }
 
 /// @nodoc
@@ -131,7 +144,7 @@ class __$$StEverWithdrawRequestImplCopyWithImpl<$Res>
   $Res call({
     Object? nonce = null,
     Object? data = null,
-    Object? accountAddress = freezed,
+    Object? accountAddress = null,
   }) {
     return _then(_$StEverWithdrawRequestImpl(
       nonce: null == nonce
@@ -142,7 +155,7 @@ class __$$StEverWithdrawRequestImplCopyWithImpl<$Res>
           ? _value.data
           : data // ignore: cast_nullable_to_non_nullable
               as StEverWithdrawRequestData,
-      accountAddress: freezed == accountAddress
+      accountAddress: null == accountAddress
           ? _value.accountAddress
           : accountAddress // ignore: cast_nullable_to_non_nullable
               as Address,
@@ -181,14 +194,13 @@ class _$StEverWithdrawRequestImpl implements _StEverWithdrawRequest {
             other is _$StEverWithdrawRequestImpl &&
             (identical(other.nonce, nonce) || other.nonce == nonce) &&
             (identical(other.data, data) || other.data == data) &&
-            const DeepCollectionEquality()
-                .equals(other.accountAddress, accountAddress));
+            (identical(other.accountAddress, accountAddress) ||
+                other.accountAddress == accountAddress));
   }
 
   @JsonKey(includeFromJson: false, includeToJson: false)
   @override
-  int get hashCode => Object.hash(runtimeType, nonce, data,
-      const DeepCollectionEquality().hash(accountAddress));
+  int get hashCode => Object.hash(runtimeType, nonce, data, accountAddress);
 
   /// Create a copy of StEverWithdrawRequest
   /// with the given fields replaced by the non-null parameter values.
