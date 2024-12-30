@@ -78,4 +78,6 @@ class SecureStorageService extends AbstractStorageService {
         hash,
         domain: _connectionJsonDomain,
       );
+
+  Future<void> clear() => _storage.clearAll();
 }

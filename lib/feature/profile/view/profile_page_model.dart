@@ -11,6 +11,7 @@ class ProfilePageModel extends ElementaryModel {
     this._biometryService,
     this._versionService,
     this._storageManagerService,
+    this._secureStorageService,
   ) : super(errorHandler: errorHandler);
 
   final NekotonRepository _nekotonRepository;
@@ -18,6 +19,7 @@ class ProfilePageModel extends ElementaryModel {
   final BiometryService _biometryService;
   final AppVersionService _versionService;
   final StorageManagerService _storageManagerService;
+  final SecureStorageService _secureStorageService;
 
   String get appVersion =>
       '${_versionService.appVersion}.${_versionService.buildNumber}';
@@ -34,6 +36,7 @@ class ProfilePageModel extends ElementaryModel {
     await _nekotonRepository.updateTokenSubscriptions([]);
     await _storageManagerService.clearSensitiveData();
     await _nekotonRepository.keyStore.reloadKeystore();
+    await _secureStorageService.clear();
   }
 
   Future<void> setBiometryEnabled({required bool enabled}) async {
