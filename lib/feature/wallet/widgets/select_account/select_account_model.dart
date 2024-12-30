@@ -21,7 +21,9 @@ class SelectAccountModel extends ElementaryModel {
   Stream<List<SelectAccountData>> get seedWithAccounts =>
       _nekotonRepository.seedListStream.map(
         (seedList) {
-          return seedList.seeds.map((seed) {
+          final seeds = seedList.seeds
+            ..sort((a, b) => a.name.compareTo(b.name));
+          return seeds.map((seed) {
             final privateKeys = seed.allKeys.map((key) {
               final accounts = key.accountList.allAccounts
                   .where((account) => !account.isHidden)
