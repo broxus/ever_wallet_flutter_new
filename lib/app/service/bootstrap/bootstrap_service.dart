@@ -95,8 +95,6 @@ class BootstrapService {
   /// This step can not be failed during initialization, so we do not let
   /// it to be re-runed (if failed - that's gg).
   Future<void> _coreStep(AppBuildType appBuildType) async {
-    await configureAppVersion();
-    await configureLogger(appBuildType);
     await configureEncryptedStorage();
   }
 

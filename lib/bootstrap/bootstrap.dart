@@ -1,4 +1,3 @@
-export 'app_version.dart';
 export 'biometry.dart';
 export 'connection_service.dart';
 export 'crash_detector.dart';

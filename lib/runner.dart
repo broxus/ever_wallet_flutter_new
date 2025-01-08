@@ -3,10 +3,10 @@ import 'dart:async';
 import 'package:app/app/router/router.dart';
 import 'package:app/app/view/app.dart';
 import 'package:app/bootstrap/localization.dart';
+import 'package:app/bootstrap/logger.dart';
 import 'package:app/bootstrap/sentry.dart';
 import 'package:app/core/app_build_type.dart';
 import 'package:app/core/bloc/app_bloc_observer.dart';
-import 'package:app/core/logger/logger.dart';
 import 'package:app/di/di.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
@@ -23,21 +23,24 @@ Future<void> run(
 ) async {
   currentAppBuildType = appBuildType;
 
-  final log = Logger('bootstrap');
+  Logger? log;
 
   await runZonedGuarded(
     () async {
       WidgetsFlutterBinding.ensureInitialized();
-      await initLogger();
 
       await configureDi();
+
+      await configureLogger(appBuildType);
+
+      log = Logger('bootstrap');
 
       await configureLocalization();
 
       await SentryWorker.instance.init(appBuildType);
 
       FlutterError.onError = (details) {
-        log.severe(details.exceptionAsString(), details, details.stack);
+        log?.severe(details.exceptionAsString(), details, details.stack);
         SentryWorker.instance.captureException(
           details.exception,
           stackTrace: details.stack,
@@ -45,7 +48,7 @@ Future<void> run(
       };
 
       PlatformDispatcher.instance.onError = (error, stack) {
-        log.severe(null, error, stack);
+        log?.severe(null, error, stack);
         SentryWorker.instance.captureException(error, stackTrace: stack);
         return true;
       };
@@ -63,7 +66,7 @@ Future<void> run(
       runApp(const App());
     },
     (error, stackTrace) async {
-      log.severe(error.toString(), error, stackTrace);
+      log?.severe(error.toString(), error, stackTrace);
       SentryWorker.instance.captureException(error, stackTrace: stackTrace);
     },
   );
