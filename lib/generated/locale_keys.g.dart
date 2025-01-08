@@ -442,7 +442,6 @@ abstract class LocaleKeys {
   static const withdrawHoursProgress = 'withdrawHoursProgress';
   static const withdrawHoursHint = 'withdrawHoursHint';
   static const cancelUnstaking = 'cancelUnstaking';
-  static const cancelUnstakingNote = 'cancelUnstakingNote';
   static const unstakingCancelled = 'unstakingCancelled';
   static const exchangeRate = 'exchangeRate';
   static const everscale = 'everscale';

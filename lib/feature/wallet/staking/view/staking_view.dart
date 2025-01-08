@@ -1,78 +1,38 @@
 import 'package:app/data/models/models.dart';
-import 'package:app/di/di.dart';
+import 'package:app/feature/wallet/staking/models/models.dart';
 import 'package:app/feature/wallet/wallet.dart';
 import 'package:app/generated/generated.dart';
+import 'package:app/utils/utils.dart';
 import 'package:app/widgets/amount_input/amount_input.dart';
-import 'package:app/widgets/amount_input/amount_input_asset.dart';
+import 'package:elementary_helper/elementary_helper.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:nekoton_repository/nekoton_repository.dart';
 import 'package:ui_components_lib/ui_components_lib.dart';
 import 'package:ui_components_lib/v2/ui_components_lib_v2.dart';
 
-extension on StakingPageType {
-  String get title {
-    return switch (this) {
-      StakingPageType.stake => LocaleKeys.stakeWord.tr(),
-      StakingPageType.unstake => LocaleKeys.unstakeWord.tr(),
-      StakingPageType.inProgress => LocaleKeys.inProgress.tr(),
-    };
-  }
-}
-
 /// Main view that displays content of staking
 class StakingView extends StatelessWidget {
-  const StakingView(
-    this.type,
-    this.withdrawTime,
-    this.attachedAmount,
-    // ignore: avoid_positional_boolean_parameters
-    this.canSubmitAction,
-    this.inputController,
-    this.exchangeRate,
-    this.receiveCurrency,
-    this.accountPublicKey,
-    this.enteredPrice,
-    this.asset,
-    this.receiveBalance,
-    this.requests,
-    this.apy, {
+  const StakingView({
+    required this.inputController,
+    required this.info,
+    required this.data,
+    required this.requests,
+    required this.receive,
+    required this.onTabChanged,
+    required this.onMaxAmount,
     super.key,
   });
 
-  /// Type of current selected action
-  final StakingPageType type;
-
-  /// Amount in EVER that will be attached to action
-  final BigInt attachedAmount;
-  final int withdrawTime;
-  final bool canSubmitAction;
   final TextEditingController inputController;
-  final Currency receiveCurrency;
-
-  /// How many stevers could be received for evers
-  final double? exchangeRate;
-
-  /// Price in real curreny of entered tokens
-  final Money enteredPrice;
-
-  /// Balance of token user select after action (stake-stever, unstake-ever)
-  final Money? receiveBalance;
-
-  /// Pending withdraw requests
-  final List<StEverWithdrawRequest>? requests;
-
-  final PublicKey accountPublicKey;
-
-  /// Average profit
-  final double? apy;
-
-  final AmountInputAsset asset;
+  final StakingInfo info;
+  final StakingData data;
+  final ListenableState<List<StEverWithdrawRequest>> requests;
+  final ListenableState<Money> receive;
+  final ValueChanged<StakingTab> onTabChanged;
+  final VoidCallback onMaxAmount;
 
   @override
   Widget build(BuildContext context) {
     final theme = context.themeStyleV2;
-    final bloc = context.read<StakingBloc>();
 
     return SeparatedColumn(
       separatorSize: DimensSizeV2.d16,
@@ -80,65 +40,68 @@ class StakingView extends StatelessWidget {
       children: [
         SingleChildScrollView(
           scrollDirection: Axis.horizontal,
-          child: SwitcherSegmentControls<StakingPageType>(
-            fullWidth: false,
-            currentValue: type,
-            values: [
-              PrimarySegmentControl(
-                title: StakingPageType.stake.title,
-                value: StakingPageType.stake,
-                size: SegmentControlSize.xsmall,
-                state: SegmentControlState.normal,
-              ),
-              PrimarySegmentControl(
-                title: StakingPageType.unstake.title,
-                value: StakingPageType.unstake,
-                size: SegmentControlSize.xsmall,
-                state: SegmentControlState.normal,
-              ),
-              if (requests != null && requests!.isNotEmpty)
+          child: StateNotifierBuilder(
+            listenableState: requests,
+            builder: (_, requests) => SwitcherSegmentControls(
+              fullWidth: false,
+              currentValue: data.tab,
+              values: [
                 PrimarySegmentControl(
-                  titleSpan: TextSpan(
-                    children: [
-                      TextSpan(text: StakingPageType.inProgress.title),
-                      const WidgetSpan(
-                        child: SizedBox(width: DimensSizeV2.d8),
-                      ),
-                      TextSpan(
-                        text: requests?.length.toString() ?? '0',
-                        style: TextStyle(
-                          color: Colors.white,
-                          background: Paint()
-                            ..strokeWidth = DimensSizeV2.d8
-                            ..color = theme.colors.backgroundAccent
-                            ..style = PaintingStyle.stroke
-                            ..strokeJoin = StrokeJoin.round,
-                        ),
-                      ),
-                    ],
-                  ),
-                  value: StakingPageType.inProgress,
+                  title: StakingTab.stake.title,
+                  value: StakingTab.stake,
                   size: SegmentControlSize.xsmall,
                   state: SegmentControlState.normal,
                 ),
-            ],
-            onTabChanged: (value) => context
-                .read<StakingBloc>()
-                .add(StakingBlocEvent.changeTab(value)),
+                PrimarySegmentControl(
+                  title: StakingTab.unstake.title,
+                  value: StakingTab.unstake,
+                  size: SegmentControlSize.xsmall,
+                  state: SegmentControlState.normal,
+                ),
+                if (requests != null && requests.isNotEmpty)
+                  PrimarySegmentControl(
+                    titleSpan: TextSpan(
+                      children: [
+                        TextSpan(text: StakingTab.inProgress.title),
+                        const WidgetSpan(
+                          child: SizedBox(width: DimensSizeV2.d8),
+                        ),
+                        TextSpan(
+                          text: requests.length.toString(),
+                          style: TextStyle(
+                            color: Colors.white,
+                            background: Paint()
+                              ..strokeWidth = DimensSizeV2.d8
+                              ..color = theme.colors.backgroundAccent
+                              ..style = PaintingStyle.stroke
+                              ..strokeJoin = StrokeJoin.round,
+                          ),
+                        ),
+                      ],
+                    ),
+                    value: StakingTab.inProgress,
+                    size: SegmentControlSize.xsmall,
+                    state: SegmentControlState.normal,
+                  ),
+              ],
+              onTabChanged: onTabChanged,
+            ),
           ),
         ),
-        switch (type) {
-          StakingPageType.stake => _stakeUnstakeBody(context),
-          StakingPageType.unstake => _stakeUnstakeBody(context),
-          StakingPageType.inProgress => StakingInProgress(
-              requests: requests ?? [],
-              accountKey: accountPublicKey,
-              exchangeRate: exchangeRate ?? 0.0,
-              stakeCurrency: receiveCurrency,
-              attachedFee: attachedAmount,
-              withdrawHours: withdrawTime,
-              everPrice: bloc.everWalletCurrency.price,
-              tokenPrice: bloc.stEverWalletCurrency.price,
+        switch (data.tab) {
+          StakingTab.stake || StakingTab.unstake => _stakeUnstakeBody(context),
+          StakingTab.inProgress => StateNotifierBuilder(
+              listenableState: requests,
+              builder: (_, requests) => StakingInProgress(
+                requests: requests ?? [],
+                accountKey: info.wallet.publicKey,
+                exchangeRate: data.exchangeRate,
+                stakeCurrency: data.receiveCurrency,
+                attachedFee: data.attachedAmount.minorUnits,
+                withdrawHours: info.withdrawHours,
+                everPrice: info.currency.price,
+                tokenPrice: info.tokenCurrency.price,
+              ),
             ),
         },
       ],
@@ -154,27 +117,20 @@ class StakingView extends StatelessWidget {
       children: [
         AmountInput(
           controller: inputController,
-          selectedAsset: asset,
-          onMaxAmount: (fieldState) => context
-              .read<StakingBloc>()
-              .add(StakingBlocEvent.selectMax(fieldState)),
+          selectedAsset: data.asset,
+          onMaxAmount: onMaxAmount,
           onSubmitted: (value) => inputController.text = value,
         ),
         const SizedBox(height: DimensSizeV2.d12),
         _InfoField(
-          currentCurrency: asset.balance.currency,
-          receiveCurrency: receiveCurrency,
-          exchangeRate: exchangeRate ?? 1,
-          attachedAmount: Money.fromBigIntWithCurrency(
-            attachedAmount,
-            Currencies()[inject<NekotonRepository>()
-                .currentTransport
-                .nativeTokenTicker]!,
-          ),
-          receiveBalance: receiveBalance,
-          apy: apy,
+          currentCurrency: data.asset!.balance.currency,
+          receiveCurrency: data.receiveCurrency,
+          exchangeRate: data.exchangeRate,
+          attachedAmount: data.attachedAmount,
+          receiveBalance: data.tab == StakingTab.inProgress ? null : receive,
+          apy: data.tab == StakingTab.inProgress ? null : info.apy,
         ),
-        if (type == StakingPageType.unstake)
+        if (data.tab == StakingTab.unstake)
           Padding(
             padding: const EdgeInsets.only(top: DimensSizeV2.d8),
             child: PrimaryCard(
@@ -183,7 +139,7 @@ class StakingView extends StatelessWidget {
               color: theme.colors.backgroundWarning,
               child: Text(
                 LocaleKeys.withdrawHoursHint.tr(
-                  args: [withdrawTime.toString()],
+                  args: [info.withdrawHours.toString()],
                 ),
                 style: theme.textStyles.labelSmall.copyWith(
                   color: theme.colors.contentWarning,
@@ -210,7 +166,7 @@ class _InfoField extends StatelessWidget {
   final Currency receiveCurrency;
   final double exchangeRate;
   final Money attachedAmount;
-  final Money? receiveBalance;
+  final ListenableState<Money>? receiveBalance;
   final double? apy;
 
   @override
@@ -243,12 +199,19 @@ class _InfoField extends StatelessWidget {
             ),
           ),
           if (receiveBalance != null)
-            _InfoRow(
-              label: LocaleKeys.receiveWord.tr(),
-              child: AmountWidget.fromMoney(
-                amount: receiveBalance!,
-                sign: receiveBalance!.amount == Fixed.zero ? '' : '~',
-              ),
+            StateNotifierBuilder(
+              listenableState: receiveBalance!,
+              builder: (_, receiveBalance) =>
+                  receiveBalance?.let(
+                    (value) => _InfoRow(
+                      label: LocaleKeys.receiveWord.tr(),
+                      child: AmountWidget.fromMoney(
+                        amount: value,
+                        sign: value.amount == Fixed.zero ? '' : '~',
+                      ),
+                    ),
+                  ) ??
+                  const SizedBox.shrink(),
             ),
           if (apy != null)
             _InfoRow(
@@ -293,5 +256,15 @@ class _InfoRow extends StatelessWidget {
         Flexible(child: child),
       ],
     );
+  }
+}
+
+extension on StakingTab {
+  String get title {
+    return switch (this) {
+      StakingTab.stake => LocaleKeys.stakeWord.tr(),
+      StakingTab.unstake => LocaleKeys.unstakeWord.tr(),
+      StakingTab.inProgress => LocaleKeys.inProgress.tr(),
+    };
   }
 }

@@ -10,8 +10,10 @@ import 'package:nekoton_repository/nekoton_repository.dart';
 import 'package:rxdart/rxdart.dart';
 
 /// Paths to load stever abi
-const _stEverAbiPath = 'assets/abi/StEverVault.abi.min.json';
+const _stEverVaultAbiPath = 'assets/abi/StEverVault.abi.min.json';
 const _stEverAccountAbiPath = 'assets/abi/StEverAccount.abi.min.json';
+const _stEverVaultNewAbiPath = 'assets/abi/StEverVaultNew.abi.json';
+const _stEverAccountNewAbiPath = 'assets/abi/StEverAccountNew.abi.json';
 
 @singleton
 class StakingService {
@@ -27,13 +29,17 @@ class StakingService {
 
   /// Initialize service loading abi from files
   Future<void> init() async {
-    stEverAbi = await _abiLoader(_stEverAbiPath);
-    stEverAccountAbi = await _abiLoader(_stEverAccountAbiPath);
+    _stEverVaultAbi = await _abiLoader(_stEverVaultAbiPath);
+    _stEverAccountAbi = await _abiLoader(_stEverAccountAbiPath);
+    _stEverVaultNewAbi = await _abiLoader(_stEverVaultNewAbiPath);
+    _stEverAccountNewAbi = await _abiLoader(_stEverAccountNewAbiPath);
   }
 
   /// Json strings of contract abi that sends in requests
-  late final String stEverAbi;
-  late final String stEverAccountAbi;
+  late final String _stEverVaultAbi;
+  late final String _stEverAccountAbi;
+  late final String _stEverVaultNewAbi;
+  late final String _stEverAccountNewAbi;
 
   /// Withdraw request that was cancelled and mustn't be displayed when
   /// [userAvailableWithdraw] returns uncompleted list of blockchain messages.
@@ -44,6 +50,15 @@ class StakingService {
   /// value - list of withdraw requests for this account
   final _withdrawSubject =
       BehaviorSubject<Map<Address, List<StEverWithdrawRequest>>>.seeded({});
+
+  String get stEverVaultAbi =>
+      nekotonRepository.currentTransport.networkType == 'ever'
+          ? _stEverVaultAbi
+          : _stEverVaultNewAbi;
+  String get stEverAccountAbi =>
+      nekotonRepository.currentTransport.networkType == 'ever'
+          ? _stEverAccountAbi
+          : _stEverAccountNewAbi;
 
   /// Get all possible withdraw requests for [accountAddress].
   /// To update withdraws, call [tryUpdateWithdraws].
@@ -76,7 +91,7 @@ class StakingService {
   Future<String> depositEverBodyPayload(BigInt depositAmount) {
     final payload = FunctionCall(
       method: 'deposit',
-      abi: stEverAbi,
+      abi: stEverVaultAbi,
       params: {
         '_nonce': NtpTime.now().millisecondsSinceEpoch,
         '_amount': depositAmount.toString(),
@@ -95,7 +110,7 @@ class StakingService {
     final contract = await getVaultContractState();
     final result = await runLocal(
       accountStuffBoc: contract.boc,
-      contractAbi: stEverAbi,
+      contractAbi: stEverVaultAbi,
       method: 'encodeDepositPayload',
       input: {
         '_nonce': NtpTime.now().millisecondsSinceEpoch,
@@ -111,7 +126,7 @@ class StakingService {
   Future<String> removeWithdrawPayload(String nonce) {
     final payload = FunctionCall(
       method: 'removePendingWithdraw',
-      abi: stEverAbi,
+      abi: stEverVaultAbi,
       params: {
         '_nonce': nonce,
       },
@@ -131,10 +146,10 @@ class StakingService {
     final vaultState = await getVaultContractState();
     final result = await runLocal(
       accountStuffBoc: vaultState.boc,
-      contractAbi: stEverAbi,
+      contractAbi: stEverVaultAbi,
       method: 'getAccountAddress',
       input: {'answerId': 0, '_user': accountAddress.address},
-      responsible: false,
+      responsible: true,
     );
     final address = result.output?.values.firstOrNull as String?;
     if (address == null) return [];
@@ -175,7 +190,7 @@ class StakingService {
     final contractState = await getVaultContractState();
     final result = await runLocal(
       accountStuffBoc: contractState.boc,
-      contractAbi: stEverAbi,
+      contractAbi: stEverVaultAbi,
       method: 'getDepositStEverAmount',
       input: {'_amount': evers.toString()},
       responsible: false,
@@ -190,7 +205,7 @@ class StakingService {
     final contractState = await getVaultContractState();
     final result = await runLocal(
       accountStuffBoc: contractState.boc,
-      contractAbi: stEverAbi,
+      contractAbi: stEverVaultAbi,
       method: 'getWithdrawEverAmount',
       input: {'_amount': stEvers.toString()},
       responsible: false,
@@ -205,10 +220,10 @@ class StakingService {
     final contractState = await getVaultContractState();
     final result = await runLocal(
       accountStuffBoc: contractState.boc,
-      contractAbi: stEverAbi,
+      contractAbi: stEverVaultAbi,
       method: 'getDetails',
       input: {'answerId': 0},
-      responsible: false,
+      responsible: true,
     );
     final detailsJson =
         result.output?.values.firstOrNull as Map<String, dynamic>?;

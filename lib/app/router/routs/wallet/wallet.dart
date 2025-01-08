@@ -380,7 +380,7 @@ GoRoute get configureNetworksRoute {
 GoRoute get stakingRoute {
   return GoRoute(
     path: AppRoute.walletStake.path,
-    builder: (context, state) => StakingPage(
+    builder: (context, state) => StakingPageWidget(
       accountAddress: Address(
         address: state.pathParameters[walletStakeAddressPathParam]!,
       ),
