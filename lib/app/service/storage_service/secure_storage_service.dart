@@ -79,5 +79,25 @@ class SecureStorageService extends AbstractStorageService {
         domain: _connectionJsonDomain,
       );
 
-  Future<void> clear() => _storage.clearAll();
+  Future<void> clear({
+    bool isSaveConnectionJson = false,
+  }) async {
+    String? hash;
+    String? json;
+
+    if (isSaveConnectionJson) {
+      hash = await getConnectionJsonHash();
+      json = await getConnectionJson();
+    }
+
+    await _storage.clearAll();
+
+    if (hash != null) {
+      await setConnectionJsonHash(hash);
+    }
+
+    if (json != null) {
+      await setConnectionJson(json);
+    }
+  }
 }

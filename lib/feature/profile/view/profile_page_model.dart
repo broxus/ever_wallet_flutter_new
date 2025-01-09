@@ -36,7 +36,9 @@ class ProfilePageModel extends ElementaryModel {
     await _nekotonRepository.updateTokenSubscriptions([]);
     await _storageManagerService.clearSensitiveData();
     await _nekotonRepository.keyStore.reloadKeystore();
-    await _secureStorageService.clear();
+    await _secureStorageService.clear(
+      isSaveConnectionJson: true,
+    );
   }
 
   Future<void> setBiometryEnabled({required bool enabled}) async {
