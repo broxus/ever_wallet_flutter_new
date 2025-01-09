@@ -18,6 +18,15 @@ on:
           - "ios_store"
           - "android_fad"
           - "android_store"
+      flavor:
+        description: "Target flavor:"
+        required: true
+        default: "production"
+        type: choice
+        options:
+          - development
+          - staging
+          - production
 
 jobs:
   setup:
@@ -147,11 +156,15 @@ jobs:
         run:
           echo "Number is = ${{ needs.setup.outputs.build_number }}"
 
+      - name: Display flavor target
+        run: echo "Flavor target is = ${{ inputs.flavor }}"
+
       - name: Build and deploy
         run: |
           bash scripts/build.sh \
           --deploy-target ${{ env.ios_target }} \
           --build-number ${{ needs.setup.outputs.build_number }} \
+          --flavor-target ${{ inputs.flavor }} \
           --upload true
 
       - name: Clean Xcode Derived Data
@@ -236,11 +249,15 @@ jobs:
         run:
           echo "Number is = ${{ needs.setup.outputs.build_number }}"
 
+      - name: Display flavor target
+        run: echo "Flavor target is = ${{ inputs.flavor }}"
+
       - name: Build and deploy
         run: |
           bash scripts/build.sh \
           --deploy-target ${{ env.android_target }} \
           --build-number ${{ needs.setup.outputs.build_number }} \
+          --flavor-target ${{ inputs.flavor }} \
           --upload true
 
       - name: Remove Flutter

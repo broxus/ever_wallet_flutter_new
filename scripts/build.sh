@@ -5,16 +5,20 @@ set -o pipefail
 deploy_target=""
 build_number=""
 upload="false"
+flavor=""
 
 while [[ "$#" -gt 0 ]]; do
     case $1 in
         --deploy-target) deploy_target="$2"; shift ;;
         --build-number) build_number="$2"; shift ;;
         --upload) upload="$2"; shift ;;
+        --flavor) flavor="$2"; shift ;;
         *) echo "Unknown parameter passed: $1"; exit 1 ;;
     esac
     shift
 done
+
+export FLAVOR="$flavor"
 
 function build() {
   source "scripts/build-binary/$1"
