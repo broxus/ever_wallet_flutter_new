@@ -21,7 +21,7 @@ on:
       flavor:
         description: "Target flavor:"
         required: true
-        default: "production"
+        default: "staging"
         type: choice
         options:
           - development
