@@ -24,9 +24,9 @@ on:
         default: "staging"
         type: choice
         options:
-          - development
-          - staging
-          - production
+          - "development"
+          - "staging"
+          - "production"
 
 jobs:
   setup:
