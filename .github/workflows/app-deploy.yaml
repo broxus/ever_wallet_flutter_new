@@ -53,6 +53,9 @@ jobs:
             exit 1
           fi
 
+      - name: Display flavor target
+        run: echo "Flavor target is = ${{ inputs.flavor }}"
+
       - name: Check store builds with flavor
         run: |
           if [[ "${{ inputs.flavor }}" != "production" &&
