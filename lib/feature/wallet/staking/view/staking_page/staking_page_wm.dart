@@ -5,7 +5,7 @@ import 'package:app/core/wm/custom_wm.dart';
 import 'package:app/data/models/models.dart';
 import 'package:app/di/di.dart';
 import 'package:app/feature/wallet/staking/models/models.dart';
-import 'package:app/feature/wallet/staking/view/staking_page_model.dart';
+import 'package:app/feature/wallet/staking/staking.dart';
 import 'package:app/feature/wallet/wallet.dart';
 import 'package:app/generated/generated.dart';
 import 'package:app/utils/utils.dart';

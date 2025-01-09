@@ -1,22 +1,19 @@
-import 'package:app/app/router/app_route.dart';
-import 'package:app/app/service/service.dart';
 import 'package:app/data/models/models.dart';
-import 'package:app/di/di.dart';
 import 'package:app/feature/wallet/wallet.dart';
 import 'package:app/feature/wallet/widgets/account_transactions_tab/detail/details.dart';
-import 'package:app/feature/wallet/widgets/account_transactions_tab/widgets/ton_wallet_transaction_status_body.dart';
+import 'package:app/feature/wallet/widgets/account_transactions_tab/widgets/widgets.dart';
 import 'package:app/generated/generated.dart';
 import 'package:app/utils/utils.dart';
+import 'package:elementary/elementary.dart';
+import 'package:elementary_helper/elementary_helper.dart';
 import 'package:flutter/material.dart';
-import 'package:go_router/go_router.dart';
 import 'package:nekoton_repository/nekoton_repository.dart';
 import 'package:ui_components_lib/ui_components_lib.dart';
-import 'package:ui_components_lib/v2/ui_components_lib_v2.dart';
+import 'package:ui_components_lib/v2/widgets/widgets.dart';
 
-// TODO(komarov): refactor
-/// Screen that allows user to cancel pending withdraw request
-class CancelUnstakingPage extends StatelessWidget {
-  const CancelUnstakingPage({
+class CancelUnstakingPageWidget
+    extends ElementaryWidget<CancelUnstakingPageWidgetModel> {
+  const CancelUnstakingPageWidget({
     required this.request,
     required this.accountKey,
     required this.exchangeRate,
@@ -25,8 +22,9 @@ class CancelUnstakingPage extends StatelessWidget {
     required this.attachedFee,
     required this.tokenPrice,
     required this.everPrice,
-    super.key,
-  });
+    Key? key,
+    WidgetModelFactory wmFactory = defaultCancelUnstakingPageWidgetModelFactory,
+  }) : super(wmFactory, key: key);
 
   /// Pending withdraw requests
   final StEverWithdrawRequest request;
@@ -39,16 +37,15 @@ class CancelUnstakingPage extends StatelessWidget {
   final Fixed? everPrice;
 
   @override
-  Widget build(BuildContext context) {
-    final theme = context.themeStyleV2;
-    final steverMoney = Money.fromBigIntWithCurrency(
+  Widget build(CancelUnstakingPageWidgetModel wm) {
+    final theme = wm.theme;
+    final tokenValue = Money.fromBigIntWithCurrency(
       request.data.amount,
       stakeCurrency,
     );
-    final everMoney = Money.fromBigIntWithCurrency(
-      (steverMoney * exchangeRate).minorUnits,
-      Currencies()[
-          inject<NekotonRepository>().currentTransport.nativeTokenTicker]!,
+    final everValue = Money.fromBigIntWithCurrency(
+      (tokenValue * exchangeRate).minorUnits,
+      wm.nativeCurrency,
     );
 
     return Scaffold(
@@ -75,7 +72,7 @@ class CancelUnstakingPage extends StatelessWidget {
                   mainAxisSize: MainAxisSize.min,
                   children: [
                     const SizedBox.shrink(),
-                    _statusDateRow(context),
+                    _StatusDateRow(request: request),
                     Text(
                       LocaleKeys.withdrawHoursNote.tr(
                         args: [withdrawHours.toString()],
@@ -89,38 +86,46 @@ class CancelUnstakingPage extends StatelessWidget {
                       title: LocaleKeys.typeWord.tr(),
                       value: LocaleKeys.liquidStaking.tr(),
                     ),
-                    WalletTransactionDetailsItem(
-                      title: LocaleKeys.unstakeAmount.tr(),
-                      valueWidget: AmountWidget.fromMoney(amount: steverMoney),
-                      iconPath: Assets.images.stever.stever.path,
-                      convertedValueWidget: tokenPrice != null
-                          ? AmountWidget.dollars(
-                              amount: steverMoney.exchangeToUSD(tokenPrice!),
-                              style: theme.textStyles.labelXSmall.copyWith(
-                                color: theme.colors.content3,
-                              ),
-                            )
-                          : null,
+                    StateNotifierBuilder(
+                      listenableState: wm.asset,
+                      builder: (_, asset) => WalletTransactionDetailsItem(
+                        title: LocaleKeys.unstakeAmount.tr(),
+                        valueWidget: AmountWidget.fromMoney(amount: tokenValue),
+                        iconPath: asset?.logoURI ??
+                            Assets.images.tokenDefaultIcon.path,
+                        convertedValueWidget: tokenPrice != null
+                            ? AmountWidget.dollars(
+                                amount: tokenValue.exchangeToUSD(tokenPrice!),
+                                style: theme.textStyles.labelXSmall.copyWith(
+                                  color: theme.colors.content3,
+                                ),
+                              )
+                            : null,
+                      ),
                     ),
                     WalletTransactionDetailsItem(
                       title: LocaleKeys.exchangeRate.tr(),
                       value:
                           // ignore: lines_longer_than_80_chars, no-magic-number, binary-expression-operand-order
-                          '1 ${inject<NekotonRepository>().currentTransport.nativeTokenTicker} ≈ ${(1 * exchangeRate).toStringAsFixed(4)} ${stakeCurrency.isoCode}',
+                          '1 ${wm.nativeCurrency.symbol} ≈ ${(1 * exchangeRate).toStringAsFixed(4)} ${stakeCurrency.isoCode}',
                     ),
-                    WalletTransactionDetailsItem(
-                      title: LocaleKeys.receiveWord.tr(),
-                      valueWidget: AmountWidget.fromMoney(amount: everMoney),
-                      iconPath: Assets.images.stever.stever.path,
-                      convertedValueWidget: everPrice != null
-                          ? AmountWidget.fromMoney(
-                              amount: everMoney.exchangeToUSD(everPrice!),
-                              style: theme.textStyles.labelXSmall.copyWith(
-                                color: theme.colors.content3,
-                              ),
-                              sign: '~ ',
-                            )
-                          : null,
+                    StateNotifierBuilder(
+                      listenableState: wm.asset,
+                      builder: (_, asset) => WalletTransactionDetailsItem(
+                        title: LocaleKeys.receiveWord.tr(),
+                        valueWidget: AmountWidget.fromMoney(amount: everValue),
+                        iconPath: asset?.logoURI ??
+                            Assets.images.tokenDefaultIcon.path,
+                        convertedValueWidget: everPrice != null
+                            ? AmountWidget.fromMoney(
+                                amount: everValue.exchangeToUSD(everPrice!),
+                                style: theme.textStyles.labelXSmall.copyWith(
+                                  color: theme.colors.content3,
+                                ),
+                                sign: '~ ',
+                              )
+                            : null,
+                      ),
                     ),
                   ],
                 ),
@@ -136,7 +141,7 @@ class CancelUnstakingPage extends StatelessWidget {
               child: DestructiveButton(
                 buttonShape: ButtonShape.pill,
                 title: LocaleKeys.cancelUnstaking.tr(),
-                onPressed: () => tryCancelUnstaking(context),
+                onPressed: wm.tryCancelUnstaking,
               ),
             ),
           ),
@@ -144,8 +149,17 @@ class CancelUnstakingPage extends StatelessWidget {
       ),
     );
   }
+}
 
-  Widget _statusDateRow(BuildContext context) {
+class _StatusDateRow extends StatelessWidget {
+  const _StatusDateRow({
+    required this.request,
+  });
+
+  final StEverWithdrawRequest request;
+
+  @override
+  Widget build(BuildContext context) {
     final date = request.data.timestamp;
     final theme = context.themeStyleV2;
     final formatter = date.year == NtpTime.now().year
@@ -164,35 +178,5 @@ class CancelUnstakingPage extends StatelessWidget {
         TonWalletTransactionStatus.unstakingInProgress.chipByStatus,
       ],
     );
-  }
-
-  Future<void> tryCancelUnstaking(BuildContext context) async {
-    final agreed = await showVerifyCancelUnstakingSheet(context);
-    if (!agreed) return;
-    final staking =
-        inject<NekotonRepository>().currentTransport.stakeInformation!;
-    final payload =
-        await inject<StakingService>().removeWithdrawPayload(request.nonce);
-    if (context.mounted) {
-      final result =
-          await Navigator.of(context, rootNavigator: true).push<bool>(
-        MaterialPageRoute(
-          builder: (_) => TonWalletSendPage(
-            address: request.accountAddress,
-            amount: staking.stakeRemovePendingWithdrawAttachedFee,
-            comment: payload,
-            destination: staking.stakingValutAddress,
-            publicKey: accountKey,
-            resultMessage: LocaleKeys.stEverReturnInMinutes.tr(),
-            completeCloseCallback: (context) => Navigator.of(context).pop(true),
-          ),
-        ),
-      );
-
-      if (result ?? false) {
-        inject<StakingService>().acceptCancelledWithdraw(request);
-        if (context.mounted) context.goNamed(AppRoute.wallet.name);
-      }
-    }
   }
 }

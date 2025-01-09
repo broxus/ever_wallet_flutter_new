@@ -1,7 +1,7 @@
 import 'package:app/app/router/router.dart';
 import 'package:app/di/di.dart';
 import 'package:app/feature/wallet/staking/models/models.dart';
-import 'package:app/feature/wallet/staking/view/staking_page_wm.dart';
+import 'package:app/feature/wallet/staking/staking.dart';
 import 'package:app/feature/wallet/wallet.dart';
 import 'package:app/generated/generated.dart';
 import 'package:elementary/elementary.dart';
@@ -42,7 +42,7 @@ class StakingPageWidget extends ElementaryWidget<StakingPageWidgetModel> {
             children: [
               Positioned.fill(
                 bottom: DimensSizeV2.d90,
-                child: _stakingViewBuilder(wm),
+                child: _StakingViewWidget(wm: wm),
               ),
               Positioned(
                 bottom: DimensSizeV2.d0,
@@ -51,7 +51,7 @@ class StakingPageWidget extends ElementaryWidget<StakingPageWidgetModel> {
                 child: Container(
                   padding: const EdgeInsets.all(DimensSizeV2.d16),
                   color: theme.colors.background0,
-                  child: _buttonBuilder(wm),
+                  child: _ButtonWidget(wm: wm),
                 ),
               ),
             ],
@@ -60,8 +60,17 @@ class StakingPageWidget extends ElementaryWidget<StakingPageWidgetModel> {
       ),
     );
   }
+}
 
-  Widget _stakingViewBuilder(StakingPageWidgetModel wm) {
+class _StakingViewWidget extends StatelessWidget {
+  const _StakingViewWidget({
+    required this.wm,
+  });
+
+  final StakingPageWidgetModel wm;
+
+  @override
+  Widget build(BuildContext context) {
     final theme = wm.theme;
 
     return SingleChildScrollView(
@@ -148,9 +157,17 @@ class StakingPageWidget extends ElementaryWidget<StakingPageWidgetModel> {
       ),
     );
   }
+}
 
-  // ignore: long-method
-  Widget _buttonBuilder(StakingPageWidgetModel wm) {
+class _ButtonWidget extends StatelessWidget {
+  const _ButtonWidget({
+    required this.wm,
+  });
+
+  final StakingPageWidgetModel wm;
+
+  @override
+  Widget build(BuildContext context) {
     return BlocConsumer<ActionStakingBloc, ActionStakingBlocState>(
       listener: (context, state) {
         state.whenOrNull(
@@ -174,7 +191,7 @@ class StakingPageWidget extends ElementaryWidget<StakingPageWidgetModel> {
                   tonWalletSendAttachedAmountQueryParam: attachedFee.toString(),
                   tonWalletSendResultMessageQueryParam:
                       LocaleKeys.stEverAppearInMinutes.tr(
-                    args: [wm.tokenCurrency?.name ?? ''],
+                    args: [wm.tokenCurrency?.symbol ?? ''],
                   ),
                 },
               ),
@@ -204,7 +221,7 @@ class StakingPageWidget extends ElementaryWidget<StakingPageWidgetModel> {
                       attachedFee.toString(),
                   tokenWalletSendResultMessageQueryParam:
                       LocaleKeys.withdrawHoursProgress.tr(
-                    args: [wm.nativeCurrency.name, withdrawHours.toString()],
+                    args: [wm.nativeCurrency.symbol, withdrawHours.toString()],
                   ),
                 },
               ),
@@ -221,25 +238,26 @@ class StakingPageWidget extends ElementaryWidget<StakingPageWidgetModel> {
         return ValueListenableBuilder(
           valueListenable: wm.tab,
           builder: (_, tab, __) => StateNotifierBuilder(
-              listenableState: wm.isValid,
-              builder: (_, isValid) {
-                final title = switch (tab) {
-                  StakingTab.stake => LocaleKeys.stakeWord.tr(),
-                  StakingTab.unstake => LocaleKeys.unstakeWord.tr(),
-                  _ => null,
-                };
+            listenableState: wm.isValid,
+            builder: (_, isValid) {
+              final title = switch (tab) {
+                StakingTab.stake => LocaleKeys.stakeWord.tr(),
+                StakingTab.unstake => LocaleKeys.unstakeWord.tr(),
+                _ => null,
+              };
 
-                if (title == null) return const SizedBox.shrink();
+              if (title == null) return const SizedBox.shrink();
 
-                return AccentButton(
-                  buttonShape: ButtonShape.pill,
-                  title: title,
-                  isLoading: isLoading,
-                  onPressed: (isValid ?? false)
-                      ? () => wm.onSubmit(context.read<ActionStakingBloc>())
-                      : null,
-                );
-              }),
+              return AccentButton(
+                buttonShape: ButtonShape.pill,
+                title: title,
+                isLoading: isLoading,
+                onPressed: (isValid ?? false)
+                    ? () => wm.onSubmit(context.read<ActionStakingBloc>())
+                    : null,
+              );
+            },
+          ),
         );
       },
     );
