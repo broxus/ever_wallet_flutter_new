@@ -174,7 +174,7 @@ jobs:
           bash scripts/build.sh \
           --deploy-target ${{ env.ios_target }} \
           --build-number ${{ needs.setup.outputs.build_number }} \
-          --flavor-target ${{ inputs.flavor }} \
+          --flavor ${{ inputs.flavor }} \
           --upload true
 
       - name: Clean Xcode Derived Data
@@ -267,7 +267,7 @@ jobs:
           bash scripts/build.sh \
           --deploy-target ${{ env.android_target }} \
           --build-number ${{ needs.setup.outputs.build_number }} \
-          --flavor-target ${{ inputs.flavor }} \
+          --flavor ${{ inputs.flavor }} \
           --upload true
 
       - name: Remove Flutter
