@@ -368,7 +368,7 @@ GoRoute get configureNetworksRoute {
     routes: [
       GoRoute(
         path: AppRoute.editNetwork.path,
-        builder: (_, state) => EditNetworkPage(
+        builder: (_, state) => EditNetworkPageWidget(
           connectionDataId:
               state.uri.queryParameters[networkConnectionDataIdQueryParam],
         ),

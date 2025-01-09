@@ -206,6 +206,12 @@ extension GetItInjectableX on _i174.GetIt {
     gh.singleton<_i721.BrowserFaviconURLStorageService>(() =>
         _i721.BrowserFaviconURLStorageService(
             gh<_i792.GetStorage>(instanceName: 'browser_favicon_urls')));
+    gh.singleton<_i65.ConnectionsStorageService>(
+        () => _i65.ConnectionsStorageService(
+              gh<_i792.GetStorage>(instanceName: 'connections'),
+              gh<_i710.PresetsConnectionService>(),
+              gh<_i128.MessengerService>(),
+            ));
     gh.singleton<_i468.BootstrapService>(
         () => _i468.BootstrapService(gh<_i710.PresetsConnectionService>()));
     gh.singleton<_i244.CurrentSeedService>(() => _i244.CurrentSeedService(
@@ -223,11 +229,6 @@ extension GetItInjectableX on _i174.GetIt {
           gh<_i128.SecureStorageService>(),
           gh<_i128.AppLifecycleService>(),
         ));
-    gh.singleton<_i65.ConnectionsStorageService>(
-        () => _i65.ConnectionsStorageService(
-              gh<_i792.GetStorage>(instanceName: 'connections'),
-              gh<_i710.PresetsConnectionService>(),
-            ));
     gh.singleton<_i308.CurrenciesService>(() => _i308.CurrenciesService(
           httpService: gh<_i128.HttpService>(),
           nekotonRepository: gh<_i771.NekotonRepository>(),
