@@ -19,8 +19,6 @@ ProfilePageWidgetModel defaultProfilePageWidgetModelFactory(
         inject(),
         inject(),
         inject(),
-        inject(),
-        inject(),
       ),
     );
 
@@ -33,8 +31,7 @@ class ProfilePageWidgetModel
       createNotifierFromStream(model.biometryAvailabilityStream);
   late final _biometryEnabled =
       createNotifierFromStream(model.biometryEnabledStream);
-
-  String get appVersion => model.appVersion;
+  late final _appVersionState = createNotifier('');
 
   ListenableState<Seed?> get seed => _seed;
 
@@ -42,10 +39,22 @@ class ProfilePageWidgetModel
 
   ListenableState<bool> get isBiometryEnabled => _biometryEnabled;
 
+  ListenableState<String> get appVersionState => _appVersionState;
+
+  @override
+  void initWidgetModel() {
+    super.initWidgetModel();
+    _init();
+  }
+
   Future<void> onLogout() => model.logout();
 
   // ignore: avoid_positional_boolean_parameters
   Future<void> onBiomentryChanged(bool enabled) async {
     await model.setBiometryEnabled(enabled: enabled);
+  }
+
+  Future<void> _init() async {
+    _appVersionState.accept(await model.appVersion);
   }
 }

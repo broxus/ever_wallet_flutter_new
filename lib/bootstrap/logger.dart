@@ -1,9 +1,9 @@
-import 'package:app/app/service/service.dart';
 import 'package:app/core/app_build_type.dart';
 import 'package:app/di/di.dart';
-import 'package:fancy_logger/fancy_logger.dart';
+import 'package:app/utils/app_version_utils.dart';
 import 'package:logging/logging.dart';
 import 'package:nekoton_repository/nekoton_repository.dart';
+import 'package:the_logger/the_logger.dart';
 
 const _devLogsRetainSessionCount = 100;
 const _prodLogsRetainSessionCount = 50;
@@ -35,20 +35,23 @@ Future<void> configureLogger(
       };
   }
 
-  final version = inject<AppVersionService>();
-  final packageInfoString = '[${version.appVersion}:${version.buildNumber}]';
+  final packageInfoString =
+      '[${await AppVersion.appVersion}:${await AppVersion.buildNumber}]';
 
-  final fancyLogger = inject<FancyLogger>();
-  await fancyLogger.init(retainStrategy, sessionStartExtra: packageInfoString);
+  final logger = TheLogger.i();
+  await logger.init(
+    retainStrategy: retainStrategy,
+    sessionStartExtra: packageInfoString,
+  );
 
   await inject<NekotonRepository>().setupLogger(
-    level: fancyLogger.minLevel,
+    level: logger.minLevel,
     mobileLogger: mobileLogger,
   );
 }
 
 Future<void> startLogSession() async {
   try {
-    await inject<FancyLogger>().startSession();
+    await TheLogger.i().startSession();
   } catch (_) {}
 }

@@ -220,12 +220,12 @@ class StakingBloc extends Bloc<StakingBlocEvent, StakingBlocState>
   }
 
   /// Get input value as Fixed based on [_currentCurrency]
-  Fixed get _currentValue {
-    return Fixed.fromNum(
-      num.tryParse(_inputController.text.trim().replaceAll(',', '.')) ?? 0.0,
-      scale: _currentCurrency.decimalDigits,
-    );
-  }
+  Fixed get _currentValue =>
+      Fixed.tryParse(
+        _inputController.text.trim().replaceAll(',', '.'),
+        scale: _currentCurrency.decimalDigits,
+      ) ??
+      Fixed.zero;
 
   /// Get currency for [_inputController].
   /// EVER for stake and stEVER for unstake

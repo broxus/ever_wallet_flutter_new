@@ -65,12 +65,8 @@ class ContentManualBackup extends ElementaryWidget<ManualBackUpWidgetModel> {
           builder: (context, data) {
             return GhostButton(
               buttonSize: ButtonSize.small,
-              postfixIcon: data?.isCopied ?? false
-                  ? LucideIcons.checkCheck
-                  : LucideIcons.copy,
-              title: data?.isCopied ?? false
-                  ? LocaleKeys.copiedExclamation.tr()
-                  : LocaleKeys.copyWords.tr(),
+              postfixIcon: LucideIcons.copy,
+              title: LocaleKeys.copyWords.tr(),
               onPressed: wm.copySeed,
               buttonShape: ButtonShape.pill,
             );

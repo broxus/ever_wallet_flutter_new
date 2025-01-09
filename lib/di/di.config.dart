@@ -11,7 +11,6 @@
 import 'package:dio/dio.dart' as _i361;
 import 'package:encrypted_storage/encrypted_storage.dart' as _i426;
 import 'package:encrypted_storage/encrypted_storage.module.dart' as _i171;
-import 'package:fancy_logger/fancy_logger.module.dart' as _i1060;
 import 'package:get_it/get_it.dart' as _i174;
 import 'package:get_storage/get_storage.dart' as _i792;
 import 'package:injectable/injectable.dart' as _i526;
@@ -21,7 +20,6 @@ import 'package:nekoton_repository/nekoton_repository.module.dart' as _i1067;
 import '../app/service/app_lifecycle_service.dart' as _i830;
 import '../app/service/app_links/app_links_service.dart' as _i746;
 import '../app/service/app_permissions_service.dart' as _i1070;
-import '../app/service/app_version_service.dart' as _i143;
 import '../app/service/approvals_service.dart' as _i654;
 import '../app/service/assets_service.dart' as _i964;
 import '../app/service/balance_service.dart' as _i637;
@@ -95,7 +93,6 @@ extension GetItInjectableX on _i174.GetIt {
       environment,
       environmentFilter,
     );
-    await _i1060.FancyLoggerPackageModule().init(gh);
     await _i171.EncryptedStoragePackageModule().init(gh);
     await _i1067.NekotonRepositoryPackageModule().init(gh);
     final dioModule = _$DioModule();
@@ -103,7 +100,6 @@ extension GetItInjectableX on _i174.GetIt {
         () => _i738.TokenWalletStorageService());
     gh.singleton<_i139.TonWalletStorageService>(
         () => _i139.TonWalletStorageService());
-    gh.singleton<_i143.AppVersionService>(() => _i143.AppVersionService());
     gh.singleton<_i157.JsService>(() => _i157.JsService());
     gh.singleton<_i746.AppLinksService>(
       () => _i746.AppLinksService(),
