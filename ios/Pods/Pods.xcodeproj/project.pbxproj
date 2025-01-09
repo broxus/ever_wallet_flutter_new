@@ -539,13 +539,13 @@
 		62A08F31EA14B29AE770732E7D865DA4 /* SentryRRWebEvent.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7A978D7FD981BD08B264C98082BA64DC /* SentryRRWebEvent.swift */; };
 		62D5710B999861A3B4C7678163679B7D /* SentryDispatchQueueWrapper.m in Sources */ = {isa = PBXBuildFile; fileRef = 122E61608B8AD4745220D6D050BAE8F8 /* SentryDispatchQueueWrapper.m */; };
 		62E1123F85A44559B03E8F6F10858751 /* permission_handler_apple-umbrella.h in Headers */ = {isa = PBXBuildFile; fileRef = ACAC625DD50072AFD4A83A14310BA8FA /* permission_handler_apple-umbrella.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		62FD1F1833BB624532091273C2097AF9 /* frb.h in Headers */ = {isa = PBXBuildFile; fileRef = 1BE4382F1DD55C174A35D246111F6C4F /* frb.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		630316A9553518D1C04023A6E3570342 /* sentry_flutter-dummy.m in Sources */ = {isa = PBXBuildFile; fileRef = D166A39BD30312CBB3794843F1E099C0 /* sentry_flutter-dummy.m */; };
 		6315FC9C00E9AA1909790F16F63BE4B1 /* SentryStacktraceBuilder.m in Sources */ = {isa = PBXBuildFile; fileRef = 997462EF57C8616665603C2A90EF3CF6 /* SentryStacktraceBuilder.m */; };
 		631BE0BFC4340B4BE9791CE102209BD0 /* SentryBaseIntegration.m in Sources */ = {isa = PBXBuildFile; fileRef = 845427193E479768C4F7C611D87DDC71 /* SentryBaseIntegration.m */; };
 		632EA30A732B554C9A92B5D46CA0D046 /* NSURLSession+GULPromises.m in Sources */ = {isa = PBXBuildFile; fileRef = D8D97F2D60CB538CBDBF50AAEA7E9FBF /* NSURLSession+GULPromises.m */; };
 		635B595992B6335EBFF0037BA0DBA310 /* SentrySamplerDecision.m in Sources */ = {isa = PBXBuildFile; fileRef = 826BEC4C379BBB5AB91617BB32FC3493 /* SentrySamplerDecision.m */; };
 		63BFB90A9EEB829FE5C3A15F378B6068 /* SentryLevelMapper.h in Headers */ = {isa = PBXBuildFile; fileRef = 2BB62DCE986A3BB14DC7F680A778A7D8 /* SentryLevelMapper.h */; settings = {ATTRIBUTES = (Project, ); }; };
-		63F88D00714CFF3CB5A3A0B8DDBBCC6F /* frb.h in Headers */ = {isa = PBXBuildFile; fileRef = 20708B59F01375DC7832BC372EBE5822 /* frb.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		6483522175E152FDA48DA2D091CF2780 /* SentryDiscardedEvent.h in Headers */ = {isa = PBXBuildFile; fileRef = 7B709F23B3CBEA122E7CA994F3F976FF /* SentryDiscardedEvent.h */; settings = {ATTRIBUTES = (Project, ); }; };
 		649DB57C687276D22E0C8EB36E64C1AE /* SentryCrashMach.c in Sources */ = {isa = PBXBuildFile; fileRef = 30EE7C5DD50795BA8F364A4BA9CD5E28 /* SentryCrashMach.c */; };
 		64AF99B9B5C95A08F7D309185C7693D1 /* SentrySwift.h in Headers */ = {isa = PBXBuildFile; fileRef = 65E6DF1A05A4AD313BA1DEF86EE5CBA0 /* SentrySwift.h */; settings = {ATTRIBUTES = (Project, ); }; };
@@ -685,7 +685,7 @@
 		7F328B1026CDEB73E8EF56B484A220CC /* external_privacy_context.nanopb.h in Headers */ = {isa = PBXBuildFile; fileRef = 1A7A0821D20899069EBC8604304595E3 /* external_privacy_context.nanopb.h */; settings = {ATTRIBUTES = (Project, ); }; };
 		7F39E95F2DF24D2F058920C95774EA09 /* SentryDelayedFramesTracker.h in Headers */ = {isa = PBXBuildFile; fileRef = 481B7900CCFB771D70765C07D6E4EC65 /* SentryDelayedFramesTracker.h */; settings = {ATTRIBUTES = (Project, ); }; };
 		7F6CFA938F27C5BECB347033A1F4416F /* SentryCrashReportFilterBasic.h in Headers */ = {isa = PBXBuildFile; fileRef = B26B202E71B992E9DCB4817CF5144E49 /* SentryCrashReportFilterBasic.h */; settings = {ATTRIBUTES = (Project, ); }; };
-		7F8D59F6958F39ADAF082747EDCE1BC9 /* flutter_nekoton_bridge-dummy.m in Sources */ = {isa = PBXBuildFile; fileRef = F074BE916F0E33773C2C3ACA49C99957 /* flutter_nekoton_bridge-dummy.m */; };
+		7F8D59F6958F39ADAF082747EDCE1BC9 /* flutter_nekoton_bridge-dummy.m in Sources */ = {isa = PBXBuildFile; fileRef = 1B8F3A60031752717E821A0937E46377 /* flutter_nekoton_bridge-dummy.m */; };
 		7F9988F552561FF2FF0AD5CC4142DA29 /* AssistantPermissionStrategy.h in Headers */ = {isa = PBXBuildFile; fileRef = C7CFE5CB16868DAFD323D56A3C3AA41B /* AssistantPermissionStrategy.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		7FCD735AF5DE1158010F30F17D2AD21E /* SentryANRTrackingIntegration.h in Headers */ = {isa = PBXBuildFile; fileRef = F460FEF79248F28F340ECB9B62D5214E /* SentryANRTrackingIntegration.h */; settings = {ATTRIBUTES = (Project, ); }; };
 		8095467BC5E249E5EDC11B49C9ABB441 /* SentryNSProcessInfoWrapper.mm in Sources */ = {isa = PBXBuildFile; fileRef = FB9AC27D767E4B0ED373B94F91791C3B /* SentryNSProcessInfoWrapper.mm */; };
@@ -719,6 +719,7 @@
 		84540DEFBD2A3828F377DDD7E7133714 /* GULNetworkInfo.h in Headers */ = {isa = PBXBuildFile; fileRef = F3A2720890899B7E805D6DC7F41640AE /* GULNetworkInfo.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		84701E9600936EA4FC50F4D309A2061F /* path_provider_foundation-dummy.m in Sources */ = {isa = PBXBuildFile; fileRef = 0E94962CC940045C5E8A8E7C1DA7F74B /* path_provider_foundation-dummy.m */; };
 		84A7138F34477A3105F52A56B647322F /* FlutterSecureStoragePlugin.m in Sources */ = {isa = PBXBuildFile; fileRef = F66CA7D7D3DD079EEF034079A1DA9484 /* FlutterSecureStoragePlugin.m */; };
+		856A0562AAE8505B970CC631E998DD93 /* EnforceBundling.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4860A8042C940323C9326E25F10E1551 /* EnforceBundling.swift */; };
 		8610D9C45AE05E759908090B037F8343 /* MediaLibraryPermissionStrategy.h in Headers */ = {isa = PBXBuildFile; fileRef = 316AE563C4BAB2623E20E9F41C6E4DF6 /* MediaLibraryPermissionStrategy.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		867FEF89FF9F44923F85896AFEB942F0 /* SentryMeta.m in Sources */ = {isa = PBXBuildFile; fileRef = 8E2A3A609721E1A7835AD9DB45526D2D /* SentryMeta.m */; };
 		86A9AE1E87142435CF756136B0F73A26 /* OriginalViewPortMetaTagContentJS.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4A599F95B48776F554DC84DFD8FC5C02 /* OriginalViewPortMetaTagContentJS.swift */; };
@@ -744,7 +745,6 @@
 		8B3FFC141C07CA2E20C6AFEF19A4D4DE /* SentryCrashCachedData.c in Sources */ = {isa = PBXBuildFile; fileRef = BAD2C34BA0B65382451B7E66B0C42184 /* SentryCrashCachedData.c */; };
 		8BA36A6CA5B146D716B555E16CC87ABB /* SentryRequest.m in Sources */ = {isa = PBXBuildFile; fileRef = 645400EA9346DA07FF2CA1A9966EF55B /* SentryRequest.m */; };
 		8BE72452765D2E021DF29D5421A6C32F /* SentryScope.h in Headers */ = {isa = PBXBuildFile; fileRef = D3D38AD9B1BD1B6C95CEF0F0E5A28376 /* SentryScope.h */; settings = {ATTRIBUTES = (Public, ); }; };
-		8BF5222189737D069377BA143F3A979C /* EnforceBundling.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7FBD35F5DECA012B066F9307D45D1BB0 /* EnforceBundling.swift */; };
 		8C4AD64B12E568BBD9D1DC712575A665 /* StoragePermissionStrategy.m in Sources */ = {isa = PBXBuildFile; fileRef = 8190F3822BACBFCBB667331DCA5264C4 /* StoragePermissionStrategy.m */; };
 		8C648C8DF839CC233248DCDF3BB057CE /* SentryExtraContextProvider.h in Headers */ = {isa = PBXBuildFile; fileRef = 7B604A3A2C40C3A08144F300244DB19B /* SentryExtraContextProvider.h */; settings = {ATTRIBUTES = (Project, ); }; };
 		8C78FF7927F461E1CB05912D86271D92 /* GTMSessionFetcherService.m in Sources */ = {isa = PBXBuildFile; fileRef = 1667A173C9CCC2EA1B103A141CB6FF0F /* GTMSessionFetcherService.m */; };
@@ -756,6 +756,7 @@
 		8DA3DF65AA47B224E841455DA70F7980 /* WebView.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 499368B22853F184B0239750599546B7 /* WebView.storyboard */; };
 		8DD4D007FAE2CC85CC1594BF0E5A8CEB /* ServerTrustAuthResponse.swift in Sources */ = {isa = PBXBuildFile; fileRef = AB1FCE642B3FFE130AA0681377BF570C /* ServerTrustAuthResponse.swift */; };
 		8DE0CB27D624D8F75693BD36BE99E27D /* FBLPromise+Await.h in Headers */ = {isa = PBXBuildFile; fileRef = 0253F16043D21802294A07C4DBB8ADED /* FBLPromise+Await.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		8EA31B604B0A807538D19336A81BED26 /* flutter_nekoton_bridge.c in Sources */ = {isa = PBXBuildFile; fileRef = 9C6EF3D7569F7C92F62BAD2986B20735 /* flutter_nekoton_bridge.c */; };
 		8FB26A547BF30B69C2581682ABEFB46E /* SentryUserFeedbackIntegration.m in Sources */ = {isa = PBXBuildFile; fileRef = 6E3A3A3C79BD8CB77A647A9BA84224A3 /* SentryUserFeedbackIntegration.m */; };
 		8FD3244270C3B015014E736B2D800C02 /* SentryCrashReportFixer.c in Sources */ = {isa = PBXBuildFile; fileRef = C515F7A8648E6300D2B2D0E1B010A475 /* SentryCrashReportFixer.c */; };
 		900BE26DD1B4F057C849D064A48452D2 /* FBLPromise+Wrap.m in Sources */ = {isa = PBXBuildFile; fileRef = 3348DDE077E6828C03D674EC33706BC8 /* FBLPromise+Wrap.m */; };
@@ -973,7 +974,6 @@
 		BD3F5D6F4CAA9AD4B4B0AB890A2DC52E /* GDTCCTUploader.h in Headers */ = {isa = PBXBuildFile; fileRef = 27B19A71D6530F58E468826BABD72945 /* GDTCCTUploader.h */; settings = {ATTRIBUTES = (Project, ); }; };
 		BDACD54E7BE47C1EBCCF360834E5163A /* GULLogger.h in Headers */ = {isa = PBXBuildFile; fileRef = 90D00AA8B8B9FDC1638494FB568A5738 /* GULLogger.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		BDEE1F2B2D50533133D8C19332E9563F /* SentryFileIOTrackingIntegration.h in Headers */ = {isa = PBXBuildFile; fileRef = 48C1ED26A9C6B8A24E4DAACB5DFC61FA /* SentryFileIOTrackingIntegration.h */; settings = {ATTRIBUTES = (Project, ); }; };
-		BE3A2DD0A38FD30843F88143983F9422 /* flutter_nekoton_bridge.c in Sources */ = {isa = PBXBuildFile; fileRef = FB07AE43DE7D8CB572DD0DD0F3A7519F /* flutter_nekoton_bridge.c */; };
 		BE4F25A2B038204ED9C3D20A1708C4C2 /* SentryScreenshot.h in Headers */ = {isa = PBXBuildFile; fileRef = 16A0A85C3B8CF51AD787DC069136C16F /* SentryScreenshot.h */; settings = {ATTRIBUTES = (Project, ); }; };
 		BF092D04DE77F5FD1C08CA027826F223 /* WebMessagePort.swift in Sources */ = {isa = PBXBuildFile; fileRef = A3B377A6BB0933763D1992FBA63B889E /* WebMessagePort.swift */; };
 		BF1DE5D8BE5683C36A4FA2D78B181B17 /* GULCCDependency.m in Sources */ = {isa = PBXBuildFile; fileRef = 50F4BCE3708D5529BC7202F1DFF05D02 /* GULCCDependency.m */; };
@@ -1197,7 +1197,7 @@
 		EC9CA684CA5CC9A02145058D1F650059 /* SentrySampling.m in Sources */ = {isa = PBXBuildFile; fileRef = BDDF07D1DFE35ED143599603FB65C837 /* SentrySampling.m */; };
 		EC9EC18B0E2AF0D7389C68FEEE576828 /* SentryMetricKitIntegration.h in Headers */ = {isa = PBXBuildFile; fileRef = 21445667183DC359DF8FBA37A185D182 /* SentryMetricKitIntegration.h */; settings = {ATTRIBUTES = (Project, ); }; };
 		ECB4D32E940E3209756E5D6DFA144143 /* messages.g.h in Headers */ = {isa = PBXBuildFile; fileRef = A600E12692C1A662CF6CA7A0030B3891 /* messages.g.h */; settings = {ATTRIBUTES = (Public, ); }; };
-		ECC5B0C0ACA368EA13B63A7131F51E93 /* flutter_nekoton_bridge-umbrella.h in Headers */ = {isa = PBXBuildFile; fileRef = 6D0E1EEDAC0FC5429F230D4C4F3C3A8D /* flutter_nekoton_bridge-umbrella.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		ECC5B0C0ACA368EA13B63A7131F51E93 /* flutter_nekoton_bridge-umbrella.h in Headers */ = {isa = PBXBuildFile; fileRef = A22608B8EC658680D3CAC40C75B3F366 /* flutter_nekoton_bridge-umbrella.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		ECD8F82D11F19C56ADEA24CC2BEB3AFE /* messages.g.m in Sources */ = {isa = PBXBuildFile; fileRef = 67FDAB7C2720B424F4724C139E65E313 /* messages.g.m */; };
 		ED0800E1D1E106145BF493E1B494B388 /* WKProcessPoolManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = F9756104599A7CBBB979CE2EB1C8589A /* WKProcessPoolManager.swift */; };
 		ED38DADB875CDFFB7ABE7E8D1409F5B1 /* SentryUIEventTracker.m in Sources */ = {isa = PBXBuildFile; fileRef = 634B98DD4980971C1CF794313F620802 /* SentryUIEventTracker.m */; };
@@ -2043,7 +2043,6 @@
 		06E77A06FB36194FF6FF0D227129CDF9 /* integration_test.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; path = integration_test.debug.xcconfig; sourceTree = "<group>"; };
 		06FC5C9CF96D60C50FCD47D339C91951 /* nanopb */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; name = nanopb; path = nanopb.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		07012EF2CBFF91AF3B4086A3F7A561C5 /* SentryCrashMonitor_System.m */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.objc; name = SentryCrashMonitor_System.m; path = Sources/SentryCrash/Recording/Monitors/SentryCrashMonitor_System.m; sourceTree = "<group>"; };
-		070649A75401FFC9FAFB1AF0E1088AF2 /* flutter_nekoton_bridge.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; path = flutter_nekoton_bridge.debug.xcconfig; sourceTree = "<group>"; };
 		071549DBDD4BFC0BD7D2715539015DC2 /* sqflite_darwin-sqflite_darwin_privacy */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; name = "sqflite_darwin-sqflite_darwin_privacy"; path = sqflite_darwin_privacy.bundle; sourceTree = BUILT_PRODUCTS_DIR; };
 		074282E39D46BA74A765730C057AFC43 /* local_auth_darwin-local_auth_darwin_privacy */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; name = "local_auth_darwin-local_auth_darwin_privacy"; path = local_auth_darwin_privacy.bundle; sourceTree = BUILT_PRODUCTS_DIR; };
 		07570331C1E5C055F5D7417B51B4B786 /* FlutterSecureStoragePlugin.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; name = FlutterSecureStoragePlugin.h; path = "../../../../../../../../../../.pub-cache/hosted/pub.dev/flutter_secure_storage-9.2.2/ios/Classes/FlutterSecureStoragePlugin.h"; sourceTree = "<group>"; };
@@ -2155,14 +2154,17 @@
 		1B690D0C7B316E84CA104463255DDEA6 /* SentryEnvelope+Private.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; name = "SentryEnvelope+Private.h"; path = "Sources/Sentry/include/SentryEnvelope+Private.h"; sourceTree = "<group>"; };
 		1B6EEFFA3CCB9317D83AE26889F51F73 /* SentryNSDictionarySanitize.m */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.objc; name = SentryNSDictionarySanitize.m; path = Sources/Sentry/SentryNSDictionarySanitize.m; sourceTree = "<group>"; };
 		1B7F00769130AE848AD5D9A012DAEC87 /* SentryDebugMeta.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; name = SentryDebugMeta.h; path = Sources/Sentry/Public/SentryDebugMeta.h; sourceTree = "<group>"; };
+		1B8F3A60031752717E821A0937E46377 /* flutter_nekoton_bridge-dummy.m */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.objc; path = "flutter_nekoton_bridge-dummy.m"; sourceTree = "<group>"; };
 		1B9E219F30260808E8328725716BF208 /* SentryThreadMetadataCache.cpp */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.cpp.cpp; name = SentryThreadMetadataCache.cpp; path = Sources/Sentry/SentryThreadMetadataCache.cpp; sourceTree = "<group>"; };
 		1BAD3B40CD97226AFDEB934FDD236D81 /* SentryFormatter.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; name = SentryFormatter.h; path = Sources/Sentry/include/HybridPublic/SentryFormatter.h; sourceTree = "<group>"; };
+		1BE4382F1DD55C174A35D246111F6C4F /* frb.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; name = frb.h; path = "../../../../../../../../../../.pub-cache/hosted/pub.dev/flutter_nekoton_bridge-2.2.3/ios/Classes/frb.h"; sourceTree = "<group>"; };
 		1C46BB240F854A362F04FF0B36DB7E94 /* flutter_secure_storage-umbrella.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; path = "flutter_secure_storage-umbrella.h"; sourceTree = "<group>"; };
 		1C634CF65A04965AD74B445F41DDC194 /* SentrySystemEventBreadcrumbs.m */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.objc; name = SentrySystemEventBreadcrumbs.m; path = Sources/Sentry/SentrySystemEventBreadcrumbs.m; sourceTree = "<group>"; };
 		1C9FE72F99375B1C4DCADCF231EA97F7 /* PermissionHandlerPlugin.m */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.objc; name = PermissionHandlerPlugin.m; path = "../../../../../../../../../../.pub-cache/hosted/pub.dev/permission_handler_apple-9.4.5/ios/Classes/PermissionHandlerPlugin.m"; sourceTree = "<group>"; };
 		1CB5A2B49688025F866A57B61CC4DF34 /* MLKitVision.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; path = MLKitVision.debug.xcconfig; sourceTree = "<group>"; };
 		1D63EAAC4935711B98E088395E42F271 /* FBLPromise+Recover.m */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.objc; name = "FBLPromise+Recover.m"; path = "Sources/FBLPromises/FBLPromise+Recover.m"; sourceTree = "<group>"; };
 		1D7949F5EBBC6542D7DD8A5283A73CBB /* InterceptAjaxRequestJS.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = InterceptAjaxRequestJS.swift; path = "../../../../../../../../../../../.pub-cache/hosted/pub.dev/flutter_inappwebview_ios-1.1.2/ios/Classes/PluginScriptsJS/InterceptAjaxRequestJS.swift"; sourceTree = "<group>"; };
+		1DB023C25CE92CCA7007A6F031D90081 /* NekotonBridge.xcframework */ = {isa = PBXFileReference; includeInIndex = 1; name = NekotonBridge.xcframework; path = "../../../../../../../../../.pub-cache/hosted/pub.dev/flutter_nekoton_bridge-2.2.3/ios/Frameworks/NekotonBridge.xcframework"; sourceTree = "<group>"; };
 		1DBF34D2A9932A8BAB85F00FEE8785CF /* broxus_app_links */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; name = broxus_app_links; path = broxus_app_links.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		1DED6F0FA040902116A62A8A2ECF4089 /* SentryRRWebTouchEvent.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = SentryRRWebTouchEvent.swift; path = Sources/Swift/Integrations/SessionReplay/RRWeb/SentryRRWebTouchEvent.swift; sourceTree = "<group>"; };
 		1E11BF04F97ED5141B032B6B9D43EFCF /* GDTCORUploadBatch.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; name = GDTCORUploadBatch.h; path = GoogleDataTransport/GDTCORLibrary/Private/GDTCORUploadBatch.h; sourceTree = "<group>"; };
@@ -2180,7 +2182,6 @@
 		1F6847309A5E67427E3F8C7A2DE4454A /* FBLPromise+Wrap.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; name = "FBLPromise+Wrap.h"; path = "Sources/FBLPromises/include/FBLPromise+Wrap.h"; sourceTree = "<group>"; };
 		1F800165ACFAB4359008FB3CFA026435 /* SentryDefaultRateLimits.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; name = SentryDefaultRateLimits.h; path = Sources/Sentry/include/SentryDefaultRateLimits.h; sourceTree = "<group>"; };
 		2056135DBED7576D883B4A68B6638980 /* Security.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Security.framework; path = Platforms/iPhoneOS.platform/Developer/SDKs/iPhoneOS18.0.sdk/System/Library/Frameworks/Security.framework; sourceTree = DEVELOPER_DIR; };
-		20708B59F01375DC7832BC372EBE5822 /* frb.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; name = frb.h; path = "../../../../../../../../../../.pub-cache/hosted/pub.dev/flutter_nekoton_bridge-2.0.1-dev.13/ios/Classes/frb.h"; sourceTree = "<group>"; };
 		2072D64F18CFBF6D68335DC48A8C293A /* device_info_plus.podspec */ = {isa = PBXFileReference; explicitFileType = text.script.ruby; includeInIndex = 1; indentWidth = 2; lastKnownFileType = text; name = device_info_plus.podspec; path = "../../../../../../../../../.pub-cache/hosted/pub.dev/device_info_plus-11.1.1/ios/device_info_plus.podspec"; sourceTree = "<group>"; tabWidth = 2; xcLanguageSpecificationIdentifier = xcode.lang.ruby; };
 		20B4CC19B86EF20F3DB89FDBEE2E8E22 /* SentryUser.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; name = SentryUser.h; path = Sources/Sentry/Public/SentryUser.h; sourceTree = "<group>"; };
 		20E63B692D091C4581DEC4F6705D4C98 /* NotificationPermissionStrategy.m */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.objc; name = NotificationPermissionStrategy.m; path = "../../../../../../../../../../../.pub-cache/hosted/pub.dev/permission_handler_apple-9.4.5/ios/Classes/strategies/NotificationPermissionStrategy.m"; sourceTree = "<group>"; };
@@ -2214,7 +2215,6 @@
 		27B19A71D6530F58E468826BABD72945 /* GDTCCTUploader.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; name = GDTCCTUploader.h; path = GoogleDataTransport/GDTCCTLibrary/Private/GDTCCTUploader.h; sourceTree = "<group>"; };
 		27C969948671D708C27769534AF94F1D /* PromisesObjC-dummy.m */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.objc; path = "PromisesObjC-dummy.m"; sourceTree = "<group>"; };
 		27FA84329526AFEBCF9EBF166B0C1B4E /* README.md */ = {isa = PBXFileReference; includeInIndex = 1; name = README.md; path = "../../../../../../../../../.pub-cache/hosted/pub.dev/sqflite_darwin-2.4.1/darwin/README.md"; sourceTree = "<group>"; };
-		2836121A1A50D4FA2E0A59905B926AF9 /* flutter_nekoton_bridge-prefix.pch */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; path = "flutter_nekoton_bridge-prefix.pch"; sourceTree = "<group>"; };
 		2893C2839F9C5A9E88CBBC557EEF91F2 /* SentryBuildAppStartSpans.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; name = SentryBuildAppStartSpans.h; path = Sources/Sentry/include/SentryBuildAppStartSpans.h; sourceTree = "<group>"; };
 		28A6DB952CEA79E3902D41748273A364 /* GoogleUtilitiesComponents */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; name = GoogleUtilitiesComponents; path = GoogleUtilitiesComponents.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		28AB93CFF0C0C2F553492FA4BE08575A /* SentryCrashIntegration.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; name = SentryCrashIntegration.h; path = Sources/Sentry/include/SentryCrashIntegration.h; sourceTree = "<group>"; };
@@ -2360,7 +2360,6 @@
 		40CC96159CEEF0D1A98863F43AAD1B8E /* OrderedSet-Info.plist */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.plist.xml; path = "OrderedSet-Info.plist"; sourceTree = "<group>"; };
 		40DDDB69F18524B00B9C9495B7769748 /* PrivacyInfo.xcprivacy */ = {isa = PBXFileReference; includeInIndex = 1; name = PrivacyInfo.xcprivacy; path = "../../../../../../../../../../../../.pub-cache/hosted/pub.dev/flutter_native_splash-2.4.3/ios/flutter_native_splash/Sources/flutter_native_splash/PrivacyInfo.xcprivacy"; sourceTree = "<group>"; };
 		40E0A304E40BAD60677D974E066E2ACA /* SentryFlutter.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = SentryFlutter.swift; path = "../../../../../../../../../../.pub-cache/hosted/pub.dev/sentry_flutter-8.10.1/ios/Classes/SentryFlutter.swift"; sourceTree = "<group>"; };
-		4102743C7BCCEA45BB3F2EB6A3F43A50 /* flutter_nekoton_bridge.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; path = flutter_nekoton_bridge.release.xcconfig; sourceTree = "<group>"; };
 		412F8B6012E35E93369BCA390A66AC4F /* CallAsyncJavaScriptBelowIOS14WrapperJS.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = CallAsyncJavaScriptBelowIOS14WrapperJS.swift; path = "../../../../../../../../../../../.pub-cache/hosted/pub.dev/flutter_inappwebview_ios-1.1.2/ios/Classes/PluginScriptsJS/CallAsyncJavaScriptBelowIOS14WrapperJS.swift"; sourceTree = "<group>"; };
 		4141304A114A4138D65A493766E2E946 /* SentryCrashUUIDConversion.c */ = {isa = PBXFileReference; includeInIndex = 1; name = SentryCrashUUIDConversion.c; path = Sources/SentryCrash/Recording/Tools/SentryCrashUUIDConversion.c; sourceTree = "<group>"; };
 		41427726503CA764C36C0DA61695190C /* SentryEnabledFeaturesBuilder.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = SentryEnabledFeaturesBuilder.swift; path = Sources/Swift/Helper/SentryEnabledFeaturesBuilder.swift; sourceTree = "<group>"; };
@@ -2400,6 +2399,7 @@
 		479B53103C86D6144CF3712B18F56CCC /* SqflitePlugin.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; name = SqflitePlugin.h; path = "../../../../../../../../../../../../.pub-cache/hosted/pub.dev/sqflite_darwin-2.4.1/darwin/sqflite_darwin/Sources/sqflite_darwin/SqflitePlugin.h"; sourceTree = "<group>"; };
 		47BB2D47A21A7AFC86D8B868C4A0AA22 /* FindInteractionController.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = FindInteractionController.swift; path = "../../../../../../../../../../../.pub-cache/hosted/pub.dev/flutter_inappwebview_ios-1.1.2/ios/Classes/FindInteraction/FindInteractionController.swift"; sourceTree = "<group>"; };
 		481B7900CCFB771D70765C07D6E4EC65 /* SentryDelayedFramesTracker.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; name = SentryDelayedFramesTracker.h; path = Sources/Sentry/include/SentryDelayedFramesTracker.h; sourceTree = "<group>"; };
+		4860A8042C940323C9326E25F10E1551 /* EnforceBundling.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = EnforceBundling.swift; path = "../../../../../../../../../../.pub-cache/hosted/pub.dev/flutter_nekoton_bridge-2.2.3/ios/Classes/EnforceBundling.swift"; sourceTree = "<group>"; };
 		48BADEC581DFF96F807CA49DB0CD3805 /* nanopb.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; path = nanopb.release.xcconfig; sourceTree = "<group>"; };
 		48C1ED26A9C6B8A24E4DAACB5DFC61FA /* SentryFileIOTrackingIntegration.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; name = SentryFileIOTrackingIntegration.h; path = Sources/Sentry/include/SentryFileIOTrackingIntegration.h; sourceTree = "<group>"; };
 		48F296FDB06F40C45FA67650D14FE437 /* SentryCrashCPU_arm64.c */ = {isa = PBXFileReference; includeInIndex = 1; name = SentryCrashCPU_arm64.c; path = Sources/SentryCrash/Recording/Tools/SentryCrashCPU_arm64.c; sourceTree = "<group>"; };
@@ -2446,6 +2446,7 @@
 		4ED9F6D64ABB2F9AC24EC4A55487F1F5 /* Pods-Runner-resources.sh */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.script.sh; path = "Pods-Runner-resources.sh"; sourceTree = "<group>"; };
 		4EF585BDD3DD3E8FDCA60BE74C7ADE1E /* ContextMenuSettings.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = ContextMenuSettings.swift; path = "../../../../../../../../../../../.pub-cache/hosted/pub.dev/flutter_inappwebview_ios-1.1.2/ios/Classes/InAppWebView/ContextMenuSettings.swift"; sourceTree = "<group>"; };
 		4F0FC8598E7F2C4DDF66335160EADB30 /* PrintJobManager.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = PrintJobManager.swift; path = "../../../../../../../../../../../.pub-cache/hosted/pub.dev/flutter_inappwebview_ios-1.1.2/ios/Classes/PrintJob/PrintJobManager.swift"; sourceTree = "<group>"; };
+		4F0FECF7D4950AD7262BDC8A91501C39 /* flutter_nekoton_bridge.podspec */ = {isa = PBXFileReference; explicitFileType = text.script.ruby; includeInIndex = 1; indentWidth = 2; lastKnownFileType = text; name = flutter_nekoton_bridge.podspec; path = "../../../../../../../../../.pub-cache/hosted/pub.dev/flutter_nekoton_bridge-2.2.3/ios/flutter_nekoton_bridge.podspec"; sourceTree = "<group>"; tabWidth = 2; xcLanguageSpecificationIdentifier = xcode.lang.ruby; };
 		4FA9A6FDDEE87CA12216D327369EF3C9 /* ConnectivityPlusPlugin.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = ConnectivityPlusPlugin.swift; path = "../../../../../../../../../../../../.pub-cache/hosted/pub.dev/connectivity_plus-6.1.1/darwin/connectivity_plus/Sources/connectivity_plus/ConnectivityPlusPlugin.swift"; sourceTree = "<group>"; };
 		4FAF20981EB9D7C0B982815EC9973976 /* SentryTracerConfiguration.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; name = SentryTracerConfiguration.h; path = Sources/Sentry/include/SentryTracerConfiguration.h; sourceTree = "<group>"; };
 		4FE20B1CF8B318A8D9591ED1587D7592 /* sqflite_darwin */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; name = sqflite_darwin; path = sqflite_darwin.framework; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -2475,7 +2476,6 @@
 		5404004CDF10757C97AA2BAD88905FE7 /* GDTCORLogSourceMetrics.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; name = GDTCORLogSourceMetrics.h; path = GoogleDataTransport/GDTCORLibrary/Private/GDTCORLogSourceMetrics.h; sourceTree = "<group>"; };
 		543AC20FF1F20FB13085F793E89B74E1 /* IntegrationTestIosTest.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; name = IntegrationTestIosTest.h; path = ../../../../../../../../../../../../../flutter/packages/integration_test/ios/integration_test/Sources/integration_test/include/IntegrationTestIosTest.h; sourceTree = "<group>"; };
 		544AEFA47C06A736347973E8DFC9D22C /* CredentialDatabase.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = CredentialDatabase.swift; path = "../../../../../../../../../../.pub-cache/hosted/pub.dev/flutter_inappwebview_ios-1.1.2/ios/Classes/CredentialDatabase.swift"; sourceTree = "<group>"; };
-		546194EB7DA83BD07754329D29F7FD1F /* flutter_nekoton_bridge.podspec */ = {isa = PBXFileReference; explicitFileType = text.script.ruby; includeInIndex = 1; indentWidth = 2; lastKnownFileType = text; name = flutter_nekoton_bridge.podspec; path = "../../../../../../../../../.pub-cache/hosted/pub.dev/flutter_nekoton_bridge-2.0.1-dev.13/ios/flutter_nekoton_bridge.podspec"; sourceTree = "<group>"; tabWidth = 2; xcLanguageSpecificationIdentifier = xcode.lang.ruby; };
 		546AAE5444AB18FF26282A938C2121A7 /* SentryCrashSysCtl.c */ = {isa = PBXFileReference; includeInIndex = 1; name = SentryCrashSysCtl.c; path = Sources/SentryCrash/Recording/Tools/SentryCrashSysCtl.c; sourceTree = "<group>"; };
 		547411FE42352678B613AF8FEEF395A8 /* CriticalAlertsPermissionStrategy.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; name = CriticalAlertsPermissionStrategy.h; path = "../../../../../../../../../../../.pub-cache/hosted/pub.dev/permission_handler_apple-9.4.5/ios/Classes/strategies/CriticalAlertsPermissionStrategy.h"; sourceTree = "<group>"; };
 		549805D6BF87B0452BCB3B27FCD5E296 /* OnWindowFocusEventJS.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = OnWindowFocusEventJS.swift; path = "../../../../../../../../../../../.pub-cache/hosted/pub.dev/flutter_inappwebview_ios-1.1.2/ios/Classes/PluginScriptsJS/OnWindowFocusEventJS.swift"; sourceTree = "<group>"; };
@@ -2536,6 +2536,7 @@
 		5DD99BA6D5035E6173AF5B3FEDDDEBCA /* SentryReplayApi.m */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.objc; name = SentryReplayApi.m; path = Sources/Sentry/SentryReplayApi.m; sourceTree = "<group>"; };
 		5DDCD19074B5991579F55C3B07BB36CF /* SentryBreadcrumbDelegate.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; name = SentryBreadcrumbDelegate.h; path = Sources/Sentry/include/SentryBreadcrumbDelegate.h; sourceTree = "<group>"; };
 		5E1133085D4B16DCF8B6C2C6A17BB959 /* GDTCORMetrics.m */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.objc; name = GDTCORMetrics.m; path = GoogleDataTransport/GDTCORLibrary/GDTCORMetrics.m; sourceTree = "<group>"; };
+		5E190C6488FF42F09BC7991A7F087EC0 /* LICENSE */ = {isa = PBXFileReference; includeInIndex = 1; name = LICENSE; path = "../../../../../../../../../.pub-cache/hosted/pub.dev/flutter_nekoton_bridge-2.2.3/LICENSE"; sourceTree = "<group>"; };
 		5E83F6744ECA19C0BA1ACB37BD68693A /* GDTCORUploader.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; name = GDTCORUploader.h; path = GoogleDataTransport/GDTCORLibrary/Internal/GDTCORUploader.h; sourceTree = "<group>"; };
 		5E91EF1ADD2D37BA333A0616F63618E1 /* SentryMessage.m */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.objc; name = SentryMessage.m; path = Sources/Sentry/SentryMessage.m; sourceTree = "<group>"; };
 		5EADC9E9EA3DF5DF3AA6EA903D6E29CC /* Pods-Runner-dummy.m */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.objc; path = "Pods-Runner-dummy.m"; sourceTree = "<group>"; };
@@ -2624,10 +2625,10 @@
 		6C68907A070877A972458B7EE45B087F /* UIKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = UIKit.framework; path = Platforms/iPhoneOS.platform/Developer/SDKs/iPhoneOS18.0.sdk/System/Library/Frameworks/UIKit.framework; sourceTree = DEVELOPER_DIR; };
 		6C8C787594E75C72BE58255152DC59E2 /* flutter_inappwebview_ios.modulemap */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.module; path = flutter_inappwebview_ios.modulemap; sourceTree = "<group>"; };
 		6CA28E5B6F590212ED72B8D1C321358E /* GDTCOREventDropReason.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; name = GDTCOREventDropReason.h; path = GoogleDataTransport/GDTCORLibrary/Internal/GDTCOREventDropReason.h; sourceTree = "<group>"; };
+		6CC68804CC9305066D925DD615EAEECE /* flutter_nekoton_bridge.modulemap */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.module; path = flutter_nekoton_bridge.modulemap; sourceTree = "<group>"; };
 		6CD61CAA4A12AC77E70FF17DF1395A61 /* GULHeartbeatDateStorageUserDefaults.m */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.objc; name = GULHeartbeatDateStorageUserDefaults.m; path = GoogleUtilities/Environment/GULHeartbeatDateStorageUserDefaults.m; sourceTree = "<group>"; };
 		6CE638EEBA185C9BD92306C2EF3A4A63 /* SentryCrashCPU_x86_32.c */ = {isa = PBXFileReference; includeInIndex = 1; name = SentryCrashCPU_x86_32.c; path = Sources/SentryCrash/Recording/Tools/SentryCrashCPU_x86_32.c; sourceTree = "<group>"; };
 		6CFEDD7D505646E367ED7C79D43091E7 /* SentryCrashCPU.c */ = {isa = PBXFileReference; includeInIndex = 1; name = SentryCrashCPU.c; path = Sources/SentryCrash/Recording/Tools/SentryCrashCPU.c; sourceTree = "<group>"; };
-		6D0E1EEDAC0FC5429F230D4C4F3C3A8D /* flutter_nekoton_bridge-umbrella.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; path = "flutter_nekoton_bridge-umbrella.h"; sourceTree = "<group>"; };
 		6D3FD4746C5C4B5292B7C4C862F01EF9 /* connectivity_plus */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; name = connectivity_plus; path = connectivity_plus.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		6D73CBD5ED6EED2BD2C4FCAA5C4AD4DE /* SentryTransaction.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; name = SentryTransaction.h; path = Sources/Sentry/include/SentryTransaction.h; sourceTree = "<group>"; };
 		6DBD9AD8A4D161FFF5200153859C043F /* SentryProfilerTestHelpers.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; name = SentryProfilerTestHelpers.h; path = Sources/Sentry/include/SentryProfilerTestHelpers.h; sourceTree = "<group>"; };
@@ -2650,6 +2651,7 @@
 		715938FDB3FEF62A604FC63226888369 /* GDTCORRegistrar_Private.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; name = GDTCORRegistrar_Private.h; path = GoogleDataTransport/GDTCORLibrary/Private/GDTCORRegistrar_Private.h; sourceTree = "<group>"; };
 		71863A742C8517180C7A144ABBA9BB08 /* SentryExtraContextProvider.m */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.objc; name = SentryExtraContextProvider.m; path = Sources/Sentry/SentryExtraContextProvider.m; sourceTree = "<group>"; };
 		72298E52CEC453F5AFD80AF20FA74F02 /* SentryProfilerSerialization+Test.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; name = "SentryProfilerSerialization+Test.h"; path = "Sources/Sentry/Profiling/SentryProfilerSerialization+Test.h"; sourceTree = "<group>"; };
+		722BCE52D99BB7257D23C7CA61DF7C3F /* flutter_nekoton_bridge-xcframeworks.sh */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.script.sh; path = "flutter_nekoton_bridge-xcframeworks.sh"; sourceTree = "<group>"; };
 		7273295211F2BE36AF0D5CEFFAF08E00 /* Flutter.podspec */ = {isa = PBXFileReference; explicitFileType = text.script.ruby; includeInIndex = 1; indentWidth = 2; lastKnownFileType = text; path = Flutter.podspec; sourceTree = "<group>"; tabWidth = 2; xcLanguageSpecificationIdentifier = xcode.lang.ruby; };
 		72FD43236360645D3983457A67FCBAA7 /* SentryCrashNSErrorUtil.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; name = SentryCrashNSErrorUtil.h; path = Sources/SentryCrash/Recording/Tools/SentryCrashNSErrorUtil.h; sourceTree = "<group>"; };
 		7321507C27E1C82119D4FEEC4526B8C6 /* SentryDispatchFactory.m */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.objc; name = SentryDispatchFactory.m; path = Sources/Sentry/SentryDispatchFactory.m; sourceTree = "<group>"; };
@@ -2728,7 +2730,6 @@
 		7F5686BDDADB33CA2FFB9253F99ABBB7 /* SentryANRTrackerV2.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; name = SentryANRTrackerV2.h; path = Sources/Sentry/include/SentryANRTrackerV2.h; sourceTree = "<group>"; };
 		7F8223A81EC84C2BB9D544ABF958A9C4 /* SentryEvent+Private.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; name = "SentryEvent+Private.h"; path = "Sources/Sentry/include/SentryEvent+Private.h"; sourceTree = "<group>"; };
 		7F8571B4F5963DC3EDACC2127E977322 /* SentryDispatchFactory.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; name = SentryDispatchFactory.h; path = Sources/Sentry/include/SentryDispatchFactory.h; sourceTree = "<group>"; };
-		7FBD35F5DECA012B066F9307D45D1BB0 /* EnforceBundling.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = EnforceBundling.swift; path = "../../../../../../../../../../.pub-cache/hosted/pub.dev/flutter_nekoton_bridge-2.0.1-dev.13/ios/Classes/EnforceBundling.swift"; sourceTree = "<group>"; };
 		7FD8841B39FD7A824F34B8A129C25CDB /* SentryCoreDataTracker.m */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.objc; name = SentryCoreDataTracker.m; path = Sources/Sentry/SentryCoreDataTracker.m; sourceTree = "<group>"; };
 		7FEAFD45C6A5E337DA7D47BA16617FC7 /* SentrySpotlightTransport.m */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.objc; name = SentrySpotlightTransport.m; path = Sources/Sentry/SentrySpotlightTransport.m; sourceTree = "<group>"; };
 		7FF0497FF9C7A4677DA6C1033A2CB665 /* SentryCrashReport.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; name = SentryCrashReport.h; path = Sources/SentryCrash/Recording/SentryCrashReport.h; sourceTree = "<group>"; };
@@ -2760,7 +2761,6 @@
 		8540A2963D2FB887D520E17E4357B163 /* SentryCoreDataSwizzling.m */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.objc; name = SentryCoreDataSwizzling.m; path = Sources/Sentry/SentryCoreDataSwizzling.m; sourceTree = "<group>"; };
 		854F85DFC6EDFFFBBFAC3FC71546C75C /* FBLPromise+Always.m */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.objc; name = "FBLPromise+Always.m"; path = "Sources/FBLPromises/FBLPromise+Always.m"; sourceTree = "<group>"; };
 		856B5CD56F194FAD26EA91620B66D614 /* GoogleDataTransport */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; name = GoogleDataTransport; path = GoogleDataTransport.framework; sourceTree = BUILT_PRODUCTS_DIR; };
-		85712E15D872743598A6258A4A006A96 /* LICENSE */ = {isa = PBXFileReference; includeInIndex = 1; name = LICENSE; path = "../../../../../../../../../.pub-cache/hosted/pub.dev/flutter_nekoton_bridge-2.0.1-dev.13/LICENSE"; sourceTree = "<group>"; };
 		85ABB49F3694BF7AD36189D587582DC5 /* GDTCORLogSourceMetrics.m */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.objc; name = GDTCORLogSourceMetrics.m; path = GoogleDataTransport/GDTCORLibrary/GDTCORLogSourceMetrics.m; sourceTree = "<group>"; };
 		85CAEB9111001B93C60D086D0EA33DC3 /* SentryThreadWrapper.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; name = SentryThreadWrapper.h; path = Sources/Sentry/include/SentryThreadWrapper.h; sourceTree = "<group>"; };
 		85F2FB9393F74A5F7C855DB7D86C1CA6 /* image_picker_ios-prefix.pch */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; path = "image_picker_ios-prefix.pch"; sourceTree = "<group>"; };
@@ -2891,6 +2891,7 @@
 		9BFA1FC994A579A78907430EF39D5EBA /* broxus_app_links-umbrella.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; path = "broxus_app_links-umbrella.h"; sourceTree = "<group>"; };
 		9C101C6494526EEC1350021E78AAC985 /* ResourceBundle-flutter_email_sender-flutter_email_sender-Info.plist */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.plist.xml; path = "ResourceBundle-flutter_email_sender-flutter_email_sender-Info.plist"; sourceTree = "<group>"; };
 		9C321C1EC973E73C83CB3423A48F13B0 /* GULCCComponentType.m */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.objc; name = GULCCComponentType.m; path = GoogleUtilitiesComponents/Sources/GULCCComponentType.m; sourceTree = "<group>"; };
+		9C6EF3D7569F7C92F62BAD2986B20735 /* flutter_nekoton_bridge.c */ = {isa = PBXFileReference; includeInIndex = 1; name = flutter_nekoton_bridge.c; path = "../../../../../../../../../../.pub-cache/hosted/pub.dev/flutter_nekoton_bridge-2.2.3/ios/Classes/flutter_nekoton_bridge.c"; sourceTree = "<group>"; };
 		9C737177D94F3FC4829CDBA66196837F /* SentryCrashJSONCodecObjC.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; name = SentryCrashJSONCodecObjC.h; path = Sources/SentryCrash/Recording/Tools/SentryCrashJSONCodecObjC.h; sourceTree = "<group>"; };
 		9CD75AD45FC95FD9895C70D0F30C06C0 /* url_launcher_ios.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; path = url_launcher_ios.release.xcconfig; sourceTree = "<group>"; };
 		9CDA2B0A87F3DADD4EBA77336AE121E4 /* SentryNSURLRequestBuilder.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; name = SentryNSURLRequestBuilder.h; path = Sources/Sentry/include/SentryNSURLRequestBuilder.h; sourceTree = "<group>"; };
@@ -2925,6 +2926,7 @@
 		A1912E4D21C0C1EE8A484D7DA01D6AF6 /* PrivacyInfo.xcprivacy */ = {isa = PBXFileReference; includeInIndex = 1; name = PrivacyInfo.xcprivacy; path = spm_resources/PrivacyInfo.xcprivacy; sourceTree = "<group>"; };
 		A1A1CC0AFC56483A9A32EA8310F0982D /* SentrySessionReplayIntegration-Hybrid.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; name = "SentrySessionReplayIntegration-Hybrid.h"; path = "Sources/Sentry/include/HybridPublic/SentrySessionReplayIntegration-Hybrid.h"; sourceTree = "<group>"; };
 		A21516B2EBAB5FA78365AD5EEFDE393A /* GoogleUtilitiesComponents.modulemap */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.module; path = GoogleUtilitiesComponents.modulemap; sourceTree = "<group>"; };
+		A22608B8EC658680D3CAC40C75B3F366 /* flutter_nekoton_bridge-umbrella.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; path = "flutter_nekoton_bridge-umbrella.h"; sourceTree = "<group>"; };
 		A26A36E25FA0E92FA286735AAE021581 /* SentryNSNotificationCenterWrapper.m */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.objc; name = SentryNSNotificationCenterWrapper.m; path = Sources/Sentry/SentryNSNotificationCenterWrapper.m; sourceTree = "<group>"; };
 		A274F54D5612E6229B983442794F2BB9 /* ClientCertChallenge.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = ClientCertChallenge.swift; path = "../../../../../../../../../../../.pub-cache/hosted/pub.dev/flutter_inappwebview_ios-1.1.2/ios/Classes/Types/ClientCertChallenge.swift"; sourceTree = "<group>"; };
 		A2A70AF4778028B9C3D9DA276DA2BD1A /* NSArray+SentrySanitize.m */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.objc; name = "NSArray+SentrySanitize.m"; path = "Sources/Sentry/NSArray+SentrySanitize.m"; sourceTree = "<group>"; };
@@ -2953,7 +2955,6 @@
 		A85E1131C42343C255EED86F38FD4309 /* GTMSessionFetcher-umbrella.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; path = "GTMSessionFetcher-umbrella.h"; sourceTree = "<group>"; };
 		A86DE561F1DF00B657E6E4EC0BAB1CAE /* SentryPerformanceTracker.m */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.objc; name = SentryPerformanceTracker.m; path = Sources/Sentry/SentryPerformanceTracker.m; sourceTree = "<group>"; };
 		A89E9B8D2AB38EB49B74D9785AD9BD6C /* FlutterMethodChannel.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = FlutterMethodChannel.swift; path = "../../../../../../../../../../../.pub-cache/hosted/pub.dev/flutter_inappwebview_ios-1.1.2/ios/Classes/Types/FlutterMethodChannel.swift"; sourceTree = "<group>"; };
-		A8F7AC5A32693C738F167621136E21BA /* NekotonBridge.xcframework */ = {isa = PBXFileReference; includeInIndex = 1; name = NekotonBridge.xcframework; path = "../../../../../../../../../.pub-cache/hosted/pub.dev/flutter_nekoton_bridge-2.0.1-dev.13/ios/Frameworks/NekotonBridge.xcframework"; sourceTree = "<group>"; };
 		A93C7146B609CAC3DF392E01E14F6E47 /* SentryDebugImageProvider.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; name = SentryDebugImageProvider.h; path = Sources/Sentry/Public/SentryDebugImageProvider.h; sourceTree = "<group>"; };
 		A95F2C6E26D22EEA9D4BF9C43359BF39 /* SentryMsgPackSerializer.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; name = SentryMsgPackSerializer.h; path = Sources/Sentry/include/SentryMsgPackSerializer.h; sourceTree = "<group>"; };
 		A9A124F5A807FD04FE16ABA6765C74BA /* SentryCrashDate.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; name = SentryCrashDate.h; path = Sources/SentryCrash/Recording/Tools/SentryCrashDate.h; sourceTree = "<group>"; };
@@ -2964,6 +2965,7 @@
 		AA5EE32E5A3F814972BD5F2CEA2B997A /* GDTCCTCompressionHelper.m */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.objc; name = GDTCCTCompressionHelper.m; path = GoogleDataTransport/GDTCCTLibrary/GDTCCTCompressionHelper.m; sourceTree = "<group>"; };
 		AA80CF14F461ED4A1A6DDFCA6545929C /* connectivity_plus-Info.plist */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.plist.xml; path = "connectivity_plus-Info.plist"; sourceTree = "<group>"; };
 		AA93FE492DA73C5118E0FB7299F1879C /* NSLock.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = NSLock.swift; path = Sources/Swift/Extensions/NSLock.swift; sourceTree = "<group>"; };
+		AAB91B9EEE8DEDCD7387B0980B464973 /* flutter_nekoton_bridge-Info.plist */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.plist.xml; path = "flutter_nekoton_bridge-Info.plist"; sourceTree = "<group>"; };
 		AACBC1512988F3D9C5D8D2C4809FE460 /* MLKitVision.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; path = MLKitVision.release.xcconfig; sourceTree = "<group>"; };
 		AAE57E4B644C27E026F71DEB9A82C762 /* SentrySpanProtocol.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; name = SentrySpanProtocol.h; path = Sources/Sentry/Public/SentrySpanProtocol.h; sourceTree = "<group>"; };
 		AAEFC67A5658F59EBE0A9DA709E1FC2D /* SentryUserFeedbackIntegration.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; name = SentryUserFeedbackIntegration.h; path = Sources/Sentry/include/SentryUserFeedbackIntegration.h; sourceTree = "<group>"; };
@@ -3022,7 +3024,6 @@
 		B5EDCA0312C3217F84009C863795BD2F /* Pods-Runner.profile-staging.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; path = "Pods-Runner.profile-staging.xcconfig"; sourceTree = "<group>"; };
 		B6563CD11545C0BC292A0275BC63BB87 /* messages.g.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = messages.g.swift; path = "../../../../../../../../../../../../.pub-cache/hosted/pub.dev/url_launcher_ios-6.3.2/ios/url_launcher_ios/Sources/url_launcher_ios/messages.g.swift"; sourceTree = "<group>"; };
 		B65CACF672F47D3CEDF36E18576CE477 /* CriticalAlertsPermissionStrategy.m */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.objc; name = CriticalAlertsPermissionStrategy.m; path = "../../../../../../../../../../../.pub-cache/hosted/pub.dev/permission_handler_apple-9.4.5/ios/Classes/strategies/CriticalAlertsPermissionStrategy.m"; sourceTree = "<group>"; };
-		B6ABF0B57ADCAB914254E5CB365EB769 /* flutter_nekoton_bridge-Info.plist */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.plist.xml; path = "flutter_nekoton_bridge-Info.plist"; sourceTree = "<group>"; };
 		B6F7CB426FDF1859ED16D9A6693B73E3 /* ResourceBundle-GoogleUtilities_Privacy-GoogleUtilities-Info.plist */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.plist.xml; path = "ResourceBundle-GoogleUtilities_Privacy-GoogleUtilities-Info.plist"; sourceTree = "<group>"; };
 		B703F8A3572DD3E16DDEB78DCF6E4BA4 /* PrivateSentrySDKOnly.mm */ = {isa = PBXFileReference; includeInIndex = 1; name = PrivateSentrySDKOnly.mm; path = Sources/Sentry/PrivateSentrySDKOnly.mm; sourceTree = "<group>"; };
 		B76FE89D3537C9F131D38702E691ABDE /* GULNetworkInfo.m */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.objc; name = GULNetworkInfo.m; path = GoogleUtilities/Environment/NetworkInfo/GULNetworkInfo.m; sourceTree = "<group>"; };
@@ -3136,6 +3137,7 @@
 		C80B2C4B10D5AD800A89FEF88E42B30C /* InAppWebViewFlutterPlugin.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; name = InAppWebViewFlutterPlugin.h; path = "../../../../../../../../../../.pub-cache/hosted/pub.dev/flutter_inappwebview_ios-1.1.2/ios/Classes/InAppWebViewFlutterPlugin.h"; sourceTree = "<group>"; };
 		C839C9567748BADA576920A5CFC4D59E /* share_plus-share_plus_privacy */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; name = "share_plus-share_plus_privacy"; path = share_plus_privacy.bundle; sourceTree = BUILT_PRODUCTS_DIR; };
 		C849E19358A7BF79AA98287B41043F0B /* SentryPrivate.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; name = SentryPrivate.h; path = Sources/Sentry/include/SentryPrivate.h; sourceTree = "<group>"; };
+		C84C742C1BA821142A6FF105A3B56624 /* flutter_nekoton_bridge-prefix.pch */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; path = "flutter_nekoton_bridge-prefix.pch"; sourceTree = "<group>"; };
 		C853DC80D954BC46C3EF676887BC6BD0 /* flutter_inappwebview_ios-Info.plist */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.plist.xml; path = "flutter_inappwebview_ios-Info.plist"; sourceTree = "<group>"; };
 		C870D25A11C9420305F821145830A1B0 /* EventPermissionStrategy.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; name = EventPermissionStrategy.h; path = "../../../../../../../../../../../.pub-cache/hosted/pub.dev/permission_handler_apple-9.4.5/ios/Classes/strategies/EventPermissionStrategy.h"; sourceTree = "<group>"; };
 		C8773728F7587C609F4D7A19FB839191 /* SentrySpan.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; name = SentrySpan.h; path = Sources/Sentry/include/SentrySpan.h; sourceTree = "<group>"; };
@@ -3275,6 +3277,7 @@
 		DFAEDA0AE772D8491A71F25DA77F2D2E /* SentryCrashMonitor_CPPException.cpp */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.cpp.cpp; name = SentryCrashMonitor_CPPException.cpp; path = Sources/SentryCrash/Recording/Monitors/SentryCrashMonitor_CPPException.cpp; sourceTree = "<group>"; };
 		DFBD5E7FC5E45DEEEB60457A7DD793CF /* SentryCrashReportFields.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; name = SentryCrashReportFields.h; path = Sources/SentryCrash/Recording/SentryCrashReportFields.h; sourceTree = "<group>"; };
 		DFE106E0BCB308FBAB79A42810F2617E /* SentryExperimentalOptions.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = SentryExperimentalOptions.swift; path = Sources/Swift/SentryExperimentalOptions.swift; sourceTree = "<group>"; };
+		DFFB43F238207385D8022F4BEC0888AC /* flutter_nekoton_bridge.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; path = flutter_nekoton_bridge.debug.xcconfig; sourceTree = "<group>"; };
 		E005DE2878CB2CADAA519033A2C9A502 /* SentryCrashObjC.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; name = SentryCrashObjC.h; path = Sources/SentryCrash/Recording/Tools/SentryCrashObjC.h; sourceTree = "<group>"; };
 		E01FF85299C079E0C2158207EA5DEAC5 /* nanopb.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; path = nanopb.debug.xcconfig; sourceTree = "<group>"; };
 		E023E5A3751F12B4B4A411DFFD8E7B57 /* FBLPromiseError.m */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.objc; name = FBLPromiseError.m; path = Sources/FBLPromises/FBLPromiseError.m; sourceTree = "<group>"; };
@@ -3324,7 +3327,6 @@
 		E7FE846AF0841D68858E79D9B9895DCD /* PrivacyInfo.xcprivacy */ = {isa = PBXFileReference; includeInIndex = 1; name = PrivacyInfo.xcprivacy; path = "../../../../../../../../../../../../../.pub-cache/hosted/pub.dev/local_auth_darwin-1.4.2/darwin/local_auth_darwin/Sources/local_auth_darwin/Resources/PrivacyInfo.xcprivacy"; sourceTree = "<group>"; };
 		E83064084386FBC9B0375C64B0E232DA /* LICENSE */ = {isa = PBXFileReference; includeInIndex = 1; name = LICENSE; path = "../../../../../../../../../.pub-cache/hosted/pub.dev/mobile_scanner-3.4.1/LICENSE"; sourceTree = "<group>"; };
 		E8642C8C4E2DC8E530D353477D4AE68E /* SentryBaseIntegration.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; name = SentryBaseIntegration.h; path = Sources/Sentry/include/SentryBaseIntegration.h; sourceTree = "<group>"; };
-		E8922BA3EF06ABD69EB21C807BC17EAA /* flutter_nekoton_bridge-xcframeworks.sh */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.script.sh; path = "flutter_nekoton_bridge-xcframeworks.sh"; sourceTree = "<group>"; };
 		E8BF1F7816F65450755FB15672495F18 /* PhotoPermissionStrategy.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; name = PhotoPermissionStrategy.h; path = "../../../../../../../../../../../.pub-cache/hosted/pub.dev/permission_handler_apple-9.4.5/ios/Classes/strategies/PhotoPermissionStrategy.h"; sourceTree = "<group>"; };
 		E8CE1A628C6948B7970233E62542AF67 /* Pods-Runner-umbrella.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; path = "Pods-Runner-umbrella.h"; sourceTree = "<group>"; };
 		E8EE1B3979002401B8D7769EAA3C1BCB /* permission_handler_apple.modulemap */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.module; path = permission_handler_apple.modulemap; sourceTree = "<group>"; };
@@ -3371,7 +3373,6 @@
 		F00784B5AFA2DDFF52B329D0435D52D3 /* connectivity_plus-prefix.pch */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; path = "connectivity_plus-prefix.pch"; sourceTree = "<group>"; };
 		F020155C47D45F4C42368826AAD5AA64 /* FBLPromiseError.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; name = FBLPromiseError.h; path = Sources/FBLPromises/include/FBLPromiseError.h; sourceTree = "<group>"; };
 		F04001AA5FF8254C52F924F0B0B87983 /* PrivatesHeader.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; name = PrivatesHeader.h; path = Sources/Sentry/include/HybridPublic/PrivatesHeader.h; sourceTree = "<group>"; };
-		F074BE916F0E33773C2C3ACA49C99957 /* flutter_nekoton_bridge-dummy.m */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.objc; path = "flutter_nekoton_bridge-dummy.m"; sourceTree = "<group>"; };
 		F0C7EFBFF01CFAAB52BA74E6CB40CE2C /* image_picker_ios-image_picker_ios_privacy */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; name = "image_picker_ios-image_picker_ios_privacy"; path = image_picker_ios_privacy.bundle; sourceTree = BUILT_PRODUCTS_DIR; };
 		F0FB3789A0D28F9D1978890F47374474 /* app_settings-umbrella.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; path = "app_settings-umbrella.h"; sourceTree = "<group>"; };
 		F11900F28636C9906036FF3099C6F6C2 /* SentryReplayApi.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; name = SentryReplayApi.h; path = Sources/Sentry/Public/SentryReplayApi.h; sourceTree = "<group>"; };
@@ -3386,10 +3387,10 @@
 		F2913C5FBAEC770550895957C07B3373 /* local_auth_darwin-Info.plist */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.plist.xml; path = "local_auth_darwin-Info.plist"; sourceTree = "<group>"; };
 		F299CA44199C1BE8473B9CFA7A90868E /* SentryOptions.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; name = SentryOptions.h; path = Sources/Sentry/Public/SentryOptions.h; sourceTree = "<group>"; };
 		F2AAE1D725E70E7F0D068279027C4D9B /* SentryUIEventTrackingIntegration.m */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.objc; name = SentryUIEventTrackingIntegration.m; path = Sources/Sentry/SentryUIEventTrackingIntegration.m; sourceTree = "<group>"; };
+		F2B6D258EF502C1FD6F0C26C7BCCD15D /* flutter_nekoton_bridge.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; path = flutter_nekoton_bridge.release.xcconfig; sourceTree = "<group>"; };
 		F2B6E7B074B79EACB23E01C99EF030ED /* GoogleUtilitiesComponents-Info.plist */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.plist.xml; path = "GoogleUtilitiesComponents-Info.plist"; sourceTree = "<group>"; };
 		F2C9796582DCA0FCABF450F8F93BF5B4 /* SqfliteDatabase.m */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.objc; name = SqfliteDatabase.m; path = "../../../../../../../../../../../../.pub-cache/hosted/pub.dev/sqflite_darwin-2.4.1/darwin/sqflite_darwin/Sources/sqflite_darwin/SqfliteDatabase.m"; sourceTree = "<group>"; };
 		F2DD1918750F3A487FADA200B7783AFA /* CoreTelephony.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreTelephony.framework; path = Platforms/iPhoneOS.platform/Developer/SDKs/iPhoneOS18.0.sdk/System/Library/Frameworks/CoreTelephony.framework; sourceTree = DEVELOPER_DIR; };
-		F2EC0C60B7F1AA3F34A071F480A8A69F /* flutter_nekoton_bridge.modulemap */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.module; path = flutter_nekoton_bridge.modulemap; sourceTree = "<group>"; };
 		F326629B7B0DC2A4477390126BB2ADF5 /* SentryCrashInstallationReporter.m */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.objc; name = SentryCrashInstallationReporter.m; path = Sources/Sentry/SentryCrashInstallationReporter.m; sourceTree = "<group>"; };
 		F36A85F75BDF7C10D2AD65B7E8C22FE0 /* SentryBreadcrumb.m */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.objc; name = SentryBreadcrumb.m; path = Sources/Sentry/SentryBreadcrumb.m; sourceTree = "<group>"; };
 		F3A2720890899B7E805D6DC7F41640AE /* GULNetworkInfo.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; name = GULNetworkInfo.h; path = GoogleUtilities/Environment/Public/GoogleUtilities/GULNetworkInfo.h; sourceTree = "<group>"; };
@@ -3439,7 +3440,6 @@
 		FA3C2029F98C4A89E7EE1DF604EDF7F6 /* SentryLogOutput.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = SentryLogOutput.swift; path = Sources/Swift/Tools/SentryLogOutput.swift; sourceTree = "<group>"; };
 		FA4914F5D6C9F497F788E5B37EA73BF3 /* SentryEnvelopeItemHeader.m */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.objc; name = SentryEnvelopeItemHeader.m; path = Sources/Sentry/SentryEnvelopeItemHeader.m; sourceTree = "<group>"; };
 		FABB2079C6C141BB9E81145623000AAE /* IntegrationTestPlugin.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; name = IntegrationTestPlugin.h; path = ../../../../../../../../../../../../../flutter/packages/integration_test/ios/integration_test/Sources/integration_test/include/IntegrationTestPlugin.h; sourceTree = "<group>"; };
-		FB07AE43DE7D8CB572DD0DD0F3A7519F /* flutter_nekoton_bridge.c */ = {isa = PBXFileReference; includeInIndex = 1; name = flutter_nekoton_bridge.c; path = "../../../../../../../../../../.pub-cache/hosted/pub.dev/flutter_nekoton_bridge-2.0.1-dev.13/ios/Classes/flutter_nekoton_bridge.c"; sourceTree = "<group>"; };
 		FB0C1F03D7C186465C3696F6C5DFBF0B /* SentryThreadInspector.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; name = SentryThreadInspector.h; path = Sources/Sentry/include/SentryThreadInspector.h; sourceTree = "<group>"; };
 		FB0F7D742B55F74A57729FC18BDA00E0 /* FBLPromise+Async.m */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.objc; name = "FBLPromise+Async.m"; path = "Sources/FBLPromises/FBLPromise+Async.m"; sourceTree = "<group>"; };
 		FB4D96380B41639F082AB1474CD7EFF4 /* SentryCrashMonitor.c */ = {isa = PBXFileReference; includeInIndex = 1; name = SentryCrashMonitor.c; path = Sources/SentryCrash/Recording/Monitors/SentryCrashMonitor.c; sourceTree = "<group>"; };
@@ -4938,15 +4938,6 @@
 			path = shared_preferences_foundation;
 			sourceTree = "<group>";
 		};
-		15D02F10A46A212FCB4A4B93A981DF00 /* .. */ = {
-			isa = PBXGroup;
-			children = (
-				4E16CB365256F94C13E2ACD4DB27608D /* .. */,
-			);
-			name = ..;
-			path = ..;
-			sourceTree = "<group>";
-		};
 		1621376E6311DE208DB0BFD8231A7B6E /* broxus */ = {
 			isa = PBXGroup;
 			children = (
@@ -4985,13 +4976,13 @@
 			path = "../Target Support Files/MLKitBarcodeScanning";
 			sourceTree = "<group>";
 		};
-		19513FFF958AEFB07098E11AE0005A91 /* ios */ = {
+		1878F30C497B234BACD0DB1B91C58B12 /* ever_wallet_flutter_new */ = {
 			isa = PBXGroup;
 			children = (
-				D055899F7B00FCBE6F11D45F723A28D2 /* .symlinks */,
+				47E285D4A1FB65CE9461BCDDBB06677D /* ios */,
 			);
-			name = ios;
-			path = ios;
+			name = ever_wallet_flutter_new;
+			path = ever_wallet_flutter_new;
 			sourceTree = "<group>";
 		};
 		195E8FE4FBF6C6BDF07E69EB74BCF698 /* projects */ = {
@@ -5074,6 +5065,15 @@
 			);
 			name = Resources;
 			path = Resources;
+			sourceTree = "<group>";
+		};
+		1CDFDABBE51D7F94B80D667E3F9F849F /* .. */ = {
+			isa = PBXGroup;
+			children = (
+				5D6205FDE2F6BC9034F0574827B7C3B6 /* .. */,
+			);
+			name = ..;
+			path = ..;
 			sourceTree = "<group>";
 		};
 		1D459C237EE5811026D00DB0880A73BE /* Support Files */ = {
@@ -5163,6 +5163,15 @@
 			path = "../Target Support Files/GoogleToolboxForMac";
 			sourceTree = "<group>";
 		};
+		1EF0E84E843F1BAF3F7AAD0957A24C04 /* flutter_nekoton_bridge */ = {
+			isa = PBXGroup;
+			children = (
+				EB07A06D17D7AF07C843FE2F73F0F2B5 /* ios */,
+			);
+			name = flutter_nekoton_bridge;
+			path = flutter_nekoton_bridge;
+			sourceTree = "<group>";
+		};
 		200BF9E480DAEC584DFCD0E975CF4D73 /* .. */ = {
 			isa = PBXGroup;
 			children = (
@@ -5204,6 +5213,15 @@
 			);
 			name = ios;
 			path = ios;
+			sourceTree = "<group>";
+		};
+		21D3309698999DD7DADFCB1F3FE9FCD5 /* .symlinks */ = {
+			isa = PBXGroup;
+			children = (
+				E36FD32427C34936D44FB657AA38C31A /* plugins */,
+			);
+			name = .symlinks;
+			path = .symlinks;
 			sourceTree = "<group>";
 		};
 		220D9B198B1E86943875E857FF6382B2 /* Documents */ = {
@@ -5290,6 +5308,15 @@
 			path = plugins;
 			sourceTree = "<group>";
 		};
+		24FB6015E4F9D3C2153632DDC8C6BED6 /* Documents */ = {
+			isa = PBXGroup;
+			children = (
+				DC639D23E86FADEC39C570A17E2F73EC /* projects */,
+			);
+			name = Documents;
+			path = Documents;
+			sourceTree = "<group>";
+		};
 		251A9D6D0EE4E545F3A6C4D8E7023E3D /* Sources */ = {
 			isa = PBXGroup;
 			children = (
@@ -5354,6 +5381,15 @@
 			);
 			name = image_picker_ios;
 			path = image_picker_ios;
+			sourceTree = "<group>";
+		};
+		27C57E2E9B8A6F59184B0826FA1F25A3 /* .. */ = {
+			isa = PBXGroup;
+			children = (
+				3F0823EFD1A4A721FEEEAFBE64036F01 /* .. */,
+			);
+			name = ..;
+			path = ..;
 			sourceTree = "<group>";
 		};
 		28434C5E7E99A1B27D5E83A379009843 /* .symlinks */ = {
@@ -5753,15 +5789,6 @@
 			path = ..;
 			sourceTree = "<group>";
 		};
-		34BF30C13526BF430FBAA972AFFA8B6E /* .. */ = {
-			isa = PBXGroup;
-			children = (
-				516C230C2064ECECD760C5528874D5F4 /* .. */,
-			);
-			name = ..;
-			path = ..;
-			sourceTree = "<group>";
-		};
 		34D10B446CF0B80E5E8FAC17F9044473 /* .. */ = {
 			isa = PBXGroup;
 			children = (
@@ -5870,13 +5897,20 @@
 			name = Frameworks;
 			sourceTree = "<group>";
 		};
-		37DA65E7F419B047C026C49B51301203 /* Documents */ = {
+		37AA215A28CACDCD6E60254ABB0017FF /* Support Files */ = {
 			isa = PBXGroup;
 			children = (
-				BED272E51A8576326BF1D5109A333D7F /* projects */,
+				6CC68804CC9305066D925DD615EAEECE /* flutter_nekoton_bridge.modulemap */,
+				1B8F3A60031752717E821A0937E46377 /* flutter_nekoton_bridge-dummy.m */,
+				AAB91B9EEE8DEDCD7387B0980B464973 /* flutter_nekoton_bridge-Info.plist */,
+				C84C742C1BA821142A6FF105A3B56624 /* flutter_nekoton_bridge-prefix.pch */,
+				A22608B8EC658680D3CAC40C75B3F366 /* flutter_nekoton_bridge-umbrella.h */,
+				722BCE52D99BB7257D23C7CA61DF7C3F /* flutter_nekoton_bridge-xcframeworks.sh */,
+				DFFB43F238207385D8022F4BEC0888AC /* flutter_nekoton_bridge.debug.xcconfig */,
+				F2B6D258EF502C1FD6F0C26C7BCCD15D /* flutter_nekoton_bridge.release.xcconfig */,
 			);
-			name = Documents;
-			path = Documents;
+			name = "Support Files";
+			path = "../../../../Pods/Target Support Files/flutter_nekoton_bridge";
 			sourceTree = "<group>";
 		};
 		3868937AD5935DF877681BD86C66726C /* .. */ = {
@@ -5963,6 +5997,15 @@
 			path = sqflite_darwin;
 			sourceTree = "<group>";
 		};
+		3B99C512A073AD3A83D9543382F3D1F3 /* .. */ = {
+			isa = PBXGroup;
+			children = (
+				1CDFDABBE51D7F94B80D667E3F9F849F /* .. */,
+			);
+			name = ..;
+			path = "../../../../../../../../../.pub-cache/hosted/pub.dev/flutter_nekoton_bridge-2.2.3/ios";
+			sourceTree = "<group>";
+		};
 		3C13FB88663F577E90D70DBE1A4ED580 /* Classes */ = {
 			isa = PBXGroup;
 			children = (
@@ -6039,6 +6082,15 @@
 			path = local_auth_darwin;
 			sourceTree = "<group>";
 		};
+		3F0823EFD1A4A721FEEEAFBE64036F01 /* .. */ = {
+			isa = PBXGroup;
+			children = (
+				615F85D4382B0BDCE4602E9A4567132B /* .. */,
+			);
+			name = ..;
+			path = ..;
+			sourceTree = "<group>";
+		};
 		3F5F72858581980C785227326C69E1A7 /* projects */ = {
 			isa = PBXGroup;
 			children = (
@@ -6111,14 +6163,6 @@
 			path = ..;
 			sourceTree = "<group>";
 		};
-		42FDCD8ABD4584A8A325AFD3CC27C22A /* Frameworks */ = {
-			isa = PBXGroup;
-			children = (
-				A8F7AC5A32693C738F167621136E21BA /* NekotonBridge.xcframework */,
-			);
-			name = Frameworks;
-			sourceTree = "<group>";
-		};
 		4336C1475296D9556B65E5A274BA6F06 /* Pod */ = {
 			isa = PBXGroup;
 			children = (
@@ -6183,6 +6227,17 @@
 			path = image_picker_ios;
 			sourceTree = "<group>";
 		};
+		45CF902587421C64F4C0BA47A3186694 /* Classes */ = {
+			isa = PBXGroup;
+			children = (
+				4860A8042C940323C9326E25F10E1551 /* EnforceBundling.swift */,
+				9C6EF3D7569F7C92F62BAD2986B20735 /* flutter_nekoton_bridge.c */,
+				1BE4382F1DD55C174A35D246111F6C4F /* frb.h */,
+			);
+			name = Classes;
+			path = Classes;
+			sourceTree = "<group>";
+		};
 		45E20FFC78D701FFF05A1BB40C19F144 /* .. */ = {
 			isa = PBXGroup;
 			children = (
@@ -6211,6 +6266,15 @@
 			isa = PBXGroup;
 			children = (
 				7FE4030280A12A27FAC3EF232CB70352 /* .symlinks */,
+			);
+			name = ios;
+			path = ios;
+			sourceTree = "<group>";
+		};
+		47E285D4A1FB65CE9461BCDDBB06677D /* ios */ = {
+			isa = PBXGroup;
+			children = (
+				21D3309698999DD7DADFCB1F3FE9FCD5 /* .symlinks */,
 			);
 			name = ios;
 			path = ios;
@@ -6247,15 +6311,6 @@
 			isa = PBXGroup;
 			children = (
 				C656934DF7C90CE7EBE228D951BD3DB0 /* .. */,
-			);
-			name = ..;
-			path = ..;
-			sourceTree = "<group>";
-		};
-		4A22A6B06EC3C6DF8445D2E764DFAAA5 /* .. */ = {
-			isa = PBXGroup;
-			children = (
-				37DA65E7F419B047C026C49B51301203 /* Documents */,
 			);
 			name = ..;
 			path = ..;
@@ -6358,15 +6413,6 @@
 			path = broxus;
 			sourceTree = "<group>";
 		};
-		4D378375A9B09ABC7DC710A8A47546FD /* ever_wallet_flutter_new */ = {
-			isa = PBXGroup;
-			children = (
-				19513FFF958AEFB07098E11AE0005A91 /* ios */,
-			);
-			name = ever_wallet_flutter_new;
-			path = ever_wallet_flutter_new;
-			sourceTree = "<group>";
-		};
 		4D84938ED4A1538AEC11753805080F03 /* darwin */ = {
 			isa = PBXGroup;
 			children = (
@@ -6383,24 +6429,6 @@
 				A179096AA6F0BE296553368163A07C5F /* LICENSE */,
 			);
 			name = Pod;
-			sourceTree = "<group>";
-		};
-		4DB3D0D9A472211EBA1B0DEE4414B61F /* plugins */ = {
-			isa = PBXGroup;
-			children = (
-				E765CE94F2B3877EC7D18C2727013D24 /* flutter_nekoton_bridge */,
-			);
-			name = plugins;
-			path = plugins;
-			sourceTree = "<group>";
-		};
-		4E16CB365256F94C13E2ACD4DB27608D /* .. */ = {
-			isa = PBXGroup;
-			children = (
-				34BF30C13526BF430FBAA972AFFA8B6E /* .. */,
-			);
-			name = ..;
-			path = ..;
 			sourceTree = "<group>";
 		};
 		4E36C81955C1C3E45B5109E2ADBA3CA6 /* local_auth_darwin */ = {
@@ -6492,15 +6520,6 @@
 			path = GTMSessionFetcher;
 			sourceTree = "<group>";
 		};
-		516C230C2064ECECD760C5528874D5F4 /* .. */ = {
-			isa = PBXGroup;
-			children = (
-				4A22A6B06EC3C6DF8445D2E764DFAAA5 /* .. */,
-			);
-			name = ..;
-			path = ..;
-			sourceTree = "<group>";
-		};
 		51869D1822F9B12482650D909EB5CA49 /* PullToRefresh */ = {
 			isa = PBXGroup;
 			children = (
@@ -6586,7 +6605,7 @@
 				FA0D659D89F31DD6C95B42A342BF83C5 /* flutter_inappwebview_ios */,
 				EA8B445D31A900BF5051C439FF39B403 /* flutter_keyboard_visibility */,
 				0B63D15C3D40A853EA5E3CD9CFABF591 /* flutter_native_splash */,
-				AAFFA193EE39F0D60142663618287DC6 /* flutter_nekoton_bridge */,
+				8D011336BD73C704A8CA0378EA1FF431 /* flutter_nekoton_bridge */,
 				7DCE7406D5D14301F20BB875625833B7 /* flutter_secure_storage */,
 				8AA0D7372C15720CE07CA71C4F99A87C /* image_picker_ios */,
 				EBCE24D5D2C740033BCC01C92862FA5A /* integration_test */,
@@ -6739,6 +6758,33 @@
 			path = flutter_inappwebview_ios;
 			sourceTree = "<group>";
 		};
+		5D6205FDE2F6BC9034F0574827B7C3B6 /* .. */ = {
+			isa = PBXGroup;
+			children = (
+				27C57E2E9B8A6F59184B0826FA1F25A3 /* .. */,
+			);
+			name = ..;
+			path = ..;
+			sourceTree = "<group>";
+		};
+		5D972495E897E20BC985C3FF3C886F56 /* broxus */ = {
+			isa = PBXGroup;
+			children = (
+				1878F30C497B234BACD0DB1B91C58B12 /* ever_wallet_flutter_new */,
+			);
+			name = broxus;
+			path = broxus;
+			sourceTree = "<group>";
+		};
+		5DD33677EA64460E39CCD49062D2DC15 /* Pod */ = {
+			isa = PBXGroup;
+			children = (
+				4F0FECF7D4950AD7262BDC8A91501C39 /* flutter_nekoton_bridge.podspec */,
+				5E190C6488FF42F09BC7991A7F087EC0 /* LICENSE */,
+			);
+			name = Pod;
+			sourceTree = "<group>";
+		};
 		5E70038AFBFBC7A2F07D6C3D6A826DC3 /* projects */ = {
 			isa = PBXGroup;
 			children = (
@@ -6810,6 +6856,15 @@
 			);
 			name = ever_wallet_flutter_new;
 			path = ever_wallet_flutter_new;
+			sourceTree = "<group>";
+		};
+		615F85D4382B0BDCE4602E9A4567132B /* .. */ = {
+			isa = PBXGroup;
+			children = (
+				24FB6015E4F9D3C2153632DDC8C6BED6 /* Documents */,
+			);
+			name = ..;
+			path = ..;
 			sourceTree = "<group>";
 		};
 		616ED54558911C35F6A8C5F4CDC9CD79 /* Pod */ = {
@@ -7700,6 +7755,14 @@
 			path = plugins;
 			sourceTree = "<group>";
 		};
+		808ADA788D0E5F8783119D1CEFC1E1B1 /* Frameworks */ = {
+			isa = PBXGroup;
+			children = (
+				1DB023C25CE92CCA7007A6F031D90081 /* NekotonBridge.xcframework */,
+			);
+			name = Frameworks;
+			sourceTree = "<group>";
+		};
 		80BF121D3AEFC3C06B821E526909A364 /* InAppWebView */ = {
 			isa = PBXGroup;
 			children = (
@@ -7996,6 +8059,18 @@
 			path = sqflite_darwin;
 			sourceTree = "<group>";
 		};
+		8D011336BD73C704A8CA0378EA1FF431 /* flutter_nekoton_bridge */ = {
+			isa = PBXGroup;
+			children = (
+				3B99C512A073AD3A83D9543382F3D1F3 /* .. */,
+				808ADA788D0E5F8783119D1CEFC1E1B1 /* Frameworks */,
+				5DD33677EA64460E39CCD49062D2DC15 /* Pod */,
+				37AA215A28CACDCD6E60254ABB0017FF /* Support Files */,
+			);
+			name = flutter_nekoton_bridge;
+			path = ../.symlinks/plugins/flutter_nekoton_bridge/ios;
+			sourceTree = "<group>";
+		};
 		8DE26CFC8A2A4F58080D0870C26084B9 /* Documents */ = {
 			isa = PBXGroup;
 			children = (
@@ -8227,15 +8302,6 @@
 			path = .symlinks;
 			sourceTree = "<group>";
 		};
-		943868E91DDE23C22A484005CAA0D59B /* broxus */ = {
-			isa = PBXGroup;
-			children = (
-				4D378375A9B09ABC7DC710A8A47546FD /* ever_wallet_flutter_new */,
-			);
-			name = broxus;
-			path = broxus;
-			sourceTree = "<group>";
-		};
 		9468479C110A3BFC0465B186BA790271 /* Pod */ = {
 			isa = PBXGroup;
 			children = (
@@ -8379,17 +8445,6 @@
 			path = plugins;
 			sourceTree = "<group>";
 		};
-		9954E2363EDB171E51145F26458C7151 /* Classes */ = {
-			isa = PBXGroup;
-			children = (
-				7FBD35F5DECA012B066F9307D45D1BB0 /* EnforceBundling.swift */,
-				FB07AE43DE7D8CB572DD0DD0F3A7519F /* flutter_nekoton_bridge.c */,
-				20708B59F01375DC7832BC372EBE5822 /* frb.h */,
-			);
-			name = Classes;
-			path = Classes;
-			sourceTree = "<group>";
-		};
 		99EF5F93B614900DC3110788C6D206C1 /* .. */ = {
 			isa = PBXGroup;
 			children = (
@@ -8451,15 +8506,6 @@
 			);
 			name = ..;
 			path = ..;
-			sourceTree = "<group>";
-		};
-		9C8500BC23F560F0E0F55236B8B6F57B /* Pod */ = {
-			isa = PBXGroup;
-			children = (
-				546194EB7DA83BD07754329D29F7FD1F /* flutter_nekoton_bridge.podspec */,
-				85712E15D872743598A6258A4A006A96 /* LICENSE */,
-			);
-			name = Pod;
 			sourceTree = "<group>";
 		};
 		9C927F98CEA89B67B1633660725B7441 /* Pod */ = {
@@ -8820,18 +8866,6 @@
 			);
 			name = darwin;
 			path = darwin;
-			sourceTree = "<group>";
-		};
-		AAFFA193EE39F0D60142663618287DC6 /* flutter_nekoton_bridge */ = {
-			isa = PBXGroup;
-			children = (
-				C8C0B22916AD7F98F7EC475E590B5B54 /* .. */,
-				42FDCD8ABD4584A8A325AFD3CC27C22A /* Frameworks */,
-				9C8500BC23F560F0E0F55236B8B6F57B /* Pod */,
-				E2F1F33039201E8F4818E8D3CC3058B1 /* Support Files */,
-			);
-			name = flutter_nekoton_bridge;
-			path = ../.symlinks/plugins/flutter_nekoton_bridge/ios;
 			sourceTree = "<group>";
 		};
 		AB7635A47E0E49812E46BF6F2B75323F /* url_launcher_ios */ = {
@@ -9250,15 +9284,6 @@
 			path = .;
 			sourceTree = "<group>";
 		};
-		BED272E51A8576326BF1D5109A333D7F /* projects */ = {
-			isa = PBXGroup;
-			children = (
-				943868E91DDE23C22A484005CAA0D59B /* broxus */,
-			);
-			name = projects;
-			path = projects;
-			sourceTree = "<group>";
-		};
 		BEEC191A9C3FA9EFB8B84B60741BBFEB /* .. */ = {
 			isa = PBXGroup;
 			children = (
@@ -9504,15 +9529,6 @@
 			path = ..;
 			sourceTree = "<group>";
 		};
-		C8C0B22916AD7F98F7EC475E590B5B54 /* .. */ = {
-			isa = PBXGroup;
-			children = (
-				15D02F10A46A212FCB4A4B93A981DF00 /* .. */,
-			);
-			name = ..;
-			path = "../../../../../../../../../.pub-cache/hosted/pub.dev/flutter_nekoton_bridge-2.0.1-dev.13/ios";
-			sourceTree = "<group>";
-		};
 		CA440A7B38B5C29A6359A961ED385C40 /* .. */ = {
 			isa = PBXGroup;
 			children = (
@@ -9712,15 +9728,6 @@
 			);
 			name = ..;
 			path = .;
-			sourceTree = "<group>";
-		};
-		D055899F7B00FCBE6F11D45F723A28D2 /* .symlinks */ = {
-			isa = PBXGroup;
-			children = (
-				4DB3D0D9A472211EBA1B0DEE4414B61F /* plugins */,
-			);
-			name = .symlinks;
-			path = .symlinks;
 			sourceTree = "<group>";
 		};
 		D05EE68BC7E241D8B09AFABC42524E62 /* .. */ = {
@@ -10003,15 +10010,6 @@
 			path = "../../../../../../../../../.pub-cache/hosted/pub.dev/url_launcher_ios-6.3.2/ios/url_launcher_ios/Sources";
 			sourceTree = "<group>";
 		};
-		D97CA3B7619D804457F299C165F3282D /* ios */ = {
-			isa = PBXGroup;
-			children = (
-				9954E2363EDB171E51145F26458C7151 /* Classes */,
-			);
-			name = ios;
-			path = ios;
-			sourceTree = "<group>";
-		};
 		DA239C0BF2555871A636AFB83E7DB2D4 /* Pod */ = {
 			isa = PBXGroup;
 			children = (
@@ -10073,6 +10071,15 @@
 			);
 			name = ..;
 			path = ..;
+			sourceTree = "<group>";
+		};
+		DC639D23E86FADEC39C570A17E2F73EC /* projects */ = {
+			isa = PBXGroup;
+			children = (
+				5D972495E897E20BC985C3FF3C886F56 /* broxus */,
+			);
+			name = projects;
+			path = projects;
 			sourceTree = "<group>";
 		};
 		DCBB77B64520DE94C4E25A2AD8D8B0A5 /* .symlinks */ = {
@@ -10232,22 +10239,6 @@
 			path = PrintJob;
 			sourceTree = "<group>";
 		};
-		E2F1F33039201E8F4818E8D3CC3058B1 /* Support Files */ = {
-			isa = PBXGroup;
-			children = (
-				F2EC0C60B7F1AA3F34A071F480A8A69F /* flutter_nekoton_bridge.modulemap */,
-				F074BE916F0E33773C2C3ACA49C99957 /* flutter_nekoton_bridge-dummy.m */,
-				B6ABF0B57ADCAB914254E5CB365EB769 /* flutter_nekoton_bridge-Info.plist */,
-				2836121A1A50D4FA2E0A59905B926AF9 /* flutter_nekoton_bridge-prefix.pch */,
-				6D0E1EEDAC0FC5429F230D4C4F3C3A8D /* flutter_nekoton_bridge-umbrella.h */,
-				E8922BA3EF06ABD69EB21C807BC17EAA /* flutter_nekoton_bridge-xcframeworks.sh */,
-				070649A75401FFC9FAFB1AF0E1088AF2 /* flutter_nekoton_bridge.debug.xcconfig */,
-				4102743C7BCCEA45BB3F2EB6A3F43A50 /* flutter_nekoton_bridge.release.xcconfig */,
-			);
-			name = "Support Files";
-			path = "../../../../Pods/Target Support Files/flutter_nekoton_bridge";
-			sourceTree = "<group>";
-		};
 		E31339CD621068B4732019E9A072D477 /* share_plus */ = {
 			isa = PBXGroup;
 			children = (
@@ -10263,6 +10254,15 @@
 			isa = PBXGroup;
 			children = (
 				A948493A4647C2E074D9A3B7F306981D /* image_picker_ios */,
+			);
+			name = plugins;
+			path = plugins;
+			sourceTree = "<group>";
+		};
+		E36FD32427C34936D44FB657AA38C31A /* plugins */ = {
+			isa = PBXGroup;
+			children = (
+				1EF0E84E843F1BAF3F7AAD0957A24C04 /* flutter_nekoton_bridge */,
 			);
 			name = plugins;
 			path = plugins;
@@ -10352,15 +10352,6 @@
 			);
 			name = .symlinks;
 			path = .symlinks;
-			sourceTree = "<group>";
-		};
-		E765CE94F2B3877EC7D18C2727013D24 /* flutter_nekoton_bridge */ = {
-			isa = PBXGroup;
-			children = (
-				D97CA3B7619D804457F299C165F3282D /* ios */,
-			);
-			name = flutter_nekoton_bridge;
-			path = flutter_nekoton_bridge;
 			sourceTree = "<group>";
 		};
 		E7BFAA64332B733E66DF1636D2A36C3F /* Pod */ = {
@@ -10463,6 +10454,15 @@
 			);
 			name = flutter_keyboard_visibility;
 			path = ../.symlinks/plugins/flutter_keyboard_visibility/ios;
+			sourceTree = "<group>";
+		};
+		EB07A06D17D7AF07C843FE2F73F0F2B5 /* ios */ = {
+			isa = PBXGroup;
+			children = (
+				45CF902587421C64F4C0BA47A3186694 /* Classes */,
+			);
+			name = ios;
+			path = ios;
 			sourceTree = "<group>";
 		};
 		EB6DF1FA1E5A1007797BEAC9A27BF1DB /* device_info_plus */ = {
@@ -11737,7 +11737,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				ECC5B0C0ACA368EA13B63A7131F51E93 /* flutter_nekoton_bridge-umbrella.h in Headers */,
-				63F88D00714CFF3CB5A3A0B8DDBBCC6F /* frb.h in Headers */,
+				62FD1F1833BB624532091273C2097AF9 /* frb.h in Headers */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -14156,8 +14156,8 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				8BF5222189737D069377BA143F3A979C /* EnforceBundling.swift in Sources */,
-				BE3A2DD0A38FD30843F88143983F9422 /* flutter_nekoton_bridge.c in Sources */,
+				856A0562AAE8505B970CC631E998DD93 /* EnforceBundling.swift in Sources */,
+				8EA31B604B0A807538D19336A81BED26 /* flutter_nekoton_bridge.c in Sources */,
 				7F8D59F6958F39ADAF082747EDCE1BC9 /* flutter_nekoton_bridge-dummy.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -15635,7 +15635,7 @@
 		};
 		072D1E3343B66525DBE60C270A689AAE /* Stage-production */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = 4102743C7BCCEA45BB3F2EB6A3F43A50 /* flutter_nekoton_bridge.release.xcconfig */;
+			baseConfigurationReference = F2B6D258EF502C1FD6F0C26C7BCCD15D /* flutter_nekoton_bridge.release.xcconfig */;
 			buildSettings = {
 				CLANG_ENABLE_OBJC_WEAK = NO;
 				"CODE_SIGN_IDENTITY[sdk=appletvos*]" = "";
@@ -16580,7 +16580,7 @@
 		};
 		0EF9CE6E415B9C8C7517A439C47384F2 /* Release-staging */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = 4102743C7BCCEA45BB3F2EB6A3F43A50 /* flutter_nekoton_bridge.release.xcconfig */;
+			baseConfigurationReference = F2B6D258EF502C1FD6F0C26C7BCCD15D /* flutter_nekoton_bridge.release.xcconfig */;
 			buildSettings = {
 				CLANG_ENABLE_OBJC_WEAK = NO;
 				"CODE_SIGN_IDENTITY[sdk=appletvos*]" = "";
@@ -16782,7 +16782,7 @@
 		};
 		0FF9EEC7D5F8497F1F1530B2FFC069A2 /* Debug-production */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = 4102743C7BCCEA45BB3F2EB6A3F43A50 /* flutter_nekoton_bridge.release.xcconfig */;
+			baseConfigurationReference = F2B6D258EF502C1FD6F0C26C7BCCD15D /* flutter_nekoton_bridge.release.xcconfig */;
 			buildSettings = {
 				CLANG_ENABLE_OBJC_WEAK = NO;
 				"CODE_SIGN_IDENTITY[sdk=appletvos*]" = "";
@@ -22113,7 +22113,7 @@
 		};
 		306DC8B27ABA63D62B5B43DACCD4EF97 /* Release-production */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = 4102743C7BCCEA45BB3F2EB6A3F43A50 /* flutter_nekoton_bridge.release.xcconfig */;
+			baseConfigurationReference = F2B6D258EF502C1FD6F0C26C7BCCD15D /* flutter_nekoton_bridge.release.xcconfig */;
 			buildSettings = {
 				CLANG_ENABLE_OBJC_WEAK = NO;
 				"CODE_SIGN_IDENTITY[sdk=appletvos*]" = "";
@@ -22504,7 +22504,7 @@
 		};
 		3303929850998D73363D5E7CEA0EB8D3 /* Profile-production */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = 4102743C7BCCEA45BB3F2EB6A3F43A50 /* flutter_nekoton_bridge.release.xcconfig */;
+			baseConfigurationReference = F2B6D258EF502C1FD6F0C26C7BCCD15D /* flutter_nekoton_bridge.release.xcconfig */;
 			buildSettings = {
 				CLANG_ENABLE_OBJC_WEAK = NO;
 				"CODE_SIGN_IDENTITY[sdk=appletvos*]" = "";
@@ -26054,7 +26054,7 @@
 		};
 		51CD0095C411244176155586682FCADE /* Profile-staging */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = 4102743C7BCCEA45BB3F2EB6A3F43A50 /* flutter_nekoton_bridge.release.xcconfig */;
+			baseConfigurationReference = F2B6D258EF502C1FD6F0C26C7BCCD15D /* flutter_nekoton_bridge.release.xcconfig */;
 			buildSettings = {
 				CLANG_ENABLE_OBJC_WEAK = NO;
 				"CODE_SIGN_IDENTITY[sdk=appletvos*]" = "";
@@ -26334,7 +26334,7 @@
 		};
 		5561BF104DFF00CB72F4F5F3615C51DA /* Release-development */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = 4102743C7BCCEA45BB3F2EB6A3F43A50 /* flutter_nekoton_bridge.release.xcconfig */;
+			baseConfigurationReference = F2B6D258EF502C1FD6F0C26C7BCCD15D /* flutter_nekoton_bridge.release.xcconfig */;
 			buildSettings = {
 				CLANG_ENABLE_OBJC_WEAK = NO;
 				"CODE_SIGN_IDENTITY[sdk=appletvos*]" = "";
@@ -26406,7 +26406,7 @@
 		};
 		55D3D7883C1CD4C0C821D73D70163312 /* Release */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = 4102743C7BCCEA45BB3F2EB6A3F43A50 /* flutter_nekoton_bridge.release.xcconfig */;
+			baseConfigurationReference = F2B6D258EF502C1FD6F0C26C7BCCD15D /* flutter_nekoton_bridge.release.xcconfig */;
 			buildSettings = {
 				CLANG_ENABLE_OBJC_WEAK = NO;
 				"CODE_SIGN_IDENTITY[sdk=appletvos*]" = "";
@@ -30081,7 +30081,7 @@
 		};
 		70DD690047C73C68BE89DC05E0AAD341 /* Profile */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = 4102743C7BCCEA45BB3F2EB6A3F43A50 /* flutter_nekoton_bridge.release.xcconfig */;
+			baseConfigurationReference = F2B6D258EF502C1FD6F0C26C7BCCD15D /* flutter_nekoton_bridge.release.xcconfig */;
 			buildSettings = {
 				CLANG_ENABLE_OBJC_WEAK = NO;
 				"CODE_SIGN_IDENTITY[sdk=appletvos*]" = "";
@@ -35021,7 +35021,7 @@
 		};
 		96F795B926F6FB158C30B13BE13D904B /* Debug */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = 070649A75401FFC9FAFB1AF0E1088AF2 /* flutter_nekoton_bridge.debug.xcconfig */;
+			baseConfigurationReference = DFFB43F238207385D8022F4BEC0888AC /* flutter_nekoton_bridge.debug.xcconfig */;
 			buildSettings = {
 				CLANG_ENABLE_OBJC_WEAK = NO;
 				"CODE_SIGN_IDENTITY[sdk=appletvos*]" = "";
@@ -40691,7 +40691,7 @@
 		};
 		C641AD90B09B3FB791617E296A6D0AD2 /* Debug-development */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = 4102743C7BCCEA45BB3F2EB6A3F43A50 /* flutter_nekoton_bridge.release.xcconfig */;
+			baseConfigurationReference = F2B6D258EF502C1FD6F0C26C7BCCD15D /* flutter_nekoton_bridge.release.xcconfig */;
 			buildSettings = {
 				CLANG_ENABLE_OBJC_WEAK = NO;
 				"CODE_SIGN_IDENTITY[sdk=appletvos*]" = "";
@@ -46274,7 +46274,7 @@
 		};
 		F16086108EF7F6450C7DC16D9519150F /* Debug-staging */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = 4102743C7BCCEA45BB3F2EB6A3F43A50 /* flutter_nekoton_bridge.release.xcconfig */;
+			baseConfigurationReference = F2B6D258EF502C1FD6F0C26C7BCCD15D /* flutter_nekoton_bridge.release.xcconfig */;
 			buildSettings = {
 				CLANG_ENABLE_OBJC_WEAK = NO;
 				"CODE_SIGN_IDENTITY[sdk=appletvos*]" = "";
@@ -46610,7 +46610,7 @@
 		};
 		F31CF7744076AA5834785341C3964590 /* Profile-development */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = 4102743C7BCCEA45BB3F2EB6A3F43A50 /* flutter_nekoton_bridge.release.xcconfig */;
+			baseConfigurationReference = F2B6D258EF502C1FD6F0C26C7BCCD15D /* flutter_nekoton_bridge.release.xcconfig */;
 			buildSettings = {
 				CLANG_ENABLE_OBJC_WEAK = NO;
 				"CODE_SIGN_IDENTITY[sdk=appletvos*]" = "";
