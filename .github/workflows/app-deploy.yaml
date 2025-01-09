@@ -53,6 +53,16 @@ jobs:
             exit 1
           fi
 
+      - name: Check store builds with flavor
+        run: |
+          if [[ "${{ inputs.flavor }}" != "production" &&
+                ( "${{ inputs.deploy_target }}" == "store" ||
+                  "${{ inputs.deploy_target }}" == "ios_store" ||
+                  "${{ inputs.deploy_target }}" == "android_store" ) ]]; then
+            echo "🚫 Error: Deployment to store, ios_store, or android_store is only allowed for 'production' flavor."
+            exit 1
+          fi
+
       - name: Set output for flutter_version
         id: set_output
         run: |
