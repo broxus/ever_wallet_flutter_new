@@ -10,7 +10,6 @@ import 'package:nekoton_repository/nekoton_repository.dart';
 import 'package:nekoton_webview/nekoton_webview.dart' as nwv;
 
 part 'browser_view_events_listener_cubit.freezed.dart';
-
 part 'browser_view_events_listener_state.dart';
 
 /// This cubit is a listener of events from different parts of application

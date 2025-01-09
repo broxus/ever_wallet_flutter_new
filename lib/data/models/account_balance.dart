@@ -1,11 +1,9 @@
-import 'package:app/utils/json/nekoton_address_converter.dart';
 import 'package:app/utils/utils.dart';
 import 'package:collection/collection.dart';
 import 'package:freezed_annotation/freezed_annotation.dart';
 import 'package:nekoton_repository/nekoton_repository.dart';
 
 part 'account_balance.freezed.dart';
-
 part 'account_balance.g.dart';
 
 /// Model of cached fiat and token balance that could be saved and restored

@@ -5,7 +5,6 @@ import 'package:app/app/service/service.dart' as s;
 import 'package:app/data/models/models.dart';
 import 'package:app/feature/browser/utils.dart';
 import 'package:app/generated/generated.dart';
-import 'package:app/utils/constants.dart';
 import 'package:app/utils/utils.dart';
 import 'package:collection/collection.dart';
 import 'package:flutter_inappwebview/flutter_inappwebview.dart';

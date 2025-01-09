@@ -11,7 +11,6 @@ import 'package:nekoton_repository/nekoton_repository.dart';
 import 'package:rxdart/rxdart.dart';
 
 part 'token_wallet_transactions_cubit.freezed.dart';
-
 part 'token_wallet_transactions_state.dart';
 
 /// Cubit that allows mapping transactions for [TokenWallet] from storage to UI
