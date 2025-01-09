@@ -37,16 +37,11 @@ platform :ios do
     setup_ci if ENV['CI']
 
     flavor = options[:flavor] || "production"
-    ipa_name = if flavor == "production"
-                   "SparX.ipa"
-                 else
-                   "SparX-#{flavor}.ipa"
-                 end
 
     firebase_app_distribution(
       app: "1:1017783238389:ios:a8de9ade8f221b782e4fbc",
       groups: "qa",
-      ipa_path: "../build/ios/ipa/#{ipa_name}",
+      ipa_path: "../build/ios/ipa/SparX.ipa",
       service_credentials_file: "../fastlane/FirebaseADKey.json",
       release_notes_file:  "../fastlane/changelog.txt",
     )
