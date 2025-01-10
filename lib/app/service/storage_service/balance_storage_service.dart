@@ -42,10 +42,14 @@ class BalanceStorageService extends AbstractStorageService {
   }
 
   @override
-  Future<void> clearSensitiveData() => Future.wait([
-        deleteOverallBalances(),
-        deleteBalances(),
+  Future<void> clear() async {
+    try {
+      await Future.wait([
+        _overallBalancesStorage.erase(),
+        _balancesStorage.erase(),
       ]);
+    } catch (_) {}
+  }
 
   /// Subject for overall balances for accounts
   /// key - address of account, value - overall balance in fiat
@@ -98,11 +102,6 @@ class BalanceStorageService extends AbstractStorageService {
     } catch (e, t) {
       _logger.severe('setOverallBalance', e, t);
     }
-  }
-
-  /// Delete overall balances
-  Future<void> deleteOverallBalances() async {
-    await _overallBalancesStorage.erase();
   }
 
   /// Subject for token balances for accounts
@@ -180,11 +179,6 @@ class BalanceStorageService extends AbstractStorageService {
     } catch (e, t) {
       _logger.severe('setBalances', e, t);
     }
-  }
-
-  /// Delete token balances
-  Future<void> deleteBalances() async {
-    await _balancesStorage.erase();
   }
 }
 

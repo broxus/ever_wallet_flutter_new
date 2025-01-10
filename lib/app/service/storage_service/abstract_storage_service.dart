@@ -6,5 +6,5 @@ abstract class AbstractStorageService {
   Future<void> init();
 
   /// Remove from storage all data that can be linked to user.
-  Future<void> clearSensitiveData();
+  Future<void> clear();
 }

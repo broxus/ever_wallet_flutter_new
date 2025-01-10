@@ -154,7 +154,10 @@ class BrowserTabsStorageService extends AbstractStorageService {
   }
 
   @override
-  Future<void> clearSensitiveData() => Future.wait([
-        clearBrowserTabs(),
-      ]);
+  Future<void> clear() async {
+    _browserTabsSubject.add([]);
+    try {
+      await _storage.erase();
+    } catch (_) {}
+  }
 }

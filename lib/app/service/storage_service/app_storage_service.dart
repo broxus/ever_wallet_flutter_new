@@ -16,8 +16,10 @@ class AppStorageService extends AbstractStorageService {
   Future<void> init() => GetStorage.init(container);
 
   @override
-  Future<void> clearSensitiveData() async {
-    await _storage.erase();
+  Future<void> clear() async {
+    try {
+      await _storage.erase();
+    } catch (_) {}
   }
 
   void addValue<T>(StorageKey key, T value) => _storage.write(key.value, value);

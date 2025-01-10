@@ -11,7 +11,7 @@ class NekotonRepositoryStorageService extends AbstractStorageService {
   final NekotonRepository _nekotonRepository;
 
   @override
-  Future<void> clearSensitiveData() async {
+  Future<void> clear() async {
     await _nekotonRepository.clear();
   }
 

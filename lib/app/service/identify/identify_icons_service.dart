@@ -43,4 +43,9 @@ class IdentifyIconsService implements IIdentifyIconsService {
   Future<IdentifyIconData> getData(String key) {
     return _accountsColors.getData(key);
   }
+
+  @override
+  Future<void> clear() {
+    return _accountsColors.clear();
+  }
 }

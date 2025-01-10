@@ -33,7 +33,7 @@ class TokenWalletStorageService extends TokenWalletTransactionsStorage
           );
 
   @override
-  Future<void> clearSensitiveData() async {
+  Future<void> clear() async {
     _transactionsSubject.add({});
   }
 

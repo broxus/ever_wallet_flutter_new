@@ -13,6 +13,16 @@ class AccountsColorsCollection {
 
   final IdentifyIconData _initialData;
 
+  Future<void> clear() async {
+    _map
+      ..forEach((key, value) {
+        _secureStorageService.delete(
+          StorageKey.accountColor(key),
+        );
+      })
+      ..clear();
+  }
+
   Future<void> setData(String key, IdentifyIconData identifyColor) async {
     _map[key] = identifyColor;
 

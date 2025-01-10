@@ -9,4 +9,11 @@ import 'package:nekoton_repository/nekoton_repository.dart';
 class NekotonStorageService extends NekotonStorageRepository
     implements AbstractStorageService {
   NekotonStorageService(super.storage);
+
+  @override
+  Future<void> clear() async {
+    try {
+      return await clearSensitiveData();
+    } catch (_) {}
+  }
 }

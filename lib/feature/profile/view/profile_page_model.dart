@@ -1,4 +1,5 @@
 import 'package:app/app/service/service.dart';
+import 'package:app/app/service/session/session_service.dart';
 import 'package:app/generated/generated.dart';
 import 'package:app/utils/app_version_utils.dart';
 import 'package:elementary/elementary.dart';
@@ -7,18 +8,14 @@ import 'package:nekoton_repository/nekoton_repository.dart';
 class ProfilePageModel extends ElementaryModel {
   ProfilePageModel(
     ErrorHandler errorHandler,
-    this._nekotonRepository,
     this._currentSeedService,
     this._biometryService,
-    this._storageManagerService,
-    this._secureStorageService,
+    this._sessionService,
   ) : super(errorHandler: errorHandler);
 
-  final NekotonRepository _nekotonRepository;
   final CurrentSeedService _currentSeedService;
   final BiometryService _biometryService;
-  final StorageManagerService _storageManagerService;
-  final SecureStorageService _secureStorageService;
+  final SessionService _sessionService;
 
   Future<String> get appVersion async {
     return '${await AppVersion.appVersion}.${await AppVersion.buildNumber}';
@@ -32,13 +29,7 @@ class ProfilePageModel extends ElementaryModel {
   Stream<bool> get biometryEnabledStream => _biometryService.enabledStream;
 
   Future<void> logout() async {
-    await _nekotonRepository.updateSubscriptions([]);
-    await _nekotonRepository.updateTokenSubscriptions([]);
-    await _storageManagerService.clearSensitiveData();
-    await _nekotonRepository.keyStore.reloadKeystore();
-    await _secureStorageService.clear(
-      isSaveConnectionJson: true,
-    );
+    await _sessionService.clear();
   }
 
   Future<void> setBiometryEnabled({required bool enabled}) async {

@@ -166,3 +166,14 @@ extension MapExt<K, V> on Map<K, V> {
     this[key] = value;
   }
 }
+
+Future<void> tryWrapper(
+  Future<void> Function() f, {
+  Future<void> Function(Object e, StackTrace s)? onCatch,
+}) async {
+  try {
+    await f();
+  } catch (e, s) {
+    await onCatch?.call(e, s);
+  }
+}
