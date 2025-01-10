@@ -365,14 +365,17 @@ enum AppRoute {
 
 /// Get first segment from [fullPath].
 String getRootPath({required String fullPath}) {
-  final segments = AppRoute.pathSegments(fullPath: fullPath);
-  if (segments.isEmpty) {
-    AppRoute._log.severe('getRootPath: no root location found');
+  try {
+    final segments = AppRoute.pathSegments(fullPath: fullPath);
+    if (segments.isEmpty) {
+      AppRoute._log.severe('getRootPath: no root location found');
 
-    return AppRoute.defaultRoute.path;
+      return AppRoute.defaultRoute.path;
+    }
+    return segments.first;
+  } catch (_) {
+    return '/';
   }
-
-  return segments.first;
 }
 
 /// Get last segment from [fullPath].
