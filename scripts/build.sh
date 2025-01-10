@@ -69,6 +69,24 @@ export BUILD_NUMBER_STRING
 
 source scripts/get-changelog.sh
 
+case $FLAVOR in
+  development)
+    TARGET_FILE="lib/main_development.dart"
+    ;;
+  staging)
+    TARGET_FILE="lib/main_staging.dart"
+    ;;
+  production)
+    TARGET_FILE="lib/main_production.dart"
+    ;;
+  *)
+    echo "❌ Unknown flavor: $FLAVOR"
+    exit 1
+    ;;
+esac
+
+export TARGET_FILE
+
 case "$deploy_target" in
   "ios_fad")
     build "fad-ipa.sh"
