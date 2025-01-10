@@ -25,6 +25,7 @@ class EditNetworkPageWidget extends ElementaryWidget<EditNetworkWidgetModel> {
         onAdd: wm.addConnection,
         onUpdate: wm.updateConnection,
         onRemove: wm.removeConnection,
+        onSwitch: wm.saveCurrentConnectionId,
       ),
     );
   }

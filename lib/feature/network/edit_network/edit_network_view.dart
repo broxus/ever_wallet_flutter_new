@@ -15,14 +15,28 @@ class EditNetworkView extends StatefulWidget {
     required this.onAdd,
     required this.onUpdate,
     required this.onRemove,
+    required this.onSwitch,
     super.key,
   }) : editable = connection?.canBeEdited ?? true;
 
+  /// Optional connection data to edit.
+  /// If null, new network will be created.
   final ConnectionData? connection;
+
+  /// Whether this network can be edited.
   final bool editable;
+
+  /// Callback to add new network.
   final ValueChanged<ConnectionData> onAdd;
+
+  /// Callback to update this network.
   final ValueChanged<ConnectionData> onUpdate;
+
+  /// Callback to remove this network.
   final ValueChanged<String> onRemove;
+
+  /// Callback to switch to this network.
+  final ValueChanged<String> onSwitch;
 
   @override
   State<EditNetworkView> createState() => _EditNetworkViewState();
@@ -221,7 +235,7 @@ class _EditNetworkViewState extends State<EditNetworkView> {
     if (widget.connection == null) {
       await showSwitchToThisNetworkSheet(
         context: context,
-        connectionId: connection.id,
+        onSwitch: () => widget.onSwitch(connection.id),
       );
     }
 

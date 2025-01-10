@@ -29,4 +29,6 @@ class EditNetworkWidgetModel
       model.updateConnection(connection);
 
   void removeConnection(String id) => model.removeConnection(id);
+
+  void saveCurrentConnectionId(String id) => model.saveCurrentConnectionId(id);
 }

@@ -20,4 +20,7 @@ class EditNetworkModel extends ElementaryModel {
 
   void removeConnection(String id) =>
       _connectionsStorageService.removeConnection(id);
+
+  void saveCurrentConnectionId(String id) =>
+      _connectionsStorageService.saveCurrentConnectionId(id);
 }

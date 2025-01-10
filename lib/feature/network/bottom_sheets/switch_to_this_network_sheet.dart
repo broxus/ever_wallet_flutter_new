@@ -1,5 +1,3 @@
-import 'package:app/app/service/service.dart';
-import 'package:app/di/di.dart';
 import 'package:app/generated/generated.dart';
 import 'package:flutter/material.dart';
 import 'package:ui_components_lib/ui_components_lib.dart';
@@ -8,23 +6,23 @@ import 'package:ui_components_lib/v2/ui_components_lib_v2.dart';
 /// Helper function to show [SwitchToThisNetworkSheet].
 Future<void> showSwitchToThisNetworkSheet({
   required BuildContext context,
-  required String connectionId,
+  required VoidCallback onSwitch,
 }) {
   return showCommonBottomSheet(
     context: context,
     body: (_, __) => SwitchToThisNetworkSheet(
-      connectionId: connectionId,
+      onSwitch: onSwitch,
     ),
   );
 }
 
 class SwitchToThisNetworkSheet extends StatefulWidget {
   const SwitchToThisNetworkSheet({
-    required this.connectionId,
+    required this.onSwitch,
     super.key,
   });
 
-  final String connectionId;
+  final VoidCallback onSwitch;
 
   @override
   State<SwitchToThisNetworkSheet> createState() =>
@@ -55,26 +53,22 @@ class _SwitchToThisNetworkSheetState extends State<SwitchToThisNetworkSheet> {
         AccentButton(
           buttonShape: ButtonShape.pill,
           title: LocaleKeys.networkAddedSheetSwitch.tr(),
-          onPressed: () => _onSwitch(context),
+          onPressed: _onSwitch,
         ),
         const SizedBox(height: DimensSizeV2.d8),
         PrimaryButton(
           buttonShape: ButtonShape.pill,
           title: LocaleKeys.networkAddedSheetContinue.tr(),
-          onPressed: () => _onContinue(context),
+          onPressed: _onContinue,
         ),
       ],
     );
   }
 
-  void _onSwitch(BuildContext context) {
-    inject<ConnectionsStorageService>().saveCurrentConnectionId(
-      widget.connectionId,
-    );
+  void _onSwitch() {
+    widget.onSwitch();
     Navigator.of(context).pop();
   }
 
-  void _onContinue(BuildContext context) {
-    Navigator.of(context).pop();
-  }
+  void _onContinue() => Navigator.of(context).pop();
 }
