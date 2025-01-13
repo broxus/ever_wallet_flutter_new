@@ -69,9 +69,6 @@ class _SelectAccountWidget extends StatelessWidget {
                   firstSource: wm.accounts,
                   secondSource: wm.selected,
                   builder: (_, list, selected) {
-                    /*WidgetsBinding.instance.addPostFrameCallback((_) {
-                      _scrollToActiveAccount(accounts, selected);
-                    });*/
                     return SingleChildScrollView(
                       controller: scrollController,
                       physics: const ClampingScrollPhysics(),
