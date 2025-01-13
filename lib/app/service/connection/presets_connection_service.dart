@@ -67,6 +67,7 @@ class PresetsConnectionService {
 
     try {
       final response = await _presetsApi.getPresetConfig(_configFileName);
+
       final str = response.data;
 
       unawaited(_updateCacheIfNeed(str));
