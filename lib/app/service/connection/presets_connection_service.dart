@@ -14,6 +14,7 @@ import 'package:app/core/exceptions/presets_connections_exceptions.dart';
 import 'package:app/http/api/presets/presets_api.dart';
 import 'package:app/runner.dart';
 import 'package:crypto/crypto.dart';
+import 'package:dio/dio.dart';
 import 'package:injectable/injectable.dart';
 import 'package:logging/logging.dart';
 import 'package:rxdart/rxdart.dart';
@@ -74,8 +75,13 @@ class PresetsConnectionService {
         jsonDecode(str) as Map<String, dynamic>,
       );
     } catch (e, s) {
+      final message = switch (e) {
+        DioException() => '${e.response?.data}',
+        _ => '',
+      };
+
       _sentry.captureException(
-        FetchPresetsConnectionsExceptions(e.toString()),
+        FetchPresetsConnectionsExceptions(message),
         stackTrace: s,
       );
       _logger.severe('Error fetch connections', e, s);

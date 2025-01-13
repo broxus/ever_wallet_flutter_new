@@ -2,6 +2,17 @@ class PresetsConnectionsExceptions implements Exception {
   PresetsConnectionsExceptions(this.message);
 
   final String message;
+
+  @override
+  String toString() {
+    return ''
+        'PresetsConnectionsExceptions('
+        '\n'
+        ' message: $message'
+        '\n'
+        ')'
+        '';
+  }
 }
 
 class FetchPresetsConnectionsExceptions extends PresetsConnectionsExceptions {
