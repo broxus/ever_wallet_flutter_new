@@ -7,7 +7,6 @@ import 'package:app/feature/browser/approvals_listener/actions/request_permissio
 import 'package:app/feature/browser/approvals_listener/actions/request_permissions/request_permissions_widget.dart';
 import 'package:app/feature/browser/browser.dart';
 import 'package:app/feature/wallet/widgets/select_account/select_account_data.dart';
-import 'package:collection/collection.dart';
 import 'package:elementary_helper/elementary_helper.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
@@ -36,7 +35,6 @@ class RequestPermissionsWidgetModel extends CustomWidgetModel<
 
   late final searchController = createTextEditingController();
   late final _step = createValueNotifier(RequestPermissionsStep.account);
-  late final _currentAccount = createNotifierFromStream(model.currentAccount);
   late final _selected = createNotifierFromStream(model.currentAccount);
   late final _accounts = createNotifierFromStream(model.seedWithAccounts);
   late final _permissions = createNotifier(widget.permissions.toSet());
@@ -54,10 +52,6 @@ class RequestPermissionsWidgetModel extends CustomWidgetModel<
   ListenableState<KeyAccount?> get selected => _selected;
 
   ListenableState<Set<Permission>> get permissions => _permissions;
-
-  ListenableState<KeyAccount?> get currentAccount => _currentAccount;
-
-  KeyAccount? get _initialSelectedAccount => currentAccount.value;
 
   void onNext() {
     if (_selected.value == null) return;

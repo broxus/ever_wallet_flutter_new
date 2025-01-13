@@ -149,12 +149,16 @@ class _PublicKeyItemWidgetState extends State<PublicKeyItemWidget> {
 
     final renderBox = context?.findRenderObject();
     if (renderBox is RenderBox) {
-      final offset = renderBox.localToGlobal(Offset.zero);
-      final scrollOffset = widget.scrollController.offset + offset.dy;
+      final ancestorRenderObject = widget
+          .scrollController.position.context.storageContext
+          .findRenderObject();
+      final offset = renderBox
+          .localToGlobal(Offset.zero, ancestor: ancestorRenderObject)
+          .dy;
 
       widget.scrollController.animateTo(
-        scrollOffset,
-        duration: const Duration(milliseconds: 100),
+        offset - DimensSizeV2.d16,
+        duration: const Duration(milliseconds: 200),
         curve: Curves.easeInOut,
       );
     }

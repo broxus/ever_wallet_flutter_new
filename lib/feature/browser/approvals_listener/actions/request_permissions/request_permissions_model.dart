@@ -1,9 +1,8 @@
 import 'package:app/app/service/service.dart';
 import 'package:app/data/models/models.dart';
+import 'package:app/feature/wallet/widgets/select_account/select_account_data.dart';
 import 'package:elementary/elementary.dart';
 import 'package:nekoton_repository/nekoton_repository.dart';
-
-import '../../../../wallet/widgets/select_account/select_account_data.dart';
 
 class RequestPermissionsModel extends ElementaryModel {
   RequestPermissionsModel(
@@ -24,8 +23,10 @@ class RequestPermissionsModel extends ElementaryModel {
 
   Stream<List<SelectAccountData>> get seedWithAccounts =>
       _nekotonRepository.seedListStream.map(
-            (seedList) {
-          return seedList.seeds.map((seed) {
+        (seedList) {
+          final seeds = seedList.seeds
+            ..sort((a, b) => a.name.compareTo(b.name));
+          return seeds.map((seed) {
             final privateKeys = seed.allKeys.map((key) {
               final accounts = key.accountList.allAccounts
                   .where((account) => !account.isHidden)
