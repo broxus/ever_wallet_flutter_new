@@ -19,7 +19,7 @@ List<ConnectionData> mapToConnectionDataList(
     final endpoints = castJsonList<String>(network['endpoints']);
     final networkType = network['networkType'] as String;
     final blockExplorerUrl = network['blockExplorerUrl'] as String;
-    final manifestUrl = network['manifestUrl'] as String;
+    final manifestUrl = network['manifestUrl'] as String?;
     final sortingOrder = parseToDouble(network['sortingOrder']) ?? 1;
 
     switch (type) {

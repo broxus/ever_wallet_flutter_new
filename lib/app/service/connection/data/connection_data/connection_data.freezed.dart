@@ -36,12 +36,12 @@ mixin _$ConnectionData {
   String get group => throw _privateConstructorUsedError;
   String get networkType => throw _privateConstructorUsedError;
   String get blockExplorerUrl => throw _privateConstructorUsedError;
-  String get manifestUrl => throw _privateConstructorUsedError;
   String get nativeTokenTicker => throw _privateConstructorUsedError;
   bool get isPreset => throw _privateConstructorUsedError;
   bool get canBeEdited => throw _privateConstructorUsedError;
   double get sortingOrder => throw _privateConstructorUsedError;
   bool get isUsedOnStart => throw _privateConstructorUsedError;
+  String get manifestUrl => throw _privateConstructorUsedError;
   @optionalTypeArgs
   TResult when<TResult extends Object?>({
     required TResult Function(
@@ -52,12 +52,12 @@ mixin _$ConnectionData {
             String networkType,
             bool isLocal,
             String blockExplorerUrl,
-            String manifestUrl,
             String nativeTokenTicker,
             bool isPreset,
             bool canBeEdited,
             double sortingOrder,
             bool isUsedOnStart,
+            String manifestUrl,
             int? latencyDetectionInterval,
             int? maxLatency,
             int? endpointSelectionRetryCount)
@@ -69,12 +69,12 @@ mixin _$ConnectionData {
             String endpoint,
             String networkType,
             String blockExplorerUrl,
-            String manifestUrl,
             String nativeTokenTicker,
             bool isPreset,
             bool canBeEdited,
             double sortingOrder,
-            bool isUsedOnStart)
+            bool isUsedOnStart,
+            String manifestUrl)
         proto,
     required TResult Function(
             String id,
@@ -83,12 +83,12 @@ mixin _$ConnectionData {
             String endpoint,
             String networkType,
             String blockExplorerUrl,
-            String manifestUrl,
             String nativeTokenTicker,
             bool isPreset,
             bool canBeEdited,
             double sortingOrder,
-            bool isUsedOnStart)
+            bool isUsedOnStart,
+            String manifestUrl)
         jrpc,
   }) =>
       throw _privateConstructorUsedError;
@@ -102,12 +102,12 @@ mixin _$ConnectionData {
             String networkType,
             bool isLocal,
             String blockExplorerUrl,
-            String manifestUrl,
             String nativeTokenTicker,
             bool isPreset,
             bool canBeEdited,
             double sortingOrder,
             bool isUsedOnStart,
+            String manifestUrl,
             int? latencyDetectionInterval,
             int? maxLatency,
             int? endpointSelectionRetryCount)?
@@ -119,12 +119,12 @@ mixin _$ConnectionData {
             String endpoint,
             String networkType,
             String blockExplorerUrl,
-            String manifestUrl,
             String nativeTokenTicker,
             bool isPreset,
             bool canBeEdited,
             double sortingOrder,
-            bool isUsedOnStart)?
+            bool isUsedOnStart,
+            String manifestUrl)?
         proto,
     TResult? Function(
             String id,
@@ -133,12 +133,12 @@ mixin _$ConnectionData {
             String endpoint,
             String networkType,
             String blockExplorerUrl,
-            String manifestUrl,
             String nativeTokenTicker,
             bool isPreset,
             bool canBeEdited,
             double sortingOrder,
-            bool isUsedOnStart)?
+            bool isUsedOnStart,
+            String manifestUrl)?
         jrpc,
   }) =>
       throw _privateConstructorUsedError;
@@ -152,12 +152,12 @@ mixin _$ConnectionData {
             String networkType,
             bool isLocal,
             String blockExplorerUrl,
-            String manifestUrl,
             String nativeTokenTicker,
             bool isPreset,
             bool canBeEdited,
             double sortingOrder,
             bool isUsedOnStart,
+            String manifestUrl,
             int? latencyDetectionInterval,
             int? maxLatency,
             int? endpointSelectionRetryCount)?
@@ -169,12 +169,12 @@ mixin _$ConnectionData {
             String endpoint,
             String networkType,
             String blockExplorerUrl,
-            String manifestUrl,
             String nativeTokenTicker,
             bool isPreset,
             bool canBeEdited,
             double sortingOrder,
-            bool isUsedOnStart)?
+            bool isUsedOnStart,
+            String manifestUrl)?
         proto,
     TResult Function(
             String id,
@@ -183,12 +183,12 @@ mixin _$ConnectionData {
             String endpoint,
             String networkType,
             String blockExplorerUrl,
-            String manifestUrl,
             String nativeTokenTicker,
             bool isPreset,
             bool canBeEdited,
             double sortingOrder,
-            bool isUsedOnStart)?
+            bool isUsedOnStart,
+            String manifestUrl)?
         jrpc,
     required TResult orElse(),
   }) =>
@@ -238,12 +238,12 @@ abstract class $ConnectionDataCopyWith<$Res> {
       String group,
       String networkType,
       String blockExplorerUrl,
-      String manifestUrl,
       String nativeTokenTicker,
       bool isPreset,
       bool canBeEdited,
       double sortingOrder,
-      bool isUsedOnStart});
+      bool isUsedOnStart,
+      String manifestUrl});
 }
 
 /// @nodoc
@@ -266,12 +266,12 @@ class _$ConnectionDataCopyWithImpl<$Res, $Val extends ConnectionData>
     Object? group = null,
     Object? networkType = null,
     Object? blockExplorerUrl = null,
-    Object? manifestUrl = null,
     Object? nativeTokenTicker = null,
     Object? isPreset = null,
     Object? canBeEdited = null,
     Object? sortingOrder = null,
     Object? isUsedOnStart = null,
+    Object? manifestUrl = null,
   }) {
     return _then(_value.copyWith(
       id: null == id
@@ -294,10 +294,6 @@ class _$ConnectionDataCopyWithImpl<$Res, $Val extends ConnectionData>
           ? _value.blockExplorerUrl
           : blockExplorerUrl // ignore: cast_nullable_to_non_nullable
               as String,
-      manifestUrl: null == manifestUrl
-          ? _value.manifestUrl
-          : manifestUrl // ignore: cast_nullable_to_non_nullable
-              as String,
       nativeTokenTicker: null == nativeTokenTicker
           ? _value.nativeTokenTicker
           : nativeTokenTicker // ignore: cast_nullable_to_non_nullable
@@ -318,6 +314,10 @@ class _$ConnectionDataCopyWithImpl<$Res, $Val extends ConnectionData>
           ? _value.isUsedOnStart
           : isUsedOnStart // ignore: cast_nullable_to_non_nullable
               as bool,
+      manifestUrl: null == manifestUrl
+          ? _value.manifestUrl
+          : manifestUrl // ignore: cast_nullable_to_non_nullable
+              as String,
     ) as $Val);
   }
 }
@@ -338,12 +338,12 @@ abstract class _$$ConnectionDataGqlImplCopyWith<$Res>
       String networkType,
       bool isLocal,
       String blockExplorerUrl,
-      String manifestUrl,
       String nativeTokenTicker,
       bool isPreset,
       bool canBeEdited,
       double sortingOrder,
       bool isUsedOnStart,
+      String manifestUrl,
       int? latencyDetectionInterval,
       int? maxLatency,
       int? endpointSelectionRetryCount});
@@ -369,12 +369,12 @@ class __$$ConnectionDataGqlImplCopyWithImpl<$Res>
     Object? networkType = null,
     Object? isLocal = null,
     Object? blockExplorerUrl = null,
-    Object? manifestUrl = null,
     Object? nativeTokenTicker = null,
     Object? isPreset = null,
     Object? canBeEdited = null,
     Object? sortingOrder = null,
     Object? isUsedOnStart = null,
+    Object? manifestUrl = null,
     Object? latencyDetectionInterval = freezed,
     Object? maxLatency = freezed,
     Object? endpointSelectionRetryCount = freezed,
@@ -408,10 +408,6 @@ class __$$ConnectionDataGqlImplCopyWithImpl<$Res>
           ? _value.blockExplorerUrl
           : blockExplorerUrl // ignore: cast_nullable_to_non_nullable
               as String,
-      manifestUrl: null == manifestUrl
-          ? _value.manifestUrl
-          : manifestUrl // ignore: cast_nullable_to_non_nullable
-              as String,
       nativeTokenTicker: null == nativeTokenTicker
           ? _value.nativeTokenTicker
           : nativeTokenTicker // ignore: cast_nullable_to_non_nullable
@@ -432,6 +428,10 @@ class __$$ConnectionDataGqlImplCopyWithImpl<$Res>
           ? _value.isUsedOnStart
           : isUsedOnStart // ignore: cast_nullable_to_non_nullable
               as bool,
+      manifestUrl: null == manifestUrl
+          ? _value.manifestUrl
+          : manifestUrl // ignore: cast_nullable_to_non_nullable
+              as String,
       latencyDetectionInterval: freezed == latencyDetectionInterval
           ? _value.latencyDetectionInterval
           : latencyDetectionInterval // ignore: cast_nullable_to_non_nullable
@@ -459,12 +459,12 @@ class _$ConnectionDataGqlImpl implements _ConnectionDataGql {
       required this.networkType,
       required this.isLocal,
       required this.blockExplorerUrl,
-      required this.manifestUrl,
       required this.nativeTokenTicker,
       required this.isPreset,
       required this.canBeEdited,
       required this.sortingOrder,
       this.isUsedOnStart = true,
+      this.manifestUrl = '',
       this.latencyDetectionInterval,
       this.maxLatency,
       this.endpointSelectionRetryCount,
@@ -496,8 +496,6 @@ class _$ConnectionDataGqlImpl implements _ConnectionDataGql {
   @override
   final String blockExplorerUrl;
   @override
-  final String manifestUrl;
-  @override
   final String nativeTokenTicker;
   @override
   final bool isPreset;
@@ -508,6 +506,9 @@ class _$ConnectionDataGqlImpl implements _ConnectionDataGql {
   @override
   @JsonKey()
   final bool isUsedOnStart;
+  @override
+  @JsonKey()
+  final String manifestUrl;
   @override
   final int? latencyDetectionInterval;
   @override
@@ -520,7 +521,7 @@ class _$ConnectionDataGqlImpl implements _ConnectionDataGql {
 
   @override
   String toString() {
-    return 'ConnectionData.gql(id: $id, name: $name, group: $group, endpoints: $endpoints, networkType: $networkType, isLocal: $isLocal, blockExplorerUrl: $blockExplorerUrl, manifestUrl: $manifestUrl, nativeTokenTicker: $nativeTokenTicker, isPreset: $isPreset, canBeEdited: $canBeEdited, sortingOrder: $sortingOrder, isUsedOnStart: $isUsedOnStart, latencyDetectionInterval: $latencyDetectionInterval, maxLatency: $maxLatency, endpointSelectionRetryCount: $endpointSelectionRetryCount)';
+    return 'ConnectionData.gql(id: $id, name: $name, group: $group, endpoints: $endpoints, networkType: $networkType, isLocal: $isLocal, blockExplorerUrl: $blockExplorerUrl, nativeTokenTicker: $nativeTokenTicker, isPreset: $isPreset, canBeEdited: $canBeEdited, sortingOrder: $sortingOrder, isUsedOnStart: $isUsedOnStart, manifestUrl: $manifestUrl, latencyDetectionInterval: $latencyDetectionInterval, maxLatency: $maxLatency, endpointSelectionRetryCount: $endpointSelectionRetryCount)';
   }
 
   @override
@@ -538,8 +539,6 @@ class _$ConnectionDataGqlImpl implements _ConnectionDataGql {
             (identical(other.isLocal, isLocal) || other.isLocal == isLocal) &&
             (identical(other.blockExplorerUrl, blockExplorerUrl) ||
                 other.blockExplorerUrl == blockExplorerUrl) &&
-            (identical(other.manifestUrl, manifestUrl) ||
-                other.manifestUrl == manifestUrl) &&
             (identical(other.nativeTokenTicker, nativeTokenTicker) ||
                 other.nativeTokenTicker == nativeTokenTicker) &&
             (identical(other.isPreset, isPreset) ||
@@ -550,6 +549,8 @@ class _$ConnectionDataGqlImpl implements _ConnectionDataGql {
                 other.sortingOrder == sortingOrder) &&
             (identical(other.isUsedOnStart, isUsedOnStart) ||
                 other.isUsedOnStart == isUsedOnStart) &&
+            (identical(other.manifestUrl, manifestUrl) ||
+                other.manifestUrl == manifestUrl) &&
             (identical(
                     other.latencyDetectionInterval, latencyDetectionInterval) ||
                 other.latencyDetectionInterval == latencyDetectionInterval) &&
@@ -572,12 +573,12 @@ class _$ConnectionDataGqlImpl implements _ConnectionDataGql {
       networkType,
       isLocal,
       blockExplorerUrl,
-      manifestUrl,
       nativeTokenTicker,
       isPreset,
       canBeEdited,
       sortingOrder,
       isUsedOnStart,
+      manifestUrl,
       latencyDetectionInterval,
       maxLatency,
       endpointSelectionRetryCount);
@@ -602,12 +603,12 @@ class _$ConnectionDataGqlImpl implements _ConnectionDataGql {
             String networkType,
             bool isLocal,
             String blockExplorerUrl,
-            String manifestUrl,
             String nativeTokenTicker,
             bool isPreset,
             bool canBeEdited,
             double sortingOrder,
             bool isUsedOnStart,
+            String manifestUrl,
             int? latencyDetectionInterval,
             int? maxLatency,
             int? endpointSelectionRetryCount)
@@ -619,12 +620,12 @@ class _$ConnectionDataGqlImpl implements _ConnectionDataGql {
             String endpoint,
             String networkType,
             String blockExplorerUrl,
-            String manifestUrl,
             String nativeTokenTicker,
             bool isPreset,
             bool canBeEdited,
             double sortingOrder,
-            bool isUsedOnStart)
+            bool isUsedOnStart,
+            String manifestUrl)
         proto,
     required TResult Function(
             String id,
@@ -633,12 +634,12 @@ class _$ConnectionDataGqlImpl implements _ConnectionDataGql {
             String endpoint,
             String networkType,
             String blockExplorerUrl,
-            String manifestUrl,
             String nativeTokenTicker,
             bool isPreset,
             bool canBeEdited,
             double sortingOrder,
-            bool isUsedOnStart)
+            bool isUsedOnStart,
+            String manifestUrl)
         jrpc,
   }) {
     return gql(
@@ -649,12 +650,12 @@ class _$ConnectionDataGqlImpl implements _ConnectionDataGql {
         networkType,
         isLocal,
         blockExplorerUrl,
-        manifestUrl,
         nativeTokenTicker,
         isPreset,
         canBeEdited,
         sortingOrder,
         isUsedOnStart,
+        manifestUrl,
         latencyDetectionInterval,
         maxLatency,
         endpointSelectionRetryCount);
@@ -671,12 +672,12 @@ class _$ConnectionDataGqlImpl implements _ConnectionDataGql {
             String networkType,
             bool isLocal,
             String blockExplorerUrl,
-            String manifestUrl,
             String nativeTokenTicker,
             bool isPreset,
             bool canBeEdited,
             double sortingOrder,
             bool isUsedOnStart,
+            String manifestUrl,
             int? latencyDetectionInterval,
             int? maxLatency,
             int? endpointSelectionRetryCount)?
@@ -688,12 +689,12 @@ class _$ConnectionDataGqlImpl implements _ConnectionDataGql {
             String endpoint,
             String networkType,
             String blockExplorerUrl,
-            String manifestUrl,
             String nativeTokenTicker,
             bool isPreset,
             bool canBeEdited,
             double sortingOrder,
-            bool isUsedOnStart)?
+            bool isUsedOnStart,
+            String manifestUrl)?
         proto,
     TResult? Function(
             String id,
@@ -702,12 +703,12 @@ class _$ConnectionDataGqlImpl implements _ConnectionDataGql {
             String endpoint,
             String networkType,
             String blockExplorerUrl,
-            String manifestUrl,
             String nativeTokenTicker,
             bool isPreset,
             bool canBeEdited,
             double sortingOrder,
-            bool isUsedOnStart)?
+            bool isUsedOnStart,
+            String manifestUrl)?
         jrpc,
   }) {
     return gql?.call(
@@ -718,12 +719,12 @@ class _$ConnectionDataGqlImpl implements _ConnectionDataGql {
         networkType,
         isLocal,
         blockExplorerUrl,
-        manifestUrl,
         nativeTokenTicker,
         isPreset,
         canBeEdited,
         sortingOrder,
         isUsedOnStart,
+        manifestUrl,
         latencyDetectionInterval,
         maxLatency,
         endpointSelectionRetryCount);
@@ -740,12 +741,12 @@ class _$ConnectionDataGqlImpl implements _ConnectionDataGql {
             String networkType,
             bool isLocal,
             String blockExplorerUrl,
-            String manifestUrl,
             String nativeTokenTicker,
             bool isPreset,
             bool canBeEdited,
             double sortingOrder,
             bool isUsedOnStart,
+            String manifestUrl,
             int? latencyDetectionInterval,
             int? maxLatency,
             int? endpointSelectionRetryCount)?
@@ -757,12 +758,12 @@ class _$ConnectionDataGqlImpl implements _ConnectionDataGql {
             String endpoint,
             String networkType,
             String blockExplorerUrl,
-            String manifestUrl,
             String nativeTokenTicker,
             bool isPreset,
             bool canBeEdited,
             double sortingOrder,
-            bool isUsedOnStart)?
+            bool isUsedOnStart,
+            String manifestUrl)?
         proto,
     TResult Function(
             String id,
@@ -771,12 +772,12 @@ class _$ConnectionDataGqlImpl implements _ConnectionDataGql {
             String endpoint,
             String networkType,
             String blockExplorerUrl,
-            String manifestUrl,
             String nativeTokenTicker,
             bool isPreset,
             bool canBeEdited,
             double sortingOrder,
-            bool isUsedOnStart)?
+            bool isUsedOnStart,
+            String manifestUrl)?
         jrpc,
     required TResult orElse(),
   }) {
@@ -789,12 +790,12 @@ class _$ConnectionDataGqlImpl implements _ConnectionDataGql {
           networkType,
           isLocal,
           blockExplorerUrl,
-          manifestUrl,
           nativeTokenTicker,
           isPreset,
           canBeEdited,
           sortingOrder,
           isUsedOnStart,
+          manifestUrl,
           latencyDetectionInterval,
           maxLatency,
           endpointSelectionRetryCount);
@@ -853,12 +854,12 @@ abstract class _ConnectionDataGql implements ConnectionData {
       required final String networkType,
       required final bool isLocal,
       required final String blockExplorerUrl,
-      required final String manifestUrl,
       required final String nativeTokenTicker,
       required final bool isPreset,
       required final bool canBeEdited,
       required final double sortingOrder,
       final bool isUsedOnStart,
+      final String manifestUrl,
       final int? latencyDetectionInterval,
       final int? maxLatency,
       final int? endpointSelectionRetryCount}) = _$ConnectionDataGqlImpl;
@@ -879,8 +880,6 @@ abstract class _ConnectionDataGql implements ConnectionData {
   @override
   String get blockExplorerUrl;
   @override
-  String get manifestUrl;
-  @override
   String get nativeTokenTicker;
   @override
   bool get isPreset;
@@ -890,6 +889,8 @@ abstract class _ConnectionDataGql implements ConnectionData {
   double get sortingOrder;
   @override
   bool get isUsedOnStart;
+  @override
+  String get manifestUrl;
   int? get latencyDetectionInterval;
   int? get maxLatency;
   int? get endpointSelectionRetryCount;
@@ -917,12 +918,12 @@ abstract class _$$ConnectionDataProtoImplCopyWith<$Res>
       String endpoint,
       String networkType,
       String blockExplorerUrl,
-      String manifestUrl,
       String nativeTokenTicker,
       bool isPreset,
       bool canBeEdited,
       double sortingOrder,
-      bool isUsedOnStart});
+      bool isUsedOnStart,
+      String manifestUrl});
 }
 
 /// @nodoc
@@ -944,12 +945,12 @@ class __$$ConnectionDataProtoImplCopyWithImpl<$Res>
     Object? endpoint = null,
     Object? networkType = null,
     Object? blockExplorerUrl = null,
-    Object? manifestUrl = null,
     Object? nativeTokenTicker = null,
     Object? isPreset = null,
     Object? canBeEdited = null,
     Object? sortingOrder = null,
     Object? isUsedOnStart = null,
+    Object? manifestUrl = null,
   }) {
     return _then(_$ConnectionDataProtoImpl(
       id: null == id
@@ -976,10 +977,6 @@ class __$$ConnectionDataProtoImplCopyWithImpl<$Res>
           ? _value.blockExplorerUrl
           : blockExplorerUrl // ignore: cast_nullable_to_non_nullable
               as String,
-      manifestUrl: null == manifestUrl
-          ? _value.manifestUrl
-          : manifestUrl // ignore: cast_nullable_to_non_nullable
-              as String,
       nativeTokenTicker: null == nativeTokenTicker
           ? _value.nativeTokenTicker
           : nativeTokenTicker // ignore: cast_nullable_to_non_nullable
@@ -1000,6 +997,10 @@ class __$$ConnectionDataProtoImplCopyWithImpl<$Res>
           ? _value.isUsedOnStart
           : isUsedOnStart // ignore: cast_nullable_to_non_nullable
               as bool,
+      manifestUrl: null == manifestUrl
+          ? _value.manifestUrl
+          : manifestUrl // ignore: cast_nullable_to_non_nullable
+              as String,
     ));
   }
 }
@@ -1014,12 +1015,12 @@ class _$ConnectionDataProtoImpl implements _ConnectionDataProto {
       required this.endpoint,
       required this.networkType,
       required this.blockExplorerUrl,
-      required this.manifestUrl,
       required this.nativeTokenTicker,
       required this.isPreset,
       required this.canBeEdited,
       required this.sortingOrder,
       this.isUsedOnStart = true,
+      this.manifestUrl = '',
       final String? $type})
       : $type = $type ?? 'proto';
 
@@ -1039,8 +1040,6 @@ class _$ConnectionDataProtoImpl implements _ConnectionDataProto {
   @override
   final String blockExplorerUrl;
   @override
-  final String manifestUrl;
-  @override
   final String nativeTokenTicker;
   @override
   final bool isPreset;
@@ -1051,13 +1050,16 @@ class _$ConnectionDataProtoImpl implements _ConnectionDataProto {
   @override
   @JsonKey()
   final bool isUsedOnStart;
+  @override
+  @JsonKey()
+  final String manifestUrl;
 
   @JsonKey(name: 'runtimeType')
   final String $type;
 
   @override
   String toString() {
-    return 'ConnectionData.proto(id: $id, name: $name, group: $group, endpoint: $endpoint, networkType: $networkType, blockExplorerUrl: $blockExplorerUrl, manifestUrl: $manifestUrl, nativeTokenTicker: $nativeTokenTicker, isPreset: $isPreset, canBeEdited: $canBeEdited, sortingOrder: $sortingOrder, isUsedOnStart: $isUsedOnStart)';
+    return 'ConnectionData.proto(id: $id, name: $name, group: $group, endpoint: $endpoint, networkType: $networkType, blockExplorerUrl: $blockExplorerUrl, nativeTokenTicker: $nativeTokenTicker, isPreset: $isPreset, canBeEdited: $canBeEdited, sortingOrder: $sortingOrder, isUsedOnStart: $isUsedOnStart, manifestUrl: $manifestUrl)';
   }
 
   @override
@@ -1074,8 +1076,6 @@ class _$ConnectionDataProtoImpl implements _ConnectionDataProto {
                 other.networkType == networkType) &&
             (identical(other.blockExplorerUrl, blockExplorerUrl) ||
                 other.blockExplorerUrl == blockExplorerUrl) &&
-            (identical(other.manifestUrl, manifestUrl) ||
-                other.manifestUrl == manifestUrl) &&
             (identical(other.nativeTokenTicker, nativeTokenTicker) ||
                 other.nativeTokenTicker == nativeTokenTicker) &&
             (identical(other.isPreset, isPreset) ||
@@ -1085,7 +1085,9 @@ class _$ConnectionDataProtoImpl implements _ConnectionDataProto {
             (identical(other.sortingOrder, sortingOrder) ||
                 other.sortingOrder == sortingOrder) &&
             (identical(other.isUsedOnStart, isUsedOnStart) ||
-                other.isUsedOnStart == isUsedOnStart));
+                other.isUsedOnStart == isUsedOnStart) &&
+            (identical(other.manifestUrl, manifestUrl) ||
+                other.manifestUrl == manifestUrl));
   }
 
   @JsonKey(includeFromJson: false, includeToJson: false)
@@ -1098,12 +1100,12 @@ class _$ConnectionDataProtoImpl implements _ConnectionDataProto {
       endpoint,
       networkType,
       blockExplorerUrl,
-      manifestUrl,
       nativeTokenTicker,
       isPreset,
       canBeEdited,
       sortingOrder,
-      isUsedOnStart);
+      isUsedOnStart,
+      manifestUrl);
 
   /// Create a copy of ConnectionData
   /// with the given fields replaced by the non-null parameter values.
@@ -1125,12 +1127,12 @@ class _$ConnectionDataProtoImpl implements _ConnectionDataProto {
             String networkType,
             bool isLocal,
             String blockExplorerUrl,
-            String manifestUrl,
             String nativeTokenTicker,
             bool isPreset,
             bool canBeEdited,
             double sortingOrder,
             bool isUsedOnStart,
+            String manifestUrl,
             int? latencyDetectionInterval,
             int? maxLatency,
             int? endpointSelectionRetryCount)
@@ -1142,12 +1144,12 @@ class _$ConnectionDataProtoImpl implements _ConnectionDataProto {
             String endpoint,
             String networkType,
             String blockExplorerUrl,
-            String manifestUrl,
             String nativeTokenTicker,
             bool isPreset,
             bool canBeEdited,
             double sortingOrder,
-            bool isUsedOnStart)
+            bool isUsedOnStart,
+            String manifestUrl)
         proto,
     required TResult Function(
             String id,
@@ -1156,12 +1158,12 @@ class _$ConnectionDataProtoImpl implements _ConnectionDataProto {
             String endpoint,
             String networkType,
             String blockExplorerUrl,
-            String manifestUrl,
             String nativeTokenTicker,
             bool isPreset,
             bool canBeEdited,
             double sortingOrder,
-            bool isUsedOnStart)
+            bool isUsedOnStart,
+            String manifestUrl)
         jrpc,
   }) {
     return proto(
@@ -1171,12 +1173,12 @@ class _$ConnectionDataProtoImpl implements _ConnectionDataProto {
         endpoint,
         networkType,
         blockExplorerUrl,
-        manifestUrl,
         nativeTokenTicker,
         isPreset,
         canBeEdited,
         sortingOrder,
-        isUsedOnStart);
+        isUsedOnStart,
+        manifestUrl);
   }
 
   @override
@@ -1190,12 +1192,12 @@ class _$ConnectionDataProtoImpl implements _ConnectionDataProto {
             String networkType,
             bool isLocal,
             String blockExplorerUrl,
-            String manifestUrl,
             String nativeTokenTicker,
             bool isPreset,
             bool canBeEdited,
             double sortingOrder,
             bool isUsedOnStart,
+            String manifestUrl,
             int? latencyDetectionInterval,
             int? maxLatency,
             int? endpointSelectionRetryCount)?
@@ -1207,12 +1209,12 @@ class _$ConnectionDataProtoImpl implements _ConnectionDataProto {
             String endpoint,
             String networkType,
             String blockExplorerUrl,
-            String manifestUrl,
             String nativeTokenTicker,
             bool isPreset,
             bool canBeEdited,
             double sortingOrder,
-            bool isUsedOnStart)?
+            bool isUsedOnStart,
+            String manifestUrl)?
         proto,
     TResult? Function(
             String id,
@@ -1221,12 +1223,12 @@ class _$ConnectionDataProtoImpl implements _ConnectionDataProto {
             String endpoint,
             String networkType,
             String blockExplorerUrl,
-            String manifestUrl,
             String nativeTokenTicker,
             bool isPreset,
             bool canBeEdited,
             double sortingOrder,
-            bool isUsedOnStart)?
+            bool isUsedOnStart,
+            String manifestUrl)?
         jrpc,
   }) {
     return proto?.call(
@@ -1236,12 +1238,12 @@ class _$ConnectionDataProtoImpl implements _ConnectionDataProto {
         endpoint,
         networkType,
         blockExplorerUrl,
-        manifestUrl,
         nativeTokenTicker,
         isPreset,
         canBeEdited,
         sortingOrder,
-        isUsedOnStart);
+        isUsedOnStart,
+        manifestUrl);
   }
 
   @override
@@ -1255,12 +1257,12 @@ class _$ConnectionDataProtoImpl implements _ConnectionDataProto {
             String networkType,
             bool isLocal,
             String blockExplorerUrl,
-            String manifestUrl,
             String nativeTokenTicker,
             bool isPreset,
             bool canBeEdited,
             double sortingOrder,
             bool isUsedOnStart,
+            String manifestUrl,
             int? latencyDetectionInterval,
             int? maxLatency,
             int? endpointSelectionRetryCount)?
@@ -1272,12 +1274,12 @@ class _$ConnectionDataProtoImpl implements _ConnectionDataProto {
             String endpoint,
             String networkType,
             String blockExplorerUrl,
-            String manifestUrl,
             String nativeTokenTicker,
             bool isPreset,
             bool canBeEdited,
             double sortingOrder,
-            bool isUsedOnStart)?
+            bool isUsedOnStart,
+            String manifestUrl)?
         proto,
     TResult Function(
             String id,
@@ -1286,12 +1288,12 @@ class _$ConnectionDataProtoImpl implements _ConnectionDataProto {
             String endpoint,
             String networkType,
             String blockExplorerUrl,
-            String manifestUrl,
             String nativeTokenTicker,
             bool isPreset,
             bool canBeEdited,
             double sortingOrder,
-            bool isUsedOnStart)?
+            bool isUsedOnStart,
+            String manifestUrl)?
         jrpc,
     required TResult orElse(),
   }) {
@@ -1303,12 +1305,12 @@ class _$ConnectionDataProtoImpl implements _ConnectionDataProto {
           endpoint,
           networkType,
           blockExplorerUrl,
-          manifestUrl,
           nativeTokenTicker,
           isPreset,
           canBeEdited,
           sortingOrder,
-          isUsedOnStart);
+          isUsedOnStart,
+          manifestUrl);
     }
     return orElse();
   }
@@ -1363,12 +1365,12 @@ abstract class _ConnectionDataProto implements ConnectionData {
       required final String endpoint,
       required final String networkType,
       required final String blockExplorerUrl,
-      required final String manifestUrl,
       required final String nativeTokenTicker,
       required final bool isPreset,
       required final bool canBeEdited,
       required final double sortingOrder,
-      final bool isUsedOnStart}) = _$ConnectionDataProtoImpl;
+      final bool isUsedOnStart,
+      final String manifestUrl}) = _$ConnectionDataProtoImpl;
 
   factory _ConnectionDataProto.fromJson(Map<String, dynamic> json) =
       _$ConnectionDataProtoImpl.fromJson;
@@ -1385,8 +1387,6 @@ abstract class _ConnectionDataProto implements ConnectionData {
   @override
   String get blockExplorerUrl;
   @override
-  String get manifestUrl;
-  @override
   String get nativeTokenTicker;
   @override
   bool get isPreset;
@@ -1396,6 +1396,8 @@ abstract class _ConnectionDataProto implements ConnectionData {
   double get sortingOrder;
   @override
   bool get isUsedOnStart;
+  @override
+  String get manifestUrl;
 
   /// Create a copy of ConnectionData
   /// with the given fields replaced by the non-null parameter values.
@@ -1420,12 +1422,12 @@ abstract class _$$ConnectionDataJrpcImplCopyWith<$Res>
       String endpoint,
       String networkType,
       String blockExplorerUrl,
-      String manifestUrl,
       String nativeTokenTicker,
       bool isPreset,
       bool canBeEdited,
       double sortingOrder,
-      bool isUsedOnStart});
+      bool isUsedOnStart,
+      String manifestUrl});
 }
 
 /// @nodoc
@@ -1447,12 +1449,12 @@ class __$$ConnectionDataJrpcImplCopyWithImpl<$Res>
     Object? endpoint = null,
     Object? networkType = null,
     Object? blockExplorerUrl = null,
-    Object? manifestUrl = null,
     Object? nativeTokenTicker = null,
     Object? isPreset = null,
     Object? canBeEdited = null,
     Object? sortingOrder = null,
     Object? isUsedOnStart = null,
+    Object? manifestUrl = null,
   }) {
     return _then(_$ConnectionDataJrpcImpl(
       id: null == id
@@ -1479,10 +1481,6 @@ class __$$ConnectionDataJrpcImplCopyWithImpl<$Res>
           ? _value.blockExplorerUrl
           : blockExplorerUrl // ignore: cast_nullable_to_non_nullable
               as String,
-      manifestUrl: null == manifestUrl
-          ? _value.manifestUrl
-          : manifestUrl // ignore: cast_nullable_to_non_nullable
-              as String,
       nativeTokenTicker: null == nativeTokenTicker
           ? _value.nativeTokenTicker
           : nativeTokenTicker // ignore: cast_nullable_to_non_nullable
@@ -1503,6 +1501,10 @@ class __$$ConnectionDataJrpcImplCopyWithImpl<$Res>
           ? _value.isUsedOnStart
           : isUsedOnStart // ignore: cast_nullable_to_non_nullable
               as bool,
+      manifestUrl: null == manifestUrl
+          ? _value.manifestUrl
+          : manifestUrl // ignore: cast_nullable_to_non_nullable
+              as String,
     ));
   }
 }
@@ -1517,12 +1519,12 @@ class _$ConnectionDataJrpcImpl implements _ConnectionDataJrpc {
       required this.endpoint,
       required this.networkType,
       required this.blockExplorerUrl,
-      required this.manifestUrl,
       required this.nativeTokenTicker,
       required this.isPreset,
       required this.canBeEdited,
       required this.sortingOrder,
       this.isUsedOnStart = true,
+      this.manifestUrl = '',
       final String? $type})
       : $type = $type ?? 'jrpc';
 
@@ -1542,8 +1544,6 @@ class _$ConnectionDataJrpcImpl implements _ConnectionDataJrpc {
   @override
   final String blockExplorerUrl;
   @override
-  final String manifestUrl;
-  @override
   final String nativeTokenTicker;
   @override
   final bool isPreset;
@@ -1554,13 +1554,16 @@ class _$ConnectionDataJrpcImpl implements _ConnectionDataJrpc {
   @override
   @JsonKey()
   final bool isUsedOnStart;
+  @override
+  @JsonKey()
+  final String manifestUrl;
 
   @JsonKey(name: 'runtimeType')
   final String $type;
 
   @override
   String toString() {
-    return 'ConnectionData.jrpc(id: $id, name: $name, group: $group, endpoint: $endpoint, networkType: $networkType, blockExplorerUrl: $blockExplorerUrl, manifestUrl: $manifestUrl, nativeTokenTicker: $nativeTokenTicker, isPreset: $isPreset, canBeEdited: $canBeEdited, sortingOrder: $sortingOrder, isUsedOnStart: $isUsedOnStart)';
+    return 'ConnectionData.jrpc(id: $id, name: $name, group: $group, endpoint: $endpoint, networkType: $networkType, blockExplorerUrl: $blockExplorerUrl, nativeTokenTicker: $nativeTokenTicker, isPreset: $isPreset, canBeEdited: $canBeEdited, sortingOrder: $sortingOrder, isUsedOnStart: $isUsedOnStart, manifestUrl: $manifestUrl)';
   }
 
   @override
@@ -1577,8 +1580,6 @@ class _$ConnectionDataJrpcImpl implements _ConnectionDataJrpc {
                 other.networkType == networkType) &&
             (identical(other.blockExplorerUrl, blockExplorerUrl) ||
                 other.blockExplorerUrl == blockExplorerUrl) &&
-            (identical(other.manifestUrl, manifestUrl) ||
-                other.manifestUrl == manifestUrl) &&
             (identical(other.nativeTokenTicker, nativeTokenTicker) ||
                 other.nativeTokenTicker == nativeTokenTicker) &&
             (identical(other.isPreset, isPreset) ||
@@ -1588,7 +1589,9 @@ class _$ConnectionDataJrpcImpl implements _ConnectionDataJrpc {
             (identical(other.sortingOrder, sortingOrder) ||
                 other.sortingOrder == sortingOrder) &&
             (identical(other.isUsedOnStart, isUsedOnStart) ||
-                other.isUsedOnStart == isUsedOnStart));
+                other.isUsedOnStart == isUsedOnStart) &&
+            (identical(other.manifestUrl, manifestUrl) ||
+                other.manifestUrl == manifestUrl));
   }
 
   @JsonKey(includeFromJson: false, includeToJson: false)
@@ -1601,12 +1604,12 @@ class _$ConnectionDataJrpcImpl implements _ConnectionDataJrpc {
       endpoint,
       networkType,
       blockExplorerUrl,
-      manifestUrl,
       nativeTokenTicker,
       isPreset,
       canBeEdited,
       sortingOrder,
-      isUsedOnStart);
+      isUsedOnStart,
+      manifestUrl);
 
   /// Create a copy of ConnectionData
   /// with the given fields replaced by the non-null parameter values.
@@ -1628,12 +1631,12 @@ class _$ConnectionDataJrpcImpl implements _ConnectionDataJrpc {
             String networkType,
             bool isLocal,
             String blockExplorerUrl,
-            String manifestUrl,
             String nativeTokenTicker,
             bool isPreset,
             bool canBeEdited,
             double sortingOrder,
             bool isUsedOnStart,
+            String manifestUrl,
             int? latencyDetectionInterval,
             int? maxLatency,
             int? endpointSelectionRetryCount)
@@ -1645,12 +1648,12 @@ class _$ConnectionDataJrpcImpl implements _ConnectionDataJrpc {
             String endpoint,
             String networkType,
             String blockExplorerUrl,
-            String manifestUrl,
             String nativeTokenTicker,
             bool isPreset,
             bool canBeEdited,
             double sortingOrder,
-            bool isUsedOnStart)
+            bool isUsedOnStart,
+            String manifestUrl)
         proto,
     required TResult Function(
             String id,
@@ -1659,12 +1662,12 @@ class _$ConnectionDataJrpcImpl implements _ConnectionDataJrpc {
             String endpoint,
             String networkType,
             String blockExplorerUrl,
-            String manifestUrl,
             String nativeTokenTicker,
             bool isPreset,
             bool canBeEdited,
             double sortingOrder,
-            bool isUsedOnStart)
+            bool isUsedOnStart,
+            String manifestUrl)
         jrpc,
   }) {
     return jrpc(
@@ -1674,12 +1677,12 @@ class _$ConnectionDataJrpcImpl implements _ConnectionDataJrpc {
         endpoint,
         networkType,
         blockExplorerUrl,
-        manifestUrl,
         nativeTokenTicker,
         isPreset,
         canBeEdited,
         sortingOrder,
-        isUsedOnStart);
+        isUsedOnStart,
+        manifestUrl);
   }
 
   @override
@@ -1693,12 +1696,12 @@ class _$ConnectionDataJrpcImpl implements _ConnectionDataJrpc {
             String networkType,
             bool isLocal,
             String blockExplorerUrl,
-            String manifestUrl,
             String nativeTokenTicker,
             bool isPreset,
             bool canBeEdited,
             double sortingOrder,
             bool isUsedOnStart,
+            String manifestUrl,
             int? latencyDetectionInterval,
             int? maxLatency,
             int? endpointSelectionRetryCount)?
@@ -1710,12 +1713,12 @@ class _$ConnectionDataJrpcImpl implements _ConnectionDataJrpc {
             String endpoint,
             String networkType,
             String blockExplorerUrl,
-            String manifestUrl,
             String nativeTokenTicker,
             bool isPreset,
             bool canBeEdited,
             double sortingOrder,
-            bool isUsedOnStart)?
+            bool isUsedOnStart,
+            String manifestUrl)?
         proto,
     TResult? Function(
             String id,
@@ -1724,12 +1727,12 @@ class _$ConnectionDataJrpcImpl implements _ConnectionDataJrpc {
             String endpoint,
             String networkType,
             String blockExplorerUrl,
-            String manifestUrl,
             String nativeTokenTicker,
             bool isPreset,
             bool canBeEdited,
             double sortingOrder,
-            bool isUsedOnStart)?
+            bool isUsedOnStart,
+            String manifestUrl)?
         jrpc,
   }) {
     return jrpc?.call(
@@ -1739,12 +1742,12 @@ class _$ConnectionDataJrpcImpl implements _ConnectionDataJrpc {
         endpoint,
         networkType,
         blockExplorerUrl,
-        manifestUrl,
         nativeTokenTicker,
         isPreset,
         canBeEdited,
         sortingOrder,
-        isUsedOnStart);
+        isUsedOnStart,
+        manifestUrl);
   }
 
   @override
@@ -1758,12 +1761,12 @@ class _$ConnectionDataJrpcImpl implements _ConnectionDataJrpc {
             String networkType,
             bool isLocal,
             String blockExplorerUrl,
-            String manifestUrl,
             String nativeTokenTicker,
             bool isPreset,
             bool canBeEdited,
             double sortingOrder,
             bool isUsedOnStart,
+            String manifestUrl,
             int? latencyDetectionInterval,
             int? maxLatency,
             int? endpointSelectionRetryCount)?
@@ -1775,12 +1778,12 @@ class _$ConnectionDataJrpcImpl implements _ConnectionDataJrpc {
             String endpoint,
             String networkType,
             String blockExplorerUrl,
-            String manifestUrl,
             String nativeTokenTicker,
             bool isPreset,
             bool canBeEdited,
             double sortingOrder,
-            bool isUsedOnStart)?
+            bool isUsedOnStart,
+            String manifestUrl)?
         proto,
     TResult Function(
             String id,
@@ -1789,12 +1792,12 @@ class _$ConnectionDataJrpcImpl implements _ConnectionDataJrpc {
             String endpoint,
             String networkType,
             String blockExplorerUrl,
-            String manifestUrl,
             String nativeTokenTicker,
             bool isPreset,
             bool canBeEdited,
             double sortingOrder,
-            bool isUsedOnStart)?
+            bool isUsedOnStart,
+            String manifestUrl)?
         jrpc,
     required TResult orElse(),
   }) {
@@ -1806,12 +1809,12 @@ class _$ConnectionDataJrpcImpl implements _ConnectionDataJrpc {
           endpoint,
           networkType,
           blockExplorerUrl,
-          manifestUrl,
           nativeTokenTicker,
           isPreset,
           canBeEdited,
           sortingOrder,
-          isUsedOnStart);
+          isUsedOnStart,
+          manifestUrl);
     }
     return orElse();
   }
@@ -1866,12 +1869,12 @@ abstract class _ConnectionDataJrpc implements ConnectionData {
       required final String endpoint,
       required final String networkType,
       required final String blockExplorerUrl,
-      required final String manifestUrl,
       required final String nativeTokenTicker,
       required final bool isPreset,
       required final bool canBeEdited,
       required final double sortingOrder,
-      final bool isUsedOnStart}) = _$ConnectionDataJrpcImpl;
+      final bool isUsedOnStart,
+      final String manifestUrl}) = _$ConnectionDataJrpcImpl;
 
   factory _ConnectionDataJrpc.fromJson(Map<String, dynamic> json) =
       _$ConnectionDataJrpcImpl.fromJson;
@@ -1888,8 +1891,6 @@ abstract class _ConnectionDataJrpc implements ConnectionData {
   @override
   String get blockExplorerUrl;
   @override
-  String get manifestUrl;
-  @override
   String get nativeTokenTicker;
   @override
   bool get isPreset;
@@ -1899,6 +1900,8 @@ abstract class _ConnectionDataJrpc implements ConnectionData {
   double get sortingOrder;
   @override
   bool get isUsedOnStart;
+  @override
+  String get manifestUrl;
 
   /// Create a copy of ConnectionData
   /// with the given fields replaced by the non-null parameter values.
