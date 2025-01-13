@@ -6,6 +6,7 @@ import 'package:app/di/di.dart';
 import 'package:app/feature/browser/approvals_listener/actions/request_permissions/request_permissions_model.dart';
 import 'package:app/feature/browser/approvals_listener/actions/request_permissions/request_permissions_widget.dart';
 import 'package:app/feature/browser/browser.dart';
+import 'package:app/feature/wallet/widgets/select_account/select_account_data.dart';
 import 'package:collection/collection.dart';
 import 'package:elementary_helper/elementary_helper.dart';
 import 'package:flutter/foundation.dart';
@@ -35,8 +36,9 @@ class RequestPermissionsWidgetModel extends CustomWidgetModel<
 
   late final searchController = createTextEditingController();
   late final _step = createValueNotifier(RequestPermissionsStep.account);
-  late final _selected = createNotifier(_initialSelectedAccount);
-  late final _accounts = createNotifier(model.accounts);
+  late final _currentAccount = createNotifierFromStream(model.currentAccount);
+  late final _selected = createNotifierFromStream(model.currentAccount);
+  late final _accounts = createNotifierFromStream(model.seedWithAccounts);
   late final _permissions = createNotifier(widget.permissions.toSet());
   late final _zeroBalance = Money.fromBigIntWithCurrency(
     BigInt.zero,
@@ -47,18 +49,15 @@ class RequestPermissionsWidgetModel extends CustomWidgetModel<
 
   ValueListenable<RequestPermissionsStep> get step => _step;
 
-  ListenableState<List<KeyAccount>> get accounts => _accounts;
+  ListenableState<List<SelectAccountData>> get accounts => _accounts;
 
   ListenableState<KeyAccount?> get selected => _selected;
 
   ListenableState<Set<Permission>> get permissions => _permissions;
 
-  KeyAccount? get _initialSelectedAccount =>
-      model.accounts.firstWhereOrNull(
-        (a) => a.address == widget.previousSelectedAccount,
-      ) ??
-      model.currentAccount ??
-      model.accounts.firstOrNull;
+  ListenableState<KeyAccount?> get currentAccount => _currentAccount;
+
+  KeyAccount? get _initialSelectedAccount => currentAccount.value;
 
   void onNext() {
     if (_selected.value == null) return;
@@ -69,14 +68,39 @@ class RequestPermissionsWidgetModel extends CustomWidgetModel<
     final value = searchController.value.text.trim().toLowerCase();
 
     if (value.isEmpty) {
-      _accounts.accept(model.accounts);
+      _accounts.accept(_accounts.value);
     } else {
       _accounts.accept(
-        model.accounts
+        _accounts.value
+            ?.map((selectAccountData) {
+              final filteredPrivateKeys = selectAccountData.privateKeys
+                  .map((keyInfo) {
+                    final filteredAccounts = keyInfo.accounts.where(
+                      (account) {
+                        return account.name.toLowerCase().contains(value) ||
+                            account.address.address
+                                .toLowerCase()
+                                .contains(value);
+                      },
+                    ).toList();
+
+                    return SeedWithInfo(
+                      keyName: keyInfo.keyName,
+                      key: keyInfo.key,
+                      accounts: filteredAccounts,
+                    );
+                  })
+                  .where(
+                    (keyInfo) => keyInfo.accounts.isNotEmpty,
+                  )
+                  .toList();
+              return SelectAccountData(
+                name: selectAccountData.name,
+                privateKeys: filteredPrivateKeys,
+              );
+            })
             .where(
-              (account) =>
-                  account.name.toLowerCase().contains(value) ||
-                  account.address.address.toLowerCase().contains(value),
+              (selectAccountData) => selectAccountData.privateKeys.isNotEmpty,
             )
             .toList(),
       );

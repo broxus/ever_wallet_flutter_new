@@ -3,6 +3,8 @@ import 'package:app/data/models/models.dart';
 import 'package:elementary/elementary.dart';
 import 'package:nekoton_repository/nekoton_repository.dart';
 
+import '../../../../wallet/widgets/select_account/select_account_data.dart';
+
 class RequestPermissionsModel extends ElementaryModel {
   RequestPermissionsModel(
     ErrorHandler errorHandler,
@@ -17,17 +19,30 @@ class RequestPermissionsModel extends ElementaryModel {
 
   String get symbol => currentTransport.nativeTokenTicker;
 
-  KeyAccount? get currentAccount =>
-      _currentAccountsService.currentActiveAccount;
+  Stream<KeyAccount?> get currentAccount =>
+      _currentAccountsService.currentActiveAccountStream;
 
-  List<KeyAccount> get accounts => _nekotonRepository.seedList.seeds
-      .expand(
-        (seed) => seed.allKeys.expand(
-          (key) => key.accountList.allAccounts,
-        ),
-      )
-      .where((account) => !account.isHidden)
-      .toList();
+  Stream<List<SelectAccountData>> get seedWithAccounts =>
+      _nekotonRepository.seedListStream.map(
+            (seedList) {
+          return seedList.seeds.map((seed) {
+            final privateKeys = seed.allKeys.map((key) {
+              final accounts = key.accountList.allAccounts
+                  .where((account) => !account.isHidden)
+                  .toList();
+              return SeedWithInfo(
+                keyName: key.name,
+                key: key.publicKey.toEllipseString(),
+                accounts: accounts,
+              );
+            }).toList();
+            return SelectAccountData(
+              name: seed.name,
+              privateKeys: privateKeys,
+            );
+          }).toList();
+        },
+      );
 
   TransportStrategy get currentTransport => _nekotonRepository.currentTransport;
 
