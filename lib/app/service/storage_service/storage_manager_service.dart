@@ -43,6 +43,5 @@ class StorageManagerService {
   Future<void> init() => Future.wait(_storages.map((e) => e.init()));
 
   /// Remove from storage all data that can be linked to user.
-  Future<void> clearSensitiveData() =>
-      Future.wait(_storages.map((e) => e.clearSensitiveData()));
+  Future<void> clear() => Future.wait(_storages.map((e) => e.clear()));
 }

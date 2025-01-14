@@ -136,14 +136,25 @@ class GeneralStorageService extends AbstractStorageService {
   }
 
   /// Clear all custom tokens
+  Future<void> clearAllContracts() async {
+    try {
+      await _systemContractAssetsStorage.erase();
+    } catch (_) {}
+  }
+
+  /// Clear all custom tokens
   Future<void> clearAllCustomTokens() async {
-    await _customContractAssetsStorage.erase();
+    try {
+      await _customContractAssetsStorage.erase();
+    } catch (_) {}
     _customTokenContractAssetsSubject.add({});
   }
 
   /// Clear information about all currencies.
   Future<void> clearCurrencies() async {
-    await _currenciesStorage.erase();
+    try {
+      await _currenciesStorage.erase();
+    } catch (_) {}
     _currencySubject.add({});
   }
 
@@ -154,14 +165,27 @@ class GeneralStorageService extends AbstractStorageService {
   }
 
   /// Clear all preferences data
-  Future<void> clearPreferences() => _prefStorage.erase();
+  Future<void> clearPreferences() async {
+    try {
+      return await _prefStorage.erase();
+    } catch (_) {}
+  }
 
   @override
-  Future<void> clearSensitiveData() => Future.wait([
-        clearCurrencies(),
-        clearPreferences(),
-        clearIsBiometryEnabled(),
-      ]);
+  Future<void> clear() async {
+    await Future.wait([
+      clearCurrencies(),
+      clearPreferences(),
+      clearIsBiometryEnabled(),
+      clearAllContracts(),
+      clearAllCustomTokens(),
+    ]);
+
+    _currentKeySubject.add(null);
+    _currentAddressSubject.add(null);
+    _lastViewedSeedsSubject.add([]);
+    _systemTokenContractAssetsSubject.add({});
+  }
 
   /// Set flag that storage was migrated from old hive to this one.
   /// This must happens only in the end of migration process.

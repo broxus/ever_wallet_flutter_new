@@ -148,7 +148,9 @@ class BrowserBookmarksStorageService extends AbstractStorageService {
   }
 
   @override
-  Future<void> clearSensitiveData() => Future.wait([
-        clearBrowserBookmarks(needUndo: false),
-      ]);
+  Future<void> clear() async {
+    try {
+      return await _storage.erase();
+    } catch (_) {}
+  }
 }

@@ -43,7 +43,11 @@ class BrowserFaviconURLStorageService extends AbstractStorageService {
   }
 
   @override
-  Future<void> clearSensitiveData() => _storage.erase();
+  Future<void> clear() async {
+    try {
+      return await _storage.erase();
+    } catch (_) {}
+  }
 
   @override
   // ignore: no-empty-block

@@ -11,4 +11,6 @@ abstract interface class IIdentifyIconsService {
   void setData(String key, IdentifyIconData color);
 
   Future<IdentifyIconData> getData(String key);
+
+  Future<void> clear();
 }

@@ -24,11 +24,6 @@ class SecureStorageService extends AbstractStorageService {
   @override
   Future<void> init() => Future.value();
 
-  @override
-  Future<void> clearSensitiveData() => Future.wait([
-        clearKeyPasswords(),
-      ]);
-
   /// Get password of public key if it was cached with biometry
   Future<String?> getKeyPassword(PublicKey publicKey) => _storage.get(
         publicKey.publicKey,
@@ -78,4 +73,27 @@ class SecureStorageService extends AbstractStorageService {
         hash,
         domain: _connectionJsonDomain,
       );
+
+  @override
+  Future<void> clear({
+    bool isSaveConnectionJson = true,
+  }) async {
+    String? hash;
+    String? json;
+
+    if (isSaveConnectionJson) {
+      hash = await getConnectionJsonHash();
+      json = await getConnectionJson();
+    }
+
+    await _storage.clearAll();
+
+    if (hash != null) {
+      await setConnectionJsonHash(hash);
+    }
+
+    if (json != null) {
+      await setConnectionJson(json);
+    }
+  }
 }

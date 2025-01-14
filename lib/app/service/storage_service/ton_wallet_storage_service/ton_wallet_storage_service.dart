@@ -74,7 +74,7 @@ class TonWalletStorageService extends TonWalletTransactionsStorage
   Future<void> init() async {}
 
   @override
-  Future<void> clearSensitiveData() async {
+  Future<void> clear() async {
     _transactionsSubject.add({});
     _pendingTransactionsSubject.add({});
     _expiredTransactionsSubject.add({});
