@@ -39,6 +39,7 @@ import '../app/service/localization/service/localization_service.dart' as _i5;
 import '../app/service/messenger/service/messenger_service.dart' as _i980;
 import '../app/service/navigation/service/navigation_service.dart' as _i451;
 import '../app/service/nekoton_related/current_key_service.dart' as _i272;
+import '../app/service/nekoton_related/gas_price_service.dart' as _i818;
 import '../app/service/nekoton_related/nekoton_related.dart' as _i403;
 import '../app/service/network_connection/network_connection_service.dart'
     as _i33;
@@ -191,6 +192,8 @@ extension GetItInjectableX on _i174.GetIt {
     );
     gh.singleton<_i386.NekotonRepositoryStorageService>(() =>
         _i386.NekotonRepositoryStorageService(gh<_i771.NekotonRepository>()));
+    gh.singleton<_i818.GasPriceService>(
+        () => _i818.GasPriceService(gh<_i771.NekotonRepository>()));
     gh.singleton<_i272.CurrentKeyService>(() => _i272.CurrentKeyService(
           gh<_i128.GeneralStorageService>(),
           gh<_i771.NekotonRepository>(),
