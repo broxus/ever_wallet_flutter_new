@@ -11,7 +11,12 @@ abstract class DioModule {
       ..options.connectTimeout = const Duration(minutes: timeoutMinutes)
       ..options.sendTimeout = const Duration(minutes: timeoutMinutes)
       ..options.receiveTimeout = const Duration(minutes: timeoutMinutes)
-      ..interceptors.addAll([LogInterceptor()]);
+      ..interceptors.addAll([
+        LogInterceptor(
+          requestBody: true,
+          responseBody: true,
+        ),
+      ]);
     return dio;
   }
 }
