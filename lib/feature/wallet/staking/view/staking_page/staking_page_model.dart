@@ -1,5 +1,6 @@
 import 'package:app/app/service/service.dart';
 import 'package:app/data/models/models.dart';
+import 'package:app/utils/utils.dart';
 import 'package:elementary/elementary.dart';
 import 'package:flutter/widgets.dart';
 import 'package:nekoton_repository/nekoton_repository.dart' hide Message;
@@ -12,6 +13,7 @@ class StakingPageModel extends ElementaryModel {
     this._stakingService,
     this._assetsService,
     this._messengerService,
+    this._gasPriceService,
   ) : super(errorHandler: errorHandler) {
     _stakingService.resetCache();
   }
@@ -21,16 +23,38 @@ class StakingPageModel extends ElementaryModel {
   final StakingService _stakingService;
   final AssetsService _assetsService;
   final MessengerService _messengerService;
+  final GasPriceService _gasPriceService;
 
   TransportStrategy get transport => _nekotonRepository.currentTransport;
 
   Currency get nativeCurrency => Currencies()[transport.nativeTokenTicker]!;
 
-  StakingInformation get staking {
+  StakingInformation get _staking {
     if (transport.stakeInformation == null) {
       throw Exception('Stake information is not available');
     }
     return transport.stakeInformation!;
+  }
+
+  Future<StakingInformation> getStakingInformation() async {
+    final prices = await _gasPriceService.getGasPriceParams();
+    final (deposit, withdraw, removePendingWithdraw) = await FutureExt.wait3(
+      _gasPriceService.computeGas(_staking.stakeDepositAttachedFee, prices),
+      _gasPriceService.computeGas(_staking.stakeWithdrawAttachedFee, prices),
+      _gasPriceService.computeGas(
+        _staking.stakeRemovePendingWithdrawAttachedFee,
+        prices,
+      ),
+    );
+
+    return StakingInformation(
+      stakingAPYLink: _staking.stakingAPYLink,
+      stakingRootContractAddress: _staking.stakingRootContractAddress,
+      stakingValutAddress: _staking.stakingValutAddress,
+      stakeDepositAttachedFee: deposit,
+      stakeWithdrawAttachedFee: withdraw,
+      stakeRemovePendingWithdrawAttachedFee: removePendingWithdraw,
+    );
   }
 
   Stream<List<StEverWithdrawRequest>> getWithdrawRequests(Address address) =>
@@ -42,13 +66,13 @@ class StakingPageModel extends ElementaryModel {
   Future<TokenWalletState> getTokenWallet(Address owner) =>
       _nekotonRepository.getTokenWallet(
         owner,
-        staking.stakingRootContractAddress,
+        _staking.stakingRootContractAddress,
       );
 
   Future<CustomCurrency?> getTokenCurrency() =>
       _currenciesService.getOrFetchCurrency(
         transport,
-        staking.stakingRootContractAddress,
+        _staking.stakingRootContractAddress,
       );
 
   Future<CustomCurrency?> getEverCurrency() =>
@@ -62,7 +86,7 @@ class StakingPageModel extends ElementaryModel {
 
   Future<TokenContractAsset?> getTokenContractAsset() =>
       _assetsService.getTokenContractAsset(
-        staking.stakingRootContractAddress,
+        _staking.stakingRootContractAddress,
         transport,
       );
 

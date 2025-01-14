@@ -31,6 +31,7 @@ StakingPageWidgetModel defaultStakingPageWidgetModelFactory(
         inject(),
         inject(),
         inject(),
+        inject(),
       ),
     );
 
@@ -61,6 +62,7 @@ class StakingPageWidgetModel
       (_) => _validate(),
     ),
   );
+  late final StakingInformation _staking;
 
   ValueListenable<StakingTab> get tab => _tab;
 
@@ -93,7 +95,7 @@ class StakingPageWidgetModel
 
   Money get _comissionMoney => Money.fromBigIntWithCurrency(
         // around 2.1 EVER
-        model.staking.stakeDepositAttachedFee + _maxPossibleStakeComission,
+        _staking.stakeDepositAttachedFee + _maxPossibleStakeComission,
         model.nativeCurrency,
       );
 
@@ -196,6 +198,7 @@ class StakingPageWidgetModel
         model.getStEverDetails(),
         model.getTokenContractAsset(),
       );
+      _staking = await model.getStakingInformation();
 
       final time = Duration(
         seconds: int.tryParse(details.withdrawHoldTime) ?? 0,
@@ -230,7 +233,7 @@ class StakingPageWidgetModel
       StakingTab.stake => StakingData(
           tab: StakingTab.stake,
           attachedAmount: Money.fromBigIntWithCurrency(
-            model.staking.stakeDepositAttachedFee,
+            _staking.stakeDepositAttachedFee,
             model.nativeCurrency,
           ),
           exchangeRate: info.details.stEverSupply / info.details.totalAssets,
@@ -251,7 +254,7 @@ class StakingPageWidgetModel
       StakingTab.unstake => StakingData(
           tab: StakingTab.unstake,
           attachedAmount: Money.fromBigIntWithCurrency(
-            model.staking.stakeWithdrawAttachedFee,
+            _staking.stakeWithdrawAttachedFee,
             model.nativeCurrency,
           ),
           exchangeRate: info.details.totalAssets / info.details.stEverSupply,
@@ -270,7 +273,7 @@ class StakingPageWidgetModel
       StakingTab.inProgress => StakingData(
           tab: StakingTab.inProgress,
           attachedAmount: Money.fromBigIntWithCurrency(
-            model.staking.stakeRemovePendingWithdrawAttachedFee,
+            _staking.stakeRemovePendingWithdrawAttachedFee,
             model.nativeCurrency,
           ),
           exchangeRate: info.details.totalAssets / info.details.stEverSupply,

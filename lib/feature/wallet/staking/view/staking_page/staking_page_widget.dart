@@ -37,6 +37,7 @@ class StakingPageWidget extends ElementaryWidget<StakingPageWidgetModel> {
             nekotonRepository: inject(),
             stakingService: inject(),
             storage: inject(),
+            gasPriceService: inject(),
           )..add(const ActionStakingBlocEvent.init()),
           child: Stack(
             children: [

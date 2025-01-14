@@ -21,6 +21,7 @@ CancelUnstakingPageWidgetModel defaultCancelUnstakingPageWidgetModelFactory(
         inject(),
         inject(),
         inject(),
+        inject(),
       ),
     );
 
@@ -55,7 +56,7 @@ class CancelUnstakingPageWidgetModel extends CustomWidgetModel<
     );
     if (!agreed) return;
 
-    final staking = model.staking;
+    final staking = await model.getStakingInformation();
     final payload = await model.getPayload(widget.request.nonce);
 
     if (!context.mounted) return;
