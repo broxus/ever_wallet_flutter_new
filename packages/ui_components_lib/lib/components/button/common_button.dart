@@ -282,15 +282,21 @@ class _CommonButtonState extends State<CommonButton> {
               mainAxisSize: MainAxisSize.min,
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
-                if (widget.leading != null) ...[
-                  widget.leading!,
-                  const SizedBox(width: DimensSize.d8),
-                ],
+                if (widget.leading != null)
+                  Padding(
+                    padding: const EdgeInsets.only(
+                      right: DimensSize.d8,
+                    ),
+                    child: widget.leading,
+                  ),
                 Flexible(child: textWidget),
-                if (widget.trailing != null) ...[
-                  const SizedBox(width: DimensSize.d8),
-                  widget.trailing!,
-                ],
+                if (widget.trailing != null)
+                  Padding(
+                    padding: const EdgeInsets.only(
+                      left: DimensSize.d8,
+                    ),
+                    child: widget.trailing,
+                  ),
               ],
             ),
     );
