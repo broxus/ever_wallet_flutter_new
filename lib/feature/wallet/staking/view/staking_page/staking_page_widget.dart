@@ -118,7 +118,7 @@ class _StakingViewWidget extends StatelessWidget {
                       TextSpan(
                         text: LocaleKeys.stakeEverReceiverStever.tr(
                           args: [
-                            wm.nativeCurrency.symbol,
+                            wm.currency.symbol,
                             info?.tokenWallet.symbol.name ?? '',
                           ],
                         ),
@@ -222,7 +222,7 @@ class _ButtonWidget extends StatelessWidget {
                       attachedFee.toString(),
                   tokenWalletSendResultMessageQueryParam:
                       LocaleKeys.withdrawHoursProgress.tr(
-                    args: [wm.nativeCurrency.symbol, withdrawHours.toString()],
+                    args: [wm.currency.symbol, withdrawHours.toString()],
                   ),
                 },
               ),
@@ -230,7 +230,7 @@ class _ButtonWidget extends StatelessWidget {
           },
         );
       },
-      builder: (context, actionState) {
+      builder: (_, actionState) {
         final isLoading = actionState.maybeWhen(
           inProgress: () => true,
           orElse: () => false,
@@ -239,28 +239,74 @@ class _ButtonWidget extends StatelessWidget {
         return ValueListenableBuilder(
           valueListenable: wm.tab,
           builder: (_, tab, __) => StateNotifierBuilder(
-            listenableState: wm.isValid,
-            builder: (_, isValid) {
-              final title = switch (tab) {
-                StakingTab.stake => LocaleKeys.stakeWord.tr(),
-                StakingTab.unstake => LocaleKeys.unstakeWord.tr(),
-                _ => null,
-              };
-
-              if (title == null) return const SizedBox.shrink();
-
-              return AccentButton(
-                buttonShape: ButtonShape.pill,
-                title: title,
-                isLoading: isLoading,
-                onPressed: (isValid ?? false)
-                    ? () => wm.onSubmit(context.read<ActionStakingBloc>())
-                    : null,
-              );
-            },
+            listenableState: wm.validation,
+            builder: (_, validation) => _InnerButtonWidget(
+              tab: tab,
+              isLoading: isLoading,
+              validation: validation,
+              onSubmit: wm.onSubmit,
+            ),
           ),
         );
       },
+    );
+  }
+}
+
+class _InnerButtonWidget extends StatelessWidget {
+  const _InnerButtonWidget({
+    required this.tab,
+    required this.isLoading,
+    required this.validation,
+    required this.onSubmit,
+  });
+
+  final StakingTab tab;
+  final bool isLoading;
+  final ValidationState? validation;
+  final void Function(ActionStakingBloc) onSubmit;
+
+  @override
+  Widget build(BuildContext context) {
+    final theme = context.themeStyleV2;
+    final title = switch (tab) {
+      StakingTab.stake => LocaleKeys.stakeWord.tr(),
+      StakingTab.unstake => LocaleKeys.unstakeWord.tr(),
+      _ => null,
+    };
+
+    if (title == null) return const SizedBox.shrink();
+
+    return Column(
+      mainAxisSize: MainAxisSize.min,
+      crossAxisAlignment: CrossAxisAlignment.stretch,
+      children: [
+        if (validation?.message != null)
+          Padding(
+            padding: const EdgeInsets.only(
+              bottom: DimensSizeV2.d8,
+            ),
+            child: PrimaryCard(
+              padding: const EdgeInsets.all(DimensSizeV2.d16),
+              borderRadius: BorderRadius.circular(DimensRadiusV2.radius16),
+              color: theme.colors.backgroundNegative,
+              child: Text(
+                validation!.message!,
+                style: theme.textStyles.labelSmall.copyWith(
+                  color: theme.colors.contentNegative,
+                ),
+              ),
+            ),
+          ),
+        AccentButton(
+          buttonShape: ButtonShape.pill,
+          title: title,
+          isLoading: isLoading,
+          onPressed: (validation?.isValid ?? false)
+              ? () => onSubmit(context.read<ActionStakingBloc>())
+              : null,
+        ),
+      ],
     );
   }
 }

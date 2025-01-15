@@ -4,6 +4,7 @@ import 'dart:convert';
 import 'package:app/app/service/service.dart';
 import 'package:app/data/models/models.dart';
 import 'package:app/utils/utils.dart';
+import 'package:collection/collection.dart';
 import 'package:flutter/services.dart';
 import 'package:injectable/injectable.dart';
 import 'package:nekoton_repository/nekoton_repository.dart';
@@ -55,6 +56,7 @@ class StakingService {
       nekotonRepository.currentTransport.networkType == 'ever'
           ? _stEverVaultAbi
           : _stEverVaultNewAbi;
+
   String get stEverAccountAbi =>
       nekotonRepository.currentTransport.networkType == 'ever'
           ? _stEverAccountAbi
@@ -171,15 +173,18 @@ class StakingService {
       return items
           // ignore cancelled withdraws
           .where((e) => !_cancelledWithdraw.contains(e[0] as String))
-          .map((e) {
-        return StEverWithdrawRequest(
-          accountAddress: accountAddress,
-          nonce: e[0] as String,
-          data: StEverWithdrawRequestData.fromJson(
-            e[1] as Map<String, dynamic>,
-          ),
-        );
-      }).toList();
+          .map(
+            (e) => StEverWithdrawRequest(
+              accountAddress: accountAddress,
+              nonce: e[0] as String,
+              data: StEverWithdrawRequestData.fromJson(
+                e[1] as Map<String, dynamic>,
+              ),
+            ),
+          )
+          .sortedBy((e) => e.data.timestamp)
+          .reversed
+          .toList();
     } catch (e) {
       return [];
     }

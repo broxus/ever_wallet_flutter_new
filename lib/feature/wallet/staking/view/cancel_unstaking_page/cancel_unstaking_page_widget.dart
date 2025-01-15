@@ -90,7 +90,10 @@ class CancelUnstakingPageWidget
                       listenableState: wm.asset,
                       builder: (_, asset) => WalletTransactionDetailsItem(
                         title: LocaleKeys.unstakeAmount.tr(),
-                        valueWidget: AmountWidget.fromMoney(amount: tokenValue),
+                        valueWidget: AmountWidget.fromMoney(
+                          amount: tokenValue,
+                          includeSymbol: false,
+                        ),
                         iconPath: asset?.logoURI ??
                             Assets.images.tokenDefaultIcon.path,
                         convertedValueWidget: tokenPrice != null
@@ -109,23 +112,22 @@ class CancelUnstakingPageWidget
                           // ignore: lines_longer_than_80_chars, no-magic-number, binary-expression-operand-order
                           '1 ${wm.nativeCurrency.symbol} ≈ ${(1 * exchangeRate).toStringAsFixed(4)} ${stakeCurrency.isoCode}',
                     ),
-                    StateNotifierBuilder(
-                      listenableState: wm.asset,
-                      builder: (_, asset) => WalletTransactionDetailsItem(
-                        title: LocaleKeys.receiveWord.tr(),
-                        valueWidget: AmountWidget.fromMoney(amount: everValue),
-                        iconPath: asset?.logoURI ??
-                            Assets.images.tokenDefaultIcon.path,
-                        convertedValueWidget: everPrice != null
-                            ? AmountWidget.fromMoney(
-                                amount: everValue.exchangeToUSD(everPrice!),
-                                style: theme.textStyles.labelXSmall.copyWith(
-                                  color: theme.colors.content3,
-                                ),
-                                sign: '~ ',
-                              )
-                            : null,
+                    WalletTransactionDetailsItem(
+                      title: LocaleKeys.receiveWord.tr(),
+                      valueWidget: AmountWidget.fromMoney(
+                        amount: everValue,
+                        includeSymbol: false,
                       ),
+                      iconPath: wm.nativeTokenIcon,
+                      convertedValueWidget: everPrice != null
+                          ? AmountWidget.fromMoney(
+                              amount: everValue.exchangeToUSD(everPrice!),
+                              style: theme.textStyles.labelXSmall.copyWith(
+                                color: theme.colors.content3,
+                              ),
+                              sign: '~ ',
+                            )
+                          : null,
                     ),
                   ],
                 ),

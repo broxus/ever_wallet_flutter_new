@@ -449,6 +449,8 @@ abstract class LocaleKeys {
   static const stakingInitError = 'stakingInitError';
   static const stakingNotEnoughBalanceToStake =
       'stakingNotEnoughBalanceToStake';
+  static const stakingNotEnoughBalanceToUnstake =
+      'stakingNotEnoughBalanceToUnstake';
   static const sendingNotEnoughBalanceToSend = 'sendingNotEnoughBalanceToSend';
   static const cancelUnstakingCheckTitle = 'cancelUnstakingCheckTitle';
   static const cancelUnstakingCheckSubtitle = 'cancelUnstakingCheckSubtitle';

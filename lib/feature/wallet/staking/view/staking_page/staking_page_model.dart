@@ -2,7 +2,6 @@ import 'package:app/app/service/service.dart';
 import 'package:app/data/models/models.dart';
 import 'package:app/utils/utils.dart';
 import 'package:elementary/elementary.dart';
-import 'package:flutter/widgets.dart';
 import 'package:nekoton_repository/nekoton_repository.dart' hide Message;
 
 class StakingPageModel extends ElementaryModel {
@@ -12,7 +11,6 @@ class StakingPageModel extends ElementaryModel {
     this._currenciesService,
     this._stakingService,
     this._assetsService,
-    this._messengerService,
     this._gasPriceService,
   ) : super(errorHandler: errorHandler) {
     _stakingService.resetCache();
@@ -22,7 +20,6 @@ class StakingPageModel extends ElementaryModel {
   final CurrenciesService _currenciesService;
   final StakingService _stakingService;
   final AssetsService _assetsService;
-  final MessengerService _messengerService;
   final GasPriceService _gasPriceService;
 
   TransportStrategy get transport => _nekotonRepository.currentTransport;
@@ -95,10 +92,4 @@ class StakingPageModel extends ElementaryModel {
 
   Future<BigInt> getWithdrawEverAmount(BigInt value) =>
       _stakingService.getWithdrawEverAmount(value);
-
-  void showError(BuildContext context, String message) {
-    _messengerService.show(
-      Message.error(context: context, message: message),
-    );
-  }
 }

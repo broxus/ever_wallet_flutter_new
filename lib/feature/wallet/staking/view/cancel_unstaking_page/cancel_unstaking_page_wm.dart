@@ -37,6 +37,8 @@ class CancelUnstakingPageWidgetModel extends CustomWidgetModel<
 
   Currency get nativeCurrency => model.nativeCurrency;
 
+  String get nativeTokenIcon => model.transport.nativeTokenIcon;
+
   @override
   void initWidgetModel() {
     super.initWidgetModel();

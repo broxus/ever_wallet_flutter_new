@@ -18,7 +18,7 @@ import 'package:nekoton_repository/nekoton_repository.dart';
 import 'package:rxdart/rxdart.dart';
 import 'package:ui_components_lib/ui_components_lib.dart';
 
-final _maxPossibleStakeComission = BigInt.parse('100000000'); // 0.1 EVER
+final _maxFixedComission = BigInt.parse('100000000'); // 0.1 EVER
 
 StakingPageWidgetModel defaultStakingPageWidgetModelFactory(
   BuildContext context,
@@ -26,7 +26,6 @@ StakingPageWidgetModel defaultStakingPageWidgetModelFactory(
     StakingPageWidgetModel(
       StakingPageModel(
         createPrimaryErrorHandler(context),
-        inject(),
         inject(),
         inject(),
         inject(),
@@ -55,7 +54,7 @@ class StakingPageWidgetModel
       (_) => _getReceive().asStream().whereNotNull(),
     ),
   );
-  late final _isValid = createNotifierFromStream(
+  late final _validation = createNotifierFromStream(
     Rx.combineLatestList(
       [_tab.asStream(), _info.asStream(), inputController.asStream()],
     ).map(
@@ -70,7 +69,7 @@ class StakingPageWidgetModel
 
   ListenableState<Money> get receive => _receive;
 
-  ListenableState<bool> get isValid => _isValid;
+  ListenableState<ValidationState> get validation => _validation;
 
   EntityValueListenable<StakingInfo> get info => _info;
 
@@ -78,7 +77,8 @@ class StakingPageWidgetModel
 
   ThemeStyleV2 get theme => context.themeStyleV2;
 
-  Currency get nativeCurrency => model.nativeCurrency;
+  /// Native currency
+  Currency get currency => model.nativeCurrency;
 
   Currency? get tokenCurrency => _info.value.data?.tokenWallet.currency;
 
@@ -90,14 +90,20 @@ class StakingPageWidgetModel
       Fixed.zero;
 
   Currency? get _currentCurrency => _tab.value == StakingTab.stake
-      ? model.nativeCurrency
+      ? currency
       : _info.value.data?.tokenWallet.currency;
 
-  Money get _comissionMoney => Money.fromBigIntWithCurrency(
-        // around 2.1 EVER
-        _staking.stakeDepositAttachedFee + _maxPossibleStakeComission,
-        model.nativeCurrency,
-      );
+  Money get _comission => _tab.value == StakingTab.stake
+      ? Money.fromBigIntWithCurrency(
+          // around 2.1 EVER
+          _staking.stakeDepositAttachedFee + _maxFixedComission,
+          currency,
+        )
+      : Money.fromBigIntWithCurrency(
+          // around 3.1 EVER
+          _staking.stakeWithdrawAttachedFee + _maxFixedComission,
+          currency,
+        );
 
   @override
   void initWidgetModel() {
@@ -132,20 +138,10 @@ class StakingPageWidgetModel
     if (max == null) return;
 
     if (_tab.value == StakingTab.stake) {
-      max = max - _comissionMoney;
-
-      if (max.amount < Fixed.zero) {
-        model.showError(
-          context,
-          LocaleKeys.stakingNotEnoughBalanceToStake.tr(
-            args: [
-              _comissionMoney.formatImproved(),
-              _comissionMoney.currency.isoCode,
-            ],
-          ),
-        );
-        return;
-      }
+      max = max - _comission;
+    }
+    if (max.isNegative) {
+      max = max.copyWith(amount: Fixed.zero);
     }
 
     inputController.text = max.formatImproved();
@@ -239,7 +235,7 @@ class StakingPageWidgetModel
           tab: StakingTab.stake,
           attachedAmount: Money.fromBigIntWithCurrency(
             _staking.stakeDepositAttachedFee,
-            model.nativeCurrency,
+            currency,
           ),
           exchangeRate: info.details.stEverSupply / info.details.totalAssets,
           receiveCurrency: info.tokenWallet.currency,
@@ -248,7 +244,7 @@ class StakingPageWidgetModel
             isNative: true,
             balance: Money.fromBigIntWithCurrency(
               info.wallet.contractState.balance,
-              model.nativeCurrency,
+              currency,
             ),
             logoURI: model.transport.nativeTokenIcon,
             title: model.transport.nativeTokenTicker,
@@ -260,10 +256,10 @@ class StakingPageWidgetModel
           tab: StakingTab.unstake,
           attachedAmount: Money.fromBigIntWithCurrency(
             _staking.stakeWithdrawAttachedFee,
-            model.nativeCurrency,
+            currency,
           ),
           exchangeRate: info.details.totalAssets / info.details.stEverSupply,
-          receiveCurrency: model.nativeCurrency,
+          receiveCurrency: currency,
           asset: AmountInputAsset(
             rootTokenContract: info.tokenWallet.symbol.rootTokenContract,
             isNative: false,
@@ -279,7 +275,7 @@ class StakingPageWidgetModel
           tab: StakingTab.inProgress,
           attachedAmount: Money.fromBigIntWithCurrency(
             _staking.stakeRemovePendingWithdrawAttachedFee,
-            model.nativeCurrency,
+            currency,
           ),
           exchangeRate: info.details.totalAssets / info.details.stEverSupply,
           receiveCurrency: info.tokenWallet.currency,
@@ -307,29 +303,63 @@ class StakingPageWidgetModel
     return Money.fromBigIntWithCurrency(amount, currency);
   }
 
-  bool _validate() {
+  ValidationState _validate() {
     final info = _info.value.data;
     final value = _currentValue;
 
-    if (info == null) return false;
+    if (info == null) return const ValidationState.invalid();
 
+    final nativeBalance = Money.fromBigIntWithCurrency(
+      info.wallet.contractState.balance,
+      currency,
+    );
     final balance = switch (_tab.value) {
-      StakingTab.stake => Money.fromBigIntWithCurrency(
-          info.wallet.contractState.balance,
-          model.nativeCurrency,
-        ),
+      StakingTab.stake => nativeBalance,
       StakingTab.unstake => info.tokenWallet.moneyBalance,
-      StakingTab.inProgress => Money.fromBigIntWithCurrency(
-          BigInt.zero,
-          Currency.create('-', 0),
-        ),
+      StakingTab.inProgress => Money.fromInt(0, isoCode: currency.isoCode),
     };
 
-    return value != Fixed.zero &&
-        value <= balance.amount &&
-        // ignore: avoid_bool_literals_in_conditional_expressions
-        (_tab.value == StakingTab.stake
-            ? balance.amount >= _comissionMoney.amount + value
-            : true);
+    if (_tab.value == StakingTab.stake &&
+        balance.amount < _comission.amount + value) {
+      return ValidationState.invalid(
+        LocaleKeys.stakingNotEnoughBalanceToStake.tr(
+          args: [
+            _comission.formatImproved(),
+            _comission.currency.isoCode,
+          ],
+        ),
+      );
+    }
+    if (_tab.value == StakingTab.unstake &&
+        nativeBalance.amount < _comission.amount) {
+      return ValidationState.invalid(
+        LocaleKeys.stakingNotEnoughBalanceToUnstake.tr(
+          args: [
+            _comission.formatImproved(),
+            _comission.currency.isoCode,
+          ],
+        ),
+      );
+    }
+    if (value == Fixed.zero || value > balance.amount) {
+      return const ValidationState.invalid();
+    }
+
+    return const ValidationState.valid();
   }
+}
+
+class ValidationState {
+  const ValidationState._(
+    this.isValid, {
+    this.message,
+  });
+
+  const ValidationState.valid() : this._(true);
+
+  const ValidationState.invalid([String? message])
+      : this._(false, message: message);
+
+  final bool isValid;
+  final String? message;
 }
