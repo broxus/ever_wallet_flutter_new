@@ -107,12 +107,17 @@ class StakingPageWidgetModel
 
   void unfocus() => FocusScope.of(context).unfocus();
 
-  void showHowItWorksSheet() => showStEverHowItWorksSheet(
+  Future<void> showHowItWorksSheet() async {
+    final info = await _info.asStream().firstWhere((e) => e.data != null);
+    contextSafe?.let((context) {
+      showStEverHowItWorksSheet(
         context: context,
-        info: _info.value.data!,
+        info: info.data!,
         nativeTokenTicker: model.transport.nativeTokenTicker,
         nativeTokenIcon: model.transport.nativeTokenIcon,
       );
+    });
+  }
 
   // ignore: use_setters_to_change_properties
   void onTabChanged(StakingTab value) {

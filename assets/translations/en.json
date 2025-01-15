@@ -615,7 +615,7 @@
   "connectionData": "Connection data",
   "changeAccountName": "Change account name",
   "refreshToFind": "Refresh to find",
-  "newTokensLabel": "{} news tokens",
+  "newTokensLabel": "{} new tokens",
   "foundInThisAccountLabel": "found in this account.",
   "dontSeeYourToken": "Don`t see your token?",
   "emptyTokensDescriptionModal": "Sorry, we couldn’t find anything matching your request.",
