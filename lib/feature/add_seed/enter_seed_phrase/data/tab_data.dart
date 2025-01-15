@@ -11,13 +11,24 @@ class EnterSeedPhraseTabData {
   final int currentValue;
   final List<EnterSeedPhraseInputData> inputs;
 
+  late final fistInputsRange = inputs.getRange(
+    0,
+    currentValue ~/ _gridColumnCount,
+  );
+
+  late final secondInputsRange = inputs.getRange(
+    currentValue ~/ _gridColumnCount,
+    currentValue,
+  );
+
+  static const _gridColumnCount = 2;
+
   EnterSeedPhraseTabData copyWith({
-    List<int>? allowedValues,
     int? currentValue,
     List<EnterSeedPhraseInputData>? inputs,
   }) {
     return EnterSeedPhraseTabData(
-      allowedValues: allowedValues ?? this.allowedValues,
+      allowedValues: allowedValues,
       currentValue: currentValue ?? this.currentValue,
       inputs: inputs ?? this.inputs,
     );

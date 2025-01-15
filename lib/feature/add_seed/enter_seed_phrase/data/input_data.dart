@@ -34,4 +34,10 @@ class EnterSeedPhraseInputData {
     controller.dispose();
     focusNode.dispose();
   }
+
+  void clear() {
+    controller
+      ..text = ''
+      ..selection = const TextSelection.collapsed(offset: 0);
+  }
 }

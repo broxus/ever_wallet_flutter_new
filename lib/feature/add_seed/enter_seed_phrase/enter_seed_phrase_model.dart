@@ -24,7 +24,7 @@ class EnterSeedPhraseModel extends ElementaryModel with ConnectionMixin {
   final MessengerService messengerService;
   final nekoton.NekotonRepository _nekotonRepository;
 
-  List<int> get seedPhraseWordsCount =>
+  late final List<int> seedPhraseWordsCount =
       _nekotonRepository.currentTransport.seedPhraseWordsCount;
 
   Future<nekoton.GeneratedKeyG> getKey(int currentValue) {

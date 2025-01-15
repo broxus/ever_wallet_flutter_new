@@ -9,6 +9,7 @@ import 'package:app/feature/add_seed/enter_seed_phrase/enter_seed_phrase.dart';
 import 'package:app/feature/add_seed/enter_seed_phrase/enter_seed_phrase_model.dart';
 import 'package:app/feature/constants.dart';
 import 'package:app/generated/generated.dart';
+import 'package:app/utils/focus_utils.dart';
 import 'package:app/utils/seed_utils.dart';
 import 'package:collection/collection.dart';
 import 'package:elementary/elementary.dart';
@@ -17,6 +18,12 @@ import 'package:flutter/widgets.dart';
 import 'package:go_router/go_router.dart';
 import 'package:logging/logging.dart';
 import 'package:nekoton_repository/nekoton_repository.dart';
+import 'package:ui_components_lib/ui_components_lib.dart';
+
+typedef SuggestionSelectedCallback = void Function(
+  String suggestion,
+  int index,
+);
 
 /// Factory method for creating [EnterSeedPhraseWidgetModel]
 EnterSeedPhraseWidgetModel defaultEnterSeedPhraseWidgetModelFactory(
@@ -43,28 +50,20 @@ class EnterSeedPhraseWidgetModel
 
   final _log = Logger('EnterSeedPhraseCubit');
 
-  late final _displayPasteButtonState = createNotifier<bool>(true);
-  late final _tabState = createNotifier<EnterSeedPhraseTabData?>();
-
-  /// TODO так просто не держать
-  late final _allowedValues = model.seedPhraseWordsCount;
-
-  /// TODO так просто не держать
-  late int _currentValue = _allowedValues.first;
-
-  /// TODO так просто не держать
   late final List<EnterSeedPhraseInputData> _inputDataList = List.unmodifiable(
     [
-      for (int i = 0; i < _allowedValues.max; i++)
+      for (int i = 0; i < model.seedPhraseWordsCount.max; i++)
         EnterSeedPhraseInputData.init(i)
           ..controller.addListener(() {
-            final hasText = _hasText;
+            final isExistText = _inputDataList.any(
+              (data) => data.text.isNotEmpty,
+            );
 
-            if (_isDisplayPasteButton == hasText) {
-              _displayPasteButtonState.accept(!hasText);
+            if (displayPasteButtonState.value == isExistText) {
+              _displayPasteButtonState.accept(!isExistText);
             }
 
-            if (hasText) {
+            if (isExistText) {
               _checkDebugPhraseGenerating();
             }
 
@@ -74,25 +73,35 @@ class EnterSeedPhraseWidgetModel
     ],
   );
 
+  late final _displayPasteButtonState = createNotifier<bool>(true);
+  late final _tabState = createNotifier<EnterSeedPhraseTabData>(
+    () {
+      final currentValue = model.seedPhraseWordsCount.first;
+
+      return EnterSeedPhraseTabData(
+        allowedValues: model.seedPhraseWordsCount,
+        currentValue: currentValue,
+        inputs: _inputDataList.take(currentValue).toList(),
+      );
+    }(),
+  );
+
+  ColorsPalette get colors => context.themeStyle.colors;
+
+  ThemeStyleV2 get themeStyleV2 => context.themeStyleV2;
+
+  double get bottomPadding => MediaQuery.of(context).viewInsets.bottom;
+
+  bool get isExistBottomPadding => bottomPadding >= commonButtonHeight;
+
   ListenableState<bool> get displayPasteButtonState => _displayPasteButtonState;
 
-  ListenableState<EnterSeedPhraseTabData?> get tabState => _tabState;
+  ListenableState<EnterSeedPhraseTabData> get tabState => _tabState;
 
-  int get _actualSeedPhraseLength => model.actualSeedPhraseLength;
-
-  int get _legacySeedPhraseLength => model.legacySeedPhraseLength;
+  int get _currentValue =>
+      _tabState.value?.currentValue ?? model.seedPhraseWordsCount.first;
 
   EnterSeedPhraseTabData? get _tabData => _tabState.value;
-
-  bool get _hasText => _inputDataList.any((data) => data.text.isNotEmpty);
-
-  bool get _isDisplayPasteButton => displayPasteButtonState.value ?? true;
-
-  @override
-  void initWidgetModel() {
-    super.initWidgetModel();
-    _init();
-  }
 
   @override
   void dispose() {
@@ -103,15 +112,162 @@ class EnterSeedPhraseWidgetModel
     super.dispose();
   }
 
-  void _init() {
-    final inputs = _inputDataList.take(_currentValue).toList();
+  void onPressedResetFocus() => resetFocus(contextSafe);
+
+  void onClosePressed(BuildContext context) => context.maybePop();
+
+  /// Callback for UI TextField widget
+  Future<List<String>> onSuggestions(String text) async {
+    if (text.isEmpty) return [];
+    final hints = await model.getHints(text);
+    if (hints.length == 1 && hints[0] == text) {
+      return [];
+    }
+
+    return hints;
+  }
+
+  void changeTab(int value) {
+    if (value == _currentValue) return;
+
+    final tabData = _tabData;
+
+    if (tabData == null) {
+      return;
+    }
+
+    _clearAllInputs();
+    _resetErrors();
+
+    formKey.currentState?.reset();
+
     _tabState.accept(
-      EnterSeedPhraseTabData(
-        allowedValues: _allowedValues,
-        currentValue: _currentValue.clamp(0, inputs.length),
-        inputs: inputs,
+      tabData.copyWith(
+        currentValue: value,
+        inputs: _inputDataList.take(value).toList(),
       ),
     );
+
+    _displayPasteButtonState.accept(true);
+  }
+
+  Future<void> confirm() async {
+    if (!await model.checkConnection(context)) {
+      return;
+    }
+
+    if (await _validateFormWithError()) {
+      try {
+        FocusManager.instance.primaryFocus?.unfocus();
+
+        final buffer = StringBuffer();
+
+        for (var i = 0; i < _currentValue; i++) {
+          buffer
+            ..write(_inputDataList[i].text.trim())
+            ..write(' ');
+        }
+
+        final phrase = buffer.toString().trimRight();
+
+        final mnemonicType = _currentValue == model.legacySeedPhraseLength
+            ? const MnemonicType.legacy()
+            : defaultMnemonicType;
+
+        await deriveFromPhrase(
+          phrase: phrase,
+          mnemonicType: mnemonicType,
+        );
+        _next(phrase);
+      } on Exception catch (e, s) {
+        _log.severe('confirmAction', e, s);
+        model.showError(e.toString());
+      } on FfiException catch (e, s) {
+        _log.severe('confirmAction FfiException', e, s);
+        model.showError(LocaleKeys.wrongSeed.tr());
+      }
+    }
+  }
+
+  /// [index] starts with 0
+  void nextOrConfirm(int index) {
+    if (index == _currentValue - 1) {
+      confirm();
+    } else if (index + 1 < _inputDataList.length) {
+      _inputDataList[index + 1].focusNode.requestFocus();
+    }
+  }
+
+  void clearFields() {
+    for (final data in _inputDataList) {
+      data.clear();
+    }
+    _resetFormAndError();
+  }
+
+  /// [index] start with 0
+  void onSuggestionSelected(
+    String suggestion,
+    int index,
+  ) {
+    _inputDataList[index].controller
+      ..text = suggestion
+      ..selection = TextSelection.fromPosition(
+        TextPosition(offset: suggestion.length),
+      );
+
+    nextOrConfirm(index);
+  }
+
+  /// Reset text of controller that triggers [_checkInputCompletion]
+  void clearField(int index) => _inputDataList[index].clear();
+
+  Future<void> pastePhrase() async {
+    final words = await getSeedListFromClipboard();
+
+    final count = words.length;
+    if (count == model.actualSeedPhraseLength ||
+        count == model.legacySeedPhraseLength) {
+      changeTab(count);
+    }
+
+    Future.delayed(const Duration(milliseconds: 100), () async {
+      if (words.isNotEmpty && words.length == _currentValue) {
+        for (final word in words) {
+          if (!await model.checkIsWordValid(word)) {
+            words.clear();
+            break;
+          }
+        }
+      } else {
+        words.clear();
+      }
+
+      if (words.isEmpty) {
+        _resetFormAndError();
+
+        model.showError(LocaleKeys.incorrectWordsFormat.tr());
+
+        return;
+      }
+
+      try {
+        if (words.length > _inputDataList.length) {
+          words.length = _inputDataList.length;
+        }
+
+        words.asMap().forEach((index, word) {
+          _inputDataList[index].controller.value = TextEditingValue(
+            text: word,
+            selection: TextSelection.fromPosition(
+              TextPosition(offset: word.length),
+            ),
+          );
+        });
+      } catch (_) {}
+
+      await _validateFormWithError();
+    });
   }
 
   /// Check if debug phrase is entered in any text field
@@ -140,25 +296,18 @@ class EnterSeedPhraseWidgetModel
   void _checkInputCompletion(int index) {
     final data = _inputDataList[index];
 
-    if ((data.text.isNotEmpty && !data.isFocused) || data.text.isEmpty) {
-      _updateInputDataList(
-        index: index,
-        isError: false,
-      );
+    if (data.text.isNotEmpty && !data.isFocused) {
+      _inputDataList[index].isError = false;
 
-      _updateTab(
-        inputs: _inputDataList.take(_currentValue).toList(),
-      );
+      _updateTab();
     }
   }
 
-  void _confirm(String phrase) {
+  void _next(String phrase) {
     final path =
         GoRouter.of(context).routerDelegate.currentConfiguration.fullPath;
     final route = getCurrentAppRoute(fullPath: path);
 
-    // because of automatic navigation, we may face problem with double
-    // navigation here.
     if (route != AppRoute.createSeedPassword) {
       context.goFurther(
         AppRoute.createSeedPassword.pathWithData(
@@ -182,16 +331,13 @@ class EnterSeedPhraseWidgetModel
 
     for (var index = 0; index < _currentValue; index++) {
       final input = _inputDataList[index];
-      if (!await _checkIsWordValid(input.text)) {
+      if (!await model.checkIsWordValid(input.text)) {
         isWrongWords = true;
         _inputDataList[index].isError = true;
       }
     }
 
-    _updateTab(
-      // TODO
-      inputs: _inputDataList.take(_currentValue).toList(),
-    );
+    _updateTab();
 
     if (isEmptyFields) {
       model.showError(LocaleKeys.fillMissingWords.tr());
@@ -202,202 +348,46 @@ class EnterSeedPhraseWidgetModel
     return !isEmptyFields && !isWrongWords;
   }
 
-  /// [word] is valid if it is in list of hints for this word.
-  Future<bool> _checkIsWordValid(String word) => model.checkIsWordValid(word);
-
   /// Drop form validation state
   void _resetFormAndError() {
     formKey.currentState?.reset();
-    var isChangedModels = false;
+    var isChanged = false;
 
     try {
       for (var index = 0; index < _currentValue; index++) {
         if (_inputDataList[index].isError) {
-          isChangedModels = true;
+          isChanged = true;
           _inputDataList[index].isError = false;
         }
       }
     } finally {
-      if (isChangedModels) {
-        _updateTab(
-          // TODO
-          inputs: _inputDataList.take(_currentValue).toList(),
-        );
+      if (isChanged) {
+        _updateTab();
       }
     }
   }
 
-  void _updateInputDataList({
-    required int index,
-    bool? isError,
-  }) {
-    _inputDataList[index].isError = isError;
+  void _resetErrors() {
+    for (final data in _inputDataList) {
+      data.isError = false;
+    }
   }
 
-  void _updateTab({
-    List<int>? allowedValues,
-    int? currentValue,
-    List<EnterSeedPhraseInputData>? inputs,
-  }) {
+  void _updateTab() {
     final data = _tabData;
     if (data == null) {
       return;
     }
+
+    var inputs = data.inputs;
+
+    if (data.inputs.length != _currentValue) {
+      inputs = _inputDataList.take(_currentValue).toList();
+    }
+
     _tabState.accept(
-      data.copyWith(
-        allowedValues: allowedValues,
-        currentValue: currentValue,
-        inputs: inputs,
-      ),
+      data.copyWith(inputs: inputs),
     );
-  }
-
-  /// Callback for UI TextField widget
-  Future<List<String>> suggestionsCallback(
-    TextEditingController controller,
-  ) async {
-    final text = controller.value.text;
-    if (text.isEmpty) return [];
-    final hints = await model.getHints(text);
-    if (hints.length == 1 && hints[0] == text) {
-      return [];
-    }
-
-    return hints;
-  }
-
-  void changeTab(int value) {
-    if (value == _currentValue) return;
-
-    _clearAllInputs();
-
-    _currentValue = value;
-    formKey.currentState?.reset();
-
-    final inputs = _inputDataList.take(value).toList();
-
-    _updateTab(
-      currentValue: value.clamp(0, inputs.length),
-      allowedValues: _allowedValues,
-      inputs: inputs,
-    );
-    _displayPasteButtonState.accept(true);
-  }
-
-  Future<void> confirmAction() async {
-    if (!await model.checkConnection(context)) {
-      return;
-    }
-
-    if (await _validateFormWithError()) {
-      try {
-        FocusManager.instance.primaryFocus?.unfocus();
-
-        final buffer = StringBuffer();
-
-        for (var i = 0; i < _currentValue; i++) {
-          buffer
-            ..write(_inputDataList[i].text.trim())
-            ..write(' ');
-        }
-
-        final phrase = buffer.toString().trimRight();
-
-        final mnemonicType = _currentValue == _legacySeedPhraseLength
-            ? const MnemonicType.legacy()
-            : defaultMnemonicType;
-
-        await deriveFromPhrase(
-          phrase: phrase,
-          mnemonicType: mnemonicType,
-        );
-        _confirm(phrase);
-      } on Exception catch (e, s) {
-        _log.severe('confirmAction', e, s);
-        model.showError(e.toString());
-      } on FfiException catch (e, s) {
-        _log.severe('confirmAction FfiException', e, s);
-        model.showError(LocaleKeys.wrongSeed.tr());
-      }
-    }
-  }
-
-  /// [index] starts with 0
-  void nextOrConfirm(int index) {
-    if (index == _currentValue - 1) {
-      confirmAction();
-    } else {
-      /// TODO сделать безопасно
-      _inputDataList[index + 1].focusNode.requestFocus();
-    }
-  }
-
-  void clearFields() {
-    for (final data in _inputDataList) {
-      data.controller.selection = const TextSelection.collapsed(offset: 0);
-    }
-    _resetFormAndError();
-  }
-
-  /// [index] start with 0
-  void onSuggestionSelected(
-    String suggestion,
-    int index,
-  ) {
-    _inputDataList[index].controller
-      ..text = suggestion
-      ..selection = TextSelection.fromPosition(
-        TextPosition(offset: suggestion.length),
-      );
-
-    nextOrConfirm(index);
-  }
-
-  /// Reset text of controller that triggers [_checkInputCompletion]
-  void clearInputModel(int index) => _inputDataList[index].controller.clear();
-
-  Future<void> pastePhrase() async {
-    final words = await getSeedListFromClipboard();
-
-    final count = words.length;
-    if (count == _actualSeedPhraseLength || count == _legacySeedPhraseLength) {
-      changeTab(count);
-    }
-
-    Future.delayed(const Duration(milliseconds: 100), () async {
-      if (words.isNotEmpty && words.length == _currentValue) {
-        for (final word in words) {
-          if (!await _checkIsWordValid(word)) {
-            words.clear();
-            break;
-          }
-        }
-      } else {
-        words.clear();
-      }
-
-      if (words.isEmpty) {
-        _resetFormAndError();
-
-        model.showError(LocaleKeys.incorrectWordsFormat.tr());
-
-        return;
-      }
-
-      try {
-        // TODO(knightforce): check why error "Not in inclusive range 0..11: 12"
-        words.asMap().forEach((index, word) {
-          _inputDataList[index].controller.value = TextEditingValue(
-            text: word,
-            selection: TextSelection.fromPosition(
-              TextPosition(offset: word.length),
-            ),
-          );
-        });
-      } catch (_) {}
-
-      await _validateFormWithError();
-    });
   }
 
   void _clearAllInputs() {
