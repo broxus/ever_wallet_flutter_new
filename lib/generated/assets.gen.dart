@@ -32,6 +32,16 @@ class $AssetsAbiGen {
       [stEverAccountAbiMin, stEverVaultAbiMin, tokenRootAbi, tokenWalletAbi];
 }
 
+class $AssetsConfigsGen {
+  const $AssetsConfigsGen();
+
+  /// File path: assets/configs/connections.json
+  String get connections => 'assets/configs/connections.json';
+
+  /// List of all assets
+  List<String> get values => [connections];
+}
+
 class $AssetsImagesGen {
   const $AssetsImagesGen();
 
@@ -787,6 +797,7 @@ class Assets {
   Assets._();
 
   static const $AssetsAbiGen abi = $AssetsAbiGen();
+  static const $AssetsConfigsGen configs = $AssetsConfigsGen();
   static const $AssetsImagesGen images = $AssetsImagesGen();
   static const $AssetsJsGen js = $AssetsJsGen();
   static const $AssetsSplashGen splash = $AssetsSplashGen();

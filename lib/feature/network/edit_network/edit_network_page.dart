@@ -1,4 +1,4 @@
-import 'package:app/app/service/connection/presets_connection_service.dart';
+import 'package:app/app/service/presets_connection/presets_connection_service.dart';
 import 'package:app/app/service/service.dart';
 import 'package:app/di/di.dart';
 import 'package:app/feature/network/edit_network/edit_network_view.dart';
