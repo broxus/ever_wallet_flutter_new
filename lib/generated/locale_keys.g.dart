@@ -135,6 +135,7 @@ abstract class LocaleKeys {
   static const networkTypeJRPC = 'networkTypeJRPC';
   static const networkTypeGraphQL = 'networkTypeGraphQL';
   static const networkTypeProto = 'networkTypeProto';
+  static const networkTypeWord = 'networkTypeWord';
   static const networkId = 'networkId';
   static const networkName = 'networkName';
   static const networkNameHint = 'networkNameHint';
