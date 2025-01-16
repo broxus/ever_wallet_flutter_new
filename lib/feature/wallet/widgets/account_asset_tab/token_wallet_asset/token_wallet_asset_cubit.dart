@@ -10,7 +10,6 @@ import 'package:freezed_annotation/freezed_annotation.dart';
 import 'package:nekoton_repository/nekoton_repository.dart';
 
 part 'token_wallet_asset_cubit.freezed.dart';
-
 part 'token_wallet_asset_state.dart';
 
 class TokenWalletAssetCubit extends Cubit<TokenWalletAssetState>
