@@ -87,14 +87,18 @@ class PresetsConnectionService {
       _logger.severe('Error fetch connections', e, s);
       try {
         final cache = await _secureStorage.getConnectionJson();
-        if (cache != null) {
-          data = mapToConnectionNetworkFromJson(
-            await jsonDecode(cache) as Map<String, dynamic>,
-          );
+        if (cache == null) {
+          throw CachePresetsConnectionsExceptions('Cache is null');
         }
+
+        data = mapToConnectionNetworkFromJson(
+          await jsonDecode(cache) as Map<String, dynamic>,
+        );
       } catch (e, s) {
         _sentry.captureException(
-          CachePresetsConnectionsExceptions(e.toString()),
+          e is CachePresetsConnectionsExceptions
+              ? e
+              : CachePresetsConnectionsExceptions(e.toString()),
           stackTrace: s,
         );
         _logger.severe('Error get connections from cache', e, s);
