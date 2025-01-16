@@ -4,8 +4,8 @@ version: 1.0.3
 publish_to: none
 
 environment:
-  sdk: '>=3.0.0 <4.0.0'
-  flutter: ">=3.10.3"
+  sdk: '>=3.6.0 <4.0.0'
+  flutter: ">=3.27.0"
 
 dependencies:
   app_settings: 5.1.1
@@ -72,7 +72,7 @@ dependencies:
       url: https://github.com/knightsforce/flutter-render-metrics
       ref: optional-render-manager
   retrofit: 4.4.1
-  rxdart: 0.27.7
+  rxdart: 0.28.0
   sentry_flutter: 8.10.1
   share_plus: 10.1.2
   shared_preferences: 2.3.3
@@ -100,7 +100,6 @@ dev_dependencies:
     sdk: flutter
   freezed: 2.5.7
   googleapis_auth: 1.6.0
-  hive_generator: 2.0.1
   injectable_generator: 2.6.2
   integration_test:
     sdk: flutter

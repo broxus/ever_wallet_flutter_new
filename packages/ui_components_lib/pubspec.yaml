@@ -4,17 +4,17 @@ version: 1.0.0+1
 publish_to: none
 
 environment:
-  sdk: '>=3.0.0 <4.0.0'
+  sdk: '>=3.6.0 <4.0.0'
 
 dependencies:
   another_flushbar: ^1.12.30
-  collection: 1.18.0
+  collection: ^1.19.0
   flutter:
     sdk: flutter
   flutter_form_builder: ^9.2.1
   flutter_screenutil: ^5.9.3
   flutter_svg: ^2.0.10+1
-  flutter_typeahead: ^4.6.1
+  flutter_typeahead: ^5.2.0
   form_builder_validators: ^11.0.0
   lucide_icons_flutter: ^1.1.2
   modal_bottom_sheet: ^3.0.0
@@ -28,7 +28,7 @@ dev_dependencies:
     git:
       url: https://github.com/broxus/flutter_templates.git
       ref: main
-  custom_lint: ^0.5.3
+  custom_lint: ^0.7.1
   datetime_avoid_lint:
     path: ../datetime_avoid_lint
   flutter_test:
