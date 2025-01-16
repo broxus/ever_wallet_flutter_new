@@ -87,7 +87,7 @@ class PresetsConnectionConfigHelper {
   Future<ConnectionNetwork?> _getLocalConnections() async {
     try {
       final cache =
-          await rootBundle.loadString("assets/configs/connections.json");
+          await rootBundle.loadString('assets/configs/connections.json');
 
       if (cache.isEmpty) {
         throw LocalPresetsConnectionsExceptions('Error read local file');

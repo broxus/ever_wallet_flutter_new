@@ -44,49 +44,50 @@ class EndpointsField extends StatelessWidget {
         }
 
         return NetworkFormField(
-            label: LocaleKeys.networkEndpoint.plural(controllers.length),
-            trailing: editable && connectionType.enableMultipleEndpoints
-                ? GhostButton(
-                    buttonShape: ButtonShape.square,
-                    buttonSize: ButtonSize.small,
-                    icon: LucideIcons.plus,
-                    onPressed: onAdd,
-                  )
-                : null,
-            child: SeparatedColumn(
-              children: [
-                ...controllers.mapIndexed(
-                  (index, controller) => EndpointItem(
-                    key: ObjectKey(controller),
-                    editable: editable,
-                    index: index,
-                    controller: controller,
-                    validator: validator,
-                    onRemove: () => onRemove(index),
-                  ),
+          label: LocaleKeys.networkEndpoint.plural(controllers.length),
+          trailing: editable && connectionType.enableMultipleEndpoints
+              ? GhostButton(
+                  buttonShape: ButtonShape.square,
+                  buttonSize: ButtonSize.small,
+                  icon: LucideIcons.plus,
+                  onPressed: onAdd,
+                )
+              : null,
+          child: SeparatedColumn(
+            children: [
+              ...controllers.mapIndexed(
+                (index, controller) => EndpointItem(
+                  key: ObjectKey(controller),
+                  editable: editable,
+                  index: index,
+                  controller: controller,
+                  validator: validator,
+                  onRemove: () => onRemove(index),
                 ),
-                if (connectionType.enableLocal)
-                  Row(
-                    children: [
-                      Expanded(
-                        child: Text(
-                          LocaleKeys.networkEndpointLocal.tr(),
-                          style: StyleRes.secondaryBold,
-                        ),
+              ),
+              if (connectionType.enableLocal)
+                Row(
+                  children: [
+                    Expanded(
+                      child: Text(
+                        LocaleKeys.networkEndpointLocal.tr(),
+                        style: StyleRes.secondaryBold,
                       ),
-                      StateNotifierBuilder<bool>(
-                        listenableState: isLocalState,
-                        builder: (_, bool? isEnabled) {
-                          return Switch(
-                            value: isEnabled ?? false,
-                            onChanged: onLocalChanged,
-                          );
-                        },
-                      ),
-                    ],
-                  ),
-              ],
-            ));
+                    ),
+                    StateNotifierBuilder<bool>(
+                      listenableState: isLocalState,
+                      builder: (_, bool? isEnabled) {
+                        return Switch(
+                          value: isEnabled ?? false,
+                          onChanged: onLocalChanged,
+                        );
+                      },
+                    ),
+                  ],
+                ),
+            ],
+          ),
+        );
       },
     );
   }

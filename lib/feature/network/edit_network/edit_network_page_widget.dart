@@ -54,7 +54,8 @@ class EditNetworkPageWidget extends ElementaryWidget<EditNetworkWidgetModel> {
                         ),
                         EndpointsField(
                           editable: wm.isEditable,
-                          endpointsControllersState: wm.endpointsControllersState,
+                          endpointsControllersState:
+                              wm.endpointsControllersState,
                           connectionTypeState: wm.connectionTypeState,
                           validator: wm.validators.nonOptionalUrlValidator,
                           isLocalState: wm.isLocalState,
