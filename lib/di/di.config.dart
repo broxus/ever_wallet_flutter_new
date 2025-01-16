@@ -27,7 +27,6 @@ import '../app/service/biometry_service.dart' as _i575;
 import '../app/service/bootstrap/bootstrap_service.dart' as _i468;
 import '../app/service/connection/connection_factory.dart' as _i252;
 import '../app/service/connection/connection_service.dart' as _i754;
-import '../app/service/connection/presets_connection_service.dart' as _i710;
 import '../app/service/currencies_service.dart' as _i308;
 import '../app/service/currency_convert_service.dart' as _i27;
 import '../app/service/current_accounts_service.dart' as _i402;
@@ -39,11 +38,14 @@ import '../app/service/localization/service/localization_service.dart' as _i5;
 import '../app/service/messenger/service/messenger_service.dart' as _i980;
 import '../app/service/navigation/service/navigation_service.dart' as _i451;
 import '../app/service/nekoton_related/current_key_service.dart' as _i272;
+import '../app/service/nekoton_related/gas_price_service.dart' as _i818;
 import '../app/service/nekoton_related/nekoton_related.dart' as _i403;
 import '../app/service/network_connection/network_connection_service.dart'
     as _i33;
 import '../app/service/ntp_service.dart' as _i68;
 import '../app/service/permissions_service.dart' as _i473;
+import '../app/service/presets_connection/presets_connection_service.dart'
+    as _i116;
 import '../app/service/remote/dns_resolve_service.dart' as _i391;
 import '../app/service/remote/http_service.dart' as _i126;
 import '../app/service/service.dart' as _i128;
@@ -146,8 +148,8 @@ extension GetItInjectableX on _i174.GetIt {
               gh<_i792.GetStorage>(instanceName: 'overallBalancesDomain'),
               gh<_i792.GetStorage>(instanceName: 'balancesDomain'),
             ));
-    gh.singleton<_i710.PresetsConnectionService>(
-        () => _i710.PresetsConnectionService(
+    gh.singleton<_i116.PresetsConnectionService>(
+        () => _i116.PresetsConnectionService(
               gh<_i249.PresetsApi>(),
               gh<_i679.SecureStorageService>(),
             ));
@@ -191,6 +193,8 @@ extension GetItInjectableX on _i174.GetIt {
     );
     gh.singleton<_i386.NekotonRepositoryStorageService>(() =>
         _i386.NekotonRepositoryStorageService(gh<_i771.NekotonRepository>()));
+    gh.singleton<_i818.GasPriceService>(
+        () => _i818.GasPriceService(gh<_i771.NekotonRepository>()));
     gh.singleton<_i272.CurrentKeyService>(() => _i272.CurrentKeyService(
           gh<_i128.GeneralStorageService>(),
           gh<_i771.NekotonRepository>(),
@@ -206,14 +210,6 @@ extension GetItInjectableX on _i174.GetIt {
     gh.singleton<_i721.BrowserFaviconURLStorageService>(() =>
         _i721.BrowserFaviconURLStorageService(
             gh<_i792.GetStorage>(instanceName: 'browser_favicon_urls')));
-    gh.singleton<_i65.ConnectionsStorageService>(
-        () => _i65.ConnectionsStorageService(
-              gh<_i792.GetStorage>(instanceName: 'connections'),
-              gh<_i710.PresetsConnectionService>(),
-              gh<_i128.MessengerService>(),
-            ));
-    gh.singleton<_i468.BootstrapService>(
-        () => _i468.BootstrapService(gh<_i710.PresetsConnectionService>()));
     gh.singleton<_i244.CurrentSeedService>(() => _i244.CurrentSeedService(
           gh<_i771.NekotonRepository>(),
           gh<_i403.CurrentKeyService>(),
@@ -224,6 +220,14 @@ extension GetItInjectableX on _i174.GetIt {
           gh<_i128.AssetsService>(),
           gh<_i188.TokenRepository>(),
         ));
+    gh.singleton<_i65.ConnectionsStorageService>(
+        () => _i65.ConnectionsStorageService(
+              gh<_i792.GetStorage>(instanceName: 'connections'),
+              gh<_i116.PresetsConnectionService>(),
+              gh<_i128.MessengerService>(),
+            ));
+    gh.singleton<_i468.BootstrapService>(
+        () => _i468.BootstrapService(gh<_i116.PresetsConnectionService>()));
     gh.singleton<_i575.BiometryService>(() => _i575.BiometryService(
           gh<_i128.GeneralStorageService>(),
           gh<_i128.SecureStorageService>(),
@@ -255,7 +259,7 @@ extension GetItInjectableX on _i174.GetIt {
     gh.singleton<_i754.ConnectionService>(() => _i754.ConnectionService(
           gh<_i128.ConnectionsStorageService>(),
           gh<_i771.NekotonRepository>(),
-          gh<_i710.PresetsConnectionService>(),
+          gh<_i116.PresetsConnectionService>(),
         ));
     gh.singleton<_i637.BalanceService>(() => _i637.BalanceService(
           gh<_i771.NekotonRepository>(),
