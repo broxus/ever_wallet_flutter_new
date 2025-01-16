@@ -35,6 +35,11 @@ class PresetsConnectionService {
     _logger,
   );
 
+  ConnectionNetwork? get _connectionNetwork => _presetsConnectionsSubj.value;
+
+  List<String>? get customNetworkOptions =>
+      _connectionNetwork?.customNetworkOptionTypes;
+
   ConnectionNetwork? get _data => _presetsConnectionsSubj.valueOrNull;
 
   List<ConnectionData> get networks => _data?.networks ?? [];

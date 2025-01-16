@@ -26,11 +26,10 @@ class PresetsConnectionConfigHelper {
   final Logger _logger;
   final _sentry = SentryWorker.instance;
 
-  Future<ConnectionNetwork?> get connections async {
-    return await _getRemoteConnections() ??
-        await _getCacheConnections() ??
-        await _getLocalConnections();
-  }
+  Future<ConnectionNetwork?> get connections async =>
+      await _getRemoteConnections() ??
+      await _getCacheConnections() ??
+      await _getLocalConnections();
 
   String get _configFileName => switch (currentAppBuildType) {
         AppBuildType.production => 'connections_prod.json',
