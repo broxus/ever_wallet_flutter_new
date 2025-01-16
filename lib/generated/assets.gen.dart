@@ -18,8 +18,14 @@ class $AssetsAbiGen {
   /// File path: assets/abi/StEverAccount.abi.min.json
   String get stEverAccountAbiMin => 'assets/abi/StEverAccount.abi.min.json';
 
+  /// File path: assets/abi/StEverAccountNew.abi.json
+  String get stEverAccountNewAbi => 'assets/abi/StEverAccountNew.abi.json';
+
   /// File path: assets/abi/StEverVault.abi.min.json
   String get stEverVaultAbiMin => 'assets/abi/StEverVault.abi.min.json';
+
+  /// File path: assets/abi/StEverVaultNew.abi.json
+  String get stEverVaultNewAbi => 'assets/abi/StEverVaultNew.abi.json';
 
   /// File path: assets/abi/TokenRoot.abi.json
   String get tokenRootAbi => 'assets/abi/TokenRoot.abi.json';
@@ -28,8 +34,14 @@ class $AssetsAbiGen {
   String get tokenWalletAbi => 'assets/abi/TokenWallet.abi.json';
 
   /// List of all assets
-  List<String> get values =>
-      [stEverAccountAbiMin, stEverVaultAbiMin, tokenRootAbi, tokenWalletAbi];
+  List<String> get values => [
+        stEverAccountAbiMin,
+        stEverAccountNewAbi,
+        stEverVaultAbiMin,
+        stEverVaultNewAbi,
+        tokenRootAbi,
+        tokenWalletAbi
+      ];
 }
 
 class $AssetsConfigsGen {

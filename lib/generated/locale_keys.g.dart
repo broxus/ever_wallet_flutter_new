@@ -443,14 +443,16 @@ abstract class LocaleKeys {
   static const withdrawHoursProgress = 'withdrawHoursProgress';
   static const withdrawHoursHint = 'withdrawHoursHint';
   static const cancelUnstaking = 'cancelUnstaking';
-  static const cancelUnstakingNote = 'cancelUnstakingNote';
   static const unstakingCancelled = 'unstakingCancelled';
   static const exchangeRate = 'exchangeRate';
   static const everscale = 'everscale';
   static const averageApy = 'averageApy';
   static const stakingInitError = 'stakingInitError';
+  static const stakingMaxSendableAmount = 'stakingMaxSendableAmount';
   static const stakingNotEnoughBalanceToStake =
       'stakingNotEnoughBalanceToStake';
+  static const stakingNotEnoughBalanceToUnstake =
+      'stakingNotEnoughBalanceToUnstake';
   static const sendingNotEnoughBalanceToSend = 'sendingNotEnoughBalanceToSend';
   static const cancelUnstakingCheckTitle = 'cancelUnstakingCheckTitle';
   static const cancelUnstakingCheckSubtitle = 'cancelUnstakingCheckSubtitle';
