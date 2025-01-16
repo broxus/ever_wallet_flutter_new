@@ -440,6 +440,7 @@
   "everscale": "Everscale",
   "averageApy": "Average APY",
   "stakingInitError": "Error occurred during staking initialization",
+  "stakingMaxSendableAmount": "Max sendable amount: {} {}",
   "stakingNotEnoughBalanceToStake": "You need a minimum {} {} for staking",
   "stakingNotEnoughBalanceToUnstake": "You need a minimum {} {} for unstaking",
   "sendingNotEnoughBalanceToSend": "You need a minimum {} {} to send",

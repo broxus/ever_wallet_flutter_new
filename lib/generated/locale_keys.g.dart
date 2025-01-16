@@ -447,6 +447,7 @@ abstract class LocaleKeys {
   static const everscale = 'everscale';
   static const averageApy = 'averageApy';
   static const stakingInitError = 'stakingInitError';
+  static const stakingMaxSendableAmount = 'stakingMaxSendableAmount';
   static const stakingNotEnoughBalanceToStake =
       'stakingNotEnoughBalanceToStake';
   static const stakingNotEnoughBalanceToUnstake =

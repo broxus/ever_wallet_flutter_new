@@ -140,11 +140,8 @@ class StakingPageWidgetModel
     if (_tab.value == StakingTab.stake) {
       max = max - _comission;
     }
-    if (max.isNegative) {
-      max = max.copyWith(amount: Fixed.zero);
-    }
 
-    inputController.text = max.formatImproved();
+    inputController.text = max.positiveOrZero().formatImproved();
   }
 
   void onSubmit(ActionStakingBloc bloc) {
@@ -308,6 +305,7 @@ class StakingPageWidgetModel
     final value = _currentValue;
 
     if (info == null) return const ValidationState.invalid();
+    if (inputController.text.isEmpty) return const ValidationState.invalid();
 
     final nativeBalance = Money.fromBigIntWithCurrency(
       info.wallet.contractState.balance,
@@ -321,11 +319,13 @@ class StakingPageWidgetModel
 
     if (_tab.value == StakingTab.stake &&
         balance.amount < _comission.amount + value) {
+      final max = balance - _comission;
+
       return ValidationState.invalid(
-        LocaleKeys.stakingNotEnoughBalanceToStake.tr(
+        LocaleKeys.stakingMaxSendableAmount.tr(
           args: [
-            _comission.formatImproved(),
-            _comission.currency.isoCode,
+            max.positiveOrZero().formatImproved(),
+            max.currency.isoCode,
           ],
         ),
       );

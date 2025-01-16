@@ -99,6 +99,16 @@ extension MoneyExt on Money {
           toDecimalDigits: 2,
         ),
       );
+
+  /// Returns a `Money` object that is guaranteed to have a non-negative amount.
+  ///
+  /// If the current `Money` object has a positive amount,
+  /// it returns the current object.
+  /// Otherwise, it returns a new `Money` object with the amount set to zero.
+  Money positiveOrZero() {
+    if (isPositive) return this;
+    return copyWith(amount: Fixed.zero);
+  }
 }
 
 extension GetStorageExt on GetStorage {
