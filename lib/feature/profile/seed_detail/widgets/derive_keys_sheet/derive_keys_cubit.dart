@@ -4,7 +4,6 @@ import 'package:freezed_annotation/freezed_annotation.dart';
 import 'package:nekoton_repository/nekoton_repository.dart';
 
 part 'derive_keys_cubit.freezed.dart';
-
 part 'derive_keys_state.dart';
 
 /// How many keys should be displayed on one page
