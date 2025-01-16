@@ -57,6 +57,7 @@ class EndpointsField extends StatelessWidget {
               children: [
                 ...controllers.mapIndexed(
                   (index, controller) => EndpointItem(
+                    key: ObjectKey(controller),
                     editable: editable,
                     index: index,
                     controller: controller,
