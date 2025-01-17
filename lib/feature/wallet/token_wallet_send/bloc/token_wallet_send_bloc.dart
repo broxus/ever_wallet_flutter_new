@@ -232,7 +232,7 @@ class TokenWalletSendBloc
     final internalMessage = await nekotonRepository.prepareTokenTransfer(
       owner: owner,
       rootTokenContract: rootTokenContract,
-      destination: await repackAddress(destination),
+      destination: repackAddress(destination),
       amount: tokenAmount,
       payload: comment,
       attachedAmount: attachedAmount,

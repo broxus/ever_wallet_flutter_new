@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:ui_components_lib/ui_components_lib.dart';
 import 'package:ui_components_lib/v2/ui_components_lib_v2.dart';
 
 class ProgressIndicatorWidget extends StatelessWidget {
@@ -20,7 +21,7 @@ class ProgressIndicatorWidget extends StatelessWidget {
       height: size,
       child: CircularProgressIndicator(
         strokeWidth: 1.5,
-        color: (color ?? colors.content0).withOpacity(OpacV2.opac50),
+        color: (color ?? colors.content0).withAlpha(OpacV2.opac50.toByteInt()),
       ),
     );
   }
