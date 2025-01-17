@@ -18,7 +18,7 @@ dependencies:
   form_builder_validators: ^11.0.0
   lucide_icons_flutter: ^1.1.2
   modal_bottom_sheet: ^3.0.0
-  money2: ^5.2.1
+  money2: 5.3.0
   money2_fixer: 2.0.0
   sliding_up_panel2: ^3.3.0+1
 
@@ -28,7 +28,7 @@ dev_dependencies:
     git:
       url: https://github.com/broxus/flutter_templates.git
       ref: main
-  custom_lint: ^0.7.1
+  custom_lint: ^0.6.0
   datetime_avoid_lint:
     path: ../datetime_avoid_lint
   flutter_test:

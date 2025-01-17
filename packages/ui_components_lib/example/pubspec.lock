@@ -314,10 +314,10 @@ packages:
     dependency: transitive
     description:
       name: money2
-      sha256: "992f864f0cfb9261b800acd5d029047809c1b9936235c59c44cd782c3c634a69"
+      sha256: "9a71b32cfa26dff236330de8da04bf9f3851cc5ee9fcae6930b6cedefd68bb92"
       url: "https://pub.dev"
     source: hosted
-    version: "5.4.6"
+    version: "5.3.0"
   money2_fixer:
     dependency: transitive
     description:
