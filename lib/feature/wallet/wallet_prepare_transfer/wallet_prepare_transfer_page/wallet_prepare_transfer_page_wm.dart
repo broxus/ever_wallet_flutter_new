@@ -155,7 +155,7 @@ class WalletPrepareTransferPageWidgetModel extends CustomWidgetModel<
     _goNext(addr, amnt);
   }
 
-  void setMaxBalance(FormFieldState<String>? fieldState) {
+  void setMaxBalance() {
     final asset = _selectedAsset;
     var available = asset?.balance;
 
@@ -187,7 +187,6 @@ class WalletPrepareTransferPageWidgetModel extends CustomWidgetModel<
     }
 
     amountController.text = available.formatImproved();
-    fieldState?.didChange(amountController.text);
   }
 
   void onPressedReceiverClear() => receiverController.clear();
