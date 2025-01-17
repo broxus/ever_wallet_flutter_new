@@ -1,7 +1,6 @@
 import 'package:app/app/service/connection/data/connection_data/connection_data.dart';
 import 'package:app/app/service/service.dart';
 import 'package:elementary/elementary.dart';
-import 'package:rxdart/rxdart.dart';
 
 class ConfigureNetworksModel extends ElementaryModel {
   ConfigureNetworksModel(
@@ -11,6 +10,6 @@ class ConfigureNetworksModel extends ElementaryModel {
 
   final ConnectionsStorageService _storageService;
 
-  BehaviorSubject<List<ConnectionData>> get connections =>
+  Stream<List<ConnectionData>> get connections =>
       _storageService.connectionsStream;
 }

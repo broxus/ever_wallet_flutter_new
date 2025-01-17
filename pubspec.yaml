@@ -119,6 +119,7 @@ flutter:
   assets:
     - assets/translations/
     - assets/abi/
+    - assets/configs/
     - assets/images/
     - assets/images/onboarding/layer1/
     - assets/images/onboarding/layer2/
