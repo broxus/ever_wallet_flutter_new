@@ -3,7 +3,6 @@
 import 'package:app/app/service/service.dart';
 import 'package:app/core/bloc/bloc_mixin.dart';
 import 'package:app/generated/generated.dart';
-import 'package:app/utils/constants.dart';
 import 'package:app/utils/utils.dart';
 import 'package:bloc/bloc.dart';
 import 'package:flutter/material.dart';

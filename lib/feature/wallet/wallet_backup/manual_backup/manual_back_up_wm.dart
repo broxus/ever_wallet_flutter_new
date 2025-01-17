@@ -25,6 +25,7 @@ ManualBackUpWidgetModel defaultManualBackUpWidgetModelFactory(
       createPrimaryErrorHandler(context),
       inject(),
       inject(),
+      inject(),
       words,
       address,
     ),
@@ -48,13 +49,10 @@ class ManualBackUpWidgetModel
   late List<String> words = model.phrases;
 
   Future<void> copySeed() async {
-    screenState.content(ManualBackUpData(isCopied: true));
     await Clipboard.setData(
       ClipboardData(text: words.join(' ')),
     );
-    Future.delayed(const Duration(seconds: 2), () {
-      screenState.content(ManualBackUpData(isCopied: false));
-    });
+    model.showMessageAboutCopy();
   }
 
   void clickCheckPhrase(BuildContext context) {

@@ -1,10 +1,10 @@
 import 'package:app/app/service/connection/data/connection_data/connection_data.dart';
 import 'package:app/app/service/connection/data/connection_transport/connection_transport_data.dart';
 import 'package:app/app/service/connection/network_type.dart';
-import 'package:app/app/service/connection/presets_connection_service.dart';
 import 'package:app/app/service/connection/transport_strategies/app_transport_strategy.dart';
 import 'package:app/app/service/connection/transport_strategies/common_transport_strategy.dart';
 import 'package:app/app/service/http_clients.dart';
+import 'package:app/app/service/presets_connection/presets_connection_service.dart';
 import 'package:app/app/service/service.dart';
 import 'package:app/di/di.dart';
 import 'package:injectable/injectable.dart';

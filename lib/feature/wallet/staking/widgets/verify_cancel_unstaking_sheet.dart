@@ -5,19 +5,29 @@ import 'package:ui_components_lib/v2/widgets/widgets.dart';
 
 /// Helper function that shows [VerifyCancelUnstakingSheet].
 /// Returns true if user decided to cancel unstaking.
-Future<bool> showVerifyCancelUnstakingSheet(BuildContext context) async {
+Future<bool> showVerifyCancelUnstakingSheet({
+  required BuildContext context,
+  required Currency stakeCurrency,
+}) async {
   final res = await showCommonBottomSheet<bool>(
     context: context,
     title: LocaleKeys.cancelUnstakingCheckTitle.tr(),
     centerTitle: true,
-    body: (_, __) => const VerifyCancelUnstakingSheet(),
+    body: (_, __) => VerifyCancelUnstakingSheet(
+      stakeCurrency: stakeCurrency,
+    ),
   );
 
   return res ?? false;
 }
 
 class VerifyCancelUnstakingSheet extends StatelessWidget {
-  const VerifyCancelUnstakingSheet({super.key});
+  const VerifyCancelUnstakingSheet({
+    required this.stakeCurrency,
+    super.key,
+  });
+
+  final Currency stakeCurrency;
 
   @override
   Widget build(BuildContext context) {
@@ -28,7 +38,9 @@ class VerifyCancelUnstakingSheet extends StatelessWidget {
       mainAxisSize: MainAxisSize.min,
       children: [
         Text(
-          LocaleKeys.cancelUnstakingCheckSubtitle.tr(),
+          LocaleKeys.cancelUnstakingCheckSubtitle.tr(
+            args: [stakeCurrency.symbol],
+          ),
           style: theme.textStyles.paragraphMedium.copyWith(
             color: theme.colors.content3,
           ),
