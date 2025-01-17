@@ -34,11 +34,15 @@ platform :android do
 
   desc "Deploy a new build to the FAD"
   lane :deploy_fad do |options|
+
+    flavor = options[:flavor] || "production"
+    apk_name = "app-#{flavor}-release.apk"
+
     firebase_app_distribution(
       app: "1:1017783238389:android:de95e7bcfdb82f8f2e4fbc",
       groups: "qa",
       android_artifact_type: "APK",
-      android_artifact_path: "../build/app/outputs/flutter-apk/app-production-release.apk",
+      android_artifact_path: "../build/app/outputs/flutter-apk/#{apk_name}",
       service_credentials_file: "../fastlane/FirebaseADKey.json",
       release_notes_file:  "../fastlane/changelog.txt",
     )

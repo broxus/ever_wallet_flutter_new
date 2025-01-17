@@ -1,10 +1,17 @@
+import 'package:app/feature/wallet/staking/models/models.dart';
+import 'package:app/feature/wallet/widgets/widgets.dart';
 import 'package:app/generated/generated.dart';
 import 'package:flutter/material.dart';
 import 'package:ui_components_lib/ui_components_lib.dart';
 import 'package:ui_components_lib/v2/widgets/widgets.dart';
 
 /// Helper function that displays [StEverHowItWorksSheet]
-Future<void> showStEverHowItWorksSheet(BuildContext context) {
+Future<void> showStEverHowItWorksSheet({
+  required BuildContext context,
+  required StakingInfo info,
+  required String nativeTokenTicker,
+  required String nativeTokenIcon,
+}) {
   return showCommonBottomSheet(
     context: context,
     useAppBackgroundColor: true,
@@ -12,6 +19,9 @@ Future<void> showStEverHowItWorksSheet(BuildContext context) {
     centerTitle: true,
     body: (_, scrollController) => StEverHowItWorksSheet(
       scrollController: scrollController,
+      info: info,
+      nativeTokenTicker: nativeTokenTicker,
+      nativeTokenIcon: nativeTokenIcon,
     ),
   );
 }
@@ -20,10 +30,16 @@ Future<void> showStEverHowItWorksSheet(BuildContext context) {
 class StEverHowItWorksSheet extends StatelessWidget {
   const StEverHowItWorksSheet({
     required this.scrollController,
+    required this.info,
+    required this.nativeTokenTicker,
+    required this.nativeTokenIcon,
     super.key,
   });
 
   final ScrollController scrollController;
+  final StakingInfo info;
+  final String nativeTokenTicker;
+  final String nativeTokenIcon;
 
   @override
   Widget build(BuildContext context) {
@@ -43,28 +59,37 @@ class StEverHowItWorksSheet extends StatelessWidget {
                 separator: const CommonDivider(),
                 children: [
                   _step(
-                    icon: Assets.images.ever.svg(
-                      width: DimensSizeV2.d40,
-                      height: DimensSizeV2.d40,
+                    icon: TonWalletIconWidget(path: nativeTokenIcon),
+                    title: LocaleKeys.stakeEverTitle.tr(
+                      args: [nativeTokenTicker],
                     ),
-                    title: LocaleKeys.stakeEverTitle.tr(),
-                    subtitle: LocaleKeys.stakeEverSubtitle.tr(),
+                    subtitle: LocaleKeys.stakeEverSubtitle.tr(
+                      args: [nativeTokenTicker],
+                    ),
                   ),
                   _step(
-                    icon: Assets.images.stever.stever.svg(
-                      width: DimensSizeV2.d40,
-                      height: DimensSizeV2.d40,
+                    icon: TonWalletIconWidget(
+                      path: info.tokenContractAsset?.logoURI ??
+                          Assets.images.tokenDefaultIcon.path,
                     ),
-                    title: LocaleKeys.receiveSteverTitle.tr(),
-                    subtitle: LocaleKeys.receiveSteverSubtitle.tr(),
+                    title: LocaleKeys.receiveSteverTitle.tr(
+                      args: [info.tokenWallet.symbol.name],
+                    ),
+                    subtitle: LocaleKeys.receiveSteverSubtitle.tr(
+                      args: [info.tokenWallet.symbol.name],
+                    ),
                   ),
                   _step(
                     icon: Assets.images.stever.steverDefi.svg(
                       width: DimensSizeV2.d40,
                       height: DimensSizeV2.d40,
                     ),
-                    title: LocaleKeys.useSteverTitle.tr(),
-                    subtitle: LocaleKeys.useSteverSubtitle.tr(),
+                    title: LocaleKeys.useSteverTitle.tr(
+                      args: [info.tokenWallet.symbol.name],
+                    ),
+                    subtitle: LocaleKeys.useSteverSubtitle.tr(
+                      args: [info.tokenWallet.symbol.name],
+                    ),
                   ),
                 ],
               ),

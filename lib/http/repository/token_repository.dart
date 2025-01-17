@@ -1,4 +1,6 @@
+import 'package:app/app/service/connection/connection_service.dart';
 import 'package:app/data/models/models.dart';
+import 'package:app/http/dto/token_balances/search_balances/request/search_token_balances_request_dto.dart';
 import 'package:app/http/http.dart';
 import 'package:dio/dio.dart';
 import 'package:injectable/injectable.dart';
@@ -28,17 +30,34 @@ class TokenRepository {
   }) async {
     if (api == null) throw Exception('API client was not initialized');
 
-    final response = await api!.getBalances(
-      GetTokenBalancesRequestDto(
-        limit: rootAddresses.length,
-        offset: 0,
-        rootAddresses: rootAddresses,
-        ownerAddress: address,
-        balanceGt: '0',
-      ),
-    );
+    List<TokenBalanceDto>? balances;
 
-    return response.balances
+    final networkType = nekotonRepository.currentTransport.networkType;
+
+    if (networkType == 'tycho') {
+      final response = await api!.searchBalances(
+        SearchTokenBalancesRequestDto(
+          limit: rootAddresses.length,
+          rootAddresses: rootAddresses,
+          ownerAddress: address,
+        ),
+      );
+
+      balances = response.balances;
+    } else {
+      final response = await api!.getBalances(
+        GetTokenBalancesRequestDto(
+          limit: rootAddresses.length,
+          offset: 0,
+          rootAddresses: rootAddresses,
+          ownerAddress: address,
+          balanceGt: '0',
+        ),
+      );
+      balances = response.balances;
+    }
+
+    return balances
         .map(
           (item) => TokenBalanceModel(
             amount: item.amount,

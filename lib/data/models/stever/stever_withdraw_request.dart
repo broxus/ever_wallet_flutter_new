@@ -1,10 +1,8 @@
-import 'package:app/utils/json/nekoton_address_converter.dart';
 import 'package:app/utils/utils.dart';
 import 'package:freezed_annotation/freezed_annotation.dart';
 import 'package:nekoton_repository/nekoton_repository.dart';
 
 part 'stever_withdraw_request.freezed.dart';
-
 part 'stever_withdraw_request.g.dart';
 
 /// Request of stever withdraw. This request can be cancelled to return

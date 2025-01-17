@@ -124,7 +124,7 @@ class TokenWalletSendPage extends StatelessWidget {
             publicKey: publicKey,
             fee: fee,
             feeError: error,
-            attachedAmount: attachedAmount,
+            attachedAmount: attachedAmount ?? this.attachedAmount,
             txErrors: txErrors,
           ),
         ),
