@@ -2,6 +2,7 @@ import 'dart:async';
 
 import 'package:app/app/service/service.dart';
 import 'package:app/core/bloc/bloc_mixin.dart';
+import 'package:app/utils/utils.dart';
 import 'package:collection/collection.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:freezed_annotation/freezed_annotation.dart';
@@ -22,6 +23,7 @@ class ActionStakingBloc
     required this.accountAddress,
     required this.stakingService,
     required this.storage,
+    required this.gasPriceService,
   }) : super(const ActionStakingBlocState.nothing()) {
     _registerHandlers();
   }
@@ -30,18 +32,9 @@ class ActionStakingBloc
   final Address accountAddress;
   final StakingService stakingService;
   final GeneralStorageService storage;
+  final GasPriceService gasPriceService;
 
-  StakingInformation? get staking =>
-      nekotonRepository.currentTransport.stakeInformation;
-
-  Address? get _stakingValutAddress => staking?.stakingValutAddress;
-
-  BigInt? get _stakeDepositAttachedFee => staking?.stakeDepositAttachedFee;
-
-  BigInt? get _stakeWithdrawAttachedFee => staking?.stakeWithdrawAttachedFee;
-
-  Address? get _stakingRootContractAddress =>
-      staking?.stakingRootContractAddress;
+  StakingInformation? _staking;
 
   void _registerHandlers() {
     on<_Init>(_prepareInit);
@@ -53,8 +46,8 @@ class ActionStakingBloc
     _Stake event,
     Emitter<ActionStakingBlocState> emit,
   ) async {
-    final valutAddress = _stakingValutAddress;
-    final depositAttachedFee = _stakeDepositAttachedFee;
+    final valutAddress = _staking?.stakingValutAddress;
+    final depositAttachedFee = _staking?.stakeDepositAttachedFee;
 
     if (valutAddress == null || depositAttachedFee == null) {
       return;
@@ -81,9 +74,9 @@ class ActionStakingBloc
     _Unstake event,
     Emitter<ActionStakingBlocState> emit,
   ) async {
-    final valutAddress = _stakingValutAddress;
-    final withdrawAttachedFee = _stakeWithdrawAttachedFee;
-    final rootContractAddress = _stakingRootContractAddress;
+    final valutAddress = _staking?.stakingValutAddress;
+    final withdrawAttachedFee = _staking?.stakeWithdrawAttachedFee;
+    final rootContractAddress = _staking?.stakingRootContractAddress;
 
     if (valutAddress == null ||
         withdrawAttachedFee == null ||
@@ -114,7 +107,8 @@ class ActionStakingBloc
     _Init event,
     Emitter<ActionStakingBlocState> emit,
   ) async {
-    final rootContractAddress = _stakingRootContractAddress;
+    _staking = await _getStakingInformation();
+    final rootContractAddress = _staking?.stakingRootContractAddress;
 
     if (rootContractAddress == null) {
       return;
@@ -138,5 +132,29 @@ class ActionStakingBloc
       storage.saveWasStEverOpened();
       emitSafe(const ActionStakingBlocState.nothing());
     }
+  }
+
+  Future<StakingInformation?> _getStakingInformation() async {
+    final staking = nekotonRepository.currentTransport.stakeInformation;
+    if (staking == null) return null;
+
+    final prices = await gasPriceService.getGasPriceParams();
+    final (deposit, withdraw, removePendingWithdraw) = await FutureExt.wait3(
+      gasPriceService.computeGas(staking.stakeDepositAttachedFee, prices),
+      gasPriceService.computeGas(staking.stakeWithdrawAttachedFee, prices),
+      gasPriceService.computeGas(
+        staking.stakeRemovePendingWithdrawAttachedFee,
+        prices,
+      ),
+    );
+
+    return StakingInformation(
+      stakingAPYLink: staking.stakingAPYLink,
+      stakingRootContractAddress: staking.stakingRootContractAddress,
+      stakingValutAddress: staking.stakingValutAddress,
+      stakeDepositAttachedFee: deposit,
+      stakeWithdrawAttachedFee: withdraw,
+      stakeRemovePendingWithdrawAttachedFee: removePendingWithdraw,
+    );
   }
 }

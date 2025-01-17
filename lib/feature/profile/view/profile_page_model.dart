@@ -1,5 +1,6 @@
 import 'package:app/app/service/service.dart';
 import 'package:app/generated/generated.dart';
+import 'package:app/utils/app_version_utils.dart';
 import 'package:elementary/elementary.dart';
 import 'package:nekoton_repository/nekoton_repository.dart';
 
@@ -9,18 +10,17 @@ class ProfilePageModel extends ElementaryModel {
     this._nekotonRepository,
     this._currentSeedService,
     this._biometryService,
-    this._versionService,
     this._storageManagerService,
   ) : super(errorHandler: errorHandler);
 
   final NekotonRepository _nekotonRepository;
   final CurrentSeedService _currentSeedService;
   final BiometryService _biometryService;
-  final AppVersionService _versionService;
   final StorageManagerService _storageManagerService;
 
-  String get appVersion =>
-      '${_versionService.appVersion}.${_versionService.buildNumber}';
+  Future<String> get appVersion async {
+    return '${await AppVersion.appVersion}.${await AppVersion.buildNumber}';
+  }
 
   Stream<Seed?> get currentSeedStream => _currentSeedService.currentSeedStream;
 

@@ -1,7 +1,6 @@
 import 'package:app/app/service/service.dart';
 import 'package:app/di/di.config.dart';
 import 'package:encrypted_storage/encrypted_storage.module.dart';
-import 'package:fancy_logger/fancy_logger.module.dart';
 import 'package:get_it/get_it.dart';
 import 'package:get_storage/get_storage.dart';
 import 'package:injectable/injectable.dart';
@@ -15,7 +14,6 @@ final getIt = GetIt.instance;
   asExtension: true, // default
   generateForDir: ['lib'],
   externalPackageModulesBefore: [
-    ExternalModule(FancyLoggerPackageModule),
     ExternalModule(EncryptedStoragePackageModule),
     ExternalModule(NekotonRepositoryPackageModule),
   ],

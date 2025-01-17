@@ -1,6 +1,7 @@
 import 'package:app/feature/wallet/wallet.dart';
 import 'package:app/feature/wallet/widgets/token_transfer_info/token_transfer_info_wm.dart';
 import 'package:app/generated/generated.dart';
+import 'package:app/utils/utils.dart';
 import 'package:elementary/elementary.dart';
 import 'package:elementary_helper/elementary_helper.dart';
 import 'package:flutter/material.dart';
@@ -71,21 +72,20 @@ class TokenTransferInfoWidget
                   StateNotifierBuilder(
                     listenableState: wm.tokenAsset,
                     builder: (_, asset) {
-                      Widget? icon;
-
-                      if (asset != null) {
-                        icon = TokenWalletIconWidget(
-                          address: asset.address,
-                          logoURI: asset.logoURI,
-                          version: asset.version,
-                          size: DimensSizeV2.d20,
-                        );
-                      } else if (wm.isNative) {
-                        icon = TonWalletIconWidget(
-                          path: wm.nativeTokenIcon,
-                          size: DimensSizeV2.d20,
-                        );
-                      }
+                      final icon = asset?.let(
+                            (asset) => TokenWalletIconWidget(
+                              address: asset.address,
+                              logoURI: asset.logoURI,
+                              version: asset.version,
+                              size: DimensSizeV2.d20,
+                            ),
+                          ) ??
+                          TonWalletIconWidget(
+                            path: wm.isNative
+                                ? wm.nativeTokenIcon
+                                : Assets.images.tokenDefaultIcon.path,
+                            size: DimensSizeV2.d20,
+                          );
 
                       return AmountWidget.fromMoney(
                         amount: amount!,
