@@ -1,5 +1,5 @@
 import 'package:app/app/service/bootstrap/bootstrap_steps.dart';
-import 'package:app/app/service/connection/presets_connection_service.dart';
+import 'package:app/app/service/presets_connection/presets_connection_service.dart';
 import 'package:app/bootstrap/bootstrap.dart';
 import 'package:app/core/app_build_type.dart';
 import 'package:app/event_bus/events/bootstrap/bootstrap_event.dart';
@@ -95,8 +95,6 @@ class BootstrapService {
   /// This step can not be failed during initialization, so we do not let
   /// it to be re-runed (if failed - that's gg).
   Future<void> _coreStep(AppBuildType appBuildType) async {
-    await configureAppVersion();
-    await configureLogger(appBuildType);
     await configureEncryptedStorage();
   }
 
