@@ -70,6 +70,7 @@ class AppRouter {
 
   void dispose() {
     _bootstrapErrorEventSubscription?.cancel();
+    router.dispose();
   }
 
   GoRouter _createRouter() {
