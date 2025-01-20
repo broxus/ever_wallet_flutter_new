@@ -89,8 +89,12 @@ class Toast extends StatelessWidget {
             Padding(
               padding: const EdgeInsets.only(top: DimensSizeV2.d16),
               child: Row(
-                children:
-                    actions!.map((value) => Expanded(child: value)).toList(),
+                children: [
+                  for (final action in actions!)
+                    Expanded(
+                      child: action,
+                    ),
+                ],
               ),
             ),
         ],

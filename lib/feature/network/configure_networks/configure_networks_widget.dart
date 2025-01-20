@@ -1,4 +1,3 @@
-import 'package:app/feature/network/configure_networks/configure_networks_wm.dart';
 import 'package:app/feature/network/network.dart';
 import 'package:app/generated/generated.dart';
 import 'package:app/utils/utils.dart';

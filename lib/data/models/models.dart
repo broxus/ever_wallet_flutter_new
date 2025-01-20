@@ -8,6 +8,7 @@ export 'browser_bookmark_item.dart';
 export 'browser_history_item.dart';
 export 'browser_tab.dart';
 export 'custom_currency.dart';
+export 'gas_price_params.dart';
 export 'key_added_event.dart';
 export 'key_removed_event.dart';
 export 'pending_transaction_with_additional_info.dart';

@@ -120,7 +120,7 @@ class TokenWalletsService {
 
             return (contract, balance);
           })
-          .whereNotNull()
+          .nonNulls
           .toList();
 
       subject.add(values);

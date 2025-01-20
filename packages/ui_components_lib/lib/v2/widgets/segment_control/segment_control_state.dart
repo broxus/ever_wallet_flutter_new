@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:ui_components_lib/ui_components_lib.dart';
 import 'package:ui_components_lib/v2/ui_components_lib_v2.dart';
 
 enum SegmentControlState { normal, selected, disabled }
@@ -37,15 +38,23 @@ class SegmentControlStyle {
     TextStylesV2 textStyles,
     SegmentControlSize size,
   )   : backgroundColor = ColorsResV2.transparent,
-        iconColor = colors.content1.withOpacity(OpacV2.opac50),
+        iconColor = colors.content1.withAlpha(OpacV2.opac50.toByteInt()),
         titleTextStyle = (size == SegmentControlSize.large
                 ? textStyles.labelMedium
                 : textStyles.labelSmall)
-            .copyWith(color: colors.content2.withOpacity(OpacV2.opac50)),
+            .copyWith(
+          color: colors.content2.withAlpha(
+            OpacV2.opac50.toByteInt(),
+          ),
+        ),
         valueTextStyle = (size == SegmentControlSize.large
                 ? textStyles.paragraphMedium
                 : textStyles.paragraphSmall)
-            .copyWith(color: colors.content2.withOpacity(OpacV2.opac50));
+            .copyWith(
+          color: colors.content2.withAlpha(
+            OpacV2.opac50.toByteInt(),
+          ),
+        );
 
   final Color backgroundColor;
   final Color iconColor;

@@ -70,11 +70,11 @@ mixin NotifierSubscriptionsMixin<W extends ElementaryWidget,
   }
 
   /// Create [Entity StateNotifier] and add to the notifier collection
-  EntityStateNotifier<T?> createEntityNotifier<T>([
-    EntityState<T?>? initialData,
+  EntityStateNotifier<T> createEntityNotifier<T>([
+    EntityState<T>? initialData,
   ]) {
     return _subscriptionsCollection.add(
-      EntityStateNotifier<T?>(initialData),
+      EntityStateNotifier<T>(initialData),
     );
   }
 

@@ -146,7 +146,7 @@ class CommonTransportStrategy extends AppTransportStrategy {
       AccountExplorerLinkType.accountDetails =>
         '${connection.blockExplorerUrl}/accounts/accountDetails?id=${accountAddress.address}',
       AccountExplorerLinkType.packAddress =>
-        '${connection.blockExplorerUrl}/${packAddress(address: accountAddress)}',
+        '${connection.blockExplorerUrl}/${packAddress(accountAddress)}',
     };
   }
 

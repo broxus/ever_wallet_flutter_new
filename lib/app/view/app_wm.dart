@@ -17,6 +17,9 @@ AppWidgetModel defaultAppWidgetModelFactory(
       inject(),
       inject(),
       inject(),
+      inject(),
+      inject(),
+      inject(),
     ),
   );
 }
@@ -35,10 +38,4 @@ class AppWidgetModel extends CustomWidgetModel<App, AppModel> {
   List<Locale> get supportedLocales => context.supportedLocales;
 
   Locale get locale => context.locale;
-
-  @override
-  void dispose() {
-    router.dispose();
-    super.dispose();
-  }
 }

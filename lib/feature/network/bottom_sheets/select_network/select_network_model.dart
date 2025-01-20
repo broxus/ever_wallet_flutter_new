@@ -1,7 +1,6 @@
 import 'package:app/app/service/connection/data/connection_data/connection_data.dart';
 import 'package:app/app/service/service.dart';
 import 'package:elementary/elementary.dart';
-import 'package:rxdart/rxdart.dart';
 
 class SelectNetworkModel extends ElementaryModel {
   SelectNetworkModel(
@@ -11,10 +10,10 @@ class SelectNetworkModel extends ElementaryModel {
 
   final ConnectionsStorageService _storageService;
 
-  BehaviorSubject<String> get currentConnectionId =>
+  Stream<String> get currentConnectionId =>
       _storageService.currentConnectionIdStream;
 
-  BehaviorSubject<List<ConnectionData>> get connections =>
+  Stream<List<ConnectionData>> get connections =>
       _storageService.connectionsStream;
 
   void changeCurrentConnection(String id) {

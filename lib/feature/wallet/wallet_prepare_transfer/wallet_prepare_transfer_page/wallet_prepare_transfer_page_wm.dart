@@ -141,7 +141,7 @@ class WalletPrepareTransferPageWidgetModel extends CustomWidgetModel<
       address: receiverController.text.trim(),
     );
 
-    if (!await validateAddress(addr)) {
+    if (!validateAddress(addr)) {
       model.showError(context, LocaleKeys.addressIsWrong.tr());
 
       return;
@@ -155,7 +155,7 @@ class WalletPrepareTransferPageWidgetModel extends CustomWidgetModel<
     _goNext(addr, amnt);
   }
 
-  void setMaxBalance(FormFieldState<String>? fieldState) {
+  void setMaxBalance() {
     final asset = _selectedAsset;
     var available = asset?.balance;
 
@@ -187,7 +187,6 @@ class WalletPrepareTransferPageWidgetModel extends CustomWidgetModel<
     }
 
     amountController.text = available.formatImproved();
-    fieldState?.didChange(amountController.text);
   }
 
   void onPressedReceiverClear() => receiverController.clear();
@@ -199,7 +198,7 @@ class WalletPrepareTransferPageWidgetModel extends CustomWidgetModel<
       return;
     }
 
-    if (await validateAddress(Address(address: text!))) {
+    if (validateAddress(Address(address: text!))) {
       receiverController.text = text;
       receiverFocus.unfocus();
     } else {
@@ -251,7 +250,7 @@ class WalletPrepareTransferPageWidgetModel extends CustomWidgetModel<
     _createNativeContract();
     model.findExistedContracts(_onUpdateContractsForAccount);
 
-    if (root != null && root != model.currentTransport.nativeTokenAddress) {
+    if (root != null && model.tokenSymbol != _selectedAsset?.tokenSymbol) {
       unawaited(_findSpecifiedContract(root));
     }
 

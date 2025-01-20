@@ -150,10 +150,10 @@ class WalletDeployBloc extends Bloc<WalletDeployEvent, WalletDeployState>
 
     try {
       await _handlePrepareDeploy(emit);
-    } on FfiException catch (e, t) {
+    } on Exception catch (e, t) {
       _logger.severe('_handlePrepareStandard', e, t);
       inject<MessengerService>()
-          .show(Message.error(context: context, message: e.message));
+          .show(Message.error(context: context, message: e.toString()));
     }
   }
 
@@ -169,10 +169,10 @@ class WalletDeployBloc extends Bloc<WalletDeployEvent, WalletDeployState>
 
     try {
       await _handlePrepareDeploy(emit, custodians, requireConfirmations);
-    } on FfiException catch (e, t) {
+    } on Exception catch (e, t) {
       _logger.severe('_handlePrepareMultisig', e, t);
       inject<MessengerService>()
-          .show(Message.error(context: context, message: e.message));
+          .show(Message.error(context: context, message: e.toString()));
     }
   }
 
@@ -228,18 +228,6 @@ class WalletDeployBloc extends Bloc<WalletDeployEvent, WalletDeployState>
           currency: tokenCustomCurrency,
           account: account,
           hours: _cachedHoursConfirmation,
-        ),
-      );
-    } on FfiException catch (e, t) {
-      _logger.severe('_handlePrepareDeploy', e, t);
-      emitSafe(
-        WalletDeployState.calculatingError(
-          error: e.message,
-          balance: balance,
-          fee: fees,
-          requireConfirmations: requireConfirmations,
-          custodians: custodians,
-          tonIconPath: tonIconPath,
         ),
       );
     } on Exception catch (e, t) {
@@ -299,25 +287,6 @@ class WalletDeployBloc extends Bloc<WalletDeployEvent, WalletDeployState>
         add(WalletDeployEvent.completeDeploy(transaction));
       }
     } on OperationCanceledException catch (_) {
-    } on FfiException catch (e, t) {
-      _logger.severe('_handleSend', e, t);
-      inject<MessengerService>()
-          .show(Message.error(context: context, message: e.message));
-      emitSafe(
-        WalletDeployState.readyToDeploy(
-          fee: fees!,
-          balance: balance!,
-          custodians:
-              _type == WalletDeployType.standard ? null : _cachedCustodians,
-          requireConfirmations: _type == WalletDeployType.standard
-              ? null
-              : _cachedRequireConfirmations,
-          tonIconPath: tonIconPath,
-          ticker: ticker,
-          currency: tokenCustomCurrency,
-          hours: _cachedHoursConfirmation,
-        ),
-      );
     } on Exception catch (e, t) {
       _logger.severe('_handleSend', e, t);
       inject<MessengerService>()

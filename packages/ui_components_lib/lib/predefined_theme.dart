@@ -1,10 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-import 'package:ui_components_lib/colors.dart';
-import 'package:ui_components_lib/components/button/button_style.dart';
-import 'package:ui_components_lib/opac.dart';
-import 'package:ui_components_lib/styles.dart';
-import 'package:ui_components_lib/theme_style.dart';
+import 'package:ui_components_lib/ui_components_lib.dart';
 
 /// Default theme for ever app with light brightness
 ThemeData everPredefinedLightTheme() {
@@ -132,8 +128,9 @@ Map<EverButtonType, EverButtonStyle> _mapButtonStyle(ColorsPalette colors) {
   return {
     EverButtonType.primary: EverButtonStyle(
       backgroundColor: colors.backgroundPrimary,
-      backgroundDisabledColor:
-          colors.backgroundPrimary.withOpacity(Opac.medium),
+      backgroundDisabledColor: colors.backgroundPrimary.withAlpha(
+        Opac.medium.toByteInt(),
+      ),
       contentColor: colors.textContrast,
       contentPressedColor: colors.textSecondary,
       contentDisabledColor: colors.textContrast,
@@ -141,15 +138,19 @@ Map<EverButtonType, EverButtonStyle> _mapButtonStyle(ColorsPalette colors) {
     EverButtonType.secondary: EverButtonStyle(
       backgroundColor: colors.backgroundSecondary,
       backgroundDisabledColor:
-          colors.backgroundSecondary.withOpacity(Opac.medium),
+          colors.backgroundSecondary.withAlpha(Opac.medium.toByteInt()),
       contentColor: colors.textPrimary,
-      contentDisabledColor: colors.textPrimary.withOpacity(Opac.medium),
+      contentDisabledColor: colors.textPrimary.withAlpha(
+        Opac.medium.toByteInt(),
+      ),
       contentPressedColor: colors.textSecondary,
     ),
     EverButtonType.ghost: EverButtonStyle(
       backgroundColor: ColorsRes.transparent,
       contentColor: colors.textPrimary,
-      contentDisabledColor: colors.textPrimary.withOpacity(Opac.medium),
+      contentDisabledColor: colors.textPrimary.withAlpha(
+        Opac.medium.toByteInt(),
+      ),
       backgroundDisabledColor: ColorsRes.transparent,
       contentPressedColor: colors.textSecondary,
     ),

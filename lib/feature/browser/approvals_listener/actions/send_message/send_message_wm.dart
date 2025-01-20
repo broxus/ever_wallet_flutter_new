@@ -190,8 +190,6 @@ class SendMessageWidgetModel
       );
 
       _fee.accept(fee);
-    } on FfiException catch (e) {
-      _feeError.accept(e.message);
     } on Exception catch (e) {
       _feeError.accept(e.toString());
     }

@@ -192,7 +192,8 @@ class DefaultAppBar extends StatelessWidget implements PreferredSizeWidget {
 
   List<Widget> _actionsWidget(BuildContext context) {
     return [
-      if (_hasActions) ...actions!.map((e) => Center(child: e)),
+      if (_hasActions)
+        for (final action in actions!) Center(child: action),
       if (_showActionsClose && defaultCanPopAction(context))
         Center(
           child: CommonButton(

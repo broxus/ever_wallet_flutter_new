@@ -1,7 +1,6 @@
 import 'package:app/app/service/connection/data/connection_data/connection_data.dart';
-import 'package:app/app/service/connection/presets_connection_service.dart';
+import 'package:app/app/service/presets_connection/presets_connection_service.dart';
 import 'package:app/app/service/service.dart';
-import 'package:app/di/di.dart';
 import 'package:app/generated/generated.dart';
 import 'package:collection/collection.dart';
 import 'package:get_storage/get_storage.dart';
@@ -21,6 +20,7 @@ class ConnectionsStorageService extends AbstractStorageService {
   ConnectionsStorageService(
     @Named(container) this._storage,
     this._presetsConnectionService,
+    this._messengerService,
   );
 
   final _log = Logger('ConnectionsStorageService');
@@ -29,6 +29,7 @@ class ConnectionsStorageService extends AbstractStorageService {
   /// Storage that is used to store data
   final GetStorage _storage;
   final PresetsConnectionService _presetsConnectionService;
+  final MessengerService _messengerService;
 
   /// Subject of [ConnectionData] items
   final _connectionsSubject = BehaviorSubject<List<ConnectionData>>.seeded([]);
@@ -42,16 +43,13 @@ class ConnectionsStorageService extends AbstractStorageService {
   final _networksIdsSubject = BehaviorSubject<Map<String, int>>();
 
   /// Stream of [ConnectionData] items
-  BehaviorSubject<List<ConnectionData>> get connectionsStream =>
-      _connectionsSubject;
+  Stream<List<ConnectionData>> get connectionsStream => _connectionsSubject;
 
   /// Stream of currect connection id
-  BehaviorSubject<String> get currentConnectionIdStream =>
-      _currentConnectionIdSubject;
+  Stream<String> get currentConnectionIdStream => _currentConnectionIdSubject;
 
   /// Stream of conntection id to network id map
-  BehaviorSubject<Map<String, int>> get networksIdsStream =>
-      _networksIdsSubject;
+  Stream<Map<String, int>> get networksIdsStream => _networksIdsSubject;
 
   /// Get last cached [ConnectionData] items
   List<ConnectionData> get connections => _connectionsSubject.valueOrNull ?? [];
@@ -272,7 +270,7 @@ class ConnectionsStorageService extends AbstractStorageService {
 
     _saveConnections(items);
 
-    inject<MessengerService>().show(
+    _messengerService.show(
       Message.info(
         message: LocaleKeys.networkDeleted.tr(),
         actionText: LocaleKeys.networkDeletedUndo.tr(),
@@ -295,7 +293,7 @@ class ConnectionsStorageService extends AbstractStorageService {
 
     _saveConnections(newConnections);
 
-    inject<MessengerService>().show(
+    _messengerService.show(
       Message.info(
         message: LocaleKeys.networkSaved.tr(),
       ),
