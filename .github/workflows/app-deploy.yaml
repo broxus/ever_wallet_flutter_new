@@ -37,7 +37,7 @@ jobs:
     env:
       SECRET_PASSPHRASE: ${{ secrets.SECRET_PASSPHRASE }}
       MATCH_PASSWORD: ${{ secrets.MATCH_PASSWORD }}
-      FLUTTER_VERSION: '3.24.0'
+      FLUTTER_VERSION: '3.27.1'
     steps:
       - uses: actions/checkout@v4
         with:
