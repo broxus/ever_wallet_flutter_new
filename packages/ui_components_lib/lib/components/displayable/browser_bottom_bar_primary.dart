@@ -48,32 +48,32 @@ class BrowserBottomBarPrimary extends StatelessWidget {
           child: Row(
             children: [
               Expanded(
-                child: _getIconButton(
-                  backSvg,
-                  Icons.arrow_back_ios,
-                  onBackPressed,
+                child: _IconButton(
+                  svg: backSvg,
+                  iconData: Icons.arrow_back_ios,
+                  onPressed: onBackPressed,
                 ),
               ),
               Expanded(
-                child: _getIconButton(
-                  forwardSvg,
-                  Icons.arrow_forward_ios,
-                  onForwardPressed,
+                child: _IconButton(
+                  svg: forwardSvg,
+                  iconData: Icons.arrow_forward_ios,
+                  onPressed: onForwardPressed,
                 ),
               ),
               Expanded(
-                child: _getIconButton(
-                  plusSvg,
-                  Icons.add_circle,
-                  onPlusPressed,
+                child: _IconButton(
+                  svg: plusSvg,
+                  iconData: Icons.add_circle,
+                  onPressed: onPlusPressed,
                 ),
               ),
               Expanded(
                 child: tabCount == 0
-                    ? _getIconButton(
-                        historySvg,
-                        Icons.watch_later_outlined,
-                        onHistoryPressed,
+                    ? _IconButton(
+                        svg: historySvg,
+                        iconData: Icons.watch_later_outlined,
+                        onPressed: onHistoryPressed,
                       )
                     : Center(
                         child: CountIndicator(
@@ -83,10 +83,10 @@ class BrowserBottomBarPrimary extends StatelessWidget {
                       ),
               ),
               Expanded(
-                child: _getIconButton(
-                  dotsSvg,
-                  Icons.menu,
-                  onDotsPressed,
+                child: _IconButton(
+                  svg: dotsSvg,
+                  iconData: Icons.menu,
+                  onPressed: onDotsPressed,
                 ),
               ),
             ],
@@ -95,27 +95,35 @@ class BrowserBottomBarPrimary extends StatelessWidget {
       ),
     );
   }
+}
 
-  // TODO(Odrin): we should add all the icons in the ui kit library
-  // and get rid of this method
-  Widget _getIconButton(
-    String? svg,
-    IconData icondata,
-    VoidCallback? onPressed,
-  ) {
+// TODO(Odrin): we should add all the icons in the ui kit library
+class _IconButton extends StatelessWidget {
+  const _IconButton({
+    required this.svg,
+    required this.iconData,
+    required this.onPressed,
+  });
+
+  final String? svg;
+  final IconData iconData;
+  final VoidCallback? onPressed;
+
+  @override
+  Widget build(BuildContext context) {
     return Padding(
       padding: const EdgeInsets.all(DimensSize.d4),
       child: svg != null
           ? CommonIconButton.svg(
               size: CommonIconButtonSize.small,
-              svg: svg,
+              svg: svg!,
               buttonType: EverButtonType.ghost,
               padding: EdgeInsets.zero,
               onPressed: onPressed,
             )
           : CommonIconButton.icon(
               size: CommonIconButtonSize.small,
-              icon: icondata,
+              icon: iconData,
               buttonType: EverButtonType.ghost,
               padding: EdgeInsets.zero,
               onPressed: onPressed,
