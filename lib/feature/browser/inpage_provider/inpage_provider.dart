@@ -43,62 +43,66 @@ class InpageProvider extends ProviderApi {
 
   Uri? get origin => url == null ? null : Uri.parse(url!.origin);
 
-  // TODO(komarov): method that will check accountInteraction and return
-  // [AccountInteraction] instance if checked successfully
-
-  /// Check [permissions] if it contains [basic] (if true) and [account]
-  /// (if true) and if accountInteraction.address == accountAddress if it's
-  /// specified.
-  /// This is just a helper function for actions to check permissions, required
-  /// for this action.
-  /// [basic] needs everywhere by default (except of getting info about
-  /// provider)
+  /// Checks if the basic permissions are granted.
   ///
-  /// Method do not return anything. If some required permission not granted,
-  /// exception will be thrown.
-  void _checkPermissions({
-    required Permissions? permissions,
-    bool basic = true,
-    bool account = false,
-    nr.Address? accountAddress,
-    nr.PublicKey? publicKey,
-  }) {
+  /// This method verifies whether the necessary basic permissions
+  /// required for the application to function properly are granted.
+  void _checkBasicPermission() {
+    final permissions = permissionsService.getPermissions(origin);
+
     if (permissions == null) {
       throw s.ApprovalsHandleException(LocaleKeys.permissionsNotGranted.tr());
     }
-    if (basic && permissions.basic != true) {
+    if (permissions.basic != true) {
       throw s.ApprovalsHandleException(
         LocaleKeys.basicInteractionNotPermitted.tr(),
       );
     }
-    if (account && permissions.accountInteraction == null) {
+  }
+
+  /// Checks if the account interaction permission is granted.
+  ///
+  /// Returns an [AccountInteraction] object that indicates the permission
+  /// status.
+  AccountInteraction _checkAccountInteractionPermission({
+    nr.Address? account,
+    nr.PublicKey? publicKey,
+  }) {
+    final permissions = permissionsService.getPermissions(origin);
+    final accountInteraction = permissions?.accountInteraction;
+
+    if (permissions == null) {
+      throw s.ApprovalsHandleException(LocaleKeys.permissionsNotGranted.tr());
+    }
+    if (permissions.basic != true) {
+      throw s.ApprovalsHandleException(
+        LocaleKeys.basicInteractionNotPermitted.tr(),
+      );
+    }
+    if (accountInteraction == null) {
       throw s.ApprovalsHandleException(
         LocaleKeys.accountInteractionNotPermitted.tr(),
       );
     }
-    if (account &&
-        accountAddress != null &&
-        permissions.accountInteraction?.address != accountAddress) {
+    if (accountInteraction.address != account) {
       throw s.ApprovalsHandleException(
         LocaleKeys.specifiedAccountInteractionNotPermitted.tr(),
       );
     }
-    if (account &&
-        publicKey != null &&
-        permissions.accountInteraction?.publicKey != publicKey) {
+    if (accountInteraction.publicKey != publicKey) {
       throw s.ApprovalsHandleException(
         LocaleKeys.specifiedSignerIsNotPermitted.tr(),
       );
     }
+
+    return accountInteraction;
   }
 
   @override
   Future<AddAssetOutput> addAsset(AddAssetInput input) async {
     final accountAddress = nr.Address(address: input.account);
-    _checkPermissions(
-      permissions: permissionsService.getPermissions(origin),
-      account: true,
-      accountAddress: accountAddress,
+    _checkAccountInteractionPermission(
+      account: accountAddress,
     );
 
     final type = assetTypeMap[input.type];
@@ -159,7 +163,7 @@ class InpageProvider extends ProviderApi {
   @override
   Future<PermissionsPartial> changeAccount() async {
     final existingPermissions = permissionsService.getPermissions(origin);
-    _checkPermissions(permissions: existingPermissions, account: true);
+    _checkAccountInteractionPermission();
 
     final existingPermissionsList = [
       if (existingPermissions?.basic ?? false) Permission.basic,
@@ -175,19 +179,7 @@ class InpageProvider extends ProviderApi {
 
     _logger.finest('changeAccount', permissions.toJson());
 
-    final accountInteraction = permissions.accountInteraction;
-
-    final partial = PermissionsPartial(
-      permissions.basic,
-      accountInteraction == null
-          ? null
-          : PermissionsAccountInteraction(
-              accountInteraction.address.address,
-              accountInteraction.publicKey.publicKey,
-              accountInteraction.contractType.jsonName,
-            ),
-    );
-
+    final partial = permissions.toPartial();
     await controller?.permissionsChanged(PermissionsChangedEvent(partial));
 
     return partial;
@@ -195,7 +187,7 @@ class InpageProvider extends ProviderApi {
 
   @override
   Future<CodeToTvcOutput> codeToTvc(CodeToTvcInput input) async {
-    _checkPermissions(permissions: permissionsService.getPermissions(origin));
+    _checkBasicPermission();
     final (tvc, hash) = await nr.codeToTvc(input.code);
 
     return CodeToTvcOutput(tvc, hash);
@@ -203,7 +195,7 @@ class InpageProvider extends ProviderApi {
 
   @override
   Future<DecodeEventOutput?> decodeEvent(DecodeEventInput input) async {
-    _checkPermissions(permissions: permissionsService.getPermissions(origin));
+    _checkBasicPermission();
 
     final event = await nr.decodeEvent(
       messageBody: input.body,
@@ -216,7 +208,7 @@ class InpageProvider extends ProviderApi {
 
   @override
   Future<DecodeInputOutput?> decodeInput(DecodeInputInput input) async {
-    _checkPermissions(permissions: permissionsService.getPermissions(origin));
+    _checkBasicPermission();
     final output = await nr.decodeInput(
       messageBody: input.body,
       contractAbi: input.abi,
@@ -231,7 +223,7 @@ class InpageProvider extends ProviderApi {
 
   @override
   Future<DecodeOutputOutput?> decodeOutput(DecodeOutputInput input) async {
-    _checkPermissions(permissions: permissionsService.getPermissions(origin));
+    _checkBasicPermission();
     final output = await nr.decodeOutput(
       messageBody: input.body,
       contractAbi: input.abi,
@@ -247,7 +239,7 @@ class InpageProvider extends ProviderApi {
   Future<DecodeTransactionOutput?> decodeTransaction(
     DecodeTransactionInput input,
   ) async {
-    _checkPermissions(permissions: permissionsService.getPermissions(origin));
+    _checkBasicPermission();
     final output = await nr.decodeTransaction(
       transaction: nr.Transaction.fromJson(input.transaction.toJson()),
       contractAbi: input.abi,
@@ -263,7 +255,7 @@ class InpageProvider extends ProviderApi {
   Future<DecodeTransactionEventsOutput> decodeTransactionEvents(
     DecodeTransactionEventsInput input,
   ) async {
-    _checkPermissions(permissions: permissionsService.getPermissions(origin));
+    _checkBasicPermission();
     final events = await nr.decodeTransactionEvents(
       transaction: nr.Transaction.fromJson(input.transaction.toJson()),
       contractAbi: input.abi,
@@ -284,17 +276,13 @@ class InpageProvider extends ProviderApi {
     final sourceKey = nr.PublicKey(
       publicKey: input.encryptedData.sourcePublicKey,
     );
-    final permissions = permissionsService.getPermissions(origin);
-
-    _checkPermissions(
-      permissions: permissions,
-      account: true,
+    final accountInteraction = _checkAccountInteractionPermission(
       publicKey: publicKey,
     );
 
     final password = await approvalsService.decryptData(
       origin: origin!,
-      account: permissions!.accountInteraction!.address,
+      account: accountInteraction.address,
       recipientPublicKey: publicKey,
       sourcePublicKey: sourceKey,
     );
@@ -335,7 +323,7 @@ class InpageProvider extends ProviderApi {
   Future<EncodeInternalInputOutput> encodeInternalInput(
     FunctionCall input,
   ) async {
-    _checkPermissions(permissions: permissionsService.getPermissions(origin));
+    _checkBasicPermission();
     final boc = await nr.encodeInternalInput(
       contractAbi: input.abi,
       method: input.method,
@@ -348,17 +336,13 @@ class InpageProvider extends ProviderApi {
   @override
   Future<EncryptDataOutput> encryptData(EncryptDataInput input) async {
     final publicKey = nr.PublicKey(publicKey: input.publicKey);
-    final permissions = permissionsService.getPermissions(origin);
-
-    _checkPermissions(
-      permissions: permissions,
-      account: true,
+    final accountInteraction = _checkAccountInteractionPermission(
       publicKey: publicKey,
     );
 
     final password = await approvalsService.encryptData(
       origin: origin!,
-      account: permissions!.accountInteraction!.address,
+      account: accountInteraction.address,
       publicKey: publicKey,
       data: input.data,
     );
@@ -398,11 +382,7 @@ class InpageProvider extends ProviderApi {
   Future<EstimateFeesOutput> estimateFees(EstimateFeesInput input) async {
     final sender = nr.Address(address: input.sender);
     final amount = input.amount;
-    _checkPermissions(
-      permissions: permissionsService.getPermissions(origin),
-      account: true,
-      accountAddress: sender,
-    );
+    _checkAccountInteractionPermission(account: sender);
     if (amount == null) {
       throw s.ApprovalsHandleException(LocaleKeys.amountIsWrong.tr());
     }
@@ -484,11 +464,7 @@ class InpageProvider extends ProviderApi {
         final publicKey =
             nr.PublicKey(publicKey: header['publicKey']! as String);
         final call = FunctionCall.fromJson(payload as Map<String, dynamic>);
-        final permissions = permissionsService.getPermissions(origin);
-
-        _checkPermissions(
-          permissions: permissions,
-          account: true,
+        final accountInteraction = _checkAccountInteractionPermission(
           publicKey: publicKey,
         );
 
@@ -511,7 +487,7 @@ class InpageProvider extends ProviderApi {
               payload: nr.FunctionCall.fromJson(call.toJson()),
               publicKey: publicKey,
               recipient: repackedAddress,
-              account: permissions!.accountInteraction!.address,
+              account: accountInteraction.address,
             );
             final transport = nekotonRepository.currentTransport.transport;
 
@@ -605,7 +581,7 @@ class InpageProvider extends ProviderApi {
   Future<ExtractPublicKeyOutput> extractPublicKey(
     ExtractPublicKeyInput input,
   ) async {
-    _checkPermissions(permissions: permissionsService.getPermissions(origin));
+    _checkBasicPermission();
     final output = await nr.extractPublicKey(input.boc);
 
     return ExtractPublicKeyOutput(output.publicKey);
@@ -615,7 +591,7 @@ class InpageProvider extends ProviderApi {
   Future<FindTransactionOutput> findTransaction(
     FindTransactionInput input,
   ) async {
-    _checkPermissions(permissions: permissionsService.getPermissions(origin));
+    _checkBasicPermission();
     final hash = input.inMessageHash;
     if (hash == null) {
       throw s.ApprovalsHandleException(LocaleKeys.transactionNotFound.tr());
@@ -633,7 +609,7 @@ class InpageProvider extends ProviderApi {
   Future<GetAccountsByCodeHashOutput> getAccountsByCodeHash(
     GetAccountsByCodeHashInput input,
   ) async {
-    _checkPermissions(permissions: permissionsService.getPermissions(origin));
+    _checkBasicPermission();
     final accountsList = await nekotonRepository.currentTransport.transport
         .getAccountsByCodeHash(
       codeHash: input.codeHash,
@@ -649,7 +625,7 @@ class InpageProvider extends ProviderApi {
 
   @override
   Future<GetBocHashOutput> getBocHash(GetBocHashInput input) async {
-    _checkPermissions(permissions: permissionsService.getPermissions(origin));
+    _checkBasicPermission();
     final hash = await nr.getBocHash(input.boc);
 
     return GetBocHashOutput(hash);
@@ -657,7 +633,7 @@ class InpageProvider extends ProviderApi {
 
   @override
   Future<GetCodeSaltOutput> getCodeSalt(GetCodeSaltInput input) async {
-    _checkPermissions(permissions: permissionsService.getPermissions(origin));
+    _checkBasicPermission();
     final code = await nr.getCodeSalt(input.code);
 
     return GetCodeSaltOutput(code);
@@ -667,7 +643,7 @@ class InpageProvider extends ProviderApi {
   Future<GetContractFieldsOutput> getContractFields(
     GetContractFieldsInput input,
   ) async {
-    _checkPermissions(permissions: permissionsService.getPermissions(origin));
+    _checkBasicPermission();
     final (output, state) =
         await nekotonRepository.currentTransport.transport.getContractFields(
       address: nr.Address(address: input.address),
@@ -687,7 +663,7 @@ class InpageProvider extends ProviderApi {
   Future<GetExpectedAddressOutput> getExpectedAddress(
     GetExpectedAddressInput input,
   ) async {
-    _checkPermissions(permissions: permissionsService.getPermissions(origin));
+    _checkBasicPermission();
     final (address, state, hash) = await nr.getExpectedAddress(
       tvc: input.tvc,
       contractAbi: input.abi,
@@ -709,7 +685,7 @@ class InpageProvider extends ProviderApi {
   Future<GetFullContractStateOutput> getFullContractState(
     GetFullContractStateInput input,
   ) async {
-    _checkPermissions(permissions: permissionsService.getPermissions(origin));
+    _checkBasicPermission();
     final state = await nekotonRepository.currentTransport.transport
         .getFullContractState(nr.Address(address: input.address));
 
@@ -734,16 +710,7 @@ class InpageProvider extends ProviderApi {
       selectedConnection,
       networkId,
       supportedPermissions.map((e) => e.name).toList(),
-      PermissionsPartial(
-        permissions.basic,
-        permissions.accountInteraction == null
-            ? null
-            : PermissionsAccountInteraction(
-                permissions.accountInteraction!.address.address,
-                permissions.accountInteraction!.publicKey.publicKey,
-                permissions.accountInteraction!.contractType.jsonName,
-              ),
-      ),
+      permissions.toPartial(),
       subscriptions?.map(
             (key, value) => MapEntry(
               key.address,
@@ -759,7 +726,7 @@ class InpageProvider extends ProviderApi {
 
   @override
   Future<GetTransactionOutput> getTransaction(GetTransactionInput input) async {
-    _checkPermissions(permissions: permissionsService.getPermissions(origin));
+    _checkBasicPermission();
     final transaction = await nekotonRepository.currentTransport.transport
         .getTransaction(input.hash);
 
@@ -772,7 +739,7 @@ class InpageProvider extends ProviderApi {
   Future<GetTransactionsOutput> getTransactions(
     GetTransactionsInput input,
   ) async {
-    _checkPermissions(permissions: permissionsService.getPermissions(origin));
+    _checkBasicPermission();
     final transactions =
         await nekotonRepository.currentTransport.transport.getTransactions(
       address: nr.Address(address: input.address),
@@ -795,7 +762,7 @@ class InpageProvider extends ProviderApi {
 
   @override
   Future<MergeTvcOutput> mergeTvc(MergeTvcInput input) async {
-    _checkPermissions(permissions: permissionsService.getPermissions(origin));
+    _checkBasicPermission();
     final (tvc, hash) = await nr.mergeTvc(code: input.code, data: input.data);
 
     return MergeTvcOutput(tvc, hash);
@@ -803,7 +770,7 @@ class InpageProvider extends ProviderApi {
 
   @override
   Future<PackIntoCellOutput> packIntoCell(PackIntoCellInput input) async {
-    _checkPermissions(permissions: permissionsService.getPermissions(origin));
+    _checkBasicPermission();
     final (boc, hash) = await nr.packIntoCell(
       params:
           input.structure.map((e) => nr.AbiParam.fromJson(e.toJson())).toList(),
@@ -847,18 +814,7 @@ class InpageProvider extends ProviderApi {
       );
     }
 
-    final accountInteraction = permissions.accountInteraction;
-
-    final partial = PermissionsPartial(
-      permissions.basic,
-      accountInteraction == null
-          ? null
-          : PermissionsAccountInteraction(
-              accountInteraction.address.address,
-              accountInteraction.publicKey.publicKey,
-              accountInteraction.contractType.jsonName,
-            ),
-    );
+    final partial = permissions.toPartial();
     await controller?.permissionsChanged(PermissionsChangedEvent(partial));
 
     return partial;
@@ -866,7 +822,7 @@ class InpageProvider extends ProviderApi {
 
   @override
   Future<RunLocalOutput> runLocal(RunLocalInput input) async {
-    _checkPermissions(permissions: permissionsService.getPermissions(origin));
+    _checkBasicPermission();
     final address = nr.Address(address: input.address);
     final cachedState = input.cachedState == null
         ? null
@@ -902,11 +858,7 @@ class InpageProvider extends ProviderApi {
   ) async {
     final publicKey = nr.PublicKey(publicKey: input.publicKey);
     final recipient = nr.Address(address: input.recipient);
-    final permissions = permissionsService.getPermissions(origin);
-
-    _checkPermissions(
-      permissions: permissions,
-      account: true,
+    final accountInteraction = _checkAccountInteractionPermission(
       publicKey: publicKey,
     );
 
@@ -943,7 +895,7 @@ class InpageProvider extends ProviderApi {
         payload: nr.FunctionCall.fromJson(input.payload.toJson()),
         publicKey: publicKey,
         recipient: recipient,
-        account: permissions!.accountInteraction!.address,
+        account: accountInteraction.address,
       );
       final transport = nekotonRepository.currentTransport.transport;
 
@@ -1005,11 +957,7 @@ class InpageProvider extends ProviderApi {
   ) async {
     final publicKey = nr.PublicKey(publicKey: input.publicKey);
     final recipient = nr.Address(address: input.recipient);
-    final permissions = permissionsService.getPermissions(origin);
-
-    _checkPermissions(
-      permissions: permissions,
-      account: true,
+    final accountInteraction = _checkAccountInteractionPermission(
       publicKey: publicKey,
     );
 
@@ -1046,7 +994,7 @@ class InpageProvider extends ProviderApi {
         payload: nr.FunctionCall.fromJson(input.payload.toJson()),
         publicKey: publicKey,
         recipient: recipient,
-        account: permissions!.accountInteraction!.address,
+        account: accountInteraction.address,
       );
       final transport = nekotonRepository.currentTransport.transport;
 
@@ -1123,11 +1071,7 @@ class InpageProvider extends ProviderApi {
   Future<SendMessageOutput> sendMessage(SendMessageInput input) async {
     final sender = nr.Address(address: input.sender);
     final amount = input.amount;
-    _checkPermissions(
-      permissions: permissionsService.getPermissions(origin),
-      account: true,
-      accountAddress: sender,
-    );
+    _checkAccountInteractionPermission(account: sender);
     if (amount == null) {
       throw s.ApprovalsHandleException(LocaleKeys.amountIsWrong.tr());
     }
@@ -1225,11 +1169,7 @@ class InpageProvider extends ProviderApi {
   ) async {
     final sender = nr.Address(address: input.sender);
     final amount = input.amount;
-    _checkPermissions(
-      permissions: permissionsService.getPermissions(origin),
-      account: true,
-      accountAddress: sender,
-    );
+    _checkAccountInteractionPermission(account: sender);
     if (amount == null) {
       throw s.ApprovalsHandleException(LocaleKeys.amountIsWrong.tr());
     }
@@ -1347,7 +1287,7 @@ class InpageProvider extends ProviderApi {
   ) async {
     final recipient = nr.Address(address: input.recipient);
 
-    _checkPermissions(permissions: permissionsService.getPermissions(origin));
+    _checkBasicPermission();
 
     final repackedRecipient =
         nr.repackAddress(nr.Address(address: input.recipient));
@@ -1419,7 +1359,7 @@ class InpageProvider extends ProviderApi {
 
   @override
   Future<SetCodeSaltOutput> setCodeSalt(SetCodeSaltInput input) async {
-    _checkPermissions(permissions: permissionsService.getPermissions(origin));
+    _checkBasicPermission();
     final (code, hash) =
         await nr.setCodeSalt(code: input.code, salt: input.salt);
 
@@ -1430,17 +1370,13 @@ class InpageProvider extends ProviderApi {
   Future<SignDataOutput> signData(SignDataInput input) async {
     final publicKey = nr.PublicKey(publicKey: input.publicKey);
     final withSignatureId = input.withSignatureId;
-    final permissions = permissionsService.getPermissions(origin);
-
-    _checkPermissions(
-      permissions: permissions,
-      account: true,
+    final accountInteraction = _checkAccountInteractionPermission(
       publicKey: publicKey,
     );
 
     final password = await approvalsService.signData(
       origin: origin!,
-      account: permissions!.accountInteraction!.address,
+      account: accountInteraction.address,
       publicKey: publicKey,
       data: input.data,
     );
@@ -1473,17 +1409,13 @@ class InpageProvider extends ProviderApi {
   @override
   Future<SignDataRawOutput> signDataRaw(SignDataRawInput input) async {
     final publicKey = nr.PublicKey(publicKey: input.publicKey);
-    final permissions = permissionsService.getPermissions(origin);
-
-    _checkPermissions(
-      permissions: permissions,
-      account: true,
+    final accountInteraction = _checkAccountInteractionPermission(
       publicKey: publicKey,
     );
 
     final password = await approvalsService.signData(
       origin: origin!,
-      account: permissions!.accountInteraction!.address,
+      account: accountInteraction.address,
       publicKey: publicKey,
       data: input.data,
     );
@@ -1509,7 +1441,7 @@ class InpageProvider extends ProviderApi {
 
   @override
   Future<SplitTvcOutput> splitTvc(SplitTvcInput input) async {
-    _checkPermissions(permissions: permissionsService.getPermissions(origin));
+    _checkBasicPermission();
     final (data, code) = await nr.splitTvc(input.tvc);
 
     return SplitTvcOutput(data, code);
@@ -1518,7 +1450,7 @@ class InpageProvider extends ProviderApi {
   @override
   Future<ContractUpdatesSubscription> subscribe(SubscribeInput input) async {
     final accountAddress = nr.Address(address: input.address);
-    _checkPermissions(permissions: permissionsService.getPermissions(origin));
+    _checkBasicPermission();
 
     final subs = nr.ContractUpdatesSubscription(
       contractState: input.subscriptions.state ?? true,
@@ -1545,7 +1477,7 @@ class InpageProvider extends ProviderApi {
 
   @override
   Future<UnpackFromCellOutput> unpackFromCell(UnpackFromCellInput input) async {
-    _checkPermissions(permissions: permissionsService.getPermissions(origin));
+    _checkBasicPermission();
     final data = await nr.unpackFromCell(
       params:
           input.structure.map((e) => nr.AbiParam.fromJson(e.toJson())).toList(),
@@ -1559,7 +1491,7 @@ class InpageProvider extends ProviderApi {
 
   @override
   Future<UnpackInitDataOutput> unpackInitData(UnpackInitDataInput input) async {
-    _checkPermissions(permissions: permissionsService.getPermissions(origin));
+    _checkBasicPermission();
     final (key, tokens) = await nr.unpackInitData(
       contractAbi: input.abi,
       data: input.data,
@@ -1587,7 +1519,7 @@ class InpageProvider extends ProviderApi {
   Future<VerifySignatureOutput> verifySignature(
     VerifySignatureInput input,
   ) async {
-    _checkPermissions(permissions: permissionsService.getPermissions(origin));
+    _checkBasicPermission();
 
     final signatureId = input.withSignatureId == true
         ? await nekotonRepository.currentTransport.transport.getSignatureId()
@@ -1637,7 +1569,7 @@ class InpageProvider extends ProviderApi {
   Future<ComputeStorageFeeOutput> computeStorageFee(
     ComputeStorageFeeInput input,
   ) async {
-    _checkPermissions(permissions: permissionsService.getPermissions(origin));
+    _checkBasicPermission();
 
     final transport = nekotonRepository.currentTransport.transport;
     final config = await transport.getBlockchainConfig();
@@ -1661,7 +1593,7 @@ class InpageProvider extends ProviderApi {
 
   @override
   Future<AddNetworkOutput> addNetwork(AddNetworkInput input) async {
-    _checkPermissions(permissions: permissionsService.getPermissions(origin));
+    _checkBasicPermission();
 
     final networkId = input.network.networkId.toInt();
     final connections = await _getConnections(networkId);
@@ -1694,7 +1626,7 @@ class InpageProvider extends ProviderApi {
 
   @override
   Future<ChangeNetworkOutput> changeNetwork(ChangeNetworkInput input) async {
-    _checkPermissions(permissions: permissionsService.getPermissions(origin));
+    _checkBasicPermission();
 
     final networkId = input.networkId.toInt();
     final currentTransport = nekotonRepository.currentTransport;
