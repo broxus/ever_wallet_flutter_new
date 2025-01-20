@@ -44,13 +44,6 @@ class AccountSettingsWidget
             onHideAccount: (list?.length ?? 0) > 1 ? wm.onHideAccount : null,
           ),
         ),
-        // TODO(knightforce): not released
-        // PrimaryButton(
-        //   buttonShape: ButtonShape.pill,
-        //   title: LocaleKeys.advancedSettings.tr(),
-        //   postfixIcon: LucideIcons.chevronRight,
-        //   onPressed: wm.onAdvancedSettings,
-        // ),
       ],
     );
   }

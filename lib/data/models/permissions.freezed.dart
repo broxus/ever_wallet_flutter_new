@@ -142,10 +142,11 @@ class __$$PermissionsImplCopyWithImpl<$Res>
 
 /// @nodoc
 @JsonSerializable()
-class _$PermissionsImpl implements _Permissions {
+class _$PermissionsImpl extends _Permissions {
   const _$PermissionsImpl(
       {@JsonKey(includeIfNull: false) this.basic,
-      @JsonKey(includeIfNull: false) this.accountInteraction});
+      @JsonKey(includeIfNull: false) this.accountInteraction})
+      : super._();
 
   factory _$PermissionsImpl.fromJson(Map<String, dynamic> json) =>
       _$$PermissionsImplFromJson(json);
@@ -192,11 +193,12 @@ class _$PermissionsImpl implements _Permissions {
   }
 }
 
-abstract class _Permissions implements Permissions {
+abstract class _Permissions extends Permissions {
   const factory _Permissions(
       {@JsonKey(includeIfNull: false) final bool? basic,
       @JsonKey(includeIfNull: false)
       final AccountInteraction? accountInteraction}) = _$PermissionsImpl;
+  const _Permissions._() : super._();
 
   factory _Permissions.fromJson(Map<String, dynamic> json) =
       _$PermissionsImpl.fromJson;
