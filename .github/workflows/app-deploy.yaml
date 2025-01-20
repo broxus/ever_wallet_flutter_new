@@ -1,3 +1,4 @@
+# Sample workflow for building and deploying a Jekyll site to GitHub Pages
 name: Deploy app
 
 on:
@@ -77,6 +78,9 @@ jobs:
           channel: 'stable'
           cache: true
           cache-key: flutter-:os:-:channel:-:version:-:arch:-:hash:-${{ hashFiles('**/pubspec.lock') }}
+
+      - name: Display Flutter version
+        run: flutter --version
 
       - name: Install Dart dependencies
         run: dart pub get
