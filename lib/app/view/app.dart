@@ -1,12 +1,15 @@
+import 'package:app/app/service/crash_detector/widget/crash_detector_service_widget.dart';
 import 'package:app/app/service/localization/service/supported_locale_codes.dart';
+import 'package:app/app/service/localization/widget/localization_service_widget.dart';
+import 'package:app/app/service/messenger/widget/messenger_service_widget.dart';
+import 'package:app/app/service/navigation/widget/navigation_service_widget.dart';
 import 'package:app/app/view/app_wm.dart';
-import 'package:app/app/view/widets/app_root.dart';
-import 'package:app/app/view/widets/app_wrapper.dart';
-import 'package:app/app/view/widets/screen_util_wrapper.dart';
 import 'package:easy_localization/easy_localization.dart';
 import 'package:elementary/elementary.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:go_router/go_router.dart';
+import 'package:in_app_notification/in_app_notification.dart';
 import 'package:ui_components_lib/v2/ui_components_lib_v2.dart';
 
 class App extends ElementaryWidget<AppWidgetModel> {
@@ -25,11 +28,11 @@ class App extends ElementaryWidget<AppWidgetModel> {
       path: 'assets/translations',
       fallbackLocale: fallbackLocale,
       useOnlyLangCode: true,
-      child: ScreenUtilWrapper(
-        child: AppWrapper(
-          child: _AppContent(
-            router: wm.router,
-          ),
+      child: ScreenUtilInit(
+        designSize: const Size(375, 812),
+        minTextAdapt: true,
+        child: _AppContent(
+          router: wm.router,
         ),
       ),
     );
@@ -57,8 +60,16 @@ class _AppContent extends StatelessWidget {
         data: MediaQuery.of(context).copyWith(
           textScaler: TextScaler.noScaling,
         ),
-        child: AppRootWidgets(
-          child: child ?? Container(),
+        child: InAppNotification(
+          child: CrashDetectorServiceWidget(
+            child: LocalizationServiceWidget(
+              child: MessengerServiceWidget(
+                child: NavigationServiceWidget(
+                  child: child ?? Container(),
+                ),
+              ),
+            ),
+          ),
         ),
       ),
     );
