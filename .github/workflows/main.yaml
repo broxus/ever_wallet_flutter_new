@@ -14,19 +14,19 @@ jobs:
     uses: VeryGoodOpenSource/very_good_workflows/.github/workflows/semantic_pull_request.yml@v1
 
   build_and_test:
-    uses: broxus/flutter_templates/.github/workflows/run-melos.yaml@main
+    uses: broxus/flutter_templates/.github/workflows/run-melos.yaml@v2
     secrets: inherit
     with:
       runner: macos-latest
 
   # integration tests are empty now
   # ios_integration_test:
-  #   uses: broxus/flutter_templates/.github/workflows/ios-integration-test.yaml@main
+  #   uses: broxus/flutter_templates/.github/workflows/ios-integration-test.yaml@v2
   #   with:
   #     target: lib/main_development.dart
   #     build-before-test: true
 
   # android_integration_test:
-  #   uses: broxus/flutter_templates/.github/workflows/android-integration-test.yaml@main
+  #   uses: broxus/flutter_templates/.github/workflows/android-integration-test.yaml@v2
   #   with:
   #     codegen: true

@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:ui_components_lib/ui_components_lib.dart';
 import 'package:ui_components_lib/v2/ui_components_lib_v2.dart';
 
 /// Default theme for ever app with light brightness
@@ -16,10 +17,13 @@ ThemeData getPredefinedLightTheme() {
     background2: ColorsResV2.n30,
     background3: ColorsResV2.n35,
     backgroundAccent: ColorsResV2.p60,
-    backgroundAlpha: ColorsResV2.n100.withOpacity(OpacV2.opac10),
-    backgroundNegativeAlpha: ColorsResV2.e30.withOpacity(OpacV2.opac50),
-    backgroundWarningAlpha: ColorsResV2.w40.withOpacity(OpacV2.opac50),
-    backgroundPositiveAlpha: ColorsResV2.s25.withOpacity(OpacV2.opac50),
+    backgroundAlpha: ColorsResV2.n100.withAlpha(OpacV2.opac10.toByteInt()),
+    backgroundNegativeAlpha:
+        ColorsResV2.e30.withAlpha(OpacV2.opac50.toByteInt()),
+    backgroundWarningAlpha:
+        ColorsResV2.w40.withAlpha(OpacV2.opac50.toByteInt()),
+    backgroundPositiveAlpha:
+        ColorsResV2.s25.withAlpha(OpacV2.opac50.toByteInt()),
     content0: ColorsResV2.n100,
     content1: ColorsResV2.n70,
     content2: ColorsResV2.n65,
@@ -27,10 +31,10 @@ ThemeData getPredefinedLightTheme() {
     border0: ColorsResV2.n35,
     border1: ColorsResV2.n40,
     border2: ColorsResV2.n50,
-    borderAlpha: ColorsResV2.n100.withOpacity(OpacV2.opac10),
-    borderFocus: ColorsResV2.n70.withOpacity(OpacV2.opac50),
-    borderDisabled: ColorsResV2.n70.withOpacity(OpacV2.opac50),
-    backgroundOverlay: ColorsResV2.n10.withOpacity(OpacV2.opac80),
+    borderAlpha: ColorsResV2.n100.withAlpha(OpacV2.opac10.toByteInt()),
+    borderFocus: ColorsResV2.n70.withAlpha(OpacV2.opac50.toByteInt()),
+    borderDisabled: ColorsResV2.n70.withAlpha(OpacV2.opac50.toByteInt()),
+    backgroundOverlay: ColorsResV2.n10.withAlpha(OpacV2.opac80.toByteInt()),
     backgroundNegative: ColorsResV2.e30,
     backgroundWarning: ColorsResV2.w20,
     backgroundPositive: ColorsResV2.s25,
@@ -83,10 +87,13 @@ ThemeData getPredefinedDarkTheme() {
     background2: ColorsResV2.n30,
     background3: ColorsResV2.n35,
     backgroundAccent: ColorsResV2.p60,
-    backgroundAlpha: ColorsResV2.n100.withOpacity(OpacV2.opac10),
-    backgroundNegativeAlpha: ColorsResV2.e30.withOpacity(OpacV2.opac50),
-    backgroundWarningAlpha: ColorsResV2.w40.withOpacity(OpacV2.opac50),
-    backgroundPositiveAlpha: ColorsResV2.s25.withOpacity(OpacV2.opac50),
+    backgroundAlpha: ColorsResV2.n100.withAlpha(OpacV2.opac10.toByteInt()),
+    backgroundNegativeAlpha:
+        ColorsResV2.e30.withAlpha(OpacV2.opac50.toByteInt()),
+    backgroundWarningAlpha:
+        ColorsResV2.w40.withAlpha(OpacV2.opac50.toByteInt()),
+    backgroundPositiveAlpha:
+        ColorsResV2.s25.withAlpha(OpacV2.opac50.toByteInt()),
     content0: ColorsResV2.n100,
     content1: ColorsResV2.n70,
     content2: ColorsResV2.n65,
@@ -94,10 +101,10 @@ ThemeData getPredefinedDarkTheme() {
     border0: ColorsResV2.n35,
     border1: ColorsResV2.n40,
     border2: ColorsResV2.n50,
-    borderAlpha: ColorsResV2.n100.withOpacity(OpacV2.opac10),
-    borderFocus: ColorsResV2.n70.withOpacity(OpacV2.opac50),
-    borderDisabled: ColorsResV2.n70.withOpacity(OpacV2.opac50),
-    backgroundOverlay: ColorsResV2.n10.withOpacity(OpacV2.opac80),
+    borderAlpha: ColorsResV2.n100.withAlpha(OpacV2.opac10.toByteInt()),
+    borderFocus: ColorsResV2.n70.withAlpha(OpacV2.opac50.toByteInt()),
+    borderDisabled: ColorsResV2.n70.withAlpha(OpacV2.opac50.toByteInt()),
+    backgroundOverlay: ColorsResV2.n10.withAlpha(OpacV2.opac80.toByteInt()),
     backgroundNegative: ColorsResV2.e30,
     backgroundWarning: ColorsResV2.w20,
     backgroundPositive: ColorsResV2.s25,
@@ -149,10 +156,13 @@ ThemeStyleV2 getDefaultTheme() {
     background2: ColorsResV2.n30,
     background3: ColorsResV2.n35,
     backgroundAccent: ColorsResV2.p60,
-    backgroundAlpha: ColorsResV2.n100.withOpacity(OpacV2.opac10),
-    backgroundNegativeAlpha: ColorsResV2.e30.withOpacity(OpacV2.opac50),
-    backgroundWarningAlpha: ColorsResV2.w40.withOpacity(OpacV2.opac50),
-    backgroundPositiveAlpha: ColorsResV2.s25.withOpacity(OpacV2.opac50),
+    backgroundAlpha: ColorsResV2.n100.withAlpha(OpacV2.opac10.toByteInt()),
+    backgroundNegativeAlpha:
+        ColorsResV2.e30.withAlpha(OpacV2.opac50.toByteInt()),
+    backgroundWarningAlpha:
+        ColorsResV2.w40.withAlpha(OpacV2.opac50.toByteInt()),
+    backgroundPositiveAlpha:
+        ColorsResV2.s25.withAlpha(OpacV2.opac50.toByteInt()),
     content0: ColorsResV2.n100,
     content1: ColorsResV2.n70,
     content2: ColorsResV2.n65,
@@ -160,10 +170,10 @@ ThemeStyleV2 getDefaultTheme() {
     border0: ColorsResV2.n35,
     border1: ColorsResV2.n40,
     border2: ColorsResV2.n50,
-    borderAlpha: ColorsResV2.n100.withOpacity(OpacV2.opac10),
-    borderFocus: ColorsResV2.n70.withOpacity(OpacV2.opac50),
-    borderDisabled: ColorsResV2.n70.withOpacity(OpacV2.opac50),
-    backgroundOverlay: ColorsResV2.n10.withOpacity(OpacV2.opac80),
+    borderAlpha: ColorsResV2.n100.withAlpha(OpacV2.opac10.toByteInt()),
+    borderFocus: ColorsResV2.n70.withAlpha(OpacV2.opac50.toByteInt()),
+    borderDisabled: ColorsResV2.n70.withAlpha(OpacV2.opac50.toByteInt()),
+    backgroundOverlay: ColorsResV2.n10.withAlpha(OpacV2.opac80.toByteInt()),
     backgroundNegative: ColorsResV2.e30,
     backgroundWarning: ColorsResV2.w20,
     backgroundPositive: ColorsResV2.s25,

@@ -14,6 +14,7 @@ import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
 import 'package:logging/logging.dart';
+import 'package:nekoton_repository/nekoton_repository.dart';
 import 'package:ui_components_lib/ui_components_lib.dart';
 
 late AppBuildType currentAppBuildType;
@@ -28,6 +29,7 @@ Future<void> run(
   await runZonedGuarded(
     () async {
       WidgetsFlutterBinding.ensureInitialized();
+      await NekotonBridge.init();
 
       await configureDi();
 

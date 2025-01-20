@@ -94,8 +94,6 @@ class NewAccountTypeWidgetModel
         );
         contextSafe!.goNamed(AppRoute.wallet.name);
       }
-    } on FfiException catch (e) {
-      model.showError(context, e.message);
     } on Exception catch (e) {
       model.showError(context, e.toString());
     } finally {

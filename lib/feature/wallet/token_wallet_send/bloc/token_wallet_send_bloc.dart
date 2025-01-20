@@ -162,9 +162,6 @@ class TokenWalletSendBloc
       }
 
       emitSafe(TokenWalletSendState.readyToSend(fees!, sendAmount, txErrors));
-    } on FfiException catch (e, t) {
-      _logger.severe('_handleSend', e, t);
-      emitSafe(TokenWalletSendState.calculatingError(e.message));
     } on Exception catch (e, t) {
       _logger.severe('_handleSend', e, t);
       emitSafe(TokenWalletSendState.calculatingError(e.toString()));
@@ -214,12 +211,12 @@ class TokenWalletSendBloc
         add(TokenWalletSendEvent.completeSend(transaction));
       }
     } on OperationCanceledException catch (_) {
-    } on FfiException catch (e, t) {
+    } on FrbException catch (e, t) {
       _logger.severe('_handleSend', e, t);
       messengerService.show(
         Message.error(
           context: context,
-          message: e.message,
+          message: e.toString(),
         ),
       );
       emitSafe(TokenWalletSendState.readyToSend(fees!, sendAmount, txErrors));
@@ -235,7 +232,7 @@ class TokenWalletSendBloc
     final internalMessage = await nekotonRepository.prepareTokenTransfer(
       owner: owner,
       rootTokenContract: rootTokenContract,
-      destination: await repackAddress(destination),
+      destination: repackAddress(destination),
       amount: tokenAmount,
       payload: comment,
       attachedAmount: attachedAmount,

@@ -78,12 +78,12 @@ class ImportWalletScreenWidgetModel
       } else {
         model.showValidateError(context, LocaleKeys.incorrectWordsFormat.tr());
       }
+    } on FrbException catch (e, s) {
+      _log.severe('confirmAction FrbException', e, s);
+      error = LocaleKeys.wrongSeed.tr();
     } on Exception catch (e, s) {
       _log.severe('confirmAction', e, s);
       error = e.toString();
-    } on FfiException catch (e, s) {
-      _log.severe('confirmAction FfiException', e, s);
-      error = LocaleKeys.wrongSeed.tr();
     }
     if (error != null) {
       model.showValidateError(context, error);

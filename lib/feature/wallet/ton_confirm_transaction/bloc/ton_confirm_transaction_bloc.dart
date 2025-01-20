@@ -157,14 +157,6 @@ class TonConfirmTransactionBloc
           selectedCustodian,
         ),
       );
-    } on FfiException catch (e, t) {
-      _logger.severe('_handleSend', e, t);
-      emitSafe(
-        TonConfirmTransactionState.calculatingError(
-          e.message,
-          selectedCustodian,
-        ),
-      );
     } on Exception catch (e, t) {
       _logger.severe('_handleSend', e, t);
       emitSafe(
@@ -218,20 +210,6 @@ class TonConfirmTransactionBloc
         add(TonConfirmTransactionEvent.completeSend(transaction));
       }
     } on OperationCanceledException catch (_) {
-    } on FfiException catch (e, t) {
-      _logger.severe('_handleSend', e, t);
-      inject<MessengerService>().show(
-        Message.error(
-          context: context,
-          message: e.message,
-        ),
-      );
-      emitSafe(
-        TonConfirmTransactionState.readyToSend(
-          fees!,
-          selectedCustodian,
-        ),
-      );
     } on Exception catch (e, t) {
       _logger.severe('_handleSend', e, t);
       inject<MessengerService>()
