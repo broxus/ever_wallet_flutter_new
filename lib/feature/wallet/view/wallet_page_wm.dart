@@ -1,5 +1,6 @@
 import 'dart:async';
 
+import 'package:app/app/service/connection/data/connection_data/connection_data.dart';
 import 'package:app/core/error_handler_factory.dart';
 import 'package:app/core/wm/custom_wm.dart';
 import 'package:app/di/di.dart';
@@ -7,6 +8,7 @@ import 'package:app/event_bus/events/navigation/bottom_navigation_events.dart';
 import 'package:app/event_bus/primary_bus.dart';
 import 'package:app/feature/wallet/view/wallet_page_model.dart';
 import 'package:app/feature/wallet/view/wallet_page_widget.dart';
+import 'package:app/generated/assets.gen.dart';
 import 'package:elementary_helper/elementary_helper.dart';
 import 'package:flutter/material.dart';
 import 'package:nekoton_repository/nekoton_repository.dart';
@@ -17,6 +19,7 @@ WalletPageWidgetModel defaultWalletPageWidgetModelFactory(
     WalletPageWidgetModel(
       WalletPageModel(
         createPrimaryErrorHandler(context),
+        inject(),
         inject(),
         inject(),
         inject(),
@@ -37,6 +40,9 @@ class WalletPageWidgetModel
   late final _isShowingBadgeNotifier = createNotifier<bool>();
   late final _isShowingNewTokensNotifier = createNotifier<bool>();
   late final _hasUnconfirmedTransactionsNotifier = createNotifier<bool>();
+  late final _connection = createNotifierFromStream(model.connectionStream);
+
+  ListenableState<ConnectionData?> get connection => _connection;
 
   StreamSubscription<PressBottomNavigationEvent>? _pressWalletSubscribtion;
 
@@ -83,6 +89,20 @@ class WalletPageWidgetModel
     _isShowingNewTokensNotifier.accept(false);
     if (account != null) {
       model.hideNewTokenLabels(account);
+    }
+  }
+
+  String getImagePathByNetwork(ConnectionData? data) {
+    if (data?.networkType == 'ever') {
+      return Assets.images.walletMainBg.everscale.walletBg.path;
+    } else if (data?.networkType == 'tycho') {
+      return Assets.images.walletMainBg.tycho.walletBg.path;
+    } else if (data?.networkType == 'venom') {
+      return Assets.images.walletMainBg.venom.walletBg.path;
+    } else if (data?.networkType == "ton") {
+      return Assets.images.walletMainBg.ton.walletBg.path;
+    } else {
+      return Assets.images.walletMainBg.custom.walletBg.path;
     }
   }
 
