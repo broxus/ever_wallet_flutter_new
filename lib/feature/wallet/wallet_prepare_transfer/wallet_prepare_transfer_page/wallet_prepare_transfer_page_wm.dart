@@ -250,7 +250,7 @@ class WalletPrepareTransferPageWidgetModel extends CustomWidgetModel<
     _createNativeContract();
     model.findExistedContracts(_onUpdateContractsForAccount);
 
-    if (root != null && root != model.currentTransport.nativeTokenAddress) {
+    if (root != null && model.tokenSymbol != _selectedAsset?.tokenSymbol) {
       unawaited(_findSpecifiedContract(root));
     }
 
