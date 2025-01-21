@@ -190,7 +190,7 @@ class CommonBottomSheetWidget extends StatelessWidget {
             child: body(
               context,
 
-              /// TODO fix of context in build
+              // TODO(knightforce): fix of context in build
               ModalScrollController.of(context)!,
             ),
           ),
