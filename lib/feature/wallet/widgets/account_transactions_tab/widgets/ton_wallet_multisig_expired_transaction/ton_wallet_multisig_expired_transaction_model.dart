@@ -11,6 +11,12 @@ class TonWalletMultisigExpiredTransactionModel extends ElementaryModel {
 
   final NekotonRepository _nekotonRepository;
 
-  String get nativeTokenTicker =>
+  late final nativeTokenTicker =
       _nekotonRepository.currentTransport.nativeTokenTicker;
+
+  late final tonIconPath = _nekotonRepository.currentTransport.nativeTokenIcon;
+
+  String getTransactionExplorerLink(String hash) {
+    return _nekotonRepository.currentTransport.transactionExplorerLink(hash);
+  }
 }

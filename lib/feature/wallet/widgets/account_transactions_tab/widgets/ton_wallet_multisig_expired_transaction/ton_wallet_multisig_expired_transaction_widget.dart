@@ -39,15 +39,9 @@ class TonWalletMultisigExpiredTransactionWidget
       address: transaction.address,
       isIncoming: !transaction.isOutgoing,
       status: TonWalletTransactionStatus.expired,
-      transactionFee: Money.fromBigIntWithCurrency(
-        transaction.fees,
-        Currencies()[wm.nativeTokenTicker]!,
-      ),
+      transactionFee: wm.transactionFee,
       transactionDateTime: transaction.date,
-      transactionValue: Money.fromBigIntWithCurrency(
-        transaction.value,
-        Currencies()[wm.nativeTokenTicker]!,
-      ),
+      transactionValue: wm.transactionValue,
       additionalInformation: Column(
         crossAxisAlignment: CrossAxisAlignment.end,
         mainAxisAlignment: MainAxisAlignment.end,
