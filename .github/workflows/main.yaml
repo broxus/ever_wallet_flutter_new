@@ -21,15 +21,14 @@ jobs:
       - name: Read Flutter version
         id: read
         run: |
-            echo "flutter_version=$(cat .github/configs/flutter_version)" >> $GITHUB_OUTPUT
+          echo "flutter_version=$(cat .github/configs/flutter_version)" >> $GITHUB_OUTPUT
 
   semantic_pull_request:
     uses: VeryGoodOpenSource/very_good_workflows/.github/workflows/semantic_pull_request.yml@v1
 
   build_and_test:
-    needs: [read_flutter_version]
-#    uses: broxus/flutter_templates/.github/workflows/run-melos.yaml@v2
-    uses: broxus/flutter_templates/.github/workflows/run-melos.yaml@dynamic-flutter-version
+    needs: [ read_flutter_version ]
+    uses: broxus/flutter_templates/.github/workflows/run-melos.yaml@v3
     secrets: inherit
     with:
       runner: macos-latest
