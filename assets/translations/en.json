@@ -642,5 +642,7 @@
   "errorMessageMaxUnconfirmedTransactions": "Unconfirmed transactions is limited by 5",
   "noRpcConnection": "No RPC connection",
   "tryAgainOrContact": "Please try again or contact technical support",
-  "contactUs": "Contact us"
+  "contactUs": "Contact us",
+  "publicKeyNull": "publicKey is null",
+  "passwordNull": "password is null"
 }
