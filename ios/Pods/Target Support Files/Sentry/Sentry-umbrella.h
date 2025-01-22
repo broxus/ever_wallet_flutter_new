@@ -57,6 +57,7 @@
 #import "PrivateSentrySDKOnly.h"
 #import "PrivatesHeader.h"
 #import "SentryAppStartMeasurement.h"
+#import "SentryBaseIntegration.h"
 #import "SentryBinaryImageCache.h"
 #import "SentryBreadcrumb+Private.h"
 #import "SentryDebugImageProvider+HybridSDKs.h"
@@ -68,6 +69,7 @@
 #import "SentryOptions+HybridSDKs.h"
 #import "SentryScreenFrames.h"
 #import "SentrySessionReplayIntegration-Hybrid.h"
+#import "SentrySessionReplayIntegration.h"
 #import "SentrySwizzle.h"
 #import "SentryUser+Private.h"
 

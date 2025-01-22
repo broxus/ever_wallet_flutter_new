@@ -18,6 +18,9 @@
 #endif
 
 #import "GTMSessionFetcher/GTMSessionFetcher.h"
+#import "GTMSessionFetcher/GTMSessionFetcherService.h"
+#import "GTMSessionFetcherService+Internal.h"
+
 #if TARGET_OS_OSX && GTMSESSION_RECONNECT_BACKGROUND_SESSIONS_ON_LAUNCH
 // To reconnect background sessions on Mac outside +load requires importing and linking
 // AppKit to access the NSApplicationDidFinishLaunching symbol.
@@ -99,15 +102,16 @@ NS_ASSUME_NONNULL_END
      (TARGET_OS_IOS && defined(__IPHONE_13_0) &&                                                  \
       __IPHONE_OS_VERSION_MIN_REQUIRED >= __IPHONE_13_0) ||                                       \
      (TARGET_OS_WATCH && defined(__WATCHOS_6_0) &&                                                \
-      __WATCH_OS_VERSION_MIN_REQUIRED >= __WATCHOS_6_0) ||                                         \
-     (TARGET_OS_TV && defined(__TVOS_13_0) && __TVOS_VERSION_MIN_REQUIRED >= __TVOS_13_0))
+      __WATCH_OS_VERSION_MIN_REQUIRED >= __WATCHOS_6_0) ||                                        \
+     (TARGET_OS_TV && defined(__TVOS_13_0) && __TVOS_VERSION_MIN_REQUIRED >= __TVOS_13_0) ||      \
+     (defined(TARGET_OS_VISION) && TARGET_OS_VISION))
 #define GTM_SDK_REQUIRES_TLSMINIMUMSUPPORTEDPROTOCOLVERSION 1
 #define GTM_SDK_SUPPORTS_TLSMINIMUMSUPPORTEDPROTOCOLVERSION 1
 #elif ((TARGET_OS_OSX && defined(__MAC_10_15) && __MAC_OS_X_VERSION_MAX_ALLOWED >= __MAC_10_15) || \
        (TARGET_OS_IOS && defined(__IPHONE_13_0) &&                                                 \
         __IPHONE_OS_VERSION_MAX_ALLOWED >= __IPHONE_13_0) ||                                       \
        (TARGET_OS_WATCH && defined(__WATCHOS_6_0) &&                                               \
-        __WATCH_OS_VERSION_MAX_ALLOWED >= __WATCHOS_6_0) ||                                         \
+        __WATCH_OS_VERSION_MAX_ALLOWED >= __WATCHOS_6_0) ||                                        \
        (TARGET_OS_TV && defined(__TVOS_13_0) && __TVOS_VERSION_MAX_ALLOWED >= __TVOS_13_0))
 #define GTM_SDK_REQUIRES_TLSMINIMUMSUPPORTEDPROTOCOLVERSION 0
 #define GTM_SDK_SUPPORTS_TLSMINIMUMSUPPORTEDPROTOCOLVERSION 1
@@ -121,8 +125,9 @@ NS_ASSUME_NONNULL_END
      (TARGET_OS_IOS && defined(__IPHONE_13_0) &&                                                  \
       __IPHONE_OS_VERSION_MIN_REQUIRED >= __IPHONE_13_0) ||                                       \
      (TARGET_OS_WATCH && defined(__WATCHOS_6_0) &&                                                \
-      __WATCH_OS_VERSION_MIN_REQUIRED >= __WATCHOS_6_0) ||                                         \
-     (TARGET_OS_TV && defined(__TVOS_13_0) && __TVOS_VERSION_MIN_REQUIRED >= __TVOS_13_0))
+      __WATCH_OS_VERSION_MIN_REQUIRED >= __WATCHOS_6_0) ||                                        \
+     (TARGET_OS_TV && defined(__TVOS_13_0) && __TVOS_VERSION_MIN_REQUIRED >= __TVOS_13_0) ||      \
+     (defined(TARGET_OS_VISION) && TARGET_OS_VISION))
 #define GTM_SDK_REQUIRES_SECTRUSTEVALUATEWITHERROR 1
 #else
 #define GTM_SDK_REQUIRES_SECTRUSTEVALUATEWITHERROR 0
@@ -233,8 +238,7 @@ static GTMSessionFetcherTestBlock _Nullable gGlobalTestBlock;
 #pragma clang diagnostic pop
 
   // The service object that created and monitors this fetcher, if any.
-  id<GTMSessionFetcherServiceProtocol>
-      _service;  // immutable; set by the fetcher service upon creation
+  GTMSessionFetcherService *_service;  // immutable; set by the fetcher service upon creation
   NSString *_serviceHost;
   NSInteger _servicePriority;  // immutable after beginFetch
   BOOL _hasStoppedFetching;    // counterpart to _initialBeginFetchDate
@@ -649,74 +653,15 @@ static GTMSessionFetcherTestBlock _Nullable gGlobalTestBlock;
 
   self.canShareSession = (_service != nil) && !isRecreatingSession && !self.usingBackgroundSession;
 
-  if (!self.session && self.canShareSession) {
-    self.session = [_service sessionForFetcherCreation];
-    // If _session is nil, then the service's session creation semaphore will block
-    // until this fetcher invokes fetcherDidCreateSession: below, so this *must* invoke
-    // that method, even if the session fails to be created.
-  }
-
   if (!self.session) {
-    // Create a session.
-    if (!_configuration) {
-      if (priorSessionIdentifier || self.usingBackgroundSession) {
-        NSString *sessionIdentifier = priorSessionIdentifier;
-        if (!sessionIdentifier) {
-          sessionIdentifier = [self createSessionIdentifierWithMetadata:nil];
-        }
-        NSMapTable *sessionIdentifierToFetcherMap = [[self class] sessionIdentifierToFetcherMap];
-        [sessionIdentifierToFetcherMap setObject:self forKey:self.sessionIdentifier];
-
-        _configuration = [NSURLSessionConfiguration
-            backgroundSessionConfigurationWithIdentifier:sessionIdentifier];
-        self.usingBackgroundSession = YES;
-        self.canShareSession = NO;
-      } else {
-        _configuration = [NSURLSessionConfiguration ephemeralSessionConfiguration];
-      }
-#if !GTM_ALLOW_INSECURE_REQUESTS
-#if GTM_SDK_REQUIRES_TLSMINIMUMSUPPORTEDPROTOCOLVERSION
-      _configuration.TLSMinimumSupportedProtocolVersion = tls_protocol_version_TLSv12;
-#elif GTM_SDK_SUPPORTS_TLSMINIMUMSUPPORTEDPROTOCOLVERSION
-      if (@available(iOS 13, tvOS 13, macOS 10.15, *)) {
-        _configuration.TLSMinimumSupportedProtocolVersion = tls_protocol_version_TLSv12;
-      } else {
-        _configuration.TLSMinimumSupportedProtocol = kTLSProtocol12;
-      }
-#else
-      _configuration.TLSMinimumSupportedProtocol = kTLSProtocol12;
-#endif  // GTM_SDK_REQUIRES_TLSMINIMUMSUPPORTEDPROTOCOLVERSION
-#endif
-    }  // !_configuration
-    _configuration.HTTPCookieStorage = self.cookieStorage;
-
-    if (_configurationBlock) {
-      _configurationBlock(self, _configuration);
-    }
-
-    id<NSURLSessionDelegate> delegate = [_service sessionDelegate];
-    if (!delegate || !self.canShareSession) {
-      delegate = self;
-    }
-    self.session = [NSURLSession sessionWithConfiguration:_configuration
-                                                 delegate:delegate
-                                            delegateQueue:self.sessionDelegateQueue];
-    GTMSESSION_ASSERT_DEBUG(self.session, @"Couldn't create session");
-
-    // Tell the service about the session created by this fetcher.  This also signals the
-    // service's semaphore to allow other fetchers to request this session.
-    [_service fetcherDidCreateSession:self];
-
-    // If this assertion fires, the client probably tried to use a session identifier that was
-    // already used. The solution is to make the client use a unique identifier (or better yet let
-    // the session fetcher assign the identifier).
-    GTMSESSION_ASSERT_DEBUG(self.session.delegate == delegate, @"Couldn't assign delegate.");
-
-    if (self.session) {
-      BOOL isUsingSharedDelegate = (delegate != self);
-      if (!isUsingSharedDelegate) {
-        _shouldInvalidateSession = YES;
-      }
+    if (self.canShareSession) {
+      self.session = [_service
+          sessionWithCreationBlock:^NSURLSession *(id<NSURLSessionDelegate> sessionDelegate) {
+            return [self createSessionWithDelegate:sessionDelegate
+                                 sessionIdentifier:priorSessionIdentifier];
+          }];
+    } else {
+      self.session = [self createSessionWithDelegate:self sessionIdentifier:priorSessionIdentifier];
     }
   }
 
@@ -766,6 +711,25 @@ static GTMSessionFetcherTestBlock _Nullable gGlobalTestBlock;
       if (self.canShareSession) {
         self.session = nil;
       }
+      return;
+    }
+  }
+
+  if ([fetchRequest valueForHTTPHeaderField:@"User-Agent"] == nil) {
+    id<GTMUserAgentProvider> userAgentProvider = _userAgentProvider;
+    NSString *cachedUserAgent = userAgentProvider.cachedUserAgent;
+    if (cachedUserAgent) {
+      // The User-Agent is already cached in memory, so set it synchronously.
+      [fetchRequest setValue:cachedUserAgent forHTTPHeaderField:@"User-Agent"];
+    } else if (userAgentProvider != nil) {
+      // The User-Agent is not cached in memory. Fetch it asynchronously.
+      [self updateUserAgentAsynchronouslyForRequest:fetchRequest
+                                  userAgentProvider:userAgentProvider
+                                           mayDelay:mayDelay
+                                       mayAuthorize:mayAuthorize
+                                        mayDecorate:mayDecorate];
+      // This method can't continue until the User-Agent header is fetched. The above
+      // method call will re-enter this method later, but with the User-Agent header set.
       return;
     }
   }
@@ -992,6 +956,116 @@ static GTMSessionFetcherTestBlock _Nullable gGlobalTestBlock;
     // of the session task.
     [newSessionTask resume];
   }
+}
+
+// Helper method to create a new NSURLSession for this fetcher. Because the original
+// implementation had this code inline, marking direct to avoid any danger of subclasses
+// overriding the behavior.
+- (NSURLSession *)createSessionWithDelegate:(id<NSURLSessionDelegate>)sessionDelegate
+                          sessionIdentifier:(nullable NSString *)priorSessionIdentifier
+    __attribute__((objc_direct)) {
+  // Create a session.
+  if (!_configuration) {
+    if (priorSessionIdentifier || self.usingBackgroundSession) {
+      NSString *sessionIdentifier = priorSessionIdentifier;
+      if (!sessionIdentifier) {
+        sessionIdentifier = [self createSessionIdentifierWithMetadata:nil];
+      }
+      NSMapTable *sessionIdentifierToFetcherMap = [[self class] sessionIdentifierToFetcherMap];
+      [sessionIdentifierToFetcherMap setObject:self forKey:self.sessionIdentifier];
+
+      _configuration = [NSURLSessionConfiguration
+          backgroundSessionConfigurationWithIdentifier:sessionIdentifier];
+      self.usingBackgroundSession = YES;
+      self.canShareSession = NO;
+    } else {
+      _configuration = [NSURLSessionConfiguration ephemeralSessionConfiguration];
+    }
+#if !GTM_ALLOW_INSECURE_REQUESTS
+#if GTM_SDK_REQUIRES_TLSMINIMUMSUPPORTEDPROTOCOLVERSION
+    _configuration.TLSMinimumSupportedProtocolVersion = tls_protocol_version_TLSv12;
+#elif GTM_SDK_SUPPORTS_TLSMINIMUMSUPPORTEDPROTOCOLVERSION
+    if (@available(iOS 13, tvOS 13, macOS 10.15, *)) {
+      _configuration.TLSMinimumSupportedProtocolVersion = tls_protocol_version_TLSv12;
+    } else {
+      _configuration.TLSMinimumSupportedProtocol = kTLSProtocol12;
+    }
+#else
+    _configuration.TLSMinimumSupportedProtocol = kTLSProtocol12;
+#endif  // GTM_SDK_REQUIRES_TLSMINIMUMSUPPORTEDPROTOCOLVERSION
+#endif
+  }  // !_configuration
+  _configuration.HTTPCookieStorage = self.cookieStorage;
+
+  if (_configurationBlock) {
+    _configurationBlock(self, _configuration);
+  }
+
+  id<NSURLSessionDelegate> delegate = sessionDelegate;
+  if (!delegate || !self.canShareSession) {
+    delegate = self;
+  }
+  NSURLSession *session = [NSURLSession sessionWithConfiguration:_configuration
+                                                        delegate:delegate
+                                                   delegateQueue:self.sessionDelegateQueue];
+  GTMSESSION_ASSERT_DEBUG(session, @"Couldn't create session");
+
+  // If this assertion fires, the client probably tried to use a session identifier that was
+  // already used. The solution is to make the client use a unique identifier (or better yet let
+  // the session fetcher assign the identifier).
+  GTMSESSION_ASSERT_DEBUG(session.delegate == delegate, @"Couldn't assign delegate.");
+
+  if (session) {
+    BOOL isUsingSharedDelegate = (delegate != self);
+    if (!isUsingSharedDelegate) {
+      _shouldInvalidateSession = YES;
+    }
+  }
+
+  return session;
+}
+
+// Asynchronously calculates the User-Agent header from |userAgentProvider|, then
+// sets it in |fetchRequest| and continues the request.
+- (void)updateUserAgentAsynchronouslyForRequest:(NSMutableURLRequest *)fetchRequest
+                              userAgentProvider:(id<GTMUserAgentProvider>)userAgentProvider
+                                       mayDelay:(BOOL)mayDelay
+                                   mayAuthorize:(BOOL)mayAuthorize
+                                    mayDecorate:(BOOL)mayDecorate {
+  GTMSESSION_LOG_DEBUG_VERBOSE(
+      @"GTMSessionFetcher fetching User-Agent from GTMUserAgentProvider %@...", _userAgentProvider);
+  __weak __typeof__(self) weakSelf = self;
+  dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
+    __strong __typeof__(self) strongSelf = weakSelf;
+    if (!strongSelf) {
+      GTMSESSION_LOG_DEBUG_VERBOSE(@"GTMSessionFetcher deallocated before GTMUserAgentProvider "
+                                   @"fetch dispatched, ignoring.");
+      return;
+    }
+    NSString *userAgent = [userAgentProvider userAgent];
+    GTMSESSION_LOG_DEBUG_VERBOSE(@"Fetched User-Agent string: [%@]", userAgent);
+    GTMSESSION_ASSERT_DEBUG(userAgentProvider.cachedUserAgent != nil,
+                            @"GTMUserAgentProvider %@ should have cached user agent now that it's "
+                            @"calculated, but returned nil",
+                            userAgentProvider);
+    BOOL shouldStop;
+    @synchronized(strongSelf) {
+      GTMSessionMonitorSynchronized(strongSelf);
+      [strongSelf->_request setValue:userAgent forHTTPHeaderField:@"User-Agent"];
+      shouldStop = strongSelf->_userStoppedFetching;
+    }
+    if (shouldStop) {
+      NSError *error = [NSError errorWithDomain:kGTMSessionFetcherErrorDomain
+                                           code:GTMSessionFetcherErrorUserCancelled
+                                       userInfo:nil];
+      [strongSelf invokeFetchCallbacksOnCallbackQueueWithData:nil
+                                                        error:error
+                                                  mayDecorate:NO
+                                       shouldReleaseCallbacks:YES];
+    } else {
+      [strongSelf beginFetchMayDelay:mayDelay mayAuthorize:mayAuthorize mayDecorate:mayDecorate];
+    }
+  });
 }
 
 NSData *_Nullable GTMDataFromInputStream(NSInputStream *inputStream, NSError **outError) {
@@ -1691,9 +1765,7 @@ NSData *_Nullable GTMDataFromInputStream(NSInputStream *inputStream, NSError **o
     NSMutableURLRequest *mutableRequest = [self.request mutableCopy];
     [authorizer authorizeRequest:mutableRequest
                completionHandler:^(NSError *_Nullable error) {
-                 [weakSelf authorizer:nil
-                               request:mutableRequest
-                     finishedWithError:error];
+                 [weakSelf authorizer:nil request:mutableRequest finishedWithError:error];
                }];
   } else if ([authorizer respondsToSelector:@selector(authorizeRequest:
                                                               delegate:didFinishSelector:)]) {
@@ -1732,22 +1804,24 @@ NSData *_Nullable GTMDataFromInputStream(NSInputStream *inputStream, NSError **o
                           startingAtIndex:(NSUInteger)index {
   GTMSessionCheckNotSynchronized(self);
   if (index >= decorators.count) {
-    GTMSESSION_LOG_DEBUG(@"GTMSessionFetcher decorate requestWillStart %zu decorators complete",
-                         decorators.count);
+    GTMSESSION_LOG_DEBUG_VERBOSE(
+        @"GTMSessionFetcher decorate requestWillStart %zu decorators complete", decorators.count);
     [self beginFetchMayDelay:NO mayAuthorize:NO mayDecorate:NO];
     return;
   }
 
   __weak __typeof__(self) weakSelf = self;
   id<GTMFetcherDecoratorProtocol> decorator = decorators[index];
-  GTMSESSION_LOG_DEBUG(@"GTMSessionFetcher decorate requestWillStart %zu decorators, index %zu, "
-                       @"retry count %zu, decorator %@",
-                       decorators.count, index, self.retryCount, decorator);
+  GTMSESSION_LOG_DEBUG_VERBOSE(
+      @"GTMSessionFetcher decorate requestWillStart %zu decorators, index %zu, "
+      @"retry count %zu, decorator %@",
+      decorators.count, index, self.retryCount, decorator);
   [decorator fetcherWillStart:self
             completionHandler:^(NSURLRequest *_Nullable newRequest, NSError *_Nullable error) {
-              GTMSESSION_LOG_DEBUG(@"GTMSessionFetcher decorator requestWillStart index %zu "
-                                   @"complete, newRequest %@, error %@",
-                                   index, newRequest, error);
+              GTMSESSION_LOG_DEBUG_VERBOSE(
+                  @"GTMSessionFetcher decorator requestWillStart index %zu "
+                  @"complete, newRequest %@, error %@",
+                  index, newRequest, error);
               __strong __typeof__(self) strongSelf = weakSelf;
               if (!strongSelf) {
                 GTMSESSION_LOG_DEBUG(@"GTMSessionFetcher destroyed before requestWillStart "
@@ -1775,8 +1849,8 @@ NSData *_Nullable GTMDataFromInputStream(NSInputStream *inputStream, NSError **o
                    shouldReleaseCallbacks:(BOOL)shouldReleaseCallbacks {
   GTMSessionCheckNotSynchronized(self);
   if (index >= decorators.count) {
-    GTMSESSION_LOG_DEBUG(@"GTMSessionFetcher decorate requestDidFinish %zu decorators complete",
-                         decorators.count);
+    GTMSESSION_LOG_DEBUG_VERBOSE(
+        @"GTMSessionFetcher decorate requestDidFinish %zu decorators complete", decorators.count);
     [self invokeFetchCallbacksOnCallbackQueueWithData:data
                                                 error:error
                                           mayDecorate:NO
@@ -1786,14 +1860,15 @@ NSData *_Nullable GTMDataFromInputStream(NSInputStream *inputStream, NSError **o
 
   __weak __typeof__(self) weakSelf = self;
   id<GTMFetcherDecoratorProtocol> decorator = decorators[index];
-  GTMSESSION_LOG_DEBUG(@"GTMSessionFetcher decorate requestDidFinish %zu decorators, index %zu, "
-                       @"retry count %zu, decorator %@",
-                       decorators.count, index, self.retryCount, decorator);
+  GTMSESSION_LOG_DEBUG_VERBOSE(
+      @"GTMSessionFetcher decorate requestDidFinish %zu decorators, index %zu, "
+      @"retry count %zu, decorator %@",
+      decorators.count, index, self.retryCount, decorator);
   [decorator fetcherDidFinish:self
                      withData:data
                         error:error
             completionHandler:^{
-              GTMSESSION_LOG_DEBUG(
+              GTMSESSION_LOG_DEBUG_VERBOSE(
                   @"GTMSessionFetcher decorator requestDidFinish index %zu complete", index);
               __strong __typeof__(self) strongSelf = weakSelf;
               if (!strongSelf) {
@@ -1961,20 +2036,22 @@ NSData *_Nullable GTMDataFromInputStream(NSInputStream *inputStream, NSError **o
   @synchronized(self) {
     GTMSessionMonitorSynchronized(self);
 
-    // Prevent enqueued callbacks from executing.
+    // Prevent enqueued callbacks from executing. The completion handler will still execute if
+    // the property `stopFetchingTriggersCompletionHandler` is `YES`.
     _userStoppedFetching = YES;
   }  // @synchronized(self)
-  [self stopFetchReleasingCallbacks:YES];
+  [self stopFetchReleasingCallbacks:!self.stopFetchingTriggersCompletionHandler];
 }
 
 // Cancel the fetch of the URL that's currently in progress.
 //
-// If shouldReleaseCallbacks is NO then the fetch will be retried so the callbacks
-// need to still be retained.
+// If shouldReleaseCallbacks is NO then the fetch will be retried so the callbacks need
+// still be retained or `stopFetching` was called and `stopFetchingTriggersCompletionHandler` is
+// `YES`.
 - (void)stopFetchReleasingCallbacks:(BOOL)shouldReleaseCallbacks {
   [self removePersistedBackgroundSessionFromDefaults];
 
-  id<GTMSessionFetcherServiceProtocol> service;
+  GTMSessionFetcherService *service;
   NSMutableURLRequest *request;
 
   // If the task or the retry timer is all that's retaining the fetcher,
@@ -1987,6 +2064,7 @@ NSData *_Nullable GTMDataFromInputStream(NSInputStream *inputStream, NSError **o
   [holdSelf destroyRetryTimer];
 
   BOOL sendStopNotification = YES;
+  BOOL callbacksPending = NO;
   @synchronized(self) {
     GTMSessionMonitorSynchronized(self);
 
@@ -2058,6 +2136,7 @@ NSData *_Nullable GTMDataFromInputStream(NSInputStream *inputStream, NSError **o
         }
       }
     }
+    callbacksPending = _stopFetchingTriggersCompletionHandler && _userStoppedFetching;
   }  // @synchronized(self)
 
   // If the NSURLSession needs to be invalidated, but needs to wait until the delegate method
@@ -2075,7 +2154,7 @@ NSData *_Nullable GTMDataFromInputStream(NSInputStream *inputStream, NSError **o
     self.authorizer = nil;
   }
 
-  [service fetcherDidStop:self];
+  [service fetcherDidStop:self callbacksPending:callbacksPending];
 
 #if GTM_BACKGROUND_TASK_FETCHING
   [self endBackgroundTask];
@@ -2469,6 +2548,14 @@ static _Nullable id<GTMUIApplicationProtocol> gSubstituteUIApp;
 
   NSString *originalScheme = originalRequestURL.scheme;
   NSString *redirectScheme = redirectRequestURL.scheme;
+
+  // If no change in scheme with redirect, just return the redirect.
+  if (originalScheme != nil &&
+      redirectScheme != nil &&
+      [originalScheme caseInsensitiveCompare:redirectScheme] == NSOrderedSame) {
+    return redirectRequestURL;
+  }
+
   BOOL insecureToSecureRedirect =
       (originalScheme != nil && [originalScheme caseInsensitiveCompare:@"http"] == NSOrderedSame &&
        redirectScheme != nil && [redirectScheme caseInsensitiveCompare:@"https"] == NSOrderedSame);
@@ -2592,7 +2679,7 @@ static _Nullable id<GTMUIApplicationProtocol> gSubstituteUIApp;
                         block:(void (^)(void))block {
   if (callbackQueue) {
     dispatch_group_async(_callbackGroup, callbackQueue, ^{
-      if (!afterStopped) {
+      if (!afterStopped && !self->_stopFetchingTriggersCompletionHandler) {
         NSDate *serviceStoppedAllDate = [self->_service stoppedAllFetchersDate];
 
         @synchronized(self) {
@@ -2659,25 +2746,28 @@ static _Nullable id<GTMUIApplicationProtocol> gSubstituteUIApp;
   }
 
   if (handler) {
-    [self invokeOnCallbackQueue:callbackQueue afterUserStopped:NO block:^{
-      handler(data, error);
+    [self invokeOnCallbackQueue:callbackQueue
+               afterUserStopped:NO
+                          block:^{
+                            handler(data, error);
 
-      // Post a notification, primarily to allow code to collect responses for
-      // testing.
-      //
-      // The observing code is not likely on the fetcher's callback
-      // queue, so this posts explicitly to the main queue.
-      NSMutableDictionary *userInfo = [NSMutableDictionary dictionary];
-      if (data) {
-        userInfo[kGTMSessionFetcherCompletionDataKey] = data;
-      }
-      if (error) {
-        userInfo[kGTMSessionFetcherCompletionErrorKey] = error;
-      }
-      [self postNotificationOnMainThreadWithName:kGTMSessionFetcherCompletionInvokedNotification
-                                        userInfo:userInfo
-                                    requireAsync:NO];
-    }];
+                            // Post a notification, primarily to allow code to collect responses for
+                            // testing.
+                            //
+                            // The observing code is not likely on the fetcher's callback
+                            // queue, so this posts explicitly to the main queue.
+                            NSMutableDictionary *userInfo = [NSMutableDictionary dictionary];
+                            if (data) {
+                              userInfo[kGTMSessionFetcherCompletionDataKey] = data;
+                            }
+                            if (error) {
+                              userInfo[kGTMSessionFetcherCompletionErrorKey] = error;
+                            }
+                            [self postNotificationOnMainThreadWithName:
+                                      kGTMSessionFetcherCompletionInvokedNotification
+                                                              userInfo:userInfo
+                                                          requireAsync:NO];
+                          }];
   }
 }
 
@@ -2804,13 +2894,15 @@ static _Nullable id<GTMUIApplicationProtocol> gSubstituteUIApp;
       if (_receivedProgressBlock) {
         [self invokeOnCallbackQueueUnlessStopped:^{
           GTMSessionFetcherReceivedProgressBlock progressBlock;
+          int64_t downloadedLength;
           @synchronized(self) {
             GTMSessionMonitorSynchronized(self);
 
             progressBlock = self->_receivedProgressBlock;
+            downloadedLength = self->_downloadedLength;
           }
           if (progressBlock) {
-            progressBlock((int64_t)bufferLength, self->_downloadedLength);
+            progressBlock((int64_t)bufferLength, downloadedLength);
           }
         }];
       }
@@ -2963,6 +3055,7 @@ static _Nullable id<GTMUIApplicationProtocol> gSubstituteUIApp;
   NSInteger status = self.statusCode;
   BOOL forceAssumeRetry = NO;
   BOOL succeeded = NO;
+  BOOL userStoppedTriggerCompletion = NO;
   @synchronized(self) {
     GTMSessionMonitorSynchronized(self);
 
@@ -2972,16 +3065,30 @@ static _Nullable id<GTMUIApplicationProtocol> gSubstituteUIApp;
     // shouldRetryNowForStatus: and finishWithError:shouldRetry:
     if (_isUsingTestBlock) return;
 #endif
+    userStoppedTriggerCompletion = _userStoppedFetching && _stopFetchingTriggersCompletionHandler;
 
     if (error == nil) {
       error = _downloadFinishedError;
     }
     succeeded = (error == nil && status >= 0 && status < 300);
-    if (succeeded) {
+    if (succeeded && !userStoppedTriggerCompletion) {
       // Succeeded.
       _bodyLength = task.countOfBytesSent;
     }
   }  // @synchronized(self)
+
+  if (userStoppedTriggerCompletion) {
+    NSMutableDictionary *userInfo = [NSMutableDictionary dictionary];
+    [userInfo setObject:@"Operation cancelled" forKey:NSLocalizedDescriptionKey];
+    if (error) {
+      [userInfo setObject:error forKey:NSUnderlyingErrorKey];
+    }
+    NSError *cancelError = [NSError errorWithDomain:kGTMSessionFetcherErrorDomain
+                                               code:GTMSessionFetcherErrorUserCancelled
+                                           userInfo:userInfo];
+    [self finishWithError:cancelError shouldRetry:NO];
+    return;
+  }
 
   if (succeeded) {
     [self finishWithError:nil shouldRetry:NO];
@@ -3041,7 +3148,7 @@ static _Nullable id<GTMUIApplicationProtocol> gSubstituteUIApp;
 #if TARGET_OS_IPHONE
 - (void)URLSessionDidFinishEventsForBackgroundURLSession:(NSURLSession *)session {
   GTMSESSION_LOG_DEBUG_VERBOSE(@"%@ %p URLSessionDidFinishEventsForBackgroundURLSession:%@",
-                           [self class], self, session);
+                               [self class], self, session);
   [self removePersistedBackgroundSessionFromDefaults];
 
   GTMSessionFetcherSystemCompletionHandler handler;
@@ -3657,7 +3764,9 @@ static NSMutableDictionary *gSystemCompletionHandlers = nil;
             testBlock = _testBlock,
             testBlockAccumulateDataChunkCount = _testBlockAccumulateDataChunkCount,
             comment = _comment,
-            log = _log;
+            log = _log,
+            userAgentProvider = _userAgentProvider,
+            stopFetchingTriggersCompletionHandler = _stopFetchingTriggersCompletionHandler;
 
 #if !STRIP_GTM_FETCH_LOGGING
 @synthesize redirectedFromURL = _redirectedFromURL,
@@ -3982,6 +4091,19 @@ static NSMutableDictionary *gSystemCompletionHandlers = nil;
 
     _usingBackgroundSession = flag;
   }  // @synchronized(self)
+}
+
+- (BOOL)stopFetchingTriggersCompletionHandler {
+  return _stopFetchingTriggersCompletionHandler;
+}
+
+- (void)setStopFetchingTriggersCompletionHandler:(BOOL)flag {
+  if (_initialBeginFetchDate == nil) {
+    _stopFetchingTriggersCompletionHandler = flag;
+  } else {
+    GTMSESSION_ASSERT_DEBUG(
+        0, @"stopFetchingTriggersCompletionHandler should not change after fetcher starts");
+  }
 }
 
 - (nullable NSURLSession *)sessionNeedingInvalidation {
@@ -4527,7 +4649,8 @@ NSString *GTMFetcherCleanedUserAgentString(NSString *str) {
 
   // Delete http token separators and remaining whitespace
   static NSCharacterSet *charsToDelete = nil;
-  if (charsToDelete == nil) {
+  static dispatch_once_t onceToken;
+  dispatch_once(&onceToken, ^{
     // Make a set of unwanted characters
     NSString *const kSeparators = @"()<>@;:\\\"/[]?={}";
 
@@ -4535,7 +4658,7 @@ NSString *GTMFetcherCleanedUserAgentString(NSString *str) {
         [[NSCharacterSet whitespaceAndNewlineCharacterSet] mutableCopy];
     [mutableChars addCharactersInString:kSeparators];
     charsToDelete = [mutableChars copy];  // hang on to an immutable copy
-  }
+  });
 
   while (1) {
     NSRange separatorRange = [result rangeOfCharacterFromSet:charsToDelete];
@@ -4628,6 +4751,65 @@ NSString *GTMFetcherSystemVersionString(void) {
   });
   return sSavedSystemString;
 }
+
+@implementation GTMUserAgentStringProvider
+
+@synthesize userAgent = _userAgent;
+
+- (instancetype)initWithUserAgentString:(NSString *)userAgentString {
+  self = [super init];
+  if (self) {
+    _userAgent = [userAgentString copy];
+  }
+  return self;
+}
+
+#pragma mark - GTMUserAgentProvider
+
+- (nullable NSString *)cachedUserAgent {
+  return _userAgent;
+}
+
+- (NSString *)userAgent {
+  return _userAgent;
+}
+
+@end
+
+@interface GTMStandardUserAgentProvider () {
+  NSBundle *_Nullable _bundle;
+}
+
+@property(atomic, copy) NSString *cachedUserAgent;
+
+@end
+
+@implementation GTMStandardUserAgentProvider
+
+@synthesize cachedUserAgent = _cachedUserAgent;
+
+- (instancetype)initWithBundle:(nullable NSBundle *)bundle {
+  self = [super init];
+  if (self) {
+    _bundle = bundle;
+  }
+  return self;
+}
+
+#pragma mark - GTMUserAgentProvider
+
+- (NSString *)userAgent {
+  NSString *userAgent = self.cachedUserAgent;
+  if (!userAgent) {
+    // This might invoke `GTMFetcherStandardUserAgentString()` more than once if two threads enter
+    // here concurrently, but the result will be the same for both.
+    userAgent = GTMFetcherStandardUserAgentString(_bundle);
+    self.cachedUserAgent = userAgent;
+  }
+  return userAgent;
+}
+
+@end
 
 NSString *GTMFetcherStandardUserAgentString(NSBundle *_Nullable bundle) {
   NSString *result = [NSString stringWithFormat:@"%@ %@", GTMFetcherApplicationIdentifier(bundle),
