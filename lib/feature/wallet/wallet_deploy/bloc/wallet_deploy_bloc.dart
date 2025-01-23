@@ -196,11 +196,7 @@ class WalletDeployBloc extends Bloc<WalletDeployEvent, WalletDeployState>
 
       balance = wallet.wallet!.contractState.balance;
       unsignedMessage = await _prepareDeploy();
-
-      fees = await nekotonRepository.estimateFees(
-        address: address,
-        message: unsignedMessage!,
-      );
+      fees = await estimateFees(unsignedMessage!);
 
       final isPossibleToSendMessage = balance! > fees!;
 
@@ -318,6 +314,19 @@ class WalletDeployBloc extends Bloc<WalletDeployEvent, WalletDeployState>
           expiration: defaultSendTimeout,
           expirationTime: _cachedHoursConfirmation * 3600, // hours to seconds
         );
+
+  Future<BigInt> estimateFees(UnsignedMessage message) async {
+    final wallet = await nekotonRepository.getWallet(address);
+    final fees = await wallet.wallet?.estimateFees(
+      signedMessage: await message.signFake(),
+      executionOptions: TransactionExecutionOptions(
+        disableSignatureCheck: true,
+        overrideBalance: BigInt.parse('100000000000'), // 100 EVER
+      ),
+    );
+
+    return fees ?? BigInt.zero;
+  }
 
   @override
   Future<void> close() {
