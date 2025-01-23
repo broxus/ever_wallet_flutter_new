@@ -6,9 +6,9 @@
   },
   "homepage": "https://github.com/broxus/nekoton_bridge",
   "authors": {
-    "nesquikm": "drapolyuk@gmail.com"
+    "Broxus": "hello@broxus.com"
   },
-  "summary": "iOS/macOS Flutter bindings for nekoton_bridge",
+  "summary": "iOS Flutter bindings for nekoton",
   "source": {
     "path": "."
   },
@@ -16,7 +16,6 @@
   "public_header_files": "Classes/**/*.h",
   "vendored_frameworks": "Frameworks/NekotonBridge.xcframework",
   "platforms": {
-    "ios": "11.0",
-    "osx": "10.14"
+    "ios": "11.0"
   }
 }

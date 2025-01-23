@@ -1,5 +1,7 @@
 framework module MLKitBarcodeScanning {
   umbrella header "MLKitBarcodeScanning.h"
+  
+
   export *
   module * { export * }
   link "c++"
