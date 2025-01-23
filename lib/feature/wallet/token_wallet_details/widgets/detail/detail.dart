@@ -1,1 +1,1 @@
-export 'token_wallet_ordinary_transaction_detail.dart';
+export 'token_wallet_ordinary_transaction_details_screen.dart';

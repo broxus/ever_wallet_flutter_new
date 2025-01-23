@@ -47,7 +47,7 @@ class TokenWalletTransactionWidget extends StatelessWidget {
     final body = PressScaleWidget(
       onPressed: () => Navigator.of(context, rootNavigator: true).push(
         MaterialPageRoute<void>(
-          builder: (_) => TokenWalletOrdinaryTransactionDetailsPage(
+          builder: (_) => TokenWalletOrdinaryTransactionDetailsScreen(
             transaction: transaction,
             tokenCurrency: transactionValue.currency,
             price: price,
