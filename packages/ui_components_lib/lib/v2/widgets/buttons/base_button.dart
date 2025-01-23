@@ -279,7 +279,8 @@ abstract class BaseButton extends StatelessWidget {
     //ignore: deprecated_member_use
     if (states.contains(MaterialState.disabled)) {
       return style.backgroundColor.withAlpha(
-          (style.backgroundColor.opacity * OpacV2.opac50).toByteInt());
+        (style.backgroundColor.opacity * OpacV2.opac50).toByteInt(),
+      );
     }
 
     return style.backgroundColor;
