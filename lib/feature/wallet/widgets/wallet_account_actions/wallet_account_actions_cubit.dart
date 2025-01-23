@@ -3,8 +3,10 @@ import 'dart:async';
 import 'package:app/app/service/service.dart';
 import 'package:app/core/bloc/bloc_mixin.dart';
 import 'package:app/data/models/models.dart';
+import 'package:app/utils/utils.dart';
 import 'package:bloc/bloc.dart';
 import 'package:collection/collection.dart';
+import 'package:flutter/material.dart';
 import 'package:freezed_annotation/freezed_annotation.dart';
 import 'package:nekoton_repository/nekoton_repository.dart';
 
@@ -74,8 +76,10 @@ class WalletAccountActionsCubit extends Cubit<WalletAccountActionsState>
 
   Future<void> _updateWalletData(TonWallet w) async {
     try {
-      final localCustodians =
-          await nekotonRepository.getLocalCustodians(address);
+      final (localCustodians, fees) = await FutureExt.wait2(
+        nekotonRepository.getLocalCustodians(address),
+        estimateFees(),
+      );
       final details = w.details;
       final contract = w.contractState;
 
@@ -99,6 +103,7 @@ class WalletAccountActionsCubit extends Cubit<WalletAccountActionsState>
           hasStake: hasStake,
           hasStakeActions: hasStake && _cachedWithdraws.isNotEmpty,
           balance: contract.balance,
+          minBalance: fees,
           custodians: wallet?.custodians,
           nativeTokenTicker:
               nekotonRepository.currentTransport.nativeTokenTicker,
@@ -107,18 +112,26 @@ class WalletAccountActionsCubit extends Cubit<WalletAccountActionsState>
                   (wallet?.pendingTransactions.length ?? 0),
         ),
       );
-    } catch (_) {}
+    } catch (_) {
+      debugPrint('Error while updating wallet data: $_');
+    }
   }
 
-  Future<BigInt?> getBalance(Address address) async {
-    try {
-      final wallet = await nekotonRepository.walletsStream
-          .expand((e) => e)
-          .firstWhere((wallets) => wallets.address == address);
-      return wallet.wallet!.contractState.balance;
-    } catch (_) {
-      return null;
-    }
+  Future<BigInt> estimateFees() async {
+    final message = await nekotonRepository.prepareDeploy(
+      address,
+      defaultSendTimeout,
+    );
+    final wallet = await nekotonRepository.getWallet(address);
+    final fees = await wallet.wallet?.estimateFees(
+      signedMessage: await message.signFake(),
+      executionOptions: TransactionExecutionOptions(
+        disableSignatureCheck: true,
+        overrideBalance: BigInt.parse('100000000000'), // 100 EVER
+      ),
+    );
+
+    return fees ?? BigInt.zero;
   }
 
   void _closeSubs() {
