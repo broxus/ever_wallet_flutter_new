@@ -1,6 +1,5 @@
 import 'package:app/app/service/service.dart';
 import 'package:app/data/models/models.dart';
-import 'package:app/utils/utils.dart';
 import 'package:elementary/elementary.dart';
 import 'package:nekoton_repository/nekoton_repository.dart' hide Message;
 
@@ -11,7 +10,6 @@ class StakingPageModel extends ElementaryModel {
     this._currenciesService,
     this._stakingService,
     this._assetsService,
-    this._gasPriceService,
   ) : super(errorHandler: errorHandler) {
     _stakingService.resetCache();
   }
@@ -20,38 +18,16 @@ class StakingPageModel extends ElementaryModel {
   final CurrenciesService _currenciesService;
   final StakingService _stakingService;
   final AssetsService _assetsService;
-  final GasPriceService _gasPriceService;
 
   TransportStrategy get transport => _nekotonRepository.currentTransport;
 
   Currency get nativeCurrency => Currencies()[transport.nativeTokenTicker]!;
 
-  StakingInformation get _staking {
+  StakingInformation get staking {
     if (transport.stakeInformation == null) {
       throw Exception('Stake information is not available');
     }
     return transport.stakeInformation!;
-  }
-
-  Future<StakingInformation> getStakingInformation() async {
-    final prices = await _gasPriceService.getGasPriceParams();
-    final (deposit, withdraw, removePendingWithdraw) = await FutureExt.wait3(
-      _gasPriceService.computeGas(_staking.stakeDepositAttachedFee, prices),
-      _gasPriceService.computeGas(_staking.stakeWithdrawAttachedFee, prices),
-      _gasPriceService.computeGas(
-        _staking.stakeRemovePendingWithdrawAttachedFee,
-        prices,
-      ),
-    );
-
-    return StakingInformation(
-      stakingAPYLink: _staking.stakingAPYLink,
-      stakingRootContractAddress: _staking.stakingRootContractAddress,
-      stakingValutAddress: _staking.stakingValutAddress,
-      stakeDepositAttachedFee: deposit,
-      stakeWithdrawAttachedFee: withdraw,
-      stakeRemovePendingWithdrawAttachedFee: removePendingWithdraw,
-    );
   }
 
   Stream<List<StEverWithdrawRequest>> getWithdrawRequests(Address address) =>
@@ -63,13 +39,13 @@ class StakingPageModel extends ElementaryModel {
   Future<TokenWalletState> getTokenWallet(Address owner) =>
       _nekotonRepository.getTokenWallet(
         owner,
-        _staking.stakingRootContractAddress,
+        staking.stakingRootContractAddress,
       );
 
   Future<CustomCurrency?> getTokenCurrency() =>
       _currenciesService.getOrFetchCurrency(
         transport,
-        _staking.stakingRootContractAddress,
+        staking.stakingRootContractAddress,
       );
 
   Future<CustomCurrency?> getEverCurrency() =>
@@ -83,7 +59,7 @@ class StakingPageModel extends ElementaryModel {
 
   Future<TokenContractAsset?> getTokenContractAsset() =>
       _assetsService.getTokenContractAsset(
-        _staking.stakingRootContractAddress,
+        staking.stakingRootContractAddress,
         transport,
       );
 
