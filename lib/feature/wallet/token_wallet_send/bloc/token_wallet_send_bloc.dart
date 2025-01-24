@@ -236,7 +236,7 @@ class TokenWalletSendBloc
       amount: tokenAmount,
       payload: comment,
       attachedAmount: attachedAmount,
-      notifyReceiver: true,
+      notifyReceiver: false,
     );
 
     final unsignedMessage = await nekotonRepository.prepareTransfer(
