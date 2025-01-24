@@ -74,8 +74,6 @@ class TokenWalletSendBloc
 
   KeyAccount? account;
 
-  UnsignedMessage? unsignedMessage;
-
   List<TxTreeSimulationErrorItem>? txErrors;
 
   TransportStrategy get transport => nekotonRepository.currentTransport;
@@ -98,6 +96,7 @@ class TokenWalletSendBloc
 
   // ignore: long-method
   Future<void> _handlePrepare(Emitter<TokenWalletSendState> emit) async {
+    UnsignedMessage? unsignedMessage;
     try {
       account = nekotonRepository.seedList.findAccountByAddress(owner);
 
@@ -127,8 +126,8 @@ class TokenWalletSendBloc
       tokenCurrency = tokenWallet.currency;
       emitSafe(const TokenWalletSendState.loading());
 
-      final (internalMessage, unsignedMessage) = await _prepareTransfer();
-      this.unsignedMessage = unsignedMessage;
+      final (internalMessage, unsignedMsg) = await _prepareTransfer();
+      unsignedMessage = unsignedMsg;
       sendAmount = internalMessage.amount;
 
       final result = await FutureExt.wait2(
@@ -165,6 +164,8 @@ class TokenWalletSendBloc
     } on Exception catch (e, t) {
       _logger.severe('_handleSend', e, t);
       emitSafe(TokenWalletSendState.calculatingError(e.toString()));
+    } finally {
+      unsignedMessage?.dispose();
     }
   }
 
@@ -172,12 +173,13 @@ class TokenWalletSendBloc
     Emitter<TokenWalletSendState> emit,
     String password,
   ) async {
+    UnsignedMessage? unsignedMessage;
     try {
       emitSafe(const TokenWalletSendState.sending(canClose: false));
       // await msg.refreshTimeout();
       // TODO(komarov): fix refresh_timeout in nekoton
-      final (internalMessage, unsignedMessage) = await _prepareTransfer();
-      this.unsignedMessage = unsignedMessage;
+      final (internalMessage, unsignedMsg) = await _prepareTransfer();
+      unsignedMessage = unsignedMsg;
       sendAmount = internalMessage.amount;
 
       final hash = unsignedMessage.hash;
@@ -225,6 +227,8 @@ class TokenWalletSendBloc
       messengerService
           .show(Message.error(context: context, message: e.toString()));
       emitSafe(TokenWalletSendState.readyToSend(fees!, sendAmount, txErrors));
+    } finally {
+      unsignedMessage?.dispose();
     }
   }
 
@@ -250,11 +254,5 @@ class TokenWalletSendBloc
     );
 
     return (internalMessage, unsignedMessage);
-  }
-
-  @override
-  Future<void> close() {
-    unsignedMessage?.dispose();
-    return super.close();
   }
 }

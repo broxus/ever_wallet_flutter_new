@@ -56,7 +56,6 @@ class WalletDeployBloc extends Bloc<WalletDeployEvent, WalletDeployState>
   String? tonIconPath;
   String? ticker;
   CustomCurrency? tokenCustomCurrency;
-  UnsignedMessage? unsignedMessage;
 
   /// Last selected type of deploying.
   /// For [WalletDeployType.multisig] [_cachedRequireConfirmations] and
@@ -182,6 +181,7 @@ class WalletDeployBloc extends Bloc<WalletDeployEvent, WalletDeployState>
     List<PublicKey>? custodians,
     int? requireConfirmations,
   ]) async {
+    UnsignedMessage? unsignedMessage;
     try {
       final account = nekotonRepository.seedList.findAccountByAddress(address);
       final wallet = await nekotonRepository.walletsStream
@@ -196,7 +196,7 @@ class WalletDeployBloc extends Bloc<WalletDeployEvent, WalletDeployState>
 
       balance = wallet.wallet!.contractState.balance;
       unsignedMessage = await _prepareDeploy();
-      fees = await estimateFees(unsignedMessage!);
+      fees = await estimateFees(unsignedMessage);
 
       final isPossibleToSendMessage = balance! > fees!;
 
@@ -238,6 +238,8 @@ class WalletDeployBloc extends Bloc<WalletDeployEvent, WalletDeployState>
           tonIconPath: tonIconPath,
         ),
       );
+    } finally {
+      unsignedMessage?.dispose();
     }
   }
 
@@ -246,11 +248,12 @@ class WalletDeployBloc extends Bloc<WalletDeployEvent, WalletDeployState>
     Emitter<WalletDeployState> emit,
     String password,
   ) async {
+    UnsignedMessage? unsignedMessage;
     try {
       emitSafe(const WalletDeployState.deploying(canClose: false));
       // await unsignedMessage.refreshTimeout();
       // TODO(komarov): fix refresh_timeout in nekoton
-      final unsignedMessage = this.unsignedMessage = await _prepareDeploy();
+      unsignedMessage = await _prepareDeploy();
 
       final hash = unsignedMessage.hash;
       final transport = nekotonRepository.currentTransport.transport;
@@ -302,6 +305,8 @@ class WalletDeployBloc extends Bloc<WalletDeployEvent, WalletDeployState>
           hours: _cachedHoursConfirmation,
         ),
       );
+    } finally {
+      unsignedMessage?.dispose();
     }
   }
 
@@ -325,11 +330,5 @@ class WalletDeployBloc extends Bloc<WalletDeployEvent, WalletDeployState>
       _logger.severe('estimateFees', e, t);
       return BigInt.zero;
     }
-  }
-
-  @override
-  Future<void> close() {
-    unsignedMessage?.dispose();
-    return super.close();
   }
 }
