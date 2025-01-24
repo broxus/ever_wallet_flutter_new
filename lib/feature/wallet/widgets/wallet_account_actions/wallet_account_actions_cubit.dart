@@ -6,8 +6,8 @@ import 'package:app/data/models/models.dart';
 import 'package:app/utils/utils.dart';
 import 'package:bloc/bloc.dart';
 import 'package:collection/collection.dart';
-import 'package:flutter/material.dart';
 import 'package:freezed_annotation/freezed_annotation.dart';
+import 'package:logging/logging.dart';
 import 'package:nekoton_repository/nekoton_repository.dart';
 
 part 'wallet_account_actions_cubit.freezed.dart';
@@ -43,6 +43,8 @@ class WalletAccountActionsCubit extends Cubit<WalletAccountActionsState>
     });
   }
 
+  static final _logger = Logger('WalletAccountActionsCubit');
+
   final NekotonRepository nekotonRepository;
   final Address address;
   final StakingService stakingService;
@@ -76,10 +78,8 @@ class WalletAccountActionsCubit extends Cubit<WalletAccountActionsState>
 
   Future<void> _updateWalletData(TonWallet w) async {
     try {
-      final (localCustodians, fees) = await FutureExt.wait2(
-        nekotonRepository.getLocalCustodians(address),
-        estimateFees(),
-      );
+      final localCustodians =
+          await nekotonRepository.getLocalCustodians(address);
       final details = w.details;
       final contract = w.contractState;
 
@@ -103,7 +103,9 @@ class WalletAccountActionsCubit extends Cubit<WalletAccountActionsState>
           hasStake: hasStake,
           hasStakeActions: hasStake && _cachedWithdraws.isNotEmpty,
           balance: contract.balance,
-          minBalance: fees,
+          minBalance: action == WalletAccountActionBehavior.deploy
+              ? await estimateFees()
+              : null,
           custodians: wallet?.custodians,
           nativeTokenTicker:
               nekotonRepository.currentTransport.nativeTokenTicker,
@@ -112,8 +114,8 @@ class WalletAccountActionsCubit extends Cubit<WalletAccountActionsState>
                   (wallet?.pendingTransactions.length ?? 0),
         ),
       );
-    } catch (_) {
-      debugPrint('Error while updating wallet data: $_');
+    } catch (e, s) {
+      _logger.warning('Error while updating wallet data', e, s);
     }
   }
 
