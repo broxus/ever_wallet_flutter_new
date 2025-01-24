@@ -78,8 +78,6 @@ class WalletAccountActionsCubit extends Cubit<WalletAccountActionsState>
 
   Future<void> _updateWalletData(TonWallet w) async {
     try {
-      final localCustodians =
-          await nekotonRepository.getLocalCustodians(address);
       final details = w.details;
       final contract = w.contractState;
 
@@ -88,6 +86,8 @@ class WalletAccountActionsCubit extends Cubit<WalletAccountActionsState>
       if (!details.requiresSeparateDeploy) {
         action = WalletAccountActionBehavior.send;
       } else if (contract.isDeployed) {
+        final localCustodians =
+            await nekotonRepository.getLocalCustodians(address);
         action = localCustodians != null && localCustodians.isNotEmpty
             ? WalletAccountActionBehavior.send
             : WalletAccountActionBehavior.sendLocalCustodiansNeeded;
@@ -97,15 +97,14 @@ class WalletAccountActionsCubit extends Cubit<WalletAccountActionsState>
 
       final hasStake = action != WalletAccountActionBehavior.deploy &&
           nekotonRepository.currentTransport.stakeInformation != null;
+
       emitSafe(
         WalletAccountActionsState.data(
           action: action,
           hasStake: hasStake,
           hasStakeActions: hasStake && _cachedWithdraws.isNotEmpty,
           balance: contract.balance,
-          minBalance: action == WalletAccountActionBehavior.deploy
-              ? await estimateFees()
-              : null,
+          minBalance: state.mapOrNull(data: (value) => value.minBalance),
           custodians: wallet?.custodians,
           nativeTokenTicker:
               nekotonRepository.currentTransport.nativeTokenTicker,
@@ -114,26 +113,33 @@ class WalletAccountActionsCubit extends Cubit<WalletAccountActionsState>
                   (wallet?.pendingTransactions.length ?? 0),
         ),
       );
+
+      if (action == WalletAccountActionBehavior.deploy) {
+        unawaited(_estimateFees());
+      }
     } catch (e, s) {
       _logger.warning('Error while updating wallet data', e, s);
     }
   }
 
-  Future<BigInt> estimateFees() async {
-    final message = await nekotonRepository.prepareDeploy(
-      address,
-      defaultSendTimeout,
-    );
-    final wallet = await nekotonRepository.getWallet(address);
-    final fees = await wallet.wallet?.estimateFees(
-      signedMessage: await message.signFake(),
-      executionOptions: TransactionExecutionOptions(
-        disableSignatureCheck: true,
-        overrideBalance: BigInt.parse('100000000000'), // 100 EVER
-      ),
-    );
+  Future<void> _estimateFees() async {
+    try {
+      final message = await nekotonRepository.prepareDeploy(
+        address,
+        defaultSendTimeout,
+      );
+      final fees = await nekotonRepository.estimateDeploymentFees(
+        address: address,
+        message: message,
+      );
 
-    return fees ?? BigInt.zero;
+      final nextState = state.mapOrNull(
+        data: (value) => value.copyWith(minBalance: fees),
+      );
+      nextState?.let(emitSafe);
+    } on Exception catch (e, t) {
+      _logger.severe('estimateFees', e, t);
+    }
   }
 
   void _closeSubs() {

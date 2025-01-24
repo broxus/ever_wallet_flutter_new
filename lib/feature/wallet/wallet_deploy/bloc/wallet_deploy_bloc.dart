@@ -316,16 +316,15 @@ class WalletDeployBloc extends Bloc<WalletDeployEvent, WalletDeployState>
         );
 
   Future<BigInt> estimateFees(UnsignedMessage message) async {
-    final wallet = await nekotonRepository.getWallet(address);
-    final fees = await wallet.wallet?.estimateFees(
-      signedMessage: await message.signFake(),
-      executionOptions: TransactionExecutionOptions(
-        disableSignatureCheck: true,
-        overrideBalance: BigInt.parse('100000000000'), // 100 EVER
-      ),
-    );
-
-    return fees ?? BigInt.zero;
+    try {
+      return await nekotonRepository.estimateDeploymentFees(
+        address: address,
+        message: message,
+      );
+    } on Exception catch (e, t) {
+      _logger.severe('estimateFees', e, t);
+      return BigInt.zero;
+    }
   }
 
   @override
