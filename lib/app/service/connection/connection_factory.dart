@@ -12,8 +12,7 @@ class ConnectionFactory {
 
   /// Establishes and returns a GraphQL connection to dton.io.
   /// Returns a [Future] that completes with the established [GqlConnection].
-  Future<GqlConnection> getTonGqlConnection() async =>
-      _connection ??= await GqlConnection.create(
+  GqlConnection getTonGqlConnection() => _connection ??= GqlConnection.create(
         name: 'jetton-gql',
         group: 'jetton-gql',
         client: JettonGqlHttpClient(_storage),

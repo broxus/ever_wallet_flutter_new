@@ -74,8 +74,6 @@ class TokenWalletSendBloc
 
   KeyAccount? account;
 
-  UnsignedMessage? unsignedMessage;
-
   List<TxTreeSimulationErrorItem>? txErrors;
 
   TransportStrategy get transport => nekotonRepository.currentTransport;
@@ -98,6 +96,7 @@ class TokenWalletSendBloc
 
   // ignore: long-method
   Future<void> _handlePrepare(Emitter<TokenWalletSendState> emit) async {
+    UnsignedMessage? unsignedMessage;
     try {
       account = nekotonRepository.seedList.findAccountByAddress(owner);
 
@@ -127,8 +126,8 @@ class TokenWalletSendBloc
       tokenCurrency = tokenWallet.currency;
       emitSafe(const TokenWalletSendState.loading());
 
-      final (internalMessage, unsignedMessage) = await _prepareTransfer();
-      this.unsignedMessage = unsignedMessage;
+      final (internalMessage, unsignedMsg) = await _prepareTransfer();
+      unsignedMessage = unsignedMsg;
       sendAmount = internalMessage.amount;
 
       final result = await FutureExt.wait2(
@@ -162,12 +161,11 @@ class TokenWalletSendBloc
       }
 
       emitSafe(TokenWalletSendState.readyToSend(fees!, sendAmount, txErrors));
-    } on FfiException catch (e, t) {
-      _logger.severe('_handleSend', e, t);
-      emitSafe(TokenWalletSendState.calculatingError(e.message));
     } on Exception catch (e, t) {
       _logger.severe('_handleSend', e, t);
       emitSafe(TokenWalletSendState.calculatingError(e.toString()));
+    } finally {
+      unsignedMessage?.dispose();
     }
   }
 
@@ -175,12 +173,13 @@ class TokenWalletSendBloc
     Emitter<TokenWalletSendState> emit,
     String password,
   ) async {
+    UnsignedMessage? unsignedMessage;
     try {
       emitSafe(const TokenWalletSendState.sending(canClose: false));
       // await msg.refreshTimeout();
       // TODO(komarov): fix refresh_timeout in nekoton
-      final (internalMessage, unsignedMessage) = await _prepareTransfer();
-      this.unsignedMessage = unsignedMessage;
+      final (internalMessage, unsignedMsg) = await _prepareTransfer();
+      unsignedMessage = unsignedMsg;
       sendAmount = internalMessage.amount;
 
       final hash = unsignedMessage.hash;
@@ -214,12 +213,12 @@ class TokenWalletSendBloc
         add(TokenWalletSendEvent.completeSend(transaction));
       }
     } on OperationCanceledException catch (_) {
-    } on FfiException catch (e, t) {
+    } on FrbException catch (e, t) {
       _logger.severe('_handleSend', e, t);
       messengerService.show(
         Message.error(
           context: context,
-          message: e.message,
+          message: e.toString(),
         ),
       );
       emitSafe(TokenWalletSendState.readyToSend(fees!, sendAmount, txErrors));
@@ -228,6 +227,8 @@ class TokenWalletSendBloc
       messengerService
           .show(Message.error(context: context, message: e.toString()));
       emitSafe(TokenWalletSendState.readyToSend(fees!, sendAmount, txErrors));
+    } finally {
+      unsignedMessage?.dispose();
     }
   }
 
@@ -235,11 +236,11 @@ class TokenWalletSendBloc
     final internalMessage = await nekotonRepository.prepareTokenTransfer(
       owner: owner,
       rootTokenContract: rootTokenContract,
-      destination: await repackAddress(destination),
+      destination: repackAddress(destination),
       amount: tokenAmount,
       payload: comment,
       attachedAmount: attachedAmount,
-      notifyReceiver: true,
+      notifyReceiver: false,
     );
 
     final unsignedMessage = await nekotonRepository.prepareTransfer(
@@ -253,11 +254,5 @@ class TokenWalletSendBloc
     );
 
     return (internalMessage, unsignedMessage);
-  }
-
-  @override
-  Future<void> close() {
-    unsignedMessage?.dispose();
-    return super.close();
   }
 }

@@ -85,3 +85,16 @@ extension MoneyFormat on Money {
     );
   }
 }
+
+extension DoubleExt on double {
+  /// Converts a double value to an integer byte representation.
+  ///
+  /// The method multiplies the double value by 255.0 and rounds the result
+  /// to the nearest integer.
+  ///
+  /// Returns an integer value between 0 and 255.
+  int toByteInt() {
+    assert(this >= 0 && this <= 1, 'Value must be between 0 and 1');
+    return (255.0 * this).round();
+  }
+}

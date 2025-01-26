@@ -37,7 +37,6 @@ class NewAccountTypeWidget extends ElementaryWidget<NewAccountTypeWidgetModel> {
                   maxLength: maxLengthForMainEntities,
                   textEditingController: wm.controller,
                   hintText: LocaleKeys.accountName.tr(),
-                  isAutofocus: true,
                 ),
                 const SizedBox(height: DimensSizeV2.d12),
                 StateNotifierBuilder(

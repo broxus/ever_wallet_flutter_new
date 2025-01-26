@@ -351,6 +351,22 @@ NSString *const DropSessionLogMessage = @"Session has no release name. Won't sen
     return [self sendEvent:preparedEvent withSession:session withScope:scope];
 }
 
+- (void)saveCrashTransaction:(SentryTransaction *)transaction withScope:(SentryScope *)scope
+{
+    SentryEvent *preparedEvent = [self prepareEvent:transaction
+                                          withScope:scope
+                             alwaysAttachStacktrace:NO
+                                       isCrashEvent:NO];
+
+    if (preparedEvent == nil) {
+        return;
+    }
+
+    SentryTraceContext *traceContext = [self getTraceStateWithEvent:transaction withScope:scope];
+
+    [self.transportAdapter storeEvent:preparedEvent traceContext:traceContext];
+}
+
 - (SentryId *)captureEvent:(SentryEvent *)event
 {
     return [self captureEvent:event withScope:[[SentryScope alloc] init]];
@@ -667,26 +683,6 @@ NSString *const DropSessionLogMessage = @"Session has no release name. Won't sen
             event.threads = [self.threadInspector getCurrentThreads];
         }
 
-#if SENTRY_HAS_UIKIT
-        if (!isCrashEvent) {
-            NSMutableDictionary *context =
-                [event.context mutableCopy] ?: [NSMutableDictionary dictionary];
-            if (context[@"app"] == nil
-                || ([context[@"app"] isKindOfClass:NSDictionary.self]
-                    && context[@"app"][@"in_foreground"] == nil)) {
-                NSMutableDictionary *app = [(NSDictionary *)context[@"app"] mutableCopy]
-                    ?: [NSMutableDictionary dictionary];
-                context[@"app"] = app;
-
-                UIApplicationState appState =
-                    [SentryDependencyContainer sharedInstance].application.applicationState;
-                BOOL inForeground = appState == UIApplicationStateActive;
-                app[@"in_foreground"] = @(inForeground);
-                event.context = context;
-            }
-        }
-#endif
-
         BOOL debugMetaNotAttached = !(nil != event.debugMeta && event.debugMeta.count > 0);
         if (!isCrashEvent && shouldAttachStacktrace && debugMetaNotAttached
             && event.threads != nil) {
@@ -694,6 +690,26 @@ NSString *const DropSessionLogMessage = @"Session has no release name. Won't sen
                 [self.debugImageProvider getDebugImagesFromCacheForThreads:event.threads];
         }
     }
+
+#if SENTRY_HAS_UIKIT
+    if (!isCrashEvent && eventIsNotReplay) {
+        NSMutableDictionary *context =
+            [event.context mutableCopy] ?: [NSMutableDictionary dictionary];
+        if (context[@"app"] == nil
+            || ([context[@"app"] isKindOfClass:NSDictionary.self]
+                && context[@"app"][@"in_foreground"] == nil)) {
+            NSMutableDictionary *app =
+                [(NSDictionary *)context[@"app"] mutableCopy] ?: [NSMutableDictionary dictionary];
+            context[@"app"] = app;
+
+            UIApplicationState appState =
+                [SentryDependencyContainer sharedInstance].application.applicationState;
+            BOOL inForeground = appState == UIApplicationStateActive;
+            app[@"in_foreground"] = @(inForeground);
+            event.context = context;
+        }
+    }
+#endif
 
     event = [scope applyToEvent:event maxBreadcrumb:self.options.maxBreadcrumbs];
 
