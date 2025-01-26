@@ -1,6 +1,7 @@
 import 'dart:ui';
 
 import 'package:flutter/material.dart';
+import 'package:ui_components_lib/ui_components_lib.dart';
 import 'package:ui_components_lib/v2/ui_components_lib_v2.dart';
 
 //It's base class for button, in this button we handle all parameters like
@@ -230,14 +231,14 @@ abstract class BaseButton extends StatelessWidget {
     //ignore: deprecated_member_use
     if (states.contains(MaterialState.pressed)) {
       return _getTextStyleBySize(styles).copyWith(
-        color: color?.withOpacity(OpacV2.opac80),
+        color: color?.withAlpha(OpacV2.opac80.toByteInt()),
       );
     }
     // TODO(MolochkoAndrew): update
     //ignore: deprecated_member_use
     if (states.contains(MaterialState.disabled)) {
       return _getTextStyleBySize(styles).copyWith(
-        color: color?.withOpacity(OpacV2.opac50),
+        color: color?.withAlpha(OpacV2.opac50.toByteInt()),
       );
     }
     return _getTextStyleBySize(styles);
@@ -270,15 +271,16 @@ abstract class BaseButton extends StatelessWidget {
     // TODO(MolochkoAndrew): update
     //ignore: deprecated_member_use
     if (states.contains(MaterialState.pressed)) {
-      return style.backgroundColor.withOpacity(
-        style.backgroundColor.opacity * OpacV2.opac80,
+      return style.backgroundColor.withAlpha(
+        (style.backgroundColor.opacity * OpacV2.opac80).toByteInt(),
       );
     }
     // TODO(MolochkoAndrew): update
     //ignore: deprecated_member_use
     if (states.contains(MaterialState.disabled)) {
-      return style.backgroundColor
-          .withOpacity(style.backgroundColor.opacity * OpacV2.opac50);
+      return style.backgroundColor.withAlpha(
+        (style.backgroundColor.opacity * OpacV2.opac50).toByteInt(),
+      );
     }
 
     return style.backgroundColor;
@@ -290,12 +292,12 @@ abstract class BaseButton extends StatelessWidget {
     // TODO(MolochkoAndrew): update
     //ignore: deprecated_member_use
     if (states.contains(MaterialState.pressed)) {
-      return style.iconColor.withOpacity(OpacV2.opac80);
+      return style.iconColor.withAlpha(OpacV2.opac80.toByteInt());
     }
     // TODO(MolochkoAndrew): update
     //ignore: deprecated_member_use
     if (states.contains(MaterialState.disabled)) {
-      return style.iconColor.withOpacity(OpacV2.opac50);
+      return style.iconColor.withAlpha(OpacV2.opac50.toByteInt());
     }
     return style.iconColor;
   }
@@ -303,8 +305,9 @@ abstract class BaseButton extends StatelessWidget {
   // TODO(MolochkoAndrew): update
   //ignore: deprecated_member_use
   Color _getColorOverlay(Set<MaterialState> states, AppButtonStyle style) =>
-      style.backgroundColor
-          .withOpacity(style.backgroundColor.opacity * OpacV2.opac80);
+      style.backgroundColor.withAlpha(
+        (style.backgroundColor.opacity * OpacV2.opac80).toByteInt(),
+      );
 
   TextStyle _getTextStyleBySize(TextStylesV2 styles) {
     switch (buttonSize) {

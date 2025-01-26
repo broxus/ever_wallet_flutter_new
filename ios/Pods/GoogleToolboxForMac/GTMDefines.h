@@ -29,6 +29,8 @@
 #include <Availability.h>
 #endif  // TARGET_OS_IPHONE
 
+NS_ASSUME_NONNULL_BEGIN
+
 // ----------------------------------------------------------------------------
 // CPP symbols that can be overridden in a prefix to control how the toolbox
 // is compiled.
@@ -96,7 +98,7 @@
 // developer level errors.  This implementation simply macros to NSLog/NSAssert.
 // It is not intended to be a general logging/reporting system.
 //
-// Please see http://code.google.com/p/google-toolbox-for-mac/wiki/DevLogNAssert
+// Please see https://github.com/google/google-toolbox-for-mac/blob/main/Docs/Development.md
 // for a little more background on the usage of these macros.
 //
 //    _GTMDevLog           log some error/problem in debug builds
@@ -199,12 +201,6 @@
     #define GTM_IPHONE_DEVICE 1
     #define GTM_IPHONE_SIMULATOR 0
   #endif  // TARGET_IPHONE_SIMULATOR
-  // By default, GTM has provided it's own unittesting support, define this
-  // to use the support provided by Xcode, especially for the Xcode4 support
-  // for unittesting.
-  #ifndef GTM_USING_XCTEST
-    #define GTM_USING_XCTEST 0
-  #endif
   #define GTM_MACOS_SDK 0
 #else
   // For MacOS specific stuff
@@ -212,9 +208,6 @@
   #define GTM_IPHONE_SDK 0
   #define GTM_IPHONE_SIMULATOR 0
   #define GTM_IPHONE_DEVICE 0
-  #ifndef GTM_USING_XCTEST
-    #define GTM_USING_XCTEST 0
-  #endif
 #endif
 
 // Some of our own availability macros
@@ -378,3 +371,5 @@
 #endif
 
 #endif  // __OBJC__
+
+NS_ASSUME_NONNULL_END

@@ -3,7 +3,6 @@ import 'dart:async';
 import 'package:app/app/service/service.dart';
 import 'package:app/core/bloc/bloc_mixin.dart';
 import 'package:bloc/bloc.dart';
-import 'package:collection/collection.dart';
 import 'package:freezed_annotation/freezed_annotation.dart';
 import 'package:logging/logging.dart';
 import 'package:nekoton_repository/nekoton_repository.dart';
@@ -45,7 +44,7 @@ class AccountDetailCubit extends Cubit<AccountDetailState> with BlocBaseMixin {
     if (_custodianKeys.isNotEmpty) {
       _custodians = _custodianKeys
           .map((e) => nekotonRepository.seedList.findSeedKey(e))
-          .whereNotNull()
+          .nonNulls
           .toList();
     }
 

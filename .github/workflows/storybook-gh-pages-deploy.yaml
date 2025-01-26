@@ -22,15 +22,32 @@ concurrency:
   cancel-in-progress: false
 
 jobs:
+  read_version:
+    runs-on: ubuntu-latest
+    outputs:
+      flutter_version: ${{ steps.read.outputs.flutter_version }}
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Read flutter version
+        id: read
+        run: echo "flutter_version=$(cat .github/configs/flutter_version)" >> $GITHUB_OUTPUT
+
   # Build job
   build:
+    needs: [read_version]
     runs-on: ubuntu-latest
     steps:
       - name: Checkout
         uses: actions/checkout@v4
         with:
           fetch-depth: 50
-      - uses: broxus/flutter_templates/.github/actions/setup-flutter@flutter-3.24.0
+      - uses: subosito/flutter-action@v2
+        with:
+          flutter-version: ${{ needs.read_version.outputs.flutter_version }}  # ADDED
+          channel: 'stable'
+          cache: true
+          cache-key: flutter-:os:-:channel:-:version:-:arch:-:hash:-${{ hashFiles('**/pubspec.lock') }}
       - uses: bluefireteam/melos-action@v3
       - name: Generate dart code
         run: melos codegen --no-select

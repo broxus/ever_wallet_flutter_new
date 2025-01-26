@@ -48,8 +48,10 @@ static SentryTouchTracker *_touchTracker;
     SentryNSNotificationCenterWrapper *_notificationCenter;
     SentryOnDemandReplay *_resumeReplayMaker;
     id<SentryRateLimits> _rateLimits;
-   // We need to use this variable to identify whether rate limiting was ever activated for session replay in this session, instead of always looking for the rate status in `SentryRateLimits`
-   // This is the easiest way to ensure segment 0 will always reach the server, because session replay absolutely needs segment 0 to make replay work.
+    // We need to use this variable to identify whether rate limiting was ever activated for session
+    // replay in this session, instead of always looking for the rate status in `SentryRateLimits`
+    // This is the easiest way to ensure segment 0 will always reach the server, because session
+    // replay absolutely needs segment 0 to make replay work.
     BOOL _rateLimited;
 }
 
@@ -375,7 +377,7 @@ static SentryTouchTracker *_touchTracker;
     }
 
     if ([NSFileManager.defaultManager moveItemAtURL:current toURL:last error:nil] == NO) {
-        SENTRY_LOG_ERROR(@"Could not move 'currentreplay' to 'lastreplat': %@", error);
+        SENTRY_LOG_ERROR(@"Could not move 'currentreplay' to 'lastreplay': %@", error);
     }
 }
 
