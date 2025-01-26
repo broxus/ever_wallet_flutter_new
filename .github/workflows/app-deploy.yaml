@@ -38,7 +38,6 @@ jobs:
     env:
       SECRET_PASSPHRASE: ${{ secrets.SECRET_PASSPHRASE }}
       MATCH_PASSWORD: ${{ secrets.MATCH_PASSWORD }}
-
     steps:
       - uses: actions/checkout@v4
         with:

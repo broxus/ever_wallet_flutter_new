@@ -36,12 +36,15 @@ class AppModel extends ElementaryModel with WidgetsBindingObserver {
     _nekotonRepository,
   );
 
-  late final _listener = AppLifecycleListener(
-    onStateChange: _onStateChanged,
-  );
+  AppLifecycleListener? _listener;
 
   @override
   void init() {
+    Future.delayed(const Duration(milliseconds: 100), () {
+      _listener = AppLifecycleListener(
+        onStateChange: _onStateChanged,
+      );
+    });
     appStartSession(setCrashDetected: true);
     _checkBiometry();
     super.init();
@@ -50,7 +53,7 @@ class AppModel extends ElementaryModel with WidgetsBindingObserver {
   @override
   void dispose() {
     appRouter.dispose();
-    _listener.dispose();
+    _listener?.dispose();
     super.dispose();
   }
 

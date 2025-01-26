@@ -4,18 +4,18 @@ version: 1.0.0
 # repository: https://github.com/my_org/my_repo
 
 environment:
-  sdk: '>=3.6.0 <4.0.0'
+  sdk: '>=3.5.0 <4.0.0'
 
 # Add regular dependencies here.
 dependencies:
-  analyzer: ^6.9.0
+  analyzer: ^6.7.0
   analyzer_plugin: ^0.11.0
-  custom_lint_builder: ^0.6.0
+  custom_lint_builder: ^0.5.4
 
 dev_dependencies:
   broxus_flutter_analysis:
     git:
       url: https://github.com/broxus/flutter_templates.git
       ref: main
-  lints: ^5.1.1
+  lints: ^3.0.0
   test: ^1.25.0

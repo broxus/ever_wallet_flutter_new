@@ -1,11 +1,11 @@
 name: app
 description: SparX Wallet Flutter app
-version: 1.0.3
+version: 1.1.0
 publish_to: none
 
 environment:
-  sdk: '>=3.6.0 <4.0.0'
-  flutter: ">=3.27.0"
+  sdk: '>=3.5.0 <4.0.0'
+  flutter: ">=3.24.0"
 
 dependencies:
   app_settings: 5.1.1
@@ -19,7 +19,7 @@ dependencies:
   cached_network_image: 3.4.1
   cached_network_svg_image: 1.2.0
   clock: 1.1.1
-  collection: 1.19.0
+  collection: 1.18.0
   crypto: 3.0.6
   device_info_plus: 11.2.1
   dio: 5.7.0
@@ -56,8 +56,8 @@ dependencies:
   mobile_scanner: 5.2.3
   money2: 5.3.0 # do not update to 5.4.0 due to json serialization issues
   money2_fixer: 2.0.0
-  nekoton_repository: 0.46.0-dev.1
-  nekoton_webview: 0.1.8-dev.5
+  nekoton_repository: 0.50.0
+  nekoton_webview: 0.1.8
   ntp: 2.0.0
   package_info_plus: 8.1.3
   path_provider: 2.1.5
@@ -69,7 +69,7 @@ dependencies:
       url: https://github.com/knightsforce/flutter-render-metrics
       ref: optional-render-manager
   retrofit: 4.4.2
-  rxdart: 0.28.0
+  rxdart: 0.27.7
   sentry_flutter: 8.12.0
   share_plus: 10.1.4
   shared_preferences: 2.3.5
@@ -88,7 +88,7 @@ dev_dependencies:
       url: https://github.com/broxus/flutter_templates.git
       ref: main
   build_runner: 2.4.13
-  custom_lint: 0.6.10
+  custom_lint: 0.5.11
   datetime_avoid_lint:
     path: packages/datetime_avoid_lint
   flutter_gen_runner: 5.8.0
@@ -104,8 +104,8 @@ dev_dependencies:
   json_serializable: 6.9.0
   melos: 6.3.1
   mocktail: 1.0.4
-  retrofit_generator: 9.1.7
-  test: ^1.25.8
+  retrofit_generator: 9.1.5
+  test: 1.25.7
 
 flutter_gen:
   output: lib/generated/

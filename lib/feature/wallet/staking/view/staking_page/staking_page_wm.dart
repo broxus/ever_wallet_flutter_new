@@ -30,7 +30,6 @@ StakingPageWidgetModel defaultStakingPageWidgetModelFactory(
         inject(),
         inject(),
         inject(),
-        inject(),
       ),
     );
 
@@ -61,7 +60,6 @@ class StakingPageWidgetModel
       (_) => _validate(),
     ),
   );
-  late final StakingInformation _staking;
 
   ValueListenable<StakingTab> get tab => _tab;
 
@@ -96,12 +94,12 @@ class StakingPageWidgetModel
   Money get _comission => _tab.value == StakingTab.stake
       ? Money.fromBigIntWithCurrency(
           // around 2.1 EVER
-          _staking.stakeDepositAttachedFee + _maxFixedComission,
+          model.staking.stakeDepositAttachedFee + _maxFixedComission,
           currency,
         )
       : Money.fromBigIntWithCurrency(
           // around 3.1 EVER
-          _staking.stakeWithdrawAttachedFee + _maxFixedComission,
+          model.staking.stakeWithdrawAttachedFee + _maxFixedComission,
           currency,
         );
 
@@ -196,7 +194,6 @@ class StakingPageWidgetModel
         model.getStEverDetails(),
         model.getTokenContractAsset(),
       );
-      _staking = await model.getStakingInformation();
 
       final time = Duration(
         seconds: int.tryParse(details.withdrawHoldTime) ?? 0,
@@ -231,7 +228,7 @@ class StakingPageWidgetModel
       StakingTab.stake => StakingData(
           tab: StakingTab.stake,
           attachedAmount: Money.fromBigIntWithCurrency(
-            _staking.stakeDepositAttachedFee,
+            model.staking.stakeDepositAttachedFee,
             currency,
           ),
           exchangeRate: info.details.stEverSupply / info.details.totalAssets,
@@ -252,7 +249,7 @@ class StakingPageWidgetModel
       StakingTab.unstake => StakingData(
           tab: StakingTab.unstake,
           attachedAmount: Money.fromBigIntWithCurrency(
-            _staking.stakeWithdrawAttachedFee,
+            model.staking.stakeWithdrawAttachedFee,
             currency,
           ),
           exchangeRate: info.details.totalAssets / info.details.stEverSupply,
@@ -271,7 +268,7 @@ class StakingPageWidgetModel
       StakingTab.inProgress => StakingData(
           tab: StakingTab.inProgress,
           attachedAmount: Money.fromBigIntWithCurrency(
-            _staking.stakeRemovePendingWithdrawAttachedFee,
+            model.staking.stakeRemovePendingWithdrawAttachedFee,
             currency,
           ),
           exchangeRate: info.details.totalAssets / info.details.stEverSupply,
