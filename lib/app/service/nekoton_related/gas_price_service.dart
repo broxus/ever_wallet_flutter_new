@@ -1,4 +1,5 @@
 import 'dart:convert';
+import 'dart:math';
 
 import 'package:app/data/models/models.dart';
 import 'package:injectable/injectable.dart';
@@ -60,18 +61,21 @@ class GasPriceService {
     }
   }
 
-  Future<BigInt> computeGas(BigInt baseGas, [GasPriceParams? params]) async {
+  Future<BigInt> computeGas({
+    required BigInt dynamicGas,
+    required BigInt fixedGas,
+    GasPriceParams? params,
+  }) async {
     final p = params ?? await getGasPriceParams();
-    if (p == null) return baseGas;
+    final gasPrice = BigInt.from(
+      (p?.gasPrice ?? _evrscaleGasPrice).toDouble() / pow(2, 16),
+    );
 
-    final k = p.gasPrice / _evrscaleGasPrice;
-    final value = baseGas.toDouble() * k;
-
-    return BigInt.from(value);
+    return dynamicGas * gasPrice + fixedGas;
   }
 }
 
-final _evrscaleGasPrice = BigInt.parse('1000');
+final _evrscaleGasPrice = BigInt.parse('65536000');
 const _address = Address(
   address:
       '-1:5555555555555555555555555555555555555555555555555555555555555555',
@@ -97,16 +101,16 @@ const _pricesParamAbi = '''
     "type": "tuple",
     "components": [
       { "name": "tag1", "type": "uint8" },
+      { "name": "flatGasLimit", "type": "uint64" },
+      { "name": "flatGasPrice", "type": "uint64" },
+      { "name": "tag2", "type": "uint8" },
       { "name": "gasPrice", "type": "uint64" },
       { "name": "gasLimit", "type": "uint64" },
-      { "name": "tag2", "type": "uint8" },
       { "name": "specialGasLimit", "type": "uint64" },
       { "name": "gasCredit", "type": "uint64" },
       { "name": "blockGasLimit", "type": "uint64" },
       { "name": "freezeDueLimit", "type": "uint64" },
-      { "name": "deleteDueLimit", "type": "uint64" },
-      { "name": "flatGasLimit", "type": "uint64" },
-      { "name": "flatGasPrice", "type": "uint64" }
+      { "name": "deleteDueLimit", "type": "uint64" }
     ]
   }
 ]

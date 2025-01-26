@@ -84,9 +84,9 @@ class AddNewLocalAccountTypeCubit extends Cubit<AddNewLocalAccountTypeState>
         name: newName.isEmpty ? null : newName,
       );
       await showNewAccountResultSheet(context: context, address: address);
-    } on FfiException catch (e) {
+    } on Exception catch (e) {
       inject<MessengerService>()
-          .show(Message.error(context: context, message: e.message));
+          .show(Message.error(context: context, message: e.toString()));
     }
 
     _emitDataState(isCompleted: true);

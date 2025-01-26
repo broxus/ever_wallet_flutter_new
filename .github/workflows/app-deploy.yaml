@@ -1,3 +1,4 @@
+# Sample workflow for building and deploying a Jekyll site to GitHub Pages
 name: Deploy app
 
 on:
@@ -33,11 +34,10 @@ jobs:
     runs-on: ubuntu-latest
     outputs:
       build_number: ${{ steps.get_build_number.outputs.build_number }}
-      flutter_version: ${{ steps.set_output.outputs.flutter_version }}
+      flutter_version: ${{ steps.read_flutter.outputs.flutter_version }}
     env:
       SECRET_PASSPHRASE: ${{ secrets.SECRET_PASSPHRASE }}
       MATCH_PASSWORD: ${{ secrets.MATCH_PASSWORD }}
-      FLUTTER_VERSION: '3.24.0'
     steps:
       - uses: actions/checkout@v4
         with:
@@ -66,18 +66,20 @@ jobs:
             exit 1
           fi
 
-      - name: Set output for flutter_version
-        id: set_output
-        run: |
-          echo "flutter_version=${FLUTTER_VERSION}" >> $GITHUB_OUTPUT
+      - name: Read Flutter version
+        id: read_flutter
+        run: echo "flutter_version=$(cat .github/configs/flutter_version)" >> $GITHUB_OUTPUT
 
       - name: Setup Flutter
         uses: subosito/flutter-action@v2
         with:
-          flutter-version: ${{ env.FLUTTER_VERSION }}
+          flutter-version: ${{ steps.read_flutter.outputs.flutter_version }}
           channel: 'stable'
           cache: true
           cache-key: flutter-:os:-:channel:-:version:-:arch:-:hash:-${{ hashFiles('**/pubspec.lock') }}
+
+      - name: Display Flutter version
+        run: flutter --version
 
       - name: Install Dart dependencies
         run: dart pub get

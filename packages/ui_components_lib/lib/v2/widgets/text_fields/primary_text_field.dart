@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-import 'package:flutter_typeahead/flutter_typeahead.dart';
 import 'package:lucide_icons_flutter/lucide_icons.dart';
 import 'package:ui_components_lib/ui_components_lib.dart';
 import 'package:ui_components_lib/v2/opac_v2.dart';
@@ -36,7 +35,6 @@ class PrimaryTextField extends StatelessWidget {
     this.suffixes,
     this.contentPadding,
     this.errorInlineIconPadding,
-    this.suggestionsCallback,
     this.maxLength,
   });
 
@@ -63,7 +61,6 @@ class PrimaryTextField extends StatelessWidget {
   final List<Widget>? suffixes;
   final EdgeInsets? contentPadding;
   final EdgeInsets? errorInlineIconPadding;
-  final SuggestionsCallback<String>? suggestionsCallback;
   final AutovalidateMode autovalidateMode;
   final int? maxLength;
 

@@ -140,7 +140,7 @@ class AssetsService {
                         getTokenContractAsset(e.rootTokenContract, transport),
                   ),
                 ))
-                    .whereNotNull()
+                    .nonNulls
                     .toList(),
               );
             }(),
@@ -172,7 +172,7 @@ class AssetsService {
             wallets.map(
               (e) => getTokenContractAsset(e.rootTokenContract, transport),
             ),
-          ).then((e) => e.whereNotNull().toList()),
+          ).then((e) => e.nonNulls.toList()),
         );
       });
     });
@@ -199,7 +199,7 @@ class AssetsService {
       if (transport.networkType == 'ton') {
         final details = await JettonWallet.getJettonRootDetails(
           transport: transport.transport,
-          gqlConnection: await connectionFactory.getTonGqlConnection(),
+          gqlConnection: connectionFactory.getTonGqlConnection(),
           tokenRoot: rootTokenContract,
         );
         final info = await tonRepository.getTokenInfo(

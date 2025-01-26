@@ -72,10 +72,14 @@ class MoneyWidget extends StatelessWidget {
             overflow: TextOverflow.ellipsis,
           ),
         ),
-        if (showSymbol) ...[
-          const SizedBox(width: DimensStroke.medium),
-          Text(money.currency.symbol, style: symbolStyle),
-        ],
+        if (showSymbol)
+          Padding(
+            padding: const EdgeInsets.only(left: DimensStroke.medium),
+            child: Text(
+              money.currency.symbol,
+              style: symbolStyle,
+            ),
+          ),
       ],
     );
   }

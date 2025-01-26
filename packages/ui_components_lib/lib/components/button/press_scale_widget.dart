@@ -51,8 +51,16 @@ class PressScaleWidget extends StatefulWidget {
 
 class PressScaleWidgetState extends State<PressScaleWidget>
     with SingleTickerProviderStateMixin {
-  late AnimationController _controller;
-  late Animation<double> _doubleAnimation;
+  late final AnimationController _controller = AnimationController(
+    duration: widget.animationDuration,
+    vsync: this,
+  );
+  late final Animation<double> _doubleAnimation = Tween<double>(
+    begin: 0,
+    end: 1,
+  ).animate(_controller);
+
+  late double _scale = _calculateScale();
 
   @override
   void dispose() {
@@ -63,14 +71,11 @@ class PressScaleWidgetState extends State<PressScaleWidget>
   @override
   void initState() {
     super.initState();
-    _controller = AnimationController(
-      duration: widget.animationDuration,
-      vsync: this,
-    )..addListener(() {
-        // ignore: no-empty-block
-        setState(() {});
+    _controller.addListener(() {
+      setState(() {
+        _scale = _calculateScale();
       });
-    _doubleAnimation = Tween<double>(begin: 0, end: 1).animate(_controller);
+    });
   }
 
   @override
@@ -89,8 +94,7 @@ class PressScaleWidgetState extends State<PressScaleWidget>
       onTap: widget.onPressed,
       radius: widget.radius,
       child: Transform.scale(
-        // ignore: no-magic-number
-        scale: 1.0 - (_doubleAnimation.value * widget.scaleRatio / 100),
+        scale: _scale,
         child: SizedBox(
           height: widget.height,
           width: widget.width,
@@ -106,5 +110,9 @@ class PressScaleWidgetState extends State<PressScaleWidget>
     } else {
       _controller.reverse();
     }
+  }
+
+  double _calculateScale() {
+    return 1.0 - (_doubleAnimation.value * widget.scaleRatio / 100);
   }
 }

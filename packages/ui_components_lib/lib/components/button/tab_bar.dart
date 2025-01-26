@@ -51,26 +51,60 @@ class CommonTabBar<T> extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return SeparatedRow(
-      children: values
-          .map(
-            (v) => fillWidth
-                ? Expanded(child: _item(context, v))
-                : _item(context, v),
-          )
-          .toList(),
+      children: [
+        for (final value in values)
+          fillWidth
+              ? Expanded(
+                  child: _Item(
+                    value,
+                    isSelected: value == selectedValue,
+                    trailingBuilder: trailingBuilder,
+                    onChanged: onChanged,
+                    fillWidth: fillWidth,
+                    builder: builder,
+                  ),
+                )
+              : _Item(
+                  value,
+                  isSelected: value == selectedValue,
+                  trailingBuilder: trailingBuilder,
+                  onChanged: onChanged,
+                  fillWidth: fillWidth,
+                  builder: builder,
+                ),
+      ],
     );
   }
+}
 
-  Widget _item(BuildContext context, T v) {
+class _Item<T> extends StatelessWidget {
+  const _Item(
+    this.value, {
+    required this.isSelected,
+    required this.trailingBuilder,
+    required this.onChanged,
+    required this.fillWidth,
+    required this.builder,
+    super.key,
+  });
+
+  final T value;
+  final bool isSelected;
+  final CommonTabBarTrailingBuilder<T>? trailingBuilder;
+  final ValueChanged<T> onChanged;
+  final bool fillWidth;
+  final CommonTabBarTitleBuilder<T> builder;
+
+  @override
+  Widget build(BuildContext context) {
     final colors = context.themeStyle.colors;
-    final isSelected = v == selectedValue;
-    final trailing = trailingBuilder?.call(context, v);
+    final trailing = trailingBuilder?.call(context, value);
 
     return CommonButton(
-      onPressed: () => onChanged(v),
+      onPressed: () => onChanged(value),
       padding: const EdgeInsets.symmetric(horizontal: DimensSize.d16),
       fillWidth: fillWidth,
-      text: builder(context, v),
+      text: builder(context, value),
       height: DimensSize.d48,
       squircleRadius: DimensRadius.xMedium,
       backgroundColor:

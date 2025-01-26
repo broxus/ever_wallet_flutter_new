@@ -1,0 +1,6 @@
+framework module pointer_interceptor_ios {
+  umbrella header "pointer_interceptor_ios-umbrella.h"
+
+  export *
+  module * { export * }
+}
