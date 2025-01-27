@@ -37,10 +37,12 @@ class _SelectionStatusInputState extends State<SelectionStatusInput> {
 
     switch (widget.status) {
       case SelectionStatus.unfocus:
-        borderColor = theme.colors.borderFocus.withOpacity(OpacV2.opac25);
+        borderColor = theme.colors.borderFocus.withAlpha(
+          OpacV2.opac25.toByteInt(),
+        );
         contentColor = isPressed
-            ? theme.colors.content3.withOpacity(OpacV2.opac50)
-            : theme.colors.content3.withOpacity(OpacV2.opac50);
+            ? theme.colors.content3.withAlpha(OpacV2.opac50.toByteInt())
+            : theme.colors.content3.withAlpha(OpacV2.opac50.toByteInt());
       case SelectionStatus.focus:
         borderColor = theme.colors.borderFocus;
         contentColor =

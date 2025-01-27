@@ -12,6 +12,7 @@ class WalletAccountActionsState with _$WalletAccountActionsState {
     required bool hasStake,
     required bool hasStakeActions,
     required BigInt? balance,
+    required BigInt? minBalance,
     required List<PublicKey>? custodians,
     required String? nativeTokenTicker,
     required int? numberUnconfirmedTransactions,

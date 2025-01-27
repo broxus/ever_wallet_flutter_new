@@ -90,7 +90,7 @@ class _ContentBottomSheet extends StatelessWidget {
                             child: FloatButton(
                               buttonShape: ButtonShape.circle,
                               icon: LucideIcons.arrowLeft,
-                              onPressed: Navigator.of(context).pop,
+                              onPressed: () => Navigator.of(context).pop(),
                             ),
                           ),
                         ),

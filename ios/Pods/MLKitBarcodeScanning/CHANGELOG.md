@@ -1,3 +1,9 @@
+# 2024-04-16 -- v5.0.0
+- Updated privacy manifest.
+# 2024-02-20 -- v4.0.0
+- Raised the minimum supported version of Xcode to 15.1.0.
+- Added privacy manifest.
+- Raised the minimum supported version of iOS from 11.0 to 12.0.
 # 2023-03-21 -- v3.0.0
 - Raised the minimum supported version of Xcode to 14.2.0.
 - Remove support for bitcode.

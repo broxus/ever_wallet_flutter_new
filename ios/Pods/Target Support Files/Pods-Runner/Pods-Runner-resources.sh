@@ -97,42 +97,55 @@ EOM
   esac
 }
 if [[ "$CONFIGURATION" == "Debug-production" ]]; then
+  install_resource "${PODS_CONFIGURATION_BUILD_DIR}/mobile_scanner/mobile_scanner_privacy.bundle"
   install_resource "${PODS_CONFIGURATION_BUILD_DIR}/permission_handler_apple/permission_handler_apple_privacy.bundle"
 fi
 if [[ "$CONFIGURATION" == "Debug-development" ]]; then
+  install_resource "${PODS_CONFIGURATION_BUILD_DIR}/mobile_scanner/mobile_scanner_privacy.bundle"
   install_resource "${PODS_CONFIGURATION_BUILD_DIR}/permission_handler_apple/permission_handler_apple_privacy.bundle"
 fi
 if [[ "$CONFIGURATION" == "Debug-staging" ]]; then
+  install_resource "${PODS_CONFIGURATION_BUILD_DIR}/mobile_scanner/mobile_scanner_privacy.bundle"
   install_resource "${PODS_CONFIGURATION_BUILD_DIR}/permission_handler_apple/permission_handler_apple_privacy.bundle"
 fi
 if [[ "$CONFIGURATION" == "Release-production" ]]; then
+  install_resource "${PODS_CONFIGURATION_BUILD_DIR}/mobile_scanner/mobile_scanner_privacy.bundle"
   install_resource "${PODS_CONFIGURATION_BUILD_DIR}/permission_handler_apple/permission_handler_apple_privacy.bundle"
 fi
 if [[ "$CONFIGURATION" == "Stage-production" ]]; then
+  install_resource "${PODS_CONFIGURATION_BUILD_DIR}/mobile_scanner/mobile_scanner_privacy.bundle"
   install_resource "${PODS_CONFIGURATION_BUILD_DIR}/permission_handler_apple/permission_handler_apple_privacy.bundle"
 fi
 if [[ "$CONFIGURATION" == "Release-development" ]]; then
+  install_resource "${PODS_CONFIGURATION_BUILD_DIR}/mobile_scanner/mobile_scanner_privacy.bundle"
   install_resource "${PODS_CONFIGURATION_BUILD_DIR}/permission_handler_apple/permission_handler_apple_privacy.bundle"
 fi
 if [[ "$CONFIGURATION" == "Release-staging" ]]; then
+  install_resource "${PODS_CONFIGURATION_BUILD_DIR}/mobile_scanner/mobile_scanner_privacy.bundle"
   install_resource "${PODS_CONFIGURATION_BUILD_DIR}/permission_handler_apple/permission_handler_apple_privacy.bundle"
 fi
 if [[ "$CONFIGURATION" == "Profile-production" ]]; then
+  install_resource "${PODS_CONFIGURATION_BUILD_DIR}/mobile_scanner/mobile_scanner_privacy.bundle"
   install_resource "${PODS_CONFIGURATION_BUILD_DIR}/permission_handler_apple/permission_handler_apple_privacy.bundle"
 fi
 if [[ "$CONFIGURATION" == "Profile-development" ]]; then
+  install_resource "${PODS_CONFIGURATION_BUILD_DIR}/mobile_scanner/mobile_scanner_privacy.bundle"
   install_resource "${PODS_CONFIGURATION_BUILD_DIR}/permission_handler_apple/permission_handler_apple_privacy.bundle"
 fi
 if [[ "$CONFIGURATION" == "Profile-staging" ]]; then
+  install_resource "${PODS_CONFIGURATION_BUILD_DIR}/mobile_scanner/mobile_scanner_privacy.bundle"
   install_resource "${PODS_CONFIGURATION_BUILD_DIR}/permission_handler_apple/permission_handler_apple_privacy.bundle"
 fi
 if [[ "$CONFIGURATION" == "Debug" ]]; then
+  install_resource "${PODS_CONFIGURATION_BUILD_DIR}/mobile_scanner/mobile_scanner_privacy.bundle"
   install_resource "${PODS_CONFIGURATION_BUILD_DIR}/permission_handler_apple/permission_handler_apple_privacy.bundle"
 fi
 if [[ "$CONFIGURATION" == "Profile" ]]; then
+  install_resource "${PODS_CONFIGURATION_BUILD_DIR}/mobile_scanner/mobile_scanner_privacy.bundle"
   install_resource "${PODS_CONFIGURATION_BUILD_DIR}/permission_handler_apple/permission_handler_apple_privacy.bundle"
 fi
 if [[ "$CONFIGURATION" == "Release" ]]; then
+  install_resource "${PODS_CONFIGURATION_BUILD_DIR}/mobile_scanner/mobile_scanner_privacy.bundle"
   install_resource "${PODS_CONFIGURATION_BUILD_DIR}/permission_handler_apple/permission_handler_apple_privacy.bundle"
 fi
 

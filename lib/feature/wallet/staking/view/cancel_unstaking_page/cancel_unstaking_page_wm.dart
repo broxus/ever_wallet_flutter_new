@@ -21,7 +21,6 @@ CancelUnstakingPageWidgetModel defaultCancelUnstakingPageWidgetModelFactory(
         inject(),
         inject(),
         inject(),
-        inject(),
       ),
     );
 
@@ -58,7 +57,6 @@ class CancelUnstakingPageWidgetModel extends CustomWidgetModel<
     );
     if (!agreed) return;
 
-    final staking = await model.getStakingInformation();
     final payload = await model.getPayload(widget.request.nonce);
 
     if (!context.mounted) return;
@@ -67,9 +65,9 @@ class CancelUnstakingPageWidgetModel extends CustomWidgetModel<
       MaterialPageRoute(
         builder: (_) => TonWalletSendPage(
           address: widget.request.accountAddress,
-          amount: staking.stakeRemovePendingWithdrawAttachedFee,
+          amount: model.staking.stakeRemovePendingWithdrawAttachedFee,
           comment: payload,
-          destination: staking.stakingValutAddress,
+          destination: model.staking.stakingValutAddress,
           publicKey: widget.accountKey,
           resultMessage: LocaleKeys.stEverReturnInMinutes.tr(
             args: [widget.stakeCurrency.symbol],

@@ -46,7 +46,10 @@ Future<T?> showCommonBottomSheet<T>({
     context: context,
     isDismissible: dismissible,
     useRootNavigator: useRootNavigator,
-    barrierColor: barrierColor ?? Colors.black.withOpacity(Opac.large),
+    barrierColor: barrierColor ??
+        Colors.black.withAlpha(
+          Opac.large.toByteInt(),
+        ),
     containerWidget: (context, animation, child) => _ContainerWidget(
       animated: wrapIntoAnimatedSize,
       child: child,
@@ -186,6 +189,8 @@ class CommonBottomSheetWidget extends StatelessWidget {
             padding: padding,
             child: body(
               context,
+
+              // TODO(knightforce): fix of context in build
               ModalScrollController.of(context)!,
             ),
           ),
