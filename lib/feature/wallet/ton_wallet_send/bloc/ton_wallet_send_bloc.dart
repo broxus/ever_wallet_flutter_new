@@ -61,8 +61,6 @@ class TonWalletSendBloc extends Bloc<TonWalletSendEvent, TonWalletSendState>
 
   KeyAccount? account;
 
-  UnsignedMessage? unsignedMessage;
-
   List<TxTreeSimulationErrorItem>? txErrors;
 
   TransportStrategy get transport => nekotonRepository.currentTransport;
@@ -86,6 +84,7 @@ class TonWalletSendBloc extends Bloc<TonWalletSendEvent, TonWalletSendState>
   }
 
   Future<void> _handlePrepare(Emitter<TonWalletSendState> emit) async {
+    UnsignedMessage? unsignedMessage;
     try {
       account = nekotonRepository.seedList.findAccountByAddress(address);
       unsignedMessage = await _prepareTransfer();
@@ -93,14 +92,14 @@ class TonWalletSendBloc extends Bloc<TonWalletSendEvent, TonWalletSendState>
       final result = await FutureExt.wait2(
         nekotonRepository.estimateFees(
           address: address,
-          message: unsignedMessage!,
+          message: unsignedMessage,
         ),
         // TODO(komarov): remove when fixed in nekoton
         transport.networkType == 'ton'
             ? Future<List<TxTreeSimulationErrorItem>>.value([])
             : nekotonRepository.simulateTransactionTree(
                 address: address,
-                message: unsignedMessage!,
+                message: unsignedMessage,
               ),
       );
       fees = result.$1;
@@ -138,6 +137,8 @@ class TonWalletSendBloc extends Bloc<TonWalletSendEvent, TonWalletSendState>
     } on Exception catch (e, t) {
       _logger.severe('_handlePrepare', e, t);
       emitSafe(TonWalletSendState.calculatingError(e.toString()));
+    } finally {
+      unsignedMessage?.dispose();
     }
   }
 
@@ -145,12 +146,13 @@ class TonWalletSendBloc extends Bloc<TonWalletSendEvent, TonWalletSendState>
     Emitter<TonWalletSendState> emit,
     String password,
   ) async {
+    UnsignedMessage? unsignedMessage;
     try {
       emitSafe(const TonWalletSendState.sending(canClose: false));
 
       // await unsignedMessage.refreshTimeout();
       // TODO(komarov): fix refresh_timeout in nekoton
-      final unsignedMessage = this.unsignedMessage = await _prepareTransfer();
+      unsignedMessage = await _prepareTransfer();
 
       final hash = unsignedMessage.hash;
       final transport = nekotonRepository.currentTransport.transport;
@@ -187,6 +189,8 @@ class TonWalletSendBloc extends Bloc<TonWalletSendEvent, TonWalletSendState>
       if (fees != null) {
         emitSafe(TonWalletSendState.readyToSend(fees!, txErrors));
       }
+    } finally {
+      unsignedMessage?.dispose();
     }
   }
 
@@ -200,10 +204,4 @@ class TonWalletSendBloc extends Bloc<TonWalletSendEvent, TonWalletSendState>
         bounce: defaultMessageBounce,
         expiration: defaultSendTimeout,
       );
-
-  @override
-  Future<void> close() {
-    unsignedMessage?.dispose();
-    return super.close();
-  }
 }
