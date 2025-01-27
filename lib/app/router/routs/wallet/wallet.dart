@@ -148,6 +148,19 @@ StatefulShellBranch get walletBranch {
                 ],
               ),
               GoRoute(
+                path: AppRoute.walletNewAccount.path,
+                builder: (_, state) => NewAccountPage(
+                  publicKey: getQueryParams(
+                    state,
+                    walletCreatePublicKeyQueryParam,
+                  ),
+                  password: getQueryParams(
+                    state,
+                    walletCreatePasswordQueryParam,
+                  ),
+                ),
+              ),
+              GoRoute(
                 path: AppRoute.walletNewExternalAccount.path,
                 builder: (_, state) => const AddExternalAccountPage(),
               ),
