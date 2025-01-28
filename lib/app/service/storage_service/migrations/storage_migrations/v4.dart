@@ -5,7 +5,9 @@ import 'package:app/utils/common_utils.dart';
 import 'package:get_storage/get_storage.dart';
 
 class StorageMigrationV4 implements StorageMigration {
-  StorageMigrationV4(this._presetsConnectionService);
+  StorageMigrationV4(
+    this._presetsConnectionService,
+  );
 
   static const int version = 4;
 
@@ -37,13 +39,30 @@ class StorageMigrationV4 implements StorageMigration {
           final group =
               entry.key == 'custom' ? 'custom' : networksMap[entry.key];
 
+          final value = entry.value;
+
+          _updateNetworkGroup(value);
+
           if (group != null) {
-            await storage.write(group, entry.value);
+            await storage.write(group, value);
             await storage.remove(entry.key);
           }
         } catch (_) {}
       }
     }
+  }
+
+  void _updateNetworkGroup(dynamic value) {
+    try {
+      if (value is List) {
+        for (final data in value) {
+          _updateNetworkGroup(data);
+        }
+      } else if (value is Map) {
+        value['networkGroup'] ??=
+            getNetworkGroupByNetworkType(value['networkType']);
+      }
+    } catch (_) {}
   }
 
   @override

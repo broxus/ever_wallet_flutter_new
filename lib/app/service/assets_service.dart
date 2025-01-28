@@ -38,8 +38,8 @@ class AssetsService {
     nekotonRepository.currentTransportStream.flatMap((transport) {
       return Rx.combineLatest2<List<TokenContractAsset>,
           List<TokenContractAsset>, void>(
-        storage.systemTokenContractAssetsStream(transport.networkType),
-        storage.customTokenContractAssetsStream(transport.networkType),
+        storage.systemTokenContractAssetsStream(transport.transport.group),
+        storage.customTokenContractAssetsStream(transport.transport.group),
         _contractsUpdateListener,
       );
       // listen needs to enable stream api
@@ -57,8 +57,8 @@ class AssetsService {
         (transport) {
           return Rx.combineLatest2<List<TokenContractAsset>,
               List<TokenContractAsset>, List<TokenContractAsset>>(
-            storage.customTokenContractAssetsStream(transport.networkType),
-            storage.systemTokenContractAssetsStream(transport.networkType),
+            storage.customTokenContractAssetsStream(transport.transport.group),
+            storage.systemTokenContractAssetsStream(transport.transport.group),
             (a, b) => <TokenContractAsset>{...a, ...b}.toList(),
           );
         },
@@ -213,6 +213,7 @@ class AssetsService {
           address: rootTokenContract,
           ownerAddress: details.adminAddress,
           networkType: transport.networkType,
+          networkGroup: transport.transport.group,
           logoURI: details.content.uri ?? info.imageUrl,
           isCustom: true,
         );
@@ -231,6 +232,7 @@ class AssetsService {
           totalSupply: tokenRootDetails.totalSupply,
           version: tokenRootDetails.version,
           networkType: transport.networkType,
+          networkGroup: transport.transport.group,
           isCustom: true,
         );
       }

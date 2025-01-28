@@ -229,3 +229,13 @@ extension ListenableStateExt<T> on ListenableState<T> {
     return subject.stream;
   }
 }
+
+String getNetworkGroupByNetworkType(dynamic networkType) {
+  return switch (networkType) {
+    'ever' => 'mainnet',
+    'venom' => 'venom_mainnet',
+    'tycho' => 'tycho_testnet',
+    'ton' => 'ton',
+    _ => 'custom',
+  };
+}

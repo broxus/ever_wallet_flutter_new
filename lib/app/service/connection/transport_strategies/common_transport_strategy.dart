@@ -128,6 +128,8 @@ class CommonTransportStrategy extends AppTransportStrategy {
     GenericTokenType.jetton => JettonTokenWalletSubscriber(inject(), inject()),
   };
 
+  String get networkGroup => transport.group;
+
   @override
   String get nativeTokenTicker => nativeTokenTickerOption.when(
         fromConnection: () => connection.nativeTokenTicker,

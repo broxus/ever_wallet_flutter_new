@@ -9,12 +9,14 @@ import 'package:get_storage/get_storage.dart';
 import 'package:logging/logging.dart';
 
 final _logger = Logger('StorageMigrationService');
+
 const _version = 4;
 const _versionKey = 'version';
 
 class StorageMigrationService {
   StorageMigrationService(
     this._encryptedStorage,
+    // this._assetsService,
     this._presetsConnectionService,
   ) : _storage = GetStorage();
 
@@ -29,6 +31,7 @@ class StorageMigrationService {
 
   final GetStorage _storage;
   final EncryptedStorage _encryptedStorage;
+
   final PresetsConnectionService _presetsConnectionService;
 
   int get currentVersion => _storage.read<int>(_versionKey) ?? 0;
@@ -65,7 +68,9 @@ class StorageMigrationService {
       yield StorageMigrationV3();
     }
     if (currentVersion < StorageMigrationV4.version) {
-      yield StorageMigrationV4(_presetsConnectionService);
+      yield StorageMigrationV4(
+        _presetsConnectionService,
+      );
     }
   }
 }

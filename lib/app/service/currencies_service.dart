@@ -1,5 +1,6 @@
 import 'dart:convert';
 
+import 'package:app/app/service/connection/group.dart';
 import 'package:app/app/service/connection/network_type.dart';
 import 'package:app/app/service/service.dart';
 import 'package:app/data/models/models.dart';
@@ -120,6 +121,7 @@ class CurrenciesService {
         final currency = await _fetchCurrency(
           endpoint: endpoint,
           networkType: transport.networkType,
+          networkGroup: transport.transport.group,
         );
 
         storageService.saveOrUpdateCurrency(currency: currency);
@@ -162,7 +164,6 @@ class CurrenciesService {
     TransportStrategy transport,
   ) async {
     if (assets == null) return;
-
     final rootTokenContracts = [
       ...{
         transport.nativeTokenAddress.address,
@@ -178,17 +179,18 @@ class CurrenciesService {
     ];
 
     if (transport.currencyApiBaseUrl != null) {
-      // currencies batch request
       final endpoint = transport.currencyApiBaseUrl!;
       final currencies = await _fetchCurrencies(
         endpoint: endpoint,
         currencyAddresses: rootTokenContracts,
         networkType: transport.networkType,
+        networkGroup: transport.transport.group,
       );
 
       storageService.saveOrUpdateCurrencies(
         currencies: currencies,
-        networkType: transport.networkType,
+        // group: transport.networkGroup,
+        group: transport.transport.group,
       );
     } else {
       for (final rootTokenContract in rootTokenContracts) {
@@ -199,6 +201,7 @@ class CurrenciesService {
             final currency = await _fetchCurrency(
               endpoint: endpoint,
               networkType: transport.networkType,
+              networkGroup: transport.transport.group,
             );
 
             storageService.saveOrUpdateCurrency(currency: currency);
@@ -214,6 +217,7 @@ class CurrenciesService {
     required String endpoint,
     required List<String> currencyAddresses,
     required NetworkType networkType,
+    required NetworkGroup networkGroup,
   }) async {
     final data = jsonEncode({
       'currencyAddresses': currencyAddresses,
@@ -234,7 +238,14 @@ class CurrenciesService {
         .map(
           (element) => CustomCurrency.fromJson(
             (element as Map<String, dynamic>)
-              ..putIfAbsent('networkType', () => networkType),
+              ..putIfAbsent(
+                'networkType',
+                () => networkType,
+              )
+              ..putIfAbsent(
+                'networkGroup',
+                () => networkGroup,
+              ),
           ),
         )
         .toList();
@@ -243,12 +254,21 @@ class CurrenciesService {
   Future<CustomCurrency> _fetchCurrency({
     required String endpoint,
     required NetworkType networkType,
+    required NetworkGroup networkGroup,
   }) async {
     final encoded = await httpService.postRequest(endpoint: endpoint);
     final decoded = jsonDecode(encoded) as Map<String, dynamic>;
 
     return CustomCurrency.fromJson(
-      decoded..putIfAbsent('networkType', () => networkType),
+      decoded
+        ..putIfAbsent(
+          'networkType',
+          () => networkType,
+        )
+        ..putIfAbsent(
+          'networkGroup',
+          () => networkGroup,
+        ),
     );
   }
 }
