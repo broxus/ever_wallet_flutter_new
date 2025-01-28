@@ -12,6 +12,7 @@ import 'package:app/feature/wallet/custodians_settings/custodians_settings_page.
 import 'package:app/feature/wallet/new_account/add_account.dart';
 import 'package:app/feature/wallet/new_account/add_account_page.dart';
 import 'package:app/feature/wallet/new_account/add_external_account/add_external_account_page.dart';
+import 'package:app/feature/wallet/new_account/screen/new_account_screen.dart';
 import 'package:app/feature/wallet/new_account/select_seed/select_seed_page.dart';
 import 'package:app/feature/wallet/wallet.dart';
 import 'package:app/feature/wallet/widgets/account_asset_tab/select_new_asset/select_new_asset.dart';
@@ -134,7 +135,7 @@ StatefulShellBranch get walletBranch {
                 routes: [
                   GoRoute(
                     path: AppRoute.walletNewAccount.path,
-                    builder: (_, state) => NewAccountPage(
+                    builder: (_, state) => NewAccountScreen(
                       publicKey: getQueryParams(
                         state,
                         walletCreatePublicKeyQueryParam,
