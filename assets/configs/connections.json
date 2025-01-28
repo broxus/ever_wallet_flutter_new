@@ -87,6 +87,7 @@
     {
       "networkName": "Everscale",
       "networkType": "ever",
+      "networkGroup": "mainnet",
       "icons": {
         "nativeToken": "https://raw.githubusercontent.com/broxus/sparx-networks/master/icons/ever/native_token.svg",
         "network": "https://raw.githubusercontent.com/broxus/sparx-networks/master/icons/ever/network.svg",
@@ -184,6 +185,7 @@
     {
       "networkName": "Venom",
       "networkType": "venom",
+      "networkGroup": "venom_mainnet",
       "icons": {
         "nativeToken": "https://raw.githubusercontent.com/broxus/sparx-networks/master/icons/venom/native_token.svg",
         "network": "https://raw.githubusercontent.com/broxus/sparx-networks/master/icons/venom/network.svg",
@@ -241,6 +243,7 @@
     {
       "networkName": "TON",
       "networkType": "ton",
+      "networkGroup": "ton",
       "icons": {
         "nativeToken": "https://raw.githubusercontent.com/broxus/sparx-networks/master/icons/ton/native_token.svg",
         "network": "https://raw.githubusercontent.com/broxus/sparx-networks/master/icons/ton/network.svg",
@@ -305,6 +308,7 @@
     {
       "networkName": "Tycho Testnet",
       "networkType": "tycho",
+      "networkGroup": "tycho_testnet",
       "icons": {
         "nativeToken": "https://raw.githubusercontent.com/broxus/sparx-networks/master/icons/tycho/native_token.svg",
         "network": "https://raw.githubusercontent.com/broxus/sparx-networks/master/icons/tycho/network.svg",
