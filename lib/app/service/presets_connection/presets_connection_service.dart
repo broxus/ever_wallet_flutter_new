@@ -5,6 +5,7 @@ import 'package:app/app/service/connection/data/connection_network/connection_ne
 import 'package:app/app/service/connection/data/connection_transport/connection_transport_data.dart';
 import 'package:app/app/service/connection/data/transport_icons.dart';
 import 'package:app/app/service/connection/default_network.dart';
+import 'package:app/app/service/connection/group.dart';
 import 'package:app/app/service/presets_connection/config_helper.dart';
 import 'package:app/app/service/storage_service/secure_storage_service.dart';
 import 'package:app/http/api/presets/presets_api.dart';
@@ -44,7 +45,7 @@ class PresetsConnectionService {
 
   List<ConnectionData> get networks => _data?.networks ?? [];
 
-  Map<String, ConnectionTransportData> get transports =>
+  Map<NetworkGroup, ConnectionTransportData> get transports =>
       _data?.transports ?? {};
 
   String? get defaultConnectionId => _data?.defaultConnectionId;
@@ -54,8 +55,8 @@ class PresetsConnectionService {
 
   String? currentPresetId;
 
-  TransportIcons getTransportIconsByNetwork(String networkType) {
-    return transports[networkType]?.icons ?? TransportIcons();
+  TransportIcons getTransportIconsByNetwork(NetworkGroup networkGroup) {
+    return transports[networkGroup]?.icons ?? TransportIcons();
   }
 
   Future<void> fetchConnectionsList() async {

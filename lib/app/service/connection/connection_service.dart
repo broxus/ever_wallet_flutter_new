@@ -52,7 +52,7 @@ class ConnectionService {
     Transport transport,
     ConnectionData connection,
   ) {
-    final data = _presetsConnectionService.transports[connection.networkType] ??
+    final data = _presetsConnectionService.transports[connection.group] ??
         ConnectionTransportData.custom(
           networkType: connection.networkType,
           networkName: connection.name,

@@ -185,10 +185,10 @@ class AssetsService {
     TransportStrategy transport,
   ) async {
     var asset = storage
-            .getCustomTokenContractAssets(transport.networkType)
+            .getCustomTokenContractAssets(transport.transport.group)
             .firstWhereOrNull((c) => c.address == rootTokenContract) ??
         storage
-            .getSystemTokenContractAssets(transport.networkType)
+            .getSystemTokenContractAssets(transport.transport.group)
             .firstWhereOrNull((c) => c.address == rootTokenContract);
 
     if (asset != null) return asset;
@@ -255,17 +255,17 @@ class AssetsService {
     TransportStrategy transport,
   ) {
     return storage
-            .getCustomTokenContractAssets(transport.networkType)
+            .getCustomTokenContractAssets(transport.transport.group)
             .firstWhereOrNull((c) => c.address == rootTokenContract) ??
         storage
-            .getSystemTokenContractAssets(transport.networkType)
+            .getSystemTokenContractAssets(transport.transport.group)
             .firstWhereOrNull((c) => c.address == rootTokenContract);
   }
 
   /// Get list of current possible system contracts for transport
   List<TokenContractAsset> get currentSystemTokenContractAssets =>
       storage.getSystemTokenContractAssets(
-        nekotonRepository.currentTransport.networkType,
+        nekotonRepository.currentTransport.transport.group,
       );
 
   /// Load manifest specified for transport and update system contracts that
@@ -280,6 +280,7 @@ class AssetsService {
       for (final token in (decoded['tokens'] as List<dynamic>)
           .cast<Map<String, dynamic>>()) {
         token['networkType'] = transport.networkType;
+        token['networkGroup'] = transport.transport.group;
         token['version'] =
             intToWalletContractConvert(token['version'] as int).toString();
         token['isCustom'] = false;
