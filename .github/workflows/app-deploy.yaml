@@ -1,4 +1,3 @@
-# Sample workflow for building and deploying a Jekyll site to GitHub Pages
 name: Deploy app
 
 on:
@@ -19,25 +18,17 @@ on:
           - "ios_store"
           - "android_fad"
           - "android_store"
-      flavor:
-        description: "Target flavor:"
-        required: true
-        default: "staging"
-        type: choice
-        options:
-          - "development"
-          - "staging"
-          - "production"
 
 jobs:
   setup:
     runs-on: ubuntu-latest
     outputs:
       build_number: ${{ steps.get_build_number.outputs.build_number }}
-      flutter_version: ${{ steps.read_flutter.outputs.flutter_version }}
+      flutter_version: ${{ steps.set_output.outputs.flutter_version }}
     env:
       SECRET_PASSPHRASE: ${{ secrets.SECRET_PASSPHRASE }}
       MATCH_PASSWORD: ${{ secrets.MATCH_PASSWORD }}
+      FLUTTER_VERSION: '3.24.0'
     steps:
       - uses: actions/checkout@v4
         with:
@@ -53,33 +44,18 @@ jobs:
             exit 1
           fi
 
-      - name: Display flavor target
-        run: echo "Flavor target is = ${{ inputs.flavor }}"
-
-      - name: Check store builds with flavor
+      - name: Set output for flutter_version
+        id: set_output
         run: |
-          if [[ "${{ inputs.flavor }}" != "production" &&
-                ( "${{ inputs.deploy_target }}" == "store" ||
-                  "${{ inputs.deploy_target }}" == "ios_store" ||
-                  "${{ inputs.deploy_target }}" == "android_store" ) ]]; then
-            echo "🚫 Error: Deployment to store, ios_store, or android_store is only allowed for 'production' flavor."
-            exit 1
-          fi
-
-      - name: Read Flutter version
-        id: read_flutter
-        run: echo "flutter_version=$(cat .github/configs/flutter_version)" >> $GITHUB_OUTPUT
+          echo "flutter_version=${FLUTTER_VERSION}" >> $GITHUB_OUTPUT
 
       - name: Setup Flutter
         uses: subosito/flutter-action@v2
         with:
-          flutter-version: ${{ steps.read_flutter.outputs.flutter_version }}
+          flutter-version: ${{ env.FLUTTER_VERSION }}
           channel: 'stable'
           cache: true
           cache-key: flutter-:os:-:channel:-:version:-:arch:-:hash:-${{ hashFiles('**/pubspec.lock') }}
-
-      - name: Display Flutter version
-        run: flutter --version
 
       - name: Install Dart dependencies
         run: dart pub get
@@ -171,15 +147,11 @@ jobs:
         run:
           echo "Number is = ${{ needs.setup.outputs.build_number }}"
 
-      - name: Display flavor target
-        run: echo "Flavor target is = ${{ inputs.flavor }}"
-
       - name: Build and deploy
         run: |
           bash scripts/build.sh \
           --deploy-target ${{ env.ios_target }} \
           --build-number ${{ needs.setup.outputs.build_number }} \
-          --flavor ${{ inputs.flavor }} \
           --upload true
 
       - name: Clean Xcode Derived Data
@@ -264,15 +236,11 @@ jobs:
         run:
           echo "Number is = ${{ needs.setup.outputs.build_number }}"
 
-      - name: Display flavor target
-        run: echo "Flavor target is = ${{ inputs.flavor }}"
-
       - name: Build and deploy
         run: |
           bash scripts/build.sh \
           --deploy-target ${{ env.android_target }} \
           --build-number ${{ needs.setup.outputs.build_number }} \
-          --flavor ${{ inputs.flavor }} \
           --upload true
 
       - name: Remove Flutter
