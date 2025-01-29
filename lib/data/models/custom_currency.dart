@@ -20,9 +20,12 @@ class CustomCurrency with _$CustomCurrency {
     required NetworkType networkGroup,
   }) = _CustomCurrency;
 
-  factory CustomCurrency.fromJson(Map<String, dynamic> json) {
-    json['networkGroup'] ??= getNetworkGroupByNetworkType(json['networkType']);
+  factory CustomCurrency.fromJson(Map<String, dynamic> json) =>
+      _$CustomCurrencyFromJson(_update(json));
+}
 
-    return _$CustomCurrencyFromJson(json);
-  }
+Map<String, dynamic> _update(Map<String, dynamic> json) {
+  json['networkGroup'] ??= getNetworkGroupByNetworkType(json['networkType']);
+
+  return json;
 }
