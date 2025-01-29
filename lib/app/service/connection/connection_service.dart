@@ -46,7 +46,7 @@ class ConnectionService {
     });
   }
 
-  /// Create TransportStrategy based on [ConnectionData.networkType] of
+  /// Create TransportStrategy based on [ConnectionData.group] of
   /// [connection] data.
   AppTransportStrategy createStrategyByConnection(
     Transport transport,

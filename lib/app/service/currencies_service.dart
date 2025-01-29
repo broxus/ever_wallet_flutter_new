@@ -55,13 +55,13 @@ class CurrenciesService {
   final GeneralStorageService storageService;
   final AppLifecycleService appLifecycle;
 
-  /// Get stream of currencies from storage for [type] of network.
-  Stream<List<CustomCurrency>> currenciesStream(String type) =>
-      storageService.currenciesStream(type);
+  /// Get stream of currencies from storage for [group] of network.
+  Stream<List<CustomCurrency>> currenciesStream(NetworkGroup group) =>
+      storageService.currenciesStream(group);
 
-  /// Get list of currencies from storage for [type] of network.
-  List<CustomCurrency> currencies(String type) =>
-      storageService.getCurrencies(type);
+  /// Get list of currencies from storage for [group] of network.
+  List<CustomCurrency> currencies(NetworkGroup group) =>
+      storageService.getCurrencies(group);
 
   RefreshPollingQueue? _poller;
 
@@ -146,14 +146,14 @@ class CurrenciesService {
     TransportStrategy transport,
     Address rootTokenContract,
   ) async =>
-      currencies(transport.networkType)
+      currencies(transport.transport.group)
           .firstWhereOrNull((e) => e.address == rootTokenContract) ??
       await fetchCurrencyForContract(transport, rootTokenContract);
 
   Future<CustomCurrency?> getOrFetchNativeCurrency(
     TransportStrategy transport,
   ) async =>
-      currencies(transport.networkType)
+      currencies(transport.transport.group)
           .firstWhereOrNull((e) => e.address == transport.nativeTokenAddress) ??
       await fetchCurrencyForNativeToken(transport);
 
@@ -189,7 +189,6 @@ class CurrenciesService {
 
       storageService.saveOrUpdateCurrencies(
         currencies: currencies,
-        // group: transport.networkGroup,
         group: transport.transport.group,
       );
     } else {

@@ -173,7 +173,7 @@ class GeneralStorageService extends AbstractStorageService {
 
   /// Stream of custom token contract assets by specified network type
   Stream<List<TokenContractAsset>> customTokenContractAssetsStream(
-    String group,
+    NetworkGroup group,
   ) =>
       _customTokenContractAssetsSubject.map((event) => event[group] ?? []);
 
