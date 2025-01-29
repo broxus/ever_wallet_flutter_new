@@ -46,13 +46,13 @@ class ConnectionService {
     });
   }
 
-  /// Create TransportStrategy based on [ConnectionData.networkType] of
+  /// Create TransportStrategy based on [ConnectionData.group] of
   /// [connection] data.
   AppTransportStrategy createStrategyByConnection(
     Transport transport,
     ConnectionData connection,
   ) {
-    final data = _presetsConnectionService.transports[connection.networkType] ??
+    final data = _presetsConnectionService.transports[connection.group] ??
         ConnectionTransportData.custom(
           networkType: connection.networkType,
           networkName: connection.name,

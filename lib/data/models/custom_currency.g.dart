@@ -12,6 +12,7 @@ _$CustomCurrencyImpl _$$CustomCurrencyImplFromJson(Map<String, dynamic> json) =>
       address: Address.fromJson(json['address'] as String),
       price: json['price'] as String,
       networkType: json['networkType'] as String,
+      networkGroup: json['networkGroup'] as String,
     );
 
 Map<String, dynamic> _$$CustomCurrencyImplToJson(
@@ -21,4 +22,5 @@ Map<String, dynamic> _$$CustomCurrencyImplToJson(
       'address': instance.address.toJson(),
       'price': instance.price,
       'networkType': instance.networkType,
+      'networkGroup': instance.networkGroup,
     };

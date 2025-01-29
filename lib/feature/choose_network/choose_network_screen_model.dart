@@ -76,7 +76,7 @@ class ChooseNetworkScreenModel extends ElementaryModel with ConnectionMixin {
               id: connection.id,
               icon: _presetsConnectionService
                   .getTransportIconsByNetwork(
-                    connection.networkType,
+                    connection.group,
                   )
                   .vector,
               title: connection.name,
