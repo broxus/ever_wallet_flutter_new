@@ -1,4 +1,5 @@
 import 'package:app/app/service/presets_connection/presets_connection_service.dart';
+import 'package:app/app/service/storage_service/balance_storage_service.dart';
 import 'package:app/app/service/storage_service/general_storage_service.dart';
 import 'package:app/app/service/storage_service/migrations/storage_migrations/storage_migration.dart';
 import 'package:app/utils/common_utils.dart';
@@ -15,6 +16,11 @@ class StorageMigrationV4 implements StorageMigration {
 
   @override
   Future<void> apply() async {
+    await _migrateCurrencies();
+    await _migrateBalances();
+  }
+
+  Future<void> _migrateCurrencies() async {
     final containers = [
       GeneralStorageService.currenciesContainer,
       GeneralStorageService.systemContractAssetsContainer,
@@ -47,6 +53,26 @@ class StorageMigrationV4 implements StorageMigration {
             await storage.write(group, value);
             await storage.remove(entry.key);
           }
+        } catch (_) {}
+      }
+    }
+  }
+
+  Future<void> _migrateBalances() async {
+    for (final container in BalanceStorageService.containers) {
+      await GetStorage.init(container);
+
+      final storage = GetStorage(container);
+      final encoded = storage.getEntries();
+
+      for (final entry in encoded.entries) {
+        try {
+          final parts = entry.key.split('::');
+          final key = parts[0];
+          final group = getNetworkGroupByNetworkType(key);
+
+          await storage.write('$group::${parts[1]}', entry.value);
+          await storage.remove(entry.key);
         } catch (_) {}
       }
     }

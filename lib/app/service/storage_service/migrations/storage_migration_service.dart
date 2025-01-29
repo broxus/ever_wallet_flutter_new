@@ -16,7 +16,6 @@ const _versionKey = 'version';
 class StorageMigrationService {
   StorageMigrationService(
     this._encryptedStorage,
-    // this._assetsService,
     this._presetsConnectionService,
   ) : _storage = GetStorage();
 
@@ -41,7 +40,7 @@ class StorageMigrationService {
   Future<void> migrate() async {
     await GetStorage.init();
 
-    if (!needMigration) return;
+    // if (!needMigration) return;
 
     final migrations = _getMigrations();
 
@@ -58,19 +57,23 @@ class StorageMigrationService {
   }
 
   Iterable<StorageMigration> _getMigrations() sync* {
-    if (currentVersion < StorageMigrationV1.version) {
-      yield StorageMigrationV1(encryptedStorage: _encryptedStorage);
-    }
-    if (currentVersion < StorageMigrationV2.version) {
-      yield StorageMigrationV2();
-    }
-    if (currentVersion < StorageMigrationV3.version) {
-      yield StorageMigrationV3();
-    }
-    if (currentVersion < StorageMigrationV4.version) {
-      yield StorageMigrationV4(
-        _presetsConnectionService,
-      );
-    }
+    // if (currentVersion < StorageMigrationV1.version) {
+    //   yield StorageMigrationV1(encryptedStorage: _encryptedStorage);
+    // }
+    // if (currentVersion < StorageMigrationV2.version) {
+    //   yield StorageMigrationV2();
+    // }
+    // if (currentVersion < StorageMigrationV3.version) {
+    //   yield StorageMigrationV3();
+    // }
+    // if (currentVersion < StorageMigrationV4.version) {
+    //   yield StorageMigrationV4(
+    //     _presetsConnectionService,
+    //   );
+    // }
+
+    yield StorageMigrationV4(
+      _presetsConnectionService,
+    );
   }
 }

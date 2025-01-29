@@ -235,6 +235,9 @@ String getNetworkGroupByNetworkType(dynamic networkType) {
     'ever' => 'mainnet',
     'venom' => 'venom_mainnet',
     'tycho' => 'tycho_testnet',
+    'mainnet' => 'mainnet',
+    'venom_mainnet' => 'venom_mainnet',
+    'tycho_testnet' => 'tycho_testnet',
     'ton' => 'ton',
     _ => 'custom',
   };
