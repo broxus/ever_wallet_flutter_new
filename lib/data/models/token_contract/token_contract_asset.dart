@@ -75,7 +75,7 @@ TokenWalletVersion intToWalletContractConvert(int version) {
 //     // <TonWallet.getTokenRootDetailsFromTokenWallet>, may be optional
 //     @JsonKey(includeToJson: false, includeFromJson: false)
 //     Address? ownerAddress,
-//     @JsonKey(includeToJson: false, includeFromJson: false) String? totalSupply,
+//   @JsonKey(includeToJson: false, includeFromJson: false) String? totalSupply,
 //     String? logoURI,
 //   }) = _TokenContractAsset;
 //
