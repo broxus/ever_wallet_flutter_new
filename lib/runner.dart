@@ -29,6 +29,7 @@ Future<void> run(
   await runZonedGuarded(
     () async {
       WidgetsFlutterBinding.ensureInitialized();
+
       await NekotonBridge.init();
 
       await configureDi();
