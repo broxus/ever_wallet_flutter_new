@@ -63,7 +63,11 @@ extension MoneyFormat on Money {
     final d = toDouble();
 
     if (currency.isoCode == 'USD') {
-      if (d < 0.001) {
+      if (d < 0.00001) {
+        return formatImproved(pattern: _moneyPattern(6));
+      } else if (d < 0.0001) {
+        return formatImproved(pattern: _moneyPattern(5));
+      } else if (d < 0.001) {
         return formatImproved(pattern: _moneyPattern(4));
       } else if (d < 0.01) {
         return formatImproved(pattern: _moneyPattern(3));
