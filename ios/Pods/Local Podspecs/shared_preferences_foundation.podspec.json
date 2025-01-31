@@ -17,16 +17,12 @@
   "source_files": "shared_preferences_foundation/Sources/shared_preferences_foundation/**/*.swift",
   "ios": {
     "dependencies": {
-      "Flutter": [
-
-      ]
+      "Flutter": []
     }
   },
   "osx": {
     "dependencies": {
-      "FlutterMacOS": [
-
-      ]
+      "FlutterMacOS": []
     }
   },
   "platforms": {

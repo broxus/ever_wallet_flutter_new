@@ -16,9 +16,7 @@
   "source_files": "flutter_native_splash/Sources/flutter_native_splash/**/*",
   "public_header_files": "flutter_native_splash/Sources/flutter_native_splash/**/*.h",
   "dependencies": {
-    "Flutter": [
-
-    ]
+    "Flutter": []
   },
   "platforms": {
     "ios": "9.0"

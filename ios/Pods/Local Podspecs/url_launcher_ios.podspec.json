@@ -22,9 +22,7 @@
     "LD_RUNPATH_SEARCH_PATHS": "/usr/lib/swift"
   },
   "dependencies": {
-    "Flutter": [
-
-    ]
+    "Flutter": []
   },
   "platforms": {
     "ios": "12.0"
