@@ -31,7 +31,9 @@ class _TonWalletIconWidgetState extends State<TonWalletIconWidget> {
   void initState() {
     super.initState();
     WidgetsBinding.instance.addPostFrameCallback((_) {
-      _isRender = true;
+      setState(() {
+        _isRender = true;
+      });
     });
   }
 
