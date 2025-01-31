@@ -70,6 +70,10 @@ Future<void> run(
     },
     (error, stackTrace) async {
       log?.severe(error.toString(), error, stackTrace);
+      if (log == null) {
+        debugPrint('bootstrap error: $error');
+        debugPrintStack(stackTrace: stackTrace, label: 'bootstrap stackTrace:');
+      }
       SentryWorker.instance.captureException(error, stackTrace: stackTrace);
     },
   );
