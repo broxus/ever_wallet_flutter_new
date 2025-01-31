@@ -417,7 +417,7 @@ class GeneralStorageService extends AbstractStorageService {
         key,
         (value as List<dynamic>)
             .map(
-              (json) => CustomCurrency.fromJson((json as Map<String, dynamic>)),
+              (json) => CustomCurrency.fromJson(json as Map<String, dynamic>),
             )
             .toList(),
       ),

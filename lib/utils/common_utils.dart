@@ -91,7 +91,7 @@ extension FunctionalExt<T> on T {
 }
 
 extension MoneyExt on Money {
-  Money exchangeToUSD(Fixed price, [int toDecimalDigits = 2]) => exchangeTo(
+  Money exchangeToUSD(Fixed price, [int toDecimalDigits = 7]) => exchangeTo(
         ExchangeRate.fromFixed(
           price,
           fromIsoCode: currency.isoCode,
