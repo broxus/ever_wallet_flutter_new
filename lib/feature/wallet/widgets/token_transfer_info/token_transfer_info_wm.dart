@@ -86,7 +86,7 @@ class TokenTransferInfoWidgetModel
     if (currency != null) {
       final price = Fixed.parse(currency.price);
       final value = Money.fromBigIntWithCurrency(
-        widget.fee ?? BigInt.zero,
+        widget.attachedAmount ?? BigInt.zero,
         nativeCurrency,
       );
       _attachedAmountPrice.accept(value.exchangeToUSD(price));
