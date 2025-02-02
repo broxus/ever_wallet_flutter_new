@@ -151,18 +151,6 @@ NS_SWIFT_NAME(Options)
 @property (nullable, nonatomic, copy) SentryBeforeSendSpanCallback beforeSendSpan NS_SWIFT_SENDABLE;
 
 /**
- * Use this callback to drop or modify a span before the SDK sends it to Sentry. Return @c nil to
- * drop the span.
- */
-@property (nullable, nonatomic, copy) SentryBeforeSendSpanCallback beforeSendSpan;
-
-/**
- * Use this callback to drop or modify a span before the SDK sends it to Sentry. Return @c nil to
- * drop the span.
- */
-@property (nullable, nonatomic, copy) SentryBeforeSendSpanCallback beforeSendSpan;
-
-/**
  * This block can be used to modify the event before it will be serialized and sent.
  */
 @property (nullable, nonatomic, copy)
@@ -183,36 +171,6 @@ NS_SWIFT_NAME(Options)
  */
 @property (nullable, nonatomic, copy)
     SentryBeforeCaptureScreenshotCallback beforeCaptureViewHierarchy NS_SWIFT_SENDABLE;
-
-/**
- * You can use this callback to decide if the SDK should capture a screenshot or not. Return @c true
- * if the SDK should capture a screenshot, return @c false if not. This callback doesn't work for
- * crashes.
- */
-@property (nullable, nonatomic, copy) SentryBeforeCaptureScreenshotCallback beforeCaptureScreenshot;
-
-/**
- * You can use this callback to decide if the SDK should capture a view hierarchy or not. Return @c
- * true if the SDK should capture a view hierarchy, return @c false if not. This callback doesn't
- * work for crashes.
- */
-@property (nullable, nonatomic, copy)
-    SentryBeforeCaptureScreenshotCallback beforeCaptureViewHierarchy;
-
-/**
- * You can use this callback to decide if the SDK should capture a screenshot or not. Return @c true
- * if the SDK should capture a screenshot, return @c false if not. This callback doesn't work for
- * crashes.
- */
-@property (nullable, nonatomic, copy) SentryBeforeCaptureScreenshotCallback beforeCaptureScreenshot;
-
-/**
- * You can use this callback to decide if the SDK should capture a view hierarchy or not. Return @c
- * true if the SDK should capture a view hierarchy, return @c false if not. This callback doesn't
- * work for crashes.
- */
-@property (nullable, nonatomic, copy)
-    SentryBeforeCaptureScreenshotCallback beforeCaptureViewHierarchy;
 
 /**
  * A block called shortly after the initialization of the SDK when the last program execution

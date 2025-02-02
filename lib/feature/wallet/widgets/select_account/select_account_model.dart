@@ -57,7 +57,7 @@ class SelectAccountModel extends ElementaryModel {
   Stream<Money?> getBalance(KeyAccount account) async* {
     try {
       final balances = _balanceStorageService.getBalances(
-        currentTransport.networkType,
+        currentTransport.transport.group,
       )[account.address];
       yield balances
           ?.tokenBalance(currentTransport.nativeTokenAddress, isNative: true)

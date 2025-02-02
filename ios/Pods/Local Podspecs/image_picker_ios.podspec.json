@@ -19,9 +19,7 @@
   "public_header_files": "image_picker_ios/Sources/image_picker_ios/**/*.h",
   "module_map": "image_picker_ios/Sources/image_picker_ios/include/ImagePickerPlugin.modulemap",
   "dependencies": {
-    "Flutter": [
-
-    ]
+    "Flutter": []
   },
   "platforms": {
     "ios": "12.0"

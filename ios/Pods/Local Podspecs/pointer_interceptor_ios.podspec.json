@@ -16,9 +16,7 @@
   },
   "source_files": "pointer_interceptor_ios/Sources/pointer_interceptor_ios/**/*.swift",
   "dependencies": {
-    "Flutter": [
-
-    ]
+    "Flutter": []
   },
   "platforms": {
     "ios": "12.0"
