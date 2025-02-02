@@ -360,7 +360,6 @@ static BOOL _framesTrackingMeasurementHybridSDKMode = NO;
 {
     [[PrivateSentrySDKOnly getReplayIntegration].viewPhotographer addRedactClasses:classes];
 }
-#endif
 
 + (void)setIgnoreContainerClass:(Class _Nonnull)containerClass
 {

@@ -1,6 +1,6 @@
 import 'dart:async';
 
-import 'package:app/app/service/connection/network_type.dart';
+import 'package:app/app/service/connection/group.dart';
 import 'package:app/app/service/service.dart';
 import 'package:app/data/models/custom_currency.dart';
 import 'package:app/data/models/token_contract/token_contract_asset.dart';
@@ -64,18 +64,18 @@ class GeneralStorageService extends AbstractStorageService {
 
   /// Subject of system token contract assets
   final _systemTokenContractAssetsSubject =
-      BehaviorSubject<Map<NetworkType, List<TokenContractAsset>>>();
+      BehaviorSubject<Map<NetworkGroup, List<TokenContractAsset>>>();
 
   /// Subject of custom token contract assets
   final _customTokenContractAssetsSubject =
-      BehaviorSubject<Map<NetworkType, List<TokenContractAsset>>>();
+      BehaviorSubject<Map<NetworkGroup, List<TokenContractAsset>>>();
 
   /// Subject of biometry enabled status
   final _biometryEnabledSubject = BehaviorSubject<bool>();
 
   /// Subject of currencies by network type
   final _currencySubject =
-      BehaviorSubject<Map<NetworkType, List<CustomCurrency>>>();
+      BehaviorSubject<Map<NetworkGroup, List<CustomCurrency>>>();
 
   /// Application documents directory, used for syncrhronous path operations
   late final String applicationDocumentsDirectory;
@@ -122,14 +122,14 @@ class GeneralStorageService extends AbstractStorageService {
     TokenContractAsset tokenContractAsset,
   ) {
     final assets = readCustomTokenContractAssets(
-      tokenContractAsset.networkType,
+      tokenContractAsset.networkGroup,
     );
     final newAssets = assets
         .where((e) => e.address != tokenContractAsset.address)
         .toList()
       ..add(tokenContractAsset);
     _customContractAssetsStorage.write(
-      tokenContractAsset.networkType,
+      tokenContractAsset.networkGroup,
       newAssets.map((e) => e.toJson()).toList(),
     );
     _streamedCustomContractAssets();
@@ -168,32 +168,32 @@ class GeneralStorageService extends AbstractStorageService {
   void completeStorageMigration() => _prefStorage.write(_migrationKey, true);
 
   /// Stream of currencies by specified network type
-  Stream<List<CustomCurrency>> currenciesStream(NetworkType network) =>
-      _currencySubject.map((event) => event[network] ?? []);
+  Stream<List<CustomCurrency>> currenciesStream(NetworkGroup group) =>
+      _currencySubject.map((event) => event[group] ?? []);
 
   /// Stream of custom token contract assets by specified network type
   Stream<List<TokenContractAsset>> customTokenContractAssetsStream(
-    String network,
+    NetworkGroup group,
   ) =>
-      _customTokenContractAssetsSubject.map((event) => event[network] ?? []);
+      _customTokenContractAssetsSubject.map((event) => event[group] ?? []);
 
   /// Delete all custom token contract assets with same type.
-  void deleteCustomTokens(NetworkType type) {
-    _customContractAssetsStorage.remove(type);
+  void deleteCustomTokens(NetworkGroup group) {
+    _customContractAssetsStorage.remove(group);
     _streamedCustomContractAssets();
   }
 
   /// Get last cached currencies by network type
-  List<CustomCurrency> getCurrencies(NetworkType type) =>
-      _currencySubject.value[type] ?? [];
+  List<CustomCurrency> getCurrencies(NetworkGroup group) =>
+      _currencySubject.value[group] ?? [];
 
   /// Get last cached custom token contract assets by network type
-  List<TokenContractAsset> getCustomTokenContractAssets(NetworkType type) =>
-      _customTokenContractAssetsSubject.value[type] ?? [];
+  List<TokenContractAsset> getCustomTokenContractAssets(NetworkGroup group) =>
+      _customTokenContractAssetsSubject.value[group] ?? [];
 
   /// Get last cached system token contract assets by network type
-  List<TokenContractAsset> getSystemTokenContractAssets(NetworkType network) =>
-      _systemTokenContractAssetsSubject.value[network] ?? [];
+  List<TokenContractAsset> getSystemTokenContractAssets(NetworkGroup group) =>
+      _systemTokenContractAssetsSubject.value[group] ?? [];
 
   @override
   Future<void> init() async {
@@ -209,8 +209,8 @@ class GeneralStorageService extends AbstractStorageService {
   }
 
   /// Read from storage list of all currencies specified for network type
-  List<CustomCurrency> readCurrencies(NetworkType type) {
-    final encoded = _currenciesStorage.read<List<dynamic>>(type);
+  List<CustomCurrency> readCurrencies(NetworkGroup group) {
+    final encoded = _currenciesStorage.read<List<dynamic>>(group);
     if (encoded == null) {
       return [];
     }
@@ -233,9 +233,9 @@ class GeneralStorageService extends AbstractStorageService {
 
   /// Read from storage list of custom assets by network type
   List<TokenContractAsset> readCustomTokenContractAssets(
-    NetworkType type,
+    NetworkGroup group,
   ) {
-    final assets = _customContractAssetsStorage.read<List<dynamic>>(type);
+    final assets = _customContractAssetsStorage.read<List<dynamic>>(group);
     if (assets == null) {
       return [];
     }
@@ -275,9 +275,9 @@ class GeneralStorageService extends AbstractStorageService {
 
   /// Get list of system assets by network type
   List<TokenContractAsset> readSystemTokenContractAssets(
-    NetworkType type,
+    NetworkGroup group,
   ) {
-    final assets = _systemContractAssetsStorage.read<List<dynamic>>(type);
+    final assets = _systemContractAssetsStorage.read<List<dynamic>>(group);
     if (assets == null) {
       return [];
     }
@@ -298,10 +298,10 @@ class GeneralStorageService extends AbstractStorageService {
   void removeCustomTokenContractAsset(
     TokenContractAsset asset,
   ) {
-    final assets = readCustomTokenContractAssets(asset.networkType);
+    final assets = readCustomTokenContractAssets(asset.networkGroup);
     final newAssets = assets.where((a) => a.address != asset.address).toList();
     _customContractAssetsStorage.write(
-      asset.networkType,
+      asset.networkGroup,
       newAssets.map((e) => e.toJson()).toList(),
     );
     _streamedCustomContractAssets();
@@ -311,15 +311,15 @@ class GeneralStorageService extends AbstractStorageService {
   /// This ignores duplicates and saves only one currency with same address.
   void saveOrUpdateCurrencies({
     required List<CustomCurrency> currencies,
-    required NetworkType networkType,
+    required NetworkGroup group,
   }) {
-    final list = readCurrencies(networkType);
+    final list = readCurrencies(group);
     final keys = currencies.map((e) => e.address).toSet();
     final newList = list.where((e) => !keys.contains(e.address)).toList()
       ..addAll(currencies);
 
     _currenciesStorage.write(
-      networkType,
+      group,
       newList.map((e) => e.toJson()).toList(),
     );
     _streamedCurrencies();
@@ -328,13 +328,13 @@ class GeneralStorageService extends AbstractStorageService {
   /// Save currency to storage for specified network type.
   /// This ignores duplicates and saves only one currency with same address.
   void saveOrUpdateCurrency({required CustomCurrency currency}) {
-    final type = currency.networkType;
-    final list = readCurrencies(type);
+    final group = currency.networkGroup;
+    final list = readCurrencies(group);
     final newList = list.where((e) => e.address != currency.address).toList()
       ..add(currency);
 
     _currenciesStorage.write(
-      type,
+      group,
       newList.map((e) => e.toJson()).toList(),
     );
     _streamedCurrencies();
@@ -362,9 +362,9 @@ class GeneralStorageService extends AbstractStorageService {
 
   /// Stream of system token contract assets by specified network type
   Stream<List<TokenContractAsset>> systemTokenContractAssetsStream(
-    NetworkType network,
+    NetworkGroup group,
   ) =>
-      _systemTokenContractAssetsSubject.map((event) => event[network] ?? []);
+      _systemTokenContractAssetsSubject.map((event) => event[group] ?? []);
 
   /// Update seeds that were used by user.
   /// There must be only master keys, if key is sub, then put its master.
@@ -384,15 +384,16 @@ class GeneralStorageService extends AbstractStorageService {
   ) {
     if (assets.isNotEmpty) {
       assert(
-        assets.every((asset) => asset.networkType == assets.first.networkType),
+        assets
+            .every((asset) => asset.networkGroup == assets.first.networkGroup),
         'All system assets must have the same type',
       );
       _systemContractAssetsStorage
         ..remove(
-          assets.first.networkType,
+          assets.first.networkGroup,
         )
         ..write(
-          assets.first.networkType,
+          assets.first.networkGroup,
           assets.map((e) => e.toJson()).toList(),
         );
       _streamedSystemContractAssets();

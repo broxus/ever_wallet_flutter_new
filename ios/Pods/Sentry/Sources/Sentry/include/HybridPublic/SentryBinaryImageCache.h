@@ -30,8 +30,6 @@ NS_ASSUME_NONNULL_BEGIN
 
 + (NSString *_Nullable)convertUUID:(const unsigned char *const)value;
 
-+ (NSString *_Nullable)convertUUID:(const unsigned char *const)value;
-
 @end
 
 NS_ASSUME_NONNULL_END

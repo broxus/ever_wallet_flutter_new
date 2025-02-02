@@ -91,12 +91,12 @@ extension FunctionalExt<T> on T {
 }
 
 extension MoneyExt on Money {
-  Money exchangeToUSD(Fixed price) => exchangeTo(
+  Money exchangeToUSD(Fixed price, [int toDecimalDigits = 7]) => exchangeTo(
         ExchangeRate.fromFixed(
           price,
           fromIsoCode: currency.isoCode,
           toIsoCode: 'USD',
-          toDecimalDigits: 2,
+          toDecimalDigits: toDecimalDigits,
         ),
       );
 
@@ -228,4 +228,17 @@ extension ListenableStateExt<T> on ListenableState<T> {
 
     return subject.stream;
   }
+}
+
+String getNetworkGroupByNetworkType(dynamic networkType) {
+  return switch (networkType) {
+    'ever' => 'mainnet',
+    'venom' => 'venom_mainnet',
+    'tycho' => 'tycho_testnet',
+    'mainnet' => 'mainnet',
+    'venom_mainnet' => 'venom_mainnet',
+    'tycho_testnet' => 'tycho_testnet',
+    'ton' => 'ton',
+    _ => 'custom',
+  };
 }
