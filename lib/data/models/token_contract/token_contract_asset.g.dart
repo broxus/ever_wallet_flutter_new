@@ -14,6 +14,7 @@ _$TokenContractAssetImpl _$$TokenContractAssetImplFromJson(
       decimals: (json['decimals'] as num).toInt(),
       address: Address.fromJson(json['address'] as String),
       networkType: json['networkType'] as String,
+      networkGroup: json['networkGroup'] as String,
       isCustom: json['isCustom'] as bool,
       version:
           $enumDecodeNullable(_$TokenWalletVersionEnumMap, json['version']),
@@ -29,6 +30,7 @@ Map<String, dynamic> _$$TokenContractAssetImplToJson(
       'decimals': instance.decimals,
       'address': instance.address.toJson(),
       'networkType': instance.networkType,
+      'networkGroup': instance.networkGroup,
       'isCustom': instance.isCustom,
       'version': _$TokenWalletVersionEnumMap[instance.version],
       'chainId': instance.chainId,

@@ -1,4 +1,4 @@
-import 'package:app/app/service/connection/network_type.dart';
+import 'package:app/app/service/connection/group.dart';
 import 'package:app/app/service/service.dart';
 import 'package:app/data/models/models.dart';
 import 'package:app/utils/utils.dart';
@@ -13,7 +13,7 @@ import 'package:rxdart/rxdart.dart';
 const _overallBalancesDomain = 'overallBalancesDomain';
 const _balancesDomain = 'balancesDomain';
 
-typedef ByNetwork<T> = Map<NetworkType, T>;
+typedef ByNetwork<T> = Map<NetworkGroup, T>;
 
 @singleton
 class BalanceStorageService extends AbstractStorageService {
@@ -54,12 +54,14 @@ class BalanceStorageService extends AbstractStorageService {
 
   /// Get cached overall balance for accounts
   /// key - address of account, value - overall balance in fiat
-  Map<Address, Fixed> getOverallBalance(NetworkType network) =>
-      _overallBalancesSubject.value[network] ?? {};
+  Map<Address, Fixed> getOverallBalance(NetworkGroup networkGroup) =>
+      _overallBalancesSubject.value[networkGroup] ?? {};
 
   /// Stream that allows tracking overall balance changing
-  Stream<Map<Address, Fixed>> getOverallBalancesStream(NetworkType network) =>
-      _overallBalancesSubject.map((event) => event[network] ?? {});
+  Stream<Map<Address, Fixed>> getOverallBalancesStream(
+    NetworkGroup networkGroup,
+  ) =>
+      _overallBalancesSubject.map((event) => event[networkGroup] ?? {});
 
   /// Put overall balances into stream
   void _streamedOverallBalance() =>
@@ -77,21 +79,21 @@ class BalanceStorageService extends AbstractStorageService {
             FixedFixer.fromJson(entry.value as Map<String, dynamic>),
           ),
         )
-        .groupFoldBy<NetworkType, Map<Address, Fixed>>(
-          (item) => item.$1.network,
+        .groupFoldBy<NetworkGroup, Map<Address, Fixed>>(
+          (item) => item.$1.group,
           (prev, item) => (prev ?? {})..set(item.$1.address, item.$2),
         );
   }
 
   /// Set overall balance for specified account
   void setOverallBalance({
-    required NetworkType network,
+    required NetworkGroup group,
     required Address accountAddress,
     required Fixed balance,
   }) {
     try {
       _overallBalancesStorage.write(
-        _Key(network: network, address: accountAddress).toString(),
+        _Key(group: group, address: accountAddress).toString(),
         balance.toJson(),
       );
       _streamedOverallBalance();
@@ -114,14 +116,14 @@ class BalanceStorageService extends AbstractStorageService {
   /// Get cached token balances for accounts
   /// key - address of account, value - list of balances for tokens in scope of
   /// this account.
-  Map<Address, List<AccountBalanceModel>> getBalances(NetworkType network) =>
-      _balancesSubject.value[network] ?? {};
+  Map<Address, List<AccountBalanceModel>> getBalances(NetworkGroup group) =>
+      _balancesSubject.value[group] ?? {};
 
   /// Stream that allows tracking token balances for accounts
   Stream<Map<Address, List<AccountBalanceModel>>> getBalancesStream(
-    NetworkType network,
+    NetworkGroup group,
   ) =>
-      _balancesSubject.map((event) => event[network] ?? {});
+      _balancesSubject.map((event) => event[group] ?? {});
 
   /// Put token balances for accounts into stream
   void _streamedBalance() => _balancesSubject.add(readBalances());
@@ -145,20 +147,20 @@ class BalanceStorageService extends AbstractStorageService {
                 .toList(),
           ),
         )
-        .groupFoldBy<NetworkType, Map<Address, List<AccountBalanceModel>>>(
-          (item) => item.$1.network,
+        .groupFoldBy<NetworkGroup, Map<Address, List<AccountBalanceModel>>>(
+          (item) => item.$1.group,
           (prev, item) => (prev ?? {})..set(item.$1.address, item.$2),
         );
   }
 
   /// Set token balances for accounts with [accountAddress]
   void setBalances({
-    required NetworkType network,
+    required NetworkGroup group,
     required Address accountAddress,
     required AccountBalanceModel balance,
   }) {
     try {
-      var existedForAccount = getBalances(network)[accountAddress];
+      var existedForAccount = getBalances(group)[accountAddress];
 
       if (existedForAccount == null) {
         existedForAccount = [balance];
@@ -173,7 +175,7 @@ class BalanceStorageService extends AbstractStorageService {
       }
 
       _balancesStorage.write(
-        _Key(network: network, address: accountAddress).toString(),
+        _Key(group: group, address: accountAddress).toString(),
         existedForAccount.map((b) => b.toJson()).toList(),
       );
       _streamedBalance();
@@ -191,7 +193,7 @@ class BalanceStorageService extends AbstractStorageService {
 @immutable
 class _Key {
   const _Key({
-    required this.network,
+    required this.group,
     required this.address,
   });
 
@@ -201,25 +203,25 @@ class _Key {
     assert(parts.length == 2, 'Invalid key format: $value');
 
     return _Key(
-      network: parts[0],
+      group: parts[0],
       address: Address(address: parts[1]),
     );
   }
 
-  final NetworkType network;
+  final NetworkGroup group;
   final Address address;
 
   @override
-  String toString() => '$network::${address.address}';
+  String toString() => '$group::${address.address}';
 
   @override
-  int get hashCode => Object.hash(runtimeType, network, address);
+  int get hashCode => Object.hash(runtimeType, group, address);
 
   @override
   bool operator ==(Object other) =>
       identical(this, other) ||
       other is _Key &&
           runtimeType == other.runtimeType &&
-          network == other.network &&
+          group == other.group &&
           address == other.address;
 }

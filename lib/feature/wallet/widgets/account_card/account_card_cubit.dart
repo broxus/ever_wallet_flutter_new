@@ -1,6 +1,6 @@
 import 'dart:async';
 
-import 'package:app/app/service/connection/network_type.dart';
+import 'package:app/app/service/connection/group.dart';
 import 'package:app/app/service/service.dart';
 import 'package:app/core/bloc/bloc_mixin.dart';
 import 'package:app/di/di.dart';
@@ -35,7 +35,7 @@ class AccountCardCubit extends Cubit<AccountCardState> with BlocBaseMixin {
       (transport) {
         _closeSubs();
         _cachedFiatBalance = balanceStorage.getOverallBalance(
-              transport.networkType,
+              transport.transport.group,
             )[account.address] ??
             Fixed.zero;
         emitSafe(
@@ -68,8 +68,8 @@ class AccountCardCubit extends Cubit<AccountCardState> with BlocBaseMixin {
 
   TonWalletState? walletState;
 
-  NetworkType get _networkType =>
-      nekotonRepository.currentTransport.networkType;
+  NetworkGroup get _networkGroup =>
+      nekotonRepository.currentTransport.transport.group;
 
   Future<void> retry() async {
     final st = state;
@@ -116,7 +116,7 @@ class AccountCardCubit extends Cubit<AccountCardState> with BlocBaseMixin {
         _updateWalletData(wallet);
 
         balanceStorage.setOverallBalance(
-          network: _networkType,
+          group: _networkGroup,
           accountAddress: account.address,
           balance: fiat,
         );
