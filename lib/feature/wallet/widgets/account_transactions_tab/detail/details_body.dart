@@ -110,10 +110,15 @@ class WalletTransactionDetailsDefaultBody extends StatelessWidget {
           title: LocaleKeys.networkFee.tr(),
           valueWidget: AmountWidget.fromMoney(
             amount: fee,
-            useDefaultFormat: false,
             includeSymbol: false,
           ),
           iconPath: tonIconPath,
+          convertedValueWidget: AmountWidget.dollars(
+            amount: fee.exchangeToUSD(price!, 5),
+            style: theme.textStyles.labelXSmall.copyWith(
+              color: theme.colors.content3,
+            ),
+          ),
         ),
         if (info != null)
           WalletTransactionDetailsItem(

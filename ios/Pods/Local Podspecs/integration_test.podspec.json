@@ -17,9 +17,7 @@
   "source_files": "integration_test/Sources/integration_test/**/*.{h,m}",
   "public_header_files": "integration_test/Sources/integration_test/**/*.h",
   "dependencies": {
-    "Flutter": [
-
-    ]
+    "Flutter": []
   },
   "ios": {
     "frameworks": "UIKit"

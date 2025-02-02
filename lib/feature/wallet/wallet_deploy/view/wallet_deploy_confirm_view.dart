@@ -109,6 +109,18 @@ class WalletDeployConfirmView extends StatelessWidget {
                       includeSymbol: false,
                     ),
                     iconPath: tonIconPath,
+                    convertedValueWidget: AmountWidget.dollars(
+                      amount: Money.fromBigIntWithCurrency(
+                        fee ?? BigInt.zero,
+                        currency!,
+                      ).exchangeToUSD(
+                        Fixed.parse(customCurrency?.price ?? '0'),
+                        5,
+                      ),
+                      style: theme.textStyles.labelXSmall.copyWith(
+                        color: theme.colors.content3,
+                      ),
+                    ),
                   ),
                 const SizedBox(height: DimensSizeV2.d4),
                 if (custodians?.isNotEmpty ?? false)

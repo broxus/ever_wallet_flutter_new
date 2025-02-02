@@ -201,20 +201,6 @@ typedef void (^SentryOnAppStartMeasurementAvailable)(
 
 + (SentryBreadcrumb *)breadcrumbWithDictionary:(NSDictionary *)dictionary;
 
-#endif
-+ (nullable NSDictionary<NSString *, id> *)appStartMeasurementWithSpans;
-
-+ (SentryUser *)userWithDictionary:(NSDictionary *)dictionary;
-
-+ (SentryBreadcrumb *)breadcrumbWithDictionary:(NSDictionary *)dictionary;
-
-#endif
-+ (nullable NSDictionary<NSString *, id> *)appStartMeasurementWithSpans;
-
-+ (SentryUser *)userWithDictionary:(NSDictionary *)dictionary;
-
-+ (SentryBreadcrumb *)breadcrumbWithDictionary:(NSDictionary *)dictionary;
-
 @end
 
 NS_ASSUME_NONNULL_END

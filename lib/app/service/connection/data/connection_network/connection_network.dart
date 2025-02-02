@@ -2,13 +2,14 @@ import 'package:app/app/service/connection/data/connection_data/connection_data.
 import 'package:app/app/service/connection/data/connection_transport/connection_transport_data.dart';
 import 'package:app/app/service/connection/data/custom_network/custom_network_option.dart';
 import 'package:app/app/service/connection/default_network.dart';
+import 'package:app/app/service/connection/group.dart';
 import 'package:collection/collection.dart';
 
 class ConnectionNetwork {
   ConnectionNetwork({
     required String defaultConnectionId,
     List<ConnectionData>? networks,
-    Map<String, ConnectionTransportData>? transports,
+    Map<NetworkGroup, ConnectionTransportData>? transports,
     this.customNetworkOptions,
   })  : networks = networks ?? [],
         transports = transports ?? {},
@@ -19,7 +20,7 @@ class ConnectionNetwork {
             defaultPresetNetwork;
 
   final List<ConnectionData> networks;
-  final Map<String, ConnectionTransportData> transports;
+  final Map<NetworkGroup, ConnectionTransportData> transports;
   final List<CustomNetworkOption>? customNetworkOptions;
 
   late final ConnectionData defaultNetwork;

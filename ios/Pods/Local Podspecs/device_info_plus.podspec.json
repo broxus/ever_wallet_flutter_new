@@ -18,9 +18,7 @@
   "source_files": "device_info_plus/Sources/device_info_plus/**/*.{h,m}",
   "public_header_files": "device_info_plus/Sources/device_info_plus/include/**/*.h",
   "dependencies": {
-    "Flutter": [
-
-    ]
+    "Flutter": []
   },
   "platforms": {
     "ios": "12.0"

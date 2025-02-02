@@ -22,9 +22,7 @@
   },
   "ios": {
     "dependencies": {
-      "Flutter": [
-
-      ]
+      "Flutter": []
     },
     "pod_target_xcconfig": {
       "DEFINES_MODULE": "YES",
@@ -33,9 +31,7 @@
   },
   "osx": {
     "dependencies": {
-      "FlutterMacOS": [
-
-      ]
+      "FlutterMacOS": []
     },
     "pod_target_xcconfig": {
       "DEFINES_MODULE": "YES"

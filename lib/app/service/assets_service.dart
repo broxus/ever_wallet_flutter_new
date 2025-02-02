@@ -38,8 +38,8 @@ class AssetsService {
     nekotonRepository.currentTransportStream.flatMap((transport) {
       return Rx.combineLatest2<List<TokenContractAsset>,
           List<TokenContractAsset>, void>(
-        storage.systemTokenContractAssetsStream(transport.networkType),
-        storage.customTokenContractAssetsStream(transport.networkType),
+        storage.systemTokenContractAssetsStream(transport.transport.group),
+        storage.customTokenContractAssetsStream(transport.transport.group),
         _contractsUpdateListener,
       );
       // listen needs to enable stream api
@@ -57,8 +57,8 @@ class AssetsService {
         (transport) {
           return Rx.combineLatest2<List<TokenContractAsset>,
               List<TokenContractAsset>, List<TokenContractAsset>>(
-            storage.customTokenContractAssetsStream(transport.networkType),
-            storage.systemTokenContractAssetsStream(transport.networkType),
+            storage.customTokenContractAssetsStream(transport.transport.group),
+            storage.systemTokenContractAssetsStream(transport.transport.group),
             (a, b) => <TokenContractAsset>{...a, ...b}.toList(),
           );
         },
@@ -185,10 +185,10 @@ class AssetsService {
     TransportStrategy transport,
   ) async {
     var asset = storage
-            .getCustomTokenContractAssets(transport.networkType)
+            .getCustomTokenContractAssets(transport.transport.group)
             .firstWhereOrNull((c) => c.address == rootTokenContract) ??
         storage
-            .getSystemTokenContractAssets(transport.networkType)
+            .getSystemTokenContractAssets(transport.transport.group)
             .firstWhereOrNull((c) => c.address == rootTokenContract);
 
     if (asset != null) return asset;
@@ -213,6 +213,7 @@ class AssetsService {
           address: rootTokenContract,
           ownerAddress: details.adminAddress,
           networkType: transport.networkType,
+          networkGroup: transport.transport.group,
           logoURI: details.content.uri ?? info.imageUrl,
           isCustom: true,
         );
@@ -231,6 +232,7 @@ class AssetsService {
           totalSupply: tokenRootDetails.totalSupply,
           version: tokenRootDetails.version,
           networkType: transport.networkType,
+          networkGroup: transport.transport.group,
           isCustom: true,
         );
       }
@@ -253,17 +255,17 @@ class AssetsService {
     TransportStrategy transport,
   ) {
     return storage
-            .getCustomTokenContractAssets(transport.networkType)
+            .getCustomTokenContractAssets(transport.transport.group)
             .firstWhereOrNull((c) => c.address == rootTokenContract) ??
         storage
-            .getSystemTokenContractAssets(transport.networkType)
+            .getSystemTokenContractAssets(transport.transport.group)
             .firstWhereOrNull((c) => c.address == rootTokenContract);
   }
 
   /// Get list of current possible system contracts for transport
   List<TokenContractAsset> get currentSystemTokenContractAssets =>
       storage.getSystemTokenContractAssets(
-        nekotonRepository.currentTransport.networkType,
+        nekotonRepository.currentTransport.transport.group,
       );
 
   /// Load manifest specified for transport and update system contracts that
@@ -278,6 +280,7 @@ class AssetsService {
       for (final token in (decoded['tokens'] as List<dynamic>)
           .cast<Map<String, dynamic>>()) {
         token['networkType'] = transport.networkType;
+        token['networkGroup'] = transport.transport.group;
         token['version'] =
             intToWalletContractConvert(token['version'] as int).toString();
         token['isCustom'] = false;

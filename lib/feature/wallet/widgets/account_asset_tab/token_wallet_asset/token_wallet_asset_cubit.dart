@@ -1,6 +1,6 @@
 import 'dart:async';
 
-import 'package:app/app/service/connection/network_type.dart';
+import 'package:app/app/service/connection/group.dart';
 import 'package:app/app/service/service.dart';
 import 'package:app/core/bloc/bloc_mixin.dart';
 import 'package:app/data/models/models.dart';
@@ -10,7 +10,6 @@ import 'package:freezed_annotation/freezed_annotation.dart';
 import 'package:nekoton_repository/nekoton_repository.dart';
 
 part 'token_wallet_asset_cubit.freezed.dart';
-
 part 'token_wallet_asset_state.dart';
 
 class TokenWalletAssetCubit extends Cubit<TokenWalletAssetState>
@@ -67,7 +66,7 @@ class TokenWalletAssetCubit extends Cubit<TokenWalletAssetState>
     });
 
     final balances = balanceStorage
-        .getBalances(_networkType)[owner]
+        .getBalances(_networkGroup)[owner]
         ?.tokenBalance(asset.address);
     if (balances != null) {
       _cachedFiatBalance = balances.fiatBalance;
@@ -92,8 +91,8 @@ class TokenWalletAssetCubit extends Cubit<TokenWalletAssetState>
 
   TokenWalletState? _wallet;
 
-  NetworkType get _networkType =>
-      nekotonRepository.currentTransport.networkType;
+  NetworkGroup get _networkGroup =>
+      nekotonRepository.currentTransport.transport.group;
 
   @override
   Future<void> close() {
@@ -120,7 +119,7 @@ class TokenWalletAssetCubit extends Cubit<TokenWalletAssetState>
   void _tryUpdateBalances() {
     if (_cachedFiatBalance != null && _cachedTokenBalance != null) {
       balanceStorage.setBalances(
-        network: _networkType,
+        group: _networkGroup,
         accountAddress: owner,
         balance: AccountBalanceModel(
           rootTokenContract: asset.address,

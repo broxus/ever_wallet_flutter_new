@@ -44,10 +44,10 @@ class BalanceService {
       final account = value.$3;
       final scale = transport.defaultNativeCurrencyDecimal;
       final overall = balanceStorageService.getOverallBalance(
-        transport.networkType,
+        transport.transport.group,
       )[address];
       final balances = balanceStorageService.getBalances(
-        transport.networkType,
+        transport.transport.group,
       )[address];
 
       if (wallet == null || account == null) {
@@ -58,7 +58,7 @@ class BalanceService {
       /// of wallet and currency updating.
       final tonWalletBalanceStream = Rx.combineLatest2(
         wallet.fieldUpdatesStream.map((_) => wallet.contractState.balance),
-        currenciesService.currenciesStream(transport.networkType).map(
+        currenciesService.currenciesStream(transport.transport.group).map(
               (curs) => curs.firstWhereOrNull(
                 (cur) => cur.address == transport.nativeTokenAddress,
               ),
@@ -104,7 +104,7 @@ class BalanceService {
 
             return Rx.combineLatest2<Money?, CustomCurrency?, Fixed>(
               wallet.onMoneyBalanceChangedStream,
-              currenciesService.currenciesStream(transport.networkType).map(
+              currenciesService.currenciesStream(transport.transport.group).map(
                     (curs) => curs.firstWhereOrNull(
                       (cur) => cur.address == contract,
                     ),
@@ -155,7 +155,7 @@ class BalanceService {
           final transport = value.$2;
           final scale = transport.defaultNativeCurrencyDecimal;
           final balances = balanceStorageService.getBalances(
-            transport.networkType,
+            transport.transport.group,
           )[address];
           final cached = balances
               ?.tokenBalance(transport.nativeTokenAddress, isNative: true)
@@ -166,7 +166,7 @@ class BalanceService {
 
           return Rx.combineLatest2<BigInt, CustomCurrency?, Fixed>(
             wallet.fieldUpdatesStream.map((_) => wallet.contractState.balance),
-            currenciesService.currenciesStream(transport.networkType).map(
+            currenciesService.currenciesStream(transport.transport.group).map(
                   (curs) => curs.firstWhereOrNull(
                     (cur) => cur.address == transport.nativeTokenAddress,
                   ),
@@ -208,7 +208,7 @@ class BalanceService {
           final wallet = value.$1?.wallet;
           final transport = value.$2;
           final balances = balanceStorageService.getBalances(
-            transport.networkType,
+            transport.transport.group,
           )[owner];
           final cached =
               balances?.tokenBalance(rootTokenContract)?.fiatBalance.amount;
@@ -219,7 +219,7 @@ class BalanceService {
 
           return Rx.combineLatest2<Money?, CustomCurrency?, Fixed>(
             wallet.onMoneyBalanceChangedStream,
-            currenciesService.currenciesStream(transport.networkType).map(
+            currenciesService.currenciesStream(transport.transport.group).map(
                   (curs) => curs.firstWhereOrNull(
                     (cur) => cur.address == rootTokenContract,
                   ),
