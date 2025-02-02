@@ -15,9 +15,7 @@
   },
   "source_files": "Classes/**/*",
   "dependencies": {
-    "Flutter": [
-
-    ],
+    "Flutter": [],
     "GoogleMLKit/BarcodeScanning": [
       "~> 6.0.0"
     ]

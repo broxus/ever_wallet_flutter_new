@@ -25,7 +25,8 @@ mixin _$TokenContractAsset {
   int get decimals =>
       throw _privateConstructorUsedError; // address of rootTokenContract
   Address get address => throw _privateConstructorUsedError;
-  String get networkType =>
+  String get networkType => throw _privateConstructorUsedError;
+  String get networkGroup =>
       throw _privateConstructorUsedError; // true if custom, false if system
   bool get isCustom => throw _privateConstructorUsedError;
   TokenWalletVersion? get version => throw _privateConstructorUsedError;
@@ -60,6 +61,7 @@ abstract class $TokenContractAssetCopyWith<$Res> {
       int decimals,
       Address address,
       String networkType,
+      String networkGroup,
       bool isCustom,
       TokenWalletVersion? version,
       int? chainId,
@@ -93,6 +95,7 @@ class _$TokenContractAssetCopyWithImpl<$Res, $Val extends TokenContractAsset>
     Object? decimals = null,
     Object? address = null,
     Object? networkType = null,
+    Object? networkGroup = null,
     Object? isCustom = null,
     Object? version = freezed,
     Object? chainId = freezed,
@@ -120,6 +123,10 @@ class _$TokenContractAssetCopyWithImpl<$Res, $Val extends TokenContractAsset>
       networkType: null == networkType
           ? _value.networkType
           : networkType // ignore: cast_nullable_to_non_nullable
+              as String,
+      networkGroup: null == networkGroup
+          ? _value.networkGroup
+          : networkGroup // ignore: cast_nullable_to_non_nullable
               as String,
       isCustom: null == isCustom
           ? _value.isCustom
@@ -187,6 +194,7 @@ abstract class _$$TokenContractAssetImplCopyWith<$Res>
       int decimals,
       Address address,
       String networkType,
+      String networkGroup,
       bool isCustom,
       TokenWalletVersion? version,
       int? chainId,
@@ -220,6 +228,7 @@ class __$$TokenContractAssetImplCopyWithImpl<$Res>
     Object? decimals = null,
     Object? address = null,
     Object? networkType = null,
+    Object? networkGroup = null,
     Object? isCustom = null,
     Object? version = freezed,
     Object? chainId = freezed,
@@ -247,6 +256,10 @@ class __$$TokenContractAssetImplCopyWithImpl<$Res>
       networkType: null == networkType
           ? _value.networkType
           : networkType // ignore: cast_nullable_to_non_nullable
+              as String,
+      networkGroup: null == networkGroup
+          ? _value.networkGroup
+          : networkGroup // ignore: cast_nullable_to_non_nullable
               as String,
       isCustom: null == isCustom
           ? _value.isCustom
@@ -285,6 +298,7 @@ class _$TokenContractAssetImpl implements _TokenContractAsset {
       required this.decimals,
       required this.address,
       required this.networkType,
+      required this.networkGroup,
       required this.isCustom,
       this.version,
       this.chainId,
@@ -306,6 +320,8 @@ class _$TokenContractAssetImpl implements _TokenContractAsset {
   final Address address;
   @override
   final String networkType;
+  @override
+  final String networkGroup;
 // true if custom, false if system
   @override
   final bool isCustom;
@@ -326,7 +342,7 @@ class _$TokenContractAssetImpl implements _TokenContractAsset {
 
   @override
   String toString() {
-    return 'TokenContractAsset(name: $name, symbol: $symbol, decimals: $decimals, address: $address, networkType: $networkType, isCustom: $isCustom, version: $version, chainId: $chainId, ownerAddress: $ownerAddress, totalSupply: $totalSupply, logoURI: $logoURI)';
+    return 'TokenContractAsset(name: $name, symbol: $symbol, decimals: $decimals, address: $address, networkType: $networkType, networkGroup: $networkGroup, isCustom: $isCustom, version: $version, chainId: $chainId, ownerAddress: $ownerAddress, totalSupply: $totalSupply, logoURI: $logoURI)';
   }
 
   @override
@@ -341,6 +357,8 @@ class _$TokenContractAssetImpl implements _TokenContractAsset {
             (identical(other.address, address) || other.address == address) &&
             (identical(other.networkType, networkType) ||
                 other.networkType == networkType) &&
+            (identical(other.networkGroup, networkGroup) ||
+                other.networkGroup == networkGroup) &&
             (identical(other.isCustom, isCustom) ||
                 other.isCustom == isCustom) &&
             (identical(other.version, version) || other.version == version) &&
@@ -361,6 +379,7 @@ class _$TokenContractAssetImpl implements _TokenContractAsset {
       decimals,
       address,
       networkType,
+      networkGroup,
       isCustom,
       version,
       chainId,
@@ -392,6 +411,7 @@ abstract class _TokenContractAsset implements TokenContractAsset {
       required final int decimals,
       required final Address address,
       required final String networkType,
+      required final String networkGroup,
       required final bool isCustom,
       final TokenWalletVersion? version,
       final int? chainId,
@@ -413,7 +433,9 @@ abstract class _TokenContractAsset implements TokenContractAsset {
   @override
   Address get address;
   @override
-  String get networkType; // true if custom, false if system
+  String get networkType;
+  @override
+  String get networkGroup; // true if custom, false if system
   @override
   bool get isCustom;
   @override

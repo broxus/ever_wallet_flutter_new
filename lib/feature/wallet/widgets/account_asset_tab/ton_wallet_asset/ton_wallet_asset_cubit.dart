@@ -1,6 +1,6 @@
 import 'dart:async';
 
-import 'package:app/app/service/connection/network_type.dart';
+import 'package:app/app/service/connection/group.dart';
 import 'package:app/app/service/service.dart';
 import 'package:app/core/bloc/bloc_mixin.dart';
 import 'package:app/data/models/models.dart';
@@ -32,7 +32,7 @@ class TonWalletAssetCubit extends Cubit<TonWalletAssetState>
       (transport) {
         _closeSubs();
         final balances = balanceStorage
-            .getBalances(_networkType)[tonWallet.address]
+            .getBalances(_networkGroup)[tonWallet.address]
             ?.tokenBalance(_nativeTokenContract, isNative: true);
 
         _cachedFiatBalance = balances?.fiatBalance;
@@ -100,8 +100,8 @@ class TonWalletAssetCubit extends Cubit<TonWalletAssetState>
   Money? _cachedFiatBalance;
   Money? _cachedTokenBalance;
 
-  NetworkType get _networkType =>
-      nekotonRepository.currentTransport.networkType;
+  NetworkGroup get _networkGroup =>
+      nekotonRepository.currentTransport.transport.group;
 
   @override
   Future<void> close() {
@@ -131,7 +131,7 @@ class TonWalletAssetCubit extends Cubit<TonWalletAssetState>
   void _tryUpdateBalances() {
     if (_cachedFiatBalance != null && _cachedTokenBalance != null) {
       balanceStorage.setBalances(
-        network: _networkType,
+        group: _networkGroup,
         accountAddress: tonWallet.address,
         balance: AccountBalanceModel(
           rootTokenContract: _nativeTokenContract,
