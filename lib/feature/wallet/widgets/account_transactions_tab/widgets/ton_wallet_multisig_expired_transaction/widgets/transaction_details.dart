@@ -18,24 +18,25 @@ class TonWalletMultisigExpiredTransactionDetailsPage extends StatelessWidget {
     required this.transaction,
     required this.price,
     required this.account,
+    required this.transactionFee,
+    required this.transactionValue,
+    required this.tonIconPath,
+    required this.onPressedSeeInExplorer,
+    this.methodData,
     super.key,
   });
 
   final TonWalletMultisigExpiredTransaction transaction;
   final Fixed price;
   final KeyAccount account;
+  final Money transactionFee;
+  final Money transactionValue;
+  final String tonIconPath;
+  final VoidCallback onPressedSeeInExplorer;
+  final DetailsTitleAndBody? methodData;
 
   @override
   Widget build(BuildContext context) {
-    // TODO(malochka): move it in widget_model or model, old implementation
-    final ticker =
-        inject<NekotonRepository>().currentTransport.nativeTokenTicker;
-
-    final methodData =
-        transaction.walletInteractionInfo?.method.toRepresentableData();
-
-    final tonIconPath =
-        inject<NekotonRepository>().currentTransport.nativeTokenIcon;
     final theme = context.themeStyleV2;
 
     return Scaffold(
@@ -58,14 +59,8 @@ class TonWalletMultisigExpiredTransactionDetailsPage extends StatelessWidget {
               date: transaction.date,
               isIncoming: !transaction.isOutgoing,
               status: TonWalletTransactionStatus.expired,
-              fee: Money.fromBigIntWithCurrency(
-                transaction.fees,
-                Currencies()[ticker]!,
-              ),
-              value: Money.fromBigIntWithCurrency(
-                transaction.value,
-                Currencies()[ticker]!,
-              ),
+              fee: transactionFee,
+              value: transactionValue,
               hash: transaction.hash,
               recipientOrSender: transaction.address,
               comment: transaction.comment,
@@ -90,13 +85,7 @@ class TonWalletMultisigExpiredTransactionDetailsPage extends StatelessWidget {
                 icon: LucideIcons.globe,
                 onPressed: () {
                   Navigator.of(context).pop();
-                  // TODO(oldVersion): extract inject from widget
-                  browserNewTab(
-                    context,
-                    inject<NekotonRepository>()
-                        .currentTransport
-                        .transactionExplorerLink(transaction.hash),
-                  );
+                  onPressedSeeInExplorer();
                 },
                 buttonShape: ButtonShape.pill,
               ),
