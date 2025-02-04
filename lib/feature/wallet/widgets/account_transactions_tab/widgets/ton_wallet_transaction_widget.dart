@@ -65,22 +65,31 @@ class TonWalletTransactionWidget extends StatelessWidget {
     final theme = context.themeStyleV2;
     final date = isFirst ? _headerDate(theme) : null;
 
-    final body = PressScaleWidget(
-      onPressed: onPressed,
-      child: Container(
-        decoration: BoxDecoration(
-          color: theme.colors.background1,
-          borderRadius: BorderRadius.vertical(
-            top: Radius.circular(isFirst ? DimensRadiusV2.radius16 : 0),
-            bottom: Radius.circular(isLast ? DimensRadiusV2.radius16 : 0),
-          ),
+    final body = Container(
+      decoration: BoxDecoration(
+        color: theme.colors.background1,
+        borderRadius: BorderRadius.vertical(
+          top: Radius.circular(isFirst ? DimensRadiusV2.radius16 : 0),
+          bottom: Radius.circular(isLast ? DimensRadiusV2.radius16 : 0),
         ),
-        child: SeparatedColumn(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          mainAxisSize: MainAxisSize.min,
-          children: [
-            _baseTransactionBody(theme),
-          ],
+      ),
+      child: PressScaleWidget(
+        onPressed: onPressed,
+        child: Container(
+          decoration: BoxDecoration(
+            color: theme.colors.background1,
+            borderRadius: BorderRadius.vertical(
+              top: Radius.circular(isFirst ? DimensRadiusV2.radius16 : 0),
+              bottom: Radius.circular(isLast ? DimensRadiusV2.radius16 : 0),
+            ),
+          ),
+          child: SeparatedColumn(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            mainAxisSize: MainAxisSize.min,
+            children: [
+              _baseTransactionBody(theme),
+            ],
+          ),
         ),
       ),
     );
