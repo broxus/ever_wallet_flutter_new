@@ -1,8 +1,8 @@
 import 'package:app/data/models/models.dart';
-import 'package:app/feature/browser/approvals_listener/actions/request_permissions/account_list_item.dart';
 import 'package:app/feature/browser/approvals_listener/actions/request_permissions/request_permissions_wm.dart';
 import 'package:app/feature/browser/approvals_listener/actions/widgets/widgets.dart';
 import 'package:app/feature/wallet/wallet.dart';
+import 'package:app/feature/wallet/widgets/select_account/widgets/seed_item_widget.dart';
 import 'package:app/generated/generated.dart';
 import 'package:elementary/elementary.dart';
 import 'package:elementary_helper/elementary_helper.dart';
@@ -50,8 +50,6 @@ class _SelectAccountWidget extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final theme = context.themeStyleV2;
-
     return SeparatedColumn(
       separatorSize: DimensSizeV2.d12,
       children: [
@@ -67,45 +65,39 @@ class _SelectAccountWidget extends StatelessWidget {
                 onSubmit: (_) => wm.onSearch(),
               ),
               Flexible(
-                child: Container(
-                  width: double.maxFinite,
-                  clipBehavior: Clip.antiAlias,
-                  decoration: BoxDecoration(
-                    border: Border.all(color: theme.colors.border1),
-                    borderRadius: BorderRadius.circular(
-                      DimensRadiusV2.radius12,
-                    ),
-                    color: theme.colors.background1,
-                  ),
-                  child: DoubleSourceBuilder(
-                    firstSource: wm.accounts,
-                    secondSource: wm.selected,
-                    builder: (_, accounts, selected) {
-                      WidgetsBinding.instance.addPostFrameCallback((_) {
-                        _scrollToActiveAccount(accounts, selected);
-                      });
-                      return ListView.separated(
-                        controller: scrollController,
-                        physics: const ClampingScrollPhysics(),
-                        itemCount: accounts?.length ?? 0,
-                        itemBuilder: (_, index) {
-                          final account = accounts?[index];
-                          return account == null
-                              ? const SizedBox.shrink()
-                              : AccountListItem(
-                                  key: ValueKey(account.address),
-                                  account: account,
-                                  balance: wm.getBalanceEntity(account),
-                                  active: account.address == selected?.address,
-                                  onTap: () => wm.onSelectedChanged(account),
-                                );
-                        },
-                        separatorBuilder: (_, __) => CommonDivider(
-                          color: theme.colors.border0,
+                child: DoubleSourceBuilder(
+                  firstSource: wm.accounts,
+                  secondSource: wm.selected,
+                  builder: (_, list, selected) {
+                    return SingleChildScrollView(
+                      controller: scrollController,
+                      physics: const ClampingScrollPhysics(),
+                      child: Column(
+                        mainAxisSize: MainAxisSize.min,
+                        children: List.generate(
+                          list?.length ?? 0,
+                          (index) {
+                            final data = list![index];
+                            final isExpanded = data.hasCurrentAccount(selected);
+                            return Padding(
+                              padding: const EdgeInsets.only(
+                                bottom: DimensSizeV2.d8,
+                              ),
+                              child: SeedItem(
+                                data: data,
+                                isExpanded: isExpanded,
+                                key: ValueKey(data.name),
+                                currentAccount: selected,
+                                onTapAccount: wm.onSelectedChanged,
+                                getBalanceEntity: wm.getBalanceEntity,
+                                scrollController: scrollController,
+                              ),
+                            );
+                          },
                         ),
-                      );
-                    },
-                  ),
+                      ),
+                    );
+                  },
                 ),
               ),
             ],
@@ -121,25 +113,6 @@ class _SelectAccountWidget extends StatelessWidget {
         ),
       ],
     );
-  }
-
-  void _scrollToActiveAccount(
-    List<KeyAccount>? accounts,
-    KeyAccount? selected,
-  ) {
-    if (accounts != null && selected != null) {
-      final index = accounts.indexWhere(
-        (account) => account.address == selected.address,
-      );
-
-      if (index != -1) {
-        scrollController.animateTo(
-          index * DimensSizeV2.d72,
-          duration: const Duration(milliseconds: 300),
-          curve: Curves.easeInOut,
-        );
-      }
-    }
   }
 }
 
