@@ -116,7 +116,8 @@ class _SelectNewAssetCustomEnterState extends State<SelectNewAssetCustomEnter> {
               child: AccentButton(
                 buttonShape: ButtonShape.pill,
                 title: LocaleKeys.proceedWord.tr(),
-                onPressed: value.text.isNotEmpty ? () => _enable(context) : null,
+                onPressed:
+                    value.text.isNotEmpty ? () => _enable(context) : null,
               ),
             ),
           ),
