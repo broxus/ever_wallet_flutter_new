@@ -32,7 +32,7 @@ class AddAccountResultWidgetModel
   ThemeStyleV2 get theme => context.themeStyleV2;
 
   Future<void> onSwitch() async {
-    final address = await repackAddress(widget.address);
+    final address = repackAddress(widget.address);
     model.changeCurrentAccount(address);
     // ignore: use_build_context_synchronously
     Navigator.of(context).pop();
