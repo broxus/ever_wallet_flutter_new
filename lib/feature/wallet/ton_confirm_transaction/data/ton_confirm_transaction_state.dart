@@ -5,38 +5,38 @@ part 'ton_confirm_transaction_state.freezed.dart';
 
 @freezed
 class TonConfirmTransactionState with _$TonConfirmTransactionState {
-  const factory TonConfirmTransactionState.prepare() = _PrepareState;
+  const factory TonConfirmTransactionState.prepare() = PrepareState;
 
   const factory TonConfirmTransactionState.loading(
     PublicKey custodian,
-  ) = _LoadingState;
+  ) = LoadingState;
 
   const factory TonConfirmTransactionState.subscribeError(Object error) =
-      _SubscribeError;
+      SubscribeError;
 
   /// Error during prepare process
   const factory TonConfirmTransactionState.calculatingError(
     String error,
     PublicKey custodian, [
     BigInt? fee,
-  ]) = _CalculatingError;
+  ]) = CalculatingError;
 
   /// Blockchain fee loaded, allow user send transaction
   const factory TonConfirmTransactionState.readyToSend(
     BigInt fee,
     PublicKey custodian,
-  ) = _Ready;
+  ) = Ready;
 
   /// Transaction is sending.
   /// [canClose] needs to allow user close transaction right after it was sent
   /// to blockchain but not completed.
   const factory TonConfirmTransactionState.sending({required bool canClose}) =
-      _Sending;
+      Sending;
 
   /// Transaction sent successfully
   const factory TonConfirmTransactionState.sent(
     BigInt fee,
     Transaction transaction,
     PublicKey custodian,
-  ) = _Sent;
+  ) = Sent;
 }

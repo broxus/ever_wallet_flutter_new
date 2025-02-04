@@ -7,6 +7,7 @@ import 'package:app/feature/wallet/ton_confirm_transaction/ton_confirm_transacti
 import 'package:app/feature/wallet/ton_confirm_transaction/ton_confirm_transaction_screen_model.dart';
 import 'package:app/generated/generated.dart';
 import 'package:elementary/elementary.dart';
+import 'package:elementary_helper/elementary_helper.dart';
 import 'package:flutter/widgets.dart';
 import 'package:go_router/go_router.dart';
 import 'package:logging/logging.dart';
@@ -39,18 +40,24 @@ class TonConfirmTransactionScreenWidgetModel extends CustomWidgetModel<
     super.model,
   );
 
-  late final screenState = createNotifier<TonConfirmTransactionState>(
+  late final _screenState = createNotifier<TonConfirmTransactionState>(
     _localCustodians.length > 1
         ? const TonConfirmTransactionState.prepare()
         : TonConfirmTransactionState.loading(_localCustodians.first),
   );
 
-  late PublicKey selectedCustodian;
+  late final _appbarState = createNotifier<String?>();
+
+  late PublicKey _selectedCustodian;
 
   /// Fee for transaction after calculating it in [_handlePrepare]
   BigInt? _fees;
 
   final _logger = Logger('TonConfirmTransaction');
+
+  ListenableState<TonConfirmTransactionState?> get screenState => _screenState;
+
+  ListenableState<String?> get appbarState => _appbarState;
 
   KeyAccount? get account => model.account;
 
@@ -64,6 +71,16 @@ class TonConfirmTransactionScreenWidgetModel extends CustomWidgetModel<
   void initWidgetModel() {
     super.initWidgetModel();
     _init();
+    _screenState.addListener(
+      () {
+        _appbarState.accept(
+          _screenState.value?.maybeWhen(
+            sending: (_) => null,
+            orElse: () => LocaleKeys.confirmTransaction.tr(),
+          ),
+        );
+      },
+    );
   }
 
   void onPasswordEntered(String value) {
@@ -83,16 +100,16 @@ class TonConfirmTransactionScreenWidgetModel extends CustomWidgetModel<
   Future<void> _handlePrepare(PublicKey custodian) async {
     UnsignedMessage? unsignedMessage;
     try {
-      selectedCustodian = custodian;
+      _selectedCustodian = custodian;
       unsignedMessage = await model.prepareConfirmTransaction(
-        selectedCustodian,
+        _selectedCustodian,
       );
       _fees = await model.estimateFees(unsignedMessage);
 
       final walletState = await model.walletState;
 
       if (walletState.hasError) {
-        screenState.accept(
+        _screenState.accept(
           TonConfirmTransactionState.subscribeError(walletState.error!),
         );
         return;
@@ -105,25 +122,25 @@ class TonConfirmTransactionScreenWidgetModel extends CustomWidgetModel<
       final isPossibleToSendMessage = balance > (_fees! + model.amount);
 
       if (!isPossibleToSendMessage) {
-        screenState.accept(
+        _screenState.accept(
           TonConfirmTransactionState.calculatingError(
             LocaleKeys.insufficientFunds.tr(),
-            selectedCustodian,
+            _selectedCustodian,
             _fees,
           ),
         );
         return;
       }
 
-      screenState.accept(
-        TonConfirmTransactionState.readyToSend(_fees!, selectedCustodian),
+      _screenState.accept(
+        TonConfirmTransactionState.readyToSend(_fees!, _selectedCustodian),
       );
     } catch (e, t) {
       _logger.severe('_handlePrepare:', e, t);
-      screenState.accept(
+      _screenState.accept(
         TonConfirmTransactionState.calculatingError(
           e.toString(),
-          selectedCustodian,
+          _selectedCustodian,
         ),
       );
     } finally {
@@ -139,21 +156,21 @@ class TonConfirmTransactionScreenWidgetModel extends CustomWidgetModel<
     }
 
     try {
-      screenState.accept(
+      _screenState.accept(
         const TonConfirmTransactionState.sending(canClose: false),
       );
       unsignedMessage = await model.prepareConfirmTransaction(
-        selectedCustodian,
+        _selectedCustodian,
       );
 
       final signedMessage = await model.createSignedMessage(
         hash: unsignedMessage.hash,
-        selectedCustodian: selectedCustodian,
+        selectedCustodian: _selectedCustodian,
         password: password,
         unsignedMessage: unsignedMessage,
       );
 
-      screenState.accept(
+      _screenState.accept(
         const TonConfirmTransactionState.sending(canClose: true),
       );
 
@@ -164,11 +181,11 @@ class TonConfirmTransactionScreenWidgetModel extends CustomWidgetModel<
 
       model.showSuccessful(contextSafe);
 
-      screenState.accept(
+      _screenState.accept(
         TonConfirmTransactionState.sent(
           _fees!,
           transaction,
-          selectedCustodian,
+          _selectedCustodian,
         ),
       );
 
@@ -177,8 +194,8 @@ class TonConfirmTransactionScreenWidgetModel extends CustomWidgetModel<
     } catch (e, t) {
       _logger.severe('_handleSend', e, t);
       model.showError(contextSafe, e.toString());
-      screenState.accept(
-        TonConfirmTransactionState.readyToSend(_fees!, selectedCustodian),
+      _screenState.accept(
+        TonConfirmTransactionState.readyToSend(_fees!, _selectedCustodian),
       );
     } finally {
       unsignedMessage?.dispose();

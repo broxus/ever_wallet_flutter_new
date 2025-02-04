@@ -4,7 +4,6 @@ import 'package:app/feature/wallet/ton_confirm_transaction/widgets/confirm_view.
 import 'package:app/feature/wallet/ton_confirm_transaction/widgets/transaction_prepare.dart';
 import 'package:app/feature/wallet/ton_wallet_send/widgets/transaction_sending_widget.dart';
 import 'package:app/feature/wallet/widgets/wallet_subscribe_error_widget.dart';
-import 'package:app/generated/generated.dart';
 import 'package:elementary/elementary.dart';
 import 'package:elementary_helper/elementary_helper.dart';
 import 'package:flutter/material.dart';
@@ -48,69 +47,129 @@ class TonConfirmTransactionScreen
 
   @override
   Widget build(TonConfirmTransactionScreenWidgetModel wm) {
-    return StateNotifierBuilder<TonConfirmTransactionState>(
-      listenableState: wm.screenState,
-      builder: (context, state) {
-        if (state == null) {
+    return Scaffold(
+      appBar: _AppBar(appbarState: wm.appbarState),
+      body: StateNotifierBuilder<TonConfirmTransactionState?>(
+        listenableState: wm.screenState,
+        builder: (_, TonConfirmTransactionState? state) {
+          if (state == null) {
+            return const SizedBox.shrink();
+          }
+
+          return switch (state) {
+            PrepareState() => TonWalletConfirmTransactionPrepare(
+                localCustodians: localCustodians,
+                onPressed: wm.onPressedPrepare,
+              ),
+            SubscribeError(:final error) => Center(
+                child: WalletSubscribeErrorWidget(error: error),
+              ),
+            Sending(:final canClose) => Padding(
+                padding: const EdgeInsets.all(DimensSize.d16),
+                child: TransactionSendingWidget(canClose: canClose),
+              ),
+            _ => _ConfirmPage(
+                account: wm.account,
+                amount: wm.amount,
+                money: wm.money,
+                comment: comment,
+                transactionIdHash: transactionIdHash,
+                destination: destination,
+                custodian: switch (state) {
+                  LoadingState(:final custodian) ||
+                  CalculatingError(:final custodian) ||
+                  Ready(:final custodian) ||
+                  Sent(:final custodian) =>
+                    custodian,
+                  _ => null,
+                },
+                fee: switch (state) {
+                  CalculatingError(:final fee) => fee,
+                  Ready(:final fee) || Sent(:final fee) => fee,
+                  _ => null,
+                },
+                error: switch (state) {
+                  CalculatingError(:final error) => error,
+                  _ => null,
+                },
+                onPasswordEntered: wm.onPasswordEntered,
+              ),
+          };
+        },
+      ),
+    );
+  }
+}
+
+class _AppBar extends StatelessWidget implements PreferredSizeWidget {
+  const _AppBar({
+    required this.appbarState,
+  });
+
+  final ListenableState<String?> appbarState;
+
+  @override
+  Size get preferredSize => DefaultAppBar.size;
+
+  @override
+  Widget build(BuildContext context) {
+    return StateNotifierBuilder<String?>(
+      listenableState: appbarState,
+      builder: (_, String? title) {
+        if (title == null) {
           return const SizedBox.shrink();
         }
-        return state.when(
-          prepare: () => Scaffold(
-            appBar: DefaultAppBar(
-              titleText: LocaleKeys.confirmTransaction.tr(),
-            ),
-            body: TonWalletConfirmTransactionPrepare(
-              localCustodians: localCustodians,
-              onPressed: wm.onPressedPrepare,
-            ),
-          ),
-          subscribeError: (error) => Scaffold(
-            appBar: DefaultAppBar(
-              titleText: LocaleKeys.confirmTransaction.tr(),
-            ),
-            body: Center(child: WalletSubscribeErrorWidget(error: error)),
-          ),
-          loading: (custodian) => _confirmPage(wm, custodian: custodian),
-          calculatingError: (error, custodian, fee) =>
-              _confirmPage(wm, fee: fee, error: error, custodian: custodian),
-          readyToSend: (fee, custodian) =>
-              _confirmPage(wm, fee: fee, custodian: custodian),
-          sending: (canClose) => Scaffold(
-            body: Padding(
-              padding: const EdgeInsets.all(DimensSize.d16),
-              child: TransactionSendingWidget(canClose: canClose),
-            ),
-          ),
-          sent: (fee, transaction, custodian) =>
-              _confirmPage(wm, fee: fee, custodian: custodian),
+
+        return DefaultAppBar(
+          titleText: title,
         );
       },
     );
   }
+}
 
-  Widget _confirmPage(
-    TonConfirmTransactionScreenWidgetModel wm, {
-    required PublicKey custodian,
-    BigInt? fee,
-    String? error,
-  }) {
-    // Получаем account и money из Widget Model
-    final account = wm.account;
-    final money = wm.money;
-    return Scaffold(
-      appBar: DefaultAppBar(titleText: LocaleKeys.confirmTransaction.tr()),
-      body: TonWalletConfirmTransactionConfirmView(
-        account: account,
-        transactionIdHash: transactionIdHash,
-        money: money,
-        recipient: destination,
-        amount: wm.amount,
-        comment: comment,
-        publicKey: custodian,
-        fee: fee,
-        feeError: error,
-        onPasswordEntered: wm.onPasswordEntered,
-      ),
+class _ConfirmPage extends StatelessWidget {
+  const _ConfirmPage({
+    required this.amount,
+    required this.destination,
+    required this.onPasswordEntered,
+    this.account,
+    this.money,
+    this.transactionIdHash,
+    this.comment,
+    this.custodian,
+    this.fee,
+    this.error,
+  });
+
+  final KeyAccount? account;
+  final BigInt amount;
+  final Money? money;
+  final String? transactionIdHash;
+  final String? comment;
+  final Address destination;
+  final PublicKey? custodian;
+  final BigInt? fee;
+  final String? error;
+  final ValueChanged<String> onPasswordEntered;
+
+  @override
+  Widget build(BuildContext context) {
+    if (custodian == null) {
+      return const SizedBox.shrink();
+    }
+
+    return TonWalletConfirmTransactionConfirmView(
+      account: account,
+      transactionIdHash: transactionIdHash,
+      money: money,
+      recipient: destination,
+      amount: amount,
+      comment: comment,
+      publicKey: custodian!,
+      fee: fee,
+      feeError: error,
+      onPasswordEntered: onPasswordEntered,
     );
   }
 }

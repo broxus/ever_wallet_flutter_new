@@ -2930,6 +2930,7 @@ abstract class _$$SendMessageImplCopyWith<$Res>
   $AddressCopyWith<$Res> get sender;
   $AddressCopyWith<$Res> get recipient;
   $FunctionCallCopyWith<$Res>? get payload;
+  $KnownPayloadCopyWith<$Res>? get knownPayload;
 }
 
 /// @nodoc
@@ -3023,6 +3024,20 @@ class __$$SendMessageImplCopyWithImpl<$Res>
       return _then(_value.copyWith(payload: value));
     });
   }
+
+  /// Create a copy of ApprovalRequest
+  /// with the given fields replaced by the non-null parameter values.
+  @override
+  @pragma('vm:prefer-inline')
+  $KnownPayloadCopyWith<$Res>? get knownPayload {
+    if (_value.knownPayload == null) {
+      return null;
+    }
+
+    return $KnownPayloadCopyWith<$Res>(_value.knownPayload!, (value) {
+      return _then(_value.copyWith(knownPayload: value));
+    });
+  }
 }
 
 /// @nodoc
@@ -3073,23 +3088,15 @@ class _$SendMessageImpl implements _SendMessage {
             (identical(other.amount, amount) || other.amount == amount) &&
             (identical(other.bounce, bounce) || other.bounce == bounce) &&
             (identical(other.payload, payload) || other.payload == payload) &&
-            const DeepCollectionEquality()
-                .equals(other.knownPayload, knownPayload) &&
+            (identical(other.knownPayload, knownPayload) ||
+                other.knownPayload == knownPayload) &&
             (identical(other.completer, completer) ||
                 other.completer == completer));
   }
 
   @override
-  int get hashCode => Object.hash(
-      runtimeType,
-      origin,
-      sender,
-      recipient,
-      amount,
-      bounce,
-      payload,
-      const DeepCollectionEquality().hash(knownPayload),
-      completer);
+  int get hashCode => Object.hash(runtimeType, origin, sender, recipient,
+      amount, bounce, payload, knownPayload, completer);
 
   /// Create a copy of ApprovalRequest
   /// with the given fields replaced by the non-null parameter values.

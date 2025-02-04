@@ -56,6 +56,8 @@ class DefaultAppBar extends StatelessWidget implements PreferredSizeWidget {
     this.systemOverlayStyle,
   });
 
+  static const size = Size.fromHeight(defaultAppBarHeight);
+
   /// This is a default action of [DefaultAppBar] that is used with leading
   /// or action buttons.
   /// This field exists because of difference of navigation between story book
@@ -83,7 +85,7 @@ class DefaultAppBar extends StatelessWidget implements PreferredSizeWidget {
   };
 
   @override
-  Size get preferredSize => const Size.fromHeight(defaultAppBarHeight);
+  Size get preferredSize => size;
 
   /// Color of the appbar.
   /// Default is transparent
