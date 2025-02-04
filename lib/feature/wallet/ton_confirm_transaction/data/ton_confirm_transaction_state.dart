@@ -1,4 +1,7 @@
-part of 'ton_confirm_transaction_bloc.dart';
+import 'package:freezed_annotation/freezed_annotation.dart';
+import 'package:nekoton_repository/nekoton_repository.dart';
+
+part 'ton_confirm_transaction_state.freezed.dart';
 
 @freezed
 class TonConfirmTransactionState with _$TonConfirmTransactionState {
