@@ -56,7 +56,6 @@ class WalletDeployBloc extends Bloc<WalletDeployEvent, WalletDeployState>
   String? tonIconPath;
   String? ticker;
   CustomCurrency? tokenCustomCurrency;
-  UnsignedMessage? unsignedMessage;
 
   /// Last selected type of deploying.
   /// For [WalletDeployType.multisig] [_cachedRequireConfirmations] and
@@ -150,10 +149,10 @@ class WalletDeployBloc extends Bloc<WalletDeployEvent, WalletDeployState>
 
     try {
       await _handlePrepareDeploy(emit);
-    } on FfiException catch (e, t) {
+    } on Exception catch (e, t) {
       _logger.severe('_handlePrepareStandard', e, t);
       inject<MessengerService>()
-          .show(Message.error(context: context, message: e.message));
+          .show(Message.error(context: context, message: e.toString()));
     }
   }
 
@@ -169,10 +168,10 @@ class WalletDeployBloc extends Bloc<WalletDeployEvent, WalletDeployState>
 
     try {
       await _handlePrepareDeploy(emit, custodians, requireConfirmations);
-    } on FfiException catch (e, t) {
+    } on Exception catch (e, t) {
       _logger.severe('_handlePrepareMultisig', e, t);
       inject<MessengerService>()
-          .show(Message.error(context: context, message: e.message));
+          .show(Message.error(context: context, message: e.toString()));
     }
   }
 
@@ -182,6 +181,7 @@ class WalletDeployBloc extends Bloc<WalletDeployEvent, WalletDeployState>
     List<PublicKey>? custodians,
     int? requireConfirmations,
   ]) async {
+    UnsignedMessage? unsignedMessage;
     try {
       final account = nekotonRepository.seedList.findAccountByAddress(address);
       final wallet = await nekotonRepository.walletsStream
@@ -196,11 +196,7 @@ class WalletDeployBloc extends Bloc<WalletDeployEvent, WalletDeployState>
 
       balance = wallet.wallet!.contractState.balance;
       unsignedMessage = await _prepareDeploy();
-
-      fees = await nekotonRepository.estimateFees(
-        address: address,
-        message: unsignedMessage!,
-      );
+      fees = await estimateFees(unsignedMessage);
 
       final isPossibleToSendMessage = balance! > fees!;
 
@@ -230,18 +226,6 @@ class WalletDeployBloc extends Bloc<WalletDeployEvent, WalletDeployState>
           hours: _cachedHoursConfirmation,
         ),
       );
-    } on FfiException catch (e, t) {
-      _logger.severe('_handlePrepareDeploy', e, t);
-      emitSafe(
-        WalletDeployState.calculatingError(
-          error: e.message,
-          balance: balance,
-          fee: fees,
-          requireConfirmations: requireConfirmations,
-          custodians: custodians,
-          tonIconPath: tonIconPath,
-        ),
-      );
     } on Exception catch (e, t) {
       _logger.severe('_handlePrepareDeploy', e, t);
       emitSafe(
@@ -254,6 +238,8 @@ class WalletDeployBloc extends Bloc<WalletDeployEvent, WalletDeployState>
           tonIconPath: tonIconPath,
         ),
       );
+    } finally {
+      unsignedMessage?.dispose();
     }
   }
 
@@ -262,11 +248,12 @@ class WalletDeployBloc extends Bloc<WalletDeployEvent, WalletDeployState>
     Emitter<WalletDeployState> emit,
     String password,
   ) async {
+    UnsignedMessage? unsignedMessage;
     try {
       emitSafe(const WalletDeployState.deploying(canClose: false));
       // await unsignedMessage.refreshTimeout();
       // TODO(komarov): fix refresh_timeout in nekoton
-      final unsignedMessage = this.unsignedMessage = await _prepareDeploy();
+      unsignedMessage = await _prepareDeploy();
 
       final hash = unsignedMessage.hash;
       final transport = nekotonRepository.currentTransport.transport;
@@ -299,25 +286,6 @@ class WalletDeployBloc extends Bloc<WalletDeployEvent, WalletDeployState>
         add(WalletDeployEvent.completeDeploy(transaction));
       }
     } on OperationCanceledException catch (_) {
-    } on FfiException catch (e, t) {
-      _logger.severe('_handleSend', e, t);
-      inject<MessengerService>()
-          .show(Message.error(context: context, message: e.message));
-      emitSafe(
-        WalletDeployState.readyToDeploy(
-          fee: fees!,
-          balance: balance!,
-          custodians:
-              _type == WalletDeployType.standard ? null : _cachedCustodians,
-          requireConfirmations: _type == WalletDeployType.standard
-              ? null
-              : _cachedRequireConfirmations,
-          tonIconPath: tonIconPath,
-          ticker: ticker,
-          currency: tokenCustomCurrency,
-          hours: _cachedHoursConfirmation,
-        ),
-      );
     } on Exception catch (e, t) {
       _logger.severe('_handleSend', e, t);
       inject<MessengerService>()
@@ -337,6 +305,8 @@ class WalletDeployBloc extends Bloc<WalletDeployEvent, WalletDeployState>
           hours: _cachedHoursConfirmation,
         ),
       );
+    } finally {
+      unsignedMessage?.dispose();
     }
   }
 
@@ -350,9 +320,15 @@ class WalletDeployBloc extends Bloc<WalletDeployEvent, WalletDeployState>
           expirationTime: _cachedHoursConfirmation * 3600, // hours to seconds
         );
 
-  @override
-  Future<void> close() {
-    unsignedMessage?.dispose();
-    return super.close();
+  Future<BigInt> estimateFees(UnsignedMessage message) async {
+    try {
+      return await nekotonRepository.estimateDeploymentFees(
+        address: address,
+        message: message,
+      );
+    } on Exception catch (e, t) {
+      _logger.severe('estimateFees', e, t);
+      return BigInt.zero;
+    }
   }
 }

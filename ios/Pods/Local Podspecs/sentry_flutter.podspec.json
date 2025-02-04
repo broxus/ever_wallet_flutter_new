@@ -1,6 +1,6 @@
 {
   "name": "sentry_flutter",
-  "version": "8.10.1",
+  "version": "8.12.0",
   "summary": "Sentry SDK for Flutter.",
   "description": "Sentry SDK for Flutter with support to native through sentry-cocoa.",
   "homepage": "https://sentry.io",
@@ -11,20 +11,18 @@
   "authors": "Sentry",
   "source": {
     "git": "https://github.com/getsentry/sentry-dart.git",
-    "tag": "8.10.1"
+    "tag": "8.12.0"
   },
   "source_files": "Classes/**/*",
   "public_header_files": "Classes/**/*.h",
   "dependencies": {
     "Sentry/HybridSDK": [
-      "8.40.1"
+      "8.42.0"
     ]
   },
   "ios": {
     "dependencies": {
-      "Flutter": [
-
-      ]
+      "Flutter": []
     },
     "pod_target_xcconfig": {
       "DEFINES_MODULE": "YES",
@@ -33,9 +31,7 @@
   },
   "osx": {
     "dependencies": {
-      "FlutterMacOS": [
-
-      ]
+      "FlutterMacOS": []
     },
     "pod_target_xcconfig": {
       "DEFINES_MODULE": "YES"

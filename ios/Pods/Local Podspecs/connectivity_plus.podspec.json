@@ -18,9 +18,7 @@
   "source_files": "connectivity_plus/Sources/connectivity_plus/**/*.swift",
   "ios": {
     "dependencies": {
-      "Flutter": [
-
-      ]
+      "Flutter": []
     },
     "resource_bundles": {
       "connectivity_plus_privacy": [
@@ -30,9 +28,7 @@
   },
   "osx": {
     "dependencies": {
-      "FlutterMacOS": [
-
-      ]
+      "FlutterMacOS": []
     },
     "resource_bundles": {
       "connectivity_plus_privacy": [

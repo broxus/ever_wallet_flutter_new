@@ -1,4 +1,6 @@
+import 'package:app/app/service/connection/group.dart';
 import 'package:app/app/service/connection/network_type.dart';
+import 'package:app/utils/common_utils.dart';
 import 'package:freezed_annotation/freezed_annotation.dart';
 import 'package:nekoton_repository/nekoton_repository.dart';
 
@@ -15,6 +17,7 @@ class TokenContractAsset with _$TokenContractAsset {
     // address of rootTokenContract
     required Address address,
     required NetworkType networkType,
+    required NetworkGroup networkGroup,
     // true if custom, false if system
     required bool isCustom,
     TokenWalletVersion? version,
@@ -28,7 +31,13 @@ class TokenContractAsset with _$TokenContractAsset {
   }) = _TokenContractAsset;
 
   factory TokenContractAsset.fromJson(Map<String, dynamic> json) =>
-      _$TokenContractAssetFromJson(json);
+      _$TokenContractAssetFromJson(_update(json));
+}
+
+Map<String, dynamic> _update(Map<String, dynamic> json) {
+  json['networkGroup'] ??= getNetworkGroupByNetworkType(json['networkType']);
+
+  return json;
 }
 
 TokenWalletVersion intToWalletContractConvert(int version) {

@@ -18,8 +18,14 @@ class $AssetsAbiGen {
   /// File path: assets/abi/StEverAccount.abi.min.json
   String get stEverAccountAbiMin => 'assets/abi/StEverAccount.abi.min.json';
 
+  /// File path: assets/abi/StEverAccountNew.abi.json
+  String get stEverAccountNewAbi => 'assets/abi/StEverAccountNew.abi.json';
+
   /// File path: assets/abi/StEverVault.abi.min.json
   String get stEverVaultAbiMin => 'assets/abi/StEverVault.abi.min.json';
+
+  /// File path: assets/abi/StEverVaultNew.abi.json
+  String get stEverVaultNewAbi => 'assets/abi/StEverVaultNew.abi.json';
 
   /// File path: assets/abi/TokenRoot.abi.json
   String get tokenRootAbi => 'assets/abi/TokenRoot.abi.json';
@@ -28,8 +34,24 @@ class $AssetsAbiGen {
   String get tokenWalletAbi => 'assets/abi/TokenWallet.abi.json';
 
   /// List of all assets
-  List<String> get values =>
-      [stEverAccountAbiMin, stEverVaultAbiMin, tokenRootAbi, tokenWalletAbi];
+  List<String> get values => [
+        stEverAccountAbiMin,
+        stEverAccountNewAbi,
+        stEverVaultAbiMin,
+        stEverVaultNewAbi,
+        tokenRootAbi,
+        tokenWalletAbi
+      ];
+}
+
+class $AssetsConfigsGen {
+  const $AssetsConfigsGen();
+
+  /// File path: assets/configs/connections.json
+  String get connections => 'assets/configs/connections.json';
+
+  /// List of all assets
+  List<String> get values => [connections];
 }
 
 class $AssetsImagesGen {
@@ -188,6 +210,10 @@ class $AssetsImagesGen {
 
   /// File path: assets/images/deploy.svg
   SvgGenImage get deploy => const SvgGenImage('assets/images/deploy.svg');
+
+  /// File path: assets/images/deployment_progress.png
+  AssetGenImage get deploymentProgress =>
+      const AssetGenImage('assets/images/deployment_progress.png');
 
   /// File path: assets/images/dots.svg
   SvgGenImage get dots => const SvgGenImage('assets/images/dots.svg');
@@ -385,6 +411,10 @@ class $AssetsImagesGen {
   SvgGenImage get tokenDefaultIcon =>
       const SvgGenImage('assets/images/token_default_icon.svg');
 
+  /// File path: assets/images/transaction_progress.png
+  AssetGenImage get transactionProgress =>
+      const AssetGenImage('assets/images/transaction_progress.png');
+
   /// File path: assets/images/trash.svg
   SvgGenImage get trash => const SvgGenImage('assets/images/trash.svg');
 
@@ -443,6 +473,7 @@ class $AssetsImagesGen {
         copyOutlined,
         currency,
         deploy,
+        deploymentProgress,
         dots,
         edit,
         ever,
@@ -497,6 +528,7 @@ class $AssetsImagesGen {
         star,
         support,
         tokenDefaultIcon,
+        transactionProgress,
         trash,
         wallet,
         web
@@ -787,6 +819,7 @@ class Assets {
   Assets._();
 
   static const $AssetsAbiGen abi = $AssetsAbiGen();
+  static const $AssetsConfigsGen configs = $AssetsConfigsGen();
   static const $AssetsImagesGen images = $AssetsImagesGen();
   static const $AssetsJsGen js = $AssetsJsGen();
   static const $AssetsSplashGen splash = $AssetsSplashGen();

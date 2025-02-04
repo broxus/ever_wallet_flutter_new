@@ -17,9 +17,7 @@
   "resources": "Storyboards/**/*.storyboard",
   "public_header_files": "Classes/**/*.h",
   "dependencies": {
-    "Flutter": [
-
-    ],
+    "Flutter": [],
     "OrderedSet": [
       "~>6.0.3"
     ]

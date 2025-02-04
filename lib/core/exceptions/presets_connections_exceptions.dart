@@ -22,3 +22,7 @@ class FetchPresetsConnectionsExceptions extends PresetsConnectionsExceptions {
 class CachePresetsConnectionsExceptions extends PresetsConnectionsExceptions {
   CachePresetsConnectionsExceptions(super.message);
 }
+
+class LocalPresetsConnectionsExceptions extends PresetsConnectionsExceptions {
+  LocalPresetsConnectionsExceptions(super.message);
+}

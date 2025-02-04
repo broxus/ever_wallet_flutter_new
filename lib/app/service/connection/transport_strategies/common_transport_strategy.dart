@@ -6,6 +6,8 @@ import 'package:app/app/service/connection/data/transport_icons.dart';
 import 'package:app/app/service/connection/data/transport_manifest_option/transport_manifest_option.dart';
 import 'package:app/app/service/connection/data/transport_native_token_option/transport_native_token_option.dart';
 import 'package:app/app/service/connection/generic_token_subscriber.dart';
+import 'package:app/app/service/connection/group.dart';
+import 'package:app/app/service/connection/network_type.dart';
 import 'package:app/app/service/connection/transport_strategies/app_transport_strategy.dart';
 import 'package:app/di/di.dart';
 import 'package:app/generated/generated.dart';
@@ -98,7 +100,7 @@ class CommonTransportStrategy extends AppTransportStrategy {
   @override
   final String networkName;
 
-  final String networkType;
+  final NetworkType networkType;
 
   @override
   final List<int> seedPhraseWordsCount;
@@ -128,6 +130,8 @@ class CommonTransportStrategy extends AppTransportStrategy {
     GenericTokenType.jetton => JettonTokenWalletSubscriber(inject(), inject()),
   };
 
+  NetworkGroup get networkGroup => transport.group;
+
   @override
   String get nativeTokenTicker => nativeTokenTickerOption.when(
         fromConnection: () => connection.nativeTokenTicker,
@@ -146,7 +150,7 @@ class CommonTransportStrategy extends AppTransportStrategy {
       AccountExplorerLinkType.accountDetails =>
         '${connection.blockExplorerUrl}/accounts/accountDetails?id=${accountAddress.address}',
       AccountExplorerLinkType.packAddress =>
-        '${connection.blockExplorerUrl}/${packAddress(address: accountAddress)}',
+        '${connection.blockExplorerUrl}/${packAddress(accountAddress)}',
     };
   }
 

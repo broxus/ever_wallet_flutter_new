@@ -1,26 +1,37 @@
+import 'package:app/app/service/presets_connection/presets_connection_service.dart';
 import 'package:app/app/service/service.dart';
+import 'package:app/app/service/storage_service/migrations/storage_migrations/v1.dart';
+import 'package:app/app/service/storage_service/migrations/storage_migrations/v2.dart';
+import 'package:app/app/service/storage_service/migrations/storage_migrations/v3.dart';
+import 'package:app/app/service/storage_service/migrations/storage_migrations/v4.dart';
 import 'package:encrypted_storage/encrypted_storage.dart';
 import 'package:get_storage/get_storage.dart';
 import 'package:logging/logging.dart';
 
 final _logger = Logger('StorageMigrationService');
-const _version = 3;
+
+const _version = 4;
 const _versionKey = 'version';
 
 class StorageMigrationService {
   StorageMigrationService(
     this._encryptedStorage,
+    this._presetsConnectionService,
   ) : _storage = GetStorage();
 
   static Future<void> applyMigrations(
     EncryptedStorage encryptedStorage,
+    PresetsConnectionService presetsConnectionService,
   ) async =>
       StorageMigrationService(
         encryptedStorage,
+        presetsConnectionService,
       ).migrate();
 
   final GetStorage _storage;
   final EncryptedStorage _encryptedStorage;
+
+  final PresetsConnectionService _presetsConnectionService;
 
   int get currentVersion => _storage.read<int>(_versionKey) ?? 0;
 
@@ -54,6 +65,11 @@ class StorageMigrationService {
     }
     if (currentVersion < StorageMigrationV3.version) {
       yield StorageMigrationV3();
+    }
+    if (currentVersion < StorageMigrationV4.version) {
+      yield StorageMigrationV4(
+        _presetsConnectionService,
+      );
     }
   }
 }

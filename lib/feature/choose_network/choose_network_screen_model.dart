@@ -1,9 +1,9 @@
 // ignore_for_file: use_build_context_synchronously
 
-import 'package:app/app/service/connection/presets_connection_service.dart';
 import 'package:app/app/service/messenger/message.dart';
 import 'package:app/app/service/messenger/service/messenger_service.dart';
 import 'package:app/app/service/network_connection/network_connection_service.dart';
+import 'package:app/app/service/presets_connection/presets_connection_service.dart';
 import 'package:app/app/service/storage_service/connections_storage_service.dart';
 import 'package:app/feature/choose_network/choose_network_screen.dart';
 import 'package:app/feature/choose_network/data/choose_network_item_data.dart';
@@ -76,7 +76,7 @@ class ChooseNetworkScreenModel extends ElementaryModel with ConnectionMixin {
               id: connection.id,
               icon: _presetsConnectionService
                   .getTransportIconsByNetwork(
-                    connection.networkType,
+                    connection.group,
                   )
                   .vector,
               title: connection.name,

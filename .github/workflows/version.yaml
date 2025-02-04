@@ -14,12 +14,27 @@ on:
           - "--graduate"
 
 jobs:
+  read_flutter_version:
+    runs-on: ubuntu-latest
+    outputs:
+      flutter_version: ${{ steps.read.outputs.flutter_version }}
+    steps:
+      - name: Checkout repo
+        uses: actions/checkout@v4
+
+      - name: Read Flutter version
+        id: read
+        run: |
+          echo "flutter_version=$(cat .github/configs/flutter_version)" >> $GITHUB_OUTPUT
+
   version_bump:
-    uses: broxus/flutter_templates/.github/workflows/version.yaml@main
+    needs: [read_flutter_version]
+    uses: broxus/flutter_templates/.github/workflows/version.yaml@v3
     with:
       version_parameters: ${{ inputs.version_parameters }}
       user_name: 'nesquikm'
       user_email: 'drapolyuk@gmail.com'
       push_tags: true
+      flutter_version: ${{ needs.read_flutter_version.outputs.flutter_version }}
     secrets:
       token: ${{ secrets.BOT_ACCESS_TOKEN }}

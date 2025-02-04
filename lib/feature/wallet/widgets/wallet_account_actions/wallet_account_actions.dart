@@ -73,6 +73,7 @@ class WalletAccountActions extends StatelessWidget {
                       hasStake,
                       hasStakeActions,
                       balance,
+                      minBalance,
                       custodians,
                       nativeTokenTicker,
                       numberUnconfirmedTransactions,
@@ -85,6 +86,7 @@ class WalletAccountActions extends StatelessWidget {
                       sendSpecified: sendSpecified,
                       padding: padding,
                       balance: balance,
+                      minBalance: minBalance,
                       custodians: custodians,
                       nativeTokenTicker: nativeTokenTicker,
                       numberUnconfirmedTransactions:
@@ -108,6 +110,7 @@ class _ActionList extends StatelessWidget {
     this.hasStakeActions = false,
     this.sendSpecified = false,
     this.balance,
+    this.minBalance,
     this.custodians,
     this.numberUnconfirmedTransactions,
   });
@@ -119,6 +122,7 @@ class _ActionList extends StatelessWidget {
   final bool sendSpecified;
   final EdgeInsetsGeometry padding;
   final BigInt? balance;
+  final BigInt? minBalance;
   final List<PublicKey>? custodians;
   final String? nativeTokenTicker;
   final int? numberUnconfirmedTransactions;
@@ -152,9 +156,10 @@ class _ActionList extends StatelessWidget {
               icon: _actionIcon(action),
               onPressed: account?.let(
                 (_) => _actionOnPressed(
-                  context,
-                  balance,
-                  numberUnconfirmedTransactions,
+                  context: context,
+                  balance: balance,
+                  minBalance: minBalance,
+                  numberUnconfirmedTransactions: numberUnconfirmedTransactions,
                 ),
               ),
             ),
@@ -217,11 +222,12 @@ class _ActionList extends StatelessWidget {
         _ => LocaleKeys.sendWord.tr(),
       };
 
-  VoidCallback _actionOnPressed(
-    BuildContext context,
+  VoidCallback _actionOnPressed({
+    required BuildContext context,
     BigInt? balance,
+    BigInt? minBalance,
     int? numberUnconfirmedTransactions,
-  ) =>
+  }) =>
       switch (action) {
         WalletAccountActionBehavior.send => () {
             if ((numberUnconfirmedTransactions ?? 0) >= 5) {
@@ -259,7 +265,7 @@ class _ActionList extends StatelessWidget {
           },
         // ignore: no-empty-block
         WalletAccountActionBehavior.deploy => () {
-            if ((balance?.toInt() ?? 0) / 1000000000 >= 0.1) {
+            if ((balance ?? BigInt.zero) >= (minBalance ?? BigInt.zero)) {
               context.goFurther(
                 AppRoute.walletDeploy.pathWithData(
                   pathParameters: {
@@ -272,9 +278,10 @@ class _ActionList extends StatelessWidget {
             } else {
               if (nativeTokenTicker != null) {
                 showDeployMinEverModal(
-                  context,
-                  account!,
-                  nativeTokenTicker!,
+                  context: context,
+                  account: account!,
+                  minAmount: minBalance!,
+                  symbol: nativeTokenTicker!,
                 );
               }
             }

@@ -33,7 +33,7 @@ class BrowserApprovalsService {
 
   /// Request user for [permissions] for [origin].
   /// Action requires user agreement
-  /// Typically, exception must be [ApprovalsHandleException] or [FfiException]
+  /// Typically, exception must be [ApprovalsHandleException] or [FrbException]
   Future<Permissions> requestPermissions({
     required Uri origin,
     required List<Permission> permissions,
@@ -54,7 +54,7 @@ class BrowserApprovalsService {
   /// Ask user for permissions for any account in list of accounts active in
   /// scope of current selected PublicKey.
   /// Action requires user agreement
-  /// Typically, exception must be [ApprovalsHandleException] or [FfiException]
+  /// Typically, exception must be [ApprovalsHandleException] or [FrbException]
   Future<Permissions> changeAccount({
     required Uri origin,
     required List<Permission> permissions,
@@ -76,7 +76,7 @@ class BrowserApprovalsService {
 
   /// Add token contract to account with address [accountAddress]
   /// Action requires user agreement
-  /// Typically, exception must be [ApprovalsHandleException] or [FfiException]
+  /// Typically, exception must be [ApprovalsHandleException] or [FrbException]
   Future<void> addTip3Token({
     required Uri origin,
     required Address accountAddress,
@@ -99,7 +99,7 @@ class BrowserApprovalsService {
   /// Ask user for password to make [SeedList.signData] for specified
   /// [publicKey].
   /// Returns password for [publicKey] or throw error.
-  /// Typically, exception must be [ApprovalsHandleException] or [FfiException]
+  /// Typically, exception must be [ApprovalsHandleException] or [FrbException]
   Future<String> signData({
     required Uri origin,
     required Address account,
@@ -124,7 +124,7 @@ class BrowserApprovalsService {
   /// Ask user for password to make [SeedList.encrypt] for specified
   /// [publicKey].
   /// Returns password for [publicKey] or throw error.
-  /// Typically, exception must be [ApprovalsHandleException] or [FfiException]
+  /// Typically, exception must be [ApprovalsHandleException] or [FrbException]
   Future<String> encryptData({
     required Uri origin,
     required Address account,
@@ -149,7 +149,7 @@ class BrowserApprovalsService {
   /// Ask user for password to make [SeedList.decrypt] for specified
   /// [recipientPublicKey].
   /// Returns password for [recipientPublicKey] or throw error.
-  /// Typically, exception must be [ApprovalsHandleException] or [FfiException]
+  /// Typically, exception must be [ApprovalsHandleException] or [FrbException]
   Future<String> decryptData({
     required Uri origin,
     required Address account,
@@ -174,7 +174,7 @@ class BrowserApprovalsService {
   /// Ask user for password to make contract action for specified [publicKey]
   /// and [recipient].
   /// Returns password for [publicKey].
-  /// Typically, exception must be [ApprovalsHandleException] or [FfiException]
+  /// Typically, exception must be [ApprovalsHandleException] or [FrbException]
   Future<String> callContractMethod({
     required Uri origin,
     required Address account,
@@ -201,7 +201,7 @@ class BrowserApprovalsService {
   /// Asks user to select publicKey and enter password to send funds from
   /// account [sender] to [recipient].
   /// Returns selected publicKey and password for it or throw error.
-  /// Typically, exception must be [ApprovalsHandleException] or [FfiException]
+  /// Typically, exception must be [ApprovalsHandleException] or [FrbException]
   Future<(PublicKey, String)> sendMessage({
     required Uri origin,
     required Address sender,
@@ -231,7 +231,7 @@ class BrowserApprovalsService {
 
   /// Ask user's confirmation to change active network.
   /// Returns activated [TransportStrategy] or null.
-  /// Typically, exception must be [ApprovalsHandleException] or [FfiException]
+  /// Typically, exception must be [ApprovalsHandleException] or [FrbException]
   Future<TransportStrategy?> changeNetwork({
     required Uri origin,
     required int networkId,
@@ -253,7 +253,7 @@ class BrowserApprovalsService {
 
   /// Ask user's confirmation to add network.
   /// Returns added [Network] or null.
-  /// Typically, exception must be [ApprovalsHandleException] or [FfiException]
+  /// Typically, exception must be [ApprovalsHandleException] or [FrbException]
   Future<Network?> addNetwork({
     required Uri origin,
     required AddNetwork network,

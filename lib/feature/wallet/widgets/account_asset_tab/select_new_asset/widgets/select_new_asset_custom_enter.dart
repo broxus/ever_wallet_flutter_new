@@ -137,7 +137,7 @@ class _SelectNewAssetCustomEnterState extends State<SelectNewAssetCustomEnter> {
     final text = await getClipBoardText();
     if (text?.isEmpty ?? true) return;
 
-    final isValid = await validateAddress(Address(address: text!));
+    final isValid = validateAddress(Address(address: text!));
     if (isValid) {
       addressController.text = text;
     } else {

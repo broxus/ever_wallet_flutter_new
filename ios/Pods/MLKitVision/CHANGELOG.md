@@ -1,3 +1,12 @@
+# 2024-04-16 -- v7.0.0
+- Added privacy manifest.
+- Upgraded the version range of GoogleToolboxForMac dependency in
+  MLKitVision from "~>2.1" to ">= 4.2.1, < 5.0" to pull in the latest privacy manifest for it.
+- Upgraded the version range of GTMSessionFetcher/Core dependency in
+  MLKitVision from ">= 1.1, < 4.0" to ">= 3.3.2, < 4.0"," to pull in the latest privacy manifest for it.
+# 2024-02-20 -- v6.0.0
+- Raised the minimum supported version of Xcode to 15.1.0.
+- Raised the minimum supported version of iOS from 11.0 to 12.0.
 # 2023-03-21 -- v5.0.0
 - Raised the minimum supported version of Xcode to 14.2.0.
 - Removed support for bitcode.
