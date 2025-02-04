@@ -5,7 +5,7 @@ import 'package:injectable/injectable.dart';
 abstract class DioModule {
   @lazySingleton
   Dio getDio() {
-    const timeoutMinutes = 1;
+    const timeoutMinutes = 3;
 
     final dio = Dio()
       ..options.connectTimeout = const Duration(minutes: timeoutMinutes)
