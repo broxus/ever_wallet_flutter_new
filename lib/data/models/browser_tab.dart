@@ -6,6 +6,7 @@ import 'package:nekoton_repository/nekoton_repository.dart';
 import 'package:uuid/uuid.dart';
 
 part 'browser_tab.freezed.dart';
+
 part 'browser_tab.g.dart';
 
 @freezed
@@ -43,9 +44,13 @@ class BrowserTab with _$BrowserTab {
   factory BrowserTab.fromJson(Map<String, dynamic> json) =>
       _$BrowserTabFromJson(json);
 
-  static String get tabsDirectoryPath {
+  static String? get tabsDirectoryPath {
     final appDocsDir =
         inject<GeneralStorageService>().applicationDocumentsDirectory;
+
+    if (appDocsDir == null) {
+      return null;
+    }
 
     return '$appDocsDir/tabs';
   }
@@ -69,14 +74,18 @@ class BrowserTab with _$BrowserTab {
     return '${getTabDirectoryPath(id)}/$imageId';
   }
 
-  static String get defaultImagePath {
+  static String? get defaultImagePath {
     final appDocsDir =
         inject<GeneralStorageService>().applicationDocumentsDirectory;
+
+    if (appDocsDir == null) {
+      return null;
+    }
 
     return '$appDocsDir/browser_default_tab_image.png';
   }
 
-  String get imageOrDefaultPath {
+  String? get imageOrDefaultPath {
     return imagePath ?? defaultImagePath;
   }
 }

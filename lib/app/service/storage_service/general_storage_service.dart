@@ -78,7 +78,9 @@ class GeneralStorageService extends AbstractStorageService {
       BehaviorSubject<Map<NetworkGroup, List<CustomCurrency>>>();
 
   /// Application documents directory, used for syncrhronous path operations
-  late final String applicationDocumentsDirectory;
+  String? _applicationDocumentsDirectory;
+
+  String? get applicationDocumentsDirectory => _applicationDocumentsDirectory;
 
   /// Get last cached public key that user set before
   PublicKey? get currentKey => _currentKeySubject.valueOrNull;
@@ -402,7 +404,7 @@ class GeneralStorageService extends AbstractStorageService {
 
   Future<void> _initAppDirectories() async {
     final directory = await getApplicationDocumentsDirectory();
-    applicationDocumentsDirectory = directory.path;
+    _applicationDocumentsDirectory = directory.path;
   }
 
   /// Convert biometry enabled status to stream

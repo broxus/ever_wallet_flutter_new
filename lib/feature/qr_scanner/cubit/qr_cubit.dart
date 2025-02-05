@@ -60,7 +60,7 @@ class QrCubit extends Cubit<QrCubitState> with BlocBaseMixin {
   final QrScanType type;
   final AppLifecycleService lifecycleService;
   final AppPermissionsService permissionsService;
-  late final StreamSubscription<dynamic> _lifecycleListener;
+  StreamSubscription<dynamic>? _lifecycleListener;
 
   final controller = MobileScannerController();
 
@@ -129,7 +129,7 @@ class QrCubit extends Cubit<QrCubitState> with BlocBaseMixin {
   @override
   Future<void> close() {
     controller.dispose();
-    _lifecycleListener.cancel();
+    _lifecycleListener?.cancel();
 
     return super.close();
   }
