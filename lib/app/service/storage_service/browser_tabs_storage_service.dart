@@ -100,10 +100,10 @@ class BrowserTabsStorageService extends AbstractStorageService {
     saveBrowserActiveTabId(null);
 
     try {
-      await Directory(BrowserTab.tabsDirectoryPath).delete(recursive: true);
+      await Directory(BrowserTab.tabsDirectoryPath!).delete(recursive: true);
     } catch (_) {}
     try {
-      await File(BrowserTab.defaultImagePath).delete();
+      await File(BrowserTab.defaultImagePath!).delete();
     } catch (_) {}
   }
 
