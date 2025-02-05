@@ -111,9 +111,11 @@ class SelectNewAssetCubit extends Cubit<SelectNewAssetState>
 
   Future<void> addCustom(BuildContext context, Address address) async {
     final isValid = validateAddress(address);
-    final isAssetsInList =
-        _originalContracts.any((contract) => contract.$1.address == address);
-    if (isValid && isAssetsInList) {
+    final isToken = await assetsService.getTokenContractAsset(
+      address,
+      nekotonRepository.currentTransport,
+    );
+    if (isValid && isToken != null) {
       await _cachedAccount?.addTokenWallet(
         repackAddress(address),
       );
