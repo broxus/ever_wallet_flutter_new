@@ -345,7 +345,7 @@
   "selectToken": "Select token",
   "insufficientFunds": "Not enough tokens on balance",
   "maxWord": "Max",
-  "transactionIsSending": "Sending transaction...",
+  "transactionIsSending": "Transaction is sending",
   "okayWord": "Okay",
   "transactionSentSuccessfully": "Transaction sent",
   "attachedAmount": "Attached amount",

@@ -1,6 +1,6 @@
 name: app
 description: SparX Wallet Flutter app
-version: 1.2.0
+version: 1.2.1
 publish_to: none
 
 environment:

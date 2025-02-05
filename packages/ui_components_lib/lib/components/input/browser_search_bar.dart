@@ -30,8 +30,10 @@ class BrowserSearchBarInput extends StatefulWidget {
 }
 
 class _BrowserSearchBarInputState extends State<BrowserSearchBarInput> {
-  late final FocusNode _focusNode;
-  late final TextEditingController _textEditingController;
+  late final _focusNode = FocusNode();
+  late final _textEditingController = TextEditingController(
+    text: _getTextFieldText(),
+  );
   bool _focused = false;
 
   TextAlign get _textAlign {
@@ -52,10 +54,8 @@ class _BrowserSearchBarInputState extends State<BrowserSearchBarInput> {
   @override
   void initState() {
     super.initState();
-    _focusNode = FocusNode();
     _focusNode.addListener(_handleFocusChange);
 
-    _textEditingController = TextEditingController(text: _getTextFieldText());
     _textEditingController.addListener(
       () {
         widget.onChanged?.call(_textEditingController.text);

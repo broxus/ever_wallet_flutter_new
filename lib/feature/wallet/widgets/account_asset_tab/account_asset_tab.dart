@@ -64,7 +64,7 @@ class AccountAssetsTab extends StatelessWidget {
             slivers: [
               DecoratedSliver(
                 decoration: BoxDecoration(
-                  color: theme.colors.background0,
+                  color: theme.colors.background1,
                   borderRadius: const BorderRadius.vertical(
                     top: Radius.circular(DimensRadiusV2.radius16),
                     bottom: Radius.circular(DimensRadiusV2.radius16),

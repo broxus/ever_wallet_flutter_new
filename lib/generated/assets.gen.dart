@@ -211,6 +211,10 @@ class $AssetsImagesGen {
   /// File path: assets/images/deploy.svg
   SvgGenImage get deploy => const SvgGenImage('assets/images/deploy.svg');
 
+  /// File path: assets/images/deployment_progress.png
+  AssetGenImage get deploymentProgress =>
+      const AssetGenImage('assets/images/deployment_progress.png');
+
   /// File path: assets/images/dots.svg
   SvgGenImage get dots => const SvgGenImage('assets/images/dots.svg');
 
@@ -407,6 +411,10 @@ class $AssetsImagesGen {
   SvgGenImage get tokenDefaultIcon =>
       const SvgGenImage('assets/images/token_default_icon.svg');
 
+  /// File path: assets/images/transaction_progress.png
+  AssetGenImage get transactionProgress =>
+      const AssetGenImage('assets/images/transaction_progress.png');
+
   /// File path: assets/images/trash.svg
   SvgGenImage get trash => const SvgGenImage('assets/images/trash.svg');
 
@@ -465,6 +473,7 @@ class $AssetsImagesGen {
         copyOutlined,
         currency,
         deploy,
+        deploymentProgress,
         dots,
         edit,
         ever,
@@ -519,6 +528,7 @@ class $AssetsImagesGen {
         star,
         support,
         tokenDefaultIcon,
+        transactionProgress,
         trash,
         wallet,
         web
