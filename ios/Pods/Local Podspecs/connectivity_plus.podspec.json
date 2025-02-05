@@ -34,16 +34,6 @@
       "connectivity_plus_privacy": [
         "connectivity_plus/Sources/connectivity_plus/PrivacyInfo-osx.xcprivacy"
       ]
-    },
-    "resource_bundles": {
-      "connectivity_plus_privacy": [
-        "connectivity_plus/Sources/connectivity_plus/PrivacyInfo-osx.xcprivacy"
-      ]
-    },
-    "resource_bundles": {
-      "connectivity_plus_privacy": [
-        "connectivity_plus/Sources/connectivity_plus/PrivacyInfo-osx.xcprivacy"
-      ]
     }
   },
   "platforms": {

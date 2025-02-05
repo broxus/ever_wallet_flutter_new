@@ -2,9 +2,6 @@
 name: Deploy app
 
 on:
-  push:
-    branches:
-      - test
   workflow_dispatch:
     inputs:
       deploy_target:

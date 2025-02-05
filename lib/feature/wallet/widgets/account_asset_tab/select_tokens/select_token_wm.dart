@@ -48,13 +48,13 @@ class SelectTokenWidgetModel
       (value) {
         final data = [
           ...?_data.value,
-          ...value.map(
-            (item) => TokenDataElement(
-              asset: item.$1,
-              isSelected: false,
-              value: item.$2,
-            ),
-          ),
+          for (final item in value)
+            if (!item.$1.isCustom)
+              TokenDataElement(
+                asset: item.$1,
+                isSelected: false,
+                value: item.$2,
+              ),
         ];
 
         _data.accept(data);

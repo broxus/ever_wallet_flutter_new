@@ -36,16 +36,33 @@ class TransactionSendingWidget extends StatelessWidget {
               separatorSize: DimensSizeV2.d16,
               mainAxisSize: MainAxisSize.min,
               children: [
-                const CommonCircularProgressIndicator(
-                  size: CircularIndicatorSize.large,
+                Stack(
+                  children: [
+                    if (isDeploying)
+                      Assets.images.deploymentProgress.image()
+                    else
+                      Assets.images.transactionProgress.image(),
+                    Positioned(
+                      bottom: 1,
+                      left: 1,
+                      right: 1,
+                      child: Column(
+                        children: [
+                          Text(
+                            isDeploying
+                                ? LocaleKeys.deploymentInProgress.tr()
+                                : LocaleKeys.transactionIsSending.tr(),
+                            style: theme.textStyles.headingLarge,
+                            textAlign: TextAlign.center,
+                          ),
+                          const SizedBox(height: DimensSizeV2.d32),
+                          const ProgressIndicatorWidget(size: DimensSizeV2.d32),
+                        ],
+                      ),
+                    ),
+                  ],
                 ),
-                Text(
-                  isDeploying
-                      ? LocaleKeys.deploymentInProgress.tr()
-                      : LocaleKeys.transactionIsSending.tr(),
-                  style: theme.textStyles.headingLarge,
-                  textAlign: TextAlign.center,
-                ),
+                const SizedBox(height: DimensSizeV2.d100),
               ],
             ),
           ),
