@@ -4,7 +4,10 @@ import 'package:app/feature/add_seed/enter_seed_phrase/view/enter_seed_phrase_vi
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
+import 'package:logging/logging.dart';
 import 'package:ui_components_lib/ui_components_lib.dart';
+
+final _log = Logger('EnterSeedPhraseCubit');
 
 /// {@template enter_seed_phrase_page}
 /// Starting page for seed phrase entering.
@@ -12,6 +15,7 @@ import 'package:ui_components_lib/ui_components_lib.dart';
 class EnterSeedPhrasePage extends StatelessWidget {
   /// {@macro enter_seed_phrase_page}
   const EnterSeedPhrasePage({super.key});
+
 
   @override
   Widget build(BuildContext context) {
@@ -21,13 +25,17 @@ class EnterSeedPhrasePage extends StatelessWidget {
         context,
         // ignore: prefer-extracting-callbacks
         (phrase) {
+          _log.severe('!!! confirmAction EnterSeedPhrasePage callback');
           final path =
               GoRouter.of(context).routerDelegate.currentConfiguration.fullPath;
-          final route = getCurrentAppRoute(fullPath: path);
 
+          _log.severe('!!! confirmAction EnterSeedPhrasePage path');
+          final route = getCurrentAppRoute(fullPath: path);
+          _log.severe('!!! confirmAction EnterSeedPhrasePage route');
           // because of automatic navigation, we may face problem with double
           // navigation here.
           if (route != AppRoute.createSeedPassword) {
+            _log.severe('!!! confirmAction EnterSeedPhrasePage router exist');
             context.goFurther(
               AppRoute.createSeedPassword.pathWithData(
                 queryParameters: {
@@ -36,6 +44,7 @@ class EnterSeedPhrasePage extends StatelessWidget {
               ),
               preserveQueryParams: true,
             );
+            _log.severe('!!! confirmAction EnterSeedPhrasePage go');
           }
         },
       )..init(),

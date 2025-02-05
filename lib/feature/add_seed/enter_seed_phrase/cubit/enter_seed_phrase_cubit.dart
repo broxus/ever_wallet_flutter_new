@@ -159,14 +159,19 @@ class EnterSeedPhraseCubit extends Cubit<EnterSeedPhraseState>
   }
 
   Future<void> confirmAction() async {
+    _log.severe('!!! confirmAction 0');
     if (!await checkConnection(context)) {
       return;
     }
+    _log.severe('!!! confirmAction 1');
 
     if (await _validateFormWithError()) {
+      _log.severe('!!! confirmAction valid');
       String? error;
       try {
         FocusManager.instance.primaryFocus?.unfocus();
+
+        _log.severe('!!! confirmAction unfocus');
 
         final buffer = StringBuffer();
 
@@ -176,17 +181,29 @@ class EnterSeedPhraseCubit extends Cubit<EnterSeedPhraseState>
             ..write(' ');
         }
 
+        _log.severe('!!! confirmAction after buffer');
+
         final phrase = buffer.toString().trimRight();
+
+        _log.severe('!!! confirmAction phrase');
 
         final mnemonicType = _currentValue == _legacySeedPhraseLength
             ? const MnemonicType.legacy()
             : defaultMnemonicType;
 
+        _log.severe('!!! confirmAction mnemonicType');
+
         await deriveFromPhrase(
           phrase: phrase,
           mnemonicType: mnemonicType,
         );
+
+        _log.severe('!!! confirmAction after deriveFromPhrase');
+
         confirmCallback(phrase);
+
+        _log.severe('!!! confirmAction after confirmCallback');
+
       } on FrbException catch (e, s) {
         _log.severe('confirmAction FrbException', e, s);
         error = LocaleKeys.wrongSeed.tr();
