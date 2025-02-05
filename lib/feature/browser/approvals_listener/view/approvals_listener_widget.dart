@@ -33,7 +33,7 @@ class ApprovalsListenerWidget extends StatefulWidget {
 
 class _ApprovalsListenerWidgetState extends State<ApprovalsListenerWidget> {
   late final BrowserApprovalsService approvalsService = inject();
-  late final StreamSubscription<dynamic> _streamSubscription;
+  StreamSubscription<dynamic>? _streamSubscription;
 
   @override
   // ignore: long-method
@@ -193,7 +193,7 @@ class _ApprovalsListenerWidgetState extends State<ApprovalsListenerWidget> {
 
   @override
   void dispose() {
-    _streamSubscription.cancel();
+    _streamSubscription?.cancel();
     super.dispose();
   }
 

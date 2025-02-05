@@ -82,7 +82,7 @@ class AccountTransactionsTabCubit extends Cubit<AccountTransactionsTabState>
   StreamSubscription<dynamic>? _expiredTransactionsSub;
   StreamSubscription<dynamic>? _pendingTransactionsSub;
   StreamSubscription<dynamic>? _multisigTransactionsSub;
-  late final StreamSubscription<dynamic> _walletSubscription;
+  StreamSubscription<dynamic>? _walletSubscription;
 
   /// Called from UI when user scrolled to the end of the list.
   /// NOTE: this method may be called multiple times
@@ -105,7 +105,7 @@ class AccountTransactionsTabCubit extends Cubit<AccountTransactionsTabState>
   @override
   Future<void> close() {
     _closeSubs();
-    _walletSubscription.cancel();
+    _walletSubscription?.cancel();
 
     return super.close();
   }

@@ -24,7 +24,7 @@ class RootView extends StatefulWidget {
 class _RootViewState extends State<RootView> {
   final _appLinksService = inject<AppLinksService>();
 
-  late final NavigationService _navigationService;
+  late final _navigationService = inject<NavigationService>();
 
   int get _tabIndex => RootTab.getByPath(
         getRootPath(fullPath: _navigationService.state.fullPath),
@@ -35,8 +35,6 @@ class _RootViewState extends State<RootView> {
   @override
   void initState() {
     super.initState();
-
-    _navigationService = inject<NavigationService>();
 
     WidgetsBinding.instance.addPostFrameCallback((_) {
       _appLinksNavSubs =

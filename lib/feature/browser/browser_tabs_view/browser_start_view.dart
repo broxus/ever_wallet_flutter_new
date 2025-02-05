@@ -142,10 +142,10 @@ class _BrowserStartViewState extends State<BrowserStartView> {
           throw Exception("Can't convert image to bytes");
         }
 
-        final file = File(BrowserTab.defaultImagePath);
+        final file = File(BrowserTab.defaultImagePath!);
         await file.writeAsBytes(pngBytes);
 
-        await FileImage(File(BrowserTab.defaultImagePath)).evict();
+        await FileImage(File(BrowserTab.defaultImagePath!)).evict();
       } catch (_) {}
     });
   }
