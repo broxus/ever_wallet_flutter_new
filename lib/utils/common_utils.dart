@@ -75,7 +75,7 @@ String convertRetrySubscribeErrorToText(Object error) {
     return LocaleKeys.suchTokenCannotBeSubscribed.tr();
   }
 
-  if (error is FrbException) {
+  if (error is Exception) {
     return error.toString();
   }
 

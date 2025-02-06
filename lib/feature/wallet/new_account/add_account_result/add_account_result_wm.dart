@@ -33,7 +33,7 @@ class AddAccountResultWidgetModel
 
   Future<void> onSwitch() async {
     final address = repackAddress(widget.address);
-    model.changeCurrentAccount(address);
+    model.changeCurrentAccount(await address);
     // ignore: use_build_context_synchronously
     Navigator.of(context).pop();
     if (model.isExternal) {

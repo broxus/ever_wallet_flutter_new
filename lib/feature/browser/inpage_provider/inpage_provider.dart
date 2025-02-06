@@ -135,7 +135,7 @@ class InpageProvider extends ProviderApi {
         }
 
         final details = await assetsService.getTokenContractAsset(
-          rootTokenContract,
+          await rootTokenContract,
           transport,
         );
         if (details == null) {
@@ -148,7 +148,7 @@ class InpageProvider extends ProviderApi {
           details: details,
         );
 
-        await account.addTokenWallet(rootTokenContract);
+        await account.addTokenWallet(await rootTokenContract);
 
         newAsset = true;
     }
@@ -428,7 +428,7 @@ class InpageProvider extends ProviderApi {
       }
 
       final unsignedMessage = await nekotonRepository.prepareTransfer(
-        destination: repackedRecipient,
+        destination: await repackedRecipient,
         amount: amount,
         body: body,
         bounce: defaultMessageBounce,
@@ -464,7 +464,7 @@ class InpageProvider extends ProviderApi {
     if (header['type'] == 'external') {
       if (payload == null || payload is String) {
         message = (await nr.createRawExternalMessage(
-          dst: repackedAddress,
+          dst: await repackedAddress,
           stateInit: input.stateInit,
           body: payload as String?,
           timeout: defaultSendTimeoutDuration,
@@ -473,7 +473,7 @@ class InpageProvider extends ProviderApi {
       } else if (header['withoutSignature'] == true) {
         final call = FunctionCall.fromJson(payload as Map<String, dynamic>);
         message = (await nr.createExternalMessageWithoutSignature(
-          dst: repackedAddress,
+          dst: await repackedAddress,
           contractAbi: call.abi,
           method: call.method,
           input: call.params,
@@ -493,7 +493,7 @@ class InpageProvider extends ProviderApi {
         );
 
         final unsignedMessage = await nr.createExternalMessage(
-          dst: repackedAddress.address,
+          dst: (await repackedAddress).address,
           publicKey: publicKey,
           contractAbi: call.abi,
           method: call.method,
@@ -510,7 +510,7 @@ class InpageProvider extends ProviderApi {
               origin: origin!,
               payload: nr.FunctionCall.fromJson(call.toJson()),
               publicKey: publicKey,
-              recipient: repackedAddress,
+              recipient: await repackedAddress,
               account: permissions!.accountInteraction!.address,
             );
             final transport = nekotonRepository.currentTransport.transport;
@@ -552,7 +552,7 @@ class InpageProvider extends ProviderApi {
                 );
       message = await nr.encodeInternalMessage(
         src: sender,
-        dst: repackedAddress,
+        dst: await repackedAddress,
         bounce: bounce,
         stateInit: input.stateInit,
         body: body,
@@ -564,7 +564,7 @@ class InpageProvider extends ProviderApi {
     }
 
     final transport = nekotonRepository.currentTransport.transport;
-    final state = await transport.getFullContractState(repackedAddress);
+    final state = await transport.getFullContractState(await repackedAddress);
     final config = await transport.getBlockchainConfig();
 
     final account = await nr.makeFullAccountBoc(state?.boc);
@@ -929,7 +929,7 @@ class InpageProvider extends ProviderApi {
       }
 
       final unsignedMessage = await nr.createExternalMessage(
-        dst: repackedRecipient.address,
+        dst: (await repackedRecipient).address,
         contractAbi: input.payload.abi,
         method: input.payload.method,
         input: input.payload.params,
@@ -961,7 +961,7 @@ class InpageProvider extends ProviderApi {
 
       final transaction = input.local ?? false
           ? await nekotonRepository.executeTransactionLocally(
-              address: repackedRecipient,
+              address: await repackedRecipient,
               signedMessage: signedMessage,
               options: nr.TransactionExecutionOptions(
                 disableSignatureCheck:
@@ -969,7 +969,7 @@ class InpageProvider extends ProviderApi {
               ),
             )
           : await nekotonRepository.sendContract(
-              address: repackedRecipient,
+              address: await repackedRecipient,
               signedMessage: signedMessage,
             );
 
@@ -1032,7 +1032,7 @@ class InpageProvider extends ProviderApi {
       }
 
       final unsignedMessage = await nr.createExternalMessage(
-        dst: repackedRecipient.address,
+        dst: (await repackedRecipient).address,
         contractAbi: input.payload.abi,
         method: input.payload.method,
         input: input.payload.params,
@@ -1063,7 +1063,7 @@ class InpageProvider extends ProviderApi {
       unsignedMessage.dispose();
 
       final transaction = await nekotonRepository.sendContractUnawaited(
-        address: repackedRecipient,
+        address: await repackedRecipient,
         signedMessage: signedMessage,
       );
 
@@ -1157,7 +1157,7 @@ class InpageProvider extends ProviderApi {
       final (key, password) = await approvalsService.sendMessage(
         origin: origin!,
         sender: sender,
-        recipient: repackedRecipient,
+        recipient: await repackedRecipient,
         amount: amount,
         bounce: input.bounce,
         payload: input.payload != null
@@ -1168,7 +1168,7 @@ class InpageProvider extends ProviderApi {
 
       final unsignedMessage = await nekotonRepository.prepareTransfer(
         address: sender,
-        destination: repackedRecipient,
+        destination: await repackedRecipient,
         amount: amount,
         body: body,
         bounce: defaultMessageBounce,
@@ -1194,7 +1194,7 @@ class InpageProvider extends ProviderApi {
       final transaction = await nekotonRepository.send(
         address: sender,
         signedMessage: signedMessage,
-        destination: repackedRecipient,
+        destination: await repackedRecipient,
         amount: amount,
       );
 
@@ -1259,7 +1259,7 @@ class InpageProvider extends ProviderApi {
       final (key, password) = await approvalsService.sendMessage(
         origin: origin!,
         sender: sender,
-        recipient: repackedRecipient,
+        recipient: await repackedRecipient,
         amount: amount,
         bounce: input.bounce,
         payload: input.payload != null
@@ -1270,7 +1270,7 @@ class InpageProvider extends ProviderApi {
 
       final unsignedMessage = await nekotonRepository.prepareTransfer(
         address: sender,
-        destination: repackedRecipient,
+        destination: await repackedRecipient,
         amount: amount,
         body: body,
         bounce: defaultMessageBounce,
@@ -1296,7 +1296,7 @@ class InpageProvider extends ProviderApi {
       final transaction = await nekotonRepository.sendUnawaited(
         address: sender,
         signedMessage: signedMessage,
-        destination: repackedRecipient,
+        destination: await repackedRecipient,
         amount: amount,
       );
 
@@ -1370,7 +1370,7 @@ class InpageProvider extends ProviderApi {
       final payload =
           FunctionCall.fromJson(input.payload! as Map<String, dynamic>);
       final signedMessage = await nr.createExternalMessageWithoutSignature(
-        dst: repackedRecipient,
+        dst: await repackedRecipient,
         contractAbi: payload.abi,
         method: payload.method,
         input: payload.params,
@@ -1380,7 +1380,7 @@ class InpageProvider extends ProviderApi {
 
       final transaction = input.local ?? false
           ? await nekotonRepository.executeTransactionLocally(
-              address: repackedRecipient,
+              address: await repackedRecipient,
               signedMessage: signedMessage,
               options: nr.TransactionExecutionOptions(
                 disableSignatureCheck:
@@ -1388,7 +1388,7 @@ class InpageProvider extends ProviderApi {
               ),
             )
           : await nekotonRepository.sendContract(
-              address: repackedRecipient,
+              address: await repackedRecipient,
               signedMessage: signedMessage,
             );
 
@@ -1620,7 +1620,7 @@ class InpageProvider extends ProviderApi {
         ),
       );
       rethrow;
-    } on nr.FrbException catch (e, t) {
+    } on nr.FfiException catch (e, t) {
       _logger.severe(method, e, t);
       messengerService.show(s.Message.error(message: e.toString()));
       rethrow;

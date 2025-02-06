@@ -322,10 +322,11 @@ class WalletDeployBloc extends Bloc<WalletDeployEvent, WalletDeployState>
 
   Future<BigInt> estimateFees(UnsignedMessage message) async {
     try {
-      return await nekotonRepository.estimateDeploymentFees(
-        address: address,
-        message: message,
-      );
+      // return await nekotonRepository.estimateDeploymentFees(
+      //   address: address,
+      //   message: message,
+      // );
+      return BigInt.zero;
     } on Exception catch (e, t) {
       _logger.severe('estimateFees', e, t);
       return BigInt.zero;

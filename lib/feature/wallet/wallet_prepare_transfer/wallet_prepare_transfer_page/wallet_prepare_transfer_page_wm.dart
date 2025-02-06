@@ -141,7 +141,7 @@ class WalletPrepareTransferPageWidgetModel extends CustomWidgetModel<
       address: receiverController.text.trim(),
     );
 
-    if (!validateAddress(addr)) {
+    if (!await validateAddress(addr)) {
       model.showError(context, LocaleKeys.addressIsWrong.tr());
 
       return;
@@ -198,7 +198,7 @@ class WalletPrepareTransferPageWidgetModel extends CustomWidgetModel<
       return;
     }
 
-    if (validateAddress(Address(address: text!))) {
+    if (await validateAddress(Address(address: text!))) {
       receiverController.text = text;
       receiverFocus.unfocus();
     } else {

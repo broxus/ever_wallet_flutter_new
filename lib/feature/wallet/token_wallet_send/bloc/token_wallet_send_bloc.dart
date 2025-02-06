@@ -213,7 +213,7 @@ class TokenWalletSendBloc
         add(TokenWalletSendEvent.completeSend(transaction));
       }
     } on OperationCanceledException catch (_) {
-    } on FrbException catch (e, t) {
+    } on FfiException catch (e, t) {
       _logger.severe('_handleSend', e, t);
       messengerService.show(
         Message.error(
@@ -236,7 +236,7 @@ class TokenWalletSendBloc
     final internalMessage = await nekotonRepository.prepareTokenTransfer(
       owner: owner,
       rootTokenContract: rootTokenContract,
-      destination: repackAddress(destination),
+      destination: await repackAddress(destination),
       amount: tokenAmount,
       payload: comment,
       attachedAmount: attachedAmount,

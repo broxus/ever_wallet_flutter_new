@@ -172,7 +172,7 @@ class TonWalletSendBloc extends Bloc<TonWalletSendEvent, TonWalletSendState>
         address: address,
         signedMessage: signedMessage,
         amount: amount,
-        destination: repackAddress(destination),
+        destination: await repackAddress(destination),
       );
 
       messengerService
@@ -194,11 +194,11 @@ class TonWalletSendBloc extends Bloc<TonWalletSendEvent, TonWalletSendState>
     }
   }
 
-  Future<UnsignedMessage> _prepareTransfer() =>
+  Future<UnsignedMessage> _prepareTransfer() async =>
       nekotonRepository.prepareTransfer(
         address: address,
         publicKey: publicKey,
-        destination: repackAddress(destination),
+        destination: await repackAddress(destination),
         amount: amount,
         body: comment,
         bounce: defaultMessageBounce,

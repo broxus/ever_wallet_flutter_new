@@ -38,7 +38,7 @@ class AddNewExternalAccountCubit extends Cubit<AddNewExternalAccountState>
     final address = Address(address: addressString.trim());
 
     try {
-      final isCorrect = validateAddress(address);
+      final isCorrect = await validateAddress(address);
       if (!isCorrect) {
         _showError(context, LocaleKeys.addressIsWrong.tr());
         emitSafe(const AddNewExternalAccountState.initial());
@@ -46,7 +46,7 @@ class AddNewExternalAccountCubit extends Cubit<AddNewExternalAccountState>
         return;
       }
       await nekotonRepository.addExternalAccount(
-        address: repackAddress(address),
+        address: await repackAddress(address),
         name: newName.isEmpty ? null : newName,
       );
       Navigator.of(context).pop();

@@ -30,7 +30,7 @@ Future<void> run(
     () async {
       WidgetsFlutterBinding.ensureInitialized();
 
-      await NekotonBridge.init();
+      // await NekotonBridge.init();
 
       await configureDi();
 

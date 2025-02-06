@@ -105,6 +105,7 @@ class EnterSeedPhraseWidgetModel
 
   @override
   void dispose() {
+    print('!!! dispose');
     for (final c in _inputDataList) {
       c.dispose();
     }
@@ -152,34 +153,39 @@ class EnterSeedPhraseWidgetModel
   }
 
   Future<void> confirm() async {
+    print('!!! 0');
     if (!await model.checkConnection(context)) {
       return;
     }
+    print('!!! 1');
 
     if (await _validateFormWithError()) {
+      print('!!! 2');
       try {
         FocusManager.instance.primaryFocus?.unfocus();
-
+        print('!!! 3');
         final buffer = StringBuffer();
-
+        print('!!! 4');
         for (var i = 0; i < _currentValue; i++) {
           buffer
             ..write(_inputDataList[i].text.trim())
             ..write(' ');
         }
-
+        print('!!! 5');
         final phrase = buffer.toString().trimRight();
-
+        print('!!! 6');
         final mnemonicType = _currentValue == model.legacySeedPhraseLength
             ? const MnemonicType.legacy()
             : defaultMnemonicType;
-
+        print('!!! 7');
         await deriveFromPhrase(
           phrase: phrase,
           mnemonicType: mnemonicType,
         );
+        print('!!! 8');
         _next(phrase);
-      } on AnyhowException catch (e, s) {
+        print('!!! 9');
+      } on FfiException catch (e, s) {
         _log.severe('confirmAction AnyhowException', e, s);
         model.showError(LocaleKeys.wrongSeed.tr());
       } on Exception catch (e, s) {
@@ -191,10 +197,13 @@ class EnterSeedPhraseWidgetModel
 
   /// [index] starts with 0
   void nextOrConfirm(int index) {
+    print('!!! 10');
     if (index == _currentValue - 1) {
       confirm();
+      print('!!! 11');
     } else if (index + 1 < _inputDataList.length) {
       _inputDataList[index + 1].focusNode.requestFocus();
+      print('!!! 12');
     }
   }
 
@@ -223,35 +232,44 @@ class EnterSeedPhraseWidgetModel
   void clearField(int index) => _inputDataList[index].clear();
 
   Future<void> pastePhrase() async {
+    print('!!! 13');
     final words = await getSeedListFromClipboard();
-
+    print('!!! 14');
     final count = words.length;
     if (count == model.actualSeedPhraseLength ||
         count == model.legacySeedPhraseLength) {
       changeTab(count);
     }
 
+    print('!!! 15');
     Future.delayed(const Duration(milliseconds: 100), () async {
-      if (words.isNotEmpty && words.length == _currentValue) {
-        for (final word in words) {
-          if (!await model.checkIsWordValid(word)) {
-            words.clear();
-            break;
-          }
-        }
-      } else {
-        words.clear();
-      }
-
-      if (words.isEmpty) {
-        _resetFormAndError();
-
-        model.showError(LocaleKeys.incorrectWordsFormat.tr());
-
-        return;
-      }
-
       try {
+        if (!isMounted) {
+          return;
+        }
+        if (words.isNotEmpty && words.length == _currentValue) {
+          print('!!! 16');
+          for (final word in words) {
+            if (!await model.checkIsWordValid(word)) {
+              words.clear();
+              break;
+            }
+          }
+          print('!!! 17');
+        } else {
+          words.clear();
+        }
+
+        if (words.isEmpty) {
+          _resetFormAndError();
+          print('!!! 18');
+          model.showError(LocaleKeys.incorrectWordsFormat.tr());
+
+          return;
+        }
+
+        print('!!! 19');
+
         if (words.length > _inputDataList.length) {
           words.length = _inputDataList.length;
         }
@@ -304,10 +322,12 @@ class EnterSeedPhraseWidgetModel
   }
 
   void _next(String phrase) {
+    print('!!! 20');
     final path =
         GoRouter.of(context).routerDelegate.currentConfiguration.fullPath;
+    print('!!! 21');
     final route = getCurrentAppRoute(fullPath: path);
-
+    print('!!! 22');
     if (route != AppRoute.createSeedPassword) {
       context.goFurther(
         AppRoute.createSeedPassword.pathWithData(

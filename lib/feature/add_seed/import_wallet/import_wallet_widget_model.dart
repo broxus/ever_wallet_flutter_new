@@ -78,7 +78,7 @@ class ImportWalletScreenWidgetModel
       } else {
         model.showValidateError(context, LocaleKeys.incorrectWordsFormat.tr());
       }
-    } on FrbException catch (e, s) {
+    } on FfiException catch (e, s) {
       _log.severe('confirmAction FrbException', e, s);
       error = LocaleKeys.wrongSeed.tr();
     } on Exception catch (e, s) {

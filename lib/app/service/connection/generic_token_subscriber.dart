@@ -42,7 +42,7 @@ class JettonTokenWalletSubscriber extends GenericTokenSubscriber {
   }) async =>
       JettonTokenWallet.subscribe(
         transport: transport,
-        gqlConnection: _connectionFactory.getTonGqlConnection(),
+        gqlConnection: await _connectionFactory.getTonGqlConnection(),
         owner: owner,
         rootTokenContract: rootTokenContract,
         symbol: await _getSymbol(rootTokenContract),

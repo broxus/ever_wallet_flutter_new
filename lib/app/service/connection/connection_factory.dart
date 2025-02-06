@@ -12,18 +12,20 @@ class ConnectionFactory {
 
   /// Establishes and returns a GraphQL connection to dton.io.
   /// Returns a [Future] that completes with the established [GqlConnection].
-  GqlConnection getTonGqlConnection() => _connection ??= GqlConnection.create(
-        name: 'jetton-gql',
-        group: 'jetton-gql',
-        client: JettonGqlHttpClient(_storage),
-        settings: const GqlNetworkSettings(
-          endpoints: ['https://dton.io/graphql/graphql'],
-          latencyDetectionInterval: 60000,
-          maxLatency: 60000,
-          endpointSelectionRetryCount: 5,
-          local: false,
-        ),
-      );
+  Future<GqlConnection> getTonGqlConnection() => _connection != null
+      ? Future.value(_connection)
+      : GqlConnection.create(
+          name: 'jetton-gql',
+          group: 'jetton-gql',
+          client: JettonGqlHttpClient(_storage),
+          settings: const GqlNetworkSettings(
+            endpoints: ['https://dton.io/graphql/graphql'],
+            latencyDetectionInterval: 60000,
+            maxLatency: 60000,
+            endpointSelectionRetryCount: 5,
+            local: false,
+          ),
+        );
 
   @disposeMethod
   void dispose() {

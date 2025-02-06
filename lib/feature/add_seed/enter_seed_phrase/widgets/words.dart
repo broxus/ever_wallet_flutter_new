@@ -32,7 +32,7 @@ class EnterSeedPhraseWords extends StatelessWidget {
   final ValueChanged<int> changeTab;
   final VoidCallback pastePhrase;
   final VoidCallback clearFields;
-  final SuggestionsCallback<String> onSuggestions;
+  final Future<List<String>> Function(String text) onSuggestions;
   final SuggestionSelectedCallback onSuggestionSelected;
   final ValueChanged<int> onNext;
 
@@ -126,7 +126,7 @@ class _Input extends StatelessWidget {
   final ThemeStyleV2 theme;
   final EnterSeedPhraseInputData data;
   final int currentValue;
-  final SuggestionsCallback<String> onSuggestions;
+  final Future<Iterable<String>> Function(String text) onSuggestions;
   final SuggestionSelectedCallback onSuggestionSelected;
   final ValueChanged<int> onNext;
 

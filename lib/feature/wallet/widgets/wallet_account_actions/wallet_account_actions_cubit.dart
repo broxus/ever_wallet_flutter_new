@@ -128,13 +128,13 @@ class WalletAccountActionsCubit extends Cubit<WalletAccountActionsState>
         address,
         defaultSendTimeout,
       );
-      final fees = await nekotonRepository.estimateDeploymentFees(
-        address: address,
-        message: message,
-      );
+      // final fees = await nekotonRepository.estimateDeploymentFees(
+      //   address: address,
+      //   message: message,
+      // );
 
       final nextState = state.mapOrNull(
-        data: (value) => value.copyWith(minBalance: fees),
+        data: (value) => value.copyWith(minBalance: BigInt.zero),
       );
       nextState?.let(emitSafe);
     } on Exception catch (e, t) {
