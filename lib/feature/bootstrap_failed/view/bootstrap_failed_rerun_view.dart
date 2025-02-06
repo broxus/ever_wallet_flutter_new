@@ -1,5 +1,6 @@
 import 'package:app/di/di.dart';
 import 'package:app/feature/bootstrap_failed/bootstrap_failed.dart';
+import 'package:app/feature/contact_support/widgets/contact_support/contact_support.dart';
 import 'package:app/generated/generated.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -27,16 +28,30 @@ class BootstrapFailedRerunView extends StatelessWidget {
                 style: StyleRes.addRegular.copyWith(color: colors.textPrimary),
                 textAlign: TextAlign.center,
               ),
-              BlocBuilder<BootstrapRerunCubit, bool>(
-                builder: (context, isLoading) {
-                  return CommonButton.primary(
+              Column(
+                mainAxisSize: MainAxisSize.min,
+                children: [
+                  BlocBuilder<BootstrapRerunCubit, bool>(
+                    builder: (context, isLoading) {
+                      return CommonButton.primary(
+                        fillWidth: true,
+                        text: LocaleKeys.tryAgain.tr(),
+                        isLoading: isLoading,
+                        onPressed: () =>
+                            context.read<BootstrapRerunCubit>().rerun(context),
+                      );
+                    },
+                  ),
+                  const SizedBox(height: DimensSize.d16),
+                  CommonButton.primary(
                     fillWidth: true,
-                    text: LocaleKeys.tryAgain.tr(),
-                    isLoading: isLoading,
-                    onPressed: () =>
-                        context.read<BootstrapRerunCubit>().rerun(context),
-                  );
-                },
+                    text: LocaleKeys.contactSupport.tr(),
+                    onPressed: () => showContactSupportSheet(
+                      context: context,
+                      mode: ContactSupportMode.initiatedByCrash,
+                    ),
+                  ),
+                ],
               ),
             ],
           ),
