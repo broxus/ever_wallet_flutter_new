@@ -63,7 +63,11 @@ extension MoneyFormat on Money {
     final d = toDouble();
 
     if (currency.isoCode == 'USD') {
-      if (d < 0.001) {
+      if (d < 0.00001) {
+        return formatImproved(pattern: _moneyPattern(6));
+      } else if (d < 0.0001) {
+        return formatImproved(pattern: _moneyPattern(5));
+      } else if (d < 0.001) {
         return formatImproved(pattern: _moneyPattern(4));
       } else if (d < 0.01) {
         return formatImproved(pattern: _moneyPattern(3));
@@ -83,5 +87,18 @@ extension MoneyFormat on Money {
     return _formatThousands(
       formatImproved(pattern: _moneyPattern(0)),
     );
+  }
+}
+
+extension DoubleExt on double {
+  /// Converts a double value to an integer byte representation.
+  ///
+  /// The method multiplies the double value by 255.0 and rounds the result
+  /// to the nearest integer.
+  ///
+  /// Returns an integer value between 0 and 255.
+  int toByteInt() {
+    assert(this >= 0 && this <= 1, 'Value must be between 0 and 1');
+    return (255.0 * this).round();
   }
 }

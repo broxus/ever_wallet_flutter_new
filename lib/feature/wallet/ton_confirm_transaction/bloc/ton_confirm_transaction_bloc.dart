@@ -88,7 +88,6 @@ class TonConfirmTransactionBloc
   BigInt? fees;
 
   late PublicKey selectedCustodian;
-  UnsignedMessage? unsignedMessage;
 
   void _registerHandlers() {
     on<_Prepare>((event, emit) => _handlePrepare(emit, event.custodian));
@@ -113,14 +112,13 @@ class TonConfirmTransactionBloc
     Emitter<TonConfirmTransactionState> emit,
     PublicKey custodian,
   ) async {
+    UnsignedMessage? unsignedMessage;
     try {
       selectedCustodian = custodian;
-
       unsignedMessage = await _prepareConfirmTransaction();
-
       fees = await nekotonRepository.estimateFees(
         address: walletAddress,
-        message: unsignedMessage!,
+        message: unsignedMessage,
       );
 
       final walletState = await nekotonRepository.walletsStream
@@ -157,22 +155,16 @@ class TonConfirmTransactionBloc
           selectedCustodian,
         ),
       );
-    } on FfiException catch (e, t) {
-      _logger.severe('_handleSend', e, t);
-      emitSafe(
-        TonConfirmTransactionState.calculatingError(
-          e.message,
-          selectedCustodian,
-        ),
-      );
     } on Exception catch (e, t) {
-      _logger.severe('_handleSend', e, t);
+      _logger.severe('_handlePrepare', e, t);
       emitSafe(
         TonConfirmTransactionState.calculatingError(
           e.toString(),
           selectedCustodian,
         ),
       );
+    } finally {
+      unsignedMessage?.dispose();
     }
   }
 
@@ -180,12 +172,12 @@ class TonConfirmTransactionBloc
     Emitter<TonConfirmTransactionState> emit,
     String password,
   ) async {
+    UnsignedMessage? unsignedMessage;
     try {
       emitSafe(const TonConfirmTransactionState.sending(canClose: false));
       // await unsignedMessage.refreshTimeout();
       // TODO(komarov): fix refresh_timeout in nekoton
-      final unsignedMessage =
-          this.unsignedMessage = await _prepareConfirmTransaction();
+      unsignedMessage = await _prepareConfirmTransaction();
 
       final hash = unsignedMessage.hash;
       final transport = nekotonRepository.currentTransport.transport;
@@ -218,20 +210,6 @@ class TonConfirmTransactionBloc
         add(TonConfirmTransactionEvent.completeSend(transaction));
       }
     } on OperationCanceledException catch (_) {
-    } on FfiException catch (e, t) {
-      _logger.severe('_handleSend', e, t);
-      inject<MessengerService>().show(
-        Message.error(
-          context: context,
-          message: e.message,
-        ),
-      );
-      emitSafe(
-        TonConfirmTransactionState.readyToSend(
-          fees!,
-          selectedCustodian,
-        ),
-      );
     } on Exception catch (e, t) {
       _logger.severe('_handleSend', e, t);
       inject<MessengerService>()
@@ -242,6 +220,8 @@ class TonConfirmTransactionBloc
           selectedCustodian,
         ),
       );
+    } finally {
+      unsignedMessage?.dispose();
     }
   }
 
@@ -252,10 +232,4 @@ class TonConfirmTransactionBloc
         transactionId: transactionId,
         expiration: defaultSendTimeout,
       );
-
-  @override
-  Future<void> close() {
-    unsignedMessage?.dispose();
-    return super.close();
-  }
 }

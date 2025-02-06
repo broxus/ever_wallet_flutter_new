@@ -10,23 +10,41 @@ on:
     - cron: "0 10 * * *"
 
 jobs:
+  read_flutter_version:
+    runs-on: ubuntu-latest
+    outputs:
+      flutter_version: ${{ steps.read.outputs.flutter_version }}
+    steps:
+      - name: Checkout repo
+        uses: actions/checkout@v4
+
+      - name: Read Flutter version
+        id: read
+        run: |
+          echo "flutter_version=$(cat .github/configs/flutter_version)" >> $GITHUB_OUTPUT
+
   semantic_pull_request:
     uses: VeryGoodOpenSource/very_good_workflows/.github/workflows/semantic_pull_request.yml@v1
 
   build_and_test:
-    uses: broxus/flutter_templates/.github/workflows/run-melos.yaml@main
+    needs: [ read_flutter_version ]
+    uses: broxus/flutter_templates/.github/workflows/run-melos.yaml@v3
     secrets: inherit
     with:
       runner: macos-latest
+      flutter_version: ${{ needs.read_flutter_version.outputs.flutter_version }}
 
   # integration tests are empty now
   # ios_integration_test:
-  #   uses: broxus/flutter_templates/.github/workflows/ios-integration-test.yaml@main
+  #   uses: broxus/flutter_templates/.github/workflows/ios-integration-test.yaml@v2
   #   with:
   #     target: lib/main_development.dart
   #     build-before-test: true
+  #     flutter_version: ${{ needs.read_flutter_version.outputs.flutter_version }}
 
   # android_integration_test:
-  #   uses: broxus/flutter_templates/.github/workflows/android-integration-test.yaml@main
+  #   needs: [read_flutter_version]
+  #   uses: broxus/flutter_templates/.github/workflows/android-integration-test.yaml@v2
   #   with:
   #     codegen: true
+  #     flutter_version: ${{ needs.read_flutter_version.outputs.flutter_version }}

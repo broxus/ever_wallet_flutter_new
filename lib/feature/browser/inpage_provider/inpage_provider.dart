@@ -5,7 +5,6 @@ import 'package:app/app/service/service.dart' as s;
 import 'package:app/data/models/models.dart';
 import 'package:app/feature/browser/utils.dart';
 import 'package:app/generated/generated.dart';
-import 'package:app/utils/constants.dart';
 import 'package:app/utils/utils.dart';
 import 'package:collection/collection.dart';
 import 'package:flutter_inappwebview/flutter_inappwebview.dart';
@@ -120,7 +119,7 @@ class InpageProvider extends ProviderApi {
 
     switch (type) {
       case AssetType.tip3Token:
-        final rootTokenContract = await nr.repackAddress(
+        final rootTokenContract = nr.repackAddress(
           nr.Address(address: contract),
         );
         final transport = nekotonRepository.currentTransport;
@@ -408,7 +407,7 @@ class InpageProvider extends ProviderApi {
       throw s.ApprovalsHandleException(LocaleKeys.amountIsWrong.tr());
     }
     final repackedRecipient =
-        await nr.repackAddress(nr.Address(address: input.recipient));
+        nr.repackAddress(nr.Address(address: input.recipient));
 
     String? body;
 
@@ -457,7 +456,7 @@ class InpageProvider extends ProviderApi {
   Future<ExecuteLocalOutput> executeLocal(ExecuteLocalInput input) async {
     final contract = nr.Address(address: input.address);
     final header = input.messageHeader as Map<String, dynamic>;
-    final repackedAddress = await nr.repackAddress(contract);
+    final repackedAddress = nr.repackAddress(contract);
     final payload = input.payload;
 
     String message;
@@ -912,7 +911,7 @@ class InpageProvider extends ProviderApi {
     );
 
     final repackedRecipient =
-        await nr.repackAddress(nr.Address(address: input.recipient));
+        nr.repackAddress(nr.Address(address: input.recipient));
 
     var subscribedNew = false;
 
@@ -1015,7 +1014,7 @@ class InpageProvider extends ProviderApi {
     );
 
     final repackedRecipient =
-        await nr.repackAddress(nr.Address(address: input.recipient));
+        nr.repackAddress(nr.Address(address: input.recipient));
 
     var subscribedNew = false;
 
@@ -1133,7 +1132,7 @@ class InpageProvider extends ProviderApi {
       throw s.ApprovalsHandleException(LocaleKeys.amountIsWrong.tr());
     }
     final repackedRecipient =
-        await nr.repackAddress(nr.Address(address: input.recipient));
+        nr.repackAddress(nr.Address(address: input.recipient));
 
     String? body;
     nr.KnownPayload? knownPayload;
@@ -1235,7 +1234,7 @@ class InpageProvider extends ProviderApi {
       throw s.ApprovalsHandleException(LocaleKeys.amountIsWrong.tr());
     }
     final repackedRecipient =
-        await nr.repackAddress(nr.Address(address: input.recipient));
+        nr.repackAddress(nr.Address(address: input.recipient));
 
     String? body;
     nr.KnownPayload? knownPayload;
@@ -1351,7 +1350,7 @@ class InpageProvider extends ProviderApi {
     _checkPermissions(permissions: permissionsService.getPermissions(origin));
 
     final repackedRecipient =
-        await nr.repackAddress(nr.Address(address: input.recipient));
+        nr.repackAddress(nr.Address(address: input.recipient));
 
     var subscribedNew = false;
 
@@ -1621,9 +1620,9 @@ class InpageProvider extends ProviderApi {
         ),
       );
       rethrow;
-    } on nr.FfiException catch (e, t) {
+    } on nr.FrbException catch (e, t) {
       _logger.severe(method, e, t);
-      messengerService.show(s.Message.error(message: e.message));
+      messengerService.show(s.Message.error(message: e.toString()));
       rethrow;
     } catch (e, t) {
       _logger.severe(method, e, t);

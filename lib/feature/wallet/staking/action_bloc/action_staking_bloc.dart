@@ -34,15 +34,6 @@ class ActionStakingBloc
   StakingInformation? get staking =>
       nekotonRepository.currentTransport.stakeInformation;
 
-  Address? get _stakingValutAddress => staking?.stakingValutAddress;
-
-  BigInt? get _stakeDepositAttachedFee => staking?.stakeDepositAttachedFee;
-
-  BigInt? get _stakeWithdrawAttachedFee => staking?.stakeWithdrawAttachedFee;
-
-  Address? get _stakingRootContractAddress =>
-      staking?.stakingRootContractAddress;
-
   void _registerHandlers() {
     on<_Init>(_prepareInit);
     on<_Stake>(_prepareStaking);
@@ -53,8 +44,8 @@ class ActionStakingBloc
     _Stake event,
     Emitter<ActionStakingBlocState> emit,
   ) async {
-    final valutAddress = _stakingValutAddress;
-    final depositAttachedFee = _stakeDepositAttachedFee;
+    final valutAddress = staking?.stakingValutAddress;
+    final depositAttachedFee = staking?.stakeDepositAttachedFee;
 
     if (valutAddress == null || depositAttachedFee == null) {
       return;
@@ -81,9 +72,9 @@ class ActionStakingBloc
     _Unstake event,
     Emitter<ActionStakingBlocState> emit,
   ) async {
-    final valutAddress = _stakingValutAddress;
-    final withdrawAttachedFee = _stakeWithdrawAttachedFee;
-    final rootContractAddress = _stakingRootContractAddress;
+    final valutAddress = staking?.stakingValutAddress;
+    final withdrawAttachedFee = staking?.stakeWithdrawAttachedFee;
+    final rootContractAddress = staking?.stakingRootContractAddress;
 
     if (valutAddress == null ||
         withdrawAttachedFee == null ||
@@ -114,7 +105,7 @@ class ActionStakingBloc
     _Init event,
     Emitter<ActionStakingBlocState> emit,
   ) async {
-    final rootContractAddress = _stakingRootContractAddress;
+    final rootContractAddress = staking?.stakingRootContractAddress;
 
     if (rootContractAddress == null) {
       return;

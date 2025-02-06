@@ -1,4 +1,5 @@
-import 'package:app/app/service/connection/presets_connection_service.dart';
+import 'package:app/app/service/connection/group.dart';
+import 'package:app/app/service/presets_connection/presets_connection_service.dart';
 import 'package:app/di/di.dart';
 import 'package:app/generated/generated.dart';
 import 'package:app/widgets/cached_svg.dart';
@@ -7,12 +8,12 @@ import 'package:ui_components_lib/v2/ui_components_lib_v2.dart';
 
 class NetworkIcon extends StatefulWidget {
   const NetworkIcon({
-    required this.type,
+    required this.group,
     this.itemSize,
     super.key,
   });
 
-  final String type;
+  final NetworkGroup group;
   final double? itemSize;
 
   @override
@@ -22,10 +23,10 @@ class NetworkIcon extends StatefulWidget {
 class _NetworkIconState extends State<NetworkIcon> {
   final _presetsConnectionService = inject<PresetsConnectionService>();
 
-  String get _type => widget.type;
+  String get _group => widget.group;
 
   String? get _path {
-    return _presetsConnectionService.getTransportIconsByNetwork(_type).network;
+    return _presetsConnectionService.getTransportIconsByNetwork(_group).network;
   }
 
   @override

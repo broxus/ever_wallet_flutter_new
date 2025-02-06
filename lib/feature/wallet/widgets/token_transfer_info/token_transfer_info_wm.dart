@@ -27,6 +27,7 @@ class TokenTransferInfoWidgetModel
   TokenTransferInfoWidgetModel(super.model);
 
   late final _amountPrice = createNotifier<Money>();
+  late final _customCurrency = createNotifier<CustomCurrency?>();
   late final _attachedAmountPrice = createNotifier<Money>();
   late final _tokenAsset = createNotifier<TokenContractAsset>();
   late final _fee = createNotifier(widget.fee);
@@ -34,6 +35,8 @@ class TokenTransferInfoWidgetModel
   late final _attachedAmount = createNotifier(widget.attachedAmount);
 
   ListenableState<Money> get amountPrice => _amountPrice;
+
+  ListenableState<CustomCurrency?> get customCurrency => _customCurrency;
 
   ListenableState<Money> get attachedAmountPrice => _attachedAmountPrice;
 
@@ -79,10 +82,11 @@ class TokenTransferInfoWidgetModel
   Future<void> _getNativePrice() async {
     final currency = await model.getCurrencyForNativeToken();
 
+    _customCurrency.accept(currency);
     if (currency != null) {
       final price = Fixed.parse(currency.price);
       final value = Money.fromBigIntWithCurrency(
-        widget.fee ?? BigInt.zero,
+        widget.attachedAmount ?? BigInt.zero,
         nativeCurrency,
       );
       _attachedAmountPrice.accept(value.exchangeToUSD(price));

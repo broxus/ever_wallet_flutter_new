@@ -60,15 +60,14 @@ class CommonTabSwitcher<T> extends StatelessWidget {
       margin: EdgeInsets.zero,
       padding: const EdgeInsets.all(DimensSize.d4),
       color: colors.appBackground,
-      children: values.map((i) {
-        final item = _switcherItem(i, colors, style);
-
-        if (fillWidth) {
-          return Expanded(child: item);
-        }
-
-        return item;
-      }).toList(),
+      children: [
+        for (final value in values)
+          fillWidth
+              ? Expanded(
+                  child: _switcherItem(value, colors, style),
+                )
+              : _switcherItem(value, colors, style),
+      ],
     );
   }
 

@@ -1,6 +1,8 @@
 import 'package:app/feature/wallet/wallet.dart';
+import 'package:app/feature/wallet/widgets/account_transactions_tab/detail/details_item.dart';
 import 'package:app/feature/wallet/widgets/token_transfer_info/token_transfer_info_wm.dart';
 import 'package:app/generated/generated.dart';
+import 'package:app/utils/utils.dart';
 import 'package:elementary/elementary.dart';
 import 'package:elementary_helper/elementary_helper.dart';
 import 'package:flutter/material.dart';
@@ -71,21 +73,20 @@ class TokenTransferInfoWidget
                   StateNotifierBuilder(
                     listenableState: wm.tokenAsset,
                     builder: (_, asset) {
-                      Widget? icon;
-
-                      if (asset != null) {
-                        icon = TokenWalletIconWidget(
-                          address: asset.address,
-                          logoURI: asset.logoURI,
-                          version: asset.version,
-                          size: DimensSizeV2.d20,
-                        );
-                      } else if (wm.isNative) {
-                        icon = TonWalletIconWidget(
-                          path: wm.nativeTokenIcon,
-                          size: DimensSizeV2.d20,
-                        );
-                      }
+                      final icon = asset?.let(
+                            (asset) => TokenWalletIconWidget(
+                              address: asset.address,
+                              logoURI: asset.logoURI,
+                              version: asset.version,
+                              size: DimensSizeV2.d20,
+                            ),
+                          ) ??
+                          TonWalletIconWidget(
+                            path: wm.isNative
+                                ? wm.nativeTokenIcon
+                                : Assets.images.tokenDefaultIcon.path,
+                            size: DimensSizeV2.d20,
+                          );
 
                       return AmountWidget.fromMoney(
                         amount: amount!,
@@ -153,27 +154,42 @@ class TokenTransferInfoWidget
             },
           ),
           const SizedBox(height: DimensSizeV2.d16),
-          DoubleSourceBuilder(
+          TripleSourceBuilder(
             firstSource: wm.fee,
             secondSource: wm.feeError,
-            builder: (_, fee, feeError) => _InfoRow(
-              label: LocaleKeys.networkFee.tr(),
-              child: SeparatedColumn(
-                separatorSize: DimensSize.d4,
-                crossAxisAlignment: CrossAxisAlignment.end,
+            thirdSource: wm.customCurrency,
+            builder: (
+              _,
+              fee,
+              feeError,
+              customCurrency,
+            ) {
+              return SeparatedColumn(
+                separatorSize: DimensSizeV2.d4,
                 children: [
-                  AmountWidget.fromMoney(
-                    amount: Money.fromBigIntWithCurrency(
-                      fee ?? BigInt.zero,
-                      wm.nativeCurrency,
+                  WalletTransactionDetailsItem(
+                    title: LocaleKeys.networkFee.tr(),
+                    valueWidget: AmountWidget.fromMoney(
+                      amount: Money.fromBigIntWithCurrency(
+                        fee ?? BigInt.zero,
+                        wm.nativeCurrency,
+                      ),
+                      sign: '~ ',
+                      includeSymbol: false,
                     ),
-                    icon: TonWalletIconWidget(
-                      path: wm.nativeTokenIcon,
-                      size: DimensSizeV2.d20,
+                    iconPath: wm.nativeTokenIcon,
+                    convertedValueWidget: AmountWidget.dollars(
+                      amount: Money.fromBigIntWithCurrency(
+                        fee ?? BigInt.zero,
+                        wm.nativeCurrency,
+                      ).exchangeToUSD(
+                        Fixed.parse(customCurrency?.price ?? '0'),
+                        5,
+                      ),
+                      style: theme.textStyles.labelXSmall.copyWith(
+                        color: theme.colors.content3,
+                      ),
                     ),
-                    sign: '~ ',
-                    useDefaultFormat: false,
-                    includeSymbol: false,
                   ),
                   if ((numberUnconfirmedTransactions ?? 0) >= 5)
                     Text(
@@ -190,8 +206,8 @@ class TokenTransferInfoWidget
                       ),
                     ),
                 ],
-              ),
-            ),
+              );
+            },
           ),
           const SizedBox(height: DimensSizeV2.d16),
           SeparatedColumn(

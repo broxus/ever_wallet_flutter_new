@@ -5,13 +5,18 @@ import 'package:injectable/injectable.dart';
 abstract class DioModule {
   @lazySingleton
   Dio getDio() {
-    const timeoutMinutes = 1;
+    const timeoutMinutes = 3;
 
     final dio = Dio()
       ..options.connectTimeout = const Duration(minutes: timeoutMinutes)
       ..options.sendTimeout = const Duration(minutes: timeoutMinutes)
       ..options.receiveTimeout = const Duration(minutes: timeoutMinutes)
-      ..interceptors.addAll([LogInterceptor()]);
+      ..interceptors.addAll([
+        LogInterceptor(
+          requestBody: true,
+          responseBody: true,
+        ),
+      ]);
     return dio;
   }
 }

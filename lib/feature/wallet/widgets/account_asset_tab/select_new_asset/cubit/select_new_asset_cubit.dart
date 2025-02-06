@@ -14,6 +14,7 @@ import 'package:freezed_annotation/freezed_annotation.dart';
 import 'package:nekoton_repository/nekoton_repository.dart' hide Message;
 
 part 'select_new_asset_cubit.freezed.dart';
+
 part 'select_new_asset_state.dart';
 
 enum SelectNewAssetTabs { select, custom }
@@ -109,10 +110,14 @@ class SelectNewAssetCubit extends Cubit<SelectNewAssetState>
   }
 
   Future<void> addCustom(BuildContext context, Address address) async {
-    final isValid = await validateAddress(address);
-    if (isValid) {
+    final isValid = validateAddress(address);
+    final isToken = await assetsService.getTokenContractAsset(
+      repackAddress(address),
+      nekotonRepository.currentTransport,
+    );
+    if (isValid && isToken != null) {
       await _cachedAccount?.addTokenWallet(
-        await repackAddress(address),
+        repackAddress(address),
       );
     } else {
       inject<MessengerService>().show(

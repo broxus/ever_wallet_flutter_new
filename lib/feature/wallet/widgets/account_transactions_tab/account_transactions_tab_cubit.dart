@@ -12,7 +12,6 @@ import 'package:nekoton_repository/nekoton_repository.dart';
 import 'package:rxdart/rxdart.dart';
 
 part 'account_transactions_tab_cubit.freezed.dart';
-
 part 'account_transactions_tab_state.dart';
 
 /// Cubit for <AccountTransactionsTab> that allows displaying list of
@@ -83,7 +82,7 @@ class AccountTransactionsTabCubit extends Cubit<AccountTransactionsTabState>
   StreamSubscription<dynamic>? _expiredTransactionsSub;
   StreamSubscription<dynamic>? _pendingTransactionsSub;
   StreamSubscription<dynamic>? _multisigTransactionsSub;
-  late final StreamSubscription<dynamic> _walletSubscription;
+  StreamSubscription<dynamic>? _walletSubscription;
 
   /// Called from UI when user scrolled to the end of the list.
   /// NOTE: this method may be called multiple times
@@ -106,7 +105,7 @@ class AccountTransactionsTabCubit extends Cubit<AccountTransactionsTabState>
   @override
   Future<void> close() {
     _closeSubs();
-    _walletSubscription.cancel();
+    _walletSubscription?.cancel();
 
     return super.close();
   }

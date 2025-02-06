@@ -57,8 +57,9 @@ class CommonChips extends StatelessWidget {
               if (leading != null) leading!,
               Text(
                 title,
-                style: StyleRes.addRegular
-                    .copyWith(color: type.contentColor(colors)),
+                style: StyleRes.addRegular.copyWith(
+                  color: type.contentColor(colors),
+                ),
               ),
             ],
           ),

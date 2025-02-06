@@ -334,7 +334,7 @@ class _InputsStoryState extends State<InputsStory> {
     );
   }
 
-  FutureOr<Iterable<String>> _onSuggest(String pattern) {
+  FutureOr<List<String>> _onSuggest(String pattern) {
     if (pattern.isEmpty) return suggestionsList;
 
     return suggestionsList

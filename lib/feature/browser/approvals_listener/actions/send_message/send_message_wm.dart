@@ -52,7 +52,7 @@ class SendMessageWidgetModel
   late final _balance = createNotifier<Money>();
   late final _isLoading = createNotifier(false);
   late final _isConfirmed = createNotifier(false);
-  late final StreamSubscription<Money> _subscription;
+  StreamSubscription<Money>? _subscription;
   int? numberUnconfirmedTransactions;
 
   ListenableState<TransferData> get data => _data;
@@ -116,7 +116,7 @@ class SendMessageWidgetModel
 
   @override
   void dispose() {
-    _subscription.cancel();
+    _subscription?.cancel();
     super.dispose();
   }
 
@@ -190,8 +190,6 @@ class SendMessageWidgetModel
       );
 
       _fee.accept(fee);
-    } on FfiException catch (e) {
-      _feeError.accept(e.message);
     } on Exception catch (e) {
       _feeError.accept(e.toString());
     }

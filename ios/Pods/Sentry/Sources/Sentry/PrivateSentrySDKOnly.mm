@@ -60,8 +60,11 @@ static BOOL _framesTrackingMeasurementHybridSDKMode = NO;
 
 + (NSArray<SentryDebugMeta *> *)getDebugImagesCrashed:(BOOL)isCrash
 {
+#pragma clang diagnostic push
+#pragma clang diagnostic ignored "-Wdeprecated-declarations"
     return [[SentryDependencyContainer sharedInstance].debugImageProvider
         getDebugImagesCrashed:isCrash];
+#pragma clang diagnostic pop
 }
 
 + (nullable SentryAppStartMeasurement *)appStartMeasurement
@@ -357,6 +360,19 @@ static BOOL _framesTrackingMeasurementHybridSDKMode = NO;
 {
     [[PrivateSentrySDKOnly getReplayIntegration].viewPhotographer addRedactClasses:classes];
 }
+
++ (void)setIgnoreContainerClass:(Class _Nonnull)containerClass
+{
+    [[PrivateSentrySDKOnly getReplayIntegration].viewPhotographer
+        setIgnoreContainerClass:containerClass];
+}
+
++ (void)setRedactContainerClass:(Class _Nonnull)containerClass
+{
+    [[PrivateSentrySDKOnly getReplayIntegration].viewPhotographer
+        setRedactContainerClass:containerClass];
+}
+
 #endif
 
 @end

@@ -1,3 +1,5 @@
+import 'dart:async';
+
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:ui_components_lib/components/input/common_input_style_v2.dart';
@@ -6,6 +8,13 @@ import 'package:ui_components_lib/ui_components_lib.dart';
 /// Default height for input
 const commonInputHeight = DimensSize.d56;
 const suggestionDividerSize = DimensStroke.small;
+
+typedef SuggestionsCallback<T> = FutureOr<List<T>?> Function(String search);
+
+typedef SuggestionsItemBuilder<T> = Widget Function(
+  BuildContext context,
+  T value,
+);
 
 /// {@template common_input}
 /// Defaut input field that could be used in application.
@@ -128,10 +137,10 @@ class CommonInput extends StatefulWidget {
 
   /// Builder function for suggestions, no need for TextField.
   /// If null, default is used
-  final ItemBuilder<String>? itemBuilder;
+  final SuggestionsItemBuilder<String>? itemBuilder;
 
   /// Callback for suggestion selection, no need for TextField
-  final SuggestionSelectionCallback<String>? onSuggestionSelected;
+  final ValueSetter<String>? onSuggestionSelected;
 
   final Color? cursorColor;
 
@@ -489,11 +498,46 @@ class _CommonInputState extends State<CommonInput> {
           hideOnEmpty: true,
           hideOnError: true,
           hideOnLoading: true,
-          textFieldConfiguration: TextFieldConfiguration(
+          controller: _controller,
+          focusNode: widget.focusNode,
+          suggestionsCallback: suggestionsCallback,
+          onSelected: onSuggestionSelected,
+          itemSeparatorBuilder: (_, __) => Divider(
+            height: suggestionDividerSize,
+            color: widget.v2Style != null
+                ? widget.v2Style!.borderSuggestionColor
+                : colors.strokeSecondary,
+            thickness: suggestionDividerSize,
+          ),
+          itemBuilder: widget.itemBuilder ??
+              (context, item) =>
+                  _defaultSuggestionItemBuilder(context, item, colors),
+          decorationBuilder: (context, child) => ScrollConfiguration(
+            behavior:
+                ScrollConfiguration.of(context).copyWith(scrollbars: false),
+            child: ConstrainedBox(
+              constraints: BoxConstraints(
+                maxWidth:
+                    widget.v2Style != null ? double.infinity : DimensSize.d168,
+              ),
+              child: Material(
+                type: MaterialType.card,
+                shape: SquircleShapeBorder(
+                  cornerRadius: widget.v2Style != null
+                      ? DimensSizeV2.d12
+                      : DimensRadius.medium,
+                ),
+                color:
+                    widget.suggestionBackground ?? colors.backgroundSecondary,
+                child: child,
+              ),
+            ),
+          ),
+          builder: (context, controller, focusNode) => TextField(
             style: widget.textStyle ??
                 StyleRes.primaryRegular.copyWith(color: colors.textPrimary),
-            controller: _controller,
-            focusNode: widget.focusNode,
+            controller: controller,
+            focusNode: focusNode,
             keyboardType: widget.keyboardType ?? TextInputType.text,
             onChanged: widget.onChanged,
             textInputAction: widget.textInputAction ?? TextInputAction.next,
@@ -567,31 +611,6 @@ class _CommonInputState extends State<CommonInput> {
               ),
             ),
           ),
-          suggestionsCallback: suggestionsCallback,
-          itemSeparatorBuilder: (_, __) => Divider(
-            height: suggestionDividerSize,
-            color: widget.v2Style != null
-                ? widget.v2Style!.borderSuggestionColor
-                : colors.strokeSecondary,
-            thickness: suggestionDividerSize,
-          ),
-          itemBuilder: widget.itemBuilder ??
-              (context, item) =>
-                  _defaultSuggestionItemBuilder(context, item, colors),
-          suggestionsBoxDecoration: SuggestionsBoxDecoration(
-            hasScrollbar: false,
-            constraints: BoxConstraints(
-              maxWidth:
-                  widget.v2Style != null ? double.infinity : DimensSize.d168,
-            ),
-            shape: SquircleShapeBorder(
-              cornerRadius: widget.v2Style != null
-                  ? DimensSizeV2.d12
-                  : DimensRadius.medium,
-            ),
-            color: widget.suggestionBackground ?? colors.backgroundSecondary,
-          ),
-          onSuggestionSelected: onSuggestionSelected,
         ),
       );
     }

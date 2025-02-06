@@ -34,18 +34,19 @@ class TabView extends StatelessWidget {
               urlPath: tab.url.toString(),
               onPressedClose: onClosePressed,
             ),
-            Expanded(
-              child: OverflowBox(
-                alignment: Alignment.topCenter,
-                // ignore: no-magic-number
-                maxHeight: 1000,
-                child: Image.file(
-                  File(tab.imageOrDefaultPath),
-                  fit: BoxFit.scaleDown,
-                  errorBuilder: (_, __, ___) => const SizedBox(),
+            if (tab.imageOrDefaultPath != null)
+              Expanded(
+                child: OverflowBox(
+                  alignment: Alignment.topCenter,
+                  // ignore: no-magic-number
+                  maxHeight: 1000,
+                  child: Image.file(
+                    File(tab.imageOrDefaultPath!),
+                    fit: BoxFit.scaleDown,
+                    errorBuilder: (_, __, ___) => const SizedBox(),
+                  ),
                 ),
               ),
-            ),
           ],
         ),
       ),

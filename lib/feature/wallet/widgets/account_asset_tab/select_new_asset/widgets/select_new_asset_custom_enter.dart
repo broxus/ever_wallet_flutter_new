@@ -111,10 +111,14 @@ class _SelectNewAssetCustomEnterState extends State<SelectNewAssetCustomEnter> {
           valueListenable: addressController,
           builder: (_, value, __) => Padding(
             padding: const EdgeInsets.symmetric(vertical: DimensSizeV2.d12),
-            child: PrimaryButton(
-              buttonShape: ButtonShape.pill,
-              title: LocaleKeys.proceedWord.tr(),
-              onPressed: value.text.isNotEmpty ? () => _enable(context) : null,
+            child: Padding(
+              padding: const EdgeInsets.only(bottom: DimensSizeV2.d8),
+              child: AccentButton(
+                buttonShape: ButtonShape.pill,
+                title: LocaleKeys.proceedWord.tr(),
+                onPressed:
+                    value.text.isNotEmpty ? () => _enable(context) : null,
+              ),
             ),
           ),
         ),
@@ -134,7 +138,7 @@ class _SelectNewAssetCustomEnterState extends State<SelectNewAssetCustomEnter> {
     final text = await getClipBoardText();
     if (text?.isEmpty ?? true) return;
 
-    final isValid = await validateAddress(Address(address: text!));
+    final isValid = validateAddress(Address(address: text!));
     if (isValid) {
       addressController.text = text;
     } else {

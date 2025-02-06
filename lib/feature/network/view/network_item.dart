@@ -30,7 +30,7 @@ class NetworkItem extends StatelessWidget {
         padding: padding,
         child: SeparatedRow(
           children: [
-            NetworkIcon(type: data.networkType),
+            NetworkIcon(group: data.group),
             Expanded(
               child: Text(
                 data.name,
