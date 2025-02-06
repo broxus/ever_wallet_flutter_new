@@ -179,12 +179,12 @@ class EnterSeedPhraseWidgetModel
           mnemonicType: mnemonicType,
         );
         _next(phrase);
+      } on AnyhowException catch (e, s) {
+        _log.severe('confirmAction AnyhowException', e, s);
+        model.showError(LocaleKeys.wrongSeed.tr());
       } on Exception catch (e, s) {
         _log.severe('confirmAction', e, s);
         model.showError(e.toString());
-      } on FfiException catch (e, s) {
-        _log.severe('confirmAction FfiException', e, s);
-        model.showError(LocaleKeys.wrongSeed.tr());
       }
     }
   }
