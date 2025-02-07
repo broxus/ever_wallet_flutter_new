@@ -78,14 +78,41 @@ class TokenWalletsService {
       );
 
       if (!success) {
-        await _searchWithBlockchain(
-          address: address,
-          contracts: contracts.$1,
-          subject: subject,
-        );
+        if (nekotonRepository.currentTransport.networkName == 'TON') {
+          await _searchWithService(
+            contracts.$1,
+            address,
+            subject,
+          );
+        } else {
+          await _searchWithBlockchain(
+            address: address,
+            contracts: contracts.$1,
+            subject: subject,
+          );
+        }
       }
     } finally {
       await subject.close();
+    }
+  }
+
+  Future<void> _searchWithService(
+    List<TokenContractAsset> assets,
+    Address root,
+    Subject<SearchStreamValue> subject,
+  ) async {
+    for (final asset in assets) {
+      try {
+        final wallet = await subscribeToken(asset.address, root);
+
+        if (wallet.wallet?.moneyBalance != null &&
+            wallet.wallet?.moneyBalance.amount != Fixed.zero) {
+          subject.add([(asset, wallet.wallet!.moneyBalance)]);
+        }
+      } finally {
+        unsubscribeToken(asset.address, root);
+      }
     }
   }
 
@@ -166,6 +193,23 @@ class TokenWalletsService {
         subject.add([(contract, balance)]);
       }
     }
+  }
+
+  Future<TokenWalletState> subscribeToken(
+    Address address,
+    Address rootTokenContract,
+  ) {
+    return nekotonRepository.subscribeToken(
+      owner: rootTokenContract,
+      rootTokenContract: address,
+    );
+  }
+
+  void unsubscribeToken(Address address, Address rootTokenContract) {
+    nekotonRepository.unsubscribeToken(
+      rootTokenContract,
+      address,
+    );
   }
 
   Currency _getCurrency(TokenContractAsset contract) => Currency.create(
