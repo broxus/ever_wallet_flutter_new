@@ -1,3 +1,4 @@
+import 'package:app/app/service/connection/data/connection_data/connection_data.dart';
 import 'package:app/app/service/service.dart';
 import 'package:elementary/elementary.dart';
 import 'package:nekoton_repository/nekoton_repository.dart';
@@ -8,17 +9,22 @@ class WalletPageModel extends ElementaryModel {
     this._currentAccountsService,
     this._storageService,
     this._nekotonRepository,
+    this._connectionStorageService,
   ) : super(errorHandler: errorHandler);
 
   final CurrentAccountsService _currentAccountsService;
   final AppStorageService _storageService;
   final NekotonRepository _nekotonRepository;
+  final ConnectionsStorageService _connectionStorageService;
 
   Stream<KeyAccount?> get currentAccount =>
       _currentAccountsService.currentActiveAccountStream;
 
   Stream<TransportStrategy> get transportStrategy =>
       _nekotonRepository.currentTransportStream;
+
+  Stream<ConnectionData?> get connectionStream =>
+      _connectionStorageService.currentConnectionStream;
 
   bool? isNewUser() {
     return _storageService.getValue(StorageKey.userWithNewWallet());

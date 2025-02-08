@@ -134,5 +134,10 @@ flutter:
     - assets/images/alert_octagon_fill/
     - assets/images/check_circle_fill/
     - assets/images/wallet_bg/
+    - assets/images/wallet_main_bg/custom/
+    - assets/images/wallet_main_bg/everscale/
+    - assets/images/wallet_main_bg/tycho/
+    - assets/images/wallet_main_bg/venom/
+    - assets/images/wallet_main_bg/ton/
     - assets/splash/
     - assets/js/

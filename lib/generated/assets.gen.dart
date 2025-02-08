@@ -329,6 +329,10 @@ class $AssetsImagesGen {
   AssetGenImage get networkEarth =>
       const AssetGenImage('assets/images/network_earth.png');
 
+  /// File path: assets/images/network_everscale_bg.png
+  AssetGenImage get networkEverscaleBg =>
+      const AssetGenImage('assets/images/network_everscale_bg.png');
+
   /// File path: assets/images/network_vector_default.svg
   SvgGenImage get networkVectorDefault =>
       const SvgGenImage('assets/images/network_vector_default.svg');
@@ -428,6 +432,10 @@ class $AssetsImagesGen {
   /// Directory path: assets/images/wallet_bg
   $AssetsImagesWalletBgGen get walletBg => const $AssetsImagesWalletBgGen();
 
+  /// Directory path: assets/images/wallet_main_bg
+  $AssetsImagesWalletMainBgGen get walletMainBg =>
+      const $AssetsImagesWalletMainBgGen();
+
   /// File path: assets/images/web.svg
   SvgGenImage get web => const SvgGenImage('assets/images/web.svg');
 
@@ -506,6 +514,7 @@ class $AssetsImagesGen {
         navigation,
         networkDefault,
         networkEarth,
+        networkEverscaleBg,
         networkVectorDefault,
         openedEye,
         paste,
@@ -671,6 +680,30 @@ class $AssetsImagesWalletBgGen {
   List<AssetGenImage> get values => [walletBg];
 }
 
+class $AssetsImagesWalletMainBgGen {
+  const $AssetsImagesWalletMainBgGen();
+
+  /// Directory path: assets/images/wallet_main_bg/custom
+  $AssetsImagesWalletMainBgCustomGen get custom =>
+      const $AssetsImagesWalletMainBgCustomGen();
+
+  /// Directory path: assets/images/wallet_main_bg/everscale
+  $AssetsImagesWalletMainBgEverscaleGen get everscale =>
+      const $AssetsImagesWalletMainBgEverscaleGen();
+
+  /// Directory path: assets/images/wallet_main_bg/ton
+  $AssetsImagesWalletMainBgTonGen get ton =>
+      const $AssetsImagesWalletMainBgTonGen();
+
+  /// Directory path: assets/images/wallet_main_bg/tycho
+  $AssetsImagesWalletMainBgTychoGen get tycho =>
+      const $AssetsImagesWalletMainBgTychoGen();
+
+  /// Directory path: assets/images/wallet_main_bg/venom
+  $AssetsImagesWalletMainBgVenomGen get venom =>
+      const $AssetsImagesWalletMainBgVenomGen();
+}
+
 class $AssetsImagesOnboardingLayer1Gen {
   const $AssetsImagesOnboardingLayer1Gen();
 
@@ -813,6 +846,61 @@ class $AssetsImagesOnboardingLayer3Gen {
   /// List of all assets
   List<SvgGenImage> get values =>
       [aave, axs, ftm, hbar, atom, link, ltc, mana, trx, xlm];
+}
+
+class $AssetsImagesWalletMainBgCustomGen {
+  const $AssetsImagesWalletMainBgCustomGen();
+
+  /// File path: assets/images/wallet_main_bg/custom/wallet_bg.png
+  AssetGenImage get walletBg =>
+      const AssetGenImage('assets/images/wallet_main_bg/custom/wallet_bg.png');
+
+  /// List of all assets
+  List<AssetGenImage> get values => [walletBg];
+}
+
+class $AssetsImagesWalletMainBgEverscaleGen {
+  const $AssetsImagesWalletMainBgEverscaleGen();
+
+  /// File path: assets/images/wallet_main_bg/everscale/wallet_bg.png
+  AssetGenImage get walletBg => const AssetGenImage(
+      'assets/images/wallet_main_bg/everscale/wallet_bg.png');
+
+  /// List of all assets
+  List<AssetGenImage> get values => [walletBg];
+}
+
+class $AssetsImagesWalletMainBgTonGen {
+  const $AssetsImagesWalletMainBgTonGen();
+
+  /// File path: assets/images/wallet_main_bg/ton/wallet_bg.png
+  AssetGenImage get walletBg =>
+      const AssetGenImage('assets/images/wallet_main_bg/ton/wallet_bg.png');
+
+  /// List of all assets
+  List<AssetGenImage> get values => [walletBg];
+}
+
+class $AssetsImagesWalletMainBgTychoGen {
+  const $AssetsImagesWalletMainBgTychoGen();
+
+  /// File path: assets/images/wallet_main_bg/tycho/wallet_bg.png
+  AssetGenImage get walletBg =>
+      const AssetGenImage('assets/images/wallet_main_bg/tycho/wallet_bg.png');
+
+  /// List of all assets
+  List<AssetGenImage> get values => [walletBg];
+}
+
+class $AssetsImagesWalletMainBgVenomGen {
+  const $AssetsImagesWalletMainBgVenomGen();
+
+  /// File path: assets/images/wallet_main_bg/venom/wallet_bg.png
+  AssetGenImage get walletBg =>
+      const AssetGenImage('assets/images/wallet_main_bg/venom/wallet_bg.png');
+
+  /// List of all assets
+  List<AssetGenImage> get values => [walletBg];
 }
 
 class Assets {

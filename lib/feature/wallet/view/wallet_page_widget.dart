@@ -13,10 +13,11 @@ class WalletPageWidget extends ElementaryWidget<WalletPageWidgetModel> {
   @override
   Widget build(WalletPageWidgetModel wm) {
     return Scaffold(
-      body: DoubleSourceBuilder(
+      body: TripleSourceBuilder(
         firstSource: wm.currentAccount,
         secondSource: wm.hasUnconfirmedTransactions,
-        builder: (_, account, hasUnconfirmed) {
+        thirdSource: wm.connection,
+        builder: (_, account, hasUnconfirmed, connection) {
           if (account == null) return const SizedBox.shrink();
           return TripleSourceBuilder(
             firstSource: wm.isShowingBadge,
@@ -33,6 +34,7 @@ class WalletPageWidget extends ElementaryWidget<WalletPageWidgetModel> {
                 confirmImportCallback: wm.hideNewTokensLabel,
                 manifestUrl: transport?.manifestUrl ?? '',
                 hasUnconfirmedTransactions: hasUnconfirmed ?? false,
+                imageUrl: wm.getImagePathByNetwork(connection),
               );
             },
           );
