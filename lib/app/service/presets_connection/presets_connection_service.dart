@@ -60,7 +60,6 @@ class PresetsConnectionService {
     return transports[networkGroup]?.icons ?? TransportIcons();
   }
 
-
   List<DefaultActiveAsset> getDefaultActiveAsset(NetworkGroup group) {
     return transports[group]?.defaultActiveAssets ?? [];
   }

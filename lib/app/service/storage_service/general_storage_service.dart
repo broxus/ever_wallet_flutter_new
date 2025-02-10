@@ -23,7 +23,8 @@ const _migrationKey = 'migration_key';
 const _preferencesKey = 'preferences_key';
 const _systemContractAssetsKey = 'system_contract_assets_key';
 const _wasStEverOpenedKey = 'was_stever_opened_key';
-const _defaultActiveAssets = 'default_active_assets';
+const _alreadyAutoEnabledDefaultActiveAssets =
+    'already_auto_enabled_default_active_assets';
 
 /// This is a wrapper-class above [GetStorage] that provides methods
 /// to interact with general information that is not related to some specified
@@ -409,18 +410,26 @@ class GeneralStorageService extends AbstractStorageService {
   }
 
   void updateDefaultActiveAssets(
+    String accountAddress,
     List<String> addresses,
   ) {
     _defaultActiveAssetsStorage.write(
-      _defaultActiveAssets,
-      getDefaultActiveAssets()..addAll(addresses),
+      '$_alreadyAutoEnabledDefaultActiveAssets-$accountAddress',
+      getDefaultActiveAssets(accountAddress)
+        ..addAll(addresses)
+        ..toSet()
+        ..toList(),
     );
   }
 
-  List<String> getDefaultActiveAssets() {
-    return _defaultActiveAssetsStorage.read<List<dynamic>?>(
-          _defaultActiveAssets,
-        )?.cast<String>() ??
+  List<String> getDefaultActiveAssets(String accountAddress) {
+    return _defaultActiveAssetsStorage
+            .read<List<dynamic>?>(
+              '$_alreadyAutoEnabledDefaultActiveAssets-$accountAddress',
+            )
+            ?.cast<String>()
+            .toSet()
+            .toList() ??
         [];
   }
 

@@ -40,6 +40,7 @@ class AssetsService {
   final TonRepository tonRepository;
 
   StreamSubscription<TransportStrategy>? _currentTransportSubscription;
+  StreamSubscription<KeyAccount?>? _accountsSubscription;
   StreamSubscription<String>? _connectionsSubscription;
   StreamSubscription<void>? _combineSubscription;
 
@@ -64,11 +65,17 @@ class AssetsService {
         connectionsStorageService.currentConnectionIdStream.listen(
       (_) => updateDefaultAssets(),
     );
+
+    _accountsSubscription =
+        currentAccountsService.currentActiveAccountStream.listen(
+      (_) => updateDefaultAssets(),
+    );
   }
 
   @disposeMethod
   void dispose() {
     _currentTransportSubscription?.cancel();
+    _accountsSubscription?.cancel();
     _connectionsSubscription?.cancel();
     _combineSubscription?.cancel();
   }
@@ -273,12 +280,15 @@ class AssetsService {
     }
   }
 
-  Future<void> updateDefaultActiveAssets(List<String> address) async {
-    return storage.updateDefaultActiveAssets(address);
+  Future<void> updateDefaultActiveAssets(
+    String accountAddress,
+    List<String> address,
+  ) async {
+    return storage.updateDefaultActiveAssets(accountAddress, address);
   }
 
-  List<String> getDefaultActiveAssets() {
-    return storage.getDefaultActiveAssets();
+  List<String> getDefaultActiveAssets(String accountAddress) {
+    return storage.getDefaultActiveAssets(accountAddress);
   }
 
   /// Try getting contract of existed token contract from storage.
@@ -306,27 +316,31 @@ class AssetsService {
     await Future.delayed(const Duration(seconds: 1), () async {
       final presetsDefaultAssets =
           presetsConnectionService.getDefaultActiveAsset(
-              connectionsStorageService.currentConnection.group);
+        connectionsStorageService.currentConnection.group,
+      );
 
       if (presetsDefaultAssets.isEmpty) {
         return;
       }
 
-      final address = currentAccountsService.currentActiveAccount?.address;
+      final accountAddress =
+          currentAccountsService.currentActiveAccount?.address;
 
-      if (address == null) {
+      if (accountAddress == null) {
         return;
       }
 
       final cachedAccount = nekotonRepository.seedList.findAccountByAddress(
-        address,
+        accountAddress,
       );
 
       if (cachedAccount == null) {
         return;
       }
 
-      final cachedDefaultAssets = getDefaultActiveAssets();
+      final cachedDefaultAssets =
+          getDefaultActiveAssets(accountAddress.address);
+
       final result = <Address>[];
       final skipped = <String>[];
 
@@ -342,7 +356,12 @@ class AssetsService {
         await cachedAccount.addTokenWallets(result);
       }
       if (skipped.isNotEmpty) {
-        unawaited(updateDefaultActiveAssets(skipped));
+        unawaited(
+          updateDefaultActiveAssets(
+            accountAddress.address,
+            skipped,
+          ),
+        );
       }
     });
   }
