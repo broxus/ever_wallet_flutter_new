@@ -1,6 +1,8 @@
+import 'dart:async';
 import 'dart:convert';
 
 import 'package:app/app/service/connection/connection_factory.dart';
+import 'package:app/app/service/presets_connection/presets_connection_service.dart';
 import 'package:app/app/service/service.dart';
 import 'package:app/data/models/models.dart';
 import 'package:app/http/repository/ton_repository.dart';
@@ -17,6 +19,9 @@ import 'package:rxdart/rxdart.dart';
 class AssetsService {
   AssetsService(
     this.nekotonRepository,
+    this.connectionsStorageService,
+    this.currentAccountsService,
+    this.presetsConnectionService,
     this.httpService,
     this.storage,
     this.connectionFactory,
@@ -26,16 +31,25 @@ class AssetsService {
   static final _logger = Logger('AssetsService');
 
   final NekotonRepository nekotonRepository;
+  final ConnectionsStorageService connectionsStorageService;
+  final CurrentAccountsService currentAccountsService;
+  final PresetsConnectionService presetsConnectionService;
   final HttpService httpService;
   final GeneralStorageService storage;
   final ConnectionFactory connectionFactory;
   final TonRepository tonRepository;
 
+  StreamSubscription<TransportStrategy>? _currentTransportSubscription;
+  StreamSubscription<String>? _connectionsSubscription;
+  StreamSubscription<void>? _combineSubscription;
+
   /// Start listening for transport changes and update contracts from manifest
   void init() {
-    nekotonRepository.currentTransportStream.listen(_updateSystemContracts);
+    _currentTransportSubscription =
+        nekotonRepository.currentTransportStream.listen(_updateSystemContracts);
 
-    nekotonRepository.currentTransportStream.flatMap((transport) {
+    _combineSubscription =
+        nekotonRepository.currentTransportStream.flatMap((transport) {
       return Rx.combineLatest2<List<TokenContractAsset>,
           List<TokenContractAsset>, void>(
         storage.systemTokenContractAssetsStream(transport.transport.group),
@@ -45,6 +59,18 @@ class AssetsService {
       // listen needs to enable stream api
       // ignore: no-empty-block
     }).listen((_) {});
+
+    _connectionsSubscription =
+        connectionsStorageService.currentConnectionIdStream.listen(
+      _handleConnections,
+    );
+  }
+
+  @disposeMethod
+  void dispose() {
+    _currentTransportSubscription?.cancel();
+    _connectionsSubscription?.cancel();
+    _combineSubscription?.cancel();
   }
 
   /// Get list of contracts (custom and system) that is available for current
@@ -247,6 +273,14 @@ class AssetsService {
     }
   }
 
+  Future<void> updateDefaultActiveAssets(List<String> address) async {
+    return storage.updateDefaultActiveAssets(address);
+  }
+
+  List<String> getDefaultActiveAssets() {
+    return storage.getDefaultActiveAssets();
+  }
+
   /// Try getting contract of existed token contract from storage.
   /// This can be helpful when you know, that token exists, but you do not have
   /// direct access to TokenWallet.
@@ -313,5 +347,50 @@ class AssetsService {
     for (final asset in oldAssets) {
       storage.removeCustomTokenContractAsset(asset);
     }
+  }
+
+  void _handleConnections(String id) {
+    Future.delayed(const Duration(seconds: 1), () {
+      final presetsDefaultAssets =
+          presetsConnectionService.getDefaultActiveAsset(
+              connectionsStorageService.currentConnection.group);
+
+      if (presetsDefaultAssets.isEmpty) {
+        return;
+      }
+
+      final address = currentAccountsService.currentActiveAccount?.address;
+
+      if (address == null) {
+        return;
+      }
+
+      final cachedAccount = nekotonRepository.seedList.findAccountByAddress(
+        address,
+      );
+
+      if (cachedAccount == null) {
+        return;
+      }
+
+      final cachedDefaultAssets = getDefaultActiveAssets();
+      final result = <Address>[];
+      final skipped = <String>[];
+
+      for (final preset in presetsDefaultAssets) {
+        if (cachedDefaultAssets.contains(preset.address.address)) {
+          continue;
+        }
+        result.add(preset.address);
+        skipped.add(preset.address.address);
+      }
+
+      if (result.isNotEmpty) {
+        cachedAccount.addTokenWallets(result);
+      }
+      if (skipped.isNotEmpty) {
+        updateDefaultActiveAssets(skipped);
+      }
+    });
   }
 }

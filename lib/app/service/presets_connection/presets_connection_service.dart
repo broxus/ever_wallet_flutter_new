@@ -3,6 +3,7 @@ import 'dart:async';
 import 'package:app/app/service/connection/data/connection_data/connection_data.dart';
 import 'package:app/app/service/connection/data/connection_network/connection_network.dart';
 import 'package:app/app/service/connection/data/connection_transport/connection_transport_data.dart';
+import 'package:app/app/service/connection/data/default_active_asset.dart';
 import 'package:app/app/service/connection/data/transport_icons.dart';
 import 'package:app/app/service/connection/default_network.dart';
 import 'package:app/app/service/connection/group.dart';
@@ -57,6 +58,11 @@ class PresetsConnectionService {
 
   TransportIcons getTransportIconsByNetwork(NetworkGroup networkGroup) {
     return transports[networkGroup]?.icons ?? TransportIcons();
+  }
+
+
+  List<DefaultActiveAsset> getDefaultActiveAsset(NetworkGroup group) {
+    return transports[group]?.defaultActiveAssets ?? [];
   }
 
   Future<void> fetchConnectionsList() async {

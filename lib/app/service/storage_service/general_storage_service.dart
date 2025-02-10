@@ -17,11 +17,13 @@ const _currentAddress = 'current_address';
 const _currentKey = 'current_public_key';
 
 const _customContractAssetsKey = 'custom_contract_assets_key';
+const _defaultActiveAssetsStorageKey = 'default_active_assets_storage_key';
 const _lastSelectedSeedsKey = 'last_selected_seeds_key';
 const _migrationKey = 'migration_key';
 const _preferencesKey = 'preferences_key';
 const _systemContractAssetsKey = 'system_contract_assets_key';
 const _wasStEverOpenedKey = 'was_stever_opened_key';
+const _defaultActiveAssets = 'default_active_assets';
 
 /// This is a wrapper-class above [GetStorage] that provides methods
 /// to interact with general information that is not related to some specified
@@ -35,23 +37,27 @@ class GeneralStorageService extends AbstractStorageService {
     @Named(currenciesContainer) this._currenciesStorage,
     @Named(systemContractAssetsContainer) this._systemContractAssetsStorage,
     @Named(customContractAssetsContainer) this._customContractAssetsStorage,
+    @Named(defaultActiveAssetsStorage) this._defaultActiveAssetsStorage,
   );
 
   static const prefContainer = _preferencesKey;
   static const currenciesContainer = _currenciesKey;
   static const systemContractAssetsContainer = _systemContractAssetsKey;
   static const customContractAssetsContainer = _customContractAssetsKey;
+  static const defaultActiveAssetsStorage = _defaultActiveAssetsStorageKey;
   static const containers = [
     prefContainer,
     currenciesContainer,
     systemContractAssetsContainer,
     customContractAssetsContainer,
+    defaultActiveAssetsStorage,
   ];
 
   final GetStorage _prefStorage;
   final GetStorage _currenciesStorage;
   final GetStorage _systemContractAssetsStorage;
   final GetStorage _customContractAssetsStorage;
+  final GetStorage _defaultActiveAssetsStorage;
 
   /// Subject of public keys names
   final _currentKeySubject = BehaviorSubject<PublicKey?>();
@@ -400,6 +406,22 @@ class GeneralStorageService extends AbstractStorageService {
         );
       _streamedSystemContractAssets();
     }
+  }
+
+  void updateDefaultActiveAssets(
+    List<String> addresses,
+  ) {
+    _defaultActiveAssetsStorage.write(
+      _defaultActiveAssets,
+      getDefaultActiveAssets()..addAll(addresses),
+    );
+  }
+
+  List<String> getDefaultActiveAssets() {
+    return _defaultActiveAssetsStorage.read<List<dynamic>?>(
+          _defaultActiveAssets,
+        )?.cast<String>() ??
+        [];
   }
 
   Future<void> _initAppDirectories() async {
