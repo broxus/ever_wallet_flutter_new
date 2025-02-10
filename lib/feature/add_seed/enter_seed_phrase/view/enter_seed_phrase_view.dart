@@ -90,27 +90,25 @@ class EnterSeedPhraseView extends StatelessWidget {
             inputsModels,
             displayPasteButton,
           ) =>
-              SingleChildScrollView(
-            child: Form(
-              key: cubit.formKey,
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  if (!isKeyboardOpen) ...[
-                    const SizedBox(height: DimensSize.d24),
-                    _Tabs(
-                      allowedValues: allowedValues,
-                      currentValue: currentValue,
-                      displayPasteButton: displayPasteButton,
-                      onTabChanged: cubit.changeTab,
-                      onPastePhrase: cubit.pastePhrase,
-                      onClearFields: cubit.clearFields,
-                    ),
-                  ],
-                  _Inputs(inputs: inputsModels, currentValue: currentValue),
-                  const SizedBox(height: DimensSize.d16),
+              Form(
+            key: cubit.formKey,
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                if (!isKeyboardOpen) ...[
+                  const SizedBox(height: DimensSize.d24),
+                  _Tabs(
+                    allowedValues: allowedValues,
+                    currentValue: currentValue,
+                    displayPasteButton: displayPasteButton,
+                    onTabChanged: cubit.changeTab,
+                    onPastePhrase: cubit.pastePhrase,
+                    onClearFields: cubit.clearFields,
+                  ),
                 ],
-              ),
+                _Inputs(inputs: inputsModels, currentValue: currentValue),
+                const SizedBox(height: DimensSize.d16),
+              ],
             ),
           ),
         );
@@ -190,46 +188,18 @@ class _Inputs extends StatelessWidget {
   Widget build(BuildContext context) {
     final cubit = context.read<EnterSeedPhraseCubit>();
 
-    return ContainerRow(
-      padding: const EdgeInsets.symmetric(vertical: DimensSize.d16),
-      children: [
-        Expanded(
-          child: SeparatedColumn(
-            children: [
-              for (final input in inputs.getRange(
-                0,
-                currentValue ~/ _gridColumnCount,
-              ))
-                _Input(
-                  input: input,
-                  currentValue: currentValue,
-                  suggestionsCallback: cubit.suggestionsCallback,
-                  onSuggestionSelected: cubit.onSuggestionSelected,
-                  onSubmitted: cubit.nextOrConfirm,
-                  onClear: cubit.clearInputModel,
-                ),
-            ],
-          ),
+    return Expanded(
+      child: ListView.builder(
+        itemCount: inputs.length,
+        itemBuilder: (_, index) => _Input(
+          input: inputs[index],
+          currentValue: currentValue,
+          suggestionsCallback: cubit.suggestionsCallback,
+          onSuggestionSelected: cubit.onSuggestionSelected,
+          onSubmitted: cubit.nextOrConfirm,
+          onClear: cubit.clearInputModel,
         ),
-        Expanded(
-          child: SeparatedColumn(
-            children: [
-              for (final input in inputs.getRange(
-                currentValue ~/ _gridColumnCount,
-                currentValue,
-              ))
-                _Input(
-                  input: input,
-                  currentValue: currentValue,
-                  suggestionsCallback: cubit.suggestionsCallback,
-                  onSuggestionSelected: cubit.onSuggestionSelected,
-                  onSubmitted: cubit.nextOrConfirm,
-                  onClear: cubit.clearInputModel,
-                ),
-            ],
-          ),
-        ),
-      ],
+      ),
     );
   }
 }
