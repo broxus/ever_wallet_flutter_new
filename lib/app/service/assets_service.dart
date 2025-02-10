@@ -62,7 +62,7 @@ class AssetsService {
 
     _connectionsSubscription =
         connectionsStorageService.currentConnectionIdStream.listen(
-      _handleConnections,
+      (_) => updateDefaultAssets(),
     );
   }
 
@@ -302,6 +302,51 @@ class AssetsService {
         nekotonRepository.currentTransport.transport.group,
       );
 
+  Future<void> updateDefaultAssets() async {
+    await Future.delayed(const Duration(seconds: 1), () async {
+      final presetsDefaultAssets =
+          presetsConnectionService.getDefaultActiveAsset(
+              connectionsStorageService.currentConnection.group);
+
+      if (presetsDefaultAssets.isEmpty) {
+        return;
+      }
+
+      final address = currentAccountsService.currentActiveAccount?.address;
+
+      if (address == null) {
+        return;
+      }
+
+      final cachedAccount = nekotonRepository.seedList.findAccountByAddress(
+        address,
+      );
+
+      if (cachedAccount == null) {
+        return;
+      }
+
+      final cachedDefaultAssets = getDefaultActiveAssets();
+      final result = <Address>[];
+      final skipped = <String>[];
+
+      for (final preset in presetsDefaultAssets) {
+        if (cachedDefaultAssets.contains(preset.address.address)) {
+          continue;
+        }
+        result.add(preset.address);
+        skipped.add(preset.address.address);
+      }
+
+      if (result.isNotEmpty) {
+        await cachedAccount.addTokenWallets(result);
+      }
+      if (skipped.isNotEmpty) {
+        unawaited(updateDefaultActiveAssets(skipped));
+      }
+    });
+  }
+
   /// Load manifest specified for transport and update system contracts that
   /// user can add to list of its contracts.
   Future<void> _updateSystemContracts(TransportStrategy transport) async {
@@ -347,50 +392,5 @@ class AssetsService {
     for (final asset in oldAssets) {
       storage.removeCustomTokenContractAsset(asset);
     }
-  }
-
-  void _handleConnections(String id) {
-    Future.delayed(const Duration(seconds: 1), () {
-      final presetsDefaultAssets =
-          presetsConnectionService.getDefaultActiveAsset(
-              connectionsStorageService.currentConnection.group);
-
-      if (presetsDefaultAssets.isEmpty) {
-        return;
-      }
-
-      final address = currentAccountsService.currentActiveAccount?.address;
-
-      if (address == null) {
-        return;
-      }
-
-      final cachedAccount = nekotonRepository.seedList.findAccountByAddress(
-        address,
-      );
-
-      if (cachedAccount == null) {
-        return;
-      }
-
-      final cachedDefaultAssets = getDefaultActiveAssets();
-      final result = <Address>[];
-      final skipped = <String>[];
-
-      for (final preset in presetsDefaultAssets) {
-        if (cachedDefaultAssets.contains(preset.address.address)) {
-          continue;
-        }
-        result.add(preset.address);
-        skipped.add(preset.address.address);
-      }
-
-      if (result.isNotEmpty) {
-        cachedAccount.addTokenWallets(result);
-      }
-      if (skipped.isNotEmpty) {
-        updateDefaultActiveAssets(skipped);
-      }
-    });
   }
 }
