@@ -98,14 +98,16 @@ class EnterSeedPhraseView extends StatelessWidget {
                 children: [
                   if (!isKeyboardOpen) ...[
                     const SizedBox(height: DimensSize.d24),
-                    _tabs(
-                      allowedValues,
-                      cubit,
-                      currentValue,
-                      displayPasteButton,
+                    _Tabs(
+                      allowedValues: allowedValues,
+                      currentValue: currentValue,
+                      displayPasteButton: displayPasteButton,
+                      onTabChanged: cubit.changeTab,
+                      onPastePhrase: cubit.pastePhrase,
+                      onClearFields: cubit.clearFields,
                     ),
                   ],
-                  _inputs(theme, inputsModels, currentValue),
+                  _Inputs(inputs: inputsModels, currentValue: currentValue),
                   const SizedBox(height: DimensSize.d16),
                 ],
               ),
@@ -115,74 +117,200 @@ class EnterSeedPhraseView extends StatelessWidget {
       },
     );
   }
+}
 
-  /// [currentValue] starts with 0
-  // ignore: long-method
-  Widget _inputBuild(
-    ThemeStyleV2 themeStyleV2,
-    EnterSeedPhraseInputState input,
-    int currentValue,
-  ) {
-    final displayIndex = input.index + 1;
-    final indexText = NumberFormat('00').format(displayIndex);
+class _Tabs extends StatelessWidget {
+  const _Tabs({
+    required this.allowedValues,
+    required this.currentValue,
+    required this.displayPasteButton,
+    required this.onTabChanged,
+    required this.onPastePhrase,
+    required this.onClearFields,
+  });
 
-    return Builder(
-      builder: (context) {
-        final cubit = context.read<EnterSeedPhraseCubit>();
-        final colors = context.themeStyle.colors;
+  final List<int> allowedValues;
+  final int currentValue;
+  final bool displayPasteButton;
+  final void Function(int) onTabChanged;
+  final VoidCallback onPastePhrase;
+  final VoidCallback onClearFields;
 
-        return input.when(
-          entered: (text, index, hasError) {
-            return PressScaleWidget(
-              onPressed: () => cubit.clearInputModel(index),
-              child: CommonCard(
-                width: double.infinity,
-                alignment: Alignment.center,
-                leadingText: indexText,
-                titleText: text,
-                trailingChild:
-                    CommonIconWidget.svg(svg: Assets.images.trash.path),
-                borderColor: hasError ? colors.alert : null,
-              ),
-            );
-          },
-          input: (controller, focus, index, hasError) {
-            return CommonInput(
-              autocorrect: false,
-              hintStyle: themeStyleV2.textStyles.labelSmall,
-              inactiveBorderColor: themeStyleV2.colors.border0,
-              textStyle: themeStyleV2.textStyles.labelSmall,
-              suggestionBackground: themeStyleV2.colors.background1,
-              keyboardType: TextInputType.visiblePassword,
-              key: Key('SeedInput-$index'),
-              height: DimensSize.d48,
-              controller: controller,
-              suggestionsCallback: (_) => cubit.suggestionsCallback(controller),
-              itemBuilder: _itemBuilder,
-              onSuggestionSelected: (suggestion) =>
-                  cubit.onSuggestionSelected(suggestion, index),
-              focusNode: focus,
-              // show error border if field is empty
-              validator: (v) => v?.isEmpty ?? true ? '' : null,
-              needClearButton: false,
-              // IntrinsicWidth to force Center match prefixIconConstraints
-              prefixIcon: IntrinsicWidth(
-                child: Center(
-                  child: Text(
-                    indexText,
-                    style: StyleRes.addRegular.copyWith(
-                      color: colors.textSecondary,
+  @override
+  Widget build(BuildContext context) {
+    return Row(
+      children: [
+        Expanded(
+          child: SingleChildScrollView(
+            scrollDirection: Axis.horizontal,
+            child: Row(
+              children: [
+                for (final value in allowedValues)
+                  GestureDetector(
+                    onTap: () => onTabChanged(value),
+                    child: PrimarySegmentControl(
+                      size: SegmentControlSize.small,
+                      state: value == currentValue
+                          ? SegmentControlState.selected
+                          : SegmentControlState.normal,
+                      title: LocaleKeys.wordsCount.plural(value),
+                      value: value,
                     ),
                   ),
+              ],
+            ),
+          ),
+        ),
+        GhostButton(
+          buttonShape: ButtonShape.pill,
+          buttonSize: ButtonSize.small,
+          onPressed: displayPasteButton ? onPastePhrase : onClearFields,
+          title: displayPasteButton
+              ? LocaleKeys.pasteAll.tr()
+              : LocaleKeys.clearAll.tr(),
+          icon: displayPasteButton
+              ? LucideIcons.arrowDownToDot
+              : LucideIcons.trash2,
+        ),
+      ],
+    );
+  }
+}
+
+class _Inputs extends StatelessWidget {
+  const _Inputs({
+    required this.inputs,
+    required this.currentValue,
+  });
+
+  final List<EnterSeedPhraseInputState> inputs;
+  final int currentValue;
+
+  @override
+  Widget build(BuildContext context) {
+    final cubit = context.read<EnterSeedPhraseCubit>();
+
+    return ContainerRow(
+      padding: const EdgeInsets.symmetric(vertical: DimensSize.d16),
+      children: [
+        Expanded(
+          child: SeparatedColumn(
+            children: [
+              for (final input in inputs.getRange(
+                0,
+                currentValue ~/ _gridColumnCount,
+              ))
+                _Input(
+                  input: input,
+                  currentValue: currentValue,
+                  suggestionsCallback: cubit.suggestionsCallback,
+                  onSuggestionSelected: cubit.onSuggestionSelected,
+                  onSubmitted: cubit.nextOrConfirm,
+                  onClear: cubit.clearInputModel,
+                ),
+            ],
+          ),
+        ),
+        Expanded(
+          child: SeparatedColumn(
+            children: [
+              for (final input in inputs.getRange(
+                currentValue ~/ _gridColumnCount,
+                currentValue,
+              ))
+                _Input(
+                  input: input,
+                  currentValue: currentValue,
+                  suggestionsCallback: cubit.suggestionsCallback,
+                  onSuggestionSelected: cubit.onSuggestionSelected,
+                  onSubmitted: cubit.nextOrConfirm,
+                  onClear: cubit.clearInputModel,
+                ),
+            ],
+          ),
+        ),
+      ],
+    );
+  }
+}
+
+final _format = NumberFormat('00');
+
+class _Input extends StatelessWidget {
+  const _Input({
+    required this.input,
+    required this.currentValue,
+    required this.suggestionsCallback,
+    required this.onSuggestionSelected,
+    required this.onSubmitted,
+    required this.onClear,
+  });
+
+  final EnterSeedPhraseInputState input;
+
+  /// starts with 0
+  final int currentValue;
+  final SuggestionsCallback<String> suggestionsCallback;
+  final void Function(String, int) onSuggestionSelected;
+  final void Function(int) onSubmitted;
+  final void Function(int) onClear;
+
+  @override
+  Widget build(BuildContext context) {
+    final theme = context.themeStyleV2;
+    final colors = context.themeStyle.colors;
+    final displayIndex = input.index + 1;
+    final indexText = _format.format(displayIndex);
+
+    return input.when(
+      entered: (text, index, hasError) {
+        return PressScaleWidget(
+          onPressed: () => onClear(index),
+          child: CommonCard(
+            width: double.infinity,
+            alignment: Alignment.center,
+            leadingText: indexText,
+            titleText: text,
+            trailingChild: CommonIconWidget.svg(svg: Assets.images.trash.path),
+            borderColor: hasError ? colors.alert : null,
+          ),
+        );
+      },
+      input: (controller, focus, index, hasError) {
+        return CommonInput(
+          key: Key('SeedInput-$index'),
+          autocorrect: false,
+          hintStyle: theme.textStyles.labelSmall,
+          inactiveBorderColor: theme.colors.border0,
+          textStyle: theme.textStyles.labelSmall,
+          suggestionBackground: theme.colors.background1,
+          keyboardType: TextInputType.visiblePassword,
+          height: DimensSize.d48,
+          controller: controller,
+          suggestionsCallback: suggestionsCallback,
+          itemBuilder: _itemBuilder,
+          onSuggestionSelected: (suggestion) =>
+              onSuggestionSelected(suggestion, index),
+          focusNode: focus,
+          // show error border if field is empty
+          validator: (v) => v?.isEmpty ?? true ? '' : null,
+          needClearButton: false,
+          // IntrinsicWidth to force Center match prefixIconConstraints
+          prefixIcon: IntrinsicWidth(
+            child: Center(
+              child: Text(
+                indexText,
+                style: StyleRes.addRegular.copyWith(
+                  color: colors.textSecondary,
                 ),
               ),
-              onSubmitted: (_) => cubit.nextOrConfirm(index),
-              textInputAction: index == currentValue - 1
-                  ? TextInputAction.done
-                  : TextInputAction.next,
-              v2Style: CommonInputStyleV2(themeStyleV2),
-            );
-          },
+            ),
+          ),
+          onSubmitted: (_) => onSubmitted(index),
+          textInputAction: index == currentValue - 1
+              ? TextInputAction.done
+              : TextInputAction.next,
+          v2Style: CommonInputStyleV2(theme),
         );
       },
     );
@@ -197,89 +325,6 @@ class EnterSeedPhraseView extends StatelessWidget {
         suggestion,
         style: theme.textStyles.labelSmall,
       ),
-    );
-  }
-
-  Widget _tabs(
-    List<int> allowedValues,
-    EnterSeedPhraseCubit cubit,
-    int currentValue,
-    bool displayPasteButton,
-  ) {
-    return Builder(
-      builder: (context) {
-        return Row(
-          children: [
-            Expanded(
-              child: SingleChildScrollView(
-                scrollDirection: Axis.horizontal,
-                child: Row(
-                  children: [
-                    for (final value in allowedValues)
-                      GestureDetector(
-                        onTap: () => cubit.changeTab(value),
-                        child: PrimarySegmentControl(
-                          size: SegmentControlSize.small,
-                          state: value == currentValue
-                              ? SegmentControlState.selected
-                              : SegmentControlState.normal,
-                          title: LocaleKeys.wordsCount.plural(value),
-                          value: value,
-                        ),
-                      ),
-                  ],
-                ),
-              ),
-            ),
-            GhostButton(
-              buttonShape: ButtonShape.pill,
-              buttonSize: ButtonSize.small,
-              onPressed:
-                  displayPasteButton ? cubit.pastePhrase : cubit.clearFields,
-              title: displayPasteButton
-                  ? LocaleKeys.pasteAll.tr()
-                  : LocaleKeys.clearAll.tr(),
-              icon: displayPasteButton
-                  ? LucideIcons.arrowDownToDot
-                  : LucideIcons.trash2,
-            ),
-          ],
-        );
-      },
-    );
-  }
-
-  Widget _inputs(
-    ThemeStyleV2 themeStyleV2,
-    List<EnterSeedPhraseInputState> inputs,
-    int currentValue,
-  ) {
-    return ContainerRow(
-      padding: const EdgeInsets.symmetric(vertical: DimensSize.d16),
-      children: [
-        Expanded(
-          child: SeparatedColumn(
-            children: [
-              for (final input in inputs.getRange(
-                0,
-                currentValue ~/ _gridColumnCount,
-              ))
-                _inputBuild(themeStyleV2, input, currentValue),
-            ],
-          ),
-        ),
-        Expanded(
-          child: SeparatedColumn(
-            children: [
-              for (final input in inputs.getRange(
-                currentValue ~/ _gridColumnCount,
-                currentValue,
-              ))
-                _inputBuild(themeStyleV2, input, currentValue),
-            ],
-          ),
-        ),
-      ],
     );
   }
 }

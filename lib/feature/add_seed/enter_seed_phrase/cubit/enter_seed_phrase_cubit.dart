@@ -18,7 +18,6 @@ import 'package:nekoton_repository/nekoton_repository.dart' hide Message;
 import 'package:ui_components_lib/ui_components_lib.dart';
 
 part 'enter_seed_phrase_cubit.freezed.dart';
-
 part 'enter_seed_phrase_state.dart';
 
 /// Regexp that helps splitting seed phrase into words.
@@ -52,6 +51,8 @@ class EnterSeedPhraseCubit extends Cubit<EnterSeedPhraseState>
 
   /// Models of input
   late List<EnterSeedPhraseInputState> _inputModels;
+
+  Set<String>? _hints;
 
   @override
   @protected
@@ -123,12 +124,10 @@ class EnterSeedPhraseCubit extends Cubit<EnterSeedPhraseState>
   }
 
   /// Callback for UI TextField widget
-  Future<List<String>> suggestionsCallback(
-    TextEditingController controller,
-  ) async {
-    final text = controller.value.text;
+  List<String> suggestionsCallback(String text) {
     if (text.isEmpty) return [];
-    final hints = await getHints(input: text);
+
+    final hints = getHints(input: text);
     if (hints.length == 1 && hints[0] == text) {
       return [];
     }
@@ -159,44 +158,41 @@ class EnterSeedPhraseCubit extends Cubit<EnterSeedPhraseState>
   }
 
   Future<void> confirmAction() async {
-    if (!await checkConnection(context)) {
-      return;
+    if (!await checkConnection(context)) return;
+    if (!_validateFormWithError()) return;
+
+    String? error;
+    try {
+      FocusManager.instance.primaryFocus?.unfocus();
+
+      final buffer = StringBuffer();
+
+      for (var i = 0; i < _currentValue; i++) {
+        buffer
+          ..write(_controllers[i].text.trim())
+          ..write(' ');
+      }
+
+      final phrase = buffer.toString().trimRight();
+
+      final mnemonicType = _currentValue == _legacySeedPhraseLength
+          ? const MnemonicType.legacy()
+          : defaultMnemonicType;
+
+      deriveFromPhrase(
+        phrase: phrase,
+        mnemonicType: mnemonicType,
+      );
+      confirmCallback(phrase);
+    } on FrbException catch (e, s) {
+      _log.severe('confirmAction FrbException', e, s);
+      error = LocaleKeys.wrongSeed.tr();
+    } on Exception catch (e, s) {
+      _log.severe('confirmAction', e, s);
+      error = e.toString();
     }
-
-    if (await _validateFormWithError()) {
-      String? error;
-      try {
-        FocusManager.instance.primaryFocus?.unfocus();
-
-        final buffer = StringBuffer();
-
-        for (var i = 0; i < _currentValue; i++) {
-          buffer
-            ..write(_controllers[i].text.trim())
-            ..write(' ');
-        }
-
-        final phrase = buffer.toString().trimRight();
-
-        final mnemonicType = _currentValue == _legacySeedPhraseLength
-            ? const MnemonicType.legacy()
-            : defaultMnemonicType;
-
-        await deriveFromPhrase(
-          phrase: phrase,
-          mnemonicType: mnemonicType,
-        );
-        confirmCallback(phrase);
-      } on FrbException catch (e, s) {
-        _log.severe('confirmAction FrbException', e, s);
-        error = LocaleKeys.wrongSeed.tr();
-      } on Exception catch (e, s) {
-        _log.severe('confirmAction', e, s);
-        error = e.toString();
-      }
-      if (error != null) {
-        _showValidateError(error);
-      }
+    if (error != null) {
+      _showValidateError(error);
     }
   }
 
@@ -249,7 +245,7 @@ class EnterSeedPhraseCubit extends Cubit<EnterSeedPhraseState>
     Future.delayed(const Duration(milliseconds: 100), () async {
       if (words.isNotEmpty && words.length == _currentValue) {
         for (final word in words) {
-          if (!await _checkIsWordValid(word)) {
+          if (!_checkIsWordValid(word)) {
             words.clear();
             break;
           }
@@ -260,7 +256,6 @@ class EnterSeedPhraseCubit extends Cubit<EnterSeedPhraseState>
 
       if (words.isEmpty) {
         _resetFormAndError();
-
         _showValidateError(LocaleKeys.incorrectWordsFormat.tr());
 
         return;
@@ -280,7 +275,7 @@ class EnterSeedPhraseCubit extends Cubit<EnterSeedPhraseState>
         });
       } catch (_) {}
 
-      await _validateFormWithError();
+      _validateFormWithError();
 
       _canAutoNavigate = true;
       _checkAutoNavigate();
@@ -288,9 +283,9 @@ class EnterSeedPhraseCubit extends Cubit<EnterSeedPhraseState>
   }
 
   /// Check if debug phrase is entered in any text field
-  Future<void> _checkDebugPhraseGenerating() async {
+  void _checkDebugPhraseGenerating() {
     if (_controllers.any((e) => e.text == 'speakfriendandenter')) {
-      final key = await generateKey(
+      final key = generateKey(
         accountType: _currentValue == _legacySeedPhraseLength
             ? const MnemonicType.legacy()
             : defaultMnemonicType,
@@ -303,7 +298,7 @@ class EnterSeedPhraseCubit extends Cubit<EnterSeedPhraseState>
             TextSelection.fromPosition(TextPosition(offset: text.length));
       }
 
-      await _validateFormWithError();
+      _validateFormWithError();
     }
   }
 
@@ -314,27 +309,25 @@ class EnterSeedPhraseCubit extends Cubit<EnterSeedPhraseState>
   }
 
   /// [word] is valid if it is in list of hints for this word.
-  Future<bool> _checkIsWordValid(String word) async {
-    final hints = await getHints(input: word);
-    if (hints.contains(word)) {
-      return true;
-    }
+  bool _checkIsWordValid(String word) {
+    final hints = _hints ??= Set.from(
+      getHints(input: ''),
+    );
 
-    return false;
+    return hints.contains(word);
   }
 
   /// Validate form and return its status.
   /// It also updates state of cubit if there was some errors.
   ///
   /// Returns true if there was no any error, false otherwise.
-  Future<bool> _validateFormWithError() async {
+  bool _validateFormWithError() {
     final hasEmptyFields = !(formKey.currentState?.validate() ?? false);
     var hasWrongWords = false;
 
     for (var index = 0; index < _currentValue; index++) {
       final input = _inputModels[index];
-      if (input is EnterSeedPhraseEntered &&
-          !await _checkIsWordValid(input.text)) {
+      if (input is EnterSeedPhraseEntered && !_checkIsWordValid(input.text)) {
         hasWrongWords = true;
         _inputModels[index] = _inputModels[index].copyWith(hasError: true);
       }
