@@ -43,6 +43,7 @@ class ImportWalletScreenWidgetModel
   ImportWalletData? get _data => screenState.value.data;
   final _log = Logger('ImportWalletWidgetModel');
   int? _currentValue;
+  Set<String>? _hints;
 
   Future<void> onPressedImport() async {
     if (!await model.checkConnection(context)) {
@@ -62,7 +63,7 @@ class ImportWalletScreenWidgetModel
             ? const MnemonicType.legacy()
             : defaultMnemonicType;
 
-        await deriveFromPhrase(
+        deriveFromPhrase(
           phrase: phrase,
           mnemonicType: mnemonicType,
         );
@@ -104,7 +105,7 @@ class ImportWalletScreenWidgetModel
 
     if (seed.isNotEmpty) {
       for (final word in seed.words) {
-        if (!await _isWordValid(word)) {
+        if (!_isWordValid(word)) {
           seed = SeedPhraseModel.empty();
           break;
         }
@@ -175,12 +176,8 @@ class ImportWalletScreenWidgetModel
     );
   }
 
-  Future<bool> _isWordValid(String word) async {
-    final hints = await getHints(input: word);
-    if (hints.contains(word)) {
-      return true;
-    }
-
-    return false;
+  bool _isWordValid(String word) {
+    final hints = _hints ??= getHints(input: '').toSet();
+    return hints.contains(word);
   }
 }

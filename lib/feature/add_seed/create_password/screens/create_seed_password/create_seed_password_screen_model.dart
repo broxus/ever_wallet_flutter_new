@@ -41,7 +41,7 @@ class CreateSeedPasswordScreenModel extends ElementaryModel {
       if (_phrase?.isNotEmpty ?? false) {
         seed = _phrase!;
       } else {
-        seed = await _createSeed();
+        seed = _createSeed();
       }
 
       final publicKey = await _nekotonRepository.addSeed(
@@ -67,8 +67,8 @@ class CreateSeedPasswordScreenModel extends ElementaryModel {
     }
   }
 
-  Future<SeedPhraseModel> _createSeed() async {
-    final seed = await generateKey(accountType: defaultMnemonicType);
+  SeedPhraseModel _createSeed() {
+    final seed = generateKey(accountType: defaultMnemonicType);
     return SeedPhraseModel.fromWords(seed.words);
   }
 }
