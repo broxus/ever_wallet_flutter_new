@@ -8,11 +8,9 @@ import 'package:app/core/error_handler_factory.dart';
 import 'package:app/core/wm/custom_wm.dart';
 import 'package:app/di/di.dart';
 import 'package:app/feature/wallet/new_account/add_account.dart';
-import 'package:app/feature/wallet/new_account/new_account_type'
-    '/new_account_type_model.dart';
+import 'package:app/feature/wallet/new_account/new_account_type/new_account_type_model.dart';
 import 'package:collection/collection.dart';
 import 'package:elementary_helper/elementary_helper.dart';
-import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:nekoton_repository/nekoton_repository.dart';
@@ -42,14 +40,26 @@ class NewAccountTypeWidgetModel
     (item) => item == const WalletType.multisig(MultisigType.multisig2_1),
   );
   late final deprecatedTypes = availableTypes.where(
-    (item) => item != defaultType && item != defaultMultisigType,
+    (item) => !_standartTypes.contains(item),
   );
 
-  late final _loading = createValueNotifier(false);
+  late final _loading = createNotifier(false);
   late final _selected = createNotifier(defaultType);
   late final _showDeprecated = createNotifier(false);
 
-  ValueListenable<bool> get loading => _loading;
+  // Hamster network workaround
+  late final Set<WalletType> _standartTypes = isHmstr
+      ? {
+          const WalletType.walletV5R1(),
+          defaultType,
+          if (defaultMultisigType != null) defaultMultisigType!,
+        }
+      : {
+          defaultType,
+          if (defaultMultisigType != null) defaultMultisigType!,
+        };
+
+  ListenableState<bool> get loading => _loading;
 
   ListenableState<WalletType> get selected => _selected;
 
@@ -59,6 +69,13 @@ class NewAccountTypeWidgetModel
 
   // TODO(knightforce): how to get rid of explicit check?
   bool get isEverscale => model.transport.networkType == 'ever';
+
+  // Hamster network workaround
+  bool get isHmstr => model.transport.networkGroup.startsWith('hmstr');
+
+  Set<WalletType> get disabledWalletTypes => widget.password == null
+      ? model.getCreatedAccountTypes(widget.publicKey).toSet()
+      : {};
 
   @override
   void initWidgetModel() {
@@ -77,8 +94,10 @@ class NewAccountTypeWidgetModel
     final walletType = selected.value!;
     final name = controller.text;
 
+    if (disabledWalletTypes.contains(walletType)) return;
+
     try {
-      _loading.value = true;
+      _loading.accept(true);
 
       final accountAddress = await model.createAccount(
         walletType: walletType,
@@ -97,7 +116,7 @@ class NewAccountTypeWidgetModel
     } on Exception catch (e) {
       model.showError(context, e.toString());
     } finally {
-      _loading.value = false;
+      _loading.accept(false);
     }
   }
 }
