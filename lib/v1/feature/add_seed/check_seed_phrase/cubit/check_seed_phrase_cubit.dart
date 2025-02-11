@@ -56,8 +56,8 @@ class CheckSeedPhraseCubit extends Cubit<CheckSeedPhraseCubitState>
   /// if null - all words selected
   int? currentCheckIndex = 0;
 
-  Future<void> initAnswers() async {
-    availableAnswers = await _generateAnswerWords(_correctAnswers);
+  void initAnswers() {
+    availableAnswers = _generateAnswerWords(_correctAnswers);
     emitSafe(
       CheckSeedPhraseCubitState.answer(availableAnswers, userAnswers, 0),
     );
@@ -174,11 +174,11 @@ class CheckSeedPhraseCubit extends Cubit<CheckSeedPhraseCubitState>
   }
 
   /// List of words that users choose of
-  Future<List<String>> _generateAnswerWords(
+  List<String> _generateAnswerWords(
     List<CheckSeedCorrectAnswer> correct,
-  ) async {
+  ) {
     final correctWords = correct.map((e) => e.word).toList();
-    final dictionary = await getHints(input: '');
+    final dictionary = getHints(input: '');
     final answers = <String>[...correctWords];
     final random = Random();
     while (answers.length < defaultCheckAnswersAmount) {
