@@ -1,4 +1,5 @@
 import 'package:app/app/service/connection/data/account_explorer/account_explorer_link_type.dart';
+import 'package:app/app/service/connection/data/default_active_asset.dart';
 import 'package:app/app/service/connection/data/transaction_explorer/transaction_explorer_link_type.dart';
 import 'package:app/app/service/connection/data/transport_icons.dart';
 import 'package:app/app/service/connection/data/transport_manifest_option/transport_manifest_option.dart';
@@ -27,7 +28,8 @@ class ConnectionTransportData {
     this.stakeInformation,
     this.tokenApiBaseUrl,
     this.currencyApiBaseUrl,
-  });
+    List<DefaultActiveAsset>? defaultActiveAssets,
+  }) : defaultActiveAssets = defaultActiveAssets ?? [];
 
   factory ConnectionTransportData.custom({
     required String networkType,
@@ -75,6 +77,7 @@ class ConnectionTransportData {
         transactionExplorerLinkType: TransactionExplorerLinkType.transactions,
       );
 
+  final List<DefaultActiveAsset> defaultActiveAssets;
   final TransportIcons icons;
   final List<WalletType> availableWalletTypes;
   final WalletDefaultAccountNames walletDefaultAccountNames;
