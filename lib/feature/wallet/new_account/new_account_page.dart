@@ -24,7 +24,7 @@ class NewAccountPage extends StatefulWidget {
 class _NewAccountPageState extends State<NewAccountPage> {
   late final _messageService = inject<MessengerService>();
 
-  bool get _isError => widget.publicKey == null || widget.password == null;
+  bool get _isError => widget.publicKey == null;
 
   @override
   void initState() {
@@ -44,7 +44,7 @@ class _NewAccountPageState extends State<NewAccountPage> {
               padding: const EdgeInsets.all(DimensSizeV2.d16),
               child: NewAccountTypeWidget(
                 publicKey: PublicKey(publicKey: widget.publicKey!),
-                password: widget.password!,
+                password: widget.password,
               ),
             ),
     );
@@ -60,7 +60,6 @@ class _NewAccountPageState extends State<NewAccountPage> {
       context,
       ''
               '${widget.publicKey == null ? 'publicKey is null' : ''}'
-              '${widget.password == null ? ' password is null' : ''}'
               ''
           .trim(),
     );

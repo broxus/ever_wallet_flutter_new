@@ -20,6 +20,7 @@ WalletPageWidgetModel defaultWalletPageWidgetModelFactory(
         inject(),
         inject(),
         inject(),
+        inject(),
       ),
     );
 
