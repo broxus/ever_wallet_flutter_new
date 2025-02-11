@@ -1,10 +1,8 @@
 import 'package:app/feature/profile/profile.dart';
-import 'package:app/feature/wallet/ton_confirm_transaction/bloc/bloc.dart';
 import 'package:app/feature/wallet/widgets/account_info.dart';
 import 'package:app/feature/wallet/widgets/token_transfer_info/token_transfer_info_widget.dart';
 import 'package:app/generated/generated.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:nekoton_repository/nekoton_repository.dart';
 import 'package:ui_components_lib/ui_components_lib.dart';
 import 'package:ui_components_lib/v2/widgets/adaptive_footer_single_child_scroll_view.dart';
@@ -17,6 +15,7 @@ class TonWalletConfirmTransactionConfirmView extends StatelessWidget {
     required this.amount,
     required this.comment,
     required this.publicKey,
+    required this.onPasswordEntered,
     this.transactionIdHash,
     this.account,
     this.money,
@@ -37,6 +36,8 @@ class TonWalletConfirmTransactionConfirmView extends StatelessWidget {
 
   final PublicKey publicKey;
 
+  final ValueChanged<String> onPasswordEntered;
+
   @override
   Widget build(BuildContext context) {
     final isLoading = fee == null && feeError == null;
@@ -56,12 +57,7 @@ class TonWalletConfirmTransactionConfirmView extends StatelessWidget {
               title: LocaleKeys.confirm.tr(),
               isLoading: isLoading,
               isDisabled: feeError != null || fee == null,
-              onPasswordEntered: (value) {
-                Navigator.of(context).pop();
-                context
-                    .read<TonConfirmTransactionBloc>()
-                    .add(TonConfirmTransactionEvent.send(value));
-              },
+              onPasswordEntered: onPasswordEntered,
             ),
           ),
           const SizedBox(height: DimensSize.d16),

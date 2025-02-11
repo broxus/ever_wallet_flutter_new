@@ -13,6 +13,7 @@ import 'package:app/feature/wallet/new_account/add_account.dart';
 import 'package:app/feature/wallet/new_account/add_account_page.dart';
 import 'package:app/feature/wallet/new_account/add_external_account/add_external_account_page.dart';
 import 'package:app/feature/wallet/new_account/select_seed/select_seed_page.dart';
+import 'package:app/feature/wallet/ton_confirm_transaction/ton_confirm_transaction_screen.dart';
 import 'package:app/feature/wallet/wallet.dart';
 import 'package:app/feature/wallet/widgets/account_asset_tab/select_new_asset/select_new_asset.dart';
 import 'package:app/utils/url_utils.dart';
@@ -348,7 +349,7 @@ GoRoute get tonConfirmTranscationRoute {
       ) as List<dynamic>)
           .cast<String>();
 
-      return TonConfirmTransactionPage(
+      return TonConfirmTransactionScreen(
         walletAddress: Address(
           address: state.uri.queryParameters[
               tonWalletConfirmTransactionWalletAddressQueryParam]!,

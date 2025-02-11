@@ -3,7 +3,7 @@
 // ignore_for_file: type=lint
 // ignore_for_file: unused_element, deprecated_member_use, deprecated_member_use_from_same_package, use_function_type_syntax_for_parameters, unnecessary_const, avoid_init_to_null, invalid_override_different_default_values_named, prefer_expression_function_bodies, annotate_overrides, invalid_annotation_target, unnecessary_question_mark
 
-part of 'ton_confirm_transaction_bloc.dart';
+part of 'ton_confirm_transaction_state.dart';
 
 // **************************************************************************
 // FreezedGenerator
@@ -13,683 +13,6 @@ T _$identity<T>(T value) => value;
 
 final _privateConstructorUsedError = UnsupportedError(
     'It seems like you constructed your class using `MyClass._()`. This constructor is only meant to be used by freezed and you are not supposed to need it nor use it.\nPlease check the documentation here for more information: https://github.com/rrousselGit/freezed#adding-getters-and-methods-to-our-models');
-
-/// @nodoc
-mixin _$TonConfirmTransactionEvent {
-  @optionalTypeArgs
-  TResult when<TResult extends Object?>({
-    required TResult Function(PublicKey custodian) prepare,
-    required TResult Function(String password) send,
-    required TResult Function() allowCloseSend,
-    required TResult Function(Transaction transaction) completeSend,
-  }) =>
-      throw _privateConstructorUsedError;
-  @optionalTypeArgs
-  TResult? whenOrNull<TResult extends Object?>({
-    TResult? Function(PublicKey custodian)? prepare,
-    TResult? Function(String password)? send,
-    TResult? Function()? allowCloseSend,
-    TResult? Function(Transaction transaction)? completeSend,
-  }) =>
-      throw _privateConstructorUsedError;
-  @optionalTypeArgs
-  TResult maybeWhen<TResult extends Object?>({
-    TResult Function(PublicKey custodian)? prepare,
-    TResult Function(String password)? send,
-    TResult Function()? allowCloseSend,
-    TResult Function(Transaction transaction)? completeSend,
-    required TResult orElse(),
-  }) =>
-      throw _privateConstructorUsedError;
-  @optionalTypeArgs
-  TResult map<TResult extends Object?>({
-    required TResult Function(_Prepare value) prepare,
-    required TResult Function(_Send value) send,
-    required TResult Function(_AllowCloseSend value) allowCloseSend,
-    required TResult Function(_CompleteSend value) completeSend,
-  }) =>
-      throw _privateConstructorUsedError;
-  @optionalTypeArgs
-  TResult? mapOrNull<TResult extends Object?>({
-    TResult? Function(_Prepare value)? prepare,
-    TResult? Function(_Send value)? send,
-    TResult? Function(_AllowCloseSend value)? allowCloseSend,
-    TResult? Function(_CompleteSend value)? completeSend,
-  }) =>
-      throw _privateConstructorUsedError;
-  @optionalTypeArgs
-  TResult maybeMap<TResult extends Object?>({
-    TResult Function(_Prepare value)? prepare,
-    TResult Function(_Send value)? send,
-    TResult Function(_AllowCloseSend value)? allowCloseSend,
-    TResult Function(_CompleteSend value)? completeSend,
-    required TResult orElse(),
-  }) =>
-      throw _privateConstructorUsedError;
-}
-
-/// @nodoc
-abstract class $TonConfirmTransactionEventCopyWith<$Res> {
-  factory $TonConfirmTransactionEventCopyWith(TonConfirmTransactionEvent value,
-          $Res Function(TonConfirmTransactionEvent) then) =
-      _$TonConfirmTransactionEventCopyWithImpl<$Res,
-          TonConfirmTransactionEvent>;
-}
-
-/// @nodoc
-class _$TonConfirmTransactionEventCopyWithImpl<$Res,
-        $Val extends TonConfirmTransactionEvent>
-    implements $TonConfirmTransactionEventCopyWith<$Res> {
-  _$TonConfirmTransactionEventCopyWithImpl(this._value, this._then);
-
-  // ignore: unused_field
-  final $Val _value;
-  // ignore: unused_field
-  final $Res Function($Val) _then;
-
-  /// Create a copy of TonConfirmTransactionEvent
-  /// with the given fields replaced by the non-null parameter values.
-}
-
-/// @nodoc
-abstract class _$$PrepareImplCopyWith<$Res> {
-  factory _$$PrepareImplCopyWith(
-          _$PrepareImpl value, $Res Function(_$PrepareImpl) then) =
-      __$$PrepareImplCopyWithImpl<$Res>;
-  @useResult
-  $Res call({PublicKey custodian});
-
-  $PublicKeyCopyWith<$Res> get custodian;
-}
-
-/// @nodoc
-class __$$PrepareImplCopyWithImpl<$Res>
-    extends _$TonConfirmTransactionEventCopyWithImpl<$Res, _$PrepareImpl>
-    implements _$$PrepareImplCopyWith<$Res> {
-  __$$PrepareImplCopyWithImpl(
-      _$PrepareImpl _value, $Res Function(_$PrepareImpl) _then)
-      : super(_value, _then);
-
-  /// Create a copy of TonConfirmTransactionEvent
-  /// with the given fields replaced by the non-null parameter values.
-  @pragma('vm:prefer-inline')
-  @override
-  $Res call({
-    Object? custodian = null,
-  }) {
-    return _then(_$PrepareImpl(
-      null == custodian
-          ? _value.custodian
-          : custodian // ignore: cast_nullable_to_non_nullable
-              as PublicKey,
-    ));
-  }
-
-  /// Create a copy of TonConfirmTransactionEvent
-  /// with the given fields replaced by the non-null parameter values.
-  @override
-  @pragma('vm:prefer-inline')
-  $PublicKeyCopyWith<$Res> get custodian {
-    return $PublicKeyCopyWith<$Res>(_value.custodian, (value) {
-      return _then(_value.copyWith(custodian: value));
-    });
-  }
-}
-
-/// @nodoc
-
-class _$PrepareImpl implements _Prepare {
-  const _$PrepareImpl(this.custodian);
-
-  @override
-  final PublicKey custodian;
-
-  @override
-  String toString() {
-    return 'TonConfirmTransactionEvent.prepare(custodian: $custodian)';
-  }
-
-  @override
-  bool operator ==(Object other) {
-    return identical(this, other) ||
-        (other.runtimeType == runtimeType &&
-            other is _$PrepareImpl &&
-            (identical(other.custodian, custodian) ||
-                other.custodian == custodian));
-  }
-
-  @override
-  int get hashCode => Object.hash(runtimeType, custodian);
-
-  /// Create a copy of TonConfirmTransactionEvent
-  /// with the given fields replaced by the non-null parameter values.
-  @JsonKey(includeFromJson: false, includeToJson: false)
-  @override
-  @pragma('vm:prefer-inline')
-  _$$PrepareImplCopyWith<_$PrepareImpl> get copyWith =>
-      __$$PrepareImplCopyWithImpl<_$PrepareImpl>(this, _$identity);
-
-  @override
-  @optionalTypeArgs
-  TResult when<TResult extends Object?>({
-    required TResult Function(PublicKey custodian) prepare,
-    required TResult Function(String password) send,
-    required TResult Function() allowCloseSend,
-    required TResult Function(Transaction transaction) completeSend,
-  }) {
-    return prepare(custodian);
-  }
-
-  @override
-  @optionalTypeArgs
-  TResult? whenOrNull<TResult extends Object?>({
-    TResult? Function(PublicKey custodian)? prepare,
-    TResult? Function(String password)? send,
-    TResult? Function()? allowCloseSend,
-    TResult? Function(Transaction transaction)? completeSend,
-  }) {
-    return prepare?.call(custodian);
-  }
-
-  @override
-  @optionalTypeArgs
-  TResult maybeWhen<TResult extends Object?>({
-    TResult Function(PublicKey custodian)? prepare,
-    TResult Function(String password)? send,
-    TResult Function()? allowCloseSend,
-    TResult Function(Transaction transaction)? completeSend,
-    required TResult orElse(),
-  }) {
-    if (prepare != null) {
-      return prepare(custodian);
-    }
-    return orElse();
-  }
-
-  @override
-  @optionalTypeArgs
-  TResult map<TResult extends Object?>({
-    required TResult Function(_Prepare value) prepare,
-    required TResult Function(_Send value) send,
-    required TResult Function(_AllowCloseSend value) allowCloseSend,
-    required TResult Function(_CompleteSend value) completeSend,
-  }) {
-    return prepare(this);
-  }
-
-  @override
-  @optionalTypeArgs
-  TResult? mapOrNull<TResult extends Object?>({
-    TResult? Function(_Prepare value)? prepare,
-    TResult? Function(_Send value)? send,
-    TResult? Function(_AllowCloseSend value)? allowCloseSend,
-    TResult? Function(_CompleteSend value)? completeSend,
-  }) {
-    return prepare?.call(this);
-  }
-
-  @override
-  @optionalTypeArgs
-  TResult maybeMap<TResult extends Object?>({
-    TResult Function(_Prepare value)? prepare,
-    TResult Function(_Send value)? send,
-    TResult Function(_AllowCloseSend value)? allowCloseSend,
-    TResult Function(_CompleteSend value)? completeSend,
-    required TResult orElse(),
-  }) {
-    if (prepare != null) {
-      return prepare(this);
-    }
-    return orElse();
-  }
-}
-
-abstract class _Prepare implements TonConfirmTransactionEvent {
-  const factory _Prepare(final PublicKey custodian) = _$PrepareImpl;
-
-  PublicKey get custodian;
-
-  /// Create a copy of TonConfirmTransactionEvent
-  /// with the given fields replaced by the non-null parameter values.
-  @JsonKey(includeFromJson: false, includeToJson: false)
-  _$$PrepareImplCopyWith<_$PrepareImpl> get copyWith =>
-      throw _privateConstructorUsedError;
-}
-
-/// @nodoc
-abstract class _$$SendImplCopyWith<$Res> {
-  factory _$$SendImplCopyWith(
-          _$SendImpl value, $Res Function(_$SendImpl) then) =
-      __$$SendImplCopyWithImpl<$Res>;
-  @useResult
-  $Res call({String password});
-}
-
-/// @nodoc
-class __$$SendImplCopyWithImpl<$Res>
-    extends _$TonConfirmTransactionEventCopyWithImpl<$Res, _$SendImpl>
-    implements _$$SendImplCopyWith<$Res> {
-  __$$SendImplCopyWithImpl(_$SendImpl _value, $Res Function(_$SendImpl) _then)
-      : super(_value, _then);
-
-  /// Create a copy of TonConfirmTransactionEvent
-  /// with the given fields replaced by the non-null parameter values.
-  @pragma('vm:prefer-inline')
-  @override
-  $Res call({
-    Object? password = null,
-  }) {
-    return _then(_$SendImpl(
-      null == password
-          ? _value.password
-          : password // ignore: cast_nullable_to_non_nullable
-              as String,
-    ));
-  }
-}
-
-/// @nodoc
-
-class _$SendImpl implements _Send {
-  const _$SendImpl(this.password);
-
-  @override
-  final String password;
-
-  @override
-  String toString() {
-    return 'TonConfirmTransactionEvent.send(password: $password)';
-  }
-
-  @override
-  bool operator ==(Object other) {
-    return identical(this, other) ||
-        (other.runtimeType == runtimeType &&
-            other is _$SendImpl &&
-            (identical(other.password, password) ||
-                other.password == password));
-  }
-
-  @override
-  int get hashCode => Object.hash(runtimeType, password);
-
-  /// Create a copy of TonConfirmTransactionEvent
-  /// with the given fields replaced by the non-null parameter values.
-  @JsonKey(includeFromJson: false, includeToJson: false)
-  @override
-  @pragma('vm:prefer-inline')
-  _$$SendImplCopyWith<_$SendImpl> get copyWith =>
-      __$$SendImplCopyWithImpl<_$SendImpl>(this, _$identity);
-
-  @override
-  @optionalTypeArgs
-  TResult when<TResult extends Object?>({
-    required TResult Function(PublicKey custodian) prepare,
-    required TResult Function(String password) send,
-    required TResult Function() allowCloseSend,
-    required TResult Function(Transaction transaction) completeSend,
-  }) {
-    return send(password);
-  }
-
-  @override
-  @optionalTypeArgs
-  TResult? whenOrNull<TResult extends Object?>({
-    TResult? Function(PublicKey custodian)? prepare,
-    TResult? Function(String password)? send,
-    TResult? Function()? allowCloseSend,
-    TResult? Function(Transaction transaction)? completeSend,
-  }) {
-    return send?.call(password);
-  }
-
-  @override
-  @optionalTypeArgs
-  TResult maybeWhen<TResult extends Object?>({
-    TResult Function(PublicKey custodian)? prepare,
-    TResult Function(String password)? send,
-    TResult Function()? allowCloseSend,
-    TResult Function(Transaction transaction)? completeSend,
-    required TResult orElse(),
-  }) {
-    if (send != null) {
-      return send(password);
-    }
-    return orElse();
-  }
-
-  @override
-  @optionalTypeArgs
-  TResult map<TResult extends Object?>({
-    required TResult Function(_Prepare value) prepare,
-    required TResult Function(_Send value) send,
-    required TResult Function(_AllowCloseSend value) allowCloseSend,
-    required TResult Function(_CompleteSend value) completeSend,
-  }) {
-    return send(this);
-  }
-
-  @override
-  @optionalTypeArgs
-  TResult? mapOrNull<TResult extends Object?>({
-    TResult? Function(_Prepare value)? prepare,
-    TResult? Function(_Send value)? send,
-    TResult? Function(_AllowCloseSend value)? allowCloseSend,
-    TResult? Function(_CompleteSend value)? completeSend,
-  }) {
-    return send?.call(this);
-  }
-
-  @override
-  @optionalTypeArgs
-  TResult maybeMap<TResult extends Object?>({
-    TResult Function(_Prepare value)? prepare,
-    TResult Function(_Send value)? send,
-    TResult Function(_AllowCloseSend value)? allowCloseSend,
-    TResult Function(_CompleteSend value)? completeSend,
-    required TResult orElse(),
-  }) {
-    if (send != null) {
-      return send(this);
-    }
-    return orElse();
-  }
-}
-
-abstract class _Send implements TonConfirmTransactionEvent {
-  const factory _Send(final String password) = _$SendImpl;
-
-  String get password;
-
-  /// Create a copy of TonConfirmTransactionEvent
-  /// with the given fields replaced by the non-null parameter values.
-  @JsonKey(includeFromJson: false, includeToJson: false)
-  _$$SendImplCopyWith<_$SendImpl> get copyWith =>
-      throw _privateConstructorUsedError;
-}
-
-/// @nodoc
-abstract class _$$AllowCloseSendImplCopyWith<$Res> {
-  factory _$$AllowCloseSendImplCopyWith(_$AllowCloseSendImpl value,
-          $Res Function(_$AllowCloseSendImpl) then) =
-      __$$AllowCloseSendImplCopyWithImpl<$Res>;
-}
-
-/// @nodoc
-class __$$AllowCloseSendImplCopyWithImpl<$Res>
-    extends _$TonConfirmTransactionEventCopyWithImpl<$Res, _$AllowCloseSendImpl>
-    implements _$$AllowCloseSendImplCopyWith<$Res> {
-  __$$AllowCloseSendImplCopyWithImpl(
-      _$AllowCloseSendImpl _value, $Res Function(_$AllowCloseSendImpl) _then)
-      : super(_value, _then);
-
-  /// Create a copy of TonConfirmTransactionEvent
-  /// with the given fields replaced by the non-null parameter values.
-}
-
-/// @nodoc
-
-class _$AllowCloseSendImpl implements _AllowCloseSend {
-  const _$AllowCloseSendImpl();
-
-  @override
-  String toString() {
-    return 'TonConfirmTransactionEvent.allowCloseSend()';
-  }
-
-  @override
-  bool operator ==(Object other) {
-    return identical(this, other) ||
-        (other.runtimeType == runtimeType && other is _$AllowCloseSendImpl);
-  }
-
-  @override
-  int get hashCode => runtimeType.hashCode;
-
-  @override
-  @optionalTypeArgs
-  TResult when<TResult extends Object?>({
-    required TResult Function(PublicKey custodian) prepare,
-    required TResult Function(String password) send,
-    required TResult Function() allowCloseSend,
-    required TResult Function(Transaction transaction) completeSend,
-  }) {
-    return allowCloseSend();
-  }
-
-  @override
-  @optionalTypeArgs
-  TResult? whenOrNull<TResult extends Object?>({
-    TResult? Function(PublicKey custodian)? prepare,
-    TResult? Function(String password)? send,
-    TResult? Function()? allowCloseSend,
-    TResult? Function(Transaction transaction)? completeSend,
-  }) {
-    return allowCloseSend?.call();
-  }
-
-  @override
-  @optionalTypeArgs
-  TResult maybeWhen<TResult extends Object?>({
-    TResult Function(PublicKey custodian)? prepare,
-    TResult Function(String password)? send,
-    TResult Function()? allowCloseSend,
-    TResult Function(Transaction transaction)? completeSend,
-    required TResult orElse(),
-  }) {
-    if (allowCloseSend != null) {
-      return allowCloseSend();
-    }
-    return orElse();
-  }
-
-  @override
-  @optionalTypeArgs
-  TResult map<TResult extends Object?>({
-    required TResult Function(_Prepare value) prepare,
-    required TResult Function(_Send value) send,
-    required TResult Function(_AllowCloseSend value) allowCloseSend,
-    required TResult Function(_CompleteSend value) completeSend,
-  }) {
-    return allowCloseSend(this);
-  }
-
-  @override
-  @optionalTypeArgs
-  TResult? mapOrNull<TResult extends Object?>({
-    TResult? Function(_Prepare value)? prepare,
-    TResult? Function(_Send value)? send,
-    TResult? Function(_AllowCloseSend value)? allowCloseSend,
-    TResult? Function(_CompleteSend value)? completeSend,
-  }) {
-    return allowCloseSend?.call(this);
-  }
-
-  @override
-  @optionalTypeArgs
-  TResult maybeMap<TResult extends Object?>({
-    TResult Function(_Prepare value)? prepare,
-    TResult Function(_Send value)? send,
-    TResult Function(_AllowCloseSend value)? allowCloseSend,
-    TResult Function(_CompleteSend value)? completeSend,
-    required TResult orElse(),
-  }) {
-    if (allowCloseSend != null) {
-      return allowCloseSend(this);
-    }
-    return orElse();
-  }
-}
-
-abstract class _AllowCloseSend implements TonConfirmTransactionEvent {
-  const factory _AllowCloseSend() = _$AllowCloseSendImpl;
-}
-
-/// @nodoc
-abstract class _$$CompleteSendImplCopyWith<$Res> {
-  factory _$$CompleteSendImplCopyWith(
-          _$CompleteSendImpl value, $Res Function(_$CompleteSendImpl) then) =
-      __$$CompleteSendImplCopyWithImpl<$Res>;
-  @useResult
-  $Res call({Transaction transaction});
-
-  $TransactionCopyWith<$Res> get transaction;
-}
-
-/// @nodoc
-class __$$CompleteSendImplCopyWithImpl<$Res>
-    extends _$TonConfirmTransactionEventCopyWithImpl<$Res, _$CompleteSendImpl>
-    implements _$$CompleteSendImplCopyWith<$Res> {
-  __$$CompleteSendImplCopyWithImpl(
-      _$CompleteSendImpl _value, $Res Function(_$CompleteSendImpl) _then)
-      : super(_value, _then);
-
-  /// Create a copy of TonConfirmTransactionEvent
-  /// with the given fields replaced by the non-null parameter values.
-  @pragma('vm:prefer-inline')
-  @override
-  $Res call({
-    Object? transaction = null,
-  }) {
-    return _then(_$CompleteSendImpl(
-      null == transaction
-          ? _value.transaction
-          : transaction // ignore: cast_nullable_to_non_nullable
-              as Transaction,
-    ));
-  }
-
-  /// Create a copy of TonConfirmTransactionEvent
-  /// with the given fields replaced by the non-null parameter values.
-  @override
-  @pragma('vm:prefer-inline')
-  $TransactionCopyWith<$Res> get transaction {
-    return $TransactionCopyWith<$Res>(_value.transaction, (value) {
-      return _then(_value.copyWith(transaction: value));
-    });
-  }
-}
-
-/// @nodoc
-
-class _$CompleteSendImpl implements _CompleteSend {
-  const _$CompleteSendImpl(this.transaction);
-
-  @override
-  final Transaction transaction;
-
-  @override
-  String toString() {
-    return 'TonConfirmTransactionEvent.completeSend(transaction: $transaction)';
-  }
-
-  @override
-  bool operator ==(Object other) {
-    return identical(this, other) ||
-        (other.runtimeType == runtimeType &&
-            other is _$CompleteSendImpl &&
-            (identical(other.transaction, transaction) ||
-                other.transaction == transaction));
-  }
-
-  @override
-  int get hashCode => Object.hash(runtimeType, transaction);
-
-  /// Create a copy of TonConfirmTransactionEvent
-  /// with the given fields replaced by the non-null parameter values.
-  @JsonKey(includeFromJson: false, includeToJson: false)
-  @override
-  @pragma('vm:prefer-inline')
-  _$$CompleteSendImplCopyWith<_$CompleteSendImpl> get copyWith =>
-      __$$CompleteSendImplCopyWithImpl<_$CompleteSendImpl>(this, _$identity);
-
-  @override
-  @optionalTypeArgs
-  TResult when<TResult extends Object?>({
-    required TResult Function(PublicKey custodian) prepare,
-    required TResult Function(String password) send,
-    required TResult Function() allowCloseSend,
-    required TResult Function(Transaction transaction) completeSend,
-  }) {
-    return completeSend(transaction);
-  }
-
-  @override
-  @optionalTypeArgs
-  TResult? whenOrNull<TResult extends Object?>({
-    TResult? Function(PublicKey custodian)? prepare,
-    TResult? Function(String password)? send,
-    TResult? Function()? allowCloseSend,
-    TResult? Function(Transaction transaction)? completeSend,
-  }) {
-    return completeSend?.call(transaction);
-  }
-
-  @override
-  @optionalTypeArgs
-  TResult maybeWhen<TResult extends Object?>({
-    TResult Function(PublicKey custodian)? prepare,
-    TResult Function(String password)? send,
-    TResult Function()? allowCloseSend,
-    TResult Function(Transaction transaction)? completeSend,
-    required TResult orElse(),
-  }) {
-    if (completeSend != null) {
-      return completeSend(transaction);
-    }
-    return orElse();
-  }
-
-  @override
-  @optionalTypeArgs
-  TResult map<TResult extends Object?>({
-    required TResult Function(_Prepare value) prepare,
-    required TResult Function(_Send value) send,
-    required TResult Function(_AllowCloseSend value) allowCloseSend,
-    required TResult Function(_CompleteSend value) completeSend,
-  }) {
-    return completeSend(this);
-  }
-
-  @override
-  @optionalTypeArgs
-  TResult? mapOrNull<TResult extends Object?>({
-    TResult? Function(_Prepare value)? prepare,
-    TResult? Function(_Send value)? send,
-    TResult? Function(_AllowCloseSend value)? allowCloseSend,
-    TResult? Function(_CompleteSend value)? completeSend,
-  }) {
-    return completeSend?.call(this);
-  }
-
-  @override
-  @optionalTypeArgs
-  TResult maybeMap<TResult extends Object?>({
-    TResult Function(_Prepare value)? prepare,
-    TResult Function(_Send value)? send,
-    TResult Function(_AllowCloseSend value)? allowCloseSend,
-    TResult Function(_CompleteSend value)? completeSend,
-    required TResult orElse(),
-  }) {
-    if (completeSend != null) {
-      return completeSend(this);
-    }
-    return orElse();
-  }
-}
-
-abstract class _CompleteSend implements TonConfirmTransactionEvent {
-  const factory _CompleteSend(final Transaction transaction) =
-      _$CompleteSendImpl;
-
-  Transaction get transaction;
-
-  /// Create a copy of TonConfirmTransactionEvent
-  /// with the given fields replaced by the non-null parameter values.
-  @JsonKey(includeFromJson: false, includeToJson: false)
-  _$$CompleteSendImplCopyWith<_$CompleteSendImpl> get copyWith =>
-      throw _privateConstructorUsedError;
-}
 
 /// @nodoc
 mixin _$TonConfirmTransactionState {
@@ -736,35 +59,35 @@ mixin _$TonConfirmTransactionState {
       throw _privateConstructorUsedError;
   @optionalTypeArgs
   TResult map<TResult extends Object?>({
-    required TResult Function(_PrepareState value) prepare,
-    required TResult Function(_LoadingState value) loading,
-    required TResult Function(_SubscribeError value) subscribeError,
-    required TResult Function(_CalculatingError value) calculatingError,
-    required TResult Function(_Ready value) readyToSend,
-    required TResult Function(_Sending value) sending,
-    required TResult Function(_Sent value) sent,
+    required TResult Function(PrepareState value) prepare,
+    required TResult Function(LoadingState value) loading,
+    required TResult Function(SubscribeError value) subscribeError,
+    required TResult Function(CalculatingError value) calculatingError,
+    required TResult Function(Ready value) readyToSend,
+    required TResult Function(Sending value) sending,
+    required TResult Function(Sent value) sent,
   }) =>
       throw _privateConstructorUsedError;
   @optionalTypeArgs
   TResult? mapOrNull<TResult extends Object?>({
-    TResult? Function(_PrepareState value)? prepare,
-    TResult? Function(_LoadingState value)? loading,
-    TResult? Function(_SubscribeError value)? subscribeError,
-    TResult? Function(_CalculatingError value)? calculatingError,
-    TResult? Function(_Ready value)? readyToSend,
-    TResult? Function(_Sending value)? sending,
-    TResult? Function(_Sent value)? sent,
+    TResult? Function(PrepareState value)? prepare,
+    TResult? Function(LoadingState value)? loading,
+    TResult? Function(SubscribeError value)? subscribeError,
+    TResult? Function(CalculatingError value)? calculatingError,
+    TResult? Function(Ready value)? readyToSend,
+    TResult? Function(Sending value)? sending,
+    TResult? Function(Sent value)? sent,
   }) =>
       throw _privateConstructorUsedError;
   @optionalTypeArgs
   TResult maybeMap<TResult extends Object?>({
-    TResult Function(_PrepareState value)? prepare,
-    TResult Function(_LoadingState value)? loading,
-    TResult Function(_SubscribeError value)? subscribeError,
-    TResult Function(_CalculatingError value)? calculatingError,
-    TResult Function(_Ready value)? readyToSend,
-    TResult Function(_Sending value)? sending,
-    TResult Function(_Sent value)? sent,
+    TResult Function(PrepareState value)? prepare,
+    TResult Function(LoadingState value)? loading,
+    TResult Function(SubscribeError value)? subscribeError,
+    TResult Function(CalculatingError value)? calculatingError,
+    TResult Function(Ready value)? readyToSend,
+    TResult Function(Sending value)? sending,
+    TResult Function(Sent value)? sent,
     required TResult orElse(),
   }) =>
       throw _privateConstructorUsedError;
@@ -814,7 +137,7 @@ class __$$PrepareStateImplCopyWithImpl<$Res>
 
 /// @nodoc
 
-class _$PrepareStateImpl implements _PrepareState {
+class _$PrepareStateImpl implements PrepareState {
   const _$PrepareStateImpl();
 
   @override
@@ -887,13 +210,13 @@ class _$PrepareStateImpl implements _PrepareState {
   @override
   @optionalTypeArgs
   TResult map<TResult extends Object?>({
-    required TResult Function(_PrepareState value) prepare,
-    required TResult Function(_LoadingState value) loading,
-    required TResult Function(_SubscribeError value) subscribeError,
-    required TResult Function(_CalculatingError value) calculatingError,
-    required TResult Function(_Ready value) readyToSend,
-    required TResult Function(_Sending value) sending,
-    required TResult Function(_Sent value) sent,
+    required TResult Function(PrepareState value) prepare,
+    required TResult Function(LoadingState value) loading,
+    required TResult Function(SubscribeError value) subscribeError,
+    required TResult Function(CalculatingError value) calculatingError,
+    required TResult Function(Ready value) readyToSend,
+    required TResult Function(Sending value) sending,
+    required TResult Function(Sent value) sent,
   }) {
     return prepare(this);
   }
@@ -901,13 +224,13 @@ class _$PrepareStateImpl implements _PrepareState {
   @override
   @optionalTypeArgs
   TResult? mapOrNull<TResult extends Object?>({
-    TResult? Function(_PrepareState value)? prepare,
-    TResult? Function(_LoadingState value)? loading,
-    TResult? Function(_SubscribeError value)? subscribeError,
-    TResult? Function(_CalculatingError value)? calculatingError,
-    TResult? Function(_Ready value)? readyToSend,
-    TResult? Function(_Sending value)? sending,
-    TResult? Function(_Sent value)? sent,
+    TResult? Function(PrepareState value)? prepare,
+    TResult? Function(LoadingState value)? loading,
+    TResult? Function(SubscribeError value)? subscribeError,
+    TResult? Function(CalculatingError value)? calculatingError,
+    TResult? Function(Ready value)? readyToSend,
+    TResult? Function(Sending value)? sending,
+    TResult? Function(Sent value)? sent,
   }) {
     return prepare?.call(this);
   }
@@ -915,13 +238,13 @@ class _$PrepareStateImpl implements _PrepareState {
   @override
   @optionalTypeArgs
   TResult maybeMap<TResult extends Object?>({
-    TResult Function(_PrepareState value)? prepare,
-    TResult Function(_LoadingState value)? loading,
-    TResult Function(_SubscribeError value)? subscribeError,
-    TResult Function(_CalculatingError value)? calculatingError,
-    TResult Function(_Ready value)? readyToSend,
-    TResult Function(_Sending value)? sending,
-    TResult Function(_Sent value)? sent,
+    TResult Function(PrepareState value)? prepare,
+    TResult Function(LoadingState value)? loading,
+    TResult Function(SubscribeError value)? subscribeError,
+    TResult Function(CalculatingError value)? calculatingError,
+    TResult Function(Ready value)? readyToSend,
+    TResult Function(Sending value)? sending,
+    TResult Function(Sent value)? sent,
     required TResult orElse(),
   }) {
     if (prepare != null) {
@@ -931,8 +254,8 @@ class _$PrepareStateImpl implements _PrepareState {
   }
 }
 
-abstract class _PrepareState implements TonConfirmTransactionState {
-  const factory _PrepareState() = _$PrepareStateImpl;
+abstract class PrepareState implements TonConfirmTransactionState {
+  const factory PrepareState() = _$PrepareStateImpl;
 }
 
 /// @nodoc
@@ -982,7 +305,7 @@ class __$$LoadingStateImplCopyWithImpl<$Res>
 
 /// @nodoc
 
-class _$LoadingStateImpl implements _LoadingState {
+class _$LoadingStateImpl implements LoadingState {
   const _$LoadingStateImpl(this.custodian);
 
   @override
@@ -1069,13 +392,13 @@ class _$LoadingStateImpl implements _LoadingState {
   @override
   @optionalTypeArgs
   TResult map<TResult extends Object?>({
-    required TResult Function(_PrepareState value) prepare,
-    required TResult Function(_LoadingState value) loading,
-    required TResult Function(_SubscribeError value) subscribeError,
-    required TResult Function(_CalculatingError value) calculatingError,
-    required TResult Function(_Ready value) readyToSend,
-    required TResult Function(_Sending value) sending,
-    required TResult Function(_Sent value) sent,
+    required TResult Function(PrepareState value) prepare,
+    required TResult Function(LoadingState value) loading,
+    required TResult Function(SubscribeError value) subscribeError,
+    required TResult Function(CalculatingError value) calculatingError,
+    required TResult Function(Ready value) readyToSend,
+    required TResult Function(Sending value) sending,
+    required TResult Function(Sent value) sent,
   }) {
     return loading(this);
   }
@@ -1083,13 +406,13 @@ class _$LoadingStateImpl implements _LoadingState {
   @override
   @optionalTypeArgs
   TResult? mapOrNull<TResult extends Object?>({
-    TResult? Function(_PrepareState value)? prepare,
-    TResult? Function(_LoadingState value)? loading,
-    TResult? Function(_SubscribeError value)? subscribeError,
-    TResult? Function(_CalculatingError value)? calculatingError,
-    TResult? Function(_Ready value)? readyToSend,
-    TResult? Function(_Sending value)? sending,
-    TResult? Function(_Sent value)? sent,
+    TResult? Function(PrepareState value)? prepare,
+    TResult? Function(LoadingState value)? loading,
+    TResult? Function(SubscribeError value)? subscribeError,
+    TResult? Function(CalculatingError value)? calculatingError,
+    TResult? Function(Ready value)? readyToSend,
+    TResult? Function(Sending value)? sending,
+    TResult? Function(Sent value)? sent,
   }) {
     return loading?.call(this);
   }
@@ -1097,13 +420,13 @@ class _$LoadingStateImpl implements _LoadingState {
   @override
   @optionalTypeArgs
   TResult maybeMap<TResult extends Object?>({
-    TResult Function(_PrepareState value)? prepare,
-    TResult Function(_LoadingState value)? loading,
-    TResult Function(_SubscribeError value)? subscribeError,
-    TResult Function(_CalculatingError value)? calculatingError,
-    TResult Function(_Ready value)? readyToSend,
-    TResult Function(_Sending value)? sending,
-    TResult Function(_Sent value)? sent,
+    TResult Function(PrepareState value)? prepare,
+    TResult Function(LoadingState value)? loading,
+    TResult Function(SubscribeError value)? subscribeError,
+    TResult Function(CalculatingError value)? calculatingError,
+    TResult Function(Ready value)? readyToSend,
+    TResult Function(Sending value)? sending,
+    TResult Function(Sent value)? sent,
     required TResult orElse(),
   }) {
     if (loading != null) {
@@ -1113,8 +436,8 @@ class _$LoadingStateImpl implements _LoadingState {
   }
 }
 
-abstract class _LoadingState implements TonConfirmTransactionState {
-  const factory _LoadingState(final PublicKey custodian) = _$LoadingStateImpl;
+abstract class LoadingState implements TonConfirmTransactionState {
+  const factory LoadingState(final PublicKey custodian) = _$LoadingStateImpl;
 
   PublicKey get custodian;
 
@@ -1157,7 +480,7 @@ class __$$SubscribeErrorImplCopyWithImpl<$Res>
 
 /// @nodoc
 
-class _$SubscribeErrorImpl implements _SubscribeError {
+class _$SubscribeErrorImpl implements SubscribeError {
   const _$SubscribeErrorImpl(this.error);
 
   @override
@@ -1245,13 +568,13 @@ class _$SubscribeErrorImpl implements _SubscribeError {
   @override
   @optionalTypeArgs
   TResult map<TResult extends Object?>({
-    required TResult Function(_PrepareState value) prepare,
-    required TResult Function(_LoadingState value) loading,
-    required TResult Function(_SubscribeError value) subscribeError,
-    required TResult Function(_CalculatingError value) calculatingError,
-    required TResult Function(_Ready value) readyToSend,
-    required TResult Function(_Sending value) sending,
-    required TResult Function(_Sent value) sent,
+    required TResult Function(PrepareState value) prepare,
+    required TResult Function(LoadingState value) loading,
+    required TResult Function(SubscribeError value) subscribeError,
+    required TResult Function(CalculatingError value) calculatingError,
+    required TResult Function(Ready value) readyToSend,
+    required TResult Function(Sending value) sending,
+    required TResult Function(Sent value) sent,
   }) {
     return subscribeError(this);
   }
@@ -1259,13 +582,13 @@ class _$SubscribeErrorImpl implements _SubscribeError {
   @override
   @optionalTypeArgs
   TResult? mapOrNull<TResult extends Object?>({
-    TResult? Function(_PrepareState value)? prepare,
-    TResult? Function(_LoadingState value)? loading,
-    TResult? Function(_SubscribeError value)? subscribeError,
-    TResult? Function(_CalculatingError value)? calculatingError,
-    TResult? Function(_Ready value)? readyToSend,
-    TResult? Function(_Sending value)? sending,
-    TResult? Function(_Sent value)? sent,
+    TResult? Function(PrepareState value)? prepare,
+    TResult? Function(LoadingState value)? loading,
+    TResult? Function(SubscribeError value)? subscribeError,
+    TResult? Function(CalculatingError value)? calculatingError,
+    TResult? Function(Ready value)? readyToSend,
+    TResult? Function(Sending value)? sending,
+    TResult? Function(Sent value)? sent,
   }) {
     return subscribeError?.call(this);
   }
@@ -1273,13 +596,13 @@ class _$SubscribeErrorImpl implements _SubscribeError {
   @override
   @optionalTypeArgs
   TResult maybeMap<TResult extends Object?>({
-    TResult Function(_PrepareState value)? prepare,
-    TResult Function(_LoadingState value)? loading,
-    TResult Function(_SubscribeError value)? subscribeError,
-    TResult Function(_CalculatingError value)? calculatingError,
-    TResult Function(_Ready value)? readyToSend,
-    TResult Function(_Sending value)? sending,
-    TResult Function(_Sent value)? sent,
+    TResult Function(PrepareState value)? prepare,
+    TResult Function(LoadingState value)? loading,
+    TResult Function(SubscribeError value)? subscribeError,
+    TResult Function(CalculatingError value)? calculatingError,
+    TResult Function(Ready value)? readyToSend,
+    TResult Function(Sending value)? sending,
+    TResult Function(Sent value)? sent,
     required TResult orElse(),
   }) {
     if (subscribeError != null) {
@@ -1289,8 +612,8 @@ class _$SubscribeErrorImpl implements _SubscribeError {
   }
 }
 
-abstract class _SubscribeError implements TonConfirmTransactionState {
-  const factory _SubscribeError(final Object error) = _$SubscribeErrorImpl;
+abstract class SubscribeError implements TonConfirmTransactionState {
+  const factory SubscribeError(final Object error) = _$SubscribeErrorImpl;
 
   Object get error;
 
@@ -1359,7 +682,7 @@ class __$$CalculatingErrorImplCopyWithImpl<$Res>
 
 /// @nodoc
 
-class _$CalculatingErrorImpl implements _CalculatingError {
+class _$CalculatingErrorImpl implements CalculatingError {
   const _$CalculatingErrorImpl(this.error, this.custodian, [this.fee]);
 
   @override
@@ -1453,13 +776,13 @@ class _$CalculatingErrorImpl implements _CalculatingError {
   @override
   @optionalTypeArgs
   TResult map<TResult extends Object?>({
-    required TResult Function(_PrepareState value) prepare,
-    required TResult Function(_LoadingState value) loading,
-    required TResult Function(_SubscribeError value) subscribeError,
-    required TResult Function(_CalculatingError value) calculatingError,
-    required TResult Function(_Ready value) readyToSend,
-    required TResult Function(_Sending value) sending,
-    required TResult Function(_Sent value) sent,
+    required TResult Function(PrepareState value) prepare,
+    required TResult Function(LoadingState value) loading,
+    required TResult Function(SubscribeError value) subscribeError,
+    required TResult Function(CalculatingError value) calculatingError,
+    required TResult Function(Ready value) readyToSend,
+    required TResult Function(Sending value) sending,
+    required TResult Function(Sent value) sent,
   }) {
     return calculatingError(this);
   }
@@ -1467,13 +790,13 @@ class _$CalculatingErrorImpl implements _CalculatingError {
   @override
   @optionalTypeArgs
   TResult? mapOrNull<TResult extends Object?>({
-    TResult? Function(_PrepareState value)? prepare,
-    TResult? Function(_LoadingState value)? loading,
-    TResult? Function(_SubscribeError value)? subscribeError,
-    TResult? Function(_CalculatingError value)? calculatingError,
-    TResult? Function(_Ready value)? readyToSend,
-    TResult? Function(_Sending value)? sending,
-    TResult? Function(_Sent value)? sent,
+    TResult? Function(PrepareState value)? prepare,
+    TResult? Function(LoadingState value)? loading,
+    TResult? Function(SubscribeError value)? subscribeError,
+    TResult? Function(CalculatingError value)? calculatingError,
+    TResult? Function(Ready value)? readyToSend,
+    TResult? Function(Sending value)? sending,
+    TResult? Function(Sent value)? sent,
   }) {
     return calculatingError?.call(this);
   }
@@ -1481,13 +804,13 @@ class _$CalculatingErrorImpl implements _CalculatingError {
   @override
   @optionalTypeArgs
   TResult maybeMap<TResult extends Object?>({
-    TResult Function(_PrepareState value)? prepare,
-    TResult Function(_LoadingState value)? loading,
-    TResult Function(_SubscribeError value)? subscribeError,
-    TResult Function(_CalculatingError value)? calculatingError,
-    TResult Function(_Ready value)? readyToSend,
-    TResult Function(_Sending value)? sending,
-    TResult Function(_Sent value)? sent,
+    TResult Function(PrepareState value)? prepare,
+    TResult Function(LoadingState value)? loading,
+    TResult Function(SubscribeError value)? subscribeError,
+    TResult Function(CalculatingError value)? calculatingError,
+    TResult Function(Ready value)? readyToSend,
+    TResult Function(Sending value)? sending,
+    TResult Function(Sent value)? sent,
     required TResult orElse(),
   }) {
     if (calculatingError != null) {
@@ -1497,8 +820,8 @@ class _$CalculatingErrorImpl implements _CalculatingError {
   }
 }
 
-abstract class _CalculatingError implements TonConfirmTransactionState {
-  const factory _CalculatingError(final String error, final PublicKey custodian,
+abstract class CalculatingError implements TonConfirmTransactionState {
+  const factory CalculatingError(final String error, final PublicKey custodian,
       [final BigInt? fee]) = _$CalculatingErrorImpl;
 
   String get error;
@@ -1564,7 +887,7 @@ class __$$ReadyImplCopyWithImpl<$Res>
 
 /// @nodoc
 
-class _$ReadyImpl implements _Ready {
+class _$ReadyImpl implements Ready {
   const _$ReadyImpl(this.fee, this.custodian);
 
   @override
@@ -1654,13 +977,13 @@ class _$ReadyImpl implements _Ready {
   @override
   @optionalTypeArgs
   TResult map<TResult extends Object?>({
-    required TResult Function(_PrepareState value) prepare,
-    required TResult Function(_LoadingState value) loading,
-    required TResult Function(_SubscribeError value) subscribeError,
-    required TResult Function(_CalculatingError value) calculatingError,
-    required TResult Function(_Ready value) readyToSend,
-    required TResult Function(_Sending value) sending,
-    required TResult Function(_Sent value) sent,
+    required TResult Function(PrepareState value) prepare,
+    required TResult Function(LoadingState value) loading,
+    required TResult Function(SubscribeError value) subscribeError,
+    required TResult Function(CalculatingError value) calculatingError,
+    required TResult Function(Ready value) readyToSend,
+    required TResult Function(Sending value) sending,
+    required TResult Function(Sent value) sent,
   }) {
     return readyToSend(this);
   }
@@ -1668,13 +991,13 @@ class _$ReadyImpl implements _Ready {
   @override
   @optionalTypeArgs
   TResult? mapOrNull<TResult extends Object?>({
-    TResult? Function(_PrepareState value)? prepare,
-    TResult? Function(_LoadingState value)? loading,
-    TResult? Function(_SubscribeError value)? subscribeError,
-    TResult? Function(_CalculatingError value)? calculatingError,
-    TResult? Function(_Ready value)? readyToSend,
-    TResult? Function(_Sending value)? sending,
-    TResult? Function(_Sent value)? sent,
+    TResult? Function(PrepareState value)? prepare,
+    TResult? Function(LoadingState value)? loading,
+    TResult? Function(SubscribeError value)? subscribeError,
+    TResult? Function(CalculatingError value)? calculatingError,
+    TResult? Function(Ready value)? readyToSend,
+    TResult? Function(Sending value)? sending,
+    TResult? Function(Sent value)? sent,
   }) {
     return readyToSend?.call(this);
   }
@@ -1682,13 +1005,13 @@ class _$ReadyImpl implements _Ready {
   @override
   @optionalTypeArgs
   TResult maybeMap<TResult extends Object?>({
-    TResult Function(_PrepareState value)? prepare,
-    TResult Function(_LoadingState value)? loading,
-    TResult Function(_SubscribeError value)? subscribeError,
-    TResult Function(_CalculatingError value)? calculatingError,
-    TResult Function(_Ready value)? readyToSend,
-    TResult Function(_Sending value)? sending,
-    TResult Function(_Sent value)? sent,
+    TResult Function(PrepareState value)? prepare,
+    TResult Function(LoadingState value)? loading,
+    TResult Function(SubscribeError value)? subscribeError,
+    TResult Function(CalculatingError value)? calculatingError,
+    TResult Function(Ready value)? readyToSend,
+    TResult Function(Sending value)? sending,
+    TResult Function(Sent value)? sent,
     required TResult orElse(),
   }) {
     if (readyToSend != null) {
@@ -1698,8 +1021,8 @@ class _$ReadyImpl implements _Ready {
   }
 }
 
-abstract class _Ready implements TonConfirmTransactionState {
-  const factory _Ready(final BigInt fee, final PublicKey custodian) =
+abstract class Ready implements TonConfirmTransactionState {
+  const factory Ready(final BigInt fee, final PublicKey custodian) =
       _$ReadyImpl;
 
   BigInt get fee;
@@ -1747,7 +1070,7 @@ class __$$SendingImplCopyWithImpl<$Res>
 
 /// @nodoc
 
-class _$SendingImpl implements _Sending {
+class _$SendingImpl implements Sending {
   const _$SendingImpl({required this.canClose});
 
   @override
@@ -1834,13 +1157,13 @@ class _$SendingImpl implements _Sending {
   @override
   @optionalTypeArgs
   TResult map<TResult extends Object?>({
-    required TResult Function(_PrepareState value) prepare,
-    required TResult Function(_LoadingState value) loading,
-    required TResult Function(_SubscribeError value) subscribeError,
-    required TResult Function(_CalculatingError value) calculatingError,
-    required TResult Function(_Ready value) readyToSend,
-    required TResult Function(_Sending value) sending,
-    required TResult Function(_Sent value) sent,
+    required TResult Function(PrepareState value) prepare,
+    required TResult Function(LoadingState value) loading,
+    required TResult Function(SubscribeError value) subscribeError,
+    required TResult Function(CalculatingError value) calculatingError,
+    required TResult Function(Ready value) readyToSend,
+    required TResult Function(Sending value) sending,
+    required TResult Function(Sent value) sent,
   }) {
     return sending(this);
   }
@@ -1848,13 +1171,13 @@ class _$SendingImpl implements _Sending {
   @override
   @optionalTypeArgs
   TResult? mapOrNull<TResult extends Object?>({
-    TResult? Function(_PrepareState value)? prepare,
-    TResult? Function(_LoadingState value)? loading,
-    TResult? Function(_SubscribeError value)? subscribeError,
-    TResult? Function(_CalculatingError value)? calculatingError,
-    TResult? Function(_Ready value)? readyToSend,
-    TResult? Function(_Sending value)? sending,
-    TResult? Function(_Sent value)? sent,
+    TResult? Function(PrepareState value)? prepare,
+    TResult? Function(LoadingState value)? loading,
+    TResult? Function(SubscribeError value)? subscribeError,
+    TResult? Function(CalculatingError value)? calculatingError,
+    TResult? Function(Ready value)? readyToSend,
+    TResult? Function(Sending value)? sending,
+    TResult? Function(Sent value)? sent,
   }) {
     return sending?.call(this);
   }
@@ -1862,13 +1185,13 @@ class _$SendingImpl implements _Sending {
   @override
   @optionalTypeArgs
   TResult maybeMap<TResult extends Object?>({
-    TResult Function(_PrepareState value)? prepare,
-    TResult Function(_LoadingState value)? loading,
-    TResult Function(_SubscribeError value)? subscribeError,
-    TResult Function(_CalculatingError value)? calculatingError,
-    TResult Function(_Ready value)? readyToSend,
-    TResult Function(_Sending value)? sending,
-    TResult Function(_Sent value)? sent,
+    TResult Function(PrepareState value)? prepare,
+    TResult Function(LoadingState value)? loading,
+    TResult Function(SubscribeError value)? subscribeError,
+    TResult Function(CalculatingError value)? calculatingError,
+    TResult Function(Ready value)? readyToSend,
+    TResult Function(Sending value)? sending,
+    TResult Function(Sent value)? sent,
     required TResult orElse(),
   }) {
     if (sending != null) {
@@ -1878,8 +1201,8 @@ class _$SendingImpl implements _Sending {
   }
 }
 
-abstract class _Sending implements TonConfirmTransactionState {
-  const factory _Sending({required final bool canClose}) = _$SendingImpl;
+abstract class Sending implements TonConfirmTransactionState {
+  const factory Sending({required final bool canClose}) = _$SendingImpl;
 
   bool get canClose;
 
@@ -1957,7 +1280,7 @@ class __$$SentImplCopyWithImpl<$Res>
 
 /// @nodoc
 
-class _$SentImpl implements _Sent {
+class _$SentImpl implements Sent {
   const _$SentImpl(this.fee, this.transaction, this.custodian);
 
   @override
@@ -2051,13 +1374,13 @@ class _$SentImpl implements _Sent {
   @override
   @optionalTypeArgs
   TResult map<TResult extends Object?>({
-    required TResult Function(_PrepareState value) prepare,
-    required TResult Function(_LoadingState value) loading,
-    required TResult Function(_SubscribeError value) subscribeError,
-    required TResult Function(_CalculatingError value) calculatingError,
-    required TResult Function(_Ready value) readyToSend,
-    required TResult Function(_Sending value) sending,
-    required TResult Function(_Sent value) sent,
+    required TResult Function(PrepareState value) prepare,
+    required TResult Function(LoadingState value) loading,
+    required TResult Function(SubscribeError value) subscribeError,
+    required TResult Function(CalculatingError value) calculatingError,
+    required TResult Function(Ready value) readyToSend,
+    required TResult Function(Sending value) sending,
+    required TResult Function(Sent value) sent,
   }) {
     return sent(this);
   }
@@ -2065,13 +1388,13 @@ class _$SentImpl implements _Sent {
   @override
   @optionalTypeArgs
   TResult? mapOrNull<TResult extends Object?>({
-    TResult? Function(_PrepareState value)? prepare,
-    TResult? Function(_LoadingState value)? loading,
-    TResult? Function(_SubscribeError value)? subscribeError,
-    TResult? Function(_CalculatingError value)? calculatingError,
-    TResult? Function(_Ready value)? readyToSend,
-    TResult? Function(_Sending value)? sending,
-    TResult? Function(_Sent value)? sent,
+    TResult? Function(PrepareState value)? prepare,
+    TResult? Function(LoadingState value)? loading,
+    TResult? Function(SubscribeError value)? subscribeError,
+    TResult? Function(CalculatingError value)? calculatingError,
+    TResult? Function(Ready value)? readyToSend,
+    TResult? Function(Sending value)? sending,
+    TResult? Function(Sent value)? sent,
   }) {
     return sent?.call(this);
   }
@@ -2079,13 +1402,13 @@ class _$SentImpl implements _Sent {
   @override
   @optionalTypeArgs
   TResult maybeMap<TResult extends Object?>({
-    TResult Function(_PrepareState value)? prepare,
-    TResult Function(_LoadingState value)? loading,
-    TResult Function(_SubscribeError value)? subscribeError,
-    TResult Function(_CalculatingError value)? calculatingError,
-    TResult Function(_Ready value)? readyToSend,
-    TResult Function(_Sending value)? sending,
-    TResult Function(_Sent value)? sent,
+    TResult Function(PrepareState value)? prepare,
+    TResult Function(LoadingState value)? loading,
+    TResult Function(SubscribeError value)? subscribeError,
+    TResult Function(CalculatingError value)? calculatingError,
+    TResult Function(Ready value)? readyToSend,
+    TResult Function(Sending value)? sending,
+    TResult Function(Sent value)? sent,
     required TResult orElse(),
   }) {
     if (sent != null) {
@@ -2095,8 +1418,8 @@ class _$SentImpl implements _Sent {
   }
 }
 
-abstract class _Sent implements TonConfirmTransactionState {
-  const factory _Sent(final BigInt fee, final Transaction transaction,
+abstract class Sent implements TonConfirmTransactionState {
+  const factory Sent(final BigInt fee, final Transaction transaction,
       final PublicKey custodian) = _$SentImpl;
 
   BigInt get fee;
