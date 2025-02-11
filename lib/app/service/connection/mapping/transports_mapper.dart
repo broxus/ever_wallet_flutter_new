@@ -1,5 +1,6 @@
 import 'package:app/app/service/connection/data/account_explorer/account_explorer_link_type.dart';
 import 'package:app/app/service/connection/data/connection_transport/connection_transport_data.dart';
+import 'package:app/app/service/connection/data/default_active_asset.dart';
 import 'package:app/app/service/connection/data/transaction_explorer/transaction_explorer_link_type.dart';
 import 'package:app/app/service/connection/data/transport_icons.dart';
 import 'package:app/app/service/connection/data/transport_manifest_option/transport_manifest_option.dart';
@@ -17,6 +18,9 @@ Map<NetworkGroup, ConnectionTransportData>? mapToTransports(
 
   for (final transport in list) {
     result[transport['networkGroup'] as String] = ConnectionTransportData(
+      defaultActiveAssets: _mapToDefaultActiveAssets(
+        transport['defaultActiveAssets'],
+      ),
       icons: _mapToTransportIcons(
         transport['icons'] as Map<String, dynamic>,
       ),
@@ -186,4 +190,19 @@ WalletDefaultAccountNames _mapRoWalletDefaultAccountNames(
     walletV4R2: json['walletV4R2'] as String,
     walletV5R1: json['walletV5R1'] as String,
   );
+}
+
+List<DefaultActiveAsset> _mapToDefaultActiveAssets(dynamic json) {
+  try {
+    final list = castJsonList<Map<String, dynamic>>(json);
+
+    return [
+      for (final item in list)
+        DefaultActiveAsset(
+          address: Address(address: item['address'] as String),
+        ),
+    ];
+  } catch (_) {
+    return [];
+  }
 }
