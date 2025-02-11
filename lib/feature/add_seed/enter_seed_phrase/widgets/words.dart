@@ -42,71 +42,54 @@ class EnterSeedPhraseWords extends StatelessWidget {
     final bottomPadding = MediaQuery.of(context).viewInsets.bottom;
     final isKeyboardOpen = bottomPadding >= commonButtonHeight;
 
-    return SingleChildScrollView(
-      child: Form(
-        key: formKey,
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            if (!isKeyboardOpen) const SizedBox(height: DimensSize.d24),
-            if (!isKeyboardOpen)
-              EnterSeedPhraseTabs(
-                allowedValues: allowedValues,
-                currentValue: currentValue,
-                displayPasteButtonState: displayPasteButtonState,
-                changeTab: changeTab,
-                pastePhrase: pastePhrase,
-                clearFields: clearFields,
-              ),
-            StateNotifierBuilder(
-              listenableState: tabState,
-              builder: (_, EnterSeedPhraseTabData? data) {
-                if (data == null) {
-                  return const SizedBox.shrink();
-                }
-
-                return ContainerRow(
-                  padding: const EdgeInsets.symmetric(vertical: DimensSize.d16),
-                  children: [
-                    Expanded(
-                      child: SeparatedColumn(
-                        children: [
-                          for (final input in data.fistInputsRange)
-                            _Input(
-                              key: ValueKey(input.index),
-                              theme: themeStyleV2,
-                              data: input,
-                              currentValue: currentValue,
-                              onSuggestions: onSuggestions,
-                              onSuggestionSelected: onSuggestionSelected,
-                              onNext: onNext,
-                            ),
-                        ],
-                      ),
-                    ),
-                    Expanded(
-                      child: SeparatedColumn(
-                        children: [
-                          for (final input in data.secondInputsRange)
-                            _Input(
-                              key: ValueKey(input.index),
-                              theme: themeStyleV2,
-                              data: input,
-                              currentValue: currentValue,
-                              onSuggestions: onSuggestions,
-                              onSuggestionSelected: onSuggestionSelected,
-                              onNext: onNext,
-                            ),
-                        ],
-                      ),
-                    ),
-                  ],
-                );
-              },
+    return Form(
+      key: formKey,
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          if (!isKeyboardOpen) const SizedBox(height: DimensSize.d24),
+          if (!isKeyboardOpen)
+            EnterSeedPhraseTabs(
+              allowedValues: allowedValues,
+              currentValue: currentValue,
+              displayPasteButtonState: displayPasteButtonState,
+              changeTab: changeTab,
+              pastePhrase: pastePhrase,
+              clearFields: clearFields,
             ),
-            const SizedBox(height: DimensSize.d16),
-          ],
-        ),
+          StateNotifierBuilder(
+            listenableState: tabState,
+            builder: (_, EnterSeedPhraseTabData? data) {
+              if (data == null) {
+                return const SizedBox.shrink();
+              }
+
+              return Expanded(
+                child: Padding(
+                  padding: const EdgeInsets.symmetric(
+                    vertical: DimensSizeV2.d16,
+                  ),
+                  child: ListView.separated(
+                    itemCount: data.inputs.length,
+                    separatorBuilder: (_, __) => const SizedBox(
+                      height: DimensSizeV2.d8,
+                    ),
+                    itemBuilder: (_, index) => _Input(
+                      key: ValueKey(index),
+                      theme: themeStyleV2,
+                      data: data.inputs[index],
+                      currentValue: currentValue,
+                      onSuggestions: onSuggestions,
+                      onSuggestionSelected: onSuggestionSelected,
+                      onNext: onNext,
+                    ),
+                  ),
+                ),
+              );
+            },
+          ),
+          const SizedBox(height: DimensSize.d16),
+        ],
       ),
     );
   }

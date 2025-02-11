@@ -27,7 +27,9 @@ class EnterSeedPhraseModel extends ElementaryModel with ConnectionMixin {
   late final List<int> seedPhraseWordsCount =
       _nekotonRepository.currentTransport.seedPhraseWordsCount;
 
-  Future<nekoton.GeneratedKeyG> getKey(int currentValue) {
+  Set<String>? _hints;
+
+  nekoton.GeneratedKeyG getKey(int currentValue) {
     return nekoton.generateKey(
       accountType: currentValue == legacySeedPhraseLength
           ? const nekoton.MnemonicType.legacy()
@@ -35,16 +37,12 @@ class EnterSeedPhraseModel extends ElementaryModel with ConnectionMixin {
     );
   }
 
-  Future<List<String>> getHints(String text) => nekoton.getHints(input: text);
+  List<String> getHints(String text) => nekoton.getHints(input: text);
 
   /// [text] is valid if it is in list of hints for this word.
-  Future<bool> checkIsWordValid(String text) async {
-    final hints = await getHints(text);
-    if (hints.contains(text)) {
-      return true;
-    }
-
-    return false;
+  bool checkIsWordValid(String text) {
+    final hints = _hints ??= nekoton.getHints(input: '').toSet();
+    return hints.contains(text);
   }
 
   void showError(String text) => handleError(text);

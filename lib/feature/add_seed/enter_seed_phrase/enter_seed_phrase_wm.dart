@@ -117,9 +117,9 @@ class EnterSeedPhraseWidgetModel
   void onClosePressed(BuildContext context) => context.maybePop();
 
   /// Callback for UI TextField widget
-  Future<List<String>> onSuggestions(String text) async {
+  List<String> onSuggestions(String text) {
     if (text.isEmpty) return [];
-    final hints = await model.getHints(text);
+    final hints = model.getHints(text);
     if (hints.length == 1 && hints[0] == text) {
       return [];
     }
@@ -156,7 +156,7 @@ class EnterSeedPhraseWidgetModel
       return;
     }
 
-    if (await _validateFormWithError()) {
+    if (_validateFormWithError()) {
       try {
         FocusManager.instance.primaryFocus?.unfocus();
 
@@ -174,7 +174,7 @@ class EnterSeedPhraseWidgetModel
             ? const MnemonicType.legacy()
             : defaultMnemonicType;
 
-        await deriveFromPhrase(
+        deriveFromPhrase(
           phrase: phrase,
           mnemonicType: mnemonicType,
         );
@@ -231,10 +231,10 @@ class EnterSeedPhraseWidgetModel
       changeTab(count);
     }
 
-    Future.delayed(const Duration(milliseconds: 100), () async {
+    Future.delayed(const Duration(milliseconds: 100), () {
       if (words.isNotEmpty && words.length == _currentValue) {
         for (final word in words) {
-          if (!await model.checkIsWordValid(word)) {
+          if (!model.checkIsWordValid(word)) {
             words.clear();
             break;
           }
@@ -266,17 +266,17 @@ class EnterSeedPhraseWidgetModel
         });
       } catch (_) {}
 
-      await _validateFormWithError();
+      _validateFormWithError();
     });
   }
 
   /// Check if debug phrase is entered in any text field
-  Future<void> _checkDebugPhraseGenerating() async {
+  void _checkDebugPhraseGenerating() {
     if (!_inputDataList.any((data) => data.text == 'speakfriendandenter')) {
       return;
     }
 
-    final key = await model.getKey(_currentValue);
+    final key = model.getKey(_currentValue);
 
     final count = _inputDataList.take(_currentValue).length;
 
@@ -289,7 +289,7 @@ class EnterSeedPhraseWidgetModel
         );
     }
 
-    await _validateFormWithError();
+    _validateFormWithError();
   }
 
   /// If input with [index] has any text and it's not in focus
@@ -324,14 +324,13 @@ class EnterSeedPhraseWidgetModel
   /// It also updates state of cubit if there was some errors.
   ///
   /// Returns true if there was no any error, false otherwise.
-
-  Future<bool> _validateFormWithError() async {
+  bool _validateFormWithError() {
     final isEmptyFields = !(formKey.currentState?.validate() ?? false);
     var isWrongWords = false;
 
     for (var index = 0; index < _currentValue; index++) {
       final input = _inputDataList[index];
-      if (!await model.checkIsWordValid(input.text)) {
+      if (!model.checkIsWordValid(input.text)) {
         isWrongWords = true;
         _inputDataList[index].isError = true;
       }
