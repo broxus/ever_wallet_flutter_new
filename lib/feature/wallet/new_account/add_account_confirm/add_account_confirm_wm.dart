@@ -1,6 +1,5 @@
 // ignore_for_file: use_build_context_synchronously
 
-import 'package:app/app/router/router.dart';
 import 'package:app/core/error_handler_factory.dart';
 import 'package:app/core/wm/custom_wm.dart';
 import 'package:app/di/di.dart';
@@ -72,14 +71,8 @@ class AddAccountConfirmWidgetModel
     if (!isCorrect) {
       model.showWrongPassword(context);
     } else if (contextSafe != null) {
-      Navigator.of(contextSafe!).pop();
-      contextSafe!.goFurther(
-        AppRoute.walletNewAccount.pathWithData(
-          queryParameters: {
-            walletCreatePublicKeyQueryParam: widget.publicKey.publicKey,
-            walletCreatePasswordQueryParam: password,
-          },
-        ),
+      Navigator.of(contextSafe!).pop(
+        (widget.publicKey, password),
       );
     }
   }

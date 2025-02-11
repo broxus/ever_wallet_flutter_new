@@ -1,3 +1,4 @@
+import 'package:app/app/router/router.dart';
 import 'package:app/core/error_handler_factory.dart';
 import 'package:app/core/wm/custom_wm.dart';
 import 'package:app/di/di.dart';
@@ -42,12 +43,38 @@ class SelectSeedWidgetModel
     _currentAccount.accept(seed);
   }
 
-  void onSelect() {
-    if (contextSafe != null && _currentAccount.value?.publicKey != null) {
-      showAddAccountConfirmSheet(
-        context: contextSafe!,
-        publicKey: _currentAccount.value!.publicKey,
-        seedName: _currentAccount.value!.name,
+  Future<void> onSelect() async {
+    final seed = _currentAccount.value;
+
+    if (contextSafe == null || seed == null) {
+      return;
+    }
+
+    if (seed.masterKey.isLegacy) {
+      contextSafe!.goFurther(
+        AppRoute.walletNewAccount.pathWithData(
+          queryParameters: {
+            walletCreatePublicKeyQueryParam: seed.publicKey.publicKey,
+          },
+        ),
+      );
+      return;
+    }
+
+    final result = await showAddAccountConfirmSheet(
+      context: contextSafe!,
+      publicKey: seed.publicKey,
+      seedName: seed.name,
+    );
+
+    if (contextSafe != null && result != null) {
+      contextSafe!.goFurther(
+        AppRoute.walletNewAccount.pathWithData(
+          queryParameters: {
+            walletCreatePublicKeyQueryParam: result.$1.publicKey,
+            walletCreatePasswordQueryParam: result.$2,
+          },
+        ),
       );
     }
   }
