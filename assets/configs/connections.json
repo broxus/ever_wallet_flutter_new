@@ -102,11 +102,6 @@
       "networkName": "TON",
       "networkType": "ton",
       "networkGroup": "ton",
-      "defaultActiveAssets": [
-        {
-          "address": "0:09f2e59dec406ab26a5259a45d7ff23ef11f3e5c7c21de0b0d2a1cbe52b76b3d"
-        }
-      ],
       "icons": {
         "nativeToken": "https://raw.githubusercontent.com/broxus/sparx-networks/master/icons/ton/native_token.svg",
         "network": "https://raw.githubusercontent.com/broxus/sparx-networks/master/icons/ton/network.svg",
@@ -128,6 +123,11 @@
         },
         {
           "type": "walletV5R1"
+        }
+      ],
+      "defaultActiveAssets": [
+        {
+          "address": "0:09f2e59dec406ab26a5259a45d7ff23ef11f3e5c7c21de0b0d2a1cbe52b76b3d"
         }
       ],
       "walletDefaultAccountNames": {
@@ -172,11 +172,6 @@
       "networkName": "Hamster Network",
       "networkType": "tycho",
       "networkGroup": "hmstr_mainnet",
-      "defaultActiveAssets": [
-        {
-          "address": "0:fddc005ddffcc9c5cc8e2d684c1338d3fa5548426602b04b2cfd2a1a3504be80"
-        }
-      ],
       "icons": {
         "nativeToken": "https://raw.githubusercontent.com/broxus/sparx-networks/master/icons/hamster/native_token.svg",
         "network": "https://raw.githubusercontent.com/broxus/sparx-networks/master/icons/hamster/network.svg",
@@ -198,6 +193,11 @@
         },
         {
           "type": "walletV5R1"
+        }
+      ],
+      "defaultActiveAssets": [
+        {
+          "address": "0:fddc005ddffcc9c5cc8e2d684c1338d3fa5548426602b04b2cfd2a1a3504be80"
         }
       ],
       "walletDefaultAccountNames": {
@@ -454,7 +454,7 @@
       "defaultNativeCurrencyDecimal": 9,
       "baseCurrencyUrl": "https://api.web3.world/v1/currencies",
       "stakeInformation": {
-        "stakingAPYLink": "https://api.venomstake.com/v1/strategies/main",
+        "stakingAPYLink":  "https://api.venomstake.com/v1/strategies/main",
         "stakingValutAddress": "0:9df94dffc0ca1768647f819c04b2cf00c484b3b756ba6ecde68d5fb62de1dfc7",
         "stakingRootContractAddress": "0:74604c7a56419477d67329848d754d205f31870025a7135909e90e1726ad9a54",
         "stakeDepositAttachedFee": "3000000000",
