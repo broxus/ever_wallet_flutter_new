@@ -20,7 +20,7 @@ class NewAccountTypeModel extends ElementaryModel {
   Future<Address> createAccount({
     required WalletType walletType,
     required PublicKey publicKey,
-    required String password,
+    required String? password,
     required String? name,
   }) async {
     final seedKey = await _getSeedKey(
@@ -44,14 +44,26 @@ class NewAccountTypeModel extends ElementaryModel {
     );
   }
 
+  List<WalletType> getCreatedAccountTypes(PublicKey publicKey) =>
+      _nekotonRepository.seedList
+          .findSeedByAnyPublicKey(publicKey)
+          ?.masterKey
+          .createdAccountTypes ??
+      [];
+
   Future<SeedKey?> _getSeedKey({
     required WalletType walletType,
     required PublicKey publicKey,
-    required String password,
+    required String? password,
   }) async {
     final seed = _nekotonRepository.seedList.findSeedByAnyPublicKey(publicKey)!;
 
     if (!seed.masterKey.createdAccountTypes.contains(walletType)) {
+      return seed.masterKey;
+    }
+
+    // legacy 24 words seed
+    if (password == null) {
       return seed.masterKey;
     }
 

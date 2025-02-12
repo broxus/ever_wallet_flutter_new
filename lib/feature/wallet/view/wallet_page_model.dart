@@ -5,11 +5,13 @@ import 'package:nekoton_repository/nekoton_repository.dart';
 class WalletPageModel extends ElementaryModel {
   WalletPageModel(
     ErrorHandler errorHandler,
+    this._assetsService,
     this._currentAccountsService,
     this._storageService,
     this._nekotonRepository,
   ) : super(errorHandler: errorHandler);
 
+  final AssetsService _assetsService;
   final CurrentAccountsService _currentAccountsService;
   final AppStorageService _storageService;
   final NekotonRepository _nekotonRepository;
@@ -19,6 +21,12 @@ class WalletPageModel extends ElementaryModel {
 
   Stream<TransportStrategy> get transportStrategy =>
       _nekotonRepository.currentTransportStream;
+
+  @override
+  void init() {
+    super.init();
+    _assetsService.updateDefaultAssets();
+  }
 
   bool? isNewUser() {
     return _storageService.getValue(StorageKey.userWithNewWallet());

@@ -4,7 +4,7 @@ import 'package:app/feature/add_seed/add_existing_wallet/view/add_existing_walle
 import 'package:app/feature/add_seed/add_seed_enable_biometry/add_seed_enable_biometry_page.dart';
 import 'package:app/feature/add_seed/create_password/screens/create_seed_password/create_seed_password_screen.dart';
 import 'package:app/feature/add_seed/create_password/view/create_seed_password_page.dart';
-import 'package:app/feature/add_seed/enter_seed_phrase/view/enter_seed_phrase_page.dart';
+import 'package:app/feature/add_seed/enter_seed_phrase/enter_seed_phrase.dart';
 import 'package:app/feature/add_seed/import_wallet/import_wallet_screen.dart';
 import 'package:app/v1/feature/add_seed/check_seed_phrase/check_seed_phrase.dart';
 import 'package:app/v1/feature/add_seed/create_seed/create_seed.dart';
@@ -54,7 +54,7 @@ GoRoute createSeedNoNamedRoute(GoRoute passwordRoute) {
 GoRoute enterSeedNoNamedRoute(GoRoute passwordRoute) {
   return GoRoute(
     path: AppRoute.enterSeed.path,
-    builder: (_, __) => const EnterSeedPhrasePage(),
+    builder: (_, __) => const EnterSeedPhrase(),
     routes: [
       passwordRoute,
     ],
@@ -186,7 +186,7 @@ GoRoute get createSeedNamedProfileRoute {
 GoRoute get enterSeedNamedProfileRoute {
   return GoRoute(
     path: AppRoute.enterSeedNamed.path,
-    builder: (_, state) => const EnterSeedPhrasePage(),
+    builder: (_, state) => const EnterSeedPhrase(),
     routes: [
       GoRoute(
         path: AppRoute.createSeedPassword.path,
