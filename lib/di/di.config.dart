@@ -229,6 +229,19 @@ extension GetItInjectableX on _i174.GetIt {
           storageService: gh<_i128.GeneralStorageService>(),
           appLifecycle: gh<_i128.AppLifecycleService>(),
         ));
+    gh.singleton<_i964.AssetsService>(
+      () => _i964.AssetsService(
+        gh<_i771.NekotonRepository>(),
+        gh<_i128.ConnectionsStorageService>(),
+        gh<_i128.CurrentAccountsService>(),
+        gh<_i116.PresetsConnectionService>(),
+        gh<_i128.HttpService>(),
+        gh<_i128.GeneralStorageService>(),
+        gh<_i252.ConnectionFactory>(),
+        gh<_i495.TonRepository>(),
+      ),
+      dispose: (i) => i.dispose(),
+    );
     gh.singleton<_i725.StorageManagerService>(() => _i725.StorageManagerService(
           gh<_i128.SecureStorageService>(),
           gh<_i128.GeneralStorageService>(),
@@ -255,19 +268,6 @@ extension GetItInjectableX on _i174.GetIt {
           gh<_i128.CurrenciesService>(),
           gh<_i128.BalanceStorageService>(),
         ));
-    gh.singleton<_i964.AssetsService>(
-      () => _i964.AssetsService(
-        gh<_i771.NekotonRepository>(),
-        gh<_i128.ConnectionsStorageService>(),
-        gh<_i128.CurrentAccountsService>(),
-        gh<_i116.PresetsConnectionService>(),
-        gh<_i128.HttpService>(),
-        gh<_i128.GeneralStorageService>(),
-        gh<_i252.ConnectionFactory>(),
-        gh<_i495.TonRepository>(),
-      ),
-      dispose: (i) => i.dispose(),
-    );
     gh.singleton<_i877.TokenWalletsService>(() => _i877.TokenWalletsService(
           gh<_i771.NekotonRepository>(),
           gh<_i128.HttpService>(),

@@ -205,8 +205,12 @@ class WalletDeployBloc extends Bloc<WalletDeployEvent, WalletDeployState>
           WalletDeployState.calculatingError(
             error: LocaleKeys.insufficientFunds.tr(),
             fee: fees,
+            balance: balance,
             requireConfirmations: requireConfirmations,
             custodians: custodians,
+            tonIconPath: tonIconPath,
+            ticker: ticker,
+            currency: tokenCustomCurrency,
           ),
         );
 
@@ -236,6 +240,8 @@ class WalletDeployBloc extends Bloc<WalletDeployEvent, WalletDeployState>
           requireConfirmations: requireConfirmations,
           custodians: custodians,
           tonIconPath: tonIconPath,
+          ticker: ticker,
+          currency: tokenCustomCurrency,
         ),
       );
     } finally {

@@ -1624,7 +1624,9 @@ mixin _$WalletDeployState {
             BigInt? balance,
             List<PublicKey>? custodians,
             int? requireConfirmations,
-            String? tonIconPath)
+            String? tonIconPath,
+            String? ticker,
+            CustomCurrency? currency)
         calculatingError,
     required TResult Function(
             BigInt fee,
@@ -1661,7 +1663,9 @@ mixin _$WalletDeployState {
             BigInt? balance,
             List<PublicKey>? custodians,
             int? requireConfirmations,
-            String? tonIconPath)?
+            String? tonIconPath,
+            String? ticker,
+            CustomCurrency? currency)?
         calculatingError,
     TResult? Function(
             BigInt fee,
@@ -1698,7 +1702,9 @@ mixin _$WalletDeployState {
             BigInt? balance,
             List<PublicKey>? custodians,
             int? requireConfirmations,
-            String? tonIconPath)?
+            String? tonIconPath,
+            String? ticker,
+            CustomCurrency? currency)?
         calculatingError,
     TResult Function(
             BigInt fee,
@@ -1832,7 +1838,9 @@ class _$StandardImpl implements _Standard {
             BigInt? balance,
             List<PublicKey>? custodians,
             int? requireConfirmations,
-            String? tonIconPath)
+            String? tonIconPath,
+            String? ticker,
+            CustomCurrency? currency)
         calculatingError,
     required TResult Function(
             BigInt fee,
@@ -1872,7 +1880,9 @@ class _$StandardImpl implements _Standard {
             BigInt? balance,
             List<PublicKey>? custodians,
             int? requireConfirmations,
-            String? tonIconPath)?
+            String? tonIconPath,
+            String? ticker,
+            CustomCurrency? currency)?
         calculatingError,
     TResult? Function(
             BigInt fee,
@@ -1912,7 +1922,9 @@ class _$StandardImpl implements _Standard {
             BigInt? balance,
             List<PublicKey>? custodians,
             int? requireConfirmations,
-            String? tonIconPath)?
+            String? tonIconPath,
+            String? ticker,
+            CustomCurrency? currency)?
         calculatingError,
     TResult Function(
             BigInt fee,
@@ -2102,7 +2114,9 @@ class _$MultisigImpl implements _Multisig {
             BigInt? balance,
             List<PublicKey>? custodians,
             int? requireConfirmations,
-            String? tonIconPath)
+            String? tonIconPath,
+            String? ticker,
+            CustomCurrency? currency)
         calculatingError,
     required TResult Function(
             BigInt fee,
@@ -2142,7 +2156,9 @@ class _$MultisigImpl implements _Multisig {
             BigInt? balance,
             List<PublicKey>? custodians,
             int? requireConfirmations,
-            String? tonIconPath)?
+            String? tonIconPath,
+            String? ticker,
+            CustomCurrency? currency)?
         calculatingError,
     TResult? Function(
             BigInt fee,
@@ -2182,7 +2198,9 @@ class _$MultisigImpl implements _Multisig {
             BigInt? balance,
             List<PublicKey>? custodians,
             int? requireConfirmations,
-            String? tonIconPath)?
+            String? tonIconPath,
+            String? ticker,
+            CustomCurrency? currency)?
         calculatingError,
     TResult Function(
             BigInt fee,
@@ -2287,7 +2305,11 @@ abstract class _$$CalculatingErrorImplCopyWith<$Res> {
       BigInt? balance,
       List<PublicKey>? custodians,
       int? requireConfirmations,
-      String? tonIconPath});
+      String? tonIconPath,
+      String? ticker,
+      CustomCurrency? currency});
+
+  $CustomCurrencyCopyWith<$Res>? get currency;
 }
 
 /// @nodoc
@@ -2309,6 +2331,8 @@ class __$$CalculatingErrorImplCopyWithImpl<$Res>
     Object? custodians = freezed,
     Object? requireConfirmations = freezed,
     Object? tonIconPath = freezed,
+    Object? ticker = freezed,
+    Object? currency = freezed,
   }) {
     return _then(_$CalculatingErrorImpl(
       error: null == error
@@ -2335,7 +2359,29 @@ class __$$CalculatingErrorImplCopyWithImpl<$Res>
           ? _value.tonIconPath
           : tonIconPath // ignore: cast_nullable_to_non_nullable
               as String?,
+      ticker: freezed == ticker
+          ? _value.ticker
+          : ticker // ignore: cast_nullable_to_non_nullable
+              as String?,
+      currency: freezed == currency
+          ? _value.currency
+          : currency // ignore: cast_nullable_to_non_nullable
+              as CustomCurrency?,
     ));
+  }
+
+  /// Create a copy of WalletDeployState
+  /// with the given fields replaced by the non-null parameter values.
+  @override
+  @pragma('vm:prefer-inline')
+  $CustomCurrencyCopyWith<$Res>? get currency {
+    if (_value.currency == null) {
+      return null;
+    }
+
+    return $CustomCurrencyCopyWith<$Res>(_value.currency!, (value) {
+      return _then(_value.copyWith(currency: value));
+    });
   }
 }
 
@@ -2348,7 +2394,9 @@ class _$CalculatingErrorImpl implements _CalculatingError {
       this.balance,
       final List<PublicKey>? custodians,
       this.requireConfirmations,
-      this.tonIconPath})
+      this.tonIconPath,
+      this.ticker,
+      this.currency})
       : _custodians = custodians;
 
   @override
@@ -2371,10 +2419,14 @@ class _$CalculatingErrorImpl implements _CalculatingError {
   final int? requireConfirmations;
   @override
   final String? tonIconPath;
+  @override
+  final String? ticker;
+  @override
+  final CustomCurrency? currency;
 
   @override
   String toString() {
-    return 'WalletDeployState.calculatingError(error: $error, fee: $fee, balance: $balance, custodians: $custodians, requireConfirmations: $requireConfirmations, tonIconPath: $tonIconPath)';
+    return 'WalletDeployState.calculatingError(error: $error, fee: $fee, balance: $balance, custodians: $custodians, requireConfirmations: $requireConfirmations, tonIconPath: $tonIconPath, ticker: $ticker, currency: $currency)';
   }
 
   @override
@@ -2390,7 +2442,10 @@ class _$CalculatingErrorImpl implements _CalculatingError {
             (identical(other.requireConfirmations, requireConfirmations) ||
                 other.requireConfirmations == requireConfirmations) &&
             (identical(other.tonIconPath, tonIconPath) ||
-                other.tonIconPath == tonIconPath));
+                other.tonIconPath == tonIconPath) &&
+            (identical(other.ticker, ticker) || other.ticker == ticker) &&
+            (identical(other.currency, currency) ||
+                other.currency == currency));
   }
 
   @override
@@ -2401,7 +2456,9 @@ class _$CalculatingErrorImpl implements _CalculatingError {
       balance,
       const DeepCollectionEquality().hash(_custodians),
       requireConfirmations,
-      tonIconPath);
+      tonIconPath,
+      ticker,
+      currency);
 
   /// Create a copy of WalletDeployState
   /// with the given fields replaced by the non-null parameter values.
@@ -2425,7 +2482,9 @@ class _$CalculatingErrorImpl implements _CalculatingError {
             BigInt? balance,
             List<PublicKey>? custodians,
             int? requireConfirmations,
-            String? tonIconPath)
+            String? tonIconPath,
+            String? ticker,
+            CustomCurrency? currency)
         calculatingError,
     required TResult Function(
             BigInt fee,
@@ -2449,8 +2508,8 @@ class _$CalculatingErrorImpl implements _CalculatingError {
         deployed,
     required TResult Function(Object error) subscribeError,
   }) {
-    return calculatingError(
-        error, fee, balance, custodians, requireConfirmations, tonIconPath);
+    return calculatingError(error, fee, balance, custodians,
+        requireConfirmations, tonIconPath, ticker, currency);
   }
 
   @override
@@ -2466,7 +2525,9 @@ class _$CalculatingErrorImpl implements _CalculatingError {
             BigInt? balance,
             List<PublicKey>? custodians,
             int? requireConfirmations,
-            String? tonIconPath)?
+            String? tonIconPath,
+            String? ticker,
+            CustomCurrency? currency)?
         calculatingError,
     TResult? Function(
             BigInt fee,
@@ -2490,8 +2551,8 @@ class _$CalculatingErrorImpl implements _CalculatingError {
         deployed,
     TResult? Function(Object error)? subscribeError,
   }) {
-    return calculatingError?.call(
-        error, fee, balance, custodians, requireConfirmations, tonIconPath);
+    return calculatingError?.call(error, fee, balance, custodians,
+        requireConfirmations, tonIconPath, ticker, currency);
   }
 
   @override
@@ -2507,7 +2568,9 @@ class _$CalculatingErrorImpl implements _CalculatingError {
             BigInt? balance,
             List<PublicKey>? custodians,
             int? requireConfirmations,
-            String? tonIconPath)?
+            String? tonIconPath,
+            String? ticker,
+            CustomCurrency? currency)?
         calculatingError,
     TResult Function(
             BigInt fee,
@@ -2533,8 +2596,8 @@ class _$CalculatingErrorImpl implements _CalculatingError {
     required TResult orElse(),
   }) {
     if (calculatingError != null) {
-      return calculatingError(
-          error, fee, balance, custodians, requireConfirmations, tonIconPath);
+      return calculatingError(error, fee, balance, custodians,
+          requireConfirmations, tonIconPath, ticker, currency);
     }
     return orElse();
   }
@@ -2593,7 +2656,9 @@ abstract class _CalculatingError implements WalletDeployState {
       final BigInt? balance,
       final List<PublicKey>? custodians,
       final int? requireConfirmations,
-      final String? tonIconPath}) = _$CalculatingErrorImpl;
+      final String? tonIconPath,
+      final String? ticker,
+      final CustomCurrency? currency}) = _$CalculatingErrorImpl;
 
   String get error;
   BigInt? get fee;
@@ -2601,6 +2666,8 @@ abstract class _CalculatingError implements WalletDeployState {
   List<PublicKey>? get custodians;
   int? get requireConfirmations;
   String? get tonIconPath;
+  String? get ticker;
+  CustomCurrency? get currency;
 
   /// Create a copy of WalletDeployState
   /// with the given fields replaced by the non-null parameter values.
@@ -2808,7 +2875,9 @@ class _$ReadyToDeployImpl implements _ReadyToDeploy {
             BigInt? balance,
             List<PublicKey>? custodians,
             int? requireConfirmations,
-            String? tonIconPath)
+            String? tonIconPath,
+            String? ticker,
+            CustomCurrency? currency)
         calculatingError,
     required TResult Function(
             BigInt fee,
@@ -2849,7 +2918,9 @@ class _$ReadyToDeployImpl implements _ReadyToDeploy {
             BigInt? balance,
             List<PublicKey>? custodians,
             int? requireConfirmations,
-            String? tonIconPath)?
+            String? tonIconPath,
+            String? ticker,
+            CustomCurrency? currency)?
         calculatingError,
     TResult? Function(
             BigInt fee,
@@ -2890,7 +2961,9 @@ class _$ReadyToDeployImpl implements _ReadyToDeploy {
             BigInt? balance,
             List<PublicKey>? custodians,
             int? requireConfirmations,
-            String? tonIconPath)?
+            String? tonIconPath,
+            String? ticker,
+            CustomCurrency? currency)?
         calculatingError,
     TResult Function(
             BigInt fee,
@@ -3077,7 +3150,9 @@ class _$DeployingImpl implements _Deploying {
             BigInt? balance,
             List<PublicKey>? custodians,
             int? requireConfirmations,
-            String? tonIconPath)
+            String? tonIconPath,
+            String? ticker,
+            CustomCurrency? currency)
         calculatingError,
     required TResult Function(
             BigInt fee,
@@ -3117,7 +3192,9 @@ class _$DeployingImpl implements _Deploying {
             BigInt? balance,
             List<PublicKey>? custodians,
             int? requireConfirmations,
-            String? tonIconPath)?
+            String? tonIconPath,
+            String? ticker,
+            CustomCurrency? currency)?
         calculatingError,
     TResult? Function(
             BigInt fee,
@@ -3157,7 +3234,9 @@ class _$DeployingImpl implements _Deploying {
             BigInt? balance,
             List<PublicKey>? custodians,
             int? requireConfirmations,
-            String? tonIconPath)?
+            String? tonIconPath,
+            String? ticker,
+            CustomCurrency? currency)?
         calculatingError,
     TResult Function(
             BigInt fee,
@@ -3409,7 +3488,9 @@ class _$DeployedImpl implements _Deployed {
             BigInt? balance,
             List<PublicKey>? custodians,
             int? requireConfirmations,
-            String? tonIconPath)
+            String? tonIconPath,
+            String? ticker,
+            CustomCurrency? currency)
         calculatingError,
     required TResult Function(
             BigInt fee,
@@ -3450,7 +3531,9 @@ class _$DeployedImpl implements _Deployed {
             BigInt? balance,
             List<PublicKey>? custodians,
             int? requireConfirmations,
-            String? tonIconPath)?
+            String? tonIconPath,
+            String? ticker,
+            CustomCurrency? currency)?
         calculatingError,
     TResult? Function(
             BigInt fee,
@@ -3491,7 +3574,9 @@ class _$DeployedImpl implements _Deployed {
             BigInt? balance,
             List<PublicKey>? custodians,
             int? requireConfirmations,
-            String? tonIconPath)?
+            String? tonIconPath,
+            String? ticker,
+            CustomCurrency? currency)?
         calculatingError,
     TResult Function(
             BigInt fee,
@@ -3670,7 +3755,9 @@ class _$SubscribeErrorImpl implements _SubscribeError {
             BigInt? balance,
             List<PublicKey>? custodians,
             int? requireConfirmations,
-            String? tonIconPath)
+            String? tonIconPath,
+            String? ticker,
+            CustomCurrency? currency)
         calculatingError,
     required TResult Function(
             BigInt fee,
@@ -3710,7 +3797,9 @@ class _$SubscribeErrorImpl implements _SubscribeError {
             BigInt? balance,
             List<PublicKey>? custodians,
             int? requireConfirmations,
-            String? tonIconPath)?
+            String? tonIconPath,
+            String? ticker,
+            CustomCurrency? currency)?
         calculatingError,
     TResult? Function(
             BigInt fee,
@@ -3750,7 +3839,9 @@ class _$SubscribeErrorImpl implements _SubscribeError {
             BigInt? balance,
             List<PublicKey>? custodians,
             int? requireConfirmations,
-            String? tonIconPath)?
+            String? tonIconPath,
+            String? ticker,
+            CustomCurrency? currency)?
         calculatingError,
     TResult Function(
             BigInt fee,
