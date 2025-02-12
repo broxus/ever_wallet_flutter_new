@@ -19,6 +19,7 @@ ProfilePageWidgetModel defaultProfilePageWidgetModelFactory(
         inject(),
         inject(),
         inject(),
+        inject(),
       ),
     );
 
