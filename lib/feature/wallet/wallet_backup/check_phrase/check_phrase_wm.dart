@@ -1,4 +1,3 @@
-import 'dart:async';
 import 'dart:math';
 
 import 'package:app/app/router/app_route.dart';
@@ -94,9 +93,9 @@ class CheckPhraseWidgetModel
     showGoodJobDialog(context);
   }
 
-  Future<void> _init() async {
+  void _init() {
     _correctAnswers = _selectCorrectAnswers(words);
-    availableAnswers = await _generateAnswerWords(_correctAnswers);
+    availableAnswers = _generateAnswerWords(_correctAnswers);
     userAnswers = _correctAnswers.map((e) => e.copyWith(word: '')).toList();
     screenState.content(
       CheckPhraseData(
@@ -181,11 +180,11 @@ class CheckPhraseWidgetModel
     ];
   }
 
-  Future<List<String>> _generateAnswerWords(
+  List<String> _generateAnswerWords(
     List<CheckSeedCorrectAnswer> correct,
-  ) async {
+  ) {
     final correctWords = correct.map((e) => e.word).toList();
-    final dictionary = await getHints(input: '');
+    final dictionary = getHints(input: '');
     final answers = <String>[...correctWords];
     final random = Random();
     while (answers.length < defaultCheckAnswersAmount) {
