@@ -1615,8 +1615,8 @@ mixin _$WalletDeployState {
   @optionalTypeArgs
   TResult when<TResult extends Object?>({
     required TResult Function() standard,
-    required TResult Function(
-            List<PublicKey> custodians, int requireConfirmations, int hours)
+    required TResult Function(List<PublicKey> custodians,
+            int requireConfirmations, int hours, WalletType walletType)
         multisig,
     required TResult Function(
             String error,
@@ -1654,8 +1654,8 @@ mixin _$WalletDeployState {
   @optionalTypeArgs
   TResult? whenOrNull<TResult extends Object?>({
     TResult? Function()? standard,
-    TResult? Function(
-            List<PublicKey> custodians, int requireConfirmations, int hours)?
+    TResult? Function(List<PublicKey> custodians, int requireConfirmations,
+            int hours, WalletType walletType)?
         multisig,
     TResult? Function(
             String error,
@@ -1693,8 +1693,8 @@ mixin _$WalletDeployState {
   @optionalTypeArgs
   TResult maybeWhen<TResult extends Object?>({
     TResult Function()? standard,
-    TResult Function(
-            List<PublicKey> custodians, int requireConfirmations, int hours)?
+    TResult Function(List<PublicKey> custodians, int requireConfirmations,
+            int hours, WalletType walletType)?
         multisig,
     TResult Function(
             String error,
@@ -1829,8 +1829,8 @@ class _$StandardImpl implements _Standard {
   @optionalTypeArgs
   TResult when<TResult extends Object?>({
     required TResult Function() standard,
-    required TResult Function(
-            List<PublicKey> custodians, int requireConfirmations, int hours)
+    required TResult Function(List<PublicKey> custodians,
+            int requireConfirmations, int hours, WalletType walletType)
         multisig,
     required TResult Function(
             String error,
@@ -1871,8 +1871,8 @@ class _$StandardImpl implements _Standard {
   @optionalTypeArgs
   TResult? whenOrNull<TResult extends Object?>({
     TResult? Function()? standard,
-    TResult? Function(
-            List<PublicKey> custodians, int requireConfirmations, int hours)?
+    TResult? Function(List<PublicKey> custodians, int requireConfirmations,
+            int hours, WalletType walletType)?
         multisig,
     TResult? Function(
             String error,
@@ -1913,8 +1913,8 @@ class _$StandardImpl implements _Standard {
   @optionalTypeArgs
   TResult maybeWhen<TResult extends Object?>({
     TResult Function()? standard,
-    TResult Function(
-            List<PublicKey> custodians, int requireConfirmations, int hours)?
+    TResult Function(List<PublicKey> custodians, int requireConfirmations,
+            int hours, WalletType walletType)?
         multisig,
     TResult Function(
             String error,
@@ -2012,7 +2012,13 @@ abstract class _$$MultisigImplCopyWith<$Res> {
           _$MultisigImpl value, $Res Function(_$MultisigImpl) then) =
       __$$MultisigImplCopyWithImpl<$Res>;
   @useResult
-  $Res call({List<PublicKey> custodians, int requireConfirmations, int hours});
+  $Res call(
+      {List<PublicKey> custodians,
+      int requireConfirmations,
+      int hours,
+      WalletType walletType});
+
+  $WalletTypeCopyWith<$Res> get walletType;
 }
 
 /// @nodoc
@@ -2031,6 +2037,7 @@ class __$$MultisigImplCopyWithImpl<$Res>
     Object? custodians = null,
     Object? requireConfirmations = null,
     Object? hours = null,
+    Object? walletType = null,
   }) {
     return _then(_$MultisigImpl(
       null == custodians
@@ -2045,15 +2052,29 @@ class __$$MultisigImplCopyWithImpl<$Res>
           ? _value.hours
           : hours // ignore: cast_nullable_to_non_nullable
               as int,
+      null == walletType
+          ? _value.walletType
+          : walletType // ignore: cast_nullable_to_non_nullable
+              as WalletType,
     ));
+  }
+
+  /// Create a copy of WalletDeployState
+  /// with the given fields replaced by the non-null parameter values.
+  @override
+  @pragma('vm:prefer-inline')
+  $WalletTypeCopyWith<$Res> get walletType {
+    return $WalletTypeCopyWith<$Res>(_value.walletType, (value) {
+      return _then(_value.copyWith(walletType: value));
+    });
   }
 }
 
 /// @nodoc
 
 class _$MultisigImpl implements _Multisig {
-  const _$MultisigImpl(
-      final List<PublicKey> custodians, this.requireConfirmations, this.hours)
+  const _$MultisigImpl(final List<PublicKey> custodians,
+      this.requireConfirmations, this.hours, this.walletType)
       : _custodians = custodians;
 
   final List<PublicKey> _custodians;
@@ -2068,10 +2089,12 @@ class _$MultisigImpl implements _Multisig {
   final int requireConfirmations;
   @override
   final int hours;
+  @override
+  final WalletType walletType;
 
   @override
   String toString() {
-    return 'WalletDeployState.multisig(custodians: $custodians, requireConfirmations: $requireConfirmations, hours: $hours)';
+    return 'WalletDeployState.multisig(custodians: $custodians, requireConfirmations: $requireConfirmations, hours: $hours, walletType: $walletType)';
   }
 
   @override
@@ -2083,7 +2106,9 @@ class _$MultisigImpl implements _Multisig {
                 .equals(other._custodians, _custodians) &&
             (identical(other.requireConfirmations, requireConfirmations) ||
                 other.requireConfirmations == requireConfirmations) &&
-            (identical(other.hours, hours) || other.hours == hours));
+            (identical(other.hours, hours) || other.hours == hours) &&
+            (identical(other.walletType, walletType) ||
+                other.walletType == walletType));
   }
 
   @override
@@ -2091,7 +2116,8 @@ class _$MultisigImpl implements _Multisig {
       runtimeType,
       const DeepCollectionEquality().hash(_custodians),
       requireConfirmations,
-      hours);
+      hours,
+      walletType);
 
   /// Create a copy of WalletDeployState
   /// with the given fields replaced by the non-null parameter values.
@@ -2105,8 +2131,8 @@ class _$MultisigImpl implements _Multisig {
   @optionalTypeArgs
   TResult when<TResult extends Object?>({
     required TResult Function() standard,
-    required TResult Function(
-            List<PublicKey> custodians, int requireConfirmations, int hours)
+    required TResult Function(List<PublicKey> custodians,
+            int requireConfirmations, int hours, WalletType walletType)
         multisig,
     required TResult Function(
             String error,
@@ -2140,15 +2166,15 @@ class _$MultisigImpl implements _Multisig {
         deployed,
     required TResult Function(Object error) subscribeError,
   }) {
-    return multisig(custodians, requireConfirmations, hours);
+    return multisig(custodians, requireConfirmations, hours, walletType);
   }
 
   @override
   @optionalTypeArgs
   TResult? whenOrNull<TResult extends Object?>({
     TResult? Function()? standard,
-    TResult? Function(
-            List<PublicKey> custodians, int requireConfirmations, int hours)?
+    TResult? Function(List<PublicKey> custodians, int requireConfirmations,
+            int hours, WalletType walletType)?
         multisig,
     TResult? Function(
             String error,
@@ -2182,15 +2208,15 @@ class _$MultisigImpl implements _Multisig {
         deployed,
     TResult? Function(Object error)? subscribeError,
   }) {
-    return multisig?.call(custodians, requireConfirmations, hours);
+    return multisig?.call(custodians, requireConfirmations, hours, walletType);
   }
 
   @override
   @optionalTypeArgs
   TResult maybeWhen<TResult extends Object?>({
     TResult Function()? standard,
-    TResult Function(
-            List<PublicKey> custodians, int requireConfirmations, int hours)?
+    TResult Function(List<PublicKey> custodians, int requireConfirmations,
+            int hours, WalletType walletType)?
         multisig,
     TResult Function(
             String error,
@@ -2226,7 +2252,7 @@ class _$MultisigImpl implements _Multisig {
     required TResult orElse(),
   }) {
     if (multisig != null) {
-      return multisig(custodians, requireConfirmations, hours);
+      return multisig(custodians, requireConfirmations, hours, walletType);
     }
     return orElse();
   }
@@ -2279,12 +2305,16 @@ class _$MultisigImpl implements _Multisig {
 }
 
 abstract class _Multisig implements WalletDeployState {
-  const factory _Multisig(final List<PublicKey> custodians,
-      final int requireConfirmations, final int hours) = _$MultisigImpl;
+  const factory _Multisig(
+      final List<PublicKey> custodians,
+      final int requireConfirmations,
+      final int hours,
+      final WalletType walletType) = _$MultisigImpl;
 
   List<PublicKey> get custodians;
   int get requireConfirmations;
   int get hours;
+  WalletType get walletType;
 
   /// Create a copy of WalletDeployState
   /// with the given fields replaced by the non-null parameter values.
@@ -2473,8 +2503,8 @@ class _$CalculatingErrorImpl implements _CalculatingError {
   @optionalTypeArgs
   TResult when<TResult extends Object?>({
     required TResult Function() standard,
-    required TResult Function(
-            List<PublicKey> custodians, int requireConfirmations, int hours)
+    required TResult Function(List<PublicKey> custodians,
+            int requireConfirmations, int hours, WalletType walletType)
         multisig,
     required TResult Function(
             String error,
@@ -2516,8 +2546,8 @@ class _$CalculatingErrorImpl implements _CalculatingError {
   @optionalTypeArgs
   TResult? whenOrNull<TResult extends Object?>({
     TResult? Function()? standard,
-    TResult? Function(
-            List<PublicKey> custodians, int requireConfirmations, int hours)?
+    TResult? Function(List<PublicKey> custodians, int requireConfirmations,
+            int hours, WalletType walletType)?
         multisig,
     TResult? Function(
             String error,
@@ -2559,8 +2589,8 @@ class _$CalculatingErrorImpl implements _CalculatingError {
   @optionalTypeArgs
   TResult maybeWhen<TResult extends Object?>({
     TResult Function()? standard,
-    TResult Function(
-            List<PublicKey> custodians, int requireConfirmations, int hours)?
+    TResult Function(List<PublicKey> custodians, int requireConfirmations,
+            int hours, WalletType walletType)?
         multisig,
     TResult Function(
             String error,
@@ -2866,8 +2896,8 @@ class _$ReadyToDeployImpl implements _ReadyToDeploy {
   @optionalTypeArgs
   TResult when<TResult extends Object?>({
     required TResult Function() standard,
-    required TResult Function(
-            List<PublicKey> custodians, int requireConfirmations, int hours)
+    required TResult Function(List<PublicKey> custodians,
+            int requireConfirmations, int hours, WalletType walletType)
         multisig,
     required TResult Function(
             String error,
@@ -2909,8 +2939,8 @@ class _$ReadyToDeployImpl implements _ReadyToDeploy {
   @optionalTypeArgs
   TResult? whenOrNull<TResult extends Object?>({
     TResult? Function()? standard,
-    TResult? Function(
-            List<PublicKey> custodians, int requireConfirmations, int hours)?
+    TResult? Function(List<PublicKey> custodians, int requireConfirmations,
+            int hours, WalletType walletType)?
         multisig,
     TResult? Function(
             String error,
@@ -2952,8 +2982,8 @@ class _$ReadyToDeployImpl implements _ReadyToDeploy {
   @optionalTypeArgs
   TResult maybeWhen<TResult extends Object?>({
     TResult Function()? standard,
-    TResult Function(
-            List<PublicKey> custodians, int requireConfirmations, int hours)?
+    TResult Function(List<PublicKey> custodians, int requireConfirmations,
+            int hours, WalletType walletType)?
         multisig,
     TResult Function(
             String error,
@@ -3141,8 +3171,8 @@ class _$DeployingImpl implements _Deploying {
   @optionalTypeArgs
   TResult when<TResult extends Object?>({
     required TResult Function() standard,
-    required TResult Function(
-            List<PublicKey> custodians, int requireConfirmations, int hours)
+    required TResult Function(List<PublicKey> custodians,
+            int requireConfirmations, int hours, WalletType walletType)
         multisig,
     required TResult Function(
             String error,
@@ -3183,8 +3213,8 @@ class _$DeployingImpl implements _Deploying {
   @optionalTypeArgs
   TResult? whenOrNull<TResult extends Object?>({
     TResult? Function()? standard,
-    TResult? Function(
-            List<PublicKey> custodians, int requireConfirmations, int hours)?
+    TResult? Function(List<PublicKey> custodians, int requireConfirmations,
+            int hours, WalletType walletType)?
         multisig,
     TResult? Function(
             String error,
@@ -3225,8 +3255,8 @@ class _$DeployingImpl implements _Deploying {
   @optionalTypeArgs
   TResult maybeWhen<TResult extends Object?>({
     TResult Function()? standard,
-    TResult Function(
-            List<PublicKey> custodians, int requireConfirmations, int hours)?
+    TResult Function(List<PublicKey> custodians, int requireConfirmations,
+            int hours, WalletType walletType)?
         multisig,
     TResult Function(
             String error,
@@ -3479,8 +3509,8 @@ class _$DeployedImpl implements _Deployed {
   @optionalTypeArgs
   TResult when<TResult extends Object?>({
     required TResult Function() standard,
-    required TResult Function(
-            List<PublicKey> custodians, int requireConfirmations, int hours)
+    required TResult Function(List<PublicKey> custodians,
+            int requireConfirmations, int hours, WalletType walletType)
         multisig,
     required TResult Function(
             String error,
@@ -3522,8 +3552,8 @@ class _$DeployedImpl implements _Deployed {
   @optionalTypeArgs
   TResult? whenOrNull<TResult extends Object?>({
     TResult? Function()? standard,
-    TResult? Function(
-            List<PublicKey> custodians, int requireConfirmations, int hours)?
+    TResult? Function(List<PublicKey> custodians, int requireConfirmations,
+            int hours, WalletType walletType)?
         multisig,
     TResult? Function(
             String error,
@@ -3565,8 +3595,8 @@ class _$DeployedImpl implements _Deployed {
   @optionalTypeArgs
   TResult maybeWhen<TResult extends Object?>({
     TResult Function()? standard,
-    TResult Function(
-            List<PublicKey> custodians, int requireConfirmations, int hours)?
+    TResult Function(List<PublicKey> custodians, int requireConfirmations,
+            int hours, WalletType walletType)?
         multisig,
     TResult Function(
             String error,
@@ -3746,8 +3776,8 @@ class _$SubscribeErrorImpl implements _SubscribeError {
   @optionalTypeArgs
   TResult when<TResult extends Object?>({
     required TResult Function() standard,
-    required TResult Function(
-            List<PublicKey> custodians, int requireConfirmations, int hours)
+    required TResult Function(List<PublicKey> custodians,
+            int requireConfirmations, int hours, WalletType walletType)
         multisig,
     required TResult Function(
             String error,
@@ -3788,8 +3818,8 @@ class _$SubscribeErrorImpl implements _SubscribeError {
   @optionalTypeArgs
   TResult? whenOrNull<TResult extends Object?>({
     TResult? Function()? standard,
-    TResult? Function(
-            List<PublicKey> custodians, int requireConfirmations, int hours)?
+    TResult? Function(List<PublicKey> custodians, int requireConfirmations,
+            int hours, WalletType walletType)?
         multisig,
     TResult? Function(
             String error,
@@ -3830,8 +3860,8 @@ class _$SubscribeErrorImpl implements _SubscribeError {
   @optionalTypeArgs
   TResult maybeWhen<TResult extends Object?>({
     TResult Function()? standard,
-    TResult Function(
-            List<PublicKey> custodians, int requireConfirmations, int hours)?
+    TResult Function(List<PublicKey> custodians, int requireConfirmations,
+            int hours, WalletType walletType)?
         multisig,
     TResult Function(
             String error,

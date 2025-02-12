@@ -49,11 +49,13 @@ class WalletDeployPage extends StatelessWidget {
               WalletSubscribeErrorWidget(error: error),
             ),
             standard: () => _scaffold(const WalletDeployStandardBody()),
-            multisig: (custodians, requireConfirmations, hours) => _scaffold(
+            multisig: (custodians, requireConfirmations, hours, walletType) =>
+                _scaffold(
               WalletDeployMultisigBody(
                 custodians: custodians,
                 requireConfirmations: requireConfirmations,
                 hours: hours,
+                walletType: walletType,
               ),
             ),
             calculatingError: (

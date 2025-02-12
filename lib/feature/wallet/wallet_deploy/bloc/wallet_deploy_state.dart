@@ -12,6 +12,7 @@ class WalletDeployState with _$WalletDeployState {
     List<PublicKey> custodians,
     int requireConfirmations,
     int hours,
+    WalletType walletType,
   ) = _Multisig;
 
   /// Error during calculating fee process
