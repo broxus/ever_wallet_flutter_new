@@ -56,6 +56,7 @@ class WalletDeployBloc extends Bloc<WalletDeployEvent, WalletDeployState>
   String? tonIconPath;
   String? ticker;
   CustomCurrency? tokenCustomCurrency;
+  WalletType? walletType;
 
   /// Last selected type of deploying.
   /// For [WalletDeployType.multisig] [_cachedRequireConfirmations] and
@@ -73,6 +74,11 @@ class WalletDeployBloc extends Bloc<WalletDeployEvent, WalletDeployState>
     ticker = nekotonRepository.currentTransport.nativeTokenTicker;
     tokenCustomCurrency = await currenciesService
         .getOrFetchNativeCurrency(nekotonRepository.currentTransport);
+    walletType = nekotonRepository.seedList
+        .findAccountByAddress(address)
+        ?.account
+        .tonWallet
+        .contract;
   }
 
   // ignore: long-method
@@ -86,6 +92,7 @@ class WalletDeployBloc extends Bloc<WalletDeployEvent, WalletDeployState>
               _cachedCustodians,
               _cachedRequireConfirmations,
               _cachedHoursConfirmation,
+              walletType ?? const WalletType.multisig(MultisigType.multisig2_1),
             ),
         },
       );
@@ -101,6 +108,7 @@ class WalletDeployBloc extends Bloc<WalletDeployEvent, WalletDeployState>
               _cachedCustodians,
               _cachedRequireConfirmations,
               _cachedHoursConfirmation,
+              walletType ?? const WalletType.multisig(MultisigType.multisig2_1),
             ),
         },
       );
@@ -205,8 +213,12 @@ class WalletDeployBloc extends Bloc<WalletDeployEvent, WalletDeployState>
           WalletDeployState.calculatingError(
             error: LocaleKeys.insufficientFunds.tr(),
             fee: fees,
+            balance: balance,
             requireConfirmations: requireConfirmations,
             custodians: custodians,
+            tonIconPath: tonIconPath,
+            ticker: ticker,
+            currency: tokenCustomCurrency,
           ),
         );
 
@@ -236,6 +248,8 @@ class WalletDeployBloc extends Bloc<WalletDeployEvent, WalletDeployState>
           requireConfirmations: requireConfirmations,
           custodians: custodians,
           tonIconPath: tonIconPath,
+          ticker: ticker,
+          currency: tokenCustomCurrency,
         ),
       );
     } finally {
@@ -317,7 +331,10 @@ class WalletDeployBloc extends Bloc<WalletDeployEvent, WalletDeployState>
           custodians: _cachedCustodians,
           reqConfirms: _cachedRequireConfirmations,
           expiration: defaultSendTimeout,
-          expirationTime: _cachedHoursConfirmation * 3600, // hours to seconds
+          expirationTime:
+              walletType == const WalletType.multisig(MultisigType.multisig2_1)
+                  ? _cachedHoursConfirmation * 3600
+                  : null, // hours to seconds
         );
 
   Future<BigInt> estimateFees(UnsignedMessage message) async {

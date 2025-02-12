@@ -12,6 +12,7 @@ class WalletDeployState with _$WalletDeployState {
     List<PublicKey> custodians,
     int requireConfirmations,
     int hours,
+    WalletType walletType,
   ) = _Multisig;
 
   /// Error during calculating fee process
@@ -22,6 +23,8 @@ class WalletDeployState with _$WalletDeployState {
     List<PublicKey>? custodians,
     int? requireConfirmations,
     String? tonIconPath,
+    String? ticker,
+    CustomCurrency? currency,
   }) = _CalculatingError;
 
   /// Fee calculated, allow user subscribe transaction

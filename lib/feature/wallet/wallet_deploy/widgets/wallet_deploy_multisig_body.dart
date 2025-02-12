@@ -27,6 +27,7 @@ class WalletDeployMultisigBody extends StatefulWidget {
     required this.custodians,
     required this.requireConfirmations,
     required this.hours,
+    required this.walletType,
     super.key,
   });
 
@@ -34,6 +35,7 @@ class WalletDeployMultisigBody extends StatefulWidget {
   final List<PublicKey> custodians;
   final int requireConfirmations;
   final int hours;
+  final WalletType walletType;
 
   @override
   State<WalletDeployMultisigBody> createState() =>
@@ -64,6 +66,9 @@ class _WalletDeployMultisigBodyState extends State<WalletDeployMultisigBody> {
   /// If true, then some of custodian focuses has focus
   final focusNotifier = ValueNotifier<bool>(false);
 
+  bool get isMultisig2_1 =>
+      widget.walletType == const WalletType.multisig(MultisigType.multisig2_1);
+
   @override
   void initState() {
     super.initState();
@@ -89,32 +94,6 @@ class _WalletDeployMultisigBodyState extends State<WalletDeployMultisigBody> {
     waitingTimeController.dispose();
     waitingTimeNode.dispose();
     super.dispose();
-  }
-
-  void _focusListener() =>
-      focusNotifier.value = custodianFocuses.any((f) => f.hasFocus);
-
-  void _addOneCustodian() {
-    setState(() {
-      custodianFocuses.add(FocusNode()..addListener(_focusListener));
-      custodianControllers.add(TextEditingController());
-    });
-  }
-
-  void _removeCustodian(int index) {
-    setState(() {
-      custodianControllers.removeAt(index).dispose();
-      custodianFocuses.removeAt(index)
-        ..removeListener(_focusListener)
-        ..dispose();
-    });
-  }
-
-  Future<void> _pasteCustodian(int index) async {
-    final text = await getClipBoardText();
-    if (text != null) {
-      custodianControllers[index].text = text;
-    }
   }
 
   @override
@@ -198,37 +177,52 @@ class _WalletDeployMultisigBodyState extends State<WalletDeployMultisigBody> {
                       );
                     },
                   ),
-                  const SizedBox(height: DimensSizeV2.d8),
-                  Text(
-                    LocaleKeys.deployWalletWaitingTime.tr(),
-                    style: textStyles.labelSmall,
-                  ),
-                  PrimaryTextField(
-                    focusNode: waitingTimeNode,
-                    textEditingController: waitingTimeController,
-                    keyboardType: TextInputType.number,
-                    textInputAction: TextInputAction.next,
-                    onSubmit: (_) => custodianFocuses.first.requestFocus(),
-                    validator: (value) {
-                      if (value == null) {
-                        return LocaleKeys.invalidValue.tr();
-                      }
-                      final number = int.tryParse(value);
-                      if (number == null || number > 24 || number == 0) {
-                        return LocaleKeys.invalidValue.tr();
-                      }
-                      return null;
-                    },
-                    inputFormatters: [
-                      InputFormatters.onlyDigitsFormatter,
-                    ],
-                    suffixes: [
-                      _buildMiniButton(1),
-                      _buildMiniButton(2),
-                      _buildMiniButton(12),
-                      _buildMiniButton(24),
-                    ],
-                  ),
+                  if (isMultisig2_1)
+                    Padding(
+                      padding: const EdgeInsets.only(
+                        top: DimensSizeV2.d8,
+                      ),
+                      child: Column(
+                        mainAxisSize: MainAxisSize.min,
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          Text(
+                            LocaleKeys.deployWalletWaitingTime.tr(),
+                            style: textStyles.labelSmall,
+                          ),
+                          const SizedBox(height: DimensSizeV2.d8),
+                          PrimaryTextField(
+                            focusNode: waitingTimeNode,
+                            textEditingController: waitingTimeController,
+                            keyboardType: TextInputType.number,
+                            textInputAction: TextInputAction.next,
+                            onSubmit: (_) =>
+                                custodianFocuses.first.requestFocus(),
+                            validator: (value) {
+                              if (value == null) {
+                                return LocaleKeys.invalidValue.tr();
+                              }
+                              final number = int.tryParse(value);
+                              if (number == null ||
+                                  number > 24 ||
+                                  number == 0) {
+                                return LocaleKeys.invalidValue.tr();
+                              }
+                              return null;
+                            },
+                            inputFormatters: [
+                              InputFormatters.onlyDigitsFormatter,
+                            ],
+                            suffixes: [
+                              _buildMiniButton(1),
+                              _buildMiniButton(2),
+                              _buildMiniButton(12),
+                              _buildMiniButton(24),
+                            ],
+                          ),
+                        ],
+                      ),
+                    ),
                   const SizedBox(height: DimensSizeV2.d12),
                   Text(
                     LocaleKeys.custodiansWord.tr(),
@@ -412,5 +406,31 @@ class _WalletDeployMultisigBodyState extends State<WalletDeployMultisigBody> {
     }
 
     return null;
+  }
+
+  void _focusListener() =>
+      focusNotifier.value = custodianFocuses.any((f) => f.hasFocus);
+
+  void _addOneCustodian() {
+    setState(() {
+      custodianFocuses.add(FocusNode()..addListener(_focusListener));
+      custodianControllers.add(TextEditingController());
+    });
+  }
+
+  void _removeCustodian(int index) {
+    setState(() {
+      custodianControllers.removeAt(index).dispose();
+      custodianFocuses.removeAt(index)
+        ..removeListener(_focusListener)
+        ..dispose();
+    });
+  }
+
+  Future<void> _pasteCustodian(int index) async {
+    final text = await getClipBoardText();
+    if (text != null) {
+      custodianControllers[index].text = text;
+    }
   }
 }
