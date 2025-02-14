@@ -6,7 +6,7 @@ import 'package:app/app/service/storage_service/browser/browser_bookmarks_storag
 import 'package:app/app/service/storage_service/browser/browser_favicon_url_storage_service.dart';
 import 'package:app/app/service/storage_service/browser/browser_history_storage_service.dart';
 import 'package:app/app/service/storage_service/browser_permissions_storage_service.dart';
-import 'package:app/app/service/storage_service/browser_tabs_storage_service.dart';
+import 'package:app/app/service/storage_service/browser/browser_tabs_storage_service.dart';
 import 'package:app/app/service/storage_service/connections_storage_service.dart';
 import 'package:app/app/service/storage_service/general_storage_service.dart';
 import 'package:app/app/service/storage_service/migrations/storage_migrations/storage_migration.dart';

@@ -37,7 +37,7 @@ class _BrowserPageState extends State<BrowserPage> {
       ],
       child: BlocProvider<BrowserTabsBloc>(
         create: (context) => BrowserTabsBloc(
-          inject<BrowserTabsStorageService>(),
+          inject(),
           (item) => _onBrowserHistoryItemAdd(context, item),
           (items) => _onBrowserMultipleHistoryItemAdd(context, items),
         ),
