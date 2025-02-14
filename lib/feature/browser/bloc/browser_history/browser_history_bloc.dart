@@ -1,8 +1,8 @@
 import 'dart:async';
 
-import 'package:app/app/service/service.dart';
 import 'package:app/core/bloc/bloc_mixin.dart';
 import 'package:app/data/models/models.dart';
+import 'package:app/feature/browserV2/browser_manager.dart';
 import 'package:bloc/bloc.dart';
 import 'package:freezed_annotation/freezed_annotation.dart';
 
@@ -15,10 +15,10 @@ part 'browser_history_state.dart';
 class BrowserHistoryBloc extends Bloc<BrowserHistoryEvent, BrowserHistoryState>
     with BlocBaseMixin {
   BrowserHistoryBloc(
-    this.browserHistoryStorageService,
+    this._browserManager,
   ) : super(
           BrowserHistoryState(
-            items: browserHistoryStorageService.browserHistory,
+            items: _browserManager.history.browserHistory,
             searchString: '',
             isEditing: false,
           ),
@@ -26,14 +26,14 @@ class BrowserHistoryBloc extends Bloc<BrowserHistoryEvent, BrowserHistoryState>
     _registerHandlers();
 
     _browserHistorySubscription =
-        browserHistoryStorageService.browserHistoryStream.listen(
+        _browserManager.history.browserHistoryStream.listen(
       (items) {
         add(BrowserHistoryEvent.set(items: items));
       },
     );
   }
 
-  final BrowserHistoryStorageService browserHistoryStorageService;
+  final BrowserManager _browserManager;
 
   StreamSubscription<List<BrowserHistoryItem>>? _browserHistorySubscription;
 
@@ -51,21 +51,21 @@ class BrowserHistoryBloc extends Bloc<BrowserHistoryEvent, BrowserHistoryState>
       if (event.item.url.host.isEmpty) {
         return;
       }
-      browserHistoryStorageService.addBrowserHistoryItem(event.item);
+      _browserManager.history.addHistoryItem(event.item);
     });
     on<_AddMultiple>((event, emit) {
       for (final item in event.items) {
         if (item.url.host.isEmpty) {
           continue;
         }
-        browserHistoryStorageService.addBrowserHistoryItem(item);
+        _browserManager.history.addHistoryItem(item);
       }
     });
     on<_Remove>((event, emit) {
-      browserHistoryStorageService.removeBrowserHistoryItem(event.id);
+      _browserManager.history.removeHistoryItem(event.id);
     });
     on<_Clear>((event, emit) {
-      browserHistoryStorageService.clearBrowserHistory();
+      _browserManager.history.clearHistory();
     });
     on<_Set>((event, emit) {
       emitSafe(

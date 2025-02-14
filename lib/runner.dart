@@ -8,7 +8,6 @@ import 'package:app/bootstrap/sentry.dart';
 import 'package:app/core/app_build_type.dart';
 import 'package:app/core/bloc/app_bloc_observer.dart';
 import 'package:app/di/di.dart';
-import 'package:app/feature/browserV2/browser_manager.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
@@ -42,8 +41,6 @@ Future<void> run(
       await configureLocalization();
 
       await SentryWorker.instance.init(appBuildType);
-
-      inject<BrowserManager>().init();
 
       FlutterError.onError = (details) {
         log?.severe(details.exceptionAsString(), details, details.stack);

@@ -19,6 +19,7 @@ SplashScreenWidgetModel defaultSplashScreenWidgetModelFactory(
       createPrimaryErrorHandler(context),
       inject(),
       inject(),
+      inject(),
     ),
   );
 }

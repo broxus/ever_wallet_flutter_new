@@ -30,14 +30,12 @@ class BookmarksManager {
   List<BrowserBookmarkItem> get browserBookmarks =>
       _browserBookmarksSubject.valueOrNull ?? [];
 
-//_streamedBrowserBookmarks
-
   void init() {
     _fetchBookmarksFromStorage();
   }
 
   Future<void> clear() async {
-    await clearBrowserBookmarks(needUndo: false);
+    await clearBookmarks(needUndo: false);
   }
 
   void saveBrowserBookmarks(List<BrowserBookmarkItem> bookmarks) {
@@ -98,7 +96,7 @@ class BookmarksManager {
   }
 
   /// Clear browser bookmarks
-  Future<void> clearBrowserBookmarks({
+  Future<void> clearBookmarks({
     bool needUndo = true,
   }) async {
     await _bookmarksStorageService.clearBrowserBookmarks();

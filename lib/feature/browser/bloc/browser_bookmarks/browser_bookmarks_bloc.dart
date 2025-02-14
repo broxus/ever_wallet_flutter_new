@@ -80,7 +80,7 @@ class BrowserBookmarksBloc
       _browserManager.bookmarks.removeBrowserBookmarkItem(event.id);
     });
     on<_Clear>((event, emit) {
-      _browserManager.bookmarks.clearBrowserBookmarks();
+      _browserManager.bookmarks.clearBookmarks();
     });
     on<_Set>((event, emit) {
       emitSafe(

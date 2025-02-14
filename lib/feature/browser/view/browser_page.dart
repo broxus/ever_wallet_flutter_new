@@ -21,7 +21,7 @@ class _BrowserPageState extends State<BrowserPage> {
       providers: [
         BlocProvider<BrowserHistoryBloc>(
           create: (context) => BrowserHistoryBloc(
-            inject<BrowserHistoryStorageService>(),
+            inject(),
           ),
         ),
         BlocProvider<BrowserBookmarksBloc>(

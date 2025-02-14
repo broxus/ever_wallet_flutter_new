@@ -1,4 +1,4 @@
-import 'package:app/app/service/storage_service/browser_favicon_url_storage_service.dart';
+import 'package:app/app/service/storage_service/browser/browser_favicon_url_storage_service.dart';
 
 class FaviconManager {
   FaviconManager(
