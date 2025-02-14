@@ -1,8 +1,8 @@
 import 'dart:async';
 
-import 'package:app/app/service/service.dart';
 import 'package:app/core/bloc/bloc_mixin.dart';
 import 'package:app/data/models/models.dart';
+import 'package:app/feature/browserV2/browser_manager.dart';
 import 'package:bloc/bloc.dart';
 import 'package:freezed_annotation/freezed_annotation.dart';
 
@@ -16,24 +16,24 @@ class BrowserBookmarksBloc
     extends Bloc<BrowserBookmarksEvent, BrowserBookmarksState>
     with BlocBaseMixin {
   BrowserBookmarksBloc(
-    this.browserBookmarksStorageService,
+    this._browserManager,
   ) : super(
           BrowserBookmarksState(
-            items: browserBookmarksStorageService.browserBookmarks,
+            items: _browserManager.bookmarks.browserBookmarks,
             isEditing: false,
           ),
         ) {
     _registerHandlers();
 
     _browserBookmarksSubscription =
-        browserBookmarksStorageService.browserBookmarksStream.listen(
+        _browserManager.bookmarks.browserBookmarksStream.listen(
       (items) {
         add(BrowserBookmarksEvent.set(items: items));
       },
     );
   }
 
-  final BrowserBookmarksStorageService browserBookmarksStorageService;
+  final BrowserManager _browserManager;
 
   StreamSubscription<List<BrowserBookmarkItem>>? _browserBookmarksSubscription;
 
@@ -74,13 +74,13 @@ class BrowserBookmarksBloc
         ),
       );
 
-      browserBookmarksStorageService.setBrowserBookmarkItem(event.item);
+      _browserManager.bookmarks.setBrowserBookmarkItem(event.item);
     });
     on<_Remove>((event, emit) {
-      browserBookmarksStorageService.removeBrowserBookmarkItem(event.id);
+      _browserManager.bookmarks.removeBrowserBookmarkItem(event.id);
     });
     on<_Clear>((event, emit) {
-      browserBookmarksStorageService.clearBrowserBookmarks();
+      _browserManager.bookmarks.clearBrowserBookmarks();
     });
     on<_Set>((event, emit) {
       emitSafe(

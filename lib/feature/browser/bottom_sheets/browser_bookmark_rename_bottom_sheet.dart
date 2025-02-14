@@ -68,7 +68,7 @@ class _BrowserBookmarkRenameSheetState
   Widget build(BuildContext context) {
     return BlocProvider<BrowserBookmarksBloc>(
       create: (context) => BrowserBookmarksBloc(
-        inject<BrowserBookmarksStorageService>(),
+        inject(),
       ),
       child: Builder(
         builder: (context) {

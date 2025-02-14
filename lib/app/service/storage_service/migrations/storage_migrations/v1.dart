@@ -2,7 +2,7 @@ import 'dart:convert';
 
 import 'package:app/app/service/storage_service/app_storage_service.dart';
 import 'package:app/app/service/storage_service/balance_storage_service.dart';
-import 'package:app/app/service/storage_service/browser_bookmarks_storage_service.dart';
+import 'package:app/app/service/storage_service/browser/browser_bookmarks_storage_service.dart';
 import 'package:app/app/service/storage_service/browser_favicon_url_storage_service.dart';
 import 'package:app/app/service/storage_service/browser_history_storage_service.dart';
 import 'package:app/app/service/storage_service/browser_permissions_storage_service.dart';

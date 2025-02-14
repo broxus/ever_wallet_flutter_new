@@ -1,5 +1,5 @@
-import 'package:app/app/service/service.dart';
 import 'package:app/core/bloc/bloc_mixin.dart';
+import 'package:app/feature/browserV2/browser_manager.dart';
 import 'package:bloc/bloc.dart';
 import 'package:freezed_annotation/freezed_annotation.dart';
 
@@ -13,7 +13,7 @@ class BrowserFaviconsBloc
     extends Bloc<BrowserFaviconsEvent, BrowserFaviconsState>
     with BlocBaseMixin {
   BrowserFaviconsBloc(
-    this.browserFaviconURLStorageService,
+    this._browserManager,
   ) : super(
           const BrowserFaviconsState(
             items: {},
@@ -22,7 +22,7 @@ class BrowserFaviconsBloc
     _registerHandlers();
   }
 
-  final BrowserFaviconURLStorageService browserFaviconURLStorageService;
+  final BrowserManager _browserManager;
 
   /// Returns the favicon URL for the given [uri].
   String? getFaviconUrl(Uri uri) {
@@ -49,7 +49,7 @@ class BrowserFaviconsBloc
   }
 
   Future<void> _fetchForUri(Uri uri) async {
-    final faviconUrl = await browserFaviconURLStorageService.getFaviconURL(uri);
+    final faviconUrl = await _browserManager.favicon.getFaviconURL(uri);
 
     if (faviconUrl != null) {
       add(

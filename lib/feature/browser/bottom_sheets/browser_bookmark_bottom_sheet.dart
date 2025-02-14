@@ -49,7 +49,7 @@ class _BrowserBookmarkSheetState extends State<BrowserBookmarkSheet> {
 
     return BlocProvider<BrowserBookmarksBloc>(
       create: (context) => BrowserBookmarksBloc(
-        inject<BrowserBookmarksStorageService>(),
+        inject(),
       ),
       child: Builder(
         builder: (context) {

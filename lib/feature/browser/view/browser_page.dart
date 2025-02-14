@@ -26,12 +26,12 @@ class _BrowserPageState extends State<BrowserPage> {
         ),
         BlocProvider<BrowserBookmarksBloc>(
           create: (context) => BrowserBookmarksBloc(
-            inject<BrowserBookmarksStorageService>(),
+            inject(),
           ),
         ),
         BlocProvider<BrowserFaviconsBloc>(
           create: (context) => BrowserFaviconsBloc(
-            inject<BrowserFaviconURLStorageService>(),
+            inject(),
           ),
         ),
       ],
