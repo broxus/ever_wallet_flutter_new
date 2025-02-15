@@ -16,10 +16,12 @@ targets:
           - lib/data/**/*.dart
           - lib/http/*.dart
           - lib/http/**/*.dart
+          - lib/feature/**/*.dart
       retrofit_generator:
         generate_for:
           - lib/http/*.dart
           - lib/http/**/*.dart
+          - lib/feature/**/*.dart
       injectable_generator:injectable_builder:
         generate_for:
           - lib/di/*.dart
@@ -28,6 +30,7 @@ targets:
           - lib/app/service/**/*.dart
           - lib/http/*.dart
           - lib/http/**/*.dart
+          - lib/feature/**/*.dart
       freezed:
         generate_for:
           - lib/app/service/*.dart
@@ -40,3 +43,4 @@ targets:
           - lib/**/*_bloc.dart
           - lib/*_state.dart
           - lib/**/*_state.dart
+          - lib/feature/**/*.dart

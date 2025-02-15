@@ -54,16 +54,6 @@ import '../app/service/storage_service/account_seed_storage_service.dart'
     as _i747;
 import '../app/service/storage_service/app_storage_service.dart' as _i184;
 import '../app/service/storage_service/balance_storage_service.dart' as _i1020;
-import '../app/service/storage_service/browser_bookmarks_storage_service.dart'
-    as _i122;
-import '../app/service/storage_service/browser_favicon_url_storage_service.dart'
-    as _i721;
-import '../app/service/storage_service/browser_history_storage_service.dart'
-    as _i756;
-import '../app/service/storage_service/browser_permissions_storage_service.dart'
-    as _i29;
-import '../app/service/storage_service/browser_tabs_storage_service.dart'
-    as _i933;
 import '../app/service/storage_service/connections_storage_service.dart'
     as _i65;
 import '../app/service/storage_service/general_storage_service.dart' as _i747;
@@ -76,6 +66,17 @@ import '../app/service/storage_service/token_wallet_storage_service/token_wallet
 import '../app/service/storage_service/ton_wallet_storage_service/ton_wallet_storage_service.dart'
     as _i139;
 import '../app/service/token_wallets_service.dart' as _i877;
+import '../feature/browserV2/service/browser_service.dart' as _i741;
+import '../feature/browserV2/service/storages/browser_bookmarks_storage_service.dart'
+    as _i542;
+import '../feature/browserV2/service/storages/browser_favicon_url_storage_service.dart'
+    as _i109;
+import '../feature/browserV2/service/storages/browser_history_storage_service.dart'
+    as _i695;
+import '../feature/browserV2/service/storages/browser_permissions_storage_service.dart'
+    as _i462;
+import '../feature/browserV2/service/storages/browser_tabs_storage_service.dart'
+    as _i209;
 import '../http/api/presets/presets_api.dart' as _i249;
 import '../http/api/token/token_api.dart' as _i639;
 import '../http/api/ton/ton_api.dart' as _i162;
@@ -122,8 +123,8 @@ extension GetItInjectableX on _i174.GetIt {
     gh.singleton<_i654.BrowserApprovalsService>(
         () => _i654.BrowserApprovalsService());
     gh.lazySingleton<_i361.Dio>(() => dioModule.getDio());
-    gh.singleton<_i29.BrowserPermissionsStorageService>(() =>
-        _i29.BrowserPermissionsStorageService(
+    gh.singleton<_i462.BrowserPermissionsStorageService>(() =>
+        _i462.BrowserPermissionsStorageService(
             gh<_i792.GetStorage>(instanceName: 'browser_permissions')));
     gh.singleton<_i679.SecureStorageService>(
         () => _i679.SecureStorageService(gh<_i426.EncryptedStorage>()));
@@ -131,10 +132,6 @@ extension GetItInjectableX on _i174.GetIt {
     gh.factory<_i249.PresetsApi>(() => _i249.PresetsApi(gh<_i361.Dio>()));
     gh.lazySingleton<_i184.AppStorageService>(() => _i184.AppStorageService(
         gh<_i792.GetStorage>(instanceName: 'app_storage_service')));
-    gh.singleton<_i473.PermissionsService>(() => _i473.PermissionsService(
-          gh<_i128.BrowserPermissionsStorageService>(),
-          gh<_i771.NekotonRepository>(),
-        ));
     gh.lazySingleton<_i958.IIdentifyIconsService>(
         () => _i316.IdentifyIconsService(gh<_i128.AppStorageService>()));
     gh.singleton<_i1020.BalanceStorageService>(
@@ -151,11 +148,11 @@ extension GetItInjectableX on _i174.GetIt {
           gh<_i771.NekotonRepository>(),
           gh<_i128.HttpService>(),
         ));
-    gh.singleton<_i933.BrowserTabsStorageService>(() =>
-        _i933.BrowserTabsStorageService(
+    gh.singleton<_i209.BrowserTabsStorageService>(() =>
+        _i209.BrowserTabsStorageService(
             gh<_i792.GetStorage>(instanceName: 'browser_tabs')));
-    gh.singleton<_i756.BrowserHistoryStorageService>(() =>
-        _i756.BrowserHistoryStorageService(
+    gh.singleton<_i695.BrowserHistoryStorageService>(() =>
+        _i695.BrowserHistoryStorageService(
             gh<_i792.GetStorage>(instanceName: 'browser_history')));
     gh.singleton<_i700.TokenRepository>(() => _i700.TokenRepository(
           gh<_i771.NekotonRepository>(),
@@ -169,8 +166,8 @@ extension GetItInjectableX on _i174.GetIt {
       () => _i252.ConnectionFactory(gh<_i128.AppStorageService>()),
       dispose: (i) => i.dispose(),
     );
-    gh.singleton<_i122.BrowserBookmarksStorageService>(() =>
-        _i122.BrowserBookmarksStorageService(
+    gh.singleton<_i542.BrowserBookmarksStorageService>(() =>
+        _i542.BrowserBookmarksStorageService(
             gh<_i792.GetStorage>(instanceName: 'browser_bookmarks')));
     gh.singleton<_i495.TonRepository>(
         () => _i495.TonRepository(gh<_i162.TonApi>()));
@@ -202,8 +199,8 @@ extension GetItInjectableX on _i174.GetIt {
             ));
     gh.singleton<_i747.NekotonStorageService>(
         () => _i747.NekotonStorageService(gh<_i426.EncryptedStorage>()));
-    gh.singleton<_i721.BrowserFaviconURLStorageService>(() =>
-        _i721.BrowserFaviconURLStorageService(
+    gh.singleton<_i109.BrowserFaviconURLStorageService>(() =>
+        _i109.BrowserFaviconURLStorageService(
             gh<_i792.GetStorage>(instanceName: 'browser_favicon_urls')));
     gh.singleton<_i244.CurrentSeedService>(() => _i244.CurrentSeedService(
           gh<_i771.NekotonRepository>(),
@@ -232,11 +229,11 @@ extension GetItInjectableX on _i174.GetIt {
     gh.singleton<_i725.StorageManagerService>(() => _i725.StorageManagerService(
           gh<_i128.SecureStorageService>(),
           gh<_i128.GeneralStorageService>(),
-          gh<_i128.BrowserTabsStorageService>(),
-          gh<_i128.BrowserHistoryStorageService>(),
-          gh<_i128.BrowserBookmarksStorageService>(),
-          gh<_i128.BrowserPermissionsStorageService>(),
-          gh<_i128.BrowserFaviconURLStorageService>(),
+          gh<_i209.BrowserTabsStorageService>(),
+          gh<_i695.BrowserHistoryStorageService>(),
+          gh<_i542.BrowserBookmarksStorageService>(),
+          gh<_i462.BrowserPermissionsStorageService>(),
+          gh<_i109.BrowserFaviconURLStorageService>(),
           gh<_i128.NekotonStorageService>(),
           gh<_i128.NekotonRepositoryStorageService>(),
           gh<_i128.TonWalletStorageService>(),
@@ -244,16 +241,6 @@ extension GetItInjectableX on _i174.GetIt {
           gh<_i128.ConnectionsStorageService>(),
           gh<_i128.BalanceStorageService>(),
           gh<_i128.AppStorageService>(),
-        ));
-    gh.singleton<_i754.ConnectionService>(() => _i754.ConnectionService(
-          gh<_i128.ConnectionsStorageService>(),
-          gh<_i771.NekotonRepository>(),
-          gh<_i116.PresetsConnectionService>(),
-        ));
-    gh.singleton<_i637.BalanceService>(() => _i637.BalanceService(
-          gh<_i771.NekotonRepository>(),
-          gh<_i128.CurrenciesService>(),
-          gh<_i128.BalanceStorageService>(),
         ));
     gh.singleton<_i964.AssetsService>(
       () => _i964.AssetsService(
@@ -268,11 +255,33 @@ extension GetItInjectableX on _i174.GetIt {
       ),
       dispose: (i) => i.dispose(),
     );
+    gh.singleton<_i754.ConnectionService>(() => _i754.ConnectionService(
+          gh<_i128.ConnectionsStorageService>(),
+          gh<_i771.NekotonRepository>(),
+          gh<_i116.PresetsConnectionService>(),
+        ));
+    gh.singleton<_i741.BrowserService>(() => _i741.BrowserService(
+          gh<_i542.BrowserBookmarksStorageService>(),
+          gh<_i109.BrowserFaviconURLStorageService>(),
+          gh<_i695.BrowserHistoryStorageService>(),
+          gh<_i209.BrowserTabsStorageService>(),
+          gh<_i462.BrowserPermissionsStorageService>(),
+          gh<_i980.MessengerService>(),
+        ));
+    gh.singleton<_i637.BalanceService>(() => _i637.BalanceService(
+          gh<_i771.NekotonRepository>(),
+          gh<_i128.CurrenciesService>(),
+          gh<_i128.BalanceStorageService>(),
+        ));
     gh.singleton<_i877.TokenWalletsService>(() => _i877.TokenWalletsService(
           gh<_i771.NekotonRepository>(),
           gh<_i128.HttpService>(),
           gh<_i128.AssetsService>(),
           gh<_i188.TokenRepository>(),
+        ));
+    gh.singleton<_i473.PermissionsService>(() => _i473.PermissionsService(
+          gh<_i741.BrowserService>(),
+          gh<_i771.NekotonRepository>(),
         ));
     return this;
   }

@@ -2,12 +2,12 @@ import 'dart:convert';
 
 import 'package:app/app/service/storage_service/app_storage_service.dart';
 import 'package:app/app/service/storage_service/balance_storage_service.dart';
-import 'package:app/app/service/storage_service/browser/browser_bookmarks_storage_service.dart';
-import 'package:app/app/service/storage_service/browser/browser_favicon_url_storage_service.dart';
-import 'package:app/app/service/storage_service/browser/browser_history_storage_service.dart';
-import 'package:app/app/service/storage_service/browser_permissions_storage_service.dart';
-import 'package:app/app/service/storage_service/browser/browser_tabs_storage_service.dart';
 import 'package:app/app/service/storage_service/connections_storage_service.dart';
+import 'package:app/feature/browserV2/service/storages/browser_bookmarks_storage_service.dart';
+import 'package:app/feature/browserV2/service/storages/browser_favicon_url_storage_service.dart';
+import 'package:app/feature/browserV2/service/storages/browser_history_storage_service.dart';
+import 'package:app/feature/browserV2/service/storages/browser_permissions_storage_service.dart';
+import 'package:app/feature/browserV2/service/storages/browser_tabs_storage_service.dart';
 import 'package:app/app/service/storage_service/general_storage_service.dart';
 import 'package:app/app/service/storage_service/migrations/storage_migrations/storage_migration.dart';
 import 'package:encrypted_storage/encrypted_storage.dart';

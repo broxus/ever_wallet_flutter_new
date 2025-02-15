@@ -1,5 +1,5 @@
 import 'package:app/app/service/service.dart';
-import 'package:app/feature/browserV2/browser_manager.dart';
+import 'package:app/feature/browserV2/service/browser_service.dart';
 import 'package:app/generated/generated.dart';
 import 'package:app/utils/app_version_utils.dart';
 import 'package:elementary/elementary.dart';
@@ -8,14 +8,14 @@ import 'package:nekoton_repository/nekoton_repository.dart';
 class ProfilePageModel extends ElementaryModel {
   ProfilePageModel(
     ErrorHandler errorHandler,
-    this._browserManager,
+    this._browserService,
     this._nekotonRepository,
     this._currentSeedService,
     this._biometryService,
     this._storageManagerService,
   ) : super(errorHandler: errorHandler);
 
-  final BrowserManager _browserManager;
+  final BrowserService _browserService;
   final NekotonRepository _nekotonRepository;
   final CurrentSeedService _currentSeedService;
   final BiometryService _biometryService;
@@ -37,7 +37,7 @@ class ProfilePageModel extends ElementaryModel {
     await _nekotonRepository.updateTokenSubscriptions([]);
     await _storageManagerService.clearSensitiveData();
     await _nekotonRepository.keyStore.reloadKeystore();
-    await _browserManager.clear();
+    await _browserService.clear();
   }
 
   Future<void> setBiometryEnabled({required bool enabled}) async {

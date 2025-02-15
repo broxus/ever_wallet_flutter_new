@@ -3,7 +3,7 @@ import 'dart:async';
 import 'package:app/core/bloc/bloc_mixin.dart';
 import 'package:app/data/models/models.dart';
 import 'package:app/feature/browser/browser.dart';
-import 'package:app/feature/browserV2/browser_manager.dart';
+import 'package:app/feature/browserV2/service/browser_service.dart';
 import 'package:bloc/bloc.dart';
 import 'package:collection/collection.dart';
 import 'package:flutter/foundation.dart';
@@ -21,13 +21,13 @@ final _emptyUri = Uri.parse('');
 class BrowserTabsBloc extends Bloc<BrowserTabsEvent, BrowserTabsState>
     with BlocBaseMixin {
   BrowserTabsBloc(
-    this._browserManager,
+    this._browserService,
     this.onBrowserHistoryItemAdd,
     this.onBrowserMultipleHistoryItemAdd,
   ) : super(
           BrowserTabsState(
-            tabs: _browserManager.tabs.browserTabs,
-            currentTabId: _browserManager.tabs.activeTabId,
+            tabs: _browserService.tM.browserTabs,
+            currentTabId: _browserService.tM.activeTabId,
             tabsState: {},
             clearCacheOnNextTab: false,
             searchText: '',
@@ -35,14 +35,14 @@ class BrowserTabsBloc extends Bloc<BrowserTabsEvent, BrowserTabsState>
         ) {
     _registerHandlers();
 
-    _browserTabsSubscription = _browserManager.tabs.tabsStream.listen(
+    _browserTabsSubscription = _browserService.tM.tabsStream.listen(
       (tabs) {
         add(BrowserTabsEvent.setTabs(tabs: tabs));
       },
     );
 
     _browserActiveTabIdSubscription =
-        _browserManager.tabs.activeTabIdStream.listen(
+        _browserService.tM.activeTabIdStream.listen(
       (id) {
         add(BrowserTabsEvent.setActiveTabId(id: id));
       },
@@ -51,7 +51,7 @@ class BrowserTabsBloc extends Bloc<BrowserTabsEvent, BrowserTabsState>
 
   static final _log = Logger('BrowserTabsBloc');
 
-  final BrowserManager _browserManager;
+  final BrowserService _browserService;
 
   final ValueChanged<BrowserHistoryItem> onBrowserHistoryItemAdd;
   final ValueChanged<List<BrowserHistoryItem>> onBrowserMultipleHistoryItemAdd;
@@ -83,13 +83,13 @@ class BrowserTabsBloc extends Bloc<BrowserTabsEvent, BrowserTabsState>
       final tab = BrowserTab.create(
         url: event.uri,
       );
-      _browserManager.tabs.addBrowserTab(tab);
+      _browserService.tM.addBrowserTab(tab);
     });
     on<_AddEmpty>((event, emit) {
       final tab = BrowserTab.create(
         url: _emptyUri,
       );
-      _browserManager.tabs.addBrowserTab(tab);
+      _browserService.tM.addBrowserTab(tab);
     });
     on<_SetUrl>((event, emit) {
       final oldTab = browserTabById(event.id);
@@ -102,7 +102,7 @@ class BrowserTabsBloc extends Bloc<BrowserTabsEvent, BrowserTabsState>
         url: event.uri,
       );
       if (oldTab.url != newTab.url) {
-        _browserManager.tabs.setBrowserTab(newTab);
+        _browserService.tM.setBrowserTab(newTab);
       }
 
       if (oldTab.url.host != newTab.url.host) {
@@ -121,7 +121,7 @@ class BrowserTabsBloc extends Bloc<BrowserTabsEvent, BrowserTabsState>
       final newTab = oldTab.copyWith(
         imageId: event.imageId,
       );
-      _browserManager.tabs.setBrowserTab(newTab);
+      _browserService.tM.setBrowserTab(newTab);
     });
     on<_SetState>((event, emit) {
       var oldTabState = browserTabStateById(event.id);
@@ -153,20 +153,20 @@ class BrowserTabsBloc extends Bloc<BrowserTabsEvent, BrowserTabsState>
         // Tab is closing, add url to history
         _addHistoryItem(tab, state);
       }
-      _browserManager.tabs.removeBrowserTab(event.id);
+      _browserService.tM.removeBrowserTab(event.id);
       if (state.currentTabId == event.id) {
         final tabs = state.tabs;
         final newActiveTabId = tabs.firstOrNull?.id;
-        _browserManager.tabs.saveActiveTabId(newActiveTabId);
+        _browserService.tM.saveActiveTabId(newActiveTabId);
       }
     });
     on<_SetActive>((event, emit) {
-      _browserManager.tabs.saveActiveTabId(event.id);
+      _browserService.tM.saveActiveTabId(event.id);
     });
     on<_CloseAll>((event, emit) {
       // All tabs are closing, add urls to history
       _addHistoryMultipleItem(state);
-      _browserManager.tabs.clearTabs();
+      _browserService.tM.clearTabs();
     });
     on<_SetTabs>((event, emit) {
       emitSafe(
@@ -177,7 +177,7 @@ class BrowserTabsBloc extends Bloc<BrowserTabsEvent, BrowserTabsState>
       );
     });
     on<_SetActiveTabId>((event, emit) {
-      _browserManager.tabs.saveActiveTabId(event.id);
+      _browserService.tM.saveActiveTabId(event.id);
       emitSafe(state.copyWith(currentTabId: event.id));
     });
     on<_ClearCache>((event, emit) {

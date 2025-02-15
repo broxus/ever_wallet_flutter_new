@@ -1,6 +1,6 @@
 import 'package:app/app/service/messenger/message.dart';
 import 'package:app/app/service/messenger/service/messenger_service.dart';
-import 'package:app/app/service/storage_service/browser/browser_bookmarks_storage_service.dart';
+import 'package:app/feature/browserV2/service/storages/browser_bookmarks_storage_service.dart';
 import 'package:app/data/models/browser_bookmark_item.dart';
 import 'package:app/generated/generated.dart';
 import 'package:collection/collection.dart';

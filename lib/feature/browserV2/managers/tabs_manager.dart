@@ -1,4 +1,4 @@
-import 'package:app/app/service/storage_service/browser/browser_tabs_storage_service.dart';
+import 'package:app/feature/browserV2/service/storages/browser_tabs_storage_service.dart';
 import 'package:app/data/models/browser_tab.dart';
 import 'package:collection/collection.dart';
 import 'package:rxdart/rxdart.dart';
