@@ -65,6 +65,11 @@ class BrowserService {
     await permissions.clear();
   }
 
+  @disposeMethod
+  void dispose() {
+    favicon.dispose();
+  }
+
   void openNewTab() {
     // TODO
   }

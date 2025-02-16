@@ -6,9 +6,9 @@ import 'package:app/data/models/models.dart';
 import 'package:app/di/di.dart';
 import 'package:app/feature/browser/browser.dart';
 import 'package:app/feature/browser/browser_tabs_view/predefined_items.dart';
-import 'package:app/feature/browser/widgets/browser_resource_item.dart';
 import 'package:app/feature/browserV2/service/browser_service.dart';
 import 'package:app/feature/browserV2/widgets/bottomsheets/bookmark/browser_bookmark_bottom_sheet.dart';
+import 'package:app/feature/browserV2/widgets/browser_resource_item/browser_resource_item.dart';
 import 'package:app/generated/generated.dart';
 import 'package:app/utils/utils.dart';
 import 'package:flutter/material.dart';
@@ -38,7 +38,6 @@ class BrowserStartView extends StatefulWidget {
 
 class _BrowserStartViewState extends State<BrowserStartView> {
   final _browserService = inject<BrowserService>();
-
   final _predefinedItems = predefinedItems();
   final _predefinedCards = predefinedCards();
   final _cardController = PageController(
@@ -188,8 +187,6 @@ class _BrowserStartViewState extends State<BrowserStartView> {
   }
 
   Widget _searchResultItemBuilder(BrowserBookmarkItem item) {
-    final faviconUrl = _getFaviconUrl(item.url);
-
     return Padding(
       padding: const EdgeInsets.only(
         bottom: DimensSizeV2.d8,
@@ -199,8 +196,7 @@ class _BrowserStartViewState extends State<BrowserStartView> {
       child: BrowserResourceItem(
         onPressed: () => _onItemPressed(item),
         title: item.title,
-        faviconUrl: faviconUrl,
-        subTitle: faviconUrl,
+        faviconUri: item.url,
         trailing: SvgPicture.asset(
           Assets.images.caretRight.path,
           width: DimensSizeV2.d20,
@@ -310,15 +306,12 @@ class _BrowserStartViewState extends State<BrowserStartView> {
   }
 
   Widget _itemBuilder(BrowserBookmarkItem item) {
-    final faviconUrl = _getFaviconUrl(item.url);
-
     return BrowserResourceItem(
       key: ValueKey(item.id),
       onPressed: () => _onItemPressed(item),
       onLongPress: () => _onItemLongPressed(item),
       title: item.title,
-      subTitle: faviconUrl,
-      faviconUrl: faviconUrl,
+      faviconUri: item.url,
     );
   }
 
@@ -435,10 +428,6 @@ class _BrowserStartViewState extends State<BrowserStartView> {
     context.read<BrowserTabsBloc>().add(
           BrowserTabsEvent.setUrl(id: currentTabId, uri: url),
         );
-  }
-
-  String _getFaviconUrl(Uri url) {
-    return context.watch<BrowserFaviconsBloc>().getFaviconUrl(url) ?? '';
   }
 }
 

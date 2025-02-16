@@ -106,13 +106,9 @@ class BookmarksScreen extends ElementaryWidget<BookmarksScreenWidgetModel> {
   }) {
     final colors = theme.colors;
 
-    // TODO favicon
-    // final faviconUrl =
-    //     context.watch<BrowserFaviconsBloc>().getFaviconUrl(item.url) ?? '';
-
     return BrowserResourceSection(
       key: ValueKey(item.id),
-      faviconUrl: '',
+      faviconUri: item.url,
       titleText: item.title,
       subTitleText: item.url.toString(),
       padding: const EdgeInsets.only(

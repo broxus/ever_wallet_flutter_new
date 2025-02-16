@@ -23,11 +23,6 @@ class _BrowserPageState extends State<BrowserPage> {
             inject(),
           ),
         ),
-        BlocProvider<BrowserFaviconsBloc>(
-          create: (context) => BrowserFaviconsBloc(
-            inject(),
-          ),
-        ),
       ],
       child: BlocProvider<BrowserTabsBloc>(
         create: (context) => BrowserTabsBloc(

@@ -1,4 +1,4 @@
-import 'package:app/feature/browser/widgets/browser_resource_item.dart';
+import 'package:app/feature/browserV2/widgets/browser_resource_item/browser_resource_item.dart';
 import 'package:flutter/material.dart';
 import 'package:ui_components_lib/ui_components_lib.dart';
 
@@ -6,7 +6,7 @@ class BrowserResourceSection extends StatelessWidget {
   const BrowserResourceSection({
     this.titleText,
     this.subTitleText,
-    this.faviconUrl,
+    this.faviconUri,
     this.onPressed,
     this.onLongPress,
     this.trailing,
@@ -16,7 +16,7 @@ class BrowserResourceSection extends StatelessWidget {
   });
 
   final String? titleText;
-  final String? faviconUrl;
+  final Uri? faviconUri;
   final String? subTitleText;
   final VoidCallback? onPressed;
   final VoidCallback? onLongPress;
@@ -36,7 +36,7 @@ class BrowserResourceSection extends StatelessWidget {
         children: [
           Expanded(
             child: BrowserResourceItem(
-              faviconUrl: faviconUrl,
+              faviconUri: faviconUri,
               title: titleText,
               subTitle: subTitleText,
               trailing: trailing,

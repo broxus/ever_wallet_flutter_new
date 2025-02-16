@@ -13,15 +13,11 @@ class HistoryPage extends StatelessWidget {
       appBar: DefaultAppBar(
         titleText: LocaleKeys.browserHistory.tr(),
       ),
-      body: BlocBuilder<BrowserFaviconsBloc, BrowserFaviconsState>(
+      body: BlocBuilder<BrowserHistoryBloc, BrowserHistoryState>(
         builder: (context, state) {
-          return BlocBuilder<BrowserHistoryBloc, BrowserHistoryState>(
-            builder: (context, state) {
-              return GestureDetector(
-                onTap: () => FocusScope.of(context).unfocus(),
-                child: const HistoryView(),
-              );
-            },
+          return GestureDetector(
+            onTap: () => FocusScope.of(context).unfocus(),
+            child: const HistoryView(),
           );
         },
       ),

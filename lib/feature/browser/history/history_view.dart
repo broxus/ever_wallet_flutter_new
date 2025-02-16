@@ -5,9 +5,12 @@ import 'package:app/di/di.dart';
 import 'package:app/feature/browser/browser.dart';
 import 'package:app/feature/browser/widgets/browser_resource_section.dart';
 import 'package:app/feature/browser/widgets/buttons_edit_section.dart';
+import 'package:app/feature/browserV2/managers/favicon_manager.dart';
+import 'package:app/feature/browserV2/service/browser_service.dart';
 import 'package:app/generated/generated.dart';
 import 'package:app/utils/utils.dart';
 import 'package:collection/collection.dart';
+import 'package:elementary_helper/elementary_helper.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_inappwebview/flutter_inappwebview.dart';
@@ -24,6 +27,7 @@ class HistoryView extends StatefulWidget {
 }
 
 class _HistoryViewState extends State<HistoryView> {
+  final _browserService = inject<BrowserService>();
   final _searchController = TextEditingController();
   final _scrollController = ScrollController();
   bool _showTopDivider = false;
@@ -180,31 +184,33 @@ class _HistoryViewState extends State<HistoryView> {
   }
 
   Widget _itemBuilder(BrowserHistoryItem item, {required bool isEditing}) {
-    final faviconUrl =
-        context.watch<BrowserFaviconsBloc>().getFaviconUrl(item.url) ?? '';
-
-    return BrowserResourceSection(
-      key: ValueKey(item.id),
-      faviconUrl: faviconUrl,
-      titleText: item.title,
-      subTitleText: item.url.toString(),
-      trailing: SvgPicture.asset(
-        Assets.images.caretRight.path,
-        width: DimensSizeV2.d20,
-        height: DimensSizeV2.d20,
-        colorFilter: context.themeStyleV2.colors.content0.colorFilter,
-      ),
-      postfix: isEditing
-          ? Padding(
-              padding: const EdgeInsets.only(left: DimensSizeV2.d4),
-              child: GhostButton(
-                buttonShape: ButtonShape.circle,
-                icon: LucideIcons.trash2,
-                onPressed: () => _removeHistoryItem(item),
-              ),
-            )
-          : null,
-      onPressed: () => _onItemPressed(item),
+    return StateNotifierBuilder<FaviconData>(
+      listenableState: _browserService.fM.faviconsState,
+      builder: (_, FaviconData? data) {
+        return BrowserResourceSection(
+          key: ValueKey(item.id),
+          faviconUri: item.url,
+          titleText: item.title,
+          subTitleText: item.url.toString(),
+          trailing: SvgPicture.asset(
+            Assets.images.caretRight.path,
+            width: DimensSizeV2.d20,
+            height: DimensSizeV2.d20,
+            colorFilter: context.themeStyleV2.colors.content0.colorFilter,
+          ),
+          postfix: isEditing
+              ? Padding(
+                  padding: const EdgeInsets.only(left: DimensSizeV2.d4),
+                  child: GhostButton(
+                    buttonShape: ButtonShape.circle,
+                    icon: LucideIcons.trash2,
+                    onPressed: () => _removeHistoryItem(item),
+                  ),
+                )
+              : null,
+          onPressed: () => _onItemPressed(item),
+        );
+      },
     );
   }
 
