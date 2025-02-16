@@ -45,11 +45,6 @@ class BrowserBookmarksBloc
     return super.close();
   }
 
-  bool canBeAdded(Uri? url) {
-    return (url?.host.isNotEmpty ?? false) &&
-        state.items.indexWhere((item) => item.url == url) < 0;
-  }
-
   List<BrowserBookmarkItem> getSortedItems() {
     return [...state.items]..sort(
         (a, b) => (b.sortingOrder - a.sortingOrder).sign.toInt(),
@@ -59,7 +54,7 @@ class BrowserBookmarksBloc
   // ignore: long-method
   void _registerHandlers() {
     on<_SetItem>((event, emit) {
-      if (!canBeAdded(event.item.url) &&
+      if (!_browserService.bM.checkExistBookmarkByUri(event.item.url) &&
           state.items.indexWhere((item) => item.id == event.item.id) < 0) {
         return;
       }
@@ -97,4 +92,6 @@ class BrowserBookmarksBloc
       );
     });
   }
+
+  bool canBeAdded(Uri? url) => _browserService.bM.checkExistBookmarkByUri(url);
 }

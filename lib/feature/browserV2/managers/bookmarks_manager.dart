@@ -47,13 +47,15 @@ class BookmarksManager {
     BrowserBookmarkItem item, {
     bool needUndo = true,
   }) {
-    final isAdding =
-        browserBookmarks.firstWhereOrNull((i) => i.id == item.id) == null;
+    final bookmarks = [...browserBookmarks];
 
-    saveBrowserBookmarks([
-      ...[...browserBookmarks]..removeWhere((i) => i.id == item.id),
-      item,
-    ]);
+    final index = bookmarks.indexWhere((i) => i.id == item.id);
+    final isAdding = index < 0;
+
+    if (!isAdding) {
+      bookmarks.removeAt(index);
+    }
+    saveBrowserBookmarks(bookmarks..add(item));
 
     if (isAdding && needUndo) {
       _messengerService.show(
@@ -116,6 +118,25 @@ class BookmarksManager {
         ),
       );
     }
+  }
+
+  bool checkExistBookmarkByUri(Uri? url) {
+    return (url?.host.isNotEmpty ?? false) &&
+        browserBookmarks.indexWhere((item) => item.url == url) < 0;
+  }
+
+  void renameBookmark(String id, String name) {
+    final index = browserBookmarks.indexWhere((item) => item.id == id);
+
+    if (index < 0) {
+      return;
+    }
+
+    final bookmarks = [...browserBookmarks];
+
+    bookmarks[index] = bookmarks[index].copyWith(title: name);
+
+    saveBrowserBookmarks(bookmarks);
   }
 
   void _fetchBookmarksFromStorage() => _browserBookmarksSubject.add(
