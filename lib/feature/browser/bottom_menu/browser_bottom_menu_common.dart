@@ -1,6 +1,8 @@
 import 'package:app/app/router/router.dart';
 import 'package:app/data/models/models.dart';
+import 'package:app/di/di.dart';
 import 'package:app/feature/browser/browser.dart';
+import 'package:app/feature/browserV2/service/browser_service.dart';
 import 'package:app/generated/generated.dart';
 import 'package:flutter/widgets.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -11,6 +13,7 @@ class BrowserBottomMenuCommon extends StatelessWidget {
   const BrowserBottomMenuCommon({
     super.key,
   });
+
   static const height = BrowserBottomBarPrimary.height;
 
   @override
@@ -60,7 +63,7 @@ class BrowserBottomMenuCommon extends StatelessWidget {
     final hasUrl = currentTab?.url.host.isNotEmpty ?? false;
 
     final canBeAddedToBookmarks =
-        context.read<BrowserBookmarksBloc>().canBeAdded(currentTab?.url);
+        inject<BrowserService>().bM.checkExistBookmarkByUri(currentTab?.url);
 
     showBrowserPrimarySheet(
       context: context,
@@ -76,12 +79,10 @@ class BrowserBottomMenuCommon extends StatelessWidget {
     final currentTabState = context.read<BrowserTabsBloc>().activeTabState;
 
     if (currentTab?.url.host.isNotEmpty ?? false) {
-      context.read<BrowserBookmarksBloc>().add(
-            BrowserBookmarksEvent.setItem(
-              item: BrowserBookmarkItem.create(
-                title: currentTabState?.title ?? '',
-                url: currentTab!.url,
-              ),
+      inject<BrowserService>().bM.setBrowserBookmarkItem(
+            BrowserBookmarkItem.create(
+              title: currentTabState?.title ?? '',
+              url: currentTab!.url,
             ),
           );
     }
