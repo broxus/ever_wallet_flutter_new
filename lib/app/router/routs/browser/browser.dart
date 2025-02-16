@@ -1,5 +1,6 @@
 import 'package:app/app/router/router.dart';
 import 'package:app/feature/browser/browser.dart';
+import 'package:app/feature/browserV2/screens/bookmarks/bookmarks_screen.dart';
 import 'package:go_router/go_router.dart';
 
 const browserUrlQueryParam = 'url';
@@ -47,7 +48,7 @@ GoRoute get bookmarksRoute {
   return GoRoute(
     name: AppRoute.browserBookmarks.name,
     path: AppRoute.browserBookmarks.path,
-    builder: (context, state) => const BookmarksPage(),
+    builder: (context, state) => const BookmarksScreen(),
   );
 }
 

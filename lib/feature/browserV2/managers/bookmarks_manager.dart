@@ -30,6 +30,12 @@ class BookmarksManager {
   List<BrowserBookmarkItem> get browserBookmarks =>
       _browserBookmarksSubject.valueOrNull ?? [];
 
+  List<BrowserBookmarkItem> get sortedBookmarks {
+    return [...browserBookmarks]..sort(
+        (a, b) => (b.sortingOrder - a.sortingOrder).sign.toInt(),
+      );
+  }
+
   void init() {
     _fetchBookmarksFromStorage();
   }
