@@ -816,7 +816,7 @@ class $AssetsImagesOnboardingLayer3Gen {
 }
 
 class Assets {
-  Assets._();
+  const Assets._();
 
   static const $AssetsAbiGen abi = $AssetsAbiGen();
   static const $AssetsConfigsGen configs = $AssetsConfigsGen();
@@ -859,7 +859,7 @@ class AssetGenImage {
     bool gaplessPlayback = true,
     bool isAntiAlias = false,
     String? package,
-    FilterQuality filterQuality = FilterQuality.low,
+    FilterQuality filterQuality = FilterQuality.medium,
     int? cacheWidth,
     int? cacheHeight,
   }) {

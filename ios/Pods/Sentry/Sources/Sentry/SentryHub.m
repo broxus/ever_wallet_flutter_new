@@ -23,7 +23,6 @@
 #import "SentrySerialization.h"
 #import "SentrySession+Private.h"
 #import "SentrySwift.h"
-#import "SentryTraceOrigins.h"
 #import "SentryTracer.h"
 #import "SentryTransaction.h"
 #import "SentryTransactionContext+Private.h"
@@ -91,10 +90,13 @@ NS_ASSUME_NONNULL_BEGIN
     SentrySession *lastSession = nil;
     SentryScope *scope = self.scope;
     SentryOptions *options = [_client options];
-    if (options == nil || options.releaseName == nil) {
-        [SentryLog
-            logWithMessage:[NSString stringWithFormat:@"No option or release to start a session."]
-                  andLevel:kSentryLevelError];
+    if (options == nil) {
+        SENTRY_LOG_ERROR(@"Options of the client are nil. Not starting a session.");
+        return;
+    }
+    if (options.releaseName == nil) {
+        SENTRY_LOG_ERROR(
+            @"Release name of the options of the client is nil. Not starting a session.");
         return;
     }
 
@@ -204,10 +206,8 @@ NS_ASSUME_NONNULL_BEGIN
         SentryClient *client = _client;
 
         if (client.options.diagnosticLevel == kSentryLevelDebug) {
-            [SentryLog
-                logWithMessage:[NSString stringWithFormat:@"Capturing session with status: %@",
-                                   [self createSessionDebugString:session]]
-                      andLevel:kSentryLevelDebug];
+            SENTRY_LOG_DEBUG(
+                @"Capturing session with status: %@", [self createSessionDebugString:session]);
         }
         [client captureSession:session];
     }
@@ -345,7 +345,7 @@ NS_ASSUME_NONNULL_BEGIN
                                                  initWithName:name
                                                    nameSource:kSentryTransactionNameSourceCustom
                                                     operation:operation
-                                                       origin:SentryTraceOriginManual]];
+                                                       origin:SentryTraceOrigin.manual]];
 }
 
 - (id<SentrySpan>)startTransactionWithName:(NSString *)name
@@ -356,7 +356,7 @@ NS_ASSUME_NONNULL_BEGIN
                                                  initWithName:name
                                                    nameSource:kSentryTransactionNameSourceCustom
                                                     operation:operation
-                                                       origin:SentryTraceOriginManual]
+                                                       origin:SentryTraceOrigin.manual]
                                  bindToScope:bindToScope];
 }
 
@@ -501,6 +501,14 @@ NS_ASSUME_NONNULL_BEGIN
     SentryClient *client = _client;
     if (client != nil) {
         [client captureUserFeedback:userFeedback];
+    }
+}
+
+- (void)captureFeedback:(SentryFeedback *)feedback
+{
+    SentryClient *client = _client;
+    if (client != nil) {
+        [client captureFeedback:feedback withScope:self.scope];
     }
 }
 
@@ -681,10 +689,8 @@ NS_ASSUME_NONNULL_BEGIN
                     endSessionCrashedWithTimestamp:[SentryDependencyContainer.sharedInstance
                                                            .dateProvider date]];
                 if (_client.options.diagnosticLevel == kSentryLevelDebug) {
-                    [SentryLog
-                        logWithMessage:[NSString stringWithFormat:@"Ending session with status: %@",
-                                           [self createSessionDebugString:currentSession]]
-                              andLevel:kSentryLevelDebug];
+                    SENTRY_LOG_DEBUG(@"Ending session with status: %@",
+                        [self createSessionDebugString:currentSession]);
                 }
                 if (startNewSession) {
                     // Setting _session to nil so startSession doesn't capture it again
@@ -742,11 +748,7 @@ NS_ASSUME_NONNULL_BEGIN
 - (void)reportFullyDisplayed
 {
 #if SENTRY_HAS_UIKIT
-    if (_client.options.enableTimeToFullDisplayTracing) {
-        [SentryUIViewControllerPerformanceTracker.shared reportFullyDisplayed];
-    } else {
-        SENTRY_LOG_DEBUG(@"The options `enableTimeToFullDisplay` is disabled.");
-    }
+    [SentryUIViewControllerPerformanceTracker.shared reportFullyDisplayed];
 #endif // SENTRY_HAS_UIKIT
 }
 

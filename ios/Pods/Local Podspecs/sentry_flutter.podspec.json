@@ -1,6 +1,6 @@
 {
   "name": "sentry_flutter",
-  "version": "8.12.0",
+  "version": "8.13.0",
   "summary": "Sentry SDK for Flutter.",
   "description": "Sentry SDK for Flutter with support to native through sentry-cocoa.",
   "homepage": "https://sentry.io",
@@ -11,13 +11,13 @@
   "authors": "Sentry",
   "source": {
     "git": "https://github.com/getsentry/sentry-dart.git",
-    "tag": "8.12.0"
+    "tag": "8.13.0"
   },
-  "source_files": "Classes/**/*",
-  "public_header_files": "Classes/**/*.h",
+  "source_files": "sentry_flutter/Sources/**/*",
+  "public_header_files": "sentry_flutter/Sources/**/*.h",
   "dependencies": {
     "Sentry/HybridSDK": [
-      "8.42.0"
+      "8.44.0"
     ]
   },
   "ios": {

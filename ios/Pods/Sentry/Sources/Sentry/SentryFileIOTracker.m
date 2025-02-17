@@ -1,4 +1,4 @@
-#import "SentryNSDataTracker.h"
+#import "SentryFileIOTracker.h"
 #import "SentryByteCountFormatter.h"
 #import "SentryClient+Private.h"
 #import "SentryDependencyContainer.h"
@@ -14,14 +14,14 @@
 #import "SentrySpan.h"
 #import "SentrySpanProtocol.h"
 #import "SentryStacktrace.h"
+#import "SentrySwift.h"
 #import "SentryThread.h"
 #import "SentryThreadInspector.h"
-#import "SentryTraceOrigins.h"
 #import "SentryTracer.h"
 
 const NSString *SENTRY_TRACKING_COUNTER_KEY = @"SENTRY_TRACKING_COUNTER_KEY";
 
-@interface SentryNSDataTracker ()
+@interface SentryFileIOTracker ()
 
 @property (nonatomic, assign) BOOL isEnabled;
 @property (nonatomic, strong) NSMutableSet<NSData *> *processingData;
@@ -30,7 +30,7 @@ const NSString *SENTRY_TRACKING_COUNTER_KEY = @"SENTRY_TRACKING_COUNTER_KEY";
 
 @end
 
-@implementation SentryNSDataTracker
+@implementation SentryFileIOTracker
 
 - (instancetype)initWithThreadInspector:(SentryThreadInspector *)threadInspector
                      processInfoWrapper:(SentryNSProcessInfoWrapper *)processInfoWrapper
@@ -143,6 +143,23 @@ const NSString *SENTRY_TRACKING_COUNTER_KEY = @"SENTRY_TRACKING_COUNTER_KEY";
     return result;
 }
 
+- (BOOL)measureNSFileManagerCreateFileAtPath:(NSString *)path
+                                        data:(NSData *)data
+                                  attributes:(NSDictionary<NSFileAttributeKey, id> *)attributes
+                                      method:
+                                          (BOOL (^)(NSString *_Nonnull, NSData *_Nonnull,
+                                              NSDictionary<NSFileAttributeKey, id> *_Nonnull))method
+{
+    id<SentrySpan> span = [self startTrackingWritingNSData:data filePath:path];
+
+    BOOL result = method(path, data, attributes);
+
+    if (span != nil) {
+        [self finishTrackingNSData:data span:span];
+    }
+    return result;
+}
+
 - (nullable id<SentrySpan>)spanForPath:(NSString *)path
                              operation:(NSString *)operation
                                   size:(NSUInteger)size
@@ -162,7 +179,7 @@ const NSString *SENTRY_TRACKING_COUNTER_KEY = @"SENTRY_TRACKING_COUNTER_KEY";
         ioSpan = [span startChildWithOperation:operation
                                    description:[self transactionDescriptionForFile:path
                                                                           fileSize:size]];
-        ioSpan.origin = SentryTraceOriginAutoNSData;
+        ioSpan.origin = SentryTraceOrigin.autoNSData;
     }];
 
     if (ioSpan == nil) {
@@ -213,7 +230,7 @@ const NSString *SENTRY_TRACKING_COUNTER_KEY = @"SENTRY_TRACKING_COUNTER_KEY";
 
 - (nullable id<SentrySpan>)startTrackingWritingNSData:(NSData *)data filePath:(NSString *)path
 {
-    return [self spanForPath:path operation:SENTRY_FILE_WRITE_OPERATION size:data.length];
+    return [self spanForPath:path operation:SentrySpanOperation.fileWrite size:data.length];
 }
 
 - (nullable id<SentrySpan>)startTrackingReadingFilePath:(NSString *)path
@@ -228,7 +245,7 @@ const NSString *SENTRY_TRACKING_COUNTER_KEY = @"SENTRY_TRACKING_COUNTER_KEY";
     if (count)
         return nil;
 
-    return [self spanForPath:path operation:SENTRY_FILE_READ_OPERATION size:0];
+    return [self spanForPath:path operation:SentrySpanOperation.fileRead size:0];
 }
 
 - (void)endTrackingFile

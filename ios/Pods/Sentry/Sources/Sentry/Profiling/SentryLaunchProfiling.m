@@ -17,7 +17,6 @@
 #    import "SentrySamplingContext.h"
 #    import "SentrySwift.h"
 #    import "SentryTime.h"
-#    import "SentryTraceOrigins.h"
 #    import "SentryTracer+Private.h"
 #    import "SentryTracerConfiguration.h"
 #    import "SentryTransactionContext+Private.h"
@@ -98,8 +97,8 @@ sentry_context(NSNumber *tracesRate)
     SentryTransactionContext *context =
         [[SentryTransactionContext alloc] initWithName:@"launch"
                                             nameSource:kSentryTransactionNameSourceCustom
-                                             operation:@"app.lifecycle"
-                                                origin:SentryTraceOriginAutoAppStartProfile
+                                             operation:SentrySpanOperation.appLifecycle
+                                                origin:SentryTraceOrigin.autoAppStartProfile
                                                sampled:kSentrySampleDecisionYes];
     context.sampleRate = tracesRate;
     return context;
@@ -107,13 +106,13 @@ sentry_context(NSNumber *tracesRate)
 
 #    pragma mark - Testing only
 
-#    if defined(TEST) || defined(TESTCI) || defined(DEBUG)
+#    if defined(SENTRY_TEST) || defined(SENTRY_TEST_CI) || defined(DEBUG)
 BOOL
 sentry_willProfileNextLaunch(SentryOptions *options)
 {
     return sentry_shouldProfileNextLaunch(options).shouldProfile;
 }
-#    endif // defined(TEST) || defined(TESTCI) || defined(DEBUG)
+#    endif // defined(SENTRY_TEST) || defined(SENTRY_TEST_CI) || defined(DEBUG)
 
 #    pragma mark - Exposed only to tests
 

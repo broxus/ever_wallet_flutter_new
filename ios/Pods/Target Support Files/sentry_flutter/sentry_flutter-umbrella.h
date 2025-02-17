@@ -10,7 +10,6 @@
 #endif
 #endif
 
-#import "SentryFlutterPlugin.h"
 #import "SentryFlutterReplayBreadcrumbConverter.h"
 #import "SentryFlutterReplayScreenshotProvider.h"
 

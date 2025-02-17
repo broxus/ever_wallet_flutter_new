@@ -13,7 +13,7 @@
   "source": {
     "path": "."
   },
-  "source_files": "Classes/**/*",
+  "source_files": "app_settings/Sources/app_settings/**/*",
   "dependencies": {
     "Flutter": []
   },
@@ -25,5 +25,10 @@
     "EXCLUDED_ARCHS[sdk=iphonesimulator*]": "i386"
   },
   "swift_versions": "5.0.1",
+  "resource_bundles": {
+    "app_settings_privacy": [
+      "app_settings/Sources/app_settings/PrivacyInfo.xcprivacy"
+    ]
+  },
   "swift_version": "5.0.1"
 }

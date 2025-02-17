@@ -13,8 +13,7 @@
   "source": {
     "path": "."
   },
-  "source_files": "Classes/**/*",
-  "public_header_files": "Classes/**/*.h",
+  "source_files": "flutter_email_sender/Sources/flutter_email_sender/**/*.swift",
   "dependencies": {
     "Flutter": []
   },
@@ -23,8 +22,8 @@
   },
   "swift_versions": "5.0",
   "resource_bundles": {
-    "flutter_email_sender": [
-      "Resources/PrivacyInfo.xcprivacy"
+    "flutter_email_sender_privacy": [
+      "flutter_email_sender/Sources/flutter_email_sender/PrivacyInfo.xcprivacy"
     ]
   },
   "swift_version": "5.0"

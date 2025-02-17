@@ -32,7 +32,7 @@ if (keystorePropertiesFile.exists()) {
 android {
     namespace 'com.broxus.sparx.app'
     compileSdkVersion flutter.compileSdkVersion
-    ndkVersion = "25.2.9519653"
+    ndkVersion = flutter.ndkVersion
 
     compileOptions {
         sourceCompatibility JavaVersion.VERSION_17

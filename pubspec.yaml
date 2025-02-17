@@ -5,25 +5,25 @@ publish_to: none
 
 environment:
   sdk: '>=3.5.0 <4.0.0'
-  flutter: ">=3.24.0"
+  flutter: ">=3.29.0"
 
 dependencies:
-  app_settings: 5.1.1
+  app_settings: 5.2.0
   auto_size_text_field: 2.2.4
   barcode_widget: 2.0.4
-  bloc: 8.1.4
+  bloc: 9.0.0
   broxus_app_links:
     git:
       url: https://github.com/broxus/broxus-flutter-app-link
       ref: v1.0.0
   cached_network_image: 3.4.1
   cached_network_svg_image: 1.2.0
-  clock: 1.1.1
-  collection: 1.18.0
+  clock: 1.1.2
+  collection: 1.19.1
   crypto: 3.0.6
-  device_info_plus: 11.2.1
-  dio: 5.7.0
-  easy_localization: 3.0.7
+  device_info_plus: 11.3.0
+  dio: 5.8.0+1
+  easy_localization: 3.0.7+1
   easy_logger: 0.0.2
   elementary: 3.2.0
   elementary_helper: 1.0.2
@@ -33,8 +33,8 @@ dependencies:
   favicon: 1.1.2
   flutter:
     sdk: flutter
-  flutter_bloc: 8.1.6
-  flutter_email_sender: 6.0.3
+  flutter_bloc: 9.0.0
+  flutter_email_sender: 7.0.0
   flutter_inappwebview: 6.1.5
   flutter_screenutil: 5.9.3
   flutter_secure_storage: 9.2.4
@@ -42,8 +42,8 @@ dependencies:
   freezed_annotation: 2.4.4
   get_it: 8.0.3
   get_storage: 2.1.1
-  go_router: 14.6.3
-  http: 1.2.2
+  go_router: 14.8.0
+  http: 1.3.0
   image_picker: 1.1.2
   in_app_notification: 1.1.2
   injectable: 2.5.0
@@ -52,14 +52,14 @@ dependencies:
   json_annotation: 4.9.0
   local_auth: 2.3.0
   logging: 1.3.0
-  lucide_icons_flutter: 1.2.5
-  mobile_scanner: 5.2.3
+  lucide_icons_flutter: 1.2.7
+  mobile_scanner: 5.2.3 # do not update due to ios compatability issues
   money2: 5.3.0 # do not update to 5.4.0 due to json serialization issues
   money2_fixer: 2.0.0
   nekoton_repository: 0.51.0-dev.2
   nekoton_webview: 0.1.8
   ntp: 2.0.0
-  package_info_plus: 8.1.3
+  package_info_plus: 8.2.1
   path_provider: 2.1.5
   permission_handler: 11.3.1
   render_metrics:
@@ -70,11 +70,11 @@ dependencies:
       ref: optional-render-manager
   retrofit: 4.4.2
   rxdart: 0.27.7
-  sentry_flutter: 8.12.0
+  sentry_flutter: 8.13.0
   share_plus: 10.1.4
-  shared_preferences: 2.3.5
+  shared_preferences: 2.5.2
   string_extensions: 0.7.3
-  the_logger: 0.0.17
+  the_logger: 0.0.18
   ui_components_lib:
     path: packages/ui_components_lib
   url_launcher: 6.3.1
@@ -82,7 +82,7 @@ dependencies:
   visibility_detector: 0.4.0+2
 
 dev_dependencies:
-  bloc_test: 9.1.7
+  bloc_test: 10.0.0
   broxus_flutter_analysis:
     git:
       url: https://github.com/broxus/flutter_templates.git
@@ -91,7 +91,7 @@ dev_dependencies:
   custom_lint: 0.5.11
   datetime_avoid_lint:
     path: packages/datetime_avoid_lint
-  flutter_gen_runner: 5.8.0
+  flutter_gen_runner: 5.9.0
   flutter_native_splash: 2.4.4
   flutter_test:
     sdk: flutter
@@ -102,10 +102,10 @@ dev_dependencies:
     sdk: flutter
   intl: 0.19.0
   json_serializable: 6.9.0
-  melos: 6.3.1
+  melos: 6.3.2
   mocktail: 1.0.4
-  retrofit_generator: 9.1.5
-  test: 1.25.7
+  retrofit_generator: 9.1.9
+  test: 1.25.15
 
 flutter_gen:
   output: lib/generated/

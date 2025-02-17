@@ -10,7 +10,6 @@
 #endif
 #endif
 
-#import "FlutterEmailSenderPlugin.h"
 
 FOUNDATION_EXPORT double flutter_email_senderVersionNumber;
 FOUNDATION_EXPORT const unsigned char flutter_email_senderVersionString[];

@@ -2,13 +2,11 @@
 #import <Foundation/Foundation.h>
 
 NS_ASSUME_NONNULL_BEGIN
-static NSString *const SENTRY_FILE_WRITE_OPERATION = @"file.write";
 
-static NSString *const SENTRY_FILE_READ_OPERATION = @"file.read";
+@class SentryNSProcessInfoWrapper;
+@class SentryThreadInspector;
 
-@class SentryThreadInspector, SentryNSProcessInfoWrapper;
-
-@interface SentryNSDataTracker : NSObject
+@interface SentryFileIOTracker : NSObject
 SENTRY_NO_INIT
 
 - (instancetype)initWithThreadInspector:(SentryThreadInspector *)threadInspector
@@ -58,6 +56,16 @@ SENTRY_NO_INIT
                                     error:(NSError **)error
                                    method:(NSData *_Nullable (^)(
                                               NSURL *, NSDataReadingOptions, NSError **))method;
+
+/**
+ * Measure NSFileManager 'createFileAtPath:contents:attributes::' method.
+ */
+- (BOOL)measureNSFileManagerCreateFileAtPath:(NSString *)path
+                                        data:(NSData *)data
+                                  attributes:(NSDictionary<NSFileAttributeKey, id> *)attributes
+                                      method:(BOOL (^)(NSString *, NSData *,
+                                                 NSDictionary<NSFileAttributeKey, id> *))method;
+
 @end
 
 NS_ASSUME_NONNULL_END

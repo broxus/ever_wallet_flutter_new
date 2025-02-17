@@ -16,6 +16,7 @@
 #import "SentryLog.h"
 #import "SentryLogC.h"
 #import "SentryMeta.h"
+#import "SentryNSProcessInfoWrapper.h"
 #import "SentryOptions+Private.h"
 #import "SentryProfilingConditionals.h"
 #import "SentryReplayApi.h"
@@ -39,6 +40,8 @@
 #    import "SentryProfiler+Private.h"
 #endif // SENTRY_TARGET_PROFILING_SUPPORTED
 
+NSString *const SENTRY_XCODE_PREVIEW_ENVIRONMENT_KEY = @"XCODE_RUNNING_FOR_PREVIEWS";
+
 @interface SentrySDK ()
 
 @property (class) SentryHub *currentHub;
@@ -47,7 +50,6 @@
 
 NS_ASSUME_NONNULL_BEGIN
 @implementation SentrySDK
-
 static SentryHub *_Nullable currentHub;
 static NSObject *currentHubLock;
 static BOOL crashedLastRunCalled;
@@ -201,6 +203,13 @@ static NSDate *_Nullable startTimestamp = nil;
 
 + (void)startWithOptions:(SentryOptions *)options
 {
+    if ([SentryDependencyContainer.sharedInstance.processInfoWrapper
+                .environment[SENTRY_XCODE_PREVIEW_ENVIRONMENT_KEY] isEqualToString:@"1"]) {
+        // Using NSLog because SentryLog was not initialized yet.
+        NSLog(@"[SENTRY] [WARNING] SentrySDK not started. Running from Xcode preview.");
+        return;
+    }
+
     startOption = options;
     [SentryLog configure:options.debug diagnosticLevel:options.diagnosticLevel];
 
@@ -209,9 +218,9 @@ static NSDate *_Nullable startTimestamp = nil;
     // thread could lead to deadlocks.
     SENTRY_LOG_DEBUG(@"Starting SDK...");
 
-#if defined(DEBUG) || defined(TEST) || defined(TESTCI)
+#if defined(DEBUG) || defined(SENTRY_TEST) || defined(SENTRY_TEST_CI)
     SENTRY_LOG_DEBUG(@"Configured options: %@", options.debugDescription);
-#endif // defined(DEBUG) || defined(TEST) || defined(TESTCI)
+#endif // defined(DEBUG) || defined(SENTRY_TEST) || defined(SENTRY_TEST_CI)
 
 #if TARGET_OS_OSX
     // Reference to SentryCrashExceptionApplication to prevent compiler from stripping it
@@ -405,10 +414,17 @@ static NSDate *_Nullable startTimestamp = nil;
     [SentrySDK.currentHub captureUserFeedback:userFeedback];
 }
 
++ (void)captureFeedback:(SentryFeedback *)feedback
+{
+    [SentrySDK.currentHub captureFeedback:feedback];
+}
+
+#if TARGET_OS_IOS && SENTRY_HAS_UIKIT
 + (void)showUserFeedbackForm
 {
     // TODO: implement
 }
+#endif // TARGET_OS_IOS && SENTRY_HAS_UIKIT
 
 + (void)addBreadcrumb:(SentryBreadcrumb *)crumb
 {
