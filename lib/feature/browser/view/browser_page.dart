@@ -1,6 +1,7 @@
 import 'package:app/data/models/models.dart';
 import 'package:app/di/di.dart';
 import 'package:app/feature/browser/browser.dart';
+import 'package:app/feature/browserV2/service/browser_service.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
@@ -14,26 +15,19 @@ class BrowserPage extends StatefulWidget {
 }
 
 class _BrowserPageState extends State<BrowserPage> {
+  final _browserService = inject<BrowserService>();
+
   @override
   Widget build(BuildContext context) {
-    return MultiBlocProvider(
-      providers: [
-        BlocProvider<BrowserHistoryBloc>(
-          create: (context) => BrowserHistoryBloc(
-            inject(),
-          ),
-        ),
-      ],
-      child: BlocProvider<BrowserTabsBloc>(
-        create: (context) => BrowserTabsBloc(
-          inject(),
-          (item) => _onBrowserHistoryItemAdd(context, item),
-          (items) => _onBrowserMultipleHistoryItemAdd(context, items),
-        ),
-        child: SafeArea(
-          child: ApprovalsListenerWidget(
-            child: BrowserView(child: widget.child),
-          ),
+    return BlocProvider<BrowserTabsBloc>(
+      create: (context) => BrowserTabsBloc(
+        inject(),
+        (item) => _onBrowserHistoryItemAdd(context, item),
+        (items) => _onBrowserMultipleHistoryItemAdd(context, items),
+      ),
+      child: SafeArea(
+        child: ApprovalsListenerWidget(
+          child: BrowserView(child: widget.child),
         ),
       ),
     );
@@ -43,17 +37,13 @@ class _BrowserPageState extends State<BrowserPage> {
     BuildContext context,
     BrowserHistoryItem item,
   ) {
-    context.read<BrowserHistoryBloc>().add(
-          BrowserHistoryEvent.add(item: item),
-        );
+    _browserService.hM.addHistoryItem(item);
   }
 
   void _onBrowserMultipleHistoryItemAdd(
     BuildContext context,
     List<BrowserHistoryItem> items,
   ) {
-    context.read<BrowserHistoryBloc>().add(
-          BrowserHistoryEvent.addMultiple(items: items),
-        );
+    _browserService.hM.addHistoryItems(items);
   }
 }

@@ -1,6 +1,7 @@
 import 'package:app/app/router/router.dart';
 import 'package:app/feature/browser/browser.dart';
 import 'package:app/feature/browserV2/screens/bookmarks/bookmarks_screen.dart';
+import 'package:app/feature/browserV2/screens/history/history_screen.dart';
 import 'package:go_router/go_router.dart';
 
 const browserUrlQueryParam = 'url';
@@ -57,7 +58,7 @@ GoRoute get historyRoute {
   return GoRoute(
     name: AppRoute.browserHistory.name,
     path: AppRoute.browserHistory.path,
-    builder: (_, __) => const HistoryPage(),
+    builder: (_, __) => const HistoryScreen(),
   );
 }
 

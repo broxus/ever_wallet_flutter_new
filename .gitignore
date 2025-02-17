@@ -141,3 +141,4 @@ secrets/sentry-dsn*
 # Fastlane
 **/fastlane/report.xml
 fastlane/changelog.txt
+.qodo

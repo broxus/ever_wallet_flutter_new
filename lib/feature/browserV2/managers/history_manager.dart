@@ -18,7 +18,7 @@ class HistoryManager {
       _browserHistorySubject;
 
   /// Get last cached browser history items
-  List<BrowserHistoryItem> get browserHistory =>
+  List<BrowserHistoryItem> get browserHistoryItems =>
       _browserHistorySubject.valueOrNull ?? [];
 
   void init() {
@@ -35,7 +35,6 @@ class HistoryManager {
         (a, b) => b.visitTime.compareTo(a.visitTime),
       )
       ..take(_historyItemCountLimit);
-
     _browserHistoryStorageService.saveBrowserHistory(sortedHistory);
 
     _browserHistorySubject.add(sortedHistory);
@@ -47,12 +46,19 @@ class HistoryManager {
   }
 
   void addHistoryItem(BrowserHistoryItem item) {
-    saveBrowserHistory([...browserHistory, item]);
+    if (item.url.host.isEmpty) {
+      return;
+    }
+    saveBrowserHistory([...browserHistoryItems, item]);
+  }
+
+  void addHistoryItems(List<BrowserHistoryItem> items) {
+    saveBrowserHistory([...browserHistoryItems, ...items]);
   }
 
   void removeHistoryItem(String id) {
     saveBrowserHistory(
-      [...browserHistory]..removeWhere((item) => item.id == id),
+      [...browserHistoryItems]..removeWhere((item) => item.id == id),
     );
   }
 
